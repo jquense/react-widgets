@@ -1,0 +1,47 @@
+
+.list-unstyled {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.list-inline {
+  .list-unstyled();
+  margin-left: -5px;
+
+  > li {
+    display: inline-block;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.border-left-radius(@radius) {
+  border-bottom-left-radius: @radius;
+     border-top-left-radius: @radius;
+}
+
+.border-bottom-radius(@radius) {
+  border-bottom-right-radius: @radius;
+   border-bottom-left-radius: @radius;
+}
+
+.border-top-radius(@radius) {
+  	border-top-right-radius: @radius;
+   border-top-left-radius: @radius;
+}
+.border-right-radius(@radius) {
+  border-bottom-right-radius: @radius;
+     border-top-right-radius: @radius;
+}
+
+.box-sizing(@bm) {
+  -webkit-box-sizing: @bm;
+     -moz-box-sizing: @bm;
+          box-sizing: @bm;
+}
+
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow; // iOS <4.3 & Android <4.1
+          box-shadow: @shadow;
+}

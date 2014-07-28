@@ -1,0 +1,37 @@
+
+
+.rw-dropdownlist {
+	position: 				relative;
+	padding-right: 		1.9em;
+	border-radius:	 	@select-border-radius;
+	background: 			@dropdown-bg;
+	border: 					@dropdown-border 1px solid;
+
+	&.rw-open {
+		.border-bottom-radius(0);
+	}
+
+	&:hover {
+		background: 			@dropdown-bg-hover;
+		border-color: 		@dropdown-border-hover;
+	}
+
+	.rw-dropdownlist-picker {
+		width: 1.9em;
+		height: 100%;
+		text-align: : middle;
+		position: absolute;
+		outline: 0;
+		right: 0;
+	}
+
+	&.rw-rtl {
+		padding-right: 0;
+		padding-left: 1.9em;
+
+		.rw-dropdownlist-picker {
+			left: 0;
+			right: auto;
+		}
+	}
+}

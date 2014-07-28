@@ -1,0 +1,38 @@
+{
+  "name": "react-widgets",
+  "version": "0.0.1",
+  "description": "React widgets",
+  "main": "server.js",
+  "author": {
+    "name": "Jason",
+    "email": ""
+  },
+  "browserify": { 
+    "transform": [ "browserify-shim"]
+  },
+  "browser": {
+    "zepto":  "./vendor/zepto.js"
+  },
+  "browserify-shim": {
+    "zepto":  "$"
+  },
+  "dependencies": {
+    "bluebird": "^1.2.4",
+    "lodash": "^2.4.1",
+    "envify": "^1.2.1",
+    "react": "^0.10.0"
+  },
+
+  "devDependencies": {
+    "gulp-rename": "^1.2.0",
+    "gulp-concat": "^2.2.0",
+    "gulp-header": "^1.0.2",
+    "gulp": "^3.6.2",
+    "gulp-uglify": "^0.3.0",
+    "gulp-less": "^1.2.3",
+    "browserify": "~4.1.6",
+    "vinyl-source-stream": "~0.1.1",
+    "reactify": "^0.13.1",
+    "gulp-plumber": "^0.6.3"
+  }
+}
