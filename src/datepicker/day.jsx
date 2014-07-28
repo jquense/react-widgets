@@ -2,13 +2,14 @@ var React = require('react')
   , cx = require('react/lib/cx')
   , dates = require('../util/dates')
   , transferProps = require('../util/transferProps')
+  , globalize = require('globalize')
   , _ = require('lodash')
 
 
 module.exports = React.createClass({
 
   propTypes: {
-    value:  dates.PropTypes.moment,
+    value:  React.PropTypes.instanceOf(Date),
     month:  React.PropTypes.number,
     year:   React.PropTypes.number,
   },
@@ -19,9 +20,9 @@ module.exports = React.createClass({
 
     return transferProps(props,
       <td className={cx({ 
-          'rw-off-month': day.month() !== this.props.month
+          'rw-off-month': dates.month(day) !== this.props.month
         })}>
-        {day.format('D')}
+        {globalize.format(day, 'D')}
       </td>
     )
   }

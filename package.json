@@ -7,14 +7,16 @@
     "name": "Jason",
     "email": ""
   },
-  "browserify": { 
-    "transform": [ "browserify-shim"]
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
   },
   "browser": {
-    "zepto":  "./vendor/zepto.js"
+    "zepto": "./vendor/zepto.js"
   },
   "browserify-shim": {
-    "zepto":  "$"
+    "zepto": "$"
   },
   "dependencies": {
     "bluebird": "^1.2.4",
@@ -22,7 +24,6 @@
     "envify": "^1.2.1",
     "react": "^0.10.0"
   },
-
   "devDependencies": {
     "gulp-rename": "^1.2.0",
     "gulp-concat": "^2.2.0",
@@ -33,6 +34,8 @@
     "browserify": "~4.1.6",
     "vinyl-source-stream": "~0.1.1",
     "reactify": "^0.13.1",
-    "gulp-plumber": "^0.6.3"
+    "gulp-plumber": "^0.6.3",
+    "font-awesome": "~4.1.0",
+    "browserify-shim": "~3.6.0"
   }
 }

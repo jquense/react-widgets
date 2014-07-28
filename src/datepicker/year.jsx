@@ -3,7 +3,7 @@ var React = require('react')
   , cx = require('react/lib/cx')
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
-  , moment = require('moment')
+  , globalize = require('globalize')
   , _ = require('lodash')
 
 
@@ -12,9 +12,9 @@ module.exports = React.createClass({
   propTypes: {
     culture:      React.PropTypes.array,
     year:         React.PropTypes.number,
-    selected:     dates.PropTypes.moment,
-    min:          dates.PropTypes.moment,
-    max:          dates.PropTypes.moment,
+    selected:     React.PropTypes.instanceOf(Date),
+    min:          React.PropTypes.instanceOf(Date),
+    max:          React.PropTypes.instanceOf(Date),
 
     format:       React.PropTypes.string,
   },
@@ -36,7 +36,7 @@ module.exports = React.createClass({
     return (
       <tr>
       {_.map(dates, function(date){
-        return <td>{ date.format('MMM') }</td>
+        return <td>{ globalize.format(date, 'MMM') }</td>
       })}
     </tr>)
   },

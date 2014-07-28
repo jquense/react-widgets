@@ -9,8 +9,8 @@ var React = require('react')
 module.exports = React.createClass({
 
   propTypes: {
-    days:       React.PropTypes.arrayOf(dates.PropTypes.moment),
-    selected:   dates.PropTypes.moment,
+    days:       React.PropTypes.arrayOf(React.PropTypes.instanceOf(Date)),
+    selected:   React.PropTypes.instanceOf(Date),
     month:      React.PropTypes.number,
     year:       React.PropTypes.number,
   },
@@ -27,6 +27,7 @@ module.exports = React.createClass({
 
     return transferProps(
       _.omit(this.props, 'days', 'onClick'),
+      
       <tr>{ _.map(this.props.days, (day, idx) => (
         !dates.inRange(day, this.props.min, this.props.max)
             ? <td className='rw-empty-cell'>&nbsp;</td>
@@ -34,7 +35,7 @@ module.exports = React.createClass({
                 className={cx({
                   'rw-state-hover'   : idx === this.state.hovering, 
                   'rw-state-focused' : idx === this.state.focused,
-                  'rw-state-selected': day.isSame(this.props.selected, 'day'),
+                  'rw-state-selected': dates.eq(day, this.props.selected, 'day'),
                 })}
                 onMouseEnter={_.partial(this._onHover, idx)}
                 onMouseLeave={_.partial(this._onHover, null)}

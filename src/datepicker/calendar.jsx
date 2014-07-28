@@ -5,7 +5,7 @@ var React = require('react')
   , cx = require('react/lib/cx')
   , dates = require('../util/dates')
   , transferProps = require('../util/transferProps')
-  , moment = require('moment')
+  , globalize = require('globalize')
   , _ = require('lodash')
 
 var RIGHT = 'right'
@@ -44,7 +44,7 @@ module.exports = React.createClass({
       selectedIndex: 0,
       open:          false,
       view:          this.props.initialView || 'month',
-      currentDate:   moment(this.props.date)
+      currentDate:   new Date(this.props.date)
     }
   },
 
@@ -58,7 +58,7 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     this.setState({
-      currentDate: moment(nextProps.date)
+      currentDate: new Date(nextProps.date)
     })
   },
 
@@ -75,8 +75,8 @@ module.exports = React.createClass({
         <View 
           selected={this.props.date} 
           date={this.state.currentDate}
-          min={moment(this.props.min)}
-          max={moment(this.props.max)}/>
+          min={this.props.min}
+          max={this.props.max}/>
       </div>
     )
   },
@@ -103,7 +103,7 @@ module.exports = React.createClass({
       , unit   = view === 'month' ? view : 'year'
       , multi  = MULTIPLIER[view] || 1;
 
-    return moment(this.state.currentDate)[method](unit, 1 * multi)
+    return dates[method](this.state.currentDate, 1 * multi, unit)
   },
 
   _label: function(){
@@ -111,18 +111,18 @@ module.exports = React.createClass({
       , dt   = this.state.currentDate;
 
     if ( view === 'month')
-      return moment(dt).format('MMMM YYYY')
+      return globalize.format(dt, 'MMMM YYYY')
 
     else if ( view === 'year')
-      return moment(dt).format('YYYY')
+      return globalize.format(dt, 'YYYY')
 
     else if ( view === 'decade')
-      return dates.firstOfDecade(dt).format('YYYY') 
-        + ' - ' + dates.lastOfDecade(dt).format('YYYY')
+      return globalize.format(dates.firstOfDecade(dt), 'YYYY') 
+        + ' - ' + globalize.format(dates.lastOfDecade(dt), 'YYYY')
 
     else if ( view === 'century')
-      return dates.firstOfCentury(dt).format('YYYY') 
-        + ' - ' + dates.lastOfCentury(dt).format('YYYY')
+      return globalize.format(dates.firstOfCentury(dt), 'YYYY') 
+        + ' - ' + globalize.format(dates.lastOfCentury(dt), 'YYYY')
   } 
 
 });
