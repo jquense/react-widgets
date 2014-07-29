@@ -22,7 +22,8 @@
     "bluebird": "^1.2.4",
     "lodash": "^2.4.1",
     "envify": "^1.2.1",
-    "react": "^0.10.0"
+    "react": "^0.10.0",
+    "globalize": "~0.1.1"
   },
   "devDependencies": {
     "gulp-rename": "^1.2.0",

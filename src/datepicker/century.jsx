@@ -9,15 +9,15 @@ var React = require('react')
 module.exports = React.createClass({
 
   propTypes: {
-    date:         React.PropTypes.instanceOf(Date),
+    value:         React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
 
-    onSelect:     React.PropTypes.func.isRequired
+    onChange:     React.PropTypes.func.isRequired
   },
 
   render: function(){
-    var years = getCenturyDecades(this.props.date)
+    var years = getCenturyDecades(this.props.value)
       , rows  = chunk(years, 4);
 
     return (
@@ -35,8 +35,8 @@ module.exports = React.createClass({
       {_.map(row, date => {
         return !inRange(date, this.props.min, this.props.max) 
           ? <td className='rw-empty-cell'>&nbsp;</td>
-          : (<td className={cx({ 'rw-off-range': !inCentury(date, this.props.date) })}>
-              <btn onClick={_.partial(this.props.onSelect, date)}>
+          : (<td className={cx({ 'rw-off-range': !inCentury(date, this.props.value) })}>
+              <btn onClick={_.partial(this.props.onChange, date)}>
                 { label(date) }
               </btn>
             </td>)

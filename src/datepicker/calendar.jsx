@@ -33,14 +33,14 @@ module.exports = React.createClass({
 
   propTypes: {
     culture:      React.PropTypes.array,
-    date:         React.PropTypes.instanceOf(Date),
+    value:         React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
 
     format:       React.PropTypes.string,
     initialView:  React.PropTypes.oneOf(['month', 'year', 'decade']),
 
-    onSelect:     React.PropTypes.func.isRequired
+    onChange:     React.PropTypes.func.isRequired
   },
 
   getInitialState: function(){
@@ -48,13 +48,13 @@ module.exports = React.createClass({
       selectedIndex: 0,
       open:          false,
       view:          this.props.initialView || 'month',
-      currentDate:   new Date(this.props.date)
+      currentDate:   new Date(this.props.value)
     }
   },
 
   getDefaultProps: function(){
     return {
-      date: new Date,
+      value: new Date,
       min:  new Date(2014,5, 14),
       max:  new Date(2099,11, 31),
     }
@@ -62,7 +62,7 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     this.setState({
-      currentDate: new Date(nextProps.date)
+      currentDate: new Date(nextProps.value)
     })
   },
 
@@ -78,9 +78,9 @@ module.exports = React.createClass({
           onMoveLeft ={_.partial(this.navigate, LEFT)}
           onMoveRight={_.partial(this.navigate, RIGHT)}/>
         <View 
-          selected={this.props.date} 
-          date={this.state.currentDate}
-          onSelect={this.select}
+          selected={this.props.value} 
+          value={this.state.currentDate}
+          onChange={this.change}
           min={this.props.min}
           max={this.props.max}/>
       </div>
@@ -96,7 +96,7 @@ module.exports = React.createClass({
       })
   },
 
-  select: function(date){
+  change: function(date){
     var view = this.state.view
       , alts = _.invert(NEXT_VIEW);
 

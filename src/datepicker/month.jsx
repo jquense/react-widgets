@@ -10,13 +10,13 @@ module.exports = React.createClass({
 
   propTypes: {
     culture:      React.PropTypes.array,
-    date:         React.PropTypes.instanceOf(Date),
+    value:        React.PropTypes.instanceOf(Date),
     selected:     React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
 
     format:       React.PropTypes.string,
-    onSelect:     React.PropTypes.func.isRequired
+    onChange:     React.PropTypes.func.isRequired
   },
 
   render: function(){
@@ -34,18 +34,18 @@ module.exports = React.createClass({
 
 
   _body: function(){
-    var month = dates.visibleDays(this.props.date)
+    var month = dates.visibleDays(this.props.value)
       , rows  = chunk(month, 7 );
 
     return _.map(rows, week => (
       <Week 
         days={week} 
         selected={this.props.selected}
-        month={dates.month(this.props.date)}
-        year ={dates.year(this.props.date)}
+        month={dates.month(this.props.value)}
+        year ={dates.year(this.props.value)}
         min={this.props.min}
         max={this.props.max}
-        onClick={this.props.onSelect}/>))
+        onClick={this.props.onChange}/>))
   },
 
 

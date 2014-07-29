@@ -1,6 +1,7 @@
 var React = require('react')
 var DropdownList = require('../src/DropdownList/dropdown-list.jsx')
 var Calendar = require('../src/datepicker/calendar.jsx')
+var DatePicker = require('../src/datepicker/datepicker.jsx')
 
 var App = React.createClass({
 
@@ -21,6 +22,7 @@ var App = React.createClass({
 
 			obj[field] = data
 			self.setState(obj)
+			console.log('example: set field: ' + field)
 		}
 
 		return (
@@ -29,7 +31,7 @@ var App = React.createClass({
 					<DropdownList data={ this.state.data } value={ this.state.dropdownValue} onChange={change.bind(null, 'dropdownValue')}/>
 				</section>
 				<section className="example" style={{ fontSize: 14, width: 200 }}>
-					<Calendar date={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
+					<DatePicker value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
 				</section>
 
 			</div>

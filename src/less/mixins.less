@@ -45,3 +45,14 @@
   -webkit-box-shadow: @shadow; // iOS <4.3 & Android <4.1
           box-shadow: @shadow;
 }
+
+.clearfix() {
+  &:before,
+  &:after {
+    content: " "; 
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}

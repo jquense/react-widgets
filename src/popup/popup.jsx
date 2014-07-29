@@ -34,7 +34,9 @@ module.exports = React.createClass({
       //setTimeout(function(){ $popup.addClass('slide-down')}, 0)
 
       self._onClick = function(e){
-        if ( !$.contains($popup[0], e.target) )
+        var detached = !$.contains(document, e.target)
+
+        if ( !$.contains($popup[0], e.target) && !detached )
           self.props.onShouldClose()
       }
 

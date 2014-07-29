@@ -64,3 +64,44 @@ ul.rw-list {
     border-color:     @state-border-select;
   }
 }
+
+.rw-date-picker,
+.rw-dropdownlist {
+  position:         relative;
+  padding-right:    1.9em;
+
+  &.rw-rtl {
+    padding-right: 0;
+    padding-left: 1.9em;
+
+    > .rw-select {
+      left: 0;
+      right: auto;
+    }
+  }
+
+  > .rw-input {
+    width: 100%;
+    border: none;
+    outline: 0;
+    background: none;
+  }
+
+  > .rw-select {
+    position: absolute;
+    width: 1.9em;
+    height: 100%;
+    right: 0;
+
+    &.rw-btn,
+    & > .rw-btn {
+      height: 100%;
+      vertical-align: middle;
+      outline: 0;
+    }
+  }
+
+  &.rw-open {
+    .border-bottom-radius(0);
+  }
+}

@@ -1,4 +1,32 @@
 
+.rw-date-picker{
+  border-radius:    @select-border-radius;
+  background:       @dropdown-bg;
+  border:           @dropdown-border 1px solid;
+
+  > .rw-select {
+    border-left: black 1px solid;
+  }
+  .rw-btn {
+    width: 1.8em;
+  } 
+
+  &.rw-has-both {
+    padding-right: 3.8em;
+
+    &.rw-rtl { 
+      padding-right: 0;
+      padding-left: 3.8em;
+    }
+  }
+
+  &.rw-has-both > .rw-select {
+    width: 3.8em;
+    height: 100%; 
+  }
+}
+
+
 .rw-calendar {
   > .rw-header {
     .rw-btn-left,

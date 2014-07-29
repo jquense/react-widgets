@@ -2,8 +2,9 @@ var React = require('react')
   , cx = require('react/lib/cx')
   , DefaultValueItem = require('./value-item.jsx')
   , Popup = require('../popup/popup.jsx')
-  , List = require('../common/list.jsx')
+  , List = require('../common/list.jsx');
 
+var btn = require('../common/btn.jsx')
 
 module.exports = React.createClass({
 
@@ -48,11 +49,11 @@ module.exports = React.createClass({
               'rw-open':         this.state.open
             })}>
 
-				<button className="rw-btn rw-dropdownlist-picker" onClick={this.toggle}>
+				<btn className="rw-dropdownlist-picker rw-select" onClick={this.toggle}>
 					<i className="rw-i rw-i-caret-down">
             <span className="rw-sr">Open Dropdown</span>
           </i>
-				</button>
+				</btn>
 				<DropdownValue
             className="rw-input" 
             value={this.props.value}

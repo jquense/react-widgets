@@ -9,14 +9,14 @@ var React = require('react')
 module.exports = React.createClass({
 
   propTypes: {
-    date:         React.PropTypes.instanceOf(Date),
+    value:        React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
-    onSelect:     React.PropTypes.func.isRequired
+    onCHange:     React.PropTypes.func.isRequired
   },
 
   render: function(){
-    var years = getDecadeYears(this.props.date)
+    var years = getDecadeYears(this.props.value)
       , rows  = chunk(years, 4);
 
     return (
@@ -34,8 +34,8 @@ module.exports = React.createClass({
       {_.map(row, date => {
         return !dates.inRange(date, this.props.min, this.props.max, 'year') 
           ? <td className='rw-empty-cell'>&nbsp;</td>
-          : (<td className={cx({ 'rw-off-range': !inDecade(date, this.props.date) })}>
-              <btn onClick={_.partial(this.props.onSelect, date)}>
+          : (<td className={cx({ 'rw-off-range': !inDecade(date, this.props.value) })}>
+              <btn onClick={_.partial(this.props.onChange, date)}>
                 { globalize.format(date, dates.formats.YEAR) }
               </btn>
             </td>)

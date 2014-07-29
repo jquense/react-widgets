@@ -10,14 +10,14 @@ var React = require('react')
 module.exports = React.createClass({
 
   propTypes: {
-    date:         React.PropTypes.instanceOf(Date),
+    value:        React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
-    onSelect:     React.PropTypes.func.isRequired
+    onChange:     React.PropTypes.func.isRequired
   },
 
   render: function(){
-    var months = dates.monthsInYear(dates.year(this.props.date))
+    var months = dates.monthsInYear(dates.year(this.props.value))
       , rows = chunk(months, 4);
 
     return (
@@ -34,7 +34,7 @@ module.exports = React.createClass({
       <tr>
       {_.map(row, date => {
         return dates.inRange(date, this.props.min, this.props.max, 'month') 
-          ? <td><btn onClick={_.partial(this.props.onSelect, date)}>{ globalize.format(date, dates.formats.MONTH_NAME_ABRV) }</btn></td>
+          ? <td><btn onClick={_.partial(this.props.onChange, date)}>{ globalize.format(date, dates.formats.MONTH_NAME_ABRV) }</btn></td>
           : <td className='rw-empty-cell'>&nbsp;</td>
       })}
     </tr>)
