@@ -4,13 +4,15 @@ var dateMath = require('./date-math')
 
 var dates = module.exports = _.extend({}, dateMath, {
 
+  shortDaysOfWeek: shortDayNames,
+
   daysOfWeek: function(date, format){
     if (arguments.length === 1){
       format = date
       date = new Date
     }
 
-    format = format || 'dd'
+    format = format || 'do'
 
     return _.map(_.range(7), function(i){
       return  globalize.format(dateMath.weekday(date, i), format)
@@ -22,7 +24,7 @@ var dates = module.exports = _.extend({}, dateMath, {
       format = date
       date = new Date
     }
-    format = format || 'MMM'
+    format = format || dates.formats.DAY_NAME_ABRV
 
     return _.map(_.range(12), function(i){
       return globalize.format(dateMath.month(date, i), format)
@@ -30,7 +32,7 @@ var dates = module.exports = _.extend({}, dateMath, {
   },
 
   monthsInYear: function(year){
-    var date = new Date(year)
+    var date = new Date(year, 0, 1)
     
     return _.map(_.range(12), function(i){
       return dateMath.month(date, i)
@@ -38,7 +40,7 @@ var dates = module.exports = _.extend({}, dateMath, {
   },
 
   firstOfDecade: function(date){
-    var decade = dateMath.year(date, i) % 10
+    var decade = dateMath.year(date) % 10
 
     return dateMath.subtract(date, decade, 'year')
   },
@@ -48,7 +50,7 @@ var dates = module.exports = _.extend({}, dateMath, {
   },
 
   firstOfCentury: function(date){
-    var decade = dateMath.year(date, i) % 100
+    var decade = dateMath.year(date) % 100
     return dateMath.subtract(date, decade, 'year')
   },
 
@@ -71,8 +73,9 @@ var dates = module.exports = _.extend({}, dateMath, {
       , last = dates.lastVisibleDay(date)
       , days = [];
 
-    while( dateMath.lte(current, last) ) {
-      days.push(dateMath.add(current, 1, 'day'))
+    while( dateMath.lte(current, last, 'day') ) {
+      days.push(current)
+      current = dateMath.add(current, 1, 'day')
     }
 
     return days
@@ -89,11 +92,20 @@ var dates = module.exports = _.extend({}, dateMath, {
         && dateMath.lte(day, max, unit)
   },
 
-  PropTypes: {
-    moment: function(props, propName, componentName){
-        //if ( !moment.isMoment(props[propName]) )
-          return new Error("must be a moment object")
-    }
+  formats: {
+    DAY_OF_MONTH:    'dd',
+    DAY_NAME_SHORT:  null,
+    MONTH_NAME_ABRV: 'MMM',
+    MONTH_YEAR:      'MMMM yyyy',
+    YEAR:            'yyyy'
   }
 
 })
+
+
+function shortDayNames(){
+  var culture = globalize.culture()
+
+  if (culture && culture.calendar)
+    return culture.calendar.days.namesShort
+}

@@ -1,14 +1,17 @@
 var React = require('react')
   , cx = require('react/lib/cx');
 
+var btn = require('../common/btn.jsx')
+
 module.exports = React.createClass({
 
   propTypes: {
     label:          React.PropTypes.string.isRequired,
 
-    onViewChange:   React.PropTypes.func,
-    onMoveLeft:     React.PropTypes.func,
-    onMoveRight:    React.PropTypes.func,
+    disabled:       React.PropTypes.bool.isRequired,
+    onViewChange:   React.PropTypes.func.isRequired,
+    onMoveLeft:     React.PropTypes.func.isRequired,
+    onMoveRight:    React.PropTypes.func.isRequired,
   },
 
 
@@ -17,15 +20,15 @@ module.exports = React.createClass({
 
     return (
       <div className='rw-header'>
-        <button className="rw-btn rw-btn-left" onClick={this.props.onMoveLeft}>
+        <btn className="rw-btn-left" onClick={this.props.onMoveLeft}>
           <i className="rw-i rw-i-caret-left"><span className="rw-sr">Move Left</span></i>
-        </button>
-        <button className="rw-btn rw-btn-view" onClick={this.props.onViewChange}>
+        </btn>
+        <btn className="rw-btn-view" onClick={this.props.onViewChange} disabled={this.props.disabled} >
           { this.props.label }
-        </button>
-        <button className="rw-btn rw-btn-right" onClick={this.props.onMoveRight}>
+        </btn>
+        <btn className="rw-btn-right" onClick={this.props.onMoveRight}>
           <i className="rw-i rw-i-caret-right"><span className="rw-sr">Move Left</span></i>
-        </button>
+        </btn>
       </div>
     )
   }

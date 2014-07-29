@@ -16,11 +16,12 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
 
     format:       React.PropTypes.string,
+    onSelect:     React.PropTypes.func.isRequired
   },
 
   render: function(){
     return (
-      <table>
+      <table className='rw-calendar-grid'>
         <thead>
           <tr>{ this._headers() }</tr>
         </thead>
@@ -31,9 +32,6 @@ module.exports = React.createClass({
     )
   },
 
-  _onClick: function(date, idx){
-    console.log(date, idx)
-  },
 
   _body: function(){
     var month = dates.visibleDays(this.props.date)
@@ -47,12 +45,12 @@ module.exports = React.createClass({
         year ={dates.year(this.props.date)}
         min={this.props.min}
         max={this.props.max}
-        onClick={this._onClick}/>))
+        onClick={this.props.onSelect}/>))
   },
 
 
   _headers: function(format){
-    var days = dates.daysOfWeek(this.props.date, format);
+    var days = dates.shortDaysOfWeek(format);
 
     return _.map(days, function(day){
       return (<th>{day}</th>)

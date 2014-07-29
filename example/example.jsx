@@ -8,24 +8,28 @@ var App = React.createClass({
 
 		return {
 			data: [ 'cherry', 'vanilla','cola','lemon-lime','grapefruit','ginder-ale'],
-			value: 'cherry'
+			dropdownValue: 'cherry',
+			calDate: new Date
 		}
 	},
 
 	render: function(){
 		var self = this;
 		
-		function change(data){
-			self.setState({ value: data })
+		function change(field, data) {
+			var obj = {}
+
+			obj[field] = data
+			self.setState(obj)
 		}
 
 		return (
 			<div>
 				<section className="example" style={{ fontSize: 14 }}>
-					<DropdownList data={ this.state.data } value={ this.state.value} onChange={change}/>
+					<DropdownList data={ this.state.data } value={ this.state.dropdownValue} onChange={change.bind(null, 'dropdownValue')}/>
 				</section>
 				<section className="example" style={{ fontSize: 14, width: 200 }}>
-					<Calendar date={new Date}/>
+					<Calendar date={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
 				</section>
 
 			</div>

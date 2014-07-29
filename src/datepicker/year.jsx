@@ -10,21 +10,18 @@ var React = require('react')
 module.exports = React.createClass({
 
   propTypes: {
-    culture:      React.PropTypes.array,
-    year:         React.PropTypes.number,
-    selected:     React.PropTypes.instanceOf(Date),
+    date:         React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
-
-    format:       React.PropTypes.string,
+    onSelect:     React.PropTypes.func.isRequired
   },
 
   render: function(){
-    var months = dates.monthsInYear(this.props.year)
+    var months = dates.monthsInYear(dates.year(this.props.date))
       , rows = chunk(months, 4);
 
     return (
-      <table tabIndex='0' role='grid'>
+      <table tabIndex='0' role='grid' className='rw-calendar-grid rw-nav-view'>
         <tbody onKeyUp={this._keyUp}>
           { _.map(rows, this._row)}
         </tbody>
@@ -32,11 +29,13 @@ module.exports = React.createClass({
     )
   },
 
-  _row: function(dates){
+  _row: function(row){
     return (
       <tr>
-      {_.map(dates, function(date){
-        return <td>{ globalize.format(date, 'MMM') }</td>
+      {_.map(row, date => {
+        return dates.inRange(date, this.props.min, this.props.max, 'month') 
+          ? <td><btn onClick={_.partial(this.props.onSelect, date)}>{ globalize.format(date, dates.formats.MONTH_NAME_ABRV) }</btn></td>
+          : <td className='rw-empty-cell'>&nbsp;</td>
       })}
     </tr>)
   },
@@ -49,3 +48,4 @@ module.exports = React.createClass({
 });
 
 
+var btn = require('../common/btn.jsx')

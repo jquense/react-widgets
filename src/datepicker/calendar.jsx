@@ -2,9 +2,11 @@ var React = require('react')
   , Header  = require('./header.jsx')
   , Month = require('./month.jsx')
   , Year = require('./year.jsx')
+  , Decade = require('./decade.jsx')
+  , Century = require('./century.jsx')
   , cx = require('react/lib/cx')
   , dates = require('../util/dates')
-  , transferProps = require('../util/transferProps')
+  //, transferProps = require('../util/transferProps')
   , globalize = require('globalize')
   , _ = require('lodash')
 
@@ -18,8 +20,8 @@ var RIGHT = 'right'
   VIEW = {
     'month':    Month,
     'year':     Year,
-    'decade':   null,
-    'century':  null
+    'decade':   Decade,
+    'century':  Century,
   }
   NEXT_VIEW = {
     'month':  'year',
@@ -36,7 +38,9 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
 
     format:       React.PropTypes.string,
-    initialView:  React.PropTypes.oneOf(['month', 'year', 'decade'])
+    initialView:  React.PropTypes.oneOf(['month', 'year', 'decade']),
+
+    onSelect:     React.PropTypes.func.isRequired
   },
 
   getInitialState: function(){
@@ -67,14 +71,16 @@ module.exports = React.createClass({
 
     return (
       <div className='rw-calendar rw-widget'>
-        <Header 
+        <Header
           label={this._label()}
-          onViewChange={this.view}
+          disabled={this.state.view === 'century'}
+          onViewChange={this.nextView}
           onMoveLeft ={_.partial(this.navigate, LEFT)}
           onMoveRight={_.partial(this.navigate, RIGHT)}/>
         <View 
           selected={this.props.date} 
           date={this.state.currentDate}
+          onSelect={this.select}
           min={this.props.min}
           max={this.props.max}/>
       </div>
@@ -90,8 +96,21 @@ module.exports = React.createClass({
       })
   },
 
+  select: function(date){
+    var view = this.state.view
+      , alts = _.invert(NEXT_VIEW);
 
-  view: function(){
+    if ( view === 'month')
+      return this.props.onChange(date)
+
+    this.setState({
+      currentDate: date,
+      view: alts[view]
+    })
+  },
+
+
+  nextView: function(){
     this.setState({
       view: NEXT_VIEW[this.state.view]
     })
@@ -111,18 +130,18 @@ module.exports = React.createClass({
       , dt   = this.state.currentDate;
 
     if ( view === 'month')
-      return globalize.format(dt, 'MMMM YYYY')
+      return globalize.format(dt, dates.formats.MONTH_YEAR)
 
     else if ( view === 'year')
-      return globalize.format(dt, 'YYYY')
+      return globalize.format(dt, dates.formats.YEAR)
 
     else if ( view === 'decade')
-      return globalize.format(dates.firstOfDecade(dt), 'YYYY') 
-        + ' - ' + globalize.format(dates.lastOfDecade(dt), 'YYYY')
+      return globalize.format(dates.firstOfDecade(dt),     dates.formats.YEAR) 
+        + ' - ' + globalize.format(dates.lastOfDecade(dt), dates.formats.YEAR)
 
     else if ( view === 'century')
-      return globalize.format(dates.firstOfCentury(dt), 'YYYY') 
-        + ' - ' + globalize.format(dates.lastOfCentury(dt), 'YYYY')
+      return globalize.format(dates.firstOfCentury(dt),     dates.formats.YEAR) 
+        + ' - ' + globalize.format(dates.lastOfCentury(dt), dates.formats.YEAR)
   } 
 
 });

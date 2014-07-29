@@ -10,7 +10,7 @@ var MILI = 'milliseconds'
   , MONTH = 'month'
   , YEAR = 'year'
 
-// function dates(date){
+// function tick(date){
 // 	this.__val__ = date;
 // }
 
@@ -38,7 +38,7 @@ var dates = module.exports = {
 			return dates.date(date, dates.date(date) + (7 * num)) 
 
 		else if ( unit === MONTH )
-			return monthMath(date, num, true)
+			return monthMath(date, num)
 
 		else if ( unit === YEAR )
 			return dates.year(date, dates.year(date) + num)
@@ -47,33 +47,7 @@ var dates = module.exports = {
 	},
 
 	subtract: function(date, num, unit) {
-		date = new Date(date)
-
-		if ( unit === MILI ) 
-			return dates.milliseconds(date, dates.milliseconds(date) - num)
-
-		else if ( unit === SECONDS ) 
-			return dates.second(date, dates.seconds(date) - num)
-
-		else if ( unit === MINUTE ) 
-			return dates.minute(date, dates.minutes(date) - num)
-
-		else if ( unit === HOUR ) 
-			return dates.hour(date, dates.hours(date) - num)
-
-		else if ( unit === DAY ) 
-			return dates.date(date, dates.date(date) - num)
-		
-		else if ( unit === WEEK )
-			return dates.day(date, dates.date(date) - (7 * num)) 
-
-		else if ( unit === MONTH )
-			return monthMath(date, num, false)
-
-		else if ( unit === YEAR )
-			return dates.year(date, dates.year(date) - num)
-
-		return date
+		return dates.add(date, -num, unit)
 	},
 
 	startOf: function(date, unit){
@@ -130,13 +104,13 @@ var dates = module.exports = {
 	}),
 
 	milliseconds: 	createAccessor('Milliseconds'),
-	seconds: 		createAccessor('Seconds'),
-	minutes: 		createAccessor('Minutes'),
-	hours: 			createAccessor('Hours'),
-	day: 			createAccessor('Day'),
-	date: 			createAccessor('Date'),
-	month: 			createAccessor('Month'),
-	year: 			createAccessor('FullYear'),
+	seconds: 				createAccessor('Seconds'),
+	minutes: 				createAccessor('Minutes'),
+	hours: 					createAccessor('Hours'),
+	day: 						createAccessor('Day'),
+	date: 					createAccessor('Date'),
+	month: 					createAccessor('Month'),
+	year: 					createAccessor('FullYear'),
 
 	weekday: function (date, val) {
         var weekday = (dates.day(date) + 7 - startOfWeek() ) % 7;
@@ -148,9 +122,9 @@ var dates = module.exports = {
 }
 
 
-function monthMath(date, val, add){
+function monthMath(date, val){
 	var current = dates.month(date)
-	  , newMonth  = add ? (current + val) : (current - val);
+	  , newMonth  = (current + val);
 
   	date = dates.month(date, newMonth)
 

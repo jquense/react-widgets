@@ -20,10 +20,12 @@ module.exports = React.createClass({
 
     return transferProps(props,
       <td className={cx({ 
-          'rw-off-month': dates.month(day) !== this.props.month
+          'rw-off-range': dates.month(day) !== this.props.month
         })}>
-        {globalize.format(day, 'D')}
+        <btn>{globalize.format(day, 'dd')}</btn>
       </td>
     )
   }
 })
+
+var btn = require('../common/btn.jsx')

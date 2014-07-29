@@ -12,11 +12,12 @@ module.exports = React.createClass({
     date:         React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
+
     onSelect:     React.PropTypes.func.isRequired
   },
 
   render: function(){
-    var years = getDecadeYears(this.props.date)
+    var years = getCenturyDecades(this.props.date)
       , rows  = chunk(years, 4);
 
     return (
@@ -32,11 +33,11 @@ module.exports = React.createClass({
     return (
       <tr>
       {_.map(row, date => {
-        return !dates.inRange(date, this.props.min, this.props.max, 'year') 
+        return !inRange(date, this.props.min, this.props.max) 
           ? <td className='rw-empty-cell'>&nbsp;</td>
-          : (<td className={cx({ 'rw-off-range': !inDecade(date, this.props.date) })}>
+          : (<td className={cx({ 'rw-off-range': !inCentury(date, this.props.date) })}>
               <btn onClick={_.partial(this.props.onSelect, date)}>
-                { globalize.format(date, dates.formats.YEAR) }
+                { label(date) }
               </btn>
             </td>)
       })}
@@ -50,16 +51,26 @@ module.exports = React.createClass({
 
 });
 
-function inDecade(date, start){
-  return dates.gte(date, dates.firstOfDecade(start), 'year') 
-      && dates.lte(date, dates.lastOfDecade(start),  'year')
+function label(date){
+  return globalize.format(dates.firstOfDecade(date),     dates.formats.YEAR) 
+    + ' - ' + globalize.format(dates.lastOfDecade(date), dates.formats.YEAR)
 }
 
-function getDecadeYears(date){
-  var date = dates.add(dates.firstOfDecade(date), -2, 'year')
+function inRange(decade, min, max){
+  return dates.gte(decade, dates.firstOfDecade(min), 'year') 
+      && dates.lte(decade, dates.lastOfDecade(max),  'year')
+}
+
+function inCentury(date, start){
+  return dates.gte(date, dates.firstOfCentury(start), 'year') 
+      && dates.lte(date, dates.lastOfCentury(start),  'year')
+}
+
+function getCenturyDecades(date){
+  var date = dates.add(dates.firstOfCentury(date), -20, 'year')
 
   return _.map(_.range(12), function(i){
-    return date = dates.add(date, 1, 'year')
+    return date = dates.add(date, 10, 'year')
   })
 }
 
