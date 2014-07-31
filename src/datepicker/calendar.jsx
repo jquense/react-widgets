@@ -1,12 +1,11 @@
-var React = require('react')
+var React = require('react/addons')
   , Header  = require('./header.jsx')
   , Month = require('./month.jsx')
   , Year = require('./year.jsx')
   , Decade = require('./decade.jsx')
   , Century = require('./century.jsx')
-  , cx = require('react/lib/cx')
+  , cx = React.addons.classSet
   , dates = require('../util/dates')
-  //, transferProps = require('../util/transferProps')
   , globalize = require('globalize')
   , _ = require('lodash')
 

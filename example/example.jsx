@@ -1,4 +1,4 @@
-var React = require('react')
+var React = require('react/addons')
 var DropdownList = require('../src/DropdownList/dropdown-list.jsx')
 var Calendar = require('../src/datepicker/calendar.jsx')
 var DatePicker = require('../src/datepicker/datepicker.jsx')

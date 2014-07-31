@@ -1,7 +1,7 @@
-var React = require('react')
-  , cx = require('react/lib/cx')
+var React  = require('react/addons')
+  , cx     = React.addons.classSet
   , events = require('../util/events')
-  , Animation = require('react/lib/ReactCSSTransitionGroup')
+  , Animation = React.addonsCSSTransitionGroup
   // , outerHt = require('../util/outerHeight')
   // , outerWt = require('../util/outerWidth')
   , $ = require('zepto');

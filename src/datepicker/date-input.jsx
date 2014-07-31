@@ -1,5 +1,5 @@
-var React = require('react')
-  , cx = require('react/lib/cx')
+var React = require('react/addons')
+  , cx = React.addons.classSet
   , Popup = require('../popup/popup.jsx')
   , Calendar = require('./calendar.jsx')
   , globalize = require('globalize')
@@ -7,8 +7,6 @@ var React = require('react')
 
 
 module.exports = React.createClass({
-
-  mixins: [ require('react/lib/LinkedStateMixin') ],
 
   propTypes: {
     format:       React.PropTypes.string,

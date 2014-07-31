@@ -1,6 +1,6 @@
-var React = require('react')
+var React = require('react/addons')
   , Week  = require('./week.jsx')
-  , cx = require('react/lib/cx')
+  , cx    = React.addons.classSet
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , globalize = require('globalize')

@@ -46,6 +46,12 @@
           box-shadow: @shadow;
 }
 
+.transition(@transition) {
+  -webkit-transition: @transition;
+       -o-transition: @transition;
+          transition: @transition;
+}
+
 .clearfix() {
   &:before,
   &:after {

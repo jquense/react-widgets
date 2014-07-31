@@ -1,5 +1,20 @@
  //@color-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
 
+.collapse {
+  display: none;
+
+  &.in { 
+    display: block; 
+  }
+}
+
+.collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  .transition(height .25s ease);
+}
+
 .rw-btn {
 	//font-size: 1.2em;
 	display: inline-block;

@@ -1,8 +1,8 @@
-var React = require('react')
-  , cx = require('react/lib/cx')
+var React = require('react/addons')
+  , cx    = React.addons.classSet
   , DefaultValueItem = require('./value-item.jsx')
   , Popup = require('../popup/popup.jsx')
-  , List = require('../common/list.jsx');
+  , List  = require('../common/list.jsx');
 
 var btn = require('../common/btn.jsx')
 

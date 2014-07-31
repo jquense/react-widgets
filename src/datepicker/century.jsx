@@ -1,5 +1,5 @@
-var React = require('react')
-  , cx = require('react/lib/cx')
+var React = require('react/addons')
+  , cx = React.addons.classSet
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , globalize = require('globalize')

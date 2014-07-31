@@ -1,9 +1,9 @@
-var React = require('react')
-  , filter = require('../util/filter')
+var React   = require('react/addons')
+  , filter  = require('../util/filter')
   , compose = require('../util/compose')
-  , cx = require('react/lib/cx')
-  , $ =  require('zepto')
-  , _ =  require('lodash');
+  , cx = React.addons.classSet
+  , $  =  require('zepto')
+  , _  =  require('lodash');
 
 var DefaultListItem = React.createClass({
 

@@ -1,5 +1,6 @@
-var React = require('react')
-  , cx = require('react/lib/cx')
+var React = require('react/addons')
+  , SlideDown = require('../common/slide-transition.jsx')
+  , cx = React.addons.classSet
   , _ = require('lodash')
   , globalize = require('globalize')
   , Popup = require('../popup/popup.jsx')
@@ -69,13 +70,15 @@ module.exports = React.createClass({
             </btn>
           }
         </span>
-        { this.state.open && 
+        <SlideDown>
+        { this.state.open && (
           <Popup getAnchor={ this._getAnchor } onShouldClose={this.close} key={key}>
             <Calendar ref="calendar"
                 value={this.props.value} 
                 onChange={this._select}/>
-          </Popup>
+          </Popup>) || []
         }
+        </SlideDown>
       </div>
     )
 
