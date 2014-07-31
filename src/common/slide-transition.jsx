@@ -19,8 +19,8 @@ var SlideChildGroup = React.createClass({
       , $this = $(node)
       , direction = this.props.direction;
 
-    $this.removeClass('slide-left out')
-      .addClass('slide-left')
+    $this.removeClass('slide-' + direction + ' out')
+      .addClass('slide-' + direction)
 
     this.props.onEnter()
 
@@ -36,7 +36,7 @@ var SlideChildGroup = React.createClass({
 
     function finish() {
       events.off(node, event, finish)
-      $this.removeClass('slide-left')
+      $this.removeClass('slide-' + direction)
       done && done() 
       self.props.onLeave()
     }
@@ -50,7 +50,7 @@ var SlideChildGroup = React.createClass({
       , direction = this.props.direction;
 
     $this.removeClass('out')
-      .addClass('slide-left in')
+      .addClass('slide-' + direction + ' in')
 
     this.props.onEnter()
 
@@ -121,12 +121,14 @@ module.exports = React.createClass({
     var node = this.getDOMNode();
 
     $(node).height(node['scrollHeight'])
+    console.log('enter')
   },
 
   leave: function(){
     var node = this.getDOMNode();
 
     $(node).height('')
+    console.log('leave')
   }
 });
 

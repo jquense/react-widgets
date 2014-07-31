@@ -133,7 +133,7 @@ function formatsParser(formats, str){
   formats = [].concat(formats)
 
   for(var i=0; i < formats.length; i++ ){
-    date = globalize.parseDate(str, formats[i])
+    date = dates.parse(str, formats[i])
     if( date) return date
   }
   return null

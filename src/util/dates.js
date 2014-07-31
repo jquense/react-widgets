@@ -3,8 +3,27 @@ var dateMath = require('./date-math')
   , _ = require('lodash')
 
 var dates = module.exports = _.extend({}, dateMath, {
+  // wrapper methods for isolating globalize use throughout the lib
+  // looking forward towards the 1.0 release
+  culture: function(){
+    return globalize.culture()
+  },
 
-  shortDaysOfWeek: shortDayNames,
+  parse: function(date, format, culture){
+    return globalize.parseDate(date, format, culture)
+  },
+
+  format: function(date, format, culture){
+    return globalize.format(date, format, culture)
+  },
+  //-------------------------------------
+
+  shortDaysOfWeek: function (){
+    var culture = dates.culture()
+
+    if (culture && culture.calendar)
+      return culture.calendar.days.namesShort
+  },
 
   daysOfWeek: function(date, format){
     if (arguments.length === 1){
@@ -15,7 +34,7 @@ var dates = module.exports = _.extend({}, dateMath, {
     format = format || 'do'
 
     return _.map(_.range(7), function(i){
-      return  globalize.format(dateMath.weekday(date, i), format)
+      return  dates.format(dateMath.weekday(date, i), format)
     })
   },
 
@@ -27,7 +46,7 @@ var dates = module.exports = _.extend({}, dateMath, {
     format = format || dates.formats.DAY_NAME_ABRV
 
     return _.map(_.range(12), function(i){
-      return globalize.format(dateMath.month(date, i), format)
+      return dates.format(dateMath.month(date, i), format)
     })
   },
 
@@ -103,9 +122,3 @@ var dates = module.exports = _.extend({}, dateMath, {
 })
 
 
-function shortDayNames(){
-  var culture = globalize.culture()
-
-  if (culture && culture.calendar)
-    return culture.calendar.days.namesShort
-}

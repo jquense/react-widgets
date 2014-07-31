@@ -2,7 +2,6 @@ var React = require('react/addons')
   , cx = React.addons.classSet
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
-  , globalize = require('globalize')
   , _ = require('lodash')
 
 
@@ -52,8 +51,8 @@ module.exports = React.createClass({
 });
 
 function label(date){
-  return globalize.format(dates.firstOfDecade(date),     dates.formats.YEAR) 
-    + ' - ' + globalize.format(dates.lastOfDecade(date), dates.formats.YEAR)
+  return dates.format(dates.firstOfDecade(date),     dates.formats.YEAR) 
+    + ' - ' + dates.format(dates.lastOfDecade(date), dates.formats.YEAR)
 }
 
 function inRange(decade, min, max){

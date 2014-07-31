@@ -2,7 +2,6 @@ var React = require('react/addons')
   , cx = React.addons.classSet
   , dates = require('../util/dates')
   , transferProps = require('../util/transferProps')
-  , globalize = require('globalize')
   , _ = require('lodash')
 
 
@@ -22,7 +21,7 @@ module.exports = React.createClass({
       <td className={cx({ 
           'rw-off-range': dates.month(day) !== this.props.month
         })}>
-        <btn>{globalize.format(day, 'dd')}</btn>
+        <btn>{dates.format(day, 'dd')}</btn>
       </td>
     )
   }

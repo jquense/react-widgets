@@ -1,5 +1,6 @@
 var React = require('react/addons')
   , cx    = React.addons.classSet
+  , SlideDown = require('../common/collapse-transition.jsx')
   , DefaultValueItem = require('./value-item.jsx')
   , Popup = require('../popup/popup.jsx')
   , List  = require('../common/list.jsx');
@@ -59,9 +60,9 @@ module.exports = React.createClass({
             value={this.props.value}
             textField={this.props.textField} 
             valueField={this.props.valueField}/>
-
+        <SlideDown>
 			  { this.state.open && 
-          <Popup getAnchor={ this._getAnchor } onShouldClose={this.close} key='popup'>
+          <Popup getAnchor={ this._getAnchor } onShouldClose={this.close} key={(new Date()).getTime()}>
             <List ref="list"
               data={this.props.data} 
               selectedIndex={this.state.selectedIndex}
@@ -70,6 +71,7 @@ module.exports = React.createClass({
               onSelect={this._onSelect}/>
           </Popup>
         }
+        </SlideDown>
 			</div>
 		)
 	},

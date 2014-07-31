@@ -7,7 +7,6 @@ var React = require('react/addons')
   , cx = React.addons.classSet
   , CSSTransitionGroup  = require('../common/slide-transition.jsx')
   , dates = require('../util/dates')
-  , globalize = require('globalize')
   , _ = require('lodash');
 
 var RIGHT = 'right'
@@ -79,7 +78,7 @@ module.exports = React.createClass({
           onViewChange={this.nextView}
           onMoveLeft ={_.partial(this.navigate, LEFT)}
           onMoveRight={_.partial(this.navigate, RIGHT)}/>
-        <CSSTransitionGroup>
+        <CSSTransitionGroup direction={this.state.direction}>
           <View 
             key={key}
             selected={this.props.value} 
@@ -99,7 +98,9 @@ module.exports = React.createClass({
     if ( dates.inRange(nextDate, this.props.min, this.props.max))
       this.setState({
         currentDate: nextDate,
-        direction:   direction,
+        direction:   direction === LEFT 
+          ? RIGHT 
+          : LEFT,
       })
   },
 
@@ -112,6 +113,7 @@ module.exports = React.createClass({
 
     this.setState({
       currentDate: date,
+      direction: LEFT,
       view: alts[view]
     })
   },
@@ -119,6 +121,7 @@ module.exports = React.createClass({
 
   nextView: function(){
     this.setState({
+      direction: RIGHT,
       view: NEXT_VIEW[this.state.view]
     })
   },
@@ -137,18 +140,18 @@ module.exports = React.createClass({
       , dt   = this.state.currentDate;
 
     if ( view === 'month')
-      return globalize.format(dt, dates.formats.MONTH_YEAR)
+      return dates.format(dt, dates.formats.MONTH_YEAR)
 
     else if ( view === 'year')
-      return globalize.format(dt, dates.formats.YEAR)
+      return dates.format(dt, dates.formats.YEAR)
 
     else if ( view === 'decade')
-      return globalize.format(dates.firstOfDecade(dt),     dates.formats.YEAR) 
-        + ' - ' + globalize.format(dates.lastOfDecade(dt), dates.formats.YEAR)
+      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR) 
+        + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR)
 
     else if ( view === 'century')
-      return globalize.format(dates.firstOfCentury(dt),     dates.formats.YEAR) 
-        + ' - ' + globalize.format(dates.lastOfCentury(dt), dates.formats.YEAR)
+      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR) 
+        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
   } 
 
 });

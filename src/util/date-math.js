@@ -128,8 +128,10 @@ function monthMath(date, val){
 
   	date = dates.month(date, newMonth)
 
+  	if (newMonth < 0 ) newMonth = 12 + val
+  		
   	//month rollover
-  	if ( dates.month(date) !== newMonth )
+  	if ( dates.month(date) !== ( newMonth % 12))
   		date = dates.date(date, 0) //move to last of month
 
   	return date

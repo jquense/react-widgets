@@ -2,7 +2,6 @@ var React = require('react/addons')
   , cx    = React.addons.classSet
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
-  , globalize = require('globalize')
   , _ = require('lodash')
 
 
@@ -36,7 +35,7 @@ module.exports = React.createClass({
           ? <td className='rw-empty-cell'>&nbsp;</td>
           : (<td className={cx({ 'rw-off-range': !inDecade(date, this.props.value) })}>
               <btn onClick={_.partial(this.props.onChange, date)}>
-                { globalize.format(date, dates.formats.YEAR) }
+                { dates.format(date, dates.formats.YEAR) }
               </btn>
             </td>)
       })}
