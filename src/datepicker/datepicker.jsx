@@ -1,5 +1,5 @@
 var React = require('react/addons')
-  , SlideDown = require('../common/slide-transition.jsx')
+  , SlideDown = require('../common/collapse-transition.jsx')
   , cx = React.addons.classSet
   , _ = require('lodash')
   , globalize = require('globalize')

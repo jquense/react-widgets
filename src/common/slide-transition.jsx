@@ -1,68 +1,75 @@
 var React   = require('react/addons')
   , TransitionGroup  = React.addons.TransitionGroup
   , $  =  require('zepto')
-  , events  =  require('../util/events');
+  , transitions = require('../util/transition')
+  , events  =  require('../util/events')
+  , _ = require('lodash');
 
-//thanks Bootstrap, stack overflow and alex mccaw
-//https://github.com/twbs/bootstrap/blob/master/js/collapse.js
-//http://stackoverflow.com/questions/5023514/how-do-i-normalize-css3-transition-functions-across-browsers
-//http://blog.alexmaccaw.com/css-transitions
+
 var SlideChildGroup = React.createClass({
 
   propTypes: {
-    dimension: React.PropTypes.oneOf(['height', 'width'])
+    direction: React.PropTypes.oneOf(['left', 'right'])
   },
 
   componentWillEnter: function(done) {
-    var event = transitionEndEventName()
+    var self = this
+      , event = transitions.endEvent()
       , node  = this.getDOMNode()
       , $this = $(node)
-      , dimension = this.props.dimension;
+      , direction = this.props.direction;
 
-    $this.removeClass('collapse')
-      .addClass('collapsing')
-      .height(0)
+    $this.removeClass('slide-left out')
+      .addClass('slide-left')
+
+    this.props.onEnter()
 
     if (!event) return finish()
 
-    events.on(node, event, finish)
-    emulateTransitionEnd(node, 300, event)
+    setTimeout(function(){
+      $this.addClass('in')
+      events.on(node, event, finish)
+      transitions.emulateEnd(node, 300, event)
+    }, 0)
+    //node.style.left = 0;
 
-    $this[dimension](node['scroll' + dimension.charAt(0).toUpperCase() + dimension.substr(1)])
 
     function finish() {
       events.off(node, event, finish)
-      $this
-        .removeClass('collapsing')
-        .addClass('collapse in')
-        [dimension]('')
-      done && done()
+      $this.removeClass('slide-left')
+      done && done() 
+      self.props.onLeave()
     }
   },
 
   componentWillLeave: function(done) {
-    var event = transitionEndEventName()
+    var self = this
+      , event = transitions.endEvent()
       , node  = this.getDOMNode()
       , $this = $(node)
-      , dimension = this.props.dimension;
+      , direction = this.props.direction;
 
-    $this[dimension]($this[dimension]())[0].offsetHeight
+    $this.removeClass('out')
+      .addClass('slide-left in')
 
-    $this.addClass('collapsing')
-      .removeClass('collapse in')
-      [dimension](0)
+    this.props.onEnter()
 
     if (!event) return finish()
 
+    setTimeout(function(){
+      $this.addClass('out')
+      events.on(node, event, finish)
+      transitions.emulateEnd(node, 300, event)
+    }, 0)
+
     events.on(node, event, finish)
-    emulateTransitionEnd(node, 300, event)
+    transitions.emulateEnd(node, 300, event)
 
     function finish() {
       events.off(node, event, finish)
-      $this
-        .removeClass('collapsing')
-        .addClass('collapse')
+      //$this.removeClass('slide-left')
       done && done()
+      self.props.onLeave()
     }
   },
 
@@ -75,58 +82,51 @@ var SlideChildGroup = React.createClass({
 module.exports = React.createClass({
 
   propTypes: {
-    dimension: React.PropTypes.oneOf(['height', 'width'])
+    direction: React.PropTypes.oneOf(['left', 'right'])
   },
 
   getDefaultProps: function(){
     return {
-      dimension: 'height'
+      direction: 'left'
     }
   },
+
   _wrapChild: function(child) {
     return SlideChildGroup({ 
-      dimension: this.props.dimension 
+      direction: this.props.direction,
+      onEnter: this._enter,
+      onLeave: this._leave
     },
     child)
   },
 
   render: function() {
+    this._enter = _.after(2, this.enter)
+    this._leave = _.after(2, this.leave)
+
     return this.transferPropsTo(
       TransitionGroup(
-        { childFactory: this._wrapChild },
+        { 
+          ref: 'container', 
+          childFactory: this._wrapChild, 
+          style: { position: 'relative', overflow: 'hidden' },
+          component: React.DOM.div
+        },
         this.props.children
       )
     );
+  },
+
+  enter: function(){
+    var node = this.getDOMNode();
+
+    $(node).height(node['scrollHeight'])
+  },
+
+  leave: function(){
+    var node = this.getDOMNode();
+
+    $(node).height('')
   }
 });
 
-function emulateTransitionEnd(el, duration, event) {
-  var called = false;
-
-  events.on(el, event, done);
-
-  setTimeout(function() { 
-    if (!called) events.trigger(el, event); 
-  }, duration);
-
-  function done() { 
-    called = true;
-    events.off(el, event, done) 
-  }
-};
-
-function transitionEndEventName () {
-    var i,
-        undefined,
-        el = document.createElement('div'),
-        transitions = {
-            'transition':'transitionend',
-            'OTransition':'otransitionend',  // oTransitionEnd in very old Opera
-            'MozTransition':'transitionend',
-            'WebkitTransition':'webkitTransitionEnd'
-        };
-
-    for (i in transitions)
-        if (transitions.hasOwnProperty(i) && el.style[i] !== undefined)
-            return transitions[i];
-}

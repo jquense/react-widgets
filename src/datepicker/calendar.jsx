@@ -5,9 +5,10 @@ var React = require('react/addons')
   , Decade = require('./decade.jsx')
   , Century = require('./century.jsx')
   , cx = React.addons.classSet
+  , CSSTransitionGroup  = require('../common/slide-transition.jsx')
   , dates = require('../util/dates')
   , globalize = require('globalize')
-  , _ = require('lodash')
+  , _ = require('lodash');
 
 var RIGHT = 'right'
   , LEFT  = 'left'
@@ -32,7 +33,7 @@ module.exports = React.createClass({
 
   propTypes: {
     culture:      React.PropTypes.array,
-    value:         React.PropTypes.instanceOf(Date),
+    value:        React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
 
@@ -66,7 +67,9 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var View = VIEW[this.state.view];
+    var View = VIEW[this.state.view]
+      , date = this.state.currentDate
+      , key  = this.state.view + '_' + date.getMonth() + '-' + date.getFullYear() + '-' + date.getDate();
 
     return (
       <div className='rw-calendar rw-widget'>
@@ -76,13 +79,17 @@ module.exports = React.createClass({
           onViewChange={this.nextView}
           onMoveLeft ={_.partial(this.navigate, LEFT)}
           onMoveRight={_.partial(this.navigate, RIGHT)}/>
-        <View 
-          selected={this.props.value} 
-          value={this.state.currentDate}
-          onChange={this.change}
-          min={this.props.min}
-          max={this.props.max}/>
+        <CSSTransitionGroup>
+          <View 
+            key={key}
+            selected={this.props.value} 
+            value={this.state.currentDate}
+            onChange={this.change}
+            min={this.props.min}
+            max={this.props.max}/>
+        </CSSTransitionGroup>
       </div>
+
     )
   },
 
@@ -91,7 +98,8 @@ module.exports = React.createClass({
 
     if ( dates.inRange(nextDate, this.props.min, this.props.max))
       this.setState({
-        currentDate: nextDate
+        currentDate: nextDate,
+        direction:   direction,
       })
   },
 
