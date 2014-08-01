@@ -1,6 +1,7 @@
 var React   = require('react/addons')
   , filter  = require('../util/filter')
   , compose = require('../util/compose')
+  , mergePropsInto = require('../util/transferProps')
   , cx = React.addons.classSet
   , $  =  require('zepto')
   , _  =  require('lodash');
@@ -50,7 +51,7 @@ module.exports = React.createClass({
 	render: function(){
     var ListItem = this.props.listItem;
 
-		return (
+		return mergePropsInto(_.omit(this.props, 'data', 'selectedIndex'),
 			<ul className="rw-list" tabIndex="-1" onKeyUp={this._keyUp} onKeyPress={this.search}>
         { _.map(this.props.data, (item, idx) => {
           return (

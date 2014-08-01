@@ -7,7 +7,7 @@ var MILI 		= 'milliseconds'
   , HOURS 	= 'hours'
   , DAY 		= 'day'
   , WEEK 		= 'week'
-  , month 	= 'month'
+  , MONTH 	= 'month'
   , YEAR 		= 'year';
 
 // function tick(date){

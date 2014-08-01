@@ -7,6 +7,7 @@ var React = require('react/addons')
   , cx = React.addons.classSet
   , CSSTransitionGroup  = require('../common/slide-transition.jsx')
   , dates = require('../util/dates')
+  , mergePropsInto = require('../util/transferProps')
   , _ = require('lodash');
 
 var RIGHT = 'right'
@@ -70,7 +71,7 @@ module.exports = React.createClass({
       , date = this.state.currentDate
       , key  = this.state.view + '_' + date.getMonth() + '-' + date.getFullYear() + '-' + date.getDate();
 
-    return (
+    return mergePropsInto(_.omit(this.props, 'value', 'min', 'max'),
       <div className='rw-calendar rw-widget'>
         <Header
           label={this._label()}

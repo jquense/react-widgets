@@ -37,6 +37,10 @@ module.exports = React.createClass({
     })
   },
 
+  componentWillUpdate: function(pvProps, pvState){
+    console.log('dropdown: ')
+  },
+
 	render: function(){ 
 		var DropdownValue = this.props.valueComponent;
 
@@ -60,20 +64,23 @@ module.exports = React.createClass({
             value={this.props.value}
             textField={this.props.textField} 
             valueField={this.props.valueField}/>
-        <SlideDown>
-			  { this.state.open && 
-          <Popup getAnchor={ this._getAnchor } onShouldClose={this.close} key={(new Date()).getTime()}>
+
+        <Popup getAnchor={ this._getAnchor } open={this.state.open} onRequestClose={this.close} onClose={closed.bind(this)}>
+          <div>
             <List ref="list"
               data={this.props.data} 
               selectedIndex={this.state.selectedIndex}
               textField={this.props.textField} 
               valueField={this.props.valueField}
               onSelect={this._onSelect}/>
-          </Popup>
-        }
-        </SlideDown>
+          </div>
+        </Popup>
 			</div>
 		)
+
+    function closed(){
+      this.refs.element.getDOMNode().focus()
+    }
 	},
 
   _onSelect: function(data, idx, elem){
@@ -127,12 +134,11 @@ module.exports = React.createClass({
   },
 
   close: function(){
-    this.setState({ open: false }, function(){
-      this.refs.element.getDOMNode().focus()
-    })
+    this.setState({ open: false })
   },
 
-  toggle: function(){
+  toggle: function(e){
+    e.nativeEvent.stopImmediatePropagation();
     this.state.open 
       ? this.close() 
       : this.open()

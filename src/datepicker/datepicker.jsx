@@ -53,6 +53,7 @@ module.exports = React.createClass({
 
   render: function(){
     var self = this
+      , isCal = this.state.openPopup === 'calendar' 
       , key = (new Date()).getTime()
       
     return (
@@ -77,19 +78,18 @@ module.exports = React.createClass({
             </btn>
           }
         </span>
-        <SlideDown>
-        { this.state.open && (
-          <Popup getAnchor={ this._getAnchor } onShouldClose={this.close} key={key} style={{ height: 200 }}>
-            { this.state.openPopup == 'calendar' 
-              ? <Calendar ref="popup" value={this.props.value} min={this.props.min} max={this.props.max} onChange={this._select}/>
-              : <Time     ref="popup" value={this.props.value} min={this.props.min} max={this.props.max} onChange={this._select}/>
-            }
-          </Popup>) || []
-        }
-        </SlideDown>
+        <Popup getAnchor={ this._getAnchor } open={this.state.open} height={isCal ? 'auto' : 200 } onClose={closed.bind(this)} onRequestClose={this.close}>
+          { isCal
+            ? <Calendar ref="popup" value={this.props.value} min={this.props.min} max={this.props.max} onChange={this._select}/>
+            : <Time     ref="popup" value={this.props.value} min={this.props.min} max={this.props.max} onChange={this._select}/>
+          }
+        </Popup>
       </div>
     )
 
+    function closed(){
+      this.refs.element.getDOMNode().focus()
+    }
   },
 
   _select: function(date){
@@ -109,10 +109,11 @@ module.exports = React.createClass({
     return parser(string)    
   },
 
-  toggle: function(){
+  toggle: function(view, e){
+    e && e.nativeEvent.stopImmediatePropagation();
     this.state.open 
-      ? this.close() 
-      : this.open()
+      ? this.close(view) 
+      : this.open(view)
   },
 
   open: function(view){
@@ -122,9 +123,7 @@ module.exports = React.createClass({
   },
 
   close: function(){
-    this.setState({ open: false }, function(){
-      this.refs.element.getDOMNode().focus()
-    })
+    this.setState({ open: false })
   },
 
   _getAnchor: function(){

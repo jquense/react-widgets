@@ -2,6 +2,7 @@ var React = require('react/addons')
   , cx    = React.addons.classSet
   , dates = require('../util/dates')
   , List = require('../common/list.jsx')
+  , mergePropsInto = require('../util/transferProps')
   , _ = require('lodash')
 
 
@@ -30,6 +31,7 @@ module.exports = React.createClass({
       format: 't'
     }
   },
+
   render: function(){
     var times = this._times()
       , format = this.props.format
@@ -37,7 +39,7 @@ module.exports = React.createClass({
         return ListItem(_.extend(props, { format: format }), children)
       }
 
-    return (
+    return mergePropsInto(_.omit(this.props, 'value'),
       <List ref="list"
         data={times} 
         listItem={listItem}
