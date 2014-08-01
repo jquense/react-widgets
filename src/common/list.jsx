@@ -10,9 +10,9 @@ var DefaultListItem = React.createClass({
   mixins: [ require('../mixins/DataHelpersMixin')],
 
   render: function(){
-      var data = this.props.data;
+      var item = this.props.item;
 
-      return this.transferPropsTo(<li>{ data ? this._dataText(data) : '' }</li>)
+      return this.transferPropsTo(<li>{ item ? this._dataText(item) : '' }</li>)
   }
 })
 
@@ -55,7 +55,7 @@ module.exports = React.createClass({
         { _.map(this.props.data, (item, idx) => {
           return (
             <ListItem 
-              data={item}
+              item={item}
               textField={this.props.textField}
               valueField={this.props.valueField}
               className={cx({ 

@@ -37,8 +37,9 @@ var SlideChildGroup = React.createClass({
     function finish() {
       events.off(node, event, finish)
       $this.removeClass('slide-' + direction)
-      done && done() 
       self.props.onLeave()
+      done && done() 
+      
     }
   },
 
@@ -67,9 +68,10 @@ var SlideChildGroup = React.createClass({
 
     function finish() {
       events.off(node, event, finish)
-      //$this.removeClass('slide-left')
-      done && done()
+      $this.removeClass('slide-'+ direction)
       self.props.onLeave()
+      done && done()
+
     }
   },
 
@@ -94,16 +96,13 @@ module.exports = React.createClass({
   _wrapChild: function(child) {
     return SlideChildGroup({ 
       direction: this.props.direction,
-      onEnter: this._enter,
-      onLeave: this._leave
+      onEnter: this.enter,
+      onLeave: this.leave
     },
     child)
   },
 
   render: function() {
-    this._enter = _.after(2, this.enter)
-    this._leave = _.after(2, this.leave)
-
     return this.transferPropsTo(
       TransitionGroup(
         { 
@@ -128,7 +127,7 @@ module.exports = React.createClass({
     var node = this.getDOMNode();
 
     $(node).height('')
-    console.log('leave')
+    console.log('leave:', $(node).children())
   }
 });
 

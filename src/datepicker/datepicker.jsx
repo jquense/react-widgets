@@ -1,10 +1,11 @@
 var React = require('react/addons')
-  , SlideDown = require('../common/collapse-transition.jsx')
-  , cx = React.addons.classSet
-  , _ = require('lodash')
+  , SlideDown = require('../common/slideup-transition.jsx')
+  , cx  = React.addons.classSet
+  , _   = require('lodash')
   , globalize = require('globalize')
-  , Popup = require('../popup/popup.jsx')
-  , Calendar = require('./calendar.jsx')
+  , Popup     = require('../popup/popup.jsx')
+  , Calendar  = require('./calendar.jsx')
+  , Time      = require('./time.jsx')
   , DateInput = require('./date-input.jsx')
 
 
@@ -30,18 +31,23 @@ module.exports = React.createClass({
   getInitialState: function(){
     return {
       selectedIndex: 0,
-      open:          false
+      open:          false,
+      openPopup:     null    
     }
   },
 
   getDefaultProps: function(){
     return {
-      value:      null,
-      format:     'd',
-      min:        new Date(1900,  0,  1),
-      max:        new Date(2099, 11, 31),
-      calendar:   true,
-      time:       false,
+      value:            null,
+      format:           'd',
+      min:              new Date(1900,  0,  1),
+      max:              new Date(2099, 11, 31),
+      calendar:         true,
+      time:             true,
+      messages: {
+        calendarButton: 'Select Date',
+        timeButton:     'Select Time'
+      }
     }
   },
 
@@ -55,27 +61,29 @@ module.exports = React.createClass({
            className={cx({
               'rw-date-picker': true,
               'rw-widget':      true,
+              'rw-open':        this.state.open,
               'rw-has-both':    this.props.calendar && this.props.time
             })}>
         <DateInput value={this.props.value} format={this.props.format} parse={this._parse} onChange={this._change} />
         <span className='rw-select'>
           { this.props.calendar &&
-            <btn onClick={this.toggle}>
-              <i className="rw-i rw-i-calendar"><span className="rw-sr">Open Calendar</span></i>
+            <btn onClick={this.toggle.bind(null, 'calendar')}>
+              <i className="rw-i rw-i-calendar"><span className="rw-sr">{ this.props.messages.calendarButton }</span></i>
             </btn>
           }
           { this.props.time &&
-            <btn onClick={this.toggle}>
-              <i className="rw-i rw-i-clock-o"><span className="rw-sr">Open Calendar</span></i>
+            <btn onClick={this.toggle.bind(null, 'time')}>
+              <i className="rw-i rw-i-clock-o"><span className="rw-sr">{ this.props.messages.timeButton }</span></i>
             </btn>
           }
         </span>
         <SlideDown>
         { this.state.open && (
-          <Popup getAnchor={ this._getAnchor } onShouldClose={this.close} key={key}>
-            <Calendar ref="calendar"
-                value={this.props.value} 
-                onChange={this._select}/>
+          <Popup getAnchor={ this._getAnchor } onShouldClose={this.close} key={key} style={{ height: 200 }}>
+            { this.state.openPopup == 'calendar' 
+              ? <Calendar ref="popup" value={this.props.value} min={this.props.min} max={this.props.max} onChange={this._select}/>
+              : <Time     ref="popup" value={this.props.value} min={this.props.min} max={this.props.max} onChange={this._select}/>
+            }
           </Popup>) || []
         }
         </SlideDown>
@@ -107,9 +115,9 @@ module.exports = React.createClass({
       : this.open()
   },
 
-  open: function(){
-    this.setState({ open: true }, function(){
-      this.refs.calendar.getDOMNode().focus()
+  open: function(view){
+    this.setState({ open: true, openPopup: view }, function(){
+      this.refs.popup.getDOMNode().focus()
     })
   },
 

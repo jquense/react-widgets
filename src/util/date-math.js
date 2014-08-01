@@ -1,14 +1,14 @@
 var _ = require('lodash')
   , globalize = require('globalize');
 
-var MILI = 'milliseconds'
-  , SECONDS ='seconds'
-  , MINUTE = 'minute'
-  , HOUR = 'hour'
-  , DAY = 'day'
-  , WEEK = 'week'
-  , MONTH = 'month'
-  , YEAR = 'year'
+var MILI 		= 'milliseconds'
+  , SECONDS = 'seconds'
+  , MINUTES = 'minutes'
+  , HOURS 	= 'hours'
+  , DAY 		= 'day'
+  , WEEK 		= 'week'
+  , month 	= 'month'
+  , YEAR 		= 'year';
 
 // function tick(date){
 // 	this.__val__ = date;
@@ -23,13 +23,13 @@ var dates = module.exports = {
 			return dates.milliseconds(date, dates.milliseconds(date) + num)
 
 		else if ( unit === SECONDS ) 
-			return dates.second(date, dates.seconds(date) + num)
+			return dates.seconds(date, dates.seconds(date) + num)
 
-		else if ( unit === MINUTE ) 
-			return dates.minute(date, dates.minutes(date) + num)
+		else if ( unit === MINUTES ) 
+			return dates.minutes(date, dates.minutes(date) + num)
 
-		else if ( unit === HOUR ) 
-			return dates.hour(date, dates.hours(date) + num)
+		else if ( unit === HOURS ) 
+			return dates.hours(date, dates.hours(date) + num)
 
 		else if ( unit === DAY ) 
 			return dates.date(date, dates.date(date) + num)
@@ -43,7 +43,7 @@ var dates = module.exports = {
 		else if ( unit === YEAR )
 			return dates.year(date, dates.year(date) + num)
 
-		return date
+		throw new TypeError('Invalid units: "' + unit + '"')
 	},
 
 	subtract: function(date, num, unit) {
@@ -55,24 +55,24 @@ var dates = module.exports = {
 
 		switch (unit) {
 			case 'year':
-	            date = dates.month(date, 0);
-	        case 'month':
-	            date = dates.date(date, 1);
-	        case 'week':
-	        case 'day':
-	            date = dates.hours(date, 0);
-	        case 'hour':
-	            date = dates.minutes(date, 0);
-	        case 'minute':
-	            date = dates.seconds(date, 0);
-	        case 'second':
-	            date = dates.milliseconds(date, 0);
-	    }
+          date = dates.month(date, 0);
+      case 'month':
+          date = dates.date(date, 1);
+      case 'week':
+      case 'day':
+          date = dates.hours(date, 0);
+      case 'hours':
+          date = dates.minutes(date, 0);
+      case 'minutes':
+          date = dates.seconds(date, 0);
+      case 'seconds':
+          date = dates.milliseconds(date, 0);
+    }
 
-	    if (unit === WEEK) 
-	    	date = dates.weekday(date, 0);
+    if (unit === WEEK) 
+    	date = dates.weekday(date, 0);
 
-        return date
+    return date
 	},
 
 	endOf: function(date, unit){

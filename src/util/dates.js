@@ -100,6 +100,14 @@ var dates = module.exports = _.extend({}, dateMath, {
     return days
   },
 
+  merge: function(date, time){
+    date = dates.startOf(date, 'day')
+    date = dates.hours(date,        dates.hours(time))
+    date = dates.minutes(date,      dates.minutes(time))
+    date = dates.seconds(date,      dates.seconds(time))
+    return dates.milliseconds(date, dates.milliseconds(time))
+  },
+
   sameMonth: function(dateA, dateB){
     return dateMath.eq(dateA, dateB, 'month')
   },
@@ -111,6 +119,8 @@ var dates = module.exports = _.extend({}, dateMath, {
         && dateMath.lte(day, max, unit)
   },
 
+
+
   formats: {
     DAY_OF_MONTH:    'dd',
     DAY_NAME_SHORT:  null,
@@ -120,5 +130,30 @@ var dates = module.exports = _.extend({}, dateMath, {
   }
 
 })
+
+Object.defineProperties(dates, {
+
+  now: { 
+    enumerable: true,
+    get: function(){ return Date.now ? Date.now : new Date }
+  },
+
+  today: { 
+    enumerable: true,
+    get: function() { return this.startOf(new Date, 'day') }
+  },
+
+  yesterday: { 
+    enumerable: true,
+    get: function() { return this.add(this.startOf(new Date, 'day'), -1, 'day') }
+  },
+
+  tomorrow: { 
+    enumerable: true,
+    get: function() { return this.add(this.startOf(new Date, 'day'), 1, 'day') }
+  }
+
+})
+
 
 

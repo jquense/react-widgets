@@ -6,13 +6,29 @@ var React  = require('react/addons')
   // , outerWt = require('../util/outerWidth')
   , $ = require('zepto');
 
+var PopupContent = React.createClass({
+
+  componentDidMount: function(){
+    this.props.height(this.getDOMNode().scrollHeight)
+  },
+
+  render: function(){
+    return React.Children.only(this.props.children)
+  }
+})
 
 module.exports = React.createClass({
 
 	propTypes: {
-		getAnchor: React.PropTypes.func
+		getAnchor: React.PropTypes.func.isRequired,
+    height:    React.PropTypes.number
 	},
 
+  getDefaultProps: function(){
+    return {
+      height:   200
+    }
+  },
 
   componentWillUnmount: function(){
     var self = this
@@ -24,11 +40,19 @@ module.exports = React.createClass({
       events.off(document, 'click', self._onClick)
   },
 
+  _height: function(contentHeight) {
+    var height = this.props.height;
+
+    // if ( this.isMounted() )
+    //   $(this.refs.content.getDOMNode()).height(contentHeight > height ? height : "auto") 
+  },
+
 	componentDidMount: function(){
-		var self = this
-		  , popup = self.refs.popup
-		  , $popup = $(popup.getDOMNode())
+		var self    = this
+		  , popup   = self.refs.popup
+		  , $popup  = $(popup.getDOMNode())
 		  , $anchor = $(this.props.getAnchor())
+      , height  = this.props.height
 		  , aOffset, aHeight, aWidth;
 
       //setTimeout(function(){ $popup.addClass('slide-down')}, 0)
@@ -44,23 +68,26 @@ module.exports = React.createClass({
 
   		aOffset = $anchor.offset()
 
-  		$popup.css({
-  			top: aOffset.top + aOffset.height,
-  			left: aOffset.left,
-        width: aOffset.width
-  		});
+  		// $popup.css({
+  		// 	top: aOffset.top + aOffset.height,
+  		// 	left: aOffset.left,
+    //     width: aOffset.width
+  		// });
 	},
 
 	render: function(){
 
 		return (
 			<div ref="popup"
+        style={{ height: 200 }}
         className={cx({
           'rw-popup': true,
           'rw-widget': true,
           //'slide-up': true
         })}>
-				{ this.props.children }
+        <div ref='content'>
+          <PopupContent height={this._height}>{ this.props.children }</PopupContent>
+        </div>
 			</div>
 		)
 	}
