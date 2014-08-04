@@ -2,10 +2,15 @@ var React = require('react/addons')
   , cx = React.addons.classSet
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
+  , directions = require('../util/constants').directions
   , _ = require('lodash')
 
 
 module.exports = React.createClass({
+
+  mixins: [
+    require('../mixins/DateFocusMixin')('century', 'decade')
+  ],
 
   propTypes: {
     value:         React.PropTypes.instanceOf(Date),
@@ -34,8 +39,12 @@ module.exports = React.createClass({
       {_.map(row, date => {
         return !inRange(date, this.props.min, this.props.max) 
           ? <td className='rw-empty-cell'>&nbsp;</td>
-          : (<td className={cx({ 'rw-off-range': !inCentury(date, this.props.value) })}>
-              <btn onClick={_.partial(this.props.onChange, date)}>
+          : (<td>
+              <btn onClick={_.partial(this.props.onChange, date)}
+                className={cx({ 
+                  'rw-off-range':  !inCentury(date, this.props.value),
+                  'rw-state-focus': dates.eq(date, this.state.focusedDate, 'decade')
+                 })}>
                 { label(date) }
               </btn>
             </td>)
@@ -43,30 +52,42 @@ module.exports = React.createClass({
     </tr>)
   },
 
-  _onClick: function(date, idx){
-    console.log(date, idx)
-  },
+  move: function(date, direction){
 
+    if ( direction === directions.LEFT)
+      date = dates.subtract(date, 1, 'decade')
+
+    else if ( direction === directions.RIGHT)
+      date = dates.add(date, 1, 'decade')
+
+    else if ( direction === directions.UP)
+      date = dates.subtract(date, 4, 'decade')
+
+    else if ( direction === directions.DOWN)
+      date = dates.add(date, 4, 'decade')
+
+    return date
+  }
 
 });
 
 function label(date){
-  return dates.format(dates.firstOfDecade(date),     dates.formats.YEAR) 
-    + ' - ' + dates.format(dates.lastOfDecade(date), dates.formats.YEAR)
+  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR) 
+    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
 }
 
 function inRange(decade, min, max){
-  return dates.gte(decade, dates.firstOfDecade(min), 'year') 
-      && dates.lte(decade, dates.lastOfDecade(max),  'year')
+  return dates.gte(decade, dates.startOf(min, 'decade'), 'year') 
+      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
 }
 
 function inCentury(date, start){
-  return dates.gte(date, dates.firstOfCentury(start), 'year') 
-      && dates.lte(date, dates.lastOfCentury(start),  'year')
+  return dates.gte(date, dates.startOf(start, 'century'), 'year') 
+      && dates.lte(date, dates.endOf(start, 'century'),  'year')
 }
 
 function getCenturyDecades(date){
-  var date = dates.add(dates.firstOfCentury(date), -20, 'year')
+  var date = dates.add(dates.startOf(date, 'century'), -20, 'year')
 
   return _.map(_.range(12), function(i){
     return date = dates.add(date, 10, 'year')

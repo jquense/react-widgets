@@ -23,5 +23,13 @@ module.exports = {
     return field && item 
       ? item[field]
       : item
+  },
+
+  _dataIndexOf: function(data, item){
+    return _.findIndex(data, function(datum){
+      return _.isEqual(
+          this._dataValue(datum)
+        , this._dataValue(item))
+    }, this)
   }
 }

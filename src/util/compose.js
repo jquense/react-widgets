@@ -3,8 +3,8 @@ var _ = require('lodash')
 module.exports = {
   chain: function chainFunction(a,b){
     return function(){
-      a.apply(this, arguments)
-      b.apply(this, arguments)
+      a && a.apply(this, arguments)
+      b && b.apply(this, arguments)
     }
   },
 

@@ -1,5 +1,5 @@
 var React   = require('react/addons')
-  , TransitionGroup  = React.addons.TransitionGroup
+  , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup.jsx')
   , $  =  require('zepto')
   , transitions = require('../util/transition')
   , events  =  require('../util/events')
@@ -22,8 +22,6 @@ var SlideChildGroup = React.createClass({
     $this.removeClass('slide-' + direction + ' out')
       .addClass('slide-' + direction)
 
-    this.props.onEnter()
-
     if (!event) return finish()
 
     setTimeout(function(){
@@ -31,15 +29,11 @@ var SlideChildGroup = React.createClass({
       events.on(node, event, finish)
       transitions.emulateEnd(node, 300, event)
     }, 0)
-    //node.style.left = 0;
-
 
     function finish() {
       events.off(node, event, finish)
       $this.removeClass('slide-' + direction)
-      self.props.onLeave()
-      done && done() 
-      
+      done && done()  
     }
   },
 
@@ -52,8 +46,6 @@ var SlideChildGroup = React.createClass({
 
     $this.removeClass('out')
       .addClass('slide-' + direction + ' in')
-
-    this.props.onEnter()
 
     if (!event) return finish()
 
@@ -69,9 +61,7 @@ var SlideChildGroup = React.createClass({
     function finish() {
       events.off(node, event, finish)
       $this.removeClass('slide-'+ direction)
-      self.props.onLeave()
       done && done()
-
     }
   },
 
@@ -94,17 +84,19 @@ module.exports = React.createClass({
   },
 
   _wrapChild: function(child) {
+    var self = this;
+
     return SlideChildGroup({ 
-      direction: this.props.direction,
-      onEnter: this.enter,
-      onLeave: this.leave
+      direction: this.props.direction
     },
     child)
   },
 
+
   render: function() {
+
     return this.transferPropsTo(
-      TransitionGroup(
+      ReplaceTransitionGroup(
         { 
           ref: 'container', 
           childFactory: this._wrapChild, 
@@ -114,20 +106,8 @@ module.exports = React.createClass({
         this.props.children
       )
     );
-  },
-
-  enter: function(){
-    var node = this.getDOMNode();
-
-    $(node).height(node['scrollHeight'])
-    console.log('enter')
-  },
-
-  leave: function(){
-    var node = this.getDOMNode();
-
-    $(node).height('')
-    console.log('leave:', $(node).children())
   }
+
+  
 });
 

@@ -2,7 +2,8 @@ var React = require('react/addons')
   , cx = React.addons.classSet
   , Popup = require('../popup/popup.jsx')
   , Calendar = require('./calendar.jsx')
-  , globalize = require('globalize')
+  , compose = require('../util/compose')
+  , dates = require('../util/dates')
   , $ = require('zepto')
 
 
@@ -23,6 +24,10 @@ module.exports = React.createClass({
     })
   },
 
+  componentDidUpdate: function() {
+    this.props.focused && this.focus()
+  },
+
   getInitialState: function(){
     var text = this.formatDate(this.props.value)
     return {
@@ -39,7 +44,12 @@ module.exports = React.createClass({
 
   render: function(){
     return this.transferPropsTo(
-      <input type='text' className='rw-input' value={this.state.textValue} onChange={this._change} onBlur={this._blur} />
+      <input 
+        type='text' 
+        className='rw-input' 
+        value={this.state.textValue} 
+        onChange={this._change} 
+        onBlur={compose.chain(this.props.blur, this._blur)} />
     )
   },
 
@@ -52,17 +62,23 @@ module.exports = React.createClass({
   _blur: function(){
     var val = this.state.textValue
 
+    this.props.onBlur(this.props.parse(val), val);
+
     if ( val === this.state.lastValue) return
 
     this.props.onChange(this.props.parse(val), val);
     this.setState({ lastValue: val });
   },
 
+  focus: function(){
+    this.getDOMNode().focus()
+  },
+
   formatDate: function(date){
     var val = ''
 
     if ( (date instanceof Date) && isValid(date) )
-      val = globalize.format(date, this.props.format)
+      val = dates.format(date, this.props.format)
 
     return val;
   }

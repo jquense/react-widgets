@@ -37,8 +37,8 @@ module.exports = React.createClass({
     })
   },
 
-  componentWillUpdate: function(pvProps, pvState){
-    console.log('dropdown: ')
+  componentDidMount: function(pvProps, pvState){
+    this.setWidth()
   },
 
 	render: function(){ 
@@ -65,15 +65,19 @@ module.exports = React.createClass({
             textField={this.props.textField} 
             valueField={this.props.valueField}/>
 
-        <Popup getAnchor={ this._getAnchor } open={this.state.open} onRequestClose={this.close} onClose={closed.bind(this)}>
-          <div>
-            <List ref="list"
-              data={this.props.data} 
-              selectedIndex={this.state.selectedIndex}
-              textField={this.props.textField} 
-              valueField={this.props.valueField}
-              onSelect={this._onSelect}/>
-          </div>
+        <Popup 
+          style={{ width: this.state.width }}
+          getAnchor={ this._getAnchor } 
+          open={this.state.open} 
+          onRequestClose={this.close} 
+          onClose={closed.bind(this)}>
+
+          <List ref="list"
+            data={this.props.data} 
+            value={this.props.value}
+            textField={this.props.textField} 
+            valueField={this.props.valueField}
+            onSelect={this._onSelect}/>
         </Popup>
 			</div>
 		)
@@ -82,6 +86,14 @@ module.exports = React.createClass({
       this.refs.element.getDOMNode().focus()
     }
 	},
+
+  setWidth: function() {
+    var width = $(this.getDOMNode()).width()
+      , changed = width !== this.state.width;
+
+    if ( changed )
+      this.setState({ width: width })   
+  },
 
   _onSelect: function(data, idx, elem){
     this.close()

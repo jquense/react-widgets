@@ -8,7 +8,9 @@ var MILI 		= 'milliseconds'
   , DAY 		= 'day'
   , WEEK 		= 'week'
   , MONTH 	= 'month'
-  , YEAR 		= 'year';
+  , YEAR 		= 'year'
+  , DECADE  = 'decade'
+  , CENTURY = 'century';
 
 // function tick(date){
 // 	this.__val__ = date;
@@ -43,6 +45,12 @@ var dates = module.exports = {
 		else if ( unit === YEAR )
 			return dates.year(date, dates.year(date) + num)
 
+    else if ( unit === DECADE )
+      return dates.year(date, dates.year(date) + (num * 10))
+
+    else if ( unit === CENTURY )
+      return dates.year(date, dates.year(date) + (num * 100))
+
 		throw new TypeError('Invalid units: "' + unit + '"')
 	},
 
@@ -50,10 +58,14 @@ var dates = module.exports = {
 		return dates.add(date, -num, unit)
 	},
 
-	startOf: function(date, unit){
+	startOf: function(date, unit) {
+    var decade, century;
+
 		date = new Date(date)
 
 		switch (unit) {
+      case 'century':
+      case 'decade':
 			case 'year':
           date = dates.month(date, 0);
       case 'month':
@@ -69,11 +81,18 @@ var dates = module.exports = {
           date = dates.milliseconds(date, 0);
     }
 
+    if (unit === DECADE) 
+      date = dates.subtract(date, dates.year(date) % 10, 'year')
+    
+    if (unit === CENTURY) 
+      date = dates.subtract(date, dates.year(date) % 100, 'year')
+
     if (unit === WEEK) 
     	date = dates.weekday(date, 0);
 
     return date
 	},
+
 
 	endOf: function(date, unit){
 		date = new Date(date)
@@ -102,6 +121,13 @@ var dates = module.exports = {
 	lte: createComparer(function(a, b){
 		return a <= b
 	}),
+
+  inRange: function(day, min, max, unit){
+    unit = unit || 'day'
+
+    return dates.gte(day, min, unit) 
+        && dates.lte(day, max, unit)
+  },
 
 	milliseconds: 	createAccessor('Milliseconds'),
 	seconds: 				createAccessor('Seconds'),

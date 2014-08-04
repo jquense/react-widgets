@@ -5,13 +5,16 @@ var React = require('react/addons')
   , Decade = require('./decade.jsx')
   , Century = require('./century.jsx')
   , cx = React.addons.classSet
-  , CSSTransitionGroup  = require('../common/slide-transition.jsx')
+  , SlideTransition  = require('../common/slide-transition.jsx')
   , dates = require('../util/dates')
   , mergePropsInto = require('../util/transferProps')
   , _ = require('lodash');
 
 var RIGHT = 'right'
   , LEFT  = 'left'
+  , UP    = 'up'
+  , DOWN  = 'down'
+
   , MULTIPLIER = {
     'year': 1,
     'decade': 10,
@@ -48,6 +51,8 @@ module.exports = React.createClass({
       selectedIndex: 0,
       open:          false,
       view:          this.props.initialView || 'month',
+
+      //determines the position of views
       currentDate:   new Date(this.props.value)
     }
   },
@@ -61,70 +66,74 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      currentDate: new Date(nextProps.value)
-    })
+    //if the value changes reset views to the new one
+    if ( !dates.eq(nextProps.value, this.props.value, 'day') )
+      this.setState({
+        currentDate: new Date(nextProps.value)
+      })
   },
 
   render: function(){
     var View = VIEW[this.state.view]
       , date = this.state.currentDate
-      , key  = this.state.view + '_' + date.getMonth() + '-' + date.getFullYear() + '-' + date.getDate();
+      , key  = this.state.view + '_' + date.getMonth() + '-' + date.getFullYear();
 
     return mergePropsInto(_.omit(this.props, 'value', 'min', 'max'),
-      <div className='rw-calendar rw-widget'>
+      <div className='rw-calendar rw-widget' onKeyUp={this._keyUp}>
         <Header
           label={this._label()}
           disabled={this.state.view === 'century'}
-          onViewChange={this.nextView}
-          onMoveLeft ={_.partial(this.navigate, LEFT)}
-          onMoveRight={_.partial(this.navigate, RIGHT)}/>
-        <CSSTransitionGroup direction={this.state.direction}>
-          <View 
+          onViewChange={_.partial(this.navigate, UP, null)}
+          onMoveLeft ={_.partial(this.navigate,  LEFT, null)}
+          onMoveRight={_.partial(this.navigate,  RIGHT, null)}/>
+
+        <SlideTransition direction={this.state.slideDirection}>
+          <View ref='currentView'
             key={key}
-            selected={this.props.value} 
+            selectedDate={this.props.value}
             value={this.state.currentDate}
             onChange={this.change}
+            onMoveLeft ={_.partial(this.navigate,  LEFT)}
+            onMoveRight={_.partial(this.navigate,  RIGHT)}
             min={this.props.min}
             max={this.props.max}/>
-        </CSSTransitionGroup>
+        </SlideTransition>
       </div>
 
     )
   },
 
-  navigate: function(direction){
-    var nextDate = this.nextDate(direction)
+  navigate: function(direction, date){
+    var alts     = _.invert(NEXT_VIEW)
+      , view     =  this.state.view
+      , slideDir = (direction === LEFT || direction === UP)
+          ? 'right' 
+          : 'left'
 
-    if ( dates.inRange(nextDate, this.props.min, this.props.max))
+    if ( !date )
+      date = _.contains([ LEFT, RIGHT ], direction)
+        ? this.nextDate(direction)
+        : this.state.currentDate
+
+    if (direction === DOWN ) 
+      view = alts[view] || view
+
+    if (direction === UP )   
+      view = NEXT_VIEW[view] || view
+
+    if ( dates.inRange(date, this.props.min, this.props.max))
       this.setState({
-        currentDate: nextDate,
-        direction:   direction === LEFT 
-          ? RIGHT 
-          : LEFT,
+        currentDate:    date,
+        slideDirection: slideDir,
+        view: view
       })
   },
 
   change: function(date){
-    var view = this.state.view
-      , alts = _.invert(NEXT_VIEW);
-
-    if ( view === 'month')
+    if ( this.state.view === 'month')
       return this.props.onChange(date)
 
-    this.setState({
-      currentDate: date,
-      direction: LEFT,
-      view: alts[view]
-    })
-  },
-
-
-  nextView: function(){
-    this.setState({
-      direction: RIGHT,
-      view: NEXT_VIEW[this.state.view]
-    })
+    this.navigate(DOWN, date)
   },
 
   nextDate: function(direction){
@@ -136,7 +145,28 @@ module.exports = React.createClass({
     return dates[method](this.state.currentDate, 1 * multi, unit)
   },
 
-  _label: function(){
+  _keyUp: function(e){
+    var ctrl = e.ctrlKey
+      , key  = e.key;
+
+      
+    if ( ctrl ){
+      if ( key === 'ArrowDown' )
+        this.navigate(DOWN)
+      if ( key === 'ArrowUp' )
+        this.navigate(UP)
+      if ( key === 'ArrowLeft' )
+        this.navigate(LEFT)
+      if ( key === 'ArrowRight' )
+        this.navigate(RIGHT)
+    } else {
+      this.refs.currentView._keyUp 
+        && this.refs.currentView._keyUp(e)
+    }
+
+  },
+
+  _label: function() {
     var view = this.state.view
       , dt   = this.state.currentDate;
 

@@ -3,20 +3,29 @@ var React = require('react/addons')
   , cx    = React.addons.classSet
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
+  , directions = require('../util/constants').directions
   , _ = require('lodash')
 
+var LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
 
 module.exports = React.createClass({
 
-  propTypes: {
-    culture:      React.PropTypes.array,
-    value:        React.PropTypes.instanceOf(Date),
-    selected:     React.PropTypes.instanceOf(Date),
-    min:          React.PropTypes.instanceOf(Date),
-    max:          React.PropTypes.instanceOf(Date),
+  mixins: [
+    require('../mixins/DateFocusMixin')('month', 'day')
+  ],
 
-    format:       React.PropTypes.string,
-    onChange:     React.PropTypes.func.isRequired
+  propTypes: {
+    culture:          React.PropTypes.array,
+    value:            React.PropTypes.instanceOf(Date),
+    selectedDate:     React.PropTypes.instanceOf(Date),
+    min:              React.PropTypes.instanceOf(Date),
+    max:              React.PropTypes.instanceOf(Date),
+
+    format:           React.PropTypes.string,
+
+    onChange:         React.PropTypes.func.isRequired, //value is chosen
+    onMoveLeft:       React.PropTypes.func,
+    onMoveRight:      React.PropTypes.func
   },
 
   render: function(){
@@ -35,16 +44,19 @@ module.exports = React.createClass({
 
   _body: function(){
     var month = dates.visibleDays(this.props.value)
+      , focused = this.state.focusedDate
       , rows  = chunk(month, 7 );
 
     return _.map(rows, week => (
       <Week 
         days={week} 
-        selected={this.props.selected}
+        selectedDate={this.props.selectedDate}
+        focusedDate={focused}
         month={dates.month(this.props.value)}
         year ={dates.year(this.props.value)}
         min={this.props.min}
         max={this.props.max}
+        onKeyUp={this._keyUp}
         onClick={this.props.onChange}/>))
   },
 
@@ -55,6 +67,24 @@ module.exports = React.createClass({
     return _.map(days, function(day){
       return (<th>{day}</th>)
     })
+  },
+
+  move: function(date, direction){
+
+    if ( direction === directions.LEFT)
+      date = dates.subtract(date, 1, 'day')
+
+    else if ( direction === directions.RIGHT)
+      date = dates.add(date, 1, 'day')
+
+    else if ( direction === directions.UP)
+      date = dates.subtract(date, 1, 'week')
+
+    else if ( direction === directions.DOWN)
+      date = dates.add(date, 1, 'week')
+
+    return date
   }
+
 
 });

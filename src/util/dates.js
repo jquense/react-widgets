@@ -112,15 +112,7 @@ var dates = module.exports = _.extend({}, dateMath, {
     return dateMath.eq(dateA, dateB, 'month')
   },
 
-  inRange: function(day, min, max, unit){
-    unit = unit || 'day'
-
-    return dateMath.gte(day, min, unit) 
-        && dateMath.lte(day, max, unit)
-  },
-
-
-
+  
   formats: {
     DAY_OF_MONTH:    'dd',
     DAY_NAME_SHORT:  null,

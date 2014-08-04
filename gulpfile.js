@@ -3,14 +3,25 @@ var gulp = require('gulp')
   , plumber = require('gulp-plumber')
   , source = require('vinyl-source-stream')
   , browserify = require('browserify')
+  , browserSync = require('browser-sync')
   , fs = require('fs');
 
+
+gulp.task('sync', function() {
+    browserSync({
+        server: {
+            baseDir: ["./example", './'],
+            index: "index.htm"
+        }
+    });
+});
 
 gulp.task('less', function(){
     gulp.src('./src/less/react-widgets.less')
         .pipe(plumber())
         .pipe(less())
-        .pipe(gulp.dest('./dist/css'));
+        .pipe(gulp.dest('./dist/css'))
+        .pipe(browserSync.reload({stream:true}));
 });
 
 gulp.task('libs', function () {
@@ -25,7 +36,7 @@ gulp.task('libs', function () {
         .on("error", handleError)
         .pipe(source('vendor.js'))
         .pipe(plumber())
-        .pipe(gulp.dest('./dist'))
+        .pipe(gulp.dest('./dist'));
 
 });
 
@@ -44,17 +55,20 @@ gulp.task('examples', function(){
         .pipe(source('./compiled.js'))
         .pipe(plumber())
         .pipe(gulp.dest('./example'))
+        .pipe(browserSync.reload({ stream:true, once: true }));
         
 });
 
-gulp.task('watch', function() {
+gulp.task('watcher', function() {
     gulp.watch('./src/less/**/*.less', ['less']);
     gulp.watch(['./src/**/*'], ['browserify']);
 });
 
 // Default Task
 gulp.task('browserify', ['libs', 'examples']);
-gulp.task('default', [ 'browserify', 'less' ]);
+gulp.task('default', [ 'sync', 'browserify', 'less' ]);
+
+gulp.task('watch', ['sync', 'watcher']);
 
 function handleError(err) {
   console.log(err.toString());

@@ -2,16 +2,21 @@ var React = require('react/addons')
   , cx    = React.addons.classSet
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
+  , directions = require('../util/constants').directions
   , _ = require('lodash')
 
 
 module.exports = React.createClass({
 
+  mixins: [
+    require('../mixins/DateFocusMixin')('decade', 'year')
+  ],
+
   propTypes: {
     value:        React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
-    onCHange:     React.PropTypes.func.isRequired
+    onChange:     React.PropTypes.func.isRequired
   },
 
   render: function(){
@@ -33,8 +38,12 @@ module.exports = React.createClass({
       {_.map(row, date => {
         return !dates.inRange(date, this.props.min, this.props.max, 'year') 
           ? <td className='rw-empty-cell'>&nbsp;</td>
-          : (<td className={cx({ 'rw-off-range': !inDecade(date, this.props.value) })}>
-              <btn onClick={_.partial(this.props.onChange, date)}>
+          : (<td>
+              <btn onClick={_.partial(this.props.onChange, date)}
+                className={cx({ 
+                  'rw-off-range':   !inDecade(date, this.props.value),
+                  'rw-state-focus': dates.eq(date,  this.state.focusedDate,  'year')
+                })}>
                 { dates.format(date, dates.formats.YEAR) }
               </btn>
             </td>)
@@ -46,16 +55,32 @@ module.exports = React.createClass({
     console.log(date, idx)
   },
 
+  move: function(date, direction){
+
+    if ( direction === directions.LEFT)
+      date = dates.subtract(date, 1, 'year')
+
+    else if ( direction === directions.RIGHT)
+      date = dates.add(date, 1, 'year')
+
+    else if ( direction === directions.UP)
+      date = dates.subtract(date, 4, 'year')
+
+    else if ( direction === directions.DOWN)
+      date = dates.add(date, 4, 'year')
+
+    return date
+  }
 
 });
 
 function inDecade(date, start){
-  return dates.gte(date, dates.firstOfDecade(start), 'year') 
-      && dates.lte(date, dates.lastOfDecade(start),  'year')
+  return dates.gte(date, dates.startOf(start, 'decade'), 'year') 
+      && dates.lte(date, dates.endOf(start,'decade'),  'year')
 }
 
 function getDecadeYears(date){
-  var date = dates.add(dates.firstOfDecade(date), -2, 'year')
+  var date = dates.add(dates.startOf(date, 'decade'), -2, 'year')
 
   return _.map(_.range(12), function(i){
     return date = dates.add(date, 1, 'year')

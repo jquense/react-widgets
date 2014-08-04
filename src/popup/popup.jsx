@@ -1,14 +1,17 @@
 var React  = require('react/addons')
   , cx     = React.addons.classSet
   , events = require('../util/events')
-  , Animation = React.addonsCSSTransitionGroup
   , _ = require('lodash')
   , mergePropsInto = require('../util/transferProps')
-  // , outerHt = require('../util/outerHeight')
-  // , outerWt = require('../util/outerWidth')
   , $ = require('zepto');
 
+function childKey(children){
+  var nextChildMapping = React.Children.map(children, function(c){ return c })
+    , key;
 
+  for(key in nextChildMapping)
+    return key
+}
 
 module.exports = React.createClass({
 
@@ -64,21 +67,28 @@ module.exports = React.createClass({
       this.close(0)
 	},
 
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
+    })
+  },
+
   componentDidUpdate: function(pvProps, pvState){
-    var closing =  pvProps.open && !this.props.open
-      , opening = !pvProps.open && this.props.open;
+    var self = this
+      , closing =  pvProps.open && !this.props.open
+      , opening = !pvProps.open && this.props.open
+      , same    = pvProps.open === this.props.open;
 
     this.position()
 
-    if (opening)      this.open()
-    else if (closing) this.close()
-    else  this.close(0)
+    if (opening)      self.open()
+    else if (closing) self.close()
   },
 
 	render: function(){
-    var style   = { overflow: 'hidden', position: 'fixed', zIndex: 1005 }
+    var style   = _.extend({}, this.props.style || {}, { overflow: 'hidden', position: 'fixed', zIndex: 1005 })
       , Content = mergePropsInto(
-          { className: 'rw-popup rw-widget', style: { position: 'absolute' } }
+          { className: 'rw-popup rw-widget' }
         , this.props.children);
 
     Content.props.ref = this.props.children.props.ref;
@@ -92,11 +102,19 @@ module.exports = React.createClass({
 		)
 	},
 
+  dimensions: function(){
+    var el = $(this.refs.content.getDOMNode())
+      , anim = this.getDOMNode()
+
+    anim.style.display = 'block'
+    anim.style.height  = el.height() + 'px'
+    anim.style.width   = el.width() + 'px'
+  },
+
   position: function(){
     var self    = this
       , $anim   = $(this.getDOMNode())
       , $anchor = $(this.props.getAnchor())
-      , height  = this._height()
       , aOffset, aHeight, aWidth;
 
       aOffset = $anchor.offset()
@@ -104,7 +122,7 @@ module.exports = React.createClass({
       $anim.css({
         top:    aOffset.top + aOffset.height,
         left:   aOffset.left,
-        width:  aOffset.width
+       // width:  aOffset.width
       });
   },
 
@@ -113,30 +131,41 @@ module.exports = React.createClass({
       , anim = this.getDOMNode()
       , el = $(this.refs.content.getDOMNode());
 
+    this.ORGINAL_POSITION = el.css('position');
+    
+    this.dimensions()
     this.props.onOpening()
 
-    anim.style.display = 'block'
-
-    el.animate({ translateY: 0 }, this.props.duration, function(){
-      anim.style.overflow = 'visible'
-      self.props.onOpen()
-    })
+    el.css('position', 'absolute')
+      .animate({ translateY: 0 }, self.props.duration, function(){
+        el.css('position', self.ORGINAL_POSITION || 'static');
+        anim.style.overflow = 'visible'
+        self.ORGINAL_POSITION = null
+        self.props.onOpen()
+      })
   },
 
   close: function(dur){
     var self = this
       , el = $(this.refs.content.getDOMNode())
       , anim = this.getDOMNode()
-      , ht = this._height()
+      , ht   = anim.style.height //this._height()
+
+    this.ORGINAL_POSITION = el.css('position');
+    this.dimensions()
 
     this.props.onClosing()
-    anim.style.overflow = 'hidden'
-    anim.style.height   = _.isNumber(ht) ? ht + 'px' : ht
 
-    el.animate({ translateY: -ht + 'px' }, dur === undefined ? this.props.duration : dur, function(){
-      anim.style.display = 'none'
-      self.props.onClose()
-    })
+    anim.style.overflow = 'hidden'
+    
+    el.css('position', 'absolute')
+      .animate({ translateY: '-100%' }, dur === undefined ? this.props.duration : dur, function() {
+        el.css('position', self.ORGINAL_POSITION || 'static');
+        
+        anim.style.display = 'none'
+        self.ORGINAL_POSITION = null
+        self.props.onClose()
+      })
   },
 
   _height: function(){

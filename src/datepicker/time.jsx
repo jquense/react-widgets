@@ -44,7 +44,7 @@ module.exports = React.createClass({
         data={times} 
         listItem={listItem}
         selectedIndex={ this._selectedIndex(times, this.props.value) }
-        onSelect={this._onClick}/>
+        onSelect={this.props.onChange}/>
     )
   },
 
@@ -66,10 +66,9 @@ module.exports = React.createClass({
     return times
   },
 
-  _onClick: function(date, idx){
-    console.log(date, idx)
+  _keyUp: function(e){
+    this.refs.list._keyUp(e)
   },
-
 
 });
 

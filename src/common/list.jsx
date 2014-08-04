@@ -23,7 +23,7 @@ module.exports = React.createClass({
 
   propTypes: {
     data:          React.PropTypes.array,
-    selectedIndex: React.PropTypes.number,
+    value:         React.PropTypes.any,
     listItem:      React.PropTypes.component,
     valueField:    React.PropTypes.string,
     textField:     React.PropTypes.string,
@@ -35,6 +35,7 @@ module.exports = React.createClass({
 		return {
 			hovering: null,
       searchTerm: '',
+      selectedIndex: this._dataIndexOf(this.props.data, this.props.value),
       focused: 0
 		}
 	},
@@ -47,6 +48,19 @@ module.exports = React.createClass({
     }
   },
 
+  componentDidUpdate: function(prevProps, prevState){
+    console.log(this.state.selectedIndex, prevState.selectedIndex)
+    if ( prevState.selectedIndex !== this.state.selectedIndex)
+      this._setScrollPosition()
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    //if the value changes reset views to the new one
+    if ( !_.isEqual(nextProps.value, this.props.value))
+      this.setState({
+        selectedIndex: this._dataIndexOf(nextProps.data, nextProps.value)
+      })
+  },
 
 	render: function(){
     var ListItem = this.props.listItem;
@@ -60,8 +74,8 @@ module.exports = React.createClass({
               textField={this.props.textField}
               valueField={this.props.valueField}
               className={cx({ 
-                'rw-state-hover'   : idx === this.state.hovering, 
-                'rw-state-focused' : idx === this.state.focused,
+                'rw-state-hover':    idx === this.state.hovering, 
+                'rw-state-focus':    idx === this.state.focused,
                 'rw-state-selected': idx === this.props.selectedIndex,
               })}
               onClick={_.partial(this.props.onSelect, item, idx)}
@@ -81,6 +95,12 @@ module.exports = React.createClass({
     
     else if ( key === 'ArrowUp' )
       this.prev()
+
+    else if ( key === 'Home' )
+      this.setState({ focused: 0 })
+
+    else if ( key === 'End' )
+      this.setState({ focused: this.props.data.length - 1 })
 
     else if ( key === 'Enter')
       this.props.onSelect(
@@ -135,8 +155,29 @@ module.exports = React.createClass({
             searchTerm: '',
             focused: index
           })
+
       }, this.props.delay)
     })    
+  },
+
+  _setScrollPosition: function(){
+    var list = this.getDOMNode()
+      , selected = $(list).children().eq(this.state.focused)[0]
+      , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
+
+    if (!selected) return
+
+    scrollTop   = list.scrollTop
+    listHeight  = list.clientHeight
+    selectedTop = selected.offsetTop
+    selectedHeight = selected.offsetHeight
+    bottom =  selectedTop + selectedHeight
+
+    list.scrollTop = scrollTop > selectedTop
+      ? selectedTop
+      : bottom > (scrollTop + listHeight) 
+          ? (bottom - listHeight)
+          : scrollTop
   },
 
   _onHover: function(idx, e){
