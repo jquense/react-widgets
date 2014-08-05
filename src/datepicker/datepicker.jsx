@@ -155,12 +155,23 @@ module.exports = React.createClass({
   _keyUp: function(e){
     e.preventDefault()
 
-    if (this.state.open ) {
+    if ( e.altKey ) {
+
+      if ( e.key === 'ArrowDown') 
+        this.open( !this.state.open
+          ? this.state.openPopup
+          : this.state.openPopup === 'time' 
+              ? 'calendar' 
+              : 'time')
+      else if ( e.key === 'ArrowUp')
+        this.close()
+
+    } else if (this.state.open ) {
       if( this.state.openPopup === 'calendar' )
         this.refs.calPopup._keyUp(e)
       if( this.state.openPopup === 'time' )
         this.refs.timePopup._keyUp(e)
-    }
+    } 
   },
 
   _focus: function(focused){
