@@ -37,6 +37,7 @@
     "reactify": "^0.13.1",
     "gulp-plumber": "^0.6.3",
     "font-awesome": "~4.1.0",
-    "browserify-shim": "~3.6.0"
+    "browserify-shim": "~3.6.0",
+    "chance": "^0.5.9"
   }
 }

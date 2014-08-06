@@ -1,0 +1,34 @@
+
+.rw-select-list {
+  
+  border-radius:    @select-border-radius;
+  background:       @dropdown-bg;
+  border:           @dropdown-border 1px solid;
+
+
+  &:hover {
+    border-color:     @dropdown-border-hover;
+  }
+
+  &.rw-open {
+    .border-bottom-radius(0);
+  }
+
+ 
+}
+
+.rw-select-wrapper {
+  .clearfix();
+  
+  > .rw-input {
+    float: left;
+    outline: 0;
+    border-width: 0;
+    width: auto;
+  }
+
+  > .rw-tag-list {
+    .list-inline;
+    float: left;
+  }
+}

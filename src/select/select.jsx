@@ -1,7 +1,8 @@
 var React = require('react/addons')
   , cx    = React.addons.classSet
-  , SlideDown = require('../common/collapse-transition.jsx')
-  , DefaultValueItem = require('./value-item.jsx')
+  , $     =  require('zepto')
+  //, DefaultValueItem = require('./value-item.jsx')
+  , SelectInput = require('./search-input.jsx')
   , Popup = require('../popup/popup.jsx')
   , List  = require('../common/list.jsx');
 
@@ -10,78 +11,67 @@ var btn = require('../common/btn.jsx')
 module.exports = React.createClass({
 
   mixins: [ 
-    require('../mixins/DataHelpersMixin'),
-    require('../mixins/TextSearchMixin')('selectedIndex')
+    React.addons.LinkedStateMixin,
+    require('../mixins/DataHelpersMixin')
   ],
 
   propTypes: {
     data:           React.PropTypes.array,
+    value:          React.PropTypes.array,
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,
-    valueComponent: React.PropTypes.component,
-    delay:         React.PropTypes.number,
-    filter:        React.PropTypes.string,
+
+    valueComponent: React.PropTypes.component
   },
 
-	getInitialState: function(){
-		return {
-			selectedIndex: 0,
-			open:          false
-		}
-	},
-
-  getDefaultProps: function(){
+  getInitialState: function(){
     return {
-      valueComponent: DefaultValueItem,
-      filter: 'startsWith',
-      delay: 500
+      open:  false
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      selectedIndex: nextProps.data.indexOf(nextProps.value)
-    })
-  },
+  // getDefaultProps: function(){
+  //   return {
+  //     valueComponent: DefaultValueItem
+  //   }
+  // },
+  // componentWillReceiveProps: function(nextProps) {
+  //   this.setState({
+  //     selectedIndex: nextProps.data.indexOf(nextProps.value)
+  //   })
+  // },
 
-  componentDidMount: function(){
+  componentDidMount: function(pvProps, pvState){
     this.setWidth()
   },
 
-  componentDidUpdate: function(pvProps, pvState){
-    if ( pvState.selectedIndex !== this.state.selectedIndex)
-      this.change(this.props.data[this.state.selectedIndex])
-  },
+  render: function(){ 
+    var DropdownValue = this.props.valueComponent;
 
-	render: function(){ 
-		var DropdownValue = this.props.valueComponent;
-
-		return (
-			<div ref="element"
+    return (
+      <div ref="element"
            onKeyUp={this._keyPress}
+           
            tabIndex="-1"
            className={cx({
-              'rw-dropdownlist': true,
+              'rw-select-list':  true,
               'rw-widget':       true,
+              'rw-state-focus':  this.state.focused,
               'rw-open':         this.state.open
             })}>
-
-				<btn className="rw-dropdownlist-picker rw-select" onClick={this.toggle}>
-					<i className="rw-i rw-i-caret-down">
-            <span className="rw-sr">Open Dropdown</span>
-          </i>
-				</btn>
-				<DropdownValue
-            className="rw-input" 
-            value={this.props.value}
-            textField={this.props.textField} 
-            valueField={this.props.valueField}/>
-
+        <div className='rw-select-wrapper' onClick={this._click}>
+          <ul className='rw-tag-list'><li>hii!</li></ul>
+          <SelectInput 
+            focused={this.state.focused} 
+            onFocus={this._focus.bind(null, true)} 
+            onBlur ={this._focus.bind(null, false)}
+            valueLink={this.linkState('searchTerm')}/>
+        </div>
         <Popup 
           style={{ width: this.state.width, height: this.state.height }}
           getAnchor={ this._getAnchor } 
           open={this.state.open} 
-          onRequestClose={this.close} 
+          onRequestClose={this.close}
           onClose={closed.bind(this)}>
 
           <List ref="list"
@@ -89,16 +79,16 @@ module.exports = React.createClass({
             value={this.props.value}
             textField={this.props.textField} 
             valueField={this.props.valueField}
-            filter={this.props.filter}
+            searchTerm={this.state.searchTerm}
             onSelect={this._onSelect}/>
         </Popup>
-			</div>
-		)
+      </div>
+    )
 
     function closed(){
       this.refs.element.getDOMNode().focus()
     }
-	},
+  },
 
   setWidth: function() {
     var width = $(this.getDOMNode()).width()
@@ -108,6 +98,17 @@ module.exports = React.createClass({
 
     if ( changed )
       this.setState({ width: width, height: ht })   
+  },
+
+
+  _click: function(e){
+    e.nativeEvent.stopImmediatePropagation();
+    this._focus(true)
+    !this.state.open && this.open()
+  },
+
+  _focus: function(focused){
+    this.setState({ focused: focused })
   },
 
   _onSelect: function(data, idx, elem){
@@ -120,25 +121,12 @@ module.exports = React.createClass({
       , alt = e.altKey
       , isOpen = this.state.open;
 
-    if ( isOpen && !alt) 
-        this.refs.list._keyUp(e)
-    
-    else if ( key === 'ArrowDown' ) {
-      if ( !isOpen )
-        alt ? this.open() : this.next()
-
-    } else if ( key === 'ArrowUp' ) {
-      if ( isOpen && alt ) this.close()
-      else if( !isOpen)    this.prev()
-    } else 
-      this.search(String.fromCharCode(e.keyCode))
   },
 
   change: function(data, idx){
     var change = this.props.onChange 
     if ( change ) change(data)  
   },
-
 
   open: function(){
     this.setState({ open: true })
@@ -155,8 +143,7 @@ module.exports = React.createClass({
       : this.open()
   },
 
-
-	_getAnchor: function(){
-		return this.refs.element.getDOMNode()
-	}
+  _getAnchor: function(){
+    return this.refs.element.getDOMNode()
+  }
 })

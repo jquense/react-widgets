@@ -186,10 +186,10 @@ module.exports = React.createClass({
       dates.merge(date, this.props.value))
   },
 
-  _selectTime: function(date){
+  _selectTime: function(datum){
     this.close()
     this.props.onChange(
-      dates.merge(this.props.value, date))
+      dates.merge(this.props.value, datum.date))
   },
 
   _click: function(view, e){

@@ -19,7 +19,10 @@ var DefaultListItem = React.createClass({
 
 module.exports = React.createClass({
 
-  mixins: [ require('../mixins/DataHelpersMixin') ],
+  mixins: [ 
+    require('../mixins/DataHelpersMixin'), 
+    require('../mixins/TextSearchMixin')('focused')
+  ],
 
   propTypes: {
     data:          React.PropTypes.array,
@@ -27,47 +30,59 @@ module.exports = React.createClass({
     listItem:      React.PropTypes.component,
     valueField:    React.PropTypes.string,
     textField:     React.PropTypes.string,
+    //keyboard nav delay
     delay:         React.PropTypes.number,
-    filter:        React.PropTypes.string,
+
+    //filter options
+    filterType:    React.PropTypes.string,
+    searchTerm:    React.PropTypes.string,
   },
 
 	getInitialState: function(){
-		return {
-			hovering: null,
-      searchTerm: '',
-      selectedIndex: this._dataIndexOf(this.props.data, this.props.value),
-      focused: 0
-		}
+    return this.getDefaultState(this.props, this.props.searchTerm)
 	},
+
+  getDefaultState: function(props, refilter){
+
+    if(  props.searchTerm === this.props.searchTerm 
+      && props.value === this.props.value)
+      return { filteredItems: props.data }
+    
+    var items = this.filter(props.data, props.searchTerm)
+      , idx   = this._dataIndexOf(items, props.value)
+
+    return {
+      filteredItems: items,
+      selectedIndex: idx,
+      focused: idx === -1 ? 0 : idx,
+    }
+  },
 
   getDefaultProps: function(){
     return {
-      listItem: DefaultListItem,
-      filter: 'startsWith',
+      listItem:   DefaultListItem,
+      filterType: 'contains',
       delay: 500
     }
   },
 
   componentDidUpdate: function(prevProps, prevState){
-    console.log(this.state.selectedIndex, prevState.selectedIndex)
-    if ( prevState.selectedIndex !== this.state.selectedIndex)
+    if ( prevState.focused !== this.state.focused)
       this._setScrollPosition()
   },
 
   componentWillReceiveProps: function(nextProps) {
-    //if the value changes reset views to the new one
-    if ( !_.isEqual(nextProps.value, this.props.value))
-      this.setState({
-        selectedIndex: this._dataIndexOf(nextProps.data, nextProps.value)
-      })
+
+    this.setState(
+      this.getDefaultState(nextProps, nextProps.searchTerm !== this.props.searchTerm))
   },
 
 	render: function(){
     var ListItem = this.props.listItem;
-
+    console.log(this.state.filteredItems.length)
 		return mergePropsInto(_.omit(this.props, 'data', 'selectedIndex'),
 			<ul className="rw-list" tabIndex="-1" onKeyUp={this._keyUp} onKeyPress={this.search}>
-        { _.map(this.props.data, (item, idx) => {
+        { _.map(this.state.filteredItems, (item, idx) => {
           return (
             <ListItem 
               item={item}
@@ -76,7 +91,7 @@ module.exports = React.createClass({
               className={cx({ 
                 'rw-state-hover':    idx === this.state.hovering, 
                 'rw-state-focus':    idx === this.state.focused,
-                'rw-state-selected': idx === this.props.selectedIndex,
+                'rw-state-selected': idx === this.state.selectedIndex,
               })}
               onClick={_.partial(this.props.onSelect, item, idx)}
               onMouseEnter={_.partial(this._onHover, idx)}
@@ -106,58 +121,8 @@ module.exports = React.createClass({
       this.props.onSelect(
           this.props.data[this.state.focused]
         , this.state.focused)
-  },
-
-  next: function(){
-    var nextIdx = this.state.focused + 1;
-
-    if ( nextIdx >= this.props.data.length )
-      nextIdx = 0;
-
-    this.setState({
-      focused: nextIdx
-    })
-  },
-
-  prev: function(){
-    var nextIdx = this.state.focused - 1;
-
-    if ( nextIdx < 0 )
-      nextIdx = this.props.data.length - 1;
-
-    this.setState({
-      focused: nextIdx
-    })
-  },
-
-  search: function(e){
-    var self = this
-      , matches   = filter[this.props.filter]
-      , character = String.fromCharCode(e.keyCode)
-      , word      = (this.state.searchTerm + character).toLowerCase();
-      
-    clearTimeout(this.state.timer)
-
-    this.setState({ 
-      searchTerm: word,
-      timer: setTimeout(function(){
-          var index = _.findIndex(self.props.data, function(item, i) { 
-                return i != self.state.focused 
-                    && matches(self._dataText(item), word)
-              });
-
-          console.log(word, index)
-
-          if ( index === -1 ) 
-            index = self.state.focused
-
-          self.setState({
-            searchTerm: '',
-            focused: index
-          })
-
-      }, this.props.delay)
-    })    
+    else
+      this.search(String.fromCharCode(e.keyCode))
   },
 
   _setScrollPosition: function(){
@@ -165,6 +130,7 @@ module.exports = React.createClass({
       , selected = $(list).children().eq(this.state.focused)[0]
       , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
 
+    console.log(selected)
     if (!selected) return
 
     scrollTop   = list.scrollTop
@@ -172,6 +138,8 @@ module.exports = React.createClass({
     selectedTop = selected.offsetTop
     selectedHeight = selected.offsetHeight
     bottom =  selectedTop + selectedHeight
+
+    console.log(bottom, listHeight, scrollTop)
 
     list.scrollTop = scrollTop > selectedTop
       ? selectedTop
@@ -186,5 +154,18 @@ module.exports = React.createClass({
 
 	_getAnchor: function(){
 		return this.refs.input.getDOMNode()
-	}
+	},
+
+  filter: function(items, searchTerm){
+    var matches = filter[this.props.filterType];
+
+    if ( !searchTerm || !searchTerm.trim() || searchTerm.length < 3)
+      return items
+
+    return _.filter(items, function(item){
+      var val = this._dataText(item).toLowerCase();
+
+      return matches(val, searchTerm.toLowerCase())
+    }, this)
+  }
 })

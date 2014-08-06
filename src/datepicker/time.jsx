@@ -42,7 +42,8 @@ module.exports = React.createClass({
     return mergePropsInto(_.omit(this.props, 'value'),
       <List ref="list"
         data={times} 
-        listItem={listItem}
+        textField='label'
+        valueField='date'
         selectedIndex={ this._selectedIndex(times, this.props.value) }
         onSelect={this.props.onChange}/>
     )
@@ -59,8 +60,8 @@ module.exports = React.createClass({
         , start = dates.eq(this.props.value, this.props.min, 'day') ? this.props.min : dates.today
         , end   = dates.eq(this.props.value, this.props.max, 'day') ? this.props.max : dates.tomorrow;
 
-    while( dates.lt(start, end, 'day') && times.length < 100 ) {
-      times.push(start)
+    while( dates.lt(start, end, 'day') ) {
+      times.push({ date: start, label: dates.format(start, this.props.format) })
       start = dates.add(start, this.props.step || 30, 'minutes')
     }
     return times
