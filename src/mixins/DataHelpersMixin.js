@@ -26,11 +26,13 @@ module.exports = {
   },
 
   _dataIndexOf: function(data, item){
-    return _.findIndex(data, function(datum){
-      return _.isEqual(
-          this._dataValue(datum)
-        , this._dataValue(item))
-    }, this)
+    return _.findIndex(data, _.partial(this._valueMatcher, item), this)
+  },
+
+  _valueMatcher: function(a, b){
+    return _.isEqual(
+        this._dataValue(a)
+      , this._dataValue(b)) 
   }
 }
 

@@ -36,6 +36,13 @@ module.exports = React.createClass({
     //filter options
     filterType:    React.PropTypes.string,
     searchTerm:    React.PropTypes.string,
+    caseSensitive: React.PropTypes.bool,
+    minLength:     React.PropTypes.number,
+
+    messages:      React.PropTypes.shape({
+      emptyList:   React.PropTypes.string,
+      emptyFilter: React.PropTypes.string
+    }),
   },
 
 	getInitialState: function(){
@@ -43,11 +50,6 @@ module.exports = React.createClass({
 	},
 
   getDefaultState: function(props, refilter){
-
-    if(  props.searchTerm === this.props.searchTerm 
-      && props.value === this.props.value)
-      return { filteredItems: props.data }
-    
     var items = this.filter(props.data, props.searchTerm)
       , idx   = this._dataIndexOf(items, props.value)
 
@@ -60,9 +62,15 @@ module.exports = React.createClass({
 
   getDefaultProps: function(){
     return {
-      listItem:   DefaultListItem,
-      filterType: 'contains',
-      delay: 500
+      listItem:      DefaultListItem,
+      filterType:    'contains',
+      delay:         500,
+      minLength:     1,
+      caseSensitive: false,
+      messages: {
+        emptyList:   "There are no items in this list",
+        emptyFilter: "The filter returned no results"
+      }
     }
   },
 
@@ -73,31 +81,40 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
 
-    this.setState(
-      this.getDefaultState(nextProps, nextProps.searchTerm !== this.props.searchTerm))
+    if(  nextProps.searchTerm !== this.props.searchTerm  
+      || nextProps.value !== this.props.value)
+      this.setState(
+        this.getDefaultState(nextProps))
   },
 
 	render: function(){
-    var ListItem = this.props.listItem;
-    console.log(this.state.filteredItems.length)
+    var ListItem    = this.props.listItem
+      , emptyList   = <li>{ this.props.messages.emptyList }</li>
+      , emptyFilter = <li>{ this.props.messages.emptyFilter }</li>
+      , items = _.map(this.state.filteredItems, (item, idx) => {
+        return (
+          <ListItem 
+            item={item}
+            textField={this.props.textField}
+            valueField={this.props.valueField}
+            unselectable='on'
+            className={cx({ 
+              'rw-state-focus':    idx === this.state.focused,
+              'rw-state-selected': idx === this.state.selectedIndex,
+            })}
+            onClick={_.partial(this.props.onSelect, item, idx)}
+            onMouseEnter={_.partial(this._onHover, idx)}
+            onMouseLeave={_.partial(this._onHover, null)} />
+        )
+      });
+    
 		return mergePropsInto(_.omit(this.props, 'data', 'selectedIndex'),
 			<ul className="rw-list" tabIndex="-1" onKeyUp={this._keyUp} onKeyPress={this.search}>
-        { _.map(this.state.filteredItems, (item, idx) => {
-          return (
-            <ListItem 
-              item={item}
-              textField={this.props.textField}
-              valueField={this.props.valueField}
-              className={cx({ 
-                'rw-state-hover':    idx === this.state.hovering, 
-                'rw-state-focus':    idx === this.state.focused,
-                'rw-state-selected': idx === this.state.selectedIndex,
-              })}
-              onClick={_.partial(this.props.onSelect, item, idx)}
-              onMouseEnter={_.partial(this._onHover, idx)}
-              onMouseLeave={_.partial(this._onHover, null)} />
-          )
-        })}
+        { !this.props.data.length 
+          ? emptyList 
+          : !this.state.filteredItems.length
+            ? emptyFilter
+            : items  }
 			</ul>
 		)
 	},
@@ -130,7 +147,7 @@ module.exports = React.createClass({
       , selected = $(list).children().eq(this.state.focused)[0]
       , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
 
-    console.log(selected)
+
     if (!selected) return
 
     scrollTop   = list.scrollTop
@@ -138,8 +155,6 @@ module.exports = React.createClass({
     selectedTop = selected.offsetTop
     selectedHeight = selected.offsetHeight
     bottom =  selectedTop + selectedHeight
-
-    console.log(bottom, listHeight, scrollTop)
 
     list.scrollTop = scrollTop > selectedTop
       ? selectedTop
@@ -159,11 +174,17 @@ module.exports = React.createClass({
   filter: function(items, searchTerm){
     var matches = filter[this.props.filterType];
 
-    if ( !searchTerm || !searchTerm.trim() || searchTerm.length < 3)
+    if ( !searchTerm || !searchTerm.trim() || searchTerm.length < (this.props.minLength || 1))
       return items
 
+    if ( !this.props.caseSensitive)
+      searchTerm = searchTerm.toLowerCase();
+
     return _.filter(items, function(item){
-      var val = this._dataText(item).toLowerCase();
+      var val = this._dataText(item);
+
+      if ( !this.props.caseSensitive)
+        val = val.toLowerCase();
 
       return matches(val, searchTerm.toLowerCase())
     }, this)

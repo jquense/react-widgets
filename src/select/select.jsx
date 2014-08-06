@@ -1,8 +1,10 @@
 var React = require('react/addons')
   , cx    = React.addons.classSet
+  , _     =  require('lodash')
   , $     =  require('zepto')
   //, DefaultValueItem = require('./value-item.jsx')
   , SelectInput = require('./search-input.jsx')
+  , TagList = require('./tag-list.jsx')
   , Popup = require('../popup/popup.jsx')
   , List  = require('../common/list.jsx');
 
@@ -11,7 +13,6 @@ var btn = require('../common/btn.jsx')
 module.exports = React.createClass({
 
   mixins: [ 
-    React.addons.LinkedStateMixin,
     require('../mixins/DataHelpersMixin')
   ],
 
@@ -26,20 +27,18 @@ module.exports = React.createClass({
 
   getInitialState: function(){
     return {
-      open:  false
+      open:  false,
+      withoutValues: this.withoutValues(this.props.data, this.props.value)
     }
   },
 
-  // getDefaultProps: function(){
-  //   return {
-  //     valueComponent: DefaultValueItem
-  //   }
-  // },
-  // componentWillReceiveProps: function(nextProps) {
-  //   this.setState({
-  //     selectedIndex: nextProps.data.indexOf(nextProps.value)
-  //   })
-  // },
+  componentWillReceiveProps: function(nextProps) {
+
+    if(  !_.isEqual(nextProps.value, this.props.value))
+      this.setState({
+        withoutValues: this.withoutValues(nextProps.data, nextProps.value),
+      })
+  },
 
   componentDidMount: function(pvProps, pvState){
     this.setWidth()
@@ -50,8 +49,7 @@ module.exports = React.createClass({
 
     return (
       <div ref="element"
-           onKeyUp={this._keyPress}
-           
+           onKeyUp={this._keyUp}
            tabIndex="-1"
            className={cx({
               'rw-select-list':  true,
@@ -60,22 +58,30 @@ module.exports = React.createClass({
               'rw-open':         this.state.open
             })}>
         <div className='rw-select-wrapper' onClick={this._click}>
-          <ul className='rw-tag-list'><li>hii!</li></ul>
+          <TagList 
+            ref='tagList'
+            value={this.props.value} 
+            textField={this.props.textField} 
+            valueField={this.props.valueField}
+            valueComponent={this.props.valueComponent}
+            onDelete={this._delete}/>
           <SelectInput 
+            value={this.state.searchTerm} 
             focused={this.state.focused} 
             onFocus={this._focus.bind(null, true)} 
             onBlur ={this._focus.bind(null, false)}
-            valueLink={this.linkState('searchTerm')}/>
+            onChange={this._typing}/>
         </div>
         <Popup 
-          style={{ width: this.state.width, height: this.state.height }}
+          style={{ width: this.state.width}}
           getAnchor={ this._getAnchor } 
           open={this.state.open} 
           onRequestClose={this.close}
           onClose={closed.bind(this)}>
 
           <List ref="list"
-            data={this.props.data} 
+            style={{ maxHeight: 200, height: 'auto' }}
+            data={this.state.withoutValues}
             value={this.props.value}
             textField={this.props.textField} 
             valueField={this.props.valueField}
@@ -93,15 +99,22 @@ module.exports = React.createClass({
   setWidth: function() {
     var width = $(this.getDOMNode()).width()
       , popup = $(this.refs.list.getDOMNode())
-      , ht = popup.height() > 200 ? 200 : popup.height()
+      //, ht = popup.height() > 200 ? 200 : popup.height()
       , changed = width !== this.state.width || ht !== this.state.height;
 
     if ( changed )
-      this.setState({ width: width, height: ht })   
+      this.setState({ width: width })
   },
 
+  _delete: function(e, value){
+    e.stopPropagation();
+    this._focus(true)
+    this.change(
+      _.without(this.props.value, value))
+  },
 
   _click: function(e){
+    
     e.nativeEvent.stopImmediatePropagation();
     this._focus(true)
     !this.state.open && this.open()
@@ -111,19 +124,39 @@ module.exports = React.createClass({
     this.setState({ focused: focused })
   },
 
-  _onSelect: function(data, idx, elem){
-    this.close()
-    this.change(data)
+  _typing: function(e){
+    console.log('e.target')
+    this.setState({
+      searchTerm: e.target.value,
+      open: this.state.open || (this.state.open === false)
+    })
   },
 
-  _keyPress: function(e){
+  _onSelect: function(data){
+    var val = this.props.value.concat(data)
+    this.close()
+    this.change(val)
+  },
+
+  _keyUp: function(e){
     var key = e.key
       , alt = e.altKey
       , isOpen = this.state.open;
 
+    if ( alt ) {
+
+      if ( key === 'ArrowDown') 
+        this.open()
+      else if ( key === 'ArrowUp')
+        this.close()
+
+    } else if ( isOpen ){
+      this.refs.list._keyUp(e)
+    } 
+
   },
 
-  change: function(data, idx){
+  change: function(data){
     var change = this.props.onChange 
     if ( change ) change(data)  
   },
@@ -143,7 +176,21 @@ module.exports = React.createClass({
       : this.open()
   },
 
+  withoutValues: function(data, values){
+    return _.reject(data, function(i){
+        return _.any(
+            values
+          , _.partial(this._valueMatcher, i)
+          , this)
+      }, this)
+  },
+
   _getAnchor: function(){
     return this.refs.element.getDOMNode()
   }
 })
+
+
+// function isTagClick(tagList, e){
+//   return $.contains(tagList, e.target)
+// }

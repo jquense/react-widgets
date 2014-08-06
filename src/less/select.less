@@ -18,6 +18,7 @@
 }
 
 .rw-select-wrapper {
+  position: relative;
   .clearfix();
   
   > .rw-input {
@@ -29,6 +30,18 @@
 
   > .rw-tag-list {
     .list-inline;
-    float: left;
+
+    > li {
+      float: left;
+      display: inline-block;
+      margin: 1px;
+      padding: .1em .15em .1em .4em;
+      line-height: 1.5em;
+      text-align: center;
+      vertical-align: middle;
+      white-space: nowrap;
+      border-radius: .25em;
+      background-color: blue;
+    }
   }
 }

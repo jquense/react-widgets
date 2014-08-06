@@ -19,8 +19,8 @@ module.exports = React.createClass({
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,
     valueComponent: React.PropTypes.component,
-    delay:         React.PropTypes.number,
-    filter:        React.PropTypes.string,
+    delay:          React.PropTypes.number,
+    filter:         React.PropTypes.string,
   },
 
 	getInitialState: function(){

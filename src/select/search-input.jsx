@@ -13,7 +13,7 @@ module.exports = React.createClass({
   },
 
   render: function(){
-      var value = this.props.valueLink.value;
+      var value = this.props.value;
 
       return this.transferPropsTo(
         <input type='text' 
