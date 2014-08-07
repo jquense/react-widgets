@@ -79,7 +79,7 @@ module.exports = React.createClass({
       , key  = this.state.view + '_' + date.getMonth() + '-' + date.getFullYear();
 
     return mergePropsInto(_.omit(this.props, 'value', 'min', 'max'),
-      <div className='rw-calendar rw-widget' onKeyUp={this._keyUp}>
+      <div className='rw-calendar rw-widget' onKeyDown={this._keyDown}>
         <Header
           label={this._label()}
           disabled={this.state.view === 'century'}
@@ -145,23 +145,31 @@ module.exports = React.createClass({
     return dates[method](this.state.currentDate, 1 * multi, unit)
   },
 
-  _keyUp: function(e){
+  _keyDown: function(e){
     var ctrl = e.ctrlKey
       , key  = e.key;
 
       
-    if ( ctrl ){
-      if ( key === 'ArrowDown' )
+    if ( ctrl ) {
+      if ( key === 'ArrowDown' ) {
+        e.preventDefault()
         this.navigate(DOWN)
-      if ( key === 'ArrowUp' )
+      } 
+      if ( key === 'ArrowUp' ) {
+        e.preventDefault()
         this.navigate(UP)
-      if ( key === 'ArrowLeft' )
+      } 
+      if ( key === 'ArrowLeft' ) {
+        e.preventDefault()
         this.navigate(LEFT)
-      if ( key === 'ArrowRight' )
+      } 
+      if ( key === 'ArrowRight' ) {
+        e.preventDefault()
         this.navigate(RIGHT)
+      }
     } else {
-      this.refs.currentView._keyUp 
-        && this.refs.currentView._keyUp(e)
+      this.refs.currentView._keyDown 
+        && this.refs.currentView._keyDown(e)
     }
 
   },

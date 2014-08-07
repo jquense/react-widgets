@@ -120,7 +120,7 @@ module.exports = React.createClass({
       aOffset = $anchor.offset()
 
       $anim.css({
-        top:    aOffset.top + aOffset.height,
+        top:    aOffset.top + aOffset.height - 1,
         left:   aOffset.left,
        // width:  aOffset.width
       });

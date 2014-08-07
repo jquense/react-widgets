@@ -26,11 +26,12 @@ module.exports = function(viewUnit, smallUnit){
         })
     },
 
-    _keyUp: function(e){
+    _keyDown: function(e){
       var key = e.key
         , alt = e.altKey
         , current = this.state.focusedDate
         , date = current;
+
 
       if ( key === 'Enter')
         return this.props.onChange(date)
@@ -49,6 +50,8 @@ module.exports = function(viewUnit, smallUnit){
 
 
       if ( !dates.eq(current, date, smallUnit) ) {
+        e.preventDefault()
+
         if ( dates.gt(date, this.props.value, viewUnit) )
           return this.props.onMoveRight(date)
 

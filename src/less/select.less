@@ -1,6 +1,6 @@
 
 .rw-select-list {
-  
+  outline: 0;
   border-radius:    @select-border-radius;
   background:       @dropdown-bg;
   border:           @dropdown-border 1px solid;
@@ -13,35 +13,42 @@
   &.rw-open {
     .border-bottom-radius(0);
   }
-
- 
 }
 
 .rw-select-wrapper {
-  position: relative;
+  position:               relative;
   .clearfix();
   
   > .rw-input {
-    float: left;
-    outline: 0;
-    border-width: 0;
-    width: auto;
+    float:                left;
+    outline:              0;
+    border-width:         0;
+    line-height:          normal;
+    width:                auto;
   }
 
-  > .rw-tag-list {
-    .list-inline;
+  .rw-btn {
+    outline:            0;
+    font-size:          115%;
+    line-height:        normal;
+  }
+}
 
-    > li {
-      float: left;
-      display: inline-block;
-      margin: 1px;
-      padding: .1em .15em .1em .4em;
-      line-height: 1.5em;
-      text-align: center;
-      vertical-align: middle;
-      white-space: nowrap;
-      border-radius: .25em;
-      background-color: blue;
-    }
+.rw-tag-list {
+  .list-inline;
+
+  > li {
+    float:              left;
+    display:            inline-block;
+    margin:             1px;
+    padding:            .1em .15em .1em .4em;
+    line-height:        1.5em;
+    text-align:         center;
+    vertical-align:     middle;
+    white-space:        nowrap;
+    border-radius:      @border-radius-sm;
+    border:             1px solid @blue;
+    background-color:   @blue;
+    cursor:             pointer;
   }
 }

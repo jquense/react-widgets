@@ -1,57 +1,13 @@
  //@color-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
 
-.collapse {
-  display: none;
 
-  &.in { 
-    display: block; 
-  }
-}
-
-.sliding {
-  position: absolute;
-  overflow: hidden;
-  -webkit-transition: -webkit-transform 0.25s ease;
-  -moz-transition: -moz-transform 0.25s ease;
-  transition: transform 0.25s ease;
-}
-
-.collapsing {
-  position: relative;
-  height: 0;
-  overflow: hidden;
-  .transition(height .25s ease);
-}
-
-.slide-left {
-  .transition(left 0.35s ease);
-  position: absolute;
-  overflow: hidden;
-  left:100%;
-}
-
-.slide-right {
-  .transition(left 0.35s ease);
-  position: absolute;
-  overflow: hidden;
-  left:-100%;
-}
-
-.slide-left.in,
-.slide-right.in, {
-    left:0;
-}
-
-.slide-left.out{
-    left:-100%;
-}
-
-.slide-right.out {
-    left:100%;
+.rw-widget {
+  outline: 0;
 }
 
 .rw-btn {
-	//font-size: 1.2em;
+  color: @btn-color;
+	line-height: @line-height;
 	display: inline-block;
 	margin: 0;
 	text-align: center;
@@ -66,9 +22,9 @@
 
 
 .rw-input {
-	height: 			@input-height;
-	line-height: 		@input-height;
-	padding: 			0.177em 0;
+	height: 			  @input-height;
+	line-height: 	  @input-height;
+	padding: 			  0.177em 0;
 	text-indent: 		0.64em;
 
 	.rw-rtl & {
@@ -84,6 +40,15 @@
  //  	}
 }
 
+
+.rw-state-focus {
+  .state-focus();
+}
+
+.rw-state-selected {
+  .state-select();
+}
+
 ul.rw-list {
 	.list-unstyled();
   padding: 5px 0;
@@ -96,22 +61,20 @@ ul.rw-list {
     border: 1px solid transparent;
     padding-left: 10px;
     padding-right: 10px;
+    border-radius: @border-radius-sm;
   }
 
-  > li.rw-state-hover {
+  > li:hover {
     background-color: @list-bg-hover;
     border-color:     @list-border-hover;
   }
 
   > li.rw-state-focus {
-    background-color: @state-bg-hover;
-    border-color:     @state-border-hover;
+    .state-focus();
   }
 
   > li.rw-state-selected {
-    color:            @state-color-select;
-    background-color: @state-bg-select;
-    border-color:     @state-border-select;
+    .state-select();
   }
 }
 

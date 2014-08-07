@@ -31,6 +31,7 @@ module.exports = React.createClass({
     valueField:    React.PropTypes.string,
     textField:     React.PropTypes.string,
     //keyboard nav delay
+    jumpToItem:    React.PropTypes.bool,
     delay:         React.PropTypes.number,
 
     //filter options
@@ -52,7 +53,7 @@ module.exports = React.createClass({
   getDefaultState: function(props, refilter){
     var items = this.filter(props.data, props.searchTerm)
       , idx   = this._dataIndexOf(items, props.value)
-
+    console.log('state: ', idx, (this.state || {}).focused)
     return {
       filteredItems: items,
       selectedIndex: idx,
@@ -63,6 +64,7 @@ module.exports = React.createClass({
   getDefaultProps: function(){
     return {
       listItem:      DefaultListItem,
+      jumpToItem:    true,
       filterType:    'contains',
       delay:         500,
       minLength:     1,
@@ -92,6 +94,7 @@ module.exports = React.createClass({
       , emptyList   = <li>{ this.props.messages.emptyList }</li>
       , emptyFilter = <li>{ this.props.messages.emptyFilter }</li>
       , items = _.map(this.state.filteredItems, (item, idx) => {
+        console.log('render: ', idx, this.state.focused)
         return (
           <ListItem 
             item={item}
@@ -132,13 +135,13 @@ module.exports = React.createClass({
       this.setState({ focused: 0 })
 
     else if ( key === 'End' )
-      this.setState({ focused: this.props.data.length - 1 })
+      this.setState({ focused: this.state.filteredItems.length - 1 })
 
     else if ( key === 'Enter')
       this.props.onSelect(
-          this.props.data[this.state.focused]
+          this.state.filteredItems[this.state.focused]
         , this.state.focused)
-    else
+    else if ( this.props.jumpToItem )
       this.search(String.fromCharCode(e.keyCode))
   },
 

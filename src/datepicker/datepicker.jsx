@@ -64,7 +64,6 @@ module.exports = React.createClass({
     return (
       <div ref="element"
            tabIndex="-1"
-           onKeyUp={this._keyUp}
            onKeyDown={this._keyDown}
            className={cx({
               'rw-date-picker': true,
@@ -73,7 +72,8 @@ module.exports = React.createClass({
               'rw-state-focus': this.state.focused,
               'rw-has-both':    this.props.calendar && this.props.time
             })}>
-        <DateInput ref='valueInput' value={this.props.value} 
+        <DateInput ref='valueInput' 
+          value={this.props.value} 
           focused={this.state.focused} 
           format={this.props.format} 
           parse={this._parse} 
@@ -148,14 +148,9 @@ module.exports = React.createClass({
   },
 
   _keyDown: function(e){
-    if (this.state.open )
-      e.preventDefault()
-  },
-
-  _keyUp: function(e){
-    e.preventDefault()
-
+    
     if ( e.altKey ) {
+      e.preventDefault()
 
       if ( e.key === 'ArrowDown') 
         this.open( !this.state.open
@@ -168,9 +163,9 @@ module.exports = React.createClass({
 
     } else if (this.state.open ) {
       if( this.state.openPopup === 'calendar' )
-        this.refs.calPopup._keyUp(e)
+        this.refs.calPopup._keyDown(e)
       if( this.state.openPopup === 'time' )
-        this.refs.timePopup._keyUp(e)
+        this.refs.timePopup._keyDown(e)
     } 
   },
 

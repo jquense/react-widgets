@@ -67,7 +67,8 @@ module.exports = React.createClass({
     return times
   },
 
-  _keyUp: function(e){
+  _keyDown: function(e){
+    e.preventDefault()
     this.refs.list._keyUp(e)
   },
 

@@ -59,6 +59,7 @@ module.exports = React.createClass({
 		return (
 			<div ref="element"
            onKeyUp={this._keyPress}
+           onClick={this.toggle}
            tabIndex="-1"
            className={cx({
               'rw-dropdownlist': true,
@@ -66,11 +67,11 @@ module.exports = React.createClass({
               'rw-open':         this.state.open
             })}>
 
-				<btn className="rw-dropdownlist-picker rw-select" onClick={this.toggle}>
+				<span className="rw-dropdownlist-picker rw-select rw-btn">
 					<i className="rw-i rw-i-caret-down">
             <span className="rw-sr">Open Dropdown</span>
           </i>
-				</btn>
+				</span>
 				<DropdownValue
             className="rw-input" 
             value={this.props.value}
@@ -78,19 +79,22 @@ module.exports = React.createClass({
             valueField={this.props.valueField}/>
 
         <Popup 
-          style={{ width: this.state.width, height: this.state.height }}
+          style={{ width: this.state.width }}
           getAnchor={ this._getAnchor } 
           open={this.state.open} 
           onRequestClose={this.close} 
           onClose={closed.bind(this)}>
-
-          <List ref="list"
-            data={this.props.data} 
-            value={this.props.value}
-            textField={this.props.textField} 
-            valueField={this.props.valueField}
-            filter={this.props.filter}
-            onSelect={this._onSelect}/>
+          
+          <div>
+            <List ref="list"
+              style={{ maxHeight: 200, height: 'auto' }}
+              data={this.props.data} 
+              value={this.props.value}
+              textField={this.props.textField} 
+              valueField={this.props.valueField}
+              filter={this.props.filter}
+              onSelect={this._onSelect}/>
+          </div>
         </Popup>
 			</div>
 		)

@@ -1,25 +1,27 @@
 
 
 .rw-dropdownlist {
-	border-radius:	 	@select-border-radius;
-	background: 			@dropdown-bg;
-	border: 					@dropdown-border 1px solid;
-
-	
+	border-radius:	 		@select-border-radius;
+	background: 				@dropdown-bg;
+	border: 						@dropdown-border 1px solid;
+	cursor: 						pointer;
 
 	&:hover {
 		background: 			@dropdown-bg-hover;
 		border-color: 		@dropdown-border-hover;
 	}
 
+	& .rw-btn {
+		display: 					inline-block;
+	}
 
 	&.rw-rtl {
-		padding-right: 0;
-		padding-left: 1.9em;
+		padding-right: 		0;
+		padding-left: 		1.9em;
 
 		.rw-dropdownlist-picker {
-			left: 0;
-			right: auto;
+			left: 					0;
+			right: 					auto;
 		}
 	}
 }

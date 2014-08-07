@@ -28,6 +28,7 @@ module.exports = React.createClass({
   getInitialState: function(){
     return {
       open:  false,
+      searchTerm: '',
       withoutValues: this.withoutValues(this.props.data, this.props.value)
     }
   },
@@ -36,6 +37,7 @@ module.exports = React.createClass({
 
     if(  !_.isEqual(nextProps.value, this.props.value))
       this.setState({
+        searchTerm: '',
         withoutValues: this.withoutValues(nextProps.data, nextProps.value),
       })
   },
@@ -79,20 +81,23 @@ module.exports = React.createClass({
           onRequestClose={this.close}
           onClose={closed.bind(this)}>
 
-          <List ref="list"
-            style={{ maxHeight: 200, height: 'auto' }}
-            data={this.state.withoutValues}
-            value={this.props.value}
-            textField={this.props.textField} 
-            valueField={this.props.valueField}
-            searchTerm={this.state.searchTerm}
-            onSelect={this._onSelect}/>
+          <div>
+            <List ref="list"
+              style={{ maxHeight: 200, height: 'auto' }}
+              data={this.state.withoutValues}
+              value={this.props.value}
+              textField={this.props.textField} 
+              valueField={this.props.valueField}
+              searchTerm={this.state.searchTerm}
+              jumpToItem={false}
+              onSelect={this._onSelect}/>
+          </div>
         </Popup>
       </div>
     )
 
     function closed(){
-      this.refs.element.getDOMNode().focus()
+      //this.refs.element.getDOMNode().focus()
     }
   },
 
@@ -106,15 +111,14 @@ module.exports = React.createClass({
       this.setState({ width: width })
   },
 
-  _delete: function(e, value){
-    e.stopPropagation();
+  _delete: function(value){
+    //e.stopPropagation();
     this._focus(true)
     this.change(
       _.without(this.props.value, value))
   },
 
   _click: function(e){
-    
     e.nativeEvent.stopImmediatePropagation();
     this._focus(true)
     !this.state.open && this.open()
@@ -125,7 +129,6 @@ module.exports = React.createClass({
   },
 
   _typing: function(e){
-    console.log('e.target')
     this.setState({
       searchTerm: e.target.value,
       open: this.state.open || (this.state.open === false)
@@ -150,14 +153,32 @@ module.exports = React.createClass({
       else if ( key === 'ArrowUp')
         this.close()
 
-    } else if ( isOpen ){
-      this.refs.list._keyUp(e)
+    } else {
+
+      if ( key === 'ArrowLeft')
+        this.refs.tagList.prev()
+
+      else if ( key === 'ArrowRight')
+        this.refs.tagList.next() 
+
+      else if ( key === 'End')
+        this.refs.tagList.last() 
+
+      else if ( key === 'Home')
+        this.refs.tagList.first()
+
+      else if ( key === 'Esc')
+        this.refs.tagList.clear()
+
+      if ( isOpen )
+        this.refs.list._keyUp(e)
     } 
 
   },
 
   change: function(data){
     var change = this.props.onChange 
+
     if ( change ) change(data)  
   },
 
