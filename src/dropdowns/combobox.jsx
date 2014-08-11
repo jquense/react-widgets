@@ -2,6 +2,7 @@ var React  = require('react/addons')
   , cx     = React.addons.classSet
   , _      = require('lodash')
   , filter = require('../util/filter')
+  , directions = require('../util/constants').directions
   , Input  = require('./combo-input.jsx')
   , Popup  = require('../popup/popup.jsx')
   , List   = require('../common/list.jsx');
@@ -10,9 +11,14 @@ var btn = require('../common/btn.jsx')
 
 module.exports = React.createClass({
 
+  displayName: 'ComboBox',
+
   mixins: [ 
     require('../mixins/DataHelpersMixin'),
-    require('../mixins/TextSearchMixin')('selectedIndex')
+    require('../mixins/TextSearchMixin'),
+
+    require('../mixins/DataIndexStateMixin')('selectedIndex'), 
+    require('../mixins/DataIndexStateMixin')('focusedIndex')    
   ],
 
   propTypes: {
@@ -20,39 +26,65 @@ module.exports = React.createClass({
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,
     delay:          React.PropTypes.number,
-    filter:         React.PropTypes.string,
+    filter:         React.PropTypes.oneOfType([
+                      React.PropTypes.string,
+                      React.PropTypes.oneOf([false])
+                    ]),
 
     messages:       React.PropTypes.shape({
-      open:         React.PropTypes.string
-    }),
+      open:         React.PropTypes.string,
+      emptyList:    React.PropTypes.string,
+      emptyFilter:  React.PropTypes.string
+    })
   },
 
 	getInitialState: function(){
+    var items = this.process(
+          this.props.data
+        , this.props.value)
+
+      , idx = this._dataIndexOf(items, this.props.value);
+
 		return {
-			selectedIndex: this.props.data.indexOf(this.props.value),
+			selectedIndex: idx,
+      focusedIndex:  idx === -1 ? 0 : idx,
       currentText:   this._dataText(this.props.value),
-      suggestion:    this.suggest(this.props),
+      processedData: items,
+      //suggestion:    this.suggest(this.props),
       deleting:      false,
 			open:          false
-
 		}
 	},
 
   getDefaultProps: function(){
     return {
-      filter: 'startsWith',
+      filter: false,
       delay: 500,
 
       messages: {
-        open: 'open combobox'
+        open: 'open combobox',
+        emptyList:   "There are no items in this list",
+        emptyFilter: "The filter returned no results"
       }
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
+    var items = this.process(
+          nextProps.data
+        , nextProps.value
+        , this._dataText(this.props.value))
+
+      , idx = this._dataIndexOf(items, nextProps.value);
+
     this.setState({
-      selectedIndex: nextProps.data.indexOf(nextProps.value),
-      suggestion: this.suggest(nextProps)
+      selectedIndex:  idx,
+      focusedIndex:   idx === -1 
+        ? this.findIndex(this._dataText(this.props.value)) 
+        : idx,
+      //suggestion:     this.suggest(nextProps),
+      processedData:  items,
+      currentText:    this._dataText(nextProps.value)
     })
   },
 
@@ -60,14 +92,15 @@ module.exports = React.createClass({
     this.setWidth()
   },
 
-  componentDidUpdate: function(pvProps, pvState){
-    if ( this.state.selectedIndex !== -1 && pvState.selectedIndex !== this.state.selectedIndex)
-      this.change(this.props.data[this.state.selectedIndex])
-  },
+  // componentDidUpdate: function(pvProps, pvState){
+  //   if ( this.state.selectedIndex !== -1 && pvState.selectedIndex !== this.state.selectedIndex)
+  //     this.change(this.props.data[this.state.selectedIndex])
+  // },
 
 	render: function(){ 
 		var DropdownValue = this.props.valueComponent
-      , text = this._dataText(this.props.value);
+      , items = this._data()
+      , text  = this.state.currentText;
 
     console.log(text)
 		return (
@@ -89,7 +122,7 @@ module.exports = React.createClass({
           className='rw-input'
           value={text}
           onChange={this._onChange}
-          onKeyDown={this._typing}/>
+          onKeyUp={this._typing}/>
 
         <Popup 
           style={{ width: this.state.width }}
@@ -100,12 +133,20 @@ module.exports = React.createClass({
           <div>
             <List ref="list"
               style={{ maxHeight: 200, height: 'auto' }}
-              data={this.props.data} 
+              data={items} 
               value={this.props.value}
+              selectedIndex={this.state.selectedIndex}
+              focusedIndex={this.state.selectedIndex === -1 
+                ? this.state.focusedIndex 
+                : this.state.selectedIndex}
               textField={this.props.textField} 
               valueField={this.props.valueField}
-              filter={this.props.filter}
-              onSelect={this._onSelect}/>
+              onSelect={this._onSelect}
+              messages={{
+                emptyList: this.props.data.length 
+                  ? this.props.messages.emptyFilter
+                  : this.props.messages.emptyList
+              }}/>
           </div>
         </Popup>
 			</div>
@@ -127,20 +168,19 @@ module.exports = React.createClass({
   },
 
   _typing: function(e){
-
-      //this.refs.list.locate(e.target.value)
-
-      this.setState({ 
-        currentText: e.target.value,
-        deleting: e.key === 'Backspace' 
-      })
+    this.setState({
+      deleting: e.key === 'Backspace'
+    })
   },
 
   _onChange: function(e, text){
-    var idx  = this.findIndex(e.target.value, function(a, b){ return a === b });
+    var self = this
+      , val  = _.find(self.props.data, function(item) { 
+          return self._dataText(item).toLowerCase() === e.target.value.toLowerCase()
+        });
 
-    this.change(idx !== -1 
-      ? this.props.data[idx]
+    this.change(val
+      ? val
       : e.target.value)
 
     this.open()
@@ -152,19 +192,39 @@ module.exports = React.createClass({
 
 
   _keyPress: function(e){
-    var key = e.key
+    var self = this
+      , key = e.key
       , alt = e.altKey
+      , character = String.fromCharCode(e.keyCode)
       , isOpen = this.state.open;
-    
-    if ( key === 'ArrowDown' ) {
-      alt ? this.open() : this.next()
 
-    } else if ( key === 'ArrowUp' ) {
-      if ( isOpen && alt ) this.close()
-      else this.prev()
+    if ( key === 'End' ) 
+      self.setFocusedIndex(this._data().length - 1)
+          .setSelectedIndex(this._data().length - 1)
+    
+    else if ( key === 'Home' ) 
+      self.setFocusedIndex(0)
+          .setSelectedIndex(0)
+
+    else if ( key === 'Enter' && isOpen ) 
+      this.change(this._data()[this.state.focusedIndex])
+
+    else if ( key === 'ArrowDown' ) {
+      if ( alt ) 
+        this.open()
+      else {
+        this.moveFocusedIndex(directions.UP)
+            .moveSelectedIndex(directions.UP)
+      }
     } 
-    else 
-      this.refs.list.locate(e.target.value)
+    else if ( key === 'ArrowUp' ) {
+      if ( alt )
+        this.close()
+      else {
+        this.moveFocusedIndex(directions.DOWN)
+            .moveSelectedIndex(directions.DOWN)
+      }
+    }
   },
 
   change: function(data, idx){
@@ -206,5 +266,17 @@ module.exports = React.createClass({
 
 	_getAnchor: function(){
 		return this.refs.element.getDOMNode()
-	}
+	},
+
+  _data: function(){
+    return this.state.processedData
+  },
+
+  process: function(data, values, searchTerm){
+
+    if( this.props.filter && searchTerm)
+      data = this.filter(data, searchTerm)
+
+    return data
+  },
 })

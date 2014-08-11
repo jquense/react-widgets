@@ -1,17 +1,31 @@
 var React = require('react/addons')
+  , _ = require('lodash')
   , cx    = React.addons.classSet
+  , setter = require('../util/stateSetter')
+  , compose = require('../util/compose')
+  , directions = require('../util/constants').directions
   , SlideDown = require('../common/collapse-transition.jsx')
   , DefaultValueItem = require('./value-item.jsx')
   , Popup = require('../popup/popup.jsx')
   , List  = require('../common/list.jsx');
 
 var btn = require('../common/btn.jsx')
+  , ifShouldUpdate = compose.provided(function(props){
+      return !_.isEqual(props.value, this.props.value)
+    })
+  , ifValueChanges = compose.provided(function(data){
+      return !_.isEqual(data, this.props.value)
+    })
 
 module.exports = React.createClass({
+  
+  displayName: 'DropdownList',
 
   mixins: [ 
+    require('../mixins/TextSearchMixin'),
     require('../mixins/DataHelpersMixin'),
-    require('../mixins/TextSearchMixin')('selectedIndex')
+    require('../mixins/DataIndexStateMixin')('selectedIndex'), 
+    require('../mixins/DataIndexStateMixin')('focusedIndex')    
   ],
 
   propTypes: {
@@ -24,25 +38,28 @@ module.exports = React.createClass({
   },
 
 	getInitialState: function(){
+    var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
+
 		return {
-			selectedIndex: 0,
-			open:          false
+			open:          false,
+      selectedIndex: initialIdx,
+      focusedIndex:  initialIdx === -1 ? 0 : initialIdx
 		}
 	},
 
   getDefaultProps: function(){
     return {
       valueComponent: DefaultValueItem,
-      filter: 'startsWith',
       delay: 500
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      selectedIndex: nextProps.data.indexOf(nextProps.value)
-    })
-  },
+  componentWillReceiveProps: ifShouldUpdate(function(props){
+    var idx = this._dataIndexOf(props.data, props.value);
+    
+    this.setSelectedIndex(idx)
+    this.setFocusedIndex(idx === -1 ? 0 : idx)
+  }),
 
   componentDidMount: function(){
     this.setWidth()
@@ -90,6 +107,8 @@ module.exports = React.createClass({
               style={{ maxHeight: 200, height: 'auto' }}
               data={this.props.data} 
               value={this.props.value}
+              selectedIndex={this.state.selectedIndex}
+              focusedIndex={this.state.focusedIndex}
               textField={this.props.textField} 
               valueField={this.props.valueField}
               filter={this.props.filter}
@@ -122,27 +141,56 @@ module.exports = React.createClass({
   _keyPress: function(e){
     var key = e.key
       , alt = e.altKey
-      , isOpen = this.state.open;
+      , isOpen = this.state.open
+      , setMethod = this[isOpen ? 'setFocusedIndex' : 'setSelectedIndex'];
 
-    if ( isOpen && !alt) 
-        this.refs.list._keyDown(e)
-    
+    if ( key === 'End' ) 
+      setMethod.call(this,
+        this.props.data.length - 1)
+
+    else if ( key === 'Home' ) 
+      setMethod.call(this, 0)
+
+    else if ( key === 'Enter' && isOpen ) 
+      this.change(this._data()[this.state.focusedIndex])
+
     else if ( key === 'ArrowDown' ) {
-      if ( !isOpen )
-        alt ? this.open() : this.next()
+      if ( alt )         this.open()
+      else if ( isOpen ) this.moveFocusedIndex('UP')
+      else               this.moveSelectedIndex('UP')
 
-    } else if ( key === 'ArrowUp' ) {
-      if ( isOpen && alt ) this.close()
-      else if( !isOpen)    this.prev()
-    } else 
-      this.search(String.fromCharCode(e.keyCode))
+    } 
+    else if ( key === 'ArrowUp' ) {
+      if ( alt )         this.close()
+      else if ( isOpen ) this.moveFocusedIndex('DOWN')
+      else               this.moveSelectedIndex('DOWN')
+    }
+    else
+      this.search(
+          String.fromCharCode(e.keyCode)
+        , this._locate)
   },
 
-  change: function(data, idx){
+  change: ifValueChanges(function(data){
     var change = this.props.onChange 
-    if ( change ) change(data)  
+    if ( change ) {
+      change(data)
+      this.close()
+    }  
+  }),
+
+  _locate: function(word){
+    var key = this.state.open ? 'focusedIndex' : 'selectedIndex'
+      , idx = this.findIndex(word, this.state[key])
+      , setIndex = setter(key).bind(this);
+      
+    if ( idx !== -1)
+      setIndex(idx)
   },
 
+  _data: function(){
+    return this.props.data
+  },
 
   open: function(){
     this.setState({ open: true })
@@ -153,7 +201,6 @@ module.exports = React.createClass({
   },
 
   toggle: function(e){
-    //e.nativeEvent.stopImmediatePropagation();
     this.state.open 
       ? this.close() 
       : this.open()

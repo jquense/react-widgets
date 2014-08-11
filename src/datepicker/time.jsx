@@ -3,6 +3,7 @@ var React = require('react/addons')
   , dates = require('../util/dates')
   , List = require('../common/list.jsx')
   , mergePropsInto = require('../util/transferProps')
+  , directions = require('../util/constants').directions
   , _ = require('lodash')
 
 
@@ -16,6 +17,14 @@ var ListItem = React.createClass({
 })
 
 module.exports = React.createClass({
+
+  displayName: 'TimeList',
+  
+  mixins: [
+    require('../mixins/TextSearchMixin'),
+    require('../mixins/DataIndexStateMixin')('selectedIndex'), 
+    require('../mixins/DataIndexStateMixin')('focusedIndex') 
+  ],
 
   propTypes: {
     value:        React.PropTypes.instanceOf(Date),
@@ -32,9 +41,16 @@ module.exports = React.createClass({
     }
   },
 
+  getInitialState: function(){
+    var idx = this._selectedIndex(this._data(), this.props.value)
+
+    return { focusedIndex: idx === -1 ? 0 : idx}
+  },
+
   render: function(){
-    var times = this._times()
+    var times = this._data()
       , format = this.props.format
+      , idx = this._selectedIndex(times, this.props.value)
       , listItem = function(props, children){
         return ListItem(_.extend(props, { format: format }), children)
       }
@@ -44,7 +60,8 @@ module.exports = React.createClass({
         data={times} 
         textField='label'
         valueField='date'
-        selectedIndex={ this._selectedIndex(times, this.props.value) }
+        selectedIndex={idx}
+        focusedIndex={this.state.focusedIndex}
         onSelect={this.props.onChange}/>
     )
   },
@@ -55,7 +72,7 @@ module.exports = React.createClass({
     })
   },
 
-  _times: function(){
+  _data: function(){
       var times = []
         , start = dates.eq(this.props.value, this.props.min, 'day') ? this.props.min : dates.today
         , end   = dates.eq(this.props.value, this.props.max, 'day') ? this.props.max : dates.tomorrow;
@@ -68,9 +85,34 @@ module.exports = React.createClass({
   },
 
   _keyDown: function(e){
+    var self = this
+      , key = e.key
+      , character = String.fromCharCode(e.keyCode);
+
     e.preventDefault()
-    this.refs.list._keyDown(e)
-  },
+    
+    if ( key === 'End' ) 
+      this.setFocusedIndex(
+        this._data().length - 1)
+
+    else if ( key === 'Home' ) 
+      this.setFocusedIndex(0)
+
+    else if ( key === 'Enter' ) 
+      this.props.onChange(this._data()[this.state.focusedIndex])
+
+    else if ( key === 'ArrowDown' ) {
+      this.moveFocusedIndex(directions.UP)
+    } 
+    else if ( key === 'ArrowUp' ) {
+      this.moveFocusedIndex(directions.DOWN)
+    }
+    else
+      this.search(character, function(word){   
+        self.setFocusedIndex(
+          this.findIndex(word, self.state.focusedIndex))
+      })
+  }
 
 });
 

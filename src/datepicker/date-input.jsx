@@ -9,6 +9,8 @@ var React = require('react/addons')
 
 module.exports = React.createClass({
 
+  displayName: 'DatePickerInput',
+
   propTypes: {
     format:       React.PropTypes.string,
     parse:        React.PropTypes.func.isRequired,

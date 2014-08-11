@@ -1,7 +1,7 @@
 var React = require('react/addons')
 var DropdownList = require('../src/dropdowns/dropdown-list.jsx')
 var Select = require('../src/select/select.jsx')
-var Calendar = require('../src/datepicker/calendar.jsx')
+//var Calendar = require('../src/datepicker/calendar.jsx')
 var DatePicker = require('../src/datepicker/datepicker.jsx')
 var ComboBox = require('../src/dropdowns/combobox.jsx')
 var chance = new (require('chance'))
@@ -41,8 +41,25 @@ var App = React.createClass({
 						value={ this.state.dropdownValue} 
 						onChange={change.bind(null, 'dropdownValue')}/>
 				</section>
-
-
+				<section className="example">
+				<ComboBox 
+						data={ this.state.data } 
+						textField='name'
+						valueField='id'
+						value={ this.state.comboboxValue} 
+						onChange={change.bind(null, 'comboboxValue')}/>
+				</section>
+				<section className="example">
+					<Select 
+						data={ this.state.data } 
+						textField='name'
+						valueField='id'
+						value={ this.state.selectValues } 
+						onChange={change.bind(null, 'selectValues')}/>
+				</section>
+				<section className="example">
+					<DatePicker value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
+				</section>
 			</div>
 		)
 	},
@@ -55,26 +72,7 @@ React.renderComponent(
 	, document.body);
 
 
-				// <section className="example">
-				// 	<ComboBox 
-				// 		data={ this.state.data } 
-				// 		textField='name'
-				// 		valueField='id'
-				// 		value={ this.state.comboboxValue} 
-				// 		onChange={change.bind(null, 'comboboxValue')}/>
-				// </section>
-				// <section className="example">
-				// 	<Select 
-				// 		data={ this.state.data } 
-				// 		textField='name'
-				// 		valueField='id'
-				// 		value={ this.state.selectValues } 
-				// 		onChange={change.bind(null, 'selectValues')}/>
-				// </section>
-
-				// <section className="example">
-				// 	<DatePicker value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
-				// </section>
+				
 function generateList(){
 	var arr = new Array(100)
 

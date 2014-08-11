@@ -33,6 +33,8 @@ var RIGHT = 'right'
   };
 
 module.exports = React.createClass({
+  
+  displayName: 'Calendar',
 
   propTypes: {
     culture:      React.PropTypes.array,

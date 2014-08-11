@@ -1,18 +1,11 @@
 var React  = require('react/addons')
   , filter = require('../util/filter')
   , helper = require('../mixins/DataHelpersMixin')
+  , compose = require('../util/compose')
+  , setter = require('../util/stateSetter')
   , _      = require('lodash');
 
-module.exports = function(key){
-  function setIndex(comp, idx){
-    var state = {}  
-    state[key] = idx
-
-    if ( idx !== -1 )
-      comp.setState(state)
-  }
-
-  return {
+module.exports = {
   
     propTypes: {
       data:          React.PropTypes.array,
@@ -21,28 +14,8 @@ module.exports = function(key){
       filter:        React.PropTypes.string,
     },
 
-    next: function(){
-      var state = {}   
-        , nextIdx = this.state[key] + 1;
-
-      if ( nextIdx >= this.props.data.length )
-        nextIdx = 0;
-
-      setIndex(this, nextIdx)
-    },
-
-    prev: function(){
-      var nextIdx = this.state[key] - 1;
-
-      if ( nextIdx < 0 )
-        nextIdx = this.props.data.length - 1;
-
-      setIndex(this, nextIdx)
-    },
-
-    search: function(character){
+    search: function(character, cb){
       var self    = this
-        , matcher = filter.startsWith
         , word    = ((this._searchTerm || '') + character).toLowerCase();
         
       clearTimeout(this._timer)
@@ -51,27 +24,20 @@ module.exports = function(key){
 
       this._timer = setTimeout(function(){
             self._searchTerm = ''
-            self.locate(word);
+            cb(word);
         }, this.props.delay)    
     },
 
-    locate: function(word){
+    findIndex: function(word, current){
       var matcher = filter.startsWith
-        , index   = this.findIndex(word, matcher);
-
-      setIndex(this, index)
-    },
-
-    findIndex: function(word, matcher){
-      var self    = this;
+        , self    = this;
         
       return _.findIndex(self.props.data, function(item, i) { 
-        return i != self.state[key] 
+        return i != current
             && matcher(
                 helper._dataText.call(self, item).toLowerCase()
               , word.toLowerCase())
       });    
     }
 
-  }
 }

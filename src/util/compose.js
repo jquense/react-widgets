@@ -24,7 +24,7 @@ var compose = module.exports = {
   }),
 
   after: _.curry(function(decorate, method){
-    return function before(){
+    return function after(){
       var r = method.apply(this, arguments)
       decorate.apply(this, arguments)
       return r
@@ -32,7 +32,7 @@ var compose = module.exports = {
   }),
 
   around: _.curry(function(decorate, method){
-    return function before(){
+    return function around(){
       var args = [method].concat(_.toArray(arguments))
       
       return decorate.apply(this, args)
@@ -44,7 +44,7 @@ var compose = module.exports = {
       var args = _.rest(arguments)
 
       if(guard.apply(this, args))
-        fn.apply(this, args)
+        return fn.apply(this, args)
     })
   }
 

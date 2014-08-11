@@ -10,6 +10,8 @@ var LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
 
 module.exports = React.createClass({
 
+  displayName: 'MonthView',
+
   mixins: [
     require('../mixins/DateFocusMixin')('month', 'day')
   ],

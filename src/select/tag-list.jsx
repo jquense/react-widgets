@@ -9,7 +9,6 @@ module.exports = React.createClass({
 
   propTypes: {
     value:          React.PropTypes.array,
-    onChange:       React.PropTypes.func.isRequired,
 
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,
@@ -97,9 +96,11 @@ module.exports = React.createClass({
   prev: function(){
     var nextIdx = this.state.focused;
 
-    if ( nextIdx === 0 ) return
+
     if ( nextIdx === null )
       nextIdx = this.props.value.length
+    else if ( nextIdx <= 0 ) 
+      nextIdx = 1
 
     this.setState({ focused: nextIdx - 1 })
   }

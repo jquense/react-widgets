@@ -7,6 +7,8 @@ var React = require('react/addons')
 
 module.exports = React.createClass({
 
+  displayName: 'CalendarWeek',
+
   propTypes: {
     days:           React.PropTypes.arrayOf(React.PropTypes.instanceOf(Date)),
     selectedDate:   React.PropTypes.instanceOf(Date),

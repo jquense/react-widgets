@@ -1,8 +1,9 @@
+'use strict';
 var React = require('react/addons')
   , cx    = React.addons.classSet
   , _     =  require('lodash')
   , $     =  require('zepto')
-  //, DefaultValueItem = require('./value-item.jsx')
+  , directions = require('../util/constants').directions
   , SelectInput = require('./search-input.jsx')
   , TagList = require('./tag-list.jsx')
   , Popup = require('../popup/popup.jsx')
@@ -12,8 +13,12 @@ var btn = require('../common/btn.jsx')
 
 module.exports = React.createClass({
 
+  displayName: 'Select',
+  
   mixins: [ 
-    require('../mixins/DataHelpersMixin')
+    require('../mixins/DataHelpersMixin'),
+    require('../mixins/DataFilterMixin'),
+    require('../mixins/DataIndexStateMixin')('focusedIndex') 
   ],
 
   propTypes: {
@@ -21,25 +26,44 @@ module.exports = React.createClass({
     value:          React.PropTypes.array,
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,
+    filterType:     React.PropTypes.string,
+    valueComponent: React.PropTypes.component,
 
-    valueComponent: React.PropTypes.component
+    messages:       React.PropTypes.shape({
+      emptyList:    React.PropTypes.string,
+      emptyFilter:  React.PropTypes.string
+    })
+  },
+
+  getDefaultProps: function(){
+    return {
+      messages: {
+        emptyList:   "There are no items in this list",
+        emptyFilter: "The filter returned no results"
+      }
+    }
   },
 
   getInitialState: function(){
+    var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
+
     return {
       open:  false,
-      searchTerm: '',
-      withoutValues: this.withoutValues(this.props.data, this.props.value)
+      processedData: this.process(this.props.data, this.props.value, ''),
+      focusedIndex:  initialIdx === -1 ? 0 : initialIdx
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
+    var idx = -1
+      , items = this.process(
+          nextProps.data
+        , nextProps.value
+        , this.state.searchTerm)
 
-    if(  !_.isEqual(nextProps.value, this.props.value))
-      this.setState({
-        searchTerm: '',
-        withoutValues: this.withoutValues(nextProps.data, nextProps.value),
-      })
+    this.setState({
+      processedData: items
+    })
   },
 
   componentDidMount: function(pvProps, pvState){
@@ -47,7 +71,8 @@ module.exports = React.createClass({
   },
 
   render: function(){ 
-    var DropdownValue = this.props.valueComponent;
+    var DropdownValue = this.props.valueComponent
+      , items = this._data()
 
     return (
       <div ref="element"
@@ -62,7 +87,7 @@ module.exports = React.createClass({
         <div className='rw-select-wrapper' onClick={this._click}>
           <TagList 
             ref='tagList'
-            value={this.props.value} 
+            value={[].concat(this.props.value)} 
             textField={this.props.textField} 
             valueField={this.props.valueField}
             valueComponent={this.props.valueComponent}
@@ -78,48 +103,48 @@ module.exports = React.createClass({
           style={{ width: this.state.width}}
           getAnchor={ this._getAnchor } 
           open={this.state.open} 
-          onRequestClose={this.close}
-          onClose={closed.bind(this)}>
+          onRequestClose={this.close}>
 
           <div>
             <List ref="list"
               style={{ maxHeight: 200, height: 'auto' }}
-              data={this.state.withoutValues}
+              data={items}
               value={this.props.value}
               textField={this.props.textField} 
               valueField={this.props.valueField}
-              searchTerm={this.state.searchTerm}
-              jumpToItem={false}
-              onSelect={this._onSelect}/>
+              focusedIndex={this.state.focusedIndex}
+              onSelect={this._onSelect}
+              messages={{
+                emptyList: this.props.data.length 
+                  ? this.props.messages.emptyFilter
+                  : this.props.messages.emptyList
+              }}/>
           </div>
         </Popup>
       </div>
     )
-
-    function closed(){
-      //this.refs.element.getDOMNode().focus()
-    }
   },
 
   setWidth: function() {
     var width = $(this.getDOMNode()).width()
       , popup = $(this.refs.list.getDOMNode())
-      //, ht = popup.height() > 200 ? 200 : popup.height()
-      , changed = width !== this.state.width || ht !== this.state.height;
+      , changed = width !== this.state.width;
 
     if ( changed )
       this.setState({ width: width })
   },
 
+  _data: function(){
+    return this.state.processedData
+  },
+
   _delete: function(value){
-    //e.stopPropagation();
     this._focus(true)
     this.change(
       _.without(this.props.value, value))
   },
 
   _click: function(e){
-    //e.nativeEvent.stopImmediatePropagation();
     this._focus(true)
     !this.state.open && this.open()
   },
@@ -129,16 +154,21 @@ module.exports = React.createClass({
   },
 
   _typing: function(e){
+    var items = this.process(this.props.data, this.props.value, e.target.value);
+
     this.setState({
       searchTerm: e.target.value,
-      open: this.state.open || (this.state.open === false)
+      processedData: items,
+      open: this.state.open || (this.state.open === false),
+      focusedIndex: items.length >= this.state.focusedIndex 
+        ? 0 
+        : this.state.focusedIndex
     })
   },
 
   _onSelect: function(data){
-    var val = this.props.value.concat(data)
+    this.change(this.props.value.concat(data))
     this.close()
-    this.change(val)
     this._focus(true)
   },
 
@@ -148,12 +178,27 @@ module.exports = React.createClass({
       , searching = !!this.state.searchTerm
       , isOpen = this.state.open;
 
+    if ( key === 'ArrowDown') {
+      if ( isOpen ) this.moveFocusedIndex('UP')
+      else          this.open()
+    }
+    else if ( key === 'ArrowUp') {
+      if ( alt)          this.close()
+      else if ( isOpen ) this.moveFocusedIndex('DOWN')
+    }
+    else if ( key === 'End'){
+      if ( isOpen ) this.setFocusedIndex(this._data().length - 1)
+      else          this.refs.tagList.last()
+    }  
+    else if (  key === 'Home'){
+      if ( isOpen ) this.setFocusedIndex(0)
+      else          this.refs.tagList.first()
+    }
+    else if ( isOpen && key === 'Enter' ) 
+      this._onSelect(this._data()[this.state.focusedIndex])
 
-    if ( !isOpen && key === 'ArrowDown') 
-      this.open()
-
-    else if ( alt && key === 'ArrowUp')
-      this.close()
+    else if ( key === 'Esc')
+      isOpen ? this.close() : this.refs.tagList.clear()
 
     else if ( !searching && key === 'ArrowLeft')
       this.refs.tagList.prev()
@@ -166,18 +211,6 @@ module.exports = React.createClass({
 
     else if ( !searching && key === 'Backspace')
       this.refs.tagList.removeNext()
-
-    else if ( !isOpen && key === 'End')
-      this.refs.tagList.last() 
-
-    else if ( !isOpen && key === 'Home')
-      this.refs.tagList.first()
-
-    else if ( !isOpen && key === 'Esc')
-      this.refs.tagList.clear()
-
-    else if ( isOpen )
-      this.refs.list._keyDown(e)
     
   },
 
@@ -196,27 +229,26 @@ module.exports = React.createClass({
   },
 
   toggle: function(e){
-    //e.nativeEvent.stopImmediatePropagation();
     this.state.open 
       ? this.close() 
       : this.open()
   },
 
-  withoutValues: function(data, values){
-    return _.reject(data, function(i){
+  process: function(data, values, searchTerm){
+    var items = _.reject(data, function(i){
         return _.any(
             values
           , _.partial(this._valueMatcher, i)
           , this)
       }, this)
+
+    if( searchTerm)
+      items = this.filter(items, searchTerm)
+
+    return items
   },
 
   _getAnchor: function(){
     return this.refs.element.getDOMNode()
   }
 })
-
-
-// function isTagClick(tagList, e){
-//   return $.contains(tagList, e.target)
-// }

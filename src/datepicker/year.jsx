@@ -9,6 +9,8 @@ var React = require('react/addons')
 
 module.exports = React.createClass({
 
+  displayName: 'YearView',
+  
   mixins: [
     require('../mixins/DateFocusMixin')('year', 'month')
   ],
