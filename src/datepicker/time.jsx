@@ -69,7 +69,7 @@ module.exports = React.createClass({
 
   _keyDown: function(e){
     e.preventDefault()
-    this.refs.list._keyUp(e)
+    this.refs.list._keyDown(e)
   },
 
 });

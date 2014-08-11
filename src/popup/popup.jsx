@@ -53,8 +53,10 @@ module.exports = React.createClass({
 
       self._onClick = function(e){
         var detached = !$.contains(document, e.target)
+          , clickedPopup = $.contains(node, e.target)
+          , clickedAnchor = $.contains(self.props.getAnchor(), e.target)
 
-        if ( self.props.open && !$.contains(node, e.target) && !detached )
+        if ( self.props.open && !clickedAnchor && !clickedPopup && !detached )
           self.props.onRequestClose()
       }
 

@@ -1,6 +1,6 @@
 var _ = require('lodash')
 
-module.exports = {
+var compose = module.exports = {
   chain: function chainFunction(a,b){
     return function(){
       a && a.apply(this, arguments)
@@ -14,7 +14,40 @@ module.exports = {
       else if ( _.isFunction(a) ) a = wrap(a, b)  
       else                        _.extend(a, b)
       return a
+  },
+
+  before: _.curry(function(decorate, method){
+    return function before(){
+      decorate.apply(this, arguments)
+      return method.apply(this, arguments)
+    }
+  }),
+
+  after: _.curry(function(decorate, method){
+    return function before(){
+      var r = method.apply(this, arguments)
+      decorate.apply(this, arguments)
+      return r
+    }
+  }),
+
+  around: _.curry(function(decorate, method){
+    return function before(){
+      var args = [method].concat(_.toArray(arguments))
+      
+      return decorate.apply(this, args)
+    }
+  }),
+
+  provided: function(guard){
+    return compose.around(function(fn){
+      var args = _.rest(arguments)
+
+      if(guard.apply(this, args))
+        fn.apply(this, args)
+    })
   }
+
 }
 
 function wrap(one, two) {

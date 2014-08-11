@@ -51,7 +51,7 @@ module.exports = React.createClass({
 
     return (
       <div ref="element"
-           onKeyUp={this._keyUp}
+           onKeyDown={this._keyDown}
            tabIndex="-1"
            className={cx({
               'rw-select-list':  true,
@@ -119,7 +119,7 @@ module.exports = React.createClass({
   },
 
   _click: function(e){
-    e.nativeEvent.stopImmediatePropagation();
+    //e.nativeEvent.stopImmediatePropagation();
     this._focus(true)
     !this.state.open && this.open()
   },
@@ -139,41 +139,46 @@ module.exports = React.createClass({
     var val = this.props.value.concat(data)
     this.close()
     this.change(val)
+    this._focus(true)
   },
 
-  _keyUp: function(e){
+  _keyDown: function(e){
     var key = e.key
       , alt = e.altKey
+      , searching = !!this.state.searchTerm
       , isOpen = this.state.open;
 
-    if ( alt ) {
 
-      if ( key === 'ArrowDown') 
-        this.open()
-      else if ( key === 'ArrowUp')
-        this.close()
+    if ( !isOpen && key === 'ArrowDown') 
+      this.open()
 
-    } else {
+    else if ( alt && key === 'ArrowUp')
+      this.close()
 
-      if ( key === 'ArrowLeft')
-        this.refs.tagList.prev()
+    else if ( !searching && key === 'ArrowLeft')
+      this.refs.tagList.prev()
 
-      else if ( key === 'ArrowRight')
-        this.refs.tagList.next() 
+    else if ( !searching && key === 'ArrowRight')
+      this.refs.tagList.next() 
 
-      else if ( key === 'End')
-        this.refs.tagList.last() 
+    else if ( !searching && key === 'Delete')
+      this.refs.tagList.removeCurrent()
 
-      else if ( key === 'Home')
-        this.refs.tagList.first()
+    else if ( !searching && key === 'Backspace')
+      this.refs.tagList.removeNext()
 
-      else if ( key === 'Esc')
-        this.refs.tagList.clear()
+    else if ( !isOpen && key === 'End')
+      this.refs.tagList.last() 
 
-      if ( isOpen )
-        this.refs.list._keyUp(e)
-    } 
+    else if ( !isOpen && key === 'Home')
+      this.refs.tagList.first()
 
+    else if ( !isOpen && key === 'Esc')
+      this.refs.tagList.clear()
+
+    else if ( isOpen )
+      this.refs.list._keyDown(e)
+    
   },
 
   change: function(data){
@@ -191,7 +196,7 @@ module.exports = React.createClass({
   },
 
   toggle: function(e){
-    e.nativeEvent.stopImmediatePropagation();
+    //e.nativeEvent.stopImmediatePropagation();
     this.state.open 
       ? this.close() 
       : this.open()

@@ -40,9 +40,9 @@ module.exports = function(key){
       setIndex(this, nextIdx)
     },
 
-    search: function(character, currentIdx, cb){
+    search: function(character){
       var self    = this
-        , matches = filter.startsWith
+        , matcher = filter.startsWith
         , word    = ((this._searchTerm || '') + character).toLowerCase();
         
       clearTimeout(this._timer)
@@ -50,19 +50,28 @@ module.exports = function(key){
       this._searchTerm = word 
 
       this._timer = setTimeout(function(){
-            var state = {}              
-              , index = _.findIndex(self.props.data, function(item, i) { 
-                  return i != self.state[key] 
-                      && matches(
-                          helper._dataText.call(self, item).toLowerCase()
-                        , word.toLowerCase())
-                });
-
             self._searchTerm = ''
-
-            setIndex(self, index)
-              
+            self.locate(word);
         }, this.props.delay)    
+    },
+
+    locate: function(word){
+      var matcher = filter.startsWith
+        , index   = this.findIndex(word, matcher);
+
+      setIndex(this, index)
+    },
+
+    findIndex: function(word, matcher){
+      var self    = this;
+        
+      return _.findIndex(self.props.data, function(item, i) { 
+        return i != self.state[key] 
+            && matcher(
+                helper._dataText.call(self, item).toLowerCase()
+              , word.toLowerCase())
+      });    
     }
+
   }
 }

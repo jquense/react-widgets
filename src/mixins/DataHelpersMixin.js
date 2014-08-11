@@ -12,7 +12,8 @@ module.exports = {
   _dataValue: function(item){
     var field = this.props.valueField
 
-    return field && item 
+
+    return field && item && _.has(item, field)
       ? item[field]
       : item
   },
@@ -20,7 +21,7 @@ module.exports = {
   _dataText: function(item){
     var field = this.props.textField
 
-    return field && item 
+    return field && item && _.has(item, field)
       ? item[field]
       : item
   },

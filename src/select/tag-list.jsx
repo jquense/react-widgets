@@ -54,14 +54,20 @@ module.exports = React.createClass({
   },
 
   _delete: function(val, e){
-    e.stopPropagation();
+    //e.stopPropagation();
     this.props.onDelete(val)
   },
 
   removeCurrent: function(){
-    var nextIdx = this.state.focused + 1;
+    var val = this.props.value[this.state.focused];
 
-    if ( val ) this.props.onDelete(e, val)
+    if ( val ) this.props.onDelete(val)
+  },
+
+  removeNext: function(){
+    var val = _.last(this.props.value);
+
+    if ( val ) this.props.onDelete(val)
   },
 
   clear: function(){

@@ -57,9 +57,7 @@ module.exports = React.createClass({
   render: function(){
     var self = this
       , key = (new Date()).getTime()
-      , popupStyle = { 
-          width:  this.state.timeWidth, 
-          height: this.state.timeHeight }
+      , popupStyle = { width:  this.state.timeWidth }
       
     return (
       <div ref="element"
@@ -100,12 +98,14 @@ module.exports = React.createClass({
           open={this.state.open && this.state.openPopup === 'time'} 
           onClose={closed.bind(this)} 
           onRequestClose={this.close}>
-
-            <Time ref="timePopup" 
-              value={this.props.value} 
-              min={this.props.min} 
-              max={this.props.max} 
-              onChange={this._selectTime}/>
+            <div>
+              <Time ref="timePopup" 
+                style={{ maxHeight: 200, height: 'auto' }}
+                value={this.props.value} 
+                min={this.props.min} 
+                max={this.props.max} 
+                onChange={this._selectTime}/>
+            </div>
         </Popup>
         }
         { this.props.calendar &&
@@ -135,13 +135,11 @@ module.exports = React.createClass({
     if( !this.refs.timePopup) return
 
     var el = $(this.refs.timePopup.getDOMNode())
-      , ht = el.height() > 200 ? 200 : el.height()
       , width = $(this.getDOMNode()).width()
-      , changed = width !== this.state.timeWidth || ht !== this.state.timeHeight;
+      , changed = width !== this.state.timeWidth;
 
     if ( changed ){
       this.setState({
-        timeHeight: ht,
         timeWidth:  width
       })
     }
@@ -205,7 +203,7 @@ module.exports = React.createClass({
   },
 
   toggle: function(view, e){
-    e && e.nativeEvent.stopImmediatePropagation();
+    //e && e.nativeEvent.stopImmediatePropagation();
 
     this.state.open 
       ? this.state.view !== view 

@@ -53,7 +53,7 @@ module.exports = React.createClass({
   getDefaultState: function(props, refilter){
     var items = this.filter(props.data, props.searchTerm)
       , idx   = this._dataIndexOf(items, props.value)
-    console.log('state: ', idx, (this.state || {}).focused)
+    //console.log('state: ', idx, (this.state || {}).focused)
     return {
       filteredItems: items,
       selectedIndex: idx,
@@ -94,7 +94,7 @@ module.exports = React.createClass({
       , emptyList   = <li>{ this.props.messages.emptyList }</li>
       , emptyFilter = <li>{ this.props.messages.emptyFilter }</li>
       , items = _.map(this.state.filteredItems, (item, idx) => {
-        console.log('render: ', idx, this.state.focused)
+       
         return (
           <ListItem 
             item={item}
@@ -105,14 +105,12 @@ module.exports = React.createClass({
               'rw-state-focus':    idx === this.state.focused,
               'rw-state-selected': idx === this.state.selectedIndex,
             })}
-            onClick={_.partial(this.props.onSelect, item, idx)}
-            onMouseEnter={_.partial(this._onHover, idx)}
-            onMouseLeave={_.partial(this._onHover, null)} />
+            onClick={_.partial(this.props.onSelect, item, idx)}/>
         )
       });
     
 		return mergePropsInto(_.omit(this.props, 'data', 'selectedIndex'),
-			<ul className="rw-list" tabIndex="-1" onKeyUp={this._keyUp} onKeyPress={this.search}>
+			<ul className="rw-list" tabIndex="-1" onKeyDown={this._keyDown} onKeyPress={this.search}>
         { !this.props.data.length 
           ? emptyList 
           : !this.state.filteredItems.length
@@ -122,8 +120,9 @@ module.exports = React.createClass({
 		)
 	},
 
-  _keyUp: function(e){
-    var key = e.key;
+  _keyDown: function(e){
+    var key = e.key
+      , selected;
 
     if ( key === 'ArrowDown' ) 
       this.next()
@@ -132,15 +131,18 @@ module.exports = React.createClass({
       this.prev()
 
     else if ( key === 'Home' )
-      this.setState({ focused: 0 })
+      this.focus(0)
 
     else if ( key === 'End' )
-      this.setState({ focused: this.state.filteredItems.length - 1 })
+      this.focus(this.state.filteredItems.length - 1)
 
-    else if ( key === 'Enter')
-      this.props.onSelect(
-          this.state.filteredItems[this.state.focused]
-        , this.state.focused)
+    else if ( key === 'Enter') {
+      selected = this.state.filteredItems[this.state.focused]
+
+      if ( selected)
+        this.props.onSelect(
+            selected, this.state.focused)
+    }
     else if ( this.props.jumpToItem )
       this.search(String.fromCharCode(e.keyCode))
   },
@@ -166,13 +168,6 @@ module.exports = React.createClass({
           : scrollTop
   },
 
-  _onHover: function(idx, e){
-    this.setState({ hovering: idx })
-  },
-
-	_getAnchor: function(){
-		return this.refs.input.getDOMNode()
-	},
 
   filter: function(items, searchTerm){
     var matches = filter[this.props.filterType];
