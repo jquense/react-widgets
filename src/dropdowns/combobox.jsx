@@ -196,7 +196,10 @@ module.exports = React.createClass({
       , key = e.key
       , alt = e.altKey
       , character = String.fromCharCode(e.keyCode)
-      , isOpen = this.state.open;
+      , selectedIdx = this.state.selectedIndex
+      , focusedIdx  = this.state.focusedIndex
+      , isOpen = this.state.open
+      , noselection = !selectedIdx || selectedIdx === -1 ;
 
     if ( key === 'End' ) 
       self.setFocusedIndex(this._data().length - 1)
@@ -207,23 +210,31 @@ module.exports = React.createClass({
           .setSelectedIndex(0)
 
     else if ( key === 'Enter' && isOpen ) 
-      this.change(this._data()[this.state.focusedIndex])
+      setFocused()
 
     else if ( key === 'ArrowDown' ) {
       if ( alt ) 
         this.open()
       else {
-        this.moveFocusedIndex(directions.UP)
-            .moveSelectedIndex(directions.UP)
+        if( noselection) setFocused()
+        else
+          this.moveFocusedIndex(directions.UP)
+              .moveSelectedIndex(directions.UP)
       }
     } 
     else if ( key === 'ArrowUp' ) {
       if ( alt )
         this.close()
       else {
-        this.moveFocusedIndex(directions.DOWN)
-            .moveSelectedIndex(directions.DOWN)
+        if( noselection) setFocused()
+        else
+          this.moveFocusedIndex(directions.DOWN)
+              .moveSelectedIndex(directions.DOWN)
       }
+    }
+
+    function setFocused(){
+      self.change(self._data()[focusedIdx])
     }
   },
 

@@ -31,7 +31,19 @@ module.exports = function(stateKey) {
 
   mixin['set' + methodName] = fluent(setIndex)
 
-  mixin['move' + methodName] = fluent(function(direction){
+  mixin['prev' + methodName] = function(direction){
+    var data = this._data()
+      , nextIdx = this.state && this.state[stateKey] || 0;
+
+    nextIdx -= 1
+
+    if ( nextIdx < 0 )
+      nextIdx = data.length - 1;
+    
+    return nextIdx;
+  }
+
+  mixin['next' + methodName] = function(direction){
     var data = this._data()
       , nextIdx = this.state && this.state[stateKey] || 0;
 
@@ -48,7 +60,7 @@ module.exports = function(stateKey) {
     }
 
     setIndex.call(this, nextIdx);
-  })
+  }
 
   return mixin;
 }
