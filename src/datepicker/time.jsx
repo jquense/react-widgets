@@ -102,10 +102,12 @@ module.exports = React.createClass({
       this.props.onChange(this._data()[this.state.focusedIndex])
 
     else if ( key === 'ArrowDown' ) {
-      this.moveFocusedIndex(directions.UP)
+      this.setFocusedIndex(
+        this.nextFocusedIndex())
     } 
     else if ( key === 'ArrowUp' ) {
-      this.moveFocusedIndex(directions.DOWN)
+      this.setFocusedIndex(
+        this.prevFocusedIndex())
     }
     else
       this.search(character, function(word){   

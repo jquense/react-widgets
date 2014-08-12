@@ -63,6 +63,8 @@ module.exports = React.createClass({
       <div ref="element"
            tabIndex="-1"
            onKeyDown={this._keyDown}
+           onFocus={this._focus.bind(null, true)} 
+           onBlur ={this._focus.bind(null, false)}
            className={cx({
               'rw-date-picker': true,
               'rw-widget':      true,
@@ -74,9 +76,7 @@ module.exports = React.createClass({
           value={this.props.value} 
           focused={this.state.focused} 
           format={this.props.format} 
-          parse={this._parse} 
-          onFocus={this._focus.bind(null, true)} 
-          onBlur ={this._focus.bind(null, false)}
+          parse={this._parse}  
           onChange={this.props.onChange} />
 
         <span className='rw-select'>

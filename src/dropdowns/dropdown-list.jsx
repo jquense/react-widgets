@@ -65,11 +65,6 @@ module.exports = React.createClass({
     this.setWidth()
   },
 
-  componentDidUpdate: function(pvProps, pvState){
-    if ( pvState.selectedIndex !== this.state.selectedIndex)
-      this.change(this.props.data[this.state.selectedIndex])
-  },
-
 	render: function(){ 
 		var DropdownValue = this.props.valueComponent;
 
@@ -77,10 +72,13 @@ module.exports = React.createClass({
 			<div ref="element"
            onKeyUp={this._keyPress}
            onClick={this.toggle}
+           onFocus={this._focus.bind(null, true)} 
+           onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
               'rw-dropdownlist': true,
               'rw-widget':       true,
+              'rw-state-focus':  this.state.focused,
               'rw-open':         this.state.open
             })}>
 
@@ -99,8 +97,7 @@ module.exports = React.createClass({
           style={{ width: this.state.width }}
           getAnchor={ this._getAnchor } 
           open={this.state.open} 
-          onRequestClose={this.close} 
-          onClose={closed.bind(this)}>
+          onRequestClose={this.close}>
           
           <div>
             <List ref="list"
@@ -117,10 +114,6 @@ module.exports = React.createClass({
         </Popup>
 			</div>
 		)
-
-    function closed(){
-      this.refs.element.getDOMNode().focus()
-    }
 	},
 
   setWidth: function() {
@@ -133,42 +126,51 @@ module.exports = React.createClass({
       this.setState({ width: width, height: ht })   
   },
 
+  _focus: function(focused){
+    this.setState({ focused: focused })
+  },
+
   _onSelect: function(data, idx, elem){
     this.close()
     this.change(data)
   },
 
   _keyPress: function(e){
-    var key = e.key
+    var self = this
+      , key = e.key
       , alt = e.altKey
-      , isOpen = this.state.open
-      , setMethod = this[isOpen ? 'setFocusedIndex' : 'setSelectedIndex'];
+      , isOpen = this.state.open;
 
     if ( key === 'End' ) 
-      setMethod.call(this,
-        this.props.data.length - 1)
+      if ( isOpen) this.setFocusedIndex(this._data().length - 1)
+      else change(this._data().length - 1)
 
     else if ( key === 'Home' ) 
-      setMethod.call(this, 0)
+      if ( isOpen) this.setFocusedIndex(0)
+      else change(0)
 
     else if ( key === 'Enter' && isOpen ) 
-      this.change(this._data()[this.state.focusedIndex])
+      change(this.state.focusedIndex)
 
     else if ( key === 'ArrowDown' ) {
       if ( alt )         this.open()
-      else if ( isOpen ) this.moveFocusedIndex('UP')
-      else               this.moveSelectedIndex('UP')
+      else if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
+      else               change(this.nextSelectedIndex())
 
     } 
     else if ( key === 'ArrowUp' ) {
       if ( alt )         this.close()
-      else if ( isOpen ) this.moveFocusedIndex('DOWN')
-      else               this.moveSelectedIndex('DOWN')
+      else if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
+      else               change(this.prevSelectedIndex())
     }
     else
       this.search(
           String.fromCharCode(e.keyCode)
         , this._locate)
+
+    function change(idx){
+      self.change(self._data()[idx])
+    }
   },
 
   change: ifValueChanges(function(data){

@@ -77,6 +77,8 @@ module.exports = React.createClass({
     return (
       <div ref="element"
            onKeyDown={this._keyDown}
+           onFocus={this._focus.bind(null, true)} 
+           onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
               'rw-select-list':  true,
@@ -95,8 +97,6 @@ module.exports = React.createClass({
           <SelectInput 
             value={this.state.searchTerm} 
             focused={this.state.focused} 
-            onFocus={this._focus.bind(null, true)} 
-            onBlur ={this._focus.bind(null, false)}
             onChange={this._typing}/>
         </div>
         <Popup 
@@ -179,12 +179,13 @@ module.exports = React.createClass({
       , isOpen = this.state.open;
 
     if ( key === 'ArrowDown') {
-      if ( isOpen ) this.moveFocusedIndex('UP')
+      if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
       else          this.open()
     }
     else if ( key === 'ArrowUp') {
       if ( alt)          this.close()
-      else if ( isOpen ) this.moveFocusedIndex('DOWN')
+      else if ( isOpen ) this.setFocusedIndex(
+        this.prevFocusedIndex())
     }
     else if ( key === 'End'){
       if ( isOpen ) this.setFocusedIndex(this._data().length - 1)

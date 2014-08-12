@@ -64,8 +64,6 @@ module.exports = React.createClass({
   _blur: function(){
     var val = this.state.textValue
 
-    this.props.onBlur(this.props.parse(val), val);
-
     if ( val === this.state.lastValue) return
 
     this.props.onChange(this.props.parse(val), val);

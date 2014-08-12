@@ -31,7 +31,7 @@ module.exports = function(stateKey) {
 
   mixin['set' + methodName] = fluent(setIndex)
 
-  mixin['prev' + methodName] = function(direction){
+  mixin['prev' + methodName] = function(){
     var data = this._data()
       , nextIdx = this.state && this.state[stateKey] || 0;
 
@@ -43,23 +43,16 @@ module.exports = function(stateKey) {
     return nextIdx;
   }
 
-  mixin['next' + methodName] = function(direction){
+  mixin['next' + methodName] = function(){
     var data = this._data()
       , nextIdx = this.state && this.state[stateKey] || 0;
 
-    if ( direction === directions.UP){
-      nextIdx += 1
+    nextIdx += 1
 
-      if ( nextIdx >= data.length )
-        nextIdx = 0;
+    if ( nextIdx >= data.length )
+      nextIdx = 0;
 
-    } else if ( directions.DOWN === direction){
-      nextIdx -= 1
-      if ( nextIdx < 0 )
-        nextIdx = data.length - 1;
-    }
-
-    setIndex.call(this, nextIdx);
+    return nextIdx;
   }
 
   return mixin;

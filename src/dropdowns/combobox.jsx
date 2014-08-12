@@ -1,6 +1,7 @@
 var React  = require('react/addons')
   , cx     = React.addons.classSet
   , _      = require('lodash')
+  , caretPos = require('../util/caret')
   , filter = require('../util/filter')
   , directions = require('../util/constants').directions
   , Input  = require('./combo-input.jsx')
@@ -82,30 +83,38 @@ module.exports = React.createClass({
       focusedIndex:   idx === -1 
         ? this.findIndex(this._dataText(this.props.value)) 
         : idx,
-      //suggestion:     this.suggest(nextProps),
-      processedData:  items,
-      currentText:    this._dataText(nextProps.value)
+     // suggestion:     this.suggest(nextProps),
+      processedData:  items
     })
   },
 
-  componentDidMount: function(){
+  componentWillUpdate: function(nextProps, nextState){
+    var input = this.refs.input.getDOMNode();
+    this._lastSelection = caretPos(input)
+  },
+
+  componentDidUpdate: function(prevProps, prevState){
+    var input = this.refs.input.getDOMNode()
+      //, suggestion = this.suggest(this.props)
+      , val = this._dataText(this.props.value);
+
+    this.state.focused && input.focus()
+
+    if ( this.state.start != null)
+      caretPos(input, this.state.start, this.state.end)
+
     this.setWidth()
   },
 
-  // componentDidUpdate: function(pvProps, pvState){
-  //   if ( this.state.selectedIndex !== -1 && pvState.selectedIndex !== this.state.selectedIndex)
-  //     this.change(this.props.data[this.state.selectedIndex])
-  // },
-
 	render: function(){ 
 		var DropdownValue = this.props.valueComponent
-      , items = this._data()
-      , text  = this.state.currentText;
+      , items = this._data();
 
-    console.log(text)
 		return (
 			<div ref="element"
            onKeyUp={this._keyPress}
+           onFocus={this._focus.bind(null, true)} 
+           onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
               'rw-combobox': true,
@@ -118,11 +127,12 @@ module.exports = React.createClass({
           <i className="rw-i rw-i-caret-down"><span className="rw-sr">{ this.props.messages.open }</span></i>
         </btn>
         <input
+          ref='input'
           type='text'
           className='rw-input'
-          value={text}
+          value={this._dataText(this.props.value)}
           onChange={this._onChange}
-          onKeyUp={this._typing}/>
+          onKeyDown={this._typing}/>
 
         <Popup 
           style={{ width: this.state.width }}
@@ -168,19 +178,43 @@ module.exports = React.createClass({
   },
 
   _typing: function(e){
-    this.setState({
-      deleting: e.key === 'Backspace'
-    })
+    var val = e.target.value
+
+    this._last = val
+    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
   },
 
   _onChange: function(e, text){
     var self = this
-      , val  = _.find(self.props.data, function(item) { 
-          return self._dataText(item).toLowerCase() === e.target.value.toLowerCase()
-        });
+      , last = this._last
+      , val  = e.target.value
+      , suggestion = this._deleting 
+          ? e.target.value
+          : this.suggest(this._data(), e.target.value) || e.target.value
+      , data;
 
-    this.change(val
-      ? val
+    data = _.find(self.props.data, function(item) { 
+      return self._dataText(item).toLowerCase() === suggestion.toLowerCase()
+    })
+
+    if ( this._deleting ){
+      this.setState({ start: null, end: null })
+
+    }
+    else if ( suggestion && val !== suggestion){
+      var start = suggestion.indexOf(val) + val.length
+        , end   = suggestion.length - start
+
+      if ( start >= 0){
+        this.setState({
+          start: start,
+          end: start + end
+        })
+      }
+    }
+
+    this.change(data
+      ? data
       : e.target.value)
 
     this.open()
@@ -190,7 +224,6 @@ module.exports = React.createClass({
     this.setState({ focused: focused })
   },
 
-
   _keyPress: function(e){
     var self = this
       , key = e.key
@@ -199,48 +232,48 @@ module.exports = React.createClass({
       , selectedIdx = this.state.selectedIndex
       , focusedIdx  = this.state.focusedIndex
       , isOpen = this.state.open
-      , noselection = !selectedIdx || selectedIdx === -1 ;
+      , noselection = selectedIdx == null || selectedIdx === -1 ;
 
     if ( key === 'End' ) 
-      self.setFocusedIndex(this._data().length - 1)
-          .setSelectedIndex(this._data().length - 1)
+      select(this._data().length - 1)
     
     else if ( key === 'Home' ) 
-      self.setFocusedIndex(0)
-          .setSelectedIndex(0)
+      select(0)
 
-    else if ( key === 'Enter' && isOpen ) 
-      setFocused()
+    else if ( key === 'Enter' && isOpen ) {
+      select(focusedIdx)
+      this.close()
+    }
 
     else if ( key === 'ArrowDown' ) {
       if ( alt ) 
         this.open()
       else {
-        if( noselection) setFocused()
-        else
-          this.moveFocusedIndex(directions.UP)
-              .moveSelectedIndex(directions.UP)
+        if( noselection) select(focusedIdx)
+        else select(this.nextSelectedIndex())
       }
     } 
     else if ( key === 'ArrowUp' ) {
       if ( alt )
         this.close()
       else {
-        if( noselection) setFocused()
-        else
-          this.moveFocusedIndex(directions.DOWN)
-              .moveSelectedIndex(directions.DOWN)
+        if( noselection) select(focusedIdx)
+        else select(this.prevSelectedIndex())
       }
     }
 
-    function setFocused(){
-      self.change(self._data()[focusedIdx])
+    function select(idx) {
+      self.setState({ start: null, end: null })
+      self.change(self._data()[idx])
     }
   },
 
   change: function(data, idx){
     var change = this.props.onChange 
-    if ( change ) change(data)  
+
+    if ( change ) {
+      change(data)  
+    }
   },
 
 
@@ -255,24 +288,30 @@ module.exports = React.createClass({
   },
 
   toggle: function(e){
+    this._focus(true)
+
     this.state.open 
       ? this.close() 
       : this.open()
   },
 
-  suggest: function(props){
-    var word = this._dataText(props.value)
-      , matcher = filter[props.filter]
-      , suggestion = _.findIndex(props.data, function(item){
-          return matcher(
-                this._dataText(item).toLowerCase()
-              , word.toLowerCase())
-        }, this)
-
+  suggest: function(data, value){
+    var word = this._dataText(value)
+      , matcher = filter.startsWith
+      , suggestion = typeof value === 'string'
+          ? _.find(data, finder, this)
+          : value
+ 
     if ( suggestion && (!this.state || !this.state.deleting)) 
       return this._dataText(suggestion)
 
     return ''
+
+    function finder(item){
+      return matcher(
+          this._dataText(item).toLowerCase()
+        , word.toLowerCase())
+    }
   },
 
 	_getAnchor: function(){
