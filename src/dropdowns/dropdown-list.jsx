@@ -3,6 +3,7 @@ var React = require('react/addons')
   , cx    = React.addons.classSet
   , setter = require('../util/stateSetter')
   , compose = require('../util/compose')
+  , mergePropsInto = require('../util/transferProps')
   , directions = require('../util/constants').directions
   , SlideDown = require('../common/collapse-transition.jsx')
   , DefaultValueItem = require('./value-item.jsx')
@@ -15,7 +16,19 @@ var btn = require('../common/btn.jsx')
     })
   , ifValueChanges = compose.provided(function(data){
       return !_.isEqual(data, this.props.value)
-    })
+    });
+
+var propTypes = {
+  //main input interface
+  value:          React.PropTypes.any,
+  onChange:       React.PropTypes.func,
+
+  data:           React.PropTypes.array,
+  valueField:     React.PropTypes.string,
+  textField:      React.PropTypes.string,
+  valueComponent: React.PropTypes.component,
+  delay:          React.PropTypes.number
+};
 
 module.exports = React.createClass({
   
@@ -28,14 +41,7 @@ module.exports = React.createClass({
     require('../mixins/DataIndexStateMixin')('focusedIndex')    
   ],
 
-  propTypes: {
-    data:           React.PropTypes.array,
-    valueField:     React.PropTypes.string,
-    textField:      React.PropTypes.string,
-    valueComponent: React.PropTypes.component,
-    delay:          React.PropTypes.number,
-    filter:         React.PropTypes.string,
-  },
+  propTypes: propTypes,
 
 	getInitialState: function(){
     var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
@@ -66,14 +72,19 @@ module.exports = React.createClass({
   },
 
 	render: function(){ 
-		var DropdownValue = this.props.valueComponent;
+		var keys = _.keys(propTypes)
+      , DropdownValue = this.props.valueComponent
+      , optID = this.props.id && this.props.id + '_option' || '';
 
-		return (
+		return mergePropsInto(
+      _.omit(this.props, keys),
 			<div ref="element"
            onKeyUp={this._keyPress}
            onClick={this.toggle}
            onFocus={this._focus.bind(null, true)} 
            onBlur ={this._focus.bind(null, false)}
+           aria-expanded={ this.state.open }
+           aria-activedescendent={ optID }
            tabIndex="-1"
            className={cx({
               'rw-dropdown-list': true,
@@ -101,6 +112,8 @@ module.exports = React.createClass({
           
           <div>
             <List ref="list"
+              optID={optID}
+              aria-hidden={ !this.state.open }
               style={{ maxHeight: 200, height: 'auto' }}
               data={this.props.data} 
               value={this.props.value}
@@ -108,7 +121,6 @@ module.exports = React.createClass({
               focusedIndex={this.state.focusedIndex}
               textField={this.props.textField} 
               valueField={this.props.valueField}
-              filter={this.props.filter}
               onSelect={this._onSelect}/>
           </div>
         </Popup>
@@ -127,8 +139,15 @@ module.exports = React.createClass({
   },
 
   _focus: function(focused){
-    this.setState({ focused: focused })
-    if(!focused) this.close()
+    var self = this;
+
+    clearTimeout(self.timer)
+    self.timer = setTimeout(function(){
+      if( focused !== self.state.focused) {
+        self.setState({ focused: focused })
+        if(!focused) self.close()
+      }
+    }, 0)
   },
 
   _onSelect: function(data, idx, elem){
@@ -208,7 +227,6 @@ module.exports = React.createClass({
       ? this.close() 
       : this.open()
   },
-
 
 	_getAnchor: function(){
 		return this.refs.element.getDOMNode()

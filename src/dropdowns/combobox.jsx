@@ -3,12 +3,30 @@ var React  = require('react/addons')
   , _      = require('lodash')
   , caretPos = require('../util/caret')
   , filter = require('../util/filter')
+  , mergePropsInto = require('../util/transferProps')
   , directions = require('../util/constants').directions
   , Input  = require('./combo-input.jsx')
   , Popup  = require('../popup/popup.jsx')
   , List   = require('../common/list.jsx');
 
 var btn = require('../common/btn.jsx')
+  , propTypes = {
+      value:          React.PropTypes.any,
+      onChange:       React.PropTypes.func,
+
+      data:           React.PropTypes.array,
+      valueField:     React.PropTypes.string,
+      textField:      React.PropTypes.string,
+      delay:          React.PropTypes.number,
+
+      suggest:        React.PropTypes.bool,
+
+      messages:       React.PropTypes.shape({
+        open:         React.PropTypes.string,
+        emptyList:    React.PropTypes.string,
+        emptyFilter:  React.PropTypes.string
+      })
+    };
 
 module.exports = React.createClass({
 
@@ -17,49 +35,32 @@ module.exports = React.createClass({
   mixins: [ 
     require('../mixins/DataHelpersMixin'),
     require('../mixins/TextSearchMixin'),
-
+    require('../mixins/DataFilterMixin'),
     require('../mixins/DataIndexStateMixin')('selectedIndex'), 
     require('../mixins/DataIndexStateMixin')('focusedIndex')    
   ],
 
-  propTypes: {
-    data:           React.PropTypes.array,
-    valueField:     React.PropTypes.string,
-    textField:      React.PropTypes.string,
-    delay:          React.PropTypes.number,
-    filter:         React.PropTypes.oneOfType([
-                      React.PropTypes.string,
-                      React.PropTypes.oneOf([false])
-                    ]),
-
-    messages:       React.PropTypes.shape({
-      open:         React.PropTypes.string,
-      emptyList:    React.PropTypes.string,
-      emptyFilter:  React.PropTypes.string
-    })
-  },
+  propTypes: propTypes,
 
 	getInitialState: function(){
     var items = this.process(
           this.props.data
         , this.props.value)
-
       , idx = this._dataIndexOf(items, this.props.value);
 
 		return {
 			selectedIndex: idx,
       focusedIndex:  idx === -1 ? 0 : idx,
-      currentText:   this._dataText(this.props.value),
       processedData: items,
-      //suggestion:    this.suggest(this.props),
-      deleting:      false,
 			open:          false
 		}
 	},
 
   getDefaultProps: function(){
     return {
-      filter: false,
+      suggest: false,
+      filter: 'startsWith',
+      //filter: false,
       delay: 500,
 
       messages: {
@@ -71,50 +72,49 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var items = this.process(
+    var inData = this._dataIndexOf(nextProps.data, nextProps.value) !== - 1
+      , items = this.process(
           nextProps.data
         , nextProps.value
-        , this._dataText(this.props.value))
+        , !inData && this._dataText(nextProps.value) ) // this._dataText(nextProps.value)
 
       , idx = this._dataIndexOf(items, nextProps.value);
 
+    this._searchTerm = '';
+
     this.setState({
+      processedData:  items,
       selectedIndex:  idx,
       focusedIndex:   idx === -1 
         ? this.findIndex(this._dataText(this.props.value)) 
-        : idx,
-     // suggestion:     this.suggest(nextProps),
-      processedData:  items
+        : idx
     })
-  },
-
-  componentWillUpdate: function(nextProps, nextState){
-    var input = this.refs.input.getDOMNode();
-    this._lastSelection = caretPos(input)
   },
 
   componentDidUpdate: function(prevProps, prevState){
     var input = this.refs.input.getDOMNode()
-      //, suggestion = this.suggest(this.props)
       , val = this._dataText(this.props.value);
 
     this.state.focused && input.focus()
-
-    if ( this.state.start != null)
-      caretPos(input, this.state.start, this.state.end)
-
     this.setWidth()
   },
 
 	render: function(){ 
 		var DropdownValue = this.props.valueComponent
-      , items = this._data();
+      , items = this._data()
+      , listID = this.props.id && this.props.id + '_listbox'
+      , optID  = this.props.id && this.props.id + '_option'
+      , completeType = this.props.suggest 
+          ? this.props.filter ? 'both' : 'inline'
+          : this.props.filter ? 'list' : '';
 
 		return (
 			<div ref="element"
+           aria-expanded={ this.state.open }
            onKeyUp={this._keyPress}
            onFocus={this._focus.bind(null, true)} 
            onBlur ={this._focus.bind(null, false)}
+
            tabIndex="-1"
            className={cx({
               'rw-combobox': true,
@@ -126,13 +126,16 @@ module.exports = React.createClass({
         <btn className='rw-select' onClick={this.toggle}>
           <i className="rw-i rw-i-caret-down"><span className="rw-sr">{ this.props.messages.open }</span></i>
         </btn>
-        <input
+        <Input
           ref='input'
           type='text'
+          role='combobox'
+          suggest={this.props.suggest}
+          aria-autocomplete={completeType}
           className='rw-input'
           value={this._dataText(this.props.value)}
-          onChange={this._onChange}
-          onKeyDown={this._typing}/>
+          onChange={this._inputTyping}
+          onKeyDown={this._inputKeyDown}/>
 
         <Popup 
           style={{ width: this.state.width }}
@@ -142,6 +145,10 @@ module.exports = React.createClass({
           
           <div>
             <List ref="list"
+              id={listID}
+              optID={optID}
+              aria-hidden={ !this.state.open }
+              aria-live={ completeType && 'polite' }
               style={{ maxHeight: 200, height: 'auto' }}
               data={items} 
               value={this.props.value}
@@ -174,56 +181,46 @@ module.exports = React.createClass({
   _onSelect: function(data, idx, elem){
     this.close()
     this.change(data)
-    this._focus();
+    this._focus(true);
   },
 
-  _typing: function(e){
-    var val = e.target.value
-
-    this._last = val
+  _inputKeyDown: function(e){
     this._deleting = e.key === 'Backspace' || e.key === 'Delete'
+    this._isTyping = true
   },
 
-  _onChange: function(e, text){
+  _inputTyping: function(e){
     var self = this
-      , last = this._last
-      , val  = e.target.value
-      , suggestion = this._deleting 
-          ? e.target.value
-          : this.suggest(this._data(), e.target.value) || e.target.value
-      , data;
+      , shouldSuggest = !!this.props.suggest
+      , strVal  = e.target.value
+      , suggestion, data;
+
+    suggestion = this._deleting || !shouldSuggest
+      ? strVal : this.suggest(this._data(), strVal)
+
+    suggestion = suggestion || strVal
 
     data = _.find(self.props.data, function(item) { 
       return self._dataText(item).toLowerCase() === suggestion.toLowerCase()
     })
 
-    if ( this._deleting ){
-      this.setState({ start: null, end: null })
-
-    }
-    else if ( suggestion && val !== suggestion){
-      var start = suggestion.indexOf(val) + val.length
-        , end   = suggestion.length - start
-
-      if ( start >= 0){
-        this.setState({
-          start: start,
-          end: start + end
-        })
-      }
-    }
-
-    this.change(data
-      ? data
-      : e.target.value)
+    this.change(!this._deleting && data 
+      ? data 
+      : strVal, true)
 
     this.open()
   },
 
-  _focus: function(focused){
-    this.setState({ focused: focused })
+  _focus: function(focused, e){
+    var self = this;
 
-    if(!focused) this.close()
+    clearTimeout(self.timer)
+    self.timer = setTimeout(function(){
+      if( focused !== self.state.focused) {
+        self.setState({ focused: focused })
+        if(!focused) self.close()
+      }
+    }, 0)
   },
 
   _keyPress: function(e){
@@ -265,19 +262,17 @@ module.exports = React.createClass({
     }
 
     function select(idx) {
-      self.setState({ start: null, end: null })
-      self.change(self._data()[idx])
+      self.change(self._data()[idx], false)
     }
   },
 
-  change: function(data, idx){
+  change: function(data, typing){
     var change = this.props.onChange 
 
-    if ( change ) {
-      change(data)  
-    }
-  },
+    this._typedChange = !!typing
 
+    if ( change ) change(data)  
+  },
 
   open: function(){
     if ( !this.state.open )

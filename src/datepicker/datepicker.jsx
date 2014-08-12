@@ -7,25 +7,29 @@ var React = require('react/addons')
   , Time      = require('./time.jsx')
   , DateInput = require('./date-input.jsx')
 
-
-module.exports = React.createClass({
-
-  propTypes: {
+var propTypes = {
     
     value:        React.PropTypes.instanceOf(Date),
+    onChange:     React.PropTypes.func,
+
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
 
     culture:      React.PropTypes.string,
     format:       React.PropTypes.string,
-    onChange:     React.PropTypes.func.isRequired,
-
+    
     parse:        React.PropTypes.oneOfType([
                     React.PropTypes.arrayOf(React.PropTypes.string),
                     React.PropTypes.string,
                     React.PropTypes.func
                   ]),
-  },
+  }
+
+
+module.exports = React.createClass({
+  displayName: 'DateTimePicker',
+
+  propTypes: propTypes,
 
   getInitialState: function(){
     return {
@@ -56,11 +60,16 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var self = this;
+    var timeListID = this.props.id && this.props.id + '_time_listbox'
+      , dateListID = this.props.id && this.props.id + '_date_listbox'
+      , timeOptID  = this.props.id && this.props.id + '_time_option'
+      , dateOptID  = this.props.id && this.props.id + '_date_option'
+      , self = this;
 
     return (
       <div ref="element"
            tabIndex="-1"
+           aria-expanded={ this.state.open }
            onKeyDown={this._keyDown}
            onFocus={this._focus.bind(null, true)} 
            onBlur ={this._focus.bind(null, false)}
@@ -72,6 +81,9 @@ module.exports = React.createClass({
               'rw-has-both':    this.props.calendar && this.props.time
             })}>
         <DateInput ref='valueInput' 
+          aria-expanded={ this.state.open }
+          aria-busy={!!this.props.busy}
+          aria-owns={dateListID + ' ' + timeListID}
           value={this.props.value} 
           focused={this.state.focused} 
           format={this.props.format} 
@@ -98,6 +110,10 @@ module.exports = React.createClass({
           onRequestClose={this.close}>
             <div>
               <Time ref="timePopup" 
+                id={timeListID}
+                optID={timeOptID}
+                aria-hidden={ !this.state.open }
+                aria-hidden={ !this.state.open }
                 style={{ maxHeight: 200, height: 'auto' }}
                 value={this.props.value} 
                 min={this.props.min} 
@@ -113,11 +129,13 @@ module.exports = React.createClass({
             open={this.state.open && this.state.openPopup === 'calendar'} 
             onRequestClose={this.close}>
 
-              <Calendar ref="calPopup" 
+              <Calendar ref="calPopup"   
+                aria-hidden={ !this.state.open }
                 value={this.props.value} 
                 min={this.props.min} 
                 max={this.props.max} 
-                onChange={this._selectDate}/>
+                onChange={this._selectDate}
+                id={ dateListID }/>
           </Popup>
         }
       </div>
@@ -169,8 +187,10 @@ module.exports = React.createClass({
 
     clearTimeout(self.timer)
     self.timer = setTimeout(function(){
-      self.setState({ focused: focused })
-      if(!focused) self.close()
+      if( focused !== self.state.focused) {
+        self.setState({ focused: focused })
+        if(!focused) self.close()
+      }
     }, 0)
   },
 

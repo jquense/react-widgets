@@ -32,7 +32,7 @@ module.exports = {
       var matcher = filter.startsWith
         , self    = this;
         
-      return _.findIndex(self.props.data, function(item, i) { 
+      return _.findIndex(self._data(), function(item, i) { 
         return i != current
             && matcher(
                 helper._dataText.call(self, item).toLowerCase()

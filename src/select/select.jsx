@@ -10,6 +10,21 @@ var React = require('react/addons')
   , List  = require('../common/list.jsx');
 
 var btn = require('../common/btn.jsx')
+  , propTypes = {
+      data:           React.PropTypes.array,
+      value:          React.PropTypes.array,
+      onChange:       React.PropTypes.func,
+
+      valueField:     React.PropTypes.string,
+      textField:      React.PropTypes.string,
+
+      tagComponent:   React.PropTypes.func,
+
+      messages:       React.PropTypes.shape({
+        emptyList:    React.PropTypes.string,
+        emptyFilter:  React.PropTypes.string
+      })
+    };
 
 module.exports = React.createClass({
 
@@ -21,22 +36,11 @@ module.exports = React.createClass({
     require('../mixins/DataIndexStateMixin')('focusedIndex') 
   ],
 
-  propTypes: {
-    data:           React.PropTypes.array,
-    value:          React.PropTypes.array,
-    valueField:     React.PropTypes.string,
-    textField:      React.PropTypes.string,
-    filterType:     React.PropTypes.string,
-    valueComponent: React.PropTypes.component,
-
-    messages:       React.PropTypes.shape({
-      emptyList:    React.PropTypes.string,
-      emptyFilter:  React.PropTypes.string
-    })
-  },
+  propTypes: propTypes,
 
   getDefaultProps: function(){
     return {
+      filter: 'startsWith',
       messages: {
         emptyList:   "There are no items in this list",
         emptyFilter: "The filter returned no results"
@@ -71,14 +75,15 @@ module.exports = React.createClass({
   },
 
   render: function(){ 
-    var DropdownValue = this.props.valueComponent
+    var listID = this.props.id && this.props.id + '_listbox'
+      , optID  = this.props.id && this.props.id + '_option'
       , items = this._data()
 
     return (
       <div ref="element"
            onKeyDown={this._keyDown}
            onFocus={this._focus.bind(null, true)} 
-           onBlur ={this._focus.bind(null, false)}
+           onBlur ={this._focus.bind(null, false)} 
            tabIndex="-1"
            className={cx({
               'rw-select-list':  true,
@@ -92,10 +97,14 @@ module.exports = React.createClass({
             value={[].concat(this.props.value)} 
             textField={this.props.textField} 
             valueField={this.props.valueField}
-            valueComponent={this.props.valueComponent}
+            valueComponent={this.props.tagComponent}
             onDelete={this._delete}/>
           <SelectInput 
+            aria-expanded={ this.state.open }
+            aria-busy={!!this.props.busy}
+            aria-owns={listID}
             value={this.state.searchTerm} 
+            placeholder={this._placeholder()}
             focused={this.state.focused} 
             onChange={this._typing}/>
         </div>
@@ -107,6 +116,9 @@ module.exports = React.createClass({
 
           <div>
             <List ref="list"
+              id={listID}
+              optID={optID}
+              aria-hidden={ !this.state.open }
               style={{ maxHeight: 200, height: 'auto' }}
               data={items}
               value={this.props.value}
@@ -150,8 +162,15 @@ module.exports = React.createClass({
   },
 
   _focus: function(focused){
-    this.setState({ focused: focused })
-    if(!focused) this.close()
+    var self = this;
+
+    clearTimeout(self.timer)
+    self.timer = setTimeout(function(){
+      if( focused !== self.state.focused) {
+        self.setState({ focused: focused })
+        if(!focused) self.close()
+      }
+    }, 0)
   },
 
   _typing: function(e){
@@ -248,6 +267,12 @@ module.exports = React.createClass({
       items = this.filter(items, searchTerm)
 
     return items
+  },
+
+  _placeholder: function(){
+    return this.props.value.length 
+      ? '' 
+      : (this.props.placeholder || '')
   },
 
   _getAnchor: function(){

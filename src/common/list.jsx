@@ -32,6 +32,8 @@ module.exports = React.createClass({
     valueField:    React.PropTypes.string,
     textField:     React.PropTypes.string,
 
+    optID:         React.PropTypes.string,
+
     messages:      React.PropTypes.shape({
       emptyList:   React.PropTypes.string
     }),
@@ -42,6 +44,7 @@ module.exports = React.createClass({
     return {
       listItem:      DefaultListItem,
       delay:         500,
+      optID:         '',
       messages: {
         emptyList:   "There are no items in this list"
       }
@@ -59,15 +62,19 @@ module.exports = React.createClass({
       , emptyList   = <li>{ this.props.messages.emptyList }</li>
       , emptyFilter = <li>{ this.props.messages.emptyFilter }</li>
       , items = _.map(this.props.data, (item, idx) => {
-       
+        var focused = idx === this.props.focusedIndex;
+
         return (
           <ListItem 
             item={item}
+            role='option'
+            id={ focused ? this.props.optID : '' }
+            aria-selected={ idx === this.props.selectedIndex }
             textField={this.props.textField}
             valueField={this.props.valueField}
             unselectable='on'
             className={cx({ 
-              'rw-state-focus':    idx === this.props.focusedIndex,
+              'rw-state-focus':    focused,
               'rw-state-selected': idx === this.props.selectedIndex,
             })}
             onClick={_.partial(this.props.onSelect, item, idx)}/>
@@ -75,7 +82,12 @@ module.exports = React.createClass({
       });
     
 		return mergePropsInto(_.omit(this.props, 'data', 'selectedIndex'),
-			<ul className="rw-list" tabIndex="-1" onKeyDown={this._keyDown} onKeyPress={this.search}>
+			<ul 
+        className="rw-list" 
+        role='listbox'
+        tabIndex="-1" 
+        onKeyDown={this._keyDown} 
+        onKeyPress={this.search}>
         { !this.props.data.length 
           ? emptyList 
           : items }

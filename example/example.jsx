@@ -36,6 +36,7 @@ var App = React.createClass({
 				<div style={{ width: 200 }}>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<DropdownList 
+							id='MyDropdownList'
 							data={ this.state.data } 
 							textField='name'
 							valueField='id'
@@ -53,6 +54,7 @@ var App = React.createClass({
 					<section className="example" style={{ marginBottom: 20 }}>
 						<Select 
 							data={ this.state.data } 
+							placeholder="hi i am a placeholder"
 							textField='name'
 							valueField='id'
 							value={ this.state.selectValues } 

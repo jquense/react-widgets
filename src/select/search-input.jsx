@@ -13,12 +13,14 @@ module.exports = React.createClass({
   },
 
   render: function(){
-      var value = this.props.value;
+      var value = this.props.value
+        , placeholder = this.props.placeholder
+        , size = Math.max((value || placeholder).length, 1);
 
       return this.transferPropsTo(
         <input type='text' 
           className='rw-input'  
-          size={Math.max( (value || '').length, 1)}/>
+          size={size}/>
       )
   },
 

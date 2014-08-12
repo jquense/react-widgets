@@ -121,6 +121,14 @@ ul.rw-list {
 .rw-select-list,
 .rw-date-picker,
 .rw-dropdown-list {
+  background-color:   @input-bg;
+  border:             @input-border 1px solid;
+  border-radius:      @input-border-radius;
+
+  &:active {
+    background-image: none;
+    .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
 
   &:hover {
     background-color: @state-bg-hover;
@@ -130,18 +138,53 @@ ul.rw-list {
   &.rw-state-focus:hover {
     border-color: @input-border-focus;
     outline: 0;
-  
-    input.rw-input {
-      .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075)")
+  }
+
+  &[disabled],
+  fieldset[disabled] & {
+    pointer-events: none;
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    .box-shadow(none);
+    opacity: .65;
+
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: @input-bg;
+          border-color: @input-border;
     }
   }
 }
 
+.rw-combobox,
+.rw-date-picker,
+.rw-dropdown-list {
+
+  &.rw-state-focus input.rw-input,
+  &.rw-state-focus:hover input.rw-input {
+    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075)")
+  }
+
+  .rw-input[disabled],
+  fieldset[disabled] .rw-input {
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: @input-bg;
+          border-color: @input-border;
+    }
+  }
+}
+  
+
 .rw-select-wrapper,
 .rw-combobox .rw-input,
 .rw-date-picker .rw-input {
-  .border-left-radius(@select-border-radius);
-  background-color: @input-bg;
+  .border-left-radius(@input-border-radius);
+  background-color: @widget-bg;
 
 }
 
@@ -149,7 +192,7 @@ ul.rw-list {
 .rw-date-picker {
 
   > .rw-select {
-    border-left: @select-border 1px solid;
+    border-left: @input-border 1px solid;
   }
 }
 

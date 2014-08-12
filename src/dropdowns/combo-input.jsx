@@ -14,29 +14,33 @@ module.exports = React.createClass({
   },
 
 
+  // hello
   componentDidUpdate: function() {
-    var suggestion = (this.props.suggestion || '').toLowerCase()
-      , val = this.props.value.toLowerCase()
-      , el = this.getDOMNode();
+    var input = this.getDOMNode()
+      , val = this.props.value
+      , isSuggestion =  this._last !== ''
+          && val.indexOf(this._last) !== -1 
+          && this._last !== val;
 
-    this.props.focused && this.focus()
+    console.log("did Update: ", val, this._last)
 
-    if (suggestion && val !== suggestion){
-      var start = suggestion.indexOf(val) + val.length
-        , end = suggestion.length - start
+    if ( this.props.suggest && isSuggestion ){
+      var start = val.indexOf(this._last) + this._last.length
+        , end   = val.length - start
 
       if ( start >= 0)
-        caretPos(el, start, start + end)
+        caretPos(input, start, start + end)
     }
+
+    //clear last value so it doesn't persist suggestion
+    this._last = val;
   },
 
-  // elephant
-  // leph
-  // 
 
   getDefaultProps: function(){
     return {
-      value: ''
+      value: '',
+      suggestion: ''
     }
   },
 
@@ -46,41 +50,19 @@ module.exports = React.createClass({
       <input 
         type='text' 
         className='rw-input'
-        value={this._value()}/>
+        onKeyDown={this.props.onKeyDown}
+        onChange={this._change}
+        value={this.props.value}/>
     )
   },
 
   _change: function(e){
     var val = e.target.value
-      , sel = caretPos(e.target)
 
-    // if ( sel.start !== sel.end)
-    //   return this.props.onChange(e, val.substr(0, sel.start))
-
+    this._last = val;
     this.props.onChange(e, val)
   },
 
-  _value: function(){
-    var val = this.props.value.toLowerCase()
-      , suggestion = (this.props.suggestion || '').toLowerCase();
-
-    if (val === suggestion || !suggestion)
-      return this.props.value
-
-    return this.props.suggestion.substr(
-      suggestion.indexOf(val))
-  },
-
-  _blur: function(){
-    var val = this.state.textValue
-
-    this.props.onBlur(this.props.parse(val), val);
-
-    if ( val === this.state.lastValue) return
-
-    this.props.onChange(this.props.parse(val), val);
-    this.setState({ lastValue: val });
-  },
 
   focus: function(){
     this.getDOMNode().focus()

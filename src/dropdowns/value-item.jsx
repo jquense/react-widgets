@@ -1,4 +1,6 @@
 var React = require('react/addons')
+  , mergePropsInto = require('../util/transferProps')
+  , _ = require('lodash')
 
 module.exports = React.createClass({
 
@@ -7,6 +9,8 @@ module.exports = React.createClass({
   render: function(){
       var value = this.props.value;
 
-      return this.transferPropsTo(<div>{this._dataText(value)}</div>)
+      return mergePropsInto(
+        _.omit(this.props, 'value'),
+        <div>{this._dataText(value)}</div>)
   }
 })
