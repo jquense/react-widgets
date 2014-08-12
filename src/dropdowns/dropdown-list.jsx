@@ -79,7 +79,7 @@ module.exports = React.createClass({
 		return mergePropsInto(
       _.omit(this.props, keys),
 			<div ref="element"
-           onKeyUp={this._keyPress}
+           onKeyDown={this._keyDown}
            onClick={this.toggle}
            onFocus={this._focus.bind(null, true)} 
            onBlur ={this._focus.bind(null, false)}
@@ -155,7 +155,7 @@ module.exports = React.createClass({
     this.change(data)
   },
 
-  _keyPress: function(e){
+  _keyDown: function(e){
     var self = this
       , key = e.key
       , alt = e.altKey

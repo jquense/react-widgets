@@ -22,7 +22,7 @@ module.exports = React.createClass({
           && val.indexOf(this._last) !== -1 
           && this._last !== val;
 
-    console.log("did Update: ", val, this._last)
+    //console.log("did Update: ", val, this._last)
 
     if ( this.props.suggest && isSuggestion ){
       var start = val.indexOf(this._last) + this._last.length
@@ -45,7 +45,7 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    console.log(this.props.value, this.props.suggestion)
+    //console.log(this.props.value, this.props.suggestion)
     return this.transferPropsTo(
       <input 
         type='text' 

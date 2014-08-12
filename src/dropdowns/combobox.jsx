@@ -71,6 +71,14 @@ module.exports = React.createClass({
     }
   },
 
+  shouldComponentUpdate: function(nextProps, nextState){
+    var stateChanged = !_.isEqual(nextState, this.state) 
+      , valueChanged = !_.isEqual(nextProps.value, this.props.value)
+
+    console.log(stateChanged, valueChanged)
+    return stateChanged || valueChanged
+  },
+
   componentWillReceiveProps: function(nextProps) {
     var inData = this._dataIndexOf(nextProps.data, nextProps.value) !== - 1
       , items = this.process(
@@ -111,7 +119,7 @@ module.exports = React.createClass({
 		return (
 			<div ref="element"
            aria-expanded={ this.state.open }
-           onKeyUp={this._keyPress}
+           onKeyDown={this._keyDown}
            onFocus={this._focus.bind(null, true)} 
            onBlur ={this._focus.bind(null, false)}
 
@@ -223,7 +231,7 @@ module.exports = React.createClass({
     }, 0)
   },
 
-  _keyPress: function(e){
+  _keyDown: function(e){
     var self = this
       , key = e.key
       , alt = e.altKey
