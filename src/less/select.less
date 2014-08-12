@@ -1,7 +1,6 @@
 
 .rw-select-list {
   outline: 0;
-  border-radius:    @select-border-radius;
   background:       @dropdown-bg;
   border:           @dropdown-border 1px solid;
 
@@ -15,6 +14,12 @@
   }
 }
 
+.rw-select-list,
+.rw-select-wrapper,
+.rw-select-wrapper .rw-input {
+  border-radius:          @select-border-radius;
+}
+
 .rw-select-wrapper {
   position:               relative;
   .clearfix();
@@ -25,7 +30,13 @@
     border-width:         0;
     line-height:          normal;
     width:                auto;
+
+
   }
+
+  .rw-rtl > & > .rw-input{
+     float: right;
+  } 
 
   .rw-btn {
     outline:            0;
@@ -47,12 +58,16 @@
     vertical-align:     middle;
     white-space:        nowrap;
     border-radius:      @border-radius-sm;
-    border:             1px solid @blue;
-    background-color:   @blue;
+    border:             1px solid @btn-bg;
+    background-color:   @btn-bg;
     cursor:             pointer;
 
     &.rw-state-focus {
       .state-focus();
     }
+  }
+
+  .rw-rtl & > li {
+     float: right;
   }
 }

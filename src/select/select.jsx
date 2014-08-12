@@ -151,6 +151,7 @@ module.exports = React.createClass({
 
   _focus: function(focused){
     this.setState({ focused: focused })
+    if(!focused) this.close()
   },
 
   _typing: function(e){

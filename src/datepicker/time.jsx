@@ -89,7 +89,7 @@ module.exports = React.createClass({
       , key = e.key
       , character = String.fromCharCode(e.keyCode);
 
-    e.preventDefault()
+    
     
     if ( key === 'End' ) 
       this.setFocusedIndex(
@@ -102,18 +102,22 @@ module.exports = React.createClass({
       this.props.onChange(this._data()[this.state.focusedIndex])
 
     else if ( key === 'ArrowDown' ) {
+      e.preventDefault()
       this.setFocusedIndex(
         this.nextFocusedIndex())
     } 
     else if ( key === 'ArrowUp' ) {
+      e.preventDefault()
       this.setFocusedIndex(
         this.prevFocusedIndex())
     }
-    else
+    else {
+      e.preventDefault()
       this.search(character, function(word){   
         self.setFocusedIndex(
           this.findIndex(word, self.state.focusedIndex))
       })
+    }
   }
 
 });

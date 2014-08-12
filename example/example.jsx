@@ -32,35 +32,48 @@ var App = React.createClass({
 		}
 
 		return (
-			<div style={{ fontSize: 14, width: 300 }}>
-				<section className="example">
-					<DropdownList 
-						data={ this.state.data } 
-						textField='name'
-						valueField='id'
-						value={ this.state.dropdownValue} 
-						onChange={change.bind(null, 'dropdownValue')}/>
-				</section>
-				<section className="example">
-				<ComboBox 
-						data={ this.state.data } 
-						textField='name'
-						valueField='id'
-						value={ this.state.comboboxValue} 
-						onChange={change.bind(null, 'comboboxValue')}/>
-				</section>
-				<section className="example">
-					<Select 
-						data={ this.state.data } 
-						textField='name'
-						valueField='id'
-						value={ this.state.selectValues } 
-						onChange={change.bind(null, 'selectValues')}/>
-				</section>
-				<section className="example">
-					<DatePicker value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
-				</section>
+			<div style={{ fontSize: 14 }}>
+				<div style={{ width: 200 }}>
+					<section className="example" style={{ marginBottom: 20 }}>
+						<DropdownList 
+							data={ this.state.data } 
+							textField='name'
+							valueField='id'
+							value={ this.state.dropdownValue} 
+							onChange={change.bind(null, 'dropdownValue')}/>
+					</section>
+					<section className="example" style={{ marginBottom: 20 }}>
+					<ComboBox 
+							data={ this.state.data } 
+							textField='name'
+							valueField='id'
+							value={ this.state.comboboxValue} 
+							onChange={change.bind(null, 'comboboxValue')}/>
+					</section>
+					<section className="example" style={{ marginBottom: 20 }}>
+						<Select 
+							data={ this.state.data } 
+							textField='name'
+							valueField='id'
+							value={ this.state.selectValues } 
+							onChange={change.bind(null, 'selectValues')}/>
+					</section>
+					<section className="example" style={{ marginBottom: 20 }}>
+						<DatePicker value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
+					</section>
+				</div>
+				<div className='clearfix'>
+					<div className='c1' style={{ float: 'left', width: 150, height: 200 }}/>
+					<div className='c2' style={{ float: 'left', width: 150, height: 200 }}/>
+					<div className='c3' style={{ float: 'left', width: 150, height: 200 }}/>
+					<div className='c4' style={{ float: 'left', width: 150, height: 200 }}/>
+					<div className='c5' style={{ float: 'left', width: 150, height: 200 }}/>
+					<div className='c6' style={{ float: 'left', width: 150, height: 200 }}/>
+					<div className='c7' style={{ float: 'left', width: 150, height: 200 }}/>
+					<div className='c8' style={{ float: 'left', width: 150, height: 200 }}/>
+				</div>
 			</div>
+
 		)
 	},
 

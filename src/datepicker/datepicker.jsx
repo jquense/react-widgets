@@ -45,7 +45,8 @@ module.exports = React.createClass({
       time:             true,
       messages: {
         calendarButton: 'Select Date',
-        timeButton:     'Select Time'
+        timeButton:     'Select Time',
+        next:           'Next Date',
       }
     }
   },
@@ -55,10 +56,8 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var self = this
-      , key = (new Date()).getTime()
-      , popupStyle = { width:  this.state.timeWidth }
-      
+    var self = this;
+
     return (
       <div ref="element"
            tabIndex="-1"
@@ -94,9 +93,8 @@ module.exports = React.createClass({
         { this.props.time &&
         <Popup 
           getAnchor={ this._getAnchor } 
-          style={popupStyle}
+          style={{ width:  this.state.timeWidth }}
           open={this.state.open && this.state.openPopup === 'time'} 
-          onClose={closed.bind(this)} 
           onRequestClose={this.close}>
             <div>
               <Time ref="timePopup" 
@@ -113,7 +111,6 @@ module.exports = React.createClass({
             getAnchor={ this._getAnchor } 
             style={{ width: 200 }} 
             open={this.state.open && this.state.openPopup === 'calendar'} 
-            onClose={closed.bind(this)} 
             onRequestClose={this.close}>
 
               <Calendar ref="calPopup" 
@@ -125,10 +122,6 @@ module.exports = React.createClass({
         }
       </div>
     )
-
-    function closed(){
-      //this.refs.element.getDOMNode().focus()
-    }
   },
 
   setTimeDimensions: function() {
@@ -147,6 +140,9 @@ module.exports = React.createClass({
 
   _keyDown: function(e){
     
+    if( e.key === 'Tab') 
+      return 
+
     if ( e.altKey ) {
       e.preventDefault()
 
@@ -167,10 +163,15 @@ module.exports = React.createClass({
     } 
   },
 
-  _focus: function(focused){
-    this.setState({
-      focused: focused
-    })
+  //timeout prevents transitions from breaking focus
+  _focus: function(focused, e){
+    var self = this;
+
+    clearTimeout(self.timer)
+    self.timer = setTimeout(function(){
+      self.setState({ focused: focused })
+      if(!focused) self.close()
+    }, 0)
   },
 
   _selectDate: function(date){
@@ -190,10 +191,6 @@ module.exports = React.createClass({
     this.toggle(view, e)
   },
 
-  _change: function(date, text){
-    console.log(date, text)
-  },
-
   _parse: function(string){
     var parser = _.isFunction(this.props.parse)
           ? parse 
@@ -202,8 +199,7 @@ module.exports = React.createClass({
     return parser(string)    
   },
 
-  toggle: function(view, e){
-    //e && e.nativeEvent.stopImmediatePropagation();
+  toggle: function(view, e) {
 
     this.state.open 
       ? this.state.view !== view 

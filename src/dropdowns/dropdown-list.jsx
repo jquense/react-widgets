@@ -76,7 +76,7 @@ module.exports = React.createClass({
            onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
-              'rw-dropdownlist': true,
+              'rw-dropdown-list': true,
               'rw-widget':       true,
               'rw-state-focus':  this.state.focused,
               'rw-open':         this.state.open
@@ -128,6 +128,7 @@ module.exports = React.createClass({
 
   _focus: function(focused){
     this.setState({ focused: focused })
+    if(!focused) this.close()
   },
 
   _onSelect: function(data, idx, elem){

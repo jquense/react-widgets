@@ -1,8 +1,10 @@
- //@color-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
-
+ 
 
 .rw-widget {
   outline: 0;
+  -moz-background-clip: border-box;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
 }
 
 .rw-btn {
@@ -20,24 +22,15 @@
 	white-space: nowrap;
 }
 
+.rw-rtl {
+  direction: rtl;
+}
 
 .rw-input {
 	height: 			  @input-height;
 	line-height: 	  @input-height;
 	padding: 			  0.177em 0;
 	text-indent: 		0.64em;
-
-	.rw-rtl & {
-		text-align: right;
-		direction: rtl;
-	}
-
-
-	// &:focus {
-	//     border-color: @input-border-focus;
-	//     outline: 0;
-	//     .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px @{color-rgba}");
- //  	}
 }
 
 
@@ -80,7 +73,7 @@ ul.rw-list {
 
 .rw-combobox,
 .rw-date-picker,
-.rw-dropdownlist {
+.rw-dropdown-list {
   position:         relative;
   padding-right:    1.9em;
 
@@ -119,3 +112,70 @@ ul.rw-list {
     .border-bottom-radius(0);
   }
 }
+
+
+
+@focus-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
+
+.rw-combobox,
+.rw-select-list,
+.rw-date-picker,
+.rw-dropdown-list {
+
+  &:hover {
+    background-color: @state-bg-hover;
+  }
+
+  &.rw-state-focus,
+  &.rw-state-focus:hover {
+    border-color: @input-border-focus;
+    outline: 0;
+  
+    input.rw-input {
+      .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075)")
+    }
+  }
+}
+
+.rw-select-wrapper,
+.rw-combobox .rw-input,
+.rw-date-picker .rw-input {
+  .border-left-radius(@select-border-radius);
+  background-color: @input-bg;
+
+}
+
+.rw-combobox,
+.rw-date-picker {
+
+  > .rw-select {
+    border-left: @select-border 1px solid;
+  }
+}
+
+// .c1 {
+//   background: @lighter1
+// }
+// .c2 {
+//   background: @lighter2
+// }
+// .c3 {
+//   background: @lighter3
+// }
+// .c4 {
+//   background: @lighter4
+// }
+// .c5 {
+//   background: @lighter5
+// }
+// .c6 {
+//   background: @lighter6
+// }
+
+
+// .c7 {
+//   background: @darker1
+// }
+// .c8 {
+//   background: @darker2
+//}
