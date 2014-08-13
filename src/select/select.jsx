@@ -33,6 +33,7 @@ module.exports = React.createClass({
   mixins: [ 
     require('../mixins/DataHelpersMixin'),
     require('../mixins/DataFilterMixin'),
+    require('../mixins/RtlParentContextMixin'),
     require('../mixins/DataIndexStateMixin')('focusedIndex') 
   ],
 
@@ -89,7 +90,8 @@ module.exports = React.createClass({
               'rw-select-list':  true,
               'rw-widget':       true,
               'rw-state-focus':  this.state.focused,
-              'rw-open':         this.state.open
+              'rw-open':         this.state.open,
+              'rw-rtl':          this.isRtl()
             })}>
         <div className='rw-select-wrapper' onClick={this._click}>
           <TagList 

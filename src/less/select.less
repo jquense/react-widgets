@@ -22,6 +22,7 @@
 
 .rw-select-wrapper {
   position:               relative;
+  cursor:                 text;
   .clearfix();
   
   > .rw-input {
@@ -32,7 +33,7 @@
     width:                auto;
   }
 
-  .rw-rtl > & > .rw-input{
+  .rw-rtl & > .rw-input{
      float: right;
   } 
 
@@ -45,6 +46,7 @@
 
 .rw-tag-list {
   .list-inline;
+  padding-right: 0;
 
   > li {
     float:              left;
@@ -67,5 +69,6 @@
 
   .rw-rtl & > li {
      float: right;
-  }
+  } 
+
 }

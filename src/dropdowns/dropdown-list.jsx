@@ -35,6 +35,7 @@ module.exports = React.createClass({
   displayName: 'DropdownList',
 
   mixins: [ 
+    require('../mixins/PureRenderMixin'),
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataHelpersMixin'),
     require('../mixins/RtlParentContextMixin'),
@@ -72,11 +73,11 @@ module.exports = React.createClass({
     this.setWidth()
   },
 
-  shouldComponentUpdate: function(nextProps, nextState){
-    var stateChanged = !_.isEqual(nextState, this.state) 
-      , valueChanged = !_.isEqual(nextProps.value, this.props.value)
-    return stateChanged || valueChanged
-  },
+  // shouldComponentUpdate: function(nextProps, nextState){
+  //   var stateChanged = !_.isEqual(nextState, this.state) 
+  //     , valueChanged = !_.isEqual(nextProps.value, this.props.value)
+  //   return stateChanged || valueChanged
+  // },
 
 	render: function(){ 
 		var keys = _.keys(propTypes)

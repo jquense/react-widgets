@@ -1,8 +1,8 @@
 var React = require('react/addons')
 var DropdownList = require('../src/dropdowns/dropdown-list.jsx')
 var Select = require('../src/select/select.jsx')
-//var Calendar = require('../src/datepicker/calendar.jsx')
-var DatePicker = require('../src/datepicker/datepicker.jsx')
+var Calendar = require('../src/calendar/calendar.jsx')
+var DatePicker = require('../src/pickers/datepicker.jsx')
 var ComboBox = require('../src/dropdowns/combobox.jsx')
 var chance = new (require('chance'))
 //var _ = require('lodash')
@@ -36,7 +36,7 @@ var App = React.createClass({
 				<div style={{ width: 200 }}>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<DropdownList 
-							isRtl={true}
+							isRtl={false}
 							id='MyDropdownList'
 							data={ this.state.data } 
 							textField='name'
@@ -45,8 +45,14 @@ var App = React.createClass({
 							onChange={change.bind(null, 'dropdownValue')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
+						<Calendar 
+							data={ this.state.data } 
+							value={ new Date } 
+							onChange={change.bind(null, 'calValue')}/>
+					</section>
+					<section className="example" style={{ marginBottom: 20 }}>
 					<ComboBox 
-							isRtl={true}
+							isRtl={false}
 							data={ this.state.data } 
 							textField='name'
 							valueField='id'
@@ -55,7 +61,7 @@ var App = React.createClass({
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<Select 
-							isRtl={true}
+							isRtl={false}
 							data={ this.state.data } 
 							placeholder="hi i am a placeholder"
 							textField='name'
@@ -64,7 +70,7 @@ var App = React.createClass({
 							onChange={change.bind(null, 'selectValues')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
-						<DatePicker isRtl={true} value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
+						<DatePicker id='AwesomeDatePicker' isRtl={false} value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
 					</section>
 				</div>
 				<div className='clearfix'>

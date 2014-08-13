@@ -69,6 +69,7 @@ module.exports = React.createClass({
 
         return (
           <ListItem 
+            key={'item_' + idx}
             item={item}
             role='option'
             id={ focused ? this.props.optID : '' }
