@@ -29,6 +29,10 @@ var propTypes = {
 module.exports = React.createClass({
   displayName: 'DateTimePicker',
 
+  mixins: [ 
+    require('../mixins/RtlParentContextMixin') 
+  ],
+  
   propTypes: propTypes,
 
   getInitialState: function(){
@@ -78,7 +82,8 @@ module.exports = React.createClass({
               'rw-widget':      true,
               'rw-open':        this.state.open,
               'rw-state-focus': this.state.focused,
-              'rw-has-both':    this.props.calendar && this.props.time
+              'rw-has-both':    this.props.calendar && this.props.time,
+              'rw-rtl':         this.isRtl()
             })}>
         <DateInput ref='valueInput' 
           aria-expanded={ this.state.open }

@@ -38,7 +38,7 @@ module.exports = function(stateKey) {
     nextIdx -= 1
 
     if ( nextIdx < 0 )
-      nextIdx = data.length - 1;
+      nextIdx = 0
     
     return nextIdx;
   }
@@ -50,7 +50,7 @@ module.exports = function(stateKey) {
     nextIdx += 1
 
     if ( nextIdx >= data.length )
-      nextIdx = 0;
+      nextIdx = data.length -1;
 
     return nextIdx;
   }

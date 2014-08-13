@@ -5,12 +5,18 @@ var React = require('react/addons')
   , directions = require('../util/constants').directions
   , _ = require('lodash')
 
+var opposite = {
+  LEFT: directions.RIGHT,
+  RIGHT: directions.LEFT
+};
+
 
 module.exports = React.createClass({
 
   displayName: 'DecadeView',
 
   mixins: [
+    require('../mixins/RtlChildContextMixin'),
     require('../mixins/DateFocusMixin')('decade', 'year')
   ],
 
@@ -35,6 +41,8 @@ module.exports = React.createClass({
   },
 
   _row: function(row){
+    // if (this.isRtl()) row.reverse()
+      
     return (
       <tr>
       {_.map(row, date => {
@@ -58,6 +66,8 @@ module.exports = React.createClass({
   },
 
   move: function(date, direction){
+    if ( this.isRtl() && opposite[direction])
+      direction =  opposite[direction]
 
     if ( direction === directions.LEFT)
       date = dates.subtract(date, 1, 'year')

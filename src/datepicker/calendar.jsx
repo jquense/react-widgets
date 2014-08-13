@@ -36,6 +36,11 @@ module.exports = React.createClass({
   
   displayName: 'Calendar',
 
+  mixins: [ 
+    require('../mixins/RtlParentContextMixin') 
+  ],
+
+
   propTypes: {
     culture:      React.PropTypes.array,
     value:        React.PropTypes.instanceOf(Date),

@@ -9,6 +9,10 @@ module.exports = React.createClass({
 
   displayName: 'CalendarWeek',
 
+  mixins: [
+    require('../mixins/RtlChildContextMixin')
+  ],
+
   propTypes: {
     days:           React.PropTypes.arrayOf(React.PropTypes.instanceOf(Date)),
     selectedDate:   React.PropTypes.instanceOf(Date),
@@ -25,8 +29,12 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var self = this;
+    var self = this
+      , days = this.props.days;
 
+    // if ( this.isRtl() )
+    //   days.reverse();
+    
     return transferProps(
       _.omit(this.props, 'days', 'onClick'),
       

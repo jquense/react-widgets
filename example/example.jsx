@@ -28,7 +28,7 @@ var App = React.createClass({
 
 			obj[field] = data
 			self.setState(obj)
-			console.log('example: set field: ' + field, data)
+			//console.log('example: set field: ' + field, data)
 		}
 
 		return (
@@ -36,6 +36,7 @@ var App = React.createClass({
 				<div style={{ width: 200 }}>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<DropdownList 
+							isRtl={true}
 							id='MyDropdownList'
 							data={ this.state.data } 
 							textField='name'
@@ -45,6 +46,7 @@ var App = React.createClass({
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 					<ComboBox 
+							isRtl={true}
 							data={ this.state.data } 
 							textField='name'
 							valueField='id'
@@ -53,6 +55,7 @@ var App = React.createClass({
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<Select 
+							isRtl={true}
 							data={ this.state.data } 
 							placeholder="hi i am a placeholder"
 							textField='name'
@@ -61,7 +64,7 @@ var App = React.createClass({
 							onChange={change.bind(null, 'selectValues')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
-						<DatePicker value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
+						<DatePicker isRtl={true} value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
 					</section>
 				</div>
 				<div className='clearfix'>

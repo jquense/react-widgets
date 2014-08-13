@@ -6,14 +6,18 @@ var React = require('react/addons')
   , directions = require('../util/constants').directions
   , _ = require('lodash')
 
-var LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
+var opposite = {
+  LEFT: directions.RIGHT,
+  RIGHT: directions.LEFT
+};
 
 module.exports = React.createClass({
 
   displayName: 'MonthView',
 
   mixins: [
-    require('../mixins/DateFocusMixin')('month', 'day')
+    require('../mixins/RtlChildContextMixin'),
+    require('../mixins/DateFocusMixin')('month', 'day'),
   ],
 
   propTypes: {
@@ -47,11 +51,13 @@ module.exports = React.createClass({
   _body: function(){
     var month = dates.visibleDays(this.props.value)
       , focused = this.state.focusedDate
+      , isRtl = this.isRtl()
       , rows  = chunk(month, 7 );
 
     return _.map(rows, week => (
+
       <Week 
-        days={week} 
+        days={ week } 
         selectedDate={this.props.selectedDate}
         focusedDate={focused}
         month={dates.month(this.props.value)}
@@ -66,13 +72,17 @@ module.exports = React.createClass({
   _headers: function(format){
     var days = dates.shortDaysOfWeek(format);
 
+    // if ( this.isRtl() ) days.reverse()
+
     return _.map(days, function(day){
       return (<th>{day}</th>)
     })
   },
 
   move: function(date, direction){
-
+    if ( this.isRtl() && opposite[direction])
+      direction =  opposite[direction]
+    
     if ( direction === directions.LEFT)
       date = dates.subtract(date, 1, 'day')
 

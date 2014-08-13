@@ -22,7 +22,7 @@ var dates = module.exports = _.extend({}, dateMath, {
     var culture = dates.culture()
 
     if (culture && culture.calendar)
-      return culture.calendar.days.namesShort
+      return culture.calendar.days.namesShort.slice()
   },
 
   daysOfWeek: function(date, format){

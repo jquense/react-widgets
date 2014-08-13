@@ -11,12 +11,12 @@ module.exports = React.createClass({
 
   displayName: 'DatePickerInput',
 
+
   propTypes: {
     format:       React.PropTypes.string,
     parse:        React.PropTypes.func.isRequired,
 
     value:        React.PropTypes.instanceOf(Date),
-
     onChange:     React.PropTypes.func.isRequired,
   },
 
@@ -48,7 +48,7 @@ module.exports = React.createClass({
     return this.transferPropsTo(
       <input 
         type='text' 
-        className='rw-input' 
+        className={cx({'rw-input': true })} 
         value={this.state.textValue} 
         onChange={this._change} 
         onBlur={compose.chain(this.props.blur, this._blur)} />

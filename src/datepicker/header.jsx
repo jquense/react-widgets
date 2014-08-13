@@ -14,20 +14,26 @@ module.exports = React.createClass({
     onMoveRight:    React.PropTypes.func.isRequired,
   },
 
+  mixins: [
+    require('../mixins/RtlChildContextMixin')
+  ],
 
   render: function(){
-    var self = this;
+    var self = this
+      , rtl = this.isRtl();
 
     return (
       <div className='rw-header'>
         <btn className="rw-btn-left" onClick={this.props.onMoveLeft}>
-          <i className="rw-i rw-i-caret-left"><span className="rw-sr">Move Left</span></i>
+          <i className={"rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}>
+            <span className="rw-sr">Move Left</span></i>
         </btn>
         <btn className="rw-btn-view" onClick={this.props.onViewChange} disabled={this.props.disabled} >
           { this.props.label }
         </btn>
         <btn className="rw-btn-right" onClick={this.props.onMoveRight}>
-          <i className="rw-i rw-i-caret-right"><span className="rw-sr">Move Left</span></i>
+          <i className={"rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}>
+            <span className="rw-sr">Move Left</span></i>
         </btn>
       </div>
     )

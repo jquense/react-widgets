@@ -186,6 +186,11 @@ ul.rw-list {
   .border-left-radius(@input-border-radius);
   background-color: @widget-bg;
 
+  .rw-rtl&{
+    .border-left-radius(0);
+    .border-right-radius(@input-border-radius);
+  }
+
 }
 
 .rw-combobox,
@@ -193,6 +198,11 @@ ul.rw-list {
 
   > .rw-select {
     border-left: @input-border 1px solid;
+
+    .rw-rtl&{
+      border-right: @input-border 1px solid;
+      border-left:  none;
+    }
   }
 }
 

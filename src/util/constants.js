@@ -7,7 +7,8 @@ module.exports = {
     RIGHT: null,
     UP: null,
     DOWN: null
-  })
+  }),
+
 }
 
 

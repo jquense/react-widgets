@@ -8,7 +8,10 @@ var React   = require('react/addons')
 
 var DefaultListItem = React.createClass({
 
-  mixins: [ require('../mixins/DataHelpersMixin')],
+  mixins: [ 
+    require('../mixins/DataHelpersMixin'),
+    require('../mixins/RtlChildContextMixin')
+  ],
 
   render: function(){
       var item = this.props.item;

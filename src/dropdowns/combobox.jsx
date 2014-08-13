@@ -36,6 +36,7 @@ module.exports = React.createClass({
     require('../mixins/DataHelpersMixin'),
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataFilterMixin'),
+    require('../mixins/RtlParentContextMixin'),
     require('../mixins/DataIndexStateMixin')('selectedIndex'), 
     require('../mixins/DataIndexStateMixin')('focusedIndex')    
   ],
@@ -75,7 +76,6 @@ module.exports = React.createClass({
     var stateChanged = !_.isEqual(nextState, this.state) 
       , valueChanged = !_.isEqual(nextProps.value, this.props.value)
 
-    console.log(stateChanged, valueChanged)
     return stateChanged || valueChanged
   },
 
@@ -128,7 +128,8 @@ module.exports = React.createClass({
               'rw-combobox': true,
               'rw-widget':       true,
               'rw-state-focus':  this.state.focused,
-              'rw-open':         this.state.open
+              'rw-open':         this.state.open,
+              'rw-rtl':          this.isRtl()
             })}>
 
         <btn className='rw-select' onClick={this.toggle}>

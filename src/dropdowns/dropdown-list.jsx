@@ -37,6 +37,7 @@ module.exports = React.createClass({
   mixins: [ 
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataHelpersMixin'),
+    require('../mixins/RtlParentContextMixin'),
     require('../mixins/DataIndexStateMixin')('selectedIndex'), 
     require('../mixins/DataIndexStateMixin')('focusedIndex')    
   ],
@@ -71,6 +72,12 @@ module.exports = React.createClass({
     this.setWidth()
   },
 
+  shouldComponentUpdate: function(nextProps, nextState){
+    var stateChanged = !_.isEqual(nextState, this.state) 
+      , valueChanged = !_.isEqual(nextProps.value, this.props.value)
+    return stateChanged || valueChanged
+  },
+
 	render: function(){ 
 		var keys = _.keys(propTypes)
       , DropdownValue = this.props.valueComponent
@@ -90,7 +97,8 @@ module.exports = React.createClass({
               'rw-dropdown-list': true,
               'rw-widget':       true,
               'rw-state-focus':  this.state.focused,
-              'rw-open':         this.state.open
+              'rw-open':         this.state.open,
+              'rw-rtl':          this.isRtl()
             })}>
 
 				<span className="rw-dropdownlist-picker rw-select rw-btn">
@@ -129,13 +137,11 @@ module.exports = React.createClass({
 	},
 
   setWidth: function() {
-    var width = $(this.getDOMNode()).width()
-      , popup = $(this.refs.list.getDOMNode())
-      , ht = popup.height() > 200 ? 200 : popup.height()
-      , changed = width !== this.state.width || ht !== this.state.height;
+    var width = $(this.getDOMNode()).width() 
+      , changed = width !== this.state.width;
 
     if ( changed )
-      this.setState({ width: width, height: ht })   
+      this.setState({ width: width })   
   },
 
   _focus: function(focused){
