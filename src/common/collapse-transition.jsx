@@ -2,7 +2,7 @@ var React = require('react/addons')
   , TransitionGroup = React.addons.TransitionGroup
   , transitions = require('../util/transition')
   , events      = require('../util/events')
-  , $  =  require('zepto');
+  , $  =  require('$');
 
 //thanks Bootstrap
 //https://github.com/twbs/bootstrap/blob/master/js/collapse.js

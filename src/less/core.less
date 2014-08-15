@@ -73,6 +73,7 @@ ul.rw-list {
 
 .rw-combobox,
 .rw-date-picker,
+.rw-number-picker,
 .rw-dropdown-list {
   position:         relative;
   padding-right:    1.9em;
@@ -94,22 +95,27 @@ ul.rw-list {
     background: none;
   }
 
-  > .rw-select {
-    position: absolute;
-    width: 1.9em;
-    height: 100%;
-    right: 0;
-
-    &.rw-btn,
-    & > .rw-btn {
-      height: 100%;
-      vertical-align: middle;
-      outline: 0;
-    }
-  }
-
   &.rw-open {
     .border-bottom-radius(0);
+  }
+}
+
+.rw-select {
+  position: absolute;
+  width: 1.9em;
+  height: 100%;
+  right: 0;
+
+  &.rw-btn,
+  & > .rw-btn {
+    height: 100%;
+    vertical-align: middle;
+    outline: 0;
+  }
+
+  .rw-rtl & {
+    left: 0;
+    right: auto;
   }
 }
 
@@ -120,6 +126,7 @@ ul.rw-list {
 .rw-combobox,
 .rw-select-list,
 .rw-date-picker,
+.rw-number-picker,
 .rw-dropdown-list {
   background-color:   @input-bg;
   border:             @input-border 1px solid;
@@ -160,6 +167,7 @@ ul.rw-list {
 
 .rw-combobox,
 .rw-date-picker,
+.rw-number-picker,
 .rw-dropdown-list {
 
   &.rw-state-focus input.rw-input,
@@ -182,7 +190,8 @@ ul.rw-list {
 
 .rw-select-wrapper,
 .rw-combobox .rw-input,
-.rw-date-picker .rw-input {
+.rw-date-picker .rw-input,
+.rw-number-picker .rw-input {
   .border-left-radius(@input-border-radius);
   background-color: @widget-bg;
 
@@ -194,7 +203,8 @@ ul.rw-list {
 }
 
 .rw-combobox,
-.rw-date-picker {
+.rw-date-picker,
+.rw-number-picker {
 
   > .rw-select {
     border-left: @input-border 1px solid;
@@ -206,6 +216,16 @@ ul.rw-list {
   }
 }
 
+.rw-number-picker{
+
+  .rw-btn {
+    display: block;
+    height: 1em;
+    line-height: 1em;
+    width: 100%;
+    border-width: 0;
+  }
+}
 // .c1 {
 //   background: @lighter1
 // }

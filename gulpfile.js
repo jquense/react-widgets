@@ -30,7 +30,7 @@ gulp.task('libs', function () {
     bundle.require('react')
     bundle.require('lodash')
     bundle.require('bluebird')
-    bundle.require('zepto')
+    bundle.require('$')
 
     bundle.bundle({ debug: true })
         .on("error", handleError)
@@ -48,7 +48,7 @@ gulp.task('examples', function(){
     bundle.external('react')
     bundle.external('lodash')
     bundle.external('bluebird')
-    bundle.external('zepto')
+    bundle.external('$')
     
     bundle.bundle({ debug: true })
         .on("error", handleError)

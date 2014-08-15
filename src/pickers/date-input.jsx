@@ -2,7 +2,7 @@ var React = require('react/addons')
   , cx = React.addons.classSet
   , compose = require('../util/compose')
   , dates = require('../util/dates')
-  , $ = require('zepto')
+  , $ = require('$')
 
 
 module.exports = React.createClass({

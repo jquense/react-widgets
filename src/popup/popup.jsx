@@ -3,7 +3,7 @@ var React  = require('react/addons')
   , events = require('../util/events')
   , _ = require('lodash')
   , mergePropsInto = require('../util/transferProps')
-  , $ = require('zepto');
+  , $ = require('$');
 
 function childKey(children){
   var nextChildMapping = React.Children.map(children, function(c){ return c })

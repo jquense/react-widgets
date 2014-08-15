@@ -1,4 +1,4 @@
-var $ = require('zepto')
+var $ = require('$')
 
 module.exports = function outerHeight(elem, margin) {
 

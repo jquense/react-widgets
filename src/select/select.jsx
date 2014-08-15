@@ -2,7 +2,7 @@
 var React = require('react/addons')
   , cx    = React.addons.classSet
   , _     =  require('lodash')
-  , $     =  require('zepto')
+  , $     =  require('$')
   , directions = require('../util/constants').directions
   , SelectInput = require('./search-input.jsx')
   , TagList = require('./tag-list.jsx')

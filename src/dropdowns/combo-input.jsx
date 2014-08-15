@@ -2,7 +2,7 @@ var React = require('react/addons')
   , cx = React.addons.classSet
   , compose = require('../util/compose')
   , caretPos = require('../util/caret')
-  , $ = require('zepto')
+  , $ = require('$')
 
 
 module.exports = React.createClass({

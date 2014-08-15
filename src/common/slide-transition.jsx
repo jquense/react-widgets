@@ -1,6 +1,6 @@
 var React   = require('react/addons')
   , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup.jsx')
-  , $  =  require('zepto')
+  , $  =  require('$')
   , transitions = require('../util/transition')
   , events  =  require('../util/events')
   , _ = require('lodash');

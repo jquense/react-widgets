@@ -3,6 +3,7 @@ var DropdownList = require('../src/dropdowns/dropdown-list.jsx')
 var Select = require('../src/select/select.jsx')
 var Calendar = require('../src/calendar/calendar.jsx')
 var DatePicker = require('../src/pickers/datepicker.jsx')
+var NumberPicker = require('../src/pickers/numberpicker.jsx')
 var ComboBox = require('../src/dropdowns/combobox.jsx')
 var chance = new (require('chance'))
 //var _ = require('lodash')
@@ -16,7 +17,8 @@ var App = React.createClass({
 			dropdownValue: list[0],
 			comboboxValue: list[0],
 			selectValues: [],
-			calDate: new Date
+			calDate: new Date,
+			numberValue: 1
 		}
 	},
 
@@ -71,6 +73,15 @@ var App = React.createClass({
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<DatePicker id='AwesomeDatePicker' isRtl={false} value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
+					</section>
+					<section className="example" style={{ marginBottom: 20 }}>
+						<NumberPicker id='AwesomeNumPicker' 
+							isRtl={false} 
+							min={0}
+							max={5}
+							format="c"
+							value={this.state.numberValue} 
+							onChange={change.bind(null, 'numberValue')}/>
 					</section>
 				</div>
 				<div className='clearfix'>

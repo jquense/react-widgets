@@ -13,10 +13,10 @@
     ]
   },
   "browser": {
-    "zepto": "./vendor/zepto.js"
+    "$": "./vendor/zepto.js"
   },
   "browserify-shim": {
-    "zepto": "$"
+    "$": "$"
   },
   "dependencies": {
     "bluebird": "^1.2.4",

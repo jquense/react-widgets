@@ -3,7 +3,7 @@ var React   = require('react/addons')
   , compose = require('../util/compose')
   , mergePropsInto = require('../util/transferProps')
   , cx = React.addons.classSet
-  , $  =  require('zepto')
+  , $  =  require('$')
   , _  =  require('lodash');
 
 var DefaultListItem = React.createClass({
