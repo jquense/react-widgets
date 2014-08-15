@@ -1,4 +1,7 @@
- 
+/* for debugging */
+// *:focus { 
+//     outline: 1px red solid !important;
+// }
 
 .rw-widget {
   outline: 0;
@@ -132,11 +135,6 @@ ul.rw-list {
   border:             @input-border 1px solid;
   border-radius:      @input-border-radius;
 
-  &:active {
-    background-image: none;
-    .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
-  }
-
   &:hover {
     background-color: @state-bg-hover;
   }
@@ -163,6 +161,16 @@ ul.rw-list {
           border-color: @input-border;
     }
   }
+}
+
+.rw-combobox:active,
+.rw-select-list:active,
+.rw-date-picker:active,
+.rw-dropdown-list:active,
+.rw-number-picker .rw-btn:active,
+.rw-number-picker .rw-btn.active {
+  background-image: none;
+  .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
 }
 
 .rw-combobox,

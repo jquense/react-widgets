@@ -36,7 +36,7 @@ module.exports = React.createClass({
 
   render: function(){
     return (
-      <table className='rw-calendar-grid'>
+      <table className='rw-calendar-grid' aria-labeledby={this.props['aria-labeledby']}>
         <thead>
           <tr>{ this._headers() }</tr>
         </thead>

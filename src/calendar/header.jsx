@@ -7,6 +7,7 @@ module.exports = React.createClass({
 
   propTypes: {
     label:          React.PropTypes.string.isRequired,
+    labelId:        React.PropTypes.string,
 
     upDisabled:     React.PropTypes.bool.isRequired,
     prevDisabled:   React.PropTypes.bool.isRequired,
@@ -35,6 +36,7 @@ module.exports = React.createClass({
             <span className="rw-sr">Move Left</span></i>
         </btn>
         <btn className="rw-btn-view" 
+          id={this.props.labelId}
           onClick={this.props.onViewChange} 
           disabled={this.props.upDisabled} 
           aria-disabled={this.props.upDisabled}>

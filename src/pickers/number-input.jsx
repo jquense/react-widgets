@@ -45,8 +45,7 @@ module.exports = React.createClass({
           ? value
           : globalize.format(value, this.props.format)
 
-    //console.log(this.state.editing, value)
-
+   
     return this.transferPropsTo(
       <input 
         type='text' 
@@ -72,7 +71,4 @@ module.exports = React.createClass({
   //this intermediate state is for when one runs into the decimal
   current: setter('stringValue'),
 
-  focus: function(){
-    this.getDOMNode().focus()
-  }
 });

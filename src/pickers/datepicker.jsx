@@ -66,10 +66,11 @@ module.exports = React.createClass({
 
   render: function(){
     var self = this
-      , timeListID = this.props.id && this.props.id + '_time_listbox'
-      , dateListID = this.props.id && this.props.id + '_date_listbox'
-      , timeOptID  = this.props.id && this.props.id + '_time_option'
-      , dateOptID  = this.props.id && this.props.id + '_date_option'
+      , id   = this.props.id
+      , timeListID = id && id + '_time_listbox'
+      , dateListID = id && id + '_date_listbox'
+      , timeOptID  = id && id + '_time_option'
+      , dateOptID  = id && id + '_selected_option'
       , owns;
 
     if (dateListID && this.props.calendar ) owns = dateListID
@@ -79,6 +80,7 @@ module.exports = React.createClass({
       <div ref="element"
            tabIndex="-1"
            aria-expanded={ this.state.open }
+           aria-haspopup={true}
            onKeyDown={this._keyDown}
            onFocus={this._focus.bind(null, true)} 
            onBlur ={this._focus.bind(null, false)}
@@ -91,9 +93,13 @@ module.exports = React.createClass({
               'rw-rtl':         this.isRtl()
             })}>
         <DateInput ref='valueInput' 
+          aria-activedescendant={this.state.open 
+            ? this.state.openPopup === 'calendar' ? dateOptID : timeOptID
+            : undefined}
           aria-expanded={ this.state.open }
           aria-busy={!!this.props.busy}
           aria-owns={owns}
+          role='combobox'
           value={this.props.value} 
           focused={this.state.focused} 
           format={this.props.format} 
@@ -122,7 +128,6 @@ module.exports = React.createClass({
               <Time ref="timePopup" 
                 id={timeListID}
                 optID={timeOptID}
-                aria-hidden={ !this.state.open }
                 aria-hidden={ !this.state.open }
                 style={{ maxHeight: 200, height: 'auto' }}
                 value={this.props.value} 

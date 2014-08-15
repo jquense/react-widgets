@@ -1,7 +1,8 @@
 var React  = require('react/addons')
   , cx     = React.addons.classSet
   , _      = require('lodash')
-  , mergePropsInto = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps')
+  , directions = require('../util/constants').directions
   , Input  = require('./number-input.jsx');
 
 var btn = require('../common/btn.jsx')
@@ -59,22 +60,18 @@ module.exports = React.createClass({
     return { focused: false }
   },
 
-  componentWillUpdate: function(){
-    var el = this.refs.input.getDOMNode()
-
-    this.state.focused 
-      && el.focus()
-  },
 
   render: function(){ 
-    var val = this.inRangeValue(this.props.value)
+    var self = this
+      , val = this.inRangeValue(this.props.value)
 
-    return (
+    //console.log('render', this.state.focused)
+
+    return this.transferPropsTo(
       <div ref="element"
            onKeyDown={this._keyDown}
            onFocus={this._focus.bind(null, true)} 
            onBlur ={this._focus.bind(null, false)}
-
            tabIndex="-1"
            className={cx({
               'rw-number-picker': true,
@@ -85,16 +82,18 @@ module.exports = React.createClass({
 
         <span className='rw-select'>
           <btn 
-            onMouseDown={this.increment} 
+            onMouseDown={_.partial(self._mouseDown, directions.UP)} 
+            onMouseUp={this._mouseUp} 
             onClick={_.partial(this._focus, true)} 
-            aria-disabled={val === this.props.max}>
+            aria-disabled={val === this.props.max || this.props.disabled}>
 
             <i className="rw-i rw-i-caret-up"><span className="rw-sr">{ this.props.messages.increment }</span></i>
           </btn>
           <btn 
-            onMouseDown={this.decrement} 
+            onMouseDown={_.partial(self._mouseDown, directions.DOWN)} 
+            onMouseUp={this._mouseUp} 
             onClick={_.partial(this._focus, true)}
-            aria-disabled={val === this.props.min}>
+            aria-disabled={val === this.props.min || this.props.disabled}>
 
             <i className="rw-i rw-i-caret-down"><span className="rw-sr">{ this.props.messages.decrement }</span></i>
           </btn>
@@ -108,23 +107,45 @@ module.exports = React.createClass({
           aria-valuenow={val}
           aria-valuemin={_.isFinite(this.props.min) ? this.props.min : '' }
           aria-valuemax={_.isFinite(this.props.max) ? this.props.max : '' }
+          aria-disabled={ this.props.disabled }
+          aria-readonly={ this.props.readonly }
           onChange={this.change}
           onKeyDown={this.props.onKeyDown}/>
       </div>
     )
   },
 
+  //allow for styling, focus stealing keeping me from the normal what have you
+  _mouseDown: function(direction, e) {
+    var self = this
+      , el = $(e.target).is('.rw-btn') ? $(e.target) : $(e.target).closest('.rw-btn') 
+      , method = direction === directions.UP ? this.increment : this.decrement
+    
+    el.addClass('active')
+
+    method()
+    this.interval = setInterval(method, 800)
+  },
+
+  _mouseUp: function(e){
+    var el = $(e.target).is('.rw-btn') ? $(e.target) : $(e.target).closest('.rw-btn') 
+    el.removeClass('active')
+    clearInterval(this.interval)
+  },
+
   _focus: function(focused, e){
     var self = this;
 
-    console.log(e && e.target)
     clearTimeout(self.timer)
+
     self.timer = setTimeout(function(){
-      
-      if( focused !== self.state.focused) {
+      var el = self.refs.input.getDOMNode()
+
+      focused && el.focus()
+
+      if( focused !== self.state.focused)
         self.setState({ focused: focused })
-        
-      }
+
     }, 0)
   },
 

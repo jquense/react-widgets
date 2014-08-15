@@ -48,7 +48,7 @@ var App = React.createClass({
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<Calendar 
-							data={ this.state.data } 
+							id='Calendar'
 							value={ new Date } 
 							onChange={change.bind(null, 'calValue')}/>
 					</section>

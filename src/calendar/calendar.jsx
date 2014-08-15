@@ -84,12 +84,14 @@ module.exports = React.createClass({
   render: function(){
     var View = VIEW[this.state.view]
       , date = this.state.currentDate
-      , key  = this.state.view + '_' + date.getMonth() + '-' + date.getFullYear();
+      , key  = this.state.view + '_' + date.getMonth() + '-' + date.getFullYear()
+      , labelId    = this.props.id && this.props.id + '_view_label';
 
     return mergePropsInto(_.omit(this.props, 'value', 'min', 'max'),
       <div className='rw-calendar rw-widget' onKeyDown={this._keyDown}>
         <Header
           label={this._label()}
+          labelId={labelId}
           upDisabled={this.state.view === 'century'}
           prevDisabled={!dates.inRange(this.nextDate(LEFT), this.props.min, this.props.max)}
           nextDisabled={!dates.inRange(this.nextDate(RIGHT), this.props.min, this.props.max)}
@@ -100,6 +102,7 @@ module.exports = React.createClass({
         <SlideTransition direction={this.state.slideDirection}>
           <View ref='currentView'
             key={key}
+            aria-labeledby={labelId}
             selectedDate={this.props.value}
             value={this.state.currentDate}
             onChange={this.change}

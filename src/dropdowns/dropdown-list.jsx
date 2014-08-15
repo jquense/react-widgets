@@ -92,6 +92,7 @@ module.exports = React.createClass({
            onFocus={this._focus.bind(null, true)} 
            onBlur ={this._focus.bind(null, false)}
            aria-expanded={ this.state.open }
+           aria-haspopup={true}
            aria-activedescendent={ optID }
            tabIndex="-1"
            className={cx({

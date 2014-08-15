@@ -119,6 +119,7 @@ module.exports = React.createClass({
 		return (
 			<div ref="element"
            aria-expanded={ this.state.open }
+           aria-haspopup={true}
            onKeyDown={this._keyDown}
            onFocus={this._focus.bind(null, true)} 
            onBlur ={this._focus.bind(null, false)}

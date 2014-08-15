@@ -33,7 +33,9 @@ module.exports = React.createClass({
       , rows = chunk(months, 4);
 
     return (
-      <table tabIndex='0' role='grid' className='rw-calendar-grid rw-nav-view'>
+      <table tabIndex='-1' role='grid' 
+        className='rw-calendar-grid rw-nav-view' 
+        aria-labeledby={this.props['aria-labeledby']}>
         <tbody onKeyUp={this._keyUp}>
           { _.map(rows, this._row)}
         </tbody>

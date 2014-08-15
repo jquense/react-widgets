@@ -30,10 +30,19 @@ module.exports = React.createClass({
 
   render: function(){
     var years = getDecadeYears(this.props.value)
-      , rows  = chunk(years, 4);
+      , rows  = chunk(years, 4)
+      , id = this.props.id && this.props.id + '_selected_option';
+
+    this.selectedId = id
 
     return (
-      <table tabIndex='0' role='grid' className='rw-calendar-grid rw-nav-view'>
+      <table 
+        tabIndex='-1'
+        role='grid' 
+        className='rw-calendar-grid rw-nav-view' 
+        aria-activedescendant={selectedId}
+        aria-labeledby={this.props['aria-labeledby']}>
+
         <tbody onKeyUp={this._keyUp}>
           { _.map(rows, this._row)}
         </tbody>
@@ -42,28 +51,27 @@ module.exports = React.createClass({
   },
 
   _row: function(row, i){
-    // if (this.isRtl()) row.reverse()
-      
+    var id = this.selectedId
+  
     return (
       <tr key={'row_' + i}>
       {_.map(row, date => {
+        var focused = dates.eq(date,  this.state.focusedDate,  'year')
+
         return !dates.inRange(date, this.props.min, this.props.max, 'year') 
           ? <td className='rw-empty-cell'>&nbsp;</td>
           : (<td>
               <btn onClick={_.partial(this.props.onChange, date)}
+                id={ focused ? id : undefined }
                 className={cx({ 
                   'rw-off-range':   !inDecade(date, this.props.value),
-                  'rw-state-focus': dates.eq(date,  this.state.focusedDate,  'year')
+                  'rw-state-focus': focused
                 })}>
                 { dates.format(date, dates.formats.YEAR) }
               </btn>
             </td>)
       })}
     </tr>)
-  },
-
-  _onClick: function(date, idx){
-    console.log(date, idx)
   },
 
   move: function(date, direction){
