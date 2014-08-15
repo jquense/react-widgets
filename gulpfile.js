@@ -4,8 +4,25 @@ var gulp = require('gulp')
   , source = require('vinyl-source-stream')
   , browserify = require('browserify')
   , browserSync = require('browser-sync')
+  , configs = require('./webpack.configs')
+  , gulpWebpack = require('gulp-webpack')
   , fs = require('fs');
 
+
+gulp.task("dev-build", function() {
+    return gulpWebpack(configs.dev)
+      .pipe(gulp.dest('./example/'));
+})
+
+gulp.task("docs-build", function() {
+    return gulpWebpack(configs.docs)
+      .pipe(gulp.dest('./docs/'));
+})
+
+gulp.task("dist-build", function() {
+    return gulpWebpack(configs.browser)
+      .pipe(gulp.dest('./dist/'));
+})
 
 gulp.task('sync', function() {
     browserSync({
