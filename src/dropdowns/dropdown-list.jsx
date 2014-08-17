@@ -26,8 +26,15 @@ var propTypes = {
   data:           React.PropTypes.array,
   valueField:     React.PropTypes.string,
   textField:      React.PropTypes.string,
+
   valueComponent: React.PropTypes.component,
-  delay:          React.PropTypes.number
+  itemComponent:  React.PropTypes.component,
+
+  delay:          React.PropTypes.number,
+
+  messages:       React.PropTypes.shape({
+    open:         React.PropTypes.string,
+  })
 };
 
 module.exports = React.createClass({
@@ -51,7 +58,10 @@ module.exports = React.createClass({
 		return {
 			open:          false,
       selectedIndex: initialIdx,
-      focusedIndex:  initialIdx === -1 ? 0 : initialIdx
+      focusedIndex:  initialIdx === -1 ? 0 : initialIdx,
+      messages: {
+        open: 'open dropdown'
+      }
 		}
 	},
 
@@ -131,6 +141,7 @@ module.exports = React.createClass({
               focusedIndex={this.state.focusedIndex}
               textField={this.props.textField} 
               valueField={this.props.valueField}
+              listItem={this.props.itemComponent}
               onSelect={this._onSelect}/>
           </div>
         </Popup>
@@ -139,7 +150,8 @@ module.exports = React.createClass({
 	},
 
   setWidth: function() {
-    var width = $(this.getDOMNode()).width() 
+    var el = $(this.getDOMNode())
+      , width = el.outerWidth ? el.outerWidth() : el.width()
       , changed = width !== this.state.width;
 
     if ( changed )
@@ -169,27 +181,30 @@ module.exports = React.createClass({
       , alt = e.altKey
       , isOpen = this.state.open;
 
-    if ( key === 'End' ) 
+    if ( key === 'End' ) {
       if ( isOpen) this.setFocusedIndex(this._data().length - 1)
       else change(this._data().length - 1)
-
-    else if ( key === 'Home' ) 
+      e.preventDefault()
+    }
+    else if ( key === 'Home' ) {
       if ( isOpen) this.setFocusedIndex(0)
       else change(0)
-
-    else if ( key === 'Enter' && isOpen ) 
+      e.preventDefault()
+    }
+    else if ( key === 'Enter' && isOpen ) {
       change(this.state.focusedIndex)
-
+    }
     else if ( key === 'ArrowDown' ) {
       if ( alt )         this.open()
       else if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
       else               change(this.nextSelectedIndex())
-
+      e.preventDefault()
     } 
     else if ( key === 'ArrowUp' ) {
       if ( alt )         this.close()
       else if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
       else               change(this.prevSelectedIndex())
+      e.preventDefault()
     }
     else
       this.search(

@@ -5,7 +5,9 @@ var gulp = require('gulp')
   , browserify = require('browserify')
   , browserSync = require('browser-sync')
   , configs = require('./webpack.configs')
+  , WebpackDevServer = require("webpack-dev-server")
   , gulpWebpack = require('gulp-webpack')
+  , webpack = require('webpack')
   , fs = require('fs');
 
 
@@ -15,14 +17,44 @@ gulp.task("dev-build", function() {
 })
 
 gulp.task("docs-build", function() {
+
     return gulpWebpack(configs.docs)
-      .pipe(gulp.dest('./docs/'));
+      .pipe(gulp.dest('./docs/js'));
 })
+
+gulp.task('docs-less', function(){
+    gulp.src('./src/less/react-widgets.less')
+        .pipe(plumber())
+        .pipe(less())
+        .pipe(gulp.dest('./docs/css'));
+});
 
 gulp.task("dist-build", function() {
     return gulpWebpack(configs.browser)
       .pipe(gulp.dest('./dist/'));
 })
+
+
+gulp.task("dev-server", function(callback) {
+
+  // Start a webpack-dev-server
+  new WebpackDevServer(webpack(configs.dev), {
+    publicPath: "/example",
+    stats: {
+      colors: true
+    }
+  }).listen(8080, "localhost");
+});
+
+gulp.task("doc-server", function(callback) {
+
+  // Start a webpack-dev-server
+  new WebpackDevServer(webpack(configs.docs), {
+    publicPath: "/docs",
+    stats: { colors: true }
+  }).listen(8081, "localhost");
+});
+
 
 gulp.task('sync', function() {
     browserSync({
@@ -37,43 +69,7 @@ gulp.task('less', function(){
     gulp.src('./src/less/react-widgets.less')
         .pipe(plumber())
         .pipe(less())
-        .pipe(gulp.dest('./dist/css'))
-        .pipe(browserSync.reload({stream:true}));
-});
-
-gulp.task('libs', function () {
-    var bundle = browserify();
-
-    bundle.require('react')
-    bundle.require('lodash')
-    bundle.require('bluebird')
-    bundle.require('$')
-
-    bundle.bundle({ debug: true })
-        .on("error", handleError)
-        .pipe(source('vendor.js'))
-        .pipe(plumber())
-        .pipe(gulp.dest('./dist'));
-
-});
-
-gulp.task('examples', function(){
-    var bundle = browserify();
-
-    bundle.add('./example/example.jsx') 
-    bundle.transform({ es6: true },'reactify')
-    bundle.external('react')
-    bundle.external('lodash')
-    bundle.external('bluebird')
-    bundle.external('$')
-    
-    bundle.bundle({ debug: true })
-        .on("error", handleError)
-        .pipe(source('./compiled.js'))
-        .pipe(plumber())
-        .pipe(gulp.dest('./example'))
-        .pipe(browserSync.reload({ stream:true, once: true }));
-        
+        .pipe(gulp.dest('./dist/css'));
 });
 
 gulp.task('watcher', function() {
@@ -86,6 +82,9 @@ gulp.task('browserify', ['libs', 'examples']);
 gulp.task('default', [ 'sync', 'browserify', 'less' ]);
 
 gulp.task('watch', ['sync', 'watcher']);
+
+
+gulp.task('docs', ['docs-build', 'docs-less']);
 
 function handleError(err) {
   console.log(err.toString());

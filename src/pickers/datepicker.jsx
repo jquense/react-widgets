@@ -161,7 +161,7 @@ module.exports = React.createClass({
     if( !this.refs.timePopup) return
 
     var el = $(this.refs.timePopup.getDOMNode())
-      , width = $(this.getDOMNode()).width()
+      , width = el.outerWidth ? el.outerWidth() : el.width()
       , changed = width !== this.state.timeWidth;
 
     if ( changed ){

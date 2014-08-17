@@ -40,6 +40,16 @@
     "browserify-shim": "~3.6.0",
     "chance": "^0.5.9",
     "browser-sync": "~1.3.3",
-    "react-bootstrap": "~0.11.1"
+    "react-bootstrap": "^0.11.1",
+    "gulp-webpack": "^0.3.0",
+    "webpack": "^1.3.3-beta2",
+    "jsx-loader": "^0.11.0",
+    "less": "^1.7.4",
+    "less-loader": "^0.7.7",
+    "style-loader": "^0.7.0",
+    "css-loader": "^0.7.1",
+    "raw-loader": "^0.5.1",
+    "url-loader": "^0.5.5",
+    "file-loader": "^0.6.1"
   }
 }

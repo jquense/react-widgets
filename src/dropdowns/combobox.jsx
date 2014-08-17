@@ -60,8 +60,7 @@ module.exports = React.createClass({
   getDefaultProps: function(){
     return {
       suggest: false,
-      filter: 'startsWith',
-      //filter: false,
+      filter: false,
       delay: 500,
 
       messages: {
@@ -181,7 +180,8 @@ module.exports = React.createClass({
 	},
 
   setWidth: function() {
-    var width = $(this.getDOMNode()).width()
+    var el = $(this.getDOMNode())
+      , width = el.outerWidth ? el.outerWidth() : el.width()
       , changed = width !== this.state.width;
 
     if ( changed )

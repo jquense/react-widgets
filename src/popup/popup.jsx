@@ -3,6 +3,7 @@ var React  = require('react/addons')
   , events = require('../util/events')
   , _ = require('lodash')
   , mergePropsInto = require('../util/transferProps')
+  , transition = require('../util/transition')
   , $ = require('$');
 
 function childKey(children){
@@ -88,7 +89,7 @@ module.exports = React.createClass({
   },
 
 	render: function(){
-    var style   = _.extend({}, this.props.style || {}, { overflow: 'hidden', position: 'fixed', zIndex: 1005 })
+    var style   = _.extend({}, this.props.style || {}, { overflow: 'hidden', position: 'absolute', zIndex: 1005 })
       , Content = mergePropsInto(
           { className: 'rw-popup rw-widget' }
         , this.props.children);
@@ -96,7 +97,7 @@ module.exports = React.createClass({
     Content.props.ref = this.props.children.props.ref;
 
 		return (
-      <div style={style}> 
+      <div style={style} > 
         <PopupContent ref='content'>
           { Content }
         </PopupContent>
@@ -109,8 +110,8 @@ module.exports = React.createClass({
       , anim = this.getDOMNode()
 
     anim.style.display = 'block'
-    anim.style.height  = el.height() + 'px'
-    anim.style.width   = el.width() + 'px'
+    anim.style.height  = (el.outerHeight ? el.outerHeight() : el.height() ) + 'px'
+    //anim.style.width   = (el.width() + )'px'
   },
 
   position: function(){
@@ -122,8 +123,8 @@ module.exports = React.createClass({
       aOffset = $anchor.offset()
 
       $anim.css({
-        top:    aOffset.top + aOffset.height - 1,
-        left:   aOffset.left,
+        top:    aOffset.height - 1,
+        left:   -1 //aOffset.left,
        // width:  aOffset.width
       });
   },
@@ -139,12 +140,13 @@ module.exports = React.createClass({
     this.props.onOpening()
 
     el.css('position', 'absolute')
-      .animate({ translateY: 0 }, self.props.duration, function(){
+      .animate({ top: 0 }, self.props.duration, function(){
         el.css('position', self.ORGINAL_POSITION || 'static');
         anim.style.overflow = 'visible'
         self.ORGINAL_POSITION = null
         self.props.onOpen()
       })
+
   },
 
   close: function(dur){
@@ -155,19 +157,19 @@ module.exports = React.createClass({
 
     this.ORGINAL_POSITION = el.css('position');
     this.dimensions()
-
     this.props.onClosing()
 
     anim.style.overflow = 'hidden'
-    
+
     el.css('position', 'absolute')
-      .animate({ translateY: '-100%' }, dur === undefined ? this.props.duration : dur, function() {
+      .animate({ top: '-100%' }, dur === undefined ? this.props.duration : dur, function() {
         el.css('position', self.ORGINAL_POSITION || 'static');
         
         anim.style.display = 'none'
         self.ORGINAL_POSITION = null
         self.props.onClose()
       })
+
   },
 
   _height: function(){

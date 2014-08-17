@@ -1,0 +1,57 @@
+
+h2, h3 {
+  margin-top: 40px;
+} 
+
+h3 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  
+}
+.example {
+  margin-top: 20px;
+  position: relative;
+  border: #ddd 1px solid;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  padding: 20px;
+  padding-top: 35px;
+}
+
+.example:before {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  color: #959595;
+  content: 'Example';
+}
+.example + pre {
+  margin-top: 0 !important;
+  border-top-width: 0; 
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.keyboard-list.list-unstyled {
+  padding-left: 20px;
+}
+
+.keyboard-list > li {
+  padding: 10px 0;
+}
+
+h3 {
+  overflow: hidden;
+}
+
+h3 > .default {
+  float: right;
+  font-weight: normal;
+  line-height: 1;
+  font-size: 65%;
+  color:  #AF006E;
+}
+
+.rw-widget {
+  max-width: 300px;
+}

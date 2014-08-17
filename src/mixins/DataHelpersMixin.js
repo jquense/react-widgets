@@ -21,9 +21,9 @@ module.exports = {
   _dataText: function(item){
     var field = this.props.textField
 
-    return field && item && _.has(item, field)
+    return (field && item && _.has(item, field)
       ? item[field]
-      : item
+      : item) + ''
   },
 
   _dataIndexOf: function(data, item){

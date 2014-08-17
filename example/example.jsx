@@ -8,6 +8,8 @@ var ComboBox = require('../src/dropdowns/combobox.jsx')
 var chance = new (require('chance'))
 //var _ = require('lodash')
 
+require('../src/less/react-widgets.less')
+
 var App = React.createClass({
 
 	getInitialState: function(){

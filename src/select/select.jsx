@@ -21,6 +21,7 @@ var btn = require('../common/btn.jsx')
       tagComponent:   React.PropTypes.func,
 
       messages:       React.PropTypes.shape({
+        open:         React.PropTypes.string,
         emptyList:    React.PropTypes.string,
         emptyFilter:  React.PropTypes.string
       })
@@ -141,8 +142,8 @@ module.exports = React.createClass({
   },
 
   setWidth: function() {
-    var width = $(this.getDOMNode()).width()
-      , popup = $(this.refs.list.getDOMNode())
+    var el = $(this.getDOMNode())
+      , width = el.outerWidth ? el.outerWidth() : el.width()
       , changed = width !== this.state.width;
 
     if ( changed )
