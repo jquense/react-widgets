@@ -36,11 +36,11 @@ module.exports = React.createClass({
 
   render: function(){
     return (
-      <table className='rw-calendar-grid' aria-labeledby={this.props['aria-labeledby']}>
+      <table  className='rw-calendar-grid' aria-labeledby={this.props['aria-labeledby']}>
         <thead>
           <tr>{ this._headers() }</tr>
         </thead>
-        <tbody tabIndex='-1' onKeyUp={this._keyUp}>
+        <tbody tabIndex='-1' ref='table' onKeyUp={this._keyUp}>
           { this._body() }
         </tbody>
       </table>

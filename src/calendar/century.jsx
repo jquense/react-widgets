@@ -46,15 +46,17 @@ module.exports = React.createClass({
   },
 
   _row: function(row, i){
-    // if (this.isRtl()) row.reverse()
+
       
     return (
       <tr key={'row_' + i}>
       {_.map(row, date => {
+        var d = inRangeDate(date, this.props.min, this.props.max) 
+
         return !inRange(date, this.props.min, this.props.max) 
           ? <td className='rw-empty-cell'>&nbsp;</td>
           : (<td>
-              <btn onClick={_.partial(this.props.onChange, date)}
+              <btn onClick={_.partial(this.props.onChange, d)}
                 className={cx({ 
                   'rw-off-range':  !inCentury(date, this.props.value),
                   'rw-state-focus': dates.eq(date, this.state.focusedDate, 'decade')
@@ -90,6 +92,10 @@ module.exports = React.createClass({
 function label(date){
   return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR) 
     + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
+}
+
+function inRangeDate(decade, min, max){
+  return dates.max( dates.min(decade, max), min) 
 }
 
 function inRange(decade, min, max){

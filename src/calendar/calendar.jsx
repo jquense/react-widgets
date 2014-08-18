@@ -43,15 +43,15 @@ module.exports = React.createClass({
 
 
   propTypes: {
-    culture:      React.PropTypes.array,
+    onChange:     React.PropTypes.func.isRequired,
     value:        React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
 
     format:       React.PropTypes.string,
-    initialView:  React.PropTypes.oneOf(['month', 'year', 'decade']),
-
-    onChange:     React.PropTypes.func.isRequired
+    
+    initialView:  React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
+    finalView:    React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
   },
 
   getInitialState: function(){
@@ -70,6 +70,9 @@ module.exports = React.createClass({
       value: new Date,
       min:  new Date(2014,5, 14),
       max:  new Date(2099,11, 31),
+
+      initialView: 'month',
+      finalView: 'century'
     }
   },
 
@@ -92,7 +95,7 @@ module.exports = React.createClass({
         <Header
           label={this._label()}
           labelId={labelId}
-          upDisabled={this.state.view === 'century'}
+          upDisabled={this.state.view === this.props.finalView}
           prevDisabled={!dates.inRange(this.nextDate(LEFT), this.props.min, this.props.max)}
           nextDisabled={!dates.inRange(this.nextDate(RIGHT), this.props.min, this.props.max)}
           onViewChange={_.partial(this.navigate, UP, null)}

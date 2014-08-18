@@ -41,7 +41,7 @@ module.exports = React.createClass({
       <tr>{ _.map(this.props.days, (day, idx) => {
         return !dates.inRange(day, this.props.min, this.props.max)
             ? <td key={'day_' + idx} className='rw-empty-cell'>&nbsp;</td>
-            : (<td key={'day_' + idx}>
+            : (<td key={'day_' + idx} >
                 <btn onClick={_.partial(this.props.onClick, day)} 
                   className={cx({ 
                     'rw-off-range':      dates.month(day) !== this.props.month,

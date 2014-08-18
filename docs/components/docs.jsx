@@ -7,7 +7,8 @@ var React = require('react/addons')
 
   , DropdownListExample = require('./examples/dropdownlist.jsx')
   , ComboBoxExample = require('./examples/combobox.jsx')
-  , SelectExample = require('./examples/select.jsx');
+  , SelectExample = require('./examples/select.jsx')
+  , CalendarExample = require('./examples/calendar.jsx');
 
 require('../../src/less/react-widgets.less')
 
@@ -370,6 +371,25 @@ var Docs = React.createClass({
                 <li><kbd>any key</kbd> search list for item starting with key</li>
               </ul>
 
+            </section>
+
+
+            <section>
+              <h1 id="select-list" className="page-header">Calendar</h1>
+              <p>
+                Calendar widget.
+              </p>
+              <CalendarExample/>
+              <Example code={
+                "render: function(){\n"+
+                "  //... \n\n" +
+                "  return (\n"+
+                "    <Calendar \n"+
+                "      value={this.state.value}\n"+
+                "      onChange={this._change}\n"+
+                "   )\n"+
+                "}"
+              }/>
             </section>
           </article>
         </div>

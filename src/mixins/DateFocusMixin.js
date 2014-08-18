@@ -20,7 +20,9 @@ module.exports = function(viewUnit, smallUnit){
     componentWillReceiveProps: function(nextProps) {
       var focused = this.state.focusedDate
 
-      if ( !dates.inRange(focused, nextProps.min, nextProps.max) ) 
+      //!dates.inRange(focused, nextProps.min, nextProps.max)
+
+      if ( !dates.eq(nextProps.value, focused, smallUnit) ) 
         this.setState({
           focusedDate: nextProps.value
         })

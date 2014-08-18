@@ -122,6 +122,18 @@ var dates = module.exports = {
 		return a <= b
 	}),
 
+  min: function(){
+    return _.min(arguments, function(a){
+      return +a
+    })
+  },
+
+  max: function(){
+    return _.max(arguments, function(a){
+      return +a
+    })
+  },
+  
   inRange: function(day, min, max, unit){
     unit = unit || 'day'
 

@@ -40,7 +40,7 @@ module.exports = React.createClass({
         tabIndex='-1'
         role='grid' 
         className='rw-calendar-grid rw-nav-view' 
-        aria-activedescendant={selectedId}
+        aria-activedescendant={id}
         aria-labeledby={this.props['aria-labeledby']}>
 
         <tbody onKeyUp={this._keyUp}>
