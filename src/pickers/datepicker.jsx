@@ -70,7 +70,7 @@ module.exports = React.createClass({
       , timeListID = id && id + '_time_listbox'
       , dateListID = id && id + '_date_listbox'
       , timeOptID  = id && id + '_time_option'
-      , dateOptID  = id && id + '_selected_option'
+      , dateOptID  = id && id + '_table_selected_item'
       , owns;
 
     if (dateListID && this.props.calendar ) owns = dateListID
@@ -144,13 +144,14 @@ module.exports = React.createClass({
             open={this.state.open && this.state.openPopup === 'calendar'} 
             onRequestClose={this.close}>
 
-              <Calendar ref="calPopup"   
-                aria-hidden={ !this.state.open }
-                value={this.props.value} 
-                min={this.props.min} 
-                max={this.props.max} 
-                onChange={this._selectDate}
-                id={ dateListID }/>
+            <Calendar ref="calPopup"   
+              maintainFocus={false}
+              aria-hidden={ !this.state.open }
+              value={this.props.value} 
+              min={this.props.min} 
+              max={this.props.max} 
+              onChange={this._selectDate}
+              id={ dateListID }/>
           </Popup>
         }
       </div>

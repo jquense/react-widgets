@@ -92,6 +92,7 @@ module.exports = React.createClass({
 	render: function(){ 
 		var keys = _.keys(propTypes)
       , DropdownValue = this.props.valueComponent
+      , valueItem = this._dataItem( this._data(), this.props.value )
       , optID = this.props.id && this.props.id + '_option' || '';
 
 		return mergePropsInto(
@@ -120,7 +121,7 @@ module.exports = React.createClass({
 				</span>
 				<DropdownValue
             className="rw-input" 
-            value={this.props.value}
+            value={valueItem}
             textField={this.props.textField} 
             valueField={this.props.valueField}/>
 

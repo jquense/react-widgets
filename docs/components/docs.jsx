@@ -24,7 +24,8 @@ var Docs = React.createClass({
 
   render: function(){
     var Nav = Bootstrap.Nav
-      , NavItem = Bootstrap.NavItem;
+      , NavItem = Bootstrap.NavItem
+      , TabPane = Bootstrap.TabPane;
 
     return (
       <div style={{ marginTop: 72 }}>
@@ -386,7 +387,17 @@ var Docs = React.createClass({
                 "  return (\n"+
                 "    <Calendar \n"+
                 "      value={this.state.value}\n"+
-                "      onChange={this._change}\n"+
+                "      onChange={this._change}/>\n"+
+                "   )\n\n"+
+                "    <Calendar \n"+
+                "      ...\n"+
+                "      initialView='year'\n"+
+                "      finialView='decade'/>\n"+
+                "   )\n\n"+
+                "    <Calendar \n"+
+                "      ...\n"+
+                "      min={new Date(2014, 0, 1)}\n"+
+                "      max={new Date(2015, 12, 15)}/>\n"+
                 "   )\n"+
                 "}"
               }/>

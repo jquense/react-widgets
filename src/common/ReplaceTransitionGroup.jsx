@@ -119,7 +119,7 @@ module.exports = React.createClass({
   _tryFinish: function(){
     var node = this.getDOMNode()
 
-    if ( Object.keys(this.currentlyTransitioningKeys).length !== 0 )
+    if ( this.isTransitioning() )
       return 
 
     node.style.overflow = 'visible'
@@ -142,6 +142,10 @@ module.exports = React.createClass({
       this.performLeave(key); // This was removed before it had fully entered. Remove it.
     
     this._tryFinish()
+  },
+
+  isTransitioning: function(){
+    return Object.keys(this.currentlyTransitioningKeys).length !== 0
   },
 
   performLeave: function(key) {

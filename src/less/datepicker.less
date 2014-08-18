@@ -28,35 +28,37 @@
 .rw-calendar {
   background-color: @widget-bg;
 
-  td {
-    .rw-btn:hover {
-      background-color: @state-bg-hover;
-    }
+  thead > tr {
+    border-bottom: 2px solid @input-border;
   }
 
-  > .rw-header {
+  .rw-header {
+    padding-bottom: 5px;
+    
     .rw-btn-left,
     .rw-btn-right {
       width: 12.5%;
-      height: 1.8em;
     }
 
     .rw-btn-view {
       width: 75%;
-      height: 1.8em;
       outline: 0;
-
+      background-color:   @input-bg;
+      border:             @input-bg 1px solid;
+      border-radius:      @input-border-radius;
     }
   }
 }
 
 
 .rw-calendar-grid {
+  height: 200 / 14em;
   table-layout: fixed;
   width: 100%;
 
   th {
     text-align: right;
+    padding:    0 .4em 0 .1em;
   }
 
   .rw-btn {
@@ -64,10 +66,24 @@
     text-align: right;
   }
 
+  td {
+    .rw-btn {
+      border-radius:        @input-border-radius;
+      padding:              0 .4em 0 .1em;
+      &:hover {
+        background-color:   @state-bg-hover;
+      }
+
+      &.rw-off-range {
+        color: lighten(@btn-color, 50%)
+      }
+    }
+  }
+
   &.rw-nav-view {
 
     .rw-btn {
-      padding: 0.5em 0;
+      padding: .25em 0 .3em;
       display: block;
       overflow: hidden;
       text-align: center;

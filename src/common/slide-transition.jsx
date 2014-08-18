@@ -67,7 +67,9 @@ var SlideChildGroup = React.createClass({
 
   render: function() {
     return React.Children.only(this.props.children);
-  }
+  },
+
+  
 })
 
 
@@ -106,7 +108,11 @@ module.exports = React.createClass({
         this.props.children
       )
     );
-  }
+  },
+
+  isTransitioning: function(){
+    return this.isMounted() && this.refs.container.isTransitioning()
+  },
 
   
 });

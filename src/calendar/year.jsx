@@ -1,9 +1,9 @@
 var React = require('react/addons')
-  , Week  = require('./week.jsx')
   , cx    = React.addons.classSet
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
+  , transferProps = require('../util/transferProps')
   , _ = require('lodash')
 
 var opposite = {
@@ -32,11 +32,15 @@ module.exports = React.createClass({
     var months = dates.monthsInYear(dates.year(this.props.value))
       , rows = chunk(months, 4);
 
-    return (
-      <table tabIndex='-1' role='grid' 
+    return transferProps(
+      _.omit(this.props, 'max', 'min', 'value', 'onChange'),
+      <table tabIndex='0' 
+        ref='table'
+        role='grid' 
         className='rw-calendar-grid rw-nav-view' 
-        aria-labeledby={this.props['aria-labeledby']}>
-        <tbody onKeyUp={this._keyUp}>
+        aria-labeledby={this.props['aria-labeledby']}
+        onKeyUp={this._keyUp}>
+        <tbody >
           { _.map(rows, this._row)}
         </tbody>
       </table>
@@ -49,10 +53,19 @@ module.exports = React.createClass({
     return (
       <tr>
       {_.map(row, date => {
+        var focused  = dates.eq(date, this.state.focusedDate,  'month')
+          , selected = dates.eq(date, this.props.value,  'month')
+          , id = this.props.id && this.props.id + '_selected_item';
+
         return dates.inRange(date, this.props.min, this.props.max, 'month') 
           ? (<td >
-              <btn onClick={_.partial(this.props.onChange, date)}
-                className={cx({ 'rw-state-focus' : dates.eq(date, this.state.focusedDate,  'month')})}>
+              <btn onClick={_.partial(this.props.onChange, date)} tabIndex='-1'
+                id={focused ? id : undefined}
+                aria-selected={selected}
+                className={cx({ 
+                  'rw-state-focus':    focused,
+                  'rw-state-selected': selected
+                })}>
                 { dates.format(date, dates.formats.MONTH_NAME_ABRV) }
               </btn>
             </td>)
@@ -61,8 +74,8 @@ module.exports = React.createClass({
     </tr>)
   },
 
-  _onClick: function(date, idx){
-    console.log(date, idx)
+  focus: function(){
+    this.refs.table.getDOMNode().focus();
   },
 
   move: function(date, direction){

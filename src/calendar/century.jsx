@@ -3,6 +3,7 @@ var React = require('react/addons')
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
+  , transferProps = require('../util/transferProps')
   , _ = require('lodash')
 
 var opposite = {
@@ -33,12 +34,15 @@ module.exports = React.createClass({
     var years = getCenturyDecades(this.props.value)
       , rows  = chunk(years, 4);
 
-    return (
-      <table tabIndex='0' 
+    return transferProps(
+      _.omit(this.props, 'max', 'min', 'value', 'onChange'),
+      <table tabIndex='0'
+        ref='table' 
         role='grid' 
         className='rw-calendar-grid rw-nav-view'
-        aria-labeledby={this.props['aria-labeledby']}>
-        <tbody onKeyUp={this._keyUp}>
+        aria-labeledby={this.props['aria-labeledby']}
+        onKeyUp={this._keyUp}>
+        <tbody>
           { _.map(rows, this._row)}
         </tbody>
       </table>
@@ -51,21 +55,32 @@ module.exports = React.createClass({
     return (
       <tr key={'row_' + i}>
       {_.map(row, date => {
-        var d = inRangeDate(date, this.props.min, this.props.max) 
+        var focused  = fdates.eq(date,  this.state.focusedDate,  'decade')
+          , selected = dates.eq(date, this.props.value,  'decade')
+          , id = this.props.id && this.props.id + '_selected_item'
+          , d = inRangeDate(date, this.props.min, this.props.max) 
 
         return !inRange(date, this.props.min, this.props.max) 
           ? <td className='rw-empty-cell'>&nbsp;</td>
           : (<td>
-              <btn onClick={_.partial(this.props.onChange, d)}
+              <btn onClick={_.partial(this.props.onChange, d)} 
+                tabIndex='-1'
+                id={ focused ? id : undefined }
+                aria-selected={selected}
                 className={cx({ 
-                  'rw-off-range':  !inCentury(date, this.props.value),
-                  'rw-state-focus': dates.eq(date, this.state.focusedDate, 'decade')
+                  'rw-off-range':       !inCentury(date, this.props.value),
+                  'rw-state-focus':     focused,
+                  'rw-state-selected':  selected,
                  })}>
                 { label(date) }
               </btn>
             </td>)
       })}
     </tr>)
+  },
+
+  focus: function(){
+    this.refs.table.getDOMNode().focus();
   },
 
   move: function(date, direction){

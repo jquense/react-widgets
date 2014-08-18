@@ -10,34 +10,38 @@ module.exports = React.createClass({
     var Calendar = require('../../../src/calendar/Calendar.jsx')
 
     return (
-      <div className='example'>
-        <div className='form-group col-sm-4'>
-          <label className=' control-label'>Calendar</label>
-          <div>
-            <Calendar 
-
-              value={this.state.value || new Date}
-              min={new Date(2014, 0, 1)}
-              onChange={this._change.bind(null, 'value')}/>
+      <div className='example '>
+        <div className='row'>
+          <div className='form-group col-sm-4'>
+            <label className=' control-label'>Calendar</label>
+            <div>
+              <Calendar 
+                id='Calendar_1'
+                value={this.state.valueA || new Date}
+                onChange={this._change.bind(null, 'valueA')}/>
+            </div>
           </div>
-        </div>
-        <div className='form-group col-sm-4'>
-          <label className=' control-label'>Limited depth</label>
-          <div>
-            <Calendar 
-              value={this.state.value || new Date}
-              finalView='year'
-              onChange={this._change.bind(null, 'value')}/>
+          <div className='form-group col-sm-4'>
+            <label className=' control-label'>Min and Max set</label>
+            <div>
+              <Calendar
+                id='Calendar_3'
+                value={this.state.valueC || new Date}
+                onChange={this._change.bind(null, 'valueC')}
+                min={new Date(2014, 0, 1)}
+                max={new Date(2015, 2, 15)}/>
+            </div>
           </div>
-        </div>
-        <div className='form-group col-sm-4'>
-          <label className=' control-label'>Calendar</label>
-          <div>
-            <Calendar 
-
-              value={this.state.value || new Date}
-              min={new Date(2014, 0, 1)}
-              onChange={this._change.bind(null, 'value')}/>
+          <div className='form-group col-sm-4'>
+            <label className=' control-label'>Limited depth</label>
+            <div>
+              <Calendar 
+                id='Calendar_2'
+                value={this.state.valueB || new Date}
+                finalView='decade'
+                initialView='year'
+                onChange={this._change.bind(null, 'valueB')}/>
+            </div>
           </div>
         </div>
       </div>
@@ -51,3 +55,5 @@ module.exports = React.createClass({
   }
 
 })
+
+          

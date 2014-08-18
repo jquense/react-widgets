@@ -150,13 +150,25 @@ var dates = module.exports = {
 	month: 					createAccessor('Month'),
 	year: 					createAccessor('FullYear'),
 
-	weekday: function (date, val) {
-        var weekday = (dates.day(date) + 7 - startOfWeek() ) % 7;
+  decade: function (date, val) {
+    return val == undefined 
+      ? dates.year(dates.startOf(date, DECADE))
+      : dates.add(date, val + 10, YEAR);
+  },
 
-        return val == undefined 
-	        ? weekday 
-	        : dates.add(date, val - weekday, DAY);
-    },
+  century: function (date, val) {
+    return val == undefined 
+      ? dates.year(dates.startOf(date, CENTURY))
+      : dates.add(date, val + 100, YEAR);
+  },
+
+	weekday: function (date, val) {
+      var weekday = (dates.day(date) + 7 - startOfWeek() ) % 7;
+
+      return val == undefined 
+        ? weekday 
+        : dates.add(date, val - weekday, DAY);
+  },
 }
 
 

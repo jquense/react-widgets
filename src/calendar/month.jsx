@@ -1,10 +1,12 @@
 var React = require('react/addons')
-  , Week  = require('./week.jsx')
   , cx    = React.addons.classSet
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
+  , transferProps = require('../util/transferProps')
   , _ = require('lodash')
+
+var btn = require('../common/btn.jsx')
 
 var opposite = {
   LEFT: directions.RIGHT,
@@ -35,38 +37,53 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    return (
-      <table  className='rw-calendar-grid' aria-labeledby={this.props['aria-labeledby']}>
+    var month = dates.visibleDays(this.props.value)
+      , rows  = chunk(month, 7 );
+
+    return transferProps(
+      _.omit(this.props, 'max', 'min', 'value', 'onChange'),
+      <table ref='table' 
+        role='grid'
+        tabIndex='0'
+        className='rw-calendar-grid' 
+        onKeyUp={this._keyUp}>
         <thead>
           <tr>{ this._headers() }</tr>
         </thead>
-        <tbody tabIndex='-1' ref='table' onKeyUp={this._keyUp}>
-          { this._body() }
+        <tbody>
+          { _.map(rows, this._row)}
         </tbody>
       </table>
     )
   },
 
+  _row: function(row, i){
+    return (
+      <tr key={'week_' + i}>{ 
+      _.map(row, (day, idx) => {
+        var focused  = dates.eq(day, this.state.focusedDate, 'day')
+          , selected = dates.eq(day, this.props.selectedDate, 'day')
+          , id = this.props.id && this.props.id + '_selected_item';
 
-  _body: function(){
-    var month = dates.visibleDays(this.props.value)
-      , focused = this.state.focusedDate
-      , isRtl = this.isRtl()
-      , rows  = chunk(month, 7 );
-
-    return _.map(rows, (week, i) => (
-
-      <Week 
-        key={'week_' + i}
-        days={ week } 
-        selectedDate={this.props.selectedDate}
-        focusedDate={focused}
-        month={dates.month(this.props.value)}
-        year ={dates.year(this.props.value)}
-        min={this.props.min}
-        max={this.props.max}
-        onKeyUp={this._keyUp}
-        onClick={this.props.onChange}/>))
+        return !dates.inRange(day, this.props.min, this.props.max)
+            ? <td  key={'day_' + idx} className='rw-empty-cell'>&nbsp;</td>
+            : (<td key={'day_' + idx} >
+                <btn 
+                  tabIndex='-1'
+                  onClick={_.partial(this.props.onChange, day)} 
+                  aria-selected={selected}
+                  className={cx({ 
+                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
+                    'rw-state-focus':    focused,
+                    'rw-state-selected': selected,
+                  })}
+                  id={focused ? id : undefined}>
+                  {dates.format(day, 'dd')}
+                </btn>
+              </td>)
+      })}
+      </tr>
+    )
   },
 
 
@@ -78,6 +95,10 @@ module.exports = React.createClass({
     return _.map(days, function(day, i){
       return (<th key={"header_" + i }>{day}</th>)
     })
+  },
+
+  focus: function(){
+    this.refs.table.getDOMNode().focus();
   },
 
   move: function(date, direction){

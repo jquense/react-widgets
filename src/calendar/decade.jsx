@@ -3,6 +3,7 @@ var React = require('react/addons')
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
+  , transferProps = require('../util/transferProps')
   , _ = require('lodash')
 
 var opposite = {
@@ -35,15 +36,18 @@ module.exports = React.createClass({
 
     this.selectedId = id
 
-    return (
+    return transferProps(
+      _.omit(this.props, 'max', 'min', 'value', 'onChange'),
       <table 
-        tabIndex='-1'
+        ref='table'
+        tabIndex='0'
         role='grid' 
         className='rw-calendar-grid rw-nav-view' 
         aria-activedescendant={id}
-        aria-labeledby={this.props['aria-labeledby']}>
+        aria-labeledby={this.props['aria-labeledby']}
+        onKeyUp={this._keyUp}>
 
-        <tbody onKeyUp={this._keyUp}>
+        <tbody>
           { _.map(rows, this._row)}
         </tbody>
       </table>
@@ -56,22 +60,30 @@ module.exports = React.createClass({
     return (
       <tr key={'row_' + i}>
       {_.map(row, date => {
-        var focused = dates.eq(date,  this.state.focusedDate,  'year')
+        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
+          , selected = dates.eq(date, this.props.value,  'year')
+          , id = this.props.id && this.props.id + '_selected_item';
 
         return !dates.inRange(date, this.props.min, this.props.max, 'year') 
           ? <td className='rw-empty-cell'>&nbsp;</td>
           : (<td>
-              <btn onClick={_.partial(this.props.onChange, date)}
+              <btn onClick={_.partial(this.props.onChange, date)} tabIndex='-1'
                 id={ focused ? id : undefined }
+                aria-selected={selected}
                 className={cx({ 
-                  'rw-off-range':   !inDecade(date, this.props.value),
-                  'rw-state-focus': focused
+                  'rw-off-range':      !inDecade(date, this.props.value),
+                  'rw-state-focus':    focused,
+                  'rw-state-selected': selected,
                 })}>
                 { dates.format(date, dates.formats.YEAR) }
               </btn>
             </td>)
       })}
     </tr>)
+  },
+
+  focus: function(){
+    this.refs.table.getDOMNode().focus();
   },
 
   move: function(date, direction){
