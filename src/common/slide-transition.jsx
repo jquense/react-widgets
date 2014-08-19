@@ -12,29 +12,30 @@ var SlideChildGroup = React.createClass({
     direction: React.PropTypes.oneOf(['left', 'right'])
   },
 
+  getDefaultProps: function(){
+    return { duration: 250 }
+  },
+
   componentWillEnter: function(done) {
     var self = this
       , event = transitions.endEvent()
       , node  = this.getDOMNode()
       , $this = $(node)
+      , width = $this.width()
       , direction = this.props.direction;
 
-    $this.removeClass('slide-' + direction + ' out')
-      .addClass('slide-' + direction)
+    this.ORGINAL_POSITION = $this.css('position');
 
-    if (!event) return finish()
+    $this.css({ position: 'absolute', overflow: 'hidden', left:  direction === 'left' ? width : -width, top: 0 })
+      .animate({ left: 0 }, self.props.duration, function(){
+        $this.css({ 
+          position:  self.ORGINAL_POSITION || 'static', 
+          overflow: 'hidden'
+        });
 
-    setTimeout(function(){
-      $this.addClass('in')
-      events.on(node, event, finish)
-      transitions.emulateEnd(node, 300, event)
-    }, 0)
-
-    function finish() {
-      events.off(node, event, finish)
-      $this.removeClass('slide-' + direction)
-      done && done()  
-    }
+        self.ORGINAL_POSITION = null
+        done && done()
+      })
   },
 
   componentWillLeave: function(done) {
@@ -42,27 +43,21 @@ var SlideChildGroup = React.createClass({
       , event = transitions.endEvent()
       , node  = this.getDOMNode()
       , $this = $(node)
+      , width = $this.width()
       , direction = this.props.direction;
 
-    $this.removeClass('out')
-      .addClass('slide-' + direction + ' in')
+    this.ORGINAL_POSITION = $this.css('position');
 
-    if (!event) return finish()
+    $this.css({ position: 'absolute', overflow: 'hidden', top: 0, left: 0})
+      .animate({ left: direction === 'left' ? -width : width }, self.props.duration, function(){
+        $this.css({ 
+          position:  self.ORGINAL_POSITION || 'static', 
+          overflow: 'hidden'
+        });
 
-    setTimeout(function(){
-      $this.addClass('out')
-      events.on(node, event, finish)
-      transitions.emulateEnd(node, 300, event)
-    }, 0)
-
-    events.on(node, event, finish)
-    transitions.emulateEnd(node, 300, event)
-
-    function finish() {
-      events.off(node, event, finish)
-      $this.removeClass('slide-'+ direction)
-      done && done()
-    }
+        self.ORGINAL_POSITION = null
+        done && done()
+      })
   },
 
   render: function() {

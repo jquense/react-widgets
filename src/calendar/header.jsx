@@ -15,12 +15,26 @@ module.exports = React.createClass({
     onViewChange:   React.PropTypes.func.isRequired,
     onMoveLeft:     React.PropTypes.func.isRequired,
     onMoveRight:    React.PropTypes.func.isRequired,
+
+    messages:       React.PropTypes.shape({
+      moveBack:     React.PropTypes.string,
+      moveForward:  React.PropTypes.string
+    })
   },
 
   mixins: [
     require('../mixins/PureRenderMixin'),
     require('../mixins/RtlChildContextMixin')
   ],
+
+  getDefaultProps: function(){
+    return {
+      messages: {
+        moveBack:     'navigate back',
+        moveForward:  'navigate forward',
+      }
+    }
+  },
 
   render: function(){
     var self = this
@@ -31,9 +45,10 @@ module.exports = React.createClass({
         <btn className="rw-btn-left" 
           onClick={this.props.onMoveLeft}
           disabled={this.props.prevDisabled} 
-          aria-disabled={this.props.prevDisabled}>
+          aria-disabled={this.props.prevDisabled}
+          title={this.props.moveBack}>
           <i className={"rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}>
-            <span className="rw-sr">Move Left</span></i>
+            <span className="rw-sr">Pthis.props.moveBack}</span></i>
         </btn>
         <btn className="rw-btn-view" 
           id={this.props.labelId}
@@ -45,9 +60,10 @@ module.exports = React.createClass({
         <btn className="rw-btn-right" 
           onClick={this.props.onMoveRight}
           disabled={this.props.nextDisabled} 
-          aria-disabled={this.props.nextDisabled}>
+          aria-disabled={this.props.nextDisabled}
+          title={this.props.moveForward}>
           <i className={"rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}>
-            <span className="rw-sr">Move Left</span></i>
+            <span className="rw-sr">{this.props.moveForward}</span></i>
         </btn>
       </div>
     )

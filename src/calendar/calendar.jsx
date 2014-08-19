@@ -50,15 +50,23 @@ module.exports = React.createClass({
 
 
   propTypes: {
+
     onChange:      React.PropTypes.func.isRequired,
     value:         React.PropTypes.instanceOf(Date),
+    
     min:           React.PropTypes.instanceOf(Date),
     max:           React.PropTypes.instanceOf(Date),
     
     initialView:   React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
     finalView:     React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
 
+    messages:      React.PropTypes.shape({
+      moveBack:    React.PropTypes.string,
+      moveForward: React.PropTypes.string
+    }),
+
     maintainFocus: React.PropTypes.bool,
+
   },
 
   getInitialState: function(){
@@ -94,10 +102,13 @@ module.exports = React.createClass({
   },
 
   componentDidUpdate: function() {
-    //console.log('update', nextState.focused);
+    var el = this.refs.currentView.getDOMNode()
+      , active = document.activeElement;
 
-    if ( this.props.maintainFocus && this.state.focused && !this.refs.animation.isTransitioning() )
-      this.refs.currentView.focus()
+    console.log('update', el === active);
+
+    // if ( this.props.maintainFocus && this.state.focused && el !== active)
+    //   el.focus()
   },
 
   render: function(){
@@ -107,13 +118,13 @@ module.exports = React.createClass({
       , key = this.state.view + '_' + dates[this.state.view](date)
       , id  = this.props.id && this.props.id + '_table';
 
-    console.log(key)
+    //console.log(key)
     return mergePropsInto(_.omit(this.props, 'value', 'min', 'max'),
-      <div className='rw-calendar rw-widget' 
-        onKeyDown={this._keyDown}>
+      <div className='rw-calendar rw-widget'>
         <Header
           label={this._label()}
           labelId={labelId}
+          messages={this.props.messages}
           upDisabled={this.state.view === this.props.finalView}
           prevDisabled={!dates.inRange(this.nextDate(LEFT), this.props.min, this.props.max)}
           nextDisabled={!dates.inRange(this.nextDate(RIGHT), this.props.min, this.props.max)}
@@ -134,10 +145,11 @@ module.exports = React.createClass({
             selectedDate={this.props.value}
             value={this.state.currentDate}
             onChange={this.change}
+            onKeyDown={this._keyDown}
+            onFocus={_.partial(this._focus, true)}
             onMoveLeft ={_.partial(this.navigate,  LEFT)}
             onMoveRight={_.partial(this.navigate,  RIGHT)}
-            onFocus={_.partial(this._focus, true)}
-            onBlur={_.partial(this._focus, false)}
+            
             min={this.props.min}
             max={this.props.max}/>
         </SlideTransition>
@@ -145,8 +157,9 @@ module.exports = React.createClass({
     )
 
     function finished(){
-      console.log('stop: ', this.refs.animation.isTransitioning())
-      this.componentDidUpdate()
+      this._focus(true, 'stop');
+      //console.log('stop: ', this.refs.animation.isTransitioning())
+      //this.componentDidUpdate()
      // this.refs.currentView.focus()
     }
   },
@@ -170,7 +183,8 @@ module.exports = React.createClass({
       view = NEXT_VIEW[view] || view
 
     if ( dates.inRange(date, this.props.min, this.props.max)){
-      console.log('navigate: ', view)
+      this._focus(true, 'nav');
+      //console.log('navigate: ', view)
       this.setState({
         currentDate:    date,
         slideDirection: slideDir,
@@ -181,9 +195,11 @@ module.exports = React.createClass({
 
   _focus: function(val, e){
     var s = setter('focused');
-
-    //console.log('focus', val, e && e.target)
-    s.call(this,val)
+    console.log('focus', val, e)
+    
+    val && this.refs.currentView.getDOMNode().focus()
+    
+    //s.call(this,val)
   },
 
   change: function(date){
@@ -206,7 +222,7 @@ module.exports = React.createClass({
     var ctrl = e.ctrlKey
       , key  = e.key;
 
-      
+    
     if ( ctrl ) {
       if ( key === 'ArrowDown' ) {
         e.preventDefault()

@@ -17,7 +17,6 @@ var btn = require('../common/btn.jsx')
       data:           React.PropTypes.array,
       valueField:     React.PropTypes.string,
       textField:      React.PropTypes.string,
-      delay:          React.PropTypes.number,
 
       suggest:        React.PropTypes.bool,
 

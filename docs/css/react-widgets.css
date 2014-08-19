@@ -167,6 +167,9 @@ input.rw-input::-moz-focus-inner {
   content: "\f017";
 }
 /* for debugging */
+*:focus {
+  outline: 1px red solid !important;
+}
 .rw-widget {
   outline: 0;
   -moz-background-clip: border-box;
@@ -382,6 +385,7 @@ fieldset[disabled] .rw-dropdown-list:active {
 .rw-select-list:active,
 .rw-date-picker:active,
 .rw-dropdown-list:active,
+.rw-header > .rw-btn:active,
 .rw-number-picker .rw-btn:active,
 .rw-number-picker .rw-btn.active {
   background-image: none;
@@ -475,12 +479,22 @@ fieldset[disabled] .rw-dropdown-list:active {
 .collapse.in {
   display: block;
 }
-.sliding {
+.slide {
   position: absolute;
   overflow: hidden;
-  -webkit-transition: -webkit-transform 0.25s ease;
-  -moz-transition: -moz-transform 0.25s ease;
-  transition: transform 0.25s ease;
+  -webkit-transition: -webkit-transform 4.25s ease;
+  -moz-transition: -moz-transform 4.25s ease;
+  transition: transform 4.25s ease;
+}
+.slide-down {
+  transform: translateY(0);
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+}
+.slide-up {
+  transform: translateY(0);
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
 }
 .collapsing {
   position: relative;
@@ -491,17 +505,17 @@ fieldset[disabled] .rw-dropdown-list:active {
   transition: height 0.25s ease;
 }
 .slide-left {
-  -webkit-transition: left 0.35s ease;
-  -o-transition: left 0.35s ease;
-  transition: left 0.35s ease;
+  -webkit-transition: left 4.35s ease;
+  -o-transition: left 4.35s ease;
+  transition: left 4.35s ease;
   position: absolute;
   overflow: hidden;
   left: 100%;
 }
 .slide-right {
-  -webkit-transition: left 0.35s ease;
-  -o-transition: left 0.35s ease;
-  transition: left 0.35s ease;
+  -webkit-transition: left 4.35s ease;
+  -o-transition: left 4.35s ease;
+  transition: left 4.35s ease;
   position: absolute;
   overflow: hidden;
   left: -100%;
@@ -549,38 +563,55 @@ fieldset[disabled] .rw-dropdown-list:active {
 .rw-calendar {
   background-color: #ffffff;
 }
-.rw-calendar td .rw-btn:hover {
-  background-color: #d5d5d5;
+.rw-calendar thead > tr {
+  border-bottom: 2px solid #cccccc;
 }
-.rw-calendar > .rw-header .rw-btn-left,
-.rw-calendar > .rw-header .rw-btn-right {
+.rw-calendar .rw-header {
+  padding-bottom: 5px;
+}
+.rw-calendar .rw-header .rw-btn-left,
+.rw-calendar .rw-header .rw-btn-right {
   width: 12.5%;
-  height: 1.8em;
 }
-.rw-calendar > .rw-header .rw-btn-view {
+.rw-calendar .rw-header .rw-btn-view {
   width: 75%;
-  height: 1.8em;
   outline: 0;
+  background-color: #eeeeee;
+  border: #eeeeee 1px solid;
+  border-radius: 4px;
 }
 .rw-calendar-grid {
+  height: 14.28571429em;
   table-layout: fixed;
   width: 100%;
 }
 .rw-calendar-grid th {
   text-align: right;
+  padding: 0 .4em 0 .1em;
 }
 .rw-calendar-grid .rw-btn {
   width: 100%;
   text-align: right;
 }
+.rw-calendar-grid td .rw-btn {
+  border-radius: 4px;
+  padding: 0 .4em 0 .1em;
+}
+.rw-calendar-grid td .rw-btn:hover {
+  background-color: #d5d5d5;
+}
+.rw-calendar-grid td .rw-btn.rw-off-range {
+  color: #b3b3b3;
+}
 .rw-calendar-grid.rw-nav-view .rw-btn {
-  padding: 0.5em 0;
+  padding: .25em 0 .3em;
   display: block;
   overflow: hidden;
   text-align: center;
   white-space: normal;
 }
 .rw-select-list {
+  position: relative;
   outline: 0;
   background: #eeeeee;
   border: #cccccc 1px solid;

@@ -37,7 +37,6 @@ module.exports = React.createClass({
     return transferProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
       <table tabIndex='0'
-        ref='table' 
         role='grid' 
         className='rw-calendar-grid rw-nav-view'
         aria-labeledby={this.props['aria-labeledby']}
@@ -55,7 +54,7 @@ module.exports = React.createClass({
     return (
       <tr key={'row_' + i}>
       {_.map(row, date => {
-        var focused  = fdates.eq(date,  this.state.focusedDate,  'decade')
+        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
           , selected = dates.eq(date, this.props.value,  'decade')
           , id = this.props.id && this.props.id + '_selected_item'
           , d = inRangeDate(date, this.props.min, this.props.max) 
@@ -79,9 +78,6 @@ module.exports = React.createClass({
     </tr>)
   },
 
-  focus: function(){
-    this.refs.table.getDOMNode().focus();
-  },
 
   move: function(date, direction){
     if ( this.isRtl() && opposite[direction])

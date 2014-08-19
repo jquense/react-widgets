@@ -59,16 +59,17 @@ module.exports = React.createClass({
 			open:          false,
       selectedIndex: initialIdx,
       focusedIndex:  initialIdx === -1 ? 0 : initialIdx,
-      messages: {
-        open: 'open dropdown'
-      }
+      
 		}
 	},
 
   getDefaultProps: function(){
     return {
       valueComponent: DefaultValueItem,
-      delay: 500
+      delay: 500,
+      messages: {
+        open: 'open dropdown'
+      }
     }
   },
 
@@ -116,7 +117,7 @@ module.exports = React.createClass({
 
 				<span className="rw-dropdownlist-picker rw-select rw-btn">
 					<i className="rw-i rw-i-caret-down">
-            <span className="rw-sr">Open Dropdown</span>
+            <span className="rw-sr">{ this.props.messages.open }</span>
           </i>
 				</span>
 				<DropdownValue

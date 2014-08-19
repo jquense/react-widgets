@@ -42,7 +42,7 @@ module.exports = React.createClass({
 
     return transferProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
-      <table ref='table' 
+      <table
         role='grid'
         tabIndex='0'
         className='rw-calendar-grid' 
@@ -95,10 +95,6 @@ module.exports = React.createClass({
     return _.map(days, function(day, i){
       return (<th key={"header_" + i }>{day}</th>)
     })
-  },
-
-  focus: function(){
-    this.refs.table.getDOMNode().focus();
   },
 
   move: function(date, direction){

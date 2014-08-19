@@ -51,18 +51,21 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     var nextChildMapping = React.Children.map(nextProps.children, function(c){ return c })
-      , prevChildMapping = this.state.children;
+      , prevChildMapping = this.state.children
+      , newChildren = {};
 
+    //console.log(prevChildMapping, nextChildMapping)
     this.setState({
       children: _.extend({}, prevChildMapping, nextChildMapping)
     });
 
-
     _.any(nextChildMapping, function(v, key){
-      var hasPrev   = prevChildMapping && _.has(prevChildMapping, key)
-        , isNext = !hasPrev && !this.currentlyTransitioningKeys[key];
+      var hasPrev = prevChildMapping && _.has(prevChildMapping, key)
+        , isNext  = !hasPrev && !this.currentlyTransitioningKeys[key];
 
-      if ( isNext ) this.next = key;
+      if ( isNext ) {
+        this.next = key;
+      }
       return isNext
     }, this)
 
@@ -70,7 +73,9 @@ module.exports = React.createClass({
       var hasNext   = nextChildMapping && _.has(nextChildMapping, key)
         , isCurrent = !hasNext && !this.currentlyTransitioningKeys[key];
 
-      if ( isCurrent ) this.current = key;
+      if ( isCurrent ) {
+        this.current = key;
+      }
       return isCurrent
     }, this)
   },
@@ -197,12 +202,13 @@ module.exports = React.createClass({
       }
     }
 
-    if ( _.size(childrenToRender) === 0) 
-       return React.DOM.noscript()
+    console.log(Object.keys(childrenToRender))
+    // if ( _.size(childrenToRender) === 0) 
+    //    return React.DOM.noscript()
     
-    if ( _.size(childrenToRender) === 1)
-      for( var k in childrenToRender)
-        return this.transferPropsTo(childrenToRender[k])
+    // if ( _.size(childrenToRender) === 1)
+    //   for( var k in childrenToRender)
+    //     return this.transferPropsTo(childrenToRender[k])
 
     return this.transferPropsTo(this.props.component(null, childrenToRender));
   }
