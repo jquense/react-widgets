@@ -23,7 +23,8 @@
     "lodash": "^2.4.1",
     "envify": "^1.2.1",
     "react": ">=0.10.0",
-    "globalize": "~0.1.1"
+    "globalize": "~0.1.1",
+    "date-arithmetic": "~1.0.0"
   },
   "devDependencies": {
     "gulp-rename": "^1.2.0",

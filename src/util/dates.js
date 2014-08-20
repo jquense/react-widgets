@@ -1,4 +1,4 @@
-var dateMath = require('./date-math')
+var dateMath = require('date-arithmetic')
   , globalize = require('globalize')
   , _ = require('lodash')
 
@@ -7,6 +7,15 @@ var dates = module.exports = _.extend({}, dateMath, {
   // looking forward towards the 1.0 release
   culture: function(){
     return globalize.culture()
+  },
+
+  startOfWeek: function(date){
+    var culture = globalize.culture()
+
+    if (!culture || !culture.calendar)
+      return 0
+
+    return culture.calendar.firstDay || 0
   },
 
   parse: function(date, format, culture){
