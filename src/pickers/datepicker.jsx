@@ -2,6 +2,7 @@ var React = require('react/addons')
   , cx  = React.addons.classSet
   , _   = require('lodash')
   , dates     = require('../util/dates')
+  , mergePropsInto = require('../util/transferProps')
   , Popup     = require('../popup/popup.jsx')
   , Calendar  = require('../calendar/calendar.jsx')
   , Time      = require('./time.jsx')
@@ -18,6 +19,9 @@ var propTypes = {
     culture:      React.PropTypes.string,
     format:       React.PropTypes.string,
     
+    calendar:     React.PropTypes.bool,
+    time:         React.PropTypes.bool,
+
     parse:        React.PropTypes.oneOfType([
                     React.PropTypes.arrayOf(React.PropTypes.string),
                     React.PropTypes.string,
@@ -45,9 +49,16 @@ module.exports = React.createClass({
   },
 
   getDefaultProps: function(){
+    var cal  = _.has(this.props, 'calendar') ? this.props.calendar : true
+      , time = _.has(this.props, 'time') ? this.props.time : true
+      , both = cal && time
+      , neither = !cal && !time;
+
     return {
       value:            null,
-      format:           'M/d/yyyy h:mm tt',
+      format:           both || neither
+        ? 'M/d/yyyy h:mm tt'
+        : cal ? 'M/d/yyyy' : 'h:mm tt',
       min:              new Date(1900,  0,  1),
       max:              new Date(2099, 11, 31),
       calendar:         true,
@@ -60,7 +71,7 @@ module.exports = React.createClass({
     }
   },
 
-  componentDidMount: function() {
+  componentDidUpdate: function() {
     this.setTimeDimensions()
   },
 
@@ -121,7 +132,7 @@ module.exports = React.createClass({
         { this.props.time &&
         <Popup 
           getAnchor={ this._getAnchor } 
-          style={{ width:  this.state.timeWidth }}
+          style={{ width:  this.state.width }}
           open={this.state.open && this.state.openPopup === 'time'} 
           onRequestClose={this.close}>
             <div>
@@ -144,14 +155,14 @@ module.exports = React.createClass({
             open={this.state.open && this.state.openPopup === 'calendar'} 
             onRequestClose={this.close}>
 
-            <Calendar ref="calPopup"   
-              maintainFocus={false}
-              aria-hidden={ !this.state.open }
-              value={this.props.value} 
-              min={this.props.min} 
-              max={this.props.max} 
-              onChange={this._selectDate}
-              id={ dateListID }/>
+            { mergePropsInto(
+              _.pick(this.props, _.keys(Calendar.type.propTypes)),
+              <Calendar ref="calPopup"   
+                maintainFocus={false}
+                aria-hidden={ !this.state.open }
+                onChange={this._selectDate}
+                id={ dateListID }/>
+            )}
           </Popup>
         }
       </div>
@@ -159,17 +170,14 @@ module.exports = React.createClass({
   },
 
   setTimeDimensions: function() {
-    if( !this.refs.timePopup) return
+    if( !this.props.time) return
 
-    var el = $(this.refs.timePopup.getDOMNode())
+    var el = $(this.getDOMNode())
       , width = el.outerWidth ? el.outerWidth() : el.width()
-      , changed = width !== this.state.timeWidth;
+      , changed = width !== this.state.width;
 
-    if ( changed ){
-      this.setState({
-        timeWidth:  width
-      })
-    }
+    if ( changed )
+      this.setState({ width: width }) 
   },
 
   _keyDown: function(e){
