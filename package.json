@@ -1,28 +1,16 @@
 {
   "name": "react-widgets",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "React widgets",
-  "main": "server.js",
+  "main": "index.js",
   "author": {
     "name": "Jason",
-    "email": ""
+    "email": "theporchrat@gmail.com"
   },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
-  "browser": {
-    "$": "./vendor/zepto.js"
-  },
-  "browserify-shim": {
-    "$": "$"
-  },
+
   "dependencies": {
     "bluebird": "^1.2.4",
     "lodash": "^2.4.1",
-    "envify": "^1.2.1",
-    "react": ">=0.10.0",
     "globalize": "~0.1.1",
     "date-arithmetic": "~1.0.0"
   },
@@ -33,15 +21,13 @@
     "gulp": "^3.6.2",
     "gulp-uglify": "^0.3.0",
     "gulp-less": "^1.2.3",
-    "browserify": "~4.1.6",
-    "vinyl-source-stream": "~0.1.1",
     "reactify": "^0.13.1",
     "gulp-plumber": "^0.6.3",
     "font-awesome": "~4.1.0",
-    "browserify-shim": "~3.6.0",
     "chance": "^0.5.9",
-    "browser-sync": "~1.3.3",
     "react-bootstrap": "^0.11.1",
+    "envify": "^1.2.1",
+    "react": ">=0.10.0",
     "gulp-webpack": "^0.3.0",
     "webpack": "^1.3.3-beta2",
     "jsx-loader": "^0.11.0",

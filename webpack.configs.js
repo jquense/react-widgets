@@ -17,13 +17,14 @@ module.exports = {
     output: {
       path: path.join(__dirname, "./dist"),
       filename: 'react-widgets.js',
-      library:  'react-widgets',
+      library:  'ReactWidgets',
       libraryTarget: 'this'
     },
 
     externals: {
       '$':      'window.$',
       'lodash': 'window._',
+      'globalize': 'window.Globalize',
       'react':  'window.React',
       'react/addons':  'window.React',
     },
@@ -68,7 +69,7 @@ module.exports = {
   },
 
   docs: {
-    devtool: 'source-map',
+    //devtool: 'source-map',
     entry: './docs/components/docs.jsx',
     
     output: {
@@ -79,22 +80,27 @@ module.exports = {
 
     externals: {
       '$':      'window.$',
+      'react':  'window.React',
+      'react/addons':  'window.React',
+      'lodash': 'window._'
     },
 
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' },
-        { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-        { test: /\.woff$/, loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },
-        { test: /\.ttf$/,  loader: "file-loader?prefix=font/" },
-        { test: /\.eot$/,  loader: "file-loader?prefix=font/" },
-        { test: /\.svg$/,  loader: "file-loader?prefix=font/" },
+        { test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' }
       ],
     },
 
+<<<<<<< HEAD
     // plugins: [
     //   ProdDefine,
     //   new webpack.optimize.UglifyJsPlugin()
     // ],
+=======
+    plugins: [
+      ProdDefine,
+      new webpack.optimize.UglifyJsPlugin()
+    ],
+>>>>>>> b1f7556... finish up docs
   },
 }

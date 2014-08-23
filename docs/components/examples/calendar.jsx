@@ -12,7 +12,7 @@ module.exports = React.createClass({
     return (
       <div className='example '>
         <div className='row'>
-          <div className='form-group col-sm-4'>
+          <div className='form-group col-md-4'>
             <label className=' control-label'>Calendar</label>
             <div>
               <Calendar 
@@ -21,7 +21,7 @@ module.exports = React.createClass({
                 onChange={this._change.bind(null, 'valueA')}/>
             </div>
           </div>
-          <div className='form-group col-sm-4'>
+          <div className='form-group col-md-4'>
             <label className=' control-label'>Min and Max set</label>
             <div>
               <Calendar
@@ -32,7 +32,7 @@ module.exports = React.createClass({
                 max={new Date(2015, 2, 15)}/>
             </div>
           </div>
-          <div className='form-group col-sm-4'>
+          <div className='form-group col-md-4'>
             <label className=' control-label'>Limited depth</label>
             <div>
               <Calendar 

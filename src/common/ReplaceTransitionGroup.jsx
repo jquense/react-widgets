@@ -202,7 +202,7 @@ module.exports = React.createClass({
       }
     }
 
-    console.log(Object.keys(childrenToRender))
+    //console.log(Object.keys(childrenToRender))
     // if ( _.size(childrenToRender) === 0) 
     //    return React.DOM.noscript()
     

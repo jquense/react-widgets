@@ -1,4 +1,8 @@
 
+body {
+  margin-bottom: 40px;
+}
+
 h2, h3 {
   margin-top: 40px;
 } 
@@ -54,4 +58,10 @@ h3 > .default {
 
 .rw-widget {
   max-width: 300px;
+}
+
+@media (max-width: 767px) {
+  .nav-aside {
+    position: static;
+  }
 }

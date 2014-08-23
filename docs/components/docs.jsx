@@ -9,9 +9,13 @@ var React = require('react/addons')
   , ComboBoxExample = require('./examples/combobox.jsx')
   , SelectExample = require('./examples/select.jsx')
   , CalendarExample = require('./examples/calendar.jsx')
+<<<<<<< HEAD
   , DatePickerExample = require('./examples/datepicker.jsx');
+=======
+  , DatePickerExample = require('./examples/datepicker.jsx')
+  , NumberPickerExample = require('./examples/numberpicker.jsx');
 
-require('../../src/less/react-widgets.less')
+>>>>>>> b1f7556... finish up docs
 
 var Docs = React.createClass({
 
@@ -25,6 +29,10 @@ var Docs = React.createClass({
 
   render: function(){
     var Nav = Bootstrap.Nav
+<<<<<<< HEAD
+=======
+      , Affix = Bootstrap.Affix
+>>>>>>> b1f7556... finish up docs
       , NavItem = Bootstrap.NavItem
       , TabPane = Bootstrap.TabPane;
 
@@ -33,29 +41,37 @@ var Docs = React.createClass({
         <Navbar page={this.props.page}/>
         <div className='container'>
           <aside className='col-sm-3'>
-            <Nav activeHref={this.state.sideHref} onSelect={this.handleNavItemSelect}>
-              <NavItem key={0} href='#intro'>Getting Started</NavItem>
-              <NavItem key={1} href='#dropdown-list'>Dropdown List</NavItem>
-              <NavItem key={2} href='#combobox'>Combobox</NavItem>
-              <NavItem key={3} href='#select-list'>Select</NavItem>
-              <NavItem key={4} href='#calendar'>Calendar</NavItem>
-              <NavItem key={5} href='#date-picker'>Date Picker</NavItem>
-              <NavItem key={6} href='#number-picker'>Number Picker</NavItem>
-            </Nav>
+            <Affix offsetTop={52} className='nav-aside'>
+              <Nav activeHref={this.state.sideHref} onSelect={this.handleNavItemSelect}>
+                <NavItem key={0} href='#intro'>Getting Started</NavItem>
+                <NavItem key={1} href='#dropdown-list'>Dropdown List</NavItem>
+                <NavItem key={2} href='#combobox'>Combobox</NavItem>
+                <NavItem key={6} href='#number-picker'>Number Picker</NavItem>
+                <NavItem key={3} href='#select-list'>Select</NavItem>
+                <NavItem key={4} href='#calendar'>Calendar</NavItem>
+                <NavItem key={5} href='#date-picker'>Date Picker</NavItem>
+                
+              </Nav>
+            </Affix>
           </aside>
           <article className='col-sm-9'>
             <section>
               <h1 id="intro" className="page-header">Getting Started</h1>
               <p>
                 React-widgets offers a basic set UI widgets, based on the excellent Kendo UI Core, and jQuery UI, but created from stratch as true 
-                React components, rather then as wrappers around these libraries. These widgets are 'pure' compared to their non-react counterparts, and 
-                manage far less state and data internally. Since data flows best in React from the top down, each widget does not make attempt to fetch their data 
-                but expects it to be passed in via <code>props</code>. Practically this means that ajax calls for data need to handled by some mechanism outside the widget.
+                React components, rather then as wrappers around these libraries. A big thanks to both of these libraries for solving all 
+                of the hard work already.
               </p>
               <p>
-                Once you have the data, each widget follows a simple <code>value=x</code> and <code>onChange</code> interface in the same 
-                way normal <code>{'<input/>'}</code> tags do. For certain Widgets (dropdown list, combobox, select) there is an 
-                additional <code>data</code> prop that is an array of possible values
+                Each widget implements the same simple interface as other input elements: <code>value=x</code> and <code>onChange</code>. 
+                For certain Widgets (dropdown list, combobox, select) there is an additional <code>data</code> prop that is an array of 
+                possible values
+              </p>
+              <h2>Install</h2>
+              <p>
+                The prefered way is to use NPM <code>npm install react-widgets</code> and make use of something like Webpack or Browserify. There is also a 
+                traditional browser build available for download in the <strong>dist</strong> folder. It does not bundle any dependencies listed below, and 
+                attaches itself to the <code>window</code> as <code>ReactWidgets</code>
               </p>
 
               <h2>External Dependencies</h2>
@@ -314,6 +330,91 @@ var Docs = React.createClass({
 
 
             <section>
+              <h1 id="number-picker" className="page-header">Number Picker</h1>
+              <p>
+                Select an item from the list, or input a custom value. The vombobox can also make suggestions as you type
+              </p>
+              <NumberPickerExample/>
+              <Example code={
+                "render: function(){\n"+
+                "  //... \n\n" +
+                "  return (\n"+
+                "    <NumberPicker \n"+
+                "      value={this.state.value}\n"+
+                "      onChange={this._change}\n"+
+                "      min='2'\n"+
+                "      max='10'/>\n\n"+
+                "    <NumberPicker \n"+
+                "      format='c'\n" +
+                "      step={1.5}/>\n\n"+
+                "  )\n"+
+                "}"
+              }/>
+              <h2>Props</h2>
+              <h3>value <small>mixed</small></h3>
+              <p>
+                The current value of the NumberPicker.
+              </p>
+
+              <h3>onChange <small>function ( selectedValue )</small></h3>
+              <p>
+                change event Handler that is called when the value is changed. 
+              </p>
+              <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
+              becomes readonly</span>
+
+              <h3>format <small>String</small><span className='default'>"d"</span></h3>
+              <p>
+                A Globalize.js compatible number format string, used to display the value when widget is not focused
+              </p>
+
+              <h3>min <small>Number</small><span className='default'>-Infinity</span></h3>
+              <p>
+                The minimum number that the NumberPicker value
+              </p>
+
+              <h3>max <small>Number</small><span className='default'>Infinity</span></h3>
+              <p>
+                The maximum number that the NumberPicker value
+              </p>
+
+              <h3>step <small>Number</small><span className='default'>1</span></h3>
+              <p>
+                Amount to increase or decrease value when using the spinner buttons
+              </p>
+
+
+              <h3>isRtl <small>Boolean</small></h3>
+              <p>
+                mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
+                 a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
+              </p>
+
+              <h3>messages <small>Object</small></h3>
+              <p>
+                Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
+                localize widget text and increase accessibility.
+              </p>
+              <h3>messages.increment <small>String</small> <span className='default'>"increment value"</span></h3>
+              <p>
+                Number picker spinner up button text for screen readers
+              </p>
+              <h3>messages.decrement <small>String</small><span className='default'>"decrement value"</span></h3>
+              <p>Number picker spinner down button text for screen readers </p>
+
+              <h2>Keyboard Navigation</h2>
+
+              <ul className='list-unstyled keyboard-list'>
+                <li><kbd>down arrow</kbd> decrement value</li>
+                <li><kbd>up arrow</kbd> increment value</li>
+
+                <li><kbd>home</kbd> set value to minimum value if finite</li>
+                <li><kbd>end</kbd> set value to maximum value if finite</li>
+              </ul>
+            </section>
+
+
+            <section>
               <h1 id="select-list" className="page-header">Select</h1>
               <p>
                 Multiple selection widget. Allow allows for on the fly creation of tags (provided they are handled by the parent component)
@@ -442,7 +543,7 @@ var Docs = React.createClass({
                 "      ...\n"+
                 "      min={new Date(2014, 0, 1)}\n"+
                 "      max={new Date(2015, 12, 15)}/>\n"+
-                "   )\n"+
+                "    \n"+
                 "    <Calendar \n"+
                 "      ...\n"+
                 "      initialView='year'\n"+
