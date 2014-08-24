@@ -18,7 +18,7 @@ var React = require('react')
 
 //backport PureRenderEqual
 
-module.exports = React.addons.PureRenderMixin || {
+module.exports = {
 
   shouldComponentUpdate: function(nextProps, nextState) {
     return !shallowEqual(this.props, nextProps) ||

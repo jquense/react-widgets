@@ -76,17 +76,12 @@ var Docs = React.createClass({
                 be fine with react 0.9 as well
 
                 <ul>
-                  <li>
-                    a <code>$</code> DOM library: <a href="http://jquery.com/download/">jQuery</a> or <a href="http://zeptojs.com/">Zepto</a> depending 
-                    on your browser support needs (used primarily for animation)
-                  </li>
                   <li><a href="http://lodash.com/">lodash</a> (<a href="http://underscorejs.org/">underscore</a>  may also work--untested)</li>
                   <li>
                     <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468">Globalize</a> used 
                     for date and number localization.
                   </li>
                 </ul>
-               
               </p>
 
               <h2>Accessibility and Read Direction</h2>
@@ -98,6 +93,13 @@ var Docs = React.createClass({
                 Each widget also has appropriate ARIA roles and attributes for the benefit of screen readers and visually impaired users. 
                 Keyboard only navigation of widgets is also supported, for those who prefer to not, or cannot use a mouse. 
                 to help ensure maximum accessibility, every widget should have an <code>id</code> attribute.
+              </p>
+
+              <h2>Styling</h2>
+              <p>
+                Styling each widget should be a simple matter of adjusting the relevant LESS variables to suit your needs. 
+                Included by default is a "Twitter Bootstrap" theme that mimics the look and feel of Twitter Bootstrap 3.0. This is less an actual 
+                theme and more a neutral starting point for creating your own theme.
               </p>
             </section>
             <section>

@@ -180,7 +180,6 @@ input.rw-input::-moz-focus-inner {
   margin: 0;
   text-align: center;
   vertical-align: middle;
-  cursor: pointer;
   background: none;
   background-image: none;
   border: 1px solid transparent;
@@ -205,6 +204,10 @@ input.rw-input::-moz-focus-inner {
   background-color: #d5d5d5;
   border: #e0e0e0 1px solid;
   color: #333333;
+}
+.rw-btn,
+.rw-dropdown-list {
+  cursor: pointer;
 }
 ul.rw-list {
   margin: 0;
@@ -288,6 +291,17 @@ ul.rw-list > li.rw-state-selected {
 .rw-rtl .rw-select {
   left: 0;
   right: auto;
+}
+.rw-combobox:active,
+.rw-select-list:active,
+.rw-date-picker:active,
+.rw-dropdown-list:active,
+.rw-header > .rw-btn:active,
+.rw-number-picker .rw-btn:active,
+.rw-number-picker .rw-btn.rw-state-active {
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 .rw-combobox,
 .rw-select-list,
@@ -375,19 +389,10 @@ fieldset[disabled] .rw-select-list:active,
 fieldset[disabled] .rw-date-picker:active,
 fieldset[disabled] .rw-number-picker:active,
 fieldset[disabled] .rw-dropdown-list:active {
+  -webkit-box-shadow: none;
+  box-shadow: none;
   background-color: #eeeeee;
   border-color: #cccccc;
-}
-.rw-combobox:active,
-.rw-select-list:active,
-.rw-date-picker:active,
-.rw-dropdown-list:active,
-.rw-header > .rw-btn:active,
-.rw-number-picker .rw-btn:active,
-.rw-number-picker .rw-btn.active {
-  background-image: none;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 .rw-combobox.rw-state-focus input.rw-input,
 .rw-date-picker.rw-state-focus input.rw-input,
