@@ -14,9 +14,12 @@ set of the basic ui widgets for React based on the excellent Kendo UI Core and j
 
 `npm install react-widgets`
 
-## Caveats
-In order to not couple the library to any DOM library you will need to shim/externalize the `$` yourself when using widgets as 
-CommonJS modules. Take a look at the included webpack configs for examples on how to, swap out jQuery with Zepto
+### Old Browser Support
+
+The goal is to support IE8+, but currently it is difficult for me to test a wide variety of browsersm so there is no guarantee 
+it will work (patches welcome!).
+
+One aspect that is definately true is that animation is not supported for browsers that do not support CSS Transitions.
 
 ### Docs
 
