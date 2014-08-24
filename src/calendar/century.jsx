@@ -1,9 +1,9 @@
-var React = require('react/addons')
-  , cx = React.addons.classSet
+var React = require('react')
+  , cx = require('../util/cx')
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
-  , transferProps = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , _ = require('lodash')
 
 var opposite = {
@@ -34,7 +34,7 @@ module.exports = React.createClass({
     var years = getCenturyDecades(this.props.value)
       , rows  = chunk(years, 4);
 
-    return transferProps(
+    return mergeIntoProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
       <table tabIndex='0'
         role='grid' 
@@ -53,15 +53,15 @@ module.exports = React.createClass({
       
     return (
       <tr key={'row_' + i}>
-      {_.map(row, date => {
+      {_.map(row, (date, i) => {
         var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
           , selected = dates.eq(date, this.props.value,  'decade')
           , id = this.props.id && this.props.id + '_selected_item'
           , d = inRangeDate(date, this.props.min, this.props.max) 
 
         return !inRange(date, this.props.min, this.props.max) 
-          ? <td className='rw-empty-cell'>&nbsp;</td>
-          : (<td>
+          ? <td key={i} className='rw-empty-cell'>&nbsp;</td>
+          : (<td key={i}>
               <btn onClick={_.partial(this.props.onChange, d)} 
                 tabIndex='-1'
                 id={ focused ? id : undefined }

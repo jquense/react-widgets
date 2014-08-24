@@ -1,9 +1,9 @@
-var React = require('react/addons')
-  , cx    = React.addons.classSet
+var React = require('react')
+  , cx    = require('../util/cx')
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
-  , transferProps = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , _ = require('lodash')
 
 var btn = require('../common/btn.jsx')
@@ -40,7 +40,7 @@ module.exports = React.createClass({
     var month = dates.visibleDays(this.props.value)
       , rows  = chunk(month, 7 );
 
-    return transferProps(
+    return mergeIntoProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
       <table
         role='grid'

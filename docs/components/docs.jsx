@@ -9,13 +9,10 @@ var React = require('react/addons')
   , ComboBoxExample = require('./examples/combobox.jsx')
   , SelectExample = require('./examples/select.jsx')
   , CalendarExample = require('./examples/calendar.jsx')
-<<<<<<< HEAD
-  , DatePickerExample = require('./examples/datepicker.jsx');
-=======
   , DatePickerExample = require('./examples/datepicker.jsx')
   , NumberPickerExample = require('./examples/numberpicker.jsx');
 
->>>>>>> b1f7556... finish up docs
+
 
 var Docs = React.createClass({
 
@@ -29,10 +26,7 @@ var Docs = React.createClass({
 
   render: function(){
     var Nav = Bootstrap.Nav
-<<<<<<< HEAD
-=======
       , Affix = Bootstrap.Affix
->>>>>>> b1f7556... finish up docs
       , NavItem = Bootstrap.NavItem
       , TabPane = Bootstrap.TabPane;
 
@@ -74,6 +68,8 @@ var Docs = React.createClass({
                 attaches itself to the <code>window</code> as <code>ReactWidgets</code>
               </p>
 
+              <p>Included icons are provided by - <a href="http://fontawesome.io">Font Awesome by Dave Gandy</a></p>
+
               <h2>External Dependencies</h2>
               <p>
                 React-widgets expects <code>React</code> to be included in your page (duh). It has been tested with React 0.10.x but should 
@@ -90,7 +86,7 @@ var Docs = React.createClass({
                     for date and number localization.
                   </li>
                 </ul>
-                React-widgets also expects jQuery or Zepto, primarily for animation (and some simplified DOM managament).
+               
               </p>
 
               <h2>Accessibility and Read Direction</h2>

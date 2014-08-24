@@ -1,14 +1,14 @@
 var React = require('react/addons')
   , _ = require('lodash')
-  , cx    = React.addons.classSet
+  , cx = require('../util/cx')
   , setter = require('../util/stateSetter')
   , compose = require('../util/compose')
-  , mergePropsInto = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
-  , SlideDown = require('../common/collapse-transition.jsx')
   , DefaultValueItem = require('./value-item.jsx')
   , Popup = require('../popup/popup.jsx')
-  , List  = require('../common/list.jsx');
+  , List  = require('../common/list.jsx')
+  , $     = require('../util/dom');
 
 var btn = require('../common/btn.jsx')
   , ifShouldUpdate = compose.provided(function(props){
@@ -96,7 +96,7 @@ module.exports = React.createClass({
       , valueItem = this._dataItem( this._data(), this.props.value )
       , optID = this.props.id && this.props.id + '_option' || '';
 
-		return mergePropsInto(
+		return mergeIntoProps(
       _.omit(this.props, keys),
 			<div ref="element"
            onKeyDown={this._keyDown}
@@ -152,8 +152,7 @@ module.exports = React.createClass({
 	},
 
   setWidth: function() {
-    var el = $(this.getDOMNode())
-      , width = el.outerWidth ? el.outerWidth() : el.width()
+    var width = $.width(this.getDOMNode())
       , changed = width !== this.state.width;
 
     if ( changed )

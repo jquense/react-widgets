@@ -1,26 +1,45 @@
 var _ = require('lodash')
+  , React = require('react')
   , RESERVED = {
-    className: resolve(joinClasses),
-    children: _.noop,
-    key:   _.noop,
-    ref:   _.noop,
-    style: resolve(merge)
-  };
+      className: resolve(joinClasses),
+      children:   _.noop,
+      key:        _.noop,
+      ref:        _.noop,
+      style:      resolve(merge)
+    };
 
+//mutates first arg
+function mergeProps(source, target) {
 
+  return _.transform(target, function(source, value, key){
+      if (_.has(RESERVED, key) )      
+        RESERVED[key](source, value, key)
 
-module.exports = mergeToProps;
+      else if ( !_.has(source, key) ) 
+        source[key] = value;
 
-function mergeToProps(obj, desc) {
-  var props = desc.props ? desc.props : desc;
+  }, source)
+}
 
-  _.transform(obj, function(target, value, key){
-      if (_.has(RESERVED, key) )      RESERVED[key](target, value, key)
-      else if ( !_.has(target, key) ) target[key] = value;
+module.exports = {
 
-  }, props)
+  mergeIntoProps: function (obj, desc) {
+    var props = desc.props ? desc.props : desc;
+    mergeProps(props, obj)
+    return desc
+  },
 
-  return desc
+  cloneWithProps: function (child, props) {
+    var newProps = mergeProps(_.clone(props), child.props);
+
+    if (!_.has(newProps, 'children') && _.has(child.props, 'children'))
+      newProps.children = child.props.children;
+    
+    if (React.version.indexOf('0.10.') === 0) //thanks react-bootstrap!
+      return child.constructor.ConvenienceConstructor(newProps);
+    
+    return child.constructor(newProps);
+  }
 }
 
 function resolve(fn){
@@ -30,7 +49,7 @@ function resolve(fn){
   }
 }
 
-function joinClasses(first){
+function joinClasses(){
   return _.reduce(arguments, function(str, next){
     if ( !str ) return next || ''
     if ( next ) return str += ' ' + next

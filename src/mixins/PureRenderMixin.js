@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-var React = require('react/addons')
+var React = require('react')
 
 //backport PureRenderEqual
 

@@ -1,8 +1,7 @@
-var React = require('react/addons')
-  , cx = React.addons.classSet
+var React = require('react')
+  , cx = require('../util/cx')
   , compose = require('../util/compose')
-  , dates = require('../util/dates')
-  , $ = require('$')
+  , dates = require('../util/dates');
 
 
 module.exports = React.createClass({
@@ -54,9 +53,7 @@ module.exports = React.createClass({
   },
 
   _change: function(e){
-    var $el = $(e.target) ;
-
-    this.setState({ textValue: $el.val() });
+    this.setState({ textValue: e.target.value });
   },
 
   _blur: function(){

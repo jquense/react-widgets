@@ -1,8 +1,6 @@
-var React   = require('react/addons')
+var React   = require('react')
   , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup.jsx')
-  , $  =  require('$')
-  , transitions = require('../util/transition')
-  , events  =  require('../util/events')
+  , $  =  require('../util/dom')
   , _ = require('lodash');
 
 
@@ -17,19 +15,20 @@ var SlideChildGroup = React.createClass({
   },
 
   componentWillEnter: function(done) {
-    var self = this
-      , event = transitions.endEvent()
+    var self  = this
       , node  = this.getDOMNode()
-      , $this = $(node)
-      , width = $this.width()
+      , width = $.width(node)
       , direction = this.props.direction;
 
-    this.ORGINAL_POSITION = $this.css('position');
+    width = direction === 'left' ? width : -width
 
-    $this.css({ position: 'absolute', overflow: 'hidden', left:  direction === 'left' ? width : -width, top: 0 })
-      .animate({ left: 0 }, self.props.duration, function(){
-        $this.css({ 
-          position:  self.ORGINAL_POSITION || 'static', 
+    this.ORGINAL_POSITION = node.style.position;
+
+    $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
+
+    $.animate(node, { left: 0 }, self.props.duration, function(){
+        $.css(node, { 
+          position:  self.ORGINAL_POSITION, 
           overflow: 'hidden'
         });
 
@@ -39,19 +38,20 @@ var SlideChildGroup = React.createClass({
   },
 
   componentWillLeave: function(done) {
-    var self = this
-      , event = transitions.endEvent()
+    var self  = this
       , node  = this.getDOMNode()
-      , $this = $(node)
-      , width = $this.width()
+      , width = $.width(node)
       , direction = this.props.direction;
 
-    this.ORGINAL_POSITION = $this.css('position');
+    width = direction === 'left' ? -width : width
 
-    $this.css({ position: 'absolute', overflow: 'hidden', top: 0, left: 0})
-      .animate({ left: direction === 'left' ? -width : width }, self.props.duration, function(){
-        $this.css({ 
-          position:  self.ORGINAL_POSITION || 'static', 
+    this.ORGINAL_POSITION = node.style.position
+
+    $.css(node, { position: 'absolute', top: 0, left: 0})
+
+    $.animate(node, { left: width + 'px'}, self.props.duration, function(){
+        $.css(node, { 
+          position: self.ORGINAL_POSITION, 
           overflow: 'hidden'
         });
 
@@ -62,9 +62,8 @@ var SlideChildGroup = React.createClass({
 
   render: function() {
     return React.Children.only(this.props.children);
-  },
+  }
 
-  
 })
 
 

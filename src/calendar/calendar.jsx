@@ -1,14 +1,14 @@
-var React = require('react/addons')
+var React = require('react')
   , Header  = require('./header.jsx')
   , Month = require('./month.jsx')
   , Year = require('./year.jsx')
   , Decade = require('./decade.jsx')
   , Century = require('./century.jsx')
-  , cx = React.addons.classSet
+  , cx = require('../util/cx')
   , setter = require('../util/stateSetter')
   , SlideTransition  = require('../common/slide-transition.jsx')
   , dates = require('../util/dates')
-  , mergePropsInto = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , _ = require('lodash');
 
 var RIGHT = 'right'
@@ -105,7 +105,7 @@ module.exports = React.createClass({
     var el = this.refs.currentView.getDOMNode()
       , active = document.activeElement;
 
-    console.log('update', el === active);
+    //console.log('update', el === active);
 
     // if ( this.props.maintainFocus && this.state.focused && el !== active)
     //   el.focus()
@@ -119,7 +119,7 @@ module.exports = React.createClass({
       , id  = this.props.id && this.props.id + '_table';
 
     //console.log(key)
-    return mergePropsInto(_.omit(this.props, 'value', 'min', 'max'),
+    return mergeIntoProps(_.omit(this.props, 'value', 'min', 'max'),
       <div className='rw-calendar rw-widget'>
         <Header
           label={this._label()}
@@ -195,7 +195,7 @@ module.exports = React.createClass({
 
   _focus: function(val, e){
     var s = setter('focused');
-    console.log('focus', val, e)
+    //console.log('focus', val, e)
     
     val && this.refs.currentView.getDOMNode().focus()
     

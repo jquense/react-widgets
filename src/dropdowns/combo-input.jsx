@@ -1,9 +1,7 @@
 var React = require('react/addons')
-  , cx = React.addons.classSet
+  , cx = require('../util/cx')
   , compose = require('../util/compose')
-  , caretPos = require('../util/caret')
-  , $ = require('$')
-
+  , caretPos = require('../util/caret');
 
 module.exports = React.createClass({
 
@@ -22,8 +20,6 @@ module.exports = React.createClass({
           && val.indexOf(this._last) !== -1 
           && this._last !== val;
 
-    //console.log("did Update: ", val, this._last)
-
     if ( this.props.suggest && isSuggestion ){
       var start = val.indexOf(this._last) + this._last.length
         , end   = val.length - start
@@ -32,7 +28,6 @@ module.exports = React.createClass({
         caretPos(input, start, start + end)
     }
 
-    //clear last value so it doesn't persist suggestion
     this._last = val;
   },
 

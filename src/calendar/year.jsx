@@ -1,9 +1,9 @@
-var React = require('react/addons')
-  , cx    = React.addons.classSet
+var React = require('react')
+  , cx    = require('../util/cx')
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
-  , transferProps = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , _ = require('lodash')
 
 var opposite = {
@@ -32,7 +32,7 @@ module.exports = React.createClass({
     var months = dates.monthsInYear(dates.year(this.props.value))
       , rows = chunk(months, 4);
 
-    return transferProps(
+    return mergeIntoProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
       <table tabIndex='0' 
         ref='table'
@@ -47,18 +47,18 @@ module.exports = React.createClass({
     )
   },
 
-  _row: function(row){
+  _row: function(row, i){
     // if (this.isRtl()) row.reverse()
 
     return (
-      <tr>
-      {_.map(row, date => {
+      <tr key={i}>
+      {_.map(row, (date, i) => {
         var focused  = dates.eq(date, this.state.focusedDate,  'month')
           , selected = dates.eq(date, this.props.value,  'month')
           , id = this.props.id && this.props.id + '_selected_item';
 
         return dates.inRange(date, this.props.min, this.props.max, 'month') 
-          ? (<td >
+          ? (<td key={i}>
               <btn onClick={_.partial(this.props.onChange, date)} tabIndex='-1'
                 id={focused ? id : undefined}
                 aria-selected={selected}
@@ -69,7 +69,7 @@ module.exports = React.createClass({
                 { dates.format(date, dates.formats.MONTH_NAME_ABRV) }
               </btn>
             </td>)
-          : <td className='rw-empty-cell'>&nbsp;</td>
+          : <td key={i} className='rw-empty-cell'>&nbsp;</td>
       })}
     </tr>)
   },

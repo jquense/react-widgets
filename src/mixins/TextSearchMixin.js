@@ -1,4 +1,4 @@
-var React  = require('react/addons')
+var React  = require('react')
   , filter = require('../util/filter')
   , helper = require('../mixins/DataHelpersMixin')
   , compose = require('../util/compose')

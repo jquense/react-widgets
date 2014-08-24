@@ -1,10 +1,9 @@
 var React   = require('react/addons')
   , filter  = require('../util/filter')
   , compose = require('../util/compose')
-  , mergePropsInto = require('../util/transferProps')
-  , cx = React.addons.classSet
-  , $  =  require('$')
-  , _  =  require('lodash');
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
+  , cx = require('../util/cx')
+  , _  = require('lodash');
 
 var DefaultListItem = React.createClass({
 
@@ -85,7 +84,8 @@ module.exports = React.createClass({
         )
       });
     
-		return mergePropsInto(_.omit(this.props, 'data', 'selectedIndex'),
+		return mergeIntoProps(
+      _.omit(this.props, 'data', 'selectedIndex'),
 			<ul 
         className="rw-list" 
         role='listbox'
@@ -101,7 +101,7 @@ module.exports = React.createClass({
 
   _setScrollPosition: function(){
     var list = this.getDOMNode()
-      , selected = $(list).children().eq(this.props.focusedIndex)[0]
+      , selected = list.children[this.props.focusedIndex]
       , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
 
 

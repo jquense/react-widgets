@@ -1,9 +1,9 @@
-var React = require('react/addons')
-  , cx    = React.addons.classSet
+var React = require('react')
+  , cx    = require('../util/cx')
   , dates = require('../util/dates')
   , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
-  , transferProps = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , _ = require('lodash')
 
 var opposite = {
@@ -36,7 +36,7 @@ module.exports = React.createClass({
 
     this.selectedId = id
 
-    return transferProps(
+    return mergeIntoProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
       <table 
         tabIndex='0'
@@ -58,14 +58,14 @@ module.exports = React.createClass({
   
     return (
       <tr key={'row_' + i}>
-      {_.map(row, date => {
+      {_.map(row, (date, i) => {
         var focused  = dates.eq(date,  this.state.focusedDate,  'year')
           , selected = dates.eq(date, this.props.value,  'year')
           , id = this.props.id && this.props.id + '_selected_item';
 
         return !dates.inRange(date, this.props.min, this.props.max, 'year') 
-          ? <td className='rw-empty-cell'>&nbsp;</td>
-          : (<td>
+          ? <td key={i} className='rw-empty-cell'>&nbsp;</td>
+          : (<td key={i}>
               <btn onClick={_.partial(this.props.onChange, date)} tabIndex='-1'
                 id={ focused ? id : undefined }
                 aria-selected={selected}

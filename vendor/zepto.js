@@ -1649,7 +1649,7 @@ window.$ === undefined && (window.$ = Zepto)
         if (event.target !== event.currentTarget) return // makes sure the event didn't bubble from "below"
         $(event.target).unbind(endEvent, wrappedCallback)
       } else
-        $(this).unbind(endEvent, wrappedCallback) // triggered by setTimeout
+        $(this).unbind(node, wrappedCallback) // triggered by setTimeout
 
       fired = true
       $(this).css(cssReset)

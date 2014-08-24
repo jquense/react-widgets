@@ -31,6 +31,12 @@ gulp.task("dist-build", function() {
       .pipe(gulp.dest('./dist/'));
 })
 
+gulp.task('dist-less', function(){
+    gulp.src('./src/less/react-widgets.less')
+        .pipe(plumber())
+        .pipe(less())
+        .pipe(gulp.dest('./dist/css'));
+});
 
 gulp.task("dev-server", function(callback) {
 
@@ -65,6 +71,9 @@ gulp.task('less', function(){
 // Default Task
 
 gulp.task('docs', ['docs-build', 'docs-less']);
+gulp.task('browser', ['dist-build', 'dist-less']);
+
+gulp.task('prod', ['docs', 'browser']);
 
 function handleError(err) {
   console.log(err.toString());

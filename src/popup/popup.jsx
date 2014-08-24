@@ -1,10 +1,8 @@
-var React  = require('react/addons')
-  , cx     = React.addons.classSet
-  , events = require('../util/events')
-  , _ = require('lodash')
-  , mergePropsInto = require('../util/transferProps')
-  , transition = require('../util/transition')
-  , $ = require('$');
+var React  = require('react')
+  , cx  = require('../util/cx')
+  , _   = require('lodash')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
+  , $ = require('../util/dom');
 
 function childKey(children){
   var nextChildMapping = React.Children.map(children, function(c){ return c })
@@ -22,11 +20,7 @@ module.exports = React.createClass({
     onClosing:      React.PropTypes.func,
     onOpening:      React.PropTypes.func,
     onClose:        React.PropTypes.func,
-    onOpen:         React.PropTypes.func,
-    height:         React.PropTypes.oneOfType([
-                      React.PropTypes.number, 
-                      React.PropTypes.string
-                    ])
+    onOpen:         React.PropTypes.func
 	},
 
   getDefaultProps: function(){
@@ -43,10 +37,9 @@ module.exports = React.createClass({
 
 
   componentWillUnmount: function(){
-    $(document).off('click', self._onClick)
-    $(window).off('resize', self._resize)
+    $.off(document, 'click', self._onClick)
+    $.off(window, 'resize', self._resize)
   },
-
 
 	componentDidMount: function(){
 		var self = this
@@ -63,8 +56,8 @@ module.exports = React.createClass({
 
       self._resize = _.throttle(this.position.bind(this), 100)
 
-      $(window).on('resize',  self._resize)
-      $(document).on('click', self._onClick)
+      $.off(window, 'resize',  self._resize)
+      $.off(document, 'click', self._onClick)
 
       this.position()
       this.close(0)
@@ -90,7 +83,7 @@ module.exports = React.createClass({
 
 	render: function(){
     var style   = _.extend({}, this.props.style || {}, { overflow: 'hidden', position: 'absolute', zIndex: 1005 })
-      , Content = mergePropsInto(
+      , Content = mergeIntoProps(
           { className: 'rw-popup rw-widget' }
         , this.props.children);
 
@@ -106,42 +99,41 @@ module.exports = React.createClass({
 	},
 
   dimensions: function(){
-    var el = $(this.refs.content.getDOMNode())
-      , anim = this.getDOMNode()
+    var el = this.getDOMNode();
 
-    anim.style.display = 'block'
-    anim.style.height  = (el.outerHeight ? el.outerHeight() : el.height() ) + 'px'
-    //anim.style.width   = (el.width() + )'px'
+    el.style.display = 'block'
+    el.style.height  = $.height(this.refs.content.getDOMNode()) + 'px'
   },
 
   position: function(){
     var self    = this
-      , $anim   = $(this.getDOMNode())
-      , $anchor = $(this.props.getAnchor())
-      , aOffset, aHeight, aWidth;
+      , aOffset = $.offset(this.props.getAnchor());
 
-      aOffset = $anchor.offset()
-
-      $anim.css({
-        top:    aOffset.height - 1,
-        left:   -1 //aOffset.left,
-       // width:  aOffset.width
+      $.css(this.getDOMNode(), {
+        top:    aOffset.height - 1 + 'px',
+        left:   -1 + 'px'
       });
   },
 
   open: function(){
     var self = this
       , anim = this.getDOMNode()
-      , el = $(this.refs.content.getDOMNode());
+      , el   = this.refs.content.getDOMNode();
 
-    this.ORGINAL_POSITION = el.css('position');
+    this.ORGINAL_POSITION = el.style.position;
     
     this.dimensions()
     this.props.onOpening()
 
-    el.css('position', 'absolute')
-      .animate({ top: 0 }, self.props.duration, function(){
-        el.css('position', self.ORGINAL_POSITION || 'static');
+    el.style.position = 'absolute'
+
+    $.animate(el
+      , { top: 0 }
+      , self.props.duration
+      , function(){
+
+        $.css(el, { position: self.ORGINAL_POSITION });
+
         anim.style.overflow = 'visible'
         self.ORGINAL_POSITION = null
         self.props.onOpen()
@@ -151,35 +143,30 @@ module.exports = React.createClass({
 
   close: function(dur){
     var self = this
-      , el = $(this.refs.content.getDOMNode())
+      , el   = this.refs.content.getDOMNode()
       , anim = this.getDOMNode()
-      , ht   = anim.style.height //this._height()
+      , ht   = anim.style.height;
 
-    this.ORGINAL_POSITION = el.css('position');
+    this.ORGINAL_POSITION = el.style.position;
     this.dimensions()
     this.props.onClosing()
 
     anim.style.overflow = 'hidden'
+    el.style.position = 'absolute'
 
-    el.css('position', 'absolute')
-      .animate({ top: '-100%' }, dur === undefined ? this.props.duration : dur, function() {
-        el.css('position', self.ORGINAL_POSITION || 'static');
+    $.animate(el
+      , { top: '-100%' }
+      , dur === undefined ? this.props.duration : dur
+      , function() {
+        $.css(el, { position: self.ORGINAL_POSITION });
         
         anim.style.display = 'none'
         self.ORGINAL_POSITION = null
         self.props.onClose()
       })
 
-  },
-
-  _height: function(){
-    var ht = this.props.height 
-      , nodeHt = this.refs.content.getDOMNode().scrollHeight
-
-    return ht === 'auto' 
-      ? nodeHt
-      : (ht > nodeHt ? nodeHt : ht)
   }
+
 })
 
 

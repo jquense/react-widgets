@@ -18,7 +18,9 @@
 
 "use strict";
 
-var React = require('react/addons')
+var React = require('react')
+  , cloneWithProps = require('../util/transferProps').cloneWithProps
+  , $ = require('../util/dom')
   , _ = require('lodash');
 
 module.exports = React.createClass({
@@ -91,12 +93,18 @@ module.exports = React.createClass({
       , next    = this.next
       , first = this.refs[current || next] 
       , node  = this.getDOMNode()
-      , el    = first && first.getDOMNode();
+      , el    = first && first.getDOMNode()
+      , ht, wt;
 
     if( el ) {
-      node.style.overflow = 'hidden'
-      node.style.height = $(el).height() + 'px'
-      node.style.width  = $(el).width() + 'px'
+      ht = $.height(el) + 'px'
+      wt = $.width(el) + 'px'
+
+      $.css(node, {
+        overflow: 'hidden',
+        height: ht,
+        width: wt
+      })
     }
 
     this.props.onAnimating();
@@ -127,9 +135,12 @@ module.exports = React.createClass({
     if ( this.isTransitioning() )
       return 
 
-    node.style.overflow = 'visible'
-    $(node).height('')
-    $(node).width('')
+    $.css(node, {
+      overflow: 'visible',
+      height: '',
+      width: ''
+    })
+
     this.props.onAnimate() 
   }, 
 
@@ -195,7 +206,7 @@ module.exports = React.createClass({
       var child = this.state.children[key];
 
       if (child) {
-        childrenToRender[key] = React.addons.cloneWithProps(
+        childrenToRender[key] = cloneWithProps(
           this.props.childFactory(child),
           { ref: key }
         );

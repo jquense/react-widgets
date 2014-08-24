@@ -1,9 +1,8 @@
-var React = require('react/addons')
-  , cx = React.addons.classSet
+var React = require('react')
+  , cx = require('../util/cx')
   , compose = require('../util/compose')
   , setter = require('../util/stateSetter')
-  , globalize = require('globalize')
-  , $ = require('$')
+  , globalize = require('globalize');
 
 
 module.exports = React.createClass({

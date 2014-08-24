@@ -2,13 +2,8 @@
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-<<<<<<< HEAD
-  src: url('../../node_modules/font-awesome/fonts/fontawesome-webfont.eot?v=4.1.0');
-  src: url('../../node_modules/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.1.0') format('embedded-opentype'), url('../../node_modules/font-awesome/fonts/fontawesome-webfont.woff?v=4.1.0') format('woff'), url('../../node_modules/font-awesome/fonts/fontawesome-webfont.ttf?v=4.1.0') format('truetype'), url('../../node_modules/font-awesome/fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular') format('svg');
-=======
   src: url('../fonts/fontawesome-webfont.eot?v=4.1.0');
   src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.1.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff?v=4.1.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.1.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular') format('svg');
->>>>>>> b1f7556... finish up docs
   font-weight: normal;
   font-style: normal;
 }
@@ -172,12 +167,6 @@ input.rw-input::-moz-focus-inner {
   content: "\f017";
 }
 /* for debugging */
-<<<<<<< HEAD
-*:focus {
-  outline: 1px red solid !important;
-}
-=======
->>>>>>> b1f7556... finish up docs
 .rw-widget {
   outline: 0;
   -moz-background-clip: border-box;
@@ -504,19 +493,6 @@ fieldset[disabled] .rw-dropdown-list:active {
   -webkit-transform: translateY(0);
   -moz-transform: translateY(0);
 }
-<<<<<<< HEAD
-=======
-.slide-down {
-  transform: translateY(0);
-  -webkit-transform: translateY(0);
-  -moz-transform: translateY(0);
-}
-.slide-up {
-  transform: translateY(0);
-  -webkit-transform: translateY(0);
-  -moz-transform: translateY(0);
-}
->>>>>>> b1f7556... finish up docs
 .collapsing {
   position: relative;
   height: 0;

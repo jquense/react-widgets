@@ -1,4 +1,4 @@
-var React = require('react/addons')
+var React = require('react')
   , dates = require('../util/dates')
   , directions = require('../util/constants').directions;
 

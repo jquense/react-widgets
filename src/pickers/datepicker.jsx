@@ -1,12 +1,13 @@
-var React = require('react/addons')
-  , cx  = React.addons.classSet
+var React = require('react')
+  , cx = require('../util/cx')
   , _   = require('lodash')
   , dates     = require('../util/dates')
-  , mergePropsInto = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , Popup     = require('../popup/popup.jsx')
   , Calendar  = require('../calendar/calendar.jsx')
   , Time      = require('./time.jsx')
   , DateInput = require('./date-input.jsx')
+  , $  =  require('../util/dom');
 
 var propTypes = {
     
@@ -87,7 +88,8 @@ module.exports = React.createClass({
     if (dateListID && this.props.calendar ) owns = dateListID
     if (timeListID && this.props.time )     owns += ' ' + timeListID
 
-    return (
+    return mergeIntoProps(
+      _.omit(this.props, _.keys(propTypes)),
       <div ref="element"
            tabIndex="-1"
            aria-expanded={ this.state.open }
@@ -155,7 +157,7 @@ module.exports = React.createClass({
             open={this.state.open && this.state.openPopup === 'calendar'} 
             onRequestClose={this.close}>
 
-            { mergePropsInto(
+            { mergeIntoProps(
               _.pick(this.props, _.keys(Calendar.type.propTypes)),
               <Calendar ref="calPopup"   
                 maintainFocus={false}
@@ -172,8 +174,7 @@ module.exports = React.createClass({
   setTimeDimensions: function() {
     if( !this.props.time) return
 
-    var el = $(this.getDOMNode())
-      , width = el.outerWidth ? el.outerWidth() : el.width()
+    var width = $.width(this.getDOMNode())
       , changed = width !== this.state.width;
 
     if ( changed )
@@ -209,16 +210,11 @@ module.exports = React.createClass({
   _focus: function(focused, e){
     var self = this;
 
-    // special case: highest view btn is disabled which causes focus lose
-    if ( !focused && e && $(e.target).is('.rw-header .rw-btn[disabled]'))
-      return 
-    
     clearTimeout(self.timer)
 
     self.timer = setTimeout(function(){
       if( focused !== self.state.focused) {
         self.setState({ focused: focused })
-        //console.log('focus end: ', focused)
         if(!focused) self.close()
       }
     }, 0)

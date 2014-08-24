@@ -1,13 +1,14 @@
 var React  = require('react/addons')
-  , cx     = React.addons.classSet
+  , cx = require('../util/cx')
   , _      = require('lodash')
   , caretPos = require('../util/caret')
   , filter = require('../util/filter')
-  , mergePropsInto = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
   , Input  = require('./combo-input.jsx')
   , Popup  = require('../popup/popup.jsx')
-  , List   = require('../common/list.jsx');
+  , List   = require('../common/list.jsx')
+  , $      = require('../util/dom');
 
 var btn = require('../common/btn.jsx')
   , propTypes = {
@@ -114,7 +115,8 @@ module.exports = React.createClass({
           ? this.props.filter ? 'both' : 'inline'
           : this.props.filter ? 'list' : '';
 
-		return (
+		return mergeIntoProps(
+      _.omit(this.props, _.keys(propTypes)),
 			<div ref="element"
            aria-expanded={ this.state.open }
            aria-haspopup={true}
@@ -179,8 +181,7 @@ module.exports = React.createClass({
 	},
 
   setWidth: function() {
-    var el = $(this.getDOMNode())
-      , width = el.outerWidth ? el.outerWidth() : el.width()
+    var width = $.width(this.getDOMNode())
       , changed = width !== this.state.width;
 
     if ( changed )

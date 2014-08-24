@@ -1,5 +1,5 @@
-var React = require('react/addons')
-  , cx    = React.addons.classSet;
+var React = require('react')
+  , cx    = require('../util/cx');
 
 var btn = require('../common/btn.jsx')
 

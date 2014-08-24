@@ -1,8 +1,8 @@
-var React = require('react/addons')
-  , cx    = React.addons.classSet
+var React = require('react')
+  , cx = require('../util/cx')
   , dates = require('../util/dates')
   , List = require('../common/list.jsx')
-  , mergePropsInto = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
   , _ = require('lodash')
 
@@ -55,7 +55,8 @@ module.exports = React.createClass({
         return ListItem(_.extend(props, { format: format }), children)
       }
 
-    return mergePropsInto(_.omit(this.props, 'value'),
+    return mergeIntoProps(
+      _.omit(this.props, 'value'),
       <List ref="list"
         data={times} 
         textField='label'

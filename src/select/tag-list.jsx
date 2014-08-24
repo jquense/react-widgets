@@ -1,10 +1,12 @@
-var React = require('react/addons')
+var React = require('react')
   , _ = require('lodash')
-  , cx    = React.addons.classSet
+  , cx  = require('../util/cx')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , btn = require('../common/btn.jsx')
 
 module.exports = React.createClass({
-
+  displayName: 'SelectTagList',
+  
   mixins: [ require('../mixins/DataHelpersMixin')],
 
   propTypes: {
@@ -33,11 +35,12 @@ module.exports = React.createClass({
         , focusIdx = this.state.focused
         , value    = this.props.value;
 
-      return this.transferPropsTo(
+      return mergeIntoProps(
+        _.omit(this.props, 'value'),
         <ul className='rw-tag-list'>
           {_.map(value, function(item, i){
             return (
-              <li unselectable='on' className={cx({'rw-state-focus': focusIdx === i })}>
+              <li key={i} unselectable='on' className={cx({'rw-state-focus': focusIdx === i })}>
                 <Item
                   item={item}
                   unselectable='on'

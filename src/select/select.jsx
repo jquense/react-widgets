@@ -1,9 +1,10 @@
 'use strict';
-var React = require('react/addons')
-  , cx    = React.addons.classSet
+var React = require('react')
+  , cx = require('../util/cx')
   , _     =  require('lodash')
-  , $     =  require('$')
+  , $     =  require('../util/dom')
   , directions = require('../util/constants').directions
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , SelectInput = require('./search-input.jsx')
   , TagList = require('./tag-list.jsx')
   , Popup = require('../popup/popup.jsx')
@@ -81,7 +82,8 @@ module.exports = React.createClass({
       , optID  = this.props.id && this.props.id + '_option'
       , items = this._data()
 
-    return (
+    return mergeIntoProps(
+      _.omit(this.props, _.keys(propTypes)),
       <div ref="element"
            aria-haspopup={true}
            onKeyDown={this._keyDown}
@@ -142,8 +144,7 @@ module.exports = React.createClass({
   },
 
   setWidth: function() {
-    var el = $(this.getDOMNode())
-      , width = el.outerWidth ? el.outerWidth() : el.width()
+    var width = $.width(this.getDOMNode())
       , changed = width !== this.state.width;
 
     if ( changed )

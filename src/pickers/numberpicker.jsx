@@ -1,9 +1,9 @@
-var React  = require('react/addons')
-  , cx     = React.addons.classSet
+var React  = require('react')
+  , cx = require('../util/cx')
   , _      = require('lodash')
-  , mergeIntoProps = require('../util/transferProps')
+  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
-  , Input  = require('./number-input.jsx');
+  , Input = require('./number-input.jsx');
 
 var btn = require('../common/btn.jsx')
   , propTypes = {
@@ -57,7 +57,10 @@ module.exports = React.createClass({
   },
 
   getInitialState: function(){
-    return { focused: false }
+    return { 
+      focused: false,
+      active: false,
+    }
   },
 
 
@@ -67,7 +70,8 @@ module.exports = React.createClass({
 
     //console.log('render', this.state.focused)
 
-    return this.transferPropsTo(
+    return mergeIntoProps(
+      _.omit(this.props, _.keys(propTypes)),
       <div ref="element"
            onKeyDown={this._keyDown}
            onFocus={this._focus.bind(null, true)} 
@@ -82,16 +86,18 @@ module.exports = React.createClass({
 
         <span className='rw-select'>
           <btn 
+            className={cx({ 'rw-state-active': this.state.active === directions.UP})}
             onMouseDown={_.partial(self._mouseDown, directions.UP)} 
-            onMouseUp={this._mouseUp} 
+            onMouseUp={_.partial(this._mouseUp, directions.UP)} 
             onClick={_.partial(this._focus, true)} 
             aria-disabled={val === this.props.max || this.props.disabled}>
 
             <i className="rw-i rw-i-caret-up"><span className="rw-sr">{ this.props.messages.increment }</span></i>
           </btn>
           <btn 
+            className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
             onMouseDown={_.partial(self._mouseDown, directions.DOWN)} 
-            onMouseUp={this._mouseUp} 
+            onMouseUp={_.partial(this._mouseUp, directions.DOWN)} 
             onClick={_.partial(this._focus, true)}
             aria-disabled={val === this.props.min || this.props.disabled}>
 
@@ -118,18 +124,16 @@ module.exports = React.createClass({
   //allow for styling, focus stealing keeping me from the normal what have you
   _mouseDown: function(direction, e) {
     var self = this
-      , el = $(e.target).is('.rw-btn') ? $(e.target) : $(e.target).closest('.rw-btn') 
       , method = direction === directions.UP ? this.increment : this.decrement
     
-    el.addClass('active')
+    this.setState({ active: direction })
 
     method()
     this.interval = setInterval(method, 800)
   },
 
-  _mouseUp: function(e){
-    var el = $(e.target).is('.rw-btn') ? $(e.target) : $(e.target).closest('.rw-btn') 
-    el.removeClass('active')
+  _mouseUp: function(direction, e ){
+    this.setState({ active: false })
     clearInterval(this.interval)
   },
 
