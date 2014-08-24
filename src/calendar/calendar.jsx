@@ -195,9 +195,9 @@ module.exports = React.createClass({
 
   _focus: function(val, e){
     var s = setter('focused');
-    //console.log('focus', val, e)
     
-    val && this.refs.currentView.getDOMNode().focus()
+    if ( this.props.maintainFocus)
+      val && this.refs.currentView.getDOMNode().focus()
     
     //s.call(this,val)
   },

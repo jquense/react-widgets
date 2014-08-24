@@ -160,10 +160,10 @@ module.exports = React.createClass({
             { mergeIntoProps(
               _.pick(this.props, _.keys(Calendar.type.propTypes)),
               <Calendar ref="calPopup"   
+                id={dateListID}
                 maintainFocus={false}
                 aria-hidden={ !this.state.open }
-                onChange={this._selectDate}
-                id={ dateListID }/>
+                onChange={this._selectDate}/>
             )}
           </Popup>
         }
@@ -208,15 +208,19 @@ module.exports = React.createClass({
 
   //timeout prevents transitions from breaking focus
   _focus: function(focused, e){
-    var self = this;
+    var self = this
+      , input =  this.refs.valueInput;
 
     clearTimeout(self.timer)
 
     self.timer = setTimeout(function(){
-      if( focused !== self.state.focused) {
+
+      if(focused) input.getDOMNode().focus() 
+      else        self.close()
+
+      if( focused !== self.state.focused)
         self.setState({ focused: focused })
-        if(!focused) self.close()
-      }
+      
     }, 0)
   },
 

@@ -23,10 +23,6 @@ module.exports = React.createClass({
     })
   },
 
-  componentDidUpdate: function() {
-    this.props.focused && this.focus()
-  },
-
   getInitialState: function(){
     var text = this.formatDate(this.props.value)
     return {

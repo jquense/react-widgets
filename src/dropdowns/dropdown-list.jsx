@@ -84,12 +84,6 @@ module.exports = React.createClass({
     this.setWidth()
   },
 
-  // shouldComponentUpdate: function(nextProps, nextState){
-  //   var stateChanged = !_.isEqual(nextState, this.state) 
-  //     , valueChanged = !_.isEqual(nextProps.value, this.props.value)
-  //   return stateChanged || valueChanged
-  // },
-
 	render: function(){ 
 		var keys = _.keys(propTypes)
       , DropdownValue = this.props.valueComponent
@@ -106,7 +100,7 @@ module.exports = React.createClass({
            aria-expanded={ this.state.open }
            aria-haspopup={true}
            aria-activedescendent={ optID }
-           tabIndex="-1"
+           tabIndex="0"
            className={cx({
               'rw-dropdown-list': true,
               'rw-widget':       true,
@@ -164,10 +158,13 @@ module.exports = React.createClass({
 
     clearTimeout(self.timer)
     self.timer = setTimeout(function(){
-      if( focused !== self.state.focused) {
+
+      if(focused) self.getDOMNode().focus() 
+      else        self.close()
+
+      if( focused !== self.state.focused)
         self.setState({ focused: focused })
-        if(!focused) self.close()
-      }
+
     }, 0)
   },
 

@@ -53,9 +53,22 @@ var DOM = module.exports = {
     return DOM.offset(node).height
   },
 
+  hasFocus: function(node){
+    var doc = node.ownerDocument
+
+    if ( doc.activeElement == null) return false
+    return doc.activeElement === node 
+  },
+
   offset: function (node) {
-    var docElem = document.documentElement
-      , box = { top: 0, left: 0 };
+    var doc     = node.ownerDocument
+      , docElem = doc && doc.documentElement
+      , box     = { top: 0, left: 0 };
+
+    if ( !docElem ) return
+
+    if ( !DOM.contains(docElem, node))
+      return box
 
     if ( node.getBoundingClientRect !== undefined ) 
       box = node.getBoundingClientRect();
@@ -187,6 +200,11 @@ var DOM = module.exports = {
       callback && callback.call(this)
     }
   }
+}
+
+function getWindow( node ) {
+  return node === node.window 
+    ? node : node.nodeType === 9 && node.defaultView;
 }
 
 function camelize(str){ 
