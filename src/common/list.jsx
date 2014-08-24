@@ -1,4 +1,4 @@
-var React   = require('react/addons')
+var React   = require('react')
   , filter  = require('../util/filter')
   , compose = require('../util/compose')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps

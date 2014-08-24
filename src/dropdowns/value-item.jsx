@@ -1,4 +1,4 @@
-var React = require('react/addons')
+var React = require('react')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , _ = require('lodash')
 
