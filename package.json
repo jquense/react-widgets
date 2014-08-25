@@ -7,6 +7,17 @@
     "name": "Jason",
     "email": "theporchrat@gmail.com"
   },
+  "keywords": [
+    "react",
+    "widgets",
+    "dropdown",
+    "combobox",
+    "calendar",
+    "datepicker",
+    "numberpicker",
+    "multiselect",
+    "react-ui"
+  ],
   "homepage": "http://theporchrat.github.io/react-widgets/docs/",
   "repository": {
     "type": "git",
