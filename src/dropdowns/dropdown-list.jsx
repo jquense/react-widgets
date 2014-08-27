@@ -65,7 +65,6 @@ module.exports = React.createClass({
 
   getDefaultProps: function(){
     return {
-      valueComponent: DefaultValueItem,
       delay: 500,
       messages: {
         open: 'open dropdown'
@@ -86,7 +85,6 @@ module.exports = React.createClass({
 
 	render: function(){ 
 		var keys = _.keys(propTypes)
-      , DropdownValue = this.props.valueComponent
       , valueItem = this._dataItem( this._data(), this.props.value )
       , optID = this.props.id && this.props.id + '_option' || '';
 
@@ -114,11 +112,12 @@ module.exports = React.createClass({
             <span className="rw-sr">{ this.props.messages.open }</span>
           </i>
 				</span>
-				<DropdownValue
-            className="rw-input" 
-            value={valueItem}
-            textField={this.props.textField} 
-            valueField={this.props.valueField}/>
+        <div className="rw-input">
+          { this.props.valueComponent 
+              ? this.props.valueComponent({ item: valueItem })
+              : this._dataText(valueItem)
+          }
+        </div>
 
         <Popup 
           style={{ width: this.state.width }}

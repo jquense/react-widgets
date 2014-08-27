@@ -20,6 +20,7 @@ var btn = require('../common/btn.jsx')
       textField:      React.PropTypes.string,
 
       tagComponent:   React.PropTypes.func,
+      itemComponent:  React.PropTypes.func,
 
       messages:       React.PropTypes.shape({
         open:         React.PropTypes.string,
@@ -132,6 +133,7 @@ module.exports = React.createClass({
               valueField={this.props.valueField}
               focusedIndex={this.state.focusedIndex}
               onSelect={this._onSelect}
+              listItem={this.props.itemComponent}
               messages={{
                 emptyList: this.props.data.length 
                   ? this.props.messages.emptyFilter

@@ -7,15 +7,6 @@ var React = require('react')
   , _ = require('lodash')
 
 
-var ListItem = React.createClass({
-
-  render: function(){
-      return this.transferPropsTo(
-        <li>{ dates.format(this.props.item, this.props.format) }</li>
-      )
-  }
-})
-
 module.exports = React.createClass({
 
   displayName: 'TimeList',
@@ -27,11 +18,12 @@ module.exports = React.createClass({
   ],
 
   propTypes: {
-    value:        React.PropTypes.instanceOf(Date),
-    min:          React.PropTypes.instanceOf(Date),
-    max:          React.PropTypes.instanceOf(Date),
-    step:         React.PropTypes.number,
-    onChange:     React.PropTypes.func.isRequired
+    value:          React.PropTypes.instanceOf(Date),
+    min:            React.PropTypes.instanceOf(Date),
+    max:            React.PropTypes.instanceOf(Date),
+    step:           React.PropTypes.number,
+    itemComponent:  React.PropTypes.func,
+    onChange:       React.PropTypes.func.isRequired
   },
 
   getDefaultProps: function(){
@@ -49,11 +41,7 @@ module.exports = React.createClass({
 
   render: function(){
     var times = this._data()
-      , format = this.props.format
-      , idx = this._selectedIndex(times, this.props.value)
-      , listItem = function(props, children){
-        return ListItem(_.extend(props, { format: format }), children)
-      }
+      , idx = this._selectedIndex(times, this.props.value);
 
     return mergeIntoProps(
       _.omit(this.props, 'value'),
@@ -63,6 +51,7 @@ module.exports = React.createClass({
         valueField='date'
         selectedIndex={idx}
         focusedIndex={this.state.focusedIndex}
+        listItem={this.props.itemComponent}
         onSelect={this.props.onChange}/>
     )
   },

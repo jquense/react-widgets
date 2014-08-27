@@ -1,7 +1,9 @@
 var React   = require('react')
   , filter  = require('../util/filter')
   , compose = require('../util/compose')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
+  , transferProps  = require('../util/transferProps')
+  , mergeIntoProps = transferProps.mergeIntoProps
+  , cloneWithProps = transferProps.cloneWithProps
   , cx = require('../util/cx')
   , _  = require('lodash');
 
@@ -44,7 +46,6 @@ module.exports = React.createClass({
 
   getDefaultProps: function(){
     return {
-      listItem:      DefaultListItem,
       delay:         500,
       optID:         '',
       messages: {
@@ -60,27 +61,27 @@ module.exports = React.createClass({
 
 
 	render: function(){
-    var ListItem    = this.props.listItem
-      , emptyList   = <li>{ this.props.messages.emptyList }</li>
+    var emptyList   = <li>{ this.props.messages.emptyList }</li>
       , emptyFilter = <li>{ this.props.messages.emptyFilter }</li>
       , items = _.map(this.props.data, (item, idx) => {
         var focused = idx === this.props.focusedIndex;
 
         return (
-          <ListItem 
+          <li 
             key={'item_' + idx}
-            item={item}
             role='option'
             id={ focused ? this.props.optID : '' }
             aria-selected={ idx === this.props.selectedIndex }
-            textField={this.props.textField}
-            valueField={this.props.valueField}
-            unselectable='on'
             className={cx({ 
               'rw-state-focus':    focused,
               'rw-state-selected': idx === this.props.selectedIndex,
             })}
-            onClick={_.partial(this.props.onSelect, item, idx)}/>
+            onClick={_.partial(this.props.onSelect, item, idx)}>
+            { this.props.listItem 
+                ? this.props.listItem({ item: item })
+                : this._dataText(item)
+             }
+          </li>
         )
       });
     

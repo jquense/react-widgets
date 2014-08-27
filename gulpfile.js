@@ -73,7 +73,7 @@ gulp.task('less', function(){
 gulp.task('docs', ['docs-build', 'docs-less']);
 gulp.task('browser', ['dist-build', 'dist-less']);
 
-gulp.task('prod', ['docs', 'browser']);
+gulp.task('build', ['docs', 'browser']);
 
 function handleError(err) {
   console.log(err.toString());

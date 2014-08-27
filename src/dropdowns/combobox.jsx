@@ -15,6 +15,8 @@ var btn = require('../common/btn.jsx')
       value:          React.PropTypes.any,
       onChange:       React.PropTypes.func,
 
+      itemComponent:  React.PropTypes.func,
+      
       data:           React.PropTypes.array,
       valueField:     React.PropTypes.string,
       textField:      React.PropTypes.string,
@@ -169,6 +171,7 @@ module.exports = React.createClass({
               textField={this.props.textField} 
               valueField={this.props.valueField}
               onSelect={this._onSelect}
+              listItem={this.props.itemComponent}
               messages={{
                 emptyList: this.props.data.length 
                   ? this.props.messages.emptyFilter

@@ -18,11 +18,6 @@ module.exports = React.createClass({
     valueComponent: React.PropTypes.component
   },
 
-  getDefaultProps: function(){
-    return {
-      valueComponent: DefaultTag
-    }
-  },
 
   getInitialState: function(){
     return {
@@ -31,8 +26,7 @@ module.exports = React.createClass({
   },
 
   render: function(){
-      var Item     = this.props.valueComponent 
-        , focusIdx = this.state.focused
+      var focusIdx = this.state.focused
         , value    = this.props.value;
 
       return mergeIntoProps(
@@ -41,11 +35,10 @@ module.exports = React.createClass({
           {_.map(value, function(item, i){
             return (
               <li key={i} unselectable='on' className={cx({'rw-state-focus': focusIdx === i })}>
-                <Item
-                  item={item}
-                  unselectable='on'
-                  textField={this.props.textField}
-                  valueField={this.props.valueField}/>
+                { this.props.valueComponent
+                    ? this.props.valueComponent({ item: item })
+                    : this._dataText(item)
+                }
                 <btn onClick={this._delete.bind(null, item)} unselectable='on'>
                   &times;<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
                 </btn>

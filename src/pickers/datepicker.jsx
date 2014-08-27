@@ -11,23 +11,25 @@ var React = require('react')
 
 var propTypes = {
     
-    value:        React.PropTypes.instanceOf(Date),
-    onChange:     React.PropTypes.func,
+    value:          React.PropTypes.instanceOf(Date),
+    onChange:       React.PropTypes.func,
 
-    min:          React.PropTypes.instanceOf(Date),
-    max:          React.PropTypes.instanceOf(Date),
+    min:            React.PropTypes.instanceOf(Date),
+    max:            React.PropTypes.instanceOf(Date),
 
-    culture:      React.PropTypes.string,
-    format:       React.PropTypes.string,
+    culture:        React.PropTypes.string,
+    format:         React.PropTypes.string,
     
-    calendar:     React.PropTypes.bool,
-    time:         React.PropTypes.bool,
+    calendar:       React.PropTypes.bool,
+    time:           React.PropTypes.bool,
 
-    parse:        React.PropTypes.oneOfType([
-                    React.PropTypes.arrayOf(React.PropTypes.string),
-                    React.PropTypes.string,
-                    React.PropTypes.func
-                  ]),
+    timeComponent:  React.PropTypes.func,
+
+    parse:          React.PropTypes.oneOfType([
+                      React.PropTypes.arrayOf(React.PropTypes.string),
+                      React.PropTypes.string,
+                      React.PropTypes.func
+                    ]),
   }
 
 
@@ -146,6 +148,7 @@ module.exports = React.createClass({
                 value={this.props.value} 
                 min={this.props.min} 
                 max={this.props.max} 
+                itemComponent={this.props.timeComponent}
                 onChange={this._selectTime}/>
             </div>
         </Popup>

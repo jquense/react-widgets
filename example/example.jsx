@@ -8,6 +8,16 @@ var ComboBox = require('../src/dropdowns/combobox.jsx')
 var chance = new (require('chance'))
 //var _ = require('lodash')
 
+var ListItem = React.createClass({
+
+	render: function(){
+
+		return (
+			<span>{ "hi: " + this.props.item.name}</span>
+		)
+	}
+})
+
 var App = React.createClass({
 
 	getInitialState: function(){
@@ -58,6 +68,7 @@ var App = React.createClass({
 							data={ this.state.data } 
 							textField='name'
 							valueField='id'
+							suggest={true}
 							value={ this.state.comboboxValue} 
 							onChange={change.bind(null, 'comboboxValue')}/>
 					</section>
@@ -69,10 +80,16 @@ var App = React.createClass({
 							textField='name'
 							valueField='id'
 							value={ this.state.selectValues } 
+							tagComponent={ListItem}
+							itemComponent={ListItem}
 							onChange={change.bind(null, 'selectValues')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
-						<DatePicker id='AwesomeDatePicker' isRtl={false} value={this.state.calDate} onChange={change.bind(null, 'calDate')}/>
+						<DatePicker 
+							id='AwesomeDatePicker' 
+							isRtl={false} 
+							value={this.state.calDate} 
+							onChange={change.bind(null, 'calDate')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<NumberPicker id='AwesomeNumPicker' 
