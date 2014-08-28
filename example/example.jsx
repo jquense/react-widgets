@@ -1,10 +1,11 @@
 var React = require('react/addons')
-var DropdownList = require('../src/dropdowns/dropdown-list.jsx')
-var Select = require('../src/select/select.jsx')
-var Calendar = require('../src/calendar/calendar.jsx')
-var DatePicker = require('../src/pickers/datepicker.jsx')
-var NumberPicker = require('../src/pickers/numberpicker.jsx')
-var ComboBox = require('../src/dropdowns/combobox.jsx')
+var Widgets = require('../index')
+var DropdownList = Widgets.DropDownlist
+var Select = Widgets.Select
+var Calendar = Widgets.Calendar
+var DatePicker = Widgets.DateTimePicker
+var NumberPicker = Widgets.NumberPicker
+var ComboBox = Widgets.Combobox
 var chance = new (require('chance'))
 //var _ = require('lodash')
 

@@ -25,14 +25,13 @@ module.exports = {
       '$':      'window.$',
       'lodash': 'window._',
       'globalize': 'window.Globalize',
-      'react':  'window.React',
-      'react/addons':  'window.React',
+      'react':  'window.React'
     },
 
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' },
-        { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+        //{ test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' },
+        //{ test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
       ],
     },
     plugins: [
@@ -50,10 +49,6 @@ module.exports = {
       filename: "example.js",
       path: path.join(__dirname, "./example"),
       publicPath: "example/"
-    },
-
-    externals: {
-      "$": "$",
     },
 
     module: {
@@ -79,9 +74,7 @@ module.exports = {
     },
 
     externals: {
-      '$':      'window.$',
       'react':  'window.React',
-      'react/addons':  'window.React',
       'lodash': 'window._'
     },
 

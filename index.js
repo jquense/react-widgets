@@ -2,17 +2,17 @@
 
 module.exports = {
 
-  DropDownlist:     require('./src/dropdowns/dropdown-list.jsx'),
-  Combobox:         require('./src/dropdowns/combobox.jsx'),
+  DropDownlist:     require('./lib/dropdowns/dropdown-list'),
+  Combobox:         require('./lib/dropdowns/combobox'),
 
-  Calendar:         require('./src/calendar/calendar.jsx'),
-  DateTimePicker:   require('./src/pickers/datepicker.jsx'),
+  Calendar:         require('./lib/calendar/calendar'),
+  DateTimePicker:   require('./lib/pickers/datepicker'),
 
-  NumberPicker:     require('./src/pickers/numberpicker.jsx'),
-  Select:           require('./src/select/select.jsx'),
+  NumberPicker:     require('./lib/pickers/numberpicker'),
+  Select:           require('./lib/select/select'),
 
   utils: {
-    ReplaceTransitionGroup: require('./src/common/ReplaceTransitionGroup.jsx'),
-    SlideTransition:        require('./src/common/slide-transition.jsx'),
+    ReplaceTransitionGroup: require('./lib/common/ReplaceTransitionGroup'),
+    SlideTransition:        require('./lib/common/slide-transition'),
   }
 }
