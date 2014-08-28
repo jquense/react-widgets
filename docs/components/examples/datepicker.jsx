@@ -1,4 +1,4 @@
-var React = require('react/addons')
+var React = require('react')
   , _ = require('lodash');
 
 module.exports = React.createClass({
@@ -7,7 +7,7 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var DatePicker = require('../../../src/pickers/datepicker.jsx')
+    var DatePicker = require('../../../index').DateTimePicker
 
     return (
       <div className='example '>

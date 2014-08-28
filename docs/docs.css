@@ -65,3 +65,13 @@ h3 > .default {
     position: static;
   }
 }
+
+pre[class*='language-'] > code[data-language] {
+  overflow: auto;
+  height: auto;
+  max-height: none;
+}
+
+pre[class*='language-'] > code[data-language]::before {
+  content: '';
+}

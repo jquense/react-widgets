@@ -1,4 +1,4 @@
-var React = require('react/addons')
+var React = require('react')
   , Bootstrap = require('react-bootstrap')
   , Navbar = require('./topnavbar.jsx')
   , Example = require('./example.jsx')
@@ -12,7 +12,7 @@ var React = require('react/addons')
   , DatePickerExample = require('./examples/datepicker.jsx')
   , NumberPickerExample = require('./examples/numberpicker.jsx');
 
-
+require('../docs.css')
 
 var Docs = React.createClass({
 

@@ -99,6 +99,9 @@ module.exports = React.createClass({
               'rw-rtl':          this.isRtl()
             })}>
         <div className='rw-select-wrapper' onClick={this._click}>
+          { this.props.busy &&
+            <i className="rw-i rw-loading"></i>
+          }
           <TagList 
             ref='tagList'
             value={[].concat(this.props.value)} 

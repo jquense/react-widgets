@@ -1,6 +1,7 @@
 var _ = require('lodash')
   , path = require('path')
   , webpack = require('webpack')
+  , pkg = require("../package.json")
   , ProdDefine = new webpack.DefinePlugin({
       "process.env": {
         // This has effect on the react lib size
@@ -28,15 +29,14 @@ module.exports = {
       'react':  'window.React'
     },
 
-    module: {
-      loaders: [
-        //{ test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' },
-        //{ test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-      ],
-    },
     plugins: [
       ProdDefine,
-      //new webpack.optimize.DedupePlugin(),
+      
+      new webpack.BannerPlugin( 
+        "v" + JSON.stringify(pkg.version) + " | (c) " + (new Date).getFullYear() + " Jason Quense | "
+        + "https://github.com/theporchrat/react-widgets/blob/master/License.txt"
+        , { entryOnly : true }),
+
       new webpack.optimize.UglifyJsPlugin()
     ],
   },
@@ -68,9 +68,9 @@ module.exports = {
     entry: './docs/components/docs.jsx',
     
     output: {
-      path: path.join(__dirname, "./docs/js"),
+      path: path.join(__dirname, "./docs"),
       filename: 'docs.js',
-      publicPath: "docs/"
+      publicPath: 'docs/'
     },
 
     externals: {
@@ -80,12 +80,18 @@ module.exports = {
 
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' }
+        { test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' },
+        { test: /\.css$/, loader: "style-loader!css-loader" },
+        { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
       ],
     },
 
     plugins: [
       ProdDefine,
+      new webpack.BannerPlugin( 
+        "v" + JSON.stringify(pkg.version) + " | (c) " + (new Date).getFullYear() + " Jason Quense | "
+        + "https://github.com/theporchrat/react-widgets/blob/master/License.txt"
+        , { entryOnly : true }),
       new webpack.optimize.UglifyJsPlugin()
     ],
   },

@@ -1,11 +1,11 @@
 var React = require('react/addons')
 var Widgets = require('../index')
-var DropdownList = Widgets.DropDownlist
-var Select = Widgets.Select
+var DropdownList = require('../src/dropdowns/Dropdown-List.jsx')
+var Select = require('../src/select/select.jsx')
 var Calendar = Widgets.Calendar
 var DatePicker = Widgets.DateTimePicker
 var NumberPicker = Widgets.NumberPicker
-var ComboBox = Widgets.Combobox
+var ComboBox = require('../src/dropdowns/Combobox.jsx')
 var chance = new (require('chance'))
 //var _ = require('lodash')
 
@@ -54,6 +54,7 @@ var App = React.createClass({
 							data={ this.state.data } 
 							textField='name'
 							valueField='id'
+							busy={true}
 							value={ this.state.dropdownValue} 
 							onChange={change.bind(null, 'dropdownValue')}/>
 					</section>
@@ -70,6 +71,7 @@ var App = React.createClass({
 							textField='name'
 							valueField='id'
 							suggest={true}
+							busy={true}
 							value={ this.state.comboboxValue} 
 							onChange={change.bind(null, 'comboboxValue')}/>
 					</section>
@@ -81,6 +83,7 @@ var App = React.createClass({
 							textField='name'
 							valueField='id'
 							value={ this.state.selectValues } 
+							busy={true}
 							tagComponent={ListItem}
 							itemComponent={ListItem}
 							onChange={change.bind(null, 'selectValues')}/>

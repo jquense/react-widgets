@@ -1,4 +1,4 @@
-var React = require('react/addons')
+var React = require('react')
   , _ = require('lodash');
 
 module.exports = React.createClass({
@@ -7,7 +7,7 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var Select = require('../../../src/select/select.jsx')
+    var Select = require('../../../index').Select
       , list = [
         { label: 'orange', id: 1 },
         { label: 'blue', id: 2 },

@@ -1,4 +1,4 @@
-var React = require('react/addons')
+var React = require('react')
   , _ = require('lodash');
 
 module.exports = React.createClass({
@@ -7,7 +7,7 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var DropdownList = require('../../../src/dropdowns/dropdown-list.jsx')
+    var DropdownList = require('../../../index').DropDownlist
       , list = [
         { label: 'orange', id: 1 },
         { label: 'blue', id: 2 },

@@ -29,7 +29,8 @@ var propTypes = {
 
   valueComponent: React.PropTypes.component,
   itemComponent:  React.PropTypes.component,
-
+  busy:           React.PropTypes.bool,
+  
   delay:          React.PropTypes.number,
 
   messages:       React.PropTypes.shape({
@@ -108,7 +109,7 @@ module.exports = React.createClass({
             })}>
 
 				<span className="rw-dropdownlist-picker rw-select rw-btn">
-					<i className="rw-i rw-i-caret-down">
+					<i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
             <span className="rw-sr">{ this.props.messages.open }</span>
           </i>
 				</span>

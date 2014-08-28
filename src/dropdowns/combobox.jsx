@@ -22,6 +22,7 @@ var btn = require('../common/btn.jsx')
       textField:      React.PropTypes.string,
 
       suggest:        React.PropTypes.bool,
+      busy:           React.PropTypes.bool,
 
       messages:       React.PropTypes.shape({
         open:         React.PropTypes.string,
@@ -136,7 +137,9 @@ module.exports = React.createClass({
             })}>
 
         <btn className='rw-select' onClick={this.toggle}>
-          <i className="rw-i rw-i-caret-down"><span className="rw-sr">{ this.props.messages.open }</span></i>
+          <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
+            <span className="rw-sr">{ this.props.messages.open }</span>
+          </i>
         </btn>
         <Input
           ref='input'
