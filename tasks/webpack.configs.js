@@ -16,7 +16,7 @@ module.exports = {
     entry: './index.js',
 
     output: {
-      path: path.join(__dirname, "./dist"),
+      path: path.join(__dirname, "./browser"),
       filename: 'react-widgets.js',
       library:  'ReactWidgets',
       libraryTarget: 'this'
