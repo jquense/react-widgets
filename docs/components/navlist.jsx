@@ -1,5 +1,6 @@
 var React = require('react')
-var Bootstrap = require('react-bootstrap')
+var Nav     = require('react-bootstrap/Nav')
+  , NavItem = require('react-bootstrap/NavItem')
 
 
 module.exports = React.createClass({
@@ -7,8 +8,6 @@ module.exports = React.createClass({
   displayName: 'page',
 
   render: function(){
-    var Nav = Bootstrap.Nav
-      , NavItem = Bootstrap.NavItem;
 
     return this.transferPropsTo(
       <Nav>

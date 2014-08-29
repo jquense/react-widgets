@@ -1,6 +1,8 @@
 var React = require('react')
-  , Bootstrap = require('react-bootstrap')
   , Navbar = require('./topnavbar.jsx')
+  , Nav = require('react-bootstrap/Nav')
+  , Affix = require('react-bootstrap/Affix')
+  , NavItem = require('react-bootstrap/NavItem')
   , Example = require('./example.jsx')
   , fs = require('fs')
   , _ = require('lodash')
@@ -25,10 +27,6 @@ var Docs = React.createClass({
   },
 
   render: function(){
-    var Nav = Bootstrap.Nav
-      , Affix = Bootstrap.Affix
-      , NavItem = Bootstrap.NavItem
-      , TabPane = Bootstrap.TabPane;
 
     return (
       <div style={{ marginTop: 72 }}>
@@ -63,12 +61,20 @@ var Docs = React.createClass({
               </p>
               <h2>Install</h2>
               <p>
-                The prefered way is to use NPM <code>npm install react-widgets</code> and make use of something like Webpack or Browserify. There is also a 
-                traditional browser build available for download in the <strong>dist</strong> folder. It does not bundle any dependencies listed below, and 
+                The prefered way is to use NPM <code>npm install react-widgets</code> and make use of something like Webpack or 
+                Browserify to bundle the lib. 
+                There is also a traditional browser build available for download in the <strong>browser</strong> folder. 
+                It does not bundle any dependencies listed below, and 
                 attaches itself to the <code>window</code> as <code>ReactWidgets</code>
               </p>
-
-              <p>Included icons are provided by - <a href="http://fontawesome.io">Font Awesome by Dave Gandy</a></p>
+              <p>
+                Compiled CSS, images, and fonts are found in the <code>dist</code> directory. 
+                Included icons are provided by - <a href="http://fontawesome.io">Font Awesome by Dave Gandy</a>
+              </p>
+              <strong>
+                Note: prior to 1.1.0 when requiring react-widgets as a CommonJS module you also need to transpile the 
+                module from jsx. As of 1.1.0 the package comes precompiled :)
+              </strong>
 
               <h2>External Dependencies</h2>
               <p>
@@ -173,6 +179,11 @@ var Docs = React.createClass({
                 This component is used to render each possible item in the dropdownlist. The default component 
                 renders the text of the selected item (specified by <code>textfield</code>)
               </p>
+              <h3>busy <small>Boolean</small></h3>
+              <p>
+                mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
+                when loading data via an ajax call.
+              </p>
               <h3>isRtl <small>Boolean</small></h3>
               <p>
                 mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
@@ -209,7 +220,7 @@ var Docs = React.createClass({
             <section>
               <h1 id="combobox" className="page-header">Combobox</h1>
               <p>
-                Select an item from the list, or input a custom value. The vombobox can also make suggestions as you type
+                Select an item from the list, or input a custom value. The combobox can also make suggestions as you type
               </p>
               <ComboBoxExample/>
               <Example code={
@@ -284,6 +295,12 @@ var Docs = React.createClass({
               <p>
                 When <code>true</code> the Combobox will filter the list of values as you type, values as you type. The suggestions 
                 are always "startsWith", meaning it will search from the start of the <code>textField</code> property
+              </p>
+
+              <h3>busy <small>Boolean</small></h3>
+              <p>
+                mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
+                when loading data via an ajax call.
               </p>
 
               <h3>isRtl <small>Boolean</small></h3>
@@ -479,6 +496,11 @@ var Docs = React.createClass({
                 The same as an input placeholder, only works in browsers that support the placeholder attribute for inputs
               </p>
 
+              <h3>busy <small>Boolean</small></h3>
+              <p>
+                mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
+                when loading data via an ajax call.
+              </p>
               <h3>isRtl <small>Boolean</small></h3>
               <p>
                 mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through

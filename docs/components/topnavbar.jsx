@@ -1,5 +1,7 @@
-var React = require('react')
-var Bootstrap = require('react-bootstrap')
+var React   = require('react')
+var Navbar  = require('react-bootstrap/Navbar')
+  , Nav     = require('react-bootstrap/Nav')
+  , NavItem = require('react-bootstrap/NavItem')
 
 
 module.exports = React.createClass({
@@ -7,9 +9,6 @@ module.exports = React.createClass({
   displayName: 'page',
 
   render: function(){
-    var Navbar  = Bootstrap.Navbar
-      , Nav     = Bootstrap.Nav
-      , NavItem = Bootstrap.NavItem;
 
     var toggle = (
       <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">

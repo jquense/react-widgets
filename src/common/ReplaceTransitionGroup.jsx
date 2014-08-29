@@ -1,19 +1,8 @@
 /**
- * Copyright 2013-2014 Facebook, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @providesModule ReactTransitionGroup
+ * A streamlined version of TransitionGroup built for managing at most two 'active' children
+ * also provides additional hooks for animation start/end
+ * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
+ * relevent code is licensed accordingly 
  */
 
 "use strict";
@@ -31,8 +20,8 @@ module.exports = React.createClass({
     component:    React.PropTypes.func,
     childFactory: React.PropTypes.func,
 
-    onAnimating: React.PropTypes.func,
-    onAnimate:   React.PropTypes.func,
+    onAnimating:  React.PropTypes.func,
+    onAnimate:    React.PropTypes.func,
   },
 
   getDefaultProps: function() {
