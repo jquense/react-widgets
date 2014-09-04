@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "React widgets",
   "main": "index.js",
   "author": {
@@ -16,7 +16,8 @@
     "datepicker",
     "numberpicker",
     "multiselect",
-    "react-ui"
+    "react-ui",
+    "react-component"
   ],
   "homepage": "http://theporchrat.github.io/react-widgets/docs/",
   "repository": {
