@@ -95,4 +95,16 @@ module.exports = {
       new webpack.optimize.UglifyJsPlugin()
     ],
   },
+
+  test: {
+    //devtool: 'source-map',
+    cache: true,
+    module: {
+      loaders: [
+        { test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' },
+        { test: /\.css$/, loader: "style-loader!css-loader" },
+        { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+      ],
+    },
+  }
 }

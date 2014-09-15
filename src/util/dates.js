@@ -136,7 +136,7 @@ Object.defineProperties(dates, {
 
   now: { 
     enumerable: true,
-    get: function(){ return Date.now ? Date.now : new Date }
+    get: function(){ return new Date }
   },
 
   today: { 

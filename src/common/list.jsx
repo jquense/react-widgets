@@ -26,7 +26,8 @@ module.exports = React.createClass({
   displayName: 'List',
 
   mixins: [ 
-    require('../mixins/DataHelpersMixin')
+    require('../mixins/DataHelpersMixin'),
+    require('../mixins/VirtualScrollMixin')
   ],
 
   propTypes: {
@@ -63,10 +64,17 @@ module.exports = React.createClass({
 	render: function(){
     var emptyList   = <li>{ this.props.messages.emptyList }</li>
       , emptyFilter = <li>{ this.props.messages.emptyFilter }</li>
-      , items = _.map(this.props.data, (item, idx) => {
-        var focused = idx === this.props.focusedIndex;
+      , items = [];
 
-        return (
+    if ( this.state.displayStart !== 0)
+      items.push(<li style={{height: this.state.displayStart * this.props.itemHeight}}/>);
+
+    console.log('render', this.state.displayEnd)  
+    for (var idx = this.state.displayStart; idx <= this.state.displayEnd; ++idx) {
+      var item = this.props.data[idx];
+      var focused = idx === this.props.focusedIndex;
+
+      items[items.length] = (
           <li 
             key={'item_' + idx}
             role='option'
@@ -82,16 +90,21 @@ module.exports = React.createClass({
                 : this._dataText(item)
              }
           </li>
-        )
-      });
+      );
+    }
     
+    if ( this.state.displayEnd !== (this.props.data.length - 1))
+      items.push(<li style={{height:  (this.props.data.length - this.state.displayEnd) * this.props.itemHeight}}/>);
+
 		return mergeIntoProps(
       _.omit(this.props, 'data', 'selectedIndex'),
 			<ul 
         className="rw-list" 
+        ref='scrollable'
         role='listbox'
         tabIndex="-1" 
-        onKeyDown={this._keyDown} 
+        onKeyDown={this._keyDown}
+        onScroll={this.onScroll} 
         onKeyPress={this.search}>
         { !this.props.data.length 
           ? emptyList 
@@ -102,16 +115,23 @@ module.exports = React.createClass({
 
   _setScrollPosition: function(){
     var list = this.getDOMNode()
+      , virtual = !!this.props.itemHeight
       , selected = list.children[this.props.focusedIndex]
       , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
 
-
-    if (!selected) return
+    if (!virtual && !selected) return
 
     scrollTop   = list.scrollTop
     listHeight  = list.clientHeight
-    selectedTop = selected.offsetTop
-    selectedHeight = selected.offsetHeight
+
+    selectedTop =  virtual 
+      ? (this.props.focusedIndex * this.props.itemHeight) 
+      : selected.offsetTop
+
+    selectedHeight = virtual 
+      ? this.props.itemHeight 
+      : selected.offsetHeight
+
     bottom =  selectedTop + selectedHeight
 
     list.scrollTop = scrollTop > selectedTop

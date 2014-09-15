@@ -6,7 +6,7 @@ var _ = require('lodash')
     gt:   function(a, b){ return a > b   },
     gte:  function(a, b){ return a >= b  },
     lt:   function(a, b){ return a < b   },
-    ltw:  function(a, b){ return a <= b  },
+    lte:  function(a, b){ return a <= b  },
 
     contains: function(a, b){ 
       return _.contains(a, b) 
@@ -26,11 +26,11 @@ var _ = require('lodash')
 
 module.exports = common
 
-module.exports.filter = function filter(obj, filter) {
+// module.exports.filter = function filter(obj, filter) {
   
-  filter = typeof filter === 'string' ? common[filter] : filter
+//   filter = typeof filter === 'string' ? common[filter] : filter
 
-  if ( typeof filter !== 'function') throw new TypeError
+//   if ( typeof filter !== 'function') throw new TypeError
 
-  return _.filter(obj, filter)
-}
+//   return _.filter(obj, filter)
+// }
