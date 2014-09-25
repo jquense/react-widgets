@@ -59,7 +59,52 @@ var App = React.createClass({
 							value={ this.state.dropdownValue} 
 							onChange={change.bind(null, 'dropdownValue')}/>
 					</section>
-					
+					<section className="example" style={{ marginBottom: 20 }}>
+						<Calendar 
+							id='Calendar'
+							value={ new Date } 
+							onChange={change.bind(null, 'calValue')}/>
+					</section>
+					<section className="example" style={{ marginBottom: 20 }}>
+					<ComboBox 
+							isRtl={false}
+							data={ this.state.data } 
+							textField='name'
+							valueField='id'
+							suggest={true}
+							busy={true}
+							value={ this.state.comboboxValue} 
+							onChange={change.bind(null, 'comboboxValue')}/>
+					</section>
+					<section className="example" style={{ marginBottom: 20 }}>
+						<Select 
+							isRtl={false}
+							data={ this.state.data } 
+							placeholder="hi i am a placeholder"
+							textField='name'
+							valueField='id'
+							value={ this.state.selectValues } 
+							busy={true}
+							tagComponent={ListItem}
+							itemComponent={ListItem}
+							onChange={change.bind(null, 'selectValues')}/>
+					</section>
+					<section className="example" style={{ marginBottom: 20 }}>
+						<DatePicker 
+							id='AwesomeDatePicker' 
+							isRtl={false} 
+							value={this.state.calDate} 
+							onChange={change.bind(null, 'calDate')}/>
+					</section>
+					<section className="example" style={{ marginBottom: 20 }}>
+						<NumberPicker id='AwesomeNumPicker' 
+							isRtl={false} 
+							min={0}
+							max={5}
+							format="c"
+							value={this.state.numberValue} 
+							onChange={change.bind(null, 'numberValue')}/>
+					</section>
 				</div>
 				<div className='clearfix'>
 					<div className='c1' style={{ float: 'left', width: 150, height: 200 }}/>

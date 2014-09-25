@@ -16,6 +16,7 @@ module.exports = React.createClass({
 
 	propTypes: {
 		getAnchor:      React.PropTypes.func.isRequired,
+    duration:       React.PropTypes.number,
     onRequestClose: React.PropTypes.func.isRequired,
     onClosing:      React.PropTypes.func,
     onOpening:      React.PropTypes.func,
