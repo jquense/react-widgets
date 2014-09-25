@@ -59,8 +59,7 @@ module.exports = React.createClass({
 		return {
 			open:          false,
       selectedIndex: initialIdx,
-      focusedIndex:  initialIdx === -1 ? 0 : initialIdx,
-      
+      focusedIndex:  initialIdx === -1 ? 0 : initialIdx  
 		}
 	},
 
@@ -80,8 +79,9 @@ module.exports = React.createClass({
     this.setFocusedIndex(idx === -1 ? 0 : idx)
   }),
 
-  componentDidMount: function(){
-    this.setWidth()
+  componentDidUpdate: function(){
+    if( this.state.open)
+      this.setWidth()
   },
 
 	render: function(){ 

@@ -106,7 +106,8 @@ module.exports = React.createClass({
       , val = this._dataText(this.props.value);
 
     this.state.focused && input.focus()
-    this.setWidth()
+    
+    if( this.state.open) this.setWidth()
   },
 
 	render: function(){ 

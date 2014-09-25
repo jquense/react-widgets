@@ -74,8 +74,9 @@ module.exports = React.createClass({
     })
   },
 
-  componentDidMount: function(pvProps, pvState){
-    this.setWidth()
+  componentDidUpdate: function(pvProps, pvState){
+    if( this.state.open)
+      this.setWidth()
   },
 
   render: function(){ 
