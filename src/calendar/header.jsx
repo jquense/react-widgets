@@ -42,24 +42,24 @@ module.exports = React.createClass({
 
     return (
       <div className='rw-header'>
-        <btn className="rw-btn-left" 
+        <btn className="rw-btn-left"
           onClick={this.props.onMoveLeft}
-          disabled={this.props.prevDisabled} 
+          disabled={this.props.prevDisabled}
           aria-disabled={this.props.prevDisabled}
           title={this.props.moveBack}>
           <i className={"rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}>
-            <span className="rw-sr">Pthis.props.moveBack}</span></i>
+            <span className="rw-sr">{this.props.moveBack}</span></i>
         </btn>
-        <btn className="rw-btn-view" 
+        <btn className="rw-btn-view"
           id={this.props.labelId}
-          onClick={this.props.onViewChange} 
-          disabled={this.props.upDisabled} 
+          onClick={this.props.onViewChange}
+          disabled={this.props.upDisabled}
           aria-disabled={this.props.upDisabled}>
           { this.props.label }
         </btn>
-        <btn className="rw-btn-right" 
+        <btn className="rw-btn-right"
           onClick={this.props.onMoveRight}
-          disabled={this.props.nextDisabled} 
+          disabled={this.props.nextDisabled}
           aria-disabled={this.props.nextDisabled}
           title={this.props.moveForward}>
           <i className={"rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}>
