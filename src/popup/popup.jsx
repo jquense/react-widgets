@@ -91,7 +91,7 @@ module.exports = React.createClass({
     Content.props.ref = this.props.children.props.ref;
 
 		return (
-      <div style={style} > 
+      <div style={style} className="rw-popup-container">
         <PopupContent ref='content'>
           { Content }
         </PopupContent>
@@ -122,7 +122,7 @@ module.exports = React.createClass({
       , el   = this.refs.content.getDOMNode();
 
     this.ORGINAL_POSITION = el.style.position;
-    
+
     this.dimensions()
     this.props.onOpening()
 
@@ -160,7 +160,7 @@ module.exports = React.createClass({
       , dur === undefined ? this.props.duration : dur
       , function() {
         $.css(el, { position: self.ORGINAL_POSITION });
-        
+
         anim.style.display = 'none'
         self.ORGINAL_POSITION = null
         self.props.onClose()
