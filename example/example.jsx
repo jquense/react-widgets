@@ -3,7 +3,7 @@ var Widgets = require('../index')
 var DropdownList = require('../src/dropdowns/Dropdown-List.jsx')
 var Select = require('../src/select/select.jsx')
 var Calendar = Widgets.Calendar
-var DatePicker = Widgets.DateTimePicker
+var DatePicker = require('../src/pickers/datepicker.jsx')
 var NumberPicker = Widgets.NumberPicker
 var ComboBox = require('../src/dropdowns/Combobox.jsx')
 var chance = new (require('chance'))
@@ -46,7 +46,7 @@ var App = React.createClass({
 
 		return (
 			<div style={{ fontSize: 14 }}>
-				<div style={{ width: 200 }}>
+				<div style={{ maxWidth: 600 }}>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<DropdownList 
 							isRtl={false}
@@ -72,7 +72,7 @@ var App = React.createClass({
 							textField='name'
 							valueField='id'
 							suggest={true}
-							busy={true}
+							busy={false}
 							value={ this.state.comboboxValue} 
 							onChange={change.bind(null, 'comboboxValue')}/>
 					</section>
@@ -84,7 +84,7 @@ var App = React.createClass({
 							textField='name'
 							valueField='id'
 							value={ this.state.selectValues } 
-							busy={true}
+							busy={false}
 							tagComponent={ListItem}
 							itemComponent={ListItem}
 							onChange={change.bind(null, 'selectValues')}/>

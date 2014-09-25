@@ -110,6 +110,12 @@ var dates = module.exports = _.extend({}, dateMath, {
   },
 
   merge: function(date, time){
+    if( time == null && date == null) 
+      return null
+    
+    if( time == null) time = new Date
+    if( date == null) date = new Date
+
     date = dates.startOf(date, 'day')
     date = dates.hours(date,        dates.hours(time))
     date = dates.minutes(date,      dates.minutes(time))

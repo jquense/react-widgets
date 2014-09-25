@@ -54,12 +54,16 @@ module.exports = React.createClass({
         listItem={this.props.itemComponent}
         onSelect={this.props.onChange}/>
     )
+
   },
 
   _selectedIndex: function(times, date){
-    return _.findIndex(times, function(d){
-      return dates.eq(date, d, 'hours')
-    })
+    var roundTo = 1000 * 60 * this.props.step;
+    
+    if( !date) return 0
+    date = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
+
+    return _.findIndex(times, { label: dates.format(date, this.props.format) } )
   },
 
   _data: function(){

@@ -164,6 +164,7 @@ module.exports = React.createClass({
               _.pick(this.props, _.keys(Calendar.type.propTypes)),
               <Calendar ref="calPopup"   
                 id={dateListID}
+                value={this.props.value || new Date }
                 maintainFocus={false}
                 aria-hidden={ !this.state.open }
                 onChange={this._selectDate}/>

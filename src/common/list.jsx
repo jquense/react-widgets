@@ -54,11 +54,14 @@ module.exports = React.createClass({
     }
   },
 
+  componentDidMount: function(prevProps, prevState){
+    this._setScrollPosition()
+  },
+
   componentDidUpdate: function(prevProps, prevState){
     if ( prevProps.focusedIndex !== this.props.focusedIndex)
       this._setScrollPosition()
   },
-
 
 	render: function(){
     var emptyList   = <li>{ this.props.messages.emptyList }</li>
