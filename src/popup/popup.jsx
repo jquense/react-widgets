@@ -15,7 +15,7 @@ function childKey(children){
 module.exports = React.createClass({
 
 	propTypes: {
-		getAnchor:      React.PropTypes.func.isRequired,
+		//getAnchor:      React.PropTypes.func.isRequired,
     duration:       React.PropTypes.number,
     onRequestClose: React.PropTypes.func.isRequired,
     onClosing:      React.PropTypes.func,
@@ -36,32 +36,8 @@ module.exports = React.createClass({
     }
   },
 
-
-  componentWillUnmount: function(){
-    $.off(document, 'click', self._onClick)
-    $.off(window, 'resize', self._resize)
-  },
-
 	componentDidMount: function(){
-		var self = this
-      , node = this.getDOMNode();
-
-      self._onClick = function(e){
-        var detached = !$.contains(document, e.target)
-          , clickedPopup = $.contains(node, e.target)
-          , clickedAnchor = $.contains(self.props.getAnchor(), e.target)
-
-        if ( self.props.open && !clickedAnchor && !clickedPopup && !detached )
-          self.props.onRequestClose()
-      }
-
-      self._resize = _.throttle(this.position.bind(this), 100)
-
-      $.off(window, 'resize',  self._resize)
-      $.off(document, 'click', self._onClick)
-
-      this.position()
-      this.close(0)
+    this.close(0)
 	},
 
   componentWillReceiveProps: function(nextProps) {
@@ -76,8 +52,6 @@ module.exports = React.createClass({
       , opening = !pvProps.open && this.props.open
       , same    = pvProps.open === this.props.open;
 
-    this.position()
-
     if (opening)      self.open()
     else if (closing) self.close()
   },
@@ -90,8 +64,8 @@ module.exports = React.createClass({
 
     Content.props.ref = this.props.children.props.ref;
 
-		return (
-      <div style={style} > 
+		return mergeIntoProps(this.props,
+      <div className="rw-popup-container">
         <PopupContent ref='content'>
           { Content }
         </PopupContent>
@@ -106,23 +80,13 @@ module.exports = React.createClass({
     el.style.height  = $.height(this.refs.content.getDOMNode()) + 'px'
   },
 
-  position: function(){
-    var self    = this
-      , aOffset = $.offset(this.props.getAnchor());
-
-      $.css(this.getDOMNode(), {
-        top:    aOffset.height - 1 + 'px',
-        left:   -1 + 'px'
-      });
-  },
-
   open: function(){
     var self = this
       , anim = this.getDOMNode()
       , el   = this.refs.content.getDOMNode();
 
-    this.ORGINAL_POSITION = el.style.position;
-    
+    this.ORGINAL_POSITION = $.css(el, 'position');
+
     this.dimensions()
     this.props.onOpening()
 
@@ -132,13 +96,11 @@ module.exports = React.createClass({
       , { top: 0 }
       , self.props.duration
       , function(){
-
-        $.css(el, { position: self.ORGINAL_POSITION });
-
-        anim.style.overflow = 'visible'
-        self.ORGINAL_POSITION = null
-        self.props.onOpen()
-      })
+          el.style.position = self.ORGINAL_POSITION
+          anim.style.overflow = 'visible'
+          self.ORGINAL_POSITION = null
+          self.props.onOpen()
+        })
 
   },
 
@@ -148,7 +110,7 @@ module.exports = React.createClass({
       , anim = this.getDOMNode()
       , ht   = anim.style.height;
 
-    this.ORGINAL_POSITION = el.style.position;
+    this.ORGINAL_POSITION = $.css(el, 'position');
     this.dimensions()
     this.props.onClosing()
 
@@ -159,12 +121,12 @@ module.exports = React.createClass({
       , { top: '-100%' }
       , dur === undefined ? this.props.duration : dur
       , function() {
-        $.css(el, { position: self.ORGINAL_POSITION });
-        
-        anim.style.display = 'none'
-        self.ORGINAL_POSITION = null
-        self.props.onClose()
-      })
+          el.style.position = self.ORGINAL_POSITION
+
+          anim.style.display = 'none'
+          self.ORGINAL_POSITION = null
+          self.props.onClose()
+        })
 
   }
 

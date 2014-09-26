@@ -87,11 +87,14 @@ ul.rw-list {
   }
 }
 
+.rw-widget {
+  position: relative;
+}
+
 .rw-combobox,
 .rw-date-picker,
 .rw-number-picker,
 .rw-dropdown-list {
-  position:         relative;
   padding-right:    1.9em;
 
   &.rw-rtl {
@@ -109,12 +112,15 @@ ul.rw-list {
     border: none;
     outline: 0;
     background: none;
+    .placeholder();
   }
 
   &.rw-open {
     .border-bottom-radius(0);
   }
+
 }
+
 
 .rw-select {
   position: absolute;
@@ -149,13 +155,26 @@ ul.rw-list {
 
 @focus-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
 
+.rw-open {
+  &.rw-combobox,
+  &.rw-date-picker,
+  &.rw-select-list,
+  &.rw-dropdown-list,
+  & .rw-select-wrapper,
+  &.rw-combobox .rw-input,
+  &.rw-date-picker .rw-input,
+  &.rw-dropdown-list .rw-input, {
+    .border-bottom-radius(0);
+  }
+}
+
 .rw-combobox,
 .rw-select-list,
 .rw-date-picker,
 .rw-number-picker,
 .rw-dropdown-list {
   background-color:   @input-bg;
-  border:             @input-border 1px solid;
+  border:             @input-border @input-border-width solid;
   border-radius:      @input-border-radius;
 
   &:hover {

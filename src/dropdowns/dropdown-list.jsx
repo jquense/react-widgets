@@ -79,10 +79,10 @@ module.exports = React.createClass({
     this.setFocusedIndex(idx === -1 ? 0 : idx)
   }),
 
-  componentDidUpdate: function(){
-    if( this.state.open)
-      this.setWidth()
-  },
+  // componentDidUpdate: function(){
+  //   if( this.state.open)
+  //     this.setWidth()
+  // },
 
 	render: function(){ 
 		var keys = _.keys(propTypes)
@@ -120,12 +120,7 @@ module.exports = React.createClass({
           }
         </div>
 
-        <Popup 
-          style={{ width: this.state.width }}
-          getAnchor={ this._getAnchor } 
-          open={this.state.open} 
-          onRequestClose={this.close}>
-          
+        <Popup open={this.state.open} onRequestClose={this.close}>
           <div>
             <List ref="list"
               optID={optID}
@@ -249,9 +244,6 @@ module.exports = React.createClass({
     this.state.open 
       ? this.close() 
       : this.open()
-  },
-
-	_getAnchor: function(){
-		return this.refs.element.getDOMNode()
-	}
+  }
+  
 })

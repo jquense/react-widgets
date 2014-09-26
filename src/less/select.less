@@ -1,21 +1,5 @@
 
-.rw-select-list {
-  position:         relative;
-  outline: 0;
-  background:       @input-bg;
-  border:           @input-border 1px solid;
 
-
-  &:hover {
-    border-color:     @input-border-hover;
-  }
-
-  &.rw-open {
-    .border-bottom-radius(0);
-  }
-}
-
-.rw-select-list,
 .rw-select-wrapper,
 .rw-select-wrapper .rw-input {
   border-radius:          @input-border-radius;
@@ -32,6 +16,7 @@
   }
 
   > .rw-input {
+    .placeholder();
     float:                left;
     outline:              0;
     border-width:         0;

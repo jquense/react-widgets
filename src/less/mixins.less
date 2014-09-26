@@ -26,7 +26,7 @@
 }
 
 .border-top-radius(@radius) {
-  	border-top-right-radius: @radius;
+  border-top-right-radius: @radius;
    border-top-left-radius: @radius;
 }
 .border-right-radius(@radius) {
@@ -78,4 +78,14 @@
   &:after {
     clear: both;
   }
+}
+
+.placeholder(@color: @input-color-placeholder) {
+  // Firefox
+  &::-moz-placeholder {
+    color: @color;
+    opacity: 1; // See https://github.com/twbs/bootstrap/pull/11526
+  }
+  &:-ms-input-placeholder { color: @color; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { color: @color; } // Safari and Chrome
 }

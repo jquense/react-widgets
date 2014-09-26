@@ -74,11 +74,6 @@ module.exports = React.createClass({
     })
   },
 
-  componentDidUpdate: function(pvProps, pvState){
-    if( this.state.open)
-      this.setWidth()
-  },
-
   render: function(){ 
     var listID = this.props.id && this.props.id + '_listbox'
       , optID  = this.props.id && this.props.id + '_option'
@@ -111,20 +106,15 @@ module.exports = React.createClass({
             valueComponent={this.props.tagComponent}
             onDelete={this._delete}/>
           <SelectInput 
+            ref='input'
             aria-expanded={ this.state.open }
             aria-busy={!!this.props.busy}
             aria-owns={listID}
             value={this.state.searchTerm} 
             placeholder={this._placeholder()}
-            focused={this.state.focused} 
             onChange={this._typing}/>
         </div>
-        <Popup 
-          style={{ width: this.state.width}}
-          getAnchor={ this._getAnchor } 
-          open={this.state.open} 
-          onRequestClose={this.close}>
-
+        <Popup open={this.state.open} onRequestClose={this.close}>
           <div>
             <List ref="list"
               id={listID}
@@ -172,15 +162,17 @@ module.exports = React.createClass({
     !this.state.open && this.open()
   },
 
-  _focus: function(focused){
+  _focus: function(focused, e){
     var self = this;
 
     clearTimeout(self.timer)
+
     self.timer = setTimeout(function(){
-      if( focused !== self.state.focused) {
+      if(focused) self.refs.input.focus() 
+      else        self.close()
+
+      if( focused !== self.state.focused)
         self.setState({ focused: focused })
-        if(!focused) self.close()
-      }
     }, 0)
   },
 
@@ -284,9 +276,6 @@ module.exports = React.createClass({
     return this.props.value.length 
       ? '' 
       : (this.props.placeholder || '')
-  },
-
-  _getAnchor: function(){
-    return this.refs.element.getDOMNode()
   }
+
 })
