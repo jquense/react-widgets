@@ -33,6 +33,8 @@ var propTypes = {
   
   delay:          React.PropTypes.number,
 
+  duration:       React.PropTypes.number, //popup
+  
   messages:       React.PropTypes.shape({
     open:         React.PropTypes.string,
   })
@@ -66,6 +68,8 @@ module.exports = React.createClass({
   getDefaultProps: function(){
     return {
       delay: 500,
+      value: null,
+      data: [],
       messages: {
         open: 'open dropdown'
       }

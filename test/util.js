@@ -1,3 +1,5 @@
+require('../vendor/phantomjs-shim')
+
 var react= require('react')
   , cx = require('../src/util/cx')
   , filters = require('../src/util/filter')

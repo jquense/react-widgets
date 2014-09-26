@@ -9,7 +9,9 @@ module.exports = function (config) {
     frameworks: ['mocha', 'expect'],
 
     files: [
-      'test/*.js'
+      './vendor/phantomjs-shim.js',
+      './vendor/sinon-1.10.3.js',
+      'test/*.js', 'test/*.jsx'
     ],
 
     reporters: ['progress'],
@@ -26,15 +28,19 @@ module.exports = function (config) {
     browsers: ['PhantomJS'],
 
     preprocessors: {
-      'test/*.js': ['webpack']
+      'test/*': ['webpack']
     },
 
     webpack: require('./tasks/webpack.configs').test,
+    webpackServer: {
+      noInfo: true
+    },
 
     plugins: [
-        require("karma-webpack"),
-        require("karma-mocha"),
-        require("karma-expect"),
+      require("karma-phantomjs-launcher"),
+      require("karma-webpack"),
+      require("karma-mocha"),
+      require("karma-expect"),
     ]
   });
 };

@@ -97,7 +97,7 @@ module.exports = {
   },
 
   test: {
-    //devtool: 'source-map',
+    devtool: 'source-map',
     cache: true,
     module: {
       loaders: [

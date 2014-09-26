@@ -66,6 +66,8 @@
     "sinon": "~1.10.3",
     "mocha": "~1.21.4",
     "karma-mocha": "~0.1.9",
-    "karma-expect": "~1.1.0"
+    "karma-expect": "~1.1.0",
+    "karma-phantomjs-launcher": "~0.1.4",
+    "phantomjs": "~1.9.10"
   }
 }
