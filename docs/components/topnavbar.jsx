@@ -20,7 +20,7 @@ module.exports = React.createClass({
     )
     return this.transferPropsTo(
       <Navbar fixedTop activeKey={this.props.page} toggleNavKey={0} toggleButton={toggle}>
-          <Nav role='navigation' key={0}>
+          <Nav role='navigation' key={0} activeKey='docs' >
             <NavItem key='docs' href="#">Docs</NavItem>
             <NavItem key='dl' href="https://github.com/theporchrat/react-widgets/releases">Download</NavItem>
             <NavItem key='github' href="https://github.com/theporchrat/react-widgets">Github</NavItem>

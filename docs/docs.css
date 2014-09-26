@@ -1,6 +1,7 @@
 
 body {
   margin-bottom: 40px;
+  background: #FAFAF9;
 }
 
 h2, h3 {
@@ -8,11 +9,14 @@ h2, h3 {
 } 
 
 h3 {
+  color: #284C6D;
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
+  font-size: 20px;
   
 }
 .example {
+  background-color: white;
   margin-top: 20px;
   position: relative;
   border: #ddd 1px solid;
@@ -30,6 +34,7 @@ h3 {
   content: 'Example';
 }
 .example + pre {
+ /* background-color: #444;*/
   margin-top: 0 !important;
   border-top-width: 0; 
   border-top-left-radius: 0;
@@ -65,13 +70,47 @@ h3 > .default {
     position: static;
   }
 }
-
-pre[class*='language-'] > code[data-language] {
-  overflow: auto;
-  height: auto;
-  max-height: none;
+pre > code.hljs {
+  background: none;
 }
 
-pre[class*='language-'] > code[data-language]::before {
-  content: '';
+pre {
+  background: #F4F4F4 ;
 }
+.navbar-default {
+  background-color: #0079C1;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: white;
+  border-bottom: 3px solid #0079C1;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+  color: #E7CAA1;
+  border-bottom-color: #E7CAA1;  
+}
+
+.navbar-default .navbar-nav>li.active > a,
+.navbar-default .navbar-nav>li.active > a:hover {
+  color: white;
+  background-color: #0B2A46;
+  border-bottom: 3px solid #0B2A46;
+}
+
+.side-nav .nav > li > a {
+  color: #284C6D;
+  border-left: 2px solid transparent;
+}
+
+.side-nav .nav > li > a:hover {
+  color: #B59E7D;
+  background: none;
+  border-left-color:  #E7CAA1;
+}
+.page-header {
+  color: #0079C1;
+  border-bottom-color: #0079C1;
+}
+
+.h1, h2,h4,h5 { color: #0079C1; }

@@ -34,7 +34,7 @@ var Docs = React.createClass({
         <div className='container'>
           <aside className='col-sm-3'>
             <Affix offsetTop={52} className='nav-aside'>
-              <Nav activeHref={this.state.sideHref} onSelect={this.handleNavItemSelect}>
+              <Nav className='side-nav' activeHref={this.state.sideHref} onSelect={this.handleNavItemSelect}>
                 <NavItem key={0} href='#intro'>Getting Started</NavItem>
                 <NavItem key={1} href='#dropdown-list'>Dropdown List</NavItem>
                 <NavItem key={2} href='#combobox'>Combobox</NavItem>
@@ -42,7 +42,6 @@ var Docs = React.createClass({
                 <NavItem key={3} href='#select-list'>Select</NavItem>
                 <NavItem key={4} href='#calendar'>Calendar</NavItem>
                 <NavItem key={5} href='#date-picker'>Date Picker</NavItem>
-                
               </Nav>
             </Affix>
           </aside>
