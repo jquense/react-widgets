@@ -90,12 +90,15 @@ pre {
   color: #E7CAA1;
   border-bottom-color: #E7CAA1;  
 }
-
+.navbar-default .navbar-nav>li>a:hover,
 .navbar-default .navbar-nav>li.active > a,
 .navbar-default .navbar-nav>li.active > a:hover {
-  color: white;
+  color: #E7CAA1;
+  border-bottom-color: #E7CAA1; 
+  background: none;
+ /* color: white;
   background-color: #0B2A46;
-  border-bottom: 3px solid #0B2A46;
+  border-bottom: 3px solid #0B2A46;*/
 }
 
 .side-nav .nav > li > a {
