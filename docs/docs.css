@@ -106,7 +106,8 @@ pre {
   border-left: 2px solid transparent;
 }
 
-.side-nav .nav > li > a:hover {
+.side-nav .nav > li > a:hover,
+.side-nav .nav > li.active > a {
   color: #B59E7D;
   background: none;
   border-left-color:  #E7CAA1;
