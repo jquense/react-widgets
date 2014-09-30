@@ -24,6 +24,8 @@ var btn = require('../common/btn.jsx')
       suggest:        React.PropTypes.bool,
       busy:           React.PropTypes.bool,
 
+      duration:       React.PropTypes.number, //popup
+
       messages:       React.PropTypes.shape({
         open:         React.PropTypes.string,
         emptyList:    React.PropTypes.string,
@@ -152,7 +154,7 @@ module.exports = React.createClass({
           onChange={this._inputTyping}
           onKeyDown={this._inputKeyDown}/>
 
-        <Popup open={this.state.open} onRequestClose={this.close}> 
+        <Popup open={this.state.open} onRequestClose={this.close} duration={this.props.duration}> 
           <div>
             <List ref="list"
               id={listID}

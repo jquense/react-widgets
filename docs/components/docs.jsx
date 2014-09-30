@@ -145,7 +145,7 @@ var Docs = React.createClass({
                 The current value of the DropdownList.
               </p>
 
-              <h3>onChange <small>function ( selectedValue )</small></h3>
+              <h3>onChange <small>{"function ( selectedValue )"}</small></h3>
               <p>
                 change event Handler that is called when the value is changed. 
               </p>
@@ -182,6 +182,10 @@ var Docs = React.createClass({
               <p>
                 mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
                 when loading data via an ajax call.
+              </p>
+              <h3>duration <small>Number</small> <span className='default'>250</span></h3>
+              <p>
+                The speed, in milliseconds, of the dropdown animation.
               </p>
               <h3>isRtl <small>Boolean</small></h3>
               <p>
@@ -251,7 +255,7 @@ var Docs = React.createClass({
                 The current value of the DropdownList.
               </p>
 
-              <h3>onChange <small>function ( selectedValue )</small></h3>
+              <h3>onChange <small>{"function ( selectedValue )"}</small></h3>
               <p>
                 change event Handler that is called when the value is changed. 
               </p>
@@ -288,7 +292,7 @@ var Docs = React.createClass({
               </p>
 
               <h3>
-                filter <small>Mixed - false, "startsWith", "endsWith", "contains", function(a, b)</small>
+                filter <small>{'Mixed - false, "startsWith", "endsWith", "contains", function(a, b)'}</small>
                 <span className='default'>false</span>
               </h3>
               <p>
@@ -301,7 +305,10 @@ var Docs = React.createClass({
                 mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
                 when loading data via an ajax call.
               </p>
-
+              <h3>duration <small>Number</small> <span className='default'>250</span></h3>
+              <p>
+                The speed, in milliseconds, of the dropdown animation.
+              </p>
               <h3>isRtl <small>Boolean</small></h3>
               <p>
                 mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
@@ -370,7 +377,7 @@ var Docs = React.createClass({
                 The current value of the NumberPicker.
               </p>
 
-              <h3>onChange <small>function ( selectedValue )</small></h3>
+              <h3>onChange <small>{"function ( selectedValue )"}</small></h3>
               <p>
                 change event Handler that is called when the value is changed. 
               </p>
@@ -499,6 +506,10 @@ var Docs = React.createClass({
               <p>
                 mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
                 when loading data via an ajax call.
+              </p>
+              <h3>duration <small>Number</small> <span className='default'>250</span></h3>
+              <p>
+                The speed, in milliseconds, of the dropdown animation.
               </p>
               <h3>isRtl <small>Boolean</small></h3>
               <p>
@@ -737,7 +748,10 @@ var Docs = React.createClass({
                 Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try, 
                 or provide a function that returns a date to handle parsing yourself
               </p>
-
+              <h3>duration <small>Number</small> <span className='default'>250</span></h3>
+              <p>
+                The speed, in milliseconds, of the either dropdown animation.
+              </p>
               <h3>isRtl <small>Boolean</small></h3>
               <p>
                 mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through

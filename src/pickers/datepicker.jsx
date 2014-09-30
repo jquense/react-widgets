@@ -24,6 +24,7 @@ var propTypes = {
     time:           React.PropTypes.bool,
 
     timeComponent:  React.PropTypes.func,
+    duration:       React.PropTypes.number, //popup
 
     parse:          React.PropTypes.oneOfType([
                       React.PropTypes.arrayOf(React.PropTypes.string),
@@ -130,7 +131,10 @@ module.exports = React.createClass({
           }
         </span>
         { this.props.time &&
-        <Popup open={this.state.open && this.state.openPopup === 'time'} onRequestClose={this.close}>
+        <Popup 
+          open={this.state.open && this.state.openPopup === 'time'} 
+          onRequestClose={this.close}
+          duration={this.props.duration}>
             <div>
               <Time ref="timePopup" 
                 id={timeListID}
@@ -149,6 +153,7 @@ module.exports = React.createClass({
           <Popup  
             className='rw-calendar-popup' 
             open={this.state.open && this.state.openPopup === 'calendar'} 
+            duration={this.props.duration}
             onRequestClose={this.close}>
 
             { mergeIntoProps(

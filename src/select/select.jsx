@@ -22,6 +22,8 @@ var btn = require('../common/btn.jsx')
       tagComponent:   React.PropTypes.func,
       itemComponent:  React.PropTypes.func,
 
+      duration:       React.PropTypes.number, //popup
+
       messages:       React.PropTypes.shape({
         open:         React.PropTypes.string,
         emptyList:    React.PropTypes.string,
@@ -114,7 +116,7 @@ module.exports = React.createClass({
             placeholder={this._placeholder()}
             onChange={this._typing}/>
         </div>
-        <Popup open={this.state.open} onRequestClose={this.close}>
+        <Popup open={this.state.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
               id={listID}
