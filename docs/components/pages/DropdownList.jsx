@@ -8,6 +8,7 @@ var React = require('react')
   , DDButton = require('react-bootstrap/DropdownButton')
   , DropdownListExample = require('../examples/dropdownlist.jsx');
 
+var prefix = 'dropdown-list/'
 var DropdownList = React.createClass({
 
   render: function() {
@@ -17,19 +18,19 @@ var DropdownList = React.createClass({
           Dropdown List
           <span className='pull-right'>
             <DDButton title='props' bsStyle='link' pullRight={true}>
-              <MenuItem href='#dropdown-list/value'>value</MenuItem>
-              <MenuItem href='#dropdown-list/onChange'>onChange</MenuItem>
-              <MenuItem href='#dropdown-list/data'>data</MenuItem>
+              <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
+              <MenuItem href={'#' + prefix + 'onChange'}>onChange</MenuItem>
+              <MenuItem href={'#' + prefix + 'data'}>data</MenuItem>
               <MenuItem divider={true}></MenuItem>
-              <MenuItem href='#dropdown-list/valueField'>valueField</MenuItem>
-              <MenuItem href='#dropdown-list/textField'>textField</MenuItem>
-              <MenuItem href='#dropdown-list/valueComponent'>valueComponent</MenuItem>
-              <MenuItem href='#dropdown-list/itemComponent'>itemComponent</MenuItem>
+              <MenuItem href={'#' + prefix + 'valueField'}>valueField</MenuItem>
+              <MenuItem href={'#' + prefix + 'textField'}>textField</MenuItem>
+              <MenuItem href={'#' + prefix + 'valueComponent'}>valueComponent</MenuItem>
+              <MenuItem href={'#' + prefix + 'itemComponent'}>itemComponent</MenuItem>
 
-              <MenuItem href='#dropdown-list/busy'>busy</MenuItem>
-              <MenuItem href='#dropdown-list/duration'>duration</MenuItem>
-              <MenuItem href='#dropdown-list/isRtl'>isRtl</MenuItem>
-              <MenuItem href='#dropdown-list/messages'>messages</MenuItem>
+              <MenuItem href={'#' + prefix + 'busy'}>busy</MenuItem>
+              <MenuItem href={'#' + prefix + 'duration'}>duration</MenuItem>
+              <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
+              <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
             </DDButton>
           </span>
         </h1>
@@ -64,59 +65,71 @@ var DropdownList = React.createClass({
         }/>
 
         <h2>Props</h2>
-        <h3>value <small>mixed</small></h3>
+        <h3 className='prop-header' id={ prefix +"value" }>
+          value <small>mixed</small>
+        </h3>
         <p>
           The current value of the DropdownList.
         </p>
 
-        <h3>onChange <small>{"function ( selectedValue )"}</small></h3>
+        <h3 className='prop-header' id={ prefix +"onChange" }>
+          onChange <small>{"function ( selectedValue )"}</small></h3>
         <p>
           change event Handler that is called when the value is changed. 
         </p>
         <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
         becomes readonly</span>
 
-        <h3>data <small>Array - mixed</small></h3>
+        <h3 className='prop-header' id={ prefix +"data" }>
+          data <small>Array - mixed</small></h3>
         <p>
           provide an array of possible values for the dropdown list. If an array of <code>objects</code> is provided you should use 
           the <code>valueField</code> and <code>textField</code> props, to specify an array item unique id and label respectively
         </p>
-        <h3>valueField <small>String</small></h3>
+        <h3 className='prop-header' id={ prefix +"valueField" }>
+          valueField <small>String</small></h3>
         <p>
           The field name of a uniquely identifying field in the <code>data</code> array
         </p>
-        <h3>textField <small>String</small></h3>
+        <h3 className='prop-header' id={ prefix +"textField" }>
+          textField <small>String</small></h3>
         <p>
           This prop determines which data item field to display in the combobox and selected item. This prop is 
           unnecessary when a <code>itemComponent</code> is provided
         </p>
 
-        <h3>valueComponent <small>Component</small></h3>
+        <h3 className='prop-header' id={ prefix +"valueComponent" }>
+          valueComponent <small>Component</small></h3>
         <p>
           This component is used to render the selected value of the combobox. The default component 
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 
-        <h3>itemComponent <small>Component</small></h3>
+        <h3 className='prop-header' id={ prefix +"itemComponent" }>
+          itemComponent <small>Component</small></h3>
         <p>
           This component is used to render each possible item in the dropdownlist. The default component 
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
-        <h3>busy <small>Boolean</small></h3>
+        <h3 className='prop-header' id={ prefix +"busy" }>
+          busy <small>Boolean</small></h3>
         <p>
           mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
           when loading data via an ajax call.
         </p>
-        <h3>duration <small>Number</small> <span className='default'>250</span></h3>
+        <h3 className='prop-header' id={ prefix +"duration" }>
+          duration <small>Number</small> <span className='default'>250</span></h3>
         <p>
           The speed, in milliseconds, of the dropdown animation.
         </p>
-        <h3>isRtl <small>Boolean</small></h3>
+        <h3 className='prop-header' id={ prefix +"isRtl" }>
+          isRtl <small>Boolean</small></h3>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
            a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
         </p>
-        <h3>messages <small>Object</small></h3>
+        <h3 className='prop-header' id={ prefix +"messages" }>
+          messages <small>Object</small></h3>
         <p>
           Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
           localize widget text and increase accessibility.
@@ -126,7 +139,9 @@ var DropdownList = React.createClass({
           Dropdown button text for screen readers
         </p>
 
-        <h2>Keyboard Navigation</h2>
+        <h2>
+          <a href={ prefix +"keyboard" }><i className="fa fa-link"></i></a>
+          Keyboard Navigation</h2>
 
         <ul className='list-unstyled keyboard-list'>
           <li><kbd>alt + down arrow</kbd> open dropdown</li>

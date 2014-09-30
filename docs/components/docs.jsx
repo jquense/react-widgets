@@ -32,7 +32,7 @@ var Docs = React.createClass({
 
   componentDidMount: function(){
     if(location.hash)
-      this.setState({ sideHref: location.hash })
+      this.setState({ sideHref: location.hash.split('/')[0] })
   },
 
   render: function(){

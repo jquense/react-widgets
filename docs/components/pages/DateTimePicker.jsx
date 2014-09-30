@@ -4,14 +4,39 @@
 
 var React = require('react')
   , Example = require('../example.jsx')
+  , DDButton = require('react-bootstrap/DropdownButton')
+  , MenuItem = require('react-bootstrap/MenuItem')
   , DatePickerExample = require('../examples/datepicker.jsx');
 
+var prefix = 'date-picker/'
 var DateTimePicker = React.createClass({
 
   render: function() {
     return this.transferPropsTo(
       <section>
-        <h1 className="page-header">Date and Time Picker</h1>
+        <h1 className="page-header">
+          Date and Time Picker
+          <span className='pull-right'>
+            <DDButton title='props' bsStyle='link' pullRight={true}>
+              <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
+              <MenuItem href={'#' + prefix + 'onChange'}>onChange</MenuItem>
+              <MenuItem href={'#' + prefix + 'data'}>data</MenuItem>
+              <MenuItem divider={true}></MenuItem>
+              <MenuItem href={'#' + prefix + 'calendar'}>calendar</MenuItem>
+              <MenuItem href={'#' + prefix + 'time'}>time</MenuItem>
+              <MenuItem href={'#' + prefix + 'min'}>min</MenuItem>
+              <MenuItem href={'#' + prefix + 'max'}>max</MenuItem>
+              <MenuItem href={'#' + prefix + 'format'}>format</MenuItem>
+              <MenuItem href={'#' + prefix + 'parse'}>parse</MenuItem>
+              <MenuItem href={'#' + prefix + 'initialView'}>initialView</MenuItem>
+              <MenuItem href={'#' + prefix + 'finalView'}>finalView</MenuItem>
+
+              <MenuItem href={'#' + prefix + 'duration'}>duration</MenuItem>
+              <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
+              <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
+            </DDButton>
+          </span>
+        </h1>
         <p>
           Datepicker widget. Allows you to {'set'} different parts of a javascript <code>Date</code> object. Since dates 
           are <em>highly</em> localized we make use of the 
@@ -54,12 +79,14 @@ var DateTimePicker = React.createClass({
         }/>
 
         <h2>Props</h2>
-        <h3>value <small>Date</small></h3>
+        <h3 className='prop-header' id={ prefix +"value" }>
+          value <small>Date</small></h3>
         <p>
           The current selected date, should be a JavaScript Date instance.
         </p>
 
-        <h3>onChange <small>{'function ( selectedValue )'}</small></h3>
+        <h3 className='prop-header' id={ prefix +"onChange" }>
+          onChange <small>{'function ( selectedValue )'}</small></h3>
         <p>
           change event Handler that is called when the value is changed. 
         </p>
@@ -69,47 +96,69 @@ var DateTimePicker = React.createClass({
           becomes readonly
         </span>
 
-        <h3>calendar <small>Boolean</small><span className='default'>true</span></h3>
+        <h3 className='prop-header' id={ prefix +"calendar" }>
+          calendar <small>Boolean</small><span className='default'>true</span></h3>
         <p>
           Whether to show the date picker button
         </p>
 
-        <h3>time <small>Boolean</small><span className='default'>true</span></h3>
+        <h3 className='prop-header' id={ prefix +"time" }>
+          time <small>Boolean</small><span className='default'>true</span></h3>
         <p>
           Whether to show the time picker button
         </p>
 
-        <h3>min <small>Date</small></h3>
+        <h3 className='prop-header' id={ prefix +"min" }>
+          min <small>Date</small></h3>
         <p>
           The minimum Date that the DatePicker value
         </p>
 
-        <h3>max <small>Date</small></h3>
+        <h3 className='prop-header' id={ prefix +"max" }>
+          max <small>Date</small></h3>
         <p>
           The maximum date that the DatePicker value
         </p>
 
-        <h3>format <small>String</small><span className='default'>"M/d/yyyy h:mm tt"</span></h3>
+        <h3 className='prop-header' id={ prefix +"format" }>
+          format <small>String</small><span className='default'>"M/d/yyyy h:mm tt"</span></h3>
         <p>
           A string format used to display the date value
         </p>
 
-        <h3>parse <small>Function, Array - Strings</small></h3>
+        <h3 className='prop-header' id={ prefix +"parse" }>
+          parse <small>Function, Array - Strings</small></h3>
         <p>
           Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try, 
           or provide a {'function'} that returns a date to handle parsing yourself
         </p>
-        <h3>duration <small>Number</small> <span className='default'>250</span></h3>
+        <h3 className='prop-header' id={ prefix +"initialView" }>
+          initialView <small>One of - "month", "year", "decade", "century"</small>
+          <span className='default'>"month"</span>
+        </h3>
+        <p>
+          The starting and lowest level view the calendar can navigate down to.
+        </p>
+
+        <h3 className='prop-header' id={ prefix +"finalView" }>
+          finalView <small>One of - "month", "year", "decade", "century"</small>
+          <span className='default'>"century"</span>
+        </h3>
+
+        <h3 className='prop-header' id={ prefix +"duration" }>
+          duration <small>Number</small> <span className='default'>250</span></h3>
         <p>
           The speed, in milliseconds, of the either dropdown animation.
         </p>
-        <h3>isRtl <small>Boolean</small></h3>
+        <h3 className='prop-header' id={ prefix +"isRtl" }>
+          isRtl <small>Boolean</small></h3>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
            a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
         </p>
 
-        <h3>messages <small>Object</small></h3>
+        <h3 className='prop-header' id={ prefix +"messages" }>
+          messages <small>Object</small></h3>
         <p>
           Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
           localize widget text and increase accessibility.

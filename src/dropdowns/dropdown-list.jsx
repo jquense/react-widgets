@@ -132,7 +132,6 @@ module.exports = React.createClass({
               aria-hidden={ !this.state.open }
               style={{ maxHeight: 200, height: 'auto' }}
               data={this.props.data}
-              value={this.props.value}
               initialVisibleItems={this.props.initialBufferSize}
               itemHeight={18}
               selectedIndex={this.state.selectedIndex}

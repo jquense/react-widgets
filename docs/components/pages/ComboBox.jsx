@@ -4,14 +4,37 @@
 
 var React = require('react')
   , Example = require('../example.jsx')
+  , MenuItem = require('react-bootstrap/MenuItem')
+  , DDButton = require('react-bootstrap/DropdownButton')
   , ComboBoxExample = require('../examples/combobox.jsx');
 
+var prefix = 'combobox/'
 var ComboBox = React.createClass({
 
   render: function() {
     return this.transferPropsTo(
       <section>
-        <h1 className="page-header">Combobox</h1>
+        <h1 className="page-header">
+          Combobox
+          <span className='pull-right'>
+            <DDButton title='props' bsStyle='link' pullRight={true}>
+              <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
+              <MenuItem href={'#' + prefix + 'onChange'}>onChange</MenuItem>
+              <MenuItem href={'#' + prefix + 'data'}>data</MenuItem>
+              <MenuItem divider={true}></MenuItem>
+              <MenuItem href={'#' + prefix + 'valueField'}>valueField</MenuItem>
+              <MenuItem href={'#' + prefix + 'textField'}>textField</MenuItem>
+              <MenuItem href={'#' + prefix + 'itemComponent'}>itemComponent</MenuItem>
+              <MenuItem href={'#' + prefix + 'suggest'}>suggest</MenuItem>
+              <MenuItem href={'#' + prefix + 'filter'}>filter</MenuItem>
+
+              <MenuItem href={'#' + prefix + 'busy'}>busy</MenuItem>
+              <MenuItem href={'#' + prefix + 'duration'}>duration</MenuItem>
+              <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
+              <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
+            </DDButton>
+          </span>
+        </h1>
         <p>
           Select an item from the list, or input a custom value. The combobox can also make suggestions as you type
         </p>
@@ -40,72 +63,85 @@ var ComboBox = React.createClass({
           "}"
         }/>
         <h2>Props</h2>
-        <h3>value <small>mixed</small></h3>
+        <h3 className='prop-header' id={ prefix +"value" }>
+          value <small>mixed</small></h3>
         <p>
           The current value of the DropdownList.
         </p>
 
-        <h3>onChange <small>{"function ( selectedValue )"}</small></h3>
+        <h3 className='prop-header' id={ prefix +"onChange" }>
+          onChange <small>{"function ( selectedValue )"}</small></h3>
         <p>
           change event Handler that is called when the value is changed. 
         </p>
         <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
         becomes readonly</span>
 
-        <h3>data <small>Array - mixed</small></h3>
+        <h3 className='prop-header' id={ prefix +"data" }>
+          data <small>Array - mixed</small></h3>
         <p>
           provide an array of possible values for the dropdown list. If an array of <code>objects</code> is provided you should use 
           the <code>valueField</code> and <code>textField</code> props, to specify an array item unique id and label respectively
         </p>
 
-        <h3>valueField <small>String</small></h3>
+        <h3 className='prop-header' id={ prefix +"valueField" }>
+          valueField <small>String</small></h3>
         <p>
           The field name of a uniquely identifying field in the <code>data</code> array
         </p>
 
-        <h3>textField <small>String</small></h3>
+        <h3 className='prop-header' id={ prefix +"textField" }>
+          textField <small>String</small></h3>
         <p>
           This prop determines which data item field to display in the dropdown list and selected item This prop is 
           unnecessary when a <code>itemComponent</code> is provided
         </p>
 
-        <h3>itemComponent <small>Component</small></h3>
+        <h3 className='prop-header' id={ prefix +"itemComponent" }>
+          itemComponent <small>Component</small></h3>
         <p>
           This component is used to render each possible item in the dropdownlist. The default component 
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 
-        <h3>suggest <small>Boolean</small></h3>
+        <h3 className='prop-header' id={ prefix +"suggest" }>
+          suggest <small>Boolean</small></h3>
         <p>
           When <code>true</code> the Combobox will suggest, or fill in, values as you type. The suggestions 
           are always "startsWith", meaning it will search from the start of the <code>textField</code> property
         </p>
 
-        <h3>
-          filter <small>{'Mixed - false, "startsWith", "endsWith", "contains", function(a, b)'}</small>
+        <h3 className='prop-header' id={ prefix +"filter" }>
+          
+          filter <small>{'Mixed - false, "startsWith", "endsWith", "contains", function(item)'}</small>
           <span className='default'>false</span>
         </h3>
         <p>
-          When <code>true</code> the Combobox will filter the list of values as you type, values as you type. The suggestions 
-          are always "startsWith", meaning it will search from the start of the <code>textField</code> property
+          When <code>true</code> the Combobox will filter the list of values as you type, values as you type. You can use
+           a built in filter ("startsWith", "endsWith", "contains"), or specify a {'function'} that returns will be passed
+           each item, and should return <code>true</code> for matches.
         </p>
 
-        <h3>busy <small>Boolean</small></h3>
+        <h3 className='prop-header' id={ prefix +"busy" }>
+          busy <small>Boolean</small></h3>
         <p>
           mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
           when loading data via an ajax call.
         </p>
-        <h3>duration <small>Number</small> <span className='default'>250</span></h3>
+        <h3 className='prop-header' id={ prefix +"duration" }>
+          duration <small>Number</small> <span className='default'>250</span></h3>
         <p>
           The speed, in milliseconds, of the dropdown animation.
         </p>
-        <h3>isRtl <small>Boolean</small></h3>
+        <h3 className='prop-header' id={ prefix +"isRtl" }>
+          isRtl <small>Boolean</small></h3>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
            a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
         </p>
 
-        <h3>messages <small>Object</small></h3>
+        <h3 className='prop-header' id={ prefix +"messages" }>
+          messages <small>Object</small></h3>
         <p>
           Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
           localize widget text and increase accessibility.

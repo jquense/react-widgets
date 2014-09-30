@@ -49,6 +49,18 @@ h3 {
   padding: 10px 0;
 }
 
+.prop-header { 
+  position: relative; 
+  overflow: visible;
+}
+.prop-header:before { 
+  display: block; 
+  content: " "; 
+  margin-top: -65px; 
+  height: 65px; 
+  visibility: hidden; 
+}
+
 h3 {
   overflow: hidden;
 }
@@ -101,13 +113,22 @@ pre {
   border-bottom: 3px solid #0B2A46;*/
 }
 
+.dropdown-menu{
+  border-radius: 0;
+ /* border-color: #0079C1;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;*/
+}
+.dropdown-menu > li > a,
 .side-nav .nav > li > a {
   color: #284C6D;
   border-left: 2px solid transparent;
 }
 
 .side-nav .nav > li > a:hover,
-.side-nav .nav > li.active > a {
+.side-nav .nav > li.active > a,
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li.active > a  {
   color: #B59E7D;
   background: none;
   border-left-color:  #E7CAA1;
