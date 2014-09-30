@@ -30,7 +30,7 @@ var propTypes = {
   valueComponent: React.PropTypes.component,
   itemComponent:  React.PropTypes.component,
   busy:           React.PropTypes.bool,
-  
+
   delay:          React.PropTypes.number,
 
   duration:       React.PropTypes.number, //popup
@@ -41,16 +41,16 @@ var propTypes = {
 };
 
 module.exports = React.createClass({
-  
+
   displayName: 'DropdownList',
 
-  mixins: [ 
+  mixins: [
     require('../mixins/PureRenderMixin'),
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataHelpersMixin'),
     require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('selectedIndex'), 
-    require('../mixins/DataIndexStateMixin')('focusedIndex')    
+    require('../mixins/DataIndexStateMixin')('selectedIndex'),
+    require('../mixins/DataIndexStateMixin')('focusedIndex')
   ],
 
   propTypes: propTypes,
@@ -61,7 +61,7 @@ module.exports = React.createClass({
 		return {
 			open:          false,
       selectedIndex: initialIdx,
-      focusedIndex:  initialIdx === -1 ? 0 : initialIdx  
+      focusedIndex:  initialIdx === -1 ? 0 : initialIdx,
 		}
 	},
 
@@ -78,7 +78,7 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: ifShouldUpdate(function(props){
     var idx = this._dataIndexOf(props.data, props.value);
-    
+
     this.setSelectedIndex(idx)
     this.setFocusedIndex(idx === -1 ? 0 : idx)
   }),
@@ -88,7 +88,7 @@ module.exports = React.createClass({
   //     this.setWidth()
   // },
 
-	render: function(){ 
+	render: function(){
 		var keys = _.keys(propTypes)
       , valueItem = this._dataItem( this._data(), this.props.value )
       , optID = this.props.id && this.props.id + '_option' || '';
@@ -98,7 +98,7 @@ module.exports = React.createClass({
 			<div ref="element"
            onKeyDown={this._keyDown}
            onClick={this.toggle}
-           onFocus={this._focus.bind(null, true)} 
+           onFocus={this._focus.bind(null, true)}
            onBlur ={this._focus.bind(null, false)}
            aria-expanded={ this.state.open }
            aria-haspopup={true}
@@ -118,25 +118,26 @@ module.exports = React.createClass({
           </i>
 				</span>
         <div className="rw-input">
-          { this.props.valueComponent 
+          { this.props.valueComponent
               ? this.props.valueComponent({ item: valueItem })
               : this._dataText(valueItem)
           }
         </div>
 
-        <Popup open={this.state.open} onRequestClose={this.close}>
+
+        <Popup open={this.state.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
               optID={optID}
               aria-hidden={ !this.state.open }
               style={{ maxHeight: 200, height: 'auto' }}
-              data={this.props.data} 
+              data={this.props.data}
               value={this.props.value}
               initialVisibleItems={this.props.initialBufferSize}
               itemHeight={18}
               selectedIndex={this.state.selectedIndex}
               focusedIndex={this.state.focusedIndex}
-              textField={this.props.textField} 
+              textField={this.props.textField}
               valueField={this.props.valueField}
               listItem={this.props.itemComponent}
               onSelect={this._onSelect}/>
@@ -151,7 +152,7 @@ module.exports = React.createClass({
       , changed = width !== this.state.width;
 
     if ( changed )
-      this.setState({ width: width })   
+      this.setState({ width: width })
   },
 
   _focus: function(focused){
@@ -160,7 +161,7 @@ module.exports = React.createClass({
     clearTimeout(self.timer)
     self.timer = setTimeout(function(){
 
-      if(focused) self.getDOMNode().focus() 
+      if(focused) self.getDOMNode().focus()
       else        self.close()
 
       if( focused !== self.state.focused)
@@ -198,7 +199,7 @@ module.exports = React.createClass({
       else if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
       else               change(this.nextSelectedIndex())
       e.preventDefault()
-    } 
+    }
     else if ( key === 'ArrowUp' ) {
       if ( alt )         this.close()
       else if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
@@ -216,18 +217,18 @@ module.exports = React.createClass({
   },
 
   change: ifValueChanges(function(data){
-    var change = this.props.onChange 
+    var change = this.props.onChange
     if ( change ) {
       change(data)
       this.close()
-    }  
+    }
   }),
 
   _locate: function(word){
     var key = this.state.open ? 'focusedIndex' : 'selectedIndex'
       , idx = this.findIndex(word, this.state[key])
       , setIndex = setter(key).bind(this);
-      
+
     if ( idx !== -1)
       setIndex(idx)
   },
@@ -245,8 +246,8 @@ module.exports = React.createClass({
   },
 
   toggle: function(e){
-    this.state.open 
-      ? this.close() 
+    this.state.open
+      ? this.close()
       : this.open()
   }
   
