@@ -24,6 +24,8 @@ var btn = require('../common/btn.jsx')
       suggest:        React.PropTypes.bool,
       busy:           React.PropTypes.bool,
 
+      filter:         React.PropTypes.any,
+
       duration:       React.PropTypes.number, //popup
 
       messages:       React.PropTypes.shape({
