@@ -28,7 +28,7 @@ module.exports = function (config) {
     browsers: ['PhantomJS'],
 
     preprocessors: {
-      'test/*': ['webpack']
+      'test/*.js*': ['webpack']
     },
 
     webpack: require('./tasks/webpack.configs').test,

@@ -63,7 +63,7 @@ describe('DROPDOWNS', function(){
     expect( findClass(dropdown, 'rw-input').getDOMNode().textContent).to.be('hello - jimmy');
   })
 
-  it.only('should open when clicked', function(done){
+  it('should open when clicked', function(done){
     var dropdown = render(<Dropdown value={'jimmy'} data={data} duration={0}/>);
     var popup = findType(dropdown, require('../src/popup/popup.jsx'))
 
@@ -79,7 +79,7 @@ describe('DROPDOWNS', function(){
   })
 
 
-  it.only('should change values on key down', function(){
+  it('should change values on key down', function(){
     var change = sinon.spy()
       , dropdown = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>);
 

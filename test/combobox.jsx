@@ -1,10 +1,10 @@
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
-var Dropdown = require('../src/dropdowns/dropdown-list.jsx')
+var ComboBox = require('../src/dropdowns/combobox.jsx')
   , _ = require('lodash');
 
-//console.log(sinon)
+
 var TestUtils = React.addons.TestUtils
   , render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
@@ -15,35 +15,37 @@ var TestUtils = React.addons.TestUtils
   , findAllType = TestUtils.scryRenderedComponentWithType
   , trigger = TestUtils.Simulate;
 
-describe('DROPDOWNS', function(){
-  var data = [
+describe('ComboBox', function(){
+  var dataList = [
     { label: 'jimmy', id: 0 },
     { label: 'sally', id: 1 },
     { label: 'pat', id: 2 }
   ];
 
-  it('should set initial values', function(){
+  it.only('should set initial values', function(){
     var dropdown = render(
-          <Dropdown value={'hello'} onChange={_.noop} />);
+          <ComboBox value={'hello'} onChange={_.noop} />);
 
     expect( findClass(dropdown, 'rw-input').getDOMNode().textContent).to.be('hello');
   })
 
   it('should respect textField and valueFields', function(){
-    var dropdown = render(
-          <Dropdown value={0} data={data} textField='label' valueField='id' />);
-
-    expect(findClass(dropdown, 'rw-input').getDOMNode().textContent)
+    var comboBox = render(
+          <ComboBox value={0} data={dataList} textField='label' valueField='id' />);
+    
+    expect(findClass(comboBox, 'rw-input').getDOMNode().textContent)
       .to.be('jimmy');
   }) 
 
   it('should start closed', function(done){
-    var dropdown = render(
-          <Dropdown value={0} data={data} textField='label' valueField='id' />);
+    var comboBox = render(
+          <ComboBox value={0} data={dataList} textField='label' valueField='id' />);
+    var popup = findType(comboBox, require('../src/popup/popup.jsx'))
 
-    expect(dropdown.state.open).to.be(false)
-    expect(dropdown.getDOMNode().className).to.not.match(/\brw-open\b/)
-    expect(dropdown.getDOMNode().getAttribute('aria-expanded')).to.be('false')
+
+    expect(comboBox.state.open).to.be(false)
+    expect(comboBox.getDOMNode().className).to.not.match(/\brw-open\b/)
+    expect(comboBox.getDOMNode().getAttribute('aria-expanded')).to.be('false')
   
     setTimeout(function(){
       expect(popup.getDOMNode().style.display).to.be('none')
@@ -51,61 +53,50 @@ describe('DROPDOWNS', function(){
     }, 0)
   })
 
-  it('should use a value template', function(){
-    var templ  = React.createClass({
-      render: function() {
-        return (<span>{"hello - " + this.props.item}</span>);
-      }
-    });
-    
-    var dropdown = render(<Dropdown value={'jimmy'} valueComponent={templ} />);
 
-    expect( findClass(dropdown, 'rw-input').getDOMNode().textContent).to.be('hello - jimmy');
-  })
+  it('should open when clicked', function(done){
+    var comboBox = render(<ComboBox value={'jimmy'} data={data} duration={0}/>);
+    var popup = findType(comboBox, require('../src/popup/popup.jsx'))
 
-  it.only('should open when clicked', function(done){
-    var dropdown = render(<Dropdown value={'jimmy'} data={data} duration={0}/>);
-    var popup = findType(dropdown, require('../src/popup/popup.jsx'))
-
-    trigger.click(dropdown.getDOMNode())
+    trigger.click(comboBox.getDOMNode())
 
     setTimeout(function() {
-      expect(dropdown.state.open).to.be(true)
-      expect(dropdown.getDOMNode().className).to.match(/\brw-open\b/)
-      expect(dropdown.getDOMNode().getAttribute('aria-expanded')).to.be('true')
+      expect(comboBox.state.open).to.be(true)
+      expect(comboBox.getDOMNode().className).to.match(/\brw-open\b/)
+      expect(comboBox.getDOMNode().getAttribute('aria-expanded')).to.be('true')
       expect(popup.props.open).to.be(true)
       done()
     }, 0) 
   })
 
 
-  it.only('should change values on key down', function(){
+  it('should change values on key down', function(){
     var change = sinon.spy()
-      , dropdown = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>);
+      , comboBox = render(<ComboBox value={data[1]} data={data} duration={0} onChange={change}/>);
 
-    trigger.keyDown(dropdown.getDOMNode(), { key: 'ArrowDown'})
+    trigger.keyDown(comboBox.getDOMNode(), { key: 'ArrowDown'})
 
     expect(change.calledOnce).to.be(true)
     expect(change.calledWith(data[2])).to.be(true)
 
-    dropdown = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>)
+    comboBox = render(<ComboBox value={data[1]} data={data} duration={0} onChange={change}/>)
     change.reset()
 
-    trigger.keyDown(dropdown.getDOMNode(), { key: 'ArrowUp'})
+    trigger.keyDown(comboBox.getDOMNode(), { key: 'ArrowUp'})
     expect(change.calledOnce).to.be(true)
     expect(change.calledWith(data[0])).to.be(true)
 
-    dropdown = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>)
+    comboBox = render(<ComboBox value={data[1]} data={data} duration={0} onChange={change}/>)
     change.reset()
 
-    trigger.keyDown(dropdown.getDOMNode(), { key: 'Home'})
+    trigger.keyDown(comboBox.getDOMNode(), { key: 'Home'})
     expect(change.calledOnce).to.be(true)
     expect(change.calledWith(data[0])).to.be(true)
 
-    dropdown = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>)
+    comboBox = render(<ComboBox value={data[1]} data={data} duration={0} onChange={change}/>)
     change.reset()
 
-    trigger.keyDown(dropdown.getDOMNode(), { key: 'End'})
+    trigger.keyDown(comboBox.getDOMNode(), { key: 'End'})
     expect(change.calledOnce).to.be(true)
     expect(change.calledWith(data[2])).to.be(true)
   })

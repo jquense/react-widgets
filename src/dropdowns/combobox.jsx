@@ -64,6 +64,7 @@ module.exports = React.createClass({
 
   getDefaultProps: function(){
     return {
+      data: [],
       suggest: false,
       filter: false,
       delay: 500,
