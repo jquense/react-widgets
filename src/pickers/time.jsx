@@ -23,13 +23,14 @@ module.exports = React.createClass({
     max:            React.PropTypes.instanceOf(Date),
     step:           React.PropTypes.number,
     itemComponent:  React.PropTypes.func,
-    onChange:       React.PropTypes.func
+    onSelect:       React.PropTypes.func
   },
 
   getDefaultProps: function(){
     return {
       step:   30,
-      format: 't'
+      format: 't',
+      onSelect: _.noop
     }
   },
 
@@ -52,7 +53,7 @@ module.exports = React.createClass({
         selectedIndex={idx}
         focusedIndex={this.state.focusedIndex}
         listItem={this.props.itemComponent}
-        onSelect={this.props.onChange}/>
+        onSelect={this.props.onSelect}/>
     )
 
   },
@@ -93,7 +94,7 @@ module.exports = React.createClass({
       this.setFocusedIndex(0)
 
     else if ( key === 'Enter' ) 
-      this.props.onChange(this._data()[this.state.focusedIndex])
+      this.props.onSelect(this._data()[this.state.focusedIndex])
 
     else if ( key === 'ArrowDown' ) {
       e.preventDefault()
@@ -109,7 +110,7 @@ module.exports = React.createClass({
       e.preventDefault()
       this.search(character, function(word){   
         self.setFocusedIndex(
-          this.findIndex(word, self.state.focusedIndex))
+          this.findNextWordIndex(word, self.state.focusedIndex))
       })
     }
   }

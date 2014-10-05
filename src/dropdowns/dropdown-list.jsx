@@ -59,8 +59,8 @@ module.exports = React.createClass({
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataHelpersMixin'),
     require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('selectedIndex'),
-    require('../mixins/DataIndexStateMixin')('focusedIndex')
+    require('../mixins/DataIndexStateMixin')('focusedIndex'),
+    require('../mixins/DataIndexStateMixin')('selectedIndex')
   ],
 
   propTypes: propTypes,
@@ -238,7 +238,7 @@ module.exports = React.createClass({
 
   _locate: function(word){
     var key = this.state.open ? 'focusedIndex' : 'selectedIndex'
-      , idx = this.findIndex(word, this.state[key])
+      , idx = this.findNextWordIndex(word, this.state[key])
       , setIndex = setter(key).bind(this);
 
     if ( idx !== -1)

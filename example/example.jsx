@@ -45,7 +45,7 @@ var App = React.createClass({
 			obj[field] = _.has(data, 'id') ? data.id : data
 
 			self.setState(obj)
-			console.log('example: set field: ' + field, data)
+			//console.log('example: set field: ' + field, data)
 		}
 
 		return (
@@ -69,6 +69,7 @@ var App = React.createClass({
 							id='Calendar'
 							value={ new Date } 
 							disabled={true}
+
 							onChange={change.bind(null, 'calValue')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
@@ -77,6 +78,7 @@ var App = React.createClass({
 							data={ this.state.data } 
 							textField='name'
 							valueField='id'
+							filter='startsWith'
 							suggest={true}
 							busy={false}
 							value={ this.state.comboboxValue} 

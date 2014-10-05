@@ -156,7 +156,7 @@ module.exports = React.createClass({
                 min={this.props.min} 
                 max={this.props.max} 
                 itemComponent={this.props.timeComponent}
-                onSelect={this._maybeHandle(this._onSelect)}/>
+                onSelect={this._maybeHandle(this._selectTime)}/>
             </div>
         </Popup>
         }
@@ -174,7 +174,7 @@ module.exports = React.createClass({
                 value={this.props.value || new Date }
                 maintainFocus={false}
                 aria-hidden={ !this.state.open }
-                onSelect={this._maybeHandle(this._onSelect)}/>
+                onChange={this._maybeHandle(this._selectDate)}/>
             )}
           </Popup>
         }

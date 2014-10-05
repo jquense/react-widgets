@@ -7,7 +7,6 @@ module.exports = React.createClass({
 
   propTypes: {
     value:        React.PropTypes.string,
-    suggestion:   React.PropTypes.string,
     onChange:     React.PropTypes.func.isRequired
   },
 
@@ -21,7 +20,7 @@ module.exports = React.createClass({
           && this._last !== val;
 
     if ( this.props.suggest && isSuggestion ){
-      var start = val.indexOf(this._last) + this._last.length
+      var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
         , end   = val.length - start
 
       if ( start >= 0)
@@ -34,20 +33,19 @@ module.exports = React.createClass({
 
   getDefaultProps: function(){
     return {
-      value: '',
-      suggestion: ''
+      value: ''
     }
   },
 
   render: function(){
-    //console.log(this.props.value, this.props.suggestion)
+    console.log(this.props.value)
     return this.transferPropsTo(
       <input 
         type='text' 
         className='rw-input'
         onKeyDown={this.props.onKeyDown}
         onChange={this._change}
-        value={this.props.value}/>
+        value={this.props.value == null ? '' : this.props.value}/>
     )
   },
 

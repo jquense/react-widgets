@@ -52,8 +52,8 @@ module.exports = React.createClass({
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataFilterMixin'),
     require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('selectedIndex'), 
-    require('../mixins/DataIndexStateMixin')('focusedIndex')    
+    require('../mixins/DataIndexStateMixin')('focusedIndex'),  
+    require('../mixins/DataIndexStateMixin')('selectedIndex') 
   ],
 
   propTypes: propTypes,
@@ -101,15 +101,17 @@ module.exports = React.createClass({
         , nextProps.value
         , !inData && this._dataText(nextProps.value) ) 
 
-      , idx = this._dataIndexOf(items, nextProps.value);
+      , idx = this._dataIndexOf(items, nextProps.value)
+      , focused = this.filterIndexOf(items, this._dataText(nextProps.value));
 
+    //console.log('set it', focused, this._dataText(nextProps.value))
     this._searchTerm = '';
 
     this.setState({
       processedData:  items,
       selectedIndex:  idx,
       focusedIndex:   idx === -1 
-        ? this.findIndex(this._dataText(this.props.value)) // focus the closest match
+        ? focused !== -1 ? focused : 0 // focus the closest match
         : idx
     })
   },
@@ -178,9 +180,8 @@ module.exports = React.createClass({
               style={{ maxHeight: 200, height: 'auto' }}
               data={items} 
               selectedIndex={this.state.selectedIndex}
-              focusedIndex={this.state.selectedIndex === -1 
-                ? this.state.focusedIndex 
-                : this.state.selectedIndex}
+              focusedIndex={this.state.focusedIndex}
+
               textField={this.props.textField} 
               valueField={this.props.valueField}
               onSelect={this._maybeHandle(this._onSelect)}
@@ -259,6 +260,7 @@ module.exports = React.createClass({
       , isOpen = this.state.open
       , noselection = selectedIdx == null || selectedIdx === -1 ;
 
+    //console.log('focused:', focusedIdx, 'select: ', selectedIdx)
     if ( key === 'End' ) 
       select(this._data().length - 1)
     
@@ -274,7 +276,8 @@ module.exports = React.createClass({
       if ( alt ) 
         this.open()
       else {
-        if( noselection) select(focusedIdx)
+        //if( noselection) select(focusedIdx)
+        if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
         else select(this.nextSelectedIndex())
       }
     } 
@@ -282,7 +285,8 @@ module.exports = React.createClass({
       if ( alt )
         this.close()
       else {
-        if( noselection) select(focusedIdx)
+        //if( noselection) select(focusedIdx)
+        if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
         else select(this.prevSelectedIndex())
       }
     }
@@ -356,3 +360,8 @@ module.exports = React.createClass({
     return data
   }
 })
+
+
+              // focusedIndex={this.state.selectedIndex === -1 
+              //   ? this.state.focusedIndex 
+              //   : this.state.selectedIndex}
