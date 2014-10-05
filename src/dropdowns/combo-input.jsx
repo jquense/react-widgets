@@ -14,22 +14,17 @@ module.exports = React.createClass({
   // hello
   componentDidUpdate: function() {
     var input = this.getDOMNode()
-      , val = this.props.value
-      , isSuggestion =  this._last !== ''
-          && val.indexOf(this._last) !== -1 
-          && this._last !== val;
+      , val = this.props.value;
 
-    if ( this.props.suggest && isSuggestion ){
+    if ( this.isSuggesting() ){
       var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
         , end   = val.length - start
 
-      if ( start >= 0)
+      if ( start >= 0) {
         caretPos(input, start, start + end)
+      }
     }
-
-    this._last = val;
   },
-
 
   getDefaultProps: function(){
     return {
@@ -38,7 +33,6 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    console.log(this.props.value)
     return this.transferPropsTo(
       <input 
         type='text' 
@@ -49,13 +43,27 @@ module.exports = React.createClass({
     )
   },
 
+  isSuggesting: function(){
+    var val = this.props.value
+      , isSuggestion =  this._last !== ''
+          && val.indexOf(this._last) !== -1;
+
+    return this.props.suggest && isSuggestion
+  },
+
+  accept: function(removeCaret){
+    var val = this.getDOMNode().value || ''
+      , end = val.length;
+
+    this._last = ''
+    removeCaret && caretPos(this.getDOMNode(), end, end)
+  },
+
   _change: function(e){
     var val = e.target.value
-
     this._last = val;
     this.props.onChange(e, val)
   },
-
 
   focus: function(){
     this.getDOMNode().focus()

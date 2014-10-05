@@ -88,23 +88,26 @@ module.exports = React.createClass({
   },
 
   shouldComponentUpdate: function(nextProps, nextState){
-    var stateChanged = !_.isEqual(nextState, this.state) 
+    var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
+      , stateChanged = !_.isEqual(nextState, this.state) 
       , valueChanged = !_.isEqual(nextProps.value, this.props.value)
 
-    return stateChanged || valueChanged
+    return isSuggesting || stateChanged || valueChanged
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var inData = this._dataIndexOf(nextProps.data, nextProps.value) !== - 1
+    var rawIdx = this._dataIndexOf(nextProps.data, nextProps.value)
+      , valueItem = rawIdx == -1 ? nextProps.value : nextProps.data[rawIdx]
+      , isSuggesting = this.refs.input.isSuggesting()
       , items = this.process(
           nextProps.data
         , nextProps.value
-        , !inData && this._dataText(nextProps.value) ) 
+        , (rawIdx === -1 || isSuggesting) && this._dataText(valueItem) ) 
 
       , idx = this._dataIndexOf(items, nextProps.value)
-      , focused = this.filterIndexOf(items, this._dataText(nextProps.value));
+      , focused = this.filterIndexOf(items, this._dataText(valueItem));
 
-    //console.log('set it', focused, this._dataText(nextProps.value))
+    //console.log('set it', this._dataText(valueItem))
     this._searchTerm = '';
 
     this.setState({
@@ -114,12 +117,6 @@ module.exports = React.createClass({
         ? focused !== -1 ? focused : 0 // focus the closest match
         : idx
     })
-  },
-
-  componentDidUpdate: function(prevProps, prevState){
-    //var val = this._dataText(this.props.value);
-
-    this.state.focused && this.refs.input.getDOMNode().focus()
   },
 
 	render: function(){ 
@@ -242,11 +239,14 @@ module.exports = React.createClass({
     var self = this;
 
     clearTimeout(self.timer)
+    !focused && self.refs.input.accept() //not suggesting anymore
+
     self.timer = setTimeout(function(){
-      if( focused !== self.state.focused) {
+      if(focused) self.refs.input.focus()
+      else        self.close()
+
+      if( focused !== self.state.focused)
         self.setState({ focused: focused })
-        if(!focused) self.close()
-      }
     }, 0)
   },
 
@@ -292,6 +292,10 @@ module.exports = React.createClass({
     }
 
     function select(idx) {
+      if( idx === -1 || self._data().length === 0) 
+        return self.change(self.refs.input.value, false)
+
+      self.refs.input.accept(true); //removes caret
       self.change(self._data()[idx], false)
     }
   },
@@ -353,7 +357,6 @@ module.exports = React.createClass({
   },
 
   process: function(data, values, searchTerm){
-
     if( this.props.filter && searchTerm)
       data = this.filter(data, searchTerm)
 

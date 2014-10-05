@@ -25,8 +25,10 @@ var App = React.createClass({
 		var list = generateList()
 		return {
 			data: list,
+			suggestdata: suggestList(),
 			dropdownValue: list[0],
-			comboboxValue: list[0],
+			comboboxValue: 1,
+			//comboboxValue: list[0],
 			selectValues: [1,3],
 			calDate: new Date,
 			numberValue: 1
@@ -75,10 +77,10 @@ var App = React.createClass({
 					<section className="example" style={{ marginBottom: 20 }}>
 					<ComboBox 
 							isRtl={false}
-							data={ this.state.data } 
+							data={ this.state.suggestdata } 
 							textField='name'
 							valueField='id'
-							filter='startsWith'
+							filter={'startsWith'}
 							suggest={true}
 							busy={false}
 							value={ this.state.comboboxValue} 
@@ -150,6 +152,20 @@ function generateList(){
 	return arr
 }
 
+function suggestList(){
+	var i = 0;
+
+	return [
+	  { id: i += 1, name: "james" },
+	  { id: i += 1, name: "jan" },
+		{ id: i += 1, name: "jase" },
+		{ id: i += 1, name: "jason" },
+		{ id: i += 1, name: "jim" },
+		{ id: i += 1, name: "jimmy" },
+		{ id: i += 1, name: "jimmy smith" },
+		{ id: i += 1, name: "john" }
+	]
+}
 // <section className="example" style={{ marginBottom: 20 }}>
 // 						<Calendar 
 // 							id='Calendar'
