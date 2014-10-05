@@ -24,6 +24,19 @@ var btn = require('../common/btn.jsx')
 
       duration:       React.PropTypes.number, //popup
 
+      placeholder:    React.PropTypes.string, //popup
+      disabled:       React.PropTypes.oneOfType([
+                        React.PropTypes.bool,
+                        React.PropTypes.array,
+                        React.PropTypes.oneOf(['disabled'])
+                      ]),
+
+      readOnly:       React.PropTypes.oneOfType([
+                        React.PropTypes.bool,
+                        React.PropTypes.array,
+                        React.PropTypes.oneOf(['readonly'])
+                      ]),
+
       messages:       React.PropTypes.shape({
         open:         React.PropTypes.string,
         emptyList:    React.PropTypes.string,
@@ -46,7 +59,9 @@ module.exports = React.createClass({
 
   getDefaultProps: function(){
     return {
+      data: [],
       filter: 'startsWith',
+      
       messages: {
         emptyList:   "There are no items in this list",
         emptyFilter: "The filter returned no results"
@@ -55,57 +70,67 @@ module.exports = React.createClass({
   },
 
   getInitialState: function(){
-    var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
 
     return {
       open:  false,
       processedData: this.process(this.props.data, this.props.value, ''),
-      focusedIndex:  initialIdx === -1 ? 0 : initialIdx
+      focusedIndex:  0,
+      dataItems: _.map([].concat(this.props.value), function(item){
+        return this._dataItem(this.props.data, item)
+      }, this)
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var idx = -1
-      , items = this.process(
+    var items = this.process(
           nextProps.data
         , nextProps.value
         , this.state.searchTerm)
 
     this.setState({
-      processedData: items
+      //searchTerm: '',
+      processedData: items,
+      dataItems: _.map([].concat(nextProps.value), function(item){
+        return this._dataItem(nextProps.data, item)
+      }, this)
     })
   },
 
   render: function(){ 
-    var listID = this.props.id && this.props.id + '_listbox'
+    var enabled  = !(this.props.disabled === true || this.props.readOnly === true)
+      , listID = this.props.id && this.props.id + '_listbox'
       , optID  = this.props.id && this.props.id + '_option'
       , items = this._data()
-
+      , values = this.state.dataItems;
+      
     return mergeIntoProps(
       _.omit(this.props, _.keys(propTypes)),
       <div ref="element"
+           onKeyDown={this._maybeHandle(this._keyDown)}
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
+           onBlur ={_.partial(this._focus, false)}
            aria-haspopup={true}
-           onKeyDown={this._keyDown}
-           onFocus={this._focus.bind(null, true)} 
-           onBlur ={this._focus.bind(null, false)} 
            tabIndex="-1"
            className={cx({
-              'rw-select-list':  true,
-              'rw-widget':       true,
-              'rw-state-focus':  this.state.focused,
-              'rw-open':         this.state.open,
-              'rw-rtl':          this.isRtl()
+              'rw-select-list':    true,
+              'rw-widget':         true,
+              'rw-state-focus':    this.state.focused,
+              'rw-state-disabled': this.props.disabled === true,
+              'rw-open':           this.state.open,
+              'rw-rtl':            this.isRtl()
             })}>
-        <div className='rw-select-wrapper' onClick={this._click}>
+        <div className='rw-select-wrapper' onClick={this._maybeHandle(this._click)}>
           { this.props.busy &&
             <i className="rw-i rw-loading"></i>
           }
           <TagList 
             ref='tagList'
-            value={[].concat(this.props.value)} 
+            value={values} 
             textField={this.props.textField} 
             valueField={this.props.valueField}
             valueComponent={this.props.tagComponent}
+            disabled={this.props.disabled}
+            readOnly={this.props.readOnly}
             onDelete={this._delete}/>
           <SelectInput 
             ref='input'
@@ -113,6 +138,8 @@ module.exports = React.createClass({
             aria-busy={!!this.props.busy}
             aria-owns={listID}
             value={this.state.searchTerm} 
+            disabled={this.props.disabled === true}
+            readOnly={this.props.readOnly === true}
             placeholder={this._placeholder()}
             onChange={this._typing}/>
         </div>
@@ -121,14 +148,14 @@ module.exports = React.createClass({
             <List ref="list"
               id={listID}
               optID={optID}
+              aria-autocomplete='list'
               aria-hidden={ !this.state.open }
               style={{ maxHeight: 200, height: 'auto' }}
               data={items}
-              value={this.props.value}
               textField={this.props.textField} 
               valueField={this.props.valueField}
               focusedIndex={this.state.focusedIndex}
-              onSelect={this._onSelect}
+              onSelect={this._maybeHandle(this._onSelect)}
               listItem={this.props.itemComponent}
               messages={{
                 emptyList: this.props.data.length 
@@ -141,14 +168,6 @@ module.exports = React.createClass({
     )
   },
 
-  setWidth: function() {
-    var width = $.width(this.getDOMNode())
-      , changed = width !== this.state.width;
-
-    if ( changed )
-      this.setState({ width: width })
-  },
-
   _data: function(){
     return this.state.processedData
   },
@@ -156,7 +175,7 @@ module.exports = React.createClass({
   _delete: function(value){
     this._focus(true)
     this.change(
-      _.without(this.props.value, value))
+      _.without(this.state.dataItems, value))
   },
 
   _click: function(e){
@@ -166,6 +185,9 @@ module.exports = React.createClass({
 
   _focus: function(focused, e){
     var self = this;
+
+    if (this.props.disabled === true )
+      return 
 
     clearTimeout(self.timer)
 
@@ -192,7 +214,7 @@ module.exports = React.createClass({
   },
 
   _onSelect: function(data){
-    this.change(this.props.value.concat(data))
+    this.change(this.state.dataItems.concat(data))
     this.close()
     this._focus(true)
   },
@@ -243,11 +265,13 @@ module.exports = React.createClass({
   change: function(data){
     var change = this.props.onChange 
 
-    if ( change ) change(data)  
+    if ( change ) 
+      change(data) 
   },
 
   open: function(){
-    this.setState({ open: true })
+    if (!(this.props.disabled === true || this.props.readOnly === true))
+      this.setState({ open: true })
   },
 
   close: function(){
@@ -275,9 +299,14 @@ module.exports = React.createClass({
   },
 
   _placeholder: function(){
-    return this.props.value.length 
+    return (this.props.value || []).length 
       ? '' 
       : (this.props.placeholder || '')
-  }
+  },
+
+  _maybeHandle: function(handler, disabledOnly){
+    if ( !(this.props.disabled === true || (!disabledOnly && this.props.readOnly === true)))
+      return handler
+  },
 
 })

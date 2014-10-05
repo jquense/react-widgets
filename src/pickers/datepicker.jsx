@@ -96,9 +96,9 @@ module.exports = React.createClass({
            tabIndex="-1"
            aria-expanded={ this.state.open }
            aria-haspopup={true}
-           onKeyDown={this._keyDown}
-           onFocus={this._focus.bind(null, true)} 
-           onBlur ={this._focus.bind(null, false)}
+           onKeyDown={this._maybeHandle(this._keyDown)}
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
+           onBlur ={_.partial(this._focus, false)}
            className={cx({
               'rw-date-picker': true,
               'rw-widget':      true,
@@ -114,6 +114,8 @@ module.exports = React.createClass({
           aria-expanded={ this.state.open }
           aria-busy={!!this.props.busy}
           aria-owns={owns}
+          disabled={this.props.disabled}
+          readOnly={this.props.readOnly}
           role='combobox'
           value={this.props.value} 
           focused={this.state.focused} 
@@ -123,12 +125,18 @@ module.exports = React.createClass({
 
         <span className='rw-select'>
           { this.props.calendar &&
-            <btn onClick={this._click.bind(null, 'calendar')}>
+            <btn tabIndex='-1'
+              disabled={this.props.disabled} 
+              aria-disabled={this.props.disabled}
+              onClick={this._maybeHandle(_.partial(this._click, 'calendar'))}>
               <i className="rw-i rw-i-calendar"><span className="rw-sr">{ this.props.messages.calendarButton }</span></i>
             </btn>
           }
           { this.props.time &&
-            <btn onClick={this._click.bind(null, 'time')}>
+            <btn tabIndex='-1'
+              disabled={this.props.disabled} 
+              aria-disabled={this.props.disabled}
+              onClick={this._maybeHandle(_.partial(this._click, 'time'))}>
               <i className="rw-i rw-i-clock-o"><span className="rw-sr">{ this.props.messages.timeButton }</span></i>
             </btn>
           }
@@ -148,7 +156,7 @@ module.exports = React.createClass({
                 min={this.props.min} 
                 max={this.props.max} 
                 itemComponent={this.props.timeComponent}
-                onChange={this._selectTime}/>
+                onSelect={this._maybeHandle(this._onSelect)}/>
             </div>
         </Popup>
         }
@@ -166,7 +174,7 @@ module.exports = React.createClass({
                 value={this.props.value || new Date }
                 maintainFocus={false}
                 aria-hidden={ !this.state.open }
-                onChange={this._selectDate}/>
+                onSelect={this._maybeHandle(this._onSelect)}/>
             )}
           </Popup>
         }
@@ -249,6 +257,11 @@ module.exports = React.createClass({
           ? this.open(view)
           : this.close(view) 
       : this.open(view)
+  },
+
+  _maybeHandle: function(handler, disabledOnly){
+    if ( !(this.props.disabled || (!disabledOnly &&this.props.readOnly)))
+      return handler
   },
 
   open: function(view){

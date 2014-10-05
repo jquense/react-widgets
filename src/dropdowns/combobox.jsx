@@ -21,6 +21,16 @@ var btn = require('../common/btn.jsx')
       valueField:     React.PropTypes.string,
       textField:      React.PropTypes.string,
 
+      disabled:       React.PropTypes.oneOfType([
+                        React.PropTypes.bool,
+                        React.PropTypes.oneOf(['disabled'])
+                      ]),
+
+      readOnly:       React.PropTypes.oneOfType([
+                        React.PropTypes.bool,
+                        React.PropTypes.oneOf(['readOnly'])
+                      ]),
+
       suggest:        React.PropTypes.bool,
       busy:           React.PropTypes.bool,
 
@@ -89,7 +99,7 @@ module.exports = React.createClass({
       , items = this.process(
           nextProps.data
         , nextProps.value
-        , !inData && this._dataText(nextProps.value) ) // this._dataText(nextProps.value)
+        , !inData && this._dataText(nextProps.value) ) 
 
       , idx = this._dataIndexOf(items, nextProps.value);
 
@@ -99,21 +109,20 @@ module.exports = React.createClass({
       processedData:  items,
       selectedIndex:  idx,
       focusedIndex:   idx === -1 
-        ? this.findIndex(this._dataText(this.props.value)) 
+        ? this.findIndex(this._dataText(this.props.value)) // focus the closest match
         : idx
     })
   },
 
   componentDidUpdate: function(prevProps, prevState){
-    var val = this._dataText(this.props.value);
+    //var val = this._dataText(this.props.value);
 
     this.state.focused && this.refs.input.getDOMNode().focus()
-    
-    //if( this.state.open) this.setWidth()
   },
 
 	render: function(){ 
 		var DropdownValue = this.props.valueComponent
+      , valueItem = this._dataItem( this._data(), this.props.value )
       , items = this._data()
       , listID = this.props.id && this.props.id + '_listbox'
       , optID  = this.props.id && this.props.id + '_option'
@@ -126,10 +135,9 @@ module.exports = React.createClass({
 			<div ref="element"
            aria-expanded={ this.state.open }
            aria-haspopup={true}
-           onKeyDown={this._keyDown}
-           onFocus={this._focus.bind(null, true)} 
+           onKeyDown={this._maybeHandle(this._keyDown)}
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
            onBlur ={this._focus.bind(null, false)}
-
            tabIndex="-1"
            className={cx({
               'rw-combobox': true,
@@ -139,7 +147,10 @@ module.exports = React.createClass({
               'rw-rtl':          this.isRtl()
             })}>
 
-        <btn className='rw-select' onClick={this.toggle}>
+        <btn 
+          className='rw-select' 
+          onClick={this._maybeHandle(this.toggle)} 
+          disabled={!!(this.props.disabled || this.props.readOnly)}>
           <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
             <span className="rw-sr">{ this.props.messages.open }</span>
           </i>
@@ -150,8 +161,10 @@ module.exports = React.createClass({
           role='combobox'
           suggest={this.props.suggest}
           aria-autocomplete={completeType}
+          disabled={this.props.disabled}
+          readOnly={this.props.readOnly}
           className='rw-input'
-          value={this._dataText(this.props.value)}
+          value={ this._dataText(valueItem) }
           onChange={this._inputTyping}
           onKeyDown={this._inputKeyDown}/>
 
@@ -164,14 +177,13 @@ module.exports = React.createClass({
               aria-live={ completeType && 'polite' }
               style={{ maxHeight: 200, height: 'auto' }}
               data={items} 
-              value={this.props.value}
               selectedIndex={this.state.selectedIndex}
               focusedIndex={this.state.selectedIndex === -1 
                 ? this.state.focusedIndex 
                 : this.state.selectedIndex}
               textField={this.props.textField} 
               valueField={this.props.valueField}
-              onSelect={this._onSelect}
+              onSelect={this._maybeHandle(this._onSelect)}
               listItem={this.props.itemComponent}
               messages={{
                 emptyList: this.props.data.length 
@@ -289,6 +301,7 @@ module.exports = React.createClass({
   },
 
   open: function(){
+
     if ( !this.state.open )
       this.setState({ open: true })
   },
@@ -323,6 +336,12 @@ module.exports = React.createClass({
           this._dataText(item).toLowerCase()
         , word.toLowerCase())
     }
+  },
+
+  _maybeHandle: function(handler, disabledOnly){
+    //console.log(!(this.props.disabled || (!disabledOnly &&this.props.readOnly)))
+    if ( !(this.props.disabled || (!disabledOnly &&this.props.readOnly)))
+      return handler
   },
 
   _data: function(){

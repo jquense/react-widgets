@@ -73,9 +73,9 @@ module.exports = React.createClass({
     return mergeIntoProps(
       _.omit(this.props, _.keys(propTypes)),
       <div ref="element"
-           onKeyDown={this._keyDown}
-           onFocus={this._focus.bind(null, true)} 
-           onBlur ={this._focus.bind(null, false)}
+           onKeyDown={this._maybeHandle(this._keyDown)}
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
+           onBlur ={_.partial(this._focus, false)}
            tabIndex="-1"
            className={cx({
               'rw-number-picker': true,
@@ -86,19 +86,23 @@ module.exports = React.createClass({
 
         <span className='rw-select'>
           <btn 
+            tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.UP})}
-            onMouseDown={_.partial(self._mouseDown, directions.UP)} 
-            onMouseUp={_.partial(this._mouseUp, directions.UP)} 
-            onClick={_.partial(this._focus, true)} 
+            onMouseDown={this._maybeHandle(_.partial(self._mouseDown, directions.UP))} 
+            onMouseUp={this._maybeHandle(_.partial(this._mouseUp, directions.UP))} 
+            onClick={this._maybeHandle(_.partial(this._focus, true))} 
+            disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
 
             <i className="rw-i rw-i-caret-up"><span className="rw-sr">{ this.props.messages.increment }</span></i>
           </btn>
           <btn 
+            tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
-            onMouseDown={_.partial(self._mouseDown, directions.DOWN)} 
-            onMouseUp={_.partial(this._mouseUp, directions.DOWN)} 
-            onClick={_.partial(this._focus, true)}
+            onMouseDown={this._maybeHandle(_.partial(self._mouseDown, directions.DOWN))} 
+            onMouseUp={this._maybeHandle(_.partial(this._mouseUp, directions.DOWN))} 
+            onClick={this._maybeHandle(_.partial(this._focus, true))}
+            disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
 
             <i className="rw-i rw-i-caret-down"><span className="rw-sr">{ this.props.messages.decrement }</span></i>
@@ -115,6 +119,8 @@ module.exports = React.createClass({
           aria-valuemax={_.isFinite(this.props.max) ? this.props.max : '' }
           aria-disabled={ this.props.disabled }
           aria-readonly={ this.props.readonly }
+          disabled={this.props.disabled}
+          readOnly={this.props.readOnly}
           onChange={this.change}
           onKeyDown={this.props.onKeyDown}/>
       </div>
@@ -171,6 +177,11 @@ module.exports = React.createClass({
       this.increment()
     }
 
+  },
+
+  _maybeHandle: function(handler, disabledOnly){
+    if ( !(this.props.disabled || (!disabledOnly &&this.props.readOnly)))
+      return handler
   },
 
   increment: function() {

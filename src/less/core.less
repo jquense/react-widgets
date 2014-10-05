@@ -1,7 +1,7 @@
 /* for debugging */
-// *:focus { 
-//     outline: 1px red solid !important;
-// }
+*:focus { 
+    outline: 1px red solid !important;
+}
 
 .rw-widget {
   outline: 0;
@@ -143,7 +143,6 @@ ul.rw-list {
 
 
 .rw-combobox:active,
-.rw-select-list:active,
 .rw-date-picker:active,
 .rw-dropdown-list:active,
 .rw-header > .rw-btn:active,
@@ -153,7 +152,6 @@ ul.rw-list {
   .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
 }
 
-@focus-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
 
 .rw-open {
   &.rw-combobox,
@@ -169,6 +167,17 @@ ul.rw-list {
 }
 
 .rw-combobox,
+.rw-date-picker,
+.rw-number-picker,
+.rw-dropdown-list {
+  &:hover {
+    background-color: @state-bg-hover;
+  }
+}
+
+@focus-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
+
+.rw-combobox,
 .rw-select-list,
 .rw-date-picker,
 .rw-number-picker,
@@ -177,17 +186,16 @@ ul.rw-list {
   border:             @input-border @input-border-width solid;
   border-radius:      @input-border-radius;
 
-  &:hover {
-    background-color: @state-bg-hover;
-  }
-
   &.rw-state-focus,
   &.rw-state-focus:hover {
+    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px @{focus-rgba}");
     border-color: @input-border-focus;
+
     outline: 0;
   }
 
   &[disabled],
+  &.rw-state-disabled,
   fieldset[disabled] & {
     pointer-events: none;
     cursor: not-allowed;
@@ -206,6 +214,7 @@ ul.rw-list {
   }
 }
 
+
 .rw-combobox,
 .rw-date-picker,
 .rw-number-picker,
@@ -213,7 +222,7 @@ ul.rw-list {
 
   &.rw-state-focus input.rw-input,
   &.rw-state-focus:hover input.rw-input {
-    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075)")
+    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px @{focus-rgba}");
   }
 
   .rw-input[disabled],
@@ -228,19 +237,24 @@ ul.rw-list {
   }
 }
   
+.rw-select-list,
+.rw-combobox .rw-input,
+.rw-date-picker .rw-input,
+.rw-number-picker .rw-input {
+  background-color: @widget-bg;
+}
+
 
 .rw-select-wrapper,
 .rw-combobox .rw-input,
 .rw-date-picker .rw-input,
 .rw-number-picker .rw-input {
   .border-left-radius(@input-border-radius);
-  background-color: @widget-bg;
 
   .rw-rtl&{
     .border-left-radius(0);
     .border-right-radius(@input-border-radius);
   }
-
 }
 
 .rw-combobox,

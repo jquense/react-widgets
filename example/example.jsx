@@ -2,9 +2,9 @@ var React = require('react/addons')
 var Widgets = require('../index')
 var DropdownList = require('../src/dropdowns/Dropdown-List.jsx')
 var Select = require('../src/select/select.jsx')
-var Calendar = Widgets.Calendar
+var Calendar = require('../src/calendar/calendar.jsx')
 var DatePicker = require('../src/pickers/datepicker.jsx')
-var NumberPicker = Widgets.NumberPicker
+var NumberPicker = require('../src/pickers/numberpicker.jsx')
 var ComboBox = require('../src/dropdowns/Combobox.jsx')
 var chance = new (require('chance'))
 //var _ = require('lodash')
@@ -27,7 +27,7 @@ var App = React.createClass({
 			data: list,
 			dropdownValue: list[0],
 			comboboxValue: list[0],
-			selectValues: [],
+			selectValues: [1,3],
 			calDate: new Date,
 			numberValue: 1
 		}
@@ -39,9 +39,13 @@ var App = React.createClass({
 		function change(field, data) {
 			var obj = {}
 
-			obj[field] = data
+			if(field === 'selectValues')
+				data = _.pluck(data, 'id')
+			
+			obj[field] = _.has(data, 'id') ? data.id : data
+
 			self.setState(obj)
-			//console.log('example: set field: ' + field, data)
+			console.log('example: set field: ' + field, data)
 		}
 
 		return (
@@ -56,13 +60,15 @@ var App = React.createClass({
 							valueField='id'
 							initialBufferSize={10}
 							busy={false}
-							value={ this.state.dropdownValue} 
+							readOnly={true}
+							value={this.state.dropdownValue} 
 							onChange={change.bind(null, 'dropdownValue')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<Calendar 
 							id='Calendar'
 							value={ new Date } 
+							disabled={true}
 							onChange={change.bind(null, 'calValue')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
@@ -85,6 +91,7 @@ var App = React.createClass({
 							valueField='id'
 							value={ this.state.selectValues } 
 							busy={false}
+							
 							tagComponent={ListItem}
 							itemComponent={ListItem}
 							onChange={change.bind(null, 'selectValues')}/>
@@ -94,6 +101,7 @@ var App = React.createClass({
 							id='AwesomeDatePicker' 
 							isRtl={false} 
 							value={this.state.calDate} 
+							
 							onChange={change.bind(null, 'calDate')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
@@ -102,6 +110,7 @@ var App = React.createClass({
 							min={0}
 							max={5}
 							format="c"
+							disabled={true}
 							value={this.state.numberValue} 
 							onChange={change.bind(null, 'numberValue')}/>
 					</section>

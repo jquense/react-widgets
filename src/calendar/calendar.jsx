@@ -60,6 +60,16 @@ module.exports = React.createClass({
     initialView:   React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
     finalView:     React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
 
+    disabled:       React.PropTypes.oneOfType([
+                        React.PropTypes.bool,
+                        React.PropTypes.oneOf(['disabled'])
+                      ]),
+
+    readOnly:       React.PropTypes.oneOfType([
+                      React.PropTypes.bool,
+                      React.PropTypes.oneOf(['readOnly'])
+                    ]),
+
     messages:      React.PropTypes.shape({
       moveBack:    React.PropTypes.string,
       moveForward: React.PropTypes.string
@@ -113,6 +123,7 @@ module.exports = React.createClass({
 
   render: function(){
     var View = VIEW[this.state.view]
+      , disabled = this.props.disabled || this.props.readOnly
       , date = this.state.currentDate
       , labelId = this.props.id && this.props.id + '_view_label'
       , key = this.state.view + '_' + dates[this.state.view](date)
@@ -120,17 +131,17 @@ module.exports = React.createClass({
 
     //console.log(key)
     return mergeIntoProps(_.omit(this.props, 'value', 'min', 'max'),
-      <div className='rw-calendar rw-widget'>
+      <div className={cx({'rw-calendar': true, 'rw-widget': true, 'rw-state-disabled': this.props.disabled })}>
         <Header
           label={this._label()}
           labelId={labelId}
           messages={this.props.messages}
-          upDisabled={this.state.view === this.props.finalView}
-          prevDisabled={!dates.inRange(this.nextDate(LEFT), this.props.min, this.props.max)}
-          nextDisabled={!dates.inRange(this.nextDate(RIGHT), this.props.min, this.props.max)}
-          onViewChange={_.partial(this.navigate, UP, null)}
-          onMoveLeft ={_.partial(this.navigate,  LEFT, null)}
-          onMoveRight={_.partial(this.navigate,  RIGHT, null)}/>
+          upDisabled={  disabled || this.state.view === this.props.finalView}
+          prevDisabled={disabled || !dates.inRange(this.nextDate(LEFT), this.props.min, this.props.max)}
+          nextDisabled={disabled || !dates.inRange(this.nextDate(RIGHT), this.props.min, this.props.max)}
+          onViewChange={this._maybeHandle(_.partial(this.navigate, UP, null))}
+          onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  LEFT, null))}
+          onMoveRight={this._maybeHandle(_.partial(this.navigate,  RIGHT, null))}/>
 
         <SlideTransition 
           ref='animation'
@@ -144,11 +155,11 @@ module.exports = React.createClass({
             aria-activedescendant={id + '_selected_item'}
             selectedDate={this.props.value}
             value={this.state.currentDate}
-            onChange={this.change}
-            onKeyDown={this._keyDown}
-            onFocus={_.partial(this._focus, true)}
-            onMoveLeft ={_.partial(this.navigate,  LEFT)}
-            onMoveRight={_.partial(this.navigate,  RIGHT)}
+            onChange={this._maybeHandle(this.change)}
+            onKeyDown={this._maybeHandle(this._keyDown)}
+            onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
+            onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  LEFT))}
+            onMoveRight={this._maybeHandle(_.partial(this.navigate,  RIGHT))}
             
             min={this.props.min}
             max={this.props.max}/>
@@ -203,7 +214,7 @@ module.exports = React.createClass({
   },
 
   change: function(date){
-    if ( this.state.view === this.props.initialView)
+    if ( this.props.onChange && this.state.view === this.props.initialView)
       return this.props.onChange(date)
 
     this.navigate(DOWN, date)
@@ -222,7 +233,6 @@ module.exports = React.createClass({
     var ctrl = e.ctrlKey
       , key  = e.key;
 
-    
     if ( ctrl ) {
       if ( key === 'ArrowDown' ) {
         e.preventDefault()
@@ -264,7 +274,14 @@ module.exports = React.createClass({
     else if ( view === 'century')
       return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR) 
         + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
-  } 
+  },
+
+   _maybeHandle: function(handler, disabledOnly){
+    if ( !(this.props.disabled || (!disabledOnly && this.props.readOnly)))
+      return handler
+
+    return _.noop
+  },
 
 });
 

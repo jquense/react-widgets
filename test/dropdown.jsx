@@ -38,8 +38,8 @@ describe('DROPDOWNS', function(){
   }) 
 
   it('should start closed', function(done){
-    var dropdown = render(
-          <Dropdown value={0} data={data} textField='label' valueField='id' />);
+    var dropdown = render(<Dropdown value={0} data={data} textField='label' valueField='id' />);
+    var popup = findType(dropdown, require('../src/popup/popup.jsx'));
 
     expect(dropdown.state.open).to.be(false)
     expect(dropdown.getDOMNode().className).to.not.match(/\brw-open\b/)
@@ -78,6 +78,39 @@ describe('DROPDOWNS', function(){
     }, 0) 
   })
 
+  it('should do nothing when disabled', function(done){
+    var dropdown = render(<Dropdown value={'jimmy'} data={data} duration={0} disabled={true}/>)
+      , input = dropdown.getDOMNode();
+
+    expect( input.className).to.not.match(/\brw-state-focus\b/)
+    expect( input.className).to.match(/\brw-state-disabled\b/)
+    expect( input.hasAttribute('aria-disabled')).to.be(true)
+    expect( input.getAttribute('aria-disabled')).to.be('true')
+
+    trigger.click(dropdown.getDOMNode())
+
+    setTimeout(function() {
+      expect(dropdown.state.open).to.be(false)
+      done()
+    }, 0) 
+  })
+
+  it('should do nothing when readonly', function(done){
+    var dropdown = render(<Dropdown value={'jimmy'} data={data} duration={0} readOnly={true}/>)
+      , input = dropdown.getDOMNode();
+    
+    expect( input.hasAttribute('aria-readonly')).to.be(true)
+    expect( input.getAttribute('aria-readonly')).to.be('true')
+
+    trigger.click(input)
+    trigger.focus(input)
+
+    setTimeout(function() {
+      expect(input.className).to.match(/\brw-state-focus\b/)
+      expect(dropdown.state.open).to.be(false)
+      done()
+    }, 0)
+  })
 
   it('should change values on key down', function(){
     var change = sinon.spy()

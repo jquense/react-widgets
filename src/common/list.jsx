@@ -31,8 +31,10 @@ module.exports = React.createClass({
 
   propTypes: {
     data:          React.PropTypes.array,
-    value:         React.PropTypes.any,
+    onSelect:      React.PropTypes.func,
     listItem:      React.PropTypes.component,
+    selectedIndex: React.PropTypes.number,
+    focusedIndex:  React.PropTypes.number,
     valueField:    React.PropTypes.string,
     textField:     React.PropTypes.string,
 
@@ -48,6 +50,8 @@ module.exports = React.createClass({
     return {
       delay:         500,
       optID:         '',
+      onSelect:      _.noop,
+      data:          [],
       messages: {
         emptyList:   "There are no items in this list"
       }
@@ -109,6 +113,8 @@ module.exports = React.createClass({
     var list = this.getDOMNode()
       , selected = list.children[this.props.focusedIndex]
       , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
+
+    if( !selected ) return 
 
     scrollTop   = list.scrollTop
     listHeight  = list.clientHeight

@@ -25,8 +25,9 @@ describe('List', function(){
   it('should set initial values', function(){
     var list = render(
           <List data={data} onChange={_.noop} />);
-
-    expect( findClass(list, 'rw-list').getDOMNode().children.length).to.be(3);
+    var input = findClass(list, 'rw-list').getDOMNode()
+    //console.log(input)
+    expect( input.children.length).to.be(3);
   })
 
   it('should respect textField and valueFields', function(){
@@ -40,13 +41,14 @@ describe('List', function(){
   it('should use a Item template', function(){
     var templ  = React.createClass({
       render: function() {
-        return (<span>{"hello - " + this.props.item}</span>);
+        return (<span>{"hello - " + this.props.item.label}</span>);
       }
     });
     
-    var list = render(<List value={'jimmy'} valueComponent={templ} />);
+    var list = render(<List data={data} listItem={templ} />);
+    var input = findClass(list, 'rw-list').getDOMNode()
 
-    expect( findClass(list, 'rw-input').getDOMNode().textContent).to.be('hello - jimmy');
+    expect( input.children[0].textContent).to.be('hello - jimmy');
   })
 
 })

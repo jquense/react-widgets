@@ -7,7 +7,10 @@ var React = require('react')
 module.exports = React.createClass({
   displayName: 'SelectTagList',
   
-  mixins: [ require('../mixins/DataHelpersMixin')],
+  mixins: [ 
+    require('../mixins/DataHelpersMixin'),
+    require('../mixins/PureRenderMixin')
+  ],
 
   propTypes: {
     value:          React.PropTypes.array,
@@ -15,7 +18,19 @@ module.exports = React.createClass({
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,
 
-    valueComponent: React.PropTypes.component
+    valueComponent: React.PropTypes.component,
+
+    disabled:       React.PropTypes.oneOfType([
+                      React.PropTypes.bool,
+                      React.PropTypes.array,
+                      React.PropTypes.oneOf(['disabled'])
+                    ]),
+
+    readOnly:       React.PropTypes.oneOfType([
+                      React.PropTypes.bool,
+                      React.PropTypes.array,
+                      React.PropTypes.oneOf(['readonly'])
+                    ])
   },
 
 
@@ -27,19 +42,33 @@ module.exports = React.createClass({
 
   render: function(){
       var focusIdx = this.state.focused
-        , value    = this.props.value;
+        , value    = this.props.value
+        , hasDisabledItems = _.isArray(this.props.disabled)
+        , hasReadonlyItems = _.isArray(this.props.readOnly);
 
       return mergeIntoProps(
         _.omit(this.props, 'value'),
         <ul className='rw-tag-list'>
           {_.map(value, function(item, i){
+            var disabled = (this.props.disabled === true) 
+                        || (hasDisabledItems && this._dataIndexOf(this.props.disabled, item) !== -1);
+
+            var readonly = (this.props.readOnly && !hasReadonlyItems) 
+                        || (hasReadonlyItems && this._dataIndexOf(this.props.readOnly, item) !== -1);
+
             return (
-              <li key={i} unselectable='on' className={cx({'rw-state-focus': focusIdx === i })}>
+              <li key={i}
+                  className={cx({
+                    'rw-state-focus': !disabled && focusIdx === i, 
+                    'rw-state-disabled': disabled })
+                  }>
                 { this.props.valueComponent
                     ? this.props.valueComponent({ item: item })
                     : this._dataText(item)
                 }
-                <btn onClick={this._delete.bind(null, item)} unselectable='on'>
+                <btn tabIndex='-1' onClick={!readonly && this._delete.bind(null, item)} 
+                  aria-disabled={disabled}
+                  disabled={disabled}>
                   &times;<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
                 </btn>
               </li>)
@@ -49,20 +78,25 @@ module.exports = React.createClass({
   },
 
   _delete: function(val, e){
-    //e.stopPropagation();
     this.props.onDelete(val)
   },
 
   removeCurrent: function(){
-    var val = this.props.value[this.state.focused];
+    var val = this.props.value[this.state.focused]
+      , readonly = this.props.readOnly === true || this._dataIndexOf(this.props.readOnly, val) !== -1
+      , disabled = this.props.disabled === true || this._dataIndexOf(this.props.disabled, val) !== -1;
 
-    if ( val ) this.props.onDelete(val)
+    if ( val && !(disabled || readonly)) 
+      this.props.onDelete(val)
   },
 
   removeNext: function(){
-    var val = _.last(this.props.value);
+    var val = _.last(this.props.value)
+      , readonly = this.props.readOnly === true || this._dataIndexOf(this.props.readOnly, val) !== -1
+      , disabled = this.props.disabled === true || this._dataIndexOf(this.props.disabled, val) !== -1;
 
-    if ( val ) this.props.onDelete(val)
+    if ( val && !(disabled || readonly)) 
+      this.props.onDelete(val)
   },
 
   clear: function(){
@@ -78,20 +112,19 @@ module.exports = React.createClass({
   },
 
   next: function(){
-      var nextIdx = this.state.focused + 1;
+    var nextIdx = this.state.focused + 1;
 
-      if ( this.state.focused === null ) 
-        return
+    if ( this.state.focused === null ) 
+      return
 
-      if ( nextIdx >= this.props.value.length )
-        return this.clear();
+    if ( nextIdx >= this.props.value.length )
+      return this.clear();
 
     this.setState({ focused: nextIdx })
   },
 
   prev: function(){
     var nextIdx = this.state.focused;
-
 
     if ( nextIdx === null )
       nextIdx = this.props.value.length

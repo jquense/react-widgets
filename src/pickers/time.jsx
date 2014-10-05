@@ -23,7 +23,7 @@ module.exports = React.createClass({
     max:            React.PropTypes.instanceOf(Date),
     step:           React.PropTypes.number,
     itemComponent:  React.PropTypes.func,
-    onChange:       React.PropTypes.func.isRequired
+    onChange:       React.PropTypes.func
   },
 
   getDefaultProps: function(){

@@ -25,7 +25,7 @@ module.exports = function (config) {
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'], //'PhantomJS', 
 
     preprocessors: {
       'test/*.js*': ['webpack']
@@ -38,6 +38,7 @@ module.exports = function (config) {
 
     plugins: [
       require("karma-phantomjs-launcher"),
+      require("karma-chrome-launcher"),
       require("karma-webpack"),
       require("karma-mocha"),
       require("karma-expect"),

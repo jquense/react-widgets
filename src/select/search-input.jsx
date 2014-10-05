@@ -1,10 +1,15 @@
 var React = require('react')
 
 module.exports = React.createClass({
+  
+  displayName: 'SelectSearchInput',
 
   propTypes: {
     value:        React.PropTypes.string,
     onChange:     React.PropTypes.func.isRequired,
+
+    disabled:     React.PropTypes.bool,
+    readOnly:     React.PropTypes.bool,
   },
 
 
@@ -19,7 +24,11 @@ module.exports = React.createClass({
 
       return this.transferPropsTo(
         <input type='text' 
-          className='rw-input'  
+          className='rw-input'
+          aria-disabled={this.props.disabled}
+          aria-readonly={this.props.readOnly}
+          disabled={this.props.disabled}
+          readOnly={this.props.readOnly}
           size={size}/>
       )
   },

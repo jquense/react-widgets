@@ -35,6 +35,16 @@ var propTypes = {
 
   duration:       React.PropTypes.number, //popup
   
+  disabled:       React.PropTypes.oneOfType([
+                        React.PropTypes.bool,
+                        React.PropTypes.oneOf(['disabled'])
+                      ]),
+
+  readOnly:       React.PropTypes.oneOfType([
+                    React.PropTypes.bool,
+                    React.PropTypes.oneOf(['readOnly'])
+                  ]),
+
   messages:       React.PropTypes.shape({
     open:         React.PropTypes.string,
   })
@@ -96,20 +106,23 @@ module.exports = React.createClass({
 		return mergeIntoProps(
       _.omit(this.props, keys),
 			<div ref="element"
-           onKeyDown={this._keyDown}
-           onClick={this.toggle}
-           onFocus={this._focus.bind(null, true)}
-           onBlur ={this._focus.bind(null, false)}
+           onKeyDown={this._maybeHandle(this._keyDown)}
+           onClick={this._maybeHandle(this.toggle)}
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
+           onBlur ={_.partial(this._focus, false)}
            aria-expanded={ this.state.open }
            aria-haspopup={true}
            aria-activedescendent={ optID }
-           tabIndex="0"
+           aria-disabled={ this.props.disabled }
+           aria-readonly={ this.props.readOnly }
+           tabIndex={this.props.disabled ? '-1' : "0"}
            className={cx({
-              'rw-dropdown-list': true,
-              'rw-widget':       true,
-              'rw-state-focus':  this.state.focused,
-              'rw-open':         this.state.open,
-              'rw-rtl':          this.isRtl()
+              'rw-dropdown-list':   true,
+              'rw-widget':          true,
+              'rw-state-disabled':  this.props.disabled,
+              'rw-state-focus':     this.state.focused,
+              'rw-open':            this.state.open,
+              'rw-rtl':             this.isRtl()
             })}>
 
 				<span className="rw-dropdownlist-picker rw-select rw-btn">
@@ -139,7 +152,7 @@ module.exports = React.createClass({
               textField={this.props.textField}
               valueField={this.props.valueField}
               listItem={this.props.itemComponent}
-              onSelect={this._onSelect}/>
+              onSelect={this._maybeHandle(this._onSelect)}/>
           </div>
         </Popup>
 			</div>
@@ -234,6 +247,11 @@ module.exports = React.createClass({
 
   _data: function(){
     return this.props.data
+  },
+
+  _maybeHandle: function(handler, disabledOnly){
+    if ( !(this.props.disabled || (!disabledOnly && this.props.readOnly)))
+      return handler
   },
 
   open: function(){
