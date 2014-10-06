@@ -32,9 +32,6 @@ module.exports = React.createClass({
   render: function(){
     var years = getDecadeYears(this.props.value)
       , rows  = chunk(years, 4)
-      , id = this.props.id && this.props.id + '_selected_option';
-
-    this.selectedId = id
 
     return mergeIntoProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
@@ -42,8 +39,7 @@ module.exports = React.createClass({
         tabIndex={this.props.disabled ? '-1' : "0"}
         role='grid' 
         className='rw-calendar-grid rw-nav-view' 
-        aria-activedescendant={id}
-        aria-labeledby={this.props['aria-labeledby']}
+        aria-activedescendant={this._id('_selected_item')}
         onKeyUp={this._keyUp}>
 
         <tbody>
@@ -53,8 +49,13 @@ module.exports = React.createClass({
     )
   },
 
+  _id: function(suffix){
+    this._id_ || (this._id_ = _.uniqueId('rw_'))
+    return (this.props.id || this._id_)  + suffix
+  },
+
   _row: function(row, i){
-    var id = this.selectedId
+    var id = this._id('_selected_item')
   
     return (
       <tr key={'row_' + i}>
@@ -116,5 +117,6 @@ function getDecadeYears(date){
     return date = dates.add(date, 1, 'year')
   })
 }
+
 
 var btn = require('../common/btn.jsx')

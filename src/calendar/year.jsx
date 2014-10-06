@@ -38,13 +38,18 @@ module.exports = React.createClass({
         ref='table'
         role='grid' 
         className='rw-calendar-grid rw-nav-view' 
-        aria-labeledby={this.props['aria-labeledby']}
+        aria-activedescendant={this._id('_selected_item')}
         onKeyUp={this._keyUp}>
         <tbody >
           { _.map(rows, this._row)}
         </tbody>
       </table>
     )
+  },
+
+  _id: function(suffix){
+    this._id_ || (this._id_ = _.uniqueId('rw_'))
+    return (this.props.id || this._id_)  + suffix
   },
 
   _row: function(row, i){
@@ -55,7 +60,7 @@ module.exports = React.createClass({
       {_.map(row, (date, i) => {
         var focused  = dates.eq(date, this.state.focusedDate,  'month')
           , selected = dates.eq(date, this.props.value,  'month')
-          , id = this.props.id && this.props.id + '_selected_item';
+          , id       = this._id('_selected_item');
 
         return dates.inRange(date, this.props.min, this.props.max, 'month') 
           ? (<td key={i}>
@@ -101,5 +106,5 @@ module.exports = React.createClass({
 
 });
 
-
+var _id;
 var btn = require('../common/btn.jsx')

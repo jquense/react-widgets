@@ -46,6 +46,7 @@ module.exports = React.createClass({
         role='grid'
         tabIndex={this.props.disabled ? '-1' : "0"}
         className='rw-calendar-grid' 
+        aria-activedescendant={this._id('_selected_item')}
         onKeyUp={this._keyUp}>
         <thead>
           <tr>{ this._headers() }</tr>
@@ -63,7 +64,7 @@ module.exports = React.createClass({
       _.map(row, (day, idx) => {
         var focused  = dates.eq(day, this.state.focusedDate, 'day')
           , selected = dates.eq(day, this.props.selectedDate, 'day')
-          , id = this.props.id && this.props.id + '_selected_item';
+          , id = this._id('_selected_item');
 
         return !dates.inRange(day, this.props.min, this.props.max)
             ? <td  key={'day_' + idx} className='rw-empty-cell'>&nbsp;</td>
@@ -116,7 +117,14 @@ module.exports = React.createClass({
       date = dates.add(date, 1, 'week')
 
     return date
-  }
+  },
+
+  _id: function(suffix){
+    this._id_ || (this._id_ = _.uniqueId('rw_'))
+    return (this.props.id || this._id_)  + suffix
+  },
 
 
 });
+
+var _id;

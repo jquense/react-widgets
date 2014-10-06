@@ -39,6 +39,8 @@ var RIGHT = 'right'
     'century':  'decade',
   };
 
+var VIEW_OPTIONS = ['month', 'year', 'decade', 'century'];
+
 module.exports = React.createClass({
   
   displayName: 'Calendar',
@@ -57,8 +59,8 @@ module.exports = React.createClass({
     min:           React.PropTypes.instanceOf(Date),
     max:           React.PropTypes.instanceOf(Date),
     
-    initialView:   React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
-    finalView:     React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
+    initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
+    finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
 
     disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.bool,
@@ -104,8 +106,19 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
+    var bottom  = VIEW_OPTIONS.indexOf(nextProps.initialView)
+      , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
+      , current = VIEW_OPTIONS.indexOf(this.state.view)
+      , view    = this.state.view;
+
+
+    if( current < bottom )
+      this.setState({ view: view = nextProps.initialView })
+    else if (current > top)
+      this.setState({ view: view = nextProps.finalView })
+
     //if the value changes reset views to the new one
-    if ( !dates.eq(nextProps.value, this.props.value, VIEW_UNIT[this.state.view]) )
+    if ( !dates.eq(nextProps.value, this.props.value, VIEW_UNIT[view]) )
       this.setState({
         currentDate: new Date(nextProps.value)
       })
@@ -115,9 +128,9 @@ module.exports = React.createClass({
     var View = VIEW[this.state.view]
       , disabled = this.props.disabled || this.props.readOnly
       , date = this.state.currentDate
-      , labelId = this.props.id && this.props.id + '_view_label'
+      , labelId = this._id('_view_label')
       , key = this.state.view + '_' + dates[this.state.view](date)
-      , id  = this.props.id && this.props.id + '_table';
+      , id  = this._id('_view');
 
     //console.log(key)
     return mergeIntoProps(_.omit(this.props, 'value', 'min', 'max'),
@@ -125,7 +138,8 @@ module.exports = React.createClass({
           'rw-calendar':       true, 
           'rw-widget':         true, 
           'rw-state-disabled': this.props.disabled,
-          'rw-state-readonly': this.props.readOnly 
+          'rw-state-readonly': this.props.readOnly,
+          'rw-rtl':            this.isRtl()
         })}>
         <Header
           label={this._label()}
@@ -147,7 +161,6 @@ module.exports = React.createClass({
             key={key}
             id={id}
             aria-labeledby={labelId}
-            aria-activedescendant={id + '_selected_item'}
             selectedDate={this.props.value}
             value={this.state.currentDate}
             onChange={this._maybeHandle(this.change)}
@@ -173,7 +186,7 @@ module.exports = React.createClass({
       , view     =  this.state.view
       , slideDir = (direction === LEFT || direction === UP)
           ? 'right' 
-          : 'left'
+          : 'left';
 
     if ( !date )
       date = _.contains([ LEFT, RIGHT ], direction)
@@ -186,7 +199,7 @@ module.exports = React.createClass({
     if (direction === UP )   
       view = NEXT_VIEW[view] || view
 
-    if ( dates.inRange(date, this.props.min, this.props.max)){
+    if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max)) {
       this._focus(true, 'nav');
       //console.log('navigate: ', view)
       this.setState({
@@ -267,12 +280,23 @@ module.exports = React.createClass({
         + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
   },
 
-   _maybeHandle: function(handler, disabledOnly){
+  _maybeHandle: function(handler, disabledOnly){
     if ( !(this.props.disabled || (!disabledOnly && this.props.readOnly)))
       return handler
 
     return _.noop
   },
 
-});
+   _id: function(suffix) {
+    this._id_ || (this._id_ = _.uniqueId('rw_'))
+    return (this.props.id || this._id_)  + suffix
+  },
 
+  isValidView: function(next) {
+    var bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
+      , top     = VIEW_OPTIONS.indexOf(this.props.finalView)
+      , current = VIEW_OPTIONS.indexOf(next);
+
+    return current >= bottom && current <= top
+  }
+});
