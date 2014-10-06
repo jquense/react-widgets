@@ -6,7 +6,7 @@ var React = require('react')
   , Example = require('../example.jsx')
   , MenuItem = require('react-bootstrap/MenuItem')
   , DDButton = require('react-bootstrap/DropdownButton')
-  , DropdownListExample = require('../examples/dropdownlist.jsx');
+  , DropdownListExample = require('../examples/dropdown-api.jsx');
 
 var prefix = 'dropdown-list/'
 var DropdownList = React.createClass({
@@ -37,9 +37,7 @@ var DropdownList = React.createClass({
         <p>
           A <code>{'<select/>'}</code> tag replacement that offers additional functionality. the Dropdown list
         </p>
-        <div className='example'>
-          <DropdownListExample/>
-        </div>
+        <DropdownListExample/>
         <Example code={
           "render: function(){\n"+
           "  var DropdownList = require('react-widgets').DropdownList\n"+

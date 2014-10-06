@@ -62,7 +62,7 @@ var App = React.createClass({
 							valueField='id'
 							initialBufferSize={10}
 							busy={false}
-							readOnly={false}
+							disabled={true}
 							value={this.state.dropdownValue} 
 							onChange={change.bind(null, 'dropdownValue')}/>
 					</section>
@@ -109,10 +109,9 @@ var App = React.createClass({
 					<section className="example" style={{ marginBottom: 20 }}>
 						<NumberPicker id='AwesomeNumPicker' 
 							isRtl={false} 
-							min={0}
-							max={5}
+							min={100}
+							step={200}
 							format="c"
-							disabled={true}
 							value={this.state.numberValue} 
 							onChange={change.bind(null, 'numberValue')}/>
 					</section>

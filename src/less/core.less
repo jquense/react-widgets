@@ -35,12 +35,15 @@
 	padding: 			  0.177em 0;
 	text-indent: 		0.64em;
 
-  &[disabled],
-  &[readonly] {
+  &[disabled] {
     .state-disabled();
     opacity: 1;
     background-color: @input-bg-disabled;
     border-color: @input-border;
+  }
+
+  &[readonly]{
+    cursor: not-allowed;
   }
 }
 
@@ -242,6 +245,11 @@ ul.rw-list {
 }
 
 .rw-dropdown-list {
+  &.rw-state-disabled,
+  &.rw-state-readonly {
+    cursor: not-allowed;
+  }
+
   > .rw-input {
     background-color:   transparent;
   }
