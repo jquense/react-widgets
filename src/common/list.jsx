@@ -79,7 +79,7 @@ module.exports = React.createClass({
       return (<li 
         key={'item_' + idx}
         role='option'
-        id={ focused ? this.props.optID : '' }
+        id={ focused ? this.props.optID : undefined }
         aria-selected={ idx === this.props.selectedIndex }
         className={cx({ 
           'rw-state-focus':    focused,
