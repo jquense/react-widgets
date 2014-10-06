@@ -45,8 +45,8 @@ module.exports = React.createClass({
 
   isSuggesting: function(){
     var val = this.props.value
-      , isSuggestion =  this._last !== ''
-          && val.indexOf(this._last) !== -1;
+      , isSuggestion = this._last !== null
+          && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
 
     return this.props.suggest && isSuggestion
   },
@@ -55,7 +55,7 @@ module.exports = React.createClass({
     var val = this.getDOMNode().value || ''
       , end = val.length;
 
-    this._last = ''
+    this._last = null
     removeCaret && caretPos(this.getDOMNode(), end, end)
   },
 

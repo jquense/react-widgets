@@ -90,8 +90,8 @@ module.exports = React.createClass({
 
   shouldComponentUpdate: function(nextProps, nextState){
     var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
-      , stateChanged = !_.isEqual(nextState, this.state) 
-      , valueChanged = !_.isEqual(nextProps.value, this.props.value)
+      , stateChanged = !shallowEqual(nextState, this.state) 
+      , valueChanged = !shallowEqual(nextProps, this.props)
 
     return isSuggesting || stateChanged || valueChanged
   },
@@ -108,7 +108,7 @@ module.exports = React.createClass({
       , idx = this._dataIndexOf(items, nextProps.value)
       , focused = this.filterIndexOf(items, this._dataText(valueItem));
 
-    //console.log('set it', this._dataText(valueItem))
+    //console.log('set it', nextProps.value, this._dataText(valueItem))
     this._searchTerm = '';
 
     this.setState({
@@ -379,3 +379,21 @@ module.exports = React.createClass({
 })
 
 var _id = ''
+
+function shallowEqual(objA, objB) {
+  var key;
+
+  if (objA === objB) return true;
+  
+  // Test for A's keys different from B.
+  for (key in objA) 
+    if (objA.hasOwnProperty(key) && (!objB.hasOwnProperty(key) || objA[key] !== objB[key]))
+      return false;
+     
+  // Test for B'a keys missing from A.
+  for (key in objB) 
+    if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key)) 
+      return false;
+    
+  return true;
+}
