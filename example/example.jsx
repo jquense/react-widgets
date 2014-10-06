@@ -68,10 +68,8 @@ var App = React.createClass({
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<Calendar 
-							id='Calendar'
+							
 							value={ new Date } 
-							disabled={true}
-
 							onChange={change.bind(null, 'calValue')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
@@ -102,7 +100,8 @@ var App = React.createClass({
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<DatePicker 
-							isRtl={false} 
+							isRtl={false}
+							id='swweeeeet' 
 							value={this.state.calDate} 
 							onChange={change.bind(null, 'calDate')}/>
 					</section>
