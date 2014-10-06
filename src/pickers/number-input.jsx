@@ -41,6 +41,9 @@ module.exports = React.createClass({
           ? nextProps.value
           : globalize.format(nextProps.value, nextProps.format)
 
+    if ( isNaN(nextProps.value) ) 
+      value = ''
+
     this.current(value)
   },
 

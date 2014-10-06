@@ -144,8 +144,8 @@ module.exports = React.createClass({
     var self = this
       , atMax  = dir === directions.UP
       , val = dir === directions.UP 
-        ? this.props.value + this.props.step
-        : this.props.value - this.props.step 
+        ? (this.props.value || 0) + this.props.step
+        : (this.props.value || 0) - this.props.step 
     
     val = this.inRangeValue(val)
 
@@ -210,11 +210,11 @@ module.exports = React.createClass({
   },
 
   increment: function() {
-    this.change(this.inRangeValue(this.props.value + this.props.step))
+    this.change(this.inRangeValue((this.props.value || 0) + this.props.step))
   },
 
   decrement: function(){
-    this.change(this.inRangeValue(this.props.value - this.props.step))
+    this.change(this.inRangeValue((this.props.value || 0) - this.props.step))
   },
 
   change: function(val){
@@ -232,3 +232,4 @@ module.exports = React.createClass({
       , this.props.min)
   }
 })
+

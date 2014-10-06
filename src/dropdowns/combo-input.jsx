@@ -45,7 +45,7 @@ module.exports = React.createClass({
 
   isSuggesting: function(){
     var val = this.props.value
-      , isSuggestion = this._last !== null
+      , isSuggestion = this._last != null
           && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
 
     return this.props.suggest && isSuggestion
