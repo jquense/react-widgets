@@ -101,7 +101,7 @@ module.exports = React.createClass({
 	render: function(){
 		var keys = _.keys(propTypes)
       , valueItem = this._dataItem( this._data(), this.props.value )
-      , optID = this.props.id && this.props.id + '_option' || '';
+      , optID = this._id('_option');
 
 		return mergeIntoProps(
       _.omit(this.props, keys),
@@ -112,7 +112,7 @@ module.exports = React.createClass({
            onBlur ={_.partial(this._focus, false)}
            aria-expanded={ this.state.open }
            aria-haspopup={true}
-           aria-activedescendent={ optID }
+           aria-activedescendent={ this.state.open ? optID : undefined }
            aria-disabled={ this.props.disabled }
            aria-readonly={ this.props.readOnly }
            tabIndex={this.props.disabled ? '-1' : "0"}
@@ -120,6 +120,7 @@ module.exports = React.createClass({
               'rw-dropdown-list':   true,
               'rw-widget':          true,
               'rw-state-disabled':  this.props.disabled,
+              'rw-state-readonly':  this.props.readOnly,
               'rw-state-focus':     this.state.focused,
               'rw-open':            this.state.open,
               'rw-rtl':             this.isRtl()
@@ -203,6 +204,9 @@ module.exports = React.createClass({
       else change(0)
       e.preventDefault()
     }
+    else if ( key === 'Escape' && isOpen ) {
+      this.close()
+    }
     else if ( key === 'Enter' && isOpen ) {
       change(this.state.focusedIndex)
     }
@@ -266,6 +270,12 @@ module.exports = React.createClass({
     this.state.open
       ? this.close()
       : this.open()
+  },
+
+  _id: function(suffix){
+    return (_id || (_id = (this.props.id || _.uniqueId('rw_'))))  + suffix
   }
   
 })
+
+var _id =''

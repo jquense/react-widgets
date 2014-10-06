@@ -24,7 +24,8 @@ var btn = require('../common/btn.jsx')
 
       duration:       React.PropTypes.number, //popup
 
-      placeholder:    React.PropTypes.string, //popup
+      placeholder:    React.PropTypes.string,
+
       disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.bool,
                         React.PropTypes.array,
@@ -97,11 +98,11 @@ module.exports = React.createClass({
   },
 
   render: function(){ 
-    var enabled  = !(this.props.disabled === true || this.props.readOnly === true)
-      , listID = this.props.id && this.props.id + '_listbox'
-      , optID  = this.props.id && this.props.id + '_option'
-      , items = this._data()
-      , values = this.state.dataItems;
+    var enabled = !(this.props.disabled === true || this.props.readOnly === true)
+      , listID  = this._id('_listbox')
+      , optID   = this._id('_option')
+      , items   = this._data()
+      , values  = this.state.dataItems;
       
     return mergeIntoProps(
       _.omit(this.props, _.keys(propTypes)),
@@ -109,13 +110,13 @@ module.exports = React.createClass({
            onKeyDown={this._maybeHandle(this._keyDown)}
            onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
            onBlur ={_.partial(this._focus, false)}
-           aria-haspopup={true}
            tabIndex="-1"
            className={cx({
               'rw-select-list':    true,
               'rw-widget':         true,
               'rw-state-focus':    this.state.focused,
               'rw-state-disabled': this.props.disabled === true,
+              'rw-state-readonly':  this.props.readOnly === true,
               'rw-open':           this.state.open,
               'rw-rtl':            this.isRtl()
             })}>
@@ -134,9 +135,11 @@ module.exports = React.createClass({
             onDelete={this._delete}/>
           <SelectInput 
             ref='input'
+            aria-activedescendent={ this.state.open ? optID : undefined }
             aria-expanded={ this.state.open }
             aria-busy={!!this.props.busy}
             aria-owns={listID}
+            aria-haspopup={true}
             value={this.state.searchTerm} 
             disabled={this.props.disabled === true}
             readOnly={this.props.readOnly === true}
@@ -193,7 +196,10 @@ module.exports = React.createClass({
 
     self.timer = setTimeout(function(){
       if(focused) self.refs.input.focus() 
-      else        self.close()
+      else        { 
+        self.close()
+        self.refs.tagList.clear()
+      }
 
       if( focused !== self.state.focused)
         self.setState({ focused: focused })
@@ -245,7 +251,7 @@ module.exports = React.createClass({
     else if ( isOpen && key === 'Enter' ) 
       this._onSelect(this._data()[this.state.focusedIndex])
 
-    else if ( key === 'Esc')
+    else if ( key === 'Escape')
       isOpen ? this.close() : this.refs.tagList.clear()
 
     else if ( !searching && key === 'ArrowLeft')
@@ -309,4 +315,9 @@ module.exports = React.createClass({
       return handler
   },
 
+  _id: function(suffix){
+    return (_id || (_id = (this.props.id || _.uniqueId('rw_'))))  + suffix
+  },
 })
+
+var _id = ''

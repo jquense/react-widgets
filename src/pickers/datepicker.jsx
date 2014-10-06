@@ -26,9 +26,21 @@ var propTypes = {
     timeComponent:  React.PropTypes.func,
     duration:       React.PropTypes.number, //popup
 
+    placeholder:    React.PropTypes.string,
+
     initialView:    React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
     finalView:      React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
 
+    disabled:       React.PropTypes.oneOfType([
+                        React.PropTypes.bool,
+                        React.PropTypes.oneOf(['disabled'])
+                      ]),
+
+    readOnly:       React.PropTypes.oneOfType([
+                      React.PropTypes.bool,
+                      React.PropTypes.oneOf(['readOnly'])
+                    ]),
+      
     parse:          React.PropTypes.oneOfType([
                       React.PropTypes.arrayOf(React.PropTypes.string),
                       React.PropTypes.string,
@@ -80,11 +92,10 @@ module.exports = React.createClass({
 
   render: function(){
     var self = this
-      , id   = this.props.id
-      , timeListID = id && id + '_time_listbox'
-      , dateListID = id && id + '_date_listbox'
-      , timeOptID  = id && id + '_time_option'
-      , dateOptID  = id && id + '_table_selected_item'
+      , timeListID = this._id('_time_listbox')
+      , dateListID = this._id('_date_listbox')
+      , timeOptID  = this._id('_time_option')
+      , dateOptID  = this._id('_table_selected_item')
       , owns;
 
     if (dateListID && this.props.calendar ) owns = dateListID
@@ -94,26 +105,28 @@ module.exports = React.createClass({
       _.omit(this.props, _.keys(propTypes)),
       <div ref="element"
            tabIndex="-1"
-           aria-expanded={ this.state.open }
-           aria-haspopup={true}
            onKeyDown={this._maybeHandle(this._keyDown)}
            onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
            onBlur ={_.partial(this._focus, false)}
            className={cx({
-              'rw-date-picker': true,
-              'rw-widget':      true,
-              'rw-open':        this.state.open,
-              'rw-state-focus': this.state.focused,
-              'rw-has-both':    this.props.calendar && this.props.time,
-              'rw-rtl':         this.isRtl()
+              'rw-date-picker':     true,
+              'rw-widget':          true,
+              'rw-open':            this.state.open,
+              'rw-state-focus':     this.state.focused,
+              'rw-state-disabled':  this.props.disabled,
+              'rw-state-readonly':  this.props.readOnly,
+              'rw-has-both':        this.props.calendar && this.props.time,
+              'rw-rtl':             this.isRtl()
             })}>
         <DateInput ref='valueInput' 
-          aria-activedescendant={this.state.open 
+          aria-activedescendant={ this.state.open 
             ? this.state.openPopup === 'calendar' ? dateOptID : timeOptID
-            : undefined}
+            : undefined }
           aria-expanded={ this.state.open }
           aria-busy={!!this.props.busy}
           aria-owns={owns}
+          aria-haspopup={true}
+          placeholder={this.props.placeholder}
           disabled={this.props.disabled}
           readOnly={this.props.readOnly}
           role='combobox'
@@ -187,7 +200,10 @@ module.exports = React.createClass({
     if( e.key === 'Tab') 
       return 
 
-    if ( e.altKey ) {
+    if ( e.key === 'Escape' && this.state.open )
+      this.close()
+
+    else if ( e.altKey ) {
       e.preventDefault()
 
       if ( e.key === 'ArrowDown') 
@@ -270,10 +286,15 @@ module.exports = React.createClass({
 
   close: function(){
     this.setState({ open: false })
-  }
+  },
+
+  _id: function(suffix){
+    return (_id || (_id = (this.props.id || _.uniqueId('rw_'))))  + suffix
+  },
 
 });
 
+var _id = ''
 var btn = require('../common/btn.jsx')
 
 function formatsParser(formats, str){

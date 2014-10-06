@@ -44,7 +44,7 @@ module.exports = React.createClass({
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
       <table
         role='grid'
-        tabIndex='0'
+        tabIndex={this.props.disabled ? '-1' : "0"}
         className='rw-calendar-grid' 
         onKeyUp={this._keyUp}>
         <thead>
@@ -72,6 +72,8 @@ module.exports = React.createClass({
                   tabIndex='-1'
                   onClick={_.partial(this.props.onChange, day)} 
                   aria-selected={selected}
+                  aria-disabled={this.props.disabled}
+                  disabled={this.props.disabled}
                   className={cx({ 
                     'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
                     'rw-state-focus':    focused,

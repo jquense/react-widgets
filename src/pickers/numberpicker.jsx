@@ -24,6 +24,16 @@ var btn = require('../common/btn.jsx')
                         React.PropTypes.func
                       ]),
 
+      disabled:       React.PropTypes.oneOfType([
+                        React.PropTypes.bool,
+                        React.PropTypes.oneOf(['disabled'])
+                      ]),
+
+      readOnly:       React.PropTypes.oneOfType([
+                        React.PropTypes.bool,
+                        React.PropTypes.oneOf(['readOnly'])
+                      ]),
+
       messages:       React.PropTypes.shape({
         increment:    React.PropTypes.string,
         decrement:    React.PropTypes.string
@@ -78,10 +88,12 @@ module.exports = React.createClass({
            onBlur ={_.partial(this._focus, false)}
            tabIndex="-1"
            className={cx({
-              'rw-number-picker': true,
-              'rw-widget':       true,
-              'rw-state-focus':  this.state.focused,
-              'rw-rtl':          this.isRtl()
+              'rw-number-picker':   true,
+              'rw-widget':          true,
+              'rw-state-focus':     this.state.focused,
+              'rw-state-disabled':  this.props.disabled,
+              'rw-state-readonly':  this.props.readOnly,
+              'rw-rtl':             this.isRtl()
             })}>
 
         <span className='rw-select'>

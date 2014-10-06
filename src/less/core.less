@@ -1,7 +1,7 @@
 /* for debugging */
-*:focus { 
-    outline: 1px red solid !important;
-}
+// *:focus { 
+//     outline: 1px red solid !important;
+// }
 
 .rw-widget {
   outline: 0;
@@ -29,10 +29,19 @@
 }
 
 .rw-input {
+  color:          @input-color;
 	height: 			  @input-height;
 	line-height: 	  @input-height;
 	padding: 			  0.177em 0;
 	text-indent: 		0.64em;
+
+  &[disabled],
+  &[readonly] {
+    .state-disabled();
+    opacity: 1;
+    background-color: @input-bg-disabled;
+    border-color: @input-border;
+  }
 }
 
 .rw-i.rw-loading {
@@ -53,9 +62,25 @@
   .state-select();
 }
 
+&.rw-state-disabled {
+  .state-disabled();
+  opacity: 1;
+}
+
 .rw-btn,
 .rw-dropdown-list {
   cursor: pointer;
+}
+
+.rw-btn {
+  &[disabled],
+  .rw-state-readonly & {
+    .state-disabled();
+    pointer-events: none;
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    opacity: .65;
+  }
 }
 
 ul.rw-list {
@@ -91,6 +116,60 @@ ul.rw-list {
   position: relative;
 }
 
+.rw-open.rw-widget,
+.rw-open >.rw-select-wrapper {
+  .border-bottom-radius(0);
+}
+
+@focus-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
+
+.rw-widget {
+  background-color:   @input-bg;
+  border:             @input-border @input-border-width solid;
+  border-radius:      @input-border-radius;
+
+  .rw-input {
+    .border-left-radius(@input-border-radius);
+
+    .rw-rtl&{
+      .border-left-radius(0);
+      .border-right-radius(@input-border-radius);
+    }
+  }
+
+  > .rw-select {
+    border-left: @input-border 1px solid;
+
+    .rw-rtl&{
+      border-right: @input-border 1px solid;
+      border-left:  none;
+    }
+  }
+  
+  &.rw-state-focus,
+  &.rw-state-focus:hover {
+    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px @{focus-rgba}");
+    border-color: @input-border-focus;
+    outline: 0;
+  }
+
+  &.rw-state-readonly,
+  &.rw-state-readonly > .rw-select-wrapper {
+    cursor: not-allowed;
+  }
+
+  &.rw-state-disabled {
+    &,
+    &:hover,
+    &:active {
+      .box-shadow(none);
+      background-color: @input-bg-disabled;
+      border-color: @input-border;
+    }
+  }
+}
+
+
 .rw-combobox,
 .rw-date-picker,
 .rw-number-picker,
@@ -100,25 +179,14 @@ ul.rw-list {
   &.rw-rtl {
     padding-right: 0;
     padding-left: 1.9em;
-
-    > .rw-select {
-      left: 0;
-      right: auto;
-    }
   }
 
   > .rw-input {
     width: 100%;
     border: none;
     outline: 0;
-    background: none;
     .placeholder();
   }
-
-  &.rw-open {
-    .border-bottom-radius(0);
-  }
-
 }
 
 
@@ -142,28 +210,25 @@ ul.rw-list {
 }
 
 
+//input inset
+.rw-select-list,
+.rw-combobox input.rw-input,
+.rw-date-picker input.rw-input,
+.rw-number-picker input.rw-input {
+  .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075)");
+}
+  
+
 .rw-combobox:active,
 .rw-date-picker:active,
 .rw-dropdown-list:active,
 .rw-header > .rw-btn:active,
-.rw-number-picker .rw-btn:active,
 .rw-number-picker .rw-btn.rw-state-active {
-  background-image: none;
-  .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
-}
-
-
-.rw-open {
-  &.rw-combobox,
-  &.rw-date-picker,
-  &.rw-select-list,
-  &.rw-dropdown-list,
-  & .rw-select-wrapper,
-  &.rw-combobox .rw-input,
-  &.rw-date-picker .rw-input,
-  &.rw-dropdown-list .rw-input, {
-    .border-bottom-radius(0);
-  }
+  &,
+  &.rw-state-focus {
+    background-image: none;
+    .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }  
 }
 
 .rw-combobox,
@@ -172,106 +237,22 @@ ul.rw-list {
 .rw-dropdown-list {
   &:hover {
     background-color: @state-bg-hover;
+    border-color: @state-border-hover;
   }
 }
 
-@focus-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
-
-.rw-combobox,
-.rw-select-list,
-.rw-date-picker,
-.rw-number-picker,
 .rw-dropdown-list {
-  background-color:   @input-bg;
-  border:             @input-border @input-border-width solid;
-  border-radius:      @input-border-radius;
-
-  &.rw-state-focus,
-  &.rw-state-focus:hover {
-    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px @{focus-rgba}");
-    border-color: @input-border-focus;
-
-    outline: 0;
+  > .rw-input {
+    background-color:   transparent;
   }
 
-  &[disabled],
-  &.rw-state-disabled,
-  fieldset[disabled] & {
-    pointer-events: none;
-    cursor: not-allowed;
-    filter: alpha(opacity=65);
-    .box-shadow(none);
-    opacity: .65;
-
-    &,
-    &:hover,
-    &:focus,
-    &:active {
-      .box-shadow(none);
-      background-color: @input-bg;
-          border-color: @input-border;
-    }
+  > .rw-select,
+  > .rw-select.rw-rtl {
+    border-width: 0;
   }
 }
 
-
-.rw-combobox,
-.rw-date-picker,
-.rw-number-picker,
-.rw-dropdown-list {
-
-  &.rw-state-focus input.rw-input,
-  &.rw-state-focus:hover input.rw-input {
-    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px @{focus-rgba}");
-  }
-
-  .rw-input[disabled],
-  fieldset[disabled] .rw-input {
-    &,
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: @input-bg;
-          border-color: @input-border;
-    }
-  }
-}
-  
-.rw-select-list,
-.rw-combobox .rw-input,
-.rw-date-picker .rw-input,
-.rw-number-picker .rw-input {
-  background-color: @widget-bg;
-}
-
-
-.rw-select-wrapper,
-.rw-combobox .rw-input,
-.rw-date-picker .rw-input,
-.rw-number-picker .rw-input {
-  .border-left-radius(@input-border-radius);
-
-  .rw-rtl&{
-    .border-left-radius(0);
-    .border-right-radius(@input-border-radius);
-  }
-}
-
-.rw-combobox,
-.rw-date-picker,
 .rw-number-picker {
-
-  > .rw-select {
-    border-left: @input-border 1px solid;
-
-    .rw-rtl&{
-      border-right: @input-border 1px solid;
-      border-left:  none;
-    }
-  }
-}
-
-.rw-number-picker{
 
   .rw-btn {
     display: block;

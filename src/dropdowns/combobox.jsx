@@ -35,7 +35,8 @@ var btn = require('../common/btn.jsx')
       busy:           React.PropTypes.bool,
 
       duration:       React.PropTypes.number, //popup
-
+      placeholder:    React.PropTypes.string, 
+      
       messages:       React.PropTypes.shape({
         open:         React.PropTypes.string,
         emptyList:    React.PropTypes.string,
@@ -123,8 +124,8 @@ module.exports = React.createClass({
 		var DropdownValue = this.props.valueComponent
       , valueItem = this._dataItem( this._data(), this.props.value )
       , items = this._data()
-      , listID = this.props.id && this.props.id + '_listbox'
-      , optID  = this.props.id && this.props.id + '_option'
+      , listID = this._id('_listbox')
+      , optID  = this._id( '_option')
       , completeType = this.props.suggest 
           ? this.props.filter ? 'both' : 'inline'
           : this.props.filter ? 'list' : '';
@@ -132,21 +133,21 @@ module.exports = React.createClass({
 		return mergeIntoProps(
       _.omit(this.props, _.keys(propTypes)),
 			<div ref="element"
-           aria-expanded={ this.state.open }
-           aria-haspopup={true}
            onKeyDown={this._maybeHandle(this._keyDown)}
            onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
            onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
-              'rw-combobox': true,
-              'rw-widget':       true,
-              'rw-state-focus':  this.state.focused,
-              'rw-open':         this.state.open,
-              'rw-rtl':          this.isRtl()
+              'rw-combobox':        true,
+              'rw-widget':          true,
+              'rw-state-focus':     this.state.focused,
+              'rw-open':            this.state.open,
+              'rw-state-disabled':  this.props.disabled,
+              'rw-state-readonly':  this.props.readOnly,
+              'rw-rtl':             this.isRtl()
             })}>
-
         <btn 
+          tabIndex='-1'
           className='rw-select' 
           onClick={this._maybeHandle(this.toggle)} 
           disabled={!!(this.props.disabled || this.props.readOnly)}>
@@ -159,7 +160,13 @@ module.exports = React.createClass({
           type='text'
           role='combobox'
           suggest={this.props.suggest}
+          aria-owns={listID}
+          aria-busy={!!this.props.busy}
           aria-autocomplete={completeType}
+          aria-activedescendent={ this.state.open ? optID : undefined }
+          aria-expanded={ this.state.open }
+          aria-haspopup={true}
+          placeholder={this.props.placeholder}
           disabled={this.props.disabled}
           readOnly={this.props.readOnly}
           className='rw-input'
@@ -267,6 +274,9 @@ module.exports = React.createClass({
     else if ( key === 'Home' ) 
       select(0)
 
+    else if ( key === 'Escape' && isOpen )
+      this.close()
+    
     else if ( key === 'Enter' && isOpen ) {
       select(focusedIdx)
       this.close()
@@ -356,6 +366,10 @@ module.exports = React.createClass({
     return this.state.processedData
   },
 
+  _id: function(suffix){
+    return (_id || (_id = (this.props.id || _.uniqueId('rw_'))))  + suffix
+  },
+
   process: function(data, values, searchTerm){
     if( this.props.filter && searchTerm)
       data = this.filter(data, searchTerm)
@@ -364,7 +378,4 @@ module.exports = React.createClass({
   }
 })
 
-
-              // focusedIndex={this.state.selectedIndex === -1 
-              //   ? this.state.focusedIndex 
-              //   : this.state.selectedIndex}
+var _id = ''

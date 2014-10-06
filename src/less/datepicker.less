@@ -1,10 +1,5 @@
 
 .rw-date-picker{
-  border-radius:    @input-border-radius;
-  background:       @dropdown-bg;
-  border:           @dropdown-border 1px solid;
-
-  
   .rw-btn {
     width: 1.8em;
   } 
@@ -32,6 +27,9 @@
     border-bottom: 2px solid @input-border;
   }
 
+  .rw-btn {
+    
+  }
   .rw-header {
     padding-bottom: 5px;
     
@@ -42,10 +40,12 @@
 
     .rw-btn-view {
       width: 75%;
-      outline: 0;
-      background-color:   @input-bg;
-      border:             @input-bg 1px solid;
+      background-color:   @gray-lighter;
       border-radius:      @input-border-radius;
+
+      &[disabled] {
+        .state-disabled()
+      }
     }
   }
 }

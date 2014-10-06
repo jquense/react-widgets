@@ -62,7 +62,7 @@ var App = React.createClass({
 							valueField='id'
 							initialBufferSize={10}
 							busy={false}
-							readOnly={true}
+							readOnly={false}
 							value={this.state.dropdownValue} 
 							onChange={change.bind(null, 'dropdownValue')}/>
 					</section>
@@ -76,13 +76,14 @@ var App = React.createClass({
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 					<ComboBox 
-							isRtl={false}
+							isRtl={true}
 							data={ this.state.suggestdata } 
 							textField='name'
 							valueField='id'
 							filter={'startsWith'}
 							suggest={true}
 							busy={false}
+							disabled={false}
 							value={ this.state.comboboxValue} 
 							onChange={change.bind(null, 'comboboxValue')}/>
 					</section>
@@ -95,17 +96,14 @@ var App = React.createClass({
 							valueField='id'
 							value={ this.state.selectValues } 
 							busy={false}
-							
 							tagComponent={ListItem}
 							itemComponent={ListItem}
 							onChange={change.bind(null, 'selectValues')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<DatePicker 
-							id='AwesomeDatePicker' 
 							isRtl={false} 
 							value={this.state.calDate} 
-							
 							onChange={change.bind(null, 'calDate')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>

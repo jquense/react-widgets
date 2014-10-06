@@ -1,11 +1,14 @@
 
+.rw-select-list {
+  background-color: @widget-bg;
 
-.rw-select-wrapper,
-.rw-select-wrapper .rw-input {
-  border-radius:          @input-border-radius;
+  &:hover {
+    border-color: @state-border-hover;
+  }
 }
 
 .rw-select-wrapper {
+  border-radius:          @input-border-radius;
   position:               relative;
   cursor:                 text;
   .clearfix();
@@ -22,6 +25,11 @@
     border-width:         0;
     line-height:          normal;
     width:                auto;
+  }
+
+  .rw-state-readonly > &,
+  .rw-state-disabled > & {
+    cursor: not-allowed;
   }
 
   .rw-rtl & > .rw-input{
@@ -49,12 +57,21 @@
     vertical-align:     middle;
     white-space:        nowrap;
     border-radius:      @border-radius-sm;
-    border:             1px solid @btn-bg;
-    background-color:   @btn-bg;
+    border:             1px solid @btn-border;
+    background-color:   @btn-border;
     cursor:             pointer;
 
     &.rw-state-focus {
       .state-focus();
+    }
+
+    &.rw-state-readonly,
+    &.rw-state-disabled,
+    .rw-select-list.rw-state-readonly &, 
+    .rw-select-list.rw-state-disabled & {
+      cursor: not-allowed;
+      filter: alpha(opacity=65);
+      opacity: .65;
     }
   }
 

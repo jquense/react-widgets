@@ -43,30 +43,28 @@ module.exports = React.createClass({
   render: function(){
       var focusIdx = this.state.focused
         , value    = this.props.value
-        , hasDisabledItems = _.isArray(this.props.disabled)
-        , hasReadonlyItems = _.isArray(this.props.readOnly);
+        , itemDisabled = _.isArray(this.props.disabled)
+        , itemReadonly = _.isArray(this.props.readOnly);
 
       return mergeIntoProps(
-        _.omit(this.props, 'value'),
+        _.omit(this.props, 'value', 'disabled', 'readOnly'),
         <ul className='rw-tag-list'>
           {_.map(value, function(item, i){
-            var disabled = (this.props.disabled === true) 
-                        || (hasDisabledItems && this._dataIndexOf(this.props.disabled, item) !== -1);
-
-            var readonly = (this.props.readOnly && !hasReadonlyItems) 
-                        || (hasReadonlyItems && this._dataIndexOf(this.props.readOnly, item) !== -1);
+            var disabled = this.isDisabled(item)
+              , readonly = this.isReadOnly(item);
 
             return (
               <li key={i}
                   className={cx({
                     'rw-state-focus': !disabled && focusIdx === i, 
-                    'rw-state-disabled': disabled })
+                    'rw-state-disabled': disabled,
+                    'rw-state-readonly': readonly})
                   }>
                 { this.props.valueComponent
                     ? this.props.valueComponent({ item: item })
                     : this._dataText(item)
                 }
-                <btn tabIndex='-1' onClick={!readonly && this._delete.bind(null, item)} 
+                <btn tabIndex='-1' onClick={!(disabled || readonly) && this._delete.bind(null, item)} 
                   aria-disabled={disabled}
                   disabled={disabled}>
                   &times;<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
@@ -82,20 +80,28 @@ module.exports = React.createClass({
   },
 
   removeCurrent: function(){
-    var val = this.props.value[this.state.focused]
-      , readonly = this.props.readOnly === true || this._dataIndexOf(this.props.readOnly, val) !== -1
-      , disabled = this.props.disabled === true || this._dataIndexOf(this.props.disabled, val) !== -1;
+    var val = this.props.value[this.state.focused];
 
-    if ( val && !(disabled || readonly)) 
+    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) )) 
       this.props.onDelete(val)
   },
 
-  removeNext: function(){
-    var val = _.last(this.props.value)
-      , readonly = this.props.readOnly === true || this._dataIndexOf(this.props.readOnly, val) !== -1
-      , disabled = this.props.disabled === true || this._dataIndexOf(this.props.disabled, val) !== -1;
+  isDisabled: function(val, isIdx) {
+    if(isIdx) val = this.props.value[val]
 
-    if ( val && !(disabled || readonly)) 
+    return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
+  },
+
+  isReadOnly: function(val, isIdx) {
+    if(isIdx) val = this.props.value[val]
+
+    return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
+  },
+
+  removeNext: function(){
+    var val = _.last(this.props.value);
+
+    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) )) 
       this.props.onDelete(val)
   },
 
@@ -104,20 +110,37 @@ module.exports = React.createClass({
   },
 
   first: function(){
-    this.setState({ focused: 0 })
+    var idx = 0
+      , l = this.props.value.length;
+
+    while( idx < l && this.isDisabled(idx, true) )
+      idx++
+
+    if (idx !== l)
+      this.setState({ focused: idx })
   },
 
   last: function(){
-    this.setState({ focused: this.props.value.length - 1 })
+    var idx = this.props.value.length - 1;
+
+    while( idx > -1 && this.isDisabled(idx, true) )
+      idx--
+
+    if (idx >= 0)
+      this.setState({ focused: idx })
   },
 
   next: function(){
-    var nextIdx = this.state.focused + 1;
+    var nextIdx = this.state.focused + 1
+      , l = this.props.value.length;
+
+    while( nextIdx < l && this.isDisabled(nextIdx, true) )
+      nextIdx++
 
     if ( this.state.focused === null ) 
       return
 
-    if ( nextIdx >= this.props.value.length )
+    if ( nextIdx >= l )
       return this.clear();
 
     this.setState({ focused: nextIdx })
@@ -128,21 +151,13 @@ module.exports = React.createClass({
 
     if ( nextIdx === null )
       nextIdx = this.props.value.length
-    else if ( nextIdx <= 0 ) 
-      nextIdx = 1
 
-    this.setState({ focused: nextIdx - 1 })
-  }
-})
+    nextIdx--;
 
+    while( nextIdx > -1 && this.isDisabled(nextIdx, true) )
+      nextIdx--
 
-var DefaultTag = React.createClass({
-
-  mixins: [ require('../mixins/DataHelpersMixin')],
-
-  render: function(){
-      var item = this.props.item;
-
-      return this.transferPropsTo(<span>{ item ? this._dataText(item) : '' }</span>)
+    if ( nextIdx >= 0 )
+      this.setState({ focused: nextIdx  })
   }
 })

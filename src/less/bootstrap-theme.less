@@ -11,28 +11,30 @@
 @border-radius:             4px;
 @border-radius-sm:          3px;
 
-@btn-bg:                    @gray-lighter;
+@btn-bg:                    #fff;
 @btn-color:                 #333;
-@btn-border:                #fff;
+@btn-border:                #ccc;
 
-@state-bg-select:           darken(@btn-bg, 10%);
+@state-bg-select:           darken(@btn-border, 12%);
 @state-border-select:       darken(@btn-border, 12%);
 @state-color-select:        #333;
 
-@state-bg-hover:            darken(@btn-bg, 10%);
-@state-border-hover:        darken(@btn-border, 12%);
+@state-bg-hover:            @btn-border;
+@state-border-hover:        @btn-border;
 @state-color-hover:         #333;
 
 @state-bg-focus:            @widget-bg;
-@state-border-focus:        darken(@btn-border, 12%);
+@state-border-focus:        #66afe9;
 @state-color-focus:         #333;
 
-@widget-bg:                 white;
+@widget-bg:                 #fff;
 @widget-border:             #ccc;
 @line-height:               1.94em;
 
+@input-color:               @gray;
 @input-height:              @line-height;
-@input-bg:                  @gray-lighter;
+@input-bg:                  #fff;
+@input-bg-disabled:         @gray-lighter;
 
 @input-bg-gradient:         none;
 @input-color-placeholder:   #999;
@@ -44,7 +46,7 @@
 @input-bg-hover:            @gray-lighter;
 @input-border-hover:        @dropdown-border;  
 
-@input-border-focus:        #66afe9; 
+@input-border-focus:        @state-border-focus; 
 
 @dropdown-bg:               @input-bg;
 @dropdown-border:           @input-border;

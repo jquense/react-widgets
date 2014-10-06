@@ -39,7 +39,7 @@ module.exports = React.createClass({
     return mergeIntoProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
       <table 
-        tabIndex='0'
+        tabIndex={this.props.disabled ? '-1' : "0"}
         role='grid' 
         className='rw-calendar-grid rw-nav-view' 
         aria-activedescendant={id}
@@ -69,6 +69,8 @@ module.exports = React.createClass({
               <btn onClick={_.partial(this.props.onChange, date)} tabIndex='-1'
                 id={ focused ? id : undefined }
                 aria-selected={selected}
+                aria-disabled={this.props.disabled}
+                disabled={this.props.disabled}
                 className={cx({ 
                   'rw-off-range':      !inDecade(date, this.props.value),
                   'rw-state-focus':    focused,

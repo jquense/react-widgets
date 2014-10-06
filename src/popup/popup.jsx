@@ -127,7 +127,6 @@ module.exports = React.createClass({
           self.ORGINAL_POSITION = null
           self.props.onClose()
         })
-
   }
 
 })

@@ -111,16 +111,6 @@ module.exports = React.createClass({
       })
   },
 
-  componentDidUpdate: function() {
-    var el = this.refs.currentView.getDOMNode()
-      , active = document.activeElement;
-
-    //console.log('update', el === active);
-
-    // if ( this.props.maintainFocus && this.state.focused && el !== active)
-    //   el.focus()
-  },
-
   render: function(){
     var View = VIEW[this.state.view]
       , disabled = this.props.disabled || this.props.readOnly
@@ -131,7 +121,12 @@ module.exports = React.createClass({
 
     //console.log(key)
     return mergeIntoProps(_.omit(this.props, 'value', 'min', 'max'),
-      <div className={cx({'rw-calendar': true, 'rw-widget': true, 'rw-state-disabled': this.props.disabled })}>
+      <div className={cx({
+          'rw-calendar':       true, 
+          'rw-widget':         true, 
+          'rw-state-disabled': this.props.disabled,
+          'rw-state-readonly': this.props.readOnly 
+        })}>
         <Header
           label={this._label()}
           labelId={labelId}
@@ -160,7 +155,8 @@ module.exports = React.createClass({
             onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
             onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  LEFT))}
             onMoveRight={this._maybeHandle(_.partial(this.navigate,  RIGHT))}
-            
+            disabled={this.props.disabled}
+            readOnly={this.props.readOnly}
             min={this.props.min}
             max={this.props.max}/>
         </SlideTransition>
@@ -169,9 +165,6 @@ module.exports = React.createClass({
 
     function finished(){
       this._focus(true, 'stop');
-      //console.log('stop: ', this.refs.animation.isTransitioning())
-      //this.componentDidUpdate()
-     // this.refs.currentView.focus()
     }
   },
 
@@ -209,8 +202,6 @@ module.exports = React.createClass({
     
     if ( this.props.maintainFocus)
       val && this.refs.currentView.getDOMNode().focus()
-    
-    //s.call(this,val)
   },
 
   change: function(date){
