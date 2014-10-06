@@ -103,7 +103,7 @@ module.exports = React.createClass({
             onMouseDown={this._maybeHandle(_.partial(self._mouseDown, directions.UP))} 
             onMouseUp={this._maybeHandle(_.partial(this._mouseUp, directions.UP))} 
             onClick={this._maybeHandle(_.partial(this._focus, true))} 
-            disabled={val === this.props.min || this.props.disabled}
+            disabled={val === this.props.max || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
 
             <i className="rw-i rw-i-caret-up"><span className="rw-sr">{ this.props.messages.increment }</span></i>
@@ -116,7 +116,6 @@ module.exports = React.createClass({
             onClick={this._maybeHandle(_.partial(this._focus, true))}
             disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
-
             <i className="rw-i rw-i-caret-down"><span className="rw-sr">{ this.props.messages.decrement }</span></i>
           </btn>
         </span>
@@ -126,6 +125,7 @@ module.exports = React.createClass({
           editing={this.state.focused}
           format={this.props.format}
           role='spinbutton'
+          min={this.props.min}
           aria-valuenow={val}
           aria-valuemin={_.isFinite(this.props.min) ? this.props.min : '' }
           aria-valuemax={_.isFinite(this.props.max) ? this.props.max : '' }
@@ -140,19 +140,32 @@ module.exports = React.createClass({
   },
 
   //allow for styling, focus stealing keeping me from the normal what have you
-  _mouseDown: function(direction, e) {
+  _mouseDown: function(dir) {
     var self = this
-      , method = direction === directions.UP ? this.increment : this.decrement
+      , atMax  = dir === directions.UP
+      , val = dir === directions.UP 
+        ? this.props.value + this.props.step
+        : this.props.value - this.props.step 
     
-    this.setState({ active: direction })
+    val = this.inRangeValue(val)
 
-    method()
-    this.interval = setInterval(method, 800)
+    this.setState({ active: dir })
+    this.change(val);
+
+    if( !((dir === directions.UP && val === this.props.max) 
+      || (dir === directions.DOWN && val === this.props.min)))
+    {
+      if(!this.interval)
+        this.interval = setInterval(this._mouseDown, 500, dir)
+    } 
+    else
+      this._mouseUp()
   },
 
   _mouseUp: function(direction, e ){
     this.setState({ active: false })
     clearInterval(this.interval)
+    this.interval = null;
   },
 
   _focus: function(focused, e){
@@ -197,18 +210,18 @@ module.exports = React.createClass({
   },
 
   increment: function() {
-    this.change(this.props.value + this.props.step)
+    this.change(this.inRangeValue(this.props.value + this.props.step))
   },
 
   decrement: function(){
-    this.change(this.props.value - this.props.step)
+    this.change(this.inRangeValue(this.props.value - this.props.step))
   },
 
   change: function(val){
     var change = this.props.onChange 
-
+    
     val = this.inRangeValue(val)
-
+    console.log('change', val)
     if ( change && this.props.value !== val ) 
       change(val)
   },
