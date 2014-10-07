@@ -71,19 +71,23 @@ module.exports = React.createClass({
   },
 
   getInitialState: function(){
+    var values = this.props.value == null 
+               ? [] 
+               : [].concat(this.props.value)
 
     return {
       open:  false,
       processedData: this.process(this.props.data, this.props.value, ''),
       focusedIndex:  0,
-      dataItems: _.map([].concat(this.props.value), function(item){
+      dataItems: _.map(values, function(item){
         return this._dataItem(this.props.data, item)
       }, this)
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var items = this.process(
+    var values = nextProps.value == null ? [] : [].concat(nextProps.value)
+      , items = this.process(
           nextProps.data
         , nextProps.value
         , this.state.searchTerm)
@@ -91,7 +95,7 @@ module.exports = React.createClass({
     this.setState({
       //searchTerm: '',
       processedData: items,
-      dataItems: _.map([].concat(nextProps.value), function(item){
+      dataItems: _.map(values, function(item){
         return this._dataItem(nextProps.data, item)
       }, this)
     })
@@ -220,8 +224,8 @@ module.exports = React.createClass({
   },
 
   _onSelect: function(data){
-    if( data === undefined || self._data().length === 0) 
-        return //handle custom tags maybe here?
+    if( data === undefined ) 
+      return //handle custom tags maybe here?
 
     this.change(this.state.dataItems.concat(data))
     this.close()
@@ -268,13 +272,6 @@ module.exports = React.createClass({
 
     else if ( !searching && key === 'Backspace')
       this.refs.tagList.removeNext()
-    
-    function select(idx){
-      if( idx === -1 || self._data().length === 0) 
-        return //handle custom tags maybe here?
-
-      return self.change(self.refs.input.value, false)
-    }
   },
 
   change: function(data){
