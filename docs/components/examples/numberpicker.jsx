@@ -19,7 +19,7 @@ module.exports = React.createClass({
       <div className='example'>
         <div className='row'>
           <div className='col-sm-8'>
-            <RW.NumberPicker 
+            <RW.NumberPicker
                 value={this.state.value}
                 onChange={this._change}
                 max={this.state.max}
@@ -34,24 +34,23 @@ module.exports = React.createClass({
           <div className='col-sm-4 api-panel'>
             <div className='form-group'>
               <buttonGroup>
-                <Button 
-                  active={this.state.disabled === 'disabled'} 
+                <Button
+                  active={this.state.disabled === 'disabled'}
                   onClick={this.disabled}>
                   Disable
                 </Button>
-                <Button 
-                  active={this.state.disabled === 'readonly'} 
+                <Button
+                  active={this.state.disabled === 'readonly'}
                   onClick={this.readOnly}>
                   Readonly
                 </Button>
               </buttonGroup>
               <label className='checkbox-inline'>
-                <input type='checkbox' 
+                <input type='checkbox'
                   checked={this.state.isRtl}
                   onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
-
             </div>
             <div className='form-group'>
               <label className='form-label'>Format</label>
@@ -62,28 +61,28 @@ module.exports = React.createClass({
             </div>
             <div className='form-group'>
               <label className='form-label'>Filter</label>
-              <RW.DropDownlist 
-                  value={this.state.filter || false} 
+              <RW.DropDownlist
+                  value={this.state.filter || false}
                   data={[false, 'startsWith', 'endsWith', 'contains']}
                   onChange={_.partial(this._set, 'filter')}/>
             </div>
 
             <div className='form-group'>
               <label className='form-label'>step</label>
-              <RW.NumberPicker 
-                  value={this.state.step} 
+              <RW.NumberPicker
+                  value={this.state.step}
                   onChange={_.partial(this._set, 'step')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>min</label>
-              <RW.NumberPicker 
-                  value={this.state.min} 
+              <RW.NumberPicker
+                  value={this.state.min}
                   onChange={_.partial(this._set, 'min')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>max</label>
-              <RW.NumberPicker 
-                  value={this.state.max} 
+              <RW.NumberPicker
+                  value={this.state.max}
                   onChange={_.partial(this._set, 'max')}/>
             </div>
           </div>
