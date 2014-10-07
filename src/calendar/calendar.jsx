@@ -42,12 +42,12 @@ var RIGHT = 'right'
 var VIEW_OPTIONS = ['month', 'year', 'decade', 'century'];
 
 module.exports = React.createClass({
-  
+
   displayName: 'Calendar',
 
-  mixins: [ 
+  mixins: [
     require('../mixins/PureRenderMixin'),
-    require('../mixins/RtlParentContextMixin') 
+    require('../mixins/RtlParentContextMixin')
   ],
 
 
@@ -55,10 +55,10 @@ module.exports = React.createClass({
 
     onChange:      React.PropTypes.func.isRequired,
     value:         React.PropTypes.instanceOf(Date),
-    
+
     min:           React.PropTypes.instanceOf(Date),
     max:           React.PropTypes.instanceOf(Date),
-    
+
     initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
     finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
 
@@ -88,7 +88,7 @@ module.exports = React.createClass({
       view:          this.props.initialView || 'month',
 
       //determines the position of views
-      currentDate:   new Date(this.props.value)
+      currentDate:   this.inRangeValue(new Date(this.props.value))
     }
   },
 
@@ -109,8 +109,8 @@ module.exports = React.createClass({
     var bottom  = VIEW_OPTIONS.indexOf(nextProps.initialView)
       , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
       , current = VIEW_OPTIONS.indexOf(this.state.view)
-      , view    = this.state.view;
-
+      , view    = this.state.view
+      , val     = this.inRangeValue(new Date(nextProps.value));
 
     if( current < bottom )
       this.setState({ view: view = nextProps.initialView })
@@ -118,9 +118,9 @@ module.exports = React.createClass({
       this.setState({ view: view = nextProps.finalView })
 
     //if the value changes reset views to the new one
-    if ( !dates.eq(nextProps.value, this.props.value, VIEW_UNIT[view]) )
+    if ( !dates.eq(val, this.props.value, VIEW_UNIT[view]))
       this.setState({
-        currentDate: new Date(nextProps.value)
+        currentDate: val
       })
   },
 
@@ -135,8 +135,8 @@ module.exports = React.createClass({
     //console.log(key)
     return mergeIntoProps(_.omit(this.props, 'value', 'min', 'max'),
       <div className={cx({
-          'rw-calendar':       true, 
-          'rw-widget':         true, 
+          'rw-calendar':       true,
+          'rw-widget':         true,
           'rw-state-disabled': this.props.disabled,
           'rw-state-readonly': this.props.readOnly,
           'rw-rtl':            this.isRtl()
@@ -152,9 +152,9 @@ module.exports = React.createClass({
           onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  LEFT, null))}
           onMoveRight={this._maybeHandle(_.partial(this.navigate,  RIGHT, null))}/>
 
-        <SlideTransition 
+        <SlideTransition
           ref='animation'
-          direction={this.state.slideDirection} 
+          direction={this.state.slideDirection}
           onAnimate={finished.bind(this)}>
 
           <View ref='currentView'
@@ -185,7 +185,7 @@ module.exports = React.createClass({
     var alts     = _.invert(NEXT_VIEW)
       , view     =  this.state.view
       , slideDir = (direction === LEFT || direction === UP)
-          ? 'right' 
+          ? 'right'
           : 'left';
 
     if ( !date )
@@ -193,10 +193,10 @@ module.exports = React.createClass({
         ? this.nextDate(direction)
         : this.state.currentDate
 
-    if (direction === DOWN ) 
+    if (direction === DOWN )
       view = alts[view] || view
 
-    if (direction === UP )   
+    if (direction === UP )
       view = NEXT_VIEW[view] || view
 
     if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max)) {
@@ -212,7 +212,7 @@ module.exports = React.createClass({
 
   _focus: function(val, e){
     var s = setter('focused');
-    
+
     if ( this.props.maintainFocus)
       val && this.refs.currentView.getDOMNode().focus()
   },
@@ -241,21 +241,21 @@ module.exports = React.createClass({
       if ( key === 'ArrowDown' ) {
         e.preventDefault()
         this.navigate(DOWN)
-      } 
+      }
       if ( key === 'ArrowUp' ) {
         e.preventDefault()
         this.navigate(UP)
-      } 
+      }
       if ( key === 'ArrowLeft' ) {
         e.preventDefault()
         this.navigate(LEFT)
-      } 
+      }
       if ( key === 'ArrowRight' ) {
         e.preventDefault()
         this.navigate(RIGHT)
       }
     } else {
-      this.refs.currentView._keyDown 
+      this.refs.currentView._keyDown
         && this.refs.currentView._keyDown(e)
     }
 
@@ -272,11 +272,11 @@ module.exports = React.createClass({
       return dates.format(dt, dates.formats.YEAR)
 
     else if ( view === 'decade')
-      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR) 
+      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR)
         + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR)
 
     else if ( view === 'century')
-      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR) 
+      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR)
         + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
   },
 
@@ -290,6 +290,15 @@ module.exports = React.createClass({
    _id: function(suffix) {
     this._id_ || (this._id_ = _.uniqueId('rw_'))
     return (this.props.id || this._id_)  + suffix
+  },
+
+  inRangeValue: function(value){
+    if( value == null)
+      return value
+
+    return dates.max(
+        dates.min(value, this.props.max)
+      , this.props.min)
   },
 
   isValidView: function(next) {

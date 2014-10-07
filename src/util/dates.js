@@ -129,6 +129,17 @@ var dates = module.exports = _.extend({}, dateMath, {
     return dateMath.eq(dateA, dateB, 'month')
   },
 
+  today: function() {
+    return this.startOf(new Date, 'day')
+  },
+
+  yesterday: function() {
+    return this.add(this.startOf(new Date, 'day'), -1, 'day')
+  },
+
+  tomorrow: function() {
+    return this.add(this.startOf(new Date, 'day'), 1, 'day')
+  },
 
   formats: {
     DAY_OF_MONTH:    'dd',
@@ -154,7 +165,7 @@ var dates = module.exports = _.extend({}, dateMath, {
 
 //   yesterday: {
 //     enumerable: true,
-//     get: function() { return this.add(this.startOf(new Date, 'day'), -1, 'day') }
+//     get:
 //   },
 
 //   tomorrow: {
