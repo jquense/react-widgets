@@ -367,7 +367,8 @@ module.exports = React.createClass({
   },
 
   _id: function(suffix){
-    return (_id || (_id = (this.props.id || _.uniqueId('rw_'))))  + suffix
+    this._id_ || (this._id_ = _.uniqueId('rw_'))
+    return (this.props.id || this._id_)  + suffix
   },
 
   process: function(data, values, searchTerm){
@@ -377,8 +378,6 @@ module.exports = React.createClass({
     return data
   }
 })
-
-var _id = ''
 
 function shallowEqual(objA, objB) {
   var key;
