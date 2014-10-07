@@ -15,6 +15,7 @@ h3 {
   font-size: 20px;
   
 }
+
 .example {
   background-color: white;
   margin-top: 20px;
@@ -139,3 +140,27 @@ pre {
 }
 
 .h1, h2,h4,h5 { color: #0079C1; }
+
+
+.example .demo {
+  margin: 40px auto 10px auto;
+}
+
+.example .api-panel {
+  margin-top: -10px;
+  border-left: #ddd 1px solid;
+}
+
+.example.example-vertical .demo {
+  margin: 20px auto 30px auto;
+}
+
+.example.example-vertical .api-panel {
+  margin-top: 0;
+  border-top: #ddd 1px solid;
+  padding-top: 10px;
+}
+
+.overdue {
+  color: #bd362f;
+}

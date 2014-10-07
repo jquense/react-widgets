@@ -30,52 +30,71 @@ module.exports = React.createClass({
     return (
       <div className='example'>
         <div className='row'>
-          <div className='col-sm-8'>
-            <RW.Combobox 
-                data={list}
-                value={this.state.value}
-                onChange={this._change}
-                textField='name'
-                valueField='id'
-                suggest={this.state.suggest || false}
-                filter={this.state.filter || false}
-                disabled={this.state.disabled === 'disabled'}
-                readOnly={this.state.disabled === 'readonly'}
-                data={list}
-                duration={this.state.duration}
-                busy={this.state.busy}
-                onChange={this._change}
-                isRtl={this.state.isRtl}/>
+          <div className='col-sm-8 demo'>
+            <div className='form-group'>
+              <RW.Combobox 
+                  data={list}
+                  value={this.state.value}
+                  onChange={this._change}
+                  textField='name'
+                  valueField='id'
+                  suggest={this.state.suggest || false}
+                  filter={this.state.filter || false}
+                  disabled={this.state.disabled === 'disabled'}
+                  readOnly={this.state.disabled === 'readonly'}
+                  data={list}
+                  duration={this.state.duration}
+                  busy={this.state.busy}
+                  onChange={this._change}
+                  isRtl={this.state.isRtl}/>
+            </div>
+            <div className='form-group'>
+              <label>Custom list Rendering</label>
+              <RW.Combobox 
+                  data={list}
+                  value={this.state.value}
+                  onChange={this._change}
+                  textField='name'
+                  valueField='id'
+                  suggest={this.state.suggest || false}
+                  filter={this.state.filter || false}
+                  disabled={this.state.disabled === 'disabled'}
+                  readOnly={this.state.disabled === 'readonly'}
+                  data={list}
+                  duration={this.state.duration}
+                  itemComponent={itemComp}
+                  busy={this.state.busy}
+                  onChange={this._change}
+                  isRtl={this.state.isRtl}/>
+            </div>
           </div>
           <div className='col-sm-4 api-panel'>
             <div className='form-group'>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.isRtl}
+                  onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
+                  Right to Left
+              </label>
+            </div>
+            <div className='form-group'>
               <buttonGroup>
-                <Button 
-                  active={this.state.disabled === 'disabled'} 
+                <Button
+                  active={this.state.disabled === 'disabled'}
                   onClick={this.disabled}>
                   Disable
                 </Button>
-                <Button 
-                  active={this.state.disabled === 'readonly'} 
+                <Button
+                  active={this.state.disabled === 'readonly'}
                   onClick={this.readOnly}>
                   Readonly
                 </Button>
               </buttonGroup>
-              <Button style={{'marginLeft': 10}} 
-                  active={this.state.busy} 
-                  onClick={_.partial(this._set, 'busy', !this.state.busy)}>
-                  Busy
+              <Button style={{ marginLeft: 10 }}
+                active={this.state.busy}
+                onClick={_.partial(this._set, 'busy', !this.state.busy)}>
+                Busy
               </Button>
-            </div>
-            <div className='form-group'>
-              <div className='checkbox'>
-                <label>
-                  <input type='checkbox' 
-                    checked={this.state.isRtl}
-                    onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
-                    Right to Left
-                </label>
-              </div>
             </div>
             <div className='form-group'>
               <label className='form-label'>Suggest</label>
@@ -130,3 +149,16 @@ module.exports = React.createClass({
 
 })
 
+var itemComp = React.createClass({
+  render: function() {
+    var icons =  ['bicycle', 'area-chart', 'anchor']
+
+    this._icon || (this._icon = icons[_.random(0, 2)])
+    return (
+      <div>
+        <i className={'fa fa-' + this._icon}></i>
+        { '  ' + this.props.item.name}
+      </div>
+    );
+  }
+});

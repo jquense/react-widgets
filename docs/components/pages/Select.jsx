@@ -37,7 +37,7 @@ var Select = React.createClass({
           </span>
         </h1>
         <p>
-          Multiple selection widget. Allow allows for on the fly creation of tags (provided they are handled by the parent component)
+          Multiple selection widget.
         </p>
         <SelectExample/>
         <Example code={

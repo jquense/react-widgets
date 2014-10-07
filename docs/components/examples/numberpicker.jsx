@@ -16,9 +16,9 @@ module.exports = React.createClass({
   render: function(){
 
     return (
-      <div className='example'>
+      <div className='example '>
         <div className='row'>
-          <div className='col-sm-8'>
+          <div className='col-sm-8 demo'>
             <RW.NumberPicker
                 value={this.state.value}
                 onChange={this._change}
@@ -33,6 +33,14 @@ module.exports = React.createClass({
           </div>
           <div className='col-sm-4 api-panel'>
             <div className='form-group'>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.isRtl}
+                  onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
+                  Right to Left
+              </label>
+            </div>
+            <div className='form-group'>
               <buttonGroup>
                 <Button
                   active={this.state.disabled === 'disabled'}
@@ -45,12 +53,6 @@ module.exports = React.createClass({
                   Readonly
                 </Button>
               </buttonGroup>
-              <label className='checkbox-inline'>
-                <input type='checkbox'
-                  checked={this.state.isRtl}
-                  onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
-                  Right to Left
-              </label>
             </div>
             <div className='form-group'>
               <label className='form-label'>Format</label>

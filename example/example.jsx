@@ -30,7 +30,7 @@ var App = React.createClass({
 			comboboxValue: 1,
 			//comboboxValue: list[0],
 			selectValues: [1,3],
-			calDate: new Date,
+			calDate: new Date(2014,5,10,0,0,0),
 			numberValue: 1
 		}
 	},
@@ -102,14 +102,18 @@ var App = React.createClass({
 						<DatePicker 
 							isRtl={false}
 							id='swweeeeet' 
-							value={this.state.calDate} 
+							value={this.state.calDate}
+							time={false}
+							format='MM/dd/yy'
+							min={new Date(2014,5,1,0,0,0)}
+							max={new Date(2014,5,15,0,0,0)}
 							onChange={change.bind(null, 'calDate')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<NumberPicker id='AwesomeNumPicker' 
 							isRtl={false} 
 							format="D"
-							value={this.state.numberValue} 
+							value={this.state.numberValue} 			
 							onChange={change.bind(null, 'numberValue')}/>
 					</section>
 				</div>

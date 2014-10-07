@@ -31,25 +31,26 @@ module.exports = React.createClass({
           </div>
           <div className='col-sm-4 api-panel'>
             <div className='form-group'>
-              <buttonGroup>
-                <Button 
-                  active={this.state.disabled === 'disabled'} 
-                  onClick={this.disabled}>
-                  Disable
-                </Button>
-                <Button 
-                  active={this.state.disabled === 'readonly'} 
-                  onClick={this.readOnly}>
-                  Readonly
-                </Button>
-              </buttonGroup>
               <label className='checkbox-inline'>
-                <input type='checkbox' 
+                <input type='checkbox'
                   checked={this.state.isRtl}
                   onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
-
+            </div>
+            <div className='form-group'>
+              <buttonGroup>
+                <Button
+                  active={this.state.disabled === 'disabled'}
+                  onClick={this.disabled}>
+                  Disable
+                </Button>
+                <Button
+                  active={this.state.disabled === 'readonly'}
+                  onClick={this.readOnly}>
+                  Readonly
+                </Button>
+              </buttonGroup>
             </div>
             <div className='form-group'>
               <label className='form-label'>Initial View</label>

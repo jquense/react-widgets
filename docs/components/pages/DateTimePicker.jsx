@@ -111,13 +111,17 @@ var DateTimePicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"min" }>
           min <small>Date</small></h3>
         <p>
-          The minimum Date that the DatePicker value
+          The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that 
+          can be typed or pasted into the widget. If you need this behavior you can constrain values via 
+          the <code>onChange</code> handler.
         </p>
 
         <h3 className='prop-header' id={ prefix +"max" }>
           max <small>Date</small></h3>
         <p>
-          The maximum date that the DatePicker value
+          The maximum Date that can be selected. Max only limits selection, it doesn't constrain the date values that 
+          can be typed or pasted into the widget. If you need this behavior you can constrain values via 
+          the <code>onChange</code> handler.
         </p>
 
         <h3 className='prop-header' id={ prefix +"format" }>
