@@ -19,6 +19,7 @@ var propTypes = {
 
     culture:        React.PropTypes.string,
     format:         React.PropTypes.string,
+    editFormat:     React.PropTypes.string,
 
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
@@ -132,8 +133,10 @@ module.exports = React.createClass({
           value={this.props.value}
           focused={this.state.focused}
           format={this.props.format}
+          editFormat={this.props.editFormat}
+          editing={this.state.focused}
           parse={this._parse}
-          onChange={this.props.onChange} />
+          onChange={this._change} />
 
         <span className='rw-select'>
           { this.props.calendar &&
@@ -195,11 +198,20 @@ module.exports = React.createClass({
     )
   },
 
-  _change: function(date){
+  _change: function(date, str, constrain){
     var change = this.props.onChange
 
-    change && this.props.onChange(
-      this.inRangeValue(date))
+    if(constrain)
+      date = this.inRangeValue(date)
+
+    if( change ) {
+      if( date == null || this.props.value == null){
+        if( date != this.props.value ) 
+          change(date, str)
+      }
+      else if (!dates.eq(date, this.props.value))
+        this.props.onChange(date)
+    }
   },
 
   _keyDown: function(e){
@@ -251,13 +263,17 @@ module.exports = React.createClass({
   _selectDate: function(date){
     this.close()
     this._change(
-      dates.merge(date, this.props.value))
+        dates.merge(date, this.props.value)
+      , formatDate(date, this.props.format)
+      , true)
   },
 
   _selectTime: function(datum){
     this.close()
     this._change(
-      dates.merge(this.props.value, datum.date))
+        dates.merge(this.props.value, datum.date)
+      , formatDate(datum.date, this.props.format)
+      , true)
   },
 
   _click: function(view, e){
@@ -311,6 +327,16 @@ module.exports = React.createClass({
 });
 
 var btn = require('../common/btn.jsx')
+
+
+function formatDate(date, format){
+  var val = ''
+
+  if ( (date instanceof Date) && !isNaN(date.getTime()) )
+    val = dates.format(date, format)
+
+  return val;
+}
 
 function formatsParser(formats, str){
   var date;

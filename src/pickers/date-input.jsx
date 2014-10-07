@@ -17,32 +17,25 @@ module.exports = React.createClass({
     onChange:     React.PropTypes.func.isRequired,
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      textValue: this.formatDate(nextProps.value)
-    })
-  },
-
-  getInitialState: function(){
-    var text = this.formatDate(this.props.value)
-    return {
-      textValue: text,
-      lastValue: text
-    }
-  },
-
   getDefaultProps: function(){
     return {
-      value: null
+      value: null,
+      editing: true,
     }
   },
 
   render: function(){
+    var value = formatDate(
+            this.props.value
+          , this.props.editing && this.props.editFormat 
+              ? this.props.editFormat 
+              : this.props.format)
+
     return this.transferPropsTo(
       <input 
         type='text' 
         className={cx({'rw-input': true })} 
-        value={this.state.textValue} 
+        value={value} 
         aria-disabled={this.props.disabled}
         aria-readonly={this.props.readOnly}
         disabled={this.props.disabled}
@@ -69,16 +62,18 @@ module.exports = React.createClass({
     this.getDOMNode().focus()
   },
 
-  formatDate: function(date){
-    var val = ''
-
-    if ( (date instanceof Date) && isValid(date) )
-      val = dates.format(date, this.props.format)
-
-    return val;
-  }
+  
 });
 
 function isValid(d) {
   return !isNaN(d.getTime());
+}
+
+function formatDate(date, format){
+  var val = ''
+
+  if ( (date instanceof Date) && isValid(date) )
+    val = dates.format(date, format)
+
+  return val;
 }
