@@ -1,3 +1,4 @@
+"use strict";
 
 var _ = require('lodash')
   , common = {
@@ -8,8 +9,8 @@ var _ = require('lodash')
     lt:   function(a, b){ return a < b   },
     lte:  function(a, b){ return a <= b  },
 
-    contains: function(a, b){ 
-      return _.contains(a, b) 
+    contains: function(a, b){
+      return _.contains(a, b)
     },
 
     startsWith: function(a, b) {
@@ -25,12 +26,3 @@ var _ = require('lodash')
   }
 
 module.exports = common
-
-// module.exports.filter = function filter(obj, filter) {
-  
-//   filter = typeof filter === 'string' ? common[filter] : filter
-
-//   if ( typeof filter !== 'function') throw new TypeError
-
-//   return _.filter(obj, filter)
-// }

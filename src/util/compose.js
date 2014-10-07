@@ -1,3 +1,4 @@
+'use strict';
 var _ = require('lodash')
 
 var compose = module.exports = {
@@ -10,8 +11,8 @@ var compose = module.exports = {
 
   merge: function merge(a, b){
       if ( typeof a !== typeof b) throw new TypeError
-      else if ( _.isArray(a) )    a.splice(a.length, 0, b)    
-      else if ( _.isFunction(a) ) a = wrap(a, b)  
+      else if ( _.isArray(a) )    a.splice(a.length, 0, b)
+      else if ( _.isFunction(a) ) a = wrap(a, b)
       else                        _.extend(a, b)
       return a
   },
@@ -34,7 +35,7 @@ var compose = module.exports = {
   around: _.curry(function(decorate, method){
     return function around(){
       var args = [method].concat(_.toArray(arguments))
-      
+
       return decorate.apply(this, args)
     }
   }),

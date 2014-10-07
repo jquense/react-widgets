@@ -6,8 +6,8 @@ var React = require('react')
 
 module.exports = React.createClass({
   displayName: 'SelectTagList',
-  
-  mixins: [ 
+
+  mixins: [
     require('../mixins/DataHelpersMixin'),
     require('../mixins/PureRenderMixin')
   ],
@@ -56,7 +56,7 @@ module.exports = React.createClass({
             return (
               <li key={i}
                   className={cx({
-                    'rw-state-focus': !disabled && focusIdx === i, 
+                    'rw-state-focus': !disabled && focusIdx === i,
                     'rw-state-disabled': disabled,
                     'rw-state-readonly': readonly})
                   }>
@@ -64,7 +64,7 @@ module.exports = React.createClass({
                     ? this.props.valueComponent({ item: item })
                     : this._dataText(item)
                 }
-                <btn tabIndex='-1' onClick={!(disabled || readonly) && this._delete.bind(null, item)} 
+                <btn tabIndex='-1' onClick={!(disabled || readonly) && this._delete.bind(null, item)}
                   aria-disabled={disabled}
                   disabled={disabled}>
                   &times;<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
@@ -82,7 +82,7 @@ module.exports = React.createClass({
   removeCurrent: function(){
     var val = this.props.value[this.state.focused];
 
-    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) )) 
+    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
       this.props.onDelete(val)
   },
 
@@ -101,7 +101,7 @@ module.exports = React.createClass({
   removeNext: function(){
     var val = _.last(this.props.value);
 
-    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) )) 
+    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
       this.props.onDelete(val)
   },
 
@@ -137,7 +137,7 @@ module.exports = React.createClass({
     while( nextIdx < l && this.isDisabled(nextIdx, true) )
       nextIdx++
 
-    if ( this.state.focused === null ) 
+    if ( this.state.focused === null )
       return
 
     if ( nextIdx >= l )

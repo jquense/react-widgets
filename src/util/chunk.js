@@ -1,3 +1,4 @@
+'use strict';
 // thanks http://lodash.com
 module.exports = function chunk(array, chunkSize) {
   var index = 0
@@ -8,6 +9,6 @@ module.exports = function chunk(array, chunkSize) {
 
   while (index < length)
     result.push(array.slice(index, (index += chunkSize)))
-  
+
   return result
 }

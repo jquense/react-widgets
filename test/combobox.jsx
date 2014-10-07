@@ -31,23 +31,21 @@ describe('ComboBox', function(){
   })
 
   it('should respect textField and valueFields', function(){
-    var comboBox = render(
-          <ComboBox value={0} data={dataList} textField='label' valueField='id' />);
+    var comboBox = render(<ComboBox value={0} data={dataList} textField='label' valueField='id' />);
     
     expect(findClass(comboBox, 'rw-input').getDOMNode().value)
       .to.be('jimmy');
   }) 
 
   it('should start closed', function(done){
-    var comboBox = render(
-          <ComboBox value={0} data={dataList} textField='label' valueField='id' />);
-
-    var popup = findType(comboBox, require('../src/popup/popup.jsx'));
+    var comboBox = render(<ComboBox value={0} data={dataList} textField='label' valueField='id' />)
+      , input = findClass(comboBox, 'rw-input').getDOMNode()
+      , popup = findType(comboBox, require('../src/popup/popup.jsx'));
 
 
     expect(comboBox.state.open).to.be(false)
     expect(comboBox.getDOMNode().className).to.not.match(/\brw-open\b/)
-    expect(comboBox.getDOMNode().getAttribute('aria-expanded')).to.be('false')
+    expect(input.getAttribute('aria-expanded')).to.be('false')
   
     setTimeout(function(){
       expect(popup.getDOMNode().style.display).to.be('none')
@@ -56,15 +54,16 @@ describe('ComboBox', function(){
   })
 
   it('should open when clicked', function(done){
-    var comboBox = render(<ComboBox value={'jimmy'} data={dataList} duration={0}/>);
-    var popup = findType(comboBox, require('../src/popup/popup.jsx'))
+    var comboBox = render(<ComboBox value={'jimmy'} data={dataList} duration={0}/>)
+      , input = findClass(comboBox, 'rw-input').getDOMNode()
+      , popup = findType(comboBox, require('../src/popup/popup.jsx'))
 
     trigger.click(findClass(comboBox, 'rw-select').getDOMNode())
 
     setTimeout(function() {
       expect(comboBox.state.open).to.be(true)
       expect(comboBox.getDOMNode().className).to.match(/\brw-open\b/)
-      expect(comboBox.getDOMNode().getAttribute('aria-expanded')).to.be('true')
+      expect(input.getAttribute('aria-expanded')).to.be('true')
       expect(popup.props.open).to.be(true)
       done()
     }, 1000) 

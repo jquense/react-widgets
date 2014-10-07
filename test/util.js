@@ -1,3 +1,6 @@
+/*global describe,it,expect */
+"use strict";
+
 require('../vendor/phantomjs-shim')
 
 var react= require('react')
@@ -61,6 +64,25 @@ describe('when using prop transfer Utils', function(){
 
 
 describe('when using array filter helpers', function(){
+
+  it('should match correctly', function(){
+
+    expect(filters.eq(1, 1)).to.equal(true)
+    expect(filters.neq(2, 1)).to.equal(true)
+    expect(filters.lt(1, 2)).to.equal(true)
+    expect(filters.lte(1, 1)).to.equal(true)
+    expect(filters.gt(2, 1)).to.equal(true)
+    expect(filters.gte(1, 1)).to.equal(true)
+   
+    expect(filters.contains([1,2], 1)).to.equal(true)
+    expect(filters.contains('hello', 'll')).to.equal(true)
+
+    expect(filters.startsWith('hello', 'hel')).to.equal(true)
+    expect(filters.endsWith('hello', 'llo')).to.equal(true)
+  })
+})
+
+describe('when using date helpers', function(){
 
   it('should match correctly', function(){
 

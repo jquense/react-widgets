@@ -108,9 +108,7 @@ var App = React.createClass({
 					<section className="example" style={{ marginBottom: 20 }}>
 						<NumberPicker id='AwesomeNumPicker' 
 							isRtl={false} 
-							min={100}
-							step={200}
-							format="c"
+							format="D"
 							value={this.state.numberValue} 
 							onChange={change.bind(null, 'numberValue')}/>
 					</section>
