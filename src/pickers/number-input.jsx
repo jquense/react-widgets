@@ -66,12 +66,20 @@ module.exports = React.createClass({
   },
 
   _change: function(e){
-    var number = +e.target.value
+    var val = e.target.value
+      , number = +e.target.value
+      , isNull = val !== 0 && !val
+      , hasMin = _.isFinite(this.props.min)
+
+    //console.log(hasMin, this.props.min)
+    //a null value is only possible when there is no min
+    if(!hasMin && isNull)
+      return this.props.onChange(null)
 
     if(this.isValid(number) && number !== this.props.value)
       return this.props.onChange(number)
 
-    console.log(number)
+    //console.log(val !== 0 && !val)
     this.current(e.target.value)
   },
 
@@ -87,6 +95,7 @@ module.exports = React.createClass({
 
   isValid: function(value) {
     var num = +value
+      , noMin = this.props.min == null || !_.isFinite(this.props.min);
 
     if(isNaN(num)) return false
     return num >= this.props.min

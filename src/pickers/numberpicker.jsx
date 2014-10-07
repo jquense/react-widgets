@@ -142,7 +142,6 @@ module.exports = React.createClass({
   //allow for styling, focus stealing keeping me from the normal what have you
   _mouseDown: function(dir) {
     var self = this
-      , atMax  = dir === directions.UP
       , val = dir === directions.UP 
         ? (this.props.value || 0) + this.props.step
         : (this.props.value || 0) - this.props.step 
@@ -221,12 +220,15 @@ module.exports = React.createClass({
     var change = this.props.onChange 
     
     val = this.inRangeValue(val)
-    console.log('change', val)
+
     if ( change && this.props.value !== val ) 
       change(val)
   },
 
   inRangeValue: function(value){
+    if( !_.isFinite(this.props.min) && value == null || value === '' ) 
+      return value
+
     return Math.max(
         Math.min(value, this.props.max)
       , this.props.min)
