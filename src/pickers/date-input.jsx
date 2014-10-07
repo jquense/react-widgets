@@ -19,6 +19,12 @@ module.exports = React.createClass({
 
   getDefaultProps: function(){
     return {
+      textValue: ''
+    }
+  },
+
+  getInitialState: function(){
+    return {
       value: null,
       editing: true,
     }

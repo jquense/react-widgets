@@ -220,6 +220,9 @@ module.exports = React.createClass({
   },
 
   _onSelect: function(data){
+    if( data === undefined || self._data().length === 0) 
+        return //handle custom tags maybe here?
+
     this.change(this.state.dataItems.concat(data))
     this.close()
     this._focus(true)
@@ -266,6 +269,12 @@ module.exports = React.createClass({
     else if ( !searching && key === 'Backspace')
       this.refs.tagList.removeNext()
     
+    function select(idx){
+      if( idx === -1 || self._data().length === 0) 
+        return //handle custom tags maybe here?
+
+      return self.change(self.refs.input.value, false)
+    }
   },
 
   change: function(data){
