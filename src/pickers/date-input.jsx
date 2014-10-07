@@ -23,19 +23,31 @@ module.exports = React.createClass({
     }
   },
 
-  getInitialState: function(){
-    return {
-      value: null,
-      editing: true,
-    }
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      textValue: formatDate(
+            nextProps.value
+          , nextProps.editing && nextProps.editFormat 
+              ? nextProps.editFormat 
+              : nextProps.format)
+    })
   },
 
-  render: function(){
-    var value = formatDate(
+  getInitialState: function(){
+    var text = formatDate(
             this.props.value
           , this.props.editing && this.props.editFormat 
               ? this.props.editFormat 
               : this.props.format)
+
+    return {
+      textValue: text,
+      lastValue: text
+    }
+  },
+
+  render: function(){
+    var value = this.state.textValue
 
     return this.transferPropsTo(
       <input 
