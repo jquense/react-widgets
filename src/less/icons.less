@@ -1,27 +1,32 @@
-/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
-   readers do not read off random characters that represent icons */
 
-.@{fa-css-prefix}-chevron-left:before { content: @fa-var-chevron-left; }
-.@{fa-css-prefix}-chevron-right:before { content: @fa-var-chevron-right; }
-.@{fa-css-prefix}-chevron-up:before { content: @fa-var-chevron-up; }
-.@{fa-css-prefix}-chevron-down:before { content: @fa-var-chevron-down; }
+@font-face {
+  font-family: 'RwWidgets';
+  src: ~"url('@{fa-font-path}/rw-widgets.eot?v=@{fa-version}')";
+  src: ~"url('@{fa-font-path}/rw-widgets.eot?#iefix&v=@{fa-version}') format('embedded-opentype')",
+    ~"url('@{fa-font-path}/rw-widgets.woff?v=@{fa-version}') format('woff')",
+    ~"url('@{fa-font-path}/rw-widgets.ttf?v=@{fa-version}') format('truetype')",
+    ~"url('@{fa-font-path}/rw-widgets.svg?v=@{fa-version}#fontawesomeregular') format('svg')";
+  font-weight: normal;
+  font-style: normal;
+}
 
-.@{fa-css-prefix}-times:before { content: @fa-var-times; }
-.@{fa-css-prefix}-ban:before { content: @fa-var-ban; }
-.@{fa-css-prefix}-arrow-left:before { content: @fa-var-arrow-left; }
-.@{fa-css-prefix}-arrow-right:before { content: @fa-var-arrow-right; }
-.@{fa-css-prefix}-arrow-up:before { content: @fa-var-arrow-up; }
-.@{fa-css-prefix}-arrow-down:before { content: @fa-var-arrow-down; }
 
-.@{fa-css-prefix}-expand:before { content: @fa-var-expand; }
-.@{fa-css-prefix}-compress:before { content: @fa-var-compress; }
-.@{fa-css-prefix}-plus:before { content: @fa-var-plus; }
-.@{fa-css-prefix}-minus:before { content: @fa-var-minus; }
+.@{fa-css-prefix} {
+  display: inline-block;
+  font-family: RwWidgets;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1em;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-.@{fa-css-prefix}-calendar:before { content: @fa-var-calendar; }
+.@{fa-css-prefix}-caret-down:before { content: '\e801'; }
+.@{fa-css-prefix}-caret-up:before { content: '\e800'; }
+.@{fa-css-prefix}-caret-left:before { content: '\e807';  }
+.@{fa-css-prefix}-caret-right:before { content: '\e806'; }
 
-.@{fa-css-prefix}-caret-down:before { content: @fa-var-caret-down; }
-.@{fa-css-prefix}-caret-up:before { content: @fa-var-caret-up; }
-.@{fa-css-prefix}-caret-left:before { content: @fa-var-caret-left; }
-.@{fa-css-prefix}-caret-right:before { content: @fa-var-caret-right; }
-.@{fa-css-prefix}-clock-o:before { content: @fa-var-clock-o; }
+.@{fa-css-prefix}-clock-o:before { content:'\e80c'; }
+.@{fa-css-prefix}-calendar:before { content: '\e808'; }
