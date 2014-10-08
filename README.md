@@ -1,7 +1,7 @@
 react-widgets
 =============
 
-A set of the basic ui widgets built from scratch with React, based on the excellent Kendo UI Core and jQuery UI.
+A set of the basic ui widgets built from scratch with React, based on the excellent Kendo UI Core and jQuery UI. 
 
 - DropdownList
 - ComboBox
@@ -10,14 +10,20 @@ A set of the basic ui widgets built from scratch with React, based on the excell
 - Calendar 
 - NumberPicker 
 
+__Demos and Documentation [here](http://theporchrat.github.io/react-widgets/docs/)__
+
+
 ### Install
 
 `npm install react-widgets`
 
-### Docs
+### Building local docs
 
-you can find docs [here](http://theporchrat.github.io/react-widgets/docs/)
-Docs are a simple React app, you can build with gulp `gulp docs`
+The docs are a simple React app hosted on gh-pages, you build and run locally with `gulp` and the command `gulp doc-server` which will webpack start up a server on localhost:8081.
+
+### Contributing 
+
+Patches welcome! Please try to match the style of the repo (comma first, 2 spaces, etc), squash large pull requests (a few commits is fine), and provide tests if relevant. It is also a good idea to open an issue and start a conversation before implementing new features or widgets.
 
 ### Old Browser Support
 
