@@ -55,7 +55,7 @@ module.exports = React.createClass({
                   isRtl={this.state.isRtl}/>
             </div>
             <div className='form-group'>
-              <label>Custom list Rendering</label>
+              <label>Custom Rendering</label>
               <RW.Select 
                   data={list}
                   value={this.state.value}
@@ -68,6 +68,7 @@ module.exports = React.createClass({
                   data={list}
                   duration={this.state.duration}
                   itemComponent={itemComp}
+                  tagComponent={itemComp}
                   busy={this.state.busy}
                   onChange={this._change}
                   isRtl={this.state.isRtl}/>
@@ -169,10 +170,11 @@ var itemComp = React.createClass({
 
     this._icon || (this._icon = icons[_.random(0, 2)])
     return (
-      <div>
+      <span>
         <i className={'fa fa-' + this._icon}></i>
         { '  ' + this.props.item.label}
-      </div>
+      </span>
     );
   }
 });
+
