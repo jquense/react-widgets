@@ -34,6 +34,8 @@ var DateTimePicker = React.createClass({
               <MenuItem href={'#' + prefix + 'duration'}>duration</MenuItem>
               <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
               <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
+              <MenuItem divider={true}></MenuItem>
+              <MenuItem href={'#' + prefix + 'keyboard'}>Keyboard Navigation</MenuItem>
             </DDButton>
           </span>
         </h1>
@@ -52,7 +54,8 @@ var DateTimePicker = React.createClass({
 
         <p>
           Dates are never mutated but always return and operate on a new Date instance. When the <code>calendar</code> prop 
-          is {'set'} the widget takes all props vailable to the Calendar widget (see above), the same is true for the keyboard navigation!
+          is {'set'} the widget takes all props vailable to the Calendar widget (see above), 
+          the same is true for the keyboard navigation!
         </p>
         <DatePickerExample/>
         <Example code={
@@ -82,30 +85,27 @@ var DateTimePicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"value" }>
           value <small>Date</small></h3>
         <p>
-          The current selected date, should be a JavaScript Date instance.
+          The current selected date, should be a <code>Date</code> instance or <code>null</code>.
         </p>
 
         <h3 className='prop-header' id={ prefix +"onChange" }>
-          onChange <small>{'function ( selectedValue )'}</small></h3>
+          onChange <small>{'function ( date, stringDate )'}</small></h3>
         <p>
-          change event Handler that is called when the value is changed. 
+          change event Handler that is called when the value is changed. The handler is called with both the 
+          current <code>Date</code> object (or null if it was not parseable), and the second argument is 
+          a <code>string</code> representation of the date value, formated by the <code>format</code> prop.
         </p>
-        <strong>Note: </strong>
-        <span> 
-          Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
-          becomes readonly
-        </span>
 
         <h3 className='prop-header' id={ prefix +"calendar" }>
           calendar <small>Boolean</small><span className='default'>true</span></h3>
         <p>
-          Whether to show the date picker button
+          Whether to show the date picker button.
         </p>
 
         <h3 className='prop-header' id={ prefix +"time" }>
           time <small>Boolean</small><span className='default'>true</span></h3>
         <p>
-          Whether to show the time picker button
+          Whether to show the time picker button.
         </p>
 
         <h3 className='prop-header' id={ prefix +"min" }>
@@ -127,7 +127,10 @@ var DateTimePicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"format" }>
           format <small>String</small><span className='default'>"M/d/yyyy h:mm tt"</span></h3>
         <p>
-          A string format used to display the date value
+          A string format used to display the date value. For more information on prefined and custom formats 
+          visit the <a href='https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates'>
+            Globalize.js documentation <i className="fa fa-external-link"></i>
+          </a>
         </p>
 
         <h3 className='prop-header' id={ prefix +"parse" }>
@@ -176,7 +179,7 @@ var DateTimePicker = React.createClass({
           title and screen reader text for the right arrow button
         </p>
 
-        <h2>Keyboard Navigation</h2>
+        <h2 id={ prefix +"keyboard" }>Keyboard Navigation</h2>
 
         <ul className='list-unstyled keyboard-list'>
           <li><strong>All Calendar keys above also apply</strong></li>

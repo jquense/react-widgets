@@ -32,6 +32,8 @@ var ComboBox = React.createClass({
               <MenuItem href={'#' + prefix + 'duration'}>duration</MenuItem>
               <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
               <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
+              <MenuItem divider={true}></MenuItem>
+              <MenuItem href={'#' + prefix + 'keyboard'}>Keyboard Navigation</MenuItem>
             </DDButton>
           </span>
         </h1>
@@ -66,35 +68,39 @@ var ComboBox = React.createClass({
         <h3 className='prop-header' id={ prefix +"value" }>
           value <small>mixed</small></h3>
         <p>
-          The current value of the DropdownList.
+          The current value of the Combobox. This can be an object (such as a member of the <code>data</code> array) 
+          or a primitive value, hinted to by the <code>valueField</code>. The widget value does not need to be in 
+          the <code>data</code>, widgets can have values that are not in their list.
         </p>
 
         <h3 className='prop-header' id={ prefix +"onChange" }>
-          onChange <small>{"function ( selectedValue )"}</small></h3>
+          onChange <small>{"function ( value )"}</small></h3>
         <p>
-          change event Handler that is called when the value is changed. 
+          change event Handler that is called when the value is changed. If the value is on of 
+          the <code>data</code> members that item will be returned. In the case of a value not being found in 
+          the <code>data</code> array the string value of the combobox will be returned.
         </p>
-        <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
-        becomes readonly</span>
 
         <h3 className='prop-header' id={ prefix +"data" }>
           data <small>Array - mixed</small></h3>
         <p>
-          provide an array of possible values for the dropdown list. If an array of <code>objects</code> is provided you should use 
-          the <code>valueField</code> and <code>textField</code> props, to specify an array item unique id and label respectively
+          provide an array of possible values for the combobox. If an array of <code>objects</code> is provided you 
+          should use  the <code>valueField</code> and <code>textField</code> props, to specify which object 
+          properties comprise the value field (such as an id) and the field used to label the item.
         </p>
 
         <h3 className='prop-header' id={ prefix +"valueField" }>
           valueField <small>String</small></h3>
         <p>
-          The field name of a uniquely identifying field in the <code>data</code> array
+          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided, 
+          the widget will use strict equality checks to locate the data item, if it exists.
         </p>
 
         <h3 className='prop-header' id={ prefix +"textField" }>
           textField <small>String</small></h3>
         <p>
-          This prop determines which data item field to display in the dropdown list and selected item This prop is 
-          unnecessary when a <code>itemComponent</code> is provided
+          This prop determines which data item field to display in the dropdown list and the text value of combobox.
+          This prop is unnecessary when an <code>itemComponent</code> is provided.
         </p>
 
         <h3 className='prop-header' id={ prefix +"itemComponent" }>
@@ -158,7 +164,7 @@ var ComboBox = React.createClass({
         <p>
           text to display when the the current filter does not return any results
         </p>
-        <h2>Keyboard Navigation</h2>
+        <h2 id={ prefix +"keyboard" }>Keyboard Navigation</h2>
 
         <ul className='list-unstyled keyboard-list'>
           <li><kbd>alt + down arrow</kbd> open dropdown</li>

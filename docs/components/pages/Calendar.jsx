@@ -29,6 +29,8 @@ var Calendar = React.createClass({
               <MenuItem href={'#' + prefix + 'duration'}>duration</MenuItem>
               <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
               <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
+              <MenuItem divider={true}></MenuItem>
+              <MenuItem href={'#' + prefix + 'keyboard'}>Keyboard Navigation</MenuItem>
             </DDButton>
           </span>
         </h1>
@@ -61,27 +63,25 @@ var Calendar = React.createClass({
         <h3 className='prop-header' id={ prefix +"value" }>
           value <small>Date</small></h3>
         <p>
-          The current selected date, should be a JavaScript Date instance.
+          The current selected date, should be a Date object or null.
         </p>
 
         <h3 className='prop-header' id={ prefix +"onChange" }>
           onChange <small>{'function ( selectedValue )'}</small></h3>
         <p>
-          change event Handler that is called when the value is changed. 
+          change event Handler that is called when the value is changed. The handler is called with the Date object
         </p>
-        <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
-        becomes readonly</span>
 
         <h3 className='prop-header' id={ prefix +"min" }>
           min <small>Date</small></h3>
         <p>
-          The minimum Date that the Calendar can navigate into the past
+          The minimum date that the Calendar can navigate from.
         </p>
 
         <h3 className='prop-header' id={ prefix +"max" }>
           max <small>Date</small></h3>
         <p>
-          The maximum date that the Calendar can navigate into the future
+          The maximum date that the Calendar can navigate to.
         </p>
 
         <h3 className='prop-header' id={ prefix +"initialView" }>
@@ -94,20 +94,19 @@ var Calendar = React.createClass({
         </p>
 
         <h3 className='prop-header' id={ prefix +"finalView" }>
-          
           finalView <small>One of - "month", "year", "decade", "century"</small>
           <span className='default'>"century"</span>
         </h3>
         <p>
-          The highest level view the calendar can navigate up to; Should be higher then <code>initialView</code>
+          The highest level view the calendar can navigate up to. This value should be higher 
+          than <code>initialView</code>
         </p>
 
-        
         <h3 className='prop-header' id={ prefix +"isRtl" }>
           isRtl <small>Boolean</small></h3>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
-           a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
+          a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
         </p>
 
         <h3 className='prop-header' id={ prefix +"messages" }>
@@ -125,7 +124,7 @@ var Calendar = React.createClass({
           title and screen reader text for the right arrow button
         </p>
 
-        <h2>Keyboard Navigation</h2>
+        <h2 id={ prefix +"keyboard" }>Keyboard Navigation</h2>
 
         <ul className='list-unstyled keyboard-list'>
           <li><kbd>ctrl + down arrow</kbd> navigate to next view </li>

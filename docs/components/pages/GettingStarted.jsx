@@ -30,6 +30,13 @@ var GettingStarted = React.createClass({
           <code>value</code> and <code>onChange()</code>. For the dropdown list, combobox, select widgets there 
           is an additional <code>data</code> prop that is an array of possible values.
         </p>
+        <p>
+          React-widgets can be "bound", meaning that they can be backed by some sort of data structure 
+          (traditionally a model). While they work just as well with data primitives such as strings, numbers, and 
+          arrays, they really shine in providing hassle free visual representations of data, without needing to map 
+          the data over and over.
+        </p>
+
         <h2>Install</h2>
         <p>
           The prefered way is to use NPM <code>npm install react-widgets</code> and make use of something like Webpack or 

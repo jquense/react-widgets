@@ -33,6 +33,8 @@ var Select = React.createClass({
               <MenuItem href={'#' + prefix + 'duration'}>duration</MenuItem>
               <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
               <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
+              <MenuItem divider={true}></MenuItem>
+              <MenuItem href={'#' + prefix + 'keyboard'}>Keyboard Navigation</MenuItem>
             </DDButton>
           </span>
         </h1>
@@ -58,13 +60,14 @@ var Select = React.createClass({
         <h3 className='prop-header' id={ prefix +"value" }>
           value <small>Array - mixed</small></h3>
         <p>
-          The current values of the Select.
+          The current values of the Select. The value should can <code>null</code>, or an array 
+          of <code>valieField</code> values, or an array of objects (such as a few items in the <code>data</code> array) 
         </p>
 
         <h3 className='prop-header' id={ prefix +"onChange" }>
           onChange <small>{'function ( selectedValue )'}</small></h3>
         <p>
-          change event Handler that is called when the value is changed. 
+          change event Handler that is called when the value is changed. The handler will return an array of values
         </p>
         <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
         becomes readonly</span>
@@ -72,21 +75,23 @@ var Select = React.createClass({
         <h3 className='prop-header' id={ prefix +"data" }>
           data <small>Array - mixed</small></h3>
         <p>
-          provide an array of possible values for the dropdown list. If an array of <code>objects</code> is provided you should use 
-          the <code>valueField</code> and <code>textField</code> props, to specify an array item unique id and label respectively
+          provide an array of possible values for the select. If an array of <code>objects</code> is provided you 
+          should use the <code>valueField</code> and <code>textField</code> props, to specify which object 
+          properties comprise the value field (such as an id) and the field used to label the item.
         </p>
 
         <h3 className='prop-header' id={ prefix +"valueField" }>
           valueField <small>String</small></h3>
         <p>
-          The field name of a uniquely identifying field in the <code>data</code> array
+          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided, 
+          the widget will use strict equality checks to locate the data item, if it exists.
         </p>
 
         <h3 className='prop-header' id={ prefix +"textField" }>
           textField <small>String</small></h3>
         <p>
           This prop determines which data item field to display in the select list and selected item This prop is 
-          unnecessary when a <code>itemComponent</code> is provided
+          unnecessary when an <code>itemComponent</code> and <code>tagComponent</code> are provided.
         </p>
 
         <h3 className='prop-header' id={ prefix +"tagComponent" }>
@@ -155,7 +160,7 @@ var Select = React.createClass({
           text to display when the the current filter does not return any results
         </p>
 
-        <h2>Keyboard Navigation</h2>
+        <h2 id={ prefix +"keyboard" }>Keyboard Navigation</h2>
 
         <ul className='list-unstyled keyboard-list'>
           <li><kbd>down arrow</kbd> open dropdown, and move focus to next item</li>

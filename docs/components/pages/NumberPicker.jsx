@@ -29,6 +29,8 @@ var NumberPicker = React.createClass({
 
               <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
               <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
+              <MenuItem divider={true}></MenuItem>
+              <MenuItem href={'#' + prefix + 'keyboard'}>Keyboard Navigation</MenuItem>
             </DDButton>
           </span>
 
@@ -54,7 +56,7 @@ var NumberPicker = React.createClass({
         }/>
         <h2>Props</h2>
         <h3 className='prop-header' id={ prefix +"value" }>
-          value <small>mixed</small></h3>
+          value <small>Number</small></h3>
         <p>
           The current value of the NumberPicker.
         </p>
@@ -62,35 +64,37 @@ var NumberPicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"onChange" }>
           onChange <small>{"function ( selectedValue )"}</small></h3>
         <p>
-          change event Handler that is called when the value is changed. 
+          change event Handler that is called when the value is changed. The handler is called with the 
+          current numeric value or null.
         </p>
-        <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
-        becomes readonly</span>
 
         <h3 className='prop-header' id={ prefix +"format" }>
           format <small>String</small><span className='default'>"d"</span></h3>
         <p>
-          A Globalize.js compatible number format string, used to display the value when widget is not focused
+          A format string used to display the number value. For more information on prefined and custom number and 
+          currency formats visit the&nbsp;
+          <a href='https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#number-formatting'>
+            Globalize.js documentation <i className="fa fa-external-link"></i>
+          </a>.
         </p>
 
         <h3 className='prop-header' id={ prefix +"min" }>
           min <small>Number</small><span className='default'>-Infinity</span></h3>
         <p>
-          The minimum number that the NumberPicker value
+          The minimum number that the NumberPicker value.
         </p>
 
         <h3 className='prop-header' id={ prefix +"max" }>
           max <small>Number</small><span className='default'>Infinity</span></h3>
         <p>
-          The maximum number that the NumberPicker value
+          The maximum number that the NumberPicker value.
         </p>
 
         <h3 className='prop-header' id={ prefix +"step" }>
           step <small>Number</small><span className='default'>1</span></h3>
         <p>
-          Amount to increase or decrease value when using the spinner buttons
+          Amount to increase or decrease value when using the spinner buttons.
         </p>
-
 
         <h3 className='prop-header' id={ prefix +"isRtl" }>
           isRtl <small>Boolean</small></h3>
@@ -112,7 +116,7 @@ var NumberPicker = React.createClass({
         <h3>messages.decrement <small>String</small><span className='default'>"decrement value"</span></h3>
         <p>Number picker spinner down button text for screen readers </p>
 
-        <h2>Keyboard Navigation</h2>
+        <h2 id={ prefix +"keyboard" }>Keyboard Navigation</h2>
 
         <ul className='list-unstyled keyboard-list'>
           <li><kbd>down arrow</kbd> decrement value</li>
