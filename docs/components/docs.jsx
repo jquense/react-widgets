@@ -43,7 +43,7 @@ var Docs = React.createClass({
         <Navbar page={this.props.page}/>
         <div className='container'>
           <aside className='col-sm-3'>
-            <Affix offsetTop={52} className='nav-aside'>
+            <div className='nav-aside'>
               <Nav className='side-nav' onSelect={this.handleNavItemSelect}>
                 <NavItem key={0} href='#intro' active={href === '#intro' }>Getting Started</NavItem>
                 <NavItem key={1} href='#dropdown-list' active={ href === '#dropdown-list' }>Dropdown List</NavItem>
@@ -51,9 +51,9 @@ var Docs = React.createClass({
                 <NavItem key={6} href='#number-picker' active={href === '#number-picker' }>Number Picker</NavItem>
                 <NavItem key={3} href='#select-list' active={href === '#select-list'}>Select</NavItem>
                 <NavItem key={4} href='#calendar' active={href === '#calendar'}>Calendar</NavItem>
-                <NavItem key={5} href='#date-picker' active={href === '#date-picker'}>Date Picker</NavItem>
+                <NavItem key={5} href='#date-picker' active={href === '#date-picker'}>Date {' & '} Time Picker</NavItem>
               </Nav>
-            </Affix>
+            </div>
           </aside>
           <article className='col-sm-9 tab-content'>
             <GettingStarted className={cx({"tab-pane": true, "active": href === '#intro' })}/>

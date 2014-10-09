@@ -25,14 +25,7 @@ module.exports = React.createClass({
 
   render: function(){
     var allVals = this.state.value
-      , disabled = this.state.disabled === true || _.isArray(this.state.disabled)
-    // _.map(list, function(){ 
-    //   return this.state.value
-    // })
-    // 
-    console.log(disabled, this.state.disabled)
-
-    //allVals.unshift({ id: false, label: 'none'});
+      , disabled = this.state.disabled === true || _.isArray(this.state.disabled);
 
     return (
       <div className='example'>

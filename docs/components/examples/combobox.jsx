@@ -97,11 +97,13 @@ module.exports = React.createClass({
               </Button>
             </div>
             <div className='form-group'>
-              <label className='form-label'>Suggest</label>
-              <RW.DropDownlist 
-                  value={this.state.suggest} 
-                  data={[false, true]}
-                  onChange={_.partial(this._set, 'suggest')}/>
+              <label className='form-label'></label>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.suggest}
+                  onChange={_.partial(this._set, 'suggest', !this.state.suggest)}/>
+                  Suggestions
+              </label>
             </div>
             <div className='form-group'>
               <label className='form-label'>Filter</label>

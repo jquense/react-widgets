@@ -78,11 +78,17 @@ h3 > .default {
   max-width: 300px;
 }
 
+.nav-aside {
+  position: fixed;
+  top: 72px;
+}
+
 @media (max-width: 767px) {
   .nav-aside {
     position: static;
   }
 }
+
 pre > code.hljs {
   background: none;
 }
