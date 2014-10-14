@@ -3,12 +3,23 @@ var _ = require('lodash')
 module.exports = {
 
   directions: mirror({
-    LEFT: null,
+    LEFT:  null,
     RIGHT: null,
-    UP: null,
-    DOWN: null
+    UP:    null,
+    DOWN:  null
   }),
 
+  datePopups: {
+    TIME:     'time',
+    CALENDAR: 'calendar'
+  },
+
+  calViews: {
+    MONTH:   'month',
+    YEAR:    'year',
+    DECADE:  'decade',
+    CENTURY: 'century'
+  }
 }
 
 

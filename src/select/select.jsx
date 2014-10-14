@@ -14,9 +14,17 @@ var React = require('react')
 var btn = require('../common/btn.jsx')
   , propTypes = {
       data:           React.PropTypes.array,
+      //-- controlled props --
       value:          React.PropTypes.array,
       onChange:       React.PropTypes.func,
 
+      searchTerm:     React.PropTypes.string,
+      onSearch:       React.PropTypes.func,
+
+      open:           React.PropTypes.bool,
+      onToggle:       React.PropTypes.func,
+      //-------------------------------------------
+      
       valueField:     React.PropTypes.string,
       textField:      React.PropTypes.string,
 
@@ -64,7 +72,9 @@ var Select = React.createClass({
     return {
       data: [],
       filter: 'startsWith',
-
+      value: [],
+      open: false,
+      searchTerm: '',
       messages: {
         emptyList:   "There are no items in this list",
         emptyFilter: "The filter returned no results"
@@ -212,8 +222,7 @@ var Select = React.createClass({
   },
 
   _typing: function(e){
-    this.props.onSearch
-      && this.props.onSearch(e.target.value)
+    this.notify('onSearch', [e.target.value])
     this.open()
   },
 
@@ -233,10 +242,12 @@ var Select = React.createClass({
       , isOpen = this.props.open;
 
     if ( key === 'ArrowDown') {
+      e.preventDefault()
       if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
       else          this.open()
     }
     else if ( key === 'ArrowUp') {
+      e.preventDefault()
       if ( alt)          this.close()
       else if ( isOpen ) this.setFocusedIndex(
         this.prevFocusedIndex())
@@ -275,13 +286,11 @@ var Select = React.createClass({
 
   open: function(){
     if (!(this.props.disabled === true || this.props.readOnly === true))
-      this.props.onToggle
-        && this.props.onToggle(true)
+      this.notify('onToggle', [ true ])
   },
 
   close: function(){
-    this.props.onToggle
-      && this.props.onToggle(false)
+    this.notify('onToggle', [false])
   },
 
   toggle: function(e){
@@ -314,7 +323,5 @@ var Select = React.createClass({
 
 
 module.exports = controlledInput.createControlledClass(
-    'Select'
-  , Select
-  , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
-  , { open: false,      value: null,         searchTerm: '' });
+    'Select', Select
+  , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });

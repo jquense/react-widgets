@@ -85,19 +85,17 @@ module.exports = React.createClass({
   getInitialState: function(){
     return {
       selectedIndex: 0,
-      open:          false,
       view:          this.props.initialView || 'month',
-
-      //determines the position of views
       currentDate:   this.inRangeValue(new Date(this.props.value))
     }
   },
 
   getDefaultProps: function(){
     return {
+      open:  false,
       value: new Date,
-      min:  new Date(1900,0, 1),
-      max:  new Date(2099,11, 31),
+      min:   new Date(1900,0, 1),
+      max:   new Date(2099,11, 31),
 
       initialView: 'month',
       finalView: 'century',
@@ -133,7 +131,6 @@ module.exports = React.createClass({
       , key = this.state.view + '_' + dates[this.state.view](date)
       , id  = this._id('_view');
 
-    //console.log(key)
     return mergeIntoProps(_.omit(this.props, 'value', 'min', 'max'),
       <div className={cx({
           'rw-calendar':       true,

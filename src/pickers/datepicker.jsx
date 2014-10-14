@@ -2,6 +2,8 @@ var React = require('react')
   , cx = require('../util/cx')
   , _   = require('lodash')
   , dates     = require('../util/dates')
+  , popups = require('../util/constants').datePopups
+  , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , Popup     = require('../popup/popup.jsx')
   , Calendar  = require('../calendar/calendar.jsx')
@@ -11,8 +13,12 @@ var React = require('react')
 
 var propTypes = {
 
+    //-- controlled props -----------
     value:          React.PropTypes.instanceOf(Date),
     onChange:       React.PropTypes.func,
+    open:           React.PropTypes.oneOf([false].concat(_.values(popups))),
+    onToggle:       React.PropTypes.func,
+    //------------------------------------
 
     min:            React.PropTypes.instanceOf(Date),
     max:            React.PropTypes.instanceOf(Date),
@@ -49,8 +55,7 @@ var propTypes = {
                     ]),
   }
 
-
-module.exports = React.createClass({
+var DateTimePicker = React.createClass({
   displayName: 'DateTimePicker',
 
   mixins: [
@@ -64,8 +69,7 @@ module.exports = React.createClass({
   getInitialState: function(){
     return {
       selectedIndex: 0,
-      open:          false,
-      openPopup:     null
+      open:          false
     }
   },
 
@@ -112,24 +116,24 @@ module.exports = React.createClass({
            className={cx({
               'rw-date-picker':     true,
               'rw-widget':          true,
-              'rw-open':            this.state.open,
+              'rw-open':            this.props.open,
               'rw-state-focus':     this.state.focused,
-              'rw-state-disabled':  this.props.disabled,
-              'rw-state-readonly':  this.props.readOnly,
+              'rw-state-disabled':  this.isDisabled(),
+              'rw-state-readonly':  this.isReadOnly(),
               'rw-has-both':        this.props.calendar && this.props.time,
               'rw-rtl':             this.isRtl()
             })}>
         <DateInput ref='valueInput'
-          aria-activedescendant={ this.state.open
-            ? this.state.openPopup === 'calendar' ? this._id('_cal_view_selected_item') : timeOptID
+          aria-activedescendant={ this.props.open
+            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
             : undefined }
-          aria-expanded={ this.state.open }
+          aria-expanded={ this.props.open }
           aria-busy={!!this.props.busy}
           aria-owns={owns}
           aria-haspopup={true}
           placeholder={this.props.placeholder}
-          disabled={this.props.disabled}
-          readOnly={this.props.readOnly}
+          disabled={this.isDisabled()}
+          readOnly={this.isReadOnly()}
           role='combobox'
           value={this.props.value}
           focused={this.state.focused}
@@ -142,31 +146,31 @@ module.exports = React.createClass({
         <span className='rw-select'>
           { this.props.calendar &&
             <btn tabIndex='-1'
-              disabled={this.props.disabled}
-              aria-disabled={this.props.disabled}
-              onClick={this._maybeHandle(_.partial(this._click, 'calendar'))}>
+              disabled={this.isDisabled() || this.isReadOnly()}
+              aria-disabled={this.isDisabled() || this.isReadOnly()}
+              onClick={this._maybeHandle(_.partial(this._click, popups.CALENDAR))}>
               <i className="rw-i rw-i-calendar"><span className="rw-sr">{ this.props.messages.calendarButton }</span></i>
             </btn>
           }
           { this.props.time &&
             <btn tabIndex='-1'
-              disabled={this.props.disabled}
-              aria-disabled={this.props.disabled}
-              onClick={this._maybeHandle(_.partial(this._click, 'time'))}>
+              disabled={this.isDisabled() || this.isReadOnly()}
+              aria-disabled={this.isDisabled() || this.isReadOnly()}
+              onClick={this._maybeHandle(_.partial(this._click, popups.TIME))}>
               <i className="rw-i rw-i-clock-o"><span className="rw-sr">{ this.props.messages.timeButton }</span></i>
             </btn>
           }
         </span>
         { this.props.time &&
         <Popup
-          open={this.state.open && this.state.openPopup === 'time'}
+          open={ this.props.open === popups.TIME }
           onRequestClose={this.close}
           duration={this.props.duration}>
             <div>
               <Time ref="timePopup"
                 id={timeListID}
                 optID={timeOptID}
-                aria-hidden={ !this.state.open }
+                aria-hidden={ !this.props.open }
                 style={{ maxHeight: 200, height: 'auto' }}
                 value={this.props.value}
                 min={this.props.min}
@@ -180,7 +184,7 @@ module.exports = React.createClass({
         { this.props.calendar &&
           <Popup
             className='rw-calendar-popup'
-            open={this.state.open && this.state.openPopup === 'calendar'}
+            open={ this.props.open === popups.CALENDAR}
             duration={this.props.duration}
             onRequestClose={this.close}>
 
@@ -190,7 +194,7 @@ module.exports = React.createClass({
                 id={dateListID}
                 value={this.props.value || new Date }
                 maintainFocus={false}
-                aria-hidden={ !this.state.open }
+                aria-hidden={ !this.props.open }
                 onChange={this._maybeHandle(this._selectDate)}/>
             )}
           </Popup>
@@ -211,7 +215,7 @@ module.exports = React.createClass({
           change(date, str)
       }
       else if (!dates.eq(date, this.props.value))
-        this.props.onChange(date)
+        change(date, str)
     }
   },
 
@@ -220,25 +224,25 @@ module.exports = React.createClass({
     if( e.key === 'Tab')
       return
 
-    if ( e.key === 'Escape' && this.state.open )
+    if ( e.key === 'Escape' && this.props.open )
       this.close()
 
     else if ( e.altKey ) {
       e.preventDefault()
 
       if ( e.key === 'ArrowDown')
-        this.open( !this.state.open
-          ? this.state.openPopup
-          : this.state.openPopup === 'time'
-              ? 'calendar'
-              : 'time')
+        this.open( !this.props.open
+          ? this.props.open
+          : this.props.open === popups.TIME
+              ? popups.CALENDAR
+              : popups.TIME)
       else if ( e.key === 'ArrowUp')
         this.close()
 
-    } else if (this.state.open ) {
-      if( this.state.openPopup === 'calendar' )
+    } else if (this.props.open ) {
+      if( this.props.open === popups.CALENDAR )
         this.refs.calPopup._keyDown(e)
-      if( this.state.openPopup === 'time' )
+      if( this.props.open === popups.TIME )
         this.refs.timePopup._keyDown(e)
     }
   },
@@ -292,7 +296,7 @@ module.exports = React.createClass({
 
   toggle: function(view, e) {
 
-    this.state.open
+    this.props.open
       ? this.state.view !== view
           ? this.open(view)
           : this.close(view)
@@ -300,11 +304,13 @@ module.exports = React.createClass({
   },
 
   open: function(view){
-    this.setState({ open: true, openPopup: view })
+    if ( this.props.open !== view )
+      this.notify('onToggle', [ view ])
   },
 
   close: function(){
-    this.setState({ open: false })
+    if ( this.props.open)
+      this.notify('onToggle')
   },
 
   inRangeValue: function(value){
@@ -319,6 +325,10 @@ module.exports = React.createClass({
 
 var btn = require('../common/btn.jsx')
 
+
+module.exports = controlledInput.createControlledClass(
+    'DateTimePicker', DateTimePicker
+  , { open: 'onToggle', value: 'onChange' });
 
 function formatDate(date, format){
   var val = ''

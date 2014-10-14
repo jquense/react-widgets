@@ -3,6 +3,7 @@ var React  = require('react')
   , _      = require('lodash')
   , caretPos = require('../util/caret')
   , filter = require('../util/filter')
+  , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
   , Input  = require('./combo-input.jsx')
@@ -12,8 +13,12 @@ var React  = require('react')
 
 var btn = require('../common/btn.jsx')
   , propTypes = {
+      //-- controlled props -----------
       value:          React.PropTypes.any,
       onChange:       React.PropTypes.func,
+      open:           React.PropTypes.array,
+      onToggle:       React.PropTypes.func,
+      //------------------------------------
 
       itemComponent:  React.PropTypes.func,
 
@@ -44,7 +49,7 @@ var btn = require('../common/btn.jsx')
       })
     };
 
-module.exports = React.createClass({
+var ComboBox = React.createClass({
 
   displayName: 'ComboBox',
 
@@ -61,11 +66,8 @@ module.exports = React.createClass({
   propTypes: propTypes,
 
 	getInitialState: function(){
-    var items = this.process(
-          this.props.data
-        , this.props.value)
-      , idx = this._dataIndexOf(items, this.props.value);
-
+    var items = this.process(this.props.data, this.props.value)
+      , idx   = this._dataIndexOf(items, this.props.value);
 
 		return {
 			selectedIndex: idx,
@@ -78,6 +80,8 @@ module.exports = React.createClass({
   getDefaultProps: function(){
     return {
       data: [],
+      value: '',
+      open: false,
       suggest: false,
       filter: false,
       delay: 500,
@@ -142,7 +146,7 @@ module.exports = React.createClass({
               'rw-combobox':        true,
               'rw-widget':          true,
               'rw-state-focus':     this.state.focused,
-              'rw-open':            this.state.open,
+              'rw-open':            this.props.open,
               'rw-state-disabled':  this.props.disabled,
               'rw-state-readonly':  this.props.readOnly,
               'rw-rtl':             this.isRtl()
@@ -164,8 +168,8 @@ module.exports = React.createClass({
           aria-owns={listID}
           aria-busy={!!this.props.busy}
           aria-autocomplete={completeType}
-          aria-activedescendent={ this.state.open ? optID : undefined }
-          aria-expanded={ this.state.open }
+          aria-activedescendent={ this.props.open ? optID : undefined }
+          aria-expanded={ this.props.open }
           aria-haspopup={true}
           placeholder={this.props.placeholder}
           disabled={this.props.disabled}
@@ -175,12 +179,12 @@ module.exports = React.createClass({
           onChange={this._inputTyping}
           onKeyDown={this._inputKeyDown}/>
 
-        <Popup open={this.state.open} onRequestClose={this.close} duration={this.props.duration}>
+        <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
               id={listID}
               optID={optID}
-              aria-hidden={ !this.state.open }
+              aria-hidden={ !this.props.open }
               aria-live={ completeType && 'polite' }
               style={{ maxHeight: 200, height: 'auto' }}
               data={items}
@@ -265,7 +269,7 @@ module.exports = React.createClass({
       , character = String.fromCharCode(e.keyCode)
       , selectedIdx = this.state.selectedIndex
       , focusedIdx  = this.state.focusedIndex
-      , isOpen = this.state.open
+      , isOpen      = this.props.open
       , noselection = selectedIdx == null || selectedIdx === -1;
 
     if ( key === 'End' )
@@ -317,20 +321,21 @@ module.exports = React.createClass({
   },
 
   open: function(){
-
-    if ( !this.state.open )
-      this.setState({ open: true })
+    if ( !this.props.open )
+      this.props.onToggle
+        && this.props.onToggle(true)
   },
 
   close: function(){
-    if ( this.state.open )
-      this.setState({ open: false })
+    if ( this.props.open )
+      this.props.onToggle
+        && this.props.onToggle(false)
   },
 
   toggle: function(e){
     this._focus(true)
 
-    this.state.open
+    this.props.open
       ? this.close()
       : this.open()
   },
@@ -365,6 +370,13 @@ module.exports = React.createClass({
     return data
   }
 })
+
+
+module.exports = controlledInput.createControlledClass(
+    'ComboBox', ComboBox
+  , { open: 'onToggle', value: 'onChange' });
+
+
 
 function shallowEqual(objA, objB) {
   var key;

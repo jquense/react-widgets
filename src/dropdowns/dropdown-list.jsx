@@ -13,10 +13,13 @@ var React = require('react')
 var btn = require('../common/btn.jsx');
 
 var propTypes = {
-  //main input interface
+  //-- controlled props -----------
   value:          React.PropTypes.any,
   onChange:       React.PropTypes.func,
-
+  open:           React.PropTypes.bool,
+  onToggle:       React.PropTypes.func,
+  //------------------------------------
+  
   data:           React.PropTypes.array,
   valueField:     React.PropTypes.string,
   textField:      React.PropTypes.string,
@@ -72,7 +75,8 @@ var DropdownList = React.createClass({
   getDefaultProps: function(){
     return {
       delay: 500,
-      value: null,
+      value: '',
+      open: false,
       data: [],
       messages: {
         open: 'open dropdown'
@@ -134,8 +138,6 @@ var DropdownList = React.createClass({
               : this._dataText(valueItem)
           }
         </div>
-
-
         <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
@@ -252,13 +254,11 @@ var DropdownList = React.createClass({
   },
 
   open: function(){
-    this.props.onToggle
-      && this.props.onToggle(true)
+    this.notify('onToggle', [true])
   },
 
   close: function(){
-    this.props.onToggle
-      && this.props.onToggle(false)
+    this.notify('onToggle', [false])
   },
 
   toggle: function(e){
@@ -271,7 +271,5 @@ var DropdownList = React.createClass({
 
 
 module.exports = controlledInput.createControlledClass(
-    'DropDownList'
-  , DropdownList
-  , { open: 'onToggle', value: 'onChange' }
-  , { open: false,      value: '' });
+    'DropDownList', DropdownList
+  , { open: 'onToggle', value: 'onChange' });

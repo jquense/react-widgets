@@ -73,7 +73,6 @@ var App = React.createClass({
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 					<ComboBox
-							isRtl={true}
 							data={ this.state.suggestdata }
 							textField='name'
 							valueField='id'
@@ -102,11 +101,9 @@ var App = React.createClass({
 							isRtl={false}
 							id='swweeeeet'
 							value={this.state.calDate}
-							time={false}
 							format='MM/dd/yy'
 							min={new Date(2014,5,1,0,0,0)}
-							max={new Date(2014,5,15,0,0,0)}
-							onChange={change.bind(null, 'calDate')}/>
+							max={new Date(2014,5,15,0,0,0)}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<NumberPicker id='AwesomeNumPicker'

@@ -1,6 +1,7 @@
-var React  = require('react')
+var React = require('react')
   , cx = require('../util/cx')
   , _      = require('lodash')
+  , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
   , Input = require('./number-input.jsx');
@@ -8,8 +9,12 @@ var React  = require('react')
 var btn = require('../common/btn.jsx')
   , propTypes = {
 
+      // -- controlled props -----------
       value:          React.PropTypes.number,
       onChange:       React.PropTypes.func,
+      open:           React.PropTypes.bool,
+      onToggle:       React.PropTypes.func,
+      //------------------------------------
 
       min:            React.PropTypes.number,
       max:            React.PropTypes.number,
@@ -40,7 +45,7 @@ var btn = require('../common/btn.jsx')
       })
     };
 
-module.exports = React.createClass({
+var NumberPicker = React.createClass({
 
   displayName: 'NumberPicker',
 
@@ -54,6 +59,9 @@ module.exports = React.createClass({
 
   getDefaultProps: function(){
     return {
+      value: '',
+      open: false,
+
       format: 'd',
 
       min: -Infinity,
@@ -217,8 +225,8 @@ module.exports = React.createClass({
 
     val = this.inRangeValue(val)
 
-    if ( change && this.props.value !== val )
-      change(val)
+    if ( this.props.value !== val )
+      this.notify('onChange', val)
   },
 
   inRangeValue: function(value){
@@ -232,3 +240,6 @@ module.exports = React.createClass({
 
 })
 
+module.exports = controlledInput.createControlledClass(
+    'NumberPicker', NumberPicker
+  , { value: 'onChange' });
