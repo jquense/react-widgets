@@ -48,12 +48,12 @@ var btn = require('../common/btn.jsx')
 module.exports = React.createClass({
 
   displayName: 'Select',
-  
-  mixins: [ 
+
+  mixins: [
     require('../mixins/DataHelpersMixin'),
     require('../mixins/DataFilterMixin'),
     require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('focusedIndex') 
+    require('../mixins/DataIndexStateMixin')('focusedIndex')
   ],
 
   propTypes: propTypes,
@@ -62,7 +62,7 @@ module.exports = React.createClass({
     return {
       data: [],
       filter: 'startsWith',
-      
+
       messages: {
         emptyList:   "There are no items in this list",
         emptyFilter: "The filter returned no results"
@@ -71,12 +71,11 @@ module.exports = React.createClass({
   },
 
   getInitialState: function(){
-    var values = this.props.value == null 
-               ? [] 
+    var values = this.props.value == null
+               ? []
                : [].concat(this.props.value)
 
     return {
-      open:  false,
       processedData: this.process(this.props.data, this.props.value, ''),
       focusedIndex:  0,
       dataItems: _.map(values, function(item){
@@ -90,7 +89,7 @@ module.exports = React.createClass({
       , items = this.process(
           nextProps.data
         , nextProps.value
-        , this.state.searchTerm)
+        , this.nextProps.searchTerm)
 
     this.setState({
       //searchTerm: '',
@@ -101,18 +100,18 @@ module.exports = React.createClass({
     })
   },
 
-  render: function(){ 
+  render: function(){
     var enabled = !(this.props.disabled === true || this.props.readOnly === true)
       , listID  = this._id('_listbox')
       , optID   = this._id('_option')
       , items   = this._data()
       , values  = this.state.dataItems;
-      
+
     return mergeIntoProps(
       _.omit(this.props, _.keys(propTypes)),
       <div ref="element"
            onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
            onBlur ={_.partial(this._focus, false)}
            tabIndex="-1"
            className={cx({
@@ -128,23 +127,23 @@ module.exports = React.createClass({
           { this.props.busy &&
             <i className="rw-i rw-loading"></i>
           }
-          <TagList 
+          <TagList
             ref='tagList'
-            value={values} 
-            textField={this.props.textField} 
+            value={values}
+            textField={this.props.textField}
             valueField={this.props.valueField}
             valueComponent={this.props.tagComponent}
             disabled={this.props.disabled}
             readOnly={this.props.readOnly}
             onDelete={this._delete}/>
-          <SelectInput 
+          <SelectInput
             ref='input'
             aria-activedescendent={ this.state.open ? optID : undefined }
             aria-expanded={ this.state.open }
             aria-busy={!!this.props.busy}
             aria-owns={listID}
             aria-haspopup={true}
-            value={this.state.searchTerm} 
+            value={this.state.searchTerm}
             disabled={this.props.disabled === true}
             readOnly={this.props.readOnly === true}
             placeholder={this._placeholder()}
@@ -159,13 +158,13 @@ module.exports = React.createClass({
               aria-hidden={ !this.state.open }
               style={{ maxHeight: 200, height: 'auto' }}
               data={items}
-              textField={this.props.textField} 
+              textField={this.props.textField}
               valueField={this.props.valueField}
               focusedIndex={this.state.focusedIndex}
               onSelect={this._maybeHandle(this._onSelect)}
               listItem={this.props.itemComponent}
               messages={{
-                emptyList: this.props.data.length 
+                emptyList: this.props.data.length
                   ? this.props.messages.emptyFilter
                   : this.props.messages.emptyList
               }}/>
@@ -194,13 +193,13 @@ module.exports = React.createClass({
     var self = this;
 
     if (this.props.disabled === true )
-      return 
+      return
 
     clearTimeout(self.timer)
 
     self.timer = setTimeout(function(){
-      if(focused) self.refs.input.focus() 
-      else        { 
+      if(focused) self.refs.input.focus()
+      else        {
         self.close()
         self.refs.tagList.clear()
       }
@@ -217,14 +216,14 @@ module.exports = React.createClass({
       searchTerm: e.target.value,
       processedData: items,
       open: this.state.open || (this.state.open === false),
-      focusedIndex: items.length >= this.state.focusedIndex 
-        ? 0 
+      focusedIndex: items.length >= this.state.focusedIndex
+        ? 0
         : this.state.focusedIndex
     })
   },
 
   _onSelect: function(data){
-    if( data === undefined ) 
+    if( data === undefined )
       return //handle custom tags maybe here?
 
     this.change(this.state.dataItems.concat(data))
@@ -250,12 +249,12 @@ module.exports = React.createClass({
     else if ( key === 'End'){
       if ( isOpen ) this.setFocusedIndex(this._data().length - 1)
       else          this.refs.tagList.last()
-    }  
+    }
     else if (  key === 'Home'){
       if ( isOpen ) this.setFocusedIndex(0)
       else          this.refs.tagList.first()
     }
-    else if ( isOpen && key === 'Enter' ) 
+    else if ( isOpen && key === 'Enter' )
       this._onSelect(this._data()[this.state.focusedIndex])
 
     else if ( key === 'Escape')
@@ -265,7 +264,7 @@ module.exports = React.createClass({
       this.refs.tagList.prev()
 
     else if ( !searching && key === 'ArrowRight')
-      this.refs.tagList.next() 
+      this.refs.tagList.next()
 
     else if ( !searching && key === 'Delete')
       this.refs.tagList.removeCurrent()
@@ -275,10 +274,10 @@ module.exports = React.createClass({
   },
 
   change: function(data){
-    var change = this.props.onChange 
+    var change = this.props.onChange
 
-    if ( change ) 
-      change(data) 
+    if ( change )
+      change(data)
   },
 
   open: function(){
@@ -291,8 +290,8 @@ module.exports = React.createClass({
   },
 
   toggle: function(e){
-    this.state.open 
-      ? this.close() 
+    this.state.open
+      ? this.close()
       : this.open()
   },
 
@@ -311,8 +310,8 @@ module.exports = React.createClass({
   },
 
   _placeholder: function(){
-    return (this.props.value || []).length 
-      ? '' 
+    return (this.props.value || []).length
+      ? ''
       : (this.props.placeholder || '')
   },
 

@@ -34,7 +34,7 @@ var propTypes = {
   delay:          React.PropTypes.number,
 
   duration:       React.PropTypes.number, //popup
-  
+
   disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.bool,
                         React.PropTypes.oneOf(['disabled'])
@@ -69,7 +69,6 @@ module.exports = React.createClass({
     var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
 
 		return {
-			open:          false,
       selectedIndex: initialIdx,
       focusedIndex:  initialIdx === -1 ? 0 : initialIdx,
 		}
@@ -108,7 +107,7 @@ module.exports = React.createClass({
 			<div ref="element"
            onKeyDown={this._maybeHandle(this._keyDown)}
            onClick={this._maybeHandle(this.toggle)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
            onBlur ={_.partial(this._focus, false)}
            aria-expanded={ this.state.open }
            aria-haspopup={true}
@@ -122,7 +121,7 @@ module.exports = React.createClass({
               'rw-state-disabled':  this.props.disabled,
               'rw-state-readonly':  this.props.readOnly,
               'rw-state-focus':     this.state.focused,
-              'rw-open':            this.state.open,
+              'rw-open':            this.props.open,
               'rw-rtl':             this.isRtl()
             })}>
 
@@ -139,11 +138,11 @@ module.exports = React.createClass({
         </div>
 
 
-        <Popup open={this.state.open} onRequestClose={this.close} duration={this.props.duration}>
+        <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
               optID={optID}
-              aria-hidden={ !this.state.open }
+              aria-hidden={ !this.props.open }
               style={{ maxHeight: 200, height: 'auto' }}
               data={this.props.data}
               initialVisibleItems={this.props.initialBufferSize}
@@ -192,7 +191,7 @@ module.exports = React.createClass({
     var self = this
       , key = e.key
       , alt = e.altKey
-      , isOpen = this.state.open;
+      , isOpen = this.props.open;
 
     if ( key === 'End' ) {
       if ( isOpen) this.setFocusedIndex(this._data().length - 1)
@@ -241,7 +240,7 @@ module.exports = React.createClass({
   }),
 
   _locate: function(word){
-    var key = this.state.open ? 'focusedIndex' : 'selectedIndex'
+    var key = this.props.open ? 'focusedIndex' : 'selectedIndex'
       , idx = this.findNextWordIndex(word, this.state[key])
       , setIndex = setter(key).bind(this);
 
@@ -259,15 +258,17 @@ module.exports = React.createClass({
   },
 
   open: function(){
-    this.setState({ open: true })
+    this.props.onToggle
+      && this.props.onToggle(true)
   },
 
   close: function(){
-    this.setState({ open: false })
+    this.props.onToggle
+      && this.props.onToggle(false)
   },
 
   toggle: function(e){
-    this.state.open
+    this.props.open
       ? this.close()
       : this.open()
   },
@@ -275,7 +276,7 @@ module.exports = React.createClass({
   _id: function(suffix){
     return (_id || (_id = (this.props.id || _.uniqueId('rw_'))))  + suffix
   }
-  
+
 })
 
 var _id =''
