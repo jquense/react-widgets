@@ -14,8 +14,9 @@ var opposite = {
 module.exports = React.createClass({
 
   displayName: 'YearView',
-  
+
   mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/RtlChildContextMixin'),
     require('../mixins/DateFocusMixin')('year', 'month')
   ],
@@ -34,10 +35,10 @@ module.exports = React.createClass({
 
     return mergeIntoProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
-      <table tabIndex={this.props.disabled ? '-1' : "0"} 
+      <table tabIndex={this.props.disabled ? '-1' : "0"}
         ref='table'
-        role='grid' 
-        className='rw-calendar-grid rw-nav-view' 
+        role='grid'
+        className='rw-calendar-grid rw-nav-view'
         aria-activedescendant={this._id('_selected_item')}
         onKeyUp={this._keyUp}>
         <tbody >
@@ -45,11 +46,6 @@ module.exports = React.createClass({
         </tbody>
       </table>
     )
-  },
-
-  _id: function(suffix){
-    this._id_ || (this._id_ = _.uniqueId('rw_'))
-    return (this.props.id || this._id_)  + suffix
   },
 
   _row: function(row, i){
@@ -62,14 +58,14 @@ module.exports = React.createClass({
           , selected = dates.eq(date, this.props.value,  'month')
           , id       = this._id('_selected_item');
 
-        return dates.inRange(date, this.props.min, this.props.max, 'month') 
+        return dates.inRange(date, this.props.min, this.props.max, 'month')
           ? (<td key={i}>
               <btn onClick={_.partial(this.props.onChange, date)} tabIndex='-1'
                 id={focused ? id : undefined}
                 aria-selected={selected}
                 aria-disabled={this.props.disabled}
                 disabled={this.props.disabled}
-                className={cx({ 
+                className={cx({
                   'rw-state-focus':    focused,
                   'rw-state-selected': selected
                 })}>

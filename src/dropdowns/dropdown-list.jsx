@@ -34,7 +34,7 @@ var propTypes = {
   delay:          React.PropTypes.number,
 
   duration:       React.PropTypes.number, //popup
-  
+
   disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.bool,
                         React.PropTypes.oneOf(['disabled'])
@@ -55,6 +55,7 @@ module.exports = React.createClass({
   displayName: 'DropdownList',
 
   mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/PureRenderMixin'),
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataHelpersMixin'),
@@ -108,7 +109,7 @@ module.exports = React.createClass({
 			<div ref="element"
            onKeyDown={this._maybeHandle(this._keyDown)}
            onClick={this._maybeHandle(this.toggle)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
            onBlur ={_.partial(this._focus, false)}
            aria-expanded={ this.state.open }
            aria-haspopup={true}
@@ -253,11 +254,6 @@ module.exports = React.createClass({
     return this.props.data
   },
 
-  _maybeHandle: function(handler, disabledOnly){
-    if ( !(this.props.disabled || (!disabledOnly && this.props.readOnly)))
-      return handler
-  },
-
   open: function(){
     this.setState({ open: true })
   },
@@ -270,12 +266,8 @@ module.exports = React.createClass({
     this.state.open
       ? this.close()
       : this.open()
-  },
-
-  _id: function(suffix){
-    return (_id || (_id = (this.props.id || _.uniqueId('rw_'))))  + suffix
   }
-  
+
 })
 
 var _id =''

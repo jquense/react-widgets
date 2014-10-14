@@ -16,7 +16,7 @@ var btn = require('../common/btn.jsx')
       onChange:       React.PropTypes.func,
 
       itemComponent:  React.PropTypes.func,
-      
+
       data:           React.PropTypes.array,
       valueField:     React.PropTypes.string,
       textField:      React.PropTypes.string,
@@ -35,8 +35,8 @@ var btn = require('../common/btn.jsx')
       busy:           React.PropTypes.bool,
 
       duration:       React.PropTypes.number, //popup
-      placeholder:    React.PropTypes.string, 
-      
+      placeholder:    React.PropTypes.string,
+
       messages:       React.PropTypes.shape({
         open:         React.PropTypes.string,
         emptyList:    React.PropTypes.string,
@@ -48,13 +48,14 @@ module.exports = React.createClass({
 
   displayName: 'ComboBox',
 
-  mixins: [ 
-    require('../mixins/DataHelpersMixin'),
+  mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataFilterMixin'),
+    require('../mixins/DataHelpersMixin'),
     require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('focusedIndex'),  
-    require('../mixins/DataIndexStateMixin')('selectedIndex') 
+    require('../mixins/DataIndexStateMixin')('focusedIndex'),
+    require('../mixins/DataIndexStateMixin')('selectedIndex')
   ],
 
   propTypes: propTypes,
@@ -91,7 +92,7 @@ module.exports = React.createClass({
 
   shouldComponentUpdate: function(nextProps, nextState){
     var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
-      , stateChanged = !shallowEqual(nextState, this.state) 
+      , stateChanged = !shallowEqual(nextState, this.state)
       , valueChanged = !shallowEqual(nextProps, this.props)
 
     return isSuggesting || stateChanged || valueChanged
@@ -104,7 +105,7 @@ module.exports = React.createClass({
       , items = this.process(
           nextProps.data
         , nextProps.value
-        , (rawIdx === -1 || isSuggesting) && this._dataText(valueItem) ) 
+        , (rawIdx === -1 || isSuggesting) && this._dataText(valueItem) )
 
       , idx = this._dataIndexOf(items, nextProps.value)
       , focused = this.filterIndexOf(items, this._dataText(valueItem));
@@ -114,19 +115,19 @@ module.exports = React.createClass({
     this.setState({
       processedData:  items,
       selectedIndex:  idx,
-      focusedIndex:   idx === -1 
+      focusedIndex:   idx === -1
         ? focused !== -1 ? focused : 0 // focus the closest match
         : idx
     })
   },
 
-	render: function(){ 
+	render: function(){
 		var DropdownValue = this.props.valueComponent
       , valueItem = this._dataItem( this._data(), this.props.value )
       , items = this._data()
       , listID = this._id('_listbox')
       , optID  = this._id( '_option')
-      , completeType = this.props.suggest 
+      , completeType = this.props.suggest
           ? this.props.filter ? 'both' : 'inline'
           : this.props.filter ? 'list' : '';
 
@@ -134,7 +135,7 @@ module.exports = React.createClass({
       _.omit(this.props, _.keys(propTypes)),
 			<div ref="element"
            onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
            onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
@@ -146,10 +147,10 @@ module.exports = React.createClass({
               'rw-state-readonly':  this.props.readOnly,
               'rw-rtl':             this.isRtl()
             })}>
-        <btn 
+        <btn
           tabIndex='-1'
-          className='rw-select' 
-          onClick={this._maybeHandle(this.toggle)} 
+          className='rw-select'
+          onClick={this._maybeHandle(this.toggle)}
           disabled={!!(this.props.disabled || this.props.readOnly)}>
           <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
             <span className="rw-sr">{ this.props.messages.open }</span>
@@ -174,7 +175,7 @@ module.exports = React.createClass({
           onChange={this._inputTyping}
           onKeyDown={this._inputKeyDown}/>
 
-        <Popup open={this.state.open} onRequestClose={this.close} duration={this.props.duration}> 
+        <Popup open={this.state.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
               id={listID}
@@ -182,16 +183,16 @@ module.exports = React.createClass({
               aria-hidden={ !this.state.open }
               aria-live={ completeType && 'polite' }
               style={{ maxHeight: 200, height: 'auto' }}
-              data={items} 
+              data={items}
               selectedIndex={this.state.selectedIndex}
               focusedIndex={this.state.focusedIndex}
 
-              textField={this.props.textField} 
+              textField={this.props.textField}
               valueField={this.props.valueField}
               onSelect={this._maybeHandle(this._onSelect)}
               listItem={this.props.itemComponent}
               messages={{
-                emptyList: this.props.data.length 
+                emptyList: this.props.data.length
                   ? this.props.messages.emptyFilter
                   : this.props.messages.emptyList
               }}/>
@@ -206,7 +207,7 @@ module.exports = React.createClass({
       , changed = width !== this.state.width;
 
     if ( changed )
-      this.setState({ width: width })   
+      this.setState({ width: width })
   },
 
   _onSelect: function(data, idx, elem){
@@ -231,12 +232,12 @@ module.exports = React.createClass({
 
     suggestion = suggestion || strVal
 
-    data = _.find(self.props.data, function(item) { 
+    data = _.find(self.props.data, function(item) {
       return self._dataText(item).toLowerCase() === suggestion.toLowerCase()
     })
 
-    this.change(!this._deleting && data 
-      ? data 
+    this.change(!this._deleting && data
+      ? data
       : strVal, true)
 
     this.open()
@@ -267,28 +268,28 @@ module.exports = React.createClass({
       , isOpen = this.state.open
       , noselection = selectedIdx == null || selectedIdx === -1;
 
-    if ( key === 'End' ) 
+    if ( key === 'End' )
       select(this._data().length - 1)
-    
-    else if ( key === 'Home' ) 
+
+    else if ( key === 'Home' )
       select(0)
 
     else if ( key === 'Escape' && isOpen )
       this.close()
-    
+
     else if ( key === 'Enter' && isOpen ) {
       select(focusedIdx)
       this.close()
     }
 
     else if ( key === 'ArrowDown' ) {
-      if ( alt ) 
+      if ( alt )
         this.open()
       else {
         if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
         else select(this.nextSelectedIndex())
       }
-    } 
+    }
     else if ( key === 'ArrowUp' ) {
       if ( alt )
         this.close()
@@ -299,7 +300,7 @@ module.exports = React.createClass({
     }
 
     function select(idx) {
-      if( idx === -1 || self._data().length === 0) 
+      if( idx === -1 || self._data().length === 0)
         return self.change(self.refs.input.getDOMNode().value, false)
 
       self.refs.input.accept(true); //removes caret
@@ -308,11 +309,11 @@ module.exports = React.createClass({
   },
 
   change: function(data, typing){
-    var change = this.props.onChange 
+    var change = this.props.onChange
 
     this._typedChange = !!typing
 
-    if ( change ) change(data)  
+    if ( change ) change(data)
   },
 
   open: function(){
@@ -329,8 +330,8 @@ module.exports = React.createClass({
   toggle: function(e){
     this._focus(true)
 
-    this.state.open 
-      ? this.close() 
+    this.state.open
+      ? this.close()
       : this.open()
   },
 
@@ -340,8 +341,8 @@ module.exports = React.createClass({
       , suggestion = typeof value === 'string'
           ? _.find(data, finder, this)
           : value
- 
-    if ( suggestion && (!this.state || !this.state.deleting)) 
+
+    if ( suggestion && (!this.state || !this.state.deleting))
       return this._dataText(suggestion)
 
     return ''
@@ -353,19 +354,8 @@ module.exports = React.createClass({
     }
   },
 
-  _maybeHandle: function(handler, disabledOnly){
-    //console.log(!(this.props.disabled || (!disabledOnly &&this.props.readOnly)))
-    if ( !(this.props.disabled || (!disabledOnly &&this.props.readOnly)))
-      return handler
-  },
-
   _data: function(){
     return this.state.processedData
-  },
-
-  _id: function(suffix){
-    this._id_ || (this._id_ = _.uniqueId('rw_'))
-    return (this.props.id || this._id_)  + suffix
   },
 
   process: function(data, values, searchTerm){
@@ -380,16 +370,16 @@ function shallowEqual(objA, objB) {
   var key;
 
   if (objA === objB) return true;
-  
+
   // Test for A's keys different from B.
-  for (key in objA) 
+  for (key in objA)
     if (objA.hasOwnProperty(key) && (!objB.hasOwnProperty(key) || objA[key] !== objB[key]))
       return false;
-     
+
   // Test for B'a keys missing from A.
-  for (key in objB) 
-    if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key)) 
+  for (key in objB)
+    if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key))
       return false;
-    
+
   return true;
 }

@@ -17,7 +17,7 @@ var btn = require('../common/btn.jsx')
 
       culture:        React.PropTypes.string,
       format:         React.PropTypes.string,
-      
+
       parse:          React.PropTypes.oneOfType([
                         React.PropTypes.arrayOf(React.PropTypes.string),
                         React.PropTypes.string,
@@ -44,9 +44,10 @@ module.exports = React.createClass({
 
   displayName: 'NumberPicker',
 
-  mixins: [ 
+  mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/PureRenderMixin'),
-    require('../mixins/RtlParentContextMixin'),  
+    require('../mixins/RtlParentContextMixin'),
   ],
 
   propTypes: propTypes,
@@ -67,14 +68,14 @@ module.exports = React.createClass({
   },
 
   getInitialState: function(){
-    return { 
+    return {
       focused: false,
       active: false,
     }
   },
 
 
-  render: function(){ 
+  render: function(){
     var self = this
       , val = this.inRangeValue(this.props.value)
 
@@ -84,7 +85,7 @@ module.exports = React.createClass({
       _.omit(this.props, _.keys(propTypes)),
       <div ref="element"
            onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)} 
+           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
            onBlur ={_.partial(this._focus, false)}
            tabIndex="-1"
            className={cx({
@@ -97,22 +98,22 @@ module.exports = React.createClass({
             })}>
 
         <span className='rw-select'>
-          <btn 
+          <btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.UP})}
-            onMouseDown={this._maybeHandle(_.partial(self._mouseDown, directions.UP))} 
-            onMouseUp={this._maybeHandle(_.partial(this._mouseUp, directions.UP))} 
-            onClick={this._maybeHandle(_.partial(this._focus, true))} 
+            onMouseDown={this._maybeHandle(_.partial(self._mouseDown, directions.UP))}
+            onMouseUp={this._maybeHandle(_.partial(this._mouseUp, directions.UP))}
+            onClick={this._maybeHandle(_.partial(this._focus, true))}
             disabled={val === this.props.max || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
 
             <i className="rw-i rw-i-caret-up"><span className="rw-sr">{ this.props.messages.increment }</span></i>
           </btn>
-          <btn 
+          <btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
-            onMouseDown={this._maybeHandle(_.partial(self._mouseDown, directions.DOWN))} 
-            onMouseUp={this._maybeHandle(_.partial(this._mouseUp, directions.DOWN))} 
+            onMouseDown={this._maybeHandle(_.partial(self._mouseDown, directions.DOWN))}
+            onMouseUp={this._maybeHandle(_.partial(this._mouseUp, directions.DOWN))}
             onClick={this._maybeHandle(_.partial(this._focus, true))}
             disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
@@ -142,21 +143,21 @@ module.exports = React.createClass({
   //allow for styling, focus stealing keeping me from the normal what have you
   _mouseDown: function(dir) {
     var self = this
-      , val = dir === directions.UP 
+      , val = dir === directions.UP
         ? (this.props.value || 0) + this.props.step
-        : (this.props.value || 0) - this.props.step 
-    
+        : (this.props.value || 0) - this.props.step
+
     val = this.inRangeValue(val)
 
     this.setState({ active: dir })
     this.change(val);
 
-    if( !((dir === directions.UP && val === this.props.max) 
+    if( !((dir === directions.UP && val === this.props.max)
       || (dir === directions.DOWN && val === this.props.min)))
     {
       if(!this.interval)
         this.interval = setInterval(this._mouseDown, 500, dir)
-    } 
+    }
     else
       this._mouseUp()
   },
@@ -186,10 +187,10 @@ module.exports = React.createClass({
   _keyDown: function(e){
     var key = e.key;
 
-    if ( key === 'End'  && _.isFinite(this.props.max)) 
+    if ( key === 'End'  && _.isFinite(this.props.max))
       this.change(this.props.max)
-    
-    else if ( key === 'Home' && _.isFinite(this.props.min)) 
+
+    else if ( key === 'Home' && _.isFinite(this.props.min))
       this.change(this.props.min)
 
     else if ( key === 'ArrowDown' ){
@@ -203,11 +204,6 @@ module.exports = React.createClass({
 
   },
 
-  _maybeHandle: function(handler, disabledOnly){
-    if ( !(this.props.disabled || (!disabledOnly &&this.props.readOnly)))
-      return handler
-  },
-
   increment: function() {
     this.change(this.inRangeValue((this.props.value || 0) + this.props.step))
   },
@@ -217,26 +213,22 @@ module.exports = React.createClass({
   },
 
   change: function(val){
-    var change = this.props.onChange 
-    
+    var change = this.props.onChange
+
     val = this.inRangeValue(val)
 
-    if ( change && this.props.value !== val ) 
+    if ( change && this.props.value !== val )
       change(val)
   },
 
   inRangeValue: function(value){
-    if( !_.isFinite(this.props.min) && value == null || value === '' ) 
+    if( !_.isFinite(this.props.min) && value == null || value === '' )
       return value
 
     return Math.max(
         Math.min(value, this.props.max)
       , this.props.min)
-  },
-  
-  _id: function(suffix){
-    this._id_ || (this._id_ = _.uniqueId('rw_'))
-    return (this.props.id || this._id_)  + suffix
-  },
+  }
+
 })
 

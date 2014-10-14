@@ -54,6 +54,7 @@ module.exports = React.createClass({
   displayName: 'DateTimePicker',
 
   mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/PureRenderMixin'),
     require('../mixins/RtlParentContextMixin')
   ],
@@ -206,7 +207,7 @@ module.exports = React.createClass({
 
     if( change ) {
       if( date == null || this.props.value == null){
-        if( date != this.props.value ) 
+        if( date != this.props.value )
           change(date, str)
       }
       else if (!dates.eq(date, this.props.value))
@@ -298,22 +299,12 @@ module.exports = React.createClass({
       : this.open(view)
   },
 
-  _maybeHandle: function(handler, disabledOnly){
-    if ( !(this.props.disabled || (!disabledOnly &&this.props.readOnly)))
-      return handler
-  },
-
   open: function(view){
     this.setState({ open: true, openPopup: view })
   },
 
   close: function(){
     this.setState({ open: false })
-  },
-
-  _id: function(suffix){
-    this._id_ || (this._id_ = _.uniqueId('rw_'))
-    return (this.props.id || this._id_)  + suffix
   },
 
   inRangeValue: function(value){

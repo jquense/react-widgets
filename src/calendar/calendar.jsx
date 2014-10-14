@@ -46,6 +46,7 @@ module.exports = React.createClass({
   displayName: 'Calendar',
 
   mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/PureRenderMixin'),
     require('../mixins/RtlParentContextMixin')
   ],
@@ -278,18 +279,6 @@ module.exports = React.createClass({
     else if ( view === 'century')
       return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR)
         + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
-  },
-
-  _maybeHandle: function(handler, disabledOnly){
-    if ( !(this.props.disabled || (!disabledOnly && this.props.readOnly)))
-      return handler
-
-    return _.noop
-  },
-
-   _id: function(suffix) {
-    this._id_ || (this._id_ = _.uniqueId('rw_'))
-    return (this.props.id || this._id_)  + suffix
   },
 
   inRangeValue: function(value){
