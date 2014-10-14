@@ -17,6 +17,7 @@ module.exports = React.createClass({
   displayName: 'CenturyView',
 
   mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/PureRenderMixin'),
     require('../mixins/RtlChildContextMixin'),
     require('../mixins/DateFocusMixin')('century', 'decade')
@@ -37,7 +38,7 @@ module.exports = React.createClass({
     return mergeIntoProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
       <table tabIndex={this.props.disabled ? '-1' : "0"}
-        role='grid' 
+        role='grid'
         className='rw-calendar-grid rw-nav-view'
         aria-activedescendant={this._id('_selected_item')}
         onKeyUp={this._keyUp}>
@@ -48,14 +49,9 @@ module.exports = React.createClass({
     )
   },
 
-  _id: function(suffix){
-    this._id_ || (this._id_ = _.uniqueId('rw_'))
-    return (this.props.id || this._id_)  + suffix
-  },
-
   _row: function(row, i){
 
-      
+
     return (
       <tr key={'row_' + i}>
       {_.map(row, (date, i) => {
@@ -64,16 +60,16 @@ module.exports = React.createClass({
           , id = this._id('_selected_item')
           , d  = inRangeDate(date, this.props.min, this.props.max);
 
-        return !inRange(date, this.props.min, this.props.max) 
+        return !inRange(date, this.props.min, this.props.max)
           ? <td key={i} className='rw-empty-cell'>&nbsp;</td>
           : (<td key={i}>
-              <btn onClick={_.partial(this.props.onChange, d)} 
+              <btn onClick={_.partial(this.props.onChange, d)}
                 tabIndex='-1'
                 id={ focused ? id : undefined }
                 aria-selected={selected}
                 aria-disabled={this.props.disabled}
                 disabled={this.props.disabled}
-                className={cx({ 
+                className={cx({
                   'rw-off-range':       !inCentury(date, this.props.value),
                   'rw-state-focus':     focused,
                   'rw-state-selected':  selected,
@@ -108,21 +104,21 @@ module.exports = React.createClass({
 });
 
 function label(date){
-  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR) 
+  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
     + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
 }
 
 function inRangeDate(decade, min, max){
-  return dates.max( dates.min(decade, max), min) 
+  return dates.max( dates.min(decade, max), min)
 }
 
 function inRange(decade, min, max){
-  return dates.gte(decade, dates.startOf(min, 'decade'), 'year') 
+  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
       && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
 }
 
 function inCentury(date, start){
-  return dates.gte(date, dates.startOf(start, 'century'), 'year') 
+  return dates.gte(date, dates.startOf(start, 'century'), 'year')
       && dates.lte(date, dates.endOf(start, 'century'),  'year')
 }
 

@@ -18,6 +18,7 @@ module.exports = React.createClass({
   displayName: 'MonthView',
 
   mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/RtlChildContextMixin'),
     require('../mixins/DateFocusMixin')('month', 'day'),
   ],
@@ -45,7 +46,7 @@ module.exports = React.createClass({
       <table
         role='grid'
         tabIndex={this.props.disabled ? '-1' : "0"}
-        className='rw-calendar-grid' 
+        className='rw-calendar-grid'
         aria-activedescendant={this._id('_selected_item')}
         onKeyUp={this._keyUp}>
         <thead>
@@ -60,7 +61,7 @@ module.exports = React.createClass({
 
   _row: function(row, i){
     return (
-      <tr key={'week_' + i}>{ 
+      <tr key={'week_' + i}>{
       _.map(row, (day, idx) => {
         var focused  = dates.eq(day, this.state.focusedDate, 'day')
           , selected = dates.eq(day, this.props.selectedDate, 'day')
@@ -69,13 +70,13 @@ module.exports = React.createClass({
         return !dates.inRange(day, this.props.min, this.props.max)
             ? <td  key={'day_' + idx} className='rw-empty-cell'>&nbsp;</td>
             : (<td key={'day_' + idx} >
-                <btn 
+                <btn
                   tabIndex='-1'
-                  onClick={_.partial(this.props.onChange, day)} 
+                  onClick={_.partial(this.props.onChange, day)}
                   aria-selected={selected}
                   aria-disabled={this.props.disabled}
                   disabled={this.props.disabled}
-                  className={cx({ 
+                  className={cx({
                     'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
                     'rw-state-focus':    focused,
                     'rw-state-selected': selected,
@@ -103,7 +104,7 @@ module.exports = React.createClass({
   move: function(date, direction){
     if ( this.isRtl() && opposite[direction])
       direction =  opposite[direction]
-    
+
     if ( direction === directions.LEFT)
       date = dates.subtract(date, 1, 'day')
 
@@ -117,13 +118,7 @@ module.exports = React.createClass({
       date = dates.add(date, 1, 'week')
 
     return date
-  },
-
-  _id: function(suffix){
-    this._id_ || (this._id_ = _.uniqueId('rw_'))
-    return (this.props.id || this._id_)  + suffix
-  },
-
+  }
 
 });
 

@@ -55,6 +55,7 @@ module.exports = React.createClass({
   displayName: 'DropdownList',
 
   mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/PureRenderMixin'),
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataHelpersMixin'),
@@ -252,11 +253,6 @@ module.exports = React.createClass({
     return this.props.data
   },
 
-  _maybeHandle: function(handler, disabledOnly){
-    if ( !(this.props.disabled || (!disabledOnly && this.props.readOnly)))
-      return handler
-  },
-
   open: function(){
     this.props.onToggle
       && this.props.onToggle(true)
@@ -271,10 +267,6 @@ module.exports = React.createClass({
     this.props.open
       ? this.close()
       : this.open()
-  },
-
-  _id: function(suffix){
-    return (_id || (_id = (this.props.id || _.uniqueId('rw_'))))  + suffix
   }
 
 })

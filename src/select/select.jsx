@@ -50,8 +50,9 @@ module.exports = React.createClass({
   displayName: 'Select',
 
   mixins: [
-    require('../mixins/DataHelpersMixin'),
+    require('../mixins/WidgetMixin'),
     require('../mixins/DataFilterMixin'),
+    require('../mixins/DataHelpersMixin'),
     require('../mixins/RtlParentContextMixin'),
     require('../mixins/DataIndexStateMixin')('focusedIndex')
   ],
@@ -313,16 +314,7 @@ module.exports = React.createClass({
     return (this.props.value || []).length
       ? ''
       : (this.props.placeholder || '')
-  },
-
-  _maybeHandle: function(handler, disabledOnly){
-    if ( !(this.props.disabled === true || (!disabledOnly && this.props.readOnly === true)))
-      return handler
-  },
-
-  _id: function(suffix){
-    this._id_ || (this._id_ = _.uniqueId('rw_'))
-    return (this.props.id || this._id_)  + suffix
   }
+
 })
 

@@ -17,6 +17,7 @@ module.exports = React.createClass({
   displayName: 'DecadeView',
 
   mixins: [
+    require('../mixins/WidgetMixin'),
     require('../mixins/PureRenderMixin'),
     require('../mixins/RtlChildContextMixin'),
     require('../mixins/DateFocusMixin')('decade', 'year')
@@ -35,10 +36,10 @@ module.exports = React.createClass({
 
     return mergeIntoProps(
       _.omit(this.props, 'max', 'min', 'value', 'onChange'),
-      <table 
+      <table
         tabIndex={this.props.disabled ? '-1' : "0"}
-        role='grid' 
-        className='rw-calendar-grid rw-nav-view' 
+        role='grid'
+        className='rw-calendar-grid rw-nav-view'
         aria-activedescendant={this._id('_selected_item')}
         onKeyUp={this._keyUp}>
 
@@ -49,14 +50,9 @@ module.exports = React.createClass({
     )
   },
 
-  _id: function(suffix){
-    this._id_ || (this._id_ = _.uniqueId('rw_'))
-    return (this.props.id || this._id_)  + suffix
-  },
-
   _row: function(row, i){
     var id = this._id('_selected_item')
-  
+
     return (
       <tr key={'row_' + i}>
       {_.map(row, (date, i) => {
@@ -64,7 +60,7 @@ module.exports = React.createClass({
           , selected = dates.eq(date, this.props.value,  'year')
           , id = this.props.id && this.props.id + '_selected_item';
 
-        return !dates.inRange(date, this.props.min, this.props.max, 'year') 
+        return !dates.inRange(date, this.props.min, this.props.max, 'year')
           ? <td key={i} className='rw-empty-cell'>&nbsp;</td>
           : (<td key={i}>
               <btn onClick={_.partial(this.props.onChange, date)} tabIndex='-1'
@@ -72,7 +68,7 @@ module.exports = React.createClass({
                 aria-selected={selected}
                 aria-disabled={this.props.disabled}
                 disabled={this.props.disabled}
-                className={cx({ 
+                className={cx({
                   'rw-off-range':      !inDecade(date, this.props.value),
                   'rw-state-focus':    focused,
                   'rw-state-selected': selected,
@@ -106,7 +102,7 @@ module.exports = React.createClass({
 });
 
 function inDecade(date, start){
-  return dates.gte(date, dates.startOf(start, 'decade'), 'year') 
+  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
       && dates.lte(date, dates.endOf(start,'decade'),  'year')
 }
 
