@@ -2,7 +2,7 @@ var React = require('react')
   , _ = require('lodash')
   , cx = require('../util/cx')
   , setter = require('../util/stateSetter')
-  , compose = require('../util/compose')
+  , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
   , DefaultValueItem = require('./value-item.jsx')
@@ -10,13 +10,7 @@ var React = require('react')
   , List  = require('../common/list.jsx')
   , $     = require('../util/dom');
 
-var btn = require('../common/btn.jsx')
-  , ifShouldUpdate = compose.provided(function(props){
-      return !_.isEqual(props.value, this.props.value)
-    })
-  , ifValueChanges = compose.provided(function(data){
-      return !_.isEqual(data, this.props.value)
-    });
+var btn = require('../common/btn.jsx');
 
 var propTypes = {
   //main input interface
@@ -50,7 +44,7 @@ var propTypes = {
   })
 };
 
-module.exports = React.createClass({
+var DropdownList = React.createClass({
 
   displayName: 'DropdownList',
 
@@ -86,12 +80,15 @@ module.exports = React.createClass({
     }
   },
 
-  componentWillReceiveProps: ifShouldUpdate(function(props){
+  componentWillReceiveProps: function(props){
+    if (_.isEqual(props.value, this.props.value))
+      return
+
     var idx = this._dataIndexOf(props.data, props.value);
 
     this.setSelectedIndex(idx)
     this.setFocusedIndex(idx === -1 ? 0 : idx)
-  }),
+  },
 
   // componentDidUpdate: function(){
   //   if( this.state.open)
@@ -232,13 +229,14 @@ module.exports = React.createClass({
     }
   },
 
-  change: ifValueChanges(function(data){
+  change: function(data){
     var change = this.props.onChange
-    if ( change ) {
+
+    if ( change && !_.isEqual(data, this.props.value) ) {
       change(data)
       this.close()
     }
-  }),
+  },
 
   _locate: function(word){
     var key = this.props.open ? 'focusedIndex' : 'selectedIndex'
@@ -271,4 +269,9 @@ module.exports = React.createClass({
 
 })
 
-var _id =''
+
+module.exports = controlledInput.createControlledClass(
+    'DropDownList'
+  , DropdownList
+  , { open: 'onToggle', value: 'onChange' }
+  , { open: false,      value: '' });

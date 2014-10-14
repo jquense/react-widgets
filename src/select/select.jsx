@@ -3,6 +3,7 @@ var React = require('react')
   , cx = require('../util/cx')
   , _     =  require('lodash')
   , $     =  require('../util/dom')
+  , controlledInput  = require('../util/controlledInput')
   , directions = require('../util/constants').directions
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , SelectInput = require('./search-input.jsx')
@@ -45,7 +46,7 @@ var btn = require('../common/btn.jsx')
       })
     };
 
-module.exports = React.createClass({
+var Select = React.createClass({
 
   displayName: 'Select',
 
@@ -90,7 +91,7 @@ module.exports = React.createClass({
       , items = this.process(
           nextProps.data
         , nextProps.value
-        , this.nextProps.searchTerm)
+        , nextProps.searchTerm)
 
     this.setState({
       //searchTerm: '',
@@ -121,7 +122,7 @@ module.exports = React.createClass({
               'rw-state-focus':    this.state.focused,
               'rw-state-disabled': this.props.disabled === true,
               'rw-state-readonly':  this.props.readOnly === true,
-              'rw-open':           this.state.open,
+              'rw-open':           this.props.open,
               'rw-rtl':            this.isRtl()
             })}>
         <div className='rw-select-wrapper' onClick={this._maybeHandle(this._click)}>
@@ -139,24 +140,24 @@ module.exports = React.createClass({
             onDelete={this._delete}/>
           <SelectInput
             ref='input'
-            aria-activedescendent={ this.state.open ? optID : undefined }
-            aria-expanded={ this.state.open }
+            aria-activedescendent={ this.props.open ? optID : undefined }
+            aria-expanded={ this.props.open }
             aria-busy={!!this.props.busy}
             aria-owns={listID}
             aria-haspopup={true}
-            value={this.state.searchTerm}
+            value={this.props.searchTerm}
             disabled={this.props.disabled === true}
             readOnly={this.props.readOnly === true}
             placeholder={this._placeholder()}
             onChange={this._typing}/>
         </div>
-        <Popup open={this.state.open} onRequestClose={this.close} duration={this.props.duration}>
+        <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
               id={listID}
               optID={optID}
               aria-autocomplete='list'
-              aria-hidden={ !this.state.open }
+              aria-hidden={ !this.props.open }
               style={{ maxHeight: 200, height: 'auto' }}
               data={items}
               textField={this.props.textField}
@@ -187,7 +188,7 @@ module.exports = React.createClass({
 
   _click: function(e){
     this._focus(true)
-    !this.state.open && this.open()
+    !this.props.open && this.open()
   },
 
   _focus: function(focused, e){
@@ -211,16 +212,9 @@ module.exports = React.createClass({
   },
 
   _typing: function(e){
-    var items = this.process(this.props.data, this.props.value, e.target.value);
-
-    this.setState({
-      searchTerm: e.target.value,
-      processedData: items,
-      open: this.state.open || (this.state.open === false),
-      focusedIndex: items.length >= this.state.focusedIndex
-        ? 0
-        : this.state.focusedIndex
-    })
+    this.props.onSearch
+      && this.props.onSearch(e.target.value)
+    this.open()
   },
 
   _onSelect: function(data){
@@ -235,8 +229,8 @@ module.exports = React.createClass({
   _keyDown: function(e){
     var key = e.key
       , alt = e.altKey
-      , searching = !!this.state.searchTerm
-      , isOpen = this.state.open;
+      , searching = !!this.props.searchTerm
+      , isOpen = this.props.open;
 
     if ( key === 'ArrowDown') {
       if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
@@ -276,22 +270,22 @@ module.exports = React.createClass({
 
   change: function(data){
     var change = this.props.onChange
-
-    if ( change )
-      change(data)
+    if ( change ) change(data)
   },
 
   open: function(){
     if (!(this.props.disabled === true || this.props.readOnly === true))
-      this.setState({ open: true })
+      this.props.onToggle
+        && this.props.onToggle(true)
   },
 
   close: function(){
-    this.setState({ open: false })
+    this.props.onToggle
+      && this.props.onToggle(false)
   },
 
   toggle: function(e){
-    this.state.open
+    this.props.open
       ? this.close()
       : this.open()
   },
@@ -318,3 +312,9 @@ module.exports = React.createClass({
 
 })
 
+
+module.exports = controlledInput.createControlledClass(
+    'Select'
+  , Select
+  , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
+  , { open: false,      value: null,         searchTerm: '' });

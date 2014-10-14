@@ -1,6 +1,6 @@
 var React = require('react/addons')
 var Widgets = require('../index')
-var DropdownList = require('../src/controlled/DropdownList.jsx')
+var DropdownList = require('../src/dropdowns/dropdown-list.jsx')
 var Select = require('../src/select/select.jsx')
 var Calendar = require('../src/calendar/calendar.jsx')
 var DatePicker = require('../src/pickers/datepicker.jsx')
@@ -92,10 +92,10 @@ var App = React.createClass({
 							textField='name'
 							valueField='id'
 							value={ this.state.selectValues }
+							onChange={change.bind(null, 'selectValues')}
 							busy={false}
 							tagComponent={ListItem}
-							itemComponent={ListItem}
-							onChange={change.bind(null, 'selectValues')}/>
+							itemComponent={ListItem}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
 						<DatePicker
