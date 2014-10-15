@@ -217,7 +217,7 @@ module.exports = React.createClass({
 
   change: function(date){
     if ( this.props.onChange && this.state.view === this.props.initialView)
-      return this.props.onChange(date)
+      return this.notify('onChange', date)
 
     this.navigate(DOWN, date)
   },
