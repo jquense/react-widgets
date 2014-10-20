@@ -129,15 +129,17 @@ module.exports = React.createClass({
           { this.props.busy &&
             <i className="rw-i rw-loading"></i>
           }
-          <TagList
-            ref='tagList'
-            value={values}
-            textField={this.props.textField}
-            valueField={this.props.valueField}
-            valueComponent={this.props.tagComponent}
-            disabled={this.props.disabled}
-            readOnly={this.props.readOnly}
-            onDelete={this._delete}/>
+          { !!values.length &&
+            <TagList
+              ref='tagList'
+              value={values}
+              textField={this.props.textField}
+              valueField={this.props.valueField}
+              valueComponent={this.props.tagComponent}
+              disabled={this.props.disabled}
+              readOnly={this.props.readOnly}
+              onDelete={this._delete}/>
+          }
           <SelectInput
             ref='input'
             aria-activedescendent={ this.state.open ? optID : undefined }
@@ -203,7 +205,7 @@ module.exports = React.createClass({
       if(focused) self.refs.input.focus()
       else        {
         self.close()
-        self.refs.tagList.clear()
+        self.refs.tagList && self.refs.tagList.clear()
       }
 
       if( focused !== self.state.focused)
