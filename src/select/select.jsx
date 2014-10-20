@@ -239,7 +239,8 @@ module.exports = React.createClass({
     var key = e.key
       , alt = e.altKey
       , searching = !!this.state.searchTerm
-      , isOpen = this.state.open;
+      , isOpen  = this.state.open
+      , tagList = this.refs.tagList;
 
     if ( key === 'ArrowDown') {
       if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
@@ -252,11 +253,11 @@ module.exports = React.createClass({
     }
     else if ( key === 'End'){
       if ( isOpen ) this.setFocusedIndex(this._data().length - 1)
-      else          this.refs.tagList.last()
+      else          tagList && tagList.last()
     }
     else if (  key === 'Home'){
       if ( isOpen ) this.setFocusedIndex(0)
-      else          this.refs.tagList.first()
+      else          tagList && tagList.first()
     }
     else if ( isOpen && key === 'Enter' )
       this._onSelect(this._data()[this.state.focusedIndex])
@@ -265,16 +266,16 @@ module.exports = React.createClass({
       isOpen ? this.close() : this.refs.tagList.clear()
 
     else if ( !searching && key === 'ArrowLeft')
-      this.refs.tagList.prev()
+     tagList && tagList.prev()
 
     else if ( !searching && key === 'ArrowRight')
-      this.refs.tagList.next()
+      tagList && tagList.next()
 
     else if ( !searching && key === 'Delete')
-      this.refs.tagList.removeCurrent()
+      tagList && tagList.removeCurrent()
 
     else if ( !searching && key === 'Backspace')
-      this.refs.tagList.removeNext()
+      tagList && tagList.removeNext()
   },
 
   change: function(data){

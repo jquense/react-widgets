@@ -37,13 +37,13 @@ var App = React.createClass({
 
 	render: function(){
 		var self = this;
-		
+
 		function change(field, data) {
 			var obj = {}
 
 			if(field === 'selectValues')
 				data = _.pluck(data, 'id')
-			
+
 			obj[field] = _.has(data, 'id') ? data.id : data
 
 			self.setState(obj)
@@ -54,54 +54,54 @@ var App = React.createClass({
 			<div style={{ fontSize: 14 }}>
 				<div style={{ maxWidth: 600 }}>
 					<section className="example" style={{ marginBottom: 20 }}>
-						<DropdownList 
+						<DropdownList
 							isRtl={false}
 							id='MyDropdownList'
-							data={ this.state.data } 
+							data={ this.state.data }
 							textField='name'
 							valueField='id'
 							initialBufferSize={10}
 							busy={false}
 							disabled={true}
-							value={this.state.dropdownValue} 
+							value={this.state.dropdownValue}
 							onChange={change.bind(null, 'dropdownValue')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
-						<Calendar 
-							
-							value={ new Date } 
+						<Calendar
+
+							value={ new Date }
 							onChange={change.bind(null, 'calValue')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
-					<ComboBox 
+					<ComboBox
 							isRtl={true}
-							data={ this.state.suggestdata } 
+							data={ this.state.suggestdata }
 							textField='name'
 							valueField='id'
 							filter={'startsWith'}
 							suggest={true}
 							busy={false}
 							disabled={false}
-							value={ this.state.comboboxValue} 
+							value={ this.state.comboboxValue}
 							onChange={change.bind(null, 'comboboxValue')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
-						<Select 
+						<Select
 							isRtl={false}
-							data={ this.state.data } 
+							data={ this.state.data }
 							placeholder="hi i am a placeholder"
 							textField='name'
 							valueField='id'
-							value={ this.state.selectValues } 
+							value={ this.state.selectValues }
 							busy={false}
 							tagComponent={ListItem}
 							itemComponent={ListItem}
 							onChange={change.bind(null, 'selectValues')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
-						<DatePicker 
+						<DatePicker
 							isRtl={false}
-							id='swweeeeet' 
+							id='swweeeeet'
 							value={this.state.calDate}
 							time={false}
 							format='MM/dd/yy'
@@ -110,10 +110,10 @@ var App = React.createClass({
 							onChange={change.bind(null, 'calDate')}/>
 					</section>
 					<section className="example" style={{ marginBottom: 20 }}>
-						<NumberPicker id='AwesomeNumPicker' 
-							isRtl={false} 
+						<NumberPicker id='AwesomeNumPicker'
+							isRtl={false}
 							format="D"
-							value={this.state.numberValue} 			
+							value={this.state.numberValue}
 							onChange={change.bind(null, 'numberValue')}/>
 					</section>
 				</div>
@@ -140,7 +140,7 @@ React.renderComponent(
 	, document.body);
 
 
-				
+
 function generateList(){
 	var arr = new Array(100)
 
@@ -165,48 +165,48 @@ function suggestList(){
 	]
 }
 // <section className="example" style={{ marginBottom: 20 }}>
-// 						<Calendar 
+// 						<Calendar
 // 							id='Calendar'
-// 							value={ new Date } 
+// 							value={ new Date }
 // 							onChange={change.bind(null, 'calValue')}/>
 // 					</section>
 // 					<section className="example" style={{ marginBottom: 20 }}>
-// 					<ComboBox 
+// 					<ComboBox
 // 							isRtl={false}
-// 							data={ this.state.data } 
+// 							data={ this.state.data }
 // 							textField='name'
 // 							valueField='id'
 // 							suggest={true}
 // 							busy={true}
-// 							value={ this.state.comboboxValue} 
+// 							value={ this.state.comboboxValue}
 // 							onChange={change.bind(null, 'comboboxValue')}/>
 // 					</section>
 // 					<section className="example" style={{ marginBottom: 20 }}>
-// 						<Select 
+// 						<Select
 // 							isRtl={false}
-// 							data={ this.state.data } 
+// 							data={ this.state.data }
 // 							placeholder="hi i am a placeholder"
 // 							textField='name'
 // 							valueField='id'
-// 							value={ this.state.selectValues } 
+// 							value={ this.state.selectValues }
 // 							busy={true}
 // 							tagComponent={ListItem}
 // 							itemComponent={ListItem}
 // 							onChange={change.bind(null, 'selectValues')}/>
 // 					</section>
 // 					<section className="example" style={{ marginBottom: 20 }}>
-// 						<DatePicker 
-// 							id='AwesomeDatePicker' 
-// 							isRtl={false} 
-// 							value={this.state.calDate} 
+// 						<DatePicker
+// 							id='AwesomeDatePicker'
+// 							isRtl={false}
+// 							value={this.state.calDate}
 // 							onChange={change.bind(null, 'calDate')}/>
 // 					</section>
 // 					<section className="example" style={{ marginBottom: 20 }}>
-// 						<NumberPicker id='AwesomeNumPicker' 
-// 							isRtl={false} 
+// 						<NumberPicker id='AwesomeNumPicker'
+// 							isRtl={false}
 // 							min={0}
 // 							max={5}
 // 							format="c"
-// 							value={this.state.numberValue} 
+// 							value={this.state.numberValue}
 // 							onChange={change.bind(null, 'numberValue')}/>
 // 					</section>
