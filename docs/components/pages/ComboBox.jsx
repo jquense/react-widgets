@@ -43,6 +43,7 @@ var ComboBox = React.createClass({
         <ComboBoxExample/>
         <Example code={
           "render: function(){\n"+
+          "  var Combobox = require('react-widgets').Combobox\n"+
           "  //... \n\n" +
           "  return (\n"+
           "    <Combobox \n"+
@@ -68,31 +69,31 @@ var ComboBox = React.createClass({
         <h3 className='prop-header' id={ prefix +"value" }>
           value <small>mixed</small></h3>
         <p>
-          The current value of the Combobox. This can be an object (such as a member of the <code>data</code> array) 
-          or a primitive value, hinted to by the <code>valueField</code>. The widget value does not need to be in 
+          The current value of the Combobox. This can be an object (such as a member of the <code>data</code> array)
+          or a primitive value, hinted to by the <code>valueField</code>. The widget value does not need to be in
           the <code>data</code>, widgets can have values that are not in their list.
         </p>
 
         <h3 className='prop-header' id={ prefix +"onChange" }>
           onChange <small>{"function ( value )"}</small></h3>
         <p>
-          change event Handler that is called when the value is changed. If the value is on of 
-          the <code>data</code> members that item will be returned. In the case of a value not being found in 
+          change event Handler that is called when the value is changed. If the value is on of
+          the <code>data</code> members that item will be returned. In the case of a value not being found in
           the <code>data</code> array the string value of the combobox will be returned.
         </p>
 
         <h3 className='prop-header' id={ prefix +"data" }>
           data <small>Array - mixed</small></h3>
         <p>
-          provide an array of possible values for the combobox. If an array of <code>objects</code> is provided you 
-          should use  the <code>valueField</code> and <code>textField</code> props, to specify which object 
+          provide an array of possible values for the combobox. If an array of <code>objects</code> is provided you
+          should use  the <code>valueField</code> and <code>textField</code> props, to specify which object
           properties comprise the value field (such as an id) and the field used to label the item.
         </p>
 
         <h3 className='prop-header' id={ prefix +"valueField" }>
           valueField <small>String</small></h3>
         <p>
-          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided, 
+          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
           the widget will use strict equality checks to locate the data item, if it exists.
         </p>
 
@@ -106,19 +107,19 @@ var ComboBox = React.createClass({
         <h3 className='prop-header' id={ prefix +"itemComponent" }>
           itemComponent <small>Component</small></h3>
         <p>
-          This component is used to render each possible item in the dropdownlist. The default component 
+          This component is used to render each possible item in the dropdownlist. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 
         <h3 className='prop-header' id={ prefix +"suggest" }>
           suggest <small>Boolean</small></h3>
         <p>
-          When <code>true</code> the Combobox will suggest, or fill in, values as you type. The suggestions 
+          When <code>true</code> the Combobox will suggest, or fill in, values as you type. The suggestions
           are always "startsWith", meaning it will search from the start of the <code>textField</code> property
         </p>
 
         <h3 className='prop-header' id={ prefix +"filter" }>
-          
+
           filter <small>{'Mixed - false, "startsWith", "endsWith", "contains", function(item)'}</small>
           <span className='default'>false</span>
         </h3>
@@ -131,7 +132,7 @@ var ComboBox = React.createClass({
         <h3 className='prop-header' id={ prefix +"busy" }>
           busy <small>Boolean</small></h3>
         <p>
-          mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
+          mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful
           when loading data via an ajax call.
         </p>
         <h3 className='prop-header' id={ prefix +"duration" }>
@@ -149,7 +150,7 @@ var ComboBox = React.createClass({
         <h3 className='prop-header' id={ prefix +"messages" }>
           messages <small>Object</small></h3>
         <p>
-          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
+          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to
           localize widget text and increase accessibility.
         </p>
         <h3>messages.open <small>String</small> <span className='default'>"Open Combobox"</span></h3>

@@ -44,6 +44,7 @@ var Select = React.createClass({
         <SelectExample/>
         <Example code={
           "render: function(){\n"+
+          "  var Select = require('react-widgets').Select\n"+
           "  //... \n\n" +
           "  return (\n"+
           "    <Select \n"+
@@ -60,8 +61,8 @@ var Select = React.createClass({
         <h3 className='prop-header' id={ prefix +"value" }>
           value <small>Array - mixed</small></h3>
         <p>
-          The current values of the Select. The value should can <code>null</code>, or an array 
-          of <code>valieField</code> values, or an array of objects (such as a few items in the <code>data</code> array) 
+          The current values of the Select. The value should can <code>null</code>, or an array
+          of <code>valieField</code> values, or an array of objects (such as a few items in the <code>data</code> array)
         </p>
 
         <h3 className='prop-header' id={ prefix +"onChange" }>
@@ -69,42 +70,42 @@ var Select = React.createClass({
         <p>
           change event Handler that is called when the value is changed. The handler will return an array of values
         </p>
-        <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
+        <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget
         becomes readonly</span>
 
         <h3 className='prop-header' id={ prefix +"data" }>
           data <small>Array - mixed</small></h3>
         <p>
-          provide an array of possible values for the select. If an array of <code>objects</code> is provided you 
-          should use the <code>valueField</code> and <code>textField</code> props, to specify which object 
+          provide an array of possible values for the select. If an array of <code>objects</code> is provided you
+          should use the <code>valueField</code> and <code>textField</code> props, to specify which object
           properties comprise the value field (such as an id) and the field used to label the item.
         </p>
 
         <h3 className='prop-header' id={ prefix +"valueField" }>
           valueField <small>String</small></h3>
         <p>
-          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided, 
+          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
           the widget will use strict equality checks to locate the data item, if it exists.
         </p>
 
         <h3 className='prop-header' id={ prefix +"textField" }>
           textField <small>String</small></h3>
         <p>
-          This prop determines which data item field to display in the select list and selected item This prop is 
+          This prop determines which data item field to display in the select list and selected item This prop is
           unnecessary when an <code>itemComponent</code> and <code>tagComponent</code> are provided.
         </p>
 
         <h3 className='prop-header' id={ prefix +"tagComponent" }>
           tagComponent <small>Component</small></h3>
         <p>
-          This component is used to render each selected item. The default component 
+          This component is used to render each selected item. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 
         <h3 className='prop-header' id={ prefix +"itemComponent" }>
           itemComponent <small>Component</small></h3>
         <p>
-          This component is used to render each possible item in the list. The default component 
+          This component is used to render each possible item in the list. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 
@@ -117,7 +118,7 @@ var Select = React.createClass({
         <h3 className='prop-header' id={ prefix +"busy" }>
           busy <small>Boolean</small></h3>
         <p>
-          mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
+          mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful
           when loading data via an ajax call.
         </p>
         <h3 className='prop-header' id={ prefix +"duration" }>
@@ -147,7 +148,7 @@ var Select = React.createClass({
         <h3 className='prop-header' id={ prefix +"messages" }>
           messages <small>Object</small></h3>
         <p>
-          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
+          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to
           localize widget text and increase accessibility.
         </p>
 

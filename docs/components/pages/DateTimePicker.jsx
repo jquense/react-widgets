@@ -40,40 +40,41 @@ var DateTimePicker = React.createClass({
           </span>
         </h1>
         <p>
-          Datepicker widget. Allows you to {'set'} different parts of a javascript <code>Date</code> object. Since dates 
-          are <em>highly</em> localized we make use of the 
-          excellent <a target='_blank' href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468">Globalize.js</a> library 
-          internally to format and parse dates from Strings. It is up to you to {'set'} the culture via 
+          Datepicker widget. Allows you to {'set'} different parts of a javascript <code>Date</code> object. Since dates
+          are <em>highly</em> localized we make use of the
+          excellent <a target='_blank' href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468">Globalize.js</a> library
+          internally to format and parse dates from Strings. It is up to you to {'set'} the culture via
           the <code>Globalize.culture()</code> method. All format props expect Globalize compatible format string.
           <br/><br/>
           <strong>
-            Note: we expect a pre 1.0.0 version as  1.0 will dramatically change the Globalize API, once 1.0 is stable we 
+            Note: we expect a pre 1.0.0 version as  1.0 will dramatically change the Globalize API, once 1.0 is stable we
             will switch to it as well
           </strong>
         </p>
 
         <p>
-          Dates are never mutated but always return and operate on a new Date instance. When the <code>calendar</code> prop 
-          is {'set'} the widget takes all props vailable to the Calendar widget (see above), 
+          Dates are never mutated but always return and operate on a new Date instance. When the <code>calendar</code> prop
+          is {'set'} the widget takes all props vailable to the Calendar widget (see above),
           the same is true for the keyboard navigation!
         </p>
         <DatePickerExample/>
         <Example code={
           "render: function(){\n"+
+          "  var DateTimePicker = require('react-widgets').DateTimePicker\n"+
           "  //... \n\n" +
           "  return (\n"+
-          "    <DatePicker \n"+
+          "    <DateTimePicker \n"+
           "      value={this.state.value}\n"+
           "      onChange={this._change}/>\n"+
           "   \n"+
-          "    <DatePicker \n"+
+          "    <DateTimePicker \n"+
           "      ...\n"+
           "      time={false}\n"+
           "      format='MMM dd yyyy'\n"+
           "      min={new Date(2014, 0, 1)}\n"+
           "      max={new Date(2015, 12, 15)}/>\n"+
           "   \n"+
-          "    <DatePicker \n"+
+          "    <DateTimePicker \n"+
           "      ...\n"+
           "      calendar={false}\n"+
           "      format='H:mm tt'\n"+
@@ -91,8 +92,8 @@ var DateTimePicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"onChange" }>
           onChange <small>{'function ( date, stringDate )'}</small></h3>
         <p>
-          change event Handler that is called when the value is changed. The handler is called with both the 
-          current <code>Date</code> object (or null if it was not parseable), and the second argument is 
+          change event Handler that is called when the value is changed. The handler is called with both the
+          current <code>Date</code> object (or null if it was not parseable), and the second argument is
           a <code>string</code> representation of the date value, formated by the <code>format</code> prop.
         </p>
 
@@ -111,23 +112,23 @@ var DateTimePicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"min" }>
           min <small>Date</small></h3>
         <p>
-          The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that 
-          can be typed or pasted into the widget. If you need this behavior you can constrain values via 
+          The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that
+          can be typed or pasted into the widget. If you need this behavior you can constrain values via
           the <code>onChange</code> handler.
         </p>
 
         <h3 className='prop-header' id={ prefix +"max" }>
           max <small>Date</small></h3>
         <p>
-          The maximum Date that can be selected. Max only limits selection, it doesn't constrain the date values that 
-          can be typed or pasted into the widget. If you need this behavior you can constrain values via 
+          The maximum Date that can be selected. Max only limits selection, it doesn't constrain the date values that
+          can be typed or pasted into the widget. If you need this behavior you can constrain values via
           the <code>onChange</code> handler.
         </p>
 
         <h3 className='prop-header' id={ prefix +"format" }>
           format <small>String</small><span className='default'>"M/d/yyyy h:mm tt"</span></h3>
         <p>
-          A string format used to display the date value. For more information on prefined and custom formats 
+          A string format used to display the date value. For more information on prefined and custom formats
           visit the <a href='https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates'>
             Globalize.js documentation <i className="fa fa-external-link"></i>
           </a>
@@ -136,7 +137,7 @@ var DateTimePicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"parse" }>
           parse <small>Function, Array - Strings</small></h3>
         <p>
-          Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try, 
+          Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
           or provide a {'function'} that returns a date to handle parsing yourself
         </p>
         <h3 className='prop-header' id={ prefix +"initialView" }>
@@ -167,7 +168,7 @@ var DateTimePicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"messages" }>
           messages <small>Object</small></h3>
         <p>
-          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
+          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to
           localize widget text and increase accessibility.
         </p>
         <h3>messages.calendarButton <small>String</small><span className='default'>"Select Date"</span></h3>

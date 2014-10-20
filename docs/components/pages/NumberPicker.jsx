@@ -41,6 +41,7 @@ var NumberPicker = React.createClass({
         <NumberPickerExample/>
         <Example code={
           "render: function(){\n"+
+          "  var NumberPicker = require('react-widgets').NumberPicker\n"+
           "  //... \n\n" +
           "  return (\n"+
           "    <NumberPicker \n"+
@@ -64,14 +65,14 @@ var NumberPicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"onChange" }>
           onChange <small>{"function ( selectedValue )"}</small></h3>
         <p>
-          change event Handler that is called when the value is changed. The handler is called with the 
+          change event Handler that is called when the value is changed. The handler is called with the
           current numeric value or null.
         </p>
 
         <h3 className='prop-header' id={ prefix +"format" }>
           format <small>String</small><span className='default'>"d"</span></h3>
         <p>
-          A format string used to display the number value. For more information on prefined and custom number and 
+          A format string used to display the number value. For more information on prefined and custom number and
           currency formats visit the&nbsp;
           <a href='https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#number-formatting'>
             Globalize.js documentation <i className="fa fa-external-link"></i>
@@ -106,7 +107,7 @@ var NumberPicker = React.createClass({
         <h3 className='prop-header' id={ prefix +"messages" }>
           messages <small>Object</small></h3>
         <p>
-          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
+          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to
           localize widget text and increase accessibility.
         </p>
         <h3>messages.increment <small>String</small> <span className='default'>"increment value"</span></h3>

@@ -40,6 +40,7 @@ var Calendar = React.createClass({
         <CalendarExample/>
         <Example code={
           "render: function(){\n"+
+          "  var Calendar = require('react-widgets').Calendar\n"+
           "  //... \n\n" +
           "  return (\n"+
           "    <Calendar \n"+
@@ -85,7 +86,7 @@ var Calendar = React.createClass({
         </p>
 
         <h3 className='prop-header' id={ prefix +"initialView" }>
-          
+
           initialView <small>One of - "month", "year", "decade", "century"</small>
           <span className='default'>"month"</span>
         </h3>
@@ -98,7 +99,7 @@ var Calendar = React.createClass({
           <span className='default'>"century"</span>
         </h3>
         <p>
-          The highest level view the calendar can navigate up to. This value should be higher 
+          The highest level view the calendar can navigate up to. This value should be higher
           than <code>initialView</code>
         </p>
 
@@ -112,7 +113,7 @@ var Calendar = React.createClass({
         <h3 className='prop-header' id={ prefix +"messages" }>
           messages <small>Object</small></h3>
         <p>
-          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
+          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to
           localize widget text and increase accessibility.
         </p>
         <h3>messages.moveBack <small>String</small><span className='default'>"navigate back"</span></h3>
