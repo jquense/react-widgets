@@ -6,42 +6,34 @@ var React = require('react')
   , Century = require('./century.jsx')
   , cx = require('../util/cx')
   , setter = require('../util/stateSetter')
+  , controlledInput  = require('../util/controlledInput')
   , SlideTransition  = require('../common/slide-transition.jsx')
   , dates = require('../util/dates')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
+  , constants  = require('../util/constants')
   , _ = require('lodash');
 
-var RIGHT = 'right'
-  , LEFT  = 'left'
-  , UP    = 'up'
-  , DOWN  = 'down'
+var dir = constants.directions;
 
-  , MULTIPLIER = {
-    'year': 1,
-    'decade': 10,
-    'century': 100
-  },
-  VIEW = {
-    'month':    Month,
-    'year':     Year,
-    'decade':   Decade,
-    'century':  Century,
-  }
-  NEXT_VIEW = {
-    'month':  'year',
-    'year':   'decade',
-    'decade': 'century'
-  }
-  VIEW_UNIT = {
-    'month':    'day',
-    'year':     'month',
-    'decade':   'year',
-    'century':  'decade',
-  };
+var views        = constants.calendarViews
+  , VIEW_OPTIONS = _.values(views);
+  , NEXT_VIEW    = constants.calendarViewHierarchy
+  , VIEW_UNIT    = constants.calendarViewUnits
+  , VIEW  = _.object([
+      [views.MONTH,   Month],
+      [views.YEAR,    Year],
+      [views.DECADE,  Decade],
+      [views.CENTURY, Century,
+    ]);
 
-var VIEW_OPTIONS = ['month', 'year', 'decade', 'century'];
+var MULTIPLIER = _.object([
+      [views.YEAR,    1],
+      [views.DECADE,  10],
+      [views.CENTURY, 100]
+    ]);
 
-module.exports = React.createClass({
+
+var Calendar = React.createClass({
 
   displayName: 'Calendar',
 
@@ -144,11 +136,11 @@ module.exports = React.createClass({
           labelId={labelId}
           messages={this.props.messages}
           upDisabled={  disabled || this.state.view === this.props.finalView}
-          prevDisabled={disabled || !dates.inRange(this.nextDate(LEFT), this.props.min, this.props.max)}
-          nextDisabled={disabled || !dates.inRange(this.nextDate(RIGHT), this.props.min, this.props.max)}
-          onViewChange={this._maybeHandle(_.partial(this.navigate, UP, null))}
-          onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  LEFT, null))}
-          onMoveRight={this._maybeHandle(_.partial(this.navigate,  RIGHT, null))}/>
+          prevDisabled={disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max)}
+          nextDisabled={disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max)}
+          onViewChange={this._maybeHandle(_.partial(this.navigate, dir.UP, null))}
+          onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  dir.LEFT, null))}
+          onMoveRight={this._maybeHandle(_.partial(this.navigate,  dir.RIGHT, null))}/>
 
         <SlideTransition
           ref='animation'
@@ -164,8 +156,8 @@ module.exports = React.createClass({
             onChange={this._maybeHandle(this.change)}
             onKeyDown={this._maybeHandle(this._keyDown)}
             onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
-            onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  LEFT))}
-            onMoveRight={this._maybeHandle(_.partial(this.navigate,  RIGHT))}
+            onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  dir.LEFT))}
+            onMoveRight={this._maybeHandle(_.partial(this.navigate,  dir.RIGHT))}
             disabled={this.props.disabled}
             readOnly={this.props.readOnly}
             min={this.props.min}
@@ -182,19 +174,19 @@ module.exports = React.createClass({
   navigate: function(direction, date){
     var alts     = _.invert(NEXT_VIEW)
       , view     =  this.state.view
-      , slideDir = (direction === LEFT || direction === UP)
+      , slideDir = (direction === dir.LEFT || direction === dir.UP)
           ? 'right'
           : 'left';
 
     if ( !date )
-      date = _.contains([ LEFT, RIGHT ], direction)
+      date = _.contains([ dir.LEFT, dir.RIGHT ], direction)
         ? this.nextDate(direction)
         : this.state.currentDate
 
-    if (direction === DOWN )
+    if (direction === dir.DOWN )
       view = alts[view] || view
 
-    if (direction === UP )
+    if (direction === dir.UP )
       view = NEXT_VIEW[view] || view
 
     if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
@@ -238,19 +230,19 @@ module.exports = React.createClass({
     if ( ctrl ) {
       if ( key === 'ArrowDown' ) {
         e.preventDefault()
-        this.navigate(DOWN)
+        this.navigate(dir.DOWN)
       }
       if ( key === 'ArrowUp' ) {
         e.preventDefault()
-        this.navigate(UP)
+        this.navigate(dir.UP)
       }
       if ( key === 'ArrowLeft' ) {
         e.preventDefault()
-        this.navigate(LEFT)
+        this.navigate(dir.LEFT)
       }
       if ( key === 'ArrowRight' ) {
         e.preventDefault()
-        this.navigate(RIGHT)
+        this.navigate(dir.RIGHT)
       }
     } else {
       this.refs.currentView._keyDown
@@ -295,3 +287,7 @@ module.exports = React.createClass({
     return current >= bottom && current <= top
   }
 });
+
+module.exports = controlledInput.createControlledClass(
+    'Calendar', Calendar
+  , { open: 'onToggle', value: 'onChange' });

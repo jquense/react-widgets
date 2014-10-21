@@ -1,22 +1,26 @@
-var React = require('react')
-  , cx = require('../util/cx')
-  , _   = require('lodash')
-  , dates     = require('../util/dates')
+var React  = require('react')
+  , cx     = require('../util/cx')
+  , _      = require('lodash')
+  , dates  = require('../util/dates')
+  , views  = require('../util/constants').calViews
   , popups = require('../util/constants').datePopups
-  , controlledInput  = require('../util/controlledInput')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
+
   , Popup     = require('../popup/popup.jsx')
   , Calendar  = require('../calendar/calendar.jsx')
   , Time      = require('./time.jsx')
   , DateInput = require('./date-input.jsx')
-  , $  =  require('../util/dom');
 
+  , $ = require('../util/dom')
+  , controlledInput = require('../util/controlledInput')
+  , mergeIntoProps  = require('../util/transferProps').mergeIntoProps;
+
+var viewEnum  = _.values(views)
 var propTypes = {
 
     //-- controlled props -----------
     value:          React.PropTypes.instanceOf(Date),
     onChange:       React.PropTypes.func,
-    open:           React.PropTypes.oneOf([false].concat(_.values(popups))),
+    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
     onToggle:       React.PropTypes.func,
     //------------------------------------
 
@@ -35,8 +39,8 @@ var propTypes = {
 
     placeholder:    React.PropTypes.string,
 
-    initialView:    React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
-    finalView:      React.PropTypes.oneOf(['month', 'year', 'decade', 'century']),
+    initialView:    React.PropTypes.oneOf(viewEnum),
+    finalView:      React.PropTypes.oneOf(viewEnum),
 
     disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.bool,

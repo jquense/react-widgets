@@ -1,5 +1,12 @@
 var _ = require('lodash')
 
+var views = {
+    MONTH:   'month',
+    YEAR:    'year',
+    DECADE:  'decade',
+    CENTURY: 'century'
+  }
+
 module.exports = {
 
   directions: mirror({
@@ -14,12 +21,20 @@ module.exports = {
     CALENDAR: 'calendar'
   },
 
-  calViews: {
-    MONTH:   'month',
-    YEAR:    'year',
-    DECADE:  'decade',
-    CENTURY: 'century'
-  }
+  calendarViews: views,
+
+  calendarViewHierarchy: _.object([
+    [views.MONTH,   views.YEAR],
+    [views.YEAR,    views.DECADE],
+    [views.DECADE,  views.CENTURY]
+  ]),
+
+  calendarViewUnits: _.object([
+    [views.MONTH,   views.DAY],
+    [views.YEAR,    views.MONTH],
+    [views.DECADE,  views.YEAR],
+    [views.CENTURY, views.DECADE],
+  ])
 }
 
 
