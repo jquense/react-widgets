@@ -12,8 +12,6 @@ var btn = require('../common/btn.jsx')
       // -- controlled props -----------
       value:          React.PropTypes.number,
       onChange:       React.PropTypes.func,
-      open:           React.PropTypes.bool,
-      onToggle:       React.PropTypes.func,
       //------------------------------------
 
       min:            React.PropTypes.number,
@@ -221,10 +219,7 @@ var NumberPicker = React.createClass({
   },
 
   change: function(val){
-    var change = this.props.onChange
-
     val = this.inRangeValue(val)
-
     if ( this.props.value !== val )
       this.notify('onChange', val)
   },

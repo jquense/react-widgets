@@ -31,7 +31,8 @@ var App = React.createClass({
       //comboboxValue: list[0],
       selectValues: [1,3],
       calDate: new Date(2014,5,10,0,0,0),
-      numberValue: 1
+      numberValue: 1,
+      open: false
     }
   },
 
@@ -43,6 +44,8 @@ var App = React.createClass({
 
       if(field === 'selectValues')
         data = _.pluck(data, 'id')
+
+      if(field === 'open') console.log(field, data)
 
       obj[field] = _.has(data, 'id') ? data.id : data
 
@@ -102,8 +105,10 @@ var App = React.createClass({
               isRtl={false}
               id='swweeeeet'
               value={this.state.calDate}
-              time={false}
+              time={true}
               format='MM/dd/yy'
+              open={this.state.open}
+              onToggle={change.bind(null, 'open')}
               min={new Date(2014,5,1,0,0,0)}
               max={new Date(2014,5,15,0,0,0)}
               onChange={change.bind(null, 'calDate')}/>

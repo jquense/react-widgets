@@ -313,23 +313,18 @@ var ComboBox = React.createClass({
   },
 
   change: function(data, typing){
-    var change = this.props.onChange
-
     this._typedChange = !!typing
-
-    if ( change ) change(data)
+    this.notify('onChange', data)
   },
 
   open: function(){
     if ( !this.props.open )
-      this.props.onToggle
-        && this.props.onToggle(true)
+      this.notify('onToggle', true)
   },
 
   close: function(){
     if ( this.props.open )
-      this.props.onToggle
-        && this.props.onToggle(false)
+      this.notify('onToggle', true)
   },
 
   toggle: function(e){

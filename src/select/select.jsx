@@ -104,7 +104,6 @@ var Select = React.createClass({
         , nextProps.searchTerm)
 
     this.setState({
-      //searchTerm: '',
       processedData: items,
       dataItems: _.map(values, function(item){
         return this._dataItem(nextProps.data, item)
@@ -240,8 +239,8 @@ var Select = React.createClass({
   _keyDown: function(e){
     var key = e.key
       , alt = e.altKey
-      , searching = !!this.state.searchTerm
-      , isOpen  = this.state.open
+      , searching = !!this.props.searchTerm
+      , isOpen  = this.props.open
       , tagList = this.refs.tagList;
 
     if ( key === 'ArrowDown') {
@@ -289,11 +288,11 @@ var Select = React.createClass({
 
   open: function(){
     if (!(this.props.disabled === true || this.props.readOnly === true))
-      this.notify('onToggle', [ true ])
+      this.notify('onToggle', true)
   },
 
   close: function(){
-    this.notify('onToggle', [false])
+    this.notify('onToggle', false)
   },
 
   toggle: function(e){

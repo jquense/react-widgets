@@ -254,11 +254,11 @@ var DropdownList = React.createClass({
   },
 
   open: function(){
-    this.notify('onToggle', [true])
+    this.notify('onToggle', true)
   },
 
   close: function(){
-    this.notify('onToggle', [false])
+    this.notify('onToggle', false)
   },
 
   toggle: function(e){

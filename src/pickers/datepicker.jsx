@@ -235,11 +235,9 @@ var DateTimePicker = React.createClass({
       e.preventDefault()
 
       if ( e.key === 'ArrowDown')
-        this.open( !this.props.open
-          ? this.props.open
-          : this.props.open === popups.TIME
-              ? popups.CALENDAR
-              : popups.TIME)
+        this.open(this.props.open === popups.CALENDAR
+              ? popups.TIME
+              : popups.CALENDAR)
       else if ( e.key === 'ArrowUp')
         this.close()
 
@@ -309,12 +307,12 @@ var DateTimePicker = React.createClass({
 
   open: function(view){
     if ( this.props.open !== view )
-      this.notify('onToggle', [ view ])
+      this.notify('onToggle', view)
   },
 
   close: function(){
     if ( this.props.open)
-      this.notify('onToggle')
+      this.notify('onToggle', false)
   },
 
   inRangeValue: function(value){
