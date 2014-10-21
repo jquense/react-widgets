@@ -48,6 +48,7 @@ var Select = React.createClass({
         <SelectExample/>
         <Example code={
           "render: function(){\n"+
+          "  var Select = require('react-widgets').Select\n"+
           "  //... \n\n" +
           "  return (\n"+
           "    <Select \n"+

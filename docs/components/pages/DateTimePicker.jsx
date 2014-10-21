@@ -65,20 +65,21 @@ var DateTimePicker = React.createClass({
         <DatePickerExample/>
         <Example code={
           "render: function(){\n"+
+          "  var DateTimePicker = require('react-widgets').DateTimePicker\n"+
           "  //... \n\n" +
           "  return (\n"+
-          "    <DatePicker \n"+
+          "    <DateTimePicker \n"+
           "      value={this.state.value}\n"+
           "      onChange={this._change}/>\n"+
           "   \n"+
-          "    <DatePicker \n"+
+          "    <DateTimePicker \n"+
           "      ...\n"+
           "      time={false}\n"+
           "      format='MMM dd yyyy'\n"+
           "      min={new Date(2014, 0, 1)}\n"+
           "      max={new Date(2015, 12, 15)}/>\n"+
           "   \n"+
-          "    <DatePicker \n"+
+          "    <DateTimePicker \n"+
           "      ...\n"+
           "      calendar={false}\n"+
           "      format='H:mm tt'\n"+

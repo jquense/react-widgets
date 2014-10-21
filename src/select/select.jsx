@@ -139,15 +139,17 @@ var Select = React.createClass({
           { this.props.busy &&
             <i className="rw-i rw-loading"></i>
           }
-          <TagList
-            ref='tagList'
-            value={values}
-            textField={this.props.textField}
-            valueField={this.props.valueField}
-            valueComponent={this.props.tagComponent}
-            disabled={this.props.disabled}
-            readOnly={this.props.readOnly}
-            onDelete={this._delete}/>
+          { !!values.length &&
+            <TagList
+              ref='tagList'
+              value={values}
+              textField={this.props.textField}
+              valueField={this.props.valueField}
+              valueComponent={this.props.tagComponent}
+              disabled={this.props.disabled}
+              readOnly={this.props.readOnly}
+              onDelete={this._delete}/>
+          }
           <SelectInput
             ref='input'
             aria-activedescendent={ this.props.open ? optID : undefined }
@@ -213,7 +215,7 @@ var Select = React.createClass({
       if(focused) self.refs.input.focus()
       else        {
         self.close()
-        self.refs.tagList.clear()
+        self.refs.tagList && self.refs.tagList.clear()
       }
 
       if( focused !== self.state.focused)
@@ -238,8 +240,14 @@ var Select = React.createClass({
   _keyDown: function(e){
     var key = e.key
       , alt = e.altKey
+<<<<<<< HEAD
       , searching = !!this.props.searchTerm
       , isOpen = this.props.open;
+=======
+      , searching = !!this.state.searchTerm
+      , isOpen  = this.state.open
+      , tagList = this.refs.tagList;
+>>>>>>> master
 
     if ( key === 'ArrowDown') {
       e.preventDefault()
@@ -254,11 +262,11 @@ var Select = React.createClass({
     }
     else if ( key === 'End'){
       if ( isOpen ) this.setFocusedIndex(this._data().length - 1)
-      else          this.refs.tagList.last()
+      else          tagList && tagList.last()
     }
     else if (  key === 'Home'){
       if ( isOpen ) this.setFocusedIndex(0)
-      else          this.refs.tagList.first()
+      else          tagList && tagList.first()
     }
     else if ( isOpen && key === 'Enter' )
       this._onSelect(this._data()[this.state.focusedIndex])
@@ -267,16 +275,16 @@ var Select = React.createClass({
       isOpen ? this.close() : this.refs.tagList.clear()
 
     else if ( !searching && key === 'ArrowLeft')
-      this.refs.tagList.prev()
+     tagList && tagList.prev()
 
     else if ( !searching && key === 'ArrowRight')
-      this.refs.tagList.next()
+      tagList && tagList.next()
 
     else if ( !searching && key === 'Delete')
-      this.refs.tagList.removeCurrent()
+      tagList && tagList.removeCurrent()
 
     else if ( !searching && key === 'Backspace')
-      this.refs.tagList.removeNext()
+      tagList && tagList.removeNext()
   },
 
   change: function(data){
