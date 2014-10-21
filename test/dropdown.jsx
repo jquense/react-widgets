@@ -31,20 +31,20 @@ describe('DROPDOWNS', function(){
 
   it('should respect textField and valueFields', function(){
     var dropdown = render(
-          <Dropdown value={0} data={data} textField='label' valueField='id' />);
+          <Dropdown defaultValue={0} data={data} textField='label' valueField='id' />);
 
     expect(findClass(dropdown, 'rw-input').getDOMNode().textContent)
       .to.be('jimmy');
-  }) 
+  })
 
   it('should start closed', function(done){
-    var dropdown = render(<Dropdown value={0} data={data} textField='label' valueField='id' />);
+    var dropdown = render(<Dropdown defaultValue={0} data={data} textField='label' valueField='id' />);
     var popup = findType(dropdown, require('../src/popup/popup.jsx'));
 
-    expect(dropdown.state.open).to.be(false)
+    expect(dropdown.state.open).to.not.be(true)
     expect(dropdown.getDOMNode().className).to.not.match(/\brw-open\b/)
     expect(dropdown.getDOMNode().getAttribute('aria-expanded')).to.be('false')
-  
+
     setTimeout(function(){
       expect(popup.getDOMNode().style.display).to.be('none')
       done()
@@ -57,14 +57,14 @@ describe('DROPDOWNS', function(){
         return (<span>{"hello - " + this.props.item}</span>);
       }
     });
-    
-    var dropdown = render(<Dropdown value={'jimmy'} valueComponent={templ} />);
+
+    var dropdown = render(<Dropdown defaultValue={'jimmy'} valueComponent={templ} />);
 
     expect( findClass(dropdown, 'rw-input').getDOMNode().textContent).to.be('hello - jimmy');
   })
 
   it('should open when clicked', function(done){
-    var dropdown = render(<Dropdown value={'jimmy'} data={data} duration={0}/>);
+    var dropdown = render(<Dropdown defaultValue={'jimmy'} data={data} duration={0}/>);
     var popup = findType(dropdown, require('../src/popup/popup.jsx'))
 
     trigger.click(dropdown.getDOMNode())
@@ -75,11 +75,11 @@ describe('DROPDOWNS', function(){
       expect(dropdown.getDOMNode().getAttribute('aria-expanded')).to.be('true')
       expect(popup.props.open).to.be(true)
       done()
-    }, 0) 
+    }, 0)
   })
 
   it('should do nothing when disabled', function(done){
-    var dropdown = render(<Dropdown value={'jimmy'} data={data} duration={0} disabled={true}/>)
+    var dropdown = render(<Dropdown defaultValue={'jimmy'} data={data} duration={0} disabled={true}/>)
       , input = dropdown.getDOMNode();
 
     expect( input.className).to.not.match(/\brw-state-focus\b/)
@@ -90,15 +90,15 @@ describe('DROPDOWNS', function(){
     trigger.click(dropdown.getDOMNode())
 
     setTimeout(function() {
-      expect(dropdown.state.open).to.be(false)
+      expect(dropdown.state.open).to.not.be(true)
       done()
-    }, 0) 
+    }, 0)
   })
 
   it('should do nothing when readonly', function(done){
-    var dropdown = render(<Dropdown value={'jimmy'} data={data} duration={0} readOnly={true}/>)
+    var dropdown = render(<Dropdown defaultValue={'jimmy'} data={data} duration={0} readOnly={true}/>)
       , input = dropdown.getDOMNode();
-    
+
     expect( input.hasAttribute('aria-readonly')).to.be(true)
     expect( input.getAttribute('aria-readonly')).to.be('true')
 
@@ -107,7 +107,7 @@ describe('DROPDOWNS', function(){
 
     setTimeout(function() {
       expect(input.className).to.match(/\brw-state-focus\b/)
-      expect(dropdown.state.open).to.be(false)
+      expect(dropdown.state.open).to.not.be(false)
       done()
     }, 0)
   })

@@ -31,20 +31,20 @@ describe('Select', function(){
   })
 
   it('should respect textField and valueFields', function(){
-    var select = render(<Select value={[0]} data={dataList} textField='label' valueField='id' />)
+    var select = render(<Select defaultValue={[0]} data={dataList} textField='label' valueField='id' />)
       , tags   = findType(select, TagList).getDOMNode();
 
     expect( tags.children[0].children[0].textContent).to.be('jimmy');
-  }) 
+  })
 
   it('should start closed', function(done){
-    var select = render(<Select value={[0]} data={dataList} textField='label' valueField='id' />);
+    var select = render(<Select defaultValue={[0]} data={dataList} textField='label' valueField='id' />);
     var popup = findType(select, require('../src/popup/popup.jsx'));
 
-    expect(select.state.open).to.be(false)
+    expect(select.state.open).to.not.be(true)
     expect(select.getDOMNode().className).to.not.match(/\brw-open\b/)
     expect(findClass(select, 'rw-input').getDOMNode().getAttribute('aria-expanded')).to.be('false')
-  
+
     setTimeout(function(){
       expect(popup.getDOMNode().style.display).to.be('none')
       done()
@@ -52,7 +52,7 @@ describe('Select', function(){
   })
 
   it('should open when clicked', function(done){
-    var select = render(<Select value={['jimmy']} data={dataList} duration={0}/>);
+    var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0}/>);
     var popup = findType(select, require('../src/popup/popup.jsx'))
 
     trigger.click(findClass(select, 'rw-select-wrapper').getDOMNode())
@@ -63,7 +63,7 @@ describe('Select', function(){
       expect(findClass(select, 'rw-input').getDOMNode().getAttribute('aria-expanded')).to.be('true')
       expect(popup.props.open).to.be(true)
       done()
-    }, 0) 
+    }, 0)
   })
 
   it('should remove tag when clicked', function(){
@@ -92,7 +92,7 @@ describe('Select', function(){
   })
 
   it('should do nothing when disabled', function(done){
-    var select = render(<Select value={['jimmy']} data={dataList} duration={0} disabled={true}/>)
+    var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0} disabled={true}/>)
       , input  = findType(select, require('../src/select/search-input.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
@@ -103,15 +103,15 @@ describe('Select', function(){
     trigger.click(findTag(select, 'button').getDOMNode())
 
     setTimeout(function() {
-      expect(select.state.open).to.be(false)
+      expect(select.state.open).to.not.be(true)
       expect(tags.children.length).to.be(1)
       expect(select.getDOMNode().className).to.not.match(/\brw-state-focus\b/)
       done()
-    }, 0) 
+    }, 0)
   })
 
   it('should disable only certain tags', function(done){
-    var select = render(<Select value={[0,1]} data={dataList} disabled={[1]}  textField='label' valueField='id'/>)
+    var select = render(<Select defaultValue={[0,1]} data={dataList} disabled={[1]}  textField='label' valueField='id'/>)
       , input  = findType(select, require('../src/select/search-input.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
@@ -124,11 +124,11 @@ describe('Select', function(){
       expect(select.state.open).to.be(true)
       expect(tags.children.length).to.be(2)
       done()
-    }, 0) 
+    }, 0)
   })
 
   it('should do nothing when readonly', function(done){
-    var select = render(<Select value={['jimmy']} data={dataList} duration={0} readOnly={true}/>)
+    var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0} readOnly={true}/>)
       , input  = findType(select, require('../src/select/search-input.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
@@ -139,14 +139,14 @@ describe('Select', function(){
     trigger.click(findTag(select, 'button').getDOMNode())
 
     setTimeout(function() {
-      expect(select.state.open).to.be(false)
+      expect(select.state.open).to.not.be(true)
       expect(tags.children.length).to.be(1)
       done()
-    }, 0) 
+    }, 0)
   })
 
   it('should readonly only certain tags', function(done){
-    var select = render(<Select value={[0,1]} data={dataList} readOnly={[1]}  textField='label' valueField='id'/>)
+    var select = render(<Select defaultValue={[0,1]} data={dataList} readOnly={[1]}  textField='label' valueField='id'/>)
       , input  = findType(select, require('../src/select/search-input.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
@@ -160,7 +160,7 @@ describe('Select', function(){
       expect(select.getDOMNode().className).to.match(/\brw-state-focus\b/)
 
       done()
-    }, 10) 
+    }, 10)
   })
 
   it('should change values on key down', function(){
@@ -187,7 +187,7 @@ describe('Select', function(){
 
     expect(tags.children[0].className).to.match(/\brw-state-focus\b/)
     expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
-    
+
     trigger.keyDown(select.getDOMNode(), { key: 'Delete'})
 
     expect(change.calledOnce).to.be(true)

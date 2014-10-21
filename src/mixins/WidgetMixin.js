@@ -28,7 +28,7 @@ module.exports = {
 
   notify: function(handler, args){
     this.props[handler]
-      && this.props[handler].apply(null, args)
+      && this.props[handler].apply(null, [].concat(args))
   },
 
   _id: function(suffix){

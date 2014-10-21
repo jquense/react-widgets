@@ -16,7 +16,7 @@ var btn = require('../common/btn.jsx')
       //-- controlled props -----------
       value:          React.PropTypes.any,
       onChange:       React.PropTypes.func,
-      open:           React.PropTypes.array,
+      open:           React.PropTypes.bool,
       onToggle:       React.PropTypes.func,
       //------------------------------------
 

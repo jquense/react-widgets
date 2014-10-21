@@ -16,14 +16,15 @@ var React = require('react')
 var dir = constants.directions;
 
 var views        = constants.calendarViews
-  , VIEW_OPTIONS = _.values(views);
+  , VIEW_OPTIONS = _.values(views)
+  , ALT_VIEW     = _.invert(constants.calendarViewHierarchy)
   , NEXT_VIEW    = constants.calendarViewHierarchy
   , VIEW_UNIT    = constants.calendarViewUnits
   , VIEW  = _.object([
       [views.MONTH,   Month],
       [views.YEAR,    Year],
       [views.DECADE,  Decade],
-      [views.CENTURY, Century,
+      [views.CENTURY, Century]
     ]);
 
 var MULTIPLIER = _.object([
@@ -172,8 +173,7 @@ var Calendar = React.createClass({
   },
 
   navigate: function(direction, date){
-    var alts     = _.invert(NEXT_VIEW)
-      , view     =  this.state.view
+    var view     =  this.state.view
       , slideDir = (direction === dir.LEFT || direction === dir.UP)
           ? 'right'
           : 'left';
@@ -184,7 +184,7 @@ var Calendar = React.createClass({
         : this.state.currentDate
 
     if (direction === dir.DOWN )
-      view = alts[view] || view
+      view = ALT_VIEW[view] || view
 
     if (direction === dir.UP )
       view = NEXT_VIEW[view] || view
@@ -211,13 +211,13 @@ var Calendar = React.createClass({
     if ( this.props.onChange && this.state.view === this.props.initialView)
       return this.notify('onChange', date)
 
-    this.navigate(DOWN, date)
+    this.navigate(dir.DOWN, date)
   },
 
   nextDate: function(direction){
-    var method = direction === LEFT ? 'subtract' : 'add'
+    var method = direction === dir.LEFT ? 'subtract' : 'add'
       , view   = this.state.view
-      , unit   = view === 'month' ? view : 'year'
+      , unit   = view === views.MONTH ? view : views.YEAR
       , multi  = MULTIPLIER[view] || 1;
 
     return dates[method](this.state.currentDate, 1 * multi, unit)
@@ -289,5 +289,4 @@ var Calendar = React.createClass({
 });
 
 module.exports = controlledInput.createControlledClass(
-    'Calendar', Calendar
-  , { open: 'onToggle', value: 'onChange' });
+    'Calendar', Calendar, { value: 'onChange' });

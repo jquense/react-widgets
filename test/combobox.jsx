@@ -31,22 +31,22 @@ describe('ComboBox', function(){
   })
 
   it('should respect textField and valueFields', function(){
-    var comboBox = render(<ComboBox value={0} data={dataList} textField='label' valueField='id' />);
-    
+    var comboBox = render(<ComboBox defaultValue={0} data={dataList} textField='label' valueField='id' />);
+
     expect(findClass(comboBox, 'rw-input').getDOMNode().value)
       .to.be('jimmy');
-  }) 
+  })
 
   it('should start closed', function(done){
-    var comboBox = render(<ComboBox value={0} data={dataList} textField='label' valueField='id' />)
+    var comboBox = render(<ComboBox defaultValue={0} data={dataList} textField='label' valueField='id' />)
       , input = findClass(comboBox, 'rw-input').getDOMNode()
       , popup = findType(comboBox, require('../src/popup/popup.jsx'));
 
 
-    expect(comboBox.state.open).to.be(false)
+    expect(comboBox.state.open).to.not.be(true)
     expect(comboBox.getDOMNode().className).to.not.match(/\brw-open\b/)
     expect(input.getAttribute('aria-expanded')).to.be('false')
-  
+
     setTimeout(function(){
       expect(popup.getDOMNode().style.display).to.be('none')
       done()
@@ -54,7 +54,7 @@ describe('ComboBox', function(){
   })
 
   it('should open when clicked', function(done){
-    var comboBox = render(<ComboBox value={'jimmy'} data={dataList} duration={0}/>)
+    var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0}/>)
       , input = findClass(comboBox, 'rw-input').getDOMNode()
       , popup = findType(comboBox, require('../src/popup/popup.jsx'))
 
@@ -66,11 +66,11 @@ describe('ComboBox', function(){
       expect(input.getAttribute('aria-expanded')).to.be('true')
       expect(popup.props.open).to.be(true)
       done()
-    }, 1000) 
+    }, 1000)
   })
 
   it('should do nothing when disabled', function(done){
-    var comboBox = render(<ComboBox value={'jimmy'} data={dataList} duration={0} disabled={true}/>)
+    var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0} disabled={true}/>)
       , input = findClass(comboBox, 'rw-input').getDOMNode();
 
     expect( input.hasAttribute('disabled')).to.be(true);
@@ -79,13 +79,13 @@ describe('ComboBox', function(){
     trigger.click(findTag(comboBox, 'button').getDOMNode())
 
     setTimeout(function() {
-      expect(comboBox.state.open).to.be(false)
+      expect(comboBox.state.open).to.not.be(true)
       done()
-    }, 0) 
+    }, 0)
   })
 
   it('should do nothing when readonly', function(done){
-    var comboBox = render(<ComboBox value={'jimmy'} data={dataList} duration={0} readOnly={true}/>)
+    var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0} readOnly={true}/>)
       , input = findClass(comboBox, 'rw-input').getDOMNode();
 
     expect( input.hasAttribute('readonly')).to.be(true);
@@ -94,7 +94,7 @@ describe('ComboBox', function(){
     trigger.click(findTag(comboBox, 'button').getDOMNode())
 
     setTimeout(function() {
-      expect(comboBox.state.open).to.be(false)
+      expect(comboBox.state.open).to.not.be(true)
       done()
     }, 0)
   })

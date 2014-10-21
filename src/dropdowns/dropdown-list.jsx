@@ -19,7 +19,7 @@ var propTypes = {
   open:           React.PropTypes.bool,
   onToggle:       React.PropTypes.func,
   //------------------------------------
-  
+
   data:           React.PropTypes.array,
   valueField:     React.PropTypes.string,
   textField:      React.PropTypes.string,
@@ -95,7 +95,7 @@ var DropdownList = React.createClass({
   },
 
   // componentDidUpdate: function(){
-  //   if( this.state.open)
+  //   if( this.props.open)
   //     this.setWidth()
   // },
 
@@ -111,9 +111,9 @@ var DropdownList = React.createClass({
            onClick={this._maybeHandle(this.toggle)}
            onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
            onBlur ={_.partial(this._focus, false)}
-           aria-expanded={ this.state.open }
+           aria-expanded={ this.props.open }
            aria-haspopup={true}
-           aria-activedescendent={ this.state.open ? optID : undefined }
+           aria-activedescendent={ this.props.open ? optID : undefined }
            aria-disabled={ this.props.disabled }
            aria-readonly={ this.props.readOnly }
            tabIndex={this.props.disabled ? '-1' : "0"}
