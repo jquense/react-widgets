@@ -3,13 +3,14 @@
  */
 
 var React = require('react')
+  , Default = require('../default.jsx')
   , Example = require('../example.jsx')
   , DDButton = require('react-bootstrap/DropdownButton')
   , MenuItem = require('react-bootstrap/MenuItem')
   , SelectExample = require('../examples/select.jsx');
 
 var prefix = 'select-list/';
-
+var widgetName = 'Select'
 var Select = React.createClass({
 
   render: function() {
@@ -28,6 +29,9 @@ var Select = React.createClass({
               <MenuItem href={'#' + prefix + 'tagComponent'}>tagComponent</MenuItem>
               <MenuItem href={'#' + prefix + 'itemComponent'}>itemComponent</MenuItem>
               <MenuItem href={'#' + prefix + 'placeholder'}>placeholder</MenuItem>
+
+              <MenuItem href={'#' + prefix + 'open'}>open</MenuItem>
+              <MenuItem href={'#' + prefix + 'onToggle'}>onToggle</MenuItem>
 
               <MenuItem href={'#' + prefix + 'busy'}>busy</MenuItem>
               <MenuItem href={'#' + prefix + 'duration'}>duration</MenuItem>
@@ -58,53 +62,53 @@ var Select = React.createClass({
 
         <h2>Props</h2>
         <h3 className='prop-header' id={ prefix +"value" }>
-          value <small>Array - mixed</small></h3>
+          value <small>Array?</small><strong>controllable (onChange, defaultValue)</strong></h3>
         <p>
-          The current values of the Select. The value should can <code>null</code>, or an array 
-          of <code>valieField</code> values, or an array of objects (such as a few items in the <code>data</code> array) 
+          The current values of the Select. The value should can <code>null</code>, or an array
+          of <code>valieField</code> values, or an array of objects (such as a few items in the <code>data</code> array)
         </p>
 
         <h3 className='prop-header' id={ prefix +"onChange" }>
-          onChange <small>{'function ( selectedValue )'}</small></h3>
+          onChange <small>{'Function(Any value)'}</small></h3>
         <p>
           change event Handler that is called when the value is changed. The handler will return an array of values
         </p>
-        <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget 
+        <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget
         becomes readonly</span>
 
         <h3 className='prop-header' id={ prefix +"data" }>
-          data <small>Array - mixed</small></h3>
+          data <small>Array</small></h3>
         <p>
-          provide an array of possible values for the select. If an array of <code>objects</code> is provided you 
-          should use the <code>valueField</code> and <code>textField</code> props, to specify which object 
+          provide an array of possible values for the select. If an array of <code>objects</code> is provided you
+          should use the <code>valueField</code> and <code>textField</code> props, to specify which object
           properties comprise the value field (such as an id) and the field used to label the item.
         </p>
 
         <h3 className='prop-header' id={ prefix +"valueField" }>
           valueField <small>String</small></h3>
         <p>
-          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided, 
+          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
           the widget will use strict equality checks to locate the data item, if it exists.
         </p>
 
         <h3 className='prop-header' id={ prefix +"textField" }>
           textField <small>String</small></h3>
         <p>
-          This prop determines which data item field to display in the select list and selected item This prop is 
+          This prop determines which data item field to display in the select list and selected item This prop is
           unnecessary when an <code>itemComponent</code> and <code>tagComponent</code> are provided.
         </p>
 
         <h3 className='prop-header' id={ prefix +"tagComponent" }>
           tagComponent <small>Component</small></h3>
         <p>
-          This component is used to render each selected item. The default component 
+          This component is used to render each selected item. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 
         <h3 className='prop-header' id={ prefix +"itemComponent" }>
           itemComponent <small>Component</small></h3>
         <p>
-          This component is used to render each possible item in the list. The default component 
+          This component is used to render each possible item in the list. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 
@@ -114,31 +118,62 @@ var Select = React.createClass({
           The same as an input placeholder, only works in browsers that support the placeholder attribute for inputs
         </p>
 
+        <h3 className='prop-header' id={ prefix +"searchTerm" }>
+          searchTerm <small>String</small><strong>controllable (onSearch, defaultSearchTerm)</strong>
+        </h3>
+        <p>
+          The string value of the current search being typed into the {widgetName}. When
+          unset (<code>undefined</code>) the {widgetName} will handle the filtering internally.
+          The <code>defaultSearchTerm</code> prop can be used to {'set'} an initialization value for uncontrolled widgets.
+        </p>
+        <h3 className='prop-header' id={ prefix +"onSearch" }>
+          onSearch <small>{"Function(String searchTerm)"}</small></h3>
+        <p>
+          Called when the value of the text box changes either from typing or a pasted value.&nbsp;
+          <code>onSearch</code> should be used when the <code>searchTerm</code> prop
+          is {'set'}.
+        </p>
+
+        <h3 className='prop-header' id={ prefix +"open" }>
+          open <small>Boolean<Default>false</Default></small><strong>controllable (onToggle, defaultOpen)</strong>
+        </h3>
+        <p>
+          Whether or not the {widgetName} is open. When unset (<code>undefined</code>) the {widgetName} will handle the
+          opening and closing internally. The <code>defaultOpen</code> prop can be used to {'set'} an
+          initialization value for uncontrolled widgets.
+        </p>
+        <h3 className='prop-header' id={ prefix +"onToggle" }>
+          onToggle <small>{"Function(Boolean isOpen)"}</small></h3>
+        <p>
+          Called when the {widgetName} is about to open or close. <code>onToggle</code> should be used
+          when the <code>open</code> prop is {'set'} otherwise the widget will never open or close.
+        </p>
+
         <h3 className='prop-header' id={ prefix +"busy" }>
           busy <small>Boolean</small></h3>
         <p>
-          mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful 
+          mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful
           when loading data via an ajax call.
         </p>
         <h3 className='prop-header' id={ prefix +"duration" }>
-          duration <small>Number</small> <span className='default'>250</span></h3>
+          duration <small>Number<Default>250</Default></small></h3>
         <p>
           The speed, in milliseconds, of the dropdown animation.
         </p>
         <h3 className='prop-header' id={ prefix +"duration" }>
-          disabled <small>Mixed - Boolean, Array</small></h3>
+          disabled <small>[Boolean, Array]</small></h3>
         <p>
           Disable the widget, If an <code>Array</code> of values is passed in only the tags specified will be disabled.
         </p>
 
         <h3 className='prop-header' id={ prefix +"duration" }>
-          readOnly <small>Mixed - Boolean, Array</small></h3>
+          readOnly <small>[Boolean, Array]</small></h3>
         <p>
           Place the widget in a readonly mode, If an <code>Array</code> of values is passed in only the tags specified will be readonly.
         </p>
 
         <h3 className='prop-header' id={ prefix +"isRtl" }>
-          isRtl <small>Boolean</small></h3>
+          isRtl <small>Boolean<Default>false</Default></small></h3>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
            a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
@@ -147,15 +182,15 @@ var Select = React.createClass({
         <h3 className='prop-header' id={ prefix +"messages" }>
           messages <small>Object</small></h3>
         <p>
-          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
+          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to
           localize widget text and increase accessibility.
         </p>
 
-        <h3>messages.emptyList <small>String</small><span className='default'>"There are no items in this list"</span></h3>
+        <h3>messages.emptyList <small>String<Default>"There are no items in this list"</Default></small></h3>
         <p>
           text to display when the <code>data</code> prop array is empty
         </p>
-        <h3>messages.emptyFilter <small>String</small><span className='default'>"The filter returned no results"</span></h3>
+        <h3>messages.emptyFilter <small>String<Default>"The filter returned no results"</Default></small></h3>
         <p>
           text to display when the the current filter does not return any results
         </p>

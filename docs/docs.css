@@ -6,14 +6,14 @@ body {
 
 h2, h3 {
   margin-top: 40px;
-} 
+}
 
 h3 {
   color: #284C6D;
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
   font-size: 20px;
-  
+
 }
 
 .example {
@@ -27,6 +27,10 @@ h3 {
   padding-top: 35px;
 }
 
+code {
+  color: #555;
+  background-color: rgba(0,0,0,0.07);
+}
 .example:before {
   position: absolute;
   top: 5px;
@@ -37,7 +41,7 @@ h3 {
 .example + pre {
  /* background-color: #444;*/
   margin-top: 0 !important;
-  border-top-width: 0; 
+  border-top-width: 0;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -50,28 +54,36 @@ h3 {
   padding: 10px 0;
 }
 
-.prop-header { 
-  position: relative; 
+.prop-header {
+  position: relative;
   overflow: visible;
 }
-.prop-header:before { 
-  display: block; 
-  content: " "; 
-  margin-top: -65px; 
-  height: 65px; 
-  visibility: hidden; 
+.prop-header:before {
+  display: block;
+  content: " ";
+  margin-top: -65px;
+  height: 65px;
+  visibility: hidden;
 }
 
 h3 {
   overflow: hidden;
 }
+h3 > small {
+  margin-left: 5px;
+  color: #555;
+  font-weight: bold;
+  font-size: 80%;
+  font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
 
-h3 > .default {
+h3 > strong {
   float: right;
   font-weight: normal;
   line-height: 1;
-  font-size: 65%;
   color:  #AF006E;
+  font-size: 65%;
+  font-style: italic;
 }
 
 .rw-widget {
@@ -107,13 +119,13 @@ pre {
 
 .navbar-default .navbar-nav>li>a:hover {
   color: #E7CAA1;
-  border-bottom-color: #E7CAA1;  
+  border-bottom-color: #E7CAA1;
 }
 .navbar-default .navbar-nav>li>a:hover,
 .navbar-default .navbar-nav>li.active > a,
 .navbar-default .navbar-nav>li.active > a:hover {
   color: #E7CAA1;
-  border-bottom-color: #E7CAA1; 
+  border-bottom-color: #E7CAA1;
   background: none;
  /* color: white;
   background-color: #0B2A46;
@@ -153,8 +165,8 @@ pre {
 }
 
 .example .api-panel {
-  margin-top: -10px;
-  border-left: #ddd 1px solid;
+  padding-top: 10px;
+  border-top: #ddd 1px solid;
 }
 
 .example.example-vertical .demo {
@@ -165,6 +177,15 @@ pre {
   margin-top: 0;
   border-top: #ddd 1px solid;
   padding-top: 10px;
+}
+
+@media (min-width: 768px) {
+  .example .api-panel {
+    margin-top: -10px;
+    padding-top: 0;
+    border-left: #ddd 1px solid;
+    border-top-width: 0;
+  }
 }
 
 .overdue {

@@ -3,6 +3,7 @@
  */
 
 var React = require('react')
+  , Default = require('../default.jsx')
   , Example = require('../example.jsx')
   , DDButton = require('react-bootstrap/DropdownButton')
   , MenuItem = require('react-bootstrap/MenuItem')
@@ -61,13 +62,13 @@ var Calendar = React.createClass({
 
         <h2>Props</h2>
         <h3 className='prop-header' id={ prefix +"value" }>
-          value <small>Date</small></h3>
+          value <small>Date</small><strong>controllable (onChange, defaultValue)</strong></h3>
         <p>
           The current selected date, should be a Date object or null.
         </p>
 
         <h3 className='prop-header' id={ prefix +"onChange" }>
-          onChange <small>{'function ( selectedValue )'}</small></h3>
+          onChange <small>{'Function( Date value )'}</small></h3>
         <p>
           change event Handler that is called when the value is changed. The handler is called with the Date object
         </p>
@@ -85,25 +86,29 @@ var Calendar = React.createClass({
         </p>
 
         <h3 className='prop-header' id={ prefix +"initialView" }>
-          
-          initialView <small>One of - "month", "year", "decade", "century"</small>
-          <span className='default'>"month"</span>
+
+          initialView <small>Enum<Default>"month"</Default></small>
         </h3>
         <p>
           The starting and lowest level view the calendar can navigate down to.
         </p>
-
+        <p>
+          Acceptable values are:
+          <code>"month"</code> <code>"year"</code> <code>"decade"</code> <code>"century"</code>
+        </p>
         <h3 className='prop-header' id={ prefix +"finalView" }>
-          finalView <small>One of - "month", "year", "decade", "century"</small>
-          <span className='default'>"century"</span>
+          finalView <small>Enum<Default>"century"</Default></small>
         </h3>
         <p>
-          The highest level view the calendar can navigate up to. This value should be higher 
+          The highest level view the calendar can navigate up to. This value should be higher
           than <code>initialView</code>
         </p>
-
+        <p>
+          Acceptable values are:
+          <code>"month"</code> <code>"year"</code> <code>"decade"</code> <code>"century"</code>
+        </p>
         <h3 className='prop-header' id={ prefix +"isRtl" }>
-          isRtl <small>Boolean</small></h3>
+          isRtl <small>Boolean<Default>false</Default></small></h3>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
           a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
@@ -112,14 +117,16 @@ var Calendar = React.createClass({
         <h3 className='prop-header' id={ prefix +"messages" }>
           messages <small>Object</small></h3>
         <p>
-          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to 
+          Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to
           localize widget text and increase accessibility.
         </p>
-        <h3>messages.moveBack <small>String</small><span className='default'>"navigate back"</span></h3>
+        <h3>messages.moveBack <small>String<Default>"navigate back"</Default></small></h3>
         <p>
           title and screen reader text for the left arrow button
         </p>
-        <h3>messages.moveForward <small>String</small><span className='default'>"navigate forward"</span></h3>
+        <h3>
+          messages.moveForward <small>String<Default>"navigate forward"</Default></small>
+        </h3>
         <p>
           title and screen reader text for the right arrow button
         </p>
