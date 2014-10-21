@@ -24,7 +24,7 @@ var btn = require('../common/btn.jsx')
       open:           React.PropTypes.bool,
       onToggle:       React.PropTypes.func,
       //-------------------------------------------
-      
+
       valueField:     React.PropTypes.string,
       textField:      React.PropTypes.string,
 
@@ -240,14 +240,9 @@ var Select = React.createClass({
   _keyDown: function(e){
     var key = e.key
       , alt = e.altKey
-<<<<<<< HEAD
-      , searching = !!this.props.searchTerm
-      , isOpen = this.props.open;
-=======
       , searching = !!this.state.searchTerm
       , isOpen  = this.state.open
       , tagList = this.refs.tagList;
->>>>>>> master
 
     if ( key === 'ArrowDown') {
       e.preventDefault()
