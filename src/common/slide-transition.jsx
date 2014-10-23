@@ -23,10 +23,11 @@ var SlideChildGroup = React.createClass({
     width = direction === 'left' ? width : -width
 
     this.ORGINAL_POSITION = node.style.position;
-
+    
     $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
 
     $.animate(node, { left: 0 }, self.props.duration, function(){
+
         $.css(node, { 
           position:  self.ORGINAL_POSITION, 
           overflow: 'hidden'

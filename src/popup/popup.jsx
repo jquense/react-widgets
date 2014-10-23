@@ -4,18 +4,17 @@ var React  = require('react')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , $ = require('../util/dom');
 
-function childKey(children){
-  var nextChildMapping = React.Children.map(children, function(c){ return c })
-    , key;
 
-  for(key in nextChildMapping)
-    return key
-}
+var PopupContent = React.createClass({
+  render: function(){
+    return React.Children.only(this.props.children)
+  }
+})
+
 
 module.exports = React.createClass({
 
 	propTypes: {
-		//getAnchor:      React.PropTypes.func.isRequired,
     duration:       React.PropTypes.number,
     onRequestClose: React.PropTypes.func.isRequired,
     onClosing:      React.PropTypes.func,
@@ -47,18 +46,15 @@ module.exports = React.createClass({
   },
 
   componentDidUpdate: function(pvProps, pvState){
-    var self = this
-      , closing =  pvProps.open && !this.props.open
-      , opening = !pvProps.open && this.props.open
-      , same    = pvProps.open === this.props.open;
+    var closing =  pvProps.open && !this.props.open
+      , opening = !pvProps.open && this.props.open;
 
-    if (opening)      self.open()
-    else if (closing) self.close()
+    if (opening)      this.open()
+    else if (closing) this.close()
   },
 
 	render: function(){
-    var style   = _.extend({}, this.props.style || {}, { overflow: 'hidden', position: 'absolute', zIndex: 1005 })
-      , Content = mergeIntoProps(
+    var Content = mergeIntoProps(
           { className: 'rw-popup rw-widget' }
         , this.props.children);
 
@@ -85,8 +81,9 @@ module.exports = React.createClass({
       , anim = this.getDOMNode()
       , el   = this.refs.content.getDOMNode();
 
-    this.ORGINAL_POSITION = $.css(el, 'position');
+    this.ORGINAL_POSITION = $.css(el, 'position')
 
+    this._isOpening = true
     this.dimensions()
     this.props.onOpening()
 
@@ -96,6 +93,7 @@ module.exports = React.createClass({
       , { top: 0 }
       , self.props.duration
       , function(){
+          if ( !self._isOpening ) return
           el.style.position = self.ORGINAL_POSITION
           anim.style.overflow = 'visible'
           self.ORGINAL_POSITION = null
@@ -110,7 +108,9 @@ module.exports = React.createClass({
       , anim = this.getDOMNode()
       , ht   = anim.style.height;
 
-    this.ORGINAL_POSITION = $.css(el, 'position');
+    this.ORGINAL_POSITION = $.css(el, 'position')
+
+    this._isOpening = false
     this.dimensions()
     this.props.onClosing()
 
@@ -121,6 +121,7 @@ module.exports = React.createClass({
       , { top: '-100%' }
       , dur === undefined ? this.props.duration : dur
       , function() {
+          if ( self._isOpening ) return
           el.style.position = self.ORGINAL_POSITION
 
           anim.style.display = 'none'
@@ -132,8 +133,7 @@ module.exports = React.createClass({
 })
 
 
-var PopupContent = React.createClass({
-  render: function(){
-    return React.Children.only(this.props.children)
-  }
-})
+function childKey(children){
+  var nextChildMapping = React.Children.map(children, function(c){ return c });
+  for(var key in nextChildMapping) return key
+}
