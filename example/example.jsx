@@ -68,7 +68,6 @@ var App = React.createClass({
             value={this.state.selectValues}
             readOnly={[1,2,3,4]}
             multiple={true}
-            onMove={function(){}}
             style={{ overflow: 'auto', height: '200px', padding: 0, border:'none' }}
             onChange={change.bind(null, 'selectValues')}/>
         </section>
