@@ -88,11 +88,9 @@ var Select = React.createClass({
                : [].concat(this.props.value)
 
     return {
-      processedData: this.process(this.props.data, this.props.value, ''),
       focusedIndex:  0,
-      dataItems: _.map(values, function(item){
-        return this._dataItem(this.props.data, item)
-      }, this)
+      processedData: this.process(this.props.data, this.props.value, ''),
+      dataItems: _.map(values, item => this._dataItem(this.props.data, item))
     }
   },
 
@@ -105,9 +103,7 @@ var Select = React.createClass({
 
     this.setState({
       processedData: items,
-      dataItems: _.map(values, function(item){
-        return this._dataItem(nextProps.data, item)
-      }, this)
+      dataItems: _.map(values, item => this._dataItem(nextProps.data, item))
     })
   },
 
@@ -130,7 +126,7 @@ var Select = React.createClass({
               'rw-widget':         true,
               'rw-state-focus':    this.state.focused,
               'rw-state-disabled': this.props.disabled === true,
-              'rw-state-readonly':  this.props.readOnly === true,
+              'rw-state-readonly': this.props.readOnly === true,
               'rw-open':           this.props.open,
               'rw-rtl':            this.isRtl()
             })}>
