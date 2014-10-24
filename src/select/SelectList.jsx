@@ -105,7 +105,7 @@ var CheckboxList = React.createClass({
 
     return mergeIntoProps(
       _.omit(this.props, _.keys(propTypes)),
-      <ul 
+      <div
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={focus}
         onBlur ={blur}
@@ -113,18 +113,20 @@ var CheckboxList = React.createClass({
         role='listbox'
         aria-busy={!!this.props.busy}
         aria-activedescendent={ this.state.focused ? optID : undefined }
-        aria-disabled={ this.props.disabled }
-        aria-readonly={ this.props.readOnly }
+        aria-disabled={ this.isDisabled() }
+        aria-readonly={ this.isReadOnly() }
         className={cx({ 
           'rw-widget':         true,
           'rw-checkboxlist':   true,
           'rw-state-focus':    this.state.focused,
           'rw-state-disabled': this.isDisabled(),
           'rw-state-readonly': this.isReadOnly(),
-          'rw-rtl':            this.isRtl()
+          'rw-rtl':            this.isRtl(),
+          'rw-loading-mask':   this.props.busy
         })}>
-        { this._rows(optID)}
-      </ul> 
+
+        <ul className='rw-list' ref='list'>{ this._rows(optID)}</ul>
+      </div> 
     );
   },
 
@@ -172,8 +174,8 @@ var CheckboxList = React.createClass({
     else if ( key === 'Home' ) {
       e.preventDefault()
 
-      if ( multiple )  this.setFocusedIndex(this.nextFocusedIndex(-1))
-      else             change(this.nextFocusedIndex(-1)) 
+      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex(-1))
+      else            change(this.nextFocusedIndex(-1)) 
     }
     else if ( key === 'Enter' || key === ' ' ) {
       e.preventDefault()
@@ -202,16 +204,16 @@ var CheckboxList = React.createClass({
 
     function change(idx, cked){
       var item = data[idx];
-      chked = cked !== undefined 
-        ? chked
-        : multiple 
-          ? !self._contains(item, self._values()) // toggle value
-          : true
-
-      if( idx > -1 && idx < last)
-        self._change(item, chked)
+      
+      if( idx > -1 && idx < last){
+        self._change(item, cked !== undefined 
+          ? chked
+          : multiple 
+            ? !self._contains(item, self._values()) // toggle value
+            : true)
+      }
+        
     }
-
   },
 
   _selectAll: function(){
@@ -299,7 +301,7 @@ var CheckboxList = React.createClass({
   },
 
   _setScrollPosition: function(){
-    var list = this.getDOMNode()
+    var list = this.refs.list.getDOMNode()
       , selected = list.children[this.state.focusedIndex]
       , handler  = this.props.onMove || scrollTo;
 

@@ -57,7 +57,7 @@ var App = React.createClass({
     return (
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
-        <section className="example" >
+        <section className="example" style={{ height: '400px', overflow: 'auto' }}>
           <div style={{ height: 150 }}>
             sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
           </div>
@@ -68,7 +68,8 @@ var App = React.createClass({
             value={this.state.selectValues}
             disabled={[1 ,6]}
             multiple={false}
-            style={{ overflow: 'auto', height: '200px', padding: 0, border:'none' }}
+            busy={false}
+            
             onChange={change.bind(null, 'selectValues')}/>
         </section>
         {/* 
