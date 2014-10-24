@@ -54,7 +54,7 @@ var CheckboxList = React.createClass({
     require('../mixins/TextSearchMixin'),
     require('../mixins/DataHelpersMixin'),
     require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('focusedIndex')
+    require('../mixins/DataIndexStateMixin')('focusedIndex', 'isDisabledItem')
   ],
 
   getDefaultProps: function(){
@@ -162,7 +162,8 @@ var CheckboxList = React.createClass({
 
   _keyDown: function(e){
     var self = this
-      , key = e.key;
+      , key = e.key
+      , multiple = !!this.props.multiple;
 
     if ( key === 'End' ) {
       this.prev(this._data().length - 1)
@@ -177,12 +178,16 @@ var CheckboxList = React.createClass({
       this._change(item, !this._contains(item, this._values()))
       e.preventDefault()
     }
-    else if ( key === 'ArrowDown' ) {
-      this.next(this.nextFocusedIndex())
+    else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
+      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex())
+      else            this._change(this._data()[this.nextFocusedIndex()])
+
       e.preventDefault()
     }
-    else if ( key === 'ArrowUp' ) {
-      this.prev(this.prevFocusedIndex())
+    else if ( key === 'ArrowUp' || key === 'ArrowLeft'  ) {
+      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex())
+      else            this._change(this._data()[this.prevFocusedIndex()])
+
       e.preventDefault()
     }
     else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {

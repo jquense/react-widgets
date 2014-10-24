@@ -8,7 +8,7 @@ var React  = require('react')
 
 
 
-module.exports = function(stateKey) {
+module.exports = function(stateKey, disabled) {
   var methodName = stateKey.charAt(0).toUpperCase() + stateKey.substr(1)
 
     , ifValueChanges = compose.provided(function(props){
@@ -31,28 +31,36 @@ module.exports = function(stateKey) {
 
   mixin['set' + methodName] = fluent(setIndex)
 
-  mixin['prev' + methodName] = function(){
+  mixin['prev' + methodName] = function(nextIdx){
     var data = this._data()
-      , nextIdx = this.state && this.state[stateKey] || 0;
+      , stateIdx = this.state && this.state[stateKey] || 0;
+    
+    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) -1;
 
-    nextIdx -= 1
+    while( nextIdx > -1 && isDisabled(this, data[nextIdx])) nextIdx--
 
-    if ( nextIdx < 0 )
-      nextIdx = 0
+    if ( nextIdx < 0 ) 
+      nextIdx = disabled ? -1 : 0
     
     return nextIdx;
   }
 
-  mixin['next' + methodName] = function(){
+  mixin['next' + methodName] = function(nextIdx){
     var data = this._data()
-      , nextIdx = this.state && this.state[stateKey] || 0;
+      , stateIdx = this.state && this.state[stateKey] || 0;
 
-    nextIdx += 1
+    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) + 1
+
+    while( nextIdx < data.length && isDisabled(this, data[nextIdx])) nextIdx++
 
     if ( nextIdx >= data.length )
-      nextIdx = data.length -1;
+      nextIdx = disabled ? -1 : data.length - 1;
 
     return nextIdx;
+  }
+
+  function isDisabled(ctx, item){
+    return disabled && ctx[disabled](item)
   }
 
   return mixin;
