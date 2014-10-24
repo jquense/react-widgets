@@ -7,6 +7,7 @@ var React = require('react')
   , cx = require('../util/cx')
   , $  =  require('../util/dom')
   , scrollTo = require('../util/scroll')
+  , splat = require('../util/splat')
   , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps;
 
@@ -45,6 +46,7 @@ var propTypes = {
     }),
   }
 
+
 var CheckboxList = React.createClass({
 
   propTypes: propTypes,
@@ -68,38 +70,32 @@ var CheckboxList = React.createClass({
     }
   },
 
-  getInitialState: function(){
-    var values = this.props.value == null ? []: [].concat(this.props.value)
-      , idx = 0, data = this._data(), l = data.length;
+  getDefaultState: function(props){
+    var isRadio = !props.multiple
+      , values  = splat(props.value)
+      , idx     = isRadio && this._dataIndexOf(props.data, values[0]) 
 
-    while( idx < l && this.isDisabledItem(data[idx])) idx++
+    idx = isRadio && idx !== -1 
+      ? this.nextFocusedIndex(idx - 1) 
+      : ((this.state || {}).focusedIndex || -1)
 
     return {
-      focusedIndex: idx <= l ? idx : -1,
-      dataItems: _.map(values, function(item){
-        return this._dataItem(this.props.data, item)
-      }, this)
+      focusedIndex: idx,
+      dataItems:    isRadio && _.map(values,  item => this._dataItem(props.data, item))
     }
+  },
+
+  getInitialState: function(){
+    return this.getDefaultState(this.props)
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    return this.setState(this.getDefaultState(nextProps))
   },
 
   componentDidUpdate: function(prevProps, prevState){
     if ( prevState.focusedIndex !== this.state.focusedIndex)
       this._setScrollPosition()
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    var values = nextProps.value == null ? [] : [].concat(nextProps.value)
-      //, idx = this._dataIndexOf(nextProps.data, values[0])
-      //, data = nextProps.data, l = data.length;
-
-    // idx = idx === -1 ? 0 : idx
-
-    // while( idx < l && this.isDisabledItem(data[idx])) idx++
-
-    this.setState({
-      //focusedIndex: idx <= l ? idx : 0,
-      dataItems: _.map(values, item => this._dataItem(nextProps.data, item))
-    })
   },
 
   render: function() {
@@ -163,41 +159,59 @@ var CheckboxList = React.createClass({
   _keyDown: function(e){
     var self = this
       , key = e.key
-      , multiple = !!this.props.multiple;
+      , data = this._data()
+      , multiple = !!this.props.multiple
+      , last = data.length;
 
     if ( key === 'End' ) {
-      this.prev(this._data().length - 1)
       e.preventDefault()
+
+      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex(last))
+      else            change(this.prevFocusedIndex(last)) 
     }
     else if ( key === 'Home' ) {
-      this.next(0)
       e.preventDefault()
+
+      if ( multiple )  this.setFocusedIndex(this.nextFocusedIndex(-1))
+      else             change(this.nextFocusedIndex(-1)) 
     }
     else if ( key === 'Enter' || key === ' ' ) {
-      var item = this._data()[this.state.focusedIndex]
-      this._change(item, !this._contains(item, this._values()))
       e.preventDefault()
+      change(data[this.state.focusedIndex])
     }
     else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
+      e.preventDefault()
+
       if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex())
-      else            this._change(this._data()[this.nextFocusedIndex()])
-
-      e.preventDefault()
+      else            change(this.nextFocusedIndex())
     }
-    else if ( key === 'ArrowUp' || key === 'ArrowLeft'  ) {
-      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex())
-      else            this._change(this._data()[this.prevFocusedIndex()])
-
+    else if ( key === 'ArrowUp' || key === 'A rrowLeft'  ) {
       e.preventDefault()
+
+      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex())
+      else            change(this.prevFocusedIndex())
     }
     else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {
-      this._selectAll()
       e.preventDefault()
+      this._selectAll() 
     }
     else
       this.search(
           String.fromCharCode(e.keyCode)
         , this._locate)
+
+    function change(idx, cked){
+      var item = data[idx];
+      chked = cked !== undefined 
+        ? chked
+        : multiple 
+          ? !self._contains(item, self._values()) // toggle value
+          : true
+
+      if( idx > -1 && idx < last)
+        self._change(item, chked)
+    }
+
   },
 
   _selectAll: function(){
@@ -248,7 +262,7 @@ var CheckboxList = React.createClass({
       if( focused) self.getDOMNode().focus()
       if( focused !== self.state.focused){
         self.setState({ focused: focused })
-        !focused && self.next(0)
+        //!focused && self.next(0)
       }
     }, 0)
   },
@@ -290,22 +304,8 @@ var CheckboxList = React.createClass({
       , handler  = this.props.onMove || scrollTo;
 
     handler(selected)
-  },
-
-  next: function(nextIdx){
-    var data = this._data()
-      , l = data.length;
-
-    while( nextIdx < l && this.isDisabledItem(data[nextIdx]) ) nextIdx++
-    if ( nextIdx <= l ) this.setFocusedIndex(nextIdx)
-  },
-
-  prev: function(nextIdx){
-    var data = this._data();
-
-    while( nextIdx > -1 && this.isDisabledItem(data[nextIdx]) ) nextIdx--
-    if ( nextIdx >= 0 ) this.setFocusedIndex(nextIdx)
   }
+
 });
 
 var SelectListItem = React.createClass({

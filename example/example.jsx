@@ -30,7 +30,7 @@ var App = React.createClass({
       dropdownValue: list[0],
       comboboxValue: 1,
       //comboboxValue: list[0],
-      selectValues: [1,3],
+      selectValues: 3,
       calDate: new Date(2014,5,10,0,0,0),
       numberValue: 1,
       open: false
@@ -66,8 +66,8 @@ var App = React.createClass({
             valueField='id'
             data={this.state.data}
             value={this.state.selectValues}
-            disabled={[1,2,3,4]}
-            multiple={true}
+            disabled={[1 ,6]}
+            multiple={false}
             style={{ overflow: 'auto', height: '200px', padding: 0, border:'none' }}
             onChange={change.bind(null, 'selectValues')}/>
         </section>
