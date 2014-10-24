@@ -26,7 +26,7 @@ var propTypes = {
 
     busy:           React.PropTypes.bool,
 
-    delay:          React.PropTypes.number,
+    delay:          React.PropTypes.number, 
 
     disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.array,
