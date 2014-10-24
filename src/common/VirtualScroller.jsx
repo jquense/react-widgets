@@ -217,30 +217,32 @@ var VirtualScroller = React.createClass({
 
   scrollTo: function(idx){
     var list  = this.getDOMNode()
-      , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
+      , scrollTop, listHeight, selectedTop, selectedHeight, bottom
+      , isBelow, isAbove;
 
-    if( this._isRenderedItem(idx) ) {
-      return scrollDom.call(this, list, (idx - this.state.displayStart));
-    }
-      
+    if( this._isRenderedItem(idx) )
+      return scrollDom.call(this, list, (idx - this.state.displayStart), this._scrollEdge);
+    
     if( this._needsScrollRecalculation) 
       return this._needsScrollRecalculation = false;
-
 
     scrollTop      = list.scrollTop
     listHeight     = list.clientHeight
     selectedTop    = idx * this.state.avgHeight 
     selectedHeight = this.state.avgHeight
+    bottom         =  selectedTop + selectedHeight
 
-    bottom =  selectedTop + selectedHeight
+    isBelow = bottom > (scrollTop + listHeight) 
+    isAbove = scrollTop > selectedTop
 
-    scrollTop = scrollTop > selectedTop
+    scrollTop = isAbove
       ? selectedTop
-      : bottom > (scrollTop + listHeight) 
+      : isBelow
           ? (bottom - listHeight)
           : scrollTop;
 
     this._needsScrollRecalculation = idx
+    this._scrollEdge = isAbove ? 'top' : isBelow ? 'bottom' : '';
     list.scrollTop = scrollTop;
   }
 
@@ -249,25 +251,55 @@ var VirtualScroller = React.createClass({
 module.exports = VirtualScroller;
 
 
-function scrollDom(list, idx){
+function scrollDom(list, idx, edge){
   var selected = list.children[idx]
-    , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
+    , offset   = relOffset(selected, list)
+    , scrollTop, listHeight, selectedTop, selectedHeight, bottom
+    , isBelow, isAbove;
 
-    if( !selected ) return 
+  if( !selected ) return 
 
-    scrollTop      = list.scrollTop
-    listHeight     = list.clientHeight
-    selectedTop    = selected.offsetTop
-    selectedHeight = selected.offsetHeight
+  scrollTop      = list.scrollTop
+  listHeight     = list.clientHeight
+  selectedTop    = offset.top + scrollTop
+  selectedHeight = offset.height
+  bottom         = selectedTop + selectedHeight
 
-    bottom =  selectedTop + selectedHeight
+  isBelow = edge === 'bottom' || (bottom > (scrollTop + listHeight))
+  isAbove = edge === 'top'    || ( scrollTop > selectedTop)
 
+  scrollTop = isAbove 
+    ? bottom 
+    : isBelow ? ((bottom + selectedHeight) - listHeight) : scrollTop
+
+  console.log('dom: ', idx, list.scrollTop, scrollTop)
+
+  if (list.scrollTop !== scrollTop)
     this._preventChange = true
-    scrollTop = scrollTop > selectedTop
-      ? selectedTop
-      : ((selectedTop + selectedHeight) - listHeight)
-    console.log('dom: ', idx, list.scrollTop, scrollTop)
-    list.scrollTop = scrollTop;
-    //this._preventChange = false
-    this._needsScrollRecalculation = false;
+  
+  list.scrollTop = scrollTop;
+  this._needsScrollRecalculation = false;
+  this._scrollEdge = ''
+}
+
+
+function relOffset(selected, list){
+  var offset = $.offset(selected)
+    , poff   = { top: 0, left: 0 }
+    , scrollTop, selectedTop, selectedHeight
+    , listHeight, bottom;
+
+  if( !selected ) return 
+
+  scrollTop  = list.scrollTop
+  listHeight = list.clientHeight
+
+  poff = $.offset(list)
+
+  return {
+    top:    offset.top  - poff.top,
+    left:   offset.left - poff.left,
+    height: offset.height,
+    width:  offset.width
   }
+}
