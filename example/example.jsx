@@ -6,6 +6,10 @@ var Calendar = require('../src/calendar/calendar.jsx')
 var DatePicker = require('../src/pickers/datepicker.jsx')
 var NumberPicker = require('../src/pickers/numberpicker.jsx')
 var ComboBox = require('../src/dropdowns/Combobox.jsx')
+
+
+var VirtualScroller = require('../src/common/VirtualScroller.jsx')
+
 var chance = new (require('chance'))
 //var _ = require('lodash')
 
@@ -39,6 +43,12 @@ var App = React.createClass({
   render: function(){
     var self = this;
 
+    function scroll(){
+      var idx = parseInt(self.refs.input.getDOMNode().value, 10)
+
+      self.refs.vs.scrollTo(idx - 1)
+    }
+
     function change(field, data) {
       var obj = {}
 
@@ -55,8 +65,16 @@ var App = React.createClass({
 
     return (
       <div style={{ fontSize: 14 }}>
-        <div style={{ maxWidth: 600 }}>
+        <div style={{ maxWidth: 250 }}>
           <section className="example" style={{ marginBottom: 20 }}>
+            <button onClick={scroll}>scrollTo</button><input type='text' ref='input' defaultValue={350}/>
+            <VirtualScroller initialItems={20} ref='vs' itemHeight={16}>
+              {
+                _.map(this.state.data, v => <li key={v.id}>{v.id}: {v.name}</li>)
+              }
+            </VirtualScroller>
+          </section>
+          {/*<section className="example" style={{ marginBottom: 20 }}>
             <DropdownList
               isRtl={false}
               id='MyDropdownList'
@@ -120,6 +138,7 @@ var App = React.createClass({
               value={this.state.numberValue}
               onChange={change.bind(null, 'numberValue')}/>
           </section>
+        */}
         </div>
         <div className='clearfix'>
           <div className='c1' style={{ float: 'left', width: 150, height: 200 }}/>
@@ -146,10 +165,10 @@ React.renderComponent(
 
 
 function generateList(){
-  var arr = new Array(100)
+  var arr = new Array(20000)
 
   for(var i = 0; i < arr.length; i++)
-    arr[i] = { id: i + 1, name: chance.name() }
+    arr[i] = { id: i + 1, name: chance.sentence({words: 1}) }
 
   return arr
 }
