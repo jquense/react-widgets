@@ -179,7 +179,7 @@ var VirtualScroller = React.createClass({
 
     //console.log('scroll: ',  itemHeight && (update || outOfRange))
     if( topVisible || botVisible) {
-      console.log('your skin is showing')
+      //console.log('your skin is showing')
       return true
     }
 
@@ -243,7 +243,7 @@ var VirtualScroller = React.createClass({
 
     this._needsScrollRecalculation = idx
     this._scrollEdge = isAbove ? 'top' : isBelow ? 'bottom' : '';
-    list.scrollTop = scrollTop;
+    list.scrollTop   = scrollTop;
   }
 
 });
@@ -272,13 +272,13 @@ function scrollDom(list, idx, edge){
     ? bottom 
     : isBelow ? ((bottom + selectedHeight) - listHeight) : scrollTop
 
-  console.log('dom: ', idx, list.scrollTop, scrollTop)
+  //console.log('dom: ', idx, list.scrollTop, scrollTop)
 
   if (list.scrollTop !== scrollTop)
     this._preventChange = true
   
-  list.scrollTop = scrollTop;
-  this._needsScrollRecalculation = false;
+  list.scrollTop = scrollTop
+  this._needsScrollRecalculation = false
   this._scrollEdge = ''
 }
 
