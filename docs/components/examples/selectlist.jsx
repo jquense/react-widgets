@@ -5,8 +5,9 @@
 var React = require('react')
   , Button = require('react-bootstrap/Button')
   , buttonGroup = require('react-bootstrap/ButtonGroup')
-  , SelectList = require('../../../index').SelectList
-  , NumberPicker = require('../../../index').NumberPicker;
+  , RW = require('../../../index')
+  , SelectList = RW.SelectList
+  , NumberPicker = RW.NumberPicker;
 
 var valueComp = React.createClass({
   render: function() {
@@ -39,6 +40,7 @@ var DropdownApi = React.createClass({
   },
 
   render: function() {
+    var disabled = this.state.disabled === true || _.isArray(this.state.disabled
     var list = [
         { label: 'orange', id: 1 },
         { label: 'blue', id: 2 },
@@ -54,10 +56,11 @@ var DropdownApi = React.createClass({
           <div className='col-sm-8 demo'>
             <div className='form-group'>
               <SelectList 
-                disabled={this.state.disabled === 'disabled'}
+                disabled={disabled ? this.state.disabled : false}
                 readOnly={this.state.disabled === 'readonly'}
                 value={this.state.value || 1}
                 data={list}
+                busy={this.state.multiple}
                 busy={this.state.busy}
                 onChange={this._change}
                 isRtl={this.state.isRtl}
@@ -73,6 +76,14 @@ var DropdownApi = React.createClass({
                   checked={this.state.isRtl}
                   onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
+              </label>
+            </div>
+            <div className='form-group'>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.multiple}
+                  onChange={_.partial(this._set, 'multiple', !this.state.multiple)}/>
+                  Is Multiple
               </label>
             </div>
             <div className='form-group'>
@@ -95,13 +106,15 @@ var DropdownApi = React.createClass({
               </Button>
             </div>
             <div className='form-group'>
-              <label className='form-label'>Duration</label>
-              <NumberPicker 
-                  value={this.state.duration} 
-                  step={200}
-                  min={0}
-                  max={1000}
-                  onChange={_.partial(this._set, 'duration')}/>
+              <label className='form-label'>Disable Values</label>
+              <RW.Select 
+                  value={ _.isArray(this.state.disabled) ? this.state.disabled : [] } 
+                  data={allVals}
+                  textField='label'
+                  valueField='id'
+                  disabled={this.state.disabled === true}
+                  messages={{ emptyList: "no values selected to the right"}}
+                  onChange={_.partial(this._set, 'disabled')}/>
             </div>
           </div>
         </div>
@@ -125,9 +138,9 @@ var DropdownApi = React.createClass({
   },
 
   disabled: function(){
-    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+    var val = this.state.disabled === true ? false : true
     this.setState({ disabled: val })
-  },
+  }
 });
 
 module.exports = DropdownApi;
