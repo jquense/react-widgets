@@ -67,7 +67,7 @@ var App = React.createClass({
             data={this.state.data}
             value={this.state.selectValues}
             disabled={[1 ,6]}
-            multiple={false}
+            multiple
             busy={false}
             
             onChange={change.bind(null, 'selectValues')}/>
