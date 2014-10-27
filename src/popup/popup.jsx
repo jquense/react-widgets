@@ -25,7 +25,6 @@ module.exports = React.createClass({
 
   getDefaultProps: function(){
     return {
-      height:      'auto',
       duration:    200,
       open:        false,
       onClosing:   _.noop,
