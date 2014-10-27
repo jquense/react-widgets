@@ -29,9 +29,9 @@ var GettingStarted = React.createClass({
           </a> to form input components, each widget can be <em>controlled</em> or <em>uncontrolled</em>. Like form inputs
           the value/onChange prop pair provides the main interface for widget interaction. If a <code>value</code> prop
           is {'set'} the widget's value is said to be <em>controlled</em>, meaning the parent is responsible for managing its
-          state. If the widget does not provide a <code>value</code> prop, it becomes <em>uncontrolled</em> or responsible
-          for managing the value through internal state. To intialize the an uncontrolled widget with a value you can use
-            the <code>defaultValue</code> In addition to the <code>value</code> prop widgets may allow other props
+          state. If the widget does not provide a <code>value</code> prop, the widget becomes <em>uncontrolled</em> or responsible
+          for managing its own value through internal state. To initialize an uncontrolled widget with a value you can use
+            the <code>defaultValue</code> prop. In addition to the <code>value</code> prop widgets may allow other props
           (such as <code>open</code> or <code>search</code>) to be controlled by the parent component.
         </p>
         <p>
