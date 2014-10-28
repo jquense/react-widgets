@@ -22,8 +22,8 @@ module.exports = React.createClass({
       <Navbar fixedTop activeKey={this.props.page} toggleNavKey={0} toggleButton={toggle}>
           <Nav role='navigation' key={0} activeKey='docs' >
             <NavItem key='docs' href="#">Docs</NavItem>
-            <NavItem key='dl' href="https://github.com/theporchrat/react-widgets/releases">Download</NavItem>
-            <NavItem key='github' href="https://github.com/theporchrat/react-widgets">Github</NavItem>
+            <NavItem key='dl' href="https://github.com/jquense/react-widgets/releases">Download</NavItem>
+            <NavItem key='github' href="https://github.com/jquense/react-widgets">Github</NavItem>
           </Nav>
       </Navbar>
     )
