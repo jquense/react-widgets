@@ -1,11 +1,11 @@
 {
   "name": "react-widgets",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "React widgets",
   "main": "index.js",
   "author": {
     "name": "Jason",
-    "email": "theporchrat@gmail.com"
+    "email": "monastic.panic@gmail.com"
   },
   "keywords": [
     "react",
@@ -21,10 +21,10 @@
     "react-ui",
     "react-component"
   ],
-  "homepage": "http://theporchrat.github.io/react-widgets/docs/",
+  "homepage": "http://jquense.github.io/react-widgets/docs/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/theporchrat/react-widgets"
+    "url": "https://github.com/jquense/react-widgets"
   },
   "dependencies": {
     "lodash": "^2.4.1",
