@@ -10,7 +10,7 @@ A set of the basic ui widgets built from scratch with React, based on the excell
 - Calendar 
 - NumberPicker 
 
-__Demos and Documentation [here](http://theporchrat.github.io/react-widgets/docs/)__
+__Demos and Documentation [here](http://jquense.github.io/react-widgets/docs/)__
 
 
 ### Install
