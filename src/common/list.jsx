@@ -71,7 +71,6 @@ module.exports = React.createClass({
     var emptyList   = <li>{ this.props.messages.emptyList }</li>
       , emptyFilter = <li>{ this.props.messages.emptyFilter }</li>
       , items;
-
     
     items = _.map(this.props.data, function(item, idx){
       var focused = this.props.focusedIndex === idx;

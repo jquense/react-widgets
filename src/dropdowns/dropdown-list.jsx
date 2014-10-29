@@ -113,6 +113,7 @@ var DropdownList = React.createClass({
            onBlur ={_.partial(this._focus, false)}
            aria-expanded={ this.props.open }
            aria-haspopup={true}
+           aria-busy={!!this.props.busy}
            aria-activedescendent={ this.props.open ? optID : undefined }
            aria-disabled={ this.props.disabled }
            aria-readonly={ this.props.readOnly }
@@ -206,7 +207,7 @@ var DropdownList = React.createClass({
     else if ( key === 'Escape' && isOpen ) {
       this.close()
     }
-    else if ( key === 'Enter' && isOpen ) {
+    else if ( (key === 'Enter' || key === ' ') && isOpen ) {
       change(this.state.focusedIndex)
     }
     else if ( key === 'ArrowDown' ) {

@@ -46,12 +46,14 @@ reset[transitionTiming   = prefix + 'transition-timing-function'] = ''
 
 var DOM = module.exports = {
 
-  width: function(node){
-    return DOM.offset(node).width
+  width: function(node, client){
+    var win = getWindow(node)
+    return win ? win.innerWidth : client ? node.clientWidth : DOM.offset(node).width
   },
 
-  height: function(node){
-    return DOM.offset(node).height
+  height: function(node, client){
+    var win = getWindow(node)
+    return win ? win.innerHeight : client ? node.clientHeight : DOM.offset(node).height
   },
 
   hasFocus: function(node){
@@ -119,6 +121,56 @@ var DOM = module.exports = {
             return false;
           }
   })(),
+
+  parents: function(node){
+    var ancestors = [];
+
+    while ( node = node.parentNode )
+      if (!isDocument(node) && ancestors.indexOf(node) < 0) 
+        ancestors.push(node)
+
+    return ancestors
+  },
+
+  scrollParent: function(node){
+    var position = DOM.css(node, "position" )
+      , excludeStatic = position === "absolute";
+
+    if (position === 'fixed') 
+      return node.ownerDocument || document
+
+    while ( (node = node.parentNode) && node.nodeType !== 9){
+      var isStatic = excludeStatic && DOM.css(node, "position" ) === "static"
+        , style    = DOM.css(node, 'overflow') 
+                   + DOM.css(node, 'overflow-y') 
+                   + DOM.css(node, 'overflow-x');
+
+      if (isStatic) continue
+      if ( (/(auto|scroll)/).test(style) && DOM.height(node) < node.scrollHeight )
+        return node
+    };
+
+    return node.ownerDocument || document
+  },
+
+  scrollTop: function(node, val){
+    var win = getWindow(node);
+
+    if ( val === undefined )
+      return win 
+        ? ('pageYOffset' in win) 
+          ? win.pageYOffset
+          : win.document.documentElement.scrollTop 
+        : node.scrollTop;
+    
+    if ( win ) 
+      win.scrollTo(('pageXOffset' in win) 
+        ? win.pageXOffset 
+        : win.document.documentElement.scrollLeft, val)
+    else       
+      node.scrollTop = val
+  },
+
 
   on: function(node, eventName, handler){
     if (node.addEventListener)

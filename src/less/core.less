@@ -57,6 +57,55 @@
   }
 }
 
+// .rw-loading-mask {
+//   position: absolute;
+//   z-index: 2;
+//   top: 0;
+//     left: 0; 
+//     height: 100%;
+//     width: 100%;
+
+//   &,
+//   & .rw-loading-backdrop {
+//     width: 100%;
+//     height: 100%;
+//     top:0;
+//     left: 0;
+//   }
+
+//   .rw-loading-backdrop {
+//     position: absolute;
+//     background-color: #fff;
+//     opacity: 0.7;
+//   }
+
+//   .rw-loading-image {
+//     background: url("./loading-big.gif") no-repeat center;
+//     width: 48px;
+//     height: 48px;
+//     position:absolute; 
+//     left: 0; 
+//     right: 0;
+//     margin: 25px auto;
+//   } 
+// }
+
+.rw-loading-mask {
+  border-radius:    @input-border-radius;
+  position:         relative;
+
+  &:after{
+    content: '';
+    background: url("./loader-big.gif") no-repeat center;
+    position:   absolute;
+    background-color: #fff;
+    opacity: 0.7;
+    top: 0;
+    left: 0; 
+    height: 100%;
+    width: 100%;
+  }
+}
 .rw-state-focus {
   .state-focus();
 }
@@ -87,7 +136,8 @@
   }
 }
 
-ul.rw-list {
+ul.rw-list,
+ul.rw-checkboxlist {
 	.list-unstyled();
   padding: 5px 0;
   overflow: auto;
