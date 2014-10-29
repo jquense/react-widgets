@@ -50,8 +50,8 @@ function renderRestParamSetup(functionNode) {
   var name = functionNode.rest.name
     , len = functionNode.params.length;
   console.log('doooing it')
-  return 'var ' + name + ' = new Array(arguments.length);' + 
-    'for(var $_i = 0; $_i < arguments.length; ++$_i){' + name + '[$_i] = arguments[$_i];}';
+  return 'var ' + name + ' = new Array(arguments.length - ' + len + ');' + 
+    'for(var $__i = 0; $__i < (arguments.length -' + len + '); ++$__i){' + name + '[$__i] = arguments[$__i+'+len+'];}';
 }
 
 function visitFunctionBodyWithRestParam(traverse, node, path, state) {

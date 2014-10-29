@@ -81,7 +81,7 @@ var CheckboxList = React.createClass({
 
     return {
       focusedIndex: idx,
-      dataItems:    isRadio && _.map(values,  item => this._dataItem(props.data, item))
+      dataItems:    !isRadio && _.map(values,  item => this._dataItem(props.data, item))
     }
   },
 
