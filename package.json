@@ -68,6 +68,9 @@
     "style-loader": "^0.7.0",
     "url-loader": "^0.5.5",
     "webpack": "^1.3.3-beta2",
-    "webpack-dev-server": "~1.4.10"
+    "webpack-dev-server": "~1.4.10",
+    "jstransform-loader": "~0.1.1",
+    "jstransform": "~7.0.0",
+    "esprima-fb": "~7001.1.0-dev-harmony-fb"
   }
 }
