@@ -9,7 +9,7 @@ var React = require('react')
   , MenuItem = require('react-bootstrap/MenuItem')
   , SelectExample = require('../examples/select.jsx');
 
-var prefix = 'select-list/';
+var prefix = 'multiselect/';
 var widgetName = 'Select'
 var Select = React.createClass({
 

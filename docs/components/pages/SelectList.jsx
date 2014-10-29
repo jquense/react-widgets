@@ -7,9 +7,9 @@ var React = require('react')
   , Example = require('../example.jsx')
   , MenuItem = require('react-bootstrap/MenuItem')
   , DDButton = require('react-bootstrap/DropdownButton')
-  , DropdownListExample = require('../examples/selectlist-api.jsx');
+  , DropdownListExample = require('../examples/selectlist.jsx');
 
-var prefix = 'SelectList/'
+var prefix = 'selectlist/'
 var widgetName = 'SelectList'
 var SelectList = React.createClass({
 

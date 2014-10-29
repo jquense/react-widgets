@@ -9,6 +9,7 @@ var React = require('react')
   , DropdownList = require('./pages/DropdownList.jsx')
   , ComboBox = require('./pages/ComboBox.jsx')
   , Select = require('./pages/Select.jsx')
+  //, SelectList = require('./pages/SelectList.jsx')
   , Calendar = require('./pages/Calendar.jsx')
   , DatePicker = require('./pages/DateTimePicker.jsx')
   , NumberPicker = require('./pages/NumberPicker.jsx');
@@ -57,11 +58,12 @@ var Docs = React.createClass({
           </aside>
           <article className='col-sm-9 tab-content'>
             <GettingStarted className={cx({"tab-pane": true, "active": href === '#intro' })}/>
-            <DropdownList className={cx({"tab-pane": true, "active": href === '#dropdown-list' })}/>
+            <DropdownList className={cx({"tab-pane": true, "active": href === '#dropdownlist' })}/>
             <ComboBox className={cx({"tab-pane": true, "active": href === '#combobox' })}/>
 
             <NumberPicker className={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
-            <Select className={cx({"tab-pane": true, "active": href === '#select-list' })}/>
+            <Select className={cx({"tab-pane": true, "active": href === '#multiselect' })}/>
+            {/*<SelectList className={cx({"tab-pane": true, "active": href === '#selectlist' })}/>*/}
 
             <Calendar className={cx({"tab-pane": true, "active": href === '#calendar' })}/>
             <DatePicker className={cx({"tab-pane": true, "active": href === '#date-picker' })}/>

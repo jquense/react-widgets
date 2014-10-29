@@ -40,7 +40,7 @@ var DropdownApi = React.createClass({
   },
 
   render: function() {
-    var disabled = this.state.disabled === true || _.isArray(this.state.disabled
+    var disabled = this.state.disabled === true || _.isArray(this.state.disabled);
     var list = [
         { label: 'orange', id: 1 },
         { label: 'blue', id: 2 },
