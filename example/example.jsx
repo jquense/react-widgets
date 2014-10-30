@@ -10,6 +10,18 @@ var CheckboxList = require('../src/select/SelectList.jsx')
 var chance = new (require('chance'))
 //var _ = require('lodash')
 
+function test(...args){
+  console.log(args)
+}
+
+function test2(first, sec, ...args){
+  console.log(first, sec, args)
+}
+
+test(1,2,3,5)
+test2(1,2,3,5)
+
+
 var ListItem = React.createClass({
 
   render: function(){
@@ -71,6 +83,13 @@ var App = React.createClass({
             busy={false}
             
             onChange={change.bind(null, 'selectValues')}/>
+        </section>
+        <section className="example" style={{ marginBottom: 20 }}>
+          <NumberPicker id='AwesomeNumPicker'
+            isRtl={false}
+            format="D"
+            value={this.state.numberValue}
+            onChange={change.bind(null, 'numberValue')}/>
         </section>
         {/* 
           <section className="example" style={{ marginBottom: 20 }}>

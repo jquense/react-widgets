@@ -57,7 +57,7 @@ var NumberPicker = React.createClass({
 
   getDefaultProps: function(){
     return {
-      value: '',
+      value: null,
       open: false,
 
       format: 'd',
@@ -134,8 +134,8 @@ var NumberPicker = React.createClass({
           role='spinbutton'
           min={this.props.min}
           aria-valuenow={val}
-          aria-valuemin={_.isFinite(this.props.min) ? this.props.min : '' }
-          aria-valuemax={_.isFinite(this.props.max) ? this.props.max : '' }
+          aria-valuemin={_.isFinite(this.props.min) ? this.props.min : null }
+          aria-valuemax={_.isFinite(this.props.max) ? this.props.max : null }
           aria-disabled={ this.props.disabled }
           aria-readonly={ this.props.readonly }
           disabled={this.props.disabled}
@@ -219,18 +219,20 @@ var NumberPicker = React.createClass({
   },
 
   change: function(val){
-    val = this.inRangeValue(val)
+    val = this.inRangeValue(val === '' ? null : val)
+    
     if ( this.props.value !== val )
       this.notify('onChange', val)
   },
 
   inRangeValue: function(value){
-    if( !_.isFinite(this.props.min) && value == null || value === '' )
+    var max = this.props.max == null ? Infinity : this.props.max
+      , min = this.props.min == null ? -Infinity : this.props.min;
+
+    if( value == null )
       return value
 
-    return Math.max(
-        Math.min(value, this.props.max)
-      , this.props.min)
+    return Math.max(Math.min(value, max), min)
   }
 
 })

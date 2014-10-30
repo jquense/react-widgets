@@ -47,10 +47,10 @@ var Docs = React.createClass({
             <div className='nav-aside'>
               <Nav className='side-nav' onSelect={this.handleNavItemSelect}>
                 <NavItem key={0} href='#intro' active={href === '#intro' }>Getting Started</NavItem>
-                <NavItem key={1} href='#dropdown-list' active={ href === '#dropdown-list' }>Dropdown List</NavItem>
+                <NavItem key={1} href='#dropdownlist' active={ href === '#dropdownlist' }>Dropdown List</NavItem>
                 <NavItem key={2} href='#combobox' active={href === '#combobox'}>Combobox</NavItem>
                 <NavItem key={6} href='#number-picker' active={href === '#number-picker' }>Number Picker</NavItem>
-                <NavItem key={3} href='#select-list' active={href === '#select-list'}>Select</NavItem>
+                <NavItem key={3} href='#multiselect' active={href === '#multiselect'}>Select</NavItem>
                 <NavItem key={4} href='#calendar' active={href === '#calendar'}>Calendar</NavItem>
                 <NavItem key={5} href='#date-picker' active={href === '#date-picker'}>Date {' & '} Time Picker</NavItem>
               </Nav>
@@ -63,10 +63,10 @@ var Docs = React.createClass({
 
             <NumberPicker className={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
             <Select className={cx({"tab-pane": true, "active": href === '#multiselect' })}/>
-            {/*<SelectList className={cx({"tab-pane": true, "active": href === '#selectlist' })}/>*/}
-
+          
             <Calendar className={cx({"tab-pane": true, "active": href === '#calendar' })}/>
             <DatePicker className={cx({"tab-pane": true, "active": href === '#date-picker' })}/>
+            
             <div className='clearfix'style={{ marginTop: 20 }}>
               { locations.indexOf(href) > 0 && 
                 <button type='button' className='btn btn-link pull-left' onClick={this.prev}>« prev</button>
@@ -75,6 +75,7 @@ var Docs = React.createClass({
                 <button type='button' className='btn btn-link pull-right' onClick={this.next}>next »</button>
               }
             </div>
+            {/*<SelectList className={cx({"tab-pane": true, "active": href === '#selectlist' })}/>*/}
           </article>
         </div>
       </div>

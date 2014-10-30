@@ -37,7 +37,7 @@ var NumberPicker = React.createClass({
 
         </h1>
         <p>
-          Select an item from the list, or input a custom value. The vombobox can also make suggestions as you type
+          Spinner for selecting numbers. Supports multiple formats for display and editing through Globalize.js
         </p>
         <NumberPickerExample/>
         <Example code={
@@ -47,8 +47,8 @@ var NumberPicker = React.createClass({
           "    <NumberPicker \n"+
           "      value={this.state.value}\n"+
           "      onChange={this._change}\n"+
-          "      min='2'\n"+
-          "      max='10'/>\n\n"+
+          "      min={2}\n"+
+          "      max={10}/>\n\n"+
           "    <NumberPicker \n"+
           "      format='c'\n" +
           "      step={1.5}/>\n\n"+
