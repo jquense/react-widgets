@@ -220,7 +220,7 @@ var NumberPicker = React.createClass({
 
   change: function(val){
     val = this.inRangeValue(val === '' ? null : val)
-    
+
     if ( this.props.value !== val )
       this.notify('onChange', val)
   },
@@ -229,7 +229,7 @@ var NumberPicker = React.createClass({
     var max = this.props.max == null ? Infinity : this.props.max
       , min = this.props.min == null ? -Infinity : this.props.min;
 
-    if( value == null )
+    if( !_.isFinite(min) && value == null )
       return value
 
     return Math.max(Math.min(value, max), min)
