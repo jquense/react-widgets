@@ -1,0 +1,82 @@
+
+.rw-select-list {
+  background-color: @widget-bg;
+
+  &:hover {
+    border-color: @state-border-hover;
+  }
+}
+
+.rw-select-wrapper {
+  border-radius:          @input-border-radius;
+  position:               relative;
+  cursor:                 text;
+  .clearfix();
+  
+  i.rw-loading {
+    position: absolute;
+    right: 3px;
+  }
+
+  > .rw-input {
+    .placeholder();
+    float:                left;
+    outline:              0;
+    border-width:         0;
+    line-height:          normal;
+    width:                auto;
+  }
+
+  .rw-state-readonly > &,
+  .rw-state-disabled > & {
+    cursor: not-allowed;
+  }
+
+  .rw-rtl & > .rw-input{
+     float: right;
+  } 
+
+  .rw-btn {
+    outline:            0;
+    font-size:          115%;
+    line-height:        normal;
+  }
+}
+
+.rw-tag-list {
+  .list-inline;
+  padding-right: 0;
+
+  > li {
+    float:              left;
+    display:            inline-block;
+    margin:             1px;
+    padding:            .1em .15em .1em .4em;
+    line-height:        1.4em;
+    text-align:         center;
+    vertical-align:     middle;
+    white-space:        nowrap;
+    border-radius:      @border-radius-sm;
+    border:             1px solid @btn-border;
+    background-color:   @btn-border;
+    cursor:             pointer;
+
+    &.rw-state-focus {
+      .state-focus();
+    }
+
+    &.rw-state-readonly,
+    &.rw-state-disabled,
+    .rw-select-list.rw-state-readonly &, 
+    .rw-select-list.rw-state-disabled & {
+      cursor: not-allowed;
+      filter: alpha(opacity=65);
+      opacity: .65;
+    }
+  }
+
+  .rw-rtl & > li {
+     float: right;
+  } 
+
+}

@@ -38,6 +38,7 @@ var propTypes = {
     duration:       React.PropTypes.number, //popup
 
     placeholder:    React.PropTypes.string,
+    name:           React.PropTypes.string,
 
     initialView:    React.PropTypes.oneOf(viewEnum),
     finalView:      React.PropTypes.oneOf(viewEnum),
@@ -136,6 +137,7 @@ var DateTimePicker = React.createClass({
           aria-owns={owns}
           aria-haspopup={true}
           placeholder={this.props.placeholder}
+          name={this.props.name}
           disabled={this.isDisabled()}
           readOnly={this.isReadOnly()}
           role='combobox'

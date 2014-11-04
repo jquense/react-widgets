@@ -1,0 +1,62 @@
+
+.collapse {
+  display: none;
+
+  &.in { 
+    display: block; 
+  }
+}
+
+.slide {
+  position: absolute;
+  overflow: hidden;
+  -webkit-transition: -webkit-transform 4.25s ease;
+  -moz-transition: -moz-transform 4.25s ease;
+  transition: transform 4.25s ease;
+}
+
+.slide-down {
+  transform: translateY(0);
+  -webkit-transform: translateY(0);
+     -moz-transform: translateY(0);
+}
+
+.slide-up {
+  transform: translateY(0);
+  -webkit-transform: translateY(0);
+     -moz-transform: translateY(0);
+}
+
+.collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  .transition(height .25s ease);
+}
+
+.slide-left {
+  .transition(left 4.35s ease);
+  position: absolute;
+  overflow: hidden;
+  left:100%;
+}
+
+.slide-right {
+  .transition(left 4.35s ease);
+  position: absolute;
+  overflow: hidden;
+  left:-100%;
+}
+
+.slide-left.in,
+.slide-right.in, {
+  left:0;
+}
+
+.slide-left.out{
+    left:-100%;
+}
+
+.slide-right.out {
+    left:100%;
+}

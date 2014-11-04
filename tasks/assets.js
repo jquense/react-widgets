@@ -1,3 +1,4 @@
+'use strict';
 var gulp = require('gulp')
   , less = require('gulp-less')
   , replace = require('gulp-replace')
@@ -27,13 +28,13 @@ module.exports = {
   }, 
 
   compile: function(){
-      gulp.src('./src/**/*.js')
-        .pipe(gulp.dest('./lib'))
+      gulp.src('./src/less/*.less')
+        .pipe(gulp.dest('./lib/less'))
 
-      return gulp.src('./src/**/*.jsx')
+      return gulp.src(['./src/**/*.jsx', './src/**/*.js'])
           .pipe(plumber())
           .pipe(gulpReact({ harmony: true }))
-          .pipe(replace(/.jsx/g, ''))
+          .pipe(replace(/\.jsx/g, ''))
           .pipe(gulp.dest('./lib'));
   }
   
