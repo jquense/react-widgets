@@ -1,7 +1,9 @@
-var React = require('react')
-  , cx = require('../util/cx')
+'use strict';
+var React   = require('react')
+  , cx      = require('../util/cx')
+  , _       = require('lodash')
   , compose = require('../util/compose')
-  , setter = require('../util/stateSetter')
+  , setter  = require('../util/stateSetter')
   , globalize = require('globalize');
 
 
