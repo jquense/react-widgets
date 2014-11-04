@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/*jslint node:true*/
-
-
+'use strict';
 var Syntax = require('esprima-fb').Syntax;
 var utils = require('jstransform/src/utils');
 
@@ -49,7 +46,7 @@ visitFunctionParamsWithRestParam.test = function(node, path, state) {
 function renderRestParamSetup(functionNode) {
   var name = functionNode.rest.name
     , len = functionNode.params.length;
-  console.log('doooing it')
+
   return 'var ' + name + ' = new Array(arguments.length - ' + len + ');' + 
     'for(var $__i = 0; $__i < (arguments.length -' + len + '); ++$__i){' + name + '[$__i] = arguments[$__i+'+len+'];}';
 }

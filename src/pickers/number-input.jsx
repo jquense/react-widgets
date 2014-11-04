@@ -1,9 +1,9 @@
 'use strict';
 var React   = require('react')
   , cx      = require('../util/cx')
-  , _       = require('lodash')
   , compose = require('../util/compose')
   , setter  = require('../util/stateSetter')
+  , transferPropsTo = require('../util/transferProps').mergeIntoProps
   , globalize = require('globalize');
 
 
@@ -52,7 +52,7 @@ module.exports = React.createClass({
   render: function(){
     var value = this.state.stringValue;
 
-    return this.transferPropsTo(
+    return transferPropsTo(this.props,
       <input 
         type='text' 
         className='rw-input'
@@ -71,7 +71,7 @@ module.exports = React.createClass({
     var val = e.target.value
       , number = +e.target.value
       , isNull = val !== 0 && !val
-      , hasMin = _.isFinite(this.props.min)
+      , hasMin = isFinite(this.props.min)
 
     //console.log(hasMin, this.props.min)
     //a null value is only possible when there is no min
@@ -97,7 +97,7 @@ module.exports = React.createClass({
 
   isValid: function(value) {
     var num = +value
-      , noMin = this.props.min == null || !_.isFinite(this.props.min);
+      , noMin = this.props.min == null || !isFinite(this.props.min);
 
     if(isNaN(num)) return false
     return num >= this.props.min

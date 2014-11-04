@@ -18,7 +18,7 @@ module.exports = React.createClass({
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,
 
-    valueComponent: React.PropTypes.component,
+    valueComponent: React.PropTypes.func,
 
     disabled:       React.PropTypes.oneOfType([
                       React.PropTypes.bool,

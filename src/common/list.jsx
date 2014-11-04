@@ -7,19 +7,6 @@ var React   = require('react')
   , cx = require('../util/cx')
   , _  = require('lodash');
 
-var DefaultListItem = React.createClass({
-
-  mixins: [ 
-    require('../mixins/DataHelpersMixin'),
-    require('../mixins/RtlChildContextMixin')
-  ],
-
-  render: function(){
-      var item = this.props.item;
-
-      return this.transferPropsTo(<li>{ item ? this._dataText(item) : '' }</li>)
-  }
-})
 
 module.exports = React.createClass({
 
@@ -32,7 +19,7 @@ module.exports = React.createClass({
   propTypes: {
     data:          React.PropTypes.array,
     onSelect:      React.PropTypes.func,
-    listItem:      React.PropTypes.component,
+    listItem:      React.PropTypes.func,
     selectedIndex: React.PropTypes.number,
     focusedIndex:  React.PropTypes.number,
     valueField:    React.PropTypes.string,

@@ -1,6 +1,7 @@
+'use strict';
 var React  = require('react')
   , cx  = require('../util/cx')
-  , _   = require('lodash')
+  , _   = require('lodash') // noop
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , $ = require('../util/dom');
 

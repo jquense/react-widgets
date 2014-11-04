@@ -1,6 +1,6 @@
 var React  = require('react')
   , cx     = require('../util/cx')
-  , _      = require('lodash')
+  , _      = require('lodash') //values, pick, omit, keys, has, compact (splat can replace)
   , dates  = require('../util/dates')
   , views  = require('../util/constants').calViews
   , popups = require('../util/constants').datePopups
@@ -116,8 +116,8 @@ var DateTimePicker = React.createClass({
       <div ref="element"
            tabIndex="-1"
            onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
-           onBlur ={_.partial(this._focus, false)}
+           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+           onBlur ={this._focus.bind(null, false)}
            className={cx({
               'rw-date-picker':     true,
               'rw-widget':          true,
@@ -154,7 +154,7 @@ var DateTimePicker = React.createClass({
             <btn tabIndex='-1'
               disabled={this.isDisabled() || this.isReadOnly()}
               aria-disabled={this.isDisabled() || this.isReadOnly()}
-              onClick={this._maybeHandle(_.partial(this._click, popups.CALENDAR))}>
+              onClick={this._maybeHandle(this._click.bind(null, popups.CALENDAR))}>
               <i className="rw-i rw-i-calendar"><span className="rw-sr">{ this.props.messages.calendarButton }</span></i>
             </btn>
           }
@@ -162,7 +162,7 @@ var DateTimePicker = React.createClass({
             <btn tabIndex='-1'
               disabled={this.isDisabled() || this.isReadOnly()}
               aria-disabled={this.isDisabled() || this.isReadOnly()}
-              onClick={this._maybeHandle(_.partial(this._click, popups.TIME))}>
+              onClick={this._maybeHandle(this._click.bind(null, popups.TIME))}>
               <i className="rw-i rw-i-clock-o"><span className="rw-sr">{ this.props.messages.timeButton }</span></i>
             </btn>
           }
@@ -291,9 +291,9 @@ var DateTimePicker = React.createClass({
   },
 
   _parse: function(string){
-    var parser = _.isFunction(this.props.parse)
+    var parser = typeof this.props.parse === 'function'
           ? parse
-          : _.partial(formatsParser, _.compact([ this.props.format ].concat(this.props.parse)) );
+          : formatsParser.bind(null, _.compact([ this.props.format ].concat(this.props.parse)) );
 
     return parser(string)
   },

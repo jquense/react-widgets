@@ -1,0 +1,11 @@
+{
+	"laxcomma": true,
+	"laxbreak": true,
+	"node": true,
+	"browser": true,
+	"esnext": true,
+	"eqnull": true,
+	"asi": true,
+	"indent": 2,
+	"strict": true
+}

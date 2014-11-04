@@ -2,6 +2,7 @@
 var React = require('react')
   , cx = require('../util/cx')
   , compose = require('../util/compose')
+  , transferPropsTo = require('../util/transferProps').mergeIntoProps
   , dates = require('../util/dates');
 
 module.exports = React.createClass({
@@ -49,7 +50,7 @@ module.exports = React.createClass({
   render: function(){
     var value = this.state.textValue
 
-    return this.transferPropsTo(
+    return transferPropsTo(this.props,
       <input 
         type='text' 
         className={cx({'rw-input': true })} 

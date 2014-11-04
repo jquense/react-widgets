@@ -1,7 +1,8 @@
+'use strict';
 var React   = require('react')
   , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup.jsx')
-  , $  =  require('../util/dom')
-  , _ = require('lodash');
+  , transferPropsTo = require('../util/transferProps').mergeIntoProps
+  , $  =  require('../util/dom');
 
 
 var SlideChildGroup = React.createClass({
@@ -83,32 +84,22 @@ module.exports = React.createClass({
   _wrapChild: function(child) {
     var self = this;
 
-    return SlideChildGroup({ 
-      direction: this.props.direction
-    },
-    child)
+    return (<SlideChildGroup direction={this.props.direction}>{child}</SlideChildGroup>)
   },
 
-
   render: function() {
-
-    return this.transferPropsTo(
-      ReplaceTransitionGroup(
-        { 
-          ref: 'container', 
-          childFactory: this._wrapChild, 
-          style: { position: 'relative', overflow: 'hidden' },
-          component: React.DOM.div
-        },
-        this.props.children
-      )
-    );
+    return transferPropsTo(this.props,
+      <ReplaceTransitionGroup 
+        ref='container' 
+        childFactory={this._wrapChild}
+        style={{ position: 'relative', overflow: 'hidden' }}
+        component={React.DOM.div}>
+        { this.props.children}
+      </ReplaceTransitionGroup>)
   },
 
   isTransitioning: function(){
     return this.isMounted() && this.refs.container.isTransitioning()
-  },
-
-  
+  }
 });
 

@@ -1,8 +1,9 @@
 'use strict';
 var React = require('react')
   , cx = require('../util/cx')
-  , _     =  require('lodash')
-  , $     =  require('../util/dom')
+  , _     = require('lodash')
+  , $     = require('../util/dom')
+  , splat = require('../util/splat')
   , controlledInput  = require('../util/controlledInput')
   , directions = require('../util/constants').directions
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
@@ -83,27 +84,22 @@ var Select = React.createClass({
   },
 
   getInitialState: function(){
-    var values = this.props.value == null
-               ? []
-               : [].concat(this.props.value)
+    var values = splat(this.props.value)
 
     return {
       focusedIndex:  0,
-      processedData: this.process(this.props.data, this.props.value, ''),
-      dataItems: _.map(values, item => this._dataItem(this.props.data, item))
+      processedData: this.process(this.props.data, values, ''),
+      dataItems: values.map( item => this._dataItem(this.props.data, item))
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var values = nextProps.value == null ? [] : [].concat(nextProps.value)
-      , items = this.process(
-          nextProps.data
-        , nextProps.value
-        , nextProps.searchTerm)
+    var values = splat(nextProps.value)
+      , items  = this.process(nextProps.data, values, nextProps.searchTerm)
 
     this.setState({
       processedData: items,
-      dataItems: _.map(values, item => this._dataItem(nextProps.data, item))
+      dataItems: values.map( item => this._dataItem(nextProps.data, item))
     })
   },
 
@@ -115,11 +111,11 @@ var Select = React.createClass({
       , values  = this.state.dataItems;
 
     return mergeIntoProps(
-      _.omit(this.props, _.keys(propTypes)),
+      _.omit(this.props, Object.keys(propTypes)),
       <div ref="element"
            onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
-           onBlur ={_.partial(this._focus, false)}
+           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+           onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
               'rw-select-list':    true,
@@ -190,7 +186,7 @@ var Select = React.createClass({
   _delete: function(value){
     this._focus(true)
     this.change(
-      _.without(this.state.dataItems, value))
+      this.state.dataItems.filter( d => d !== value))
   },
 
   _click: function(e){
@@ -298,12 +294,7 @@ var Select = React.createClass({
   },
 
   process: function(data, values, searchTerm){
-    var items = _.reject(data, function(i){
-        return _.any(
-            values
-          , _.partial(this._valueMatcher, i)
-          , this)
-      }, this)
+    var items = data.filter( i => !values.some(this._valueMatcher.bind(null, i), this), this)
 
     if( searchTerm)
       items = this.filter(items, searchTerm)

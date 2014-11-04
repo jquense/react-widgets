@@ -4,7 +4,7 @@ var React = require('react')
   , List = require('../common/list.jsx')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
-  , _ = require('lodash')
+  , _ = require('lodash') //findIndex (pl), omit, noop
 
 
 module.exports = React.createClass({

@@ -1,6 +1,6 @@
 var React = require('react')
   , cx = require('../util/cx')
-  , _      = require('lodash')
+  , _      = require('lodash') //omit
   , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
@@ -90,11 +90,11 @@ var NumberPicker = React.createClass({
     //console.log('render', this.state.focused)
 
     return mergeIntoProps(
-      _.omit(this.props, _.keys(propTypes)),
+      _.omit(this.props, Object.keys(propTypes)),
       <div ref="element"
            onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
-           onBlur ={_.partial(this._focus, false)}
+           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+           onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
               'rw-number-picker':   true,
@@ -109,9 +109,9 @@ var NumberPicker = React.createClass({
           <btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.UP})}
-            onMouseDown={this._maybeHandle(_.partial(self._mouseDown, directions.UP))}
-            onMouseUp={this._maybeHandle(_.partial(this._mouseUp, directions.UP))}
-            onClick={this._maybeHandle(_.partial(this._focus, true))}
+            onMouseDown={this._maybeHandle(self._mouseDown.bind(null, directions.UP))}
+            onMouseUp={this._maybeHandle(this._mouseUp.bind(null, directions.UP))}
+            onClick={this._maybeHandle(this._focus.bind(null, true))}
             disabled={val === this.props.max || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
 
@@ -120,9 +120,9 @@ var NumberPicker = React.createClass({
           <btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
-            onMouseDown={this._maybeHandle(_.partial(self._mouseDown, directions.DOWN))}
-            onMouseUp={this._maybeHandle(_.partial(this._mouseUp, directions.DOWN))}
-            onClick={this._maybeHandle(_.partial(this._focus, true))}
+            onMouseDown={this._maybeHandle(self._mouseDown.bind(null, directions.DOWN))}
+            onMouseUp={this._maybeHandle(this._mouseUp.bind(null, directions.DOWN))}
+            onClick={this._maybeHandle(this._focus.bind(null, true))}
             disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
             <i className="rw-i rw-i-caret-down"><span className="rw-sr">{ this.props.messages.decrement }</span></i>
@@ -137,8 +137,8 @@ var NumberPicker = React.createClass({
           role='spinbutton'
           min={this.props.min}
           aria-valuenow={val}
-          aria-valuemin={_.isFinite(this.props.min) ? this.props.min : null }
-          aria-valuemax={_.isFinite(this.props.max) ? this.props.max : null }
+          aria-valuemin={isFinite(this.props.min) ? this.props.min : null }
+          aria-valuemax={isFinite(this.props.max) ? this.props.max : null }
           aria-disabled={ this.props.disabled }
           aria-readonly={ this.props.readonly }
           disabled={this.props.disabled}
@@ -196,10 +196,10 @@ var NumberPicker = React.createClass({
   _keyDown: function(e){
     var key = e.key;
 
-    if ( key === 'End'  && _.isFinite(this.props.max))
+    if ( key === 'End'  && isFinite(this.props.max))
       this.change(this.props.max)
 
-    else if ( key === 'Home' && _.isFinite(this.props.min))
+    else if ( key === 'Home' && isFinite(this.props.min))
       this.change(this.props.min)
 
     else if ( key === 'ArrowDown' ){
@@ -232,7 +232,7 @@ var NumberPicker = React.createClass({
     var max = this.props.max == null ? Infinity : this.props.max
       , min = this.props.min == null ? -Infinity : this.props.min;
 
-    if( !_.isFinite(min) && value == null )
+    if( !isFinite(min) && value == null )
       return value
 
     return Math.max(Math.min(value, max), min)

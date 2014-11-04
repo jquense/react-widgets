@@ -1,3 +1,5 @@
+'use strict';
+/*global it, describe, expect, sinon*/
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
