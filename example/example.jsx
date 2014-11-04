@@ -21,6 +21,9 @@ function test2(first, sec, ...args){
 test(1,2,3,5)
 test2(1,2,3,5)
 
+var g = require('globalize')
+var culture = require('globalize/lib/cultures/globalize.culture.fi');
+g.culture('fi');
 
 var ListItem = React.createClass({
 
@@ -69,7 +72,7 @@ var App = React.createClass({
     return (
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
-        <section className="example" style={{ height: '400px', overflow: 'auto' }}>
+        {/* <section className="example" style={{ height: '400px', overflow: 'auto' }}>
           <div style={{ height: 150 }}>
             sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
           </div>
@@ -83,15 +86,8 @@ var App = React.createClass({
             busy={false}
             
             onChange={change.bind(null, 'selectValues')}/>
-        </section>
-        <section className="example" style={{ marginBottom: 20 }}>
-          <NumberPicker id='AwesomeNumPicker'
-            isRtl={false}
-            format="D"
-            value={this.state.numberValue}
-            onChange={change.bind(null, 'numberValue')}/>
-        </section>
-        {/* 
+        </section>*/}
+        
           <section className="example" style={{ marginBottom: 20 }}>
             <DropdownList
               isRtl={false}
@@ -156,7 +152,6 @@ var App = React.createClass({
               value={this.state.numberValue}
               onChange={change.bind(null, 'numberValue')}/>
           </section>
-        */}
         </div>
       </div>
 
