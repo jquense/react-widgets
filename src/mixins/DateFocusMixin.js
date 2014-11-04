@@ -13,7 +13,7 @@ module.exports = function(viewUnit, smallUnit){
 
     getInitialState: function(){
       return {
-        focusedDate:   this.props.value 
+        focusedDate:   constrainValue(this.props.value, this.props.min, this.props.max)
       }
     },
 
@@ -33,7 +33,6 @@ module.exports = function(viewUnit, smallUnit){
         , alt = e.altKey
         , current = this.state.focusedDate
         , date = current;
-
 
       if ( key === 'Enter')
         return this.props.onChange(date)
@@ -66,4 +65,10 @@ module.exports = function(viewUnit, smallUnit){
       }
     }
   }
+}
+
+
+function constrainValue(value, min, max){
+  if( value == null) return value
+  return dates.max(dates.min(value, max), min)
 }

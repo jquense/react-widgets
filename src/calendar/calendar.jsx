@@ -118,6 +118,7 @@ var Calendar = React.createClass({
 
   render: function(){
     var View = VIEW[this.state.view]
+      , unit = this.state.view
       , disabled = this.props.disabled || this.props.readOnly
       , date = this.state.currentDate
       , labelId = this._id('_view_label')
@@ -137,8 +138,8 @@ var Calendar = React.createClass({
           labelId={labelId}
           messages={this.props.messages}
           upDisabled={  disabled || this.state.view === this.props.finalView}
-          prevDisabled={disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max)}
-          nextDisabled={disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max)}
+          prevDisabled={disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit)}
+          nextDisabled={disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max, unit)}
           onViewChange={this._maybeHandle(_.partial(this.navigate, dir.UP, null))}
           onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  dir.LEFT, null))}
           onMoveRight={this._maybeHandle(_.partial(this.navigate,  dir.RIGHT, null))}/>

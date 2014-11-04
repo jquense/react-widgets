@@ -10,20 +10,10 @@ var CheckboxList = require('../src/select/SelectList.jsx')
 var chance = new (require('chance'))
 //var _ = require('lodash')
 
-function test(...args){
-  console.log(args)
-}
 
-function test2(first, sec, ...args){
-  console.log(first, sec, args)
-}
-
-test(1,2,3,5)
-test2(1,2,3,5)
-
-var g = require('globalize')
-var culture = require('globalize/lib/cultures/globalize.culture.fi');
-g.culture('fi');
+// var g = require('globalize')
+// var culture = require('globalize/lib/cultures/globalize.culture.fi');
+// g.culture('fi');
 
 var ListItem = React.createClass({
 
@@ -104,6 +94,8 @@ var App = React.createClass({
           <section className="example" style={{ marginBottom: 20 }}>
             <Calendar
               value={ this.state.calValue }
+              min={new Date(2014, 9, 15)}
+              max={new Date(2025, 0, 15)}
               onChange={change.bind(null, 'calValue')}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>

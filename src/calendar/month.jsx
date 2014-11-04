@@ -102,24 +102,31 @@ module.exports = React.createClass({
   },
 
   move: function(date, direction){
+    var min = this.props.min
+      , max = this.props.max;
+
     if ( this.isRtl() && opposite[direction])
       direction =  opposite[direction]
 
     if ( direction === directions.LEFT)
-      date = dates.subtract(date, 1, 'day')
+      date = nextDate(date, -1, 'day', min, max)
 
     else if ( direction === directions.RIGHT)
-      date = dates.add(date, 1, 'day')
+      date = nextDate(date, 1, 'day',min, max)
 
     else if ( direction === directions.UP)
-      date = dates.subtract(date, 1, 'week')
+      date = nextDate(date, -1, 'week', min, max)
 
     else if ( direction === directions.DOWN)
-      date = dates.add(date, 1, 'week')
+      date = nextDate(date, 1, 'week', min, max)
 
     return date
   }
 
 });
 
-var _id;
+function nextDate(date, val, unit, min, max){
+  var newDate = dates.add(date, val, unit)
+
+  return dates.inRange(newDate, min, max, 'day') ? newDate : date
+}

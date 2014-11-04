@@ -81,20 +81,23 @@ module.exports = React.createClass({
   },
 
   move: function(date, direction){
+    var min = this.props.min
+      , max = this.props.max;
+
     if ( this.isRtl() && opposite[direction])
       direction =  opposite[direction]
 
     if ( direction === directions.LEFT)
-      date = dates.subtract(date, 1, 'year')
+      date = nextDate(date, -1, 'year', min, max)
 
     else if ( direction === directions.RIGHT)
-      date = dates.add(date, 1, 'year')
+      date = nextDate(date, 1, 'year', min, max)
 
     else if ( direction === directions.UP)
-      date = dates.subtract(date, 4, 'year')
+      date = nextDate(date, -4, 'year', min, max)
 
     else if ( direction === directions.DOWN)
-      date = dates.add(date, 4, 'year')
+      date = nextDate(date, 4, 'year', min, max)
 
     return date
   }
@@ -114,5 +117,9 @@ function getDecadeYears(date){
   })
 }
 
+function nextDate(date, val, unit, min, max){
+  var newDate = dates.add(date, val, unit)
+  return dates.inRange(newDate, min, max, 'year') ? newDate : date
+}
 
 var btn = require('../common/btn.jsx')
