@@ -1,8 +1,6 @@
 var React  = require('react')
   , filter = require('../util/filter')
   , helper = require('../mixins/DataHelpersMixin')
-  , compose = require('../util/compose')
-  , setter = require('../util/stateSetter')
   , _      = require('lodash');
 
 module.exports = {

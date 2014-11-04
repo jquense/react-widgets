@@ -1,5 +1,6 @@
+'use strict';
 var React = require('react')
-  , _ =  require('lodash')
+  , _ =  require('lodash') //findIndex, has, isEqual (shouldn't be tho)
 
 module.exports = {
   
@@ -25,7 +26,7 @@ module.exports = {
   },
 
   _dataIndexOf: function(data, item){
-    return _.findIndex(data, _.partial(this._valueMatcher, item), this)
+    return _.findIndex(data, this._valueMatcher.bind(null, item), this)
   },
 
   _valueMatcher: function(a, b){

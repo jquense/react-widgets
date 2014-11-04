@@ -137,10 +137,10 @@ var ComboBox = React.createClass({
           : this.props.filter ? 'list' : '';
 
 		return mergeIntoProps(
-      _.omit(this.props, _.keys(propTypes)),
+      _.omit(this.props, Object.keys(propTypes)),
 			<div ref="element"
            onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
+           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
            onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
@@ -238,9 +238,8 @@ var ComboBox = React.createClass({
 
     suggestion = suggestion || strVal
 
-    data = _.find(self.props.data, function(item) {
-      return self._dataText(item).toLowerCase() === suggestion.toLowerCase()
-    })
+    data = find(self.props.data, 
+      item => this._dataText(item).toLowerCase() === suggestion.toLowerCase())
 
     this.change(!this._deleting && data
       ? data
@@ -341,7 +340,7 @@ var ComboBox = React.createClass({
     var word = this._dataText(value)
       , matcher = filter.startsWith
       , suggestion = typeof value === 'string'
-          ? _.find(data, finder, this)
+          ? find(data, finder, this)
           : value
 
     if ( suggestion && (!this.state || !this.state.deleting))
@@ -391,4 +390,12 @@ function shallowEqual(objA, objB) {
       return false;
 
   return true;
+}
+
+function find(arr, cb, thisArg){
+  var idx = -1, len = arr.length;
+
+  while(++idx < arr.length)
+    if( cb.call(thisArg, arr[idx], idx) ) 
+      return arr[idx]
 }

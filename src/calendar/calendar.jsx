@@ -1,3 +1,4 @@
+'use strict';
 var React = require('react')
   , Header  = require('./header.jsx')
   , Month = require('./month.jsx')
@@ -11,13 +12,15 @@ var React = require('react')
   , dates = require('../util/dates')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , constants  = require('../util/constants')
-  , _ = require('lodash');
+  , _ = require('lodash'); //values, omit, object
 
 var dir = constants.directions;
 
 var views        = constants.calendarViews
-  , VIEW_OPTIONS = _.values(views)
-  , ALT_VIEW     = _.invert(constants.calendarViewHierarchy)
+  , VIEW_OPTIONS = Object.keys(views).map( k => views[k] )
+  , ALT_VIEW     = _.transform(constants.calendarViewHierarchy, (o, val, key) => { 
+                      o[val] = key 
+                    }, {})
   , NEXT_VIEW    = constants.calendarViewHierarchy
   , VIEW_UNIT    = constants.calendarViewUnits
   , VIEW  = _.object([
@@ -139,9 +142,9 @@ var Calendar = React.createClass({
           upDisabled={  disabled || this.state.view === this.props.finalView}
           prevDisabled={disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max)}
           nextDisabled={disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max)}
-          onViewChange={this._maybeHandle(_.partial(this.navigate, dir.UP, null))}
-          onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  dir.LEFT, null))}
-          onMoveRight={this._maybeHandle(_.partial(this.navigate,  dir.RIGHT, null))}/>
+          onViewChange={this._maybeHandle(this.navigate.bind(null, dir.UP, null))}
+          onMoveLeft ={this._maybeHandle(this.navigate.bind(null,  dir.LEFT, null))}
+          onMoveRight={this._maybeHandle(this.navigate.bind(null,  dir.RIGHT, null))}/>
 
         <SlideTransition
           ref='animation'
@@ -156,9 +159,9 @@ var Calendar = React.createClass({
             value={this.state.currentDate}
             onChange={this._maybeHandle(this.change)}
             onKeyDown={this._maybeHandle(this._keyDown)}
-            onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
-            onMoveLeft ={this._maybeHandle(_.partial(this.navigate,  dir.LEFT))}
-            onMoveRight={this._maybeHandle(_.partial(this.navigate,  dir.RIGHT))}
+            onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+            onMoveLeft ={this._maybeHandle(this.navigate.bind(null,  dir.LEFT))}
+            onMoveRight={this._maybeHandle(this.navigate.bind(null,  dir.RIGHT))}
             disabled={this.props.disabled}
             readOnly={this.props.readOnly}
             min={this.props.min}
@@ -179,7 +182,7 @@ var Calendar = React.createClass({
           : 'left';
 
     if ( !date )
-      date = _.contains([ dir.LEFT, dir.RIGHT ], direction)
+      date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
         ? this.nextDate(direction)
         : this.state.currentDate
 

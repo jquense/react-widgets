@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash')
+var _ = require('lodash'); //object
 
 var views = {
     MONTH:   'month',
@@ -10,12 +10,12 @@ var views = {
 
 module.exports = {
 
-  directions: mirror({
-    LEFT:  null,
-    RIGHT: null,
-    UP:    null,
-    DOWN:  null
-  }),
+  directions: {
+    LEFT:  'LEFT',
+    RIGHT: 'RIGHT',
+    UP:    'UP',
+    DOWN:  'DOWN'
+  },
 
   datePopups: {
     TIME:     'time',
@@ -36,11 +36,4 @@ module.exports = {
     [views.DECADE,  views.YEAR],
     [views.CENTURY, views.DECADE],
   ])
-}
-
-
-function mirror(obj){
-  return _.mapValues(obj, function(val, key){
-    return key
-  })
 }

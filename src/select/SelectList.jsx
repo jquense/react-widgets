@@ -290,7 +290,7 @@ var CheckboxList = React.createClass({
 
   _contains: function(item, values){
     return Array.isArray(values) 
-      ? values.some(this._valueMatcher.bind(null, item))
+      ? _.some(values, this._valueMatcher.bind(null, item))
       : this._valueMatcher(item, values)
   },
 

@@ -43,13 +43,13 @@ module.exports = React.createClass({
   render: function(){
       var focusIdx = this.state.focused
         , value    = this.props.value
-        , itemDisabled = _.isArray(this.props.disabled)
-        , itemReadonly = _.isArray(this.props.readOnly);
+        , itemDisabled = Array.isArray(this.props.disabled)
+        , itemReadonly = Array.isArray(this.props.readOnly);
 
       return mergeIntoProps(
         _.omit(this.props, 'value', 'disabled', 'readOnly'),
         <ul className='rw-tag-list'>
-          {_.map(value, function(item, i){
+          { value.map( (item, i) => {
             var disabled = this.isDisabled(item)
               , readonly = this.isReadOnly(item);
 
@@ -70,7 +70,7 @@ module.exports = React.createClass({
                   &times;<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
                 </btn>
               </li>)
-          }, this)}
+          })}
         </ul>
       )
   },
@@ -99,7 +99,7 @@ module.exports = React.createClass({
   },
 
   removeNext: function(){
-    var val = _.last(this.props.value);
+    var val = this.props.value[this.props.value.length - 1];
 
     if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
       this.props.onDelete(val)

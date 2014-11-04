@@ -1,9 +1,11 @@
+'use strict';
 var $ = require('./dom')
 
 module.exports = function scrollTo( selected ) {
   var offset = $.offset(selected)
     , poff   = { top: 0, left: 0 }
-    , scrollTop, selectedTop, selectedHeight, listHeight, bottom;
+    , list, scrollTop, selectedTop
+    , selectedHeight, listHeight, bottom;
 
     if( !selected ) return 
 

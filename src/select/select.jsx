@@ -294,7 +294,7 @@ var Select = React.createClass({
   },
 
   process: function(data, values, searchTerm){
-    var items = data.filter( i => !values.some(this._valueMatcher.bind(null, i), this), this)
+    var items = data.filter( i => !_.some(values, this._valueMatcher.bind(null, i), this), this)
 
     if( searchTerm)
       items = this.filter(items, searchTerm)

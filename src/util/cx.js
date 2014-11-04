@@ -2,7 +2,7 @@
 var _ = require('lodash')
 
 module.exports = function(classes){
-  if( !_.isArray(classes))
+  if( !Array.isArray(classes))
     classes = _.transform(classes, function(arr, value, key){
       if( !!value ) arr.push(key)
     }, [])

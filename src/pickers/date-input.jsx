@@ -1,7 +1,6 @@
 'use strict';
 var React = require('react')
   , cx = require('../util/cx')
-  , compose = require('../util/compose')
   , transferPropsTo = require('../util/transferProps').mergeIntoProps
   , dates = require('../util/dates');
 
@@ -60,7 +59,7 @@ module.exports = React.createClass({
         disabled={this.props.disabled}
         readOnly={this.props.readOnly}
         onChange={this._change} 
-        onBlur={compose.chain(this.props.blur, this._blur)} />
+        onBlur={chain(this.props.blur, this._blur, this)} />
     )
   },
 
@@ -95,4 +94,11 @@ function formatDate(date, format){
     val = dates.format(date, format)
 
   return val;
+}
+
+function chain(a,b, thisArg){
+  return function(){
+    a && a.apply(thisArg, arguments)
+    b && b.apply(thisArg, arguments)
+  }
 }

@@ -1,7 +1,6 @@
 var React = require('react')
   , cx = require('../util/cx')
   , transferPropsTo = require('../util/transferProps').mergeIntoProps
-  , compose = require('../util/compose')
   , caretPos = require('../util/caret');
 
 module.exports = React.createClass({

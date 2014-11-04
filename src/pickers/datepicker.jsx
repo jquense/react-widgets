@@ -1,7 +1,8 @@
 var React  = require('react')
   , cx     = require('../util/cx')
-  , _      = require('lodash') //values, pick, omit, keys, has, compact (splat can replace)
+  , _      = require('lodash') //values, pick, omit, has
   , dates  = require('../util/dates')
+  , splat  = require('../util/splat')
   , views  = require('../util/constants').calViews
   , popups = require('../util/constants').datePopups
 
@@ -14,7 +15,7 @@ var React  = require('react')
   , controlledInput = require('../util/controlledInput')
   , mergeIntoProps  = require('../util/transferProps').mergeIntoProps;
 
-var viewEnum  = _.values(views)
+var viewEnum  = Object.keys(views).map( k => views[k] )
 var propTypes = {
 
     //-- controlled props -----------
@@ -112,7 +113,7 @@ var DateTimePicker = React.createClass({
     if (timeListID && this.props.time )     owns += ' ' + timeListID
 
     return mergeIntoProps(
-      _.omit(this.props, _.keys(propTypes)),
+      _.omit(this.props, Object.keys(propTypes)),
       <div ref="element"
            tabIndex="-1"
            onKeyDown={this._maybeHandle(this._keyDown)}
@@ -195,7 +196,7 @@ var DateTimePicker = React.createClass({
             onRequestClose={this.close}>
 
             { mergeIntoProps(
-              _.pick(this.props, _.keys(Calendar.type.propTypes)),
+              _.pick(this.props, Object.keys(Calendar.type.propTypes)),
               <Calendar ref="calPopup"
                 id={dateListID}
                 value={this.props.value || new Date }
@@ -293,7 +294,7 @@ var DateTimePicker = React.createClass({
   _parse: function(string){
     var parser = typeof this.props.parse === 'function'
           ? parse
-          : formatsParser.bind(null, _.compact([ this.props.format ].concat(this.props.parse)) );
+          : formatsParser.bind(null, splat(this.props.format).concat(this.props.parse));
 
     return parser(string)
   },

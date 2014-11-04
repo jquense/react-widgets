@@ -53,7 +53,7 @@ module.exports = React.createClass({
           <tr>{ this._headers() }</tr>
         </thead>
         <tbody>
-          { _.map(rows, this._row)}
+          { rows.map(this._row)}
         </tbody>
       </table>
     )
@@ -61,8 +61,8 @@ module.exports = React.createClass({
 
   _row: function(row, i){
     return (
-      <tr key={'week_' + i}>{
-      _.map(row, (day, idx) => {
+      <tr key={'week_' + i}>
+      { row.map( (day, idx) => {
         var focused  = dates.eq(day, this.state.focusedDate, 'day')
           , selected = dates.eq(day, this.props.selectedDate, 'day')
           , id = this._id('_selected_item');
@@ -72,7 +72,7 @@ module.exports = React.createClass({
             : (<td key={'day_' + idx} >
                 <btn
                   tabIndex='-1'
-                  onClick={_.partial(this.props.onChange, day)}
+                  onClick={this.props.onChange.bind(null, day)}
                   aria-selected={selected}
                   aria-disabled={this.props.disabled}
                   disabled={this.props.disabled}
@@ -94,11 +94,8 @@ module.exports = React.createClass({
   _headers: function(format){
     var days = dates.shortDaysOfWeek(format);
 
-    // if ( this.isRtl() ) days.reverse()
-
-    return _.map(days, function(day, i){
-      return (<th key={"header_" + i }>{day}</th>)
-    })
+    return days.map( (day, i) => 
+      <th key={"header_" + i }>{day}</th>)
   },
 
   move: function(date, direction){

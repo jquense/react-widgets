@@ -1,13 +1,13 @@
 "use strict";
 
 var _ = require('lodash')
-  , React    = require('react')
+  , compat   = require('./compat')
   , hasOwn   = Object.prototype.hasOwnProperty
   , RESERVED = {
       className:  resolve(joinClasses),
-      children:   _.noop,
-      key:        _.noop,
-      ref:        _.noop,
+      children:   function(){},
+      key:        function(){},
+      ref:        function(){},
       style:      resolve(merge)
     };
 
@@ -33,7 +33,7 @@ module.exports = {
 
   cloneWithProps: function (child, props) {
     var newProps = mergeProps(_.extend({}, props), child.props)
-      , version  = React.version.split('.').map(parseFloat);
+      , version  = compat.version();
 
     if (!hasOwn.call(newProps, 'children') && hasOwn.call(child.props, 'children'))
       newProps.children = child.props.children;
