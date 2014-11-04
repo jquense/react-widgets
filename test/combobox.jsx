@@ -1,3 +1,5 @@
+'use strict';
+/*global it, describe, expect*/
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
@@ -26,7 +28,6 @@ describe('ComboBox', function(){
     var dropdown = render(
           <ComboBox value={'hello'} onChange={_.noop} />);
 
-
     expect( findClass(dropdown, 'rw-input').getDOMNode().value).to.be('hello');
   })
 
@@ -35,6 +36,13 @@ describe('ComboBox', function(){
 
     expect(findClass(comboBox, 'rw-input').getDOMNode().value)
       .to.be('jimmy');
+  })
+
+  it('should pass NAME down', function(){
+    var comboBox = render(<ComboBox defaultValue={0} data={dataList} textField='label' valueField='id' name='hello'/>)
+      , input  = findClass(comboBox, 'rw-input').getDOMNode();
+
+    expect(input.hasAttribute('name')).to.be(true)
   })
 
   it('should start closed', function(done){

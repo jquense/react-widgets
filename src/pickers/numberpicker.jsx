@@ -21,6 +21,8 @@ var btn = require('../common/btn.jsx')
       culture:        React.PropTypes.string,
       format:         React.PropTypes.string,
 
+      name:           React.PropTypes.string,
+
       parse:          React.PropTypes.oneOfType([
                         React.PropTypes.arrayOf(React.PropTypes.string),
                         React.PropTypes.string,
@@ -131,6 +133,7 @@ var NumberPicker = React.createClass({
           value={val}
           editing={this.state.focused}
           format={this.props.format}
+          name={this.props.name}
           role='spinbutton'
           min={this.props.min}
           aria-valuenow={val}

@@ -47,6 +47,13 @@ describe('Numberpicker', function(){
     })
   })
 
+  it('should pass NAME down', function(){
+    var picker = render(<NumberPicker value={15} format='D' onChange={_.noop} name='hello'/>)
+      , input  = findClass(picker, 'rw-input').getDOMNode();
+
+    expect(input.hasAttribute('name')).to.be(true)
+  })
+
   it('should not fire change until there is a valid value', function(done){
     var change = sinon.spy()
       , picker = render(<NumberPicker value={150} format='D' min={100} onChange={change} />)

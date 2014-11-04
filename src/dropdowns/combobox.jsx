@@ -25,6 +25,7 @@ var btn = require('../common/btn.jsx')
       data:           React.PropTypes.array,
       valueField:     React.PropTypes.string,
       textField:      React.PropTypes.string,
+      name:           React.PropTypes.string,
 
       disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.bool,
@@ -165,6 +166,7 @@ var ComboBox = React.createClass({
           type='text'
           role='combobox'
           suggest={this.props.suggest}
+          name={this.props.name}
           aria-owns={listID}
           aria-busy={!!this.props.busy}
           aria-autocomplete={completeType}

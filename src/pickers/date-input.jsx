@@ -1,8 +1,8 @@
+'use strict';
 var React = require('react')
   , cx = require('../util/cx')
   , compose = require('../util/compose')
   , dates = require('../util/dates');
-
 
 module.exports = React.createClass({
 
