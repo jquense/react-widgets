@@ -1,9 +1,8 @@
 var React  = require('react')
   , cx     = require('../util/cx')
-  , _      = require('lodash') //values, pick, omit, has
+  , _      = require('../util/_') //pick, omit, has
   , dates  = require('../util/dates')
-  , splat  = require('../util/splat')
-  , views  = require('../util/constants').calViews
+  , views  = require('../util/constants').calendarViews
   , popups = require('../util/constants').datePopups
 
   , Popup     = require('../popup/popup.jsx')
@@ -246,7 +245,7 @@ var DateTimePicker = React.createClass({
 
     } else if (this.props.open ) {
       if( this.props.open === popups.CALENDAR )
-        this.refs.calPopup._keyDown(e)
+        this.refs.calPopup.refs.calPopup._keyDown(e) //because right now its wrapped TODO 2.0
       if( this.props.open === popups.TIME )
         this.refs.timePopup._keyDown(e)
     }
@@ -294,7 +293,7 @@ var DateTimePicker = React.createClass({
   _parse: function(string){
     var parser = typeof this.props.parse === 'function'
           ? parse
-          : formatsParser.bind(null, splat(this.props.format).concat(this.props.parse));
+          : formatsParser.bind(null, _.splat(this.props.format).concat(this.props.parse));
 
     return parser(string)
   },

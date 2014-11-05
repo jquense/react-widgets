@@ -1,6 +1,6 @@
 var React  = require('react')
   , cx = require('../util/cx')
-  , _      = require('lodash')
+  , _      = require('../util/_')
   , caretPos = require('../util/caret')
   , filter = require('../util/filter')
   , controlledInput  = require('../util/controlledInput')
@@ -97,8 +97,8 @@ var ComboBox = React.createClass({
 
   shouldComponentUpdate: function(nextProps, nextState){
     var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
-      , stateChanged = !shallowEqual(nextState, this.state)
-      , valueChanged = !shallowEqual(nextProps, this.props)
+      , stateChanged = !_.isShallowEqual(nextState, this.state)
+      , valueChanged = !_.isShallowEqual(nextProps, this.props)
 
     return isSuggesting || stateChanged || valueChanged
   },
@@ -371,26 +371,6 @@ var ComboBox = React.createClass({
 module.exports = controlledInput.createControlledClass(
     'ComboBox', ComboBox
   , { open: 'onToggle', value: 'onChange' });
-
-
-
-function shallowEqual(objA, objB) {
-  var key;
-
-  if (objA === objB) return true;
-
-  // Test for A's keys different from B.
-  for (key in objA)
-    if (objA.hasOwnProperty(key) && (!objB.hasOwnProperty(key) || objA[key] !== objB[key]))
-      return false;
-
-  // Test for B'a keys missing from A.
-  for (key in objB)
-    if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key))
-      return false;
-
-  return true;
-}
 
 function find(arr, cb, thisArg){
   var idx = -1, len = arr.length;

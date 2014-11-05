@@ -1,10 +1,9 @@
 var React = require('react')
   , cx = require('../util/cx')
   , dates = require('../util/dates')
-  , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , _ = require('lodash'); //omit
+  , _ = require('../util/_'); //omit
 
 var opposite = {
   LEFT:  directions.RIGHT,
@@ -33,10 +32,10 @@ module.exports = React.createClass({
 
   render: function(){
     var years = getCenturyDecades(this.props.value)
-      , rows  = chunk(years, 4);
+      , rows  = _.chunk(years, 4);
 
     return mergeIntoProps(
-      _.omit(this.props, 'max', 'min', 'value', 'onChange'),
+      _.omit(this.props, ['max', 'min', 'value', 'onChange']),
       <table tabIndex={this.props.disabled ? '-1' : "0"}
         role='grid'
         className='rw-calendar-grid rw-nav-view'

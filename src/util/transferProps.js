@@ -1,6 +1,6 @@
 "use strict";
 
-var _ = require('lodash')
+var _ = require('./_')
   , compat   = require('./compat')
   , hasOwn   = Object.prototype.hasOwnProperty
   , RESERVED = {
@@ -8,7 +8,7 @@ var _ = require('lodash')
       children:   function(){},
       key:        function(){},
       ref:        function(){},
-      style:      resolve(merge)
+      style:      resolve(_.merge)
     };
 
 //mutates first arg
@@ -57,8 +57,4 @@ function resolve(fn){
 function joinClasses(a, b){
   if ( !a ) return b || ''
   return a + (b ? ' ' + b : '')
-}
-
-function merge(a, b){
-  return _.extend({}, a, b)
 }

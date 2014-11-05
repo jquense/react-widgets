@@ -1,6 +1,6 @@
 var React = require('react')
-  , cx = require('../util/cx')
-  , _      = require('lodash') //omit
+  , cx    = require('../util/cx')
+  , _     = require('../util/_') //omit
   , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions

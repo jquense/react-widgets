@@ -1,9 +1,8 @@
 'use strict';
 var React = require('react')
-  , cx = require('../util/cx')
-  , _     = require('lodash')
+  , cx    = require('../util/cx')
+  , _     = require('../util/_')
   , $     = require('../util/dom')
-  , splat = require('../util/splat')
   , controlledInput  = require('../util/controlledInput')
   , directions = require('../util/constants').directions
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
@@ -84,7 +83,7 @@ var Select = React.createClass({
   },
 
   getInitialState: function(){
-    var values = splat(this.props.value)
+    var values = _.splat(this.props.value)
 
     return {
       focusedIndex:  0,
@@ -94,7 +93,7 @@ var Select = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var values = splat(nextProps.value)
+    var values = _.splat(nextProps.value)
       , items  = this.process(nextProps.data, values, nextProps.searchTerm)
 
     this.setState({
@@ -294,7 +293,7 @@ var Select = React.createClass({
   },
 
   process: function(data, values, searchTerm){
-    var items = data.filter( i => !_.some(values, this._valueMatcher.bind(null, i), this), this)
+    var items = _.filter(data, i => !_.some(values, this._valueMatcher.bind(null, i), this), this)
 
     if( searchTerm)
       items = this.filter(items, searchTerm)

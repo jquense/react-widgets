@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash')
+var _ = require('./_')
 
 module.exports = function(classes){
   if( !Array.isArray(classes))

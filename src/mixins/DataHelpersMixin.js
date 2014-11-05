@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , _ =  require('lodash') //findIndex, has, isEqual (shouldn't be tho)
+  , _ =  require('../util/_')
 
 module.exports = {
   
@@ -30,7 +30,7 @@ module.exports = {
   },
 
   _valueMatcher: function(a, b){
-    return _.isEqual(
+    return _.isShallowEqual(
         this._dataValue(a)
       , this._dataValue(b)) 
   },

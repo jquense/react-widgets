@@ -1,3 +1,4 @@
+'use strict';
 var React = require('react/addons')
 var Widgets = require('../index')
 var DropdownList = require('../src/dropdowns/Dropdown-List.jsx')
@@ -8,22 +9,12 @@ var NumberPicker = require('../src/pickers/numberpicker.jsx')
 var ComboBox = require('../src/dropdowns/Combobox.jsx')
 var CheckboxList = require('../src/select/SelectList.jsx')
 var chance = new (require('chance'))
-//var _ = require('lodash')
+var _ = require('lodash')
 
-function test(...args){
-  console.log(args)
-}
 
-function test2(first, sec, ...args){
-  console.log(first, sec, args)
-}
-
-test(1,2,3,5)
-test2(1,2,3,5)
-
-var g = require('globalize')
-var culture = require('globalize/lib/cultures/globalize.culture.fi');
-g.culture('fi');
+// var g = require('globalize')
+// var culture = require('globalize/lib/cultures/globalize.culture.fi');
+// g.culture('fi');
 
 var ListItem = React.createClass({
 
@@ -58,7 +49,7 @@ var App = React.createClass({
     function change(field, data) {
       var obj = {}
 
-      if(field === 'selectValues' && _.isArray(data))
+      if(field === 'selectValues' && Array.isArray(data))
         data = _.pluck(data, 'id')
 
       if(field === 'open') console.log(field, data)
@@ -95,9 +86,7 @@ var App = React.createClass({
               data={ this.state.data }
               textField='name'
               valueField='id'
-              initialBufferSize={10}
               busy={false}
-              disabled={true}
               value={this.state.dropdownValue}
               onChange={change.bind(null, 'dropdownValue')}/>
           </section>
@@ -138,7 +127,7 @@ var App = React.createClass({
               id='swweeeeet'
               value={this.state.calDate}
               time={true}
-              format='MM/dd/yy'
+              format='f'
               open={this.state.open}
               onToggle={change.bind(null, 'open')}
               min={new Date(2014,5,1,0,0,0)}

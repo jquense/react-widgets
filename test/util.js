@@ -7,6 +7,7 @@ var react= require('react')
   , cx = require('../src/util/cx')
   , filters = require('../src/util/filter')
   , transferProps = require('../src/util/transferProps')
+  , _ = require('../src/util/_')
 
 describe('when using Class Set', function(){
 
@@ -59,6 +60,79 @@ describe('when using prop transfer Utils', function(){
       .and.to.have.property('key', 'key')
 
     expect(props.children).to.be.eql([1,2,3])
+  })
+})
+
+
+describe('_ utils', function(){
+
+  it('should OMIT and PICK', function(){
+    expect(_.omit({ a: 1, b: 2, c: 3}, ['b','c'])).to.eql({ a: 1 })
+    expect(_.pick({ a: 1, b: 2, c: 3}, ['b','c'])).to.eql({ b: 2, c: 3 })
+  })
+
+  it('should FINDINDEX', function(){
+    expect(_.findIndex([1,2,3,4,5], v => v === 2)).to.equal(1)
+    expect(_.findIndex([1,2,3,4,5], (v, i) => i === 2)).to.equal(2)
+  })
+
+  it('should FILTER', function(){
+    expect( _.filter([1,2,3,4,5], (v, i) => v > 2 && i < 4 )).to.eql([3,4])
+  })
+
+  it('should SOME', function(){
+    expect(_.some([1,2,3,4,5], (v, i) => v > 2 )).to.equal(true)
+    expect(_.some([1,2,3,4,5], (v, i) => i > 2 )).to.equal(true)
+  })
+
+  it('should UNIQUEID', function(){
+    expect(_.uniqueId('gello_')).to.equal('gello_' + 1)
+    expect(_.uniqueId('ello_')).to.equal('ello_' + 2)
+  })
+
+  it('should OBJECT', function(){
+    expect(_.object([[1,2], [2,3]])).to.eql({ 1:2, 2: 3})
+  })
+
+  it('should SHALLOW EQUAL', function(){
+    expect( _.isShallowEqual(1,1) ).to.be(true)
+    expect( _.isShallowEqual(1,'1') ).to.be(false)
+    expect( _.isShallowEqual(1, 1.4) ).to.be(false)
+    expect( _.isShallowEqual('hi', 'hi') ).to.be(true)
+    expect( _.isShallowEqual('hi', 'hiw') ).to.be(false)
+
+    expect( _.isShallowEqual(null, null) ).to.be(true)
+    expect( _.isShallowEqual(null, undefined) ).to.be(false)
+
+    expect( _.isShallowEqual([1,2], [1,2]) ).to.be(true)
+    expect( _.isShallowEqual([1,2], [1,3]) ).to.be(false)
+
+    expect( _.isShallowEqual([1,2], { 0: 1, 1: 2}) ).to.be(true)
+
+    expect( _.isShallowEqual({ a: 1, b: 2}, { b: 2, a: 1 }) ).to.be(true)
+    expect( _.isShallowEqual({ a: 1, b: 2}, { a: 1, c: 'hi' }) ).to.be(false)
+  })
+
+  it('should TRANSFORM', function(){
+    var obj;
+
+    _.transform([1], function(o, v,i){ 
+      expect(o).to.eql([])
+      expect(v).to.equal(1)
+      expect(i).to.equal(0)
+    })
+
+    _.transform({ key: 1 }, (o, v, i) => { 
+      expect(o).to.eql({})
+      expect(v).to.equal(1)
+      expect(i).to.equal('key')
+    })
+
+    expect( _.transform({ a:0, b:1 }, 
+      (o, v, i) => o[i] = ++v )).to.eql({ a:1, b: 2})
+
+    expect( _.transform([ 0, 1 ], 
+      (o, v ) => o[v] = ++v, {})).to.eql({ 0:1, 1: 2})
   })
 })
 

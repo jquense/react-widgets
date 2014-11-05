@@ -12,7 +12,7 @@ var React = require('react')
   , dates = require('../util/dates')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , constants  = require('../util/constants')
-  , _ = require('lodash'); //values, omit, object
+  , _ = require('../util/_'); //values, omit, object
 
 var dir = constants.directions;
 
@@ -127,7 +127,7 @@ var Calendar = React.createClass({
       , key = this.state.view + '_' + dates[this.state.view](date)
       , id  = this._id('_view');
 
-    return mergeIntoProps(_.omit(this.props, 'value', 'min', 'max'),
+    return mergeIntoProps(_.omit(this.props, ['value', 'min', 'max']),
       <div className={cx({
           'rw-calendar':       true,
           'rw-widget':         true,

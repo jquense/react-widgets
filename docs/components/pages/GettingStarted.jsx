@@ -14,7 +14,7 @@ var GettingStarted = React.createClass({
           React-widgets offers a {'set'} UI widgets, built from scratch with React. The suite is based on the excellent
           work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By
           building each widget entirely in React, it can leavage all of the benefits of the React ecosystem
-          and <a href='http://facebook.github.io/react/blog/2013/11/05/thinking-in-react.html'>
+          and <a href='http://facebook.github.io/react/blog/2013/11/05/thinking-in-react.html' target="_blank">
             philosophy <i className="fa fa-external-link"></i>
           </a>.
         </p>
@@ -24,7 +24,7 @@ var GettingStarted = React.createClass({
         </p>
         <p>
           In keeping with the&nbsp;
-          <a href='http://facebook.github.io/react/docs/forms.html#controlled-components'>
+          <a href='http://facebook.github.io/react/docs/forms.html#controlled-components' target="_blank">
             React approach <i className="fa fa-external-link"></i>
           </a> to form input components, each widget can be <em>controlled</em> or <em>uncontrolled</em>. Like form inputs
           the value/onChange prop pair provides the main interface for widget interaction. If a <code>value</code> prop
@@ -72,13 +72,19 @@ var GettingStarted = React.createClass({
 
           <ul>
             <li>
-              <a href="http://lodash.com/">lodash</a> if you are using underscore consider making the switch :).
-            </li>
-            <li>
-              <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468">Globalize</a>&nbsp;
+              <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468" >Globalize</a>&nbsp;
               used for date and number localization. Requires a 0.x.x version (not the upcoming 1.0.0)
             </li>
           </ul>
+        </p>
+        <h3>Older Browser Support</h3>
+        <p>
+          Moving forward react-widgets is working to reduce dependence on external utility-belt libraries in favor of 
+          using polyfills for older, non es5 compliant, browsers. For consumers supporting older browsers you will already
+          be using the necessary polyfills that&nbsp; 
+          <a target="_blank" href="http://facebook.github.io/react/docs/working-with-the-browser.html#polyfills-needed-to-support-older-browsers">
+            React requires <i className="fa fa-external-link"></i>
+          </a>
         </p>
 
         <h2>Accessibility and Read Direction</h2>

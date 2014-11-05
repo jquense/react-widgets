@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash') //invert, transform
+var _ = require('./_') //invert, transform
   , React = require('react')
   , compat = require('./compat')
 
@@ -64,7 +64,7 @@ module.exports = {
         }, {})
 
         return component(
-            _.extend({}, this.props, props, handles)
+            _.merge(this.props, props, handles)
           , this.props.children);
       }
     })
@@ -79,7 +79,7 @@ module.exports = {
       if ( !this._notifying ) this._notifying = [];
 
       if( this.props[handler] ) {
-        args = [].slice.call(arguments, 2)
+        args = [].slice.call(arguments, 1)
         this._notifying.push(true)
         this.props[handler].apply(this, args)
         this._notifying.pop()

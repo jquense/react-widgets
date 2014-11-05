@@ -1,10 +1,9 @@
 var React = require('react')
   , cx    = require('../util/cx')
   , dates = require('../util/dates')
-  , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , _ = require('lodash')
+  , _ = require('../util/_')
 
 var btn = require('../common/btn.jsx')
 
@@ -39,10 +38,10 @@ module.exports = React.createClass({
 
   render: function(){
     var month = dates.visibleDays(this.props.value)
-      , rows  = chunk(month, 7 );
+      , rows  = _.chunk(month, 7 );
 
     return mergeIntoProps(
-      _.omit(this.props, 'max', 'min', 'value', 'onChange'),
+      _.omit(this.props, ['max', 'min', 'value', 'onChange']),
       <table
         role='grid'
         tabIndex={this.props.disabled ? '-1' : "0"}

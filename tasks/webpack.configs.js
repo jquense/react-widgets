@@ -1,5 +1,4 @@
-var _ = require('lodash')
-  , path = require('path')
+var path = require('path')
   , webpack = require('webpack')
   , pkg = require("../package.json")
   , ProdDefine = new webpack.DefinePlugin({
@@ -33,7 +32,6 @@ module.exports = {
 
     externals: {
       '$':      'window.$',
-      'lodash': 'window._',
       'globalize': 'window.Globalize',
       'react':  'window.React'
     },
@@ -62,12 +60,8 @@ module.exports = {
 
     module: {
       loaders: [
-        { test: /\.jsx$/,  loader: 'jsx-loader?insertPragma=React.DOM' },
-        // { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-        // { test: /\.woff$/, loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },
-        // { test: /\.ttf$/,  loader: "file-loader?prefix=font/" },
-        // { test: /\.eot$/,  loader: "file-loader?prefix=font/" },
-        // { test: /\.svg$/,  loader: "file-loader?prefix=font/" },
+        { test: /\.jsx$/, loader: 'jsx-loader?insertPragma=React.DOM' },
+        //{ test: /lodash/, loader: "imports?define=>false" }
       ],
       postLoaders: [
         { loader: 'jstransform-loader?' + visitors.join(',') }
@@ -87,7 +81,7 @@ module.exports = {
 
     externals: {
       'react':  'window.React',
-      'lodash': 'window._'
+      //'lodash': 'window._'
     },
 
     module: {
@@ -113,10 +107,13 @@ module.exports = {
     cache: true,
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' },
+        { test: /\.jsx$/, loader: 'jsx-loader?insertPragma=React.DOM' },
         { test: /\.css$/, loader: "style-loader!css-loader" },
         { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
       ],
+      postLoaders: [
+        { loader: 'jstransform-loader?' + visitors.join(',') }
+      ]
     },
   }
 }

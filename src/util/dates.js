@@ -2,7 +2,7 @@
 
 var dateMath = require('date-arithmetic')
   , globalize = require('globalize')
-  , _ = require('lodash'); //extend
+  , _ = require('./_'); //extend
 
 var dates = module.exports = _.extend(dateMath, {
   // wrapper methods for isolating globalize use throughout the lib

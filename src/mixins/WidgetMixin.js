@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , _ =  require('lodash'); //uniqueID
+  , _ =  require('../util/_'); //uniqueID
 
 module.exports = {
 

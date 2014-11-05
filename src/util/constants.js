@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash'); //object
+var _ = require('./_'); //object
 
 var views = {
     MONTH:   'month',

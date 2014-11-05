@@ -5,7 +5,7 @@ var React   = require('react')
   , mergeIntoProps = transferProps.mergeIntoProps
   , cloneWithProps = transferProps.cloneWithProps
   , cx = require('../util/cx')
-  , _  = require('lodash');
+  , _  = require('../util/_');
 
 
 module.exports = React.createClass({
@@ -80,7 +80,7 @@ module.exports = React.createClass({
     }, this);
     
 		return mergeIntoProps(
-      _.omit(this.props, 'data', 'selectedIndex'),
+      _.omit(this.props, ['data', 'selectedIndex']),
 			<ul 
         className="rw-list" 
         ref='scrollable'

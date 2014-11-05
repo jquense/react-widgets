@@ -5,7 +5,7 @@ var React = require('react')
   , List = require('../common/list.jsx')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
-  , _ = require('lodash') // omit
+  , _ = require('../util/_') // omit
 
 
 module.exports = React.createClass({

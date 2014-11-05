@@ -3,9 +3,9 @@ var React   = require('react')
   , filters = require('../util/filter')
   , helper  = require('../mixins/DataHelpersMixin')
   , directions = require('../util/constants').directions
-  , _      = require('lodash');
+  , _      = require('../util/_');
 
-var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
+var filterTypes = _.filter( Object.keys(filters), i => i !== 'filter')
 
 module.exports = {
   
@@ -65,7 +65,7 @@ module.exports = {
       if ( !this.props.caseSensitive)
         searchTerm = searchTerm.toLowerCase();
 
-      return items.filter(item => {
+      return _.filter(items, item => {
         var val = helper._dataText.call(this, item);
 
         if ( !this.props.caseSensitive)

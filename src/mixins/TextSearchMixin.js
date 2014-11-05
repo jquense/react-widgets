@@ -1,7 +1,7 @@
 var React  = require('react')
   , filter = require('../util/filter')
   , helper = require('../mixins/DataHelpersMixin')
-  , _      = require('lodash');
+  , _      = require('../util/_');
 
 module.exports = {
   

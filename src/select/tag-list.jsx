@@ -1,5 +1,5 @@
 var React = require('react')
-  , _ = require('lodash')
+  , _ = require('../util/_')
   , cx  = require('../util/cx')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , btn = require('../common/btn.jsx')
@@ -47,7 +47,7 @@ module.exports = React.createClass({
         , itemReadonly = Array.isArray(this.props.readOnly);
 
       return mergeIntoProps(
-        _.omit(this.props, 'value', 'disabled', 'readOnly'),
+        _.omit(this.props, ['value', 'disabled', 'readOnly']),
         <ul className='rw-tag-list'>
           { value.map( (item, i) => {
             var disabled = this.isDisabled(item)
