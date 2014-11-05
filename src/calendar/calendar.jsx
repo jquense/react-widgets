@@ -1,18 +1,18 @@
 'use strict';
-var React = require('react')
-  , Header  = require('./header.jsx')
-  , Month = require('./month.jsx')
-  , Year = require('./year.jsx')
-  , Decade = require('./decade.jsx')
-  , Century = require('./century.jsx')
-  , cx = require('../util/cx')
-  , setter = require('../util/stateSetter')
-  , controlledInput  = require('../util/controlledInput')
-  , SlideTransition  = require('../common/slide-transition.jsx')
-  , dates = require('../util/dates')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , constants  = require('../util/constants')
-  , _ = require('../util/_'); //values, omit, object
+var React           = require('react')
+  , Header          = require('./header.jsx')
+  , Month           = require('./month.jsx')
+  , Year            = require('./year.jsx')
+  , Decade          = require('./decade.jsx')
+  , Century         = require('./century.jsx')
+  , cx              = require('../util/cx')
+  , setter          = require('../util/stateSetter')
+  , controlledInput = require('../util/controlledInput')
+  , SlideTransition = require('../common/slide-transition.jsx')
+  , dates           = require('../util/dates')
+  , mergeIntoProps  = require('../util/transferProps').mergeIntoProps
+  , constants       = require('../util/constants')
+  , _               = require('../util/_'); //values, omit, object
 
 var dir = constants.directions;
 
@@ -205,8 +205,6 @@ var Calendar = React.createClass({
   },
 
   _focus: function(val, e){
-    var s = setter('focused');
-
     if ( this.props.maintainFocus)
       val && this.refs.currentView.getDOMNode().focus()
   },

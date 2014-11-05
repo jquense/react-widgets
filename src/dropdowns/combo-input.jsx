@@ -1,5 +1,5 @@
+'use strict';
 var React = require('react')
-  , cx = require('../util/cx')
   , transferPropsTo = require('../util/transferProps').mergeIntoProps
   , caretPos = require('../util/caret');
 

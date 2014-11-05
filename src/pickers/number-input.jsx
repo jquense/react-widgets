@@ -1,6 +1,5 @@
 'use strict';
 var React   = require('react')
-  , cx      = require('../util/cx')
   , setter  = require('../util/stateSetter')
   , transferPropsTo = require('../util/transferProps').mergeIntoProps
   , globalize = require('globalize');
@@ -95,8 +94,7 @@ module.exports = React.createClass({
   },
 
   isValid: function(value) {
-    var num = +value
-      , noMin = this.props.min == null || !isFinite(this.props.min);
+    var num = +value;
 
     if(isNaN(num)) return false
     return num >= this.props.min

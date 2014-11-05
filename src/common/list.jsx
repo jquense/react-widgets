@@ -1,9 +1,7 @@
 'use strict';
 var React   = require('react')
-  , filter  = require('../util/filter')
   , transferProps  = require('../util/transferProps')
   , mergeIntoProps = transferProps.mergeIntoProps
-  , cloneWithProps = transferProps.cloneWithProps
   , cx = require('../util/cx')
   , _  = require('../util/_');
 
@@ -56,7 +54,6 @@ module.exports = React.createClass({
 
 	render: function(){
     var emptyList   = <li>{ this.props.messages.emptyList }</li>
-      , emptyFilter = <li>{ this.props.messages.emptyFilter }</li>
       , items;
     
     items = this.props.data.map(function(item, idx){

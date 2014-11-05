@@ -1,6 +1,6 @@
+'use strict';
 var React = require('react')
   , transferPropsTo = require('../util/transferProps').mergeIntoProps
-
 
 module.exports = React.createClass({
 

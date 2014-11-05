@@ -1,5 +1,4 @@
-var React = require('react')
-  , cx    = require('../util/cx');
+var React = require('react');
 
 var btn = require('../common/btn.jsx')
 

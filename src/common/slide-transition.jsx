@@ -82,8 +82,6 @@ module.exports = React.createClass({
   },
 
   _wrapChild: function(child) {
-    var self = this;
-
     return (<SlideChildGroup direction={this.props.direction}>{child}</SlideChildGroup>)
   },
 

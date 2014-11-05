@@ -1,3 +1,4 @@
+'use strict';
 var React = require('react')
   , dates = require('../util/dates')
   , directions = require('../util/constants').directions;
@@ -30,7 +31,6 @@ module.exports = function(viewUnit, smallUnit){
 
     _keyDown: function(e){
       var key = e.key
-        , alt = e.altKey
         , current = this.state.focusedDate
         , date = current;
 

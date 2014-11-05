@@ -55,13 +55,6 @@ module.exports = React.createClass({
               </buttonGroup>
             </div>
             <div className='form-group'>
-              <label className='form-label'>Format</label>
-              <RW.Combobox
-                  value={this.state.format}
-                  data={['c', 'd3', 'n2', 'p1']}
-                  onChange={_.partial(this._set, 'format')}/>
-            </div>
-            <div className='form-group'>
               <label className='form-label'>Filter</label>
               <RW.DropDownlist
                   value={this.state.filter || false}

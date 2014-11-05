@@ -10,7 +10,6 @@ var React  = require('react')
   , Time      = require('./time.jsx')
   , DateInput = require('./date-input.jsx')
 
-  , $ = require('../util/dom')
   , controlledInput = require('../util/controlledInput')
   , mergeIntoProps  = require('../util/transferProps').mergeIntoProps;
 
@@ -102,8 +101,7 @@ var DateTimePicker = React.createClass({
   },
 
   render: function(){
-    var self = this
-      , timeListID = this._id('_time_listbox')
+    var timeListID = this._id('_time_listbox')
       , timeOptID  = this._id('_time_option')
       , dateListID = this._id('_cal')
       , owns;
@@ -114,20 +112,20 @@ var DateTimePicker = React.createClass({
     return mergeIntoProps(
       _.omit(this.props, Object.keys(propTypes)),
       <div ref="element"
-           tabIndex="-1"
-           onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
-           onBlur ={this._focus.bind(null, false)}
-           className={cx({
-              'rw-date-picker':     true,
-              'rw-widget':          true,
-              'rw-open':            this.props.open,
-              'rw-state-focus':     this.state.focused,
-              'rw-state-disabled':  this.isDisabled(),
-              'rw-state-readonly':  this.isReadOnly(),
-              'rw-has-both':        this.props.calendar && this.props.time,
-              'rw-rtl':             this.isRtl()
-            })}>
+          tabIndex="-1"
+          onKeyDown={this._maybeHandle(this._keyDown)}
+          onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+          onBlur ={this._focus.bind(null, false)}
+          className={cx({
+            'rw-date-picker':     true,
+            'rw-widget':          true,
+            'rw-open':            this.props.open,
+            'rw-state-focus':     this.state.focused,
+            'rw-state-disabled':  this.isDisabled(),
+            'rw-state-readonly':  this.isReadOnly(),
+            'rw-has-both':        this.props.calendar && this.props.time,
+            'rw-rtl':             this.isRtl()
+          })}>
         <DateInput ref='valueInput'
           aria-activedescendant={ this.props.open
             ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID

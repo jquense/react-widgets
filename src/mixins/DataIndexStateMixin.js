@@ -1,8 +1,5 @@
 'use strict';
-var React  = require('react')
-  , filter = require('../util/filter')
-  , helper = require('../mixins/DataHelpersMixin')
-  , directions = require('../util/constants').directions;
+var React  = require('react');
 
 module.exports = function(stateKey, disabled) {
   var methodName = stateKey.charAt(0).toUpperCase() + stateKey.substr(1);
@@ -16,7 +13,7 @@ module.exports = function(stateKey, disabled) {
     }
   }
 
-  mixin['set' + methodName] = function setIndex(idx){
+  mixin['set' + methodName] = function(idx){
     var state = {}; state[stateKey] = idx;
 
     if(idx !== -1) 

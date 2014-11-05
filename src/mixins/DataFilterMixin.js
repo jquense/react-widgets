@@ -2,7 +2,6 @@
 var React   = require('react')
   , filters = require('../util/filter')
   , helper  = require('../mixins/DataHelpersMixin')
-  , directions = require('../util/constants').directions
   , _      = require('../util/_');
 
 var filterTypes = _.filter( Object.keys(filters), i => i !== 'filter')

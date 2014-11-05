@@ -1,6 +1,5 @@
 'use strict';
 var React  = require('react')
-  , cx  = require('../util/cx')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , $ = require('../util/dom');
 
@@ -104,8 +103,7 @@ module.exports = React.createClass({
   close: function(dur){
     var self = this
       , el   = this.refs.content.getDOMNode()
-      , anim = this.getDOMNode()
-      , ht   = anim.style.height;
+      , anim = this.getDOMNode();
 
     this.ORGINAL_POSITION = $.css(el, 'position')
 

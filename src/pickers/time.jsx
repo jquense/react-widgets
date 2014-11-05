@@ -1,10 +1,8 @@
 'use strict';
 var React = require('react')
-  , cx = require('../util/cx')
   , dates = require('../util/dates')
   , List = require('../common/list.jsx')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , directions = require('../util/constants').directions
   , _ = require('../util/_') // omit
 
 
@@ -156,6 +154,3 @@ module.exports = React.createClass({
   }
 
 });
-
-
-var btn = require('../common/btn.jsx')

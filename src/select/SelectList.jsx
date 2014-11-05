@@ -1,13 +1,8 @@
-/**
- * @jsx React.DOM
- */
 'use strict';
 var React = require('react')
   , _  = require('../util/_')
   , cx = require('../util/cx')
-  , $  =  require('../util/dom')
   , scrollTo = require('../util/scroll')
-  , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps;
 
 var propTypes = {
@@ -206,7 +201,7 @@ var CheckboxList = React.createClass({
       
       if( idx > -1 && idx < last){
         self._change(item, cked !== undefined 
-          ? chked
+          ? cked
           : multiple 
             ? !self._contains(item, self._values()) // toggle value
             : true)

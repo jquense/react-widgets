@@ -3,8 +3,8 @@ var gulp    = require('gulp')
   , xtend   = require('xtend')
   , configs = require('./webpack.configs')
   , clean   = require('gulp-clean')
-  , WebpackDevServer = require("webpack-dev-server")
-  , webpack = require('webpack');
+  , webpack = require('webpack')
+  , WebpackDevServer = require("webpack-dev-server");
 
 var docs    = require('./docs')
   , assets  = require('./assets');

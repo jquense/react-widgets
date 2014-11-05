@@ -1,17 +1,13 @@
 'use strict';
-var React = require('react')
-  , _ = require('../util/_')
-  , cx = require('../util/cx')
-  , setter = require('../util/stateSetter')
+var React            = require('react')
+  , _                = require('../util/_')
+  , cx               = require('../util/cx')
+  , setter           = require('../util/stateSetter')
   , controlledInput  = require('../util/controlledInput')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , directions = require('../util/constants').directions
-  , DefaultValueItem = require('./value-item.jsx')
-  , Popup = require('../popup/popup.jsx')
-  , List  = require('../common/list.jsx')
-  , $     = require('../util/dom');
-
-var btn = require('../common/btn.jsx');
+  , mergeIntoProps   = require('../util/transferProps').mergeIntoProps
+  , Popup            = require('../popup/popup.jsx')
+  , List             = require('../common/list.jsx')
+  , $                = require('../util/dom');
 
 var propTypes = {
   //-- controlled props -----------
@@ -30,7 +26,6 @@ var propTypes = {
   busy:           React.PropTypes.bool,
 
   delay:          React.PropTypes.number,
-
   duration:       React.PropTypes.number, //popup
 
   disabled:       React.PropTypes.oneOfType([

@@ -48,14 +48,13 @@ module.exports = React.createClass({
   },
 
   _row: function(row, i){
-    // if (this.isRtl()) row.reverse()
-
+    var id = this._id('_selected_item');
+    
     return (
       <tr key={i}>
       { row.map( (date, i) => {
         var focused  = dates.eq(date, this.state.focusedDate,  'month')
-          , selected = dates.eq(date, this.props.value,  'month')
-          , id       = this._id('_selected_item');
+          , selected = dates.eq(date, this.props.value,  'month');
 
         return dates.inRange(date, this.props.min, this.props.max, 'month')
           ? (<td key={i}>

@@ -4,7 +4,7 @@ var _ = require('./_') //invert, transform
   , compat = require('./compat')
 
 
-function propType(handler, propType) {
+function compatPropType(handler, propType) {
 
   return compat.propType(function(props, propName, componentName, location){
     if(props[propName] !== undefined){
@@ -26,7 +26,7 @@ module.exports = {
     var types = _.transform(controlledValues, function(obj, handler, prop){
           var type = component.type.propTypes[prop];
 
-          obj[prop] = propType(handler, type)
+          obj[prop] = compatPropType(handler, type)
           obj[defaultKey(prop)] = type
         }, {});
 

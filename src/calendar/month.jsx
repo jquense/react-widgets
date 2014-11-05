@@ -59,12 +59,13 @@ module.exports = React.createClass({
   },
 
   _row: function(row, i){
+    var id = this._id('_selected_item')
+    
     return (
       <tr key={'week_' + i}>
       { row.map( (day, idx) => {
         var focused  = dates.eq(day, this.state.focusedDate, 'day')
-          , selected = dates.eq(day, this.props.selectedDate, 'day')
-          , id = this._id('_selected_item');
+          , selected = dates.eq(day, this.props.selectedDate, 'day');
 
         return !dates.inRange(day, this.props.min, this.props.max)
             ? <td  key={'day_' + idx} className='rw-empty-cell'>&nbsp;</td>

@@ -1,6 +1,5 @@
 'use strict';
-var extend = require('xtend')
-  , idCount = 0;
+var idCount = 0;
 
 var _ = 
 
@@ -13,8 +12,6 @@ var _ =
     extend: require('xtend/mutable'),
 
     isShallowEqual: function (a, b) {
-      var key;
-
       if (a === b) return true;
       if (a instanceof Date && b instanceof Date)
         return a.getTime() === b.getTime()

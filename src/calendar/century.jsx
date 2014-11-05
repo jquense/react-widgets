@@ -49,15 +49,14 @@ module.exports = React.createClass({
   },
 
   _row: function(row, i){
-
+    var id = this._id('_selected_item')
 
     return (
       <tr key={'row_' + i}>
       { row.map( (date, i) => {
         var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
           , selected = dates.eq(date, this.props.value,  'decade')
-          , id = this._id('_selected_item')
-          , d  = inRangeDate(date, this.props.min, this.props.max);
+          , d        = inRangeDate(date, this.props.min, this.props.max);
 
         return !inRange(date, this.props.min, this.props.max)
           ? <td key={i} className='rw-empty-cell'>&nbsp;</td>
