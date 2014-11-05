@@ -1,13 +1,12 @@
 /**
  * @jsx React.DOM
  */
-
+'use strict';
 var React = require('react')
-  , _  = require('lodash')
+  , _  = require('../util/_')
   , cx = require('../util/cx')
   , $  =  require('../util/dom')
   , scrollTo = require('../util/scroll')
-  , splat = require('../util/splat')
   , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps;
 
@@ -20,7 +19,7 @@ var propTypes = {
     onChange:      React.PropTypes.func,
 
     multiple:      React.PropTypes.bool,
-    itemComponent: React.PropTypes.component,
+    itemComponent: React.PropTypes.func,
     
     valueField:    React.PropTypes.string,
     textField:     React.PropTypes.string,
@@ -72,7 +71,7 @@ var CheckboxList = React.createClass({
 
   getDefaultState: function(props){
     var isRadio = !props.multiple
-      , values  = splat(props.value)
+      , values  = _.splat(props.value)
       , idx     = isRadio && this._dataIndexOf(props.data, values[0]) 
 
     idx = isRadio && idx !== -1 
@@ -81,7 +80,7 @@ var CheckboxList = React.createClass({
 
     return {
       focusedIndex: idx,
-      dataItems:    !isRadio && _.map(values,  item => this._dataItem(props.data, item))
+      dataItems:    !isRadio && values.map(item => this._dataItem(props.data, item))
     }
   },
 
@@ -99,12 +98,12 @@ var CheckboxList = React.createClass({
   },
 
   render: function() {
-    var focus = this._maybeHandle(_.partial(this._focus, true), true)
+    var focus = this._maybeHandle(this._focus.bind(null, true), true)
       , optID = this._id('_selected_option')
-      , blur  = _.partial(this._focus, false);
+      , blur  = this._focus.bind(null, false);
 
     return mergeIntoProps(
-      _.omit(this.props, _.keys(propTypes)),
+      _.omit(this.props, Object.keys(propTypes)),
       <div
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={focus}
@@ -135,11 +134,11 @@ var CheckboxList = React.createClass({
       , name = this._id('_name')
       , type = this.props.multiple ? 'checkbox' : 'radio';
 
-    return _.map(this._data(), function(item, idx){
+    return this._data().map( (item, idx) => {
       var focused  = this.state.focused && this.state.focusedIndex === idx
         , text     = this._dataText(item)
         , checked  = this._contains(item, this._values())
-        , change   = _.partial(this._change, item)
+        , change   = this._change.bind(null, item)
         , disabled = this.isDisabledItem(item)
         , readonly = this.isReadOnlyItem(item);
 
@@ -155,7 +154,7 @@ var CheckboxList = React.createClass({
           { component && component({ item: item }) || text }
         </SelectListItem>
       </li>)
-    }, this)
+    })
   },
 
   _keyDown: function(e){
@@ -222,14 +221,14 @@ var CheckboxList = React.createClass({
       , data = this._data()
       , blacklist;
 
-    disabled = _.isArray(disabled) ? disabled : [];
+    disabled = Array.isArray(disabled) ? disabled : [];
     //disabled values that are not selected
-    blacklist = _.reject(disabled, v => this._contains(v, values))
-    data      = _.reject(data,     v => this._contains(v, blacklist))
+    blacklist = _.filter(disabled, v => !this._contains(v, values))
+    data      = _.filter(data,     v => !this._contains(v, blacklist))
 
     if ( data.length === values.length) {
-      data = _.filter(disabled,    v => this._contains(v, values))
-      data = _.map(data,           v => this._dataItem(this._data(), v))
+      data = _.filter(disabled, v => this._contains(v, values))
+      data = data.map( v => this._dataItem(this._data(), v))
     }
 
     this.notify('onChange', [data])
@@ -240,7 +239,7 @@ var CheckboxList = React.createClass({
       , blacklist = this.props.disabled || this.props.readOnly 
       , values    = this.state.dataItems;
 
-    blacklist = _.isArray(blacklist) ? blacklist : [];
+    blacklist = Array.isArray(blacklist) ? blacklist : [];
 
     if(this._contains(item, blacklist)) return 
 
@@ -249,9 +248,8 @@ var CheckboxList = React.createClass({
 
     values = checked 
       ? values.concat(item)
-      : _.without(values, item)
+      : _.filter(values, v => v !== item)
 
-    this._allSelected = false
     this.notify('onChange', [values || []])
   },
 
@@ -289,8 +287,8 @@ var CheckboxList = React.createClass({
   },
 
   _contains: function(item, values){
-    return _.isArray(values) 
-      ? _.any(values, _.partial(this._valueMatcher, item))
+    return Array.isArray(values) 
+      ? _.some(values, this._valueMatcher.bind(null, item))
       : this._valueMatcher(item, values)
   },
 

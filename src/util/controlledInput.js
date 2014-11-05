@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash')
+var _ = require('./_') //invert, transform
   , React = require('react')
   , compat = require('./compat')
 
@@ -23,8 +23,7 @@ module.exports = {
 
   createControlledClass: function(displayName, component, controlledValues, defaults) {
 
-    var handlers = _.invert(controlledValues)
-      , types    = _.transform(controlledValues, function(obj, handler, prop){
+    var types = _.transform(controlledValues, function(obj, handler, prop){
           var type = component.type.propTypes[prop];
 
           obj[prop] = propType(handler, type)
@@ -40,7 +39,7 @@ module.exports = {
 
       getInitialState: function(){
         var props = this.props
-          , keys  = _.keys(controlledValues);
+          , keys  = Object.keys(controlledValues);
 
         return _.transform(keys, function(state, key){
           state[key] = props[defaultKey(key)]
@@ -56,35 +55,38 @@ module.exports = {
         var self = this
           , props, handles;
 
-        props = _.mapValues(controlledValues, function(p, key){
-          return isProp(self.props, key) ? self.props[key] : self.state[key]
-        })
-
-        handles = _.mapValues(handlers, function(prop){
-          return _.partial(setAndNotify, self, prop)
-        })
+        props = _.transform(controlledValues, (obj, handle, prop) => {
+          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
+        }, {})
+        
+        handles = _.transform(controlledValues, (obj, handle, prop) => {
+          obj[handle] = setAndNotify.bind(this, prop)
+        }, {})
 
         return component(
-            _.extend({}, this.props, props, handles)
+            _.merge(this.props, props, handles)
           , this.props.children);
       }
     })
 
-    function setAndNotify(ctx, prop, value){
+    function setAndNotify(prop, value){
+      /*jshint validthis:true */
       var handler    = controlledValues[prop]
-        , controlled = handler && isProp(ctx.props, prop)
-        , st = {};
+        , controlled = handler && isProp(this.props, prop)
+        , st = {}
+        , args;
 
-      if ( !ctx._notifying ) ctx._notifying = [];
+      if ( !this._notifying ) this._notifying = [];
 
-      if( ctx.props[handler] ) {
-        ctx._notifying.push(true)
-        ctx.props[handler].apply(ctx, _.rest(arguments, 2))
-        ctx._notifying.pop()
+      if( this.props[handler] ) {
+        args = [].slice.call(arguments, 1)
+        this._notifying.push(true)
+        this.props[handler].apply(this, args)
+        this._notifying.pop()
       }
         
       st[prop] = value
-      ctx.setState(st)
+      this.setState(st)
 
       return !controlled
     }
@@ -96,6 +98,10 @@ module.exports = {
   }
 }
 
+
+// function invert(controlledValues){
+//   return _.transform(controlledValues, (val, key ) => ,)
+// }
 
 function defaultKey(key){
   return 'default' + key.charAt(0).toUpperCase() + key.substr(1)

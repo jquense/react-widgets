@@ -27,15 +27,15 @@
     "url": "https://github.com/jquense/react-widgets"
   },
   "dependencies": {
-    "lodash": "^2.4.1",
+    "date-arithmetic": "~1.0.0",
     "globalize": "~0.1.1",
-    "date-arithmetic": "~1.0.0"
+    "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "chai": "~1.9.1",
     "chance": "^0.5.9",
     "css-loader": "^0.7.1",
     "envify": "^1.2.1",
+    "esprima-fb": "~7001.1.0-dev-harmony-fb",
     "file-loader": "^0.6.1",
     "gulp": "^3.6.2",
     "gulp-clean": "~0.3.1",
@@ -48,6 +48,9 @@
     "gulp-replace": "~0.4.0",
     "gulp-uglify": "^0.3.0",
     "gulp-webpack": "^0.3.0",
+    "imports-loader": "^0.6.3",
+    "jstransform": "~7.0.0",
+    "jstransform-loader": "~0.1.1",
     "jsx-loader": "^0.11.0",
     "karma": "~0.12.23",
     "karma-chrome-launcher": "^0.1.5",
@@ -57,20 +60,17 @@
     "karma-webpack": "~1.2.2",
     "less": "^1.7.4",
     "less-loader": "^0.7.7",
+    "lodash": "^2.4.1",
     "mocha": "~1.21.4",
     "phantomjs": "~1.9.10",
     "raw-loader": "^0.5.1",
-    "react": ">=0.10.0",
+    "react": "0.11.0",
     "react-bootstrap": "^0.11.1",
-    "reactify": "^0.13.1",
     "sinon": "~1.10.3",
     "sinon-chai": "~2.5.0",
     "style-loader": "^0.7.0",
     "url-loader": "^0.5.5",
-    "webpack": "^1.3.3-beta2",
-    "webpack-dev-server": "~1.4.10",
-    "jstransform-loader": "~0.1.1",
-    "jstransform": "~7.0.0",
-    "esprima-fb": "~7001.1.0-dev-harmony-fb"
+    "webpack": "^1.3.3",
+    "webpack-dev-server": "~1.4.10"
   }
 }

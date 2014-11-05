@@ -1,7 +1,8 @@
+'use strict';
 var gulp    = require('gulp')
-  , _       = require('lodash')
+  , xtend   = require('xtend')
   , configs = require('./webpack.configs')
-  , clean = require('gulp-clean')
+  , clean   = require('gulp-clean')
   , WebpackDevServer = require("webpack-dev-server")
   , webpack = require('webpack');
 
@@ -24,7 +25,7 @@ module.exports = {
   },
 
   docServer: function() {
-    var config = _.cloneDeep(configs.docs);
+    var config = xtend(configs.docs);
 
     config.devtool = 'source-map'
     config.plugins = [];

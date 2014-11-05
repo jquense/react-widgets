@@ -1,8 +1,8 @@
 'use strict';
-var _ = require('lodash')
+var _ = require('./_')
 
 module.exports = function(classes){
-  if( !_.isArray(classes))
+  if( !Array.isArray(classes))
     classes = _.transform(classes, function(arr, value, key){
       if( !!value ) arr.push(key)
     }, [])

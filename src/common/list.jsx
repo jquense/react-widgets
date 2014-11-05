@@ -1,25 +1,12 @@
+'use strict';
 var React   = require('react')
   , filter  = require('../util/filter')
-  , compose = require('../util/compose')
   , transferProps  = require('../util/transferProps')
   , mergeIntoProps = transferProps.mergeIntoProps
   , cloneWithProps = transferProps.cloneWithProps
   , cx = require('../util/cx')
-  , _  = require('lodash');
+  , _  = require('../util/_');
 
-var DefaultListItem = React.createClass({
-
-  mixins: [ 
-    require('../mixins/DataHelpersMixin'),
-    require('../mixins/RtlChildContextMixin')
-  ],
-
-  render: function(){
-      var item = this.props.item;
-
-      return this.transferPropsTo(<li>{ item ? this._dataText(item) : '' }</li>)
-  }
-})
 
 module.exports = React.createClass({
 
@@ -32,7 +19,7 @@ module.exports = React.createClass({
   propTypes: {
     data:          React.PropTypes.array,
     onSelect:      React.PropTypes.func,
-    listItem:      React.PropTypes.component,
+    listItem:      React.PropTypes.func,
     selectedIndex: React.PropTypes.number,
     focusedIndex:  React.PropTypes.number,
     valueField:    React.PropTypes.string,
@@ -50,7 +37,7 @@ module.exports = React.createClass({
     return {
       delay:         500,
       optID:         '',
-      onSelect:      _.noop,
+      onSelect:      function(){},
       data:          [],
       messages: {
         emptyList:   "There are no items in this list"
@@ -72,7 +59,7 @@ module.exports = React.createClass({
       , emptyFilter = <li>{ this.props.messages.emptyFilter }</li>
       , items;
     
-    items = _.map(this.props.data, function(item, idx){
+    items = this.props.data.map(function(item, idx){
       var focused = this.props.focusedIndex === idx;
 
       return (<li 
@@ -84,16 +71,16 @@ module.exports = React.createClass({
           'rw-state-focus':    focused,
           'rw-state-selected': idx === this.props.selectedIndex,
         })}
-        onClick={_.partial(this.props.onSelect, item, idx)}>
+        onClick={this.props.onSelect.bind(null, item, idx)}>
         { this.props.listItem 
             ? this.props.listItem({ item: item })
             : this._dataText(item)
-         }
+        }
       </li>)
     }, this);
     
 		return mergeIntoProps(
-      _.omit(this.props, 'data', 'selectedIndex'),
+      _.omit(this.props, ['data', 'selectedIndex']),
 			<ul 
         className="rw-list" 
         ref='scrollable'

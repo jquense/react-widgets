@@ -1,5 +1,5 @@
 var React = require('react')
-  , _ =  require('lodash')
+  , _ =  require('../util/_')
   , $ = require('../util/dom')
 
 module.exports = {

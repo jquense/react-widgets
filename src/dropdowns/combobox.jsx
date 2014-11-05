@@ -1,6 +1,6 @@
 var React  = require('react')
   , cx = require('../util/cx')
-  , _      = require('lodash')
+  , _      = require('../util/_')
   , caretPos = require('../util/caret')
   , filter = require('../util/filter')
   , controlledInput  = require('../util/controlledInput')
@@ -97,8 +97,8 @@ var ComboBox = React.createClass({
 
   shouldComponentUpdate: function(nextProps, nextState){
     var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
-      , stateChanged = !shallowEqual(nextState, this.state)
-      , valueChanged = !shallowEqual(nextProps, this.props)
+      , stateChanged = !_.isShallowEqual(nextState, this.state)
+      , valueChanged = !_.isShallowEqual(nextProps, this.props)
 
     return isSuggesting || stateChanged || valueChanged
   },
@@ -137,10 +137,10 @@ var ComboBox = React.createClass({
           : this.props.filter ? 'list' : '';
 
 		return mergeIntoProps(
-      _.omit(this.props, _.keys(propTypes)),
+      _.omit(this.props, Object.keys(propTypes)),
 			<div ref="element"
            onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(_.partial(this._focus, true), true)}
+           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
            onBlur ={this._focus.bind(null, false)}
            tabIndex="-1"
            className={cx({
@@ -238,9 +238,8 @@ var ComboBox = React.createClass({
 
     suggestion = suggestion || strVal
 
-    data = _.find(self.props.data, function(item) {
-      return self._dataText(item).toLowerCase() === suggestion.toLowerCase()
-    })
+    data = find(self.props.data, 
+      item => this._dataText(item).toLowerCase() === suggestion.toLowerCase())
 
     this.change(!this._deleting && data
       ? data
@@ -341,7 +340,7 @@ var ComboBox = React.createClass({
     var word = this._dataText(value)
       , matcher = filter.startsWith
       , suggestion = typeof value === 'string'
-          ? _.find(data, finder, this)
+          ? find(data, finder, this)
           : value
 
     if ( suggestion && (!this.state || !this.state.deleting))
@@ -373,22 +372,10 @@ module.exports = controlledInput.createControlledClass(
     'ComboBox', ComboBox
   , { open: 'onToggle', value: 'onChange' });
 
+function find(arr, cb, thisArg){
+  var idx = -1, len = arr.length;
 
-
-function shallowEqual(objA, objB) {
-  var key;
-
-  if (objA === objB) return true;
-
-  // Test for A's keys different from B.
-  for (key in objA)
-    if (objA.hasOwnProperty(key) && (!objB.hasOwnProperty(key) || objA[key] !== objB[key]))
-      return false;
-
-  // Test for B'a keys missing from A.
-  for (key in objB)
-    if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key))
-      return false;
-
-  return true;
+  while(++idx < arr.length)
+    if( cb.call(thisArg, arr[idx], idx) ) 
+      return arr[idx]
 }

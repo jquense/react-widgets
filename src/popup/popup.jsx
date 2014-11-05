@@ -1,6 +1,6 @@
+'use strict';
 var React  = require('react')
   , cx  = require('../util/cx')
-  , _   = require('lodash')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , $ = require('../util/dom');
 
@@ -27,10 +27,10 @@ module.exports = React.createClass({
     return {
       duration:    200,
       open:        false,
-      onClosing:   _.noop,
-      onOpening:   _.noop,
-      onClose:     _.noop,
-      onOpen:      _.noop,
+      onClosing:   function(){},
+      onOpening:   function(){},
+      onClose:     function(){},
+      onOpen:      function(){},
     }
   },
 

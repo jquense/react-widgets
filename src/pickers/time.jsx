@@ -1,10 +1,11 @@
+'use strict';
 var React = require('react')
   , cx = require('../util/cx')
   , dates = require('../util/dates')
   , List = require('../common/list.jsx')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
   , directions = require('../util/constants').directions
-  , _ = require('lodash')
+  , _ = require('../util/_') // omit
 
 
 module.exports = React.createClass({
@@ -31,7 +32,7 @@ module.exports = React.createClass({
     return {
       step:   30,
       format: 't',
-      onSelect: _.noop,
+      onSelect: function(){},
       preserveDate: true,
     }
   },
@@ -61,12 +62,20 @@ module.exports = React.createClass({
   },
 
   _selectedIndex: function(times, date){
-    var roundTo = 1000 * 60 * this.props.step;
+    var roundTo = 1000 * 60 * this.props.step
+      , idx = -1, label;
 
     if( !date) return 0
-    date = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
 
-    return _.findIndex(times, { label: dates.format(date, this.props.format) } )
+    date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
+    label = dates.format(date, this.props.format)
+
+    times.every( (time, i) => {
+      if( time.label === label ) return (idx = i), false
+      return true
+    })
+
+    return idx
   },
 
   _data: function(){
@@ -116,8 +125,6 @@ module.exports = React.createClass({
     var self = this
       , key = e.key
       , character = String.fromCharCode(e.keyCode);
-
-
 
     if ( key === 'End' )
       this.setFocusedIndex(

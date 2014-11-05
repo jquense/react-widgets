@@ -1,26 +1,26 @@
 "use strict";
 
-var _ = require('lodash')
-  , React = require('react')
+var _ = require('./_')
+  , compat   = require('./compat')
+  , hasOwn   = Object.prototype.hasOwnProperty
   , RESERVED = {
-      className: resolve(joinClasses),
-      children:   _.noop,
-      key:        _.noop,
-      ref:        _.noop,
-      style:      resolve(merge)
+      className:  resolve(joinClasses),
+      children:   function(){},
+      key:        function(){},
+      ref:        function(){},
+      style:      resolve(_.merge)
     };
 
 //mutates first arg
 function mergeProps(source, target) {
+  for (var key in target) {
+    if (hasOwn.call(RESERVED, key) )
+      RESERVED[key](source, target[key], key)
 
-  return _.transform(target, function(source, value, key){
-      if (_.has(RESERVED, key) )
-        RESERVED[key](source, value, key)
-
-      else if ( !_.has(source, key) )
-        source[key] = value;
-
-  }, source)
+    else if ( !hasOwn.call(source, key) )
+      source[key] = target[key];
+  }
+  return source
 }
 
 module.exports = {
@@ -32,10 +32,10 @@ module.exports = {
   },
 
   cloneWithProps: function (child, props) {
-    var newProps = mergeProps(_.clone(props), child.props)
-      , version  = _.map(React.version.split('.'), parseFloat);
+    var newProps = mergeProps(_.extend({}, props), child.props)
+      , version  = compat.version();
 
-    if (!_.has(newProps, 'children') && _.has(child.props, 'children'))
+    if (!hasOwn.call(newProps, 'children') && hasOwn.call(child.props, 'children'))
       newProps.children = child.props.children;
 
     // TODO remove eventually
@@ -46,21 +46,15 @@ module.exports = {
   }
 }
 
+
 function resolve(fn){
   return function(src, value, key){
-    if( !_.has(src, key)) src[key] = value
+    if( !hasOwn.call(src, key)) src[key] = value
     else src[key] = fn(src[key], value)
   }
 }
 
-function joinClasses(){
-  return _.reduce(arguments, function(str, next){
-    if ( !str ) return next || ''
-    if ( next ) return str += ' ' + next
-    return str
-  }, '')
-}
-
-function merge(a, b){
-  return _.extend({}, a, b)
+function joinClasses(a, b){
+  if ( !a ) return b || ''
+  return a + (b ? ' ' + b : '')
 }

@@ -1,10 +1,9 @@
 var React = require('react')
   , cx    = require('../util/cx')
   , dates = require('../util/dates')
-  , chunk = require('../util/chunk')
   , directions = require('../util/constants').directions
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , _ = require('lodash')
+  , _ = require('../util/_'); //omit
 
 var opposite = {
   LEFT: directions.RIGHT,
@@ -32,10 +31,10 @@ module.exports = React.createClass({
 
   render: function(){
     var years = getDecadeYears(this.props.value)
-      , rows  = chunk(years, 4)
+      , rows  = _.chunk(years, 4)
 
     return mergeIntoProps(
-      _.omit(this.props, 'max', 'min', 'value', 'onChange'),
+      _.omit(this.props, ['max', 'min', 'value', 'onChange']),
       <table
         tabIndex={this.props.disabled ? '-1' : "0"}
         role='grid'
@@ -44,7 +43,7 @@ module.exports = React.createClass({
         onKeyUp={this._keyUp}>
 
         <tbody>
-          { _.map(rows, this._row)}
+          {rows.map(this._row)}
         </tbody>
       </table>
     )
@@ -55,7 +54,7 @@ module.exports = React.createClass({
 
     return (
       <tr key={'row_' + i}>
-      {_.map(row, (date, i) => {
+      { row.map( (date, i) => {
         var focused  = dates.eq(date,  this.state.focusedDate,  'year')
           , selected = dates.eq(date, this.props.value,  'year')
           , id = this.props.id && this.props.id + '_selected_item';
@@ -63,7 +62,7 @@ module.exports = React.createClass({
         return !dates.inRange(date, this.props.min, this.props.max, 'year')
           ? <td key={i} className='rw-empty-cell'>&nbsp;</td>
           : (<td key={i}>
-              <btn onClick={_.partial(this.props.onChange, date)} tabIndex='-1'
+              <btn onClick={this.props.onChange.bind(null, date)} tabIndex='-1'
                 id={ focused ? id : undefined }
                 aria-selected={selected}
                 aria-disabled={this.props.disabled}
@@ -110,11 +109,11 @@ function inDecade(date, start){
 }
 
 function getDecadeYears(date){
-  var date = dates.add(dates.startOf(date, 'decade'), -2, 'year')
+  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+    , date = dates.add(dates.startOf(date, 'decade'), -2, 'year')
 
-  return _.map(_.range(12), function(i){
-    return date = dates.add(date, 1, 'year')
-  })
+  return days.map( 
+    i => date = dates.add(date, 1, 'year'))
 }
 
 function nextDate(date, val, unit, min, max){

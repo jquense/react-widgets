@@ -1,6 +1,6 @@
 var React = require('react')
   , cx = require('../util/cx')
-  , compose = require('../util/compose')
+  , transferPropsTo = require('../util/transferProps').mergeIntoProps
   , caretPos = require('../util/caret');
 
 module.exports = React.createClass({
@@ -33,7 +33,7 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    return this.transferPropsTo(
+    return transferPropsTo(this.props,
       <input 
         type='text' 
         className='rw-input'

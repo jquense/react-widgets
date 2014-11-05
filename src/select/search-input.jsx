@@ -1,4 +1,6 @@
+'use strict';
 var React = require('react')
+  , transferPropsTo = require('../util/transferProps').mergeIntoProps
 
 module.exports = React.createClass({
   
@@ -22,7 +24,7 @@ module.exports = React.createClass({
         , placeholder = this.props.placeholder
         , size = Math.max((value || placeholder).length, 1);
 
-      return this.transferPropsTo(
+      return transferPropsTo(this.props,
         <input type='text' 
           className='rw-input'
           aria-disabled={this.props.disabled}

@@ -1,6 +1,6 @@
 var React = require('react')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , _ = require('lodash')
+  , _ = require('../util/_')
 
 module.exports = React.createClass({
 

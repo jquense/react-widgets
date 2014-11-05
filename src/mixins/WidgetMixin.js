@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , _ =  require('lodash');
+  , _ =  require('../util/_'); //uniqueID
 
 module.exports = {
 
@@ -39,6 +39,6 @@ module.exports = {
   _maybeHandle: function(handler, disabledOnly){
     if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
       return handler
-    return _.noop
+    return function(){}
   },
 }
