@@ -11,13 +11,8 @@ var SlideChildGroup = React.createClass({
     direction: React.PropTypes.oneOf(['left', 'right'])
   },
 
-  getDefaultProps: function(){
-    return { duration: 250 }
-  },
-
   componentWillEnter: function(done) {
-    var self  = this
-      , node  = this.getDOMNode()
+    var node  = this.getDOMNode()
       , width = $.width(node)
       , direction = this.props.direction;
 
@@ -27,21 +22,20 @@ var SlideChildGroup = React.createClass({
     
     $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
 
-    $.animate(node, { left: 0 }, self.props.duration, function(){
+    $.animate(node, { left: 0 }, this.props.duration, () => {
 
         $.css(node, { 
-          position:  self.ORGINAL_POSITION, 
+          position:  this.ORGINAL_POSITION, 
           overflow: 'hidden'
         });
 
-        self.ORGINAL_POSITION = null
+        this.ORGINAL_POSITION = null
         done && done()
       })
   },
 
   componentWillLeave: function(done) {
-    var self  = this
-      , node  = this.getDOMNode()
+    var node  = this.getDOMNode()
       , width = $.width(node)
       , direction = this.props.direction;
 
@@ -51,13 +45,13 @@ var SlideChildGroup = React.createClass({
 
     $.css(node, { position: 'absolute', top: 0, left: 0})
 
-    $.animate(node, { left: width + 'px'}, self.props.duration, function(){
+    $.animate(node, { left: width + 'px' }, this.props.duration, () => {
         $.css(node, { 
-          position: self.ORGINAL_POSITION, 
+          position: this.ORGINAL_POSITION, 
           overflow: 'hidden'
         });
 
-        self.ORGINAL_POSITION = null
+        this.ORGINAL_POSITION = null
         done && done()
       })
   },
@@ -72,17 +66,19 @@ var SlideChildGroup = React.createClass({
 module.exports = React.createClass({
 
   propTypes: {
-    direction: React.PropTypes.oneOf(['left', 'right'])
+    direction: React.PropTypes.oneOf(['left', 'right']),
+    duration:  React.PropTypes.number
   },
 
   getDefaultProps: function(){
     return {
-      direction: 'left'
+      direction: 'left',
+      duration: 250
     }
   },
 
-  _wrapChild: function(child) {
-    return (<SlideChildGroup direction={this.props.direction}>{child}</SlideChildGroup>)
+  _wrapChild: function(child, ref) {
+    return (<SlideChildGroup ref={ref} direction={this.props.direction} duration={this.props.duration}>{child}</SlideChildGroup>)
   },
 
   render: function() {

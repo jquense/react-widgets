@@ -79,6 +79,21 @@ var _ =
       }, {})
     },
 
+    find: function(arr, cb, thisArg){
+      var result;
+      if( Array.isArray(arr)) {
+        arr.every(function(val, idx){
+          if( cb.call(thisArg, val, idx, arr)) return (result = val), false
+          return true
+        })
+        return result
+      }
+      else 
+        for(var key in arr) if(has(arr, key)) 
+          if( cb.call(thisArg, arr[key], key, arr) ) 
+            return arr[key]; 
+    },
+
     findIndex: function(arr, cb, thisArg){
       var idx = -1, len = arr.length;
 
@@ -112,7 +127,7 @@ var _ =
   }
 
 function has(o, k){
-  return o && Object.prototype.hasOwnProperty.call(o, k)
+  return o ? Object.prototype.hasOwnProperty.call(o, k) : false
 }
 
 function shallowEqual(objA, objB) {

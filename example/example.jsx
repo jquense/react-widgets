@@ -1,6 +1,5 @@
 'use strict';
 var React = require('react/addons')
-var Widgets = require('../index')
 var DropdownList = require('../src/dropdowns/Dropdown-List.jsx')
 var Select = require('../src/select/select.jsx')
 var Calendar = require('../src/calendar/calendar.jsx')

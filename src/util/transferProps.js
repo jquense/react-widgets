@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require('./_')
+  , React    = require('react')
   , compat   = require('./compat')
   , hasOwn   = Object.prototype.hasOwnProperty
   , RESERVED = {
@@ -42,7 +43,16 @@ module.exports = {
     if (version[0] === 0 && version[1] < 11)
       return child.constructor.ConvenienceConstructor(newProps);
 
+    else if (version[0] === 0 && version[1] === 12){
+      //this is SO hacky
+      mock.isReactLegacyFactory = true
+      mock.type = child.type
+      return React.createElement(mock, newProps);
+    }
+
     return child.constructor(newProps);
+
+    function mock(){}
   }
 }
 
