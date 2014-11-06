@@ -1,5 +1,7 @@
 react-widgets
 =============
+[![NPM version][npm-image]][npm-url]
+[![Downloads][downloads-image]][downloads-url]
 
 A set of the basic ui widgets built from scratch with React, based on the excellent Kendo UI Core and jQuery UI. 
 
@@ -32,3 +34,8 @@ it will work (patches welcome!).
 
 One aspect that is definately true is that animation is not supported for browsers that do not support CSS Transitions.
 
+
+[npm-image]: https://img.shields.io/npm/v/react-widgets.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/react-widgets
+[downloads-image]: http://img.shields.io/npm/dm/react-widgets.svg?style=flat-square
+[downloads-url]: https://npmjs.org/package/react-widgets
