@@ -127,7 +127,7 @@ var _ =
   }
 
 function has(o, k){
-  return Object.prototype.hasOwnProperty.call(o || {}, k)
+  return o && Object.prototype.hasOwnProperty.call(o, k)
 }
 
 function shallowEqual(objA, objB) {
