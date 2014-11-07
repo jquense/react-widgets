@@ -1,10 +1,9 @@
 'use strict';
-var React = require('react')
-  , transferPropsTo = require('../util/transferProps').mergeIntoProps
+var React = require('react');
 
 module.exports = React.createClass({
   
-  displayName: 'SelectSearchInput',
+  displayName: 'MultiselectInput',
 
   propTypes: {
     value:        React.PropTypes.string,
@@ -24,8 +23,9 @@ module.exports = React.createClass({
         , placeholder = this.props.placeholder
         , size = Math.max((value || placeholder).length, 1);
 
-      return transferPropsTo(this.props,
-        <input type='text' 
+      return (
+        <input {...this.props}
+          type='text' 
           className='rw-input'
           aria-disabled={this.props.disabled}
           aria-readonly={this.props.readOnly}

@@ -1,19 +1,21 @@
+'use strict';
 var React  = require('react')
-  , cx     = require('../util/cx')
-  , _      = require('../util/_') //pick, omit, has
-  , dates  = require('../util/dates')
-  , views  = require('../util/constants').calendarViews
-  , popups = require('../util/constants').datePopups
+  , cx     = require('./util/cx')
+  , _      = require('./util/_') //pick, omit, has
+  , dates  = require('./util/dates')
+  , views  = require('./util/constants').calendarViews
+  , popups = require('./util/constants').datePopups
 
-  , Popup     = require('../popup/popup.jsx')
-  , Calendar  = require('../calendar/calendar.jsx')
-  , Time      = require('./time.jsx')
-  , DateInput = require('./date-input.jsx')
+  , Popup     = require('./Popup.jsx')
+  , Calendar  = require('./Calendar.jsx')
+  , Time      = require('./TimeList.jsx')
+  , DateInput = require('./DateInput.jsx')
+  , Btn       = require('./WidgetButton.jsx')
 
-  , controlledInput = require('../util/controlledInput')
-  , mergeIntoProps  = require('../util/transferProps').mergeIntoProps;
+  , controlledInput = require('./util/controlledInput');
 
 var viewEnum  = Object.keys(views).map( k => views[k] )
+
 var propTypes = {
 
     //-- controlled props -----------
@@ -63,9 +65,9 @@ var DateTimePicker = React.createClass({
   displayName: 'DateTimePicker',
 
   mixins: [
-    require('../mixins/WidgetMixin'),
-    require('../mixins/PureRenderMixin'),
-    require('../mixins/RtlParentContextMixin')
+    require('./mixins/WidgetMixin'),
+    require('./mixins/PureRenderMixin'),
+    require('./mixins/RtlParentContextMixin')
   ],
 
   propTypes: propTypes,
@@ -101,7 +103,9 @@ var DateTimePicker = React.createClass({
   },
 
   render: function(){
-    var timeListID = this._id('_time_listbox')
+    var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
+      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
+      , timeListID = this._id('_time_listbox')
       , timeOptID  = this._id('_time_option')
       , dateListID = this._id('_cal')
       , owns;
@@ -109,23 +113,23 @@ var DateTimePicker = React.createClass({
     if (dateListID && this.props.calendar ) owns = dateListID
     if (timeListID && this.props.time )     owns += ' ' + timeListID
 
-    return mergeIntoProps(
-      _.omit(this.props, Object.keys(propTypes)),
-      <div ref="element"
-          tabIndex="-1"
-          onKeyDown={this._maybeHandle(this._keyDown)}
-          onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
-          onBlur ={this._focus.bind(null, false)}
-          className={cx({
-            'rw-date-picker':     true,
-            'rw-widget':          true,
-            'rw-open':            this.props.open,
-            'rw-state-focus':     this.state.focused,
-            'rw-state-disabled':  this.isDisabled(),
-            'rw-state-readonly':  this.isReadOnly(),
-            'rw-has-both':        this.props.calendar && this.props.time,
-            'rw-rtl':             this.isRtl()
-          })}>
+    return (
+      <div {...props}
+        ref="element"
+        tabIndex="-1"
+        onKeyDown={this._maybeHandle(this._keyDown)}
+        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onBlur ={this._focus.bind(null, false)}
+        className={(className ||'')  + ' ' + cx({
+          'rw-date-picker':     true,
+          'rw-widget':          true,
+          'rw-open':            this.props.open,
+          'rw-state-focus':     this.state.focused,
+          'rw-state-disabled':  this.isDisabled(),
+          'rw-state-readonly':  this.isReadOnly(),
+          'rw-has-both':        this.props.calendar && this.props.time,
+          'rw-rtl':             this.isRtl()
+        })}>
         <DateInput ref='valueInput'
           aria-activedescendant={ this.props.open
             ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
@@ -149,20 +153,20 @@ var DateTimePicker = React.createClass({
 
         <span className='rw-select'>
           { this.props.calendar &&
-            <btn tabIndex='-1'
+            <Btn tabIndex='-1'
               disabled={this.isDisabled() || this.isReadOnly()}
               aria-disabled={this.isDisabled() || this.isReadOnly()}
               onClick={this._maybeHandle(this._click.bind(null, popups.CALENDAR))}>
               <i className="rw-i rw-i-calendar"><span className="rw-sr">{ this.props.messages.calendarButton }</span></i>
-            </btn>
+            </Btn>
           }
           { this.props.time &&
-            <btn tabIndex='-1'
+            <Btn tabIndex='-1'
               disabled={this.isDisabled() || this.isReadOnly()}
               aria-disabled={this.isDisabled() || this.isReadOnly()}
               onClick={this._maybeHandle(this._click.bind(null, popups.TIME))}>
               <i className="rw-i rw-i-clock-o"><span className="rw-sr">{ this.props.messages.timeButton }</span></i>
-            </btn>
+            </Btn>
           }
         </span>
         { this.props.time &&
@@ -192,15 +196,13 @@ var DateTimePicker = React.createClass({
             duration={this.props.duration}
             onRequestClose={this.close}>
 
-            { mergeIntoProps(
-              _.pick(this.props, Object.keys(Calendar.type.propTypes)),
-              <Calendar ref="calPopup"
-                id={dateListID}
-                value={this.props.value || new Date }
-                maintainFocus={false}
-                aria-hidden={ !this.props.open }
-                onChange={this._maybeHandle(this._selectDate)}/>
-            )}
+            <Calendar {...calProps }
+              ref="calPopup"
+              id={dateListID}
+              value={this.props.value || new Date }
+              maintainFocus={false}
+              aria-hidden={ !this.props.open }
+              onChange={this._maybeHandle(this._selectDate)}/>
           </Popup>
         }
       </div>
@@ -324,8 +326,6 @@ var DateTimePicker = React.createClass({
   },
 
 });
-
-var btn = require('../common/btn.jsx')
 
 
 module.exports = controlledInput.createControlledClass(

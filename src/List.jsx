@@ -1,9 +1,7 @@
 'use strict';
 var React   = require('react')
-  , transferProps  = require('../util/transferProps')
-  , mergeIntoProps = transferProps.mergeIntoProps
-  , cx = require('../util/cx')
-  , _  = require('../util/_');
+  , cx = require('./util/cx')
+  , _  = require('./util/_');
 
 
 module.exports = React.createClass({
@@ -11,7 +9,7 @@ module.exports = React.createClass({
   displayName: 'List',
 
   mixins: [ 
-    require('../mixins/DataHelpersMixin')
+    require('./mixins/DataHelpersMixin')
   ],
 
   propTypes: {
@@ -53,7 +51,9 @@ module.exports = React.createClass({
   },
 
 	render: function(){
-    var emptyList   = <li>{ this.props.messages.emptyList }</li>
+    var { className, ...props } = _.omit(this.props, ['data', 'selectedIndex'])
+      , ItemComponent = this.props.listItem
+      , emptyList   = <li>{ this.props.messages.emptyList }</li>
       , items;
     
     items = this.props.data.map(function(item, idx){
@@ -69,17 +69,16 @@ module.exports = React.createClass({
           'rw-state-selected': idx === this.props.selectedIndex,
         })}
         onClick={this.props.onSelect.bind(null, item, idx)}>
-        { this.props.listItem 
-            ? this.props.listItem({ item: item })
+        { ItemComponent
+            ? <ItemComponent item={item}/>
             : this._dataText(item)
         }
       </li>)
     }, this);
     
-		return mergeIntoProps(
-      _.omit(this.props, ['data', 'selectedIndex']),
-			<ul 
-        className="rw-list" 
+		return (
+			<ul { ...props }
+        className={ className + ' rw-list' } 
         ref='scrollable'
         role='listbox'
         tabIndex="-1" 

@@ -1,11 +1,10 @@
+'use strict';
 var React = require('react')
-  , cx    = require('../util/cx')
-  , dates = require('../util/dates')
-  , directions = require('../util/constants').directions
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , _ = require('../util/_')
-
-var btn = require('../common/btn.jsx')
+  , cx    = require('./util/cx')
+  , dates = require('./util/dates')
+  , directions = require('./util/constants').directions
+  , _   = require('./util/_')
+  , Btn = require('./WidgetButton.jsx');
 
 var opposite = {
   LEFT: directions.RIGHT,
@@ -17,9 +16,9 @@ module.exports = React.createClass({
   displayName: 'MonthView',
 
   mixins: [
-    require('../mixins/WidgetMixin'),
-    require('../mixins/RtlChildContextMixin'),
-    require('../mixins/DateFocusMixin')('month', 'day'),
+    require('./mixins/WidgetMixin'),
+    require('./mixins/RtlChildContextMixin'),
+    require('./mixins/DateFocusMixin')('month', 'day'),
   ],
 
   propTypes: {
@@ -37,12 +36,12 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var month = dates.visibleDays(this.props.value)
+    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+      , month = dates.visibleDays(this.props.value)
       , rows  = _.chunk(month, 7 );
 
-    return mergeIntoProps(
-      _.omit(this.props, ['max', 'min', 'value', 'onChange']),
-      <table
+    return (
+      <table {...props}
         role='grid'
         tabIndex={this.props.disabled ? '-1' : "0"}
         className='rw-calendar-grid'
@@ -70,7 +69,7 @@ module.exports = React.createClass({
         return !dates.inRange(day, this.props.min, this.props.max)
             ? <td  key={'day_' + idx} className='rw-empty-cell'>&nbsp;</td>
             : (<td key={'day_' + idx} >
-                <btn
+                <Btn
                   tabIndex='-1'
                   onClick={this.props.onChange.bind(null, day)}
                   aria-selected={selected}
@@ -83,7 +82,7 @@ module.exports = React.createClass({
                   })}
                   id={focused ? id : undefined}>
                   {dates.format(day, 'dd')}
-                </btn>
+                </Btn>
               </td>)
       })}
       </tr>

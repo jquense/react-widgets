@@ -1,12 +1,17 @@
 'use strict';
 var React  = require('react')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , $ = require('../util/dom');
+  //, cloneWithProps = require('./util/transferProps').cloneWithProps
+  , $ = require('./util/dom');
 
 
 var PopupContent = React.createClass({
   render: function(){
-    return React.Children.only(this.props.children)
+    var Content = React.Children.only(this.props.children)
+
+    if( Content.props.className)
+      Content.props.className = Content.props.className + ' rw-popup rw-widget';
+
+    return Content
   }
 })
 
@@ -52,16 +57,12 @@ module.exports = React.createClass({
   },
 
 	render: function(){
-    var Content = mergeIntoProps(
-          { className: 'rw-popup rw-widget' }
-        , this.props.children);
+    var { className, ...props } = this.props
 
-    Content.props.ref = this.props.children.props.ref;
-
-		return mergeIntoProps(this.props,
-      <div className="rw-popup-container">
+		return (
+      <div {...props} className={ (className ||'') + " rw-popup-container"}>
         <PopupContent ref='content'>
-          { Content }
+          { this.props.children }
         </PopupContent>
       </div>
 		)

@@ -1,12 +1,12 @@
 'use strict';
 var React = require('react/addons')
-var DropdownList = require('../src/dropdowns/Dropdown-List.jsx')
-var Select = require('../src/select/select.jsx')
-var Calendar = require('../src/calendar/calendar.jsx')
-var DatePicker = require('../src/pickers/datepicker.jsx')
-var NumberPicker = require('../src/pickers/numberpicker.jsx')
-var ComboBox = require('../src/dropdowns/Combobox.jsx')
-var CheckboxList = require('../src/select/SelectList.jsx')
+var DropdownList = require('../src/DropdownList.jsx')
+var Select = require('../src/Multiselect.jsx')
+var Calendar = require('../src/Calendar.jsx')
+var DatePicker = require('../src/DateTimepicker.jsx')
+var NumberPicker = require('../src/NumberPicker.jsx')
+var ComboBox = require('../src/Combobox.jsx')
+var CheckboxList = require('../src/SelectList.jsx')
 var chance = new (require('chance'))
 var _ = require('lodash')
 
@@ -151,9 +151,7 @@ var App = React.createClass({
 
 })
 
-React.renderComponent(
-    App()
-  , document.body);
+React.render(<App/>, document.body);
 
 
 

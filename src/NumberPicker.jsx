@@ -1,12 +1,12 @@
+'use strict';
 var React = require('react')
-  , cx    = require('../util/cx')
-  , _     = require('../util/_') //omit
-  , controlledInput  = require('../util/controlledInput')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , directions = require('../util/constants').directions
-  , Input = require('./number-input.jsx');
+  , cx    = require('./util/cx')
+  , _     = require('./util/_') //omit
+  , controlledInput  = require('./util/controlledInput')
+  , directions = require('./util/constants').directions
+  , Input = require('./NumberInput.jsx');
 
-var btn = require('../common/btn.jsx')
+var Btn = require('./WidgetButton.jsx')
   , propTypes = {
 
       // -- controlled props -----------
@@ -50,9 +50,9 @@ var NumberPicker = React.createClass({
   displayName: 'NumberPicker',
 
   mixins: [
-    require('../mixins/WidgetMixin'),
-    require('../mixins/PureRenderMixin'),
-    require('../mixins/RtlParentContextMixin'),
+    require('./mixins/WidgetMixin'),
+    require('./mixins/PureRenderMixin'),
+    require('./mixins/RtlParentContextMixin'),
   ],
 
   propTypes: propTypes,
@@ -84,49 +84,49 @@ var NumberPicker = React.createClass({
 
 
   render: function(){
-    var self = this
+    var {className, ...props} = _.omit(this.props, Object.keys(propTypes))
       , val = this.inRangeValue(this.props.value)
 
     //console.log('render', this.state.focused)
 
-    return mergeIntoProps(
-      _.omit(this.props, Object.keys(propTypes)),
-      <div ref="element"
-           onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
-           onBlur ={this._focus.bind(null, false)}
-           tabIndex="-1"
-           className={cx({
-              'rw-number-picker':   true,
-              'rw-widget':          true,
-              'rw-state-focus':     this.state.focused,
-              'rw-state-disabled':  this.props.disabled,
-              'rw-state-readonly':  this.props.readOnly,
-              'rw-rtl':             this.isRtl()
-            })}>
+    return (
+      <div {...props }
+        ref="element"
+        onKeyDown={this._maybeHandle(this._keyDown)}
+        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onBlur ={this._focus.bind(null, false)}
+        tabIndex="-1"
+        className={(className ||'') + ' ' + cx({
+          'rw-number-picker':   true,
+          'rw-widget':          true,
+          'rw-state-focus':     this.state.focused,
+          'rw-state-disabled':  this.props.disabled,
+          'rw-state-readonly':  this.props.readOnly,
+          'rw-rtl':             this.isRtl()
+        })}>
 
         <span className='rw-select'>
-          <btn
+          <Btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.UP})}
-            onMouseDown={this._maybeHandle(self._mouseDown.bind(null, directions.UP))}
+            onMouseDown={this._maybeHandle(this._mouseDown.bind(null, directions.UP))}
             onMouseUp={this._maybeHandle(this._mouseUp.bind(null, directions.UP))}
             onClick={this._maybeHandle(this._focus.bind(null, true))}
             disabled={val === this.props.max || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
 
             <i className="rw-i rw-i-caret-up"><span className="rw-sr">{ this.props.messages.increment }</span></i>
-          </btn>
-          <btn
+          </Btn>
+          <Btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
-            onMouseDown={this._maybeHandle(self._mouseDown.bind(null, directions.DOWN))}
+            onMouseDown={this._maybeHandle(this._mouseDown.bind(null, directions.DOWN))}
             onMouseUp={this._maybeHandle(this._mouseUp.bind(null, directions.DOWN))}
             onClick={this._maybeHandle(this._focus.bind(null, true))}
             disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
             <i className="rw-i rw-i-caret-down"><span className="rw-sr">{ this.props.messages.decrement }</span></i>
-          </btn>
+          </Btn>
         </span>
         <Input
           ref='input'
@@ -151,8 +151,7 @@ var NumberPicker = React.createClass({
 
   //allow for styling, focus stealing keeping me from the normal what have you
   _mouseDown: function(dir) {
-    var self = this
-      , val = dir === directions.UP
+    var val = dir === directions.UP
         ? (this.props.value || 0) + this.props.step
         : (this.props.value || 0) - this.props.step
 

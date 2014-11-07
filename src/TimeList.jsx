@@ -1,9 +1,9 @@
 'use strict';
 var React = require('react')
-  , dates = require('../util/dates')
-  , List = require('../common/list.jsx')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , _ = require('../util/_') // omit
+  , dates = require('./util/dates')
+  , List = require('./List.jsx')
+  , mergeIntoProps = require('./util/transferProps').mergeIntoProps
+  , _ = require('./util/_') // omit
 
 
 module.exports = React.createClass({
@@ -11,9 +11,9 @@ module.exports = React.createClass({
   displayName: 'TimeList',
 
   mixins: [
-    require('../mixins/TextSearchMixin'),
-    require('../mixins/DataIndexStateMixin')('selectedIndex'),
-    require('../mixins/DataIndexStateMixin')('focusedIndex')
+    require('./mixins/TextSearchMixin'),
+    require('./mixins/DataIndexStateMixin')('selectedIndex'),
+    require('./mixins/DataIndexStateMixin')('focusedIndex')
   ],
 
   propTypes: {
@@ -45,9 +45,9 @@ module.exports = React.createClass({
     var times = this._data()
       , idx = this._selectedIndex(times, this.props.value);
 
-    return mergeIntoProps(
-      _.omit(this.props, 'value'),
-      <List ref="list"
+    return (
+      <List {..._.omit(this.props, 'value')}
+        ref="list"
         data={times}
         textField='label'
         valueField='date'

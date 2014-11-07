@@ -1,7 +1,6 @@
 'use strict';
 var React = require('react')
-  , transferPropsTo = require('../util/transferProps').mergeIntoProps
-  , caretPos = require('../util/caret');
+  , caretPos = require('./util/caret');
 
 module.exports = React.createClass({
 
@@ -33,10 +32,11 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    return transferPropsTo(this.props,
+    return (
       <input 
+        {...this.props }
         type='text' 
-        className='rw-input'
+        className={this.props.className + ' rw-input'}
         onKeyDown={this.props.onKeyDown}
         onChange={this._change}
         value={this.props.value == null ? '' : this.props.value}/>

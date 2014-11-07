@@ -1,9 +1,10 @@
+'use strict';
 var React = require('react')
-  , cx    = require('../util/cx')
-  , dates = require('../util/dates')
-  , directions = require('../util/constants').directions
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , _ = require('../util/_'); //omit
+  , _ = require('./util/_')
+  , cx    = require('./util/cx')
+  , dates = require('./util/dates')
+  , directions = require('./util/constants').directions
+  , Btn = require('./WidgetButton.jsx'); 
 
 var opposite = {
   LEFT: directions.RIGHT,
@@ -16,10 +17,10 @@ module.exports = React.createClass({
   displayName: 'DecadeView',
 
   mixins: [
-    require('../mixins/WidgetMixin'),
-    require('../mixins/PureRenderMixin'),
-    require('../mixins/RtlChildContextMixin'),
-    require('../mixins/DateFocusMixin')('decade', 'year')
+    require('./mixins/WidgetMixin'),
+    require('./mixins/PureRenderMixin'),
+    require('./mixins/RtlChildContextMixin'),
+    require('./mixins/DateFocusMixin')('decade', 'year')
   ],
 
   propTypes: {
@@ -30,12 +31,12 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var years = getDecadeYears(this.props.value)
+    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+      , years = getDecadeYears(this.props.value)
       , rows  = _.chunk(years, 4)
 
-    return mergeIntoProps(
-      _.omit(this.props, ['max', 'min', 'value', 'onChange']),
-      <table
+    return (
+      <table {...props} 
         tabIndex={this.props.disabled ? '-1' : "0"}
         role='grid'
         className='rw-calendar-grid rw-nav-view'
@@ -61,7 +62,7 @@ module.exports = React.createClass({
         return !dates.inRange(date, this.props.min, this.props.max, 'year')
           ? <td key={i} className='rw-empty-cell'>&nbsp;</td>
           : (<td key={i}>
-              <btn onClick={this.props.onChange.bind(null, date)} tabIndex='-1'
+              <Btn onClick={this.props.onChange.bind(null, date)} tabIndex='-1'
                 id={ focused ? id : undefined }
                 aria-selected={selected}
                 aria-disabled={this.props.disabled}
@@ -72,7 +73,7 @@ module.exports = React.createClass({
                   'rw-state-selected': selected,
                 })}>
                 { dates.format(date, dates.formats.YEAR) }
-              </btn>
+              </Btn>
             </td>)
       })}
     </tr>)
@@ -107,9 +108,9 @@ function inDecade(date, start){
       && dates.lte(date, dates.endOf(start,'decade'),  'year')
 }
 
-function getDecadeYears(date){
+function getDecadeYears(_date){
   var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-    , date = dates.add(dates.startOf(date, 'decade'), -2, 'year')
+    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
 
   return days.map( 
     i => date = dates.add(date, 1, 'year'))
@@ -119,5 +120,3 @@ function nextDate(date, val, unit, min, max){
   var newDate = dates.add(date, val, unit)
   return dates.inRange(newDate, min, max, 'year') ? newDate : date
 }
-
-var btn = require('../common/btn.jsx')

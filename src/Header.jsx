@@ -1,6 +1,6 @@
-var React = require('react');
-
-var btn = require('../common/btn.jsx')
+'use strict';
+var React = require('react')
+  , Btn = require('./WidgetButton.jsx');
 
 module.exports = React.createClass({
 
@@ -22,8 +22,8 @@ module.exports = React.createClass({
   },
 
   mixins: [
-    require('../mixins/PureRenderMixin'),
-    require('../mixins/RtlChildContextMixin')
+    require('./mixins/PureRenderMixin'),
+    require('./mixins/RtlChildContextMixin')
   ],
 
   getDefaultProps: function(){
@@ -36,34 +36,33 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var self = this
-      , rtl = this.isRtl();
+    var rtl = this.isRtl();
 
     return (
       <div className='rw-header'>
-        <btn className="rw-btn-left"
+        <Btn className="rw-btn-left"
           onClick={this.props.onMoveLeft}
           disabled={this.props.prevDisabled}
           aria-disabled={this.props.prevDisabled}
           title={this.props.moveBack}>
           <i className={"rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}>
             <span className="rw-sr">{this.props.moveBack}</span></i>
-        </btn>
-        <btn className="rw-btn-view"
+        </Btn>
+        <Btn className="rw-btn-view"
           id={this.props.labelId}
           onClick={this.props.onViewChange}
           disabled={this.props.upDisabled}
           aria-disabled={this.props.upDisabled}>
           { this.props.label }
-        </btn>
-        <btn className="rw-btn-right"
+        </Btn>
+        <Btn className="rw-btn-right"
           onClick={this.props.onMoveRight}
           disabled={this.props.nextDisabled}
           aria-disabled={this.props.nextDisabled}
           title={this.props.moveForward}>
           <i className={"rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}>
             <span className="rw-sr">{this.props.moveForward}</span></i>
-        </btn>
+        </Btn>
       </div>
     )
   }

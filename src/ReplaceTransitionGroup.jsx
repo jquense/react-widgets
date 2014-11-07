@@ -8,11 +8,8 @@
 "use strict";
 
 var React = require('react')
-  , startsWith = require('../util/filter').startsWith
-  , cloneWithProps = require('../util/transferProps').cloneWithProps
-  , transferPropsTo = require('../util/transferProps').mergeIntoProps
-  , $ = require('../util/dom')
-  , _ = require('../util/_');
+  , $ = require('./util/dom')
+  , _ = require('./util/_');
 
 
 
@@ -21,7 +18,10 @@ module.exports = React.createClass({
   displayName: 'ReplaceTransitionGroup',
 
   propTypes: {
-    component:    React.PropTypes.func,
+    component:    React.PropTypes.oneOfType([
+                    React.PropTypes.element,
+                    React.PropTypes.string
+                  ]),
     childFactory: React.PropTypes.func,
 
     onAnimating:  React.PropTypes.func,
@@ -30,7 +30,7 @@ module.exports = React.createClass({
 
   getDefaultProps: function() {
     return {
-      component: React.DOM.span,
+      component:    'span',
       childFactory: function(a){ return a },
 
       onAnimating: _.noop,
@@ -182,8 +182,7 @@ module.exports = React.createClass({
 
   render: function() {
     var Component = this.props.component
-    return transferPropsTo(this.props, 
-            <Component>{ this.state.children.map(c => this.props.childFactory(c, key(c))) }</Component>);
+    return <Component {...this.props}>{ this.state.children.map(c => this.props.childFactory(c, key(c))) }</Component>;
   }
 });
 
@@ -193,5 +192,5 @@ function getChild(children){
 
 //CHANGE 0.12.0
 function key(child){
-  return child && (startsWith(React.version, '0.12') ? child.key : child.props.key)
+  return child && child.key
 }

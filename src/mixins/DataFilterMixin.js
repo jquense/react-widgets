@@ -1,7 +1,7 @@
 'use strict';
 var React   = require('react')
   , filters = require('../util/filter')
-  , helper  = require('../mixins/DataHelpersMixin')
+  , helper  = require('./DataHelpersMixin')
   , _      = require('../util/_');
 
 var filterTypes = _.filter( Object.keys(filters), i => i !== 'filter')

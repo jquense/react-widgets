@@ -1,13 +1,13 @@
 'use strict';
 var React = require('react')
-  , cx    = require('../util/cx')
-  , _     = require('../util/_')
-  , controlledInput  = require('../util/controlledInput')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , SelectInput = require('./search-input.jsx')
-  , TagList = require('./tag-list.jsx')
-  , Popup = require('../popup/popup.jsx')
-  , List  = require('../common/list.jsx');
+  , cx    = require('./util/cx')
+  , _     = require('./util/_')
+  , controlledInput  = require('./util/controlledInput')
+  
+  , SelectInput = require('./MultiselectInput.jsx')
+  , TagList     = require('./MultiselectTagList.jsx')
+  , Popup       = require('./Popup.jsx')
+  , List        = require('./List.jsx');
 
 var propTypes = {
       data:           React.PropTypes.array,
@@ -56,11 +56,11 @@ var Select = React.createClass({
   displayName: 'Select',
 
   mixins: [
-    require('../mixins/WidgetMixin'),
-    require('../mixins/DataFilterMixin'),
-    require('../mixins/DataHelpersMixin'),
-    require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('focusedIndex')
+    require('./mixins/WidgetMixin'),
+    require('./mixins/DataFilterMixin'),
+    require('./mixins/DataHelpersMixin'),
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/DataIndexStateMixin')('focusedIndex')
   ],
 
   propTypes: propTypes,
@@ -100,27 +100,28 @@ var Select = React.createClass({
   },
 
   render: function(){
-    var listID  = this._id('_listbox')
+    var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
+      , listID  = this._id('_listbox')
       , optID   = this._id('_option')
       , items   = this._data()
       , values  = this.state.dataItems;
 
-    return mergeIntoProps(
-      _.omit(this.props, Object.keys(propTypes)),
-      <div ref="element"
-           onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
-           onBlur ={this._focus.bind(null, false)}
-           tabIndex="-1"
-           className={cx({
-              'rw-select-list':    true,
-              'rw-widget':         true,
-              'rw-state-focus':    this.state.focused,
-              'rw-state-disabled': this.props.disabled === true,
-              'rw-state-readonly': this.props.readOnly === true,
-              'rw-open':           this.props.open,
-              'rw-rtl':            this.isRtl()
-            })}>
+    return (
+      <div {...props}
+        ref="element"
+        onKeyDown={this._maybeHandle(this._keyDown)}
+        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onBlur ={this._focus.bind(null, false)}
+        tabIndex="-1"
+        className={(className ||'') + ' ' + cx({
+          'rw-select-list':    true,
+          'rw-widget':         true,
+          'rw-state-focus':    this.state.focused,
+          'rw-state-disabled': this.props.disabled === true,
+          'rw-state-readonly': this.props.readOnly === true,
+          'rw-open':           this.props.open,
+          'rw-rtl':            this.isRtl()
+        })}>
         <div className='rw-select-wrapper' onClick={this._maybeHandle(this._click)}>
           { this.props.busy &&
             <i className="rw-i rw-loading"></i>

@@ -1,15 +1,16 @@
+'use strict';
 var React = require('react')
-  , _ = require('../util/_')
-  , cx  = require('../util/cx')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , btn = require('../common/btn.jsx')
+  , _     = require('./util/_')
+  , cx    = require('./util/cx')
+  , Btn   = require('./WidgetButton.jsx')
 
 module.exports = React.createClass({
-  displayName: 'SelectTagList',
+  
+  displayName: 'MultiselectTagList',
 
   mixins: [
-    require('../mixins/DataHelpersMixin'),
-    require('../mixins/PureRenderMixin')
+    require('./mixins/DataHelpersMixin'),
+    require('./mixins/PureRenderMixin')
   ],
 
   propTypes: {
@@ -41,12 +42,14 @@ module.exports = React.createClass({
   },
 
   render: function(){
-      var focusIdx = this.state.focused
-        , value    = this.props.value;
+      var ValueComponent = this.props.valueComponent
+        , props     = _.omit(this.props, ['value', 'disabled', 'readOnly'])
+        , focusIdx  = this.state.focused
+        , value     = this.props.value;
 
-      return mergeIntoProps(
-        _.omit(this.props, ['value', 'disabled', 'readOnly']),
-        <ul className='rw-tag-list'>
+      return (
+        <ul {...props} 
+          className='rw-tag-list'>
           { value.map( (item, i) => {
             var disabled = this.isDisabled(item)
               , readonly = this.isReadOnly(item);
@@ -58,15 +61,15 @@ module.exports = React.createClass({
                     'rw-state-disabled': disabled,
                     'rw-state-readonly': readonly})
                   }>
-                { this.props.valueComponent
-                    ? this.props.valueComponent({ item: item })
+                { ValueComponent
+                    ? <ValueComponent item={item }/>
                     : this._dataText(item)
                 }
-                <btn tabIndex='-1' onClick={!(disabled || readonly) && this._delete.bind(null, item)}
+                <Btn tabIndex='-1' onClick={!(disabled || readonly) && this._delete.bind(null, item)}
                   aria-disabled={disabled}
                   disabled={disabled}>
                   &times;<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
-                </btn>
+                </Btn>
               </li>)
           })}
         </ul>

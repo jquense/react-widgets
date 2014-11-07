@@ -1,18 +1,17 @@
+'use strict';
 var React  = require('react')
-  , cx = require('../util/cx')
-  , _      = require('../util/_')
-  , caretPos = require('../util/caret')
-  , filter = require('../util/filter')
-  , controlledInput  = require('../util/controlledInput')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps
-  , directions = require('../util/constants').directions
-  , Input  = require('./combo-input.jsx')
-  , Popup  = require('../popup/popup.jsx')
-  , List   = require('../common/list.jsx')
-  , $      = require('../util/dom');
+  , cx     = require('./util/cx')
+  , _      = require('./util/_')
+  , $      = require('./util/dom')
+  , filter = require('./util/filter')
+  , controlledInput  = require('./util/controlledInput')
+  
+  , Popup  = require('./Popup.jsx')
+  , List   = require('./List.jsx')
+  , Btn    = require('./WidgetButton.jsx')
+  , Input  = require('./ComboboxInput.jsx');
 
-var btn = require('../common/btn.jsx')
-  , propTypes = {
+var propTypes = {
       //-- controlled props -----------
       value:          React.PropTypes.any,
       onChange:       React.PropTypes.func,
@@ -55,13 +54,13 @@ var ComboBox = React.createClass({
   displayName: 'ComboBox',
 
   mixins: [
-    require('../mixins/WidgetMixin'),
-    require('../mixins/TextSearchMixin'),
-    require('../mixins/DataFilterMixin'),
-    require('../mixins/DataHelpersMixin'),
-    require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('focusedIndex'),
-    require('../mixins/DataIndexStateMixin')('selectedIndex')
+    require('./mixins/WidgetMixin'),
+    require('./mixins/TextSearchMixin'),
+    require('./mixins/DataFilterMixin'),
+    require('./mixins/DataHelpersMixin'),
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/DataIndexStateMixin')('focusedIndex'),
+    require('./mixins/DataIndexStateMixin')('selectedIndex')
   ],
 
   propTypes: propTypes,
@@ -127,7 +126,7 @@ var ComboBox = React.createClass({
   },
 
 	render: function(){
-		var DropdownValue = this.props.valueComponent
+		var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
       , valueItem = this._dataItem( this._data(), this.props.value )
       , items = this._data()
       , listID = this._id('_listbox')
@@ -136,23 +135,23 @@ var ComboBox = React.createClass({
           ? this.props.filter ? 'both' : 'inline'
           : this.props.filter ? 'list' : '';
 
-		return mergeIntoProps(
-      _.omit(this.props, Object.keys(propTypes)),
-			<div ref="element"
-           onKeyDown={this._maybeHandle(this._keyDown)}
-           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
-           onBlur ={this._focus.bind(null, false)}
-           tabIndex="-1"
-           className={cx({
-              'rw-combobox':        true,
-              'rw-widget':          true,
-              'rw-state-focus':     this.state.focused,
-              'rw-open':            this.props.open,
-              'rw-state-disabled':  this.props.disabled,
-              'rw-state-readonly':  this.props.readOnly,
-              'rw-rtl':             this.isRtl()
-            })}>
-        <btn
+		return (
+			<div {...props }
+        ref="element"
+        onKeyDown={this._maybeHandle(this._keyDown)}
+        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onBlur ={this._focus.bind(null, false)}
+        tabIndex="-1"
+        className={(className ||'') + ' ' + cx({
+          'rw-combobox':        true,
+          'rw-widget':          true,
+          'rw-state-focus':     this.state.focused,
+          'rw-open':            this.props.open,
+          'rw-state-disabled':  this.props.disabled,
+          'rw-state-readonly':  this.props.readOnly,
+          'rw-rtl':             this.isRtl()
+         })}>
+        <Btn
           tabIndex='-1'
           className='rw-select'
           onClick={this._maybeHandle(this.toggle)}
@@ -160,7 +159,7 @@ var ComboBox = React.createClass({
           <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
             <span className="rw-sr">{ this.props.messages.open }</span>
           </i>
-        </btn>
+        </Btn>
         <Input
           ref='input'
           type='text'

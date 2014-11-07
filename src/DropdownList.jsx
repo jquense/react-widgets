@@ -1,13 +1,12 @@
 'use strict';
 var React            = require('react')
-  , _                = require('../util/_')
-  , cx               = require('../util/cx')
-  , setter           = require('../util/stateSetter')
-  , controlledInput  = require('../util/controlledInput')
-  , mergeIntoProps   = require('../util/transferProps').mergeIntoProps
-  , Popup            = require('../popup/popup.jsx')
-  , List             = require('../common/list.jsx')
-  , $                = require('../util/dom');
+  , _                = require('./util/_')
+  , $                = require('./util/dom')
+  , cx               = require('./util/cx')
+  , setter           = require('./util/stateSetter')
+  , controlledInput  = require('./util/controlledInput')
+  , Popup            = require('./Popup.jsx')
+  , List             = require('./List.jsx');
 
 var propTypes = {
   //-- controlled props -----------
@@ -21,8 +20,8 @@ var propTypes = {
   valueField:     React.PropTypes.string,
   textField:      React.PropTypes.string,
 
-  valueComponent: React.PropTypes.component,
-  itemComponent:  React.PropTypes.component,
+  valueComponent: React.PropTypes.element,
+  itemComponent:  React.PropTypes.element,
   busy:           React.PropTypes.bool,
 
   delay:          React.PropTypes.number,
@@ -48,13 +47,13 @@ var DropdownList = React.createClass({
   displayName: 'DropdownList',
 
   mixins: [
-    require('../mixins/WidgetMixin'),
-    require('../mixins/PureRenderMixin'),
-    require('../mixins/TextSearchMixin'),
-    require('../mixins/DataHelpersMixin'),
-    require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('focusedIndex'),
-    require('../mixins/DataIndexStateMixin')('selectedIndex')
+    require('./mixins/WidgetMixin'),
+    require('./mixins/PureRenderMixin'),
+    require('./mixins/TextSearchMixin'),
+    require('./mixins/DataHelpersMixin'),
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/DataIndexStateMixin')('focusedIndex'),
+    require('./mixins/DataIndexStateMixin')('selectedIndex')
   ],
 
   propTypes: propTypes,
@@ -91,32 +90,34 @@ var DropdownList = React.createClass({
   },
 
 	render: function(){
-		var keys = Object.keys(propTypes)
+		var {className, ...props} = _.omit(this.props, Object.keys(propTypes))
+      , ValueComponent = this.props.valueComponent
       , valueItem = this._dataItem( this._data(), this.props.value )
       , optID = this._id('_option');
 
-		return mergeIntoProps(_.omit(this.props, keys),
-			<div ref="element"
-           onKeyDown={this._maybeHandle(this._keyDown)}
-           onClick={this._maybeHandle(this.toggle)}
-           onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
-           onBlur ={this._focus.bind(null, false)}
-           aria-expanded={ this.props.open }
-           aria-haspopup={true}
-           aria-busy={!!this.props.busy}
-           aria-activedescendent={ this.props.open ? optID : undefined }
-           aria-disabled={ this.props.disabled }
-           aria-readonly={ this.props.readOnly }
-           tabIndex={this.props.disabled ? '-1' : "0"}
-           className={cx({
-              'rw-dropdown-list':   true,
-              'rw-widget':          true,
-              'rw-state-disabled':  this.props.disabled,
-              'rw-state-readonly':  this.props.readOnly,
-              'rw-state-focus':     this.state.focused,
-              'rw-open':            this.props.open,
-              'rw-rtl':             this.isRtl()
-            })}>
+		return (
+			<div {...props}
+        ref="element"
+        onKeyDown={this._maybeHandle(this._keyDown)}
+        onClick={this._maybeHandle(this.toggle)}
+        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onBlur ={this._focus.bind(null, false)}
+        aria-expanded={ this.props.open }
+        aria-haspopup={true}
+        aria-busy={!!this.props.busy}
+        aria-activedescendent={ this.props.open ? optID : undefined }
+        aria-disabled={ this.props.disabled }
+        aria-readonly={ this.props.readOnly }
+        tabIndex={this.props.disabled ? '-1' : "0"}
+        className={(className ||'') + ' ' + cx({
+          'rw-dropdown-list':   true,
+          'rw-widget':          true,
+          'rw-state-disabled':  this.props.disabled,
+          'rw-state-readonly':  this.props.readOnly,
+          'rw-state-focus':     this.state.focused,
+          'rw-open':            this.props.open,
+          'rw-rtl':             this.isRtl()
+        })}>
 
 				<span className="rw-dropdownlist-picker rw-select rw-btn">
 					<i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
@@ -125,7 +126,7 @@ var DropdownList = React.createClass({
 				</span>
         <div className="rw-input">
           { this.props.valueComponent
-              ? this.props.valueComponent({ item: valueItem })
+              ? <ValueComponent item={valueItem}/>
               : this._dataText(valueItem)
           }
         </div>

@@ -21,10 +21,10 @@ function compatPropType(handler, propType) {
 
 module.exports = {
 
-  createControlledClass: function(displayName, component, controlledValues, defaults) {
+  createControlledClass: function(displayName, Component, controlledValues, defaults) {
 
     var types = _.transform(controlledValues, function(obj, handler, prop){
-          var type = component.type.propTypes[prop];
+          var type = Component.type.propTypes[prop];
 
           obj[prop] = compatPropType(handler, type)
           obj[defaultKey(prop)] = type
@@ -52,8 +52,7 @@ module.exports = {
       },
 
       render: function(){
-        var self = this
-          , props, handles;
+        var props, handles;
 
         props = _.transform(controlledValues, (obj, handle, prop) => {
           obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
@@ -63,9 +62,10 @@ module.exports = {
           obj[handle] = setAndNotify.bind(this, prop)
         }, {})
 
-        return component(
-            _.merge(this.props, props, handles)
-          , this.props.children);
+        return React.createElement(
+              Component
+            , _.merge(this.props, props, handles)
+            , this.props.children);
       }
     })
 

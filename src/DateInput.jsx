@@ -1,8 +1,7 @@
 'use strict';
 var React = require('react')
-  , cx = require('../util/cx')
-  , transferPropsTo = require('../util/transferProps').mergeIntoProps
-  , dates = require('../util/dates');
+  , cx = require('./util/cx')
+  , dates = require('./util/dates');
 
 module.exports = React.createClass({
 
@@ -49,8 +48,9 @@ module.exports = React.createClass({
   render: function(){
     var value = this.state.textValue
 
-    return transferPropsTo(this.props,
+    return (
       <input 
+        {...this.props}
         type='text' 
         className={cx({'rw-input': true })} 
         value={value} 

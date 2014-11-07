@@ -1,7 +1,6 @@
 'use strict';
 var React   = require('react')
-  , setter  = require('../util/stateSetter')
-  , transferPropsTo = require('../util/transferProps').mergeIntoProps
+  , setter  = require('./util/stateSetter')
   , globalize = require('globalize');
 
 
@@ -50,8 +49,8 @@ module.exports = React.createClass({
   render: function(){
     var value = this.state.stringValue;
 
-    return transferPropsTo(this.props,
-      <input 
+    return (
+      <input {...this.props}
         type='text' 
         className='rw-input'
         onKeyDown={this.props.onKeyDown}

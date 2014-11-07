@@ -11,10 +11,13 @@ var path = require('path')
 var visitors = [
     'jstransform/visitors/es6-arrow-function-visitors',
     'jstransform/visitors/es6-class-visitors',
+    'jstransform/visitors/es6-destructuring-visitors',
     'jstransform/visitors/es6-object-concise-method-visitors',
     'jstransform/visitors/es6-object-short-notation-visitors',
+    __dirname + '/transforms/rest-param',
     'jstransform/visitors/es6-template-visitors',
-    __dirname + '/transforms/rest-param'
+    'jstransform/visitors/es7-rest-property-helpers',
+    'jstransform/visitors/es7-spread-property-visitors'  
 ]
 
 module.exports = {
@@ -64,7 +67,7 @@ module.exports = {
         //{ test: /lodash/, loader: "imports?define=>false" }
       ],
       postLoaders: [
-        { loader: 'jstransform-loader?' + visitors.join(',') }
+        { loader: path.join(__dirname, './jstransform-loader') }
       ]
     },
   },
@@ -86,8 +89,8 @@ module.exports = {
 
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader?harmony=true&insertPragma=React.DOM' },
-        { test: /\.css$/, loader: "style-loader!css-loader" },
+        { test: /\.jsx$/, loader:  'jsx-loader?harmony=true&insertPragma=React.DOM' },
+        { test: /\.css$/, loader:  "style-loader!css-loader" },
         { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
       ],
     },
@@ -112,7 +115,7 @@ module.exports = {
         { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
       ],
       postLoaders: [
-        { loader: 'jstransform-loader?' + visitors.join(',') }
+        { loader: path.join(__dirname, './jstransform-loader') }
       ]
     },
   }

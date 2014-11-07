@@ -1,18 +1,16 @@
 'use strict';
 var React           = require('react')
-  , Header          = require('./header.jsx')
-  , Month           = require('./month.jsx')
-  , Year            = require('./year.jsx')
-  , Decade          = require('./decade.jsx')
-  , Century         = require('./century.jsx')
-  , cx              = require('../util/cx')
-  , setter          = require('../util/stateSetter')
-  , controlledInput = require('../util/controlledInput')
-  , SlideTransition = require('../common/slide-transition.jsx')
-  , dates           = require('../util/dates')
-  , mergeIntoProps  = require('../util/transferProps').mergeIntoProps
-  , constants       = require('../util/constants')
-  , _               = require('../util/_'); //values, omit, object
+  , Header          = require('./Header.jsx')
+  , Month           = require('./Month.jsx')
+  , Year            = require('./Year.jsx')
+  , Decade          = require('./Decade.jsx')
+  , Century         = require('./Century.jsx')
+  , cx              = require('./util/cx')
+  , controlledInput = require('./util/controlledInput')
+  , SlideTransition = require('./SlideTransition.jsx')
+  , dates           = require('./util/dates')
+  , constants       = require('./util/constants')
+  , _               = require('./util/_'); //values, omit, object
 
 var dir = constants.directions;
 
@@ -42,9 +40,9 @@ var Calendar = React.createClass({
   displayName: 'Calendar',
 
   mixins: [
-    require('../mixins/WidgetMixin'),
-    require('../mixins/PureRenderMixin'),
-    require('../mixins/RtlParentContextMixin')
+    require('./mixins/WidgetMixin'),
+    require('./mixins/PureRenderMixin'),
+    require('./mixins/RtlParentContextMixin')
   ],
 
 
@@ -120,16 +118,19 @@ var Calendar = React.createClass({
   },
 
   render: function(){
-    var View = VIEW[this.state.view]
+    var {className, ...props } = _.omit(this.props, ['value', 'min', 'max'])
+      , View = VIEW[this.state.view]
       , unit = this.state.view
+      
       , disabled = this.props.disabled || this.props.readOnly
       , date = this.state.currentDate
       , labelId = this._id('_view_label')
       , key = this.state.view + '_' + dates[this.state.view](date)
       , id  = this._id('_view');
 
-    return mergeIntoProps(_.omit(this.props, ['value', 'min', 'max']),
-      <div className={cx({
+    return (
+      <div {...props }
+        className={(className ||'') + ' ' + cx({
           'rw-calendar':       true,
           'rw-widget':         true,
           'rw-state-disabled': this.props.disabled,

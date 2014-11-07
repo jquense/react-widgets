@@ -1,7 +1,7 @@
 'use strict';
 var React  = require('react')
   , filter = require('../util/filter')
-  , helper = require('../mixins/DataHelpersMixin')
+  , helper = require('./DataHelpersMixin')
   , _      = require('../util/_');
 
 module.exports = {

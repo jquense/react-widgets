@@ -1,9 +1,8 @@
 'use strict';
 var React = require('react')
-  , _  = require('../util/_')
-  , cx = require('../util/cx')
-  , scrollTo = require('../util/scroll')
-  , mergeIntoProps = require('../util/transferProps').mergeIntoProps;
+  , _  = require('./util/_')
+  , cx = require('./util/cx')
+  , scrollTo = require('./util/scroll');
 
 var propTypes = {
     data:          React.PropTypes.array,
@@ -46,11 +45,11 @@ var CheckboxList = React.createClass({
   propTypes: propTypes,
 
   mixins: [
-    require('../mixins/WidgetMixin'),
-    require('../mixins/TextSearchMixin'),
-    require('../mixins/DataHelpersMixin'),
-    require('../mixins/RtlParentContextMixin'),
-    require('../mixins/DataIndexStateMixin')('focusedIndex', 'isDisabledItem')
+    require('./mixins/WidgetMixin'),
+    require('./mixins/TextSearchMixin'),
+    require('./mixins/DataHelpersMixin'),
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/DataIndexStateMixin')('focusedIndex', 'isDisabledItem')
   ],
 
   getDefaultProps: function(){
@@ -93,13 +92,14 @@ var CheckboxList = React.createClass({
   },
 
   render: function() {
-    var focus = this._maybeHandle(this._focus.bind(null, true), true)
+    var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
+      , focus = this._maybeHandle(this._focus.bind(null, true), true)
       , optID = this._id('_selected_option')
       , blur  = this._focus.bind(null, false);
 
-    return mergeIntoProps(
-      _.omit(this.props, Object.keys(propTypes)),
-      <div
+    return (
+      
+      <div {...props}
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={focus}
         onBlur ={blur}
@@ -109,7 +109,7 @@ var CheckboxList = React.createClass({
         aria-activedescendent={ this.state.focused ? optID : undefined }
         aria-disabled={ this.isDisabled() }
         aria-readonly={ this.isReadOnly() }
-        className={cx({ 
+        className={(className ||'') + ' ' + cx({ 
           'rw-widget':         true,
           'rw-checkboxlist':   true,
           'rw-state-focus':    this.state.focused,
