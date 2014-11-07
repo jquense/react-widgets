@@ -3,6 +3,7 @@ var React = require('react')
   , _  = require('./util/_')
   , cx = require('./util/cx')
   , controlledInput  = require('./util/controlledInput')
+  , CustomPropTypes  = require('./util/propTypes')
   , scrollTo = require('./util/scroll');
 
 var propTypes = {
@@ -14,7 +15,7 @@ var propTypes = {
     onChange:       React.PropTypes.func,
 
     multiple:       React.PropTypes.bool,
-    itemComponent:  React.PropTypes.func,
+    itemComponent:  CustomPropTypes.elementType,
     
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,

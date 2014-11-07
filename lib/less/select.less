@@ -1,5 +1,5 @@
 
-.rw-select-list {
+.rw-multiselect {
   background-color: @widget-bg;
 
   &:hover {
@@ -7,7 +7,7 @@
   }
 }
 
-.rw-select-wrapper {
+.rw-multiselect-wrapper {
   border-radius:          @input-border-radius;
   position:               relative;
   cursor:                 text;
@@ -33,7 +33,7 @@
   }
 
   .rw-rtl & > .rw-input{
-     float: right;
+    float: right;
   } 
 
   .rw-btn {
@@ -43,8 +43,8 @@
   }
 }
 
-.rw-tag-list {
-  .list-inline;
+.rw-multiselect-taglist {
+  .list-inline();
   padding-right: 0;
 
   > li {
@@ -67,8 +67,8 @@
 
     &.rw-state-readonly,
     &.rw-state-disabled,
-    .rw-select-list.rw-state-readonly &, 
-    .rw-select-list.rw-state-disabled & {
+    .rw-multiselect.rw-state-readonly &, 
+    .rw-multiselect.rw-state-disabled & {
       cursor: not-allowed;
       filter: alpha(opacity=65);
       opacity: .65;

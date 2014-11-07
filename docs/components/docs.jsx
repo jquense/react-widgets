@@ -1,10 +1,8 @@
 var React = require('react')
   , cx = require('../../lib/util/cx')
   , Navbar = require('./topnavbar.jsx')
-  , Nav = require('react-bootstrap/Nav')
-  , Affix = require('react-bootstrap/Affix')
-  , NavItem = require('react-bootstrap/NavItem')
-  , _ = require('lodash')
+  , Nav = require('../bootstrap').Nav
+  , NavItem = require('../bootstrap').NavItem
   , GettingStarted = require('./pages/GettingStarted.jsx')
   , DropdownList = require('./pages/DropdownList.jsx')
   , ComboBox = require('./pages/ComboBox.jsx')
@@ -47,7 +45,7 @@ var Docs = React.createClass({
             <div className='nav-aside'>
               <Nav className='side-nav' onSelect={this.handleNavItemSelect}>
                 <NavItem key={0} href='#intro' active={href === '#intro' }>Getting Started</NavItem>
-                <NavItem key={1} href='#dropdownlist' active={ href === '#dropdownlist' }>Dropdown List</NavItem>
+                <NavItem key={1} href='#DropdownList' active={ href === '#DropdownList' }>Dropdown List</NavItem>
                 <NavItem key={2} href='#combobox' active={href === '#combobox'}>Combobox</NavItem>
                 <NavItem key={6} href='#number-picker' active={href === '#number-picker' }>Number Picker</NavItem>
                 <NavItem key={3} href='#multiselect' active={href === '#multiselect'}>Select</NavItem>
@@ -58,7 +56,7 @@ var Docs = React.createClass({
           </aside>
           <article className='col-sm-9 tab-content'>
             <GettingStarted className={cx({"tab-pane": true, "active": href === '#intro' })}/>
-            <DropdownList className={cx({"tab-pane": true, "active": href === '#dropdownlist' })}/>
+            <DropdownList className={cx({"tab-pane": true, "active": href === '#DropdownList' })}/>
             <ComboBox className={cx({"tab-pane": true, "active": href === '#combobox' })}/>
 
             <NumberPicker className={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
@@ -106,6 +104,4 @@ var Docs = React.createClass({
 })
 
 
-React.renderComponent(
-    Docs()
-  , document.body);
+React.render(<Docs/>, document.body);

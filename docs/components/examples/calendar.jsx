@@ -1,8 +1,7 @@
-var React = require('react')
-  , _ = require('lodash')
-  , Button = require('react-bootstrap/Button')
-  , buttonGroup = require('react-bootstrap/ButtonGroup')
-  , RW = require('../../../index');
+var React       = require('react')
+  , Button      = require('../../bootstrap').Button
+  , ButtonGroup = require('../../bootstrap').ButtonGroup
+  , RW          = require('../../../index');
 
 module.exports = React.createClass({
   getInitialState: function(){
@@ -34,12 +33,12 @@ module.exports = React.createClass({
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.isRtl}
-                  onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
+                  onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
             </div>
             <div className='form-group'>
-              <buttonGroup>
+              <ButtonGroup>
                 <Button
                   active={this.state.disabled === 'disabled'}
                   onClick={this.disabled}>
@@ -50,21 +49,21 @@ module.exports = React.createClass({
                   onClick={this.readOnly}>
                   Readonly
                 </Button>
-              </buttonGroup>
+              </ButtonGroup>
             </div>
             <div className='form-group'>
               <label className='form-label'>Initial View</label>
-              <RW.DropDownlist 
+              <RW.DropdownList 
                   value={this.state.initialView || 'month'} 
                   data={["month", "year", "decade", "century"]}
-                  onChange={_.partial(this._set, 'initialView')}/>
+                  onChange={this._set.bind(null, 'initialView')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>Final View</label>
-              <RW.DropDownlist 
+              <RW.DropdownList 
                   value={this.state.finalView || 'century'} 
                   data={["month", "year", "decade", "century"]}
-                  onChange={_.partial(this._set, 'finalView')}/>
+                  onChange={this._set.bind(null, 'finalView')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>min</label>
@@ -72,7 +71,7 @@ module.exports = React.createClass({
                   time={false}
                   format='MMM dd, yyyy'
                   value={this.state.min} 
-                  onChange={_.partial(this._set, 'min')}/>
+                  onChange={this._set.bind(null, 'min')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>max</label>
@@ -80,7 +79,7 @@ module.exports = React.createClass({
                   time={false}
                   format='MMM dd, yyyy'
                   value={this.state.max} 
-                  onChange={_.partial(this._set, 'max')}/>
+                  onChange={this._set.bind(null, 'max')}/>
             </div>
           </div>
         </div>

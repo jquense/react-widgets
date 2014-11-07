@@ -5,19 +5,19 @@
 var React = require('react')
   , Default = require('../default.jsx')
   , Example = require('../example.jsx')
-  , DDButton = require('react-bootstrap/DropdownButton')
-  , MenuItem = require('react-bootstrap/MenuItem')
-  , SelectExample = require('../examples/select.jsx');
+  , DDButton = require('../../bootstrap').DropdownButton
+  , MenuItem = require('../../bootstrap').MenuItem
+  , MultiselectExample = require('../examples/Multiselect.jsx');
 
 var prefix = 'multiselect/';
-var widgetName = 'Select'
-var Select = React.createClass({
+var widgetName = 'Multiselect'
+var Multiselect = React.createClass({
 
   render: function() {
-    return this.transferPropsTo(
-      <section>
+    return (
+      <section {...this.props}>
         <h1 className="page-header">
-          Select
+          Multiselect
           <span className='pull-right'>
             <DDButton title='props' bsStyle='link' pullRight={true}>
               <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
@@ -43,15 +43,15 @@ var Select = React.createClass({
           </span>
         </h1>
         <p>
-          Multiple selection widget.
+          Multiple Multiselection widget.
         </p>
-        <SelectExample/>
+        <MultiselectExample/>
         <Example code={
           "render: function(){\n"+
-          "  var Select = require('react-widgets').Select\n"+
+          "  var Multiselect = require('react-widgets').Multiselect\n"+
           "  //... \n\n" +
           "  return (\n"+
-          "    <Select \n"+
+          "    <Multiselect \n"+
           "      data={list}\n"+
           "      value={this.state.value}\n"+
           "      onChange={this._change}\n"+
@@ -65,7 +65,7 @@ var Select = React.createClass({
         <h3 className='prop-header' id={ prefix +"value" }>
           value <small>Array?</small><strong>controllable (onChange, defaultValue)</strong></h3>
         <p>
-          The current values of the Select. The value should can <code>null</code>, or an array
+          The current values of the Multiselect. The value should can <code>null</code>, or an array
           of <code>valieField</code> values, or an array of objects (such as a few items in the <code>data</code> array)
         </p>
 
@@ -80,7 +80,7 @@ var Select = React.createClass({
         <h3 className='prop-header' id={ prefix +"data" }>
           data <small>Array</small></h3>
         <p>
-          provide an array of possible values for the select. If an array of <code>objects</code> is provided you
+          provide an array of possible values for the {widgetName}. If an array of <code>objects</code> is provided you
           should use the <code>valueField</code> and <code>textField</code> props, to specify which object
           properties comprise the value field (such as an id) and the field used to label the item.
         </p>
@@ -95,7 +95,7 @@ var Select = React.createClass({
         <h3 className='prop-header' id={ prefix +"textField" }>
           textField <small>String</small></h3>
         <p>
-          This prop determines which data item field to display in the select list and selected item This prop is
+          This prop determines which data item field to display in the {widgetName} list andselected item This prop is
           unnecessary when an <code>itemComponent</code> and <code>tagComponent</code> are provided.
         </p>
 
@@ -221,4 +221,4 @@ var Select = React.createClass({
 
 });
 
-module.exports = Select;
+module.exports = Multiselect;

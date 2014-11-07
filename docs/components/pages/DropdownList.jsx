@@ -5,11 +5,11 @@
 var React = require('react')
   , Default = require('../default.jsx')
   , Example = require('../example.jsx')
-  , MenuItem = require('react-bootstrap/MenuItem')
-  , DDButton = require('react-bootstrap/DropdownButton')
-  , DropdownListExample = require('../examples/dropdown-api.jsx');
+  , MenuItem = require('../../bootstrap').MenuItem
+  , DDButton = require('../../bootstrap').DropdownButton
+  , DropdownListExample = require('../examples/DropdownList.jsx');
 
-var prefix = 'dropdownlist/'
+var prefix = 'DropdownList/'
 var widgetName = 'DropdownList'
 var DropdownList = React.createClass({
 
@@ -115,7 +115,7 @@ var DropdownList = React.createClass({
         <h3 className='prop-header' id={ prefix +"itemComponent" }>
           itemComponent <small>Component</small></h3>
         <p>
-          This component is used to render each possible item in the dropdownlist. The default component
+          This component is used to render each possible item in the DropdownList. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 

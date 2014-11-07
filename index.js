@@ -2,7 +2,7 @@
 
 module.exports = {
 
-  Dropdownlist:     require('./lib/Dropdownlist'),
+  DropdownList:     require('./lib/DropdownList'),
   Combobox:         require('./lib/Combobox'),
 
   Calendar:         require('./lib/Calendar'),

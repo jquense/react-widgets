@@ -1,7 +1,6 @@
 var React = require('react')
-  , _ = require('lodash')
-  , Button = require('react-bootstrap/Button')
-  , buttonGroup = require('react-bootstrap/ButtonGroup')
+  , Button = require('../../bootstrap').Button
+  , ButtonGroup = require('../../bootstrap').ButtonGroup
   , RW = require('../../../index');
 
 module.exports = React.createClass({
@@ -36,12 +35,12 @@ module.exports = React.createClass({
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.isRtl}
-                  onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
+                  onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
             </div>
             <div className='form-group'>
-              <buttonGroup>
+              <ButtonGroup>
                 <Button
                   active={this.state.disabled === 'disabled'}
                   onClick={this.disabled}>
@@ -52,33 +51,33 @@ module.exports = React.createClass({
                   onClick={this.readOnly}>
                   Readonly
                 </Button>
-              </buttonGroup>
+              </ButtonGroup>
             </div>
             <div className='form-group'>
               <label className='form-label'>Filter</label>
-              <RW.DropDownlist
+              <RW.DropdownList
                   value={this.state.filter || false}
                   data={[false, 'startsWith', 'endsWith', 'contains']}
-                  onChange={_.partial(this._set, 'filter')}/>
+                  onChange={this._set.bind(null, 'filter')}/>
             </div>
 
             <div className='form-group'>
               <label className='form-label'>step</label>
               <RW.NumberPicker
                   value={this.state.step}
-                  onChange={_.partial(this._set, 'step')}/>
+                  onChange={this._set.bind(null, 'step')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>min</label>
               <RW.NumberPicker
                   value={this.state.min}
-                  onChange={_.partial(this._set, 'min')}/>
+                  onChange={this._set.bind(null, 'min')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>max</label>
               <RW.NumberPicker
                   value={this.state.max}
-                  onChange={_.partial(this._set, 'max')}/>
+                  onChange={this._set.bind(null, 'max')}/>
             </div>
           </div>
         </div>

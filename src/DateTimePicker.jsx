@@ -11,7 +11,7 @@ var React  = require('react')
   , Time      = require('./TimeList.jsx')
   , DateInput = require('./DateInput.jsx')
   , Btn       = require('./WidgetButton.jsx')
-
+  , CustomPropTypes = require('./util/propTypes')
   , controlledInput = require('./util/controlledInput');
 
 var viewEnum  = Object.keys(views).map( k => views[k] )
@@ -35,7 +35,7 @@ var propTypes = {
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
 
-    timeComponent:  React.PropTypes.node,
+    timeComponent:  CustomPropTypes.elementType,
     duration:       React.PropTypes.number, //popup
 
     placeholder:    React.PropTypes.string,

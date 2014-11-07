@@ -2,6 +2,7 @@
 var React = require('react')
   , dates = require('./util/dates')
   , List = require('./List.jsx')
+  , CustomPropTypes  = require('./util/propTypes')
   , _ = require('./util/_') // omit
 
 
@@ -20,7 +21,7 @@ module.exports = React.createClass({
     min:            React.PropTypes.instanceOf(Date),
     max:            React.PropTypes.instanceOf(Date),
     step:           React.PropTypes.number,
-    itemComponent:  React.PropTypes.func,
+    itemComponent:  CustomPropTypes.elementType,
     onSelect:       React.PropTypes.func,
     preserveDate:   React.PropTypes.bool,
   },

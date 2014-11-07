@@ -5,8 +5,8 @@
 var React = require('react')
   , Default = require('../default.jsx')
   , Example = require('../example.jsx')
-  , MenuItem = require('react-bootstrap/MenuItem')
-  , DDButton = require('react-bootstrap/DropdownButton')
+  , MenuItem = require('../../bootstrap').MenuItem
+  , DDButton = require('../../bootstrap').DropdownButton
   , ComboBoxExample = require('../examples/combobox.jsx');
 
 var prefix = 'combobox/'
@@ -111,7 +111,7 @@ var ComboBox = React.createClass({
         <h3 className='prop-header' id={ prefix +"itemComponent" }>
           itemComponent <small>Component</small></h3>
         <p>
-          This component is used to render each possible item in the dropdownlist. The default component
+          This component is used to render each possible item in the DropdownList. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 

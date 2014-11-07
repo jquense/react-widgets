@@ -44,7 +44,7 @@ module.exports = {
       
       new webpack.BannerPlugin( 
         "v" + JSON.stringify(pkg.version) + " | (c) " + (new Date).getFullYear() + " Jason Quense | "
-        + "https://github.com/theporchrat/react-widgets/blob/master/License.txt"
+        + "https://github.com/jquense/react-widgets/blob/master/License.txt"
         , { entryOnly : true }),
 
       new webpack.optimize.UglifyJsPlugin()
@@ -73,7 +73,7 @@ module.exports = {
   },
 
   docs: {
-    //devtool: 'source-map',
+    devtool: 'source-map',
     entry: './docs/components/docs.jsx',
     
     output: {
@@ -99,9 +99,9 @@ module.exports = {
       ProdDefine,
       new webpack.BannerPlugin( 
         "v" + JSON.stringify(pkg.version) + " | (c) " + (new Date).getFullYear() + " Jason Quense | "
-        + "https://github.com/theporchrat/react-widgets/blob/master/License.txt"
+        + "https://github.com/jaquense/react-widgets/blob/master/License.txt"
         , { entryOnly : true }),
-      new webpack.optimize.UglifyJsPlugin()
+     // new webpack.optimize.UglifyJsPlugin()
     ],
   },
 

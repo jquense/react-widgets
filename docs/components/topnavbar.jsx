@@ -1,7 +1,6 @@
 var React   = require('react')
-var Navbar  = require('react-bootstrap/Navbar')
-  , Nav     = require('react-bootstrap/Nav')
-  , NavItem = require('react-bootstrap/NavItem')
+var Nav     = require('../bootstrap').Nav
+  , NavItem = require('../bootstrap').NavItem
 
 
 module.exports = React.createClass({
@@ -18,14 +17,20 @@ module.exports = React.createClass({
         <span className="icon-bar"></span>
       </button>
     )
-    return this.transferPropsTo(
-      <Navbar fixedTop activeKey={this.props.page} toggleNavKey={0} toggleButton={toggle}>
-          <Nav role='navigation' key={0} activeKey='docs' >
+
+    return (
+      <nav className='navbar navbar-default navbar-fixed-top'>
+        <div className="container">
+          <div className='navbar-header'>
+
+          </div>
+          <Nav role='navigation' key={0} activeKey='docs' className='navbar-nav' >
             <NavItem key='docs' href="#">Docs</NavItem>
             <NavItem key='dl' href="https://github.com/jquense/react-widgets/releases">Download</NavItem>
             <NavItem key='github' href="https://github.com/jquense/react-widgets">Github</NavItem>
           </Nav>
-      </Navbar>
+        </div>
+      </nav>
     )
   }
 })

@@ -1,5 +1,6 @@
 'use strict';
 var React   = require('react')
+  , CustomPropTypes  = require('./util/propTypes')
   , cx = require('./util/cx')
   , _  = require('./util/_');
 
@@ -15,7 +16,7 @@ module.exports = React.createClass({
   propTypes: {
     data:          React.PropTypes.array,
     onSelect:      React.PropTypes.func,
-    listItem:      React.PropTypes.func,
+    listItem:      CustomPropTypes.elementType,
     selectedIndex: React.PropTypes.number,
     focusedIndex:  React.PropTypes.number,
     valueField:    React.PropTypes.string,

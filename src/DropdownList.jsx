@@ -5,6 +5,7 @@ var React            = require('react')
   , cx               = require('./util/cx')
   , setter           = require('./util/stateSetter')
   , controlledInput  = require('./util/controlledInput')
+  , CustomPropTypes  = require('./util/propTypes')
   , Popup            = require('./Popup.jsx')
   , List             = require('./List.jsx');
 
@@ -20,8 +21,8 @@ var propTypes = {
   valueField:     React.PropTypes.string,
   textField:      React.PropTypes.string,
 
-  valueComponent: React.PropTypes.node,
-  itemComponent:  React.PropTypes.node,
+  valueComponent: CustomPropTypes.elementType,
+  itemComponent:  CustomPropTypes.elementType,
   busy:           React.PropTypes.bool,
 
   delay:          React.PropTypes.number,

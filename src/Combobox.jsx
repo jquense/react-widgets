@@ -5,6 +5,7 @@ var React  = require('react')
   , $      = require('./util/dom')
   , filter = require('./util/filter')
   , controlledInput  = require('./util/controlledInput')
+  , CustomPropTypes  = require('./util/propTypes')
   
   , Popup  = require('./Popup.jsx')
   , List   = require('./List.jsx')
@@ -19,7 +20,7 @@ var propTypes = {
       onToggle:       React.PropTypes.func,
       //------------------------------------
 
-      itemComponent:  React.PropTypes.func,
+      itemComponent:  CustomPropTypes.elementType,
 
       data:           React.PropTypes.array,
       valueField:     React.PropTypes.string,

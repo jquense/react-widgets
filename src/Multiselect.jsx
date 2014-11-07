@@ -3,6 +3,7 @@ var React = require('react')
   , cx    = require('./util/cx')
   , _     = require('./util/_')
   , controlledInput  = require('./util/controlledInput')
+  , CustomPropTypes  = require('./util/propTypes')
   
   , SelectInput = require('./MultiselectInput.jsx')
   , TagList     = require('./MultiselectTagList.jsx')
@@ -25,8 +26,8 @@ var propTypes = {
       valueField:     React.PropTypes.string,
       textField:      React.PropTypes.string,
 
-      tagComponent:   React.PropTypes.func,
-      itemComponent:  React.PropTypes.func,
+      tagComponent:   CustomPropTypes.elementType,
+      itemComponent:  CustomPropTypes.elementType,
 
       duration:       React.PropTypes.number, //popup
 

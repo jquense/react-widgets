@@ -3,9 +3,11 @@
 
 require('../vendor/phantomjs-shim')
 
-var filters = require('../src/util/filter')
+var React   = require('react')
+  , filters = require('../src/util/filter')
   , cx      = require('../src/util/cx')
-  , _       = require('../src/util/_');
+  , _       = require('../src/util/_')
+  , propTypes = require('../src/util/propTypes');
 
 describe('when using Class Set', function(){
 
@@ -134,5 +136,28 @@ describe('when using date helpers', function(){
 
     expect(filters.startsWith('hello', 'hel')).to.equal(true)
     expect(filters.endsWith('hello', 'llo')).to.equal(true)
+  })
+})
+
+describe('when using custom PropTypes', function(){
+
+  it('should concat names', function(){
+    var props = { type: 'span' }
+
+    expect(propTypes.elementType(props, 'type', 'component'))
+      .to.equal(true)
+
+    props.type = function(){}
+    expect(propTypes.elementType(props, 'type', 'component'))
+      .to.equal(true)
+
+    props.type = React.createElement('span')
+
+    expect(
+      propTypes.elementType(props, 'type', 'component')).to.be.an(Error)
+
+    props.type = true
+    expect(
+      propTypes.elementType(props, 'type', 'component')).to.be.an(Error)
   })
 })

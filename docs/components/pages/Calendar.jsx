@@ -5,8 +5,8 @@
 var React = require('react')
   , Default = require('../default.jsx')
   , Example = require('../example.jsx')
-  , DDButton = require('react-bootstrap/DropdownButton')
-  , MenuItem = require('react-bootstrap/MenuItem')
+  , DDButton = require('../../bootstrap').DropdownButton
+  , MenuItem = require('../../bootstrap').MenuItem
   , CalendarExample = require('../examples/calendar.jsx');
 
 var prefix = 'calendar/'

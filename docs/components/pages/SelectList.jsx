@@ -5,8 +5,8 @@
 var React = require('react')
   , Default = require('../default.jsx')
   , Example = require('../example.jsx')
-  , MenuItem = require('react-bootstrap/MenuItem')
-  , DDButton = require('react-bootstrap/DropdownButton')
+  , MenuItem = require('../../bootstrap').MenuItem
+  , DDButton = require('../../bootstrap').DropdownButton
   , DropdownListExample = require('../examples/selectlist.jsx');
 
 var prefix = 'selectlist/'
