@@ -1,9 +1,9 @@
 'use strict';
-/*global it, describe, expect*/
+/*global it, describe, expect, sinon*/
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
-var ComboBox = require('../src/dropdowns/combobox.jsx')
+var ComboBox = require('../src/Combobox.jsx')
   , _ = require('lodash');
 
 
@@ -48,7 +48,7 @@ describe('ComboBox', function(){
   it('should start closed', function(done){
     var comboBox = render(<ComboBox defaultValue={0} data={dataList} textField='label' valueField='id' />)
       , input = findClass(comboBox, 'rw-input').getDOMNode()
-      , popup = findType(comboBox, require('../src/popup/popup.jsx'));
+      , popup = findType(comboBox, require('../src/Popup.jsx'));
 
 
     expect(comboBox.state.open).to.not.be(true)
@@ -64,7 +64,7 @@ describe('ComboBox', function(){
   it('should open when clicked', function(done){
     var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0}/>)
       , input = findClass(comboBox, 'rw-input').getDOMNode()
-      , popup = findType(comboBox, require('../src/popup/popup.jsx'))
+      , popup = findType(comboBox, require('../src/Popup.jsx'))
 
     trigger.click(findClass(comboBox, 'rw-select').getDOMNode())
 

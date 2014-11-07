@@ -96,7 +96,7 @@ var NumberPicker = React.createClass({
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
-        className={(className ||'') + ' ' + cx({
+        className={cx(className, {
           'rw-number-picker':   true,
           'rw-widget':          true,
           'rw-state-focus':     this.state.focused,
@@ -240,5 +240,6 @@ var NumberPicker = React.createClass({
 })
 
 module.exports = controlledInput.createControlledClass(
-    'NumberPicker', NumberPicker
-  , { value: 'onChange' });
+    NumberPicker, { value: 'onChange' });
+
+module.exports.BaseNumberPicker = NumberPicker

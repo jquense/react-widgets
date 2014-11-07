@@ -1,8 +1,10 @@
+/* global it, describe, expect, sinon */
+'use strict';
 require('../vendor/phantomjs-shim')
 
-var React = require('react/addons');
-var Dropdown = require('../src/dropdowns/dropdown-list.jsx')
-  , _ = require('lodash');
+var React    = require('react/addons')
+  , Dropdown = require('../src/DropdownList.jsx')
+  , _        = require('lodash');
 
 //console.log(sinon)
 var TestUtils = React.addons.TestUtils
@@ -39,7 +41,7 @@ describe('DROPDOWNS', function(){
 
   it('should start closed', function(done){
     var dropdown = render(<Dropdown defaultValue={0} data={data} textField='label' valueField='id' />);
-    var popup = findType(dropdown, require('../src/popup/popup.jsx'));
+    var popup = findType(dropdown, require('../src/Popup.jsx'));
 
     expect(dropdown.state.open).to.not.be(true)
     expect(dropdown.getDOMNode().className).to.not.match(/\brw-open\b/)
@@ -65,7 +67,7 @@ describe('DROPDOWNS', function(){
 
   it('should open when clicked', function(done){
     var dropdown = render(<Dropdown defaultValue={'jimmy'} data={data} duration={0}/>);
-    var popup = findType(dropdown, require('../src/popup/popup.jsx'))
+    var popup = findType(dropdown, require('../src/Popup.jsx'))
 
     trigger.click(dropdown.getDOMNode())
 

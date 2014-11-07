@@ -5,28 +5,28 @@ var React = require('react')
   , scrollTo = require('./util/scroll');
 
 var propTypes = {
-    data:          React.PropTypes.array,
-    value:         React.PropTypes.oneOfType([
-                    React.PropTypes.any,
-                    React.PropTypes.array
-                   ]),
-    onChange:      React.PropTypes.func,
+    data:           React.PropTypes.array,
+    value:          React.PropTypes.oneOfType([
+                      React.PropTypes.any,
+                      React.PropTypes.array
+                    ]),
+    onChange:       React.PropTypes.func,
 
-    multiple:      React.PropTypes.bool,
-    itemComponent: React.PropTypes.func,
+    multiple:       React.PropTypes.bool,
+    itemComponent:  React.PropTypes.func,
     
-    valueField:    React.PropTypes.string,
-    textField:     React.PropTypes.string,
+    valueField:     React.PropTypes.string,
+    textField:      React.PropTypes.string,
 
     busy:           React.PropTypes.bool,
 
     delay:          React.PropTypes.number, 
 
     disabled:       React.PropTypes.oneOfType([
-                        React.PropTypes.array,
-                        React.PropTypes.bool,
-                        React.PropTypes.oneOf(['disabled'])
-                      ]),
+                      React.PropTypes.array,
+                      React.PropTypes.bool,
+                      React.PropTypes.oneOf(['disabled'])
+                    ]),
 
     readOnly:       React.PropTypes.oneOfType([
                       React.PropTypes.bool,
@@ -34,8 +34,8 @@ var propTypes = {
                       React.PropTypes.oneOf(['readonly'])
                     ]),
 
-    messages:      React.PropTypes.shape({
-      emptyList:   React.PropTypes.string
+    messages:       React.PropTypes.shape({
+      emptyList:    React.PropTypes.string
     }),
   }
 
@@ -109,7 +109,7 @@ var CheckboxList = React.createClass({
         aria-activedescendent={ this.state.focused ? optID : undefined }
         aria-disabled={ this.isDisabled() }
         aria-readonly={ this.isReadOnly() }
-        className={(className ||'') + ' ' + cx({ 
+        className={cx(className, { 
           'rw-widget':         true,
           'rw-checkboxlist':   true,
           'rw-state-focus':    this.state.focused,

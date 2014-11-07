@@ -113,7 +113,7 @@ var Select = React.createClass({
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
-        className={(className ||'') + ' ' + cx({
+        className={cx(className, {
           'rw-select-list':    true,
           'rw-widget':         true,
           'rw-state-focus':    this.state.focused,
@@ -308,5 +308,6 @@ var Select = React.createClass({
 
 
 module.exports = controlledInput.createControlledClass(
-    'Select', Select
-  , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
+    Select, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
+
+module.exports.BaseMultiselect = Select

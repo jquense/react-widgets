@@ -6,7 +6,7 @@ var Calendar = require('../src/Calendar.jsx')
 var DatePicker = require('../src/DateTimepicker.jsx')
 var NumberPicker = require('../src/NumberPicker.jsx')
 var ComboBox = require('../src/Combobox.jsx')
-var CheckboxList = require('../src/SelectList.jsx')
+var SelectList = require('../src/SelectList.jsx')
 var chance = new (require('chance'))
 var _ = require('lodash')
 
@@ -66,7 +66,7 @@ var App = React.createClass({
           <div style={{ height: 150 }}>
             sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
           </div>
-          <CheckboxList
+          <SelectList
             textField='name'
             valueField='id'
             data={this.state.data}

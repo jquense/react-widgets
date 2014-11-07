@@ -142,7 +142,7 @@ var ComboBox = React.createClass({
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
-        className={(className ||'') + ' ' + cx({
+        className={cx(className, {
           'rw-combobox':        true,
           'rw-widget':          true,
           'rw-state-focus':     this.state.focused,
@@ -237,7 +237,7 @@ var ComboBox = React.createClass({
 
     suggestion = suggestion || strVal
 
-    data = find(self.props.data, 
+    data = _.find(self.props.data, 
       item => this._dataText(item).toLowerCase() === suggestion.toLowerCase())
 
     this.change(!this._deleting && data
@@ -264,13 +264,10 @@ var ComboBox = React.createClass({
 
   _keyDown: function(e){
     var self = this
-      , key = e.key
-      , alt = e.altKey
-      , character = String.fromCharCode(e.keyCode)
-      , selectedIdx = this.state.selectedIndex
+      , key  = e.key
+      , alt  = e.altKey
       , focusedIdx  = this.state.focusedIndex
-      , isOpen      = this.props.open
-      , noselection = selectedIdx == null || selectedIdx === -1;
+      , isOpen      = this.props.open;
 
     if ( key === 'End' )
       select(this._data().length - 1)
@@ -339,7 +336,7 @@ var ComboBox = React.createClass({
     var word = this._dataText(value)
       , matcher = filter.startsWith
       , suggestion = typeof value === 'string'
-          ? find(data, finder, this)
+          ? _.find(data, finder, this)
           : value
 
     if ( suggestion && (!this.state || !this.state.deleting))
@@ -366,15 +363,7 @@ var ComboBox = React.createClass({
   }
 })
 
-
 module.exports = controlledInput.createControlledClass(
-    'ComboBox', ComboBox
-  , { open: 'onToggle', value: 'onChange' });
+      ComboBox, { open: 'onToggle', value: 'onChange' });
 
-function find(arr, cb, thisArg){
-  var idx = -1, len = arr.length;
-
-  while(++idx < arr.length)
-    if( cb.call(thisArg, arr[idx], idx) ) 
-      return arr[idx]
-}
+module.exports.BaseComboBox = ComboBox

@@ -3,7 +3,7 @@
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
-var NumberPicker = require('../src/pickers/numberpicker.jsx')
+var NumberPicker = require('../src/NumberPicker.jsx')
   , _ = require('lodash');
 
 //console.log(sinon)

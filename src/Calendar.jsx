@@ -118,19 +118,20 @@ var Calendar = React.createClass({
   },
 
   render: function(){
-    var {className, ...props } = _.omit(this.props, ['value', 'min', 'max'])
-      , View = VIEW[this.state.view]
-      , unit = this.state.view
+    var {className, ...props } 
+                 = _.omit(this.props, ['value', 'min', 'max'])
+      , View     = VIEW[this.state.view]
+      , unit     = this.state.view
       
       , disabled = this.props.disabled || this.props.readOnly
-      , date = this.state.currentDate
-      , labelId = this._id('_view_label')
-      , key = this.state.view + '_' + dates[this.state.view](date)
-      , id  = this._id('_view');
+      , date     = this.state.currentDate
+      , labelId  = this._id('_view_label')
+      , key      = this.state.view + '_' + dates[this.state.view](date)
+      , id       = this._id('_view');
 
     return (
       <div {...props }
-        className={(className ||'') + ' ' + cx({
+        className={cx(className, {
           'rw-calendar':       true,
           'rw-widget':         true,
           'rw-state-disabled': this.props.disabled,
@@ -196,7 +197,7 @@ var Calendar = React.createClass({
 
     if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
       this._focus(true, 'nav');
-      //console.log('navigate: ', view)
+
       this.setState({
         currentDate:    date,
         slideDirection: slideDir,
@@ -247,11 +248,11 @@ var Calendar = React.createClass({
         e.preventDefault()
         this.navigate(dir.RIGHT)
       }
-    } else {
+    } 
+    else {
       this.refs.currentView._keyDown
         && this.refs.currentView._keyDown(e)
     }
-
   },
 
   _label: function() {
@@ -292,4 +293,6 @@ var Calendar = React.createClass({
 });
 
 module.exports = controlledInput.createControlledClass(
-    'Calendar', Calendar, { value: 'onChange' });
+    Calendar, { value: 'onChange' });
+
+module.exports.BaseCalendar = Calendar

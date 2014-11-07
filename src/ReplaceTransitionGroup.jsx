@@ -1,5 +1,5 @@
 /**
- * A streamlined version of TransitionGroup built for managing at most two 'active' children
+ * A streamlined version of TransitionGroup built for managing at most two active children
  * also provides additional hooks for animation start/end
  * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
  * relevent code is licensed accordingly 
@@ -8,8 +8,8 @@
 "use strict";
 
 var React = require('react')
-  , $ = require('./util/dom')
-  , _ = require('./util/_');
+  , $     = require('./util/dom')
+  , _     = require('./util/_');
 
 
 

@@ -1,68 +1,25 @@
-/*global describe,it,expect */
-"use strict";
+'use strict';
+/*global it, describe, expect */
 
 require('../vendor/phantomjs-shim')
 
-var react= require('react')
-  , cx = require('../src/util/cx')
-  , filters = require('../src/util/filter')
-  , transferProps = require('../src/util/transferProps')
-  , _ = require('../src/util/_')
+var filters = require('../src/util/filter')
+  , cx      = require('../src/util/cx')
+  , _       = require('../src/util/_');
 
 describe('when using Class Set', function(){
 
   it('should concat names', function(){
     expect(cx({ 'a': true, b: true, c: false, d: true})).to.be('a b d')
+    expect(cx('first', { 'a': true, b: true, c: false, d: true})).to.be('first a b d')
   })
 
   it('should ignore empty', function(){
     expect(cx({ 'a': '', b: 0, c: false, d: true})).to.be('d')
+    expect(cx('first', { 'a': '', b: 0, c: false, d: true})).to.be('first d')
   })
   
 })
-
-
-describe('when using prop transfer Utils', function(){
-
-  it('should merge into props object', function(){
-    var props = {}
-      , newProps = transferProps.mergeIntoProps({a: 'hi'}, props)
-
-    expect(props).to.have.property('a', 'hi')
-  })
-
-  it('should merge into descriptor', function(){
-    var child = react.createClass({ render: function(){} })({})
-      , newProps = transferProps.mergeIntoProps({a: 'hi'}, child)
-
-    expect(child.props).to.have.property('a', 'hi')
-  })
-  
-  it('should merge className', function(){
-    var props = { className: 'class hi'}
-      , newProps = transferProps.mergeIntoProps({ className: 'new-class' }, props)
-
-    expect(props).to.have.property('className', 'class hi new-class')
-  })
-
-  it('should merge style', function(){
-    var props = { style: { styleB: true }}
-      , newProps = transferProps.mergeIntoProps({ style: { styleA: true } }, props)
-
-    expect(props.style).to.have.keys(['styleA', 'styleB'])
-  })
-
-  it('should ignore ref, children ,and key', function(){
-    var props = { ref: 'ref', key: 'key', children: [1,2,3] }
-      , newProps = transferProps.mergeIntoProps({ ref: 'refB', key: 'keyB', children: [4,5] }, props)
-
-    expect(props).to.have.property('ref', 'ref')
-      .and.to.have.property('key', 'key')
-
-    expect(props.children).to.be.eql([1,2,3])
-  })
-})
-
 
 describe('_ utils', function(){
 
@@ -114,7 +71,6 @@ describe('_ utils', function(){
   })
 
   it('should TRANSFORM', function(){
-    var obj;
 
     _.transform([1], function(o, v,i){ 
       expect(o).to.eql([])
@@ -135,7 +91,6 @@ describe('_ utils', function(){
       (o, v ) => o[v] = ++v, {})).to.eql({ 0:1, 1: 2})
   })
 })
-
 
 describe('when using array filter helpers', function(){
 

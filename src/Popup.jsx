@@ -8,8 +8,7 @@ var PopupContent = React.createClass({
   render: function(){
     var Content = React.Children.only(this.props.children)
 
-    if( Content.props.className)
-      Content.props.className = Content.props.className + ' rw-popup rw-widget';
+    Content.props.className = (Content.props.className || '') + ' rw-popup rw-widget';
 
     return Content
   }
@@ -98,7 +97,6 @@ module.exports = React.createClass({
           self.ORGINAL_POSITION = null
           self.props.onOpen()
         })
-
   },
 
   close: function(dur){
@@ -132,6 +130,6 @@ module.exports = React.createClass({
 
 
 function childKey(children){
-  var nextChildMapping = React.Children.map(children, function(c){ return c });
+  var nextChildMapping = React.Children.map(children, c => c );
   for(var key in nextChildMapping) return key
 }

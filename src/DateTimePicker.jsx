@@ -7,7 +7,7 @@ var React  = require('react')
   , popups = require('./util/constants').datePopups
 
   , Popup     = require('./Popup.jsx')
-  , Calendar  = require('./Calendar.jsx')
+  , Calendar  = require('./Calendar.jsx').BaseCalendar
   , Time      = require('./TimeList.jsx')
   , DateInput = require('./DateInput.jsx')
   , Btn       = require('./WidgetButton.jsx')
@@ -35,7 +35,7 @@ var propTypes = {
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
 
-    timeComponent:  React.PropTypes.func,
+    timeComponent:  React.PropTypes.node,
     duration:       React.PropTypes.number, //popup
 
     placeholder:    React.PropTypes.string,
@@ -120,7 +120,7 @@ var DateTimePicker = React.createClass({
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
-        className={(className ||'')  + ' ' + cx({
+        className={cx(className, {
           'rw-date-picker':     true,
           'rw-widget':          true,
           'rw-open':            this.props.open,
@@ -245,7 +245,7 @@ var DateTimePicker = React.createClass({
 
     } else if (this.props.open ) {
       if( this.props.open === popups.CALENDAR )
-        this.refs.calPopup.refs.calPopup._keyDown(e) //because right now its wrapped TODO 2.0
+        this.refs.calPopup._keyDown(e)
       if( this.props.open === popups.TIME )
         this.refs.timePopup._keyDown(e)
     }
@@ -292,7 +292,7 @@ var DateTimePicker = React.createClass({
 
   _parse: function(string){
     var parser = typeof this.props.parse === 'function'
-          ? parse
+          ? this.props.parse
           : formatsParser.bind(null, _.splat(this.props.format).concat(this.props.parse));
 
     return parser(string)
@@ -329,7 +329,7 @@ var DateTimePicker = React.createClass({
 
 
 module.exports = controlledInput.createControlledClass(
-    'DateTimePicker', DateTimePicker
+    DateTimePicker
   , { open: 'onToggle', value: 'onChange' });
 
 function formatDate(date, format){
@@ -340,6 +340,8 @@ function formatDate(date, format){
 
   return val;
 }
+
+module.exports.BaseDateTimePicker = DateTimePicker
 
 function formatsParser(formats, str){
   var date;

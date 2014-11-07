@@ -1,7 +1,9 @@
+/* global it, describe, expect */
+'use strict';
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
-var List = require('../src/common/list.jsx')
+var List = require('../src/List.jsx')
   , _ = require('lodash');
 
 //console.log(sinon)

@@ -20,8 +20,8 @@ var propTypes = {
   valueField:     React.PropTypes.string,
   textField:      React.PropTypes.string,
 
-  valueComponent: React.PropTypes.element,
-  itemComponent:  React.PropTypes.element,
+  valueComponent: React.PropTypes.node,
+  itemComponent:  React.PropTypes.node,
   busy:           React.PropTypes.bool,
 
   delay:          React.PropTypes.number,
@@ -109,7 +109,7 @@ var DropdownList = React.createClass({
         aria-disabled={ this.props.disabled }
         aria-readonly={ this.props.readOnly }
         tabIndex={this.props.disabled ? '-1' : "0"}
-        className={(className ||'') + ' ' + cx({
+        className={cx(className, {
           'rw-dropdown-list':   true,
           'rw-widget':          true,
           'rw-state-disabled':  this.props.disabled,
@@ -263,5 +263,6 @@ var DropdownList = React.createClass({
 
 
 module.exports = controlledInput.createControlledClass(
-    'DropDownList', DropdownList
-  , { open: 'onToggle', value: 'onChange' });
+    DropdownList, { open: 'onToggle', value: 'onChange' });
+
+module.exports.BaseDropdownList = DropdownList

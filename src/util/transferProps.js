@@ -3,7 +3,6 @@
 var _ = require('./_')
   , React    = require('react')
   , compat   = require('./compat')
-  , hasOwn   = Object.prototype.hasOwnProperty
   , RESERVED = {
       className:  resolve(joinClasses),
       children:   function(){},
@@ -15,10 +14,10 @@ var _ = require('./_')
 //mutates first arg
 function mergeProps(source, target) {
   for (var key in target) {
-    if (hasOwn.call(RESERVED, key) )
+    if (_.has(RESERVED, key) )
       RESERVED[key](source, target[key], key)
 
-    else if ( !hasOwn.call(source, key) )
+    else if ( !_.has(source, key) )
       source[key] = target[key];
   }
   return source
@@ -26,31 +25,16 @@ function mergeProps(source, target) {
 
 module.exports = {
 
-  mergeIntoProps: function (obj, desc) {
-    var props = desc.props ? desc.props : desc;
-    mergeProps(props, obj)
-    return desc
-  },
-
   cloneWithProps: function (child, props) {
-    var newProps = mergeProps(_.extend({}, props), child.props)
-      , version  = compat.version();
+    var newProps = mergeProps(_.extend({}, props), child.props);
 
-    if (!hasOwn.call(newProps, 'children') && hasOwn.call(child.props, 'children'))
+    if (!_.has(newProps, 'children') && _.has(child.props, 'children'))
       newProps.children = child.props.children;
 
-    // TODO remove eventually
-    if (version[0] === 0 && version[1] < 11)
-      return child.constructor.ConvenienceConstructor(newProps);
+    mock.isReactLegacyFactory = true
+    mock.type = child.type
 
-    else if (version[0] === 0 && version[1] === 12){
-      //this is SO hacky
-      mock.isReactLegacyFactory = true
-      mock.type = child.type
-      return React.createElement(mock, newProps);
-    }
-
-    return child.constructor(newProps);
+    return React.createElement(mock, newProps);
 
     function mock(){}
   }
@@ -59,7 +43,7 @@ module.exports = {
 
 function resolve(fn){
   return function(src, value, key){
-    if( !hasOwn.call(src, key)) src[key] = value
+    if( !_.has(src, key)) src[key] = value
     else src[key] = fn(src[key], value)
   }
 }
