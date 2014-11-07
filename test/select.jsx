@@ -57,7 +57,7 @@ describe('Select', function(){
     var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0}/>);
     var popup = findType(select, require('../src/Popup.jsx'))
 
-    trigger.click(findClass(select, 'rw-select-wrapper').getDOMNode())
+    trigger.click(findClass(select, 'rw-multiselect-wrapper').getDOMNode())
 
     setTimeout(function() {
       expect(select.state.open).to.be(true)
