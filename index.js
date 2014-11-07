@@ -9,8 +9,8 @@ module.exports = {
   DateTimePicker:   require('./lib/DateTimePicker'),
 
   NumberPicker:     require('./lib/NumberPicker'),
+  
   Multiselect:      require('./lib/Multiselect'),
-
   SelectList:       require('./lib/SelectList'),
 
   utils: {

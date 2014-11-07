@@ -110,7 +110,7 @@ var DropdownList = React.createClass({
         aria-readonly={ this.props.readOnly }
         tabIndex={this.props.disabled ? '-1' : "0"}
         className={cx(className, {
-          'rw-dropdown-list':   true,
+          'rw-dropdownlist':   true,
           'rw-widget':          true,
           'rw-state-disabled':  this.props.disabled,
           'rw-state-readonly':  this.props.readOnly,

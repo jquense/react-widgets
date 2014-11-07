@@ -121,7 +121,7 @@ var DateTimePicker = React.createClass({
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
         className={cx(className, {
-          'rw-date-picker':     true,
+          'rw-datetimepicker':     true,
           'rw-widget':          true,
           'rw-open':            this.props.open,
           'rw-state-focus':     this.state.focused,

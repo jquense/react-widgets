@@ -23,6 +23,22 @@ describe('when using Class Set', function(){
 
 describe('_ utils', function(){
 
+  it('should EACH', function(){
+    var cnt = 0
+    _.each([1], (v, i, a) => {
+      expect(v).equal(1)
+      expect(i).equal(0)
+      expect(a).eql([1])
+    })
+
+    _.each({ a: 1, b: 2, c: 3}, () => cnt++)
+
+    expect(cnt).to.equal(3)
+    cnt = 0
+    _.each([1,2,3], () => cnt++)
+    expect(cnt).to.equal(3)
+  })
+
   it('should OMIT and PICK', function(){
     expect(_.omit({ a: 1, b: 2, c: 3}, ['b','c'])).to.eql({ a: 1 })
     expect(_.pick({ a: 1, b: 2, c: 3}, ['b','c'])).to.eql({ b: 2, c: 3 })
@@ -31,15 +47,6 @@ describe('_ utils', function(){
   it('should FINDINDEX', function(){
     expect(_.findIndex([1,2,3,4,5], v => v === 2)).to.equal(1)
     expect(_.findIndex([1,2,3,4,5], (v, i) => i === 2)).to.equal(2)
-  })
-
-  it('should FILTER', function(){
-    expect( _.filter([1,2,3,4,5], (v, i) => v > 2 && i < 4 )).to.eql([3,4])
-  })
-
-  it('should SOME', function(){
-    expect(_.some([1,2,3,4,5], (v, i) => v > 2 )).to.equal(true)
-    expect(_.some([1,2,3,4,5], (v, i) => i > 2 )).to.equal(true)
   })
 
   it('should UNIQUEID', function(){

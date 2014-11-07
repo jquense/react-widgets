@@ -114,7 +114,7 @@ var Select = React.createClass({
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
         className={cx(className, {
-          'rw-select-list':    true,
+          'rw-multiselect':    true,
           'rw-widget':         true,
           'rw-state-focus':    this.state.focused,
           'rw-state-disabled': this.props.disabled === true,
@@ -122,7 +122,7 @@ var Select = React.createClass({
           'rw-open':           this.props.open,
           'rw-rtl':            this.isRtl()
         })}>
-        <div className='rw-select-wrapper' onClick={this._maybeHandle(this._click)}>
+        <div className='rw-multiselect-wrapper' onClick={this._maybeHandle(this._click)}>
           { this.props.busy &&
             <i className="rw-i rw-loading"></i>
           }
@@ -290,7 +290,7 @@ var Select = React.createClass({
   },
 
   process: function(data, values, searchTerm){
-    var items = _.filter(data, i => !_.some(values, this._valueMatcher.bind(null, i), this), this)
+    var items = data.filter( i => !values.some( this._valueMatcher.bind(null, i), this), this)
 
     if( searchTerm)
       items = this.filter(items, searchTerm)

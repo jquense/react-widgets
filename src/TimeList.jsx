@@ -2,7 +2,6 @@
 var React = require('react')
   , dates = require('./util/dates')
   , List = require('./List.jsx')
-  , mergeIntoProps = require('./util/transferProps').mergeIntoProps
   , _ = require('./util/_') // omit
 
 

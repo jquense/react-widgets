@@ -4,7 +4,7 @@ var React   = require('react')
   , helper  = require('./DataHelpersMixin')
   , _      = require('../util/_');
 
-var filterTypes = _.filter( Object.keys(filters), i => i !== 'filter')
+var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
 
 module.exports = {
   
@@ -64,7 +64,7 @@ module.exports = {
       if ( !this.props.caseSensitive)
         searchTerm = searchTerm.toLowerCase();
 
-      return _.filter(items, item => {
+      return items.filter( item => {
         var val = helper._dataText.call(this, item);
 
         if ( !this.props.caseSensitive)

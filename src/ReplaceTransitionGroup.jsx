@@ -11,8 +11,6 @@ var React = require('react')
   , $     = require('./util/dom')
   , _     = require('./util/_');
 
-
-
 module.exports = React.createClass({
 
   displayName: 'ReplaceTransitionGroup',
@@ -173,7 +171,7 @@ module.exports = React.createClass({
     if (key(this.props.children) === leavekey )
       this.performEnter(leavekey); // This entered again before it fully left. Add it again.
     else {
-      var newChildren = _.filter(this.state.children, c => key(c) !== leavekey);
+      var newChildren = this.state.children.filter( c => key(c) !== leavekey);
       this.setState({ children: newChildren });
     }
 

@@ -25,10 +25,7 @@ var _ =
     }, 
 
     transform: function(obj, cb, seed){
-      seed = seed || (Array.isArray(obj) ? [] : {})
-      _.each(obj, function(v, k, l){
-        cb(seed, v, k, l)
-      })
+      _.each(obj, cb.bind(null, seed = seed || (Array.isArray(obj) ? [] : {})))
       return seed
     },
 
@@ -40,29 +37,8 @@ var _ =
     },
 
     object: function(arr){
-      return _.transform(arr, function(obj, val){
-        obj[val[0]] = val[1]
-      }, {})
-    },
-
-    filter: function(arr, cb, thisArg){
-      var idx = -1, len = arr.length
-        , result = [];
-
-      while( ++idx < len)
-        if ( cb.call(thisArg, arr[idx], idx, arr) ) 
-          result.push(arr[idx])
-      
-      return result
-    },
-
-    some: function(arr, cb, thisArg){
-      var idx = -1, len = arr.length;
-
-      while( ++idx < len)
-        if ( cb.call(thisArg, arr[idx], idx, arr) ) return true
-      
-      return false
+      return _.transform(arr, 
+        (obj, val) => obj[val[0]] = val[1], {})
     },
 
     pick: function(obj, keys){

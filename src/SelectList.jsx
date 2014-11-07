@@ -2,6 +2,7 @@
 var React = require('react')
   , _  = require('./util/_')
   , cx = require('./util/cx')
+  , controlledInput  = require('./util/controlledInput')
   , scrollTo = require('./util/scroll');
 
 var propTypes = {
@@ -40,7 +41,7 @@ var propTypes = {
   }
 
 
-var CheckboxList = React.createClass({
+var SelectList = React.createClass({
 
   propTypes: propTypes,
 
@@ -111,7 +112,7 @@ var CheckboxList = React.createClass({
         aria-readonly={ this.isReadOnly() }
         className={cx(className, { 
           'rw-widget':         true,
-          'rw-checkboxlist':   true,
+          'rw-selectlist':   true,
           'rw-state-focus':    this.state.focused,
           'rw-state-disabled': this.isDisabled(),
           'rw-state-readonly': this.isReadOnly(),
@@ -218,11 +219,11 @@ var CheckboxList = React.createClass({
 
     disabled = Array.isArray(disabled) ? disabled : [];
     //disabled values that are not selected
-    blacklist = _.filter(disabled, v => !this._contains(v, values))
-    data      = _.filter(data,     v => !this._contains(v, blacklist))
+    blacklist = disabled.filter( v => !this._contains(v, values))
+    data      = data.filter( v => !this._contains(v, blacklist))
 
     if ( data.length === values.length) {
-      data = _.filter(disabled, v => this._contains(v, values))
+      data = disabled.filter( v => this._contains(v, values))
       data = data.map( v => this._dataItem(this._data(), v))
     }
 
@@ -243,7 +244,7 @@ var CheckboxList = React.createClass({
 
     values = checked 
       ? values.concat(item)
-      : _.filter(values, v => v !== item)
+      : values.filter( v => v !== item)
 
     this.notify('onChange', [values || []])
   },
@@ -283,7 +284,7 @@ var CheckboxList = React.createClass({
 
   _contains: function(item, values){
     return Array.isArray(values) 
-      ? _.some(values, this._valueMatcher.bind(null, item))
+      ? values.some(this._valueMatcher.bind(null, item))
       : this._valueMatcher(item, values)
   },
 
@@ -313,11 +314,11 @@ var SelectListItem = React.createClass({
           'rw-state-disabled': props.disabled,
           'rw-state-readonly': props.readOnly
         })}>
-        { mergeIntoProps(props, 
-          <input tabIndex='-1' onChange={change} 
-            disabled={props.disabled ||props.readOnly }
-            aria-disabled={ props.disabled ||props.readOnly } />)
-        }
+        <input { ...props} 
+          tabIndex='-1'
+          onChange={change} 
+          disabled={props.disabled ||props.readOnly }
+          aria-disabled={ props.disabled ||props.readOnly } />
         { this.props.children }
       </label>
     );
@@ -330,4 +331,9 @@ var SelectListItem = React.createClass({
 
 })
 
-module.exports = CheckboxList;
+module.exports = SelectList;
+
+module.exports = controlledInput.createControlledClass(
+    SelectList, { value: 'onChange' });
+
+module.exports.BaseSelectList = SelectList

@@ -49,7 +49,7 @@ module.exports = React.createClass({
 
       return (
         <ul {...props} 
-          className='rw-tag-list'>
+          className='rw-multiselect-taglist'>
           { value.map( (item, i) => {
             var disabled = this.isDisabled(item)
               , readonly = this.isReadOnly(item);

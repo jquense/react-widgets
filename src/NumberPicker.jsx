@@ -97,7 +97,7 @@ var NumberPicker = React.createClass({
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
         className={cx(className, {
-          'rw-number-picker':   true,
+          'rw-numberpicker':   true,
           'rw-widget':          true,
           'rw-state-focus':     this.state.focused,
           'rw-state-disabled':  this.props.disabled,

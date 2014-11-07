@@ -14,6 +14,43 @@ A set of the basic ui widgets built from scratch with React, based on the excell
 
 __Demos and Documentation [here](http://jquense.github.io/react-widgets/docs/)__
 
+### Migration
+
+__Required Shims__
+
+Es5 shims.
+
+- Array.prototype.filter
+- Array.prototype.some
+- Array.prototype.reduce
+
+find/replace
+__Exported Widget Names__
+
+- `require('react-widgets').DropDownlist` -> `require('react-widgets').Dropdownlist`
+- `require('react-widgets').Select`       -> `require('react-widgets').Multiselect`
+
+__Require Paths__
+If you require widgets individually from the `lib` directory then most widgets have moved and changed names slightly
+
+- `react-widgets/lib/select/select`           -> `react-widgets/lib/Multiselect`
+- `react-widgets/lib/calendar/calendar`       -> `react-widgets/lib/Calendar`
+- `react-widgets/lib/pickers/datepicker`      -> `react-widgets/lib/DateTimePicker`
+- `react-widgets/lib/pickers/numberpicker`    -> `react-widgets/lib/NumberPicker`
+- `react-widgets/lib/dropdowns/dropdown-list` -> `react-widgets/lib/DropdownList`
+- `react-widgets/lib/dropdowns/combobox`      -> `react-widgets/lib/Combobox`
+
+__CSS__
+
+Some CSS class names have changed.
+
+- `rw-dropdown-list`  -> `rw-dropdownlist`
+- `rw-number-picker`  -> `rw-numberpicker`
+- `rw-date-picker`    -> `rw-datetimepicker`
+- `rw-select-list`    -> `rw-multiselect`
+- `rw-select-wrapper` -> `rw-multiselect-wrapper`
+- `rw-tag-list`       -> `rw-multiselect-taglist`
+
 
 ### Install
 
