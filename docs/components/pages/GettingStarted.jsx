@@ -57,15 +57,16 @@ var GettingStarted = React.createClass({
 
         <h2 id='intro/deps' className='prop-header'>External Dependencies</h2>
         <p>
-          React-widgets is compatible with <code>React</code> 0.9.0+, and expects it to be bundled.
-          Comsumers of the NPM package should note that React is not listed as direct, or peer dependency. This is help
-          reduce the friction that Peer Dependencies can cause. This means that NPM will not warn you if you try to use
-          react-widgets with an incompatible React version.
+          React-widgets <b>2.x</b> is compatible with React <b>0.12.0+</b>, and <b>1.x</b> supports
+           React <b>0.9.0</b> to <b>0.10.0</b>. Either branch
+           expects React to be bundled by you. Comsumers of the NPM package should note that React is not listed as direct, 
+           or peer dependency. This is help reduce the friction that Peer Dependencies can cause. 
+           This means that NPM will not warn you if you try to use react-widgets with an incompatible React version.
         </p>
         <p>
           If you use Browserify or Webpack to build your projects, the dependencies listed below will automatically be
           included. They are listed for the sake of those who wish to externalize the lib dependencies to reduce
-          duplication, or wish to use a different, compatible library (such as underscore).
+          duplication, or wish to use a different, compatible, library.
 
           <ul>
             <li>
