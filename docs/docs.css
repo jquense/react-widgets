@@ -139,13 +139,26 @@ pre {
   border-top-left-radius: 0;*/
 }
 .dropdown-menu > li > a,
-.side-nav .nav > li > a {
+.side-nav .nav li > a {
   color: #284C6D;
   border-left: 2px solid transparent;
 }
 
-.side-nav .nav > li > a:hover,
-.side-nav .nav > li.active > a,
+.side-nav .nav > li.active .nav {
+  display: block;}
+
+.side-nav .nav .nav {
+  display: none;
+  padding-bottom: 10px;
+  padding-left: 30px;
+}
+
+.side-nav .nav .nav > li > a {
+  font-size: 80%;
+}
+
+.side-nav .nav li > a:hover,
+.side-nav .nav li.active > a,
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li.active > a  {
   color: #B59E7D;
