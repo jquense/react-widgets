@@ -8,7 +8,7 @@ module.exports = {
 	MenuItem: 		require('react-bootstrap/src/MenuItem'),
 
 	Nav: require('react-bootstrap/src/Nav'),
+	Navbar: require('react-bootstrap/src/Navbar'),
 	SubNav: require('react-bootstrap/src/SubNav'),
 	NavItem: require('react-bootstrap/src/NavItem'),
-	Navbar: require('react-bootstrap/src/Navbar'),
 }

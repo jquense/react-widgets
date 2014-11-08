@@ -67,7 +67,7 @@
     "phantomjs": "~1.9.10",
     "raw-loader": "^0.5.1",
     "react": "^0.12.0",
-    "react-bootstrap": "git://github.com/trentgrover-wf/react-bootstrap.git#react12",
+    "react-bootstrap": "git://github.com/jquense/react-bootstrap.git",
     "sinon": "~1.10.3",
     "sinon-chai": "~2.5.0",
     "style-loader": "^0.7.0",

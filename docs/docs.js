@@ -59,7 +59,7 @@
 	  , DatePicker     = __webpack_require__(10)
 	  , NumberPicker   = __webpack_require__(11);
 	
-	__webpack_require__(13)
+	//require('../docs.css')
 	
 	var locations = [
 	      '#intro','#dropdown-list', '#combobox',
@@ -174,25 +174,25 @@
 	
 	
 	module.exports = {
-		Button: 		__webpack_require__(26),
-		ButtonGroup: 	__webpack_require__(27),
+		Button: 		__webpack_require__(23),
+		ButtonGroup: 	__webpack_require__(24),
 	
-		DropdownButton: __webpack_require__(28),
-		MenuItem: 		__webpack_require__(29),
+		DropdownButton: __webpack_require__(25),
+		MenuItem: 		__webpack_require__(26),
 	
-		Nav: __webpack_require__(30),
-		SubNav: __webpack_require__(31),
-		NavItem: __webpack_require__(32),
-		Navbar: __webpack_require__(33),
+		Nav: __webpack_require__(27),
+		Navbar: __webpack_require__(28),
+		SubNav: __webpack_require__(29),
+		NavItem: __webpack_require__(30),
 	}
 
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var React   = __webpack_require__(1)
-	var Nav     = __webpack_require__(2).Nav
-	  , NavItem = __webpack_require__(2).NavItem
+	/** @jsx React.DOM */'use strict';
+	var React   = __webpack_require__(1)
+	var Tbs     = __webpack_require__(2)
 	
 	
 	module.exports = React.createClass({
@@ -211,16 +211,11 @@
 	    )
 	
 	    return (
-	      React.createElement("nav", {className: "navbar navbar-default navbar-fixed-top"}, 
-	        React.createElement("div", {className: "container"}, 
-	          React.createElement("div", {className: "navbar-header"}
-	
-	          ), 
-	          React.createElement(Nav, {role: "navigation", key: 0, activeKey: "docs", className: "navbar-nav"}, 
-	            React.createElement(NavItem, {key: "docs", href: "#"}, "Docs"), 
-	            React.createElement(NavItem, {key: "dl", href: "https://github.com/jquense/react-widgets/releases"}, "Download"), 
-	            React.createElement(NavItem, {key: "github", href: "https://github.com/jquense/react-widgets"}, "Github")
-	          )
+	      React.createElement(Tbs.Navbar, {fixedTop: true, activeKey: this.props.page, toggleNavKey: 0, toggleButton: toggle, brand: "React Widgets"}, 
+	        React.createElement(Tbs.Nav, {role: "navigation", selectKey: 0, activeKey: "docs", className: "navbar-nav"}, 
+	          React.createElement(Tbs.NavItem, {key: "docs", href: "#"}, "Docs"), 
+	          React.createElement(Tbs.NavItem, {key: "dl", href: "https://github.com/jquense/react-widgets/releases"}, "Download"), 
+	          React.createElement(Tbs.NavItem, {key: "github", href: "https://github.com/jquense/react-widgets"}, "Github")
 	        )
 	      )
 	    )
@@ -273,10 +268,9 @@
 	
 	        React.createElement("h2", {id: "intro/install", className: "prop-header"}, "Install ", React.createElement("a", null)), 
 	        React.createElement("p", null, 
-	          "The prefered way is to use NPM ", React.createElement("code", null, "npm install react-widgets"), " and make use of something like Webpack or" + ' ' +
-	          "Browserify to bundle the lib." + ' ' +
-	          "There is also a traditional browser build available for download in the ", React.createElement("strong", null, "browser"), " folder." + ' ' +
-	          "It does not bundle any dependencies listed below, and" + ' ' +
+	          "The prefered way to install is NPM (", React.createElement("code", null, "npm install react-widgets"), ") and make use of something like Webpack or" + ' ' +
+	          "Browserify to bundle the library. There is also a traditional browser build available for" + ' ' + 
+	          "download in the ", React.createElement("strong", null, "browser"), " folder. The browser build does not bundle any dependencies, and" + ' ' +
 	          "attaches itself to the ", React.createElement("code", null, "window"), " as ", React.createElement("code", null, "ReactWidgets")
 	        ), 
 	        React.createElement("p", null, 
@@ -290,10 +284,10 @@
 	
 	        React.createElement("h2", {id: "intro/deps", className: "prop-header"}, "External Dependencies"), 
 	        React.createElement("p", null, 
-	          "React-widgets ", React.createElement("b", null, "2.x"), " is compatible with React ", React.createElement("b", null, "0.12.0+"), ", and ", React.createElement("b", null, "1.x"), " supports" + ' ' +
+	          "React-widgets ", React.createElement("b", null, "2.x"), " is compatible with React ", React.createElement("b", null, "0.12.0+"), ", while the ", React.createElement("b", null, "1.x"), " branch supports" + ' ' +
 	           "React ", React.createElement("b", null, "0.9.0"), " to ", React.createElement("b", null, "0.10.0"), ". Either branch" + ' ' +
-	           "expects React to be bundled by you. Comsumers of the NPM package should note that React is not listed as direct," + ' ' + 
-	           "or peer dependency. This is help reduce the friction that Peer Dependencies can cause." + ' ' + 
+	           "expects React to be bundled by you. Consumers of the NPM package should note that React is not listed as direct," + ' ' + 
+	           "or peer dependency. This is to help reduce the friction that Peer Dependencies can cause." + ' ' + 
 	           "This means that NPM will not warn you if you try to use react-widgets with an incompatible React version."
 	        ), 
 	        React.createElement("p", null, 
@@ -310,15 +304,27 @@
 	        ), 
 	        React.createElement("h2", {id: "intro/browser"}, "Older Browser Support"), 
 	        React.createElement("p", null, 
-	          "Moving forward react-widgets is working to reduce dependence on external utility-belt libraries in favor of" + ' ' + 
-	          "using polyfills for older, non es5 compliant, browsers. For consumers supporting older browsers you will already" + ' ' +
-	          "be using the necessary polyfills that ",  
-	          React.createElement("a", {target: "_blank", href: "http://facebook.github.io/react/docs/working-with-the-browser.html#polyfills-needed-to-support-older-browsers"}, 
-	            "React requires ", React.createElement("i", {className: "fa fa-external-link"})
-	          )
+	          "Rather than including an entire utility library, like underscore, react widgets takes a hint from React itself," + ' ' + 
+	          "and instead relies on es5 (and transpiled es6) functionality. For most browsers this is will not be an issue, as es5" + ' ' + 
+	          "is ", React.createElement("a", {href: "http://kangax.github.io/compat-table/es5/"}, "very well supported"), " by modern browsers. However older" + ' ' + 
+	          "browsers will need the required functionality polyfilled. In most clases React already requires most of the needed shims" + ' ' + 
+	          "(", 
+	            React.createElement("a", {target: "_blank", href: "http://facebook.github.io/react/docs/working-with-the-browser.html#polyfills-needed-to-support-older-browsers"}, 
+	            "see here ", React.createElement("i", {className: "fa fa-external-link"})
+	          ), "). If you are already including ", React.createElement("a", {href: "https://github.com/es-shims/es5-shim"}, "kriskowal's es5-shim"), " then" + ' ' + 
+	          "react-widgets propbably has everything it needs." + ' ' +
+	
+	          "For those interested in the specific additions needed by react-widgets they are:", 
+	          React.createElement("ul", null, 
+	            React.createElement("li", null, React.createElement("code", null, "Array.prototype.some")), 
+	            React.createElement("li", null, React.createElement("code", null, "Array.prototype.filter")), 
+	            React.createElement("li", null, React.createElement("code", null, "Array.prototype.reduce"))
+	          ), 
+	
+	          "You can use the excellent ", React.createElement("a", {href: "https://github.com/es-shims/es5-shim"}, "kriskowal's es5-shim"), " for all of these."
 	        ), 
 	
-	        React.createElement("h2", {id: "intro/access", className: "prop-header"}, "Accessibility and Read Direction"), 
+	        React.createElement("h2", {id: "intro/access"}, "Accessibility and Read Direction"), 
 	        React.createElement("p", null, 
 	          "React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for" + ' ' +
 	          "date and number localization, there is first class support for cultures and languages that read" + ' ' +
@@ -340,10 +346,10 @@
 	
 	          React.createElement("ul", null, 
 	            React.createElement("li", null, 
-	              "Widget styles with LESS variables (see ", React.createElement("code", null, "./src/less/bootstrap-theme.less"), " for reference)."
+	              "Widget styles with LESS variables (see ", React.createElement("code", null, "./lib/less/bootstrap-theme.less"), " for reference)."
 	            ), 
 	            React.createElement("li", null, 
-	              "Icon fonts can be swapped out in the ", React.createElement("code", null, "./src/less/icons.less"), " file"
+	              "Icon fonts can be swapped out in the ", React.createElement("code", null, "./lib/less/icons.less"), " file"
 	            )
 	          )
 	        )
@@ -361,11 +367,11 @@
 
 	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(17)
-	  , Example = __webpack_require__(18)
+	  , Default = __webpack_require__(14)
+	  , Example = __webpack_require__(15)
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
-	  , DropdownListExample = __webpack_require__(19);
+	  , DropdownListExample = __webpack_require__(18);
 	
 	var prefix = 'DropdownList/'
 	var widgetName = 'DropdownList'
@@ -549,11 +555,11 @@
 
 	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(17)
-	  , Example = __webpack_require__(18)
+	  , Default = __webpack_require__(14)
+	  , Example = __webpack_require__(15)
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
-	  , ComboBoxExample = __webpack_require__(20);
+	  , ComboBoxExample = __webpack_require__(16);
 	
 	var prefix = 'combobox/'
 	var widgetName = 'Combobox'
@@ -767,11 +773,11 @@
 
 	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(17)
-	  , Example = __webpack_require__(18)
+	  , Default = __webpack_require__(14)
+	  , Example = __webpack_require__(15)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , MultiselectExample = __webpack_require__(21);
+	  , MultiselectExample = __webpack_require__(22);
 	
 	var prefix = 'multiselect/';
 	var widgetName = 'Multiselect'
@@ -995,11 +1001,11 @@
 
 	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(17)
-	  , Example = __webpack_require__(18)
+	  , Default = __webpack_require__(14)
+	  , Example = __webpack_require__(15)
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
-	  , SelectListExample = __webpack_require__(22);
+	  , SelectListExample = __webpack_require__(17);
 	
 	var prefix = 'selectlist/'
 	var widgetName = 'SelectList'
@@ -1172,11 +1178,11 @@
 
 	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(17)
-	  , Example = __webpack_require__(18)
+	  , Default = __webpack_require__(14)
+	  , Example = __webpack_require__(15)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , CalendarExample = __webpack_require__(23);
+	  , CalendarExample = __webpack_require__(21);
 	
 	var prefix = 'calendar/'
 	var Calendar = React.createClass({displayName: 'Calendar',
@@ -1328,11 +1334,11 @@
 
 	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(17)
-	  , Example = __webpack_require__(18)
+	  , Default = __webpack_require__(14)
+	  , Example = __webpack_require__(15)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , DatePickerExample = __webpack_require__(24);
+	  , DatePickerExample = __webpack_require__(19);
 	
 	var prefix = 'date-picker/'
 	var widgetName = 'DateTimePicker'
@@ -1566,11 +1572,11 @@
 
 	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(17)
-	  , Example = __webpack_require__(18)
+	  , Default = __webpack_require__(14)
+	  , Example = __webpack_require__(15)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , NumberPickerExample = __webpack_require__(25);
+	  , NumberPickerExample = __webpack_require__(20);
 	
 	var prefix = 'number-picker/'
 	var NumberPicker = React.createClass({displayName: 'NumberPicker',
@@ -1702,7 +1708,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(13)
 	
 	module.exports = function(existing, classes) {
 		if(arguments.length === 1 )
@@ -1724,73 +1730,6 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	var update = __webpack_require__(15)(
-		__webpack_require__(14)
-	);
-	// Hot Module Replacement
-	if(false) {
-		module.hot.accept("!!E:\\Projects\\react-widgets\\node_modules\\css-loader\\index.js!E:\\Projects\\react-widgets\\docs\\docs.css", function() {
-			update(require("!!E:\\Projects\\react-widgets\\node_modules\\css-loader\\index.js!E:\\Projects\\react-widgets\\docs\\docs.css"));
-		});
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports =
-		"\r\nbody {\r\n  margin-bottom: 40px;\r\n  background: #FAFAF9;\r\n}\r\n\r\nh2, h3 {\r\n  margin-top: 40px;\r\n}\r\n\r\nh3 {\r\n  color: #284C6D;\r\n  border-bottom: 1px solid #eee;\r\n  padding-bottom: 10px;\r\n  font-size: 20px;\r\n\r\n}\r\n\r\n.example {\r\n  background-color: white;\r\n  margin-top: 20px;\r\n  position: relative;\r\n  border: #ddd 1px solid;\r\n  border-top-right-radius: 4px;\r\n  border-top-left-radius: 4px;\r\n  padding: 20px;\r\n  padding-top: 35px;\r\n}\r\n\r\ncode {\r\n  color: #555;\r\n  background-color: rgba(0,0,0,0.07);\r\n}\r\n.example:before {\r\n  position: absolute;\r\n  top: 5px;\r\n  left: 10px;\r\n  color: #959595;\r\n  content: 'Example';\r\n}\r\n.example + pre {\r\n /* background-color: #444;*/\r\n  margin-top: 0 !important;\r\n  border-top-width: 0;\r\n  border-top-left-radius: 0;\r\n  border-top-right-radius: 0;\r\n}\r\n\r\n.keyboard-list.list-unstyled {\r\n  padding-left: 20px;\r\n}\r\n\r\n.keyboard-list > li {\r\n  padding: 10px 0;\r\n}\r\n\r\n.prop-header {\r\n  position: relative;\r\n  overflow: visible;\r\n}\r\n.prop-header:before {\r\n  display: block;\r\n  content: \" \";\r\n  margin-top: -65px;\r\n  height: 65px;\r\n  visibility: hidden;\r\n}\r\n\r\nh3 {\r\n  overflow: hidden;\r\n}\r\nh3 > small {\r\n  margin-left: 5px;\r\n  color: #555;\r\n  font-weight: bold;\r\n  font-size: 80%;\r\n  font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;\r\n}\r\n\r\nh3 > strong {\r\n  float: right;\r\n  font-weight: normal;\r\n  line-height: 1;\r\n  color:  #AF006E;\r\n  font-size: 65%;\r\n  font-style: italic;\r\n}\r\n\r\n.rw-widget {\r\n  max-width: 300px;\r\n}\r\n\r\n.nav-aside {\r\n  position: fixed;\r\n  top: 72px;\r\n}\r\n\r\n@media (max-width: 767px) {\r\n  .nav-aside {\r\n    position: static;\r\n  }\r\n}\r\n\r\npre > code.hljs {\r\n  background: none;\r\n}\r\n\r\npre {\r\n  background: #F4F4F4 ;\r\n}\r\n.navbar-default {\r\n  background-color: #0079C1;\r\n}\r\n\r\n.navbar-default .navbar-nav>li>a {\r\n  color: white;\r\n  border-bottom: 3px solid #0079C1;\r\n}\r\n\r\n.navbar-default .navbar-nav>li>a:hover {\r\n  color: #E7CAA1;\r\n  border-bottom-color: #E7CAA1;\r\n}\r\n.navbar-default .navbar-nav>li>a:hover,\r\n.navbar-default .navbar-nav>li.active > a,\r\n.navbar-default .navbar-nav>li.active > a:hover {\r\n  color: #E7CAA1;\r\n  border-bottom-color: #E7CAA1;\r\n  background: none;\r\n /* color: white;\r\n  background-color: #0B2A46;\r\n  border-bottom: 3px solid #0B2A46;*/\r\n}\r\n\r\n.dropdown-menu{\r\n  border-radius: 0;\r\n /* border-color: #0079C1;\r\n  border-top-right-radius: 0;\r\n  border-top-left-radius: 0;*/\r\n}\r\n.dropdown-menu > li > a,\r\n.side-nav .nav li > a {\r\n  color: #284C6D;\r\n  border-left: 2px solid transparent;\r\n}\r\n\r\n.side-nav .nav > li.active .nav {\r\n  display: block;}\r\n\r\n.side-nav .nav .nav {\r\n  display: none;\r\n  padding-bottom: 10px;\r\n  padding-left: 30px;\r\n}\r\n\r\n.side-nav .nav .nav > li > a {\r\n  font-size: 80%;\r\n}\r\n\r\n.side-nav .nav li > a:hover,\r\n.side-nav .nav li.active > a,\r\n.dropdown-menu > li > a:hover,\r\n.dropdown-menu > li.active > a  {\r\n  color: #B59E7D;\r\n  background: none;\r\n  border-left-color:  #E7CAA1;\r\n}\r\n.page-header {\r\n  color: #0079C1;\r\n  border-bottom-color: #0079C1;\r\n}\r\n\r\n.h1, h2,h4,h5 { color: #0079C1; }\r\n\r\n\r\n.example .demo {\r\n  margin: 40px auto 10px auto;\r\n}\r\n\r\n.example .api-panel {\r\n  padding-top: 10px;\r\n  border-top: #ddd 1px solid;\r\n}\r\n\r\n.example.example-vertical .demo {\r\n  margin: 20px auto 30px auto;\r\n}\r\n\r\n.example.example-vertical .api-panel {\r\n  margin-top: 0;\r\n  border-top: #ddd 1px solid;\r\n  padding-top: 10px;\r\n}\r\n\r\n@media (min-width: 768px) {\r\n  .example .api-panel {\r\n    margin-top: -10px;\r\n    padding-top: 0;\r\n    border-left: #ddd 1px solid;\r\n    border-top-width: 0;\r\n  }\r\n}\r\n\r\n.overdue {\r\n  color: #bd362f;\r\n}";
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	module.exports = function addStyle(cssCode) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-		var styleElement = document.createElement("style"),
-			head = document.head || document.getElementsByTagName("head")[0];
-		styleElement.type = "text/css";
-		head.appendChild(styleElement);
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = cssCode;
-		} else {
-			styleElement.appendChild(document.createTextNode(cssCode));
-		}
-		if(false) {
-			return function(cssCode) {
-				if(typeof cssCode === "string") {
-					if (styleElement.styleSheet) {
-						styleElement.styleSheet.cssText = cssCode;
-					} else {
-						styleElement.childNodes[0].nodeValue = cssCode;
-					}
-				} else {
-					dispose();
-				}
-			};
-		} else {
-			// For the useable API, provide a function to remove the stylesheet.
-			return dispose;
-		}
-	
-		function dispose() {
-			head.removeChild(styleElement);
-		}
-	};
-
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 	var idCount = 0;
 	
@@ -1800,9 +1739,9 @@
 	
 	    has: has,
 	    
-	    merge:  __webpack_require__(47),
+	    merge:  __webpack_require__(37),
 	
-	    extend: __webpack_require__(36),
+	    extend: __webpack_require__(32),
 	
 	    isShallowEqual: function (a, b) {
 	      if (a === b) return true;
@@ -1912,7 +1851,7 @@
 	}
 
 /***/ },
-/* 17 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -1936,11 +1875,11 @@
 	module.exports = defaultValue;
 
 /***/ },
-/* 18 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1)
-	  , _ = __webpack_require__(58);
+	  , _ = __webpack_require__(54);
 	
 	
 	module.exports = React.createClass({displayName: 'exports',
@@ -1963,172 +1902,14 @@
 	})
 
 /***/ },
-/* 19 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , Dropdown = __webpack_require__(34).DropdownList
-	  , NumberPicker = __webpack_require__(34).NumberPicker;
-	
-	var valueComp = React.createClass({displayName: 'valueComp',
-	  render: function() {
-	
-	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.label))
-	  }
-	});
-	
-	var itemComp = React.createClass({displayName: 'itemComp',
-	  render: function() {
-	    var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	    return (
-	      React.createElement("div", null, 
-	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
-	         '  ' + this.props.item.label
-	      )
-	    );
-	  }
-	});
-	
-	
-	function getRandomInt(min, max) {
-	  return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-	
-	
-	var DropdownApi = React.createClass({displayName: 'DropdownApi',
-	
-	  getInitialState: function(){
-	
-	    return {
-	      duration: 250,
-	    }
-	  },
-	
-	  render: function() {
-	    var list = [
-	        { label: 'orange', id: 1 },
-	        { label: 'blue', id: 2 },
-	        { label: 'red', id: 3 },
-	      ];
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-sm-8 demo"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(Dropdown, {
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value || 1, 
-	                data: list, 
-	                duration: this.state.duration, 
-	                busy: this.state.busy, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl, 
-	                valueField: "id", 
-	                textField: "label"}
-	                )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", null, "Custom Rendering"), 
-	              React.createElement(Dropdown, {
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value || 1, 
-	                valueComponent: valueComp, 
-	                itemComponent: itemComp, 
-	                data: list, 
-	                duration: this.state.duration, 
-	                busy: this.state.busy, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl, 
-	                valueField: "id", 
-	                textField: "label"}
-	                )
-	            )
-	          ), 
-	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              ), 
-	              React.createElement(Button, {style: { marginLeft: 10}, 
-	                active: this.state.busy, 
-	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
-	                "Busy"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Duration"), 
-	              React.createElement(NumberPicker, {
-	                  value: this.state.duration, 
-	                  step: 200, 
-	                  min: 0, 
-	                  max: 1000, 
-	                  onChange: this._set.bind(null, 'duration')})
-	            )
-	          )
-	        )
-	      )
-	    );
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
-	    this.setState({ disabled: val })
-	  },
-	});
-	
-	module.exports = DropdownApi;
-	
-
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */'use strict';
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(34);
+	  , RW = __webpack_require__(31);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -2293,193 +2074,14 @@
 	}
 
 /***/ },
-/* 21 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(34);
-	
-	var chance = new (__webpack_require__(48))
-	
-	var list = new Array(100)
-	
-	for(var i = 0; i < list.length; i++)
-	  list[i] = { id: i + 1, label: chance.name() }
-	
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  getInitialState: function(){
-	    return {
-	      duration: 250,
-	      value: [],
-	      suggest: true,
-	      placeholder: 'a placeholder...'
-	    }
-	  },
-	
-	  render: function(){
-	    var allVals = this.state.value
-	      , disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-sm-8 demo"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(RW.Multiselect, {
-	                  data: list, 
-	                  value: this.state.value, 
-	                  onChange: this._change, 
-	                  textField: "label", 
-	                  valueField: "id", 
-	                  placeholder: this.state.placeholder, 
-	                  disabled: disabled ? this.state.disabled : false, 
-	                  readOnly: this.state.disabled === 'readonly', 
-	                  duration: this.state.duration, 
-	                  busy: this.state.busy, 
-	                  isRtl: this.state.isRtl})
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", null, "Custom Rendering"), 
-	              React.createElement(RW.Multiselect, {
-	                  data: list, 
-	                  value: this.state.value, 
-	                  onChange: this._change, 
-	                  textField: "label", 
-	                  valueField: "id", 
-	                  placeholder: this.state.placeholder, 
-	                  disabled: disabled ? this.state.disabled : false, 
-	                  readOnly: this.state.disabled === 'readonly', 
-	
-	                  duration: this.state.duration, 
-	                  itemComponent: itemComp, 
-	                  tagComponent: itemComp, 
-	                  busy: this.state.busy, 
-	                  isRtl: this.state.isRtl})
-	            )
-	          ), 
-	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              ), 
-	              React.createElement(Button, {style: { marginLeft: 10}, 
-	                active: this.state.busy, 
-	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
-	                "Busy"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Disable Multiselect Values"), 
-	              React.createElement(RW.Multiselect, {
-	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
-	                  data: allVals, 
-	                  textField: "label", 
-	                  valueField: "id", 
-	                  disabled: this.state.disabled === true, 
-	                  messages: { emptyList: "no values selected to the right"}, 
-	                  onChange: this._set.bind(null, 'disabled')})
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Placeholder"), 
-	              React.createElement("input", {className: "form-control", type: "text", 
-	                  value: this.state.placeholder, 
-	                  onChange: extract(this._set.bind(null, 'placeholder'))})
-	            ), 
-	
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Duration"), 
-	              React.createElement(RW.NumberPicker, {
-	                  value: this.state.duration, 
-	                  step: 200, 
-	                  min: 0, 
-	                  max: 1000, 
-	                  onChange: this._set.bind(null, 'duration')})
-	            )
-	            
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === true ? false : true
-	    this.setState({ disabled: val })
-	  },
-	
-	})
-	
-	function extract(fn){
-	  return function(e){
-	    return fn(e.target.value)
-	  }
-	}
-	
-	var itemComp = React.createClass({displayName: 'itemComp',
-	  render: function() {
-	    var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	    return (
-	      React.createElement("span", null, 
-	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
-	         '  ' + this.props.item.label
-	      )
-	    );
-	  }
-	});
-	
-	function getRandomInt(min, max) {
-	  return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */'use strict';
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(34);
+	  , RW = __webpack_require__(31);
 	
 	// var valueComp = React.createClass({
 	//   render: function() {
@@ -2623,38 +2225,94 @@
 
 
 /***/ },
-/* 23 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */'use strict';
-	var React       = __webpack_require__(1)
-	  , Button      = __webpack_require__(2).Button
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW          = __webpack_require__(34);
+	  , Dropdown = __webpack_require__(31).DropdownList
+	  , NumberPicker = __webpack_require__(31).NumberPicker;
 	
-	module.exports = React.createClass({displayName: 'exports',
+	var valueComp = React.createClass({displayName: 'valueComp',
+	  render: function() {
+	
+	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.label))
+	  }
+	});
+	
+	var itemComp = React.createClass({displayName: 'itemComp',
+	  render: function() {
+	    var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	    return (
+	      React.createElement("div", null, 
+	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
+	         '  ' + this.props.item.label
+	      )
+	    );
+	  }
+	});
+	
+	
+	function getRandomInt(min, max) {
+	  return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	
+	
+	var DropdownApi = React.createClass({displayName: 'DropdownApi',
+	
 	  getInitialState: function(){
+	
 	    return {
-	      format: ''
+	      duration: 250,
 	    }
 	  },
 	
-	  render: function(){
+	  render: function() {
+	    var list = [
+	        { label: 'orange', id: 1 },
+	        { label: 'blue', id: 2 },
+	        { label: 'red', id: 3 },
+	      ];
 	
 	    return (
 	      React.createElement("div", {className: "example"}, 
 	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-sm-8"}, 
-	            React.createElement(RW.Calendar, {
-	                value: this.state.value, 
-	                onChange: this._change, 
-	                max: this.state.max, 
-	                min: this.state.min, 
-	                finalView: this.state.finalView, 
-	                initialView: this.state.initialView, 
+	          React.createElement("div", {className: "col-sm-8 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(Dropdown, {
 	                disabled: this.state.disabled === 'disabled', 
 	                readOnly: this.state.disabled === 'readonly', 
-	                isRtl: this.state.isRtl})
+	                value: this.state.value || 1, 
+	                data: list, 
+	                duration: this.state.duration, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", null, "Custom Rendering"), 
+	              React.createElement(Dropdown, {
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                value: this.state.value || 1, 
+	                valueComponent: valueComp, 
+	                itemComponent: itemComp, 
+	                data: list, 
+	                duration: this.state.duration, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            )
 	          ), 
 	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
 	            React.createElement("div", {className: "form-group"}, 
@@ -2677,42 +2335,26 @@
 	                  onClick: this.readOnly}, 
 	                  "Readonly"
 	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
 	              )
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Initial View"), 
-	              React.createElement(RW.DropdownList, {
-	                  value: this.state.initialView || 'month', 
-	                  data: ["month", "year", "decade", "century"], 
-	                  onChange: this._set.bind(null, 'initialView')})
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Final View"), 
-	              React.createElement(RW.DropdownList, {
-	                  value: this.state.finalView || 'century', 
-	                  data: ["month", "year", "decade", "century"], 
-	                  onChange: this._set.bind(null, 'finalView')})
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "min"), 
-	              React.createElement(RW.DateTimePicker, {
-	                  time: false, 
-	                  format: "MMM dd, yyyy", 
-	                  value: this.state.min, 
-	                  onChange: this._set.bind(null, 'min')})
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "max"), 
-	              React.createElement(RW.DateTimePicker, {
-	                  time: false, 
-	                  format: "MMM dd, yyyy", 
-	                  value: this.state.max, 
-	                  onChange: this._set.bind(null, 'max')})
+	              React.createElement("label", {className: "form-label"}, "Duration"), 
+	              React.createElement(NumberPicker, {
+	                  value: this.state.duration, 
+	                  step: 200, 
+	                  min: 0, 
+	                  max: 1000, 
+	                  onChange: this._set.bind(null, 'duration')})
 	            )
 	          )
 	        )
 	      )
-	    )
+	    );
 	  },
 	
 	  _change: function(val){
@@ -2734,21 +2376,21 @@
 	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
 	    this.setState({ disabled: val })
 	  },
+	});
 	
-	})
+	module.exports = DropdownApi;
 	
-	          
 
 
 /***/ },
-/* 24 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1)
-	  , dates = __webpack_require__(40)
+	  , dates = __webpack_require__(38)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(34);
+	  , RW = __webpack_require__(31);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	  getInitialState: function(){
@@ -2936,13 +2578,13 @@
 	}
 
 /***/ },
-/* 25 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(34);
+	  , RW = __webpack_require__(31);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	  getInitialState: function(){
@@ -3055,13 +2697,310 @@
 	}
 
 /***/ },
-/* 26 */
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */'use strict';
+	var React       = __webpack_require__(1)
+	  , Button      = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW          = __webpack_require__(31);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	  getInitialState: function(){
+	    return {
+	      format: ''
+	    }
+	  },
+	
+	  render: function(){
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-sm-8"}, 
+	            React.createElement(RW.Calendar, {
+	                value: this.state.value, 
+	                onChange: this._change, 
+	                max: this.state.max, 
+	                min: this.state.min, 
+	                finalView: this.state.finalView, 
+	                initialView: this.state.initialView, 
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                isRtl: this.state.isRtl})
+	          ), 
+	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Initial View"), 
+	              React.createElement(RW.DropdownList, {
+	                  value: this.state.initialView || 'month', 
+	                  data: ["month", "year", "decade", "century"], 
+	                  onChange: this._set.bind(null, 'initialView')})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Final View"), 
+	              React.createElement(RW.DropdownList, {
+	                  value: this.state.finalView || 'century', 
+	                  data: ["month", "year", "decade", "century"], 
+	                  onChange: this._set.bind(null, 'finalView')})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "min"), 
+	              React.createElement(RW.DateTimePicker, {
+	                  time: false, 
+	                  format: "MMM dd, yyyy", 
+	                  value: this.state.min, 
+	                  onChange: this._set.bind(null, 'min')})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "max"), 
+	              React.createElement(RW.DateTimePicker, {
+	                  time: false, 
+	                  format: "MMM dd, yyyy", 
+	                  value: this.state.max, 
+	                  onChange: this._set.bind(null, 'max')})
+	            )
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	
+	})
+	
+	          
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */'use strict';
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW = __webpack_require__(31);
+	
+	var chance = new (__webpack_require__(55))
+	
+	var list = new Array(100)
+	
+	for(var i = 0; i < list.length; i++)
+	  list[i] = { id: i + 1, label: chance.name() }
+	
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  getInitialState: function(){
+	    return {
+	      duration: 250,
+	      value: [],
+	      suggest: true,
+	      placeholder: 'a placeholder...'
+	    }
+	  },
+	
+	  render: function(){
+	    var allVals = this.state.value
+	      , disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-sm-8 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(RW.Multiselect, {
+	                  data: list, 
+	                  value: this.state.value, 
+	                  onChange: this._change, 
+	                  textField: "label", 
+	                  valueField: "id", 
+	                  placeholder: this.state.placeholder, 
+	                  disabled: disabled ? this.state.disabled : false, 
+	                  readOnly: this.state.disabled === 'readonly', 
+	                  duration: this.state.duration, 
+	                  busy: this.state.busy, 
+	                  isRtl: this.state.isRtl})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", null, "Custom Rendering"), 
+	              React.createElement(RW.Multiselect, {
+	                  data: list, 
+	                  value: this.state.value, 
+	                  onChange: this._change, 
+	                  textField: "label", 
+	                  valueField: "id", 
+	                  placeholder: this.state.placeholder, 
+	                  disabled: disabled ? this.state.disabled : false, 
+	                  readOnly: this.state.disabled === 'readonly', 
+	
+	                  duration: this.state.duration, 
+	                  itemComponent: itemComp, 
+	                  tagComponent: itemComp, 
+	                  busy: this.state.busy, 
+	                  isRtl: this.state.isRtl})
+	            )
+	          ), 
+	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Disable Multiselect Values"), 
+	              React.createElement(RW.Multiselect, {
+	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
+	                  data: allVals, 
+	                  textField: "label", 
+	                  valueField: "id", 
+	                  disabled: this.state.disabled === true, 
+	                  messages: { emptyList: "no values selected to the right"}, 
+	                  onChange: this._set.bind(null, 'disabled')})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Placeholder"), 
+	              React.createElement("input", {className: "form-control", type: "text", 
+	                  value: this.state.placeholder, 
+	                  onChange: extract(this._set.bind(null, 'placeholder'))})
+	            ), 
+	
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Duration"), 
+	              React.createElement(RW.NumberPicker, {
+	                  value: this.state.duration, 
+	                  step: 200, 
+	                  min: 0, 
+	                  max: 1000, 
+	                  onChange: this._set.bind(null, 'duration')})
+	            )
+	            
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === true ? false : true
+	    this.setState({ disabled: val })
+	  },
+	
+	})
+	
+	function extract(fn){
+	  return function(e){
+	    return fn(e.target.value)
+	  }
+	}
+	
+	var itemComp = React.createClass({displayName: 'itemComp',
+	  render: function() {
+	    var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	    return (
+	      React.createElement("span", null, 
+	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
+	         '  ' + this.props.item.label
+	      )
+	    );
+	  }
+	});
+	
+	function getRandomInt(min, max) {
+	  return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+
+/***/ },
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var BootstrapMixin = __webpack_require__(35);
+	var joinClasses = __webpack_require__(39);
+	var classSet = __webpack_require__(40);
+	var BootstrapMixin = __webpack_require__(33);
 	
 	var Button = React.createClass({displayName: 'Button',
 	  mixins: [BootstrapMixin],
@@ -3146,14 +3085,14 @@
 
 
 /***/ },
-/* 27 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var BootstrapMixin = __webpack_require__(35);
-	var Button = __webpack_require__(26);
+	var joinClasses = __webpack_require__(39);
+	var classSet = __webpack_require__(40);
+	var BootstrapMixin = __webpack_require__(33);
+	var Button = __webpack_require__(23);
 	
 	var ButtonGroup = React.createClass({displayName: 'ButtonGroup',
 	  mixins: [BootstrapMixin],
@@ -3188,21 +3127,21 @@
 	module.exports = ButtonGroup;
 
 /***/ },
-/* 28 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var cloneWithProps = __webpack_require__(44);
+	var joinClasses = __webpack_require__(39);
+	var classSet = __webpack_require__(40);
+	var cloneWithProps = __webpack_require__(41);
 	
-	var createChainedFunction = __webpack_require__(46);
-	var BootstrapMixin = __webpack_require__(35);
-	var DropdownStateMixin = __webpack_require__(38);
-	var Button = __webpack_require__(26);
-	var ButtonGroup = __webpack_require__(27);
-	var DropdownMenu = __webpack_require__(39);
-	var ValidComponentChildren = __webpack_require__(45);
+	var createChainedFunction = __webpack_require__(42);
+	var BootstrapMixin = __webpack_require__(33);
+	var DropdownStateMixin = __webpack_require__(34);
+	var Button = __webpack_require__(23);
+	var ButtonGroup = __webpack_require__(24);
+	var DropdownMenu = __webpack_require__(35);
+	var ValidComponentChildren = __webpack_require__(43);
 	
 	
 	var DropdownButton = React.createClass({displayName: 'DropdownButton',
@@ -3316,12 +3255,12 @@
 	module.exports = DropdownButton;
 
 /***/ },
-/* 29 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
+	var joinClasses = __webpack_require__(39);
+	var classSet = __webpack_require__(40);
 	
 	var MenuItem = React.createClass({displayName: 'MenuItem',
 	  propTypes: {
@@ -3379,19 +3318,19 @@
 	module.exports = MenuItem;
 
 /***/ },
-/* 30 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var BootstrapMixin = __webpack_require__(35);
-	var CollapsableMixin = __webpack_require__(37);
-	var classSet = __webpack_require__(42);
-	var domUtils = __webpack_require__(43);
-	var cloneWithProps = __webpack_require__(44);
+	var joinClasses = __webpack_require__(39);
+	var BootstrapMixin = __webpack_require__(33);
+	var CollapsableMixin = __webpack_require__(36);
+	var classSet = __webpack_require__(40);
+	var domUtils = __webpack_require__(44);
+	var cloneWithProps = __webpack_require__(41);
 	
-	var ValidComponentChildren = __webpack_require__(45);
-	var createChainedFunction = __webpack_require__(46);
+	var ValidComponentChildren = __webpack_require__(43);
+	var createChainedFunction = __webpack_require__(42);
 	
 	
 	var Nav = React.createClass({displayName: 'Nav',
@@ -3495,211 +3434,18 @@
 
 
 /***/ },
-/* 31 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var cloneWithProps = __webpack_require__(44);
+	var joinClasses = __webpack_require__(39);
+	var BootstrapMixin = __webpack_require__(33);
+	var classSet = __webpack_require__(40);
+	var cloneWithProps = __webpack_require__(41);
 	
-	var ValidComponentChildren = __webpack_require__(45);
-	var createChainedFunction = __webpack_require__(46);
-	var BootstrapMixin = __webpack_require__(35);
-	
-	
-	var SubNav = React.createClass({displayName: 'SubNav',
-	  mixins: [BootstrapMixin],
-	
-	  propTypes: {
-	    onSelect: React.PropTypes.func,
-	    active: React.PropTypes.bool,
-	    disabled: React.PropTypes.bool,
-	    href: React.PropTypes.string,
-	    title: React.PropTypes.string,
-	    text: React.PropTypes.node
-	  },
-	
-	  getDefaultProps: function () {
-	    return {
-	      bsClass: 'nav'
-	    };
-	  },
-	
-	  handleClick: function (e) {
-	    if (this.props.onSelect) {
-	      e.preventDefault();
-	
-	      if (!this.props.disabled) {
-	        this.props.onSelect(this.props.selectKey, this.props.href);
-	      }
-	    }
-	  },
-	
-	  isActive: function () {
-	    return this.isChildActive(this);
-	  },
-	
-	  isChildActive: function (child) {
-	    if (child.props.active) {
-	      return true;
-	    }
-	
-	    if (this.props.activeKey != null && this.props.activeKey === child.props.selectKey) {
-	      return true;
-	    }
-	
-	    if (this.props.activeHref != null && this.props.activeHref === child.props.href) {
-	      return true;
-	    }
-	
-	    if (child.props.children) {
-	      var isActive = false;
-	
-	      ValidComponentChildren.forEach(
-	        child.props.children,
-	        function (child) {
-	          if (this.isChildActive(child)) {
-	            isActive = true;
-	          }
-	        },
-	        this
-	      );
-	
-	      return isActive;
-	    }
-	
-	    return false;
-	  },
-	
-	  getChildActiveProp: function (child) {
-	    if (child.props.active) {
-	      return true;
-	    }
-	    if (this.props.activeKey != null) {
-	      if (child.props.selectKey == this.props.activeKey) {
-	        return true;
-	      }
-	    }
-	    if (this.props.activeHref != null) {
-	      if (child.props.href === this.props.activeHref) {
-	        return true;
-	      }
-	    }
-	
-	    return child.props.active;
-	  },
-	
-	  render: function () {
-	    var classes = {
-	      'active': this.isActive(),
-	      'disabled': this.props.disabled
-	    };
-	
-	    return (
-	      React.createElement("li", React.__spread({},  this.props, {className: joinClasses(this.props.className, classSet(classes))}), 
-	        React.createElement("a", {
-	          href: this.props.href, 
-	          title: this.props.title, 
-	          onClick: this.handleClick, 
-	          ref: "anchor"}, 
-	          this.props.text
-	        ), 
-	        React.createElement("ul", {className: "nav"}, 
-	          ValidComponentChildren.map(this.props.children, this.renderNavItem)
-	        )
-	      )
-	    );
-	  },
-	
-	  renderNavItem: function (child, index) {
-	    return cloneWithProps(
-	      child,
-	      {
-	        active: this.getChildActiveProp(child),
-	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
-	        ref: child.ref,
-	        key: child.key ? child.key : index
-	      }
-	    );
-	  }
-	});
-	
-	module.exports = SubNav;
-
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var BootstrapMixin = __webpack_require__(35);
-	
-	var NavItem = React.createClass({displayName: 'NavItem',
-	  mixins: [BootstrapMixin],
-	
-	  propTypes: {
-	    onSelect: React.PropTypes.func,
-	    active: React.PropTypes.bool,
-	    disabled: React.PropTypes.bool,
-	    href: React.PropTypes.string,
-	    title: React.PropTypes.string,
-	    selectKey: React.PropTypes.any
-	  },
-	
-	  getDefaultProps: function () {
-	    return {
-	      href: '#'
-	    };
-	  },
-	
-	  render: function () {
-	    var classes = {
-	      'active': this.props.active,
-	      'disabled': this.props.disabled
-	    };
-	
-	    return (
-	      React.createElement("li", React.__spread({},  this.props, {className: joinClasses(this.props.className, classSet(classes))}), 
-	        React.createElement("a", {
-	          href: this.props.href, 
-	          title: this.props.title, 
-	          onClick: this.handleClick, 
-	          ref: "anchor"}, 
-	          this.props.children
-	        )
-	      )
-	    );
-	  },
-	
-	  handleClick: function (e) {
-	    if (this.props.onSelect) {
-	      e.preventDefault();
-	
-	      if (!this.props.disabled) {
-	        this.props.onSelect(this.props.selectKey, this.props.href);
-	      }
-	    }
-	  }
-	});
-	
-	module.exports = NavItem;
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var BootstrapMixin = __webpack_require__(35);
-	var classSet = __webpack_require__(42);
-	var cloneWithProps = __webpack_require__(44);
-	
-	var ValidComponentChildren = __webpack_require__(45);
-	var createChainedFunction = __webpack_require__(46);
-	var Nav = __webpack_require__(30);
+	var ValidComponentChildren = __webpack_require__(43);
+	var createChainedFunction = __webpack_require__(42);
+	var Nav = __webpack_require__(27);
 	
 	
 	var Navbar = React.createClass({displayName: 'Navbar',
@@ -3833,36 +3579,250 @@
 
 
 /***/ },
-/* 34 */
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(39);
+	var classSet = __webpack_require__(40);
+	var cloneWithProps = __webpack_require__(41);
+	
+	var ValidComponentChildren = __webpack_require__(43);
+	var createChainedFunction = __webpack_require__(42);
+	var BootstrapMixin = __webpack_require__(33);
+	
+	
+	var SubNav = React.createClass({displayName: 'SubNav',
+	  mixins: [BootstrapMixin],
+	
+	  propTypes: {
+	    onSelect: React.PropTypes.func,
+	    active: React.PropTypes.bool,
+	    disabled: React.PropTypes.bool,
+	    href: React.PropTypes.string,
+	    title: React.PropTypes.string,
+	    text: React.PropTypes.node
+	  },
+	
+	  getDefaultProps: function () {
+	    return {
+	      bsClass: 'nav'
+	    };
+	  },
+	
+	  handleClick: function (e) {
+	    if (this.props.onSelect) {
+	      e.preventDefault();
+	
+	      if (!this.props.disabled) {
+	        this.props.onSelect(this.props.selectKey, this.props.href);
+	      }
+	    }
+	  },
+	
+	  isActive: function () {
+	    return this.isChildActive(this);
+	  },
+	
+	  isChildActive: function (child) {
+	    if (child.props.active) {
+	      return true;
+	    }
+	
+	    if (this.props.activeKey != null && this.props.activeKey === child.props.selectKey) {
+	      return true;
+	    }
+	
+	    if (this.props.activeHref != null && this.props.activeHref === child.props.href) {
+	      return true;
+	    }
+	
+	    if (child.props.children) {
+	      var isActive = false;
+	
+	      ValidComponentChildren.forEach(
+	        child.props.children,
+	        function (child) {
+	          if (this.isChildActive(child)) {
+	            isActive = true;
+	          }
+	        },
+	        this
+	      );
+	
+	      return isActive;
+	    }
+	
+	    return false;
+	  },
+	
+	  getChildActiveProp: function (child) {
+	    if (child.props.active) {
+	      return true;
+	    }
+	    if (this.props.activeKey != null) {
+	      if (child.props.selectKey == this.props.activeKey) {
+	        return true;
+	      }
+	    }
+	    if (this.props.activeHref != null) {
+	      if (child.props.href === this.props.activeHref) {
+	        return true;
+	      }
+	    }
+	
+	    return child.props.active;
+	  },
+	
+	  render: function () {
+	    var classes = {
+	      'active': this.isActive(),
+	      'disabled': this.props.disabled
+	    };
+	
+	    return (
+	      React.createElement("li", React.__spread({},  this.props, {className: joinClasses(this.props.className, classSet(classes))}), 
+	        React.createElement("a", {
+	          href: this.props.href, 
+	          title: this.props.title, 
+	          onClick: this.handleClick, 
+	          ref: "anchor"}, 
+	          this.props.text
+	        ), 
+	        React.createElement("ul", {className: "nav"}, 
+	          ValidComponentChildren.map(this.props.children, this.renderNavItem)
+	        )
+	      )
+	    );
+	  },
+	
+	  renderNavItem: function (child, index) {
+	    return cloneWithProps(
+	      child,
+	      {
+	        active: this.getChildActiveProp(child),
+	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
+	        ref: child.ref,
+	        key: child.key ? child.key : index
+	      }
+	    );
+	  }
+	});
+	
+	module.exports = SubNav;
+
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(39);
+	var classSet = __webpack_require__(40);
+	var BootstrapMixin = __webpack_require__(33);
+	
+	var NavItem = React.createClass({displayName: 'NavItem',
+	  mixins: [BootstrapMixin],
+	
+	  propTypes: {
+	    onSelect: React.PropTypes.func,
+	    active: React.PropTypes.bool,
+	    disabled: React.PropTypes.bool,
+	    href: React.PropTypes.string,
+	    title: React.PropTypes.string,
+	    selectKey: React.PropTypes.any
+	  },
+	
+	  getDefaultProps: function () {
+	    return {
+	      href: '#'
+	    };
+	  },
+	
+	  render: function () {
+	    var classes = {
+	      'active': this.props.active,
+	      'disabled': this.props.disabled
+	    };
+	
+	    return (
+	      React.createElement("li", React.__spread({},  this.props, {className: joinClasses(this.props.className, classSet(classes))}), 
+	        React.createElement("a", {
+	          href: this.props.href, 
+	          title: this.props.title, 
+	          onClick: this.handleClick, 
+	          ref: "anchor"}, 
+	          this.props.children
+	        )
+	      )
+	    );
+	  },
+	
+	  handleClick: function (e) {
+	    if (this.props.onSelect) {
+	      e.preventDefault();
+	
+	      if (!this.props.disabled) {
+	        this.props.onSelect(this.props.selectKey, this.props.href);
+	      }
+	    }
+	  }
+	});
+	
+	module.exports = NavItem;
+
+/***/ },
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
 	
 	module.exports = {
 	
-	  DropdownList:     __webpack_require__(49),
-	  Combobox:         __webpack_require__(50),
+	  DropdownList:     __webpack_require__(45),
+	  Combobox:         __webpack_require__(46),
 	
-	  Calendar:         __webpack_require__(51),
-	  DateTimePicker:   __webpack_require__(52),
+	  Calendar:         __webpack_require__(47),
+	  DateTimePicker:   __webpack_require__(48),
 	
-	  NumberPicker:     __webpack_require__(53),
+	  NumberPicker:     __webpack_require__(49),
 	  
-	  Multiselect:      __webpack_require__(54),
-	  SelectList:       __webpack_require__(55),
+	  Multiselect:      __webpack_require__(50),
+	  SelectList:       __webpack_require__(51),
 	
 	  utils: {
-	    ReplaceTransitionGroup: __webpack_require__(56),
-	    SlideTransition:        __webpack_require__(57),
+	    ReplaceTransitionGroup: __webpack_require__(52),
+	    SlideTransition:        __webpack_require__(53),
 	  }
 	}
 
 /***/ },
-/* 35 */
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = extend
+	
+	function extend(target) {
+	    for (var i = 1; i < arguments.length; i++) {
+	        var source = arguments[i]
+	
+	        for (var key in source) {
+	            if (source.hasOwnProperty(key)) {
+	                target[key] = source[key]
+	            }
+	        }
+	    }
+	
+	    return target
+	}
+
+
+/***/ },
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var constants = __webpack_require__(59);
+	var constants = __webpack_require__(57);
 	
 	var BootstrapMixin = {
 	  propTypes: {
@@ -3898,32 +3858,147 @@
 	module.exports = BootstrapMixin;
 
 /***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = extend
-	
-	function extend(target) {
-	    for (var i = 1; i < arguments.length; i++) {
-	        var source = arguments[i]
-	
-	        for (var key in source) {
-	            if (source.hasOwnProperty(key)) {
-	                target[key] = source[key]
-	            }
-	        }
-	    }
-	
-	    return target
-	}
-
-
-/***/ },
-/* 37 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var TransitionEvents = __webpack_require__(60);
+	var EventListener = __webpack_require__(56);
+	
+	/**
+	 * Checks whether a node is within
+	 * a root nodes tree
+	 *
+	 * @param {DOMElement} node
+	 * @param {DOMElement} root
+	 * @returns {boolean}
+	 */
+	function isNodeInRoot(node, root) {
+	  while (node) {
+	    if (node === root) {
+	      return true;
+	    }
+	    node = node.parentNode;
+	  }
+	
+	  return false;
+	}
+	
+	var DropdownStateMixin = {
+	  getInitialState: function () {
+	    return {
+	      open: false
+	    };
+	  },
+	
+	  setDropdownState: function (newState, onStateChangeComplete) {
+	    if (newState) {
+	      this.bindRootCloseHandlers();
+	    } else {
+	      this.unbindRootCloseHandlers();
+	    }
+	
+	    this.setState({
+	      open: newState
+	    }, onStateChangeComplete);
+	  },
+	
+	  handleDocumentKeyUp: function (e) {
+	    if (e.keyCode === 27) {
+	      this.setDropdownState(false);
+	    }
+	  },
+	
+	  handleDocumentClick: function (e) {
+	    // If the click originated from within this component
+	    // don't do anything.
+	    if (isNodeInRoot(e.target, this.getDOMNode())) {
+	      return;
+	    }
+	
+	    this.setDropdownState(false);
+	  },
+	
+	  bindRootCloseHandlers: function () {
+	    this._onDocumentClickListener =
+	      EventListener.listen(document, 'click', this.handleDocumentClick);
+	    this._onDocumentKeyupListener =
+	      EventListener.listen(document, 'keyup', this.handleDocumentKeyUp);
+	  },
+	
+	  unbindRootCloseHandlers: function () {
+	    if (this._onDocumentClickListener) {
+	      this._onDocumentClickListener.remove();
+	    }
+	
+	    if (this._onDocumentKeyupListener) {
+	      this._onDocumentKeyupListener.remove();
+	    }
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.unbindRootCloseHandlers();
+	  }
+	};
+	
+	module.exports = DropdownStateMixin;
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(39);
+	var classSet = __webpack_require__(40);
+	var cloneWithProps = __webpack_require__(41);
+	
+	var createChainedFunction = __webpack_require__(42);
+	var ValidComponentChildren = __webpack_require__(43);
+	
+	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
+	  propTypes: {
+	    pullRight: React.PropTypes.bool,
+	    onSelect: React.PropTypes.func
+	  },
+	
+	  render: function () {
+	    var classes = {
+	        'dropdown-menu': true,
+	        'dropdown-menu-right': this.props.pullRight
+	      };
+	
+	    return (
+	        React.createElement("ul", React.__spread({}, 
+	          this.props, 
+	          {className: joinClasses(this.props.className, classSet(classes)), 
+	          role: "menu"}), 
+	          ValidComponentChildren.map(this.props.children, this.renderMenuItem)
+	        )
+	      );
+	  },
+	
+	  renderMenuItem: function (child, index) {
+	    return cloneWithProps(
+	      child,
+	      {
+	        // Capture onSelect events
+	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
+	
+	        // Force special props to be transferred
+	        key: child.key ? child.key : index,
+	        ref: child.ref
+	      }
+	    );
+	  }
+	});
+	
+	module.exports = DropdownMenu;
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var TransitionEvents = __webpack_require__(58);
 	
 	var CollapsableMixin = {
 	
@@ -4055,143 +4130,30 @@
 
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var EventListener = __webpack_require__(61);
+	module.exports = extend
 	
-	/**
-	 * Checks whether a node is within
-	 * a root nodes tree
-	 *
-	 * @param {DOMElement} node
-	 * @param {DOMElement} root
-	 * @returns {boolean}
-	 */
-	function isNodeInRoot(node, root) {
-	  while (node) {
-	    if (node === root) {
-	      return true;
+	function extend() {
+	    var target = {}
+	
+	    for (var i = 0; i < arguments.length; i++) {
+	        var source = arguments[i]
+	
+	        for (var key in source) {
+	            if (source.hasOwnProperty(key)) {
+	                target[key] = source[key]
+	            }
+	        }
 	    }
-	    node = node.parentNode;
-	  }
 	
-	  return false;
+	    return target
 	}
-	
-	var DropdownStateMixin = {
-	  getInitialState: function () {
-	    return {
-	      open: false
-	    };
-	  },
-	
-	  setDropdownState: function (newState, onStateChangeComplete) {
-	    if (newState) {
-	      this.bindRootCloseHandlers();
-	    } else {
-	      this.unbindRootCloseHandlers();
-	    }
-	
-	    this.setState({
-	      open: newState
-	    }, onStateChangeComplete);
-	  },
-	
-	  handleDocumentKeyUp: function (e) {
-	    if (e.keyCode === 27) {
-	      this.setDropdownState(false);
-	    }
-	  },
-	
-	  handleDocumentClick: function (e) {
-	    // If the click originated from within this component
-	    // don't do anything.
-	    if (isNodeInRoot(e.target, this.getDOMNode())) {
-	      return;
-	    }
-	
-	    this.setDropdownState(false);
-	  },
-	
-	  bindRootCloseHandlers: function () {
-	    this._onDocumentClickListener =
-	      EventListener.listen(document, 'click', this.handleDocumentClick);
-	    this._onDocumentKeyupListener =
-	      EventListener.listen(document, 'keyup', this.handleDocumentKeyUp);
-	  },
-	
-	  unbindRootCloseHandlers: function () {
-	    if (this._onDocumentClickListener) {
-	      this._onDocumentClickListener.remove();
-	    }
-	
-	    if (this._onDocumentKeyupListener) {
-	      this._onDocumentKeyupListener.remove();
-	    }
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.unbindRootCloseHandlers();
-	  }
-	};
-	
-	module.exports = DropdownStateMixin;
+
 
 /***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var cloneWithProps = __webpack_require__(44);
-	
-	var createChainedFunction = __webpack_require__(46);
-	var ValidComponentChildren = __webpack_require__(45);
-	
-	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
-	  propTypes: {
-	    pullRight: React.PropTypes.bool,
-	    onSelect: React.PropTypes.func
-	  },
-	
-	  render: function () {
-	    var classes = {
-	        'dropdown-menu': true,
-	        'dropdown-menu-right': this.props.pullRight
-	      };
-	
-	    return (
-	        React.createElement("ul", React.__spread({}, 
-	          this.props, 
-	          {className: joinClasses(this.props.className, classSet(classes)), 
-	          role: "menu"}), 
-	          ValidComponentChildren.map(this.props.children, this.renderMenuItem)
-	        )
-	      );
-	  },
-	
-	  renderMenuItem: function (child, index) {
-	    return cloneWithProps(
-	      child,
-	      {
-	        // Capture onSelect events
-	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
-	
-	        // Force special props to be transferred
-	        key: child.key ? child.key : index,
-	        ref: child.ref
-	      }
-	    );
-	  }
-	});
-	
-	module.exports = DropdownMenu;
-
-/***/ },
-/* 40 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var MILI 		= 'milliseconds'
@@ -4409,7 +4371,7 @@
 
 
 /***/ },
-/* 41 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4458,7 +4420,7 @@
 
 
 /***/ },
-/* 42 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4505,7 +4467,197 @@
 
 
 /***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/cloneWithProps.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @typechecks
+	 * @providesModule cloneWithProps
+	 */
+	
+	"use strict";
+	
+	var ReactElement = __webpack_require__(59);
+	var ReactPropTransferer = __webpack_require__(60);
+	
+	var keyOf = __webpack_require__(61);
+	var warning = __webpack_require__(62);
+	
+	var CHILDREN_PROP = keyOf({children: null});
+	
+	/**
+	 * Sometimes you want to change the props of a child passed to you. Usually
+	 * this is to add a CSS class.
+	 *
+	 * @param {object} child child component you'd like to clone
+	 * @param {object} props props you'd like to modify. They will be merged
+	 * as if you used `transferPropsTo()`.
+	 * @return {object} a clone of child with props merged in.
+	 */
+	function cloneWithProps(child, props) {
+	  if (true) {
+	    (true ? warning(
+	      !child.ref,
+	      'You are calling cloneWithProps() on a child with a ref. This is ' +
+	      'dangerous because you\'re creating a new child which will not be ' +
+	      'added as a ref to its parent.'
+	    ) : null);
+	  }
+	
+	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
+	
+	  // Use `child.props.children` if it is provided.
+	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
+	      child.props.hasOwnProperty(CHILDREN_PROP)) {
+	    newProps.children = child.props.children;
+	  }
+	
+	  // The current API doesn't retain _owner and _context, which is why this
+	  // doesn't use ReactElement.cloneAndReplaceProps.
+	  return ReactElement.createElement(child.type, newProps);
+	}
+	
+	module.exports = cloneWithProps;
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Safe chained function
+	 *
+	 * Will only create a new function if needed,
+	 * otherwise will pass back existing functions or null.
+	 *
+	 * @param {function} one
+	 * @param {function} two
+	 * @returns {function|null}
+	 */
+	function createChainedFunction(one, two) {
+	  var hasOne = typeof one === 'function';
+	  var hasTwo = typeof two === 'function';
+	
+	  if (!hasOne && !hasTwo) { return null; }
+	  if (!hasOne) { return two; }
+	  if (!hasTwo) { return one; }
+	
+	  return function chainedFunction() {
+	    one.apply(this, arguments);
+	    two.apply(this, arguments);
+	  };
+	}
+	
+	module.exports = createChainedFunction;
+
+/***/ },
 /* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	/**
+	 * Maps children that are typically specified as `props.children`,
+	 * but only iterates over children that are "valid components".
+	 *
+	 * The mapFunction provided index will be normalised to the components mapped,
+	 * so an invalid component would not increase the index.
+	 *
+	 * @param {?*} children Children tree container.
+	 * @param {function(*, int)} mapFunction.
+	 * @param {*} mapContext Context for mapFunction.
+	 * @return {object} Object containing the ordered map of results.
+	 */
+	function mapValidComponents(children, func, context) {
+	  var index = 0;
+	
+	  return React.Children.map(children, function (child) {
+	    if (React.isValidElement(child)) {
+	      var lastIndex = index;
+	      index++;
+	      return func.call(context, child, lastIndex);
+	    }
+	
+	    return child;
+	  });
+	}
+	
+	/**
+	 * Iterates through children that are typically specified as `props.children`,
+	 * but only iterates over children that are "valid components".
+	 *
+	 * The provided forEachFunc(child, index) will be called for each
+	 * leaf child with the index reflecting the position relative to "valid components".
+	 *
+	 * @param {?*} children Children tree container.
+	 * @param {function(*, int)} forEachFunc.
+	 * @param {*} forEachContext Context for forEachContext.
+	 */
+	function forEachValidComponents(children, func, context) {
+	  var index = 0;
+	
+	  return React.Children.forEach(children, function (child) {
+	    if (React.isValidElement(child)) {
+	      func.call(context, child, index);
+	      index++;
+	    }
+	  });
+	}
+	
+	/**
+	 * Count the number of "valid components" in the Children container.
+	 *
+	 * @param {?*} children Children tree container.
+	 * @returns {number}
+	 */
+	function numberOfValidComponents(children) {
+	  var count = 0;
+	
+	  React.Children.forEach(children, function (child) {
+	    if (React.isValidElement(child)) { count++; }
+	  });
+	
+	  return count;
+	}
+	
+	/**
+	 * Determine if the Child container has one or more "valid components".
+	 *
+	 * @param {?*} children Children tree container.
+	 * @returns {boolean}
+	 */
+	function hasValidComponent(children) {
+	  var hasValid = false;
+	
+	  React.Children.forEach(children, function (child) {
+	    if (!hasValid && React.isValidElement(child)) {
+	      hasValid = true;
+	    }
+	  });
+	
+	  return hasValid;
+	}
+	
+	module.exports = {
+	  map: mapValidComponents,
+	  forEach: forEachValidComponents,
+	  numberOf: numberOfValidComponents,
+	  hasValidComponent: hasValidComponent
+	};
+
+/***/ },
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -4619,1861 +4771,19 @@
 	};
 
 /***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/cloneWithProps.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @typechecks
-	 * @providesModule cloneWithProps
-	 */
-	
-	"use strict";
-	
-	var ReactElement = __webpack_require__(62);
-	var ReactPropTransferer = __webpack_require__(63);
-	
-	var keyOf = __webpack_require__(64);
-	var warning = __webpack_require__(65);
-	
-	var CHILDREN_PROP = keyOf({children: null});
-	
-	/**
-	 * Sometimes you want to change the props of a child passed to you. Usually
-	 * this is to add a CSS class.
-	 *
-	 * @param {object} child child component you'd like to clone
-	 * @param {object} props props you'd like to modify. They will be merged
-	 * as if you used `transferPropsTo()`.
-	 * @return {object} a clone of child with props merged in.
-	 */
-	function cloneWithProps(child, props) {
-	  if (false) {
-	    ("production" !== process.env.NODE_ENV ? warning(
-	      !child.ref,
-	      'You are calling cloneWithProps() on a child with a ref. This is ' +
-	      'dangerous because you\'re creating a new child which will not be ' +
-	      'added as a ref to its parent.'
-	    ) : null);
-	  }
-	
-	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
-	
-	  // Use `child.props.children` if it is provided.
-	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
-	      child.props.hasOwnProperty(CHILDREN_PROP)) {
-	    newProps.children = child.props.children;
-	  }
-	
-	  // The current API doesn't retain _owner and _context, which is why this
-	  // doesn't use ReactElement.cloneAndReplaceProps.
-	  return ReactElement.createElement(child.type, newProps);
-	}
-	
-	module.exports = cloneWithProps;
-
-
-/***/ },
 /* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	/**
-	 * Maps children that are typically specified as `props.children`,
-	 * but only iterates over children that are "valid components".
-	 *
-	 * The mapFunction provided index will be normalised to the components mapped,
-	 * so an invalid component would not increase the index.
-	 *
-	 * @param {?*} children Children tree container.
-	 * @param {function(*, int)} mapFunction.
-	 * @param {*} mapContext Context for mapFunction.
-	 * @return {object} Object containing the ordered map of results.
-	 */
-	function mapValidComponents(children, func, context) {
-	  var index = 0;
-	
-	  return React.Children.map(children, function (child) {
-	    if (React.isValidElement(child)) {
-	      var lastIndex = index;
-	      index++;
-	      return func.call(context, child, lastIndex);
-	    }
-	
-	    return child;
-	  });
-	}
-	
-	/**
-	 * Iterates through children that are typically specified as `props.children`,
-	 * but only iterates over children that are "valid components".
-	 *
-	 * The provided forEachFunc(child, index) will be called for each
-	 * leaf child with the index reflecting the position relative to "valid components".
-	 *
-	 * @param {?*} children Children tree container.
-	 * @param {function(*, int)} forEachFunc.
-	 * @param {*} forEachContext Context for forEachContext.
-	 */
-	function forEachValidComponents(children, func, context) {
-	  var index = 0;
-	
-	  return React.Children.forEach(children, function (child) {
-	    if (React.isValidElement(child)) {
-	      func.call(context, child, index);
-	      index++;
-	    }
-	  });
-	}
-	
-	/**
-	 * Count the number of "valid components" in the Children container.
-	 *
-	 * @param {?*} children Children tree container.
-	 * @returns {number}
-	 */
-	function numberOfValidComponents(children) {
-	  var count = 0;
-	
-	  React.Children.forEach(children, function (child) {
-	    if (React.isValidElement(child)) { count++; }
-	  });
-	
-	  return count;
-	}
-	
-	/**
-	 * Determine if the Child container has one or more "valid components".
-	 *
-	 * @param {?*} children Children tree container.
-	 * @returns {boolean}
-	 */
-	function hasValidComponent(children) {
-	  var hasValid = false;
-	
-	  React.Children.forEach(children, function (child) {
-	    if (!hasValid && React.isValidElement(child)) {
-	      hasValid = true;
-	    }
-	  });
-	
-	  return hasValid;
-	}
-	
-	module.exports = {
-	  map: mapValidComponents,
-	  forEach: forEachValidComponents,
-	  numberOf: numberOfValidComponents,
-	  hasValidComponent: hasValidComponent
-	};
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Safe chained function
-	 *
-	 * Will only create a new function if needed,
-	 * otherwise will pass back existing functions or null.
-	 *
-	 * @param {function} one
-	 * @param {function} two
-	 * @returns {function|null}
-	 */
-	function createChainedFunction(one, two) {
-	  var hasOne = typeof one === 'function';
-	  var hasTwo = typeof two === 'function';
-	
-	  if (!hasOne && !hasTwo) { return null; }
-	  if (!hasOne) { return two; }
-	  if (!hasTwo) { return one; }
-	
-	  return function chainedFunction() {
-	    one.apply(this, arguments);
-	    two.apply(this, arguments);
-	  };
-	}
-	
-	module.exports = createChainedFunction;
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = extend
-	
-	function extend() {
-	    var target = {}
-	
-	    for (var i = 0; i < arguments.length; i++) {
-	        var source = arguments[i]
-	
-	        for (var key in source) {
-	            if (source.hasOwnProperty(key)) {
-	                target[key] = source[key]
-	            }
-	        }
-	    }
-	
-	    return target
-	}
-
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//  Chance.js 0.5.9
-	//  http://chancejs.com
-	//  (c) 2013 Victor Quinn
-	//  Chance may be freely distributed or modified under the MIT license.
-	
-	(function () {
-	
-	    // Constants
-	    var MAX_INT = 9007199254740992;
-	    var MIN_INT = -MAX_INT;
-	    var NUMBERS = '0123456789';
-	    var CHARS_LOWER = 'abcdefghijklmnopqrstuvwxyz';
-	    var CHARS_UPPER = CHARS_LOWER.toUpperCase();
-	    var HEX_POOL  = NUMBERS + "abcdef";
-	
-	    // Cached array helpers
-	    var slice = Array.prototype.slice;
-	
-	    // Constructor
-	    function Chance (seed) {
-	        if (!(this instanceof Chance)) {
-	            return new Chance(seed);
-	        }
-	
-	        if (seed !== undefined) {
-	            // If we were passed a generator rather than a seed, use it.
-	            if (typeof seed === 'function') {
-	                this.random = seed;
-	            } else {
-	                this.seed = seed;
-	            }
-	        }
-	
-	        // If no generator function was provided, use our MT
-	        if (typeof this.random === 'undefined') {
-	            this.mt = this.mersenne_twister(seed);
-	            this.random = function () {
-	                return this.mt.random(this.seed);
-	            };
-	        }
-	    }
-	
-	    // Random helper functions
-	    function initOptions(options, defaults) {
-	        options || (options = {});
-	        if (!defaults) {
-	            return options;
-	        }
-	        for (var i in defaults) {
-	            if (typeof options[i] === 'undefined') {
-	                options[i] = defaults[i];
-	            }
-	        }
-	        return options;
-	    }
-	
-	    function testRange(test, errorMessage) {
-	        if (test) {
-	            throw new RangeError(errorMessage);
-	        }
-	    }
-	
-	    // -- Basics --
-	
-	    Chance.prototype.bool = function (options) {
-	
-	        // likelihood of success (true)
-	        options = initOptions(options, {likelihood : 50});
-	
-	        testRange(
-	            options.likelihood < 0 || options.likelihood > 100,
-	            "Chance: Likelihood accepts values from 0 to 100."
-	        );
-	
-	        return this.random() * 100 < options.likelihood;
-	    };
-	
-	    Chance.prototype.character = function (options) {
-	        options = initOptions(options);
-	
-	        var symbols = "!@#$%^&*()[]",
-	            letters, pool;
-	
-	        testRange(
-	            options.alpha && options.symbols,
-	            "Chance: Cannot specify both alpha and symbols."
-	        );
-	
-	
-	        if (options.casing === 'lower') {
-	            letters = CHARS_LOWER;
-	        } else if (options.casing === 'upper') {
-	            letters = CHARS_UPPER;
-	        } else {
-	            letters = CHARS_LOWER + CHARS_UPPER;
-	        }
-	
-	        if (options.pool) {
-	            pool = options.pool;
-	        } else if (options.alpha) {
-	            pool = letters;
-	        } else if (options.symbols) {
-	            pool = symbols;
-	        } else {
-	            pool = letters + NUMBERS + symbols;
-	        }
-	
-	        return pool.charAt(this.natural({max: (pool.length - 1)}));
-	    };
-	
-	    // Note, wanted to use "float" or "double" but those are both JS reserved words.
-	
-	    // Note, fixed means N OR LESS digits after the decimal. This because
-	    // It could be 14.9000 but in JavaScript, when this is cast as a number,
-	    // the trailing zeroes are dropped. Left to the consumer if trailing zeroes are
-	    // needed
-	    Chance.prototype.floating = function (options) {
-	        var num, range;
-	
-	        options = initOptions(options, {fixed : 4});
-	        var fixed = Math.pow(10, options.fixed);
-	
-	        testRange(
-	            options.fixed && options.precision,
-	            "Chance: Cannot specify both fixed and precision."
-	        );
-	
-	        var max = MAX_INT / fixed;
-	        var min = -max;
-	
-	        testRange(
-	            options.min && options.fixed && options.min < min,
-	            "Chance: Min specified is out of range with fixed. Min should be, at least, " + min
-	        );
-	        testRange(
-	            options.max && options.fixed && options.max > max,
-	            "Chance: Max specified is out of range with fixed. Max should be, at most, " + max
-	        );
-	
-	        options = initOptions(options, {min : min, max : max});
-	
-	        // Todo - Make this work!
-	        // options.precision = (typeof options.precision !== "undefined") ? options.precision : false;
-	
-	        num = this.integer({min: options.min * fixed, max: options.max * fixed});
-	        var num_fixed = (num / fixed).toFixed(options.fixed);
-	
-	        return parseFloat(num_fixed);
-	    };
-	
-	    // NOTE the max and min are INCLUDED in the range. So:
-	    //
-	    // chance.natural({min: 1, max: 3});
-	    //
-	    // would return either 1, 2, or 3.
-	
-	    Chance.prototype.integer = function (options) {
-	
-	        // 9007199254740992 (2^53) is the max integer number in JavaScript
-	        // See: http://vq.io/132sa2j
-	        options = initOptions(options, {min: MIN_INT, max: MAX_INT});
-	
-	        testRange(options.min > options.max, "Chance: Min cannot be greater than Max.");
-	
-	        return Math.floor(this.random() * (options.max - options.min + 1) + options.min);
-	    };
-	
-	    Chance.prototype.natural = function (options) {
-	        options = initOptions(options, {min: 0, max: MAX_INT});
-	        return this.integer(options);
-	    };
-	
-	    Chance.prototype.normal = function (options) {
-	        options = initOptions(options, {mean : 0, dev : 1});
-	
-	        // The Marsaglia Polar method
-	        var s, u, v, norm,
-	            mean = options.mean,
-	            dev = options.dev;
-	
-	        do {
-	            // U and V are from the uniform distribution on (-1, 1)
-	            u = this.random() * 2 - 1;
-	            v = this.random() * 2 - 1;
-	
-	            s = u * u + v * v;
-	        } while (s >= 1);
-	
-	        // Compute the standard normal variate
-	        norm = u * Math.sqrt(-2 * Math.log(s) / s);
-	
-	        // Shape and scale
-	        return dev * norm + mean;
-	    };
-	
-	    Chance.prototype.string = function (options) {
-	        options = initOptions(options);
-	
-	        var length = options.length || this.natural({min: 5, max: 20}),
-	            text = '',
-	            pool = options.pool;
-	
-	        for (var i = 0; i < length; i++) {
-	            text += this.character({pool: pool});
-	        }
-	        return text;
-	    };
-	
-	    // -- End Basics --
-	
-	    // -- Helpers --
-	
-	    Chance.prototype.capitalize = function (word) {
-	        return word.charAt(0).toUpperCase() + word.substr(1);
-	    };
-	
-	    Chance.prototype.mixin = function (obj) {
-	        var chance = this;
-	        for (var func_name in obj) {
-	            Chance.prototype[func_name] = obj[func_name];
-	        }
-	        return this;
-	    };
-	
-	    // Given a function that generates something random and a number of items to generate,
-	    // return an array of items where none repeat.
-	    Chance.prototype.unique = function(fn, num, options) {
-	        options = initOptions(options, {
-	            // Default comparator to check that val is not already in arr.
-	            // Should return `false` if item not in array, `true` otherwise
-	            comparator: function(arr, val) {
-	                return arr.indexOf(result) !== -1;
-	            }
-	        });
-	
-	        var arr = [], count = 0;
-	
-	        while (arr.length < num) {
-	            var result = fn.apply(this, slice.call(arguments, 2));
-	            if (!options.comparator(arr, result)) {
-	                arr.push(result);
-	                // reset count when unique found
-	                count = 0;
-	            }
-	
-	            if (++count > num * 50) {
-	                throw new RangeError("Chance: num is likely too large for sample set");
-	            }
-	        }
-	        return arr;
-	    };
-	
-	    // H/T to SO for this one: http://vq.io/OtUrZ5
-	    Chance.prototype.pad = function (number, width, pad) {
-	        // Default pad to 0 if none provided
-	        pad = pad || '0';
-	        // Convert number to a string
-	        number = number + '';
-	        return number.length >= width ? number : new Array(width - number.length + 1).join(pad) + number;
-	    };
-	
-	    Chance.prototype.pick = function (arr, count) {
-	        if (!count || count === 1) {
-	            return arr[this.natural({max: arr.length - 1})];
-	        } else {
-	            return this.shuffle(arr).slice(0, count);
-	        }
-	    };
-	
-	    Chance.prototype.shuffle = function (arr) {
-	        var old_array = arr.slice(0),
-	            new_array = [],
-	            j = 0,
-	            length = Number(old_array.length);
-	
-	        for (var i = 0; i < length; i++) {
-	            // Pick a random index from the array
-	            j = this.natural({max: old_array.length - 1});
-	            // Add it to the new array
-	            new_array[i] = old_array[j];
-	            // Remove that element from the original array
-	            old_array.splice(j, 1);
-	        }
-	
-	        return new_array;
-	    };
-	
-	    // -- End Helpers --
-	
-	    // -- Text --
-	
-	    Chance.prototype.paragraph = function (options) {
-	        options = initOptions(options);
-	
-	        var sentences = options.sentences || this.natural({min: 3, max: 7}),
-	            sentence_array = [];
-	
-	        for (var i = 0; i < sentences; i++) {
-	            sentence_array.push(this.sentence());
-	        }
-	
-	        return sentence_array.join(' ');
-	    };
-	
-	    // Could get smarter about this than generating random words and
-	    // chaining them together. Such as: http://vq.io/1a5ceOh
-	    Chance.prototype.sentence = function (options) {
-	        options = initOptions(options);
-	
-	        var words = options.words || this.natural({min: 12, max: 18}),
-	            text, word_array = [];
-	
-	        for (var i = 0; i < words; i++) {
-	            word_array.push(this.word());
-	        }
-	
-	        text = word_array.join(' ');
-	
-	        // Capitalize first letter of sentence, add period at end
-	        text = this.capitalize(text) + '.';
-	
-	        return text;
-	    };
-	
-	    Chance.prototype.syllable = function (options) {
-	        options = initOptions(options);
-	
-	        var length = options.length || this.natural({min: 2, max: 3}),
-	            consonants = 'bcdfghjklmnprstvwz', // consonants except hard to speak ones
-	            vowels = 'aeiou', // vowels
-	            all = consonants + vowels, // all
-	            text = '',
-	            chr;
-	
-	        // I'm sure there's a more elegant way to do this, but this works
-	        // decently well.
-	        for (var i = 0; i < length; i++) {
-	            if (i === 0) {
-	                // First character can be anything
-	                chr = this.character({pool: all});
-	            } else if (consonants.indexOf(chr) === -1) {
-	                // Last character was a vowel, now we want a consonant
-	                chr = this.character({pool: consonants});
-	            } else {
-	                // Last character was a consonant, now we want a vowel
-	                chr = this.character({pool: vowels});
-	            }
-	
-	            text += chr;
-	        }
-	
-	        return text;
-	    };
-	
-	    Chance.prototype.word = function (options) {
-	        options = initOptions(options);
-	
-	        testRange(
-	            options.syllables && options.length,
-	            "Chance: Cannot specify both syllables AND length."
-	        );
-	
-	        var syllables = options.syllables || this.natural({min: 1, max: 3}),
-	            text = '';
-	
-	        if (options.length) {
-	            // Either bound word by length
-	            do {
-	                text += this.syllable();
-	            } while (text.length < options.length);
-	            text = text.substring(0, options.length);
-	        } else {
-	            // Or by number of syllables
-	            for (var i = 0; i < syllables; i++) {
-	                text += this.syllable();
-	            }
-	        }
-	        return text;
-	    };
-	
-	    // -- End Text --
-	
-	    // -- Person --
-	
-	    Chance.prototype.age = function (options) {
-	        options = initOptions(options);
-	        var ageRange;
-	
-	        switch (options.type) {
-	            case 'child':
-	                ageRange = {min: 1, max: 12};
-	                break;
-	            case 'teen':
-	                ageRange = {min: 13, max: 19};
-	                break;
-	            case 'adult':
-	                ageRange = {min: 18, max: 65};
-	                break;
-	            case 'senior':
-	                ageRange = {min: 65, max: 100};
-	                break;
-	            case 'all':
-	                ageRange = {min: 1, max: 100};
-	                break;
-	            default:
-	                ageRange = {min: 18, max: 65};
-	                break;
-	        }
-	
-	        return this.natural(ageRange);
-	    };
-	
-	    Chance.prototype.birthday = function (options) {
-	        options = initOptions(options, {
-	            year: (new Date().getFullYear() - this.age(options))
-	        });
-	
-	        return this.date(options);
-	    };
-	
-	
-	    Chance.prototype.first = function (options) {
-	        options = initOptions(options, {gender: this.gender()});
-	        return this.pick(this.get("firstNames")[options.gender.toLowerCase()]);
-	    };
-	
-	    Chance.prototype.gender = function () {
-	        return this.pick(['Male', 'Female']);
-	    };
-	
-	
-	    Chance.prototype.last = function () {
-	        return this.pick(this.get("lastNames"));
-	    };
-	
-	    Chance.prototype.name = function (options) {
-	        options = initOptions(options);
-	
-	        var first = this.first(options),
-	            last = this.last(),
-	            name;
-	
-	        if (options.middle) {
-	            name = first + ' ' + this.first(options) + ' ' + last;
-	        } else if (options.middle_initial) {
-	            name = first + ' ' + this.character({alpha: true, casing: 'upper'}) + '. ' + last;
-	        } else {
-	            name = first + ' ' + last;
-	        }
-	
-	        if (options.prefix) {
-	            name = this.prefix(options) + ' ' + name;
-	        }
-	
-	        return name;
-	    };
-	
-	    // Return the list of available name prefixes based on supplied gender.
-	    Chance.prototype.name_prefixes = function (gender) {
-	        gender = gender || "all";
-	
-	        var prefixes = [
-	            { name: 'Doctor', abbreviation: 'Dr.' }
-	        ];
-	
-	        if (gender === "male" || gender === "all") {
-	            prefixes.push({ name: 'Mister', abbreviation: 'Mr.' });
-	        }
-	
-	        if (gender === "female" || gender === "all") {
-	            prefixes.push({ name: 'Miss', abbreviation: 'Miss' });
-	            prefixes.push({ name: 'Misses', abbreviation: 'Mrs.' });
-	        }
-	
-	        return prefixes;
-	    };
-	
-	    // Alias for name_prefix
-	    Chance.prototype.prefix = function (options) {
-	        return this.name_prefix(options);
-	    };
-	
-	    Chance.prototype.name_prefix = function (options) {
-	        options = initOptions(options, { gender: "all" });
-	        return options.full ?
-	            this.pick(this.name_prefixes(options.gender)).name :
-	            this.pick(this.name_prefixes(options.gender)).abbreviation;
-	    };
-	
-	    Chance.prototype.ssn = function (options) {
-	        options = initOptions(options, {ssnFour: false, dashes: true});
-	        var ssn_pool = "1234567890",
-	            ssn,
-	            dash = '';
-	
-	        if(options.dashes){
-	            dash = '-';
-	        }
-	
-	        if(!options.ssnFour) {
-	            ssn = this.string({pool: ssn_pool, length: 3}) + dash +
-	            this.string({pool: ssn_pool, length: 2}) + dash +
-	            this.string({pool: ssn_pool, length: 4});
-	        } else {
-	            ssn = this.string({pool: ssn_pool, length: 4});
-	        }
-	        return ssn;
-	    };
-	
-	    // -- End Person --
-	
-	    // -- Web --
-	
-	    Chance.prototype.color = function (options) {
-	        function gray(value, delimiter) {
-	            return [value, value, value].join(delimiter || '');
-	        }
-	
-	        options = initOptions(options, {format: this.pick(['hex', 'shorthex', 'rgb']), grayscale: false});
-	        var isGrayscale = options.grayscale;
-	
-	        if (options.format === 'hex') {
-	            return '#' + (isGrayscale ? gray(this.hash({length: 2})) : this.hash({length: 6}));
-	        }
-	
-	        if (options.format === 'shorthex') {
-	            return '#' + (isGrayscale ? gray(this.hash({length: 1})) : this.hash({length: 3}));
-	        }
-	
-	        if (options.format === 'rgb') {
-	            if (isGrayscale) {
-	                return 'rgb(' + gray(this.natural({max: 255}), ',') + ')';
-	            } else {
-	                return 'rgb(' + this.natural({max: 255}) + ',' + this.natural({max: 255}) + ',' + this.natural({max: 255}) + ')';
-	            }
-	        }
-	
-	        throw new Error('Invalid format provided. Please provide one of "hex", "shorthex", or "rgb"');
-	    };
-	
-	    Chance.prototype.domain = function (options) {
-	        options = initOptions(options);
-	        return this.word() + '.' + (options.tld || this.tld());
-	    };
-	
-	    Chance.prototype.email = function (options) {
-	        options = initOptions(options);
-	        return this.word() + '@' + (options.domain || this.domain());
-	    };
-	
-	    Chance.prototype.fbid = function () {
-	        return parseInt('10000' + this.natural({max: 100000000000}), 10);
-	    };
-	
-	    Chance.prototype.google_analytics = function () {
-	        var account = this.pad(this.natural({max: 999999}), 6);
-	        var property = this.pad(this.natural({max: 99}), 2);
-	        return 'UA-' + account + '-' + property;
-	    };
-	
-	    Chance.prototype.hashtag = function () {
-	        return '#' + this.word();
-	    };
-	
-	    Chance.prototype.ip = function () {
-	        // Todo: This could return some reserved IPs. See http://vq.io/137dgYy
-	        // this should probably be updated to account for that rare as it may be
-	        return this.natural({max: 255}) + '.' +
-	               this.natural({max: 255}) + '.' +
-	               this.natural({max: 255}) + '.' +
-	               this.natural({max: 255});
-	    };
-	
-	    Chance.prototype.ipv6 = function () {
-	        var ip_addr = [];
-	
-	        for (var i = 0; i < 8; i++) {
-	            ip_addr.push(this.hash({length: 4}));
-	        }
-	        return ip_addr.join(":");
-	    };
-	
-	    Chance.prototype.klout = function () {
-	        return this.natural({min: 1, max: 99});
-	    };
-	
-	    Chance.prototype.tlds = function () {
-	        return ['com', 'org', 'edu', 'gov', 'co.uk', 'net', 'io'];
-	    };
-	
-	    Chance.prototype.tld = function () {
-	        return this.pick(this.tlds());
-	    };
-	
-	    Chance.prototype.twitter = function () {
-	        return '@' + this.word();
-	    };
-	
-	    // -- End Web --
-	
-	    // -- Address --
-	
-	    Chance.prototype.address = function (options) {
-	        options = initOptions(options);
-	        return this.natural({min: 5, max: 2000}) + ' ' + this.street(options);
-	    };
-	
-	    Chance.prototype.areacode = function (options) {
-	        options = initOptions(options, {parens : true});
-	        // Don't want area codes to start with 1, or have a 9 as the second digit
-	        var areacode = this.natural({min: 2, max: 9}).toString() + this.natural({min: 0, max: 8}).toString() + this.natural({min: 0, max: 9}).toString();
-	        return options.parens ? '(' + areacode + ')' : areacode;
-	    };
-	
-	    Chance.prototype.city = function () {
-	        return this.capitalize(this.word({syllables: 3}));
-	    };
-	
-	    Chance.prototype.coordinates = function (options) {
-	        options = initOptions(options);
-	        return this.latitude(options) + ', ' + this.longitude(options);
-	    };
-	
-	    Chance.prototype.geoJson = function (options) {
-	        options = initOptions(options);
-	        return this.latitude(options) + ', ' + this.longitude(options) + ', ' + this.altitude(options);
-	    };
-	
-	    Chance.prototype.altitude = function (options) {
-	        options = initOptions(options, {fixed : 5});
-	        return this.floating({min: 0, max: 32736000, fixed: options.fixed});
-	    };
-	
-	    Chance.prototype.depth = function (options) {
-	        options = initOptions(options, {fixed: 5});
-	        return this.floating({min: -35994, max: 0, fixed: options.fixed});
-	    };
-	
-	    Chance.prototype.latitude = function (options) {
-	        options = initOptions(options, {fixed: 5, min: -90, max: 90});
-	        return this.floating({min: options.min, max: options.max, fixed: options.fixed});
-	    };
-	
-	    Chance.prototype.longitude = function (options) {
-	        options = initOptions(options, {fixed: 5, min: -180, max: 180});
-	        return this.floating({min: options.min, max: options.max, fixed: options.fixed});
-	    };
-	
-	    Chance.prototype.phone = function (options) {
-	        options = initOptions(options, {formatted : true});
-	        if (!options.formatted) {
-	            options.parens = false;
-	        }
-	        var areacode = this.areacode(options).toString();
-	        var exchange = this.natural({min: 2, max: 9}).toString() 
-	            + this.natural({min: 0, max: 9}).toString() 
-	            + this.natural({min: 0, max: 9}).toString();
-	        var subscriber = this.natural({min: 1000, max: 9999}).toString(); // this could be random [0-9]{4}
-	        
-	        return options.formatted ? areacode + ' ' + exchange + '-' + subscriber : areacode + exchange + subscriber;
-	    };
-	
-	    Chance.prototype.postal = function () {
-	        // Postal District
-	        var pd = this.character({pool: "XVTSRPNKLMHJGECBA"});
-	        // Forward Sortation Area (FSA)
-	        var fsa = pd + this.natural({max: 9}) + this.character({alpha: true, casing: "upper"});
-	        // Local Delivery Unut (LDU)
-	        var ldu = this.natural({max: 9}) + this.character({alpha: true, casing: "upper"}) + this.natural({max: 9});
-	
-	        return fsa + " " + ldu;
-	    };
-	
-	    Chance.prototype.provinces = function () {
-	        return this.get("provinces");
-	    };
-	
-	    Chance.prototype.province = function (options) {
-	        return (options && options.full) ?
-	            this.pick(this.provinces()).name :
-	            this.pick(this.provinces()).abbreviation;
-	    };
-	
-	    Chance.prototype.radio = function (options) {
-	        // Initial Letter (Typically Designated by Side of Mississippi River)
-	        options = initOptions(options, {side : "?"});
-	        var fl = "";
-	        switch (options.side.toLowerCase()) {
-	        case "east":
-	        case "e":
-	            fl = "W";
-	            break;
-	        case "west":
-	        case "w":
-	            fl = "K";
-	            break;
-	        default:
-	            fl = this.character({pool: "KW"});
-	            break;
-	        }
-	
-	        return fl + this.character({alpha: true, casing: "upper"}) + this.character({alpha: true, casing: "upper"}) + this.character({alpha: true, casing: "upper"});
-	    };
-	
-	    Chance.prototype.state = function (options) {
-	        return (options && options.full) ?
-	            this.pick(this.states(options)).name :
-	            this.pick(this.states(options)).abbreviation;
-	    };
-	
-	    Chance.prototype.states = function (options) {
-	        options = initOptions(options);
-	
-	        var states,
-	            us_states_and_dc = this.get("us_states_and_dc"),
-	            territories = this.get("territories"),
-	            armed_forces = this.get("armed_forces");
-	
-	        states = us_states_and_dc;
-	
-	        if (options.territories) {
-	            states = states.concat(territories);
-	        }
-	        if (options.armed_forces) {
-	            states = states.concat(armed_forces);
-	        }
-	
-	        return states;
-	    };
-	
-	    Chance.prototype.street = function (options) {
-	        options = initOptions(options);
-	
-	        var street = this.word({syllables: 2});
-	        street = this.capitalize(street);
-	        street += ' ';
-	        street += options.short_suffix ?
-	            this.street_suffix().abbreviation :
-	            this.street_suffix().name;
-	        return street;
-	    };
-	
-	    Chance.prototype.street_suffix = function () {
-	        return this.pick(this.street_suffixes());
-	    };
-	
-	    Chance.prototype.street_suffixes = function () {
-	        // These are the most common suffixes.
-	        return this.get("street_suffixes");
-	    };
-	
-	    Chance.prototype.tv = function (options) {
-	        return this.radio(options);
-	    };
-	
-	    // Note: only returning US zip codes, internationalization will be a whole
-	    // other beast to tackle at some point.
-	    Chance.prototype.zip = function (options) {
-	        var zip = "";
-	
-	        for (var i = 0; i < 5; i++) {
-	            zip += this.natural({max: 9}).toString();
-	        }
-	
-	        if (options && options.plusfour === true) {
-	            zip += '-';
-	            for (i = 0; i < 4; i++) {
-	                zip += this.natural({max: 9}).toString();
-	            }
-	        }
-	
-	        return zip;
-	    };
-	
-	    // -- End Address --
-	
-	    // -- Time
-	
-	    Chance.prototype.ampm = function () {
-	        return this.bool() ? 'am' : 'pm';
-	    };
-	
-	    Chance.prototype.date = function (options) {
-	        var m = this.month({raw: true}),
-	            date_string;
-	
-	        options = initOptions(options, {
-	            year: parseInt(this.year(), 10),
-	            // Necessary to subtract 1 because Date() 0-indexes month but not day or year
-	            // for some reason.
-	            month: m.numeric - 1,
-	            day: this.natural({min: 1, max: m.days}),
-	            hour: this.hour(),
-	            minute: this.minute(),
-	            second: this.second(),
-	            millisecond: this.millisecond(),
-	            american: true,
-	            string: false
-	        });
-	
-	        var date = new Date(options.year, options.month, options.day, options.hour, options.minute, options.second, options.millisecond);
-	
-	        if (options.american) {
-	            // Adding 1 to the month is necessary because Date() 0-indexes
-	            // months but not day for some odd reason.
-	            date_string = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-	        } else {
-	            date_string = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-	        }
-	
-	        return options.string ? date_string : date;
-	    };
-	
-	    Chance.prototype.hammertime = function (options) {
-	        return this.date(options).getTime();
-	    };
-	
-	    Chance.prototype.hour = function (options) {
-	        options = initOptions(options);
-	        var max = options.twentyfour ? 24 : 12;
-	        return this.natural({min: 1, max: max});
-	    };
-	
-	    Chance.prototype.millisecond = function () {
-	        return this.natural({max: 999});
-	    };
-	
-	    Chance.prototype.minute = Chance.prototype.second = function () {
-	        return this.natural({max: 59});
-	    };
-	
-	    Chance.prototype.month = function (options) {
-	        options = initOptions(options);
-	        var month = this.pick(this.months());
-	        return options.raw ? month : month.name;
-	    };
-	
-	    Chance.prototype.months = function () {
-	        return this.get("months");
-	    };
-	
-	    Chance.prototype.second = function () {
-	        return this.natural({max: 59});
-	    };
-	
-	    Chance.prototype.timestamp = function () {
-	        return this.natural({min: 1, max: parseInt(new Date().getTime() / 1000, 10)});
-	    };
-	
-	    Chance.prototype.year = function (options) {
-	        // Default to current year as min if none specified
-	        options = initOptions(options, {min: new Date().getFullYear()});
-	
-	        // Default to one century after current year as max if none specified
-	        options.max = (typeof options.max !== "undefined") ? options.max : options.min + 100;
-	
-	        return this.natural(options).toString();
-	    };
-	
-	    // -- End Time
-	
-	    // -- Finance --
-	
-	    Chance.prototype.cc = function (options) {
-	        options = initOptions(options);
-	
-	        var type, number, to_generate, type_name;
-	
-	        type = (options.type) ?
-	                    this.cc_type({ name: options.type, raw: true }) :
-	                    this.cc_type({ raw: true });
-	        number = type.prefix.split("");
-	        to_generate = type.length - type.prefix.length - 1;
-	
-	        // Generates n - 1 digits
-	        for (var i = 0; i < to_generate; i++) {
-	            number.push(this.integer({min: 0, max: 9}));
-	        }
-	
-	        // Generates the last digit according to Luhn algorithm
-	        number.push(this.luhn_calculate(number.join("")));
-	
-	        return number.join("");
-	    };
-	
-	    Chance.prototype.cc_types = function () {
-	        // http://en.wikipedia.org/wiki/Bank_card_number#Issuer_identification_number_.28IIN.29
-	        return this.get("cc_types");
-	    };
-	
-	    Chance.prototype.cc_type = function (options) {
-	        options = initOptions(options);
-	        var types = this.cc_types(),
-	            type = null;
-	
-	        if (options.name) {
-	            for (var i = 0; i < types.length; i++) {
-	                // Accept either name or short_name to specify card type
-	                if (types[i].name === options.name || types[i].short_name === options.name) {
-	                    type = types[i];
-	                    break;
-	                }
-	            }
-	            if (type === null) {
-	                throw new Error("Credit card type '" + options.name + "'' is not supported");
-	            }
-	        } else {
-	            type = this.pick(types);
-	        }
-	
-	        return options.raw ? type : type.name;
-	    };
-	
-	    Chance.prototype.dollar = function (options) {
-	        // By default, a somewhat more sane max for dollar than all available numbers
-	        options = initOptions(options, {max : 10000, min : 0});
-	
-	        var dollar = this.floating({min: options.min, max: options.max, fixed: 2}).toString(),
-	            cents = dollar.split('.')[1];
-	
-	        if (cents === undefined) {
-	            dollar += '.00';
-	        } else if (cents.length < 2) {
-	            dollar = dollar + '0';
-	        }
-	
-	        if (dollar < 0) {
-	            return '-$' + dollar.replace('-', '');
-	        } else {
-	            return '$' + dollar;
-	        }
-	    };
-	
-	    Chance.prototype.exp = function (options) {
-	        options = initOptions(options);
-	        var exp = {};
-	
-	        exp.year = this.exp_year();
-	
-	        // If the year is this year, need to ensure month is greater than the
-	        // current month or this expiration will not be valid
-	        if (exp.year === (new Date().getFullYear())) {
-	            exp.month = this.exp_month({future: true});
-	        } else {
-	            exp.month = this.exp_month();
-	        }
-	
-	        return options.raw ? exp : exp.month + '/' + exp.year;
-	    };
-	
-	    Chance.prototype.exp_month = function (options) {
-	        options = initOptions(options);
-	        var month, month_int;
-	
-	        if (options.future) {
-	            do {
-	                month = this.month({raw: true}).numeric;
-	                month_int = parseInt(month, 10);
-	            } while (month_int < new Date().getMonth());
-	        } else {
-	            month = this.month({raw: true}).numeric;
-	        }
-	
-	        return month;
-	    };
-	
-	    Chance.prototype.exp_year = function () {
-	        return this.year({max: new Date().getFullYear() + 10});
-	    };
-	
-	    //return all world currency by ISO 4217
-	    Chance.prototype.currency_types = function () {
-	        return this.get("currency_types");
-	    };
-	
-	
-	    //return random world currency by ISO 4217
-	    Chance.prototype.currency = function () {
-	        return this.pick(this.currency_types());
-	    };
-	
-	    //Return random correct currency exchange pair (e.g. EUR/USD) or array of currency code
-	    Chance.prototype.currency_pair = function (returnAsString) {
-	        var currencies = this.unique(this.currency, 2, {
-	            comparator: function(arr, val) {
-	                // If this is the first element, we know it doesn't exist
-	                if (arr.length === 0) {
-	                    return false;
-	                }
-	
-	                return arr.reduce(function(acc, item) {
-	                    // If a match has been found, short circuit check and just return
-	                    if (acc) {
-	                        return acc;
-	                    }
-	                    return item.code === val.code;
-	                }, false);
-	            }
-	        });
-	
-	        if (returnAsString) {
-	            return  currencies[0] + '/' + currencies[1];
-	        } else {
-	            return currencies;
-	        }
-	    };
-	
-	    // -- End Finance
-	
-	    // -- Miscellaneous --
-	
-	    // Dice - For all the board game geeks out there, myself included ;)
-	    function diceFn (range) {
-	    	return function () {
-	    		return this.natural(range);
-	    	};
-	    }
-	    Chance.prototype.d4 = diceFn({min: 1, max: 4});
-	    Chance.prototype.d6 = diceFn({min: 1, max: 6});
-	    Chance.prototype.d8 = diceFn({min: 1, max: 8});
-	    Chance.prototype.d10 = diceFn({min: 1, max: 10});
-	    Chance.prototype.d12 = diceFn({min: 1, max: 12});
-	    Chance.prototype.d20 = diceFn({min: 1, max: 20});
-	    Chance.prototype.d30 = diceFn({min: 1, max: 30});
-	    Chance.prototype.d100 = diceFn({min: 1, max: 100});
-	
-	    Chance.prototype.rpg = function (thrown, options) {
-	        options = initOptions(options);
-	        if (thrown === null) {
-	            throw new Error("A type of die roll must be included");
-	        } else {
-	            var bits = thrown.toLowerCase().split("d"),
-	                rolls = [];
-	
-	            if (bits.length !== 2 || !parseInt(bits[0], 10) || !parseInt(bits[1], 10)) {
-	                throw new Error("Invalid format provided. Please provide #d# where the first # is the number of dice to roll, the second # is the max of each die");
-	            }
-	            for (var i = bits[0]; i > 0; i--) {
-	                rolls[i - 1] = this.natural({min: 1, max: bits[1]});
-	            }
-	            return (typeof options.sum !== 'undefined' && options.sum) ? rolls.reduce(function (p, c) { return p + c; }) : rolls;
-	        }
-	    };
-	
-	    // Guid
-	    Chance.prototype.guid = function (options) {
-	        options = options || {version: 5};
-	
-	        var guid_pool = "ABCDEF1234567890",
-	            variant_pool = "AB89",
-	            guid = this.string({pool: guid_pool, length: 8}) + '-' +
-	                   this.string({pool: guid_pool, length: 4}) + '-' +
-	                   // The Version
-	                   options.version +
-	                   this.string({pool: guid_pool, length: 3}) + '-' +
-	                   // The Variant
-	                   this.string({pool: variant_pool, length: 1}) +
-	                   this.string({pool: guid_pool, length: 3}) + '-' +
-	                   this.string({pool: guid_pool, length: 12});
-	        return guid;
-	    };
-	
-	    // Hash
-	    Chance.prototype.hash = function (options) {
-	        options = initOptions(options, {length : 40, casing: 'lower'});
-	        var pool = options.casing === 'upper' ? HEX_POOL.toUpperCase() : HEX_POOL;
-	        return this.string({pool: pool, length: options.length});
-	    };
-	
-	    Chance.prototype.luhn_check = function (num) {
-	        var str = num.toString();
-	        var checkDigit = +str.substring(str.length - 1);
-	        return checkDigit === this.luhn_calculate(+str.substring(0, str.length - 1));
-	    };
-	
-	    Chance.prototype.luhn_calculate = function (num) {
-	        var digits = num.toString().split("").reverse();
-	        var sum = 0;
-	        var digit;
-	        
-	        for (var i = 0, l = digits.length; l > i; ++i) {
-	            digit = +digits[i];
-	            if (i % 2 === 0) {
-	                digit *= 2;
-	                if (digit > 9) {
-	                    digit -= 9;
-	                }
-	            }
-	            sum += digit;
-	        }
-	        return (sum * 9) % 10;
-	    };
-	
-	
-	    var data = {
-	
-	        firstNames: {
-	            "male": ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Charles", "Thomas", "Christopher", "Daniel", "Matthew", "George", "Donald", "Anthony", "Paul", "Mark", "Edward", "Steven", "Kenneth", "Andrew", "Brian", "Joshua", "Kevin", "Ronald", "Timothy", "Jason", "Jeffrey", "Frank", "Gary", "Ryan", "Nicholas", "Eric", "Stephen", "Jacob", "Larry", "Jonathan", "Scott", "Raymond", "Justin", "Brandon", "Gregory", "Samuel", "Benjamin", "Patrick", "Jack", "Henry", "Walter", "Dennis", "Jerry", "Alexander", "Peter", "Tyler", "Douglas", "Harold", "Aaron", "Jose", "Adam", "Arthur", "Zachary", "Carl", "Nathan", "Albert", "Kyle", "Lawrence", "Joe", "Willie", "Gerald", "Roger", "Keith", "Jeremy", "Terry", "Harry", "Ralph", "Sean", "Jesse", "Roy", "Louis", "Billy", "Austin", "Bruce", "Eugene", "Christian", "Bryan", "Wayne", "Russell", "Howard", "Fred", "Ethan", "Jordan", "Philip", "Alan", "Juan", "Randy", "Vincent", "Bobby", "Dylan", "Johnny", "Phillip", "Victor", "Clarence", "Ernest", "Martin", "Craig", "Stanley", "Shawn", "Travis", "Bradley", "Leonard", "Earl", "Gabriel", "Jimmy", "Francis", "Todd", "Noah", "Danny", "Dale", "Cody", "Carlos", "Allen", "Frederick", "Logan", "Curtis", "Alex", "Joel", "Luis", "Norman", "Marvin", "Glenn", "Tony", "Nathaniel", "Rodney", "Melvin", "Alfred", "Steve", "Cameron", "Chad", "Edwin", "Caleb", "Evan", "Antonio", "Lee", "Herbert", "Jeffery", "Isaac", "Derek", "Ricky", "Marcus", "Theodore", "Elijah", "Luke", "Jesus", "Eddie", "Troy", "Mike", "Dustin", "Ray", "Adrian", "Bernard", "Leroy", "Angel", "Randall", "Wesley", "Ian", "Jared", "Mason", "Hunter", "Calvin", "Oscar", "Clifford", "Jay", "Shane", "Ronnie", "Barry", "Lucas", "Corey", "Manuel", "Leo", "Tommy", "Warren", "Jackson", "Isaiah", "Connor", "Don", "Dean", "Jon", "Julian", "Miguel", "Bill", "Lloyd", "Charlie", "Mitchell", "Leon", "Jerome", "Darrell", "Jeremiah", "Alvin", "Brett", "Seth", "Floyd", "Jim", "Blake", "Micheal", "Gordon", "Trevor", "Lewis", "Erik", "Edgar", "Vernon", "Devin", "Gavin", "Jayden", "Chris", "Clyde", "Tom", "Derrick", "Mario", "Brent", "Marc", "Herman", "Chase", "Dominic", "Ricardo", "Franklin", "Maurice", "Max", "Aiden", "Owen", "Lester", "Gilbert", "Elmer", "Gene", "Francisco", "Glen", "Cory", "Garrett", "Clayton", "Sam", "Jorge", "Chester", "Alejandro", "Jeff", "Harvey", "Milton", "Cole", "Ivan", "Andre", "Duane", "Landon"],
-	            "female": ["Mary", "Emma", "Elizabeth", "Minnie", "Margaret", "Ida", "Alice", "Bertha", "Sarah", "Annie", "Clara", "Ella", "Florence", "Cora", "Martha", "Laura", "Nellie", "Grace", "Carrie", "Maude", "Mabel", "Bessie", "Jennie", "Gertrude", "Julia", "Hattie", "Edith", "Mattie", "Rose", "Catherine", "Lillian", "Ada", "Lillie", "Helen", "Jessie", "Louise", "Ethel", "Lula", "Myrtle", "Eva", "Frances", "Lena", "Lucy", "Edna", "Maggie", "Pearl", "Daisy", "Fannie", "Josephine", "Dora", "Rosa", "Katherine", "Agnes", "Marie", "Nora", "May", "Mamie", "Blanche", "Stella", "Ellen", "Nancy", "Effie", "Sallie", "Nettie", "Della", "Lizzie", "Flora", "Susie", "Maud", "Mae", "Etta", "Harriet", "Sadie", "Caroline", "Katie", "Lydia", "Elsie", "Kate", "Susan", "Mollie", "Alma", "Addie", "Georgia", "Eliza", "Lulu", "Nannie", "Lottie", "Amanda", "Belle", "Charlotte", "Rebecca", "Ruth", "Viola", "Olive", "Amelia", "Hannah", "Jane", "Virginia", "Emily", "Matilda", "Irene", "Kathryn", "Esther", "Willie", "Henrietta", "Ollie", "Amy", "Rachel", "Sara", "Estella", "Theresa", "Augusta", "Ora", "Pauline", "Josie", "Lola", "Sophia", "Leona", "Anne", "Mildred", "Ann", "Beulah", "Callie", "Lou", "Delia", "Eleanor", "Barbara", "Iva", "Louisa", "Maria", "Mayme", "Evelyn", "Estelle", "Nina", "Betty", "Marion", "Bettie", "Dorothy", "Luella", "Inez", "Lela", "Rosie", "Allie", "Millie", "Janie", "Cornelia", "Victoria", "Ruby", "Winifred", "Alta", "Celia", "Christine", "Beatrice", "Birdie", "Harriett", "Mable", "Myra", "Sophie", "Tillie", "Isabel", "Sylvia", "Carolyn", "Isabelle", "Leila", "Sally", "Ina", "Essie", "Bertie", "Nell", "Alberta", "Katharine", "Lora", "Rena", "Mina", "Rhoda", "Mathilda", "Abbie", "Eula", "Dollie", "Hettie", "Eunice", "Fanny", "Ola", "Lenora", "Adelaide", "Christina", "Lelia", "Nelle", "Sue", "Johanna", "Lilly", "Lucinda", "Minerva", "Lettie", "Roxie", "Cynthia", "Helena", "Hilda", "Hulda", "Bernice", "Genevieve", "Jean", "Cordelia", "Marian", "Francis", "Jeanette", "Adeline", "Gussie", "Leah", "Lois", "Lura", "Mittie", "Hallie", "Isabella", "Olga", "Phoebe", "Teresa", "Hester", "Lida", "Lina", "Winnie", "Claudia", "Marguerite", "Vera", "Cecelia", "Bess", "Emilie", "John", "Rosetta", "Verna", "Myrtie", "Cecilia", "Elva", "Olivia", "Ophelia", "Georgie", "Elnora", "Violet", "Adele", "Lily", "Linnie", "Loretta", "Madge", "Polly", "Virgie", "Eugenia", "Lucile", "Lucille", "Mabelle", "Rosalie"]
-	        },
-	
-	        lastNames: ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart', 'Sanchez', 'Morris', 'Rogers', 'Reed', 'Cook', 'Morgan', 'Bell', 'Murphy', 'Bailey', 'Rivera', 'Cooper', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray', 'Ramirez', 'James', 'Watson', 'Brooks', 'Kelly', 'Sanders', 'Price', 'Bennett', 'Wood', 'Barnes', 'Ross', 'Henderson', 'Coleman', 'Jenkins', 'Perry', 'Powell', 'Long', 'Patterson', 'Hughes', 'Flores', 'Washington', 'Butler', 'Simmons', 'Foster', 'Gonzales', 'Bryant', 'Alexander', 'Russell', 'Griffin', 'Diaz', 'Hayes', 'Myers', 'Ford', 'Hamilton', 'Graham', 'Sullivan', 'Wallace', 'Woods', 'Cole', 'West', 'Jordan', 'Owens', 'Reynolds', 'Fisher', 'Ellis', 'Harrison', 'Gibson', 'McDonald', 'Cruz', 'Marshall', 'Ortiz', 'Gomez', 'Murray', 'Freeman', 'Wells', 'Webb', 'Simpson', 'Stevens', 'Tucker', 'Porter', 'Hunter', 'Hicks', 'Crawford', 'Henry', 'Boyd', 'Mason', 'Morales', 'Kennedy', 'Warren', 'Dixon', 'Ramos', 'Reyes', 'Burns', 'Gordon', 'Shaw', 'Holmes', 'Rice', 'Robertson', 'Hunt', 'Black', 'Daniels', 'Palmer', 'Mills', 'Nichols', 'Grant', 'Knight', 'Ferguson', 'Rose', 'Stone', 'Hawkins', 'Dunn', 'Perkins', 'Hudson', 'Spencer', 'Gardner', 'Stephens', 'Payne', 'Pierce', 'Berry', 'Matthews', 'Arnold', 'Wagner', 'Willis', 'Ray', 'Watkins', 'Olson', 'Carroll', 'Duncan', 'Snyder', 'Hart', 'Cunningham', 'Bradley', 'Lane', 'Andrews', 'Ruiz', 'Harper', 'Fox', 'Riley', 'Armstrong', 'Carpenter', 'Weaver', 'Greene', 'Lawrence', 'Elliott', 'Chavez', 'Sims', 'Austin', 'Peters', 'Kelley', 'Franklin', 'Lawson', 'Fields', 'Gutierrez', 'Ryan', 'Schmidt', 'Carr', 'Vasquez', 'Castillo', 'Wheeler', 'Chapman', 'Oliver', 'Montgomery', 'Richards', 'Williamson', 'Johnston', 'Banks', 'Meyer', 'Bishop', 'McCoy', 'Howell', 'Alvarez', 'Morrison', 'Hansen', 'Fernandez', 'Garza', 'Harvey', 'Little', 'Burton', 'Stanley', 'Nguyen', 'George', 'Jacobs', 'Reid', 'Kim', 'Fuller', 'Lynch', 'Dean', 'Gilbert', 'Garrett', 'Romero', 'Welch', 'Larson', 'Frazier', 'Burke', 'Hanson', 'Day', 'Mendoza', 'Moreno', 'Bowman', 'Medina', 'Fowler', 'Brewer', 'Hoffman', 'Carlson', 'Silva', 'Pearson', 'Holland', 'Douglas', 'Fleming', 'Jensen', 'Vargas', 'Byrd', 'Davidson', 'Hopkins', 'May', 'Terry', 'Herrera', 'Wade', 'Soto', 'Walters', 'Curtis', 'Neal', 'Caldwell', 'Lowe', 'Jennings', 'Barnett', 'Graves', 'Jimenez', 'Horton', 'Shelton', 'Barrett', 'Obrien', 'Castro', 'Sutton', 'Gregory', 'McKinney', 'Lucas', 'Miles', 'Craig', 'Rodriquez', 'Chambers', 'Holt', 'Lambert', 'Fletcher', 'Watts', 'Bates', 'Hale', 'Rhodes', 'Pena', 'Beck', 'Newman', 'Haynes', 'McDaniel', 'Mendez', 'Bush', 'Vaughn', 'Parks', 'Dawson', 'Santiago', 'Norris', 'Hardy', 'Love', 'Steele', 'Curry', 'Powers', 'Schultz', 'Barker', 'Guzman', 'Page', 'Munoz', 'Ball', 'Keller', 'Chandler', 'Weber', 'Leonard', 'Walsh', 'Lyons', 'Ramsey', 'Wolfe', 'Schneider', 'Mullins', 'Benson', 'Sharp', 'Bowen', 'Daniel', 'Barber', 'Cummings', 'Hines', 'Baldwin', 'Griffith', 'Valdez', 'Hubbard', 'Salazar', 'Reeves', 'Warner', 'Stevenson', 'Burgess', 'Santos', 'Tate', 'Cross', 'Garner', 'Mann', 'Mack', 'Moss', 'Thornton', 'Dennis', 'McGee', 'Farmer', 'Delgado', 'Aguilar', 'Vega', 'Glover', 'Manning', 'Cohen', 'Harmon', 'Rodgers', 'Robbins', 'Newton', 'Todd', 'Blair', 'Higgins', 'Ingram', 'Reese', 'Cannon', 'Strickland', 'Townsend', 'Potter', 'Goodwin', 'Walton', 'Rowe', 'Hampton', 'Ortega', 'Patton', 'Swanson', 'Joseph', 'Francis', 'Goodman', 'Maldonado', 'Yates', 'Becker', 'Erickson', 'Hodges', 'Rios', 'Conner', 'Adkins', 'Webster', 'Norman', 'Malone', 'Hammond', 'Flowers', 'Cobb', 'Moody', 'Quinn', 'Blake', 'Maxwell', 'Pope', 'Floyd', 'Osborne', 'Paul', 'McCarthy', 'Guerrero', 'Lindsey', 'Estrada', 'Sandoval', 'Gibbs', 'Tyler', 'Gross', 'Fitzgerald', 'Stokes', 'Doyle', 'Sherman', 'Saunders', 'Wise', 'Colon', 'Gill', 'Alvarado', 'Greer', 'Padilla', 'Simon', 'Waters', 'Nunez', 'Ballard', 'Schwartz', 'McBride', 'Houston', 'Christensen', 'Klein', 'Pratt', 'Briggs', 'Parsons', 'McLaughlin', 'Zimmerman', 'French', 'Buchanan', 'Moran', 'Copeland', 'Roy', 'Pittman', 'Brady', 'McCormick', 'Holloway', 'Brock', 'Poole', 'Frank', 'Logan', 'Owen', 'Bass', 'Marsh', 'Drake', 'Wong', 'Jefferson', 'Park', 'Morton', 'Abbott', 'Sparks', 'Patrick', 'Norton', 'Huff', 'Clayton', 'Massey', 'Lloyd', 'Figueroa', 'Carson', 'Bowers', 'Roberson', 'Barton', 'Tran', 'Lamb', 'Harrington', 'Casey', 'Boone', 'Cortez', 'Clarke', 'Mathis', 'Singleton', 'Wilkins', 'Cain', 'Bryan', 'Underwood', 'Hogan', 'McKenzie', 'Collier', 'Luna', 'Phelps', 'McGuire', 'Allison', 'Bridges', 'Wilkerson', 'Nash', 'Summers', 'Atkins'],
-	
-	        provinces: [
-	            {name: 'Alberta', abbreviation: 'AB'},
-	            {name: 'British Columbia', abbreviation: 'BC'},
-	            {name: 'Manitoba', abbreviation: 'MB'},
-	            {name: 'New Brunswick', abbreviation: 'NB'},
-	            {name: 'Newfoundland and Labrador', abbreviation: 'NL'},
-	            {name: 'Nova Scotia', abbreviation: 'NS'},
-	            {name: 'Ontario', abbreviation: 'ON'},
-	            {name: 'Prince Edward Island', abbreviation: 'PE'},
-	            {name: 'Quebec', abbreviation: 'QC'},
-	            {name: 'Saskatchewan', abbreviation: 'SK'},
-	
-	            // The case could be made that the following are not actually provinces
-	            // since they are technically considered "territories" however they all
-	            // look the same on an envelope!
-	            {name: 'Northwest Territories', abbreviation: 'NT'},
-	            {name: 'Nunavut', abbreviation: 'NU'},
-	            {name: 'Yukon', abbreviation: 'YT'}
-	        ],
-	
-	        us_states_and_dc: [
-	            {name: 'Alabama', abbreviation: 'AL'},
-	            {name: 'Alaska', abbreviation: 'AK'},
-	            {name: 'Arizona', abbreviation: 'AZ'},
-	            {name: 'Arkansas', abbreviation: 'AR'},
-	            {name: 'California', abbreviation: 'CA'},
-	            {name: 'Colorado', abbreviation: 'CO'},
-	            {name: 'Connecticut', abbreviation: 'CT'},
-	            {name: 'Delaware', abbreviation: 'DE'},
-	            {name: 'District of Columbia', abbreviation: 'DC'},
-	            {name: 'Florida', abbreviation: 'FL'},
-	            {name: 'Georgia', abbreviation: 'GA'},
-	            {name: 'Hawaii', abbreviation: 'HI'},
-	            {name: 'Idaho', abbreviation: 'ID'},
-	            {name: 'Illinois', abbreviation: 'IL'},
-	            {name: 'Indiana', abbreviation: 'IN'},
-	            {name: 'Iowa', abbreviation: 'IA'},
-	            {name: 'Kansas', abbreviation: 'KS'},
-	            {name: 'Kentucky', abbreviation: 'KY'},
-	            {name: 'Louisiana', abbreviation: 'LA'},
-	            {name: 'Maine', abbreviation: 'ME'},
-	            {name: 'Maryland', abbreviation: 'MD'},
-	            {name: 'Massachusetts', abbreviation: 'MA'},
-	            {name: 'Michigan', abbreviation: 'MI'},
-	            {name: 'Minnesota', abbreviation: 'MN'},
-	            {name: 'Mississippi', abbreviation: 'MS'},
-	            {name: 'Missouri', abbreviation: 'MO'},
-	            {name: 'Montana', abbreviation: 'MT'},
-	            {name: 'Nebraska', abbreviation: 'NE'},
-	            {name: 'Nevada', abbreviation: 'NV'},
-	            {name: 'New Hampshire', abbreviation: 'NH'},
-	            {name: 'New Jersey', abbreviation: 'NJ'},
-	            {name: 'New Mexico', abbreviation: 'NM'},
-	            {name: 'New York', abbreviation: 'NY'},
-	            {name: 'North Carolina', abbreviation: 'NC'},
-	            {name: 'North Dakota', abbreviation: 'ND'},
-	            {name: 'Ohio', abbreviation: 'OH'},
-	            {name: 'Oklahoma', abbreviation: 'OK'},
-	            {name: 'Oregon', abbreviation: 'OR'},
-	            {name: 'Pennsylvania', abbreviation: 'PA'},
-	            {name: 'Rhode Island', abbreviation: 'RI'},
-	            {name: 'South Carolina', abbreviation: 'SC'},
-	            {name: 'South Dakota', abbreviation: 'SD'},
-	            {name: 'Tennessee', abbreviation: 'TN'},
-	            {name: 'Texas', abbreviation: 'TX'},
-	            {name: 'Utah', abbreviation: 'UT'},
-	            {name: 'Vermont', abbreviation: 'VT'},
-	            {name: 'Virginia', abbreviation: 'VA'},
-	            {name: 'Washington', abbreviation: 'WA'},
-	            {name: 'West Virginia', abbreviation: 'WV'},
-	            {name: 'Wisconsin', abbreviation: 'WI'},
-	            {name: 'Wyoming', abbreviation: 'WY'}
-	        ],
-	
-	        territories: [
-	            {name: 'American Samoa', abbreviation: 'AS'},
-	            {name: 'Federated States of Micronesia', abbreviation: 'FM'},
-	            {name: 'Guam', abbreviation: 'GU'},
-	            {name: 'Marshall Islands', abbreviation: 'MH'},
-	            {name: 'Northern Mariana Islands', abbreviation: 'MP'},
-	            {name: 'Puerto Rico', abbreviation: 'PR'},
-	            {name: 'Virgin Islands, U.S.', abbreviation: 'VI'}
-	        ],
-	
-	        armed_forces: [
-	            {name: 'Armed Forces Europe', abbreviation: 'AE'},
-	            {name: 'Armed Forces Pacific', abbreviation: 'AP'},
-	            {name: 'Armed Forces the Americas', abbreviation: 'AA'}
-	        ],
-	
-	        street_suffixes: [
-	            {name: 'Avenue', abbreviation: 'Ave'},
-	            {name: 'Boulevard', abbreviation: 'Blvd'},
-	            {name: 'Center', abbreviation: 'Ctr'},
-	            {name: 'Circle', abbreviation: 'Cir'},
-	            {name: 'Court', abbreviation: 'Ct'},
-	            {name: 'Drive', abbreviation: 'Dr'},
-	            {name: 'Extension', abbreviation: 'Ext'},
-	            {name: 'Glen', abbreviation: 'Gln'},
-	            {name: 'Grove', abbreviation: 'Grv'},
-	            {name: 'Heights', abbreviation: 'Hts'},
-	            {name: 'Highway', abbreviation: 'Hwy'},
-	            {name: 'Junction', abbreviation: 'Jct'},
-	            {name: 'Key', abbreviation: 'Key'},
-	            {name: 'Lane', abbreviation: 'Ln'},
-	            {name: 'Loop', abbreviation: 'Loop'},
-	            {name: 'Manor', abbreviation: 'Mnr'},
-	            {name: 'Mill', abbreviation: 'Mill'},
-	            {name: 'Park', abbreviation: 'Park'},
-	            {name: 'Parkway', abbreviation: 'Pkwy'},
-	            {name: 'Pass', abbreviation: 'Pass'},
-	            {name: 'Path', abbreviation: 'Path'},
-	            {name: 'Pike', abbreviation: 'Pike'},
-	            {name: 'Place', abbreviation: 'Pl'},
-	            {name: 'Plaza', abbreviation: 'Plz'},
-	            {name: 'Point', abbreviation: 'Pt'},
-	            {name: 'Ridge', abbreviation: 'Rdg'},
-	            {name: 'River', abbreviation: 'Riv'},
-	            {name: 'Road', abbreviation: 'Rd'},
-	            {name: 'Square', abbreviation: 'Sq'},
-	            {name: 'Street', abbreviation: 'St'},
-	            {name: 'Terrace', abbreviation: 'Ter'},
-	            {name: 'Trail', abbreviation: 'Trl'},
-	            {name: 'Turnpike', abbreviation: 'Tpke'},
-	            {name: 'View', abbreviation: 'Vw'},
-	            {name: 'Way', abbreviation: 'Way'}
-	        ],
-	
-	        months: [
-	            {name: 'January', short_name: 'Jan', numeric: '01', days: 31},
-	            // Not messing with leap years...
-	            {name: 'February', short_name: 'Feb', numeric: '02', days: 28},
-	            {name: 'March', short_name: 'Mar', numeric: '03', days: 31},
-	            {name: 'April', short_name: 'Apr', numeric: '04', days: 30},
-	            {name: 'May', short_name: 'May', numeric: '05', days: 31},
-	            {name: 'June', short_name: 'Jun', numeric: '06', days: 30},
-	            {name: 'July', short_name: 'Jul', numeric: '07', days: 31},
-	            {name: 'August', short_name: 'Aug', numeric: '08', days: 31},
-	            {name: 'September', short_name: 'Sep', numeric: '09', days: 30},
-	            {name: 'October', short_name: 'Oct', numeric: '10', days: 31},
-	            {name: 'November', short_name: 'Nov', numeric: '11', days: 30},
-	            {name: 'December', short_name: 'Dec', numeric: '12', days: 31}
-	        ],
-	
-	        // http://en.wikipedia.org/wiki/Bank_card_number#Issuer_identification_number_.28IIN.29
-	        cc_types: [
-	            {name: "American Express", short_name: 'amex', prefix: '34', length: 15},
-	            {name: "Bankcard", short_name: 'bankcard', prefix: '5610', length: 16},
-	            {name: "China UnionPay", short_name: 'chinaunion', prefix: '62', length: 16},
-	            {name: "Diners Club Carte Blanche", short_name: 'dccarte', prefix: '300', length: 14},
-	            {name: "Diners Club enRoute", short_name: 'dcenroute', prefix: '2014', length: 15},
-	            {name: "Diners Club International", short_name: 'dcintl', prefix: '36', length: 14},
-	            {name: "Diners Club United States & Canada", short_name: 'dcusc', prefix: '54', length: 16},
-	            {name: "Discover Card", short_name: 'discover', prefix: '6011', length: 16},
-	            {name: "InstaPayment", short_name: 'instapay', prefix: '637', length: 16},
-	            {name: "JCB", short_name: 'jcb', prefix: '3528', length: 16},
-	            {name: "Laser", short_name: 'laser', prefix: '6304', length: 16},
-	            {name: "Maestro", short_name: 'maestro', prefix: '5018', length: 16},
-	            {name: "Mastercard", short_name: 'mc', prefix: '51', length: 16},
-	            {name: "Solo", short_name: 'solo', prefix: '6334', length: 16},
-	            {name: "Switch", short_name: 'switch', prefix: '4903', length: 16},
-	            {name: "Visa", short_name: 'visa', prefix: '4', length: 16},
-	            {name: "Visa Electron", short_name: 'electron', prefix: '4026', length: 16}
-	        ],
-	
-	        //return all world currency by ISO 4217
-	        currency_types: [
-	            {'code' : 'AED', 'name' : 'United Arab Emirates Dirham'},
-	            {'code' : 'AFN', 'name' : 'Afghanistan Afghani'},
-	            {'code' : 'ALL', 'name' : 'Albania Lek'},
-	            {'code' : 'AMD', 'name' : 'Armenia Dram'},
-	            {'code' : 'ANG', 'name' : 'Netherlands Antilles Guilder'},
-	            {'code' : 'AOA', 'name' : 'Angola Kwanza'},
-	            {'code' : 'ARS', 'name' : 'Argentina Peso'},
-	            {'code' : 'AUD', 'name' : 'Australia Dollar'},
-	            {'code' : 'AWG', 'name' : 'Aruba Guilder'},
-	            {'code' : 'AZN', 'name' : 'Azerbaijan New Manat'},
-	            {'code' : 'BAM', 'name' : 'Bosnia and Herzegovina Convertible Marka'},
-	            {'code' : 'BBD', 'name' : 'Barbados Dollar'},
-	            {'code' : 'BDT', 'name' : 'Bangladesh Taka'},
-	            {'code' : 'BGN', 'name' : 'Bulgaria Lev'},
-	            {'code' : 'BHD', 'name' : 'Bahrain Dinar'},
-	            {'code' : 'BIF', 'name' : 'Burundi Franc'},
-	            {'code' : 'BMD', 'name' : 'Bermuda Dollar'},
-	            {'code' : 'BND', 'name' : 'Brunei Darussalam Dollar'},
-	            {'code' : 'BOB', 'name' : 'Bolivia Boliviano'},
-	            {'code' : 'BRL', 'name' : 'Brazil Real'},
-	            {'code' : 'BSD', 'name' : 'Bahamas Dollar'},
-	            {'code' : 'BTN', 'name' : 'Bhutan Ngultrum'},
-	            {'code' : 'BWP', 'name' : 'Botswana Pula'},
-	            {'code' : 'BYR', 'name' : 'Belarus Ruble'},
-	            {'code' : 'BZD', 'name' : 'Belize Dollar'},
-	            {'code' : 'CAD', 'name' : 'Canada Dollar'},
-	            {'code' : 'CDF', 'name' : 'Congo/Kinshasa Franc'},
-	            {'code' : 'CHF', 'name' : 'Switzerland Franc'},
-	            {'code' : 'CLP', 'name' : 'Chile Peso'},
-	            {'code' : 'CNY', 'name' : 'China Yuan Renminbi'},
-	            {'code' : 'COP', 'name' : 'Colombia Peso'},
-	            {'code' : 'CRC', 'name' : 'Costa Rica Colon'},
-	            {'code' : 'CUC', 'name' : 'Cuba Convertible Peso'},
-	            {'code' : 'CUP', 'name' : 'Cuba Peso'},
-	            {'code' : 'CVE', 'name' : 'Cape Verde Escudo'},
-	            {'code' : 'CZK', 'name' : 'Czech Republic Koruna'},
-	            {'code' : 'DJF', 'name' : 'Djibouti Franc'},
-	            {'code' : 'DKK', 'name' : 'Denmark Krone'},
-	            {'code' : 'DOP', 'name' : 'Dominican Republic Peso'},
-	            {'code' : 'DZD', 'name' : 'Algeria Dinar'},
-	            {'code' : 'EGP', 'name' : 'Egypt Pound'},
-	            {'code' : 'ERN', 'name' : 'Eritrea Nakfa'},
-	            {'code' : 'ETB', 'name' : 'Ethiopia Birr'},
-	            {'code' : 'EUR', 'name' : 'Euro Member Countries'},
-	            {'code' : 'FJD', 'name' : 'Fiji Dollar'},
-	            {'code' : 'FKP', 'name' : 'Falkland Islands (Malvinas) Pound'},
-	            {'code' : 'GBP', 'name' : 'United Kingdom Pound'},
-	            {'code' : 'GEL', 'name' : 'Georgia Lari'},
-	            {'code' : 'GGP', 'name' : 'Guernsey Pound'},
-	            {'code' : 'GHS', 'name' : 'Ghana Cedi'},
-	            {'code' : 'GIP', 'name' : 'Gibraltar Pound'},
-	            {'code' : 'GMD', 'name' : 'Gambia Dalasi'},
-	            {'code' : 'GNF', 'name' : 'Guinea Franc'},
-	            {'code' : 'GTQ', 'name' : 'Guatemala Quetzal'},
-	            {'code' : 'GYD', 'name' : 'Guyana Dollar'},
-	            {'code' : 'HKD', 'name' : 'Hong Kong Dollar'},
-	            {'code' : 'HNL', 'name' : 'Honduras Lempira'},
-	            {'code' : 'HRK', 'name' : 'Croatia Kuna'},
-	            {'code' : 'HTG', 'name' : 'Haiti Gourde'},
-	            {'code' : 'HUF', 'name' : 'Hungary Forint'},
-	            {'code' : 'IDR', 'name' : 'Indonesia Rupiah'},
-	            {'code' : 'ILS', 'name' : 'Israel Shekel'},
-	            {'code' : 'IMP', 'name' : 'Isle of Man Pound'},
-	            {'code' : 'INR', 'name' : 'India Rupee'},
-	            {'code' : 'IQD', 'name' : 'Iraq Dinar'},
-	            {'code' : 'IRR', 'name' : 'Iran Rial'},
-	            {'code' : 'ISK', 'name' : 'Iceland Krona'},
-	            {'code' : 'JEP', 'name' : 'Jersey Pound'},
-	            {'code' : 'JMD', 'name' : 'Jamaica Dollar'},
-	            {'code' : 'JOD', 'name' : 'Jordan Dinar'},
-	            {'code' : 'JPY', 'name' : 'Japan Yen'},
-	            {'code' : 'KES', 'name' : 'Kenya Shilling'},
-	            {'code' : 'KGS', 'name' : 'Kyrgyzstan Som'},
-	            {'code' : 'KHR', 'name' : 'Cambodia Riel'},
-	            {'code' : 'KMF', 'name' : 'Comoros Franc'},
-	            {'code' : 'KPW', 'name' : 'Korea (North) Won'},
-	            {'code' : 'KRW', 'name' : 'Korea (South) Won'},
-	            {'code' : 'KWD', 'name' : 'Kuwait Dinar'},
-	            {'code' : 'KYD', 'name' : 'Cayman Islands Dollar'},
-	            {'code' : 'KZT', 'name' : 'Kazakhstan Tenge'},
-	            {'code' : 'LAK', 'name' : 'Laos Kip'},
-	            {'code' : 'LBP', 'name' : 'Lebanon Pound'},
-	            {'code' : 'LKR', 'name' : 'Sri Lanka Rupee'},
-	            {'code' : 'LRD', 'name' : 'Liberia Dollar'},
-	            {'code' : 'LSL', 'name' : 'Lesotho Loti'},
-	            {'code' : 'LTL', 'name' : 'Lithuania Litas'},
-	            {'code' : 'LYD', 'name' : 'Libya Dinar'},
-	            {'code' : 'MAD', 'name' : 'Morocco Dirham'},
-	            {'code' : 'MDL', 'name' : 'Moldova Leu'},
-	            {'code' : 'MGA', 'name' : 'Madagascar Ariary'},
-	            {'code' : 'MKD', 'name' : 'Macedonia Denar'},
-	            {'code' : 'MMK', 'name' : 'Myanmar (Burma) Kyat'},
-	            {'code' : 'MNT', 'name' : 'Mongolia Tughrik'},
-	            {'code' : 'MOP', 'name' : 'Macau Pataca'},
-	            {'code' : 'MRO', 'name' : 'Mauritania Ouguiya'},
-	            {'code' : 'MUR', 'name' : 'Mauritius Rupee'},
-	            {'code' : 'MVR', 'name' : 'Maldives (Maldive Islands) Rufiyaa'},
-	            {'code' : 'MWK', 'name' : 'Malawi Kwacha'},
-	            {'code' : 'MXN', 'name' : 'Mexico Peso'},
-	            {'code' : 'MYR', 'name' : 'Malaysia Ringgit'},
-	            {'code' : 'MZN', 'name' : 'Mozambique Metical'},
-	            {'code' : 'NAD', 'name' : 'Namibia Dollar'},
-	            {'code' : 'NGN', 'name' : 'Nigeria Naira'},
-	            {'code' : 'NIO', 'name' : 'Nicaragua Cordoba'},
-	            {'code' : 'NOK', 'name' : 'Norway Krone'},
-	            {'code' : 'NPR', 'name' : 'Nepal Rupee'},
-	            {'code' : 'NZD', 'name' : 'New Zealand Dollar'},
-	            {'code' : 'OMR', 'name' : 'Oman Rial'},
-	            {'code' : 'PAB', 'name' : 'Panama Balboa'},
-	            {'code' : 'PEN', 'name' : 'Peru Nuevo Sol'},
-	            {'code' : 'PGK', 'name' : 'Papua New Guinea Kina'},
-	            {'code' : 'PHP', 'name' : 'Philippines Peso'},
-	            {'code' : 'PKR', 'name' : 'Pakistan Rupee'},
-	            {'code' : 'PLN', 'name' : 'Poland Zloty'},
-	            {'code' : 'PYG', 'name' : 'Paraguay Guarani'},
-	            {'code' : 'QAR', 'name' : 'Qatar Riyal'},
-	            {'code' : 'RON', 'name' : 'Romania New Leu'},
-	            {'code' : 'RSD', 'name' : 'Serbia Dinar'},
-	            {'code' : 'RUB', 'name' : 'Russia Ruble'},
-	            {'code' : 'RWF', 'name' : 'Rwanda Franc'},
-	            {'code' : 'SAR', 'name' : 'Saudi Arabia Riyal'},
-	            {'code' : 'SBD', 'name' : 'Solomon Islands Dollar'},
-	            {'code' : 'SCR', 'name' : 'Seychelles Rupee'},
-	            {'code' : 'SDG', 'name' : 'Sudan Pound'},
-	            {'code' : 'SEK', 'name' : 'Sweden Krona'},
-	            {'code' : 'SGD', 'name' : 'Singapore Dollar'},
-	            {'code' : 'SHP', 'name' : 'Saint Helena Pound'},
-	            {'code' : 'SLL', 'name' : 'Sierra Leone Leone'},
-	            {'code' : 'SOS', 'name' : 'Somalia Shilling'},
-	            {'code' : 'SPL', 'name' : 'Seborga Luigino'},
-	            {'code' : 'SRD', 'name' : 'Suriname Dollar'},
-	            {'code' : 'STD', 'name' : 'São Tomé and Príncipe Dobra'},
-	            {'code' : 'SVC', 'name' : 'El Salvador Colon'},
-	            {'code' : 'SYP', 'name' : 'Syria Pound'},
-	            {'code' : 'SZL', 'name' : 'Swaziland Lilangeni'},
-	            {'code' : 'THB', 'name' : 'Thailand Baht'},
-	            {'code' : 'TJS', 'name' : 'Tajikistan Somoni'},
-	            {'code' : 'TMT', 'name' : 'Turkmenistan Manat'},
-	            {'code' : 'TND', 'name' : 'Tunisia Dinar'},
-	            {'code' : 'TOP', 'name' : 'Tonga Pa\'anga'},
-	            {'code' : 'TRY', 'name' : 'Turkey Lira'},
-	            {'code' : 'TTD', 'name' : 'Trinidad and Tobago Dollar'},
-	            {'code' : 'TVD', 'name' : 'Tuvalu Dollar'},
-	            {'code' : 'TWD', 'name' : 'Taiwan New Dollar'},
-	            {'code' : 'TZS', 'name' : 'Tanzania Shilling'},
-	            {'code' : 'UAH', 'name' : 'Ukraine Hryvnia'},
-	            {'code' : 'UGX', 'name' : 'Uganda Shilling'},
-	            {'code' : 'USD', 'name' : 'United States Dollar'},
-	            {'code' : 'UYU', 'name' : 'Uruguay Peso'},
-	            {'code' : 'UZS', 'name' : 'Uzbekistan Som'},
-	            {'code' : 'VEF', 'name' : 'Venezuela Bolivar'},
-	            {'code' : 'VND', 'name' : 'Viet Nam Dong'},
-	            {'code' : 'VUV', 'name' : 'Vanuatu Vatu'},
-	            {'code' : 'WST', 'name' : 'Samoa Tala'},
-	            {'code' : 'XAF', 'name' : 'Communauté Financière Africaine (BEAC) CFA Franc BEAC'},
-	            {'code' : 'XCD', 'name' : 'East Caribbean Dollar'},
-	            {'code' : 'XDR', 'name' : 'International Monetary Fund (IMF) Special Drawing Rights'},
-	            {'code' : 'XOF', 'name' : 'Communauté Financière Africaine (BCEAO) Franc'},
-	            {'code' : 'XPF', 'name' : 'Comptoirs Français du Pacifique (CFP) Franc'},
-	            {'code' : 'YER', 'name' : 'Yemen Rial'},
-	            {'code' : 'ZAR', 'name' : 'South Africa Rand'},
-	            {'code' : 'ZMW', 'name' : 'Zambia Kwacha'},
-	            {'code' : 'ZWD', 'name' : 'Zimbabwe Dollar'}
-	        ]
-	    };
-	
-	    function copyObject(source, target) {
-	        var key;
-	
-	        target = target || (Array.isArray(source) ? [] : {});
-	
-	        for (key in source) {
-	            if (source.hasOwnProperty(key)) {
-	                target[key] = source[key] || target[key];
-	            }
-	        }
-	
-	        return target;
-	    }
-	
-	    /** Get the data based on key**/
-	    Chance.prototype.get = function (name) {
-	        return copyObject(data[name]);
-	    };
-	
-	    /** Set the data as key and data or the data map**/
-	    Chance.prototype.set = function (name, values) {
-	        if (typeof name === "string") {
-	            data[name] = values;
-	        } else {
-	            data = copyObject(name, data);
-	        }
-	    };
-	
-	
-	    Chance.prototype.mersenne_twister = function (seed) {
-	        return new MersenneTwister(seed);
-	    };
-	
-	    // -- End Miscellaneous --
-	
-	    Chance.prototype.VERSION = "0.5.9";
-	
-	    // Mersenne Twister from https://gist.github.com/banksean/300494
-	    var MersenneTwister = function (seed) {
-	        if (seed === undefined) {
-	            seed = new Date().getTime();
-	        }
-	        /* Period parameters */
-	        this.N = 624;
-	        this.M = 397;
-	        this.MATRIX_A = 0x9908b0df;   /* constant vector a */
-	        this.UPPER_MASK = 0x80000000; /* most significant w-r bits */
-	        this.LOWER_MASK = 0x7fffffff; /* least significant r bits */
-	
-	        this.mt = new Array(this.N); /* the array for the state vector */
-	        this.mti = this.N + 1; /* mti==N + 1 means mt[N] is not initialized */
-	
-	        this.init_genrand(seed);
-	    };
-	
-	    /* initializes mt[N] with a seed */
-	    MersenneTwister.prototype.init_genrand = function (s) {
-	        this.mt[0] = s >>> 0;
-	        for (this.mti = 1; this.mti < this.N; this.mti++) {
-	            s = this.mt[this.mti - 1] ^ (this.mt[this.mti - 1] >>> 30);
-	            this.mt[this.mti] = (((((s & 0xffff0000) >>> 16) * 1812433253) << 16) + (s & 0x0000ffff) * 1812433253) + this.mti;
-	            /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
-	            /* In the previous versions, MSBs of the seed affect   */
-	            /* only MSBs of the array mt[].                        */
-	            /* 2002/01/09 modified by Makoto Matsumoto             */
-	            this.mt[this.mti] >>>= 0;
-	            /* for >32 bit machines */
-	        }
-	    };
-	
-	    /* initialize by an array with array-length */
-	    /* init_key is the array for initializing keys */
-	    /* key_length is its length */
-	    /* slight change for C++, 2004/2/26 */
-	    MersenneTwister.prototype.init_by_array = function (init_key, key_length) {
-	        var i = 1, j = 0, k, s;
-	        this.init_genrand(19650218);
-	        k = (this.N > key_length ? this.N : key_length);
-	        for (; k; k--) {
-	            s = this.mt[i - 1] ^ (this.mt[i - 1] >>> 30);
-	            this.mt[i] = (this.mt[i] ^ (((((s & 0xffff0000) >>> 16) * 1664525) << 16) + ((s & 0x0000ffff) * 1664525))) + init_key[j] + j; /* non linear */
-	            this.mt[i] >>>= 0; /* for WORDSIZE > 32 machines */
-	            i++;
-	            j++;
-	            if (i >= this.N) { this.mt[0] = this.mt[this.N - 1]; i = 1; }
-	            if (j >= key_length) { j = 0; }
-	        }
-	        for (k = this.N - 1; k; k--) {
-	            s = this.mt[i - 1] ^ (this.mt[i - 1] >>> 30);
-	            this.mt[i] = (this.mt[i] ^ (((((s & 0xffff0000) >>> 16) * 1566083941) << 16) + (s & 0x0000ffff) * 1566083941)) - i; /* non linear */
-	            this.mt[i] >>>= 0; /* for WORDSIZE > 32 machines */
-	            i++;
-	            if (i >= this.N) { this.mt[0] = this.mt[this.N - 1]; i = 1; }
-	        }
-	
-	        this.mt[0] = 0x80000000; /* MSB is 1; assuring non-zero initial array */
-	    };
-	
-	    /* generates a random number on [0,0xffffffff]-interval */
-	    MersenneTwister.prototype.genrand_int32 = function () {
-	        var y;
-	        var mag01 = new Array(0x0, this.MATRIX_A);
-	        /* mag01[x] = x * MATRIX_A  for x=0,1 */
-	
-	        if (this.mti >= this.N) { /* generate N words at one time */
-	            var kk;
-	
-	            if (this.mti === this.N + 1) {   /* if init_genrand() has not been called, */
-	                this.init_genrand(5489); /* a default initial seed is used */
-	            }
-	            for (kk = 0; kk < this.N - this.M; kk++) {
-	                y = (this.mt[kk]&this.UPPER_MASK)|(this.mt[kk + 1]&this.LOWER_MASK);
-	                this.mt[kk] = this.mt[kk + this.M] ^ (y >>> 1) ^ mag01[y & 0x1];
-	            }
-	            for (;kk < this.N - 1; kk++) {
-	                y = (this.mt[kk]&this.UPPER_MASK)|(this.mt[kk + 1]&this.LOWER_MASK);
-	                this.mt[kk] = this.mt[kk + (this.M - this.N)] ^ (y >>> 1) ^ mag01[y & 0x1];
-	            }
-	            y = (this.mt[this.N - 1]&this.UPPER_MASK)|(this.mt[0]&this.LOWER_MASK);
-	            this.mt[this.N - 1] = this.mt[this.M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
-	
-	            this.mti = 0;
-	        }
-	
-	        y = this.mt[this.mti++];
-	
-	        /* Tempering */
-	        y ^= (y >>> 11);
-	        y ^= (y << 7) & 0x9d2c5680;
-	        y ^= (y << 15) & 0xefc60000;
-	        y ^= (y >>> 18);
-	
-	        return y >>> 0;
-	    };
-	
-	    /* generates a random number on [0,0x7fffffff]-interval */
-	    MersenneTwister.prototype.genrand_int31 = function () {
-	        return (this.genrand_int32() >>> 1);
-	    };
-	
-	    /* generates a random number on [0,1]-real-interval */
-	    MersenneTwister.prototype.genrand_real1 = function () {
-	        return this.genrand_int32() * (1.0 / 4294967295.0);
-	        /* divided by 2^32-1 */
-	    };
-	
-	    /* generates a random number on [0,1)-real-interval */
-	    MersenneTwister.prototype.random = function () {
-	        return this.genrand_int32() * (1.0 / 4294967296.0);
-	        /* divided by 2^32 */
-	    };
-	
-	    /* generates a random number on (0,1)-real-interval */
-	    MersenneTwister.prototype.genrand_real3 = function () {
-	        return (this.genrand_int32() + 0.5) * (1.0 / 4294967296.0);
-	        /* divided by 2^32 */
-	    };
-	
-	    /* generates a random number on [0,1) with 53-bit resolution*/
-	    MersenneTwister.prototype.genrand_res53 = function () {
-	        var a = this.genrand_int32()>>>5, b = this.genrand_int32()>>>6;
-	        return (a * 67108864.0 + b) * (1.0 / 9007199254740992.0);
-	    };
-	
-	
-	    // CommonJS module
-	    if (true) {
-	        if (typeof module !== 'undefined' && module.exports) {
-	            exports = module.exports = Chance;
-	        }
-	        exports.Chance = Chance;
-	    }
-	
-	    // Register as an anonymous AMD module
-	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	            return Chance;
-	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	    }
-	
-	    // If there is a window object, that at least has a document property,
-	    // instantiate and define chance on the window
-	    if (typeof window === "object" && typeof window.document === "object") {
-	        window.Chance = Chance;
-	        window.chance = new Chance();
-	    }
-	})();
-
-
-/***/ },
-/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React            = __webpack_require__(1)
-	  , _                = __webpack_require__(16)
-	  , $                = __webpack_require__(74)
+	  , _                = __webpack_require__(13)
+	  , $                = __webpack_require__(63)
 	  , cx               = __webpack_require__(12)
-	  , setter           = __webpack_require__(75)
-	  , controlledInput  = __webpack_require__(71)
-	  , CustomPropTypes  = __webpack_require__(76)
-	  , Popup            = __webpack_require__(77)
-	  , List             = __webpack_require__(78);
+	  , setter           = __webpack_require__(64)
+	  , controlledInput  = __webpack_require__(65)
+	  , CustomPropTypes  = __webpack_require__(66)
+	  , Popup            = __webpack_require__(67)
+	  , List             = __webpack_require__(68);
 	
 	var propTypes = {
 	  //-- controlled props -----------
@@ -6514,13 +4824,13 @@
 	  displayName: 'DropdownList',
 	
 	  mixins: [
+	    __webpack_require__(85),
+	    __webpack_require__(86),
+	    __webpack_require__(87),
 	    __webpack_require__(88),
 	    __webpack_require__(89),
-	    __webpack_require__(91),
-	    __webpack_require__(92),
-	    __webpack_require__(90),
-	    __webpack_require__(93)('focusedIndex'),
-	    __webpack_require__(93)('selectedIndex')
+	    __webpack_require__(90)('focusedIndex'),
+	    __webpack_require__(90)('selectedIndex')
 	  ],
 	
 	  propTypes: propTypes,
@@ -6735,22 +5045,22 @@
 	module.exports.BaseDropdownList = DropdownList
 
 /***/ },
-/* 50 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React  = __webpack_require__(1)
 	  , cx     = __webpack_require__(12)
-	  , _      = __webpack_require__(16)
-	  , $      = __webpack_require__(74)
-	  , filter = __webpack_require__(79)
-	  , controlledInput  = __webpack_require__(71)
-	  , CustomPropTypes  = __webpack_require__(76)
+	  , _      = __webpack_require__(13)
+	  , $      = __webpack_require__(63)
+	  , filter = __webpack_require__(69)
+	  , controlledInput  = __webpack_require__(65)
+	  , CustomPropTypes  = __webpack_require__(66)
 	  
-	  , Popup  = __webpack_require__(77)
-	  , List   = __webpack_require__(78)
-	  , Btn    = __webpack_require__(80)
-	  , Input  = __webpack_require__(81);
+	  , Popup  = __webpack_require__(67)
+	  , List   = __webpack_require__(68)
+	  , Btn    = __webpack_require__(70)
+	  , Input  = __webpack_require__(71);
 	
 	var propTypes = {
 	      //-- controlled props -----------
@@ -6795,13 +5105,13 @@
 	  displayName: 'ComboBox',
 	
 	  mixins: [
-	    __webpack_require__(88),
+	    __webpack_require__(85),
+	    __webpack_require__(87),
 	    __webpack_require__(91),
-	    __webpack_require__(94),
-	    __webpack_require__(92),
-	    __webpack_require__(90),
-	    __webpack_require__(93)('focusedIndex'),
-	    __webpack_require__(93)('selectedIndex')
+	    __webpack_require__(88),
+	    __webpack_require__(89),
+	    __webpack_require__(90)('focusedIndex'),
+	    __webpack_require__(90)('selectedIndex')
 	  ],
 	
 	  propTypes: propTypes,
@@ -7110,22 +5420,22 @@
 	module.exports.BaseComboBox = ComboBox
 
 /***/ },
-/* 51 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React           = __webpack_require__(1)
-	  , Header          = __webpack_require__(66)
-	  , Month           = __webpack_require__(67)
-	  , Year            = __webpack_require__(68)
-	  , Decade          = __webpack_require__(69)
-	  , Century         = __webpack_require__(70)
+	  , Header          = __webpack_require__(72)
+	  , Month           = __webpack_require__(73)
+	  , Year            = __webpack_require__(74)
+	  , Decade          = __webpack_require__(75)
+	  , Century         = __webpack_require__(76)
 	  , cx              = __webpack_require__(12)
-	  , controlledInput = __webpack_require__(71)
-	  , SlideTransition = __webpack_require__(57)
-	  , dates           = __webpack_require__(72)
-	  , constants       = __webpack_require__(73)
-	  , _               = __webpack_require__(16); //values, omit, object
+	  , controlledInput = __webpack_require__(65)
+	  , SlideTransition = __webpack_require__(53)
+	  , dates           = __webpack_require__(77)
+	  , constants       = __webpack_require__(78)
+	  , _               = __webpack_require__(13); //values, omit, object
 	
 	var dir = constants.directions;
 	
@@ -7155,9 +5465,9 @@
 	  displayName: 'Calendar',
 	
 	  mixins: [
-	    __webpack_require__(88),
-	    __webpack_require__(89),
-	    __webpack_require__(90)
+	    __webpack_require__(85),
+	    __webpack_require__(86),
+	    __webpack_require__(89)
 	  ],
 	
 	
@@ -7413,24 +5723,24 @@
 	module.exports.BaseCalendar = Calendar
 
 /***/ },
-/* 52 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React  = __webpack_require__(1)
 	  , cx     = __webpack_require__(12)
-	  , _      = __webpack_require__(16) //pick, omit, has
-	  , dates  = __webpack_require__(72)
-	  , views  = __webpack_require__(73).calendarViews
-	  , popups = __webpack_require__(73).datePopups
+	  , _      = __webpack_require__(13) //pick, omit, has
+	  , dates  = __webpack_require__(77)
+	  , views  = __webpack_require__(78).calendarViews
+	  , popups = __webpack_require__(78).datePopups
 	
-	  , Popup     = __webpack_require__(77)
-	  , Calendar  = __webpack_require__(51).BaseCalendar
-	  , Time      = __webpack_require__(82)
-	  , DateInput = __webpack_require__(83)
-	  , Btn       = __webpack_require__(80)
-	  , CustomPropTypes = __webpack_require__(76)
-	  , controlledInput = __webpack_require__(71);
+	  , Popup     = __webpack_require__(67)
+	  , Calendar  = __webpack_require__(47).BaseCalendar
+	  , Time      = __webpack_require__(79)
+	  , DateInput = __webpack_require__(80)
+	  , Btn       = __webpack_require__(70)
+	  , CustomPropTypes = __webpack_require__(66)
+	  , controlledInput = __webpack_require__(65);
 	
 	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
 	
@@ -7483,9 +5793,9 @@
 	  displayName: 'DateTimePicker',
 	
 	  mixins: [
-	    __webpack_require__(88),
-	    __webpack_require__(89),
-	    __webpack_require__(90)
+	    __webpack_require__(85),
+	    __webpack_require__(86),
+	    __webpack_require__(89)
 	  ],
 	
 	  propTypes: propTypes,
@@ -7776,18 +6086,18 @@
 
 
 /***/ },
-/* 53 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , cx    = __webpack_require__(12)
-	  , _     = __webpack_require__(16) //omit
-	  , controlledInput  = __webpack_require__(71)
-	  , directions = __webpack_require__(73).directions
-	  , Input = __webpack_require__(84);
+	  , _     = __webpack_require__(13) //omit
+	  , controlledInput  = __webpack_require__(65)
+	  , directions = __webpack_require__(78).directions
+	  , Input = __webpack_require__(83);
 	
-	var Btn = __webpack_require__(80)
+	var Btn = __webpack_require__(70)
 	  , propTypes = {
 	
 	      // -- controlled props -----------
@@ -7831,9 +6141,9 @@
 	  displayName: 'NumberPicker',
 	
 	  mixins: [
-	    __webpack_require__(88),
+	    __webpack_require__(85),
+	    __webpack_require__(86),
 	    __webpack_require__(89),
-	    __webpack_require__(90),
 	  ],
 	
 	  propTypes: propTypes,
@@ -8026,20 +6336,20 @@
 	module.exports.BaseNumberPicker = NumberPicker
 
 /***/ },
-/* 54 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , cx    = __webpack_require__(12)
-	  , _     = __webpack_require__(16)
-	  , controlledInput  = __webpack_require__(71)
-	  , CustomPropTypes  = __webpack_require__(76)
+	  , _     = __webpack_require__(13)
+	  , controlledInput  = __webpack_require__(65)
+	  , CustomPropTypes  = __webpack_require__(66)
 	  
-	  , SelectInput = __webpack_require__(85)
-	  , TagList     = __webpack_require__(86)
-	  , Popup       = __webpack_require__(77)
-	  , List        = __webpack_require__(78);
+	  , SelectInput = __webpack_require__(81)
+	  , TagList     = __webpack_require__(82)
+	  , Popup       = __webpack_require__(67)
+	  , List        = __webpack_require__(68);
 	
 	var propTypes = {
 	      data:           React.PropTypes.array,
@@ -8088,11 +6398,11 @@
 	  displayName: 'Select',
 	
 	  mixins: [
+	    __webpack_require__(85),
+	    __webpack_require__(91),
 	    __webpack_require__(88),
-	    __webpack_require__(94),
-	    __webpack_require__(92),
-	    __webpack_require__(90),
-	    __webpack_require__(93)('focusedIndex')
+	    __webpack_require__(89),
+	    __webpack_require__(90)('focusedIndex')
 	  ],
 	
 	  propTypes: propTypes,
@@ -8345,16 +6655,16 @@
 	module.exports.BaseMultiselect = Select
 
 /***/ },
-/* 55 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , _  = __webpack_require__(16)
+	  , _  = __webpack_require__(13)
 	  , cx = __webpack_require__(12)
-	  , controlledInput  = __webpack_require__(71)
-	  , CustomPropTypes  = __webpack_require__(76)
-	  , scrollTo = __webpack_require__(87);
+	  , controlledInput  = __webpack_require__(65)
+	  , CustomPropTypes  = __webpack_require__(66)
+	  , scrollTo = __webpack_require__(84);
 	
 	var propTypes = {
 	    data:           React.PropTypes.array,
@@ -8398,11 +6708,11 @@
 	  propTypes: propTypes,
 	
 	  mixins: [
+	    __webpack_require__(85),
+	    __webpack_require__(87),
 	    __webpack_require__(88),
-	    __webpack_require__(91),
-	    __webpack_require__(92),
-	    __webpack_require__(90),
-	    __webpack_require__(93)('focusedIndex', 'isDisabledItem')
+	    __webpack_require__(89),
+	    __webpack_require__(90)('focusedIndex', 'isDisabledItem')
 	  ],
 	
 	  getDefaultProps: function(){
@@ -8697,7 +7007,7 @@
 	        
 
 /***/ },
-/* 56 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8710,8 +7020,8 @@
 	"use strict";
 	
 	var React = __webpack_require__(1)
-	  , $     = __webpack_require__(74)
-	  , _     = __webpack_require__(16);
+	  , $     = __webpack_require__(63)
+	  , _     = __webpack_require__(13);
 	
 	module.exports = React.createClass({
 	
@@ -8899,14 +7209,14 @@
 	}
 
 /***/ },
-/* 57 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , ReplaceTransitionGroup  = __webpack_require__(56)
-	  , _ = __webpack_require__(16)
-	  , $  =  __webpack_require__(74);
+	  , ReplaceTransitionGroup  = __webpack_require__(52)
+	  , _ = __webpack_require__(13)
+	  , $  =  __webpack_require__(63);
 	
 	
 	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
@@ -9009,7 +7319,7 @@
 
 
 /***/ },
-/* 58 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -16170,10 +14480,1734 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(105)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(102)(module), (function() { return this; }())))
 
 /***/ },
-/* 59 */
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//  Chance.js 0.5.9
+	//  http://chancejs.com
+	//  (c) 2013 Victor Quinn
+	//  Chance may be freely distributed or modified under the MIT license.
+	
+	(function () {
+	
+	    // Constants
+	    var MAX_INT = 9007199254740992;
+	    var MIN_INT = -MAX_INT;
+	    var NUMBERS = '0123456789';
+	    var CHARS_LOWER = 'abcdefghijklmnopqrstuvwxyz';
+	    var CHARS_UPPER = CHARS_LOWER.toUpperCase();
+	    var HEX_POOL  = NUMBERS + "abcdef";
+	
+	    // Cached array helpers
+	    var slice = Array.prototype.slice;
+	
+	    // Constructor
+	    function Chance (seed) {
+	        if (!(this instanceof Chance)) {
+	            return new Chance(seed);
+	        }
+	
+	        if (seed !== undefined) {
+	            // If we were passed a generator rather than a seed, use it.
+	            if (typeof seed === 'function') {
+	                this.random = seed;
+	            } else {
+	                this.seed = seed;
+	            }
+	        }
+	
+	        // If no generator function was provided, use our MT
+	        if (typeof this.random === 'undefined') {
+	            this.mt = this.mersenne_twister(seed);
+	            this.random = function () {
+	                return this.mt.random(this.seed);
+	            };
+	        }
+	    }
+	
+	    // Random helper functions
+	    function initOptions(options, defaults) {
+	        options || (options = {});
+	        if (!defaults) {
+	            return options;
+	        }
+	        for (var i in defaults) {
+	            if (typeof options[i] === 'undefined') {
+	                options[i] = defaults[i];
+	            }
+	        }
+	        return options;
+	    }
+	
+	    function testRange(test, errorMessage) {
+	        if (test) {
+	            throw new RangeError(errorMessage);
+	        }
+	    }
+	
+	    // -- Basics --
+	
+	    Chance.prototype.bool = function (options) {
+	
+	        // likelihood of success (true)
+	        options = initOptions(options, {likelihood : 50});
+	
+	        testRange(
+	            options.likelihood < 0 || options.likelihood > 100,
+	            "Chance: Likelihood accepts values from 0 to 100."
+	        );
+	
+	        return this.random() * 100 < options.likelihood;
+	    };
+	
+	    Chance.prototype.character = function (options) {
+	        options = initOptions(options);
+	
+	        var symbols = "!@#$%^&*()[]",
+	            letters, pool;
+	
+	        testRange(
+	            options.alpha && options.symbols,
+	            "Chance: Cannot specify both alpha and symbols."
+	        );
+	
+	
+	        if (options.casing === 'lower') {
+	            letters = CHARS_LOWER;
+	        } else if (options.casing === 'upper') {
+	            letters = CHARS_UPPER;
+	        } else {
+	            letters = CHARS_LOWER + CHARS_UPPER;
+	        }
+	
+	        if (options.pool) {
+	            pool = options.pool;
+	        } else if (options.alpha) {
+	            pool = letters;
+	        } else if (options.symbols) {
+	            pool = symbols;
+	        } else {
+	            pool = letters + NUMBERS + symbols;
+	        }
+	
+	        return pool.charAt(this.natural({max: (pool.length - 1)}));
+	    };
+	
+	    // Note, wanted to use "float" or "double" but those are both JS reserved words.
+	
+	    // Note, fixed means N OR LESS digits after the decimal. This because
+	    // It could be 14.9000 but in JavaScript, when this is cast as a number,
+	    // the trailing zeroes are dropped. Left to the consumer if trailing zeroes are
+	    // needed
+	    Chance.prototype.floating = function (options) {
+	        var num, range;
+	
+	        options = initOptions(options, {fixed : 4});
+	        var fixed = Math.pow(10, options.fixed);
+	
+	        testRange(
+	            options.fixed && options.precision,
+	            "Chance: Cannot specify both fixed and precision."
+	        );
+	
+	        var max = MAX_INT / fixed;
+	        var min = -max;
+	
+	        testRange(
+	            options.min && options.fixed && options.min < min,
+	            "Chance: Min specified is out of range with fixed. Min should be, at least, " + min
+	        );
+	        testRange(
+	            options.max && options.fixed && options.max > max,
+	            "Chance: Max specified is out of range with fixed. Max should be, at most, " + max
+	        );
+	
+	        options = initOptions(options, {min : min, max : max});
+	
+	        // Todo - Make this work!
+	        // options.precision = (typeof options.precision !== "undefined") ? options.precision : false;
+	
+	        num = this.integer({min: options.min * fixed, max: options.max * fixed});
+	        var num_fixed = (num / fixed).toFixed(options.fixed);
+	
+	        return parseFloat(num_fixed);
+	    };
+	
+	    // NOTE the max and min are INCLUDED in the range. So:
+	    //
+	    // chance.natural({min: 1, max: 3});
+	    //
+	    // would return either 1, 2, or 3.
+	
+	    Chance.prototype.integer = function (options) {
+	
+	        // 9007199254740992 (2^53) is the max integer number in JavaScript
+	        // See: http://vq.io/132sa2j
+	        options = initOptions(options, {min: MIN_INT, max: MAX_INT});
+	
+	        testRange(options.min > options.max, "Chance: Min cannot be greater than Max.");
+	
+	        return Math.floor(this.random() * (options.max - options.min + 1) + options.min);
+	    };
+	
+	    Chance.prototype.natural = function (options) {
+	        options = initOptions(options, {min: 0, max: MAX_INT});
+	        return this.integer(options);
+	    };
+	
+	    Chance.prototype.normal = function (options) {
+	        options = initOptions(options, {mean : 0, dev : 1});
+	
+	        // The Marsaglia Polar method
+	        var s, u, v, norm,
+	            mean = options.mean,
+	            dev = options.dev;
+	
+	        do {
+	            // U and V are from the uniform distribution on (-1, 1)
+	            u = this.random() * 2 - 1;
+	            v = this.random() * 2 - 1;
+	
+	            s = u * u + v * v;
+	        } while (s >= 1);
+	
+	        // Compute the standard normal variate
+	        norm = u * Math.sqrt(-2 * Math.log(s) / s);
+	
+	        // Shape and scale
+	        return dev * norm + mean;
+	    };
+	
+	    Chance.prototype.string = function (options) {
+	        options = initOptions(options);
+	
+	        var length = options.length || this.natural({min: 5, max: 20}),
+	            text = '',
+	            pool = options.pool;
+	
+	        for (var i = 0; i < length; i++) {
+	            text += this.character({pool: pool});
+	        }
+	        return text;
+	    };
+	
+	    // -- End Basics --
+	
+	    // -- Helpers --
+	
+	    Chance.prototype.capitalize = function (word) {
+	        return word.charAt(0).toUpperCase() + word.substr(1);
+	    };
+	
+	    Chance.prototype.mixin = function (obj) {
+	        var chance = this;
+	        for (var func_name in obj) {
+	            Chance.prototype[func_name] = obj[func_name];
+	        }
+	        return this;
+	    };
+	
+	    // Given a function that generates something random and a number of items to generate,
+	    // return an array of items where none repeat.
+	    Chance.prototype.unique = function(fn, num, options) {
+	        options = initOptions(options, {
+	            // Default comparator to check that val is not already in arr.
+	            // Should return `false` if item not in array, `true` otherwise
+	            comparator: function(arr, val) {
+	                return arr.indexOf(result) !== -1;
+	            }
+	        });
+	
+	        var arr = [], count = 0;
+	
+	        while (arr.length < num) {
+	            var result = fn.apply(this, slice.call(arguments, 2));
+	            if (!options.comparator(arr, result)) {
+	                arr.push(result);
+	                // reset count when unique found
+	                count = 0;
+	            }
+	
+	            if (++count > num * 50) {
+	                throw new RangeError("Chance: num is likely too large for sample set");
+	            }
+	        }
+	        return arr;
+	    };
+	
+	    // H/T to SO for this one: http://vq.io/OtUrZ5
+	    Chance.prototype.pad = function (number, width, pad) {
+	        // Default pad to 0 if none provided
+	        pad = pad || '0';
+	        // Convert number to a string
+	        number = number + '';
+	        return number.length >= width ? number : new Array(width - number.length + 1).join(pad) + number;
+	    };
+	
+	    Chance.prototype.pick = function (arr, count) {
+	        if (!count || count === 1) {
+	            return arr[this.natural({max: arr.length - 1})];
+	        } else {
+	            return this.shuffle(arr).slice(0, count);
+	        }
+	    };
+	
+	    Chance.prototype.shuffle = function (arr) {
+	        var old_array = arr.slice(0),
+	            new_array = [],
+	            j = 0,
+	            length = Number(old_array.length);
+	
+	        for (var i = 0; i < length; i++) {
+	            // Pick a random index from the array
+	            j = this.natural({max: old_array.length - 1});
+	            // Add it to the new array
+	            new_array[i] = old_array[j];
+	            // Remove that element from the original array
+	            old_array.splice(j, 1);
+	        }
+	
+	        return new_array;
+	    };
+	
+	    // -- End Helpers --
+	
+	    // -- Text --
+	
+	    Chance.prototype.paragraph = function (options) {
+	        options = initOptions(options);
+	
+	        var sentences = options.sentences || this.natural({min: 3, max: 7}),
+	            sentence_array = [];
+	
+	        for (var i = 0; i < sentences; i++) {
+	            sentence_array.push(this.sentence());
+	        }
+	
+	        return sentence_array.join(' ');
+	    };
+	
+	    // Could get smarter about this than generating random words and
+	    // chaining them together. Such as: http://vq.io/1a5ceOh
+	    Chance.prototype.sentence = function (options) {
+	        options = initOptions(options);
+	
+	        var words = options.words || this.natural({min: 12, max: 18}),
+	            text, word_array = [];
+	
+	        for (var i = 0; i < words; i++) {
+	            word_array.push(this.word());
+	        }
+	
+	        text = word_array.join(' ');
+	
+	        // Capitalize first letter of sentence, add period at end
+	        text = this.capitalize(text) + '.';
+	
+	        return text;
+	    };
+	
+	    Chance.prototype.syllable = function (options) {
+	        options = initOptions(options);
+	
+	        var length = options.length || this.natural({min: 2, max: 3}),
+	            consonants = 'bcdfghjklmnprstvwz', // consonants except hard to speak ones
+	            vowels = 'aeiou', // vowels
+	            all = consonants + vowels, // all
+	            text = '',
+	            chr;
+	
+	        // I'm sure there's a more elegant way to do this, but this works
+	        // decently well.
+	        for (var i = 0; i < length; i++) {
+	            if (i === 0) {
+	                // First character can be anything
+	                chr = this.character({pool: all});
+	            } else if (consonants.indexOf(chr) === -1) {
+	                // Last character was a vowel, now we want a consonant
+	                chr = this.character({pool: consonants});
+	            } else {
+	                // Last character was a consonant, now we want a vowel
+	                chr = this.character({pool: vowels});
+	            }
+	
+	            text += chr;
+	        }
+	
+	        return text;
+	    };
+	
+	    Chance.prototype.word = function (options) {
+	        options = initOptions(options);
+	
+	        testRange(
+	            options.syllables && options.length,
+	            "Chance: Cannot specify both syllables AND length."
+	        );
+	
+	        var syllables = options.syllables || this.natural({min: 1, max: 3}),
+	            text = '';
+	
+	        if (options.length) {
+	            // Either bound word by length
+	            do {
+	                text += this.syllable();
+	            } while (text.length < options.length);
+	            text = text.substring(0, options.length);
+	        } else {
+	            // Or by number of syllables
+	            for (var i = 0; i < syllables; i++) {
+	                text += this.syllable();
+	            }
+	        }
+	        return text;
+	    };
+	
+	    // -- End Text --
+	
+	    // -- Person --
+	
+	    Chance.prototype.age = function (options) {
+	        options = initOptions(options);
+	        var ageRange;
+	
+	        switch (options.type) {
+	            case 'child':
+	                ageRange = {min: 1, max: 12};
+	                break;
+	            case 'teen':
+	                ageRange = {min: 13, max: 19};
+	                break;
+	            case 'adult':
+	                ageRange = {min: 18, max: 65};
+	                break;
+	            case 'senior':
+	                ageRange = {min: 65, max: 100};
+	                break;
+	            case 'all':
+	                ageRange = {min: 1, max: 100};
+	                break;
+	            default:
+	                ageRange = {min: 18, max: 65};
+	                break;
+	        }
+	
+	        return this.natural(ageRange);
+	    };
+	
+	    Chance.prototype.birthday = function (options) {
+	        options = initOptions(options, {
+	            year: (new Date().getFullYear() - this.age(options))
+	        });
+	
+	        return this.date(options);
+	    };
+	
+	
+	    Chance.prototype.first = function (options) {
+	        options = initOptions(options, {gender: this.gender()});
+	        return this.pick(this.get("firstNames")[options.gender.toLowerCase()]);
+	    };
+	
+	    Chance.prototype.gender = function () {
+	        return this.pick(['Male', 'Female']);
+	    };
+	
+	
+	    Chance.prototype.last = function () {
+	        return this.pick(this.get("lastNames"));
+	    };
+	
+	    Chance.prototype.name = function (options) {
+	        options = initOptions(options);
+	
+	        var first = this.first(options),
+	            last = this.last(),
+	            name;
+	
+	        if (options.middle) {
+	            name = first + ' ' + this.first(options) + ' ' + last;
+	        } else if (options.middle_initial) {
+	            name = first + ' ' + this.character({alpha: true, casing: 'upper'}) + '. ' + last;
+	        } else {
+	            name = first + ' ' + last;
+	        }
+	
+	        if (options.prefix) {
+	            name = this.prefix(options) + ' ' + name;
+	        }
+	
+	        return name;
+	    };
+	
+	    // Return the list of available name prefixes based on supplied gender.
+	    Chance.prototype.name_prefixes = function (gender) {
+	        gender = gender || "all";
+	
+	        var prefixes = [
+	            { name: 'Doctor', abbreviation: 'Dr.' }
+	        ];
+	
+	        if (gender === "male" || gender === "all") {
+	            prefixes.push({ name: 'Mister', abbreviation: 'Mr.' });
+	        }
+	
+	        if (gender === "female" || gender === "all") {
+	            prefixes.push({ name: 'Miss', abbreviation: 'Miss' });
+	            prefixes.push({ name: 'Misses', abbreviation: 'Mrs.' });
+	        }
+	
+	        return prefixes;
+	    };
+	
+	    // Alias for name_prefix
+	    Chance.prototype.prefix = function (options) {
+	        return this.name_prefix(options);
+	    };
+	
+	    Chance.prototype.name_prefix = function (options) {
+	        options = initOptions(options, { gender: "all" });
+	        return options.full ?
+	            this.pick(this.name_prefixes(options.gender)).name :
+	            this.pick(this.name_prefixes(options.gender)).abbreviation;
+	    };
+	
+	    Chance.prototype.ssn = function (options) {
+	        options = initOptions(options, {ssnFour: false, dashes: true});
+	        var ssn_pool = "1234567890",
+	            ssn,
+	            dash = '';
+	
+	        if(options.dashes){
+	            dash = '-';
+	        }
+	
+	        if(!options.ssnFour) {
+	            ssn = this.string({pool: ssn_pool, length: 3}) + dash +
+	            this.string({pool: ssn_pool, length: 2}) + dash +
+	            this.string({pool: ssn_pool, length: 4});
+	        } else {
+	            ssn = this.string({pool: ssn_pool, length: 4});
+	        }
+	        return ssn;
+	    };
+	
+	    // -- End Person --
+	
+	    // -- Web --
+	
+	    Chance.prototype.color = function (options) {
+	        function gray(value, delimiter) {
+	            return [value, value, value].join(delimiter || '');
+	        }
+	
+	        options = initOptions(options, {format: this.pick(['hex', 'shorthex', 'rgb']), grayscale: false});
+	        var isGrayscale = options.grayscale;
+	
+	        if (options.format === 'hex') {
+	            return '#' + (isGrayscale ? gray(this.hash({length: 2})) : this.hash({length: 6}));
+	        }
+	
+	        if (options.format === 'shorthex') {
+	            return '#' + (isGrayscale ? gray(this.hash({length: 1})) : this.hash({length: 3}));
+	        }
+	
+	        if (options.format === 'rgb') {
+	            if (isGrayscale) {
+	                return 'rgb(' + gray(this.natural({max: 255}), ',') + ')';
+	            } else {
+	                return 'rgb(' + this.natural({max: 255}) + ',' + this.natural({max: 255}) + ',' + this.natural({max: 255}) + ')';
+	            }
+	        }
+	
+	        throw new Error('Invalid format provided. Please provide one of "hex", "shorthex", or "rgb"');
+	    };
+	
+	    Chance.prototype.domain = function (options) {
+	        options = initOptions(options);
+	        return this.word() + '.' + (options.tld || this.tld());
+	    };
+	
+	    Chance.prototype.email = function (options) {
+	        options = initOptions(options);
+	        return this.word() + '@' + (options.domain || this.domain());
+	    };
+	
+	    Chance.prototype.fbid = function () {
+	        return parseInt('10000' + this.natural({max: 100000000000}), 10);
+	    };
+	
+	    Chance.prototype.google_analytics = function () {
+	        var account = this.pad(this.natural({max: 999999}), 6);
+	        var property = this.pad(this.natural({max: 99}), 2);
+	        return 'UA-' + account + '-' + property;
+	    };
+	
+	    Chance.prototype.hashtag = function () {
+	        return '#' + this.word();
+	    };
+	
+	    Chance.prototype.ip = function () {
+	        // Todo: This could return some reserved IPs. See http://vq.io/137dgYy
+	        // this should probably be updated to account for that rare as it may be
+	        return this.natural({max: 255}) + '.' +
+	               this.natural({max: 255}) + '.' +
+	               this.natural({max: 255}) + '.' +
+	               this.natural({max: 255});
+	    };
+	
+	    Chance.prototype.ipv6 = function () {
+	        var ip_addr = [];
+	
+	        for (var i = 0; i < 8; i++) {
+	            ip_addr.push(this.hash({length: 4}));
+	        }
+	        return ip_addr.join(":");
+	    };
+	
+	    Chance.prototype.klout = function () {
+	        return this.natural({min: 1, max: 99});
+	    };
+	
+	    Chance.prototype.tlds = function () {
+	        return ['com', 'org', 'edu', 'gov', 'co.uk', 'net', 'io'];
+	    };
+	
+	    Chance.prototype.tld = function () {
+	        return this.pick(this.tlds());
+	    };
+	
+	    Chance.prototype.twitter = function () {
+	        return '@' + this.word();
+	    };
+	
+	    // -- End Web --
+	
+	    // -- Address --
+	
+	    Chance.prototype.address = function (options) {
+	        options = initOptions(options);
+	        return this.natural({min: 5, max: 2000}) + ' ' + this.street(options);
+	    };
+	
+	    Chance.prototype.areacode = function (options) {
+	        options = initOptions(options, {parens : true});
+	        // Don't want area codes to start with 1, or have a 9 as the second digit
+	        var areacode = this.natural({min: 2, max: 9}).toString() + this.natural({min: 0, max: 8}).toString() + this.natural({min: 0, max: 9}).toString();
+	        return options.parens ? '(' + areacode + ')' : areacode;
+	    };
+	
+	    Chance.prototype.city = function () {
+	        return this.capitalize(this.word({syllables: 3}));
+	    };
+	
+	    Chance.prototype.coordinates = function (options) {
+	        options = initOptions(options);
+	        return this.latitude(options) + ', ' + this.longitude(options);
+	    };
+	
+	    Chance.prototype.geoJson = function (options) {
+	        options = initOptions(options);
+	        return this.latitude(options) + ', ' + this.longitude(options) + ', ' + this.altitude(options);
+	    };
+	
+	    Chance.prototype.altitude = function (options) {
+	        options = initOptions(options, {fixed : 5});
+	        return this.floating({min: 0, max: 32736000, fixed: options.fixed});
+	    };
+	
+	    Chance.prototype.depth = function (options) {
+	        options = initOptions(options, {fixed: 5});
+	        return this.floating({min: -35994, max: 0, fixed: options.fixed});
+	    };
+	
+	    Chance.prototype.latitude = function (options) {
+	        options = initOptions(options, {fixed: 5, min: -90, max: 90});
+	        return this.floating({min: options.min, max: options.max, fixed: options.fixed});
+	    };
+	
+	    Chance.prototype.longitude = function (options) {
+	        options = initOptions(options, {fixed: 5, min: -180, max: 180});
+	        return this.floating({min: options.min, max: options.max, fixed: options.fixed});
+	    };
+	
+	    Chance.prototype.phone = function (options) {
+	        options = initOptions(options, {formatted : true});
+	        if (!options.formatted) {
+	            options.parens = false;
+	        }
+	        var areacode = this.areacode(options).toString();
+	        var exchange = this.natural({min: 2, max: 9}).toString() 
+	            + this.natural({min: 0, max: 9}).toString() 
+	            + this.natural({min: 0, max: 9}).toString();
+	        var subscriber = this.natural({min: 1000, max: 9999}).toString(); // this could be random [0-9]{4}
+	        
+	        return options.formatted ? areacode + ' ' + exchange + '-' + subscriber : areacode + exchange + subscriber;
+	    };
+	
+	    Chance.prototype.postal = function () {
+	        // Postal District
+	        var pd = this.character({pool: "XVTSRPNKLMHJGECBA"});
+	        // Forward Sortation Area (FSA)
+	        var fsa = pd + this.natural({max: 9}) + this.character({alpha: true, casing: "upper"});
+	        // Local Delivery Unut (LDU)
+	        var ldu = this.natural({max: 9}) + this.character({alpha: true, casing: "upper"}) + this.natural({max: 9});
+	
+	        return fsa + " " + ldu;
+	    };
+	
+	    Chance.prototype.provinces = function () {
+	        return this.get("provinces");
+	    };
+	
+	    Chance.prototype.province = function (options) {
+	        return (options && options.full) ?
+	            this.pick(this.provinces()).name :
+	            this.pick(this.provinces()).abbreviation;
+	    };
+	
+	    Chance.prototype.radio = function (options) {
+	        // Initial Letter (Typically Designated by Side of Mississippi River)
+	        options = initOptions(options, {side : "?"});
+	        var fl = "";
+	        switch (options.side.toLowerCase()) {
+	        case "east":
+	        case "e":
+	            fl = "W";
+	            break;
+	        case "west":
+	        case "w":
+	            fl = "K";
+	            break;
+	        default:
+	            fl = this.character({pool: "KW"});
+	            break;
+	        }
+	
+	        return fl + this.character({alpha: true, casing: "upper"}) + this.character({alpha: true, casing: "upper"}) + this.character({alpha: true, casing: "upper"});
+	    };
+	
+	    Chance.prototype.state = function (options) {
+	        return (options && options.full) ?
+	            this.pick(this.states(options)).name :
+	            this.pick(this.states(options)).abbreviation;
+	    };
+	
+	    Chance.prototype.states = function (options) {
+	        options = initOptions(options);
+	
+	        var states,
+	            us_states_and_dc = this.get("us_states_and_dc"),
+	            territories = this.get("territories"),
+	            armed_forces = this.get("armed_forces");
+	
+	        states = us_states_and_dc;
+	
+	        if (options.territories) {
+	            states = states.concat(territories);
+	        }
+	        if (options.armed_forces) {
+	            states = states.concat(armed_forces);
+	        }
+	
+	        return states;
+	    };
+	
+	    Chance.prototype.street = function (options) {
+	        options = initOptions(options);
+	
+	        var street = this.word({syllables: 2});
+	        street = this.capitalize(street);
+	        street += ' ';
+	        street += options.short_suffix ?
+	            this.street_suffix().abbreviation :
+	            this.street_suffix().name;
+	        return street;
+	    };
+	
+	    Chance.prototype.street_suffix = function () {
+	        return this.pick(this.street_suffixes());
+	    };
+	
+	    Chance.prototype.street_suffixes = function () {
+	        // These are the most common suffixes.
+	        return this.get("street_suffixes");
+	    };
+	
+	    Chance.prototype.tv = function (options) {
+	        return this.radio(options);
+	    };
+	
+	    // Note: only returning US zip codes, internationalization will be a whole
+	    // other beast to tackle at some point.
+	    Chance.prototype.zip = function (options) {
+	        var zip = "";
+	
+	        for (var i = 0; i < 5; i++) {
+	            zip += this.natural({max: 9}).toString();
+	        }
+	
+	        if (options && options.plusfour === true) {
+	            zip += '-';
+	            for (i = 0; i < 4; i++) {
+	                zip += this.natural({max: 9}).toString();
+	            }
+	        }
+	
+	        return zip;
+	    };
+	
+	    // -- End Address --
+	
+	    // -- Time
+	
+	    Chance.prototype.ampm = function () {
+	        return this.bool() ? 'am' : 'pm';
+	    };
+	
+	    Chance.prototype.date = function (options) {
+	        var m = this.month({raw: true}),
+	            date_string;
+	
+	        options = initOptions(options, {
+	            year: parseInt(this.year(), 10),
+	            // Necessary to subtract 1 because Date() 0-indexes month but not day or year
+	            // for some reason.
+	            month: m.numeric - 1,
+	            day: this.natural({min: 1, max: m.days}),
+	            hour: this.hour(),
+	            minute: this.minute(),
+	            second: this.second(),
+	            millisecond: this.millisecond(),
+	            american: true,
+	            string: false
+	        });
+	
+	        var date = new Date(options.year, options.month, options.day, options.hour, options.minute, options.second, options.millisecond);
+	
+	        if (options.american) {
+	            // Adding 1 to the month is necessary because Date() 0-indexes
+	            // months but not day for some odd reason.
+	            date_string = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+	        } else {
+	            date_string = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+	        }
+	
+	        return options.string ? date_string : date;
+	    };
+	
+	    Chance.prototype.hammertime = function (options) {
+	        return this.date(options).getTime();
+	    };
+	
+	    Chance.prototype.hour = function (options) {
+	        options = initOptions(options);
+	        var max = options.twentyfour ? 24 : 12;
+	        return this.natural({min: 1, max: max});
+	    };
+	
+	    Chance.prototype.millisecond = function () {
+	        return this.natural({max: 999});
+	    };
+	
+	    Chance.prototype.minute = Chance.prototype.second = function () {
+	        return this.natural({max: 59});
+	    };
+	
+	    Chance.prototype.month = function (options) {
+	        options = initOptions(options);
+	        var month = this.pick(this.months());
+	        return options.raw ? month : month.name;
+	    };
+	
+	    Chance.prototype.months = function () {
+	        return this.get("months");
+	    };
+	
+	    Chance.prototype.second = function () {
+	        return this.natural({max: 59});
+	    };
+	
+	    Chance.prototype.timestamp = function () {
+	        return this.natural({min: 1, max: parseInt(new Date().getTime() / 1000, 10)});
+	    };
+	
+	    Chance.prototype.year = function (options) {
+	        // Default to current year as min if none specified
+	        options = initOptions(options, {min: new Date().getFullYear()});
+	
+	        // Default to one century after current year as max if none specified
+	        options.max = (typeof options.max !== "undefined") ? options.max : options.min + 100;
+	
+	        return this.natural(options).toString();
+	    };
+	
+	    // -- End Time
+	
+	    // -- Finance --
+	
+	    Chance.prototype.cc = function (options) {
+	        options = initOptions(options);
+	
+	        var type, number, to_generate, type_name;
+	
+	        type = (options.type) ?
+	                    this.cc_type({ name: options.type, raw: true }) :
+	                    this.cc_type({ raw: true });
+	        number = type.prefix.split("");
+	        to_generate = type.length - type.prefix.length - 1;
+	
+	        // Generates n - 1 digits
+	        for (var i = 0; i < to_generate; i++) {
+	            number.push(this.integer({min: 0, max: 9}));
+	        }
+	
+	        // Generates the last digit according to Luhn algorithm
+	        number.push(this.luhn_calculate(number.join("")));
+	
+	        return number.join("");
+	    };
+	
+	    Chance.prototype.cc_types = function () {
+	        // http://en.wikipedia.org/wiki/Bank_card_number#Issuer_identification_number_.28IIN.29
+	        return this.get("cc_types");
+	    };
+	
+	    Chance.prototype.cc_type = function (options) {
+	        options = initOptions(options);
+	        var types = this.cc_types(),
+	            type = null;
+	
+	        if (options.name) {
+	            for (var i = 0; i < types.length; i++) {
+	                // Accept either name or short_name to specify card type
+	                if (types[i].name === options.name || types[i].short_name === options.name) {
+	                    type = types[i];
+	                    break;
+	                }
+	            }
+	            if (type === null) {
+	                throw new Error("Credit card type '" + options.name + "'' is not supported");
+	            }
+	        } else {
+	            type = this.pick(types);
+	        }
+	
+	        return options.raw ? type : type.name;
+	    };
+	
+	    Chance.prototype.dollar = function (options) {
+	        // By default, a somewhat more sane max for dollar than all available numbers
+	        options = initOptions(options, {max : 10000, min : 0});
+	
+	        var dollar = this.floating({min: options.min, max: options.max, fixed: 2}).toString(),
+	            cents = dollar.split('.')[1];
+	
+	        if (cents === undefined) {
+	            dollar += '.00';
+	        } else if (cents.length < 2) {
+	            dollar = dollar + '0';
+	        }
+	
+	        if (dollar < 0) {
+	            return '-$' + dollar.replace('-', '');
+	        } else {
+	            return '$' + dollar;
+	        }
+	    };
+	
+	    Chance.prototype.exp = function (options) {
+	        options = initOptions(options);
+	        var exp = {};
+	
+	        exp.year = this.exp_year();
+	
+	        // If the year is this year, need to ensure month is greater than the
+	        // current month or this expiration will not be valid
+	        if (exp.year === (new Date().getFullYear())) {
+	            exp.month = this.exp_month({future: true});
+	        } else {
+	            exp.month = this.exp_month();
+	        }
+	
+	        return options.raw ? exp : exp.month + '/' + exp.year;
+	    };
+	
+	    Chance.prototype.exp_month = function (options) {
+	        options = initOptions(options);
+	        var month, month_int;
+	
+	        if (options.future) {
+	            do {
+	                month = this.month({raw: true}).numeric;
+	                month_int = parseInt(month, 10);
+	            } while (month_int < new Date().getMonth());
+	        } else {
+	            month = this.month({raw: true}).numeric;
+	        }
+	
+	        return month;
+	    };
+	
+	    Chance.prototype.exp_year = function () {
+	        return this.year({max: new Date().getFullYear() + 10});
+	    };
+	
+	    //return all world currency by ISO 4217
+	    Chance.prototype.currency_types = function () {
+	        return this.get("currency_types");
+	    };
+	
+	
+	    //return random world currency by ISO 4217
+	    Chance.prototype.currency = function () {
+	        return this.pick(this.currency_types());
+	    };
+	
+	    //Return random correct currency exchange pair (e.g. EUR/USD) or array of currency code
+	    Chance.prototype.currency_pair = function (returnAsString) {
+	        var currencies = this.unique(this.currency, 2, {
+	            comparator: function(arr, val) {
+	                // If this is the first element, we know it doesn't exist
+	                if (arr.length === 0) {
+	                    return false;
+	                }
+	
+	                return arr.reduce(function(acc, item) {
+	                    // If a match has been found, short circuit check and just return
+	                    if (acc) {
+	                        return acc;
+	                    }
+	                    return item.code === val.code;
+	                }, false);
+	            }
+	        });
+	
+	        if (returnAsString) {
+	            return  currencies[0] + '/' + currencies[1];
+	        } else {
+	            return currencies;
+	        }
+	    };
+	
+	    // -- End Finance
+	
+	    // -- Miscellaneous --
+	
+	    // Dice - For all the board game geeks out there, myself included ;)
+	    function diceFn (range) {
+	    	return function () {
+	    		return this.natural(range);
+	    	};
+	    }
+	    Chance.prototype.d4 = diceFn({min: 1, max: 4});
+	    Chance.prototype.d6 = diceFn({min: 1, max: 6});
+	    Chance.prototype.d8 = diceFn({min: 1, max: 8});
+	    Chance.prototype.d10 = diceFn({min: 1, max: 10});
+	    Chance.prototype.d12 = diceFn({min: 1, max: 12});
+	    Chance.prototype.d20 = diceFn({min: 1, max: 20});
+	    Chance.prototype.d30 = diceFn({min: 1, max: 30});
+	    Chance.prototype.d100 = diceFn({min: 1, max: 100});
+	
+	    Chance.prototype.rpg = function (thrown, options) {
+	        options = initOptions(options);
+	        if (thrown === null) {
+	            throw new Error("A type of die roll must be included");
+	        } else {
+	            var bits = thrown.toLowerCase().split("d"),
+	                rolls = [];
+	
+	            if (bits.length !== 2 || !parseInt(bits[0], 10) || !parseInt(bits[1], 10)) {
+	                throw new Error("Invalid format provided. Please provide #d# where the first # is the number of dice to roll, the second # is the max of each die");
+	            }
+	            for (var i = bits[0]; i > 0; i--) {
+	                rolls[i - 1] = this.natural({min: 1, max: bits[1]});
+	            }
+	            return (typeof options.sum !== 'undefined' && options.sum) ? rolls.reduce(function (p, c) { return p + c; }) : rolls;
+	        }
+	    };
+	
+	    // Guid
+	    Chance.prototype.guid = function (options) {
+	        options = options || {version: 5};
+	
+	        var guid_pool = "ABCDEF1234567890",
+	            variant_pool = "AB89",
+	            guid = this.string({pool: guid_pool, length: 8}) + '-' +
+	                   this.string({pool: guid_pool, length: 4}) + '-' +
+	                   // The Version
+	                   options.version +
+	                   this.string({pool: guid_pool, length: 3}) + '-' +
+	                   // The Variant
+	                   this.string({pool: variant_pool, length: 1}) +
+	                   this.string({pool: guid_pool, length: 3}) + '-' +
+	                   this.string({pool: guid_pool, length: 12});
+	        return guid;
+	    };
+	
+	    // Hash
+	    Chance.prototype.hash = function (options) {
+	        options = initOptions(options, {length : 40, casing: 'lower'});
+	        var pool = options.casing === 'upper' ? HEX_POOL.toUpperCase() : HEX_POOL;
+	        return this.string({pool: pool, length: options.length});
+	    };
+	
+	    Chance.prototype.luhn_check = function (num) {
+	        var str = num.toString();
+	        var checkDigit = +str.substring(str.length - 1);
+	        return checkDigit === this.luhn_calculate(+str.substring(0, str.length - 1));
+	    };
+	
+	    Chance.prototype.luhn_calculate = function (num) {
+	        var digits = num.toString().split("").reverse();
+	        var sum = 0;
+	        var digit;
+	        
+	        for (var i = 0, l = digits.length; l > i; ++i) {
+	            digit = +digits[i];
+	            if (i % 2 === 0) {
+	                digit *= 2;
+	                if (digit > 9) {
+	                    digit -= 9;
+	                }
+	            }
+	            sum += digit;
+	        }
+	        return (sum * 9) % 10;
+	    };
+	
+	
+	    var data = {
+	
+	        firstNames: {
+	            "male": ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Charles", "Thomas", "Christopher", "Daniel", "Matthew", "George", "Donald", "Anthony", "Paul", "Mark", "Edward", "Steven", "Kenneth", "Andrew", "Brian", "Joshua", "Kevin", "Ronald", "Timothy", "Jason", "Jeffrey", "Frank", "Gary", "Ryan", "Nicholas", "Eric", "Stephen", "Jacob", "Larry", "Jonathan", "Scott", "Raymond", "Justin", "Brandon", "Gregory", "Samuel", "Benjamin", "Patrick", "Jack", "Henry", "Walter", "Dennis", "Jerry", "Alexander", "Peter", "Tyler", "Douglas", "Harold", "Aaron", "Jose", "Adam", "Arthur", "Zachary", "Carl", "Nathan", "Albert", "Kyle", "Lawrence", "Joe", "Willie", "Gerald", "Roger", "Keith", "Jeremy", "Terry", "Harry", "Ralph", "Sean", "Jesse", "Roy", "Louis", "Billy", "Austin", "Bruce", "Eugene", "Christian", "Bryan", "Wayne", "Russell", "Howard", "Fred", "Ethan", "Jordan", "Philip", "Alan", "Juan", "Randy", "Vincent", "Bobby", "Dylan", "Johnny", "Phillip", "Victor", "Clarence", "Ernest", "Martin", "Craig", "Stanley", "Shawn", "Travis", "Bradley", "Leonard", "Earl", "Gabriel", "Jimmy", "Francis", "Todd", "Noah", "Danny", "Dale", "Cody", "Carlos", "Allen", "Frederick", "Logan", "Curtis", "Alex", "Joel", "Luis", "Norman", "Marvin", "Glenn", "Tony", "Nathaniel", "Rodney", "Melvin", "Alfred", "Steve", "Cameron", "Chad", "Edwin", "Caleb", "Evan", "Antonio", "Lee", "Herbert", "Jeffery", "Isaac", "Derek", "Ricky", "Marcus", "Theodore", "Elijah", "Luke", "Jesus", "Eddie", "Troy", "Mike", "Dustin", "Ray", "Adrian", "Bernard", "Leroy", "Angel", "Randall", "Wesley", "Ian", "Jared", "Mason", "Hunter", "Calvin", "Oscar", "Clifford", "Jay", "Shane", "Ronnie", "Barry", "Lucas", "Corey", "Manuel", "Leo", "Tommy", "Warren", "Jackson", "Isaiah", "Connor", "Don", "Dean", "Jon", "Julian", "Miguel", "Bill", "Lloyd", "Charlie", "Mitchell", "Leon", "Jerome", "Darrell", "Jeremiah", "Alvin", "Brett", "Seth", "Floyd", "Jim", "Blake", "Micheal", "Gordon", "Trevor", "Lewis", "Erik", "Edgar", "Vernon", "Devin", "Gavin", "Jayden", "Chris", "Clyde", "Tom", "Derrick", "Mario", "Brent", "Marc", "Herman", "Chase", "Dominic", "Ricardo", "Franklin", "Maurice", "Max", "Aiden", "Owen", "Lester", "Gilbert", "Elmer", "Gene", "Francisco", "Glen", "Cory", "Garrett", "Clayton", "Sam", "Jorge", "Chester", "Alejandro", "Jeff", "Harvey", "Milton", "Cole", "Ivan", "Andre", "Duane", "Landon"],
+	            "female": ["Mary", "Emma", "Elizabeth", "Minnie", "Margaret", "Ida", "Alice", "Bertha", "Sarah", "Annie", "Clara", "Ella", "Florence", "Cora", "Martha", "Laura", "Nellie", "Grace", "Carrie", "Maude", "Mabel", "Bessie", "Jennie", "Gertrude", "Julia", "Hattie", "Edith", "Mattie", "Rose", "Catherine", "Lillian", "Ada", "Lillie", "Helen", "Jessie", "Louise", "Ethel", "Lula", "Myrtle", "Eva", "Frances", "Lena", "Lucy", "Edna", "Maggie", "Pearl", "Daisy", "Fannie", "Josephine", "Dora", "Rosa", "Katherine", "Agnes", "Marie", "Nora", "May", "Mamie", "Blanche", "Stella", "Ellen", "Nancy", "Effie", "Sallie", "Nettie", "Della", "Lizzie", "Flora", "Susie", "Maud", "Mae", "Etta", "Harriet", "Sadie", "Caroline", "Katie", "Lydia", "Elsie", "Kate", "Susan", "Mollie", "Alma", "Addie", "Georgia", "Eliza", "Lulu", "Nannie", "Lottie", "Amanda", "Belle", "Charlotte", "Rebecca", "Ruth", "Viola", "Olive", "Amelia", "Hannah", "Jane", "Virginia", "Emily", "Matilda", "Irene", "Kathryn", "Esther", "Willie", "Henrietta", "Ollie", "Amy", "Rachel", "Sara", "Estella", "Theresa", "Augusta", "Ora", "Pauline", "Josie", "Lola", "Sophia", "Leona", "Anne", "Mildred", "Ann", "Beulah", "Callie", "Lou", "Delia", "Eleanor", "Barbara", "Iva", "Louisa", "Maria", "Mayme", "Evelyn", "Estelle", "Nina", "Betty", "Marion", "Bettie", "Dorothy", "Luella", "Inez", "Lela", "Rosie", "Allie", "Millie", "Janie", "Cornelia", "Victoria", "Ruby", "Winifred", "Alta", "Celia", "Christine", "Beatrice", "Birdie", "Harriett", "Mable", "Myra", "Sophie", "Tillie", "Isabel", "Sylvia", "Carolyn", "Isabelle", "Leila", "Sally", "Ina", "Essie", "Bertie", "Nell", "Alberta", "Katharine", "Lora", "Rena", "Mina", "Rhoda", "Mathilda", "Abbie", "Eula", "Dollie", "Hettie", "Eunice", "Fanny", "Ola", "Lenora", "Adelaide", "Christina", "Lelia", "Nelle", "Sue", "Johanna", "Lilly", "Lucinda", "Minerva", "Lettie", "Roxie", "Cynthia", "Helena", "Hilda", "Hulda", "Bernice", "Genevieve", "Jean", "Cordelia", "Marian", "Francis", "Jeanette", "Adeline", "Gussie", "Leah", "Lois", "Lura", "Mittie", "Hallie", "Isabella", "Olga", "Phoebe", "Teresa", "Hester", "Lida", "Lina", "Winnie", "Claudia", "Marguerite", "Vera", "Cecelia", "Bess", "Emilie", "John", "Rosetta", "Verna", "Myrtie", "Cecilia", "Elva", "Olivia", "Ophelia", "Georgie", "Elnora", "Violet", "Adele", "Lily", "Linnie", "Loretta", "Madge", "Polly", "Virgie", "Eugenia", "Lucile", "Lucille", "Mabelle", "Rosalie"]
+	        },
+	
+	        lastNames: ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart', 'Sanchez', 'Morris', 'Rogers', 'Reed', 'Cook', 'Morgan', 'Bell', 'Murphy', 'Bailey', 'Rivera', 'Cooper', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray', 'Ramirez', 'James', 'Watson', 'Brooks', 'Kelly', 'Sanders', 'Price', 'Bennett', 'Wood', 'Barnes', 'Ross', 'Henderson', 'Coleman', 'Jenkins', 'Perry', 'Powell', 'Long', 'Patterson', 'Hughes', 'Flores', 'Washington', 'Butler', 'Simmons', 'Foster', 'Gonzales', 'Bryant', 'Alexander', 'Russell', 'Griffin', 'Diaz', 'Hayes', 'Myers', 'Ford', 'Hamilton', 'Graham', 'Sullivan', 'Wallace', 'Woods', 'Cole', 'West', 'Jordan', 'Owens', 'Reynolds', 'Fisher', 'Ellis', 'Harrison', 'Gibson', 'McDonald', 'Cruz', 'Marshall', 'Ortiz', 'Gomez', 'Murray', 'Freeman', 'Wells', 'Webb', 'Simpson', 'Stevens', 'Tucker', 'Porter', 'Hunter', 'Hicks', 'Crawford', 'Henry', 'Boyd', 'Mason', 'Morales', 'Kennedy', 'Warren', 'Dixon', 'Ramos', 'Reyes', 'Burns', 'Gordon', 'Shaw', 'Holmes', 'Rice', 'Robertson', 'Hunt', 'Black', 'Daniels', 'Palmer', 'Mills', 'Nichols', 'Grant', 'Knight', 'Ferguson', 'Rose', 'Stone', 'Hawkins', 'Dunn', 'Perkins', 'Hudson', 'Spencer', 'Gardner', 'Stephens', 'Payne', 'Pierce', 'Berry', 'Matthews', 'Arnold', 'Wagner', 'Willis', 'Ray', 'Watkins', 'Olson', 'Carroll', 'Duncan', 'Snyder', 'Hart', 'Cunningham', 'Bradley', 'Lane', 'Andrews', 'Ruiz', 'Harper', 'Fox', 'Riley', 'Armstrong', 'Carpenter', 'Weaver', 'Greene', 'Lawrence', 'Elliott', 'Chavez', 'Sims', 'Austin', 'Peters', 'Kelley', 'Franklin', 'Lawson', 'Fields', 'Gutierrez', 'Ryan', 'Schmidt', 'Carr', 'Vasquez', 'Castillo', 'Wheeler', 'Chapman', 'Oliver', 'Montgomery', 'Richards', 'Williamson', 'Johnston', 'Banks', 'Meyer', 'Bishop', 'McCoy', 'Howell', 'Alvarez', 'Morrison', 'Hansen', 'Fernandez', 'Garza', 'Harvey', 'Little', 'Burton', 'Stanley', 'Nguyen', 'George', 'Jacobs', 'Reid', 'Kim', 'Fuller', 'Lynch', 'Dean', 'Gilbert', 'Garrett', 'Romero', 'Welch', 'Larson', 'Frazier', 'Burke', 'Hanson', 'Day', 'Mendoza', 'Moreno', 'Bowman', 'Medina', 'Fowler', 'Brewer', 'Hoffman', 'Carlson', 'Silva', 'Pearson', 'Holland', 'Douglas', 'Fleming', 'Jensen', 'Vargas', 'Byrd', 'Davidson', 'Hopkins', 'May', 'Terry', 'Herrera', 'Wade', 'Soto', 'Walters', 'Curtis', 'Neal', 'Caldwell', 'Lowe', 'Jennings', 'Barnett', 'Graves', 'Jimenez', 'Horton', 'Shelton', 'Barrett', 'Obrien', 'Castro', 'Sutton', 'Gregory', 'McKinney', 'Lucas', 'Miles', 'Craig', 'Rodriquez', 'Chambers', 'Holt', 'Lambert', 'Fletcher', 'Watts', 'Bates', 'Hale', 'Rhodes', 'Pena', 'Beck', 'Newman', 'Haynes', 'McDaniel', 'Mendez', 'Bush', 'Vaughn', 'Parks', 'Dawson', 'Santiago', 'Norris', 'Hardy', 'Love', 'Steele', 'Curry', 'Powers', 'Schultz', 'Barker', 'Guzman', 'Page', 'Munoz', 'Ball', 'Keller', 'Chandler', 'Weber', 'Leonard', 'Walsh', 'Lyons', 'Ramsey', 'Wolfe', 'Schneider', 'Mullins', 'Benson', 'Sharp', 'Bowen', 'Daniel', 'Barber', 'Cummings', 'Hines', 'Baldwin', 'Griffith', 'Valdez', 'Hubbard', 'Salazar', 'Reeves', 'Warner', 'Stevenson', 'Burgess', 'Santos', 'Tate', 'Cross', 'Garner', 'Mann', 'Mack', 'Moss', 'Thornton', 'Dennis', 'McGee', 'Farmer', 'Delgado', 'Aguilar', 'Vega', 'Glover', 'Manning', 'Cohen', 'Harmon', 'Rodgers', 'Robbins', 'Newton', 'Todd', 'Blair', 'Higgins', 'Ingram', 'Reese', 'Cannon', 'Strickland', 'Townsend', 'Potter', 'Goodwin', 'Walton', 'Rowe', 'Hampton', 'Ortega', 'Patton', 'Swanson', 'Joseph', 'Francis', 'Goodman', 'Maldonado', 'Yates', 'Becker', 'Erickson', 'Hodges', 'Rios', 'Conner', 'Adkins', 'Webster', 'Norman', 'Malone', 'Hammond', 'Flowers', 'Cobb', 'Moody', 'Quinn', 'Blake', 'Maxwell', 'Pope', 'Floyd', 'Osborne', 'Paul', 'McCarthy', 'Guerrero', 'Lindsey', 'Estrada', 'Sandoval', 'Gibbs', 'Tyler', 'Gross', 'Fitzgerald', 'Stokes', 'Doyle', 'Sherman', 'Saunders', 'Wise', 'Colon', 'Gill', 'Alvarado', 'Greer', 'Padilla', 'Simon', 'Waters', 'Nunez', 'Ballard', 'Schwartz', 'McBride', 'Houston', 'Christensen', 'Klein', 'Pratt', 'Briggs', 'Parsons', 'McLaughlin', 'Zimmerman', 'French', 'Buchanan', 'Moran', 'Copeland', 'Roy', 'Pittman', 'Brady', 'McCormick', 'Holloway', 'Brock', 'Poole', 'Frank', 'Logan', 'Owen', 'Bass', 'Marsh', 'Drake', 'Wong', 'Jefferson', 'Park', 'Morton', 'Abbott', 'Sparks', 'Patrick', 'Norton', 'Huff', 'Clayton', 'Massey', 'Lloyd', 'Figueroa', 'Carson', 'Bowers', 'Roberson', 'Barton', 'Tran', 'Lamb', 'Harrington', 'Casey', 'Boone', 'Cortez', 'Clarke', 'Mathis', 'Singleton', 'Wilkins', 'Cain', 'Bryan', 'Underwood', 'Hogan', 'McKenzie', 'Collier', 'Luna', 'Phelps', 'McGuire', 'Allison', 'Bridges', 'Wilkerson', 'Nash', 'Summers', 'Atkins'],
+	
+	        provinces: [
+	            {name: 'Alberta', abbreviation: 'AB'},
+	            {name: 'British Columbia', abbreviation: 'BC'},
+	            {name: 'Manitoba', abbreviation: 'MB'},
+	            {name: 'New Brunswick', abbreviation: 'NB'},
+	            {name: 'Newfoundland and Labrador', abbreviation: 'NL'},
+	            {name: 'Nova Scotia', abbreviation: 'NS'},
+	            {name: 'Ontario', abbreviation: 'ON'},
+	            {name: 'Prince Edward Island', abbreviation: 'PE'},
+	            {name: 'Quebec', abbreviation: 'QC'},
+	            {name: 'Saskatchewan', abbreviation: 'SK'},
+	
+	            // The case could be made that the following are not actually provinces
+	            // since they are technically considered "territories" however they all
+	            // look the same on an envelope!
+	            {name: 'Northwest Territories', abbreviation: 'NT'},
+	            {name: 'Nunavut', abbreviation: 'NU'},
+	            {name: 'Yukon', abbreviation: 'YT'}
+	        ],
+	
+	        us_states_and_dc: [
+	            {name: 'Alabama', abbreviation: 'AL'},
+	            {name: 'Alaska', abbreviation: 'AK'},
+	            {name: 'Arizona', abbreviation: 'AZ'},
+	            {name: 'Arkansas', abbreviation: 'AR'},
+	            {name: 'California', abbreviation: 'CA'},
+	            {name: 'Colorado', abbreviation: 'CO'},
+	            {name: 'Connecticut', abbreviation: 'CT'},
+	            {name: 'Delaware', abbreviation: 'DE'},
+	            {name: 'District of Columbia', abbreviation: 'DC'},
+	            {name: 'Florida', abbreviation: 'FL'},
+	            {name: 'Georgia', abbreviation: 'GA'},
+	            {name: 'Hawaii', abbreviation: 'HI'},
+	            {name: 'Idaho', abbreviation: 'ID'},
+	            {name: 'Illinois', abbreviation: 'IL'},
+	            {name: 'Indiana', abbreviation: 'IN'},
+	            {name: 'Iowa', abbreviation: 'IA'},
+	            {name: 'Kansas', abbreviation: 'KS'},
+	            {name: 'Kentucky', abbreviation: 'KY'},
+	            {name: 'Louisiana', abbreviation: 'LA'},
+	            {name: 'Maine', abbreviation: 'ME'},
+	            {name: 'Maryland', abbreviation: 'MD'},
+	            {name: 'Massachusetts', abbreviation: 'MA'},
+	            {name: 'Michigan', abbreviation: 'MI'},
+	            {name: 'Minnesota', abbreviation: 'MN'},
+	            {name: 'Mississippi', abbreviation: 'MS'},
+	            {name: 'Missouri', abbreviation: 'MO'},
+	            {name: 'Montana', abbreviation: 'MT'},
+	            {name: 'Nebraska', abbreviation: 'NE'},
+	            {name: 'Nevada', abbreviation: 'NV'},
+	            {name: 'New Hampshire', abbreviation: 'NH'},
+	            {name: 'New Jersey', abbreviation: 'NJ'},
+	            {name: 'New Mexico', abbreviation: 'NM'},
+	            {name: 'New York', abbreviation: 'NY'},
+	            {name: 'North Carolina', abbreviation: 'NC'},
+	            {name: 'North Dakota', abbreviation: 'ND'},
+	            {name: 'Ohio', abbreviation: 'OH'},
+	            {name: 'Oklahoma', abbreviation: 'OK'},
+	            {name: 'Oregon', abbreviation: 'OR'},
+	            {name: 'Pennsylvania', abbreviation: 'PA'},
+	            {name: 'Rhode Island', abbreviation: 'RI'},
+	            {name: 'South Carolina', abbreviation: 'SC'},
+	            {name: 'South Dakota', abbreviation: 'SD'},
+	            {name: 'Tennessee', abbreviation: 'TN'},
+	            {name: 'Texas', abbreviation: 'TX'},
+	            {name: 'Utah', abbreviation: 'UT'},
+	            {name: 'Vermont', abbreviation: 'VT'},
+	            {name: 'Virginia', abbreviation: 'VA'},
+	            {name: 'Washington', abbreviation: 'WA'},
+	            {name: 'West Virginia', abbreviation: 'WV'},
+	            {name: 'Wisconsin', abbreviation: 'WI'},
+	            {name: 'Wyoming', abbreviation: 'WY'}
+	        ],
+	
+	        territories: [
+	            {name: 'American Samoa', abbreviation: 'AS'},
+	            {name: 'Federated States of Micronesia', abbreviation: 'FM'},
+	            {name: 'Guam', abbreviation: 'GU'},
+	            {name: 'Marshall Islands', abbreviation: 'MH'},
+	            {name: 'Northern Mariana Islands', abbreviation: 'MP'},
+	            {name: 'Puerto Rico', abbreviation: 'PR'},
+	            {name: 'Virgin Islands, U.S.', abbreviation: 'VI'}
+	        ],
+	
+	        armed_forces: [
+	            {name: 'Armed Forces Europe', abbreviation: 'AE'},
+	            {name: 'Armed Forces Pacific', abbreviation: 'AP'},
+	            {name: 'Armed Forces the Americas', abbreviation: 'AA'}
+	        ],
+	
+	        street_suffixes: [
+	            {name: 'Avenue', abbreviation: 'Ave'},
+	            {name: 'Boulevard', abbreviation: 'Blvd'},
+	            {name: 'Center', abbreviation: 'Ctr'},
+	            {name: 'Circle', abbreviation: 'Cir'},
+	            {name: 'Court', abbreviation: 'Ct'},
+	            {name: 'Drive', abbreviation: 'Dr'},
+	            {name: 'Extension', abbreviation: 'Ext'},
+	            {name: 'Glen', abbreviation: 'Gln'},
+	            {name: 'Grove', abbreviation: 'Grv'},
+	            {name: 'Heights', abbreviation: 'Hts'},
+	            {name: 'Highway', abbreviation: 'Hwy'},
+	            {name: 'Junction', abbreviation: 'Jct'},
+	            {name: 'Key', abbreviation: 'Key'},
+	            {name: 'Lane', abbreviation: 'Ln'},
+	            {name: 'Loop', abbreviation: 'Loop'},
+	            {name: 'Manor', abbreviation: 'Mnr'},
+	            {name: 'Mill', abbreviation: 'Mill'},
+	            {name: 'Park', abbreviation: 'Park'},
+	            {name: 'Parkway', abbreviation: 'Pkwy'},
+	            {name: 'Pass', abbreviation: 'Pass'},
+	            {name: 'Path', abbreviation: 'Path'},
+	            {name: 'Pike', abbreviation: 'Pike'},
+	            {name: 'Place', abbreviation: 'Pl'},
+	            {name: 'Plaza', abbreviation: 'Plz'},
+	            {name: 'Point', abbreviation: 'Pt'},
+	            {name: 'Ridge', abbreviation: 'Rdg'},
+	            {name: 'River', abbreviation: 'Riv'},
+	            {name: 'Road', abbreviation: 'Rd'},
+	            {name: 'Square', abbreviation: 'Sq'},
+	            {name: 'Street', abbreviation: 'St'},
+	            {name: 'Terrace', abbreviation: 'Ter'},
+	            {name: 'Trail', abbreviation: 'Trl'},
+	            {name: 'Turnpike', abbreviation: 'Tpke'},
+	            {name: 'View', abbreviation: 'Vw'},
+	            {name: 'Way', abbreviation: 'Way'}
+	        ],
+	
+	        months: [
+	            {name: 'January', short_name: 'Jan', numeric: '01', days: 31},
+	            // Not messing with leap years...
+	            {name: 'February', short_name: 'Feb', numeric: '02', days: 28},
+	            {name: 'March', short_name: 'Mar', numeric: '03', days: 31},
+	            {name: 'April', short_name: 'Apr', numeric: '04', days: 30},
+	            {name: 'May', short_name: 'May', numeric: '05', days: 31},
+	            {name: 'June', short_name: 'Jun', numeric: '06', days: 30},
+	            {name: 'July', short_name: 'Jul', numeric: '07', days: 31},
+	            {name: 'August', short_name: 'Aug', numeric: '08', days: 31},
+	            {name: 'September', short_name: 'Sep', numeric: '09', days: 30},
+	            {name: 'October', short_name: 'Oct', numeric: '10', days: 31},
+	            {name: 'November', short_name: 'Nov', numeric: '11', days: 30},
+	            {name: 'December', short_name: 'Dec', numeric: '12', days: 31}
+	        ],
+	
+	        // http://en.wikipedia.org/wiki/Bank_card_number#Issuer_identification_number_.28IIN.29
+	        cc_types: [
+	            {name: "American Express", short_name: 'amex', prefix: '34', length: 15},
+	            {name: "Bankcard", short_name: 'bankcard', prefix: '5610', length: 16},
+	            {name: "China UnionPay", short_name: 'chinaunion', prefix: '62', length: 16},
+	            {name: "Diners Club Carte Blanche", short_name: 'dccarte', prefix: '300', length: 14},
+	            {name: "Diners Club enRoute", short_name: 'dcenroute', prefix: '2014', length: 15},
+	            {name: "Diners Club International", short_name: 'dcintl', prefix: '36', length: 14},
+	            {name: "Diners Club United States & Canada", short_name: 'dcusc', prefix: '54', length: 16},
+	            {name: "Discover Card", short_name: 'discover', prefix: '6011', length: 16},
+	            {name: "InstaPayment", short_name: 'instapay', prefix: '637', length: 16},
+	            {name: "JCB", short_name: 'jcb', prefix: '3528', length: 16},
+	            {name: "Laser", short_name: 'laser', prefix: '6304', length: 16},
+	            {name: "Maestro", short_name: 'maestro', prefix: '5018', length: 16},
+	            {name: "Mastercard", short_name: 'mc', prefix: '51', length: 16},
+	            {name: "Solo", short_name: 'solo', prefix: '6334', length: 16},
+	            {name: "Switch", short_name: 'switch', prefix: '4903', length: 16},
+	            {name: "Visa", short_name: 'visa', prefix: '4', length: 16},
+	            {name: "Visa Electron", short_name: 'electron', prefix: '4026', length: 16}
+	        ],
+	
+	        //return all world currency by ISO 4217
+	        currency_types: [
+	            {'code' : 'AED', 'name' : 'United Arab Emirates Dirham'},
+	            {'code' : 'AFN', 'name' : 'Afghanistan Afghani'},
+	            {'code' : 'ALL', 'name' : 'Albania Lek'},
+	            {'code' : 'AMD', 'name' : 'Armenia Dram'},
+	            {'code' : 'ANG', 'name' : 'Netherlands Antilles Guilder'},
+	            {'code' : 'AOA', 'name' : 'Angola Kwanza'},
+	            {'code' : 'ARS', 'name' : 'Argentina Peso'},
+	            {'code' : 'AUD', 'name' : 'Australia Dollar'},
+	            {'code' : 'AWG', 'name' : 'Aruba Guilder'},
+	            {'code' : 'AZN', 'name' : 'Azerbaijan New Manat'},
+	            {'code' : 'BAM', 'name' : 'Bosnia and Herzegovina Convertible Marka'},
+	            {'code' : 'BBD', 'name' : 'Barbados Dollar'},
+	            {'code' : 'BDT', 'name' : 'Bangladesh Taka'},
+	            {'code' : 'BGN', 'name' : 'Bulgaria Lev'},
+	            {'code' : 'BHD', 'name' : 'Bahrain Dinar'},
+	            {'code' : 'BIF', 'name' : 'Burundi Franc'},
+	            {'code' : 'BMD', 'name' : 'Bermuda Dollar'},
+	            {'code' : 'BND', 'name' : 'Brunei Darussalam Dollar'},
+	            {'code' : 'BOB', 'name' : 'Bolivia Boliviano'},
+	            {'code' : 'BRL', 'name' : 'Brazil Real'},
+	            {'code' : 'BSD', 'name' : 'Bahamas Dollar'},
+	            {'code' : 'BTN', 'name' : 'Bhutan Ngultrum'},
+	            {'code' : 'BWP', 'name' : 'Botswana Pula'},
+	            {'code' : 'BYR', 'name' : 'Belarus Ruble'},
+	            {'code' : 'BZD', 'name' : 'Belize Dollar'},
+	            {'code' : 'CAD', 'name' : 'Canada Dollar'},
+	            {'code' : 'CDF', 'name' : 'Congo/Kinshasa Franc'},
+	            {'code' : 'CHF', 'name' : 'Switzerland Franc'},
+	            {'code' : 'CLP', 'name' : 'Chile Peso'},
+	            {'code' : 'CNY', 'name' : 'China Yuan Renminbi'},
+	            {'code' : 'COP', 'name' : 'Colombia Peso'},
+	            {'code' : 'CRC', 'name' : 'Costa Rica Colon'},
+	            {'code' : 'CUC', 'name' : 'Cuba Convertible Peso'},
+	            {'code' : 'CUP', 'name' : 'Cuba Peso'},
+	            {'code' : 'CVE', 'name' : 'Cape Verde Escudo'},
+	            {'code' : 'CZK', 'name' : 'Czech Republic Koruna'},
+	            {'code' : 'DJF', 'name' : 'Djibouti Franc'},
+	            {'code' : 'DKK', 'name' : 'Denmark Krone'},
+	            {'code' : 'DOP', 'name' : 'Dominican Republic Peso'},
+	            {'code' : 'DZD', 'name' : 'Algeria Dinar'},
+	            {'code' : 'EGP', 'name' : 'Egypt Pound'},
+	            {'code' : 'ERN', 'name' : 'Eritrea Nakfa'},
+	            {'code' : 'ETB', 'name' : 'Ethiopia Birr'},
+	            {'code' : 'EUR', 'name' : 'Euro Member Countries'},
+	            {'code' : 'FJD', 'name' : 'Fiji Dollar'},
+	            {'code' : 'FKP', 'name' : 'Falkland Islands (Malvinas) Pound'},
+	            {'code' : 'GBP', 'name' : 'United Kingdom Pound'},
+	            {'code' : 'GEL', 'name' : 'Georgia Lari'},
+	            {'code' : 'GGP', 'name' : 'Guernsey Pound'},
+	            {'code' : 'GHS', 'name' : 'Ghana Cedi'},
+	            {'code' : 'GIP', 'name' : 'Gibraltar Pound'},
+	            {'code' : 'GMD', 'name' : 'Gambia Dalasi'},
+	            {'code' : 'GNF', 'name' : 'Guinea Franc'},
+	            {'code' : 'GTQ', 'name' : 'Guatemala Quetzal'},
+	            {'code' : 'GYD', 'name' : 'Guyana Dollar'},
+	            {'code' : 'HKD', 'name' : 'Hong Kong Dollar'},
+	            {'code' : 'HNL', 'name' : 'Honduras Lempira'},
+	            {'code' : 'HRK', 'name' : 'Croatia Kuna'},
+	            {'code' : 'HTG', 'name' : 'Haiti Gourde'},
+	            {'code' : 'HUF', 'name' : 'Hungary Forint'},
+	            {'code' : 'IDR', 'name' : 'Indonesia Rupiah'},
+	            {'code' : 'ILS', 'name' : 'Israel Shekel'},
+	            {'code' : 'IMP', 'name' : 'Isle of Man Pound'},
+	            {'code' : 'INR', 'name' : 'India Rupee'},
+	            {'code' : 'IQD', 'name' : 'Iraq Dinar'},
+	            {'code' : 'IRR', 'name' : 'Iran Rial'},
+	            {'code' : 'ISK', 'name' : 'Iceland Krona'},
+	            {'code' : 'JEP', 'name' : 'Jersey Pound'},
+	            {'code' : 'JMD', 'name' : 'Jamaica Dollar'},
+	            {'code' : 'JOD', 'name' : 'Jordan Dinar'},
+	            {'code' : 'JPY', 'name' : 'Japan Yen'},
+	            {'code' : 'KES', 'name' : 'Kenya Shilling'},
+	            {'code' : 'KGS', 'name' : 'Kyrgyzstan Som'},
+	            {'code' : 'KHR', 'name' : 'Cambodia Riel'},
+	            {'code' : 'KMF', 'name' : 'Comoros Franc'},
+	            {'code' : 'KPW', 'name' : 'Korea (North) Won'},
+	            {'code' : 'KRW', 'name' : 'Korea (South) Won'},
+	            {'code' : 'KWD', 'name' : 'Kuwait Dinar'},
+	            {'code' : 'KYD', 'name' : 'Cayman Islands Dollar'},
+	            {'code' : 'KZT', 'name' : 'Kazakhstan Tenge'},
+	            {'code' : 'LAK', 'name' : 'Laos Kip'},
+	            {'code' : 'LBP', 'name' : 'Lebanon Pound'},
+	            {'code' : 'LKR', 'name' : 'Sri Lanka Rupee'},
+	            {'code' : 'LRD', 'name' : 'Liberia Dollar'},
+	            {'code' : 'LSL', 'name' : 'Lesotho Loti'},
+	            {'code' : 'LTL', 'name' : 'Lithuania Litas'},
+	            {'code' : 'LYD', 'name' : 'Libya Dinar'},
+	            {'code' : 'MAD', 'name' : 'Morocco Dirham'},
+	            {'code' : 'MDL', 'name' : 'Moldova Leu'},
+	            {'code' : 'MGA', 'name' : 'Madagascar Ariary'},
+	            {'code' : 'MKD', 'name' : 'Macedonia Denar'},
+	            {'code' : 'MMK', 'name' : 'Myanmar (Burma) Kyat'},
+	            {'code' : 'MNT', 'name' : 'Mongolia Tughrik'},
+	            {'code' : 'MOP', 'name' : 'Macau Pataca'},
+	            {'code' : 'MRO', 'name' : 'Mauritania Ouguiya'},
+	            {'code' : 'MUR', 'name' : 'Mauritius Rupee'},
+	            {'code' : 'MVR', 'name' : 'Maldives (Maldive Islands) Rufiyaa'},
+	            {'code' : 'MWK', 'name' : 'Malawi Kwacha'},
+	            {'code' : 'MXN', 'name' : 'Mexico Peso'},
+	            {'code' : 'MYR', 'name' : 'Malaysia Ringgit'},
+	            {'code' : 'MZN', 'name' : 'Mozambique Metical'},
+	            {'code' : 'NAD', 'name' : 'Namibia Dollar'},
+	            {'code' : 'NGN', 'name' : 'Nigeria Naira'},
+	            {'code' : 'NIO', 'name' : 'Nicaragua Cordoba'},
+	            {'code' : 'NOK', 'name' : 'Norway Krone'},
+	            {'code' : 'NPR', 'name' : 'Nepal Rupee'},
+	            {'code' : 'NZD', 'name' : 'New Zealand Dollar'},
+	            {'code' : 'OMR', 'name' : 'Oman Rial'},
+	            {'code' : 'PAB', 'name' : 'Panama Balboa'},
+	            {'code' : 'PEN', 'name' : 'Peru Nuevo Sol'},
+	            {'code' : 'PGK', 'name' : 'Papua New Guinea Kina'},
+	            {'code' : 'PHP', 'name' : 'Philippines Peso'},
+	            {'code' : 'PKR', 'name' : 'Pakistan Rupee'},
+	            {'code' : 'PLN', 'name' : 'Poland Zloty'},
+	            {'code' : 'PYG', 'name' : 'Paraguay Guarani'},
+	            {'code' : 'QAR', 'name' : 'Qatar Riyal'},
+	            {'code' : 'RON', 'name' : 'Romania New Leu'},
+	            {'code' : 'RSD', 'name' : 'Serbia Dinar'},
+	            {'code' : 'RUB', 'name' : 'Russia Ruble'},
+	            {'code' : 'RWF', 'name' : 'Rwanda Franc'},
+	            {'code' : 'SAR', 'name' : 'Saudi Arabia Riyal'},
+	            {'code' : 'SBD', 'name' : 'Solomon Islands Dollar'},
+	            {'code' : 'SCR', 'name' : 'Seychelles Rupee'},
+	            {'code' : 'SDG', 'name' : 'Sudan Pound'},
+	            {'code' : 'SEK', 'name' : 'Sweden Krona'},
+	            {'code' : 'SGD', 'name' : 'Singapore Dollar'},
+	            {'code' : 'SHP', 'name' : 'Saint Helena Pound'},
+	            {'code' : 'SLL', 'name' : 'Sierra Leone Leone'},
+	            {'code' : 'SOS', 'name' : 'Somalia Shilling'},
+	            {'code' : 'SPL', 'name' : 'Seborga Luigino'},
+	            {'code' : 'SRD', 'name' : 'Suriname Dollar'},
+	            {'code' : 'STD', 'name' : 'São Tomé and Príncipe Dobra'},
+	            {'code' : 'SVC', 'name' : 'El Salvador Colon'},
+	            {'code' : 'SYP', 'name' : 'Syria Pound'},
+	            {'code' : 'SZL', 'name' : 'Swaziland Lilangeni'},
+	            {'code' : 'THB', 'name' : 'Thailand Baht'},
+	            {'code' : 'TJS', 'name' : 'Tajikistan Somoni'},
+	            {'code' : 'TMT', 'name' : 'Turkmenistan Manat'},
+	            {'code' : 'TND', 'name' : 'Tunisia Dinar'},
+	            {'code' : 'TOP', 'name' : 'Tonga Pa\'anga'},
+	            {'code' : 'TRY', 'name' : 'Turkey Lira'},
+	            {'code' : 'TTD', 'name' : 'Trinidad and Tobago Dollar'},
+	            {'code' : 'TVD', 'name' : 'Tuvalu Dollar'},
+	            {'code' : 'TWD', 'name' : 'Taiwan New Dollar'},
+	            {'code' : 'TZS', 'name' : 'Tanzania Shilling'},
+	            {'code' : 'UAH', 'name' : 'Ukraine Hryvnia'},
+	            {'code' : 'UGX', 'name' : 'Uganda Shilling'},
+	            {'code' : 'USD', 'name' : 'United States Dollar'},
+	            {'code' : 'UYU', 'name' : 'Uruguay Peso'},
+	            {'code' : 'UZS', 'name' : 'Uzbekistan Som'},
+	            {'code' : 'VEF', 'name' : 'Venezuela Bolivar'},
+	            {'code' : 'VND', 'name' : 'Viet Nam Dong'},
+	            {'code' : 'VUV', 'name' : 'Vanuatu Vatu'},
+	            {'code' : 'WST', 'name' : 'Samoa Tala'},
+	            {'code' : 'XAF', 'name' : 'Communauté Financière Africaine (BEAC) CFA Franc BEAC'},
+	            {'code' : 'XCD', 'name' : 'East Caribbean Dollar'},
+	            {'code' : 'XDR', 'name' : 'International Monetary Fund (IMF) Special Drawing Rights'},
+	            {'code' : 'XOF', 'name' : 'Communauté Financière Africaine (BCEAO) Franc'},
+	            {'code' : 'XPF', 'name' : 'Comptoirs Français du Pacifique (CFP) Franc'},
+	            {'code' : 'YER', 'name' : 'Yemen Rial'},
+	            {'code' : 'ZAR', 'name' : 'South Africa Rand'},
+	            {'code' : 'ZMW', 'name' : 'Zambia Kwacha'},
+	            {'code' : 'ZWD', 'name' : 'Zimbabwe Dollar'}
+	        ]
+	    };
+	
+	    function copyObject(source, target) {
+	        var key;
+	
+	        target = target || (Array.isArray(source) ? [] : {});
+	
+	        for (key in source) {
+	            if (source.hasOwnProperty(key)) {
+	                target[key] = source[key] || target[key];
+	            }
+	        }
+	
+	        return target;
+	    }
+	
+	    /** Get the data based on key**/
+	    Chance.prototype.get = function (name) {
+	        return copyObject(data[name]);
+	    };
+	
+	    /** Set the data as key and data or the data map**/
+	    Chance.prototype.set = function (name, values) {
+	        if (typeof name === "string") {
+	            data[name] = values;
+	        } else {
+	            data = copyObject(name, data);
+	        }
+	    };
+	
+	
+	    Chance.prototype.mersenne_twister = function (seed) {
+	        return new MersenneTwister(seed);
+	    };
+	
+	    // -- End Miscellaneous --
+	
+	    Chance.prototype.VERSION = "0.5.9";
+	
+	    // Mersenne Twister from https://gist.github.com/banksean/300494
+	    var MersenneTwister = function (seed) {
+	        if (seed === undefined) {
+	            seed = new Date().getTime();
+	        }
+	        /* Period parameters */
+	        this.N = 624;
+	        this.M = 397;
+	        this.MATRIX_A = 0x9908b0df;   /* constant vector a */
+	        this.UPPER_MASK = 0x80000000; /* most significant w-r bits */
+	        this.LOWER_MASK = 0x7fffffff; /* least significant r bits */
+	
+	        this.mt = new Array(this.N); /* the array for the state vector */
+	        this.mti = this.N + 1; /* mti==N + 1 means mt[N] is not initialized */
+	
+	        this.init_genrand(seed);
+	    };
+	
+	    /* initializes mt[N] with a seed */
+	    MersenneTwister.prototype.init_genrand = function (s) {
+	        this.mt[0] = s >>> 0;
+	        for (this.mti = 1; this.mti < this.N; this.mti++) {
+	            s = this.mt[this.mti - 1] ^ (this.mt[this.mti - 1] >>> 30);
+	            this.mt[this.mti] = (((((s & 0xffff0000) >>> 16) * 1812433253) << 16) + (s & 0x0000ffff) * 1812433253) + this.mti;
+	            /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
+	            /* In the previous versions, MSBs of the seed affect   */
+	            /* only MSBs of the array mt[].                        */
+	            /* 2002/01/09 modified by Makoto Matsumoto             */
+	            this.mt[this.mti] >>>= 0;
+	            /* for >32 bit machines */
+	        }
+	    };
+	
+	    /* initialize by an array with array-length */
+	    /* init_key is the array for initializing keys */
+	    /* key_length is its length */
+	    /* slight change for C++, 2004/2/26 */
+	    MersenneTwister.prototype.init_by_array = function (init_key, key_length) {
+	        var i = 1, j = 0, k, s;
+	        this.init_genrand(19650218);
+	        k = (this.N > key_length ? this.N : key_length);
+	        for (; k; k--) {
+	            s = this.mt[i - 1] ^ (this.mt[i - 1] >>> 30);
+	            this.mt[i] = (this.mt[i] ^ (((((s & 0xffff0000) >>> 16) * 1664525) << 16) + ((s & 0x0000ffff) * 1664525))) + init_key[j] + j; /* non linear */
+	            this.mt[i] >>>= 0; /* for WORDSIZE > 32 machines */
+	            i++;
+	            j++;
+	            if (i >= this.N) { this.mt[0] = this.mt[this.N - 1]; i = 1; }
+	            if (j >= key_length) { j = 0; }
+	        }
+	        for (k = this.N - 1; k; k--) {
+	            s = this.mt[i - 1] ^ (this.mt[i - 1] >>> 30);
+	            this.mt[i] = (this.mt[i] ^ (((((s & 0xffff0000) >>> 16) * 1566083941) << 16) + (s & 0x0000ffff) * 1566083941)) - i; /* non linear */
+	            this.mt[i] >>>= 0; /* for WORDSIZE > 32 machines */
+	            i++;
+	            if (i >= this.N) { this.mt[0] = this.mt[this.N - 1]; i = 1; }
+	        }
+	
+	        this.mt[0] = 0x80000000; /* MSB is 1; assuring non-zero initial array */
+	    };
+	
+	    /* generates a random number on [0,0xffffffff]-interval */
+	    MersenneTwister.prototype.genrand_int32 = function () {
+	        var y;
+	        var mag01 = new Array(0x0, this.MATRIX_A);
+	        /* mag01[x] = x * MATRIX_A  for x=0,1 */
+	
+	        if (this.mti >= this.N) { /* generate N words at one time */
+	            var kk;
+	
+	            if (this.mti === this.N + 1) {   /* if init_genrand() has not been called, */
+	                this.init_genrand(5489); /* a default initial seed is used */
+	            }
+	            for (kk = 0; kk < this.N - this.M; kk++) {
+	                y = (this.mt[kk]&this.UPPER_MASK)|(this.mt[kk + 1]&this.LOWER_MASK);
+	                this.mt[kk] = this.mt[kk + this.M] ^ (y >>> 1) ^ mag01[y & 0x1];
+	            }
+	            for (;kk < this.N - 1; kk++) {
+	                y = (this.mt[kk]&this.UPPER_MASK)|(this.mt[kk + 1]&this.LOWER_MASK);
+	                this.mt[kk] = this.mt[kk + (this.M - this.N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+	            }
+	            y = (this.mt[this.N - 1]&this.UPPER_MASK)|(this.mt[0]&this.LOWER_MASK);
+	            this.mt[this.N - 1] = this.mt[this.M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
+	
+	            this.mti = 0;
+	        }
+	
+	        y = this.mt[this.mti++];
+	
+	        /* Tempering */
+	        y ^= (y >>> 11);
+	        y ^= (y << 7) & 0x9d2c5680;
+	        y ^= (y << 15) & 0xefc60000;
+	        y ^= (y >>> 18);
+	
+	        return y >>> 0;
+	    };
+	
+	    /* generates a random number on [0,0x7fffffff]-interval */
+	    MersenneTwister.prototype.genrand_int31 = function () {
+	        return (this.genrand_int32() >>> 1);
+	    };
+	
+	    /* generates a random number on [0,1]-real-interval */
+	    MersenneTwister.prototype.genrand_real1 = function () {
+	        return this.genrand_int32() * (1.0 / 4294967295.0);
+	        /* divided by 2^32-1 */
+	    };
+	
+	    /* generates a random number on [0,1)-real-interval */
+	    MersenneTwister.prototype.random = function () {
+	        return this.genrand_int32() * (1.0 / 4294967296.0);
+	        /* divided by 2^32 */
+	    };
+	
+	    /* generates a random number on (0,1)-real-interval */
+	    MersenneTwister.prototype.genrand_real3 = function () {
+	        return (this.genrand_int32() + 0.5) * (1.0 / 4294967296.0);
+	        /* divided by 2^32 */
+	    };
+	
+	    /* generates a random number on [0,1) with 53-bit resolution*/
+	    MersenneTwister.prototype.genrand_res53 = function () {
+	        var a = this.genrand_int32()>>>5, b = this.genrand_int32()>>>6;
+	        return (a * 67108864.0 + b) * (1.0 / 9007199254740992.0);
+	    };
+	
+	
+	    // CommonJS module
+	    if (true) {
+	        if (typeof module !== 'undefined' && module.exports) {
+	            exports = module.exports = Chance;
+	        }
+	        exports.Chance = Chance;
+	    }
+	
+	    // Register as an anonymous AMD module
+	    if (true) {
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	            return Chance;
+	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    }
+	
+	    // If there is a window object, that at least has a document property,
+	    // instantiate and define chance on the window
+	    if (typeof window === "object" && typeof window.document === "object") {
+	        window.Chance = Chance;
+	        window.chance = new Chance();
+	    }
+	})();
+
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/EventListener.js
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule EventListener
+	 * @typechecks
+	 */
+	
+	var emptyFunction = __webpack_require__(92);
+	
+	/**
+	 * Upstream version of event listener. Does not take into account specific
+	 * nature of platform.
+	 */
+	var EventListener = {
+	  /**
+	   * Listen to DOM events during the bubble phase.
+	   *
+	   * @param {DOMEventTarget} target DOM element to register listener on.
+	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+	   * @param {function} callback Callback function.
+	   * @return {object} Object with a `remove` method.
+	   */
+	  listen: function(target, eventType, callback) {
+	    if (target.addEventListener) {
+	      target.addEventListener(eventType, callback, false);
+	      return {
+	        remove: function() {
+	          target.removeEventListener(eventType, callback, false);
+	        }
+	      };
+	    } else if (target.attachEvent) {
+	      target.attachEvent('on' + eventType, callback);
+	      return {
+	        remove: function() {
+	          target.detachEvent('on' + eventType, callback);
+	        }
+	      };
+	    }
+	  },
+	
+	  /**
+	   * Listen to DOM events during the capture phase.
+	   *
+	   * @param {DOMEventTarget} target DOM element to register listener on.
+	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+	   * @param {function} callback Callback function.
+	   * @return {object} Object with a `remove` method.
+	   */
+	  capture: function(target, eventType, callback) {
+	    if (!target.addEventListener) {
+	      if (true) {
+	        console.error(
+	          'Attempted to listen to events during the capture phase on a ' +
+	          'browser that does not support the capture phase. Your application ' +
+	          'will not receive some events.'
+	        );
+	      }
+	      return {
+	        remove: emptyFunction
+	      };
+	    } else {
+	      target.addEventListener(eventType, callback, true);
+	      return {
+	        remove: function() {
+	          target.removeEventListener(eventType, callback, true);
+	        }
+	      };
+	    }
+	  },
+	
+	  registerDefault: function() {}
+	};
+	
+	module.exports = EventListener;
+
+
+/***/ },
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -16421,7 +16455,7 @@
 
 
 /***/ },
-/* 60 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16441,7 +16475,7 @@
 	
 	"use strict";
 	
-	var ExecutionEnvironment = __webpack_require__(96);
+	var ExecutionEnvironment = __webpack_require__(93);
 	
 	/**
 	 * EVENT_NAME_MAP is used to determine which event fired when a
@@ -16540,102 +16574,7 @@
 
 
 /***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/EventListener.js
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule EventListener
-	 * @typechecks
-	 */
-	
-	var emptyFunction = __webpack_require__(95);
-	
-	/**
-	 * Upstream version of event listener. Does not take into account specific
-	 * nature of platform.
-	 */
-	var EventListener = {
-	  /**
-	   * Listen to DOM events during the bubble phase.
-	   *
-	   * @param {DOMEventTarget} target DOM element to register listener on.
-	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-	   * @param {function} callback Callback function.
-	   * @return {object} Object with a `remove` method.
-	   */
-	  listen: function(target, eventType, callback) {
-	    if (target.addEventListener) {
-	      target.addEventListener(eventType, callback, false);
-	      return {
-	        remove: function() {
-	          target.removeEventListener(eventType, callback, false);
-	        }
-	      };
-	    } else if (target.attachEvent) {
-	      target.attachEvent('on' + eventType, callback);
-	      return {
-	        remove: function() {
-	          target.detachEvent('on' + eventType, callback);
-	        }
-	      };
-	    }
-	  },
-	
-	  /**
-	   * Listen to DOM events during the capture phase.
-	   *
-	   * @param {DOMEventTarget} target DOM element to register listener on.
-	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-	   * @param {function} callback Callback function.
-	   * @return {object} Object with a `remove` method.
-	   */
-	  capture: function(target, eventType, callback) {
-	    if (!target.addEventListener) {
-	      if (false) {
-	        console.error(
-	          'Attempted to listen to events during the capture phase on a ' +
-	          'browser that does not support the capture phase. Your application ' +
-	          'will not receive some events.'
-	        );
-	      }
-	      return {
-	        remove: emptyFunction
-	      };
-	    } else {
-	      target.addEventListener(eventType, callback, true);
-	      return {
-	        remove: function() {
-	          target.removeEventListener(eventType, callback, true);
-	        }
-	      };
-	    }
-	  },
-	
-	  registerDefault: function() {}
-	};
-	
-	module.exports = EventListener;
-
-
-/***/ },
-/* 62 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16655,10 +16594,10 @@
 	
 	"use strict";
 	
-	var ReactContext = __webpack_require__(97);
-	var ReactCurrentOwner = __webpack_require__(98);
+	var ReactContext = __webpack_require__(94);
+	var ReactCurrentOwner = __webpack_require__(95);
 	
-	var warning = __webpack_require__(65);
+	var warning = __webpack_require__(62);
 	
 	var RESERVED_PROPS = {
 	  key: true,
@@ -16686,7 +16625,7 @@
 	    },
 	
 	    set: function(value) {
-	      (false ? warning(
+	      (true ? warning(
 	        false,
 	        'Don\'t set the ' + key + ' property of the component. ' +
 	        'Mutate the existing props object instead.'
@@ -16745,7 +16684,7 @@
 	  // through the owner.
 	  this._context = context;
 	
-	  if (false) {
+	  if (true) {
 	    // The validation flag and props are currently mutative. We put them on
 	    // an external backing store so that we can freeze the whole object.
 	    // This can be replaced with a WeakMap once they are implemented in
@@ -16770,7 +16709,7 @@
 	  _isReactElement: true
 	};
 	
-	if (false) {
+	if (true) {
 	  defineMutationMembrane(ReactElement.prototype);
 	}
 	
@@ -16785,8 +16724,8 @@
 	
 	  if (config != null) {
 	    ref = config.ref === undefined ? null : config.ref;
-	    if (false) {
-	      ("production" !== process.env.NODE_ENV ? warning(
+	    if (true) {
+	      (true ? warning(
 	        config.key !== null,
 	        'createElement(...): Encountered component with a `key` of null. In ' +
 	        'a future version, this will be treated as equivalent to the string ' +
@@ -16857,7 +16796,7 @@
 	    newProps
 	  );
 	
-	  if (false) {
+	  if (true) {
 	    // If the key on the original is valid, then the clone is valid
 	    newElement._store.validated = oldElement._store.validated;
 	  }
@@ -16887,7 +16826,7 @@
 
 
 /***/ },
-/* 63 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16907,11 +16846,11 @@
 	
 	"use strict";
 	
-	var assign = __webpack_require__(99);
-	var emptyFunction = __webpack_require__(95);
-	var invariant = __webpack_require__(100);
-	var joinClasses = __webpack_require__(41);
-	var warning = __webpack_require__(65);
+	var assign = __webpack_require__(96);
+	var emptyFunction = __webpack_require__(92);
+	var invariant = __webpack_require__(97);
+	var joinClasses = __webpack_require__(39);
+	var warning = __webpack_require__(62);
 	
 	var didWarn = false;
 	
@@ -17024,7 +16963,7 @@
 	     * @protected
 	     */
 	    transferPropsTo: function(element) {
-	      (false ? invariant(
+	      (true ? invariant(
 	        element._owner === this,
 	        '%s: You can\'t call transferPropsTo() on a component that you ' +
 	        'don\'t own, %s. This usually means you are calling ' +
@@ -17035,10 +16974,10 @@
 	        element.type.displayName
 	      ) : invariant(element._owner === this));
 	
-	      if (false) {
+	      if (true) {
 	        if (!didWarn) {
 	          didWarn = true;
-	          ("production" !== process.env.NODE_ENV ? warning(
+	          (true ? warning(
 	            false,
 	            'transferPropsTo is deprecated. ' +
 	            'See http://fb.me/react-transferpropsto for more information.'
@@ -17060,7 +16999,7 @@
 
 
 /***/ },
-/* 64 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17104,7 +17043,7 @@
 
 
 /***/ },
-/* 65 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17124,7 +17063,7 @@
 	
 	"use strict";
 	
-	var emptyFunction = __webpack_require__(95);
+	var emptyFunction = __webpack_require__(92);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -17135,7 +17074,7 @@
 	
 	var warning = emptyFunction;
 	
-	if (false) {
+	if (true) {
 	  warning = function(condition, format ) {var args=Array.prototype.slice.call(arguments,2);
 	    if (format === undefined) {
 	      throw new Error(
@@ -17155,932 +17094,7 @@
 
 
 /***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Btn = __webpack_require__(80);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    label:          React.PropTypes.string.isRequired,
-	    labelId:        React.PropTypes.string,
-	
-	    upDisabled:     React.PropTypes.bool.isRequired,
-	    prevDisabled:   React.PropTypes.bool.isRequired,
-	    nextDisabled:   React.PropTypes.bool.isRequired,
-	    onViewChange:   React.PropTypes.func.isRequired,
-	    onMoveLeft:     React.PropTypes.func.isRequired,
-	    onMoveRight:    React.PropTypes.func.isRequired,
-	
-	    messages:       React.PropTypes.shape({
-	      moveBack:     React.PropTypes.string,
-	      moveForward:  React.PropTypes.string
-	    })
-	  },
-	
-	  mixins: [
-	    __webpack_require__(89),
-	    __webpack_require__(101)
-	  ],
-	
-	  getDefaultProps: function(){
-	    return {
-	      messages: {
-	        moveBack:     'navigate back',
-	        moveForward:  'navigate forward',
-	      }
-	    }
-	  },
-	
-	  render: function(){
-	    var rtl = this.isRtl();
-	
-	    return (
-	      React.createElement("div", {className: "rw-header"}, 
-	        React.createElement(Btn, {className: "rw-btn-left", 
-	          onClick: this.props.onMoveLeft, 
-	          disabled: this.props.prevDisabled, 
-	          'aria-disabled': this.props.prevDisabled, 
-	          title: this.props.moveBack}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-view", 
-	          id: this.props.labelId, 
-	          onClick: this.props.onViewChange, 
-	          disabled: this.props.upDisabled, 
-	          'aria-disabled': this.props.upDisabled}, 
-	           this.props.label
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-right", 
-	          onClick: this.props.onMoveRight, 
-	          disabled: this.props.nextDisabled, 
-	          'aria-disabled': this.props.nextDisabled, 
-	          title: this.props.moveForward}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
-	        )
-	      )
-	    )
-	  }
-	})
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(12)
-	  , dates = __webpack_require__(72)
-	  , directions = __webpack_require__(73).directions
-	  , _   = __webpack_require__(16)
-	  , Btn = __webpack_require__(80);
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'MonthView',
-	
-	  mixins: [
-	    __webpack_require__(88),
-	    __webpack_require__(101),
-	    __webpack_require__(102)('month', 'day'),
-	  ],
-	
-	  propTypes: {
-	    culture:          React.PropTypes.array,
-	    value:            React.PropTypes.instanceOf(Date),
-	    selectedDate:     React.PropTypes.instanceOf(Date),
-	    min:              React.PropTypes.instanceOf(Date),
-	    max:              React.PropTypes.instanceOf(Date),
-	
-	    format:           React.PropTypes.string,
-	
-	    onChange:         React.PropTypes.func.isRequired, //value is chosen
-	    onMoveLeft:       React.PropTypes.func,
-	    onMoveRight:      React.PropTypes.func
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , month = dates.visibleDays(this.props.value)
-	      , rows  = _.chunk(month, 7 );
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {role: "grid", 
-	        tabIndex: this.props.disabled ? '-1' : "0", 
-	        className: "rw-calendar-grid", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("thead", null, 
-	          React.createElement("tr", null,  this._headers() )
-	        ), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	    
-	    return (
-	      React.createElement("tr", {key: 'week_' + i}, 
-	       row.map( function(day, idx)  {
-	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
-	          , selected = dates.eq(day, this.props.selectedDate, 'day');
-	
-	        return !dates.inRange(day, this.props.min, this.props.max)
-	            ? React.createElement("td", {key: 'day_' + idx, className: "rw-empty-cell"}, " ")
-	            : (React.createElement("td", {key: 'day_' + idx}, 
-	                React.createElement(Btn, {
-	                  tabIndex: "-1", 
-	                  onClick: this.props.onChange.bind(null, day), 
-	                  'aria-selected': selected, 
-	                  'aria-disabled': this.props.disabled, 
-	                  disabled: this.props.disabled, 
-	                  className: cx({
-	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
-	                    'rw-state-focus':    focused,
-	                    'rw-state-selected': selected,
-	                  }), 
-	                  id: focused ? id : undefined}, 
-	                  dates.format(day, 'dd')
-	                )
-	              ))
-	      }.bind(this))
-	      )
-	    )
-	  },
-	
-	
-	  _headers: function(format){
-	    var days = dates.shortDaysOfWeek(format);
-	
-	    return days.map( function(day, i)  
-	      {return React.createElement("th", {key: "header_" + i}, day);})
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'day', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'day',min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -1, 'week', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 1, 'week', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	
-	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
-	}
-
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(12)
-	  , dates      = __webpack_require__(72)
-	  , directions = __webpack_require__(73).directions
-	  , Btn        = __webpack_require__(80)
-	  , _          = __webpack_require__(16)
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'YearView',
-	
-	  mixins: [
-	    __webpack_require__(88),
-	    __webpack_require__(101),
-	    __webpack_require__(102)('year', 'month')
-	  ],
-	
-	  propTypes: {
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	
-	  render: function(){
-	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , months = dates.monthsInYear(dates.year(this.props.value))
-	      , rows = _.chunk(months, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},   props , 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        ref: "table", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item');
-	    
-	    return (
-	      React.createElement("tr", {key: i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
-	          , selected = dates.eq(date, this.props.value,  'month');
-	
-	        return dates.inRange(date, this.props.min, this.props.max, 'month')
-	          ? (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id: focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected
-	                })}, 
-	                 dates.format(date, dates.formats.MONTH_NAME_ABRV) 
-	              )
-	            ))
-	          : React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	      }.bind(this))
-	    ))
-	  },
-	
-	  focus: function(){
-	    this.refs.table.getDOMNode().focus();
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'month', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'month', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'month', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'month', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
-	}
-
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _ = __webpack_require__(16)
-	  , cx    = __webpack_require__(12)
-	  , dates = __webpack_require__(72)
-	  , directions = __webpack_require__(73).directions
-	  , Btn = __webpack_require__(80); 
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'DecadeView',
-	
-	  mixins: [
-	    __webpack_require__(88),
-	    __webpack_require__(89),
-	    __webpack_require__(101),
-	    __webpack_require__(102)('decade', 'year')
-	  ],
-	
-	  propTypes: {
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , years = getDecadeYears(this.props.value)
-	      , rows  = _.chunk(years, 4)
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	
-	        React.createElement("tbody", null, 
-	          rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
-	          , selected = dates.eq(date, this.props.value,  'year');
-	
-	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':      !inDecade(date, this.props.value),
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected,
-	                })}, 
-	                 dates.format(date, dates.formats.YEAR) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'year', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'year', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'year', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'year', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function inDecade(date, start){
-	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
-	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
-	}
-	
-	function getDecadeYears(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
-	
-	  return days.map( 
-	    function(i)  {return date = dates.add(date, 1, 'year');})
-	}
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
-	}
-
-
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(12)
-	  , dates      = __webpack_require__(72)
-	  , directions = __webpack_require__(73).directions
-	  , Btn        = __webpack_require__(80)
-	  , _          = __webpack_require__(16); //omit
-	
-	var opposite = {
-	  LEFT:  directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CenturyView',
-	
-	  mixins: [
-	    __webpack_require__(88),
-	    __webpack_require__(89),
-	    __webpack_require__(101),
-	    __webpack_require__(102)('century', 'decade')
-	  ],
-	
-	  propTypes: {
-	    value:         React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
-	      , years = getCenturyDecades(this.props.value)
-	      , rows  = _.chunk(years, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
-	          , selected = dates.eq(date, this.props.value,  'decade')
-	          , d        = inRangeDate(date, this.props.min, this.props.max);
-	
-	        return !inRange(date, this.props.min, this.props.max)
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
-	                tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':       !inCentury(date, this.props.value),
-	                  'rw-state-focus':     focused,
-	                  'rw-state-selected':  selected,
-	                 })}, 
-	                 label(date) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'decade', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'decade', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'decade', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'decade', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function label(date){
-	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
-	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
-	}
-	
-	function inRangeDate(decade, min, max){
-	  return dates.max( dates.min(decade, max), min)
-	}
-	
-	function inRange(decade, min, max){
-	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
-	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
-	}
-	
-	function inCentury(date, start){
-	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
-	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
-	}
-	
-	function getCenturyDecades(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
-	
-	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
-	}
-	
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
-	}
-
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(16) //invert, transform
-	  , React = __webpack_require__(1)
-	  , compat = __webpack_require__(103)
-	
-	
-	function compatPropType(handler, propType) {
-	
-	  return compat.propType(function(props, propName, componentName, location){
-	    if(props[propName] !== undefined){
-	      if ( !props[handler] )
-	        return new Error(
-	            'ReactWidgets: you have provided a `' + propName + '` prop to ' 
-	          + '`' + componentName + '` without an `' + handler + '` handler. This will render a read-only field. ' 
-	          + 'If the field should be mutable use `' + defaultKey(propName) + '`. Otherwise, set `' + handler + '`')
-	
-	      return propType && propType(props, propName, componentName, location)
-	    }
-	  })
-	}
-	
-	module.exports = {
-	
-	  createControlledClass: function(Component, controlledValues, publicApi) {
-	    // var publicMethods 
-	    //       = _.transform(publicApi || [], function(obj, method) {
-	    //           obj[method] = function (...args){ 
-	    //             return this.refs[this._innerRef][method](args) 
-	    //           }
-	    //         }, {})
-	
-	    var types = _.transform(controlledValues, function(obj, handler, prop){
-	          var type = Component.type.propTypes[prop];
-	
-	          obj[prop] = compatPropType(handler, type)
-	          obj[defaultKey(prop)] = type
-	        }, {});
-	
-	    return React.createClass({
-	
-	      displayName: Component.displayName,
-	
-	      propTypes: types,
-	
-	      getInitialState: function(){
-	        var props = this.props
-	          , keys  = Object.keys(controlledValues);
-	
-	        return _.transform(keys, function(state, key){
-	          state[key] = props[defaultKey(key)]
-	        }, {})
-	      },
-	
-	      shouldComponentUpdate: function() {
-	        //let the setState trigger the update
-	        return !this._notifying || !this._notifying.length;
-	      },
-	
-	      render: function(){
-	        var props, handles;
-	
-	        props = _.transform(controlledValues, function(obj, handle, prop)  {
-	          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
-	        }.bind(this), {})
-	        
-	        handles = _.transform(controlledValues, function(obj, handle, prop)  {
-	          obj[handle] = setAndNotify.bind(this, prop)
-	        }.bind(this), {})
-	
-	        props    = _.merge(this.props, props, handles)
-	        //this._innerRef = props.ref = props.ref || 'component'
-	
-	        return React.createElement(Component, props, this.props.children);
-	      }
-	    })
-	
-	    function setAndNotify(prop, value){
-	      /*jshint validthis:true */
-	      var handler    = controlledValues[prop]
-	        , controlled = handler && isProp(this.props, prop)
-	        , st = {}
-	        , args;
-	
-	      if ( !this._notifying ) this._notifying = [];
-	
-	      if( this.props[handler] ) {
-	        args = [].slice.call(arguments, 1)
-	        this._notifying.push(true)
-	        this.props[handler].apply(this, args)
-	        this._notifying.pop()
-	      }
-	        
-	      st[prop] = value
-	      this.setState(st)
-	
-	      return !controlled
-	    }
-	
-	    function isProp(props, prop){
-	      return props[prop] !== undefined;
-	    }
-	  }
-	}
-	
-	
-	// function invert(controlledValues){
-	//   return _.transform(controlledValues, (val, key ) => ,)
-	// }
-	
-	function defaultKey(key){
-	  return 'default' + key.charAt(0).toUpperCase() + key.substr(1)
-	}
-
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var dateMath = __webpack_require__(40)
-	  , globalize = __webpack_require__(106)
-	  , _ = __webpack_require__(16); //extend
-	
-	var dates = module.exports = _.extend(dateMath, {
-	  // wrapper methods for isolating globalize use throughout the lib
-	  // looking forward towards the 1.0 release
-	  culture: function(){
-	    return globalize.culture()
-	  },
-	
-	  startOfWeek: function(date){
-	    var culture = globalize.culture()
-	
-	    if (!culture || !culture.calendar)
-	      return 0
-	
-	    return culture.calendar.firstDay || 0
-	  },
-	
-	  parse: function(date, format, culture){
-	    return globalize.parseDate(date, format, culture)
-	  },
-	
-	  format: function(date, format, culture){
-	    return globalize.format(date, format, culture)
-	  },
-	  //-------------------------------------
-	
-	  shortDaysOfWeek: function (){
-	    var culture = dates.culture()
-	      , start = dates.startOfWeek()
-	      , days, front;
-	
-	    if (culture && culture.calendar){
-	      days = culture.calendar.days.namesShort.slice()
-	
-	      if(start === 0 ) 
-	        return days
-	      
-	      front = days.splice(0, start)
-	      days  = days.concat(front)
-	      return days
-	    }
-	  },
-	
-	  daysOfWeek: function(date, format){
-	    var range = [0,1,2,3,4,5,6]
-	    if (arguments.length === 1){
-	      format = date
-	      date = new Date()
-	    }
-	
-	    format = format || 'do'
-	
-	    return range.map(function(i)  {return dates.format(dates.weekday(date, i), format);} )
-	  },
-	
-	  months: function(date, format){
-	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	
-	    if (arguments.length === 1){
-	      format = date
-	      date = new Date()
-	    }
-	    format = format || dates.formats.DAY_NAME_ABRV
-	
-	    return months.map( function(i)  {return dates.format(dates.month(date, i), format);})
-	  },
-	
-	  monthsInYear: function(year){
-	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	      , date   = new Date(year, 0, 1)
-	
-	    return  months.map( function(i)  {return dates.month(date, i);})
-	  },
-	
-	  firstOfDecade: function(date){
-	    var decade = dates.year(date) % 10
-	
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfDecade: function(date){
-	    return dates.add(dates.firstOfDecade(date), 9, 'year')
-	  },
-	
-	  firstOfCentury: function(date){
-	    var decade = dates.year(date) % 100
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfCentury: function(date){
-	    return dates.add(dates.firstOfCentury(date), 99, 'year')
-	  },
-	
-	  firstVisibleDay: function(date){
-	    var firstOfMonth = dates.startOf(date, 'month')
-	    return dates.startOf(firstOfMonth, 'week');
-	  },
-	
-	  lastVisibleDay: function(date){
-	    var endOfMonth = dates.endOf(date, 'month')
-	    return dates.endOf(endOfMonth, 'week');
-	  },
-	
-	  visibleDays: function(date){
-	    var current = dates.firstVisibleDay(date)
-	      , last = dates.lastVisibleDay(date)
-	      , days = [];
-	
-	    while( dates.lte(current, last, 'day') ) {
-	      days.push(current)
-	      current = dates.add(current, 1, 'day')
-	    }
-	
-	    return days
-	  },
-	
-	  merge: function(date, time){
-	    if( time == null && date == null)
-	      return null
-	
-	    if( time == null) time = new Date()
-	    if( date == null) date = new Date()
-	
-	    date = dates.startOf(date, 'day')
-	    date = dates.hours(date,        dates.hours(time))
-	    date = dates.minutes(date,      dates.minutes(time))
-	    date = dates.seconds(date,      dates.seconds(time))
-	    return dates.milliseconds(date, dates.milliseconds(time))
-	  },
-	
-	  sameMonth: function(dateA, dateB){
-	    return dates.eq(dateA, dateB, 'month')
-	  },
-	
-	  today: function() {
-	    return this.startOf(new Date(), 'day')
-	  },
-	
-	  yesterday: function() {
-	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
-	  },
-	
-	  tomorrow: function() {
-	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
-	  },
-	
-	  formats: {
-	    DAY_OF_MONTH:    'dd',
-	    DAY_NAME_SHORT:  null,
-	    MONTH_NAME_ABRV: 'MMM',
-	    MONTH_YEAR:      'MMMM yyyy',
-	    YEAR:            'yyyy'
-	  }
-	
-	})
-
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(16); //object
-	
-	var views = {
-	    MONTH:   'month',
-	    YEAR:    'year',
-	    DECADE:  'decade',
-	    CENTURY: 'century'
-	  }
-	
-	module.exports = {
-	
-	  directions: {
-	    LEFT:  'LEFT',
-	    RIGHT: 'RIGHT',
-	    UP:    'UP',
-	    DOWN:  'DOWN'
-	  },
-	
-	  datePopups: {
-	    TIME:     'time',
-	    CALENDAR: 'calendar'
-	  },
-	
-	  calendarViews: views,
-	
-	  calendarViewHierarchy: _.object([
-	    [views.MONTH,   views.YEAR],
-	    [views.YEAR,    views.DECADE],
-	    [views.DECADE,  views.CENTURY]
-	  ]),
-	
-	  calendarViewUnits: _.object([
-	    [views.MONTH,   views.DAY],
-	    [views.YEAR,    views.MONTH],
-	    [views.DECADE,  views.YEAR],
-	    [views.CENTURY, views.DECADE],
-	  ])
-	}
-
-
-/***/ },
-/* 74 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18337,7 +17351,7 @@
 
 
 /***/ },
-/* 75 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18353,7 +17367,124 @@
 	}
 
 /***/ },
-/* 76 */
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _ = __webpack_require__(13) //invert, transform
+	  , React = __webpack_require__(1)
+	  , compat = __webpack_require__(98)
+	
+	
+	function compatPropType(handler, propType) {
+	
+	  return compat.propType(function(props, propName, componentName, location){
+	    if(props[propName] !== undefined){
+	      if ( !props[handler] )
+	        return new Error(
+	            'ReactWidgets: you have provided a `' + propName + '` prop to ' 
+	          + '`' + componentName + '` without an `' + handler + '` handler. This will render a read-only field. ' 
+	          + 'If the field should be mutable use `' + defaultKey(propName) + '`. Otherwise, set `' + handler + '`')
+	
+	      return propType && propType(props, propName, componentName, location)
+	    }
+	  })
+	}
+	
+	module.exports = {
+	
+	  createControlledClass: function(Component, controlledValues, publicApi) {
+	    // var publicMethods 
+	    //       = _.transform(publicApi || [], function(obj, method) {
+	    //           obj[method] = function (...args){ 
+	    //             return this.refs[this._innerRef][method](args) 
+	    //           }
+	    //         }, {})
+	
+	    var types = _.transform(controlledValues, function(obj, handler, prop){
+	          var type = Component.type.propTypes[prop];
+	
+	          obj[prop] = compatPropType(handler, type)
+	          obj[defaultKey(prop)] = type
+	        }, {});
+	
+	    return React.createClass({
+	
+	      displayName: Component.displayName,
+	
+	      propTypes: types,
+	
+	      getInitialState: function(){
+	        var props = this.props
+	          , keys  = Object.keys(controlledValues);
+	
+	        return _.transform(keys, function(state, key){
+	          state[key] = props[defaultKey(key)]
+	        }, {})
+	      },
+	
+	      shouldComponentUpdate: function() {
+	        //let the setState trigger the update
+	        return !this._notifying || !this._notifying.length;
+	      },
+	
+	      render: function(){
+	        var props, handles;
+	
+	        props = _.transform(controlledValues, function(obj, handle, prop)  {
+	          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
+	        }.bind(this), {})
+	        
+	        handles = _.transform(controlledValues, function(obj, handle, prop)  {
+	          obj[handle] = setAndNotify.bind(this, prop)
+	        }.bind(this), {})
+	
+	        props    = _.merge(this.props, props, handles)
+	        //this._innerRef = props.ref = props.ref || 'component'
+	
+	        return React.createElement(Component, props, this.props.children);
+	      }
+	    })
+	
+	    function setAndNotify(prop, value){
+	      /*jshint validthis:true */
+	      var handler    = controlledValues[prop]
+	        , controlled = handler && isProp(this.props, prop)
+	        , st = {}
+	        , args;
+	
+	      if ( !this._notifying ) this._notifying = [];
+	
+	      if( this.props[handler] ) {
+	        args = [].slice.call(arguments, 1)
+	        this._notifying.push(true)
+	        this.props[handler].apply(this, args)
+	        this._notifying.pop()
+	      }
+	        
+	      st[prop] = value
+	      this.setState(st)
+	
+	      return !controlled
+	    }
+	
+	    function isProp(props, prop){
+	      return props[prop] !== undefined;
+	    }
+	  }
+	}
+	
+	
+	// function invert(controlledValues){
+	//   return _.transform(controlledValues, (val, key ) => ,)
+	// }
+	
+	function defaultKey(key){
+	  return 'default' + key.charAt(0).toUpperCase() + key.substr(1)
+	}
+
+/***/ },
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18401,13 +17532,13 @@
 	}
 
 /***/ },
-/* 77 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React  = __webpack_require__(1)
 	  //, cloneWithProps = require('./util/transferProps').cloneWithProps
-	  , $ = __webpack_require__(74);
+	  , $ = __webpack_require__(63);
 	
 	
 	var PopupContent = React.createClass({displayName: 'PopupContent',
@@ -18541,14 +17672,14 @@
 	}
 
 /***/ },
-/* 78 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(76)
+	  , CustomPropTypes  = __webpack_require__(66)
 	  , cx = __webpack_require__(12)
-	  , _  = __webpack_require__(16);
+	  , _  = __webpack_require__(13);
 	
 	
 	module.exports = React.createClass({
@@ -18556,7 +17687,7 @@
 	  displayName: 'List',
 	
 	  mixins: [ 
-	    __webpack_require__(92)
+	    __webpack_require__(88)
 	  ],
 	
 	  propTypes: {
@@ -18663,7 +17794,7 @@
 	})
 
 /***/ },
-/* 79 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18695,7 +17826,7 @@
 	module.exports = common
 
 /***/ },
-/* 80 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18715,12 +17846,12 @@
 	})
 
 /***/ },
-/* 81 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , caretPos = __webpack_require__(104);
+	  , caretPos = __webpack_require__(99);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -18792,15 +17923,823 @@
 
 
 /***/ },
-/* 82 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(72)
-	  , List = __webpack_require__(78)
-	  , CustomPropTypes  = __webpack_require__(76)
-	  , _ = __webpack_require__(16) // omit
+	  , Btn = __webpack_require__(70);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    label:          React.PropTypes.string.isRequired,
+	    labelId:        React.PropTypes.string,
+	
+	    upDisabled:     React.PropTypes.bool.isRequired,
+	    prevDisabled:   React.PropTypes.bool.isRequired,
+	    nextDisabled:   React.PropTypes.bool.isRequired,
+	    onViewChange:   React.PropTypes.func.isRequired,
+	    onMoveLeft:     React.PropTypes.func.isRequired,
+	    onMoveRight:    React.PropTypes.func.isRequired,
+	
+	    messages:       React.PropTypes.shape({
+	      moveBack:     React.PropTypes.string,
+	      moveForward:  React.PropTypes.string
+	    })
+	  },
+	
+	  mixins: [
+	    __webpack_require__(86),
+	    __webpack_require__(100)
+	  ],
+	
+	  getDefaultProps: function(){
+	    return {
+	      messages: {
+	        moveBack:     'navigate back',
+	        moveForward:  'navigate forward',
+	      }
+	    }
+	  },
+	
+	  render: function(){
+	    var rtl = this.isRtl();
+	
+	    return (
+	      React.createElement("div", {className: "rw-header"}, 
+	        React.createElement(Btn, {className: "rw-btn-left", 
+	          onClick: this.props.onMoveLeft, 
+	          disabled: this.props.prevDisabled, 
+	          'aria-disabled': this.props.prevDisabled, 
+	          title: this.props.moveBack}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-view", 
+	          id: this.props.labelId, 
+	          onClick: this.props.onViewChange, 
+	          disabled: this.props.upDisabled, 
+	          'aria-disabled': this.props.upDisabled}, 
+	           this.props.label
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-right", 
+	          onClick: this.props.onMoveRight, 
+	          disabled: this.props.nextDisabled, 
+	          'aria-disabled': this.props.nextDisabled, 
+	          title: this.props.moveForward}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
+	        )
+	      )
+	    )
+	  }
+	})
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(12)
+	  , dates = __webpack_require__(77)
+	  , directions = __webpack_require__(78).directions
+	  , _   = __webpack_require__(13)
+	  , Btn = __webpack_require__(70);
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'MonthView',
+	
+	  mixins: [
+	    __webpack_require__(85),
+	    __webpack_require__(100),
+	    __webpack_require__(101)('month', 'day'),
+	  ],
+	
+	  propTypes: {
+	    culture:          React.PropTypes.array,
+	    value:            React.PropTypes.instanceOf(Date),
+	    selectedDate:     React.PropTypes.instanceOf(Date),
+	    min:              React.PropTypes.instanceOf(Date),
+	    max:              React.PropTypes.instanceOf(Date),
+	
+	    format:           React.PropTypes.string,
+	
+	    onChange:         React.PropTypes.func.isRequired, //value is chosen
+	    onMoveLeft:       React.PropTypes.func,
+	    onMoveRight:      React.PropTypes.func
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , month = dates.visibleDays(this.props.value)
+	      , rows  = _.chunk(month, 7 );
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {role: "grid", 
+	        tabIndex: this.props.disabled ? '-1' : "0", 
+	        className: "rw-calendar-grid", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("thead", null, 
+	          React.createElement("tr", null,  this._headers() )
+	        ), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	    
+	    return (
+	      React.createElement("tr", {key: 'week_' + i}, 
+	       row.map( function(day, idx)  {
+	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
+	          , selected = dates.eq(day, this.props.selectedDate, 'day');
+	
+	        return !dates.inRange(day, this.props.min, this.props.max)
+	            ? React.createElement("td", {key: 'day_' + idx, className: "rw-empty-cell"}, " ")
+	            : (React.createElement("td", {key: 'day_' + idx}, 
+	                React.createElement(Btn, {
+	                  tabIndex: "-1", 
+	                  onClick: this.props.onChange.bind(null, day), 
+	                  'aria-selected': selected, 
+	                  'aria-disabled': this.props.disabled, 
+	                  disabled: this.props.disabled, 
+	                  className: cx({
+	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
+	                    'rw-state-focus':    focused,
+	                    'rw-state-selected': selected,
+	                  }), 
+	                  id: focused ? id : undefined}, 
+	                  dates.format(day, 'dd')
+	                )
+	              ))
+	      }.bind(this))
+	      )
+	    )
+	  },
+	
+	
+	  _headers: function(format){
+	    var days = dates.shortDaysOfWeek(format);
+	
+	    return days.map( function(day, i)  
+	      {return React.createElement("th", {key: "header_" + i}, day);})
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'day', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'day',min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -1, 'week', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 1, 'week', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	
+	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
+	}
+
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(12)
+	  , dates      = __webpack_require__(77)
+	  , directions = __webpack_require__(78).directions
+	  , Btn        = __webpack_require__(70)
+	  , _          = __webpack_require__(13)
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'YearView',
+	
+	  mixins: [
+	    __webpack_require__(85),
+	    __webpack_require__(100),
+	    __webpack_require__(101)('year', 'month')
+	  ],
+	
+	  propTypes: {
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	
+	  render: function(){
+	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , months = dates.monthsInYear(dates.year(this.props.value))
+	      , rows = _.chunk(months, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},   props , 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        ref: "table", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item');
+	    
+	    return (
+	      React.createElement("tr", {key: i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
+	          , selected = dates.eq(date, this.props.value,  'month');
+	
+	        return dates.inRange(date, this.props.min, this.props.max, 'month')
+	          ? (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id: focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected
+	                })}, 
+	                 dates.format(date, dates.formats.MONTH_NAME_ABRV) 
+	              )
+	            ))
+	          : React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	      }.bind(this))
+	    ))
+	  },
+	
+	  focus: function(){
+	    this.refs.table.getDOMNode().focus();
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'month', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'month', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'month', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'month', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
+	}
+
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _ = __webpack_require__(13)
+	  , cx    = __webpack_require__(12)
+	  , dates = __webpack_require__(77)
+	  , directions = __webpack_require__(78).directions
+	  , Btn = __webpack_require__(70); 
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'DecadeView',
+	
+	  mixins: [
+	    __webpack_require__(85),
+	    __webpack_require__(86),
+	    __webpack_require__(100),
+	    __webpack_require__(101)('decade', 'year')
+	  ],
+	
+	  propTypes: {
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , years = getDecadeYears(this.props.value)
+	      , rows  = _.chunk(years, 4)
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	
+	        React.createElement("tbody", null, 
+	          rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
+	          , selected = dates.eq(date, this.props.value,  'year');
+	
+	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
+	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':      !inDecade(date, this.props.value),
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected,
+	                })}, 
+	                 dates.format(date, dates.formats.YEAR) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'year', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'year', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'year', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'year', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function inDecade(date, start){
+	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
+	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
+	}
+	
+	function getDecadeYears(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
+	
+	  return days.map( 
+	    function(i)  {return date = dates.add(date, 1, 'year');})
+	}
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
+	}
+
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(12)
+	  , dates      = __webpack_require__(77)
+	  , directions = __webpack_require__(78).directions
+	  , Btn        = __webpack_require__(70)
+	  , _          = __webpack_require__(13); //omit
+	
+	var opposite = {
+	  LEFT:  directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'CenturyView',
+	
+	  mixins: [
+	    __webpack_require__(85),
+	    __webpack_require__(86),
+	    __webpack_require__(100),
+	    __webpack_require__(101)('century', 'decade')
+	  ],
+	
+	  propTypes: {
+	    value:         React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
+	      , years = getCenturyDecades(this.props.value)
+	      , rows  = _.chunk(years, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
+	          , selected = dates.eq(date, this.props.value,  'decade')
+	          , d        = inRangeDate(date, this.props.min, this.props.max);
+	
+	        return !inRange(date, this.props.min, this.props.max)
+	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
+	                tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':       !inCentury(date, this.props.value),
+	                  'rw-state-focus':     focused,
+	                  'rw-state-selected':  selected,
+	                 })}, 
+	                 label(date) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'decade', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'decade', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'decade', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'decade', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function label(date){
+	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
+	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
+	}
+	
+	function inRangeDate(decade, min, max){
+	  return dates.max( dates.min(decade, max), min)
+	}
+	
+	function inRange(decade, min, max){
+	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
+	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
+	}
+	
+	function inCentury(date, start){
+	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
+	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
+	}
+	
+	function getCenturyDecades(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
+	
+	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
+	}
+	
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
+	}
+
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var dateMath = __webpack_require__(38)
+	  , globalize = __webpack_require__(103)
+	  , _ = __webpack_require__(13); //extend
+	
+	var dates = module.exports = _.extend(dateMath, {
+	  // wrapper methods for isolating globalize use throughout the lib
+	  // looking forward towards the 1.0 release
+	  culture: function(){
+	    return globalize.culture()
+	  },
+	
+	  startOfWeek: function(date){
+	    var culture = globalize.culture()
+	
+	    if (!culture || !culture.calendar)
+	      return 0
+	
+	    return culture.calendar.firstDay || 0
+	  },
+	
+	  parse: function(date, format, culture){
+	    return globalize.parseDate(date, format, culture)
+	  },
+	
+	  format: function(date, format, culture){
+	    return globalize.format(date, format, culture)
+	  },
+	  //-------------------------------------
+	
+	  shortDaysOfWeek: function (){
+	    var culture = dates.culture()
+	      , start = dates.startOfWeek()
+	      , days, front;
+	
+	    if (culture && culture.calendar){
+	      days = culture.calendar.days.namesShort.slice()
+	
+	      if(start === 0 ) 
+	        return days
+	      
+	      front = days.splice(0, start)
+	      days  = days.concat(front)
+	      return days
+	    }
+	  },
+	
+	  daysOfWeek: function(date, format){
+	    var range = [0,1,2,3,4,5,6]
+	    if (arguments.length === 1){
+	      format = date
+	      date = new Date()
+	    }
+	
+	    format = format || 'do'
+	
+	    return range.map(function(i)  {return dates.format(dates.weekday(date, i), format);} )
+	  },
+	
+	  months: function(date, format){
+	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	
+	    if (arguments.length === 1){
+	      format = date
+	      date = new Date()
+	    }
+	    format = format || dates.formats.DAY_NAME_ABRV
+	
+	    return months.map( function(i)  {return dates.format(dates.month(date, i), format);})
+	  },
+	
+	  monthsInYear: function(year){
+	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	      , date   = new Date(year, 0, 1)
+	
+	    return  months.map( function(i)  {return dates.month(date, i);})
+	  },
+	
+	  firstOfDecade: function(date){
+	    var decade = dates.year(date) % 10
+	
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfDecade: function(date){
+	    return dates.add(dates.firstOfDecade(date), 9, 'year')
+	  },
+	
+	  firstOfCentury: function(date){
+	    var decade = dates.year(date) % 100
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfCentury: function(date){
+	    return dates.add(dates.firstOfCentury(date), 99, 'year')
+	  },
+	
+	  firstVisibleDay: function(date){
+	    var firstOfMonth = dates.startOf(date, 'month')
+	    return dates.startOf(firstOfMonth, 'week');
+	  },
+	
+	  lastVisibleDay: function(date){
+	    var endOfMonth = dates.endOf(date, 'month')
+	    return dates.endOf(endOfMonth, 'week');
+	  },
+	
+	  visibleDays: function(date){
+	    var current = dates.firstVisibleDay(date)
+	      , last = dates.lastVisibleDay(date)
+	      , days = [];
+	
+	    while( dates.lte(current, last, 'day') ) {
+	      days.push(current)
+	      current = dates.add(current, 1, 'day')
+	    }
+	
+	    return days
+	  },
+	
+	  merge: function(date, time){
+	    if( time == null && date == null)
+	      return null
+	
+	    if( time == null) time = new Date()
+	    if( date == null) date = new Date()
+	
+	    date = dates.startOf(date, 'day')
+	    date = dates.hours(date,        dates.hours(time))
+	    date = dates.minutes(date,      dates.minutes(time))
+	    date = dates.seconds(date,      dates.seconds(time))
+	    return dates.milliseconds(date, dates.milliseconds(time))
+	  },
+	
+	  sameMonth: function(dateA, dateB){
+	    return dates.eq(dateA, dateB, 'month')
+	  },
+	
+	  today: function() {
+	    return this.startOf(new Date(), 'day')
+	  },
+	
+	  yesterday: function() {
+	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
+	  },
+	
+	  tomorrow: function() {
+	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
+	  },
+	
+	  formats: {
+	    DAY_OF_MONTH:    'dd',
+	    DAY_NAME_SHORT:  null,
+	    MONTH_NAME_ABRV: 'MMM',
+	    MONTH_YEAR:      'MMMM yyyy',
+	    YEAR:            'yyyy'
+	  }
+	
+	})
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _ = __webpack_require__(13); //object
+	
+	var views = {
+	    MONTH:   'month',
+	    YEAR:    'year',
+	    DECADE:  'decade',
+	    CENTURY: 'century'
+	  }
+	
+	module.exports = {
+	
+	  directions: {
+	    LEFT:  'LEFT',
+	    RIGHT: 'RIGHT',
+	    UP:    'UP',
+	    DOWN:  'DOWN'
+	  },
+	
+	  datePopups: {
+	    TIME:     'time',
+	    CALENDAR: 'calendar'
+	  },
+	
+	  calendarViews: views,
+	
+	  calendarViewHierarchy: _.object([
+	    [views.MONTH,   views.YEAR],
+	    [views.YEAR,    views.DECADE],
+	    [views.DECADE,  views.CENTURY]
+	  ]),
+	
+	  calendarViewUnits: _.object([
+	    [views.MONTH,   views.DAY],
+	    [views.YEAR,    views.MONTH],
+	    [views.DECADE,  views.YEAR],
+	    [views.CENTURY, views.DECADE],
+	  ])
+	}
+
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , dates = __webpack_require__(77)
+	  , List = __webpack_require__(68)
+	  , CustomPropTypes  = __webpack_require__(66)
+	  , _ = __webpack_require__(13) // omit
 	
 	
 	module.exports = React.createClass({
@@ -18808,9 +18747,9 @@
 	  displayName: 'TimeList',
 	
 	  mixins: [
-	    __webpack_require__(91),
-	    __webpack_require__(93)('selectedIndex'),
-	    __webpack_require__(93)('focusedIndex')
+	    __webpack_require__(87),
+	    __webpack_require__(90)('selectedIndex'),
+	    __webpack_require__(90)('focusedIndex')
 	  ],
 	
 	  propTypes: {
@@ -18954,13 +18893,13 @@
 
 
 /***/ },
-/* 83 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , cx = __webpack_require__(12)
-	  , dates = __webpack_require__(72);
+	  , dates = __webpack_require__(77);
 	
 	module.exports = React.createClass({
 	
@@ -19063,118 +19002,7 @@
 	}
 
 /***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , setter  = __webpack_require__(75)
-	  , globalize = __webpack_require__(106);
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'NumberPickerInput', 
-	
-	  propTypes: {
-	    value:        React.PropTypes.number,
-	    format:       React.PropTypes.string,
-	    min:          React.PropTypes.number,
-	    
-	    onChange:     React.PropTypes.func.isRequired,
-	    onKeyDown:    React.PropTypes.func,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: null,
-	      format: 'd',
-	      editing: false,
-	    }
-	  },
-	
-	  getInitialState: function() {
-	    var value = this.props.editing 
-	          ? this.props.value
-	          : globalize.format(this.props.value, this.props.format)
-	
-	    return { 
-	      stringValue: value
-	    }
-	  },
-	  
-	  componentWillReceiveProps: function(nextProps) {
-	    var value = nextProps.editing 
-	          ? nextProps.value
-	          : globalize.format(nextProps.value, nextProps.format)
-	
-	    if ( isNaN(nextProps.value) ) 
-	      value = ''
-	
-	    this.current(value)
-	  },
-	
-	  render: function(){
-	    var value = this.state.stringValue;
-	
-	    return (
-	      React.createElement("input", React.__spread({},  this.props, 
-	        {type: "text", 
-	        className: "rw-input", 
-	        onKeyDown: this.props.onKeyDown, 
-	        onChange: this._change, 
-	        onBlur: this._finish, 
-	        'aria-disabled': this.props.disabled, 
-	        'aria-readonly': this.props.readOnly, 
-	        disabled: this.props.disabled, 
-	        readOnly: this.props.readOnly, 
-	        value: value}))
-	    )
-	  },
-	
-	  _change: function(e){
-	    var val = e.target.value
-	      , number = +e.target.value
-	      , isNull = val !== 0 && !val
-	      , hasMin = isFinite(this.props.min)
-	
-	    //console.log(hasMin, this.props.min)
-	    //a null value is only possible when there is no min
-	    if(!hasMin && isNull)
-	      return this.props.onChange(null)
-	
-	    if(this.isValid(number) && number !== this.props.value)
-	      return this.props.onChange(number)
-	
-	    //console.log(val !== 0 && !val)
-	    this.current(e.target.value)
-	  },
-	
-	  _finish: function(e){
-	    var number = +this.state.stringValue
-	
-	    // if number is below the min
-	    // we need to flush low values eventually, onBlur is definativly no typing
-	    if(!isNaN(number) && number < this.props.min) {
-	      this.props.onChange(number)
-	    }
-	  },
-	
-	  isValid: function(value) {
-	    var num = +value;
-	
-	    if(isNaN(num)) return false
-	    return num >= this.props.min
-	  },
-	
-	  //this intermediate state is for when one runs into the decimal or are typing the number
-	  current: setter('stringValue'),
-	
-	});
-
-
-/***/ },
-/* 85 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19222,22 +19050,22 @@
 
 
 /***/ },
-/* 86 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , _     = __webpack_require__(16)
+	  , _     = __webpack_require__(13)
 	  , cx    = __webpack_require__(12)
-	  , Btn   = __webpack_require__(80)
+	  , Btn   = __webpack_require__(70)
 	
 	module.exports = React.createClass({
 	  
 	  displayName: 'MultiselectTagList',
 	
 	  mixins: [
-	    __webpack_require__(92),
-	    __webpack_require__(89)
+	    __webpack_require__(88),
+	    __webpack_require__(86)
 	  ],
 	
 	  propTypes: {
@@ -19392,11 +19220,122 @@
 
 
 /***/ },
-/* 87 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $ = __webpack_require__(74)
+	var React   = __webpack_require__(1)
+	  , setter  = __webpack_require__(64)
+	  , globalize = __webpack_require__(103);
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'NumberPickerInput', 
+	
+	  propTypes: {
+	    value:        React.PropTypes.number,
+	    format:       React.PropTypes.string,
+	    min:          React.PropTypes.number,
+	    
+	    onChange:     React.PropTypes.func.isRequired,
+	    onKeyDown:    React.PropTypes.func,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: null,
+	      format: 'd',
+	      editing: false,
+	    }
+	  },
+	
+	  getInitialState: function() {
+	    var value = this.props.editing 
+	          ? this.props.value
+	          : globalize.format(this.props.value, this.props.format)
+	
+	    return { 
+	      stringValue: value
+	    }
+	  },
+	  
+	  componentWillReceiveProps: function(nextProps) {
+	    var value = nextProps.editing 
+	          ? nextProps.value
+	          : globalize.format(nextProps.value, nextProps.format)
+	
+	    if ( isNaN(nextProps.value) ) 
+	      value = ''
+	
+	    this.current(value)
+	  },
+	
+	  render: function(){
+	    var value = this.state.stringValue;
+	
+	    return (
+	      React.createElement("input", React.__spread({},  this.props, 
+	        {type: "text", 
+	        className: "rw-input", 
+	        onKeyDown: this.props.onKeyDown, 
+	        onChange: this._change, 
+	        onBlur: this._finish, 
+	        'aria-disabled': this.props.disabled, 
+	        'aria-readonly': this.props.readOnly, 
+	        disabled: this.props.disabled, 
+	        readOnly: this.props.readOnly, 
+	        value: value}))
+	    )
+	  },
+	
+	  _change: function(e){
+	    var val = e.target.value
+	      , number = +e.target.value
+	      , isNull = val !== 0 && !val
+	      , hasMin = isFinite(this.props.min)
+	
+	    //console.log(hasMin, this.props.min)
+	    //a null value is only possible when there is no min
+	    if(!hasMin && isNull)
+	      return this.props.onChange(null)
+	
+	    if(this.isValid(number) && number !== this.props.value)
+	      return this.props.onChange(number)
+	
+	    //console.log(val !== 0 && !val)
+	    this.current(e.target.value)
+	  },
+	
+	  _finish: function(e){
+	    var number = +this.state.stringValue
+	
+	    // if number is below the min
+	    // we need to flush low values eventually, onBlur is definativly no typing
+	    if(!isNaN(number) && number < this.props.min) {
+	      this.props.onChange(number)
+	    }
+	  },
+	
+	  isValid: function(value) {
+	    var num = +value;
+	
+	    if(isNaN(num)) return false
+	    return num >= this.props.min
+	  },
+	
+	  //this intermediate state is for when one runs into the decimal or are typing the number
+	  current: setter('stringValue'),
+	
+	});
+
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var $ = __webpack_require__(63)
 	
 	module.exports = function scrollTo( selected ) {
 	  var offset = $.offset(selected)
@@ -19439,12 +19378,12 @@
 	}
 
 /***/ },
-/* 88 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , _ =  __webpack_require__(16); //uniqueID
+	  , _ =  __webpack_require__(13); //uniqueID
 	
 	module.exports = {
 	
@@ -19488,11 +19427,11 @@
 	}
 
 /***/ },
-/* 89 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var _ = __webpack_require__(16)
+	var _ = __webpack_require__(13)
 	
 	//backport PureRenderEqual
 	module.exports = {
@@ -19506,47 +19445,14 @@
 
 
 /***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	
-	module.exports = {
-	  
-	  propTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  contextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  childContextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  getChildContext: function() {
-	    return { 
-	      isRtl: this.props.isRtl || (this.context && this.context.isRtl)
-	    }
-	  },
-	
-	  isRtl: function() {
-	    return !!(this.props.isRtl || (this.context && this.context.isRtl))
-	  }
-	
-	}
-
-/***/ },
-/* 91 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React  = __webpack_require__(1)
-	  , filter = __webpack_require__(79)
-	  , helper = __webpack_require__(92)
-	  , _      = __webpack_require__(16);
+	  , filter = __webpack_require__(69)
+	  , helper = __webpack_require__(88)
+	  , _      = __webpack_require__(13);
 	
 	module.exports = {
 	  
@@ -19586,12 +19492,12 @@
 	}
 
 /***/ },
-/* 92 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , _ =  __webpack_require__(16)
+	  , _ =  __webpack_require__(13)
 	
 	module.exports = {
 	  
@@ -19648,7 +19554,40 @@
 
 
 /***/ },
-/* 93 */
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	
+	module.exports = {
+	  
+	  propTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  contextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  childContextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  getChildContext: function() {
+	    return { 
+	      isRtl: this.props.isRtl || (this.context && this.context.isRtl)
+	    }
+	  },
+	
+	  isRtl: function() {
+	    return !!(this.props.isRtl || (this.context && this.context.isRtl))
+	  }
+	
+	}
+
+/***/ },
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19711,14 +19650,14 @@
 
 
 /***/ },
-/* 94 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , filters = __webpack_require__(79)
-	  , helper  = __webpack_require__(92)
-	  , _      = __webpack_require__(16);
+	  , filters = __webpack_require__(69)
+	  , helper  = __webpack_require__(88)
+	  , _      = __webpack_require__(13);
 	
 	var filterTypes = Object.keys(filters).filter( function(i)  {return i !== 'filter';})
 	
@@ -19793,7 +19732,7 @@
 
 
 /***/ },
-/* 95 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19835,7 +19774,7 @@
 
 
 /***/ },
-/* 96 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19888,7 +19827,7 @@
 
 
 /***/ },
-/* 97 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19908,7 +19847,7 @@
 	
 	"use strict";
 	
-	var assign = __webpack_require__(99);
+	var assign = __webpack_require__(96);
 	
 	/**
 	 * Keeps track of the current context.
@@ -19958,7 +19897,7 @@
 
 
 /***/ },
-/* 98 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19996,7 +19935,7 @@
 
 
 /***/ },
-/* 99 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20051,7 +19990,7 @@
 
 
 /***/ },
-/* 100 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20083,7 +20022,7 @@
 	 */
 	
 	var invariant = function(condition, format, a, b, c, d, e, f) {
-	  if (false) {
+	  if (true) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
@@ -20114,7 +20053,56 @@
 
 
 /***/ },
-/* 101 */
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	var compat = module.exports = {
+	
+	  version: function(){
+	    return React.version.split('.').map(parseFloat);
+	  },
+	
+	  propType: function(fn) {
+	
+	    return function validator(props, propName, componentName, location){
+	      var ver = compat.version()
+	        , err = fn.call(this, props, propName, componentName, location)
+	
+	      if ( err && err !== true ) {
+	        if( ver[0] === 0 && ver[1] < 11 )
+	          return console.warn(err instanceof Error ? err.message : err)
+	
+	        return err
+	      }
+	
+	    }
+	  }
+	}
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = function caret(el, start, end ){
+	
+	  if ( start === undefined){
+	    return {
+	      start: el.selectionStart,
+	      end: el.selectionEnd
+	    }
+	  }
+	
+	  el.focus();
+	  el.setSelectionRange(start, end)
+	}
+
+/***/ },
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20133,13 +20121,13 @@
 	}
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(72)
-	  , directions = __webpack_require__(73).directions;
+	  , dates = __webpack_require__(77)
+	  , directions = __webpack_require__(78).directions;
 	
 	module.exports = function(viewUnit, smallUnit){
 	
@@ -20212,56 +20200,7 @@
 	}
 
 /***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	var compat = module.exports = {
-	
-	  version: function(){
-	    return React.version.split('.').map(parseFloat);
-	  },
-	
-	  propType: function(fn) {
-	
-	    return function validator(props, propName, componentName, location){
-	      var ver = compat.version()
-	        , err = fn.call(this, props, propName, componentName, location)
-	
-	      if ( err && err !== true ) {
-	        if( ver[0] === 0 && ver[1] < 11 )
-	          return console.warn(err instanceof Error ? err.message : err)
-	
-	        return err
-	      }
-	
-	    }
-	  }
-	}
-
-/***/ },
-/* 104 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = function caret(el, start, end ){
-	
-	  if ( start === undefined){
-	    return {
-	      start: el.selectionStart,
-	      end: el.selectionEnd
-	    }
-	  }
-	
-	  el.focus();
-	  el.setSelectionRange(start, end)
-	}
-
-/***/ },
-/* 105 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module) {
@@ -20277,7 +20216,7 @@
 
 
 /***/ },
-/* 106 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!

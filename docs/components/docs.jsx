@@ -12,7 +12,7 @@ var React          = require('react')
   , DatePicker     = require('./pages/DateTimePicker.jsx')
   , NumberPicker   = require('./pages/NumberPicker.jsx');
 
-require('../docs.css')
+//require('../docs.css')
 
 var locations = [
       '#intro','#dropdown-list', '#combobox',

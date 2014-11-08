@@ -2,9 +2,9 @@ var path = require('path')
   , webpack = require('webpack')
   , pkg = require('../package.json')
   , ProdDefine = new webpack.DefinePlugin({
-      'process.env': {
+      "process.env": {
         // This has effect on the react lib size
-        NODE_ENV: JSON.stringify('production')
+        "NODE_ENV": JSON.stringify('production')
       }
     })
 
@@ -51,7 +51,7 @@ module.exports = {
     
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader?insertPragma=React.DOM' }
+        { test: /\.jsx$/, loader: 'jsx-loader' }
       ],
       postLoaders: [
         { loader: path.join(__dirname, './jstransform-loader') }
@@ -79,14 +79,22 @@ module.exports = {
 
     module: {
       loaders: [
-        { test: /\.jsx$/, loader:  'jsx-loader?harmony=true&insertPragma=React.DOM' },
+        { test: /\.jsx$/, loader:  'jsx-loader' },
         { test: /\.css$/, loader:  'style-loader!css-loader' },
         { test: /\.less$/, loader: 'style-loader!css-loader!less-loader' },
       ],
+      postLoaders: [
+        { loader: path.join(__dirname, './jstransform-loader') }
+      ]
     },
 
     plugins: [
-      ProdDefine,
+      new webpack.DefinePlugin({
+      "process.env": {
+          // This has effect on the react lib size
+          "NODE_ENV": JSON.stringify('development')
+        }
+      }),
       new webpack.BannerPlugin( 
         'v' + JSON.stringify(pkg.version) + ' | (c) ' + (new Date).getFullYear() + ' Jason Quense | '
         + 'https://github.com/jaquense/react-widgets/blob/master/License.txt'

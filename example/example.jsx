@@ -19,11 +19,12 @@ var ListItem = React.createClass({
 
   render: function(){
 
-    return (
-      <span>{ "hi: " + this.props.item.name}</span>
-    )
+    return (<span>{ "hi: " + this.props.item.name}</span>)
   }
 })
+
+// var a = { a:1, b: 3};
+// var c = { ...a, x: 1 };
 
 var App = React.createClass({
 
