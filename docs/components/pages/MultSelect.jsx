@@ -31,6 +31,8 @@ var Multiselect = React.createClass({
               <MenuItem href={'#' + prefix + 'onToggle'}>onToggle</MenuItem>
 
               <MenuItem href={'#' + prefix + 'busy'}>busy</MenuItem>
+              <MenuItem href={'#' + prefix + 'disabled'}>disabled</MenuItem>
+              <MenuItem href={'#' + prefix + 'readonly'}>readonly</MenuItem>
               <MenuItem href={'#' + prefix + 'duration'}>duration</MenuItem>
               <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
               <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
@@ -158,13 +160,13 @@ var Multiselect = React.createClass({
         <p>
           The speed, in milliseconds, of the dropdown animation.
         </p>
-        <h3 className='prop-header' id={ prefix +"duration" }>
+        <h3 className='prop-header' id={ prefix +"disabled" }>
           disabled <small>[Boolean, Array]</small></h3>
         <p>
           Disable the widget, If an <code>Array</code> of values is passed in only the tags specified will be disabled.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"duration" }>
+        <h3 className='prop-header' id={ prefix +"readOnly" }>
           readOnly <small>[Boolean, Array]</small></h3>
         <p>
           Place the widget in a readonly mode, If an <code>Array</code> of values is passed in only the tags specified will be readonly.
