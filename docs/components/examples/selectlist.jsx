@@ -1,39 +1,42 @@
-/**
- * @jsx React.DOM
- */
-
+'use strict';
 var React = require('react')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
-  , RW = require('../../../index')
-  , MultiselectList = RW.MultiselectList
-  , NumberPicker = RW.NumberPicker;
+  , RW = require('../../../index');
 
-var valueComp = React.createClass({
-  render: function() {
-    return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
-  }
-});
+// var valueComp = React.createClass({
+//   render: function() {
+//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
+//   }
+// });
 
-var itemComp = React.createClass({
-  render: function() {
-    var icons =  ['bicycle', 'area-chart', 'anchor']
+// var itemComp = React.createClass({
+//   render: function() {
+//     var icons =  ['bicycle', 'area-chart', 'anchor']
 
-    this._icon || (this._icon = icons[getRandomInt(0, 2)])
-    return (
-      <div>
-        <i className={'fa fa-' + this._icon}></i>
-        { '  ' + this.props.item.label}
-      </div>
-    );
-  }
-});
+//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
+//     return (
+//       <div>
+//         <i className={'fa fa-' + this._icon}></i>
+//         { '  ' + this.props.item.label}
+//       </div>
+//     );
+//   }
+// });
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+// function getRandomInt(min, max) {
+//   return Math.floor(Math.random() * (max - min + 1)) + min;
+// }
 
-
+var list = [
+        { label: 'orange', id: 1 },
+        { label: 'blue',   id: 2 },
+        { label: 'red',    id: 3 },
+        { label: 'maroon', id: 4 },
+        { label: 'purple', id: 5 },
+        { label: 'mauve',  id: 6 },
+      ];
+      
 var DropdownApi = React.createClass({
 
   getInitialState: function(){
@@ -44,27 +47,19 @@ var DropdownApi = React.createClass({
   },
 
   render: function() {
-    var disabled = this.state.disabled === true || _.isArray(this.state.disabled);
-    var list = [
-        { label: 'orange', id: 1 },
-        { label: 'blue', id: 2 },
-        { label: 'red', id: 3 },
-        { label: 'maroon', id: 4 },
-        { label: 'purple', id: 5 },
-        { label: 'mauve', id: 6 },
-      ];
+    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 
     return (
       <div className='example'>
         <div className='row'>
           <div className='col-sm-8 demo'>
             <div className='form-group'>
-              <SelectList 
+              <RW.SelectList 
                 disabled={disabled ? this.state.disabled : false}
                 readOnly={this.state.disabled === 'readonly'}
-                value={this.state.value || 1}
+                value={this.state.value}
                 data={list}
-                busy={this.state.multiple}
+                multiple={this.state.multiple}
                 busy={this.state.busy}
                 onChange={this._change}
                 isRtl={this.state.isRtl}
@@ -112,12 +107,11 @@ var DropdownApi = React.createClass({
             <div className='form-group'>
               <label className='form-label'>Disable Values</label>
               <RW.Multiselect 
-                  value={ _.isArray(this.state.disabled) ? this.state.disabled : [] } 
-                  data={allVals}
+                  value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] } 
+                  data={list}
                   textField='label'
                   valueField='id'
                   disabled={this.state.disabled === true}
-                  messages={{ emptyList: "no values Multiselected to the right"}}
                   onChange={this._set.bind(null, 'disabled')}/>
             </div>
           </div>

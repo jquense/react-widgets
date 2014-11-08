@@ -13,6 +13,7 @@ var propTypes = {
                       React.PropTypes.array
                     ]),
     onChange:       React.PropTypes.func,
+    onMove:         React.PropTypes.func,
 
     multiple:       React.PropTypes.bool,
     itemComponent:  CustomPropTypes.elementType,
@@ -127,13 +128,12 @@ var SelectList = React.createClass({
   },
 
   _rows: function(optID){
-    var component = this.props.itemComponent
+    var Component = this.props.itemComponent
       , name = this._id('_name')
       , type = this.props.multiple ? 'checkbox' : 'radio';
 
     return this._data().map( (item, idx) => {
       var focused  = this.state.focused && this.state.focusedIndex === idx
-        , text     = this._dataText(item)
         , checked  = this._contains(item, this._values())
         , change   = this._change.bind(null, item)
         , disabled = this.isDisabledItem(item)
@@ -144,12 +144,15 @@ var SelectList = React.createClass({
         role='option'
         id={ focused ? optID : undefined }
         className={cx({ 'rw-state-focus': focused, 'rw-selectlist-item': true })}>
-        <SelectListItem type={type} name={name} onChange={change} 
+        <SelectListItem 
+          type={type} 
+          name={name} 
+          onChange={change} 
           checked={checked} 
           readOnly={readonly}
           disabled={disabled || readonly}>
-          { component && component({ item: item }) || text }
-        </SelectListItem>
+          { Component ? <Component item={item}/> : this._dataText(item) }
+          </SelectListItem>
       </li>)
     })
   },
@@ -300,7 +303,8 @@ var SelectList = React.createClass({
       , selected = list.children[this.state.focusedIndex]
       , handler  = this.props.onMove || scrollTo;
 
-    handler(selected)
+    if ( this.state.focusedIndex !== -1 )
+      handler(selected)
   }
 
 });
@@ -308,19 +312,20 @@ var SelectList = React.createClass({
 var SelectListItem = React.createClass({
 
   render: function() {
-    var props = this.props;
+    var {children, ...props} = this.props;
 
     return (
-      <label className={cx({ 
+      <label 
+        className={cx({ 
           'rw-state-disabled': props.disabled,
           'rw-state-readonly': props.readOnly
         })}>
         <input { ...props} 
           tabIndex='-1'
           onChange={change} 
-          disabled={props.disabled ||props.readOnly }
+          disabled={props.disabled || props.readOnly }
           aria-disabled={ props.disabled ||props.readOnly } />
-        { this.props.children }
+          { children }
       </label>
     );
 
@@ -338,3 +343,5 @@ module.exports = controlledInput.createControlledClass(
     SelectList, { value: 'onChange' });
 
 module.exports.BaseSelectList = SelectList
+
+        
