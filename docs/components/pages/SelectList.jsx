@@ -160,7 +160,7 @@ var SelectList = React.createClass({
           <li><kbd>end</kbd> move focus to or select last item</li>
 
           <li><kbd>spacebar</kbd> <kbd>enter</kbd> toggle focused item</li>
-
+          <li><kbd>ctrl + a</kbd> toggle select all/select none</li>
           <li><kbd>any key</kbd> search list for item starting with key</li>
         </ul>
       </section>

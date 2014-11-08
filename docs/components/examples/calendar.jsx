@@ -1,3 +1,4 @@
+'use strict';
 var React = require('react')
   , _ = require('lodash')
   , Button = require('react-bootstrap/Button')
@@ -26,7 +27,6 @@ module.exports = React.createClass({
                 initialView={this.state.initialView}
                 disabled={this.state.disabled === 'disabled'}
                 readOnly={this.state.disabled === 'readonly'}
-                onChange={this._change}
                 isRtl={this.state.isRtl}/>
           </div>
           <div className='col-sm-4 api-panel'>
