@@ -72,6 +72,9 @@ module.exports = React.createClass({
       this.leaving  = next
       this.entering = nextChild
     }
+    //new child that just needs to be re-rendered
+    else if (isLastChild) stack.splice(0, 1, nextChild) 
+    else if (isNextChild) stack.splice(1, 1, nextChild)
 
     if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] ) 
       this.setState({ children: stack });
