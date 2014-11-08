@@ -1,7 +1,4 @@
-/**
- * @jsx React.DOM
- */
-
+'use strict';
 var React = require('react')
   , Default = require('../default.jsx')
   , Example = require('../example.jsx')
@@ -14,8 +11,8 @@ var widgetName = 'Combobox'
 var ComboBox = React.createClass({
 
   render: function() {
-    return this.transferPropsTo(
-      <section>
+    return (
+      <section {...this.props}>
         <h1 className="page-header">
           Combobox
           <span className='pull-right'>

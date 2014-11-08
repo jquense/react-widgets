@@ -1,7 +1,4 @@
-/**
- * @jsx React.DOM
- */
-
+'use strict';
 var React = require('react')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
@@ -92,7 +89,7 @@ var DropdownApi = React.createClass({
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.isRtl}
-                  onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
+                  onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
             </div>
@@ -111,7 +108,7 @@ var DropdownApi = React.createClass({
               </ButtonGroup>
               <Button style={{ marginLeft: 10 }}
                 active={this.state.busy}
-                onClick={_.partial(this._set, 'busy', !this.state.busy)}>
+                onClick={this._set.bind(null, 'busy', !this.state.busy)}>
                 Busy
               </Button>
             </div>
@@ -122,7 +119,7 @@ var DropdownApi = React.createClass({
                   step={200}
                   min={0}
                   max={1000}
-                  onChange={_.partial(this._set, 'duration')}/>
+                  onChange={this._set.bind(null, 'duration')}/>
             </div>
           </div>
         </div>

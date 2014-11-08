@@ -1,16 +1,17 @@
-var React = require('react')
-  , cx = require('../../lib/util/cx')
-  , Navbar = require('./topnavbar.jsx')
-  , Nav = require('../bootstrap').Nav
-  , NavItem = require('../bootstrap').NavItem
+'use strict';
+var React          = require('react')
+  , cx             = require('../../lib/util/cx')
+  , Navbar         = require('./topnavbar.jsx')
+  , Nav            = require('../bootstrap').Nav
+  , NavItem        = require('../bootstrap').NavItem
   , GettingStarted = require('./pages/GettingStarted.jsx')
-  , DropdownList = require('./pages/DropdownList.jsx')
-  , ComboBox = require('./pages/ComboBox.jsx')
-  , Select = require('./pages/Select.jsx')
-  //, SelectList = require('./pages/SelectList.jsx')
-  , Calendar = require('./pages/Calendar.jsx')
-  , DatePicker = require('./pages/DateTimePicker.jsx')
-  , NumberPicker = require('./pages/NumberPicker.jsx');
+  , DropdownList   = require('./pages/DropdownList.jsx')
+  , ComboBox       = require('./pages/ComboBox.jsx')
+  , MultiSelect    = require('./pages/MultSelect.jsx')
+  , SelectList     = require('./pages/SelectList.jsx')
+  , Calendar       = require('./pages/Calendar.jsx')
+  , DatePicker     = require('./pages/DateTimePicker.jsx')
+  , NumberPicker   = require('./pages/NumberPicker.jsx');
 
 require('../docs.css')
 
@@ -44,26 +45,26 @@ var Docs = React.createClass({
           <aside className='col-sm-3'>
             <div className='nav-aside'>
               <Nav className='side-nav' onSelect={this.handleNavItemSelect}>
-                <NavItem key={0} href='#intro' active={href === '#intro' }>Getting Started</NavItem>
-                <NavItem key={1} href='#DropdownList' active={ href === '#DropdownList' }>Dropdown List</NavItem>
-                <NavItem key={2} href='#combobox' active={href === '#combobox'}>Combobox</NavItem>
-                <NavItem key={6} href='#number-picker' active={href === '#number-picker' }>Number Picker</NavItem>
-                <NavItem key={3} href='#multiselect' active={href === '#multiselect'}>Select</NavItem>
-                <NavItem key={4} href='#calendar' active={href === '#calendar'}>Calendar</NavItem>
-                <NavItem key={5} href='#date-picker' active={href === '#date-picker'}>Date {' & '} Time Picker</NavItem>
+                <NavItem key ={0} href='#intro'         active={href === '#intro' }>Getting Started</NavItem>
+                <NavItem key ={1} href='#DropdownList'  active={href === '#DropdownList' }>Dropdown List</NavItem>
+                <NavItem key ={2} href='#combobox'      active={href === '#combobox'}>Combobox</NavItem>
+                <NavItem key ={3} href='#number-picker' active={href === '#number-picker' }>Number Picker</NavItem>
+                <NavItem key ={4} href='#multiselect'   active={href === '#multiselect'}>Multiselect</NavItem>
+                <NavItem key ={5} href='#selectlist'    active={href === '#mselectlist'}>SelectList</NavItem>
+                <NavItem key ={6} href='#calendar'      active={href === '#calendar'}>Calendar</NavItem>
+                <NavItem key ={7} href='#date-picker'   active={href === '#date-picker'}>Date {' & '} Time Picker</NavItem>
               </Nav>
             </div>
           </aside>
           <article className='col-sm-9 tab-content'>
-            <GettingStarted className={cx({"tab-pane": true, "active": href === '#intro' })}/>
-            <DropdownList className={cx({"tab-pane": true, "active": href === '#DropdownList' })}/>
-            <ComboBox className={cx({"tab-pane": true, "active": href === '#combobox' })}/>
-
-            <NumberPicker className={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
-            <Select className={cx({"tab-pane": true, "active": href === '#multiselect' })}/>
-          
-            <Calendar className={cx({"tab-pane": true, "active": href === '#calendar' })}/>
-            <DatePicker className={cx({"tab-pane": true, "active": href === '#date-picker' })}/>
+            <GettingStarted className ={cx({"tab-pane": true, "active": href === '#intro' })}/>
+            <DropdownList   className ={cx({"tab-pane": true, "active": href === '#DropdownList' })}/>
+            <ComboBox       className ={cx({"tab-pane": true, "active": href === '#combobox' })}/>
+            <NumberPicker   className ={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
+            <MultiSelect    className ={cx({"tab-pane": true, "active": href === '#multiselect' })}/>
+            <SelectList     className ={cx({"tab-pane": true, "active": href === '#selectlist' })}/>
+            <Calendar       className ={cx({"tab-pane": true, "active": href === '#calendar' })}/>
+            <DatePicker     className ={cx({"tab-pane": true, "active": href === '#date-picker' })}/>
             
             <div className='clearfix'style={{ marginTop: 20 }}>
               { locations.indexOf(href) > 0 && 
@@ -73,7 +74,7 @@ var Docs = React.createClass({
                 <button type='button' className='btn btn-link pull-right' onClick={this.next}>next »</button>
               }
             </div>
-            {/*<SelectList className={cx({"tab-pane": true, "active": href === '#selectlist' })}/>*/}
+            {/**/}
           </article>
         </div>
       </div>

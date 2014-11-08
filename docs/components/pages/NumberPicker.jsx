@@ -1,7 +1,4 @@
-/**
- * @jsx React.DOM
- */
-
+'use strict';
 var React = require('react')
   , Default = require('../default.jsx')
   , Example = require('../example.jsx')
@@ -13,8 +10,8 @@ var prefix = 'number-picker/'
 var NumberPicker = React.createClass({
 
   render: function() {
-    return this.transferPropsTo(
-      <section>
+    return (
+      <section {...this.props}>
         <h1 className="page-header">
           Number Picker
           <span className='pull-right'>

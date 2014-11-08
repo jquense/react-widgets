@@ -1,14 +1,11 @@
-/**
- * @jsx React.DOM
- */
-
+'use strict';
 var React = require('react');
 
 var GettingStarted = React.createClass({
 
   render: function() {
     return (
-      <section {...props}>
+      <section {...this.props}>
         <h1 className="page-header">Getting Started</h1>
         <p>
           React-widgets offers a {'set'} UI widgets, built from scratch with React. The suite is based on the excellent

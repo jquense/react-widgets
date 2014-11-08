@@ -1,3 +1,4 @@
+'use strict';
 var React = require('react')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
@@ -41,10 +42,9 @@ module.exports = React.createClass({
                   filter={this.state.filter || false}
                   disabled={this.state.disabled === 'disabled'}
                   readOnly={this.state.disabled === 'readonly'}
-                  data={list}
+
                   duration={this.state.duration}
                   busy={this.state.busy}
-                  onChange={this._change}
                   isRtl={this.state.isRtl}/>
             </div>
             <div className='form-group'>
@@ -59,11 +59,9 @@ module.exports = React.createClass({
                   filter={this.state.filter || false}
                   disabled={this.state.disabled === 'disabled'}
                   readOnly={this.state.disabled === 'readonly'}
-                  data={list}
                   duration={this.state.duration}
                   itemComponent={itemComp}
                   busy={this.state.busy}
-                  onChange={this._change}
                   isRtl={this.state.isRtl}/>
             </div>
           </div>

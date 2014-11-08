@@ -1,5 +1,5 @@
+'use strict';
 var React = require('react')
-  , _ = require('lodash')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
   , RW = require('../../../index');
@@ -25,7 +25,7 @@ module.exports = React.createClass({
 
   render: function(){
     var allVals = this.state.value
-      , disabled = this.state.disabled === true || _.isArray(this.state.disabled);
+      , disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 
     return (
       <div className='example'>
@@ -41,10 +41,8 @@ module.exports = React.createClass({
                   placeholder={this.state.placeholder}
                   disabled={disabled ? this.state.disabled : false}
                   readOnly={this.state.disabled === 'readonly'}
-                  data={list}
                   duration={this.state.duration}
                   busy={this.state.busy}
-                  onChange={this._change}
                   isRtl={this.state.isRtl}/>
             </div>
             <div className='form-group'>
@@ -58,12 +56,11 @@ module.exports = React.createClass({
                   placeholder={this.state.placeholder}
                   disabled={disabled ? this.state.disabled : false}
                   readOnly={this.state.disabled === 'readonly'}
-                  data={list}
+
                   duration={this.state.duration}
                   itemComponent={itemComp}
                   tagComponent={itemComp}
                   busy={this.state.busy}
-                  onChange={this._change}
                   isRtl={this.state.isRtl}/>
             </div>
           </div>
@@ -98,7 +95,7 @@ module.exports = React.createClass({
             <div className='form-group'>
               <label className='form-label'>Disable Multiselect Values</label>
               <RW.Multiselect 
-                  value={ _.isArray(this.state.disabled) ? this.state.disabled : [] } 
+                  value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] } 
                   data={allVals}
                   textField='label'
                   valueField='id'

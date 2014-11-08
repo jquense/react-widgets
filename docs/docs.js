@@ -45,21 +45,22 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var React = __webpack_require__(1)
-	  , cx = __webpack_require__(11)
-	  , Navbar = __webpack_require__(3)
-	  , Nav = __webpack_require__(2).Nav
-	  , NavItem = __webpack_require__(2).NavItem
+	/** @jsx React.DOM */'use strict';
+	var React          = __webpack_require__(1)
+	  , cx             = __webpack_require__(12)
+	  , Navbar         = __webpack_require__(3)
+	  , Nav            = __webpack_require__(2).Nav
+	  , NavItem        = __webpack_require__(2).NavItem
 	  , GettingStarted = __webpack_require__(4)
-	  , DropdownList = __webpack_require__(5)
-	  , ComboBox = __webpack_require__(6)
-	  , Select = __webpack_require__(7)
-	  //, SelectList = require('./pages/SelectList.jsx')
-	  , Calendar = __webpack_require__(8)
-	  , DatePicker = __webpack_require__(9)
-	  , NumberPicker = __webpack_require__(10);
+	  , DropdownList   = __webpack_require__(5)
+	  , ComboBox       = __webpack_require__(6)
+	  , MultiSelect    = __webpack_require__(7)
+	  , SelectList     = __webpack_require__(8)
+	  , Calendar       = __webpack_require__(9)
+	  , DatePicker     = __webpack_require__(10)
+	  , NumberPicker   = __webpack_require__(11);
 	
-	__webpack_require__(12)
+	__webpack_require__(13)
 	
 	var locations = [
 	      '#intro','#dropdown-list', '#combobox',
@@ -92,12 +93,13 @@
 	            React.createElement("div", {className: "nav-aside"}, 
 	              React.createElement(Nav, {className: "side-nav", onSelect: this.handleNavItemSelect}, 
 	                React.createElement(NavItem, {key: 0, href: "#intro", active: href === '#intro'}, "Getting Started"), 
-	                React.createElement(NavItem, {key: 1, href: "#DropdownList", active:  href === '#DropdownList'}, "Dropdown List"), 
+	                React.createElement(NavItem, {key: 1, href: "#DropdownList", active: href === '#DropdownList'}, "Dropdown List"), 
 	                React.createElement(NavItem, {key: 2, href: "#combobox", active: href === '#combobox'}, "Combobox"), 
-	                React.createElement(NavItem, {key: 6, href: "#number-picker", active: href === '#number-picker'}, "Number Picker"), 
-	                React.createElement(NavItem, {key: 3, href: "#multiselect", active: href === '#multiselect'}, "Select"), 
-	                React.createElement(NavItem, {key: 4, href: "#calendar", active: href === '#calendar'}, "Calendar"), 
-	                React.createElement(NavItem, {key: 5, href: "#date-picker", active: href === '#date-picker'}, "Date ", ' & ', " Time Picker")
+	                React.createElement(NavItem, {key: 3, href: "#number-picker", active: href === '#number-picker'}, "Number Picker"), 
+	                React.createElement(NavItem, {key: 4, href: "#multiselect", active: href === '#multiselect'}, "Multiselect"), 
+	                React.createElement(NavItem, {key: 5, href: "#selectlist", active: href === '#mselectlist'}, "SelectList"), 
+	                React.createElement(NavItem, {key: 6, href: "#calendar", active: href === '#calendar'}, "Calendar"), 
+	                React.createElement(NavItem, {key: 7, href: "#date-picker", active: href === '#date-picker'}, "Date ", ' & ', " Time Picker")
 	              )
 	            )
 	          ), 
@@ -105,10 +107,9 @@
 	            React.createElement(GettingStarted, {className: cx({"tab-pane": true, "active": href === '#intro' })}), 
 	            React.createElement(DropdownList, {className: cx({"tab-pane": true, "active": href === '#DropdownList' })}), 
 	            React.createElement(ComboBox, {className: cx({"tab-pane": true, "active": href === '#combobox' })}), 
-	
 	            React.createElement(NumberPicker, {className: cx({"tab-pane": true, "active": href === '#number-picker' })}), 
-	            React.createElement(Select, {className: cx({"tab-pane": true, "active": href === '#multiselect' })}), 
-	          
+	            React.createElement(MultiSelect, {className: cx({"tab-pane": true, "active": href === '#multiselect' })}), 
+	            React.createElement(SelectList, {className: cx({"tab-pane": true, "active": href === '#selectlist' })}), 
 	            React.createElement(Calendar, {className: cx({"tab-pane": true, "active": href === '#calendar' })}), 
 	            React.createElement(DatePicker, {className: cx({"tab-pane": true, "active": href === '#date-picker' })}), 
 	            
@@ -120,7 +121,7 @@
 	                React.createElement("button", {type: "button", className: "btn btn-link pull-right", onClick: this.next}, "next »")
 	              
 	            )
-	            /*<SelectList className={cx({"tab-pane": true, "active": href === '#selectlist' })}/>*/
+	            /**/
 	          )
 	        )
 	      )
@@ -167,15 +168,15 @@
 	
 	
 	module.exports = {
-		Button: 		__webpack_require__(24),
-		ButtonGroup: 	__webpack_require__(25),
+		Button: 		__webpack_require__(26),
+		ButtonGroup: 	__webpack_require__(27),
 	
-		DropdownButton: __webpack_require__(26),
-		MenuItem: 		__webpack_require__(27),
+		DropdownButton: __webpack_require__(28),
+		MenuItem: 		__webpack_require__(29),
 	
-		Nav: __webpack_require__(28),
-		NavItem: __webpack_require__(29),
-		Navbar: __webpack_require__(30),
+		Nav: __webpack_require__(30),
+		NavItem: __webpack_require__(31),
+		Navbar: __webpack_require__(32),
 	}
 
 /***/ },
@@ -223,17 +224,14 @@
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * @jsx React.DOM
-	 */
-	
+	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1);
 	
 	var GettingStarted = React.createClass({displayName: 'GettingStarted',
 	
 	  render: function() {
 	    return (
-	      React.createElement("section", React.__spread({},  props), 
+	      React.createElement("section", React.__spread({},  this.props), 
 	        React.createElement("h1", {className: "page-header"}, "Getting Started"), 
 	        React.createElement("p", null, 
 	          "React-widgets offers a ", 'set', " UI widgets, built from scratch with React. The suite is based on the excellent" + ' ' +
@@ -353,24 +351,21 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * @jsx React.DOM
-	 */
-	
+	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(16)
-	  , Example = __webpack_require__(17)
+	  , Default = __webpack_require__(17)
+	  , Example = __webpack_require__(18)
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
-	  , DropdownListExample = __webpack_require__(23);
+	  , DropdownListExample = __webpack_require__(19);
 	
 	var prefix = 'DropdownList/'
 	var widgetName = 'DropdownList'
 	var DropdownList = React.createClass({displayName: 'DropdownList',
 	
 	  render: function() {
-	    return this.transferPropsTo(
-	      React.createElement("section", null, 
+	    return (
+	      React.createElement("section", React.__spread({},  this.props), 
 	        React.createElement("h1", {className: "page-header"}, 
 	          "Dropdown List", 
 	          React.createElement("span", {className: "pull-right"}, 
@@ -544,24 +539,21 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * @jsx React.DOM
-	 */
-	
+	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(16)
-	  , Example = __webpack_require__(17)
+	  , Default = __webpack_require__(17)
+	  , Example = __webpack_require__(18)
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
-	  , ComboBoxExample = __webpack_require__(18);
+	  , ComboBoxExample = __webpack_require__(20);
 	
 	var prefix = 'combobox/'
 	var widgetName = 'Combobox'
 	var ComboBox = React.createClass({displayName: 'ComboBox',
 	
 	  render: function() {
-	    return this.transferPropsTo(
-	      React.createElement("section", null, 
+	    return (
+	      React.createElement("section", React.__spread({},  this.props), 
 	        React.createElement("h1", {className: "page-header"}, 
 	          "Combobox", 
 	          React.createElement("span", {className: "pull-right"}, 
@@ -765,16 +757,13 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * @jsx React.DOM
-	 */
-	
+	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(16)
-	  , Example = __webpack_require__(17)
+	  , Default = __webpack_require__(17)
+	  , Example = __webpack_require__(18)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , MultiselectExample = __webpack_require__(19);
+	  , MultiselectExample = __webpack_require__(21);
 	
 	var prefix = 'multiselect/';
 	var widgetName = 'Multiselect'
@@ -994,23 +983,181 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * @jsx React.DOM
-	 */
-	
+	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(16)
-	  , Example = __webpack_require__(17)
+	  , Default = __webpack_require__(17)
+	  , Example = __webpack_require__(18)
+	  , MenuItem = __webpack_require__(2).MenuItem
+	  , DDButton = __webpack_require__(2).DropdownButton
+	  , SelectListExample = __webpack_require__(22);
+	
+	var prefix = 'selectlist/'
+	var widgetName = 'SelectList'
+	var SelectList = React.createClass({displayName: 'SelectList',
+	
+	  render: function() {
+	    return (
+	      React.createElement("section", React.__spread({},  this.props), 
+	        React.createElement("h1", {className: "page-header"}, 
+	          "Select List", 
+	          React.createElement("span", {className: "pull-right"}, 
+	            React.createElement(DDButton, {title: "props", bsStyle: "link", pullRight: true}, 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'value'}, "value"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'onChange'}, "onChange"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'data'}, "data"), 
+	              React.createElement(MenuItem, {divider: true}), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'valueField'}, "valueField"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'textField'}, "textField"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'itemComponent'}, "itemComponent"), 
+	
+	              React.createElement(MenuItem, {href: '#' + prefix + 'multiple'}, "multiple"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'busy'}, "busy"), 
+	
+	              React.createElement(MenuItem, {href: '#' + prefix + 'isRtl'}, "isRtl"), 
+	              React.createElement(MenuItem, {divider: true}), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'keyboard'}, "Keyboard Navigation")
+	            )
+	          )
+	        ), 
+	        React.createElement("p", null, 
+	          "Creates a list of radio buttons or checkboxes bound to a ", 'set', " of data."
+	        ), 
+	        React.createElement(SelectListExample, null), 
+	        React.createElement(Example, {code: 
+	          "render: function(){\n"+
+	          "  var SelectList = require('react-widgets').SelectList\n"+
+	          "    , list = [\n"+
+	          "      { label: 'orange', id: 1 },\n"+
+	          "      { label: 'blue', id: 2 },\n"+
+	          "      { label: 'red', id: 3 },\n"+
+	          "    ]\n"+
+	          "  return (\n"+
+	          "    <SelectList \n"+
+	          "      multiple\n" +
+	          "      data={list}\n"+
+	          "      value={this.state.value}\n"+
+	          "      onChange={this._change}\n"+
+	          "      textField='label'\n"+
+	          "      valueField='id'/>\n"+
+	          "  )\n"+
+	          "},\n\n"+
+	          "_change: function(value){\n"+
+	          "  this.setState({\n"+
+	          "    value: value\n"+
+	          "  })\n"+
+	          "}\n"
+	        }), 
+	
+	        React.createElement("h2", null, "Props"), 
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"value"}, 
+	          "value ", React.createElement("small", null, "Any|Array<Any>"), React.createElement("strong", null, "controllable (onChange, defaultValue)")
+	        ), 
+	        React.createElement("p", null, 
+	          "The current value or values of the ", widgetName, ". This can be an object (such as a member of the ", React.createElement("code", null, "data"), " array)" + ' ' +
+	          "or a primitive value, hinted to by the ", React.createElement("code", null, "valueField"), ". The widget value does not need to be in" + ' ' +
+	          "the ", React.createElement("code", null, "data"), " array; widgets can have values that are not in their list."
+	        ), 
+	
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"onChange"}, 
+	          "onChange ", React.createElement("small", null, "Function(Array<Any>|Any values)")), 
+	        React.createElement("p", null, 
+	          "Change event handler that is called when the value is changed. ", React.createElement("code", null, "values"), " will be an array" + ' ' + 
+	          "when ", React.createElement("code", null, "multiple"), " prop is set."
+	        ), 
+	
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"data"}, 
+	          "data ", React.createElement("small", null, "Array - mixed")), 
+	        React.createElement("p", null, 
+	          "provide an array of possible values for the ", widgetName, ". If an array of ", React.createElement("code", null, "objects"), " is provided you" + ' ' +
+	          "should use the ", React.createElement("code", null, "valueField"), " and ", React.createElement("code", null, "textField"), " props, to specify which object" + ' ' +
+	          "properties comprise the value field (such as an id) and the field used to label the item."
+	        ), 
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"valueField"}, 
+	          "valueField ", React.createElement("small", null, "String")), 
+	        React.createElement("p", null, 
+	          "A property name of a uniquely identifying field in the ", React.createElement("code", null, "data"), " array. If no valueField is provided," + ' ' +
+	          "the ", widgetName, " will use strict equality checks to locate the data item, if it exists."
+	        ), 
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"textField"}, 
+	          "textField ", React.createElement("small", null, "String")), 
+	        React.createElement("p", null, 
+	          "This prop determines which data item field to display in the ", widgetName, "."
+	        ), 
+	
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"itemComponent"}, 
+	          "itemComponent ", React.createElement("small", null, "Component")), 
+	        React.createElement("p", null, 
+	          "This component is used to render each item in the ", widgetName, ". The default component" + ' ' +
+	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
+	        ), 
+	
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"multiple"}, 
+	          "multiple ", React.createElement("small", null, "Boolean", React.createElement(Default, null, "false"))
+	        ), 
+	        React.createElement("p", null, 
+	          "Whether or not the ", widgetName, " allows multiple selection or not. when ", React.createElement("code", null, "false"), " the ", widgetName, " will" + ' ' + 
+	          "render as a list of radio buttonsand checkboxes when ", React.createElement("code", null, "true"), "."
+	        ), 
+	
+	
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"busy"}, 
+	          "busy ", React.createElement("small", null, "Boolean")), 
+	        React.createElement("p", null, 
+	          "mark whether the widget is in a busy or loading state. If ", React.createElement("code", null, "true"), " the widget will display a spinner gif, useful" + ' ' +
+	          "when loading data via an ajax call."
+	        ), 
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"duration"}, 
+	          "duration ", React.createElement("small", null, "Number", React.createElement(Default, null, "250"))), 
+	        React.createElement("p", null, 
+	          "The speed, in milliseconds, of the dropdown animation."
+	        ), 
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"isRtl"}, 
+	          "isRtl ", React.createElement("small", null, "Boolean", React.createElement(Default, null, "false"))), 
+	        React.createElement("p", null, 
+	          "mark whether the ", widgetName, " should render right-to-left. This property can also be implicitly passed to the widget through" + ' ' +
+	           "a ", React.createElement("code", null, "childContext"), " prop (", React.createElement("code", null, "isRtl"), ") this allows higher level application components to specify the direction."
+	        ), 
+	
+	
+	        React.createElement("h2", {id:  prefix +"keyboard"}, "Keyboard Navigation"), 
+	
+	        React.createElement("ul", {className: "list-unstyled keyboard-list"}, 
+	          React.createElement("li", null, React.createElement("kbd", null, "down arrow"), " move focus to or select next item"), 
+	          React.createElement("li", null, React.createElement("kbd", null, "up arrow"), " move focus to or select previous item"), 
+	
+	          React.createElement("li", null, React.createElement("kbd", null, "home"), " move focus to or select first item"), 
+	          React.createElement("li", null, React.createElement("kbd", null, "end"), " move focus to or select last item"), 
+	
+	          React.createElement("li", null, React.createElement("kbd", null, "spacebar"), " ", React.createElement("kbd", null, "enter"), " toggle focused item"), 
+	
+	          React.createElement("li", null, React.createElement("kbd", null, "any key"), " search list for item starting with key")
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = SelectList;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */'use strict';
+	var React = __webpack_require__(1)
+	  , Default = __webpack_require__(17)
+	  , Example = __webpack_require__(18)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , CalendarExample = __webpack_require__(20);
+	  , CalendarExample = __webpack_require__(23);
 	
 	var prefix = 'calendar/'
 	var Calendar = React.createClass({displayName: 'Calendar',
 	
 	  render: function() {
-	    return this.transferPropsTo(
-	      React.createElement("section", null, 
+	    return (
+	      React.createElement("section", React.__spread({},  this.props), 
 	        React.createElement("h1", {className: "page-header"}, 
 	          "Calendar", 
 	          React.createElement("span", {className: "pull-right"}, 
@@ -1150,27 +1297,24 @@
 	module.exports = Calendar;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * @jsx React.DOM
-	 */
-	
+	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(16)
-	  , Example = __webpack_require__(17)
+	  , Default = __webpack_require__(17)
+	  , Example = __webpack_require__(18)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , DatePickerExample = __webpack_require__(21);
+	  , DatePickerExample = __webpack_require__(24);
 	
 	var prefix = 'date-picker/'
 	var widgetName = 'DateTimePicker'
 	var DateTimePicker = React.createClass({displayName: 'DateTimePicker',
 	
 	  render: function() {
-	    return this.transferPropsTo(
-	      React.createElement("section", null, 
+	    return (
+	      React.createElement("section", React.__spread({},  this.props), 
 	        React.createElement("h1", {className: "page-header"}, 
 	          "Date and Time Picker", 
 	          React.createElement("span", {className: "pull-right"}, 
@@ -1391,26 +1535,23 @@
 	module.exports = DateTimePicker;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * @jsx React.DOM
-	 */
-	
+	/** @jsx React.DOM */'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(16)
-	  , Example = __webpack_require__(17)
+	  , Default = __webpack_require__(17)
+	  , Example = __webpack_require__(18)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , NumberPickerExample = __webpack_require__(22);
+	  , NumberPickerExample = __webpack_require__(25);
 	
 	var prefix = 'number-picker/'
 	var NumberPicker = React.createClass({displayName: 'NumberPicker',
 	
 	  render: function() {
-	    return this.transferPropsTo(
-	      React.createElement("section", null, 
+	    return (
+	      React.createElement("section", React.__spread({},  this.props), 
 	        React.createElement("h1", {className: "page-header"}, 
 	          "Number Picker", 
 	          React.createElement("span", {className: "pull-right"}, 
@@ -1531,11 +1672,11 @@
 	module.exports = NumberPicker;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var _ = __webpack_require__(15)
+	var _ = __webpack_require__(16)
 	
 	module.exports = function(existing, classes) {
 		if(arguments.length === 1 )
@@ -1554,30 +1695,30 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-	var update = __webpack_require__(14)(
-		__webpack_require__(13)
+	var update = __webpack_require__(15)(
+		__webpack_require__(14)
 	);
 	// Hot Module Replacement
 	if(false) {
-		module.hot.accept("!!C:\\Projects\\react-widgets\\node_modules\\css-loader\\index.js!C:\\Projects\\react-widgets\\docs\\docs.css", function() {
-			update(require("!!C:\\Projects\\react-widgets\\node_modules\\css-loader\\index.js!C:\\Projects\\react-widgets\\docs\\docs.css"));
+		module.hot.accept("!!E:\\Projects\\react-widgets\\node_modules\\css-loader\\index.js!E:\\Projects\\react-widgets\\docs\\docs.css", function() {
+			update(require("!!E:\\Projects\\react-widgets\\node_modules\\css-loader\\index.js!E:\\Projects\\react-widgets\\docs\\docs.css"));
 		});
 		module.hot.dispose(function() { update(); });
 	}
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports =
 		"\r\nbody {\r\n  margin-bottom: 40px;\r\n  background: #FAFAF9;\r\n}\r\n\r\nh2, h3 {\r\n  margin-top: 40px;\r\n}\r\n\r\nh3 {\r\n  color: #284C6D;\r\n  border-bottom: 1px solid #eee;\r\n  padding-bottom: 10px;\r\n  font-size: 20px;\r\n\r\n}\r\n\r\n.example {\r\n  background-color: white;\r\n  margin-top: 20px;\r\n  position: relative;\r\n  border: #ddd 1px solid;\r\n  border-top-right-radius: 4px;\r\n  border-top-left-radius: 4px;\r\n  padding: 20px;\r\n  padding-top: 35px;\r\n}\r\n\r\ncode {\r\n  color: #555;\r\n  background-color: rgba(0,0,0,0.07);\r\n}\r\n.example:before {\r\n  position: absolute;\r\n  top: 5px;\r\n  left: 10px;\r\n  color: #959595;\r\n  content: 'Example';\r\n}\r\n.example + pre {\r\n /* background-color: #444;*/\r\n  margin-top: 0 !important;\r\n  border-top-width: 0;\r\n  border-top-left-radius: 0;\r\n  border-top-right-radius: 0;\r\n}\r\n\r\n.keyboard-list.list-unstyled {\r\n  padding-left: 20px;\r\n}\r\n\r\n.keyboard-list > li {\r\n  padding: 10px 0;\r\n}\r\n\r\n.prop-header {\r\n  position: relative;\r\n  overflow: visible;\r\n}\r\n.prop-header:before {\r\n  display: block;\r\n  content: \" \";\r\n  margin-top: -65px;\r\n  height: 65px;\r\n  visibility: hidden;\r\n}\r\n\r\nh3 {\r\n  overflow: hidden;\r\n}\r\nh3 > small {\r\n  margin-left: 5px;\r\n  color: #555;\r\n  font-weight: bold;\r\n  font-size: 80%;\r\n  font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;\r\n}\r\n\r\nh3 > strong {\r\n  float: right;\r\n  font-weight: normal;\r\n  line-height: 1;\r\n  color:  #AF006E;\r\n  font-size: 65%;\r\n  font-style: italic;\r\n}\r\n\r\n.rw-widget {\r\n  max-width: 300px;\r\n}\r\n\r\n.nav-aside {\r\n  position: fixed;\r\n  top: 72px;\r\n}\r\n\r\n@media (max-width: 767px) {\r\n  .nav-aside {\r\n    position: static;\r\n  }\r\n}\r\n\r\npre > code.hljs {\r\n  background: none;\r\n}\r\n\r\npre {\r\n  background: #F4F4F4 ;\r\n}\r\n.navbar-default {\r\n  background-color: #0079C1;\r\n}\r\n\r\n.navbar-default .navbar-nav>li>a {\r\n  color: white;\r\n  border-bottom: 3px solid #0079C1;\r\n}\r\n\r\n.navbar-default .navbar-nav>li>a:hover {\r\n  color: #E7CAA1;\r\n  border-bottom-color: #E7CAA1;\r\n}\r\n.navbar-default .navbar-nav>li>a:hover,\r\n.navbar-default .navbar-nav>li.active > a,\r\n.navbar-default .navbar-nav>li.active > a:hover {\r\n  color: #E7CAA1;\r\n  border-bottom-color: #E7CAA1;\r\n  background: none;\r\n /* color: white;\r\n  background-color: #0B2A46;\r\n  border-bottom: 3px solid #0B2A46;*/\r\n}\r\n\r\n.dropdown-menu{\r\n  border-radius: 0;\r\n /* border-color: #0079C1;\r\n  border-top-right-radius: 0;\r\n  border-top-left-radius: 0;*/\r\n}\r\n.dropdown-menu > li > a,\r\n.side-nav .nav > li > a {\r\n  color: #284C6D;\r\n  border-left: 2px solid transparent;\r\n}\r\n\r\n.side-nav .nav > li > a:hover,\r\n.side-nav .nav > li.active > a,\r\n.dropdown-menu > li > a:hover,\r\n.dropdown-menu > li.active > a  {\r\n  color: #B59E7D;\r\n  background: none;\r\n  border-left-color:  #E7CAA1;\r\n}\r\n.page-header {\r\n  color: #0079C1;\r\n  border-bottom-color: #0079C1;\r\n}\r\n\r\n.h1, h2,h4,h5 { color: #0079C1; }\r\n\r\n\r\n.example .demo {\r\n  margin: 40px auto 10px auto;\r\n}\r\n\r\n.example .api-panel {\r\n  padding-top: 10px;\r\n  border-top: #ddd 1px solid;\r\n}\r\n\r\n.example.example-vertical .demo {\r\n  margin: 20px auto 30px auto;\r\n}\r\n\r\n.example.example-vertical .api-panel {\r\n  margin-top: 0;\r\n  border-top: #ddd 1px solid;\r\n  padding-top: 10px;\r\n}\r\n\r\n@media (min-width: 768px) {\r\n  .example .api-panel {\r\n    margin-top: -10px;\r\n    padding-top: 0;\r\n    border-left: #ddd 1px solid;\r\n    border-top-width: 0;\r\n  }\r\n}\r\n\r\n.overdue {\r\n  color: #bd362f;\r\n}";
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -1588,9 +1729,9 @@
 		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
-		var styleElement = document.createElement("style");
+		var styleElement = document.createElement("style"),
+			head = document.head || document.getElementsByTagName("head")[0];
 		styleElement.type = "text/css";
-		var head = document.getElementsByTagName("head")[0];
 		head.appendChild(styleElement);
 		if (styleElement.styleSheet) {
 			styleElement.styleSheet.cssText = cssCode;
@@ -1606,15 +1747,22 @@
 						styleElement.childNodes[0].nodeValue = cssCode;
 					}
 				} else {
-					head.removeChild(styleElement);
+					dispose();
 				}
 			};
+		} else {
+			// For the useable API, provide a function to remove the stylesheet.
+			return dispose;
 		}
-	}
+	
+		function dispose() {
+			head.removeChild(styleElement);
+		}
+	};
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1626,9 +1774,9 @@
 	
 	    has: has,
 	    
-	    merge:  __webpack_require__(41),
+	    merge:  __webpack_require__(40),
 	
-	    extend: __webpack_require__(39),
+	    extend: __webpack_require__(34),
 	
 	    isShallowEqual: function (a, b) {
 	      if (a === b) return true;
@@ -1738,7 +1886,7 @@
 	}
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM *//**
@@ -1762,11 +1910,11 @@
 	module.exports = defaultValue;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1)
-	  , _ = __webpack_require__(52);
+	  , _ = __webpack_require__(57);
 	
 	
 	module.exports = React.createClass({displayName: 'exports',
@@ -1789,13 +1937,172 @@
 	})
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var React = __webpack_require__(1)
+	/** @jsx React.DOM */'use strict';
+	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(31);
+	  , Dropdown = __webpack_require__(33).DropdownList
+	  , NumberPicker = __webpack_require__(33).NumberPicker;
+	
+	var valueComp = React.createClass({displayName: 'valueComp',
+	  render: function() {
+	
+	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.label))
+	  }
+	});
+	
+	var itemComp = React.createClass({displayName: 'itemComp',
+	  render: function() {
+	    var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	    return (
+	      React.createElement("div", null, 
+	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
+	         '  ' + this.props.item.label
+	      )
+	    );
+	  }
+	});
+	
+	
+	function getRandomInt(min, max) {
+	  return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	
+	
+	var DropdownApi = React.createClass({displayName: 'DropdownApi',
+	
+	  getInitialState: function(){
+	
+	    return {
+	      duration: 250,
+	    }
+	  },
+	
+	  render: function() {
+	    var list = [
+	        { label: 'orange', id: 1 },
+	        { label: 'blue', id: 2 },
+	        { label: 'red', id: 3 },
+	      ];
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-sm-8 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(Dropdown, {
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                value: this.state.value || 1, 
+	                data: list, 
+	                duration: this.state.duration, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", null, "Custom Rendering"), 
+	              React.createElement(Dropdown, {
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                value: this.state.value || 1, 
+	                valueComponent: valueComp, 
+	                itemComponent: itemComp, 
+	                data: list, 
+	                duration: this.state.duration, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            )
+	          ), 
+	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Duration"), 
+	              React.createElement(NumberPicker, {
+	                  value: this.state.duration, 
+	                  step: 200, 
+	                  min: 0, 
+	                  max: 1000, 
+	                  onChange: this._set.bind(null, 'duration')})
+	            )
+	          )
+	        )
+	      )
+	    );
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	});
+	
+	module.exports = DropdownApi;
+	
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */'use strict';
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW = __webpack_require__(33);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -1835,10 +2142,9 @@
 	                  filter: this.state.filter || false, 
 	                  disabled: this.state.disabled === 'disabled', 
 	                  readOnly: this.state.disabled === 'readonly', 
-	                  data: list, 
+	
 	                  duration: this.state.duration, 
 	                  busy: this.state.busy, 
-	                  onChange: this._change, 
 	                  isRtl: this.state.isRtl})
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
@@ -1853,11 +2159,9 @@
 	                  filter: this.state.filter || false, 
 	                  disabled: this.state.disabled === 'disabled', 
 	                  readOnly: this.state.disabled === 'readonly', 
-	                  data: list, 
 	                  duration: this.state.duration, 
 	                  itemComponent: itemComp, 
 	                  busy: this.state.busy, 
-	                  onChange: this._change, 
 	                  isRtl: this.state.isRtl})
 	            )
 	          ), 
@@ -1963,16 +2267,16 @@
 	}
 
 /***/ },
-/* 19 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM */var React = __webpack_require__(1)
-	  , _ = __webpack_require__(52)
+	/** @jsx React.DOM */'use strict';
+	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(31);
+	  , RW = __webpack_require__(33);
 	
-	var chance = new (__webpack_require__(42))
+	var chance = new (__webpack_require__(50))
 	
 	var list = new Array(100)
 	
@@ -1993,7 +2297,7 @@
 	
 	  render: function(){
 	    var allVals = this.state.value
-	      , disabled = this.state.disabled === true || _.isArray(this.state.disabled);
+	      , disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 	
 	    return (
 	      React.createElement("div", {className: "example"}, 
@@ -2009,10 +2313,8 @@
 	                  placeholder: this.state.placeholder, 
 	                  disabled: disabled ? this.state.disabled : false, 
 	                  readOnly: this.state.disabled === 'readonly', 
-	                  data: list, 
 	                  duration: this.state.duration, 
 	                  busy: this.state.busy, 
-	                  onChange: this._change, 
 	                  isRtl: this.state.isRtl})
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
@@ -2026,12 +2328,11 @@
 	                  placeholder: this.state.placeholder, 
 	                  disabled: disabled ? this.state.disabled : false, 
 	                  readOnly: this.state.disabled === 'readonly', 
-	                  data: list, 
+	
 	                  duration: this.state.duration, 
 	                  itemComponent: itemComp, 
 	                  tagComponent: itemComp, 
 	                  busy: this.state.busy, 
-	                  onChange: this._change, 
 	                  isRtl: this.state.isRtl})
 	            )
 	          ), 
@@ -2066,7 +2367,7 @@
 	            React.createElement("div", {className: "form-group"}, 
 	              React.createElement("label", {className: "form-label"}, "Disable Multiselect Values"), 
 	              React.createElement(RW.Multiselect, {
-	                  value:  _.isArray(this.state.disabled) ? this.state.disabled : [], 
+	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
 	                  data: allVals, 
 	                  textField: "label", 
 	                  valueField: "id", 
@@ -2145,13 +2446,165 @@
 
 
 /***/ },
-/* 20 */
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */'use strict';
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW = __webpack_require__(33);
+	
+	// var valueComp = React.createClass({
+	//   render: function() {
+	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
+	//   }
+	// });
+	
+	// var itemComp = React.createClass({
+	//   render: function() {
+	//     var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	//     return (
+	//       <div>
+	//         <i className={'fa fa-' + this._icon}></i>
+	//         { '  ' + this.props.item.label}
+	//       </div>
+	//     );
+	//   }
+	// });
+	
+	// function getRandomInt(min, max) {
+	//   return Math.floor(Math.random() * (max - min + 1)) + min;
+	// }
+	
+	
+	var DropdownApi = React.createClass({displayName: 'DropdownApi',
+	
+	  getInitialState: function(){
+	
+	    return {
+	      duration: 250,
+	    }
+	  },
+	
+	  render: function() {
+	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
+	    var list = [
+	        { label: 'orange', id: 1 },
+	        { label: 'blue',   id: 2 },
+	        { label: 'red',    id: 3 },
+	        { label: 'maroon', id: 4 },
+	        { label: 'purple', id: 5 },
+	        { label: 'mauve',  id: 6 },
+	      ];
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-sm-8 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(RW.SelectList, {
+	                disabled: disabled ? this.state.disabled : false, 
+	                readOnly: this.state.disabled === 'readonly', 
+	                value: this.state.value || 1, 
+	                data: list, 
+	                multiple: this.state.multiple, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            )
+	          ), 
+	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.multiple, 
+	                  onChange: this._set.bind(null, 'multiple', !this.state.multiple)}), 
+	                  "Is Multiple"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Disable Values")
+	              /*<RW.Multiselect 
+	                  value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] } 
+	                  data={allVals}
+	                  textField='label'
+	                  valueField='id'
+	                  disabled={this.state.disabled === true}
+	                  messages={{ emptyList: "no values Multiselected to the right"}}
+	                  onChange={this._set.bind(null, 'disabled')}/>*/
+	            )
+	          )
+	        )
+	      )
+	    );
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === true ? false : true
+	    this.setState({ disabled: val })
+	  }
+	});
+	
+	module.exports = DropdownApi;
+	
+
+
+/***/ },
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React       = __webpack_require__(1)
 	  , Button      = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW          = __webpack_require__(31);
+	  , RW          = __webpack_require__(33);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	  getInitialState: function(){
@@ -2263,14 +2716,14 @@
 
 
 /***/ },
-/* 21 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1)
-	  , dates = __webpack_require__(40)
+	  , dates = __webpack_require__(35)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(31);
+	  , RW = __webpack_require__(33);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	  getInitialState: function(){
@@ -2458,13 +2911,13 @@
 	}
 
 /***/ },
-/* 22 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(31);
+	  , RW = __webpack_require__(33);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	  getInitialState: function(){
@@ -2577,174 +3030,13 @@
 	}
 
 /***/ },
-/* 23 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** @jsx React.DOM *//**
-	 * @jsx React.DOM
-	 */
-	
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , Dropdown = __webpack_require__(31).DropdownList
-	  , NumberPicker = __webpack_require__(31).NumberPicker;
-	
-	var valueComp = React.createClass({displayName: 'valueComp',
-	  render: function() {
-	
-	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.label))
-	  }
-	});
-	
-	var itemComp = React.createClass({displayName: 'itemComp',
-	  render: function() {
-	    var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	    return (
-	      React.createElement("div", null, 
-	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
-	         '  ' + this.props.item.label
-	      )
-	    );
-	  }
-	});
-	
-	
-	function getRandomInt(min, max) {
-	  return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-	
-	
-	var DropdownApi = React.createClass({displayName: 'DropdownApi',
-	
-	  getInitialState: function(){
-	
-	    return {
-	      duration: 250,
-	    }
-	  },
-	
-	  render: function() {
-	    var list = [
-	        { label: 'orange', id: 1 },
-	        { label: 'blue', id: 2 },
-	        { label: 'red', id: 3 },
-	      ];
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-sm-8 demo"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(Dropdown, {
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value || 1, 
-	                data: list, 
-	                duration: this.state.duration, 
-	                busy: this.state.busy, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl, 
-	                valueField: "id", 
-	                textField: "label"}
-	                )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", null, "Custom Rendering"), 
-	              React.createElement(Dropdown, {
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value || 1, 
-	                valueComponent: valueComp, 
-	                itemComponent: itemComp, 
-	                data: list, 
-	                duration: this.state.duration, 
-	                busy: this.state.busy, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl, 
-	                valueField: "id", 
-	                textField: "label"}
-	                )
-	            )
-	          ), 
-	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: _.partial(this._set, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              ), 
-	              React.createElement(Button, {style: { marginLeft: 10}, 
-	                active: this.state.busy, 
-	                onClick: _.partial(this._set, 'busy', !this.state.busy)}, 
-	                "Busy"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Duration"), 
-	              React.createElement(NumberPicker, {
-	                  value: this.state.duration, 
-	                  step: 200, 
-	                  min: 0, 
-	                  max: 1000, 
-	                  onChange: _.partial(this._set, 'duration')})
-	            )
-	          )
-	        )
-	      )
-	    );
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
-	    this.setState({ disabled: val })
-	  },
-	});
-	
-	module.exports = DropdownApi;
-	
-
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(54);
-	var classSet = __webpack_require__(55);
-	var BootstrapMixin = __webpack_require__(32);
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(51);
+	var classSet = __webpack_require__(52);
+	var BootstrapMixin = __webpack_require__(36);
 	
 	var Button = React.createClass({displayName: 'Button',
 	  mixins: [BootstrapMixin],
@@ -2829,14 +3121,14 @@
 
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(54);
-	var classSet = __webpack_require__(55);
-	var BootstrapMixin = __webpack_require__(32);
-	var Button = __webpack_require__(24);
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(51);
+	var classSet = __webpack_require__(52);
+	var BootstrapMixin = __webpack_require__(36);
+	var Button = __webpack_require__(26);
 	
 	var ButtonGroup = React.createClass({displayName: 'ButtonGroup',
 	  mixins: [BootstrapMixin],
@@ -2871,21 +3163,21 @@
 	module.exports = ButtonGroup;
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(54);
-	var classSet = __webpack_require__(55);
-	var cloneWithProps = __webpack_require__(56);
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(51);
+	var classSet = __webpack_require__(52);
+	var cloneWithProps = __webpack_require__(54);
 	
-	var createChainedFunction = __webpack_require__(36);
-	var BootstrapMixin = __webpack_require__(32);
-	var DropdownStateMixin = __webpack_require__(33);
-	var Button = __webpack_require__(24);
-	var ButtonGroup = __webpack_require__(25);
-	var DropdownMenu = __webpack_require__(34);
-	var ValidComponentChildren = __webpack_require__(37);
+	var createChainedFunction = __webpack_require__(56);
+	var BootstrapMixin = __webpack_require__(36);
+	var DropdownStateMixin = __webpack_require__(38);
+	var Button = __webpack_require__(26);
+	var ButtonGroup = __webpack_require__(27);
+	var DropdownMenu = __webpack_require__(39);
+	var ValidComponentChildren = __webpack_require__(55);
 	
 	
 	var DropdownButton = React.createClass({displayName: 'DropdownButton',
@@ -2999,12 +3291,12 @@
 	module.exports = DropdownButton;
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(54);
-	var classSet = __webpack_require__(55);
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(51);
+	var classSet = __webpack_require__(52);
 	
 	var MenuItem = React.createClass({displayName: 'MenuItem',
 	  propTypes: {
@@ -3062,19 +3354,19 @@
 	module.exports = MenuItem;
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(54);
-	var BootstrapMixin = __webpack_require__(32);
-	var CollapsableMixin = __webpack_require__(35);
-	var classSet = __webpack_require__(55);
-	var domUtils = __webpack_require__(38);
-	var cloneWithProps = __webpack_require__(56);
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(51);
+	var BootstrapMixin = __webpack_require__(36);
+	var CollapsableMixin = __webpack_require__(37);
+	var classSet = __webpack_require__(52);
+	var domUtils = __webpack_require__(53);
+	var cloneWithProps = __webpack_require__(54);
 	
-	var ValidComponentChildren = __webpack_require__(37);
-	var createChainedFunction = __webpack_require__(36);
+	var ValidComponentChildren = __webpack_require__(55);
+	var createChainedFunction = __webpack_require__(56);
 	
 	
 	var Nav = React.createClass({displayName: 'Nav',
@@ -3178,13 +3470,13 @@
 
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(54);
-	var classSet = __webpack_require__(55);
-	var BootstrapMixin = __webpack_require__(32);
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(51);
+	var classSet = __webpack_require__(52);
+	var BootstrapMixin = __webpack_require__(36);
 	
 	var NavItem = React.createClass({displayName: 'NavItem',
 	  mixins: [BootstrapMixin],
@@ -3237,18 +3529,18 @@
 	module.exports = NavItem;
 
 /***/ },
-/* 30 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(54);
-	var BootstrapMixin = __webpack_require__(32);
-	var classSet = __webpack_require__(55);
-	var cloneWithProps = __webpack_require__(56);
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(51);
+	var BootstrapMixin = __webpack_require__(36);
+	var classSet = __webpack_require__(52);
+	var cloneWithProps = __webpack_require__(54);
 	
-	var ValidComponentChildren = __webpack_require__(37);
-	var createChainedFunction = __webpack_require__(36);
-	var Nav = __webpack_require__(28);
+	var ValidComponentChildren = __webpack_require__(55);
+	var createChainedFunction = __webpack_require__(56);
+	var Nav = __webpack_require__(30);
 	
 	
 	var Navbar = React.createClass({displayName: 'Navbar',
@@ -3382,583 +3674,32 @@
 
 
 /***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	
-	module.exports = {
-	
-	  DropdownList:     __webpack_require__(43),
-	  Combobox:         __webpack_require__(44),
-	
-	  Calendar:         __webpack_require__(45),
-	  DateTimePicker:   __webpack_require__(46),
-	
-	  NumberPicker:     __webpack_require__(47),
-	  
-	  Multiselect:      __webpack_require__(48),
-	  SelectList:       __webpack_require__(49),
-	
-	  utils: {
-	    ReplaceTransitionGroup: __webpack_require__(50),
-	    SlideTransition:        __webpack_require__(51),
-	  }
-	}
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var constants = __webpack_require__(53);
-	
-	var BootstrapMixin = {
-	  propTypes: {
-	    bsClass: React.PropTypes.oneOf(Object.keys(constants.CLASSES)),
-	    bsStyle: React.PropTypes.oneOf(Object.keys(constants.STYLES)),
-	    bsSize: React.PropTypes.oneOf(Object.keys(constants.SIZES))
-	  },
-	
-	  getBsClassSet: function () {
-	    var classes = {};
-	
-	    var bsClass = this.props.bsClass && constants.CLASSES[this.props.bsClass];
-	    if (bsClass) {
-	      classes[bsClass] = true;
-	
-	      var prefix = bsClass + '-';
-	
-	      var bsSize = this.props.bsSize && constants.SIZES[this.props.bsSize];
-	      if (bsSize) {
-	        classes[prefix + bsSize] = true;
-	      }
-	
-	      var bsStyle = this.props.bsStyle && constants.STYLES[this.props.bsStyle];
-	      if (this.props.bsStyle) {
-	        classes[prefix + bsStyle] = true;
-	      }
-	    }
-	
-	    return classes;
-	  }
-	};
-	
-	module.exports = BootstrapMixin;
-
-/***/ },
 /* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var EventListener = __webpack_require__(57);
 	
-	/**
-	 * Checks whether a node is within
-	 * a root nodes tree
-	 *
-	 * @param {DOMElement} node
-	 * @param {DOMElement} root
-	 * @returns {boolean}
-	 */
-	function isNodeInRoot(node, root) {
-	  while (node) {
-	    if (node === root) {
-	      return true;
-	    }
-	    node = node.parentNode;
+	
+	module.exports = {
+	
+	  DropdownList:     __webpack_require__(41),
+	  Combobox:         __webpack_require__(42),
+	
+	  Calendar:         __webpack_require__(43),
+	  DateTimePicker:   __webpack_require__(44),
+	
+	  NumberPicker:     __webpack_require__(45),
+	  
+	  Multiselect:      __webpack_require__(46),
+	  SelectList:       __webpack_require__(47),
+	
+	  utils: {
+	    ReplaceTransitionGroup: __webpack_require__(48),
+	    SlideTransition:        __webpack_require__(49),
 	  }
-	
-	  return false;
 	}
-	
-	var DropdownStateMixin = {
-	  getInitialState: function () {
-	    return {
-	      open: false
-	    };
-	  },
-	
-	  setDropdownState: function (newState, onStateChangeComplete) {
-	    if (newState) {
-	      this.bindRootCloseHandlers();
-	    } else {
-	      this.unbindRootCloseHandlers();
-	    }
-	
-	    this.setState({
-	      open: newState
-	    }, onStateChangeComplete);
-	  },
-	
-	  handleDocumentKeyUp: function (e) {
-	    if (e.keyCode === 27) {
-	      this.setDropdownState(false);
-	    }
-	  },
-	
-	  handleDocumentClick: function (e) {
-	    // If the click originated from within this component
-	    // don't do anything.
-	    if (isNodeInRoot(e.target, this.getDOMNode())) {
-	      return;
-	    }
-	
-	    this.setDropdownState(false);
-	  },
-	
-	  bindRootCloseHandlers: function () {
-	    this._onDocumentClickListener =
-	      EventListener.listen(document, 'click', this.handleDocumentClick);
-	    this._onDocumentKeyupListener =
-	      EventListener.listen(document, 'keyup', this.handleDocumentKeyUp);
-	  },
-	
-	  unbindRootCloseHandlers: function () {
-	    if (this._onDocumentClickListener) {
-	      this._onDocumentClickListener.remove();
-	    }
-	
-	    if (this._onDocumentKeyupListener) {
-	      this._onDocumentKeyupListener.remove();
-	    }
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.unbindRootCloseHandlers();
-	  }
-	};
-	
-	module.exports = DropdownStateMixin;
 
 /***/ },
 /* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(54);
-	var classSet = __webpack_require__(55);
-	var cloneWithProps = __webpack_require__(56);
-	
-	var createChainedFunction = __webpack_require__(36);
-	var ValidComponentChildren = __webpack_require__(37);
-	
-	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
-	  propTypes: {
-	    pullRight: React.PropTypes.bool,
-	    onSelect: React.PropTypes.func
-	  },
-	
-	  render: function () {
-	    var classes = {
-	        'dropdown-menu': true,
-	        'dropdown-menu-right': this.props.pullRight
-	      };
-	
-	    return (
-	        React.createElement("ul", React.__spread({}, 
-	          this.props, 
-	          {className: joinClasses(this.props.className, classSet(classes)), 
-	          role: "menu"}), 
-	          ValidComponentChildren.map(this.props.children, this.renderMenuItem)
-	        )
-	      );
-	  },
-	
-	  renderMenuItem: function (child, index) {
-	    return cloneWithProps(
-	      child,
-	      {
-	        // Capture onSelect events
-	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
-	
-	        // Force special props to be transferred
-	        key: child.key ? child.key : index,
-	        ref: child.ref
-	      }
-	    );
-	  }
-	});
-	
-	module.exports = DropdownMenu;
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var TransitionEvents = __webpack_require__(58);
-	
-	var CollapsableMixin = {
-	
-	  propTypes: {
-	    collapsable: React.PropTypes.bool,
-	    defaultExpanded: React.PropTypes.bool,
-	    expanded: React.PropTypes.bool
-	  },
-	
-	  getInitialState: function () {
-	    return {
-	      expanded: this.props.defaultExpanded != null ? this.props.defaultExpanded : null,
-	      collapsing: false
-	    };
-	  },
-	
-	  handleTransitionEnd: function () {
-	    this._collapseEnd = true;
-	    this.setState({
-	      collapsing: false
-	    });
-	  },
-	
-	  componentWillReceiveProps: function (newProps) {
-	    if (this.props.collapsable && newProps.expanded !== this.props.expanded) {
-	      this._collapseEnd = false;
-	      this.setState({
-	        collapsing: true
-	      });
-	    }
-	  },
-	
-	  _addEndTransitionListener: function () {
-	    var node = this.getCollapsableDOMNode();
-	
-	    if (node) {
-	      TransitionEvents.addEndEventListener(
-	        node,
-	        this.handleTransitionEnd
-	      );
-	    }
-	  },
-	
-	  _removeEndTransitionListener: function () {
-	    var node = this.getCollapsableDOMNode();
-	
-	    if (node) {
-	      TransitionEvents.removeEndEventListener(
-	        node,
-	        this.handleTransitionEnd
-	      );
-	    }
-	  },
-	
-	  componentDidMount: function () {
-	    this._afterRender();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this._removeEndTransitionListener();
-	  },
-	
-	  componentWillUpdate: function (nextProps) {
-	    var dimension = (typeof this.getCollapsableDimension === 'function') ?
-	      this.getCollapsableDimension() : 'height';
-	    var node = this.getCollapsableDOMNode();
-	
-	    this._removeEndTransitionListener();
-	    if (node && nextProps.expanded !== this.props.expanded && this.props.expanded) {
-	      node.style[dimension] = this.getCollapsableDimensionValue() + 'px';
-	    }
-	  },
-	
-	  componentDidUpdate: function (prevProps, prevState) {
-	    if (this.state.collapsing !== prevState.collapsing) {
-	      this._afterRender();
-	    }
-	  },
-	
-	  _afterRender: function () {
-	    if (!this.props.collapsable) {
-	      return;
-	    }
-	
-	    this._addEndTransitionListener();
-	    setTimeout(this._updateDimensionAfterRender, 0);
-	  },
-	
-	  _updateDimensionAfterRender: function () {
-	    var dimension = (typeof this.getCollapsableDimension === 'function') ?
-	      this.getCollapsableDimension() : 'height';
-	    var node = this.getCollapsableDOMNode();
-	
-	    if (node) {
-	        if(this.isExpanded() && !this.state.collapsing) {
-	            node.style[dimension] = 'auto';
-	        } else {
-	            node.style[dimension] = this.isExpanded() ?
-	              this.getCollapsableDimensionValue() + 'px' : '0px';
-	        }
-	    }
-	  },
-	
-	  isExpanded: function () {
-	    return (this.props.expanded != null) ?
-	      this.props.expanded : this.state.expanded;
-	  },
-	
-	  getCollapsableClassSet: function (className) {
-	    var classes = {};
-	
-	    if (typeof className === 'string') {
-	      className.split(' ').forEach(function (className) {
-	        if (className) {
-	          classes[className] = true;
-	        }
-	      });
-	    }
-	
-	    classes.collapsing = this.state.collapsing;
-	    classes.collapse = !this.state.collapsing;
-	    classes['in'] = this.isExpanded() && !this.state.collapsing;
-	
-	    return classes;
-	  }
-	};
-	
-	module.exports = CollapsableMixin;
-
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Safe chained function
-	 *
-	 * Will only create a new function if needed,
-	 * otherwise will pass back existing functions or null.
-	 *
-	 * @param {function} one
-	 * @param {function} two
-	 * @returns {function|null}
-	 */
-	function createChainedFunction(one, two) {
-	  var hasOne = typeof one === 'function';
-	  var hasTwo = typeof two === 'function';
-	
-	  if (!hasOne && !hasTwo) { return null; }
-	  if (!hasOne) { return two; }
-	  if (!hasTwo) { return one; }
-	
-	  return function chainedFunction() {
-	    one.apply(this, arguments);
-	    two.apply(this, arguments);
-	  };
-	}
-	
-	module.exports = createChainedFunction;
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	/**
-	 * Maps children that are typically specified as `props.children`,
-	 * but only iterates over children that are "valid components".
-	 *
-	 * The mapFunction provided index will be normalised to the components mapped,
-	 * so an invalid component would not increase the index.
-	 *
-	 * @param {?*} children Children tree container.
-	 * @param {function(*, int)} mapFunction.
-	 * @param {*} mapContext Context for mapFunction.
-	 * @return {object} Object containing the ordered map of results.
-	 */
-	function mapValidComponents(children, func, context) {
-	  var index = 0;
-	
-	  return React.Children.map(children, function (child) {
-	    if (React.isValidElement(child)) {
-	      var lastIndex = index;
-	      index++;
-	      return func.call(context, child, lastIndex);
-	    }
-	
-	    return child;
-	  });
-	}
-	
-	/**
-	 * Iterates through children that are typically specified as `props.children`,
-	 * but only iterates over children that are "valid components".
-	 *
-	 * The provided forEachFunc(child, index) will be called for each
-	 * leaf child with the index reflecting the position relative to "valid components".
-	 *
-	 * @param {?*} children Children tree container.
-	 * @param {function(*, int)} forEachFunc.
-	 * @param {*} forEachContext Context for forEachContext.
-	 */
-	function forEachValidComponents(children, func, context) {
-	  var index = 0;
-	
-	  return React.Children.forEach(children, function (child) {
-	    if (React.isValidElement(child)) {
-	      func.call(context, child, index);
-	      index++;
-	    }
-	  });
-	}
-	
-	/**
-	 * Count the number of "valid components" in the Children container.
-	 *
-	 * @param {?*} children Children tree container.
-	 * @returns {number}
-	 */
-	function numberOfValidComponents(children) {
-	  var count = 0;
-	
-	  React.Children.forEach(children, function (child) {
-	    if (React.isValidElement(child)) { count++; }
-	  });
-	
-	  return count;
-	}
-	
-	/**
-	 * Determine if the Child container has one or more "valid components".
-	 *
-	 * @param {?*} children Children tree container.
-	 * @returns {boolean}
-	 */
-	function hasValidComponent(children) {
-	  var hasValid = false;
-	
-	  React.Children.forEach(children, function (child) {
-	    if (!hasValid && React.isValidElement(child)) {
-	      hasValid = true;
-	    }
-	  });
-	
-	  return hasValid;
-	}
-	
-	module.exports = {
-	  map: mapValidComponents,
-	  forEach: forEachValidComponents,
-	  numberOf: numberOfValidComponents,
-	  hasValidComponent: hasValidComponent
-	};
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Shortcut to compute element style
-	 *
-	 * @param {HTMLElement} elem
-	 * @returns {CssStyle}
-	 */
-	function getComputedStyles(elem) {
-	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
-	}
-	
-	/**
-	 * Get elements offset
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} DOMNode
-	 * @returns {{top: number, left: number}}
-	 */
-	function getOffset(DOMNode) {
-	  if (window.jQuery) {
-	    return window.jQuery(DOMNode).offset();
-	  }
-	
-	  var docElem = document.documentElement;
-	  var box = { top: 0, left: 0 };
-	
-	  // If we don't have gBCR, just use 0,0 rather than error
-	  // BlackBerry 5, iOS 3 (original iPhone)
-	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
-	    box = DOMNode.getBoundingClientRect();
-	  }
-	
-	  return {
-	    top: box.top + window.pageYOffset - docElem.clientTop,
-	    left: box.left + window.pageXOffset - docElem.clientLeft
-	  };
-	}
-	
-	/**
-	 * Get elements position
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} elem
-	 * @param {HTMLElement?} offsetParent
-	 * @returns {{top: number, left: number}}
-	 */
-	function getPosition(elem, offsetParent) {
-	  if (window.jQuery) {
-	    return window.jQuery(elem).position();
-	  }
-	
-	  var offset,
-	      parentOffset = {top: 0, left: 0};
-	
-	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
-	  if (getComputedStyles(elem).position === 'fixed' ) {
-	    // We assume that getBoundingClientRect is available when computed position is fixed
-	    offset = elem.getBoundingClientRect();
-	
-	  } else {
-	    if (!offsetParent) {
-	      // Get *real* offsetParent
-	      offsetParent = offsetParent(elem);
-	    }
-	
-	    // Get correct offsets
-	    offset = getOffset(elem);
-	    if ( offsetParent.nodeName !== 'HTML') {
-	      parentOffset = getOffset(offsetParent);
-	    }
-	
-	    // Add offsetParent borders
-	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
-	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
-	  }
-	
-	  // Subtract parent offsets and element margins
-	  return {
-	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
-	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
-	  };
-	}
-	
-	/**
-	 * Get parent element
-	 *
-	 * @param {HTMLElement?} elem
-	 * @returns {HTMLElement}
-	 */
-	function offsetParent(elem) {
-	  var docElem = document.documentElement;
-	  var offsetParent = elem.offsetParent || docElem;
-	
-	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
-	    getComputedStyles(offsetParent).position === 'static' ) ) {
-	    offsetParent = offsetParent.offsetParent;
-	  }
-	
-	  return offsetParent || docElem;
-	}
-	
-	module.exports = {
-	  getComputedStyles: getComputedStyles,
-	  getOffset: getOffset,
-	  getPosition: getPosition,
-	  offsetParent: offsetParent
-	};
-
-/***/ },
-/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = extend
@@ -3979,7 +3720,7 @@
 
 
 /***/ },
-/* 40 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var MILI 		= 'milliseconds'
@@ -4197,7 +3938,319 @@
 
 
 /***/ },
-/* 41 */
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var constants = __webpack_require__(58);
+	
+	var BootstrapMixin = {
+	  propTypes: {
+	    bsClass: React.PropTypes.oneOf(Object.keys(constants.CLASSES)),
+	    bsStyle: React.PropTypes.oneOf(Object.keys(constants.STYLES)),
+	    bsSize: React.PropTypes.oneOf(Object.keys(constants.SIZES))
+	  },
+	
+	  getBsClassSet: function () {
+	    var classes = {};
+	
+	    var bsClass = this.props.bsClass && constants.CLASSES[this.props.bsClass];
+	    if (bsClass) {
+	      classes[bsClass] = true;
+	
+	      var prefix = bsClass + '-';
+	
+	      var bsSize = this.props.bsSize && constants.SIZES[this.props.bsSize];
+	      if (bsSize) {
+	        classes[prefix + bsSize] = true;
+	      }
+	
+	      var bsStyle = this.props.bsStyle && constants.STYLES[this.props.bsStyle];
+	      if (this.props.bsStyle) {
+	        classes[prefix + bsStyle] = true;
+	      }
+	    }
+	
+	    return classes;
+	  }
+	};
+	
+	module.exports = BootstrapMixin;
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var TransitionEvents = __webpack_require__(59);
+	
+	var CollapsableMixin = {
+	
+	  propTypes: {
+	    collapsable: React.PropTypes.bool,
+	    defaultExpanded: React.PropTypes.bool,
+	    expanded: React.PropTypes.bool
+	  },
+	
+	  getInitialState: function () {
+	    return {
+	      expanded: this.props.defaultExpanded != null ? this.props.defaultExpanded : null,
+	      collapsing: false
+	    };
+	  },
+	
+	  handleTransitionEnd: function () {
+	    this._collapseEnd = true;
+	    this.setState({
+	      collapsing: false
+	    });
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    if (this.props.collapsable && newProps.expanded !== this.props.expanded) {
+	      this._collapseEnd = false;
+	      this.setState({
+	        collapsing: true
+	      });
+	    }
+	  },
+	
+	  _addEndTransitionListener: function () {
+	    var node = this.getCollapsableDOMNode();
+	
+	    if (node) {
+	      TransitionEvents.addEndEventListener(
+	        node,
+	        this.handleTransitionEnd
+	      );
+	    }
+	  },
+	
+	  _removeEndTransitionListener: function () {
+	    var node = this.getCollapsableDOMNode();
+	
+	    if (node) {
+	      TransitionEvents.removeEndEventListener(
+	        node,
+	        this.handleTransitionEnd
+	      );
+	    }
+	  },
+	
+	  componentDidMount: function () {
+	    this._afterRender();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this._removeEndTransitionListener();
+	  },
+	
+	  componentWillUpdate: function (nextProps) {
+	    var dimension = (typeof this.getCollapsableDimension === 'function') ?
+	      this.getCollapsableDimension() : 'height';
+	    var node = this.getCollapsableDOMNode();
+	
+	    this._removeEndTransitionListener();
+	    if (node && nextProps.expanded !== this.props.expanded && this.props.expanded) {
+	      node.style[dimension] = this.getCollapsableDimensionValue() + 'px';
+	    }
+	  },
+	
+	  componentDidUpdate: function (prevProps, prevState) {
+	    if (this.state.collapsing !== prevState.collapsing) {
+	      this._afterRender();
+	    }
+	  },
+	
+	  _afterRender: function () {
+	    if (!this.props.collapsable) {
+	      return;
+	    }
+	
+	    this._addEndTransitionListener();
+	    setTimeout(this._updateDimensionAfterRender, 0);
+	  },
+	
+	  _updateDimensionAfterRender: function () {
+	    var dimension = (typeof this.getCollapsableDimension === 'function') ?
+	      this.getCollapsableDimension() : 'height';
+	    var node = this.getCollapsableDOMNode();
+	
+	    if (node) {
+	        if(this.isExpanded() && !this.state.collapsing) {
+	            node.style[dimension] = 'auto';
+	        } else {
+	            node.style[dimension] = this.isExpanded() ?
+	              this.getCollapsableDimensionValue() + 'px' : '0px';
+	        }
+	    }
+	  },
+	
+	  isExpanded: function () {
+	    return (this.props.expanded != null) ?
+	      this.props.expanded : this.state.expanded;
+	  },
+	
+	  getCollapsableClassSet: function (className) {
+	    var classes = {};
+	
+	    if (typeof className === 'string') {
+	      className.split(' ').forEach(function (className) {
+	        if (className) {
+	          classes[className] = true;
+	        }
+	      });
+	    }
+	
+	    classes.collapsing = this.state.collapsing;
+	    classes.collapse = !this.state.collapsing;
+	    classes['in'] = this.isExpanded() && !this.state.collapsing;
+	
+	    return classes;
+	  }
+	};
+	
+	module.exports = CollapsableMixin;
+
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var EventListener = __webpack_require__(60);
+	
+	/**
+	 * Checks whether a node is within
+	 * a root nodes tree
+	 *
+	 * @param {DOMElement} node
+	 * @param {DOMElement} root
+	 * @returns {boolean}
+	 */
+	function isNodeInRoot(node, root) {
+	  while (node) {
+	    if (node === root) {
+	      return true;
+	    }
+	    node = node.parentNode;
+	  }
+	
+	  return false;
+	}
+	
+	var DropdownStateMixin = {
+	  getInitialState: function () {
+	    return {
+	      open: false
+	    };
+	  },
+	
+	  setDropdownState: function (newState, onStateChangeComplete) {
+	    if (newState) {
+	      this.bindRootCloseHandlers();
+	    } else {
+	      this.unbindRootCloseHandlers();
+	    }
+	
+	    this.setState({
+	      open: newState
+	    }, onStateChangeComplete);
+	  },
+	
+	  handleDocumentKeyUp: function (e) {
+	    if (e.keyCode === 27) {
+	      this.setDropdownState(false);
+	    }
+	  },
+	
+	  handleDocumentClick: function (e) {
+	    // If the click originated from within this component
+	    // don't do anything.
+	    if (isNodeInRoot(e.target, this.getDOMNode())) {
+	      return;
+	    }
+	
+	    this.setDropdownState(false);
+	  },
+	
+	  bindRootCloseHandlers: function () {
+	    this._onDocumentClickListener =
+	      EventListener.listen(document, 'click', this.handleDocumentClick);
+	    this._onDocumentKeyupListener =
+	      EventListener.listen(document, 'keyup', this.handleDocumentKeyUp);
+	  },
+	
+	  unbindRootCloseHandlers: function () {
+	    if (this._onDocumentClickListener) {
+	      this._onDocumentClickListener.remove();
+	    }
+	
+	    if (this._onDocumentKeyupListener) {
+	      this._onDocumentKeyupListener.remove();
+	    }
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.unbindRootCloseHandlers();
+	  }
+	};
+	
+	module.exports = DropdownStateMixin;
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(51);
+	var classSet = __webpack_require__(52);
+	var cloneWithProps = __webpack_require__(54);
+	
+	var createChainedFunction = __webpack_require__(56);
+	var ValidComponentChildren = __webpack_require__(55);
+	
+	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
+	  propTypes: {
+	    pullRight: React.PropTypes.bool,
+	    onSelect: React.PropTypes.func
+	  },
+	
+	  render: function () {
+	    var classes = {
+	        'dropdown-menu': true,
+	        'dropdown-menu-right': this.props.pullRight
+	      };
+	
+	    return (
+	        React.createElement("ul", React.__spread({}, 
+	          this.props, 
+	          {className: joinClasses(this.props.className, classSet(classes)), 
+	          role: "menu"}), 
+	          ValidComponentChildren.map(this.props.children, this.renderMenuItem)
+	        )
+	      );
+	  },
+	
+	  renderMenuItem: function (child, index) {
+	    return cloneWithProps(
+	      child,
+	      {
+	        // Capture onSelect events
+	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
+	
+	        // Force special props to be transferred
+	        key: child.key ? child.key : index,
+	        ref: child.ref
+	      }
+	    );
+	  }
+	});
+	
+	module.exports = DropdownMenu;
+
+/***/ },
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = extend
@@ -4220,7 +4273,2551 @@
 
 
 /***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React            = __webpack_require__(1)
+	  , _                = __webpack_require__(16)
+	  , $                = __webpack_require__(61)
+	  , cx               = __webpack_require__(12)
+	  , setter           = __webpack_require__(62)
+	  , controlledInput  = __webpack_require__(63)
+	  , CustomPropTypes  = __webpack_require__(64)
+	  , Popup            = __webpack_require__(65)
+	  , List             = __webpack_require__(66);
+	
+	var propTypes = {
+	  //-- controlled props -----------
+	  value:          React.PropTypes.any,
+	  onChange:       React.PropTypes.func,
+	  open:           React.PropTypes.bool,
+	  onToggle:       React.PropTypes.func,
+	  //------------------------------------
+	
+	  data:           React.PropTypes.array,
+	  valueField:     React.PropTypes.string,
+	  textField:      React.PropTypes.string,
+	
+	  valueComponent: CustomPropTypes.elementType,
+	  itemComponent:  CustomPropTypes.elementType,
+	  busy:           React.PropTypes.bool,
+	
+	  delay:          React.PropTypes.number,
+	  duration:       React.PropTypes.number, //popup
+	
+	  disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	  readOnly:       React.PropTypes.oneOfType([
+	                    React.PropTypes.bool,
+	                    React.PropTypes.oneOf(['readOnly'])
+	                  ]),
+	
+	  messages:       React.PropTypes.shape({
+	    open:         React.PropTypes.string,
+	  })
+	};
+	
+	var DropdownList = React.createClass({
+	
+	  displayName: 'DropdownList',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(89),
+	    __webpack_require__(90),
+	    __webpack_require__(91),
+	    __webpack_require__(92)('focusedIndex'),
+	    __webpack_require__(92)('selectedIndex')
+	  ],
+	
+	  propTypes: propTypes,
+	
+		getInitialState: function(){
+	    var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
+	
+			return {
+	      selectedIndex: initialIdx,
+	      focusedIndex:  initialIdx === -1 ? 0 : initialIdx,
+			}
+		},
+	
+	  getDefaultProps: function(){
+	    return {
+	      delay: 500,
+	      value: '',
+	      open: false,
+	      data: [],
+	      messages: {
+	        open: 'open dropdown'
+	      }
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(props){
+	    if ( _.isShallowEqual(props.value, this.props.value) )
+	      return
+	
+	    var idx = this._dataIndexOf(props.data, props.value);
+	
+	    this.setSelectedIndex(idx)
+	    this.setFocusedIndex(idx === -1 ? 0 : idx)
+	  },
+	
+		render: function(){
+			var $__0=   _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , ValueComponent = this.props.valueComponent
+	      , valueItem = this._dataItem( this._data(), this.props.value )
+	      , optID = this._id('_option');
+	
+			return (
+				React.createElement("div", React.__spread({},  props, 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onClick: this._maybeHandle(this.toggle), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        'aria-expanded':  this.props.open, 
+	        'aria-haspopup': true, 
+	        'aria-busy': !!this.props.busy, 
+	        'aria-activedescendent':  this.props.open ? optID : undefined, 
+	        'aria-disabled':  this.props.disabled, 
+	        'aria-readonly':  this.props.readOnly, 
+	        tabIndex: this.props.disabled ? '-1' : "0", 
+	        className: cx(className, {
+	          'rw-dropdownlist':   true,
+	          'rw-widget':          true,
+	          'rw-state-disabled':  this.props.disabled,
+	          'rw-state-readonly':  this.props.readOnly,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-open':            this.props.open,
+	          'rw-rtl':             this.isRtl()
+	        })}), 
+	
+					React.createElement("span", {className: "rw-dropdownlist-picker rw-select rw-btn"}, 
+						React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
+	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
+	          )
+					), 
+	        React.createElement("div", {className: "rw-input"}, 
+	           this.props.valueComponent
+	              ? React.createElement(ValueComponent, {item: valueItem})
+	              : this._dataText(valueItem)
+	          
+	        ), 
+	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
+	          React.createElement("div", null, 
+	            React.createElement(List, {ref: "list", 
+	              optID: optID, 
+	              'aria-hidden':  !this.props.open, 
+	              style: { maxHeight: 200, height: 'auto'}, 
+	              data: this.props.data, 
+	              initialVisibleItems: this.props.initialBufferSize, 
+	              itemHeight: 18, 
+	              selectedIndex: this.state.selectedIndex, 
+	              focusedIndex: this.state.focusedIndex, 
+	              textField: this.props.textField, 
+	              valueField: this.props.valueField, 
+	              listItem: this.props.itemComponent, 
+	              onSelect: this._maybeHandle(this._onSelect)})
+	          )
+	        )
+				)
+			)
+		},
+	
+	  setWidth: function() {
+	    var width = $.width(this.getDOMNode())
+	      , changed = width !== this.state.width;
+	
+	    if ( changed )
+	      this.setState({ width: width })
+	  },
+	
+	  _focus: function(focused){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	    self.timer = setTimeout(function(){
+	
+	      if(focused) self.getDOMNode().focus()
+	      else        self.close()
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	
+	    }, 0)
+	  },
+	
+	  _onSelect: function(data, idx, elem){
+	    this.close()
+	    this.change(data)
+	  },
+	
+	  _keyDown: function(e){
+	    var self = this
+	      , key = e.key
+	      , alt = e.altKey
+	      , isOpen = this.props.open;
+	
+	    if ( key === 'End' ) {
+	      if ( isOpen) this.setFocusedIndex(this._data().length - 1)
+	      else change(this._data().length - 1)
+	      e.preventDefault()
+	    }
+	    else if ( key === 'Home' ) {
+	      if ( isOpen) this.setFocusedIndex(0)
+	      else change(0)
+	      e.preventDefault()
+	    }
+	    else if ( key === 'Escape' && isOpen ) {
+	      this.close()
+	    }
+	    else if ( (key === 'Enter' || key === ' ') && isOpen ) {
+	      change(this.state.focusedIndex)
+	    }
+	    else if ( key === 'ArrowDown' ) {
+	      if ( alt )         this.open()
+	      else if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
+	      else               change(this.nextSelectedIndex())
+	      e.preventDefault()
+	    }
+	    else if ( key === 'ArrowUp' ) {
+	      if ( alt )         this.close()
+	      else if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
+	      else               change(this.prevSelectedIndex())
+	      e.preventDefault()
+	    }
+	    else
+	      this.search(
+	          String.fromCharCode(e.keyCode)
+	        , this._locate)
+	
+	    function change(idx){
+	      self.change(self._data()[idx])
+	    }
+	  },
+	
+	  change: function(data){
+	    var change = this.props.onChange
+	
+	    if ( change && !_.isShallowEqual(data, this.props.value) ) {
+	      change(data)
+	      this.close()
+	    }
+	  },
+	
+	  _locate: function(word){
+	    var key = this.props.open ? 'focusedIndex' : 'selectedIndex'
+	      , idx = this.findNextWordIndex(word, this.state[key])
+	      , setIndex = setter(key).bind(this);
+	
+	    if ( idx !== -1)
+	      setIndex(idx)
+	  },
+	
+	  _data: function(){
+	    return this.props.data
+	  },
+	
+	  open: function(){
+	    this.notify('onToggle', true)
+	  },
+	
+	  close: function(){
+	    this.notify('onToggle', false)
+	  },
+	
+	  toggle: function(e){
+	    this.props.open
+	      ? this.close()
+	      : this.open()
+	  }
+	
+	})
+	
+	
+	module.exports = controlledInput.createControlledClass(
+	    DropdownList, { open: 'onToggle', value: 'onChange' });
+	
+	module.exports.BaseDropdownList = DropdownList
+
+/***/ },
 /* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1)
+	  , cx     = __webpack_require__(12)
+	  , _      = __webpack_require__(16)
+	  , $      = __webpack_require__(61)
+	  , filter = __webpack_require__(67)
+	  , controlledInput  = __webpack_require__(63)
+	  , CustomPropTypes  = __webpack_require__(64)
+	  
+	  , Popup  = __webpack_require__(65)
+	  , List   = __webpack_require__(66)
+	  , Btn    = __webpack_require__(68)
+	  , Input  = __webpack_require__(69);
+	
+	var propTypes = {
+	      //-- controlled props -----------
+	      value:          React.PropTypes.any,
+	      onChange:       React.PropTypes.func,
+	      open:           React.PropTypes.bool,
+	      onToggle:       React.PropTypes.func,
+	      //------------------------------------
+	
+	      itemComponent:  CustomPropTypes.elementType,
+	
+	      data:           React.PropTypes.array,
+	      valueField:     React.PropTypes.string,
+	      textField:      React.PropTypes.string,
+	      name:           React.PropTypes.string,
+	
+	      disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	      readOnly:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['readOnly'])
+	                      ]),
+	
+	      suggest:        React.PropTypes.bool,
+	      busy:           React.PropTypes.bool,
+	
+	      duration:       React.PropTypes.number, //popup
+	      placeholder:    React.PropTypes.string,
+	
+	      messages:       React.PropTypes.shape({
+	        open:         React.PropTypes.string,
+	        emptyList:    React.PropTypes.string,
+	        emptyFilter:  React.PropTypes.string
+	      })
+	    };
+	
+	var ComboBox = React.createClass({
+	
+	  displayName: 'ComboBox',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(89),
+	    __webpack_require__(93),
+	    __webpack_require__(90),
+	    __webpack_require__(91),
+	    __webpack_require__(92)('focusedIndex'),
+	    __webpack_require__(92)('selectedIndex')
+	  ],
+	
+	  propTypes: propTypes,
+	
+		getInitialState: function(){
+	    var items = this.process(this.props.data, this.props.value)
+	      , idx   = this._dataIndexOf(items, this.props.value);
+	
+			return {
+				selectedIndex: idx,
+	      focusedIndex:  idx === -1 ? 0 : idx,
+	      processedData: items,
+				open:          false
+			}
+		},
+	
+	  getDefaultProps: function(){
+	    return {
+	      data: [],
+	      value: '',
+	      open: false,
+	      suggest: false,
+	      filter: false,
+	      delay: 500,
+	
+	      messages: {
+	        open: 'open combobox',
+	        emptyList:   "There are no items in this list",
+	        emptyFilter: "The filter returned no results"
+	      }
+	    }
+	  },
+	
+	  shouldComponentUpdate: function(nextProps, nextState){
+	    var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
+	      , stateChanged = !_.isShallowEqual(nextState, this.state)
+	      , valueChanged = !_.isShallowEqual(nextProps, this.props)
+	
+	    return isSuggesting || stateChanged || valueChanged
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var rawIdx = this._dataIndexOf(nextProps.data, nextProps.value)
+	      , valueItem = rawIdx == -1 ? nextProps.value : nextProps.data[rawIdx]
+	      , isSuggesting = this.refs.input.isSuggesting()
+	      , items = this.process(
+	          nextProps.data
+	        , nextProps.value
+	        , (rawIdx === -1 || isSuggesting) && this._dataText(valueItem) )
+	
+	      , idx = this._dataIndexOf(items, nextProps.value)
+	      , focused = this.filterIndexOf(items, this._dataText(valueItem));
+	
+	    this._searchTerm = '';
+	
+	    this.setState({
+	      processedData:  items,
+	      selectedIndex:  idx,
+	      focusedIndex:   idx === -1
+	        ? focused !== -1 ? focused : 0 // focus the closest match
+	        : idx
+	    })
+	  },
+	
+		render: function(){
+			var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , valueItem = this._dataItem( this._data(), this.props.value )
+	      , items = this._data()
+	      , listID = this._id('_listbox')
+	      , optID  = this._id( '_option')
+	      , completeType = this.props.suggest
+	          ? this.props.filter ? 'both' : 'inline'
+	          : this.props.filter ? 'list' : '';
+	
+			return (
+				React.createElement("div", React.__spread({},  props , 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        tabIndex: "-1", 
+	        className: cx(className, {
+	          'rw-combobox':        true,
+	          'rw-widget':          true,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-open':            this.props.open,
+	          'rw-state-disabled':  this.props.disabled,
+	          'rw-state-readonly':  this.props.readOnly,
+	          'rw-rtl':             this.isRtl()
+	         })}), 
+	        React.createElement(Btn, {
+	          tabIndex: "-1", 
+	          className: "rw-select", 
+	          onClick: this._maybeHandle(this.toggle), 
+	          disabled: !!(this.props.disabled || this.props.readOnly)}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
+	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
+	          )
+	        ), 
+	        React.createElement(Input, {
+	          ref: "input", 
+	          type: "text", 
+	          role: "combobox", 
+	          suggest: this.props.suggest, 
+	          name: this.props.name, 
+	          'aria-owns': listID, 
+	          'aria-busy': !!this.props.busy, 
+	          'aria-autocomplete': completeType, 
+	          'aria-activedescendent':  this.props.open ? optID : undefined, 
+	          'aria-expanded':  this.props.open, 
+	          'aria-haspopup': true, 
+	          placeholder: this.props.placeholder, 
+	          disabled: this.props.disabled, 
+	          readOnly: this.props.readOnly, 
+	          className: "rw-input", 
+	          value:  this._dataText(valueItem), 
+	          onChange: this._inputTyping, 
+	          onKeyDown: this._inputKeyDown}), 
+	
+	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
+	          React.createElement("div", null, 
+	            React.createElement(List, {ref: "list", 
+	              id: listID, 
+	              optID: optID, 
+	              'aria-hidden':  !this.props.open, 
+	              'aria-live':  completeType && 'polite', 
+	              style: { maxHeight: 200, height: 'auto'}, 
+	              data: items, 
+	              selectedIndex: this.state.selectedIndex, 
+	              focusedIndex: this.state.focusedIndex, 
+	
+	              textField: this.props.textField, 
+	              valueField: this.props.valueField, 
+	              onSelect: this._maybeHandle(this._onSelect), 
+	              listItem: this.props.itemComponent, 
+	              messages: {
+	                emptyList: this.props.data.length
+	                  ? this.props.messages.emptyFilter
+	                  : this.props.messages.emptyList
+	              }})
+	          )
+	        )
+				)
+			)
+		},
+	
+	  setWidth: function() {
+	    var width = $.width(this.getDOMNode())
+	      , changed = width !== this.state.width;
+	
+	    if ( changed )
+	      this.setState({ width: width })
+	  },
+	
+	  _onSelect: function(data, idx, elem){
+	    this.close()
+	    this.change(data)
+	    this._focus(true);
+	  },
+	
+	  _inputKeyDown: function(e){
+	    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
+	    this._isTyping = true
+	  },
+	
+	  _inputTyping: function(e){
+	    var self = this
+	      , shouldSuggest = !!this.props.suggest
+	      , strVal  = e.target.value
+	      , suggestion, data;
+	
+	    suggestion = this._deleting || !shouldSuggest
+	      ? strVal : this.suggest(this._data(), strVal)
+	
+	    suggestion = suggestion || strVal
+	
+	    data = _.find(self.props.data, 
+	      function(item)  {return this._dataText(item).toLowerCase() === suggestion.toLowerCase();}.bind(this))
+	
+	    this.change(!this._deleting && data
+	      ? data
+	      : strVal, true)
+	
+	    this.open()
+	  },
+	
+	  _focus: function(focused, e){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	    !focused && self.refs.input.accept() //not suggesting anymore
+	
+	    self.timer = setTimeout(function(){
+	      if(focused) self.refs.input.focus()
+	      else        self.close()
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	    }, 0)
+	  },
+	
+	  _keyDown: function(e){
+	    var self = this
+	      , key  = e.key
+	      , alt  = e.altKey
+	      , focusedIdx  = this.state.focusedIndex
+	      , isOpen      = this.props.open;
+	
+	    if ( key === 'End' )
+	      select(this._data().length - 1)
+	
+	    else if ( key === 'Home' )
+	      select(0)
+	
+	    else if ( key === 'Escape' && isOpen )
+	      this.close()
+	
+	    else if ( key === 'Enter' && isOpen ) {
+	      select(focusedIdx)
+	      this.close()
+	    }
+	
+	    else if ( key === 'ArrowDown' ) {
+	      if ( alt )
+	        this.open()
+	      else {
+	        if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
+	        else select(this.nextSelectedIndex())
+	      }
+	    }
+	    else if ( key === 'ArrowUp' ) {
+	      if ( alt )
+	        this.close()
+	      else {
+	        if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
+	        else select(this.prevSelectedIndex())
+	      }
+	    }
+	
+	    function select(idx) {
+	      if( idx === -1 || self._data().length === 0)
+	        return self.change(self.refs.input.getDOMNode().value, false)
+	
+	      self.refs.input.accept(true); //removes caret
+	      self.change(self._data()[idx], false)
+	    }
+	  },
+	
+	  change: function(data, typing){
+	    this._typedChange = !!typing
+	    this.notify('onChange', data)
+	  },
+	
+	  open: function(){
+	    if ( !this.props.open )
+	      this.notify('onToggle', true)
+	  },
+	
+	  close: function(){
+	    if ( this.props.open )
+	      this.notify('onToggle', false)
+	  },
+	
+	  toggle: function(e){
+	    this._focus(true)
+	
+	    this.props.open
+	      ? this.close()
+	      : this.open()
+	  },
+	
+	  suggest: function(data, value){
+	    var word = this._dataText(value)
+	      , matcher = filter.startsWith
+	      , suggestion = typeof value === 'string'
+	          ? _.find(data, finder, this)
+	          : value
+	
+	    if ( suggestion && (!this.state || !this.state.deleting))
+	      return this._dataText(suggestion)
+	
+	    return ''
+	
+	    function finder(item){
+	      return matcher(
+	          this._dataText(item).toLowerCase()
+	        , word.toLowerCase())
+	    }
+	  },
+	
+	  _data: function(){
+	    return this.state.processedData
+	  },
+	
+	  process: function(data, values, searchTerm){
+	    if( this.props.filter && searchTerm)
+	      data = this.filter(data, searchTerm)
+	
+	    return data
+	  }
+	})
+	
+	module.exports = controlledInput.createControlledClass(
+	      ComboBox, { open: 'onToggle', value: 'onChange' });
+	
+	module.exports.BaseComboBox = ComboBox
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React           = __webpack_require__(1)
+	  , Header          = __webpack_require__(70)
+	  , Month           = __webpack_require__(71)
+	  , Year            = __webpack_require__(72)
+	  , Decade          = __webpack_require__(73)
+	  , Century         = __webpack_require__(74)
+	  , cx              = __webpack_require__(12)
+	  , controlledInput = __webpack_require__(63)
+	  , SlideTransition = __webpack_require__(49)
+	  , dates           = __webpack_require__(75)
+	  , constants       = __webpack_require__(76)
+	  , _               = __webpack_require__(16); //values, omit, object
+	
+	var dir = constants.directions;
+	
+	var views        = constants.calendarViews
+	  , VIEW_OPTIONS = Object.keys(views).map( function(k)  {return views[k];} )
+	  , ALT_VIEW     = _.transform(constants.calendarViewHierarchy, function(o, val, key)  { 
+	                      o[val] = key 
+	                    }, {})
+	  , NEXT_VIEW    = constants.calendarViewHierarchy
+	  , VIEW_UNIT    = constants.calendarViewUnits
+	  , VIEW  = _.object([
+	      [views.MONTH,   Month],
+	      [views.YEAR,    Year],
+	      [views.DECADE,  Decade],
+	      [views.CENTURY, Century]
+	    ]);
+	
+	var MULTIPLIER = _.object([
+	      [views.YEAR,    1],
+	      [views.DECADE,  10],
+	      [views.CENTURY, 100]
+	    ]);
+	
+	
+	var Calendar = React.createClass({
+	
+	  displayName: 'Calendar',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(91)
+	  ],
+	
+	
+	  propTypes: {
+	
+	    onChange:      React.PropTypes.func.isRequired,
+	    value:         React.PropTypes.instanceOf(Date),
+	
+	    min:           React.PropTypes.instanceOf(Date),
+	    max:           React.PropTypes.instanceOf(Date),
+	
+	    initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
+	    finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['readOnly'])
+	                    ]),
+	
+	    messages:      React.PropTypes.shape({
+	      moveBack:    React.PropTypes.string,
+	      moveForward: React.PropTypes.string
+	    }),
+	
+	    maintainFocus: React.PropTypes.bool,
+	
+	  },
+	
+	  getInitialState: function(){
+	    return {
+	      selectedIndex: 0,
+	      view:          this.props.initialView || 'month',
+	      currentDate:   this.inRangeValue(new Date(this.props.value))
+	    }
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      open:  false,
+	      value: new Date,
+	      min:   new Date(1900,0, 1),
+	      max:   new Date(2099,11, 31),
+	
+	      initialView: 'month',
+	      finalView: 'century',
+	
+	      maintainFocus: true
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var bottom  = VIEW_OPTIONS.indexOf(nextProps.initialView)
+	      , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
+	      , current = VIEW_OPTIONS.indexOf(this.state.view)
+	      , view    = this.state.view
+	      , val     = this.inRangeValue(new Date(nextProps.value));
+	
+	    if( current < bottom )
+	      this.setState({ view: view = nextProps.initialView })
+	    else if (current > top)
+	      this.setState({ view: view = nextProps.finalView })
+	
+	    //if the value changes reset views to the new one
+	    if ( !dates.eq(val, this.props.value, VIEW_UNIT[view]))
+	      this.setState({
+	        currentDate: val
+	      })
+	  },
+	
+	  render: function(){
+	    var $__0=   
+	                  _.omit(this.props, ['value', 'min', 'max']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , View     = VIEW[this.state.view]
+	      , unit     = this.state.view
+	      
+	      , disabled = this.props.disabled || this.props.readOnly
+	      , date     = this.state.currentDate
+	      , labelId  = this._id('_view_label')
+	      , key      = this.state.view + '_' + dates[this.state.view](date)
+	      , id       = this._id('_view');
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props , 
+	        {className: cx(className, {
+	          'rw-calendar':       true,
+	          'rw-widget':         true,
+	          'rw-state-disabled': this.props.disabled,
+	          'rw-state-readonly': this.props.readOnly,
+	          'rw-rtl':            this.isRtl()
+	        })}), 
+	        React.createElement(Header, {
+	          label: this._label(), 
+	          labelId: labelId, 
+	          messages: this.props.messages, 
+	          upDisabled:   disabled || this.state.view === this.props.finalView, 
+	          prevDisabled: disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit), 
+	          nextDisabled: disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max, unit), 
+	          onViewChange: this._maybeHandle(this.navigate.bind(null, dir.UP, null)), 
+	          onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT, null)), 
+	          onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT, null))}), 
+	
+	        React.createElement(SlideTransition, {
+	          ref: "animation", 
+	          direction: this.state.slideDirection, 
+	          onAnimate: finished.bind(this)}, 
+	
+	          React.createElement(View, {ref: "currentView", 
+	            key: key, 
+	            id: id, 
+	            'aria-labeledby': labelId, 
+	            selectedDate: this.props.value, 
+	            value: this.state.currentDate, 
+	            onChange: this._maybeHandle(this.change), 
+	            onKeyDown: this._maybeHandle(this._keyDown), 
+	            onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	            onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT)), 
+	            onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT)), 
+	            disabled: this.props.disabled, 
+	            readOnly: this.props.readOnly, 
+	            min: this.props.min, 
+	            max: this.props.max})
+	        )
+	      )
+	    )
+	
+	    function finished(){
+	      this._focus(true, 'stop');
+	    }
+	  },
+	
+	  navigate: function(direction, date){
+	    var view     =  this.state.view
+	      , slideDir = (direction === dir.LEFT || direction === dir.UP)
+	          ? 'right'
+	          : 'left';
+	
+	    if ( !date )
+	      date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
+	        ? this.nextDate(direction)
+	        : this.state.currentDate
+	
+	    if (direction === dir.DOWN )
+	      view = ALT_VIEW[view] || view
+	
+	    if (direction === dir.UP )
+	      view = NEXT_VIEW[view] || view
+	
+	    if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
+	      this._focus(true, 'nav');
+	
+	      this.setState({
+	        currentDate:    date,
+	        slideDirection: slideDir,
+	        view: view
+	      })
+	    }
+	  },
+	
+	  _focus: function(val, e){
+	    if ( this.props.maintainFocus)
+	      val && this.refs.currentView.getDOMNode().focus()
+	  },
+	
+	  change: function(date){
+	    if ( this.props.onChange && this.state.view === this.props.initialView)
+	      return this.notify('onChange', date)
+	
+	    this.navigate(dir.DOWN, date)
+	  },
+	
+	  nextDate: function(direction){
+	    var method = direction === dir.LEFT ? 'subtract' : 'add'
+	      , view   = this.state.view
+	      , unit   = view === views.MONTH ? view : views.YEAR
+	      , multi  = MULTIPLIER[view] || 1;
+	
+	    return dates[method](this.state.currentDate, 1 * multi, unit)
+	  },
+	
+	  _keyDown: function(e){
+	    var ctrl = e.ctrlKey
+	      , key  = e.key;
+	
+	    if ( ctrl ) {
+	      if ( key === 'ArrowDown' ) {
+	        e.preventDefault()
+	        this.navigate(dir.DOWN)
+	      }
+	      if ( key === 'ArrowUp' ) {
+	        e.preventDefault()
+	        this.navigate(dir.UP)
+	      }
+	      if ( key === 'ArrowLeft' ) {
+	        e.preventDefault()
+	        this.navigate(dir.LEFT)
+	      }
+	      if ( key === 'ArrowRight' ) {
+	        e.preventDefault()
+	        this.navigate(dir.RIGHT)
+	      }
+	    } 
+	    else {
+	      this.refs.currentView._keyDown
+	        && this.refs.currentView._keyDown(e)
+	    }
+	  },
+	
+	  _label: function() {
+	    var view = this.state.view
+	      , dt   = this.state.currentDate;
+	
+	    if ( view === 'month')
+	      return dates.format(dt, dates.formats.MONTH_YEAR)
+	
+	    else if ( view === 'year')
+	      return dates.format(dt, dates.formats.YEAR)
+	
+	    else if ( view === 'decade')
+	      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR)
+	        + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR)
+	
+	    else if ( view === 'century')
+	      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR)
+	        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
+	  },
+	
+	  inRangeValue: function(value){
+	    if( value == null)
+	      return value
+	
+	    return dates.max(
+	        dates.min(value, this.props.max)
+	      , this.props.min)
+	  },
+	
+	  isValidView: function(next) {
+	    var bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
+	      , top     = VIEW_OPTIONS.indexOf(this.props.finalView)
+	      , current = VIEW_OPTIONS.indexOf(next);
+	
+	    return current >= bottom && current <= top
+	  }
+	});
+	
+	module.exports = controlledInput.createControlledClass(
+	    Calendar, { value: 'onChange' });
+	
+	module.exports.BaseCalendar = Calendar
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1)
+	  , cx     = __webpack_require__(12)
+	  , _      = __webpack_require__(16) //pick, omit, has
+	  , dates  = __webpack_require__(75)
+	  , views  = __webpack_require__(76).calendarViews
+	  , popups = __webpack_require__(76).datePopups
+	
+	  , Popup     = __webpack_require__(65)
+	  , Calendar  = __webpack_require__(43).BaseCalendar
+	  , Time      = __webpack_require__(77)
+	  , DateInput = __webpack_require__(78)
+	  , Btn       = __webpack_require__(68)
+	  , CustomPropTypes = __webpack_require__(64)
+	  , controlledInput = __webpack_require__(63);
+	
+	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
+	
+	var propTypes = {
+	
+	    //-- controlled props -----------
+	    value:          React.PropTypes.instanceOf(Date),
+	    onChange:       React.PropTypes.func,
+	    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
+	    onToggle:       React.PropTypes.func,
+	    //------------------------------------
+	
+	    min:            React.PropTypes.instanceOf(Date),
+	    max:            React.PropTypes.instanceOf(Date),
+	
+	    culture:        React.PropTypes.string,
+	    format:         React.PropTypes.string,
+	    editFormat:     React.PropTypes.string,
+	
+	    calendar:       React.PropTypes.bool,
+	    time:           React.PropTypes.bool,
+	
+	    timeComponent:  CustomPropTypes.elementType,
+	    duration:       React.PropTypes.number, //popup
+	
+	    placeholder:    React.PropTypes.string,
+	    name:           React.PropTypes.string,
+	
+	    initialView:    React.PropTypes.oneOf(viewEnum),
+	    finalView:      React.PropTypes.oneOf(viewEnum),
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['readOnly'])
+	                    ]),
+	
+	    parse:          React.PropTypes.oneOfType([
+	                      React.PropTypes.arrayOf(React.PropTypes.string),
+	                      React.PropTypes.string,
+	                      React.PropTypes.func
+	                    ]),
+	  }
+	
+	var DateTimePicker = React.createClass({
+	  displayName: 'DateTimePicker',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(91)
+	  ],
+	
+	  propTypes: propTypes,
+	
+	  getInitialState: function(){
+	    return {
+	      selectedIndex: 0,
+	      open:          false
+	    }
+	  },
+	
+	  getDefaultProps: function(){
+	    var cal  = _.has(this.props, 'calendar') ? this.props.calendar : true
+	      , time = _.has(this.props, 'time') ? this.props.time : true
+	      , both = cal && time
+	      , neither = !cal && !time;
+	
+	    return {
+	      value:            null,
+	      format:           both || neither
+	        ? 'M/d/yyyy h:mm tt'
+	        : cal ? 'M/d/yyyy' : 'h:mm tt',
+	      min:              new Date(1900,  0,  1),
+	      max:              new Date(2099, 11, 31),
+	      calendar:         true,
+	      time:             true,
+	      messages: {
+	        calendarButton: 'Select Date',
+	        timeButton:     'Select Time',
+	        next:           'Next Date',
+	      }
+	    }
+	  },
+	
+	  render: function(){
+	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
+	      , timeListID = this._id('_time_listbox')
+	      , timeOptID  = this._id('_time_option')
+	      , dateListID = this._id('_cal')
+	      , owns;
+	
+	    if (dateListID && this.props.calendar ) owns = dateListID
+	    if (timeListID && this.props.time )     owns += ' ' + timeListID
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props, 
+	        {ref: "element", 
+	        tabIndex: "-1", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        className: cx(className, {
+	          'rw-datetimepicker':     true,
+	          'rw-widget':          true,
+	          'rw-open':            this.props.open,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-state-disabled':  this.isDisabled(),
+	          'rw-state-readonly':  this.isReadOnly(),
+	          'rw-has-both':        this.props.calendar && this.props.time,
+	          'rw-rtl':             this.isRtl()
+	        })}), 
+	        React.createElement(DateInput, {ref: "valueInput", 
+	          'aria-activedescendant':  this.props.open
+	            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
+	            : undefined, 
+	          'aria-expanded':  this.props.open, 
+	          'aria-busy': !!this.props.busy, 
+	          'aria-owns': owns, 
+	          'aria-haspopup': true, 
+	          placeholder: this.props.placeholder, 
+	          name: this.props.name, 
+	          disabled: this.isDisabled(), 
+	          readOnly: this.isReadOnly(), 
+	          role: "combobox", 
+	          value: this.props.value, 
+	          focused: this.state.focused, 
+	          format: this.props.format, 
+	          editFormat: this.props.editFormat, 
+	          editing: this.state.focused, 
+	          parse: this._parse, 
+	          onChange: this._change}), 
+	
+	        React.createElement("span", {className: "rw-select"}, 
+	           this.props.calendar &&
+	            React.createElement(Btn, {tabIndex: "-1", 
+	              disabled: this.isDisabled() || this.isReadOnly(), 
+	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
+	              onClick: this._maybeHandle(this._click.bind(null, popups.CALENDAR))}, 
+	              React.createElement("i", {className: "rw-i rw-i-calendar"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.calendarButton))
+	            ), 
+	          
+	           this.props.time &&
+	            React.createElement(Btn, {tabIndex: "-1", 
+	              disabled: this.isDisabled() || this.isReadOnly(), 
+	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
+	              onClick: this._maybeHandle(this._click.bind(null, popups.TIME))}, 
+	              React.createElement("i", {className: "rw-i rw-i-clock-o"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.timeButton))
+	            )
+	          
+	        ), 
+	         this.props.time &&
+	        React.createElement(Popup, {
+	          open:  this.props.open === popups.TIME, 
+	          onRequestClose: this.close, 
+	          duration: this.props.duration}, 
+	            React.createElement("div", null, 
+	              React.createElement(Time, {ref: "timePopup", 
+	                id: timeListID, 
+	                optID: timeOptID, 
+	                'aria-hidden':  !this.props.open, 
+	                style: { maxHeight: 200, height: 'auto'}, 
+	                value: this.props.value, 
+	                min: this.props.min, 
+	                max: this.props.max, 
+	                preserveDate: !!this.props.calendar, 
+	                itemComponent: this.props.timeComponent, 
+	                onSelect: this._maybeHandle(this._selectTime)})
+	            )
+	        ), 
+	        
+	         this.props.calendar &&
+	          React.createElement(Popup, {
+	            className: "rw-calendar-popup", 
+	            open:  this.props.open === popups.CALENDAR, 
+	            duration: this.props.duration, 
+	            onRequestClose: this.close}, 
+	
+	            React.createElement(Calendar, React.__spread({},  calProps , 
+	              {ref: "calPopup", 
+	              id: dateListID, 
+	              value: this.props.value || new Date, 
+	              maintainFocus: false, 
+	              'aria-hidden':  !this.props.open, 
+	              onChange: this._maybeHandle(this._selectDate)}))
+	          )
+	        
+	      )
+	    )
+	  },
+	
+	  _change: function(date, str, constrain){
+	    var change = this.props.onChange
+	
+	    if(constrain)
+	      date = this.inRangeValue(date)
+	
+	    if( change ) {
+	      if( date == null || this.props.value == null){
+	        if( date != this.props.value )
+	          change(date, str)
+	      }
+	      else if (!dates.eq(date, this.props.value))
+	        change(date, str)
+	    }
+	  },
+	
+	  _keyDown: function(e){
+	
+	    if( e.key === 'Tab')
+	      return
+	
+	    if ( e.key === 'Escape' && this.props.open )
+	      this.close()
+	
+	    else if ( e.altKey ) {
+	      e.preventDefault()
+	
+	      if ( e.key === 'ArrowDown')
+	        this.open(this.props.open === popups.CALENDAR
+	              ? popups.TIME
+	              : popups.CALENDAR)
+	      else if ( e.key === 'ArrowUp')
+	        this.close()
+	
+	    } else if (this.props.open ) {
+	      if( this.props.open === popups.CALENDAR )
+	        this.refs.calPopup._keyDown(e)
+	      if( this.props.open === popups.TIME )
+	        this.refs.timePopup._keyDown(e)
+	    }
+	  },
+	
+	  //timeout prevents transitions from breaking focus
+	  _focus: function(focused, e){
+	    var self = this
+	      , input =  this.refs.valueInput;
+	
+	    clearTimeout(self.timer)
+	
+	    self.timer = setTimeout(function(){
+	
+	      if(focused) input.getDOMNode().focus()
+	      else        self.close()
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	
+	    }, 0)
+	  },
+	
+	  _selectDate: function(date){
+	    this.close()
+	    this._change(
+	        dates.merge(date, this.props.value)
+	      , formatDate(date, this.props.format)
+	      , true)
+	  },
+	
+	  _selectTime: function(datum){
+	    this.close()
+	    this._change(
+	        dates.merge(this.props.value, datum.date)
+	      , formatDate(datum.date, this.props.format)
+	      , true)
+	  },
+	
+	  _click: function(view, e){
+	    this._focus(true)
+	    this.toggle(view, e)
+	  },
+	
+	  _parse: function(string){
+	    var parser = typeof this.props.parse === 'function'
+	          ? this.props.parse
+	          : formatsParser.bind(null, _.splat(this.props.format).concat(this.props.parse));
+	
+	    return parser(string)
+	  },
+	
+	  toggle: function(view, e) {
+	
+	    this.props.open
+	      ? this.state.view !== view
+	          ? this.open(view)
+	          : this.close(view)
+	      : this.open(view)
+	  },
+	
+	  open: function(view){
+	    if ( this.props.open !== view )
+	      this.notify('onToggle', view)
+	  },
+	
+	  close: function(){
+	    if ( this.props.open)
+	      this.notify('onToggle', false)
+	  },
+	
+	  inRangeValue: function(value){
+	    if( value == null) return value
+	
+	    return dates.max(
+	        dates.min(value, this.props.max)
+	      , this.props.min)
+	  },
+	
+	});
+	
+	
+	module.exports = controlledInput.createControlledClass(
+	    DateTimePicker
+	  , { open: 'onToggle', value: 'onChange' });
+	
+	function formatDate(date, format){
+	  var val = ''
+	
+	  if ( (date instanceof Date) && !isNaN(date.getTime()) )
+	    val = dates.format(date, format)
+	
+	  return val;
+	}
+	
+	module.exports.BaseDateTimePicker = DateTimePicker
+	
+	function formatsParser(formats, str){
+	  var date;
+	
+	  formats = [].concat(formats)
+	
+	  for(var i=0; i < formats.length; i++ ){
+	    date = dates.parse(str, formats[i])
+	    if( date) return date
+	  }
+	  return null
+	}
+	
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(12)
+	  , _     = __webpack_require__(16) //omit
+	  , controlledInput  = __webpack_require__(63)
+	  , directions = __webpack_require__(76).directions
+	  , Input = __webpack_require__(79);
+	
+	var Btn = __webpack_require__(68)
+	  , propTypes = {
+	
+	      // -- controlled props -----------
+	      value:          React.PropTypes.number,
+	      onChange:       React.PropTypes.func,
+	      //------------------------------------
+	
+	      min:            React.PropTypes.number,
+	      max:            React.PropTypes.number,
+	      step:           React.PropTypes.number,
+	
+	      culture:        React.PropTypes.string,
+	      format:         React.PropTypes.string,
+	
+	      name:           React.PropTypes.string,
+	
+	      parse:          React.PropTypes.oneOfType([
+	                        React.PropTypes.arrayOf(React.PropTypes.string),
+	                        React.PropTypes.string,
+	                        React.PropTypes.func
+	                      ]),
+	
+	      disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	      readOnly:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['readOnly'])
+	                      ]),
+	
+	      messages:       React.PropTypes.shape({
+	        increment:    React.PropTypes.string,
+	        decrement:    React.PropTypes.string
+	      })
+	    };
+	
+	var NumberPicker = React.createClass({
+	
+	  displayName: 'NumberPicker',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(91),
+	  ],
+	
+	  propTypes: propTypes,
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: null,
+	      open: false,
+	
+	      format: 'd',
+	
+	      min: -Infinity,
+	      max:  Infinity,
+	      step: 1,
+	
+	      messages: {
+	        increment: 'increment value',
+	        decrement:  'decrement value'
+	      }
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    return {
+	      focused: false,
+	      active: false,
+	    }
+	  },
+	
+	
+	  render: function(){
+	    var $__0=   _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , val = this.inRangeValue(this.props.value)
+	
+	    //console.log('render', this.state.focused)
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props , 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        tabIndex: "-1", 
+	        className: cx(className, {
+	          'rw-numberpicker':   true,
+	          'rw-widget':          true,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-state-disabled':  this.props.disabled,
+	          'rw-state-readonly':  this.props.readOnly,
+	          'rw-rtl':             this.isRtl()
+	        })}), 
+	
+	        React.createElement("span", {className: "rw-select"}, 
+	          React.createElement(Btn, {
+	            tabIndex: "-1", 
+	            className: cx({ 'rw-state-active': this.state.active === directions.UP}), 
+	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.UP)), 
+	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.UP)), 
+	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
+	            disabled: val === this.props.max || this.props.disabled, 
+	            'aria-disabled': val === this.props.max || this.props.disabled}, 
+	
+	            React.createElement("i", {className: "rw-i rw-i-caret-up"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.increment))
+	          ), 
+	          React.createElement(Btn, {
+	            tabIndex: "-1", 
+	            className: cx({ 'rw-state-active': this.state.active === directions.DOWN}), 
+	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.DOWN)), 
+	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.DOWN)), 
+	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
+	            disabled: val === this.props.min || this.props.disabled, 
+	            'aria-disabled': val === this.props.min || this.props.disabled}, 
+	            React.createElement("i", {className: "rw-i rw-i-caret-down"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.decrement))
+	          )
+	        ), 
+	        React.createElement(Input, {
+	          ref: "input", 
+	          value: val, 
+	          editing: this.state.focused, 
+	          format: this.props.format, 
+	          name: this.props.name, 
+	          role: "spinbutton", 
+	          min: this.props.min, 
+	          'aria-valuenow': val, 
+	          'aria-valuemin': isFinite(this.props.min) ? this.props.min : null, 
+	          'aria-valuemax': isFinite(this.props.max) ? this.props.max : null, 
+	          'aria-disabled':  this.props.disabled, 
+	          'aria-readonly':  this.props.readonly, 
+	          disabled: this.props.disabled, 
+	          readOnly: this.props.readOnly, 
+	          onChange: this.change, 
+	          onKeyDown: this.props.onKeyDown})
+	      )
+	    )
+	  },
+	
+	  //allow for styling, focus stealing keeping me from the normal what have you
+	  _mouseDown: function(dir) {
+	    var val = dir === directions.UP
+	        ? (this.props.value || 0) + this.props.step
+	        : (this.props.value || 0) - this.props.step
+	
+	    val = this.inRangeValue(val)
+	
+	    this.setState({ active: dir })
+	    this.change(val);
+	
+	    if( !((dir === directions.UP && val === this.props.max)
+	      || (dir === directions.DOWN && val === this.props.min)))
+	    {
+	      if(!this.interval)
+	        this.interval = setInterval(this._mouseDown, 500, dir)
+	    }
+	    else
+	      this._mouseUp()
+	  },
+	
+	  _mouseUp: function(direction, e ){
+	    this.setState({ active: false })
+	    clearInterval(this.interval)
+	    this.interval = null;
+	  },
+	
+	  _focus: function(focused, e){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	
+	    self.timer = setTimeout(function(){
+	      var el = self.refs.input.getDOMNode()
+	
+	      focused && el.focus()
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	
+	    }, 0)
+	  },
+	
+	  _keyDown: function(e){
+	    var key = e.key;
+	
+	    if ( key === 'End'  && isFinite(this.props.max))
+	      this.change(this.props.max)
+	
+	    else if ( key === 'Home' && isFinite(this.props.min))
+	      this.change(this.props.min)
+	
+	    else if ( key === 'ArrowDown' ){
+	      e.preventDefault()
+	      this.decrement()
+	    }
+	    else if ( key === 'ArrowUp' ){
+	      e.preventDefault()
+	      this.increment()
+	    }
+	
+	  },
+	
+	  increment: function() {
+	    this.change(this.inRangeValue((this.props.value || 0) + this.props.step))
+	  },
+	
+	  decrement: function(){
+	    this.change(this.inRangeValue((this.props.value || 0) - this.props.step))
+	  },
+	
+	  change: function(val){
+	    val = this.inRangeValue(val === '' ? null : val)
+	
+	    if ( this.props.value !== val )
+	      this.notify('onChange', val)
+	  },
+	
+	  inRangeValue: function(value){
+	    var max = this.props.max == null ? Infinity : this.props.max
+	      , min = this.props.min == null ? -Infinity : this.props.min;
+	
+	    if( !isFinite(min) && value == null )
+	      return value
+	
+	    return Math.max(Math.min(value, max), min)
+	  }
+	
+	})
+	
+	module.exports = controlledInput.createControlledClass(
+	    NumberPicker, { value: 'onChange' });
+	
+	module.exports.BaseNumberPicker = NumberPicker
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(12)
+	  , _     = __webpack_require__(16)
+	  , controlledInput  = __webpack_require__(63)
+	  , CustomPropTypes  = __webpack_require__(64)
+	  
+	  , SelectInput = __webpack_require__(81)
+	  , TagList     = __webpack_require__(82)
+	  , Popup       = __webpack_require__(65)
+	  , List        = __webpack_require__(66);
+	
+	var propTypes = {
+	      data:           React.PropTypes.array,
+	      //-- controlled props --
+	      value:          React.PropTypes.array,
+	      onChange:       React.PropTypes.func,
+	
+	      searchTerm:     React.PropTypes.string,
+	      onSearch:       React.PropTypes.func,
+	
+	      open:           React.PropTypes.bool,
+	      onToggle:       React.PropTypes.func,
+	      //-------------------------------------------
+	
+	      valueField:     React.PropTypes.string,
+	      textField:      React.PropTypes.string,
+	
+	      tagComponent:   CustomPropTypes.elementType,
+	      itemComponent:  CustomPropTypes.elementType,
+	
+	      duration:       React.PropTypes.number, //popup
+	
+	      placeholder:    React.PropTypes.string,
+	
+	      disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.array,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	      readOnly:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.array,
+	                        React.PropTypes.oneOf(['readonly'])
+	                      ]),
+	
+	      messages:       React.PropTypes.shape({
+	        open:         React.PropTypes.string,
+	        emptyList:    React.PropTypes.string,
+	        emptyFilter:  React.PropTypes.string
+	      })
+	    };
+	
+	var Select = React.createClass({
+	
+	  displayName: 'Select',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(93),
+	    __webpack_require__(90),
+	    __webpack_require__(91),
+	    __webpack_require__(92)('focusedIndex')
+	  ],
+	
+	  propTypes: propTypes,
+	
+	  getDefaultProps: function(){
+	    return {
+	      data: [],
+	      filter: 'startsWith',
+	      value: [],
+	      open: false,
+	      searchTerm: '',
+	      messages: {
+	        emptyList:   "There are no items in this list",
+	        emptyFilter: "The filter returned no results"
+	      }
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    var values = _.splat(this.props.value)
+	
+	    return {
+	      focusedIndex:  0,
+	      processedData: this.process(this.props.data, values, ''),
+	      dataItems: values.map( function(item)  {return this._dataItem(this.props.data, item);}.bind(this))
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var values = _.splat(nextProps.value)
+	      , items  = this.process(nextProps.data, values, nextProps.searchTerm)
+	
+	    this.setState({
+	      processedData: items,
+	      dataItems: values.map( function(item)  {return this._dataItem(nextProps.data, item);}.bind(this))
+	    })
+	  },
+	
+	  render: function(){
+	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , listID  = this._id('_listbox')
+	      , optID   = this._id('_option')
+	      , items   = this._data()
+	      , values  = this.state.dataItems;
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props, 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        tabIndex: "-1", 
+	        className: cx(className, {
+	          'rw-multiselect':    true,
+	          'rw-widget':         true,
+	          'rw-state-focus':    this.state.focused,
+	          'rw-state-disabled': this.props.disabled === true,
+	          'rw-state-readonly': this.props.readOnly === true,
+	          'rw-open':           this.props.open,
+	          'rw-rtl':            this.isRtl()
+	        })}), 
+	        React.createElement("div", {className: "rw-multiselect-wrapper", onClick: this._maybeHandle(this._click)}, 
+	           this.props.busy &&
+	            React.createElement("i", {className: "rw-i rw-loading"}), 
+	          
+	           !!values.length &&
+	            React.createElement(TagList, {
+	              ref: "tagList", 
+	              value: values, 
+	              textField: this.props.textField, 
+	              valueField: this.props.valueField, 
+	              valueComponent: this.props.tagComponent, 
+	              disabled: this.props.disabled, 
+	              readOnly: this.props.readOnly, 
+	              onDelete: this._delete}), 
+	          
+	          React.createElement(SelectInput, {
+	            ref: "input", 
+	            'aria-activedescendent':  this.props.open ? optID : undefined, 
+	            'aria-expanded':  this.props.open, 
+	            'aria-busy': !!this.props.busy, 
+	            'aria-owns': listID, 
+	            'aria-haspopup': true, 
+	            value: this.props.searchTerm, 
+	            disabled: this.props.disabled === true, 
+	            readOnly: this.props.readOnly === true, 
+	            placeholder: this._placeholder(), 
+	            onChange: this._typing})
+	        ), 
+	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
+	          React.createElement("div", null, 
+	            React.createElement(List, {ref: "list", 
+	              id: listID, 
+	              optID: optID, 
+	              'aria-autocomplete': "list", 
+	              'aria-hidden':  !this.props.open, 
+	              style: { maxHeight: 200, height: 'auto'}, 
+	              data: items, 
+	              textField: this.props.textField, 
+	              valueField: this.props.valueField, 
+	              focusedIndex: this.state.focusedIndex, 
+	              onSelect: this._maybeHandle(this._onSelect), 
+	              listItem: this.props.itemComponent, 
+	              messages: {
+	                emptyList: this.props.data.length
+	                  ? this.props.messages.emptyFilter
+	                  : this.props.messages.emptyList
+	              }})
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _data: function(){
+	    return this.state.processedData
+	  },
+	
+	  _delete: function(value){
+	    this._focus(true)
+	    this.change(
+	      this.state.dataItems.filter( function(d)  {return d !== value;}))
+	  },
+	
+	  _click: function(e){
+	    this._focus(true)
+	    !this.props.open && this.open()
+	  },
+	
+	  _focus: function(focused, e){
+	    var self = this;
+	
+	    if (this.props.disabled === true )
+	      return
+	
+	    clearTimeout(self.timer)
+	
+	    self.timer = setTimeout(function(){
+	      if(focused) self.refs.input.focus()
+	      else        {
+	        self.close()
+	        self.refs.tagList && self.refs.tagList.clear()
+	      }
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	    }, 0)
+	  },
+	
+	  _typing: function(e){
+	    this.notify('onSearch', [e.target.value])
+	    this.open()
+	  },
+	
+	  _onSelect: function(data){
+	    if( data === undefined )
+	      return //handle custom tags maybe here?
+	
+	    this.change(this.state.dataItems.concat(data))
+	    this.close()
+	    this._focus(true)
+	  },
+	
+	  _keyDown: function(e){
+	    var key = e.key
+	      , alt = e.altKey
+	      , searching = !!this.props.searchTerm
+	      , isOpen  = this.props.open
+	      , tagList = this.refs.tagList;
+	
+	    if ( key === 'ArrowDown') {
+	      e.preventDefault()
+	      if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
+	      else          this.open()
+	    }
+	    else if ( key === 'ArrowUp') {
+	      e.preventDefault()
+	      if ( alt)          this.close()
+	      else if ( isOpen ) this.setFocusedIndex(
+	        this.prevFocusedIndex())
+	    }
+	    else if ( key === 'End'){
+	      if ( isOpen ) this.setFocusedIndex(this._data().length - 1)
+	      else          tagList && tagList.last()
+	    }
+	    else if (  key === 'Home'){
+	      if ( isOpen ) this.setFocusedIndex(0)
+	      else          tagList && tagList.first()
+	    }
+	    else if ( isOpen && key === 'Enter' )
+	      this._onSelect(this._data()[this.state.focusedIndex])
+	
+	    else if ( key === 'Escape')
+	      isOpen ? this.close() : this.refs.tagList.clear()
+	
+	    else if ( !searching && key === 'ArrowLeft')
+	     tagList && tagList.prev()
+	
+	    else if ( !searching && key === 'ArrowRight')
+	      tagList && tagList.next()
+	
+	    else if ( !searching && key === 'Delete')
+	      tagList && tagList.removeCurrent()
+	
+	    else if ( !searching && key === 'Backspace')
+	      tagList && tagList.removeNext()
+	  },
+	
+	  change: function(data){
+	    var change = this.props.onChange
+	    if ( change ) change(data)
+	  },
+	
+	  open: function(){
+	    if (!(this.props.disabled === true || this.props.readOnly === true))
+	      this.notify('onToggle', true)
+	  },
+	
+	  close: function(){
+	    this.notify('onToggle', false)
+	  },
+	
+	  toggle: function(e){
+	    this.props.open
+	      ? this.close()
+	      : this.open()
+	  },
+	
+	  process: function(data, values, searchTerm){
+	    var items = data.filter( function(i)  {return !values.some( this._valueMatcher.bind(null, i), this);}.bind(this), this)
+	
+	    if( searchTerm)
+	      items = this.filter(items, searchTerm)
+	
+	    return items
+	  },
+	
+	  _placeholder: function(){
+	    return (this.props.value || []).length
+	      ? ''
+	      : (this.props.placeholder || '')
+	  }
+	
+	})
+	
+	
+	module.exports = controlledInput.createControlledClass(
+	    Select, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
+	
+	module.exports.BaseMultiselect = Select
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _  = __webpack_require__(16)
+	  , cx = __webpack_require__(12)
+	  , controlledInput  = __webpack_require__(63)
+	  , CustomPropTypes  = __webpack_require__(64)
+	  , scrollTo = __webpack_require__(80);
+	
+	var propTypes = {
+	    data:           React.PropTypes.array,
+	    value:          React.PropTypes.oneOfType([
+	                      React.PropTypes.any,
+	                      React.PropTypes.array
+	                    ]),
+	    onChange:       React.PropTypes.func,
+	
+	    multiple:       React.PropTypes.bool,
+	    itemComponent:  CustomPropTypes.elementType,
+	    
+	    valueField:     React.PropTypes.string,
+	    textField:      React.PropTypes.string,
+	
+	    busy:           React.PropTypes.bool,
+	
+	    delay:          React.PropTypes.number, 
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                      React.PropTypes.array,
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['disabled'])
+	                    ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.array,
+	                      React.PropTypes.oneOf(['readonly'])
+	                    ]),
+	
+	    messages:       React.PropTypes.shape({
+	      emptyList:    React.PropTypes.string
+	    }),
+	  }
+	
+	
+	var SelectList = React.createClass({displayName: 'SelectList',
+	
+	  propTypes: propTypes,
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(89),
+	    __webpack_require__(90),
+	    __webpack_require__(91),
+	    __webpack_require__(92)('focusedIndex', 'isDisabledItem')
+	  ],
+	
+	  getDefaultProps: function(){
+	    return {
+	      delay: 250,
+	      value: [],
+	      data:  [],
+	      messages: {
+	        emptyList: 'There are no items in this list'
+	      }
+	    }
+	  },
+	
+	  getDefaultState: function(props){
+	    var isRadio = !props.multiple
+	      , values  = _.splat(props.value)
+	      , idx     = isRadio && this._dataIndexOf(props.data, values[0]) 
+	
+	    idx = isRadio && idx !== -1 
+	      ? this.nextFocusedIndex(idx - 1) 
+	      : ((this.state || {}).focusedIndex || -1)
+	
+	    return {
+	      focusedIndex: idx,
+	      dataItems:    !isRadio && values.map(function(item)  {return this._dataItem(props.data, item);}.bind(this))
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    return this.getDefaultState(this.props)
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    return this.setState(this.getDefaultState(nextProps))
+	  },
+	
+	  componentDidUpdate: function(prevProps, prevState){
+	    if ( prevState.focusedIndex !== this.state.focusedIndex)
+	      this._setScrollPosition()
+	  },
+	
+	  render: function() {
+	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , focus = this._maybeHandle(this._focus.bind(null, true), true)
+	      , optID = this._id('_selected_option')
+	      , blur  = this._focus.bind(null, false);
+	
+	    return (
+	      
+	      React.createElement("div", React.__spread({},  props, 
+	        {onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: focus, 
+	        onBlur: blur, 
+	        tabIndex: "0", 
+	        role: "listbox", 
+	        'aria-busy': !!this.props.busy, 
+	        'aria-activedescendent':  this.state.focused ? optID : undefined, 
+	        'aria-disabled':  this.isDisabled(), 
+	        'aria-readonly':  this.isReadOnly(), 
+	        className: cx(className, { 
+	          'rw-widget':         true,
+	          'rw-selectlist':   true,
+	          'rw-state-focus':    this.state.focused,
+	          'rw-state-disabled': this.isDisabled(),
+	          'rw-state-readonly': this.isReadOnly(),
+	          'rw-rtl':            this.isRtl(),
+	          'rw-loading-mask':   this.props.busy
+	        })}), 
+	
+	        React.createElement("ul", {className: "rw-list", ref: "list"},  this._rows(optID))
+	      ) 
+	    );
+	  },
+	
+	  _rows: function(optID){
+	    var Component = this.props.itemComponent
+	      , name = this._id('_name')
+	      , type = this.props.multiple ? 'checkbox' : 'radio';
+	
+	    return this._data().map( function(item, idx)  {
+	      var focused  = this.state.focused && this.state.focusedIndex === idx
+	        , checked  = this._contains(item, this._values())
+	        , change   = this._change.bind(null, item)
+	        , disabled = this.isDisabledItem(item)
+	        , readonly = this.isReadOnlyItem(item);
+	
+	      return (React.createElement("li", {
+	        key: 'item_' + idx, 
+	        role: "option", 
+	        id:  focused ? optID : undefined, 
+	        className: cx({ 'rw-state-focus': focused, 'rw-selectlist-item': true })}, 
+	        React.createElement(SelectListItem, {
+	          type: type, 
+	          name: name, 
+	          onChange: change, 
+	          checked: checked, 
+	          readOnly: readonly, 
+	          disabled: disabled || readonly}, 
+	           Component ? React.createElement(Component, {item: item}) : this._dataText(item)
+	          )
+	      ))
+	    }.bind(this))
+	  },
+	
+	  _keyDown: function(e){
+	    var self = this
+	      , key = e.key
+	      , data = this._data()
+	      , multiple = !!this.props.multiple
+	      , last = data.length;
+	
+	    if ( key === 'End' ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex(last))
+	      else            change(this.prevFocusedIndex(last)) 
+	    }
+	    else if ( key === 'Home' ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex(-1))
+	      else            change(this.nextFocusedIndex(-1)) 
+	    }
+	    else if ( key === 'Enter' || key === ' ' ) {
+	      e.preventDefault()
+	      change(data[this.state.focusedIndex])
+	    }
+	    else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex())
+	      else            change(this.nextFocusedIndex())
+	    }
+	    else if ( key === 'ArrowUp' || key === 'A rrowLeft'  ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex())
+	      else            change(this.prevFocusedIndex())
+	    }
+	    else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {
+	      e.preventDefault()
+	      this._selectAll() 
+	    }
+	    else
+	      this.search(
+	          String.fromCharCode(e.keyCode)
+	        , this._locate)
+	
+	    function change(idx, cked){
+	      var item = data[idx];
+	      
+	      if( idx > -1 && idx < last){
+	        self._change(item, cked !== undefined 
+	          ? cked
+	          : multiple 
+	            ? !self._contains(item, self._values()) // toggle value
+	            : true)
+	      }
+	        
+	    }
+	  },
+	
+	  _selectAll: function(){
+	    var values = this.state.dataItems
+	      , disabled = this.props.disabled || this.props.readOnly
+	      , data = this._data()
+	      , blacklist;
+	
+	    disabled = Array.isArray(disabled) ? disabled : [];
+	    //disabled values that are not selected
+	    blacklist = disabled.filter( function(v)  {return !this._contains(v, values);}.bind(this))
+	    data      = data.filter( function(v)  {return !this._contains(v, blacklist);}.bind(this))
+	
+	    if ( data.length === values.length) {
+	      data = disabled.filter( function(v)  {return this._contains(v, values);}.bind(this))
+	      data = data.map( function(v)  {return this._dataItem(this._data(), v);}.bind(this))
+	    }
+	
+	    this.notify('onChange', [data])
+	  },
+	
+	  _change: function(item, checked){
+	    var multiple  = !!this.props.multiple
+	      , blacklist = this.props.disabled || this.props.readOnly 
+	      , values    = this.state.dataItems;
+	
+	    blacklist = Array.isArray(blacklist) ? blacklist : [];
+	
+	    if(this._contains(item, blacklist)) return 
+	
+	    if ( !multiple )
+	      return this.notify('onChange', checked ? item : null)
+	
+	    values = checked 
+	      ? values.concat(item)
+	      : values.filter( function(v)  {return v !== item;})
+	
+	    this.notify('onChange', [values || []])
+	  },
+	
+	  _focus: function(focused, e){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	
+	    self.timer = setTimeout(function(){
+	      if( focused) self.getDOMNode().focus()
+	      if( focused !== self.state.focused){
+	        self.setState({ focused: focused })
+	        //!focused && self.next(0)
+	      }
+	    }, 0)
+	  },
+	
+	  isDisabledItem: function(item) {
+	    return this.isDisabled() || this._contains(item, this.props.disabled)
+	  },
+	
+	  isReadOnlyItem: function(item) {
+	    return this.isReadOnly() || this._contains(item, this.props.readOnly)
+	  },
+	
+	  _locate: function(word){
+	    var idx = this.findNextWordIndex(word, this.state.focusedIndex);
+	
+	    if ( idx !== -1) 
+	      this.setFocusedIndex(idx)
+	  },
+	
+	  _data:function(){
+	    return this.props.data
+	  },
+	
+	  _contains: function(item, values){
+	    return Array.isArray(values) 
+	      ? values.some(this._valueMatcher.bind(null, item))
+	      : this._valueMatcher(item, values)
+	  },
+	
+	  _values: function(){
+	    return !!this.props.multiple 
+	      ? this.state.dataItems
+	      : this.props.value
+	  },
+	
+	  _setScrollPosition: function(){
+	    var list = this.refs.list.getDOMNode()
+	      , selected = list.children[this.state.focusedIndex]
+	      , handler  = this.props.onMove || scrollTo;
+	
+	    if ( this.state.focusedIndex !== -1 )
+	      handler(selected)
+	  }
+	
+	});
+	
+	var SelectListItem = React.createClass({displayName: 'SelectListItem',
+	
+	  render: function() {
+	    var $__0=   this.props,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{children:1});
+	
+	    return (
+	      React.createElement("label", {
+	        className: cx({ 
+	          'rw-state-disabled': props.disabled,
+	          'rw-state-readonly': props.readOnly
+	        })}, 
+	        React.createElement("input", React.__spread({},   props, 
+	          {tabIndex: "-1", 
+	          onChange: change, 
+	          disabled: props.disabled || props.readOnly, 
+	          'aria-disabled':  props.disabled ||props.readOnly})), 
+	          children 
+	      )
+	    );
+	
+	    function change(e){
+	      if( !props.disabled && !props.readOnly)
+	        props.onChange(e.target.checked)
+	    }
+	  },
+	
+	})
+	
+	module.exports = SelectList;
+	
+	module.exports = controlledInput.createControlledClass(
+	    SelectList, { value: 'onChange' });
+	
+	module.exports.BaseSelectList = SelectList
+	
+	        
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * A streamlined version of TransitionGroup built for managing at most two active children
+	 * also provides additional hooks for animation start/end
+	 * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
+	 * relevent code is licensed accordingly 
+	 */
+	
+	"use strict";
+	
+	var React = __webpack_require__(1)
+	  , $     = __webpack_require__(61)
+	  , _     = __webpack_require__(16);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'ReplaceTransitionGroup',
+	
+	  propTypes: {
+	    component:    React.PropTypes.oneOfType([
+	                    React.PropTypes.element,
+	                    React.PropTypes.string
+	                  ]),
+	    childFactory: React.PropTypes.func,
+	
+	    onAnimating:  React.PropTypes.func,
+	    onAnimate:    React.PropTypes.func,
+	  },
+	
+	  getDefaultProps: function() {
+	    return {
+	      component:    'span',
+	      childFactory: function(a){ return a },
+	
+	      onAnimating: _.noop,
+	      onAnimate:   _.noop
+	    };
+	  },
+	
+	  getInitialState: function() {
+	    return {
+	      children: _.splat(this.props.children)
+	    };
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var nextChild = getChild(nextProps.children)
+	      , stack     = this.state.children.slice()
+	      , next      = stack[1]
+	      , last      = stack[0];
+	
+	    var isLastChild = last && key(last) === key(nextChild)
+	      , isNextChild = next && key(next) === key(nextChild);
+	
+	    //no children
+	    if (!last) {
+	      stack.push(nextChild)
+	      this.entering = nextChild
+	    }
+	    else if ( last && !next && !isLastChild) {
+	      //new child
+	      stack.push(nextChild)
+	      this.leaving = last 
+	      this.entering = nextChild
+	    }
+	    else if ( last && next && !isLastChild && !isNextChild) {
+	      // the child is not the current one, exit the current one, add the new one
+	      //  - shift the stack down
+	      stack.shift()
+	      stack.push(nextChild)
+	      this.leaving  = next
+	      this.entering = nextChild
+	    }
+	
+	    if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] ) 
+	      this.setState({ children: stack });
+	  },
+	
+	  componentWillMount: function() {
+	    this.animatingKeys = {};
+	    this.leaving  = null;
+	    this.entering = null;
+	  },
+	
+	  componentDidUpdate: function() {
+	    var entering = this.entering
+	      , leaving  = this.leaving
+	      , first    = this.refs[key(entering) || key(leaving)]
+	      , node     = this.getDOMNode()
+	      , el       = first && first.getDOMNode();
+	
+	    if( el )
+	      $.css(node, {
+	        overflow: 'hidden',
+	        height: $.height(el) + 'px',
+	        width:  $.width(el) + 'px'
+	      })
+	    
+	    this.props.onAnimating();
+	
+	    this.entering = null;
+	    this.leaving  = null;
+	
+	    if (entering) this.performEnter(key(entering))
+	    if (leaving)  this.performLeave(key(leaving))
+	  },
+	
+	  performEnter: function(key) {
+	    var component = this.refs[key];
+	
+	    if(!component) return
+	
+	    this.animatingKeys[key] = true;
+	
+	    if (component.componentWillEnter) 
+	      component.componentWillEnter(
+	        this._handleDoneEntering.bind(this, key));
+	    else 
+	      this._handleDoneEntering(key);
+	  },
+	
+	  _tryFinish: function(){
+	    var node = this.getDOMNode()
+	
+	    if ( this.isTransitioning() )
+	      return 
+	
+	    $.css(node, { overflow: 'visible', height: '', width: '' })
+	
+	    this.props.onAnimate() 
+	  }, 
+	
+	  _handleDoneEntering: function(enterkey) {
+	    var component = this.refs[enterkey];
+	
+	    if (component && component.componentDidEnter) 
+	      component.componentDidEnter();
+	    
+	    delete this.animatingKeys[enterkey];
+	
+	    if ( key(this.props.children) !== enterkey) 
+	      this.performLeave(enterkey); // This was removed before it had fully entered. Remove it.
+	    
+	    this._tryFinish()
+	  },
+	
+	  isTransitioning: function(){
+	    return Object.keys(this.animatingKeys).length !== 0
+	  },
+	
+	  performLeave: function(key) {
+	    var component = this.refs[key];
+	
+	    if(!component) return
+	
+	    this.animatingKeys[key] = true;
+	
+	    if (component.componentWillLeave) 
+	      component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
+	    else 
+	      this._handleDoneLeaving(key);
+	  },
+	
+	  _handleDoneLeaving: function(leavekey) {
+	    var component = this.refs[leavekey];
+	
+	    if (component && component.componentDidLeave) 
+	      component.componentDidLeave();
+	    
+	    delete this.animatingKeys[leavekey];
+	
+	    if (key(this.props.children) === leavekey )
+	      this.performEnter(leavekey); // This entered again before it fully left. Add it again.
+	    else {
+	      var newChildren = this.state.children.filter( function(c)  {return key(c) !== leavekey;});
+	      this.setState({ children: newChildren });
+	    }
+	
+	    this._tryFinish() 
+	  },
+	
+	  render: function() {
+	    var Component = this.props.component
+	    return React.createElement(Component, React.__spread({},  this.props),  this.state.children.map(function(c)  {return this.props.childFactory(c, key(c));}.bind(this)) );
+	  }
+	});
+	
+	function getChild(children){
+	  return React.Children.only(children)
+	}
+	
+	//CHANGE 0.12.0
+	function key(child){
+	  return child && child.key
+	}
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , ReplaceTransitionGroup  = __webpack_require__(48)
+	  , _ = __webpack_require__(16)
+	  , $  =  __webpack_require__(61);
+	
+	
+	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
+	
+	  propTypes: {
+	    direction: React.PropTypes.oneOf(['left', 'right'])
+	  },
+	
+	  componentWillEnter: function(done) {
+	    var node  = this.getDOMNode()
+	      , width = $.width(node)
+	      , direction = this.props.direction;
+	
+	    width = direction === 'left' ? width : -width
+	
+	    this.ORGINAL_POSITION = node.style.position;
+	    
+	    $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
+	
+	    $.animate(node, { left: 0 }, this.props.duration, function()  {
+	
+	        $.css(node, { 
+	          position:  this.ORGINAL_POSITION, 
+	          overflow: 'hidden'
+	        });
+	
+	        this.ORGINAL_POSITION = null
+	        done && done()
+	      }.bind(this))
+	  },
+	
+	  componentWillLeave: function(done) {
+	    var node  = this.getDOMNode()
+	      , width = $.width(node)
+	      , direction = this.props.direction;
+	
+	    width = direction === 'left' ? -width : width
+	
+	    this.ORGINAL_POSITION = node.style.position
+	
+	    $.css(node, { position: 'absolute', top: 0, left: 0})
+	
+	    $.animate(node, { left: width + 'px' }, this.props.duration, function()  {
+	        $.css(node, { 
+	          position: this.ORGINAL_POSITION, 
+	          overflow: 'hidden'
+	        });
+	
+	        this.ORGINAL_POSITION = null
+	        done && done()
+	      }.bind(this))
+	  },
+	
+	  render: function() {
+	    return React.Children.only(this.props.children);
+	  }
+	
+	})
+	
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    direction: React.PropTypes.oneOf(['left', 'right']),
+	    duration:  React.PropTypes.number
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      direction: 'left',
+	      duration: 250
+	    }
+	  },
+	
+	  _wrapChild: function(child, ref) {
+	    return (React.createElement(SlideChildGroup, {key: child.key, ref: ref, direction: this.props.direction, duration: this.props.duration}, child))
+	  },
+	
+	  render: function() {
+	    var $__0=      this.props,style=$__0.style,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{style:1,children:1})
+	
+	    style = _.merge(style, { position: 'relative', overflow: 'hidden' })
+	
+	    return (
+	      React.createElement(ReplaceTransitionGroup, React.__spread({},  
+	        props, 
+	        {ref: "container", 
+	        childFactory: this._wrapChild, 
+	        style: style, 
+	        component: 'div'}), 
+	        children 
+	      ))
+	  },
+	
+	  isTransitioning: function(){
+	    return this.isMounted() && this.refs.container.isTransitioning()
+	  }
+	});
+	
+
+
+/***/ },
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//  Chance.js 0.5.9
@@ -5849,2545 +8446,407 @@
 
 
 /***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React            = __webpack_require__(1)
-	  , _                = __webpack_require__(15)
-	  , $                = __webpack_require__(59)
-	  , cx               = __webpack_require__(11)
-	  , setter           = __webpack_require__(60)
-	  , controlledInput  = __webpack_require__(61)
-	  , CustomPropTypes  = __webpack_require__(62)
-	  , Popup            = __webpack_require__(63)
-	  , List             = __webpack_require__(64);
-	
-	var propTypes = {
-	  //-- controlled props -----------
-	  value:          React.PropTypes.any,
-	  onChange:       React.PropTypes.func,
-	  open:           React.PropTypes.bool,
-	  onToggle:       React.PropTypes.func,
-	  //------------------------------------
-	
-	  data:           React.PropTypes.array,
-	  valueField:     React.PropTypes.string,
-	  textField:      React.PropTypes.string,
-	
-	  valueComponent: CustomPropTypes.elementType,
-	  itemComponent:  CustomPropTypes.elementType,
-	  busy:           React.PropTypes.bool,
-	
-	  delay:          React.PropTypes.number,
-	  duration:       React.PropTypes.number, //popup
-	
-	  disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	  readOnly:       React.PropTypes.oneOfType([
-	                    React.PropTypes.bool,
-	                    React.PropTypes.oneOf(['readOnly'])
-	                  ]),
-	
-	  messages:       React.PropTypes.shape({
-	    open:         React.PropTypes.string,
-	  })
-	};
-	
-	var DropdownList = React.createClass({
-	
-	  displayName: 'DropdownList',
-	
-	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(82),
-	    __webpack_require__(83),
-	    __webpack_require__(84),
-	    __webpack_require__(85),
-	    __webpack_require__(86)('focusedIndex'),
-	    __webpack_require__(86)('selectedIndex')
-	  ],
-	
-	  propTypes: propTypes,
-	
-		getInitialState: function(){
-	    var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
-	
-			return {
-	      selectedIndex: initialIdx,
-	      focusedIndex:  initialIdx === -1 ? 0 : initialIdx,
-			}
-		},
-	
-	  getDefaultProps: function(){
-	    return {
-	      delay: 500,
-	      value: '',
-	      open: false,
-	      data: [],
-	      messages: {
-	        open: 'open dropdown'
-	      }
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(props){
-	    if ( _.isShallowEqual(props.value, this.props.value) )
-	      return
-	
-	    var idx = this._dataIndexOf(props.data, props.value);
-	
-	    this.setSelectedIndex(idx)
-	    this.setFocusedIndex(idx === -1 ? 0 : idx)
-	  },
-	
-		render: function(){
-			var $__0=   _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , ValueComponent = this.props.valueComponent
-	      , valueItem = this._dataItem( this._data(), this.props.value )
-	      , optID = this._id('_option');
-	
-			return (
-				React.createElement("div", React.__spread({},  props, 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onClick: this._maybeHandle(this.toggle), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        'aria-expanded':  this.props.open, 
-	        'aria-haspopup': true, 
-	        'aria-busy': !!this.props.busy, 
-	        'aria-activedescendent':  this.props.open ? optID : undefined, 
-	        'aria-disabled':  this.props.disabled, 
-	        'aria-readonly':  this.props.readOnly, 
-	        tabIndex: this.props.disabled ? '-1' : "0", 
-	        className: cx(className, {
-	          'rw-dropdownlist':   true,
-	          'rw-widget':          true,
-	          'rw-state-disabled':  this.props.disabled,
-	          'rw-state-readonly':  this.props.readOnly,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-open':            this.props.open,
-	          'rw-rtl':             this.isRtl()
-	        })}), 
-	
-					React.createElement("span", {className: "rw-dropdownlist-picker rw-select rw-btn"}, 
-						React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
-	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
-	          )
-					), 
-	        React.createElement("div", {className: "rw-input"}, 
-	           this.props.valueComponent
-	              ? React.createElement(ValueComponent, {item: valueItem})
-	              : this._dataText(valueItem)
-	          
-	        ), 
-	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
-	          React.createElement("div", null, 
-	            React.createElement(List, {ref: "list", 
-	              optID: optID, 
-	              'aria-hidden':  !this.props.open, 
-	              style: { maxHeight: 200, height: 'auto'}, 
-	              data: this.props.data, 
-	              initialVisibleItems: this.props.initialBufferSize, 
-	              itemHeight: 18, 
-	              selectedIndex: this.state.selectedIndex, 
-	              focusedIndex: this.state.focusedIndex, 
-	              textField: this.props.textField, 
-	              valueField: this.props.valueField, 
-	              listItem: this.props.itemComponent, 
-	              onSelect: this._maybeHandle(this._onSelect)})
-	          )
-	        )
-				)
-			)
-		},
-	
-	  setWidth: function() {
-	    var width = $.width(this.getDOMNode())
-	      , changed = width !== this.state.width;
-	
-	    if ( changed )
-	      this.setState({ width: width })
-	  },
-	
-	  _focus: function(focused){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	    self.timer = setTimeout(function(){
-	
-	      if(focused) self.getDOMNode().focus()
-	      else        self.close()
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	
-	    }, 0)
-	  },
-	
-	  _onSelect: function(data, idx, elem){
-	    this.close()
-	    this.change(data)
-	  },
-	
-	  _keyDown: function(e){
-	    var self = this
-	      , key = e.key
-	      , alt = e.altKey
-	      , isOpen = this.props.open;
-	
-	    if ( key === 'End' ) {
-	      if ( isOpen) this.setFocusedIndex(this._data().length - 1)
-	      else change(this._data().length - 1)
-	      e.preventDefault()
-	    }
-	    else if ( key === 'Home' ) {
-	      if ( isOpen) this.setFocusedIndex(0)
-	      else change(0)
-	      e.preventDefault()
-	    }
-	    else if ( key === 'Escape' && isOpen ) {
-	      this.close()
-	    }
-	    else if ( (key === 'Enter' || key === ' ') && isOpen ) {
-	      change(this.state.focusedIndex)
-	    }
-	    else if ( key === 'ArrowDown' ) {
-	      if ( alt )         this.open()
-	      else if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
-	      else               change(this.nextSelectedIndex())
-	      e.preventDefault()
-	    }
-	    else if ( key === 'ArrowUp' ) {
-	      if ( alt )         this.close()
-	      else if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
-	      else               change(this.prevSelectedIndex())
-	      e.preventDefault()
-	    }
-	    else
-	      this.search(
-	          String.fromCharCode(e.keyCode)
-	        , this._locate)
-	
-	    function change(idx){
-	      self.change(self._data()[idx])
-	    }
-	  },
-	
-	  change: function(data){
-	    var change = this.props.onChange
-	
-	    if ( change && !_.isShallowEqual(data, this.props.value) ) {
-	      change(data)
-	      this.close()
-	    }
-	  },
-	
-	  _locate: function(word){
-	    var key = this.props.open ? 'focusedIndex' : 'selectedIndex'
-	      , idx = this.findNextWordIndex(word, this.state[key])
-	      , setIndex = setter(key).bind(this);
-	
-	    if ( idx !== -1)
-	      setIndex(idx)
-	  },
-	
-	  _data: function(){
-	    return this.props.data
-	  },
-	
-	  open: function(){
-	    this.notify('onToggle', true)
-	  },
-	
-	  close: function(){
-	    this.notify('onToggle', false)
-	  },
-	
-	  toggle: function(e){
-	    this.props.open
-	      ? this.close()
-	      : this.open()
-	  }
-	
-	})
-	
-	
-	module.exports = controlledInput.createControlledClass(
-	    DropdownList, { open: 'onToggle', value: 'onChange' });
-	
-	module.exports.BaseDropdownList = DropdownList
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , cx     = __webpack_require__(11)
-	  , _      = __webpack_require__(15)
-	  , $      = __webpack_require__(59)
-	  , filter = __webpack_require__(78)
-	  , controlledInput  = __webpack_require__(61)
-	  , CustomPropTypes  = __webpack_require__(62)
-	  
-	  , Popup  = __webpack_require__(63)
-	  , List   = __webpack_require__(64)
-	  , Btn    = __webpack_require__(73)
-	  , Input  = __webpack_require__(79);
-	
-	var propTypes = {
-	      //-- controlled props -----------
-	      value:          React.PropTypes.any,
-	      onChange:       React.PropTypes.func,
-	      open:           React.PropTypes.bool,
-	      onToggle:       React.PropTypes.func,
-	      //------------------------------------
-	
-	      itemComponent:  CustomPropTypes.elementType,
-	
-	      data:           React.PropTypes.array,
-	      valueField:     React.PropTypes.string,
-	      textField:      React.PropTypes.string,
-	      name:           React.PropTypes.string,
-	
-	      disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	      readOnly:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['readOnly'])
-	                      ]),
-	
-	      suggest:        React.PropTypes.bool,
-	      busy:           React.PropTypes.bool,
-	
-	      duration:       React.PropTypes.number, //popup
-	      placeholder:    React.PropTypes.string,
-	
-	      messages:       React.PropTypes.shape({
-	        open:         React.PropTypes.string,
-	        emptyList:    React.PropTypes.string,
-	        emptyFilter:  React.PropTypes.string
-	      })
-	    };
-	
-	var ComboBox = React.createClass({
-	
-	  displayName: 'ComboBox',
-	
-	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(83),
-	    __webpack_require__(87),
-	    __webpack_require__(84),
-	    __webpack_require__(85),
-	    __webpack_require__(86)('focusedIndex'),
-	    __webpack_require__(86)('selectedIndex')
-	  ],
-	
-	  propTypes: propTypes,
-	
-		getInitialState: function(){
-	    var items = this.process(this.props.data, this.props.value)
-	      , idx   = this._dataIndexOf(items, this.props.value);
-	
-			return {
-				selectedIndex: idx,
-	      focusedIndex:  idx === -1 ? 0 : idx,
-	      processedData: items,
-				open:          false
-			}
-		},
-	
-	  getDefaultProps: function(){
-	    return {
-	      data: [],
-	      value: '',
-	      open: false,
-	      suggest: false,
-	      filter: false,
-	      delay: 500,
-	
-	      messages: {
-	        open: 'open combobox',
-	        emptyList:   "There are no items in this list",
-	        emptyFilter: "The filter returned no results"
-	      }
-	    }
-	  },
-	
-	  shouldComponentUpdate: function(nextProps, nextState){
-	    var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
-	      , stateChanged = !_.isShallowEqual(nextState, this.state)
-	      , valueChanged = !_.isShallowEqual(nextProps, this.props)
-	
-	    return isSuggesting || stateChanged || valueChanged
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var rawIdx = this._dataIndexOf(nextProps.data, nextProps.value)
-	      , valueItem = rawIdx == -1 ? nextProps.value : nextProps.data[rawIdx]
-	      , isSuggesting = this.refs.input.isSuggesting()
-	      , items = this.process(
-	          nextProps.data
-	        , nextProps.value
-	        , (rawIdx === -1 || isSuggesting) && this._dataText(valueItem) )
-	
-	      , idx = this._dataIndexOf(items, nextProps.value)
-	      , focused = this.filterIndexOf(items, this._dataText(valueItem));
-	
-	    this._searchTerm = '';
-	
-	    this.setState({
-	      processedData:  items,
-	      selectedIndex:  idx,
-	      focusedIndex:   idx === -1
-	        ? focused !== -1 ? focused : 0 // focus the closest match
-	        : idx
-	    })
-	  },
-	
-		render: function(){
-			var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , valueItem = this._dataItem( this._data(), this.props.value )
-	      , items = this._data()
-	      , listID = this._id('_listbox')
-	      , optID  = this._id( '_option')
-	      , completeType = this.props.suggest
-	          ? this.props.filter ? 'both' : 'inline'
-	          : this.props.filter ? 'list' : '';
-	
-			return (
-				React.createElement("div", React.__spread({},  props , 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        tabIndex: "-1", 
-	        className: cx(className, {
-	          'rw-combobox':        true,
-	          'rw-widget':          true,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-open':            this.props.open,
-	          'rw-state-disabled':  this.props.disabled,
-	          'rw-state-readonly':  this.props.readOnly,
-	          'rw-rtl':             this.isRtl()
-	         })}), 
-	        React.createElement(Btn, {
-	          tabIndex: "-1", 
-	          className: "rw-select", 
-	          onClick: this._maybeHandle(this.toggle), 
-	          disabled: !!(this.props.disabled || this.props.readOnly)}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
-	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
-	          )
-	        ), 
-	        React.createElement(Input, {
-	          ref: "input", 
-	          type: "text", 
-	          role: "combobox", 
-	          suggest: this.props.suggest, 
-	          name: this.props.name, 
-	          'aria-owns': listID, 
-	          'aria-busy': !!this.props.busy, 
-	          'aria-autocomplete': completeType, 
-	          'aria-activedescendent':  this.props.open ? optID : undefined, 
-	          'aria-expanded':  this.props.open, 
-	          'aria-haspopup': true, 
-	          placeholder: this.props.placeholder, 
-	          disabled: this.props.disabled, 
-	          readOnly: this.props.readOnly, 
-	          className: "rw-input", 
-	          value:  this._dataText(valueItem), 
-	          onChange: this._inputTyping, 
-	          onKeyDown: this._inputKeyDown}), 
-	
-	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
-	          React.createElement("div", null, 
-	            React.createElement(List, {ref: "list", 
-	              id: listID, 
-	              optID: optID, 
-	              'aria-hidden':  !this.props.open, 
-	              'aria-live':  completeType && 'polite', 
-	              style: { maxHeight: 200, height: 'auto'}, 
-	              data: items, 
-	              selectedIndex: this.state.selectedIndex, 
-	              focusedIndex: this.state.focusedIndex, 
-	
-	              textField: this.props.textField, 
-	              valueField: this.props.valueField, 
-	              onSelect: this._maybeHandle(this._onSelect), 
-	              listItem: this.props.itemComponent, 
-	              messages: {
-	                emptyList: this.props.data.length
-	                  ? this.props.messages.emptyFilter
-	                  : this.props.messages.emptyList
-	              }})
-	          )
-	        )
-				)
-			)
-		},
-	
-	  setWidth: function() {
-	    var width = $.width(this.getDOMNode())
-	      , changed = width !== this.state.width;
-	
-	    if ( changed )
-	      this.setState({ width: width })
-	  },
-	
-	  _onSelect: function(data, idx, elem){
-	    this.close()
-	    this.change(data)
-	    this._focus(true);
-	  },
-	
-	  _inputKeyDown: function(e){
-	    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
-	    this._isTyping = true
-	  },
-	
-	  _inputTyping: function(e){
-	    var self = this
-	      , shouldSuggest = !!this.props.suggest
-	      , strVal  = e.target.value
-	      , suggestion, data;
-	
-	    suggestion = this._deleting || !shouldSuggest
-	      ? strVal : this.suggest(this._data(), strVal)
-	
-	    suggestion = suggestion || strVal
-	
-	    data = _.find(self.props.data, 
-	      function(item)  {return this._dataText(item).toLowerCase() === suggestion.toLowerCase();}.bind(this))
-	
-	    this.change(!this._deleting && data
-	      ? data
-	      : strVal, true)
-	
-	    this.open()
-	  },
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	    !focused && self.refs.input.accept() //not suggesting anymore
-	
-	    self.timer = setTimeout(function(){
-	      if(focused) self.refs.input.focus()
-	      else        self.close()
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	    }, 0)
-	  },
-	
-	  _keyDown: function(e){
-	    var self = this
-	      , key  = e.key
-	      , alt  = e.altKey
-	      , focusedIdx  = this.state.focusedIndex
-	      , isOpen      = this.props.open;
-	
-	    if ( key === 'End' )
-	      select(this._data().length - 1)
-	
-	    else if ( key === 'Home' )
-	      select(0)
-	
-	    else if ( key === 'Escape' && isOpen )
-	      this.close()
-	
-	    else if ( key === 'Enter' && isOpen ) {
-	      select(focusedIdx)
-	      this.close()
-	    }
-	
-	    else if ( key === 'ArrowDown' ) {
-	      if ( alt )
-	        this.open()
-	      else {
-	        if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
-	        else select(this.nextSelectedIndex())
-	      }
-	    }
-	    else if ( key === 'ArrowUp' ) {
-	      if ( alt )
-	        this.close()
-	      else {
-	        if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
-	        else select(this.prevSelectedIndex())
-	      }
-	    }
-	
-	    function select(idx) {
-	      if( idx === -1 || self._data().length === 0)
-	        return self.change(self.refs.input.getDOMNode().value, false)
-	
-	      self.refs.input.accept(true); //removes caret
-	      self.change(self._data()[idx], false)
-	    }
-	  },
-	
-	  change: function(data, typing){
-	    this._typedChange = !!typing
-	    this.notify('onChange', data)
-	  },
-	
-	  open: function(){
-	    if ( !this.props.open )
-	      this.notify('onToggle', true)
-	  },
-	
-	  close: function(){
-	    if ( this.props.open )
-	      this.notify('onToggle', false)
-	  },
-	
-	  toggle: function(e){
-	    this._focus(true)
-	
-	    this.props.open
-	      ? this.close()
-	      : this.open()
-	  },
-	
-	  suggest: function(data, value){
-	    var word = this._dataText(value)
-	      , matcher = filter.startsWith
-	      , suggestion = typeof value === 'string'
-	          ? _.find(data, finder, this)
-	          : value
-	
-	    if ( suggestion && (!this.state || !this.state.deleting))
-	      return this._dataText(suggestion)
-	
-	    return ''
-	
-	    function finder(item){
-	      return matcher(
-	          this._dataText(item).toLowerCase()
-	        , word.toLowerCase())
-	    }
-	  },
-	
-	  _data: function(){
-	    return this.state.processedData
-	  },
-	
-	  process: function(data, values, searchTerm){
-	    if( this.props.filter && searchTerm)
-	      data = this.filter(data, searchTerm)
-	
-	    return data
-	  }
-	})
-	
-	module.exports = controlledInput.createControlledClass(
-	      ComboBox, { open: 'onToggle', value: 'onChange' });
-	
-	module.exports.BaseComboBox = ComboBox
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React           = __webpack_require__(1)
-	  , Header          = __webpack_require__(65)
-	  , Month           = __webpack_require__(66)
-	  , Year            = __webpack_require__(67)
-	  , Decade          = __webpack_require__(68)
-	  , Century         = __webpack_require__(69)
-	  , cx              = __webpack_require__(11)
-	  , controlledInput = __webpack_require__(61)
-	  , SlideTransition = __webpack_require__(51)
-	  , dates           = __webpack_require__(70)
-	  , constants       = __webpack_require__(71)
-	  , _               = __webpack_require__(15); //values, omit, object
-	
-	var dir = constants.directions;
-	
-	var views        = constants.calendarViews
-	  , VIEW_OPTIONS = Object.keys(views).map( function(k)  {return views[k];} )
-	  , ALT_VIEW     = _.transform(constants.calendarViewHierarchy, function(o, val, key)  { 
-	                      o[val] = key 
-	                    }, {})
-	  , NEXT_VIEW    = constants.calendarViewHierarchy
-	  , VIEW_UNIT    = constants.calendarViewUnits
-	  , VIEW  = _.object([
-	      [views.MONTH,   Month],
-	      [views.YEAR,    Year],
-	      [views.DECADE,  Decade],
-	      [views.CENTURY, Century]
-	    ]);
-	
-	var MULTIPLIER = _.object([
-	      [views.YEAR,    1],
-	      [views.DECADE,  10],
-	      [views.CENTURY, 100]
-	    ]);
-	
-	
-	var Calendar = React.createClass({
-	
-	  displayName: 'Calendar',
-	
-	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(82),
-	    __webpack_require__(85)
-	  ],
-	
-	
-	  propTypes: {
-	
-	    onChange:      React.PropTypes.func.isRequired,
-	    value:         React.PropTypes.instanceOf(Date),
-	
-	    min:           React.PropTypes.instanceOf(Date),
-	    max:           React.PropTypes.instanceOf(Date),
-	
-	    initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
-	    finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['readOnly'])
-	                    ]),
-	
-	    messages:      React.PropTypes.shape({
-	      moveBack:    React.PropTypes.string,
-	      moveForward: React.PropTypes.string
-	    }),
-	
-	    maintainFocus: React.PropTypes.bool,
-	
-	  },
-	
-	  getInitialState: function(){
-	    return {
-	      selectedIndex: 0,
-	      view:          this.props.initialView || 'month',
-	      currentDate:   this.inRangeValue(new Date(this.props.value))
-	    }
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      open:  false,
-	      value: new Date,
-	      min:   new Date(1900,0, 1),
-	      max:   new Date(2099,11, 31),
-	
-	      initialView: 'month',
-	      finalView: 'century',
-	
-	      maintainFocus: true
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var bottom  = VIEW_OPTIONS.indexOf(nextProps.initialView)
-	      , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
-	      , current = VIEW_OPTIONS.indexOf(this.state.view)
-	      , view    = this.state.view
-	      , val     = this.inRangeValue(new Date(nextProps.value));
-	
-	    if( current < bottom )
-	      this.setState({ view: view = nextProps.initialView })
-	    else if (current > top)
-	      this.setState({ view: view = nextProps.finalView })
-	
-	    //if the value changes reset views to the new one
-	    if ( !dates.eq(val, this.props.value, VIEW_UNIT[view]))
-	      this.setState({
-	        currentDate: val
-	      })
-	  },
-	
-	  render: function(){
-	    var $__0=   
-	                  _.omit(this.props, ['value', 'min', 'max']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , View     = VIEW[this.state.view]
-	      , unit     = this.state.view
-	      
-	      , disabled = this.props.disabled || this.props.readOnly
-	      , date     = this.state.currentDate
-	      , labelId  = this._id('_view_label')
-	      , key      = this.state.view + '_' + dates[this.state.view](date)
-	      , id       = this._id('_view');
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props , 
-	        {className: cx(className, {
-	          'rw-calendar':       true,
-	          'rw-widget':         true,
-	          'rw-state-disabled': this.props.disabled,
-	          'rw-state-readonly': this.props.readOnly,
-	          'rw-rtl':            this.isRtl()
-	        })}), 
-	        React.createElement(Header, {
-	          label: this._label(), 
-	          labelId: labelId, 
-	          messages: this.props.messages, 
-	          upDisabled:   disabled || this.state.view === this.props.finalView, 
-	          prevDisabled: disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit), 
-	          nextDisabled: disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max, unit), 
-	          onViewChange: this._maybeHandle(this.navigate.bind(null, dir.UP, null)), 
-	          onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT, null)), 
-	          onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT, null))}), 
-	
-	        React.createElement(SlideTransition, {
-	          ref: "animation", 
-	          direction: this.state.slideDirection, 
-	          onAnimate: finished.bind(this)}, 
-	
-	          React.createElement(View, {ref: "currentView", 
-	            key: key, 
-	            id: id, 
-	            'aria-labeledby': labelId, 
-	            selectedDate: this.props.value, 
-	            value: this.state.currentDate, 
-	            onChange: this._maybeHandle(this.change), 
-	            onKeyDown: this._maybeHandle(this._keyDown), 
-	            onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	            onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT)), 
-	            onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT)), 
-	            disabled: this.props.disabled, 
-	            readOnly: this.props.readOnly, 
-	            min: this.props.min, 
-	            max: this.props.max})
-	        )
-	      )
-	    )
-	
-	    function finished(){
-	      this._focus(true, 'stop');
-	    }
-	  },
-	
-	  navigate: function(direction, date){
-	    var view     =  this.state.view
-	      , slideDir = (direction === dir.LEFT || direction === dir.UP)
-	          ? 'right'
-	          : 'left';
-	
-	    if ( !date )
-	      date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
-	        ? this.nextDate(direction)
-	        : this.state.currentDate
-	
-	    if (direction === dir.DOWN )
-	      view = ALT_VIEW[view] || view
-	
-	    if (direction === dir.UP )
-	      view = NEXT_VIEW[view] || view
-	
-	    if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
-	      this._focus(true, 'nav');
-	
-	      this.setState({
-	        currentDate:    date,
-	        slideDirection: slideDir,
-	        view: view
-	      })
-	    }
-	  },
-	
-	  _focus: function(val, e){
-	    if ( this.props.maintainFocus)
-	      val && this.refs.currentView.getDOMNode().focus()
-	  },
-	
-	  change: function(date){
-	    if ( this.props.onChange && this.state.view === this.props.initialView)
-	      return this.notify('onChange', date)
-	
-	    this.navigate(dir.DOWN, date)
-	  },
-	
-	  nextDate: function(direction){
-	    var method = direction === dir.LEFT ? 'subtract' : 'add'
-	      , view   = this.state.view
-	      , unit   = view === views.MONTH ? view : views.YEAR
-	      , multi  = MULTIPLIER[view] || 1;
-	
-	    return dates[method](this.state.currentDate, 1 * multi, unit)
-	  },
-	
-	  _keyDown: function(e){
-	    var ctrl = e.ctrlKey
-	      , key  = e.key;
-	
-	    if ( ctrl ) {
-	      if ( key === 'ArrowDown' ) {
-	        e.preventDefault()
-	        this.navigate(dir.DOWN)
-	      }
-	      if ( key === 'ArrowUp' ) {
-	        e.preventDefault()
-	        this.navigate(dir.UP)
-	      }
-	      if ( key === 'ArrowLeft' ) {
-	        e.preventDefault()
-	        this.navigate(dir.LEFT)
-	      }
-	      if ( key === 'ArrowRight' ) {
-	        e.preventDefault()
-	        this.navigate(dir.RIGHT)
-	      }
-	    } 
-	    else {
-	      this.refs.currentView._keyDown
-	        && this.refs.currentView._keyDown(e)
-	    }
-	  },
-	
-	  _label: function() {
-	    var view = this.state.view
-	      , dt   = this.state.currentDate;
-	
-	    if ( view === 'month')
-	      return dates.format(dt, dates.formats.MONTH_YEAR)
-	
-	    else if ( view === 'year')
-	      return dates.format(dt, dates.formats.YEAR)
-	
-	    else if ( view === 'decade')
-	      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR)
-	        + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR)
-	
-	    else if ( view === 'century')
-	      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR)
-	        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
-	  },
-	
-	  inRangeValue: function(value){
-	    if( value == null)
-	      return value
-	
-	    return dates.max(
-	        dates.min(value, this.props.max)
-	      , this.props.min)
-	  },
-	
-	  isValidView: function(next) {
-	    var bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
-	      , top     = VIEW_OPTIONS.indexOf(this.props.finalView)
-	      , current = VIEW_OPTIONS.indexOf(next);
-	
-	    return current >= bottom && current <= top
-	  }
-	});
-	
-	module.exports = controlledInput.createControlledClass(
-	    Calendar, { value: 'onChange' });
-	
-	module.exports.BaseCalendar = Calendar
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , cx     = __webpack_require__(11)
-	  , _      = __webpack_require__(15) //pick, omit, has
-	  , dates  = __webpack_require__(70)
-	  , views  = __webpack_require__(71).calendarViews
-	  , popups = __webpack_require__(71).datePopups
-	
-	  , Popup     = __webpack_require__(63)
-	  , Calendar  = __webpack_require__(45).BaseCalendar
-	  , Time      = __webpack_require__(72)
-	  , DateInput = __webpack_require__(74)
-	  , Btn       = __webpack_require__(73)
-	  , CustomPropTypes = __webpack_require__(62)
-	  , controlledInput = __webpack_require__(61);
-	
-	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
-	
-	var propTypes = {
-	
-	    //-- controlled props -----------
-	    value:          React.PropTypes.instanceOf(Date),
-	    onChange:       React.PropTypes.func,
-	    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
-	    onToggle:       React.PropTypes.func,
-	    //------------------------------------
-	
-	    min:            React.PropTypes.instanceOf(Date),
-	    max:            React.PropTypes.instanceOf(Date),
-	
-	    culture:        React.PropTypes.string,
-	    format:         React.PropTypes.string,
-	    editFormat:     React.PropTypes.string,
-	
-	    calendar:       React.PropTypes.bool,
-	    time:           React.PropTypes.bool,
-	
-	    timeComponent:  CustomPropTypes.elementType,
-	    duration:       React.PropTypes.number, //popup
-	
-	    placeholder:    React.PropTypes.string,
-	    name:           React.PropTypes.string,
-	
-	    initialView:    React.PropTypes.oneOf(viewEnum),
-	    finalView:      React.PropTypes.oneOf(viewEnum),
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['readOnly'])
-	                    ]),
-	
-	    parse:          React.PropTypes.oneOfType([
-	                      React.PropTypes.arrayOf(React.PropTypes.string),
-	                      React.PropTypes.string,
-	                      React.PropTypes.func
-	                    ]),
-	  }
-	
-	var DateTimePicker = React.createClass({
-	  displayName: 'DateTimePicker',
-	
-	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(82),
-	    __webpack_require__(85)
-	  ],
-	
-	  propTypes: propTypes,
-	
-	  getInitialState: function(){
-	    return {
-	      selectedIndex: 0,
-	      open:          false
-	    }
-	  },
-	
-	  getDefaultProps: function(){
-	    var cal  = _.has(this.props, 'calendar') ? this.props.calendar : true
-	      , time = _.has(this.props, 'time') ? this.props.time : true
-	      , both = cal && time
-	      , neither = !cal && !time;
-	
-	    return {
-	      value:            null,
-	      format:           both || neither
-	        ? 'M/d/yyyy h:mm tt'
-	        : cal ? 'M/d/yyyy' : 'h:mm tt',
-	      min:              new Date(1900,  0,  1),
-	      max:              new Date(2099, 11, 31),
-	      calendar:         true,
-	      time:             true,
-	      messages: {
-	        calendarButton: 'Select Date',
-	        timeButton:     'Select Time',
-	        next:           'Next Date',
-	      }
-	    }
-	  },
-	
-	  render: function(){
-	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
-	      , timeListID = this._id('_time_listbox')
-	      , timeOptID  = this._id('_time_option')
-	      , dateListID = this._id('_cal')
-	      , owns;
-	
-	    if (dateListID && this.props.calendar ) owns = dateListID
-	    if (timeListID && this.props.time )     owns += ' ' + timeListID
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props, 
-	        {ref: "element", 
-	        tabIndex: "-1", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        className: cx(className, {
-	          'rw-datetimepicker':     true,
-	          'rw-widget':          true,
-	          'rw-open':            this.props.open,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-state-disabled':  this.isDisabled(),
-	          'rw-state-readonly':  this.isReadOnly(),
-	          'rw-has-both':        this.props.calendar && this.props.time,
-	          'rw-rtl':             this.isRtl()
-	        })}), 
-	        React.createElement(DateInput, {ref: "valueInput", 
-	          'aria-activedescendant':  this.props.open
-	            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
-	            : undefined, 
-	          'aria-expanded':  this.props.open, 
-	          'aria-busy': !!this.props.busy, 
-	          'aria-owns': owns, 
-	          'aria-haspopup': true, 
-	          placeholder: this.props.placeholder, 
-	          name: this.props.name, 
-	          disabled: this.isDisabled(), 
-	          readOnly: this.isReadOnly(), 
-	          role: "combobox", 
-	          value: this.props.value, 
-	          focused: this.state.focused, 
-	          format: this.props.format, 
-	          editFormat: this.props.editFormat, 
-	          editing: this.state.focused, 
-	          parse: this._parse, 
-	          onChange: this._change}), 
-	
-	        React.createElement("span", {className: "rw-select"}, 
-	           this.props.calendar &&
-	            React.createElement(Btn, {tabIndex: "-1", 
-	              disabled: this.isDisabled() || this.isReadOnly(), 
-	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
-	              onClick: this._maybeHandle(this._click.bind(null, popups.CALENDAR))}, 
-	              React.createElement("i", {className: "rw-i rw-i-calendar"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.calendarButton))
-	            ), 
-	          
-	           this.props.time &&
-	            React.createElement(Btn, {tabIndex: "-1", 
-	              disabled: this.isDisabled() || this.isReadOnly(), 
-	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
-	              onClick: this._maybeHandle(this._click.bind(null, popups.TIME))}, 
-	              React.createElement("i", {className: "rw-i rw-i-clock-o"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.timeButton))
-	            )
-	          
-	        ), 
-	         this.props.time &&
-	        React.createElement(Popup, {
-	          open:  this.props.open === popups.TIME, 
-	          onRequestClose: this.close, 
-	          duration: this.props.duration}, 
-	            React.createElement("div", null, 
-	              React.createElement(Time, {ref: "timePopup", 
-	                id: timeListID, 
-	                optID: timeOptID, 
-	                'aria-hidden':  !this.props.open, 
-	                style: { maxHeight: 200, height: 'auto'}, 
-	                value: this.props.value, 
-	                min: this.props.min, 
-	                max: this.props.max, 
-	                preserveDate: !!this.props.calendar, 
-	                itemComponent: this.props.timeComponent, 
-	                onSelect: this._maybeHandle(this._selectTime)})
-	            )
-	        ), 
-	        
-	         this.props.calendar &&
-	          React.createElement(Popup, {
-	            className: "rw-calendar-popup", 
-	            open:  this.props.open === popups.CALENDAR, 
-	            duration: this.props.duration, 
-	            onRequestClose: this.close}, 
-	
-	            React.createElement(Calendar, React.__spread({},  calProps , 
-	              {ref: "calPopup", 
-	              id: dateListID, 
-	              value: this.props.value || new Date, 
-	              maintainFocus: false, 
-	              'aria-hidden':  !this.props.open, 
-	              onChange: this._maybeHandle(this._selectDate)}))
-	          )
-	        
-	      )
-	    )
-	  },
-	
-	  _change: function(date, str, constrain){
-	    var change = this.props.onChange
-	
-	    if(constrain)
-	      date = this.inRangeValue(date)
-	
-	    if( change ) {
-	      if( date == null || this.props.value == null){
-	        if( date != this.props.value )
-	          change(date, str)
-	      }
-	      else if (!dates.eq(date, this.props.value))
-	        change(date, str)
-	    }
-	  },
-	
-	  _keyDown: function(e){
-	
-	    if( e.key === 'Tab')
-	      return
-	
-	    if ( e.key === 'Escape' && this.props.open )
-	      this.close()
-	
-	    else if ( e.altKey ) {
-	      e.preventDefault()
-	
-	      if ( e.key === 'ArrowDown')
-	        this.open(this.props.open === popups.CALENDAR
-	              ? popups.TIME
-	              : popups.CALENDAR)
-	      else if ( e.key === 'ArrowUp')
-	        this.close()
-	
-	    } else if (this.props.open ) {
-	      if( this.props.open === popups.CALENDAR )
-	        this.refs.calPopup._keyDown(e)
-	      if( this.props.open === popups.TIME )
-	        this.refs.timePopup._keyDown(e)
-	    }
-	  },
-	
-	  //timeout prevents transitions from breaking focus
-	  _focus: function(focused, e){
-	    var self = this
-	      , input =  this.refs.valueInput;
-	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	
-	      if(focused) input.getDOMNode().focus()
-	      else        self.close()
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	
-	    }, 0)
-	  },
-	
-	  _selectDate: function(date){
-	    this.close()
-	    this._change(
-	        dates.merge(date, this.props.value)
-	      , formatDate(date, this.props.format)
-	      , true)
-	  },
-	
-	  _selectTime: function(datum){
-	    this.close()
-	    this._change(
-	        dates.merge(this.props.value, datum.date)
-	      , formatDate(datum.date, this.props.format)
-	      , true)
-	  },
-	
-	  _click: function(view, e){
-	    this._focus(true)
-	    this.toggle(view, e)
-	  },
-	
-	  _parse: function(string){
-	    var parser = typeof this.props.parse === 'function'
-	          ? this.props.parse
-	          : formatsParser.bind(null, _.splat(this.props.format).concat(this.props.parse));
-	
-	    return parser(string)
-	  },
-	
-	  toggle: function(view, e) {
-	
-	    this.props.open
-	      ? this.state.view !== view
-	          ? this.open(view)
-	          : this.close(view)
-	      : this.open(view)
-	  },
-	
-	  open: function(view){
-	    if ( this.props.open !== view )
-	      this.notify('onToggle', view)
-	  },
-	
-	  close: function(){
-	    if ( this.props.open)
-	      this.notify('onToggle', false)
-	  },
-	
-	  inRangeValue: function(value){
-	    if( value == null) return value
-	
-	    return dates.max(
-	        dates.min(value, this.props.max)
-	      , this.props.min)
-	  },
-	
-	});
-	
-	
-	module.exports = controlledInput.createControlledClass(
-	    DateTimePicker
-	  , { open: 'onToggle', value: 'onChange' });
-	
-	function formatDate(date, format){
-	  var val = ''
-	
-	  if ( (date instanceof Date) && !isNaN(date.getTime()) )
-	    val = dates.format(date, format)
-	
-	  return val;
-	}
-	
-	module.exports.BaseDateTimePicker = DateTimePicker
-	
-	function formatsParser(formats, str){
-	  var date;
-	
-	  formats = [].concat(formats)
-	
-	  for(var i=0; i < formats.length; i++ ){
-	    date = dates.parse(str, formats[i])
-	    if( date) return date
-	  }
-	  return null
-	}
-	
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(11)
-	  , _     = __webpack_require__(15) //omit
-	  , controlledInput  = __webpack_require__(61)
-	  , directions = __webpack_require__(71).directions
-	  , Input = __webpack_require__(75);
-	
-	var Btn = __webpack_require__(73)
-	  , propTypes = {
-	
-	      // -- controlled props -----------
-	      value:          React.PropTypes.number,
-	      onChange:       React.PropTypes.func,
-	      //------------------------------------
-	
-	      min:            React.PropTypes.number,
-	      max:            React.PropTypes.number,
-	      step:           React.PropTypes.number,
-	
-	      culture:        React.PropTypes.string,
-	      format:         React.PropTypes.string,
-	
-	      name:           React.PropTypes.string,
-	
-	      parse:          React.PropTypes.oneOfType([
-	                        React.PropTypes.arrayOf(React.PropTypes.string),
-	                        React.PropTypes.string,
-	                        React.PropTypes.func
-	                      ]),
-	
-	      disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	      readOnly:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['readOnly'])
-	                      ]),
-	
-	      messages:       React.PropTypes.shape({
-	        increment:    React.PropTypes.string,
-	        decrement:    React.PropTypes.string
-	      })
-	    };
-	
-	var NumberPicker = React.createClass({
-	
-	  displayName: 'NumberPicker',
-	
-	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(82),
-	    __webpack_require__(85),
-	  ],
-	
-	  propTypes: propTypes,
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: null,
-	      open: false,
-	
-	      format: 'd',
-	
-	      min: -Infinity,
-	      max:  Infinity,
-	      step: 1,
-	
-	      messages: {
-	        increment: 'increment value',
-	        decrement:  'decrement value'
-	      }
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    return {
-	      focused: false,
-	      active: false,
-	    }
-	  },
-	
-	
-	  render: function(){
-	    var $__0=   _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , val = this.inRangeValue(this.props.value)
-	
-	    //console.log('render', this.state.focused)
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props , 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        tabIndex: "-1", 
-	        className: cx(className, {
-	          'rw-numberpicker':   true,
-	          'rw-widget':          true,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-state-disabled':  this.props.disabled,
-	          'rw-state-readonly':  this.props.readOnly,
-	          'rw-rtl':             this.isRtl()
-	        })}), 
-	
-	        React.createElement("span", {className: "rw-select"}, 
-	          React.createElement(Btn, {
-	            tabIndex: "-1", 
-	            className: cx({ 'rw-state-active': this.state.active === directions.UP}), 
-	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.UP)), 
-	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.UP)), 
-	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
-	            disabled: val === this.props.max || this.props.disabled, 
-	            'aria-disabled': val === this.props.max || this.props.disabled}, 
-	
-	            React.createElement("i", {className: "rw-i rw-i-caret-up"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.increment))
-	          ), 
-	          React.createElement(Btn, {
-	            tabIndex: "-1", 
-	            className: cx({ 'rw-state-active': this.state.active === directions.DOWN}), 
-	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.DOWN)), 
-	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.DOWN)), 
-	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
-	            disabled: val === this.props.min || this.props.disabled, 
-	            'aria-disabled': val === this.props.min || this.props.disabled}, 
-	            React.createElement("i", {className: "rw-i rw-i-caret-down"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.decrement))
-	          )
-	        ), 
-	        React.createElement(Input, {
-	          ref: "input", 
-	          value: val, 
-	          editing: this.state.focused, 
-	          format: this.props.format, 
-	          name: this.props.name, 
-	          role: "spinbutton", 
-	          min: this.props.min, 
-	          'aria-valuenow': val, 
-	          'aria-valuemin': isFinite(this.props.min) ? this.props.min : null, 
-	          'aria-valuemax': isFinite(this.props.max) ? this.props.max : null, 
-	          'aria-disabled':  this.props.disabled, 
-	          'aria-readonly':  this.props.readonly, 
-	          disabled: this.props.disabled, 
-	          readOnly: this.props.readOnly, 
-	          onChange: this.change, 
-	          onKeyDown: this.props.onKeyDown})
-	      )
-	    )
-	  },
-	
-	  //allow for styling, focus stealing keeping me from the normal what have you
-	  _mouseDown: function(dir) {
-	    var val = dir === directions.UP
-	        ? (this.props.value || 0) + this.props.step
-	        : (this.props.value || 0) - this.props.step
-	
-	    val = this.inRangeValue(val)
-	
-	    this.setState({ active: dir })
-	    this.change(val);
-	
-	    if( !((dir === directions.UP && val === this.props.max)
-	      || (dir === directions.DOWN && val === this.props.min)))
-	    {
-	      if(!this.interval)
-	        this.interval = setInterval(this._mouseDown, 500, dir)
-	    }
-	    else
-	      this._mouseUp()
-	  },
-	
-	  _mouseUp: function(direction, e ){
-	    this.setState({ active: false })
-	    clearInterval(this.interval)
-	    this.interval = null;
-	  },
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	      var el = self.refs.input.getDOMNode()
-	
-	      focused && el.focus()
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	
-	    }, 0)
-	  },
-	
-	  _keyDown: function(e){
-	    var key = e.key;
-	
-	    if ( key === 'End'  && isFinite(this.props.max))
-	      this.change(this.props.max)
-	
-	    else if ( key === 'Home' && isFinite(this.props.min))
-	      this.change(this.props.min)
-	
-	    else if ( key === 'ArrowDown' ){
-	      e.preventDefault()
-	      this.decrement()
-	    }
-	    else if ( key === 'ArrowUp' ){
-	      e.preventDefault()
-	      this.increment()
-	    }
-	
-	  },
-	
-	  increment: function() {
-	    this.change(this.inRangeValue((this.props.value || 0) + this.props.step))
-	  },
-	
-	  decrement: function(){
-	    this.change(this.inRangeValue((this.props.value || 0) - this.props.step))
-	  },
-	
-	  change: function(val){
-	    val = this.inRangeValue(val === '' ? null : val)
-	
-	    if ( this.props.value !== val )
-	      this.notify('onChange', val)
-	  },
-	
-	  inRangeValue: function(value){
-	    var max = this.props.max == null ? Infinity : this.props.max
-	      , min = this.props.min == null ? -Infinity : this.props.min;
-	
-	    if( !isFinite(min) && value == null )
-	      return value
-	
-	    return Math.max(Math.min(value, max), min)
-	  }
-	
-	})
-	
-	module.exports = controlledInput.createControlledClass(
-	    NumberPicker, { value: 'onChange' });
-	
-	module.exports.BaseNumberPicker = NumberPicker
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(11)
-	  , _     = __webpack_require__(15)
-	  , controlledInput  = __webpack_require__(61)
-	  , CustomPropTypes  = __webpack_require__(62)
-	  
-	  , SelectInput = __webpack_require__(76)
-	  , TagList     = __webpack_require__(77)
-	  , Popup       = __webpack_require__(63)
-	  , List        = __webpack_require__(64);
-	
-	var propTypes = {
-	      data:           React.PropTypes.array,
-	      //-- controlled props --
-	      value:          React.PropTypes.array,
-	      onChange:       React.PropTypes.func,
-	
-	      searchTerm:     React.PropTypes.string,
-	      onSearch:       React.PropTypes.func,
-	
-	      open:           React.PropTypes.bool,
-	      onToggle:       React.PropTypes.func,
-	      //-------------------------------------------
-	
-	      valueField:     React.PropTypes.string,
-	      textField:      React.PropTypes.string,
-	
-	      tagComponent:   CustomPropTypes.elementType,
-	      itemComponent:  CustomPropTypes.elementType,
-	
-	      duration:       React.PropTypes.number, //popup
-	
-	      placeholder:    React.PropTypes.string,
-	
-	      disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.array,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	      readOnly:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.array,
-	                        React.PropTypes.oneOf(['readonly'])
-	                      ]),
-	
-	      messages:       React.PropTypes.shape({
-	        open:         React.PropTypes.string,
-	        emptyList:    React.PropTypes.string,
-	        emptyFilter:  React.PropTypes.string
-	      })
-	    };
-	
-	var Select = React.createClass({
-	
-	  displayName: 'Select',
-	
-	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(87),
-	    __webpack_require__(84),
-	    __webpack_require__(85),
-	    __webpack_require__(86)('focusedIndex')
-	  ],
-	
-	  propTypes: propTypes,
-	
-	  getDefaultProps: function(){
-	    return {
-	      data: [],
-	      filter: 'startsWith',
-	      value: [],
-	      open: false,
-	      searchTerm: '',
-	      messages: {
-	        emptyList:   "There are no items in this list",
-	        emptyFilter: "The filter returned no results"
-	      }
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    var values = _.splat(this.props.value)
-	
-	    return {
-	      focusedIndex:  0,
-	      processedData: this.process(this.props.data, values, ''),
-	      dataItems: values.map( function(item)  {return this._dataItem(this.props.data, item);}.bind(this))
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var values = _.splat(nextProps.value)
-	      , items  = this.process(nextProps.data, values, nextProps.searchTerm)
-	
-	    this.setState({
-	      processedData: items,
-	      dataItems: values.map( function(item)  {return this._dataItem(nextProps.data, item);}.bind(this))
-	    })
-	  },
-	
-	  render: function(){
-	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , listID  = this._id('_listbox')
-	      , optID   = this._id('_option')
-	      , items   = this._data()
-	      , values  = this.state.dataItems;
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props, 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        tabIndex: "-1", 
-	        className: cx(className, {
-	          'rw-multiselect':    true,
-	          'rw-widget':         true,
-	          'rw-state-focus':    this.state.focused,
-	          'rw-state-disabled': this.props.disabled === true,
-	          'rw-state-readonly': this.props.readOnly === true,
-	          'rw-open':           this.props.open,
-	          'rw-rtl':            this.isRtl()
-	        })}), 
-	        React.createElement("div", {className: "rw-multiselect-wrapper", onClick: this._maybeHandle(this._click)}, 
-	           this.props.busy &&
-	            React.createElement("i", {className: "rw-i rw-loading"}), 
-	          
-	           !!values.length &&
-	            React.createElement(TagList, {
-	              ref: "tagList", 
-	              value: values, 
-	              textField: this.props.textField, 
-	              valueField: this.props.valueField, 
-	              valueComponent: this.props.tagComponent, 
-	              disabled: this.props.disabled, 
-	              readOnly: this.props.readOnly, 
-	              onDelete: this._delete}), 
-	          
-	          React.createElement(SelectInput, {
-	            ref: "input", 
-	            'aria-activedescendent':  this.props.open ? optID : undefined, 
-	            'aria-expanded':  this.props.open, 
-	            'aria-busy': !!this.props.busy, 
-	            'aria-owns': listID, 
-	            'aria-haspopup': true, 
-	            value: this.props.searchTerm, 
-	            disabled: this.props.disabled === true, 
-	            readOnly: this.props.readOnly === true, 
-	            placeholder: this._placeholder(), 
-	            onChange: this._typing})
-	        ), 
-	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
-	          React.createElement("div", null, 
-	            React.createElement(List, {ref: "list", 
-	              id: listID, 
-	              optID: optID, 
-	              'aria-autocomplete': "list", 
-	              'aria-hidden':  !this.props.open, 
-	              style: { maxHeight: 200, height: 'auto'}, 
-	              data: items, 
-	              textField: this.props.textField, 
-	              valueField: this.props.valueField, 
-	              focusedIndex: this.state.focusedIndex, 
-	              onSelect: this._maybeHandle(this._onSelect), 
-	              listItem: this.props.itemComponent, 
-	              messages: {
-	                emptyList: this.props.data.length
-	                  ? this.props.messages.emptyFilter
-	                  : this.props.messages.emptyList
-	              }})
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _data: function(){
-	    return this.state.processedData
-	  },
-	
-	  _delete: function(value){
-	    this._focus(true)
-	    this.change(
-	      this.state.dataItems.filter( function(d)  {return d !== value;}))
-	  },
-	
-	  _click: function(e){
-	    this._focus(true)
-	    !this.props.open && this.open()
-	  },
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    if (this.props.disabled === true )
-	      return
-	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	      if(focused) self.refs.input.focus()
-	      else        {
-	        self.close()
-	        self.refs.tagList && self.refs.tagList.clear()
-	      }
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	    }, 0)
-	  },
-	
-	  _typing: function(e){
-	    this.notify('onSearch', [e.target.value])
-	    this.open()
-	  },
-	
-	  _onSelect: function(data){
-	    if( data === undefined )
-	      return //handle custom tags maybe here?
-	
-	    this.change(this.state.dataItems.concat(data))
-	    this.close()
-	    this._focus(true)
-	  },
-	
-	  _keyDown: function(e){
-	    var key = e.key
-	      , alt = e.altKey
-	      , searching = !!this.props.searchTerm
-	      , isOpen  = this.props.open
-	      , tagList = this.refs.tagList;
-	
-	    if ( key === 'ArrowDown') {
-	      e.preventDefault()
-	      if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
-	      else          this.open()
-	    }
-	    else if ( key === 'ArrowUp') {
-	      e.preventDefault()
-	      if ( alt)          this.close()
-	      else if ( isOpen ) this.setFocusedIndex(
-	        this.prevFocusedIndex())
-	    }
-	    else if ( key === 'End'){
-	      if ( isOpen ) this.setFocusedIndex(this._data().length - 1)
-	      else          tagList && tagList.last()
-	    }
-	    else if (  key === 'Home'){
-	      if ( isOpen ) this.setFocusedIndex(0)
-	      else          tagList && tagList.first()
-	    }
-	    else if ( isOpen && key === 'Enter' )
-	      this._onSelect(this._data()[this.state.focusedIndex])
-	
-	    else if ( key === 'Escape')
-	      isOpen ? this.close() : this.refs.tagList.clear()
-	
-	    else if ( !searching && key === 'ArrowLeft')
-	     tagList && tagList.prev()
-	
-	    else if ( !searching && key === 'ArrowRight')
-	      tagList && tagList.next()
-	
-	    else if ( !searching && key === 'Delete')
-	      tagList && tagList.removeCurrent()
-	
-	    else if ( !searching && key === 'Backspace')
-	      tagList && tagList.removeNext()
-	  },
-	
-	  change: function(data){
-	    var change = this.props.onChange
-	    if ( change ) change(data)
-	  },
-	
-	  open: function(){
-	    if (!(this.props.disabled === true || this.props.readOnly === true))
-	      this.notify('onToggle', true)
-	  },
-	
-	  close: function(){
-	    this.notify('onToggle', false)
-	  },
-	
-	  toggle: function(e){
-	    this.props.open
-	      ? this.close()
-	      : this.open()
-	  },
-	
-	  process: function(data, values, searchTerm){
-	    var items = data.filter( function(i)  {return !values.some( this._valueMatcher.bind(null, i), this);}.bind(this), this)
-	
-	    if( searchTerm)
-	      items = this.filter(items, searchTerm)
-	
-	    return items
-	  },
-	
-	  _placeholder: function(){
-	    return (this.props.value || []).length
-	      ? ''
-	      : (this.props.placeholder || '')
-	  }
-	
-	})
-	
-	
-	module.exports = controlledInput.createControlledClass(
-	    Select, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
-	
-	module.exports.BaseMultiselect = Select
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _  = __webpack_require__(15)
-	  , cx = __webpack_require__(11)
-	  , controlledInput  = __webpack_require__(61)
-	  , CustomPropTypes  = __webpack_require__(62)
-	  , scrollTo = __webpack_require__(80);
-	
-	var propTypes = {
-	    data:           React.PropTypes.array,
-	    value:          React.PropTypes.oneOfType([
-	                      React.PropTypes.any,
-	                      React.PropTypes.array
-	                    ]),
-	    onChange:       React.PropTypes.func,
-	
-	    multiple:       React.PropTypes.bool,
-	    itemComponent:  CustomPropTypes.elementType,
-	    
-	    valueField:     React.PropTypes.string,
-	    textField:      React.PropTypes.string,
-	
-	    busy:           React.PropTypes.bool,
-	
-	    delay:          React.PropTypes.number, 
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                      React.PropTypes.array,
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['disabled'])
-	                    ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.array,
-	                      React.PropTypes.oneOf(['readonly'])
-	                    ]),
-	
-	    messages:       React.PropTypes.shape({
-	      emptyList:    React.PropTypes.string
-	    }),
-	  }
-	
-	
-	var SelectList = React.createClass({displayName: 'SelectList',
-	
-	  propTypes: propTypes,
-	
-	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(83),
-	    __webpack_require__(84),
-	    __webpack_require__(85),
-	    __webpack_require__(86)('focusedIndex', 'isDisabledItem')
-	  ],
-	
-	  getDefaultProps: function(){
-	    return {
-	      delay: 250,
-	      value: [],
-	      data:  [],
-	      messages: {
-	        emptyList: 'There are no items in this list'
-	      }
-	    }
-	  },
-	
-	  getDefaultState: function(props){
-	    var isRadio = !props.multiple
-	      , values  = _.splat(props.value)
-	      , idx     = isRadio && this._dataIndexOf(props.data, values[0]) 
-	
-	    idx = isRadio && idx !== -1 
-	      ? this.nextFocusedIndex(idx - 1) 
-	      : ((this.state || {}).focusedIndex || -1)
-	
-	    return {
-	      focusedIndex: idx,
-	      dataItems:    !isRadio && values.map(function(item)  {return this._dataItem(props.data, item);}.bind(this))
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    return this.getDefaultState(this.props)
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    return this.setState(this.getDefaultState(nextProps))
-	  },
-	
-	  componentDidUpdate: function(prevProps, prevState){
-	    if ( prevState.focusedIndex !== this.state.focusedIndex)
-	      this._setScrollPosition()
-	  },
-	
-	  render: function() {
-	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , focus = this._maybeHandle(this._focus.bind(null, true), true)
-	      , optID = this._id('_selected_option')
-	      , blur  = this._focus.bind(null, false);
-	
-	    return (
-	      
-	      React.createElement("div", React.__spread({},  props, 
-	        {onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: focus, 
-	        onBlur: blur, 
-	        tabIndex: "0", 
-	        role: "listbox", 
-	        'aria-busy': !!this.props.busy, 
-	        'aria-activedescendent':  this.state.focused ? optID : undefined, 
-	        'aria-disabled':  this.isDisabled(), 
-	        'aria-readonly':  this.isReadOnly(), 
-	        className: cx(className, { 
-	          'rw-widget':         true,
-	          'rw-selectlist':   true,
-	          'rw-state-focus':    this.state.focused,
-	          'rw-state-disabled': this.isDisabled(),
-	          'rw-state-readonly': this.isReadOnly(),
-	          'rw-rtl':            this.isRtl(),
-	          'rw-loading-mask':   this.props.busy
-	        })}), 
-	
-	        React.createElement("ul", {className: "rw-list", ref: "list"},  this._rows(optID))
-	      ) 
-	    );
-	  },
-	
-	  _rows: function(optID){
-	    var component = this.props.itemComponent
-	      , name = this._id('_name')
-	      , type = this.props.multiple ? 'checkbox' : 'radio';
-	
-	    return this._data().map( function(item, idx)  {
-	      var focused  = this.state.focused && this.state.focusedIndex === idx
-	        , text     = this._dataText(item)
-	        , checked  = this._contains(item, this._values())
-	        , change   = this._change.bind(null, item)
-	        , disabled = this.isDisabledItem(item)
-	        , readonly = this.isReadOnlyItem(item);
-	
-	      return (React.createElement("li", {
-	        key: 'item_' + idx, 
-	        role: "option", 
-	        id:  focused ? optID : undefined, 
-	        className: cx({ 'rw-state-focus': focused, 'rw-selectlist-item': true })}, 
-	        React.createElement(SelectListItem, {type: type, name: name, onChange: change, 
-	          checked: checked, 
-	          readOnly: readonly, 
-	          disabled: disabled || readonly}, 
-	           component && component({ item: item }) || text
-	        )
-	      ))
-	    }.bind(this))
-	  },
-	
-	  _keyDown: function(e){
-	    var self = this
-	      , key = e.key
-	      , data = this._data()
-	      , multiple = !!this.props.multiple
-	      , last = data.length;
-	
-	    if ( key === 'End' ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex(last))
-	      else            change(this.prevFocusedIndex(last)) 
-	    }
-	    else if ( key === 'Home' ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex(-1))
-	      else            change(this.nextFocusedIndex(-1)) 
-	    }
-	    else if ( key === 'Enter' || key === ' ' ) {
-	      e.preventDefault()
-	      change(data[this.state.focusedIndex])
-	    }
-	    else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex())
-	      else            change(this.nextFocusedIndex())
-	    }
-	    else if ( key === 'ArrowUp' || key === 'A rrowLeft'  ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex())
-	      else            change(this.prevFocusedIndex())
-	    }
-	    else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {
-	      e.preventDefault()
-	      this._selectAll() 
-	    }
-	    else
-	      this.search(
-	          String.fromCharCode(e.keyCode)
-	        , this._locate)
-	
-	    function change(idx, cked){
-	      var item = data[idx];
-	      
-	      if( idx > -1 && idx < last){
-	        self._change(item, cked !== undefined 
-	          ? cked
-	          : multiple 
-	            ? !self._contains(item, self._values()) // toggle value
-	            : true)
-	      }
-	        
-	    }
-	  },
-	
-	  _selectAll: function(){
-	    var values = this.state.dataItems
-	      , disabled = this.props.disabled || this.props.readOnly
-	      , data = this._data()
-	      , blacklist;
-	
-	    disabled = Array.isArray(disabled) ? disabled : [];
-	    //disabled values that are not selected
-	    blacklist = disabled.filter( function(v)  {return !this._contains(v, values);}.bind(this))
-	    data      = data.filter( function(v)  {return !this._contains(v, blacklist);}.bind(this))
-	
-	    if ( data.length === values.length) {
-	      data = disabled.filter( function(v)  {return this._contains(v, values);}.bind(this))
-	      data = data.map( function(v)  {return this._dataItem(this._data(), v);}.bind(this))
-	    }
-	
-	    this.notify('onChange', [data])
-	  },
-	
-	  _change: function(item, checked){
-	    var multiple  = !!this.props.multiple
-	      , blacklist = this.props.disabled || this.props.readOnly 
-	      , values    = this.state.dataItems;
-	
-	    blacklist = Array.isArray(blacklist) ? blacklist : [];
-	
-	    if(this._contains(item, blacklist)) return 
-	
-	    if ( !multiple )
-	      return this.notify('onChange', checked ? item : null)
-	
-	    values = checked 
-	      ? values.concat(item)
-	      : values.filter( function(v)  {return v !== item;})
-	
-	    this.notify('onChange', [values || []])
-	  },
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	      if( focused) self.getDOMNode().focus()
-	      if( focused !== self.state.focused){
-	        self.setState({ focused: focused })
-	        //!focused && self.next(0)
-	      }
-	    }, 0)
-	  },
-	
-	  isDisabledItem: function(item) {
-	    return this.isDisabled() || this._contains(item, this.props.disabled)
-	  },
-	
-	  isReadOnlyItem: function(item) {
-	    return this.isReadOnly() || this._contains(item, this.props.readOnly)
-	  },
-	
-	  _locate: function(word){
-	    var idx = this.findNextWordIndex(word, this.state.focusedIndex);
-	
-	    if ( idx !== -1) 
-	      this.setFocusedIndex(idx)
-	  },
-	
-	  _data:function(){
-	    return this.props.data
-	  },
-	
-	  _contains: function(item, values){
-	    return Array.isArray(values) 
-	      ? values.some(this._valueMatcher.bind(null, item))
-	      : this._valueMatcher(item, values)
-	  },
-	
-	  _values: function(){
-	    return !!this.props.multiple 
-	      ? this.state.dataItems
-	      : this.props.value
-	  },
-	
-	  _setScrollPosition: function(){
-	    var list = this.refs.list.getDOMNode()
-	      , selected = list.children[this.state.focusedIndex]
-	      , handler  = this.props.onMove || scrollTo;
-	
-	    handler(selected)
-	  }
-	
-	});
-	
-	var SelectListItem = React.createClass({displayName: 'SelectListItem',
-	
-	  render: function() {
-	    var props = this.props;
-	
-	    return (
-	      React.createElement("label", {className: cx({ 
-	          'rw-state-disabled': props.disabled,
-	          'rw-state-readonly': props.readOnly
-	        })}, 
-	        React.createElement("input", React.__spread({},   props, 
-	          {tabIndex: "-1", 
-	          onChange: change, 
-	          disabled: props.disabled ||props.readOnly, 
-	          'aria-disabled':  props.disabled ||props.readOnly})), 
-	         this.props.children
-	      )
-	    );
-	
-	    function change(e){
-	      if( !props.disabled && !props.readOnly)
-	        props.onChange(e.target.checked)
-	    }
-	  },
-	
-	})
-	
-	module.exports = SelectList;
-	
-	module.exports = controlledInput.createControlledClass(
-	    SelectList, { value: 'onChange' });
-	
-	module.exports.BaseSelectList = SelectList
-
-/***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * A streamlined version of TransitionGroup built for managing at most two active children
-	 * also provides additional hooks for animation start/end
-	 * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
-	 * relevent code is licensed accordingly 
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/joinClasses.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule joinClasses
+	 * @typechecks static-only
 	 */
 	
 	"use strict";
 	
-	var React = __webpack_require__(1)
-	  , $     = __webpack_require__(59)
-	  , _     = __webpack_require__(15);
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'ReplaceTransitionGroup',
-	
-	  propTypes: {
-	    component:    React.PropTypes.oneOfType([
-	                    React.PropTypes.element,
-	                    React.PropTypes.string
-	                  ]),
-	    childFactory: React.PropTypes.func,
-	
-	    onAnimating:  React.PropTypes.func,
-	    onAnimate:    React.PropTypes.func,
-	  },
-	
-	  getDefaultProps: function() {
-	    return {
-	      component:    'span',
-	      childFactory: function(a){ return a },
-	
-	      onAnimating: _.noop,
-	      onAnimate:   _.noop
-	    };
-	  },
-	
-	  getInitialState: function() {
-	    return {
-	      children: _.splat(this.props.children)
-	    };
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var nextChild = getChild(nextProps.children)
-	      , stack     = this.state.children.slice()
-	      , next      = stack[1]
-	      , last      = stack[0];
-	
-	    var isLastChild = last && key(last) === key(nextChild)
-	      , isNextChild = next && key(next) === key(nextChild);
-	
-	    //no children
-	    if (!last) {
-	      stack.push(nextChild)
-	      this.entering = nextChild
-	    }
-	    else if ( last && !next && !isLastChild) {
-	      //new child
-	      stack.push(nextChild)
-	      this.leaving = last 
-	      this.entering = nextChild
-	    }
-	    else if ( last && next && !isLastChild && !isNextChild) {
-	      // the child is not the current one, exit the current one, add the new one
-	      //  - shift the stack down
-	      stack.shift()
-	      stack.push(nextChild)
-	      this.leaving  = next
-	      this.entering = nextChild
-	    }
-	
-	    if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] ) 
-	      this.setState({ children: stack });
-	  },
-	
-	  componentWillMount: function() {
-	    this.animatingKeys = {};
-	    this.leaving  = null;
-	    this.entering = null;
-	  },
-	
-	  componentDidUpdate: function() {
-	    var entering = this.entering
-	      , leaving  = this.leaving
-	      , first    = this.refs[key(entering) || key(leaving)]
-	      , node     = this.getDOMNode()
-	      , el       = first && first.getDOMNode();
-	
-	    if( el )
-	      $.css(node, {
-	        overflow: 'hidden',
-	        height: $.height(el) + 'px',
-	        width:  $.width(el) + 'px'
-	      })
-	    
-	    this.props.onAnimating();
-	
-	    this.entering = null;
-	    this.leaving  = null;
-	
-	    if (entering) this.performEnter(key(entering))
-	    if (leaving)  this.performLeave(key(leaving))
-	  },
-	
-	  performEnter: function(key) {
-	    var component = this.refs[key];
-	
-	    if(!component) return
-	
-	    this.animatingKeys[key] = true;
-	
-	    if (component.componentWillEnter) 
-	      component.componentWillEnter(
-	        this._handleDoneEntering.bind(this, key));
-	    else 
-	      this._handleDoneEntering(key);
-	  },
-	
-	  _tryFinish: function(){
-	    var node = this.getDOMNode()
-	
-	    if ( this.isTransitioning() )
-	      return 
-	
-	    $.css(node, { overflow: 'visible', height: '', width: '' })
-	
-	    this.props.onAnimate() 
-	  }, 
-	
-	  _handleDoneEntering: function(enterkey) {
-	    var component = this.refs[enterkey];
-	
-	    if (component && component.componentDidEnter) 
-	      component.componentDidEnter();
-	    
-	    delete this.animatingKeys[enterkey];
-	
-	    if ( key(this.props.children) !== enterkey) 
-	      this.performLeave(enterkey); // This was removed before it had fully entered. Remove it.
-	    
-	    this._tryFinish()
-	  },
-	
-	  isTransitioning: function(){
-	    return Object.keys(this.animatingKeys).length !== 0
-	  },
-	
-	  performLeave: function(key) {
-	    var component = this.refs[key];
-	
-	    if(!component) return
-	
-	    this.animatingKeys[key] = true;
-	
-	    if (component.componentWillLeave) 
-	      component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
-	    else 
-	      this._handleDoneLeaving(key);
-	  },
-	
-	  _handleDoneLeaving: function(leavekey) {
-	    var component = this.refs[leavekey];
-	
-	    if (component && component.componentDidLeave) 
-	      component.componentDidLeave();
-	    
-	    delete this.animatingKeys[leavekey];
-	
-	    if (key(this.props.children) === leavekey )
-	      this.performEnter(leavekey); // This entered again before it fully left. Add it again.
-	    else {
-	      var newChildren = this.state.children.filter( function(c)  {return key(c) !== leavekey;});
-	      this.setState({ children: newChildren });
-	    }
-	
-	    this._tryFinish() 
-	  },
-	
-	  render: function() {
-	    var Component = this.props.component
-	    return React.createElement(Component, React.__spread({},  this.props),  this.state.children.map(function(c)  {return this.props.childFactory(c, key(c));}.bind(this)) );
+	/**
+	 * Combines multiple className strings into one.
+	 * http://jsperf.com/joinclasses-args-vs-array
+	 *
+	 * @param {...?string} classes
+	 * @return {string}
+	 */
+	function joinClasses(className/*, ... */) {
+	  if (!className) {
+	    className = '';
 	  }
-	});
-	
-	function getChild(children){
-	  return React.Children.only(children)
+	  var nextClass;
+	  var argLength = arguments.length;
+	  if (argLength > 1) {
+	    for (var ii = 1; ii < argLength; ii++) {
+	      nextClass = arguments[ii];
+	      if (nextClass) {
+	        className = (className ? className + ' ' : '') + nextClass;
+	      }
+	    }
+	  }
+	  return className;
 	}
 	
-	//CHANGE 0.12.0
-	function key(child){
-	  return child && child.key
-	}
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , ReplaceTransitionGroup  = __webpack_require__(50)
-	  , _ = __webpack_require__(15)
-	  , $  =  __webpack_require__(59);
-	
-	
-	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
-	
-	  propTypes: {
-	    direction: React.PropTypes.oneOf(['left', 'right'])
-	  },
-	
-	  componentWillEnter: function(done) {
-	    var node  = this.getDOMNode()
-	      , width = $.width(node)
-	      , direction = this.props.direction;
-	
-	    width = direction === 'left' ? width : -width
-	
-	    this.ORGINAL_POSITION = node.style.position;
-	    
-	    $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
-	
-	    $.animate(node, { left: 0 }, this.props.duration, function()  {
-	
-	        $.css(node, { 
-	          position:  this.ORGINAL_POSITION, 
-	          overflow: 'hidden'
-	        });
-	
-	        this.ORGINAL_POSITION = null
-	        done && done()
-	      }.bind(this))
-	  },
-	
-	  componentWillLeave: function(done) {
-	    var node  = this.getDOMNode()
-	      , width = $.width(node)
-	      , direction = this.props.direction;
-	
-	    width = direction === 'left' ? -width : width
-	
-	    this.ORGINAL_POSITION = node.style.position
-	
-	    $.css(node, { position: 'absolute', top: 0, left: 0})
-	
-	    $.animate(node, { left: width + 'px' }, this.props.duration, function()  {
-	        $.css(node, { 
-	          position: this.ORGINAL_POSITION, 
-	          overflow: 'hidden'
-	        });
-	
-	        this.ORGINAL_POSITION = null
-	        done && done()
-	      }.bind(this))
-	  },
-	
-	  render: function() {
-	    return React.Children.only(this.props.children);
-	  }
-	
-	})
-	
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    direction: React.PropTypes.oneOf(['left', 'right']),
-	    duration:  React.PropTypes.number
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      direction: 'left',
-	      duration: 250
-	    }
-	  },
-	
-	  _wrapChild: function(child, ref) {
-	    return (React.createElement(SlideChildGroup, {key: child.key, ref: ref, direction: this.props.direction, duration: this.props.duration}, child))
-	  },
-	
-	  render: function() {
-	    var $__0=      this.props,style=$__0.style,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{style:1,children:1})
-	
-	    style = _.merge(style, { position: 'relative', overflow: 'hidden' })
-	
-	    return (
-	      React.createElement(ReplaceTransitionGroup, React.__spread({},  
-	        props, 
-	        {ref: "container", 
-	        childFactory: this._wrapChild, 
-	        style: style, 
-	        component: 'div'}), 
-	        children 
-	      ))
-	  },
-	
-	  isTransitioning: function(){
-	    return this.isMounted() && this.refs.container.isTransitioning()
-	  }
-	});
-	
+	module.exports = joinClasses;
 
 
 /***/ },
 /* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/cx.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule cx
+	 */
+	
+	/**
+	 * This function is used to mark string literals representing CSS class names
+	 * so that they can be transformed statically. This allows for modularization
+	 * and minification of CSS class names.
+	 *
+	 * In static_upstream, this function is actually implemented, but it should
+	 * eventually be replaced with something more descriptive, and the transform
+	 * that is used in the main stack should be ported for use elsewhere.
+	 *
+	 * @param string|object className to modularize, or an object of key/values.
+	 *                      In the object case, the values are conditions that
+	 *                      determine if the className keys should be included.
+	 * @param [string ...]  Variable list of classNames in the string case.
+	 * @return string       Renderable space-separated CSS className.
+	 */
+	function cx(classNames) {
+	  if (typeof classNames == 'object') {
+	    return Object.keys(classNames).filter(function(className) {
+	      return classNames[className];
+	    }).join(' ');
+	  } else {
+	    return Array.prototype.join.call(arguments, ' ');
+	  }
+	}
+	
+	module.exports = cx;
+
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Shortcut to compute element style
+	 *
+	 * @param {HTMLElement} elem
+	 * @returns {CssStyle}
+	 */
+	function getComputedStyles(elem) {
+	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
+	}
+	
+	/**
+	 * Get elements offset
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} DOMNode
+	 * @returns {{top: number, left: number}}
+	 */
+	function getOffset(DOMNode) {
+	  if (window.jQuery) {
+	    return window.jQuery(DOMNode).offset();
+	  }
+	
+	  var docElem = document.documentElement;
+	  var box = { top: 0, left: 0 };
+	
+	  // If we don't have gBCR, just use 0,0 rather than error
+	  // BlackBerry 5, iOS 3 (original iPhone)
+	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
+	    box = DOMNode.getBoundingClientRect();
+	  }
+	
+	  return {
+	    top: box.top + window.pageYOffset - docElem.clientTop,
+	    left: box.left + window.pageXOffset - docElem.clientLeft
+	  };
+	}
+	
+	/**
+	 * Get elements position
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} elem
+	 * @param {HTMLElement?} offsetParent
+	 * @returns {{top: number, left: number}}
+	 */
+	function getPosition(elem, offsetParent) {
+	  if (window.jQuery) {
+	    return window.jQuery(elem).position();
+	  }
+	
+	  var offset,
+	      parentOffset = {top: 0, left: 0};
+	
+	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
+	  if (getComputedStyles(elem).position === 'fixed' ) {
+	    // We assume that getBoundingClientRect is available when computed position is fixed
+	    offset = elem.getBoundingClientRect();
+	
+	  } else {
+	    if (!offsetParent) {
+	      // Get *real* offsetParent
+	      offsetParent = offsetParent(elem);
+	    }
+	
+	    // Get correct offsets
+	    offset = getOffset(elem);
+	    if ( offsetParent.nodeName !== 'HTML') {
+	      parentOffset = getOffset(offsetParent);
+	    }
+	
+	    // Add offsetParent borders
+	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
+	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
+	  }
+	
+	  // Subtract parent offsets and element margins
+	  return {
+	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
+	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
+	  };
+	}
+	
+	/**
+	 * Get parent element
+	 *
+	 * @param {HTMLElement?} elem
+	 * @returns {HTMLElement}
+	 */
+	function offsetParent(elem) {
+	  var docElem = document.documentElement;
+	  var offsetParent = elem.offsetParent || docElem;
+	
+	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
+	    getComputedStyles(offsetParent).position === 'static' ) ) {
+	    offsetParent = offsetParent.offsetParent;
+	  }
+	
+	  return offsetParent || docElem;
+	}
+	
+	module.exports = {
+	  getComputedStyles: getComputedStyles,
+	  getOffset: getOffset,
+	  getPosition: getPosition,
+	  offsetParent: offsetParent
+	};
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/cloneWithProps.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @typechecks
+	 * @providesModule cloneWithProps
+	 */
+	
+	"use strict";
+	
+	var ReactElement = __webpack_require__(83);
+	var ReactPropTransferer = __webpack_require__(84);
+	
+	var keyOf = __webpack_require__(85);
+	var warning = __webpack_require__(86);
+	
+	var CHILDREN_PROP = keyOf({children: null});
+	
+	/**
+	 * Sometimes you want to change the props of a child passed to you. Usually
+	 * this is to add a CSS class.
+	 *
+	 * @param {object} child child component you'd like to clone
+	 * @param {object} props props you'd like to modify. They will be merged
+	 * as if you used `transferPropsTo()`.
+	 * @return {object} a clone of child with props merged in.
+	 */
+	function cloneWithProps(child, props) {
+	  if (false) {
+	    ("production" !== process.env.NODE_ENV ? warning(
+	      !child.ref,
+	      'You are calling cloneWithProps() on a child with a ref. This is ' +
+	      'dangerous because you\'re creating a new child which will not be ' +
+	      'added as a ref to its parent.'
+	    ) : null);
+	  }
+	
+	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
+	
+	  // Use `child.props.children` if it is provided.
+	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
+	      child.props.hasOwnProperty(CHILDREN_PROP)) {
+	    newProps.children = child.props.children;
+	  }
+	
+	  // The current API doesn't retain _owner and _context, which is why this
+	  // doesn't use ReactElement.cloneAndReplaceProps.
+	  return ReactElement.createElement(child.type, newProps);
+	}
+	
+	module.exports = cloneWithProps;
+
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	/**
+	 * Maps children that are typically specified as `props.children`,
+	 * but only iterates over children that are "valid components".
+	 *
+	 * The mapFunction provided index will be normalised to the components mapped,
+	 * so an invalid component would not increase the index.
+	 *
+	 * @param {?*} children Children tree container.
+	 * @param {function(*, int)} mapFunction.
+	 * @param {*} mapContext Context for mapFunction.
+	 * @return {object} Object containing the ordered map of results.
+	 */
+	function mapValidComponents(children, func, context) {
+	  var index = 0;
+	
+	  return React.Children.map(children, function (child) {
+	    if (React.isValidElement(child)) {
+	      var lastIndex = index;
+	      index++;
+	      return func.call(context, child, lastIndex);
+	    }
+	
+	    return child;
+	  });
+	}
+	
+	/**
+	 * Iterates through children that are typically specified as `props.children`,
+	 * but only iterates over children that are "valid components".
+	 *
+	 * The provided forEachFunc(child, index) will be called for each
+	 * leaf child with the index reflecting the position relative to "valid components".
+	 *
+	 * @param {?*} children Children tree container.
+	 * @param {function(*, int)} forEachFunc.
+	 * @param {*} forEachContext Context for forEachContext.
+	 */
+	function forEachValidComponents(children, func, context) {
+	  var index = 0;
+	
+	  return React.Children.forEach(children, function (child) {
+	    if (React.isValidElement(child)) {
+	      func.call(context, child, index);
+	      index++;
+	    }
+	  });
+	}
+	
+	/**
+	 * Count the number of "valid components" in the Children container.
+	 *
+	 * @param {?*} children Children tree container.
+	 * @returns {number}
+	 */
+	function numberOfValidComponents(children) {
+	  var count = 0;
+	
+	  React.Children.forEach(children, function (child) {
+	    if (React.isValidElement(child)) { count++; }
+	  });
+	
+	  return count;
+	}
+	
+	/**
+	 * Determine if the Child container has one or more "valid components".
+	 *
+	 * @param {?*} children Children tree container.
+	 * @returns {boolean}
+	 */
+	function hasValidComponent(children) {
+	  var hasValid = false;
+	
+	  React.Children.forEach(children, function (child) {
+	    if (!hasValid && React.isValidElement(child)) {
+	      hasValid = true;
+	    }
+	  });
+	
+	  return hasValid;
+	}
+	
+	module.exports = {
+	  map: mapValidComponents,
+	  forEach: forEachValidComponents,
+	  numberOf: numberOfValidComponents,
+	  hasValidComponent: hasValidComponent
+	};
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Safe chained function
+	 *
+	 * Will only create a new function if needed,
+	 * otherwise will pass back existing functions or null.
+	 *
+	 * @param {function} one
+	 * @param {function} two
+	 * @returns {function|null}
+	 */
+	function createChainedFunction(one, two) {
+	  var hasOne = typeof one === 'function';
+	  var hasTwo = typeof two === 'function';
+	
+	  if (!hasOne && !hasTwo) { return null; }
+	  if (!hasOne) { return two; }
+	  if (!hasTwo) { return one; }
+	
+	  return function chainedFunction() {
+	    one.apply(this, arguments);
+	    two.apply(this, arguments);
+	  };
+	}
+	
+	module.exports = createChainedFunction;
+
+/***/ },
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -15548,10 +16007,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(104)(module), (function() { return this; }())))
 
 /***/ },
-/* 53 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -15799,264 +16258,27 @@
 
 
 /***/ },
-/* 54 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/addons/transitions/ReactTransitionEvents.js
 	 *
-	 * @providesModule joinClasses
-	 * @typechecks static-only
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Combines multiple className strings into one.
-	 * http://jsperf.com/joinclasses-args-vs-array
-	 *
-	 * @param {...?string} classes
-	 * @return {string}
-	 */
-	function joinClasses(className/*, ... */) {
-	  if (!className) {
-	    className = '';
-	  }
-	  var nextClass;
-	  var argLength = arguments.length;
-	  if (argLength > 1) {
-	    for (var ii = 1; ii < argLength; ii++) {
-	      nextClass = arguments[ii];
-	      if (nextClass) {
-	        className = (className ? className + ' ' : '') + nextClass;
-	      }
-	    }
-	  }
-	  return className;
-	}
-	
-	module.exports = joinClasses;
-
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule cx
-	 */
-	
-	/**
-	 * This function is used to mark string literals representing CSS class names
-	 * so that they can be transformed statically. This allows for modularization
-	 * and minification of CSS class names.
-	 *
-	 * In static_upstream, this function is actually implemented, but it should
-	 * eventually be replaced with something more descriptive, and the transform
-	 * that is used in the main stack should be ported for use elsewhere.
-	 *
-	 * @param string|object className to modularize, or an object of key/values.
-	 *                      In the object case, the values are conditions that
-	 *                      determine if the className keys should be included.
-	 * @param [string ...]  Variable list of classNames in the string case.
-	 * @return string       Renderable space-separated CSS className.
-	 */
-	function cx(classNames) {
-	  if (typeof classNames == 'object') {
-	    return Object.keys(classNames).filter(function(className) {
-	      return classNames[className];
-	    }).join(' ');
-	  } else {
-	    return Array.prototype.join.call(arguments, ' ');
-	  }
-	}
-	
-	module.exports = cx;
-
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @typechecks
-	 * @providesModule cloneWithProps
-	 */
-	
-	"use strict";
-	
-	var ReactElement = __webpack_require__(92);
-	var ReactPropTransferer = __webpack_require__(93);
-	
-	var keyOf = __webpack_require__(94);
-	var warning = __webpack_require__(95);
-	
-	var CHILDREN_PROP = keyOf({children: null});
-	
-	/**
-	 * Sometimes you want to change the props of a child passed to you. Usually
-	 * this is to add a CSS class.
-	 *
-	 * @param {object} child child component you'd like to clone
-	 * @param {object} props props you'd like to modify. They will be merged
-	 * as if you used `transferPropsTo()`.
-	 * @return {object} a clone of child with props merged in.
-	 */
-	function cloneWithProps(child, props) {
-	  if (false) {
-	    ("production" !== process.env.NODE_ENV ? warning(
-	      !child.ref,
-	      'You are calling cloneWithProps() on a child with a ref. This is ' +
-	      'dangerous because you\'re creating a new child which will not be ' +
-	      'added as a ref to its parent.'
-	    ) : null);
-	  }
-	
-	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
-	
-	  // Use `child.props.children` if it is provided.
-	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
-	      child.props.hasOwnProperty(CHILDREN_PROP)) {
-	    newProps.children = child.props.children;
-	  }
-	
-	  // The current API doesn't retain _owner and _context, which is why this
-	  // doesn't use ReactElement.cloneAndReplaceProps.
-	  return ReactElement.createElement(child.type, newProps);
-	}
-	
-	module.exports = cloneWithProps;
-
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule EventListener
-	 * @typechecks
-	 */
-	
-	var emptyFunction = __webpack_require__(88);
-	
-	/**
-	 * Upstream version of event listener. Does not take into account specific
-	 * nature of platform.
-	 */
-	var EventListener = {
-	  /**
-	   * Listen to DOM events during the bubble phase.
-	   *
-	   * @param {DOMEventTarget} target DOM element to register listener on.
-	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-	   * @param {function} callback Callback function.
-	   * @return {object} Object with a `remove` method.
-	   */
-	  listen: function(target, eventType, callback) {
-	    if (target.addEventListener) {
-	      target.addEventListener(eventType, callback, false);
-	      return {
-	        remove: function() {
-	          target.removeEventListener(eventType, callback, false);
-	        }
-	      };
-	    } else if (target.attachEvent) {
-	      target.attachEvent('on' + eventType, callback);
-	      return {
-	        remove: function() {
-	          target.detachEvent('on' + eventType, callback);
-	        }
-	      };
-	    }
-	  },
-	
-	  /**
-	   * Listen to DOM events during the capture phase.
-	   *
-	   * @param {DOMEventTarget} target DOM element to register listener on.
-	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-	   * @param {function} callback Callback function.
-	   * @return {object} Object with a `remove` method.
-	   */
-	  capture: function(target, eventType, callback) {
-	    if (!target.addEventListener) {
-	      if (false) {
-	        console.error(
-	          'Attempted to listen to events during the capture phase on a ' +
-	          'browser that does not support the capture phase. Your application ' +
-	          'will not receive some events.'
-	        );
-	      }
-	      return {
-	        remove: emptyFunction
-	      };
-	    } else {
-	      target.addEventListener(eventType, callback, true);
-	      return {
-	        remove: function() {
-	          target.removeEventListener(eventType, callback, true);
-	        }
-	      };
-	    }
-	  },
-	
-	  registerDefault: function() {}
-	};
-	
-	module.exports = EventListener;
-
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 *
 	 * @providesModule ReactTransitionEvents
 	 */
 	
 	"use strict";
 	
-	var ExecutionEnvironment = __webpack_require__(89);
+	var ExecutionEnvironment = __webpack_require__(94);
 	
 	/**
 	 * EVENT_NAME_MAP is used to determine which event fired when a
@@ -16155,7 +16377,102 @@
 
 
 /***/ },
-/* 59 */
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/EventListener.js
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule EventListener
+	 * @typechecks
+	 */
+	
+	var emptyFunction = __webpack_require__(96);
+	
+	/**
+	 * Upstream version of event listener. Does not take into account specific
+	 * nature of platform.
+	 */
+	var EventListener = {
+	  /**
+	   * Listen to DOM events during the bubble phase.
+	   *
+	   * @param {DOMEventTarget} target DOM element to register listener on.
+	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+	   * @param {function} callback Callback function.
+	   * @return {object} Object with a `remove` method.
+	   */
+	  listen: function(target, eventType, callback) {
+	    if (target.addEventListener) {
+	      target.addEventListener(eventType, callback, false);
+	      return {
+	        remove: function() {
+	          target.removeEventListener(eventType, callback, false);
+	        }
+	      };
+	    } else if (target.attachEvent) {
+	      target.attachEvent('on' + eventType, callback);
+	      return {
+	        remove: function() {
+	          target.detachEvent('on' + eventType, callback);
+	        }
+	      };
+	    }
+	  },
+	
+	  /**
+	   * Listen to DOM events during the capture phase.
+	   *
+	   * @param {DOMEventTarget} target DOM element to register listener on.
+	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+	   * @param {function} callback Callback function.
+	   * @return {object} Object with a `remove` method.
+	   */
+	  capture: function(target, eventType, callback) {
+	    if (!target.addEventListener) {
+	      if (false) {
+	        console.error(
+	          'Attempted to listen to events during the capture phase on a ' +
+	          'browser that does not support the capture phase. Your application ' +
+	          'will not receive some events.'
+	        );
+	      }
+	      return {
+	        remove: emptyFunction
+	      };
+	    } else {
+	      target.addEventListener(eventType, callback, true);
+	      return {
+	        remove: function() {
+	          target.removeEventListener(eventType, callback, true);
+	        }
+	      };
+	    }
+	  },
+	
+	  registerDefault: function() {}
+	};
+	
+	module.exports = EventListener;
+
+
+/***/ },
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16412,7 +16729,7 @@
 
 
 /***/ },
-/* 60 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16428,13 +16745,13 @@
 	}
 
 /***/ },
-/* 61 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var _ = __webpack_require__(15) //invert, transform
+	var _ = __webpack_require__(16) //invert, transform
 	  , React = __webpack_require__(1)
-	  , compat = __webpack_require__(90)
+	  , compat = __webpack_require__(95)
 	
 	
 	function compatPropType(handler, propType) {
@@ -16545,7 +16862,7 @@
 	}
 
 /***/ },
-/* 62 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16593,13 +16910,13 @@
 	}
 
 /***/ },
-/* 63 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React  = __webpack_require__(1)
 	  //, cloneWithProps = require('./util/transferProps').cloneWithProps
-	  , $ = __webpack_require__(59);
+	  , $ = __webpack_require__(61);
 	
 	
 	var PopupContent = React.createClass({displayName: 'PopupContent',
@@ -16733,14 +17050,14 @@
 	}
 
 /***/ },
-/* 64 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(62)
-	  , cx = __webpack_require__(11)
-	  , _  = __webpack_require__(15);
+	  , CustomPropTypes  = __webpack_require__(64)
+	  , cx = __webpack_require__(12)
+	  , _  = __webpack_require__(16);
 	
 	
 	module.exports = React.createClass({
@@ -16748,7 +17065,7 @@
 	  displayName: 'List',
 	
 	  mixins: [ 
-	    __webpack_require__(84)
+	    __webpack_require__(90)
 	  ],
 	
 	  propTypes: {
@@ -16855,12 +17172,141 @@
 	})
 
 /***/ },
-/* 65 */
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var common = {
+	      eq:   function(a, b){ return a === b },
+	      neq:  function(a, b){ return a !== b },
+	      gt:   function(a, b){ return a > b   },
+	      gte:  function(a, b){ return a >= b  },
+	      lt:   function(a, b){ return a < b   },
+	      lte:  function(a, b){ return a <= b  },
+	
+	      contains: function(a, b){
+	        return a.indexOf(b) !== -1
+	      },
+	
+	      startsWith: function(a, b) {
+	        return a.lastIndexOf(b, 0) === 0;
+	      },
+	
+	      endsWith: function(a, b) {
+	        var pos = a.length - b.length
+	          , lastIndex = a.indexOf(b, pos);
+	
+	        return  lastIndex !== -1 && lastIndex === pos;
+	      }
+	    }
+	
+	module.exports = common
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  render: function(){
+	  	var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1});
+	
+	    return (
+	      React.createElement("button", React.__spread({},  props, {type: "button", className: className + ' rw-btn'}), 
+	        this.props.children
+	      )
+	  	)
+	  }
+	})
+
+/***/ },
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , Btn = __webpack_require__(73);
+	  , caretPos = __webpack_require__(97);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    value:        React.PropTypes.string,
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	
+	  // hello
+	  componentDidUpdate: function() {
+	    var input = this.getDOMNode()
+	      , val = this.props.value;
+	
+	    if ( this.isSuggesting() ){
+	      var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
+	        , end   = val.length - start
+	
+	      if ( start >= 0) {
+	        caretPos(input, start, start + end)
+	      }
+	    }
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: ''
+	    }
+	  },
+	
+	  render: function(){
+	    return (
+	      React.createElement("input", React.__spread({},  
+	        this.props , 
+	        {type: "text", 
+	        className: this.props.className + ' rw-input', 
+	        onKeyDown: this.props.onKeyDown, 
+	        onChange: this._change, 
+	        value: this.props.value == null ? '' : this.props.value}))
+	    )
+	  },
+	
+	  isSuggesting: function(){
+	    var val = this.props.value
+	      , isSuggestion = this._last != null
+	          && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
+	
+	    return this.props.suggest && isSuggestion
+	  },
+	
+	  accept: function(removeCaret){
+	    var val = this.getDOMNode().value || ''
+	      , end = val.length;
+	
+	    this._last = null
+	    removeCaret && caretPos(this.getDOMNode(), end, end)
+	  },
+	
+	  _change: function(e){
+	    var val = e.target.value
+	    this._last = val;
+	    this.props.onChange(e, val)
+	  },
+	
+	  focus: function(){
+	    this.getDOMNode().focus()
+	  }
+	});
+
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Btn = __webpack_require__(68);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -16882,8 +17328,8 @@
 	  },
 	
 	  mixins: [
-	    __webpack_require__(82),
-	    __webpack_require__(91)
+	    __webpack_require__(88),
+	    __webpack_require__(98)
 	  ],
 	
 	  getDefaultProps: function(){
@@ -16929,16 +17375,16 @@
 	})
 
 /***/ },
-/* 66 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(11)
-	  , dates = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions
-	  , _   = __webpack_require__(15)
-	  , Btn = __webpack_require__(73);
+	  , cx    = __webpack_require__(12)
+	  , dates = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , _   = __webpack_require__(16)
+	  , Btn = __webpack_require__(68);
 	
 	var opposite = {
 	  LEFT: directions.RIGHT,
@@ -16950,9 +17396,9 @@
 	  displayName: 'MonthView',
 	
 	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(91),
-	    __webpack_require__(96)('month', 'day'),
+	    __webpack_require__(87),
+	    __webpack_require__(98),
+	    __webpack_require__(99)('month', 'day'),
 	  ],
 	
 	  propTypes: {
@@ -17063,16 +17509,16 @@
 
 
 /***/ },
-/* 67 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(11)
-	  , dates      = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions
-	  , Btn        = __webpack_require__(73)
-	  , _          = __webpack_require__(15)
+	  , cx         = __webpack_require__(12)
+	  , dates      = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , Btn        = __webpack_require__(68)
+	  , _          = __webpack_require__(16)
 	
 	var opposite = {
 	  LEFT: directions.RIGHT,
@@ -17084,9 +17530,9 @@
 	  displayName: 'YearView',
 	
 	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(91),
-	    __webpack_require__(96)('year', 'month')
+	    __webpack_require__(87),
+	    __webpack_require__(98),
+	    __webpack_require__(99)('year', 'month')
 	  ],
 	
 	  propTypes: {
@@ -17180,16 +17626,16 @@
 
 
 /***/ },
-/* 68 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , _ = __webpack_require__(15)
-	  , cx    = __webpack_require__(11)
-	  , dates = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions
-	  , Btn = __webpack_require__(73); 
+	  , _ = __webpack_require__(16)
+	  , cx    = __webpack_require__(12)
+	  , dates = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , Btn = __webpack_require__(68); 
 	
 	var opposite = {
 	  LEFT: directions.RIGHT,
@@ -17202,10 +17648,10 @@
 	  displayName: 'DecadeView',
 	
 	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(82),
-	    __webpack_require__(91),
-	    __webpack_require__(96)('decade', 'year')
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(98),
+	    __webpack_require__(99)('decade', 'year')
 	  ],
 	
 	  propTypes: {
@@ -17308,16 +17754,16 @@
 
 
 /***/ },
-/* 69 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(11)
-	  , dates      = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions
-	  , Btn        = __webpack_require__(73)
-	  , _          = __webpack_require__(15); //omit
+	  , cx         = __webpack_require__(12)
+	  , dates      = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , Btn        = __webpack_require__(68)
+	  , _          = __webpack_require__(16); //omit
 	
 	var opposite = {
 	  LEFT:  directions.RIGHT,
@@ -17330,10 +17776,10 @@
 	  displayName: 'CenturyView',
 	
 	  mixins: [
-	    __webpack_require__(81),
-	    __webpack_require__(82),
-	    __webpack_require__(91),
-	    __webpack_require__(96)('century', 'decade')
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(98),
+	    __webpack_require__(99)('century', 'decade')
 	  ],
 	
 	  propTypes: {
@@ -17453,14 +17899,14 @@
 
 
 /***/ },
-/* 70 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var dateMath = __webpack_require__(40)
-	  , globalize = __webpack_require__(103)
-	  , _ = __webpack_require__(15); //extend
+	var dateMath = __webpack_require__(35)
+	  , globalize = __webpack_require__(105)
+	  , _ = __webpack_require__(16); //extend
 	
 	var dates = module.exports = _.extend(dateMath, {
 	  // wrapper methods for isolating globalize use throughout the lib
@@ -17618,11 +18064,11 @@
 	})
 
 /***/ },
-/* 71 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var _ = __webpack_require__(15); //object
+	var _ = __webpack_require__(16); //object
 	
 	var views = {
 	    MONTH:   'month',
@@ -17663,15 +18109,15 @@
 
 
 /***/ },
-/* 72 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(70)
-	  , List = __webpack_require__(64)
-	  , CustomPropTypes  = __webpack_require__(62)
-	  , _ = __webpack_require__(15) // omit
+	  , dates = __webpack_require__(75)
+	  , List = __webpack_require__(66)
+	  , CustomPropTypes  = __webpack_require__(64)
+	  , _ = __webpack_require__(16) // omit
 	
 	
 	module.exports = React.createClass({
@@ -17679,9 +18125,9 @@
 	  displayName: 'TimeList',
 	
 	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(86)('selectedIndex'),
-	    __webpack_require__(86)('focusedIndex')
+	    __webpack_require__(89),
+	    __webpack_require__(92)('selectedIndex'),
+	    __webpack_require__(92)('focusedIndex')
 	  ],
 	
 	  propTypes: {
@@ -17825,33 +18271,13 @@
 
 
 /***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  render: function(){
-	  	var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1});
-	
-	    return (
-	      React.createElement("button", React.__spread({},  props, {type: "button", className: className + ' rw-btn'}), 
-	        this.props.children
-	      )
-	  	)
-	  }
-	})
-
-/***/ },
-/* 74 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , cx = __webpack_require__(11)
-	  , dates = __webpack_require__(70);
+	  , cx = __webpack_require__(12)
+	  , dates = __webpack_require__(75);
 	
 	module.exports = React.createClass({
 	
@@ -17954,13 +18380,13 @@
 	}
 
 /***/ },
-/* 75 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , setter  = __webpack_require__(60)
-	  , globalize = __webpack_require__(103);
+	  , setter  = __webpack_require__(62)
+	  , globalize = __webpack_require__(105);
 	
 	
 	module.exports = React.createClass({
@@ -18065,7 +18491,54 @@
 
 
 /***/ },
-/* 76 */
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var $ = __webpack_require__(61)
+	
+	module.exports = function scrollTo( selected ) {
+	  var offset = $.offset(selected)
+	    , poff   = { top: 0, left: 0 }
+	    , list, scrollTop, selectedTop
+	    , selectedHeight, listHeight, bottom;
+	
+	    if( !selected ) return 
+	
+	    list       = $.scrollParent(selected)
+	    scrollTop  = $.scrollTop(list)
+	    listHeight = $.height(list, true)
+	
+	    if (!getWindow(list)) 
+	      poff = $.offset(list)
+	
+	    offset     = {
+	      top:    offset.top  - poff.top,
+	      left:   offset.left - poff.left,
+	      height: offset.height,
+	      width:  offset.width
+	    }
+	
+	    selectedHeight = offset.height
+	    selectedTop    = offset.top  + scrollTop
+	    bottom         = selectedTop + selectedHeight
+	
+	    scrollTop = scrollTop > selectedTop
+	          ? selectedTop
+	          : bottom > (scrollTop + listHeight) 
+	              ? (bottom - listHeight)
+	              : scrollTop
+	
+	    $.scrollTop(list, scrollTop)
+	}
+	
+	function getWindow( node ) {
+	  return node === node.window
+	    ? node : node.nodeType === 9 && node.defaultView;
+	}
+
+/***/ },
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18113,22 +18586,22 @@
 
 
 /***/ },
-/* 77 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , _     = __webpack_require__(15)
-	  , cx    = __webpack_require__(11)
-	  , Btn   = __webpack_require__(73)
+	  , _     = __webpack_require__(16)
+	  , cx    = __webpack_require__(12)
+	  , Btn   = __webpack_require__(68)
 	
 	module.exports = React.createClass({
 	  
 	  displayName: 'MultiselectTagList',
 	
 	  mixins: [
-	    __webpack_require__(84),
-	    __webpack_require__(82)
+	    __webpack_require__(90),
+	    __webpack_require__(88)
 	  ],
 	
 	  propTypes: {
@@ -18283,672 +18756,30 @@
 
 
 /***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var common = {
-	      eq:   function(a, b){ return a === b },
-	      neq:  function(a, b){ return a !== b },
-	      gt:   function(a, b){ return a > b   },
-	      gte:  function(a, b){ return a >= b  },
-	      lt:   function(a, b){ return a < b   },
-	      lte:  function(a, b){ return a <= b  },
-	
-	      contains: function(a, b){
-	        return a.indexOf(b) !== -1
-	      },
-	
-	      startsWith: function(a, b) {
-	        return a.lastIndexOf(b, 0) === 0;
-	      },
-	
-	      endsWith: function(a, b) {
-	        var pos = a.length - b.length
-	          , lastIndex = a.indexOf(b, pos);
-	
-	        return  lastIndex !== -1 && lastIndex === pos;
-	      }
-	    }
-	
-	module.exports = common
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , caretPos = __webpack_require__(97);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    value:        React.PropTypes.string,
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	
-	  // hello
-	  componentDidUpdate: function() {
-	    var input = this.getDOMNode()
-	      , val = this.props.value;
-	
-	    if ( this.isSuggesting() ){
-	      var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
-	        , end   = val.length - start
-	
-	      if ( start >= 0) {
-	        caretPos(input, start, start + end)
-	      }
-	    }
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: ''
-	    }
-	  },
-	
-	  render: function(){
-	    return (
-	      React.createElement("input", React.__spread({},  
-	        this.props , 
-	        {type: "text", 
-	        className: this.props.className + ' rw-input', 
-	        onKeyDown: this.props.onKeyDown, 
-	        onChange: this._change, 
-	        value: this.props.value == null ? '' : this.props.value}))
-	    )
-	  },
-	
-	  isSuggesting: function(){
-	    var val = this.props.value
-	      , isSuggestion = this._last != null
-	          && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
-	
-	    return this.props.suggest && isSuggestion
-	  },
-	
-	  accept: function(removeCaret){
-	    var val = this.getDOMNode().value || ''
-	      , end = val.length;
-	
-	    this._last = null
-	    removeCaret && caretPos(this.getDOMNode(), end, end)
-	  },
-	
-	  _change: function(e){
-	    var val = e.target.value
-	    this._last = val;
-	    this.props.onChange(e, val)
-	  },
-	
-	  focus: function(){
-	    this.getDOMNode().focus()
-	  }
-	});
-
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var $ = __webpack_require__(59)
-	
-	module.exports = function scrollTo( selected ) {
-	  var offset = $.offset(selected)
-	    , poff   = { top: 0, left: 0 }
-	    , list, scrollTop, selectedTop
-	    , selectedHeight, listHeight, bottom;
-	
-	    if( !selected ) return 
-	
-	    list       = $.scrollParent(selected)
-	    scrollTop  = $.scrollTop(list)
-	    listHeight = $.height(list, true)
-	
-	    if (!getWindow(list)) 
-	      poff = $.offset(list)
-	
-	    offset     = {
-	      top:    offset.top  - poff.top,
-	      left:   offset.left - poff.left,
-	      height: offset.height,
-	      width:  offset.width
-	    }
-	
-	    selectedHeight = offset.height
-	    selectedTop    = offset.top  + scrollTop
-	    bottom         = selectedTop + selectedHeight
-	
-	    scrollTop = scrollTop > selectedTop
-	          ? selectedTop
-	          : bottom > (scrollTop + listHeight) 
-	              ? (bottom - listHeight)
-	              : scrollTop
-	
-	    $.scrollTop(list, scrollTop)
-	}
-	
-	function getWindow( node ) {
-	  return node === node.window
-	    ? node : node.nodeType === 9 && node.defaultView;
-	}
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _ =  __webpack_require__(15); //uniqueID
-	
-	module.exports = {
-	
-	  propTypes: {
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['readOnly'])
-	                    ]),
-	  },
-	
-	  isDisabled: function(){
-	    return this.props.disabled === true || this.props.disabled === 'disabled'
-	  },
-	
-	  isReadOnly: function(){
-	    return this.props.readOnly === true
-	      || this.props.readOnly === 'readonly'
-	  },
-	
-	  notify: function(handler, args){
-	    this.props[handler]
-	      && this.props[handler].apply(null, [].concat(args))
-	  },
-	
-	  _id: function(suffix){
-	    this._id_ || (this._id_ = _.uniqueId('rw_'))
-	    return (this.props.id || this._id_)  + suffix
-	  },
-	
-	  _maybeHandle: function(handler, disabledOnly){
-	    if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
-	      return handler
-	    return function(){}
-	  },
-	}
-
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(15)
-	
-	//backport PureRenderEqual
-	module.exports = {
-	
-	  shouldComponentUpdate: function(nextProps, nextState) {
-	    return !_.isShallowEqual(this.props, nextProps) ||
-	           !_.isShallowEqual(this.state, nextState);
-	  }
-	}
-	
-
-
-/***/ },
 /* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , filter = __webpack_require__(78)
-	  , helper = __webpack_require__(84)
-	  , _      = __webpack_require__(15);
-	
-	module.exports = {
-	  
-	    propTypes: {
-	      data:          React.PropTypes.array,
-	      value:         React.PropTypes.any,
-	      delay:         React.PropTypes.number,
-	      filter:        React.PropTypes.string,
-	    },
-	
-	    search: function(character, cb){
-	      var self    = this
-	        , word    = ((this._searchTerm || '') + character).toLowerCase();
-	        
-	      clearTimeout(this._timer)
-	
-	      this._searchTerm = word 
-	
-	      this._timer = setTimeout(function(){
-	            self._searchTerm = ''
-	            cb(word);
-	        }, this.props.delay)    
-	    },
-	
-	    findNextWordIndex: function(word, current){
-	      var matcher = filter.startsWith
-	        , self    = this;
-	        
-	      return _.findIndex(self._data(), function(item, i) { 
-	        return i >= current
-	            && matcher(
-	                helper._dataText.call(self, item).toLowerCase()
-	              , word.toLowerCase())
-	      });    
-	    }
-	
-	}
-
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _ =  __webpack_require__(15)
-	
-	module.exports = {
-	  
-	  propTypes: {    
-	    valueField: React.PropTypes.string,
-	    textField:  React.PropTypes.string
-	  },
-	
-	  _dataValue: function(item){
-	    var field = this.props.valueField;
-	
-	        return field && item && _.has(item, field)
-	      ? item[field]
-	      : item
-	  },
-	
-	  _dataText: function(item){
-	    var field = this.props.textField;
-	
-	    return (field && item && _.has(item, field)
-	      ? item[field]
-	      : item) + ''
-	  },
-	
-	  _dataIndexOf: function(data, item){
-	    return _.findIndex(data, this._valueMatcher.bind(null, item), this)
-	  },
-	
-	  _valueMatcher: function(a, b){
-	    return _.isShallowEqual(
-	        this._dataValue(a)
-	      , this._dataValue(b)) 
-	  },
-	
-	  _dataItem: function(data, item){
-	    var first = data[0]
-	      , field = this.props.valueField
-	      , idx;
-	
-	    // make an attempt to see if we were passed in dataItem vs just a valueField value
-	    // either an object with the right prop, or a primitive
-	    // { valueField: 5 } || "hello" [ "hello" ]
-	    if( _.has(item, field) || typeof(first) === typeof(val))
-	      return item
-	
-	    idx = this._dataIndexOf(data, this._dataValue(item))
-	
-	    if (idx !== -1)
-	      return data[idx]
-	
-	    return item
-	  }
-	}
-
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	
-	module.exports = {
-	  
-	  propTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  contextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  childContextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  getChildContext: function() {
-	    return { 
-	      isRtl: this.props.isRtl || (this.context && this.context.isRtl)
-	    }
-	  },
-	
-	  isRtl: function() {
-	    return !!(this.props.isRtl || (this.context && this.context.isRtl))
-	  }
-	
-	}
-
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1);
-	
-	module.exports = function(stateKey, disabled) {
-	  var methodName = stateKey.charAt(0).toUpperCase() + stateKey.substr(1);
-	
-	
-	  var mixin = {
-	  
-	    propTypes: {
-	      data:          React.PropTypes.array,
-	      value:         React.PropTypes.any
-	    }
-	  }
-	
-	  mixin['set' + methodName] = function(idx){
-	    var state = {}; state[stateKey] = idx;
-	
-	    if(idx !== -1) 
-	      this.setState(state);
-	    return this
-	  }
-	
-	  mixin['prev' + methodName] = function(nextIdx){
-	    var data = this._data()
-	      , stateIdx = this.state && this.state[stateKey] || 0;
-	    
-	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) -1;
-	
-	    while( nextIdx > -1 && isDisabled(this, data[nextIdx])) nextIdx--
-	
-	    if ( nextIdx < 0 ) 
-	      nextIdx = disabled ? -1 : 0
-	    
-	    return nextIdx;
-	  }
-	
-	  mixin['next' + methodName] = function(nextIdx){
-	    var data = this._data()
-	      , stateIdx = this.state && this.state[stateKey] || 0;
-	
-	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) + 1
-	
-	    while( nextIdx < data.length && isDisabled(this, data[nextIdx])) nextIdx++
-	
-	    if ( nextIdx >= data.length )
-	      nextIdx = disabled ? -1 : data.length - 1;
-	
-	    return nextIdx;
-	  }
-	
-	  function isDisabled(ctx, item){
-	    return disabled && ctx[disabled](item)
-	  }
-	
-	  return mixin;
-	}
-
-
-/***/ },
-/* 87 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , filters = __webpack_require__(78)
-	  , helper  = __webpack_require__(84)
-	  , _      = __webpack_require__(15);
-	
-	var filterTypes = Object.keys(filters).filter( function(i)  {return i !== 'filter';})
-	
-	module.exports = {
-	  
-	    propTypes: {
-	      data:           React.PropTypes.array,
-	      value:          React.PropTypes.any,
-	      filter:         React.PropTypes.oneOfType([
-	                        React.PropTypes.func,
-	                        React.PropTypes.oneOf(filterTypes.concat(false))
-	                      ]),
-	      caseSensitive:  React.PropTypes.bool,
-	      minLength:      React.PropTypes.number,
-	    },
-	
-	    getDefaultProps: function(){
-	      return {
-	        caseSensitive: false,
-	        minLength: 1
-	      }
-	    },
-	
-	    filterIndexOf: function(items, searchTerm){
-	      var idx = -1
-	        , matches = typeof this.props.filter === 'function'
-	            ? this.props.filter
-	            : filters[this.props.filter || 'eq'];
-	
-	      if ( !searchTerm || !searchTerm.trim() || (this.props.filter && searchTerm.length < (this.props.minLength || 1)))
-	        return -1
-	
-	      if ( !this.props.caseSensitive)
-	        searchTerm = searchTerm.toLowerCase();
-	
-	      items.every( function(item, i)  {
-	        var val = helper._dataText.call(this, item);
-	
-	        if ( !this.props.caseSensitive) 
-	          val = val.toLowerCase();
-	
-	        if (matches(val, searchTerm.toLowerCase()))
-	          return (idx = i), false
-	
-	        return true
-	      }.bind(this))
-	
-	      return idx  
-	    },
-	
-	    filter: function(items, searchTerm){
-	      var matches = typeof this.props.filter === 'string'
-	            ? filters[this.props.filter]
-	            : this.props.filter;
-	
-	      if ( !matches || !searchTerm || !searchTerm.trim() || searchTerm.length < (this.props.minLength || 1))
-	        return items
-	
-	      if ( !this.props.caseSensitive)
-	        searchTerm = searchTerm.toLowerCase();
-	
-	      return items.filter( function(item)  {
-	        var val = helper._dataText.call(this, item);
-	
-	        if ( !this.props.caseSensitive)
-	          val = val.toLowerCase();
-	
-	        return matches(val, searchTerm.toLowerCase())
-	      }.bind(this))
-	    }
-	  }
-
-
-/***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule emptyFunction
-	 */
-	
-	function makeEmptyFunction(arg) {
-	  return function() {
-	    return arg;
-	  };
-	}
-	
-	/**
-	 * This function accepts and discards inputs; it has no side effects. This is
-	 * primarily useful idiomatically for overridable function endpoints which
-	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-	 */
-	function emptyFunction() {}
-	
-	emptyFunction.thatReturns = makeEmptyFunction;
-	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-	emptyFunction.thatReturnsThis = function() { return this; };
-	emptyFunction.thatReturnsArgument = function(arg) { return arg; };
-	
-	module.exports = emptyFunction;
-
-
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ExecutionEnvironment
-	 */
-	
-	/*jslint evil: true */
-	
-	"use strict";
-	
-	var canUseDOM = !!(
-	  typeof window !== 'undefined' &&
-	  window.document &&
-	  window.document.createElement
-	);
-	
-	/**
-	 * Simple, lightweight module assisting with the detection and context of
-	 * Worker. Helps avoid circular dependencies and allows code to reason about
-	 * whether or not they are in a Worker, even if they never include the main
-	 * `ReactWorker` dependency.
-	 */
-	var ExecutionEnvironment = {
-	
-	  canUseDOM: canUseDOM,
-	
-	  canUseWorkers: typeof Worker !== 'undefined',
-	
-	  canUseEventListeners:
-	    canUseDOM && !!(window.addEventListener || window.attachEvent),
-	
-	  canUseViewport: canUseDOM && !!window.screen,
-	
-	  isInWorker: !canUseDOM // For now, this is true - might change in the future.
-	
-	};
-	
-	module.exports = ExecutionEnvironment;
-
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	var compat = module.exports = {
-	
-	  version: function(){
-	    return React.version.split('.').map(parseFloat);
-	  },
-	
-	  propType: function(fn) {
-	
-	    return function validator(props, propName, componentName, location){
-	      var ver = compat.version()
-	        , err = fn.call(this, props, propName, componentName, location)
-	
-	      if ( err && err !== true ) {
-	        if( ver[0] === 0 && ver[1] < 11 )
-	          return console.warn(err instanceof Error ? err.message : err)
-	
-	        return err
-	      }
-	
-	    }
-	  }
-	}
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	
-	module.exports = {
-	  
-	  contextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  isRtl: function() {
-	    return !!this.context.isRtl
-	  }
-	
-	}
-
-/***/ },
-/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactElement.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 *
 	 * @providesModule ReactElement
 	 */
 	
 	"use strict";
 	
-	var ReactContext = __webpack_require__(99);
-	var ReactCurrentOwner = __webpack_require__(100);
+	var ReactContext = __webpack_require__(100);
+	var ReactCurrentOwner = __webpack_require__(101);
 	
-	var warning = __webpack_require__(95);
+	var warning = __webpack_require__(86);
 	
 	var RESERVED_PROPS = {
 	  key: true,
@@ -19177,27 +19008,31 @@
 
 
 /***/ },
-/* 93 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactPropTransferer.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 *
 	 * @providesModule ReactPropTransferer
 	 */
 	
 	"use strict";
 	
-	var assign = __webpack_require__(101);
-	var emptyFunction = __webpack_require__(88);
-	var invariant = __webpack_require__(102);
-	var joinClasses = __webpack_require__(54);
-	var warning = __webpack_require__(95);
+	var assign = __webpack_require__(102);
+	var emptyFunction = __webpack_require__(96);
+	var invariant = __webpack_require__(103);
+	var joinClasses = __webpack_require__(51);
+	var warning = __webpack_require__(86);
 	
 	var didWarn = false;
 	
@@ -19346,16 +19181,20 @@
 
 
 /***/ },
-/* 94 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/keyOf.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 *
 	 * @providesModule keyOf
 	 */
@@ -19386,23 +19225,27 @@
 
 
 /***/ },
-/* 95 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/warning.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 *
 	 * @providesModule warning
 	 */
 	
 	"use strict";
 	
-	var emptyFunction = __webpack_require__(88);
+	var emptyFunction = __webpack_require__(96);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -19433,13 +19276,530 @@
 
 
 /***/ },
-/* 96 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions;
+	  , _ =  __webpack_require__(16); //uniqueID
+	
+	module.exports = {
+	
+	  propTypes: {
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['readOnly'])
+	                    ]),
+	  },
+	
+	  isDisabled: function(){
+	    return this.props.disabled === true || this.props.disabled === 'disabled'
+	  },
+	
+	  isReadOnly: function(){
+	    return this.props.readOnly === true
+	      || this.props.readOnly === 'readonly'
+	  },
+	
+	  notify: function(handler, args){
+	    this.props[handler]
+	      && this.props[handler].apply(null, [].concat(args))
+	  },
+	
+	  _id: function(suffix){
+	    this._id_ || (this._id_ = _.uniqueId('rw_'))
+	    return (this.props.id || this._id_)  + suffix
+	  },
+	
+	  _maybeHandle: function(handler, disabledOnly){
+	    if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
+	      return handler
+	    return function(){}
+	  },
+	}
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _ = __webpack_require__(16)
+	
+	//backport PureRenderEqual
+	module.exports = {
+	
+	  shouldComponentUpdate: function(nextProps, nextState) {
+	    return !_.isShallowEqual(this.props, nextProps) ||
+	           !_.isShallowEqual(this.state, nextState);
+	  }
+	}
+	
+
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1)
+	  , filter = __webpack_require__(67)
+	  , helper = __webpack_require__(90)
+	  , _      = __webpack_require__(16);
+	
+	module.exports = {
+	  
+	    propTypes: {
+	      data:          React.PropTypes.array,
+	      value:         React.PropTypes.any,
+	      delay:         React.PropTypes.number,
+	      filter:        React.PropTypes.string,
+	    },
+	
+	    search: function(character, cb){
+	      var self    = this
+	        , word    = ((this._searchTerm || '') + character).toLowerCase();
+	        
+	      clearTimeout(this._timer)
+	
+	      this._searchTerm = word 
+	
+	      this._timer = setTimeout(function(){
+	            self._searchTerm = ''
+	            cb(word);
+	        }, this.props.delay)    
+	    },
+	
+	    findNextWordIndex: function(word, current){
+	      var matcher = filter.startsWith
+	        , self    = this;
+	        
+	      return _.findIndex(self._data(), function(item, i) { 
+	        return i >= current
+	            && matcher(
+	                helper._dataText.call(self, item).toLowerCase()
+	              , word.toLowerCase())
+	      });    
+	    }
+	
+	}
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _ =  __webpack_require__(16)
+	
+	module.exports = {
+	  
+	  propTypes: {    
+	    valueField: React.PropTypes.string,
+	    textField:  React.PropTypes.string
+	  },
+	
+	  _dataValue: function(item){
+	    var field = this.props.valueField;
+	
+	        return field && item && _.has(item, field)
+	      ? item[field]
+	      : item
+	  },
+	
+	  _dataText: function(item){
+	    var field = this.props.textField;
+	
+	    return (field && item && _.has(item, field)
+	      ? item[field]
+	      : item) + ''
+	  },
+	
+	  _dataIndexOf: function(data, item){
+	    return _.findIndex(data, this._valueMatcher.bind(null, item), this)
+	  },
+	
+	  _valueMatcher: function(a, b){
+	    return _.isShallowEqual(
+	        this._dataValue(a)
+	      , this._dataValue(b)) 
+	  },
+	
+	  _dataItem: function(data, item){
+	    var first = data[0]
+	      , field = this.props.valueField
+	      , idx;
+	
+	    // make an attempt to see if we were passed in dataItem vs just a valueField value
+	    // either an object with the right prop, or a primitive
+	    // { valueField: 5 } || "hello" [ "hello" ]
+	    if( _.has(item, field) || typeof(first) === typeof(val))
+	      return item
+	
+	    idx = this._dataIndexOf(data, this._dataValue(item))
+	
+	    if (idx !== -1)
+	      return data[idx]
+	
+	    return item
+	  }
+	}
+
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	
+	module.exports = {
+	  
+	  propTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  contextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  childContextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  getChildContext: function() {
+	    return { 
+	      isRtl: this.props.isRtl || (this.context && this.context.isRtl)
+	    }
+	  },
+	
+	  isRtl: function() {
+	    return !!(this.props.isRtl || (this.context && this.context.isRtl))
+	  }
+	
+	}
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1);
+	
+	module.exports = function(stateKey, disabled) {
+	  var methodName = stateKey.charAt(0).toUpperCase() + stateKey.substr(1);
+	
+	
+	  var mixin = {
+	  
+	    propTypes: {
+	      data:          React.PropTypes.array,
+	      value:         React.PropTypes.any
+	    }
+	  }
+	
+	  mixin['set' + methodName] = function(idx){
+	    var state = {}; state[stateKey] = idx;
+	
+	    if(idx !== -1) 
+	      this.setState(state);
+	    return this
+	  }
+	
+	  mixin['prev' + methodName] = function(nextIdx){
+	    var data = this._data()
+	      , stateIdx = this.state && this.state[stateKey] || 0;
+	    
+	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) -1;
+	
+	    while( nextIdx > -1 && isDisabled(this, data[nextIdx])) nextIdx--
+	
+	    if ( nextIdx < 0 ) 
+	      nextIdx = disabled ? -1 : 0
+	    
+	    return nextIdx;
+	  }
+	
+	  mixin['next' + methodName] = function(nextIdx){
+	    var data = this._data()
+	      , stateIdx = this.state && this.state[stateKey] || 0;
+	
+	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) + 1
+	
+	    while( nextIdx < data.length && isDisabled(this, data[nextIdx])) nextIdx++
+	
+	    if ( nextIdx >= data.length )
+	      nextIdx = disabled ? -1 : data.length - 1;
+	
+	    return nextIdx;
+	  }
+	
+	  function isDisabled(ctx, item){
+	    return disabled && ctx[disabled](item)
+	  }
+	
+	  return mixin;
+	}
+
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , filters = __webpack_require__(67)
+	  , helper  = __webpack_require__(90)
+	  , _      = __webpack_require__(16);
+	
+	var filterTypes = Object.keys(filters).filter( function(i)  {return i !== 'filter';})
+	
+	module.exports = {
+	  
+	    propTypes: {
+	      data:           React.PropTypes.array,
+	      value:          React.PropTypes.any,
+	      filter:         React.PropTypes.oneOfType([
+	                        React.PropTypes.func,
+	                        React.PropTypes.oneOf(filterTypes.concat(false))
+	                      ]),
+	      caseSensitive:  React.PropTypes.bool,
+	      minLength:      React.PropTypes.number,
+	    },
+	
+	    getDefaultProps: function(){
+	      return {
+	        caseSensitive: false,
+	        minLength: 1
+	      }
+	    },
+	
+	    filterIndexOf: function(items, searchTerm){
+	      var idx = -1
+	        , matches = typeof this.props.filter === 'function'
+	            ? this.props.filter
+	            : filters[this.props.filter || 'eq'];
+	
+	      if ( !searchTerm || !searchTerm.trim() || (this.props.filter && searchTerm.length < (this.props.minLength || 1)))
+	        return -1
+	
+	      if ( !this.props.caseSensitive)
+	        searchTerm = searchTerm.toLowerCase();
+	
+	      items.every( function(item, i)  {
+	        var val = helper._dataText.call(this, item);
+	
+	        if ( !this.props.caseSensitive) 
+	          val = val.toLowerCase();
+	
+	        if (matches(val, searchTerm.toLowerCase()))
+	          return (idx = i), false
+	
+	        return true
+	      }.bind(this))
+	
+	      return idx  
+	    },
+	
+	    filter: function(items, searchTerm){
+	      var matches = typeof this.props.filter === 'string'
+	            ? filters[this.props.filter]
+	            : this.props.filter;
+	
+	      if ( !matches || !searchTerm || !searchTerm.trim() || searchTerm.length < (this.props.minLength || 1))
+	        return items
+	
+	      if ( !this.props.caseSensitive)
+	        searchTerm = searchTerm.toLowerCase();
+	
+	      return items.filter( function(item)  {
+	        var val = helper._dataText.call(this, item);
+	
+	        if ( !this.props.caseSensitive)
+	          val = val.toLowerCase();
+	
+	        return matches(val, searchTerm.toLowerCase())
+	      }.bind(this))
+	    }
+	  }
+
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/ExecutionEnvironment.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule ExecutionEnvironment
+	 */
+	
+	/*jslint evil: true */
+	
+	"use strict";
+	
+	var canUseDOM = !!(
+	  typeof window !== 'undefined' &&
+	  window.document &&
+	  window.document.createElement
+	);
+	
+	/**
+	 * Simple, lightweight module assisting with the detection and context of
+	 * Worker. Helps avoid circular dependencies and allows code to reason about
+	 * whether or not they are in a Worker, even if they never include the main
+	 * `ReactWorker` dependency.
+	 */
+	var ExecutionEnvironment = {
+	
+	  canUseDOM: canUseDOM,
+	
+	  canUseWorkers: typeof Worker !== 'undefined',
+	
+	  canUseEventListeners:
+	    canUseDOM && !!(window.addEventListener || window.attachEvent),
+	
+	  canUseViewport: canUseDOM && !!window.screen,
+	
+	  isInWorker: !canUseDOM // For now, this is true - might change in the future.
+	
+	};
+	
+	module.exports = ExecutionEnvironment;
+
+
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	var compat = module.exports = {
+	
+	  version: function(){
+	    return React.version.split('.').map(parseFloat);
+	  },
+	
+	  propType: function(fn) {
+	
+	    return function validator(props, propName, componentName, location){
+	      var ver = compat.version()
+	        , err = fn.call(this, props, propName, componentName, location)
+	
+	      if ( err && err !== true ) {
+	        if( ver[0] === 0 && ver[1] < 11 )
+	          return console.warn(err instanceof Error ? err.message : err)
+	
+	        return err
+	      }
+	
+	    }
+	  }
+	}
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/emptyFunction.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule emptyFunction
+	 */
+	
+	function makeEmptyFunction(arg) {
+	  return function() {
+	    return arg;
+	  };
+	}
+	
+	/**
+	 * This function accepts and discards inputs; it has no side effects. This is
+	 * primarily useful idiomatically for overridable function endpoints which
+	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+	 */
+	function emptyFunction() {}
+	
+	emptyFunction.thatReturns = makeEmptyFunction;
+	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+	emptyFunction.thatReturnsThis = function() { return this; };
+	emptyFunction.thatReturnsArgument = function(arg) { return arg; };
+	
+	module.exports = emptyFunction;
+
+
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = function caret(el, start, end ){
+	
+	  if ( start === undefined){
+	    return {
+	      start: el.selectionStart,
+	      end: el.selectionEnd
+	    }
+	  }
+	
+	  el.focus();
+	  el.setSelectionRange(start, end)
+	}
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	
+	module.exports = {
+	  
+	  contextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  isRtl: function() {
+	    return !!this.context.isRtl
+	  }
+	
+	}
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , dates = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions;
 	
 	module.exports = function(viewUnit, smallUnit){
 	
@@ -19512,58 +19872,27 @@
 	}
 
 /***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = function caret(el, start, end ){
-	
-	  if ( start === undefined){
-	    return {
-	      start: el.selectionStart,
-	      end: el.selectionEnd
-	    }
-	  }
-	
-	  el.focus();
-	  el.setSelectionRange(start, end)
-	}
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function(module) {
-		if(!module.webpackPolyfill) {
-			module.deprecate = function() {};
-			module.paths = [];
-			// module.parent = undefined by default
-			module.children = [];
-			module.webpackPolyfill = 1;
-		}
-		return module;
-	}
-
-
-/***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactContext.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 *
 	 * @providesModule ReactContext
 	 */
 	
 	"use strict";
 	
-	var assign = __webpack_require__(101);
+	var assign = __webpack_require__(102);
 	
 	/**
 	 * Keeps track of the current context.
@@ -19613,7 +19942,7 @@
 
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19651,16 +19980,20 @@
 
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 *
 	 * @providesModule Object.assign
 	 */
@@ -19702,16 +20035,20 @@
 
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
 	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/invariant.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 *
 	 * @providesModule invariant
 	 */
@@ -19761,7 +20098,23 @@
 
 
 /***/ },
-/* 103 */
+/* 104 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
+
+
+/***/ },
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
