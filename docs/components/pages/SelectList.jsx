@@ -1,21 +1,18 @@
-/**
- * @jsx React.DOM
- */
-
+'use strict';
 var React = require('react')
   , Default = require('../default.jsx')
   , Example = require('../example.jsx')
   , MenuItem = require('react-bootstrap/MenuItem')
   , DDButton = require('react-bootstrap/DropdownButton')
-  , DropdownListExample = require('../examples/selectlist.jsx');
+  , SelectListExample = require('../examples/selectlist.jsx');
 
 var prefix = 'selectlist/'
 var widgetName = 'SelectList'
 var SelectList = React.createClass({
 
   render: function() {
-    return this.transferPropsTo(
-      <section>
+    return (
+      <section {...this.props}>
         <h1 className="page-header">
           Select List
           <span className='pull-right'>
@@ -29,7 +26,10 @@ var SelectList = React.createClass({
               <MenuItem href={'#' + prefix + 'itemComponent'}>itemComponent</MenuItem>
 
               <MenuItem href={'#' + prefix + 'multiple'}>multiple</MenuItem>
+              <MenuItem href={'#' + prefix + 'onMove'}>onMove</MenuItem>
               <MenuItem href={'#' + prefix + 'busy'}>busy</MenuItem>
+              <MenuItem href={'#' + prefix + 'disabled'}>disabled</MenuItem>
+              <MenuItem href={'#' + prefix + 'readonly'}>readonly</MenuItem>
 
               <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
               <MenuItem divider={true}></MenuItem>
@@ -40,7 +40,7 @@ var SelectList = React.createClass({
         <p>
           Creates a list of radio buttons or checkboxes bound to a {'set'} of data.
         </p>
-        <DropdownListExample/>
+        <SelectListExample/>
         <Example code={
           "render: function(){\n"+
           "  var SelectList = require('react-widgets').SelectList\n"+
@@ -114,9 +114,15 @@ var SelectList = React.createClass({
         </h3>
         <p>
           Whether or not the {widgetName} allows multiple selection or not. when <code>false</code> the {widgetName} will 
-          render as a list of radio buttonsand checkboxes when <code>true</code>.
+          render as a list of radio buttons, and checkboxes when <code>true</code>.
         </p>
 
+        <h3 className='prop-header' id={ prefix +"onMove" }>
+          onMove <small>{"Function(HTMLElement)"}</small></h3>
+        <p>
+          A handler called when focus shifts on the {widgetName}. Internally this is used to ensure the focused item is in view.
+          If you want to define your own "scrollTo" behavior or just disable the default one specify an <code>onMove</code> handler.
+        </p>
 
         <h3 className='prop-header' id={ prefix +"busy" }>
           busy <small>Boolean</small></h3>
@@ -124,11 +130,18 @@ var SelectList = React.createClass({
           mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful
           when loading data via an ajax call.
         </p>
-        <h3 className='prop-header' id={ prefix +"duration" }>
-          duration <small>Number<Default>250</Default></small></h3>
+        <h3 className='prop-header' id={ prefix +"disabled" }>
+          disabled <small>[Boolean, Array]</small></h3>
         <p>
-          The speed, in milliseconds, of the dropdown animation.
+          Disable the widget, if an <code>Array</code> of values is passed in only those values will be disabled.
         </p>
+
+        <h3 className='prop-header' id={ prefix + "readOnly" }>
+          readOnly <small>[Boolean, Array]</small></h3>
+        <p>
+          Place the {widgetName} in a readonly mode, If an <code>Array</code> of values is passed in only those values will be readonly.
+        </p>
+
         <h3 className='prop-header' id={ prefix +"isRtl" }>
           isRtl <small>Boolean<Default>false</Default></small></h3>
         <p>

@@ -41,7 +41,7 @@ var GettingStarted = React.createClass({
           which offer a quick way to display complex data structures.
         </p>
 
-        <h2>Install</h2>
+        <h2 id='intro/install' className='prop-header'>Install <a/></h2>
         <p>
           The prefered way is to use NPM <code>npm install react-widgets</code> and make use of something like Webpack or
           Browserify to bundle the lib.
@@ -58,7 +58,7 @@ var GettingStarted = React.createClass({
           As of 1.1.0 the package comes precompiled, and no build step is needed.
         </strong>
 
-        <h2>External Dependencies</h2>
+        <h2 id='intro/deps' className='prop-header'>External Dependencies</h2>
         <p>
           React-widgets is compatible with <code>React</code> 0.9.0+, and expects it to be bundled.
           Comsumers of the NPM package should note that React is not listed as direct, or peer dependency. This is help
@@ -77,7 +77,7 @@ var GettingStarted = React.createClass({
             </li>
           </ul>
         </p>
-        <h3>Older Browser Support</h3>
+        <h2 id='intro/browser'>Older Browser Support</h2>
         <p>
           Moving forward react-widgets is working to reduce dependence on external utility-belt libraries in favor of 
           using polyfills for older, non es5 compliant, browsers. For consumers supporting older browsers you will already
@@ -87,7 +87,7 @@ var GettingStarted = React.createClass({
           </a>
         </p>
 
-        <h2>Accessibility and Read Direction</h2>
+        <h2 id='intro/access' className='prop-header'>Accessibility and Read Direction</h2>
         <p>
           React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for
           date and number localization, there is first class support for cultures and languages that read
@@ -101,7 +101,7 @@ var GettingStarted = React.createClass({
           the necessary id's to properly label and annotate the widget ARIA.
         </p>
 
-        <h2>Styling</h2>
+        <h2 id='intro/style' className='prop-header'>Styling</h2>
         <p>
           Styling each widget should be a simple matter of adjusting the relevant LESS variables to suit your needs.
           Included by default is a "Twitter Bootstrap" theme that mimics the look and feel of Twitter Bootstrap 3.0.

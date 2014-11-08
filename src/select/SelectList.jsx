@@ -3,21 +3,24 @@ var React = require('react')
   , _  = require('../util/_')
   , cx = require('../util/cx')
   , scrollTo = require('../util/scroll')
+  , controlledInput  = require('../util/controlledInput')
   , mergeIntoProps = require('../util/transferProps').mergeIntoProps;
 
 var propTypes = {
-    data:          React.PropTypes.array,
-    value:         React.PropTypes.oneOfType([
-                    React.PropTypes.any,
-                    React.PropTypes.array
-                   ]),
-    onChange:      React.PropTypes.func,
 
-    multiple:      React.PropTypes.bool,
-    itemComponent: React.PropTypes.func,
-    
-    valueField:    React.PropTypes.string,
-    textField:     React.PropTypes.string,
+    data:           React.PropTypes.array,
+    value:          React.PropTypes.oneOfType([
+                      React.PropTypes.any,
+                      React.PropTypes.array
+                    ]),
+    onChange:       React.PropTypes.func,
+    onMove:         React.PropTypes.func,
+
+    multiple:       React.PropTypes.bool,
+    itemComponent:  React.PropTypes.func,
+
+    valueField:     React.PropTypes.string,
+    textField:      React.PropTypes.string,
 
     busy:           React.PropTypes.bool,
 
@@ -41,7 +44,7 @@ var propTypes = {
   }
 
 
-var CheckboxList = React.createClass({
+var SelectList = React.createClass({
 
   propTypes: propTypes,
 
@@ -111,7 +114,7 @@ var CheckboxList = React.createClass({
         aria-readonly={ this.isReadOnly() }
         className={cx({ 
           'rw-widget':         true,
-          'rw-checkboxlist':   true,
+          'rw-selectlist':   true,
           'rw-state-focus':    this.state.focused,
           'rw-state-disabled': this.isDisabled(),
           'rw-state-readonly': this.isReadOnly(),
@@ -125,13 +128,12 @@ var CheckboxList = React.createClass({
   },
 
   _rows: function(optID){
-    var component = this.props.itemComponent
+    var Component = this.props.itemComponent
       , name = this._id('_name')
       , type = this.props.multiple ? 'checkbox' : 'radio';
 
     return this._data().map( (item, idx) => {
       var focused  = this.state.focused && this.state.focusedIndex === idx
-        , text     = this._dataText(item)
         , checked  = this._contains(item, this._values())
         , change   = this._change.bind(null, item)
         , disabled = this.isDisabledItem(item)
@@ -142,12 +144,15 @@ var CheckboxList = React.createClass({
         role='option'
         id={ focused ? optID : undefined }
         className={cx({ 'rw-state-focus': focused, 'rw-selectlist-item': true })}>
-        <SelectListItem type={type} name={name} onChange={change} 
+        <SelectListItem 
+          type={type} 
+          name={name} 
+          onChange={change} 
           checked={checked} 
           readOnly={readonly}
           disabled={disabled || readonly}>
-          { component && component({ item: item }) || text }
-        </SelectListItem>
+          { Component ? <Component item={item}/> : this._dataText(item) }
+          </SelectListItem>
       </li>)
     })
   },
@@ -298,7 +303,8 @@ var CheckboxList = React.createClass({
       , selected = list.children[this.state.focusedIndex]
       , handler  = this.props.onMove || scrollTo;
 
-    handler(selected)
+    if ( this.state.focusedIndex !== -1 )
+      handler(selected)
   }
 
 });
@@ -309,7 +315,8 @@ var SelectListItem = React.createClass({
     var props = this.props;
 
     return (
-      <label className={cx({ 
+      <label 
+        className={cx({ 
           'rw-state-disabled': props.disabled,
           'rw-state-readonly': props.readOnly
         })}>
@@ -330,4 +337,10 @@ var SelectListItem = React.createClass({
 
 })
 
-module.exports = CheckboxList;
+
+module.exports = SelectList;
+
+module.exports = controlledInput.createControlledClass(
+    SelectList, { value: 'onChange' });
+
+module.exports.BaseSelectList = SelectList
