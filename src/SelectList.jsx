@@ -180,7 +180,7 @@ var SelectList = React.createClass({
     }
     else if ( key === 'Enter' || key === ' ' ) {
       e.preventDefault()
-      change(data[this.state.focusedIndex])
+      change(this.state.focusedIndex)
     }
     else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
       e.preventDefault()
