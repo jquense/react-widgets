@@ -13,6 +13,7 @@ var MigrationGuide = React.createClass({
           the inability to adequately support React <b>0.12</b> along side previous versions. We do, however, take the
           opportunity of a major bump to remove some warts from the widget api and architecture. 
           Most changes are consmetic and easily "grep-able", but should lead to less confusion and increase ease of use. 
+          Almost every change can be migrated to via "find and replace".
         </p>
         <p>
           For those unwilling or unable to upgrade, the 1+ branch will continue to be supported for any applicable bug fixes. 
@@ -40,8 +41,8 @@ var MigrationGuide = React.createClass({
         <h4>Exported Values</h4>
         <p>
           We have tried to make the consumption of react-widgets as consistent as possible, regardless of whether you require 
-          the entire suite, or just make use of a few widgets. To that end names and locations of files have been changed to 
-          make everything consistent. one ofthe biggest change is that the <code>Select</code> widget has changed names
+          the entire suite, or just make use of a few widgets. To that end, names and locations of files have been changed to 
+          make everything consistent. one of the biggest changes is that the <code>Select</code> widget has changed names
           to <code>Multiselect</code> which is more descriptive, and makes room for the new <code>SelectList</code> widget.
         </p>
         <ul>
