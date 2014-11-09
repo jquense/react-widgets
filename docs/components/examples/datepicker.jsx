@@ -1,8 +1,7 @@
 var React = require('react')
-  , _ = require('lodash')
   , dates = require('date-arithmetic')
-  , Button = require('react-bootstrap/Button')
-  , buttonGroup = require('react-bootstrap/ButtonGroup')
+  , Button = require('../../bootstrap').Button
+  , ButtonGroup = require('../../bootstrap').ButtonGroup
   , RW = require('../../../index');
 
 module.exports = React.createClass({
@@ -64,12 +63,12 @@ render: function(){
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.isRtl}
-                  onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
+                  onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
             </div>
             <div className='form-group'>
-              <buttonGroup>
+              <ButtonGroup>
                 <Button
                   active={this.state.disabled === 'disabled'}
                   onClick={this.disabled}>
@@ -80,17 +79,17 @@ render: function(){
                   onClick={this.readOnly}>
                   Readonly
                 </Button>
-              </buttonGroup>
+              </ButtonGroup>
             </div>
             <div className='form-group'>
                 <Button
                   active={this.state.calendar}
-                  onClick={_.partial(this._set, 'calendar', !this.state.calendar)}>
+                  onClick={this._set.bind(null, 'calendar', !this.state.calendar)}>
                   Date Picker
                 </Button>
                 <Button style={{ marginLeft: 10 }}
                   active={this.state.time}
-                  onClick={_.partial(this._set, 'time', !this.state.time)}>
+                  onClick={this._set.bind(null, 'time', !this.state.time)}>
                   Time Picker
                 </Button>
             </div>
@@ -99,21 +98,21 @@ render: function(){
               <RW.Combobox
                   value={this.state.format}
                   data={['MMM dd, yyyy', 'f', 'dd, MMM yyyy HH:mm']}
-                  onChange={_.partial(this._set, 'format')}/>
+                  onChange={this._set.bind(null, 'format')}/>
             </div> 
             <div className='form-group'>
               <label className='form-label'>Initial View</label>
-              <RW.DropDownlist
+              <RW.DropdownList
                   value={this.state.initialView || 'month'}
                   data={["month", "year", "decade", "century"]}
-                  onChange={_.partial(this._set, 'initialView')}/>
+                  onChange={this._set.bind(null, 'initialView')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>Final View</label>
-              <RW.DropDownlist
+              <RW.DropdownList
                   value={this.state.finalView || 'century'}
                   data={["month", "year", "decade", "century"]}
-                  onChange={_.partial(this._set, 'finalView')}/>
+                  onChange={this._set.bind(null, 'finalView')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>min</label>
@@ -122,7 +121,7 @@ render: function(){
                   time={this.state.time}
                   format={pickerFormat}
                   value={this.state.min}
-                  onChange={_.partial(this._set, 'min')}/>
+                  onChange={this._set.bind(null, 'min')}/>
             </div>
             <div className='form-group'>
               <label className='form-label'>max</label>
@@ -131,7 +130,7 @@ render: function(){
                   time={this.state.time}
                   format={pickerFormat}
                   value={this.state.max}
-                  onChange={_.partial(this._set, 'max')}/>
+                  onChange={this._set.bind(null, 'max')}/>
             </div>
           </div>
         </div>

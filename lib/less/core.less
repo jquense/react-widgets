@@ -120,7 +120,7 @@
 }
 
 .rw-btn,
-.rw-dropdown-list {
+.rw-dropdownlist {
   cursor: pointer;
 }
 
@@ -137,7 +137,7 @@
 }
 
 ul.rw-list,
-ul.rw-checkboxlist {
+ul.rw-selectlist {
 	.list-unstyled();
   padding: 5px 0;
   overflow: auto;
@@ -171,7 +171,7 @@ ul.rw-checkboxlist {
 }
 
 .rw-open.rw-widget,
-.rw-open >.rw-select-wrapper {
+.rw-open >.rw-multiselect-wrapper {
   .border-bottom-radius(0);
 }
 
@@ -208,7 +208,7 @@ ul.rw-checkboxlist {
   }
 
   &.rw-state-readonly,
-  &.rw-state-readonly > .rw-select-wrapper {
+  &.rw-state-readonly > .rw-multiselect-wrapper {
     cursor: not-allowed;
   }
 
@@ -225,9 +225,9 @@ ul.rw-checkboxlist {
 
 
 .rw-combobox,
-.rw-date-picker,
-.rw-number-picker,
-.rw-dropdown-list {
+.rw-datetimepicker,
+.rw-numberpicker,
+.rw-dropdownlist {
   padding-right:    1.9em;
 
   &.rw-rtl {
@@ -265,19 +265,19 @@ ul.rw-checkboxlist {
 
 
 //input inset
-.rw-select-list,
+.rw-multiselect,
 .rw-combobox input.rw-input,
-.rw-date-picker input.rw-input,
-.rw-number-picker input.rw-input {
+.rw-datetimepicker input.rw-input,
+.rw-numberpicker input.rw-input {
   .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075)");
 }
 
 
 .rw-combobox:active,
-.rw-date-picker:active,
-.rw-dropdown-list:active,
+.rw-datetimepicker:active,
+.rw-dropdownlist:active,
 .rw-header > .rw-btn:active,
-.rw-number-picker .rw-btn.rw-state-active {
+.rw-numberpicker .rw-btn.rw-state-active {
   &,
   &.rw-state-focus {
     background-image: none;
@@ -286,16 +286,16 @@ ul.rw-checkboxlist {
 }
 
 .rw-combobox,
-.rw-date-picker,
-.rw-number-picker,
-.rw-dropdown-list {
+.rw-datetimepicker,
+.rw-numberpicker,
+.rw-dropdownlist {
   &:hover {
     background-color: @state-bg-hover;
     border-color: @state-border-hover;
   }
 }
 
-.rw-dropdown-list {
+.rw-dropdownlist {
   &.rw-state-disabled,
   &.rw-state-readonly {
     cursor: not-allowed;
@@ -312,7 +312,7 @@ ul.rw-checkboxlist {
   }
 }
 
-.rw-number-picker {
+.rw-numberpicker {
 
   .rw-btn {
     display: block;

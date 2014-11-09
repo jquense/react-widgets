@@ -1,20 +1,19 @@
-var React = require('react')
-  , cx = require('../../lib/util/cx')
-  , Navbar = require('./topnavbar.jsx')
-  , Nav = require('react-bootstrap/Nav')
-  , Affix = require('react-bootstrap/Affix')
-  , NavItem = require('react-bootstrap/NavItem')
-  , _ = require('lodash')
+'use strict';
+var React          = require('react')
+  , cx             = require('../../lib/util/cx')
+  , Navbar         = require('./topnavbar.jsx')
+  , Tbs            = require('../bootstrap')
   , GettingStarted = require('./pages/GettingStarted.jsx')
-  , DropdownList = require('./pages/DropdownList.jsx')
-  , ComboBox = require('./pages/ComboBox.jsx')
-  , Select = require('./pages/Select.jsx')
-  //, SelectList = require('./pages/SelectList.jsx')
-  , Calendar = require('./pages/Calendar.jsx')
-  , DatePicker = require('./pages/DateTimePicker.jsx')
-  , NumberPicker = require('./pages/NumberPicker.jsx');
+  , DropdownList   = require('./pages/DropdownList.jsx')
+  , ComboBox       = require('./pages/ComboBox.jsx')
+  , MultiSelect    = require('./pages/MultSelect.jsx')
+  , SelectList     = require('./pages/SelectList.jsx')
+  , Calendar       = require('./pages/Calendar.jsx')
+  , DatePicker     = require('./pages/DateTimePicker.jsx')
+  , NumberPicker   = require('./pages/NumberPicker.jsx')
+  , Migration      = require('./pages/Migration.jsx');
 
-require('../docs.css')
+//require('../docs.css')
 
 var locations = [
       '#intro','#dropdown-list', '#combobox',
@@ -45,27 +44,36 @@ var Docs = React.createClass({
         <div className='container'>
           <aside className='col-sm-3'>
             <div className='nav-aside'>
-              <Nav className='side-nav' onSelect={this.handleNavItemSelect}>
-                <NavItem key={0} href='#intro' active={href === '#intro' }>Getting Started</NavItem>
-                <NavItem key={1} href='#dropdownlist' active={ href === '#dropdownlist' }>Dropdown List</NavItem>
-                <NavItem key={2} href='#combobox' active={href === '#combobox'}>Combobox</NavItem>
-                <NavItem key={6} href='#number-picker' active={href === '#number-picker' }>Number Picker</NavItem>
-                <NavItem key={3} href='#multiselect' active={href === '#multiselect'}>Select</NavItem>
-                <NavItem key={4} href='#calendar' active={href === '#calendar'}>Calendar</NavItem>
-                <NavItem key={5} href='#date-picker' active={href === '#date-picker'}>Date {' & '} Time Picker</NavItem>
-              </Nav>
+              <Tbs.Nav className='side-nav' activeHref={href} onSelect={this.handleNavItemSelect}>
+                <Tbs.SubNav key={0} href='#intro' text='Getting Started'>
+                  <Tbs.NavItem key={0} href="#intro/install">Install</Tbs.NavItem>
+                  <Tbs.NavItem key={1} href="#intro/deps">External Dependencies</Tbs.NavItem>
+                  <Tbs.NavItem key={2} href="#intro/browser">Older Browser Support</Tbs.NavItem>
+                  <Tbs.NavItem key={3} href="#intro/access">Accessibility</Tbs.NavItem>
+                  <Tbs.NavItem key={4} href="#intro/style">Styling</Tbs.NavItem>
+                </Tbs.SubNav>
+                <Tbs.NavItem key={1} href='#DropdownList'>Dropdown List</Tbs.NavItem>
+                <Tbs.NavItem key={2} href='#combobox'>Combobox</Tbs.NavItem>
+                <Tbs.NavItem key={3} href='#number-picker'>Number Picker</Tbs.NavItem>
+                <Tbs.NavItem key={4} href='#multiselect'>Multiselect</Tbs.NavItem>
+                <Tbs.NavItem key={5} href='#selectlist' >SelectList</Tbs.NavItem>
+                <Tbs.NavItem key={6} href='#calendar'>Calendar</Tbs.NavItem>
+                <Tbs.NavItem key={7} href='#date-picker'>{'Date &  Time Picker'}</Tbs.NavItem>
+
+                <Tbs.NavItem key={8} href='#migration'>Migrating to 2.x</Tbs.NavItem>
+              </Tbs.Nav>
             </div>
           </aside>
           <article className='col-sm-9 tab-content'>
-            <GettingStarted className={cx({"tab-pane": true, "active": href === '#intro' })}/>
-            <DropdownList className={cx({"tab-pane": true, "active": href === '#dropdownlist' })}/>
-            <ComboBox className={cx({"tab-pane": true, "active": href === '#combobox' })}/>
-
-            <NumberPicker className={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
-            <Select className={cx({"tab-pane": true, "active": href === '#multiselect' })}/>
-          
-            <Calendar className={cx({"tab-pane": true, "active": href === '#calendar' })}/>
-            <DatePicker className={cx({"tab-pane": true, "active": href === '#date-picker' })}/>
+            <GettingStarted className ={cx({"tab-pane": true, "active": href.split('/')[0] === '#intro' })}/>
+            <DropdownList   className ={cx({"tab-pane": true, "active": href === '#DropdownList' })}/>
+            <ComboBox       className ={cx({"tab-pane": true, "active": href === '#combobox' })}/>
+            <NumberPicker   className ={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
+            <MultiSelect    className ={cx({"tab-pane": true, "active": href === '#multiselect' })}/>
+            <SelectList     className ={cx({"tab-pane": true, "active": href === '#selectlist' })}/>
+            <Calendar       className ={cx({"tab-pane": true, "active": href === '#calendar' })}/>
+            <DatePicker     className ={cx({"tab-pane": true, "active": href === '#date-picker' })}/>
+            <Migration      className ={cx({"tab-pane": true, "active": href === '#migration' })}/>
             
             <div className='clearfix'style={{ marginTop: 20 }}>
               { locations.indexOf(href) > 0 && 
@@ -75,7 +83,6 @@ var Docs = React.createClass({
                 <button type='button' className='btn btn-link pull-right' onClick={this.next}>next »</button>
               }
             </div>
-            {/*<SelectList className={cx({"tab-pane": true, "active": href === '#selectlist' })}/>*/}
           </article>
         </div>
       </div>
@@ -99,13 +106,13 @@ var Docs = React.createClass({
   },
 
   navigate: function(href){
+    var change = this.state.sideHref.split('/')[0] !== href.split('/')[0]
     this.setState({ sideHref: href });
     window.location = href;
-    window.scrollTo(0, 0)
+    if(change)
+      window.scrollTo(0, 0)
   }
 })
 
 
-React.renderComponent(
-    Docs()
-  , document.body);
+React.render(<Docs/>, document.body);

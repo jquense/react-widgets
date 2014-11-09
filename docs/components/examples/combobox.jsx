@@ -1,7 +1,7 @@
+'use strict';
 var React = require('react')
-  , _ = require('lodash')
-  , Button = require('react-bootstrap/Button')
-  , buttonGroup = require('react-bootstrap/ButtonGroup')
+  , Button = require('../../bootstrap').Button
+  , ButtonGroup = require('../../bootstrap').ButtonGroup
   , RW = require('../../../index');
 
 module.exports = React.createClass({
@@ -42,10 +42,9 @@ module.exports = React.createClass({
                   filter={this.state.filter || false}
                   disabled={this.state.disabled === 'disabled'}
                   readOnly={this.state.disabled === 'readonly'}
-                  data={list}
+
                   duration={this.state.duration}
                   busy={this.state.busy}
-                  onChange={this._change}
                   isRtl={this.state.isRtl}/>
             </div>
             <div className='form-group'>
@@ -60,11 +59,9 @@ module.exports = React.createClass({
                   filter={this.state.filter || false}
                   disabled={this.state.disabled === 'disabled'}
                   readOnly={this.state.disabled === 'readonly'}
-                  data={list}
                   duration={this.state.duration}
                   itemComponent={itemComp}
                   busy={this.state.busy}
-                  onChange={this._change}
                   isRtl={this.state.isRtl}/>
             </div>
           </div>
@@ -73,12 +70,12 @@ module.exports = React.createClass({
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.isRtl}
-                  onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
+                  onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
             </div>
             <div className='form-group'>
-              <buttonGroup>
+              <ButtonGroup>
                 <Button
                   active={this.state.disabled === 'disabled'}
                   onClick={this.disabled}>
@@ -89,10 +86,10 @@ module.exports = React.createClass({
                   onClick={this.readOnly}>
                   Readonly
                 </Button>
-              </buttonGroup>
+              </ButtonGroup>
               <Button style={{ marginLeft: 10 }}
                 active={this.state.busy}
-                onClick={_.partial(this._set, 'busy', !this.state.busy)}>
+                onClick={this._set.bind(null, 'busy', !this.state.busy)}>
                 Busy
               </Button>
             </div>
@@ -101,16 +98,16 @@ module.exports = React.createClass({
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.suggest}
-                  onChange={_.partial(this._set, 'suggest', !this.state.suggest)}/>
+                  onChange={this._set.bind(null, 'suggest', !this.state.suggest)}/>
                   Suggestions
               </label>
             </div>
             <div className='form-group'>
               <label className='form-label'>Filter</label>
-              <RW.DropDownlist 
+              <RW.DropdownList 
                   value={this.state.filter || false} 
                   data={[false, 'startsWith', 'endsWith', 'contains']}
-                  onChange={_.partial(this._set, 'filter')}/>
+                  onChange={this._set.bind(null, 'filter')}/>
             </div>
 
             <div className='form-group'>
@@ -120,7 +117,7 @@ module.exports = React.createClass({
                   step={200}
                   min={0}
                   max={1000}
-                  onChange={_.partial(this._set, 'duration')}/>
+                  onChange={this._set.bind(null, 'duration')}/>
             </div>
             
           </div>
@@ -155,7 +152,7 @@ var itemComp = React.createClass({
   render: function() {
     var icons =  ['bicycle', 'area-chart', 'anchor']
 
-    this._icon || (this._icon = icons[_.random(0, 2)])
+    this._icon || (this._icon = icons[getRandomInt(0, 2)])
     return (
       <div>
         <i className={'fa fa-' + this._icon}></i>
@@ -164,3 +161,7 @@ var itemComp = React.createClass({
     );
   }
 });
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

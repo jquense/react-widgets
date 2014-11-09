@@ -1,12 +1,12 @@
 'use strict';
 var React = require('react/addons')
-var DropdownList = require('../src/dropdowns/Dropdown-List.jsx')
-var Select = require('../src/select/select.jsx')
-var Calendar = require('../src/calendar/calendar.jsx')
-var DatePicker = require('../src/pickers/datepicker.jsx')
-var NumberPicker = require('../src/pickers/numberpicker.jsx')
-var ComboBox = require('../src/dropdowns/Combobox.jsx')
-var CheckboxList = require('../src/select/SelectList.jsx')
+var DropdownList = require('../src/DropdownList.jsx')
+var Select = require('../src/Multiselect.jsx')
+var Calendar = require('../src/Calendar.jsx')
+var DatePicker = require('../src/DateTimepicker.jsx')
+var NumberPicker = require('../src/NumberPicker.jsx')
+var ComboBox = require('../src/Combobox.jsx')
+var SelectList = require('../src/SelectList.jsx')
 var chance = new (require('chance'))
 var _ = require('lodash')
 
@@ -19,11 +19,12 @@ var ListItem = React.createClass({
 
   render: function(){
 
-    return (
-      <span>{ "hi: " + this.props.item.name}</span>
-    )
+    return (<span>{ "hi: " + this.props.item.name}</span>)
   }
 })
+
+// var a = { a:1, b: 3};
+// var c = { ...a, x: 1 };
 
 var App = React.createClass({
 
@@ -66,7 +67,7 @@ var App = React.createClass({
           <div style={{ height: 150 }}>
             sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
           </div>
-          <CheckboxList
+          <SelectList
             textField='name'
             valueField='id'
             data={this.state.data}
@@ -151,9 +152,7 @@ var App = React.createClass({
 
 })
 
-React.renderComponent(
-    App()
-  , document.body);
+React.render(<App/>, document.body);
 
 
 

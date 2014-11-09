@@ -1,7 +1,6 @@
+'use strict';
 var React   = require('react')
-var Navbar  = require('react-bootstrap/Navbar')
-  , Nav     = require('react-bootstrap/Nav')
-  , NavItem = require('react-bootstrap/NavItem')
+var Tbs     = require('../bootstrap')
 
 
 module.exports = React.createClass({
@@ -18,14 +17,15 @@ module.exports = React.createClass({
         <span className="icon-bar"></span>
       </button>
     )
-    return this.transferPropsTo(
-      <Navbar fixedTop activeKey={this.props.page} toggleNavKey={0} toggleButton={toggle}>
-          <Nav role='navigation' key={0} activeKey='docs' >
-            <NavItem key='docs' href="#">Docs</NavItem>
-            <NavItem key='dl' href="https://github.com/jquense/react-widgets/releases">Download</NavItem>
-            <NavItem key='github' href="https://github.com/jquense/react-widgets">Github</NavItem>
-          </Nav>
-      </Navbar>
+
+    return (
+      <Tbs.Navbar fixedTop activeKey={this.props.page} toggleNavKey={0} toggleButton={toggle} brand='React Widgets'>
+        <Tbs.Nav role='navigation' selectKey={0} activeKey='docs' className='navbar-nav' >
+          <Tbs.NavItem key='docs' href="#">Docs</Tbs.NavItem>
+          <Tbs.NavItem key='dl' href="https://github.com/jquense/react-widgets/releases">Download</Tbs.NavItem>
+          <Tbs.NavItem key='github' href="https://github.com/jquense/react-widgets">Github</Tbs.NavItem>
+        </Tbs.Nav>
+      </Tbs.Navbar>
     )
   }
 })

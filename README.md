@@ -3,17 +3,21 @@ react-widgets
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][downloads-url]
 
-A set of the basic ui widgets built from scratch with React, based on the excellent Kendo UI Core and jQuery UI. 
+A set of the basic UI widgets built from scratch with React, based on the excellent Kendo UI Core and jQuery UI. 
 
 - DropdownList
 - ComboBox
-- Select (multi select)
+- Multiselect
+- SelectList (checkbox and radio group)
 - DateTimePicker
 - Calendar 
 - NumberPicker 
 
 __Demos and Documentation [here](http://jquense.github.io/react-widgets/docs/)__
 
+### Migration: 2.0
+
+Migration guide can be found [here](http://jquense.github.io/react-widgets/docs/index.htm#migration)
 
 ### Install
 
@@ -21,7 +25,7 @@ __Demos and Documentation [here](http://jquense.github.io/react-widgets/docs/)__
 
 ### Building local docs
 
-The docs are a simple React app hosted on gh-pages, you build and run locally with `gulp` and the command `gulp doc-server` which will webpack start up a server on localhost:8081.
+The docs are a simple React app hosted on gh-pages, you build and run locally with `gulp` and the command `gulp doc-server` and open up `docs/index.html`
 
 ### Contributing 
 

@@ -1,20 +1,17 @@
-/**
- * @jsx React.DOM
- */
-
+'use strict';
 var React = require('react')
   , Default = require('../default.jsx')
   , Example = require('../example.jsx')
-  , DDButton = require('react-bootstrap/DropdownButton')
-  , MenuItem = require('react-bootstrap/MenuItem')
+  , DDButton = require('../../bootstrap').DropdownButton
+  , MenuItem = require('../../bootstrap').MenuItem
   , CalendarExample = require('../examples/calendar.jsx');
 
 var prefix = 'calendar/'
 var Calendar = React.createClass({
 
   render: function() {
-    return this.transferPropsTo(
-      <section>
+    return (
+      <section {...this.props}>
         <h1 className="page-header">
           Calendar
           <span className='pull-right'>

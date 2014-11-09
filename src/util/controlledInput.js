@@ -21,10 +21,16 @@ function compatPropType(handler, propType) {
 
 module.exports = {
 
-  createControlledClass: function(displayName, component, controlledValues, defaults) {
+  createControlledClass: function(Component, controlledValues, publicApi) {
+    // var publicMethods 
+    //       = _.transform(publicApi || [], function(obj, method) {
+    //           obj[method] = function (...args){ 
+    //             return this.refs[this._innerRef][method](args) 
+    //           }
+    //         }, {})
 
     var types = _.transform(controlledValues, function(obj, handler, prop){
-          var type = component.type.propTypes[prop];
+          var type = Component.type.propTypes[prop];
 
           obj[prop] = compatPropType(handler, type)
           obj[defaultKey(prop)] = type
@@ -32,10 +38,9 @@ module.exports = {
 
     return React.createClass({
 
-      displayName: displayName,
+      displayName: Component.displayName,
 
       propTypes: types,
-
 
       getInitialState: function(){
         var props = this.props
@@ -52,8 +57,7 @@ module.exports = {
       },
 
       render: function(){
-        var self = this
-          , props, handles;
+        var props, handles;
 
         props = _.transform(controlledValues, (obj, handle, prop) => {
           obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
@@ -63,9 +67,10 @@ module.exports = {
           obj[handle] = setAndNotify.bind(this, prop)
         }, {})
 
-        return component(
-            _.merge(this.props, props, handles)
-          , this.props.children);
+        props    = _.merge(this.props, props, handles)
+        //this._innerRef = props.ref = props.ref || 'component'
+
+        return React.createElement(Component, props, this.props.children);
       }
     })
 
@@ -90,7 +95,6 @@ module.exports = {
 
       return !controlled
     }
-
 
     function isProp(props, prop){
       return props[prop] !== undefined;

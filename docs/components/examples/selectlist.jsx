@@ -1,8 +1,10 @@
 'use strict';
 var React = require('react')
-  , Button = require('react-bootstrap/Button')
-  , ButtonGroup = require('react-bootstrap/ButtonGroup')
+  , Button = require('../../bootstrap').Button
+  , ButtonGroup = require('../../bootstrap').ButtonGroup
   , RW = require('../../../index');
+
+
 // var valueComp = React.createClass({
 //   render: function() {
 //     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
@@ -72,7 +74,7 @@ var DropdownApi = React.createClass({
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.isRtl}
-                  onChange={_.partial(this._set, 'isRtl', !this.state.isRtl)}/>
+                  onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
             </div>
@@ -80,7 +82,7 @@ var DropdownApi = React.createClass({
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.multiple}
-                  onChange={_.partial(this._set, 'multiple', !this.state.multiple)}/>
+                  onChange={this._set.bind(null, 'multiple', !this.state.multiple)}/>
                   Is Multiple
               </label>
             </div>
@@ -99,13 +101,13 @@ var DropdownApi = React.createClass({
               </ButtonGroup>
               <Button style={{ marginLeft: 10 }}
                 active={this.state.busy}
-                onClick={_.partial(this._set, 'busy', !this.state.busy)}>
+                onClick={this._set.bind(null, 'busy', !this.state.busy)}>
                 Busy
               </Button>
             </div>
             <div className='form-group'>
               <label className='form-label'>Disable Values</label>
-              <RW.Select 
+              <RW.Multiselect 
                   value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] } 
                   data={list}
                   textField='label'

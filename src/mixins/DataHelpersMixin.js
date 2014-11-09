@@ -12,7 +12,7 @@ module.exports = {
   _dataValue: function(item){
     var field = this.props.valueField;
 
-    return field && item && _.has(item, field)
+        return field && item && _.has(item, field)
       ? item[field]
       : item
   },

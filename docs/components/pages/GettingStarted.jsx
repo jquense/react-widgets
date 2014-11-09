@@ -1,15 +1,12 @@
-/**
- * @jsx React.DOM
- */
-
+'use strict';
 var React = require('react');
 
 var GettingStarted = React.createClass({
 
   render: function() {
-    return this.transferPropsTo(
-      <section>
-        <h1 className="page-header">Getting Started</h1>
+    return (
+      <section {...this.props}>
+        <h1 className="page-header">Getting Started <small className='pull-right' style={{marginTop: 15}}>current version 2.0.0</small></h1>
         <p>
           React-widgets offers a {'set'} UI widgets, built from scratch with React. The suite is based on the excellent
           work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By
@@ -31,7 +28,7 @@ var GettingStarted = React.createClass({
           is {'set'} the widget's value is said to be <em>controlled</em>, meaning the parent is responsible for managing its
           state. If the widget does not provide a <code>value</code> prop, the widget becomes <em>uncontrolled</em> or responsible
           for managing its own value through internal state. To initialize an uncontrolled widget with a value you can use
-            the <code>defaultValue</code> prop. In addition to the <code>value</code> prop widgets may allow other props
+            the <code>defaultValue</code> prop. In addition to the <code>value</code> prop, widgets may allow other props
           (such as <code>open</code> or <code>search</code>) to be controlled by the parent component.
         </p>
         <p>
@@ -43,10 +40,9 @@ var GettingStarted = React.createClass({
 
         <h2 id='intro/install' className='prop-header'>Install <a/></h2>
         <p>
-          The prefered way is to use NPM <code>npm install react-widgets</code> and make use of something like Webpack or
-          Browserify to bundle the lib.
-          There is also a traditional browser build available for download in the <strong>browser</strong> folder.
-          It does not bundle any dependencies listed below, and
+          The prefered way to install is NPM (<code>npm install react-widgets</code>) and make use of something like Webpack or
+          Browserify to bundle the library. There is also a traditional browser build available for 
+          download in the <strong>browser</strong> folder. The browser build does not bundle any dependencies, and
           attaches itself to the <code>window</code> as <code>ReactWidgets</code>
         </p>
         <p>
@@ -60,15 +56,16 @@ var GettingStarted = React.createClass({
 
         <h2 id='intro/deps' className='prop-header'>External Dependencies</h2>
         <p>
-          React-widgets is compatible with <code>React</code> 0.9.0+, and expects it to be bundled.
-          Comsumers of the NPM package should note that React is not listed as direct, or peer dependency. This is help
-          reduce the friction that Peer Dependencies can cause. This means that NPM will not warn you if you try to use
-          react-widgets with an incompatible React version.
+          React-widgets <b>2.x</b> is compatible with React <b>0.12.0+</b>, while the <b>1.x</b> branch supports
+           React <b>0.9.0</b> to <b>0.10.0</b>. Either branch
+           expects React to be bundled by you. Consumers of the NPM package should note that React is not listed as direct, 
+           or peer dependency. This is to help reduce the friction that Peer Dependencies can cause. 
+           This means that NPM will not warn you if you try to use react-widgets with an incompatible React version.
         </p>
         <p>
           If you use Browserify or Webpack to build your projects, the dependencies listed below will automatically be
           included. They are listed for the sake of those who wish to externalize the lib dependencies to reduce
-          duplication, or wish to use a different, compatible library (such as underscore).
+          duplication, or wish to use a different, compatible, library.
 
           <ul>
             <li>
@@ -79,15 +76,27 @@ var GettingStarted = React.createClass({
         </p>
         <h2 id='intro/browser'>Older Browser Support</h2>
         <p>
-          Moving forward react-widgets is working to reduce dependence on external utility-belt libraries in favor of 
-          using polyfills for older, non es5 compliant, browsers. For consumers supporting older browsers you will already
-          be using the necessary polyfills that&nbsp; 
-          <a target="_blank" href="http://facebook.github.io/react/docs/working-with-the-browser.html#polyfills-needed-to-support-older-browsers">
-            React requires <i className="fa fa-external-link"></i>
-          </a>
+          Rather than including an entire utility library, like underscore, react widgets takes a hint from React itself, 
+          and instead relies on es5 (and transpiled es6) functionality. For most browsers this is will not be an issue, as es5 
+          is <a href="http://kangax.github.io/compat-table/es5/">very well supported</a> by modern browsers. However older 
+          browsers will need the required functionality polyfilled. In most clases React already requires most of the needed shims 
+          (
+            <a target="_blank" href="http://facebook.github.io/react/docs/working-with-the-browser.html#polyfills-needed-to-support-older-browsers">
+            see here <i className="fa fa-external-link"></i>
+          </a>). If you are already including <a href="https://github.com/es-shims/es5-shim">kriskowal's es5-shim</a> then 
+          react-widgets propbably has everything it needs.
+
+          For those interested in the specific additions needed by react-widgets they are:
+          <ul>
+            <li><code>Array.prototype.some</code></li>
+            <li><code>Array.prototype.filter</code></li>
+            <li><code>Array.prototype.reduce</code></li>
+          </ul>
+
+          You can use the excellent <a href="https://github.com/es-shims/es5-shim">kriskowal's es5-shim</a> for all of these.
         </p>
 
-        <h2 id='intro/access' className='prop-header'>Accessibility and Read Direction</h2>
+        <h2 id='intro/access'>Accessibility and Read Direction</h2>
         <p>
           React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for
           date and number localization, there is first class support for cultures and languages that read
@@ -109,10 +118,10 @@ var GettingStarted = React.createClass({
 
           <ul>
             <li>
-              Widget styles with LESS variables (see <code>./src/less/bootstrap-theme.less</code> for reference).
+              Widget styles with LESS variables (see <code>./lib/less/bootstrap-theme.less</code> for reference).
             </li>
             <li>
-              Icon fonts can be swapped out in the <code>./src/less/icons.less</code> file
+              Icon fonts can be swapped out in the <code>./lib/less/icons.less</code> file
             </li>
           </ul>
         </p>

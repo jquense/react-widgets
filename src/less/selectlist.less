@@ -1,8 +1,7 @@
 
-.rw-checkboxlist {
+.rw-selectlist {
   padding: 2px;
 }
-
 
 .rw-selectlist {
 
@@ -45,9 +44,23 @@
       padding-right: 20px;
     }
   }
+
+  &.rw-rtl > ul > li.rw-selectlist-item {
+    padding-left: 0;
+    padding-right: 5px;
+
+    > label > input {
+       margin: 4px -20px 0 0px;
+    }
+
+    > label {
+      padding-left: 0;
+      padding-right: 20px;
+    }
+  }
 }
 
-.rw-checkboxlist {
+.rw-selectlist {
 
   &.rw-state-disabled,
   &.rw-state-readonly {

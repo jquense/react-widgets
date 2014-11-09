@@ -1,3 +1,4 @@
+'use strict';
 var gulp    = require('gulp')
   , docs    = require('./tasks/docs')
   , dev     = require('./tasks/development')
@@ -5,7 +6,11 @@ var gulp    = require('gulp')
   , browser = require('./tasks/browser');
 
 gulp.task('dev-server',    dev.devServer)
-gulp.task('doc-server',    dev.docServer)
+
+gulp.task('doc-watch',    function(){
+	gulp.watch(['./src/**/*', './docs/**/*.jsx'], ['docs'])
+})
+
 
 gulp.task('assets-less',   assets.less)
 gulp.task('assets-fonts',  assets.fonts)
@@ -20,6 +25,8 @@ gulp.task('lib',     [ 'lib-clean', 'lib-compile'])
 gulp.task('assets',  [ 'assets-fonts', 'assets-less'])
 
 gulp.task('docs',    [ 'lib', 'assets'], docs.build)
+
+gulp.task('doc-server', ['docs', 'doc-watch'])
 
 gulp.task('browser', [ 'browser-clean', 'browser-build'])
 

@@ -1,8 +1,10 @@
+'use strict';
+/*global it, describe, expect, sinon*/
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
-var Select = require('../src/select/select.jsx')
-  , TagList = require('../src/select/tag-list.jsx')
+var Select = require('../src/Multiselect.jsx')
+  , TagList = require('../src/MultiselectTagList.jsx')
   , _ = require('lodash');
 
 
@@ -39,7 +41,7 @@ describe('Select', function(){
 
   it('should start closed', function(done){
     var select = render(<Select defaultValue={[0]} data={dataList} textField='label' valueField='id' />);
-    var popup = findType(select, require('../src/popup/popup.jsx'));
+    var popup = findType(select, require('../src/Popup.jsx'));
 
     expect(select.state.open).to.not.be(true)
     expect(select.getDOMNode().className).to.not.match(/\brw-open\b/)
@@ -53,9 +55,9 @@ describe('Select', function(){
 
   it('should open when clicked', function(done){
     var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0}/>);
-    var popup = findType(select, require('../src/popup/popup.jsx'))
+    var popup = findType(select, require('../src/Popup.jsx'))
 
-    trigger.click(findClass(select, 'rw-select-wrapper').getDOMNode())
+    trigger.click(findClass(select, 'rw-multiselect-wrapper').getDOMNode())
 
     setTimeout(function() {
       expect(select.state.open).to.be(true)
@@ -93,7 +95,7 @@ describe('Select', function(){
 
   it('should do nothing when disabled', function(done){
     var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0} disabled={true}/>)
-      , input  = findType(select, require('../src/select/search-input.jsx')).getDOMNode()
+      , input  = findType(select, require('../src/MultiselectInput.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
     expect( input.hasAttribute('disabled')).to.be(true);
@@ -112,7 +114,7 @@ describe('Select', function(){
 
   it('should disable only certain tags', function(done){
     var select = render(<Select defaultValue={[0,1]} data={dataList} disabled={[1]}  textField='label' valueField='id'/>)
-      , input  = findType(select, require('../src/select/search-input.jsx')).getDOMNode()
+      , input  = findType(select, require('../src/MultiselectInput.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
     expect(tags.children.length).to.be(2)
@@ -129,7 +131,7 @@ describe('Select', function(){
 
   it('should do nothing when readonly', function(done){
     var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0} readOnly={true}/>)
-      , input  = findType(select, require('../src/select/search-input.jsx')).getDOMNode()
+      , input  = findType(select, require('../src/MultiselectInput.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
     expect( input.hasAttribute('readonly')).to.be(true);
@@ -147,7 +149,7 @@ describe('Select', function(){
 
   it('should readonly only certain tags', function(done){
     var select = render(<Select defaultValue={[0,1]} data={dataList} readOnly={[1]}  textField='label' valueField='id'/>)
-      , input  = findType(select, require('../src/select/search-input.jsx')).getDOMNode()
+      , input  = findType(select, require('../src/MultiselectInput.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
     expect(tags.children.length).to.be(2)

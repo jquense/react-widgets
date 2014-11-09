@@ -4,9 +4,7 @@ var gulp = require('gulp')
   , replace = require('gulp-replace')
   , clean = require('gulp-clean')
   , gulpReact = require('gulp-react')
-  , plumber = require('gulp-plumber')
-  , configs = require('./webpack.configs')
-  , webpack = require('gulp-webpack');
+  , plumber = require('gulp-plumber');
 
 module.exports = {
 
