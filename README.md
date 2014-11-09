@@ -25,7 +25,7 @@ Migration guide can be found [here](http://jquense.github.io/react-widgets/docs/
 
 ### Building local docs
 
-The docs are a simple React app hosted on gh-pages, you build and run locally with `gulp` and the command `gulp doc-server` which will webpack start up a server on localhost:8081.
+The docs are a simple React app hosted on gh-pages, you build and run locally with `gulp` and the command `gulp doc-server` and open up `docs/index.html`
 
 ### Contributing 
 
