@@ -10,7 +10,8 @@ var React          = require('react')
   , SelectList     = require('./pages/SelectList.jsx')
   , Calendar       = require('./pages/Calendar.jsx')
   , DatePicker     = require('./pages/DateTimePicker.jsx')
-  , NumberPicker   = require('./pages/NumberPicker.jsx');
+  , NumberPicker   = require('./pages/NumberPicker.jsx')
+  , Migration      = require('./pages/Migration.jsx');
 
 //require('../docs.css')
 
@@ -58,6 +59,8 @@ var Docs = React.createClass({
                 <Tbs.NavItem key={5} href='#selectlist' >SelectList</Tbs.NavItem>
                 <Tbs.NavItem key={6} href='#calendar'>Calendar</Tbs.NavItem>
                 <Tbs.NavItem key={7} href='#date-picker'>{'Date &  Time Picker'}</Tbs.NavItem>
+
+                <Tbs.NavItem key={8} href='#migration'>Migrating to 2.x</Tbs.NavItem>
               </Tbs.Nav>
             </div>
           </aside>
@@ -70,6 +73,7 @@ var Docs = React.createClass({
             <SelectList     className ={cx({"tab-pane": true, "active": href === '#selectlist' })}/>
             <Calendar       className ={cx({"tab-pane": true, "active": href === '#calendar' })}/>
             <DatePicker     className ={cx({"tab-pane": true, "active": href === '#date-picker' })}/>
+            <Migration      className ={cx({"tab-pane": true, "active": href === '#migration' })}/>
             
             <div className='clearfix'style={{ marginTop: 20 }}>
               { locations.indexOf(href) > 0 && 

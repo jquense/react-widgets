@@ -28,7 +28,7 @@ var GettingStarted = React.createClass({
           is {'set'} the widget's value is said to be <em>controlled</em>, meaning the parent is responsible for managing its
           state. If the widget does not provide a <code>value</code> prop, the widget becomes <em>uncontrolled</em> or responsible
           for managing its own value through internal state. To initialize an uncontrolled widget with a value you can use
-            the <code>defaultValue</code> prop. In addition to the <code>value</code> prop widgets may allow other props
+            the <code>defaultValue</code> prop. In addition to the <code>value</code> prop, widgets may allow other props
           (such as <code>open</code> or <code>search</code>) to be controlled by the parent component.
         </p>
         <p>

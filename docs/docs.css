@@ -8,6 +8,10 @@ h2, h3 {
   margin-top: 40px;
 }
 
+h4 {
+  margin-top: 20px;
+}
+
 h3 {
   color: #284C6D;
   border-bottom: 1px solid #eee;
