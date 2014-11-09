@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "1.4.5",
+  "version": "2.0.0",
   "description": "React widgets",
   "main": "index.js",
   "author": {
@@ -17,6 +17,8 @@
     "date picker",
     "numberpicker",
     "number picker",
+    "radio group",
+    "checkbox list",
     "multiselect",
     "react-ui",
     "react-component"

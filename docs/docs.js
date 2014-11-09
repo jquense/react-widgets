@@ -1,4 +1,4 @@
-/*! v"1.4.5" | (c) 2014 Jason Quense | https://github.com/jaquense/react-widgets/blob/master/License.txt */
+/*! v"2.0.0" | (c) 2014 Jason Quense | https://github.com/jaquense/react-widgets/blob/master/License.txt */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -375,7 +375,7 @@
 	  , Example = __webpack_require__(16)
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
-	  , DropdownListExample = __webpack_require__(19);
+	  , DropdownListExample = __webpack_require__(17);
 	
 	var prefix = 'DropdownList/'
 	var widgetName = 'DropdownList'
@@ -563,7 +563,7 @@
 	  , Example = __webpack_require__(16)
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
-	  , ComboBoxExample = __webpack_require__(17);
+	  , ComboBoxExample = __webpack_require__(18);
 	
 	var prefix = 'combobox/'
 	var widgetName = 'Combobox'
@@ -781,7 +781,7 @@
 	  , Example = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , MultiselectExample = __webpack_require__(18);
+	  , MultiselectExample = __webpack_require__(19);
 	
 	var prefix = 'multiselect/';
 	var widgetName = 'Multiselect'
@@ -1009,7 +1009,8 @@
 	  , Example = __webpack_require__(16)
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
-	  , SelectListExample = __webpack_require__(22);
+	
+	  , SelectListExample = __webpack_require__(20);
 	
 	var prefix = 'selectlist/'
 	var widgetName = 'SelectList'
@@ -1186,7 +1187,7 @@
 	  , Example = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , CalendarExample = __webpack_require__(20);
+	  , CalendarExample = __webpack_require__(21);
 	
 	var prefix = 'calendar/'
 	var Calendar = React.createClass({displayName: 'Calendar',
@@ -1342,7 +1343,7 @@
 	  , Example = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , DatePickerExample = __webpack_require__(21);
+	  , DatePickerExample = __webpack_require__(23);
 	
 	var prefix = 'date-picker/'
 	var widgetName = 'DateTimePicker'
@@ -1580,7 +1581,7 @@
 	  , Example = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , NumberPickerExample = __webpack_require__(23);
+	  , NumberPickerExample = __webpack_require__(22);
 	
 	var prefix = 'number-picker/'
 	var NumberPicker = React.createClass({displayName: 'NumberPicker',
@@ -2007,6 +2008,164 @@
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , Dropdown = __webpack_require__(32).DropdownList
+	  , NumberPicker = __webpack_require__(32).NumberPicker;
+	
+	var valueComp = React.createClass({displayName: 'valueComp',
+	  render: function() {
+	
+	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.label))
+	  }
+	});
+	
+	var itemComp = React.createClass({displayName: 'itemComp',
+	  render: function() {
+	    var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	    return (
+	      React.createElement("div", null, 
+	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
+	         '  ' + this.props.item.label
+	      )
+	    );
+	  }
+	});
+	
+	
+	function getRandomInt(min, max) {
+	  return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	
+	
+	var DropdownApi = React.createClass({displayName: 'DropdownApi',
+	
+	  getInitialState: function(){
+	
+	    return {
+	      duration: 250,
+	    }
+	  },
+	
+	  render: function() {
+	    var list = [
+	        { label: 'orange', id: 1 },
+	        { label: 'blue', id: 2 },
+	        { label: 'red', id: 3 },
+	      ];
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-sm-8 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(Dropdown, {
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                value: this.state.value || 1, 
+	                data: list, 
+	                duration: this.state.duration, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", null, "Custom Rendering"), 
+	              React.createElement(Dropdown, {
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                value: this.state.value || 1, 
+	                valueComponent: valueComp, 
+	                itemComponent: itemComp, 
+	                data: list, 
+	                duration: this.state.duration, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            )
+	          ), 
+	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Duration"), 
+	              React.createElement(NumberPicker, {
+	                  value: this.state.duration, 
+	                  step: 200, 
+	                  min: 0, 
+	                  max: 1000, 
+	                  onChange: this._set.bind(null, 'duration')})
+	            )
+	          )
+	        )
+	      )
+	    );
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	});
+	
+	module.exports = DropdownApi;
+	
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
 	  , RW = __webpack_require__(32);
 	
 	module.exports = React.createClass({displayName: 'exports',
@@ -2172,7 +2331,7 @@
 	}
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2351,42 +2510,48 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , Dropdown = __webpack_require__(32).DropdownList
-	  , NumberPicker = __webpack_require__(32).NumberPicker;
-	
-	var valueComp = React.createClass({displayName: 'valueComp',
-	  render: function() {
-	
-	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.label))
-	  }
-	});
-	
-	var itemComp = React.createClass({displayName: 'itemComp',
-	  render: function() {
-	    var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	    return (
-	      React.createElement("div", null, 
-	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
-	         '  ' + this.props.item.label
-	      )
-	    );
-	  }
-	});
+	  , RW = __webpack_require__(32);
 	
 	
-	function getRandomInt(min, max) {
-	  return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
+	// var valueComp = React.createClass({
+	//   render: function() {
+	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
+	//   }
+	// });
 	
+	// var itemComp = React.createClass({
+	//   render: function() {
+	//     var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	//     return (
+	//       <div>
+	//         <i className={'fa fa-' + this._icon}></i>
+	//         { '  ' + this.props.item.label}
+	//       </div>
+	//     );
+	//   }
+	// });
+	
+	// function getRandomInt(min, max) {
+	//   return Math.floor(Math.random() * (max - min + 1)) + min;
+	// }
+	
+	var list = [
+	        { label: 'orange', id: 1 },
+	        { label: 'blue',   id: 2 },
+	        { label: 'red',    id: 3 },
+	        { label: 'maroon', id: 4 },
+	        { label: 'purple', id: 5 },
+	        { label: 'mauve',  id: 6 },
+	      ];
 	
 	var DropdownApi = React.createClass({displayName: 'DropdownApi',
 	
@@ -2398,40 +2563,19 @@
 	  },
 	
 	  render: function() {
-	    var list = [
-	        { label: 'orange', id: 1 },
-	        { label: 'blue', id: 2 },
-	        { label: 'red', id: 3 },
-	      ];
+	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 	
 	    return (
 	      React.createElement("div", {className: "example"}, 
 	        React.createElement("div", {className: "row"}, 
 	          React.createElement("div", {className: "col-sm-8 demo"}, 
 	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(Dropdown, {
-	                disabled: this.state.disabled === 'disabled', 
+	              React.createElement(RW.SelectList, {
+	                disabled: disabled ? this.state.disabled : false, 
 	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value || 1, 
+	                value: this.state.value, 
 	                data: list, 
-	                duration: this.state.duration, 
-	                busy: this.state.busy, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl, 
-	                valueField: "id", 
-	                textField: "label"}
-	                )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", null, "Custom Rendering"), 
-	              React.createElement(Dropdown, {
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value || 1, 
-	                valueComponent: valueComp, 
-	                itemComponent: itemComp, 
-	                data: list, 
-	                duration: this.state.duration, 
+	                multiple: this.state.multiple, 
 	                busy: this.state.busy, 
 	                onChange: this._change, 
 	                isRtl: this.state.isRtl, 
@@ -2447,6 +2591,14 @@
 	                  checked: this.state.isRtl, 
 	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
 	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.multiple, 
+	                  onChange: this._set.bind(null, 'multiple', !this.state.multiple)}), 
+	                  "Is Multiple"
 	              )
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
@@ -2469,13 +2621,14 @@
 	              )
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Duration"), 
-	              React.createElement(NumberPicker, {
-	                  value: this.state.duration, 
-	                  step: 200, 
-	                  min: 0, 
-	                  max: 1000, 
-	                  onChange: this._set.bind(null, 'duration')})
+	              React.createElement("label", {className: "form-label"}, "Disable Values"), 
+	              React.createElement(RW.Multiselect, {
+	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
+	                  data: list, 
+	                  textField: "label", 
+	                  valueField: "id", 
+	                  disabled: this.state.disabled === true, 
+	                  onChange: this._set.bind(null, 'disabled')})
 	            )
 	          )
 	        )
@@ -2499,9 +2652,9 @@
 	  },
 	
 	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    var val = this.state.disabled === true ? false : true
 	    this.setState({ disabled: val })
-	  },
+	  }
 	});
 	
 	module.exports = DropdownApi;
@@ -2509,7 +2662,7 @@
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2627,11 +2780,130 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(45)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW = __webpack_require__(32);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	  getInitialState: function(){
+	    return {
+	      value: 15,
+	      format: 'D',
+	      step: 1,
+	    }
+	  },
+	
+	  render: function(){
+	
+	    return (
+	      React.createElement("div", {className: "example "}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-sm-8 demo"}, 
+	            React.createElement(RW.NumberPicker, {
+	                value: this.state.value, 
+	                onChange: this._change, 
+	                max: this.state.max, 
+	                min: this.state.min, 
+	                step: this.state.step, 
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                format: this.state.format, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl})
+	          ), 
+	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Filter"), 
+	              React.createElement(RW.DropdownList, {
+	                  value: this.state.filter || false, 
+	                  data: [false, 'startsWith', 'endsWith', 'contains'], 
+	                  onChange: this._set.bind(null, 'filter')})
+	            ), 
+	
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "step"), 
+	              React.createElement(RW.NumberPicker, {
+	                  value: this.state.step, 
+	                  onChange: this._set.bind(null, 'step')})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "min"), 
+	              React.createElement(RW.NumberPicker, {
+	                  value: this.state.min, 
+	                  onChange: this._set.bind(null, 'min')})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "max"), 
+	              React.createElement(RW.NumberPicker, {
+	                  value: this.state.max, 
+	                  onChange: this._set.bind(null, 'max')})
+	            )
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	
+	})
+	
+	function extract(fn){
+	  return function(e){
+	    return fn(e.target.value)
+	  }
+	}
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1)
+	  , dates = __webpack_require__(39)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
 	  , RW = __webpack_require__(32);
@@ -2822,282 +3094,12 @@
 	}
 
 /***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(32);
-	
-	// var valueComp = React.createClass({
-	//   render: function() {
-	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
-	//   }
-	// });
-	
-	// var itemComp = React.createClass({
-	//   render: function() {
-	//     var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	//     return (
-	//       <div>
-	//         <i className={'fa fa-' + this._icon}></i>
-	//         { '  ' + this.props.item.label}
-	//       </div>
-	//     );
-	//   }
-	// });
-	
-	// function getRandomInt(min, max) {
-	//   return Math.floor(Math.random() * (max - min + 1)) + min;
-	// }
-	
-	var list = [
-	        { label: 'orange', id: 1 },
-	        { label: 'blue',   id: 2 },
-	        { label: 'red',    id: 3 },
-	        { label: 'maroon', id: 4 },
-	        { label: 'purple', id: 5 },
-	        { label: 'mauve',  id: 6 },
-	      ];
-	      
-	var DropdownApi = React.createClass({displayName: 'DropdownApi',
-	
-	  getInitialState: function(){
-	
-	    return {
-	      duration: 250,
-	    }
-	  },
-	
-	  render: function() {
-	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-sm-8 demo"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(RW.SelectList, {
-	                disabled: disabled ? this.state.disabled : false, 
-	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value, 
-	                data: list, 
-	                multiple: this.state.multiple, 
-	                busy: this.state.busy, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl, 
-	                valueField: "id", 
-	                textField: "label"}
-	                )
-	            )
-	          ), 
-	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.multiple, 
-	                  onChange: this._set.bind(null, 'multiple', !this.state.multiple)}), 
-	                  "Is Multiple"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              ), 
-	              React.createElement(Button, {style: { marginLeft: 10}, 
-	                active: this.state.busy, 
-	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
-	                "Busy"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Disable Values"), 
-	              React.createElement(RW.Multiselect, {
-	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
-	                  data: list, 
-	                  textField: "label", 
-	                  valueField: "id", 
-	                  disabled: this.state.disabled === true, 
-	                  onChange: this._set.bind(null, 'disabled')})
-	            )
-	          )
-	        )
-	      )
-	    );
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === true ? false : true
-	    this.setState({ disabled: val })
-	  }
-	});
-	
-	module.exports = DropdownApi;
-	
-
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(32);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	  getInitialState: function(){
-	    return {
-	      value: 15,
-	      format: 'D',
-	      step: 1,
-	    }
-	  },
-	
-	  render: function(){
-	
-	    return (
-	      React.createElement("div", {className: "example "}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-sm-8 demo"}, 
-	            React.createElement(RW.NumberPicker, {
-	                value: this.state.value, 
-	                onChange: this._change, 
-	                max: this.state.max, 
-	                min: this.state.min, 
-	                step: this.state.step, 
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                format: this.state.format, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl})
-	          ), 
-	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Filter"), 
-	              React.createElement(RW.DropdownList, {
-	                  value: this.state.filter || false, 
-	                  data: [false, 'startsWith', 'endsWith', 'contains'], 
-	                  onChange: this._set.bind(null, 'filter')})
-	            ), 
-	
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "step"), 
-	              React.createElement(RW.NumberPicker, {
-	                  value: this.state.step, 
-	                  onChange: this._set.bind(null, 'step')})
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "min"), 
-	              React.createElement(RW.NumberPicker, {
-	                  value: this.state.min, 
-	                  onChange: this._set.bind(null, 'min')})
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "max"), 
-	              React.createElement(RW.NumberPicker, {
-	                  value: this.state.max, 
-	                  onChange: this._set.bind(null, 'max')})
-	            )
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
-	    this.setState({ disabled: val })
-	  },
-	
-	})
-	
-	function extract(fn){
-	  return function(e){
-	    return fn(e.target.value)
-	  }
-	}
-
-/***/ },
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(39);
-	var classSet = __webpack_require__(40);
+	var joinClasses = __webpack_require__(40);
+	var classSet = __webpack_require__(41);
 	var BootstrapMixin = __webpack_require__(34);
 	
 	var Button = React.createClass({displayName: 'Button',
@@ -3187,8 +3189,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(39);
-	var classSet = __webpack_require__(40);
+	var joinClasses = __webpack_require__(40);
+	var classSet = __webpack_require__(41);
 	var BootstrapMixin = __webpack_require__(34);
 	var Button = __webpack_require__(24);
 	
@@ -3229,17 +3231,17 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(39);
-	var classSet = __webpack_require__(40);
-	var cloneWithProps = __webpack_require__(41);
+	var joinClasses = __webpack_require__(40);
+	var classSet = __webpack_require__(41);
+	var cloneWithProps = __webpack_require__(42);
 	
-	var createChainedFunction = __webpack_require__(42);
+	var createChainedFunction = __webpack_require__(43);
 	var BootstrapMixin = __webpack_require__(34);
 	var DropdownStateMixin = __webpack_require__(35);
 	var Button = __webpack_require__(24);
 	var ButtonGroup = __webpack_require__(25);
 	var DropdownMenu = __webpack_require__(36);
-	var ValidComponentChildren = __webpack_require__(43);
+	var ValidComponentChildren = __webpack_require__(44);
 	
 	
 	var DropdownButton = React.createClass({displayName: 'DropdownButton',
@@ -3357,8 +3359,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(39);
-	var classSet = __webpack_require__(40);
+	var joinClasses = __webpack_require__(40);
+	var classSet = __webpack_require__(41);
 	
 	var MenuItem = React.createClass({displayName: 'MenuItem',
 	  propTypes: {
@@ -3420,15 +3422,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(39);
+	var joinClasses = __webpack_require__(40);
 	var BootstrapMixin = __webpack_require__(34);
 	var CollapsableMixin = __webpack_require__(37);
-	var classSet = __webpack_require__(40);
-	var domUtils = __webpack_require__(44);
-	var cloneWithProps = __webpack_require__(41);
+	var classSet = __webpack_require__(41);
+	var domUtils = __webpack_require__(45);
+	var cloneWithProps = __webpack_require__(42);
 	
-	var ValidComponentChildren = __webpack_require__(43);
-	var createChainedFunction = __webpack_require__(42);
+	var ValidComponentChildren = __webpack_require__(44);
+	var createChainedFunction = __webpack_require__(43);
 	
 	
 	var Nav = React.createClass({displayName: 'Nav',
@@ -3536,13 +3538,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(39);
+	var joinClasses = __webpack_require__(40);
 	var BootstrapMixin = __webpack_require__(34);
-	var classSet = __webpack_require__(40);
-	var cloneWithProps = __webpack_require__(41);
+	var classSet = __webpack_require__(41);
+	var cloneWithProps = __webpack_require__(42);
 	
-	var ValidComponentChildren = __webpack_require__(43);
-	var createChainedFunction = __webpack_require__(42);
+	var ValidComponentChildren = __webpack_require__(44);
+	var createChainedFunction = __webpack_require__(43);
 	var Nav = __webpack_require__(28);
 	
 	
@@ -3681,12 +3683,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(39);
-	var classSet = __webpack_require__(40);
-	var cloneWithProps = __webpack_require__(41);
+	var joinClasses = __webpack_require__(40);
+	var classSet = __webpack_require__(41);
+	var cloneWithProps = __webpack_require__(42);
 	
-	var ValidComponentChildren = __webpack_require__(43);
-	var createChainedFunction = __webpack_require__(42);
+	var ValidComponentChildren = __webpack_require__(44);
+	var createChainedFunction = __webpack_require__(43);
 	var BootstrapMixin = __webpack_require__(34);
 	
 	
@@ -3815,8 +3817,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(39);
-	var classSet = __webpack_require__(40);
+	var joinClasses = __webpack_require__(40);
+	var classSet = __webpack_require__(41);
 	var BootstrapMixin = __webpack_require__(34);
 	
 	var NavItem = React.createClass({displayName: 'NavItem',
@@ -4045,12 +4047,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(39);
-	var classSet = __webpack_require__(40);
-	var cloneWithProps = __webpack_require__(41);
+	var joinClasses = __webpack_require__(40);
+	var classSet = __webpack_require__(41);
+	var cloneWithProps = __webpack_require__(42);
 	
-	var createChainedFunction = __webpack_require__(42);
-	var ValidComponentChildren = __webpack_require__(43);
+	var createChainedFunction = __webpack_require__(43);
+	var ValidComponentChildren = __webpack_require__(44);
 	
 	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
 	  propTypes: {
@@ -4252,406 +4254,6 @@
 
 /***/ },
 /* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/joinClasses.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @providesModule joinClasses
-	 * @typechecks static-only
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Combines multiple className strings into one.
-	 * http://jsperf.com/joinclasses-args-vs-array
-	 *
-	 * @param {...?string} classes
-	 * @return {string}
-	 */
-	function joinClasses(className/*, ... */) {
-	  if (!className) {
-	    className = '';
-	  }
-	  var nextClass;
-	  var argLength = arguments.length;
-	  if (argLength > 1) {
-	    for (var ii = 1; ii < argLength; ii++) {
-	      nextClass = arguments[ii];
-	      if (nextClass) {
-	        className = (className ? className + ' ' : '') + nextClass;
-	      }
-	    }
-	  }
-	  return className;
-	}
-	
-	module.exports = joinClasses;
-
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/cx.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @providesModule cx
-	 */
-	
-	/**
-	 * This function is used to mark string literals representing CSS class names
-	 * so that they can be transformed statically. This allows for modularization
-	 * and minification of CSS class names.
-	 *
-	 * In static_upstream, this function is actually implemented, but it should
-	 * eventually be replaced with something more descriptive, and the transform
-	 * that is used in the main stack should be ported for use elsewhere.
-	 *
-	 * @param string|object className to modularize, or an object of key/values.
-	 *                      In the object case, the values are conditions that
-	 *                      determine if the className keys should be included.
-	 * @param [string ...]  Variable list of classNames in the string case.
-	 * @return string       Renderable space-separated CSS className.
-	 */
-	function cx(classNames) {
-	  if (typeof classNames == 'object') {
-	    return Object.keys(classNames).filter(function(className) {
-	      return classNames[className];
-	    }).join(' ');
-	  } else {
-	    return Array.prototype.join.call(arguments, ' ');
-	  }
-	}
-	
-	module.exports = cx;
-
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/cloneWithProps.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @typechecks
-	 * @providesModule cloneWithProps
-	 */
-	
-	"use strict";
-	
-	var ReactElement = __webpack_require__(60);
-	var ReactPropTransferer = __webpack_require__(61);
-	
-	var keyOf = __webpack_require__(62);
-	var warning = __webpack_require__(63);
-	
-	var CHILDREN_PROP = keyOf({children: null});
-	
-	/**
-	 * Sometimes you want to change the props of a child passed to you. Usually
-	 * this is to add a CSS class.
-	 *
-	 * @param {object} child child component you'd like to clone
-	 * @param {object} props props you'd like to modify. They will be merged
-	 * as if you used `transferPropsTo()`.
-	 * @return {object} a clone of child with props merged in.
-	 */
-	function cloneWithProps(child, props) {
-	  if (true) {
-	    (true ? warning(
-	      !child.ref,
-	      'You are calling cloneWithProps() on a child with a ref. This is ' +
-	      'dangerous because you\'re creating a new child which will not be ' +
-	      'added as a ref to its parent.'
-	    ) : null);
-	  }
-	
-	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
-	
-	  // Use `child.props.children` if it is provided.
-	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
-	      child.props.hasOwnProperty(CHILDREN_PROP)) {
-	    newProps.children = child.props.children;
-	  }
-	
-	  // The current API doesn't retain _owner and _context, which is why this
-	  // doesn't use ReactElement.cloneAndReplaceProps.
-	  return ReactElement.createElement(child.type, newProps);
-	}
-	
-	module.exports = cloneWithProps;
-
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Safe chained function
-	 *
-	 * Will only create a new function if needed,
-	 * otherwise will pass back existing functions or null.
-	 *
-	 * @param {function} one
-	 * @param {function} two
-	 * @returns {function|null}
-	 */
-	function createChainedFunction(one, two) {
-	  var hasOne = typeof one === 'function';
-	  var hasTwo = typeof two === 'function';
-	
-	  if (!hasOne && !hasTwo) { return null; }
-	  if (!hasOne) { return two; }
-	  if (!hasTwo) { return one; }
-	
-	  return function chainedFunction() {
-	    one.apply(this, arguments);
-	    two.apply(this, arguments);
-	  };
-	}
-	
-	module.exports = createChainedFunction;
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	/**
-	 * Maps children that are typically specified as `props.children`,
-	 * but only iterates over children that are "valid components".
-	 *
-	 * The mapFunction provided index will be normalised to the components mapped,
-	 * so an invalid component would not increase the index.
-	 *
-	 * @param {?*} children Children tree container.
-	 * @param {function(*, int)} mapFunction.
-	 * @param {*} mapContext Context for mapFunction.
-	 * @return {object} Object containing the ordered map of results.
-	 */
-	function mapValidComponents(children, func, context) {
-	  var index = 0;
-	
-	  return React.Children.map(children, function (child) {
-	    if (React.isValidElement(child)) {
-	      var lastIndex = index;
-	      index++;
-	      return func.call(context, child, lastIndex);
-	    }
-	
-	    return child;
-	  });
-	}
-	
-	/**
-	 * Iterates through children that are typically specified as `props.children`,
-	 * but only iterates over children that are "valid components".
-	 *
-	 * The provided forEachFunc(child, index) will be called for each
-	 * leaf child with the index reflecting the position relative to "valid components".
-	 *
-	 * @param {?*} children Children tree container.
-	 * @param {function(*, int)} forEachFunc.
-	 * @param {*} forEachContext Context for forEachContext.
-	 */
-	function forEachValidComponents(children, func, context) {
-	  var index = 0;
-	
-	  return React.Children.forEach(children, function (child) {
-	    if (React.isValidElement(child)) {
-	      func.call(context, child, index);
-	      index++;
-	    }
-	  });
-	}
-	
-	/**
-	 * Count the number of "valid components" in the Children container.
-	 *
-	 * @param {?*} children Children tree container.
-	 * @returns {number}
-	 */
-	function numberOfValidComponents(children) {
-	  var count = 0;
-	
-	  React.Children.forEach(children, function (child) {
-	    if (React.isValidElement(child)) { count++; }
-	  });
-	
-	  return count;
-	}
-	
-	/**
-	 * Determine if the Child container has one or more "valid components".
-	 *
-	 * @param {?*} children Children tree container.
-	 * @returns {boolean}
-	 */
-	function hasValidComponent(children) {
-	  var hasValid = false;
-	
-	  React.Children.forEach(children, function (child) {
-	    if (!hasValid && React.isValidElement(child)) {
-	      hasValid = true;
-	    }
-	  });
-	
-	  return hasValid;
-	}
-	
-	module.exports = {
-	  map: mapValidComponents,
-	  forEach: forEachValidComponents,
-	  numberOf: numberOfValidComponents,
-	  hasValidComponent: hasValidComponent
-	};
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Shortcut to compute element style
-	 *
-	 * @param {HTMLElement} elem
-	 * @returns {CssStyle}
-	 */
-	function getComputedStyles(elem) {
-	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
-	}
-	
-	/**
-	 * Get elements offset
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} DOMNode
-	 * @returns {{top: number, left: number}}
-	 */
-	function getOffset(DOMNode) {
-	  if (window.jQuery) {
-	    return window.jQuery(DOMNode).offset();
-	  }
-	
-	  var docElem = document.documentElement;
-	  var box = { top: 0, left: 0 };
-	
-	  // If we don't have gBCR, just use 0,0 rather than error
-	  // BlackBerry 5, iOS 3 (original iPhone)
-	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
-	    box = DOMNode.getBoundingClientRect();
-	  }
-	
-	  return {
-	    top: box.top + window.pageYOffset - docElem.clientTop,
-	    left: box.left + window.pageXOffset - docElem.clientLeft
-	  };
-	}
-	
-	/**
-	 * Get elements position
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} elem
-	 * @param {HTMLElement?} offsetParent
-	 * @returns {{top: number, left: number}}
-	 */
-	function getPosition(elem, offsetParent) {
-	  if (window.jQuery) {
-	    return window.jQuery(elem).position();
-	  }
-	
-	  var offset,
-	      parentOffset = {top: 0, left: 0};
-	
-	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
-	  if (getComputedStyles(elem).position === 'fixed' ) {
-	    // We assume that getBoundingClientRect is available when computed position is fixed
-	    offset = elem.getBoundingClientRect();
-	
-	  } else {
-	    if (!offsetParent) {
-	      // Get *real* offsetParent
-	      offsetParent = offsetParent(elem);
-	    }
-	
-	    // Get correct offsets
-	    offset = getOffset(elem);
-	    if ( offsetParent.nodeName !== 'HTML') {
-	      parentOffset = getOffset(offsetParent);
-	    }
-	
-	    // Add offsetParent borders
-	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
-	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
-	  }
-	
-	  // Subtract parent offsets and element margins
-	  return {
-	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
-	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
-	  };
-	}
-	
-	/**
-	 * Get parent element
-	 *
-	 * @param {HTMLElement?} elem
-	 * @returns {HTMLElement}
-	 */
-	function offsetParent(elem) {
-	  var docElem = document.documentElement;
-	  var offsetParent = elem.offsetParent || docElem;
-	
-	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
-	    getComputedStyles(offsetParent).position === 'static' ) ) {
-	    offsetParent = offsetParent.offsetParent;
-	  }
-	
-	  return offsetParent || docElem;
-	}
-	
-	module.exports = {
-	  getComputedStyles: getComputedStyles,
-	  getOffset: getOffset,
-	  getPosition: getPosition,
-	  offsetParent: offsetParent
-	};
-
-/***/ },
-/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var MILI 		= 'milliseconds'
@@ -4867,6 +4469,406 @@
 	    };
 	}
 
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/joinClasses.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule joinClasses
+	 * @typechecks static-only
+	 */
+	
+	"use strict";
+	
+	/**
+	 * Combines multiple className strings into one.
+	 * http://jsperf.com/joinclasses-args-vs-array
+	 *
+	 * @param {...?string} classes
+	 * @return {string}
+	 */
+	function joinClasses(className/*, ... */) {
+	  if (!className) {
+	    className = '';
+	  }
+	  var nextClass;
+	  var argLength = arguments.length;
+	  if (argLength > 1) {
+	    for (var ii = 1; ii < argLength; ii++) {
+	      nextClass = arguments[ii];
+	      if (nextClass) {
+	        className = (className ? className + ' ' : '') + nextClass;
+	      }
+	    }
+	  }
+	  return className;
+	}
+	
+	module.exports = joinClasses;
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/cx.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule cx
+	 */
+	
+	/**
+	 * This function is used to mark string literals representing CSS class names
+	 * so that they can be transformed statically. This allows for modularization
+	 * and minification of CSS class names.
+	 *
+	 * In static_upstream, this function is actually implemented, but it should
+	 * eventually be replaced with something more descriptive, and the transform
+	 * that is used in the main stack should be ported for use elsewhere.
+	 *
+	 * @param string|object className to modularize, or an object of key/values.
+	 *                      In the object case, the values are conditions that
+	 *                      determine if the className keys should be included.
+	 * @param [string ...]  Variable list of classNames in the string case.
+	 * @return string       Renderable space-separated CSS className.
+	 */
+	function cx(classNames) {
+	  if (typeof classNames == 'object') {
+	    return Object.keys(classNames).filter(function(className) {
+	      return classNames[className];
+	    }).join(' ');
+	  } else {
+	    return Array.prototype.join.call(arguments, ' ');
+	  }
+	}
+	
+	module.exports = cx;
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/cloneWithProps.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @typechecks
+	 * @providesModule cloneWithProps
+	 */
+	
+	"use strict";
+	
+	var ReactElement = __webpack_require__(82);
+	var ReactPropTransferer = __webpack_require__(83);
+	
+	var keyOf = __webpack_require__(84);
+	var warning = __webpack_require__(85);
+	
+	var CHILDREN_PROP = keyOf({children: null});
+	
+	/**
+	 * Sometimes you want to change the props of a child passed to you. Usually
+	 * this is to add a CSS class.
+	 *
+	 * @param {object} child child component you'd like to clone
+	 * @param {object} props props you'd like to modify. They will be merged
+	 * as if you used `transferPropsTo()`.
+	 * @return {object} a clone of child with props merged in.
+	 */
+	function cloneWithProps(child, props) {
+	  if (true) {
+	    (true ? warning(
+	      !child.ref,
+	      'You are calling cloneWithProps() on a child with a ref. This is ' +
+	      'dangerous because you\'re creating a new child which will not be ' +
+	      'added as a ref to its parent.'
+	    ) : null);
+	  }
+	
+	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
+	
+	  // Use `child.props.children` if it is provided.
+	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
+	      child.props.hasOwnProperty(CHILDREN_PROP)) {
+	    newProps.children = child.props.children;
+	  }
+	
+	  // The current API doesn't retain _owner and _context, which is why this
+	  // doesn't use ReactElement.cloneAndReplaceProps.
+	  return ReactElement.createElement(child.type, newProps);
+	}
+	
+	module.exports = cloneWithProps;
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Safe chained function
+	 *
+	 * Will only create a new function if needed,
+	 * otherwise will pass back existing functions or null.
+	 *
+	 * @param {function} one
+	 * @param {function} two
+	 * @returns {function|null}
+	 */
+	function createChainedFunction(one, two) {
+	  var hasOne = typeof one === 'function';
+	  var hasTwo = typeof two === 'function';
+	
+	  if (!hasOne && !hasTwo) { return null; }
+	  if (!hasOne) { return two; }
+	  if (!hasTwo) { return one; }
+	
+	  return function chainedFunction() {
+	    one.apply(this, arguments);
+	    two.apply(this, arguments);
+	  };
+	}
+	
+	module.exports = createChainedFunction;
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	/**
+	 * Maps children that are typically specified as `props.children`,
+	 * but only iterates over children that are "valid components".
+	 *
+	 * The mapFunction provided index will be normalised to the components mapped,
+	 * so an invalid component would not increase the index.
+	 *
+	 * @param {?*} children Children tree container.
+	 * @param {function(*, int)} mapFunction.
+	 * @param {*} mapContext Context for mapFunction.
+	 * @return {object} Object containing the ordered map of results.
+	 */
+	function mapValidComponents(children, func, context) {
+	  var index = 0;
+	
+	  return React.Children.map(children, function (child) {
+	    if (React.isValidElement(child)) {
+	      var lastIndex = index;
+	      index++;
+	      return func.call(context, child, lastIndex);
+	    }
+	
+	    return child;
+	  });
+	}
+	
+	/**
+	 * Iterates through children that are typically specified as `props.children`,
+	 * but only iterates over children that are "valid components".
+	 *
+	 * The provided forEachFunc(child, index) will be called for each
+	 * leaf child with the index reflecting the position relative to "valid components".
+	 *
+	 * @param {?*} children Children tree container.
+	 * @param {function(*, int)} forEachFunc.
+	 * @param {*} forEachContext Context for forEachContext.
+	 */
+	function forEachValidComponents(children, func, context) {
+	  var index = 0;
+	
+	  return React.Children.forEach(children, function (child) {
+	    if (React.isValidElement(child)) {
+	      func.call(context, child, index);
+	      index++;
+	    }
+	  });
+	}
+	
+	/**
+	 * Count the number of "valid components" in the Children container.
+	 *
+	 * @param {?*} children Children tree container.
+	 * @returns {number}
+	 */
+	function numberOfValidComponents(children) {
+	  var count = 0;
+	
+	  React.Children.forEach(children, function (child) {
+	    if (React.isValidElement(child)) { count++; }
+	  });
+	
+	  return count;
+	}
+	
+	/**
+	 * Determine if the Child container has one or more "valid components".
+	 *
+	 * @param {?*} children Children tree container.
+	 * @returns {boolean}
+	 */
+	function hasValidComponent(children) {
+	  var hasValid = false;
+	
+	  React.Children.forEach(children, function (child) {
+	    if (!hasValid && React.isValidElement(child)) {
+	      hasValid = true;
+	    }
+	  });
+	
+	  return hasValid;
+	}
+	
+	module.exports = {
+	  map: mapValidComponents,
+	  forEach: forEachValidComponents,
+	  numberOf: numberOfValidComponents,
+	  hasValidComponent: hasValidComponent
+	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Shortcut to compute element style
+	 *
+	 * @param {HTMLElement} elem
+	 * @returns {CssStyle}
+	 */
+	function getComputedStyles(elem) {
+	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
+	}
+	
+	/**
+	 * Get elements offset
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} DOMNode
+	 * @returns {{top: number, left: number}}
+	 */
+	function getOffset(DOMNode) {
+	  if (window.jQuery) {
+	    return window.jQuery(DOMNode).offset();
+	  }
+	
+	  var docElem = document.documentElement;
+	  var box = { top: 0, left: 0 };
+	
+	  // If we don't have gBCR, just use 0,0 rather than error
+	  // BlackBerry 5, iOS 3 (original iPhone)
+	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
+	    box = DOMNode.getBoundingClientRect();
+	  }
+	
+	  return {
+	    top: box.top + window.pageYOffset - docElem.clientTop,
+	    left: box.left + window.pageXOffset - docElem.clientLeft
+	  };
+	}
+	
+	/**
+	 * Get elements position
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} elem
+	 * @param {HTMLElement?} offsetParent
+	 * @returns {{top: number, left: number}}
+	 */
+	function getPosition(elem, offsetParent) {
+	  if (window.jQuery) {
+	    return window.jQuery(elem).position();
+	  }
+	
+	  var offset,
+	      parentOffset = {top: 0, left: 0};
+	
+	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
+	  if (getComputedStyles(elem).position === 'fixed' ) {
+	    // We assume that getBoundingClientRect is available when computed position is fixed
+	    offset = elem.getBoundingClientRect();
+	
+	  } else {
+	    if (!offsetParent) {
+	      // Get *real* offsetParent
+	      offsetParent = offsetParent(elem);
+	    }
+	
+	    // Get correct offsets
+	    offset = getOffset(elem);
+	    if ( offsetParent.nodeName !== 'HTML') {
+	      parentOffset = getOffset(offsetParent);
+	    }
+	
+	    // Add offsetParent borders
+	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
+	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
+	  }
+	
+	  // Subtract parent offsets and element margins
+	  return {
+	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
+	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
+	  };
+	}
+	
+	/**
+	 * Get parent element
+	 *
+	 * @param {HTMLElement?} elem
+	 * @returns {HTMLElement}
+	 */
+	function offsetParent(elem) {
+	  var docElem = document.documentElement;
+	  var offsetParent = elem.offsetParent || docElem;
+	
+	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
+	    getComputedStyles(offsetParent).position === 'static' ) ) {
+	    offsetParent = offsetParent.offsetParent;
+	  }
+	
+	  return offsetParent || docElem;
+	}
+	
+	module.exports = {
+	  getComputedStyles: getComputedStyles,
+	  getOffset: getOffset,
+	  getPosition: getPosition,
+	  offsetParent: offsetParent
+	};
 
 /***/ },
 /* 46 */
@@ -12039,13 +12041,13 @@
 	'use strict';
 	var React            = __webpack_require__(1)
 	  , _                = __webpack_require__(14)
-	  , $                = __webpack_require__(64)
+	  , $                = __webpack_require__(73)
 	  , cx               = __webpack_require__(13)
-	  , setter           = __webpack_require__(65)
-	  , controlledInput  = __webpack_require__(66)
-	  , CustomPropTypes  = __webpack_require__(67)
+	  , setter           = __webpack_require__(77)
+	  , controlledInput  = __webpack_require__(65)
+	  , CustomPropTypes  = __webpack_require__(72)
 	  , Popup            = __webpack_require__(68)
-	  , List             = __webpack_require__(69);
+	  , List             = __webpack_require__(75);
 	
 	var propTypes = {
 	  //-- controlled props -----------
@@ -12088,11 +12090,11 @@
 	  mixins: [
 	    __webpack_require__(86),
 	    __webpack_require__(87),
-	    __webpack_require__(88),
 	    __webpack_require__(89),
-	    __webpack_require__(90),
-	    __webpack_require__(91)('focusedIndex'),
-	    __webpack_require__(91)('selectedIndex')
+	    __webpack_require__(91),
+	    __webpack_require__(88),
+	    __webpack_require__(92)('focusedIndex'),
+	    __webpack_require__(92)('selectedIndex')
 	  ],
 	
 	  propTypes: propTypes,
@@ -12314,15 +12316,15 @@
 	var React  = __webpack_require__(1)
 	  , cx     = __webpack_require__(13)
 	  , _      = __webpack_require__(14)
-	  , $      = __webpack_require__(64)
-	  , filter = __webpack_require__(70)
-	  , controlledInput  = __webpack_require__(66)
-	  , CustomPropTypes  = __webpack_require__(67)
+	  , $      = __webpack_require__(73)
+	  , filter = __webpack_require__(74)
+	  , controlledInput  = __webpack_require__(65)
+	  , CustomPropTypes  = __webpack_require__(72)
 	  
 	  , Popup  = __webpack_require__(68)
-	  , List   = __webpack_require__(69)
+	  , List   = __webpack_require__(75)
 	  , Btn    = __webpack_require__(71)
-	  , Input  = __webpack_require__(72);
+	  , Input  = __webpack_require__(76);
 	
 	var propTypes = {
 	      //-- controlled props -----------
@@ -12368,12 +12370,12 @@
 	
 	  mixins: [
 	    __webpack_require__(86),
-	    __webpack_require__(88),
-	    __webpack_require__(92),
 	    __webpack_require__(89),
 	    __webpack_require__(90),
-	    __webpack_require__(91)('focusedIndex'),
-	    __webpack_require__(91)('selectedIndex')
+	    __webpack_require__(91),
+	    __webpack_require__(88),
+	    __webpack_require__(92)('focusedIndex'),
+	    __webpack_require__(92)('selectedIndex')
 	  ],
 	
 	  propTypes: propTypes,
@@ -12687,16 +12689,16 @@
 
 	'use strict';
 	var React           = __webpack_require__(1)
-	  , Header          = __webpack_require__(73)
-	  , Month           = __webpack_require__(74)
-	  , Year            = __webpack_require__(75)
-	  , Decade          = __webpack_require__(76)
-	  , Century         = __webpack_require__(77)
+	  , Header          = __webpack_require__(60)
+	  , Month           = __webpack_require__(61)
+	  , Year            = __webpack_require__(62)
+	  , Decade          = __webpack_require__(63)
+	  , Century         = __webpack_require__(64)
 	  , cx              = __webpack_require__(13)
-	  , controlledInput = __webpack_require__(66)
+	  , controlledInput = __webpack_require__(65)
 	  , SlideTransition = __webpack_require__(55)
-	  , dates           = __webpack_require__(78)
-	  , constants       = __webpack_require__(79)
+	  , dates           = __webpack_require__(66)
+	  , constants       = __webpack_require__(67)
 	  , _               = __webpack_require__(14); //values, omit, object
 	
 	var dir = constants.directions;
@@ -12729,7 +12731,7 @@
 	  mixins: [
 	    __webpack_require__(86),
 	    __webpack_require__(87),
-	    __webpack_require__(90)
+	    __webpack_require__(88)
 	  ],
 	
 	
@@ -12992,17 +12994,17 @@
 	var React  = __webpack_require__(1)
 	  , cx     = __webpack_require__(13)
 	  , _      = __webpack_require__(14) //pick, omit, has
-	  , dates  = __webpack_require__(78)
-	  , views  = __webpack_require__(79).calendarViews
-	  , popups = __webpack_require__(79).datePopups
+	  , dates  = __webpack_require__(66)
+	  , views  = __webpack_require__(67).calendarViews
+	  , popups = __webpack_require__(67).datePopups
 	
 	  , Popup     = __webpack_require__(68)
 	  , Calendar  = __webpack_require__(49).BaseCalendar
-	  , Time      = __webpack_require__(80)
-	  , DateInput = __webpack_require__(81)
+	  , Time      = __webpack_require__(69)
+	  , DateInput = __webpack_require__(70)
 	  , Btn       = __webpack_require__(71)
-	  , CustomPropTypes = __webpack_require__(67)
-	  , controlledInput = __webpack_require__(66);
+	  , CustomPropTypes = __webpack_require__(72)
+	  , controlledInput = __webpack_require__(65);
 	
 	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
 	
@@ -13057,7 +13059,7 @@
 	  mixins: [
 	    __webpack_require__(86),
 	    __webpack_require__(87),
-	    __webpack_require__(90)
+	    __webpack_require__(88)
 	  ],
 	
 	  propTypes: propTypes,
@@ -13355,9 +13357,9 @@
 	var React = __webpack_require__(1)
 	  , cx    = __webpack_require__(13)
 	  , _     = __webpack_require__(14) //omit
-	  , controlledInput  = __webpack_require__(66)
-	  , directions = __webpack_require__(79).directions
-	  , Input = __webpack_require__(82);
+	  , controlledInput  = __webpack_require__(65)
+	  , directions = __webpack_require__(67).directions
+	  , Input = __webpack_require__(78);
 	
 	var Btn = __webpack_require__(71)
 	  , propTypes = {
@@ -13405,7 +13407,7 @@
 	  mixins: [
 	    __webpack_require__(86),
 	    __webpack_require__(87),
-	    __webpack_require__(90),
+	    __webpack_require__(88),
 	  ],
 	
 	  propTypes: propTypes,
@@ -13605,13 +13607,13 @@
 	var React = __webpack_require__(1)
 	  , cx    = __webpack_require__(13)
 	  , _     = __webpack_require__(14)
-	  , controlledInput  = __webpack_require__(66)
-	  , CustomPropTypes  = __webpack_require__(67)
+	  , controlledInput  = __webpack_require__(65)
+	  , CustomPropTypes  = __webpack_require__(72)
 	  
-	  , SelectInput = __webpack_require__(83)
-	  , TagList     = __webpack_require__(84)
+	  , SelectInput = __webpack_require__(80)
+	  , TagList     = __webpack_require__(81)
 	  , Popup       = __webpack_require__(68)
-	  , List        = __webpack_require__(69);
+	  , List        = __webpack_require__(75);
 	
 	var propTypes = {
 	      data:           React.PropTypes.array,
@@ -13661,10 +13663,10 @@
 	
 	  mixins: [
 	    __webpack_require__(86),
-	    __webpack_require__(92),
-	    __webpack_require__(89),
 	    __webpack_require__(90),
-	    __webpack_require__(91)('focusedIndex')
+	    __webpack_require__(91),
+	    __webpack_require__(88),
+	    __webpack_require__(92)('focusedIndex')
 	  ],
 	
 	  propTypes: propTypes,
@@ -13924,11 +13926,12 @@
 	var React = __webpack_require__(1)
 	  , _  = __webpack_require__(14)
 	  , cx = __webpack_require__(13)
-	  , controlledInput  = __webpack_require__(66)
-	  , CustomPropTypes  = __webpack_require__(67)
-	  , scrollTo = __webpack_require__(85);
+	  , controlledInput  = __webpack_require__(65)
+	  , CustomPropTypes  = __webpack_require__(72)
+	  , scrollTo = __webpack_require__(79);
 	
 	var propTypes = {
+	
 	    data:           React.PropTypes.array,
 	    value:          React.PropTypes.oneOfType([
 	                      React.PropTypes.any,
@@ -13938,6 +13941,7 @@
 	    onMove:         React.PropTypes.func,
 	
 	    multiple:       React.PropTypes.bool,
+	
 	    itemComponent:  CustomPropTypes.elementType,
 	    
 	    valueField:     React.PropTypes.string,
@@ -13971,10 +13975,10 @@
 	
 	  mixins: [
 	    __webpack_require__(86),
-	    __webpack_require__(88),
 	    __webpack_require__(89),
-	    __webpack_require__(90),
-	    __webpack_require__(91)('focusedIndex', 'isDisabledItem')
+	    __webpack_require__(91),
+	    __webpack_require__(88),
+	    __webpack_require__(92)('focusedIndex', 'isDisabledItem')
 	  ],
 	
 	  getDefaultProps: function(){
@@ -14100,7 +14104,7 @@
 	    }
 	    else if ( key === 'Enter' || key === ' ' ) {
 	      e.preventDefault()
-	      change(data[this.state.focusedIndex])
+	      change(this.state.focusedIndex)
 	    }
 	    else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
 	      e.preventDefault()
@@ -14259,14 +14263,13 @@
 	
 	})
 	
+	
 	module.exports = SelectList;
 	
 	module.exports = controlledInput.createControlledClass(
 	    SelectList, { value: 'onChange' });
 	
 	module.exports.BaseSelectList = SelectList
-	
-	        
 
 /***/ },
 /* 54 */
@@ -14282,7 +14285,7 @@
 	"use strict";
 	
 	var React = __webpack_require__(1)
-	  , $     = __webpack_require__(64)
+	  , $     = __webpack_require__(73)
 	  , _     = __webpack_require__(14);
 	
 	module.exports = React.createClass({
@@ -14478,7 +14481,7 @@
 	var React   = __webpack_require__(1)
 	  , ReplaceTransitionGroup  = __webpack_require__(54)
 	  , _ = __webpack_require__(14)
-	  , $  =  __webpack_require__(64);
+	  , $  =  __webpack_require__(73);
 	
 	
 	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
@@ -16483,7 +16486,7 @@
 	 * @typechecks
 	 */
 	
-	var emptyFunction = __webpack_require__(93);
+	var emptyFunction = __webpack_require__(94);
 	
 	/**
 	 * Upstream version of event listener. Does not take into account specific
@@ -16573,7 +16576,7 @@
 	
 	"use strict";
 	
-	var ExecutionEnvironment = __webpack_require__(94);
+	var ExecutionEnvironment = __webpack_require__(93);
 	
 	/**
 	 * EVENT_NAME_MAP is used to determine which event fired when a
@@ -16675,524 +16678,1407 @@
 /* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copyright 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactElement.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @providesModule ReactElement
-	 */
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Btn = __webpack_require__(71);
 	
-	"use strict";
+	module.exports = React.createClass({displayName: 'exports',
 	
-	var ReactContext = __webpack_require__(95);
-	var ReactCurrentOwner = __webpack_require__(96);
+	  propTypes: {
+	    label:          React.PropTypes.string.isRequired,
+	    labelId:        React.PropTypes.string,
 	
-	var warning = __webpack_require__(63);
+	    upDisabled:     React.PropTypes.bool.isRequired,
+	    prevDisabled:   React.PropTypes.bool.isRequired,
+	    nextDisabled:   React.PropTypes.bool.isRequired,
+	    onViewChange:   React.PropTypes.func.isRequired,
+	    onMoveLeft:     React.PropTypes.func.isRequired,
+	    onMoveRight:    React.PropTypes.func.isRequired,
 	
-	var RESERVED_PROPS = {
-	  key: true,
-	  ref: true
-	};
+	    messages:       React.PropTypes.shape({
+	      moveBack:     React.PropTypes.string,
+	      moveForward:  React.PropTypes.string
+	    })
+	  },
 	
-	/**
-	 * Warn for mutations.
-	 *
-	 * @internal
-	 * @param {object} object
-	 * @param {string} key
-	 */
-	function defineWarningProperty(object, key) {
-	  Object.defineProperty(object, key, {
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(95)
+	  ],
 	
-	    configurable: false,
-	    enumerable: true,
-	
-	    get: function() {
-	      if (!this._store) {
-	        return null;
-	      }
-	      return this._store[key];
-	    },
-	
-	    set: function(value) {
-	      (true ? warning(
-	        false,
-	        'Don\'t set the ' + key + ' property of the component. ' +
-	        'Mutate the existing props object instead.'
-	      ) : null);
-	      this._store[key] = value;
-	    }
-	
-	  });
-	}
-	
-	/**
-	 * This is updated to true if the membrane is successfully created.
-	 */
-	var useMutationMembrane = false;
-	
-	/**
-	 * Warn for mutations.
-	 *
-	 * @internal
-	 * @param {object} element
-	 */
-	function defineMutationMembrane(prototype) {
-	  try {
-	    var pseudoFrozenProperties = {
-	      props: true
-	    };
-	    for (var key in pseudoFrozenProperties) {
-	      defineWarningProperty(prototype, key);
-	    }
-	    useMutationMembrane = true;
-	  } catch (x) {
-	    // IE will fail on defineProperty
-	  }
-	}
-	
-	/**
-	 * Base constructor for all React elements. This is only used to make this
-	 * work with a dynamic instanceof check. Nothing should live on this prototype.
-	 *
-	 * @param {*} type
-	 * @param {string|object} ref
-	 * @param {*} key
-	 * @param {*} props
-	 * @internal
-	 */
-	var ReactElement = function(type, key, ref, owner, context, props) {
-	  // Built-in properties that belong on the element
-	  this.type = type;
-	  this.key = key;
-	  this.ref = ref;
-	
-	  // Record the component responsible for creating this element.
-	  this._owner = owner;
-	
-	  // TODO: Deprecate withContext, and then the context becomes accessible
-	  // through the owner.
-	  this._context = context;
-	
-	  if (true) {
-	    // The validation flag and props are currently mutative. We put them on
-	    // an external backing store so that we can freeze the whole object.
-	    // This can be replaced with a WeakMap once they are implemented in
-	    // commonly used development environments.
-	    this._store = { validated: false, props: props };
-	
-	    // We're not allowed to set props directly on the object so we early
-	    // return and rely on the prototype membrane to forward to the backing
-	    // store.
-	    if (useMutationMembrane) {
-	      Object.freeze(this);
-	      return;
-	    }
-	  }
-	
-	  this.props = props;
-	};
-	
-	// We intentionally don't expose the function on the constructor property.
-	// ReactElement should be indistinguishable from a plain object.
-	ReactElement.prototype = {
-	  _isReactElement: true
-	};
-	
-	if (true) {
-	  defineMutationMembrane(ReactElement.prototype);
-	}
-	
-	ReactElement.createElement = function(type, config, children) {
-	  var propName;
-	
-	  // Reserved names are extracted
-	  var props = {};
-	
-	  var key = null;
-	  var ref = null;
-	
-	  if (config != null) {
-	    ref = config.ref === undefined ? null : config.ref;
-	    if (true) {
-	      (true ? warning(
-	        config.key !== null,
-	        'createElement(...): Encountered component with a `key` of null. In ' +
-	        'a future version, this will be treated as equivalent to the string ' +
-	        '\'null\'; instead, provide an explicit key or use undefined.'
-	      ) : null);
-	    }
-	    // TODO: Change this back to `config.key === undefined`
-	    key = config.key == null ? null : '' + config.key;
-	    // Remaining properties are added to a new props object
-	    for (propName in config) {
-	      if (config.hasOwnProperty(propName) &&
-	          !RESERVED_PROPS.hasOwnProperty(propName)) {
-	        props[propName] = config[propName];
+	  getDefaultProps: function(){
+	    return {
+	      messages: {
+	        moveBack:     'navigate back',
+	        moveForward:  'navigate forward',
 	      }
 	    }
+	  },
+	
+	  render: function(){
+	    var rtl = this.isRtl();
+	
+	    return (
+	      React.createElement("div", {className: "rw-header"}, 
+	        React.createElement(Btn, {className: "rw-btn-left", 
+	          onClick: this.props.onMoveLeft, 
+	          disabled: this.props.prevDisabled, 
+	          'aria-disabled': this.props.prevDisabled, 
+	          title: this.props.moveBack}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-view", 
+	          id: this.props.labelId, 
+	          onClick: this.props.onViewChange, 
+	          disabled: this.props.upDisabled, 
+	          'aria-disabled': this.props.upDisabled}, 
+	           this.props.label
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-right", 
+	          onClick: this.props.onMoveRight, 
+	          disabled: this.props.nextDisabled, 
+	          'aria-disabled': this.props.nextDisabled, 
+	          title: this.props.moveForward}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
+	        )
+	      )
+	    )
 	  }
-	
-	  // Children can be more than one argument, and those are transferred onto
-	  // the newly allocated props object.
-	  var childrenLength = arguments.length - 2;
-	  if (childrenLength === 1) {
-	    props.children = children;
-	  } else if (childrenLength > 1) {
-	    var childArray = Array(childrenLength);
-	    for (var i = 0; i < childrenLength; i++) {
-	      childArray[i] = arguments[i + 2];
-	    }
-	    props.children = childArray;
-	  }
-	
-	  // Resolve default props
-	  if (type.defaultProps) {
-	    var defaultProps = type.defaultProps;
-	    for (propName in defaultProps) {
-	      if (typeof props[propName] === 'undefined') {
-	        props[propName] = defaultProps[propName];
-	      }
-	    }
-	  }
-	
-	  return new ReactElement(
-	    type,
-	    key,
-	    ref,
-	    ReactCurrentOwner.current,
-	    ReactContext.current,
-	    props
-	  );
-	};
-	
-	ReactElement.createFactory = function(type) {
-	  var factory = ReactElement.createElement.bind(null, type);
-	  // Expose the type on the factory and the prototype so that it can be
-	  // easily accessed on elements. E.g. <Foo />.type === Foo.type.
-	  // This should not be named `constructor` since this may not be the function
-	  // that created the element, and it may not even be a constructor.
-	  factory.type = type;
-	  return factory;
-	};
-	
-	ReactElement.cloneAndReplaceProps = function(oldElement, newProps) {
-	  var newElement = new ReactElement(
-	    oldElement.type,
-	    oldElement.key,
-	    oldElement.ref,
-	    oldElement._owner,
-	    oldElement._context,
-	    newProps
-	  );
-	
-	  if (true) {
-	    // If the key on the original is valid, then the clone is valid
-	    newElement._store.validated = oldElement._store.validated;
-	  }
-	  return newElement;
-	};
-	
-	/**
-	 * @param {?object} object
-	 * @return {boolean} True if `object` is a valid component.
-	 * @final
-	 */
-	ReactElement.isValidElement = function(object) {
-	  // ReactTestUtils is often used outside of beforeEach where as React is
-	  // within it. This leads to two different instances of React on the same
-	  // page. To identify a element from a different React instance we use
-	  // a flag instead of an instanceof check.
-	  var isElement = !!(object && object._isReactElement);
-	  // if (isElement && !(object instanceof ReactElement)) {
-	  // This is an indicator that you're using multiple versions of React at the
-	  // same time. This will screw with ownership and stuff. Fix it, please.
-	  // TODO: We could possibly warn here.
-	  // }
-	  return isElement;
-	};
-	
-	module.exports = ReactElement;
-
+	})
 
 /***/ },
 /* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactPropTransferer.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @providesModule ReactPropTransferer
-	 */
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(13)
+	  , dates = __webpack_require__(66)
+	  , directions = __webpack_require__(67).directions
+	  , _   = __webpack_require__(14)
+	  , Btn = __webpack_require__(71);
 	
-	"use strict";
-	
-	var assign = __webpack_require__(97);
-	var emptyFunction = __webpack_require__(93);
-	var invariant = __webpack_require__(98);
-	var joinClasses = __webpack_require__(39);
-	var warning = __webpack_require__(63);
-	
-	var didWarn = false;
-	
-	/**
-	 * Creates a transfer strategy that will merge prop values using the supplied
-	 * `mergeStrategy`. If a prop was previously unset, this just sets it.
-	 *
-	 * @param {function} mergeStrategy
-	 * @return {function}
-	 */
-	function createTransferStrategy(mergeStrategy) {
-	  return function(props, key, value) {
-	    if (!props.hasOwnProperty(key)) {
-	      props[key] = value;
-	    } else {
-	      props[key] = mergeStrategy(props[key], value);
-	    }
-	  };
-	}
-	
-	var transferStrategyMerge = createTransferStrategy(function(a, b) {
-	  // `merge` overrides the first object's (`props[key]` above) keys using the
-	  // second object's (`value`) keys. An object's style's existing `propA` would
-	  // get overridden. Flip the order here.
-	  return assign({}, b, a);
-	});
-	
-	/**
-	 * Transfer strategies dictate how props are transferred by `transferPropsTo`.
-	 * NOTE: if you add any more exceptions to this list you should be sure to
-	 * update `cloneWithProps()` accordingly.
-	 */
-	var TransferStrategies = {
-	  /**
-	   * Never transfer `children`.
-	   */
-	  children: emptyFunction,
-	  /**
-	   * Transfer the `className` prop by merging them.
-	   */
-	  className: createTransferStrategy(joinClasses),
-	  /**
-	   * Transfer the `style` prop (which is an object) by merging them.
-	   */
-	  style: transferStrategyMerge
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
 	};
 	
-	/**
-	 * Mutates the first argument by transferring the properties from the second
-	 * argument.
-	 *
-	 * @param {object} props
-	 * @param {object} newProps
-	 * @return {object}
-	 */
-	function transferInto(props, newProps) {
-	  for (var thisKey in newProps) {
-	    if (!newProps.hasOwnProperty(thisKey)) {
-	      continue;
-	    }
+	module.exports = React.createClass({
 	
-	    var transferStrategy = TransferStrategies[thisKey];
+	  displayName: 'MonthView',
 	
-	    if (transferStrategy && TransferStrategies.hasOwnProperty(thisKey)) {
-	      transferStrategy(props, thisKey, newProps[thisKey]);
-	    } else if (!props.hasOwnProperty(thisKey)) {
-	      props[thisKey] = newProps[thisKey];
-	    }
-	  }
-	  return props;
-	}
+	  mixins: [
+	    __webpack_require__(86),
+	    __webpack_require__(95),
+	    __webpack_require__(96)('month', 'day'),
+	  ],
 	
-	/**
-	 * ReactPropTransferer are capable of transferring props to another component
-	 * using a `transferPropsTo` method.
-	 *
-	 * @class ReactPropTransferer
-	 */
-	var ReactPropTransferer = {
+	  propTypes: {
+	    culture:          React.PropTypes.array,
+	    value:            React.PropTypes.instanceOf(Date),
+	    selectedDate:     React.PropTypes.instanceOf(Date),
+	    min:              React.PropTypes.instanceOf(Date),
+	    max:              React.PropTypes.instanceOf(Date),
 	
-	  TransferStrategies: TransferStrategies,
+	    format:           React.PropTypes.string,
 	
-	  /**
-	   * Merge two props objects using TransferStrategies.
-	   *
-	   * @param {object} oldProps original props (they take precedence)
-	   * @param {object} newProps new props to merge in
-	   * @return {object} a new object containing both sets of props merged.
-	   */
-	  mergeProps: function(oldProps, newProps) {
-	    return transferInto(assign({}, oldProps), newProps);
+	    onChange:         React.PropTypes.func.isRequired, //value is chosen
+	    onMoveLeft:       React.PropTypes.func,
+	    onMoveRight:      React.PropTypes.func
 	  },
 	
-	  /**
-	   * @lends {ReactPropTransferer.prototype}
-	   */
-	  Mixin: {
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , month = dates.visibleDays(this.props.value)
+	      , rows  = _.chunk(month, 7 );
 	
-	    /**
-	     * Transfer props from this component to a target component.
-	     *
-	     * Props that do not have an explicit transfer strategy will be transferred
-	     * only if the target component does not already have the prop set.
-	     *
-	     * This is usually used to pass down props to a returned root component.
-	     *
-	     * @param {ReactElement} element Component receiving the properties.
-	     * @return {ReactElement} The supplied `component`.
-	     * @final
-	     * @protected
-	     */
-	    transferPropsTo: function(element) {
-	      (true ? invariant(
-	        element._owner === this,
-	        '%s: You can\'t call transferPropsTo() on a component that you ' +
-	        'don\'t own, %s. This usually means you are calling ' +
-	        'transferPropsTo() on a component passed in as props or children.',
-	        this.constructor.displayName,
-	        typeof element.type === 'string' ?
-	        element.type :
-	        element.type.displayName
-	      ) : invariant(element._owner === this));
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {role: "grid", 
+	        tabIndex: this.props.disabled ? '-1' : "0", 
+	        className: "rw-calendar-grid", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("thead", null, 
+	          React.createElement("tr", null,  this._headers() )
+	        ), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
 	
-	      if (true) {
-	        if (!didWarn) {
-	          didWarn = true;
-	          (true ? warning(
-	            false,
-	            'transferPropsTo is deprecated. ' +
-	            'See http://fb.me/react-transferpropsto for more information.'
-	          ) : null);
-	        }
-	      }
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	    
+	    return (
+	      React.createElement("tr", {key: 'week_' + i}, 
+	       row.map( function(day, idx)  {
+	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
+	          , selected = dates.eq(day, this.props.selectedDate, 'day');
 	
-	      // Because elements are immutable we have to merge into the existing
-	      // props object rather than clone it.
-	      transferInto(element.props, this.props);
+	        return !dates.inRange(day, this.props.min, this.props.max)
+	            ? React.createElement("td", {key: 'day_' + idx, className: "rw-empty-cell"}, " ")
+	            : (React.createElement("td", {key: 'day_' + idx}, 
+	                React.createElement(Btn, {
+	                  tabIndex: "-1", 
+	                  onClick: this.props.onChange.bind(null, day), 
+	                  'aria-selected': selected, 
+	                  'aria-disabled': this.props.disabled, 
+	                  disabled: this.props.disabled, 
+	                  className: cx({
+	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
+	                    'rw-state-focus':    focused,
+	                    'rw-state-selected': selected,
+	                  }), 
+	                  id: focused ? id : undefined}, 
+	                  dates.format(day, 'dd')
+	                )
+	              ))
+	      }.bind(this))
+	      )
+	    )
+	  },
 	
-	      return element;
-	    }
 	
+	  _headers: function(format){
+	    var days = dates.shortDaysOfWeek(format);
+	
+	    return days.map( function(day, i)  
+	      {return React.createElement("th", {key: "header_" + i}, day);})
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'day', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'day',min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -1, 'week', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 1, 'week', min, max)
+	
+	    return date
 	  }
-	};
 	
-	module.exports = ReactPropTransferer;
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	
+	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
+	}
 
 
 /***/ },
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/keyOf.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @providesModule keyOf
-	 */
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(13)
+	  , dates      = __webpack_require__(66)
+	  , directions = __webpack_require__(67).directions
+	  , Btn        = __webpack_require__(71)
+	  , _          = __webpack_require__(14)
 	
-	/**
-	 * Allows extraction of a minified key. Let's the build system minify keys
-	 * without loosing the ability to dynamically use key strings as values
-	 * themselves. Pass in an object with a single key/val pair and it will return
-	 * you the string key of that single record. Suppose you want to grab the
-	 * value for a key 'className' inside of an object. Key/val minification may
-	 * have aliased that key to be 'xa12'. keyOf({className: null}) will return
-	 * 'xa12' in that case. Resolve keys you want to use once at startup time, then
-	 * reuse those resolutions.
-	 */
-	var keyOf = function(oneKeyObj) {
-	  var key;
-	  for (key in oneKeyObj) {
-	    if (!oneKeyObj.hasOwnProperty(key)) {
-	      continue;
-	    }
-	    return key;
-	  }
-	  return null;
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
 	};
 	
+	module.exports = React.createClass({
 	
-	module.exports = keyOf;
+	  displayName: 'YearView',
+	
+	  mixins: [
+	    __webpack_require__(86),
+	    __webpack_require__(95),
+	    __webpack_require__(96)('year', 'month')
+	  ],
+	
+	  propTypes: {
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	
+	  render: function(){
+	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , months = dates.monthsInYear(dates.year(this.props.value))
+	      , rows = _.chunk(months, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},   props , 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        ref: "table", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item');
+	    
+	    return (
+	      React.createElement("tr", {key: i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
+	          , selected = dates.eq(date, this.props.value,  'month');
+	
+	        return dates.inRange(date, this.props.min, this.props.max, 'month')
+	          ? (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id: focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected
+	                })}, 
+	                 dates.format(date, dates.formats.MONTH_NAME_ABRV) 
+	              )
+	            ))
+	          : React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	      }.bind(this))
+	    ))
+	  },
+	
+	  focus: function(){
+	    this.refs.table.getDOMNode().focus();
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'month', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'month', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'month', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'month', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
+	}
 
 
 /***/ },
 /* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copyright 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/warning.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @providesModule warning
-	 */
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _ = __webpack_require__(14)
+	  , cx    = __webpack_require__(13)
+	  , dates = __webpack_require__(66)
+	  , directions = __webpack_require__(67).directions
+	  , Btn = __webpack_require__(71); 
 	
-	"use strict";
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
 	
-	var emptyFunction = __webpack_require__(93);
 	
-	/**
-	 * Similar to invariant but only logs a warning if the condition is not met.
-	 * This can be used to log issues in development environments in critical
-	 * paths. Removing the logging code for production environments will keep the
-	 * same logic and follow the same code paths.
-	 */
+	module.exports = React.createClass({
 	
-	var warning = emptyFunction;
+	  displayName: 'DecadeView',
 	
-	if (true) {
-	  warning = function(condition, format ) {var args=Array.prototype.slice.call(arguments,2);
-	    if (format === undefined) {
-	      throw new Error(
-	        '`warning(condition, format, ...args)` requires a warning ' +
-	        'message argument'
-	      );
-	    }
+	  mixins: [
+	    __webpack_require__(86),
+	    __webpack_require__(87),
+	    __webpack_require__(95),
+	    __webpack_require__(96)('decade', 'year')
+	  ],
 	
-	    if (!condition) {
-	      var argIndex = 0;
-	      console.warn('Warning: ' + format.replace(/%s/g, function()  {return args[argIndex++];}));
-	    }
-	  };
+	  propTypes: {
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , years = getDecadeYears(this.props.value)
+	      , rows  = _.chunk(years, 4)
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	
+	        React.createElement("tbody", null, 
+	          rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
+	          , selected = dates.eq(date, this.props.value,  'year');
+	
+	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
+	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':      !inDecade(date, this.props.value),
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected,
+	                })}, 
+	                 dates.format(date, dates.formats.YEAR) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'year', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'year', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'year', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'year', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function inDecade(date, start){
+	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
+	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
 	}
 	
-	module.exports = warning;
+	function getDecadeYears(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
+	
+	  return days.map( 
+	    function(i)  {return date = dates.add(date, 1, 'year');})
+	}
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
+	}
 
 
 /***/ },
 /* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(13)
+	  , dates      = __webpack_require__(66)
+	  , directions = __webpack_require__(67).directions
+	  , Btn        = __webpack_require__(71)
+	  , _          = __webpack_require__(14); //omit
+	
+	var opposite = {
+	  LEFT:  directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'CenturyView',
+	
+	  mixins: [
+	    __webpack_require__(86),
+	    __webpack_require__(87),
+	    __webpack_require__(95),
+	    __webpack_require__(96)('century', 'decade')
+	  ],
+	
+	  propTypes: {
+	    value:         React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
+	      , years = getCenturyDecades(this.props.value)
+	      , rows  = _.chunk(years, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
+	          , selected = dates.eq(date, this.props.value,  'decade')
+	          , d        = inRangeDate(date, this.props.min, this.props.max);
+	
+	        return !inRange(date, this.props.min, this.props.max)
+	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
+	                tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':       !inCentury(date, this.props.value),
+	                  'rw-state-focus':     focused,
+	                  'rw-state-selected':  selected,
+	                 })}, 
+	                 label(date) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'decade', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'decade', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'decade', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'decade', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function label(date){
+	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
+	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
+	}
+	
+	function inRangeDate(decade, min, max){
+	  return dates.max( dates.min(decade, max), min)
+	}
+	
+	function inRange(decade, min, max){
+	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
+	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
+	}
+	
+	function inCentury(date, start){
+	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
+	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
+	}
+	
+	function getCenturyDecades(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
+	
+	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
+	}
+	
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
+	}
+
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _ = __webpack_require__(14) //invert, transform
+	  , React = __webpack_require__(1)
+	  , compat = __webpack_require__(97)
+	
+	
+	function compatPropType(handler, propType) {
+	
+	  return compat.propType(function(props, propName, componentName, location){
+	    if(props[propName] !== undefined){
+	      if ( !props[handler] )
+	        return new Error(
+	            'ReactWidgets: you have provided a `' + propName + '` prop to ' 
+	          + '`' + componentName + '` without an `' + handler + '` handler. This will render a read-only field. ' 
+	          + 'If the field should be mutable use `' + defaultKey(propName) + '`. Otherwise, set `' + handler + '`')
+	
+	      return propType && propType(props, propName, componentName, location)
+	    }
+	  })
+	}
+	
+	module.exports = {
+	
+	  createControlledClass: function(Component, controlledValues, publicApi) {
+	    // var publicMethods 
+	    //       = _.transform(publicApi || [], function(obj, method) {
+	    //           obj[method] = function (...args){ 
+	    //             return this.refs[this._innerRef][method](args) 
+	    //           }
+	    //         }, {})
+	
+	    var types = _.transform(controlledValues, function(obj, handler, prop){
+	          var type = Component.type.propTypes[prop];
+	
+	          obj[prop] = compatPropType(handler, type)
+	          obj[defaultKey(prop)] = type
+	        }, {});
+	
+	    return React.createClass({
+	
+	      displayName: Component.displayName,
+	
+	      propTypes: types,
+	
+	      getInitialState: function(){
+	        var props = this.props
+	          , keys  = Object.keys(controlledValues);
+	
+	        return _.transform(keys, function(state, key){
+	          state[key] = props[defaultKey(key)]
+	        }, {})
+	      },
+	
+	      shouldComponentUpdate: function() {
+	        //let the setState trigger the update
+	        return !this._notifying || !this._notifying.length;
+	      },
+	
+	      render: function(){
+	        var props, handles;
+	
+	        props = _.transform(controlledValues, function(obj, handle, prop)  {
+	          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
+	        }.bind(this), {})
+	        
+	        handles = _.transform(controlledValues, function(obj, handle, prop)  {
+	          obj[handle] = setAndNotify.bind(this, prop)
+	        }.bind(this), {})
+	
+	        props    = _.merge(this.props, props, handles)
+	        //this._innerRef = props.ref = props.ref || 'component'
+	
+	        return React.createElement(Component, props, this.props.children);
+	      }
+	    })
+	
+	    function setAndNotify(prop, value){
+	      /*jshint validthis:true */
+	      var handler    = controlledValues[prop]
+	        , controlled = handler && isProp(this.props, prop)
+	        , st = {}
+	        , args;
+	
+	      if ( !this._notifying ) this._notifying = [];
+	
+	      if( this.props[handler] ) {
+	        args = [].slice.call(arguments, 1)
+	        this._notifying.push(true)
+	        this.props[handler].apply(this, args)
+	        this._notifying.pop()
+	      }
+	        
+	      st[prop] = value
+	      this.setState(st)
+	
+	      return !controlled
+	    }
+	
+	    function isProp(props, prop){
+	      return props[prop] !== undefined;
+	    }
+	  }
+	}
+	
+	
+	// function invert(controlledValues){
+	//   return _.transform(controlledValues, (val, key ) => ,)
+	// }
+	
+	function defaultKey(key){
+	  return 'default' + key.charAt(0).toUpperCase() + key.substr(1)
+	}
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var dateMath = __webpack_require__(39)
+	  , globalize = __webpack_require__(104)
+	  , _ = __webpack_require__(14); //extend
+	
+	var dates = module.exports = _.extend(dateMath, {
+	  // wrapper methods for isolating globalize use throughout the lib
+	  // looking forward towards the 1.0 release
+	  culture: function(){
+	    return globalize.culture()
+	  },
+	
+	  startOfWeek: function(date){
+	    var culture = globalize.culture()
+	
+	    if (!culture || !culture.calendar)
+	      return 0
+	
+	    return culture.calendar.firstDay || 0
+	  },
+	
+	  parse: function(date, format, culture){
+	    return globalize.parseDate(date, format, culture)
+	  },
+	
+	  format: function(date, format, culture){
+	    return globalize.format(date, format, culture)
+	  },
+	  //-------------------------------------
+	
+	  shortDaysOfWeek: function (){
+	    var culture = dates.culture()
+	      , start = dates.startOfWeek()
+	      , days, front;
+	
+	    if (culture && culture.calendar){
+	      days = culture.calendar.days.namesShort.slice()
+	
+	      if(start === 0 ) 
+	        return days
+	      
+	      front = days.splice(0, start)
+	      days  = days.concat(front)
+	      return days
+	    }
+	  },
+	
+	  daysOfWeek: function(date, format){
+	    var range = [0,1,2,3,4,5,6]
+	    if (arguments.length === 1){
+	      format = date
+	      date = new Date()
+	    }
+	
+	    format = format || 'do'
+	
+	    return range.map(function(i)  {return dates.format(dates.weekday(date, i), format);} )
+	  },
+	
+	  months: function(date, format){
+	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	
+	    if (arguments.length === 1){
+	      format = date
+	      date = new Date()
+	    }
+	    format = format || dates.formats.DAY_NAME_ABRV
+	
+	    return months.map( function(i)  {return dates.format(dates.month(date, i), format);})
+	  },
+	
+	  monthsInYear: function(year){
+	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	      , date   = new Date(year, 0, 1)
+	
+	    return  months.map( function(i)  {return dates.month(date, i);})
+	  },
+	
+	  firstOfDecade: function(date){
+	    var decade = dates.year(date) % 10
+	
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfDecade: function(date){
+	    return dates.add(dates.firstOfDecade(date), 9, 'year')
+	  },
+	
+	  firstOfCentury: function(date){
+	    var decade = dates.year(date) % 100
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfCentury: function(date){
+	    return dates.add(dates.firstOfCentury(date), 99, 'year')
+	  },
+	
+	  firstVisibleDay: function(date){
+	    var firstOfMonth = dates.startOf(date, 'month')
+	    return dates.startOf(firstOfMonth, 'week');
+	  },
+	
+	  lastVisibleDay: function(date){
+	    var endOfMonth = dates.endOf(date, 'month')
+	    return dates.endOf(endOfMonth, 'week');
+	  },
+	
+	  visibleDays: function(date){
+	    var current = dates.firstVisibleDay(date)
+	      , last = dates.lastVisibleDay(date)
+	      , days = [];
+	
+	    while( dates.lte(current, last, 'day') ) {
+	      days.push(current)
+	      current = dates.add(current, 1, 'day')
+	    }
+	
+	    return days
+	  },
+	
+	  merge: function(date, time){
+	    if( time == null && date == null)
+	      return null
+	
+	    if( time == null) time = new Date()
+	    if( date == null) date = new Date()
+	
+	    date = dates.startOf(date, 'day')
+	    date = dates.hours(date,        dates.hours(time))
+	    date = dates.minutes(date,      dates.minutes(time))
+	    date = dates.seconds(date,      dates.seconds(time))
+	    return dates.milliseconds(date, dates.milliseconds(time))
+	  },
+	
+	  sameMonth: function(dateA, dateB){
+	    return dates.eq(dateA, dateB, 'month')
+	  },
+	
+	  today: function() {
+	    return this.startOf(new Date(), 'day')
+	  },
+	
+	  yesterday: function() {
+	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
+	  },
+	
+	  tomorrow: function() {
+	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
+	  },
+	
+	  formats: {
+	    DAY_OF_MONTH:    'dd',
+	    DAY_NAME_SHORT:  null,
+	    MONTH_NAME_ABRV: 'MMM',
+	    MONTH_YEAR:      'MMMM yyyy',
+	    YEAR:            'yyyy'
+	  }
+	
+	})
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _ = __webpack_require__(14); //object
+	
+	var views = {
+	    MONTH:   'month',
+	    YEAR:    'year',
+	    DECADE:  'decade',
+	    CENTURY: 'century'
+	  }
+	
+	module.exports = {
+	
+	  directions: {
+	    LEFT:  'LEFT',
+	    RIGHT: 'RIGHT',
+	    UP:    'UP',
+	    DOWN:  'DOWN'
+	  },
+	
+	  datePopups: {
+	    TIME:     'time',
+	    CALENDAR: 'calendar'
+	  },
+	
+	  calendarViews: views,
+	
+	  calendarViewHierarchy: _.object([
+	    [views.MONTH,   views.YEAR],
+	    [views.YEAR,    views.DECADE],
+	    [views.DECADE,  views.CENTURY]
+	  ]),
+	
+	  calendarViewUnits: _.object([
+	    [views.MONTH,   views.DAY],
+	    [views.YEAR,    views.MONTH],
+	    [views.DECADE,  views.YEAR],
+	    [views.CENTURY, views.DECADE],
+	  ])
+	}
+
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1)
+	  , $ = __webpack_require__(73);
+	
+	
+	var PopupContent = React.createClass({displayName: 'PopupContent',
+	  render: function(){
+	    var Content = React.Children.only(this.props.children)
+	
+	    Content.props.className = (Content.props.className || '') + ' rw-popup rw-widget';
+	
+	    return Content
+	  }
+	})
+	
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+		propTypes: {
+	    duration:       React.PropTypes.number,
+	    onRequestClose: React.PropTypes.func.isRequired,
+	    onClosing:      React.PropTypes.func,
+	    onOpening:      React.PropTypes.func,
+	    onClose:        React.PropTypes.func,
+	    onOpen:         React.PropTypes.func
+		},
+	
+	  getDefaultProps: function(){
+	    return {
+	      duration:    200,
+	      open:        false,
+	      onClosing:   function(){},
+	      onOpening:   function(){},
+	      onClose:     function(){},
+	      onOpen:      function(){},
+	    }
+	  },
+	
+		componentDidMount: function(){
+	    this.close(0)
+		},
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    this.setState({
+	      contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
+	    })
+	  },
+	
+	  componentDidUpdate: function(pvProps, pvState){
+	    var closing =  pvProps.open && !this.props.open
+	      , opening = !pvProps.open && this.props.open;
+	
+	    if (opening)      this.open()
+	    else if (closing) this.close()
+	  },
+	
+		render: function(){
+	    var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	
+			return (
+	      React.createElement("div", React.__spread({},  props, {className:  (className ||'') + " rw-popup-container"}), 
+	        React.createElement(PopupContent, {ref: "content"}, 
+	           this.props.children
+	        )
+	      )
+			)
+		},
+	
+	  dimensions: function(){
+	    var el = this.getDOMNode();
+	
+	    el.style.display = 'block'
+	    el.style.height  = $.height(this.refs.content.getDOMNode()) + 'px'
+	  },
+	
+	  open: function(){
+	    var self = this
+	      , anim = this.getDOMNode()
+	      , el   = this.refs.content.getDOMNode();
+	
+	    this.ORGINAL_POSITION = $.css(el, 'position')
+	
+	    this._isOpening = true
+	    this.dimensions()
+	    this.props.onOpening()
+	
+	    el.style.position = 'absolute'
+	
+	    $.animate(el
+	      , { top: 0 }
+	      , self.props.duration
+	      , function(){
+	          if ( !self._isOpening ) return
+	          el.style.position = self.ORGINAL_POSITION
+	          anim.style.overflow = 'visible'
+	          self.ORGINAL_POSITION = null
+	          self.props.onOpen()
+	        })
+	  },
+	
+	  close: function(dur){
+	    var self = this
+	      , el   = this.refs.content.getDOMNode()
+	      , anim = this.getDOMNode();
+	
+	    this.ORGINAL_POSITION = $.css(el, 'position')
+	
+	    this._isOpening = false
+	    this.dimensions()
+	    this.props.onClosing()
+	
+	    anim.style.overflow = 'hidden'
+	    el.style.position = 'absolute'
+	
+	    $.animate(el
+	      , { top: '-100%' }
+	      , dur === undefined ? this.props.duration : dur
+	      , function() {
+	          if ( self._isOpening ) return
+	          el.style.position = self.ORGINAL_POSITION
+	
+	          anim.style.display = 'none'
+	          self.ORGINAL_POSITION = null
+	          self.props.onClose()
+	        })
+	  }
+	
+	})
+	
+	
+	function childKey(children){
+	  var nextChildMapping = React.Children.map(children, function(c)  {return c;} );
+	  for(var key in nextChildMapping) return key
+	}
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , dates = __webpack_require__(66)
+	  , List = __webpack_require__(75)
+	  , CustomPropTypes  = __webpack_require__(72)
+	  , _ = __webpack_require__(14) // omit
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'TimeList',
+	
+	  mixins: [
+	    __webpack_require__(89),
+	    __webpack_require__(92)('selectedIndex'),
+	    __webpack_require__(92)('focusedIndex')
+	  ],
+	
+	  propTypes: {
+	    value:          React.PropTypes.instanceOf(Date),
+	    min:            React.PropTypes.instanceOf(Date),
+	    max:            React.PropTypes.instanceOf(Date),
+	    step:           React.PropTypes.number,
+	    itemComponent:  CustomPropTypes.elementType,
+	    onSelect:       React.PropTypes.func,
+	    preserveDate:   React.PropTypes.bool,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      step:   30,
+	      format: 't',
+	      onSelect: function(){},
+	      preserveDate: true,
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    var idx = this._selectedIndex(this._data(), this.props.value)
+	
+	    return { focusedIndex: idx === -1 ? 0 : idx}
+	  },
+	
+	  render: function(){
+	    var times = this._data()
+	      , idx = this._selectedIndex(times, this.props.value);
+	
+	    return (
+	      React.createElement(List, React.__spread({},  _.omit(this.props, 'value'), 
+	        {ref: "list", 
+	        data: times, 
+	        textField: "label", 
+	        valueField: "date", 
+	        selectedIndex: idx, 
+	        focusedIndex: this.state.focusedIndex, 
+	        listItem: this.props.itemComponent, 
+	        onSelect: this.props.onSelect}))
+	    )
+	
+	  },
+	
+	  _selectedIndex: function(times, date){
+	    var roundTo = 1000 * 60 * this.props.step
+	      , idx = -1, label;
+	
+	    if( !date) return 0
+	
+	    date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
+	    label = dates.format(date, this.props.format)
+	
+	    times.every( function(time, i)  {
+	      if( time.label === label ) return (idx = i), false
+	      return true
+	    })
+	
+	    return idx
+	  },
+	
+	  _data: function(){
+	    var times  = [], i = 0
+	      , values = this._dateValues()
+	      , start  = values.min
+	      , startDay = dates.date(start);
+	
+	    // debugger;
+	    while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
+	      i++
+	      times.push({ date: start, label: dates.format(start, this.props.format) })
+	      start = dates.add(start, this.props.step || 30, 'minutes')
+	    }
+	    return times
+	  },
+	
+	  _dateValues: function(){
+	    var value = this.props.value || dates.today()
+	      , useDate = this.props.preserveDate
+	      , min = this.props.min
+	      , max = this.props.max
+	      , start, end;
+	
+	    //compare just the time regradless of whether they fall on the same day
+	    if(!useDate) {
+	      start = dates.startOf(dates.merge(new Date, min), 'minutes')
+	      end   = dates.startOf(dates.merge(new Date, max), 'minutes')
+	
+	      if( dates.lte(end, start) && dates.gt(max, min, 'day'))
+	        end = dates.tomorrow()
+	
+	      return {
+	        min: start,
+	        max: end
+	      }
+	    }
+	
+	    //date parts are equal
+	    return {
+	      min: dates.eq(value, min, 'day') ? min : dates.today(),
+	      max: dates.eq(value, max, 'day') ? min : dates.tomorrow()
+	    }
+	
+	  },
+	  _keyDown: function(e){
+	    var self = this
+	      , key = e.key
+	      , character = String.fromCharCode(e.keyCode);
+	
+	    if ( key === 'End' )
+	      this.setFocusedIndex(
+	        this._data().length - 1)
+	
+	    else if ( key === 'Home' )
+	      this.setFocusedIndex(0)
+	
+	    else if ( key === 'Enter' )
+	      this.props.onSelect(this._data()[this.state.focusedIndex])
+	
+	    else if ( key === 'ArrowDown' ) {
+	      e.preventDefault()
+	      this.setFocusedIndex(
+	        this.nextFocusedIndex())
+	    }
+	    else if ( key === 'ArrowUp' ) {
+	      e.preventDefault()
+	      this.setFocusedIndex(
+	        this.prevFocusedIndex())
+	    }
+	    else {
+	      e.preventDefault()
+	      this.search(character, function(word){
+	        self.setFocusedIndex(
+	          this.findNextWordIndex(word, self.state.focusedIndex))
+	      })
+	    }
+	  }
+	
+	});
+
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx = __webpack_require__(13)
+	  , dates = __webpack_require__(66);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'DatePickerInput',
+	
+	
+	  propTypes: {
+	    format:       React.PropTypes.string,
+	    parse:        React.PropTypes.func.isRequired,
+	
+	    value:        React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      textValue: ''
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    this.setState({
+	      textValue: formatDate(
+	            nextProps.value
+	          , nextProps.editing && nextProps.editFormat 
+	              ? nextProps.editFormat 
+	              : nextProps.format)
+	    })
+	  },
+	
+	  getInitialState: function(){
+	    var text = formatDate(
+	            this.props.value
+	          , this.props.editing && this.props.editFormat 
+	              ? this.props.editFormat 
+	              : this.props.format)
+	
+	    return {
+	      textValue: text,
+	      lastValue: text
+	    }
+	  },
+	
+	  render: function(){
+	    var value = this.state.textValue
+	
+	    return (
+	      React.createElement("input", React.__spread({},  
+	        this.props, 
+	        {type: "text", 
+	        className: cx({'rw-input': true }), 
+	        value: value, 
+	        'aria-disabled': this.props.disabled, 
+	        'aria-readonly': this.props.readOnly, 
+	        disabled: this.props.disabled, 
+	        readOnly: this.props.readOnly, 
+	        onChange: this._change, 
+	        onBlur: chain(this.props.blur, this._blur, this)}))
+	    )
+	  },
+	
+	  _change: function(e){
+	    this.setState({ textValue: e.target.value });
+	  },
+	
+	  _blur: function(){
+	    var val = this.state.textValue
+	
+	    if ( val === this.state.lastValue) return
+	
+	    this.props.onChange(this.props.parse(val), val);
+	    this.setState({ lastValue: val });
+	  },
+	
+	  focus: function(){
+	    this.getDOMNode().focus()
+	  },
+	
+	  
+	});
+	
+	function isValid(d) {
+	  return !isNaN(d.getTime());
+	}
+	
+	function formatDate(date, format){
+	  var val = ''
+	
+	  if ( (date instanceof Date) && isValid(date) )
+	    val = dates.format(date, format)
+	
+	  return val;
+	}
+	
+	function chain(a,b, thisArg){
+	  return function(){
+	    a && a.apply(thisArg, arguments)
+	    b && b.apply(thisArg, arguments)
+	  }
+	}
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  render: function(){
+	  	var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1});
+	
+	    return (
+	      React.createElement("button", React.__spread({},  props, {type: "button", className: className + ' rw-btn'}), 
+	        this.props.children
+	      )
+	  	)
+	  }
+	})
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	
+	module.exports = {
+	
+		elementType: createChainableTypeChecker(
+	    function (props, propName, componentName, location) {
+	
+	      if( typeof props[propName] !== 'function'){
+	        if ( React.isValidElement(props[propName]))
+	          return new Error(
+	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
+	            ' Expected an Element `type`, not an actual Element')
+	
+	        if (typeof props[propName] !== 'string')
+	          return new Error(
+	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
+	            ' Expected an Element `type` such as a tag name or return value of React.createClass(...)')
+	      }
+	      return true
+	    })
+	}
+	
+	
+	function createChainableTypeChecker(validate) {
+	
+	  function checkType(isRequired, props, propName, componentName, location) {
+	    componentName = componentName || '<<anonymous>>';
+	    if (props[propName] == null) {
+	      if (isRequired) {
+	        return new Error(
+	          "Required prop `" + propName + "` was not specified in  `" + componentName + "`.");
+	      }
+	    } 
+	    else 
+	      return validate(props, propName, componentName, location);
+	  }
+	
+	  var chainedCheckType = checkType.bind(null, false);
+	  chainedCheckType.isRequired = checkType.bind(null, true);
+	
+	  return chainedCheckType
+	}
+
+/***/ },
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17449,332 +18335,44 @@
 
 
 /***/ },
-/* 65 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	module.exports = function stateSetter(key){
-	  return function(val){
-	    var state = {}
+	var common = {
+	      eq:   function(a, b){ return a === b },
+	      neq:  function(a, b){ return a !== b },
+	      gt:   function(a, b){ return a > b   },
+	      gte:  function(a, b){ return a >= b  },
+	      lt:   function(a, b){ return a < b   },
+	      lte:  function(a, b){ return a <= b  },
 	
-	    state[key] = val
-	    this.setState(state)
-	    return this
-	  }
-	}
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(14) //invert, transform
-	  , React = __webpack_require__(1)
-	  , compat = __webpack_require__(99)
-	
-	
-	function compatPropType(handler, propType) {
-	
-	  return compat.propType(function(props, propName, componentName, location){
-	    if(props[propName] !== undefined){
-	      if ( !props[handler] )
-	        return new Error(
-	            'ReactWidgets: you have provided a `' + propName + '` prop to ' 
-	          + '`' + componentName + '` without an `' + handler + '` handler. This will render a read-only field. ' 
-	          + 'If the field should be mutable use `' + defaultKey(propName) + '`. Otherwise, set `' + handler + '`')
-	
-	      return propType && propType(props, propName, componentName, location)
-	    }
-	  })
-	}
-	
-	module.exports = {
-	
-	  createControlledClass: function(Component, controlledValues, publicApi) {
-	    // var publicMethods 
-	    //       = _.transform(publicApi || [], function(obj, method) {
-	    //           obj[method] = function (...args){ 
-	    //             return this.refs[this._innerRef][method](args) 
-	    //           }
-	    //         }, {})
-	
-	    var types = _.transform(controlledValues, function(obj, handler, prop){
-	          var type = Component.type.propTypes[prop];
-	
-	          obj[prop] = compatPropType(handler, type)
-	          obj[defaultKey(prop)] = type
-	        }, {});
-	
-	    return React.createClass({
-	
-	      displayName: Component.displayName,
-	
-	      propTypes: types,
-	
-	      getInitialState: function(){
-	        var props = this.props
-	          , keys  = Object.keys(controlledValues);
-	
-	        return _.transform(keys, function(state, key){
-	          state[key] = props[defaultKey(key)]
-	        }, {})
+	      contains: function(a, b){
+	        return a.indexOf(b) !== -1
 	      },
 	
-	      shouldComponentUpdate: function() {
-	        //let the setState trigger the update
-	        return !this._notifying || !this._notifying.length;
+	      startsWith: function(a, b) {
+	        return a.lastIndexOf(b, 0) === 0;
 	      },
 	
-	      render: function(){
-	        var props, handles;
+	      endsWith: function(a, b) {
+	        var pos = a.length - b.length
+	          , lastIndex = a.indexOf(b, pos);
 	
-	        props = _.transform(controlledValues, function(obj, handle, prop)  {
-	          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
-	        }.bind(this), {})
-	        
-	        handles = _.transform(controlledValues, function(obj, handle, prop)  {
-	          obj[handle] = setAndNotify.bind(this, prop)
-	        }.bind(this), {})
-	
-	        props    = _.merge(this.props, props, handles)
-	        //this._innerRef = props.ref = props.ref || 'component'
-	
-	        return React.createElement(Component, props, this.props.children);
+	        return  lastIndex !== -1 && lastIndex === pos;
 	      }
-	    })
-	
-	    function setAndNotify(prop, value){
-	      /*jshint validthis:true */
-	      var handler    = controlledValues[prop]
-	        , controlled = handler && isProp(this.props, prop)
-	        , st = {}
-	        , args;
-	
-	      if ( !this._notifying ) this._notifying = [];
-	
-	      if( this.props[handler] ) {
-	        args = [].slice.call(arguments, 1)
-	        this._notifying.push(true)
-	        this.props[handler].apply(this, args)
-	        this._notifying.pop()
-	      }
-	        
-	      st[prop] = value
-	      this.setState(st)
-	
-	      return !controlled
 	    }
 	
-	    function isProp(props, prop){
-	      return props[prop] !== undefined;
-	    }
-	  }
-	}
-	
-	
-	// function invert(controlledValues){
-	//   return _.transform(controlledValues, (val, key ) => ,)
-	// }
-	
-	function defaultKey(key){
-	  return 'default' + key.charAt(0).toUpperCase() + key.substr(1)
-	}
+	module.exports = common
 
 /***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	
-	module.exports = {
-	
-		elementType: createChainableTypeChecker(
-	    function (props, propName, componentName, location) {
-	
-	      if( typeof props[propName] !== 'function'){
-	        if ( React.isValidElement(props[propName]))
-	          return new Error(
-	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
-	            ' Expected an Element `type`, not an actual Element')
-	
-	        if (typeof props[propName] !== 'string')
-	          return new Error(
-	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
-	            ' Expected an Element `type` such as a tag name or return value of React.createClass(...)')
-	      }
-	      return true
-	    })
-	}
-	
-	
-	function createChainableTypeChecker(validate) {
-	
-	  function checkType(isRequired, props, propName, componentName, location) {
-	    componentName = componentName || '<<anonymous>>';
-	    if (props[propName] == null) {
-	      if (isRequired) {
-	        return new Error(
-	          "Required prop `" + propName + "` was not specified in  `" + componentName + "`.");
-	      }
-	    } 
-	    else 
-	      return validate(props, propName, componentName, location);
-	  }
-	
-	  var chainedCheckType = checkType.bind(null, false);
-	  chainedCheckType.isRequired = checkType.bind(null, true);
-	
-	  return chainedCheckType
-	}
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , $ = __webpack_require__(64);
-	
-	
-	var PopupContent = React.createClass({displayName: 'PopupContent',
-	  render: function(){
-	    var Content = React.Children.only(this.props.children)
-	
-	    Content.props.className = (Content.props.className || '') + ' rw-popup rw-widget';
-	
-	    return Content
-	  }
-	})
-	
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-		propTypes: {
-	    duration:       React.PropTypes.number,
-	    onRequestClose: React.PropTypes.func.isRequired,
-	    onClosing:      React.PropTypes.func,
-	    onOpening:      React.PropTypes.func,
-	    onClose:        React.PropTypes.func,
-	    onOpen:         React.PropTypes.func
-		},
-	
-	  getDefaultProps: function(){
-	    return {
-	      duration:    200,
-	      open:        false,
-	      onClosing:   function(){},
-	      onOpening:   function(){},
-	      onClose:     function(){},
-	      onOpen:      function(){},
-	    }
-	  },
-	
-		componentDidMount: function(){
-	    this.close(0)
-		},
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    this.setState({
-	      contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
-	    })
-	  },
-	
-	  componentDidUpdate: function(pvProps, pvState){
-	    var closing =  pvProps.open && !this.props.open
-	      , opening = !pvProps.open && this.props.open;
-	
-	    if (opening)      this.open()
-	    else if (closing) this.close()
-	  },
-	
-		render: function(){
-	    var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	
-			return (
-	      React.createElement("div", React.__spread({},  props, {className:  (className ||'') + " rw-popup-container"}), 
-	        React.createElement(PopupContent, {ref: "content"}, 
-	           this.props.children
-	        )
-	      )
-			)
-		},
-	
-	  dimensions: function(){
-	    var el = this.getDOMNode();
-	
-	    el.style.display = 'block'
-	    el.style.height  = $.height(this.refs.content.getDOMNode()) + 'px'
-	  },
-	
-	  open: function(){
-	    var self = this
-	      , anim = this.getDOMNode()
-	      , el   = this.refs.content.getDOMNode();
-	
-	    this.ORGINAL_POSITION = $.css(el, 'position')
-	
-	    this._isOpening = true
-	    this.dimensions()
-	    this.props.onOpening()
-	
-	    el.style.position = 'absolute'
-	
-	    $.animate(el
-	      , { top: 0 }
-	      , self.props.duration
-	      , function(){
-	          if ( !self._isOpening ) return
-	          el.style.position = self.ORGINAL_POSITION
-	          anim.style.overflow = 'visible'
-	          self.ORGINAL_POSITION = null
-	          self.props.onOpen()
-	        })
-	  },
-	
-	  close: function(dur){
-	    var self = this
-	      , el   = this.refs.content.getDOMNode()
-	      , anim = this.getDOMNode();
-	
-	    this.ORGINAL_POSITION = $.css(el, 'position')
-	
-	    this._isOpening = false
-	    this.dimensions()
-	    this.props.onClosing()
-	
-	    anim.style.overflow = 'hidden'
-	    el.style.position = 'absolute'
-	
-	    $.animate(el
-	      , { top: '-100%' }
-	      , dur === undefined ? this.props.duration : dur
-	      , function() {
-	          if ( self._isOpening ) return
-	          el.style.position = self.ORGINAL_POSITION
-	
-	          anim.style.display = 'none'
-	          self.ORGINAL_POSITION = null
-	          self.props.onClose()
-	        })
-	  }
-	
-	})
-	
-	
-	function childKey(children){
-	  var nextChildMapping = React.Children.map(children, function(c)  {return c;} );
-	  for(var key in nextChildMapping) return key
-	}
-
-/***/ },
-/* 69 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(67)
+	  , CustomPropTypes  = __webpack_require__(72)
 	  , cx = __webpack_require__(13)
 	  , _  = __webpack_require__(14);
 	
@@ -17784,7 +18382,7 @@
 	  displayName: 'List',
 	
 	  mixins: [ 
-	    __webpack_require__(89)
+	    __webpack_require__(91)
 	  ],
 	
 	  propTypes: {
@@ -17891,64 +18489,12 @@
 	})
 
 /***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var common = {
-	      eq:   function(a, b){ return a === b },
-	      neq:  function(a, b){ return a !== b },
-	      gt:   function(a, b){ return a > b   },
-	      gte:  function(a, b){ return a >= b  },
-	      lt:   function(a, b){ return a < b   },
-	      lte:  function(a, b){ return a <= b  },
-	
-	      contains: function(a, b){
-	        return a.indexOf(b) !== -1
-	      },
-	
-	      startsWith: function(a, b) {
-	        return a.lastIndexOf(b, 0) === 0;
-	      },
-	
-	      endsWith: function(a, b) {
-	        var pos = a.length - b.length
-	          , lastIndex = a.indexOf(b, pos);
-	
-	        return  lastIndex !== -1 && lastIndex === pos;
-	      }
-	    }
-	
-	module.exports = common
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  render: function(){
-	  	var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1});
-	
-	    return (
-	      React.createElement("button", React.__spread({},  props, {type: "button", className: className + ' rw-btn'}), 
-	        this.props.children
-	      )
-	  	)
-	  }
-	})
-
-/***/ },
-/* 72 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , caretPos = __webpack_require__(101);
+	  , caretPos = __webpack_require__(98);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -18020,1091 +18566,28 @@
 
 
 /***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Btn = __webpack_require__(71);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    label:          React.PropTypes.string.isRequired,
-	    labelId:        React.PropTypes.string,
-	
-	    upDisabled:     React.PropTypes.bool.isRequired,
-	    prevDisabled:   React.PropTypes.bool.isRequired,
-	    nextDisabled:   React.PropTypes.bool.isRequired,
-	    onViewChange:   React.PropTypes.func.isRequired,
-	    onMoveLeft:     React.PropTypes.func.isRequired,
-	    onMoveRight:    React.PropTypes.func.isRequired,
-	
-	    messages:       React.PropTypes.shape({
-	      moveBack:     React.PropTypes.string,
-	      moveForward:  React.PropTypes.string
-	    })
-	  },
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(100)
-	  ],
-	
-	  getDefaultProps: function(){
-	    return {
-	      messages: {
-	        moveBack:     'navigate back',
-	        moveForward:  'navigate forward',
-	      }
-	    }
-	  },
-	
-	  render: function(){
-	    var rtl = this.isRtl();
-	
-	    return (
-	      React.createElement("div", {className: "rw-header"}, 
-	        React.createElement(Btn, {className: "rw-btn-left", 
-	          onClick: this.props.onMoveLeft, 
-	          disabled: this.props.prevDisabled, 
-	          'aria-disabled': this.props.prevDisabled, 
-	          title: this.props.moveBack}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-view", 
-	          id: this.props.labelId, 
-	          onClick: this.props.onViewChange, 
-	          disabled: this.props.upDisabled, 
-	          'aria-disabled': this.props.upDisabled}, 
-	           this.props.label
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-right", 
-	          onClick: this.props.onMoveRight, 
-	          disabled: this.props.nextDisabled, 
-	          'aria-disabled': this.props.nextDisabled, 
-	          title: this.props.moveForward}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
-	        )
-	      )
-	    )
-	  }
-	})
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(78)
-	  , directions = __webpack_require__(79).directions
-	  , _   = __webpack_require__(14)
-	  , Btn = __webpack_require__(71);
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'MonthView',
-	
-	  mixins: [
-	    __webpack_require__(86),
-	    __webpack_require__(100),
-	    __webpack_require__(102)('month', 'day'),
-	  ],
-	
-	  propTypes: {
-	    culture:          React.PropTypes.array,
-	    value:            React.PropTypes.instanceOf(Date),
-	    selectedDate:     React.PropTypes.instanceOf(Date),
-	    min:              React.PropTypes.instanceOf(Date),
-	    max:              React.PropTypes.instanceOf(Date),
-	
-	    format:           React.PropTypes.string,
-	
-	    onChange:         React.PropTypes.func.isRequired, //value is chosen
-	    onMoveLeft:       React.PropTypes.func,
-	    onMoveRight:      React.PropTypes.func
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , month = dates.visibleDays(this.props.value)
-	      , rows  = _.chunk(month, 7 );
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {role: "grid", 
-	        tabIndex: this.props.disabled ? '-1' : "0", 
-	        className: "rw-calendar-grid", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("thead", null, 
-	          React.createElement("tr", null,  this._headers() )
-	        ), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	    
-	    return (
-	      React.createElement("tr", {key: 'week_' + i}, 
-	       row.map( function(day, idx)  {
-	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
-	          , selected = dates.eq(day, this.props.selectedDate, 'day');
-	
-	        return !dates.inRange(day, this.props.min, this.props.max)
-	            ? React.createElement("td", {key: 'day_' + idx, className: "rw-empty-cell"}, " ")
-	            : (React.createElement("td", {key: 'day_' + idx}, 
-	                React.createElement(Btn, {
-	                  tabIndex: "-1", 
-	                  onClick: this.props.onChange.bind(null, day), 
-	                  'aria-selected': selected, 
-	                  'aria-disabled': this.props.disabled, 
-	                  disabled: this.props.disabled, 
-	                  className: cx({
-	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
-	                    'rw-state-focus':    focused,
-	                    'rw-state-selected': selected,
-	                  }), 
-	                  id: focused ? id : undefined}, 
-	                  dates.format(day, 'dd')
-	                )
-	              ))
-	      }.bind(this))
-	      )
-	    )
-	  },
-	
-	
-	  _headers: function(format){
-	    var days = dates.shortDaysOfWeek(format);
-	
-	    return days.map( function(day, i)  
-	      {return React.createElement("th", {key: "header_" + i}, day);})
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'day', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'day',min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -1, 'week', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 1, 'week', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	
-	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
-	}
-
-
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(78)
-	  , directions = __webpack_require__(79).directions
-	  , Btn        = __webpack_require__(71)
-	  , _          = __webpack_require__(14)
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'YearView',
-	
-	  mixins: [
-	    __webpack_require__(86),
-	    __webpack_require__(100),
-	    __webpack_require__(102)('year', 'month')
-	  ],
-	
-	  propTypes: {
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	
-	  render: function(){
-	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , months = dates.monthsInYear(dates.year(this.props.value))
-	      , rows = _.chunk(months, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},   props , 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        ref: "table", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item');
-	    
-	    return (
-	      React.createElement("tr", {key: i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
-	          , selected = dates.eq(date, this.props.value,  'month');
-	
-	        return dates.inRange(date, this.props.min, this.props.max, 'month')
-	          ? (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id: focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected
-	                })}, 
-	                 dates.format(date, dates.formats.MONTH_NAME_ABRV) 
-	              )
-	            ))
-	          : React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	      }.bind(this))
-	    ))
-	  },
-	
-	  focus: function(){
-	    this.refs.table.getDOMNode().focus();
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'month', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'month', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'month', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'month', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
-	}
-
-
-/***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _ = __webpack_require__(14)
-	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(78)
-	  , directions = __webpack_require__(79).directions
-	  , Btn = __webpack_require__(71); 
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'DecadeView',
-	
-	  mixins: [
-	    __webpack_require__(86),
-	    __webpack_require__(87),
-	    __webpack_require__(100),
-	    __webpack_require__(102)('decade', 'year')
-	  ],
-	
-	  propTypes: {
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , years = getDecadeYears(this.props.value)
-	      , rows  = _.chunk(years, 4)
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	
-	        React.createElement("tbody", null, 
-	          rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
-	          , selected = dates.eq(date, this.props.value,  'year');
-	
-	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':      !inDecade(date, this.props.value),
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected,
-	                })}, 
-	                 dates.format(date, dates.formats.YEAR) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'year', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'year', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'year', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'year', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function inDecade(date, start){
-	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
-	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
-	}
-	
-	function getDecadeYears(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
-	
-	  return days.map( 
-	    function(i)  {return date = dates.add(date, 1, 'year');})
-	}
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
-	}
-
-
-/***/ },
 /* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(78)
-	  , directions = __webpack_require__(79).directions
-	  , Btn        = __webpack_require__(71)
-	  , _          = __webpack_require__(14); //omit
+	"use strict";
 	
-	var opposite = {
-	  LEFT:  directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
+	module.exports = function stateSetter(key){
+	  return function(val){
+	    var state = {}
 	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CenturyView',
-	
-	  mixins: [
-	    __webpack_require__(86),
-	    __webpack_require__(87),
-	    __webpack_require__(100),
-	    __webpack_require__(102)('century', 'decade')
-	  ],
-	
-	  propTypes: {
-	    value:         React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
-	      , years = getCenturyDecades(this.props.value)
-	      , rows  = _.chunk(years, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
-	          , selected = dates.eq(date, this.props.value,  'decade')
-	          , d        = inRangeDate(date, this.props.min, this.props.max);
-	
-	        return !inRange(date, this.props.min, this.props.max)
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
-	                tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':       !inCentury(date, this.props.value),
-	                  'rw-state-focus':     focused,
-	                  'rw-state-selected':  selected,
-	                 })}, 
-	                 label(date) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'decade', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'decade', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'decade', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'decade', min, max)
-	
-	    return date
+	    state[key] = val
+	    this.setState(state)
+	    return this
 	  }
-	
-	});
-	
-	function label(date){
-	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
-	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
 	}
-	
-	function inRangeDate(decade, min, max){
-	  return dates.max( dates.min(decade, max), min)
-	}
-	
-	function inRange(decade, min, max){
-	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
-	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
-	}
-	
-	function inCentury(date, start){
-	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
-	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
-	}
-	
-	function getCenturyDecades(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
-	
-	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
-	}
-	
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
-	}
-
 
 /***/ },
 /* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	
-	var dateMath = __webpack_require__(45)
-	  , globalize = __webpack_require__(104)
-	  , _ = __webpack_require__(14); //extend
-	
-	var dates = module.exports = _.extend(dateMath, {
-	  // wrapper methods for isolating globalize use throughout the lib
-	  // looking forward towards the 1.0 release
-	  culture: function(){
-	    return globalize.culture()
-	  },
-	
-	  startOfWeek: function(date){
-	    var culture = globalize.culture()
-	
-	    if (!culture || !culture.calendar)
-	      return 0
-	
-	    return culture.calendar.firstDay || 0
-	  },
-	
-	  parse: function(date, format, culture){
-	    return globalize.parseDate(date, format, culture)
-	  },
-	
-	  format: function(date, format, culture){
-	    return globalize.format(date, format, culture)
-	  },
-	  //-------------------------------------
-	
-	  shortDaysOfWeek: function (){
-	    var culture = dates.culture()
-	      , start = dates.startOfWeek()
-	      , days, front;
-	
-	    if (culture && culture.calendar){
-	      days = culture.calendar.days.namesShort.slice()
-	
-	      if(start === 0 ) 
-	        return days
-	      
-	      front = days.splice(0, start)
-	      days  = days.concat(front)
-	      return days
-	    }
-	  },
-	
-	  daysOfWeek: function(date, format){
-	    var range = [0,1,2,3,4,5,6]
-	    if (arguments.length === 1){
-	      format = date
-	      date = new Date()
-	    }
-	
-	    format = format || 'do'
-	
-	    return range.map(function(i)  {return dates.format(dates.weekday(date, i), format);} )
-	  },
-	
-	  months: function(date, format){
-	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	
-	    if (arguments.length === 1){
-	      format = date
-	      date = new Date()
-	    }
-	    format = format || dates.formats.DAY_NAME_ABRV
-	
-	    return months.map( function(i)  {return dates.format(dates.month(date, i), format);})
-	  },
-	
-	  monthsInYear: function(year){
-	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	      , date   = new Date(year, 0, 1)
-	
-	    return  months.map( function(i)  {return dates.month(date, i);})
-	  },
-	
-	  firstOfDecade: function(date){
-	    var decade = dates.year(date) % 10
-	
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfDecade: function(date){
-	    return dates.add(dates.firstOfDecade(date), 9, 'year')
-	  },
-	
-	  firstOfCentury: function(date){
-	    var decade = dates.year(date) % 100
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfCentury: function(date){
-	    return dates.add(dates.firstOfCentury(date), 99, 'year')
-	  },
-	
-	  firstVisibleDay: function(date){
-	    var firstOfMonth = dates.startOf(date, 'month')
-	    return dates.startOf(firstOfMonth, 'week');
-	  },
-	
-	  lastVisibleDay: function(date){
-	    var endOfMonth = dates.endOf(date, 'month')
-	    return dates.endOf(endOfMonth, 'week');
-	  },
-	
-	  visibleDays: function(date){
-	    var current = dates.firstVisibleDay(date)
-	      , last = dates.lastVisibleDay(date)
-	      , days = [];
-	
-	    while( dates.lte(current, last, 'day') ) {
-	      days.push(current)
-	      current = dates.add(current, 1, 'day')
-	    }
-	
-	    return days
-	  },
-	
-	  merge: function(date, time){
-	    if( time == null && date == null)
-	      return null
-	
-	    if( time == null) time = new Date()
-	    if( date == null) date = new Date()
-	
-	    date = dates.startOf(date, 'day')
-	    date = dates.hours(date,        dates.hours(time))
-	    date = dates.minutes(date,      dates.minutes(time))
-	    date = dates.seconds(date,      dates.seconds(time))
-	    return dates.milliseconds(date, dates.milliseconds(time))
-	  },
-	
-	  sameMonth: function(dateA, dateB){
-	    return dates.eq(dateA, dateB, 'month')
-	  },
-	
-	  today: function() {
-	    return this.startOf(new Date(), 'day')
-	  },
-	
-	  yesterday: function() {
-	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
-	  },
-	
-	  tomorrow: function() {
-	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
-	  },
-	
-	  formats: {
-	    DAY_OF_MONTH:    'dd',
-	    DAY_NAME_SHORT:  null,
-	    MONTH_NAME_ABRV: 'MMM',
-	    MONTH_YEAR:      'MMMM yyyy',
-	    YEAR:            'yyyy'
-	  }
-	
-	})
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(14); //object
-	
-	var views = {
-	    MONTH:   'month',
-	    YEAR:    'year',
-	    DECADE:  'decade',
-	    CENTURY: 'century'
-	  }
-	
-	module.exports = {
-	
-	  directions: {
-	    LEFT:  'LEFT',
-	    RIGHT: 'RIGHT',
-	    UP:    'UP',
-	    DOWN:  'DOWN'
-	  },
-	
-	  datePopups: {
-	    TIME:     'time',
-	    CALENDAR: 'calendar'
-	  },
-	
-	  calendarViews: views,
-	
-	  calendarViewHierarchy: _.object([
-	    [views.MONTH,   views.YEAR],
-	    [views.YEAR,    views.DECADE],
-	    [views.DECADE,  views.CENTURY]
-	  ]),
-	
-	  calendarViewUnits: _.object([
-	    [views.MONTH,   views.DAY],
-	    [views.YEAR,    views.MONTH],
-	    [views.DECADE,  views.YEAR],
-	    [views.CENTURY, views.DECADE],
-	  ])
-	}
-
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(78)
-	  , List = __webpack_require__(69)
-	  , CustomPropTypes  = __webpack_require__(67)
-	  , _ = __webpack_require__(14) // omit
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'TimeList',
-	
-	  mixins: [
-	    __webpack_require__(88),
-	    __webpack_require__(91)('selectedIndex'),
-	    __webpack_require__(91)('focusedIndex')
-	  ],
-	
-	  propTypes: {
-	    value:          React.PropTypes.instanceOf(Date),
-	    min:            React.PropTypes.instanceOf(Date),
-	    max:            React.PropTypes.instanceOf(Date),
-	    step:           React.PropTypes.number,
-	    itemComponent:  CustomPropTypes.elementType,
-	    onSelect:       React.PropTypes.func,
-	    preserveDate:   React.PropTypes.bool,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      step:   30,
-	      format: 't',
-	      onSelect: function(){},
-	      preserveDate: true,
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    var idx = this._selectedIndex(this._data(), this.props.value)
-	
-	    return { focusedIndex: idx === -1 ? 0 : idx}
-	  },
-	
-	  render: function(){
-	    var times = this._data()
-	      , idx = this._selectedIndex(times, this.props.value);
-	
-	    return (
-	      React.createElement(List, React.__spread({},  _.omit(this.props, 'value'), 
-	        {ref: "list", 
-	        data: times, 
-	        textField: "label", 
-	        valueField: "date", 
-	        selectedIndex: idx, 
-	        focusedIndex: this.state.focusedIndex, 
-	        listItem: this.props.itemComponent, 
-	        onSelect: this.props.onSelect}))
-	    )
-	
-	  },
-	
-	  _selectedIndex: function(times, date){
-	    var roundTo = 1000 * 60 * this.props.step
-	      , idx = -1, label;
-	
-	    if( !date) return 0
-	
-	    date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
-	    label = dates.format(date, this.props.format)
-	
-	    times.every( function(time, i)  {
-	      if( time.label === label ) return (idx = i), false
-	      return true
-	    })
-	
-	    return idx
-	  },
-	
-	  _data: function(){
-	    var times  = [], i = 0
-	      , values = this._dateValues()
-	      , start  = values.min
-	      , startDay = dates.date(start);
-	
-	    // debugger;
-	    while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
-	      i++
-	      times.push({ date: start, label: dates.format(start, this.props.format) })
-	      start = dates.add(start, this.props.step || 30, 'minutes')
-	    }
-	    return times
-	  },
-	
-	  _dateValues: function(){
-	    var value = this.props.value || dates.today()
-	      , useDate = this.props.preserveDate
-	      , min = this.props.min
-	      , max = this.props.max
-	      , start, end;
-	
-	    //compare just the time regradless of whether they fall on the same day
-	    if(!useDate) {
-	      start = dates.startOf(dates.merge(new Date, min), 'minutes')
-	      end   = dates.startOf(dates.merge(new Date, max), 'minutes')
-	
-	      if( dates.lte(end, start) && dates.gt(max, min, 'day'))
-	        end = dates.tomorrow()
-	
-	      return {
-	        min: start,
-	        max: end
-	      }
-	    }
-	
-	    //date parts are equal
-	    return {
-	      min: dates.eq(value, min, 'day') ? min : dates.today(),
-	      max: dates.eq(value, max, 'day') ? min : dates.tomorrow()
-	    }
-	
-	  },
-	  _keyDown: function(e){
-	    var self = this
-	      , key = e.key
-	      , character = String.fromCharCode(e.keyCode);
-	
-	    if ( key === 'End' )
-	      this.setFocusedIndex(
-	        this._data().length - 1)
-	
-	    else if ( key === 'Home' )
-	      this.setFocusedIndex(0)
-	
-	    else if ( key === 'Enter' )
-	      this.props.onSelect(this._data()[this.state.focusedIndex])
-	
-	    else if ( key === 'ArrowDown' ) {
-	      e.preventDefault()
-	      this.setFocusedIndex(
-	        this.nextFocusedIndex())
-	    }
-	    else if ( key === 'ArrowUp' ) {
-	      e.preventDefault()
-	      this.setFocusedIndex(
-	        this.prevFocusedIndex())
-	    }
-	    else {
-	      e.preventDefault()
-	      this.search(character, function(word){
-	        self.setFocusedIndex(
-	          this.findNextWordIndex(word, self.state.focusedIndex))
-	      })
-	    }
-	  }
-	
-	});
-
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx = __webpack_require__(13)
-	  , dates = __webpack_require__(78);
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'DatePickerInput',
-	
-	
-	  propTypes: {
-	    format:       React.PropTypes.string,
-	    parse:        React.PropTypes.func.isRequired,
-	
-	    value:        React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      textValue: ''
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    this.setState({
-	      textValue: formatDate(
-	            nextProps.value
-	          , nextProps.editing && nextProps.editFormat 
-	              ? nextProps.editFormat 
-	              : nextProps.format)
-	    })
-	  },
-	
-	  getInitialState: function(){
-	    var text = formatDate(
-	            this.props.value
-	          , this.props.editing && this.props.editFormat 
-	              ? this.props.editFormat 
-	              : this.props.format)
-	
-	    return {
-	      textValue: text,
-	      lastValue: text
-	    }
-	  },
-	
-	  render: function(){
-	    var value = this.state.textValue
-	
-	    return (
-	      React.createElement("input", React.__spread({},  
-	        this.props, 
-	        {type: "text", 
-	        className: cx({'rw-input': true }), 
-	        value: value, 
-	        'aria-disabled': this.props.disabled, 
-	        'aria-readonly': this.props.readOnly, 
-	        disabled: this.props.disabled, 
-	        readOnly: this.props.readOnly, 
-	        onChange: this._change, 
-	        onBlur: chain(this.props.blur, this._blur, this)}))
-	    )
-	  },
-	
-	  _change: function(e){
-	    this.setState({ textValue: e.target.value });
-	  },
-	
-	  _blur: function(){
-	    var val = this.state.textValue
-	
-	    if ( val === this.state.lastValue) return
-	
-	    this.props.onChange(this.props.parse(val), val);
-	    this.setState({ lastValue: val });
-	  },
-	
-	  focus: function(){
-	    this.getDOMNode().focus()
-	  },
-	
-	  
-	});
-	
-	function isValid(d) {
-	  return !isNaN(d.getTime());
-	}
-	
-	function formatDate(date, format){
-	  var val = ''
-	
-	  if ( (date instanceof Date) && isValid(date) )
-	    val = dates.format(date, format)
-	
-	  return val;
-	}
-	
-	function chain(a,b, thisArg){
-	  return function(){
-	    a && a.apply(thisArg, arguments)
-	    b && b.apply(thisArg, arguments)
-	  }
-	}
-
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , setter  = __webpack_require__(65)
+	  , setter  = __webpack_require__(77)
 	  , globalize = __webpack_require__(104);
 	
 	
@@ -19210,7 +18693,54 @@
 
 
 /***/ },
-/* 83 */
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var $ = __webpack_require__(73)
+	
+	module.exports = function scrollTo( selected ) {
+	  var offset = $.offset(selected)
+	    , poff   = { top: 0, left: 0 }
+	    , list, scrollTop, selectedTop
+	    , selectedHeight, listHeight, bottom;
+	
+	    if( !selected ) return 
+	
+	    list       = $.scrollParent(selected)
+	    scrollTop  = $.scrollTop(list)
+	    listHeight = $.height(list, true)
+	
+	    if (!getWindow(list)) 
+	      poff = $.offset(list)
+	
+	    offset     = {
+	      top:    offset.top  - poff.top,
+	      left:   offset.left - poff.left,
+	      height: offset.height,
+	      width:  offset.width
+	    }
+	
+	    selectedHeight = offset.height
+	    selectedTop    = offset.top  + scrollTop
+	    bottom         = selectedTop + selectedHeight
+	
+	    scrollTop = scrollTop > selectedTop
+	          ? selectedTop
+	          : bottom > (scrollTop + listHeight) 
+	              ? (bottom - listHeight)
+	              : scrollTop
+	
+	    $.scrollTop(list, scrollTop)
+	}
+	
+	function getWindow( node ) {
+	  return node === node.window
+	    ? node : node.nodeType === 9 && node.defaultView;
+	}
+
+/***/ },
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19258,7 +18788,7 @@
 
 
 /***/ },
-/* 84 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19272,7 +18802,7 @@
 	  displayName: 'MultiselectTagList',
 	
 	  mixins: [
-	    __webpack_require__(89),
+	    __webpack_require__(91),
 	    __webpack_require__(87)
 	  ],
 	
@@ -19428,51 +18958,524 @@
 
 
 /***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactElement.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule ReactElement
+	 */
+	
+	"use strict";
+	
+	var ReactContext = __webpack_require__(99);
+	var ReactCurrentOwner = __webpack_require__(100);
+	
+	var warning = __webpack_require__(85);
+	
+	var RESERVED_PROPS = {
+	  key: true,
+	  ref: true
+	};
+	
+	/**
+	 * Warn for mutations.
+	 *
+	 * @internal
+	 * @param {object} object
+	 * @param {string} key
+	 */
+	function defineWarningProperty(object, key) {
+	  Object.defineProperty(object, key, {
+	
+	    configurable: false,
+	    enumerable: true,
+	
+	    get: function() {
+	      if (!this._store) {
+	        return null;
+	      }
+	      return this._store[key];
+	    },
+	
+	    set: function(value) {
+	      (true ? warning(
+	        false,
+	        'Don\'t set the ' + key + ' property of the component. ' +
+	        'Mutate the existing props object instead.'
+	      ) : null);
+	      this._store[key] = value;
+	    }
+	
+	  });
+	}
+	
+	/**
+	 * This is updated to true if the membrane is successfully created.
+	 */
+	var useMutationMembrane = false;
+	
+	/**
+	 * Warn for mutations.
+	 *
+	 * @internal
+	 * @param {object} element
+	 */
+	function defineMutationMembrane(prototype) {
+	  try {
+	    var pseudoFrozenProperties = {
+	      props: true
+	    };
+	    for (var key in pseudoFrozenProperties) {
+	      defineWarningProperty(prototype, key);
+	    }
+	    useMutationMembrane = true;
+	  } catch (x) {
+	    // IE will fail on defineProperty
+	  }
+	}
+	
+	/**
+	 * Base constructor for all React elements. This is only used to make this
+	 * work with a dynamic instanceof check. Nothing should live on this prototype.
+	 *
+	 * @param {*} type
+	 * @param {string|object} ref
+	 * @param {*} key
+	 * @param {*} props
+	 * @internal
+	 */
+	var ReactElement = function(type, key, ref, owner, context, props) {
+	  // Built-in properties that belong on the element
+	  this.type = type;
+	  this.key = key;
+	  this.ref = ref;
+	
+	  // Record the component responsible for creating this element.
+	  this._owner = owner;
+	
+	  // TODO: Deprecate withContext, and then the context becomes accessible
+	  // through the owner.
+	  this._context = context;
+	
+	  if (true) {
+	    // The validation flag and props are currently mutative. We put them on
+	    // an external backing store so that we can freeze the whole object.
+	    // This can be replaced with a WeakMap once they are implemented in
+	    // commonly used development environments.
+	    this._store = { validated: false, props: props };
+	
+	    // We're not allowed to set props directly on the object so we early
+	    // return and rely on the prototype membrane to forward to the backing
+	    // store.
+	    if (useMutationMembrane) {
+	      Object.freeze(this);
+	      return;
+	    }
+	  }
+	
+	  this.props = props;
+	};
+	
+	// We intentionally don't expose the function on the constructor property.
+	// ReactElement should be indistinguishable from a plain object.
+	ReactElement.prototype = {
+	  _isReactElement: true
+	};
+	
+	if (true) {
+	  defineMutationMembrane(ReactElement.prototype);
+	}
+	
+	ReactElement.createElement = function(type, config, children) {
+	  var propName;
+	
+	  // Reserved names are extracted
+	  var props = {};
+	
+	  var key = null;
+	  var ref = null;
+	
+	  if (config != null) {
+	    ref = config.ref === undefined ? null : config.ref;
+	    if (true) {
+	      (true ? warning(
+	        config.key !== null,
+	        'createElement(...): Encountered component with a `key` of null. In ' +
+	        'a future version, this will be treated as equivalent to the string ' +
+	        '\'null\'; instead, provide an explicit key or use undefined.'
+	      ) : null);
+	    }
+	    // TODO: Change this back to `config.key === undefined`
+	    key = config.key == null ? null : '' + config.key;
+	    // Remaining properties are added to a new props object
+	    for (propName in config) {
+	      if (config.hasOwnProperty(propName) &&
+	          !RESERVED_PROPS.hasOwnProperty(propName)) {
+	        props[propName] = config[propName];
+	      }
+	    }
+	  }
+	
+	  // Children can be more than one argument, and those are transferred onto
+	  // the newly allocated props object.
+	  var childrenLength = arguments.length - 2;
+	  if (childrenLength === 1) {
+	    props.children = children;
+	  } else if (childrenLength > 1) {
+	    var childArray = Array(childrenLength);
+	    for (var i = 0; i < childrenLength; i++) {
+	      childArray[i] = arguments[i + 2];
+	    }
+	    props.children = childArray;
+	  }
+	
+	  // Resolve default props
+	  if (type.defaultProps) {
+	    var defaultProps = type.defaultProps;
+	    for (propName in defaultProps) {
+	      if (typeof props[propName] === 'undefined') {
+	        props[propName] = defaultProps[propName];
+	      }
+	    }
+	  }
+	
+	  return new ReactElement(
+	    type,
+	    key,
+	    ref,
+	    ReactCurrentOwner.current,
+	    ReactContext.current,
+	    props
+	  );
+	};
+	
+	ReactElement.createFactory = function(type) {
+	  var factory = ReactElement.createElement.bind(null, type);
+	  // Expose the type on the factory and the prototype so that it can be
+	  // easily accessed on elements. E.g. <Foo />.type === Foo.type.
+	  // This should not be named `constructor` since this may not be the function
+	  // that created the element, and it may not even be a constructor.
+	  factory.type = type;
+	  return factory;
+	};
+	
+	ReactElement.cloneAndReplaceProps = function(oldElement, newProps) {
+	  var newElement = new ReactElement(
+	    oldElement.type,
+	    oldElement.key,
+	    oldElement.ref,
+	    oldElement._owner,
+	    oldElement._context,
+	    newProps
+	  );
+	
+	  if (true) {
+	    // If the key on the original is valid, then the clone is valid
+	    newElement._store.validated = oldElement._store.validated;
+	  }
+	  return newElement;
+	};
+	
+	/**
+	 * @param {?object} object
+	 * @return {boolean} True if `object` is a valid component.
+	 * @final
+	 */
+	ReactElement.isValidElement = function(object) {
+	  // ReactTestUtils is often used outside of beforeEach where as React is
+	  // within it. This leads to two different instances of React on the same
+	  // page. To identify a element from a different React instance we use
+	  // a flag instead of an instanceof check.
+	  var isElement = !!(object && object._isReactElement);
+	  // if (isElement && !(object instanceof ReactElement)) {
+	  // This is an indicator that you're using multiple versions of React at the
+	  // same time. This will screw with ownership and stuff. Fix it, please.
+	  // TODO: We could possibly warn here.
+	  // }
+	  return isElement;
+	};
+	
+	module.exports = ReactElement;
+
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactPropTransferer.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule ReactPropTransferer
+	 */
+	
+	"use strict";
+	
+	var assign = __webpack_require__(101);
+	var emptyFunction = __webpack_require__(94);
+	var invariant = __webpack_require__(102);
+	var joinClasses = __webpack_require__(40);
+	var warning = __webpack_require__(85);
+	
+	var didWarn = false;
+	
+	/**
+	 * Creates a transfer strategy that will merge prop values using the supplied
+	 * `mergeStrategy`. If a prop was previously unset, this just sets it.
+	 *
+	 * @param {function} mergeStrategy
+	 * @return {function}
+	 */
+	function createTransferStrategy(mergeStrategy) {
+	  return function(props, key, value) {
+	    if (!props.hasOwnProperty(key)) {
+	      props[key] = value;
+	    } else {
+	      props[key] = mergeStrategy(props[key], value);
+	    }
+	  };
+	}
+	
+	var transferStrategyMerge = createTransferStrategy(function(a, b) {
+	  // `merge` overrides the first object's (`props[key]` above) keys using the
+	  // second object's (`value`) keys. An object's style's existing `propA` would
+	  // get overridden. Flip the order here.
+	  return assign({}, b, a);
+	});
+	
+	/**
+	 * Transfer strategies dictate how props are transferred by `transferPropsTo`.
+	 * NOTE: if you add any more exceptions to this list you should be sure to
+	 * update `cloneWithProps()` accordingly.
+	 */
+	var TransferStrategies = {
+	  /**
+	   * Never transfer `children`.
+	   */
+	  children: emptyFunction,
+	  /**
+	   * Transfer the `className` prop by merging them.
+	   */
+	  className: createTransferStrategy(joinClasses),
+	  /**
+	   * Transfer the `style` prop (which is an object) by merging them.
+	   */
+	  style: transferStrategyMerge
+	};
+	
+	/**
+	 * Mutates the first argument by transferring the properties from the second
+	 * argument.
+	 *
+	 * @param {object} props
+	 * @param {object} newProps
+	 * @return {object}
+	 */
+	function transferInto(props, newProps) {
+	  for (var thisKey in newProps) {
+	    if (!newProps.hasOwnProperty(thisKey)) {
+	      continue;
+	    }
+	
+	    var transferStrategy = TransferStrategies[thisKey];
+	
+	    if (transferStrategy && TransferStrategies.hasOwnProperty(thisKey)) {
+	      transferStrategy(props, thisKey, newProps[thisKey]);
+	    } else if (!props.hasOwnProperty(thisKey)) {
+	      props[thisKey] = newProps[thisKey];
+	    }
+	  }
+	  return props;
+	}
+	
+	/**
+	 * ReactPropTransferer are capable of transferring props to another component
+	 * using a `transferPropsTo` method.
+	 *
+	 * @class ReactPropTransferer
+	 */
+	var ReactPropTransferer = {
+	
+	  TransferStrategies: TransferStrategies,
+	
+	  /**
+	   * Merge two props objects using TransferStrategies.
+	   *
+	   * @param {object} oldProps original props (they take precedence)
+	   * @param {object} newProps new props to merge in
+	   * @return {object} a new object containing both sets of props merged.
+	   */
+	  mergeProps: function(oldProps, newProps) {
+	    return transferInto(assign({}, oldProps), newProps);
+	  },
+	
+	  /**
+	   * @lends {ReactPropTransferer.prototype}
+	   */
+	  Mixin: {
+	
+	    /**
+	     * Transfer props from this component to a target component.
+	     *
+	     * Props that do not have an explicit transfer strategy will be transferred
+	     * only if the target component does not already have the prop set.
+	     *
+	     * This is usually used to pass down props to a returned root component.
+	     *
+	     * @param {ReactElement} element Component receiving the properties.
+	     * @return {ReactElement} The supplied `component`.
+	     * @final
+	     * @protected
+	     */
+	    transferPropsTo: function(element) {
+	      (true ? invariant(
+	        element._owner === this,
+	        '%s: You can\'t call transferPropsTo() on a component that you ' +
+	        'don\'t own, %s. This usually means you are calling ' +
+	        'transferPropsTo() on a component passed in as props or children.',
+	        this.constructor.displayName,
+	        typeof element.type === 'string' ?
+	        element.type :
+	        element.type.displayName
+	      ) : invariant(element._owner === this));
+	
+	      if (true) {
+	        if (!didWarn) {
+	          didWarn = true;
+	          (true ? warning(
+	            false,
+	            'transferPropsTo is deprecated. ' +
+	            'See http://fb.me/react-transferpropsto for more information.'
+	          ) : null);
+	        }
+	      }
+	
+	      // Because elements are immutable we have to merge into the existing
+	      // props object rather than clone it.
+	      transferInto(element.props, this.props);
+	
+	      return element;
+	    }
+	
+	  }
+	};
+	
+	module.exports = ReactPropTransferer;
+
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/keyOf.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule keyOf
+	 */
+	
+	/**
+	 * Allows extraction of a minified key. Let's the build system minify keys
+	 * without loosing the ability to dynamically use key strings as values
+	 * themselves. Pass in an object with a single key/val pair and it will return
+	 * you the string key of that single record. Suppose you want to grab the
+	 * value for a key 'className' inside of an object. Key/val minification may
+	 * have aliased that key to be 'xa12'. keyOf({className: null}) will return
+	 * 'xa12' in that case. Resolve keys you want to use once at startup time, then
+	 * reuse those resolutions.
+	 */
+	var keyOf = function(oneKeyObj) {
+	  var key;
+	  for (key in oneKeyObj) {
+	    if (!oneKeyObj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    return key;
+	  }
+	  return null;
+	};
+	
+	
+	module.exports = keyOf;
+
+
+/***/ },
 /* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	var $ = __webpack_require__(64)
+	/**
+	 * Copyright 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/warning.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule warning
+	 */
 	
-	module.exports = function scrollTo( selected ) {
-	  var offset = $.offset(selected)
-	    , poff   = { top: 0, left: 0 }
-	    , list, scrollTop, selectedTop
-	    , selectedHeight, listHeight, bottom;
+	"use strict";
 	
-	    if( !selected ) return 
+	var emptyFunction = __webpack_require__(94);
 	
-	    list       = $.scrollParent(selected)
-	    scrollTop  = $.scrollTop(list)
-	    listHeight = $.height(list, true)
+	/**
+	 * Similar to invariant but only logs a warning if the condition is not met.
+	 * This can be used to log issues in development environments in critical
+	 * paths. Removing the logging code for production environments will keep the
+	 * same logic and follow the same code paths.
+	 */
 	
-	    if (!getWindow(list)) 
-	      poff = $.offset(list)
+	var warning = emptyFunction;
 	
-	    offset     = {
-	      top:    offset.top  - poff.top,
-	      left:   offset.left - poff.left,
-	      height: offset.height,
-	      width:  offset.width
+	if (true) {
+	  warning = function(condition, format ) {var args=Array.prototype.slice.call(arguments,2);
+	    if (format === undefined) {
+	      throw new Error(
+	        '`warning(condition, format, ...args)` requires a warning ' +
+	        'message argument'
+	      );
 	    }
 	
-	    selectedHeight = offset.height
-	    selectedTop    = offset.top  + scrollTop
-	    bottom         = selectedTop + selectedHeight
-	
-	    scrollTop = scrollTop > selectedTop
-	          ? selectedTop
-	          : bottom > (scrollTop + listHeight) 
-	              ? (bottom - listHeight)
-	              : scrollTop
-	
-	    $.scrollTop(list, scrollTop)
+	    if (!condition) {
+	      var argIndex = 0;
+	      console.warn('Warning: ' + format.replace(/%s/g, function()  {return args[argIndex++];}));
+	    }
+	  };
 	}
 	
-	function getWindow( node ) {
-	  return node === node.window
-	    ? node : node.nodeType === 9 && node.defaultView;
-	}
+	module.exports = warning;
+
 
 /***/ },
 /* 86 */
@@ -19546,9 +19549,42 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	var React = __webpack_require__(1)
+	
+	module.exports = {
+	  
+	  propTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  contextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  childContextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+	
+	  getChildContext: function() {
+	    return { 
+	      isRtl: this.props.isRtl || (this.context && this.context.isRtl)
+	    }
+	  },
+	
+	  isRtl: function() {
+	    return !!(this.props.isRtl || (this.context && this.context.isRtl))
+	  }
+	
+	}
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	var React  = __webpack_require__(1)
-	  , filter = __webpack_require__(70)
-	  , helper = __webpack_require__(89)
+	  , filter = __webpack_require__(74)
+	  , helper = __webpack_require__(91)
 	  , _      = __webpack_require__(14);
 	
 	module.exports = {
@@ -19589,171 +19625,13 @@
 	}
 
 /***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _ =  __webpack_require__(14)
-	
-	module.exports = {
-	  
-	  propTypes: {    
-	    valueField: React.PropTypes.string,
-	    textField:  React.PropTypes.string
-	  },
-	
-	  _dataValue: function(item){
-	    var field = this.props.valueField;
-	
-	        return field && item && _.has(item, field)
-	      ? item[field]
-	      : item
-	  },
-	
-	  _dataText: function(item){
-	    var field = this.props.textField;
-	
-	    return (field && item && _.has(item, field)
-	      ? item[field]
-	      : item) + ''
-	  },
-	
-	  _dataIndexOf: function(data, item){
-	    return _.findIndex(data, this._valueMatcher.bind(null, item), this)
-	  },
-	
-	  _valueMatcher: function(a, b){
-	    return _.isShallowEqual(
-	        this._dataValue(a)
-	      , this._dataValue(b)) 
-	  },
-	
-	  _dataItem: function(data, item){
-	    var first = data[0]
-	      , field = this.props.valueField
-	      , idx;
-	
-	    // make an attempt to see if we were passed in dataItem vs just a valueField value
-	    // either an object with the right prop, or a primitive
-	    // { valueField: 5 } || "hello" [ "hello" ]
-	    if( _.has(item, field) || typeof(first) === typeof(val))
-	      return item
-	
-	    idx = this._dataIndexOf(data, this._dataValue(item))
-	
-	    if (idx !== -1)
-	      return data[idx]
-	
-	    return item
-	  }
-	}
-
-
-/***/ },
 /* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var React = __webpack_require__(1)
-	
-	module.exports = {
-	  
-	  propTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  contextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  childContextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-	
-	  getChildContext: function() {
-	    return { 
-	      isRtl: this.props.isRtl || (this.context && this.context.isRtl)
-	    }
-	  },
-	
-	  isRtl: function() {
-	    return !!(this.props.isRtl || (this.context && this.context.isRtl))
-	  }
-	
-	}
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1);
-	
-	module.exports = function(stateKey, disabled) {
-	  var methodName = stateKey.charAt(0).toUpperCase() + stateKey.substr(1);
-	
-	
-	  var mixin = {
-	  
-	    propTypes: {
-	      data:          React.PropTypes.array,
-	      value:         React.PropTypes.any
-	    }
-	  }
-	
-	  mixin['set' + methodName] = function(idx){
-	    var state = {}; state[stateKey] = idx;
-	
-	    if(idx !== -1) 
-	      this.setState(state);
-	    return this
-	  }
-	
-	  mixin['prev' + methodName] = function(nextIdx){
-	    var data = this._data()
-	      , stateIdx = this.state && this.state[stateKey] || 0;
-	    
-	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) -1;
-	
-	    while( nextIdx > -1 && isDisabled(this, data[nextIdx])) nextIdx--
-	
-	    if ( nextIdx < 0 ) 
-	      nextIdx = disabled ? -1 : 0
-	    
-	    return nextIdx;
-	  }
-	
-	  mixin['next' + methodName] = function(nextIdx){
-	    var data = this._data()
-	      , stateIdx = this.state && this.state[stateKey] || 0;
-	
-	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) + 1
-	
-	    while( nextIdx < data.length && isDisabled(this, data[nextIdx])) nextIdx++
-	
-	    if ( nextIdx >= data.length )
-	      nextIdx = disabled ? -1 : data.length - 1;
-	
-	    return nextIdx;
-	  }
-	
-	  function isDisabled(ctx, item){
-	    return disabled && ctx[disabled](item)
-	  }
-	
-	  return mixin;
-	}
-
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
 	var React   = __webpack_require__(1)
-	  , filters = __webpack_require__(70)
-	  , helper  = __webpack_require__(89)
+	  , filters = __webpack_require__(74)
+	  , helper  = __webpack_require__(91)
 	  , _      = __webpack_require__(14);
 	
 	var filterTypes = Object.keys(filters).filter( function(i)  {return i !== 'filter';})
@@ -19829,49 +19707,132 @@
 
 
 /***/ },
-/* 93 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/emptyFunction.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @providesModule emptyFunction
-	 */
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _ =  __webpack_require__(14)
 	
-	function makeEmptyFunction(arg) {
-	  return function() {
-	    return arg;
-	  };
+	module.exports = {
+	  
+	  propTypes: {    
+	    valueField: React.PropTypes.string,
+	    textField:  React.PropTypes.string
+	  },
+	
+	  _dataValue: function(item){
+	    var field = this.props.valueField;
+	
+	        return field && item && _.has(item, field)
+	      ? item[field]
+	      : item
+	  },
+	
+	  _dataText: function(item){
+	    var field = this.props.textField;
+	
+	    return (field && item && _.has(item, field)
+	      ? item[field]
+	      : item) + ''
+	  },
+	
+	  _dataIndexOf: function(data, item){
+	    return _.findIndex(data, this._valueMatcher.bind(null, item), this)
+	  },
+	
+	  _valueMatcher: function(a, b){
+	    return _.isShallowEqual(
+	        this._dataValue(a)
+	      , this._dataValue(b)) 
+	  },
+	
+	  _dataItem: function(data, item){
+	    var first = data[0]
+	      , field = this.props.valueField
+	      , idx;
+	
+	    // make an attempt to see if we were passed in dataItem vs just a valueField value
+	    // either an object with the right prop, or a primitive
+	    // { valueField: 5 } || "hello" [ "hello" ]
+	    if( _.has(item, field) || typeof(first) === typeof(val))
+	      return item
+	
+	    idx = this._dataIndexOf(data, this._dataValue(item))
+	
+	    if (idx !== -1)
+	      return data[idx]
+	
+	    return item
+	  }
 	}
-	
-	/**
-	 * This function accepts and discards inputs; it has no side effects. This is
-	 * primarily useful idiomatically for overridable function endpoints which
-	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-	 */
-	function emptyFunction() {}
-	
-	emptyFunction.thatReturns = makeEmptyFunction;
-	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-	emptyFunction.thatReturnsThis = function() { return this; };
-	emptyFunction.thatReturnsArgument = function(arg) { return arg; };
-	
-	module.exports = emptyFunction;
 
 
 /***/ },
-/* 94 */
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1);
+	
+	module.exports = function(stateKey, disabled) {
+	  var methodName = stateKey.charAt(0).toUpperCase() + stateKey.substr(1);
+	
+	
+	  var mixin = {
+	  
+	    propTypes: {
+	      data:          React.PropTypes.array,
+	      value:         React.PropTypes.any
+	    }
+	  }
+	
+	  mixin['set' + methodName] = function(idx){
+	    var state = {}; state[stateKey] = idx;
+	
+	    if(idx !== -1) 
+	      this.setState(state);
+	    return this
+	  }
+	
+	  mixin['prev' + methodName] = function(nextIdx){
+	    var data = this._data()
+	      , stateIdx = this.state && this.state[stateKey] || 0;
+	    
+	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) -1;
+	
+	    while( nextIdx > -1 && isDisabled(this, data[nextIdx])) nextIdx--
+	
+	    if ( nextIdx < 0 ) 
+	      nextIdx = disabled ? -1 : 0
+	    
+	    return nextIdx;
+	  }
+	
+	  mixin['next' + methodName] = function(nextIdx){
+	    var data = this._data()
+	      , stateIdx = this.state && this.state[stateKey] || 0;
+	
+	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) + 1
+	
+	    while( nextIdx < data.length && isDisabled(this, data[nextIdx])) nextIdx++
+	
+	    if ( nextIdx >= data.length )
+	      nextIdx = disabled ? -1 : data.length - 1;
+	
+	    return nextIdx;
+	  }
+	
+	  function isDisabled(ctx, item){
+	    return disabled && ctx[disabled](item)
+	  }
+	
+	  return mixin;
+	}
+
+
+/***/ },
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19924,7 +19885,7 @@
 
 
 /***/ },
-/* 95 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19932,255 +19893,41 @@
 	 * All rights reserved.
 	 *
 	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactContext.js
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/emptyFunction.js
 	 *
 	 * This source code is licensed under the BSD-style license found here:
 	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
 	 * An additional grant of patent rights can be found here:
 	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 *
-	 * @providesModule ReactContext
+	 * @providesModule emptyFunction
 	 */
 	
-	"use strict";
-	
-	var assign = __webpack_require__(97);
-	
-	/**
-	 * Keeps track of the current context.
-	 *
-	 * The context is automatically passed down the component ownership hierarchy
-	 * and is accessible via `this.context` on ReactCompositeComponents.
-	 */
-	var ReactContext = {
-	
-	  /**
-	   * @internal
-	   * @type {object}
-	   */
-	  current: {},
-	
-	  /**
-	   * Temporarily extends the current context while executing scopedCallback.
-	   *
-	   * A typical use case might look like
-	   *
-	   *  render: function() {
-	   *    var children = ReactContext.withContext({foo: 'foo'}, () => (
-	   *
-	   *    ));
-	   *    return <div>{children}</div>;
-	   *  }
-	   *
-	   * @param {object} newContext New context to merge into the existing context
-	   * @param {function} scopedCallback Callback to run with the new context
-	   * @return {ReactComponent|array<ReactComponent>}
-	   */
-	  withContext: function(newContext, scopedCallback) {
-	    var result;
-	    var previousContext = ReactContext.current;
-	    ReactContext.current = assign({}, previousContext, newContext);
-	    try {
-	      result = scopedCallback();
-	    } finally {
-	      ReactContext.current = previousContext;
-	    }
-	    return result;
-	  }
-	
-	};
-	
-	module.exports = ReactContext;
-
-
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactCurrentOwner
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Keeps track of the current owner.
-	 *
-	 * The current owner is the component who should own any components that are
-	 * currently being constructed.
-	 *
-	 * The depth indicate how many composite components are above this render level.
-	 */
-	var ReactCurrentOwner = {
-	
-	  /**
-	   * @internal
-	   * @type {ReactComponent}
-	   */
-	  current: null
-	
-	};
-	
-	module.exports = ReactCurrentOwner;
-
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @providesModule Object.assign
-	 */
-	
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
-	
-	function assign(target, sources) {
-	  if (target == null) {
-	    throw new TypeError('Object.assign target cannot be null or undefined');
-	  }
-	
-	  var to = Object(target);
-	  var hasOwnProperty = Object.prototype.hasOwnProperty;
-	
-	  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
-	    var nextSource = arguments[nextIndex];
-	    if (nextSource == null) {
-	      continue;
-	    }
-	
-	    var from = Object(nextSource);
-	
-	    // We don't currently support accessors nor proxies. Therefore this
-	    // copy cannot throw. If we ever supported this then we must handle
-	    // exceptions and side-effects. We don't support symbols so they won't
-	    // be transferred.
-	
-	    for (var key in from) {
-	      if (hasOwnProperty.call(from, key)) {
-	        to[key] = from[key];
-	      }
-	    }
-	  }
-	
-	  return to;
-	};
-	
-	module.exports = assign;
-
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/invariant.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * @providesModule invariant
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-	
-	var invariant = function(condition, format, a, b, c, d, e, f) {
-	  if (true) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-	
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error(
-	        'Minified exception occurred; use the non-minified dev environment ' +
-	        'for the full error message and additional helpful warnings.'
-	      );
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(
-	        'Invariant Violation: ' +
-	        format.replace(/%s/g, function() { return args[argIndex++]; })
-	      );
-	    }
-	
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-	
-	module.exports = invariant;
-
-
-/***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	var compat = module.exports = {
-	
-	  version: function(){
-	    return React.version.split('.').map(parseFloat);
-	  },
-	
-	  propType: function(fn) {
-	
-	    return function validator(props, propName, componentName, location){
-	      var ver = compat.version()
-	        , err = fn.call(this, props, propName, componentName, location)
-	
-	      if ( err && err !== true ) {
-	        if( ver[0] === 0 && ver[1] < 11 )
-	          return console.warn(err instanceof Error ? err.message : err)
-	
-	        return err
-	      }
-	
-	    }
-	  }
+	function makeEmptyFunction(arg) {
+	  return function() {
+	    return arg;
+	  };
 	}
+	
+	/**
+	 * This function accepts and discards inputs; it has no side effects. This is
+	 * primarily useful idiomatically for overridable function endpoints which
+	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+	 */
+	function emptyFunction() {}
+	
+	emptyFunction.thatReturns = makeEmptyFunction;
+	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+	emptyFunction.thatReturnsThis = function() { return this; };
+	emptyFunction.thatReturnsArgument = function(arg) { return arg; };
+	
+	module.exports = emptyFunction;
+
 
 /***/ },
-/* 100 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20199,32 +19946,13 @@
 	}
 
 /***/ },
-/* 101 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = function caret(el, start, end ){
-	
-	  if ( start === undefined){
-	    return {
-	      start: el.selectionStart,
-	      end: el.selectionEnd
-	    }
-	  }
-	
-	  el.focus();
-	  el.setSelectionRange(start, end)
-	}
-
-/***/ },
-/* 102 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(78)
-	  , directions = __webpack_require__(79).directions;
+	  , dates = __webpack_require__(66)
+	  , directions = __webpack_require__(67).directions;
 	
 	module.exports = function(viewUnit, smallUnit){
 	
@@ -20295,6 +20023,281 @@
 	  if( value == null) return value
 	  return dates.max(dates.min(value, max), min)
 	}
+
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	var compat = module.exports = {
+	
+	  version: function(){
+	    return React.version.split('.').map(parseFloat);
+	  },
+	
+	  propType: function(fn) {
+	
+	    return function validator(props, propName, componentName, location){
+	      var ver = compat.version()
+	        , err = fn.call(this, props, propName, componentName, location)
+	
+	      if ( err && err !== true ) {
+	        if( ver[0] === 0 && ver[1] < 11 )
+	          return console.warn(err instanceof Error ? err.message : err)
+	
+	        return err
+	      }
+	
+	    }
+	  }
+	}
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = function caret(el, start, end ){
+	
+	  if ( start === undefined){
+	    return {
+	      start: el.selectionStart,
+	      end: el.selectionEnd
+	    }
+	  }
+	
+	  el.focus();
+	  el.setSelectionRange(start, end)
+	}
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactContext.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule ReactContext
+	 */
+	
+	"use strict";
+	
+	var assign = __webpack_require__(101);
+	
+	/**
+	 * Keeps track of the current context.
+	 *
+	 * The context is automatically passed down the component ownership hierarchy
+	 * and is accessible via `this.context` on ReactCompositeComponents.
+	 */
+	var ReactContext = {
+	
+	  /**
+	   * @internal
+	   * @type {object}
+	   */
+	  current: {},
+	
+	  /**
+	   * Temporarily extends the current context while executing scopedCallback.
+	   *
+	   * A typical use case might look like
+	   *
+	   *  render: function() {
+	   *    var children = ReactContext.withContext({foo: 'foo'}, () => (
+	   *
+	   *    ));
+	   *    return <div>{children}</div>;
+	   *  }
+	   *
+	   * @param {object} newContext New context to merge into the existing context
+	   * @param {function} scopedCallback Callback to run with the new context
+	   * @return {ReactComponent|array<ReactComponent>}
+	   */
+	  withContext: function(newContext, scopedCallback) {
+	    var result;
+	    var previousContext = ReactContext.current;
+	    ReactContext.current = assign({}, previousContext, newContext);
+	    try {
+	      result = scopedCallback();
+	    } finally {
+	      ReactContext.current = previousContext;
+	    }
+	    return result;
+	  }
+	
+	};
+	
+	module.exports = ReactContext;
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactCurrentOwner
+	 */
+	
+	"use strict";
+	
+	/**
+	 * Keeps track of the current owner.
+	 *
+	 * The current owner is the component who should own any components that are
+	 * currently being constructed.
+	 *
+	 * The depth indicate how many composite components are above this render level.
+	 */
+	var ReactCurrentOwner = {
+	
+	  /**
+	   * @internal
+	   * @type {ReactComponent}
+	   */
+	  current: null
+	
+	};
+	
+	module.exports = ReactCurrentOwner;
+
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule Object.assign
+	 */
+	
+	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
+	
+	function assign(target, sources) {
+	  if (target == null) {
+	    throw new TypeError('Object.assign target cannot be null or undefined');
+	  }
+	
+	  var to = Object(target);
+	  var hasOwnProperty = Object.prototype.hasOwnProperty;
+	
+	  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
+	    var nextSource = arguments[nextIndex];
+	    if (nextSource == null) {
+	      continue;
+	    }
+	
+	    var from = Object(nextSource);
+	
+	    // We don't currently support accessors nor proxies. Therefore this
+	    // copy cannot throw. If we ever supported this then we must handle
+	    // exceptions and side-effects. We don't support symbols so they won't
+	    // be transferred.
+	
+	    for (var key in from) {
+	      if (hasOwnProperty.call(from, key)) {
+	        to[key] = from[key];
+	      }
+	    }
+	  }
+	
+	  return to;
+	};
+	
+	module.exports = assign;
+
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/core/invariant.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * @providesModule invariant
+	 */
+	
+	"use strict";
+	
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+	
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if (true) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+	
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        'Invariant Violation: ' +
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	    }
+	
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+	
+	module.exports = invariant;
+
 
 /***/ },
 /* 103 */
