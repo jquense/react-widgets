@@ -46,7 +46,7 @@ var MigrationGuide = React.createClass({
           to <code>Multiselect</code> which is more descriptive, and makes room for the new <code>SelectList</code> widget.
         </p>
         <ul>
-          <li><code>require('react-widgets').DropDownlist</code> -> <code>require('react-widgets').Dropdownlist</code></li>
+          <li><code>require('react-widgets').DropDownlist</code> -> <code>require('react-widgets').DropdownList</code></li>
           <li><code>require('react-widgets').Select</code> -> <code>require('react-widgets').Multiselect</code></li>
         </ul>
         <h4>File Names and Locations</h4>
