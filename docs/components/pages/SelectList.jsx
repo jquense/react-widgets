@@ -150,7 +150,6 @@ var SelectList = React.createClass({
            a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
         </p>
 
-
         <h2 id={ prefix +"keyboard" }>Keyboard Navigation</h2>
 
         <ul className='list-unstyled keyboard-list'>
@@ -164,6 +163,16 @@ var SelectList = React.createClass({
           <li><kbd>ctrl + a</kbd> toggle select all/select none</li>
           <li><kbd>any key</kbd> search list for item starting with key</li>
         </ul>
+
+        <h2 id={ prefix +"tips" }>Keyboard Navigation</h2>
+
+        <p>
+          To make the entire width of the list item clickable add "display: block;" CSS.  For example:
+          <Example code={
+            .rw-selectlist>ul>li.rw-selectlist-item>label {
+              display: block;
+            }
+          }/>
       </section>
     );
   }
