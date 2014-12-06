@@ -30,9 +30,7 @@ var propTypes = {
       itemComponent:   CustomPropTypes.elementType,
 
       onSelect:        React.PropTypes.func,
-
       onCreate:        React.PropTypes.func,
-      //allowCustomTags: React.PropTypes.bool,
 
       duration:        React.PropTypes.number, //popup
 

@@ -53,7 +53,7 @@ var MigrationGuide = React.createClass({
         <p>
           File names and locations have also changed. Components now all have a consistent PascalCase names that match 
           their exported value. 
-          To make it easier to require individual widgets all file structures for componets have been flattened down 
+          To make it easier to require individual widgets all file structures for components have been flattened down 
           to just the <code>lib/</code> directory.
         </p>
         <ul>

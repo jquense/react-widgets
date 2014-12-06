@@ -1,6 +1,5 @@
+'use strict';
 var gulp = require('gulp')
-  , less = require('gulp-less')
-  , plumber = require('gulp-plumber')
   , clean = require('gulp-clean')
   , configs = require('./webpack.configs')
   , webpack = require('gulp-webpack');
@@ -8,7 +7,7 @@ var gulp = require('gulp')
 module.exports = {
 
   clean: function(){
-      return gulp.src('./browser/*', { read: false })
+      return gulp.src('./browser/*.js', { read: false })
           .pipe(clean())
   }, 
 

@@ -48,20 +48,7 @@ var Multiselect = React.createClass({
           Multiple Multiselection widget.
         </p>
         <MultiselectExample/>
-        <Example code={
-          "render: function(){\n"+
-          "  var Multiselect = require('react-widgets').Multiselect\n"+
-          "  //... \n\n" +
-          "  return (\n"+
-          "    <Multiselect \n"+
-          "      data={list}\n"+
-          "      value={this.state.value}\n"+
-          "      onChange={this._change}\n"+
-          "      textField='label'\n"+
-          "      valueField='id'/>\n"+
-          "   )\n"+
-          "}"
-        }/>
+        <Example code={initialExample}/>
 
         <h2>Props</h2>
         <h3 className='prop-header' id={ prefix +"value" }>
@@ -87,10 +74,10 @@ var Multiselect = React.createClass({
         <h3 className='prop-header' id={ prefix +"onCreate" }>
           onCreate <small>{"Function(String searchTerm)"}</small></h3>
         <p>
-          This handler fires when the user types a <code>searchTerm</code> that is not in the data list, and the choose to create a new tag. OnCreate is only fired 
-          when <code>allowCustomTags</code> prop is <code>true</code>. It is up to the widget parent to implement actual creation logic, the most common 
-          approach would be to add the tag into the data and values arrays.
+          This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic, 
+          a common implementation is shown below, where the new tag is selected and addedto the data list.
         </p>
+        <Example code={onCreateExample}/>
 
         <h3 className='prop-header' id={ prefix +"data" }>
           data <small>Array</small></h3>
@@ -202,13 +189,18 @@ var Multiselect = React.createClass({
           localize widget text and increase accessibility.
         </p>
 
+        <h3>messages.createNew <small>String<Default>"(create new tag)"</Default></small></h3>
+        <p>
+          The text label for creating new tags
+        </p>
+
         <h3>messages.emptyList <small>String<Default>"There are no items in this list"</Default></small></h3>
         <p>
-          text to display when the <code>data</code> prop array is empty
+          Text to display when the <code>data</code> prop array is empty
         </p>
         <h3>messages.emptyFilter <small>String<Default>"The filter returned no results"</Default></small></h3>
         <p>
-          text to display when the the current filter does not return any results
+          Text to display when the the current filter does not return any results
         </p>
 
         <h2 id={ prefix +"keyboard" }>Keyboard Navigation</h2>
@@ -227,6 +219,7 @@ var Multiselect = React.createClass({
           <li><kbd>end</kbd> move focus to last item</li>
 
           <li><kbd>enter</kbd> select focused item</li>
+          <li><kbd>ctrl + enter</kbd> create new tag from current search term</li>
 
           <li><kbd>any key</kbd> search list for item starting with key</li>
         </ul>
@@ -235,5 +228,55 @@ var Multiselect = React.createClass({
   }
 
 });
+
+var initialExample =
+`
+render: function(){
+  var Multiselect = require('react-widgets').Multiselect
+    , list = [
+      { label: 'orange', id: 1 },
+      { label: 'blue', id: 2 },
+      { label: 'red', id: 3 },
+    ];
+ 
+  return (
+    <Multiselect 
+      data={list}
+      value={this.state.value}
+      onChange={this._change}
+      textField='label'
+      valueField='id'/>
+   )
+}`;
+
+var onCreateExample =
+`
+render(){
+  var list = [
+      { label: 'orange', id: 1 },
+      { label: 'blue', id: 2 },
+      { label: 'red', id: 3 },
+    ];
+  
+  function change(values){
+    this.setState({ value: values })
+  }
+
+  function create(color){
+    var tag = { label: color, id: list.length + 1 } // create a tag object
+
+    list.push(value) // add new tag to the data list
+    this.setState({ value: this.state.value.concat(tag) }) //add new tag tothe list of values
+  }
+
+  return (
+    <Multiselect 
+      value={this.state.value} 
+      data={data} 
+      textfield="label"
+      onCreate={create} 
+      onChange={change}/>
+  )
+}`;
 
 module.exports = Multiselect;
