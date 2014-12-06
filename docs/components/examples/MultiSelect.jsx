@@ -19,6 +19,7 @@ module.exports = React.createClass({
       duration: 250,
       value: [],
       suggest: true,
+      allowCustom: true,
       placeholder: 'a placeholder...'
     }
   },
@@ -26,6 +27,15 @@ module.exports = React.createClass({
   render: function(){
     var allVals = this.state.value
       , disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
+
+    function onCreate(tag){
+      var tag = { id: list.length + 1, label: tag }
+
+      //list.push(tag)
+      this.setState({
+        value: [].concat(this.state.value, tag),
+      })
+    }
 
     return (
       <div className='example'>
@@ -41,6 +51,7 @@ module.exports = React.createClass({
                   placeholder={this.state.placeholder}
                   disabled={disabled ? this.state.disabled : false}
                   readOnly={this.state.disabled === 'readonly'}
+                  onCreate={this.state.allowCustom && onCreate.bind(this)}
                   duration={this.state.duration}
                   busy={this.state.busy}
                   isRtl={this.state.isRtl}/>
@@ -56,7 +67,7 @@ module.exports = React.createClass({
                   placeholder={this.state.placeholder}
                   disabled={disabled ? this.state.disabled : false}
                   readOnly={this.state.disabled === 'readonly'}
-
+                  onCreate={this.state.allowCustom && onCreate.bind(this)}
                   duration={this.state.duration}
                   itemComponent={itemComp}
                   tagComponent={itemComp}
@@ -71,6 +82,14 @@ module.exports = React.createClass({
                   checked={this.state.isRtl}
                   onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
+              </label>
+            </div>
+            <div className='form-group'>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.allowCustom}
+                  onChange={this._set.bind(null, 'allowCustom', !this.state.allowCustom)}/>
+                  Allow custom tags
               </label>
             </div>
             <div className='form-group'>

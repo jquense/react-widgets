@@ -32,7 +32,7 @@ var propTypes = {
       onSelect:        React.PropTypes.func,
 
       onCreate:        React.PropTypes.func,
-      allowCustomTags: React.PropTypes.bool,
+      //allowCustomTags: React.PropTypes.bool,
 
       duration:        React.PropTypes.number, //popup
 
@@ -77,7 +77,6 @@ var Select = React.createClass({
       filter: 'startsWith',
       value: [],
       open: false,
-      allowCustomTags: false,
       searchTerm: '',
       messages: {
         createNew:   "(create new tag)",
@@ -92,7 +91,7 @@ var Select = React.createClass({
 
     return {
       focusedIndex:  0,
-      processedData: this.process(this.props.data, values, ''),
+      processedData: this.process(this.props.data, values, this.props.searchTerm),
       dataItems: values.map( item => this._dataItem(this.props.data, item))
     }
   },
@@ -232,7 +231,8 @@ var Select = React.createClass({
   },
 
   _onSelect: function(data){
-    if( data === undefined && this.props.allowCustomTags )
+
+    if( data === undefined && this.props.onCreate )
       return this._onCreate(this.props.searchTerm)
 
     this.notify('onSelect', data)
@@ -284,7 +284,7 @@ var Select = React.createClass({
       else          tagList && tagList.first()
     }
     else if ( isOpen && key === 'Enter' )
-      ctrl && this.props.allowCustomTags
+      ctrl && this.props.onCreate
         ? this._onCreate(this.props.searchTerm)
         : this._onSelect(this._data()[this.state.focusedIndex])
 
@@ -336,7 +336,7 @@ var Select = React.createClass({
   _shouldShowCreate(){
     var text = this.props.searchTerm;
 
-    if ( !(this.props.allowCustomTags && text) ) 
+    if ( !(this.props.onCreate && text) ) 
       return false
 
     //if there is an exact match
@@ -353,7 +353,14 @@ var Select = React.createClass({
 })
 
 
-module.exports = controlledInput.createControlledClass(
-    Select, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
+module.exports = controlledInput.createControlledClass(Select
+    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
+    , { onChange: defaultChange, onCreate: defaultChange });
+
+
+function defaultChange(){
+  if ( this.props.searchTerm === undefined )
+    this.setState({ searchTerm: '' })
+}
 
 module.exports.BaseMultiselect = Select

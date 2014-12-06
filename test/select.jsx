@@ -191,13 +191,37 @@ describe('Select', function(){
     })
   })
 
+  it('should clear SearchTerm when uncontrolled', function(){
+    var ms = render(<Select data={dataList}/>);
+
+    var input = findTag(ms, 'input').getDOMNode()
+    input.value = "ji"
+  
+    trigger.change(input, {})
+    expect(input.value).to.be('ji')
+
+    trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
+    expect(input.value).to.be('')
+  })
+
+
+  it('should not clear SearchTerm when controlled', function(){
+    var ms = render(<Select searchTerm="jim" data={dataList}/>);
+
+    var input = findTag(ms, 'input').getDOMNode()
+    trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
+
+    expect(input.value).to.be('jim')
+  })
+
+
   it('should show create tag correctly', function(){
-    var ms = render(<Select open={true} searchTerm="custom tag" allowCustomTags data={dataList}/>);
+    var ms = render(<Select open={true} searchTerm="custom tag" onCreate={_.noop} data={dataList}/>);
 
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.not.throwException()
 
-    ms = render(<Select open={true} searchTerm="" allowCustomTags data={dataList}/>)
+    ms = render(<Select open={true} searchTerm="" onCreate={_.noop} data={dataList}/>)
 
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
@@ -210,7 +234,7 @@ describe('Select', function(){
 
   it('should call onCreate', function(){
     var create = sinon.spy()
-      , ms = render(<Select open={true} searchTerm="custom tag" allowCustomTags data={dataList} onCreate={create}/>)
+      , ms = render(<Select open={true} searchTerm="custom tag"  data={dataList} onCreate={create}/>)
       , createLi = findClass(ms, 'rw-multiselect-create-tag').getDOMNode().children[0];
 
     trigger.click(createLi)
@@ -226,7 +250,7 @@ describe('Select', function(){
     expect(create.calledWith("custom tag")).to.ok()
 
     // other values have focus
-    ms = render(<Select open={true} searchTerm="custom tag" data={['custom tag time']} allowCustomTags onCreate={create}/>)
+    ms = render(<Select open={true} searchTerm="custom tag" data={['custom tag time']}  onCreate={create}/>)
     create.reset()
     trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
 

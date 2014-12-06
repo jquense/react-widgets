@@ -136,7 +136,6 @@ var App = React.createClass({
               allowCustomTags
               onCreate={create}
               open={true} 
-              searchTerm="custom tag" 
               tagComponent={ListItem}
               itemComponent={ListItem}
               onChange={change.bind(null, 'selectValues')}/>
