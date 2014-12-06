@@ -19,6 +19,7 @@ var ComboBox = React.createClass({
             <DDButton title='props' bsStyle='link' pullRight={true}>
               <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
               <MenuItem href={'#' + prefix + 'onChange'}>onChange</MenuItem>
+              <MenuItem href={'#' + prefix + 'onSelect'}>onSelect</MenuItem>
               <MenuItem href={'#' + prefix + 'data'}>data</MenuItem>
               <MenuItem divider={true}></MenuItem>
               <MenuItem href={'#' + prefix + 'valueField'}>valueField</MenuItem>
@@ -81,6 +82,13 @@ var ComboBox = React.createClass({
           Called when the value is changed. If the value is on of the <code>data</code> members
           that item will be returned. In the case of a value not being found in the <code>data</code> array
           the string value of the combobox will be returned.
+        </p>
+
+        <h3 className='prop-header' id={ prefix +"onSelect" }>
+          onSelect <small>{"Function(Any value)"}</small></h3>
+        <p>
+          This handler fires when an item has been selected from the list. It fires before the <code>onChange</code> handler, and fires 
+          regardless of whether the value has actually changed.
         </p>
 
         <h3 className='prop-header' id={ prefix +"data" }>

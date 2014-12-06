@@ -39,9 +39,9 @@ module.exports = React.createClass({
               ? this.props.editFormat 
               : this.props.format)
 
+    this.lastValue = text
     return {
-      textValue: text,
-      lastValue: text
+      textValue: text
     }
   },
 
@@ -67,20 +67,22 @@ module.exports = React.createClass({
     this.setState({ textValue: e.target.value });
   },
 
-  _blur: function(){
-    var val = this.state.textValue
+  _blur: function(e){
+    var val = e.target.value 
+    
+    //console.log('blur', val, e.target, '\nlast', this.lastValue)
 
-    if ( val === this.state.lastValue) return
+    if ( val === this.lastValue) return
 
+    this.lastValue = val;
     this.props.onChange(this.props.parse(val), val);
-    this.setState({ lastValue: val });
+    
   },
 
   focus: function(){
     this.getDOMNode().focus()
-  },
+  }
 
-  
 });
 
 function isValid(d) {

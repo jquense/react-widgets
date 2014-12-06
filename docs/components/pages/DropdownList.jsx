@@ -19,6 +19,7 @@ var DropdownList = React.createClass({
             <DDButton title='props' bsStyle='link' pullRight={true}>
               <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
               <MenuItem href={'#' + prefix + 'onChange'}>onChange</MenuItem>
+              <MenuItem href={'#' + prefix + 'onSelect'}>onSelect</MenuItem>
               <MenuItem href={'#' + prefix + 'data'}>data</MenuItem>
               <MenuItem divider={true}></MenuItem>
               <MenuItem href={'#' + prefix + 'valueField'}>valueField</MenuItem>
@@ -82,6 +83,13 @@ var DropdownList = React.createClass({
           Change event Handler that is called when the value is changed.
         </p>
 
+        <h3 className='prop-header' id={ prefix +"onSelect" }>
+          onSelect <small>{"Function(Any value)"}</small></h3>
+        <p>
+          This handler fires when an item has been selected from the list. It fires before the <code>onChange</code> handler, and fires 
+          regardless of whether the value has actually changed.
+        </p>
+
         <h3 className='prop-header' id={ prefix +"data" }>
           data <small>Array - mixed</small></h3>
         <p>
@@ -115,6 +123,8 @@ var DropdownList = React.createClass({
           This component is used to render each possible item in the DropdownList. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
+
+
 
         <h3 className='prop-header' id={ prefix +"open" }>
           open <small>Boolean<Default>false</Default></small><strong>controllable (onToggle, defaultOpen)</strong>

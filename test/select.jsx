@@ -165,6 +165,32 @@ describe('Select', function(){
     }, 10)
   })
 
+  it('should call Select handler', function(done){
+    var change = sinon.spy(), select = sinon.spy()
+      , ms = render(<Select open={true} value={[dataList[1]]} data={dataList} onChange={change} onSelect={select}/>)
+      , list = findClass(ms, 'rw-list');
+
+    ms.getDOMNode().focus()
+
+    setTimeout(function(){
+
+      trigger.click(list.getDOMNode().children[0])
+
+      expect(select.calledOnce).to.be(true)
+      expect(change.calledAfter(select)).to.be(true)
+      
+      select.reset()
+      change.reset()
+
+      trigger.keyDown(ms.getDOMNode(), { key: 'ArrowDown'}) //move to different value so change fires
+      trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
+      
+      expect(select.calledOnce).to.be(true)
+      expect(change.calledAfter(select)).to.be(true)
+      done()
+    })
+  })
+
   it('should change values on key down', function(){
     var change = sinon.spy()
       , select = render(<Select value={[0,1,2]} data={dataList} textField='label' valueField='id' onChange={change}/>)

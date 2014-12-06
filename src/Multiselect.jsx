@@ -29,6 +29,8 @@ var propTypes = {
       tagComponent:   CustomPropTypes.elementType,
       itemComponent:  CustomPropTypes.elementType,
 
+      onSelect:       React.PropTypes.func,
+
       duration:       React.PropTypes.number, //popup
 
       placeholder:    React.PropTypes.string,
@@ -220,6 +222,7 @@ var Select = React.createClass({
     if( data === undefined )
       return //handle custom tags maybe here?
 
+    this.notify('onSelect', data)
     this.change(this.state.dataItems.concat(data))
     this.close()
     this._focus(true)

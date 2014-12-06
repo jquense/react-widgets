@@ -19,6 +19,7 @@ var Multiselect = React.createClass({
             <DDButton title='props' bsStyle='link' pullRight={true}>
               <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
               <MenuItem href={'#' + prefix + 'onChange'}>onChange</MenuItem>
+              <MenuItem href={'#' + prefix + 'onSelect'}>onSelect</MenuItem>
               <MenuItem href={'#' + prefix + 'data'}>data</MenuItem>
               <MenuItem divider={true}></MenuItem>
               <MenuItem href={'#' + prefix + 'valueField'}>valueField</MenuItem>
@@ -69,12 +70,17 @@ var Multiselect = React.createClass({
         </p>
 
         <h3 className='prop-header' id={ prefix +"onChange" }>
-          onChange <small>{'Function(Any value)'}</small></h3>
+          onChange <small>{'Function(Array value)'}</small></h3>
         <p>
-          change event Handler that is called when the value is changed. The handler will return an array of values
+          change event Handler that is called when the value is changed. The handler is called with an array of values
         </p>
-        <strong>Note:</strong><span> Just like input tags, if you do not specify an <code>onChange</code> handler the widget
-        becomes readonly</span>
+
+        <h3 className='prop-header' id={ prefix +"onSelect" }>
+          onSelect <small>{"Function(Any value)"}</small></h3>
+        <p>
+          This handler fires when an item has been selected from the list. It fires before the <code>onChange</code> handler, and fires 
+          regardless of whether the value has actually changed.
+        </p>
 
         <h3 className='prop-header' id={ prefix +"data" }>
           data <small>Array</small></h3>

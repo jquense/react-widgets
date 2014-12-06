@@ -107,6 +107,30 @@ describe('ComboBox', function(){
     }, 0)
   })
 
+  it('should call Select handler', function(done){
+    var change = sinon.spy(), select = sinon.spy()
+      , comboBox = render(<ComboBox open={true} value={dataList[1]} data={dataList} duration={0} onChange={change} onSelect={select}/>)
+      , list = findClass(comboBox, 'rw-list');
+
+    comboBox.getDOMNode().focus()
+
+    setTimeout(function(){
+
+      trigger.click(list.getDOMNode().children[0])
+
+      expect(select.calledOnce).to.be(true)
+      expect(change.calledAfter(select)).to.be(true)
+
+      select.reset()
+      trigger.keyDown(comboBox.getDOMNode(), { key: 'ArrowDown'}) //move to different value so change fires
+      trigger.keyDown(comboBox.getDOMNode(), { key: 'Enter'})
+      
+      expect(select.calledOnce).to.be(true)
+      expect(change.calledAfter(select)).to.be(true)
+      done()
+    })
+  })
+
   it('should change values on key down', function(){
     var change = sinon.spy()
       , comboBox = render(<ComboBox value={dataList[1]} data={dataList} duration={0} onChange={change}/>);

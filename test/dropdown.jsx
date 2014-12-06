@@ -114,6 +114,32 @@ describe('DROPDOWNS', function(){
     }, 0)
   })
 
+  it('should call Select handler', function(done){
+    var change = sinon.spy(), select = sinon.spy()
+      , dropdown = render(<Dropdown open={true} value={data[1]} data={data} duration={0} onChange={change} onSelect={select}/>)
+      , list = findClass(dropdown, 'rw-list');
+
+    dropdown.getDOMNode().focus()
+
+    setTimeout(function(){
+
+      trigger.click(list.getDOMNode().children[0])
+
+      expect(select.calledOnce).to.be(true)
+      expect(change.calledAfter(select)).to.be(true)
+      
+      select.reset()
+      change.reset()
+
+      trigger.keyDown(dropdown.getDOMNode(), { key: 'ArrowDown'}) //move to different value so change fires
+      trigger.keyDown(dropdown.getDOMNode(), { key: 'Enter'})
+      
+      expect(select.calledOnce).to.be(true)
+      expect(change.calledAfter(select)).to.be(true)
+      done()
+    })
+  })
+
   it('should change values on key down', function(){
     var change = sinon.spy()
       , dropdown = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>);
