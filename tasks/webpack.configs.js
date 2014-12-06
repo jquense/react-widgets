@@ -22,9 +22,8 @@ module.exports = {
     },
 
     externals: {
-      $:      'window.$',
-      globalize: 'window.Globalize',
-      react:  'window.React'
+      globalize: 'Globalize',
+      react:  'React'
     },
 
     plugins: [
