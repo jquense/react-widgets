@@ -24,7 +24,7 @@ var propTypes = {
   valueComponent: CustomPropTypes.elementType,
   itemComponent:  CustomPropTypes.elementType,
 
-  onChange:       React.PropTypes.func,
+  onSelect:       React.PropTypes.func,
   
   busy:           React.PropTypes.bool,
 

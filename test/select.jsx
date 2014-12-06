@@ -191,6 +191,53 @@ describe('Select', function(){
     })
   })
 
+  it('should show create tag correctly', function(){
+    var ms = render(<Select open={true} searchTerm="custom tag" allowCustomTags data={dataList}/>);
+
+    expect(function err() {
+      findClass(ms, 'rw-multiselect-create-tag') }).to.not.throwException()
+
+    ms = render(<Select open={true} searchTerm="" allowCustomTags data={dataList}/>)
+
+    expect(function err() {
+      findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
+
+    ms = render(<Select open={true} searchTerm="custom tag" data={dataList}/>)
+
+    expect(function err() {
+      findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
+  })
+
+  it('should call onCreate', function(){
+    var create = sinon.spy()
+      , ms = render(<Select open={true} searchTerm="custom tag" allowCustomTags data={dataList} onCreate={create}/>)
+      , createLi = findClass(ms, 'rw-multiselect-create-tag').getDOMNode().children[0];
+
+    trigger.click(createLi)
+
+    expect(create.calledOnce).to.ok()
+    expect(create.calledWith("custom tag")).to.ok()
+
+    // only option is create
+    create.reset()
+    trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
+
+    expect(create.calledOnce).to.ok()
+    expect(create.calledWith("custom tag")).to.ok()
+
+    // other values have focus
+    ms = render(<Select open={true} searchTerm="custom tag" data={['custom tag time']} allowCustomTags onCreate={create}/>)
+    create.reset()
+    trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
+
+    expect(create.called).to.be(false)
+
+    trigger.keyDown(ms.getDOMNode(), { key: 'Enter', ctrlKey: true })
+
+    expect(create.calledOnce).to.ok()
+    expect(create.calledWith("custom tag")).to.ok()
+  })
+
   it('should change values on key down', function(){
     var change = sinon.spy()
       , select = render(<Select value={[0,1,2]} data={dataList} textField='label' valueField='id' onChange={change}/>)

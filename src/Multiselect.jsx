@@ -11,46 +11,49 @@ var React = require('react')
   , List        = require('./List.jsx');
 
 var propTypes = {
-      data:           React.PropTypes.array,
+      data:            React.PropTypes.array,
       //-- controlled props --
-      value:          React.PropTypes.array,
-      onChange:       React.PropTypes.func,
+      value:           React.PropTypes.array,
+      onChange:        React.PropTypes.func,
 
-      searchTerm:     React.PropTypes.string,
-      onSearch:       React.PropTypes.func,
+      searchTerm:      React.PropTypes.string,
+      onSearch:        React.PropTypes.func,
 
-      open:           React.PropTypes.bool,
-      onToggle:       React.PropTypes.func,
+      open:            React.PropTypes.bool,
+      onToggle:        React.PropTypes.func,
       //-------------------------------------------
 
-      valueField:     React.PropTypes.string,
-      textField:      React.PropTypes.string,
+      valueField:      React.PropTypes.string,
+      textField:       React.PropTypes.string,
 
-      tagComponent:   CustomPropTypes.elementType,
-      itemComponent:  CustomPropTypes.elementType,
+      tagComponent:    CustomPropTypes.elementType,
+      itemComponent:   CustomPropTypes.elementType,
 
-      onSelect:       React.PropTypes.func,
+      onSelect:        React.PropTypes.func,
 
-      duration:       React.PropTypes.number, //popup
+      onCreate:        React.PropTypes.func,
+      allowCustomTags: React.PropTypes.bool,
 
-      placeholder:    React.PropTypes.string,
+      duration:        React.PropTypes.number, //popup
 
-      disabled:       React.PropTypes.oneOfType([
-                        React.PropTypes.bool,
-                        React.PropTypes.array,
-                        React.PropTypes.oneOf(['disabled'])
+      placeholder:     React.PropTypes.string,
+
+      disabled:        React.PropTypes.oneOfType([
+                         React.PropTypes.bool,
+                         React.PropTypes.array,
+                         React.PropTypes.oneOf(['disabled'])
                       ]),
 
-      readOnly:       React.PropTypes.oneOfType([
-                        React.PropTypes.bool,
-                        React.PropTypes.array,
-                        React.PropTypes.oneOf(['readonly'])
-                      ]),
+      readOnly:        React.PropTypes.oneOfType([
+                         React.PropTypes.bool,
+                         React.PropTypes.array,
+                         React.PropTypes.oneOf(['readonly'])
+                       ]),
 
-      messages:       React.PropTypes.shape({
-        open:         React.PropTypes.string,
-        emptyList:    React.PropTypes.string,
-        emptyFilter:  React.PropTypes.string
+      messages:        React.PropTypes.shape({
+        open:          React.PropTypes.string,
+        emptyList:     React.PropTypes.string,
+        emptyFilter:   React.PropTypes.string
       })
     };
 
@@ -74,8 +77,10 @@ var Select = React.createClass({
       filter: 'startsWith',
       value: [],
       open: false,
+      allowCustomTags: false,
       searchTerm: '',
       messages: {
+        createNew:   "(create new tag)",
         emptyList:   "There are no items in this list",
         emptyFilter: "The filter returned no results"
       }
@@ -103,7 +108,7 @@ var Select = React.createClass({
   },
 
   render: function(){
-    var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
+    var { className, children, ...props } = _.omit(this.props, Object.keys(propTypes))
       , listID  = this._id('_listbox')
       , optID   = this._id('_option')
       , items   = this._data()
@@ -172,6 +177,14 @@ var Select = React.createClass({
                   ? this.props.messages.emptyFilter
                   : this.props.messages.emptyList
               }}/>
+              { this._shouldShowCreate() &&
+                <ul className="rw-list rw-multiselect-create-tag">
+                  <li onClick={this._onCreate.bind(null, this.props.searchTerm)} 
+                      className={cx({'rw-state-focus': !this._data().length || this.state.focusedIndex === null })}>
+                    <strong>{`"${this.props.searchTerm}"`}</strong> { this.props.messages.createNew }
+                  </li>
+                </ul>
+              }
           </div>
         </Popup>
       </div>
@@ -214,13 +227,13 @@ var Select = React.createClass({
   },
 
   _typing: function(e){
-    this.notify('onSearch', [e.target.value])
+    this.notify('onSearch', [ e.target.value ])
     this.open()
   },
 
   _onSelect: function(data){
-    if( data === undefined )
-      return //handle custom tags maybe here?
+    if( data === undefined && this.props.allowCustomTags )
+      return this._onCreate(this.props.searchTerm)
 
     this.notify('onSelect', data)
     this.change(this.state.dataItems.concat(data))
@@ -228,23 +241,39 @@ var Select = React.createClass({
     this._focus(true)
   },
 
+  _onCreate: function(tag){
+    if (tag.trim() === '' ) 
+      return
+
+    this.notify('onCreate', tag)
+    this.close()
+    this._focus(true)
+  },
+
   _keyDown: function(e){
     var key = e.key
       , alt = e.altKey
+      , ctrl = e.ctrlKey
       , searching = !!this.props.searchTerm
       , isOpen  = this.props.open
-      , tagList = this.refs.tagList;
+      , current = this.state.focusedIndex
+      , tagList = this.refs.tagList
+      , isLast;
 
     if ( key === 'ArrowDown') {
+      var nextIdx = this.nextFocusedIndex()
+
       e.preventDefault()
-      if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
+      if ( isOpen ) this.setFocusedIndex(current === nextIdx || current === null ? null : nextIdx)
       else          this.open()
     }
     else if ( key === 'ArrowUp') {
       e.preventDefault()
+
       if ( alt)          this.close()
-      else if ( isOpen ) this.setFocusedIndex(
-        this.prevFocusedIndex())
+      else if ( isOpen ) this.setFocusedIndex(current === null
+        ? this._data().length - 1
+        : this.prevFocusedIndex())
     }
     else if ( key === 'End'){
       if ( isOpen ) this.setFocusedIndex(this._data().length - 1)
@@ -255,8 +284,11 @@ var Select = React.createClass({
       else          tagList && tagList.first()
     }
     else if ( isOpen && key === 'Enter' )
-      this._onSelect(this._data()[this.state.focusedIndex])
+      ctrl && this.props.allowCustomTags
+        ? this._onCreate(this.props.searchTerm)
+        : this._onSelect(this._data()[this.state.focusedIndex])
 
+    
     else if ( key === 'Escape')
       isOpen ? this.close() : this.refs.tagList.clear()
 
@@ -274,8 +306,7 @@ var Select = React.createClass({
   },
 
   change: function(data){
-    var change = this.props.onChange
-    if ( change ) change(data)
+    this.notify('onChange', [data])
   },
 
   open: function(){
@@ -300,6 +331,17 @@ var Select = React.createClass({
       items = this.filter(items, searchTerm)
 
     return items
+  },
+
+  _shouldShowCreate(){
+    var text = this.props.searchTerm;
+
+    if ( !(this.props.allowCustomTags && text) ) 
+      return false
+
+    //if there is an exact match
+    return !this._data().some( v => this._dataText(v) === text) 
+        && !this.state.dataItems.some( v => this._dataText(v) === text) 
   },
 
   _placeholder: function(){

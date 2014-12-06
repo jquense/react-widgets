@@ -37,7 +37,7 @@ module.exports = React.createClass({
   },
 
 	componentDidMount: function(){
-    this.close(0)
+    !this.props.open && this.close(0)
 	},
 
   componentWillReceiveProps: function(nextProps) {
@@ -55,7 +55,7 @@ module.exports = React.createClass({
   },
 
 	render: function(){
-    var { className, ...props } = this.props
+    var { className, open, ...props } = this.props
 
 		return (
       <div {...props} className={ (className ||'') + " rw-popup-container"}>

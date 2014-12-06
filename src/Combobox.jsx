@@ -27,7 +27,7 @@ var propTypes = {
       textField:      React.PropTypes.string,
       name:           React.PropTypes.string,
 
-      onChange:       React.PropTypes.func,
+      onSelect:       React.PropTypes.func,
       
       disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.bool,

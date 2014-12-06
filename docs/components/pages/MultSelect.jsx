@@ -20,6 +20,8 @@ var Multiselect = React.createClass({
               <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
               <MenuItem href={'#' + prefix + 'onChange'}>onChange</MenuItem>
               <MenuItem href={'#' + prefix + 'onSelect'}>onSelect</MenuItem>
+              <MenuItem href={'#' + prefix + 'onCreate'}>onCreate</MenuItem>
+              <MenuItem href={'#' + prefix + 'allowCustomTags'}>customTags</MenuItem>
               <MenuItem href={'#' + prefix + 'data'}>data</MenuItem>
               <MenuItem divider={true}></MenuItem>
               <MenuItem href={'#' + prefix + 'valueField'}>valueField</MenuItem>
@@ -80,6 +82,14 @@ var Multiselect = React.createClass({
         <p>
           This handler fires when an item has been selected from the list. It fires before the <code>onChange</code> handler, and fires 
           regardless of whether the value has actually changed.
+        </p>
+
+        <h3 className='prop-header' id={ prefix +"onCreate" }>
+          onCreate <small>{"Function(String searchTerm)"}</small></h3>
+        <p>
+          This handler fires when the user types a <code>searchTerm</code> that is not in the data list, and the choose to create a new tag. OnCreate is only fired 
+          when <code>allowCustomTags</code> prop is <code>true</code>. It is up to the widget parent to implement actual creation logic, the most common 
+          approach would be to add the tag into the data and values arrays.
         </p>
 
         <h3 className='prop-header' id={ prefix +"data" }>

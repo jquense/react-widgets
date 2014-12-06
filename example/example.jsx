@@ -60,6 +60,20 @@ var App = React.createClass({
       //console.log('example: set field: ' + field, data)
     }
 
+    function create(tag){
+      var data;
+
+      tag = { id: self.state.data.length + 1, name: tag }
+      data = self.state.data.concat(tag)
+
+      self.setState({
+        data: data,
+        selectValues: []
+          .concat(self.state.selectValues)
+          .concat(tag)
+      })
+    }
+
     return (
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
@@ -119,6 +133,10 @@ var App = React.createClass({
               valueField='id'
               value={ this.state.selectValues }
               busy={false}
+              allowCustomTags
+              onCreate={create}
+              open={true} 
+              searchTerm="custom tag" 
               tagComponent={ListItem}
               itemComponent={ListItem}
               onChange={change.bind(null, 'selectValues')}/>
@@ -142,6 +160,8 @@ var App = React.createClass({
       </div>
 
     )
+
+
   },
 
 
