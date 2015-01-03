@@ -162,7 +162,6 @@ var Select = React.createClass({
               optID={optID}
               aria-autocomplete='list'
               aria-hidden={ !this.props.open }
-              style={{ maxHeight: 200, height: 'auto' }}
               data={items}
               textField={this.props.textField}
               valueField={this.props.valueField}

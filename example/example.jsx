@@ -101,6 +101,8 @@ var App = React.createClass({
               textField='name'
               valueField='id'
               busy={false}
+              groupBy='surname'
+              open
               value={this.state.dropdownValue}
               onChange={change.bind(null, 'dropdownValue')}/>
           </section>
@@ -135,7 +137,6 @@ var App = React.createClass({
               busy={false}
               allowCustomTags
               onCreate={create}
-              open={true} 
               tagComponent={ListItem}
               itemComponent={ListItem}
               onChange={change.bind(null, 'selectValues')}/>
@@ -173,8 +174,10 @@ React.render(<App/>, document.body);
 function generateList(){
   var arr = new Array(100)
 
-  for(var i = 0; i < arr.length; i++)
-    arr[i] = { id: i + 1, name: chance.name() }
+  for(var i = 0; i < arr.length; i++){
+    var first = chance.first(), last = chance.last()
+    arr[i] = { id: i + 1, name: `${first} ${last}`, first, surname: last }
+  }
 
   return arr
 }

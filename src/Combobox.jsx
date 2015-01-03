@@ -190,7 +190,6 @@ var ComboBox = React.createClass({
               optID={optID}
               aria-hidden={ !this.props.open }
               aria-live={ completeType && 'polite' }
-              style={{ maxHeight: 200, height: 'auto' }}
               data={items}
               selectedIndex={this.state.selectedIndex}
               focusedIndex={this.state.focusedIndex}
@@ -218,7 +217,7 @@ var ComboBox = React.createClass({
       this.setState({ width: width })
   },
 
-  _onSelect: function(data, idx, elem){
+  _onSelect: function(data){
     this.close()
     this.notify('onSelect', data)
     this.change(data)

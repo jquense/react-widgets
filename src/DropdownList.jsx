@@ -7,7 +7,9 @@ var React            = require('react')
   , controlledInput  = require('./util/controlledInput')
   , CustomPropTypes  = require('./util/propTypes')
   , Popup            = require('./Popup.jsx')
-  , List             = require('./List.jsx');
+  , PlainList        = require('./List.jsx')
+  , GroupableList    = require('./ListGRoupable.jsx')
+  ;
 
 var propTypes = {
   //-- controlled props -----------
@@ -23,10 +25,16 @@ var propTypes = {
 
   valueComponent: CustomPropTypes.elementType,
   itemComponent:  CustomPropTypes.elementType,
+  groupComponent: CustomPropTypes.elementType,
+  list:           CustomPropTypes.elementType,
 
   onSelect:       React.PropTypes.func,
   
   busy:           React.PropTypes.bool,
+  groupBy:        React.PropTypes.oneOfType([
+                    React.PropTypes.func,
+                    React.PropTypes.string
+                  ]),
 
   delay:          React.PropTypes.number,
   duration:       React.PropTypes.number, //popup
@@ -94,10 +102,14 @@ var DropdownList = React.createClass({
   },
 
 	render: function(){
-		var {className, ...props} = _.omit(this.props, Object.keys(propTypes))
+		var {
+        className
+      , ...props } = _.omit(this.props, Object.keys(propTypes))
       , ValueComponent = this.props.valueComponent
       , valueItem = this._dataItem( this._data(), this.props.value )
-      , optID = this._id('_option');
+      , optID = this._id('_option')
+      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList
+      ;
 
 		return (
 			<div {...props}
@@ -136,18 +148,12 @@ var DropdownList = React.createClass({
         </div>
         <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
-            <List ref="list"
+            <List ref="list" 
+              {..._.pick(this.props, Object.keys(List.type.propTypes))}
               optID={optID}
-              aria-hidden={ !this.props.open }
-              style={{ maxHeight: 200, height: 'auto' }}
-              data={this.props.data}
-              initialVisibleItems={this.props.initialBufferSize}
-              itemHeight={18}
+              aria-hidden={!this.props.open}
               selectedIndex={this.state.selectedIndex}
               focusedIndex={this.state.focusedIndex}
-              textField={this.props.textField}
-              valueField={this.props.valueField}
-              listItem={this.props.itemComponent}
               onSelect={this._maybeHandle(this._onSelect)}/>
           </div>
         </Popup>
@@ -178,7 +184,7 @@ var DropdownList = React.createClass({
     }, 0)
   },
 
-  _onSelect: function(data, idx, elem){
+  _onSelect: function(data){
     this.close()
     this.notify('onSelect', data)
     this.change(data)
