@@ -8,7 +8,6 @@ var React            = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   , Popup            = require('./Popup.jsx')
   , PlainList        = require('./List.jsx')
-  , GroupableList    = require('./ListGRoupable.jsx')
   ;
 
 var propTypes = {
@@ -108,7 +107,7 @@ var DropdownList = React.createClass({
       , ValueComponent = this.props.valueComponent
       , valueItem = this._dataItem( this._data(), this.props.value )
       , optID = this._id('_option')
-      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList
+      , List  = this.props.list || PlainList
       ;
 
 		return (
