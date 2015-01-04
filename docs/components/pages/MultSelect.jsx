@@ -28,6 +28,10 @@ var Multiselect = React.createClass({
               <MenuItem href={'#' + prefix + 'textField'}>textField</MenuItem>
               <MenuItem href={'#' + prefix + 'tagComponent'}>tagComponent</MenuItem>
               <MenuItem href={'#' + prefix + 'itemComponent'}>itemComponent</MenuItem>
+              
+              <MenuItem href={'#' + prefix + 'groupComponent'}>groupComponent</MenuItem>
+              <MenuItem href={'#' + prefix + 'groupBy'}>groupBy</MenuItem>
+
               <MenuItem href={'#' + prefix + 'placeholder'}>placeholder</MenuItem>
 
               <MenuItem href={'#' + prefix + 'open'}>open</MenuItem>
@@ -114,7 +118,49 @@ var Multiselect = React.createClass({
           This component is used to render each possible item in the list. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
+        <h3 className='prop-header' id={ prefix +"groupBy" }>
+          groupBy <small>String | Function(Any dataItem)}</small>
+        </h3>
+        <p>
+          Determines how to group the {widgetName} dropdown list. Providing a <code>string</code> will group 
+          the <code>data</code> array by that property. You can also provide a {'function'} which should return the group value.
+        </p>
 
+<Example>{
+`function groupBy(item) {
+  return item.length
+}
+
+return (<${widgetName} data={[ john, jim, jill, sam]} groupBy={groupBy}/>)
+`}
+</Example>
+
+        <h3 className='prop-header' id={ prefix +"groupComponent" }>
+          groupComponent <small>Component</small></h3>
+        <p>
+          This component is used to render each option group, when <code>groupBy</code> is specified. By 
+          default the <code>groupBy</code> value will be used.
+        </p>
+<Example>{
+`function groupBy(item) {
+  return item.length
+}
+
+var Group = React.createClass({
+  render() {
+    return this.props.item.length + ' letters long'; //return a helpful sring
+  }
+});
+
+module.exports = ;
+return (
+  <${widgetName} 
+    data={[ john, jim, jill, sam]} 
+    groupBy={groupBy}
+    groupComponent={Group}/>
+)
+`}
+</Example>
         <h3 className='prop-header' id={ prefix +"placeholder" }>
           placeholder <small>String</small></h3>
         <p>

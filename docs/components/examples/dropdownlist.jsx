@@ -3,12 +3,13 @@ var React = require('react')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
   , Dropdown = require('../../../index').DropdownList
-  , NumberPicker = require('../../../index').NumberPicker;
+  , NumberPicker = require('../../../index').NumberPicker
+  , genData = require('../generate-data');
 
 var valueComp = React.createClass({
   render: function() {
 
-    return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
+    return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.name }</span>)
   }
 });
 
@@ -20,7 +21,7 @@ var itemComp = React.createClass({
     return (
       <div>
         <i className={'fa fa-' + this._icon}></i>
-        { '  ' + this.props.item.label}
+        { '  ' + this.props.item.name}
       </div>
     );
   }
@@ -42,11 +43,7 @@ var DropdownApi = React.createClass({
   },
 
   render: function() {
-    var list = [
-        { label: 'orange', id: 1 },
-        { label: 'blue', id: 2 },
-        { label: 'red', id: 3 },
-      ];
+    var list = genData(25);
 
     return (
       <div className='example'>
@@ -56,6 +53,7 @@ var DropdownApi = React.createClass({
               <Dropdown 
                 disabled={this.state.disabled === 'disabled'}
                 readOnly={this.state.disabled === 'readonly'}
+                groupBy={this.state.groupBy}
                 value={this.state.value || 1}
                 data={list}
                 duration={this.state.duration}
@@ -63,7 +61,7 @@ var DropdownApi = React.createClass({
                 onChange={this._change}
                 isRtl={this.state.isRtl}
                 valueField='id'
-                textField='label'
+                textField='name'
                 />
             </div>
             <div className='form-group'>
@@ -71,6 +69,7 @@ var DropdownApi = React.createClass({
               <Dropdown 
                 disabled={this.state.disabled === 'disabled'}
                 readOnly={this.state.disabled === 'readonly'}
+                groupBy={this.state.groupBy}
                 value={this.state.value || 1}
                 valueComponent={valueComp}
                 itemComponent={itemComp}
@@ -80,7 +79,7 @@ var DropdownApi = React.createClass({
                 onChange={this._change}
                 isRtl={this.state.isRtl}
                 valueField='id'
-                textField='label'
+                textField='name'
                 />
             </div>
           </div>
@@ -91,6 +90,14 @@ var DropdownApi = React.createClass({
                   checked={this.state.isRtl}
                   onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
+              </label>
+            </div>
+            <div className='form-group'>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.groupBy}
+                  onChange={this._set.bind(null, 'groupBy', !this.state.groupBy ? 'last' : null )}/>
+                  Group
               </label>
             </div>
             <div className='form-group'>

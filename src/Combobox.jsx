@@ -8,7 +8,8 @@ var React  = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   
   , Popup  = require('./Popup.jsx')
-  , List   = require('./List.jsx')
+  , PlainList   = require('./List.jsx')
+  , GroupableList = require('./ListGroupable.jsx')
   , Btn    = require('./WidgetButton.jsx')
   , Input  = require('./ComboboxInput.jsx');
 
@@ -21,6 +22,13 @@ var propTypes = {
       //------------------------------------
 
       itemComponent:  CustomPropTypes.elementType,
+      list:           CustomPropTypes.elementType,
+
+      groupComponent: CustomPropTypes.elementType,
+      groupBy:        React.PropTypes.oneOfType([
+                        React.PropTypes.func,
+                        React.PropTypes.string
+                      ]),
 
       data:           React.PropTypes.array,
       valueField:     React.PropTypes.string,
@@ -132,6 +140,7 @@ var ComboBox = React.createClass({
       , items = this._data()
       , listID = this._id('_listbox')
       , optID  = this._id( '_option')
+      , List   = this.props.list || (this.props.groupBy && GroupableList) || PlainList
       , completeType = this.props.suggest
           ? this.props.filter ? 'both' : 'inline'
           : this.props.filter ? 'list' : '';

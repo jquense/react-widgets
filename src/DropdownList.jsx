@@ -1,12 +1,12 @@
 'use strict';
-var React            = require('react')
-  , _                = require('./util/_')
-  , cx               = require('./util/cx')
-  , controlledInput  = require('./util/controlledInput')
-  , CustomPropTypes  = require('./util/propTypes')
-  , Popup            = require('./Popup.jsx')
-  , PlainList        = require('./List.jsx')
-  , GroupableList    = require('./ListGRoupable.jsx')
+var React           = require('react')
+  , _               = require('./util/_')
+  , cx              = require('./util/cx')
+  , controlledInput = require('./util/controlledInput')
+  , CustomPropTypes = require('./util/propTypes')
+  , Popup           = require('./Popup.jsx')
+  , PlainList       = require('./List.jsx')
+  , GroupableList   = require('./ListGroupable.jsx')
   ;
 
 var propTypes = {
@@ -23,16 +23,17 @@ var propTypes = {
 
   valueComponent: CustomPropTypes.elementType,
   itemComponent:  CustomPropTypes.elementType,
-  groupComponent: CustomPropTypes.elementType,
   list:           CustomPropTypes.elementType,
 
-  onSelect:       React.PropTypes.func,
-  
-  busy:           React.PropTypes.bool,
+  groupComponent: CustomPropTypes.elementType,
   groupBy:        React.PropTypes.oneOfType([
                     React.PropTypes.func,
                     React.PropTypes.string
                   ]),
+
+  onSelect:       React.PropTypes.func,
+  
+  busy:           React.PropTypes.bool,
 
   delay:          React.PropTypes.number,
   duration:       React.PropTypes.number, //popup

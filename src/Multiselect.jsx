@@ -8,7 +8,8 @@ var React = require('react')
   , SelectInput = require('./MultiselectInput.jsx')
   , TagList     = require('./MultiselectTagList.jsx')
   , Popup       = require('./Popup.jsx')
-  , List        = require('./List.jsx');
+  , PlainList        = require('./List.jsx')
+  , GroupableList = require('./ListGroupable.jsx');
 
 var propTypes = {
       data:            React.PropTypes.array,
@@ -28,6 +29,13 @@ var propTypes = {
 
       tagComponent:    CustomPropTypes.elementType,
       itemComponent:   CustomPropTypes.elementType,
+      list:            CustomPropTypes.elementType,
+
+      groupComponent:  CustomPropTypes.elementType,
+      groupBy:         React.PropTypes.oneOfType([
+                         React.PropTypes.func,
+                         React.PropTypes.string
+                       ]),
 
       onSelect:        React.PropTypes.func,
       onCreate:        React.PropTypes.func,
@@ -109,10 +117,11 @@ var Select = React.createClass({
         className
       , children
       , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , listID  = this._id('_listbox')
-      , optID   = this._id('_option')
-      , items   = this._data()
-      , values  = this.state.dataItems;
+      , listID = this._id('_listbox')
+      , optID  = this._id('_option')
+      , items  = this._data()
+      , values = this.state.dataItems
+      , List   = this.props.list || (this.props.groupBy && GroupableList) || PlainList;
 
     return (
       <div {...props}
