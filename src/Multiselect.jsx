@@ -63,8 +63,7 @@ var Select = React.createClass({
     require('./mixins/WidgetMixin'),
     require('./mixins/DataFilterMixin'),
     require('./mixins/DataHelpersMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/DataIndexStateMixin')('focusedIndex')
+    require('./mixins/RtlParentContextMixin')
   ],
 
   propTypes: propTypes,
@@ -86,11 +85,12 @@ var Select = React.createClass({
 
   getInitialState: function(){
     var values = _.splat(this.props.value)
+      , data   = this.process(this.props.data, values, this.props.searchTerm)
 
     return {
-      focusedIndex:  0,
-      processedData: this.process(this.props.data, values, this.props.searchTerm),
-      dataItems: values.map( item => this._dataItem(this.props.data, item))
+      focusedItem:   data[0],
+      processedData: data,
+      dataItems:     values.map( item => this._dataItem(this.props.data, item))
     }
   },
 
@@ -105,7 +105,10 @@ var Select = React.createClass({
   },
 
   render: function(){
-    var { className, children, ...props } = _.omit(this.props, Object.keys(propTypes))
+    var { 
+        className
+      , children
+      , ...props } = _.omit(this.props, Object.keys(propTypes))
       , listID  = this._id('_listbox')
       , optID   = this._id('_option')
       , items   = this._data()
@@ -158,16 +161,14 @@ var Select = React.createClass({
         <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
+              {..._.pick(this.props, Object.keys(List.type.propTypes))}
               id={listID}
               optID={optID}
               aria-autocomplete='list'
-              aria-hidden={ !this.props.open }
+              aria-hidden={!this.props.open}
               data={items}
-              textField={this.props.textField}
-              valueField={this.props.valueField}
-              focusedIndex={this.state.focusedIndex}
+              focused={this.state.focusedItem}
               onSelect={this._maybeHandle(this._onSelect)}
-              listItem={this.props.itemComponent}
               messages={{
                 emptyList: this.props.data.length
                   ? this.props.messages.emptyFilter
@@ -176,7 +177,7 @@ var Select = React.createClass({
               { this._shouldShowCreate() &&
                 <ul className="rw-list rw-multiselect-create-tag">
                   <li onClick={this._onCreate.bind(null, this.props.searchTerm)} 
-                      className={cx({'rw-state-focus': !this._data().length || this.state.focusedIndex === null })}>
+                      className={cx({'rw-state-focus': !this._data().length || this.state.focusedItem === null })}>
                     <strong>{`"${this.props.searchTerm}"`}</strong> { this.props.messages.createNew }
                   </li>
                 </ul>
@@ -187,22 +188,22 @@ var Select = React.createClass({
     )
   },
 
-  _data: function(){
+  _data(){
     return this.state.processedData
   },
 
-  _delete: function(value){
+  _delete(value){
     this._focus(true)
     this.change(
       this.state.dataItems.filter( d => d !== value))
   },
 
-  _click: function(e){
+  _click(e){
     this._focus(true)
     !this.props.open && this.open()
   },
 
-  _focus: function(focused, e){
+  _focus(focused, e){
     var self = this;
 
     if (this.props.disabled === true )
@@ -253,39 +254,40 @@ var Select = React.createClass({
       , ctrl = e.ctrlKey
       , searching = !!this.props.searchTerm
       , isOpen  = this.props.open
-      , current = this.state.focusedIndex
+      , current = this.state.focusedItem
       , tagList = this.refs.tagList
-      , isLast;
+      , list    = this.refs.list;
 
     if ( key === 'ArrowDown') {
-      var nextIdx = this.nextFocusedIndex()
+      var next = list.next('focused')
+      next = (current === next || current === null) ? null : list.next('focused')
 
       e.preventDefault()
-      if ( isOpen ) this.setFocusedIndex(current === nextIdx || current === null ? null : nextIdx)
+      if ( isOpen ) this.setState({ focusedItem: next })
       else          this.open()
     }
     else if ( key === 'ArrowUp') {
+      var prev = list.prev('focused')
+      prev = current === null ? list.last() : list.prev('focused')
+
       e.preventDefault()
 
       if ( alt)          this.close()
-      else if ( isOpen ) this.setFocusedIndex(current === null
-        ? this._data().length - 1
-        : this.prevFocusedIndex())
+      else if ( isOpen ) this.setState({ focusedItem: prev })
     }
     else if ( key === 'End'){
-      if ( isOpen ) this.setFocusedIndex(this._data().length - 1)
+      if ( isOpen ) this.setState({ focusedItem: list.last() })
       else          tagList && tagList.last()
     }
     else if (  key === 'Home'){
-      if ( isOpen ) this.setFocusedIndex(0)
+      if ( isOpen ) this.setState({ focusedItem: list.first() })
       else          tagList && tagList.first()
     }
     else if ( isOpen && key === 'Enter' )
       ctrl && this.props.onCreate
         ? this._onCreate(this.props.searchTerm)
-        : this._onSelect(this._data()[this.state.focusedIndex])
+        : this._onSelect(this.state.focusedItem)
 
-    
     else if ( key === 'Escape')
       isOpen ? this.close() : this.refs.tagList.clear()
 

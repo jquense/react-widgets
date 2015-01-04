@@ -61,9 +61,7 @@ var ComboBox = React.createClass({
     require('./mixins/TextSearchMixin'),
     require('./mixins/DataFilterMixin'),
     require('./mixins/DataHelpersMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/DataIndexStateMixin')('focusedIndex'),
-    require('./mixins/DataIndexStateMixin')('selectedIndex')
+    require('./mixins/RtlParentContextMixin')
   ],
 
   propTypes: propTypes,
@@ -73,8 +71,8 @@ var ComboBox = React.createClass({
       , idx   = this._dataIndexOf(items, this.props.value);
 
 		return {
-			selectedIndex: idx,
-      focusedIndex:  idx === -1 ? 0 : idx,
+			selectedItem:  items[idx],
+      focusedItem:   items[!~idx ? 0 : idx],
       processedData: items,
 			open:          false
 		}
@@ -121,10 +119,10 @@ var ComboBox = React.createClass({
 
     this.setState({
       processedData:  items,
-      selectedIndex:  idx,
-      focusedIndex:   idx === -1
+      selectedItem:   items[idx],
+      focusedItem:    items[idx === -1
         ? focused !== -1 ? focused : 0 // focus the closest match
-        : idx
+        : idx]
     })
   },
 
@@ -186,18 +184,15 @@ var ComboBox = React.createClass({
         <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
+              {..._.pick(this.props, Object.keys(List.type.propTypes))}
               id={listID}
               optID={optID}
               aria-hidden={ !this.props.open }
               aria-live={ completeType && 'polite' }
               data={items}
-              selectedIndex={this.state.selectedIndex}
-              focusedIndex={this.state.focusedIndex}
-
-              textField={this.props.textField}
-              valueField={this.props.valueField}
+              selected={this.state.selectedItem}
+              focused ={this.state.focusedItem}
               onSelect={this._maybeHandle(this._onSelect)}
-              listItem={this.props.itemComponent}
               messages={{
                 emptyList: this.props.data.length
                   ? this.props.messages.emptyFilter
@@ -269,44 +264,42 @@ var ComboBox = React.createClass({
     var self = this
       , key  = e.key
       , alt  = e.altKey
-      , focusedIdx  = this.state.focusedIndex
-      , isOpen      = this.props.open;
+      , list = this.refs.list
+      , isOpen = this.props.open;
 
     if ( key === 'End' )
-      select(this._data().length - 1)
+      select(list.last())
 
     else if ( key === 'Home' )
-      select(0)
+      select(list.first())
 
     else if ( key === 'Escape' && isOpen )
       this.close()
 
     else if ( key === 'Enter' && isOpen ) {
       this.close()
-      select(focusedIdx, true)
+      select(this.state.focusedItem, true)
     }
 
     else if ( key === 'ArrowDown' ) {
       if ( alt )
         this.open()
       else {
-        if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
-        else select(this.nextSelectedIndex())
+        if ( isOpen ) this.setState({ focusedItem: list.next('focused') })
+        else          select(list.next('selected'))
       }
     }
     else if ( key === 'ArrowUp' ) {
       if ( alt )
         this.close()
       else {
-        if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
-        else select(this.prevSelectedIndex())
+        if ( isOpen ) this.setState({ focusedItem: list.prev('focused') })
+        else          select(list.prev('selected'))
       }
     }
 
-    function select(idx, fromList) {
-      var item = self._data()[idx]
-
-      if( idx === -1 || self._data().length === 0)
+    function select(item, fromList) {
+      if(!item)
         return self.change(self.refs.input.getDOMNode().value, false)
 
       self.refs.input.accept(true); //removes caret

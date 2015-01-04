@@ -6,15 +6,11 @@ var React = require('react/addons');
 var ComboBox = require('../src/Combobox.jsx')
   , _ = require('lodash');
 
-
 var TestUtils = React.addons.TestUtils
   , render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findAllTag = TestUtils.scryRenderedDOMComponentsWithTag
-  , findAllClass = TestUtils.scryRenderedDOMComponentsWithClass
   , findType = TestUtils.findRenderedComponentWithType
-  , findAllType = TestUtils.scryRenderedComponentWithType
   , trigger = TestUtils.Simulate;
 
 describe('ComboBox', function(){
@@ -109,7 +105,7 @@ describe('ComboBox', function(){
 
   it('should call Select handler', function(done){
     var change = sinon.spy(), select = sinon.spy()
-      , comboBox = render(<ComboBox open={true} value={dataList[1]} data={dataList} duration={0} onChange={change} onSelect={select}/>)
+      , comboBox = render(<ComboBox open={true} value={dataList[1]} data={dataList} duration={0} onChange={change} onSelect={select} onToggle={()=>{}}/>)
       , list = findClass(comboBox, 'rw-list');
 
     comboBox.getDOMNode().focus()
@@ -122,11 +118,12 @@ describe('ComboBox', function(){
       expect(change.calledAfter(select)).to.be(true)
 
       select.reset()
-      trigger.keyDown(comboBox.getDOMNode(), { key: 'ArrowDown'}) //move to different value so change fires
+      comboBox.setProps({ value: [] })
       trigger.keyDown(comboBox.getDOMNode(), { key: 'Enter'})
       
       expect(select.calledOnce).to.be(true)
       expect(change.calledAfter(select)).to.be(true)
+
       done()
     })
   })
@@ -162,4 +159,5 @@ describe('ComboBox', function(){
     expect(change.calledWith(dataList[2])).to.be(true)
   })
 
+  
 })

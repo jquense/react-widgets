@@ -1,9 +1,7 @@
 'use strict';
 var React            = require('react')
   , _                = require('./util/_')
-  , $                = require('./util/dom')
   , cx               = require('./util/cx')
-  , setter           = require('./util/stateSetter')
   , controlledInput  = require('./util/controlledInput')
   , CustomPropTypes  = require('./util/propTypes')
   , Popup            = require('./Popup.jsx')
@@ -95,7 +93,7 @@ var DropdownList = React.createClass({
 
     this.setState({ 
       selectedItem: props.data[idx],
-      focusedItem:  idx === -1 ? props.data[0] : props.value
+      focusedItem:  props.data[!~idx ? 0 : idx]
     })
   },
 
@@ -159,14 +157,6 @@ var DropdownList = React.createClass({
 		)
 	},
 
-  setWidth: function() {
-    var width = $.width(this.getDOMNode())
-      , changed = width !== this.state.width;
-
-    if ( changed )
-      this.setState({ width: width })
-  },
-
   _focus: function(focused){
     var self = this;
 
@@ -213,18 +203,22 @@ var DropdownList = React.createClass({
     }
     else if ( key === 'ArrowDown' ) {
       if ( alt )         this.open()
-      else if ( isOpen ) this.setState({ focusedItem: list.nextFocused() })
-      else               change(list.nextSelected())
+      else if ( isOpen ) this.setState({ focusedItem: list.next('focused') })
+      else               change(list.next('selected'))
       e.preventDefault()
     }
     else if ( key === 'ArrowUp' ) {
       if ( alt )         this.close()
-      else if ( isOpen ) this.setState({ focusedItem: list.prevFocused() })
-      else               change(list.prevSelected())
+      else if ( isOpen ) this.setState({ focusedItem: list.prev('focused') })
+      else               change(list.prev('selected'))
       e.preventDefault()
     }
     else
-      this.search(String.fromCharCode(e.keyCode))
+      this.search(String.fromCharCode(e.keyCode), item => {
+        isOpen 
+          ? this.setState({ focusedItem: item })
+          : change(item)
+      })
 
     function change(item, fromList){
       if(!item) return
@@ -253,12 +247,11 @@ var DropdownList = React.createClass({
 
     this._timer = setTimeout(() => {
       var list = this.refs.list
-        , key = this.props.open ? 'nextFocused' : 'nextSelected'
-        , item = list[key](word)
-        , set = setter((this.props.open ? 'focused' : 'selected') +'Item').bind(this);
+        , key  = this.props.open ? 'focused' : 'selected'
+        , item = list.next(key, word);
       
       this._searchTerm = ''
-      if ( item) set(item)
+      if ( item) cb(item)
 
     }, this.props.delay)
   },

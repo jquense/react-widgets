@@ -20,7 +20,7 @@ module.exports = React.createClass({
   propTypes: {
     data:          React.PropTypes.array,
     onSelect:      React.PropTypes.func,
-    listItem:      CustomPropTypes.elementType,
+    ItemComponent: CustomPropTypes.elementType,
 
     selectedIndex: React.PropTypes.number,
     focusedIndex:  React.PropTypes.number,
@@ -88,6 +88,7 @@ module.exports = React.createClass({
             id={ focused ? this.props.optID : undefined }
             aria-selected={ idx === this.state.selectedIndex }
             className={cx({ 
+              'rw-list-option':    true,
               'rw-state-focus':    focused,
               'rw-state-selected': idx === this.state.selectedIndex,
             })}
@@ -117,28 +118,16 @@ module.exports = React.createClass({
     return this.props.data[this.props.data.length -1]
   },
 
-  nextSelected(word){
+  next(state, word){
     return this.props.data[word 
-      ? this._findNextWordIndex(word, this.state.selectedIndex, 'next')
-      : this.nextSelectedIndex()]
+      ? this._findNextWordIndex(word, this.state[state + 'Index'], 'next')
+      : this[`next${capitalize(state)}Index`]()]
   },
 
-  prevSelected(word){
+  prev(state, word){
     return this.props.data[ word
-      ? this._findNextWordIndex(word, this.state.selectedIndex, 'next')
-      : this.prevSelectedIndex()]
-  },
-
-  nextFocused(word){
-    return this.props.data[word
-      ? this._findNextWordIndex(word, this.state.focusedIndex, 'next')
-      : this.nextFocusedIndex()]
-  },
-
-  prevFocused(word){
-    return this.props.data[word
-      ? this._findNextWordIndex(word, this.state.focusedIndex, 'prev')
-      : this.prevFocusedIndex()]
+      ? this._findNextWordIndex(word, this.state[state + 'Index'], 'prev')
+      : this[`prev${capitalize(state)}Index`]()]
   },
 
   _data(){ 
@@ -148,7 +137,7 @@ module.exports = React.createClass({
   _findNextWordIndex: function(word, current, dir){
     var matcher = filter.startsWith
       , self    = this;
-      
+    
     return _.findIndex(self._data(), (item, i) => { 
       return (dir === 'next' ? i >= current : i <= current)
           && matcher(
@@ -180,3 +169,7 @@ module.exports = React.createClass({
   }
 
 })
+
+function capitalize(str){
+  return str.charAt(0).toUpperCase() + str.substr(1)
+}

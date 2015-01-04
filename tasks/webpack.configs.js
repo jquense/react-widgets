@@ -115,5 +115,6 @@ module.exports = {
         { loader: path.join(__dirname, './jstransform-loader') }
       ]
     },
+    //plugins: [ ProdDefine ]
   }
 }

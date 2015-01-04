@@ -12,10 +12,7 @@ var TestUtils = React.addons.TestUtils
   , render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findAllTag = TestUtils.scryRenderedDOMComponentsWithTag
-  , findAllClass = TestUtils.scryRenderedDOMComponentsWithClass
   , findType = TestUtils.findRenderedComponentWithType
-  , findAllType = TestUtils.scryRenderedComponentWithType
   , trigger = TestUtils.Simulate;
 
 describe('Select', function(){
@@ -114,7 +111,6 @@ describe('Select', function(){
 
   it('should disable only certain tags', function(done){
     var select = render(<Select defaultValue={[0,1]} data={dataList} disabled={[1]}  textField='label' valueField='id'/>)
-      , input  = findType(select, require('../src/MultiselectInput.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
     expect(tags.children.length).to.be(2)
@@ -149,7 +145,6 @@ describe('Select', function(){
 
   it('should readonly only certain tags', function(done){
     var select = render(<Select defaultValue={[0,1]} data={dataList} readOnly={[1]}  textField='label' valueField='id'/>)
-      , input  = findType(select, require('../src/MultiselectInput.jsx')).getDOMNode()
       , tags   = findType(select, TagList).getDOMNode();
 
     expect(tags.children.length).to.be(2)
@@ -167,7 +162,7 @@ describe('Select', function(){
 
   it('should call Select handler', function(done){
     var change = sinon.spy(), select = sinon.spy()
-      , ms = render(<Select open={true} value={[dataList[1]]} data={dataList} onChange={change} onSelect={select}/>)
+      , ms = render(<Select value={[dataList[1]]} data={dataList} onChange={change} onSelect={select}/>)
       , list = findClass(ms, 'rw-list');
 
     ms.getDOMNode().focus()
@@ -206,7 +201,7 @@ describe('Select', function(){
 
 
   it('should not clear SearchTerm when controlled', function(){
-    var ms = render(<Select searchTerm="jim" data={dataList}/>);
+    var ms = render(<Select searchTerm="jim" data={dataList} onSearch={()=>{}}/>);
 
     var input = findTag(ms, 'input').getDOMNode()
     trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
@@ -216,17 +211,17 @@ describe('Select', function(){
 
 
   it('should show create tag correctly', function(){
-    var ms = render(<Select open={true} searchTerm="custom tag" onCreate={_.noop} data={dataList}/>);
+    var ms = render(<Select searchTerm="custom tag" onCreate={_.noop} data={dataList} onSearch={()=>{}}/>);
 
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.not.throwException()
 
-    ms = render(<Select open={true} searchTerm="" onCreate={_.noop} data={dataList}/>)
+    ms.setProps({ searchTerm: '' })
 
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
 
-    ms = render(<Select open={true} searchTerm="custom tag" data={dataList}/>)
+    ms.setProps({ onCreate: null }) 
 
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
@@ -234,7 +229,13 @@ describe('Select', function(){
 
   it('should call onCreate', function(){
     var create = sinon.spy()
-      , ms = render(<Select open={true} searchTerm="custom tag"  data={dataList} onCreate={create}/>)
+      , ms = render(<Select 
+          open={true} 
+          searchTerm="custom tag" 
+          data={dataList} 
+          onCreate={create} 
+          onSearch={()=>{}} onToggle={()=>{}}/>)
+
       , createLi = findClass(ms, 'rw-multiselect-create-tag').getDOMNode().children[0];
 
     trigger.click(createLi)
@@ -250,7 +251,7 @@ describe('Select', function(){
     expect(create.calledWith("custom tag")).to.ok()
 
     // other values have focus
-    ms = render(<Select open={true} searchTerm="custom tag" data={['custom tag time']}  onCreate={create}/>)
+    ms = render(<Select open={true} searchTerm="custom tag" data={['custom tag time']}  onCreate={create} onSearch={()=>{}} onToggle={()=>{}}/>)
     create.reset()
     trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
 
@@ -265,7 +266,9 @@ describe('Select', function(){
   it('should change values on key down', function(){
     var change = sinon.spy()
       , select = render(<Select value={[0,1,2]} data={dataList} textField='label' valueField='id' onChange={change}/>)
-      , tags   = findType(select, TagList).getDOMNode();
+      , tags   = findType(select, TagList).getDOMNode()
+      , list   = findClass(select, 'rw-list').getDOMNode();
+
 
     trigger.keyDown(select.getDOMNode(), { key: 'ArrowLeft'})
 
@@ -306,6 +309,17 @@ describe('Select', function(){
 
     trigger.keyDown(select.getDOMNode(), { key: 'ArrowDown'})
     expect(select.state.open).to.be(true)
+
+    select.setProps({ open: true, value:[], onToggle: ()=>{} })
+
+    trigger.keyDown(select.getDOMNode(), { key: 'ArrowDown'})
+    expect(list.children[0].className).to.match(/\brw-state-focus\b/)
+
+    trigger.keyDown(select.getDOMNode(), { key: 'End'})
+    expect(list.children[2].className).to.match(/\brw-state-focus\b/)
+
+    trigger.keyDown(select.getDOMNode(), { key: 'Home'})
+    expect(list.children[0].className).to.match(/\brw-state-focus\b/)
   })
 
 })
