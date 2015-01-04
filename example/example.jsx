@@ -102,7 +102,6 @@ var App = React.createClass({
               valueField='id'
               busy={false}
               groupBy='surname'
-              open
               value={this.state.dropdownValue}
               onChange={change.bind(null, 'dropdownValue')}/>
           </section>

@@ -60,11 +60,8 @@ var DropdownList = React.createClass({
   mixins: [
     require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/TextSearchMixin'),
     require('./mixins/DataHelpersMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/DataIndexStateMixin')('focusedIndex'),
-    require('./mixins/DataIndexStateMixin')('selectedIndex')
+    require('./mixins/RtlParentContextMixin')
   ],
 
   propTypes: propTypes,
@@ -73,8 +70,8 @@ var DropdownList = React.createClass({
     var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
 
 		return {
-      selectedIndex: initialIdx,
-      focusedIndex:  initialIdx === -1 ? 0 : initialIdx,
+      selectedItem: this.props.data[initialIdx],
+      focusedItem:  this.props.data[initialIdx] || this.props.data[0],
 		}
 	},
 
@@ -96,8 +93,10 @@ var DropdownList = React.createClass({
 
     var idx = this._dataIndexOf(props.data, props.value);
 
-    this.setSelectedIndex(idx)
-    this.setFocusedIndex(idx === -1 ? 0 : idx)
+    this.setState({ 
+      selectedItem: props.data[idx],
+      focusedItem:  idx === -1 ? props.data[0] : props.value
+    })
   },
 
 	render: function(){
@@ -151,8 +150,8 @@ var DropdownList = React.createClass({
               {..._.pick(this.props, Object.keys(List.type.propTypes))}
               optID={optID}
               aria-hidden={!this.props.open}
-              selectedIndex={this.state.selectedIndex}
-              focusedIndex={this.state.focusedIndex}
+              selected={this.state.selectedItem}
+              focused ={this.state.focusedItem}
               onSelect={this._maybeHandle(this._onSelect)}/>
           </div>
         </Popup>
@@ -193,51 +192,44 @@ var DropdownList = React.createClass({
     var self = this
       , key = e.key
       , alt = e.altKey
+      , list = this.refs.list
       , isOpen = this.props.open;
 
     if ( key === 'End' ) {
-      if ( isOpen) this.setFocusedIndex(this._data().length - 1)
-      else change(this._data().length - 1)
+      if ( isOpen) this.setState({ focusedItem: list.last() })
+      else         change(list.last())
       e.preventDefault()
     }
     else if ( key === 'Home' ) {
-      if ( isOpen) this.setFocusedIndex(0)
-      else change(0)
+      if ( isOpen) this.setState({ focusedItem: list.first() })
+      else         change(list.first())
       e.preventDefault()
     }
     else if ( key === 'Escape' && isOpen ) {
       this.close()
     }
     else if ( (key === 'Enter' || key === ' ') && isOpen ) {
-      change(this.state.focusedIndex, true)
+      change(this.state.focusedItem, true)
     }
     else if ( key === 'ArrowDown' ) {
       if ( alt )         this.open()
-      else if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
-      else               change(this.nextSelectedIndex())
+      else if ( isOpen ) this.setState({ focusedItem: list.nextFocused() })
+      else               change(list.nextSelected())
       e.preventDefault()
     }
     else if ( key === 'ArrowUp' ) {
       if ( alt )         this.close()
-      else if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
-      else               change(this.prevSelectedIndex())
+      else if ( isOpen ) this.setState({ focusedItem: list.prevFocused() })
+      else               change(list.prevSelected())
       e.preventDefault()
     }
     else
-      this.search(
-          String.fromCharCode(e.keyCode)
-        , this._locate)
+      this.search(String.fromCharCode(e.keyCode))
 
-    function change(idx, fromList){
-      var item = self._data()[idx];
+    function change(item, fromList){
+      if(!item) return
+      if(fromList) self.notify('onSelect', item)
 
-      if (idx === -1 || self._data().length === 0)
-        return
-
-      if(fromList) 
-        self.notify('onSelect', item)
-
-      
       self.change(item)
     }
   },
@@ -249,17 +241,26 @@ var DropdownList = React.createClass({
     }
   },
 
-  _locate: function(word){
-    var key = this.props.open ? 'focusedIndex' : 'selectedIndex'
-      , idx = this.findNextWordIndex(word, this.state[key])
-      , setIndex = setter(key).bind(this);
-
-    if ( idx !== -1)
-      setIndex(idx)
-  },
-
   _data: function(){
     return this.props.data
+  },
+
+  search: function(character, cb){
+    var word = ((this._searchTerm || '') + character).toLowerCase();
+      
+    clearTimeout(this._timer)
+    this._searchTerm = word 
+
+    this._timer = setTimeout(() => {
+      var list = this.refs.list
+        , key = this.props.open ? 'nextFocused' : 'nextSelected'
+        , item = list[key](word)
+        , set = setter((this.props.open ? 'focused' : 'selected') +'Item').bind(this);
+      
+      this._searchTerm = ''
+      if ( item) set(item)
+
+    }, this.props.delay)
   },
 
   open: function(){
