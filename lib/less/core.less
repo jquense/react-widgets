@@ -57,38 +57,6 @@
   }
 }
 
-// .rw-loading-mask {
-//   position: absolute;
-//   z-index: 2;
-//   top: 0;
-//     left: 0; 
-//     height: 100%;
-//     width: 100%;
-
-//   &,
-//   & .rw-loading-backdrop {
-//     width: 100%;
-//     height: 100%;
-//     top:0;
-//     left: 0;
-//   }
-
-//   .rw-loading-backdrop {
-//     position: absolute;
-//     background-color: #fff;
-//     opacity: 0.7;
-//   }
-
-//   .rw-loading-image {
-//     background: url("./loading-big.gif") no-repeat center;
-//     width: 48px;
-//     height: 48px;
-//     position:absolute; 
-//     left: 0; 
-//     right: 0;
-//     margin: 25px auto;
-//   } 
-// }
 
 .rw-loading-mask {
   border-radius:    @input-border-radius;
@@ -144,27 +112,46 @@ ul.rw-selectlist {
   outline: 0;
   height: 100%;
 
-  > li {
+  > li.rw-list-optgroup {
+    font-weight: bold;
+  }
+
+  > li.rw-list-option {
     cursor: pointer;
     border: 1px solid transparent;
     padding-left: 10px;
     padding-right: 10px;
     border-radius: @border-radius-sm;
-  }
 
-  > li:hover {
-    background-color: @list-bg-hover;
-    border-color:     @list-border-hover;
-  }
+    &:hover {
+      background-color: @list-bg-hover;
+      border-color:     @list-border-hover;
+    }
 
-  > li.rw-state-focus {
-    .state-focus();
-  }
+    &.rw-state-focus {
+      .state-focus();
+    }
 
-  > li.rw-state-selected {
-    .state-select();
+    &.rw-state-selected {
+      .state-select();
+    }
   }
 }
+
+ul.rw-list {
+
+  &.rw-list-grouped {
+
+    > li.rw-list-optgroup {
+      padding-left: 10px;
+    }
+
+    > li.rw-list-option {
+      padding-left: 20px;
+    }
+  }
+}
+
 
 .rw-widget {
   position: relative;
@@ -173,6 +160,17 @@ ul.rw-selectlist {
 .rw-open.rw-widget,
 .rw-open >.rw-multiselect-wrapper {
   .border-bottom-radius(0);
+}
+
+.rw-combobox,
+.rw-datetimepicker,
+.rw-numberpicker,
+.rw-dropdownlist,
+.rw-multiselect {
+  & .rw-list {
+    max-height: 200px;
+    height: auto;
+  }
 }
 
 @focus-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
@@ -284,6 +282,7 @@ ul.rw-selectlist {
     .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
   }
 }
+
 
 .rw-combobox,
 .rw-datetimepicker,

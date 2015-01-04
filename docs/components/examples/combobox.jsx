@@ -42,7 +42,7 @@ module.exports = React.createClass({
                   filter={this.state.filter || false}
                   disabled={this.state.disabled === 'disabled'}
                   readOnly={this.state.disabled === 'readonly'}
-
+                  groupBy={this.state.groupBy}
                   duration={this.state.duration}
                   busy={this.state.busy}
                   isRtl={this.state.isRtl}/>
@@ -59,6 +59,7 @@ module.exports = React.createClass({
                   filter={this.state.filter || false}
                   disabled={this.state.disabled === 'disabled'}
                   readOnly={this.state.disabled === 'readonly'}
+                  groupBy={this.state.groupBy}
                   duration={this.state.duration}
                   itemComponent={itemComp}
                   busy={this.state.busy}
@@ -72,6 +73,14 @@ module.exports = React.createClass({
                   checked={this.state.isRtl}
                   onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
+              </label>
+            </div>
+            <div className='form-group'>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.groupBy}
+                  onChange={this._set.bind(null, 'groupBy', !this.state.groupBy ? (item => item.name.substr(0,2)) : null )}/>
+                  Group
               </label>
             </div>
             <div className='form-group'>

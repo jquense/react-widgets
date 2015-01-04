@@ -34,7 +34,8 @@
     "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "chance": "^0.5.9",
+    "chance": "^0.7.1",
+    "codemirror": "^4.10.0",
     "concat-map": "0.0.1",
     "convert-source-map": "^0.4.1",
     "css-loader": "^0.7.1",

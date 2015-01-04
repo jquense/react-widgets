@@ -116,7 +116,7 @@ describe('DROPDOWNS', function(){
 
   it('should call Select handler', function(done){
     var change = sinon.spy(), select = sinon.spy()
-      , dropdown = render(<Dropdown open={true} value={data[1]} data={data} duration={0} onChange={change} onSelect={select}/>)
+      , dropdown = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change} onSelect={select}/>)
       , list = findClass(dropdown, 'rw-list');
 
     dropdown.getDOMNode().focus()

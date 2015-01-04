@@ -1,8 +1,5 @@
 'use strict';
 /*global it, describe, expect, beforeEach */
-
-require('../vendor/phantomjs-shim');
-
 var React    = require('react/addons')
   , helper = require('../src/mixins/DataHelpersMixin');
 

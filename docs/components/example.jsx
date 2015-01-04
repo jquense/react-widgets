@@ -14,7 +14,7 @@ module.exports = React.createClass({
     return (
       <pre>
         <code className={ this.props.language}>
-          {this.props.code}
+          {this.props.code || this.props.children}
         </code>
       </pre>
     )

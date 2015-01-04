@@ -1,4 +1,4 @@
-/*! v"2.0.1" | (c) 2014 Jason Quense | https://github.com/jaquense/react-widgets/blob/master/License.txt */
+/*! v"2.1.0" | (c) 2015 Jason Quense | https://github.com/jaquense/react-widgets/blob/master/License.txt */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -238,7 +238,7 @@
 	  render: function() {
 	    return (
 	      React.createElement("section", React.__spread({},  this.props), 
-	        React.createElement("h1", {className: "page-header"}, "Getting Started ", React.createElement("small", {className: "pull-right", style: {marginTop: 15}}, "current version 2.0.0")), 
+	        React.createElement("h1", {className: "page-header"}, "Getting Started ", React.createElement("small", {className: "pull-right", style: {marginTop: 15}}, "current version 2.1.0")), 
 	        React.createElement("p", null, 
 	          "React-widgets offers a ", 'set', " UI widgets, built from scratch with React. The suite is based on the excellent" + ' ' +
 	          "work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By" + ' ' +
@@ -375,7 +375,7 @@
 	  , Example = __webpack_require__(16)
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
-	  , DropdownListExample = __webpack_require__(17);
+	  , DropdownListExample = __webpack_require__(17)
 	
 	var prefix = 'DropdownList/'
 	var widgetName = 'DropdownList'
@@ -397,6 +397,8 @@
 	              React.createElement(MenuItem, {href: '#' + prefix + 'textField'}, "textField"), 
 	              React.createElement(MenuItem, {href: '#' + prefix + 'valueComponent'}, "valueComponent"), 
 	              React.createElement(MenuItem, {href: '#' + prefix + 'itemComponent'}, "itemComponent"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'groupComponent'}, "groupComponent"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'groupBy'}, "groupBy"), 
 	
 	              React.createElement(MenuItem, {href: '#' + prefix + 'open'}, "open"), 
 	              React.createElement(MenuItem, {href: '#' + prefix + 'onToggle'}, "onToggle"), 
@@ -495,7 +497,49 @@
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
 	
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"groupBy"}, 
+	          "groupBy ", React.createElement("small", null, "String | Function(Any dataItem)}")
+	        ), 
+	        React.createElement("p", null, 
+	          "Determines how to group the ", widgetName, " dropdown list. Providing a ", React.createElement("code", null, "string"), " will group" + ' ' + 
+	          "the ", React.createElement("code", null, "data"), " array by that property. You can also provide a ", 'function', " which should return the group value."
+	        ), 
 	
+	React.createElement(Example, null, 
+	("function groupBy(item) {\n  return item.length\n}\n\nreturn (<" + 
+	
+	
+	
+	widgetName + " data={[ john, jim, jill, sam]} groupBy={groupBy}/>)\n"
+	)
+	), 
+	
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"groupComponent"}, 
+	          "groupComponent ", React.createElement("small", null, "Component")), 
+	        React.createElement("p", null, 
+	          "This component is used to render each option group, when ", React.createElement("code", null, "groupBy"), " is specified. By" + ' ' + 
+	          "default the ", React.createElement("code", null, "groupBy"), " value will be used."
+	        ), 
+	React.createElement(Example, null, 
+	("function groupBy(item) {\n  return item.length\n}\n\nvar Group = React.createClass({\n  render() {\n    return this.props.item.length + ' letters long'; //return a helpful sring\n  }\n});\n\nmodule.exports = ;\nreturn (\n  <" + 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	widgetName + " \n    data={[ john, jim, jill, sam]} \n    groupBy={groupBy}\n    groupComponent={Group}/>\n)\n"
+	
+	
+	
+	
+	)
+	), 
 	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"open"}, 
 	          "open ", React.createElement("small", null, "Boolean", React.createElement(Default, null, "false")), React.createElement("strong", null, "controllable (onToggle, defaultOpen)")
@@ -562,6 +606,8 @@
 	});
 	
 	module.exports = DropdownList;
+	
+
 
 /***/ },
 /* 6 */
@@ -594,6 +640,9 @@
 	              React.createElement(MenuItem, {href: '#' + prefix + 'valueField'}, "valueField"), 
 	              React.createElement(MenuItem, {href: '#' + prefix + 'textField'}, "textField"), 
 	              React.createElement(MenuItem, {href: '#' + prefix + 'itemComponent'}, "itemComponent"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'groupComponent'}, "groupComponent"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'groupBy'}, "groupBy"), 
+	              
 	              React.createElement(MenuItem, {href: '#' + prefix + 'suggest'}, "suggest"), 
 	              React.createElement(MenuItem, {href: '#' + prefix + 'filter'}, "filter"), 
 	
@@ -688,6 +737,49 @@
 	          "This component is used to render each possible item in the DropdownList. The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"groupBy"}, 
+	          "groupBy ", React.createElement("small", null, "String | Function(Any dataItem)}")
+	        ), 
+	        React.createElement("p", null, 
+	          "Determines how to group the ", widgetName, " dropdown list. Providing a ", React.createElement("code", null, "string"), " will group" + ' ' + 
+	          "the ", React.createElement("code", null, "data"), " array by that property. You can also provide a ", 'function', " which should return the group value."
+	        ), 
+	
+	React.createElement(Example, null, 
+	("function groupBy(item) {\n  return item.length\n}\n\nreturn (<" + 
+	
+	
+	
+	widgetName + " data={[ john, jim, jill, sam]} groupBy={groupBy}/>)\n"
+	)
+	), 
+	
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"groupComponent"}, 
+	          "groupComponent ", React.createElement("small", null, "Component")), 
+	        React.createElement("p", null, 
+	          "This component is used to render each option group, when ", React.createElement("code", null, "groupBy"), " is specified. By" + ' ' + 
+	          "default the ", React.createElement("code", null, "groupBy"), " value will be used."
+	        ), 
+	React.createElement(Example, null, 
+	("function groupBy(item) {\n  return item.length\n}\n\nvar Group = React.createClass({\n  render() {\n    return this.props.item.length + ' letters long'; //return a helpful sring\n  }\n});\n\nmodule.exports = ;\nreturn (\n  <" + 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	widgetName + " \n    data={[ john, jim, jill, sam]} \n    groupBy={groupBy}\n    groupComponent={Group}/>\n)\n"
+	
+	
+	
+	
+	)
+	), 
 	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"suggest"}, 
 	          "suggest ", React.createElement("small", null, "Boolean", React.createElement(Default, null, "false"))), 
@@ -823,6 +915,10 @@
 	              React.createElement(MenuItem, {href: '#' + prefix + 'textField'}, "textField"), 
 	              React.createElement(MenuItem, {href: '#' + prefix + 'tagComponent'}, "tagComponent"), 
 	              React.createElement(MenuItem, {href: '#' + prefix + 'itemComponent'}, "itemComponent"), 
+	              
+	              React.createElement(MenuItem, {href: '#' + prefix + 'groupComponent'}, "groupComponent"), 
+	              React.createElement(MenuItem, {href: '#' + prefix + 'groupBy'}, "groupBy"), 
+	
 	              React.createElement(MenuItem, {href: '#' + prefix + 'placeholder'}, "placeholder"), 
 	
 	              React.createElement(MenuItem, {href: '#' + prefix + 'open'}, "open"), 
@@ -909,7 +1005,49 @@
 	          "This component is used to render each possible item in the list. The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"groupBy"}, 
+	          "groupBy ", React.createElement("small", null, "String | Function(Any dataItem)}")
+	        ), 
+	        React.createElement("p", null, 
+	          "Determines how to group the ", widgetName, " dropdown list. Providing a ", React.createElement("code", null, "string"), " will group" + ' ' + 
+	          "the ", React.createElement("code", null, "data"), " array by that property. You can also provide a ", 'function', " which should return the group value."
+	        ), 
 	
+	React.createElement(Example, null, 
+	("function groupBy(item) {\n  return item.length\n}\n\nreturn (<" + 
+	
+	
+	
+	widgetName + " data={[ john, jim, jill, sam]} groupBy={groupBy}/>)\n"
+	)
+	), 
+	
+	        React.createElement("h3", {className: "prop-header", id:  prefix +"groupComponent"}, 
+	          "groupComponent ", React.createElement("small", null, "Component")), 
+	        React.createElement("p", null, 
+	          "This component is used to render each option group, when ", React.createElement("code", null, "groupBy"), " is specified. By" + ' ' + 
+	          "default the ", React.createElement("code", null, "groupBy"), " value will be used."
+	        ), 
+	React.createElement(Example, null, 
+	("function groupBy(item) {\n  return item.length\n}\n\nvar Group = React.createClass({\n  render() {\n    return this.props.item.length + ' letters long'; //return a helpful sring\n  }\n});\n\nmodule.exports = ;\nreturn (\n  <" + 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	widgetName + " \n    data={[ john, jim, jill, sam]} \n    groupBy={groupBy}\n    groupComponent={Group}/>\n)\n"
+	
+	
+	
+	
+	)
+	), 
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"placeholder"}, 
 	          "placeholder ", React.createElement("small", null, "String")), 
 	        React.createElement("p", null, 
@@ -1915,9 +2053,9 @@
 	
 	    has: has,
 	    
-	    merge:  __webpack_require__(38),
+	    merge:  __webpack_require__(40),
 	
-	    extend: __webpack_require__(33),
+	    extend: __webpack_require__(34),
 	
 	    isShallowEqual: function (a, b) {
 	      if (a === b) return true;
@@ -2055,7 +2193,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1)
-	  , _ = __webpack_require__(47);
+	  , _ = __webpack_require__(56);
 	
 	
 	module.exports = React.createClass({displayName: 'exports',
@@ -2070,7 +2208,7 @@
 	    return (
 	      React.createElement("pre", null, 
 	        React.createElement("code", {className:  this.props.language}, 
-	          this.props.code
+	          this.props.code || this.props.children
 	        )
 	      )
 	    )
@@ -2086,12 +2224,13 @@
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
 	  , Dropdown = __webpack_require__(32).DropdownList
-	  , NumberPicker = __webpack_require__(32).NumberPicker;
+	  , NumberPicker = __webpack_require__(32).NumberPicker
+	  , genData = __webpack_require__(33);
 	
 	var valueComp = React.createClass({displayName: 'valueComp',
 	  render: function() {
 	
-	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.label))
+	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.name))
 	  }
 	});
 	
@@ -2103,7 +2242,7 @@
 	    return (
 	      React.createElement("div", null, 
 	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
-	         '  ' + this.props.item.label
+	         '  ' + this.props.item.name
 	      )
 	    );
 	  }
@@ -2125,11 +2264,7 @@
 	  },
 	
 	  render: function() {
-	    var list = [
-	        { label: 'orange', id: 1 },
-	        { label: 'blue', id: 2 },
-	        { label: 'red', id: 3 },
-	      ];
+	    var list = genData(25);
 	
 	    return (
 	      React.createElement("div", {className: "example"}, 
@@ -2139,6 +2274,7 @@
 	              React.createElement(Dropdown, {
 	                disabled: this.state.disabled === 'disabled', 
 	                readOnly: this.state.disabled === 'readonly', 
+	                groupBy: this.state.groupBy, 
 	                value: this.state.value || 1, 
 	                data: list, 
 	                duration: this.state.duration, 
@@ -2146,7 +2282,7 @@
 	                onChange: this._change, 
 	                isRtl: this.state.isRtl, 
 	                valueField: "id", 
-	                textField: "label"}
+	                textField: "name"}
 	                )
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
@@ -2154,6 +2290,7 @@
 	              React.createElement(Dropdown, {
 	                disabled: this.state.disabled === 'disabled', 
 	                readOnly: this.state.disabled === 'readonly', 
+	                groupBy: this.state.groupBy, 
 	                value: this.state.value || 1, 
 	                valueComponent: valueComp, 
 	                itemComponent: itemComp, 
@@ -2163,7 +2300,7 @@
 	                onChange: this._change, 
 	                isRtl: this.state.isRtl, 
 	                valueField: "id", 
-	                textField: "label"}
+	                textField: "name"}
 	                )
 	            )
 	          ), 
@@ -2174,6 +2311,14 @@
 	                  checked: this.state.isRtl, 
 	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
 	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.groupBy, 
+	                  onChange: this._set.bind(null, 'groupBy', !this.state.groupBy ? 'last' : null)}), 
+	                  "Group"
 	              )
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
@@ -2283,7 +2428,7 @@
 	                  filter: this.state.filter || false, 
 	                  disabled: this.state.disabled === 'disabled', 
 	                  readOnly: this.state.disabled === 'readonly', 
-	
+	                  groupBy: this.state.groupBy, 
 	                  duration: this.state.duration, 
 	                  busy: this.state.busy, 
 	                  isRtl: this.state.isRtl})
@@ -2300,6 +2445,7 @@
 	                  filter: this.state.filter || false, 
 	                  disabled: this.state.disabled === 'disabled', 
 	                  readOnly: this.state.disabled === 'readonly', 
+	                  groupBy: this.state.groupBy, 
 	                  duration: this.state.duration, 
 	                  itemComponent: itemComp, 
 	                  busy: this.state.busy, 
@@ -2313,6 +2459,14 @@
 	                  checked: this.state.isRtl, 
 	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
 	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.groupBy, 
+	                  onChange: this._set.bind(null, 'groupBy', !this.state.groupBy ? (function(item)  {return item.name.substr(0,2);}) : null)}), 
+	                  "Group"
 	              )
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
@@ -2415,15 +2569,10 @@
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(32);
+	  , RW = __webpack_require__(32)
+	  , genData = __webpack_require__(33);
 	
-	var chance = new (__webpack_require__(46))
-	
-	var list = new Array(100)
-	
-	for(var i = 0; i < list.length; i++)
-	  list[i] = { id: i + 1, label: chance.name() }
-	
+	var list = genData(50);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -2442,11 +2591,15 @@
 	      , disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 	
 	    function onCreate(tag){
-	      var tag = { id: list.length + 1, label: tag }
-	
+	      var parts = tag.split(' ')
 	      //list.push(tag)
 	      this.setState({
-	        value: [].concat(this.state.value, tag),
+	        value: [].concat(this.state.value, { 
+	          id: list.length + 1, 
+	          name: tag, 
+	          first: parts[0],
+	          last: parts[1],
+	        }),
 	      })
 	    }
 	
@@ -2459,12 +2612,13 @@
 	                  data: list, 
 	                  value: this.state.value, 
 	                  onChange: this._change, 
-	                  textField: "label", 
+	                  textField: "name", 
 	                  valueField: "id", 
 	                  placeholder: this.state.placeholder, 
 	                  disabled: disabled ? this.state.disabled : false, 
 	                  readOnly: this.state.disabled === 'readonly', 
 	                  onCreate: this.state.allowCustom && onCreate.bind(this), 
+	                  groupBy: this.state.groupBy, 
 	                  duration: this.state.duration, 
 	                  busy: this.state.busy, 
 	                  isRtl: this.state.isRtl})
@@ -2475,13 +2629,14 @@
 	                  data: list, 
 	                  value: this.state.value, 
 	                  onChange: this._change, 
-	                  textField: "label", 
+	                  textField: "name", 
 	                  valueField: "id", 
 	                  placeholder: this.state.placeholder, 
 	                  disabled: disabled ? this.state.disabled : false, 
 	                  readOnly: this.state.disabled === 'readonly', 
 	                  onCreate: this.state.allowCustom && onCreate.bind(this), 
 	                  duration: this.state.duration, 
+	                  groupBy: this.state.groupBy, 
 	                  itemComponent: itemComp, 
 	                  tagComponent: itemComp, 
 	                  busy: this.state.busy, 
@@ -2503,6 +2658,14 @@
 	                  checked: this.state.allowCustom, 
 	                  onChange: this._set.bind(null, 'allowCustom', !this.state.allowCustom)}), 
 	                  "Allow custom tags"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.groupBy, 
+	                  onChange: this._set.bind(null, 'groupBy', !this.state.groupBy ? 'last' : null)}), 
+	                  "Group"
 	              )
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
@@ -3194,9 +3357,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var classSet = __webpack_require__(41);
-	var BootstrapMixin = __webpack_require__(34);
+	var joinClasses = __webpack_require__(41);
+	var classSet = __webpack_require__(42);
+	var BootstrapMixin = __webpack_require__(35);
 	
 	var Button = React.createClass({displayName: 'Button',
 	  mixins: [BootstrapMixin],
@@ -3285,9 +3448,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var classSet = __webpack_require__(41);
-	var BootstrapMixin = __webpack_require__(34);
+	var joinClasses = __webpack_require__(41);
+	var classSet = __webpack_require__(42);
+	var BootstrapMixin = __webpack_require__(35);
 	var Button = __webpack_require__(24);
 	
 	var ButtonGroup = React.createClass({displayName: 'ButtonGroup',
@@ -3327,17 +3490,17 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var classSet = __webpack_require__(41);
-	var cloneWithProps = __webpack_require__(42);
+	var joinClasses = __webpack_require__(41);
+	var classSet = __webpack_require__(42);
+	var cloneWithProps = __webpack_require__(43);
 	
-	var createChainedFunction = __webpack_require__(43);
-	var BootstrapMixin = __webpack_require__(34);
-	var DropdownStateMixin = __webpack_require__(35);
+	var createChainedFunction = __webpack_require__(44);
+	var BootstrapMixin = __webpack_require__(35);
+	var DropdownStateMixin = __webpack_require__(36);
 	var Button = __webpack_require__(24);
 	var ButtonGroup = __webpack_require__(25);
-	var DropdownMenu = __webpack_require__(36);
-	var ValidComponentChildren = __webpack_require__(44);
+	var DropdownMenu = __webpack_require__(37);
+	var ValidComponentChildren = __webpack_require__(45);
 	
 	
 	var DropdownButton = React.createClass({displayName: 'DropdownButton',
@@ -3455,8 +3618,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var classSet = __webpack_require__(41);
+	var joinClasses = __webpack_require__(41);
+	var classSet = __webpack_require__(42);
 	
 	var MenuItem = React.createClass({displayName: 'MenuItem',
 	  propTypes: {
@@ -3518,15 +3681,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var BootstrapMixin = __webpack_require__(34);
-	var CollapsableMixin = __webpack_require__(37);
-	var classSet = __webpack_require__(41);
-	var domUtils = __webpack_require__(45);
-	var cloneWithProps = __webpack_require__(42);
+	var joinClasses = __webpack_require__(41);
+	var BootstrapMixin = __webpack_require__(35);
+	var CollapsableMixin = __webpack_require__(38);
+	var classSet = __webpack_require__(42);
+	var domUtils = __webpack_require__(46);
+	var cloneWithProps = __webpack_require__(43);
 	
-	var ValidComponentChildren = __webpack_require__(44);
-	var createChainedFunction = __webpack_require__(43);
+	var ValidComponentChildren = __webpack_require__(45);
+	var createChainedFunction = __webpack_require__(44);
 	
 	
 	var Nav = React.createClass({displayName: 'Nav',
@@ -3634,13 +3797,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var BootstrapMixin = __webpack_require__(34);
-	var classSet = __webpack_require__(41);
-	var cloneWithProps = __webpack_require__(42);
+	var joinClasses = __webpack_require__(41);
+	var BootstrapMixin = __webpack_require__(35);
+	var classSet = __webpack_require__(42);
+	var cloneWithProps = __webpack_require__(43);
 	
-	var ValidComponentChildren = __webpack_require__(44);
-	var createChainedFunction = __webpack_require__(43);
+	var ValidComponentChildren = __webpack_require__(45);
+	var createChainedFunction = __webpack_require__(44);
 	var Nav = __webpack_require__(28);
 	
 	
@@ -3779,13 +3942,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var classSet = __webpack_require__(41);
-	var cloneWithProps = __webpack_require__(42);
+	var joinClasses = __webpack_require__(41);
+	var classSet = __webpack_require__(42);
+	var cloneWithProps = __webpack_require__(43);
 	
-	var ValidComponentChildren = __webpack_require__(44);
-	var createChainedFunction = __webpack_require__(43);
-	var BootstrapMixin = __webpack_require__(34);
+	var ValidComponentChildren = __webpack_require__(45);
+	var createChainedFunction = __webpack_require__(44);
+	var BootstrapMixin = __webpack_require__(35);
 	
 	
 	var SubNav = React.createClass({displayName: 'SubNav',
@@ -3913,9 +4076,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var classSet = __webpack_require__(41);
-	var BootstrapMixin = __webpack_require__(34);
+	var joinClasses = __webpack_require__(41);
+	var classSet = __webpack_require__(42);
+	var BootstrapMixin = __webpack_require__(35);
 	
 	var NavItem = React.createClass({displayName: 'NavItem',
 	  mixins: [BootstrapMixin],
@@ -3942,7 +4105,7 @@
 	    };
 	
 	    return (
-	      React.createElement("li", React.__spread({},  this.props, {title: null, href: null, className: joinClasses(this.props.className, classSet(classes))}), 
+	      React.createElement("li", React.__spread({},  this.props, {className: joinClasses(this.props.className, classSet(classes))}), 
 	        React.createElement("a", {
 	          href: this.props.href, 
 	          title: this.props.title, 
@@ -3975,25 +4138,46 @@
 	
 	module.exports = {
 	
-	  DropdownList:     __webpack_require__(48),
-	  Combobox:         __webpack_require__(49),
+	  DropdownList:     __webpack_require__(47),
+	  Combobox:         __webpack_require__(48),
 	
-	  Calendar:         __webpack_require__(50),
-	  DateTimePicker:   __webpack_require__(51),
+	  Calendar:         __webpack_require__(49),
+	  DateTimePicker:   __webpack_require__(50),
 	
-	  NumberPicker:     __webpack_require__(52),
+	  NumberPicker:     __webpack_require__(51),
 	  
-	  Multiselect:      __webpack_require__(53),
-	  SelectList:       __webpack_require__(54),
+	  Multiselect:      __webpack_require__(52),
+	  SelectList:       __webpack_require__(53),
 	
 	  utils: {
-	    ReplaceTransitionGroup: __webpack_require__(55),
-	    SlideTransition:        __webpack_require__(56),
+	    ReplaceTransitionGroup: __webpack_require__(54),
+	    SlideTransition:        __webpack_require__(55),
 	  }
 	}
 
 /***/ },
 /* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var chance = new (__webpack_require__(82))
+	
+	chance.set('lastNames', ['Smith', 'Williams', 'Chang', 'Diaz', 'Morales'])
+	
+	module.exports = function generateList(len, lastNames){
+	  var arr = new Array(len)
+	
+	  for(var i = 0; i < arr.length; i++){
+	    var first = chance.first(), last = chance.last()
+	    arr[i] = { id: i + 1, name: (first + " " + last), first:first, last:last }
+	  }
+	
+	  return arr
+	}
+
+
+/***/ },
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = extend
@@ -4014,7 +4198,7 @@
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -4054,7 +4238,7 @@
 	module.exports = BootstrapMixin;
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -4139,16 +4323,16 @@
 	module.exports = DropdownStateMixin;
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var classSet = __webpack_require__(41);
-	var cloneWithProps = __webpack_require__(42);
+	var joinClasses = __webpack_require__(41);
+	var classSet = __webpack_require__(42);
+	var cloneWithProps = __webpack_require__(43);
 	
-	var createChainedFunction = __webpack_require__(43);
-	var ValidComponentChildren = __webpack_require__(44);
+	var createChainedFunction = __webpack_require__(44);
+	var ValidComponentChildren = __webpack_require__(45);
 	
 	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
 	  propTypes: {
@@ -4190,7 +4374,7 @@
 	module.exports = DropdownMenu;
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -4323,29 +4507,6 @@
 	};
 	
 	module.exports = CollapsableMixin;
-
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = extend
-	
-	function extend() {
-	    var target = {}
-	
-	    for (var i = 0; i < arguments.length; i++) {
-	        var source = arguments[i]
-	
-	        for (var key in source) {
-	            if (source.hasOwnProperty(key)) {
-	                target[key] = source[key]
-	            }
-	        }
-	    }
-	
-	    return target
-	}
 
 
 /***/ },
@@ -4570,6 +4731,29 @@
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = extend
+	
+	function extend() {
+	    var target = {}
+	
+	    for (var i = 0; i < arguments.length; i++) {
+	        var source = arguments[i]
+	
+	        for (var key in source) {
+	            if (source.hasOwnProperty(key)) {
+	                target[key] = source[key]
+	            }
+	        }
+	    }
+	
+	    return target
+	}
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/**
 	 * Copyright 2013-2014, Facebook, Inc.
 	 * All rights reserved.
@@ -4613,7 +4797,7 @@
 
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4657,7 +4841,7 @@
 	module.exports = cx;
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4679,8 +4863,8 @@
 	 */
 	
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(40);
-	var assign = __webpack_require__(82);
+	var joinClasses = __webpack_require__(41);
+	var assign = __webpack_require__(83);
 	
 	/**
 	 * Creates a transfer strategy that will merge prop values using the supplied
@@ -4807,7 +4991,7 @@
 	module.exports = cloneWithProps;
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4837,7 +5021,7 @@
 	module.exports = createChainedFunction;
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -4932,7 +5116,7 @@
 	};
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -5046,1636 +5230,2638 @@
 	};
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//  Chance.js 0.5.9
-	//  http://chancejs.com
-	//  (c) 2013 Victor Quinn
-	//  Chance may be freely distributed or modified under the MIT license.
+	'use strict';
+	var React           = __webpack_require__(1)
+	  , _               = __webpack_require__(14)
+	  , cx              = __webpack_require__(13)
+	  , controlledInput = __webpack_require__(60)
+	  , CustomPropTypes = __webpack_require__(61)
+	  , Popup           = __webpack_require__(62)
+	  , PlainList       = __webpack_require__(63)
+	  , GroupableList   = __webpack_require__(64)
+	  ;
 	
-	(function () {
+	var propTypes = {
+	  //-- controlled props -----------
+	  value:          React.PropTypes.any,
+	  onChange:       React.PropTypes.func,
+	  open:           React.PropTypes.bool,
+	  onToggle:       React.PropTypes.func,
+	  //------------------------------------
 	
-	    // Constants
-	    var MAX_INT = 9007199254740992;
-	    var MIN_INT = -MAX_INT;
-	    var NUMBERS = '0123456789';
-	    var CHARS_LOWER = 'abcdefghijklmnopqrstuvwxyz';
-	    var CHARS_UPPER = CHARS_LOWER.toUpperCase();
-	    var HEX_POOL  = NUMBERS + "abcdef";
+	  data:           React.PropTypes.array,
+	  valueField:     React.PropTypes.string,
+	  textField:      React.PropTypes.string,
 	
-	    // Cached array helpers
-	    var slice = Array.prototype.slice;
+	  valueComponent: CustomPropTypes.elementType,
+	  itemComponent:  CustomPropTypes.elementType,
+	  list:           CustomPropTypes.elementType,
 	
-	    // Constructor
-	    function Chance (seed) {
-	        if (!(this instanceof Chance)) {
-	            return new Chance(seed);
-	        }
+	  groupComponent: CustomPropTypes.elementType,
+	  groupBy:        React.PropTypes.oneOfType([
+	                    React.PropTypes.func,
+	                    React.PropTypes.string
+	                  ]),
 	
-	        if (seed !== undefined) {
-	            // If we were passed a generator rather than a seed, use it.
-	            if (typeof seed === 'function') {
-	                this.random = seed;
-	            } else {
-	                this.seed = seed;
-	            }
-	        }
+	  onSelect:       React.PropTypes.func,
+	  
+	  busy:           React.PropTypes.bool,
 	
-	        // If no generator function was provided, use our MT
-	        if (typeof this.random === 'undefined') {
-	            this.mt = this.mersenne_twister(seed);
-	            this.random = function () {
-	                return this.mt.random(this.seed);
-	            };
-	        }
+	  delay:          React.PropTypes.number,
+	  duration:       React.PropTypes.number, //popup
+	
+	  disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	  readOnly:       React.PropTypes.oneOfType([
+	                    React.PropTypes.bool,
+	                    React.PropTypes.oneOf(['readOnly'])
+	                  ]),
+	
+	  messages:       React.PropTypes.shape({
+	    open:         React.PropTypes.string,
+	  })
+	};
+	
+	var DropdownList = React.createClass({
+	
+	  displayName: 'DropdownList',
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(85),
+	    __webpack_require__(86),
+	    __webpack_require__(87)
+	  ],
+	
+	  propTypes: propTypes,
+	
+		getInitialState: function(){
+	    var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
+	
+			return {
+	      selectedItem: this.props.data[initialIdx],
+	      focusedItem:  this.props.data[initialIdx] || this.props.data[0],
+			}
+		},
+	
+	  getDefaultProps: function(){
+	    return {
+	      delay: 500,
+	      value: '',
+	      open: false,
+	      data: [],
+	      messages: {
+	        open: 'open dropdown'
+	      }
 	    }
+	  },
 	
-	    // Random helper functions
-	    function initOptions(options, defaults) {
-	        options || (options = {});
-	        if (!defaults) {
-	            return options;
-	        }
-	        for (var i in defaults) {
-	            if (typeof options[i] === 'undefined') {
-	                options[i] = defaults[i];
-	            }
-	        }
-	        return options;
-	    }
+	  componentWillReceiveProps: function(props){
+	    if ( _.isShallowEqual(props.value, this.props.value) )
+	      return
 	
-	    function testRange(test, errorMessage) {
-	        if (test) {
-	            throw new RangeError(errorMessage);
-	        }
-	    }
+	    var idx = this._dataIndexOf(props.data, props.value);
 	
-	    // -- Basics --
+	    this.setState({ 
+	      selectedItem: props.data[idx],
+	      focusedItem:  props.data[!~idx ? 0 : idx]
+	    })
+	  },
 	
-	    Chance.prototype.bool = function (options) {
-	
-	        // likelihood of success (true)
-	        options = initOptions(options, {likelihood : 50});
-	
-	        testRange(
-	            options.likelihood < 0 || options.likelihood > 100,
-	            "Chance: Likelihood accepts values from 0 to 100."
-	        );
-	
-	        return this.random() * 100 < options.likelihood;
-	    };
-	
-	    Chance.prototype.character = function (options) {
-	        options = initOptions(options);
-	
-	        var symbols = "!@#$%^&*()[]",
-	            letters, pool;
-	
-	        testRange(
-	            options.alpha && options.symbols,
-	            "Chance: Cannot specify both alpha and symbols."
-	        );
-	
-	
-	        if (options.casing === 'lower') {
-	            letters = CHARS_LOWER;
-	        } else if (options.casing === 'upper') {
-	            letters = CHARS_UPPER;
-	        } else {
-	            letters = CHARS_LOWER + CHARS_UPPER;
-	        }
-	
-	        if (options.pool) {
-	            pool = options.pool;
-	        } else if (options.alpha) {
-	            pool = letters;
-	        } else if (options.symbols) {
-	            pool = symbols;
-	        } else {
-	            pool = letters + NUMBERS + symbols;
-	        }
-	
-	        return pool.charAt(this.natural({max: (pool.length - 1)}));
-	    };
-	
-	    // Note, wanted to use "float" or "double" but those are both JS reserved words.
-	
-	    // Note, fixed means N OR LESS digits after the decimal. This because
-	    // It could be 14.9000 but in JavaScript, when this is cast as a number,
-	    // the trailing zeroes are dropped. Left to the consumer if trailing zeroes are
-	    // needed
-	    Chance.prototype.floating = function (options) {
-	        var num, range;
-	
-	        options = initOptions(options, {fixed : 4});
-	        var fixed = Math.pow(10, options.fixed);
-	
-	        testRange(
-	            options.fixed && options.precision,
-	            "Chance: Cannot specify both fixed and precision."
-	        );
-	
-	        var max = MAX_INT / fixed;
-	        var min = -max;
-	
-	        testRange(
-	            options.min && options.fixed && options.min < min,
-	            "Chance: Min specified is out of range with fixed. Min should be, at least, " + min
-	        );
-	        testRange(
-	            options.max && options.fixed && options.max > max,
-	            "Chance: Max specified is out of range with fixed. Max should be, at most, " + max
-	        );
-	
-	        options = initOptions(options, {min : min, max : max});
-	
-	        // Todo - Make this work!
-	        // options.precision = (typeof options.precision !== "undefined") ? options.precision : false;
-	
-	        num = this.integer({min: options.min * fixed, max: options.max * fixed});
-	        var num_fixed = (num / fixed).toFixed(options.fixed);
-	
-	        return parseFloat(num_fixed);
-	    };
-	
-	    // NOTE the max and min are INCLUDED in the range. So:
-	    //
-	    // chance.natural({min: 1, max: 3});
-	    //
-	    // would return either 1, 2, or 3.
-	
-	    Chance.prototype.integer = function (options) {
-	
-	        // 9007199254740992 (2^53) is the max integer number in JavaScript
-	        // See: http://vq.io/132sa2j
-	        options = initOptions(options, {min: MIN_INT, max: MAX_INT});
-	
-	        testRange(options.min > options.max, "Chance: Min cannot be greater than Max.");
-	
-	        return Math.floor(this.random() * (options.max - options.min + 1) + options.min);
-	    };
-	
-	    Chance.prototype.natural = function (options) {
-	        options = initOptions(options, {min: 0, max: MAX_INT});
-	        return this.integer(options);
-	    };
-	
-	    Chance.prototype.normal = function (options) {
-	        options = initOptions(options, {mean : 0, dev : 1});
-	
-	        // The Marsaglia Polar method
-	        var s, u, v, norm,
-	            mean = options.mean,
-	            dev = options.dev;
-	
-	        do {
-	            // U and V are from the uniform distribution on (-1, 1)
-	            u = this.random() * 2 - 1;
-	            v = this.random() * 2 - 1;
-	
-	            s = u * u + v * v;
-	        } while (s >= 1);
-	
-	        // Compute the standard normal variate
-	        norm = u * Math.sqrt(-2 * Math.log(s) / s);
-	
-	        // Shape and scale
-	        return dev * norm + mean;
-	    };
-	
-	    Chance.prototype.string = function (options) {
-	        options = initOptions(options);
-	
-	        var length = options.length || this.natural({min: 5, max: 20}),
-	            text = '',
-	            pool = options.pool;
-	
-	        for (var i = 0; i < length; i++) {
-	            text += this.character({pool: pool});
-	        }
-	        return text;
-	    };
-	
-	    // -- End Basics --
-	
-	    // -- Helpers --
-	
-	    Chance.prototype.capitalize = function (word) {
-	        return word.charAt(0).toUpperCase() + word.substr(1);
-	    };
-	
-	    Chance.prototype.mixin = function (obj) {
-	        var chance = this;
-	        for (var func_name in obj) {
-	            Chance.prototype[func_name] = obj[func_name];
-	        }
-	        return this;
-	    };
-	
-	    // Given a function that generates something random and a number of items to generate,
-	    // return an array of items where none repeat.
-	    Chance.prototype.unique = function(fn, num, options) {
-	        options = initOptions(options, {
-	            // Default comparator to check that val is not already in arr.
-	            // Should return `false` if item not in array, `true` otherwise
-	            comparator: function(arr, val) {
-	                return arr.indexOf(result) !== -1;
-	            }
-	        });
-	
-	        var arr = [], count = 0;
-	
-	        while (arr.length < num) {
-	            var result = fn.apply(this, slice.call(arguments, 2));
-	            if (!options.comparator(arr, result)) {
-	                arr.push(result);
-	                // reset count when unique found
-	                count = 0;
-	            }
-	
-	            if (++count > num * 50) {
-	                throw new RangeError("Chance: num is likely too large for sample set");
-	            }
-	        }
-	        return arr;
-	    };
-	
-	    // H/T to SO for this one: http://vq.io/OtUrZ5
-	    Chance.prototype.pad = function (number, width, pad) {
-	        // Default pad to 0 if none provided
-	        pad = pad || '0';
-	        // Convert number to a string
-	        number = number + '';
-	        return number.length >= width ? number : new Array(width - number.length + 1).join(pad) + number;
-	    };
-	
-	    Chance.prototype.pick = function (arr, count) {
-	        if (!count || count === 1) {
-	            return arr[this.natural({max: arr.length - 1})];
-	        } else {
-	            return this.shuffle(arr).slice(0, count);
-	        }
-	    };
-	
-	    Chance.prototype.shuffle = function (arr) {
-	        var old_array = arr.slice(0),
-	            new_array = [],
-	            j = 0,
-	            length = Number(old_array.length);
-	
-	        for (var i = 0; i < length; i++) {
-	            // Pick a random index from the array
-	            j = this.natural({max: old_array.length - 1});
-	            // Add it to the new array
-	            new_array[i] = old_array[j];
-	            // Remove that element from the original array
-	            old_array.splice(j, 1);
-	        }
-	
-	        return new_array;
-	    };
-	
-	    // -- End Helpers --
-	
-	    // -- Text --
-	
-	    Chance.prototype.paragraph = function (options) {
-	        options = initOptions(options);
-	
-	        var sentences = options.sentences || this.natural({min: 3, max: 7}),
-	            sentence_array = [];
-	
-	        for (var i = 0; i < sentences; i++) {
-	            sentence_array.push(this.sentence());
-	        }
-	
-	        return sentence_array.join(' ');
-	    };
-	
-	    // Could get smarter about this than generating random words and
-	    // chaining them together. Such as: http://vq.io/1a5ceOh
-	    Chance.prototype.sentence = function (options) {
-	        options = initOptions(options);
-	
-	        var words = options.words || this.natural({min: 12, max: 18}),
-	            text, word_array = [];
-	
-	        for (var i = 0; i < words; i++) {
-	            word_array.push(this.word());
-	        }
-	
-	        text = word_array.join(' ');
-	
-	        // Capitalize first letter of sentence, add period at end
-	        text = this.capitalize(text) + '.';
-	
-	        return text;
-	    };
-	
-	    Chance.prototype.syllable = function (options) {
-	        options = initOptions(options);
-	
-	        var length = options.length || this.natural({min: 2, max: 3}),
-	            consonants = 'bcdfghjklmnprstvwz', // consonants except hard to speak ones
-	            vowels = 'aeiou', // vowels
-	            all = consonants + vowels, // all
-	            text = '',
-	            chr;
-	
-	        // I'm sure there's a more elegant way to do this, but this works
-	        // decently well.
-	        for (var i = 0; i < length; i++) {
-	            if (i === 0) {
-	                // First character can be anything
-	                chr = this.character({pool: all});
-	            } else if (consonants.indexOf(chr) === -1) {
-	                // Last character was a vowel, now we want a consonant
-	                chr = this.character({pool: consonants});
-	            } else {
-	                // Last character was a consonant, now we want a vowel
-	                chr = this.character({pool: vowels});
-	            }
-	
-	            text += chr;
-	        }
-	
-	        return text;
-	    };
-	
-	    Chance.prototype.word = function (options) {
-	        options = initOptions(options);
-	
-	        testRange(
-	            options.syllables && options.length,
-	            "Chance: Cannot specify both syllables AND length."
-	        );
-	
-	        var syllables = options.syllables || this.natural({min: 1, max: 3}),
-	            text = '';
-	
-	        if (options.length) {
-	            // Either bound word by length
-	            do {
-	                text += this.syllable();
-	            } while (text.length < options.length);
-	            text = text.substring(0, options.length);
-	        } else {
-	            // Or by number of syllables
-	            for (var i = 0; i < syllables; i++) {
-	                text += this.syllable();
-	            }
-	        }
-	        return text;
-	    };
-	
-	    // -- End Text --
-	
-	    // -- Person --
-	
-	    Chance.prototype.age = function (options) {
-	        options = initOptions(options);
-	        var ageRange;
-	
-	        switch (options.type) {
-	            case 'child':
-	                ageRange = {min: 1, max: 12};
-	                break;
-	            case 'teen':
-	                ageRange = {min: 13, max: 19};
-	                break;
-	            case 'adult':
-	                ageRange = {min: 18, max: 65};
-	                break;
-	            case 'senior':
-	                ageRange = {min: 65, max: 100};
-	                break;
-	            case 'all':
-	                ageRange = {min: 1, max: 100};
-	                break;
-	            default:
-	                ageRange = {min: 18, max: 65};
-	                break;
-	        }
-	
-	        return this.natural(ageRange);
-	    };
-	
-	    Chance.prototype.birthday = function (options) {
-	        options = initOptions(options, {
-	            year: (new Date().getFullYear() - this.age(options))
-	        });
-	
-	        return this.date(options);
-	    };
-	
-	
-	    Chance.prototype.first = function (options) {
-	        options = initOptions(options, {gender: this.gender()});
-	        return this.pick(this.get("firstNames")[options.gender.toLowerCase()]);
-	    };
-	
-	    Chance.prototype.gender = function () {
-	        return this.pick(['Male', 'Female']);
-	    };
-	
-	
-	    Chance.prototype.last = function () {
-	        return this.pick(this.get("lastNames"));
-	    };
-	
-	    Chance.prototype.name = function (options) {
-	        options = initOptions(options);
-	
-	        var first = this.first(options),
-	            last = this.last(),
-	            name;
-	
-	        if (options.middle) {
-	            name = first + ' ' + this.first(options) + ' ' + last;
-	        } else if (options.middle_initial) {
-	            name = first + ' ' + this.character({alpha: true, casing: 'upper'}) + '. ' + last;
-	        } else {
-	            name = first + ' ' + last;
-	        }
-	
-	        if (options.prefix) {
-	            name = this.prefix(options) + ' ' + name;
-	        }
-	
-	        return name;
-	    };
-	
-	    // Return the list of available name prefixes based on supplied gender.
-	    Chance.prototype.name_prefixes = function (gender) {
-	        gender = gender || "all";
-	
-	        var prefixes = [
-	            { name: 'Doctor', abbreviation: 'Dr.' }
-	        ];
-	
-	        if (gender === "male" || gender === "all") {
-	            prefixes.push({ name: 'Mister', abbreviation: 'Mr.' });
-	        }
-	
-	        if (gender === "female" || gender === "all") {
-	            prefixes.push({ name: 'Miss', abbreviation: 'Miss' });
-	            prefixes.push({ name: 'Misses', abbreviation: 'Mrs.' });
-	        }
-	
-	        return prefixes;
-	    };
-	
-	    // Alias for name_prefix
-	    Chance.prototype.prefix = function (options) {
-	        return this.name_prefix(options);
-	    };
-	
-	    Chance.prototype.name_prefix = function (options) {
-	        options = initOptions(options, { gender: "all" });
-	        return options.full ?
-	            this.pick(this.name_prefixes(options.gender)).name :
-	            this.pick(this.name_prefixes(options.gender)).abbreviation;
-	    };
-	
-	    Chance.prototype.ssn = function (options) {
-	        options = initOptions(options, {ssnFour: false, dashes: true});
-	        var ssn_pool = "1234567890",
-	            ssn,
-	            dash = '';
-	
-	        if(options.dashes){
-	            dash = '-';
-	        }
-	
-	        if(!options.ssnFour) {
-	            ssn = this.string({pool: ssn_pool, length: 3}) + dash +
-	            this.string({pool: ssn_pool, length: 2}) + dash +
-	            this.string({pool: ssn_pool, length: 4});
-	        } else {
-	            ssn = this.string({pool: ssn_pool, length: 4});
-	        }
-	        return ssn;
-	    };
-	
-	    // -- End Person --
-	
-	    // -- Web --
-	
-	    Chance.prototype.color = function (options) {
-	        function gray(value, delimiter) {
-	            return [value, value, value].join(delimiter || '');
-	        }
-	
-	        options = initOptions(options, {format: this.pick(['hex', 'shorthex', 'rgb']), grayscale: false});
-	        var isGrayscale = options.grayscale;
-	
-	        if (options.format === 'hex') {
-	            return '#' + (isGrayscale ? gray(this.hash({length: 2})) : this.hash({length: 6}));
-	        }
-	
-	        if (options.format === 'shorthex') {
-	            return '#' + (isGrayscale ? gray(this.hash({length: 1})) : this.hash({length: 3}));
-	        }
-	
-	        if (options.format === 'rgb') {
-	            if (isGrayscale) {
-	                return 'rgb(' + gray(this.natural({max: 255}), ',') + ')';
-	            } else {
-	                return 'rgb(' + this.natural({max: 255}) + ',' + this.natural({max: 255}) + ',' + this.natural({max: 255}) + ')';
-	            }
-	        }
-	
-	        throw new Error('Invalid format provided. Please provide one of "hex", "shorthex", or "rgb"');
-	    };
-	
-	    Chance.prototype.domain = function (options) {
-	        options = initOptions(options);
-	        return this.word() + '.' + (options.tld || this.tld());
-	    };
-	
-	    Chance.prototype.email = function (options) {
-	        options = initOptions(options);
-	        return this.word() + '@' + (options.domain || this.domain());
-	    };
-	
-	    Chance.prototype.fbid = function () {
-	        return parseInt('10000' + this.natural({max: 100000000000}), 10);
-	    };
-	
-	    Chance.prototype.google_analytics = function () {
-	        var account = this.pad(this.natural({max: 999999}), 6);
-	        var property = this.pad(this.natural({max: 99}), 2);
-	        return 'UA-' + account + '-' + property;
-	    };
-	
-	    Chance.prototype.hashtag = function () {
-	        return '#' + this.word();
-	    };
-	
-	    Chance.prototype.ip = function () {
-	        // Todo: This could return some reserved IPs. See http://vq.io/137dgYy
-	        // this should probably be updated to account for that rare as it may be
-	        return this.natural({max: 255}) + '.' +
-	               this.natural({max: 255}) + '.' +
-	               this.natural({max: 255}) + '.' +
-	               this.natural({max: 255});
-	    };
-	
-	    Chance.prototype.ipv6 = function () {
-	        var ip_addr = [];
-	
-	        for (var i = 0; i < 8; i++) {
-	            ip_addr.push(this.hash({length: 4}));
-	        }
-	        return ip_addr.join(":");
-	    };
-	
-	    Chance.prototype.klout = function () {
-	        return this.natural({min: 1, max: 99});
-	    };
-	
-	    Chance.prototype.tlds = function () {
-	        return ['com', 'org', 'edu', 'gov', 'co.uk', 'net', 'io'];
-	    };
-	
-	    Chance.prototype.tld = function () {
-	        return this.pick(this.tlds());
-	    };
-	
-	    Chance.prototype.twitter = function () {
-	        return '@' + this.word();
-	    };
-	
-	    // -- End Web --
-	
-	    // -- Address --
-	
-	    Chance.prototype.address = function (options) {
-	        options = initOptions(options);
-	        return this.natural({min: 5, max: 2000}) + ' ' + this.street(options);
-	    };
-	
-	    Chance.prototype.areacode = function (options) {
-	        options = initOptions(options, {parens : true});
-	        // Don't want area codes to start with 1, or have a 9 as the second digit
-	        var areacode = this.natural({min: 2, max: 9}).toString() + this.natural({min: 0, max: 8}).toString() + this.natural({min: 0, max: 9}).toString();
-	        return options.parens ? '(' + areacode + ')' : areacode;
-	    };
-	
-	    Chance.prototype.city = function () {
-	        return this.capitalize(this.word({syllables: 3}));
-	    };
-	
-	    Chance.prototype.coordinates = function (options) {
-	        options = initOptions(options);
-	        return this.latitude(options) + ', ' + this.longitude(options);
-	    };
-	
-	    Chance.prototype.geoJson = function (options) {
-	        options = initOptions(options);
-	        return this.latitude(options) + ', ' + this.longitude(options) + ', ' + this.altitude(options);
-	    };
-	
-	    Chance.prototype.altitude = function (options) {
-	        options = initOptions(options, {fixed : 5});
-	        return this.floating({min: 0, max: 32736000, fixed: options.fixed});
-	    };
-	
-	    Chance.prototype.depth = function (options) {
-	        options = initOptions(options, {fixed: 5});
-	        return this.floating({min: -35994, max: 0, fixed: options.fixed});
-	    };
-	
-	    Chance.prototype.latitude = function (options) {
-	        options = initOptions(options, {fixed: 5, min: -90, max: 90});
-	        return this.floating({min: options.min, max: options.max, fixed: options.fixed});
-	    };
-	
-	    Chance.prototype.longitude = function (options) {
-	        options = initOptions(options, {fixed: 5, min: -180, max: 180});
-	        return this.floating({min: options.min, max: options.max, fixed: options.fixed});
-	    };
-	
-	    Chance.prototype.phone = function (options) {
-	        options = initOptions(options, {formatted : true});
-	        if (!options.formatted) {
-	            options.parens = false;
-	        }
-	        var areacode = this.areacode(options).toString();
-	        var exchange = this.natural({min: 2, max: 9}).toString() 
-	            + this.natural({min: 0, max: 9}).toString() 
-	            + this.natural({min: 0, max: 9}).toString();
-	        var subscriber = this.natural({min: 1000, max: 9999}).toString(); // this could be random [0-9]{4}
+		render: function(){
+			var $__0=
 	        
-	        return options.formatted ? areacode + ' ' + exchange + '-' + subscriber : areacode + exchange + subscriber;
-	    };
-	
-	    Chance.prototype.postal = function () {
-	        // Postal District
-	        var pd = this.character({pool: "XVTSRPNKLMHJGECBA"});
-	        // Forward Sortation Area (FSA)
-	        var fsa = pd + this.natural({max: 9}) + this.character({alpha: true, casing: "upper"});
-	        // Local Delivery Unut (LDU)
-	        var ldu = this.natural({max: 9}) + this.character({alpha: true, casing: "upper"}) + this.natural({max: 9});
-	
-	        return fsa + " " + ldu;
-	    };
-	
-	    Chance.prototype.provinces = function () {
-	        return this.get("provinces");
-	    };
-	
-	    Chance.prototype.province = function (options) {
-	        return (options && options.full) ?
-	            this.pick(this.provinces()).name :
-	            this.pick(this.provinces()).abbreviation;
-	    };
-	
-	    Chance.prototype.radio = function (options) {
-	        // Initial Letter (Typically Designated by Side of Mississippi River)
-	        options = initOptions(options, {side : "?"});
-	        var fl = "";
-	        switch (options.side.toLowerCase()) {
-	        case "east":
-	        case "e":
-	            fl = "W";
-	            break;
-	        case "west":
-	        case "w":
-	            fl = "K";
-	            break;
-	        default:
-	            fl = this.character({pool: "KW"});
-	            break;
-	        }
-	
-	        return fl + this.character({alpha: true, casing: "upper"}) + this.character({alpha: true, casing: "upper"}) + this.character({alpha: true, casing: "upper"});
-	    };
-	
-	    Chance.prototype.state = function (options) {
-	        return (options && options.full) ?
-	            this.pick(this.states(options)).name :
-	            this.pick(this.states(options)).abbreviation;
-	    };
-	
-	    Chance.prototype.states = function (options) {
-	        options = initOptions(options);
-	
-	        var states,
-	            us_states_and_dc = this.get("us_states_and_dc"),
-	            territories = this.get("territories"),
-	            armed_forces = this.get("armed_forces");
-	
-	        states = us_states_and_dc;
-	
-	        if (options.territories) {
-	            states = states.concat(territories);
-	        }
-	        if (options.armed_forces) {
-	            states = states.concat(armed_forces);
-	        }
-	
-	        return states;
-	    };
-	
-	    Chance.prototype.street = function (options) {
-	        options = initOptions(options);
-	
-	        var street = this.word({syllables: 2});
-	        street = this.capitalize(street);
-	        street += ' ';
-	        street += options.short_suffix ?
-	            this.street_suffix().abbreviation :
-	            this.street_suffix().name;
-	        return street;
-	    };
-	
-	    Chance.prototype.street_suffix = function () {
-	        return this.pick(this.street_suffixes());
-	    };
-	
-	    Chance.prototype.street_suffixes = function () {
-	        // These are the most common suffixes.
-	        return this.get("street_suffixes");
-	    };
-	
-	    Chance.prototype.tv = function (options) {
-	        return this.radio(options);
-	    };
-	
-	    // Note: only returning US zip codes, internationalization will be a whole
-	    // other beast to tackle at some point.
-	    Chance.prototype.zip = function (options) {
-	        var zip = "";
-	
-	        for (var i = 0; i < 5; i++) {
-	            zip += this.natural({max: 9}).toString();
-	        }
-	
-	        if (options && options.plusfour === true) {
-	            zip += '-';
-	            for (i = 0; i < 4; i++) {
-	                zip += this.natural({max: 9}).toString();
-	            }
-	        }
-	
-	        return zip;
-	    };
-	
-	    // -- End Address --
-	
-	    // -- Time
-	
-	    Chance.prototype.ampm = function () {
-	        return this.bool() ? 'am' : 'pm';
-	    };
-	
-	    Chance.prototype.date = function (options) {
-	        var m = this.month({raw: true}),
-	            date_string;
-	
-	        options = initOptions(options, {
-	            year: parseInt(this.year(), 10),
-	            // Necessary to subtract 1 because Date() 0-indexes month but not day or year
-	            // for some reason.
-	            month: m.numeric - 1,
-	            day: this.natural({min: 1, max: m.days}),
-	            hour: this.hour(),
-	            minute: this.minute(),
-	            second: this.second(),
-	            millisecond: this.millisecond(),
-	            american: true,
-	            string: false
-	        });
-	
-	        var date = new Date(options.year, options.month, options.day, options.hour, options.minute, options.second, options.millisecond);
-	
-	        if (options.american) {
-	            // Adding 1 to the month is necessary because Date() 0-indexes
-	            // months but not day for some odd reason.
-	            date_string = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-	        } else {
-	            date_string = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-	        }
-	
-	        return options.string ? date_string : date;
-	    };
-	
-	    Chance.prototype.hammertime = function (options) {
-	        return this.date(options).getTime();
-	    };
-	
-	    Chance.prototype.hour = function (options) {
-	        options = initOptions(options);
-	        var max = options.twentyfour ? 24 : 12;
-	        return this.natural({min: 1, max: max});
-	    };
-	
-	    Chance.prototype.millisecond = function () {
-	        return this.natural({max: 999});
-	    };
-	
-	    Chance.prototype.minute = Chance.prototype.second = function () {
-	        return this.natural({max: 59});
-	    };
-	
-	    Chance.prototype.month = function (options) {
-	        options = initOptions(options);
-	        var month = this.pick(this.months());
-	        return options.raw ? month : month.name;
-	    };
-	
-	    Chance.prototype.months = function () {
-	        return this.get("months");
-	    };
-	
-	    Chance.prototype.second = function () {
-	        return this.natural({max: 59});
-	    };
-	
-	    Chance.prototype.timestamp = function () {
-	        return this.natural({min: 1, max: parseInt(new Date().getTime() / 1000, 10)});
-	    };
-	
-	    Chance.prototype.year = function (options) {
-	        // Default to current year as min if none specified
-	        options = initOptions(options, {min: new Date().getFullYear()});
-	
-	        // Default to one century after current year as max if none specified
-	        options.max = (typeof options.max !== "undefined") ? options.max : options.min + 100;
-	
-	        return this.natural(options).toString();
-	    };
-	
-	    // -- End Time
-	
-	    // -- Finance --
-	
-	    Chance.prototype.cc = function (options) {
-	        options = initOptions(options);
-	
-	        var type, number, to_generate, type_name;
-	
-	        type = (options.type) ?
-	                    this.cc_type({ name: options.type, raw: true }) :
-	                    this.cc_type({ raw: true });
-	        number = type.prefix.split("");
-	        to_generate = type.length - type.prefix.length - 1;
-	
-	        // Generates n - 1 digits
-	        for (var i = 0; i < to_generate; i++) {
-	            number.push(this.integer({min: 0, max: 9}));
-	        }
-	
-	        // Generates the last digit according to Luhn algorithm
-	        number.push(this.luhn_calculate(number.join("")));
-	
-	        return number.join("");
-	    };
-	
-	    Chance.prototype.cc_types = function () {
-	        // http://en.wikipedia.org/wiki/Bank_card_number#Issuer_identification_number_.28IIN.29
-	        return this.get("cc_types");
-	    };
-	
-	    Chance.prototype.cc_type = function (options) {
-	        options = initOptions(options);
-	        var types = this.cc_types(),
-	            type = null;
-	
-	        if (options.name) {
-	            for (var i = 0; i < types.length; i++) {
-	                // Accept either name or short_name to specify card type
-	                if (types[i].name === options.name || types[i].short_name === options.name) {
-	                    type = types[i];
-	                    break;
-	                }
-	            }
-	            if (type === null) {
-	                throw new Error("Credit card type '" + options.name + "'' is not supported");
-	            }
-	        } else {
-	            type = this.pick(types);
-	        }
-	
-	        return options.raw ? type : type.name;
-	    };
-	
-	    Chance.prototype.dollar = function (options) {
-	        // By default, a somewhat more sane max for dollar than all available numbers
-	        options = initOptions(options, {max : 10000, min : 0});
-	
-	        var dollar = this.floating({min: options.min, max: options.max, fixed: 2}).toString(),
-	            cents = dollar.split('.')[1];
-	
-	        if (cents === undefined) {
-	            dollar += '.00';
-	        } else if (cents.length < 2) {
-	            dollar = dollar + '0';
-	        }
-	
-	        if (dollar < 0) {
-	            return '-$' + dollar.replace('-', '');
-	        } else {
-	            return '$' + dollar;
-	        }
-	    };
-	
-	    Chance.prototype.exp = function (options) {
-	        options = initOptions(options);
-	        var exp = {};
-	
-	        exp.year = this.exp_year();
-	
-	        // If the year is this year, need to ensure month is greater than the
-	        // current month or this expiration will not be valid
-	        if (exp.year === (new Date().getFullYear())) {
-	            exp.month = this.exp_month({future: true});
-	        } else {
-	            exp.month = this.exp_month();
-	        }
-	
-	        return options.raw ? exp : exp.month + '/' + exp.year;
-	    };
-	
-	    Chance.prototype.exp_month = function (options) {
-	        options = initOptions(options);
-	        var month, month_int;
-	
-	        if (options.future) {
-	            do {
-	                month = this.month({raw: true}).numeric;
-	                month_int = parseInt(month, 10);
-	            } while (month_int < new Date().getMonth());
-	        } else {
-	            month = this.month({raw: true}).numeric;
-	        }
-	
-	        return month;
-	    };
-	
-	    Chance.prototype.exp_year = function () {
-	        return this.year({max: new Date().getFullYear() + 10});
-	    };
-	
-	    //return all world currency by ISO 4217
-	    Chance.prototype.currency_types = function () {
-	        return this.get("currency_types");
-	    };
-	
-	
-	    //return random world currency by ISO 4217
-	    Chance.prototype.currency = function () {
-	        return this.pick(this.currency_types());
-	    };
-	
-	    //Return random correct currency exchange pair (e.g. EUR/USD) or array of currency code
-	    Chance.prototype.currency_pair = function (returnAsString) {
-	        var currencies = this.unique(this.currency, 2, {
-	            comparator: function(arr, val) {
-	                // If this is the first element, we know it doesn't exist
-	                if (arr.length === 0) {
-	                    return false;
-	                }
-	
-	                return arr.reduce(function(acc, item) {
-	                    // If a match has been found, short circuit check and just return
-	                    if (acc) {
-	                        return acc;
-	                    }
-	                    return item.code === val.code;
-	                }, false);
-	            }
-	        });
-	
-	        if (returnAsString) {
-	            return  currencies[0] + '/' + currencies[1];
-	        } else {
-	            return currencies;
-	        }
-	    };
-	
-	    // -- End Finance
-	
-	    // -- Miscellaneous --
-	
-	    // Dice - For all the board game geeks out there, myself included ;)
-	    function diceFn (range) {
-	    	return function () {
-	    		return this.natural(range);
-	    	};
+	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , ValueComponent = this.props.valueComponent
+	      , valueItem = this._dataItem( this._data(), this.props.value )
+	      , optID = this._id('_option')
+	      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList
+	      ;
+	
+			return (
+				React.createElement("div", React.__spread({},  props, 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onClick: this._maybeHandle(this.toggle), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        'aria-expanded':  this.props.open, 
+	        'aria-haspopup': true, 
+	        'aria-busy': !!this.props.busy, 
+	        'aria-activedescendent':  this.props.open ? optID : undefined, 
+	        'aria-disabled':  this.props.disabled, 
+	        'aria-readonly':  this.props.readOnly, 
+	        tabIndex: this.props.disabled ? '-1' : "0", 
+	        className: cx(className, {
+	          'rw-dropdownlist':   true,
+	          'rw-widget':          true,
+	          'rw-state-disabled':  this.props.disabled,
+	          'rw-state-readonly':  this.props.readOnly,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-open':            this.props.open,
+	          'rw-rtl':             this.isRtl()
+	        })}), 
+	
+					React.createElement("span", {className: "rw-dropdownlist-picker rw-select rw-btn"}, 
+						React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
+	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
+	          )
+					), 
+	        React.createElement("div", {className: "rw-input"}, 
+	           this.props.valueComponent
+	              ? React.createElement(ValueComponent, {item: valueItem})
+	              : this._dataText(valueItem)
+	          
+	        ), 
+	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
+	          React.createElement("div", null, 
+	            React.createElement(List, React.__spread({ref: "list"},  
+	              _.pick(this.props, Object.keys(List.type.propTypes)), 
+	              {optID: optID, 
+	              'aria-hidden': !this.props.open, 
+	              selected: this.state.selectedItem, 
+	              focused: this.props.open ? this.state.focusedItem : null, 
+	              onSelect: this._maybeHandle(this._onSelect)}))
+	          )
+	        )
+				)
+			)
+		},
+	
+	  _focus: function(focused){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	    self.timer = setTimeout(function(){
+	
+	      if(focused) self.getDOMNode().focus()
+	      else        self.close()
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	
+	    }, 0)
+	  },
+	
+	  _onSelect: function(data){
+	    this.close()
+	    this.notify('onSelect', data)
+	    this.change(data)
+	  },
+	
+	  _keyDown: function(e){
+	    var self = this
+	      , key = e.key
+	      , alt = e.altKey
+	      , list = this.refs.list
+	      , isOpen = this.props.open;
+	
+	    if ( key === 'End' ) {
+	      if ( isOpen) this.setState({ focusedItem: list.last() })
+	      else         change(list.last())
+	      e.preventDefault()
 	    }
-	    Chance.prototype.d4 = diceFn({min: 1, max: 4});
-	    Chance.prototype.d6 = diceFn({min: 1, max: 6});
-	    Chance.prototype.d8 = diceFn({min: 1, max: 8});
-	    Chance.prototype.d10 = diceFn({min: 1, max: 10});
-	    Chance.prototype.d12 = diceFn({min: 1, max: 12});
-	    Chance.prototype.d20 = diceFn({min: 1, max: 20});
-	    Chance.prototype.d30 = diceFn({min: 1, max: 30});
-	    Chance.prototype.d100 = diceFn({min: 1, max: 100});
+	    else if ( key === 'Home' ) {
+	      if ( isOpen) this.setState({ focusedItem: list.first() })
+	      else         change(list.first())
+	      e.preventDefault()
+	    }
+	    else if ( key === 'Escape' && isOpen ) {
+	      this.close()
+	    }
+	    else if ( (key === 'Enter' || key === ' ') && isOpen ) {
+	      change(this.state.focusedItem, true)
+	    }
+	    else if ( key === 'ArrowDown' ) {
+	      if ( alt )         this.open()
+	      else if ( isOpen ) this.setState({ focusedItem: list.next('focused') })
+	      else               change(list.next('selected'))
+	      e.preventDefault()
+	    }
+	    else if ( key === 'ArrowUp' ) {
+	      if ( alt )         this.close()
+	      else if ( isOpen ) this.setState({ focusedItem: list.prev('focused') })
+	      else               change(list.prev('selected'))
+	      e.preventDefault()
+	    }
+	    else
+	      this.search(String.fromCharCode(e.keyCode), function(item)  {
+	        isOpen 
+	          ? this.setState({ focusedItem: item })
+	          : change(item)
+	      }.bind(this))
 	
-	    Chance.prototype.rpg = function (thrown, options) {
-	        options = initOptions(options);
-	        if (thrown === null) {
-	            throw new Error("A type of die roll must be included");
-	        } else {
-	            var bits = thrown.toLowerCase().split("d"),
-	                rolls = [];
+	    function change(item, fromList){
+	      if(!item) return
+	      if(fromList) self.notify('onSelect', item)
 	
-	            if (bits.length !== 2 || !parseInt(bits[0], 10) || !parseInt(bits[1], 10)) {
-	                throw new Error("Invalid format provided. Please provide #d# where the first # is the number of dice to roll, the second # is the max of each die");
-	            }
-	            for (var i = bits[0]; i > 0; i--) {
-	                rolls[i - 1] = this.natural({min: 1, max: bits[1]});
-	            }
-	            return (typeof options.sum !== 'undefined' && options.sum) ? rolls.reduce(function (p, c) { return p + c; }) : rolls;
-	        }
+	      self.change(item)
+	    }
+	  },
+	
+	  change: function(data){
+	    if ( !_.isShallowEqual(data, this.props.value) ) {
+	      this.notify('onChange', data)
+	      this.close()
+	    }
+	  },
+	
+	  _data: function(){
+	    return this.props.data
+	  },
+	
+	  search: function(character, cb){
+	    var word = ((this._searchTerm || '') + character).toLowerCase();
+	      
+	    clearTimeout(this._timer)
+	    this._searchTerm = word 
+	
+	    this._timer = setTimeout(function()  {
+	      var list = this.refs.list
+	        , key  = this.props.open ? 'focused' : 'selected'
+	        , item = list.next(key, word);
+	      
+	      this._searchTerm = ''
+	      if ( item) cb(item)
+	
+	    }.bind(this), this.props.delay)
+	  },
+	
+	  open: function(){
+	    this.notify('onToggle', true)
+	  },
+	
+	  close: function(){
+	    this.notify('onToggle', false)
+	  },
+	
+	  toggle: function(e){
+	    this.props.open
+	      ? this.close()
+	      : this.open()
+	  }
+	
+	})
+	
+	
+	module.exports = controlledInput.createControlledClass(
+	    DropdownList, { open: 'onToggle', value: 'onChange' });
+	
+	module.exports.BaseDropdownList = DropdownList
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1)
+	  , cx     = __webpack_require__(13)
+	  , _      = __webpack_require__(14)
+	  , $      = __webpack_require__(65)
+	  , filter = __webpack_require__(66)
+	  , controlledInput  = __webpack_require__(60)
+	  , CustomPropTypes  = __webpack_require__(61)
+	  
+	  , Popup  = __webpack_require__(62)
+	  , PlainList   = __webpack_require__(63)
+	  , GroupableList = __webpack_require__(64)
+	  , Btn    = __webpack_require__(67)
+	  , Input  = __webpack_require__(68);
+	
+	var propTypes = {
+	      //-- controlled props -----------
+	      value:          React.PropTypes.any,
+	      onChange:       React.PropTypes.func,
+	      open:           React.PropTypes.bool,
+	      onToggle:       React.PropTypes.func,
+	      //------------------------------------
+	
+	      itemComponent:  CustomPropTypes.elementType,
+	      list:           CustomPropTypes.elementType,
+	
+	      groupComponent: CustomPropTypes.elementType,
+	      groupBy:        React.PropTypes.oneOfType([
+	                        React.PropTypes.func,
+	                        React.PropTypes.string
+	                      ]),
+	
+	      data:           React.PropTypes.array,
+	      valueField:     React.PropTypes.string,
+	      textField:      React.PropTypes.string,
+	      name:           React.PropTypes.string,
+	
+	      onSelect:       React.PropTypes.func,
+	      
+	      disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	      readOnly:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['readOnly'])
+	                      ]),
+	
+	      suggest:        React.PropTypes.bool,
+	      busy:           React.PropTypes.bool,
+	
+	      duration:       React.PropTypes.number, //popup
+	      placeholder:    React.PropTypes.string,
+	
+	      messages:       React.PropTypes.shape({
+	        open:         React.PropTypes.string,
+	        emptyList:    React.PropTypes.string,
+	        emptyFilter:  React.PropTypes.string
+	      })
 	    };
 	
-	    // Guid
-	    Chance.prototype.guid = function (options) {
-	        options = options || {version: 5};
+	var ComboBox = React.createClass({
 	
-	        var guid_pool = "ABCDEF1234567890",
-	            variant_pool = "AB89",
-	            guid = this.string({pool: guid_pool, length: 8}) + '-' +
-	                   this.string({pool: guid_pool, length: 4}) + '-' +
-	                   // The Version
-	                   options.version +
-	                   this.string({pool: guid_pool, length: 3}) + '-' +
-	                   // The Variant
-	                   this.string({pool: variant_pool, length: 1}) +
-	                   this.string({pool: guid_pool, length: 3}) + '-' +
-	                   this.string({pool: guid_pool, length: 12});
-	        return guid;
-	    };
+	  displayName: 'ComboBox',
 	
-	    // Hash
-	    Chance.prototype.hash = function (options) {
-	        options = initOptions(options, {length : 40, casing: 'lower'});
-	        var pool = options.casing === 'upper' ? HEX_POOL.toUpperCase() : HEX_POOL;
-	        return this.string({pool: pool, length: options.length});
-	    };
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(88),
+	    __webpack_require__(89),
+	    __webpack_require__(86),
+	    __webpack_require__(87)
+	  ],
 	
-	    Chance.prototype.luhn_check = function (num) {
-	        var str = num.toString();
-	        var checkDigit = +str.substring(str.length - 1);
-	        return checkDigit === this.luhn_calculate(+str.substring(0, str.length - 1));
-	    };
+	  propTypes: propTypes,
 	
-	    Chance.prototype.luhn_calculate = function (num) {
-	        var digits = num.toString().split("").reverse();
-	        var sum = 0;
-	        var digit;
+		getInitialState: function(){
+	    var items = this.process(this.props.data, this.props.value)
+	      , idx   = this._dataIndexOf(items, this.props.value);
+	
+			return {
+				selectedItem:  items[idx],
+	      focusedItem:   items[!~idx ? 0 : idx],
+	      processedData: items,
+				open:          false
+			}
+		},
+	
+	  getDefaultProps: function(){
+	    return {
+	      data: [],
+	      value: '',
+	      open: false,
+	      suggest: false,
+	      filter: false,
+	      delay: 500,
+	
+	      messages: {
+	        open: 'open combobox',
+	        emptyList:   "There are no items in this list",
+	        emptyFilter: "The filter returned no results"
+	      }
+	    }
+	  },
+	
+	  shouldComponentUpdate: function(nextProps, nextState){
+	    var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
+	      , stateChanged = !_.isShallowEqual(nextState, this.state)
+	      , valueChanged = !_.isShallowEqual(nextProps, this.props)
+	
+	    return isSuggesting || stateChanged || valueChanged
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var rawIdx = this._dataIndexOf(nextProps.data, nextProps.value)
+	      , valueItem = rawIdx == -1 ? nextProps.value : nextProps.data[rawIdx]
+	      , isSuggesting = this.refs.input.isSuggesting()
+	      , items = this.process(
+	          nextProps.data
+	        , nextProps.value
+	        , (rawIdx === -1 || isSuggesting) && this._dataText(valueItem) )
+	
+	      , idx = this._dataIndexOf(items, nextProps.value)
+	      , focused = this.filterIndexOf(items, this._dataText(valueItem));
+	
+	    this._searchTerm = '';
+	
+	    this.setState({
+	      processedData:  items,
+	      selectedItem:   items[idx],
+	      focusedItem:    items[idx === -1
+	        ? focused !== -1 ? focused : 0 // focus the closest match
+	        : idx]
+	    })
+	  },
+	
+		render: function(){
+			var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , valueItem = this._dataItem( this._data(), this.props.value )
+	      , items = this._data()
+	      , listID = this._id('_listbox')
+	      , optID  = this._id( '_option')
+	      , List   = this.props.list || (this.props.groupBy && GroupableList) || PlainList
+	      , completeType = this.props.suggest
+	          ? this.props.filter ? 'both' : 'inline'
+	          : this.props.filter ? 'list' : '';
+	
+			return (
+				React.createElement("div", React.__spread({},  props , 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        tabIndex: "-1", 
+	        className: cx(className, {
+	          'rw-combobox':        true,
+	          'rw-widget':          true,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-open':            this.props.open,
+	          'rw-state-disabled':  this.props.disabled,
+	          'rw-state-readonly':  this.props.readOnly,
+	          'rw-rtl':             this.isRtl()
+	         })}), 
+	        React.createElement(Btn, {
+	          tabIndex: "-1", 
+	          className: "rw-select", 
+	          onClick: this._maybeHandle(this.toggle), 
+	          disabled: !!(this.props.disabled || this.props.readOnly)}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
+	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
+	          )
+	        ), 
+	        React.createElement(Input, {
+	          ref: "input", 
+	          type: "text", 
+	          role: "combobox", 
+	          suggest: this.props.suggest, 
+	          name: this.props.name, 
+	          'aria-owns': listID, 
+	          'aria-busy': !!this.props.busy, 
+	          'aria-autocomplete': completeType, 
+	          'aria-activedescendent':  this.props.open ? optID : undefined, 
+	          'aria-expanded':  this.props.open, 
+	          'aria-haspopup': true, 
+	          placeholder: this.props.placeholder, 
+	          disabled: this.props.disabled, 
+	          readOnly: this.props.readOnly, 
+	          className: "rw-input", 
+	          value:  this._dataText(valueItem), 
+	          onChange: this._inputTyping, 
+	          onKeyDown: this._inputKeyDown}), 
+	
+	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
+	          React.createElement("div", null, 
+	            React.createElement(List, React.__spread({ref: "list"}, 
+	              _.pick(this.props, Object.keys(List.type.propTypes)), 
+	              {id: listID, 
+	              optID: optID, 
+	              'aria-hidden':  !this.props.open, 
+	              'aria-live':  completeType && 'polite', 
+	              data: items, 
+	              selected: this.state.selectedItem, 
+	              focused: this.state.focusedItem, 
+	              onSelect: this._maybeHandle(this._onSelect), 
+	              messages: {
+	                emptyList: this.props.data.length
+	                  ? this.props.messages.emptyFilter
+	                  : this.props.messages.emptyList
+	              }}))
+	          )
+	        )
+				)
+			)
+		},
+	
+	  setWidth: function() {
+	    var width = $.width(this.getDOMNode())
+	      , changed = width !== this.state.width;
+	
+	    if ( changed )
+	      this.setState({ width: width })
+	  },
+	
+	  _onSelect: function(data){
+	    this.close()
+	    this.notify('onSelect', data)
+	    this.change(data)
+	    this._focus(true);
+	  },
+	
+	  _inputKeyDown: function(e){
+	    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
+	    this._isTyping = true
+	  },
+	
+	  _inputTyping: function(e){
+	    var self = this
+	      , shouldSuggest = !!this.props.suggest
+	      , strVal  = e.target.value
+	      , suggestion, data;
+	
+	    suggestion = this._deleting || !shouldSuggest
+	      ? strVal : this.suggest(this._data(), strVal)
+	
+	    suggestion = suggestion || strVal
+	
+	    data = _.find(self.props.data, 
+	      function(item)  {return this._dataText(item).toLowerCase() === suggestion.toLowerCase();}.bind(this))
+	
+	    this.change(!this._deleting && data
+	      ? data
+	      : strVal, true)
+	
+	    this.open()
+	  },
+	
+	  _focus: function(focused, e){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	    !focused && self.refs.input.accept() //not suggesting anymore
+	
+	    self.timer = setTimeout(function(){
+	      if(focused) self.refs.input.focus()
+	      else        self.close()
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	    }, 0)
+	  },
+	
+	  _keyDown: function(e){
+	    var self = this
+	      , key  = e.key
+	      , alt  = e.altKey
+	      , list = this.refs.list
+	      , isOpen = this.props.open;
+	
+	    if ( key === 'End' )
+	      select(list.last())
+	
+	    else if ( key === 'Home' )
+	      select(list.first())
+	
+	    else if ( key === 'Escape' && isOpen )
+	      this.close()
+	
+	    else if ( key === 'Enter' && isOpen ) {
+	      this.close()
+	      select(this.state.focusedItem, true)
+	    }
+	
+	    else if ( key === 'ArrowDown' ) {
+	      if ( alt )
+	        this.open()
+	      else {
+	        if ( isOpen ) this.setState({ focusedItem: list.next('focused') })
+	        else          select(list.next('selected'))
+	      }
+	    }
+	    else if ( key === 'ArrowUp' ) {
+	      if ( alt )
+	        this.close()
+	      else {
+	        if ( isOpen ) this.setState({ focusedItem: list.prev('focused') })
+	        else          select(list.prev('selected'))
+	      }
+	    }
+	
+	    function select(item, fromList) {
+	      if(!item)
+	        return self.change(self.refs.input.getDOMNode().value, false)
+	
+	      self.refs.input.accept(true); //removes caret
+	
+	      if(fromList) 
+	        self.notify('onSelect', item)
+	
+	      self.change(item, false)
+	    }
+	  },
+	
+	  change: function(data, typing){
+	    this._typedChange = !!typing
+	    this.notify('onChange', data)
+	  },
+	
+	  open: function(){
+	    if ( !this.props.open )
+	      this.notify('onToggle', true)
+	  },
+	
+	  close: function(){
+	    if ( this.props.open )
+	      this.notify('onToggle', false)
+	  },
+	
+	  toggle: function(e){
+	    this._focus(true)
+	
+	    this.props.open
+	      ? this.close()
+	      : this.open()
+	  },
+	
+	  suggest: function(data, value){
+	    var word = this._dataText(value)
+	      , matcher = filter.startsWith
+	      , suggestion = typeof value === 'string'
+	          ? _.find(data, finder, this)
+	          : value
+	
+	    if ( suggestion && (!this.state || !this.state.deleting))
+	      return this._dataText(suggestion)
+	
+	    return ''
+	
+	    function finder(item){
+	      return matcher(
+	          this._dataText(item).toLowerCase()
+	        , word.toLowerCase())
+	    }
+	  },
+	
+	  _data: function(){
+	    return this.state.processedData
+	  },
+	
+	  process: function(data, values, searchTerm){
+	    if( this.props.filter && searchTerm)
+	      data = this.filter(data, searchTerm)
+	
+	    return data
+	  }
+	})
+	
+	module.exports = controlledInput.createControlledClass(
+	      ComboBox, { open: 'onToggle', value: 'onChange' });
+	
+	module.exports.BaseComboBox = ComboBox
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React           = __webpack_require__(1)
+	  , Header          = __webpack_require__(69)
+	  , Month           = __webpack_require__(70)
+	  , Year            = __webpack_require__(71)
+	  , Decade          = __webpack_require__(72)
+	  , Century         = __webpack_require__(73)
+	  , cx              = __webpack_require__(13)
+	  , controlledInput = __webpack_require__(60)
+	  , SlideTransition = __webpack_require__(55)
+	  , dates           = __webpack_require__(74)
+	  , constants       = __webpack_require__(75)
+	  , _               = __webpack_require__(14); //values, omit, object
+	
+	var dir = constants.directions;
+	
+	var views        = constants.calendarViews
+	  , VIEW_OPTIONS = Object.keys(views).map( function(k)  {return views[k];} )
+	  , ALT_VIEW     = _.transform(constants.calendarViewHierarchy, function(o, val, key)  { 
+	                      o[val] = key 
+	                    }, {})
+	  , NEXT_VIEW    = constants.calendarViewHierarchy
+	  , VIEW_UNIT    = constants.calendarViewUnits
+	  , VIEW  = _.object([
+	      [views.MONTH,   Month],
+	      [views.YEAR,    Year],
+	      [views.DECADE,  Decade],
+	      [views.CENTURY, Century]
+	    ]);
+	
+	var MULTIPLIER = _.object([
+	      [views.YEAR,    1],
+	      [views.DECADE,  10],
+	      [views.CENTURY, 100]
+	    ]);
+	
+	
+	var Calendar = React.createClass({
+	
+	  displayName: 'Calendar',
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(85),
+	    __webpack_require__(87)
+	  ],
+	
+	
+	  propTypes: {
+	
+	    onChange:      React.PropTypes.func.isRequired,
+	    value:         React.PropTypes.instanceOf(Date),
+	
+	    min:           React.PropTypes.instanceOf(Date),
+	    max:           React.PropTypes.instanceOf(Date),
+	
+	    initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
+	    finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['readOnly'])
+	                    ]),
+	
+	    messages:      React.PropTypes.shape({
+	      moveBack:    React.PropTypes.string,
+	      moveForward: React.PropTypes.string
+	    }),
+	
+	    maintainFocus: React.PropTypes.bool,
+	
+	  },
+	
+	  getInitialState: function(){
+	    return {
+	      selectedIndex: 0,
+	      view:          this.props.initialView || 'month',
+	      currentDate:   this.inRangeValue(new Date(this.props.value))
+	    }
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      open:  false,
+	      value: new Date,
+	      min:   new Date(1900,0, 1),
+	      max:   new Date(2099,11, 31),
+	
+	      initialView: 'month',
+	      finalView: 'century',
+	
+	      maintainFocus: true
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var bottom  = VIEW_OPTIONS.indexOf(nextProps.initialView)
+	      , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
+	      , current = VIEW_OPTIONS.indexOf(this.state.view)
+	      , view    = this.state.view
+	      , val     = this.inRangeValue(new Date(nextProps.value));
+	
+	    if( current < bottom )
+	      this.setState({ view: view = nextProps.initialView })
+	    else if (current > top)
+	      this.setState({ view: view = nextProps.finalView })
+	
+	    //if the value changes reset views to the new one
+	    if ( !dates.eq(val, this.props.value, VIEW_UNIT[view]))
+	      this.setState({
+	        currentDate: val
+	      })
+	  },
+	
+	  render: function(){
+	    var $__0=   
+	                  _.omit(this.props, ['value', 'min', 'max']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , View     = VIEW[this.state.view]
+	      , unit     = this.state.view
+	      
+	      , disabled = this.props.disabled || this.props.readOnly
+	      , date     = this.state.currentDate
+	      , labelId  = this._id('_view_label')
+	      , key      = this.state.view + '_' + dates[this.state.view](date)
+	      , id       = this._id('_view');
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props , 
+	        {className: cx(className, {
+	          'rw-calendar':       true,
+	          'rw-widget':         true,
+	          'rw-state-disabled': this.props.disabled,
+	          'rw-state-readonly': this.props.readOnly,
+	          'rw-rtl':            this.isRtl()
+	        })}), 
+	        React.createElement(Header, {
+	          label: this._label(), 
+	          labelId: labelId, 
+	          messages: this.props.messages, 
+	          upDisabled:   disabled || this.state.view === this.props.finalView, 
+	          prevDisabled: disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit), 
+	          nextDisabled: disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max, unit), 
+	          onViewChange: this._maybeHandle(this.navigate.bind(null, dir.UP, null)), 
+	          onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT, null)), 
+	          onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT, null))}), 
+	
+	        React.createElement(SlideTransition, {
+	          ref: "animation", 
+	          direction: this.state.slideDirection, 
+	          onAnimate: finished.bind(this)}, 
+	
+	          React.createElement(View, {ref: "currentView", 
+	            key: key, 
+	            id: id, 
+	            'aria-labeledby': labelId, 
+	            selectedDate: this.props.value, 
+	            value: this.state.currentDate, 
+	            onChange: this._maybeHandle(this.change), 
+	            onKeyDown: this._maybeHandle(this._keyDown), 
+	            onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	            onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT)), 
+	            onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT)), 
+	            disabled: this.props.disabled, 
+	            readOnly: this.props.readOnly, 
+	            min: this.props.min, 
+	            max: this.props.max})
+	        )
+	      )
+	    )
+	
+	    function finished(){
+	      this._focus(true, 'stop');
+	    }
+	  },
+	
+	  navigate: function(direction, date){
+	    var view     =  this.state.view
+	      , slideDir = (direction === dir.LEFT || direction === dir.UP)
+	          ? 'right'
+	          : 'left';
+	
+	    if ( !date )
+	      date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
+	        ? this.nextDate(direction)
+	        : this.state.currentDate
+	
+	    if (direction === dir.DOWN )
+	      view = ALT_VIEW[view] || view
+	
+	    if (direction === dir.UP )
+	      view = NEXT_VIEW[view] || view
+	
+	    if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
+	      this._focus(true, 'nav');
+	
+	      this.setState({
+	        currentDate:    date,
+	        slideDirection: slideDir,
+	        view: view
+	      })
+	    }
+	  },
+	
+	  _focus: function(val, e){
+	    if ( this.props.maintainFocus)
+	      val && this.refs.currentView.getDOMNode().focus()
+	  },
+	
+	  change: function(date){
+	    if ( this.props.onChange && this.state.view === this.props.initialView)
+	      return this.notify('onChange', date)
+	
+	    this.navigate(dir.DOWN, date)
+	  },
+	
+	  nextDate: function(direction){
+	    var method = direction === dir.LEFT ? 'subtract' : 'add'
+	      , view   = this.state.view
+	      , unit   = view === views.MONTH ? view : views.YEAR
+	      , multi  = MULTIPLIER[view] || 1;
+	
+	    return dates[method](this.state.currentDate, 1 * multi, unit)
+	  },
+	
+	  _keyDown: function(e){
+	    var ctrl = e.ctrlKey
+	      , key  = e.key;
+	
+	    if ( ctrl ) {
+	      if ( key === 'ArrowDown' ) {
+	        e.preventDefault()
+	        this.navigate(dir.DOWN)
+	      }
+	      if ( key === 'ArrowUp' ) {
+	        e.preventDefault()
+	        this.navigate(dir.UP)
+	      }
+	      if ( key === 'ArrowLeft' ) {
+	        e.preventDefault()
+	        this.navigate(dir.LEFT)
+	      }
+	      if ( key === 'ArrowRight' ) {
+	        e.preventDefault()
+	        this.navigate(dir.RIGHT)
+	      }
+	    } 
+	    else {
+	      this.refs.currentView._keyDown
+	        && this.refs.currentView._keyDown(e)
+	    }
+	  },
+	
+	  _label: function() {
+	    var view = this.state.view
+	      , dt   = this.state.currentDate;
+	
+	    if ( view === 'month')
+	      return dates.format(dt, dates.formats.MONTH_YEAR)
+	
+	    else if ( view === 'year')
+	      return dates.format(dt, dates.formats.YEAR)
+	
+	    else if ( view === 'decade')
+	      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR)
+	        + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR)
+	
+	    else if ( view === 'century')
+	      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR)
+	        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
+	  },
+	
+	  inRangeValue: function(value){
+	    if( value == null)
+	      return value
+	
+	    return dates.max(
+	        dates.min(value, this.props.max)
+	      , this.props.min)
+	  },
+	
+	  isValidView: function(next) {
+	    var bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
+	      , top     = VIEW_OPTIONS.indexOf(this.props.finalView)
+	      , current = VIEW_OPTIONS.indexOf(next);
+	
+	    return current >= bottom && current <= top
+	  }
+	});
+	
+	module.exports = controlledInput.createControlledClass(
+	    Calendar, { value: 'onChange' });
+	
+	module.exports.BaseCalendar = Calendar
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1)
+	  , cx     = __webpack_require__(13)
+	  , _      = __webpack_require__(14) //pick, omit, has
+	  , dates  = __webpack_require__(74)
+	  , views  = __webpack_require__(75).calendarViews
+	  , popups = __webpack_require__(75).datePopups
+	
+	  , Popup     = __webpack_require__(62)
+	  , Calendar  = __webpack_require__(49).BaseCalendar
+	  , Time      = __webpack_require__(76)
+	  , DateInput = __webpack_require__(77)
+	  , Btn       = __webpack_require__(67)
+	  , CustomPropTypes = __webpack_require__(61)
+	  , controlledInput = __webpack_require__(60);
+	
+	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
+	
+	var propTypes = {
+	
+	    //-- controlled props -----------
+	    value:          React.PropTypes.instanceOf(Date),
+	    onChange:       React.PropTypes.func,
+	    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
+	    onToggle:       React.PropTypes.func,
+	    //------------------------------------
+	
+	    min:            React.PropTypes.instanceOf(Date),
+	    max:            React.PropTypes.instanceOf(Date),
+	
+	    culture:        React.PropTypes.string,
+	    format:         React.PropTypes.string,
+	    editFormat:     React.PropTypes.string,
+	
+	    calendar:       React.PropTypes.bool,
+	    time:           React.PropTypes.bool,
+	
+	    timeComponent:  CustomPropTypes.elementType,
+	    duration:       React.PropTypes.number, //popup
+	
+	    placeholder:    React.PropTypes.string,
+	    name:           React.PropTypes.string,
+	
+	    initialView:    React.PropTypes.oneOf(viewEnum),
+	    finalView:      React.PropTypes.oneOf(viewEnum),
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['readOnly'])
+	                    ]),
+	
+	    parse:          React.PropTypes.oneOfType([
+	                      React.PropTypes.arrayOf(React.PropTypes.string),
+	                      React.PropTypes.string,
+	                      React.PropTypes.func
+	                    ]),
+	  }
+	
+	var DateTimePicker = React.createClass({
+	  displayName: 'DateTimePicker',
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(85),
+	    __webpack_require__(87)
+	  ],
+	
+	  propTypes: propTypes,
+	
+	  getInitialState: function(){
+	    return {
+	      selectedIndex: 0,
+	      open:          false
+	    }
+	  },
+	
+	  getDefaultProps: function(){
+	    var cal  = _.has(this.props, 'calendar') ? this.props.calendar : true
+	      , time = _.has(this.props, 'time') ? this.props.time : true
+	      , both = cal && time
+	      , neither = !cal && !time;
+	
+	    return {
+	      value:            null,
+	      format:           both || neither
+	        ? 'M/d/yyyy h:mm tt'
+	        : cal ? 'M/d/yyyy' : 'h:mm tt',
+	      min:              new Date(1900,  0,  1),
+	      max:              new Date(2099, 11, 31),
+	      calendar:         true,
+	      time:             true,
+	      messages: {
+	        calendarButton: 'Select Date',
+	        timeButton:     'Select Time',
+	        next:           'Next Date',
+	      }
+	    }
+	  },
+	
+	  render: function(){
+	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
+	      , timeListID = this._id('_time_listbox')
+	      , timeOptID  = this._id('_time_option')
+	      , dateListID = this._id('_cal')
+	      , owns;
+	
+	    if (dateListID && this.props.calendar ) owns = dateListID
+	    if (timeListID && this.props.time )     owns += ' ' + timeListID
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props, 
+	        {ref: "element", 
+	        tabIndex: "-1", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        className: cx(className, {
+	          'rw-datetimepicker':     true,
+	          'rw-widget':          true,
+	          'rw-open':            this.props.open,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-state-disabled':  this.isDisabled(),
+	          'rw-state-readonly':  this.isReadOnly(),
+	          'rw-has-both':        this.props.calendar && this.props.time,
+	          'rw-rtl':             this.isRtl()
+	        })}), 
+	        React.createElement(DateInput, {ref: "valueInput", 
+	          'aria-activedescendant':  this.props.open
+	            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
+	            : undefined, 
+	          'aria-expanded':  this.props.open, 
+	          'aria-busy': !!this.props.busy, 
+	          'aria-owns': owns, 
+	          'aria-haspopup': true, 
+	          placeholder: this.props.placeholder, 
+	          name: this.props.name, 
+	          disabled: this.isDisabled(), 
+	          readOnly: this.isReadOnly(), 
+	          role: "combobox", 
+	          value: this.props.value, 
+	          focused: this.state.focused, 
+	          format: this.props.format, 
+	          editFormat: this.props.editFormat, 
+	          editing: this.state.focused, 
+	          parse: this._parse, 
+	          onChange: this._change}), 
+	
+	        React.createElement("span", {className: "rw-select"}, 
+	           this.props.calendar &&
+	            React.createElement(Btn, {tabIndex: "-1", 
+	              disabled: this.isDisabled() || this.isReadOnly(), 
+	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
+	              onClick: this._maybeHandle(this._click.bind(null, popups.CALENDAR))}, 
+	              React.createElement("i", {className: "rw-i rw-i-calendar"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.calendarButton))
+	            ), 
+	          
+	           this.props.time &&
+	            React.createElement(Btn, {tabIndex: "-1", 
+	              disabled: this.isDisabled() || this.isReadOnly(), 
+	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
+	              onClick: this._maybeHandle(this._click.bind(null, popups.TIME))}, 
+	              React.createElement("i", {className: "rw-i rw-i-clock-o"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.timeButton))
+	            )
+	          
+	        ), 
+	         this.props.time &&
+	        React.createElement(Popup, {
+	          open:  this.props.open === popups.TIME, 
+	          onRequestClose: this.close, 
+	          duration: this.props.duration}, 
+	            React.createElement("div", null, 
+	              React.createElement(Time, {ref: "timePopup", 
+	                id: timeListID, 
+	                optID: timeOptID, 
+	                'aria-hidden':  !this.props.open, 
+	                style: { maxHeight: 200, height: 'auto'}, 
+	                value: this.props.value, 
+	                min: this.props.min, 
+	                max: this.props.max, 
+	                preserveDate: !!this.props.calendar, 
+	                itemComponent: this.props.timeComponent, 
+	                onSelect: this._maybeHandle(this._selectTime)})
+	            )
+	        ), 
 	        
-	        for (var i = 0, l = digits.length; l > i; ++i) {
-	            digit = +digits[i];
-	            if (i % 2 === 0) {
-	                digit *= 2;
-	                if (digit > 9) {
-	                    digit -= 9;
-	                }
-	            }
-	            sum += digit;
-	        }
-	        return (sum * 9) % 10;
-	    };
+	         this.props.calendar &&
+	          React.createElement(Popup, {
+	            className: "rw-calendar-popup", 
+	            open:  this.props.open === popups.CALENDAR, 
+	            duration: this.props.duration, 
+	            onRequestClose: this.close}, 
 	
+	            React.createElement(Calendar, React.__spread({},  calProps , 
+	              {ref: "calPopup", 
+	              id: dateListID, 
+	              value: this.props.value || new Date, 
+	              maintainFocus: false, 
+	              'aria-hidden':  !this.props.open, 
+	              onChange: this._maybeHandle(this._selectDate)}))
+	          )
+	        
+	      )
+	    )
+	  },
 	
-	    var data = {
+	  _change: function(date, str, constrain){
+	    var change = this.props.onChange
 	
-	        firstNames: {
-	            "male": ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Charles", "Thomas", "Christopher", "Daniel", "Matthew", "George", "Donald", "Anthony", "Paul", "Mark", "Edward", "Steven", "Kenneth", "Andrew", "Brian", "Joshua", "Kevin", "Ronald", "Timothy", "Jason", "Jeffrey", "Frank", "Gary", "Ryan", "Nicholas", "Eric", "Stephen", "Jacob", "Larry", "Jonathan", "Scott", "Raymond", "Justin", "Brandon", "Gregory", "Samuel", "Benjamin", "Patrick", "Jack", "Henry", "Walter", "Dennis", "Jerry", "Alexander", "Peter", "Tyler", "Douglas", "Harold", "Aaron", "Jose", "Adam", "Arthur", "Zachary", "Carl", "Nathan", "Albert", "Kyle", "Lawrence", "Joe", "Willie", "Gerald", "Roger", "Keith", "Jeremy", "Terry", "Harry", "Ralph", "Sean", "Jesse", "Roy", "Louis", "Billy", "Austin", "Bruce", "Eugene", "Christian", "Bryan", "Wayne", "Russell", "Howard", "Fred", "Ethan", "Jordan", "Philip", "Alan", "Juan", "Randy", "Vincent", "Bobby", "Dylan", "Johnny", "Phillip", "Victor", "Clarence", "Ernest", "Martin", "Craig", "Stanley", "Shawn", "Travis", "Bradley", "Leonard", "Earl", "Gabriel", "Jimmy", "Francis", "Todd", "Noah", "Danny", "Dale", "Cody", "Carlos", "Allen", "Frederick", "Logan", "Curtis", "Alex", "Joel", "Luis", "Norman", "Marvin", "Glenn", "Tony", "Nathaniel", "Rodney", "Melvin", "Alfred", "Steve", "Cameron", "Chad", "Edwin", "Caleb", "Evan", "Antonio", "Lee", "Herbert", "Jeffery", "Isaac", "Derek", "Ricky", "Marcus", "Theodore", "Elijah", "Luke", "Jesus", "Eddie", "Troy", "Mike", "Dustin", "Ray", "Adrian", "Bernard", "Leroy", "Angel", "Randall", "Wesley", "Ian", "Jared", "Mason", "Hunter", "Calvin", "Oscar", "Clifford", "Jay", "Shane", "Ronnie", "Barry", "Lucas", "Corey", "Manuel", "Leo", "Tommy", "Warren", "Jackson", "Isaiah", "Connor", "Don", "Dean", "Jon", "Julian", "Miguel", "Bill", "Lloyd", "Charlie", "Mitchell", "Leon", "Jerome", "Darrell", "Jeremiah", "Alvin", "Brett", "Seth", "Floyd", "Jim", "Blake", "Micheal", "Gordon", "Trevor", "Lewis", "Erik", "Edgar", "Vernon", "Devin", "Gavin", "Jayden", "Chris", "Clyde", "Tom", "Derrick", "Mario", "Brent", "Marc", "Herman", "Chase", "Dominic", "Ricardo", "Franklin", "Maurice", "Max", "Aiden", "Owen", "Lester", "Gilbert", "Elmer", "Gene", "Francisco", "Glen", "Cory", "Garrett", "Clayton", "Sam", "Jorge", "Chester", "Alejandro", "Jeff", "Harvey", "Milton", "Cole", "Ivan", "Andre", "Duane", "Landon"],
-	            "female": ["Mary", "Emma", "Elizabeth", "Minnie", "Margaret", "Ida", "Alice", "Bertha", "Sarah", "Annie", "Clara", "Ella", "Florence", "Cora", "Martha", "Laura", "Nellie", "Grace", "Carrie", "Maude", "Mabel", "Bessie", "Jennie", "Gertrude", "Julia", "Hattie", "Edith", "Mattie", "Rose", "Catherine", "Lillian", "Ada", "Lillie", "Helen", "Jessie", "Louise", "Ethel", "Lula", "Myrtle", "Eva", "Frances", "Lena", "Lucy", "Edna", "Maggie", "Pearl", "Daisy", "Fannie", "Josephine", "Dora", "Rosa", "Katherine", "Agnes", "Marie", "Nora", "May", "Mamie", "Blanche", "Stella", "Ellen", "Nancy", "Effie", "Sallie", "Nettie", "Della", "Lizzie", "Flora", "Susie", "Maud", "Mae", "Etta", "Harriet", "Sadie", "Caroline", "Katie", "Lydia", "Elsie", "Kate", "Susan", "Mollie", "Alma", "Addie", "Georgia", "Eliza", "Lulu", "Nannie", "Lottie", "Amanda", "Belle", "Charlotte", "Rebecca", "Ruth", "Viola", "Olive", "Amelia", "Hannah", "Jane", "Virginia", "Emily", "Matilda", "Irene", "Kathryn", "Esther", "Willie", "Henrietta", "Ollie", "Amy", "Rachel", "Sara", "Estella", "Theresa", "Augusta", "Ora", "Pauline", "Josie", "Lola", "Sophia", "Leona", "Anne", "Mildred", "Ann", "Beulah", "Callie", "Lou", "Delia", "Eleanor", "Barbara", "Iva", "Louisa", "Maria", "Mayme", "Evelyn", "Estelle", "Nina", "Betty", "Marion", "Bettie", "Dorothy", "Luella", "Inez", "Lela", "Rosie", "Allie", "Millie", "Janie", "Cornelia", "Victoria", "Ruby", "Winifred", "Alta", "Celia", "Christine", "Beatrice", "Birdie", "Harriett", "Mable", "Myra", "Sophie", "Tillie", "Isabel", "Sylvia", "Carolyn", "Isabelle", "Leila", "Sally", "Ina", "Essie", "Bertie", "Nell", "Alberta", "Katharine", "Lora", "Rena", "Mina", "Rhoda", "Mathilda", "Abbie", "Eula", "Dollie", "Hettie", "Eunice", "Fanny", "Ola", "Lenora", "Adelaide", "Christina", "Lelia", "Nelle", "Sue", "Johanna", "Lilly", "Lucinda", "Minerva", "Lettie", "Roxie", "Cynthia", "Helena", "Hilda", "Hulda", "Bernice", "Genevieve", "Jean", "Cordelia", "Marian", "Francis", "Jeanette", "Adeline", "Gussie", "Leah", "Lois", "Lura", "Mittie", "Hallie", "Isabella", "Olga", "Phoebe", "Teresa", "Hester", "Lida", "Lina", "Winnie", "Claudia", "Marguerite", "Vera", "Cecelia", "Bess", "Emilie", "John", "Rosetta", "Verna", "Myrtie", "Cecilia", "Elva", "Olivia", "Ophelia", "Georgie", "Elnora", "Violet", "Adele", "Lily", "Linnie", "Loretta", "Madge", "Polly", "Virgie", "Eugenia", "Lucile", "Lucille", "Mabelle", "Rosalie"]
-	        },
+	    if(constrain)
+	      date = this.inRangeValue(date)
 	
-	        lastNames: ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart', 'Sanchez', 'Morris', 'Rogers', 'Reed', 'Cook', 'Morgan', 'Bell', 'Murphy', 'Bailey', 'Rivera', 'Cooper', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray', 'Ramirez', 'James', 'Watson', 'Brooks', 'Kelly', 'Sanders', 'Price', 'Bennett', 'Wood', 'Barnes', 'Ross', 'Henderson', 'Coleman', 'Jenkins', 'Perry', 'Powell', 'Long', 'Patterson', 'Hughes', 'Flores', 'Washington', 'Butler', 'Simmons', 'Foster', 'Gonzales', 'Bryant', 'Alexander', 'Russell', 'Griffin', 'Diaz', 'Hayes', 'Myers', 'Ford', 'Hamilton', 'Graham', 'Sullivan', 'Wallace', 'Woods', 'Cole', 'West', 'Jordan', 'Owens', 'Reynolds', 'Fisher', 'Ellis', 'Harrison', 'Gibson', 'McDonald', 'Cruz', 'Marshall', 'Ortiz', 'Gomez', 'Murray', 'Freeman', 'Wells', 'Webb', 'Simpson', 'Stevens', 'Tucker', 'Porter', 'Hunter', 'Hicks', 'Crawford', 'Henry', 'Boyd', 'Mason', 'Morales', 'Kennedy', 'Warren', 'Dixon', 'Ramos', 'Reyes', 'Burns', 'Gordon', 'Shaw', 'Holmes', 'Rice', 'Robertson', 'Hunt', 'Black', 'Daniels', 'Palmer', 'Mills', 'Nichols', 'Grant', 'Knight', 'Ferguson', 'Rose', 'Stone', 'Hawkins', 'Dunn', 'Perkins', 'Hudson', 'Spencer', 'Gardner', 'Stephens', 'Payne', 'Pierce', 'Berry', 'Matthews', 'Arnold', 'Wagner', 'Willis', 'Ray', 'Watkins', 'Olson', 'Carroll', 'Duncan', 'Snyder', 'Hart', 'Cunningham', 'Bradley', 'Lane', 'Andrews', 'Ruiz', 'Harper', 'Fox', 'Riley', 'Armstrong', 'Carpenter', 'Weaver', 'Greene', 'Lawrence', 'Elliott', 'Chavez', 'Sims', 'Austin', 'Peters', 'Kelley', 'Franklin', 'Lawson', 'Fields', 'Gutierrez', 'Ryan', 'Schmidt', 'Carr', 'Vasquez', 'Castillo', 'Wheeler', 'Chapman', 'Oliver', 'Montgomery', 'Richards', 'Williamson', 'Johnston', 'Banks', 'Meyer', 'Bishop', 'McCoy', 'Howell', 'Alvarez', 'Morrison', 'Hansen', 'Fernandez', 'Garza', 'Harvey', 'Little', 'Burton', 'Stanley', 'Nguyen', 'George', 'Jacobs', 'Reid', 'Kim', 'Fuller', 'Lynch', 'Dean', 'Gilbert', 'Garrett', 'Romero', 'Welch', 'Larson', 'Frazier', 'Burke', 'Hanson', 'Day', 'Mendoza', 'Moreno', 'Bowman', 'Medina', 'Fowler', 'Brewer', 'Hoffman', 'Carlson', 'Silva', 'Pearson', 'Holland', 'Douglas', 'Fleming', 'Jensen', 'Vargas', 'Byrd', 'Davidson', 'Hopkins', 'May', 'Terry', 'Herrera', 'Wade', 'Soto', 'Walters', 'Curtis', 'Neal', 'Caldwell', 'Lowe', 'Jennings', 'Barnett', 'Graves', 'Jimenez', 'Horton', 'Shelton', 'Barrett', 'Obrien', 'Castro', 'Sutton', 'Gregory', 'McKinney', 'Lucas', 'Miles', 'Craig', 'Rodriquez', 'Chambers', 'Holt', 'Lambert', 'Fletcher', 'Watts', 'Bates', 'Hale', 'Rhodes', 'Pena', 'Beck', 'Newman', 'Haynes', 'McDaniel', 'Mendez', 'Bush', 'Vaughn', 'Parks', 'Dawson', 'Santiago', 'Norris', 'Hardy', 'Love', 'Steele', 'Curry', 'Powers', 'Schultz', 'Barker', 'Guzman', 'Page', 'Munoz', 'Ball', 'Keller', 'Chandler', 'Weber', 'Leonard', 'Walsh', 'Lyons', 'Ramsey', 'Wolfe', 'Schneider', 'Mullins', 'Benson', 'Sharp', 'Bowen', 'Daniel', 'Barber', 'Cummings', 'Hines', 'Baldwin', 'Griffith', 'Valdez', 'Hubbard', 'Salazar', 'Reeves', 'Warner', 'Stevenson', 'Burgess', 'Santos', 'Tate', 'Cross', 'Garner', 'Mann', 'Mack', 'Moss', 'Thornton', 'Dennis', 'McGee', 'Farmer', 'Delgado', 'Aguilar', 'Vega', 'Glover', 'Manning', 'Cohen', 'Harmon', 'Rodgers', 'Robbins', 'Newton', 'Todd', 'Blair', 'Higgins', 'Ingram', 'Reese', 'Cannon', 'Strickland', 'Townsend', 'Potter', 'Goodwin', 'Walton', 'Rowe', 'Hampton', 'Ortega', 'Patton', 'Swanson', 'Joseph', 'Francis', 'Goodman', 'Maldonado', 'Yates', 'Becker', 'Erickson', 'Hodges', 'Rios', 'Conner', 'Adkins', 'Webster', 'Norman', 'Malone', 'Hammond', 'Flowers', 'Cobb', 'Moody', 'Quinn', 'Blake', 'Maxwell', 'Pope', 'Floyd', 'Osborne', 'Paul', 'McCarthy', 'Guerrero', 'Lindsey', 'Estrada', 'Sandoval', 'Gibbs', 'Tyler', 'Gross', 'Fitzgerald', 'Stokes', 'Doyle', 'Sherman', 'Saunders', 'Wise', 'Colon', 'Gill', 'Alvarado', 'Greer', 'Padilla', 'Simon', 'Waters', 'Nunez', 'Ballard', 'Schwartz', 'McBride', 'Houston', 'Christensen', 'Klein', 'Pratt', 'Briggs', 'Parsons', 'McLaughlin', 'Zimmerman', 'French', 'Buchanan', 'Moran', 'Copeland', 'Roy', 'Pittman', 'Brady', 'McCormick', 'Holloway', 'Brock', 'Poole', 'Frank', 'Logan', 'Owen', 'Bass', 'Marsh', 'Drake', 'Wong', 'Jefferson', 'Park', 'Morton', 'Abbott', 'Sparks', 'Patrick', 'Norton', 'Huff', 'Clayton', 'Massey', 'Lloyd', 'Figueroa', 'Carson', 'Bowers', 'Roberson', 'Barton', 'Tran', 'Lamb', 'Harrington', 'Casey', 'Boone', 'Cortez', 'Clarke', 'Mathis', 'Singleton', 'Wilkins', 'Cain', 'Bryan', 'Underwood', 'Hogan', 'McKenzie', 'Collier', 'Luna', 'Phelps', 'McGuire', 'Allison', 'Bridges', 'Wilkerson', 'Nash', 'Summers', 'Atkins'],
-	
-	        provinces: [
-	            {name: 'Alberta', abbreviation: 'AB'},
-	            {name: 'British Columbia', abbreviation: 'BC'},
-	            {name: 'Manitoba', abbreviation: 'MB'},
-	            {name: 'New Brunswick', abbreviation: 'NB'},
-	            {name: 'Newfoundland and Labrador', abbreviation: 'NL'},
-	            {name: 'Nova Scotia', abbreviation: 'NS'},
-	            {name: 'Ontario', abbreviation: 'ON'},
-	            {name: 'Prince Edward Island', abbreviation: 'PE'},
-	            {name: 'Quebec', abbreviation: 'QC'},
-	            {name: 'Saskatchewan', abbreviation: 'SK'},
-	
-	            // The case could be made that the following are not actually provinces
-	            // since they are technically considered "territories" however they all
-	            // look the same on an envelope!
-	            {name: 'Northwest Territories', abbreviation: 'NT'},
-	            {name: 'Nunavut', abbreviation: 'NU'},
-	            {name: 'Yukon', abbreviation: 'YT'}
-	        ],
-	
-	        us_states_and_dc: [
-	            {name: 'Alabama', abbreviation: 'AL'},
-	            {name: 'Alaska', abbreviation: 'AK'},
-	            {name: 'Arizona', abbreviation: 'AZ'},
-	            {name: 'Arkansas', abbreviation: 'AR'},
-	            {name: 'California', abbreviation: 'CA'},
-	            {name: 'Colorado', abbreviation: 'CO'},
-	            {name: 'Connecticut', abbreviation: 'CT'},
-	            {name: 'Delaware', abbreviation: 'DE'},
-	            {name: 'District of Columbia', abbreviation: 'DC'},
-	            {name: 'Florida', abbreviation: 'FL'},
-	            {name: 'Georgia', abbreviation: 'GA'},
-	            {name: 'Hawaii', abbreviation: 'HI'},
-	            {name: 'Idaho', abbreviation: 'ID'},
-	            {name: 'Illinois', abbreviation: 'IL'},
-	            {name: 'Indiana', abbreviation: 'IN'},
-	            {name: 'Iowa', abbreviation: 'IA'},
-	            {name: 'Kansas', abbreviation: 'KS'},
-	            {name: 'Kentucky', abbreviation: 'KY'},
-	            {name: 'Louisiana', abbreviation: 'LA'},
-	            {name: 'Maine', abbreviation: 'ME'},
-	            {name: 'Maryland', abbreviation: 'MD'},
-	            {name: 'Massachusetts', abbreviation: 'MA'},
-	            {name: 'Michigan', abbreviation: 'MI'},
-	            {name: 'Minnesota', abbreviation: 'MN'},
-	            {name: 'Mississippi', abbreviation: 'MS'},
-	            {name: 'Missouri', abbreviation: 'MO'},
-	            {name: 'Montana', abbreviation: 'MT'},
-	            {name: 'Nebraska', abbreviation: 'NE'},
-	            {name: 'Nevada', abbreviation: 'NV'},
-	            {name: 'New Hampshire', abbreviation: 'NH'},
-	            {name: 'New Jersey', abbreviation: 'NJ'},
-	            {name: 'New Mexico', abbreviation: 'NM'},
-	            {name: 'New York', abbreviation: 'NY'},
-	            {name: 'North Carolina', abbreviation: 'NC'},
-	            {name: 'North Dakota', abbreviation: 'ND'},
-	            {name: 'Ohio', abbreviation: 'OH'},
-	            {name: 'Oklahoma', abbreviation: 'OK'},
-	            {name: 'Oregon', abbreviation: 'OR'},
-	            {name: 'Pennsylvania', abbreviation: 'PA'},
-	            {name: 'Rhode Island', abbreviation: 'RI'},
-	            {name: 'South Carolina', abbreviation: 'SC'},
-	            {name: 'South Dakota', abbreviation: 'SD'},
-	            {name: 'Tennessee', abbreviation: 'TN'},
-	            {name: 'Texas', abbreviation: 'TX'},
-	            {name: 'Utah', abbreviation: 'UT'},
-	            {name: 'Vermont', abbreviation: 'VT'},
-	            {name: 'Virginia', abbreviation: 'VA'},
-	            {name: 'Washington', abbreviation: 'WA'},
-	            {name: 'West Virginia', abbreviation: 'WV'},
-	            {name: 'Wisconsin', abbreviation: 'WI'},
-	            {name: 'Wyoming', abbreviation: 'WY'}
-	        ],
-	
-	        territories: [
-	            {name: 'American Samoa', abbreviation: 'AS'},
-	            {name: 'Federated States of Micronesia', abbreviation: 'FM'},
-	            {name: 'Guam', abbreviation: 'GU'},
-	            {name: 'Marshall Islands', abbreviation: 'MH'},
-	            {name: 'Northern Mariana Islands', abbreviation: 'MP'},
-	            {name: 'Puerto Rico', abbreviation: 'PR'},
-	            {name: 'Virgin Islands, U.S.', abbreviation: 'VI'}
-	        ],
-	
-	        armed_forces: [
-	            {name: 'Armed Forces Europe', abbreviation: 'AE'},
-	            {name: 'Armed Forces Pacific', abbreviation: 'AP'},
-	            {name: 'Armed Forces the Americas', abbreviation: 'AA'}
-	        ],
-	
-	        street_suffixes: [
-	            {name: 'Avenue', abbreviation: 'Ave'},
-	            {name: 'Boulevard', abbreviation: 'Blvd'},
-	            {name: 'Center', abbreviation: 'Ctr'},
-	            {name: 'Circle', abbreviation: 'Cir'},
-	            {name: 'Court', abbreviation: 'Ct'},
-	            {name: 'Drive', abbreviation: 'Dr'},
-	            {name: 'Extension', abbreviation: 'Ext'},
-	            {name: 'Glen', abbreviation: 'Gln'},
-	            {name: 'Grove', abbreviation: 'Grv'},
-	            {name: 'Heights', abbreviation: 'Hts'},
-	            {name: 'Highway', abbreviation: 'Hwy'},
-	            {name: 'Junction', abbreviation: 'Jct'},
-	            {name: 'Key', abbreviation: 'Key'},
-	            {name: 'Lane', abbreviation: 'Ln'},
-	            {name: 'Loop', abbreviation: 'Loop'},
-	            {name: 'Manor', abbreviation: 'Mnr'},
-	            {name: 'Mill', abbreviation: 'Mill'},
-	            {name: 'Park', abbreviation: 'Park'},
-	            {name: 'Parkway', abbreviation: 'Pkwy'},
-	            {name: 'Pass', abbreviation: 'Pass'},
-	            {name: 'Path', abbreviation: 'Path'},
-	            {name: 'Pike', abbreviation: 'Pike'},
-	            {name: 'Place', abbreviation: 'Pl'},
-	            {name: 'Plaza', abbreviation: 'Plz'},
-	            {name: 'Point', abbreviation: 'Pt'},
-	            {name: 'Ridge', abbreviation: 'Rdg'},
-	            {name: 'River', abbreviation: 'Riv'},
-	            {name: 'Road', abbreviation: 'Rd'},
-	            {name: 'Square', abbreviation: 'Sq'},
-	            {name: 'Street', abbreviation: 'St'},
-	            {name: 'Terrace', abbreviation: 'Ter'},
-	            {name: 'Trail', abbreviation: 'Trl'},
-	            {name: 'Turnpike', abbreviation: 'Tpke'},
-	            {name: 'View', abbreviation: 'Vw'},
-	            {name: 'Way', abbreviation: 'Way'}
-	        ],
-	
-	        months: [
-	            {name: 'January', short_name: 'Jan', numeric: '01', days: 31},
-	            // Not messing with leap years...
-	            {name: 'February', short_name: 'Feb', numeric: '02', days: 28},
-	            {name: 'March', short_name: 'Mar', numeric: '03', days: 31},
-	            {name: 'April', short_name: 'Apr', numeric: '04', days: 30},
-	            {name: 'May', short_name: 'May', numeric: '05', days: 31},
-	            {name: 'June', short_name: 'Jun', numeric: '06', days: 30},
-	            {name: 'July', short_name: 'Jul', numeric: '07', days: 31},
-	            {name: 'August', short_name: 'Aug', numeric: '08', days: 31},
-	            {name: 'September', short_name: 'Sep', numeric: '09', days: 30},
-	            {name: 'October', short_name: 'Oct', numeric: '10', days: 31},
-	            {name: 'November', short_name: 'Nov', numeric: '11', days: 30},
-	            {name: 'December', short_name: 'Dec', numeric: '12', days: 31}
-	        ],
-	
-	        // http://en.wikipedia.org/wiki/Bank_card_number#Issuer_identification_number_.28IIN.29
-	        cc_types: [
-	            {name: "American Express", short_name: 'amex', prefix: '34', length: 15},
-	            {name: "Bankcard", short_name: 'bankcard', prefix: '5610', length: 16},
-	            {name: "China UnionPay", short_name: 'chinaunion', prefix: '62', length: 16},
-	            {name: "Diners Club Carte Blanche", short_name: 'dccarte', prefix: '300', length: 14},
-	            {name: "Diners Club enRoute", short_name: 'dcenroute', prefix: '2014', length: 15},
-	            {name: "Diners Club International", short_name: 'dcintl', prefix: '36', length: 14},
-	            {name: "Diners Club United States & Canada", short_name: 'dcusc', prefix: '54', length: 16},
-	            {name: "Discover Card", short_name: 'discover', prefix: '6011', length: 16},
-	            {name: "InstaPayment", short_name: 'instapay', prefix: '637', length: 16},
-	            {name: "JCB", short_name: 'jcb', prefix: '3528', length: 16},
-	            {name: "Laser", short_name: 'laser', prefix: '6304', length: 16},
-	            {name: "Maestro", short_name: 'maestro', prefix: '5018', length: 16},
-	            {name: "Mastercard", short_name: 'mc', prefix: '51', length: 16},
-	            {name: "Solo", short_name: 'solo', prefix: '6334', length: 16},
-	            {name: "Switch", short_name: 'switch', prefix: '4903', length: 16},
-	            {name: "Visa", short_name: 'visa', prefix: '4', length: 16},
-	            {name: "Visa Electron", short_name: 'electron', prefix: '4026', length: 16}
-	        ],
-	
-	        //return all world currency by ISO 4217
-	        currency_types: [
-	            {'code' : 'AED', 'name' : 'United Arab Emirates Dirham'},
-	            {'code' : 'AFN', 'name' : 'Afghanistan Afghani'},
-	            {'code' : 'ALL', 'name' : 'Albania Lek'},
-	            {'code' : 'AMD', 'name' : 'Armenia Dram'},
-	            {'code' : 'ANG', 'name' : 'Netherlands Antilles Guilder'},
-	            {'code' : 'AOA', 'name' : 'Angola Kwanza'},
-	            {'code' : 'ARS', 'name' : 'Argentina Peso'},
-	            {'code' : 'AUD', 'name' : 'Australia Dollar'},
-	            {'code' : 'AWG', 'name' : 'Aruba Guilder'},
-	            {'code' : 'AZN', 'name' : 'Azerbaijan New Manat'},
-	            {'code' : 'BAM', 'name' : 'Bosnia and Herzegovina Convertible Marka'},
-	            {'code' : 'BBD', 'name' : 'Barbados Dollar'},
-	            {'code' : 'BDT', 'name' : 'Bangladesh Taka'},
-	            {'code' : 'BGN', 'name' : 'Bulgaria Lev'},
-	            {'code' : 'BHD', 'name' : 'Bahrain Dinar'},
-	            {'code' : 'BIF', 'name' : 'Burundi Franc'},
-	            {'code' : 'BMD', 'name' : 'Bermuda Dollar'},
-	            {'code' : 'BND', 'name' : 'Brunei Darussalam Dollar'},
-	            {'code' : 'BOB', 'name' : 'Bolivia Boliviano'},
-	            {'code' : 'BRL', 'name' : 'Brazil Real'},
-	            {'code' : 'BSD', 'name' : 'Bahamas Dollar'},
-	            {'code' : 'BTN', 'name' : 'Bhutan Ngultrum'},
-	            {'code' : 'BWP', 'name' : 'Botswana Pula'},
-	            {'code' : 'BYR', 'name' : 'Belarus Ruble'},
-	            {'code' : 'BZD', 'name' : 'Belize Dollar'},
-	            {'code' : 'CAD', 'name' : 'Canada Dollar'},
-	            {'code' : 'CDF', 'name' : 'Congo/Kinshasa Franc'},
-	            {'code' : 'CHF', 'name' : 'Switzerland Franc'},
-	            {'code' : 'CLP', 'name' : 'Chile Peso'},
-	            {'code' : 'CNY', 'name' : 'China Yuan Renminbi'},
-	            {'code' : 'COP', 'name' : 'Colombia Peso'},
-	            {'code' : 'CRC', 'name' : 'Costa Rica Colon'},
-	            {'code' : 'CUC', 'name' : 'Cuba Convertible Peso'},
-	            {'code' : 'CUP', 'name' : 'Cuba Peso'},
-	            {'code' : 'CVE', 'name' : 'Cape Verde Escudo'},
-	            {'code' : 'CZK', 'name' : 'Czech Republic Koruna'},
-	            {'code' : 'DJF', 'name' : 'Djibouti Franc'},
-	            {'code' : 'DKK', 'name' : 'Denmark Krone'},
-	            {'code' : 'DOP', 'name' : 'Dominican Republic Peso'},
-	            {'code' : 'DZD', 'name' : 'Algeria Dinar'},
-	            {'code' : 'EGP', 'name' : 'Egypt Pound'},
-	            {'code' : 'ERN', 'name' : 'Eritrea Nakfa'},
-	            {'code' : 'ETB', 'name' : 'Ethiopia Birr'},
-	            {'code' : 'EUR', 'name' : 'Euro Member Countries'},
-	            {'code' : 'FJD', 'name' : 'Fiji Dollar'},
-	            {'code' : 'FKP', 'name' : 'Falkland Islands (Malvinas) Pound'},
-	            {'code' : 'GBP', 'name' : 'United Kingdom Pound'},
-	            {'code' : 'GEL', 'name' : 'Georgia Lari'},
-	            {'code' : 'GGP', 'name' : 'Guernsey Pound'},
-	            {'code' : 'GHS', 'name' : 'Ghana Cedi'},
-	            {'code' : 'GIP', 'name' : 'Gibraltar Pound'},
-	            {'code' : 'GMD', 'name' : 'Gambia Dalasi'},
-	            {'code' : 'GNF', 'name' : 'Guinea Franc'},
-	            {'code' : 'GTQ', 'name' : 'Guatemala Quetzal'},
-	            {'code' : 'GYD', 'name' : 'Guyana Dollar'},
-	            {'code' : 'HKD', 'name' : 'Hong Kong Dollar'},
-	            {'code' : 'HNL', 'name' : 'Honduras Lempira'},
-	            {'code' : 'HRK', 'name' : 'Croatia Kuna'},
-	            {'code' : 'HTG', 'name' : 'Haiti Gourde'},
-	            {'code' : 'HUF', 'name' : 'Hungary Forint'},
-	            {'code' : 'IDR', 'name' : 'Indonesia Rupiah'},
-	            {'code' : 'ILS', 'name' : 'Israel Shekel'},
-	            {'code' : 'IMP', 'name' : 'Isle of Man Pound'},
-	            {'code' : 'INR', 'name' : 'India Rupee'},
-	            {'code' : 'IQD', 'name' : 'Iraq Dinar'},
-	            {'code' : 'IRR', 'name' : 'Iran Rial'},
-	            {'code' : 'ISK', 'name' : 'Iceland Krona'},
-	            {'code' : 'JEP', 'name' : 'Jersey Pound'},
-	            {'code' : 'JMD', 'name' : 'Jamaica Dollar'},
-	            {'code' : 'JOD', 'name' : 'Jordan Dinar'},
-	            {'code' : 'JPY', 'name' : 'Japan Yen'},
-	            {'code' : 'KES', 'name' : 'Kenya Shilling'},
-	            {'code' : 'KGS', 'name' : 'Kyrgyzstan Som'},
-	            {'code' : 'KHR', 'name' : 'Cambodia Riel'},
-	            {'code' : 'KMF', 'name' : 'Comoros Franc'},
-	            {'code' : 'KPW', 'name' : 'Korea (North) Won'},
-	            {'code' : 'KRW', 'name' : 'Korea (South) Won'},
-	            {'code' : 'KWD', 'name' : 'Kuwait Dinar'},
-	            {'code' : 'KYD', 'name' : 'Cayman Islands Dollar'},
-	            {'code' : 'KZT', 'name' : 'Kazakhstan Tenge'},
-	            {'code' : 'LAK', 'name' : 'Laos Kip'},
-	            {'code' : 'LBP', 'name' : 'Lebanon Pound'},
-	            {'code' : 'LKR', 'name' : 'Sri Lanka Rupee'},
-	            {'code' : 'LRD', 'name' : 'Liberia Dollar'},
-	            {'code' : 'LSL', 'name' : 'Lesotho Loti'},
-	            {'code' : 'LTL', 'name' : 'Lithuania Litas'},
-	            {'code' : 'LYD', 'name' : 'Libya Dinar'},
-	            {'code' : 'MAD', 'name' : 'Morocco Dirham'},
-	            {'code' : 'MDL', 'name' : 'Moldova Leu'},
-	            {'code' : 'MGA', 'name' : 'Madagascar Ariary'},
-	            {'code' : 'MKD', 'name' : 'Macedonia Denar'},
-	            {'code' : 'MMK', 'name' : 'Myanmar (Burma) Kyat'},
-	            {'code' : 'MNT', 'name' : 'Mongolia Tughrik'},
-	            {'code' : 'MOP', 'name' : 'Macau Pataca'},
-	            {'code' : 'MRO', 'name' : 'Mauritania Ouguiya'},
-	            {'code' : 'MUR', 'name' : 'Mauritius Rupee'},
-	            {'code' : 'MVR', 'name' : 'Maldives (Maldive Islands) Rufiyaa'},
-	            {'code' : 'MWK', 'name' : 'Malawi Kwacha'},
-	            {'code' : 'MXN', 'name' : 'Mexico Peso'},
-	            {'code' : 'MYR', 'name' : 'Malaysia Ringgit'},
-	            {'code' : 'MZN', 'name' : 'Mozambique Metical'},
-	            {'code' : 'NAD', 'name' : 'Namibia Dollar'},
-	            {'code' : 'NGN', 'name' : 'Nigeria Naira'},
-	            {'code' : 'NIO', 'name' : 'Nicaragua Cordoba'},
-	            {'code' : 'NOK', 'name' : 'Norway Krone'},
-	            {'code' : 'NPR', 'name' : 'Nepal Rupee'},
-	            {'code' : 'NZD', 'name' : 'New Zealand Dollar'},
-	            {'code' : 'OMR', 'name' : 'Oman Rial'},
-	            {'code' : 'PAB', 'name' : 'Panama Balboa'},
-	            {'code' : 'PEN', 'name' : 'Peru Nuevo Sol'},
-	            {'code' : 'PGK', 'name' : 'Papua New Guinea Kina'},
-	            {'code' : 'PHP', 'name' : 'Philippines Peso'},
-	            {'code' : 'PKR', 'name' : 'Pakistan Rupee'},
-	            {'code' : 'PLN', 'name' : 'Poland Zloty'},
-	            {'code' : 'PYG', 'name' : 'Paraguay Guarani'},
-	            {'code' : 'QAR', 'name' : 'Qatar Riyal'},
-	            {'code' : 'RON', 'name' : 'Romania New Leu'},
-	            {'code' : 'RSD', 'name' : 'Serbia Dinar'},
-	            {'code' : 'RUB', 'name' : 'Russia Ruble'},
-	            {'code' : 'RWF', 'name' : 'Rwanda Franc'},
-	            {'code' : 'SAR', 'name' : 'Saudi Arabia Riyal'},
-	            {'code' : 'SBD', 'name' : 'Solomon Islands Dollar'},
-	            {'code' : 'SCR', 'name' : 'Seychelles Rupee'},
-	            {'code' : 'SDG', 'name' : 'Sudan Pound'},
-	            {'code' : 'SEK', 'name' : 'Sweden Krona'},
-	            {'code' : 'SGD', 'name' : 'Singapore Dollar'},
-	            {'code' : 'SHP', 'name' : 'Saint Helena Pound'},
-	            {'code' : 'SLL', 'name' : 'Sierra Leone Leone'},
-	            {'code' : 'SOS', 'name' : 'Somalia Shilling'},
-	            {'code' : 'SPL', 'name' : 'Seborga Luigino'},
-	            {'code' : 'SRD', 'name' : 'Suriname Dollar'},
-	            {'code' : 'STD', 'name' : 'São Tomé and Príncipe Dobra'},
-	            {'code' : 'SVC', 'name' : 'El Salvador Colon'},
-	            {'code' : 'SYP', 'name' : 'Syria Pound'},
-	            {'code' : 'SZL', 'name' : 'Swaziland Lilangeni'},
-	            {'code' : 'THB', 'name' : 'Thailand Baht'},
-	            {'code' : 'TJS', 'name' : 'Tajikistan Somoni'},
-	            {'code' : 'TMT', 'name' : 'Turkmenistan Manat'},
-	            {'code' : 'TND', 'name' : 'Tunisia Dinar'},
-	            {'code' : 'TOP', 'name' : 'Tonga Pa\'anga'},
-	            {'code' : 'TRY', 'name' : 'Turkey Lira'},
-	            {'code' : 'TTD', 'name' : 'Trinidad and Tobago Dollar'},
-	            {'code' : 'TVD', 'name' : 'Tuvalu Dollar'},
-	            {'code' : 'TWD', 'name' : 'Taiwan New Dollar'},
-	            {'code' : 'TZS', 'name' : 'Tanzania Shilling'},
-	            {'code' : 'UAH', 'name' : 'Ukraine Hryvnia'},
-	            {'code' : 'UGX', 'name' : 'Uganda Shilling'},
-	            {'code' : 'USD', 'name' : 'United States Dollar'},
-	            {'code' : 'UYU', 'name' : 'Uruguay Peso'},
-	            {'code' : 'UZS', 'name' : 'Uzbekistan Som'},
-	            {'code' : 'VEF', 'name' : 'Venezuela Bolivar'},
-	            {'code' : 'VND', 'name' : 'Viet Nam Dong'},
-	            {'code' : 'VUV', 'name' : 'Vanuatu Vatu'},
-	            {'code' : 'WST', 'name' : 'Samoa Tala'},
-	            {'code' : 'XAF', 'name' : 'Communauté Financière Africaine (BEAC) CFA Franc BEAC'},
-	            {'code' : 'XCD', 'name' : 'East Caribbean Dollar'},
-	            {'code' : 'XDR', 'name' : 'International Monetary Fund (IMF) Special Drawing Rights'},
-	            {'code' : 'XOF', 'name' : 'Communauté Financière Africaine (BCEAO) Franc'},
-	            {'code' : 'XPF', 'name' : 'Comptoirs Français du Pacifique (CFP) Franc'},
-	            {'code' : 'YER', 'name' : 'Yemen Rial'},
-	            {'code' : 'ZAR', 'name' : 'South Africa Rand'},
-	            {'code' : 'ZMW', 'name' : 'Zambia Kwacha'},
-	            {'code' : 'ZWD', 'name' : 'Zimbabwe Dollar'}
-	        ]
-	    };
-	
-	    function copyObject(source, target) {
-	        var key;
-	
-	        target = target || (Array.isArray(source) ? [] : {});
-	
-	        for (key in source) {
-	            if (source.hasOwnProperty(key)) {
-	                target[key] = source[key] || target[key];
-	            }
-	        }
-	
-	        return target;
+	    if( change ) {
+	      if( date == null || this.props.value == null){
+	        if( date != this.props.value )
+	          change(date, str)
+	      }
+	      else if (!dates.eq(date, this.props.value))
+	        change(date, str)
 	    }
+	  },
 	
-	    /** Get the data based on key**/
-	    Chance.prototype.get = function (name) {
-	        return copyObject(data[name]);
-	    };
+	  _keyDown: function(e){
 	
-	    /** Set the data as key and data or the data map**/
-	    Chance.prototype.set = function (name, values) {
-	        if (typeof name === "string") {
-	            data[name] = values;
-	        } else {
-	            data = copyObject(name, data);
-	        }
-	    };
+	    if( e.key === 'Tab')
+	      return
 	
+	    if ( e.key === 'Escape' && this.props.open )
+	      this.close()
 	
-	    Chance.prototype.mersenne_twister = function (seed) {
-	        return new MersenneTwister(seed);
-	    };
+	    else if ( e.altKey ) {
+	      e.preventDefault()
 	
-	    // -- End Miscellaneous --
+	      if ( e.key === 'ArrowDown')
+	        this.open(this.props.open === popups.CALENDAR
+	              ? popups.TIME
+	              : popups.CALENDAR)
+	      else if ( e.key === 'ArrowUp')
+	        this.close()
 	
-	    Chance.prototype.VERSION = "0.5.9";
-	
-	    // Mersenne Twister from https://gist.github.com/banksean/300494
-	    var MersenneTwister = function (seed) {
-	        if (seed === undefined) {
-	            seed = new Date().getTime();
-	        }
-	        /* Period parameters */
-	        this.N = 624;
-	        this.M = 397;
-	        this.MATRIX_A = 0x9908b0df;   /* constant vector a */
-	        this.UPPER_MASK = 0x80000000; /* most significant w-r bits */
-	        this.LOWER_MASK = 0x7fffffff; /* least significant r bits */
-	
-	        this.mt = new Array(this.N); /* the array for the state vector */
-	        this.mti = this.N + 1; /* mti==N + 1 means mt[N] is not initialized */
-	
-	        this.init_genrand(seed);
-	    };
-	
-	    /* initializes mt[N] with a seed */
-	    MersenneTwister.prototype.init_genrand = function (s) {
-	        this.mt[0] = s >>> 0;
-	        for (this.mti = 1; this.mti < this.N; this.mti++) {
-	            s = this.mt[this.mti - 1] ^ (this.mt[this.mti - 1] >>> 30);
-	            this.mt[this.mti] = (((((s & 0xffff0000) >>> 16) * 1812433253) << 16) + (s & 0x0000ffff) * 1812433253) + this.mti;
-	            /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
-	            /* In the previous versions, MSBs of the seed affect   */
-	            /* only MSBs of the array mt[].                        */
-	            /* 2002/01/09 modified by Makoto Matsumoto             */
-	            this.mt[this.mti] >>>= 0;
-	            /* for >32 bit machines */
-	        }
-	    };
-	
-	    /* initialize by an array with array-length */
-	    /* init_key is the array for initializing keys */
-	    /* key_length is its length */
-	    /* slight change for C++, 2004/2/26 */
-	    MersenneTwister.prototype.init_by_array = function (init_key, key_length) {
-	        var i = 1, j = 0, k, s;
-	        this.init_genrand(19650218);
-	        k = (this.N > key_length ? this.N : key_length);
-	        for (; k; k--) {
-	            s = this.mt[i - 1] ^ (this.mt[i - 1] >>> 30);
-	            this.mt[i] = (this.mt[i] ^ (((((s & 0xffff0000) >>> 16) * 1664525) << 16) + ((s & 0x0000ffff) * 1664525))) + init_key[j] + j; /* non linear */
-	            this.mt[i] >>>= 0; /* for WORDSIZE > 32 machines */
-	            i++;
-	            j++;
-	            if (i >= this.N) { this.mt[0] = this.mt[this.N - 1]; i = 1; }
-	            if (j >= key_length) { j = 0; }
-	        }
-	        for (k = this.N - 1; k; k--) {
-	            s = this.mt[i - 1] ^ (this.mt[i - 1] >>> 30);
-	            this.mt[i] = (this.mt[i] ^ (((((s & 0xffff0000) >>> 16) * 1566083941) << 16) + (s & 0x0000ffff) * 1566083941)) - i; /* non linear */
-	            this.mt[i] >>>= 0; /* for WORDSIZE > 32 machines */
-	            i++;
-	            if (i >= this.N) { this.mt[0] = this.mt[this.N - 1]; i = 1; }
-	        }
-	
-	        this.mt[0] = 0x80000000; /* MSB is 1; assuring non-zero initial array */
-	    };
-	
-	    /* generates a random number on [0,0xffffffff]-interval */
-	    MersenneTwister.prototype.genrand_int32 = function () {
-	        var y;
-	        var mag01 = new Array(0x0, this.MATRIX_A);
-	        /* mag01[x] = x * MATRIX_A  for x=0,1 */
-	
-	        if (this.mti >= this.N) { /* generate N words at one time */
-	            var kk;
-	
-	            if (this.mti === this.N + 1) {   /* if init_genrand() has not been called, */
-	                this.init_genrand(5489); /* a default initial seed is used */
-	            }
-	            for (kk = 0; kk < this.N - this.M; kk++) {
-	                y = (this.mt[kk]&this.UPPER_MASK)|(this.mt[kk + 1]&this.LOWER_MASK);
-	                this.mt[kk] = this.mt[kk + this.M] ^ (y >>> 1) ^ mag01[y & 0x1];
-	            }
-	            for (;kk < this.N - 1; kk++) {
-	                y = (this.mt[kk]&this.UPPER_MASK)|(this.mt[kk + 1]&this.LOWER_MASK);
-	                this.mt[kk] = this.mt[kk + (this.M - this.N)] ^ (y >>> 1) ^ mag01[y & 0x1];
-	            }
-	            y = (this.mt[this.N - 1]&this.UPPER_MASK)|(this.mt[0]&this.LOWER_MASK);
-	            this.mt[this.N - 1] = this.mt[this.M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
-	
-	            this.mti = 0;
-	        }
-	
-	        y = this.mt[this.mti++];
-	
-	        /* Tempering */
-	        y ^= (y >>> 11);
-	        y ^= (y << 7) & 0x9d2c5680;
-	        y ^= (y << 15) & 0xefc60000;
-	        y ^= (y >>> 18);
-	
-	        return y >>> 0;
-	    };
-	
-	    /* generates a random number on [0,0x7fffffff]-interval */
-	    MersenneTwister.prototype.genrand_int31 = function () {
-	        return (this.genrand_int32() >>> 1);
-	    };
-	
-	    /* generates a random number on [0,1]-real-interval */
-	    MersenneTwister.prototype.genrand_real1 = function () {
-	        return this.genrand_int32() * (1.0 / 4294967295.0);
-	        /* divided by 2^32-1 */
-	    };
-	
-	    /* generates a random number on [0,1)-real-interval */
-	    MersenneTwister.prototype.random = function () {
-	        return this.genrand_int32() * (1.0 / 4294967296.0);
-	        /* divided by 2^32 */
-	    };
-	
-	    /* generates a random number on (0,1)-real-interval */
-	    MersenneTwister.prototype.genrand_real3 = function () {
-	        return (this.genrand_int32() + 0.5) * (1.0 / 4294967296.0);
-	        /* divided by 2^32 */
-	    };
-	
-	    /* generates a random number on [0,1) with 53-bit resolution*/
-	    MersenneTwister.prototype.genrand_res53 = function () {
-	        var a = this.genrand_int32()>>>5, b = this.genrand_int32()>>>6;
-	        return (a * 67108864.0 + b) * (1.0 / 9007199254740992.0);
-	    };
-	
-	
-	    // CommonJS module
-	    if (true) {
-	        if (typeof module !== 'undefined' && module.exports) {
-	            exports = module.exports = Chance;
-	        }
-	        exports.Chance = Chance;
+	    } else if (this.props.open ) {
+	      if( this.props.open === popups.CALENDAR )
+	        this.refs.calPopup._keyDown(e)
+	      if( this.props.open === popups.TIME )
+	        this.refs.timePopup._keyDown(e)
 	    }
+	  },
 	
-	    // Register as an anonymous AMD module
-	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	            return Chance;
-	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	    }
+	  //timeout prevents transitions from breaking focus
+	  _focus: function(focused, e){
+	    var self = this
+	      , input =  this.refs.valueInput;
 	
-	    // If there is a window object, that at least has a document property,
-	    // instantiate and define chance on the window
-	    if (typeof window === "object" && typeof window.document === "object") {
-	        window.Chance = Chance;
-	        window.chance = new Chance();
-	    }
-	})();
+	    clearTimeout(self.timer)
+	
+	    self.timer = setTimeout(function(){
+	
+	      if(focused) input.getDOMNode().focus()
+	      else        self.close()
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	
+	    }, 0)
+	  },
+	
+	  _selectDate: function(date){
+	    this.close()
+	    this._change(
+	        dates.merge(date, this.props.value)
+	      , formatDate(date, this.props.format)
+	      , true)
+	  },
+	
+	  _selectTime: function(datum){
+	    this.close()
+	    this._change(
+	        dates.merge(this.props.value, datum.date)
+	      , formatDate(datum.date, this.props.format)
+	      , true)
+	  },
+	
+	  _click: function(view, e){
+	    this._focus(true)
+	    this.toggle(view, e)
+	  },
+	
+	  _parse: function(string){
+	    var parser = typeof this.props.parse === 'function'
+	          ? this.props.parse
+	          : formatsParser.bind(null, _.splat(this.props.format).concat(this.props.parse));
+	
+	    return parser(string)
+	  },
+	
+	  toggle: function(view, e) {
+	
+	    this.props.open
+	      ? this.state.view !== view
+	          ? this.open(view)
+	          : this.close(view)
+	      : this.open(view)
+	  },
+	
+	  open: function(view){
+	    if ( this.props.open !== view )
+	      this.notify('onToggle', view)
+	  },
+	
+	  close: function(){
+	    if ( this.props.open)
+	      this.notify('onToggle', false)
+	  },
+	
+	  inRangeValue: function(value){
+	    if( value == null) return value
+	
+	    return dates.max(
+	        dates.min(value, this.props.max)
+	      , this.props.min)
+	  },
+	
+	});
+	
+	
+	module.exports = controlledInput.createControlledClass(
+	    DateTimePicker
+	  , { open: 'onToggle', value: 'onChange' });
+	
+	function formatDate(date, format){
+	  var val = ''
+	
+	  if ( (date instanceof Date) && !isNaN(date.getTime()) )
+	    val = dates.format(date, format)
+	
+	  return val;
+	}
+	
+	module.exports.BaseDateTimePicker = DateTimePicker
+	
+	function formatsParser(formats, str){
+	  var date;
+	
+	  formats = [].concat(formats)
+	
+	  for(var i=0; i < formats.length; i++ ){
+	    date = dates.parse(str, formats[i])
+	    if( date) return date
+	  }
+	  return null
+	}
+	
 
 
 /***/ },
-/* 47 */
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(13)
+	  , _     = __webpack_require__(14) //omit
+	  , controlledInput  = __webpack_require__(60)
+	  , directions = __webpack_require__(75).directions
+	  , Input = __webpack_require__(78);
+	
+	var Btn = __webpack_require__(67)
+	  , propTypes = {
+	
+	      // -- controlled props -----------
+	      value:          React.PropTypes.number,
+	      onChange:       React.PropTypes.func,
+	      //------------------------------------
+	
+	      min:            React.PropTypes.number,
+	      max:            React.PropTypes.number,
+	      step:           React.PropTypes.number,
+	
+	      culture:        React.PropTypes.string,
+	      format:         React.PropTypes.string,
+	
+	      name:           React.PropTypes.string,
+	
+	      parse:          React.PropTypes.oneOfType([
+	                        React.PropTypes.arrayOf(React.PropTypes.string),
+	                        React.PropTypes.string,
+	                        React.PropTypes.func
+	                      ]),
+	
+	      disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	      readOnly:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['readOnly'])
+	                      ]),
+	
+	      messages:       React.PropTypes.shape({
+	        increment:    React.PropTypes.string,
+	        decrement:    React.PropTypes.string
+	      })
+	    };
+	
+	var NumberPicker = React.createClass({
+	
+	  displayName: 'NumberPicker',
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(85),
+	    __webpack_require__(87),
+	  ],
+	
+	  propTypes: propTypes,
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: null,
+	      open: false,
+	
+	      format: 'd',
+	
+	      min: -Infinity,
+	      max:  Infinity,
+	      step: 1,
+	
+	      messages: {
+	        increment: 'increment value',
+	        decrement:  'decrement value'
+	      }
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    return {
+	      focused: false,
+	      active: false,
+	    }
+	  },
+	
+	
+	  render: function(){
+	    var $__0=   _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , val = this.inRangeValue(this.props.value)
+	
+	    //console.log('render', this.state.focused)
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props , 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        tabIndex: "-1", 
+	        className: cx(className, {
+	          'rw-numberpicker':   true,
+	          'rw-widget':          true,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-state-disabled':  this.props.disabled,
+	          'rw-state-readonly':  this.props.readOnly,
+	          'rw-rtl':             this.isRtl()
+	        })}), 
+	
+	        React.createElement("span", {className: "rw-select"}, 
+	          React.createElement(Btn, {
+	            tabIndex: "-1", 
+	            className: cx({ 'rw-state-active': this.state.active === directions.UP}), 
+	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.UP)), 
+	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.UP)), 
+	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
+	            disabled: val === this.props.max || this.props.disabled, 
+	            'aria-disabled': val === this.props.max || this.props.disabled}, 
+	
+	            React.createElement("i", {className: "rw-i rw-i-caret-up"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.increment))
+	          ), 
+	          React.createElement(Btn, {
+	            tabIndex: "-1", 
+	            className: cx({ 'rw-state-active': this.state.active === directions.DOWN}), 
+	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.DOWN)), 
+	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.DOWN)), 
+	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
+	            disabled: val === this.props.min || this.props.disabled, 
+	            'aria-disabled': val === this.props.min || this.props.disabled}, 
+	            React.createElement("i", {className: "rw-i rw-i-caret-down"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.decrement))
+	          )
+	        ), 
+	        React.createElement(Input, {
+	          ref: "input", 
+	          value: val, 
+	          editing: this.state.focused, 
+	          format: this.props.format, 
+	          name: this.props.name, 
+	          role: "spinbutton", 
+	          min: this.props.min, 
+	          'aria-valuenow': val, 
+	          'aria-valuemin': isFinite(this.props.min) ? this.props.min : null, 
+	          'aria-valuemax': isFinite(this.props.max) ? this.props.max : null, 
+	          'aria-disabled':  this.props.disabled, 
+	          'aria-readonly':  this.props.readonly, 
+	          disabled: this.props.disabled, 
+	          readOnly: this.props.readOnly, 
+	          onChange: this.change, 
+	          onKeyDown: this.props.onKeyDown})
+	      )
+	    )
+	  },
+	
+	  //allow for styling, focus stealing keeping me from the normal what have you
+	  _mouseDown: function(dir) {
+	    var val = dir === directions.UP
+	        ? (this.props.value || 0) + this.props.step
+	        : (this.props.value || 0) - this.props.step
+	
+	    val = this.inRangeValue(val)
+	
+	    this.setState({ active: dir })
+	    this.change(val);
+	
+	    if( !((dir === directions.UP && val === this.props.max)
+	      || (dir === directions.DOWN && val === this.props.min)))
+	    {
+	      if(!this.interval)
+	        this.interval = setInterval(this._mouseDown, 500, dir)
+	    }
+	    else
+	      this._mouseUp()
+	  },
+	
+	  _mouseUp: function(direction, e ){
+	    this.setState({ active: false })
+	    clearInterval(this.interval)
+	    this.interval = null;
+	  },
+	
+	  _focus: function(focused, e){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	
+	    self.timer = setTimeout(function(){
+	      var el = self.refs.input.getDOMNode()
+	
+	      focused && el.focus()
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	
+	    }, 0)
+	  },
+	
+	  _keyDown: function(e){
+	    var key = e.key;
+	
+	    if ( key === 'End'  && isFinite(this.props.max))
+	      this.change(this.props.max)
+	
+	    else if ( key === 'Home' && isFinite(this.props.min))
+	      this.change(this.props.min)
+	
+	    else if ( key === 'ArrowDown' ){
+	      e.preventDefault()
+	      this.decrement()
+	    }
+	    else if ( key === 'ArrowUp' ){
+	      e.preventDefault()
+	      this.increment()
+	    }
+	
+	  },
+	
+	  increment: function() {
+	    this.change(this.inRangeValue((this.props.value || 0) + this.props.step))
+	  },
+	
+	  decrement: function(){
+	    this.change(this.inRangeValue((this.props.value || 0) - this.props.step))
+	  },
+	
+	  change: function(val){
+	    val = this.inRangeValue(val === '' ? null : val)
+	
+	    if ( this.props.value !== val )
+	      this.notify('onChange', val)
+	  },
+	
+	  inRangeValue: function(value){
+	    var max = this.props.max == null ? Infinity : this.props.max
+	      , min = this.props.min == null ? -Infinity : this.props.min;
+	
+	    if( !isFinite(min) && value == null )
+	      return value
+	
+	    return Math.max(Math.min(value, max), min)
+	  }
+	
+	})
+	
+	module.exports = controlledInput.createControlledClass(
+	    NumberPicker, { value: 'onChange' });
+	
+	module.exports.BaseNumberPicker = NumberPicker
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(13)
+	  , _     = __webpack_require__(14)
+	  , controlledInput  = __webpack_require__(60)
+	  , CustomPropTypes  = __webpack_require__(61)
+	  
+	  , SelectInput = __webpack_require__(79)
+	  , TagList     = __webpack_require__(80)
+	  , Popup       = __webpack_require__(62)
+	  , PlainList        = __webpack_require__(63)
+	  , GroupableList = __webpack_require__(64);
+	
+	var propTypes = {
+	      data:            React.PropTypes.array,
+	      //-- controlled props --
+	      value:           React.PropTypes.array,
+	      onChange:        React.PropTypes.func,
+	
+	      searchTerm:      React.PropTypes.string,
+	      onSearch:        React.PropTypes.func,
+	
+	      open:            React.PropTypes.bool,
+	      onToggle:        React.PropTypes.func,
+	      //-------------------------------------------
+	
+	      valueField:      React.PropTypes.string,
+	      textField:       React.PropTypes.string,
+	
+	      tagComponent:    CustomPropTypes.elementType,
+	      itemComponent:   CustomPropTypes.elementType,
+	      list:            CustomPropTypes.elementType,
+	
+	      groupComponent:  CustomPropTypes.elementType,
+	      groupBy:         React.PropTypes.oneOfType([
+	                         React.PropTypes.func,
+	                         React.PropTypes.string
+	                       ]),
+	
+	      onSelect:        React.PropTypes.func,
+	      onCreate:        React.PropTypes.func,
+	
+	      duration:        React.PropTypes.number, //popup
+	
+	      placeholder:     React.PropTypes.string,
+	
+	      disabled:        React.PropTypes.oneOfType([
+	                         React.PropTypes.bool,
+	                         React.PropTypes.array,
+	                         React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	      readOnly:        React.PropTypes.oneOfType([
+	                         React.PropTypes.bool,
+	                         React.PropTypes.array,
+	                         React.PropTypes.oneOf(['readonly'])
+	                       ]),
+	
+	      messages:        React.PropTypes.shape({
+	        open:          React.PropTypes.string,
+	        emptyList:     React.PropTypes.string,
+	        emptyFilter:   React.PropTypes.string
+	      })
+	    };
+	
+	var Select = React.createClass({
+	
+	  displayName: 'Select',
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(89),
+	    __webpack_require__(86),
+	    __webpack_require__(87)
+	  ],
+	
+	  propTypes: propTypes,
+	
+	  getDefaultProps: function(){
+	    return {
+	      data: [],
+	      filter: 'startsWith',
+	      value: [],
+	      open: false,
+	      searchTerm: '',
+	      messages: {
+	        createNew:   "(create new tag)",
+	        emptyList:   "There are no items in this list",
+	        emptyFilter: "The filter returned no results"
+	      }
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    var values = _.splat(this.props.value)
+	      , data   = this.process(this.props.data, values, this.props.searchTerm)
+	
+	    return {
+	      focusedItem:   data[0],
+	      processedData: data,
+	      dataItems:     values.map( function(item)  {return this._dataItem(this.props.data, item);}.bind(this))
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var values = _.splat(nextProps.value)
+	      , items  = this.process(nextProps.data, values, nextProps.searchTerm)
+	
+	    this.setState({
+	      processedData: items,
+	      dataItems: values.map( function(item)  {return this._dataItem(nextProps.data, item);}.bind(this))
+	    })
+	  },
+	
+	  render: function(){
+	    var $__0= 
+	        
+	       
+	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,children:1})
+	      , listID = this._id('_listbox')
+	      , optID  = this._id('_option')
+	      , items  = this._data()
+	      , values = this.state.dataItems
+	      , List   = this.props.list || (this.props.groupBy && GroupableList) || PlainList;
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props, 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        tabIndex: "-1", 
+	        className: cx(className, {
+	          'rw-multiselect':    true,
+	          'rw-widget':         true,
+	          'rw-state-focus':    this.state.focused,
+	          'rw-state-disabled': this.props.disabled === true,
+	          'rw-state-readonly': this.props.readOnly === true,
+	          'rw-open':           this.props.open,
+	          'rw-rtl':            this.isRtl()
+	        })}), 
+	        React.createElement("div", {className: "rw-multiselect-wrapper", onClick: this._maybeHandle(this._click)}, 
+	           this.props.busy &&
+	            React.createElement("i", {className: "rw-i rw-loading"}), 
+	          
+	           !!values.length &&
+	            React.createElement(TagList, {
+	              ref: "tagList", 
+	              value: values, 
+	              textField: this.props.textField, 
+	              valueField: this.props.valueField, 
+	              valueComponent: this.props.tagComponent, 
+	              disabled: this.props.disabled, 
+	              readOnly: this.props.readOnly, 
+	              onDelete: this._delete}), 
+	          
+	          React.createElement(SelectInput, {
+	            ref: "input", 
+	            'aria-activedescendent':  this.props.open ? optID : undefined, 
+	            'aria-expanded':  this.props.open, 
+	            'aria-busy': !!this.props.busy, 
+	            'aria-owns': listID, 
+	            'aria-haspopup': true, 
+	            value: this.props.searchTerm, 
+	            disabled: this.props.disabled === true, 
+	            readOnly: this.props.readOnly === true, 
+	            placeholder: this._placeholder(), 
+	            onChange: this._typing})
+	        ), 
+	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
+	          React.createElement("div", null, 
+	            React.createElement(List, React.__spread({ref: "list"}, 
+	              _.pick(this.props, Object.keys(List.type.propTypes)), 
+	              {id: listID, 
+	              optID: optID, 
+	              'aria-autocomplete': "list", 
+	              'aria-hidden': !this.props.open, 
+	              data: items, 
+	              focused: this.state.focusedItem, 
+	              onSelect: this._maybeHandle(this._onSelect), 
+	              messages: {
+	                emptyList: this.props.data.length
+	                  ? this.props.messages.emptyFilter
+	                  : this.props.messages.emptyList
+	              }})), 
+	               this._shouldShowCreate() &&
+	                React.createElement("ul", {className: "rw-list rw-multiselect-create-tag"}, 
+	                  React.createElement("li", {onClick: this._onCreate.bind(null, this.props.searchTerm), 
+	                      className: cx({'rw-state-focus': !this._data().length || this.state.focusedItem === null })}, 
+	                    React.createElement("strong", null, ("\"" + this.props.searchTerm + "\"")), " ",  this.props.messages.createNew
+	                  )
+	                )
+	              
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _data:function(){
+	    return this.state.processedData
+	  },
+	
+	  _delete:function(value){
+	    this._focus(true)
+	    this.change(
+	      this.state.dataItems.filter( function(d)  {return d !== value;}))
+	  },
+	
+	  _click:function(e){
+	    this._focus(true)
+	    !this.props.open && this.open()
+	  },
+	
+	  _focus:function(focused, e){
+	    var self = this;
+	
+	    if (this.props.disabled === true )
+	      return
+	
+	    clearTimeout(self.timer)
+	
+	    self.timer = setTimeout(function(){
+	      if(focused) self.refs.input.focus()
+	      else        {
+	        self.close()
+	        self.refs.tagList && self.refs.tagList.clear()
+	      }
+	
+	      if( focused !== self.state.focused)
+	        self.setState({ focused: focused })
+	    }, 0)
+	  },
+	
+	  _typing: function(e){
+	    this.notify('onSearch', [ e.target.value ])
+	    this.open()
+	  },
+	
+	  _onSelect: function(data){
+	
+	    if( data === undefined && this.props.onCreate )
+	      return this._onCreate(this.props.searchTerm)
+	
+	    this.notify('onSelect', data)
+	    this.change(this.state.dataItems.concat(data))
+	    this.close()
+	    this._focus(true)
+	  },
+	
+	  _onCreate: function(tag){
+	    if (tag.trim() === '' ) 
+	      return
+	
+	    this.notify('onCreate', tag)
+	    this.close()
+	    this._focus(true)
+	  },
+	
+	  _keyDown: function(e){
+	    var key = e.key
+	      , alt = e.altKey
+	      , ctrl = e.ctrlKey
+	      , searching = !!this.props.searchTerm
+	      , isOpen  = this.props.open
+	      , current = this.state.focusedItem
+	      , tagList = this.refs.tagList
+	      , list    = this.refs.list;
+	
+	    if ( key === 'ArrowDown') {
+	      var next = list.next('focused')
+	      next = (current === next || current === null) ? null : list.next('focused')
+	
+	      e.preventDefault()
+	      if ( isOpen ) this.setState({ focusedItem: next })
+	      else          this.open()
+	    }
+	    else if ( key === 'ArrowUp') {
+	      var prev = list.prev('focused')
+	      prev = current === null ? list.last() : list.prev('focused')
+	
+	      e.preventDefault()
+	
+	      if ( alt)          this.close()
+	      else if ( isOpen ) this.setState({ focusedItem: prev })
+	    }
+	    else if ( key === 'End'){
+	      if ( isOpen ) this.setState({ focusedItem: list.last() })
+	      else          tagList && tagList.last()
+	    }
+	    else if (  key === 'Home'){
+	      if ( isOpen ) this.setState({ focusedItem: list.first() })
+	      else          tagList && tagList.first()
+	    }
+	    else if ( isOpen && key === 'Enter' )
+	      ctrl && this.props.onCreate
+	        ? this._onCreate(this.props.searchTerm)
+	        : this._onSelect(this.state.focusedItem)
+	
+	    else if ( key === 'Escape')
+	      isOpen ? this.close() : this.refs.tagList.clear()
+	
+	    else if ( !searching && key === 'ArrowLeft')
+	     tagList && tagList.prev()
+	
+	    else if ( !searching && key === 'ArrowRight')
+	      tagList && tagList.next()
+	
+	    else if ( !searching && key === 'Delete')
+	      tagList && tagList.removeCurrent()
+	
+	    else if ( !searching && key === 'Backspace')
+	      tagList && tagList.removeNext()
+	  },
+	
+	  change: function(data){
+	    this.notify('onChange', [data])
+	  },
+	
+	  open: function(){
+	    if (!(this.props.disabled === true || this.props.readOnly === true))
+	      this.notify('onToggle', true)
+	  },
+	
+	  close: function(){
+	    this.notify('onToggle', false)
+	  },
+	
+	  toggle: function(e){
+	    this.props.open
+	      ? this.close()
+	      : this.open()
+	  },
+	
+	  process: function(data, values, searchTerm){
+	    var items = data.filter( function(i)  {return !values.some( this._valueMatcher.bind(null, i), this);}.bind(this), this)
+	
+	    if( searchTerm)
+	      items = this.filter(items, searchTerm)
+	
+	    return items
+	  },
+	
+	  _shouldShowCreate:function(){
+	    var text = this.props.searchTerm;
+	
+	    if ( !(this.props.onCreate && text) ) 
+	      return false
+	
+	    //if there is an exact match
+	    return !this._data().some( function(v)  {return this._dataText(v) === text;}.bind(this)) 
+	        && !this.state.dataItems.some( function(v)  {return this._dataText(v) === text;}.bind(this)) 
+	  },
+	
+	  _placeholder: function(){
+	    return (this.props.value || []).length
+	      ? ''
+	      : (this.props.placeholder || '')
+	  }
+	
+	})
+	
+	
+	module.exports = controlledInput.createControlledClass(Select
+	    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
+	    , { onChange: defaultChange, onCreate: defaultChange });
+	
+	
+	function defaultChange(){
+	  if ( this.props.searchTerm === undefined )
+	    this.setState({ searchTerm: '' })
+	}
+	
+	module.exports.BaseMultiselect = Select
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _  = __webpack_require__(14)
+	  , cx = __webpack_require__(13)
+	  , controlledInput  = __webpack_require__(60)
+	  , CustomPropTypes  = __webpack_require__(61)
+	  , scrollTo = __webpack_require__(81);
+	
+	var propTypes = {
+	
+	    data:           React.PropTypes.array,
+	    value:          React.PropTypes.oneOfType([
+	                      React.PropTypes.any,
+	                      React.PropTypes.array
+	                    ]),
+	    onChange:       React.PropTypes.func,
+	    onMove:         React.PropTypes.func,
+	
+	    multiple:       React.PropTypes.bool,
+	
+	    itemComponent:  CustomPropTypes.elementType,
+	    
+	    valueField:     React.PropTypes.string,
+	    textField:      React.PropTypes.string,
+	
+	    busy:           React.PropTypes.bool,
+	
+	    delay:          React.PropTypes.number, 
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                      React.PropTypes.array,
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['disabled'])
+	                    ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.array,
+	                      React.PropTypes.oneOf(['readonly'])
+	                    ]),
+	
+	    messages:       React.PropTypes.shape({
+	      emptyList:    React.PropTypes.string
+	    }),
+	  }
+	
+	
+	var SelectList = React.createClass({displayName: 'SelectList',
+	
+	  propTypes: propTypes,
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(88),
+	    __webpack_require__(86),
+	    __webpack_require__(87),
+	    __webpack_require__(90)('focusedIndex', 'isDisabledItem')
+	  ],
+	
+	  getDefaultProps: function(){
+	    return {
+	      delay: 250,
+	      value: [],
+	      data:  [],
+	      messages: {
+	        emptyList: 'There are no items in this list'
+	      }
+	    }
+	  },
+	
+	  getDefaultState: function(props){
+	    var isRadio = !props.multiple
+	      , values  = _.splat(props.value)
+	      , idx     = isRadio && this._dataIndexOf(props.data, values[0]) 
+	
+	    idx = isRadio && idx !== -1 
+	      ? this.nextFocusedIndex(idx - 1) 
+	      : ((this.state || {}).focusedIndex || -1)
+	
+	    return {
+	      focusedIndex: idx,
+	      dataItems:    !isRadio && values.map(function(item)  {return this._dataItem(props.data, item);}.bind(this))
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    return this.getDefaultState(this.props)
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    return this.setState(this.getDefaultState(nextProps))
+	  },
+	
+	  componentDidUpdate: function(prevProps, prevState){
+	    if ( prevState.focusedIndex !== this.state.focusedIndex)
+	      this._setScrollPosition()
+	  },
+	
+	  render: function() {
+	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , focus = this._maybeHandle(this._focus.bind(null, true), true)
+	      , optID = this._id('_selected_option')
+	      , blur  = this._focus.bind(null, false);
+	
+	    return (
+	      
+	      React.createElement("div", React.__spread({},  props, 
+	        {onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: focus, 
+	        onBlur: blur, 
+	        tabIndex: "0", 
+	        role: "listbox", 
+	        'aria-busy': !!this.props.busy, 
+	        'aria-activedescendent':  this.state.focused ? optID : undefined, 
+	        'aria-disabled':  this.isDisabled(), 
+	        'aria-readonly':  this.isReadOnly(), 
+	        className: cx(className, { 
+	          'rw-widget':         true,
+	          'rw-selectlist':   true,
+	          'rw-state-focus':    this.state.focused,
+	          'rw-state-disabled': this.isDisabled(),
+	          'rw-state-readonly': this.isReadOnly(),
+	          'rw-rtl':            this.isRtl(),
+	          'rw-loading-mask':   this.props.busy
+	        })}), 
+	
+	        React.createElement("ul", {className: "rw-list", ref: "list"},  this._rows(optID))
+	      ) 
+	    );
+	  },
+	
+	  _rows: function(optID){
+	    var Component = this.props.itemComponent
+	      , name = this._id('_name')
+	      , type = this.props.multiple ? 'checkbox' : 'radio';
+	
+	    return this._data().map( function(item, idx)  {
+	      var focused  = this.state.focused && this.state.focusedIndex === idx
+	        , checked  = this._contains(item, this._values())
+	        , change   = this._change.bind(null, item)
+	        , disabled = this.isDisabledItem(item)
+	        , readonly = this.isReadOnlyItem(item);
+	
+	      return (React.createElement("li", {
+	        key: 'item_' + idx, 
+	        role: "option", 
+	        id:  focused ? optID : undefined, 
+	        className: cx({ 'rw-state-focus': focused, 'rw-selectlist-item': true })}, 
+	        React.createElement(SelectListItem, {
+	          type: type, 
+	          name: name, 
+	          onChange: change, 
+	          checked: checked, 
+	          readOnly: readonly, 
+	          disabled: disabled || readonly}, 
+	           Component ? React.createElement(Component, {item: item}) : this._dataText(item)
+	          )
+	      ))
+	    }.bind(this))
+	  },
+	
+	  _keyDown: function(e){
+	    var self = this
+	      , key = e.key
+	      , data = this._data()
+	      , multiple = !!this.props.multiple
+	      , last = data.length;
+	
+	    if ( key === 'End' ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex(last))
+	      else            change(this.prevFocusedIndex(last)) 
+	    }
+	    else if ( key === 'Home' ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex(-1))
+	      else            change(this.nextFocusedIndex(-1)) 
+	    }
+	    else if ( key === 'Enter' || key === ' ' ) {
+	      e.preventDefault()
+	      change(this.state.focusedIndex)
+	    }
+	    else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex())
+	      else            change(this.nextFocusedIndex())
+	    }
+	    else if ( key === 'ArrowUp' || key === 'A rrowLeft'  ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex())
+	      else            change(this.prevFocusedIndex())
+	    }
+	    else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {
+	      e.preventDefault()
+	      this._selectAll() 
+	    }
+	    else
+	      this.search(
+	          String.fromCharCode(e.keyCode)
+	        , this._locate)
+	
+	    function change(idx, cked){
+	      var item = data[idx];
+	      
+	      if( idx > -1 && idx < last){
+	        self._change(item, cked !== undefined 
+	          ? cked
+	          : multiple 
+	            ? !self._contains(item, self._values()) // toggle value
+	            : true)
+	      }
+	        
+	    }
+	  },
+	
+	  _selectAll: function(){
+	    var values = this.state.dataItems
+	      , disabled = this.props.disabled || this.props.readOnly
+	      , data = this._data()
+	      , blacklist;
+	
+	    disabled = Array.isArray(disabled) ? disabled : [];
+	    //disabled values that are not selected
+	    blacklist = disabled.filter( function(v)  {return !this._contains(v, values);}.bind(this))
+	    data      = data.filter( function(v)  {return !this._contains(v, blacklist);}.bind(this))
+	
+	    if ( data.length === values.length) {
+	      data = disabled.filter( function(v)  {return this._contains(v, values);}.bind(this))
+	      data = data.map( function(v)  {return this._dataItem(this._data(), v);}.bind(this))
+	    }
+	
+	    this.notify('onChange', [data])
+	  },
+	
+	  _change: function(item, checked){
+	    var multiple  = !!this.props.multiple
+	      , blacklist = this.props.disabled || this.props.readOnly 
+	      , values    = this.state.dataItems;
+	
+	    blacklist = Array.isArray(blacklist) ? blacklist : [];
+	
+	    if(this._contains(item, blacklist)) return 
+	
+	    if ( !multiple )
+	      return this.notify('onChange', checked ? item : null)
+	
+	    values = checked 
+	      ? values.concat(item)
+	      : values.filter( function(v)  {return v !== item;})
+	
+	    this.notify('onChange', [values || []])
+	  },
+	
+	  _focus: function(focused, e){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	
+	    self.timer = setTimeout(function(){
+	      if( focused) self.getDOMNode().focus()
+	      if( focused !== self.state.focused){
+	        self.setState({ focused: focused })
+	        //!focused && self.next(0)
+	      }
+	    }, 0)
+	  },
+	
+	  isDisabledItem: function(item) {
+	    return this.isDisabled() || this._contains(item, this.props.disabled)
+	  },
+	
+	  isReadOnlyItem: function(item) {
+	    return this.isReadOnly() || this._contains(item, this.props.readOnly)
+	  },
+	
+	  _locate: function(word){
+	    var idx = this.findNextWordIndex(word, this.state.focusedIndex);
+	
+	    if ( idx !== -1) 
+	      this.setFocusedIndex(idx)
+	  },
+	
+	  _data:function(){
+	    return this.props.data
+	  },
+	
+	  _contains: function(item, values){
+	    return Array.isArray(values) 
+	      ? values.some(this._valueMatcher.bind(null, item))
+	      : this._valueMatcher(item, values)
+	  },
+	
+	  _values: function(){
+	    return !!this.props.multiple 
+	      ? this.state.dataItems
+	      : this.props.value
+	  },
+	
+	  _setScrollPosition: function(){
+	    var list = this.refs.list.getDOMNode()
+	      , selected = list.children[this.state.focusedIndex]
+	      , handler  = this.props.onMove || scrollTo;
+	
+	    if ( this.state.focusedIndex !== -1 )
+	      handler(selected)
+	  }
+	
+	});
+	
+	var SelectListItem = React.createClass({displayName: 'SelectListItem',
+	
+	  render: function() {
+	    var $__0=   this.props,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{children:1});
+	
+	    return (
+	      React.createElement("label", {
+	        className: cx({ 
+	          'rw-state-disabled': props.disabled,
+	          'rw-state-readonly': props.readOnly
+	        })}, 
+	        React.createElement("input", React.__spread({},   props, 
+	          {tabIndex: "-1", 
+	          onChange: change, 
+	          disabled: props.disabled || props.readOnly, 
+	          'aria-disabled':  props.disabled ||props.readOnly})), 
+	          children 
+	      )
+	    );
+	
+	    function change(e){
+	      if( !props.disabled && !props.readOnly)
+	        props.onChange(e.target.checked)
+	    }
+	  },
+	
+	})
+	
+	
+	module.exports = SelectList;
+	
+	module.exports = controlledInput.createControlledClass(
+	    SelectList, { value: 'onChange' });
+	
+	module.exports.BaseSelectList = SelectList
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * A streamlined version of TransitionGroup built for managing at most two active children
+	 * also provides additional hooks for animation start/end
+	 * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
+	 * relevent code is licensed accordingly 
+	 */
+	
+	"use strict";
+	
+	var React = __webpack_require__(1)
+	  , $     = __webpack_require__(65)
+	  , _     = __webpack_require__(14);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'ReplaceTransitionGroup',
+	
+	  propTypes: {
+	    component:    React.PropTypes.oneOfType([
+	                    React.PropTypes.element,
+	                    React.PropTypes.string
+	                  ]),
+	    childFactory: React.PropTypes.func,
+	
+	    onAnimating:  React.PropTypes.func,
+	    onAnimate:    React.PropTypes.func,
+	  },
+	
+	  getDefaultProps: function() {
+	    return {
+	      component:    'span',
+	      childFactory: function(a){ return a },
+	
+	      onAnimating: _.noop,
+	      onAnimate:   _.noop
+	    };
+	  },
+	
+	  getInitialState: function() {
+	    return {
+	      children: _.splat(this.props.children)
+	    };
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var nextChild = getChild(nextProps.children)
+	      , stack     = this.state.children.slice()
+	      , next      = stack[1]
+	      , last      = stack[0];
+	
+	    var isLastChild = last && key(last) === key(nextChild)
+	      , isNextChild = next && key(next) === key(nextChild);
+	
+	    //no children
+	    if (!last) {
+	      stack.push(nextChild)
+	      this.entering = nextChild
+	    }
+	    else if ( last && !next && !isLastChild) {
+	      //new child
+	      stack.push(nextChild)
+	      this.leaving = last 
+	      this.entering = nextChild
+	    }
+	    else if ( last && next && !isLastChild && !isNextChild) {
+	      // the child is not the current one, exit the current one, add the new one
+	      //  - shift the stack down
+	      stack.shift()
+	      stack.push(nextChild)
+	      this.leaving  = next
+	      this.entering = nextChild
+	    }
+	    //new child that just needs to be re-rendered
+	    else if (isLastChild) stack.splice(0, 1, nextChild) 
+	    else if (isNextChild) stack.splice(1, 1, nextChild)
+	
+	    if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] ) 
+	      this.setState({ children: stack });
+	  },
+	
+	  componentWillMount: function() {
+	    this.animatingKeys = {};
+	    this.leaving  = null;
+	    this.entering = null;
+	  },
+	
+	  componentDidUpdate: function() {
+	    var entering = this.entering
+	      , leaving  = this.leaving
+	      , first    = this.refs[key(entering) || key(leaving)]
+	      , node     = this.getDOMNode()
+	      , el       = first && first.getDOMNode();
+	
+	    if( el )
+	      $.css(node, {
+	        overflow: 'hidden',
+	        height: $.height(el) + 'px',
+	        width:  $.width(el) + 'px'
+	      })
+	    
+	    this.props.onAnimating();
+	
+	    this.entering = null;
+	    this.leaving  = null;
+	
+	    if (entering) this.performEnter(key(entering))
+	    if (leaving)  this.performLeave(key(leaving))
+	  },
+	
+	  performEnter: function(key) {
+	    var component = this.refs[key];
+	
+	    if(!component) return
+	
+	    this.animatingKeys[key] = true;
+	
+	    if (component.componentWillEnter) 
+	      component.componentWillEnter(
+	        this._handleDoneEntering.bind(this, key));
+	    else 
+	      this._handleDoneEntering(key);
+	  },
+	
+	  _tryFinish: function(){
+	    var node = this.getDOMNode()
+	
+	    if ( this.isTransitioning() )
+	      return 
+	
+	    $.css(node, { overflow: 'visible', height: '', width: '' })
+	
+	    this.props.onAnimate() 
+	  }, 
+	
+	  _handleDoneEntering: function(enterkey) {
+	    var component = this.refs[enterkey];
+	
+	    if (component && component.componentDidEnter) 
+	      component.componentDidEnter();
+	    
+	    delete this.animatingKeys[enterkey];
+	
+	    if ( key(this.props.children) !== enterkey) 
+	      this.performLeave(enterkey); // This was removed before it had fully entered. Remove it.
+	    
+	    this._tryFinish()
+	  },
+	
+	  isTransitioning: function(){
+	    return Object.keys(this.animatingKeys).length !== 0
+	  },
+	
+	  performLeave: function(key) {
+	    var component = this.refs[key];
+	
+	    if(!component) return
+	
+	    this.animatingKeys[key] = true;
+	
+	    if (component.componentWillLeave) 
+	      component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
+	    else 
+	      this._handleDoneLeaving(key);
+	  },
+	
+	  _handleDoneLeaving: function(leavekey) {
+	    var component = this.refs[leavekey];
+	
+	    if (component && component.componentDidLeave) 
+	      component.componentDidLeave();
+	    
+	    delete this.animatingKeys[leavekey];
+	
+	    if (key(this.props.children) === leavekey )
+	      this.performEnter(leavekey); // This entered again before it fully left. Add it again.
+	    else {
+	      var newChildren = this.state.children.filter( function(c)  {return key(c) !== leavekey;});
+	      this.setState({ children: newChildren });
+	    }
+	
+	    this._tryFinish() 
+	  },
+	
+	  render: function() {
+	    var Component = this.props.component
+	    return React.createElement(Component, React.__spread({},  this.props),  this.state.children.map(function(c)  {return this.props.childFactory(c, key(c));}.bind(this)) );
+	  }
+	});
+	
+	function getChild(children){
+	  return React.Children.only(children)
+	}
+	
+	//CHANGE 0.12.0
+	function key(child){
+	  return child && child.key
+	}
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , ReplaceTransitionGroup  = __webpack_require__(54)
+	  , _ = __webpack_require__(14)
+	  , $  =  __webpack_require__(65);
+	
+	
+	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
+	
+	  propTypes: {
+	    direction: React.PropTypes.oneOf(['left', 'right'])
+	  },
+	
+	  componentWillEnter: function(done) {
+	    var node  = this.getDOMNode()
+	      , width = $.width(node)
+	      , direction = this.props.direction;
+	
+	    width = direction === 'left' ? width : -width
+	
+	    this.ORGINAL_POSITION = node.style.position;
+	    
+	    $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
+	
+	    $.animate(node, { left: 0 }, this.props.duration, function()  {
+	
+	        $.css(node, { 
+	          position:  this.ORGINAL_POSITION, 
+	          overflow: 'hidden'
+	        });
+	
+	        this.ORGINAL_POSITION = null
+	        done && done()
+	      }.bind(this))
+	  },
+	
+	  componentWillLeave: function(done) {
+	    var node  = this.getDOMNode()
+	      , width = $.width(node)
+	      , direction = this.props.direction;
+	
+	    width = direction === 'left' ? -width : width
+	
+	    this.ORGINAL_POSITION = node.style.position
+	
+	    $.css(node, { position: 'absolute', top: 0, left: 0})
+	
+	    $.animate(node, { left: width + 'px' }, this.props.duration, function()  {
+	        $.css(node, { 
+	          position: this.ORGINAL_POSITION, 
+	          overflow: 'hidden'
+	        });
+	
+	        this.ORGINAL_POSITION = null
+	        done && done()
+	      }.bind(this))
+	  },
+	
+	  render: function() {
+	    return React.Children.only(this.props.children);
+	  }
+	
+	})
+	
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    direction: React.PropTypes.oneOf(['left', 'right']),
+	    duration:  React.PropTypes.number
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      direction: 'left',
+	      duration: 250
+	    }
+	  },
+	
+	  _wrapChild: function(child, ref) {
+	    return (React.createElement(SlideChildGroup, {key: child.key, ref: ref, direction: this.props.direction, duration: this.props.duration}, child))
+	  },
+	
+	  render: function() {
+	    var $__0=      this.props,style=$__0.style,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{style:1,children:1})
+	
+	    style = _.merge(style, { position: 'relative', overflow: 'hidden' })
+	
+	    return (
+	      React.createElement(ReplaceTransitionGroup, React.__spread({},  
+	        props, 
+	        {ref: "container", 
+	        childFactory: this._wrapChild, 
+	        style: style, 
+	        component: 'div'}), 
+	        children 
+	      ))
+	  },
+	
+	  isTransitioning: function(){
+	    return this.isMounted() && this.refs.container.isTransitioning()
+	  }
+	});
+	
+
+
+/***/ },
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -13836,2626 +15022,7 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(94)(module), (function() { return this; }())))
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React            = __webpack_require__(1)
-	  , _                = __webpack_require__(14)
-	  , $                = __webpack_require__(60)
-	  , cx               = __webpack_require__(13)
-	  , setter           = __webpack_require__(61)
-	  , controlledInput  = __webpack_require__(62)
-	  , CustomPropTypes  = __webpack_require__(63)
-	  , Popup            = __webpack_require__(64)
-	  , List             = __webpack_require__(65);
-	
-	var propTypes = {
-	  //-- controlled props -----------
-	  value:          React.PropTypes.any,
-	  onChange:       React.PropTypes.func,
-	  open:           React.PropTypes.bool,
-	  onToggle:       React.PropTypes.func,
-	  //------------------------------------
-	
-	  data:           React.PropTypes.array,
-	  valueField:     React.PropTypes.string,
-	  textField:      React.PropTypes.string,
-	
-	  valueComponent: CustomPropTypes.elementType,
-	  itemComponent:  CustomPropTypes.elementType,
-	
-	  onSelect:       React.PropTypes.func,
-	  
-	  busy:           React.PropTypes.bool,
-	
-	  delay:          React.PropTypes.number,
-	  duration:       React.PropTypes.number, //popup
-	
-	  disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	  readOnly:       React.PropTypes.oneOfType([
-	                    React.PropTypes.bool,
-	                    React.PropTypes.oneOf(['readOnly'])
-	                  ]),
-	
-	  messages:       React.PropTypes.shape({
-	    open:         React.PropTypes.string,
-	  })
-	};
-	
-	var DropdownList = React.createClass({
-	
-	  displayName: 'DropdownList',
-	
-	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(84),
-	    __webpack_require__(85),
-	    __webpack_require__(86),
-	    __webpack_require__(87),
-	    __webpack_require__(88)('focusedIndex'),
-	    __webpack_require__(88)('selectedIndex')
-	  ],
-	
-	  propTypes: propTypes,
-	
-		getInitialState: function(){
-	    var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
-	
-			return {
-	      selectedIndex: initialIdx,
-	      focusedIndex:  initialIdx === -1 ? 0 : initialIdx,
-			}
-		},
-	
-	  getDefaultProps: function(){
-	    return {
-	      delay: 500,
-	      value: '',
-	      open: false,
-	      data: [],
-	      messages: {
-	        open: 'open dropdown'
-	      }
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(props){
-	    if ( _.isShallowEqual(props.value, this.props.value) )
-	      return
-	
-	    var idx = this._dataIndexOf(props.data, props.value);
-	
-	    this.setSelectedIndex(idx)
-	    this.setFocusedIndex(idx === -1 ? 0 : idx)
-	  },
-	
-		render: function(){
-			var $__0=   _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , ValueComponent = this.props.valueComponent
-	      , valueItem = this._dataItem( this._data(), this.props.value )
-	      , optID = this._id('_option');
-	
-			return (
-				React.createElement("div", React.__spread({},  props, 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onClick: this._maybeHandle(this.toggle), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        'aria-expanded':  this.props.open, 
-	        'aria-haspopup': true, 
-	        'aria-busy': !!this.props.busy, 
-	        'aria-activedescendent':  this.props.open ? optID : undefined, 
-	        'aria-disabled':  this.props.disabled, 
-	        'aria-readonly':  this.props.readOnly, 
-	        tabIndex: this.props.disabled ? '-1' : "0", 
-	        className: cx(className, {
-	          'rw-dropdownlist':   true,
-	          'rw-widget':          true,
-	          'rw-state-disabled':  this.props.disabled,
-	          'rw-state-readonly':  this.props.readOnly,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-open':            this.props.open,
-	          'rw-rtl':             this.isRtl()
-	        })}), 
-	
-					React.createElement("span", {className: "rw-dropdownlist-picker rw-select rw-btn"}, 
-						React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
-	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
-	          )
-					), 
-	        React.createElement("div", {className: "rw-input"}, 
-	           this.props.valueComponent
-	              ? React.createElement(ValueComponent, {item: valueItem})
-	              : this._dataText(valueItem)
-	          
-	        ), 
-	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
-	          React.createElement("div", null, 
-	            React.createElement(List, {ref: "list", 
-	              optID: optID, 
-	              'aria-hidden':  !this.props.open, 
-	              style: { maxHeight: 200, height: 'auto'}, 
-	              data: this.props.data, 
-	              initialVisibleItems: this.props.initialBufferSize, 
-	              itemHeight: 18, 
-	              selectedIndex: this.state.selectedIndex, 
-	              focusedIndex: this.state.focusedIndex, 
-	              textField: this.props.textField, 
-	              valueField: this.props.valueField, 
-	              listItem: this.props.itemComponent, 
-	              onSelect: this._maybeHandle(this._onSelect)})
-	          )
-	        )
-				)
-			)
-		},
-	
-	  setWidth: function() {
-	    var width = $.width(this.getDOMNode())
-	      , changed = width !== this.state.width;
-	
-	    if ( changed )
-	      this.setState({ width: width })
-	  },
-	
-	  _focus: function(focused){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	    self.timer = setTimeout(function(){
-	
-	      if(focused) self.getDOMNode().focus()
-	      else        self.close()
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	
-	    }, 0)
-	  },
-	
-	  _onSelect: function(data, idx, elem){
-	    this.close()
-	    this.notify('onSelect', data)
-	    this.change(data)
-	  },
-	
-	  _keyDown: function(e){
-	    var self = this
-	      , key = e.key
-	      , alt = e.altKey
-	      , isOpen = this.props.open;
-	
-	    if ( key === 'End' ) {
-	      if ( isOpen) this.setFocusedIndex(this._data().length - 1)
-	      else change(this._data().length - 1)
-	      e.preventDefault()
-	    }
-	    else if ( key === 'Home' ) {
-	      if ( isOpen) this.setFocusedIndex(0)
-	      else change(0)
-	      e.preventDefault()
-	    }
-	    else if ( key === 'Escape' && isOpen ) {
-	      this.close()
-	    }
-	    else if ( (key === 'Enter' || key === ' ') && isOpen ) {
-	      change(this.state.focusedIndex, true)
-	    }
-	    else if ( key === 'ArrowDown' ) {
-	      if ( alt )         this.open()
-	      else if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
-	      else               change(this.nextSelectedIndex())
-	      e.preventDefault()
-	    }
-	    else if ( key === 'ArrowUp' ) {
-	      if ( alt )         this.close()
-	      else if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
-	      else               change(this.prevSelectedIndex())
-	      e.preventDefault()
-	    }
-	    else
-	      this.search(
-	          String.fromCharCode(e.keyCode)
-	        , this._locate)
-	
-	    function change(idx, fromList){
-	      var item = self._data()[idx];
-	
-	      if (idx === -1 || self._data().length === 0)
-	        return
-	
-	      if(fromList) 
-	        self.notify('onSelect', item)
-	
-	      
-	      self.change(item)
-	    }
-	  },
-	
-	  change: function(data){
-	    if ( !_.isShallowEqual(data, this.props.value) ) {
-	      this.notify('onChange', data)
-	      this.close()
-	    }
-	  },
-	
-	  _locate: function(word){
-	    var key = this.props.open ? 'focusedIndex' : 'selectedIndex'
-	      , idx = this.findNextWordIndex(word, this.state[key])
-	      , setIndex = setter(key).bind(this);
-	
-	    if ( idx !== -1)
-	      setIndex(idx)
-	  },
-	
-	  _data: function(){
-	    return this.props.data
-	  },
-	
-	  open: function(){
-	    this.notify('onToggle', true)
-	  },
-	
-	  close: function(){
-	    this.notify('onToggle', false)
-	  },
-	
-	  toggle: function(e){
-	    this.props.open
-	      ? this.close()
-	      : this.open()
-	  }
-	
-	})
-	
-	
-	module.exports = controlledInput.createControlledClass(
-	    DropdownList, { open: 'onToggle', value: 'onChange' });
-	
-	module.exports.BaseDropdownList = DropdownList
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , cx     = __webpack_require__(13)
-	  , _      = __webpack_require__(14)
-	  , $      = __webpack_require__(60)
-	  , filter = __webpack_require__(66)
-	  , controlledInput  = __webpack_require__(62)
-	  , CustomPropTypes  = __webpack_require__(63)
-	  
-	  , Popup  = __webpack_require__(64)
-	  , List   = __webpack_require__(65)
-	  , Btn    = __webpack_require__(67)
-	  , Input  = __webpack_require__(68);
-	
-	var propTypes = {
-	      //-- controlled props -----------
-	      value:          React.PropTypes.any,
-	      onChange:       React.PropTypes.func,
-	      open:           React.PropTypes.bool,
-	      onToggle:       React.PropTypes.func,
-	      //------------------------------------
-	
-	      itemComponent:  CustomPropTypes.elementType,
-	
-	      data:           React.PropTypes.array,
-	      valueField:     React.PropTypes.string,
-	      textField:      React.PropTypes.string,
-	      name:           React.PropTypes.string,
-	
-	      onSelect:       React.PropTypes.func,
-	      
-	      disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	      readOnly:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['readOnly'])
-	                      ]),
-	
-	      suggest:        React.PropTypes.bool,
-	      busy:           React.PropTypes.bool,
-	
-	      duration:       React.PropTypes.number, //popup
-	      placeholder:    React.PropTypes.string,
-	
-	      messages:       React.PropTypes.shape({
-	        open:         React.PropTypes.string,
-	        emptyList:    React.PropTypes.string,
-	        emptyFilter:  React.PropTypes.string
-	      })
-	    };
-	
-	var ComboBox = React.createClass({
-	
-	  displayName: 'ComboBox',
-	
-	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(85),
-	    __webpack_require__(89),
-	    __webpack_require__(86),
-	    __webpack_require__(87),
-	    __webpack_require__(88)('focusedIndex'),
-	    __webpack_require__(88)('selectedIndex')
-	  ],
-	
-	  propTypes: propTypes,
-	
-		getInitialState: function(){
-	    var items = this.process(this.props.data, this.props.value)
-	      , idx   = this._dataIndexOf(items, this.props.value);
-	
-			return {
-				selectedIndex: idx,
-	      focusedIndex:  idx === -1 ? 0 : idx,
-	      processedData: items,
-				open:          false
-			}
-		},
-	
-	  getDefaultProps: function(){
-	    return {
-	      data: [],
-	      value: '',
-	      open: false,
-	      suggest: false,
-	      filter: false,
-	      delay: 500,
-	
-	      messages: {
-	        open: 'open combobox',
-	        emptyList:   "There are no items in this list",
-	        emptyFilter: "The filter returned no results"
-	      }
-	    }
-	  },
-	
-	  shouldComponentUpdate: function(nextProps, nextState){
-	    var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
-	      , stateChanged = !_.isShallowEqual(nextState, this.state)
-	      , valueChanged = !_.isShallowEqual(nextProps, this.props)
-	
-	    return isSuggesting || stateChanged || valueChanged
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var rawIdx = this._dataIndexOf(nextProps.data, nextProps.value)
-	      , valueItem = rawIdx == -1 ? nextProps.value : nextProps.data[rawIdx]
-	      , isSuggesting = this.refs.input.isSuggesting()
-	      , items = this.process(
-	          nextProps.data
-	        , nextProps.value
-	        , (rawIdx === -1 || isSuggesting) && this._dataText(valueItem) )
-	
-	      , idx = this._dataIndexOf(items, nextProps.value)
-	      , focused = this.filterIndexOf(items, this._dataText(valueItem));
-	
-	    this._searchTerm = '';
-	
-	    this.setState({
-	      processedData:  items,
-	      selectedIndex:  idx,
-	      focusedIndex:   idx === -1
-	        ? focused !== -1 ? focused : 0 // focus the closest match
-	        : idx
-	    })
-	  },
-	
-		render: function(){
-			var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , valueItem = this._dataItem( this._data(), this.props.value )
-	      , items = this._data()
-	      , listID = this._id('_listbox')
-	      , optID  = this._id( '_option')
-	      , completeType = this.props.suggest
-	          ? this.props.filter ? 'both' : 'inline'
-	          : this.props.filter ? 'list' : '';
-	
-			return (
-				React.createElement("div", React.__spread({},  props , 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        tabIndex: "-1", 
-	        className: cx(className, {
-	          'rw-combobox':        true,
-	          'rw-widget':          true,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-open':            this.props.open,
-	          'rw-state-disabled':  this.props.disabled,
-	          'rw-state-readonly':  this.props.readOnly,
-	          'rw-rtl':             this.isRtl()
-	         })}), 
-	        React.createElement(Btn, {
-	          tabIndex: "-1", 
-	          className: "rw-select", 
-	          onClick: this._maybeHandle(this.toggle), 
-	          disabled: !!(this.props.disabled || this.props.readOnly)}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
-	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
-	          )
-	        ), 
-	        React.createElement(Input, {
-	          ref: "input", 
-	          type: "text", 
-	          role: "combobox", 
-	          suggest: this.props.suggest, 
-	          name: this.props.name, 
-	          'aria-owns': listID, 
-	          'aria-busy': !!this.props.busy, 
-	          'aria-autocomplete': completeType, 
-	          'aria-activedescendent':  this.props.open ? optID : undefined, 
-	          'aria-expanded':  this.props.open, 
-	          'aria-haspopup': true, 
-	          placeholder: this.props.placeholder, 
-	          disabled: this.props.disabled, 
-	          readOnly: this.props.readOnly, 
-	          className: "rw-input", 
-	          value:  this._dataText(valueItem), 
-	          onChange: this._inputTyping, 
-	          onKeyDown: this._inputKeyDown}), 
-	
-	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
-	          React.createElement("div", null, 
-	            React.createElement(List, {ref: "list", 
-	              id: listID, 
-	              optID: optID, 
-	              'aria-hidden':  !this.props.open, 
-	              'aria-live':  completeType && 'polite', 
-	              style: { maxHeight: 200, height: 'auto'}, 
-	              data: items, 
-	              selectedIndex: this.state.selectedIndex, 
-	              focusedIndex: this.state.focusedIndex, 
-	
-	              textField: this.props.textField, 
-	              valueField: this.props.valueField, 
-	              onSelect: this._maybeHandle(this._onSelect), 
-	              listItem: this.props.itemComponent, 
-	              messages: {
-	                emptyList: this.props.data.length
-	                  ? this.props.messages.emptyFilter
-	                  : this.props.messages.emptyList
-	              }})
-	          )
-	        )
-				)
-			)
-		},
-	
-	  setWidth: function() {
-	    var width = $.width(this.getDOMNode())
-	      , changed = width !== this.state.width;
-	
-	    if ( changed )
-	      this.setState({ width: width })
-	  },
-	
-	  _onSelect: function(data, idx, elem){
-	    this.close()
-	    this.notify('onSelect', data)
-	    this.change(data)
-	    this._focus(true);
-	  },
-	
-	  _inputKeyDown: function(e){
-	    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
-	    this._isTyping = true
-	  },
-	
-	  _inputTyping: function(e){
-	    var self = this
-	      , shouldSuggest = !!this.props.suggest
-	      , strVal  = e.target.value
-	      , suggestion, data;
-	
-	    suggestion = this._deleting || !shouldSuggest
-	      ? strVal : this.suggest(this._data(), strVal)
-	
-	    suggestion = suggestion || strVal
-	
-	    data = _.find(self.props.data, 
-	      function(item)  {return this._dataText(item).toLowerCase() === suggestion.toLowerCase();}.bind(this))
-	
-	    this.change(!this._deleting && data
-	      ? data
-	      : strVal, true)
-	
-	    this.open()
-	  },
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	    !focused && self.refs.input.accept() //not suggesting anymore
-	
-	    self.timer = setTimeout(function(){
-	      if(focused) self.refs.input.focus()
-	      else        self.close()
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	    }, 0)
-	  },
-	
-	  _keyDown: function(e){
-	    var self = this
-	      , key  = e.key
-	      , alt  = e.altKey
-	      , focusedIdx  = this.state.focusedIndex
-	      , isOpen      = this.props.open;
-	
-	    if ( key === 'End' )
-	      select(this._data().length - 1)
-	
-	    else if ( key === 'Home' )
-	      select(0)
-	
-	    else if ( key === 'Escape' && isOpen )
-	      this.close()
-	
-	    else if ( key === 'Enter' && isOpen ) {
-	      this.close()
-	      select(focusedIdx, true)
-	    }
-	
-	    else if ( key === 'ArrowDown' ) {
-	      if ( alt )
-	        this.open()
-	      else {
-	        if ( isOpen ) this.setFocusedIndex(this.nextFocusedIndex())
-	        else select(this.nextSelectedIndex())
-	      }
-	    }
-	    else if ( key === 'ArrowUp' ) {
-	      if ( alt )
-	        this.close()
-	      else {
-	        if ( isOpen ) this.setFocusedIndex(this.prevFocusedIndex())
-	        else select(this.prevSelectedIndex())
-	      }
-	    }
-	
-	    function select(idx, fromList) {
-	      var item = self._data()[idx]
-	
-	      if( idx === -1 || self._data().length === 0)
-	        return self.change(self.refs.input.getDOMNode().value, false)
-	
-	      self.refs.input.accept(true); //removes caret
-	
-	      if(fromList) 
-	        self.notify('onSelect', item)
-	
-	      self.change(item, false)
-	    }
-	  },
-	
-	  change: function(data, typing){
-	    this._typedChange = !!typing
-	    this.notify('onChange', data)
-	  },
-	
-	  open: function(){
-	    if ( !this.props.open )
-	      this.notify('onToggle', true)
-	  },
-	
-	  close: function(){
-	    if ( this.props.open )
-	      this.notify('onToggle', false)
-	  },
-	
-	  toggle: function(e){
-	    this._focus(true)
-	
-	    this.props.open
-	      ? this.close()
-	      : this.open()
-	  },
-	
-	  suggest: function(data, value){
-	    var word = this._dataText(value)
-	      , matcher = filter.startsWith
-	      , suggestion = typeof value === 'string'
-	          ? _.find(data, finder, this)
-	          : value
-	
-	    if ( suggestion && (!this.state || !this.state.deleting))
-	      return this._dataText(suggestion)
-	
-	    return ''
-	
-	    function finder(item){
-	      return matcher(
-	          this._dataText(item).toLowerCase()
-	        , word.toLowerCase())
-	    }
-	  },
-	
-	  _data: function(){
-	    return this.state.processedData
-	  },
-	
-	  process: function(data, values, searchTerm){
-	    if( this.props.filter && searchTerm)
-	      data = this.filter(data, searchTerm)
-	
-	    return data
-	  }
-	})
-	
-	module.exports = controlledInput.createControlledClass(
-	      ComboBox, { open: 'onToggle', value: 'onChange' });
-	
-	module.exports.BaseComboBox = ComboBox
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React           = __webpack_require__(1)
-	  , Header          = __webpack_require__(69)
-	  , Month           = __webpack_require__(70)
-	  , Year            = __webpack_require__(71)
-	  , Decade          = __webpack_require__(72)
-	  , Century         = __webpack_require__(73)
-	  , cx              = __webpack_require__(13)
-	  , controlledInput = __webpack_require__(62)
-	  , SlideTransition = __webpack_require__(56)
-	  , dates           = __webpack_require__(74)
-	  , constants       = __webpack_require__(75)
-	  , _               = __webpack_require__(14); //values, omit, object
-	
-	var dir = constants.directions;
-	
-	var views        = constants.calendarViews
-	  , VIEW_OPTIONS = Object.keys(views).map( function(k)  {return views[k];} )
-	  , ALT_VIEW     = _.transform(constants.calendarViewHierarchy, function(o, val, key)  { 
-	                      o[val] = key 
-	                    }, {})
-	  , NEXT_VIEW    = constants.calendarViewHierarchy
-	  , VIEW_UNIT    = constants.calendarViewUnits
-	  , VIEW  = _.object([
-	      [views.MONTH,   Month],
-	      [views.YEAR,    Year],
-	      [views.DECADE,  Decade],
-	      [views.CENTURY, Century]
-	    ]);
-	
-	var MULTIPLIER = _.object([
-	      [views.YEAR,    1],
-	      [views.DECADE,  10],
-	      [views.CENTURY, 100]
-	    ]);
-	
-	
-	var Calendar = React.createClass({
-	
-	  displayName: 'Calendar',
-	
-	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(84),
-	    __webpack_require__(87)
-	  ],
-	
-	
-	  propTypes: {
-	
-	    onChange:      React.PropTypes.func.isRequired,
-	    value:         React.PropTypes.instanceOf(Date),
-	
-	    min:           React.PropTypes.instanceOf(Date),
-	    max:           React.PropTypes.instanceOf(Date),
-	
-	    initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
-	    finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['readOnly'])
-	                    ]),
-	
-	    messages:      React.PropTypes.shape({
-	      moveBack:    React.PropTypes.string,
-	      moveForward: React.PropTypes.string
-	    }),
-	
-	    maintainFocus: React.PropTypes.bool,
-	
-	  },
-	
-	  getInitialState: function(){
-	    return {
-	      selectedIndex: 0,
-	      view:          this.props.initialView || 'month',
-	      currentDate:   this.inRangeValue(new Date(this.props.value))
-	    }
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      open:  false,
-	      value: new Date,
-	      min:   new Date(1900,0, 1),
-	      max:   new Date(2099,11, 31),
-	
-	      initialView: 'month',
-	      finalView: 'century',
-	
-	      maintainFocus: true
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var bottom  = VIEW_OPTIONS.indexOf(nextProps.initialView)
-	      , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
-	      , current = VIEW_OPTIONS.indexOf(this.state.view)
-	      , view    = this.state.view
-	      , val     = this.inRangeValue(new Date(nextProps.value));
-	
-	    if( current < bottom )
-	      this.setState({ view: view = nextProps.initialView })
-	    else if (current > top)
-	      this.setState({ view: view = nextProps.finalView })
-	
-	    //if the value changes reset views to the new one
-	    if ( !dates.eq(val, this.props.value, VIEW_UNIT[view]))
-	      this.setState({
-	        currentDate: val
-	      })
-	  },
-	
-	  render: function(){
-	    var $__0=   
-	                  _.omit(this.props, ['value', 'min', 'max']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , View     = VIEW[this.state.view]
-	      , unit     = this.state.view
-	      
-	      , disabled = this.props.disabled || this.props.readOnly
-	      , date     = this.state.currentDate
-	      , labelId  = this._id('_view_label')
-	      , key      = this.state.view + '_' + dates[this.state.view](date)
-	      , id       = this._id('_view');
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props , 
-	        {className: cx(className, {
-	          'rw-calendar':       true,
-	          'rw-widget':         true,
-	          'rw-state-disabled': this.props.disabled,
-	          'rw-state-readonly': this.props.readOnly,
-	          'rw-rtl':            this.isRtl()
-	        })}), 
-	        React.createElement(Header, {
-	          label: this._label(), 
-	          labelId: labelId, 
-	          messages: this.props.messages, 
-	          upDisabled:   disabled || this.state.view === this.props.finalView, 
-	          prevDisabled: disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit), 
-	          nextDisabled: disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max, unit), 
-	          onViewChange: this._maybeHandle(this.navigate.bind(null, dir.UP, null)), 
-	          onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT, null)), 
-	          onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT, null))}), 
-	
-	        React.createElement(SlideTransition, {
-	          ref: "animation", 
-	          direction: this.state.slideDirection, 
-	          onAnimate: finished.bind(this)}, 
-	
-	          React.createElement(View, {ref: "currentView", 
-	            key: key, 
-	            id: id, 
-	            'aria-labeledby': labelId, 
-	            selectedDate: this.props.value, 
-	            value: this.state.currentDate, 
-	            onChange: this._maybeHandle(this.change), 
-	            onKeyDown: this._maybeHandle(this._keyDown), 
-	            onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	            onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT)), 
-	            onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT)), 
-	            disabled: this.props.disabled, 
-	            readOnly: this.props.readOnly, 
-	            min: this.props.min, 
-	            max: this.props.max})
-	        )
-	      )
-	    )
-	
-	    function finished(){
-	      this._focus(true, 'stop');
-	    }
-	  },
-	
-	  navigate: function(direction, date){
-	    var view     =  this.state.view
-	      , slideDir = (direction === dir.LEFT || direction === dir.UP)
-	          ? 'right'
-	          : 'left';
-	
-	    if ( !date )
-	      date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
-	        ? this.nextDate(direction)
-	        : this.state.currentDate
-	
-	    if (direction === dir.DOWN )
-	      view = ALT_VIEW[view] || view
-	
-	    if (direction === dir.UP )
-	      view = NEXT_VIEW[view] || view
-	
-	    if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
-	      this._focus(true, 'nav');
-	
-	      this.setState({
-	        currentDate:    date,
-	        slideDirection: slideDir,
-	        view: view
-	      })
-	    }
-	  },
-	
-	  _focus: function(val, e){
-	    if ( this.props.maintainFocus)
-	      val && this.refs.currentView.getDOMNode().focus()
-	  },
-	
-	  change: function(date){
-	    if ( this.props.onChange && this.state.view === this.props.initialView)
-	      return this.notify('onChange', date)
-	
-	    this.navigate(dir.DOWN, date)
-	  },
-	
-	  nextDate: function(direction){
-	    var method = direction === dir.LEFT ? 'subtract' : 'add'
-	      , view   = this.state.view
-	      , unit   = view === views.MONTH ? view : views.YEAR
-	      , multi  = MULTIPLIER[view] || 1;
-	
-	    return dates[method](this.state.currentDate, 1 * multi, unit)
-	  },
-	
-	  _keyDown: function(e){
-	    var ctrl = e.ctrlKey
-	      , key  = e.key;
-	
-	    if ( ctrl ) {
-	      if ( key === 'ArrowDown' ) {
-	        e.preventDefault()
-	        this.navigate(dir.DOWN)
-	      }
-	      if ( key === 'ArrowUp' ) {
-	        e.preventDefault()
-	        this.navigate(dir.UP)
-	      }
-	      if ( key === 'ArrowLeft' ) {
-	        e.preventDefault()
-	        this.navigate(dir.LEFT)
-	      }
-	      if ( key === 'ArrowRight' ) {
-	        e.preventDefault()
-	        this.navigate(dir.RIGHT)
-	      }
-	    } 
-	    else {
-	      this.refs.currentView._keyDown
-	        && this.refs.currentView._keyDown(e)
-	    }
-	  },
-	
-	  _label: function() {
-	    var view = this.state.view
-	      , dt   = this.state.currentDate;
-	
-	    if ( view === 'month')
-	      return dates.format(dt, dates.formats.MONTH_YEAR)
-	
-	    else if ( view === 'year')
-	      return dates.format(dt, dates.formats.YEAR)
-	
-	    else if ( view === 'decade')
-	      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR)
-	        + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR)
-	
-	    else if ( view === 'century')
-	      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR)
-	        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
-	  },
-	
-	  inRangeValue: function(value){
-	    if( value == null)
-	      return value
-	
-	    return dates.max(
-	        dates.min(value, this.props.max)
-	      , this.props.min)
-	  },
-	
-	  isValidView: function(next) {
-	    var bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
-	      , top     = VIEW_OPTIONS.indexOf(this.props.finalView)
-	      , current = VIEW_OPTIONS.indexOf(next);
-	
-	    return current >= bottom && current <= top
-	  }
-	});
-	
-	module.exports = controlledInput.createControlledClass(
-	    Calendar, { value: 'onChange' });
-	
-	module.exports.BaseCalendar = Calendar
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , cx     = __webpack_require__(13)
-	  , _      = __webpack_require__(14) //pick, omit, has
-	  , dates  = __webpack_require__(74)
-	  , views  = __webpack_require__(75).calendarViews
-	  , popups = __webpack_require__(75).datePopups
-	
-	  , Popup     = __webpack_require__(64)
-	  , Calendar  = __webpack_require__(50).BaseCalendar
-	  , Time      = __webpack_require__(76)
-	  , DateInput = __webpack_require__(77)
-	  , Btn       = __webpack_require__(67)
-	  , CustomPropTypes = __webpack_require__(63)
-	  , controlledInput = __webpack_require__(62);
-	
-	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
-	
-	var propTypes = {
-	
-	    //-- controlled props -----------
-	    value:          React.PropTypes.instanceOf(Date),
-	    onChange:       React.PropTypes.func,
-	    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
-	    onToggle:       React.PropTypes.func,
-	    //------------------------------------
-	
-	    min:            React.PropTypes.instanceOf(Date),
-	    max:            React.PropTypes.instanceOf(Date),
-	
-	    culture:        React.PropTypes.string,
-	    format:         React.PropTypes.string,
-	    editFormat:     React.PropTypes.string,
-	
-	    calendar:       React.PropTypes.bool,
-	    time:           React.PropTypes.bool,
-	
-	    timeComponent:  CustomPropTypes.elementType,
-	    duration:       React.PropTypes.number, //popup
-	
-	    placeholder:    React.PropTypes.string,
-	    name:           React.PropTypes.string,
-	
-	    initialView:    React.PropTypes.oneOf(viewEnum),
-	    finalView:      React.PropTypes.oneOf(viewEnum),
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['readOnly'])
-	                    ]),
-	
-	    parse:          React.PropTypes.oneOfType([
-	                      React.PropTypes.arrayOf(React.PropTypes.string),
-	                      React.PropTypes.string,
-	                      React.PropTypes.func
-	                    ]),
-	  }
-	
-	var DateTimePicker = React.createClass({
-	  displayName: 'DateTimePicker',
-	
-	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(84),
-	    __webpack_require__(87)
-	  ],
-	
-	  propTypes: propTypes,
-	
-	  getInitialState: function(){
-	    return {
-	      selectedIndex: 0,
-	      open:          false
-	    }
-	  },
-	
-	  getDefaultProps: function(){
-	    var cal  = _.has(this.props, 'calendar') ? this.props.calendar : true
-	      , time = _.has(this.props, 'time') ? this.props.time : true
-	      , both = cal && time
-	      , neither = !cal && !time;
-	
-	    return {
-	      value:            null,
-	      format:           both || neither
-	        ? 'M/d/yyyy h:mm tt'
-	        : cal ? 'M/d/yyyy' : 'h:mm tt',
-	      min:              new Date(1900,  0,  1),
-	      max:              new Date(2099, 11, 31),
-	      calendar:         true,
-	      time:             true,
-	      messages: {
-	        calendarButton: 'Select Date',
-	        timeButton:     'Select Time',
-	        next:           'Next Date',
-	      }
-	    }
-	  },
-	
-	  render: function(){
-	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
-	      , timeListID = this._id('_time_listbox')
-	      , timeOptID  = this._id('_time_option')
-	      , dateListID = this._id('_cal')
-	      , owns;
-	
-	    if (dateListID && this.props.calendar ) owns = dateListID
-	    if (timeListID && this.props.time )     owns += ' ' + timeListID
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props, 
-	        {ref: "element", 
-	        tabIndex: "-1", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        className: cx(className, {
-	          'rw-datetimepicker':     true,
-	          'rw-widget':          true,
-	          'rw-open':            this.props.open,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-state-disabled':  this.isDisabled(),
-	          'rw-state-readonly':  this.isReadOnly(),
-	          'rw-has-both':        this.props.calendar && this.props.time,
-	          'rw-rtl':             this.isRtl()
-	        })}), 
-	        React.createElement(DateInput, {ref: "valueInput", 
-	          'aria-activedescendant':  this.props.open
-	            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
-	            : undefined, 
-	          'aria-expanded':  this.props.open, 
-	          'aria-busy': !!this.props.busy, 
-	          'aria-owns': owns, 
-	          'aria-haspopup': true, 
-	          placeholder: this.props.placeholder, 
-	          name: this.props.name, 
-	          disabled: this.isDisabled(), 
-	          readOnly: this.isReadOnly(), 
-	          role: "combobox", 
-	          value: this.props.value, 
-	          focused: this.state.focused, 
-	          format: this.props.format, 
-	          editFormat: this.props.editFormat, 
-	          editing: this.state.focused, 
-	          parse: this._parse, 
-	          onChange: this._change}), 
-	
-	        React.createElement("span", {className: "rw-select"}, 
-	           this.props.calendar &&
-	            React.createElement(Btn, {tabIndex: "-1", 
-	              disabled: this.isDisabled() || this.isReadOnly(), 
-	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
-	              onClick: this._maybeHandle(this._click.bind(null, popups.CALENDAR))}, 
-	              React.createElement("i", {className: "rw-i rw-i-calendar"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.calendarButton))
-	            ), 
-	          
-	           this.props.time &&
-	            React.createElement(Btn, {tabIndex: "-1", 
-	              disabled: this.isDisabled() || this.isReadOnly(), 
-	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
-	              onClick: this._maybeHandle(this._click.bind(null, popups.TIME))}, 
-	              React.createElement("i", {className: "rw-i rw-i-clock-o"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.timeButton))
-	            )
-	          
-	        ), 
-	         this.props.time &&
-	        React.createElement(Popup, {
-	          open:  this.props.open === popups.TIME, 
-	          onRequestClose: this.close, 
-	          duration: this.props.duration}, 
-	            React.createElement("div", null, 
-	              React.createElement(Time, {ref: "timePopup", 
-	                id: timeListID, 
-	                optID: timeOptID, 
-	                'aria-hidden':  !this.props.open, 
-	                style: { maxHeight: 200, height: 'auto'}, 
-	                value: this.props.value, 
-	                min: this.props.min, 
-	                max: this.props.max, 
-	                preserveDate: !!this.props.calendar, 
-	                itemComponent: this.props.timeComponent, 
-	                onSelect: this._maybeHandle(this._selectTime)})
-	            )
-	        ), 
-	        
-	         this.props.calendar &&
-	          React.createElement(Popup, {
-	            className: "rw-calendar-popup", 
-	            open:  this.props.open === popups.CALENDAR, 
-	            duration: this.props.duration, 
-	            onRequestClose: this.close}, 
-	
-	            React.createElement(Calendar, React.__spread({},  calProps , 
-	              {ref: "calPopup", 
-	              id: dateListID, 
-	              value: this.props.value || new Date, 
-	              maintainFocus: false, 
-	              'aria-hidden':  !this.props.open, 
-	              onChange: this._maybeHandle(this._selectDate)}))
-	          )
-	        
-	      )
-	    )
-	  },
-	
-	  _change: function(date, str, constrain){
-	    var change = this.props.onChange
-	
-	    if(constrain)
-	      date = this.inRangeValue(date)
-	
-	    if( change ) {
-	      if( date == null || this.props.value == null){
-	        if( date != this.props.value )
-	          change(date, str)
-	      }
-	      else if (!dates.eq(date, this.props.value))
-	        change(date, str)
-	    }
-	  },
-	
-	  _keyDown: function(e){
-	
-	    if( e.key === 'Tab')
-	      return
-	
-	    if ( e.key === 'Escape' && this.props.open )
-	      this.close()
-	
-	    else if ( e.altKey ) {
-	      e.preventDefault()
-	
-	      if ( e.key === 'ArrowDown')
-	        this.open(this.props.open === popups.CALENDAR
-	              ? popups.TIME
-	              : popups.CALENDAR)
-	      else if ( e.key === 'ArrowUp')
-	        this.close()
-	
-	    } else if (this.props.open ) {
-	      if( this.props.open === popups.CALENDAR )
-	        this.refs.calPopup._keyDown(e)
-	      if( this.props.open === popups.TIME )
-	        this.refs.timePopup._keyDown(e)
-	    }
-	  },
-	
-	  //timeout prevents transitions from breaking focus
-	  _focus: function(focused, e){
-	    var self = this
-	      , input =  this.refs.valueInput;
-	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	
-	      if(focused) input.getDOMNode().focus()
-	      else        self.close()
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	
-	    }, 0)
-	  },
-	
-	  _selectDate: function(date){
-	    this.close()
-	    this._change(
-	        dates.merge(date, this.props.value)
-	      , formatDate(date, this.props.format)
-	      , true)
-	  },
-	
-	  _selectTime: function(datum){
-	    this.close()
-	    this._change(
-	        dates.merge(this.props.value, datum.date)
-	      , formatDate(datum.date, this.props.format)
-	      , true)
-	  },
-	
-	  _click: function(view, e){
-	    this._focus(true)
-	    this.toggle(view, e)
-	  },
-	
-	  _parse: function(string){
-	    var parser = typeof this.props.parse === 'function'
-	          ? this.props.parse
-	          : formatsParser.bind(null, _.splat(this.props.format).concat(this.props.parse));
-	
-	    return parser(string)
-	  },
-	
-	  toggle: function(view, e) {
-	
-	    this.props.open
-	      ? this.state.view !== view
-	          ? this.open(view)
-	          : this.close(view)
-	      : this.open(view)
-	  },
-	
-	  open: function(view){
-	    if ( this.props.open !== view )
-	      this.notify('onToggle', view)
-	  },
-	
-	  close: function(){
-	    if ( this.props.open)
-	      this.notify('onToggle', false)
-	  },
-	
-	  inRangeValue: function(value){
-	    if( value == null) return value
-	
-	    return dates.max(
-	        dates.min(value, this.props.max)
-	      , this.props.min)
-	  },
-	
-	});
-	
-	
-	module.exports = controlledInput.createControlledClass(
-	    DateTimePicker
-	  , { open: 'onToggle', value: 'onChange' });
-	
-	function formatDate(date, format){
-	  var val = ''
-	
-	  if ( (date instanceof Date) && !isNaN(date.getTime()) )
-	    val = dates.format(date, format)
-	
-	  return val;
-	}
-	
-	module.exports.BaseDateTimePicker = DateTimePicker
-	
-	function formatsParser(formats, str){
-	  var date;
-	
-	  formats = [].concat(formats)
-	
-	  for(var i=0; i < formats.length; i++ ){
-	    date = dates.parse(str, formats[i])
-	    if( date) return date
-	  }
-	  return null
-	}
-	
-
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(13)
-	  , _     = __webpack_require__(14) //omit
-	  , controlledInput  = __webpack_require__(62)
-	  , directions = __webpack_require__(75).directions
-	  , Input = __webpack_require__(78);
-	
-	var Btn = __webpack_require__(67)
-	  , propTypes = {
-	
-	      // -- controlled props -----------
-	      value:          React.PropTypes.number,
-	      onChange:       React.PropTypes.func,
-	      //------------------------------------
-	
-	      min:            React.PropTypes.number,
-	      max:            React.PropTypes.number,
-	      step:           React.PropTypes.number,
-	
-	      culture:        React.PropTypes.string,
-	      format:         React.PropTypes.string,
-	
-	      name:           React.PropTypes.string,
-	
-	      parse:          React.PropTypes.oneOfType([
-	                        React.PropTypes.arrayOf(React.PropTypes.string),
-	                        React.PropTypes.string,
-	                        React.PropTypes.func
-	                      ]),
-	
-	      disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	      readOnly:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['readOnly'])
-	                      ]),
-	
-	      messages:       React.PropTypes.shape({
-	        increment:    React.PropTypes.string,
-	        decrement:    React.PropTypes.string
-	      })
-	    };
-	
-	var NumberPicker = React.createClass({
-	
-	  displayName: 'NumberPicker',
-	
-	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(84),
-	    __webpack_require__(87),
-	  ],
-	
-	  propTypes: propTypes,
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: null,
-	      open: false,
-	
-	      format: 'd',
-	
-	      min: -Infinity,
-	      max:  Infinity,
-	      step: 1,
-	
-	      messages: {
-	        increment: 'increment value',
-	        decrement:  'decrement value'
-	      }
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    return {
-	      focused: false,
-	      active: false,
-	    }
-	  },
-	
-	
-	  render: function(){
-	    var $__0=   _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , val = this.inRangeValue(this.props.value)
-	
-	    //console.log('render', this.state.focused)
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props , 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        tabIndex: "-1", 
-	        className: cx(className, {
-	          'rw-numberpicker':   true,
-	          'rw-widget':          true,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-state-disabled':  this.props.disabled,
-	          'rw-state-readonly':  this.props.readOnly,
-	          'rw-rtl':             this.isRtl()
-	        })}), 
-	
-	        React.createElement("span", {className: "rw-select"}, 
-	          React.createElement(Btn, {
-	            tabIndex: "-1", 
-	            className: cx({ 'rw-state-active': this.state.active === directions.UP}), 
-	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.UP)), 
-	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.UP)), 
-	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
-	            disabled: val === this.props.max || this.props.disabled, 
-	            'aria-disabled': val === this.props.max || this.props.disabled}, 
-	
-	            React.createElement("i", {className: "rw-i rw-i-caret-up"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.increment))
-	          ), 
-	          React.createElement(Btn, {
-	            tabIndex: "-1", 
-	            className: cx({ 'rw-state-active': this.state.active === directions.DOWN}), 
-	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.DOWN)), 
-	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.DOWN)), 
-	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
-	            disabled: val === this.props.min || this.props.disabled, 
-	            'aria-disabled': val === this.props.min || this.props.disabled}, 
-	            React.createElement("i", {className: "rw-i rw-i-caret-down"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.decrement))
-	          )
-	        ), 
-	        React.createElement(Input, {
-	          ref: "input", 
-	          value: val, 
-	          editing: this.state.focused, 
-	          format: this.props.format, 
-	          name: this.props.name, 
-	          role: "spinbutton", 
-	          min: this.props.min, 
-	          'aria-valuenow': val, 
-	          'aria-valuemin': isFinite(this.props.min) ? this.props.min : null, 
-	          'aria-valuemax': isFinite(this.props.max) ? this.props.max : null, 
-	          'aria-disabled':  this.props.disabled, 
-	          'aria-readonly':  this.props.readonly, 
-	          disabled: this.props.disabled, 
-	          readOnly: this.props.readOnly, 
-	          onChange: this.change, 
-	          onKeyDown: this.props.onKeyDown})
-	      )
-	    )
-	  },
-	
-	  //allow for styling, focus stealing keeping me from the normal what have you
-	  _mouseDown: function(dir) {
-	    var val = dir === directions.UP
-	        ? (this.props.value || 0) + this.props.step
-	        : (this.props.value || 0) - this.props.step
-	
-	    val = this.inRangeValue(val)
-	
-	    this.setState({ active: dir })
-	    this.change(val);
-	
-	    if( !((dir === directions.UP && val === this.props.max)
-	      || (dir === directions.DOWN && val === this.props.min)))
-	    {
-	      if(!this.interval)
-	        this.interval = setInterval(this._mouseDown, 500, dir)
-	    }
-	    else
-	      this._mouseUp()
-	  },
-	
-	  _mouseUp: function(direction, e ){
-	    this.setState({ active: false })
-	    clearInterval(this.interval)
-	    this.interval = null;
-	  },
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	      var el = self.refs.input.getDOMNode()
-	
-	      focused && el.focus()
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	
-	    }, 0)
-	  },
-	
-	  _keyDown: function(e){
-	    var key = e.key;
-	
-	    if ( key === 'End'  && isFinite(this.props.max))
-	      this.change(this.props.max)
-	
-	    else if ( key === 'Home' && isFinite(this.props.min))
-	      this.change(this.props.min)
-	
-	    else if ( key === 'ArrowDown' ){
-	      e.preventDefault()
-	      this.decrement()
-	    }
-	    else if ( key === 'ArrowUp' ){
-	      e.preventDefault()
-	      this.increment()
-	    }
-	
-	  },
-	
-	  increment: function() {
-	    this.change(this.inRangeValue((this.props.value || 0) + this.props.step))
-	  },
-	
-	  decrement: function(){
-	    this.change(this.inRangeValue((this.props.value || 0) - this.props.step))
-	  },
-	
-	  change: function(val){
-	    val = this.inRangeValue(val === '' ? null : val)
-	
-	    if ( this.props.value !== val )
-	      this.notify('onChange', val)
-	  },
-	
-	  inRangeValue: function(value){
-	    var max = this.props.max == null ? Infinity : this.props.max
-	      , min = this.props.min == null ? -Infinity : this.props.min;
-	
-	    if( !isFinite(min) && value == null )
-	      return value
-	
-	    return Math.max(Math.min(value, max), min)
-	  }
-	
-	})
-	
-	module.exports = controlledInput.createControlledClass(
-	    NumberPicker, { value: 'onChange' });
-	
-	module.exports.BaseNumberPicker = NumberPicker
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(13)
-	  , _     = __webpack_require__(14)
-	  , controlledInput  = __webpack_require__(62)
-	  , CustomPropTypes  = __webpack_require__(63)
-	  
-	  , SelectInput = __webpack_require__(79)
-	  , TagList     = __webpack_require__(80)
-	  , Popup       = __webpack_require__(64)
-	  , List        = __webpack_require__(65);
-	
-	var propTypes = {
-	      data:            React.PropTypes.array,
-	      //-- controlled props --
-	      value:           React.PropTypes.array,
-	      onChange:        React.PropTypes.func,
-	
-	      searchTerm:      React.PropTypes.string,
-	      onSearch:        React.PropTypes.func,
-	
-	      open:            React.PropTypes.bool,
-	      onToggle:        React.PropTypes.func,
-	      //-------------------------------------------
-	
-	      valueField:      React.PropTypes.string,
-	      textField:       React.PropTypes.string,
-	
-	      tagComponent:    CustomPropTypes.elementType,
-	      itemComponent:   CustomPropTypes.elementType,
-	
-	      onSelect:        React.PropTypes.func,
-	      onCreate:        React.PropTypes.func,
-	
-	      duration:        React.PropTypes.number, //popup
-	
-	      placeholder:     React.PropTypes.string,
-	
-	      disabled:        React.PropTypes.oneOfType([
-	                         React.PropTypes.bool,
-	                         React.PropTypes.array,
-	                         React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	      readOnly:        React.PropTypes.oneOfType([
-	                         React.PropTypes.bool,
-	                         React.PropTypes.array,
-	                         React.PropTypes.oneOf(['readonly'])
-	                       ]),
-	
-	      messages:        React.PropTypes.shape({
-	        open:          React.PropTypes.string,
-	        emptyList:     React.PropTypes.string,
-	        emptyFilter:   React.PropTypes.string
-	      })
-	    };
-	
-	var Select = React.createClass({
-	
-	  displayName: 'Select',
-	
-	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(89),
-	    __webpack_require__(86),
-	    __webpack_require__(87),
-	    __webpack_require__(88)('focusedIndex')
-	  ],
-	
-	  propTypes: propTypes,
-	
-	  getDefaultProps: function(){
-	    return {
-	      data: [],
-	      filter: 'startsWith',
-	      value: [],
-	      open: false,
-	      searchTerm: '',
-	      messages: {
-	        createNew:   "(create new tag)",
-	        emptyList:   "There are no items in this list",
-	        emptyFilter: "The filter returned no results"
-	      }
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    var values = _.splat(this.props.value)
-	
-	    return {
-	      focusedIndex:  0,
-	      processedData: this.process(this.props.data, values, this.props.searchTerm),
-	      dataItems: values.map( function(item)  {return this._dataItem(this.props.data, item);}.bind(this))
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var values = _.splat(nextProps.value)
-	      , items  = this.process(nextProps.data, values, nextProps.searchTerm)
-	
-	    this.setState({
-	      processedData: items,
-	      dataItems: values.map( function(item)  {return this._dataItem(nextProps.data, item);}.bind(this))
-	    })
-	  },
-	
-	  render: function(){
-	    var $__0=      _.omit(this.props, Object.keys(propTypes)),className=$__0.className,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,children:1})
-	      , listID  = this._id('_listbox')
-	      , optID   = this._id('_option')
-	      , items   = this._data()
-	      , values  = this.state.dataItems;
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props, 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        tabIndex: "-1", 
-	        className: cx(className, {
-	          'rw-multiselect':    true,
-	          'rw-widget':         true,
-	          'rw-state-focus':    this.state.focused,
-	          'rw-state-disabled': this.props.disabled === true,
-	          'rw-state-readonly': this.props.readOnly === true,
-	          'rw-open':           this.props.open,
-	          'rw-rtl':            this.isRtl()
-	        })}), 
-	        React.createElement("div", {className: "rw-multiselect-wrapper", onClick: this._maybeHandle(this._click)}, 
-	           this.props.busy &&
-	            React.createElement("i", {className: "rw-i rw-loading"}), 
-	          
-	           !!values.length &&
-	            React.createElement(TagList, {
-	              ref: "tagList", 
-	              value: values, 
-	              textField: this.props.textField, 
-	              valueField: this.props.valueField, 
-	              valueComponent: this.props.tagComponent, 
-	              disabled: this.props.disabled, 
-	              readOnly: this.props.readOnly, 
-	              onDelete: this._delete}), 
-	          
-	          React.createElement(SelectInput, {
-	            ref: "input", 
-	            'aria-activedescendent':  this.props.open ? optID : undefined, 
-	            'aria-expanded':  this.props.open, 
-	            'aria-busy': !!this.props.busy, 
-	            'aria-owns': listID, 
-	            'aria-haspopup': true, 
-	            value: this.props.searchTerm, 
-	            disabled: this.props.disabled === true, 
-	            readOnly: this.props.readOnly === true, 
-	            placeholder: this._placeholder(), 
-	            onChange: this._typing})
-	        ), 
-	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
-	          React.createElement("div", null, 
-	            React.createElement(List, {ref: "list", 
-	              id: listID, 
-	              optID: optID, 
-	              'aria-autocomplete': "list", 
-	              'aria-hidden':  !this.props.open, 
-	              style: { maxHeight: 200, height: 'auto'}, 
-	              data: items, 
-	              textField: this.props.textField, 
-	              valueField: this.props.valueField, 
-	              focusedIndex: this.state.focusedIndex, 
-	              onSelect: this._maybeHandle(this._onSelect), 
-	              listItem: this.props.itemComponent, 
-	              messages: {
-	                emptyList: this.props.data.length
-	                  ? this.props.messages.emptyFilter
-	                  : this.props.messages.emptyList
-	              }}), 
-	               this._shouldShowCreate() &&
-	                React.createElement("ul", {className: "rw-list rw-multiselect-create-tag"}, 
-	                  React.createElement("li", {onClick: this._onCreate.bind(null, this.props.searchTerm), 
-	                      className: cx({'rw-state-focus': !this._data().length || this.state.focusedIndex === null })}, 
-	                    React.createElement("strong", null, ("\"" + this.props.searchTerm + "\"")), " ",  this.props.messages.createNew
-	                  )
-	                )
-	              
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _data: function(){
-	    return this.state.processedData
-	  },
-	
-	  _delete: function(value){
-	    this._focus(true)
-	    this.change(
-	      this.state.dataItems.filter( function(d)  {return d !== value;}))
-	  },
-	
-	  _click: function(e){
-	    this._focus(true)
-	    !this.props.open && this.open()
-	  },
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    if (this.props.disabled === true )
-	      return
-	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	      if(focused) self.refs.input.focus()
-	      else        {
-	        self.close()
-	        self.refs.tagList && self.refs.tagList.clear()
-	      }
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	    }, 0)
-	  },
-	
-	  _typing: function(e){
-	    this.notify('onSearch', [ e.target.value ])
-	    this.open()
-	  },
-	
-	  _onSelect: function(data){
-	
-	    if( data === undefined && this.props.onCreate )
-	      return this._onCreate(this.props.searchTerm)
-	
-	    this.notify('onSelect', data)
-	    this.change(this.state.dataItems.concat(data))
-	    this.close()
-	    this._focus(true)
-	  },
-	
-	  _onCreate: function(tag){
-	    if (tag.trim() === '' ) 
-	      return
-	
-	    this.notify('onCreate', tag)
-	    this.close()
-	    this._focus(true)
-	  },
-	
-	  _keyDown: function(e){
-	    var key = e.key
-	      , alt = e.altKey
-	      , ctrl = e.ctrlKey
-	      , searching = !!this.props.searchTerm
-	      , isOpen  = this.props.open
-	      , current = this.state.focusedIndex
-	      , tagList = this.refs.tagList
-	      , isLast;
-	
-	    if ( key === 'ArrowDown') {
-	      var nextIdx = this.nextFocusedIndex()
-	
-	      e.preventDefault()
-	      if ( isOpen ) this.setFocusedIndex(current === nextIdx || current === null ? null : nextIdx)
-	      else          this.open()
-	    }
-	    else if ( key === 'ArrowUp') {
-	      e.preventDefault()
-	
-	      if ( alt)          this.close()
-	      else if ( isOpen ) this.setFocusedIndex(current === null
-	        ? this._data().length - 1
-	        : this.prevFocusedIndex())
-	    }
-	    else if ( key === 'End'){
-	      if ( isOpen ) this.setFocusedIndex(this._data().length - 1)
-	      else          tagList && tagList.last()
-	    }
-	    else if (  key === 'Home'){
-	      if ( isOpen ) this.setFocusedIndex(0)
-	      else          tagList && tagList.first()
-	    }
-	    else if ( isOpen && key === 'Enter' )
-	      ctrl && this.props.onCreate
-	        ? this._onCreate(this.props.searchTerm)
-	        : this._onSelect(this._data()[this.state.focusedIndex])
-	
-	    
-	    else if ( key === 'Escape')
-	      isOpen ? this.close() : this.refs.tagList.clear()
-	
-	    else if ( !searching && key === 'ArrowLeft')
-	     tagList && tagList.prev()
-	
-	    else if ( !searching && key === 'ArrowRight')
-	      tagList && tagList.next()
-	
-	    else if ( !searching && key === 'Delete')
-	      tagList && tagList.removeCurrent()
-	
-	    else if ( !searching && key === 'Backspace')
-	      tagList && tagList.removeNext()
-	  },
-	
-	  change: function(data){
-	    this.notify('onChange', [data])
-	  },
-	
-	  open: function(){
-	    if (!(this.props.disabled === true || this.props.readOnly === true))
-	      this.notify('onToggle', true)
-	  },
-	
-	  close: function(){
-	    this.notify('onToggle', false)
-	  },
-	
-	  toggle: function(e){
-	    this.props.open
-	      ? this.close()
-	      : this.open()
-	  },
-	
-	  process: function(data, values, searchTerm){
-	    var items = data.filter( function(i)  {return !values.some( this._valueMatcher.bind(null, i), this);}.bind(this), this)
-	
-	    if( searchTerm)
-	      items = this.filter(items, searchTerm)
-	
-	    return items
-	  },
-	
-	  _shouldShowCreate:function(){
-	    var text = this.props.searchTerm;
-	
-	    if ( !(this.props.onCreate && text) ) 
-	      return false
-	
-	    //if there is an exact match
-	    return !this._data().some( function(v)  {return this._dataText(v) === text;}.bind(this)) 
-	        && !this.state.dataItems.some( function(v)  {return this._dataText(v) === text;}.bind(this)) 
-	  },
-	
-	  _placeholder: function(){
-	    return (this.props.value || []).length
-	      ? ''
-	      : (this.props.placeholder || '')
-	  }
-	
-	})
-	
-	
-	module.exports = controlledInput.createControlledClass(Select
-	    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
-	    , { onChange: defaultChange, onCreate: defaultChange });
-	
-	
-	function defaultChange(){
-	  if ( this.props.searchTerm === undefined )
-	    this.setState({ searchTerm: '' })
-	}
-	
-	module.exports.BaseMultiselect = Select
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _  = __webpack_require__(14)
-	  , cx = __webpack_require__(13)
-	  , controlledInput  = __webpack_require__(62)
-	  , CustomPropTypes  = __webpack_require__(63)
-	  , scrollTo = __webpack_require__(81);
-	
-	var propTypes = {
-	
-	    data:           React.PropTypes.array,
-	    value:          React.PropTypes.oneOfType([
-	                      React.PropTypes.any,
-	                      React.PropTypes.array
-	                    ]),
-	    onChange:       React.PropTypes.func,
-	    onMove:         React.PropTypes.func,
-	
-	    multiple:       React.PropTypes.bool,
-	
-	    itemComponent:  CustomPropTypes.elementType,
-	    
-	    valueField:     React.PropTypes.string,
-	    textField:      React.PropTypes.string,
-	
-	    busy:           React.PropTypes.bool,
-	
-	    delay:          React.PropTypes.number, 
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                      React.PropTypes.array,
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['disabled'])
-	                    ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.array,
-	                      React.PropTypes.oneOf(['readonly'])
-	                    ]),
-	
-	    messages:       React.PropTypes.shape({
-	      emptyList:    React.PropTypes.string
-	    }),
-	  }
-	
-	
-	var SelectList = React.createClass({displayName: 'SelectList',
-	
-	  propTypes: propTypes,
-	
-	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(85),
-	    __webpack_require__(86),
-	    __webpack_require__(87),
-	    __webpack_require__(88)('focusedIndex', 'isDisabledItem')
-	  ],
-	
-	  getDefaultProps: function(){
-	    return {
-	      delay: 250,
-	      value: [],
-	      data:  [],
-	      messages: {
-	        emptyList: 'There are no items in this list'
-	      }
-	    }
-	  },
-	
-	  getDefaultState: function(props){
-	    var isRadio = !props.multiple
-	      , values  = _.splat(props.value)
-	      , idx     = isRadio && this._dataIndexOf(props.data, values[0]) 
-	
-	    idx = isRadio && idx !== -1 
-	      ? this.nextFocusedIndex(idx - 1) 
-	      : ((this.state || {}).focusedIndex || -1)
-	
-	    return {
-	      focusedIndex: idx,
-	      dataItems:    !isRadio && values.map(function(item)  {return this._dataItem(props.data, item);}.bind(this))
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    return this.getDefaultState(this.props)
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    return this.setState(this.getDefaultState(nextProps))
-	  },
-	
-	  componentDidUpdate: function(prevProps, prevState){
-	    if ( prevState.focusedIndex !== this.state.focusedIndex)
-	      this._setScrollPosition()
-	  },
-	
-	  render: function() {
-	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , focus = this._maybeHandle(this._focus.bind(null, true), true)
-	      , optID = this._id('_selected_option')
-	      , blur  = this._focus.bind(null, false);
-	
-	    return (
-	      
-	      React.createElement("div", React.__spread({},  props, 
-	        {onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: focus, 
-	        onBlur: blur, 
-	        tabIndex: "0", 
-	        role: "listbox", 
-	        'aria-busy': !!this.props.busy, 
-	        'aria-activedescendent':  this.state.focused ? optID : undefined, 
-	        'aria-disabled':  this.isDisabled(), 
-	        'aria-readonly':  this.isReadOnly(), 
-	        className: cx(className, { 
-	          'rw-widget':         true,
-	          'rw-selectlist':   true,
-	          'rw-state-focus':    this.state.focused,
-	          'rw-state-disabled': this.isDisabled(),
-	          'rw-state-readonly': this.isReadOnly(),
-	          'rw-rtl':            this.isRtl(),
-	          'rw-loading-mask':   this.props.busy
-	        })}), 
-	
-	        React.createElement("ul", {className: "rw-list", ref: "list"},  this._rows(optID))
-	      ) 
-	    );
-	  },
-	
-	  _rows: function(optID){
-	    var Component = this.props.itemComponent
-	      , name = this._id('_name')
-	      , type = this.props.multiple ? 'checkbox' : 'radio';
-	
-	    return this._data().map( function(item, idx)  {
-	      var focused  = this.state.focused && this.state.focusedIndex === idx
-	        , checked  = this._contains(item, this._values())
-	        , change   = this._change.bind(null, item)
-	        , disabled = this.isDisabledItem(item)
-	        , readonly = this.isReadOnlyItem(item);
-	
-	      return (React.createElement("li", {
-	        key: 'item_' + idx, 
-	        role: "option", 
-	        id:  focused ? optID : undefined, 
-	        className: cx({ 'rw-state-focus': focused, 'rw-selectlist-item': true })}, 
-	        React.createElement(SelectListItem, {
-	          type: type, 
-	          name: name, 
-	          onChange: change, 
-	          checked: checked, 
-	          readOnly: readonly, 
-	          disabled: disabled || readonly}, 
-	           Component ? React.createElement(Component, {item: item}) : this._dataText(item)
-	          )
-	      ))
-	    }.bind(this))
-	  },
-	
-	  _keyDown: function(e){
-	    var self = this
-	      , key = e.key
-	      , data = this._data()
-	      , multiple = !!this.props.multiple
-	      , last = data.length;
-	
-	    if ( key === 'End' ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex(last))
-	      else            change(this.prevFocusedIndex(last)) 
-	    }
-	    else if ( key === 'Home' ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex(-1))
-	      else            change(this.nextFocusedIndex(-1)) 
-	    }
-	    else if ( key === 'Enter' || key === ' ' ) {
-	      e.preventDefault()
-	      change(this.state.focusedIndex)
-	    }
-	    else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex())
-	      else            change(this.nextFocusedIndex())
-	    }
-	    else if ( key === 'ArrowUp' || key === 'A rrowLeft'  ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex())
-	      else            change(this.prevFocusedIndex())
-	    }
-	    else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {
-	      e.preventDefault()
-	      this._selectAll() 
-	    }
-	    else
-	      this.search(
-	          String.fromCharCode(e.keyCode)
-	        , this._locate)
-	
-	    function change(idx, cked){
-	      var item = data[idx];
-	      
-	      if( idx > -1 && idx < last){
-	        self._change(item, cked !== undefined 
-	          ? cked
-	          : multiple 
-	            ? !self._contains(item, self._values()) // toggle value
-	            : true)
-	      }
-	        
-	    }
-	  },
-	
-	  _selectAll: function(){
-	    var values = this.state.dataItems
-	      , disabled = this.props.disabled || this.props.readOnly
-	      , data = this._data()
-	      , blacklist;
-	
-	    disabled = Array.isArray(disabled) ? disabled : [];
-	    //disabled values that are not selected
-	    blacklist = disabled.filter( function(v)  {return !this._contains(v, values);}.bind(this))
-	    data      = data.filter( function(v)  {return !this._contains(v, blacklist);}.bind(this))
-	
-	    if ( data.length === values.length) {
-	      data = disabled.filter( function(v)  {return this._contains(v, values);}.bind(this))
-	      data = data.map( function(v)  {return this._dataItem(this._data(), v);}.bind(this))
-	    }
-	
-	    this.notify('onChange', [data])
-	  },
-	
-	  _change: function(item, checked){
-	    var multiple  = !!this.props.multiple
-	      , blacklist = this.props.disabled || this.props.readOnly 
-	      , values    = this.state.dataItems;
-	
-	    blacklist = Array.isArray(blacklist) ? blacklist : [];
-	
-	    if(this._contains(item, blacklist)) return 
-	
-	    if ( !multiple )
-	      return this.notify('onChange', checked ? item : null)
-	
-	    values = checked 
-	      ? values.concat(item)
-	      : values.filter( function(v)  {return v !== item;})
-	
-	    this.notify('onChange', [values || []])
-	  },
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	      if( focused) self.getDOMNode().focus()
-	      if( focused !== self.state.focused){
-	        self.setState({ focused: focused })
-	        //!focused && self.next(0)
-	      }
-	    }, 0)
-	  },
-	
-	  isDisabledItem: function(item) {
-	    return this.isDisabled() || this._contains(item, this.props.disabled)
-	  },
-	
-	  isReadOnlyItem: function(item) {
-	    return this.isReadOnly() || this._contains(item, this.props.readOnly)
-	  },
-	
-	  _locate: function(word){
-	    var idx = this.findNextWordIndex(word, this.state.focusedIndex);
-	
-	    if ( idx !== -1) 
-	      this.setFocusedIndex(idx)
-	  },
-	
-	  _data:function(){
-	    return this.props.data
-	  },
-	
-	  _contains: function(item, values){
-	    return Array.isArray(values) 
-	      ? values.some(this._valueMatcher.bind(null, item))
-	      : this._valueMatcher(item, values)
-	  },
-	
-	  _values: function(){
-	    return !!this.props.multiple 
-	      ? this.state.dataItems
-	      : this.props.value
-	  },
-	
-	  _setScrollPosition: function(){
-	    var list = this.refs.list.getDOMNode()
-	      , selected = list.children[this.state.focusedIndex]
-	      , handler  = this.props.onMove || scrollTo;
-	
-	    if ( this.state.focusedIndex !== -1 )
-	      handler(selected)
-	  }
-	
-	});
-	
-	var SelectListItem = React.createClass({displayName: 'SelectListItem',
-	
-	  render: function() {
-	    var $__0=   this.props,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{children:1});
-	
-	    return (
-	      React.createElement("label", {
-	        className: cx({ 
-	          'rw-state-disabled': props.disabled,
-	          'rw-state-readonly': props.readOnly
-	        })}, 
-	        React.createElement("input", React.__spread({},   props, 
-	          {tabIndex: "-1", 
-	          onChange: change, 
-	          disabled: props.disabled || props.readOnly, 
-	          'aria-disabled':  props.disabled ||props.readOnly})), 
-	          children 
-	      )
-	    );
-	
-	    function change(e){
-	      if( !props.disabled && !props.readOnly)
-	        props.onChange(e.target.checked)
-	    }
-	  },
-	
-	})
-	
-	
-	module.exports = SelectList;
-	
-	module.exports = controlledInput.createControlledClass(
-	    SelectList, { value: 'onChange' });
-	
-	module.exports.BaseSelectList = SelectList
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * A streamlined version of TransitionGroup built for managing at most two active children
-	 * also provides additional hooks for animation start/end
-	 * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
-	 * relevent code is licensed accordingly 
-	 */
-	
-	"use strict";
-	
-	var React = __webpack_require__(1)
-	  , $     = __webpack_require__(60)
-	  , _     = __webpack_require__(14);
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'ReplaceTransitionGroup',
-	
-	  propTypes: {
-	    component:    React.PropTypes.oneOfType([
-	                    React.PropTypes.element,
-	                    React.PropTypes.string
-	                  ]),
-	    childFactory: React.PropTypes.func,
-	
-	    onAnimating:  React.PropTypes.func,
-	    onAnimate:    React.PropTypes.func,
-	  },
-	
-	  getDefaultProps: function() {
-	    return {
-	      component:    'span',
-	      childFactory: function(a){ return a },
-	
-	      onAnimating: _.noop,
-	      onAnimate:   _.noop
-	    };
-	  },
-	
-	  getInitialState: function() {
-	    return {
-	      children: _.splat(this.props.children)
-	    };
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var nextChild = getChild(nextProps.children)
-	      , stack     = this.state.children.slice()
-	      , next      = stack[1]
-	      , last      = stack[0];
-	
-	    var isLastChild = last && key(last) === key(nextChild)
-	      , isNextChild = next && key(next) === key(nextChild);
-	
-	    //no children
-	    if (!last) {
-	      stack.push(nextChild)
-	      this.entering = nextChild
-	    }
-	    else if ( last && !next && !isLastChild) {
-	      //new child
-	      stack.push(nextChild)
-	      this.leaving = last 
-	      this.entering = nextChild
-	    }
-	    else if ( last && next && !isLastChild && !isNextChild) {
-	      // the child is not the current one, exit the current one, add the new one
-	      //  - shift the stack down
-	      stack.shift()
-	      stack.push(nextChild)
-	      this.leaving  = next
-	      this.entering = nextChild
-	    }
-	    //new child that just needs to be re-rendered
-	    else if (isLastChild) stack.splice(0, 1, nextChild) 
-	    else if (isNextChild) stack.splice(1, 1, nextChild)
-	
-	    if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] ) 
-	      this.setState({ children: stack });
-	  },
-	
-	  componentWillMount: function() {
-	    this.animatingKeys = {};
-	    this.leaving  = null;
-	    this.entering = null;
-	  },
-	
-	  componentDidUpdate: function() {
-	    var entering = this.entering
-	      , leaving  = this.leaving
-	      , first    = this.refs[key(entering) || key(leaving)]
-	      , node     = this.getDOMNode()
-	      , el       = first && first.getDOMNode();
-	
-	    if( el )
-	      $.css(node, {
-	        overflow: 'hidden',
-	        height: $.height(el) + 'px',
-	        width:  $.width(el) + 'px'
-	      })
-	    
-	    this.props.onAnimating();
-	
-	    this.entering = null;
-	    this.leaving  = null;
-	
-	    if (entering) this.performEnter(key(entering))
-	    if (leaving)  this.performLeave(key(leaving))
-	  },
-	
-	  performEnter: function(key) {
-	    var component = this.refs[key];
-	
-	    if(!component) return
-	
-	    this.animatingKeys[key] = true;
-	
-	    if (component.componentWillEnter) 
-	      component.componentWillEnter(
-	        this._handleDoneEntering.bind(this, key));
-	    else 
-	      this._handleDoneEntering(key);
-	  },
-	
-	  _tryFinish: function(){
-	    var node = this.getDOMNode()
-	
-	    if ( this.isTransitioning() )
-	      return 
-	
-	    $.css(node, { overflow: 'visible', height: '', width: '' })
-	
-	    this.props.onAnimate() 
-	  }, 
-	
-	  _handleDoneEntering: function(enterkey) {
-	    var component = this.refs[enterkey];
-	
-	    if (component && component.componentDidEnter) 
-	      component.componentDidEnter();
-	    
-	    delete this.animatingKeys[enterkey];
-	
-	    if ( key(this.props.children) !== enterkey) 
-	      this.performLeave(enterkey); // This was removed before it had fully entered. Remove it.
-	    
-	    this._tryFinish()
-	  },
-	
-	  isTransitioning: function(){
-	    return Object.keys(this.animatingKeys).length !== 0
-	  },
-	
-	  performLeave: function(key) {
-	    var component = this.refs[key];
-	
-	    if(!component) return
-	
-	    this.animatingKeys[key] = true;
-	
-	    if (component.componentWillLeave) 
-	      component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
-	    else 
-	      this._handleDoneLeaving(key);
-	  },
-	
-	  _handleDoneLeaving: function(leavekey) {
-	    var component = this.refs[leavekey];
-	
-	    if (component && component.componentDidLeave) 
-	      component.componentDidLeave();
-	    
-	    delete this.animatingKeys[leavekey];
-	
-	    if (key(this.props.children) === leavekey )
-	      this.performEnter(leavekey); // This entered again before it fully left. Add it again.
-	    else {
-	      var newChildren = this.state.children.filter( function(c)  {return key(c) !== leavekey;});
-	      this.setState({ children: newChildren });
-	    }
-	
-	    this._tryFinish() 
-	  },
-	
-	  render: function() {
-	    var Component = this.props.component
-	    return React.createElement(Component, React.__spread({},  this.props),  this.state.children.map(function(c)  {return this.props.childFactory(c, key(c));}.bind(this)) );
-	  }
-	});
-	
-	function getChild(children){
-	  return React.Children.only(children)
-	}
-	
-	//CHANGE 0.12.0
-	function key(child){
-	  return child && child.key
-	}
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , ReplaceTransitionGroup  = __webpack_require__(55)
-	  , _ = __webpack_require__(14)
-	  , $  =  __webpack_require__(60);
-	
-	
-	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
-	
-	  propTypes: {
-	    direction: React.PropTypes.oneOf(['left', 'right'])
-	  },
-	
-	  componentWillEnter: function(done) {
-	    var node  = this.getDOMNode()
-	      , width = $.width(node)
-	      , direction = this.props.direction;
-	
-	    width = direction === 'left' ? width : -width
-	
-	    this.ORGINAL_POSITION = node.style.position;
-	    
-	    $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
-	
-	    $.animate(node, { left: 0 }, this.props.duration, function()  {
-	
-	        $.css(node, { 
-	          position:  this.ORGINAL_POSITION, 
-	          overflow: 'hidden'
-	        });
-	
-	        this.ORGINAL_POSITION = null
-	        done && done()
-	      }.bind(this))
-	  },
-	
-	  componentWillLeave: function(done) {
-	    var node  = this.getDOMNode()
-	      , width = $.width(node)
-	      , direction = this.props.direction;
-	
-	    width = direction === 'left' ? -width : width
-	
-	    this.ORGINAL_POSITION = node.style.position
-	
-	    $.css(node, { position: 'absolute', top: 0, left: 0})
-	
-	    $.animate(node, { left: width + 'px' }, this.props.duration, function()  {
-	        $.css(node, { 
-	          position: this.ORGINAL_POSITION, 
-	          overflow: 'hidden'
-	        });
-	
-	        this.ORGINAL_POSITION = null
-	        done && done()
-	      }.bind(this))
-	  },
-	
-	  render: function() {
-	    return React.Children.only(this.props.children);
-	  }
-	
-	})
-	
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    direction: React.PropTypes.oneOf(['left', 'right']),
-	    duration:  React.PropTypes.number
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      direction: 'left',
-	      duration: 250
-	    }
-	  },
-	
-	  _wrapChild: function(child, ref) {
-	    return (React.createElement(SlideChildGroup, {key: child.key, ref: ref, direction: this.props.direction, duration: this.props.duration}, child))
-	  },
-	
-	  render: function() {
-	    var $__0=      this.props,style=$__0.style,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{style:1,children:1})
-	
-	    style = _.merge(style, { position: 'relative', overflow: 'hidden' })
-	
-	    return (
-	      React.createElement(ReplaceTransitionGroup, React.__spread({},  
-	        props, 
-	        {ref: "container", 
-	        childFactory: this._wrapChild, 
-	        style: style, 
-	        component: 'div'}), 
-	        children 
-	      ))
-	  },
-	
-	  isTransitioning: function(){
-	    return this.isMounted() && this.refs.container.isTransitioning()
-	  }
-	});
-	
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(96)(module), (function() { return this; }())))
 
 /***/ },
 /* 57 */
@@ -16888,6 +15455,744 @@
 /* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	var _ = __webpack_require__(14) //invert, transform
+	  , React = __webpack_require__(1)
+	  , compat = __webpack_require__(91)
+	
+	
+	function compatPropType(handler, propType) {
+	
+	  return compat.propType(function(props, propName, componentName, location){
+	    if(props[propName] !== undefined){
+	      if ( !props[handler] )
+	        return new Error(
+	            'ReactWidgets: you have provided a `' + propName + '` prop to ' 
+	          + '`' + componentName + '` without an `' + handler + '` handler. This will render a read-only field. ' 
+	          + 'If the field should be mutable use `' + defaultKey(propName) + '`. Otherwise, set `' + handler + '`')
+	
+	      return propType && propType(props, propName, componentName, location)
+	    }
+	  })
+	}
+	
+	module.exports = {
+	
+	  createControlledClass: function(Component, controlledValues, taps) {
+	    // var publicMethods 
+	    //       = _.transform(publicApi || [], function(obj, method) {
+	    //           obj[method] = function (...args){ 
+	    //             return this.refs[this._innerRef][method](args) 
+	    //           }
+	    //         }, {})
+	
+	    var types = _.transform(controlledValues, function(obj, handler, prop){
+	          var type = Component.type.propTypes[prop];
+	
+	          obj[prop] = compatPropType(handler, type)
+	          obj[defaultKey(prop)] = type
+	        }, {});
+	
+	    taps = taps || {}
+	
+	    return React.createClass({
+	
+	      displayName: Component.displayName,
+	
+	      propTypes: types,
+	
+	      getInitialState: function(){
+	        var props = this.props
+	          , keys  = Object.keys(controlledValues);
+	
+	        return _.transform(keys, function(state, key){
+	          state[key] = props[defaultKey(key)]
+	        }, {})
+	      },
+	
+	      shouldComponentUpdate: function() {
+	        //let the setState trigger the update
+	        return !this._notifying || !this._notifying.length;
+	      },
+	
+	      render: function(){
+	        var props, handles;
+	
+	        props = _.transform(controlledValues, function(obj, handle, prop)  {
+	          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
+	        }.bind(this), {})
+	        
+	        handles = _.transform(controlledValues, function(obj, handle, prop)  {
+	          obj[handle] = setAndNotify.bind(this, prop)
+	        }.bind(this), {})
+	
+	        props = _.merge(this.props, props, handles)
+	
+	        for(var k in taps) if (_.has(props, k)) {
+	          props[k] = chain(this, taps[k], props[k])
+	        }
+	        //this._innerRef = props.ref = props.ref || 'component'
+	
+	        return React.createElement(Component, props, this.props.children);
+	      }
+	    })
+	
+	    function setAndNotify(prop, value){
+	      /*jshint validthis:true */
+	      var handler    = controlledValues[prop]
+	        , controlled = handler && isProp(this.props, prop)
+	        , st = {}
+	        , args;
+	
+	      if ( !this._notifying ) this._notifying = [];
+	
+	      if( this.props[handler] ) {
+	        args = [].slice.call(arguments, 1)
+	        this._notifying.push(true)
+	        this.props[handler].apply(this, args)
+	        this._notifying.pop()
+	      }
+	        
+	      st[prop] = value
+	      this.setState(st)
+	
+	      return !controlled
+	    }
+	
+	    function isProp(props, prop){
+	      return props[prop] !== undefined;
+	    }
+	  }
+	}
+	
+	
+	// function invert(controlledValues){
+	//   return _.transform(controlledValues, (val, key ) => ,)
+	// }
+	
+	function defaultKey(key){
+	  return 'default' + key.charAt(0).toUpperCase() + key.substr(1)
+	}
+	
+	function chain(thisArg, a, b){
+	  return function chainedFunction(){
+	    a && a.apply(thisArg, arguments)
+	    b && b.apply(thisArg, arguments)
+	  }
+	}
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	
+	module.exports = {
+	
+		elementType: createChainableTypeChecker(
+	    function (props, propName, componentName, location) {
+	
+	      if( typeof props[propName] !== 'function'){
+	        if ( React.isValidElement(props[propName]))
+	          return new Error(
+	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
+	            ' Expected an Element `type`, not an actual Element')
+	
+	        if (typeof props[propName] !== 'string')
+	          return new Error(
+	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
+	            ' Expected an Element `type` such as a tag name or return value of React.createClass(...)')
+	      }
+	      return true
+	    })
+	}
+	
+	
+	function createChainableTypeChecker(validate) {
+	
+	  function checkType(isRequired, props, propName, componentName, location) {
+	    componentName = componentName || '<<anonymous>>';
+	    if (props[propName] == null) {
+	      if (isRequired) {
+	        return new Error(
+	          "Required prop `" + propName + "` was not specified in  `" + componentName + "`.");
+	      }
+	    } 
+	    else 
+	      return validate(props, propName, componentName, location);
+	  }
+	
+	  var chainedCheckType = checkType.bind(null, false);
+	  chainedCheckType.isRequired = checkType.bind(null, true);
+	
+	  return chainedCheckType
+	}
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1)
+	  , $ = __webpack_require__(65);
+	
+	
+	var PopupContent = React.createClass({displayName: 'PopupContent',
+	  render: function(){
+	    var Content = React.Children.only(this.props.children)
+	
+	    Content.props.className = (Content.props.className || '') + ' rw-popup rw-widget';
+	
+	    return Content
+	  }
+	})
+	
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+		propTypes: {
+	    duration:       React.PropTypes.number,
+	    onRequestClose: React.PropTypes.func.isRequired,
+	    onClosing:      React.PropTypes.func,
+	    onOpening:      React.PropTypes.func,
+	    onClose:        React.PropTypes.func,
+	    onOpen:         React.PropTypes.func
+		},
+	
+	  getDefaultProps: function(){
+	    return {
+	      duration:    200,
+	      open:        false,
+	      onClosing:   function(){},
+	      onOpening:   function(){},
+	      onClose:     function(){},
+	      onOpen:      function(){},
+	    }
+	  },
+	
+		componentDidMount: function(){
+	    !this.props.open && this.close(0)
+		},
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    this.setState({
+	      contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
+	    })
+	  },
+	
+	  componentDidUpdate: function(pvProps, pvState){
+	    var closing =  pvProps.open && !this.props.open
+	      , opening = !pvProps.open && this.props.open;
+	
+	    if (opening)      this.open()
+	    else if (closing) this.close()
+	  },
+	
+		render: function(){
+	    var $__0=      this.props,className=$__0.className,open=$__0.open,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,open:1})
+	
+			return (
+	      React.createElement("div", React.__spread({},  props, {className:  (className ||'') + " rw-popup-container"}), 
+	        React.createElement(PopupContent, {ref: "content"}, 
+	           this.props.children
+	        )
+	      )
+			)
+		},
+	
+	  dimensions: function(){
+	    var el = this.getDOMNode();
+	
+	    el.style.display = 'block'
+	    el.style.height  = $.height(this.refs.content.getDOMNode()) + 'px'
+	  },
+	
+	  open: function(){
+	    var self = this
+	      , anim = this.getDOMNode()
+	      , el   = this.refs.content.getDOMNode();
+	
+	    this.ORGINAL_POSITION = $.css(el, 'position')
+	
+	    this._isOpening = true
+	    this.dimensions()
+	    this.props.onOpening()
+	
+	    el.style.position = 'absolute'
+	
+	    $.animate(el
+	      , { top: 0 }
+	      , self.props.duration
+	      , function(){
+	          if ( !self._isOpening ) return
+	          el.style.position = self.ORGINAL_POSITION
+	          anim.style.overflow = 'visible'
+	          self.ORGINAL_POSITION = null
+	          self.props.onOpen()
+	        })
+	  },
+	
+	  close: function(dur){
+	    var self = this
+	      , el   = this.refs.content.getDOMNode()
+	      , anim = this.getDOMNode();
+	
+	    this.ORGINAL_POSITION = $.css(el, 'position')
+	
+	    this._isOpening = false
+	    this.dimensions()
+	    this.props.onClosing()
+	
+	    anim.style.overflow = 'hidden'
+	    el.style.position = 'absolute'
+	
+	    $.animate(el
+	      , { top: '-100%' }
+	      , dur === undefined ? this.props.duration : dur
+	      , function() {
+	          if ( self._isOpening ) return
+	          el.style.position = self.ORGINAL_POSITION
+	
+	          anim.style.display = 'none'
+	          self.ORGINAL_POSITION = null
+	          self.props.onClose()
+	        })
+	  }
+	
+	})
+	
+	
+	function childKey(children){
+	  var nextChildMapping = React.Children.map(children, function(c)  {return c;} );
+	  for(var key in nextChildMapping) return key
+	}
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , CustomPropTypes  = __webpack_require__(61)
+	  , filter = __webpack_require__(66)
+	  , cx = __webpack_require__(13)
+	  , _  = __webpack_require__(14)
+	  , scrollTo  = __webpack_require__(81);
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'List',
+	
+	  mixins: [ 
+	    __webpack_require__(86),
+	
+	    __webpack_require__(90)('focusedIndex'),
+	    __webpack_require__(90)('selectedIndex')
+	  ],
+	
+	  propTypes: {
+	    data:          React.PropTypes.array,
+	    onSelect:      React.PropTypes.func,
+	    ItemComponent: CustomPropTypes.elementType,
+	
+	    selectedIndex: React.PropTypes.number,
+	    focusedIndex:  React.PropTypes.number,
+	    valueField:    React.PropTypes.string,
+	    textField:     React.PropTypes.string,
+	
+	    optID:         React.PropTypes.string,
+	
+	    messages:      React.PropTypes.shape({
+	      emptyList:   React.PropTypes.string
+	    }),
+	  },
+	
+	
+	  getDefaultProps: function(){
+	    return {
+	      optID:         '',
+	      onSelect:      function(){},
+	      data:          [],
+	      messages: {
+	        emptyList:   "There are no items in this list"
+	      }
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    var data = this.props.data;
+	
+	    return {
+	      selectedIndex: data.indexOf(this.props.selected),
+	      focusedIndex:  data.indexOf(this.props.focused),
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(props){
+	    var data = props.data;
+	
+	    this.setSelectedIndex(data.indexOf(props.selected))
+	    this.setFocusedIndex(data.indexOf(props.focused))
+	  },
+	
+	  componentDidMount: function(prevProps, prevState){
+	    this._setScrollPosition()
+	  },
+	
+	  componentDidUpdate: function(prevProps, prevState){
+	    if ( prevState.focusedIndex !== this.state.focusedIndex)
+	      this._setScrollPosition()
+	  },
+	
+		render: function(){
+	    var $__0=     _.omit(this.props, ['data']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , ItemComponent = this.props.listItem
+	      , items;
+	    
+	
+	    items = !this.props.data.length 
+	      ? React.createElement("li", null,  this.props.messages.emptyList)
+	      : this.props.data.map(function(item, idx) {
+	          var focused = this.state.focusedIndex === idx;
+	
+	          return (React.createElement("li", {
+	            key: 'item_' + idx, 
+	            role: "option", 
+	            id:  focused ? this.props.optID : undefined, 
+	            'aria-selected':  idx === this.state.selectedIndex, 
+	            className: cx({ 
+	              'rw-list-option':    true,
+	              'rw-state-focus':    focused,
+	              'rw-state-selected': idx === this.state.selectedIndex,
+	            }), 
+	            onClick: this.props.onSelect.bind(null, item)}, 
+	             ItemComponent
+	                ? React.createElement(ItemComponent, {item: item})
+	                : this._dataText(item)
+	            
+	          ))
+	        }.bind(this));
+	    
+			return (
+				React.createElement("ul", React.__spread({},   props , 
+	        {className:  className + ' rw-list', 
+	        ref: "scrollable", 
+	        role: "listbox"}), 
+	          items 
+				)
+			)
+		},
+	
+	  first:function(){
+	    return this.props.data[0]
+	  },
+	
+	  last:function(){
+	    return this.props.data[this.props.data.length -1]
+	  },
+	
+	  next:function(state, word){
+	    return this.props.data[word 
+	      ? this._findNextWordIndex(word, this.state[state + 'Index'], 'next')
+	      : this[("next" + capitalize(state) + "Index")]()]
+	  },
+	
+	  prev:function(state, word){
+	    return this.props.data[ word
+	      ? this._findNextWordIndex(word, this.state[state + 'Index'], 'prev')
+	      : this[("prev" + capitalize(state) + "Index")]()]
+	  },
+	
+	  _data:function(){ 
+	    return this.props.data 
+	  },
+	
+	  _findNextWordIndex: function(word, current, dir){
+	    var matcher = filter.startsWith
+	      , self    = this;
+	    
+	    return _.findIndex(self._data(), function(item, i)  { 
+	      return (dir === 'next' ? i > current : i < current)
+	          && matcher(
+	              this._dataText.call(self, item).toLowerCase()
+	            , word.toLowerCase())
+	    }.bind(this));    
+	  },
+	
+	  _setScrollPosition: function(){
+	    var list = this.getDOMNode()
+	      , selected = list.children[this.state.focusedIndex];
+	
+	    if( !selected ) return 
+	
+	    // timeout allows for element to become visible
+	    setTimeout(function()  {return scrollTo(selected, list);})
+	  }
+	
+	})
+	
+	function capitalize(str){
+	  return str.charAt(0).toUpperCase() + str.substr(1)
+	}
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , CustomPropTypes  = __webpack_require__(61)
+	  , filter = __webpack_require__(66)
+	  , cx = __webpack_require__(13)
+	  , _  = __webpack_require__(14)
+	  , scrollTo  = __webpack_require__(81);
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'List',
+	
+	  mixins: [ 
+	    __webpack_require__(86)
+	  ],
+	
+	  propTypes: {
+	    data:           React.PropTypes.array,
+	    onSelect:       React.PropTypes.func,
+	
+	    ItemComponent:  CustomPropTypes.elementType,
+	    GroupComponent: CustomPropTypes.elementType,
+	
+	    selected:       React.PropTypes.any,
+	    focused:        React.PropTypes.any,
+	
+	    valueField:     React.PropTypes.string,
+	    textField:      React.PropTypes.string,
+	 
+	    optID:          React.PropTypes.string,
+	
+	    groupBy:        React.PropTypes.oneOfType([
+	                     React.PropTypes.func,
+	                     React.PropTypes.string
+	                    ]),
+	
+	    messages:       React.PropTypes.shape({
+	      emptyList:    React.PropTypes.string
+	    }),
+	  },
+	
+	
+	  getDefaultProps: function(){
+	    return {
+	      optID:         '',
+	      onSelect:      function(){},
+	      data:          [],
+	      messages: {
+	        emptyList:   "There are no items in this list"
+	      }
+	    }
+	  },
+	
+	  getInitialState: function() {
+	    var keys = [];
+	
+	    return {
+	      groups: this._group(this.props.groupBy, this.props.data, keys),
+	
+	      sortedKeys: keys
+	    };
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    if(nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy)
+	      this.setState({ 
+	        groups: this._group(nextProps.groupBy, nextProps.data)
+	      })
+	  },
+	
+	  componentDidMount: function(prevProps, prevState){
+	    this._setScrollPosition()
+	  },
+	
+	  componentDidUpdate: function(prevProps, prevState){
+	    if ( prevProps.focused !== this.props.focused)
+	      this._setScrollPosition()
+	  },
+	
+	  render: function(){
+	    var $__0= 
+	        
+	          _.omit(this.props, ['data', 'selectedIndex']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , groups = this.state.groups
+	      , items = []
+	      , idx = -1
+	      , group;
+	    
+	    if ( this.props.data.length ){
+	      items = this.state.sortedKeys
+	        .reduce( function(items, key)  {
+	          group = groups[key]
+	          items.push(this._renderGroupHeader(key))
+	
+	          for (var itemIdx = 0; itemIdx < group.length; itemIdx++) 
+	            items.push(
+	              this._renderItem(key, group[itemIdx], ++idx))
+	
+	          return items
+	        }.bind(this), [])
+	    }
+	    else 
+	      items = React.createElement("li", null,  this.props.messages.emptyList)
+	
+	    return (
+	      React.createElement("ul", React.__spread({},   props , 
+	        {className:  className + ' rw-list  rw-list-grouped', 
+	        ref: "scrollable", 
+	        role: "listbox"}), 
+	        items 
+	      )
+	    )
+	  },
+	
+	  _renderGroupHeader:function(group){
+	    var ItemComponent = this.props.groupComponent;
+	
+	    return (React.createElement("li", {
+	      key: 'item_' + group, 
+	      tabIndex: "-1", 
+	      className: "rw-list-optgroup"}, 
+	         ItemComponent ? React.createElement(ItemComponent, {item: group}) : group
+	    ))
+	  },
+	
+	  _renderItem:function(group, item, idx){
+	    var focused  = this.props.focused  === item
+	      , selected = this.props.selected === item
+	      , ItemComponent = this.props.listItem;
+	
+	    return (
+	      React.createElement("li", {
+	        key: 'item_' + group + '_' + idx, 
+	        role: "option", 
+	        id:  focused ? this.props.optID : undefined, 
+	        'aria-selected': selected, 
+	        onClick: this.props.onSelect.bind(null, item), 
+	        className: cx({ 
+	          'rw-state-focus':    focused,
+	          'rw-state-selected': selected,
+	          'rw-list-option':    true
+	        })}, 
+	           ItemComponent
+	              ? React.createElement(ItemComponent, {item: item})
+	              : this._dataText(item)
+	          
+	      ))
+	  },
+	
+	  _isIndexOf:function(idx, item){
+	    return this.props.data[idx] === item
+	  },
+	
+	  _group:function(groupBy, data, keys){
+	    var iter = typeof groupBy === 'function' ? groupBy : function(item)  {return item[groupBy];}
+	
+	    // the keys array ensures that groups are rendered in the order they came in
+	    // which means that if you sort the data array it will render sorted, 
+	    // so long as you also sorted by group
+	    keys = keys || []
+	
+	    return data.reduce( function(grps, item)  {
+	      var group = iter(item);
+	
+	      _.has(grps, group) 
+	        ? grps[group].push(item)
+	        : (keys.push(group), grps[group] = [item])
+	
+	      return grps
+	    }, {}) 
+	  },
+	
+	  first:function(){
+	    return this._data()[0]
+	  },
+	
+	  last:function(){
+	    var data = this._data()
+	    return data[data.length-1]
+	  },
+	
+	  prev:function(state, word){
+	    var data = this._data()
+	      , idx  = data.indexOf(this.props[state])
+	
+	    return word 
+	      ? this._findNextInstance(data, word, idx, 'prev')
+	      : --idx < 0 ? data[0] : data[idx]
+	  },
+	
+	  next:function(state,word){
+	    var data = this._data()
+	      , idx  = data.indexOf(this.props[state])
+	
+	    return word 
+	      ? this._findNextInstance(data, word, idx, 'next')
+	      : ++idx === data.length ? data[data.length - 1] : data[idx]
+	  },
+	
+	  _data:function(){ 
+	    var groups = this.state.groups;
+	
+	    return this.state.sortedKeys
+	      .reduce( function(flat, grp)  {return flat.concat(groups[grp]);}, [])
+	  },
+	
+	  _findNextInstance: function(data, word, current, dir){
+	    var matcher = filter.startsWith;
+	      
+	    return _.find(data, function(item, i)  { 
+	      return (dir === 'next' ? i > current : i < current)
+	          && matcher(
+	              this._dataText.call(this, item).toLowerCase()
+	            , word.toLowerCase())
+	    }.bind(this));    
+	  },
+	
+	  _setScrollPosition: function(){
+	    var list = this.getDOMNode()
+	      , selected = this.getItemDOMNode(this.props.focused);
+	
+	    if( !selected ) return 
+	
+	    setTimeout(function()  {return scrollTo(selected, list);})
+	  },
+	
+	  getItemDOMNode:function(item){
+	    var list = this.getDOMNode()
+	      , groups = this.state.groups
+	      , idx = -1
+	      , itemIdx, child;
+	
+	    this.state.sortedKeys.some(function(group)  {
+	      itemIdx = groups[group].indexOf(item)
+	      idx++;
+	
+	      if( itemIdx !== -1) 
+	        return !!(child = list.children[idx + itemIdx + 1])
+	
+	      idx += groups[group].length
+	    })
+	
+	    return child
+	  }
+	
+	})
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 	var has = Object.prototype.hasOwnProperty
 	  , transitionTiming, transitionDuration
@@ -16896,11 +16201,16 @@
 	  , prefix = ''
 	  , el = document.createElement('div')
 	  , reset = {}
+	  , transform ='transform'
 	  , transitions = {
 	      O:'otransitionend',
 	      Moz:'transitionend',
 	      Webkit:'webkitTransitionEnd'
 	    };
+	
+	var TRANSLATION_MAP = { 
+	      left: 'translateX', right: 'translateX'
+	    , top: 'translateY', bottom: 'translateY'}
 	
 	for(var vendor in transitions) if( has.call(transitions, vendor) )
 	{
@@ -16915,6 +16225,8 @@
 	  endEvent = 'transitionend'
 	
 	notSupported = !endEvent
+	
+	transform = prefix + transform
 	
 	reset[transitionProperty = prefix + 'transition-property'] =
 	reset[transitionDuration = prefix + 'transition-duration'] =
@@ -17073,6 +16385,7 @@
 	    var cssProperties = []
 	      , fakeEvent = { target: node, currentTarget: node }
 	      , cssValues = {}
+	      , transforms =''
 	      , fired;
 	
 	    if ( typeof easing === 'function' )
@@ -17082,8 +16395,17 @@
 	    if ( duration === undefined ) duration = 200
 	
 	    for(var key in properties) if ( has.call(properties, key) ) {
-	      cssValues[key] = properties[key]
-	      cssProperties.push(dasherize(key))
+	      if( /(top|bottom)/.test(key) ) 
+	        transforms += TRANSLATION_MAP[key] +'(' + properties[key] + ') '
+	      else{
+	        cssValues[key] = properties[key]
+	        cssProperties.push(dasherize(key))
+	      }
+	    }
+	
+	    if (transforms) {
+	      cssValues[transform] = transforms
+	      cssProperties.push(transform)
 	    }
 	
 	    if (duration > 0 ) {
@@ -17119,6 +16441,7 @@
 	  }
 	}
 	
+	
 	function getWindow( node ) {
 	  return node === node.window
 	    ? node : node.nodeType === 9 && node.defaultView;
@@ -17140,461 +16463,6 @@
 	    : window.getComputedStyle(node, null);
 	}
 
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	module.exports = function stateSetter(key){
-	  return function(val){
-	    var state = {}
-	
-	    state[key] = val
-	    this.setState(state)
-	    return this
-	  }
-	}
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(14) //invert, transform
-	  , React = __webpack_require__(1)
-	  , compat = __webpack_require__(90)
-	
-	
-	function compatPropType(handler, propType) {
-	
-	  return compat.propType(function(props, propName, componentName, location){
-	    if(props[propName] !== undefined){
-	      if ( !props[handler] )
-	        return new Error(
-	            'ReactWidgets: you have provided a `' + propName + '` prop to ' 
-	          + '`' + componentName + '` without an `' + handler + '` handler. This will render a read-only field. ' 
-	          + 'If the field should be mutable use `' + defaultKey(propName) + '`. Otherwise, set `' + handler + '`')
-	
-	      return propType && propType(props, propName, componentName, location)
-	    }
-	  })
-	}
-	
-	module.exports = {
-	
-	  createControlledClass: function(Component, controlledValues, taps) {
-	    // var publicMethods 
-	    //       = _.transform(publicApi || [], function(obj, method) {
-	    //           obj[method] = function (...args){ 
-	    //             return this.refs[this._innerRef][method](args) 
-	    //           }
-	    //         }, {})
-	
-	    var types = _.transform(controlledValues, function(obj, handler, prop){
-	          var type = Component.type.propTypes[prop];
-	
-	          obj[prop] = compatPropType(handler, type)
-	          obj[defaultKey(prop)] = type
-	        }, {});
-	
-	    taps = taps || {}
-	
-	    return React.createClass({
-	
-	      displayName: Component.displayName,
-	
-	      propTypes: types,
-	
-	      getInitialState: function(){
-	        var props = this.props
-	          , keys  = Object.keys(controlledValues);
-	
-	        return _.transform(keys, function(state, key){
-	          state[key] = props[defaultKey(key)]
-	        }, {})
-	      },
-	
-	      shouldComponentUpdate: function() {
-	        //let the setState trigger the update
-	        return !this._notifying || !this._notifying.length;
-	      },
-	
-	      render: function(){
-	        var props, handles;
-	
-	        props = _.transform(controlledValues, function(obj, handle, prop)  {
-	          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
-	        }.bind(this), {})
-	        
-	        handles = _.transform(controlledValues, function(obj, handle, prop)  {
-	          obj[handle] = setAndNotify.bind(this, prop)
-	        }.bind(this), {})
-	
-	        props = _.merge(this.props, props, handles)
-	
-	        for(var k in taps) if (_.has(props, k)) {
-	          props[k] = chain(this, taps[k], props[k])
-	        }
-	        //this._innerRef = props.ref = props.ref || 'component'
-	
-	        return React.createElement(Component, props, this.props.children);
-	      }
-	    })
-	
-	    function setAndNotify(prop, value){
-	      /*jshint validthis:true */
-	      var handler    = controlledValues[prop]
-	        , controlled = handler && isProp(this.props, prop)
-	        , st = {}
-	        , args;
-	
-	      if ( !this._notifying ) this._notifying = [];
-	
-	      if( this.props[handler] ) {
-	        args = [].slice.call(arguments, 1)
-	        this._notifying.push(true)
-	        this.props[handler].apply(this, args)
-	        this._notifying.pop()
-	      }
-	        
-	      st[prop] = value
-	      this.setState(st)
-	
-	      return !controlled
-	    }
-	
-	    function isProp(props, prop){
-	      return props[prop] !== undefined;
-	    }
-	  }
-	}
-	
-	
-	// function invert(controlledValues){
-	//   return _.transform(controlledValues, (val, key ) => ,)
-	// }
-	
-	function defaultKey(key){
-	  return 'default' + key.charAt(0).toUpperCase() + key.substr(1)
-	}
-	
-	function chain(thisArg, a, b){
-	  return function chainedFunction(){
-	    a && a.apply(thisArg, arguments)
-	    b && b.apply(thisArg, arguments)
-	  }
-	}
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	
-	module.exports = {
-	
-		elementType: createChainableTypeChecker(
-	    function (props, propName, componentName, location) {
-	
-	      if( typeof props[propName] !== 'function'){
-	        if ( React.isValidElement(props[propName]))
-	          return new Error(
-	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
-	            ' Expected an Element `type`, not an actual Element')
-	
-	        if (typeof props[propName] !== 'string')
-	          return new Error(
-	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
-	            ' Expected an Element `type` such as a tag name or return value of React.createClass(...)')
-	      }
-	      return true
-	    })
-	}
-	
-	
-	function createChainableTypeChecker(validate) {
-	
-	  function checkType(isRequired, props, propName, componentName, location) {
-	    componentName = componentName || '<<anonymous>>';
-	    if (props[propName] == null) {
-	      if (isRequired) {
-	        return new Error(
-	          "Required prop `" + propName + "` was not specified in  `" + componentName + "`.");
-	      }
-	    } 
-	    else 
-	      return validate(props, propName, componentName, location);
-	  }
-	
-	  var chainedCheckType = checkType.bind(null, false);
-	  chainedCheckType.isRequired = checkType.bind(null, true);
-	
-	  return chainedCheckType
-	}
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , $ = __webpack_require__(60);
-	
-	
-	var PopupContent = React.createClass({displayName: 'PopupContent',
-	  render: function(){
-	    var Content = React.Children.only(this.props.children)
-	
-	    Content.props.className = (Content.props.className || '') + ' rw-popup rw-widget';
-	
-	    return Content
-	  }
-	})
-	
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-		propTypes: {
-	    duration:       React.PropTypes.number,
-	    onRequestClose: React.PropTypes.func.isRequired,
-	    onClosing:      React.PropTypes.func,
-	    onOpening:      React.PropTypes.func,
-	    onClose:        React.PropTypes.func,
-	    onOpen:         React.PropTypes.func
-		},
-	
-	  getDefaultProps: function(){
-	    return {
-	      duration:    200,
-	      open:        false,
-	      onClosing:   function(){},
-	      onOpening:   function(){},
-	      onClose:     function(){},
-	      onOpen:      function(){},
-	    }
-	  },
-	
-		componentDidMount: function(){
-	    !this.props.open && this.close(0)
-		},
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    this.setState({
-	      contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
-	    })
-	  },
-	
-	  componentDidUpdate: function(pvProps, pvState){
-	    var closing =  pvProps.open && !this.props.open
-	      , opening = !pvProps.open && this.props.open;
-	
-	    if (opening)      this.open()
-	    else if (closing) this.close()
-	  },
-	
-		render: function(){
-	    var $__0=      this.props,className=$__0.className,open=$__0.open,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,open:1})
-	
-			return (
-	      React.createElement("div", React.__spread({},  props, {className:  (className ||'') + " rw-popup-container"}), 
-	        React.createElement(PopupContent, {ref: "content"}, 
-	           this.props.children
-	        )
-	      )
-			)
-		},
-	
-	  dimensions: function(){
-	    var el = this.getDOMNode();
-	
-	    el.style.display = 'block'
-	    el.style.height  = $.height(this.refs.content.getDOMNode()) + 'px'
-	  },
-	
-	  open: function(){
-	    var self = this
-	      , anim = this.getDOMNode()
-	      , el   = this.refs.content.getDOMNode();
-	
-	    this.ORGINAL_POSITION = $.css(el, 'position')
-	
-	    this._isOpening = true
-	    this.dimensions()
-	    this.props.onOpening()
-	
-	    el.style.position = 'absolute'
-	
-	    $.animate(el
-	      , { top: 0 }
-	      , self.props.duration
-	      , function(){
-	          if ( !self._isOpening ) return
-	          el.style.position = self.ORGINAL_POSITION
-	          anim.style.overflow = 'visible'
-	          self.ORGINAL_POSITION = null
-	          self.props.onOpen()
-	        })
-	  },
-	
-	  close: function(dur){
-	    var self = this
-	      , el   = this.refs.content.getDOMNode()
-	      , anim = this.getDOMNode();
-	
-	    this.ORGINAL_POSITION = $.css(el, 'position')
-	
-	    this._isOpening = false
-	    this.dimensions()
-	    this.props.onClosing()
-	
-	    anim.style.overflow = 'hidden'
-	    el.style.position = 'absolute'
-	
-	    $.animate(el
-	      , { top: '-100%' }
-	      , dur === undefined ? this.props.duration : dur
-	      , function() {
-	          if ( self._isOpening ) return
-	          el.style.position = self.ORGINAL_POSITION
-	
-	          anim.style.display = 'none'
-	          self.ORGINAL_POSITION = null
-	          self.props.onClose()
-	        })
-	  }
-	
-	})
-	
-	
-	function childKey(children){
-	  var nextChildMapping = React.Children.map(children, function(c)  {return c;} );
-	  for(var key in nextChildMapping) return key
-	}
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(63)
-	  , cx = __webpack_require__(13)
-	  , _  = __webpack_require__(14);
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'List',
-	
-	  mixins: [ 
-	    __webpack_require__(86)
-	  ],
-	
-	  propTypes: {
-	    data:          React.PropTypes.array,
-	    onSelect:      React.PropTypes.func,
-	    listItem:      CustomPropTypes.elementType,
-	    selectedIndex: React.PropTypes.number,
-	    focusedIndex:  React.PropTypes.number,
-	    valueField:    React.PropTypes.string,
-	    textField:     React.PropTypes.string,
-	
-	    optID:         React.PropTypes.string,
-	
-	    messages:      React.PropTypes.shape({
-	      emptyList:   React.PropTypes.string
-	    }),
-	  },
-	
-	
-	  getDefaultProps: function(){
-	    return {
-	      delay:         500,
-	      optID:         '',
-	      onSelect:      function(){},
-	      data:          [],
-	      messages: {
-	        emptyList:   "There are no items in this list"
-	      }
-	    }
-	  },
-	
-	  componentDidMount: function(prevProps, prevState){
-	    this._setScrollPosition()
-	  },
-	
-	  componentDidUpdate: function(prevProps, prevState){
-	    if ( prevProps.focusedIndex !== this.props.focusedIndex)
-	      this._setScrollPosition()
-	  },
-	
-		render: function(){
-	    var $__0=     _.omit(this.props, ['data', 'selectedIndex']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , ItemComponent = this.props.listItem
-	      , emptyList   = React.createElement("li", null,  this.props.messages.emptyList)
-	      , items;
-	    
-	    items = this.props.data.map(function(item, idx){
-	      var focused = this.props.focusedIndex === idx;
-	
-	      return (React.createElement("li", {
-	        key: 'item_' + idx, 
-	        role: "option", 
-	        id:  focused ? this.props.optID : undefined, 
-	        'aria-selected':  idx === this.props.selectedIndex, 
-	        className: cx({ 
-	          'rw-state-focus':    focused,
-	          'rw-state-selected': idx === this.props.selectedIndex,
-	        }), 
-	        onClick: this.props.onSelect.bind(null, item, idx)}, 
-	         ItemComponent
-	            ? React.createElement(ItemComponent, {item: item})
-	            : this._dataText(item)
-	        
-	      ))
-	    }, this);
-	    
-			return (
-				React.createElement("ul", React.__spread({},   props , 
-	        {className:  className + ' rw-list', 
-	        ref: "scrollable", 
-	        role: "listbox", 
-	        tabIndex: "-1", 
-	        onKeyDown: this._keyDown, 
-	        onKeyPress: this.search}), 
-	         !this.props.data.length 
-	          ? emptyList 
-	          : items
-				)
-			)
-		},
-	
-	  _setScrollPosition: function(){
-	    var list = this.getDOMNode()
-	      , selected = list.children[this.props.focusedIndex]
-	      , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
-	
-	    if( !selected ) return 
-	
-	    scrollTop   = list.scrollTop
-	    listHeight  = list.clientHeight
-	
-	    selectedTop =  selected.offsetTop
-	    selectedHeight = selected.offsetHeight
-	
-	    bottom =  selectedTop + selectedHeight
-	
-	    list.scrollTop = scrollTop > selectedTop
-	      ? selectedTop
-	      : bottom > (scrollTop + listHeight) 
-	          ? (bottom - listHeight)
-	          : scrollTop
-	  }
-	
-	})
 
 /***/ },
 /* 66 */
@@ -17654,7 +16522,7 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , caretPos = __webpack_require__(91);
+	  , caretPos = __webpack_require__(92);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -17753,8 +16621,8 @@
 	  },
 	
 	  mixins: [
-	    __webpack_require__(84),
-	    __webpack_require__(92)
+	    __webpack_require__(85),
+	    __webpack_require__(93)
 	  ],
 	
 	  getDefaultProps: function(){
@@ -17821,9 +16689,9 @@
 	  displayName: 'MonthView',
 	
 	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(92),
-	    __webpack_require__(93)('month', 'day'),
+	    __webpack_require__(84),
+	    __webpack_require__(93),
+	    __webpack_require__(94)('month', 'day'),
 	  ],
 	
 	  propTypes: {
@@ -17955,9 +16823,9 @@
 	  displayName: 'YearView',
 	
 	  mixins: [
-	    __webpack_require__(83),
-	    __webpack_require__(92),
-	    __webpack_require__(93)('year', 'month')
+	    __webpack_require__(84),
+	    __webpack_require__(93),
+	    __webpack_require__(94)('year', 'month')
 	  ],
 	
 	  propTypes: {
@@ -18073,10 +16941,10 @@
 	  displayName: 'DecadeView',
 	
 	  mixins: [
-	    __webpack_require__(83),
 	    __webpack_require__(84),
-	    __webpack_require__(92),
-	    __webpack_require__(93)('decade', 'year')
+	    __webpack_require__(85),
+	    __webpack_require__(93),
+	    __webpack_require__(94)('decade', 'year')
 	  ],
 	
 	  propTypes: {
@@ -18201,10 +17069,10 @@
 	  displayName: 'CenturyView',
 	
 	  mixins: [
-	    __webpack_require__(83),
 	    __webpack_require__(84),
-	    __webpack_require__(92),
-	    __webpack_require__(93)('century', 'decade')
+	    __webpack_require__(85),
+	    __webpack_require__(93),
+	    __webpack_require__(94)('century', 'decade')
 	  ],
 	
 	  propTypes: {
@@ -18330,7 +17198,7 @@
 	"use strict";
 	
 	var dateMath = __webpack_require__(39)
-	  , globalize = __webpack_require__(95)
+	  , globalize = __webpack_require__(97)
 	  , _ = __webpack_require__(14); //extend
 	
 	var dates = module.exports = _.extend(dateMath, {
@@ -18540,8 +17408,8 @@
 	'use strict';
 	var React = __webpack_require__(1)
 	  , dates = __webpack_require__(74)
-	  , List = __webpack_require__(65)
-	  , CustomPropTypes  = __webpack_require__(63)
+	  , List = __webpack_require__(63)
+	  , CustomPropTypes  = __webpack_require__(61)
 	  , _ = __webpack_require__(14) // omit
 	
 	
@@ -18550,9 +17418,9 @@
 	  displayName: 'TimeList',
 	
 	  mixins: [
-	    __webpack_require__(85),
-	    __webpack_require__(88)('selectedIndex'),
-	    __webpack_require__(88)('focusedIndex')
+	    __webpack_require__(88),
+	    __webpack_require__(90)('selectedIndex'),
+	    __webpack_require__(90)('focusedIndex')
 	  ],
 	
 	  propTypes: {
@@ -18812,8 +17680,8 @@
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , setter  = __webpack_require__(61)
-	  , globalize = __webpack_require__(95);
+	  , setter  = __webpack_require__(95)
+	  , globalize = __webpack_require__(97);
 	
 	
 	module.exports = React.createClass({
@@ -18981,7 +17849,7 @@
 	
 	  mixins: [
 	    __webpack_require__(86),
-	    __webpack_require__(84)
+	    __webpack_require__(85)
 	  ],
 	
 	  propTypes: {
@@ -19140,9 +18008,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $ = __webpack_require__(60)
+	var $ = __webpack_require__(65)
 	
-	module.exports = function scrollTo( selected ) {
+	module.exports = function scrollTo( selected, scrollParent ) {
 	  var offset = $.offset(selected)
 	    , poff   = { top: 0, left: 0 }
 	    , list, scrollTop, selectedTop
@@ -19150,7 +18018,7 @@
 	
 	    if( !selected ) return 
 	
-	    list       = $.scrollParent(selected)
+	    list       = scrollParent || $.scrollParent(selected) // if we know the parent skip this step for perf (maybe)
 	    scrollTop  = $.scrollTop(list)
 	    listHeight = $.height(list, true)
 	
@@ -19184,6 +18052,1981 @@
 
 /***/ },
 /* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(Buffer) {//  Chance.js 0.7.1
+	//  http://chancejs.com
+	//  (c) 2013 Victor Quinn
+	//  Chance may be freely distributed or modified under the MIT license.
+	
+	(function () {
+	
+	    // Constants
+	    var MAX_INT = 9007199254740992;
+	    var MIN_INT = -MAX_INT;
+	    var NUMBERS = '0123456789';
+	    var CHARS_LOWER = 'abcdefghijklmnopqrstuvwxyz';
+	    var CHARS_UPPER = CHARS_LOWER.toUpperCase();
+	    var HEX_POOL  = NUMBERS + "abcdef";
+	
+	    // Cached array helpers
+	    var slice = Array.prototype.slice;
+	
+	    // Constructor
+	    function Chance (seed) {
+	        if (!(this instanceof Chance)) {
+	            return new Chance(seed);
+	        }
+	
+	        // if user has provided a function, use that as the generator
+	        if (typeof seed === 'function') {
+	            this.random = seed;
+	            return this;
+	        }
+	
+	        var seedling;
+	        
+	        if (arguments.length) {
+	            // set a starting value of zero so we can add to it
+	            this.seed = 0;
+	        }
+	        // otherwise, leave this.seed blank so that MT will recieve a blank
+	
+	        for (var i = 0; i < arguments.length; i++) {
+	            seedling = 0;
+	            if (typeof arguments[i] === 'string') {
+	                for (var j = 0; j < arguments[i].length; j++) {
+	                    seedling += (arguments[i].length - j) * arguments[i].charCodeAt(j);
+	                }
+	            } else {
+	                seedling = arguments[i];
+	            }
+	            this.seed += (arguments.length - i) * seedling;
+	        }
+	
+	        // If no generator function was provided, use our MT
+	        this.mt = this.mersenne_twister(this.seed);
+	        this.random = function () {
+	            return this.mt.random(this.seed);
+	        };
+	
+	        return this;
+	    }
+	
+	    Chance.prototype.VERSION = "0.7.1";
+	
+	    // Random helper functions
+	    function initOptions(options, defaults) {
+	        options || (options = {});
+	
+	        if (defaults) {
+	            for (var i in defaults) {
+	                if (typeof options[i] === 'undefined') {
+	                    options[i] = defaults[i];
+	                }
+	            }
+	        }
+	
+	        return options;
+	    }
+	
+	    function testRange(test, errorMessage) {
+	        if (test) {
+	            throw new RangeError(errorMessage);
+	        }
+	    }
+	
+	    /**
+	     * Encode the input string with Base64.
+	     * @param input
+	     */
+	    var base64 = function(input) {
+	        throw new Error('No Base64 encoder available.');
+	    };
+	
+	    // Select proper Base64 encoder.
+	    (function determineBase64Encoder() {
+	        if (typeof btoa === 'function') {
+	            base64 = btoa;
+	        } else if (typeof Buffer === 'function') {
+	            base64 = function(input) {
+	                return new Buffer(input).toString('base64');
+	            };
+	        }
+	    })();
+	
+	    // -- Basics --
+	
+	    Chance.prototype.bool = function (options) {
+	
+	        // likelihood of success (true)
+	        options = initOptions(options, {likelihood : 50});
+	
+	        testRange(
+	            options.likelihood < 0 || options.likelihood > 100,
+	            "Chance: Likelihood accepts values from 0 to 100."
+	        );
+	
+	        return this.random() * 100 < options.likelihood;
+	    };
+	
+	    Chance.prototype.character = function (options) {
+	        options = initOptions(options);
+	
+	        var symbols = "!@#$%^&*()[]",
+	            letters, pool;
+	
+	        testRange(
+	            options.alpha && options.symbols,
+	            "Chance: Cannot specify both alpha and symbols."
+	        );
+	
+	
+	        if (options.casing === 'lower') {
+	            letters = CHARS_LOWER;
+	        } else if (options.casing === 'upper') {
+	            letters = CHARS_UPPER;
+	        } else {
+	            letters = CHARS_LOWER + CHARS_UPPER;
+	        }
+	
+	        if (options.pool) {
+	            pool = options.pool;
+	        } else if (options.alpha) {
+	            pool = letters;
+	        } else if (options.symbols) {
+	            pool = symbols;
+	        } else {
+	            pool = letters + NUMBERS + symbols;
+	        }
+	
+	        return pool.charAt(this.natural({max: (pool.length - 1)}));
+	    };
+	
+	    // Note, wanted to use "float" or "double" but those are both JS reserved words.
+	
+	    // Note, fixed means N OR LESS digits after the decimal. This because
+	    // It could be 14.9000 but in JavaScript, when this is cast as a number,
+	    // the trailing zeroes are dropped. Left to the consumer if trailing zeroes are
+	    // needed
+	    Chance.prototype.floating = function (options) {
+	        var num;
+	
+	        options = initOptions(options, {fixed : 4});
+	        var fixed = Math.pow(10, options.fixed);
+	
+	        testRange(
+	            options.fixed && options.precision,
+	            "Chance: Cannot specify both fixed and precision."
+	        );
+	
+	        var max = MAX_INT / fixed;
+	        var min = -max;
+	
+	        testRange(
+	            options.min && options.fixed && options.min < min,
+	            "Chance: Min specified is out of range with fixed. Min should be, at least, " + min
+	        );
+	        testRange(
+	            options.max && options.fixed && options.max > max,
+	            "Chance: Max specified is out of range with fixed. Max should be, at most, " + max
+	        );
+	
+	        options = initOptions(options, {min : min, max : max});
+	
+	        // Todo - Make this work!
+	        // options.precision = (typeof options.precision !== "undefined") ? options.precision : false;
+	
+	        num = this.integer({min: options.min * fixed, max: options.max * fixed});
+	        var num_fixed = (num / fixed).toFixed(options.fixed);
+	
+	        return parseFloat(num_fixed);
+	    };
+	
+	    // NOTE the max and min are INCLUDED in the range. So:
+	    //
+	    // chance.natural({min: 1, max: 3});
+	    //
+	    // would return either 1, 2, or 3.
+	
+	    Chance.prototype.integer = function (options) {
+	
+	        // 9007199254740992 (2^53) is the max integer number in JavaScript
+	        // See: http://vq.io/132sa2j
+	        options = initOptions(options, {min: MIN_INT, max: MAX_INT});
+	
+	        testRange(options.min > options.max, "Chance: Min cannot be greater than Max.");
+	
+	        return Math.floor(this.random() * (options.max - options.min + 1) + options.min);
+	    };
+	
+	    Chance.prototype.natural = function (options) {
+	        options = initOptions(options, {min: 0, max: MAX_INT});
+	        return this.integer(options);
+	    };
+	
+	    Chance.prototype.string = function (options) {
+	        options = initOptions(options);
+	
+	        var length = options.length || this.natural({min: 5, max: 20}),
+	            pool = options.pool,
+	            text = this.n(this.character, length, {pool: pool});
+	
+	        return text.join("");
+	    };
+	
+	    // -- End Basics --
+	
+	    // -- Helpers --
+	
+	    Chance.prototype.capitalize = function (word) {
+	        return word.charAt(0).toUpperCase() + word.substr(1);
+	    };
+	
+	    Chance.prototype.mixin = function (obj) {
+	        for (var func_name in obj) {
+	            Chance.prototype[func_name] = obj[func_name];
+	        }
+	        return this;
+	    };
+	
+	    // Given a function that generates something random and a number of items to generate,
+	    // return an array of items where none repeat.
+	    Chance.prototype.unique = function(fn, num, options) {
+	        options = initOptions(options, {
+	            // Default comparator to check that val is not already in arr.
+	            // Should return `false` if item not in array, `true` otherwise
+	            comparator: function(arr, val) {
+	                return arr.indexOf(val) !== -1;
+	            }
+	        });
+	
+	        var arr = [], count = 0, result, MAX_DUPLICATES = num * 50, params = slice.call(arguments, 2);
+	
+	        while (arr.length < num) {
+	            result = fn.apply(this, params);
+	            if (!options.comparator(arr, result)) {
+	                arr.push(result);
+	                // reset count when unique found
+	                count = 0;
+	            }
+	
+	            if (++count > MAX_DUPLICATES) {
+	                throw new RangeError("Chance: num is likely too large for sample set");
+	            }
+	        }
+	        return arr;
+	    };
+	
+	    /**
+	     *  Gives an array of n random terms
+	     *  @param fn the function that generates something random
+	     *  @param n number of terms to generate
+	     *  @param options options for the function fn. 
+	     *  There can be more parameters after these. All additional parameters are provided to the given function
+	     */
+	    Chance.prototype.n = function(fn, n, options) {
+	        var i = n || 1, arr = [], params = slice.call(arguments, 2);
+	        // Providing a negative count should result in a noop.
+	        i = Math.max( 0, i );
+	
+	        for (null; i--; null) {
+	            arr.push(fn.apply(this, params));
+	        }
+	
+	        return arr;
+	    };
+	
+	    // H/T to SO for this one: http://vq.io/OtUrZ5
+	    Chance.prototype.pad = function (number, width, pad) {
+	        // Default pad to 0 if none provided
+	        pad = pad || '0';
+	        // Convert number to a string
+	        number = number + '';
+	        return number.length >= width ? number : new Array(width - number.length + 1).join(pad) + number;
+	    };
+	
+	    Chance.prototype.pick = function (arr, count) {
+	        if (arr.length === 0) {
+	            throw new RangeError("Chance: Cannot pick() from an empty array");
+	        }
+	        if (!count || count === 1) {
+	            return arr[this.natural({max: arr.length - 1})];
+	        } else {
+	            return this.shuffle(arr).slice(0, count);
+	        }
+	    };
+	
+	    Chance.prototype.shuffle = function (arr) {
+	        var old_array = arr.slice(0),
+	            new_array = [],
+	            j = 0,
+	            length = Number(old_array.length);
+	
+	        for (var i = 0; i < length; i++) {
+	            // Pick a random index from the array
+	            j = this.natural({max: old_array.length - 1});
+	            // Add it to the new array
+	            new_array[i] = old_array[j];
+	            // Remove that element from the original array
+	            old_array.splice(j, 1);
+	        }
+	
+	        return new_array;
+	    };
+	
+	    // Returns a single item from an array with relative weighting of odds
+	    Chance.prototype.weighted = function(arr, weights) {
+	        if (arr.length !== weights.length) {
+	            throw new RangeError("Chance: length of array and weights must match");
+	        }
+	
+	        // If any of the weights are less than 1, we want to scale them up to whole
+	        //   numbers for the rest of this logic to work
+	        if (weights.some(function(weight) { return weight < 1; })) {
+	            var min = weights.reduce(function(min, weight) {
+	                return (weight < min) ? weight : min;
+	            }, weights[0]);
+	
+	            var scaling_factor = 1 / min;
+	
+	            weights = weights.map(function(weight) {
+	                return weight * scaling_factor;
+	            });
+	        }
+	
+	        var sum = weights.reduce(function(total, weight) {
+	            return total + weight;
+	        }, 0);
+	
+	        // get an index
+	        var selected = this.natural({ min: 1, max: sum });
+	
+	        var total = 0;
+	        var chosen;
+	        // Using some() here so we can bail as soon as we get our match
+	        weights.some(function(weight, index) {
+	            if (selected <= total + weight) {
+	                chosen = arr[index];
+	                return true;
+	            }
+	            total += weight;
+	            return false;
+	        });
+	
+	        return chosen;
+	    };
+	
+	    // -- End Helpers --
+	
+	    // -- Text --
+	
+	    Chance.prototype.paragraph = function (options) {
+	        options = initOptions(options);
+	
+	        var sentences = options.sentences || this.natural({min: 3, max: 7}),
+	            sentence_array = this.n(this.sentence, sentences);
+	
+	        return sentence_array.join(' ');
+	    };
+	
+	    // Could get smarter about this than generating random words and
+	    // chaining them together. Such as: http://vq.io/1a5ceOh
+	    Chance.prototype.sentence = function (options) {
+	        options = initOptions(options);
+	
+	        var words = options.words || this.natural({min: 12, max: 18}),
+	            text, word_array = this.n(this.word, words);
+	
+	        text = word_array.join(' ');
+	
+	        // Capitalize first letter of sentence, add period at end
+	        text = this.capitalize(text) + '.';
+	
+	        return text;
+	    };
+	
+	    Chance.prototype.syllable = function (options) {
+	        options = initOptions(options);
+	
+	        var length = options.length || this.natural({min: 2, max: 3}),
+	            consonants = 'bcdfghjklmnprstvwz', // consonants except hard to speak ones
+	            vowels = 'aeiou', // vowels
+	            all = consonants + vowels, // all
+	            text = '',
+	            chr;
+	
+	        // I'm sure there's a more elegant way to do this, but this works
+	        // decently well.
+	        for (var i = 0; i < length; i++) {
+	            if (i === 0) {
+	                // First character can be anything
+	                chr = this.character({pool: all});
+	            } else if (consonants.indexOf(chr) === -1) {
+	                // Last character was a vowel, now we want a consonant
+	                chr = this.character({pool: consonants});
+	            } else {
+	                // Last character was a consonant, now we want a vowel
+	                chr = this.character({pool: vowels});
+	            }
+	
+	            text += chr;
+	        }
+	
+	        return text;
+	    };
+	
+	    Chance.prototype.word = function (options) {
+	        options = initOptions(options);
+	
+	        testRange(
+	            options.syllables && options.length,
+	            "Chance: Cannot specify both syllables AND length."
+	        );
+	
+	        var syllables = options.syllables || this.natural({min: 1, max: 3}),
+	            text = '';
+	
+	        if (options.length) {
+	            // Either bound word by length
+	            do {
+	                text += this.syllable();
+	            } while (text.length < options.length);
+	            text = text.substring(0, options.length);
+	        } else {
+	            // Or by number of syllables
+	            for (var i = 0; i < syllables; i++) {
+	                text += this.syllable();
+	            }
+	        }
+	        return text;
+	    };
+	
+	    // -- End Text --
+	
+	    // -- Person --
+	
+	    Chance.prototype.age = function (options) {
+	        options = initOptions(options);
+	        var ageRange;
+	
+	        switch (options.type) {
+	            case 'child':
+	                ageRange = {min: 1, max: 12};
+	                break;
+	            case 'teen':
+	                ageRange = {min: 13, max: 19};
+	                break;
+	            case 'adult':
+	                ageRange = {min: 18, max: 65};
+	                break;
+	            case 'senior':
+	                ageRange = {min: 65, max: 100};
+	                break;
+	            case 'all':
+	                ageRange = {min: 1, max: 100};
+	                break;
+	            default:
+	                ageRange = {min: 18, max: 65};
+	                break;
+	        }
+	
+	        return this.natural(ageRange);
+	    };
+	
+	    Chance.prototype.birthday = function (options) {
+	        options = initOptions(options, {
+	            year: (new Date().getFullYear() - this.age(options))
+	        });
+	
+	        return this.date(options);
+	    };
+	
+	    // CPF; ID to identify taxpayers in Brazil
+	    Chance.prototype.cpf = function () {
+	        var n = this.n(this.natural, 9, { max: 9 });
+	        var d1 = n[8]*2+n[7]*3+n[6]*4+n[5]*5+n[4]*6+n[3]*7+n[2]*8+n[1]*9+n[0]*10;
+	        d1 = 11 - (d1 % 11);
+	        if (d1>=10) {
+	            d1 = 0;
+	        }
+	        var d2 = d1*2+n[8]*3+n[7]*4+n[6]*5+n[5]*6+n[4]*7+n[3]*8+n[2]*9+n[1]*10+n[0]*11;
+	        d2 = 11 - (d2 % 11);
+	        if (d2>=10) {
+	            d2 = 0;
+	        }
+	        return ''+n[0]+n[1]+n[2]+'.'+n[3]+n[4]+n[5]+'.'+n[6]+n[7]+n[8]+'-'+d1+d2;
+	    };
+	
+	    Chance.prototype.first = function (options) {
+	        options = initOptions(options, {gender: this.gender()});
+	        return this.pick(this.get("firstNames")[options.gender.toLowerCase()]);
+	    };
+	
+	    Chance.prototype.gender = function () {
+	        return this.pick(['Male', 'Female']);
+	    };
+	
+	    Chance.prototype.last = function () {
+	        return this.pick(this.get("lastNames"));
+	    };
+	
+	    Chance.prototype.name = function (options) {
+	        options = initOptions(options);
+	
+	        var first = this.first(options),
+	            last = this.last(),
+	            name;
+	
+	        if (options.middle) {
+	            name = first + ' ' + this.first(options) + ' ' + last;
+	        } else if (options.middle_initial) {
+	            name = first + ' ' + this.character({alpha: true, casing: 'upper'}) + '. ' + last;
+	        } else {
+	            name = first + ' ' + last;
+	        }
+	
+	        if (options.prefix) {
+	            name = this.prefix(options) + ' ' + name;
+	        }
+	
+	        if (options.suffix) {
+	            name = name + ' ' + this.suffix(options);
+	        }
+	
+	        return name;
+	    };
+	
+	    // Return the list of available name prefixes based on supplied gender.
+	    Chance.prototype.name_prefixes = function (gender) {
+	        gender = gender || "all";
+	        gender = gender.toLowerCase();
+	
+	        var prefixes = [
+	            { name: 'Doctor', abbreviation: 'Dr.' }
+	        ];
+	
+	        if (gender === "male" || gender === "all") {
+	            prefixes.push({ name: 'Mister', abbreviation: 'Mr.' });
+	        }
+	
+	        if (gender === "female" || gender === "all") {
+	            prefixes.push({ name: 'Miss', abbreviation: 'Miss' });
+	            prefixes.push({ name: 'Misses', abbreviation: 'Mrs.' });
+	        }
+	
+	        return prefixes;
+	    };
+	
+	    // Alias for name_prefix
+	    Chance.prototype.prefix = function (options) {
+	        return this.name_prefix(options);
+	    };
+	
+	    Chance.prototype.name_prefix = function (options) {
+	        options = initOptions(options, { gender: "all" });
+	        return options.full ?
+	            this.pick(this.name_prefixes(options.gender)).name :
+	            this.pick(this.name_prefixes(options.gender)).abbreviation;
+	    };
+	
+	    Chance.prototype.ssn = function (options) {
+	        options = initOptions(options, {ssnFour: false, dashes: true});
+	        var ssn_pool = "1234567890",
+	            ssn,
+	            dash = options.dashes ? '-' : '';
+	
+	        if(!options.ssnFour) {
+	            ssn = this.string({pool: ssn_pool, length: 3}) + dash +
+	            this.string({pool: ssn_pool, length: 2}) + dash +
+	            this.string({pool: ssn_pool, length: 4});
+	        } else {
+	            ssn = this.string({pool: ssn_pool, length: 4});
+	        }
+	        return ssn;
+	    };
+	
+	    // Return the list of available name suffixes
+	    Chance.prototype.name_suffixes = function () {
+	        var suffixes = [
+	            { name: 'Doctor of Osteopathic Medicine', abbreviation: 'D.O.' },
+	            { name: 'Doctor of Philosophy', abbreviation: 'Ph.D.' },
+	            { name: 'Esquire', abbreviation: 'Esq.' },
+	            { name: 'Junior', abbreviation: 'Jr.' },
+	            { name: 'Juris Doctor', abbreviation: 'J.D.' },
+	            { name: 'Master of Arts', abbreviation: 'M.A.' },
+	            { name: 'Master of Business Administration', abbreviation: 'M.B.A.' },
+	            { name: 'Master of Science', abbreviation: 'M.S.' },
+	            { name: 'Medical Doctor', abbreviation: 'M.D.' },
+	            { name: 'Senior', abbreviation: 'Sr.' },
+	            { name: 'The Third', abbreviation: 'III' },
+	            { name: 'The Fourth', abbreviation: 'IV' }
+	        ];
+	        return suffixes;
+	    };
+	
+	    // Alias for name_suffix
+	    Chance.prototype.suffix = function (options) {
+	        return this.name_suffix(options);
+	    };
+	
+	    Chance.prototype.name_suffix = function (options) {
+	        options = initOptions(options);
+	        return options.full ?
+	            this.pick(this.name_suffixes()).name :
+	            this.pick(this.name_suffixes()).abbreviation;
+	    };
+	
+	    // -- End Person --
+	
+	    // -- Mobile --
+	    // Android GCM Registration ID
+	    Chance.prototype.android_id = function (options) {
+	        return "APA91" + this.string({ pool: "0123456789abcefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_", length: 178 });
+	    };
+	
+	    // Apple Push Token
+	    Chance.prototype.apple_token = function (options) {
+	        return this.string({ pool: "abcdef1234567890", length: 64 });
+	    };
+	
+	    // Windows Phone 8 ANID2
+	    Chance.prototype.wp8_anid2 = function (options) {
+	        return base64( this.hash( { length : 32 } ) );
+	    };
+	
+	    // Windows Phone 7 ANID
+	    Chance.prototype.wp7_anid = function (options) {
+	        return 'A=' + this.guid().replace(/-/g, '').toUpperCase() + '&E=' + this.hash({ length:3 }) + '&W=' + this.integer({ min:0, max:9 });
+	    };
+	
+	    // BlackBerry Device PIN
+	    Chance.prototype.bb_pin = function (options) {
+	        return this.hash({ length: 8 });
+	    };
+	
+	    // -- End Mobile --
+	
+	    // -- Web --
+	    Chance.prototype.color = function (options) {
+	        function gray(value, delimiter) {
+	            return [value, value, value].join(delimiter || '');
+	        }
+	
+	        options = initOptions(options, {format: this.pick(['hex', 'shorthex', 'rgb', '0x']), grayscale: false, casing: 'lower'});
+	        var isGrayscale = options.grayscale;
+	        var colorValue;
+	
+	        if (options.format === 'hex') {
+	            colorValue = '#' + (isGrayscale ? gray(this.hash({length: 2})) : this.hash({length: 6}));
+	
+	        } else if (options.format === 'shorthex') {
+	            colorValue = '#' + (isGrayscale ? gray(this.hash({length: 1})) : this.hash({length: 3}));
+	
+	        } else if (options.format === 'rgb') {
+	            if (isGrayscale) {
+	                colorValue = 'rgb(' + gray(this.natural({max: 255}), ',') + ')';
+	            } else {
+	                colorValue = 'rgb(' + this.natural({max: 255}) + ',' + this.natural({max: 255}) + ',' + this.natural({max: 255}) + ')';
+	            }
+	        } else if (options.format === '0x') {
+	            colorValue = '0x' + (isGrayscale ? gray(this.hash({length: 2})) : this.hash({length: 6}));
+	        } else {
+	            throw new Error('Invalid format provided. Please provide one of "hex", "shorthex", "rgb" or "0x".');
+	        }
+	
+	        if (options.casing === 'upper' ) {
+	            colorValue = colorValue.toUpperCase();
+	        }
+	
+	        return colorValue;
+	    };
+	
+	    Chance.prototype.domain = function (options) {
+	        options = initOptions(options);
+	        return this.word() + '.' + (options.tld || this.tld());
+	    };
+	
+	    Chance.prototype.email = function (options) {
+	        options = initOptions(options);
+	        return this.word({length: options.length}) + '@' + (options.domain || this.domain());
+	    };
+	
+	    Chance.prototype.fbid = function () {
+	        return parseInt('10000' + this.natural({max: 100000000000}), 10);
+	    };
+	
+	    Chance.prototype.google_analytics = function () {
+	        var account = this.pad(this.natural({max: 999999}), 6);
+	        var property = this.pad(this.natural({max: 99}), 2);
+	
+	        return 'UA-' + account + '-' + property;
+	    };
+	
+	    Chance.prototype.hashtag = function () {
+	        return '#' + this.word();
+	    };
+	
+	    Chance.prototype.ip = function () {
+	        // Todo: This could return some reserved IPs. See http://vq.io/137dgYy
+	        // this should probably be updated to account for that rare as it may be
+	        return this.natural({max: 255}) + '.' +
+	               this.natural({max: 255}) + '.' +
+	               this.natural({max: 255}) + '.' +
+	               this.natural({max: 255});
+	    };
+	
+	    Chance.prototype.ipv6 = function () {
+	        var ip_addr = this.n(this.hash, 8, {length: 4});
+	
+	        return ip_addr.join(":");
+	    };
+	
+	    Chance.prototype.klout = function () {
+	        return this.natural({min: 1, max: 99});
+	    };
+	
+	    Chance.prototype.tlds = function () {
+	        return ['com', 'org', 'edu', 'gov', 'co.uk', 'net', 'io'];
+	    };
+	
+	    Chance.prototype.tld = function () {
+	        return this.pick(this.tlds());
+	    };
+	
+	    Chance.prototype.twitter = function () {
+	        return '@' + this.word();
+	    };
+	
+	    Chance.prototype.url = function (options) {
+	        options = initOptions(options, { protocol: "http", domain: this.domain(options), domain_prefix: "", path: this.word(), extensions: []});
+	
+	        var extension = options.extensions.length > 0 ? "." + this.pick(options.extensions) : "";
+	        var domain = options.domain_prefix ? options.domain_prefix + "." + options.domain : options.domain;
+	
+	        return options.protocol + "://" + domain + "/" + options.path + extension;
+	    };
+	
+	    // -- End Web --
+	
+	    // -- Location --
+	
+	    Chance.prototype.address = function (options) {
+	        options = initOptions(options);
+	        return this.natural({min: 5, max: 2000}) + ' ' + this.street(options);
+	    };
+	
+	    Chance.prototype.altitude = function (options) {
+	        options = initOptions(options, {fixed : 5, max: 8848});
+	        return this.floating({min: 0, max: options.max, fixed: options.fixed});
+	    };
+	
+	    Chance.prototype.areacode = function (options) {
+	        options = initOptions(options, {parens : true});
+	        // Don't want area codes to start with 1, or have a 9 as the second digit
+	        var areacode = this.natural({min: 2, max: 9}).toString() +
+	                this.natural({min: 0, max: 8}).toString() +
+	                this.natural({min: 0, max: 9}).toString();
+	
+	        return options.parens ? '(' + areacode + ')' : areacode;
+	    };
+	
+	    Chance.prototype.city = function () {
+	        return this.capitalize(this.word({syllables: 3}));
+	    };
+	
+	    Chance.prototype.coordinates = function (options) {
+	        options = initOptions(options);
+	        return this.latitude(options) + ', ' + this.longitude(options);
+	    };
+	
+	    Chance.prototype.countries = function () {
+	        return this.get("countries");
+	    };
+	
+	    Chance.prototype.country = function (options) {
+	        options = initOptions(options);
+	        var country = this.pick(this.countries());
+	        return options.full ? country.name : country.abbreviation;
+	    };
+	
+	    Chance.prototype.depth = function (options) {
+	        options = initOptions(options, {fixed: 5, min: -2550});
+	        return this.floating({min: options.min, max: 0, fixed: options.fixed});
+	    };
+	
+	    Chance.prototype.geohash = function (options) {
+	        options = initOptions(options, { length: 7 });
+	        return this.string({ length: options.length, pool: '0123456789bcdefghjkmnpqrstuvwxyz' });
+	    };
+	
+	    Chance.prototype.geojson = function (options) {
+	        options = initOptions(options);
+	        return this.latitude(options) + ', ' + this.longitude(options) + ', ' + this.altitude(options);
+	    };
+	
+	    Chance.prototype.latitude = function (options) {
+	        options = initOptions(options, {fixed: 5, min: -90, max: 90});
+	        return this.floating({min: options.min, max: options.max, fixed: options.fixed});
+	    };
+	
+	    Chance.prototype.longitude = function (options) {
+	        options = initOptions(options, {fixed: 5, min: -180, max: 180});
+	        return this.floating({min: options.min, max: options.max, fixed: options.fixed});
+	    };
+	
+	    Chance.prototype.phone = function (options) {
+	        var self = this,
+	            numPick,
+	            ukNum = function (parts) {
+	                var section = [];
+	                //fills the section part of the phone number with random numbers.
+	                parts.sections.forEach(function(n) {
+	                    section.push(self.string({ pool: '0123456789', length: n}));
+	                });
+	                return parts.area + section.join(' ');
+	            };
+	        options = initOptions(options, {
+	            formatted: true,
+	            country: 'us',
+	            mobile: false
+	        });
+	        if (!options.formatted) {
+	            options.parens = false;
+	        }
+	        var phone;
+	        switch (options.country) {
+	            case 'fr':
+	                if (!options.mobile) {
+	                    numPick = this.pick([
+	                        // Valid zone and département codes.
+	                        '01' + this.pick(['30', '34', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '53', '55', '56', '58', '60', '64', '69', '70', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83']) + self.string({ pool: '0123456789', length: 6}),
+	                        '02' + this.pick(['14', '18', '22', '23', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '40', '41', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '56', '57', '61', '62', '69', '72', '76', '77', '78', '85', '90', '96', '97', '98', '99']) + self.string({ pool: '0123456789', length: 6}),
+	                        '03' + this.pick(['10', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '39', '44', '45', '51', '52', '54', '55', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90']) + self.string({ pool: '0123456789', length: 6}),
+	                        '04' + this.pick(['11', '13', '15', '20', '22', '26', '27', '30', '32', '34', '37', '42', '43', '44', '50', '56', '57', '63', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '88', '89', '90', '91', '92', '93', '94', '95', '97', '98']) + self.string({ pool: '0123456789', length: 6}),
+	                        '05' + this.pick(['08', '16', '17', '19', '24', '31', '32', '33', '34', '35', '40', '45', '46', '47', '49', '53', '55', '56', '57', '58', '59', '61', '62', '63', '64', '65', '67', '79', '81', '82', '86', '87', '90', '94']) + self.string({ pool: '0123456789', length: 6}),
+	                        '09' + self.string({ pool: '0123456789', length: 8}),
+	                    ]);
+	                    phone = options.formatted ? numPick.match(/../g).join(' ') : numPick;
+	                } else {
+	                    numPick = this.pick(['06', '07']) + self.string({ pool: '0123456789', length: 8});
+	                    phone = options.formatted ? numPick.match(/../g).join(' ') : numPick;
+	                }
+	                break;
+	            case 'uk':
+	                if (!options.mobile) {
+	                    numPick = this.pick([
+	                        //valid area codes of major cities/counties followed by random numbers in required format.
+	                        { area: '01' + this.character({ pool: '234569' }) + '1 ', sections: [3,4] },
+	                        { area: '020 ' + this.character({ pool: '378' }), sections: [3,4] },
+	                        { area: '023 ' + this.character({ pool: '89' }), sections: [3,4] },
+	                        { area: '024 7', sections: [3,4] },
+	                        { area: '028 ' + this.pick(['25','28','37','71','82','90','92','95']), sections: [2,4] },
+	                        { area: '012' + this.pick(['04','08','54','76','97','98']) + ' ', sections: [5] },
+	                        { area: '013' + this.pick(['63','64','84','86']) + ' ', sections: [5] },
+	                        { area: '014' + this.pick(['04','20','60','61','80','88']) + ' ', sections: [5] },
+	                        { area: '015' + this.pick(['24','27','62','66']) + ' ', sections: [5] },
+	                        { area: '016' + this.pick(['06','29','35','47','59','95']) + ' ', sections: [5] },
+	                        { area: '017' + this.pick(['26','44','50','68']) + ' ', sections: [5] },
+	                        { area: '018' + this.pick(['27','37','84','97']) + ' ', sections: [5] },
+	                        { area: '019' + this.pick(['00','05','35','46','49','63','95']) + ' ', sections: [5] }
+	                    ]);
+	                    phone = options.formatted ? ukNum(numPick) : ukNum(numPick).replace(' ', '', 'g');
+	                } else {
+	                    numPick = this.pick([
+	                        { area: '07' + this.pick(['4','5','7','8','9']), sections: [2,6] },
+	                        { area: '07624 ', sections: [6] }
+	                    ]);
+	                    phone = options.formatted ? ukNum(numPick) : ukNum(numPick).replace(' ', '');
+	                }
+	                break;
+	            case 'us':
+	                var areacode = this.areacode(options).toString();
+	                var exchange = this.natural({ min: 2, max: 9 }).toString() +
+	                    this.natural({ min: 0, max: 9 }).toString() +
+	                    this.natural({ min: 0, max: 9 }).toString();
+	                var subscriber = this.natural({ min: 1000, max: 9999 }).toString(); // this could be random [0-9]{4}
+	                phone = options.formatted ? areacode + ' ' + exchange + '-' + subscriber : areacode + exchange + subscriber;
+	        }
+	        return phone;
+	    };
+	
+	    Chance.prototype.postal = function () {
+	        // Postal District
+	        var pd = this.character({pool: "XVTSRPNKLMHJGECBA"});
+	        // Forward Sortation Area (FSA)
+	        var fsa = pd + this.natural({max: 9}) + this.character({alpha: true, casing: "upper"});
+	        // Local Delivery Unut (LDU)
+	        var ldu = this.natural({max: 9}) + this.character({alpha: true, casing: "upper"}) + this.natural({max: 9});
+	
+	        return fsa + " " + ldu;
+	    };
+	
+	    Chance.prototype.provinces = function () {
+	        return this.get("provinces");
+	    };
+	
+	    Chance.prototype.province = function (options) {
+	        return (options && options.full) ?
+	            this.pick(this.provinces()).name :
+	            this.pick(this.provinces()).abbreviation;
+	    };
+	
+	    Chance.prototype.state = function (options) {
+	        return (options && options.full) ?
+	            this.pick(this.states(options)).name :
+	            this.pick(this.states(options)).abbreviation;
+	    };
+	
+	    Chance.prototype.states = function (options) {
+	        options = initOptions(options);
+	
+	        var states,
+	            us_states_and_dc = this.get("us_states_and_dc"),
+	            territories = this.get("territories"),
+	            armed_forces = this.get("armed_forces");
+	
+	        states = us_states_and_dc;
+	
+	        if (options.territories) {
+	            states = states.concat(territories);
+	        }
+	        if (options.armed_forces) {
+	            states = states.concat(armed_forces);
+	        }
+	
+	        return states;
+	    };
+	
+	    Chance.prototype.street = function (options) {
+	        options = initOptions(options);
+	
+	        var street = this.word({syllables: 2});
+	        street = this.capitalize(street);
+	        street += ' ';
+	        street += options.short_suffix ?
+	            this.street_suffix().abbreviation :
+	            this.street_suffix().name;
+	        return street;
+	    };
+	
+	    Chance.prototype.street_suffix = function () {
+	        return this.pick(this.street_suffixes());
+	    };
+	
+	    Chance.prototype.street_suffixes = function () {
+	        // These are the most common suffixes.
+	        return this.get("street_suffixes");
+	    };
+	
+	    // Note: only returning US zip codes, internationalization will be a whole
+	    // other beast to tackle at some point.
+	    Chance.prototype.zip = function (options) {
+	        var zip = this.n(this.natural, 5, {max: 9});
+	
+	        if (options && options.plusfour === true) {
+	            zip.push('-');
+	            zip = zip.concat(this.n(this.natural, 4, {max: 9}));
+	        }
+	
+	        return zip.join("");
+	    };
+	
+	    // -- End Location --
+	
+	    // -- Time
+	
+	    Chance.prototype.ampm = function () {
+	        return this.bool() ? 'am' : 'pm';
+	    };
+	
+	    Chance.prototype.date = function (options) {
+	        var date_string, date;
+	
+	        // If interval is specified we ignore preset
+	        if(options && (options.min || options.max)) {
+	            options = initOptions(options, {
+	                american: true,
+	                string: false
+	            });
+	            var min = typeof options.min !== "undefined" ? options.min.getTime() : 1;
+	            // 100,000,000 days measured relative to midnight at the beginning of 01 January, 1970 UTC. http://es5.github.io/#x15.9.1.1
+	            var max = typeof options.max !== "undefined" ? options.max.getTime() : 8640000000000000;
+	
+	            date = new Date(this.natural({min: min, max: max}));
+	        } else {
+	            var m = this.month({raw: true});
+	
+	            options = initOptions(options, {
+	                year: parseInt(this.year(), 10),
+	                // Necessary to subtract 1 because Date() 0-indexes month but not day or year
+	                // for some reason.
+	                month: m.numeric - 1,
+	                day: this.natural({min: 1, max: m.days}),
+	                hour: this.hour(),
+	                minute: this.minute(),
+	                second: this.second(),
+	                millisecond: this.millisecond(),
+	                american: true,
+	                string: false
+	            });
+	
+	            date = new Date(options.year, options.month, options.day, options.hour, options.minute, options.second, options.millisecond);
+	        }
+	
+	        if (options.american) {
+	            // Adding 1 to the month is necessary because Date() 0-indexes
+	            // months but not day for some odd reason.
+	            date_string = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+	        } else {
+	            date_string = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+	        }
+	
+	        return options.string ? date_string : date;
+	    };
+	
+	    Chance.prototype.hammertime = function (options) {
+	        return this.date(options).getTime();
+	    };
+	
+	    Chance.prototype.hour = function (options) {
+	        options = initOptions(options, {min: 1, max: options && options.twentyfour ? 24 : 12});
+	
+	        testRange(options.min < 1, "Chance: Min cannot be less than 1.");
+	        testRange(options.twentyfour && options.max > 24, "Chance: Max cannot be greater than 24 for twentyfour option.");
+	        testRange(!options.twentyfour && options.max > 12, "Chance: Max cannot be greater than 12.");
+	        testRange(options.min > options.max, "Chance: Min cannot be greater than Max.");
+	
+	        return this.natural({min: options.min, max: options.max});
+	    };
+	
+	    Chance.prototype.millisecond = function () {
+	        return this.natural({max: 999});
+	    };
+	
+	    Chance.prototype.minute = Chance.prototype.second = function (options) {
+	        options = initOptions(options, {min: 0, max: 59});
+	
+	        testRange(options.min < 0, "Chance: Min cannot be less than 0.");
+	        testRange(options.max > 59, "Chance: Max cannot be greater than 59.");
+	        testRange(options.min > options.max, "Chance: Min cannot be greater than Max.");
+	
+	        return this.natural({min: options.min, max: options.max});
+	    };
+	
+	    Chance.prototype.month = function (options) {
+	        options = initOptions(options, {min: 1, max: 12});
+	
+	        testRange(options.min < 1, "Chance: Min cannot be less than 1.");
+	        testRange(options.max > 12, "Chance: Max cannot be greater than 12.");
+	        testRange(options.min > options.max, "Chance: Min cannot be greater than Max.");
+	
+	        var month = this.pick(this.months().slice(options.min - 1, options.max));
+	        return options.raw ? month : month.name;
+	    };
+	
+	    Chance.prototype.months = function () {
+	        return this.get("months");
+	    };
+	
+	    Chance.prototype.second = function () {
+	        return this.natural({max: 59});
+	    };
+	
+	    Chance.prototype.timestamp = function () {
+	        return this.natural({min: 1, max: parseInt(new Date().getTime() / 1000, 10)});
+	    };
+	
+	    Chance.prototype.year = function (options) {
+	        // Default to current year as min if none specified
+	        options = initOptions(options, {min: new Date().getFullYear()});
+	
+	        // Default to one century after current year as max if none specified
+	        options.max = (typeof options.max !== "undefined") ? options.max : options.min + 100;
+	
+	        return this.natural(options).toString();
+	    };
+	
+	    // -- End Time
+	
+	    // -- Finance --
+	
+	    Chance.prototype.cc = function (options) {
+	        options = initOptions(options);
+	
+	        var type, number, to_generate;
+	
+	        type = (options.type) ?
+	                    this.cc_type({ name: options.type, raw: true }) :
+	                    this.cc_type({ raw: true });
+	
+	        number = type.prefix.split("");
+	        to_generate = type.length - type.prefix.length - 1;
+	
+	        // Generates n - 1 digits
+	        number = number.concat(this.n(this.integer, to_generate, {min: 0, max: 9}));
+	
+	        // Generates the last digit according to Luhn algorithm
+	        number.push(this.luhn_calculate(number.join("")));
+	
+	        return number.join("");
+	    };
+	
+	    Chance.prototype.cc_types = function () {
+	        // http://en.wikipedia.org/wiki/Bank_card_number#Issuer_identification_number_.28IIN.29
+	        return this.get("cc_types");
+	    };
+	
+	    Chance.prototype.cc_type = function (options) {
+	        options = initOptions(options);
+	        var types = this.cc_types(),
+	            type = null;
+	
+	        if (options.name) {
+	            for (var i = 0; i < types.length; i++) {
+	                // Accept either name or short_name to specify card type
+	                if (types[i].name === options.name || types[i].short_name === options.name) {
+	                    type = types[i];
+	                    break;
+	                }
+	            }
+	            if (type === null) {
+	                throw new Error("Credit card type '" + options.name + "'' is not supported");
+	            }
+	        } else {
+	            type = this.pick(types);
+	        }
+	
+	        return options.raw ? type : type.name;
+	    };
+	
+	    //return all world currency by ISO 4217
+	    Chance.prototype.currency_types = function () {
+	        return this.get("currency_types");
+	    };
+	
+	    //return random world currency by ISO 4217
+	    Chance.prototype.currency = function () {
+	        return this.pick(this.currency_types());
+	    };
+	
+	    //Return random correct currency exchange pair (e.g. EUR/USD) or array of currency code
+	    Chance.prototype.currency_pair = function (returnAsString) {
+	        var currencies = this.unique(this.currency, 2, {
+	            comparator: function(arr, val) {
+	
+	                return arr.reduce(function(acc, item) {
+	                    // If a match has been found, short circuit check and just return
+	                    return acc || (item.code === val.code);
+	                }, false);
+	            }
+	        });
+	
+	        if (returnAsString) {
+	            return  currencies[0] + '/' + currencies[1];
+	        } else {
+	            return currencies;
+	        }
+	    };
+	
+	    Chance.prototype.dollar = function (options) {
+	        // By default, a somewhat more sane max for dollar than all available numbers
+	        options = initOptions(options, {max : 10000, min : 0});
+	
+	        var dollar = this.floating({min: options.min, max: options.max, fixed: 2}).toString(),
+	            cents = dollar.split('.')[1];
+	
+	        if (cents === undefined) {
+	            dollar += '.00';
+	        } else if (cents.length < 2) {
+	            dollar = dollar + '0';
+	        }
+	
+	        if (dollar < 0) {
+	            return '-$' + dollar.replace('-', '');
+	        } else {
+	            return '$' + dollar;
+	        }
+	    };
+	
+	    Chance.prototype.exp = function (options) {
+	        options = initOptions(options);
+	        var exp = {};
+	
+	        exp.year = this.exp_year();
+	
+	        // If the year is this year, need to ensure month is greater than the
+	        // current month or this expiration will not be valid
+	        if (exp.year === (new Date().getFullYear())) {
+	            exp.month = this.exp_month({future: true});
+	        } else {
+	            exp.month = this.exp_month();
+	        }
+	
+	        return options.raw ? exp : exp.month + '/' + exp.year;
+	    };
+	
+	    Chance.prototype.exp_month = function (options) {
+	        options = initOptions(options);
+	        var month, month_int,
+	            curMonth = new Date().getMonth();
+	
+	        if (options.future) {
+	            do {
+	                month = this.month({raw: true}).numeric;
+	                month_int = parseInt(month, 10);
+	            } while (month_int < curMonth);
+	        } else {
+	            month = this.month({raw: true}).numeric;
+	        }
+	
+	        return month;
+	    };
+	
+	    Chance.prototype.exp_year = function () {
+	        return this.year({max: new Date().getFullYear() + 10});
+	    };
+	
+	    // -- End Finance
+	
+	    // -- Miscellaneous --
+	
+	    // Dice - For all the board game geeks out there, myself included ;)
+	    function diceFn (range) {
+	        return function () {
+	            return this.natural(range);
+	        };
+	    }
+	    Chance.prototype.d4 = diceFn({min: 1, max: 4});
+	    Chance.prototype.d6 = diceFn({min: 1, max: 6});
+	    Chance.prototype.d8 = diceFn({min: 1, max: 8});
+	    Chance.prototype.d10 = diceFn({min: 1, max: 10});
+	    Chance.prototype.d12 = diceFn({min: 1, max: 12});
+	    Chance.prototype.d20 = diceFn({min: 1, max: 20});
+	    Chance.prototype.d30 = diceFn({min: 1, max: 30});
+	    Chance.prototype.d100 = diceFn({min: 1, max: 100});
+	
+	    Chance.prototype.rpg = function (thrown, options) {
+	        options = initOptions(options);
+	        if (thrown === null) {
+	            throw new Error("A type of die roll must be included");
+	        } else {
+	            var bits = thrown.toLowerCase().split("d"),
+	                rolls = [];
+	
+	            if (bits.length !== 2 || !parseInt(bits[0], 10) || !parseInt(bits[1], 10)) {
+	                throw new Error("Invalid format provided. Please provide #d# where the first # is the number of dice to roll, the second # is the max of each die");
+	            }
+	            for (var i = bits[0]; i > 0; i--) {
+	                rolls[i - 1] = this.natural({min: 1, max: bits[1]});
+	            }
+	            return (typeof options.sum !== 'undefined' && options.sum) ? rolls.reduce(function (p, c) { return p + c; }) : rolls;
+	        }
+	    };
+	
+	    // Guid
+	    Chance.prototype.guid = function (options) {
+	        options = initOptions(options, { version: 5 });
+	
+	        var guid_pool = "abcdef1234567890",
+	            variant_pool = "ab89",
+	            guid = this.string({ pool: guid_pool, length: 8 }) + '-' +
+	                   this.string({ pool: guid_pool, length: 4 }) + '-' +
+	                   // The Version
+	                   options.version +
+	                   this.string({ pool: guid_pool, length: 3 }) + '-' +
+	                   // The Variant
+	                   this.string({ pool: variant_pool, length: 1 }) +
+	                   this.string({ pool: guid_pool, length: 3 }) + '-' +
+	                   this.string({ pool: guid_pool, length: 12 });
+	        return guid;
+	    };
+	    
+	    // Hash
+	    Chance.prototype.hash = function (options) {
+	        options = initOptions(options, {length : 40, casing: 'lower'});
+	        var pool = options.casing === 'upper' ? HEX_POOL.toUpperCase() : HEX_POOL;
+	        return this.string({pool: pool, length: options.length});
+	    };
+	
+	    Chance.prototype.luhn_check = function (num) {
+	        var str = num.toString();
+	        var checkDigit = +str.substring(str.length - 1);
+	        return checkDigit === this.luhn_calculate(+str.substring(0, str.length - 1));
+	    };
+	
+	    Chance.prototype.luhn_calculate = function (num) {
+	        var digits = num.toString().split("").reverse();
+	        var sum = 0;
+	        var digit;
+	
+	        for (var i = 0, l = digits.length; l > i; ++i) {
+	            digit = +digits[i];
+	            if (i % 2 === 0) {
+	                digit *= 2;
+	                if (digit > 9) {
+	                    digit -= 9;
+	                }
+	            }
+	            sum += digit;
+	        }
+	        return (sum * 9) % 10;
+	    };
+	
+	
+	    var data = {
+	
+	        firstNames: {
+	            "male": ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Charles", "Thomas", "Christopher", "Daniel", "Matthew", "George", "Donald", "Anthony", "Paul", "Mark", "Edward", "Steven", "Kenneth", "Andrew", "Brian", "Joshua", "Kevin", "Ronald", "Timothy", "Jason", "Jeffrey", "Frank", "Gary", "Ryan", "Nicholas", "Eric", "Stephen", "Jacob", "Larry", "Jonathan", "Scott", "Raymond", "Justin", "Brandon", "Gregory", "Samuel", "Benjamin", "Patrick", "Jack", "Henry", "Walter", "Dennis", "Jerry", "Alexander", "Peter", "Tyler", "Douglas", "Harold", "Aaron", "Jose", "Adam", "Arthur", "Zachary", "Carl", "Nathan", "Albert", "Kyle", "Lawrence", "Joe", "Willie", "Gerald", "Roger", "Keith", "Jeremy", "Terry", "Harry", "Ralph", "Sean", "Jesse", "Roy", "Louis", "Billy", "Austin", "Bruce", "Eugene", "Christian", "Bryan", "Wayne", "Russell", "Howard", "Fred", "Ethan", "Jordan", "Philip", "Alan", "Juan", "Randy", "Vincent", "Bobby", "Dylan", "Johnny", "Phillip", "Victor", "Clarence", "Ernest", "Martin", "Craig", "Stanley", "Shawn", "Travis", "Bradley", "Leonard", "Earl", "Gabriel", "Jimmy", "Francis", "Todd", "Noah", "Danny", "Dale", "Cody", "Carlos", "Allen", "Frederick", "Logan", "Curtis", "Alex", "Joel", "Luis", "Norman", "Marvin", "Glenn", "Tony", "Nathaniel", "Rodney", "Melvin", "Alfred", "Steve", "Cameron", "Chad", "Edwin", "Caleb", "Evan", "Antonio", "Lee", "Herbert", "Jeffery", "Isaac", "Derek", "Ricky", "Marcus", "Theodore", "Elijah", "Luke", "Jesus", "Eddie", "Troy", "Mike", "Dustin", "Ray", "Adrian", "Bernard", "Leroy", "Angel", "Randall", "Wesley", "Ian", "Jared", "Mason", "Hunter", "Calvin", "Oscar", "Clifford", "Jay", "Shane", "Ronnie", "Barry", "Lucas", "Corey", "Manuel", "Leo", "Tommy", "Warren", "Jackson", "Isaiah", "Connor", "Don", "Dean", "Jon", "Julian", "Miguel", "Bill", "Lloyd", "Charlie", "Mitchell", "Leon", "Jerome", "Darrell", "Jeremiah", "Alvin", "Brett", "Seth", "Floyd", "Jim", "Blake", "Micheal", "Gordon", "Trevor", "Lewis", "Erik", "Edgar", "Vernon", "Devin", "Gavin", "Jayden", "Chris", "Clyde", "Tom", "Derrick", "Mario", "Brent", "Marc", "Herman", "Chase", "Dominic", "Ricardo", "Franklin", "Maurice", "Max", "Aiden", "Owen", "Lester", "Gilbert", "Elmer", "Gene", "Francisco", "Glen", "Cory", "Garrett", "Clayton", "Sam", "Jorge", "Chester", "Alejandro", "Jeff", "Harvey", "Milton", "Cole", "Ivan", "Andre", "Duane", "Landon"],
+	            "female": ["Mary", "Emma", "Elizabeth", "Minnie", "Margaret", "Ida", "Alice", "Bertha", "Sarah", "Annie", "Clara", "Ella", "Florence", "Cora", "Martha", "Laura", "Nellie", "Grace", "Carrie", "Maude", "Mabel", "Bessie", "Jennie", "Gertrude", "Julia", "Hattie", "Edith", "Mattie", "Rose", "Catherine", "Lillian", "Ada", "Lillie", "Helen", "Jessie", "Louise", "Ethel", "Lula", "Myrtle", "Eva", "Frances", "Lena", "Lucy", "Edna", "Maggie", "Pearl", "Daisy", "Fannie", "Josephine", "Dora", "Rosa", "Katherine", "Agnes", "Marie", "Nora", "May", "Mamie", "Blanche", "Stella", "Ellen", "Nancy", "Effie", "Sallie", "Nettie", "Della", "Lizzie", "Flora", "Susie", "Maud", "Mae", "Etta", "Harriet", "Sadie", "Caroline", "Katie", "Lydia", "Elsie", "Kate", "Susan", "Mollie", "Alma", "Addie", "Georgia", "Eliza", "Lulu", "Nannie", "Lottie", "Amanda", "Belle", "Charlotte", "Rebecca", "Ruth", "Viola", "Olive", "Amelia", "Hannah", "Jane", "Virginia", "Emily", "Matilda", "Irene", "Kathryn", "Esther", "Willie", "Henrietta", "Ollie", "Amy", "Rachel", "Sara", "Estella", "Theresa", "Augusta", "Ora", "Pauline", "Josie", "Lola", "Sophia", "Leona", "Anne", "Mildred", "Ann", "Beulah", "Callie", "Lou", "Delia", "Eleanor", "Barbara", "Iva", "Louisa", "Maria", "Mayme", "Evelyn", "Estelle", "Nina", "Betty", "Marion", "Bettie", "Dorothy", "Luella", "Inez", "Lela", "Rosie", "Allie", "Millie", "Janie", "Cornelia", "Victoria", "Ruby", "Winifred", "Alta", "Celia", "Christine", "Beatrice", "Birdie", "Harriett", "Mable", "Myra", "Sophie", "Tillie", "Isabel", "Sylvia", "Carolyn", "Isabelle", "Leila", "Sally", "Ina", "Essie", "Bertie", "Nell", "Alberta", "Katharine", "Lora", "Rena", "Mina", "Rhoda", "Mathilda", "Abbie", "Eula", "Dollie", "Hettie", "Eunice", "Fanny", "Ola", "Lenora", "Adelaide", "Christina", "Lelia", "Nelle", "Sue", "Johanna", "Lilly", "Lucinda", "Minerva", "Lettie", "Roxie", "Cynthia", "Helena", "Hilda", "Hulda", "Bernice", "Genevieve", "Jean", "Cordelia", "Marian", "Francis", "Jeanette", "Adeline", "Gussie", "Leah", "Lois", "Lura", "Mittie", "Hallie", "Isabella", "Olga", "Phoebe", "Teresa", "Hester", "Lida", "Lina", "Winnie", "Claudia", "Marguerite", "Vera", "Cecelia", "Bess", "Emilie", "John", "Rosetta", "Verna", "Myrtie", "Cecilia", "Elva", "Olivia", "Ophelia", "Georgie", "Elnora", "Violet", "Adele", "Lily", "Linnie", "Loretta", "Madge", "Polly", "Virgie", "Eugenia", "Lucile", "Lucille", "Mabelle", "Rosalie"]
+	        },
+	
+	        lastNames: ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart', 'Sanchez', 'Morris', 'Rogers', 'Reed', 'Cook', 'Morgan', 'Bell', 'Murphy', 'Bailey', 'Rivera', 'Cooper', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray', 'Ramirez', 'James', 'Watson', 'Brooks', 'Kelly', 'Sanders', 'Price', 'Bennett', 'Wood', 'Barnes', 'Ross', 'Henderson', 'Coleman', 'Jenkins', 'Perry', 'Powell', 'Long', 'Patterson', 'Hughes', 'Flores', 'Washington', 'Butler', 'Simmons', 'Foster', 'Gonzales', 'Bryant', 'Alexander', 'Russell', 'Griffin', 'Diaz', 'Hayes', 'Myers', 'Ford', 'Hamilton', 'Graham', 'Sullivan', 'Wallace', 'Woods', 'Cole', 'West', 'Jordan', 'Owens', 'Reynolds', 'Fisher', 'Ellis', 'Harrison', 'Gibson', 'McDonald', 'Cruz', 'Marshall', 'Ortiz', 'Gomez', 'Murray', 'Freeman', 'Wells', 'Webb', 'Simpson', 'Stevens', 'Tucker', 'Porter', 'Hunter', 'Hicks', 'Crawford', 'Henry', 'Boyd', 'Mason', 'Morales', 'Kennedy', 'Warren', 'Dixon', 'Ramos', 'Reyes', 'Burns', 'Gordon', 'Shaw', 'Holmes', 'Rice', 'Robertson', 'Hunt', 'Black', 'Daniels', 'Palmer', 'Mills', 'Nichols', 'Grant', 'Knight', 'Ferguson', 'Rose', 'Stone', 'Hawkins', 'Dunn', 'Perkins', 'Hudson', 'Spencer', 'Gardner', 'Stephens', 'Payne', 'Pierce', 'Berry', 'Matthews', 'Arnold', 'Wagner', 'Willis', 'Ray', 'Watkins', 'Olson', 'Carroll', 'Duncan', 'Snyder', 'Hart', 'Cunningham', 'Bradley', 'Lane', 'Andrews', 'Ruiz', 'Harper', 'Fox', 'Riley', 'Armstrong', 'Carpenter', 'Weaver', 'Greene', 'Lawrence', 'Elliott', 'Chavez', 'Sims', 'Austin', 'Peters', 'Kelley', 'Franklin', 'Lawson', 'Fields', 'Gutierrez', 'Ryan', 'Schmidt', 'Carr', 'Vasquez', 'Castillo', 'Wheeler', 'Chapman', 'Oliver', 'Montgomery', 'Richards', 'Williamson', 'Johnston', 'Banks', 'Meyer', 'Bishop', 'McCoy', 'Howell', 'Alvarez', 'Morrison', 'Hansen', 'Fernandez', 'Garza', 'Harvey', 'Little', 'Burton', 'Stanley', 'Nguyen', 'George', 'Jacobs', 'Reid', 'Kim', 'Fuller', 'Lynch', 'Dean', 'Gilbert', 'Garrett', 'Romero', 'Welch', 'Larson', 'Frazier', 'Burke', 'Hanson', 'Day', 'Mendoza', 'Moreno', 'Bowman', 'Medina', 'Fowler', 'Brewer', 'Hoffman', 'Carlson', 'Silva', 'Pearson', 'Holland', 'Douglas', 'Fleming', 'Jensen', 'Vargas', 'Byrd', 'Davidson', 'Hopkins', 'May', 'Terry', 'Herrera', 'Wade', 'Soto', 'Walters', 'Curtis', 'Neal', 'Caldwell', 'Lowe', 'Jennings', 'Barnett', 'Graves', 'Jimenez', 'Horton', 'Shelton', 'Barrett', 'Obrien', 'Castro', 'Sutton', 'Gregory', 'McKinney', 'Lucas', 'Miles', 'Craig', 'Rodriquez', 'Chambers', 'Holt', 'Lambert', 'Fletcher', 'Watts', 'Bates', 'Hale', 'Rhodes', 'Pena', 'Beck', 'Newman', 'Haynes', 'McDaniel', 'Mendez', 'Bush', 'Vaughn', 'Parks', 'Dawson', 'Santiago', 'Norris', 'Hardy', 'Love', 'Steele', 'Curry', 'Powers', 'Schultz', 'Barker', 'Guzman', 'Page', 'Munoz', 'Ball', 'Keller', 'Chandler', 'Weber', 'Leonard', 'Walsh', 'Lyons', 'Ramsey', 'Wolfe', 'Schneider', 'Mullins', 'Benson', 'Sharp', 'Bowen', 'Daniel', 'Barber', 'Cummings', 'Hines', 'Baldwin', 'Griffith', 'Valdez', 'Hubbard', 'Salazar', 'Reeves', 'Warner', 'Stevenson', 'Burgess', 'Santos', 'Tate', 'Cross', 'Garner', 'Mann', 'Mack', 'Moss', 'Thornton', 'Dennis', 'McGee', 'Farmer', 'Delgado', 'Aguilar', 'Vega', 'Glover', 'Manning', 'Cohen', 'Harmon', 'Rodgers', 'Robbins', 'Newton', 'Todd', 'Blair', 'Higgins', 'Ingram', 'Reese', 'Cannon', 'Strickland', 'Townsend', 'Potter', 'Goodwin', 'Walton', 'Rowe', 'Hampton', 'Ortega', 'Patton', 'Swanson', 'Joseph', 'Francis', 'Goodman', 'Maldonado', 'Yates', 'Becker', 'Erickson', 'Hodges', 'Rios', 'Conner', 'Adkins', 'Webster', 'Norman', 'Malone', 'Hammond', 'Flowers', 'Cobb', 'Moody', 'Quinn', 'Blake', 'Maxwell', 'Pope', 'Floyd', 'Osborne', 'Paul', 'McCarthy', 'Guerrero', 'Lindsey', 'Estrada', 'Sandoval', 'Gibbs', 'Tyler', 'Gross', 'Fitzgerald', 'Stokes', 'Doyle', 'Sherman', 'Saunders', 'Wise', 'Colon', 'Gill', 'Alvarado', 'Greer', 'Padilla', 'Simon', 'Waters', 'Nunez', 'Ballard', 'Schwartz', 'McBride', 'Houston', 'Christensen', 'Klein', 'Pratt', 'Briggs', 'Parsons', 'McLaughlin', 'Zimmerman', 'French', 'Buchanan', 'Moran', 'Copeland', 'Roy', 'Pittman', 'Brady', 'McCormick', 'Holloway', 'Brock', 'Poole', 'Frank', 'Logan', 'Owen', 'Bass', 'Marsh', 'Drake', 'Wong', 'Jefferson', 'Park', 'Morton', 'Abbott', 'Sparks', 'Patrick', 'Norton', 'Huff', 'Clayton', 'Massey', 'Lloyd', 'Figueroa', 'Carson', 'Bowers', 'Roberson', 'Barton', 'Tran', 'Lamb', 'Harrington', 'Casey', 'Boone', 'Cortez', 'Clarke', 'Mathis', 'Singleton', 'Wilkins', 'Cain', 'Bryan', 'Underwood', 'Hogan', 'McKenzie', 'Collier', 'Luna', 'Phelps', 'McGuire', 'Allison', 'Bridges', 'Wilkerson', 'Nash', 'Summers', 'Atkins'],
+	
+	        // Data taken from https://github.com/umpirsky/country-list/blob/master/country/cldr/en_US/country.json
+	        countries: [{"name":"Afghanistan","abbreviation":"AF"},{"name":"Albania","abbreviation":"AL"},{"name":"Algeria","abbreviation":"DZ"},{"name":"American Samoa","abbreviation":"AS"},{"name":"Andorra","abbreviation":"AD"},{"name":"Angola","abbreviation":"AO"},{"name":"Anguilla","abbreviation":"AI"},{"name":"Antarctica","abbreviation":"AQ"},{"name":"Antigua and Barbuda","abbreviation":"AG"},{"name":"Argentina","abbreviation":"AR"},{"name":"Armenia","abbreviation":"AM"},{"name":"Aruba","abbreviation":"AW"},{"name":"Australia","abbreviation":"AU"},{"name":"Austria","abbreviation":"AT"},{"name":"Azerbaijan","abbreviation":"AZ"},{"name":"Bahamas","abbreviation":"BS"},{"name":"Bahrain","abbreviation":"BH"},{"name":"Bangladesh","abbreviation":"BD"},{"name":"Barbados","abbreviation":"BB"},{"name":"Belarus","abbreviation":"BY"},{"name":"Belgium","abbreviation":"BE"},{"name":"Belize","abbreviation":"BZ"},{"name":"Benin","abbreviation":"BJ"},{"name":"Bermuda","abbreviation":"BM"},{"name":"Bhutan","abbreviation":"BT"},{"name":"Bolivia","abbreviation":"BO"},{"name":"Bosnia and Herzegovina","abbreviation":"BA"},{"name":"Botswana","abbreviation":"BW"},{"name":"Bouvet Island","abbreviation":"BV"},{"name":"Brazil","abbreviation":"BR"},{"name":"British Antarctic Territory","abbreviation":"BQ"},{"name":"British Indian Ocean Territory","abbreviation":"IO"},{"name":"British Virgin Islands","abbreviation":"VG"},{"name":"Brunei","abbreviation":"BN"},{"name":"Bulgaria","abbreviation":"BG"},{"name":"Burkina Faso","abbreviation":"BF"},{"name":"Burundi","abbreviation":"BI"},{"name":"Cambodia","abbreviation":"KH"},{"name":"Cameroon","abbreviation":"CM"},{"name":"Canada","abbreviation":"CA"},{"name":"Canton and Enderbury Islands","abbreviation":"CT"},{"name":"Cape Verde","abbreviation":"CV"},{"name":"Cayman Islands","abbreviation":"KY"},{"name":"Central African Republic","abbreviation":"CF"},{"name":"Chad","abbreviation":"TD"},{"name":"Chile","abbreviation":"CL"},{"name":"China","abbreviation":"CN"},{"name":"Christmas Island","abbreviation":"CX"},{"name":"Cocos [Keeling] Islands","abbreviation":"CC"},{"name":"Colombia","abbreviation":"CO"},{"name":"Comoros","abbreviation":"KM"},{"name":"Congo - Brazzaville","abbreviation":"CG"},{"name":"Congo - Kinshasa","abbreviation":"CD"},{"name":"Cook Islands","abbreviation":"CK"},{"name":"Costa Rica","abbreviation":"CR"},{"name":"Croatia","abbreviation":"HR"},{"name":"Cuba","abbreviation":"CU"},{"name":"Cyprus","abbreviation":"CY"},{"name":"Czech Republic","abbreviation":"CZ"},{"name":"Côte d’Ivoire","abbreviation":"CI"},{"name":"Denmark","abbreviation":"DK"},{"name":"Djibouti","abbreviation":"DJ"},{"name":"Dominica","abbreviation":"DM"},{"name":"Dominican Republic","abbreviation":"DO"},{"name":"Dronning Maud Land","abbreviation":"NQ"},{"name":"East Germany","abbreviation":"DD"},{"name":"Ecuador","abbreviation":"EC"},{"name":"Egypt","abbreviation":"EG"},{"name":"El Salvador","abbreviation":"SV"},{"name":"Equatorial Guinea","abbreviation":"GQ"},{"name":"Eritrea","abbreviation":"ER"},{"name":"Estonia","abbreviation":"EE"},{"name":"Ethiopia","abbreviation":"ET"},{"name":"Falkland Islands","abbreviation":"FK"},{"name":"Faroe Islands","abbreviation":"FO"},{"name":"Fiji","abbreviation":"FJ"},{"name":"Finland","abbreviation":"FI"},{"name":"France","abbreviation":"FR"},{"name":"French Guiana","abbreviation":"GF"},{"name":"French Polynesia","abbreviation":"PF"},{"name":"French Southern Territories","abbreviation":"TF"},{"name":"French Southern and Antarctic Territories","abbreviation":"FQ"},{"name":"Gabon","abbreviation":"GA"},{"name":"Gambia","abbreviation":"GM"},{"name":"Georgia","abbreviation":"GE"},{"name":"Germany","abbreviation":"DE"},{"name":"Ghana","abbreviation":"GH"},{"name":"Gibraltar","abbreviation":"GI"},{"name":"Greece","abbreviation":"GR"},{"name":"Greenland","abbreviation":"GL"},{"name":"Grenada","abbreviation":"GD"},{"name":"Guadeloupe","abbreviation":"GP"},{"name":"Guam","abbreviation":"GU"},{"name":"Guatemala","abbreviation":"GT"},{"name":"Guernsey","abbreviation":"GG"},{"name":"Guinea","abbreviation":"GN"},{"name":"Guinea-Bissau","abbreviation":"GW"},{"name":"Guyana","abbreviation":"GY"},{"name":"Haiti","abbreviation":"HT"},{"name":"Heard Island and McDonald Islands","abbreviation":"HM"},{"name":"Honduras","abbreviation":"HN"},{"name":"Hong Kong SAR China","abbreviation":"HK"},{"name":"Hungary","abbreviation":"HU"},{"name":"Iceland","abbreviation":"IS"},{"name":"India","abbreviation":"IN"},{"name":"Indonesia","abbreviation":"ID"},{"name":"Iran","abbreviation":"IR"},{"name":"Iraq","abbreviation":"IQ"},{"name":"Ireland","abbreviation":"IE"},{"name":"Isle of Man","abbreviation":"IM"},{"name":"Israel","abbreviation":"IL"},{"name":"Italy","abbreviation":"IT"},{"name":"Jamaica","abbreviation":"JM"},{"name":"Japan","abbreviation":"JP"},{"name":"Jersey","abbreviation":"JE"},{"name":"Johnston Island","abbreviation":"JT"},{"name":"Jordan","abbreviation":"JO"},{"name":"Kazakhstan","abbreviation":"KZ"},{"name":"Kenya","abbreviation":"KE"},{"name":"Kiribati","abbreviation":"KI"},{"name":"Kuwait","abbreviation":"KW"},{"name":"Kyrgyzstan","abbreviation":"KG"},{"name":"Laos","abbreviation":"LA"},{"name":"Latvia","abbreviation":"LV"},{"name":"Lebanon","abbreviation":"LB"},{"name":"Lesotho","abbreviation":"LS"},{"name":"Liberia","abbreviation":"LR"},{"name":"Libya","abbreviation":"LY"},{"name":"Liechtenstein","abbreviation":"LI"},{"name":"Lithuania","abbreviation":"LT"},{"name":"Luxembourg","abbreviation":"LU"},{"name":"Macau SAR China","abbreviation":"MO"},{"name":"Macedonia","abbreviation":"MK"},{"name":"Madagascar","abbreviation":"MG"},{"name":"Malawi","abbreviation":"MW"},{"name":"Malaysia","abbreviation":"MY"},{"name":"Maldives","abbreviation":"MV"},{"name":"Mali","abbreviation":"ML"},{"name":"Malta","abbreviation":"MT"},{"name":"Marshall Islands","abbreviation":"MH"},{"name":"Martinique","abbreviation":"MQ"},{"name":"Mauritania","abbreviation":"MR"},{"name":"Mauritius","abbreviation":"MU"},{"name":"Mayotte","abbreviation":"YT"},{"name":"Metropolitan France","abbreviation":"FX"},{"name":"Mexico","abbreviation":"MX"},{"name":"Micronesia","abbreviation":"FM"},{"name":"Midway Islands","abbreviation":"MI"},{"name":"Moldova","abbreviation":"MD"},{"name":"Monaco","abbreviation":"MC"},{"name":"Mongolia","abbreviation":"MN"},{"name":"Montenegro","abbreviation":"ME"},{"name":"Montserrat","abbreviation":"MS"},{"name":"Morocco","abbreviation":"MA"},{"name":"Mozambique","abbreviation":"MZ"},{"name":"Myanmar [Burma]","abbreviation":"MM"},{"name":"Namibia","abbreviation":"NA"},{"name":"Nauru","abbreviation":"NR"},{"name":"Nepal","abbreviation":"NP"},{"name":"Netherlands","abbreviation":"NL"},{"name":"Netherlands Antilles","abbreviation":"AN"},{"name":"Neutral Zone","abbreviation":"NT"},{"name":"New Caledonia","abbreviation":"NC"},{"name":"New Zealand","abbreviation":"NZ"},{"name":"Nicaragua","abbreviation":"NI"},{"name":"Niger","abbreviation":"NE"},{"name":"Nigeria","abbreviation":"NG"},{"name":"Niue","abbreviation":"NU"},{"name":"Norfolk Island","abbreviation":"NF"},{"name":"North Korea","abbreviation":"KP"},{"name":"North Vietnam","abbreviation":"VD"},{"name":"Northern Mariana Islands","abbreviation":"MP"},{"name":"Norway","abbreviation":"NO"},{"name":"Oman","abbreviation":"OM"},{"name":"Pacific Islands Trust Territory","abbreviation":"PC"},{"name":"Pakistan","abbreviation":"PK"},{"name":"Palau","abbreviation":"PW"},{"name":"Palestinian Territories","abbreviation":"PS"},{"name":"Panama","abbreviation":"PA"},{"name":"Panama Canal Zone","abbreviation":"PZ"},{"name":"Papua New Guinea","abbreviation":"PG"},{"name":"Paraguay","abbreviation":"PY"},{"name":"People's Democratic Republic of Yemen","abbreviation":"YD"},{"name":"Peru","abbreviation":"PE"},{"name":"Philippines","abbreviation":"PH"},{"name":"Pitcairn Islands","abbreviation":"PN"},{"name":"Poland","abbreviation":"PL"},{"name":"Portugal","abbreviation":"PT"},{"name":"Puerto Rico","abbreviation":"PR"},{"name":"Qatar","abbreviation":"QA"},{"name":"Romania","abbreviation":"RO"},{"name":"Russia","abbreviation":"RU"},{"name":"Rwanda","abbreviation":"RW"},{"name":"Réunion","abbreviation":"RE"},{"name":"Saint Barthélemy","abbreviation":"BL"},{"name":"Saint Helena","abbreviation":"SH"},{"name":"Saint Kitts and Nevis","abbreviation":"KN"},{"name":"Saint Lucia","abbreviation":"LC"},{"name":"Saint Martin","abbreviation":"MF"},{"name":"Saint Pierre and Miquelon","abbreviation":"PM"},{"name":"Saint Vincent and the Grenadines","abbreviation":"VC"},{"name":"Samoa","abbreviation":"WS"},{"name":"San Marino","abbreviation":"SM"},{"name":"Saudi Arabia","abbreviation":"SA"},{"name":"Senegal","abbreviation":"SN"},{"name":"Serbia","abbreviation":"RS"},{"name":"Serbia and Montenegro","abbreviation":"CS"},{"name":"Seychelles","abbreviation":"SC"},{"name":"Sierra Leone","abbreviation":"SL"},{"name":"Singapore","abbreviation":"SG"},{"name":"Slovakia","abbreviation":"SK"},{"name":"Slovenia","abbreviation":"SI"},{"name":"Solomon Islands","abbreviation":"SB"},{"name":"Somalia","abbreviation":"SO"},{"name":"South Africa","abbreviation":"ZA"},{"name":"South Georgia and the South Sandwich Islands","abbreviation":"GS"},{"name":"South Korea","abbreviation":"KR"},{"name":"Spain","abbreviation":"ES"},{"name":"Sri Lanka","abbreviation":"LK"},{"name":"Sudan","abbreviation":"SD"},{"name":"Suriname","abbreviation":"SR"},{"name":"Svalbard and Jan Mayen","abbreviation":"SJ"},{"name":"Swaziland","abbreviation":"SZ"},{"name":"Sweden","abbreviation":"SE"},{"name":"Switzerland","abbreviation":"CH"},{"name":"Syria","abbreviation":"SY"},{"name":"São Tomé and Príncipe","abbreviation":"ST"},{"name":"Taiwan","abbreviation":"TW"},{"name":"Tajikistan","abbreviation":"TJ"},{"name":"Tanzania","abbreviation":"TZ"},{"name":"Thailand","abbreviation":"TH"},{"name":"Timor-Leste","abbreviation":"TL"},{"name":"Togo","abbreviation":"TG"},{"name":"Tokelau","abbreviation":"TK"},{"name":"Tonga","abbreviation":"TO"},{"name":"Trinidad and Tobago","abbreviation":"TT"},{"name":"Tunisia","abbreviation":"TN"},{"name":"Turkey","abbreviation":"TR"},{"name":"Turkmenistan","abbreviation":"TM"},{"name":"Turks and Caicos Islands","abbreviation":"TC"},{"name":"Tuvalu","abbreviation":"TV"},{"name":"U.S. Minor Outlying Islands","abbreviation":"UM"},{"name":"U.S. Miscellaneous Pacific Islands","abbreviation":"PU"},{"name":"U.S. Virgin Islands","abbreviation":"VI"},{"name":"Uganda","abbreviation":"UG"},{"name":"Ukraine","abbreviation":"UA"},{"name":"Union of Soviet Socialist Republics","abbreviation":"SU"},{"name":"United Arab Emirates","abbreviation":"AE"},{"name":"United Kingdom","abbreviation":"GB"},{"name":"United States","abbreviation":"US"},{"name":"Unknown or Invalid Region","abbreviation":"ZZ"},{"name":"Uruguay","abbreviation":"UY"},{"name":"Uzbekistan","abbreviation":"UZ"},{"name":"Vanuatu","abbreviation":"VU"},{"name":"Vatican City","abbreviation":"VA"},{"name":"Venezuela","abbreviation":"VE"},{"name":"Vietnam","abbreviation":"VN"},{"name":"Wake Island","abbreviation":"WK"},{"name":"Wallis and Futuna","abbreviation":"WF"},{"name":"Western Sahara","abbreviation":"EH"},{"name":"Yemen","abbreviation":"YE"},{"name":"Zambia","abbreviation":"ZM"},{"name":"Zimbabwe","abbreviation":"ZW"},{"name":"Åland Islands","abbreviation":"AX"}],
+	
+	        provinces: [
+	            {name: 'Alberta', abbreviation: 'AB'},
+	            {name: 'British Columbia', abbreviation: 'BC'},
+	            {name: 'Manitoba', abbreviation: 'MB'},
+	            {name: 'New Brunswick', abbreviation: 'NB'},
+	            {name: 'Newfoundland and Labrador', abbreviation: 'NL'},
+	            {name: 'Nova Scotia', abbreviation: 'NS'},
+	            {name: 'Ontario', abbreviation: 'ON'},
+	            {name: 'Prince Edward Island', abbreviation: 'PE'},
+	            {name: 'Quebec', abbreviation: 'QC'},
+	            {name: 'Saskatchewan', abbreviation: 'SK'},
+	
+	            // The case could be made that the following are not actually provinces
+	            // since they are technically considered "territories" however they all
+	            // look the same on an envelope!
+	            {name: 'Northwest Territories', abbreviation: 'NT'},
+	            {name: 'Nunavut', abbreviation: 'NU'},
+	            {name: 'Yukon', abbreviation: 'YT'}
+	        ],
+	
+	        us_states_and_dc: [
+	            {name: 'Alabama', abbreviation: 'AL'},
+	            {name: 'Alaska', abbreviation: 'AK'},
+	            {name: 'Arizona', abbreviation: 'AZ'},
+	            {name: 'Arkansas', abbreviation: 'AR'},
+	            {name: 'California', abbreviation: 'CA'},
+	            {name: 'Colorado', abbreviation: 'CO'},
+	            {name: 'Connecticut', abbreviation: 'CT'},
+	            {name: 'Delaware', abbreviation: 'DE'},
+	            {name: 'District of Columbia', abbreviation: 'DC'},
+	            {name: 'Florida', abbreviation: 'FL'},
+	            {name: 'Georgia', abbreviation: 'GA'},
+	            {name: 'Hawaii', abbreviation: 'HI'},
+	            {name: 'Idaho', abbreviation: 'ID'},
+	            {name: 'Illinois', abbreviation: 'IL'},
+	            {name: 'Indiana', abbreviation: 'IN'},
+	            {name: 'Iowa', abbreviation: 'IA'},
+	            {name: 'Kansas', abbreviation: 'KS'},
+	            {name: 'Kentucky', abbreviation: 'KY'},
+	            {name: 'Louisiana', abbreviation: 'LA'},
+	            {name: 'Maine', abbreviation: 'ME'},
+	            {name: 'Maryland', abbreviation: 'MD'},
+	            {name: 'Massachusetts', abbreviation: 'MA'},
+	            {name: 'Michigan', abbreviation: 'MI'},
+	            {name: 'Minnesota', abbreviation: 'MN'},
+	            {name: 'Mississippi', abbreviation: 'MS'},
+	            {name: 'Missouri', abbreviation: 'MO'},
+	            {name: 'Montana', abbreviation: 'MT'},
+	            {name: 'Nebraska', abbreviation: 'NE'},
+	            {name: 'Nevada', abbreviation: 'NV'},
+	            {name: 'New Hampshire', abbreviation: 'NH'},
+	            {name: 'New Jersey', abbreviation: 'NJ'},
+	            {name: 'New Mexico', abbreviation: 'NM'},
+	            {name: 'New York', abbreviation: 'NY'},
+	            {name: 'North Carolina', abbreviation: 'NC'},
+	            {name: 'North Dakota', abbreviation: 'ND'},
+	            {name: 'Ohio', abbreviation: 'OH'},
+	            {name: 'Oklahoma', abbreviation: 'OK'},
+	            {name: 'Oregon', abbreviation: 'OR'},
+	            {name: 'Pennsylvania', abbreviation: 'PA'},
+	            {name: 'Rhode Island', abbreviation: 'RI'},
+	            {name: 'South Carolina', abbreviation: 'SC'},
+	            {name: 'South Dakota', abbreviation: 'SD'},
+	            {name: 'Tennessee', abbreviation: 'TN'},
+	            {name: 'Texas', abbreviation: 'TX'},
+	            {name: 'Utah', abbreviation: 'UT'},
+	            {name: 'Vermont', abbreviation: 'VT'},
+	            {name: 'Virginia', abbreviation: 'VA'},
+	            {name: 'Washington', abbreviation: 'WA'},
+	            {name: 'West Virginia', abbreviation: 'WV'},
+	            {name: 'Wisconsin', abbreviation: 'WI'},
+	            {name: 'Wyoming', abbreviation: 'WY'}
+	        ],
+	
+	        territories: [
+	            {name: 'American Samoa', abbreviation: 'AS'},
+	            {name: 'Federated States of Micronesia', abbreviation: 'FM'},
+	            {name: 'Guam', abbreviation: 'GU'},
+	            {name: 'Marshall Islands', abbreviation: 'MH'},
+	            {name: 'Northern Mariana Islands', abbreviation: 'MP'},
+	            {name: 'Puerto Rico', abbreviation: 'PR'},
+	            {name: 'Virgin Islands, U.S.', abbreviation: 'VI'}
+	        ],
+	
+	        armed_forces: [
+	            {name: 'Armed Forces Europe', abbreviation: 'AE'},
+	            {name: 'Armed Forces Pacific', abbreviation: 'AP'},
+	            {name: 'Armed Forces the Americas', abbreviation: 'AA'}
+	        ],
+	
+	        street_suffixes: [
+	            {name: 'Avenue', abbreviation: 'Ave'},
+	            {name: 'Boulevard', abbreviation: 'Blvd'},
+	            {name: 'Center', abbreviation: 'Ctr'},
+	            {name: 'Circle', abbreviation: 'Cir'},
+	            {name: 'Court', abbreviation: 'Ct'},
+	            {name: 'Drive', abbreviation: 'Dr'},
+	            {name: 'Extension', abbreviation: 'Ext'},
+	            {name: 'Glen', abbreviation: 'Gln'},
+	            {name: 'Grove', abbreviation: 'Grv'},
+	            {name: 'Heights', abbreviation: 'Hts'},
+	            {name: 'Highway', abbreviation: 'Hwy'},
+	            {name: 'Junction', abbreviation: 'Jct'},
+	            {name: 'Key', abbreviation: 'Key'},
+	            {name: 'Lane', abbreviation: 'Ln'},
+	            {name: 'Loop', abbreviation: 'Loop'},
+	            {name: 'Manor', abbreviation: 'Mnr'},
+	            {name: 'Mill', abbreviation: 'Mill'},
+	            {name: 'Park', abbreviation: 'Park'},
+	            {name: 'Parkway', abbreviation: 'Pkwy'},
+	            {name: 'Pass', abbreviation: 'Pass'},
+	            {name: 'Path', abbreviation: 'Path'},
+	            {name: 'Pike', abbreviation: 'Pike'},
+	            {name: 'Place', abbreviation: 'Pl'},
+	            {name: 'Plaza', abbreviation: 'Plz'},
+	            {name: 'Point', abbreviation: 'Pt'},
+	            {name: 'Ridge', abbreviation: 'Rdg'},
+	            {name: 'River', abbreviation: 'Riv'},
+	            {name: 'Road', abbreviation: 'Rd'},
+	            {name: 'Square', abbreviation: 'Sq'},
+	            {name: 'Street', abbreviation: 'St'},
+	            {name: 'Terrace', abbreviation: 'Ter'},
+	            {name: 'Trail', abbreviation: 'Trl'},
+	            {name: 'Turnpike', abbreviation: 'Tpke'},
+	            {name: 'View', abbreviation: 'Vw'},
+	            {name: 'Way', abbreviation: 'Way'}
+	        ],
+	
+	        months: [
+	            {name: 'January', short_name: 'Jan', numeric: '01', days: 31},
+	            // Not messing with leap years...
+	            {name: 'February', short_name: 'Feb', numeric: '02', days: 28},
+	            {name: 'March', short_name: 'Mar', numeric: '03', days: 31},
+	            {name: 'April', short_name: 'Apr', numeric: '04', days: 30},
+	            {name: 'May', short_name: 'May', numeric: '05', days: 31},
+	            {name: 'June', short_name: 'Jun', numeric: '06', days: 30},
+	            {name: 'July', short_name: 'Jul', numeric: '07', days: 31},
+	            {name: 'August', short_name: 'Aug', numeric: '08', days: 31},
+	            {name: 'September', short_name: 'Sep', numeric: '09', days: 30},
+	            {name: 'October', short_name: 'Oct', numeric: '10', days: 31},
+	            {name: 'November', short_name: 'Nov', numeric: '11', days: 30},
+	            {name: 'December', short_name: 'Dec', numeric: '12', days: 31}
+	        ],
+	
+	        // http://en.wikipedia.org/wiki/Bank_card_number#Issuer_identification_number_.28IIN.29
+	        cc_types: [
+	            {name: "American Express", short_name: 'amex', prefix: '34', length: 15},
+	            {name: "Bankcard", short_name: 'bankcard', prefix: '5610', length: 16},
+	            {name: "China UnionPay", short_name: 'chinaunion', prefix: '62', length: 16},
+	            {name: "Diners Club Carte Blanche", short_name: 'dccarte', prefix: '300', length: 14},
+	            {name: "Diners Club enRoute", short_name: 'dcenroute', prefix: '2014', length: 15},
+	            {name: "Diners Club International", short_name: 'dcintl', prefix: '36', length: 14},
+	            {name: "Diners Club United States & Canada", short_name: 'dcusc', prefix: '54', length: 16},
+	            {name: "Discover Card", short_name: 'discover', prefix: '6011', length: 16},
+	            {name: "InstaPayment", short_name: 'instapay', prefix: '637', length: 16},
+	            {name: "JCB", short_name: 'jcb', prefix: '3528', length: 16},
+	            {name: "Laser", short_name: 'laser', prefix: '6304', length: 16},
+	            {name: "Maestro", short_name: 'maestro', prefix: '5018', length: 16},
+	            {name: "Mastercard", short_name: 'mc', prefix: '51', length: 16},
+	            {name: "Solo", short_name: 'solo', prefix: '6334', length: 16},
+	            {name: "Switch", short_name: 'switch', prefix: '4903', length: 16},
+	            {name: "Visa", short_name: 'visa', prefix: '4', length: 16},
+	            {name: "Visa Electron", short_name: 'electron', prefix: '4026', length: 16}
+	        ],
+	
+	        //return all world currency by ISO 4217
+	        currency_types: [
+	            {'code' : 'AED', 'name' : 'United Arab Emirates Dirham'},
+	            {'code' : 'AFN', 'name' : 'Afghanistan Afghani'},
+	            {'code' : 'ALL', 'name' : 'Albania Lek'},
+	            {'code' : 'AMD', 'name' : 'Armenia Dram'},
+	            {'code' : 'ANG', 'name' : 'Netherlands Antilles Guilder'},
+	            {'code' : 'AOA', 'name' : 'Angola Kwanza'},
+	            {'code' : 'ARS', 'name' : 'Argentina Peso'},
+	            {'code' : 'AUD', 'name' : 'Australia Dollar'},
+	            {'code' : 'AWG', 'name' : 'Aruba Guilder'},
+	            {'code' : 'AZN', 'name' : 'Azerbaijan New Manat'},
+	            {'code' : 'BAM', 'name' : 'Bosnia and Herzegovina Convertible Marka'},
+	            {'code' : 'BBD', 'name' : 'Barbados Dollar'},
+	            {'code' : 'BDT', 'name' : 'Bangladesh Taka'},
+	            {'code' : 'BGN', 'name' : 'Bulgaria Lev'},
+	            {'code' : 'BHD', 'name' : 'Bahrain Dinar'},
+	            {'code' : 'BIF', 'name' : 'Burundi Franc'},
+	            {'code' : 'BMD', 'name' : 'Bermuda Dollar'},
+	            {'code' : 'BND', 'name' : 'Brunei Darussalam Dollar'},
+	            {'code' : 'BOB', 'name' : 'Bolivia Boliviano'},
+	            {'code' : 'BRL', 'name' : 'Brazil Real'},
+	            {'code' : 'BSD', 'name' : 'Bahamas Dollar'},
+	            {'code' : 'BTN', 'name' : 'Bhutan Ngultrum'},
+	            {'code' : 'BWP', 'name' : 'Botswana Pula'},
+	            {'code' : 'BYR', 'name' : 'Belarus Ruble'},
+	            {'code' : 'BZD', 'name' : 'Belize Dollar'},
+	            {'code' : 'CAD', 'name' : 'Canada Dollar'},
+	            {'code' : 'CDF', 'name' : 'Congo/Kinshasa Franc'},
+	            {'code' : 'CHF', 'name' : 'Switzerland Franc'},
+	            {'code' : 'CLP', 'name' : 'Chile Peso'},
+	            {'code' : 'CNY', 'name' : 'China Yuan Renminbi'},
+	            {'code' : 'COP', 'name' : 'Colombia Peso'},
+	            {'code' : 'CRC', 'name' : 'Costa Rica Colon'},
+	            {'code' : 'CUC', 'name' : 'Cuba Convertible Peso'},
+	            {'code' : 'CUP', 'name' : 'Cuba Peso'},
+	            {'code' : 'CVE', 'name' : 'Cape Verde Escudo'},
+	            {'code' : 'CZK', 'name' : 'Czech Republic Koruna'},
+	            {'code' : 'DJF', 'name' : 'Djibouti Franc'},
+	            {'code' : 'DKK', 'name' : 'Denmark Krone'},
+	            {'code' : 'DOP', 'name' : 'Dominican Republic Peso'},
+	            {'code' : 'DZD', 'name' : 'Algeria Dinar'},
+	            {'code' : 'EGP', 'name' : 'Egypt Pound'},
+	            {'code' : 'ERN', 'name' : 'Eritrea Nakfa'},
+	            {'code' : 'ETB', 'name' : 'Ethiopia Birr'},
+	            {'code' : 'EUR', 'name' : 'Euro Member Countries'},
+	            {'code' : 'FJD', 'name' : 'Fiji Dollar'},
+	            {'code' : 'FKP', 'name' : 'Falkland Islands (Malvinas) Pound'},
+	            {'code' : 'GBP', 'name' : 'United Kingdom Pound'},
+	            {'code' : 'GEL', 'name' : 'Georgia Lari'},
+	            {'code' : 'GGP', 'name' : 'Guernsey Pound'},
+	            {'code' : 'GHS', 'name' : 'Ghana Cedi'},
+	            {'code' : 'GIP', 'name' : 'Gibraltar Pound'},
+	            {'code' : 'GMD', 'name' : 'Gambia Dalasi'},
+	            {'code' : 'GNF', 'name' : 'Guinea Franc'},
+	            {'code' : 'GTQ', 'name' : 'Guatemala Quetzal'},
+	            {'code' : 'GYD', 'name' : 'Guyana Dollar'},
+	            {'code' : 'HKD', 'name' : 'Hong Kong Dollar'},
+	            {'code' : 'HNL', 'name' : 'Honduras Lempira'},
+	            {'code' : 'HRK', 'name' : 'Croatia Kuna'},
+	            {'code' : 'HTG', 'name' : 'Haiti Gourde'},
+	            {'code' : 'HUF', 'name' : 'Hungary Forint'},
+	            {'code' : 'IDR', 'name' : 'Indonesia Rupiah'},
+	            {'code' : 'ILS', 'name' : 'Israel Shekel'},
+	            {'code' : 'IMP', 'name' : 'Isle of Man Pound'},
+	            {'code' : 'INR', 'name' : 'India Rupee'},
+	            {'code' : 'IQD', 'name' : 'Iraq Dinar'},
+	            {'code' : 'IRR', 'name' : 'Iran Rial'},
+	            {'code' : 'ISK', 'name' : 'Iceland Krona'},
+	            {'code' : 'JEP', 'name' : 'Jersey Pound'},
+	            {'code' : 'JMD', 'name' : 'Jamaica Dollar'},
+	            {'code' : 'JOD', 'name' : 'Jordan Dinar'},
+	            {'code' : 'JPY', 'name' : 'Japan Yen'},
+	            {'code' : 'KES', 'name' : 'Kenya Shilling'},
+	            {'code' : 'KGS', 'name' : 'Kyrgyzstan Som'},
+	            {'code' : 'KHR', 'name' : 'Cambodia Riel'},
+	            {'code' : 'KMF', 'name' : 'Comoros Franc'},
+	            {'code' : 'KPW', 'name' : 'Korea (North) Won'},
+	            {'code' : 'KRW', 'name' : 'Korea (South) Won'},
+	            {'code' : 'KWD', 'name' : 'Kuwait Dinar'},
+	            {'code' : 'KYD', 'name' : 'Cayman Islands Dollar'},
+	            {'code' : 'KZT', 'name' : 'Kazakhstan Tenge'},
+	            {'code' : 'LAK', 'name' : 'Laos Kip'},
+	            {'code' : 'LBP', 'name' : 'Lebanon Pound'},
+	            {'code' : 'LKR', 'name' : 'Sri Lanka Rupee'},
+	            {'code' : 'LRD', 'name' : 'Liberia Dollar'},
+	            {'code' : 'LSL', 'name' : 'Lesotho Loti'},
+	            {'code' : 'LTL', 'name' : 'Lithuania Litas'},
+	            {'code' : 'LYD', 'name' : 'Libya Dinar'},
+	            {'code' : 'MAD', 'name' : 'Morocco Dirham'},
+	            {'code' : 'MDL', 'name' : 'Moldova Leu'},
+	            {'code' : 'MGA', 'name' : 'Madagascar Ariary'},
+	            {'code' : 'MKD', 'name' : 'Macedonia Denar'},
+	            {'code' : 'MMK', 'name' : 'Myanmar (Burma) Kyat'},
+	            {'code' : 'MNT', 'name' : 'Mongolia Tughrik'},
+	            {'code' : 'MOP', 'name' : 'Macau Pataca'},
+	            {'code' : 'MRO', 'name' : 'Mauritania Ouguiya'},
+	            {'code' : 'MUR', 'name' : 'Mauritius Rupee'},
+	            {'code' : 'MVR', 'name' : 'Maldives (Maldive Islands) Rufiyaa'},
+	            {'code' : 'MWK', 'name' : 'Malawi Kwacha'},
+	            {'code' : 'MXN', 'name' : 'Mexico Peso'},
+	            {'code' : 'MYR', 'name' : 'Malaysia Ringgit'},
+	            {'code' : 'MZN', 'name' : 'Mozambique Metical'},
+	            {'code' : 'NAD', 'name' : 'Namibia Dollar'},
+	            {'code' : 'NGN', 'name' : 'Nigeria Naira'},
+	            {'code' : 'NIO', 'name' : 'Nicaragua Cordoba'},
+	            {'code' : 'NOK', 'name' : 'Norway Krone'},
+	            {'code' : 'NPR', 'name' : 'Nepal Rupee'},
+	            {'code' : 'NZD', 'name' : 'New Zealand Dollar'},
+	            {'code' : 'OMR', 'name' : 'Oman Rial'},
+	            {'code' : 'PAB', 'name' : 'Panama Balboa'},
+	            {'code' : 'PEN', 'name' : 'Peru Nuevo Sol'},
+	            {'code' : 'PGK', 'name' : 'Papua New Guinea Kina'},
+	            {'code' : 'PHP', 'name' : 'Philippines Peso'},
+	            {'code' : 'PKR', 'name' : 'Pakistan Rupee'},
+	            {'code' : 'PLN', 'name' : 'Poland Zloty'},
+	            {'code' : 'PYG', 'name' : 'Paraguay Guarani'},
+	            {'code' : 'QAR', 'name' : 'Qatar Riyal'},
+	            {'code' : 'RON', 'name' : 'Romania New Leu'},
+	            {'code' : 'RSD', 'name' : 'Serbia Dinar'},
+	            {'code' : 'RUB', 'name' : 'Russia Ruble'},
+	            {'code' : 'RWF', 'name' : 'Rwanda Franc'},
+	            {'code' : 'SAR', 'name' : 'Saudi Arabia Riyal'},
+	            {'code' : 'SBD', 'name' : 'Solomon Islands Dollar'},
+	            {'code' : 'SCR', 'name' : 'Seychelles Rupee'},
+	            {'code' : 'SDG', 'name' : 'Sudan Pound'},
+	            {'code' : 'SEK', 'name' : 'Sweden Krona'},
+	            {'code' : 'SGD', 'name' : 'Singapore Dollar'},
+	            {'code' : 'SHP', 'name' : 'Saint Helena Pound'},
+	            {'code' : 'SLL', 'name' : 'Sierra Leone Leone'},
+	            {'code' : 'SOS', 'name' : 'Somalia Shilling'},
+	            {'code' : 'SPL', 'name' : 'Seborga Luigino'},
+	            {'code' : 'SRD', 'name' : 'Suriname Dollar'},
+	            {'code' : 'STD', 'name' : 'São Tomé and Príncipe Dobra'},
+	            {'code' : 'SVC', 'name' : 'El Salvador Colon'},
+	            {'code' : 'SYP', 'name' : 'Syria Pound'},
+	            {'code' : 'SZL', 'name' : 'Swaziland Lilangeni'},
+	            {'code' : 'THB', 'name' : 'Thailand Baht'},
+	            {'code' : 'TJS', 'name' : 'Tajikistan Somoni'},
+	            {'code' : 'TMT', 'name' : 'Turkmenistan Manat'},
+	            {'code' : 'TND', 'name' : 'Tunisia Dinar'},
+	            {'code' : 'TOP', 'name' : 'Tonga Pa\'anga'},
+	            {'code' : 'TRY', 'name' : 'Turkey Lira'},
+	            {'code' : 'TTD', 'name' : 'Trinidad and Tobago Dollar'},
+	            {'code' : 'TVD', 'name' : 'Tuvalu Dollar'},
+	            {'code' : 'TWD', 'name' : 'Taiwan New Dollar'},
+	            {'code' : 'TZS', 'name' : 'Tanzania Shilling'},
+	            {'code' : 'UAH', 'name' : 'Ukraine Hryvnia'},
+	            {'code' : 'UGX', 'name' : 'Uganda Shilling'},
+	            {'code' : 'USD', 'name' : 'United States Dollar'},
+	            {'code' : 'UYU', 'name' : 'Uruguay Peso'},
+	            {'code' : 'UZS', 'name' : 'Uzbekistan Som'},
+	            {'code' : 'VEF', 'name' : 'Venezuela Bolivar'},
+	            {'code' : 'VND', 'name' : 'Viet Nam Dong'},
+	            {'code' : 'VUV', 'name' : 'Vanuatu Vatu'},
+	            {'code' : 'WST', 'name' : 'Samoa Tala'},
+	            {'code' : 'XAF', 'name' : 'Communauté Financière Africaine (BEAC) CFA Franc BEAC'},
+	            {'code' : 'XCD', 'name' : 'East Caribbean Dollar'},
+	            {'code' : 'XDR', 'name' : 'International Monetary Fund (IMF) Special Drawing Rights'},
+	            {'code' : 'XOF', 'name' : 'Communauté Financière Africaine (BCEAO) Franc'},
+	            {'code' : 'XPF', 'name' : 'Comptoirs Français du Pacifique (CFP) Franc'},
+	            {'code' : 'YER', 'name' : 'Yemen Rial'},
+	            {'code' : 'ZAR', 'name' : 'South Africa Rand'},
+	            {'code' : 'ZMW', 'name' : 'Zambia Kwacha'},
+	            {'code' : 'ZWD', 'name' : 'Zimbabwe Dollar'}
+	        ]
+	    };
+	
+	    var o_hasOwnProperty = Object.prototype.hasOwnProperty;
+	    var o_keys = (Object.keys || function(obj) {
+	      var result = [];
+	      for (var key in obj) {
+	        if (o_hasOwnProperty.call(obj, key)) {
+	          result.push(key);
+	        }
+	      }
+	
+	      return result;
+	    });
+	
+	    function _copyObject(source, target) {
+	      var keys = o_keys(source);
+	
+	      for (var i = 0, l = keys.length; i < l; i++) {
+	        key = keys[i];
+	        target[key] = source[key] || target[key];
+	      }
+	    }
+	
+	    function _copyArray(source, target) {
+	      for (var i = 0, l = source.length; i < l; i++) {
+	        target[i] = source[i];
+	      }
+	    }
+	
+	    function copyObject(source, _target) {
+	        var isArray = Array.isArray(source);
+	        var target = _target || (isArray ? new Array(source.length) : {});
+	
+	        if (isArray) {
+	          _copyArray(source, target);
+	        } else {
+	          _copyObject(source, target);
+	        }
+	
+	        return target;
+	    }
+	
+	    /** Get the data based on key**/
+	    Chance.prototype.get = function (name) {
+	        return copyObject(data[name]);
+	    };
+	
+	    // Mac Address
+	    Chance.prototype.mac_address = function(options){
+	        // typically mac addresses are separated by ":"
+	        // however they can also be separated by "-"
+	        // the network variant uses a dot every fourth byte
+	
+	        options = initOptions(options);
+	        if(!options.separator) {
+	            options.separator =  options.networkVersion ? "." : ":";
+	        }
+	
+	        var mac_pool="ABCDEF1234567890",
+	            mac = "";
+	        if(!options.networkVersion) {
+	            mac = this.n(this.string, 6, { pool: mac_pool, length:2 }).join(options.separator);
+	        } else {
+	            mac = this.n(this.string, 3, { pool: mac_pool, length:4 }).join(options.separator);
+	        }
+	
+	        return mac;
+	    };
+	
+	    Chance.prototype.normal = function (options) {
+	        options = initOptions(options, {mean : 0, dev : 1});
+	
+	        // The Marsaglia Polar method
+	        var s, u, v, norm,
+	            mean = options.mean,
+	            dev = options.dev;
+	
+	        do {
+	            // U and V are from the uniform distribution on (-1, 1)
+	            u = this.random() * 2 - 1;
+	            v = this.random() * 2 - 1;
+	
+	            s = u * u + v * v;
+	        } while (s >= 1);
+	
+	        // Compute the standard normal variate
+	        norm = u * Math.sqrt(-2 * Math.log(s) / s);
+	
+	        // Shape and scale
+	        return dev * norm + mean;
+	    };
+	
+	    Chance.prototype.radio = function (options) {
+	        // Initial Letter (Typically Designated by Side of Mississippi River)
+	        options = initOptions(options, {side : "?"});
+	        var fl = "";
+	        switch (options.side.toLowerCase()) {
+	        case "east":
+	        case "e":
+	            fl = "W";
+	            break;
+	        case "west":
+	        case "w":
+	            fl = "K";
+	            break;
+	        default:
+	            fl = this.character({pool: "KW"});
+	            break;
+	        }
+	
+	        return fl + this.character({alpha: true, casing: "upper"}) +
+	                this.character({alpha: true, casing: "upper"}) +
+	                this.character({alpha: true, casing: "upper"});
+	    };
+	
+	    // Set the data as key and data or the data map
+	    Chance.prototype.set = function (name, values) {
+	        if (typeof name === "string") {
+	            data[name] = values;
+	        } else {
+	            data = copyObject(name, data);
+	        }
+	    };
+	
+	    Chance.prototype.tv = function (options) {
+	        return this.radio(options);
+	    };
+	
+	    // ID number for Brazil companies
+	    Chance.prototype.cnpj = function () {
+	        var n = this.n(this.natural, 8, { max: 9 });
+	        var d1 = 2+n[7]*6+n[6]*7+n[5]*8+n[4]*9+n[3]*2+n[2]*3+n[1]*4+n[0]*5;
+	        d1 = 11 - (d1 % 11);
+	        if (d1>=10){
+	            d1 = 0;
+	        }
+	        var d2 = d1*2+3+n[7]*7+n[6]*8+n[5]*9+n[4]*2+n[3]*3+n[2]*4+n[1]*5+n[0]*6;
+	        d2 = 11 - (d2 % 11);
+	        if (d2>=10){
+	            d2 = 0;
+	        }
+	        return ''+n[0]+n[1]+'.'+n[2]+n[3]+n[4]+'.'+n[5]+n[6]+n[7]+'/0001-'+d1+d2;
+	    };
+	
+	    // -- End Miscellaneous --
+	
+	    Chance.prototype.mersenne_twister = function (seed) {
+	        return new MersenneTwister(seed);
+	    };
+	
+	    // Mersenne Twister from https://gist.github.com/banksean/300494
+	    var MersenneTwister = function (seed) {
+	        if (seed === undefined) {
+	            seed = new Date().getTime();
+	        }
+	        /* Period parameters */
+	        this.N = 624;
+	        this.M = 397;
+	        this.MATRIX_A = 0x9908b0df;   /* constant vector a */
+	        this.UPPER_MASK = 0x80000000; /* most significant w-r bits */
+	        this.LOWER_MASK = 0x7fffffff; /* least significant r bits */
+	
+	        this.mt = new Array(this.N); /* the array for the state vector */
+	        this.mti = this.N + 1; /* mti==N + 1 means mt[N] is not initialized */
+	
+	        this.init_genrand(seed);
+	    };
+	
+	    /* initializes mt[N] with a seed */
+	    MersenneTwister.prototype.init_genrand = function (s) {
+	        this.mt[0] = s >>> 0;
+	        for (this.mti = 1; this.mti < this.N; this.mti++) {
+	            s = this.mt[this.mti - 1] ^ (this.mt[this.mti - 1] >>> 30);
+	            this.mt[this.mti] = (((((s & 0xffff0000) >>> 16) * 1812433253) << 16) + (s & 0x0000ffff) * 1812433253) + this.mti;
+	            /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
+	            /* In the previous versions, MSBs of the seed affect   */
+	            /* only MSBs of the array mt[].                        */
+	            /* 2002/01/09 modified by Makoto Matsumoto             */
+	            this.mt[this.mti] >>>= 0;
+	            /* for >32 bit machines */
+	        }
+	    };
+	
+	    /* initialize by an array with array-length */
+	    /* init_key is the array for initializing keys */
+	    /* key_length is its length */
+	    /* slight change for C++, 2004/2/26 */
+	    MersenneTwister.prototype.init_by_array = function (init_key, key_length) {
+	        var i = 1, j = 0, k, s;
+	        this.init_genrand(19650218);
+	        k = (this.N > key_length ? this.N : key_length);
+	        for (; k; k--) {
+	            s = this.mt[i - 1] ^ (this.mt[i - 1] >>> 30);
+	            this.mt[i] = (this.mt[i] ^ (((((s & 0xffff0000) >>> 16) * 1664525) << 16) + ((s & 0x0000ffff) * 1664525))) + init_key[j] + j; /* non linear */
+	            this.mt[i] >>>= 0; /* for WORDSIZE > 32 machines */
+	            i++;
+	            j++;
+	            if (i >= this.N) { this.mt[0] = this.mt[this.N - 1]; i = 1; }
+	            if (j >= key_length) { j = 0; }
+	        }
+	        for (k = this.N - 1; k; k--) {
+	            s = this.mt[i - 1] ^ (this.mt[i - 1] >>> 30);
+	            this.mt[i] = (this.mt[i] ^ (((((s & 0xffff0000) >>> 16) * 1566083941) << 16) + (s & 0x0000ffff) * 1566083941)) - i; /* non linear */
+	            this.mt[i] >>>= 0; /* for WORDSIZE > 32 machines */
+	            i++;
+	            if (i >= this.N) { this.mt[0] = this.mt[this.N - 1]; i = 1; }
+	        }
+	
+	        this.mt[0] = 0x80000000; /* MSB is 1; assuring non-zero initial array */
+	    };
+	
+	    /* generates a random number on [0,0xffffffff]-interval */
+	    MersenneTwister.prototype.genrand_int32 = function () {
+	        var y;
+	        var mag01 = new Array(0x0, this.MATRIX_A);
+	        /* mag01[x] = x * MATRIX_A  for x=0,1 */
+	
+	        if (this.mti >= this.N) { /* generate N words at one time */
+	            var kk;
+	
+	            if (this.mti === this.N + 1) {   /* if init_genrand() has not been called, */
+	                this.init_genrand(5489); /* a default initial seed is used */
+	            }
+	            for (kk = 0; kk < this.N - this.M; kk++) {
+	                y = (this.mt[kk]&this.UPPER_MASK)|(this.mt[kk + 1]&this.LOWER_MASK);
+	                this.mt[kk] = this.mt[kk + this.M] ^ (y >>> 1) ^ mag01[y & 0x1];
+	            }
+	            for (;kk < this.N - 1; kk++) {
+	                y = (this.mt[kk]&this.UPPER_MASK)|(this.mt[kk + 1]&this.LOWER_MASK);
+	                this.mt[kk] = this.mt[kk + (this.M - this.N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+	            }
+	            y = (this.mt[this.N - 1]&this.UPPER_MASK)|(this.mt[0]&this.LOWER_MASK);
+	            this.mt[this.N - 1] = this.mt[this.M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
+	
+	            this.mti = 0;
+	        }
+	
+	        y = this.mt[this.mti++];
+	
+	        /* Tempering */
+	        y ^= (y >>> 11);
+	        y ^= (y << 7) & 0x9d2c5680;
+	        y ^= (y << 15) & 0xefc60000;
+	        y ^= (y >>> 18);
+	
+	        return y >>> 0;
+	    };
+	
+	    /* generates a random number on [0,0x7fffffff]-interval */
+	    MersenneTwister.prototype.genrand_int31 = function () {
+	        return (this.genrand_int32() >>> 1);
+	    };
+	
+	    /* generates a random number on [0,1]-real-interval */
+	    MersenneTwister.prototype.genrand_real1 = function () {
+	        return this.genrand_int32() * (1.0 / 4294967295.0);
+	        /* divided by 2^32-1 */
+	    };
+	
+	    /* generates a random number on [0,1)-real-interval */
+	    MersenneTwister.prototype.random = function () {
+	        return this.genrand_int32() * (1.0 / 4294967296.0);
+	        /* divided by 2^32 */
+	    };
+	
+	    /* generates a random number on (0,1)-real-interval */
+	    MersenneTwister.prototype.genrand_real3 = function () {
+	        return (this.genrand_int32() + 0.5) * (1.0 / 4294967296.0);
+	        /* divided by 2^32 */
+	    };
+	
+	    /* generates a random number on [0,1) with 53-bit resolution*/
+	    MersenneTwister.prototype.genrand_res53 = function () {
+	        var a = this.genrand_int32()>>>5, b = this.genrand_int32()>>>6;
+	        return (a * 67108864.0 + b) * (1.0 / 9007199254740992.0);
+	    };
+	
+	
+	    // CommonJS module
+	    if (true) {
+	        if (typeof module !== 'undefined' && module.exports) {
+	            exports = module.exports = Chance;
+	        }
+	        exports.Chance = Chance;
+	    }
+	
+	    // Register as an anonymous AMD module
+	    if (true) {
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	            return Chance;
+	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    }
+	
+	    // if there is a importsScrips object define chance for worker
+	    if (typeof importScripts !== 'undefined') {
+	        chance = new Chance();
+	    }
+	
+	    // If there is a window object, that at least has a document property,
+	    // instantiate and define chance on the window
+	    if (typeof window === "object" && typeof window.document === "object") {
+	        window.Chance = Chance;
+	        window.chance = new Chance();
+	    }
+	})();
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98).Buffer))
+
+/***/ },
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19236,7 +20079,7 @@
 
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19285,7 +20128,7 @@
 	}
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19303,53 +20146,6 @@
 
 
 /***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , filter = __webpack_require__(66)
-	  , helper = __webpack_require__(86)
-	  , _      = __webpack_require__(14);
-	
-	module.exports = {
-	  
-	    propTypes: {
-	      data:          React.PropTypes.array,
-	      value:         React.PropTypes.any,
-	      delay:         React.PropTypes.number,
-	      filter:        React.PropTypes.string,
-	    },
-	
-	    search: function(character, cb){
-	      var self    = this
-	        , word    = ((this._searchTerm || '') + character).toLowerCase();
-	        
-	      clearTimeout(this._timer)
-	
-	      this._searchTerm = word 
-	
-	      this._timer = setTimeout(function(){
-	            self._searchTerm = ''
-	            cb(word);
-	        }, this.props.delay)    
-	    },
-	
-	    findNextWordIndex: function(word, current){
-	      var matcher = filter.startsWith
-	        , self    = this;
-	        
-	      return _.findIndex(self._data(), function(item, i) { 
-	        return i >= current
-	            && matcher(
-	                helper._dataText.call(self, item).toLowerCase()
-	              , word.toLowerCase())
-	      });    
-	    }
-	
-	}
-
-/***/ },
 /* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -19361,7 +20157,7 @@
 	  
 	  propTypes: {    
 	    valueField: React.PropTypes.string,
-	    textField:  React.PropTypes.string
+	    textField:  React.PropTypes.string,
 	  },
 	
 	  _dataValue: function(item){
@@ -19449,63 +20245,47 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var React  = __webpack_require__(1);
+	var React  = __webpack_require__(1)
+	  , filter = __webpack_require__(66)
+	  , helper = __webpack_require__(86)
+	  , _      = __webpack_require__(14);
 	
-	module.exports = function(stateKey, disabled) {
-	  var methodName = stateKey.charAt(0).toUpperCase() + stateKey.substr(1);
-	
-	
-	  var mixin = {
+	module.exports = {
 	  
 	    propTypes: {
 	      data:          React.PropTypes.array,
-	      value:         React.PropTypes.any
+	      value:         React.PropTypes.any,
+	      delay:         React.PropTypes.number,
+	      filter:        React.PropTypes.string,
+	    },
+	
+	    search: function(character, cb){
+	      var self    = this
+	        , word    = ((this._searchTerm || '') + character).toLowerCase();
+	        
+	      clearTimeout(this._timer)
+	
+	      this._searchTerm = word 
+	
+	      this._timer = setTimeout(function(){
+	            self._searchTerm = ''
+	            cb(word);
+	        }, this.props.delay)    
+	    },
+	
+	    findNextWordIndex: function(word, current){
+	      var matcher = filter.startsWith
+	        , self    = this;
+	        
+	      return _.findIndex(self._data(), function(item, i) { 
+	        return i >= current
+	            && matcher(
+	                helper._dataText.call(self, item).toLowerCase()
+	              , word.toLowerCase())
+	      });    
 	    }
-	  }
 	
-	  mixin['set' + methodName] = function(idx){
-	    var state = {}; state[stateKey] = idx;
-	
-	    if(idx !== -1) 
-	      this.setState(state);
-	    return this
-	  }
-	
-	  mixin['prev' + methodName] = function(nextIdx){
-	    var data = this._data()
-	      , stateIdx = this.state && this.state[stateKey] || 0;
-	    
-	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) -1;
-	
-	    while( nextIdx > -1 && isDisabled(this, data[nextIdx])) nextIdx--
-	
-	    if ( nextIdx < 0 ) 
-	      nextIdx = disabled ? -1 : 0
-	    
-	    return nextIdx;
-	  }
-	
-	  mixin['next' + methodName] = function(nextIdx){
-	    var data = this._data()
-	      , stateIdx = this.state && this.state[stateKey] || 0;
-	
-	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) + 1
-	
-	    while( nextIdx < data.length && isDisabled(this, data[nextIdx])) nextIdx++
-	
-	    if ( nextIdx >= data.length )
-	      nextIdx = disabled ? -1 : data.length - 1;
-	
-	    return nextIdx;
-	  }
-	
-	  function isDisabled(ctx, item){
-	    return disabled && ctx[disabled](item)
-	  }
-	
-	  return mixin;
 	}
-
 
 /***/ },
 /* 89 */
@@ -19594,6 +20374,69 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	var React  = __webpack_require__(1);
+	
+	module.exports = function(stateKey, disabled) {
+	  var methodName = stateKey.charAt(0).toUpperCase() + stateKey.substr(1);
+	
+	
+	  var mixin = {
+	  
+	    propTypes: {
+	      data:          React.PropTypes.array,
+	      value:         React.PropTypes.any
+	    }
+	  }
+	
+	  mixin['set' + methodName] = function(idx){
+	    var state = {}; state[stateKey] = idx;
+	
+	    if(idx !== -1) 
+	      this.setState(state);
+	    return this
+	  }
+	
+	  mixin['prev' + methodName] = function(nextIdx){
+	    var data = this._data()
+	      , stateIdx = this.state && this.state[stateKey] || 0;
+	    
+	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) -1;
+	
+	    while( nextIdx > -1 && isDisabled(this, data[nextIdx])) nextIdx--
+	
+	    if ( nextIdx < 0 ) 
+	      nextIdx = disabled ? -1 : 0
+	    
+	    return nextIdx;
+	  }
+	
+	  mixin['next' + methodName] = function(nextIdx){
+	    var data = this._data()
+	      , stateIdx = this.state && this.state[stateKey] || 0;
+	
+	    nextIdx = (nextIdx === undefined ? stateIdx : nextIdx) + 1
+	
+	    while( nextIdx < data.length && isDisabled(this, data[nextIdx])) nextIdx++
+	
+	    if ( nextIdx >= data.length )
+	      nextIdx = disabled ? -1 : data.length - 1;
+	
+	    return nextIdx;
+	  }
+	
+	  function isDisabled(ctx, item){
+	    return disabled && ctx[disabled](item)
+	  }
+	
+	  return mixin;
+	}
+
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	var React = __webpack_require__(1);
 	
 	var compat = module.exports = {
@@ -19620,7 +20463,7 @@
 	}
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19639,7 +20482,7 @@
 	}
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19658,7 +20501,7 @@
 	}
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19737,7 +20580,23 @@
 	}
 
 /***/ },
-/* 94 */
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	module.exports = function stateSetter(key){
+	  return function(val){
+	    var state = {}
+	
+	    state[key] = val
+	    this.setState(state)
+	    return this
+	  }
+	}
+
+/***/ },
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module) {
@@ -19753,7 +20612,7 @@
 
 
 /***/ },
-/* 95 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -21340,6 +22199,1319 @@
 	};
 	
 	}( this ));
+
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
+	 * The buffer module from node.js, for the browser.
+	 *
+	 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+	 * @license  MIT
+	 */
+	
+	var base64 = __webpack_require__(101)
+	var ieee754 = __webpack_require__(99)
+	var isArray = __webpack_require__(100)
+	
+	exports.Buffer = Buffer
+	exports.SlowBuffer = Buffer
+	exports.INSPECT_MAX_BYTES = 50
+	Buffer.poolSize = 8192 // not used by this implementation
+	
+	var kMaxLength = 0x3fffffff
+	
+	/**
+	 * If `Buffer.TYPED_ARRAY_SUPPORT`:
+	 *   === true    Use Uint8Array implementation (fastest)
+	 *   === false   Use Object implementation (most compatible, even IE6)
+	 *
+	 * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+	 * Opera 11.6+, iOS 4.2+.
+	 *
+	 * Note:
+	 *
+	 * - Implementation must support adding new properties to `Uint8Array` instances.
+	 *   Firefox 4-29 lacked support, fixed in Firefox 30+.
+	 *   See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+	 *
+	 *  - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+	 *
+	 *  - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+	 *    incorrect length in some situations.
+	 *
+	 * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they will
+	 * get the Object implementation, which is slower but will work correctly.
+	 */
+	Buffer.TYPED_ARRAY_SUPPORT = (function () {
+	  try {
+	    var buf = new ArrayBuffer(0)
+	    var arr = new Uint8Array(buf)
+	    arr.foo = function () { return 42 }
+	    return 42 === arr.foo() && // typed array instances can be augmented
+	        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+	        new Uint8Array(1).subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+	  } catch (e) {
+	    return false
+	  }
+	})()
+	
+	/**
+	 * Class: Buffer
+	 * =============
+	 *
+	 * The Buffer constructor returns instances of `Uint8Array` that are augmented
+	 * with function properties for all the node `Buffer` API functions. We use
+	 * `Uint8Array` so that square bracket notation works as expected -- it returns
+	 * a single octet.
+	 *
+	 * By augmenting the instances, we can avoid modifying the `Uint8Array`
+	 * prototype.
+	 */
+	function Buffer (subject, encoding, noZero) {
+	  if (!(this instanceof Buffer))
+	    return new Buffer(subject, encoding, noZero)
+	
+	  var type = typeof subject
+	
+	  // Find the length
+	  var length
+	  if (type === 'number')
+	    length = subject > 0 ? subject >>> 0 : 0
+	  else if (type === 'string') {
+	    if (encoding === 'base64')
+	      subject = base64clean(subject)
+	    length = Buffer.byteLength(subject, encoding)
+	  } else if (type === 'object' && subject !== null) { // assume object is array-like
+	    if (subject.type === 'Buffer' && isArray(subject.data))
+	      subject = subject.data
+	    length = +subject.length > 0 ? Math.floor(+subject.length) : 0
+	  } else
+	    throw new TypeError('must start with number, buffer, array or string')
+	
+	  if (this.length > kMaxLength)
+	    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+	      'size: 0x' + kMaxLength.toString(16) + ' bytes')
+	
+	  var buf
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    // Preferred: Return an augmented `Uint8Array` instance for best performance
+	    buf = Buffer._augment(new Uint8Array(length))
+	  } else {
+	    // Fallback: Return THIS instance of Buffer (created by `new`)
+	    buf = this
+	    buf.length = length
+	    buf._isBuffer = true
+	  }
+	
+	  var i
+	  if (Buffer.TYPED_ARRAY_SUPPORT && typeof subject.byteLength === 'number') {
+	    // Speed optimization -- use set if we're copying from a typed array
+	    buf._set(subject)
+	  } else if (isArrayish(subject)) {
+	    // Treat array-ish objects as a byte array
+	    if (Buffer.isBuffer(subject)) {
+	      for (i = 0; i < length; i++)
+	        buf[i] = subject.readUInt8(i)
+	    } else {
+	      for (i = 0; i < length; i++)
+	        buf[i] = ((subject[i] % 256) + 256) % 256
+	    }
+	  } else if (type === 'string') {
+	    buf.write(subject, 0, encoding)
+	  } else if (type === 'number' && !Buffer.TYPED_ARRAY_SUPPORT && !noZero) {
+	    for (i = 0; i < length; i++) {
+	      buf[i] = 0
+	    }
+	  }
+	
+	  return buf
+	}
+	
+	Buffer.isBuffer = function (b) {
+	  return !!(b != null && b._isBuffer)
+	}
+	
+	Buffer.compare = function (a, b) {
+	  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b))
+	    throw new TypeError('Arguments must be Buffers')
+	
+	  var x = a.length
+	  var y = b.length
+	  for (var i = 0, len = Math.min(x, y); i < len && a[i] === b[i]; i++) {}
+	  if (i !== len) {
+	    x = a[i]
+	    y = b[i]
+	  }
+	  if (x < y) return -1
+	  if (y < x) return 1
+	  return 0
+	}
+	
+	Buffer.isEncoding = function (encoding) {
+	  switch (String(encoding).toLowerCase()) {
+	    case 'hex':
+	    case 'utf8':
+	    case 'utf-8':
+	    case 'ascii':
+	    case 'binary':
+	    case 'base64':
+	    case 'raw':
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      return true
+	    default:
+	      return false
+	  }
+	}
+	
+	Buffer.concat = function (list, totalLength) {
+	  if (!isArray(list)) throw new TypeError('Usage: Buffer.concat(list[, length])')
+	
+	  if (list.length === 0) {
+	    return new Buffer(0)
+	  } else if (list.length === 1) {
+	    return list[0]
+	  }
+	
+	  var i
+	  if (totalLength === undefined) {
+	    totalLength = 0
+	    for (i = 0; i < list.length; i++) {
+	      totalLength += list[i].length
+	    }
+	  }
+	
+	  var buf = new Buffer(totalLength)
+	  var pos = 0
+	  for (i = 0; i < list.length; i++) {
+	    var item = list[i]
+	    item.copy(buf, pos)
+	    pos += item.length
+	  }
+	  return buf
+	}
+	
+	Buffer.byteLength = function (str, encoding) {
+	  var ret
+	  str = str + ''
+	  switch (encoding || 'utf8') {
+	    case 'ascii':
+	    case 'binary':
+	    case 'raw':
+	      ret = str.length
+	      break
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      ret = str.length * 2
+	      break
+	    case 'hex':
+	      ret = str.length >>> 1
+	      break
+	    case 'utf8':
+	    case 'utf-8':
+	      ret = utf8ToBytes(str).length
+	      break
+	    case 'base64':
+	      ret = base64ToBytes(str).length
+	      break
+	    default:
+	      ret = str.length
+	  }
+	  return ret
+	}
+	
+	// pre-set for values that may exist in the future
+	Buffer.prototype.length = undefined
+	Buffer.prototype.parent = undefined
+	
+	// toString(encoding, start=0, end=buffer.length)
+	Buffer.prototype.toString = function (encoding, start, end) {
+	  var loweredCase = false
+	
+	  start = start >>> 0
+	  end = end === undefined || end === Infinity ? this.length : end >>> 0
+	
+	  if (!encoding) encoding = 'utf8'
+	  if (start < 0) start = 0
+	  if (end > this.length) end = this.length
+	  if (end <= start) return ''
+	
+	  while (true) {
+	    switch (encoding) {
+	      case 'hex':
+	        return hexSlice(this, start, end)
+	
+	      case 'utf8':
+	      case 'utf-8':
+	        return utf8Slice(this, start, end)
+	
+	      case 'ascii':
+	        return asciiSlice(this, start, end)
+	
+	      case 'binary':
+	        return binarySlice(this, start, end)
+	
+	      case 'base64':
+	        return base64Slice(this, start, end)
+	
+	      case 'ucs2':
+	      case 'ucs-2':
+	      case 'utf16le':
+	      case 'utf-16le':
+	        return utf16leSlice(this, start, end)
+	
+	      default:
+	        if (loweredCase)
+	          throw new TypeError('Unknown encoding: ' + encoding)
+	        encoding = (encoding + '').toLowerCase()
+	        loweredCase = true
+	    }
+	  }
+	}
+	
+	Buffer.prototype.equals = function (b) {
+	  if(!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+	  return Buffer.compare(this, b) === 0
+	}
+	
+	Buffer.prototype.inspect = function () {
+	  var str = ''
+	  var max = exports.INSPECT_MAX_BYTES
+	  if (this.length > 0) {
+	    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+	    if (this.length > max)
+	      str += ' ... '
+	  }
+	  return '<Buffer ' + str + '>'
+	}
+	
+	Buffer.prototype.compare = function (b) {
+	  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+	  return Buffer.compare(this, b)
+	}
+	
+	// `get` will be removed in Node 0.13+
+	Buffer.prototype.get = function (offset) {
+	  console.log('.get() is deprecated. Access using array indexes instead.')
+	  return this.readUInt8(offset)
+	}
+	
+	// `set` will be removed in Node 0.13+
+	Buffer.prototype.set = function (v, offset) {
+	  console.log('.set() is deprecated. Access using array indexes instead.')
+	  return this.writeUInt8(v, offset)
+	}
+	
+	function hexWrite (buf, string, offset, length) {
+	  offset = Number(offset) || 0
+	  var remaining = buf.length - offset
+	  if (!length) {
+	    length = remaining
+	  } else {
+	    length = Number(length)
+	    if (length > remaining) {
+	      length = remaining
+	    }
+	  }
+	
+	  // must be an even number of digits
+	  var strLen = string.length
+	  if (strLen % 2 !== 0) throw new Error('Invalid hex string')
+	
+	  if (length > strLen / 2) {
+	    length = strLen / 2
+	  }
+	  for (var i = 0; i < length; i++) {
+	    var byte = parseInt(string.substr(i * 2, 2), 16)
+	    if (isNaN(byte)) throw new Error('Invalid hex string')
+	    buf[offset + i] = byte
+	  }
+	  return i
+	}
+	
+	function utf8Write (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(utf8ToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	function asciiWrite (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(asciiToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	function binaryWrite (buf, string, offset, length) {
+	  return asciiWrite(buf, string, offset, length)
+	}
+	
+	function base64Write (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(base64ToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	function utf16leWrite (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	Buffer.prototype.write = function (string, offset, length, encoding) {
+	  // Support both (string, offset, length, encoding)
+	  // and the legacy (string, encoding, offset, length)
+	  if (isFinite(offset)) {
+	    if (!isFinite(length)) {
+	      encoding = length
+	      length = undefined
+	    }
+	  } else {  // legacy
+	    var swap = encoding
+	    encoding = offset
+	    offset = length
+	    length = swap
+	  }
+	
+	  offset = Number(offset) || 0
+	  var remaining = this.length - offset
+	  if (!length) {
+	    length = remaining
+	  } else {
+	    length = Number(length)
+	    if (length > remaining) {
+	      length = remaining
+	    }
+	  }
+	  encoding = String(encoding || 'utf8').toLowerCase()
+	
+	  var ret
+	  switch (encoding) {
+	    case 'hex':
+	      ret = hexWrite(this, string, offset, length)
+	      break
+	    case 'utf8':
+	    case 'utf-8':
+	      ret = utf8Write(this, string, offset, length)
+	      break
+	    case 'ascii':
+	      ret = asciiWrite(this, string, offset, length)
+	      break
+	    case 'binary':
+	      ret = binaryWrite(this, string, offset, length)
+	      break
+	    case 'base64':
+	      ret = base64Write(this, string, offset, length)
+	      break
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      ret = utf16leWrite(this, string, offset, length)
+	      break
+	    default:
+	      throw new TypeError('Unknown encoding: ' + encoding)
+	  }
+	  return ret
+	}
+	
+	Buffer.prototype.toJSON = function () {
+	  return {
+	    type: 'Buffer',
+	    data: Array.prototype.slice.call(this._arr || this, 0)
+	  }
+	}
+	
+	function base64Slice (buf, start, end) {
+	  if (start === 0 && end === buf.length) {
+	    return base64.fromByteArray(buf)
+	  } else {
+	    return base64.fromByteArray(buf.slice(start, end))
+	  }
+	}
+	
+	function utf8Slice (buf, start, end) {
+	  var res = ''
+	  var tmp = ''
+	  end = Math.min(buf.length, end)
+	
+	  for (var i = start; i < end; i++) {
+	    if (buf[i] <= 0x7F) {
+	      res += decodeUtf8Char(tmp) + String.fromCharCode(buf[i])
+	      tmp = ''
+	    } else {
+	      tmp += '%' + buf[i].toString(16)
+	    }
+	  }
+	
+	  return res + decodeUtf8Char(tmp)
+	}
+	
+	function asciiSlice (buf, start, end) {
+	  var ret = ''
+	  end = Math.min(buf.length, end)
+	
+	  for (var i = start; i < end; i++) {
+	    ret += String.fromCharCode(buf[i])
+	  }
+	  return ret
+	}
+	
+	function binarySlice (buf, start, end) {
+	  return asciiSlice(buf, start, end)
+	}
+	
+	function hexSlice (buf, start, end) {
+	  var len = buf.length
+	
+	  if (!start || start < 0) start = 0
+	  if (!end || end < 0 || end > len) end = len
+	
+	  var out = ''
+	  for (var i = start; i < end; i++) {
+	    out += toHex(buf[i])
+	  }
+	  return out
+	}
+	
+	function utf16leSlice (buf, start, end) {
+	  var bytes = buf.slice(start, end)
+	  var res = ''
+	  for (var i = 0; i < bytes.length; i += 2) {
+	    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+	  }
+	  return res
+	}
+	
+	Buffer.prototype.slice = function (start, end) {
+	  var len = this.length
+	  start = ~~start
+	  end = end === undefined ? len : ~~end
+	
+	  if (start < 0) {
+	    start += len;
+	    if (start < 0)
+	      start = 0
+	  } else if (start > len) {
+	    start = len
+	  }
+	
+	  if (end < 0) {
+	    end += len
+	    if (end < 0)
+	      end = 0
+	  } else if (end > len) {
+	    end = len
+	  }
+	
+	  if (end < start)
+	    end = start
+	
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    return Buffer._augment(this.subarray(start, end))
+	  } else {
+	    var sliceLen = end - start
+	    var newBuf = new Buffer(sliceLen, undefined, true)
+	    for (var i = 0; i < sliceLen; i++) {
+	      newBuf[i] = this[i + start]
+	    }
+	    return newBuf
+	  }
+	}
+	
+	/*
+	 * Need to make sure that buffer isn't trying to write out of bounds.
+	 */
+	function checkOffset (offset, ext, length) {
+	  if ((offset % 1) !== 0 || offset < 0)
+	    throw new RangeError('offset is not uint')
+	  if (offset + ext > length)
+	    throw new RangeError('Trying to access beyond buffer length')
+	}
+	
+	Buffer.prototype.readUInt8 = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 1, this.length)
+	  return this[offset]
+	}
+	
+	Buffer.prototype.readUInt16LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  return this[offset] | (this[offset + 1] << 8)
+	}
+	
+	Buffer.prototype.readUInt16BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  return (this[offset] << 8) | this[offset + 1]
+	}
+	
+	Buffer.prototype.readUInt32LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return ((this[offset]) |
+	      (this[offset + 1] << 8) |
+	      (this[offset + 2] << 16)) +
+	      (this[offset + 3] * 0x1000000)
+	}
+	
+	Buffer.prototype.readUInt32BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return (this[offset] * 0x1000000) +
+	      ((this[offset + 1] << 16) |
+	      (this[offset + 2] << 8) |
+	      this[offset + 3])
+	}
+	
+	Buffer.prototype.readInt8 = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 1, this.length)
+	  if (!(this[offset] & 0x80))
+	    return (this[offset])
+	  return ((0xff - this[offset] + 1) * -1)
+	}
+	
+	Buffer.prototype.readInt16LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  var val = this[offset] | (this[offset + 1] << 8)
+	  return (val & 0x8000) ? val | 0xFFFF0000 : val
+	}
+	
+	Buffer.prototype.readInt16BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  var val = this[offset + 1] | (this[offset] << 8)
+	  return (val & 0x8000) ? val | 0xFFFF0000 : val
+	}
+	
+	Buffer.prototype.readInt32LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return (this[offset]) |
+	      (this[offset + 1] << 8) |
+	      (this[offset + 2] << 16) |
+	      (this[offset + 3] << 24)
+	}
+	
+	Buffer.prototype.readInt32BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return (this[offset] << 24) |
+	      (this[offset + 1] << 16) |
+	      (this[offset + 2] << 8) |
+	      (this[offset + 3])
+	}
+	
+	Buffer.prototype.readFloatLE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	  return ieee754.read(this, offset, true, 23, 4)
+	}
+	
+	Buffer.prototype.readFloatBE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	  return ieee754.read(this, offset, false, 23, 4)
+	}
+	
+	Buffer.prototype.readDoubleLE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 8, this.length)
+	  return ieee754.read(this, offset, true, 52, 8)
+	}
+	
+	Buffer.prototype.readDoubleBE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 8, this.length)
+	  return ieee754.read(this, offset, false, 52, 8)
+	}
+	
+	function checkInt (buf, value, offset, ext, max, min) {
+	  if (!Buffer.isBuffer(buf)) throw new TypeError('buffer must be a Buffer instance')
+	  if (value > max || value < min) throw new TypeError('value is out of bounds')
+	  if (offset + ext > buf.length) throw new TypeError('index out of range')
+	}
+	
+	Buffer.prototype.writeUInt8 = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 1, 0xff, 0)
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+	  this[offset] = value
+	  return offset + 1
+	}
+	
+	function objectWriteUInt16 (buf, value, offset, littleEndian) {
+	  if (value < 0) value = 0xffff + value + 1
+	  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; i++) {
+	    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+	      (littleEndian ? i : 1 - i) * 8
+	  }
+	}
+	
+	Buffer.prototype.writeUInt16LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0xffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = value
+	    this[offset + 1] = (value >>> 8)
+	  } else objectWriteUInt16(this, value, offset, true)
+	  return offset + 2
+	}
+	
+	Buffer.prototype.writeUInt16BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0xffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 8)
+	    this[offset + 1] = value
+	  } else objectWriteUInt16(this, value, offset, false)
+	  return offset + 2
+	}
+	
+	function objectWriteUInt32 (buf, value, offset, littleEndian) {
+	  if (value < 0) value = 0xffffffff + value + 1
+	  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; i++) {
+	    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+	  }
+	}
+	
+	Buffer.prototype.writeUInt32LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0xffffffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset + 3] = (value >>> 24)
+	    this[offset + 2] = (value >>> 16)
+	    this[offset + 1] = (value >>> 8)
+	    this[offset] = value
+	  } else objectWriteUInt32(this, value, offset, true)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeUInt32BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0xffffffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 24)
+	    this[offset + 1] = (value >>> 16)
+	    this[offset + 2] = (value >>> 8)
+	    this[offset + 3] = value
+	  } else objectWriteUInt32(this, value, offset, false)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeInt8 = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 1, 0x7f, -0x80)
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+	  if (value < 0) value = 0xff + value + 1
+	  this[offset] = value
+	  return offset + 1
+	}
+	
+	Buffer.prototype.writeInt16LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = value
+	    this[offset + 1] = (value >>> 8)
+	  } else objectWriteUInt16(this, value, offset, true)
+	  return offset + 2
+	}
+	
+	Buffer.prototype.writeInt16BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 8)
+	    this[offset + 1] = value
+	  } else objectWriteUInt16(this, value, offset, false)
+	  return offset + 2
+	}
+	
+	Buffer.prototype.writeInt32LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = value
+	    this[offset + 1] = (value >>> 8)
+	    this[offset + 2] = (value >>> 16)
+	    this[offset + 3] = (value >>> 24)
+	  } else objectWriteUInt32(this, value, offset, true)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeInt32BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+	  if (value < 0) value = 0xffffffff + value + 1
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 24)
+	    this[offset + 1] = (value >>> 16)
+	    this[offset + 2] = (value >>> 8)
+	    this[offset + 3] = value
+	  } else objectWriteUInt32(this, value, offset, false)
+	  return offset + 4
+	}
+	
+	function checkIEEE754 (buf, value, offset, ext, max, min) {
+	  if (value > max || value < min) throw new TypeError('value is out of bounds')
+	  if (offset + ext > buf.length) throw new TypeError('index out of range')
+	}
+	
+	function writeFloat (buf, value, offset, littleEndian, noAssert) {
+	  if (!noAssert)
+	    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+	  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeFloatLE = function (value, offset, noAssert) {
+	  return writeFloat(this, value, offset, true, noAssert)
+	}
+	
+	Buffer.prototype.writeFloatBE = function (value, offset, noAssert) {
+	  return writeFloat(this, value, offset, false, noAssert)
+	}
+	
+	function writeDouble (buf, value, offset, littleEndian, noAssert) {
+	  if (!noAssert)
+	    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+	  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+	  return offset + 8
+	}
+	
+	Buffer.prototype.writeDoubleLE = function (value, offset, noAssert) {
+	  return writeDouble(this, value, offset, true, noAssert)
+	}
+	
+	Buffer.prototype.writeDoubleBE = function (value, offset, noAssert) {
+	  return writeDouble(this, value, offset, false, noAssert)
+	}
+	
+	// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+	Buffer.prototype.copy = function (target, target_start, start, end) {
+	  var source = this
+	
+	  if (!start) start = 0
+	  if (!end && end !== 0) end = this.length
+	  if (!target_start) target_start = 0
+	
+	  // Copy 0 bytes; we're done
+	  if (end === start) return
+	  if (target.length === 0 || source.length === 0) return
+	
+	  // Fatal error conditions
+	  if (end < start) throw new TypeError('sourceEnd < sourceStart')
+	  if (target_start < 0 || target_start >= target.length)
+	    throw new TypeError('targetStart out of bounds')
+	  if (start < 0 || start >= source.length) throw new TypeError('sourceStart out of bounds')
+	  if (end < 0 || end > source.length) throw new TypeError('sourceEnd out of bounds')
+	
+	  // Are we oob?
+	  if (end > this.length)
+	    end = this.length
+	  if (target.length - target_start < end - start)
+	    end = target.length - target_start + start
+	
+	  var len = end - start
+	
+	  if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+	    for (var i = 0; i < len; i++) {
+	      target[i + target_start] = this[i + start]
+	    }
+	  } else {
+	    target._set(this.subarray(start, start + len), target_start)
+	  }
+	}
+	
+	// fill(value, start=0, end=buffer.length)
+	Buffer.prototype.fill = function (value, start, end) {
+	  if (!value) value = 0
+	  if (!start) start = 0
+	  if (!end) end = this.length
+	
+	  if (end < start) throw new TypeError('end < start')
+	
+	  // Fill 0 bytes; we're done
+	  if (end === start) return
+	  if (this.length === 0) return
+	
+	  if (start < 0 || start >= this.length) throw new TypeError('start out of bounds')
+	  if (end < 0 || end > this.length) throw new TypeError('end out of bounds')
+	
+	  var i
+	  if (typeof value === 'number') {
+	    for (i = start; i < end; i++) {
+	      this[i] = value
+	    }
+	  } else {
+	    var bytes = utf8ToBytes(value.toString())
+	    var len = bytes.length
+	    for (i = start; i < end; i++) {
+	      this[i] = bytes[i % len]
+	    }
+	  }
+	
+	  return this
+	}
+	
+	/**
+	 * Creates a new `ArrayBuffer` with the *copied* memory of the buffer instance.
+	 * Added in Node 0.12. Only available in browsers that support ArrayBuffer.
+	 */
+	Buffer.prototype.toArrayBuffer = function () {
+	  if (typeof Uint8Array !== 'undefined') {
+	    if (Buffer.TYPED_ARRAY_SUPPORT) {
+	      return (new Buffer(this)).buffer
+	    } else {
+	      var buf = new Uint8Array(this.length)
+	      for (var i = 0, len = buf.length; i < len; i += 1) {
+	        buf[i] = this[i]
+	      }
+	      return buf.buffer
+	    }
+	  } else {
+	    throw new TypeError('Buffer.toArrayBuffer not supported in this browser')
+	  }
+	}
+	
+	// HELPER FUNCTIONS
+	// ================
+	
+	var BP = Buffer.prototype
+	
+	/**
+	 * Augment a Uint8Array *instance* (not the Uint8Array class!) with Buffer methods
+	 */
+	Buffer._augment = function (arr) {
+	  arr.constructor = Buffer
+	  arr._isBuffer = true
+	
+	  // save reference to original Uint8Array get/set methods before overwriting
+	  arr._get = arr.get
+	  arr._set = arr.set
+	
+	  // deprecated, will be removed in node 0.13+
+	  arr.get = BP.get
+	  arr.set = BP.set
+	
+	  arr.write = BP.write
+	  arr.toString = BP.toString
+	  arr.toLocaleString = BP.toString
+	  arr.toJSON = BP.toJSON
+	  arr.equals = BP.equals
+	  arr.compare = BP.compare
+	  arr.copy = BP.copy
+	  arr.slice = BP.slice
+	  arr.readUInt8 = BP.readUInt8
+	  arr.readUInt16LE = BP.readUInt16LE
+	  arr.readUInt16BE = BP.readUInt16BE
+	  arr.readUInt32LE = BP.readUInt32LE
+	  arr.readUInt32BE = BP.readUInt32BE
+	  arr.readInt8 = BP.readInt8
+	  arr.readInt16LE = BP.readInt16LE
+	  arr.readInt16BE = BP.readInt16BE
+	  arr.readInt32LE = BP.readInt32LE
+	  arr.readInt32BE = BP.readInt32BE
+	  arr.readFloatLE = BP.readFloatLE
+	  arr.readFloatBE = BP.readFloatBE
+	  arr.readDoubleLE = BP.readDoubleLE
+	  arr.readDoubleBE = BP.readDoubleBE
+	  arr.writeUInt8 = BP.writeUInt8
+	  arr.writeUInt16LE = BP.writeUInt16LE
+	  arr.writeUInt16BE = BP.writeUInt16BE
+	  arr.writeUInt32LE = BP.writeUInt32LE
+	  arr.writeUInt32BE = BP.writeUInt32BE
+	  arr.writeInt8 = BP.writeInt8
+	  arr.writeInt16LE = BP.writeInt16LE
+	  arr.writeInt16BE = BP.writeInt16BE
+	  arr.writeInt32LE = BP.writeInt32LE
+	  arr.writeInt32BE = BP.writeInt32BE
+	  arr.writeFloatLE = BP.writeFloatLE
+	  arr.writeFloatBE = BP.writeFloatBE
+	  arr.writeDoubleLE = BP.writeDoubleLE
+	  arr.writeDoubleBE = BP.writeDoubleBE
+	  arr.fill = BP.fill
+	  arr.inspect = BP.inspect
+	  arr.toArrayBuffer = BP.toArrayBuffer
+	
+	  return arr
+	}
+	
+	var INVALID_BASE64_RE = /[^+\/0-9A-z]/g
+	
+	function base64clean (str) {
+	  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+	  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+	  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+	  while (str.length % 4 !== 0) {
+	    str = str + '='
+	  }
+	  return str
+	}
+	
+	function stringtrim (str) {
+	  if (str.trim) return str.trim()
+	  return str.replace(/^\s+|\s+$/g, '')
+	}
+	
+	function isArrayish (subject) {
+	  return isArray(subject) || Buffer.isBuffer(subject) ||
+	      subject && typeof subject === 'object' &&
+	      typeof subject.length === 'number'
+	}
+	
+	function toHex (n) {
+	  if (n < 16) return '0' + n.toString(16)
+	  return n.toString(16)
+	}
+	
+	function utf8ToBytes (str) {
+	  var byteArray = []
+	  for (var i = 0; i < str.length; i++) {
+	    var b = str.charCodeAt(i)
+	    if (b <= 0x7F) {
+	      byteArray.push(b)
+	    } else {
+	      var start = i
+	      if (b >= 0xD800 && b <= 0xDFFF) i++
+	      var h = encodeURIComponent(str.slice(start, i+1)).substr(1).split('%')
+	      for (var j = 0; j < h.length; j++) {
+	        byteArray.push(parseInt(h[j], 16))
+	      }
+	    }
+	  }
+	  return byteArray
+	}
+	
+	function asciiToBytes (str) {
+	  var byteArray = []
+	  for (var i = 0; i < str.length; i++) {
+	    // Node's code seems to be doing this and not & 0x7F..
+	    byteArray.push(str.charCodeAt(i) & 0xFF)
+	  }
+	  return byteArray
+	}
+	
+	function utf16leToBytes (str) {
+	  var c, hi, lo
+	  var byteArray = []
+	  for (var i = 0; i < str.length; i++) {
+	    c = str.charCodeAt(i)
+	    hi = c >> 8
+	    lo = c % 256
+	    byteArray.push(lo)
+	    byteArray.push(hi)
+	  }
+	
+	  return byteArray
+	}
+	
+	function base64ToBytes (str) {
+	  return base64.toByteArray(str)
+	}
+	
+	function blitBuffer (src, dst, offset, length) {
+	  for (var i = 0; i < length; i++) {
+	    if ((i + offset >= dst.length) || (i >= src.length))
+	      break
+	    dst[i + offset] = src[i]
+	  }
+	  return i
+	}
+	
+	function decodeUtf8Char (str) {
+	  try {
+	    return decodeURIComponent(str)
+	  } catch (err) {
+	    return String.fromCharCode(0xFFFD) // UTF 8 invalid char
+	  }
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98).Buffer))
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports.read = function(buffer, offset, isLE, mLen, nBytes) {
+	  var e, m,
+	      eLen = nBytes * 8 - mLen - 1,
+	      eMax = (1 << eLen) - 1,
+	      eBias = eMax >> 1,
+	      nBits = -7,
+	      i = isLE ? (nBytes - 1) : 0,
+	      d = isLE ? -1 : 1,
+	      s = buffer[offset + i];
+	
+	  i += d;
+	
+	  e = s & ((1 << (-nBits)) - 1);
+	  s >>= (-nBits);
+	  nBits += eLen;
+	  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8);
+	
+	  m = e & ((1 << (-nBits)) - 1);
+	  e >>= (-nBits);
+	  nBits += mLen;
+	  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8);
+	
+	  if (e === 0) {
+	    e = 1 - eBias;
+	  } else if (e === eMax) {
+	    return m ? NaN : ((s ? -1 : 1) * Infinity);
+	  } else {
+	    m = m + Math.pow(2, mLen);
+	    e = e - eBias;
+	  }
+	  return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
+	};
+	
+	exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
+	  var e, m, c,
+	      eLen = nBytes * 8 - mLen - 1,
+	      eMax = (1 << eLen) - 1,
+	      eBias = eMax >> 1,
+	      rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0),
+	      i = isLE ? 0 : (nBytes - 1),
+	      d = isLE ? 1 : -1,
+	      s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0;
+	
+	  value = Math.abs(value);
+	
+	  if (isNaN(value) || value === Infinity) {
+	    m = isNaN(value) ? 1 : 0;
+	    e = eMax;
+	  } else {
+	    e = Math.floor(Math.log(value) / Math.LN2);
+	    if (value * (c = Math.pow(2, -e)) < 1) {
+	      e--;
+	      c *= 2;
+	    }
+	    if (e + eBias >= 1) {
+	      value += rt / c;
+	    } else {
+	      value += rt * Math.pow(2, 1 - eBias);
+	    }
+	    if (value * c >= 2) {
+	      e++;
+	      c /= 2;
+	    }
+	
+	    if (e + eBias >= eMax) {
+	      m = 0;
+	      e = eMax;
+	    } else if (e + eBias >= 1) {
+	      m = (value * c - 1) * Math.pow(2, mLen);
+	      e = e + eBias;
+	    } else {
+	      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
+	      e = 0;
+	    }
+	  }
+	
+	  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8);
+	
+	  e = (e << mLen) | m;
+	  eLen += mLen;
+	  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8);
+	
+	  buffer[offset + i - d] |= s * 128;
+	};
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * isArray
+	 */
+	
+	var isArray = Array.isArray;
+	
+	/**
+	 * toString
+	 */
+	
+	var str = Object.prototype.toString;
+	
+	/**
+	 * Whether or not the given `val`
+	 * is an array.
+	 *
+	 * example:
+	 *
+	 *        isArray([]);
+	 *        // > true
+	 *        isArray(arguments);
+	 *        // > false
+	 *        isArray('');
+	 *        // > false
+	 *
+	 * @param {mixed} val
+	 * @return {bool}
+	 */
+	
+	module.exports = isArray || function (val) {
+	  return !! val && '[object Array]' == str.call(val);
+	};
+
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+	
+	;(function (exports) {
+		'use strict';
+	
+	  var Arr = (typeof Uint8Array !== 'undefined')
+	    ? Uint8Array
+	    : Array
+	
+		var PLUS   = '+'.charCodeAt(0)
+		var SLASH  = '/'.charCodeAt(0)
+		var NUMBER = '0'.charCodeAt(0)
+		var LOWER  = 'a'.charCodeAt(0)
+		var UPPER  = 'A'.charCodeAt(0)
+	
+		function decode (elt) {
+			var code = elt.charCodeAt(0)
+			if (code === PLUS)
+				return 62 // '+'
+			if (code === SLASH)
+				return 63 // '/'
+			if (code < NUMBER)
+				return -1 //no match
+			if (code < NUMBER + 10)
+				return code - NUMBER + 26 + 26
+			if (code < UPPER + 26)
+				return code - UPPER
+			if (code < LOWER + 26)
+				return code - LOWER + 26
+		}
+	
+		function b64ToByteArray (b64) {
+			var i, j, l, tmp, placeHolders, arr
+	
+			if (b64.length % 4 > 0) {
+				throw new Error('Invalid string. Length must be a multiple of 4')
+			}
+	
+			// the number of equal signs (place holders)
+			// if there are two placeholders, than the two characters before it
+			// represent one byte
+			// if there is only one, then the three characters before it represent 2 bytes
+			// this is just a cheap hack to not do indexOf twice
+			var len = b64.length
+			placeHolders = '=' === b64.charAt(len - 2) ? 2 : '=' === b64.charAt(len - 1) ? 1 : 0
+	
+			// base64 is 4/3 + up to two characters of the original data
+			arr = new Arr(b64.length * 3 / 4 - placeHolders)
+	
+			// if there are placeholders, only get up to the last complete 4 chars
+			l = placeHolders > 0 ? b64.length - 4 : b64.length
+	
+			var L = 0
+	
+			function push (v) {
+				arr[L++] = v
+			}
+	
+			for (i = 0, j = 0; i < l; i += 4, j += 3) {
+				tmp = (decode(b64.charAt(i)) << 18) | (decode(b64.charAt(i + 1)) << 12) | (decode(b64.charAt(i + 2)) << 6) | decode(b64.charAt(i + 3))
+				push((tmp & 0xFF0000) >> 16)
+				push((tmp & 0xFF00) >> 8)
+				push(tmp & 0xFF)
+			}
+	
+			if (placeHolders === 2) {
+				tmp = (decode(b64.charAt(i)) << 2) | (decode(b64.charAt(i + 1)) >> 4)
+				push(tmp & 0xFF)
+			} else if (placeHolders === 1) {
+				tmp = (decode(b64.charAt(i)) << 10) | (decode(b64.charAt(i + 1)) << 4) | (decode(b64.charAt(i + 2)) >> 2)
+				push((tmp >> 8) & 0xFF)
+				push(tmp & 0xFF)
+			}
+	
+			return arr
+		}
+	
+		function uint8ToBase64 (uint8) {
+			var i,
+				extraBytes = uint8.length % 3, // if we have 1 byte left, pad 2 bytes
+				output = "",
+				temp, length
+	
+			function encode (num) {
+				return lookup.charAt(num)
+			}
+	
+			function tripletToBase64 (num) {
+				return encode(num >> 18 & 0x3F) + encode(num >> 12 & 0x3F) + encode(num >> 6 & 0x3F) + encode(num & 0x3F)
+			}
+	
+			// go through the array every three bytes, we'll deal with trailing stuff later
+			for (i = 0, length = uint8.length - extraBytes; i < length; i += 3) {
+				temp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+				output += tripletToBase64(temp)
+			}
+	
+			// pad the end with zeros, but make sure to not forget the extra bytes
+			switch (extraBytes) {
+				case 1:
+					temp = uint8[uint8.length - 1]
+					output += encode(temp >> 2)
+					output += encode((temp << 4) & 0x3F)
+					output += '=='
+					break
+				case 2:
+					temp = (uint8[uint8.length - 2] << 8) + (uint8[uint8.length - 1])
+					output += encode(temp >> 10)
+					output += encode((temp >> 4) & 0x3F)
+					output += encode((temp << 2) & 0x3F)
+					output += '='
+					break
+			}
+	
+			return output
+		}
+	
+		exports.toByteArray = b64ToByteArray
+		exports.fromByteArray = uint8ToBase64
+	}(false ? (this.base64js = {}) : exports))
 
 
 /***/ }

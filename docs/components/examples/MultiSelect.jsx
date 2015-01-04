@@ -2,15 +2,10 @@
 var React = require('react')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
-  , RW = require('../../../index');
+  , RW = require('../../../index')
+  , genData = require('../generate-data');
 
-var chance = new (require('chance'))
-
-var list = new Array(100)
-
-for(var i = 0; i < list.length; i++)
-  list[i] = { id: i + 1, label: chance.name() }
-
+var list = genData(50);
 
 module.exports = React.createClass({
 
@@ -29,11 +24,15 @@ module.exports = React.createClass({
       , disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 
     function onCreate(tag){
-      var tag = { id: list.length + 1, label: tag }
-
+      var parts = tag.split(' ')
       //list.push(tag)
       this.setState({
-        value: [].concat(this.state.value, tag),
+        value: [].concat(this.state.value, { 
+          id: list.length + 1, 
+          name: tag, 
+          first: parts[0],
+          last: parts[1],
+        }),
       })
     }
 
@@ -46,12 +45,13 @@ module.exports = React.createClass({
                   data={list}
                   value={this.state.value}
                   onChange={this._change}
-                  textField='label'
+                  textField='name'
                   valueField='id'
                   placeholder={this.state.placeholder}
                   disabled={disabled ? this.state.disabled : false}
                   readOnly={this.state.disabled === 'readonly'}
                   onCreate={this.state.allowCustom && onCreate.bind(this)}
+                  groupBy={this.state.groupBy}
                   duration={this.state.duration}
                   busy={this.state.busy}
                   isRtl={this.state.isRtl}/>
@@ -62,13 +62,14 @@ module.exports = React.createClass({
                   data={list}
                   value={this.state.value}
                   onChange={this._change}
-                  textField='label'
+                  textField='name'
                   valueField='id'
                   placeholder={this.state.placeholder}
                   disabled={disabled ? this.state.disabled : false}
                   readOnly={this.state.disabled === 'readonly'}
                   onCreate={this.state.allowCustom && onCreate.bind(this)}
                   duration={this.state.duration}
+                  groupBy={this.state.groupBy}
                   itemComponent={itemComp}
                   tagComponent={itemComp}
                   busy={this.state.busy}
@@ -90,6 +91,14 @@ module.exports = React.createClass({
                   checked={this.state.allowCustom}
                   onChange={this._set.bind(null, 'allowCustom', !this.state.allowCustom)}/>
                   Allow custom tags
+              </label>
+            </div>
+            <div className='form-group'>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.groupBy}
+                  onChange={this._set.bind(null, 'groupBy', !this.state.groupBy ? 'last' : null )}/>
+                  Group
               </label>
             </div>
             <div className='form-group'>
