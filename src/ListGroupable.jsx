@@ -1,8 +1,10 @@
 'use strict';
 var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
+  , filter = require('./util/filter')
   , cx = require('./util/cx')
-  , _  = require('./util/_');
+  , _  = require('./util/_')
+  , scrollTo  = require('./util/scroll');
 
 
 module.exports = React.createClass({
@@ -14,35 +16,33 @@ module.exports = React.createClass({
   ],
 
   propTypes: {
-    data:          React.PropTypes.array,
-    onSelect:      React.PropTypes.func,
-    listItem:      CustomPropTypes.elementType,
+    data:           React.PropTypes.array,
+    onSelect:       React.PropTypes.func,
 
-    selected:      React.PropTypes.any,
-    focused:       React.PropTypes.any,
+    ItemComponent:  CustomPropTypes.elementType,
+    GroupComponent: CustomPropTypes.elementType,
 
-    selectedIndex: React.PropTypes.number,
-    focusedIndex:  React.PropTypes.number,
+    selected:       React.PropTypes.any,
+    focused:        React.PropTypes.any,
 
-    valueField:    React.PropTypes.string,
-    textField:     React.PropTypes.string,
+    valueField:     React.PropTypes.string,
+    textField:      React.PropTypes.string,
+ 
+    optID:          React.PropTypes.string,
 
-    optID:         React.PropTypes.string,
+    groupBy:        React.PropTypes.oneOfType([
+                     React.PropTypes.func,
+                     React.PropTypes.string
+                    ]),
 
-    groupBy:       React.PropTypes.oneOfType([
-                    React.PropTypes.func,
-                    React.PropTypes.string
-                   ]),
-
-    messages:      React.PropTypes.shape({
-      emptyList:   React.PropTypes.string
+    messages:       React.PropTypes.shape({
+      emptyList:    React.PropTypes.string
     }),
   },
 
 
   getDefaultProps: function(){
     return {
-      delay:         500,
       optID:         '',
       onSelect:      function(){},
       data:          [],
@@ -56,8 +56,9 @@ module.exports = React.createClass({
     var keys = [];
 
     return {
-      sortedKeys: keys,
-      groups: this._group(this.props.groupBy, this.props.data, keys)
+      groups: this._group(this.props.groupBy, this.props.data, keys),
+
+      sortedKeys: keys
     };
   },
 
@@ -104,24 +105,20 @@ module.exports = React.createClass({
 
     return (
       <ul { ...props }
-        className={ className + ' rw-list' } 
+        className={ className + ' rw-list  rw-list-grouped' } 
         ref='scrollable'
-        role='listbox'
-        onKeyDown={() => console.log('did it')}
-        tabIndex="-1">
+        role='listbox'>
         { items }
       </ul>
     )
   },
 
   _renderGroupHeader(group){
-    var ItemComponent = this.props.groupItem;
+    var ItemComponent = this.props.groupComponent;
 
     return (<li 
       key={'item_' + group}
-      role='presentation'
       tabIndex='-1'
-
       className='rw-list-optgroup'>
         { ItemComponent ? <ItemComponent item={group}/> : group }
     </li>)
@@ -157,7 +154,12 @@ module.exports = React.createClass({
 
   _group(groupBy, data, keys){
     var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
+
+    // the keys array ensures that groups are rendered in the order they came in
+    // which means that if you sort the data array it will render sorted, 
+    // so long as you also sorted by group
     keys = keys || []
+
     return data.reduce( (grps, item) => {
       var group = iter(item);
 
@@ -178,32 +180,22 @@ module.exports = React.createClass({
     return data[data.length-1]
   },
 
-  nextSelected(word){
+  prev(state, word){
     var data = this._data()
-      , idx  = data.indexOf(this.props.selected) + 1
+      , idx  = data.indexOf(this.props[state])
 
-    return idx === data.length ? data[data.length - 1] : data[idx]
+    return word 
+      ? this._findNextInstance(data, word, idx, 'prev')
+      : --idx < 0 ? data[0] : data[idx]
   },
 
-  prevSelected(word){
+  next(state,word){
     var data = this._data()
-      , idx  = data.indexOf(this.props.selected) - 1
+      , idx  = data.indexOf(this.props[state])
 
-    return idx < 0 ? data[0] : data[idx]
-  },
-
-  nextFocused(word){
-    var data = this._data()
-      , idx  = data.indexOf(this.props.focused) + 1
-
-    return idx === data.length ? data[data.length - 1] : data[idx]
-  },
-
-  prevFocused(word){
-    var data = this._data()
-      , idx  = data.indexOf(this.props.focused) - 1
-
-    return idx < 0 ? data[0] : data[idx]
+    return word 
+      ? this._findNextInstance(data, word, idx, 'next')
+      : ++idx === data.length ? data[data.length - 1] : data[idx]
   },
 
   _data(){ 
@@ -213,54 +205,43 @@ module.exports = React.createClass({
       .reduce( (flat, grp) => flat.concat(groups[grp]), [])
   },
 
-  // _findNextWordIndex: function(word, current, dir){
-  //   var matcher = filter.startsWith
-  //     , self    = this;
+  _findNextInstance: function(data, word, current, dir){
+    var matcher = filter.startsWith;
       
-  //   return _.findIndex(self._data(), (item, i) => { 
-  //     return (dir === 'next' ? i >= current : i <= current)
-  //         && matcher(
-  //             this._dataText.call(self, item).toLowerCase()
-  //           , word.toLowerCase())
-  //   });    
-  // },
+    return _.find(data, (item, i) => { 
+      return (dir === 'next' ? i > current : i < current)
+          && matcher(
+              this._dataText.call(this, item).toLowerCase()
+            , word.toLowerCase())
+    });    
+  },
 
   _setScrollPosition: function(){
     var list = this.getDOMNode()
-      , selected = this.getItemDOMNode(this.props.focused)
-      , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
+      , selected = this.getItemDOMNode(this.props.focused);
 
     if( !selected ) return 
 
-    scrollTop   = list.scrollTop
-    listHeight  = list.clientHeight
-
-    selectedTop =  selected.offsetTop
-    selectedHeight = selected.offsetHeight
-
-    bottom =  selectedTop + selectedHeight
-
-    list.scrollTop = scrollTop > selectedTop
-      ? selectedTop
-      : bottom > (scrollTop + listHeight) 
-          ? (bottom - listHeight)
-          : scrollTop
+    setTimeout(() => scrollTo(selected, list))
   },
 
   getItemDOMNode(item){
     var list = this.getDOMNode()
       , groups = this.state.groups
-      , itemIdx, idx = -1;
+      , idx = -1
+      , itemIdx, child;
 
-    for( var group in groups ) if ( groups.hasOwnProperty( group)) {
+    this.state.sortedKeys.some(group => {
       itemIdx = groups[group].indexOf(item)
       idx++;
 
       if( itemIdx !== -1) 
-        return list.children[idx + itemIdx + 1]
+        return !!(child = list.children[idx + itemIdx + 1])
 
       idx += groups[group].length
-    }
+    })
+
+    return child
   }
 
 })

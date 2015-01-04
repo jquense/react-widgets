@@ -150,7 +150,7 @@ var DropdownList = React.createClass({
               optID={optID}
               aria-hidden={!this.props.open}
               selected={this.state.selectedItem}
-              focused ={this.state.focusedItem}
+              focused ={this.props.open ? this.state.focusedItem : null}
               onSelect={this._maybeHandle(this._onSelect)}/>
           </div>
         </Popup>

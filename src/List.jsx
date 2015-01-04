@@ -3,7 +3,8 @@ var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   , filter = require('./util/filter')
   , cx = require('./util/cx')
-  , _  = require('./util/_');
+  , _  = require('./util/_')
+  , scrollTo  = require('./util/scroll');
 
 
 module.exports = React.createClass({
@@ -139,7 +140,7 @@ module.exports = React.createClass({
       , self    = this;
     
     return _.findIndex(self._data(), (item, i) => { 
-      return (dir === 'next' ? i >= current : i <= current)
+      return (dir === 'next' ? i > current : i < current)
           && matcher(
               this._dataText.call(self, item).toLowerCase()
             , word.toLowerCase())
@@ -148,24 +149,12 @@ module.exports = React.createClass({
 
   _setScrollPosition: function(){
     var list = this.getDOMNode()
-      , selected = list.children[this.state.focusedIndex]
-      , scrollTop, listHeight, selectedTop, selectedHeight, bottom;
+      , selected = list.children[this.state.focusedIndex];
 
     if( !selected ) return 
 
-    scrollTop   = list.scrollTop
-    listHeight  = list.clientHeight
-
-    selectedTop =  selected.offsetTop
-    selectedHeight = selected.offsetHeight
-
-    bottom =  selectedTop + selectedHeight
-
-    list.scrollTop = scrollTop > selectedTop
-      ? selectedTop
-      : bottom > (scrollTop + listHeight) 
-          ? (bottom - listHeight)
-          : scrollTop
+    // timeout allows for element to become visible
+    setTimeout(() => scrollTo(selected, list))
   }
 
 })
