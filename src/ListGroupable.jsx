@@ -53,8 +53,11 @@ module.exports = React.createClass({
   },
 
   getInitialState: function() {
+    var keys = [];
+
     return {
-      groups: this._group(this.props.groupBy, this.props.data)
+      sortedKeys: keys,
+      groups: this._group(this.props.groupBy, this.props.data, keys)
     };
   },
 
@@ -84,16 +87,17 @@ module.exports = React.createClass({
       , group;
     
     if ( this.props.data.length ){
-      for( var key in groups ) if ( groups.hasOwnProperty( key)){
-        //idx++;
-        group = groups[key]
+      items = this.state.sortedKeys
+        .reduce( (items, key) => {
+          group = groups[key]
+          items.push(this._renderGroupHeader(key))
 
-        items.push(this._renderGroupHeader(key))
+          for (var itemIdx = 0; itemIdx < group.length; itemIdx++) 
+            items.push(
+              this._renderItem(key, group[itemIdx], ++idx))
 
-        for (var itemIdx = 0; itemIdx < group.length; itemIdx++) 
-          items.push(
-            this._renderItem(key, group[itemIdx], ++idx))
-      } 
+          return items
+        }, [])
     }
     else 
       items = <li>{ this.props.messages.emptyList }</li>
@@ -151,18 +155,75 @@ module.exports = React.createClass({
     return this.props.data[idx] === item
   },
 
-  _group(groupBy, data){
+  _group(groupBy, data, keys){
     var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
+    keys = keys || []
     return data.reduce( (grps, item) => {
       var group = iter(item);
 
       _.has(grps, group) 
         ? grps[group].push(item)
-        : (grps[group] = [item])
+        : (keys.push(group), grps[group] = [item])
 
       return grps
     }, {}) 
   },
+
+  first(){
+    return this._data()[0]
+  },
+
+  last(){
+    var data = this._data()
+    return data[data.length-1]
+  },
+
+  nextSelected(word){
+    var data = this._data()
+      , idx  = data.indexOf(this.props.selected) + 1
+
+    return idx === data.length ? data[data.length - 1] : data[idx]
+  },
+
+  prevSelected(word){
+    var data = this._data()
+      , idx  = data.indexOf(this.props.selected) - 1
+
+    return idx < 0 ? data[0] : data[idx]
+  },
+
+  nextFocused(word){
+    var data = this._data()
+      , idx  = data.indexOf(this.props.focused) + 1
+
+    return idx === data.length ? data[data.length - 1] : data[idx]
+  },
+
+  prevFocused(word){
+    var data = this._data()
+      , idx  = data.indexOf(this.props.focused) - 1
+
+    return idx < 0 ? data[0] : data[idx]
+  },
+
+  _data(){ 
+    var groups = this.state.groups;
+
+    return this.state.sortedKeys
+      .reduce( (flat, grp) => flat.concat(groups[grp]), [])
+  },
+
+  // _findNextWordIndex: function(word, current, dir){
+  //   var matcher = filter.startsWith
+  //     , self    = this;
+      
+  //   return _.findIndex(self._data(), (item, i) => { 
+  //     return (dir === 'next' ? i >= current : i <= current)
+  //         && matcher(
+  //             this._dataText.call(self, item).toLowerCase()
+  //           , word.toLowerCase())
+  //   });    
+  // },
 
   _setScrollPosition: function(){
     var list = this.getDOMNode()
