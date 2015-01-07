@@ -190,7 +190,7 @@ var itemComp = React.createClass({
     return (
       <span>
         <i className={'fa fa-' + this._icon}></i>
-        { '  ' + this.props.item.label}
+        { '  ' + this.props.item.name}
       </span>
     );
   }

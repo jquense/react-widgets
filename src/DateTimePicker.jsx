@@ -25,6 +25,8 @@ var propTypes = {
     onToggle:       React.PropTypes.func,
     //------------------------------------
 
+    onSelect:       React.PropTypes.func,
+
     min:            React.PropTypes.instanceOf(Date),
     max:            React.PropTypes.instanceOf(Date),
 
@@ -74,14 +76,13 @@ var DateTimePicker = React.createClass({
 
   getInitialState: function(){
     return {
-      selectedIndex: 0,
-      open:          false
+      focused: false,
     }
   },
 
   getDefaultProps: function(){
-    var cal  = _.has(this.props, 'calendar') ? this.props.calendar : true
-      , time = _.has(this.props, 'time') ? this.props.time : true
+    var cal  = _.has(this.props, popups.CALENDAR) ? this.props.calendar : true
+      , time = _.has(this.props, popups.TIME) ? this.props.time : true
       , both = cal && time
       , neither = !cal && !time;
 
@@ -94,6 +95,7 @@ var DateTimePicker = React.createClass({
       max:              new Date(2099, 11, 31),
       calendar:         true,
       time:             true,
+      open:             false,
       messages: {
         calendarButton: 'Select Date',
         timeButton:     'Select Time',
@@ -128,13 +130,14 @@ var DateTimePicker = React.createClass({
           'rw-state-disabled':  this.isDisabled(),
           'rw-state-readonly':  this.isReadOnly(),
           'rw-has-both':        this.props.calendar && this.props.time,
+          'rw-has-neither':     !this.props.calendar && !this.props.time,
           'rw-rtl':             this.isRtl()
         })}>
         <DateInput ref='valueInput'
           aria-activedescendant={ this.props.open
             ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
             : undefined }
-          aria-expanded={ this.props.open }
+          aria-expanded={ !!this.props.open }
           aria-busy={!!this.props.busy}
           aria-owns={owns}
           aria-haspopup={true}
@@ -150,10 +153,11 @@ var DateTimePicker = React.createClass({
           editing={this.state.focused}
           parse={this._parse}
           onChange={this._change} />
-
+        { (this.props.calendar || this.props.time) &&
         <span className='rw-select'>
           { this.props.calendar &&
             <Btn tabIndex='-1'
+              className='rw-btn-calendar'
               disabled={this.isDisabled() || this.isReadOnly()}
               aria-disabled={this.isDisabled() || this.isReadOnly()}
               onClick={this._maybeHandle(this._click.bind(null, popups.CALENDAR))}>
@@ -162,6 +166,7 @@ var DateTimePicker = React.createClass({
           }
           { this.props.time &&
             <Btn tabIndex='-1'
+              className='rw-btn-time'
               disabled={this.isDisabled() || this.isReadOnly()}
               aria-disabled={this.isDisabled() || this.isReadOnly()}
               onClick={this._maybeHandle(this._click.bind(null, popups.TIME))}>
@@ -169,7 +174,7 @@ var DateTimePicker = React.createClass({
             </Btn>
           }
         </span>
-        { this.props.time &&
+        }
         <Popup
           open={ this.props.open === popups.TIME }
           onRequestClose={this.close}
@@ -188,23 +193,20 @@ var DateTimePicker = React.createClass({
                 onSelect={this._maybeHandle(this._selectTime)}/>
             </div>
         </Popup>
-        }
-        { this.props.calendar &&
-          <Popup
-            className='rw-calendar-popup'
-            open={ this.props.open === popups.CALENDAR}
-            duration={this.props.duration}
-            onRequestClose={this.close}>
+        <Popup
+          className='rw-calendar-popup'
+          open={ this.props.open === popups.CALENDAR}
+          duration={this.props.duration}
+          onRequestClose={this.close}>
 
-            <Calendar {...calProps }
-              ref="calPopup"
-              id={dateListID}
-              value={this.props.value || new Date }
-              maintainFocus={false}
-              aria-hidden={ !this.props.open }
-              onChange={this._maybeHandle(this._selectDate)}/>
-          </Popup>
-        }
+          <Calendar {...calProps }
+            ref="calPopup"
+            id={dateListID}
+            value={this.props.value || new Date }
+            maintainFocus={false}
+            aria-hidden={ !this.props.open }
+            onChange={this._maybeHandle(this._selectDate)}/>
+        </Popup>
       </div>
     )
   },
@@ -249,40 +251,44 @@ var DateTimePicker = React.createClass({
       if( this.props.open === popups.TIME )
         this.refs.timePopup._keyDown(e)
     }
+
+    this.notify('onKeyDown', [e])
   },
 
   //timeout prevents transitions from breaking focus
   _focus: function(focused, e){
-    var self = this
-      , input =  this.refs.valueInput;
+    var input =  this.refs.valueInput;
 
-    clearTimeout(self.timer)
+    clearTimeout(this.timer)
 
-    self.timer = setTimeout(function(){
+    this.timer = setTimeout(() =>{
 
       if(focused) input.getDOMNode().focus()
-      else        self.close()
+      else        this.close()
 
-      if( focused !== self.state.focused)
-        self.setState({ focused: focused })
-
-    }, 0)
+      if( focused !== this.state.focused){
+        this.notify(focused ? 'onFocus' : 'onBlur', e)
+        this.setState({ focused: focused })
+      }
+    })
   },
 
   _selectDate: function(date){
+    var dateTime = dates.merge(date, this.props.value)
+      , dateStr  = formatDate(date, this.props.format) 
+
     this.close()
-    this._change(
-        dates.merge(date, this.props.value)
-      , formatDate(date, this.props.format)
-      , true)
+    this.notify('onSelect', [dateTime, dateStr])
+    this._change(dateTime, dateStr, true)
   },
 
   _selectTime: function(datum){
+    var dateTime = dates.merge(this.props.value, datum.date)
+      , dateStr  = formatDate(datum.date, this.props.format) 
+
     this.close()
-    this._change(
-        dates.merge(this.props.value, datum.date)
-      , formatDate(datum.date, this.props.format)
-      , true)
+    this.notify('onSelect', [dateTime, dateStr])
+    this._change(dateTime, dateStr, true)
   },
 
   _click: function(view, e){
@@ -308,12 +314,12 @@ var DateTimePicker = React.createClass({
   },
 
   open: function(view){
-    if ( this.props.open !== view )
+    if ( this.props.open !== view && this.props[view] === true )
       this.notify('onToggle', view)
   },
 
   close: function(){
-    if ( this.props.open)
+    if ( this.props.open )
       this.notify('onToggle', false)
   },
 
@@ -354,4 +360,3 @@ function formatsParser(formats, str){
   }
   return null
 }
-

@@ -12,7 +12,7 @@
 
 .rw-btn {
   color: @btn-color;
-	line-height: @line-height;
+	line-height: @input-height;
 	display: inline-block;
 	margin: 0;
 	text-align: center;
@@ -32,8 +32,8 @@
   color:          @input-color;
 	height: 			  @input-height;
 	line-height: 	  @input-height;
-	padding: 			  0.177em 0;
-	text-indent: 		0.64em;
+	padding: 			  @input-padding;
+	//text-indent: 		0.64em;
 
   &[disabled] {
     .state-disabled();
@@ -302,7 +302,8 @@ ul.rw-list {
 
   > .rw-input {
     background-color:   transparent;
-    padding: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   > .rw-select,

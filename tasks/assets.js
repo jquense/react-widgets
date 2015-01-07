@@ -4,7 +4,8 @@ var gulp = require('gulp')
   , replace = require('gulp-replace')
   , clean = require('gulp-clean')
   , gulpReact = require('gulp-react')
-  , plumber = require('gulp-plumber');
+  , plumber = require('gulp-plumber')
+  , stripDebug = require('gulp-strip-debug');
 
 module.exports = {
 
@@ -33,7 +34,9 @@ module.exports = {
           .pipe(plumber())
           .pipe(gulpReact({ harmony: true }))
           .pipe(replace(/\.jsx/g, ''))
+          .pipe(stripDebug())
           .pipe(gulp.dest('./lib'));
-  }
+  },
+
   
 }

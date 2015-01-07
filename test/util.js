@@ -3,11 +3,14 @@
 
 require('../vendor/phantomjs-shim')
 
+delete require.cache[require.resolve('../src/util/_')]
+
 var React   = require('react')
   , filters = require('../src/util/filter')
   , cx      = require('../src/util/cx')
   , _       = require('../src/util/_')
   , propTypes = require('../src/util/propTypes');
+
 
 describe('when using Class Set', function(){
 

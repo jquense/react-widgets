@@ -21,7 +21,7 @@ module.exports = React.createClass({
   propTypes: {
     data:          React.PropTypes.array,
     onSelect:      React.PropTypes.func,
-    ItemComponent: CustomPropTypes.elementType,
+    itemComponent: CustomPropTypes.elementType,
 
     selectedIndex: React.PropTypes.number,
     focusedIndex:  React.PropTypes.number,
@@ -74,10 +74,9 @@ module.exports = React.createClass({
 
 	render: function(){
     var { className, ...props } = _.omit(this.props, ['data'])
-      , ItemComponent = this.props.listItem
+      , ItemComponent = this.props.itemComponent
       , items;
     
-
     items = !this.props.data.length 
       ? <li>{ this.props.messages.emptyList }</li>
       : this.props.data.map((item, idx) =>{
@@ -103,7 +102,7 @@ module.exports = React.createClass({
     
 		return (
 			<ul { ...props } 
-        className={ className + ' rw-list' } 
+        className={ (className + '') + ' rw-list' } 
         ref='scrollable'
         role='listbox'>
           { items }

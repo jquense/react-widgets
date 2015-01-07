@@ -73,6 +73,41 @@ describe('ComboBox', function(){
     }, 1000)
   })
 
+  it('should trigger focus/blur events', function(done){
+    var blur = sinon.spy()
+      , focus = sinon.spy()
+      , picker = render(<ComboBox onBlur={blur} onFocus={focus}/>);
+
+    expect(focus.calledOnce).to.be(false)
+    expect(blur.calledOnce).to.be(false)
+
+    trigger.focus(picker.getDOMNode())
+
+    setTimeout(() => {
+      expect(focus.calledOnce).to.be(true)
+      trigger.blur(picker.getDOMNode())
+
+      setTimeout(() => {
+        expect(blur.calledOnce).to.be(true)
+        done()
+      })
+    })
+  })
+
+  it('should trigger key events', function(){
+    var kp = sinon.spy(), kd = sinon.spy(), ku = sinon.spy()
+      , comboBox = render(<ComboBox onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
+      , input    = findClass(comboBox, 'rw-input').getDOMNode();
+
+    trigger.keyPress(input)
+    trigger.keyDown(input)
+    trigger.keyUp(input)
+
+    expect(kp.calledOnce).to.be(true)
+    expect(kd.calledOnce).to.be(true)
+    expect(ku.calledOnce).to.be(true)
+  })
+
   it('should do nothing when disabled', function(done){
     var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0} disabled={true}/>)
       , input = findClass(comboBox, 'rw-input').getDOMNode();

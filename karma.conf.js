@@ -11,10 +11,10 @@ module.exports = function (config) {
     files: [
       './vendor/phantomjs-shim.js',
       './vendor/sinon-1.10.3.js',
-      'test/*.js', 'test/*.jsx'
+      'test.js',
     ],
 
-    reporters: ['progress'],
+    reporters: ['mocha'],
 
     port: 9876,
     colors: true,
@@ -27,7 +27,7 @@ module.exports = function (config) {
     browsers: ['PhantomJS'], //'', 
 
     preprocessors: {
-      'test/*.js*': ['webpack']
+      'test.js': ['webpack']
     },
 
     webpack: require('./tasks/webpack.configs').test,
@@ -36,6 +36,7 @@ module.exports = function (config) {
     },
 
     plugins: [
+      require("karma-mocha-reporter"),
       require("karma-phantomjs-launcher"),
       require("karma-chrome-launcher"),
       require("karma-webpack"),

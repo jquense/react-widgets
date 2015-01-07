@@ -144,7 +144,6 @@ var App = React.createClass({
             <DatePicker
               isRtl={false}
               id='swweeeeet'
-              time={true}
               format='f'
               min={new Date(2013,5,1,0,0,0)}/>
           </section>

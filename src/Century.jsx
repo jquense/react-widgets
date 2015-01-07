@@ -129,7 +129,7 @@ function getCenturyDecades(_date){
   var days = [1,2,3,4,5,6,7,8,9,10,11,12]
     , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
 
-  return days.map( i => date = dates.add(date, 10, 'year'))
+  return days.map( i => (date = dates.add(date, 10, 'year')))
 }
 
 

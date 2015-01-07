@@ -49,13 +49,13 @@ describe('List', function(){
   }) 
 
   it('should use a Item template', function(){
-    var templ  = React.createClass({
+    var Templ  = React.createClass({
       render: function() {
         return (<span>{"hello - " + this.props.item.label}</span>);
       }
     });
     
-    var list = render(<List data={data} listItem={templ} />);
+    var list = render(<List data={data} itemComponent={Templ} />);
 
     expect( list.getDOMNode().children[0].textContent).to.be('hello - jimmy');
   })

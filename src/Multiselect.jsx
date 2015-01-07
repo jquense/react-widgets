@@ -154,7 +154,7 @@ var Select = React.createClass({
               readOnly={this.props.readOnly}
               onDelete={this._delete}/>
           }
-          <SelectInput
+          <SelectInput 
             ref='input'
             aria-activedescendent={ this.props.open ? optID : undefined }
             aria-expanded={ this.props.open }
@@ -213,23 +213,23 @@ var Select = React.createClass({
   },
 
   _focus(focused, e){
-    var self = this;
-
     if (this.props.disabled === true )
       return
 
-    clearTimeout(self.timer)
+    clearTimeout(this.timer)
 
-    self.timer = setTimeout(function(){
-      if(focused) self.refs.input.focus()
+    this.timer = setTimeout(() => {
+      if(focused) this.refs.input.focus()
       else        {
-        self.close()
-        self.refs.tagList && self.refs.tagList.clear()
+        this.close()
+        this.refs.tagList && this.refs.tagList.clear()
       }
-
-      if( focused !== self.state.focused)
-        self.setState({ focused: focused })
-    }, 0)
+      
+      if( focused !== this.state.focused){
+        this.notify(focused ? 'onFocus' : 'onBlur', e)
+        this.setState({ focused: focused })
+      }
+    })
   },
 
   _typing: function(e){
@@ -311,6 +311,8 @@ var Select = React.createClass({
 
     else if ( !searching && key === 'Backspace')
       tagList && tagList.removeNext()
+
+    this.notify('onKeyDown', [e])
   },
 
   change: function(data){

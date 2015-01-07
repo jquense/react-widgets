@@ -23,13 +23,16 @@
     "react-ui",
     "react-component"
   ],
+  "scripts": {
+    "test": "node ./node_modules/karma/bin/karma start karma.conf.js"
+  },
   "homepage": "http://jquense.github.io/react-widgets/docs/",
   "repository": {
     "type": "git",
     "url": "https://github.com/jquense/react-widgets"
   },
   "dependencies": {
-    "date-arithmetic": "~1.0.0",
+    "date-arithmetic": "^2.0.0",
     "globalize": "~0.1.1",
     "xtend": "^4.0.0"
   },
@@ -51,6 +54,7 @@
     "gulp-react": "~2.0.0",
     "gulp-rename": "^1.2.0",
     "gulp-replace": "~0.4.0",
+    "gulp-strip-debug": "^1.0.2",
     "gulp-uglify": "^0.3.0",
     "gulp-webpack": "^0.3.0",
     "imports-loader": "^0.6.3",
@@ -61,7 +65,8 @@
     "karma-expect": "~1.1.0",
     "karma-mocha": "~0.1.9",
     "karma-phantomjs-launcher": "~0.1.4",
-    "karma-webpack": "~1.2.2",
+    "karma-sourcemap-loader": "^0.3.2",
+    "karma-webpack": "~1.2.0",
     "less": "^1.7.4",
     "less-loader": "^0.7.7",
     "lodash": "^2.4.1",
@@ -75,7 +80,7 @@
     "sinon-chai": "~2.5.0",
     "style-loader": "^0.7.0",
     "url-loader": "^0.5.5",
-    "webpack": "^1.3.3",
+    "webpack": "^1.4.0",
     "webpack-dev-server": "~1.4.10"
   }
 }

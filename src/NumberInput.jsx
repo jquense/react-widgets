@@ -53,7 +53,6 @@ module.exports = React.createClass({
       <input {...this.props}
         type='text' 
         className='rw-input'
-        onKeyDown={this.props.onKeyDown}
         onChange={this._change}
         onBlur={this._finish}
         aria-disabled={this.props.disabled}

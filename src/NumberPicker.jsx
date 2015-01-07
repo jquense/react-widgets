@@ -84,10 +84,13 @@ var NumberPicker = React.createClass({
 
 
   render: function(){
-    var {className, ...props} = _.omit(this.props, Object.keys(propTypes))
+    var {
+        className
+      , onKeyDown
+      , onKeyPress
+      , onKeyUp
+      , ...props } = _.omit(this.props, Object.keys(propTypes))
       , val = this.inRangeValue(this.props.value)
-
-    //console.log('render', this.state.focused)
 
     return (
       <div {...props }
@@ -116,7 +119,7 @@ var NumberPicker = React.createClass({
             aria-disabled={val === this.props.max || this.props.disabled}>
 
             <i className="rw-i rw-i-caret-up"><span className="rw-sr">{ this.props.messages.increment }</span></i>
-          </Btn>
+          </Btn> 
           <Btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
@@ -144,7 +147,9 @@ var NumberPicker = React.createClass({
           disabled={this.props.disabled}
           readOnly={this.props.readOnly}
           onChange={this.change}
-          onKeyDown={this.props.onKeyDown}/>
+          onKeyDown={onKeyDown}
+          onKeyPress={onKeyPress}
+          onKeyUp={onKeyUp}/>
       </div>
     )
   },
@@ -177,17 +182,17 @@ var NumberPicker = React.createClass({
   },
 
   _focus: function(focused, e){
-    var self = this;
+    clearTimeout(this.timer)
 
-    clearTimeout(self.timer)
-
-    self.timer = setTimeout(function(){
-      var el = self.refs.input.getDOMNode()
+    this.timer = setTimeout(() =>{
+      var el = this.refs.input.getDOMNode()
 
       focused && el.focus()
 
-      if( focused !== self.state.focused)
-        self.setState({ focused: focused })
+      if( focused !== this.state.focused){
+        this.notify(focused ? 'onFocus' : 'onBlur', e)
+        this.setState({ focused: focused })
+      }
 
     }, 0)
   },
@@ -209,7 +214,6 @@ var NumberPicker = React.createClass({
       e.preventDefault()
       this.increment()
     }
-
   },
 
   increment: function() {

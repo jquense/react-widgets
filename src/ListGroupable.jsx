@@ -63,9 +63,12 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
+    var keys = [];
+
     if(nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy)
       this.setState({ 
-        groups: this._group(nextProps.groupBy, nextProps.data)
+        groups: this._group(nextProps.groupBy, nextProps.data, keys),
+        sortedKeys: keys
       })
   },
 
@@ -105,7 +108,7 @@ module.exports = React.createClass({
 
     return (
       <ul { ...props }
-        className={ className + ' rw-list  rw-list-grouped' } 
+        className={ (className + '') + ' rw-list  rw-list-grouped' } 
         ref='scrollable'
         role='listbox'>
         { items }
@@ -127,8 +130,9 @@ module.exports = React.createClass({
   _renderItem(group, item, idx){
     var focused  = this.props.focused  === item
       , selected = this.props.selected === item
-      , ItemComponent = this.props.listItem;
+      , ItemComponent = this.props.itemComponent;
 
+    //console.log('hi')
     return (
       <li 
         key={'item_' + group + '_' + idx}

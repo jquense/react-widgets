@@ -118,8 +118,9 @@ var Calendar = React.createClass({
   },
 
   render: function(){
-    var {className, ...props } 
-                 = _.omit(this.props, ['value', 'min', 'max'])
+    var {
+        className
+      , ...props } = _.omit(this.props, ['value', 'min', 'max'])
       , View     = VIEW[this.state.view]
       , unit     = this.state.view
       
@@ -131,6 +132,7 @@ var Calendar = React.createClass({
 
     return (
       <div {...props }
+        onKeyDown={this._keyDown}
         className={cx(className, {
           'rw-calendar':       true,
           'rw-widget':         true,
@@ -174,7 +176,7 @@ var Calendar = React.createClass({
     )
 
     function finished(){
-      this._focus(true, 'stop');
+      this._focus(true);
     }
   },
 
@@ -206,7 +208,7 @@ var Calendar = React.createClass({
     }
   },
 
-  _focus: function(val, e){
+  _focus: function(val){
     if ( this.props.maintainFocus)
       val && this.refs.currentView.getDOMNode().focus()
   },
@@ -253,6 +255,8 @@ var Calendar = React.createClass({
       this.refs.currentView._keyDown
         && this.refs.currentView._keyDown(e)
     }
+
+    this.notify('onKeyDown', [e])
   },
 
   _label: function() {

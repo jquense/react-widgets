@@ -80,6 +80,41 @@ describe('DROPDOWNS', function(){
     }, 0)
   })
 
+  it('should trigger focus/blur events', function(done){
+    var blur = sinon.spy()
+      , focus = sinon.spy()
+      , picker = render(<Dropdown onBlur={blur} onFocus={focus}/>);
+
+    expect(focus.calledOnce).to.be(false)
+    expect(blur.calledOnce).to.be(false)
+
+    trigger.focus(picker.getDOMNode())
+
+    setTimeout(() => {
+      expect(focus.calledOnce).to.be(true)
+      trigger.blur(picker.getDOMNode())
+
+      setTimeout(() => {
+        expect(blur.calledOnce).to.be(true)
+        done()
+      })
+    })
+  })
+
+  it('should trigger key events', function(){
+    var kp = sinon.spy(), kd = sinon.spy(), ku = sinon.spy()
+      , picker = render(<Dropdown onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
+      , input  = picker.getDOMNode();
+
+    trigger.keyPress(input)
+    trigger.keyDown(input)
+    trigger.keyUp(input)
+
+    expect(kp.calledOnce).to.be(true)
+    expect(kd.calledOnce).to.be(true)
+    expect(ku.calledOnce).to.be(true)
+  })
+
   it('should do nothing when disabled', function(done){
     var dropdown = render(<Dropdown defaultValue={'jimmy'} data={data} duration={0} disabled={true}/>)
       , input = dropdown.getDOMNode();

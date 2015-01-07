@@ -159,7 +159,7 @@ var DropdownList = React.createClass({
 		)
 	},
 
-  _focus: function(focused){
+  _focus: function(focused, e){
     var self = this;
 
     clearTimeout(self.timer)
@@ -168,8 +168,10 @@ var DropdownList = React.createClass({
       if(focused) self.getDOMNode().focus()
       else        self.close()
 
-      if( focused !== self.state.focused)
+      if( focused !== self.state.focused){
+        self.notify(focused ? 'onFocus' : 'onBlur', e)
         self.setState({ focused: focused })
+      }
 
     }, 0)
   },
@@ -222,6 +224,8 @@ var DropdownList = React.createClass({
           : change(item)
       })
 
+    this.notify('onKeyDown', [e])
+    
     function change(item, fromList){
       if(!item) return
       if(fromList) self.notify('onSelect', item)

@@ -90,6 +90,42 @@ describe('Select', function(){
     expect(change.args[0][0]).to.eql([ dataList[0] ])
   })
 
+  it('should trigger focus/blur events', function(done){
+    var blur = sinon.spy()
+      , focus = sinon.spy()
+      , select = render(<Select onBlur={blur} onFocus={focus}/>);
+
+    expect(focus.calledOnce).to.be(false)
+    expect(blur.calledOnce).to.be(false)
+
+    trigger.focus(select.getDOMNode())
+
+    setTimeout(() => {
+      expect(focus.calledOnce).to.be(true)
+      trigger.blur(select.getDOMNode())
+
+      setTimeout(() => {
+        expect(blur.calledOnce).to.be(true)
+        done()
+      })
+    })
+  })
+
+  it('should trigger key events', function(){
+    var kp = sinon.spy(), kd = sinon.spy(), ku = sinon.spy()
+      , select = render(<Select onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
+      , input  = findType(select, require('../src/MultiselectInput.jsx')).getDOMNode();
+
+    trigger.keyPress(input)
+    trigger.keyDown(input)
+    trigger.keyUp(input)
+
+    expect(kp.calledOnce).to.be(true)
+    expect(kd.calledOnce).to.be(true)
+    expect(ku.calledOnce).to.be(true)
+  })
+
+
   it('should do nothing when disabled', function(done){
     var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0} disabled={true}/>)
       , input  = findType(select, require('../src/MultiselectInput.jsx')).getDOMNode()

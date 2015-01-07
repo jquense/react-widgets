@@ -10,12 +10,6 @@ module.exports = React.createClass({
 
   displayName: 'TimeList',
 
-  mixins: [
-    require('./mixins/TextSearchMixin'),
-    require('./mixins/DataIndexStateMixin')('selectedIndex'),
-    require('./mixins/DataIndexStateMixin')('focusedIndex')
-  ],
-
   propTypes: {
     value:          React.PropTypes.instanceOf(Date),
     min:            React.PropTypes.instanceOf(Date),
@@ -32,18 +26,34 @@ module.exports = React.createClass({
       format: 't',
       onSelect: function(){},
       preserveDate: true,
+      delay: 300
     }
   },
 
   getInitialState: function(){
-    var idx = this._selectedIndex(this._data(), this.props.value)
+    var data = this._dates(this.props)
+      , focusedItem = this._closestDate(data, this.props.value);
 
-    return { focusedIndex: idx === -1 ? 0 : idx}
+    return { 
+      focusedItem: focusedItem || data[0],
+      dates: data
+    }
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    var data = this._dates(nextProps)
+      , focusedItem = this._closestDate(data, this.props.value);
+
+    if ( nextProps.value !== this.props.value)
+      this.setState({ 
+        focusedItem: focusedItem || data[0],
+        dates: data
+      })
   },
 
   render: function(){
-    var times = this._data()
-      , idx = this._selectedIndex(times, this.props.value);
+    var times = this.state.dates
+      , date  = this._closestDate(times, this.props.value);
 
     return (
       <List {..._.omit(this.props, 'value')}
@@ -51,51 +61,55 @@ module.exports = React.createClass({
         data={times}
         textField='label'
         valueField='date'
-        selectedIndex={idx}
-        focusedIndex={this.state.focusedIndex}
-        listItem={this.props.itemComponent}
+        selected={date}
+        focused={this.state.focusedItem}
+        itemComponent={this.props.itemComponent}
         onSelect={this.props.onSelect}/>
     )
-
   },
 
-  _selectedIndex: function(times, date){
+  _closestDate: function(times, date){
     var roundTo = 1000 * 60 * this.props.step
-      , idx = -1, label;
+      , inst = null
+      , label;
 
-    if( !date) return 0
+    if( !date) return null
 
     date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
     label = dates.format(date, this.props.format)
 
-    times.every( (time, i) => {
-      if( time.label === label ) return (idx = i), false
-      return true
+    times.some( time => {
+      if( time.label === label ) 
+        return (inst = time)
     })
 
-    return idx
+    return inst
   },
 
-  _data: function(){
+  _data(){ 
+    return this.state.dates
+  },
+
+  _dates: function(props){
     var times  = [], i = 0
-      , values = this._dateValues()
+      , values = this._dateValues(props)
       , start  = values.min
       , startDay = dates.date(start);
 
     // debugger;
     while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
       i++
-      times.push({ date: start, label: dates.format(start, this.props.format) })
-      start = dates.add(start, this.props.step || 30, 'minutes')
+      times.push({ date: start, label: dates.format(start, props.format) })
+      start = dates.add(start, props.step || 30, 'minutes')
     }
     return times
   },
 
-  _dateValues: function(){
-    var value = this.props.value || dates.today()
-      , useDate = this.props.preserveDate
-      , min = this.props.min
-      , max = this.props.max
+  _dateValues: function(props){
+    var value = props.value || dates.today()
+      , useDate = props.preserveDate
+      , min = props.min
+      , max = props.max
       , start, end;
 
     //compare just the time regradless of whether they fall on the same day
@@ -119,38 +133,52 @@ module.exports = React.createClass({
     }
 
   },
+
   _keyDown: function(e){
-    var self = this
-      , key = e.key
-      , character = String.fromCharCode(e.keyCode);
+    var key = e.key
+      , character = String.fromCharCode(e.keyCode)
+      , list = this.refs.list;
 
     if ( key === 'End' )
-      this.setFocusedIndex(
-        this._data().length - 1)
+      this.setState({ focusedItem: list.last() })
 
     else if ( key === 'Home' )
-      this.setFocusedIndex(0)
+      this.setState({ focusedItem: list.first() })
 
     else if ( key === 'Enter' )
-      this.props.onSelect(this._data()[this.state.focusedIndex])
+      this.props.onSelect(this.state.focusedItem)
 
     else if ( key === 'ArrowDown' ) {
       e.preventDefault()
-      this.setFocusedIndex(
-        this.nextFocusedIndex())
+      this.setState({ focusedItem: list.next('focused') })
     }
     else if ( key === 'ArrowUp' ) {
       e.preventDefault()
-      this.setFocusedIndex(
-        this.prevFocusedIndex())
+      this.setState({ focusedItem: list.prev('focused') })
     }
     else {
       e.preventDefault()
-      this.search(character, function(word){
-        self.setFocusedIndex(
-          this.findNextWordIndex(word, self.state.focusedIndex))
+
+      this.search(character, item => {
+        this.setState({ focusedItem: item })
       })
     }
-  }
+  },
+
+  search: function(character, cb){
+    var word = ((this._searchTerm || '') + character).toLowerCase();
+      
+    clearTimeout(this._timer)
+    this._searchTerm = word 
+
+    this._timer = setTimeout(() => {
+      var list = this.refs.list
+        , item = list.next('focused', word);
+      
+      this._searchTerm = ''
+      if (item) cb(item)
+
+    }, this.props.delay)
+  },
 
 });
