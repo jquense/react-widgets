@@ -79,7 +79,7 @@ var Multiselect = React.createClass({
           onCreate <small>{"Function(String searchTerm)"}</small></h3>
         <p>
           This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic, 
-          a common implementation is shown below, where the new tag is selected and addedto the data list.
+          a common implementation is shown below, where the new tag is selected and added to the data list.
         </p>
         <Example code={onCreateExample}/>
 
