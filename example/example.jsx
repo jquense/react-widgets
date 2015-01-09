@@ -109,7 +109,6 @@ var App = React.createClass({
             <Calendar
               value={ this.state.calValue }
               min={new Date(2014, 9, 15)}
-              max={new Date(2025, 0, 15)}
               onChange={change.bind(null, 'calValue')}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>

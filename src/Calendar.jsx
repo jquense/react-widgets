@@ -153,6 +153,7 @@ var Calendar = React.createClass({
 
         <SlideTransition
           ref='animation'
+          duration={this.props.duration}
           direction={this.state.slideDirection}
           onAnimate={finished.bind(this)}>
 

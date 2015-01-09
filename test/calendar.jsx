@@ -4,8 +4,15 @@ require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
 var DateTimePicker = require('../src/DateTimePicker.jsx')
+  , dateMath = require('date-arithmetic')
   , Calendar = require('../src/Calendar.jsx')
+  , BaseCalendar = require('../src/Calendar.jsx').BaseCalendar
   , Header = require('../src/Header.jsx')
+  , Month  =  require('../src/Month.jsx')
+  , Year = require('../src/Year.jsx')
+  , Decade = require('../src/Decade.jsx')
+  , Century = require('../src/Century.jsx')
+  , DOM = require('../src/util/dom')
   , Globalize = require('globalize');
 
 
@@ -17,7 +24,7 @@ var TestUtils = React.addons.TestUtils
   , findAllType = TestUtils.scryRenderedComponentsWithType
   , trigger = TestUtils.Simulate;
 
-describe('DateTimePicker', function(){
+describe('Calendar', function(){
 
   it('should set Initial View', function(){
     var date = new Date()
@@ -34,48 +41,136 @@ describe('DateTimePicker', function(){
       , navBtn = findClass(header, 'rw-btn-view').getDOMNode();
 
     expect(() => 
-      findType(picker, require('../src/Month.jsx'))).to.not.throwException();
+      findType(picker, Month)).to.not.throwException();
 
     trigger.click(navBtn)
 
     expect(() => 
-      findType(picker, require('../src/Year.jsx'))).to.not.throwException();
+      findType(picker, Year)).to.not.throwException();
 
     trigger.click(navBtn)
 
     expect(() => 
-      findType(picker, require('../src/Decade.jsx'))).to.not.throwException();
+      findType(picker, Decade)).to.not.throwException();
 
     trigger.click(navBtn)
 
     expect(() => 
-      findType(picker, require('../src/Century.jsx'))).to.not.throwException();
+      findType(picker, Century)).to.not.throwException();
 
     expect(navBtn.hasAttribute('disabled')).to.be(true)
   })
 
-  it.only('should key up through views', function(){
+  it('should key up through views', function(){
     var date = new Date()
       , picker = render(<Calendar defaultValue={date} />);
 
     expect(() => 
-      findType(picker, require('../src/Month.jsx'))).to.not.throwException();
+      findType(picker, Month)).to.not.throwException();
 
     trigger.keyDown(picker.getDOMNode(), { ctrlKey: true, key: 'ArrowUp' })
 
     expect(() => 
-      findType(picker, require('../src/Year.jsx'))).to.not.throwException();
+      findType(picker, Year)).to.not.throwException();
 
     trigger.keyDown(picker.getDOMNode(), { ctrlKey: true, key: 'ArrowUp' })
 
     expect(() => 
-       findType(picker, require('../src/Decade.jsx'))).to.not.throwException();
+      findType(picker, Decade)).to.not.throwException();
 
     trigger.keyDown(picker.getDOMNode(), { ctrlKey: true, key: 'ArrowUp' })
 
     expect(() => 
-      findType(picker, require('../src/Century.jsx'))).to.not.throwException();
+      findType(picker, Century)).to.not.throwException();
 
   })
 
+  it('should navigate into the past', function(){
+    var date    = new Date(2014, 5, 15, 0, 0, 0)
+      , picker  = render(<Calendar defaultValue={date} />)
+      , header  = findType(picker, Header)
+      , leftBtn = findClass(header, 'rw-btn-left').getDOMNode()
+      , navBtn  = findClass(header, 'rw-btn-view').getDOMNode();
+
+    sinon.stub(DOM, 'animate', syncAnimate)
+
+    trigger.click(leftBtn)
+
+    expect(findType(picker, Month).state.focusedDate.getMonth()).to.be(4);
+
+    trigger.click(navBtn)
+    trigger.click(leftBtn)
+
+    expect(findType(picker, Year).state.focusedDate.getFullYear()).to.be(2013);
+
+    trigger.click(navBtn)
+    trigger.click(leftBtn)
+
+    expect(findType(picker, Decade).state.focusedDate.getFullYear()).to.be(2003);
+
+    trigger.click(navBtn)
+    trigger.click(leftBtn)
+
+    expect(findType(picker, Century).state.focusedDate.getFullYear()).to.be(1903);
+
+    DOM.animate.restore()
+  })
+
+  it('should navigate into the future', function(){
+    var date     = new Date(2014, 5, 15, 0, 0, 0)
+      , picker   = render(<Calendar defaultValue={date} max={new Date(2199,11, 31)} />)
+      , header   = findType(picker, Header)
+      , rightBtn = findClass(header, 'rw-btn-right').getDOMNode()
+      , navBtn   = findClass(header, 'rw-btn-view').getDOMNode();
+
+    sinon.stub(DOM, 'animate', syncAnimate)
+
+    trigger.click(rightBtn)
+
+    expect(findType(picker, Month).state.focusedDate.getMonth()).to.be(6);
+
+    trigger.click(navBtn)
+    trigger.click(rightBtn)
+
+    expect(findType(picker, Year).state.focusedDate.getFullYear()).to.be(2015);
+
+    trigger.click(navBtn)
+    trigger.click(rightBtn)
+
+    expect(findType(picker, Decade).state.focusedDate.getFullYear()).to.be(2025);
+
+    trigger.click(navBtn)
+    trigger.click(rightBtn)
+
+    expect(findType(picker, Century).state.focusedDate.getFullYear()).to.be(2125);
+
+    DOM.animate.restore()
+  })
+
+  it.only('should constrain movement by min and max', function(done){
+    var date     = new Date(2014, 5, 15)
+      , picker   = render(<BaseCalendar value={date} max={new Date(2014, 5, 25)}  min={new Date(2014, 5, 5)} />)
+      , header   = findType(picker, Header)
+      , rightBtn = findClass(header, 'rw-btn-right').getDOMNode()
+      , leftBtn  = findClass(header, 'rw-btn-left').getDOMNode();
+
+    trigger.click(rightBtn)
+
+    setTimeout(() => {
+      expect(picker.state.currentDate).to.eql(date)
+
+      trigger.click(leftBtn)
+
+      setTimeout(() => {
+        expect(picker.state.currentDate).to.eql(date)
+        done()
+      })
+    })
+  })
+
 })
+
+
+function syncAnimate(node, properties, duration, easing, callback){
+  typeof easing === 'function' ? easing() : callback()
+}

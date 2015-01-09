@@ -966,7 +966,7 @@
 	          "onCreate ", React.createElement("small", null, "Function(String searchTerm)")), 
 	        React.createElement("p", null, 
 	          "This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic," + ' ' + 
-	          "a common implementation is shown below, where the new tag is selected and addedto the data list."
+	          "a common implementation is shown below, where the new tag is selected and added to the data list."
 	        ), 
 	        React.createElement(Example, {code: onCreateExample}), 
 	
@@ -1225,7 +1225,7 @@
 	  , MenuItem = __webpack_require__(2).MenuItem
 	  , DDButton = __webpack_require__(2).DropdownButton
 	
-	  , SelectListExample = __webpack_require__(20);
+	  , SelectListExample = __webpack_require__(21);
 	
 	var prefix = 'selectlist/'
 	var widgetName = 'SelectList'
@@ -1402,7 +1402,7 @@
 	  , Example = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , CalendarExample = __webpack_require__(21);
+	  , CalendarExample = __webpack_require__(20);
 	
 	var prefix = 'calendar/'
 	var Calendar = React.createClass({displayName: 'Calendar',
@@ -1558,7 +1558,7 @@
 	  , Example = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , DatePickerExample = __webpack_require__(22);
+	  , DatePickerExample = __webpack_require__(23);
 	
 	var prefix = 'date-picker/'
 	var widgetName = 'DateTimePicker'
@@ -1796,7 +1796,7 @@
 	  , Example = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(2).MenuItem
-	  , NumberPickerExample = __webpack_require__(23);
+	  , NumberPickerExample = __webpack_require__(22);
 	
 	var prefix = 'number-picker/'
 	var NumberPicker = React.createClass({displayName: 'NumberPicker',
@@ -2053,9 +2053,9 @@
 	
 	    has: has,
 	    
-	    merge:  __webpack_require__(39),
+	    merge:  __webpack_require__(45),
 	
-	    extend: __webpack_require__(34),
+	    extend: __webpack_require__(44),
 	
 	    isShallowEqual: function (a, b) {
 	      if (a === b) return true;
@@ -2757,7 +2757,7 @@
 	    return (
 	      React.createElement("span", null, 
 	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
-	         '  ' + this.props.item.label
+	         '  ' + this.props.item.name
 	      )
 	    );
 	  }
@@ -2770,6 +2770,124 @@
 
 /***/ },
 /* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React       = __webpack_require__(1)
+	  , Button      = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW          = __webpack_require__(32);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	  getInitialState: function(){
+	    return {
+	      format: ''
+	    }
+	  },
+	
+	  render: function(){
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-sm-8"}, 
+	            React.createElement(RW.Calendar, {
+	                value: this.state.value, 
+	                onChange: this._change, 
+	                max: this.state.max, 
+	                min: this.state.min, 
+	                finalView: this.state.finalView, 
+	                initialView: this.state.initialView, 
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                isRtl: this.state.isRtl})
+	          ), 
+	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Initial View"), 
+	              React.createElement(RW.DropdownList, {
+	                  value: this.state.initialView || 'month', 
+	                  data: ["month", "year", "decade", "century"], 
+	                  onChange: this._set.bind(null, 'initialView')})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Final View"), 
+	              React.createElement(RW.DropdownList, {
+	                  value: this.state.finalView || 'century', 
+	                  data: ["month", "year", "decade", "century"], 
+	                  onChange: this._set.bind(null, 'finalView')})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "min"), 
+	              React.createElement(RW.DateTimePicker, {
+	                  time: false, 
+	                  format: "MMM dd, yyyy", 
+	                  value: this.state.min, 
+	                  onChange: this._set.bind(null, 'min')})
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "max"), 
+	              React.createElement(RW.DateTimePicker, {
+	                  time: false, 
+	                  format: "MMM dd, yyyy", 
+	                  value: this.state.max, 
+	                  onChange: this._set.bind(null, 'max')})
+	            )
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	
+	})
+	
+	          
+
+
+/***/ },
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2921,37 +3039,39 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	var React       = __webpack_require__(1)
-	  , Button      = __webpack_require__(2).Button
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW          = __webpack_require__(32);
+	  , RW = __webpack_require__(32);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	  getInitialState: function(){
 	    return {
-	      format: ''
+	      value: 15,
+	      format: 'D',
+	      step: 1,
 	    }
 	  },
 	
 	  render: function(){
 	
 	    return (
-	      React.createElement("div", {className: "example"}, 
+	      React.createElement("div", {className: "example "}, 
 	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-sm-8"}, 
-	            React.createElement(RW.Calendar, {
+	          React.createElement("div", {className: "col-sm-8 demo"}, 
+	            React.createElement(RW.NumberPicker, {
 	                value: this.state.value, 
 	                onChange: this._change, 
 	                max: this.state.max, 
 	                min: this.state.min, 
-	                finalView: this.state.finalView, 
-	                initialView: this.state.initialView, 
+	                step: this.state.step, 
 	                disabled: this.state.disabled === 'disabled', 
 	                readOnly: this.state.disabled === 'readonly', 
+	                format: this.state.format, 
+	                onChange: this._change, 
 	                isRtl: this.state.isRtl})
 	          ), 
 	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
@@ -2978,32 +3098,28 @@
 	              )
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Initial View"), 
+	              React.createElement("label", {className: "form-label"}, "Filter"), 
 	              React.createElement(RW.DropdownList, {
-	                  value: this.state.initialView || 'month', 
-	                  data: ["month", "year", "decade", "century"], 
-	                  onChange: this._set.bind(null, 'initialView')})
+	                  value: this.state.filter || false, 
+	                  data: [false, 'startsWith', 'endsWith', 'contains'], 
+	                  onChange: this._set.bind(null, 'filter')})
 	            ), 
+	
 	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Final View"), 
-	              React.createElement(RW.DropdownList, {
-	                  value: this.state.finalView || 'century', 
-	                  data: ["month", "year", "decade", "century"], 
-	                  onChange: this._set.bind(null, 'finalView')})
+	              React.createElement("label", {className: "form-label"}, "step"), 
+	              React.createElement(RW.NumberPicker, {
+	                  value: this.state.step, 
+	                  onChange: this._set.bind(null, 'step')})
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
 	              React.createElement("label", {className: "form-label"}, "min"), 
-	              React.createElement(RW.DateTimePicker, {
-	                  time: false, 
-	                  format: "MMM dd, yyyy", 
+	              React.createElement(RW.NumberPicker, {
 	                  value: this.state.min, 
 	                  onChange: this._set.bind(null, 'min')})
 	            ), 
 	            React.createElement("div", {className: "form-group"}, 
 	              React.createElement("label", {className: "form-label"}, "max"), 
-	              React.createElement(RW.DateTimePicker, {
-	                  time: false, 
-	                  format: "MMM dd, yyyy", 
+	              React.createElement(RW.NumberPicker, {
 	                  value: this.state.max, 
 	                  onChange: this._set.bind(null, 'max')})
 	            )
@@ -3035,15 +3151,18 @@
 	
 	})
 	
-	          
-
+	function extract(fn){
+	  return function(e){
+	    return fn(e.target.value)
+	  }
+	}
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(40)
+	  , dates = __webpack_require__(46)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
 	  , RW = __webpack_require__(32);
@@ -3234,132 +3353,13 @@
 	}
 
 /***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(32);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	  getInitialState: function(){
-	    return {
-	      value: 15,
-	      format: 'D',
-	      step: 1,
-	    }
-	  },
-	
-	  render: function(){
-	
-	    return (
-	      React.createElement("div", {className: "example "}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-sm-8 demo"}, 
-	            React.createElement(RW.NumberPicker, {
-	                value: this.state.value, 
-	                onChange: this._change, 
-	                max: this.state.max, 
-	                min: this.state.min, 
-	                step: this.state.step, 
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                format: this.state.format, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl})
-	          ), 
-	          React.createElement("div", {className: "col-sm-4 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Filter"), 
-	              React.createElement(RW.DropdownList, {
-	                  value: this.state.filter || false, 
-	                  data: [false, 'startsWith', 'endsWith', 'contains'], 
-	                  onChange: this._set.bind(null, 'filter')})
-	            ), 
-	
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "step"), 
-	              React.createElement(RW.NumberPicker, {
-	                  value: this.state.step, 
-	                  onChange: this._set.bind(null, 'step')})
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "min"), 
-	              React.createElement(RW.NumberPicker, {
-	                  value: this.state.min, 
-	                  onChange: this._set.bind(null, 'min')})
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "max"), 
-	              React.createElement(RW.NumberPicker, {
-	                  value: this.state.max, 
-	                  onChange: this._set.bind(null, 'max')})
-	            )
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
-	    this.setState({ disabled: val })
-	  },
-	
-	})
-	
-	function extract(fn){
-	  return function(e){
-	    return fn(e.target.value)
-	  }
-	}
-
-/***/ },
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var BootstrapMixin = __webpack_require__(35);
+	var joinClasses = __webpack_require__(38);
+	var classSet = __webpack_require__(39);
+	var BootstrapMixin = __webpack_require__(34);
 	
 	var Button = React.createClass({displayName: 'Button',
 	  mixins: [BootstrapMixin],
@@ -3448,9 +3448,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var BootstrapMixin = __webpack_require__(35);
+	var joinClasses = __webpack_require__(38);
+	var classSet = __webpack_require__(39);
+	var BootstrapMixin = __webpack_require__(34);
 	var Button = __webpack_require__(24);
 	
 	var ButtonGroup = React.createClass({displayName: 'ButtonGroup',
@@ -3490,17 +3490,17 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var cloneWithProps = __webpack_require__(43);
+	var joinClasses = __webpack_require__(38);
+	var classSet = __webpack_require__(39);
+	var cloneWithProps = __webpack_require__(40);
 	
-	var createChainedFunction = __webpack_require__(44);
-	var BootstrapMixin = __webpack_require__(35);
-	var DropdownStateMixin = __webpack_require__(36);
+	var createChainedFunction = __webpack_require__(41);
+	var BootstrapMixin = __webpack_require__(34);
+	var DropdownStateMixin = __webpack_require__(35);
 	var Button = __webpack_require__(24);
 	var ButtonGroup = __webpack_require__(25);
-	var DropdownMenu = __webpack_require__(37);
-	var ValidComponentChildren = __webpack_require__(45);
+	var DropdownMenu = __webpack_require__(36);
+	var ValidComponentChildren = __webpack_require__(42);
 	
 	
 	var DropdownButton = React.createClass({displayName: 'DropdownButton',
@@ -3618,8 +3618,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
+	var joinClasses = __webpack_require__(38);
+	var classSet = __webpack_require__(39);
 	
 	var MenuItem = React.createClass({displayName: 'MenuItem',
 	  propTypes: {
@@ -3628,7 +3628,7 @@
 	    href:      React.PropTypes.string,
 	    title:     React.PropTypes.string,
 	    onSelect:  React.PropTypes.func,
-	    selectKey: React.PropTypes.any
+	    eventKey: React.PropTypes.any
 	  },
 	
 	  getDefaultProps: function () {
@@ -3640,7 +3640,7 @@
 	  handleClick: function (e) {
 	    if (this.props.onSelect) {
 	      e.preventDefault();
-	      this.props.onSelect(this.props.selectKey);
+	      this.props.onSelect(this.props.eventKey);
 	    }
 	  },
 	
@@ -3681,15 +3681,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var BootstrapMixin = __webpack_require__(35);
-	var CollapsableMixin = __webpack_require__(38);
-	var classSet = __webpack_require__(42);
-	var domUtils = __webpack_require__(46);
-	var cloneWithProps = __webpack_require__(43);
+	var joinClasses = __webpack_require__(38);
+	var BootstrapMixin = __webpack_require__(34);
+	var CollapsableMixin = __webpack_require__(37);
+	var classSet = __webpack_require__(39);
+	var domUtils = __webpack_require__(43);
+	var cloneWithProps = __webpack_require__(40);
 	
-	var ValidComponentChildren = __webpack_require__(45);
-	var createChainedFunction = __webpack_require__(44);
+	var ValidComponentChildren = __webpack_require__(42);
+	var createChainedFunction = __webpack_require__(41);
 	
 	
 	var Nav = React.createClass({displayName: 'Nav',
@@ -3703,7 +3703,8 @@
 	    collapsable: React.PropTypes.bool,
 	    expanded: React.PropTypes.bool,
 	    navbar: React.PropTypes.bool,
-	    selectKey: React.PropTypes.any
+	    eventKey: React.PropTypes.any,
+	    right: React.PropTypes.bool
 	  },
 	
 	  getDefaultProps: function () {
@@ -3747,6 +3748,7 @@
 	    classes['nav-justified'] = this.props.justified;
 	    classes['navbar-nav'] = this.props.navbar;
 	    classes['pull-right'] = this.props.pullRight;
+	    classes['navbar-right'] = this.props.right;
 	
 	    return (
 	      React.createElement("ul", React.__spread({},  this.props, {className: joinClasses(this.props.className, classSet(classes)), ref: "ul"}), 
@@ -3760,7 +3762,7 @@
 	      return true;
 	    }
 	    if (this.props.activeKey != null) {
-	      if (child.props.selectKey == this.props.activeKey) {
+	      if (child.props.eventKey == this.props.activeKey) {
 	        return true;
 	      }
 	    }
@@ -3797,13 +3799,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var BootstrapMixin = __webpack_require__(35);
-	var classSet = __webpack_require__(42);
-	var cloneWithProps = __webpack_require__(43);
+	var joinClasses = __webpack_require__(38);
+	var BootstrapMixin = __webpack_require__(34);
+	var classSet = __webpack_require__(39);
+	var cloneWithProps = __webpack_require__(40);
 	
-	var ValidComponentChildren = __webpack_require__(45);
-	var createChainedFunction = __webpack_require__(44);
+	var ValidComponentChildren = __webpack_require__(42);
+	var createChainedFunction = __webpack_require__(41);
 	var Nav = __webpack_require__(28);
 	
 	
@@ -3883,8 +3885,8 @@
 	  renderChild: function (child, index) {
 	    return cloneWithProps(child, {
 	      navbar: true,
-	      collapsable: this.props.toggleNavKey != null && this.props.toggleNavKey === child.props.selectKey,
-	      expanded: this.props.toggleNavKey != null && this.props.toggleNavKey === child.props.selectKey && this.isNavExpanded(),
+	      collapsable: this.props.toggleNavKey != null && this.props.toggleNavKey === child.props.eventKey,
+	      expanded: this.props.toggleNavKey != null && this.props.toggleNavKey === child.props.eventKey && this.isNavExpanded(),
 	      key: child.key ? child.key : index,
 	      ref: child.ref
 	    });
@@ -3942,13 +3944,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var cloneWithProps = __webpack_require__(43);
+	var joinClasses = __webpack_require__(38);
+	var classSet = __webpack_require__(39);
+	var cloneWithProps = __webpack_require__(40);
 	
-	var ValidComponentChildren = __webpack_require__(45);
-	var createChainedFunction = __webpack_require__(44);
-	var BootstrapMixin = __webpack_require__(35);
+	var ValidComponentChildren = __webpack_require__(42);
+	var createChainedFunction = __webpack_require__(41);
+	var BootstrapMixin = __webpack_require__(34);
 	
 	
 	var SubNav = React.createClass({displayName: 'SubNav',
@@ -3974,7 +3976,7 @@
 	      e.preventDefault();
 	
 	      if (!this.props.disabled) {
-	        this.props.onSelect(this.props.selectKey, this.props.href);
+	        this.props.onSelect(this.props.eventKey, this.props.href);
 	      }
 	    }
 	  },
@@ -3988,7 +3990,7 @@
 	      return true;
 	    }
 	
-	    if (this.props.activeKey != null && this.props.activeKey === child.props.selectKey) {
+	    if (this.props.activeKey != null && this.props.activeKey === child.props.eventKey) {
 	      return true;
 	    }
 	
@@ -4020,7 +4022,7 @@
 	      return true;
 	    }
 	    if (this.props.activeKey != null) {
-	      if (child.props.selectKey == this.props.activeKey) {
+	      if (child.props.eventKey == this.props.activeKey) {
 	        return true;
 	      }
 	    }
@@ -4076,9 +4078,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var BootstrapMixin = __webpack_require__(35);
+	var joinClasses = __webpack_require__(38);
+	var classSet = __webpack_require__(39);
+	var BootstrapMixin = __webpack_require__(34);
 	
 	var NavItem = React.createClass({displayName: 'NavItem',
 	  mixins: [BootstrapMixin],
@@ -4089,7 +4091,7 @@
 	    disabled: React.PropTypes.bool,
 	    href: React.PropTypes.string,
 	    title: React.PropTypes.string,
-	    selectKey: React.PropTypes.any
+	    eventKey: React.PropTypes.any
 	  },
 	
 	  getDefaultProps: function () {
@@ -4099,19 +4101,26 @@
 	  },
 	
 	  render: function () {
-	    var classes = {
-	      'active': this.props.active,
-	      'disabled': this.props.disabled
-	    };
+	    var $__0= 
+	        
+	        
+	        
+	        
+	        
+	           this.props,disabled=$__0.disabled,active=$__0.active,href=$__0.href,title=$__0.title,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{disabled:1,active:1,href:1,title:1,children:1}),
+	        classes = {
+	          'active': active,
+	          'disabled': disabled
+	        };
 	
 	    return (
-	      React.createElement("li", React.__spread({},  this.props, {className: joinClasses(this.props.className, classSet(classes))}), 
+	      React.createElement("li", React.__spread({},  props, {className: joinClasses(props.className, classSet(classes))}), 
 	        React.createElement("a", {
-	          href: this.props.href, 
-	          title: this.props.title, 
+	          href: href, 
+	          title: title, 
 	          onClick: this.handleClick, 
 	          ref: "anchor"}, 
-	          this.props.children
+	          children 
 	        )
 	      )
 	    );
@@ -4122,7 +4131,7 @@
 	      e.preventDefault();
 	
 	      if (!this.props.disabled) {
-	        this.props.onSelect(this.props.selectKey, this.props.href);
+	        this.props.onSelect(this.props.eventKey, this.props.href);
 	      }
 	    }
 	  }
@@ -4160,7 +4169,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var chance = new (__webpack_require__(65))
+	var chance = new (__webpack_require__(83))
 	
 	chance.set('lastNames', ['Smith', 'Williams', 'Chang', 'Diaz', 'Morales'])
 	
@@ -4178,27 +4187,6 @@
 
 /***/ },
 /* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = extend
-	
-	function extend(target) {
-	    for (var i = 1; i < arguments.length; i++) {
-	        var source = arguments[i]
-	
-	        for (var key in source) {
-	            if (source.hasOwnProperty(key)) {
-	                target[key] = source[key]
-	            }
-	        }
-	    }
-	
-	    return target
-	}
-
-
-/***/ },
-/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -4238,7 +4226,7 @@
 	module.exports = BootstrapMixin;
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -4323,16 +4311,16 @@
 	module.exports = DropdownStateMixin;
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var classSet = __webpack_require__(42);
-	var cloneWithProps = __webpack_require__(43);
+	var joinClasses = __webpack_require__(38);
+	var classSet = __webpack_require__(39);
+	var cloneWithProps = __webpack_require__(40);
 	
-	var createChainedFunction = __webpack_require__(44);
-	var ValidComponentChildren = __webpack_require__(45);
+	var createChainedFunction = __webpack_require__(41);
+	var ValidComponentChildren = __webpack_require__(42);
 	
 	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
 	  propTypes: {
@@ -4374,7 +4362,7 @@
 	module.exports = DropdownMenu;
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -4447,15 +4435,10 @@
 	    var node = this.getCollapsableDOMNode();
 	
 	    this._removeEndTransitionListener();
-	    if (node && nextProps.expanded !== this.props.expanded && this.props.expanded) {
-	      node.style[dimension] = this.getCollapsableDimensionValue() + 'px';
-	    }
 	  },
 	
 	  componentDidUpdate: function (prevProps, prevState) {
-	    if (this.state.collapsing !== prevState.collapsing) {
-	      this._afterRender();
-	    }
+	    this._afterRender();
 	  },
 	
 	  _afterRender: function () {
@@ -4468,17 +4451,12 @@
 	  },
 	
 	  _updateDimensionAfterRender: function () {
-	    var dimension = (typeof this.getCollapsableDimension === 'function') ?
-	      this.getCollapsableDimension() : 'height';
 	    var node = this.getCollapsableDOMNode();
-	
 	    if (node) {
-	        if(this.isExpanded() && !this.state.collapsing) {
-	            node.style[dimension] = 'auto';
-	        } else {
-	            node.style[dimension] = this.isExpanded() ?
-	              this.getCollapsableDimensionValue() + 'px' : '0px';
-	        }
+	        var dimension = (typeof this.getCollapsableDimension === 'function') ?
+	            this.getCollapsableDimension() : 'height';
+	        node.style[dimension] = this.isExpanded() ?
+	            this.getCollapsableDimensionValue() + 'px' : '0px';
 	    }
 	  },
 	
@@ -4510,7 +4488,505 @@
 
 
 /***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/joinClasses.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 */
+	
+	"use strict";
+	
+	/**
+	 * Combines multiple className strings into one.
+	 * http://jsperf.com/joinclasses-args-vs-array
+	 *
+	 * @param {...?string} classes
+	 * @return {string}
+	 */
+	function joinClasses(className/*, ... */) {
+	  if (!className) {
+	    className = '';
+	  }
+	  var nextClass;
+	  var argLength = arguments.length;
+	  if (argLength > 1) {
+	    for (var ii = 1; ii < argLength; ii++) {
+	      nextClass = arguments[ii];
+	      if (nextClass) {
+	        className = (className ? className + ' ' : '') + nextClass;
+	      }
+	    }
+	  }
+	  return className;
+	}
+	
+	module.exports = joinClasses;
+
+
+/***/ },
 /* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/cx.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 */
+	
+	/**
+	 * This function is used to mark string literals representing CSS class names
+	 * so that they can be transformed statically. This allows for modularization
+	 * and minification of CSS class names.
+	 *
+	 * In static_upstream, this function is actually implemented, but it should
+	 * eventually be replaced with something more descriptive, and the transform
+	 * that is used in the main stack should be ported for use elsewhere.
+	 *
+	 * @param string|object className to modularize, or an object of key/values.
+	 *                      In the object case, the values are conditions that
+	 *                      determine if the className keys should be included.
+	 * @param [string ...]  Variable list of classNames in the string case.
+	 * @return string       Renderable space-separated CSS className.
+	 */
+	function cx(classNames) {
+	  if (typeof classNames == 'object') {
+	    return Object.keys(classNames).filter(function(className) {
+	      return classNames[className];
+	    }).join(' ');
+	  } else {
+	    return Array.prototype.join.call(arguments, ' ');
+	  }
+	}
+	
+	module.exports = cx;
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains modified versions of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/cloneWithProps.js
+	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactPropTransferer.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 *
+	 * TODO: This should be replaced as soon as cloneWithProps is available via
+	 *  the core React package or a separate package.
+	 *  @see https://github.com/facebook/react/issues/1906
+	 */
+	
+	var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(38);
+	var assign = __webpack_require__(60);
+	
+	/**
+	 * Creates a transfer strategy that will merge prop values using the supplied
+	 * `mergeStrategy`. If a prop was previously unset, this just sets it.
+	 *
+	 * @param {function} mergeStrategy
+	 * @return {function}
+	 */
+	function createTransferStrategy(mergeStrategy) {
+	  return function(props, key, value) {
+	    if (!props.hasOwnProperty(key)) {
+	      props[key] = value;
+	    } else {
+	      props[key] = mergeStrategy(props[key], value);
+	    }
+	  };
+	}
+	
+	var transferStrategyMerge = createTransferStrategy(function(a, b) {
+	  // `merge` overrides the first object's (`props[key]` above) keys using the
+	  // second object's (`value`) keys. An object's style's existing `propA` would
+	  // get overridden. Flip the order here.
+	  return assign({}, b, a);
+	});
+	
+	function emptyFunction() {}
+	
+	/**
+	 * Transfer strategies dictate how props are transferred by `transferPropsTo`.
+	 * NOTE: if you add any more exceptions to this list you should be sure to
+	 * update `cloneWithProps()` accordingly.
+	 */
+	var TransferStrategies = {
+	  /**
+	   * Never transfer `children`.
+	   */
+	  children: emptyFunction,
+	  /**
+	   * Transfer the `className` prop by merging them.
+	   */
+	  className: createTransferStrategy(joinClasses),
+	  /**
+	   * Transfer the `style` prop (which is an object) by merging them.
+	   */
+	  style: transferStrategyMerge
+	};
+	
+	/**
+	 * Mutates the first argument by transferring the properties from the second
+	 * argument.
+	 *
+	 * @param {object} props
+	 * @param {object} newProps
+	 * @return {object}
+	 */
+	function transferInto(props, newProps) {
+	  for (var thisKey in newProps) {
+	    if (!newProps.hasOwnProperty(thisKey)) {
+	      continue;
+	    }
+	
+	    var transferStrategy = TransferStrategies[thisKey];
+	
+	    if (transferStrategy && TransferStrategies.hasOwnProperty(thisKey)) {
+	      transferStrategy(props, thisKey, newProps[thisKey]);
+	    } else if (!props.hasOwnProperty(thisKey)) {
+	      props[thisKey] = newProps[thisKey];
+	    }
+	  }
+	  return props;
+	}
+	
+	/**
+	 * Merge two props objects using TransferStrategies.
+	 *
+	 * @param {object} oldProps original props (they take precedence)
+	 * @param {object} newProps new props to merge in
+	 * @return {object} a new object containing both sets of props merged.
+	 */
+	function mergeProps(oldProps, newProps) {
+	  return transferInto(assign({}, oldProps), newProps);
+	}
+	
+	
+	var ReactPropTransferer = {
+	  mergeProps: mergeProps
+	};
+	
+	var CHILDREN_PROP = 'children';
+	
+	/**
+	 * Sometimes you want to change the props of a child passed to you. Usually
+	 * this is to add a CSS class.
+	 *
+	 * @param {object} child child component you'd like to clone
+	 * @param {object} props props you'd like to modify. They will be merged
+	 * as if you used `transferPropsTo()`.
+	 * @return {object} a clone of child with props merged in.
+	 */
+	function cloneWithProps(child, props) {
+	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
+	
+	  // Use `child.props.children` if it is provided.
+	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
+	    child.props.hasOwnProperty(CHILDREN_PROP)) {
+	    newProps.children = child.props.children;
+	  }
+	
+	  if (React.version.substr(0, 4) === '0.12'){
+	    var mockLegacyFactory = function(){};
+	    mockLegacyFactory.isReactLegacyFactory = true;
+	    mockLegacyFactory.type = child.type;
+	
+	    return React.createElement(mockLegacyFactory, newProps);
+	  }
+	
+	  // The current API doesn't retain _owner and _context, which is why this
+	  // doesn't use ReactElement.cloneAndReplaceProps.
+	  return React.createElement(child.type, newProps);
+	}
+	
+	module.exports = cloneWithProps;
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Safe chained function
+	 *
+	 * Will only create a new function if needed,
+	 * otherwise will pass back existing functions or null.
+	 *
+	 * @param {function} one
+	 * @param {function} two
+	 * @returns {function|null}
+	 */
+	function createChainedFunction(one, two) {
+	  var hasOne = typeof one === 'function';
+	  var hasTwo = typeof two === 'function';
+	
+	  if (!hasOne && !hasTwo) { return null; }
+	  if (!hasOne) { return two; }
+	  if (!hasTwo) { return one; }
+	
+	  return function chainedFunction() {
+	    one.apply(this, arguments);
+	    two.apply(this, arguments);
+	  };
+	}
+	
+	module.exports = createChainedFunction;
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	/**
+	 * Maps children that are typically specified as `props.children`,
+	 * but only iterates over children that are "valid components".
+	 *
+	 * The mapFunction provided index will be normalised to the components mapped,
+	 * so an invalid component would not increase the index.
+	 *
+	 * @param {?*} children Children tree container.
+	 * @param {function(*, int)} mapFunction.
+	 * @param {*} mapContext Context for mapFunction.
+	 * @return {object} Object containing the ordered map of results.
+	 */
+	function mapValidComponents(children, func, context) {
+	  var index = 0;
+	
+	  return React.Children.map(children, function (child) {
+	    if (React.isValidElement(child)) {
+	      var lastIndex = index;
+	      index++;
+	      return func.call(context, child, lastIndex);
+	    }
+	
+	    return child;
+	  });
+	}
+	
+	/**
+	 * Iterates through children that are typically specified as `props.children`,
+	 * but only iterates over children that are "valid components".
+	 *
+	 * The provided forEachFunc(child, index) will be called for each
+	 * leaf child with the index reflecting the position relative to "valid components".
+	 *
+	 * @param {?*} children Children tree container.
+	 * @param {function(*, int)} forEachFunc.
+	 * @param {*} forEachContext Context for forEachContext.
+	 */
+	function forEachValidComponents(children, func, context) {
+	  var index = 0;
+	
+	  return React.Children.forEach(children, function (child) {
+	    if (React.isValidElement(child)) {
+	      func.call(context, child, index);
+	      index++;
+	    }
+	  });
+	}
+	
+	/**
+	 * Count the number of "valid components" in the Children container.
+	 *
+	 * @param {?*} children Children tree container.
+	 * @returns {number}
+	 */
+	function numberOfValidComponents(children) {
+	  var count = 0;
+	
+	  React.Children.forEach(children, function (child) {
+	    if (React.isValidElement(child)) { count++; }
+	  });
+	
+	  return count;
+	}
+	
+	/**
+	 * Determine if the Child container has one or more "valid components".
+	 *
+	 * @param {?*} children Children tree container.
+	 * @returns {boolean}
+	 */
+	function hasValidComponent(children) {
+	  var hasValid = false;
+	
+	  React.Children.forEach(children, function (child) {
+	    if (!hasValid && React.isValidElement(child)) {
+	      hasValid = true;
+	    }
+	  });
+	
+	  return hasValid;
+	}
+	
+	module.exports = {
+	  map: mapValidComponents,
+	  forEach: forEachValidComponents,
+	  numberOf: numberOfValidComponents,
+	  hasValidComponent: hasValidComponent
+	};
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Shortcut to compute element style
+	 *
+	 * @param {HTMLElement} elem
+	 * @returns {CssStyle}
+	 */
+	function getComputedStyles(elem) {
+	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
+	}
+	
+	/**
+	 * Get elements offset
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} DOMNode
+	 * @returns {{top: number, left: number}}
+	 */
+	function getOffset(DOMNode) {
+	  if (window.jQuery) {
+	    return window.jQuery(DOMNode).offset();
+	  }
+	
+	  var docElem = document.documentElement;
+	  var box = { top: 0, left: 0 };
+	
+	  // If we don't have gBCR, just use 0,0 rather than error
+	  // BlackBerry 5, iOS 3 (original iPhone)
+	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
+	    box = DOMNode.getBoundingClientRect();
+	  }
+	
+	  return {
+	    top: box.top + window.pageYOffset - docElem.clientTop,
+	    left: box.left + window.pageXOffset - docElem.clientLeft
+	  };
+	}
+	
+	/**
+	 * Get elements position
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} elem
+	 * @param {HTMLElement?} offsetParent
+	 * @returns {{top: number, left: number}}
+	 */
+	function getPosition(elem, offsetParent) {
+	  if (window.jQuery) {
+	    return window.jQuery(elem).position();
+	  }
+	
+	  var offset,
+	      parentOffset = {top: 0, left: 0};
+	
+	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
+	  if (getComputedStyles(elem).position === 'fixed' ) {
+	    // We assume that getBoundingClientRect is available when computed position is fixed
+	    offset = elem.getBoundingClientRect();
+	
+	  } else {
+	    if (!offsetParent) {
+	      // Get *real* offsetParent
+	      offsetParent = offsetParent(elem);
+	    }
+	
+	    // Get correct offsets
+	    offset = getOffset(elem);
+	    if ( offsetParent.nodeName !== 'HTML') {
+	      parentOffset = getOffset(offsetParent);
+	    }
+	
+	    // Add offsetParent borders
+	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
+	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
+	  }
+	
+	  // Subtract parent offsets and element margins
+	  return {
+	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
+	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
+	  };
+	}
+	
+	/**
+	 * Get parent element
+	 *
+	 * @param {HTMLElement?} elem
+	 * @returns {HTMLElement}
+	 */
+	function offsetParent(elem) {
+	  var docElem = document.documentElement;
+	  var offsetParent = elem.offsetParent || docElem;
+	
+	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
+	    getComputedStyles(offsetParent).position === 'static' ) ) {
+	    offsetParent = offsetParent.offsetParent;
+	  }
+	
+	  return offsetParent || docElem;
+	}
+	
+	module.exports = {
+	  getComputedStyles: getComputedStyles,
+	  getOffset: getOffset,
+	  getPosition: getPosition,
+	  offsetParent: offsetParent
+	};
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = extend
+	
+	function extend(target) {
+	    for (var i = 1; i < arguments.length; i++) {
+	        var source = arguments[i]
+	
+	        for (var key in source) {
+	            if (source.hasOwnProperty(key)) {
+	                target[key] = source[key]
+	            }
+	        }
+	    }
+	
+	    return target
+	}
+
+
+/***/ },
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = extend
@@ -4533,7 +5009,7 @@
 
 
 /***/ },
-/* 40 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var MILI 		= 'milliseconds'
@@ -4676,8 +5152,8 @@
 	  inRange: function(day, min, max, unit){
 	    unit = unit || 'day'
 	
-	    return dates.gte(day, min, unit) 
-	        && dates.lte(day, max, unit)
+	    return (!min || dates.gte(day, min, unit))
+	        && (!max || dates.lte(day, max, unit))
 	  },
 	
 		milliseconds: 	createAccessor('Milliseconds'),
@@ -4751,485 +5227,6 @@
 
 
 /***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/joinClasses.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Combines multiple className strings into one.
-	 * http://jsperf.com/joinclasses-args-vs-array
-	 *
-	 * @param {...?string} classes
-	 * @return {string}
-	 */
-	function joinClasses(className/*, ... */) {
-	  if (!className) {
-	    className = '';
-	  }
-	  var nextClass;
-	  var argLength = arguments.length;
-	  if (argLength > 1) {
-	    for (var ii = 1; ii < argLength; ii++) {
-	      nextClass = arguments[ii];
-	      if (nextClass) {
-	        className = (className ? className + ' ' : '') + nextClass;
-	      }
-	    }
-	  }
-	  return className;
-	}
-	
-	module.exports = joinClasses;
-
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/cx.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-	
-	/**
-	 * This function is used to mark string literals representing CSS class names
-	 * so that they can be transformed statically. This allows for modularization
-	 * and minification of CSS class names.
-	 *
-	 * In static_upstream, this function is actually implemented, but it should
-	 * eventually be replaced with something more descriptive, and the transform
-	 * that is used in the main stack should be ported for use elsewhere.
-	 *
-	 * @param string|object className to modularize, or an object of key/values.
-	 *                      In the object case, the values are conditions that
-	 *                      determine if the className keys should be included.
-	 * @param [string ...]  Variable list of classNames in the string case.
-	 * @return string       Renderable space-separated CSS className.
-	 */
-	function cx(classNames) {
-	  if (typeof classNames == 'object') {
-	    return Object.keys(classNames).filter(function(className) {
-	      return classNames[className];
-	    }).join(' ');
-	  } else {
-	    return Array.prototype.join.call(arguments, ' ');
-	  }
-	}
-	
-	module.exports = cx;
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains modified versions of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/cloneWithProps.js
-	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactPropTransferer.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * TODO: This should be replaced as soon as cloneWithProps is available via
-	 *  the core React package or a separate package.
-	 *  @see https://github.com/facebook/react/issues/1906
-	 */
-	
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(41);
-	var assign = __webpack_require__(83);
-	
-	/**
-	 * Creates a transfer strategy that will merge prop values using the supplied
-	 * `mergeStrategy`. If a prop was previously unset, this just sets it.
-	 *
-	 * @param {function} mergeStrategy
-	 * @return {function}
-	 */
-	function createTransferStrategy(mergeStrategy) {
-	  return function(props, key, value) {
-	    if (!props.hasOwnProperty(key)) {
-	      props[key] = value;
-	    } else {
-	      props[key] = mergeStrategy(props[key], value);
-	    }
-	  };
-	}
-	
-	var transferStrategyMerge = createTransferStrategy(function(a, b) {
-	  // `merge` overrides the first object's (`props[key]` above) keys using the
-	  // second object's (`value`) keys. An object's style's existing `propA` would
-	  // get overridden. Flip the order here.
-	  return assign({}, b, a);
-	});
-	
-	function emptyFunction() {}
-	
-	/**
-	 * Transfer strategies dictate how props are transferred by `transferPropsTo`.
-	 * NOTE: if you add any more exceptions to this list you should be sure to
-	 * update `cloneWithProps()` accordingly.
-	 */
-	var TransferStrategies = {
-	  /**
-	   * Never transfer `children`.
-	   */
-	  children: emptyFunction,
-	  /**
-	   * Transfer the `className` prop by merging them.
-	   */
-	  className: createTransferStrategy(joinClasses),
-	  /**
-	   * Transfer the `style` prop (which is an object) by merging them.
-	   */
-	  style: transferStrategyMerge
-	};
-	
-	/**
-	 * Mutates the first argument by transferring the properties from the second
-	 * argument.
-	 *
-	 * @param {object} props
-	 * @param {object} newProps
-	 * @return {object}
-	 */
-	function transferInto(props, newProps) {
-	  for (var thisKey in newProps) {
-	    if (!newProps.hasOwnProperty(thisKey)) {
-	      continue;
-	    }
-	
-	    var transferStrategy = TransferStrategies[thisKey];
-	
-	    if (transferStrategy && TransferStrategies.hasOwnProperty(thisKey)) {
-	      transferStrategy(props, thisKey, newProps[thisKey]);
-	    } else if (!props.hasOwnProperty(thisKey)) {
-	      props[thisKey] = newProps[thisKey];
-	    }
-	  }
-	  return props;
-	}
-	
-	/**
-	 * Merge two props objects using TransferStrategies.
-	 *
-	 * @param {object} oldProps original props (they take precedence)
-	 * @param {object} newProps new props to merge in
-	 * @return {object} a new object containing both sets of props merged.
-	 */
-	function mergeProps(oldProps, newProps) {
-	  return transferInto(assign({}, oldProps), newProps);
-	}
-	
-	
-	var ReactPropTransferer = {
-	  mergeProps: mergeProps
-	};
-	
-	var CHILDREN_PROP = 'children';
-	
-	/**
-	 * Sometimes you want to change the props of a child passed to you. Usually
-	 * this is to add a CSS class.
-	 *
-	 * @param {object} child child component you'd like to clone
-	 * @param {object} props props you'd like to modify. They will be merged
-	 * as if you used `transferPropsTo()`.
-	 * @return {object} a clone of child with props merged in.
-	 */
-	function cloneWithProps(child, props) {
-	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
-	
-	  function MockLegacyElement(){}
-	
-	  // Use `child.props.children` if it is provided.
-	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
-	    child.props.hasOwnProperty(CHILDREN_PROP)) {
-	    newProps.children = child.props.children;
-	  }
-	
-	  // The need for this is due to the fact that react wraps the normal `createElement(...)`
-	  // in legacy checker that fails in this case. We trick react and pass in a Mock legacy wrapper
-	  // with the correct type. It is this or include the private stuff.
-	  if( React.version.substr(0, 4) === '0.12' ){
-	    MockLegacyElement.type = child.type;
-	    MockLegacyElement.isReactLegacyFactory = true;
-	    return React.createElement(MockLegacyElement, newProps);
-	  }
-	  
-	  //0.13 will remove the deprecation warnings and so the hack above is not needed
-	  return React.createElement(child.type, newProps);
-	}
-	
-	module.exports = cloneWithProps;
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Safe chained function
-	 *
-	 * Will only create a new function if needed,
-	 * otherwise will pass back existing functions or null.
-	 *
-	 * @param {function} one
-	 * @param {function} two
-	 * @returns {function|null}
-	 */
-	function createChainedFunction(one, two) {
-	  var hasOne = typeof one === 'function';
-	  var hasTwo = typeof two === 'function';
-	
-	  if (!hasOne && !hasTwo) { return null; }
-	  if (!hasOne) { return two; }
-	  if (!hasTwo) { return one; }
-	
-	  return function chainedFunction() {
-	    one.apply(this, arguments);
-	    two.apply(this, arguments);
-	  };
-	}
-	
-	module.exports = createChainedFunction;
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	/**
-	 * Maps children that are typically specified as `props.children`,
-	 * but only iterates over children that are "valid components".
-	 *
-	 * The mapFunction provided index will be normalised to the components mapped,
-	 * so an invalid component would not increase the index.
-	 *
-	 * @param {?*} children Children tree container.
-	 * @param {function(*, int)} mapFunction.
-	 * @param {*} mapContext Context for mapFunction.
-	 * @return {object} Object containing the ordered map of results.
-	 */
-	function mapValidComponents(children, func, context) {
-	  var index = 0;
-	
-	  return React.Children.map(children, function (child) {
-	    if (React.isValidElement(child)) {
-	      var lastIndex = index;
-	      index++;
-	      return func.call(context, child, lastIndex);
-	    }
-	
-	    return child;
-	  });
-	}
-	
-	/**
-	 * Iterates through children that are typically specified as `props.children`,
-	 * but only iterates over children that are "valid components".
-	 *
-	 * The provided forEachFunc(child, index) will be called for each
-	 * leaf child with the index reflecting the position relative to "valid components".
-	 *
-	 * @param {?*} children Children tree container.
-	 * @param {function(*, int)} forEachFunc.
-	 * @param {*} forEachContext Context for forEachContext.
-	 */
-	function forEachValidComponents(children, func, context) {
-	  var index = 0;
-	
-	  return React.Children.forEach(children, function (child) {
-	    if (React.isValidElement(child)) {
-	      func.call(context, child, index);
-	      index++;
-	    }
-	  });
-	}
-	
-	/**
-	 * Count the number of "valid components" in the Children container.
-	 *
-	 * @param {?*} children Children tree container.
-	 * @returns {number}
-	 */
-	function numberOfValidComponents(children) {
-	  var count = 0;
-	
-	  React.Children.forEach(children, function (child) {
-	    if (React.isValidElement(child)) { count++; }
-	  });
-	
-	  return count;
-	}
-	
-	/**
-	 * Determine if the Child container has one or more "valid components".
-	 *
-	 * @param {?*} children Children tree container.
-	 * @returns {boolean}
-	 */
-	function hasValidComponent(children) {
-	  var hasValid = false;
-	
-	  React.Children.forEach(children, function (child) {
-	    if (!hasValid && React.isValidElement(child)) {
-	      hasValid = true;
-	    }
-	  });
-	
-	  return hasValid;
-	}
-	
-	module.exports = {
-	  map: mapValidComponents,
-	  forEach: forEachValidComponents,
-	  numberOf: numberOfValidComponents,
-	  hasValidComponent: hasValidComponent
-	};
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Shortcut to compute element style
-	 *
-	 * @param {HTMLElement} elem
-	 * @returns {CssStyle}
-	 */
-	function getComputedStyles(elem) {
-	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
-	}
-	
-	/**
-	 * Get elements offset
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} DOMNode
-	 * @returns {{top: number, left: number}}
-	 */
-	function getOffset(DOMNode) {
-	  if (window.jQuery) {
-	    return window.jQuery(DOMNode).offset();
-	  }
-	
-	  var docElem = document.documentElement;
-	  var box = { top: 0, left: 0 };
-	
-	  // If we don't have gBCR, just use 0,0 rather than error
-	  // BlackBerry 5, iOS 3 (original iPhone)
-	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
-	    box = DOMNode.getBoundingClientRect();
-	  }
-	
-	  return {
-	    top: box.top + window.pageYOffset - docElem.clientTop,
-	    left: box.left + window.pageXOffset - docElem.clientLeft
-	  };
-	}
-	
-	/**
-	 * Get elements position
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} elem
-	 * @param {HTMLElement?} offsetParent
-	 * @returns {{top: number, left: number}}
-	 */
-	function getPosition(elem, offsetParent) {
-	  if (window.jQuery) {
-	    return window.jQuery(elem).position();
-	  }
-	
-	  var offset,
-	      parentOffset = {top: 0, left: 0};
-	
-	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
-	  if (getComputedStyles(elem).position === 'fixed' ) {
-	    // We assume that getBoundingClientRect is available when computed position is fixed
-	    offset = elem.getBoundingClientRect();
-	
-	  } else {
-	    if (!offsetParent) {
-	      // Get *real* offsetParent
-	      offsetParent = offsetParent(elem);
-	    }
-	
-	    // Get correct offsets
-	    offset = getOffset(elem);
-	    if ( offsetParent.nodeName !== 'HTML') {
-	      parentOffset = getOffset(offsetParent);
-	    }
-	
-	    // Add offsetParent borders
-	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
-	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
-	  }
-	
-	  // Subtract parent offsets and element margins
-	  return {
-	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
-	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
-	  };
-	}
-	
-	/**
-	 * Get parent element
-	 *
-	 * @param {HTMLElement?} elem
-	 * @returns {HTMLElement}
-	 */
-	function offsetParent(elem) {
-	  var docElem = document.documentElement;
-	  var offsetParent = elem.offsetParent || docElem;
-	
-	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
-	    getComputedStyles(offsetParent).position === 'static' ) ) {
-	    offsetParent = offsetParent.offsetParent;
-	  }
-	
-	  return offsetParent || docElem;
-	}
-	
-	module.exports = {
-	  getComputedStyles: getComputedStyles,
-	  getOffset: getOffset,
-	  getPosition: getPosition,
-	  offsetParent: offsetParent
-	};
-
-/***/ },
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -5237,11 +5234,11 @@
 	var React           = __webpack_require__(1)
 	  , _               = __webpack_require__(14)
 	  , cx              = __webpack_require__(13)
-	  , controlledInput = __webpack_require__(60)
-	  , CustomPropTypes = __webpack_require__(61)
-	  , Popup           = __webpack_require__(62)
-	  , PlainList       = __webpack_require__(63)
-	  , GroupableList   = __webpack_require__(64)
+	  , controlledInput = __webpack_require__(61)
+	  , CustomPropTypes = __webpack_require__(62)
+	  , Popup           = __webpack_require__(63)
+	  , PlainList       = __webpack_require__(64)
+	  , GroupableList   = __webpack_require__(65)
 	  ;
 	
 	var propTypes = {
@@ -5394,7 +5391,7 @@
 			)
 		},
 	
-	  _focus: function(focused){
+	  _focus: function(focused, e){
 	    var self = this;
 	
 	    clearTimeout(self.timer)
@@ -5403,8 +5400,10 @@
 	      if(focused) self.getDOMNode().focus()
 	      else        self.close()
 	
-	      if( focused !== self.state.focused)
+	      if( focused !== self.state.focused){
+	        self.notify(focused ? 'onFocus' : 'onBlur', e)
 	        self.setState({ focused: focused })
+	      }
 	
 	    }, 0)
 	  },
@@ -5457,6 +5456,8 @@
 	          : change(item)
 	      }.bind(this))
 	
+	    this.notify('onKeyDown', [e])
+	    
 	    function change(item, fromList){
 	      if(!item) return
 	      if(fromList) self.notify('onSelect', item)
@@ -5525,12 +5526,12 @@
 	  , _      = __webpack_require__(14)
 	  , $      = __webpack_require__(66)
 	  , filter = __webpack_require__(67)
-	  , controlledInput  = __webpack_require__(60)
-	  , CustomPropTypes  = __webpack_require__(61)
+	  , controlledInput  = __webpack_require__(61)
+	  , CustomPropTypes  = __webpack_require__(62)
 	  
-	  , Popup  = __webpack_require__(62)
-	  , PlainList   = __webpack_require__(63)
-	  , GroupableList = __webpack_require__(64)
+	  , Popup  = __webpack_require__(63)
+	  , PlainList   = __webpack_require__(64)
+	  , GroupableList = __webpack_require__(65)
 	  , Btn    = __webpack_require__(68)
 	  , Input  = __webpack_require__(69);
 	
@@ -5776,18 +5777,18 @@
 	  },
 	
 	  _focus: function(focused, e){
-	    var self = this;
+	    clearTimeout(this.timer)
+	    !focused && this.refs.input.accept() //not suggesting anymore
 	
-	    clearTimeout(self.timer)
-	    !focused && self.refs.input.accept() //not suggesting anymore
+	    this.timer = setTimeout(function() {
+	      if(focused) this.refs.input.focus()
+	      else        this.close()
 	
-	    self.timer = setTimeout(function(){
-	      if(focused) self.refs.input.focus()
-	      else        self.close()
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	    }, 0)
+	      if( focused !== this.state.focused){
+	        this.notify(focused ? 'onFocus' : 'onBlur', e)
+	        this.setState({ focused:focused })
+	      }
+	    }.bind(this), 0)
 	  },
 	
 	  _keyDown: function(e){
@@ -5828,6 +5829,8 @@
 	      }
 	    }
 	
+	    this.notify('onKeyDown', [e])
+	    
 	    function select(item, fromList) {
 	      if(!item)
 	        return self.change(self.refs.input.getDOMNode().value, false)
@@ -5912,7 +5915,7 @@
 	  , Decade          = __webpack_require__(73)
 	  , Century         = __webpack_require__(74)
 	  , cx              = __webpack_require__(13)
-	  , controlledInput = __webpack_require__(60)
+	  , controlledInput = __webpack_require__(61)
 	  , SlideTransition = __webpack_require__(55)
 	  , dates           = __webpack_require__(75)
 	  , constants       = __webpack_require__(76)
@@ -6024,8 +6027,9 @@
 	  },
 	
 	  render: function(){
-	    var $__0=   
-	                  _.omit(this.props, ['value', 'min', 'max']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	    var $__0=
+	        
+	          _.omit(this.props, ['value', 'min', 'max']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
 	      , View     = VIEW[this.state.view]
 	      , unit     = this.state.view
 	      
@@ -6037,7 +6041,8 @@
 	
 	    return (
 	      React.createElement("div", React.__spread({},  props , 
-	        {className: cx(className, {
+	        {onKeyDown: this._keyDown, 
+	        className: cx(className, {
 	          'rw-calendar':       true,
 	          'rw-widget':         true,
 	          'rw-state-disabled': this.props.disabled,
@@ -6080,7 +6085,7 @@
 	    )
 	
 	    function finished(){
-	      this._focus(true, 'stop');
+	      this._focus(true);
 	    }
 	  },
 	
@@ -6112,7 +6117,7 @@
 	    }
 	  },
 	
-	  _focus: function(val, e){
+	  _focus: function(val){
 	    if ( this.props.maintainFocus)
 	      val && this.refs.currentView.getDOMNode().focus()
 	  },
@@ -6159,6 +6164,8 @@
 	      this.refs.currentView._keyDown
 	        && this.refs.currentView._keyDown(e)
 	    }
+	
+	    this.notify('onKeyDown', [e])
 	  },
 	
 	  _label: function() {
@@ -6215,13 +6222,13 @@
 	  , views  = __webpack_require__(76).calendarViews
 	  , popups = __webpack_require__(76).datePopups
 	
-	  , Popup     = __webpack_require__(62)
+	  , Popup     = __webpack_require__(63)
 	  , Calendar  = __webpack_require__(49).BaseCalendar
-	  , Time      = __webpack_require__(78)
-	  , DateInput = __webpack_require__(79)
+	  , Time      = __webpack_require__(81)
+	  , DateInput = __webpack_require__(82)
 	  , Btn       = __webpack_require__(68)
-	  , CustomPropTypes = __webpack_require__(61)
-	  , controlledInput = __webpack_require__(60);
+	  , CustomPropTypes = __webpack_require__(62)
+	  , controlledInput = __webpack_require__(61);
 	
 	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
 	
@@ -6233,6 +6240,8 @@
 	    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
 	    onToggle:       React.PropTypes.func,
 	    //------------------------------------
+	
+	    onSelect:       React.PropTypes.func,
 	
 	    min:            React.PropTypes.instanceOf(Date),
 	    max:            React.PropTypes.instanceOf(Date),
@@ -6283,14 +6292,13 @@
 	
 	  getInitialState: function(){
 	    return {
-	      selectedIndex: 0,
-	      open:          false
+	      focused: false,
 	    }
 	  },
 	
 	  getDefaultProps: function(){
-	    var cal  = _.has(this.props, 'calendar') ? this.props.calendar : true
-	      , time = _.has(this.props, 'time') ? this.props.time : true
+	    var cal  = _.has(this.props, popups.CALENDAR) ? this.props.calendar : true
+	      , time = _.has(this.props, popups.TIME) ? this.props.time : true
 	      , both = cal && time
 	      , neither = !cal && !time;
 	
@@ -6303,6 +6311,7 @@
 	      max:              new Date(2099, 11, 31),
 	      calendar:         true,
 	      time:             true,
+	      open:             false,
 	      messages: {
 	        calendarButton: 'Select Date',
 	        timeButton:     'Select Time',
@@ -6337,13 +6346,14 @@
 	          'rw-state-disabled':  this.isDisabled(),
 	          'rw-state-readonly':  this.isReadOnly(),
 	          'rw-has-both':        this.props.calendar && this.props.time,
+	          'rw-has-neither':     !this.props.calendar && !this.props.time,
 	          'rw-rtl':             this.isRtl()
 	        })}), 
 	        React.createElement(DateInput, {ref: "valueInput", 
 	          'aria-activedescendant':  this.props.open
 	            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
 	            : undefined, 
-	          'aria-expanded':  this.props.open, 
+	          'aria-expanded':  !!this.props.open, 
 	          'aria-busy': !!this.props.busy, 
 	          'aria-owns': owns, 
 	          'aria-haspopup': true, 
@@ -6359,10 +6369,11 @@
 	          editing: this.state.focused, 
 	          parse: this._parse, 
 	          onChange: this._change}), 
-	
+	         (this.props.calendar || this.props.time) &&
 	        React.createElement("span", {className: "rw-select"}, 
 	           this.props.calendar &&
 	            React.createElement(Btn, {tabIndex: "-1", 
+	              className: "rw-btn-calendar", 
 	              disabled: this.isDisabled() || this.isReadOnly(), 
 	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
 	              onClick: this._maybeHandle(this._click.bind(null, popups.CALENDAR))}, 
@@ -6371,6 +6382,7 @@
 	          
 	           this.props.time &&
 	            React.createElement(Btn, {tabIndex: "-1", 
+	              className: "rw-btn-time", 
 	              disabled: this.isDisabled() || this.isReadOnly(), 
 	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
 	              onClick: this._maybeHandle(this._click.bind(null, popups.TIME))}, 
@@ -6378,7 +6390,7 @@
 	            )
 	          
 	        ), 
-	         this.props.time &&
+	        
 	        React.createElement(Popup, {
 	          open:  this.props.open === popups.TIME, 
 	          onRequestClose: this.close, 
@@ -6397,23 +6409,20 @@
 	                onSelect: this._maybeHandle(this._selectTime)})
 	            )
 	        ), 
-	        
-	         this.props.calendar &&
-	          React.createElement(Popup, {
-	            className: "rw-calendar-popup", 
-	            open:  this.props.open === popups.CALENDAR, 
-	            duration: this.props.duration, 
-	            onRequestClose: this.close}, 
+	        React.createElement(Popup, {
+	          className: "rw-calendar-popup", 
+	          open:  this.props.open === popups.CALENDAR, 
+	          duration: this.props.duration, 
+	          onRequestClose: this.close}, 
 	
-	            React.createElement(Calendar, React.__spread({},  calProps , 
-	              {ref: "calPopup", 
-	              id: dateListID, 
-	              value: this.props.value || new Date, 
-	              maintainFocus: false, 
-	              'aria-hidden':  !this.props.open, 
-	              onChange: this._maybeHandle(this._selectDate)}))
-	          )
-	        
+	          React.createElement(Calendar, React.__spread({},  calProps , 
+	            {ref: "calPopup", 
+	            id: dateListID, 
+	            value: this.props.value || new Date, 
+	            maintainFocus: false, 
+	            'aria-hidden':  !this.props.open, 
+	            onChange: this._maybeHandle(this._selectDate)}))
+	        )
 	      )
 	    )
 	  },
@@ -6458,40 +6467,44 @@
 	      if( this.props.open === popups.TIME )
 	        this.refs.timePopup._keyDown(e)
 	    }
+	
+	    this.notify('onKeyDown', [e])
 	  },
 	
 	  //timeout prevents transitions from breaking focus
 	  _focus: function(focused, e){
-	    var self = this
-	      , input =  this.refs.valueInput;
+	    var input =  this.refs.valueInput;
 	
-	    clearTimeout(self.timer)
+	    clearTimeout(this.timer)
 	
-	    self.timer = setTimeout(function(){
+	    this.timer = setTimeout(function() {
 	
 	      if(focused) input.getDOMNode().focus()
-	      else        self.close()
+	      else        this.close()
 	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	
-	    }, 0)
+	      if( focused !== this.state.focused){
+	        this.notify(focused ? 'onFocus' : 'onBlur', e)
+	        this.setState({ focused: focused })
+	      }
+	    }.bind(this))
 	  },
 	
 	  _selectDate: function(date){
+	    var dateTime = dates.merge(date, this.props.value)
+	      , dateStr  = formatDate(date, this.props.format) 
+	
 	    this.close()
-	    this._change(
-	        dates.merge(date, this.props.value)
-	      , formatDate(date, this.props.format)
-	      , true)
+	    this.notify('onSelect', [dateTime, dateStr])
+	    this._change(dateTime, dateStr, true)
 	  },
 	
 	  _selectTime: function(datum){
+	    var dateTime = dates.merge(this.props.value, datum.date)
+	      , dateStr  = formatDate(datum.date, this.props.format) 
+	
 	    this.close()
-	    this._change(
-	        dates.merge(this.props.value, datum.date)
-	      , formatDate(datum.date, this.props.format)
-	      , true)
+	    this.notify('onSelect', [dateTime, dateStr])
+	    this._change(dateTime, dateStr, true)
 	  },
 	
 	  _click: function(view, e){
@@ -6517,12 +6530,12 @@
 	  },
 	
 	  open: function(view){
-	    if ( this.props.open !== view )
+	    if ( this.props.open !== view && this.props[view] === true )
 	      this.notify('onToggle', view)
 	  },
 	
 	  close: function(){
-	    if ( this.props.open)
+	    if ( this.props.open )
 	      this.notify('onToggle', false)
 	  },
 	
@@ -6563,8 +6576,6 @@
 	  }
 	  return null
 	}
-	
-
 
 /***/ },
 /* 51 */
@@ -6574,7 +6585,7 @@
 	var React = __webpack_require__(1)
 	  , cx    = __webpack_require__(13)
 	  , _     = __webpack_require__(14) //omit
-	  , controlledInput  = __webpack_require__(60)
+	  , controlledInput  = __webpack_require__(61)
 	  , directions = __webpack_require__(76).directions
 	  , Input = __webpack_require__(77);
 	
@@ -6656,10 +6667,13 @@
 	
 	
 	  render: function(){
-	    var $__0=   _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	    var $__0=
+	        
+	       
+	       
+	       
+	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,onKeyDown=$__0.onKeyDown,onKeyPress=$__0.onKeyPress,onKeyUp=$__0.onKeyUp,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,onKeyDown:1,onKeyPress:1,onKeyUp:1})
 	      , val = this.inRangeValue(this.props.value)
-	
-	    //console.log('render', this.state.focused)
 	
 	    return (
 	      React.createElement("div", React.__spread({},  props , 
@@ -6716,7 +6730,9 @@
 	          disabled: this.props.disabled, 
 	          readOnly: this.props.readOnly, 
 	          onChange: this.change, 
-	          onKeyDown: this.props.onKeyDown})
+	          onKeyDown: onKeyDown, 
+	          onKeyPress: onKeyPress, 
+	          onKeyUp: onKeyUp})
 	      )
 	    )
 	  },
@@ -6749,19 +6765,19 @@
 	  },
 	
 	  _focus: function(focused, e){
-	    var self = this;
+	    clearTimeout(this.timer)
 	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	      var el = self.refs.input.getDOMNode()
+	    this.timer = setTimeout(function() {
+	      var el = this.refs.input.getDOMNode()
 	
 	      focused && el.focus()
 	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
+	      if( focused !== this.state.focused){
+	        this.notify(focused ? 'onFocus' : 'onBlur', e)
+	        this.setState({ focused: focused })
+	      }
 	
-	    }, 0)
+	    }.bind(this), 0)
 	  },
 	
 	  _keyDown: function(e){
@@ -6781,7 +6797,6 @@
 	      e.preventDefault()
 	      this.increment()
 	    }
-	
 	  },
 	
 	  increment: function() {
@@ -6824,14 +6839,14 @@
 	var React = __webpack_require__(1)
 	  , cx    = __webpack_require__(13)
 	  , _     = __webpack_require__(14)
-	  , controlledInput  = __webpack_require__(60)
-	  , CustomPropTypes  = __webpack_require__(61)
+	  , controlledInput  = __webpack_require__(61)
+	  , CustomPropTypes  = __webpack_require__(62)
 	  
-	  , SelectInput = __webpack_require__(80)
-	  , TagList     = __webpack_require__(81)
-	  , Popup       = __webpack_require__(62)
-	  , PlainList        = __webpack_require__(63)
-	  , GroupableList = __webpack_require__(64);
+	  , SelectInput = __webpack_require__(78)
+	  , TagList     = __webpack_require__(79)
+	  , Popup       = __webpack_require__(63)
+	  , PlainList        = __webpack_require__(64)
+	  , GroupableList = __webpack_require__(65);
 	
 	var propTypes = {
 	      data:            React.PropTypes.array,
@@ -7035,23 +7050,23 @@
 	  },
 	
 	  _focus:function(focused, e){
-	    var self = this;
-	
 	    if (this.props.disabled === true )
 	      return
 	
-	    clearTimeout(self.timer)
+	    clearTimeout(this.timer)
 	
-	    self.timer = setTimeout(function(){
-	      if(focused) self.refs.input.focus()
+	    this.timer = setTimeout(function()  {
+	      if(focused) this.refs.input.focus()
 	      else        {
-	        self.close()
-	        self.refs.tagList && self.refs.tagList.clear()
+	        this.close()
+	        this.refs.tagList && this.refs.tagList.clear()
 	      }
-	
-	      if( focused !== self.state.focused)
-	        self.setState({ focused: focused })
-	    }, 0)
+	      
+	      if( focused !== this.state.focused){
+	        this.notify(focused ? 'onFocus' : 'onBlur', e)
+	        this.setState({ focused: focused })
+	      }
+	    }.bind(this))
 	  },
 	
 	  _typing: function(e){
@@ -7133,6 +7148,8 @@
 	
 	    else if ( !searching && key === 'Backspace')
 	      tagList && tagList.removeNext()
+	
+	    this.notify('onKeyDown', [e])
 	  },
 	
 	  change: function(data){
@@ -7203,9 +7220,9 @@
 	var React = __webpack_require__(1)
 	  , _  = __webpack_require__(14)
 	  , cx = __webpack_require__(13)
-	  , controlledInput  = __webpack_require__(60)
-	  , CustomPropTypes  = __webpack_require__(61)
-	  , scrollTo = __webpack_require__(82);
+	  , controlledInput  = __webpack_require__(61)
+	  , CustomPropTypes  = __webpack_require__(62)
+	  , scrollTo = __webpack_require__(80);
 	
 	var propTypes = {
 	
@@ -15455,6 +15472,59 @@
 /* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Copyright 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 */
+	
+	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
+	
+	function assign(target, sources) {
+	  if (target == null) {
+	    throw new TypeError('Object.assign target cannot be null or undefined');
+	  }
+	
+	  var to = Object(target);
+	  var hasOwnProperty = Object.prototype.hasOwnProperty;
+	
+	  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
+	    var nextSource = arguments[nextIndex];
+	    if (nextSource == null) {
+	      continue;
+	    }
+	
+	    var from = Object(nextSource);
+	
+	    // We don't currently support accessors nor proxies. Therefore this
+	    // copy cannot throw. If we ever supported this then we must handle
+	    // exceptions and side-effects. We don't support symbols so they won't
+	    // be transferred.
+	
+	    for (var key in from) {
+	      if (hasOwnProperty.call(from, key)) {
+	        to[key] = from[key];
+	      }
+	    }
+	  }
+	
+	  return to;
+	};
+	
+	module.exports = assign;
+
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	var _ = __webpack_require__(14) //invert, transform
 	  , React = __webpack_require__(1)
@@ -15582,7 +15652,7 @@
 	}
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15630,7 +15700,7 @@
 	}
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15769,16 +15839,16 @@
 	}
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(61)
+	  , CustomPropTypes  = __webpack_require__(62)
 	  , filter = __webpack_require__(67)
 	  , cx = __webpack_require__(13)
 	  , _  = __webpack_require__(14)
-	  , scrollTo  = __webpack_require__(82);
+	  , scrollTo  = __webpack_require__(80);
 	
 	
 	module.exports = React.createClass({
@@ -15795,7 +15865,7 @@
 	  propTypes: {
 	    data:          React.PropTypes.array,
 	    onSelect:      React.PropTypes.func,
-	    ItemComponent: CustomPropTypes.elementType,
+	    itemComponent: CustomPropTypes.elementType,
 	
 	    selectedIndex: React.PropTypes.number,
 	    focusedIndex:  React.PropTypes.number,
@@ -15848,10 +15918,9 @@
 	
 		render: function(){
 	    var $__0=     _.omit(this.props, ['data']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , ItemComponent = this.props.listItem
+	      , ItemComponent = this.props.itemComponent
 	      , items;
 	    
-	
 	    items = !this.props.data.length 
 	      ? React.createElement("li", null,  this.props.messages.emptyList)
 	      : this.props.data.map(function(item, idx) {
@@ -15877,7 +15946,7 @@
 	    
 			return (
 				React.createElement("ul", React.__spread({},   props , 
-	        {className:  className + ' rw-list', 
+	        {className:  (className + '') + ' rw-list', 
 	        ref: "scrollable", 
 	        role: "listbox"}), 
 	          items 
@@ -15938,16 +16007,16 @@
 	}
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(61)
+	  , CustomPropTypes  = __webpack_require__(62)
 	  , filter = __webpack_require__(67)
 	  , cx = __webpack_require__(13)
 	  , _  = __webpack_require__(14)
-	  , scrollTo  = __webpack_require__(82);
+	  , scrollTo  = __webpack_require__(80);
 	
 	
 	module.exports = React.createClass({
@@ -16051,7 +16120,7 @@
 	
 	    return (
 	      React.createElement("ul", React.__spread({},   props , 
-	        {className:  className + ' rw-list  rw-list-grouped', 
+	        {className:  (className + '') + ' rw-list  rw-list-grouped', 
 	        ref: "scrollable", 
 	        role: "listbox"}), 
 	        items 
@@ -16073,8 +16142,9 @@
 	  _renderItem:function(group, item, idx){
 	    var focused  = this.props.focused  === item
 	      , selected = this.props.selected === item
-	      , ItemComponent = this.props.listItem;
+	      , ItemComponent = this.props.itemComponent;
 	
+	    //console.log('hi')
 	    return (
 	      React.createElement("li", {
 	        key: 'item_' + group + '_' + idx, 
@@ -16193,7 +16263,1895 @@
 	})
 
 /***/ },
-/* 65 */
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var has = Object.prototype.hasOwnProperty
+	  , transitionTiming, transitionDuration
+	  , transitionProperty, transitionDelay
+	  , notSupported, endEvent
+	  , prefix = ''
+	  , el = document.createElement('div')
+	  , reset = {}
+	  , transform ='transform'
+	  , transitions = {
+	      O:'otransitionend',
+	      Moz:'transitionend',
+	      Webkit:'webkitTransitionEnd'
+	    };
+	
+	var TRANSLATION_MAP = { 
+	      left: 'translateX', right: 'translateX'
+	    , top: 'translateY', bottom: 'translateY'}
+	
+	for(var vendor in transitions) if( has.call(transitions, vendor) )
+	{
+	  if (el.style[vendor + 'TransitionProperty'] !== undefined) {
+	    prefix = '-' + vendor.toLowerCase() + '-'
+	    endEvent = transitions[vendor];
+	    break
+	  }
+	}
+	
+	if (!endEvent && el.style.transitionProperty !== undefined)
+	  endEvent = 'transitionend'
+	
+	notSupported = !endEvent
+	
+	transform = prefix + transform
+	
+	reset[transitionProperty = prefix + 'transition-property'] =
+	reset[transitionDuration = prefix + 'transition-duration'] =
+	reset[transitionDelay    = prefix + 'transition-delay'] =
+	reset[transitionTiming   = prefix + 'transition-timing-function'] = ''
+	
+	var DOM = module.exports = {
+	
+	  width: function(node, client){
+	    var win = getWindow(node)
+	    return win ? win.innerWidth : client ? node.clientWidth : DOM.offset(node).width
+	  },
+	
+	  height: function(node, client){
+	    var win = getWindow(node)
+	    return win ? win.innerHeight : client ? node.clientHeight : DOM.offset(node).height
+	  },
+	
+	  hasFocus: function(node){
+	    var doc = node.ownerDocument
+	
+	    if ( doc.activeElement == null) return false
+	    return doc.activeElement === node
+	  },
+	
+	  offset: function (node) {
+	    var doc     = node.ownerDocument
+	      , docElem = doc && doc.documentElement
+	      , box     = { top: 0, left: 0 };
+	
+	    if ( !docElem ) return
+	
+	    if ( !DOM.contains(docElem, node))
+	      return box
+	
+	    if ( node.getBoundingClientRect !== undefined )
+	      box = node.getBoundingClientRect();
+	
+	    return {
+	      top: box.top + window.pageYOffset - docElem.clientTop,
+	      left: box.left + window.pageXOffset - docElem.clientLeft,
+	      width: box.width || node.offsetWidth,
+	      height: box.height || node.offsetHeight,
+	    };
+	  },
+	
+	  css: function(node, property, value){
+	      var css = ''
+	        , props = property;
+	
+	      if ( typeof property === 'string') {
+	        if ( value === undefined)
+	          return node.style[camelize(property)] || getComputedStyle(node).getPropertyValue(property)
+	        else
+	          (props = {})[property] = value
+	      }
+	
+	      for(var key in props) if ( has.call(props, key) ) 
+	      {
+	        !props[key] && props[key] !== 0
+	          ? node.style.removeProperty(dasherize(key))
+	          : (css += dasherize(key) + ':' + props[key] + ';')
+	      }
+	
+	      node.style.cssText += ';' + css
+	  },
+	
+	  contains: (function(){
+	    var root = document.documentElement
+	
+	    return (root && root.contains)
+	      ? function(context, node){ return context.contains(node); }
+	      : (root && root.compareDocumentPosition)
+	          ? function(context, node){
+	            return context === node || !!(context.compareDocumentPosition(node) & 16);
+	          }
+	          : function(context, node){
+	            if (node) do {
+	              if (node === context) return true;
+	            } while ((node = node.parentNode));
+	
+	            return false;
+	          }
+	  })(),
+	
+	  scrollParent: function(node){
+	    var position = DOM.css(node, "position" )
+	      , excludeStatic = position === "absolute";
+	
+	    if (position === 'fixed') 
+	      return node.ownerDocument || document
+	
+	    while ( (node = node.parentNode) && node.nodeType !== 9){
+	      var isStatic = excludeStatic && DOM.css(node, "position" ) === "static"
+	        , style    = DOM.css(node, 'overflow') 
+	                   + DOM.css(node, 'overflow-y') 
+	                   + DOM.css(node, 'overflow-x');
+	
+	      if (isStatic) continue
+	      if ( (/(auto|scroll)/).test(style) && DOM.height(node) < node.scrollHeight )
+	        return node
+	    }
+	
+	    return node.ownerDocument || document
+	  },
+	
+	  scrollTop: function(node, val){
+	    var win = getWindow(node);
+	
+	    if ( val === undefined )
+	      return win 
+	        ? ('pageYOffset' in win) 
+	          ? win.pageYOffset
+	          : win.document.documentElement.scrollTop 
+	        : node.scrollTop;
+	    
+	    if ( win ) 
+	      win.scrollTo(('pageXOffset' in win) 
+	        ? win.pageXOffset 
+	        : win.document.documentElement.scrollLeft, val)
+	    else       
+	      node.scrollTop = val
+	  },
+	
+	
+	  on: function(node, eventName, handler){
+	    if (node.addEventListener)
+	      node.addEventListener(eventName, handler, false);
+	
+	    else if (node.attachEvent)
+	      node.attachEvent('on' + eventName, handler);
+	
+	    else
+	      node['on' + eventName] = handler;
+	  },
+	
+	  off: function(node, eventName, handler){
+	    if (node.addEventListener)
+	      node.removeEventListener(eventName, handler, false);
+	    else if (node.attachEvent)
+	      node.detachEvent('on' + eventName, handler);
+	    else
+	      node['on' + eventName] = null;
+	  },
+	
+	  trigger: function(node, type){
+	    var event = document.createEvent('Events')
+	    event.initEvent(type, true, true)
+	    node.dispatchEvent(event);
+	  },
+	
+	  /* code in part from: Zepto 1.1.4 | zeptojs.com/license */
+	  // super lean animate function for transitions
+	  // doesn't support translations to keep it matching the jquery API
+	  animate: function(node, properties, duration, easing, callback){
+	    var cssProperties = []
+	      , fakeEvent = { target: node, currentTarget: node }
+	      , cssValues = {}
+	      , transforms =''
+	      , fired;
+	
+	    if ( typeof easing === 'function' )
+	      callback = easing, easing = null
+	
+	    if ( notSupported )           duration = 0
+	    if ( duration === undefined ) duration = 200
+	
+	    for(var key in properties) if ( has.call(properties, key) ) {
+	      if( /(top|bottom)/.test(key) ) 
+	        transforms += TRANSLATION_MAP[key] +'(' + properties[key] + ') '
+	      else{
+	        cssValues[key] = properties[key]
+	        cssProperties.push(dasherize(key))
+	      }
+	    }
+	
+	    if (transforms) {
+	      cssValues[transform] = transforms
+	      cssProperties.push(transform)
+	    }
+	
+	    if (duration > 0 ) {
+	      cssValues[transitionProperty] = cssProperties.join(', ')
+	      cssValues[transitionDuration] = (duration / 1000) + 's'
+	      cssValues[transitionDelay]    = 0 + 's'
+	      cssValues[transitionTiming]   = easing || 'linear'
+	
+	      DOM.on(node, endEvent, done)
+	
+	      setTimeout(function(){
+	        if (!fired) done(fakeEvent)
+	      }, duration + 25)
+	    }
+	
+	    // trigger page reflow
+	    node.clientLeft
+	
+	    DOM.css(node, cssValues)
+	
+	    if (duration <= 0)
+	      setTimeout(done.bind(null, fakeEvent), 0)
+	
+	    function done(event) {
+	      if (event.target !== event.currentTarget) return
+	
+	      fired = true
+	
+	      DOM.off(event.target, endEvent, done)
+	      DOM.css(node, reset)
+	      callback && callback.call(this)
+	    }
+	  }
+	}
+	
+	
+	function getWindow( node ) {
+	  return node === node.window
+	    ? node : node.nodeType === 9 && node.defaultView;
+	}
+	
+	function camelize(str){
+	  return str.replace(/-+(.)?/g, function(match, chr){ return chr ? chr.toUpperCase() : '' })
+	}
+	
+	function dasherize(str) {
+	  return str.replace(/[A-Z]/g, function(char, index) {
+	    return (index !== 0 ? '-' : '') + char.toLowerCase();
+	  });
+	}
+	
+	function getComputedStyle(node) {
+	  return node.ownerDocument.defaultView.opener
+	    ? node.ownerDocument.defaultView.getComputedStyle( node, null )
+	    : window.getComputedStyle(node, null);
+	}
+
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var common = {
+	      eq:   function(a, b){ return a === b },
+	      neq:  function(a, b){ return a !== b },
+	      gt:   function(a, b){ return a > b   },
+	      gte:  function(a, b){ return a >= b  },
+	      lt:   function(a, b){ return a < b   },
+	      lte:  function(a, b){ return a <= b  },
+	
+	      contains: function(a, b){
+	        return a.indexOf(b) !== -1
+	      },
+	
+	      startsWith: function(a, b) {
+	        return a.lastIndexOf(b, 0) === 0;
+	      },
+	
+	      endsWith: function(a, b) {
+	        var pos = a.length - b.length
+	          , lastIndex = a.indexOf(b, pos);
+	
+	        return  lastIndex !== -1 && lastIndex === pos;
+	      }
+	    }
+	
+	module.exports = common
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  render: function(){
+	  	var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1});
+	
+	    return (
+	      React.createElement("button", React.__spread({},  props, {type: "button", className: (className  || '') + ' rw-btn'}), 
+	        this.props.children
+	      )
+	  	)
+	  }
+	})
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , caretPos = __webpack_require__(92);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    value:        React.PropTypes.string,
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	
+	  // hello
+	  componentDidUpdate: function() {
+	    var input = this.getDOMNode()
+	      , val = this.props.value;
+	
+	    if ( this.isSuggesting() ){
+	      var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
+	        , end   = val.length - start
+	
+	      if ( start >= 0) {
+	        caretPos(input, start, start + end)
+	      }
+	    }
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: ''
+	    }
+	  },
+	
+	  render: function(){
+	    return (
+	      React.createElement("input", React.__spread({},  
+	        this.props , 
+	        {type: "text", 
+	        className: this.props.className + ' rw-input', 
+	        onKeyDown: this.props.onKeyDown, 
+	        onChange: this._change, 
+	        value: this.props.value == null ? '' : this.props.value}))
+	    )
+	  },
+	
+	  isSuggesting: function(){
+	    var val = this.props.value
+	      , isSuggestion = this._last != null
+	          && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
+	
+	    return this.props.suggest && isSuggestion
+	  },
+	
+	  accept: function(removeCaret){
+	    var val = this.getDOMNode().value || ''
+	      , end = val.length;
+	
+	    this._last = null
+	    removeCaret && caretPos(this.getDOMNode(), end, end)
+	  },
+	
+	  _change: function(e){
+	    var val = e.target.value
+	    this._last = val;
+	    this.props.onChange(e, val)
+	  },
+	
+	  focus: function(){
+	    this.getDOMNode().focus()
+	  }
+	});
+
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Btn = __webpack_require__(68);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    label:          React.PropTypes.string.isRequired,
+	    labelId:        React.PropTypes.string,
+	
+	    upDisabled:     React.PropTypes.bool.isRequired,
+	    prevDisabled:   React.PropTypes.bool.isRequired,
+	    nextDisabled:   React.PropTypes.bool.isRequired,
+	    onViewChange:   React.PropTypes.func.isRequired,
+	    onMoveLeft:     React.PropTypes.func.isRequired,
+	    onMoveRight:    React.PropTypes.func.isRequired,
+	
+	    messages:       React.PropTypes.shape({
+	      moveBack:     React.PropTypes.string,
+	      moveForward:  React.PropTypes.string
+	    })
+	  },
+	
+	  mixins: [
+	    __webpack_require__(85),
+	    __webpack_require__(93)
+	  ],
+	
+	  getDefaultProps: function(){
+	    return {
+	      messages: {
+	        moveBack:     'navigate back',
+	        moveForward:  'navigate forward',
+	      }
+	    }
+	  },
+	
+	  render: function(){
+	    var rtl = this.isRtl();
+	
+	    return (
+	      React.createElement("div", {className: "rw-header"}, 
+	        React.createElement(Btn, {className: "rw-btn-left", 
+	          onClick: this.props.onMoveLeft, 
+	          disabled: this.props.prevDisabled, 
+	          'aria-disabled': this.props.prevDisabled, 
+	          title: this.props.moveBack}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-view", 
+	          id: this.props.labelId, 
+	          onClick: this.props.onViewChange, 
+	          disabled: this.props.upDisabled, 
+	          'aria-disabled': this.props.upDisabled}, 
+	           this.props.label
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-right", 
+	          onClick: this.props.onMoveRight, 
+	          disabled: this.props.nextDisabled, 
+	          'aria-disabled': this.props.nextDisabled, 
+	          title: this.props.moveForward}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
+	        )
+	      )
+	    )
+	  }
+	})
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(13)
+	  , dates = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , _   = __webpack_require__(14)
+	  , Btn = __webpack_require__(68);
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'MonthView',
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(93),
+	    __webpack_require__(94)('month', 'day'),
+	  ],
+	
+	  propTypes: {
+	    culture:          React.PropTypes.array,
+	    value:            React.PropTypes.instanceOf(Date),
+	    selectedDate:     React.PropTypes.instanceOf(Date),
+	    min:              React.PropTypes.instanceOf(Date),
+	    max:              React.PropTypes.instanceOf(Date),
+	
+	    format:           React.PropTypes.string,
+	
+	    onChange:         React.PropTypes.func.isRequired, //value is chosen
+	    onMoveLeft:       React.PropTypes.func,
+	    onMoveRight:      React.PropTypes.func
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , month = dates.visibleDays(this.props.value)
+	      , rows  = _.chunk(month, 7 );
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {role: "grid", 
+	        tabIndex: this.props.disabled ? '-1' : "0", 
+	        className: "rw-calendar-grid", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("thead", null, 
+	          React.createElement("tr", null,  this._headers() )
+	        ), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	    
+	    return (
+	      React.createElement("tr", {key: 'week_' + i}, 
+	       row.map( function(day, idx)  {
+	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
+	          , selected = dates.eq(day, this.props.selectedDate, 'day');
+	
+	        return !dates.inRange(day, this.props.min, this.props.max)
+	            ? React.createElement("td", {key: 'day_' + idx, className: "rw-empty-cell"}, " ")
+	            : (React.createElement("td", {key: 'day_' + idx}, 
+	                React.createElement(Btn, {
+	                  tabIndex: "-1", 
+	                  onClick: this.props.onChange.bind(null, day), 
+	                  'aria-selected': selected, 
+	                  'aria-disabled': this.props.disabled, 
+	                  disabled: this.props.disabled, 
+	                  className: cx({
+	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
+	                    'rw-state-focus':    focused,
+	                    'rw-state-selected': selected,
+	                  }), 
+	                  id: focused ? id : undefined}, 
+	                  dates.format(day, 'dd')
+	                )
+	              ))
+	      }.bind(this))
+	      )
+	    )
+	  },
+	
+	
+	  _headers: function(format){
+	    var days = dates.shortDaysOfWeek(format);
+	
+	    return days.map( function(day, i)  
+	      {return React.createElement("th", {key: "header_" + i}, day);})
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'day', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'day',min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -1, 'week', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 1, 'week', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	
+	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
+	}
+
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(13)
+	  , dates      = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , Btn        = __webpack_require__(68)
+	  , _          = __webpack_require__(14)
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'YearView',
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(93),
+	    __webpack_require__(94)('year', 'month')
+	  ],
+	
+	  propTypes: {
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	
+	  render: function(){
+	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , months = dates.monthsInYear(dates.year(this.props.value))
+	      , rows = _.chunk(months, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},   props , 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        ref: "table", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item');
+	    
+	    return (
+	      React.createElement("tr", {key: i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
+	          , selected = dates.eq(date, this.props.value,  'month');
+	
+	        return dates.inRange(date, this.props.min, this.props.max, 'month')
+	          ? (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id: focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected
+	                })}, 
+	                 dates.format(date, dates.formats.MONTH_NAME_ABRV) 
+	              )
+	            ))
+	          : React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	      }.bind(this))
+	    ))
+	  },
+	
+	  focus: function(){
+	    this.refs.table.getDOMNode().focus();
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'month', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'month', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'month', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'month', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
+	}
+
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _ = __webpack_require__(14)
+	  , cx    = __webpack_require__(13)
+	  , dates = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , Btn = __webpack_require__(68); 
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'DecadeView',
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(85),
+	    __webpack_require__(93),
+	    __webpack_require__(94)('decade', 'year')
+	  ],
+	
+	  propTypes: {
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , years = getDecadeYears(this.props.value)
+	      , rows  = _.chunk(years, 4)
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	
+	        React.createElement("tbody", null, 
+	          rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
+	          , selected = dates.eq(date, this.props.value,  'year');
+	
+	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
+	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':      !inDecade(date, this.props.value),
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected,
+	                })}, 
+	                 dates.format(date, dates.formats.YEAR) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'year', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'year', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'year', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'year', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function inDecade(date, start){
+	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
+	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
+	}
+	
+	function getDecadeYears(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
+	
+	  return days.map( 
+	    function(i)  {return date = dates.add(date, 1, 'year');})
+	}
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
+	}
+
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(13)
+	  , dates      = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , Btn        = __webpack_require__(68)
+	  , _          = __webpack_require__(14); //omit
+	
+	var opposite = {
+	  LEFT:  directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'CenturyView',
+	
+	  mixins: [
+	    __webpack_require__(84),
+	    __webpack_require__(85),
+	    __webpack_require__(93),
+	    __webpack_require__(94)('century', 'decade')
+	  ],
+	
+	  propTypes: {
+	    value:         React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
+	      , years = getCenturyDecades(this.props.value)
+	      , rows  = _.chunk(years, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
+	          , selected = dates.eq(date, this.props.value,  'decade')
+	          , d        = inRangeDate(date, this.props.min, this.props.max);
+	
+	        return !inRange(date, this.props.min, this.props.max)
+	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
+	                tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':       !inCentury(date, this.props.value),
+	                  'rw-state-focus':     focused,
+	                  'rw-state-selected':  selected,
+	                 })}, 
+	                 label(date) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'decade', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'decade', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'decade', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'decade', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function label(date){
+	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
+	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
+	}
+	
+	function inRangeDate(decade, min, max){
+	  return dates.max( dates.min(decade, max), min)
+	}
+	
+	function inRange(decade, min, max){
+	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
+	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
+	}
+	
+	function inCentury(date, start){
+	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
+	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
+	}
+	
+	function getCenturyDecades(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
+	
+	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
+	}
+	
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
+	}
+
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var dateMath = __webpack_require__(46)
+	  , globalize = __webpack_require__(97)
+	  , _ = __webpack_require__(14); //extend
+	
+	var dates = module.exports = _.extend(dateMath, {
+	  // wrapper methods for isolating globalize use throughout the lib
+	  // looking forward towards the 1.0 release
+	  culture: function(){
+	    return globalize.culture()
+	  },
+	
+	  startOfWeek: function(date){
+	    var culture = globalize.culture()
+	
+	    if (!culture || !culture.calendar)
+	      return 0
+	
+	    return culture.calendar.firstDay || 0
+	  },
+	
+	  parse: function(date, format, culture){
+	    return globalize.parseDate(date, format, culture)
+	  },
+	
+	  format: function(date, format, culture){
+	    return globalize.format(date, format, culture)
+	  },
+	  //-------------------------------------
+	
+	  shortDaysOfWeek: function (){
+	    var culture = dates.culture()
+	      , start = dates.startOfWeek()
+	      , days, front;
+	
+	    if (culture && culture.calendar){
+	      days = culture.calendar.days.namesShort.slice()
+	
+	      if(start === 0 ) 
+	        return days
+	      
+	      front = days.splice(0, start)
+	      days  = days.concat(front)
+	      return days
+	    }
+	  },
+	
+	  daysOfWeek: function(date, format){
+	    var range = [0,1,2,3,4,5,6]
+	    if (arguments.length === 1){
+	      format = date
+	      date = new Date()
+	    }
+	
+	    format = format || 'do'
+	
+	    return range.map(function(i)  {return dates.format(dates.weekday(date, i), format);} )
+	  },
+	
+	  months: function(date, format){
+	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	
+	    if (arguments.length === 1){
+	      format = date
+	      date = new Date()
+	    }
+	    format = format || dates.formats.DAY_NAME_ABRV
+	
+	    return months.map( function(i)  {return dates.format(dates.month(date, i), format);})
+	  },
+	
+	  monthsInYear: function(year){
+	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	      , date   = new Date(year, 0, 1)
+	
+	    return  months.map( function(i)  {return dates.month(date, i);})
+	  },
+	
+	  firstOfDecade: function(date){
+	    var decade = dates.year(date) % 10
+	
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfDecade: function(date){
+	    return dates.add(dates.firstOfDecade(date), 9, 'year')
+	  },
+	
+	  firstOfCentury: function(date){
+	    var decade = dates.year(date) % 100
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfCentury: function(date){
+	    return dates.add(dates.firstOfCentury(date), 99, 'year')
+	  },
+	
+	  firstVisibleDay: function(date){
+	    var firstOfMonth = dates.startOf(date, 'month')
+	    return dates.startOf(firstOfMonth, 'week');
+	  },
+	
+	  lastVisibleDay: function(date){
+	    var endOfMonth = dates.endOf(date, 'month')
+	    return dates.endOf(endOfMonth, 'week');
+	  },
+	
+	  visibleDays: function(date){
+	    var current = dates.firstVisibleDay(date)
+	      , last = dates.lastVisibleDay(date)
+	      , days = [];
+	
+	    while( dates.lte(current, last, 'day') ) {
+	      days.push(current)
+	      current = dates.add(current, 1, 'day')
+	    }
+	
+	    return days
+	  },
+	
+	  merge: function(date, time){
+	    if( time == null && date == null)
+	      return null
+	
+	    if( time == null) time = new Date()
+	    if( date == null) date = new Date()
+	
+	    date = dates.startOf(date, 'day')
+	    date = dates.hours(date,        dates.hours(time))
+	    date = dates.minutes(date,      dates.minutes(time))
+	    date = dates.seconds(date,      dates.seconds(time))
+	    return dates.milliseconds(date, dates.milliseconds(time))
+	  },
+	
+	  sameMonth: function(dateA, dateB){
+	    return dates.eq(dateA, dateB, 'month')
+	  },
+	
+	  today: function() {
+	    return this.startOf(new Date(), 'day')
+	  },
+	
+	  yesterday: function() {
+	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
+	  },
+	
+	  tomorrow: function() {
+	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
+	  },
+	
+	  formats: {
+	    DAY_OF_MONTH:    'dd',
+	    DAY_NAME_SHORT:  null,
+	    MONTH_NAME_ABRV: 'MMM',
+	    MONTH_YEAR:      'MMMM yyyy',
+	    YEAR:            'yyyy'
+	  }
+	
+	})
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _ = __webpack_require__(14); //object
+	
+	var views = {
+	    MONTH:   'month',
+	    YEAR:    'year',
+	    DECADE:  'decade',
+	    CENTURY: 'century'
+	  }
+	
+	module.exports = {
+	
+	  directions: {
+	    LEFT:  'LEFT',
+	    RIGHT: 'RIGHT',
+	    UP:    'UP',
+	    DOWN:  'DOWN'
+	  },
+	
+	  datePopups: {
+	    TIME:     'time',
+	    CALENDAR: 'calendar'
+	  },
+	
+	  calendarViews: views,
+	
+	  calendarViewHierarchy: _.object([
+	    [views.MONTH,   views.YEAR],
+	    [views.YEAR,    views.DECADE],
+	    [views.DECADE,  views.CENTURY]
+	  ]),
+	
+	  calendarViewUnits: _.object([
+	    [views.MONTH,   views.DAY],
+	    [views.YEAR,    views.MONTH],
+	    [views.DECADE,  views.YEAR],
+	    [views.CENTURY, views.DECADE],
+	  ])
+	}
+
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , setter  = __webpack_require__(95)
+	  , globalize = __webpack_require__(97);
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'NumberPickerInput', 
+	
+	  propTypes: {
+	    value:        React.PropTypes.number,
+	    format:       React.PropTypes.string,
+	    min:          React.PropTypes.number,
+	    
+	    onChange:     React.PropTypes.func.isRequired,
+	    onKeyDown:    React.PropTypes.func,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: null,
+	      format: 'd',
+	      editing: false,
+	    }
+	  },
+	
+	  getInitialState: function() {
+	    var value = this.props.editing 
+	          ? this.props.value
+	          : globalize.format(this.props.value, this.props.format)
+	
+	    return { 
+	      stringValue: value
+	    }
+	  },
+	  
+	  componentWillReceiveProps: function(nextProps) {
+	    var value = nextProps.editing 
+	          ? nextProps.value
+	          : globalize.format(nextProps.value, nextProps.format)
+	
+	    if ( isNaN(nextProps.value) ) 
+	      value = ''
+	
+	    this.current(value)
+	  },
+	
+	  render: function(){
+	    var value = this.state.stringValue;
+	
+	    return (
+	      React.createElement("input", React.__spread({},  this.props, 
+	        {type: "text", 
+	        className: "rw-input", 
+	        onChange: this._change, 
+	        onBlur: this._finish, 
+	        'aria-disabled': this.props.disabled, 
+	        'aria-readonly': this.props.readOnly, 
+	        disabled: this.props.disabled, 
+	        readOnly: this.props.readOnly, 
+	        value: value}))
+	    )
+	  },
+	
+	  _change: function(e){
+	    var val = e.target.value
+	      , number = +e.target.value
+	      , isNull = val !== 0 && !val
+	      , hasMin = isFinite(this.props.min)
+	
+	    //console.log(hasMin, this.props.min)
+	    //a null value is only possible when there is no min
+	    if(!hasMin && isNull)
+	      return this.props.onChange(null)
+	
+	    if(this.isValid(number) && number !== this.props.value)
+	      return this.props.onChange(number)
+	
+	    //console.log(val !== 0 && !val)
+	    this.current(e.target.value)
+	  },
+	
+	  _finish: function(e){
+	    var number = +this.state.stringValue
+	
+	    // if number is below the min
+	    // we need to flush low values eventually, onBlur is definativly no typing
+	    if(!isNaN(number) && number < this.props.min) {
+	      this.props.onChange(number)
+	    }
+	  },
+	
+	  isValid: function(value) {
+	    var num = +value;
+	
+	    if(isNaN(num)) return false
+	    return num >= this.props.min
+	  },
+	
+	  //this intermediate state is for when one runs into the decimal or are typing the number
+	  current: setter('stringValue'),
+	
+	});
+
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	module.exports = React.createClass({
+	  
+	  displayName: 'MultiselectInput',
+	
+	  propTypes: {
+	    value:        React.PropTypes.string,
+	    onChange:     React.PropTypes.func.isRequired,
+	
+	    disabled:     React.PropTypes.bool,
+	    readOnly:     React.PropTypes.bool,
+	  },
+	
+	
+	  componentDidUpdate: function() {
+	    this.props.focused && this.focus()
+	  },
+	
+	  render: function(){
+	      var value = this.props.value
+	        , placeholder = this.props.placeholder
+	        , size = Math.max((value || placeholder).length, 1);
+	
+	      return (
+	        React.createElement("input", React.__spread({},  this.props, 
+	          {type: "text", 
+	          className: "rw-input", 
+	          'aria-disabled': this.props.disabled, 
+	          'aria-readonly': this.props.readOnly, 
+	          disabled: this.props.disabled, 
+	          readOnly: this.props.readOnly, 
+	          size: size}))
+	      )
+	  },
+	
+	  focus: function(){
+	    this.getDOMNode().focus()
+	  }
+	
+	})
+
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _     = __webpack_require__(14)
+	  , cx    = __webpack_require__(13)
+	  , Btn   = __webpack_require__(68)
+	
+	module.exports = React.createClass({
+	  
+	  displayName: 'MultiselectTagList',
+	
+	  mixins: [
+	    __webpack_require__(86),
+	    __webpack_require__(85)
+	  ],
+	
+	  propTypes: {
+	    value:          React.PropTypes.array,
+	
+	    valueField:     React.PropTypes.string,
+	    textField:      React.PropTypes.string,
+	
+	    valueComponent: React.PropTypes.func,
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.array,
+	                      React.PropTypes.oneOf(['disabled'])
+	                    ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.array,
+	                      React.PropTypes.oneOf(['readonly'])
+	                    ])
+	  },
+	
+	
+	  getInitialState: function(){
+	    return {
+	      focused: null
+	    }
+	  },
+	
+	  render: function(){
+	      var ValueComponent = this.props.valueComponent
+	        , props     = _.omit(this.props, ['value', 'disabled', 'readOnly'])
+	        , focusIdx  = this.state.focused
+	        , value     = this.props.value;
+	
+	      return (
+	        React.createElement("ul", React.__spread({},  props, 
+	          {className: "rw-multiselect-taglist"}), 
+	           value.map( function(item, i)  {
+	            var disabled = this.isDisabled(item)
+	              , readonly = this.isReadOnly(item);
+	
+	            return (
+	              React.createElement("li", {key: i, 
+	                  className: cx({
+	                    'rw-state-focus': !disabled && focusIdx === i,
+	                    'rw-state-disabled': disabled,
+	                    'rw-state-readonly': readonly})
+	                  }, 
+	                 ValueComponent
+	                    ? React.createElement(ValueComponent, {item: item })
+	                    : this._dataText(item), 
+	                
+	                React.createElement(Btn, {tabIndex: "-1", onClick: !(disabled || readonly) && this._delete.bind(null, item), 
+	                  'aria-disabled': disabled, 
+	                  disabled: disabled}, 
+	                  "×", React.createElement("span", {className: "rw-sr"},  "Remove " + this._dataText(item))
+	                )
+	              ))
+	          }.bind(this))
+	        )
+	      )
+	  },
+	
+	  _delete: function(val, e){
+	    this.props.onDelete(val)
+	  },
+	
+	  removeCurrent: function(){
+	    var val = this.props.value[this.state.focused];
+	
+	    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
+	      this.props.onDelete(val)
+	  },
+	
+	  isDisabled: function(val, isIdx) {
+	    if(isIdx) val = this.props.value[val]
+	
+	    return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
+	  },
+	
+	  isReadOnly: function(val, isIdx) {
+	    if(isIdx) val = this.props.value[val]
+	
+	    return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
+	  },
+	
+	  removeNext: function(){
+	    var val = this.props.value[this.props.value.length - 1];
+	
+	    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
+	      this.props.onDelete(val)
+	  },
+	
+	  clear: function(){
+	    this.setState({ focused: null })
+	  },
+	
+	  first: function(){
+	    var idx = 0
+	      , l = this.props.value.length;
+	
+	    while( idx < l && this.isDisabled(idx, true) )
+	      idx++
+	
+	    if (idx !== l)
+	      this.setState({ focused: idx })
+	  },
+	
+	  last: function(){
+	    var idx = this.props.value.length - 1;
+	
+	    while( idx > -1 && this.isDisabled(idx, true) )
+	      idx--
+	
+	    if (idx >= 0)
+	      this.setState({ focused: idx })
+	  },
+	
+	  next: function(){
+	    var nextIdx = this.state.focused + 1
+	      , l = this.props.value.length;
+	
+	    while( nextIdx < l && this.isDisabled(nextIdx, true) )
+	      nextIdx++
+	
+	    if ( this.state.focused === null )
+	      return
+	
+	    if ( nextIdx >= l )
+	      return this.clear();
+	
+	    this.setState({ focused: nextIdx })
+	  },
+	
+	  prev: function(){
+	    var nextIdx = this.state.focused;
+	
+	    if ( nextIdx === null )
+	      nextIdx = this.props.value.length
+	
+	    nextIdx--;
+	
+	    while( nextIdx > -1 && this.isDisabled(nextIdx, true) )
+	      nextIdx--
+	
+	    if ( nextIdx >= 0 )
+	      this.setState({ focused: nextIdx  })
+	  }
+	})
+
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var $ = __webpack_require__(66)
+	
+	module.exports = function scrollTo( selected, scrollParent ) {
+	  var offset = $.offset(selected)
+	    , poff   = { top: 0, left: 0 }
+	    , list, scrollTop, selectedTop
+	    , selectedHeight, listHeight, bottom;
+	
+	    if( !selected ) return 
+	
+	    list       = scrollParent || $.scrollParent(selected) // if we know the parent skip this step for perf (maybe)
+	    scrollTop  = $.scrollTop(list)
+	    listHeight = $.height(list, true)
+	
+	    if (!getWindow(list)) 
+	      poff = $.offset(list)
+	
+	    offset     = {
+	      top:    offset.top  - poff.top,
+	      left:   offset.left - poff.left,
+	      height: offset.height,
+	      width:  offset.width
+	    }
+	
+	    selectedHeight = offset.height
+	    selectedTop    = offset.top  + scrollTop
+	    bottom         = selectedTop + selectedHeight
+	
+	    scrollTop = scrollTop > selectedTop
+	          ? selectedTop
+	          : bottom > (scrollTop + listHeight) 
+	              ? (bottom - listHeight)
+	              : scrollTop
+	
+	    $.scrollTop(list, scrollTop)
+	}
+	
+	function getWindow( node ) {
+	  return node === node.window
+	    ? node : node.nodeType === 9 && node.defaultView;
+	}
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , dates = __webpack_require__(75)
+	  , List = __webpack_require__(64)
+	  , CustomPropTypes  = __webpack_require__(62)
+	  , _ = __webpack_require__(14) // omit
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'TimeList',
+	
+	  propTypes: {
+	    value:          React.PropTypes.instanceOf(Date),
+	    min:            React.PropTypes.instanceOf(Date),
+	    max:            React.PropTypes.instanceOf(Date),
+	    step:           React.PropTypes.number,
+	    itemComponent:  CustomPropTypes.elementType,
+	    onSelect:       React.PropTypes.func,
+	    preserveDate:   React.PropTypes.bool,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      step:   30,
+	      format: 't',
+	      onSelect: function(){},
+	      preserveDate: true,
+	      delay: 300
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    var data = this._dates(this.props)
+	      , focusedItem = this._closestDate(data, this.props.value);
+	
+	    return { 
+	      focusedItem: focusedItem || data[0],
+	      dates: data
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var data = this._dates(nextProps)
+	      , focusedItem = this._closestDate(data, this.props.value);
+	
+	    if ( nextProps.value !== this.props.value)
+	      this.setState({ 
+	        focusedItem: focusedItem || data[0],
+	        dates: data
+	      })
+	  },
+	
+	  render: function(){
+	    var times = this.state.dates
+	      , date  = this._closestDate(times, this.props.value);
+	
+	    return (
+	      React.createElement(List, React.__spread({},  _.omit(this.props, 'value'), 
+	        {ref: "list", 
+	        data: times, 
+	        textField: "label", 
+	        valueField: "date", 
+	        selected: date, 
+	        focused: this.state.focusedItem, 
+	        itemComponent: this.props.itemComponent, 
+	        onSelect: this.props.onSelect}))
+	    )
+	  },
+	
+	  _closestDate: function(times, date){
+	    var roundTo = 1000 * 60 * this.props.step
+	      , inst = null
+	      , label;
+	
+	    if( !date) return null
+	
+	    date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
+	    label = dates.format(date, this.props.format)
+	
+	    times.some( function(time)  {
+	      if( time.label === label ) 
+	        return (inst = time)
+	    })
+	
+	    return inst
+	  },
+	
+	  _data:function(){ 
+	    return this.state.dates
+	  },
+	
+	  _dates: function(props){
+	    var times  = [], i = 0
+	      , values = this._dateValues(props)
+	      , start  = values.min
+	      , startDay = dates.date(start);
+	
+	    // debugger;
+	    while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
+	      i++
+	      times.push({ date: start, label: dates.format(start, props.format) })
+	      start = dates.add(start, props.step || 30, 'minutes')
+	    }
+	    return times
+	  },
+	
+	  _dateValues: function(props){
+	    var value = props.value || dates.today()
+	      , useDate = props.preserveDate
+	      , min = props.min
+	      , max = props.max
+	      , start, end;
+	
+	    //compare just the time regradless of whether they fall on the same day
+	    if(!useDate) {
+	      start = dates.startOf(dates.merge(new Date, min), 'minutes')
+	      end   = dates.startOf(dates.merge(new Date, max), 'minutes')
+	
+	      if( dates.lte(end, start) && dates.gt(max, min, 'day'))
+	        end = dates.tomorrow()
+	
+	      return {
+	        min: start,
+	        max: end
+	      }
+	    }
+	
+	    //date parts are equal
+	    return {
+	      min: dates.eq(value, min, 'day') ? min : dates.today(),
+	      max: dates.eq(value, max, 'day') ? min : dates.tomorrow()
+	    }
+	
+	  },
+	
+	  _keyDown: function(e){
+	    var key = e.key
+	      , character = String.fromCharCode(e.keyCode)
+	      , list = this.refs.list;
+	
+	    if ( key === 'End' )
+	      this.setState({ focusedItem: list.last() })
+	
+	    else if ( key === 'Home' )
+	      this.setState({ focusedItem: list.first() })
+	
+	    else if ( key === 'Enter' )
+	      this.props.onSelect(this.state.focusedItem)
+	
+	    else if ( key === 'ArrowDown' ) {
+	      e.preventDefault()
+	      this.setState({ focusedItem: list.next('focused') })
+	    }
+	    else if ( key === 'ArrowUp' ) {
+	      e.preventDefault()
+	      this.setState({ focusedItem: list.prev('focused') })
+	    }
+	    else {
+	      e.preventDefault()
+	
+	      this.search(character, function(item)  {
+	        this.setState({ focusedItem: item })
+	      }.bind(this))
+	    }
+	  },
+	
+	  search: function(character, cb){
+	    var word = ((this._searchTerm || '') + character).toLowerCase();
+	      
+	    clearTimeout(this._timer)
+	    this._searchTerm = word 
+	
+	    this._timer = setTimeout(function()  {
+	      var list = this.refs.list
+	        , item = list.next('focused', word);
+	      
+	      this._searchTerm = ''
+	      if (item) cb(item)
+	
+	    }.bind(this), this.props.delay)
+	  },
+	
+	});
+
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx = __webpack_require__(13)
+	  , dates = __webpack_require__(75);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'DatePickerInput',
+	
+	
+	  propTypes: {
+	    format:       React.PropTypes.string,
+	    parse:        React.PropTypes.func.isRequired,
+	
+	    value:        React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      textValue: ''
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    this.setState({
+	      textValue: formatDate(
+	            nextProps.value
+	          , nextProps.editing && nextProps.editFormat 
+	              ? nextProps.editFormat 
+	              : nextProps.format)
+	    })
+	  },
+	
+	  getInitialState: function(){
+	    var text = formatDate(
+	            this.props.value
+	          , this.props.editing && this.props.editFormat 
+	              ? this.props.editFormat 
+	              : this.props.format)
+	
+	    this.lastValue = text
+	    return {
+	      textValue: text
+	    }
+	  },
+	
+	  render: function(){
+	    var value = this.state.textValue
+	
+	    return (
+	      React.createElement("input", React.__spread({},  
+	        this.props, 
+	        {type: "text", 
+	        className: cx({'rw-input': true }), 
+	        value: value, 
+	        'aria-disabled': this.props.disabled, 
+	        'aria-readonly': this.props.readOnly, 
+	        disabled: this.props.disabled, 
+	        readOnly: this.props.readOnly, 
+	        onChange: this._change, 
+	        onBlur: chain(this.props.blur, this._blur, this)}))
+	    )
+	  },
+	
+	  _change: function(e){
+	    this.setState({ textValue: e.target.value });
+	  },
+	
+	  _blur: function(e){
+	    var val = e.target.value 
+	    
+	    //console.log('blur', val, e.target, '\nlast', this.lastValue)
+	
+	    if ( val === this.lastValue) return
+	
+	    this.lastValue = val;
+	    this.props.onChange(this.props.parse(val), val);
+	    
+	  },
+	
+	  focus: function(){
+	    this.getDOMNode().focus()
+	  }
+	
+	});
+	
+	function isValid(d) {
+	  return !isNaN(d.getTime());
+	}
+	
+	function formatDate(date, format){
+	  var val = ''
+	
+	  if ( (date instanceof Date) && isValid(date) )
+	    val = dates.format(date, format)
+	
+	  return val;
+	}
+	
+	function chain(a,b, thisArg){
+	  return function(){
+	    a && a.apply(thisArg, arguments)
+	    b && b.apply(thisArg, arguments)
+	  }
+	}
+
+/***/ },
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(Buffer) {//  Chance.js 0.7.1
@@ -18165,1921 +20123,7 @@
 	    }
 	})();
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97).Buffer))
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var has = Object.prototype.hasOwnProperty
-	  , transitionTiming, transitionDuration
-	  , transitionProperty, transitionDelay
-	  , notSupported, endEvent
-	  , prefix = ''
-	  , el = document.createElement('div')
-	  , reset = {}
-	  , transform ='transform'
-	  , transitions = {
-	      O:'otransitionend',
-	      Moz:'transitionend',
-	      Webkit:'webkitTransitionEnd'
-	    };
-	
-	var TRANSLATION_MAP = { 
-	      left: 'translateX', right: 'translateX'
-	    , top: 'translateY', bottom: 'translateY'}
-	
-	for(var vendor in transitions) if( has.call(transitions, vendor) )
-	{
-	  if (el.style[vendor + 'TransitionProperty'] !== undefined) {
-	    prefix = '-' + vendor.toLowerCase() + '-'
-	    endEvent = transitions[vendor];
-	    break
-	  }
-	}
-	
-	if (!endEvent && el.style.transitionProperty !== undefined)
-	  endEvent = 'transitionend'
-	
-	notSupported = !endEvent
-	
-	transform = prefix + transform
-	
-	reset[transitionProperty = prefix + 'transition-property'] =
-	reset[transitionDuration = prefix + 'transition-duration'] =
-	reset[transitionDelay    = prefix + 'transition-delay'] =
-	reset[transitionTiming   = prefix + 'transition-timing-function'] = ''
-	
-	var DOM = module.exports = {
-	
-	  width: function(node, client){
-	    var win = getWindow(node)
-	    return win ? win.innerWidth : client ? node.clientWidth : DOM.offset(node).width
-	  },
-	
-	  height: function(node, client){
-	    var win = getWindow(node)
-	    return win ? win.innerHeight : client ? node.clientHeight : DOM.offset(node).height
-	  },
-	
-	  hasFocus: function(node){
-	    var doc = node.ownerDocument
-	
-	    if ( doc.activeElement == null) return false
-	    return doc.activeElement === node
-	  },
-	
-	  offset: function (node) {
-	    var doc     = node.ownerDocument
-	      , docElem = doc && doc.documentElement
-	      , box     = { top: 0, left: 0 };
-	
-	    if ( !docElem ) return
-	
-	    if ( !DOM.contains(docElem, node))
-	      return box
-	
-	    if ( node.getBoundingClientRect !== undefined )
-	      box = node.getBoundingClientRect();
-	
-	    return {
-	      top: box.top + window.pageYOffset - docElem.clientTop,
-	      left: box.left + window.pageXOffset - docElem.clientLeft,
-	      width: box.width || node.offsetWidth,
-	      height: box.height || node.offsetHeight,
-	    };
-	  },
-	
-	  css: function(node, property, value){
-	      var css = ''
-	        , props = property;
-	
-	      if ( typeof property === 'string') {
-	        if ( value === undefined)
-	          return node.style[camelize(property)] || getComputedStyle(node).getPropertyValue(property)
-	        else
-	          (props = {})[property] = value
-	      }
-	
-	      for(var key in props) if ( has.call(props, key) ) 
-	      {
-	        !props[key] && props[key] !== 0
-	          ? node.style.removeProperty(dasherize(key))
-	          : (css += dasherize(key) + ':' + props[key] + ';')
-	      }
-	
-	      node.style.cssText += ';' + css
-	  },
-	
-	  contains: (function(){
-	    var root = document.documentElement
-	
-	    return (root && root.contains)
-	      ? function(context, node){ return context.contains(node); }
-	      : (root && root.compareDocumentPosition)
-	          ? function(context, node){
-	            return context === node || !!(context.compareDocumentPosition(node) & 16);
-	          }
-	          : function(context, node){
-	            if (node) do {
-	              if (node === context) return true;
-	            } while ((node = node.parentNode));
-	
-	            return false;
-	          }
-	  })(),
-	
-	  scrollParent: function(node){
-	    var position = DOM.css(node, "position" )
-	      , excludeStatic = position === "absolute";
-	
-	    if (position === 'fixed') 
-	      return node.ownerDocument || document
-	
-	    while ( (node = node.parentNode) && node.nodeType !== 9){
-	      var isStatic = excludeStatic && DOM.css(node, "position" ) === "static"
-	        , style    = DOM.css(node, 'overflow') 
-	                   + DOM.css(node, 'overflow-y') 
-	                   + DOM.css(node, 'overflow-x');
-	
-	      if (isStatic) continue
-	      if ( (/(auto|scroll)/).test(style) && DOM.height(node) < node.scrollHeight )
-	        return node
-	    }
-	
-	    return node.ownerDocument || document
-	  },
-	
-	  scrollTop: function(node, val){
-	    var win = getWindow(node);
-	
-	    if ( val === undefined )
-	      return win 
-	        ? ('pageYOffset' in win) 
-	          ? win.pageYOffset
-	          : win.document.documentElement.scrollTop 
-	        : node.scrollTop;
-	    
-	    if ( win ) 
-	      win.scrollTo(('pageXOffset' in win) 
-	        ? win.pageXOffset 
-	        : win.document.documentElement.scrollLeft, val)
-	    else       
-	      node.scrollTop = val
-	  },
-	
-	
-	  on: function(node, eventName, handler){
-	    if (node.addEventListener)
-	      node.addEventListener(eventName, handler, false);
-	
-	    else if (node.attachEvent)
-	      node.attachEvent('on' + eventName, handler);
-	
-	    else
-	      node['on' + eventName] = handler;
-	  },
-	
-	  off: function(node, eventName, handler){
-	    if (node.addEventListener)
-	      node.removeEventListener(eventName, handler, false);
-	    else if (node.attachEvent)
-	      node.detachEvent('on' + eventName, handler);
-	    else
-	      node['on' + eventName] = null;
-	  },
-	
-	  trigger: function(node, type){
-	    var event = document.createEvent('Events')
-	    event.initEvent(type, true, true)
-	    node.dispatchEvent(event);
-	  },
-	
-	  /* code in part from: Zepto 1.1.4 | zeptojs.com/license */
-	  // super lean animate function for transitions
-	  // doesn't support translations to keep it matching the jquery API
-	  animate: function(node, properties, duration, easing, callback){
-	    var cssProperties = []
-	      , fakeEvent = { target: node, currentTarget: node }
-	      , cssValues = {}
-	      , transforms =''
-	      , fired;
-	
-	    if ( typeof easing === 'function' )
-	      callback = easing, easing = null
-	
-	    if ( notSupported )           duration = 0
-	    if ( duration === undefined ) duration = 200
-	
-	    for(var key in properties) if ( has.call(properties, key) ) {
-	      if( /(top|bottom)/.test(key) ) 
-	        transforms += TRANSLATION_MAP[key] +'(' + properties[key] + ') '
-	      else{
-	        cssValues[key] = properties[key]
-	        cssProperties.push(dasherize(key))
-	      }
-	    }
-	
-	    if (transforms) {
-	      cssValues[transform] = transforms
-	      cssProperties.push(transform)
-	    }
-	
-	    if (duration > 0 ) {
-	      cssValues[transitionProperty] = cssProperties.join(', ')
-	      cssValues[transitionDuration] = (duration / 1000) + 's'
-	      cssValues[transitionDelay]    = 0 + 's'
-	      cssValues[transitionTiming]   = easing || 'linear'
-	
-	      DOM.on(node, endEvent, done)
-	
-	      setTimeout(function(){
-	        if (!fired) done(fakeEvent)
-	      }, duration + 25)
-	    }
-	
-	    // trigger page reflow
-	    node.clientLeft
-	
-	    DOM.css(node, cssValues)
-	
-	    if (duration <= 0)
-	      setTimeout(done.bind(null, fakeEvent), 0)
-	
-	    function done(event) {
-	      if (event.target !== event.currentTarget) return
-	
-	      fired = true
-	
-	      DOM.off(event.target, endEvent, done)
-	      DOM.css(node, reset)
-	      callback && callback.call(this)
-	    }
-	  }
-	}
-	
-	
-	function getWindow( node ) {
-	  return node === node.window
-	    ? node : node.nodeType === 9 && node.defaultView;
-	}
-	
-	function camelize(str){
-	  return str.replace(/-+(.)?/g, function(match, chr){ return chr ? chr.toUpperCase() : '' })
-	}
-	
-	function dasherize(str) {
-	  return str.replace(/[A-Z]/g, function(char, index) {
-	    return (index !== 0 ? '-' : '') + char.toLowerCase();
-	  });
-	}
-	
-	function getComputedStyle(node) {
-	  return node.ownerDocument.defaultView.opener
-	    ? node.ownerDocument.defaultView.getComputedStyle( node, null )
-	    : window.getComputedStyle(node, null);
-	}
-
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var common = {
-	      eq:   function(a, b){ return a === b },
-	      neq:  function(a, b){ return a !== b },
-	      gt:   function(a, b){ return a > b   },
-	      gte:  function(a, b){ return a >= b  },
-	      lt:   function(a, b){ return a < b   },
-	      lte:  function(a, b){ return a <= b  },
-	
-	      contains: function(a, b){
-	        return a.indexOf(b) !== -1
-	      },
-	
-	      startsWith: function(a, b) {
-	        return a.lastIndexOf(b, 0) === 0;
-	      },
-	
-	      endsWith: function(a, b) {
-	        var pos = a.length - b.length
-	          , lastIndex = a.indexOf(b, pos);
-	
-	        return  lastIndex !== -1 && lastIndex === pos;
-	      }
-	    }
-	
-	module.exports = common
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  render: function(){
-	  	var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1});
-	
-	    return (
-	      React.createElement("button", React.__spread({},  props, {type: "button", className: className + ' rw-btn'}), 
-	        this.props.children
-	      )
-	  	)
-	  }
-	})
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , caretPos = __webpack_require__(92);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    value:        React.PropTypes.string,
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	
-	  // hello
-	  componentDidUpdate: function() {
-	    var input = this.getDOMNode()
-	      , val = this.props.value;
-	
-	    if ( this.isSuggesting() ){
-	      var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
-	        , end   = val.length - start
-	
-	      if ( start >= 0) {
-	        caretPos(input, start, start + end)
-	      }
-	    }
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: ''
-	    }
-	  },
-	
-	  render: function(){
-	    return (
-	      React.createElement("input", React.__spread({},  
-	        this.props , 
-	        {type: "text", 
-	        className: this.props.className + ' rw-input', 
-	        onKeyDown: this.props.onKeyDown, 
-	        onChange: this._change, 
-	        value: this.props.value == null ? '' : this.props.value}))
-	    )
-	  },
-	
-	  isSuggesting: function(){
-	    var val = this.props.value
-	      , isSuggestion = this._last != null
-	          && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
-	
-	    return this.props.suggest && isSuggestion
-	  },
-	
-	  accept: function(removeCaret){
-	    var val = this.getDOMNode().value || ''
-	      , end = val.length;
-	
-	    this._last = null
-	    removeCaret && caretPos(this.getDOMNode(), end, end)
-	  },
-	
-	  _change: function(e){
-	    var val = e.target.value
-	    this._last = val;
-	    this.props.onChange(e, val)
-	  },
-	
-	  focus: function(){
-	    this.getDOMNode().focus()
-	  }
-	});
-
-
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Btn = __webpack_require__(68);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    label:          React.PropTypes.string.isRequired,
-	    labelId:        React.PropTypes.string,
-	
-	    upDisabled:     React.PropTypes.bool.isRequired,
-	    prevDisabled:   React.PropTypes.bool.isRequired,
-	    nextDisabled:   React.PropTypes.bool.isRequired,
-	    onViewChange:   React.PropTypes.func.isRequired,
-	    onMoveLeft:     React.PropTypes.func.isRequired,
-	    onMoveRight:    React.PropTypes.func.isRequired,
-	
-	    messages:       React.PropTypes.shape({
-	      moveBack:     React.PropTypes.string,
-	      moveForward:  React.PropTypes.string
-	    })
-	  },
-	
-	  mixins: [
-	    __webpack_require__(85),
-	    __webpack_require__(93)
-	  ],
-	
-	  getDefaultProps: function(){
-	    return {
-	      messages: {
-	        moveBack:     'navigate back',
-	        moveForward:  'navigate forward',
-	      }
-	    }
-	  },
-	
-	  render: function(){
-	    var rtl = this.isRtl();
-	
-	    return (
-	      React.createElement("div", {className: "rw-header"}, 
-	        React.createElement(Btn, {className: "rw-btn-left", 
-	          onClick: this.props.onMoveLeft, 
-	          disabled: this.props.prevDisabled, 
-	          'aria-disabled': this.props.prevDisabled, 
-	          title: this.props.moveBack}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-view", 
-	          id: this.props.labelId, 
-	          onClick: this.props.onViewChange, 
-	          disabled: this.props.upDisabled, 
-	          'aria-disabled': this.props.upDisabled}, 
-	           this.props.label
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-right", 
-	          onClick: this.props.onMoveRight, 
-	          disabled: this.props.nextDisabled, 
-	          'aria-disabled': this.props.nextDisabled, 
-	          title: this.props.moveForward}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
-	        )
-	      )
-	    )
-	  }
-	})
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(75)
-	  , directions = __webpack_require__(76).directions
-	  , _   = __webpack_require__(14)
-	  , Btn = __webpack_require__(68);
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'MonthView',
-	
-	  mixins: [
-	    __webpack_require__(84),
-	    __webpack_require__(93),
-	    __webpack_require__(94)('month', 'day'),
-	  ],
-	
-	  propTypes: {
-	    culture:          React.PropTypes.array,
-	    value:            React.PropTypes.instanceOf(Date),
-	    selectedDate:     React.PropTypes.instanceOf(Date),
-	    min:              React.PropTypes.instanceOf(Date),
-	    max:              React.PropTypes.instanceOf(Date),
-	
-	    format:           React.PropTypes.string,
-	
-	    onChange:         React.PropTypes.func.isRequired, //value is chosen
-	    onMoveLeft:       React.PropTypes.func,
-	    onMoveRight:      React.PropTypes.func
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , month = dates.visibleDays(this.props.value)
-	      , rows  = _.chunk(month, 7 );
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {role: "grid", 
-	        tabIndex: this.props.disabled ? '-1' : "0", 
-	        className: "rw-calendar-grid", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("thead", null, 
-	          React.createElement("tr", null,  this._headers() )
-	        ), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	    
-	    return (
-	      React.createElement("tr", {key: 'week_' + i}, 
-	       row.map( function(day, idx)  {
-	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
-	          , selected = dates.eq(day, this.props.selectedDate, 'day');
-	
-	        return !dates.inRange(day, this.props.min, this.props.max)
-	            ? React.createElement("td", {key: 'day_' + idx, className: "rw-empty-cell"}, " ")
-	            : (React.createElement("td", {key: 'day_' + idx}, 
-	                React.createElement(Btn, {
-	                  tabIndex: "-1", 
-	                  onClick: this.props.onChange.bind(null, day), 
-	                  'aria-selected': selected, 
-	                  'aria-disabled': this.props.disabled, 
-	                  disabled: this.props.disabled, 
-	                  className: cx({
-	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
-	                    'rw-state-focus':    focused,
-	                    'rw-state-selected': selected,
-	                  }), 
-	                  id: focused ? id : undefined}, 
-	                  dates.format(day, 'dd')
-	                )
-	              ))
-	      }.bind(this))
-	      )
-	    )
-	  },
-	
-	
-	  _headers: function(format){
-	    var days = dates.shortDaysOfWeek(format);
-	
-	    return days.map( function(day, i)  
-	      {return React.createElement("th", {key: "header_" + i}, day);})
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'day', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'day',min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -1, 'week', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 1, 'week', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	
-	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
-	}
-
-
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(75)
-	  , directions = __webpack_require__(76).directions
-	  , Btn        = __webpack_require__(68)
-	  , _          = __webpack_require__(14)
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'YearView',
-	
-	  mixins: [
-	    __webpack_require__(84),
-	    __webpack_require__(93),
-	    __webpack_require__(94)('year', 'month')
-	  ],
-	
-	  propTypes: {
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	
-	  render: function(){
-	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , months = dates.monthsInYear(dates.year(this.props.value))
-	      , rows = _.chunk(months, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},   props , 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        ref: "table", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item');
-	    
-	    return (
-	      React.createElement("tr", {key: i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
-	          , selected = dates.eq(date, this.props.value,  'month');
-	
-	        return dates.inRange(date, this.props.min, this.props.max, 'month')
-	          ? (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id: focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected
-	                })}, 
-	                 dates.format(date, dates.formats.MONTH_NAME_ABRV) 
-	              )
-	            ))
-	          : React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	      }.bind(this))
-	    ))
-	  },
-	
-	  focus: function(){
-	    this.refs.table.getDOMNode().focus();
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'month', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'month', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'month', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'month', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
-	}
-
-
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _ = __webpack_require__(14)
-	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(75)
-	  , directions = __webpack_require__(76).directions
-	  , Btn = __webpack_require__(68); 
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'DecadeView',
-	
-	  mixins: [
-	    __webpack_require__(84),
-	    __webpack_require__(85),
-	    __webpack_require__(93),
-	    __webpack_require__(94)('decade', 'year')
-	  ],
-	
-	  propTypes: {
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , years = getDecadeYears(this.props.value)
-	      , rows  = _.chunk(years, 4)
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	
-	        React.createElement("tbody", null, 
-	          rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
-	          , selected = dates.eq(date, this.props.value,  'year');
-	
-	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':      !inDecade(date, this.props.value),
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected,
-	                })}, 
-	                 dates.format(date, dates.formats.YEAR) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'year', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'year', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'year', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'year', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function inDecade(date, start){
-	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
-	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
-	}
-	
-	function getDecadeYears(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
-	
-	  return days.map( 
-	    function(i)  {return date = dates.add(date, 1, 'year');})
-	}
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
-	}
-
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(75)
-	  , directions = __webpack_require__(76).directions
-	  , Btn        = __webpack_require__(68)
-	  , _          = __webpack_require__(14); //omit
-	
-	var opposite = {
-	  LEFT:  directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CenturyView',
-	
-	  mixins: [
-	    __webpack_require__(84),
-	    __webpack_require__(85),
-	    __webpack_require__(93),
-	    __webpack_require__(94)('century', 'decade')
-	  ],
-	
-	  propTypes: {
-	    value:         React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
-	      , years = getCenturyDecades(this.props.value)
-	      , rows  = _.chunk(years, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
-	          , selected = dates.eq(date, this.props.value,  'decade')
-	          , d        = inRangeDate(date, this.props.min, this.props.max);
-	
-	        return !inRange(date, this.props.min, this.props.max)
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
-	                tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':       !inCentury(date, this.props.value),
-	                  'rw-state-focus':     focused,
-	                  'rw-state-selected':  selected,
-	                 })}, 
-	                 label(date) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'decade', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'decade', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'decade', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'decade', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function label(date){
-	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
-	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
-	}
-	
-	function inRangeDate(decade, min, max){
-	  return dates.max( dates.min(decade, max), min)
-	}
-	
-	function inRange(decade, min, max){
-	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
-	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
-	}
-	
-	function inCentury(date, start){
-	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
-	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
-	}
-	
-	function getCenturyDecades(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
-	
-	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
-	}
-	
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
-	}
-
-
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var dateMath = __webpack_require__(40)
-	  , globalize = __webpack_require__(98)
-	  , _ = __webpack_require__(14); //extend
-	
-	var dates = module.exports = _.extend(dateMath, {
-	  // wrapper methods for isolating globalize use throughout the lib
-	  // looking forward towards the 1.0 release
-	  culture: function(){
-	    return globalize.culture()
-	  },
-	
-	  startOfWeek: function(date){
-	    var culture = globalize.culture()
-	
-	    if (!culture || !culture.calendar)
-	      return 0
-	
-	    return culture.calendar.firstDay || 0
-	  },
-	
-	  parse: function(date, format, culture){
-	    return globalize.parseDate(date, format, culture)
-	  },
-	
-	  format: function(date, format, culture){
-	    return globalize.format(date, format, culture)
-	  },
-	  //-------------------------------------
-	
-	  shortDaysOfWeek: function (){
-	    var culture = dates.culture()
-	      , start = dates.startOfWeek()
-	      , days, front;
-	
-	    if (culture && culture.calendar){
-	      days = culture.calendar.days.namesShort.slice()
-	
-	      if(start === 0 ) 
-	        return days
-	      
-	      front = days.splice(0, start)
-	      days  = days.concat(front)
-	      return days
-	    }
-	  },
-	
-	  daysOfWeek: function(date, format){
-	    var range = [0,1,2,3,4,5,6]
-	    if (arguments.length === 1){
-	      format = date
-	      date = new Date()
-	    }
-	
-	    format = format || 'do'
-	
-	    return range.map(function(i)  {return dates.format(dates.weekday(date, i), format);} )
-	  },
-	
-	  months: function(date, format){
-	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	
-	    if (arguments.length === 1){
-	      format = date
-	      date = new Date()
-	    }
-	    format = format || dates.formats.DAY_NAME_ABRV
-	
-	    return months.map( function(i)  {return dates.format(dates.month(date, i), format);})
-	  },
-	
-	  monthsInYear: function(year){
-	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	      , date   = new Date(year, 0, 1)
-	
-	    return  months.map( function(i)  {return dates.month(date, i);})
-	  },
-	
-	  firstOfDecade: function(date){
-	    var decade = dates.year(date) % 10
-	
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfDecade: function(date){
-	    return dates.add(dates.firstOfDecade(date), 9, 'year')
-	  },
-	
-	  firstOfCentury: function(date){
-	    var decade = dates.year(date) % 100
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfCentury: function(date){
-	    return dates.add(dates.firstOfCentury(date), 99, 'year')
-	  },
-	
-	  firstVisibleDay: function(date){
-	    var firstOfMonth = dates.startOf(date, 'month')
-	    return dates.startOf(firstOfMonth, 'week');
-	  },
-	
-	  lastVisibleDay: function(date){
-	    var endOfMonth = dates.endOf(date, 'month')
-	    return dates.endOf(endOfMonth, 'week');
-	  },
-	
-	  visibleDays: function(date){
-	    var current = dates.firstVisibleDay(date)
-	      , last = dates.lastVisibleDay(date)
-	      , days = [];
-	
-	    while( dates.lte(current, last, 'day') ) {
-	      days.push(current)
-	      current = dates.add(current, 1, 'day')
-	    }
-	
-	    return days
-	  },
-	
-	  merge: function(date, time){
-	    if( time == null && date == null)
-	      return null
-	
-	    if( time == null) time = new Date()
-	    if( date == null) date = new Date()
-	
-	    date = dates.startOf(date, 'day')
-	    date = dates.hours(date,        dates.hours(time))
-	    date = dates.minutes(date,      dates.minutes(time))
-	    date = dates.seconds(date,      dates.seconds(time))
-	    return dates.milliseconds(date, dates.milliseconds(time))
-	  },
-	
-	  sameMonth: function(dateA, dateB){
-	    return dates.eq(dateA, dateB, 'month')
-	  },
-	
-	  today: function() {
-	    return this.startOf(new Date(), 'day')
-	  },
-	
-	  yesterday: function() {
-	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
-	  },
-	
-	  tomorrow: function() {
-	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
-	  },
-	
-	  formats: {
-	    DAY_OF_MONTH:    'dd',
-	    DAY_NAME_SHORT:  null,
-	    MONTH_NAME_ABRV: 'MMM',
-	    MONTH_YEAR:      'MMMM yyyy',
-	    YEAR:            'yyyy'
-	  }
-	
-	})
-
-/***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(14); //object
-	
-	var views = {
-	    MONTH:   'month',
-	    YEAR:    'year',
-	    DECADE:  'decade',
-	    CENTURY: 'century'
-	  }
-	
-	module.exports = {
-	
-	  directions: {
-	    LEFT:  'LEFT',
-	    RIGHT: 'RIGHT',
-	    UP:    'UP',
-	    DOWN:  'DOWN'
-	  },
-	
-	  datePopups: {
-	    TIME:     'time',
-	    CALENDAR: 'calendar'
-	  },
-	
-	  calendarViews: views,
-	
-	  calendarViewHierarchy: _.object([
-	    [views.MONTH,   views.YEAR],
-	    [views.YEAR,    views.DECADE],
-	    [views.DECADE,  views.CENTURY]
-	  ]),
-	
-	  calendarViewUnits: _.object([
-	    [views.MONTH,   views.DAY],
-	    [views.YEAR,    views.MONTH],
-	    [views.DECADE,  views.YEAR],
-	    [views.CENTURY, views.DECADE],
-	  ])
-	}
-
-
-/***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , setter  = __webpack_require__(95)
-	  , globalize = __webpack_require__(98);
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'NumberPickerInput', 
-	
-	  propTypes: {
-	    value:        React.PropTypes.number,
-	    format:       React.PropTypes.string,
-	    min:          React.PropTypes.number,
-	    
-	    onChange:     React.PropTypes.func.isRequired,
-	    onKeyDown:    React.PropTypes.func,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: null,
-	      format: 'd',
-	      editing: false,
-	    }
-	  },
-	
-	  getInitialState: function() {
-	    var value = this.props.editing 
-	          ? this.props.value
-	          : globalize.format(this.props.value, this.props.format)
-	
-	    return { 
-	      stringValue: value
-	    }
-	  },
-	  
-	  componentWillReceiveProps: function(nextProps) {
-	    var value = nextProps.editing 
-	          ? nextProps.value
-	          : globalize.format(nextProps.value, nextProps.format)
-	
-	    if ( isNaN(nextProps.value) ) 
-	      value = ''
-	
-	    this.current(value)
-	  },
-	
-	  render: function(){
-	    var value = this.state.stringValue;
-	
-	    return (
-	      React.createElement("input", React.__spread({},  this.props, 
-	        {type: "text", 
-	        className: "rw-input", 
-	        onKeyDown: this.props.onKeyDown, 
-	        onChange: this._change, 
-	        onBlur: this._finish, 
-	        'aria-disabled': this.props.disabled, 
-	        'aria-readonly': this.props.readOnly, 
-	        disabled: this.props.disabled, 
-	        readOnly: this.props.readOnly, 
-	        value: value}))
-	    )
-	  },
-	
-	  _change: function(e){
-	    var val = e.target.value
-	      , number = +e.target.value
-	      , isNull = val !== 0 && !val
-	      , hasMin = isFinite(this.props.min)
-	
-	    //console.log(hasMin, this.props.min)
-	    //a null value is only possible when there is no min
-	    if(!hasMin && isNull)
-	      return this.props.onChange(null)
-	
-	    if(this.isValid(number) && number !== this.props.value)
-	      return this.props.onChange(number)
-	
-	    //console.log(val !== 0 && !val)
-	    this.current(e.target.value)
-	  },
-	
-	  _finish: function(e){
-	    var number = +this.state.stringValue
-	
-	    // if number is below the min
-	    // we need to flush low values eventually, onBlur is definativly no typing
-	    if(!isNaN(number) && number < this.props.min) {
-	      this.props.onChange(number)
-	    }
-	  },
-	
-	  isValid: function(value) {
-	    var num = +value;
-	
-	    if(isNaN(num)) return false
-	    return num >= this.props.min
-	  },
-	
-	  //this intermediate state is for when one runs into the decimal or are typing the number
-	  current: setter('stringValue'),
-	
-	});
-
-
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(75)
-	  , List = __webpack_require__(63)
-	  , CustomPropTypes  = __webpack_require__(61)
-	  , _ = __webpack_require__(14) // omit
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'TimeList',
-	
-	  mixins: [
-	    __webpack_require__(88),
-	    __webpack_require__(90)('selectedIndex'),
-	    __webpack_require__(90)('focusedIndex')
-	  ],
-	
-	  propTypes: {
-	    value:          React.PropTypes.instanceOf(Date),
-	    min:            React.PropTypes.instanceOf(Date),
-	    max:            React.PropTypes.instanceOf(Date),
-	    step:           React.PropTypes.number,
-	    itemComponent:  CustomPropTypes.elementType,
-	    onSelect:       React.PropTypes.func,
-	    preserveDate:   React.PropTypes.bool,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      step:   30,
-	      format: 't',
-	      onSelect: function(){},
-	      preserveDate: true,
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    var idx = this._selectedIndex(this._data(), this.props.value)
-	
-	    return { focusedIndex: idx === -1 ? 0 : idx}
-	  },
-	
-	  render: function(){
-	    var times = this._data()
-	      , idx = this._selectedIndex(times, this.props.value);
-	
-	    return (
-	      React.createElement(List, React.__spread({},  _.omit(this.props, 'value'), 
-	        {ref: "list", 
-	        data: times, 
-	        textField: "label", 
-	        valueField: "date", 
-	        selectedIndex: idx, 
-	        focusedIndex: this.state.focusedIndex, 
-	        listItem: this.props.itemComponent, 
-	        onSelect: this.props.onSelect}))
-	    )
-	
-	  },
-	
-	  _selectedIndex: function(times, date){
-	    var roundTo = 1000 * 60 * this.props.step
-	      , idx = -1, label;
-	
-	    if( !date) return 0
-	
-	    date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
-	    label = dates.format(date, this.props.format)
-	
-	    times.every( function(time, i)  {
-	      if( time.label === label ) return (idx = i), false
-	      return true
-	    })
-	
-	    return idx
-	  },
-	
-	  _data: function(){
-	    var times  = [], i = 0
-	      , values = this._dateValues()
-	      , start  = values.min
-	      , startDay = dates.date(start);
-	
-	    // debugger;
-	    while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
-	      i++
-	      times.push({ date: start, label: dates.format(start, this.props.format) })
-	      start = dates.add(start, this.props.step || 30, 'minutes')
-	    }
-	    return times
-	  },
-	
-	  _dateValues: function(){
-	    var value = this.props.value || dates.today()
-	      , useDate = this.props.preserveDate
-	      , min = this.props.min
-	      , max = this.props.max
-	      , start, end;
-	
-	    //compare just the time regradless of whether they fall on the same day
-	    if(!useDate) {
-	      start = dates.startOf(dates.merge(new Date, min), 'minutes')
-	      end   = dates.startOf(dates.merge(new Date, max), 'minutes')
-	
-	      if( dates.lte(end, start) && dates.gt(max, min, 'day'))
-	        end = dates.tomorrow()
-	
-	      return {
-	        min: start,
-	        max: end
-	      }
-	    }
-	
-	    //date parts are equal
-	    return {
-	      min: dates.eq(value, min, 'day') ? min : dates.today(),
-	      max: dates.eq(value, max, 'day') ? min : dates.tomorrow()
-	    }
-	
-	  },
-	  _keyDown: function(e){
-	    var self = this
-	      , key = e.key
-	      , character = String.fromCharCode(e.keyCode);
-	
-	    if ( key === 'End' )
-	      this.setFocusedIndex(
-	        this._data().length - 1)
-	
-	    else if ( key === 'Home' )
-	      this.setFocusedIndex(0)
-	
-	    else if ( key === 'Enter' )
-	      this.props.onSelect(this._data()[this.state.focusedIndex])
-	
-	    else if ( key === 'ArrowDown' ) {
-	      e.preventDefault()
-	      this.setFocusedIndex(
-	        this.nextFocusedIndex())
-	    }
-	    else if ( key === 'ArrowUp' ) {
-	      e.preventDefault()
-	      this.setFocusedIndex(
-	        this.prevFocusedIndex())
-	    }
-	    else {
-	      e.preventDefault()
-	      this.search(character, function(word){
-	        self.setFocusedIndex(
-	          this.findNextWordIndex(word, self.state.focusedIndex))
-	      })
-	    }
-	  }
-	
-	});
-
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx = __webpack_require__(13)
-	  , dates = __webpack_require__(75);
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'DatePickerInput',
-	
-	
-	  propTypes: {
-	    format:       React.PropTypes.string,
-	    parse:        React.PropTypes.func.isRequired,
-	
-	    value:        React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      textValue: ''
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    this.setState({
-	      textValue: formatDate(
-	            nextProps.value
-	          , nextProps.editing && nextProps.editFormat 
-	              ? nextProps.editFormat 
-	              : nextProps.format)
-	    })
-	  },
-	
-	  getInitialState: function(){
-	    var text = formatDate(
-	            this.props.value
-	          , this.props.editing && this.props.editFormat 
-	              ? this.props.editFormat 
-	              : this.props.format)
-	
-	    this.lastValue = text
-	    return {
-	      textValue: text
-	    }
-	  },
-	
-	  render: function(){
-	    var value = this.state.textValue
-	
-	    return (
-	      React.createElement("input", React.__spread({},  
-	        this.props, 
-	        {type: "text", 
-	        className: cx({'rw-input': true }), 
-	        value: value, 
-	        'aria-disabled': this.props.disabled, 
-	        'aria-readonly': this.props.readOnly, 
-	        disabled: this.props.disabled, 
-	        readOnly: this.props.readOnly, 
-	        onChange: this._change, 
-	        onBlur: chain(this.props.blur, this._blur, this)}))
-	    )
-	  },
-	
-	  _change: function(e){
-	    this.setState({ textValue: e.target.value });
-	  },
-	
-	  _blur: function(e){
-	    var val = e.target.value 
-	    
-	    //console.log('blur', val, e.target, '\nlast', this.lastValue)
-	
-	    if ( val === this.lastValue) return
-	
-	    this.lastValue = val;
-	    this.props.onChange(this.props.parse(val), val);
-	    
-	  },
-	
-	  focus: function(){
-	    this.getDOMNode().focus()
-	  }
-	
-	});
-	
-	function isValid(d) {
-	  return !isNaN(d.getTime());
-	}
-	
-	function formatDate(date, format){
-	  var val = ''
-	
-	  if ( (date instanceof Date) && isValid(date) )
-	    val = dates.format(date, format)
-	
-	  return val;
-	}
-	
-	function chain(a,b, thisArg){
-	  return function(){
-	    a && a.apply(thisArg, arguments)
-	    b && b.apply(thisArg, arguments)
-	  }
-	}
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	module.exports = React.createClass({
-	  
-	  displayName: 'MultiselectInput',
-	
-	  propTypes: {
-	    value:        React.PropTypes.string,
-	    onChange:     React.PropTypes.func.isRequired,
-	
-	    disabled:     React.PropTypes.bool,
-	    readOnly:     React.PropTypes.bool,
-	  },
-	
-	
-	  componentDidUpdate: function() {
-	    this.props.focused && this.focus()
-	  },
-	
-	  render: function(){
-	      var value = this.props.value
-	        , placeholder = this.props.placeholder
-	        , size = Math.max((value || placeholder).length, 1);
-	
-	      return (
-	        React.createElement("input", React.__spread({},  this.props, 
-	          {type: "text", 
-	          className: "rw-input", 
-	          'aria-disabled': this.props.disabled, 
-	          'aria-readonly': this.props.readOnly, 
-	          disabled: this.props.disabled, 
-	          readOnly: this.props.readOnly, 
-	          size: size}))
-	      )
-	  },
-	
-	  focus: function(){
-	    this.getDOMNode().focus()
-	  }
-	
-	})
-
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _     = __webpack_require__(14)
-	  , cx    = __webpack_require__(13)
-	  , Btn   = __webpack_require__(68)
-	
-	module.exports = React.createClass({
-	  
-	  displayName: 'MultiselectTagList',
-	
-	  mixins: [
-	    __webpack_require__(86),
-	    __webpack_require__(85)
-	  ],
-	
-	  propTypes: {
-	    value:          React.PropTypes.array,
-	
-	    valueField:     React.PropTypes.string,
-	    textField:      React.PropTypes.string,
-	
-	    valueComponent: React.PropTypes.func,
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.array,
-	                      React.PropTypes.oneOf(['disabled'])
-	                    ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.array,
-	                      React.PropTypes.oneOf(['readonly'])
-	                    ])
-	  },
-	
-	
-	  getInitialState: function(){
-	    return {
-	      focused: null
-	    }
-	  },
-	
-	  render: function(){
-	      var ValueComponent = this.props.valueComponent
-	        , props     = _.omit(this.props, ['value', 'disabled', 'readOnly'])
-	        , focusIdx  = this.state.focused
-	        , value     = this.props.value;
-	
-	      return (
-	        React.createElement("ul", React.__spread({},  props, 
-	          {className: "rw-multiselect-taglist"}), 
-	           value.map( function(item, i)  {
-	            var disabled = this.isDisabled(item)
-	              , readonly = this.isReadOnly(item);
-	
-	            return (
-	              React.createElement("li", {key: i, 
-	                  className: cx({
-	                    'rw-state-focus': !disabled && focusIdx === i,
-	                    'rw-state-disabled': disabled,
-	                    'rw-state-readonly': readonly})
-	                  }, 
-	                 ValueComponent
-	                    ? React.createElement(ValueComponent, {item: item })
-	                    : this._dataText(item), 
-	                
-	                React.createElement(Btn, {tabIndex: "-1", onClick: !(disabled || readonly) && this._delete.bind(null, item), 
-	                  'aria-disabled': disabled, 
-	                  disabled: disabled}, 
-	                  "×", React.createElement("span", {className: "rw-sr"},  "Remove " + this._dataText(item))
-	                )
-	              ))
-	          }.bind(this))
-	        )
-	      )
-	  },
-	
-	  _delete: function(val, e){
-	    this.props.onDelete(val)
-	  },
-	
-	  removeCurrent: function(){
-	    var val = this.props.value[this.state.focused];
-	
-	    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
-	      this.props.onDelete(val)
-	  },
-	
-	  isDisabled: function(val, isIdx) {
-	    if(isIdx) val = this.props.value[val]
-	
-	    return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
-	  },
-	
-	  isReadOnly: function(val, isIdx) {
-	    if(isIdx) val = this.props.value[val]
-	
-	    return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
-	  },
-	
-	  removeNext: function(){
-	    var val = this.props.value[this.props.value.length - 1];
-	
-	    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
-	      this.props.onDelete(val)
-	  },
-	
-	  clear: function(){
-	    this.setState({ focused: null })
-	  },
-	
-	  first: function(){
-	    var idx = 0
-	      , l = this.props.value.length;
-	
-	    while( idx < l && this.isDisabled(idx, true) )
-	      idx++
-	
-	    if (idx !== l)
-	      this.setState({ focused: idx })
-	  },
-	
-	  last: function(){
-	    var idx = this.props.value.length - 1;
-	
-	    while( idx > -1 && this.isDisabled(idx, true) )
-	      idx--
-	
-	    if (idx >= 0)
-	      this.setState({ focused: idx })
-	  },
-	
-	  next: function(){
-	    var nextIdx = this.state.focused + 1
-	      , l = this.props.value.length;
-	
-	    while( nextIdx < l && this.isDisabled(nextIdx, true) )
-	      nextIdx++
-	
-	    if ( this.state.focused === null )
-	      return
-	
-	    if ( nextIdx >= l )
-	      return this.clear();
-	
-	    this.setState({ focused: nextIdx })
-	  },
-	
-	  prev: function(){
-	    var nextIdx = this.state.focused;
-	
-	    if ( nextIdx === null )
-	      nextIdx = this.props.value.length
-	
-	    nextIdx--;
-	
-	    while( nextIdx > -1 && this.isDisabled(nextIdx, true) )
-	      nextIdx--
-	
-	    if ( nextIdx >= 0 )
-	      this.setState({ focused: nextIdx  })
-	  }
-	})
-
-
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var $ = __webpack_require__(66)
-	
-	module.exports = function scrollTo( selected, scrollParent ) {
-	  var offset = $.offset(selected)
-	    , poff   = { top: 0, left: 0 }
-	    , list, scrollTop, selectedTop
-	    , selectedHeight, listHeight, bottom;
-	
-	    if( !selected ) return 
-	
-	    list       = scrollParent || $.scrollParent(selected) // if we know the parent skip this step for perf (maybe)
-	    scrollTop  = $.scrollTop(list)
-	    listHeight = $.height(list, true)
-	
-	    if (!getWindow(list)) 
-	      poff = $.offset(list)
-	
-	    offset     = {
-	      top:    offset.top  - poff.top,
-	      left:   offset.left - poff.left,
-	      height: offset.height,
-	      width:  offset.width
-	    }
-	
-	    selectedHeight = offset.height
-	    selectedTop    = offset.top  + scrollTop
-	    bottom         = selectedTop + selectedHeight
-	
-	    scrollTop = scrollTop > selectedTop
-	          ? selectedTop
-	          : bottom > (scrollTop + listHeight) 
-	              ? (bottom - listHeight)
-	              : scrollTop
-	
-	    $.scrollTop(list, scrollTop)
-	}
-	
-	function getWindow( node ) {
-	  return node === node.window
-	    ? node : node.nodeType === 9 && node.defaultView;
-	}
-
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-	
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
-	
-	function assign(target, sources) {
-	  if (target == null) {
-	    throw new TypeError('Object.assign target cannot be null or undefined');
-	  }
-	
-	  var to = Object(target);
-	  var hasOwnProperty = Object.prototype.hasOwnProperty;
-	
-	  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
-	    var nextSource = arguments[nextIndex];
-	    if (nextSource == null) {
-	      continue;
-	    }
-	
-	    var from = Object(nextSource);
-	
-	    // We don't currently support accessors nor proxies. Therefore this
-	    // copy cannot throw. If we ever supported this then we must handle
-	    // exceptions and side-effects. We don't support symbols so they won't
-	    // be transferred.
-	
-	    for (var key in from) {
-	      if (hasOwnProperty.call(from, key)) {
-	        to[key] = from[key];
-	      }
-	    }
-	  }
-	
-	  return to;
-	};
-	
-	module.exports = assign;
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98).Buffer))
 
 /***/ },
 /* 84 */
@@ -20456,7 +20500,7 @@
 	
 	      if ( err && err !== true ) {
 	        if( ver[0] === 0 && ver[1] < 11 )
-	          return console.warn(err instanceof Error ? err.message : err)
+	          return void 0
 	
 	        return err
 	      }
@@ -20616,1064 +20660,6 @@
 
 /***/ },
 /* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
-	 * The buffer module from node.js, for the browser.
-	 *
-	 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
-	 * @license  MIT
-	 */
-	
-	var base64 = __webpack_require__(101)
-	var ieee754 = __webpack_require__(100)
-	var isArray = __webpack_require__(99)
-	
-	exports.Buffer = Buffer
-	exports.SlowBuffer = Buffer
-	exports.INSPECT_MAX_BYTES = 50
-	Buffer.poolSize = 8192 // not used by this implementation
-	
-	var kMaxLength = 0x3fffffff
-	
-	/**
-	 * If `Buffer.TYPED_ARRAY_SUPPORT`:
-	 *   === true    Use Uint8Array implementation (fastest)
-	 *   === false   Use Object implementation (most compatible, even IE6)
-	 *
-	 * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
-	 * Opera 11.6+, iOS 4.2+.
-	 *
-	 * Note:
-	 *
-	 * - Implementation must support adding new properties to `Uint8Array` instances.
-	 *   Firefox 4-29 lacked support, fixed in Firefox 30+.
-	 *   See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
-	 *
-	 *  - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
-	 *
-	 *  - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
-	 *    incorrect length in some situations.
-	 *
-	 * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they will
-	 * get the Object implementation, which is slower but will work correctly.
-	 */
-	Buffer.TYPED_ARRAY_SUPPORT = (function () {
-	  try {
-	    var buf = new ArrayBuffer(0)
-	    var arr = new Uint8Array(buf)
-	    arr.foo = function () { return 42 }
-	    return 42 === arr.foo() && // typed array instances can be augmented
-	        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
-	        new Uint8Array(1).subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
-	  } catch (e) {
-	    return false
-	  }
-	})()
-	
-	/**
-	 * Class: Buffer
-	 * =============
-	 *
-	 * The Buffer constructor returns instances of `Uint8Array` that are augmented
-	 * with function properties for all the node `Buffer` API functions. We use
-	 * `Uint8Array` so that square bracket notation works as expected -- it returns
-	 * a single octet.
-	 *
-	 * By augmenting the instances, we can avoid modifying the `Uint8Array`
-	 * prototype.
-	 */
-	function Buffer (subject, encoding, noZero) {
-	  if (!(this instanceof Buffer))
-	    return new Buffer(subject, encoding, noZero)
-	
-	  var type = typeof subject
-	
-	  // Find the length
-	  var length
-	  if (type === 'number')
-	    length = subject > 0 ? subject >>> 0 : 0
-	  else if (type === 'string') {
-	    if (encoding === 'base64')
-	      subject = base64clean(subject)
-	    length = Buffer.byteLength(subject, encoding)
-	  } else if (type === 'object' && subject !== null) { // assume object is array-like
-	    if (subject.type === 'Buffer' && isArray(subject.data))
-	      subject = subject.data
-	    length = +subject.length > 0 ? Math.floor(+subject.length) : 0
-	  } else
-	    throw new TypeError('must start with number, buffer, array or string')
-	
-	  if (this.length > kMaxLength)
-	    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
-	      'size: 0x' + kMaxLength.toString(16) + ' bytes')
-	
-	  var buf
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    // Preferred: Return an augmented `Uint8Array` instance for best performance
-	    buf = Buffer._augment(new Uint8Array(length))
-	  } else {
-	    // Fallback: Return THIS instance of Buffer (created by `new`)
-	    buf = this
-	    buf.length = length
-	    buf._isBuffer = true
-	  }
-	
-	  var i
-	  if (Buffer.TYPED_ARRAY_SUPPORT && typeof subject.byteLength === 'number') {
-	    // Speed optimization -- use set if we're copying from a typed array
-	    buf._set(subject)
-	  } else if (isArrayish(subject)) {
-	    // Treat array-ish objects as a byte array
-	    if (Buffer.isBuffer(subject)) {
-	      for (i = 0; i < length; i++)
-	        buf[i] = subject.readUInt8(i)
-	    } else {
-	      for (i = 0; i < length; i++)
-	        buf[i] = ((subject[i] % 256) + 256) % 256
-	    }
-	  } else if (type === 'string') {
-	    buf.write(subject, 0, encoding)
-	  } else if (type === 'number' && !Buffer.TYPED_ARRAY_SUPPORT && !noZero) {
-	    for (i = 0; i < length; i++) {
-	      buf[i] = 0
-	    }
-	  }
-	
-	  return buf
-	}
-	
-	Buffer.isBuffer = function (b) {
-	  return !!(b != null && b._isBuffer)
-	}
-	
-	Buffer.compare = function (a, b) {
-	  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b))
-	    throw new TypeError('Arguments must be Buffers')
-	
-	  var x = a.length
-	  var y = b.length
-	  for (var i = 0, len = Math.min(x, y); i < len && a[i] === b[i]; i++) {}
-	  if (i !== len) {
-	    x = a[i]
-	    y = b[i]
-	  }
-	  if (x < y) return -1
-	  if (y < x) return 1
-	  return 0
-	}
-	
-	Buffer.isEncoding = function (encoding) {
-	  switch (String(encoding).toLowerCase()) {
-	    case 'hex':
-	    case 'utf8':
-	    case 'utf-8':
-	    case 'ascii':
-	    case 'binary':
-	    case 'base64':
-	    case 'raw':
-	    case 'ucs2':
-	    case 'ucs-2':
-	    case 'utf16le':
-	    case 'utf-16le':
-	      return true
-	    default:
-	      return false
-	  }
-	}
-	
-	Buffer.concat = function (list, totalLength) {
-	  if (!isArray(list)) throw new TypeError('Usage: Buffer.concat(list[, length])')
-	
-	  if (list.length === 0) {
-	    return new Buffer(0)
-	  } else if (list.length === 1) {
-	    return list[0]
-	  }
-	
-	  var i
-	  if (totalLength === undefined) {
-	    totalLength = 0
-	    for (i = 0; i < list.length; i++) {
-	      totalLength += list[i].length
-	    }
-	  }
-	
-	  var buf = new Buffer(totalLength)
-	  var pos = 0
-	  for (i = 0; i < list.length; i++) {
-	    var item = list[i]
-	    item.copy(buf, pos)
-	    pos += item.length
-	  }
-	  return buf
-	}
-	
-	Buffer.byteLength = function (str, encoding) {
-	  var ret
-	  str = str + ''
-	  switch (encoding || 'utf8') {
-	    case 'ascii':
-	    case 'binary':
-	    case 'raw':
-	      ret = str.length
-	      break
-	    case 'ucs2':
-	    case 'ucs-2':
-	    case 'utf16le':
-	    case 'utf-16le':
-	      ret = str.length * 2
-	      break
-	    case 'hex':
-	      ret = str.length >>> 1
-	      break
-	    case 'utf8':
-	    case 'utf-8':
-	      ret = utf8ToBytes(str).length
-	      break
-	    case 'base64':
-	      ret = base64ToBytes(str).length
-	      break
-	    default:
-	      ret = str.length
-	  }
-	  return ret
-	}
-	
-	// pre-set for values that may exist in the future
-	Buffer.prototype.length = undefined
-	Buffer.prototype.parent = undefined
-	
-	// toString(encoding, start=0, end=buffer.length)
-	Buffer.prototype.toString = function (encoding, start, end) {
-	  var loweredCase = false
-	
-	  start = start >>> 0
-	  end = end === undefined || end === Infinity ? this.length : end >>> 0
-	
-	  if (!encoding) encoding = 'utf8'
-	  if (start < 0) start = 0
-	  if (end > this.length) end = this.length
-	  if (end <= start) return ''
-	
-	  while (true) {
-	    switch (encoding) {
-	      case 'hex':
-	        return hexSlice(this, start, end)
-	
-	      case 'utf8':
-	      case 'utf-8':
-	        return utf8Slice(this, start, end)
-	
-	      case 'ascii':
-	        return asciiSlice(this, start, end)
-	
-	      case 'binary':
-	        return binarySlice(this, start, end)
-	
-	      case 'base64':
-	        return base64Slice(this, start, end)
-	
-	      case 'ucs2':
-	      case 'ucs-2':
-	      case 'utf16le':
-	      case 'utf-16le':
-	        return utf16leSlice(this, start, end)
-	
-	      default:
-	        if (loweredCase)
-	          throw new TypeError('Unknown encoding: ' + encoding)
-	        encoding = (encoding + '').toLowerCase()
-	        loweredCase = true
-	    }
-	  }
-	}
-	
-	Buffer.prototype.equals = function (b) {
-	  if(!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
-	  return Buffer.compare(this, b) === 0
-	}
-	
-	Buffer.prototype.inspect = function () {
-	  var str = ''
-	  var max = exports.INSPECT_MAX_BYTES
-	  if (this.length > 0) {
-	    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
-	    if (this.length > max)
-	      str += ' ... '
-	  }
-	  return '<Buffer ' + str + '>'
-	}
-	
-	Buffer.prototype.compare = function (b) {
-	  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
-	  return Buffer.compare(this, b)
-	}
-	
-	// `get` will be removed in Node 0.13+
-	Buffer.prototype.get = function (offset) {
-	  console.log('.get() is deprecated. Access using array indexes instead.')
-	  return this.readUInt8(offset)
-	}
-	
-	// `set` will be removed in Node 0.13+
-	Buffer.prototype.set = function (v, offset) {
-	  console.log('.set() is deprecated. Access using array indexes instead.')
-	  return this.writeUInt8(v, offset)
-	}
-	
-	function hexWrite (buf, string, offset, length) {
-	  offset = Number(offset) || 0
-	  var remaining = buf.length - offset
-	  if (!length) {
-	    length = remaining
-	  } else {
-	    length = Number(length)
-	    if (length > remaining) {
-	      length = remaining
-	    }
-	  }
-	
-	  // must be an even number of digits
-	  var strLen = string.length
-	  if (strLen % 2 !== 0) throw new Error('Invalid hex string')
-	
-	  if (length > strLen / 2) {
-	    length = strLen / 2
-	  }
-	  for (var i = 0; i < length; i++) {
-	    var byte = parseInt(string.substr(i * 2, 2), 16)
-	    if (isNaN(byte)) throw new Error('Invalid hex string')
-	    buf[offset + i] = byte
-	  }
-	  return i
-	}
-	
-	function utf8Write (buf, string, offset, length) {
-	  var charsWritten = blitBuffer(utf8ToBytes(string), buf, offset, length)
-	  return charsWritten
-	}
-	
-	function asciiWrite (buf, string, offset, length) {
-	  var charsWritten = blitBuffer(asciiToBytes(string), buf, offset, length)
-	  return charsWritten
-	}
-	
-	function binaryWrite (buf, string, offset, length) {
-	  return asciiWrite(buf, string, offset, length)
-	}
-	
-	function base64Write (buf, string, offset, length) {
-	  var charsWritten = blitBuffer(base64ToBytes(string), buf, offset, length)
-	  return charsWritten
-	}
-	
-	function utf16leWrite (buf, string, offset, length) {
-	  var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length)
-	  return charsWritten
-	}
-	
-	Buffer.prototype.write = function (string, offset, length, encoding) {
-	  // Support both (string, offset, length, encoding)
-	  // and the legacy (string, encoding, offset, length)
-	  if (isFinite(offset)) {
-	    if (!isFinite(length)) {
-	      encoding = length
-	      length = undefined
-	    }
-	  } else {  // legacy
-	    var swap = encoding
-	    encoding = offset
-	    offset = length
-	    length = swap
-	  }
-	
-	  offset = Number(offset) || 0
-	  var remaining = this.length - offset
-	  if (!length) {
-	    length = remaining
-	  } else {
-	    length = Number(length)
-	    if (length > remaining) {
-	      length = remaining
-	    }
-	  }
-	  encoding = String(encoding || 'utf8').toLowerCase()
-	
-	  var ret
-	  switch (encoding) {
-	    case 'hex':
-	      ret = hexWrite(this, string, offset, length)
-	      break
-	    case 'utf8':
-	    case 'utf-8':
-	      ret = utf8Write(this, string, offset, length)
-	      break
-	    case 'ascii':
-	      ret = asciiWrite(this, string, offset, length)
-	      break
-	    case 'binary':
-	      ret = binaryWrite(this, string, offset, length)
-	      break
-	    case 'base64':
-	      ret = base64Write(this, string, offset, length)
-	      break
-	    case 'ucs2':
-	    case 'ucs-2':
-	    case 'utf16le':
-	    case 'utf-16le':
-	      ret = utf16leWrite(this, string, offset, length)
-	      break
-	    default:
-	      throw new TypeError('Unknown encoding: ' + encoding)
-	  }
-	  return ret
-	}
-	
-	Buffer.prototype.toJSON = function () {
-	  return {
-	    type: 'Buffer',
-	    data: Array.prototype.slice.call(this._arr || this, 0)
-	  }
-	}
-	
-	function base64Slice (buf, start, end) {
-	  if (start === 0 && end === buf.length) {
-	    return base64.fromByteArray(buf)
-	  } else {
-	    return base64.fromByteArray(buf.slice(start, end))
-	  }
-	}
-	
-	function utf8Slice (buf, start, end) {
-	  var res = ''
-	  var tmp = ''
-	  end = Math.min(buf.length, end)
-	
-	  for (var i = start; i < end; i++) {
-	    if (buf[i] <= 0x7F) {
-	      res += decodeUtf8Char(tmp) + String.fromCharCode(buf[i])
-	      tmp = ''
-	    } else {
-	      tmp += '%' + buf[i].toString(16)
-	    }
-	  }
-	
-	  return res + decodeUtf8Char(tmp)
-	}
-	
-	function asciiSlice (buf, start, end) {
-	  var ret = ''
-	  end = Math.min(buf.length, end)
-	
-	  for (var i = start; i < end; i++) {
-	    ret += String.fromCharCode(buf[i])
-	  }
-	  return ret
-	}
-	
-	function binarySlice (buf, start, end) {
-	  return asciiSlice(buf, start, end)
-	}
-	
-	function hexSlice (buf, start, end) {
-	  var len = buf.length
-	
-	  if (!start || start < 0) start = 0
-	  if (!end || end < 0 || end > len) end = len
-	
-	  var out = ''
-	  for (var i = start; i < end; i++) {
-	    out += toHex(buf[i])
-	  }
-	  return out
-	}
-	
-	function utf16leSlice (buf, start, end) {
-	  var bytes = buf.slice(start, end)
-	  var res = ''
-	  for (var i = 0; i < bytes.length; i += 2) {
-	    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
-	  }
-	  return res
-	}
-	
-	Buffer.prototype.slice = function (start, end) {
-	  var len = this.length
-	  start = ~~start
-	  end = end === undefined ? len : ~~end
-	
-	  if (start < 0) {
-	    start += len;
-	    if (start < 0)
-	      start = 0
-	  } else if (start > len) {
-	    start = len
-	  }
-	
-	  if (end < 0) {
-	    end += len
-	    if (end < 0)
-	      end = 0
-	  } else if (end > len) {
-	    end = len
-	  }
-	
-	  if (end < start)
-	    end = start
-	
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    return Buffer._augment(this.subarray(start, end))
-	  } else {
-	    var sliceLen = end - start
-	    var newBuf = new Buffer(sliceLen, undefined, true)
-	    for (var i = 0; i < sliceLen; i++) {
-	      newBuf[i] = this[i + start]
-	    }
-	    return newBuf
-	  }
-	}
-	
-	/*
-	 * Need to make sure that buffer isn't trying to write out of bounds.
-	 */
-	function checkOffset (offset, ext, length) {
-	  if ((offset % 1) !== 0 || offset < 0)
-	    throw new RangeError('offset is not uint')
-	  if (offset + ext > length)
-	    throw new RangeError('Trying to access beyond buffer length')
-	}
-	
-	Buffer.prototype.readUInt8 = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 1, this.length)
-	  return this[offset]
-	}
-	
-	Buffer.prototype.readUInt16LE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 2, this.length)
-	  return this[offset] | (this[offset + 1] << 8)
-	}
-	
-	Buffer.prototype.readUInt16BE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 2, this.length)
-	  return (this[offset] << 8) | this[offset + 1]
-	}
-	
-	Buffer.prototype.readUInt32LE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	
-	  return ((this[offset]) |
-	      (this[offset + 1] << 8) |
-	      (this[offset + 2] << 16)) +
-	      (this[offset + 3] * 0x1000000)
-	}
-	
-	Buffer.prototype.readUInt32BE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	
-	  return (this[offset] * 0x1000000) +
-	      ((this[offset + 1] << 16) |
-	      (this[offset + 2] << 8) |
-	      this[offset + 3])
-	}
-	
-	Buffer.prototype.readInt8 = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 1, this.length)
-	  if (!(this[offset] & 0x80))
-	    return (this[offset])
-	  return ((0xff - this[offset] + 1) * -1)
-	}
-	
-	Buffer.prototype.readInt16LE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 2, this.length)
-	  var val = this[offset] | (this[offset + 1] << 8)
-	  return (val & 0x8000) ? val | 0xFFFF0000 : val
-	}
-	
-	Buffer.prototype.readInt16BE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 2, this.length)
-	  var val = this[offset + 1] | (this[offset] << 8)
-	  return (val & 0x8000) ? val | 0xFFFF0000 : val
-	}
-	
-	Buffer.prototype.readInt32LE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	
-	  return (this[offset]) |
-	      (this[offset + 1] << 8) |
-	      (this[offset + 2] << 16) |
-	      (this[offset + 3] << 24)
-	}
-	
-	Buffer.prototype.readInt32BE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	
-	  return (this[offset] << 24) |
-	      (this[offset + 1] << 16) |
-	      (this[offset + 2] << 8) |
-	      (this[offset + 3])
-	}
-	
-	Buffer.prototype.readFloatLE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	  return ieee754.read(this, offset, true, 23, 4)
-	}
-	
-	Buffer.prototype.readFloatBE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	  return ieee754.read(this, offset, false, 23, 4)
-	}
-	
-	Buffer.prototype.readDoubleLE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 8, this.length)
-	  return ieee754.read(this, offset, true, 52, 8)
-	}
-	
-	Buffer.prototype.readDoubleBE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 8, this.length)
-	  return ieee754.read(this, offset, false, 52, 8)
-	}
-	
-	function checkInt (buf, value, offset, ext, max, min) {
-	  if (!Buffer.isBuffer(buf)) throw new TypeError('buffer must be a Buffer instance')
-	  if (value > max || value < min) throw new TypeError('value is out of bounds')
-	  if (offset + ext > buf.length) throw new TypeError('index out of range')
-	}
-	
-	Buffer.prototype.writeUInt8 = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 1, 0xff, 0)
-	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
-	  this[offset] = value
-	  return offset + 1
-	}
-	
-	function objectWriteUInt16 (buf, value, offset, littleEndian) {
-	  if (value < 0) value = 0xffff + value + 1
-	  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; i++) {
-	    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
-	      (littleEndian ? i : 1 - i) * 8
-	  }
-	}
-	
-	Buffer.prototype.writeUInt16LE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 2, 0xffff, 0)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = value
-	    this[offset + 1] = (value >>> 8)
-	  } else objectWriteUInt16(this, value, offset, true)
-	  return offset + 2
-	}
-	
-	Buffer.prototype.writeUInt16BE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 2, 0xffff, 0)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = (value >>> 8)
-	    this[offset + 1] = value
-	  } else objectWriteUInt16(this, value, offset, false)
-	  return offset + 2
-	}
-	
-	function objectWriteUInt32 (buf, value, offset, littleEndian) {
-	  if (value < 0) value = 0xffffffff + value + 1
-	  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; i++) {
-	    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
-	  }
-	}
-	
-	Buffer.prototype.writeUInt32LE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 4, 0xffffffff, 0)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset + 3] = (value >>> 24)
-	    this[offset + 2] = (value >>> 16)
-	    this[offset + 1] = (value >>> 8)
-	    this[offset] = value
-	  } else objectWriteUInt32(this, value, offset, true)
-	  return offset + 4
-	}
-	
-	Buffer.prototype.writeUInt32BE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 4, 0xffffffff, 0)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = (value >>> 24)
-	    this[offset + 1] = (value >>> 16)
-	    this[offset + 2] = (value >>> 8)
-	    this[offset + 3] = value
-	  } else objectWriteUInt32(this, value, offset, false)
-	  return offset + 4
-	}
-	
-	Buffer.prototype.writeInt8 = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 1, 0x7f, -0x80)
-	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
-	  if (value < 0) value = 0xff + value + 1
-	  this[offset] = value
-	  return offset + 1
-	}
-	
-	Buffer.prototype.writeInt16LE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = value
-	    this[offset + 1] = (value >>> 8)
-	  } else objectWriteUInt16(this, value, offset, true)
-	  return offset + 2
-	}
-	
-	Buffer.prototype.writeInt16BE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = (value >>> 8)
-	    this[offset + 1] = value
-	  } else objectWriteUInt16(this, value, offset, false)
-	  return offset + 2
-	}
-	
-	Buffer.prototype.writeInt32LE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = value
-	    this[offset + 1] = (value >>> 8)
-	    this[offset + 2] = (value >>> 16)
-	    this[offset + 3] = (value >>> 24)
-	  } else objectWriteUInt32(this, value, offset, true)
-	  return offset + 4
-	}
-	
-	Buffer.prototype.writeInt32BE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-	  if (value < 0) value = 0xffffffff + value + 1
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = (value >>> 24)
-	    this[offset + 1] = (value >>> 16)
-	    this[offset + 2] = (value >>> 8)
-	    this[offset + 3] = value
-	  } else objectWriteUInt32(this, value, offset, false)
-	  return offset + 4
-	}
-	
-	function checkIEEE754 (buf, value, offset, ext, max, min) {
-	  if (value > max || value < min) throw new TypeError('value is out of bounds')
-	  if (offset + ext > buf.length) throw new TypeError('index out of range')
-	}
-	
-	function writeFloat (buf, value, offset, littleEndian, noAssert) {
-	  if (!noAssert)
-	    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
-	  ieee754.write(buf, value, offset, littleEndian, 23, 4)
-	  return offset + 4
-	}
-	
-	Buffer.prototype.writeFloatLE = function (value, offset, noAssert) {
-	  return writeFloat(this, value, offset, true, noAssert)
-	}
-	
-	Buffer.prototype.writeFloatBE = function (value, offset, noAssert) {
-	  return writeFloat(this, value, offset, false, noAssert)
-	}
-	
-	function writeDouble (buf, value, offset, littleEndian, noAssert) {
-	  if (!noAssert)
-	    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
-	  ieee754.write(buf, value, offset, littleEndian, 52, 8)
-	  return offset + 8
-	}
-	
-	Buffer.prototype.writeDoubleLE = function (value, offset, noAssert) {
-	  return writeDouble(this, value, offset, true, noAssert)
-	}
-	
-	Buffer.prototype.writeDoubleBE = function (value, offset, noAssert) {
-	  return writeDouble(this, value, offset, false, noAssert)
-	}
-	
-	// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
-	Buffer.prototype.copy = function (target, target_start, start, end) {
-	  var source = this
-	
-	  if (!start) start = 0
-	  if (!end && end !== 0) end = this.length
-	  if (!target_start) target_start = 0
-	
-	  // Copy 0 bytes; we're done
-	  if (end === start) return
-	  if (target.length === 0 || source.length === 0) return
-	
-	  // Fatal error conditions
-	  if (end < start) throw new TypeError('sourceEnd < sourceStart')
-	  if (target_start < 0 || target_start >= target.length)
-	    throw new TypeError('targetStart out of bounds')
-	  if (start < 0 || start >= source.length) throw new TypeError('sourceStart out of bounds')
-	  if (end < 0 || end > source.length) throw new TypeError('sourceEnd out of bounds')
-	
-	  // Are we oob?
-	  if (end > this.length)
-	    end = this.length
-	  if (target.length - target_start < end - start)
-	    end = target.length - target_start + start
-	
-	  var len = end - start
-	
-	  if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
-	    for (var i = 0; i < len; i++) {
-	      target[i + target_start] = this[i + start]
-	    }
-	  } else {
-	    target._set(this.subarray(start, start + len), target_start)
-	  }
-	}
-	
-	// fill(value, start=0, end=buffer.length)
-	Buffer.prototype.fill = function (value, start, end) {
-	  if (!value) value = 0
-	  if (!start) start = 0
-	  if (!end) end = this.length
-	
-	  if (end < start) throw new TypeError('end < start')
-	
-	  // Fill 0 bytes; we're done
-	  if (end === start) return
-	  if (this.length === 0) return
-	
-	  if (start < 0 || start >= this.length) throw new TypeError('start out of bounds')
-	  if (end < 0 || end > this.length) throw new TypeError('end out of bounds')
-	
-	  var i
-	  if (typeof value === 'number') {
-	    for (i = start; i < end; i++) {
-	      this[i] = value
-	    }
-	  } else {
-	    var bytes = utf8ToBytes(value.toString())
-	    var len = bytes.length
-	    for (i = start; i < end; i++) {
-	      this[i] = bytes[i % len]
-	    }
-	  }
-	
-	  return this
-	}
-	
-	/**
-	 * Creates a new `ArrayBuffer` with the *copied* memory of the buffer instance.
-	 * Added in Node 0.12. Only available in browsers that support ArrayBuffer.
-	 */
-	Buffer.prototype.toArrayBuffer = function () {
-	  if (typeof Uint8Array !== 'undefined') {
-	    if (Buffer.TYPED_ARRAY_SUPPORT) {
-	      return (new Buffer(this)).buffer
-	    } else {
-	      var buf = new Uint8Array(this.length)
-	      for (var i = 0, len = buf.length; i < len; i += 1) {
-	        buf[i] = this[i]
-	      }
-	      return buf.buffer
-	    }
-	  } else {
-	    throw new TypeError('Buffer.toArrayBuffer not supported in this browser')
-	  }
-	}
-	
-	// HELPER FUNCTIONS
-	// ================
-	
-	var BP = Buffer.prototype
-	
-	/**
-	 * Augment a Uint8Array *instance* (not the Uint8Array class!) with Buffer methods
-	 */
-	Buffer._augment = function (arr) {
-	  arr.constructor = Buffer
-	  arr._isBuffer = true
-	
-	  // save reference to original Uint8Array get/set methods before overwriting
-	  arr._get = arr.get
-	  arr._set = arr.set
-	
-	  // deprecated, will be removed in node 0.13+
-	  arr.get = BP.get
-	  arr.set = BP.set
-	
-	  arr.write = BP.write
-	  arr.toString = BP.toString
-	  arr.toLocaleString = BP.toString
-	  arr.toJSON = BP.toJSON
-	  arr.equals = BP.equals
-	  arr.compare = BP.compare
-	  arr.copy = BP.copy
-	  arr.slice = BP.slice
-	  arr.readUInt8 = BP.readUInt8
-	  arr.readUInt16LE = BP.readUInt16LE
-	  arr.readUInt16BE = BP.readUInt16BE
-	  arr.readUInt32LE = BP.readUInt32LE
-	  arr.readUInt32BE = BP.readUInt32BE
-	  arr.readInt8 = BP.readInt8
-	  arr.readInt16LE = BP.readInt16LE
-	  arr.readInt16BE = BP.readInt16BE
-	  arr.readInt32LE = BP.readInt32LE
-	  arr.readInt32BE = BP.readInt32BE
-	  arr.readFloatLE = BP.readFloatLE
-	  arr.readFloatBE = BP.readFloatBE
-	  arr.readDoubleLE = BP.readDoubleLE
-	  arr.readDoubleBE = BP.readDoubleBE
-	  arr.writeUInt8 = BP.writeUInt8
-	  arr.writeUInt16LE = BP.writeUInt16LE
-	  arr.writeUInt16BE = BP.writeUInt16BE
-	  arr.writeUInt32LE = BP.writeUInt32LE
-	  arr.writeUInt32BE = BP.writeUInt32BE
-	  arr.writeInt8 = BP.writeInt8
-	  arr.writeInt16LE = BP.writeInt16LE
-	  arr.writeInt16BE = BP.writeInt16BE
-	  arr.writeInt32LE = BP.writeInt32LE
-	  arr.writeInt32BE = BP.writeInt32BE
-	  arr.writeFloatLE = BP.writeFloatLE
-	  arr.writeFloatBE = BP.writeFloatBE
-	  arr.writeDoubleLE = BP.writeDoubleLE
-	  arr.writeDoubleBE = BP.writeDoubleBE
-	  arr.fill = BP.fill
-	  arr.inspect = BP.inspect
-	  arr.toArrayBuffer = BP.toArrayBuffer
-	
-	  return arr
-	}
-	
-	var INVALID_BASE64_RE = /[^+\/0-9A-z]/g
-	
-	function base64clean (str) {
-	  // Node strips out invalid characters like \n and \t from the string, base64-js does not
-	  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
-	  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
-	  while (str.length % 4 !== 0) {
-	    str = str + '='
-	  }
-	  return str
-	}
-	
-	function stringtrim (str) {
-	  if (str.trim) return str.trim()
-	  return str.replace(/^\s+|\s+$/g, '')
-	}
-	
-	function isArrayish (subject) {
-	  return isArray(subject) || Buffer.isBuffer(subject) ||
-	      subject && typeof subject === 'object' &&
-	      typeof subject.length === 'number'
-	}
-	
-	function toHex (n) {
-	  if (n < 16) return '0' + n.toString(16)
-	  return n.toString(16)
-	}
-	
-	function utf8ToBytes (str) {
-	  var byteArray = []
-	  for (var i = 0; i < str.length; i++) {
-	    var b = str.charCodeAt(i)
-	    if (b <= 0x7F) {
-	      byteArray.push(b)
-	    } else {
-	      var start = i
-	      if (b >= 0xD800 && b <= 0xDFFF) i++
-	      var h = encodeURIComponent(str.slice(start, i+1)).substr(1).split('%')
-	      for (var j = 0; j < h.length; j++) {
-	        byteArray.push(parseInt(h[j], 16))
-	      }
-	    }
-	  }
-	  return byteArray
-	}
-	
-	function asciiToBytes (str) {
-	  var byteArray = []
-	  for (var i = 0; i < str.length; i++) {
-	    // Node's code seems to be doing this and not & 0x7F..
-	    byteArray.push(str.charCodeAt(i) & 0xFF)
-	  }
-	  return byteArray
-	}
-	
-	function utf16leToBytes (str) {
-	  var c, hi, lo
-	  var byteArray = []
-	  for (var i = 0; i < str.length; i++) {
-	    c = str.charCodeAt(i)
-	    hi = c >> 8
-	    lo = c % 256
-	    byteArray.push(lo)
-	    byteArray.push(hi)
-	  }
-	
-	  return byteArray
-	}
-	
-	function base64ToBytes (str) {
-	  return base64.toByteArray(str)
-	}
-	
-	function blitBuffer (src, dst, offset, length) {
-	  for (var i = 0; i < length; i++) {
-	    if ((i + offset >= dst.length) || (i >= src.length))
-	      break
-	    dst[i + offset] = src[i]
-	  }
-	  return i
-	}
-	
-	function decodeUtf8Char (str) {
-	  try {
-	    return decodeURIComponent(str)
-	  } catch (err) {
-	    return String.fromCharCode(0xFFFD) // UTF 8 invalid char
-	  }
-	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97).Buffer))
-
-/***/ },
-/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -23263,46 +22249,1065 @@
 
 
 /***/ },
-/* 99 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
-	/**
-	 * isArray
+	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
+	 * The buffer module from node.js, for the browser.
+	 *
+	 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+	 * @license  MIT
 	 */
 	
-	var isArray = Array.isArray;
+	var base64 = __webpack_require__(101)
+	var ieee754 = __webpack_require__(99)
+	var isArray = __webpack_require__(100)
+	
+	exports.Buffer = Buffer
+	exports.SlowBuffer = Buffer
+	exports.INSPECT_MAX_BYTES = 50
+	Buffer.poolSize = 8192 // not used by this implementation
+	
+	var kMaxLength = 0x3fffffff
 	
 	/**
-	 * toString
+	 * If `Buffer.TYPED_ARRAY_SUPPORT`:
+	 *   === true    Use Uint8Array implementation (fastest)
+	 *   === false   Use Object implementation (most compatible, even IE6)
+	 *
+	 * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+	 * Opera 11.6+, iOS 4.2+.
+	 *
+	 * Note:
+	 *
+	 * - Implementation must support adding new properties to `Uint8Array` instances.
+	 *   Firefox 4-29 lacked support, fixed in Firefox 30+.
+	 *   See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+	 *
+	 *  - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+	 *
+	 *  - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+	 *    incorrect length in some situations.
+	 *
+	 * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they will
+	 * get the Object implementation, which is slower but will work correctly.
 	 */
-	
-	var str = Object.prototype.toString;
+	Buffer.TYPED_ARRAY_SUPPORT = (function () {
+	  try {
+	    var buf = new ArrayBuffer(0)
+	    var arr = new Uint8Array(buf)
+	    arr.foo = function () { return 42 }
+	    return 42 === arr.foo() && // typed array instances can be augmented
+	        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+	        new Uint8Array(1).subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+	  } catch (e) {
+	    return false
+	  }
+	})()
 	
 	/**
-	 * Whether or not the given `val`
-	 * is an array.
+	 * Class: Buffer
+	 * =============
 	 *
-	 * example:
+	 * The Buffer constructor returns instances of `Uint8Array` that are augmented
+	 * with function properties for all the node `Buffer` API functions. We use
+	 * `Uint8Array` so that square bracket notation works as expected -- it returns
+	 * a single octet.
 	 *
-	 *        isArray([]);
-	 *        // > true
-	 *        isArray(arguments);
-	 *        // > false
-	 *        isArray('');
-	 *        // > false
-	 *
-	 * @param {mixed} val
-	 * @return {bool}
+	 * By augmenting the instances, we can avoid modifying the `Uint8Array`
+	 * prototype.
 	 */
+	function Buffer (subject, encoding, noZero) {
+	  if (!(this instanceof Buffer))
+	    return new Buffer(subject, encoding, noZero)
 	
-	module.exports = isArray || function (val) {
-	  return !! val && '[object Array]' == str.call(val);
-	};
-
+	  var type = typeof subject
+	
+	  // Find the length
+	  var length
+	  if (type === 'number')
+	    length = subject > 0 ? subject >>> 0 : 0
+	  else if (type === 'string') {
+	    if (encoding === 'base64')
+	      subject = base64clean(subject)
+	    length = Buffer.byteLength(subject, encoding)
+	  } else if (type === 'object' && subject !== null) { // assume object is array-like
+	    if (subject.type === 'Buffer' && isArray(subject.data))
+	      subject = subject.data
+	    length = +subject.length > 0 ? Math.floor(+subject.length) : 0
+	  } else
+	    throw new TypeError('must start with number, buffer, array or string')
+	
+	  if (this.length > kMaxLength)
+	    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+	      'size: 0x' + kMaxLength.toString(16) + ' bytes')
+	
+	  var buf
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    // Preferred: Return an augmented `Uint8Array` instance for best performance
+	    buf = Buffer._augment(new Uint8Array(length))
+	  } else {
+	    // Fallback: Return THIS instance of Buffer (created by `new`)
+	    buf = this
+	    buf.length = length
+	    buf._isBuffer = true
+	  }
+	
+	  var i
+	  if (Buffer.TYPED_ARRAY_SUPPORT && typeof subject.byteLength === 'number') {
+	    // Speed optimization -- use set if we're copying from a typed array
+	    buf._set(subject)
+	  } else if (isArrayish(subject)) {
+	    // Treat array-ish objects as a byte array
+	    if (Buffer.isBuffer(subject)) {
+	      for (i = 0; i < length; i++)
+	        buf[i] = subject.readUInt8(i)
+	    } else {
+	      for (i = 0; i < length; i++)
+	        buf[i] = ((subject[i] % 256) + 256) % 256
+	    }
+	  } else if (type === 'string') {
+	    buf.write(subject, 0, encoding)
+	  } else if (type === 'number' && !Buffer.TYPED_ARRAY_SUPPORT && !noZero) {
+	    for (i = 0; i < length; i++) {
+	      buf[i] = 0
+	    }
+	  }
+	
+	  return buf
+	}
+	
+	Buffer.isBuffer = function (b) {
+	  return !!(b != null && b._isBuffer)
+	}
+	
+	Buffer.compare = function (a, b) {
+	  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b))
+	    throw new TypeError('Arguments must be Buffers')
+	
+	  var x = a.length
+	  var y = b.length
+	  for (var i = 0, len = Math.min(x, y); i < len && a[i] === b[i]; i++) {}
+	  if (i !== len) {
+	    x = a[i]
+	    y = b[i]
+	  }
+	  if (x < y) return -1
+	  if (y < x) return 1
+	  return 0
+	}
+	
+	Buffer.isEncoding = function (encoding) {
+	  switch (String(encoding).toLowerCase()) {
+	    case 'hex':
+	    case 'utf8':
+	    case 'utf-8':
+	    case 'ascii':
+	    case 'binary':
+	    case 'base64':
+	    case 'raw':
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      return true
+	    default:
+	      return false
+	  }
+	}
+	
+	Buffer.concat = function (list, totalLength) {
+	  if (!isArray(list)) throw new TypeError('Usage: Buffer.concat(list[, length])')
+	
+	  if (list.length === 0) {
+	    return new Buffer(0)
+	  } else if (list.length === 1) {
+	    return list[0]
+	  }
+	
+	  var i
+	  if (totalLength === undefined) {
+	    totalLength = 0
+	    for (i = 0; i < list.length; i++) {
+	      totalLength += list[i].length
+	    }
+	  }
+	
+	  var buf = new Buffer(totalLength)
+	  var pos = 0
+	  for (i = 0; i < list.length; i++) {
+	    var item = list[i]
+	    item.copy(buf, pos)
+	    pos += item.length
+	  }
+	  return buf
+	}
+	
+	Buffer.byteLength = function (str, encoding) {
+	  var ret
+	  str = str + ''
+	  switch (encoding || 'utf8') {
+	    case 'ascii':
+	    case 'binary':
+	    case 'raw':
+	      ret = str.length
+	      break
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      ret = str.length * 2
+	      break
+	    case 'hex':
+	      ret = str.length >>> 1
+	      break
+	    case 'utf8':
+	    case 'utf-8':
+	      ret = utf8ToBytes(str).length
+	      break
+	    case 'base64':
+	      ret = base64ToBytes(str).length
+	      break
+	    default:
+	      ret = str.length
+	  }
+	  return ret
+	}
+	
+	// pre-set for values that may exist in the future
+	Buffer.prototype.length = undefined
+	Buffer.prototype.parent = undefined
+	
+	// toString(encoding, start=0, end=buffer.length)
+	Buffer.prototype.toString = function (encoding, start, end) {
+	  var loweredCase = false
+	
+	  start = start >>> 0
+	  end = end === undefined || end === Infinity ? this.length : end >>> 0
+	
+	  if (!encoding) encoding = 'utf8'
+	  if (start < 0) start = 0
+	  if (end > this.length) end = this.length
+	  if (end <= start) return ''
+	
+	  while (true) {
+	    switch (encoding) {
+	      case 'hex':
+	        return hexSlice(this, start, end)
+	
+	      case 'utf8':
+	      case 'utf-8':
+	        return utf8Slice(this, start, end)
+	
+	      case 'ascii':
+	        return asciiSlice(this, start, end)
+	
+	      case 'binary':
+	        return binarySlice(this, start, end)
+	
+	      case 'base64':
+	        return base64Slice(this, start, end)
+	
+	      case 'ucs2':
+	      case 'ucs-2':
+	      case 'utf16le':
+	      case 'utf-16le':
+	        return utf16leSlice(this, start, end)
+	
+	      default:
+	        if (loweredCase)
+	          throw new TypeError('Unknown encoding: ' + encoding)
+	        encoding = (encoding + '').toLowerCase()
+	        loweredCase = true
+	    }
+	  }
+	}
+	
+	Buffer.prototype.equals = function (b) {
+	  if(!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+	  return Buffer.compare(this, b) === 0
+	}
+	
+	Buffer.prototype.inspect = function () {
+	  var str = ''
+	  var max = exports.INSPECT_MAX_BYTES
+	  if (this.length > 0) {
+	    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+	    if (this.length > max)
+	      str += ' ... '
+	  }
+	  return '<Buffer ' + str + '>'
+	}
+	
+	Buffer.prototype.compare = function (b) {
+	  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+	  return Buffer.compare(this, b)
+	}
+	
+	// `get` will be removed in Node 0.13+
+	Buffer.prototype.get = function (offset) {
+	  console.log('.get() is deprecated. Access using array indexes instead.')
+	  return this.readUInt8(offset)
+	}
+	
+	// `set` will be removed in Node 0.13+
+	Buffer.prototype.set = function (v, offset) {
+	  console.log('.set() is deprecated. Access using array indexes instead.')
+	  return this.writeUInt8(v, offset)
+	}
+	
+	function hexWrite (buf, string, offset, length) {
+	  offset = Number(offset) || 0
+	  var remaining = buf.length - offset
+	  if (!length) {
+	    length = remaining
+	  } else {
+	    length = Number(length)
+	    if (length > remaining) {
+	      length = remaining
+	    }
+	  }
+	
+	  // must be an even number of digits
+	  var strLen = string.length
+	  if (strLen % 2 !== 0) throw new Error('Invalid hex string')
+	
+	  if (length > strLen / 2) {
+	    length = strLen / 2
+	  }
+	  for (var i = 0; i < length; i++) {
+	    var byte = parseInt(string.substr(i * 2, 2), 16)
+	    if (isNaN(byte)) throw new Error('Invalid hex string')
+	    buf[offset + i] = byte
+	  }
+	  return i
+	}
+	
+	function utf8Write (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(utf8ToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	function asciiWrite (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(asciiToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	function binaryWrite (buf, string, offset, length) {
+	  return asciiWrite(buf, string, offset, length)
+	}
+	
+	function base64Write (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(base64ToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	function utf16leWrite (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	Buffer.prototype.write = function (string, offset, length, encoding) {
+	  // Support both (string, offset, length, encoding)
+	  // and the legacy (string, encoding, offset, length)
+	  if (isFinite(offset)) {
+	    if (!isFinite(length)) {
+	      encoding = length
+	      length = undefined
+	    }
+	  } else {  // legacy
+	    var swap = encoding
+	    encoding = offset
+	    offset = length
+	    length = swap
+	  }
+	
+	  offset = Number(offset) || 0
+	  var remaining = this.length - offset
+	  if (!length) {
+	    length = remaining
+	  } else {
+	    length = Number(length)
+	    if (length > remaining) {
+	      length = remaining
+	    }
+	  }
+	  encoding = String(encoding || 'utf8').toLowerCase()
+	
+	  var ret
+	  switch (encoding) {
+	    case 'hex':
+	      ret = hexWrite(this, string, offset, length)
+	      break
+	    case 'utf8':
+	    case 'utf-8':
+	      ret = utf8Write(this, string, offset, length)
+	      break
+	    case 'ascii':
+	      ret = asciiWrite(this, string, offset, length)
+	      break
+	    case 'binary':
+	      ret = binaryWrite(this, string, offset, length)
+	      break
+	    case 'base64':
+	      ret = base64Write(this, string, offset, length)
+	      break
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      ret = utf16leWrite(this, string, offset, length)
+	      break
+	    default:
+	      throw new TypeError('Unknown encoding: ' + encoding)
+	  }
+	  return ret
+	}
+	
+	Buffer.prototype.toJSON = function () {
+	  return {
+	    type: 'Buffer',
+	    data: Array.prototype.slice.call(this._arr || this, 0)
+	  }
+	}
+	
+	function base64Slice (buf, start, end) {
+	  if (start === 0 && end === buf.length) {
+	    return base64.fromByteArray(buf)
+	  } else {
+	    return base64.fromByteArray(buf.slice(start, end))
+	  }
+	}
+	
+	function utf8Slice (buf, start, end) {
+	  var res = ''
+	  var tmp = ''
+	  end = Math.min(buf.length, end)
+	
+	  for (var i = start; i < end; i++) {
+	    if (buf[i] <= 0x7F) {
+	      res += decodeUtf8Char(tmp) + String.fromCharCode(buf[i])
+	      tmp = ''
+	    } else {
+	      tmp += '%' + buf[i].toString(16)
+	    }
+	  }
+	
+	  return res + decodeUtf8Char(tmp)
+	}
+	
+	function asciiSlice (buf, start, end) {
+	  var ret = ''
+	  end = Math.min(buf.length, end)
+	
+	  for (var i = start; i < end; i++) {
+	    ret += String.fromCharCode(buf[i])
+	  }
+	  return ret
+	}
+	
+	function binarySlice (buf, start, end) {
+	  return asciiSlice(buf, start, end)
+	}
+	
+	function hexSlice (buf, start, end) {
+	  var len = buf.length
+	
+	  if (!start || start < 0) start = 0
+	  if (!end || end < 0 || end > len) end = len
+	
+	  var out = ''
+	  for (var i = start; i < end; i++) {
+	    out += toHex(buf[i])
+	  }
+	  return out
+	}
+	
+	function utf16leSlice (buf, start, end) {
+	  var bytes = buf.slice(start, end)
+	  var res = ''
+	  for (var i = 0; i < bytes.length; i += 2) {
+	    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+	  }
+	  return res
+	}
+	
+	Buffer.prototype.slice = function (start, end) {
+	  var len = this.length
+	  start = ~~start
+	  end = end === undefined ? len : ~~end
+	
+	  if (start < 0) {
+	    start += len;
+	    if (start < 0)
+	      start = 0
+	  } else if (start > len) {
+	    start = len
+	  }
+	
+	  if (end < 0) {
+	    end += len
+	    if (end < 0)
+	      end = 0
+	  } else if (end > len) {
+	    end = len
+	  }
+	
+	  if (end < start)
+	    end = start
+	
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    return Buffer._augment(this.subarray(start, end))
+	  } else {
+	    var sliceLen = end - start
+	    var newBuf = new Buffer(sliceLen, undefined, true)
+	    for (var i = 0; i < sliceLen; i++) {
+	      newBuf[i] = this[i + start]
+	    }
+	    return newBuf
+	  }
+	}
+	
+	/*
+	 * Need to make sure that buffer isn't trying to write out of bounds.
+	 */
+	function checkOffset (offset, ext, length) {
+	  if ((offset % 1) !== 0 || offset < 0)
+	    throw new RangeError('offset is not uint')
+	  if (offset + ext > length)
+	    throw new RangeError('Trying to access beyond buffer length')
+	}
+	
+	Buffer.prototype.readUInt8 = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 1, this.length)
+	  return this[offset]
+	}
+	
+	Buffer.prototype.readUInt16LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  return this[offset] | (this[offset + 1] << 8)
+	}
+	
+	Buffer.prototype.readUInt16BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  return (this[offset] << 8) | this[offset + 1]
+	}
+	
+	Buffer.prototype.readUInt32LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return ((this[offset]) |
+	      (this[offset + 1] << 8) |
+	      (this[offset + 2] << 16)) +
+	      (this[offset + 3] * 0x1000000)
+	}
+	
+	Buffer.prototype.readUInt32BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return (this[offset] * 0x1000000) +
+	      ((this[offset + 1] << 16) |
+	      (this[offset + 2] << 8) |
+	      this[offset + 3])
+	}
+	
+	Buffer.prototype.readInt8 = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 1, this.length)
+	  if (!(this[offset] & 0x80))
+	    return (this[offset])
+	  return ((0xff - this[offset] + 1) * -1)
+	}
+	
+	Buffer.prototype.readInt16LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  var val = this[offset] | (this[offset + 1] << 8)
+	  return (val & 0x8000) ? val | 0xFFFF0000 : val
+	}
+	
+	Buffer.prototype.readInt16BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  var val = this[offset + 1] | (this[offset] << 8)
+	  return (val & 0x8000) ? val | 0xFFFF0000 : val
+	}
+	
+	Buffer.prototype.readInt32LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return (this[offset]) |
+	      (this[offset + 1] << 8) |
+	      (this[offset + 2] << 16) |
+	      (this[offset + 3] << 24)
+	}
+	
+	Buffer.prototype.readInt32BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return (this[offset] << 24) |
+	      (this[offset + 1] << 16) |
+	      (this[offset + 2] << 8) |
+	      (this[offset + 3])
+	}
+	
+	Buffer.prototype.readFloatLE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	  return ieee754.read(this, offset, true, 23, 4)
+	}
+	
+	Buffer.prototype.readFloatBE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	  return ieee754.read(this, offset, false, 23, 4)
+	}
+	
+	Buffer.prototype.readDoubleLE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 8, this.length)
+	  return ieee754.read(this, offset, true, 52, 8)
+	}
+	
+	Buffer.prototype.readDoubleBE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 8, this.length)
+	  return ieee754.read(this, offset, false, 52, 8)
+	}
+	
+	function checkInt (buf, value, offset, ext, max, min) {
+	  if (!Buffer.isBuffer(buf)) throw new TypeError('buffer must be a Buffer instance')
+	  if (value > max || value < min) throw new TypeError('value is out of bounds')
+	  if (offset + ext > buf.length) throw new TypeError('index out of range')
+	}
+	
+	Buffer.prototype.writeUInt8 = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 1, 0xff, 0)
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+	  this[offset] = value
+	  return offset + 1
+	}
+	
+	function objectWriteUInt16 (buf, value, offset, littleEndian) {
+	  if (value < 0) value = 0xffff + value + 1
+	  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; i++) {
+	    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+	      (littleEndian ? i : 1 - i) * 8
+	  }
+	}
+	
+	Buffer.prototype.writeUInt16LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0xffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = value
+	    this[offset + 1] = (value >>> 8)
+	  } else objectWriteUInt16(this, value, offset, true)
+	  return offset + 2
+	}
+	
+	Buffer.prototype.writeUInt16BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0xffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 8)
+	    this[offset + 1] = value
+	  } else objectWriteUInt16(this, value, offset, false)
+	  return offset + 2
+	}
+	
+	function objectWriteUInt32 (buf, value, offset, littleEndian) {
+	  if (value < 0) value = 0xffffffff + value + 1
+	  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; i++) {
+	    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+	  }
+	}
+	
+	Buffer.prototype.writeUInt32LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0xffffffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset + 3] = (value >>> 24)
+	    this[offset + 2] = (value >>> 16)
+	    this[offset + 1] = (value >>> 8)
+	    this[offset] = value
+	  } else objectWriteUInt32(this, value, offset, true)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeUInt32BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0xffffffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 24)
+	    this[offset + 1] = (value >>> 16)
+	    this[offset + 2] = (value >>> 8)
+	    this[offset + 3] = value
+	  } else objectWriteUInt32(this, value, offset, false)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeInt8 = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 1, 0x7f, -0x80)
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+	  if (value < 0) value = 0xff + value + 1
+	  this[offset] = value
+	  return offset + 1
+	}
+	
+	Buffer.prototype.writeInt16LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = value
+	    this[offset + 1] = (value >>> 8)
+	  } else objectWriteUInt16(this, value, offset, true)
+	  return offset + 2
+	}
+	
+	Buffer.prototype.writeInt16BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 8)
+	    this[offset + 1] = value
+	  } else objectWriteUInt16(this, value, offset, false)
+	  return offset + 2
+	}
+	
+	Buffer.prototype.writeInt32LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = value
+	    this[offset + 1] = (value >>> 8)
+	    this[offset + 2] = (value >>> 16)
+	    this[offset + 3] = (value >>> 24)
+	  } else objectWriteUInt32(this, value, offset, true)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeInt32BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+	  if (value < 0) value = 0xffffffff + value + 1
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 24)
+	    this[offset + 1] = (value >>> 16)
+	    this[offset + 2] = (value >>> 8)
+	    this[offset + 3] = value
+	  } else objectWriteUInt32(this, value, offset, false)
+	  return offset + 4
+	}
+	
+	function checkIEEE754 (buf, value, offset, ext, max, min) {
+	  if (value > max || value < min) throw new TypeError('value is out of bounds')
+	  if (offset + ext > buf.length) throw new TypeError('index out of range')
+	}
+	
+	function writeFloat (buf, value, offset, littleEndian, noAssert) {
+	  if (!noAssert)
+	    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+	  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeFloatLE = function (value, offset, noAssert) {
+	  return writeFloat(this, value, offset, true, noAssert)
+	}
+	
+	Buffer.prototype.writeFloatBE = function (value, offset, noAssert) {
+	  return writeFloat(this, value, offset, false, noAssert)
+	}
+	
+	function writeDouble (buf, value, offset, littleEndian, noAssert) {
+	  if (!noAssert)
+	    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+	  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+	  return offset + 8
+	}
+	
+	Buffer.prototype.writeDoubleLE = function (value, offset, noAssert) {
+	  return writeDouble(this, value, offset, true, noAssert)
+	}
+	
+	Buffer.prototype.writeDoubleBE = function (value, offset, noAssert) {
+	  return writeDouble(this, value, offset, false, noAssert)
+	}
+	
+	// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+	Buffer.prototype.copy = function (target, target_start, start, end) {
+	  var source = this
+	
+	  if (!start) start = 0
+	  if (!end && end !== 0) end = this.length
+	  if (!target_start) target_start = 0
+	
+	  // Copy 0 bytes; we're done
+	  if (end === start) return
+	  if (target.length === 0 || source.length === 0) return
+	
+	  // Fatal error conditions
+	  if (end < start) throw new TypeError('sourceEnd < sourceStart')
+	  if (target_start < 0 || target_start >= target.length)
+	    throw new TypeError('targetStart out of bounds')
+	  if (start < 0 || start >= source.length) throw new TypeError('sourceStart out of bounds')
+	  if (end < 0 || end > source.length) throw new TypeError('sourceEnd out of bounds')
+	
+	  // Are we oob?
+	  if (end > this.length)
+	    end = this.length
+	  if (target.length - target_start < end - start)
+	    end = target.length - target_start + start
+	
+	  var len = end - start
+	
+	  if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+	    for (var i = 0; i < len; i++) {
+	      target[i + target_start] = this[i + start]
+	    }
+	  } else {
+	    target._set(this.subarray(start, start + len), target_start)
+	  }
+	}
+	
+	// fill(value, start=0, end=buffer.length)
+	Buffer.prototype.fill = function (value, start, end) {
+	  if (!value) value = 0
+	  if (!start) start = 0
+	  if (!end) end = this.length
+	
+	  if (end < start) throw new TypeError('end < start')
+	
+	  // Fill 0 bytes; we're done
+	  if (end === start) return
+	  if (this.length === 0) return
+	
+	  if (start < 0 || start >= this.length) throw new TypeError('start out of bounds')
+	  if (end < 0 || end > this.length) throw new TypeError('end out of bounds')
+	
+	  var i
+	  if (typeof value === 'number') {
+	    for (i = start; i < end; i++) {
+	      this[i] = value
+	    }
+	  } else {
+	    var bytes = utf8ToBytes(value.toString())
+	    var len = bytes.length
+	    for (i = start; i < end; i++) {
+	      this[i] = bytes[i % len]
+	    }
+	  }
+	
+	  return this
+	}
+	
+	/**
+	 * Creates a new `ArrayBuffer` with the *copied* memory of the buffer instance.
+	 * Added in Node 0.12. Only available in browsers that support ArrayBuffer.
+	 */
+	Buffer.prototype.toArrayBuffer = function () {
+	  if (typeof Uint8Array !== 'undefined') {
+	    if (Buffer.TYPED_ARRAY_SUPPORT) {
+	      return (new Buffer(this)).buffer
+	    } else {
+	      var buf = new Uint8Array(this.length)
+	      for (var i = 0, len = buf.length; i < len; i += 1) {
+	        buf[i] = this[i]
+	      }
+	      return buf.buffer
+	    }
+	  } else {
+	    throw new TypeError('Buffer.toArrayBuffer not supported in this browser')
+	  }
+	}
+	
+	// HELPER FUNCTIONS
+	// ================
+	
+	var BP = Buffer.prototype
+	
+	/**
+	 * Augment a Uint8Array *instance* (not the Uint8Array class!) with Buffer methods
+	 */
+	Buffer._augment = function (arr) {
+	  arr.constructor = Buffer
+	  arr._isBuffer = true
+	
+	  // save reference to original Uint8Array get/set methods before overwriting
+	  arr._get = arr.get
+	  arr._set = arr.set
+	
+	  // deprecated, will be removed in node 0.13+
+	  arr.get = BP.get
+	  arr.set = BP.set
+	
+	  arr.write = BP.write
+	  arr.toString = BP.toString
+	  arr.toLocaleString = BP.toString
+	  arr.toJSON = BP.toJSON
+	  arr.equals = BP.equals
+	  arr.compare = BP.compare
+	  arr.copy = BP.copy
+	  arr.slice = BP.slice
+	  arr.readUInt8 = BP.readUInt8
+	  arr.readUInt16LE = BP.readUInt16LE
+	  arr.readUInt16BE = BP.readUInt16BE
+	  arr.readUInt32LE = BP.readUInt32LE
+	  arr.readUInt32BE = BP.readUInt32BE
+	  arr.readInt8 = BP.readInt8
+	  arr.readInt16LE = BP.readInt16LE
+	  arr.readInt16BE = BP.readInt16BE
+	  arr.readInt32LE = BP.readInt32LE
+	  arr.readInt32BE = BP.readInt32BE
+	  arr.readFloatLE = BP.readFloatLE
+	  arr.readFloatBE = BP.readFloatBE
+	  arr.readDoubleLE = BP.readDoubleLE
+	  arr.readDoubleBE = BP.readDoubleBE
+	  arr.writeUInt8 = BP.writeUInt8
+	  arr.writeUInt16LE = BP.writeUInt16LE
+	  arr.writeUInt16BE = BP.writeUInt16BE
+	  arr.writeUInt32LE = BP.writeUInt32LE
+	  arr.writeUInt32BE = BP.writeUInt32BE
+	  arr.writeInt8 = BP.writeInt8
+	  arr.writeInt16LE = BP.writeInt16LE
+	  arr.writeInt16BE = BP.writeInt16BE
+	  arr.writeInt32LE = BP.writeInt32LE
+	  arr.writeInt32BE = BP.writeInt32BE
+	  arr.writeFloatLE = BP.writeFloatLE
+	  arr.writeFloatBE = BP.writeFloatBE
+	  arr.writeDoubleLE = BP.writeDoubleLE
+	  arr.writeDoubleBE = BP.writeDoubleBE
+	  arr.fill = BP.fill
+	  arr.inspect = BP.inspect
+	  arr.toArrayBuffer = BP.toArrayBuffer
+	
+	  return arr
+	}
+	
+	var INVALID_BASE64_RE = /[^+\/0-9A-z]/g
+	
+	function base64clean (str) {
+	  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+	  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+	  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+	  while (str.length % 4 !== 0) {
+	    str = str + '='
+	  }
+	  return str
+	}
+	
+	function stringtrim (str) {
+	  if (str.trim) return str.trim()
+	  return str.replace(/^\s+|\s+$/g, '')
+	}
+	
+	function isArrayish (subject) {
+	  return isArray(subject) || Buffer.isBuffer(subject) ||
+	      subject && typeof subject === 'object' &&
+	      typeof subject.length === 'number'
+	}
+	
+	function toHex (n) {
+	  if (n < 16) return '0' + n.toString(16)
+	  return n.toString(16)
+	}
+	
+	function utf8ToBytes (str) {
+	  var byteArray = []
+	  for (var i = 0; i < str.length; i++) {
+	    var b = str.charCodeAt(i)
+	    if (b <= 0x7F) {
+	      byteArray.push(b)
+	    } else {
+	      var start = i
+	      if (b >= 0xD800 && b <= 0xDFFF) i++
+	      var h = encodeURIComponent(str.slice(start, i+1)).substr(1).split('%')
+	      for (var j = 0; j < h.length; j++) {
+	        byteArray.push(parseInt(h[j], 16))
+	      }
+	    }
+	  }
+	  return byteArray
+	}
+	
+	function asciiToBytes (str) {
+	  var byteArray = []
+	  for (var i = 0; i < str.length; i++) {
+	    // Node's code seems to be doing this and not & 0x7F..
+	    byteArray.push(str.charCodeAt(i) & 0xFF)
+	  }
+	  return byteArray
+	}
+	
+	function utf16leToBytes (str) {
+	  var c, hi, lo
+	  var byteArray = []
+	  for (var i = 0; i < str.length; i++) {
+	    c = str.charCodeAt(i)
+	    hi = c >> 8
+	    lo = c % 256
+	    byteArray.push(lo)
+	    byteArray.push(hi)
+	  }
+	
+	  return byteArray
+	}
+	
+	function base64ToBytes (str) {
+	  return base64.toByteArray(str)
+	}
+	
+	function blitBuffer (src, dst, offset, length) {
+	  for (var i = 0; i < length; i++) {
+	    if ((i + offset >= dst.length) || (i >= src.length))
+	      break
+	    dst[i + offset] = src[i]
+	  }
+	  return i
+	}
+	
+	function decodeUtf8Char (str) {
+	  try {
+	    return decodeURIComponent(str)
+	  } catch (err) {
+	    return String.fromCharCode(0xFFFD) // UTF 8 invalid char
+	  }
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(98).Buffer))
 
 /***/ },
-/* 100 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports.read = function(buffer, offset, isLE, mLen, nBytes) {
@@ -23388,6 +23393,45 @@
 	  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8);
 	
 	  buffer[offset + i - d] |= s * 128;
+	};
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * isArray
+	 */
+	
+	var isArray = Array.isArray;
+	
+	/**
+	 * toString
+	 */
+	
+	var str = Object.prototype.toString;
+	
+	/**
+	 * Whether or not the given `val`
+	 * is an array.
+	 *
+	 * example:
+	 *
+	 *        isArray([]);
+	 *        // > true
+	 *        isArray(arguments);
+	 *        // > false
+	 *        isArray('');
+	 *        // > false
+	 *
+	 * @param {mixed} val
+	 * @return {bool}
+	 */
+	
+	module.exports = isArray || function (val) {
+	  return !! val && '[object Array]' == str.call(val);
 	};
 
 
