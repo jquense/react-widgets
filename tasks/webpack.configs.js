@@ -103,7 +103,7 @@ module.exports = {
   },
 
   test: {
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
     cache: true,
     module: {
       loaders: [

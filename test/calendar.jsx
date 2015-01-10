@@ -147,9 +147,9 @@ describe('Calendar', function(){
     DOM.animate.restore()
   })
 
-  it.only('should constrain movement by min and max', function(done){
+  it('should constrain movement by min and max', function(done){
     var date     = new Date(2014, 5, 15)
-      , picker   = render(<BaseCalendar value={date} max={new Date(2014, 5, 25)}  min={new Date(2014, 5, 5)} />)
+      , picker   = render(<BaseCalendar value={date} max={new Date(2014, 5, 25)}  min={new Date(2014, 5, 5)} onChange={()=>{}}/>)
       , header   = findType(picker, Header)
       , rightBtn = findClass(header, 'rw-btn-right').getDOMNode()
       , leftBtn  = findClass(header, 'rw-btn-left').getDOMNode();

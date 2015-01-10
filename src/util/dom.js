@@ -263,7 +263,26 @@ function dasherize(str) {
 }
 
 function getComputedStyle(node) {
-  return node.ownerDocument.defaultView.opener
-    ? node.ownerDocument.defaultView.getComputedStyle( node, null )
-    : window.getComputedStyle(node, null);
+  var doc = node.ownerDocument;
+
+  return "defaultView" in doc 
+    ? doc.defaultView.opener
+      ? node.ownerDocument.defaultView.getComputedStyle( node, null )
+      : window.getComputedStyle(node, null)
+    : ie8(node)
+}
+
+function ie8(el) {
+  return {
+    getPropertyValue(prop) {
+      var re = /(\-([a-z]){1})/g;
+      if (prop == 'float') prop = 'styleFloat';
+      if (re.test(prop)) {
+          prop = prop.replace(re, function () {
+              return arguments[2].toUpperCase();
+          });
+      }
+      return el.currentStyle[prop] ? el.currentStyle[prop] : null;
+    }
+  }
 }
