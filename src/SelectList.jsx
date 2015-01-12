@@ -4,7 +4,9 @@ var React = require('react')
   , cx = require('./util/cx')
   , controlledInput  = require('./util/controlledInput')
   , CustomPropTypes  = require('./util/propTypes')
-  , scrollTo = require('./util/scroll');
+  , scrollTo = require('./util/scroll')
+  , PlainList        = require('./List.jsx')
+  , GroupableList = require('./ListGroupable.jsx');
 
 var propTypes = {
 
@@ -19,7 +21,8 @@ var propTypes = {
     multiple:       React.PropTypes.bool,
 
     itemComponent:  CustomPropTypes.elementType,
-    
+    list:           CustomPropTypes.elementType,
+
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,
 
@@ -57,7 +60,7 @@ var SelectList = React.createClass({
     require('./mixins/DataIndexStateMixin')('focusedIndex', 'isDisabledItem')
   ],
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       delay: 250,
       value: [],
@@ -68,7 +71,7 @@ var SelectList = React.createClass({
     }
   },
 
-  getDefaultState: function(props){
+  getDefaultState(props){
     var isRadio = !props.multiple
       , values  = _.splat(props.value)
       , idx     = isRadio && this._dataIndexOf(props.data, values[0]) 
@@ -83,24 +86,26 @@ var SelectList = React.createClass({
     }
   },
 
-  getInitialState: function(){
+  getInitialState(){
     return this.getDefaultState(this.props)
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     return this.setState(this.getDefaultState(nextProps))
   },
 
-  componentDidUpdate: function(prevProps, prevState){
-    if ( prevState.focusedIndex !== this.state.focusedIndex)
+  componentDidUpdate(prevProps, prevState){
+    if ( prevState.focused !== this.state.focused)
       this._setScrollPosition()
   },
 
-  render: function() {
+  render() {
     var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
       , focus = this._maybeHandle(this._focus.bind(null, true), true)
       , optID = this._id('_selected_option')
-      , blur  = this._focus.bind(null, false);
+      , blur  = this._focus.bind(null, false)
+      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList;
+
 
     return (
       
@@ -116,7 +121,7 @@ var SelectList = React.createClass({
         aria-readonly={ this.isReadOnly() }
         className={cx(className, { 
           'rw-widget':         true,
-          'rw-selectlist':   true,
+          'rw-selectlist':     true,
           'rw-state-focus':    this.state.focused,
           'rw-state-disabled': this.isDisabled(),
           'rw-state-readonly': this.isReadOnly(),
@@ -124,9 +129,41 @@ var SelectList = React.createClass({
           'rw-loading-mask':   this.props.busy
         })}>
 
-        <ul className='rw-list' ref='list'>{ this._rows(optID)}</ul>
+        <List ref='list' 
+          data={this._data()}
+          focused={this.state.focusedItem}
+          optID ={optID}
+          itemComponent={this.getListItem(optID)}/>
       </div> 
     );
+  },
+
+  getListItem(){
+    var self = this
+      , Component = self.props.itemComponent
+      , type = this.props.multiple ? 'checkbox' : 'radio';
+
+    return React.createClass({
+
+      render(){
+        var item     = this.props.item
+          , checked  = self._contains(item, self._values())
+          , change   = self._change.bind(null, item)
+          , disabled = self.isDisabledItem(item)
+          , readonly = self.isReadOnlyItem(item);
+
+        return (<SelectListItem 
+          type={type} 
+          name={name} 
+          onChange={change} 
+          checked={checked} 
+          readOnly={readonly}
+          disabled={disabled || readonly}>
+            { Component ? <Component item={item}/> : self._dataText(item) }
+          </SelectListItem>)
+      }
+
+    })
   },
 
   _rows: function(optID){
@@ -145,7 +182,11 @@ var SelectList = React.createClass({
         key={'item_' + idx}
         role='option'
         id={ focused ? optID : undefined }
-        className={cx({ 'rw-state-focus': focused, 'rw-selectlist-item': true })}>
+        className={cx({ 
+          'rw-state-focus': focused, 
+          'rw-selectlist-item': true, 
+          'rw-list-option': true, 
+        })}>
         <SelectListItem 
           type={type} 
           name={name} 
@@ -164,35 +205,36 @@ var SelectList = React.createClass({
       , key = e.key
       , data = this._data()
       , multiple = !!this.props.multiple
-      , last = data.length;
+      , last = data.length
+      , list = this.refs.list;
 
     if ( key === 'End' ) {
       e.preventDefault()
 
-      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex(last))
-      else            change(this.prevFocusedIndex(last)) 
+      if ( multiple ) this.setState({ focusedItem: list.last() })
+      else            change(list.last()) 
     }
     else if ( key === 'Home' ) {
       e.preventDefault()
 
-      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex(-1))
-      else            change(this.nextFocusedIndex(-1)) 
+      if ( multiple ) this.setState({ focusedItem: list.first() })
+      else            change(list.first()) 
     }
     else if ( key === 'Enter' || key === ' ' ) {
       e.preventDefault()
-      change(this.state.focusedIndex)
+      change(this.state.focusedItem)
     }
     else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
       e.preventDefault()
 
-      if ( multiple ) this.setFocusedIndex(this.nextFocusedIndex())
+      if ( multiple ) this.setState({ focusedItem: list.next('focused') })
       else            change(this.nextFocusedIndex())
     }
     else if ( key === 'ArrowUp' || key === 'A rrowLeft'  ) {
       e.preventDefault()
 
-      if ( multiple ) this.setFocusedIndex(this.prevFocusedIndex())
-      else            change(this.prevFocusedIndex())
+      if ( multiple ) this.setState({ focusedItem: list.prev('focused') })
+      else            change(list.prev('focused'))
     }
     else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {
       e.preventDefault()

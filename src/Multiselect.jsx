@@ -186,7 +186,10 @@ var Select = React.createClass({
               { this._shouldShowCreate() &&
                 <ul className="rw-list rw-multiselect-create-tag">
                   <li onClick={this._onCreate.bind(null, this.props.searchTerm)} 
-                      className={cx({'rw-state-focus': !this._data().length || this.state.focusedItem === null })}>
+                      className={cx({
+                        'rw-list-option': true,
+                        'rw-state-focus': !this._data().length || this.state.focusedItem === null 
+                      })}>
                     <strong>{`"${this.props.searchTerm}"`}</strong> { this.props.messages.createNew }
                   </li>
                 </ul>
@@ -269,7 +272,9 @@ var Select = React.createClass({
 
     if ( key === 'ArrowDown') {
       var next = list.next('focused')
-      next = (current === next || current === null) ? null : list.next('focused')
+        , creating = (this._shouldShowCreate() && current === next) || current === null;
+        
+      next = creating ? null : list.next('focused')
 
       e.preventDefault()
       if ( isOpen ) this.setState({ focusedItem: next })

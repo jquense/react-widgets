@@ -122,6 +122,7 @@ module.exports = React.createClass({
     return (<li 
       key={'item_' + group}
       tabIndex='-1'
+      role="separator"
       className='rw-list-optgroup'>
         { ItemComponent ? <ItemComponent item={group}/> : group }
     </li>)

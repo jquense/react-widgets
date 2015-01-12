@@ -88,7 +88,7 @@ var DropdownList = React.createClass({
   },
 
   componentWillReceiveProps: function(props){
-    if ( _.isShallowEqual(props.value, this.props.value) )
+    if ( _.isShallowEqual(props.value, this.props.value) && props.data === this.props.data)
       return
 
     var idx = this._dataIndexOf(props.data, props.value);
