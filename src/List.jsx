@@ -44,13 +44,8 @@ module.exports = React.createClass({
     }
   },
 
-  getInitialState: function(){
-    var data = this.props.data;
-
-    return {
-      selectedIndex: data.indexOf(this.props.selected),
-      focusedIndex:  data.indexOf(this.props.focused),
-    }
+  getInitialState(){
+    return {}
   },
 
   // componentWillReceiveProps: function(props){
@@ -62,16 +57,16 @@ module.exports = React.createClass({
   //   if( focusIdx !== -1)  this.setFocusedIndex(focusIdx)
   // },
 
-  componentDidMount: function(prevProps, prevState){
+  componentDidMount(prevProps, prevState){
     this._setScrollPosition()
   },
 
-  componentDidUpdate: function(prevProps, prevState){
+  componentDidUpdate(prevProps, prevState){
     if ( prevState.focused !== this.props.focused)
       this._setScrollPosition()
   },
 
-	render: function(){
+	render(){
     var { className, ...props } = _.omit(this.props, ['data'])
       , ItemComponent = this.props.itemComponent
       , items;

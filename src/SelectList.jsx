@@ -4,7 +4,6 @@ var React = require('react')
   , cx = require('./util/cx')
   , controlledInput  = require('./util/controlledInput')
   , CustomPropTypes  = require('./util/propTypes')
-  , scrollTo = require('./util/scroll')
   , PlainList        = require('./List.jsx')
   , GroupableList = require('./ListGroupable.jsx')
   , validateList    = require('./util/validateListInterface');
@@ -57,8 +56,7 @@ var SelectList = React.createClass({
     require('./mixins/WidgetMixin'),
     require('./mixins/TextSearchMixin'),
     require('./mixins/DataHelpersMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/DataIndexStateMixin')('focusedIndex', 'isDisabledItem')
+    require('./mixins/RtlParentContextMixin')
   ],
 
   getDefaultProps(){
@@ -88,7 +86,11 @@ var SelectList = React.createClass({
   },
 
   getInitialState(){
-    return this.getDefaultState(this.props)
+    var state = this.getDefaultState(this.props)
+    
+    state.ListItem = getListItem(this)
+
+    return state
   },
 
   componentWillReceiveProps(nextProps) {
@@ -109,7 +111,6 @@ var SelectList = React.createClass({
                     && !this.isDisabled() 
                     && !this.isReadOnly() 
                     && this.state.focusedItem;
-
 
     return (
       
@@ -137,37 +138,9 @@ var SelectList = React.createClass({
           data={this._data()}
           focused={focusedItem}
           optID ={optID}
-          itemComponent={this.getListItem(optID)}/>
+          itemComponent={this.state.ListItem}/>
       </div> 
     );
-  },
-
-  getListItem(){
-    var self = this
-      , Component = self.props.itemComponent
-      , type = this.props.multiple ? 'checkbox' : 'radio';
-
-    return React.createClass({
-
-      render(){
-        var item     = this.props.item
-          , checked  = self._contains(item, self._values())
-          , change   = self._change.bind(null, item)
-          , disabled = self.isDisabledItem(item)
-          , readonly = self.isReadOnlyItem(item);
-
-        return (<SelectListItem 
-          type={type} 
-          name={name} 
-          onChange={change} 
-          checked={checked} 
-          readOnly={readonly}
-          disabled={disabled || readonly}>
-            { Component ? <Component item={item}/> : self._dataText(item) }
-          </SelectListItem>)
-      }
-
-    })
   },
 
 
@@ -315,47 +288,54 @@ var SelectList = React.createClass({
     return !!this.props.multiple 
       ? this.state.dataItems
       : this.props.value
-  },
-
-  // _setScrollPosition: function(){
-  //   var list = this.refs.list.getDOMNode()
-  //     , selected = list.children[this.state.focusedIndex]
-  //     , handler  = this.props.onMove || scrollTo;
-
-  //   if ( this.state.focusedIndex !== -1 )
-  //     handler(selected)
-  // }
+  }
 
 });
 
-var SelectListItem = React.createClass({
+function getListItem(parent){
 
-  render: function() {
-    var {children, ...props} = this.props;
+  return React.createClass({
 
-    return (
-      <label 
-        className={cx({ 
-          'rw-state-disabled': props.disabled,
-          'rw-state-readonly': props.readOnly
-        })}>
-        <input { ...props} 
-          tabIndex='-1'
-          onChange={change} 
-          disabled={props.disabled || props.readOnly }
-          aria-disabled={ props.disabled ||props.readOnly } />
-          { children }
-      </label>
-    );
+    render: function() {
+      var {
+          ...props } = this.props
+        , item      = this.props.item
+        , checked   = parent._contains(item, parent._values())
+        , change    = parent._change.bind(null, item)
+        , disabled  = parent.isDisabledItem(item)
+        , readonly  = parent.isReadOnlyItem(item)
+        , Component = parent.props.itemComponent
+        , name      = parent.props.name || parent._id('_name');
 
-    function change(e){
-      if( !props.disabled && !props.readOnly)
-        props.onChange(e.target.checked)
+      return (
+        <label
+          className={cx({ 
+            'rw-state-disabled': disabled,
+            'rw-state-readonly': readonly
+          })}>
+          <input { ...props} 
+            tabIndex='-1'
+            name={name}
+            type={parent.props.multiple ? 'checkbox' : 'radio'}
+            
+            onChange={onChange} 
+            checked={checked}
+            disabled={disabled || readonly}
+            aria-disabled={disabled || readonly}/>
+            { Component 
+                ? <Component item={item}/> 
+                : parent._dataText(item)
+            }
+        </label>
+      );
+
+      function onChange(e){
+        if( !disabled && !readonly)
+          change(e.target.checked)
+      }
     }
-  },
-
-})
-
+  })
+}
 
 module.exports = SelectList;
 
