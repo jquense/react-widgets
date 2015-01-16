@@ -1,17 +1,18 @@
 'use strict';
-var React  = require('react')
-  , cx     = require('./util/cx')
-  , _      = require('./util/_')
-  , $      = require('./util/dom')
-  , filter = require('./util/filter')
-  , controlledInput  = require('./util/controlledInput')
-  , CustomPropTypes  = require('./util/propTypes')
-  
-  , Popup  = require('./Popup.jsx')
-  , PlainList   = require('./List.jsx')
-  , GroupableList = require('./ListGroupable.jsx')
-  , Btn    = require('./WidgetButton.jsx')
-  , Input  = require('./ComboboxInput.jsx');
+var React           = require('react')
+  , cx              = require('./util/cx')
+  , _               = require('./util/_')
+  , $               = require('./util/dom')
+  , filter          = require('./util/filter')
+  , Popup           = require('./Popup.jsx')
+  , Btn             = require('./WidgetButton.jsx')
+  , Input           = require('./ComboboxInput.jsx')
+
+  , controlledInput = require('./util/controlledInput')
+  , CustomPropTypes = require('./util/propTypes')
+  , PlainList       = require('./List.jsx')
+  , GroupableList   = require('./ListGroupable.jsx')
+  , validateList    = require('./util/validateListInterface');
 
 var propTypes = {
       //-- controlled props -----------
@@ -101,6 +102,10 @@ var ComboBox = React.createClass({
         emptyFilter: "The filter returned no results"
       }
     }
+  },
+
+  componentDidMount: function() {
+    validateList(this.refs.list)
   },
 
   shouldComponentUpdate: function(nextProps, nextState){
@@ -274,13 +279,17 @@ var ComboBox = React.createClass({
       , key  = e.key
       , alt  = e.altKey
       , list = this.refs.list
+      , focusedItem = this.state.focusedItem
+      , selectedItem = this.state.selectedItem
       , isOpen = this.props.open;
 
     if ( key === 'End' )
-      select(list.last())
+      if ( isOpen ) this.setState({ focusedItem: list.last() })
+      else          select(list.last(), true)
 
     else if ( key === 'Home' )
-      select(list.first())
+      if ( isOpen ) this.setState({ focusedItem: list.first() })
+      else          select(list.first(), true)
 
     else if ( key === 'Escape' && isOpen )
       this.close()
@@ -294,16 +303,16 @@ var ComboBox = React.createClass({
       if ( alt )
         this.open()
       else {
-        if ( isOpen ) this.setState({ focusedItem: list.next('focused') })
-        else          select(list.next('selected'))
+        if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
+        else          select(list.next(selectedItem), true)
       }
     }
     else if ( key === 'ArrowUp' ) {
       if ( alt )
         this.close()
       else {
-        if ( isOpen ) this.setState({ focusedItem: list.prev('focused') })
-        else          select(list.prev('selected'))
+        if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
+        else          select(list.prev(selectedItem), true)
       }
     }
 

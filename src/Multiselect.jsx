@@ -1,15 +1,15 @@
 'use strict';
-var React = require('react')
-  , cx    = require('./util/cx')
-  , _     = require('./util/_')
-  , controlledInput  = require('./util/controlledInput')
-  , CustomPropTypes  = require('./util/propTypes')
-  
-  , SelectInput = require('./MultiselectInput.jsx')
-  , TagList     = require('./MultiselectTagList.jsx')
-  , Popup       = require('./Popup.jsx')
-  , PlainList        = require('./List.jsx')
-  , GroupableList = require('./ListGroupable.jsx');
+var React           = require('react')
+  , cx              = require('./util/cx')
+  , _               = require('./util/_')
+  , SelectInput     = require('./MultiselectInput.jsx')
+  , TagList         = require('./MultiselectTagList.jsx')
+  , Popup           = require('./Popup.jsx')
+  , PlainList       = require('./List.jsx')
+  , GroupableList   = require('./ListGroupable.jsx')
+  , validateList    = require('./util/validateListInterface')
+  , controlledInput = require('./util/controlledInput')
+  , CustomPropTypes = require('./util/propTypes');
 
 var propTypes = {
       data:            React.PropTypes.array,
@@ -102,12 +102,18 @@ var Select = React.createClass({
     }
   },
 
+  componentDidMount: function() {
+    validateList(this.refs.list)
+  },
+
   componentWillReceiveProps: function(nextProps) {
     var values = _.splat(nextProps.value)
+      , current = this.state.focusedItem
       , items  = this.process(nextProps.data, values, nextProps.searchTerm)
 
     this.setState({
       processedData: items,
+      focusedItem: items.indexOf(current) === -1 ? items[0]: current,
       dataItems: values.map( item => this._dataItem(nextProps.data, item))
     })
   },
@@ -276,20 +282,16 @@ var Select = React.createClass({
     var key = e.key
       , alt = e.altKey
       , ctrl = e.ctrlKey
-      , searching = !!this.props.searchTerm
       , noSearch = !this.props.searchTerm && !this._deletingText
       , isOpen  = this.props.open
-      , current = this.state.focusedItem
       , focusedItem = this.state.focusedItem
       , tagList = this.refs.tagList
       , list    = this.refs.list;
 
     if ( key === 'ArrowDown') {
       var next = list.next('focused')
-        , creating = (this._shouldShowCreate() && current === next) || current === null;
         , creating = (this._shouldShowCreate() && focusedItem === next) || focusedItem === null;
         
-      next = creating ? null : list.next('focused')
       next = creating ? null : list.next(focusedItem)
 
       e.preventDefault()
@@ -297,8 +299,6 @@ var Select = React.createClass({
       else          this.open()
     }
     else if ( key === 'ArrowUp') {
-      var prev = list.prev('focused')
-      prev = current === null ? list.last() : list.prev('focused')
       var prev = focusedItem === null 
         ? list.last() 
         : list.prev(focusedItem)
@@ -324,19 +324,15 @@ var Select = React.createClass({
     else if ( key === 'Escape')
       isOpen ? this.close() : this.refs.tagList.clear()
 
-    else if ( !searching && key === 'ArrowLeft')
     else if ( noSearch && key === 'ArrowLeft')
      tagList && tagList.prev()
 
-    else if ( !searching && key === 'ArrowRight')
     else if ( noSearch && key === 'ArrowRight')
       tagList && tagList.next()
 
-    else if ( !searching && key === 'Delete')
     else if ( noSearch && key === 'Delete')
       tagList && tagList.removeCurrent()
 
-    else if ( !searching && key === 'Backspace')
     else if ( noSearch && key === 'Backspace')
       tagList && tagList.removeNext()
 
@@ -377,7 +373,7 @@ var Select = React.createClass({
     if ( !(this.props.onCreate && text) ) 
       return false
 
-    //if there is an exact match
+    // if there is an exact match on textFields: "john" => { name: "john" }, don't show
     return !this._data().some( v => this._dataText(v) === text) 
         && !this.state.dataItems.some( v => this._dataText(v) === text) 
   },

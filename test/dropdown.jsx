@@ -206,4 +206,23 @@ describe('DROPDOWNS', function(){
     expect(change.calledWith(data[2])).to.be(true)
   })
 
+  it('should search values on typing', function(done){
+    var change = sinon.spy()
+      , dropdown = render(<Dropdown.BaseDropdownList value={data[0]} data={data} duration={0} delay={0} onChange={change} textField='label' />);
+
+    trigger.keyDown(dropdown.getDOMNode(), { keyCode: 80, key: 'p' })
+
+    setTimeout(() => {
+      expect(change.calledOnce).to.be(true)
+      expect(change.calledWith(data[2])).to.be(true)
+
+      dropdown.setProps({ value: data[0], open: true, onToggle: ()=>{} })
+      trigger.keyDown(dropdown.getDOMNode(), { keyCode: 80, key: 'p' })
+
+      setTimeout(() => {
+        expect(dropdown.state.focusedItem).to.be(data[2])
+        done()
+      })
+    })
+  })
 })

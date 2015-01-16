@@ -6,7 +6,8 @@ var React = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   , scrollTo = require('./util/scroll')
   , PlainList        = require('./List.jsx')
-  , GroupableList = require('./ListGroupable.jsx');
+  , GroupableList = require('./ListGroupable.jsx')
+  , validateList    = require('./util/validateListInterface');
 
 var propTypes = {
 
@@ -74,15 +75,15 @@ var SelectList = React.createClass({
   getDefaultState(props){
     var isRadio = !props.multiple
       , values  = _.splat(props.value)
-      , idx     = isRadio && this._dataIndexOf(props.data, values[0]) 
+      , first   = isRadio && this._dataItem(props.data, values[0]) 
 
-    idx = isRadio && idx !== -1 
-      ? this.nextFocusedIndex(idx - 1) 
-      : ((this.state || {}).focusedIndex || -1)
+    first = isRadio && first 
+      ? first
+      : ((this.state || {}).focusedItem || null)
 
     return {
-      focusedIndex: idx,
-      dataItems:    !isRadio && values.map(item => this._dataItem(props.data, item))
+      focusedItem: first,
+      dataItems:   !isRadio && values.map(item => this._dataItem(props.data, item))
     }
   },
 
@@ -94,9 +95,8 @@ var SelectList = React.createClass({
     return this.setState(this.getDefaultState(nextProps))
   },
 
-  componentDidUpdate(prevProps, prevState){
-    if ( prevState.focused !== this.state.focused)
-      this._setScrollPosition()
+  componentDidMount: function() {
+    validateList(this.refs.list)
   },
 
   render() {
@@ -104,7 +104,11 @@ var SelectList = React.createClass({
       , focus = this._maybeHandle(this._focus.bind(null, true), true)
       , optID = this._id('_selected_option')
       , blur  = this._focus.bind(null, false)
-      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList;
+      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList
+      , focusedItem = this.state.focused 
+                    && !this.isDisabled() 
+                    && !this.isReadOnly() 
+                    && this.state.focusedItem;
 
 
     return (
@@ -131,7 +135,7 @@ var SelectList = React.createClass({
 
         <List ref='list' 
           data={this._data()}
-          focused={this.state.focusedItem}
+          focused={focusedItem}
           optID ={optID}
           itemComponent={this.getListItem(optID)}/>
       </div> 
@@ -166,75 +170,41 @@ var SelectList = React.createClass({
     })
   },
 
-  _rows: function(optID){
-    var Component = this.props.itemComponent
-      , name = this._id('_name')
-      , type = this.props.multiple ? 'checkbox' : 'radio';
-
-    return this._data().map( (item, idx) => {
-      var focused  = this.state.focused && this.state.focusedIndex === idx
-        , checked  = this._contains(item, this._values())
-        , change   = this._change.bind(null, item)
-        , disabled = this.isDisabledItem(item)
-        , readonly = this.isReadOnlyItem(item);
-
-      return (<li 
-        key={'item_' + idx}
-        role='option'
-        id={ focused ? optID : undefined }
-        className={cx({ 
-          'rw-state-focus': focused, 
-          'rw-selectlist-item': true, 
-          'rw-list-option': true, 
-        })}>
-        <SelectListItem 
-          type={type} 
-          name={name} 
-          onChange={change} 
-          checked={checked} 
-          readOnly={readonly}
-          disabled={disabled || readonly}>
-          { Component ? <Component item={item}/> : this._dataText(item) }
-          </SelectListItem>
-      </li>)
-    })
-  },
 
   _keyDown: function(e){
     var self = this
       , key = e.key
-      , data = this._data()
       , multiple = !!this.props.multiple
-      , last = data.length
-      , list = this.refs.list;
+      , list = this.refs.list
+      , focusedItem = this.state.focusedItem;
 
     if ( key === 'End' ) {
       e.preventDefault()
 
-      if ( multiple ) this.setState({ focusedItem: list.last() })
-      else            change(list.last()) 
+      if ( multiple ) this.setState({ focusedItem: move('prev', null) })
+      else            change(move('prev', null)) 
     }
     else if ( key === 'Home' ) {
       e.preventDefault()
 
-      if ( multiple ) this.setState({ focusedItem: list.first() })
-      else            change(list.first()) 
+      if ( multiple ) this.setState({ focusedItem: move('next', null) })
+      else            change(move('next', null)) 
     }
     else if ( key === 'Enter' || key === ' ' ) {
       e.preventDefault()
-      change(this.state.focusedItem)
+      change(focusedItem)
     }
     else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
       e.preventDefault()
 
-      if ( multiple ) this.setState({ focusedItem: list.next('focused') })
-      else            change(this.nextFocusedIndex())
+      if ( multiple ) this.setState({ focusedItem: move('next', focusedItem) })
+      else            change(move('next', focusedItem))
     }
-    else if ( key === 'ArrowUp' || key === 'A rrowLeft'  ) {
+    else if ( key === 'ArrowUp' || key === 'ArrowLeft'  ) {
       e.preventDefault()
 
-      if ( multiple ) this.setState({ focusedItem: list.prev('focused') })
-      else            change(list.prev('focused'))
+      if ( multiple ) this.setState({ focusedItem: move('prev', focusedItem) })
+      else            change(move('prev', focusedItem))
     }
     else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {
       e.preventDefault()
@@ -245,17 +215,22 @@ var SelectList = React.createClass({
           String.fromCharCode(e.keyCode)
         , this._locate)
 
-    function change(idx, cked){
-      var item = data[idx];
-      
-      if( idx > -1 && idx < last){
-        self._change(item, cked !== undefined 
-          ? cked
-          : multiple 
+    function change(item, cked){
+      if( item ){
+        self._change(item, multiple 
             ? !self._contains(item, self._values()) // toggle value
             : true)
-      }
-        
+      }    
+    }
+
+    function move(dir, item){
+      var stop = dir === 'next' ? list.last() : list.first()
+        , next = list[dir](item);
+      
+      while( next !== stop && self.isDisabledItem(next) ) 
+        next = list[dir](next)
+
+      return self.isDisabledItem(next) ? item : next
     }
   },
 
@@ -342,14 +317,14 @@ var SelectList = React.createClass({
       : this.props.value
   },
 
-  _setScrollPosition: function(){
-    var list = this.refs.list.getDOMNode()
-      , selected = list.children[this.state.focusedIndex]
-      , handler  = this.props.onMove || scrollTo;
+  // _setScrollPosition: function(){
+  //   var list = this.refs.list.getDOMNode()
+  //     , selected = list.children[this.state.focusedIndex]
+  //     , handler  = this.props.onMove || scrollTo;
 
-    if ( this.state.focusedIndex !== -1 )
-      handler(selected)
-  }
+  //   if ( this.state.focusedIndex !== -1 )
+  //     handler(selected)
+  // }
 
 });
 

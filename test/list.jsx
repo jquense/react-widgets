@@ -61,34 +61,41 @@ describe('List', function(){
   })
 
   it('should implement first()', function(){
-    var list = render(<List data={data} selected={data[1]} focused={data[2]} />);
+    var focused = data[2]
+      , selected = data[1]
+      , list = render(<List data={data} selected={selected} focused={focused} />);
 
-    expect(list.first('focused')).to.be(data[0]);
+    expect(list.first(focused)).to.be(data[0]);
   })
 
   it('should implement prev()', function(){
-    var list = render(<List data={data} selected={data[3]} focused={data[4]} textField='label' />);
+    var focused = data[4]
+      , selected = data[3]
+      , list = render(<List data={data} selected={selected} focused={focused} textField='label' />);
 
-    expect(list.prev('selected')).to.be(data[2]);
-    expect(list.prev('selected', 'sa')).to.be(data[1]);
+    expect(list.prev(selected)).to.be(data[2]);
+    expect(list.prev(selected, 'sa')).to.be(data[1]);
 
-    expect(list.prev('focused')).to.be(data[3]);
-    expect(list.prev('focused', 'ji')).to.be(data[0]);
+    expect(list.prev(focused)).to.be(data[3]);
+    expect(list.prev(focused, 'ji')).to.be(data[0]);
   })
 
   it('should implement next()', function(){
-    var list = render(<List data={data} selected={data[1]} focused={data[2]} textField='label'/>);
+    var focused = data[2]
+      , selected = data[1]
+      , list = render(<List data={data} selected={selected} focused={focused} textField='label'/>);
 
-    expect(list.next('selected')).to.be(data[2]);
-    expect(list.next('selected', 'ja')).to.be(data[3]);
+    expect(list.next(selected)).to.be(data[2]);
+    expect(list.next(selected, 'ja')).to.be(data[3]);
 
-    expect(list.next('focused', 'na')).to.be(data[4]);
-    expect(list.next('focused', 'na')).to.be(data[4]);
+    expect(list.next(focused, 'na')).to.be(data[4]);
+    expect(list.next(focused, 'na')).to.be(data[4]);
   })
 
   it('should implement last()', function(){
-    var list = render(<List data={data} selected={data[1]} focused={data[2]} />);
+    var focused = data[2]
+      , list = render(<List data={data} focused={focused} />);
 
-    expect(list.last('focused')).to.be(data[4]);
+    expect(list.last(focused)).to.be(data[4]);
   })
 })

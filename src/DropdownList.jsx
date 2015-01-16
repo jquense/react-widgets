@@ -7,7 +7,8 @@ var React           = require('react')
   , Popup           = require('./Popup.jsx')
   , PlainList       = require('./List.jsx')
   , GroupableList   = require('./ListGroupable.jsx')
-  ;
+  , validateList    = require('./util/validateListInterface');
+  
 
 var propTypes = {
   //-- controlled props -----------
@@ -85,6 +86,10 @@ var DropdownList = React.createClass({
         open: 'open dropdown'
       }
     }
+  },
+
+  componentDidMount: function() {
+    validateList(this.refs.list)
   },
 
   componentWillReceiveProps: function(props){
@@ -187,7 +192,10 @@ var DropdownList = React.createClass({
       , key = e.key
       , alt = e.altKey
       , list = this.refs.list
+      , focusedItem = this.state.focusedItem
+      , selectedItem = this.state.selectedItem
       , isOpen = this.props.open;
+
 
     if ( key === 'End' ) {
       if ( isOpen) this.setState({ focusedItem: list.last() })
@@ -207,14 +215,14 @@ var DropdownList = React.createClass({
     }
     else if ( key === 'ArrowDown' ) {
       if ( alt )         this.open()
-      else if ( isOpen ) this.setState({ focusedItem: list.next('focused') })
-      else               change(list.next('selected'))
+      else if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
+      else               change(list.next(selectedItem))
       e.preventDefault()
     }
     else if ( key === 'ArrowUp' ) {
       if ( alt )         this.close()
-      else if ( isOpen ) this.setState({ focusedItem: list.prev('focused') })
-      else               change(list.prev('selected'))
+      else if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
+      else               change(list.prev(selectedItem))
       e.preventDefault()
     }
     else
@@ -223,6 +231,7 @@ var DropdownList = React.createClass({
           ? this.setState({ focusedItem: item })
           : change(item)
       })
+
 
     this.notify('onKeyDown', [e])
     
@@ -250,11 +259,11 @@ var DropdownList = React.createClass({
       
     clearTimeout(this._timer)
     this._searchTerm = word 
-
+  
     this._timer = setTimeout(() => {
       var list = this.refs.list
-        , key  = this.props.open ? 'focused' : 'selected'
-        , item = list.next(key, word);
+        , key  = this.props.open ? 'focusedItem' : 'selectedItem'
+        , item = list.next(this.state[key], word);
       
       this._searchTerm = ''
       if ( item) cb(item)

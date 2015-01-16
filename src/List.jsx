@@ -1,7 +1,6 @@
 'use strict';
 var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
-  , filter = require('./util/filter')
   , cx = require('./util/cx')
   , _  = require('./util/_')
   , scrollTo  = require('./util/scroll');
@@ -12,7 +11,8 @@ module.exports = React.createClass({
   displayName: 'List',
 
   mixins: [ 
-    require('./mixins/DataHelpersMixin')
+    require('./mixins/DataHelpersMixin'),
+    require('./mixins/ListMovementMixin')
   ],
 
   propTypes: {
@@ -110,46 +110,9 @@ module.exports = React.createClass({
 		)
 	},
 
-  first(){
-    return this._data()[0]
-  },
-
-  last(){
-    var data = this._data()
-    return data[data.length-1]
-  },
-
-  prev(state, word){
-    var data = this._data()
-      , idx  = data.indexOf(this.props[state])
-
-    return word 
-      ? this._findNextInstance(data, word, idx, 'prev')
-      : --idx < 0 ? data[0] : data[idx]
-  },
-
-  next(state,word){
-    var data = this._data()
-      , idx  = data.indexOf(this.props[state])
-
-    return word 
-      ? this._findNextInstance(data, word, idx, 'next')
-      : ++idx === data.length ? data[data.length - 1] : data[idx]
-  },
 
   _data(){ 
     return this.props.data 
-  },
-
-  _findNextInstance: function(data, word, current, dir){
-    var matcher = filter.startsWith;
-      
-    return _.find(this._data(), (item, i) => { 
-      return (dir === 'next' ? i > current : i < current)
-          && matcher(
-              this._dataText.call(this, item).toLowerCase()
-            , word.toLowerCase())
-    });    
   },
 
   _setScrollPosition: function(){
@@ -160,7 +123,7 @@ module.exports = React.createClass({
     if( !selected ) return 
 
     // timeout allows for element to become visible
-    setTimeout(() => scrollTo(selected, list))
+    setTimeout(() => scrollTo(selected))
   }
 
 })

@@ -9,7 +9,8 @@ var React   = require('react')
   , filters = require('../src/util/filter')
   , cx      = require('../src/util/cx')
   , _       = require('../src/util/_')
-  , propTypes = require('../src/util/propTypes');
+  , propTypes = require('../src/util/propTypes')
+  , validateList = require('../src/util/validateListInterface');
 
 
 describe('when using Class Set', function(){
@@ -123,23 +124,22 @@ describe('when using array filter helpers', function(){
   })
 })
 
-describe('when using date helpers', function(){
+describe('when validating Lists', function(){
 
-  it('should match correctly', function(){
+  it('should throw when methods are not implemented', function(){
+    var List = { prev: ()=>{}, next: ()=>{}, last: ()=>{}, first: 'wrong type' }
 
-    expect(filters.eq(1, 1)).to.equal(true)
-    expect(filters.neq(2, 1)).to.equal(true)
-    expect(filters.lt(1, 2)).to.equal(true)
-    expect(filters.lte(1, 1)).to.equal(true)
-    expect(filters.gt(2, 1)).to.equal(true)
-    expect(filters.gte(1, 1)).to.equal(true)
-   
-    expect(filters.contains([1,2], 1)).to.equal(true)
-    expect(filters.contains('hello', 'll')).to.equal(true)
-
-    expect(filters.startsWith('hello', 'hel')).to.equal(true)
-    expect(filters.endsWith('hello', 'llo')).to.equal(true)
+    expect(()=> validateList(List)).to.throwException(/first()/)
   })
+
+  it('should fail quietly in production', function(){
+    var List = { prev: ()=>{}, next: ()=>{}, last: ()=>{}, first: 'wrong type' }
+
+    process.env.NODE_ENV = "production"
+    expect(()=> validateList(List)).to.not.throwException()
+    process.env.NODE_ENV = "test"
+  })
+
 })
 
 describe('when using custom PropTypes', function(){
