@@ -165,6 +165,8 @@ var Select = React.createClass({
             disabled={this.props.disabled === true}
             readOnly={this.props.readOnly === true}
             placeholder={this._placeholder()}
+            onKeyDown={this._searchKeyDown}
+            onKeyUp={this._searchgKeyUp}
             onChange={this._typing}/>
         </div>
         <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
@@ -235,6 +237,16 @@ var Select = React.createClass({
     })
   },
 
+  _searchKeyDown(e){ 
+    if (e.key === 'Backspace' && e.target.value && !this._deletingText)
+      this._deletingText = true
+  },
+
+  _searchgKeyUp(e){ 
+    if (e.key === 'Backspace' && this._deletingText) 
+      this._deletingText = false
+  },
+
   _typing: function(e){
     this.notify('onSearch', [ e.target.value ])
     this.open()
@@ -265,16 +277,20 @@ var Select = React.createClass({
       , alt = e.altKey
       , ctrl = e.ctrlKey
       , searching = !!this.props.searchTerm
+      , noSearch = !this.props.searchTerm && !this._deletingText
       , isOpen  = this.props.open
       , current = this.state.focusedItem
+      , focusedItem = this.state.focusedItem
       , tagList = this.refs.tagList
       , list    = this.refs.list;
 
     if ( key === 'ArrowDown') {
       var next = list.next('focused')
         , creating = (this._shouldShowCreate() && current === next) || current === null;
+        , creating = (this._shouldShowCreate() && focusedItem === next) || focusedItem === null;
         
       next = creating ? null : list.next('focused')
+      next = creating ? null : list.next(focusedItem)
 
       e.preventDefault()
       if ( isOpen ) this.setState({ focusedItem: next })
@@ -283,6 +299,9 @@ var Select = React.createClass({
     else if ( key === 'ArrowUp') {
       var prev = list.prev('focused')
       prev = current === null ? list.last() : list.prev('focused')
+      var prev = focusedItem === null 
+        ? list.last() 
+        : list.prev(focusedItem)
 
       e.preventDefault()
 
@@ -306,15 +325,19 @@ var Select = React.createClass({
       isOpen ? this.close() : this.refs.tagList.clear()
 
     else if ( !searching && key === 'ArrowLeft')
+    else if ( noSearch && key === 'ArrowLeft')
      tagList && tagList.prev()
 
     else if ( !searching && key === 'ArrowRight')
+    else if ( noSearch && key === 'ArrowRight')
       tagList && tagList.next()
 
     else if ( !searching && key === 'Delete')
+    else if ( noSearch && key === 'Delete')
       tagList && tagList.removeCurrent()
 
     else if ( !searching && key === 'Backspace')
+    else if ( noSearch && key === 'Backspace')
       tagList && tagList.removeNext()
 
     this.notify('onKeyDown', [e])
