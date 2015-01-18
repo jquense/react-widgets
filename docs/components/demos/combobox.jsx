@@ -4,6 +4,18 @@ var React = require('react')
   , ButtonGroup = require('../../bootstrap').ButtonGroup
   , RW = require('../../../index');
 
+var i = 0
+  , list = [
+    { id: i += 1, name: "James" },
+    { id: i += 1, name: "Jan" },
+    { id: i += 1, name: "Jase" },
+    { id: i += 1, name: "Jason" },
+    { id: i += 1, name: "Jim" },
+    { id: i += 1, name: "Jimmy" },
+    { id: i += 1, name: "Jimmy Smith" },
+    { id: i += 1, name: "John" }
+  ];
+
 module.exports = React.createClass({
 
   getInitialState: function(){
@@ -15,58 +27,36 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var i = 0
-      , list = [
-        { id: i += 1, name: "James" },
-        { id: i += 1, name: "Jan" },
-        { id: i += 1, name: "Jase" },
-        { id: i += 1, name: "Jason" },
-        { id: i += 1, name: "Jim" },
-        { id: i += 1, name: "Jimmy" },
-        { id: i += 1, name: "Jimmy Smith" },
-        { id: i += 1, name: "John" }
-      ]
+    var props;
+
+    props = {
+      data: list,
+      defaultValue: 1,
+      textField: 'name',
+      valueField: 'id',
+      suggest: this.state.suggest || false,
+      filter: this.state.filter || false,
+      disabled: this.state.disabled === 'disabled',
+      readOnly: this.state.disabled === 'readonly',
+      groupBy: this.state.groupBy,
+      duration: this.state.duration,
+      busy: this.state.busy,
+      isRtl: this.state.isRtl
+    }
 
     return (
       <div className='example'>
         <div className='row'>
-          <div className='col-sm-8 demo'>
+          <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>
-              <RW.Combobox 
-                  data={list}
-                  value={this.state.value}
-                  onChange={this._change}
-                  textField='name'
-                  valueField='id'
-                  suggest={this.state.suggest || false}
-                  filter={this.state.filter || false}
-                  disabled={this.state.disabled === 'disabled'}
-                  readOnly={this.state.disabled === 'readonly'}
-                  groupBy={this.state.groupBy}
-                  duration={this.state.duration}
-                  busy={this.state.busy}
-                  isRtl={this.state.isRtl}/>
+              <RW.Combobox {...props}/>
             </div>
             <div className='form-group'>
               <label>Custom list Rendering</label>
-              <RW.Combobox 
-                  data={list}
-                  value={this.state.value}
-                  onChange={this._change}
-                  textField='name'
-                  valueField='id'
-                  suggest={this.state.suggest || false}
-                  filter={this.state.filter || false}
-                  disabled={this.state.disabled === 'disabled'}
-                  readOnly={this.state.disabled === 'readonly'}
-                  groupBy={this.state.groupBy}
-                  duration={this.state.duration}
-                  itemComponent={itemComp}
-                  busy={this.state.busy}
-                  isRtl={this.state.isRtl}/>
+              <RW.Combobox {...props} itemComponent={itemComp}/>
             </div>
           </div>
-          <div className='col-sm-4 api-panel'>
+          <div className='col-md-6 col-lg-5 api-panel'>
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
@@ -75,14 +65,7 @@ module.exports = React.createClass({
                   Right to Left
               </label>
             </div>
-            <div className='form-group'>
-              <label className='checkbox-inline'>
-                <input type='checkbox'
-                  checked={this.state.groupBy}
-                  onChange={this._set.bind(null, 'groupBy', !this.state.groupBy ? (item => item.name.substr(0,2)) : null )}/>
-                  Group
-              </label>
-            </div>
+            
             <div className='form-group'>
               <ButtonGroup>
                 <Button
@@ -102,8 +85,15 @@ module.exports = React.createClass({
                 Busy
               </Button>
             </div>
+            
+            
             <div className='form-group'>
-              <label className='form-label'></label>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.groupBy}
+                  onChange={this._set.bind(null, 'groupBy', !this.state.groupBy ? (item => item.name.substr(0,2)) : null )}/>
+                  Group
+              </label>
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.suggest}
@@ -111,24 +101,26 @@ module.exports = React.createClass({
                   Suggestions
               </label>
             </div>
-            <div className='form-group'>
-              <label className='form-label'>Filter</label>
-              <RW.DropdownList 
-                  value={this.state.filter || false} 
-                  data={[false, 'startsWith', 'endsWith', 'contains']}
-                  onChange={this._set.bind(null, 'filter')}/>
-            </div>
 
-            <div className='form-group'>
-              <label className='form-label'>Duration</label>
-              <RW.NumberPicker 
-                  value={this.state.duration} 
-                  step={200}
-                  min={0}
-                  max={1000}
-                  onChange={this._set.bind(null, 'duration')}/>
+            <div className='row'>
+              <div className='form-group col-xs-6'>
+                <label className='form-label'>Filter</label>
+                <RW.DropdownList 
+                    value={this.state.filter || false} 
+                    data={[false, 'startsWith', 'endsWith', 'contains']}
+                    onChange={this._set.bind(null, 'filter')}/>
+              </div>
+
+              <div className='form-group  col-xs-6'>
+                <label className='form-label'>Duration</label>
+                <RW.NumberPicker 
+                    value={this.state.duration} 
+                    step={200}
+                    min={0}
+                    max={1000}
+                    onChange={this._set.bind(null, 'duration')}/>
+              </div>
             </div>
-            
           </div>
         </div>
       </div>

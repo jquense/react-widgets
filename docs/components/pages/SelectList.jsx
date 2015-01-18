@@ -1,16 +1,17 @@
 'use strict';
 var React = require('react')
-  , Default = require('../default.jsx')
   , Example = require('../example.jsx')
-  , MenuItem = require('../../bootstrap').MenuItem
+  , MenuItem = require('../ApiMenuItem.jsx')
   , DDButton = require('../../bootstrap').DropdownButton
-
-  , SelectListExample = require('../examples/selectlist.jsx');
+  , PropHeader = require('../PropHeader.jsx')
+  , SelectListExample = require('../demos/selectlist.jsx');
 
 var prefix = 'selectlist/'
 var widgetName = 'SelectList'
 var SelectList = React.createClass({
 
+  mixins: [ require('../PageMixin')(prefix) ],
+  
   render: function() {
     return (
       <section {...this.props}>
@@ -18,23 +19,23 @@ var SelectList = React.createClass({
           Select List
           <span className='pull-right'>
             <DDButton title='props' bsStyle='link' pullRight={true}>
-              <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
-              <MenuItem href={'#' + prefix + 'onChange'}>onChange</MenuItem>
-              <MenuItem href={'#' + prefix + 'data'}>data</MenuItem>
-              <MenuItem divider={true}></MenuItem>
-              <MenuItem href={'#' + prefix + 'valueField'}>valueField</MenuItem>
-              <MenuItem href={'#' + prefix + 'textField'}>textField</MenuItem>
-              <MenuItem href={'#' + prefix + 'itemComponent'}>itemComponent</MenuItem>
+              <MenuItem prefix={prefix}>value</MenuItem>
+              <MenuItem prefix={prefix}>onChange</MenuItem>
+              <MenuItem prefix={prefix}>data</MenuItem>
+              <MenuItem divider/>
+              <MenuItem prefix={prefix}>valueField</MenuItem>
+              <MenuItem prefix={prefix}>textField</MenuItem>
+              <MenuItem prefix={prefix}>itemComponent</MenuItem>
 
-              <MenuItem href={'#' + prefix + 'multiple'}>multiple</MenuItem>
-              <MenuItem href={'#' + prefix + 'onMove'}>onMove</MenuItem>
-              <MenuItem href={'#' + prefix + 'busy'}>busy</MenuItem>
-              <MenuItem href={'#' + prefix + 'disabled'}>disabled</MenuItem>
-              <MenuItem href={'#' + prefix + 'readonly'}>readonly</MenuItem>
+              <MenuItem prefix={prefix}>multiple</MenuItem>
+              <MenuItem prefix={prefix}>onMove</MenuItem>
+              <MenuItem prefix={prefix}>busy</MenuItem>
+              <MenuItem prefix={prefix}>disabled</MenuItem>
+              <MenuItem prefix={prefix}>readonly</MenuItem>
 
-              <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
-              <MenuItem divider={true}></MenuItem>
-              <MenuItem href={'#' + prefix + 'keyboard'}>Keyboard Navigation</MenuItem>
+              <MenuItem prefix={prefix}>isRtl</MenuItem>
+              <MenuItem divider/>
+              <MenuItem prefix={prefix}>Keyboard Navigation</MenuItem>
             </DDButton>
           </span>
         </h1>
@@ -68,83 +69,74 @@ var SelectList = React.createClass({
         }/>
 
         <h2>Props</h2>
-        <h3 className='prop-header' id={ prefix +"value" }>
-          value <small>{"Any|Array<Any>"}</small><strong>controllable (onChange, defaultValue)</strong>
-        </h3>
+
+        <PropHeader type='Any|Array<Any>' handler="onChange" controllable>value</PropHeader>
         <p>
           The current value or values of the {widgetName}. This can be an object (such as a member of the <code>data</code> array)
           or a primitive value, hinted to by the <code>valueField</code>. The widget value does not need to be in
           the <code>data</code> array; widgets can have values that are not in their list.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"onChange" }>
-          onChange <small>{"Function(Array<Any>|Any values)"}</small></h3>
+        <PropHeader type='Function(Array<Any>|Any values)'>onChange</PropHeader>
         <p>
           Change event handler that is called when the value is changed. <code>values</code> will be an array 
           when <code>multiple</code> prop is set.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"data" }>
-          data <small>Array - mixed</small></h3>
+        <PropHeader type='Array<Any>'>data</PropHeader>
         <p>
           provide an array of possible values for the {widgetName}. If an array of <code>objects</code> is provided you
           should use the <code>valueField</code> and <code>textField</code> props, to specify which object
           properties comprise the value field (such as an id) and the field used to label the item.
         </p>
-        <h3 className='prop-header' id={ prefix +"valueField" }>
-          valueField <small>String</small></h3>
+
+        <PropHeader type='String'>valueField</PropHeader>
         <p>
           A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
           the {widgetName} will use strict equality checks to locate the data item, if it exists.
         </p>
-        <h3 className='prop-header' id={ prefix +"textField" }>
-          textField <small>String</small></h3>
+
+        <PropHeader type='String'>textField</PropHeader>
         <p>
           This prop determines which data item field to display in the {widgetName}.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"itemComponent" }>
-          itemComponent <small>Component</small></h3>
+        <PropHeader type='Component'>itemComponent</PropHeader>
+
         <p>
           This component is used to render each item in the {widgetName}. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
 
-        <h3 className='prop-header' id={ prefix +"multiple" }>
-          multiple <small>Boolean<Default>false</Default></small>
-        </h3>
+        <PropHeader type='Boolean'>multiple</PropHeader>
         <p>
           Whether or not the {widgetName} allows multiple selection or not. when <code>false</code> the {widgetName} will 
           render as a list of radio buttons, and checkboxes when <code>true</code>.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"onMove" }>
-          onMove <small>{"Function(HTMLElement)"}</small></h3>
+        <PropHeader type='Function(HTMLElement)'>onMove</PropHeader>
         <p>
           A handler called when focus shifts on the {widgetName}. Internally this is used to ensure the focused item is in view.
           If you want to define your own "scrollTo" behavior or just disable the default one specify an <code>onMove</code> handler.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"busy" }>
-          busy <small>Boolean</small></h3>
+        <PropHeader type='Boolean' default="false">busy</PropHeader>
         <p>
           mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful
           when loading data via an ajax call.
         </p>
-        <h3 className='prop-header' id={ prefix +"disabled" }>
-          disabled <small>[Boolean, Array]</small></h3>
+
+        <PropHeader type='[Boolean, Array]'>disabled</PropHeader>
         <p>
           Disable the widget, if an <code>Array</code> of values is passed in only those values will be disabled.
         </p>
 
-        <h3 className='prop-header' id={ prefix + "readOnly" }>
-          readOnly <small>[Boolean, Array]</small></h3>
+        <PropHeader type='[Boolean, Array]'>readOnly</PropHeader>
         <p>
           Place the {widgetName} in a readonly mode, If an <code>Array</code> of values is passed in only those values will be readonly.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"isRtl" }>
-          isRtl <small>Boolean<Default>false</Default></small></h3>
+        <PropHeader type='Boolean' default="false">isRtl</PropHeader>
         <p>
           mark whether the {widgetName} should render right-to-left. This property can also be implicitly passed to the widget through
            a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.

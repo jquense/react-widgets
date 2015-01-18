@@ -1,7 +1,7 @@
 
 body {
   margin-bottom: 40px;
-  background: #FAFAF9;
+  font-size: 14px;
 }
 
 h2, h3 {
@@ -12,21 +12,19 @@ h4 {
   margin-top: 20px;
 }
 
-h3 {
+/*h3 {
   color: #284C6D;
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
   font-size: 20px;
 
-}
+}*/
 
 .example {
   background-color: white;
   margin-top: 20px;
   position: relative;
-  border: #ddd 1px solid;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
+  border: #DAE3E7 1px solid;
   padding: 20px;
   padding-top: 35px;
 }
@@ -35,6 +33,11 @@ code {
   color: #555;
   background-color: rgba(0,0,0,0.07);
 }
+
+.prop-item {
+  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
 .example:before {
   position: absolute;
   top: 5px;
@@ -46,8 +49,6 @@ code {
  /* background-color: #444;*/
   margin-top: 0 !important;
   border-top-width: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 
 .keyboard-list.list-unstyled {
@@ -62,9 +63,11 @@ code {
   position: relative;
   overflow: visible;
 }
+
 .prop-header:before {
   display: block;
   content: " ";
+  font-size: 18px;
   margin-top: -65px;
   height: 65px;
   visibility: hidden;
@@ -73,6 +76,7 @@ code {
 h3 {
   overflow: hidden;
 }
+
 h3 > small {
   margin-left: 5px;
   color: #555;
@@ -90,7 +94,7 @@ h3 > strong {
   font-style: italic;
 }
 
-.rw-widget {
+.demo .rw-widget:not(.rw-calendar) {
   max-width: 300px;
 }
 
@@ -99,7 +103,33 @@ h3 > strong {
   top: 72px;
 }
 
+
+@media (min-width: 768px) {
+  .nav-aside {
+    width: 165px;
+    padding: 20px 10px;
+  }
+
+  .nav-aside.section-inner {
+    padding: 20px 10px;
+  }
+}
+
+@media (min-width: 992px) {
+  .nav-aside {
+    width: 215px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .nav-aside {
+    width: 265px;
+  }
+}
+
+
 @media (max-width: 767px) {
+
   .nav-aside {
     position: static;
   }
@@ -110,49 +140,15 @@ pre > code.hljs {
 }
 
 pre {
-  background: #F4F4F4 ;
-}
-.navbar-default {
-  background-color: #0079C1;
-}
-
-.navbar-default .navbar-nav>li>a {
-  color: white;
-  border-bottom: 3px solid #0079C1;
-}
-
-.navbar-default .navbar-nav>li>a:hover {
-  color: #E7CAA1;
-  border-bottom-color: #E7CAA1;
-}
-.navbar-default .navbar-brand,
-.navbar-default .navbar-brand:hover,
-.navbar-default .navbar-brand:focus,
-.navbar-default .navbar-nav>li>a:hover,
-.navbar-default .navbar-nav>li.active > a,
-.navbar-default .navbar-nav>li.active > a:hover {
-  color: #E7CAA1;
-  border-bottom-color: #E7CAA1;
-  background: none;
- /* color: white;
-  background-color: #0B2A46;
-  border-bottom: 3px solid #0B2A46;*/
-}
-
-.dropdown-menu{
+  background: #F4F4F4;
   border-radius: 0;
- /* border-color: #0079C1;
-  border-top-right-radius: 0;
-  border-top-left-radius: 0;*/
+  border-color: #DAE3E7;
 }
-.dropdown-menu > li > a,
-.side-nav .nav li > a {
-  color: #284C6D;
-  border-left: 2px solid transparent;
-}
+
 
 .side-nav .nav > li.active .nav {
-  display: block;}
+  display: block;
+}
 
 .side-nav .nav .nav {
   display: none;
@@ -161,31 +157,20 @@ pre {
 }
 
 .side-nav .nav .nav > li > a {
-  font-size: 80%;
+  font-size: 90%;
 }
 
-.side-nav .nav li > a:hover,
-.side-nav .nav li.active > a,
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li.active > a  {
-  color: #B59E7D;
-  background: none;
-  border-left-color:  #E7CAA1;
-}
 .page-header {
-  color: #0079C1;
-  border-bottom-color: #0079C1;
+  margin-top: 0;
 }
-
-.h1, h2,h4,h5 { color: #0079C1; }
-
 
 .example .demo {
-  margin: 40px auto 10px auto;
+  margin: 20px auto 10px auto;
 }
 
 .example .api-panel {
   padding-top: 10px;
+  margin-top: 10px;
   border-top: #ddd 1px solid;
 }
 
@@ -199,7 +184,7 @@ pre {
   padding-top: 10px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .example .api-panel {
     margin-top: -10px;
     padding-top: 0;
@@ -208,16 +193,27 @@ pre {
   }
 }
 
-@media (max-width: 768px) {
-  .navbar-default .navbar-nav>li>a,
-  .navbar-default .navbar-nav>li>a:hover {
-    border-left: 3px solid #0079C1;
-    border-bottom-width: 0px;
-  }
+.navbar-collapse.collapse {
+  display: block!important;
+}
 
-  .navbar-default .navbar-nav>li>a:hover {
-    border-left: 3px solid #E7CAA1;
-  }
+.navbar-nav { margin: 0 !important;}
+.navbar-header,
+.navbar-nav >li, .navbar-nav {
+  float: left !important;
+}
+
+.navbar-nav > li > a {
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+  margin-right: -15px !important;
+}
+
+.navbar-right {
+  float: right!important;
 }
 
 .overdue {

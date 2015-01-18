@@ -17,7 +17,7 @@ var React          = require('react')
 
 var locations = [
       '#intro','#dropdown-list', '#combobox',
-      '#number-picker', '#select-list', 
+      '#number-picker', '#selectlist', 
       '#calendar', '#date-picker'];
 
 var Docs = React.createClass({
@@ -42,8 +42,8 @@ var Docs = React.createClass({
       <div style={{ marginTop: 72 }}>
         <Navbar page={this.props.page}/>
         <div className='container'>
-          <aside className='col-sm-3'>
-            <div className='nav-aside'>
+          <aside className='col-sm-3 section'>
+            <div className='nav-aside section-inner'>
               <Tbs.Nav className='side-nav' activeHref={href} onSelect={this.handleNavItemSelect}>
                 <Tbs.SubNav key={0} href='#intro' text='Getting Started'>
                   <Tbs.NavItem key={0} href="#intro/install">Install</Tbs.NavItem>
@@ -64,24 +64,26 @@ var Docs = React.createClass({
               </Tbs.Nav>
             </div>
           </aside>
-          <article className='col-sm-9 tab-content'>
-            <GettingStarted className ={cx({"tab-pane": true, "active": href.split('/')[0] === '#intro' })}/>
-            <DropdownList   className ={cx({"tab-pane": true, "active": href === '#DropdownList' })}/>
-            <ComboBox       className ={cx({"tab-pane": true, "active": href === '#combobox' })}/>
-            <NumberPicker   className ={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
-            <MultiSelect    className ={cx({"tab-pane": true, "active": href === '#multiselect' })}/>
-            <SelectList     className ={cx({"tab-pane": true, "active": href === '#selectlist' })}/>
-            <Calendar       className ={cx({"tab-pane": true, "active": href === '#calendar' })}/>
-            <DatePicker     className ={cx({"tab-pane": true, "active": href === '#date-picker' })}/>
-            <Migration      className ={cx({"tab-pane": true, "active": href === '#migration' })}/>
-            
-            <div className='clearfix'style={{ marginTop: 20 }}>
-              { locations.indexOf(href) > 0 && 
-                <button type='button' className='btn btn-link pull-left' onClick={this.prev}>« prev</button>
-              }
-              { locations.indexOf(href) < (locations.length - 1) && 
-                <button type='button' className='btn btn-link pull-right' onClick={this.next}>next »</button>
-              }
+          <article className='col-sm-9 section'>
+            <div className='tab-content section-inner'>
+              <GettingStarted className ={cx({"tab-pane": true, "active": href.split('/')[0] === '#intro' })}/>
+              <DropdownList   className ={cx({"tab-pane": true, "active": href === '#DropdownList' })}/>
+              <ComboBox       className ={cx({"tab-pane": true, "active": href === '#combobox' })}/>
+              <NumberPicker   className ={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
+              <MultiSelect    className ={cx({"tab-pane": true, "active": href === '#multiselect' })}/>
+              <SelectList     className ={cx({"tab-pane": true, "active": href === '#selectlist' })}/>
+              <Calendar       className ={cx({"tab-pane": true, "active": href === '#calendar' })}/>
+              <DatePicker     className ={cx({"tab-pane": true, "active": href === '#date-picker' })}/>
+              <Migration      className ={cx({"tab-pane": true, "active": href === '#migration' })}/>
+              
+              <div className='clearfix'style={{ marginTop: 20 }}>
+                { locations.indexOf(href) > 0 && 
+                  <button type='button' className='btn btn-link pull-left' onClick={this.prev}>« prev</button>
+                }
+                { locations.indexOf(href) < (locations.length - 1) && 
+                  <button type='button' className='btn btn-link pull-right' onClick={this.next}>next »</button>
+                }
+              </div>
             </div>
           </article>
         </div>

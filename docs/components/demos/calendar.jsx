@@ -16,7 +16,7 @@ module.exports = React.createClass({
     return (
       <div className='example'>
         <div className='row'>
-          <div className='col-sm-8'>
+          <div className='col-md-6 col-lg-7 demo'>
             <RW.Calendar 
                 value={this.state.value}
                 onChange={this._change}
@@ -28,7 +28,7 @@ module.exports = React.createClass({
                 readOnly={this.state.disabled === 'readonly'}
                 isRtl={this.state.isRtl}/>
           </div>
-          <div className='col-sm-4 api-panel'>
+          <div className='col-md-6 col-lg-5 api-panel'>
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
@@ -51,35 +51,39 @@ module.exports = React.createClass({
                 </Button>
               </ButtonGroup>
             </div>
-            <div className='form-group'>
-              <label className='form-label'>Initial View</label>
-              <RW.DropdownList 
-                  value={this.state.initialView || 'month'} 
-                  data={["month", "year", "decade", "century"]}
-                  onChange={this._set.bind(null, 'initialView')}/>
+            <div className="row">
+              <div className='form-group col-xs-6'>
+                <label className='form-label'>Initial View</label>
+                <RW.DropdownList 
+                    value={this.state.initialView || 'month'} 
+                    data={["month", "year", "decade", "century"]}
+                    onChange={this._set.bind(null, 'initialView')}/>
+              </div>
+              <div className='form-group col-xs-6'>
+                <label className='form-label'>Final View</label>
+                <RW.DropdownList 
+                    value={this.state.finalView || 'century'} 
+                    data={["month", "year", "decade", "century"]}
+                    onChange={this._set.bind(null, 'finalView')}/>
+              </div>
             </div>
-            <div className='form-group'>
-              <label className='form-label'>Final View</label>
-              <RW.DropdownList 
-                  value={this.state.finalView || 'century'} 
-                  data={["month", "year", "decade", "century"]}
-                  onChange={this._set.bind(null, 'finalView')}/>
-            </div>
-            <div className='form-group'>
-              <label className='form-label'>min</label>
-              <RW.DateTimePicker 
-                  time={false}
-                  format='MMM dd, yyyy'
-                  value={this.state.min} 
-                  onChange={this._set.bind(null, 'min')}/>
-            </div>
-            <div className='form-group'>
-              <label className='form-label'>max</label>
-              <RW.DateTimePicker 
-                  time={false}
-                  format='MMM dd, yyyy'
-                  value={this.state.max} 
-                  onChange={this._set.bind(null, 'max')}/>
+            <div className="row">
+              <div className='form-group col-xs-6'>
+                <label className='control-label'>min</label>
+                <RW.DateTimePicker 
+                    time={false}
+                    format='MMM dd, yyyy'
+                    value={this.state.min} 
+                    onChange={this._set.bind(null, 'min')}/>
+              </div>
+              <div className='form-group col-xs-6'>
+                <label className='control-label'>max</label>
+                <RW.DateTimePicker 
+                    time={false}
+                    format='MMM dd yyyy'
+                    value={this.state.max} 
+                    onChange={this._set.bind(null, 'max')}/>
+              </div>
             </div>
           </div>
         </div>

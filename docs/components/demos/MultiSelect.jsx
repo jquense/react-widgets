@@ -23,6 +23,22 @@ module.exports = React.createClass({
     var allVals = this.state.value
       , disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 
+    var props = {
+      data: list,
+      Value: this.state.value,
+      onChange: this._change,
+      textField: 'name',
+      valueField: 'id',
+      placeholder: this.state.placeholder,
+      disabled: disabled ? this.state.disabled : false,
+      readOnly: this.state.disabled === 'readonly',
+      onCreate: this.state.allowCustom && onCreate.bind(this),
+      groupBy: this.state.groupBy,
+      duration: this.state.duration,
+      busy: this.state.busy,
+      isRtl: this.state.isRtl
+    }
+
     function onCreate(tag){
       var parts = tag.split(' ')
       //list.push(tag)
@@ -39,44 +55,18 @@ module.exports = React.createClass({
     return (
       <div className='example'>
         <div className='row'>
-          <div className='col-sm-8 demo'>
+          <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>
-              <RW.Multiselect 
-                  data={list}
-                  value={this.state.value}
-                  onChange={this._change}
-                  textField='name'
-                  valueField='id'
-                  placeholder={this.state.placeholder}
-                  disabled={disabled ? this.state.disabled : false}
-                  readOnly={this.state.disabled === 'readonly'}
-                  onCreate={this.state.allowCustom && onCreate.bind(this)}
-                  groupBy={this.state.groupBy}
-                  duration={this.state.duration}
-                  busy={this.state.busy}
-                  isRtl={this.state.isRtl}/>
+              <RW.Multiselect {...props}/>
             </div>
             <div className='form-group'>
               <label>Custom Rendering</label>
-              <RW.Multiselect 
-                  data={list}
-                  value={this.state.value}
-                  onChange={this._change}
-                  textField='name'
-                  valueField='id'
-                  placeholder={this.state.placeholder}
-                  disabled={disabled ? this.state.disabled : false}
-                  readOnly={this.state.disabled === 'readonly'}
-                  onCreate={this.state.allowCustom && onCreate.bind(this)}
-                  duration={this.state.duration}
-                  groupBy={this.state.groupBy}
+              <RW.Multiselect {...props }
                   itemComponent={itemComp}
-                  tagComponent={itemComp}
-                  busy={this.state.busy}
-                  isRtl={this.state.isRtl}/>
+                  tagComponent={itemComp}/>
             </div>
           </div>
-          <div className='col-sm-4 api-panel'>
+          <div className='col-md-6 col-lg-5 api-panel'>
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
@@ -92,8 +82,6 @@ module.exports = React.createClass({
                   onChange={this._set.bind(null, 'allowCustom', !this.state.allowCustom)}/>
                   Allow custom tags
               </label>
-            </div>
-            <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.groupBy}
@@ -125,29 +113,30 @@ module.exports = React.createClass({
               <RW.Multiselect 
                   value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] } 
                   data={allVals}
-                  textField='label'
+                  textField='name'
                   valueField='id'
                   disabled={this.state.disabled === true}
                   messages={{ emptyList: "no values selected to the right"}}
                   onChange={this._set.bind(null, 'disabled')}/>
             </div>
-            <div className='form-group'>
-              <label className='form-label'>Placeholder</label>
-              <input className='form-control' type='text'
-                  value={this.state.placeholder} 
-                  onChange={extract(this._set.bind(null, 'placeholder'))}/>
-            </div>
+            <div className='row'>  
+              <div className='form-group col-xs-7'>
+                <label className='control-label'>Placeholder</label>
+                <input className='form-control' type='text'
+                    value={this.state.placeholder} 
+                    onChange={extract(this._set.bind(null, 'placeholder'))}/>
+              </div>
 
-            <div className='form-group'>
-              <label className='form-label'>Duration</label>
-              <RW.NumberPicker 
-                  value={this.state.duration} 
-                  step={200}
-                  min={0}
-                  max={1000}
-                  onChange={this._set.bind(null, 'duration')}/>
+              <div className='form-group col-xs-5'>
+                <label className='control-label'>Duration</label>
+                <RW.NumberPicker 
+                    value={this.state.duration} 
+                    step={200}
+                    min={0}
+                    max={1000}
+                    onChange={this._set.bind(null, 'duration')}/>
+              </div>
             </div>
-            
           </div>
         </div>
       </div>

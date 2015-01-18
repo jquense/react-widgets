@@ -1,3 +1,4 @@
+'use strict';
 var React = require('react')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
@@ -15,10 +16,10 @@ module.exports = React.createClass({
   render: function(){
 
     return (
-      <div className='example '>
+      <div className='example'>
         <div className='row'>
-          <div className='col-sm-8 demo'>
-            <RW.NumberPicker
+          <div className='col-md-6 col-lg-7 demo'>
+            <RW.NumberPicker 
                 value={this.state.value}
                 onChange={this._change}
                 max={this.state.max}
@@ -27,10 +28,9 @@ module.exports = React.createClass({
                 disabled={this.state.disabled === 'disabled'}
                 readOnly={this.state.disabled === 'readonly'}
                 format={this.state.format}
-                onChange={this._change}
                 isRtl={this.state.isRtl}/>
           </div>
-          <div className='col-sm-4 api-panel'>
+          <div className='col-md-6 col-lg-5 api-panel'>
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
@@ -61,24 +61,29 @@ module.exports = React.createClass({
                   onChange={this._set.bind(null, 'filter')}/>
             </div>
 
-            <div className='form-group'>
-              <label className='form-label'>step</label>
-              <RW.NumberPicker
-                  value={this.state.step}
-                  onChange={this._set.bind(null, 'step')}/>
-            </div>
-            <div className='form-group'>
-              <label className='form-label'>min</label>
-              <RW.NumberPicker
-                  value={this.state.min}
-                  onChange={this._set.bind(null, 'min')}/>
-            </div>
-            <div className='form-group'>
-              <label className='form-label'>max</label>
-              <RW.NumberPicker
-                  value={this.state.max}
-                  onChange={this._set.bind(null, 'max')}/>
-            </div>
+            <div className='row'>
+
+              <div className='form-group col-xs-4'>
+                <label className='form-label '>step</label>
+                <RW.NumberPicker
+                    value={this.state.step}
+                    onChange={this._set.bind(null, 'step')}/>
+              </div>
+
+              <div className="col-xs-4 form-group">
+                <label className='form-label'>min</label>
+                <RW.NumberPicker
+                    value={this.state.min}
+                    onChange={this._set.bind(null, 'min')}/>
+
+              </div>
+              <div className='form-group col-xs-4'>
+                <label className='form-label'>max</label>
+                <RW.NumberPicker
+                    value={this.state.max}
+                    onChange={this._set.bind(null, 'max')}/>
+              </div>
+            </div> 
           </div>
         </div>
       </div>

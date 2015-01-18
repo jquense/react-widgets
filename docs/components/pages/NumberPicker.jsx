@@ -1,13 +1,16 @@
 'use strict';
 var React = require('react')
-  , Default = require('../default.jsx')
   , Example = require('../example.jsx')
   , DDButton = require('../../bootstrap').DropdownButton
-  , MenuItem = require('../../bootstrap').MenuItem
-  , NumberPickerExample = require('../examples/numberpicker.jsx');
+  , PropHeader = require('../PropHeader.jsx')
+  , MenuItem = require('../ApiMenuItem.jsx')
+  , NumberPickerExample = require('../demos/numberpicker.jsx');
 
 var prefix = 'number-picker/'
 var NumberPicker = React.createClass({
+
+  mixins: [ require('../PageMixin')(prefix) ],
+
 
   render: function() {
     return (
@@ -16,19 +19,19 @@ var NumberPicker = React.createClass({
           Number Picker
           <span className='pull-right'>
             <DDButton title='props' bsStyle='link' pullRight={true}>
-              <MenuItem href={'#' + prefix + 'value'}>value</MenuItem>
-              <MenuItem href={'#' + prefix + 'onChange'}>onChange</MenuItem>
-              <MenuItem divider={true}></MenuItem>
-              <MenuItem href={'#' + prefix + 'format'}>format</MenuItem>
-              <MenuItem href={'#' + prefix + 'min'}>min</MenuItem>
-              <MenuItem href={'#' + prefix + 'max'}>max</MenuItem>
-              <MenuItem href={'#' + prefix + 'step'}>step</MenuItem>
+              <MenuItem>value</MenuItem>
+              <MenuItem>onChange</MenuItem>
+              <MenuItem divider/>
+              <MenuItem>format</MenuItem>
+              <MenuItem>min</MenuItem>
+              <MenuItem>max</MenuItem>
+              <MenuItem>step</MenuItem>
 
 
-              <MenuItem href={'#' + prefix + 'isRtl'}>isRtl</MenuItem>
-              <MenuItem href={'#' + prefix + 'messages'}>messages</MenuItem>
-              <MenuItem divider={true}></MenuItem>
-              <MenuItem href={'#' + prefix + 'keyboard'}>Keyboard Navigation</MenuItem>
+              <MenuItem>isRtl</MenuItem>
+              <MenuItem>messages</MenuItem>
+              <MenuItem divider/>
+              <MenuItem>Keyboard Navigation</MenuItem>
             </DDButton>
           </span>
 
@@ -53,21 +56,18 @@ var NumberPicker = React.createClass({
           "}"
         }/>
         <h2>Props</h2>
-        <h3 className='prop-header' id={ prefix +"value" }>
-          value <small>Number?</small><strong>controllable (onChange, defaultValue)</strong></h3>
+        <PropHeader type='Number?' handler="onChange" controllable>value</PropHeader>
         <p>
           The current value of the NumberPicker.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"onChange" }>
-          onChange <small>{"Function(Number? value)"}</small></h3>
+        <PropHeader type='Function(Number? value)'>onChange</PropHeader>
         <p>
           Change event Handler that is called when the value is changed. The handler is called with the
           current numeric value or null.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"format" }>
-          format <small>String<Default>"d"</Default></small></h3>
+        <PropHeader type='String' default='d'>format</PropHeader>
         <p>
           A format string used to display the number value. For more information on prefined and custom number and
           currency formats visit the&nbsp;
@@ -76,45 +76,44 @@ var NumberPicker = React.createClass({
           </a>.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"min" }>
-          min <small>Number<Default>-Infinity</Default></small></h3>
+        <PropHeader type='Number' default='-Infinity'>min</PropHeader>
         <p>
           The minimum number that the NumberPicker value.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"max" }>
-          max <small>Number<Default>Infinity</Default></small></h3>
+        <PropHeader type='Number' default='Infinity'>max</PropHeader>
         <p>
           The maximum number that the NumberPicker value.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"step" }>
-          step <small>Number<Default>1</Default></small></h3>
+        <PropHeader type='Number' default='1'>step</PropHeader>
         <p>
           Amount to increase or decrease value when using the spinner buttons.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"isRtl" }>
-          isRtl <small>Boolean<Default>false</Default></small></h3>
+        <PropHeader type='Boolean' default='false'>
+          isRtl
+        </PropHeader>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
            a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"messages" }>
-          messages <small>Object</small></h3>
+        <PropHeader type='Object'>messages</PropHeader>
         <p>
           Object hash containing display text and/or text for screen readers. Use the <code>messages</code> object to
           localize widget text and increase accessibility.
         </p>
-        <h3>messages.increment <small>String<Default>"increment value"</Default></small></h3>
+
+        <PropHeader type='String' default='"increment value"'>messages.increment</PropHeader>
         <p>
           Number picker spinner up button text for screen readers
         </p>
-        <h3>messages.decrement <small>String<Default>"decrement value"</Default></small></h3>
+
+        <PropHeader type='String' default='"decrement value"'>messages.decrement</PropHeader>
         <p>Number picker spinner down button text for screen readers </p>
 
-        <h2 id={ prefix +"keyboard" }>Keyboard Navigation</h2>
+        <PropHeader prefix={prefix}>Keyboard Navigation</PropHeader>
 
         <ul className='list-unstyled keyboard-list'>
           <li><kbd>down arrow</kbd> decrement value</li>

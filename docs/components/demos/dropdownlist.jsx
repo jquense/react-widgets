@@ -32,6 +32,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+var list = genData(25);
 
 var DropdownApi = React.createClass({
 
@@ -43,47 +44,35 @@ var DropdownApi = React.createClass({
   },
 
   render: function() {
-    var list = genData(25);
+    
+    var props = {
+      disabled: this.state.disabled === 'disabled',
+      readOnly: this.state.disabled === 'readonly',
+      groupBy: this.state.groupBy,
+      defaultValue: 1,
+      data: list,
+      duration: this.state.duration,
+      busy: this.state.busy,
+      isRtl: this.state.isRtl,
+      valueField: 'id',
+      textField: 'name'
+    }
 
     return (
       <div className='example'>
         <div className='row'>
-          <div className='col-sm-8 demo'>
+          <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>
-              <Dropdown 
-                disabled={this.state.disabled === 'disabled'}
-                readOnly={this.state.disabled === 'readonly'}
-                groupBy={this.state.groupBy}
-                value={this.state.value || 1}
-                data={list}
-                duration={this.state.duration}
-                busy={this.state.busy}
-                onChange={this._change}
-                isRtl={this.state.isRtl}
-                valueField='id'
-                textField='name'
-                />
+              <Dropdown {...props }/>
             </div>
             <div className='form-group'>
               <label>Custom Rendering</label>
-              <Dropdown 
-                disabled={this.state.disabled === 'disabled'}
-                readOnly={this.state.disabled === 'readonly'}
-                groupBy={this.state.groupBy}
-                value={this.state.value || 1}
+              <Dropdown {...props }
                 valueComponent={valueComp}
-                itemComponent={itemComp}
-                data={list}
-                duration={this.state.duration}
-                busy={this.state.busy}
-                onChange={this._change}
-                isRtl={this.state.isRtl}
-                valueField='id'
-                textField='name'
-                />
+                itemComponent={itemComp}/>
             </div>
           </div>
-          <div className='col-sm-4 api-panel'>
+          <div className='col-md-6 col-lg-5 api-panel'>
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
@@ -91,8 +80,6 @@ var DropdownApi = React.createClass({
                   onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
-            </div>
-            <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.groupBy}
