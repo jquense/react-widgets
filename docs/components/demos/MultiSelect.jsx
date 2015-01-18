@@ -25,7 +25,7 @@ module.exports = React.createClass({
 
     var props = {
       data: list,
-      Value: this.state.value,
+      value: this.state.value,
       onChange: this._change,
       textField: 'name',
       valueField: 'id',

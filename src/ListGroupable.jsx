@@ -18,6 +18,7 @@ module.exports = React.createClass({
   propTypes: {
     data:           React.PropTypes.array,
     onSelect:       React.PropTypes.func,
+    onMove:         React.PropTypes.func,
 
     ItemComponent:  CustomPropTypes.elementType,
     GroupComponent: CustomPropTypes.elementType,
@@ -184,11 +185,12 @@ module.exports = React.createClass({
   },
 
   _setScrollPosition: function(){
-    var selected = this.getItemDOMNode(this.props.focused);
+    var selected = this.getItemDOMNode(this.props.focused)
+      , handler  = this.props.onMove || scrollTo;
 
     if( !selected ) return 
 
-    setTimeout(() => scrollTo(selected))
+    setTimeout(() => handler(selected))
   },
 
   getItemDOMNode(item){

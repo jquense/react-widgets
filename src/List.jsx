@@ -18,6 +18,7 @@ module.exports = React.createClass({
   propTypes: {
     data:          React.PropTypes.array,
     onSelect:      React.PropTypes.func,
+    onMove:        React.PropTypes.func,
     itemComponent: CustomPropTypes.elementType,
 
     selectedIndex: React.PropTypes.number,
@@ -36,7 +37,7 @@ module.exports = React.createClass({
   getDefaultProps: function(){
     return {
       optID:         '',
-      onSelect:      function(){},
+      onSelect:      ()=>{},
       data:          [],
       messages: {
         emptyList:   "There are no items in this list"
@@ -48,14 +49,6 @@ module.exports = React.createClass({
     return {}
   },
 
-  // componentWillReceiveProps: function(props){
-  //   var data = props.data
-  //     , focusIdx = data.indexOf(props.focused)
-  //     , selectIdx = data.indexOf(props.selected);
-
-  //   if( selectIdx !== -1) this.setSelectedIndex(selectIdx)
-  //   if( focusIdx !== -1)  this.setFocusedIndex(focusIdx)
-  // },
 
   componentDidMount(prevProps, prevState){
     this._setScrollPosition()
@@ -113,12 +106,13 @@ module.exports = React.createClass({
   _setScrollPosition: function(){
     var list = this.getDOMNode()
       , idx  = this._data().indexOf(this.props.focused)
-      , selected = list.children[idx];
+      , selected = list.children[idx]
+      , handler  = this.props.onMove || scrollTo;
 
     if( !selected ) return 
 
     // timeout allows for element to become visible
-    setTimeout(() => scrollTo(selected))
+    setTimeout(() => handler(selected))
   }
 
 })

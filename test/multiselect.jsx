@@ -308,6 +308,7 @@ describe('Select', function(){
 
     trigger.keyDown(select.getDOMNode(), { key: 'ArrowLeft'})
 
+
     expect(tags.children[2].className).to.match(/\brw-state-focus\b/)
     expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
 
@@ -348,8 +349,9 @@ describe('Select', function(){
 
     select.setProps({ open: true, value:[], onToggle: ()=>{} })
 
+    
     trigger.keyDown(select.getDOMNode(), { key: 'ArrowDown'})
-    expect(list.children[0].className).to.match(/\brw-state-focus\b/)
+    expect(list.children[1].className).to.match(/\brw-state-focus\b/)
 
     trigger.keyDown(select.getDOMNode(), { key: 'End'})
     expect(list.children[2].className).to.match(/\brw-state-focus\b/)

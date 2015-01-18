@@ -92,11 +92,17 @@ var DateTimePicker = React.createClass({
           The current selected date, should be a <code>Date</code> instance or <code>null</code>.
         </p>
 
-        <PropHeader type='Function( Date? date, String dateStr )'>onChange</PropHeader>
+        <PropHeader type='Function(Date? date, String dateStr)'>onChange</PropHeader>
         <p>
           change event Handler that is called when the value is changed. The handler is called with both the
           current <code>Date</code> object (or null if it was not parseable), and the second argument is
           a <code>string</code> representation of the date value, formated by the <code>format</code> prop.
+        </p>
+
+        <PropHeader type='Function(Date? value)'>onSelect</PropHeader>
+        <p>
+          This handler fires when an item has been selected from the list or calendar. It fires before the <code>onChange</code> handler, and fires 
+          regardless of whether the value has actually changed.
         </p>
 
         <PropHeader type='Boolean' default='true'>calendar</PropHeader>
