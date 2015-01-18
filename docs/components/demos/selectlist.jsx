@@ -53,7 +53,7 @@ var DropdownApi = React.createClass({
     return (
       <div className='example'>
         <div className='row'>
-          <div className='col-sm-8 demo'>
+          <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>
               <RW.SelectList 
                 disabled={disabled ? this.state.disabled : false}
@@ -69,7 +69,7 @@ var DropdownApi = React.createClass({
                 />
             </div>
           </div>
-          <div className='col-sm-4 api-panel'>
+          <div className='col-md-6 col-lg-5 api-panel'>
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
