@@ -599,7 +599,7 @@
 	  , MenuItem = __webpack_require__(17)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(18)
-	  , ComboBoxExample = __webpack_require__(21);
+	  , ComboBoxExample = __webpack_require__(24);
 	
 	var prefix = 'combobox/'
 	var widgetName = 'Combobox'
@@ -864,7 +864,7 @@
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(17)
 	  , PropHeader = __webpack_require__(18)
-	  , MultiselectExample = __webpack_require__(22);
+	  , MultiselectExample = __webpack_require__(21);
 	
 	var prefix = 'multiselect/';
 	var widgetName = 'Multiselect'
@@ -1186,7 +1186,7 @@
 	  , MenuItem = __webpack_require__(17)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(18)
-	  , SelectListExample = __webpack_require__(24);
+	  , SelectListExample = __webpack_require__(22);
 	
 	var prefix = 'selectlist/'
 	var widgetName = 'SelectList'
@@ -2135,7 +2135,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1)
-	  , _ = __webpack_require__(50);
+	  , _ = __webpack_require__(59);
 	
 	
 	module.exports = React.createClass({displayName: 'exports',
@@ -2419,179 +2419,6 @@
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(35);
-	
-	var i = 0
-	  , list = [
-	    { id: i += 1, name: "James" },
-	    { id: i += 1, name: "Jan" },
-	    { id: i += 1, name: "Jase" },
-	    { id: i += 1, name: "Jason" },
-	    { id: i += 1, name: "Jim" },
-	    { id: i += 1, name: "Jimmy" },
-	    { id: i += 1, name: "Jimmy Smith" },
-	    { id: i += 1, name: "John" }
-	  ];
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  getInitialState: function(){
-	    return {
-	      duration: 250,
-	      value: 1,
-	      suggest: true
-	    }
-	  },
-	
-	  render: function(){
-	    var props;
-	
-	    props = {
-	      data: list,
-	      defaultValue: 1,
-	      textField: 'name',
-	      valueField: 'id',
-	      suggest: this.state.suggest || false,
-	      filter: this.state.filter || false,
-	      disabled: this.state.disabled === 'disabled',
-	      readOnly: this.state.disabled === 'readonly',
-	      groupBy: this.state.groupBy,
-	      duration: this.state.duration,
-	      busy: this.state.busy,
-	      isRtl: this.state.isRtl
-	    }
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(RW.Combobox, React.__spread({},  props))
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", null, "Custom list Rendering"), 
-	              React.createElement(RW.Combobox, React.__spread({},  props, {itemComponent: itemComp}))
-	            )
-	          ), 
-	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              ), 
-	              React.createElement(Button, {style: { marginLeft: 10}, 
-	                active: this.state.busy, 
-	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
-	                "Busy"
-	              )
-	            ), 
-	            
-	            
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.groupBy, 
-	                  onChange: this._set.bind(null, 'groupBy', !this.state.groupBy ? (function(item)  {return item.name.substr(0,2);}) : null)}), 
-	                  "Group"
-	              ), 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.suggest, 
-	                  onChange: this._set.bind(null, 'suggest', !this.state.suggest)}), 
-	                  "Suggestions"
-	              )
-	            ), 
-	
-	            React.createElement("div", {className: "row"}, 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "form-label"}, "Filter"), 
-	                React.createElement(RW.DropdownList, {
-	                    value: this.state.filter || false, 
-	                    data: [false, 'startsWith', 'endsWith', 'contains'], 
-	                    onChange: this._set.bind(null, 'filter')})
-	              ), 
-	
-	              React.createElement("div", {className: "form-group  col-xs-6"}, 
-	                React.createElement("label", {className: "form-label"}, "Duration"), 
-	                React.createElement(RW.NumberPicker, {
-	                    value: this.state.duration, 
-	                    step: 200, 
-	                    min: 0, 
-	                    max: 1000, 
-	                    onChange: this._set.bind(null, 'duration')})
-	              )
-	            )
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
-	    this.setState({ disabled: val })
-	  },
-	
-	})
-	
-	var itemComp = React.createClass({displayName: 'itemComp',
-	  render: function() {
-	    var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	    return (
-	      React.createElement("div", null, 
-	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
-	         '  ' + this.props.item.name
-	      )
-	    );
-	  }
-	});
-	
-	function getRandomInt(min, max) {
-	    return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
 	  , RW = __webpack_require__(35)
 	  , genData = __webpack_require__(36);
 	
@@ -2781,129 +2608,7 @@
 
 
 /***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React       = __webpack_require__(1)
-	  , Button      = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW          = __webpack_require__(35);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	  getInitialState: function(){
-	    return {
-	      format: ''
-	    }
-	  },
-	
-	  render: function(){
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
-	            React.createElement(RW.Calendar, {
-	                value: this.state.value, 
-	                onChange: this._change, 
-	                max: this.state.max, 
-	                min: this.state.min, 
-	                finalView: this.state.finalView, 
-	                initialView: this.state.initialView, 
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                isRtl: this.state.isRtl})
-	          ), 
-	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              )
-	            ), 
-	            React.createElement("div", {className: "row"}, 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "form-label"}, "Initial View"), 
-	                React.createElement(RW.DropdownList, {
-	                    value: this.state.initialView || 'month', 
-	                    data: ["month", "year", "decade", "century"], 
-	                    onChange: this._set.bind(null, 'initialView')})
-	              ), 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "form-label"}, "Final View"), 
-	                React.createElement(RW.DropdownList, {
-	                    value: this.state.finalView || 'century', 
-	                    data: ["month", "year", "decade", "century"], 
-	                    onChange: this._set.bind(null, 'finalView')})
-	              )
-	            ), 
-	            React.createElement("div", {className: "row"}, 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "control-label"}, "min"), 
-	                React.createElement(RW.DateTimePicker, {
-	                    time: false, 
-	                    format: "MMM dd, yyyy", 
-	                    value: this.state.min, 
-	                    onChange: this._set.bind(null, 'min')})
-	              ), 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "control-label"}, "max"), 
-	                React.createElement(RW.DateTimePicker, {
-	                    time: false, 
-	                    format: "MMM dd yyyy", 
-	                    value: this.state.max, 
-	                    onChange: this._set.bind(null, 'max')})
-	              )
-	            )
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
-	    this.setState({ disabled: val })
-	  },
-	
-	})
-	
-	          
-
-
-/***/ },
-/* 24 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3053,6 +2758,301 @@
 	module.exports = DropdownApi;
 	
 
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React       = __webpack_require__(1)
+	  , Button      = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW          = __webpack_require__(35);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	  getInitialState: function(){
+	    return {
+	      format: ''
+	    }
+	  },
+	
+	  render: function(){
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
+	            React.createElement(RW.Calendar, {
+	                value: this.state.value, 
+	                onChange: this._change, 
+	                max: this.state.max, 
+	                min: this.state.min, 
+	                finalView: this.state.finalView, 
+	                initialView: this.state.initialView, 
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                isRtl: this.state.isRtl})
+	          ), 
+	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              )
+	            ), 
+	            React.createElement("div", {className: "row"}, 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "form-label"}, "Initial View"), 
+	                React.createElement(RW.DropdownList, {
+	                    value: this.state.initialView || 'month', 
+	                    data: ["month", "year", "decade", "century"], 
+	                    onChange: this._set.bind(null, 'initialView')})
+	              ), 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "form-label"}, "Final View"), 
+	                React.createElement(RW.DropdownList, {
+	                    value: this.state.finalView || 'century', 
+	                    data: ["month", "year", "decade", "century"], 
+	                    onChange: this._set.bind(null, 'finalView')})
+	              )
+	            ), 
+	            React.createElement("div", {className: "row"}, 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "control-label"}, "min"), 
+	                React.createElement(RW.DateTimePicker, {
+	                    time: false, 
+	                    format: "MMM dd, yyyy", 
+	                    value: this.state.min, 
+	                    onChange: this._set.bind(null, 'min')})
+	              ), 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "control-label"}, "max"), 
+	                React.createElement(RW.DateTimePicker, {
+	                    time: false, 
+	                    format: "MMM dd yyyy", 
+	                    value: this.state.max, 
+	                    onChange: this._set.bind(null, 'max')})
+	              )
+	            )
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	
+	})
+	
+	          
+
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW = __webpack_require__(35);
+	
+	var i = 0
+	  , list = [
+	    { id: i += 1, name: "James" },
+	    { id: i += 1, name: "Jan" },
+	    { id: i += 1, name: "Jase" },
+	    { id: i += 1, name: "Jason" },
+	    { id: i += 1, name: "Jim" },
+	    { id: i += 1, name: "Jimmy" },
+	    { id: i += 1, name: "Jimmy Smith" },
+	    { id: i += 1, name: "John" }
+	  ];
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  getInitialState: function(){
+	    return {
+	      duration: 250,
+	      value: 1,
+	      suggest: true
+	    }
+	  },
+	
+	  render: function(){
+	    var props;
+	
+	    props = {
+	      data: list,
+	      defaultValue: 1,
+	      textField: 'name',
+	      valueField: 'id',
+	      suggest: this.state.suggest || false,
+	      filter: this.state.filter || false,
+	      disabled: this.state.disabled === 'disabled',
+	      readOnly: this.state.disabled === 'readonly',
+	      groupBy: this.state.groupBy,
+	      duration: this.state.duration,
+	      busy: this.state.busy,
+	      isRtl: this.state.isRtl
+	    }
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(RW.Combobox, React.__spread({},  props))
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", null, "Custom list Rendering"), 
+	              React.createElement(RW.Combobox, React.__spread({},  props, {itemComponent: itemComp}))
+	            )
+	          ), 
+	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
+	              )
+	            ), 
+	            
+	            
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.groupBy, 
+	                  onChange: this._set.bind(null, 'groupBy', !this.state.groupBy ? (function(item)  {return item.name.substr(0,2);}) : null)}), 
+	                  "Group"
+	              ), 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.suggest, 
+	                  onChange: this._set.bind(null, 'suggest', !this.state.suggest)}), 
+	                  "Suggestions"
+	              )
+	            ), 
+	
+	            React.createElement("div", {className: "row"}, 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "form-label"}, "Filter"), 
+	                React.createElement(RW.DropdownList, {
+	                    value: this.state.filter || false, 
+	                    data: [false, 'startsWith', 'endsWith', 'contains'], 
+	                    onChange: this._set.bind(null, 'filter')})
+	              ), 
+	
+	              React.createElement("div", {className: "form-group  col-xs-6"}, 
+	                React.createElement("label", {className: "form-label"}, "Duration"), 
+	                React.createElement(RW.NumberPicker, {
+	                    value: this.state.duration, 
+	                    step: 200, 
+	                    min: 0, 
+	                    max: 1000, 
+	                    onChange: this._set.bind(null, 'duration')})
+	              )
+	            )
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	
+	})
+	
+	var itemComp = React.createClass({displayName: 'itemComp',
+	  render: function() {
+	    var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	    return (
+	      React.createElement("div", null, 
+	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
+	         '  ' + this.props.item.name
+	      )
+	    );
+	  }
+	});
+	
+	function getRandomInt(min, max) {
+	    return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
 
 /***/ },
 /* 25 */
@@ -3500,14 +3500,14 @@
 	var React = __webpack_require__(1);
 	var joinClasses = __webpack_require__(42);
 	var classSet = __webpack_require__(43);
-	var cloneWithProps = __webpack_require__(44);
+	var cloneWithProps = __webpack_require__(45);
 	
-	var createChainedFunction = __webpack_require__(45);
+	var createChainedFunction = __webpack_require__(47);
 	var BootstrapMixin = __webpack_require__(37);
-	var DropdownStateMixin = __webpack_require__(38);
+	var DropdownStateMixin = __webpack_require__(39);
 	var Button = __webpack_require__(27);
 	var ButtonGroup = __webpack_require__(28);
-	var DropdownMenu = __webpack_require__(39);
+	var DropdownMenu = __webpack_require__(40);
 	var ValidComponentChildren = __webpack_require__(46);
 	
 	
@@ -3691,13 +3691,13 @@
 	var React = __webpack_require__(1);
 	var joinClasses = __webpack_require__(42);
 	var BootstrapMixin = __webpack_require__(37);
-	var CollapsableMixin = __webpack_require__(40);
+	var CollapsableMixin = __webpack_require__(38);
 	var classSet = __webpack_require__(43);
-	var domUtils = __webpack_require__(47);
-	var cloneWithProps = __webpack_require__(44);
+	var domUtils = __webpack_require__(44);
+	var cloneWithProps = __webpack_require__(45);
 	
 	var ValidComponentChildren = __webpack_require__(46);
-	var createChainedFunction = __webpack_require__(45);
+	var createChainedFunction = __webpack_require__(47);
 	
 	
 	var Nav = React.createClass({displayName: 'Nav',
@@ -3810,10 +3810,10 @@
 	var joinClasses = __webpack_require__(42);
 	var BootstrapMixin = __webpack_require__(37);
 	var classSet = __webpack_require__(43);
-	var cloneWithProps = __webpack_require__(44);
+	var cloneWithProps = __webpack_require__(45);
 	
 	var ValidComponentChildren = __webpack_require__(46);
-	var createChainedFunction = __webpack_require__(45);
+	var createChainedFunction = __webpack_require__(47);
 	var Nav = __webpack_require__(31);
 	
 	
@@ -3954,10 +3954,10 @@
 	var React = __webpack_require__(1);
 	var joinClasses = __webpack_require__(42);
 	var classSet = __webpack_require__(43);
-	var cloneWithProps = __webpack_require__(44);
+	var cloneWithProps = __webpack_require__(45);
 	
 	var ValidComponentChildren = __webpack_require__(46);
-	var createChainedFunction = __webpack_require__(45);
+	var createChainedFunction = __webpack_require__(47);
 	var BootstrapMixin = __webpack_require__(37);
 	
 	
@@ -4155,20 +4155,20 @@
 	
 	module.exports = {
 	
-	  DropdownList:     __webpack_require__(51),
-	  Combobox:         __webpack_require__(52),
+	  DropdownList:     __webpack_require__(50),
+	  Combobox:         __webpack_require__(51),
 	
-	  Calendar:         __webpack_require__(53),
-	  DateTimePicker:   __webpack_require__(54),
+	  Calendar:         __webpack_require__(52),
+	  DateTimePicker:   __webpack_require__(53),
 	
-	  NumberPicker:     __webpack_require__(55),
+	  NumberPicker:     __webpack_require__(54),
 	  
-	  Multiselect:      __webpack_require__(56),
-	  SelectList:       __webpack_require__(57),
+	  Multiselect:      __webpack_require__(55),
+	  SelectList:       __webpack_require__(56),
 	
 	  utils: {
-	    ReplaceTransitionGroup: __webpack_require__(58),
-	    SlideTransition:        __webpack_require__(59),
+	    ReplaceTransitionGroup: __webpack_require__(57),
+	    SlideTransition:        __webpack_require__(58),
 	  }
 	}
 
@@ -4177,7 +4177,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var chance = new (__webpack_require__(86))
+	var chance = new (__webpack_require__(64))
 	
 	chance.set('lastNames', ['Smith', 'Williams', 'Chang', 'Diaz', 'Morales'])
 	
@@ -4198,7 +4198,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var constants = __webpack_require__(60);
+	var constants = __webpack_require__(61);
 	
 	var BootstrapMixin = {
 	  propTypes: {
@@ -4238,143 +4238,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var EventListener = __webpack_require__(61);
-	
-	/**
-	 * Checks whether a node is within
-	 * a root nodes tree
-	 *
-	 * @param {DOMElement} node
-	 * @param {DOMElement} root
-	 * @returns {boolean}
-	 */
-	function isNodeInRoot(node, root) {
-	  while (node) {
-	    if (node === root) {
-	      return true;
-	    }
-	    node = node.parentNode;
-	  }
-	
-	  return false;
-	}
-	
-	var DropdownStateMixin = {
-	  getInitialState: function () {
-	    return {
-	      open: false
-	    };
-	  },
-	
-	  setDropdownState: function (newState, onStateChangeComplete) {
-	    if (newState) {
-	      this.bindRootCloseHandlers();
-	    } else {
-	      this.unbindRootCloseHandlers();
-	    }
-	
-	    this.setState({
-	      open: newState
-	    }, onStateChangeComplete);
-	  },
-	
-	  handleDocumentKeyUp: function (e) {
-	    if (e.keyCode === 27) {
-	      this.setDropdownState(false);
-	    }
-	  },
-	
-	  handleDocumentClick: function (e) {
-	    // If the click originated from within this component
-	    // don't do anything.
-	    if (isNodeInRoot(e.target, this.getDOMNode())) {
-	      return;
-	    }
-	
-	    this.setDropdownState(false);
-	  },
-	
-	  bindRootCloseHandlers: function () {
-	    this._onDocumentClickListener =
-	      EventListener.listen(document, 'click', this.handleDocumentClick);
-	    this._onDocumentKeyupListener =
-	      EventListener.listen(document, 'keyup', this.handleDocumentKeyUp);
-	  },
-	
-	  unbindRootCloseHandlers: function () {
-	    if (this._onDocumentClickListener) {
-	      this._onDocumentClickListener.remove();
-	    }
-	
-	    if (this._onDocumentKeyupListener) {
-	      this._onDocumentKeyupListener.remove();
-	    }
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.unbindRootCloseHandlers();
-	  }
-	};
-	
-	module.exports = DropdownStateMixin;
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(42);
-	var classSet = __webpack_require__(43);
-	var cloneWithProps = __webpack_require__(44);
-	
-	var createChainedFunction = __webpack_require__(45);
-	var ValidComponentChildren = __webpack_require__(46);
-	
-	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
-	  propTypes: {
-	    pullRight: React.PropTypes.bool,
-	    onSelect: React.PropTypes.func
-	  },
-	
-	  render: function () {
-	    var classes = {
-	        'dropdown-menu': true,
-	        'dropdown-menu-right': this.props.pullRight
-	      };
-	
-	    return (
-	        React.createElement("ul", React.__spread({}, 
-	          this.props, 
-	          {className: joinClasses(this.props.className, classSet(classes)), 
-	          role: "menu"}), 
-	          ValidComponentChildren.map(this.props.children, this.renderMenuItem)
-	        )
-	      );
-	  },
-	
-	  renderMenuItem: function (child, index) {
-	    return cloneWithProps(
-	      child,
-	      {
-	        // Capture onSelect events
-	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
-	
-	        // Force special props to be transferred
-	        key: child.key ? child.key : index,
-	        ref: child.ref
-	      }
-	    );
-	  }
-	});
-	
-	module.exports = DropdownMenu;
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var TransitionEvents = __webpack_require__(62);
+	var TransitionEvents = __webpack_require__(60);
 	
 	var CollapsableMixin = {
 	
@@ -4496,6 +4360,142 @@
 
 
 /***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var EventListener = __webpack_require__(62);
+	
+	/**
+	 * Checks whether a node is within
+	 * a root nodes tree
+	 *
+	 * @param {DOMElement} node
+	 * @param {DOMElement} root
+	 * @returns {boolean}
+	 */
+	function isNodeInRoot(node, root) {
+	  while (node) {
+	    if (node === root) {
+	      return true;
+	    }
+	    node = node.parentNode;
+	  }
+	
+	  return false;
+	}
+	
+	var DropdownStateMixin = {
+	  getInitialState: function () {
+	    return {
+	      open: false
+	    };
+	  },
+	
+	  setDropdownState: function (newState, onStateChangeComplete) {
+	    if (newState) {
+	      this.bindRootCloseHandlers();
+	    } else {
+	      this.unbindRootCloseHandlers();
+	    }
+	
+	    this.setState({
+	      open: newState
+	    }, onStateChangeComplete);
+	  },
+	
+	  handleDocumentKeyUp: function (e) {
+	    if (e.keyCode === 27) {
+	      this.setDropdownState(false);
+	    }
+	  },
+	
+	  handleDocumentClick: function (e) {
+	    // If the click originated from within this component
+	    // don't do anything.
+	    if (isNodeInRoot(e.target, this.getDOMNode())) {
+	      return;
+	    }
+	
+	    this.setDropdownState(false);
+	  },
+	
+	  bindRootCloseHandlers: function () {
+	    this._onDocumentClickListener =
+	      EventListener.listen(document, 'click', this.handleDocumentClick);
+	    this._onDocumentKeyupListener =
+	      EventListener.listen(document, 'keyup', this.handleDocumentKeyUp);
+	  },
+	
+	  unbindRootCloseHandlers: function () {
+	    if (this._onDocumentClickListener) {
+	      this._onDocumentClickListener.remove();
+	    }
+	
+	    if (this._onDocumentKeyupListener) {
+	      this._onDocumentKeyupListener.remove();
+	    }
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.unbindRootCloseHandlers();
+	  }
+	};
+	
+	module.exports = DropdownStateMixin;
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(42);
+	var classSet = __webpack_require__(43);
+	var cloneWithProps = __webpack_require__(45);
+	
+	var createChainedFunction = __webpack_require__(47);
+	var ValidComponentChildren = __webpack_require__(46);
+	
+	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
+	  propTypes: {
+	    pullRight: React.PropTypes.bool,
+	    onSelect: React.PropTypes.func
+	  },
+	
+	  render: function () {
+	    var classes = {
+	        'dropdown-menu': true,
+	        'dropdown-menu-right': this.props.pullRight
+	      };
+	
+	    return (
+	        React.createElement("ul", React.__spread({}, 
+	          this.props, 
+	          {className: joinClasses(this.props.className, classSet(classes)), 
+	          role: "menu"}), 
+	          ValidComponentChildren.map(this.props.children, this.renderMenuItem)
+	        )
+	      );
+	  },
+	
+	  renderMenuItem: function (child, index) {
+	    return cloneWithProps(
+	      child,
+	      {
+	        // Capture onSelect events
+	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
+	
+	        // Force special props to be transferred
+	        key: child.key ? child.key : index,
+	        ref: child.ref
+	      }
+	    );
+	  }
+	});
+	
+	module.exports = DropdownMenu;
+
+/***/ },
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4608,6 +4608,120 @@
 
 /***/ },
 /* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Shortcut to compute element style
+	 *
+	 * @param {HTMLElement} elem
+	 * @returns {CssStyle}
+	 */
+	function getComputedStyles(elem) {
+	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
+	}
+	
+	/**
+	 * Get elements offset
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} DOMNode
+	 * @returns {{top: number, left: number}}
+	 */
+	function getOffset(DOMNode) {
+	  if (window.jQuery) {
+	    return window.jQuery(DOMNode).offset();
+	  }
+	
+	  var docElem = document.documentElement;
+	  var box = { top: 0, left: 0 };
+	
+	  // If we don't have gBCR, just use 0,0 rather than error
+	  // BlackBerry 5, iOS 3 (original iPhone)
+	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
+	    box = DOMNode.getBoundingClientRect();
+	  }
+	
+	  return {
+	    top: box.top + window.pageYOffset - docElem.clientTop,
+	    left: box.left + window.pageXOffset - docElem.clientLeft
+	  };
+	}
+	
+	/**
+	 * Get elements position
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} elem
+	 * @param {HTMLElement?} offsetParent
+	 * @returns {{top: number, left: number}}
+	 */
+	function getPosition(elem, offsetParent) {
+	  if (window.jQuery) {
+	    return window.jQuery(elem).position();
+	  }
+	
+	  var offset,
+	      parentOffset = {top: 0, left: 0};
+	
+	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
+	  if (getComputedStyles(elem).position === 'fixed' ) {
+	    // We assume that getBoundingClientRect is available when computed position is fixed
+	    offset = elem.getBoundingClientRect();
+	
+	  } else {
+	    if (!offsetParent) {
+	      // Get *real* offsetParent
+	      offsetParent = offsetParent(elem);
+	    }
+	
+	    // Get correct offsets
+	    offset = getOffset(elem);
+	    if ( offsetParent.nodeName !== 'HTML') {
+	      parentOffset = getOffset(offsetParent);
+	    }
+	
+	    // Add offsetParent borders
+	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
+	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
+	  }
+	
+	  // Subtract parent offsets and element margins
+	  return {
+	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
+	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
+	  };
+	}
+	
+	/**
+	 * Get parent element
+	 *
+	 * @param {HTMLElement?} elem
+	 * @returns {HTMLElement}
+	 */
+	function offsetParent(elem) {
+	  var docElem = document.documentElement;
+	  var offsetParent = elem.offsetParent || docElem;
+	
+	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
+	    getComputedStyles(offsetParent).position === 'static' ) ) {
+	    offsetParent = offsetParent.offsetParent;
+	  }
+	
+	  return offsetParent || docElem;
+	}
+	
+	module.exports = {
+	  getComputedStyles: getComputedStyles,
+	  getOffset: getOffset,
+	  getPosition: getPosition,
+	  offsetParent: offsetParent
+	};
+
+/***/ },
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4755,36 +4869,6 @@
 	module.exports = cloneWithProps;
 
 /***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Safe chained function
-	 *
-	 * Will only create a new function if needed,
-	 * otherwise will pass back existing functions or null.
-	 *
-	 * @param {function} one
-	 * @param {function} two
-	 * @returns {function|null}
-	 */
-	function createChainedFunction(one, two) {
-	  var hasOne = typeof one === 'function';
-	  var hasTwo = typeof two === 'function';
-	
-	  if (!hasOne && !hasTwo) { return null; }
-	  if (!hasOne) { return two; }
-	  if (!hasTwo) { return one; }
-	
-	  return function chainedFunction() {
-	    one.apply(this, arguments);
-	    two.apply(this, arguments);
-	  };
-	}
-	
-	module.exports = createChainedFunction;
-
-/***/ },
 /* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4883,115 +4967,31 @@
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
 	/**
-	 * Shortcut to compute element style
+	 * Safe chained function
 	 *
-	 * @param {HTMLElement} elem
-	 * @returns {CssStyle}
+	 * Will only create a new function if needed,
+	 * otherwise will pass back existing functions or null.
+	 *
+	 * @param {function} one
+	 * @param {function} two
+	 * @returns {function|null}
 	 */
-	function getComputedStyles(elem) {
-	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
-	}
+	function createChainedFunction(one, two) {
+	  var hasOne = typeof one === 'function';
+	  var hasTwo = typeof two === 'function';
 	
-	/**
-	 * Get elements offset
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} DOMNode
-	 * @returns {{top: number, left: number}}
-	 */
-	function getOffset(DOMNode) {
-	  if (window.jQuery) {
-	    return window.jQuery(DOMNode).offset();
-	  }
+	  if (!hasOne && !hasTwo) { return null; }
+	  if (!hasOne) { return two; }
+	  if (!hasTwo) { return one; }
 	
-	  var docElem = document.documentElement;
-	  var box = { top: 0, left: 0 };
-	
-	  // If we don't have gBCR, just use 0,0 rather than error
-	  // BlackBerry 5, iOS 3 (original iPhone)
-	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
-	    box = DOMNode.getBoundingClientRect();
-	  }
-	
-	  return {
-	    top: box.top + window.pageYOffset - docElem.clientTop,
-	    left: box.left + window.pageXOffset - docElem.clientLeft
+	  return function chainedFunction() {
+	    one.apply(this, arguments);
+	    two.apply(this, arguments);
 	  };
 	}
 	
-	/**
-	 * Get elements position
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} elem
-	 * @param {HTMLElement?} offsetParent
-	 * @returns {{top: number, left: number}}
-	 */
-	function getPosition(elem, offsetParent) {
-	  if (window.jQuery) {
-	    return window.jQuery(elem).position();
-	  }
-	
-	  var offset,
-	      parentOffset = {top: 0, left: 0};
-	
-	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
-	  if (getComputedStyles(elem).position === 'fixed' ) {
-	    // We assume that getBoundingClientRect is available when computed position is fixed
-	    offset = elem.getBoundingClientRect();
-	
-	  } else {
-	    if (!offsetParent) {
-	      // Get *real* offsetParent
-	      offsetParent = offsetParent(elem);
-	    }
-	
-	    // Get correct offsets
-	    offset = getOffset(elem);
-	    if ( offsetParent.nodeName !== 'HTML') {
-	      parentOffset = getOffset(offsetParent);
-	    }
-	
-	    // Add offsetParent borders
-	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
-	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
-	  }
-	
-	  // Subtract parent offsets and element margins
-	  return {
-	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
-	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
-	  };
-	}
-	
-	/**
-	 * Get parent element
-	 *
-	 * @param {HTMLElement?} elem
-	 * @returns {HTMLElement}
-	 */
-	function offsetParent(elem) {
-	  var docElem = document.documentElement;
-	  var offsetParent = elem.offsetParent || docElem;
-	
-	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
-	    getComputedStyles(offsetParent).position === 'static' ) ) {
-	    offsetParent = offsetParent.offsetParent;
-	  }
-	
-	  return offsetParent || docElem;
-	}
-	
-	module.exports = {
-	  getComputedStyles: getComputedStyles,
-	  getOffset: getOffset,
-	  getPosition: getPosition,
-	  offsetParent: offsetParent
-	};
+	module.exports = createChainedFunction;
 
 /***/ },
 /* 48 */
@@ -5236,6 +5236,2697 @@
 
 /***/ },
 /* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React           = __webpack_require__(1)
+	  , _               = __webpack_require__(15)
+	  , cx              = __webpack_require__(13)
+	  , controlledInput = __webpack_require__(65)
+	  , CustomPropTypes = __webpack_require__(66)
+	  , Popup           = __webpack_require__(67)
+	  , PlainList       = __webpack_require__(68)
+	  , GroupableList   = __webpack_require__(69)
+	  , validateList    = __webpack_require__(70);
+	  
+	
+	var propTypes = {
+	  //-- controlled props -----------
+	  value:          React.PropTypes.any,
+	  onChange:       React.PropTypes.func,
+	  open:           React.PropTypes.bool,
+	  onToggle:       React.PropTypes.func,
+	  //------------------------------------
+	
+	  data:           React.PropTypes.array,
+	  valueField:     React.PropTypes.string,
+	  textField:      React.PropTypes.string,
+	
+	  valueComponent: CustomPropTypes.elementType,
+	  itemComponent:  CustomPropTypes.elementType,
+	  listComponent:  CustomPropTypes.elementType,
+	
+	  groupComponent: CustomPropTypes.elementType,
+	  groupBy:        React.PropTypes.oneOfType([
+	                    React.PropTypes.func,
+	                    React.PropTypes.string
+	                  ]),
+	
+	  onSelect:       React.PropTypes.func,
+	  
+	  busy:           React.PropTypes.bool,
+	
+	  delay:          React.PropTypes.number,
+	  duration:       React.PropTypes.number, //popup
+	
+	  disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	  readOnly:       React.PropTypes.oneOfType([
+	                    React.PropTypes.bool,
+	                    React.PropTypes.oneOf(['readOnly'])
+	                  ]),
+	
+	  messages:       React.PropTypes.shape({
+	    open:         React.PropTypes.string,
+	  })
+	};
+	
+	var DropdownList = React.createClass({
+	
+	  displayName: 'DropdownList',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(89),
+	    __webpack_require__(90)
+	  ],
+	
+	  propTypes: propTypes,
+	
+		getInitialState: function(){
+	    var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
+	
+			return {
+	      selectedItem: this.props.data[initialIdx],
+	      focusedItem:  this.props.data[initialIdx] || this.props.data[0],
+			}
+		},
+	
+	  getDefaultProps: function(){
+	    return {
+	      delay: 500,
+	      value: '',
+	      open: false,
+	      data: [],
+	      messages: {
+	        open: 'open dropdown'
+	      }
+	    }
+	  },
+	
+	  componentDidMount: function() {
+	    validateList(this.refs.list)
+	  },
+	
+	  componentWillReceiveProps: function(props){
+	    if ( _.isShallowEqual(props.value, this.props.value) && props.data === this.props.data)
+	      return
+	
+	    var idx = this._dataIndexOf(props.data, props.value);
+	
+	    this.setState({ 
+	      selectedItem: props.data[idx],
+	      focusedItem:  props.data[!~idx ? 0 : idx]
+	    })
+	  },
+	
+		render: function(){
+			var $__0=
+	        
+	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , ValueComponent = this.props.valueComponent
+	      , valueItem = this._dataItem( this._data(), this.props.value )
+	      , optID = this._id('_option')
+	      , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
+	      ;
+	
+			return (
+				React.createElement("div", React.__spread({},  props, 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onClick: this._maybeHandle(this.toggle), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        'aria-expanded':  this.props.open, 
+	        'aria-haspopup': true, 
+	        'aria-busy': !!this.props.busy, 
+	        'aria-activedescendent':  this.props.open ? optID : undefined, 
+	        'aria-disabled':  this.props.disabled, 
+	        'aria-readonly':  this.props.readOnly, 
+	        tabIndex: this.props.disabled ? '-1' : "0", 
+	        className: cx(className, {
+	          'rw-dropdownlist':   true,
+	          'rw-widget':          true,
+	          'rw-state-disabled':  this.props.disabled,
+	          'rw-state-readonly':  this.props.readOnly,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-open':            this.props.open,
+	          'rw-rtl':             this.isRtl()
+	        })}), 
+	
+					React.createElement("span", {className: "rw-dropdownlist-picker rw-select rw-btn"}, 
+						React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
+	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
+	          )
+					), 
+	        React.createElement("div", {className: "rw-input"}, 
+	           this.props.valueComponent
+	              ? React.createElement(ValueComponent, {item: valueItem})
+	              : this._dataText(valueItem)
+	          
+	        ), 
+	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
+	          React.createElement("div", null, 
+	            React.createElement(List, React.__spread({ref: "list"},  
+	              _.pick(this.props, Object.keys(List.type.propTypes)), 
+	              {optID: optID, 
+	              'aria-hidden': !this.props.open, 
+	              selected: this.state.selectedItem, 
+	              focused: this.props.open ? this.state.focusedItem : null, 
+	              onSelect: this._maybeHandle(this._onSelect)}))
+	          )
+	        )
+				)
+			)
+		},
+	
+	  _focus: function(focused, e){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	    self.timer = setTimeout(function(){
+	
+	      if(focused) self.getDOMNode().focus()
+	      else        self.close()
+	
+	      if( focused !== self.state.focused){
+	        self.notify(focused ? 'onFocus' : 'onBlur', e)
+	        self.setState({ focused: focused })
+	      }
+	
+	    }, 0)
+	  },
+	
+	  _onSelect: function(data){
+	    this.close()
+	    this.notify('onSelect', data)
+	    this.change(data)
+	  },
+	
+	  _keyDown: function(e){
+	    var self = this
+	      , key = e.key
+	      , alt = e.altKey
+	      , list = this.refs.list
+	      , focusedItem = this.state.focusedItem
+	      , selectedItem = this.state.selectedItem
+	      , isOpen = this.props.open;
+	
+	
+	    if ( key === 'End' ) {
+	      if ( isOpen) this.setState({ focusedItem: list.last() })
+	      else         change(list.last())
+	      e.preventDefault()
+	    }
+	    else if ( key === 'Home' ) {
+	      if ( isOpen) this.setState({ focusedItem: list.first() })
+	      else         change(list.first())
+	      e.preventDefault()
+	    }
+	    else if ( key === 'Escape' && isOpen ) {
+	      this.close()
+	    }
+	    else if ( (key === 'Enter' || key === ' ') && isOpen ) {
+	      change(this.state.focusedItem, true)
+	    }
+	    else if ( key === 'ArrowDown' ) {
+	      if ( alt )         this.open()
+	      else if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
+	      else               change(list.next(selectedItem))
+	      e.preventDefault()
+	    }
+	    else if ( key === 'ArrowUp' ) {
+	      if ( alt )         this.close()
+	      else if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
+	      else               change(list.prev(selectedItem))
+	      e.preventDefault()
+	    }
+	    else
+	      this.search(String.fromCharCode(e.keyCode), function(item)  {
+	        isOpen 
+	          ? this.setState({ focusedItem: item })
+	          : change(item)
+	      }.bind(this))
+	
+	
+	    this.notify('onKeyDown', [e])
+	    
+	    function change(item, fromList){
+	      if(!item) return
+	      if(fromList) self.notify('onSelect', item)
+	
+	      self.change(item)
+	    }
+	  },
+	
+	  change: function(data){
+	    if ( !_.isShallowEqual(data, this.props.value) ) {
+	      this.notify('onChange', data)
+	      this.close()
+	    }
+	  },
+	
+	  _data: function(){
+	    return this.props.data
+	  },
+	
+	  search: function(character, cb){
+	    var word = ((this._searchTerm || '') + character).toLowerCase();
+	      
+	    clearTimeout(this._timer)
+	    this._searchTerm = word 
+	  
+	    this._timer = setTimeout(function()  {
+	      var list = this.refs.list
+	        , key  = this.props.open ? 'focusedItem' : 'selectedItem'
+	        , item = list.next(this.state[key], word);
+	      
+	      this._searchTerm = ''
+	      if ( item) cb(item)
+	
+	    }.bind(this), this.props.delay)
+	  },
+	
+	  open: function(){
+	    this.notify('onToggle', true)
+	  },
+	
+	  close: function(){
+	    this.notify('onToggle', false)
+	  },
+	
+	  toggle: function(e){
+	    this.props.open
+	      ? this.close()
+	      : this.open()
+	  }
+	
+	})
+	
+	
+	module.exports = controlledInput.createControlledClass(
+	    DropdownList, { open: 'onToggle', value: 'onChange' });
+	
+	module.exports.BaseDropdownList = DropdownList
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React           = __webpack_require__(1)
+	  , cx              = __webpack_require__(13)
+	  , _               = __webpack_require__(15)
+	  , $               = __webpack_require__(71)
+	  , filter          = __webpack_require__(72)
+	  , Popup           = __webpack_require__(67)
+	  , Btn             = __webpack_require__(73)
+	  , Input           = __webpack_require__(74)
+	
+	  , controlledInput = __webpack_require__(65)
+	  , CustomPropTypes = __webpack_require__(66)
+	  , PlainList       = __webpack_require__(68)
+	  , GroupableList   = __webpack_require__(69)
+	  , validateList    = __webpack_require__(70);
+	
+	var propTypes = {
+	      //-- controlled props -----------
+	      value:          React.PropTypes.any,
+	      onChange:       React.PropTypes.func,
+	      open:           React.PropTypes.bool,
+	      onToggle:       React.PropTypes.func,
+	      //------------------------------------
+	
+	      itemComponent:  CustomPropTypes.elementType,
+	      listComponent:  CustomPropTypes.elementType,
+	
+	      groupComponent: CustomPropTypes.elementType,
+	      groupBy:        React.PropTypes.oneOfType([
+	                        React.PropTypes.func,
+	                        React.PropTypes.string
+	                      ]),
+	
+	      data:           React.PropTypes.array,
+	      valueField:     React.PropTypes.string,
+	      textField:      React.PropTypes.string,
+	      name:           React.PropTypes.string,
+	
+	      onSelect:       React.PropTypes.func,
+	      
+	      disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	      readOnly:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['readOnly'])
+	                      ]),
+	
+	      suggest:        React.PropTypes.bool,
+	      busy:           React.PropTypes.bool,
+	
+	      duration:       React.PropTypes.number, //popup
+	      placeholder:    React.PropTypes.string,
+	
+	      messages:       React.PropTypes.shape({
+	        open:         React.PropTypes.string,
+	        emptyList:    React.PropTypes.string,
+	        emptyFilter:  React.PropTypes.string
+	      })
+	    };
+	
+	var ComboBox = React.createClass({
+	
+	  displayName: 'ComboBox',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(91),
+	    __webpack_require__(92),
+	    __webpack_require__(89),
+	    __webpack_require__(90)
+	  ],
+	
+	  propTypes: propTypes,
+	
+		getInitialState: function(){
+	    var items = this.process(this.props.data, this.props.value)
+	      , idx   = this._dataIndexOf(items, this.props.value);
+	
+			return {
+				selectedItem:  items[idx],
+	      focusedItem:   items[!~idx ? 0 : idx],
+	      processedData: items,
+				open:          false
+			}
+		},
+	
+	  getDefaultProps: function(){
+	    return {
+	      data: [],
+	      value: '',
+	      open: false,
+	      suggest: false,
+	      filter: false,
+	      delay: 500,
+	
+	      messages: {
+	        open: 'open combobox',
+	        emptyList:   "There are no items in this list",
+	        emptyFilter: "The filter returned no results"
+	      }
+	    }
+	  },
+	
+	  componentDidMount: function() {
+	    validateList(this.refs.list)
+	  },
+	
+	  shouldComponentUpdate: function(nextProps, nextState){
+	    var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
+	      , stateChanged = !_.isShallowEqual(nextState, this.state)
+	      , valueChanged = !_.isShallowEqual(nextProps, this.props)
+	
+	    return isSuggesting || stateChanged || valueChanged
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var rawIdx = this._dataIndexOf(nextProps.data, nextProps.value)
+	      , valueItem = rawIdx == -1 ? nextProps.value : nextProps.data[rawIdx]
+	      , isSuggesting = this.refs.input.isSuggesting()
+	      , items = this.process(
+	          nextProps.data
+	        , nextProps.value
+	        , (rawIdx === -1 || isSuggesting) && this._dataText(valueItem) )
+	
+	      , idx = this._dataIndexOf(items, nextProps.value)
+	      , focused = this.filterIndexOf(items, this._dataText(valueItem));
+	
+	    this._searchTerm = '';
+	
+	    this.setState({
+	      processedData:  items,
+	      selectedItem:   items[idx],
+	      focusedItem:    items[idx === -1
+	        ? focused !== -1 ? focused : 0 // focus the closest match
+	        : idx]
+	    })
+	  },
+	
+		render: function(){
+			var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , valueItem = this._dataItem( this._data(), this.props.value )
+	      , items = this._data()
+	      , listID = this._id('_listbox')
+	      , optID  = this._id( '_option')
+	      , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
+	      , completeType = this.props.suggest
+	          ? this.props.filter ? 'both' : 'inline'
+	          : this.props.filter ? 'list' : '';
+	
+			return (
+				React.createElement("div", React.__spread({},  props , 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        tabIndex: "-1", 
+	        className: cx(className, {
+	          'rw-combobox':        true,
+	          'rw-widget':          true,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-open':            this.props.open,
+	          'rw-state-disabled':  this.props.disabled,
+	          'rw-state-readonly':  this.props.readOnly,
+	          'rw-rtl':             this.isRtl()
+	         })}), 
+	        React.createElement(Btn, {
+	          tabIndex: "-1", 
+	          className: "rw-select", 
+	          onClick: this._maybeHandle(this.toggle), 
+	          disabled: !!(this.props.disabled || this.props.readOnly)}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
+	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
+	          )
+	        ), 
+	        React.createElement(Input, {
+	          ref: "input", 
+	          type: "text", 
+	          role: "combobox", 
+	          suggest: this.props.suggest, 
+	          name: this.props.name, 
+	          'aria-owns': listID, 
+	          'aria-busy': !!this.props.busy, 
+	          'aria-autocomplete': completeType, 
+	          'aria-activedescendent':  this.props.open ? optID : undefined, 
+	          'aria-expanded':  this.props.open, 
+	          'aria-haspopup': true, 
+	          placeholder: this.props.placeholder, 
+	          disabled: this.props.disabled, 
+	          readOnly: this.props.readOnly, 
+	          className: "rw-input", 
+	          value:  this._dataText(valueItem), 
+	          onChange: this._inputTyping, 
+	          onKeyDown: this._inputKeyDown}), 
+	
+	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
+	          React.createElement("div", null, 
+	            React.createElement(List, React.__spread({ref: "list"}, 
+	              _.pick(this.props, Object.keys(List.type.propTypes)), 
+	              {id: listID, 
+	              optID: optID, 
+	              'aria-hidden':  !this.props.open, 
+	              'aria-live':  completeType && 'polite', 
+	              data: items, 
+	              selected: this.state.selectedItem, 
+	              focused: this.state.focusedItem, 
+	              onSelect: this._maybeHandle(this._onSelect), 
+	              messages: {
+	                emptyList: this.props.data.length
+	                  ? this.props.messages.emptyFilter
+	                  : this.props.messages.emptyList
+	              }}))
+	          )
+	        )
+				)
+			)
+		},
+	
+	  setWidth: function() {
+	    var width = $.width(this.getDOMNode())
+	      , changed = width !== this.state.width;
+	
+	    if ( changed )
+	      this.setState({ width: width })
+	  },
+	
+	  _onSelect: function(data){
+	    this.close()
+	    this.notify('onSelect', data)
+	    this.change(data)
+	    this._focus(true);
+	  },
+	
+	  _inputKeyDown: function(e){
+	    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
+	    this._isTyping = true
+	  },
+	
+	  _inputTyping: function(e){
+	    var self = this
+	      , shouldSuggest = !!this.props.suggest
+	      , strVal  = e.target.value
+	      , suggestion, data;
+	
+	    suggestion = this._deleting || !shouldSuggest
+	      ? strVal : this.suggest(this._data(), strVal)
+	
+	    suggestion = suggestion || strVal
+	
+	    data = _.find(self.props.data, 
+	      function(item)  {return this._dataText(item).toLowerCase() === suggestion.toLowerCase();}.bind(this))
+	
+	    this.change(!this._deleting && data
+	      ? data
+	      : strVal, true)
+	
+	    this.open()
+	  },
+	
+	  _focus: function(focused, e){
+	    clearTimeout(this.timer)
+	    !focused && this.refs.input.accept() //not suggesting anymore
+	
+	    this.timer = setTimeout(function() {
+	      if(focused) this.refs.input.focus()
+	      else        this.close()
+	
+	      if( focused !== this.state.focused){
+	        this.notify(focused ? 'onFocus' : 'onBlur', e)
+	        this.setState({ focused:focused })
+	      }
+	    }.bind(this), 0)
+	  },
+	
+	  _keyDown: function(e){
+	    var self = this
+	      , key  = e.key
+	      , alt  = e.altKey
+	      , list = this.refs.list
+	      , focusedItem = this.state.focusedItem
+	      , selectedItem = this.state.selectedItem
+	      , isOpen = this.props.open;
+	
+	    if ( key === 'End' )
+	      if ( isOpen ) this.setState({ focusedItem: list.last() })
+	      else          select(list.last(), true)
+	
+	    else if ( key === 'Home' )
+	      if ( isOpen ) this.setState({ focusedItem: list.first() })
+	      else          select(list.first(), true)
+	
+	    else if ( key === 'Escape' && isOpen )
+	      this.close()
+	
+	    else if ( key === 'Enter' && isOpen ) {
+	      this.close()
+	      select(this.state.focusedItem, true)
+	    }
+	
+	    else if ( key === 'ArrowDown' ) {
+	      if ( alt )
+	        this.open()
+	      else {
+	        if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
+	        else          select(list.next(selectedItem), true)
+	      }
+	    }
+	    else if ( key === 'ArrowUp' ) {
+	      if ( alt )
+	        this.close()
+	      else {
+	        if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
+	        else          select(list.prev(selectedItem), true)
+	      }
+	    }
+	
+	    this.notify('onKeyDown', [e])
+	    
+	    function select(item, fromList) {
+	      if(!item)
+	        return self.change(self.refs.input.getDOMNode().value, false)
+	
+	      self.refs.input.accept(true); //removes caret
+	
+	      if(fromList) 
+	        self.notify('onSelect', item)
+	
+	      self.change(item, false)
+	    }
+	  },
+	
+	  change: function(data, typing){
+	    this._typedChange = !!typing
+	    this.notify('onChange', data)
+	  },
+	
+	  open: function(){
+	    if ( !this.props.open )
+	      this.notify('onToggle', true)
+	  },
+	
+	  close: function(){
+	    if ( this.props.open )
+	      this.notify('onToggle', false)
+	  },
+	
+	  toggle: function(e){
+	    this._focus(true)
+	
+	    this.props.open
+	      ? this.close()
+	      : this.open()
+	  },
+	
+	  suggest: function(data, value){
+	    var word = this._dataText(value)
+	      , matcher = filter.startsWith
+	      , suggestion = typeof value === 'string'
+	          ? _.find(data, finder, this)
+	          : value
+	
+	    if ( suggestion && (!this.state || !this.state.deleting))
+	      return this._dataText(suggestion)
+	
+	    return ''
+	
+	    function finder(item){
+	      return matcher(
+	          this._dataText(item).toLowerCase()
+	        , word.toLowerCase())
+	    }
+	  },
+	
+	  _data: function(){
+	    return this.state.processedData
+	  },
+	
+	  process: function(data, values, searchTerm){
+	    if( this.props.filter && searchTerm)
+	      data = this.filter(data, searchTerm)
+	
+	    return data
+	  }
+	})
+	
+	module.exports = controlledInput.createControlledClass(
+	      ComboBox, { open: 'onToggle', value: 'onChange' });
+	
+	module.exports.BaseComboBox = ComboBox
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React           = __webpack_require__(1)
+	  , Header          = __webpack_require__(79)
+	  , Month           = __webpack_require__(80)
+	  , Year            = __webpack_require__(81)
+	  , Decade          = __webpack_require__(82)
+	  , Century         = __webpack_require__(83)
+	  , cx              = __webpack_require__(13)
+	  , controlledInput = __webpack_require__(65)
+	  , SlideTransition = __webpack_require__(58)
+	  , dates           = __webpack_require__(75)
+	  , constants       = __webpack_require__(76)
+	  , _               = __webpack_require__(15); //values, omit, object
+	
+	var dir = constants.directions;
+	
+	var views        = constants.calendarViews
+	  , VIEW_OPTIONS = Object.keys(views).map( function(k)  {return views[k];} )
+	  , ALT_VIEW     = _.transform(constants.calendarViewHierarchy, function(o, val, key)  { 
+	                      o[val] = key 
+	                    }, {})
+	  , NEXT_VIEW    = constants.calendarViewHierarchy
+	  , VIEW_UNIT    = constants.calendarViewUnits
+	  , VIEW  = _.object([
+	      [views.MONTH,   Month],
+	      [views.YEAR,    Year],
+	      [views.DECADE,  Decade],
+	      [views.CENTURY, Century]
+	    ]);
+	
+	var MULTIPLIER = _.object([
+	      [views.YEAR,    1],
+	      [views.DECADE,  10],
+	      [views.CENTURY, 100]
+	    ]);
+	
+	
+	var Calendar = React.createClass({
+	
+	  displayName: 'Calendar',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(90)
+	  ],
+	
+	
+	  propTypes: {
+	
+	    onChange:      React.PropTypes.func.isRequired,
+	    value:         React.PropTypes.instanceOf(Date),
+	
+	    min:           React.PropTypes.instanceOf(Date),
+	    max:           React.PropTypes.instanceOf(Date),
+	
+	    initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
+	    finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['readOnly'])
+	                    ]),
+	
+	    messages:      React.PropTypes.shape({
+	      moveBack:    React.PropTypes.string,
+	      moveForward: React.PropTypes.string
+	    }),
+	
+	    maintainFocus: React.PropTypes.bool,
+	
+	  },
+	
+	  getInitialState: function(){
+	    return {
+	      selectedIndex: 0,
+	      view:          this.props.initialView || 'month',
+	      currentDate:   this.inRangeValue(new Date(this.props.value))
+	    }
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      open:  false,
+	      value: new Date,
+	      min:   new Date(1900,0, 1),
+	      max:   new Date(2099,11, 31),
+	
+	      initialView: 'month',
+	      finalView: 'century',
+	
+	      maintainFocus: true
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var bottom  = VIEW_OPTIONS.indexOf(nextProps.initialView)
+	      , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
+	      , current = VIEW_OPTIONS.indexOf(this.state.view)
+	      , view    = this.state.view
+	      , val     = this.inRangeValue(new Date(nextProps.value));
+	
+	    if( current < bottom )
+	      this.setState({ view: view = nextProps.initialView })
+	    else if (current > top)
+	      this.setState({ view: view = nextProps.finalView })
+	
+	    //if the value changes reset views to the new one
+	    if ( !dates.eq(val, this.props.value, VIEW_UNIT[view]))
+	      this.setState({
+	        currentDate: val
+	      })
+	  },
+	
+	  render: function(){
+	    var $__0=
+	        
+	          _.omit(this.props, ['value', 'min', 'max']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , View     = VIEW[this.state.view]
+	      , unit     = this.state.view
+	      
+	      , disabled = this.props.disabled || this.props.readOnly
+	      , date     = this.state.currentDate
+	      , labelId  = this._id('_view_label')
+	      , key      = this.state.view + '_' + dates[this.state.view](date)
+	      , id       = this._id('_view');
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props , 
+	        {onKeyDown: this._keyDown, 
+	        className: cx(className, {
+	          'rw-calendar':       true,
+	          'rw-widget':         true,
+	          'rw-state-disabled': this.props.disabled,
+	          'rw-state-readonly': this.props.readOnly,
+	          'rw-rtl':            this.isRtl()
+	        })}), 
+	        React.createElement(Header, {
+	          label: this._label(), 
+	          labelId: labelId, 
+	          messages: this.props.messages, 
+	          upDisabled:   disabled || this.state.view === this.props.finalView, 
+	          prevDisabled: disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit), 
+	          nextDisabled: disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max, unit), 
+	          onViewChange: this._maybeHandle(this.navigate.bind(null, dir.UP, null)), 
+	          onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT, null)), 
+	          onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT, null))}), 
+	
+	        React.createElement(SlideTransition, {
+	          ref: "animation", 
+	          duration: this.props.duration, 
+	          direction: this.state.slideDirection, 
+	          onAnimate: finished.bind(this)}, 
+	
+	          React.createElement(View, {ref: "currentView", 
+	            key: key, 
+	            id: id, 
+	            'aria-labeledby': labelId, 
+	            selectedDate: this.props.value, 
+	            value: this.state.currentDate, 
+	            onChange: this._maybeHandle(this.change), 
+	            onKeyDown: this._maybeHandle(this._keyDown), 
+	            onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	            onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT)), 
+	            onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT)), 
+	            disabled: this.props.disabled, 
+	            readOnly: this.props.readOnly, 
+	            min: this.props.min, 
+	            max: this.props.max})
+	        )
+	      )
+	    )
+	
+	    function finished(){
+	      this._focus(true);
+	    }
+	  },
+	
+	  navigate: function(direction, date){
+	    var view     =  this.state.view
+	      , slideDir = (direction === dir.LEFT || direction === dir.UP)
+	          ? 'right'
+	          : 'left';
+	
+	    if ( !date )
+	      date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
+	        ? this.nextDate(direction)
+	        : this.state.currentDate
+	
+	    if (direction === dir.DOWN )
+	      view = ALT_VIEW[view] || view
+	
+	    if (direction === dir.UP )
+	      view = NEXT_VIEW[view] || view
+	
+	    if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
+	      this._focus(true, 'nav');
+	
+	      this.setState({
+	        currentDate:    date,
+	        slideDirection: slideDir,
+	        view: view
+	      })
+	    }
+	  },
+	
+	  _focus: function(val){
+	    if ( this.props.maintainFocus)
+	      val && this.refs.currentView.getDOMNode().focus()
+	  },
+	
+	  change: function(date){
+	    if ( this.props.onChange && this.state.view === this.props.initialView)
+	      return this.notify('onChange', date)
+	
+	    this.navigate(dir.DOWN, date)
+	  },
+	
+	  nextDate: function(direction){
+	    var method = direction === dir.LEFT ? 'subtract' : 'add'
+	      , view   = this.state.view
+	      , unit   = view === views.MONTH ? view : views.YEAR
+	      , multi  = MULTIPLIER[view] || 1;
+	
+	    return dates[method](this.state.currentDate, 1 * multi, unit)
+	  },
+	
+	  _keyDown: function(e){
+	    var ctrl = e.ctrlKey
+	      , key  = e.key;
+	
+	    if ( ctrl ) {
+	      if ( key === 'ArrowDown' ) {
+	        e.preventDefault()
+	        this.navigate(dir.DOWN)
+	      }
+	      if ( key === 'ArrowUp' ) {
+	        e.preventDefault()
+	        this.navigate(dir.UP)
+	      }
+	      if ( key === 'ArrowLeft' ) {
+	        e.preventDefault()
+	        this.navigate(dir.LEFT)
+	      }
+	      if ( key === 'ArrowRight' ) {
+	        e.preventDefault()
+	        this.navigate(dir.RIGHT)
+	      }
+	    } 
+	    else {
+	      this.refs.currentView._keyDown
+	        && this.refs.currentView._keyDown(e)
+	    }
+	
+	    this.notify('onKeyDown', [e])
+	  },
+	
+	  _label: function() {
+	    var view = this.state.view
+	      , dt   = this.state.currentDate;
+	
+	    if ( view === 'month')
+	      return dates.format(dt, dates.formats.MONTH_YEAR)
+	
+	    else if ( view === 'year')
+	      return dates.format(dt, dates.formats.YEAR)
+	
+	    else if ( view === 'decade')
+	      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR)
+	        + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR)
+	
+	    else if ( view === 'century')
+	      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR)
+	        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
+	  },
+	
+	  inRangeValue: function(value){
+	    if( value == null)
+	      return value
+	
+	    return dates.max(
+	        dates.min(value, this.props.max)
+	      , this.props.min)
+	  },
+	
+	  isValidView: function(next) {
+	    var bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
+	      , top     = VIEW_OPTIONS.indexOf(this.props.finalView)
+	      , current = VIEW_OPTIONS.indexOf(next);
+	
+	    return current >= bottom && current <= top
+	  }
+	});
+	
+	module.exports = controlledInput.createControlledClass(
+	    Calendar, { value: 'onChange' });
+	
+	module.exports.BaseCalendar = Calendar
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1)
+	  , cx     = __webpack_require__(13)
+	  , _      = __webpack_require__(15) //pick, omit, has
+	  , dates  = __webpack_require__(75)
+	  , views  = __webpack_require__(76).calendarViews
+	  , popups = __webpack_require__(76).datePopups
+	
+	  , Popup     = __webpack_require__(67)
+	  , Calendar  = __webpack_require__(52).BaseCalendar
+	  , Time      = __webpack_require__(77)
+	  , DateInput = __webpack_require__(78)
+	  , Btn       = __webpack_require__(73)
+	  , CustomPropTypes = __webpack_require__(66)
+	  , controlledInput = __webpack_require__(65);
+	
+	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
+	
+	var propTypes = {
+	
+	    //-- controlled props -----------
+	    value:          React.PropTypes.instanceOf(Date),
+	    onChange:       React.PropTypes.func,
+	    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
+	    onToggle:       React.PropTypes.func,
+	    //------------------------------------
+	
+	    onSelect:       React.PropTypes.func,
+	
+	    min:            React.PropTypes.instanceOf(Date),
+	    max:            React.PropTypes.instanceOf(Date),
+	
+	    culture:        React.PropTypes.string,
+	    format:         React.PropTypes.string,
+	    editFormat:     React.PropTypes.string,
+	
+	    calendar:       React.PropTypes.bool,
+	    time:           React.PropTypes.bool,
+	
+	    timeComponent:  CustomPropTypes.elementType,
+	    duration:       React.PropTypes.number, //popup
+	
+	    placeholder:    React.PropTypes.string,
+	    name:           React.PropTypes.string,
+	
+	    initialView:    React.PropTypes.oneOf(viewEnum),
+	    finalView:      React.PropTypes.oneOf(viewEnum),
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['readOnly'])
+	                    ]),
+	
+	    parse:          React.PropTypes.oneOfType([
+	                      React.PropTypes.arrayOf(React.PropTypes.string),
+	                      React.PropTypes.string,
+	                      React.PropTypes.func
+	                    ]),
+	  }
+	
+	var DateTimePicker = React.createClass({
+	  displayName: 'DateTimePicker',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(90)
+	  ],
+	
+	  propTypes: propTypes,
+	
+	  getInitialState: function(){
+	    return {
+	      focused: false,
+	    }
+	  },
+	
+	  getDefaultProps: function(){
+	    var cal  = _.has(this.props, popups.CALENDAR) ? this.props.calendar : true
+	      , time = _.has(this.props, popups.TIME) ? this.props.time : true
+	      , both = cal && time
+	      , neither = !cal && !time;
+	
+	    return {
+	      value:            null,
+	      format:           both || neither
+	        ? 'M/d/yyyy h:mm tt'
+	        : cal ? 'M/d/yyyy' : 'h:mm tt',
+	      min:              new Date(1900,  0,  1),
+	      max:              new Date(2099, 11, 31),
+	      calendar:         true,
+	      time:             true,
+	      open:             false,
+	      messages: {
+	        calendarButton: 'Select Date',
+	        timeButton:     'Select Time',
+	        next:           'Next Date',
+	      }
+	    }
+	  },
+	
+	  render: function(){
+	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
+	      , timeListID = this._id('_time_listbox')
+	      , timeOptID  = this._id('_time_option')
+	      , dateListID = this._id('_cal')
+	      , owns;
+	
+	    if (dateListID && this.props.calendar ) owns = dateListID
+	    if (timeListID && this.props.time )     owns += ' ' + timeListID
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props, 
+	        {ref: "element", 
+	        tabIndex: "-1", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        className: cx(className, {
+	          'rw-datetimepicker':     true,
+	          'rw-widget':          true,
+	          'rw-open':            this.props.open,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-state-disabled':  this.isDisabled(),
+	          'rw-state-readonly':  this.isReadOnly(),
+	          'rw-has-both':        this.props.calendar && this.props.time,
+	          'rw-has-neither':     !this.props.calendar && !this.props.time,
+	          'rw-rtl':             this.isRtl()
+	        })}), 
+	        React.createElement(DateInput, {ref: "valueInput", 
+	          'aria-activedescendant':  this.props.open
+	            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
+	            : undefined, 
+	          'aria-expanded':  !!this.props.open, 
+	          'aria-busy': !!this.props.busy, 
+	          'aria-owns': owns, 
+	          'aria-haspopup': true, 
+	          placeholder: this.props.placeholder, 
+	          name: this.props.name, 
+	          disabled: this.isDisabled(), 
+	          readOnly: this.isReadOnly(), 
+	          role: "combobox", 
+	          value: this.props.value, 
+	          focused: this.state.focused, 
+	          format: this.props.format, 
+	          editFormat: this.props.editFormat, 
+	          editing: this.state.focused, 
+	          parse: this._parse, 
+	          onChange: this._change}), 
+	         (this.props.calendar || this.props.time) &&
+	        React.createElement("span", {className: "rw-select"}, 
+	           this.props.calendar &&
+	            React.createElement(Btn, {tabIndex: "-1", 
+	              className: "rw-btn-calendar", 
+	              disabled: this.isDisabled() || this.isReadOnly(), 
+	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
+	              onClick: this._maybeHandle(this._click.bind(null, popups.CALENDAR))}, 
+	              React.createElement("i", {className: "rw-i rw-i-calendar"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.calendarButton))
+	            ), 
+	          
+	           this.props.time &&
+	            React.createElement(Btn, {tabIndex: "-1", 
+	              className: "rw-btn-time", 
+	              disabled: this.isDisabled() || this.isReadOnly(), 
+	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
+	              onClick: this._maybeHandle(this._click.bind(null, popups.TIME))}, 
+	              React.createElement("i", {className: "rw-i rw-i-clock-o"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.timeButton))
+	            )
+	          
+	        ), 
+	        
+	        React.createElement(Popup, {
+	          open:  this.props.open === popups.TIME, 
+	          onRequestClose: this.close, 
+	          duration: this.props.duration}, 
+	            React.createElement("div", null, 
+	              React.createElement(Time, {ref: "timePopup", 
+	                id: timeListID, 
+	                optID: timeOptID, 
+	                'aria-hidden':  !this.props.open, 
+	                style: { maxHeight: 200, height: 'auto'}, 
+	                value: this.props.value, 
+	                min: this.props.min, 
+	                max: this.props.max, 
+	                preserveDate: !!this.props.calendar, 
+	                itemComponent: this.props.timeComponent, 
+	                onSelect: this._maybeHandle(this._selectTime)})
+	            )
+	        ), 
+	        React.createElement(Popup, {
+	          className: "rw-calendar-popup", 
+	          open:  this.props.open === popups.CALENDAR, 
+	          duration: this.props.duration, 
+	          onRequestClose: this.close}, 
+	
+	          React.createElement(Calendar, React.__spread({},  calProps , 
+	            {ref: "calPopup", 
+	            id: dateListID, 
+	            value: this.props.value || new Date, 
+	            maintainFocus: false, 
+	            'aria-hidden':  !this.props.open, 
+	            onChange: this._maybeHandle(this._selectDate)}))
+	        )
+	      )
+	    )
+	  },
+	
+	  _change: function(date, str, constrain){
+	    var change = this.props.onChange
+	
+	    if(constrain)
+	      date = this.inRangeValue(date)
+	
+	    if( change ) {
+	      if( date == null || this.props.value == null){
+	        if( date != this.props.value )
+	          change(date, str)
+	      }
+	      else if (!dates.eq(date, this.props.value))
+	        change(date, str)
+	    }
+	  },
+	
+	  _keyDown: function(e){
+	
+	    if( e.key === 'Tab')
+	      return
+	
+	    if ( e.key === 'Escape' && this.props.open )
+	      this.close()
+	
+	    else if ( e.altKey ) {
+	      e.preventDefault()
+	
+	      if ( e.key === 'ArrowDown')
+	        this.open(this.props.open === popups.CALENDAR
+	              ? popups.TIME
+	              : popups.CALENDAR)
+	      else if ( e.key === 'ArrowUp')
+	        this.close()
+	
+	    } else if (this.props.open ) {
+	      if( this.props.open === popups.CALENDAR )
+	        this.refs.calPopup._keyDown(e)
+	      if( this.props.open === popups.TIME )
+	        this.refs.timePopup._keyDown(e)
+	    }
+	
+	    this.notify('onKeyDown', [e])
+	  },
+	
+	  //timeout prevents transitions from breaking focus
+	  _focus: function(focused, e){
+	    var input =  this.refs.valueInput;
+	
+	    clearTimeout(this.timer)
+	
+	    this.timer = setTimeout(function() {
+	
+	      if(focused) input.getDOMNode().focus()
+	      else        this.close()
+	
+	      if( focused !== this.state.focused){
+	        this.notify(focused ? 'onFocus' : 'onBlur', e)
+	        this.setState({ focused: focused })
+	      }
+	    }.bind(this))
+	  },
+	
+	  _selectDate: function(date){
+	    var dateTime = dates.merge(date, this.props.value)
+	      , dateStr  = formatDate(date, this.props.format) 
+	
+	    this.close()
+	    this.notify('onSelect', [dateTime, dateStr])
+	    this._change(dateTime, dateStr, true)
+	  },
+	
+	  _selectTime: function(datum){
+	    var dateTime = dates.merge(this.props.value, datum.date)
+	      , dateStr  = formatDate(datum.date, this.props.format) 
+	
+	    this.close()
+	    this.notify('onSelect', [dateTime, dateStr])
+	    this._change(dateTime, dateStr, true)
+	  },
+	
+	  _click: function(view, e){
+	    this._focus(true)
+	    this.toggle(view, e)
+	  },
+	
+	  _parse: function(string){
+	    var parser = typeof this.props.parse === 'function'
+	          ? this.props.parse
+	          : formatsParser.bind(null, _.splat(this.props.format).concat(this.props.parse));
+	
+	    return parser(string)
+	  },
+	
+	  toggle: function(view, e) {
+	
+	    this.props.open
+	      ? this.state.view !== view
+	          ? this.open(view)
+	          : this.close(view)
+	      : this.open(view)
+	  },
+	
+	  open: function(view){
+	    if ( this.props.open !== view && this.props[view] === true )
+	      this.notify('onToggle', view)
+	  },
+	
+	  close: function(){
+	    if ( this.props.open )
+	      this.notify('onToggle', false)
+	  },
+	
+	  inRangeValue: function(value){
+	    if( value == null) return value
+	
+	    return dates.max(
+	        dates.min(value, this.props.max)
+	      , this.props.min)
+	  },
+	
+	});
+	
+	
+	module.exports = controlledInput.createControlledClass(
+	    DateTimePicker
+	  , { open: 'onToggle', value: 'onChange' });
+	
+	function formatDate(date, format){
+	  var val = ''
+	
+	  if ( (date instanceof Date) && !isNaN(date.getTime()) )
+	    val = dates.format(date, format)
+	
+	  return val;
+	}
+	
+	module.exports.BaseDateTimePicker = DateTimePicker
+	
+	function formatsParser(formats, str){
+	  var date;
+	
+	  formats = [].concat(formats)
+	
+	  for(var i=0; i < formats.length; i++ ){
+	    date = dates.parse(str, formats[i])
+	    if( date) return date
+	  }
+	  return null
+	}
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(13)
+	  , _     = __webpack_require__(15) //omit
+	  , controlledInput  = __webpack_require__(65)
+	  , directions = __webpack_require__(76).directions
+	  , Input = __webpack_require__(84);
+	
+	var Btn = __webpack_require__(73)
+	  , propTypes = {
+	
+	      // -- controlled props -----------
+	      value:          React.PropTypes.number,
+	      onChange:       React.PropTypes.func,
+	      //------------------------------------
+	
+	      min:            React.PropTypes.number,
+	      max:            React.PropTypes.number,
+	      step:           React.PropTypes.number,
+	
+	      culture:        React.PropTypes.string,
+	      format:         React.PropTypes.string,
+	
+	      name:           React.PropTypes.string,
+	
+	      parse:          React.PropTypes.oneOfType([
+	                        React.PropTypes.arrayOf(React.PropTypes.string),
+	                        React.PropTypes.string,
+	                        React.PropTypes.func
+	                      ]),
+	
+	      disabled:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	      readOnly:       React.PropTypes.oneOfType([
+	                        React.PropTypes.bool,
+	                        React.PropTypes.oneOf(['readOnly'])
+	                      ]),
+	
+	      messages:       React.PropTypes.shape({
+	        increment:    React.PropTypes.string,
+	        decrement:    React.PropTypes.string
+	      })
+	    };
+	
+	var NumberPicker = React.createClass({
+	
+	  displayName: 'NumberPicker',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(90),
+	  ],
+	
+	  propTypes: propTypes,
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: null,
+	      open: false,
+	
+	      format: 'd',
+	
+	      min: -Infinity,
+	      max:  Infinity,
+	      step: 1,
+	
+	      messages: {
+	        increment: 'increment value',
+	        decrement:  'decrement value'
+	      }
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    return {
+	      focused: false,
+	      active: false,
+	    }
+	  },
+	
+	
+	  render: function(){
+	    var $__0=
+	        
+	       
+	       
+	       
+	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,onKeyDown=$__0.onKeyDown,onKeyPress=$__0.onKeyPress,onKeyUp=$__0.onKeyUp,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,onKeyDown:1,onKeyPress:1,onKeyUp:1})
+	      , val = this.inRangeValue(this.props.value)
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props , 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        tabIndex: "-1", 
+	        className: cx(className, {
+	          'rw-numberpicker':   true,
+	          'rw-widget':          true,
+	          'rw-state-focus':     this.state.focused,
+	          'rw-state-disabled':  this.props.disabled,
+	          'rw-state-readonly':  this.props.readOnly,
+	          'rw-rtl':             this.isRtl()
+	        })}), 
+	
+	        React.createElement("span", {className: "rw-select"}, 
+	          React.createElement(Btn, {
+	            tabIndex: "-1", 
+	            className: cx({ 'rw-state-active': this.state.active === directions.UP}), 
+	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.UP)), 
+	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.UP)), 
+	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
+	            disabled: val === this.props.max || this.props.disabled, 
+	            'aria-disabled': val === this.props.max || this.props.disabled}, 
+	
+	            React.createElement("i", {className: "rw-i rw-i-caret-up"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.increment))
+	          ), 
+	          React.createElement(Btn, {
+	            tabIndex: "-1", 
+	            className: cx({ 'rw-state-active': this.state.active === directions.DOWN}), 
+	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.DOWN)), 
+	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.DOWN)), 
+	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
+	            disabled: val === this.props.min || this.props.disabled, 
+	            'aria-disabled': val === this.props.min || this.props.disabled}, 
+	            React.createElement("i", {className: "rw-i rw-i-caret-down"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.decrement))
+	          )
+	        ), 
+	        React.createElement(Input, {
+	          ref: "input", 
+	          value: val, 
+	          editing: this.state.focused, 
+	          format: this.props.format, 
+	          name: this.props.name, 
+	          role: "spinbutton", 
+	          min: this.props.min, 
+	          'aria-valuenow': val, 
+	          'aria-valuemin': isFinite(this.props.min) ? this.props.min : null, 
+	          'aria-valuemax': isFinite(this.props.max) ? this.props.max : null, 
+	          'aria-disabled':  this.props.disabled, 
+	          'aria-readonly':  this.props.readonly, 
+	          disabled: this.props.disabled, 
+	          readOnly: this.props.readOnly, 
+	          onChange: this.change, 
+	          onKeyDown: onKeyDown, 
+	          onKeyPress: onKeyPress, 
+	          onKeyUp: onKeyUp})
+	      )
+	    )
+	  },
+	
+	  //allow for styling, focus stealing keeping me from the normal what have you
+	  _mouseDown: function(dir) {
+	    var val = dir === directions.UP
+	        ? (this.props.value || 0) + this.props.step
+	        : (this.props.value || 0) - this.props.step
+	
+	    val = this.inRangeValue(val)
+	
+	    this.setState({ active: dir })
+	    this.change(val);
+	
+	    if( !((dir === directions.UP && val === this.props.max)
+	      || (dir === directions.DOWN && val === this.props.min)))
+	    {
+	      if(!this.interval)
+	        this.interval = setInterval(this._mouseDown, 500, dir)
+	    }
+	    else
+	      this._mouseUp()
+	  },
+	
+	  _mouseUp: function(direction, e ){
+	    this.setState({ active: false })
+	    clearInterval(this.interval)
+	    this.interval = null;
+	  },
+	
+	  _focus: function(focused, e){
+	    clearTimeout(this.timer)
+	
+	    this.timer = setTimeout(function() {
+	      var el = this.refs.input.getDOMNode()
+	
+	      focused && el.focus()
+	
+	      if( focused !== this.state.focused){
+	        this.notify(focused ? 'onFocus' : 'onBlur', e)
+	        this.setState({ focused: focused })
+	      }
+	
+	    }.bind(this), 0)
+	  },
+	
+	  _keyDown: function(e){
+	    var key = e.key;
+	
+	    if ( key === 'End'  && isFinite(this.props.max))
+	      this.change(this.props.max)
+	
+	    else if ( key === 'Home' && isFinite(this.props.min))
+	      this.change(this.props.min)
+	
+	    else if ( key === 'ArrowDown' ){
+	      e.preventDefault()
+	      this.decrement()
+	    }
+	    else if ( key === 'ArrowUp' ){
+	      e.preventDefault()
+	      this.increment()
+	    }
+	  },
+	
+	  increment: function() {
+	    this.change(this.inRangeValue((this.props.value || 0) + this.props.step))
+	  },
+	
+	  decrement: function(){
+	    this.change(this.inRangeValue((this.props.value || 0) - this.props.step))
+	  },
+	
+	  change: function(val){
+	    val = this.inRangeValue(val === '' ? null : val)
+	
+	    if ( this.props.value !== val )
+	      this.notify('onChange', val)
+	  },
+	
+	  inRangeValue: function(value){
+	    var max = this.props.max == null ? Infinity : this.props.max
+	      , min = this.props.min == null ? -Infinity : this.props.min;
+	
+	    if( !isFinite(min) && value == null )
+	      return value
+	
+	    return Math.max(Math.min(value, max), min)
+	  }
+	
+	})
+	
+	module.exports = controlledInput.createControlledClass(
+	    NumberPicker, { value: 'onChange' });
+	
+	module.exports.BaseNumberPicker = NumberPicker
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React           = __webpack_require__(1)
+	  , cx              = __webpack_require__(13)
+	  , _               = __webpack_require__(15)
+	  , SelectInput     = __webpack_require__(85)
+	  , TagList         = __webpack_require__(86)
+	  , Popup           = __webpack_require__(67)
+	  , PlainList       = __webpack_require__(68)
+	  , GroupableList   = __webpack_require__(69)
+	  , validateList    = __webpack_require__(70)
+	  , controlledInput = __webpack_require__(65)
+	  , CustomPropTypes = __webpack_require__(66);
+	
+	var propTypes = {
+	      data:            React.PropTypes.array,
+	      //-- controlled props --
+	      value:           React.PropTypes.array,
+	      onChange:        React.PropTypes.func,
+	
+	      searchTerm:      React.PropTypes.string,
+	      onSearch:        React.PropTypes.func,
+	
+	      open:            React.PropTypes.bool,
+	      onToggle:        React.PropTypes.func,
+	      //-------------------------------------------
+	
+	      valueField:      React.PropTypes.string,
+	      textField:       React.PropTypes.string,
+	
+	      tagComponent:    CustomPropTypes.elementType,
+	      itemComponent:   CustomPropTypes.elementType,
+	      listComponent:   CustomPropTypes.elementType,
+	
+	      groupComponent:  CustomPropTypes.elementType,
+	      groupBy:         React.PropTypes.oneOfType([
+	                         React.PropTypes.func,
+	                         React.PropTypes.string
+	                       ]),
+	
+	      onSelect:        React.PropTypes.func,
+	      onCreate:        React.PropTypes.func,
+	
+	      duration:        React.PropTypes.number, //popup
+	
+	      placeholder:     React.PropTypes.string,
+	
+	      disabled:        React.PropTypes.oneOfType([
+	                         React.PropTypes.bool,
+	                         React.PropTypes.array,
+	                         React.PropTypes.oneOf(['disabled'])
+	                      ]),
+	
+	      readOnly:        React.PropTypes.oneOfType([
+	                         React.PropTypes.bool,
+	                         React.PropTypes.array,
+	                         React.PropTypes.oneOf(['readonly'])
+	                       ]),
+	
+	      messages:        React.PropTypes.shape({
+	        open:          React.PropTypes.string,
+	        emptyList:     React.PropTypes.string,
+	        emptyFilter:   React.PropTypes.string
+	      })
+	    };
+	
+	var Select = React.createClass({
+	
+	  displayName: 'Select',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(92),
+	    __webpack_require__(89),
+	    __webpack_require__(90)
+	  ],
+	
+	  propTypes: propTypes,
+	
+	  getDefaultProps: function(){
+	    return {
+	      data: [],
+	      filter: 'startsWith',
+	      value: [],
+	      open: false,
+	      searchTerm: '',
+	      messages: {
+	        createNew:   "(create new tag)",
+	        emptyList:   "There are no items in this list",
+	        emptyFilter: "The filter returned no results"
+	      }
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    var values = _.splat(this.props.value)
+	      , data   = this.process(this.props.data, values, this.props.searchTerm)
+	
+	    return {
+	      focusedItem:   data[0],
+	      processedData: data,
+	      dataItems:     values.map( function(item)  {return this._dataItem(this.props.data, item);}.bind(this))
+	    }
+	  },
+	
+	  componentDidMount: function() {
+	    validateList(this.refs.list)
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var values = _.splat(nextProps.value)
+	      , current = this.state.focusedItem
+	      , items  = this.process(nextProps.data, values, nextProps.searchTerm)
+	
+	    this.setState({
+	      processedData: items,
+	      focusedItem: items.indexOf(current) === -1 ? items[0]: current,
+	      dataItems: values.map( function(item)  {return this._dataItem(nextProps.data, item);}.bind(this))
+	    })
+	  },
+	
+	  render: function(){
+	    var $__0= 
+	        
+	       
+	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,children:1})
+	      , listID = this._id('_listbox')
+	      , optID  = this._id('_option')
+	      , items  = this._data()
+	      , values = this.state.dataItems
+	      , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList;
+	
+	    return (
+	      React.createElement("div", React.__spread({},  props, 
+	        {ref: "element", 
+	        onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
+	        tabIndex: "-1", 
+	        className: cx(className, {
+	          'rw-multiselect':    true,
+	          'rw-widget':         true,
+	          'rw-state-focus':    this.state.focused,
+	          'rw-state-disabled': this.props.disabled === true,
+	          'rw-state-readonly': this.props.readOnly === true,
+	          'rw-open':           this.props.open,
+	          'rw-rtl':            this.isRtl()
+	        })}), 
+	        React.createElement("div", {className: "rw-multiselect-wrapper", onClick: this._maybeHandle(this._click)}, 
+	           this.props.busy &&
+	            React.createElement("i", {className: "rw-i rw-loading"}), 
+	          
+	           !!values.length &&
+	            React.createElement(TagList, {
+	              ref: "tagList", 
+	              value: values, 
+	              textField: this.props.textField, 
+	              valueField: this.props.valueField, 
+	              valueComponent: this.props.tagComponent, 
+	              disabled: this.props.disabled, 
+	              readOnly: this.props.readOnly, 
+	              onDelete: this._delete}), 
+	          
+	          React.createElement(SelectInput, {
+	            ref: "input", 
+	            'aria-activedescendent':  this.props.open ? optID : undefined, 
+	            'aria-expanded':  this.props.open, 
+	            'aria-busy': !!this.props.busy, 
+	            'aria-owns': listID, 
+	            'aria-haspopup': true, 
+	            value: this.props.searchTerm, 
+	            disabled: this.props.disabled === true, 
+	            readOnly: this.props.readOnly === true, 
+	            placeholder: this._placeholder(), 
+	            onKeyDown: this._searchKeyDown, 
+	            onKeyUp: this._searchgKeyUp, 
+	            onChange: this._typing})
+	        ), 
+	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
+	          React.createElement("div", null, 
+	            React.createElement(List, React.__spread({ref: "list"}, 
+	              _.pick(this.props, Object.keys(List.type.propTypes)), 
+	              {id: listID, 
+	              optID: optID, 
+	              'aria-autocomplete': "list", 
+	              'aria-hidden': !this.props.open, 
+	              data: items, 
+	              focused: this.state.focusedItem, 
+	              onSelect: this._maybeHandle(this._onSelect), 
+	              messages: {
+	                emptyList: this.props.data.length
+	                  ? this.props.messages.emptyFilter
+	                  : this.props.messages.emptyList
+	              }})), 
+	               this._shouldShowCreate() &&
+	                React.createElement("ul", {className: "rw-list rw-multiselect-create-tag"}, 
+	                  React.createElement("li", {onClick: this._onCreate.bind(null, this.props.searchTerm), 
+	                      className: cx({
+	                        'rw-list-option': true,
+	                        'rw-state-focus': !this._data().length || this.state.focusedItem === null 
+	                      })}, 
+	                    React.createElement("strong", null, ("\"" + this.props.searchTerm + "\"")), " ",  this.props.messages.createNew
+	                  )
+	                )
+	              
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _data:function(){
+	    return this.state.processedData
+	  },
+	
+	  _delete:function(value){
+	    this._focus(true)
+	    this.change(
+	      this.state.dataItems.filter( function(d)  {return d !== value;}))
+	  },
+	
+	  _click:function(e){
+	    this._focus(true)
+	    !this.props.open && this.open()
+	  },
+	
+	  _focus:function(focused, e){
+	    if (this.props.disabled === true )
+	      return
+	
+	    clearTimeout(this.timer)
+	
+	    this.timer = setTimeout(function()  {
+	      if(focused) this.refs.input.focus()
+	      else        {
+	        this.close()
+	        this.refs.tagList && this.refs.tagList.clear()
+	      }
+	      
+	      if( focused !== this.state.focused){
+	        this.notify(focused ? 'onFocus' : 'onBlur', e)
+	        this.setState({ focused: focused })
+	      }
+	    }.bind(this))
+	  },
+	
+	  _searchKeyDown:function(e){ 
+	    if (e.key === 'Backspace' && e.target.value && !this._deletingText)
+	      this._deletingText = true
+	  },
+	
+	  _searchgKeyUp:function(e){ 
+	    if (e.key === 'Backspace' && this._deletingText) 
+	      this._deletingText = false
+	  },
+	
+	  _typing: function(e){
+	    this.notify('onSearch', [ e.target.value ])
+	    this.open()
+	  },
+	
+	  _onSelect: function(data){
+	
+	    if( data === undefined && this.props.onCreate )
+	      return this._onCreate(this.props.searchTerm)
+	
+	    this.notify('onSelect', data)
+	    this.change(this.state.dataItems.concat(data))
+	    this.close()
+	    this._focus(true)
+	  },
+	
+	  _onCreate: function(tag){
+	    if (tag.trim() === '' ) 
+	      return
+	
+	    this.notify('onCreate', tag)
+	    this.close()
+	    this._focus(true)
+	  },
+	
+	  _keyDown: function(e){
+	    var key = e.key
+	      , alt = e.altKey
+	      , ctrl = e.ctrlKey
+	      , noSearch = !this.props.searchTerm && !this._deletingText
+	      , isOpen  = this.props.open
+	      , focusedItem = this.state.focusedItem
+	      , tagList = this.refs.tagList
+	      , list    = this.refs.list;
+	
+	    if ( key === 'ArrowDown') {
+	      var next = list.next('focused')
+	        , creating = (this._shouldShowCreate() && focusedItem === next) || focusedItem === null;
+	        
+	      next = creating ? null : list.next(focusedItem)
+	
+	      e.preventDefault()
+	      if ( isOpen ) this.setState({ focusedItem: next })
+	      else          this.open()
+	    }
+	    else if ( key === 'ArrowUp') {
+	      var prev = focusedItem === null 
+	        ? list.last() 
+	        : list.prev(focusedItem)
+	
+	      e.preventDefault()
+	
+	      if ( alt)          this.close()
+	      else if ( isOpen ) this.setState({ focusedItem: prev })
+	    }
+	    else if ( key === 'End'){
+	      if ( isOpen ) this.setState({ focusedItem: list.last() })
+	      else          tagList && tagList.last()
+	    }
+	    else if (  key === 'Home'){
+	      if ( isOpen ) this.setState({ focusedItem: list.first() })
+	      else          tagList && tagList.first()
+	    }
+	    else if ( isOpen && key === 'Enter' )
+	      ctrl && this.props.onCreate
+	        ? this._onCreate(this.props.searchTerm)
+	        : this._onSelect(this.state.focusedItem)
+	
+	    else if ( key === 'Escape')
+	      isOpen ? this.close() : this.refs.tagList.clear()
+	
+	    else if ( noSearch && key === 'ArrowLeft')
+	     tagList && tagList.prev()
+	
+	    else if ( noSearch && key === 'ArrowRight')
+	      tagList && tagList.next()
+	
+	    else if ( noSearch && key === 'Delete')
+	      tagList && tagList.removeCurrent()
+	
+	    else if ( noSearch && key === 'Backspace')
+	      tagList && tagList.removeNext()
+	
+	    this.notify('onKeyDown', [e])
+	  },
+	
+	  change: function(data){
+	    this.notify('onChange', [data])
+	  },
+	
+	  open: function(){
+	    if (!(this.props.disabled === true || this.props.readOnly === true))
+	      this.notify('onToggle', true)
+	  },
+	
+	  close: function(){
+	    this.notify('onToggle', false)
+	  },
+	
+	  toggle: function(e){
+	    this.props.open
+	      ? this.close()
+	      : this.open()
+	  },
+	
+	  process: function(data, values, searchTerm){
+	    var items = data.filter( function(i)  {return !values.some( this._valueMatcher.bind(null, i), this);}.bind(this), this)
+	
+	    if( searchTerm)
+	      items = this.filter(items, searchTerm)
+	
+	    return items
+	  },
+	
+	  _shouldShowCreate:function(){
+	    var text = this.props.searchTerm;
+	
+	    if ( !(this.props.onCreate && text) ) 
+	      return false
+	
+	    // if there is an exact match on textFields: "john" => { name: "john" }, don't show
+	    return !this._data().some( function(v)  {return this._dataText(v) === text;}.bind(this)) 
+	        && !this.state.dataItems.some( function(v)  {return this._dataText(v) === text;}.bind(this)) 
+	  },
+	
+	  _placeholder: function(){
+	    return (this.props.value || []).length
+	      ? ''
+	      : (this.props.placeholder || '')
+	  }
+	
+	})
+	
+	
+	module.exports = controlledInput.createControlledClass(Select
+	    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
+	    , { onChange: defaultChange, onCreate: defaultChange });
+	
+	
+	function defaultChange(){
+	  if ( this.props.searchTerm === undefined )
+	    this.setState({ searchTerm: '' })
+	}
+	
+	module.exports.BaseMultiselect = Select
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _  = __webpack_require__(15)
+	  , cx = __webpack_require__(13)
+	  , controlledInput  = __webpack_require__(65)
+	  , CustomPropTypes  = __webpack_require__(66)
+	  , PlainList        = __webpack_require__(68)
+	  , GroupableList = __webpack_require__(69)
+	  , validateList    = __webpack_require__(70);
+	
+	var propTypes = {
+	
+	    data:           React.PropTypes.array,
+	    value:          React.PropTypes.oneOfType([
+	                      React.PropTypes.any,
+	                      React.PropTypes.array
+	                    ]),
+	    onChange:       React.PropTypes.func,
+	    onMove:         React.PropTypes.func,
+	
+	    multiple:       React.PropTypes.bool,
+	
+	    itemComponent:  CustomPropTypes.elementType,
+	    listComponent:  CustomPropTypes.elementType,
+	
+	    valueField:     React.PropTypes.string,
+	    textField:      React.PropTypes.string,
+	
+	    busy:           React.PropTypes.bool,
+	
+	    delay:          React.PropTypes.number, 
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                      React.PropTypes.array,
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['disabled'])
+	                    ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.array,
+	                      React.PropTypes.oneOf(['readonly'])
+	                    ]),
+	
+	    messages:       React.PropTypes.shape({
+	      emptyList:    React.PropTypes.string
+	    }),
+	  }
+	
+	
+	var SelectList = React.createClass({displayName: 'SelectList',
+	
+	  propTypes: propTypes,
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(91),
+	    __webpack_require__(89),
+	    __webpack_require__(90)
+	  ],
+	
+	  getDefaultProps:function(){
+	    return {
+	      delay: 250,
+	      value: [],
+	      data:  [],
+	      messages: {
+	        emptyList: 'There are no items in this list'
+	      }
+	    }
+	  },
+	
+	  getDefaultState:function(props){
+	    var isRadio = !props.multiple
+	      , values  = _.splat(props.value)
+	      , first   = isRadio && this._dataItem(props.data, values[0]) 
+	
+	    first = isRadio && first 
+	      ? first
+	      : ((this.state || {}).focusedItem || null)
+	
+	    return {
+	      focusedItem: first,
+	      dataItems:   !isRadio && values.map(function(item)  {return this._dataItem(props.data, item);}.bind(this))
+	    }
+	  },
+	
+	  getInitialState:function(){
+	    var state = this.getDefaultState(this.props)
+	    
+	    state.ListItem = getListItem(this)
+	
+	    return state
+	  },
+	
+	  componentWillReceiveProps:function(nextProps) {
+	    return this.setState(this.getDefaultState(nextProps))
+	  },
+	
+	  componentDidMount: function() {
+	    validateList(this.refs.list)
+	  },
+	
+	  render:function() {
+	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , focus = this._maybeHandle(this._focus.bind(null, true), true)
+	      , optID = this._id('_selected_option')
+	      , blur  = this._focus.bind(null, false)
+	      , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
+	      , focusedItem = this.state.focused 
+	                    && !this.isDisabled() 
+	                    && !this.isReadOnly() 
+	                    && this.state.focusedItem;
+	
+	    return (
+	      
+	      React.createElement("div", React.__spread({},  props, 
+	        {onKeyDown: this._maybeHandle(this._keyDown), 
+	        onFocus: focus, 
+	        onBlur: blur, 
+	        tabIndex: "0", 
+	        role: "listbox", 
+	        'aria-busy': !!this.props.busy, 
+	        'aria-activedescendent':  this.state.focused ? optID : undefined, 
+	        'aria-disabled':  this.isDisabled(), 
+	        'aria-readonly':  this.isReadOnly(), 
+	        className: cx(className, { 
+	          'rw-widget':         true,
+	          'rw-selectlist':     true,
+	          'rw-state-focus':    this.state.focused,
+	          'rw-state-disabled': this.isDisabled(),
+	          'rw-state-readonly': this.isReadOnly(),
+	          'rw-rtl':            this.isRtl(),
+	          'rw-loading-mask':   this.props.busy
+	        })}), 
+	
+	        React.createElement(List, {ref: "list", 
+	          data: this._data(), 
+	          focused: focusedItem, 
+	          optID: optID, 
+	          itemComponent: this.state.ListItem})
+	      ) 
+	    );
+	  },
+	
+	
+	  _keyDown: function(e){
+	    var self = this
+	      , key = e.key
+	      , multiple = !!this.props.multiple
+	      , list = this.refs.list
+	      , focusedItem = this.state.focusedItem;
+	
+	    if ( key === 'End' ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setState({ focusedItem: move('prev', null) })
+	      else            change(move('prev', null)) 
+	    }
+	    else if ( key === 'Home' ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setState({ focusedItem: move('next', null) })
+	      else            change(move('next', null)) 
+	    }
+	    else if ( key === 'Enter' || key === ' ' ) {
+	      e.preventDefault()
+	      change(focusedItem)
+	    }
+	    else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setState({ focusedItem: move('next', focusedItem) })
+	      else            change(move('next', focusedItem))
+	    }
+	    else if ( key === 'ArrowUp' || key === 'ArrowLeft'  ) {
+	      e.preventDefault()
+	
+	      if ( multiple ) this.setState({ focusedItem: move('prev', focusedItem) })
+	      else            change(move('prev', focusedItem))
+	    }
+	    else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {
+	      e.preventDefault()
+	      this._selectAll() 
+	    }
+	    else
+	      this.search(
+	          String.fromCharCode(e.keyCode)
+	        , this._locate)
+	
+	    function change(item, cked){
+	      if( item ){
+	        self._change(item, multiple 
+	            ? !self._contains(item, self._values()) // toggle value
+	            : true)
+	      }    
+	    }
+	
+	    function move(dir, item){
+	      var stop = dir === 'next' ? list.last() : list.first()
+	        , next = list[dir](item);
+	      
+	      while( next !== stop && self.isDisabledItem(next) ) 
+	        next = list[dir](next)
+	
+	      return self.isDisabledItem(next) ? item : next
+	    }
+	  },
+	
+	  _selectAll: function(){
+	    var values = this.state.dataItems
+	      , disabled = this.props.disabled || this.props.readOnly
+	      , data = this._data()
+	      , blacklist;
+	
+	    disabled = Array.isArray(disabled) ? disabled : [];
+	    //disabled values that are not selected
+	    blacklist = disabled.filter( function(v)  {return !this._contains(v, values);}.bind(this))
+	    data      = data.filter( function(v)  {return !this._contains(v, blacklist);}.bind(this))
+	
+	    if ( data.length === values.length) {
+	      data = disabled.filter( function(v)  {return this._contains(v, values);}.bind(this))
+	      data = data.map( function(v)  {return this._dataItem(this._data(), v);}.bind(this))
+	    }
+	
+	    this.notify('onChange', [data])
+	  },
+	
+	  _change: function(item, checked){
+	    var multiple  = !!this.props.multiple
+	      , blacklist = this.props.disabled || this.props.readOnly 
+	      , values    = this.state.dataItems;
+	
+	    blacklist = Array.isArray(blacklist) ? blacklist : [];
+	
+	    if(this._contains(item, blacklist)) return 
+	
+	    if ( !multiple )
+	      return this.notify('onChange', checked ? item : null)
+	
+	    values = checked 
+	      ? values.concat(item)
+	      : values.filter( function(v)  {return v !== item;})
+	
+	    this.notify('onChange', [values || []])
+	  },
+	
+	  _focus: function(focused, e){
+	    var self = this;
+	
+	    clearTimeout(self.timer)
+	
+	    self.timer = setTimeout(function(){
+	      if( focused) self.getDOMNode().focus()
+	      if( focused !== self.state.focused){
+	        self.setState({ focused: focused })
+	        //!focused && self.next(0)
+	      }
+	    }, 0)
+	  },
+	
+	  isDisabledItem: function(item) {
+	    return this.isDisabled() || this._contains(item, this.props.disabled)
+	  },
+	
+	  isReadOnlyItem: function(item) {
+	    return this.isReadOnly() || this._contains(item, this.props.readOnly)
+	  },
+	
+	  _locate: function(word){
+	    var idx = this.findNextWordIndex(word, this.state.focusedIndex);
+	
+	    if ( idx !== -1) 
+	      this.setFocusedIndex(idx)
+	  },
+	
+	  _data:function(){
+	    return this.props.data
+	  },
+	
+	  _contains: function(item, values){
+	    return Array.isArray(values) 
+	      ? values.some(this._valueMatcher.bind(null, item))
+	      : this._valueMatcher(item, values)
+	  },
+	
+	  _values: function(){
+	    return !!this.props.multiple 
+	      ? this.state.dataItems
+	      : this.props.value
+	  }
+	
+	});
+	
+	function getListItem(parent){
+	
+	  return React.createClass({
+	
+	    render: function() {
+	      var $__0=
+	             this.props,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{})
+	        , item      = this.props.item
+	        , checked   = parent._contains(item, parent._values())
+	        , change    = parent._change.bind(null, item)
+	        , disabled  = parent.isDisabledItem(item)
+	        , readonly  = parent.isReadOnlyItem(item)
+	        , Component = parent.props.itemComponent
+	        , name      = parent.props.name || parent._id('_name');
+	
+	      return (
+	        React.createElement("label", {
+	          className: cx({ 
+	            'rw-state-disabled': disabled,
+	            'rw-state-readonly': readonly
+	          })}, 
+	          React.createElement("input", React.__spread({},   props, 
+	            {tabIndex: "-1", 
+	            name: name, 
+	            type: parent.props.multiple ? 'checkbox' : 'radio', 
+	            
+	            onChange: onChange, 
+	            checked: checked, 
+	            disabled: disabled || readonly, 
+	            'aria-disabled': disabled || readonly})), 
+	             Component 
+	                ? React.createElement(Component, {item: item}) 
+	                : parent._dataText(item)
+	            
+	        )
+	      );
+	
+	      function onChange(e){
+	        if( !disabled && !readonly)
+	          change(e.target.checked)
+	      }
+	    }
+	  })
+	}
+	
+	module.exports = SelectList;
+	
+	module.exports = controlledInput.createControlledClass(
+	    SelectList, { value: 'onChange' });
+	
+	module.exports.BaseSelectList = SelectList
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * A streamlined version of TransitionGroup built for managing at most two active children
+	 * also provides additional hooks for animation start/end
+	 * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
+	 * relevent code is licensed accordingly 
+	 */
+	
+	"use strict";
+	
+	var React = __webpack_require__(1)
+	  , $     = __webpack_require__(71)
+	  , _     = __webpack_require__(15);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'ReplaceTransitionGroup',
+	
+	  propTypes: {
+	    component:    React.PropTypes.oneOfType([
+	                    React.PropTypes.element,
+	                    React.PropTypes.string
+	                  ]),
+	    childFactory: React.PropTypes.func,
+	
+	    onAnimating:  React.PropTypes.func,
+	    onAnimate:    React.PropTypes.func,
+	  },
+	
+	  getDefaultProps: function() {
+	    return {
+	      component:    'span',
+	      childFactory: function(a){ return a },
+	
+	      onAnimating: _.noop,
+	      onAnimate:   _.noop
+	    };
+	  },
+	
+	  getInitialState: function() {
+	    return {
+	      children: _.splat(this.props.children)
+	    };
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var nextChild = getChild(nextProps.children)
+	      , stack     = this.state.children.slice()
+	      , next      = stack[1]
+	      , last      = stack[0];
+	
+	    var isLastChild = last && key(last) === key(nextChild)
+	      , isNextChild = next && key(next) === key(nextChild);
+	
+	    //no children
+	    if (!last) {
+	      stack.push(nextChild)
+	      this.entering = nextChild
+	    }
+	    else if ( last && !next && !isLastChild) {
+	      //new child
+	      stack.push(nextChild)
+	      this.leaving = last 
+	      this.entering = nextChild
+	    }
+	    else if ( last && next && !isLastChild && !isNextChild) {
+	      // the child is not the current one, exit the current one, add the new one
+	      //  - shift the stack down
+	      stack.shift()
+	      stack.push(nextChild)
+	      this.leaving  = next
+	      this.entering = nextChild
+	    }
+	    //new child that just needs to be re-rendered
+	    else if (isLastChild) stack.splice(0, 1, nextChild) 
+	    else if (isNextChild) stack.splice(1, 1, nextChild)
+	
+	    if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] ) 
+	      this.setState({ children: stack });
+	  },
+	
+	  componentWillMount: function() {
+	    this.animatingKeys = {};
+	    this.leaving  = null;
+	    this.entering = null;
+	  },
+	
+	  componentDidUpdate: function() {
+	    var entering = this.entering
+	      , leaving  = this.leaving
+	      , first    = this.refs[key(entering) || key(leaving)]
+	      , node     = this.getDOMNode()
+	      , el       = first && first.getDOMNode();
+	
+	    if( el )
+	      $.css(node, {
+	        overflow: 'hidden',
+	        height: $.height(el) + 'px',
+	        width:  $.width(el) + 'px'
+	      })
+	    
+	    this.props.onAnimating();
+	
+	    this.entering = null;
+	    this.leaving  = null;
+	
+	    if (entering) this.performEnter(key(entering))
+	    if (leaving)  this.performLeave(key(leaving))
+	  },
+	
+	  performEnter: function(key) {
+	    var component = this.refs[key];
+	
+	    if(!component) return
+	
+	    this.animatingKeys[key] = true;
+	
+	    if (component.componentWillEnter) 
+	      component.componentWillEnter(
+	        this._handleDoneEntering.bind(this, key));
+	    else 
+	      this._handleDoneEntering(key);
+	  },
+	
+	  _tryFinish: function(){
+	    var node = this.getDOMNode()
+	
+	    if ( this.isTransitioning() )
+	      return 
+	
+	    $.css(node, { overflow: 'visible', height: '', width: '' })
+	
+	    this.props.onAnimate() 
+	  }, 
+	
+	  _handleDoneEntering: function(enterkey) {
+	    var component = this.refs[enterkey];
+	
+	    if (component && component.componentDidEnter) 
+	      component.componentDidEnter();
+	    
+	    delete this.animatingKeys[enterkey];
+	
+	    if ( key(this.props.children) !== enterkey) 
+	      this.performLeave(enterkey); // This was removed before it had fully entered. Remove it.
+	    
+	    this._tryFinish()
+	  },
+	
+	  isTransitioning: function(){
+	    return Object.keys(this.animatingKeys).length !== 0
+	  },
+	
+	  performLeave: function(key) {
+	    var component = this.refs[key];
+	
+	    if(!component) return
+	
+	    this.animatingKeys[key] = true;
+	
+	    if (component.componentWillLeave) 
+	      component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
+	    else 
+	      this._handleDoneLeaving(key);
+	  },
+	
+	  _handleDoneLeaving: function(leavekey) {
+	    var component = this.refs[leavekey];
+	
+	    if (component && component.componentDidLeave) 
+	      component.componentDidLeave();
+	    
+	    delete this.animatingKeys[leavekey];
+	
+	    if (key(this.props.children) === leavekey )
+	      this.performEnter(leavekey); // This entered again before it fully left. Add it again.
+	    else {
+	      var newChildren = this.state.children.filter( function(c)  {return key(c) !== leavekey;});
+	      this.setState({ children: newChildren });
+	    }
+	
+	    this._tryFinish() 
+	  },
+	
+	  render: function() {
+	    var Component = this.props.component
+	    return React.createElement(Component, React.__spread({},  this.props),  this.state.children.map(function(c)  {return this.props.childFactory(c, key(c));}.bind(this)) );
+	  }
+	});
+	
+	function getChild(children){
+	  return React.Children.only(children)
+	}
+	
+	//CHANGE 0.12.0
+	function key(child){
+	  return child && child.key
+	}
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , ReplaceTransitionGroup  = __webpack_require__(57)
+	  , _ = __webpack_require__(15)
+	  , $  =  __webpack_require__(71);
+	
+	
+	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
+	
+	  propTypes: {
+	    direction: React.PropTypes.oneOf(['left', 'right'])
+	  },
+	
+	  componentWillEnter: function(done) {
+	    var node  = this.getDOMNode()
+	      , width = $.width(node)
+	      , direction = this.props.direction;
+	
+	    width = direction === 'left' ? width : -width
+	
+	    this.ORGINAL_POSITION = node.style.position;
+	    
+	    $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
+	
+	    $.animate(node, { left: 0 }, this.props.duration, function()  {
+	
+	        $.css(node, { 
+	          position:  this.ORGINAL_POSITION, 
+	          overflow: 'hidden'
+	        });
+	
+	        this.ORGINAL_POSITION = null
+	        done && done()
+	      }.bind(this))
+	  },
+	
+	  componentWillLeave: function(done) {
+	    var node  = this.getDOMNode()
+	      , width = $.width(node)
+	      , direction = this.props.direction;
+	
+	    width = direction === 'left' ? -width : width
+	
+	    this.ORGINAL_POSITION = node.style.position
+	
+	    $.css(node, { position: 'absolute', top: 0, left: 0})
+	
+	    $.animate(node, { left: width + 'px' }, this.props.duration, function()  {
+	        $.css(node, { 
+	          position: this.ORGINAL_POSITION, 
+	          overflow: 'hidden'
+	        });
+	
+	        this.ORGINAL_POSITION = null
+	        done && done()
+	      }.bind(this))
+	  },
+	
+	  render: function() {
+	    return React.Children.only(this.props.children);
+	  }
+	
+	})
+	
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    direction: React.PropTypes.oneOf(['left', 'right']),
+	    duration:  React.PropTypes.number
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      direction: 'left',
+	      duration: 250
+	    }
+	  },
+	
+	  _wrapChild: function(child, ref) {
+	    return (React.createElement(SlideChildGroup, {key: child.key, ref: ref, direction: this.props.direction, duration: this.props.duration}, child))
+	  },
+	
+	  render: function() {
+	    var $__0=      this.props,style=$__0.style,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{style:1,children:1})
+	
+	    style = _.merge(style, { position: 'relative', overflow: 'hidden' })
+	
+	    return (
+	      React.createElement(ReplaceTransitionGroup, React.__spread({},  
+	        props, 
+	        {ref: "container", 
+	        childFactory: this._wrapChild, 
+	        style: style, 
+	        component: 'div'}), 
+	        children 
+	      ))
+	  },
+	
+	  isTransitioning: function(){
+	    return this.isMounted() && this.refs.container.isTransitioning()
+	  }
+	});
+	
+
+
+/***/ },
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -12399,2698 +15090,126 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(100)(module), (function() { return this; }())))
 
 /***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React           = __webpack_require__(1)
-	  , _               = __webpack_require__(15)
-	  , cx              = __webpack_require__(13)
-	  , controlledInput = __webpack_require__(69)
-	  , CustomPropTypes = __webpack_require__(77)
-	  , Popup           = __webpack_require__(74)
-	  , PlainList       = __webpack_require__(78)
-	  , GroupableList   = __webpack_require__(79)
-	  , validateList    = __webpack_require__(80);
-	  
-	
-	var propTypes = {
-	  //-- controlled props -----------
-	  value:          React.PropTypes.any,
-	  onChange:       React.PropTypes.func,
-	  open:           React.PropTypes.bool,
-	  onToggle:       React.PropTypes.func,
-	  //------------------------------------
-	
-	  data:           React.PropTypes.array,
-	  valueField:     React.PropTypes.string,
-	  textField:      React.PropTypes.string,
-	
-	  valueComponent: CustomPropTypes.elementType,
-	  itemComponent:  CustomPropTypes.elementType,
-	  list:           CustomPropTypes.elementType,
-	
-	  groupComponent: CustomPropTypes.elementType,
-	  groupBy:        React.PropTypes.oneOfType([
-	                    React.PropTypes.func,
-	                    React.PropTypes.string
-	                  ]),
-	
-	  onSelect:       React.PropTypes.func,
-	  
-	  busy:           React.PropTypes.bool,
-	
-	  delay:          React.PropTypes.number,
-	  duration:       React.PropTypes.number, //popup
-	
-	  disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	  readOnly:       React.PropTypes.oneOfType([
-	                    React.PropTypes.bool,
-	                    React.PropTypes.oneOf(['readOnly'])
-	                  ]),
-	
-	  messages:       React.PropTypes.shape({
-	    open:         React.PropTypes.string,
-	  })
-	};
-	
-	var DropdownList = React.createClass({
-	
-	  displayName: 'DropdownList',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(88),
-	    __webpack_require__(92),
-	    __webpack_require__(89)
-	  ],
-	
-	  propTypes: propTypes,
-	
-		getInitialState: function(){
-	    var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
-	
-			return {
-	      selectedItem: this.props.data[initialIdx],
-	      focusedItem:  this.props.data[initialIdx] || this.props.data[0],
-			}
-		},
-	
-	  getDefaultProps: function(){
-	    return {
-	      delay: 500,
-	      value: '',
-	      open: false,
-	      data: [],
-	      messages: {
-	        open: 'open dropdown'
-	      }
-	    }
-	  },
-	
-	  componentDidMount: function() {
-	    validateList(this.refs.list)
-	  },
-	
-	  componentWillReceiveProps: function(props){
-	    if ( _.isShallowEqual(props.value, this.props.value) && props.data === this.props.data)
-	      return
-	
-	    var idx = this._dataIndexOf(props.data, props.value);
-	
-	    this.setState({ 
-	      selectedItem: props.data[idx],
-	      focusedItem:  props.data[!~idx ? 0 : idx]
-	    })
-	  },
-	
-		render: function(){
-			var $__0=
-	        
-	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , ValueComponent = this.props.valueComponent
-	      , valueItem = this._dataItem( this._data(), this.props.value )
-	      , optID = this._id('_option')
-	      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList
-	      ;
-	
-			return (
-				React.createElement("div", React.__spread({},  props, 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onClick: this._maybeHandle(this.toggle), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        'aria-expanded':  this.props.open, 
-	        'aria-haspopup': true, 
-	        'aria-busy': !!this.props.busy, 
-	        'aria-activedescendent':  this.props.open ? optID : undefined, 
-	        'aria-disabled':  this.props.disabled, 
-	        'aria-readonly':  this.props.readOnly, 
-	        tabIndex: this.props.disabled ? '-1' : "0", 
-	        className: cx(className, {
-	          'rw-dropdownlist':   true,
-	          'rw-widget':          true,
-	          'rw-state-disabled':  this.props.disabled,
-	          'rw-state-readonly':  this.props.readOnly,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-open':            this.props.open,
-	          'rw-rtl':             this.isRtl()
-	        })}), 
-	
-					React.createElement("span", {className: "rw-dropdownlist-picker rw-select rw-btn"}, 
-						React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
-	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
-	          )
-					), 
-	        React.createElement("div", {className: "rw-input"}, 
-	           this.props.valueComponent
-	              ? React.createElement(ValueComponent, {item: valueItem})
-	              : this._dataText(valueItem)
-	          
-	        ), 
-	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
-	          React.createElement("div", null, 
-	            React.createElement(List, React.__spread({ref: "list"},  
-	              _.pick(this.props, Object.keys(List.type.propTypes)), 
-	              {optID: optID, 
-	              'aria-hidden': !this.props.open, 
-	              selected: this.state.selectedItem, 
-	              focused: this.props.open ? this.state.focusedItem : null, 
-	              onSelect: this._maybeHandle(this._onSelect)}))
-	          )
-	        )
-				)
-			)
-		},
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	    self.timer = setTimeout(function(){
-	
-	      if(focused) self.getDOMNode().focus()
-	      else        self.close()
-	
-	      if( focused !== self.state.focused){
-	        self.notify(focused ? 'onFocus' : 'onBlur', e)
-	        self.setState({ focused: focused })
-	      }
-	
-	    }, 0)
-	  },
-	
-	  _onSelect: function(data){
-	    this.close()
-	    this.notify('onSelect', data)
-	    this.change(data)
-	  },
-	
-	  _keyDown: function(e){
-	    var self = this
-	      , key = e.key
-	      , alt = e.altKey
-	      , list = this.refs.list
-	      , focusedItem = this.state.focusedItem
-	      , selectedItem = this.state.selectedItem
-	      , isOpen = this.props.open;
-	
-	
-	    if ( key === 'End' ) {
-	      if ( isOpen) this.setState({ focusedItem: list.last() })
-	      else         change(list.last())
-	      e.preventDefault()
-	    }
-	    else if ( key === 'Home' ) {
-	      if ( isOpen) this.setState({ focusedItem: list.first() })
-	      else         change(list.first())
-	      e.preventDefault()
-	    }
-	    else if ( key === 'Escape' && isOpen ) {
-	      this.close()
-	    }
-	    else if ( (key === 'Enter' || key === ' ') && isOpen ) {
-	      change(this.state.focusedItem, true)
-	    }
-	    else if ( key === 'ArrowDown' ) {
-	      if ( alt )         this.open()
-	      else if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
-	      else               change(list.next(selectedItem))
-	      e.preventDefault()
-	    }
-	    else if ( key === 'ArrowUp' ) {
-	      if ( alt )         this.close()
-	      else if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
-	      else               change(list.prev(selectedItem))
-	      e.preventDefault()
-	    }
-	    else
-	      this.search(String.fromCharCode(e.keyCode), function(item)  {
-	        isOpen 
-	          ? this.setState({ focusedItem: item })
-	          : change(item)
-	      }.bind(this))
-	
-	
-	    this.notify('onKeyDown', [e])
-	    
-	    function change(item, fromList){
-	      if(!item) return
-	      if(fromList) self.notify('onSelect', item)
-	
-	      self.change(item)
-	    }
-	  },
-	
-	  change: function(data){
-	    if ( !_.isShallowEqual(data, this.props.value) ) {
-	      this.notify('onChange', data)
-	      this.close()
-	    }
-	  },
-	
-	  _data: function(){
-	    return this.props.data
-	  },
-	
-	  search: function(character, cb){
-	    var word = ((this._searchTerm || '') + character).toLowerCase();
-	      
-	    clearTimeout(this._timer)
-	    this._searchTerm = word 
-	  
-	    this._timer = setTimeout(function()  {
-	      var list = this.refs.list
-	        , key  = this.props.open ? 'focusedItem' : 'selectedItem'
-	        , item = list.next(this.state[key], word);
-	      
-	      this._searchTerm = ''
-	      if ( item) cb(item)
-	
-	    }.bind(this), this.props.delay)
-	  },
-	
-	  open: function(){
-	    this.notify('onToggle', true)
-	  },
-	
-	  close: function(){
-	    this.notify('onToggle', false)
-	  },
-	
-	  toggle: function(e){
-	    this.props.open
-	      ? this.close()
-	      : this.open()
-	  }
-	
-	})
-	
-	
-	module.exports = controlledInput.createControlledClass(
-	    DropdownList, { open: 'onToggle', value: 'onChange' });
-	
-	module.exports.BaseDropdownList = DropdownList
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React           = __webpack_require__(1)
-	  , cx              = __webpack_require__(13)
-	  , _               = __webpack_require__(15)
-	  , $               = __webpack_require__(72)
-	  , filter          = __webpack_require__(73)
-	  , Popup           = __webpack_require__(74)
-	  , Btn             = __webpack_require__(75)
-	  , Input           = __webpack_require__(76)
-	
-	  , controlledInput = __webpack_require__(69)
-	  , CustomPropTypes = __webpack_require__(77)
-	  , PlainList       = __webpack_require__(78)
-	  , GroupableList   = __webpack_require__(79)
-	  , validateList    = __webpack_require__(80);
-	
-	var propTypes = {
-	      //-- controlled props -----------
-	      value:          React.PropTypes.any,
-	      onChange:       React.PropTypes.func,
-	      open:           React.PropTypes.bool,
-	      onToggle:       React.PropTypes.func,
-	      //------------------------------------
-	
-	      itemComponent:  CustomPropTypes.elementType,
-	      list:           CustomPropTypes.elementType,
-	
-	      groupComponent: CustomPropTypes.elementType,
-	      groupBy:        React.PropTypes.oneOfType([
-	                        React.PropTypes.func,
-	                        React.PropTypes.string
-	                      ]),
-	
-	      data:           React.PropTypes.array,
-	      valueField:     React.PropTypes.string,
-	      textField:      React.PropTypes.string,
-	      name:           React.PropTypes.string,
-	
-	      onSelect:       React.PropTypes.func,
-	      
-	      disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	      readOnly:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['readOnly'])
-	                      ]),
-	
-	      suggest:        React.PropTypes.bool,
-	      busy:           React.PropTypes.bool,
-	
-	      duration:       React.PropTypes.number, //popup
-	      placeholder:    React.PropTypes.string,
-	
-	      messages:       React.PropTypes.shape({
-	        open:         React.PropTypes.string,
-	        emptyList:    React.PropTypes.string,
-	        emptyFilter:  React.PropTypes.string
-	      })
-	    };
-	
-	var ComboBox = React.createClass({
-	
-	  displayName: 'ComboBox',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(90),
-	    __webpack_require__(91),
-	    __webpack_require__(92),
-	    __webpack_require__(89)
-	  ],
-	
-	  propTypes: propTypes,
-	
-		getInitialState: function(){
-	    var items = this.process(this.props.data, this.props.value)
-	      , idx   = this._dataIndexOf(items, this.props.value);
-	
-			return {
-				selectedItem:  items[idx],
-	      focusedItem:   items[!~idx ? 0 : idx],
-	      processedData: items,
-				open:          false
-			}
-		},
-	
-	  getDefaultProps: function(){
-	    return {
-	      data: [],
-	      value: '',
-	      open: false,
-	      suggest: false,
-	      filter: false,
-	      delay: 500,
-	
-	      messages: {
-	        open: 'open combobox',
-	        emptyList:   "There are no items in this list",
-	        emptyFilter: "The filter returned no results"
-	      }
-	    }
-	  },
-	
-	  componentDidMount: function() {
-	    validateList(this.refs.list)
-	  },
-	
-	  shouldComponentUpdate: function(nextProps, nextState){
-	    var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
-	      , stateChanged = !_.isShallowEqual(nextState, this.state)
-	      , valueChanged = !_.isShallowEqual(nextProps, this.props)
-	
-	    return isSuggesting || stateChanged || valueChanged
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var rawIdx = this._dataIndexOf(nextProps.data, nextProps.value)
-	      , valueItem = rawIdx == -1 ? nextProps.value : nextProps.data[rawIdx]
-	      , isSuggesting = this.refs.input.isSuggesting()
-	      , items = this.process(
-	          nextProps.data
-	        , nextProps.value
-	        , (rawIdx === -1 || isSuggesting) && this._dataText(valueItem) )
-	
-	      , idx = this._dataIndexOf(items, nextProps.value)
-	      , focused = this.filterIndexOf(items, this._dataText(valueItem));
-	
-	    this._searchTerm = '';
-	
-	    this.setState({
-	      processedData:  items,
-	      selectedItem:   items[idx],
-	      focusedItem:    items[idx === -1
-	        ? focused !== -1 ? focused : 0 // focus the closest match
-	        : idx]
-	    })
-	  },
-	
-		render: function(){
-			var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , valueItem = this._dataItem( this._data(), this.props.value )
-	      , items = this._data()
-	      , listID = this._id('_listbox')
-	      , optID  = this._id( '_option')
-	      , List   = this.props.list || (this.props.groupBy && GroupableList) || PlainList
-	      , completeType = this.props.suggest
-	          ? this.props.filter ? 'both' : 'inline'
-	          : this.props.filter ? 'list' : '';
-	
-			return (
-				React.createElement("div", React.__spread({},  props , 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        tabIndex: "-1", 
-	        className: cx(className, {
-	          'rw-combobox':        true,
-	          'rw-widget':          true,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-open':            this.props.open,
-	          'rw-state-disabled':  this.props.disabled,
-	          'rw-state-readonly':  this.props.readOnly,
-	          'rw-rtl':             this.isRtl()
-	         })}), 
-	        React.createElement(Btn, {
-	          tabIndex: "-1", 
-	          className: "rw-select", 
-	          onClick: this._maybeHandle(this.toggle), 
-	          disabled: !!(this.props.disabled || this.props.readOnly)}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}, 
-	            React.createElement("span", {className: "rw-sr"},  this.props.messages.open)
-	          )
-	        ), 
-	        React.createElement(Input, {
-	          ref: "input", 
-	          type: "text", 
-	          role: "combobox", 
-	          suggest: this.props.suggest, 
-	          name: this.props.name, 
-	          'aria-owns': listID, 
-	          'aria-busy': !!this.props.busy, 
-	          'aria-autocomplete': completeType, 
-	          'aria-activedescendent':  this.props.open ? optID : undefined, 
-	          'aria-expanded':  this.props.open, 
-	          'aria-haspopup': true, 
-	          placeholder: this.props.placeholder, 
-	          disabled: this.props.disabled, 
-	          readOnly: this.props.readOnly, 
-	          className: "rw-input", 
-	          value:  this._dataText(valueItem), 
-	          onChange: this._inputTyping, 
-	          onKeyDown: this._inputKeyDown}), 
-	
-	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
-	          React.createElement("div", null, 
-	            React.createElement(List, React.__spread({ref: "list"}, 
-	              _.pick(this.props, Object.keys(List.type.propTypes)), 
-	              {id: listID, 
-	              optID: optID, 
-	              'aria-hidden':  !this.props.open, 
-	              'aria-live':  completeType && 'polite', 
-	              data: items, 
-	              selected: this.state.selectedItem, 
-	              focused: this.state.focusedItem, 
-	              onSelect: this._maybeHandle(this._onSelect), 
-	              messages: {
-	                emptyList: this.props.data.length
-	                  ? this.props.messages.emptyFilter
-	                  : this.props.messages.emptyList
-	              }}))
-	          )
-	        )
-				)
-			)
-		},
-	
-	  setWidth: function() {
-	    var width = $.width(this.getDOMNode())
-	      , changed = width !== this.state.width;
-	
-	    if ( changed )
-	      this.setState({ width: width })
-	  },
-	
-	  _onSelect: function(data){
-	    this.close()
-	    this.notify('onSelect', data)
-	    this.change(data)
-	    this._focus(true);
-	  },
-	
-	  _inputKeyDown: function(e){
-	    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
-	    this._isTyping = true
-	  },
-	
-	  _inputTyping: function(e){
-	    var self = this
-	      , shouldSuggest = !!this.props.suggest
-	      , strVal  = e.target.value
-	      , suggestion, data;
-	
-	    suggestion = this._deleting || !shouldSuggest
-	      ? strVal : this.suggest(this._data(), strVal)
-	
-	    suggestion = suggestion || strVal
-	
-	    data = _.find(self.props.data, 
-	      function(item)  {return this._dataText(item).toLowerCase() === suggestion.toLowerCase();}.bind(this))
-	
-	    this.change(!this._deleting && data
-	      ? data
-	      : strVal, true)
-	
-	    this.open()
-	  },
-	
-	  _focus: function(focused, e){
-	    clearTimeout(this.timer)
-	    !focused && this.refs.input.accept() //not suggesting anymore
-	
-	    this.timer = setTimeout(function() {
-	      if(focused) this.refs.input.focus()
-	      else        this.close()
-	
-	      if( focused !== this.state.focused){
-	        this.notify(focused ? 'onFocus' : 'onBlur', e)
-	        this.setState({ focused:focused })
-	      }
-	    }.bind(this), 0)
-	  },
-	
-	  _keyDown: function(e){
-	    var self = this
-	      , key  = e.key
-	      , alt  = e.altKey
-	      , list = this.refs.list
-	      , focusedItem = this.state.focusedItem
-	      , selectedItem = this.state.selectedItem
-	      , isOpen = this.props.open;
-	
-	    if ( key === 'End' )
-	      if ( isOpen ) this.setState({ focusedItem: list.last() })
-	      else          select(list.last(), true)
-	
-	    else if ( key === 'Home' )
-	      if ( isOpen ) this.setState({ focusedItem: list.first() })
-	      else          select(list.first(), true)
-	
-	    else if ( key === 'Escape' && isOpen )
-	      this.close()
-	
-	    else if ( key === 'Enter' && isOpen ) {
-	      this.close()
-	      select(this.state.focusedItem, true)
-	    }
-	
-	    else if ( key === 'ArrowDown' ) {
-	      if ( alt )
-	        this.open()
-	      else {
-	        if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
-	        else          select(list.next(selectedItem), true)
-	      }
-	    }
-	    else if ( key === 'ArrowUp' ) {
-	      if ( alt )
-	        this.close()
-	      else {
-	        if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
-	        else          select(list.prev(selectedItem), true)
-	      }
-	    }
-	
-	    this.notify('onKeyDown', [e])
-	    
-	    function select(item, fromList) {
-	      if(!item)
-	        return self.change(self.refs.input.getDOMNode().value, false)
-	
-	      self.refs.input.accept(true); //removes caret
-	
-	      if(fromList) 
-	        self.notify('onSelect', item)
-	
-	      self.change(item, false)
-	    }
-	  },
-	
-	  change: function(data, typing){
-	    this._typedChange = !!typing
-	    this.notify('onChange', data)
-	  },
-	
-	  open: function(){
-	    if ( !this.props.open )
-	      this.notify('onToggle', true)
-	  },
-	
-	  close: function(){
-	    if ( this.props.open )
-	      this.notify('onToggle', false)
-	  },
-	
-	  toggle: function(e){
-	    this._focus(true)
-	
-	    this.props.open
-	      ? this.close()
-	      : this.open()
-	  },
-	
-	  suggest: function(data, value){
-	    var word = this._dataText(value)
-	      , matcher = filter.startsWith
-	      , suggestion = typeof value === 'string'
-	          ? _.find(data, finder, this)
-	          : value
-	
-	    if ( suggestion && (!this.state || !this.state.deleting))
-	      return this._dataText(suggestion)
-	
-	    return ''
-	
-	    function finder(item){
-	      return matcher(
-	          this._dataText(item).toLowerCase()
-	        , word.toLowerCase())
-	    }
-	  },
-	
-	  _data: function(){
-	    return this.state.processedData
-	  },
-	
-	  process: function(data, values, searchTerm){
-	    if( this.props.filter && searchTerm)
-	      data = this.filter(data, searchTerm)
-	
-	    return data
-	  }
-	})
-	
-	module.exports = controlledInput.createControlledClass(
-	      ComboBox, { open: 'onToggle', value: 'onChange' });
-	
-	module.exports.BaseComboBox = ComboBox
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React           = __webpack_require__(1)
-	  , Header          = __webpack_require__(64)
-	  , Month           = __webpack_require__(65)
-	  , Year            = __webpack_require__(66)
-	  , Decade          = __webpack_require__(67)
-	  , Century         = __webpack_require__(68)
-	  , cx              = __webpack_require__(13)
-	  , controlledInput = __webpack_require__(69)
-	  , SlideTransition = __webpack_require__(59)
-	  , dates           = __webpack_require__(70)
-	  , constants       = __webpack_require__(71)
-	  , _               = __webpack_require__(15); //values, omit, object
-	
-	var dir = constants.directions;
-	
-	var views        = constants.calendarViews
-	  , VIEW_OPTIONS = Object.keys(views).map( function(k)  {return views[k];} )
-	  , ALT_VIEW     = _.transform(constants.calendarViewHierarchy, function(o, val, key)  { 
-	                      o[val] = key 
-	                    }, {})
-	  , NEXT_VIEW    = constants.calendarViewHierarchy
-	  , VIEW_UNIT    = constants.calendarViewUnits
-	  , VIEW  = _.object([
-	      [views.MONTH,   Month],
-	      [views.YEAR,    Year],
-	      [views.DECADE,  Decade],
-	      [views.CENTURY, Century]
-	    ]);
-	
-	var MULTIPLIER = _.object([
-	      [views.YEAR,    1],
-	      [views.DECADE,  10],
-	      [views.CENTURY, 100]
-	    ]);
-	
-	
-	var Calendar = React.createClass({
-	
-	  displayName: 'Calendar',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(88),
-	    __webpack_require__(89)
-	  ],
-	
-	
-	  propTypes: {
-	
-	    onChange:      React.PropTypes.func.isRequired,
-	    value:         React.PropTypes.instanceOf(Date),
-	
-	    min:           React.PropTypes.instanceOf(Date),
-	    max:           React.PropTypes.instanceOf(Date),
-	
-	    initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
-	    finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['readOnly'])
-	                    ]),
-	
-	    messages:      React.PropTypes.shape({
-	      moveBack:    React.PropTypes.string,
-	      moveForward: React.PropTypes.string
-	    }),
-	
-	    maintainFocus: React.PropTypes.bool,
-	
-	  },
-	
-	  getInitialState: function(){
-	    return {
-	      selectedIndex: 0,
-	      view:          this.props.initialView || 'month',
-	      currentDate:   this.inRangeValue(new Date(this.props.value))
-	    }
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      open:  false,
-	      value: new Date,
-	      min:   new Date(1900,0, 1),
-	      max:   new Date(2099,11, 31),
-	
-	      initialView: 'month',
-	      finalView: 'century',
-	
-	      maintainFocus: true
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var bottom  = VIEW_OPTIONS.indexOf(nextProps.initialView)
-	      , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
-	      , current = VIEW_OPTIONS.indexOf(this.state.view)
-	      , view    = this.state.view
-	      , val     = this.inRangeValue(new Date(nextProps.value));
-	
-	    if( current < bottom )
-	      this.setState({ view: view = nextProps.initialView })
-	    else if (current > top)
-	      this.setState({ view: view = nextProps.finalView })
-	
-	    //if the value changes reset views to the new one
-	    if ( !dates.eq(val, this.props.value, VIEW_UNIT[view]))
-	      this.setState({
-	        currentDate: val
-	      })
-	  },
-	
-	  render: function(){
-	    var $__0=
-	        
-	          _.omit(this.props, ['value', 'min', 'max']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , View     = VIEW[this.state.view]
-	      , unit     = this.state.view
-	      
-	      , disabled = this.props.disabled || this.props.readOnly
-	      , date     = this.state.currentDate
-	      , labelId  = this._id('_view_label')
-	      , key      = this.state.view + '_' + dates[this.state.view](date)
-	      , id       = this._id('_view');
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props , 
-	        {onKeyDown: this._keyDown, 
-	        className: cx(className, {
-	          'rw-calendar':       true,
-	          'rw-widget':         true,
-	          'rw-state-disabled': this.props.disabled,
-	          'rw-state-readonly': this.props.readOnly,
-	          'rw-rtl':            this.isRtl()
-	        })}), 
-	        React.createElement(Header, {
-	          label: this._label(), 
-	          labelId: labelId, 
-	          messages: this.props.messages, 
-	          upDisabled:   disabled || this.state.view === this.props.finalView, 
-	          prevDisabled: disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit), 
-	          nextDisabled: disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max, unit), 
-	          onViewChange: this._maybeHandle(this.navigate.bind(null, dir.UP, null)), 
-	          onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT, null)), 
-	          onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT, null))}), 
-	
-	        React.createElement(SlideTransition, {
-	          ref: "animation", 
-	          duration: this.props.duration, 
-	          direction: this.state.slideDirection, 
-	          onAnimate: finished.bind(this)}, 
-	
-	          React.createElement(View, {ref: "currentView", 
-	            key: key, 
-	            id: id, 
-	            'aria-labeledby': labelId, 
-	            selectedDate: this.props.value, 
-	            value: this.state.currentDate, 
-	            onChange: this._maybeHandle(this.change), 
-	            onKeyDown: this._maybeHandle(this._keyDown), 
-	            onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	            onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT)), 
-	            onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT)), 
-	            disabled: this.props.disabled, 
-	            readOnly: this.props.readOnly, 
-	            min: this.props.min, 
-	            max: this.props.max})
-	        )
-	      )
-	    )
-	
-	    function finished(){
-	      this._focus(true);
-	    }
-	  },
-	
-	  navigate: function(direction, date){
-	    var view     =  this.state.view
-	      , slideDir = (direction === dir.LEFT || direction === dir.UP)
-	          ? 'right'
-	          : 'left';
-	
-	    if ( !date )
-	      date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
-	        ? this.nextDate(direction)
-	        : this.state.currentDate
-	
-	    if (direction === dir.DOWN )
-	      view = ALT_VIEW[view] || view
-	
-	    if (direction === dir.UP )
-	      view = NEXT_VIEW[view] || view
-	
-	    if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
-	      this._focus(true, 'nav');
-	
-	      this.setState({
-	        currentDate:    date,
-	        slideDirection: slideDir,
-	        view: view
-	      })
-	    }
-	  },
-	
-	  _focus: function(val){
-	    if ( this.props.maintainFocus)
-	      val && this.refs.currentView.getDOMNode().focus()
-	  },
-	
-	  change: function(date){
-	    if ( this.props.onChange && this.state.view === this.props.initialView)
-	      return this.notify('onChange', date)
-	
-	    this.navigate(dir.DOWN, date)
-	  },
-	
-	  nextDate: function(direction){
-	    var method = direction === dir.LEFT ? 'subtract' : 'add'
-	      , view   = this.state.view
-	      , unit   = view === views.MONTH ? view : views.YEAR
-	      , multi  = MULTIPLIER[view] || 1;
-	
-	    return dates[method](this.state.currentDate, 1 * multi, unit)
-	  },
-	
-	  _keyDown: function(e){
-	    var ctrl = e.ctrlKey
-	      , key  = e.key;
-	
-	    if ( ctrl ) {
-	      if ( key === 'ArrowDown' ) {
-	        e.preventDefault()
-	        this.navigate(dir.DOWN)
-	      }
-	      if ( key === 'ArrowUp' ) {
-	        e.preventDefault()
-	        this.navigate(dir.UP)
-	      }
-	      if ( key === 'ArrowLeft' ) {
-	        e.preventDefault()
-	        this.navigate(dir.LEFT)
-	      }
-	      if ( key === 'ArrowRight' ) {
-	        e.preventDefault()
-	        this.navigate(dir.RIGHT)
-	      }
-	    } 
-	    else {
-	      this.refs.currentView._keyDown
-	        && this.refs.currentView._keyDown(e)
-	    }
-	
-	    this.notify('onKeyDown', [e])
-	  },
-	
-	  _label: function() {
-	    var view = this.state.view
-	      , dt   = this.state.currentDate;
-	
-	    if ( view === 'month')
-	      return dates.format(dt, dates.formats.MONTH_YEAR)
-	
-	    else if ( view === 'year')
-	      return dates.format(dt, dates.formats.YEAR)
-	
-	    else if ( view === 'decade')
-	      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR)
-	        + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR)
-	
-	    else if ( view === 'century')
-	      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR)
-	        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
-	  },
-	
-	  inRangeValue: function(value){
-	    if( value == null)
-	      return value
-	
-	    return dates.max(
-	        dates.min(value, this.props.max)
-	      , this.props.min)
-	  },
-	
-	  isValidView: function(next) {
-	    var bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
-	      , top     = VIEW_OPTIONS.indexOf(this.props.finalView)
-	      , current = VIEW_OPTIONS.indexOf(next);
-	
-	    return current >= bottom && current <= top
-	  }
-	});
-	
-	module.exports = controlledInput.createControlledClass(
-	    Calendar, { value: 'onChange' });
-	
-	module.exports.BaseCalendar = Calendar
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , cx     = __webpack_require__(13)
-	  , _      = __webpack_require__(15) //pick, omit, has
-	  , dates  = __webpack_require__(70)
-	  , views  = __webpack_require__(71).calendarViews
-	  , popups = __webpack_require__(71).datePopups
-	
-	  , Popup     = __webpack_require__(74)
-	  , Calendar  = __webpack_require__(53).BaseCalendar
-	  , Time      = __webpack_require__(84)
-	  , DateInput = __webpack_require__(85)
-	  , Btn       = __webpack_require__(75)
-	  , CustomPropTypes = __webpack_require__(77)
-	  , controlledInput = __webpack_require__(69);
-	
-	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
-	
-	var propTypes = {
-	
-	    //-- controlled props -----------
-	    value:          React.PropTypes.instanceOf(Date),
-	    onChange:       React.PropTypes.func,
-	    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
-	    onToggle:       React.PropTypes.func,
-	    //------------------------------------
-	
-	    onSelect:       React.PropTypes.func,
-	
-	    min:            React.PropTypes.instanceOf(Date),
-	    max:            React.PropTypes.instanceOf(Date),
-	
-	    culture:        React.PropTypes.string,
-	    format:         React.PropTypes.string,
-	    editFormat:     React.PropTypes.string,
-	
-	    calendar:       React.PropTypes.bool,
-	    time:           React.PropTypes.bool,
-	
-	    timeComponent:  CustomPropTypes.elementType,
-	    duration:       React.PropTypes.number, //popup
-	
-	    placeholder:    React.PropTypes.string,
-	    name:           React.PropTypes.string,
-	
-	    initialView:    React.PropTypes.oneOf(viewEnum),
-	    finalView:      React.PropTypes.oneOf(viewEnum),
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['readOnly'])
-	                    ]),
-	
-	    parse:          React.PropTypes.oneOfType([
-	                      React.PropTypes.arrayOf(React.PropTypes.string),
-	                      React.PropTypes.string,
-	                      React.PropTypes.func
-	                    ]),
-	  }
-	
-	var DateTimePicker = React.createClass({
-	  displayName: 'DateTimePicker',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(88),
-	    __webpack_require__(89)
-	  ],
-	
-	  propTypes: propTypes,
-	
-	  getInitialState: function(){
-	    return {
-	      focused: false,
-	    }
-	  },
-	
-	  getDefaultProps: function(){
-	    var cal  = _.has(this.props, popups.CALENDAR) ? this.props.calendar : true
-	      , time = _.has(this.props, popups.TIME) ? this.props.time : true
-	      , both = cal && time
-	      , neither = !cal && !time;
-	
-	    return {
-	      value:            null,
-	      format:           both || neither
-	        ? 'M/d/yyyy h:mm tt'
-	        : cal ? 'M/d/yyyy' : 'h:mm tt',
-	      min:              new Date(1900,  0,  1),
-	      max:              new Date(2099, 11, 31),
-	      calendar:         true,
-	      time:             true,
-	      open:             false,
-	      messages: {
-	        calendarButton: 'Select Date',
-	        timeButton:     'Select Time',
-	        next:           'Next Date',
-	      }
-	    }
-	  },
-	
-	  render: function(){
-	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
-	      , timeListID = this._id('_time_listbox')
-	      , timeOptID  = this._id('_time_option')
-	      , dateListID = this._id('_cal')
-	      , owns;
-	
-	    if (dateListID && this.props.calendar ) owns = dateListID
-	    if (timeListID && this.props.time )     owns += ' ' + timeListID
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props, 
-	        {ref: "element", 
-	        tabIndex: "-1", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        className: cx(className, {
-	          'rw-datetimepicker':     true,
-	          'rw-widget':          true,
-	          'rw-open':            this.props.open,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-state-disabled':  this.isDisabled(),
-	          'rw-state-readonly':  this.isReadOnly(),
-	          'rw-has-both':        this.props.calendar && this.props.time,
-	          'rw-has-neither':     !this.props.calendar && !this.props.time,
-	          'rw-rtl':             this.isRtl()
-	        })}), 
-	        React.createElement(DateInput, {ref: "valueInput", 
-	          'aria-activedescendant':  this.props.open
-	            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
-	            : undefined, 
-	          'aria-expanded':  !!this.props.open, 
-	          'aria-busy': !!this.props.busy, 
-	          'aria-owns': owns, 
-	          'aria-haspopup': true, 
-	          placeholder: this.props.placeholder, 
-	          name: this.props.name, 
-	          disabled: this.isDisabled(), 
-	          readOnly: this.isReadOnly(), 
-	          role: "combobox", 
-	          value: this.props.value, 
-	          focused: this.state.focused, 
-	          format: this.props.format, 
-	          editFormat: this.props.editFormat, 
-	          editing: this.state.focused, 
-	          parse: this._parse, 
-	          onChange: this._change}), 
-	         (this.props.calendar || this.props.time) &&
-	        React.createElement("span", {className: "rw-select"}, 
-	           this.props.calendar &&
-	            React.createElement(Btn, {tabIndex: "-1", 
-	              className: "rw-btn-calendar", 
-	              disabled: this.isDisabled() || this.isReadOnly(), 
-	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
-	              onClick: this._maybeHandle(this._click.bind(null, popups.CALENDAR))}, 
-	              React.createElement("i", {className: "rw-i rw-i-calendar"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.calendarButton))
-	            ), 
-	          
-	           this.props.time &&
-	            React.createElement(Btn, {tabIndex: "-1", 
-	              className: "rw-btn-time", 
-	              disabled: this.isDisabled() || this.isReadOnly(), 
-	              'aria-disabled': this.isDisabled() || this.isReadOnly(), 
-	              onClick: this._maybeHandle(this._click.bind(null, popups.TIME))}, 
-	              React.createElement("i", {className: "rw-i rw-i-clock-o"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.timeButton))
-	            )
-	          
-	        ), 
-	        
-	        React.createElement(Popup, {
-	          open:  this.props.open === popups.TIME, 
-	          onRequestClose: this.close, 
-	          duration: this.props.duration}, 
-	            React.createElement("div", null, 
-	              React.createElement(Time, {ref: "timePopup", 
-	                id: timeListID, 
-	                optID: timeOptID, 
-	                'aria-hidden':  !this.props.open, 
-	                style: { maxHeight: 200, height: 'auto'}, 
-	                value: this.props.value, 
-	                min: this.props.min, 
-	                max: this.props.max, 
-	                preserveDate: !!this.props.calendar, 
-	                itemComponent: this.props.timeComponent, 
-	                onSelect: this._maybeHandle(this._selectTime)})
-	            )
-	        ), 
-	        React.createElement(Popup, {
-	          className: "rw-calendar-popup", 
-	          open:  this.props.open === popups.CALENDAR, 
-	          duration: this.props.duration, 
-	          onRequestClose: this.close}, 
-	
-	          React.createElement(Calendar, React.__spread({},  calProps , 
-	            {ref: "calPopup", 
-	            id: dateListID, 
-	            value: this.props.value || new Date, 
-	            maintainFocus: false, 
-	            'aria-hidden':  !this.props.open, 
-	            onChange: this._maybeHandle(this._selectDate)}))
-	        )
-	      )
-	    )
-	  },
-	
-	  _change: function(date, str, constrain){
-	    var change = this.props.onChange
-	
-	    if(constrain)
-	      date = this.inRangeValue(date)
-	
-	    if( change ) {
-	      if( date == null || this.props.value == null){
-	        if( date != this.props.value )
-	          change(date, str)
-	      }
-	      else if (!dates.eq(date, this.props.value))
-	        change(date, str)
-	    }
-	  },
-	
-	  _keyDown: function(e){
-	
-	    if( e.key === 'Tab')
-	      return
-	
-	    if ( e.key === 'Escape' && this.props.open )
-	      this.close()
-	
-	    else if ( e.altKey ) {
-	      e.preventDefault()
-	
-	      if ( e.key === 'ArrowDown')
-	        this.open(this.props.open === popups.CALENDAR
-	              ? popups.TIME
-	              : popups.CALENDAR)
-	      else if ( e.key === 'ArrowUp')
-	        this.close()
-	
-	    } else if (this.props.open ) {
-	      if( this.props.open === popups.CALENDAR )
-	        this.refs.calPopup._keyDown(e)
-	      if( this.props.open === popups.TIME )
-	        this.refs.timePopup._keyDown(e)
-	    }
-	
-	    this.notify('onKeyDown', [e])
-	  },
-	
-	  //timeout prevents transitions from breaking focus
-	  _focus: function(focused, e){
-	    var input =  this.refs.valueInput;
-	
-	    clearTimeout(this.timer)
-	
-	    this.timer = setTimeout(function() {
-	
-	      if(focused) input.getDOMNode().focus()
-	      else        this.close()
-	
-	      if( focused !== this.state.focused){
-	        this.notify(focused ? 'onFocus' : 'onBlur', e)
-	        this.setState({ focused: focused })
-	      }
-	    }.bind(this))
-	  },
-	
-	  _selectDate: function(date){
-	    var dateTime = dates.merge(date, this.props.value)
-	      , dateStr  = formatDate(date, this.props.format) 
-	
-	    this.close()
-	    this.notify('onSelect', [dateTime, dateStr])
-	    this._change(dateTime, dateStr, true)
-	  },
-	
-	  _selectTime: function(datum){
-	    var dateTime = dates.merge(this.props.value, datum.date)
-	      , dateStr  = formatDate(datum.date, this.props.format) 
-	
-	    this.close()
-	    this.notify('onSelect', [dateTime, dateStr])
-	    this._change(dateTime, dateStr, true)
-	  },
-	
-	  _click: function(view, e){
-	    this._focus(true)
-	    this.toggle(view, e)
-	  },
-	
-	  _parse: function(string){
-	    var parser = typeof this.props.parse === 'function'
-	          ? this.props.parse
-	          : formatsParser.bind(null, _.splat(this.props.format).concat(this.props.parse));
-	
-	    return parser(string)
-	  },
-	
-	  toggle: function(view, e) {
-	
-	    this.props.open
-	      ? this.state.view !== view
-	          ? this.open(view)
-	          : this.close(view)
-	      : this.open(view)
-	  },
-	
-	  open: function(view){
-	    if ( this.props.open !== view && this.props[view] === true )
-	      this.notify('onToggle', view)
-	  },
-	
-	  close: function(){
-	    if ( this.props.open )
-	      this.notify('onToggle', false)
-	  },
-	
-	  inRangeValue: function(value){
-	    if( value == null) return value
-	
-	    return dates.max(
-	        dates.min(value, this.props.max)
-	      , this.props.min)
-	  },
-	
-	});
-	
-	
-	module.exports = controlledInput.createControlledClass(
-	    DateTimePicker
-	  , { open: 'onToggle', value: 'onChange' });
-	
-	function formatDate(date, format){
-	  var val = ''
-	
-	  if ( (date instanceof Date) && !isNaN(date.getTime()) )
-	    val = dates.format(date, format)
-	
-	  return val;
-	}
-	
-	module.exports.BaseDateTimePicker = DateTimePicker
-	
-	function formatsParser(formats, str){
-	  var date;
-	
-	  formats = [].concat(formats)
-	
-	  for(var i=0; i < formats.length; i++ ){
-	    date = dates.parse(str, formats[i])
-	    if( date) return date
-	  }
-	  return null
-	}
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(13)
-	  , _     = __webpack_require__(15) //omit
-	  , controlledInput  = __webpack_require__(69)
-	  , directions = __webpack_require__(71).directions
-	  , Input = __webpack_require__(81);
-	
-	var Btn = __webpack_require__(75)
-	  , propTypes = {
-	
-	      // -- controlled props -----------
-	      value:          React.PropTypes.number,
-	      onChange:       React.PropTypes.func,
-	      //------------------------------------
-	
-	      min:            React.PropTypes.number,
-	      max:            React.PropTypes.number,
-	      step:           React.PropTypes.number,
-	
-	      culture:        React.PropTypes.string,
-	      format:         React.PropTypes.string,
-	
-	      name:           React.PropTypes.string,
-	
-	      parse:          React.PropTypes.oneOfType([
-	                        React.PropTypes.arrayOf(React.PropTypes.string),
-	                        React.PropTypes.string,
-	                        React.PropTypes.func
-	                      ]),
-	
-	      disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	      readOnly:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['readOnly'])
-	                      ]),
-	
-	      messages:       React.PropTypes.shape({
-	        increment:    React.PropTypes.string,
-	        decrement:    React.PropTypes.string
-	      })
-	    };
-	
-	var NumberPicker = React.createClass({
-	
-	  displayName: 'NumberPicker',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(88),
-	    __webpack_require__(89),
-	  ],
-	
-	  propTypes: propTypes,
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: null,
-	      open: false,
-	
-	      format: 'd',
-	
-	      min: -Infinity,
-	      max:  Infinity,
-	      step: 1,
-	
-	      messages: {
-	        increment: 'increment value',
-	        decrement:  'decrement value'
-	      }
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    return {
-	      focused: false,
-	      active: false,
-	    }
-	  },
-	
-	
-	  render: function(){
-	    var $__0=
-	        
-	       
-	       
-	       
-	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,onKeyDown=$__0.onKeyDown,onKeyPress=$__0.onKeyPress,onKeyUp=$__0.onKeyUp,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,onKeyDown:1,onKeyPress:1,onKeyUp:1})
-	      , val = this.inRangeValue(this.props.value)
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props , 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        tabIndex: "-1", 
-	        className: cx(className, {
-	          'rw-numberpicker':   true,
-	          'rw-widget':          true,
-	          'rw-state-focus':     this.state.focused,
-	          'rw-state-disabled':  this.props.disabled,
-	          'rw-state-readonly':  this.props.readOnly,
-	          'rw-rtl':             this.isRtl()
-	        })}), 
-	
-	        React.createElement("span", {className: "rw-select"}, 
-	          React.createElement(Btn, {
-	            tabIndex: "-1", 
-	            className: cx({ 'rw-state-active': this.state.active === directions.UP}), 
-	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.UP)), 
-	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.UP)), 
-	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
-	            disabled: val === this.props.max || this.props.disabled, 
-	            'aria-disabled': val === this.props.max || this.props.disabled}, 
-	
-	            React.createElement("i", {className: "rw-i rw-i-caret-up"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.increment))
-	          ), 
-	          React.createElement(Btn, {
-	            tabIndex: "-1", 
-	            className: cx({ 'rw-state-active': this.state.active === directions.DOWN}), 
-	            onMouseDown: this._maybeHandle(this._mouseDown.bind(null, directions.DOWN)), 
-	            onMouseUp: this._maybeHandle(this._mouseUp.bind(null, directions.DOWN)), 
-	            onClick: this._maybeHandle(this._focus.bind(null, true)), 
-	            disabled: val === this.props.min || this.props.disabled, 
-	            'aria-disabled': val === this.props.min || this.props.disabled}, 
-	            React.createElement("i", {className: "rw-i rw-i-caret-down"}, React.createElement("span", {className: "rw-sr"},  this.props.messages.decrement))
-	          )
-	        ), 
-	        React.createElement(Input, {
-	          ref: "input", 
-	          value: val, 
-	          editing: this.state.focused, 
-	          format: this.props.format, 
-	          name: this.props.name, 
-	          role: "spinbutton", 
-	          min: this.props.min, 
-	          'aria-valuenow': val, 
-	          'aria-valuemin': isFinite(this.props.min) ? this.props.min : null, 
-	          'aria-valuemax': isFinite(this.props.max) ? this.props.max : null, 
-	          'aria-disabled':  this.props.disabled, 
-	          'aria-readonly':  this.props.readonly, 
-	          disabled: this.props.disabled, 
-	          readOnly: this.props.readOnly, 
-	          onChange: this.change, 
-	          onKeyDown: onKeyDown, 
-	          onKeyPress: onKeyPress, 
-	          onKeyUp: onKeyUp})
-	      )
-	    )
-	  },
-	
-	  //allow for styling, focus stealing keeping me from the normal what have you
-	  _mouseDown: function(dir) {
-	    var val = dir === directions.UP
-	        ? (this.props.value || 0) + this.props.step
-	        : (this.props.value || 0) - this.props.step
-	
-	    val = this.inRangeValue(val)
-	
-	    this.setState({ active: dir })
-	    this.change(val);
-	
-	    if( !((dir === directions.UP && val === this.props.max)
-	      || (dir === directions.DOWN && val === this.props.min)))
-	    {
-	      if(!this.interval)
-	        this.interval = setInterval(this._mouseDown, 500, dir)
-	    }
-	    else
-	      this._mouseUp()
-	  },
-	
-	  _mouseUp: function(direction, e ){
-	    this.setState({ active: false })
-	    clearInterval(this.interval)
-	    this.interval = null;
-	  },
-	
-	  _focus: function(focused, e){
-	    clearTimeout(this.timer)
-	
-	    this.timer = setTimeout(function() {
-	      var el = this.refs.input.getDOMNode()
-	
-	      focused && el.focus()
-	
-	      if( focused !== this.state.focused){
-	        this.notify(focused ? 'onFocus' : 'onBlur', e)
-	        this.setState({ focused: focused })
-	      }
-	
-	    }.bind(this), 0)
-	  },
-	
-	  _keyDown: function(e){
-	    var key = e.key;
-	
-	    if ( key === 'End'  && isFinite(this.props.max))
-	      this.change(this.props.max)
-	
-	    else if ( key === 'Home' && isFinite(this.props.min))
-	      this.change(this.props.min)
-	
-	    else if ( key === 'ArrowDown' ){
-	      e.preventDefault()
-	      this.decrement()
-	    }
-	    else if ( key === 'ArrowUp' ){
-	      e.preventDefault()
-	      this.increment()
-	    }
-	  },
-	
-	  increment: function() {
-	    this.change(this.inRangeValue((this.props.value || 0) + this.props.step))
-	  },
-	
-	  decrement: function(){
-	    this.change(this.inRangeValue((this.props.value || 0) - this.props.step))
-	  },
-	
-	  change: function(val){
-	    val = this.inRangeValue(val === '' ? null : val)
-	
-	    if ( this.props.value !== val )
-	      this.notify('onChange', val)
-	  },
-	
-	  inRangeValue: function(value){
-	    var max = this.props.max == null ? Infinity : this.props.max
-	      , min = this.props.min == null ? -Infinity : this.props.min;
-	
-	    if( !isFinite(min) && value == null )
-	      return value
-	
-	    return Math.max(Math.min(value, max), min)
-	  }
-	
-	})
-	
-	module.exports = controlledInput.createControlledClass(
-	    NumberPicker, { value: 'onChange' });
-	
-	module.exports.BaseNumberPicker = NumberPicker
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React           = __webpack_require__(1)
-	  , cx              = __webpack_require__(13)
-	  , _               = __webpack_require__(15)
-	  , SelectInput     = __webpack_require__(82)
-	  , TagList         = __webpack_require__(83)
-	  , Popup           = __webpack_require__(74)
-	  , PlainList       = __webpack_require__(78)
-	  , GroupableList   = __webpack_require__(79)
-	  , validateList    = __webpack_require__(80)
-	  , controlledInput = __webpack_require__(69)
-	  , CustomPropTypes = __webpack_require__(77);
-	
-	var propTypes = {
-	      data:            React.PropTypes.array,
-	      //-- controlled props --
-	      value:           React.PropTypes.array,
-	      onChange:        React.PropTypes.func,
-	
-	      searchTerm:      React.PropTypes.string,
-	      onSearch:        React.PropTypes.func,
-	
-	      open:            React.PropTypes.bool,
-	      onToggle:        React.PropTypes.func,
-	      //-------------------------------------------
-	
-	      valueField:      React.PropTypes.string,
-	      textField:       React.PropTypes.string,
-	
-	      tagComponent:    CustomPropTypes.elementType,
-	      itemComponent:   CustomPropTypes.elementType,
-	      list:            CustomPropTypes.elementType,
-	
-	      groupComponent:  CustomPropTypes.elementType,
-	      groupBy:         React.PropTypes.oneOfType([
-	                         React.PropTypes.func,
-	                         React.PropTypes.string
-	                       ]),
-	
-	      onSelect:        React.PropTypes.func,
-	      onCreate:        React.PropTypes.func,
-	
-	      duration:        React.PropTypes.number, //popup
-	
-	      placeholder:     React.PropTypes.string,
-	
-	      disabled:        React.PropTypes.oneOfType([
-	                         React.PropTypes.bool,
-	                         React.PropTypes.array,
-	                         React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	      readOnly:        React.PropTypes.oneOfType([
-	                         React.PropTypes.bool,
-	                         React.PropTypes.array,
-	                         React.PropTypes.oneOf(['readonly'])
-	                       ]),
-	
-	      messages:        React.PropTypes.shape({
-	        open:          React.PropTypes.string,
-	        emptyList:     React.PropTypes.string,
-	        emptyFilter:   React.PropTypes.string
-	      })
-	    };
-	
-	var Select = React.createClass({
-	
-	  displayName: 'Select',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(91),
-	    __webpack_require__(92),
-	    __webpack_require__(89)
-	  ],
-	
-	  propTypes: propTypes,
-	
-	  getDefaultProps: function(){
-	    return {
-	      data: [],
-	      filter: 'startsWith',
-	      value: [],
-	      open: false,
-	      searchTerm: '',
-	      messages: {
-	        createNew:   "(create new tag)",
-	        emptyList:   "There are no items in this list",
-	        emptyFilter: "The filter returned no results"
-	      }
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    var values = _.splat(this.props.value)
-	      , data   = this.process(this.props.data, values, this.props.searchTerm)
-	
-	    return {
-	      focusedItem:   data[0],
-	      processedData: data,
-	      dataItems:     values.map( function(item)  {return this._dataItem(this.props.data, item);}.bind(this))
-	    }
-	  },
-	
-	  componentDidMount: function() {
-	    validateList(this.refs.list)
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var values = _.splat(nextProps.value)
-	      , current = this.state.focusedItem
-	      , items  = this.process(nextProps.data, values, nextProps.searchTerm)
-	
-	    this.setState({
-	      processedData: items,
-	      focusedItem: items.indexOf(current) === -1 ? items[0]: current,
-	      dataItems: values.map( function(item)  {return this._dataItem(nextProps.data, item);}.bind(this))
-	    })
-	  },
-	
-	  render: function(){
-	    var $__0= 
-	        
-	       
-	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,children:1})
-	      , listID = this._id('_listbox')
-	      , optID  = this._id('_option')
-	      , items  = this._data()
-	      , values = this.state.dataItems
-	      , List   = this.props.list || (this.props.groupBy && GroupableList) || PlainList;
-	
-	    return (
-	      React.createElement("div", React.__spread({},  props, 
-	        {ref: "element", 
-	        onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
-	        onBlur: this._focus.bind(null, false), 
-	        tabIndex: "-1", 
-	        className: cx(className, {
-	          'rw-multiselect':    true,
-	          'rw-widget':         true,
-	          'rw-state-focus':    this.state.focused,
-	          'rw-state-disabled': this.props.disabled === true,
-	          'rw-state-readonly': this.props.readOnly === true,
-	          'rw-open':           this.props.open,
-	          'rw-rtl':            this.isRtl()
-	        })}), 
-	        React.createElement("div", {className: "rw-multiselect-wrapper", onClick: this._maybeHandle(this._click)}, 
-	           this.props.busy &&
-	            React.createElement("i", {className: "rw-i rw-loading"}), 
-	          
-	           !!values.length &&
-	            React.createElement(TagList, {
-	              ref: "tagList", 
-	              value: values, 
-	              textField: this.props.textField, 
-	              valueField: this.props.valueField, 
-	              valueComponent: this.props.tagComponent, 
-	              disabled: this.props.disabled, 
-	              readOnly: this.props.readOnly, 
-	              onDelete: this._delete}), 
-	          
-	          React.createElement(SelectInput, {
-	            ref: "input", 
-	            'aria-activedescendent':  this.props.open ? optID : undefined, 
-	            'aria-expanded':  this.props.open, 
-	            'aria-busy': !!this.props.busy, 
-	            'aria-owns': listID, 
-	            'aria-haspopup': true, 
-	            value: this.props.searchTerm, 
-	            disabled: this.props.disabled === true, 
-	            readOnly: this.props.readOnly === true, 
-	            placeholder: this._placeholder(), 
-	            onKeyDown: this._searchKeyDown, 
-	            onKeyUp: this._searchgKeyUp, 
-	            onChange: this._typing})
-	        ), 
-	        React.createElement(Popup, {open: this.props.open, onRequestClose: this.close, duration: this.props.duration}, 
-	          React.createElement("div", null, 
-	            React.createElement(List, React.__spread({ref: "list"}, 
-	              _.pick(this.props, Object.keys(List.type.propTypes)), 
-	              {id: listID, 
-	              optID: optID, 
-	              'aria-autocomplete': "list", 
-	              'aria-hidden': !this.props.open, 
-	              data: items, 
-	              focused: this.state.focusedItem, 
-	              onSelect: this._maybeHandle(this._onSelect), 
-	              messages: {
-	                emptyList: this.props.data.length
-	                  ? this.props.messages.emptyFilter
-	                  : this.props.messages.emptyList
-	              }})), 
-	               this._shouldShowCreate() &&
-	                React.createElement("ul", {className: "rw-list rw-multiselect-create-tag"}, 
-	                  React.createElement("li", {onClick: this._onCreate.bind(null, this.props.searchTerm), 
-	                      className: cx({
-	                        'rw-list-option': true,
-	                        'rw-state-focus': !this._data().length || this.state.focusedItem === null 
-	                      })}, 
-	                    React.createElement("strong", null, ("\"" + this.props.searchTerm + "\"")), " ",  this.props.messages.createNew
-	                  )
-	                )
-	              
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _data:function(){
-	    return this.state.processedData
-	  },
-	
-	  _delete:function(value){
-	    this._focus(true)
-	    this.change(
-	      this.state.dataItems.filter( function(d)  {return d !== value;}))
-	  },
-	
-	  _click:function(e){
-	    this._focus(true)
-	    !this.props.open && this.open()
-	  },
-	
-	  _focus:function(focused, e){
-	    if (this.props.disabled === true )
-	      return
-	
-	    clearTimeout(this.timer)
-	
-	    this.timer = setTimeout(function()  {
-	      if(focused) this.refs.input.focus()
-	      else        {
-	        this.close()
-	        this.refs.tagList && this.refs.tagList.clear()
-	      }
-	      
-	      if( focused !== this.state.focused){
-	        this.notify(focused ? 'onFocus' : 'onBlur', e)
-	        this.setState({ focused: focused })
-	      }
-	    }.bind(this))
-	  },
-	
-	  _searchKeyDown:function(e){ 
-	    if (e.key === 'Backspace' && e.target.value && !this._deletingText)
-	      this._deletingText = true
-	  },
-	
-	  _searchgKeyUp:function(e){ 
-	    if (e.key === 'Backspace' && this._deletingText) 
-	      this._deletingText = false
-	  },
-	
-	  _typing: function(e){
-	    this.notify('onSearch', [ e.target.value ])
-	    this.open()
-	  },
-	
-	  _onSelect: function(data){
-	
-	    if( data === undefined && this.props.onCreate )
-	      return this._onCreate(this.props.searchTerm)
-	
-	    this.notify('onSelect', data)
-	    this.change(this.state.dataItems.concat(data))
-	    this.close()
-	    this._focus(true)
-	  },
-	
-	  _onCreate: function(tag){
-	    if (tag.trim() === '' ) 
-	      return
-	
-	    this.notify('onCreate', tag)
-	    this.close()
-	    this._focus(true)
-	  },
-	
-	  _keyDown: function(e){
-	    var key = e.key
-	      , alt = e.altKey
-	      , ctrl = e.ctrlKey
-	      , noSearch = !this.props.searchTerm && !this._deletingText
-	      , isOpen  = this.props.open
-	      , focusedItem = this.state.focusedItem
-	      , tagList = this.refs.tagList
-	      , list    = this.refs.list;
-	
-	    if ( key === 'ArrowDown') {
-	      var next = list.next('focused')
-	        , creating = (this._shouldShowCreate() && focusedItem === next) || focusedItem === null;
-	        
-	      next = creating ? null : list.next(focusedItem)
-	
-	      e.preventDefault()
-	      if ( isOpen ) this.setState({ focusedItem: next })
-	      else          this.open()
-	    }
-	    else if ( key === 'ArrowUp') {
-	      var prev = focusedItem === null 
-	        ? list.last() 
-	        : list.prev(focusedItem)
-	
-	      e.preventDefault()
-	
-	      if ( alt)          this.close()
-	      else if ( isOpen ) this.setState({ focusedItem: prev })
-	    }
-	    else if ( key === 'End'){
-	      if ( isOpen ) this.setState({ focusedItem: list.last() })
-	      else          tagList && tagList.last()
-	    }
-	    else if (  key === 'Home'){
-	      if ( isOpen ) this.setState({ focusedItem: list.first() })
-	      else          tagList && tagList.first()
-	    }
-	    else if ( isOpen && key === 'Enter' )
-	      ctrl && this.props.onCreate
-	        ? this._onCreate(this.props.searchTerm)
-	        : this._onSelect(this.state.focusedItem)
-	
-	    else if ( key === 'Escape')
-	      isOpen ? this.close() : this.refs.tagList.clear()
-	
-	    else if ( noSearch && key === 'ArrowLeft')
-	     tagList && tagList.prev()
-	
-	    else if ( noSearch && key === 'ArrowRight')
-	      tagList && tagList.next()
-	
-	    else if ( noSearch && key === 'Delete')
-	      tagList && tagList.removeCurrent()
-	
-	    else if ( noSearch && key === 'Backspace')
-	      tagList && tagList.removeNext()
-	
-	    this.notify('onKeyDown', [e])
-	  },
-	
-	  change: function(data){
-	    this.notify('onChange', [data])
-	  },
-	
-	  open: function(){
-	    if (!(this.props.disabled === true || this.props.readOnly === true))
-	      this.notify('onToggle', true)
-	  },
-	
-	  close: function(){
-	    this.notify('onToggle', false)
-	  },
-	
-	  toggle: function(e){
-	    this.props.open
-	      ? this.close()
-	      : this.open()
-	  },
-	
-	  process: function(data, values, searchTerm){
-	    var items = data.filter( function(i)  {return !values.some( this._valueMatcher.bind(null, i), this);}.bind(this), this)
-	
-	    if( searchTerm)
-	      items = this.filter(items, searchTerm)
-	
-	    return items
-	  },
-	
-	  _shouldShowCreate:function(){
-	    var text = this.props.searchTerm;
-	
-	    if ( !(this.props.onCreate && text) ) 
-	      return false
-	
-	    // if there is an exact match on textFields: "john" => { name: "john" }, don't show
-	    return !this._data().some( function(v)  {return this._dataText(v) === text;}.bind(this)) 
-	        && !this.state.dataItems.some( function(v)  {return this._dataText(v) === text;}.bind(this)) 
-	  },
-	
-	  _placeholder: function(){
-	    return (this.props.value || []).length
-	      ? ''
-	      : (this.props.placeholder || '')
-	  }
-	
-	})
-	
-	
-	module.exports = controlledInput.createControlledClass(Select
-	    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
-	    , { onChange: defaultChange, onCreate: defaultChange });
-	
-	
-	function defaultChange(){
-	  if ( this.props.searchTerm === undefined )
-	    this.setState({ searchTerm: '' })
-	}
-	
-	module.exports.BaseMultiselect = Select
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _  = __webpack_require__(15)
-	  , cx = __webpack_require__(13)
-	  , controlledInput  = __webpack_require__(69)
-	  , CustomPropTypes  = __webpack_require__(77)
-	  , PlainList        = __webpack_require__(78)
-	  , GroupableList = __webpack_require__(79)
-	  , validateList    = __webpack_require__(80);
-	
-	var propTypes = {
-	
-	    data:           React.PropTypes.array,
-	    value:          React.PropTypes.oneOfType([
-	                      React.PropTypes.any,
-	                      React.PropTypes.array
-	                    ]),
-	    onChange:       React.PropTypes.func,
-	    onMove:         React.PropTypes.func,
-	
-	    multiple:       React.PropTypes.bool,
-	
-	    itemComponent:  CustomPropTypes.elementType,
-	    list:           CustomPropTypes.elementType,
-	
-	    valueField:     React.PropTypes.string,
-	    textField:      React.PropTypes.string,
-	
-	    busy:           React.PropTypes.bool,
-	
-	    delay:          React.PropTypes.number, 
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                      React.PropTypes.array,
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['disabled'])
-	                    ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.array,
-	                      React.PropTypes.oneOf(['readonly'])
-	                    ]),
-	
-	    messages:       React.PropTypes.shape({
-	      emptyList:    React.PropTypes.string
-	    }),
-	  }
-	
-	
-	var SelectList = React.createClass({displayName: 'SelectList',
-	
-	  propTypes: propTypes,
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(90),
-	    __webpack_require__(92),
-	    __webpack_require__(89)
-	  ],
-	
-	  getDefaultProps:function(){
-	    return {
-	      delay: 250,
-	      value: [],
-	      data:  [],
-	      messages: {
-	        emptyList: 'There are no items in this list'
-	      }
-	    }
-	  },
-	
-	  getDefaultState:function(props){
-	    var isRadio = !props.multiple
-	      , values  = _.splat(props.value)
-	      , first   = isRadio && this._dataItem(props.data, values[0]) 
-	
-	    first = isRadio && first 
-	      ? first
-	      : ((this.state || {}).focusedItem || null)
-	
-	    return {
-	      focusedItem: first,
-	      dataItems:   !isRadio && values.map(function(item)  {return this._dataItem(props.data, item);}.bind(this))
-	    }
-	  },
-	
-	  getInitialState:function(){
-	    var state = this.getDefaultState(this.props)
-	    
-	    state.ListItem = getListItem(this)
-	
-	    return state
-	  },
-	
-	  componentWillReceiveProps:function(nextProps) {
-	    return this.setState(this.getDefaultState(nextProps))
-	  },
-	
-	  componentDidMount: function() {
-	    validateList(this.refs.list)
-	  },
-	
-	  render:function() {
-	    var $__0=     _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , focus = this._maybeHandle(this._focus.bind(null, true), true)
-	      , optID = this._id('_selected_option')
-	      , blur  = this._focus.bind(null, false)
-	      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList
-	      , focusedItem = this.state.focused 
-	                    && !this.isDisabled() 
-	                    && !this.isReadOnly() 
-	                    && this.state.focusedItem;
-	
-	    return (
-	      
-	      React.createElement("div", React.__spread({},  props, 
-	        {onKeyDown: this._maybeHandle(this._keyDown), 
-	        onFocus: focus, 
-	        onBlur: blur, 
-	        tabIndex: "0", 
-	        role: "listbox", 
-	        'aria-busy': !!this.props.busy, 
-	        'aria-activedescendent':  this.state.focused ? optID : undefined, 
-	        'aria-disabled':  this.isDisabled(), 
-	        'aria-readonly':  this.isReadOnly(), 
-	        className: cx(className, { 
-	          'rw-widget':         true,
-	          'rw-selectlist':     true,
-	          'rw-state-focus':    this.state.focused,
-	          'rw-state-disabled': this.isDisabled(),
-	          'rw-state-readonly': this.isReadOnly(),
-	          'rw-rtl':            this.isRtl(),
-	          'rw-loading-mask':   this.props.busy
-	        })}), 
-	
-	        React.createElement(List, {ref: "list", 
-	          data: this._data(), 
-	          focused: focusedItem, 
-	          optID: optID, 
-	          itemComponent: this.state.ListItem})
-	      ) 
-	    );
-	  },
-	
-	
-	  _keyDown: function(e){
-	    var self = this
-	      , key = e.key
-	      , multiple = !!this.props.multiple
-	      , list = this.refs.list
-	      , focusedItem = this.state.focusedItem;
-	
-	    if ( key === 'End' ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setState({ focusedItem: move('prev', null) })
-	      else            change(move('prev', null)) 
-	    }
-	    else if ( key === 'Home' ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setState({ focusedItem: move('next', null) })
-	      else            change(move('next', null)) 
-	    }
-	    else if ( key === 'Enter' || key === ' ' ) {
-	      e.preventDefault()
-	      change(focusedItem)
-	    }
-	    else if ( key === 'ArrowDown' || key === 'ArrowRight' ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setState({ focusedItem: move('next', focusedItem) })
-	      else            change(move('next', focusedItem))
-	    }
-	    else if ( key === 'ArrowUp' || key === 'ArrowLeft'  ) {
-	      e.preventDefault()
-	
-	      if ( multiple ) this.setState({ focusedItem: move('prev', focusedItem) })
-	      else            change(move('prev', focusedItem))
-	    }
-	    else if (this.props.multiple && e.keyCode === 65 && e.ctrlKey ) {
-	      e.preventDefault()
-	      this._selectAll() 
-	    }
-	    else
-	      this.search(
-	          String.fromCharCode(e.keyCode)
-	        , this._locate)
-	
-	    function change(item, cked){
-	      if( item ){
-	        self._change(item, multiple 
-	            ? !self._contains(item, self._values()) // toggle value
-	            : true)
-	      }    
-	    }
-	
-	    function move(dir, item){
-	      var stop = dir === 'next' ? list.last() : list.first()
-	        , next = list[dir](item);
-	      
-	      while( next !== stop && self.isDisabledItem(next) ) 
-	        next = list[dir](next)
-	
-	      return self.isDisabledItem(next) ? item : next
-	    }
-	  },
-	
-	  _selectAll: function(){
-	    var values = this.state.dataItems
-	      , disabled = this.props.disabled || this.props.readOnly
-	      , data = this._data()
-	      , blacklist;
-	
-	    disabled = Array.isArray(disabled) ? disabled : [];
-	    //disabled values that are not selected
-	    blacklist = disabled.filter( function(v)  {return !this._contains(v, values);}.bind(this))
-	    data      = data.filter( function(v)  {return !this._contains(v, blacklist);}.bind(this))
-	
-	    if ( data.length === values.length) {
-	      data = disabled.filter( function(v)  {return this._contains(v, values);}.bind(this))
-	      data = data.map( function(v)  {return this._dataItem(this._data(), v);}.bind(this))
-	    }
-	
-	    this.notify('onChange', [data])
-	  },
-	
-	  _change: function(item, checked){
-	    var multiple  = !!this.props.multiple
-	      , blacklist = this.props.disabled || this.props.readOnly 
-	      , values    = this.state.dataItems;
-	
-	    blacklist = Array.isArray(blacklist) ? blacklist : [];
-	
-	    if(this._contains(item, blacklist)) return 
-	
-	    if ( !multiple )
-	      return this.notify('onChange', checked ? item : null)
-	
-	    values = checked 
-	      ? values.concat(item)
-	      : values.filter( function(v)  {return v !== item;})
-	
-	    this.notify('onChange', [values || []])
-	  },
-	
-	  _focus: function(focused, e){
-	    var self = this;
-	
-	    clearTimeout(self.timer)
-	
-	    self.timer = setTimeout(function(){
-	      if( focused) self.getDOMNode().focus()
-	      if( focused !== self.state.focused){
-	        self.setState({ focused: focused })
-	        //!focused && self.next(0)
-	      }
-	    }, 0)
-	  },
-	
-	  isDisabledItem: function(item) {
-	    return this.isDisabled() || this._contains(item, this.props.disabled)
-	  },
-	
-	  isReadOnlyItem: function(item) {
-	    return this.isReadOnly() || this._contains(item, this.props.readOnly)
-	  },
-	
-	  _locate: function(word){
-	    var idx = this.findNextWordIndex(word, this.state.focusedIndex);
-	
-	    if ( idx !== -1) 
-	      this.setFocusedIndex(idx)
-	  },
-	
-	  _data:function(){
-	    return this.props.data
-	  },
-	
-	  _contains: function(item, values){
-	    return Array.isArray(values) 
-	      ? values.some(this._valueMatcher.bind(null, item))
-	      : this._valueMatcher(item, values)
-	  },
-	
-	  _values: function(){
-	    return !!this.props.multiple 
-	      ? this.state.dataItems
-	      : this.props.value
-	  }
-	
-	});
-	
-	function getListItem(parent){
-	
-	  return React.createClass({
-	
-	    render: function() {
-	      var $__0=
-	             this.props,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{})
-	        , item      = this.props.item
-	        , checked   = parent._contains(item, parent._values())
-	        , change    = parent._change.bind(null, item)
-	        , disabled  = parent.isDisabledItem(item)
-	        , readonly  = parent.isReadOnlyItem(item)
-	        , Component = parent.props.itemComponent
-	        , name      = parent.props.name || parent._id('_name');
-	
-	      return (
-	        React.createElement("label", {
-	          className: cx({ 
-	            'rw-state-disabled': disabled,
-	            'rw-state-readonly': readonly
-	          })}, 
-	          React.createElement("input", React.__spread({},   props, 
-	            {tabIndex: "-1", 
-	            name: name, 
-	            type: parent.props.multiple ? 'checkbox' : 'radio', 
-	            
-	            onChange: onChange, 
-	            checked: checked, 
-	            disabled: disabled || readonly, 
-	            'aria-disabled': disabled || readonly})), 
-	             Component 
-	                ? React.createElement(Component, {item: item}) 
-	                : parent._dataText(item)
-	            
-	        )
-	      );
-	
-	      function onChange(e){
-	        if( !disabled && !readonly)
-	          change(e.target.checked)
-	      }
-	    }
-	  })
-	}
-	
-	module.exports = SelectList;
-	
-	module.exports = controlledInput.createControlledClass(
-	    SelectList, { value: 'onChange' });
-	
-	module.exports.BaseSelectList = SelectList
-
-/***/ },
-/* 58 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * A streamlined version of TransitionGroup built for managing at most two active children
-	 * also provides additional hooks for animation start/end
-	 * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
-	 * relevent code is licensed accordingly 
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains a modified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/addons/transitions/ReactTransitionEvents.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 */
 	
-	"use strict";
+	var canUseDOM = !!(
+	  typeof window !== 'undefined' &&
+	    window.document &&
+	    window.document.createElement
+	  );
 	
-	var React = __webpack_require__(1)
-	  , $     = __webpack_require__(72)
-	  , _     = __webpack_require__(15);
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'ReplaceTransitionGroup',
-	
-	  propTypes: {
-	    component:    React.PropTypes.oneOfType([
-	                    React.PropTypes.element,
-	                    React.PropTypes.string
-	                  ]),
-	    childFactory: React.PropTypes.func,
-	
-	    onAnimating:  React.PropTypes.func,
-	    onAnimate:    React.PropTypes.func,
+	/**
+	 * EVENT_NAME_MAP is used to determine which event fired when a
+	 * transition/animation ends, based on the style property used to
+	 * define that event.
+	 */
+	var EVENT_NAME_MAP = {
+	  transitionend: {
+	    'transition': 'transitionend',
+	    'WebkitTransition': 'webkitTransitionEnd',
+	    'MozTransition': 'mozTransitionEnd',
+	    'OTransition': 'oTransitionEnd',
+	    'msTransition': 'MSTransitionEnd'
 	  },
 	
-	  getDefaultProps: function() {
-	    return {
-	      component:    'span',
-	      childFactory: function(a){ return a },
-	
-	      onAnimating: _.noop,
-	      onAnimate:   _.noop
-	    };
-	  },
-	
-	  getInitialState: function() {
-	    return {
-	      children: _.splat(this.props.children)
-	    };
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var nextChild = getChild(nextProps.children)
-	      , stack     = this.state.children.slice()
-	      , next      = stack[1]
-	      , last      = stack[0];
-	
-	    var isLastChild = last && key(last) === key(nextChild)
-	      , isNextChild = next && key(next) === key(nextChild);
-	
-	    //no children
-	    if (!last) {
-	      stack.push(nextChild)
-	      this.entering = nextChild
-	    }
-	    else if ( last && !next && !isLastChild) {
-	      //new child
-	      stack.push(nextChild)
-	      this.leaving = last 
-	      this.entering = nextChild
-	    }
-	    else if ( last && next && !isLastChild && !isNextChild) {
-	      // the child is not the current one, exit the current one, add the new one
-	      //  - shift the stack down
-	      stack.shift()
-	      stack.push(nextChild)
-	      this.leaving  = next
-	      this.entering = nextChild
-	    }
-	    //new child that just needs to be re-rendered
-	    else if (isLastChild) stack.splice(0, 1, nextChild) 
-	    else if (isNextChild) stack.splice(1, 1, nextChild)
-	
-	    if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] ) 
-	      this.setState({ children: stack });
-	  },
-	
-	  componentWillMount: function() {
-	    this.animatingKeys = {};
-	    this.leaving  = null;
-	    this.entering = null;
-	  },
-	
-	  componentDidUpdate: function() {
-	    var entering = this.entering
-	      , leaving  = this.leaving
-	      , first    = this.refs[key(entering) || key(leaving)]
-	      , node     = this.getDOMNode()
-	      , el       = first && first.getDOMNode();
-	
-	    if( el )
-	      $.css(node, {
-	        overflow: 'hidden',
-	        height: $.height(el) + 'px',
-	        width:  $.width(el) + 'px'
-	      })
-	    
-	    this.props.onAnimating();
-	
-	    this.entering = null;
-	    this.leaving  = null;
-	
-	    if (entering) this.performEnter(key(entering))
-	    if (leaving)  this.performLeave(key(leaving))
-	  },
-	
-	  performEnter: function(key) {
-	    var component = this.refs[key];
-	
-	    if(!component) return
-	
-	    this.animatingKeys[key] = true;
-	
-	    if (component.componentWillEnter) 
-	      component.componentWillEnter(
-	        this._handleDoneEntering.bind(this, key));
-	    else 
-	      this._handleDoneEntering(key);
-	  },
-	
-	  _tryFinish: function(){
-	    var node = this.getDOMNode()
-	
-	    if ( this.isTransitioning() )
-	      return 
-	
-	    $.css(node, { overflow: 'visible', height: '', width: '' })
-	
-	    this.props.onAnimate() 
-	  }, 
-	
-	  _handleDoneEntering: function(enterkey) {
-	    var component = this.refs[enterkey];
-	
-	    if (component && component.componentDidEnter) 
-	      component.componentDidEnter();
-	    
-	    delete this.animatingKeys[enterkey];
-	
-	    if ( key(this.props.children) !== enterkey) 
-	      this.performLeave(enterkey); // This was removed before it had fully entered. Remove it.
-	    
-	    this._tryFinish()
-	  },
-	
-	  isTransitioning: function(){
-	    return Object.keys(this.animatingKeys).length !== 0
-	  },
-	
-	  performLeave: function(key) {
-	    var component = this.refs[key];
-	
-	    if(!component) return
-	
-	    this.animatingKeys[key] = true;
-	
-	    if (component.componentWillLeave) 
-	      component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
-	    else 
-	      this._handleDoneLeaving(key);
-	  },
-	
-	  _handleDoneLeaving: function(leavekey) {
-	    var component = this.refs[leavekey];
-	
-	    if (component && component.componentDidLeave) 
-	      component.componentDidLeave();
-	    
-	    delete this.animatingKeys[leavekey];
-	
-	    if (key(this.props.children) === leavekey )
-	      this.performEnter(leavekey); // This entered again before it fully left. Add it again.
-	    else {
-	      var newChildren = this.state.children.filter( function(c)  {return key(c) !== leavekey;});
-	      this.setState({ children: newChildren });
-	    }
-	
-	    this._tryFinish() 
-	  },
-	
-	  render: function() {
-	    var Component = this.props.component
-	    return React.createElement(Component, React.__spread({},  this.props),  this.state.children.map(function(c)  {return this.props.childFactory(c, key(c));}.bind(this)) );
+	  animationend: {
+	    'animation': 'animationend',
+	    'WebkitAnimation': 'webkitAnimationEnd',
+	    'MozAnimation': 'mozAnimationEnd',
+	    'OAnimation': 'oAnimationEnd',
+	    'msAnimation': 'MSAnimationEnd'
 	  }
-	});
+	};
 	
-	function getChild(children){
-	  return React.Children.only(children)
+	var endEvents = [];
+	
+	function detectEvents() {
+	  var testEl = document.createElement('div');
+	  var style = testEl.style;
+	
+	  // On some platforms, in particular some releases of Android 4.x,
+	  // the un-prefixed "animation" and "transition" properties are defined on the
+	  // style object but the events that fire will still be prefixed, so we need
+	  // to check if the un-prefixed events are useable, and if not remove them
+	  // from the map
+	  if (!('AnimationEvent' in window)) {
+	    delete EVENT_NAME_MAP.animationend.animation;
+	  }
+	
+	  if (!('TransitionEvent' in window)) {
+	    delete EVENT_NAME_MAP.transitionend.transition;
+	  }
+	
+	  for (var baseEventName in EVENT_NAME_MAP) {
+	    var baseEvents = EVENT_NAME_MAP[baseEventName];
+	    for (var styleName in baseEvents) {
+	      if (styleName in style) {
+	        endEvents.push(baseEvents[styleName]);
+	        break;
+	      }
+	    }
+	  }
 	}
 	
-	//CHANGE 0.12.0
-	function key(child){
-	  return child && child.key
+	if (canUseDOM) {
+	  detectEvents();
 	}
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , ReplaceTransitionGroup  = __webpack_require__(58)
-	  , _ = __webpack_require__(15)
-	  , $  =  __webpack_require__(72);
 	
+	// We use the raw {add|remove}EventListener() call because EventListener
+	// does not know how to remove event listeners and we really should
+	// clean up. Also, these events are not triggered in older browsers
+	// so we should be A-OK here.
 	
-	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
+	function addEventListener(node, eventName, eventListener) {
+	  node.addEventListener(eventName, eventListener, false);
+	}
 	
-	  propTypes: {
-	    direction: React.PropTypes.oneOf(['left', 'right'])
-	  },
+	function removeEventListener(node, eventName, eventListener) {
+	  node.removeEventListener(eventName, eventListener, false);
+	}
 	
-	  componentWillEnter: function(done) {
-	    var node  = this.getDOMNode()
-	      , width = $.width(node)
-	      , direction = this.props.direction;
-	
-	    width = direction === 'left' ? width : -width
-	
-	    this.ORGINAL_POSITION = node.style.position;
-	    
-	    $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
-	
-	    $.animate(node, { left: 0 }, this.props.duration, function()  {
-	
-	        $.css(node, { 
-	          position:  this.ORGINAL_POSITION, 
-	          overflow: 'hidden'
-	        });
-	
-	        this.ORGINAL_POSITION = null
-	        done && done()
-	      }.bind(this))
-	  },
-	
-	  componentWillLeave: function(done) {
-	    var node  = this.getDOMNode()
-	      , width = $.width(node)
-	      , direction = this.props.direction;
-	
-	    width = direction === 'left' ? -width : width
-	
-	    this.ORGINAL_POSITION = node.style.position
-	
-	    $.css(node, { position: 'absolute', top: 0, left: 0})
-	
-	    $.animate(node, { left: width + 'px' }, this.props.duration, function()  {
-	        $.css(node, { 
-	          position: this.ORGINAL_POSITION, 
-	          overflow: 'hidden'
-	        });
-	
-	        this.ORGINAL_POSITION = null
-	        done && done()
-	      }.bind(this))
-	  },
-	
-	  render: function() {
-	    return React.Children.only(this.props.children);
-	  }
-	
-	})
-	
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    direction: React.PropTypes.oneOf(['left', 'right']),
-	    duration:  React.PropTypes.number
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      direction: 'left',
-	      duration: 250
+	var ReactTransitionEvents = {
+	  addEndEventListener: function(node, eventListener) {
+	    if (endEvents.length === 0) {
+	      // If CSS transitions are not supported, trigger an "end animation"
+	      // event immediately.
+	      window.setTimeout(eventListener, 0);
+	      return;
 	    }
+	    endEvents.forEach(function(endEvent) {
+	      addEventListener(node, endEvent, eventListener);
+	    });
 	  },
 	
-	  _wrapChild: function(child, ref) {
-	    return (React.createElement(SlideChildGroup, {key: child.key, ref: ref, direction: this.props.direction, duration: this.props.duration}, child))
-	  },
-	
-	  render: function() {
-	    var $__0=      this.props,style=$__0.style,children=$__0.children,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{style:1,children:1})
-	
-	    style = _.merge(style, { position: 'relative', overflow: 'hidden' })
-	
-	    return (
-	      React.createElement(ReplaceTransitionGroup, React.__spread({},  
-	        props, 
-	        {ref: "container", 
-	        childFactory: this._wrapChild, 
-	        style: style, 
-	        component: 'div'}), 
-	        children 
-	      ))
-	  },
-	
-	  isTransitioning: function(){
-	    return this.isMounted() && this.refs.container.isTransitioning()
+	  removeEndEventListener: function(node, eventListener) {
+	    if (endEvents.length === 0) {
+	      return;
+	    }
+	    endEvents.forEach(function(endEvent) {
+	      removeEventListener(node, endEvent, eventListener);
+	    });
 	  }
-	});
+	};
 	
+	module.exports = ReactTransitionEvents;
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -15338,7 +15457,7 @@
 
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15398,125 +15517,6 @@
 
 
 /***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains a modified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/addons/transitions/ReactTransitionEvents.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-	
-	var canUseDOM = !!(
-	  typeof window !== 'undefined' &&
-	    window.document &&
-	    window.document.createElement
-	  );
-	
-	/**
-	 * EVENT_NAME_MAP is used to determine which event fired when a
-	 * transition/animation ends, based on the style property used to
-	 * define that event.
-	 */
-	var EVENT_NAME_MAP = {
-	  transitionend: {
-	    'transition': 'transitionend',
-	    'WebkitTransition': 'webkitTransitionEnd',
-	    'MozTransition': 'mozTransitionEnd',
-	    'OTransition': 'oTransitionEnd',
-	    'msTransition': 'MSTransitionEnd'
-	  },
-	
-	  animationend: {
-	    'animation': 'animationend',
-	    'WebkitAnimation': 'webkitAnimationEnd',
-	    'MozAnimation': 'mozAnimationEnd',
-	    'OAnimation': 'oAnimationEnd',
-	    'msAnimation': 'MSAnimationEnd'
-	  }
-	};
-	
-	var endEvents = [];
-	
-	function detectEvents() {
-	  var testEl = document.createElement('div');
-	  var style = testEl.style;
-	
-	  // On some platforms, in particular some releases of Android 4.x,
-	  // the un-prefixed "animation" and "transition" properties are defined on the
-	  // style object but the events that fire will still be prefixed, so we need
-	  // to check if the un-prefixed events are useable, and if not remove them
-	  // from the map
-	  if (!('AnimationEvent' in window)) {
-	    delete EVENT_NAME_MAP.animationend.animation;
-	  }
-	
-	  if (!('TransitionEvent' in window)) {
-	    delete EVENT_NAME_MAP.transitionend.transition;
-	  }
-	
-	  for (var baseEventName in EVENT_NAME_MAP) {
-	    var baseEvents = EVENT_NAME_MAP[baseEventName];
-	    for (var styleName in baseEvents) {
-	      if (styleName in style) {
-	        endEvents.push(baseEvents[styleName]);
-	        break;
-	      }
-	    }
-	  }
-	}
-	
-	if (canUseDOM) {
-	  detectEvents();
-	}
-	
-	// We use the raw {add|remove}EventListener() call because EventListener
-	// does not know how to remove event listeners and we really should
-	// clean up. Also, these events are not triggered in older browsers
-	// so we should be A-OK here.
-	
-	function addEventListener(node, eventName, eventListener) {
-	  node.addEventListener(eventName, eventListener, false);
-	}
-	
-	function removeEventListener(node, eventName, eventListener) {
-	  node.removeEventListener(eventName, eventListener, false);
-	}
-	
-	var ReactTransitionEvents = {
-	  addEndEventListener: function(node, eventListener) {
-	    if (endEvents.length === 0) {
-	      // If CSS transitions are not supported, trigger an "end animation"
-	      // event immediately.
-	      window.setTimeout(eventListener, 0);
-	      return;
-	    }
-	    endEvents.forEach(function(endEvent) {
-	      addEventListener(node, endEvent, eventListener);
-	    });
-	  },
-	
-	  removeEndEventListener: function(node, eventListener) {
-	    if (endEvents.length === 0) {
-	      return;
-	    }
-	    endEvents.forEach(function(endEvent) {
-	      removeEventListener(node, endEvent, eventListener);
-	    });
-	  }
-	};
-	
-	module.exports = ReactTransitionEvents;
-
-
-/***/ },
 /* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -15571,2553 +15571,6 @@
 
 /***/ },
 /* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Btn = __webpack_require__(75);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    label:          React.PropTypes.string.isRequired,
-	    labelId:        React.PropTypes.string,
-	
-	    upDisabled:     React.PropTypes.bool.isRequired,
-	    prevDisabled:   React.PropTypes.bool.isRequired,
-	    nextDisabled:   React.PropTypes.bool.isRequired,
-	    onViewChange:   React.PropTypes.func.isRequired,
-	    onMoveLeft:     React.PropTypes.func.isRequired,
-	    onMoveRight:    React.PropTypes.func.isRequired,
-	
-	    messages:       React.PropTypes.shape({
-	      moveBack:     React.PropTypes.string,
-	      moveForward:  React.PropTypes.string
-	    })
-	  },
-	
-	  mixins: [
-	    __webpack_require__(88),
-	    __webpack_require__(93)
-	  ],
-	
-	  getDefaultProps: function(){
-	    return {
-	      messages: {
-	        moveBack:     'navigate back',
-	        moveForward:  'navigate forward',
-	      }
-	    }
-	  },
-	
-	  render: function(){
-	    var rtl = this.isRtl();
-	
-	    return (
-	      React.createElement("div", {className: "rw-header"}, 
-	        React.createElement(Btn, {className: "rw-btn-left", 
-	          onClick: this.props.onMoveLeft, 
-	          disabled: this.props.prevDisabled, 
-	          'aria-disabled': this.props.prevDisabled, 
-	          title: this.props.moveBack}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-view", 
-	          id: this.props.labelId, 
-	          onClick: this.props.onViewChange, 
-	          disabled: this.props.upDisabled, 
-	          'aria-disabled': this.props.upDisabled}, 
-	           this.props.label
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-right", 
-	          onClick: this.props.onMoveRight, 
-	          disabled: this.props.nextDisabled, 
-	          'aria-disabled': this.props.nextDisabled, 
-	          title: this.props.moveForward}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
-	        )
-	      )
-	    )
-	  }
-	})
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions
-	  , _   = __webpack_require__(15)
-	  , Btn = __webpack_require__(75);
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'MonthView',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(93),
-	    __webpack_require__(94)('month', 'day'),
-	  ],
-	
-	  propTypes: {
-	    culture:          React.PropTypes.array,
-	    value:            React.PropTypes.instanceOf(Date),
-	    selectedDate:     React.PropTypes.instanceOf(Date),
-	    min:              React.PropTypes.instanceOf(Date),
-	    max:              React.PropTypes.instanceOf(Date),
-	
-	    format:           React.PropTypes.string,
-	
-	    onChange:         React.PropTypes.func.isRequired, //value is chosen
-	    onMoveLeft:       React.PropTypes.func,
-	    onMoveRight:      React.PropTypes.func
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , month = dates.visibleDays(this.props.value)
-	      , rows  = _.chunk(month, 7 );
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {role: "grid", 
-	        tabIndex: this.props.disabled ? '-1' : "0", 
-	        className: "rw-calendar-grid", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("thead", null, 
-	          React.createElement("tr", null,  this._headers() )
-	        ), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	    
-	    return (
-	      React.createElement("tr", {key: 'week_' + i}, 
-	       row.map( function(day, idx)  {
-	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
-	          , selected = dates.eq(day, this.props.selectedDate, 'day');
-	
-	        return !dates.inRange(day, this.props.min, this.props.max)
-	            ? React.createElement("td", {key: 'day_' + idx, className: "rw-empty-cell"}, " ")
-	            : (React.createElement("td", {key: 'day_' + idx}, 
-	                React.createElement(Btn, {
-	                  tabIndex: "-1", 
-	                  onClick: this.props.onChange.bind(null, day), 
-	                  'aria-selected': selected, 
-	                  'aria-disabled': this.props.disabled, 
-	                  disabled: this.props.disabled, 
-	                  className: cx({
-	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
-	                    'rw-state-focus':    focused,
-	                    'rw-state-selected': selected,
-	                  }), 
-	                  id: focused ? id : undefined}, 
-	                  dates.format(day, 'dd')
-	                )
-	              ))
-	      }.bind(this))
-	      )
-	    )
-	  },
-	
-	
-	  _headers: function(format){
-	    var days = dates.shortDaysOfWeek(format);
-	
-	    return days.map( function(day, i)  
-	      {return React.createElement("th", {key: "header_" + i}, day);})
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'day', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'day',min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -1, 'week', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 1, 'week', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	
-	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
-	}
-
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions
-	  , Btn        = __webpack_require__(75)
-	  , _          = __webpack_require__(15)
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'YearView',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(93),
-	    __webpack_require__(94)('year', 'month')
-	  ],
-	
-	  propTypes: {
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	
-	  render: function(){
-	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , months = dates.monthsInYear(dates.year(this.props.value))
-	      , rows = _.chunk(months, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},   props , 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        ref: "table", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item');
-	    
-	    return (
-	      React.createElement("tr", {key: i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
-	          , selected = dates.eq(date, this.props.value,  'month');
-	
-	        return dates.inRange(date, this.props.min, this.props.max, 'month')
-	          ? (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id: focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected
-	                })}, 
-	                 dates.format(date, dates.formats.MONTH_NAME_ABRV) 
-	              )
-	            ))
-	          : React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	      }.bind(this))
-	    ))
-	  },
-	
-	  focus: function(){
-	    this.refs.table.getDOMNode().focus();
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'month', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'month', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'month', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'month', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
-	}
-
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _ = __webpack_require__(15)
-	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions
-	  , Btn = __webpack_require__(75); 
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'DecadeView',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(88),
-	    __webpack_require__(93),
-	    __webpack_require__(94)('decade', 'year')
-	  ],
-	
-	  propTypes: {
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , years = getDecadeYears(this.props.value)
-	      , rows  = _.chunk(years, 4)
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	
-	        React.createElement("tbody", null, 
-	          rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
-	          , selected = dates.eq(date, this.props.value,  'year');
-	
-	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':      !inDecade(date, this.props.value),
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected,
-	                })}, 
-	                 dates.format(date, dates.formats.YEAR) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'year', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'year', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'year', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'year', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function inDecade(date, start){
-	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
-	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
-	}
-	
-	function getDecadeYears(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
-	
-	  return days.map( 
-	    function(i)  {return date = dates.add(date, 1, 'year');})
-	}
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
-	}
-
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions
-	  , Btn        = __webpack_require__(75)
-	  , _          = __webpack_require__(15); //omit
-	
-	var opposite = {
-	  LEFT:  directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CenturyView',
-	
-	  mixins: [
-	    __webpack_require__(87),
-	    __webpack_require__(88),
-	    __webpack_require__(93),
-	    __webpack_require__(94)('century', 'decade')
-	  ],
-	
-	  propTypes: {
-	    value:         React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
-	      , years = getCenturyDecades(this.props.value)
-	      , rows  = _.chunk(years, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
-	          , selected = dates.eq(date, this.props.value,  'decade')
-	          , d        = inRangeDate(date, this.props.min, this.props.max);
-	
-	        return !inRange(date, this.props.min, this.props.max)
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
-	                tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':       !inCentury(date, this.props.value),
-	                  'rw-state-focus':     focused,
-	                  'rw-state-selected':  selected,
-	                 })}, 
-	                 label(date) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'decade', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'decade', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'decade', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'decade', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function label(date){
-	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
-	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
-	}
-	
-	function inRangeDate(decade, min, max){
-	  return dates.max( dates.min(decade, max), min)
-	}
-	
-	function inRange(decade, min, max){
-	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
-	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
-	}
-	
-	function inCentury(date, start){
-	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
-	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
-	}
-	
-	function getCenturyDecades(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
-	
-	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
-	}
-	
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
-	}
-
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(15) //invert, transform
-	  , React = __webpack_require__(1)
-	  , compat = __webpack_require__(95)
-	
-	
-	function compatPropType(handler, propType) {
-	
-	  return compat.propType(function(props, propName, componentName, location){
-	    if(props[propName] !== undefined){
-	      if ( !props[handler] )
-	        return new Error(
-	            'ReactWidgets: you have provided a `' + propName + '` prop to ' 
-	          + '`' + componentName + '` without an `' + handler + '` handler. This will render a read-only field. ' 
-	          + 'If the field should be mutable use `' + defaultKey(propName) + '`. Otherwise, set `' + handler + '`')
-	
-	      return propType && propType(props, propName, componentName, location)
-	    }
-	  })
-	}
-	
-	module.exports = {
-	
-	  createControlledClass: function(Component, controlledValues, taps) {
-	    // var publicMethods 
-	    //       = _.transform(publicApi || [], function(obj, method) {
-	    //           obj[method] = function (...args){ 
-	    //             return this.refs[this._innerRef][method](args) 
-	    //           }
-	    //         }, {})
-	
-	    var types = _.transform(controlledValues, function(obj, handler, prop){
-	          var type = Component.type.propTypes[prop];
-	
-	          obj[prop] = compatPropType(handler, type)
-	          obj[defaultKey(prop)] = type
-	        }, {});
-	
-	    taps = taps || {}
-	
-	    return React.createClass({
-	
-	      displayName: Component.displayName,
-	
-	      propTypes: types,
-	
-	      getInitialState: function(){
-	        var props = this.props
-	          , keys  = Object.keys(controlledValues);
-	
-	        return _.transform(keys, function(state, key){
-	          state[key] = props[defaultKey(key)]
-	        }, {})
-	      },
-	
-	      shouldComponentUpdate: function() {
-	        //let the setState trigger the update
-	        return !this._notifying || !this._notifying.length;
-	      },
-	
-	      render: function(){
-	        var props, handles;
-	
-	        props = _.transform(controlledValues, function(obj, handle, prop)  {
-	          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
-	        }.bind(this), {})
-	        
-	        handles = _.transform(controlledValues, function(obj, handle, prop)  {
-	          obj[handle] = setAndNotify.bind(this, prop)
-	        }.bind(this), {})
-	
-	        props = _.merge(this.props, props, handles)
-	
-	        for(var k in taps) if (_.has(props, k)) {
-	          props[k] = chain(this, taps[k], props[k])
-	        }
-	        //this._innerRef = props.ref = props.ref || 'component'
-	
-	        return React.createElement(Component, props, this.props.children);
-	      }
-	    })
-	
-	    function setAndNotify(prop, value){
-	      /*jshint validthis:true */
-	      var handler    = controlledValues[prop]
-	        , controlled = handler && isProp(this.props, prop)
-	        , st = {}
-	        , args;
-	
-	      if ( !this._notifying ) this._notifying = [];
-	
-	      if( this.props[handler] ) {
-	        args = [].slice.call(arguments, 1)
-	        this._notifying.push(true)
-	        this.props[handler].apply(this, args)
-	        this._notifying.pop()
-	      }
-	        
-	      st[prop] = value
-	      this.setState(st)
-	
-	      return !controlled
-	    }
-	
-	    function isProp(props, prop){
-	      return props[prop] !== undefined;
-	    }
-	  }
-	}
-	
-	
-	// function invert(controlledValues){
-	//   return _.transform(controlledValues, (val, key ) => ,)
-	// }
-	
-	function defaultKey(key){
-	  return 'default' + key.charAt(0).toUpperCase() + key.substr(1)
-	}
-	
-	function chain(thisArg, a, b){
-	  return function chainedFunction(){
-	    a && a.apply(thisArg, arguments)
-	    b && b.apply(thisArg, arguments)
-	  }
-	}
-
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var dateMath = __webpack_require__(49)
-	  , globalize = __webpack_require__(101)
-	  , _ = __webpack_require__(15); //extend
-	
-	var dates = module.exports = _.extend(dateMath, {
-	  // wrapper methods for isolating globalize use throughout the lib
-	  // looking forward towards the 1.0 release
-	  culture: function(){
-	    return globalize.culture()
-	  },
-	
-	  startOfWeek: function(date){
-	    var culture = globalize.culture()
-	
-	    if (!culture || !culture.calendar)
-	      return 0
-	
-	    return culture.calendar.firstDay || 0
-	  },
-	
-	  parse: function(date, format, culture){
-	    return globalize.parseDate(date, format, culture)
-	  },
-	
-	  format: function(date, format, culture){
-	    return globalize.format(date, format, culture)
-	  },
-	  //-------------------------------------
-	
-	  shortDaysOfWeek: function (){
-	    var culture = dates.culture()
-	      , start = dates.startOfWeek()
-	      , days, front;
-	
-	    if (culture && culture.calendar){
-	      days = culture.calendar.days.namesShort.slice()
-	
-	      if(start === 0 ) 
-	        return days
-	      
-	      front = days.splice(0, start)
-	      days  = days.concat(front)
-	      return days
-	    }
-	  },
-	
-	  daysOfWeek: function(date, format){
-	    var range = [0,1,2,3,4,5,6]
-	    if (arguments.length === 1){
-	      format = date
-	      date = new Date()
-	    }
-	
-	    format = format || 'do'
-	
-	    return range.map(function(i)  {return dates.format(dates.weekday(date, i), format);} )
-	  },
-	
-	  months: function(date, format){
-	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	
-	    if (arguments.length === 1){
-	      format = date
-	      date = new Date()
-	    }
-	    format = format || dates.formats.DAY_NAME_ABRV
-	
-	    return months.map( function(i)  {return dates.format(dates.month(date, i), format);})
-	  },
-	
-	  monthsInYear: function(year){
-	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	      , date   = new Date(year, 0, 1)
-	
-	    return  months.map( function(i)  {return dates.month(date, i);})
-	  },
-	
-	  firstOfDecade: function(date){
-	    var decade = dates.year(date) % 10
-	
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfDecade: function(date){
-	    return dates.add(dates.firstOfDecade(date), 9, 'year')
-	  },
-	
-	  firstOfCentury: function(date){
-	    var decade = dates.year(date) % 100
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfCentury: function(date){
-	    return dates.add(dates.firstOfCentury(date), 99, 'year')
-	  },
-	
-	  firstVisibleDay: function(date){
-	    var firstOfMonth = dates.startOf(date, 'month')
-	    return dates.startOf(firstOfMonth, 'week');
-	  },
-	
-	  lastVisibleDay: function(date){
-	    var endOfMonth = dates.endOf(date, 'month')
-	    return dates.endOf(endOfMonth, 'week');
-	  },
-	
-	  visibleDays: function(date){
-	    var current = dates.firstVisibleDay(date)
-	      , last = dates.lastVisibleDay(date)
-	      , days = [];
-	
-	    while( dates.lte(current, last, 'day') ) {
-	      days.push(current)
-	      current = dates.add(current, 1, 'day')
-	    }
-	
-	    return days
-	  },
-	
-	  merge: function(date, time){
-	    if( time == null && date == null)
-	      return null
-	
-	    if( time == null) time = new Date()
-	    if( date == null) date = new Date()
-	
-	    date = dates.startOf(date, 'day')
-	    date = dates.hours(date,        dates.hours(time))
-	    date = dates.minutes(date,      dates.minutes(time))
-	    date = dates.seconds(date,      dates.seconds(time))
-	    return dates.milliseconds(date, dates.milliseconds(time))
-	  },
-	
-	  sameMonth: function(dateA, dateB){
-	    return dates.eq(dateA, dateB, 'month')
-	  },
-	
-	  today: function() {
-	    return this.startOf(new Date(), 'day')
-	  },
-	
-	  yesterday: function() {
-	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
-	  },
-	
-	  tomorrow: function() {
-	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
-	  },
-	
-	  formats: {
-	    DAY_OF_MONTH:    'dd',
-	    DAY_NAME_SHORT:  null,
-	    MONTH_NAME_ABRV: 'MMM',
-	    MONTH_YEAR:      'MMMM yyyy',
-	    YEAR:            'yyyy'
-	  }
-	
-	})
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(15); //object
-	
-	var views = {
-	    MONTH:   'month',
-	    YEAR:    'year',
-	    DECADE:  'decade',
-	    CENTURY: 'century'
-	  }
-	
-	module.exports = {
-	
-	  directions: {
-	    LEFT:  'LEFT',
-	    RIGHT: 'RIGHT',
-	    UP:    'UP',
-	    DOWN:  'DOWN'
-	  },
-	
-	  datePopups: {
-	    TIME:     'time',
-	    CALENDAR: 'calendar'
-	  },
-	
-	  calendarViews: views,
-	
-	  calendarViewHierarchy: _.object([
-	    [views.MONTH,   views.YEAR],
-	    [views.YEAR,    views.DECADE],
-	    [views.DECADE,  views.CENTURY]
-	  ]),
-	
-	  calendarViewUnits: _.object([
-	    [views.MONTH,   views.DAY],
-	    [views.YEAR,    views.MONTH],
-	    [views.DECADE,  views.YEAR],
-	    [views.CENTURY, views.DECADE],
-	  ])
-	}
-
-
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var has = Object.prototype.hasOwnProperty
-	  , transitionTiming, transitionDuration
-	  , transitionProperty, transitionDelay
-	  , notSupported, endEvent
-	  , prefix = ''
-	  , el = document.createElement('div')
-	  , reset = {}
-	  , transform ='transform'
-	  , transitions = {
-	      O:'otransitionend',
-	      Moz:'transitionend',
-	      Webkit:'webkitTransitionEnd'
-	    };
-	
-	var TRANSLATION_MAP = { 
-	      left: 'translateX', right: 'translateX'
-	    , top: 'translateY', bottom: 'translateY'}
-	
-	for(var vendor in transitions) if( has.call(transitions, vendor) )
-	{
-	  if (el.style[vendor + 'TransitionProperty'] !== undefined) {
-	    prefix = '-' + vendor.toLowerCase() + '-'
-	    endEvent = transitions[vendor];
-	    break
-	  }
-	}
-	
-	if (!endEvent && el.style.transitionProperty !== undefined)
-	  endEvent = 'transitionend'
-	
-	notSupported = !endEvent
-	
-	transform = prefix + transform
-	
-	reset[transitionProperty = prefix + 'transition-property'] =
-	reset[transitionDuration = prefix + 'transition-duration'] =
-	reset[transitionDelay    = prefix + 'transition-delay'] =
-	reset[transitionTiming   = prefix + 'transition-timing-function'] = ''
-	
-	var DOM = module.exports = {
-	
-	  width: function(node, client){
-	    var win = getWindow(node)
-	    return win ? win.innerWidth : client ? node.clientWidth : DOM.offset(node).width
-	  },
-	
-	  height: function(node, client){
-	    var win = getWindow(node)
-	    return win ? win.innerHeight : client ? node.clientHeight : DOM.offset(node).height
-	  },
-	
-	  hasFocus: function(node){
-	    var doc = node.ownerDocument
-	
-	    if ( doc.activeElement == null) return false
-	    return doc.activeElement === node
-	  },
-	
-	  offset: function (node) {
-	    var doc     = node.ownerDocument
-	      , docElem = doc && doc.documentElement
-	      , box     = { top: 0, left: 0 };
-	
-	    if ( !docElem ) return
-	
-	    if ( !DOM.contains(docElem, node))
-	      return box
-	
-	    if ( node.getBoundingClientRect !== undefined )
-	      box = node.getBoundingClientRect();
-	
-	    return {
-	      top: box.top + window.pageYOffset - docElem.clientTop,
-	      left: box.left + window.pageXOffset - docElem.clientLeft,
-	      width: box.width || node.offsetWidth,
-	      height: box.height || node.offsetHeight,
-	    };
-	  },
-	
-	  css: function(node, property, value){
-	      var css = ''
-	        , props = property;
-	
-	      if ( typeof property === 'string') {
-	        if ( value === undefined)
-	          return node.style[camelize(property)] || getComputedStyle(node).getPropertyValue(property)
-	        else
-	          (props = {})[property] = value
-	      }
-	
-	      for(var key in props) if ( has.call(props, key) ) 
-	      {
-	        !props[key] && props[key] !== 0
-	          ? node.style.removeProperty(dasherize(key))
-	          : (css += dasherize(key) + ':' + props[key] + ';')
-	      }
-	
-	      node.style.cssText += ';' + css
-	  },
-	
-	  contains: (function(){
-	    var root = document.documentElement
-	
-	    return (root && root.contains)
-	      ? function(context, node){ return context.contains(node); }
-	      : (root && root.compareDocumentPosition)
-	          ? function(context, node){
-	            return context === node || !!(context.compareDocumentPosition(node) & 16);
-	          }
-	          : function(context, node){
-	            if (node) do {
-	              if (node === context) return true;
-	            } while ((node = node.parentNode));
-	
-	            return false;
-	          }
-	  })(),
-	
-	  scrollParent: function(node){
-	    var position = DOM.css(node, "position" )
-	      , excludeStatic = position === "absolute";
-	
-	    if (position === 'fixed') 
-	      return node.ownerDocument || document
-	
-	    while ( (node = node.parentNode) && node.nodeType !== 9){
-	      var isStatic = excludeStatic && DOM.css(node, "position" ) === "static"
-	        , style    = DOM.css(node, 'overflow') 
-	                   + DOM.css(node, 'overflow-y') 
-	                   + DOM.css(node, 'overflow-x');
-	
-	      if (isStatic) continue
-	      if ( (/(auto|scroll)/).test(style) && DOM.height(node) < node.scrollHeight )
-	        return node
-	    }
-	
-	    return (node && node.ownerDocument) || document
-	  },
-	
-	  scrollTop: function(node, val){
-	    var win = getWindow(node);
-	
-	    if ( val === undefined )
-	      return win 
-	        ? ('pageYOffset' in win) 
-	          ? win.pageYOffset
-	          : win.document.documentElement.scrollTop 
-	        : node.scrollTop;
-	    
-	    if ( win ) 
-	      win.scrollTo(('pageXOffset' in win) 
-	        ? win.pageXOffset 
-	        : win.document.documentElement.scrollLeft, val)
-	    else       
-	      node.scrollTop = val
-	  },
-	
-	
-	  on: function(node, eventName, handler){
-	    if (node.addEventListener)
-	      node.addEventListener(eventName, handler, false);
-	
-	    else if (node.attachEvent)
-	      node.attachEvent('on' + eventName, handler);
-	
-	    else
-	      node['on' + eventName] = handler;
-	  },
-	
-	  off: function(node, eventName, handler){
-	    if (node.addEventListener)
-	      node.removeEventListener(eventName, handler, false);
-	    else if (node.attachEvent)
-	      node.detachEvent('on' + eventName, handler);
-	    else
-	      node['on' + eventName] = null;
-	  },
-	
-	  trigger: function(node, type){
-	    var event = document.createEvent('Events')
-	    event.initEvent(type, true, true)
-	    node.dispatchEvent(event);
-	  },
-	
-	  /* code in part from: Zepto 1.1.4 | zeptojs.com/license */
-	  // super lean animate function for transitions
-	  // doesn't support translations to keep it matching the jquery API
-	  animate: function(node, properties, duration, easing, callback){
-	    var cssProperties = []
-	      , fakeEvent = { target: node, currentTarget: node }
-	      , cssValues = {}
-	      , transforms =''
-	      , fired;
-	
-	    if ( typeof easing === 'function' )
-	      callback = easing, easing = null
-	
-	    if ( notSupported )           duration = 0
-	    if ( duration === undefined ) duration = 200
-	
-	    for(var key in properties) if ( has.call(properties, key) ) {
-	      if( /(top|bottom)/.test(key) ) 
-	        transforms += TRANSLATION_MAP[key] +'(' + properties[key] + ') '
-	      else{
-	        cssValues[key] = properties[key]
-	        cssProperties.push(dasherize(key))
-	      }
-	    }
-	
-	    if (transforms) {
-	      cssValues[transform] = transforms
-	      cssProperties.push(transform)
-	    }
-	
-	    if (duration > 0 ) {
-	      cssValues[transitionProperty] = cssProperties.join(', ')
-	      cssValues[transitionDuration] = (duration / 1000) + 's'
-	      cssValues[transitionDelay]    = 0 + 's'
-	      cssValues[transitionTiming]   = easing || 'linear'
-	
-	      DOM.on(node, endEvent, done)
-	
-	      setTimeout(function(){
-	        if (!fired) done(fakeEvent)
-	      }, duration + 25)
-	    }
-	
-	    // trigger page reflow
-	    node.clientLeft
-	
-	    DOM.css(node, cssValues)
-	
-	    if (duration <= 0)
-	      setTimeout(done.bind(null, fakeEvent), 0)
-	
-	    function done(event) {
-	      if (event.target !== event.currentTarget) return
-	
-	      fired = true
-	
-	      DOM.off(event.target, endEvent, done)
-	      DOM.css(node, reset)
-	      callback && callback.call(this)
-	    }
-	  }
-	}
-	
-	
-	function getWindow( node ) {
-	  return node === node.window
-	    ? node : node.nodeType === 9 && node.defaultView;
-	}
-	
-	function camelize(str){
-	  return str.replace(/-+(.)?/g, function(match, chr){ return chr ? chr.toUpperCase() : '' })
-	}
-	
-	function dasherize(str) {
-	  return str.replace(/[A-Z]/g, function(char, index) {
-	    return (index !== 0 ? '-' : '') + char.toLowerCase();
-	  });
-	}
-	
-	function getComputedStyle(node) {
-	  if( !node) throw new Error()
-	  var doc = node.ownerDocument;
-	
-	  return "defaultView" in doc 
-	    ? doc.defaultView.opener
-	      ? node.ownerDocument.defaultView.getComputedStyle( node, null )
-	      : window.getComputedStyle(node, null)
-	    : ie8(node)
-	}
-	
-	function ie8(el) {
-	  return {
-	    getPropertyValue:function(prop) {
-	      var re = /(\-([a-z]){1})/g;
-	      if (prop == 'float') prop = 'styleFloat';
-	      if (re.test(prop)) {
-	          prop = prop.replace(re, function () {
-	              return arguments[2].toUpperCase();
-	          });
-	      }
-	      return el.currentStyle[prop] ? el.currentStyle[prop] : null;
-	    }
-	  }
-	}
-
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var common = {
-	      eq:   function(a, b){ return a === b },
-	      neq:  function(a, b){ return a !== b },
-	      gt:   function(a, b){ return a > b   },
-	      gte:  function(a, b){ return a >= b  },
-	      lt:   function(a, b){ return a < b   },
-	      lte:  function(a, b){ return a <= b  },
-	
-	      contains: function(a, b){
-	        return a.indexOf(b) !== -1
-	      },
-	
-	      startsWith: function(a, b) {
-	        return a.lastIndexOf(b, 0) === 0;
-	      },
-	
-	      endsWith: function(a, b) {
-	        var pos = a.length - b.length
-	          , lastIndex = a.indexOf(b, pos);
-	
-	        return  lastIndex !== -1 && lastIndex === pos;
-	      }
-	    }
-	
-	module.exports = common
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React  = __webpack_require__(1)
-	  , $ = __webpack_require__(72);
-	
-	
-	var PopupContent = React.createClass({displayName: 'PopupContent',
-	  render: function(){
-	    var Content = React.Children.only(this.props.children)
-	
-	    Content.props.className = (Content.props.className || '') + ' rw-popup rw-widget';
-	
-	    return Content
-	  }
-	})
-	
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-		propTypes: {
-	    duration:       React.PropTypes.number,
-	    onRequestClose: React.PropTypes.func.isRequired,
-	    onClosing:      React.PropTypes.func,
-	    onOpening:      React.PropTypes.func,
-	    onClose:        React.PropTypes.func,
-	    onOpen:         React.PropTypes.func
-		},
-	
-	  getDefaultProps: function(){
-	    return {
-	      duration:    200,
-	      open:        false,
-	      onClosing:   function(){},
-	      onOpening:   function(){},
-	      onClose:     function(){},
-	      onOpen:      function(){},
-	    }
-	  },
-	
-		componentDidMount: function(){
-	    !this.props.open && this.close(0)
-		},
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    this.setState({
-	      contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
-	    })
-	  },
-	
-	  componentDidUpdate: function(pvProps, pvState){
-	    var closing =  pvProps.open && !this.props.open
-	      , opening = !pvProps.open && this.props.open;
-	
-	    if (opening)      this.open()
-	    else if (closing) this.close()
-	  },
-	
-		render: function(){
-	    var $__0=      this.props,className=$__0.className,open=$__0.open,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,open:1})
-	
-			return (
-	      React.createElement("div", React.__spread({},  props, {className:  (className ||'') + " rw-popup-container"}), 
-	        React.createElement(PopupContent, {ref: "content"}, 
-	           this.props.children
-	        )
-	      )
-			)
-		},
-	
-	  dimensions: function(){
-	    var el = this.getDOMNode();
-	
-	    el.style.display = 'block'
-	    el.style.height  = $.height(this.refs.content.getDOMNode()) + 'px'
-	  },
-	
-	  open: function(){
-	    var self = this
-	      , anim = this.getDOMNode()
-	      , el   = this.refs.content.getDOMNode();
-	
-	    this.ORGINAL_POSITION = $.css(el, 'position')
-	
-	    this._isOpening = true
-	    this.dimensions()
-	    this.props.onOpening()
-	
-	    el.style.position = 'absolute'
-	
-	    $.animate(el
-	      , { top: 0 }
-	      , self.props.duration
-	      , function(){
-	          if ( !self._isOpening ) return
-	          el.style.position = self.ORGINAL_POSITION
-	          anim.style.overflow = 'visible'
-	          self.ORGINAL_POSITION = null
-	          self.props.onOpen()
-	        })
-	  },
-	
-	  close: function(dur){
-	    var self = this
-	      , el   = this.refs.content.getDOMNode()
-	      , anim = this.getDOMNode();
-	
-	    this.ORGINAL_POSITION = $.css(el, 'position')
-	
-	    this._isOpening = false
-	    this.dimensions()
-	    this.props.onClosing()
-	
-	    anim.style.overflow = 'hidden'
-	    el.style.position = 'absolute'
-	
-	    $.animate(el
-	      , { top: '-100%' }
-	      , dur === undefined ? this.props.duration : dur
-	      , function() {
-	          if ( self._isOpening ) return
-	          el.style.position = self.ORGINAL_POSITION
-	
-	          anim.style.display = 'none'
-	          self.ORGINAL_POSITION = null
-	          self.props.onClose()
-	        })
-	  }
-	
-	})
-	
-	
-	function childKey(children){
-	  var nextChildMapping = React.Children.map(children, function(c)  {return c;} );
-	  for(var key in nextChildMapping) return key
-	}
-
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  render: function(){
-	  	var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1});
-	
-	    return (
-	      React.createElement("button", React.__spread({},  props, {type: "button", className: (className  || '') + ' rw-btn'}), 
-	        this.props.children
-	      )
-	  	)
-	  }
-	})
-
-/***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , caretPos = __webpack_require__(96);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    value:        React.PropTypes.string,
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	
-	  // hello
-	  componentDidUpdate: function() {
-	    var input = this.getDOMNode()
-	      , val = this.props.value;
-	
-	    if ( this.isSuggesting() ){
-	      var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
-	        , end   = val.length - start
-	
-	      if ( start >= 0) {
-	        caretPos(input, start, start + end)
-	      }
-	    }
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: ''
-	    }
-	  },
-	
-	  render: function(){
-	    return (
-	      React.createElement("input", React.__spread({},  
-	        this.props , 
-	        {type: "text", 
-	        className: this.props.className + ' rw-input', 
-	        onKeyDown: this.props.onKeyDown, 
-	        onChange: this._change, 
-	        value: this.props.value == null ? '' : this.props.value}))
-	    )
-	  },
-	
-	  isSuggesting: function(){
-	    var val = this.props.value
-	      , isSuggestion = this._last != null
-	          && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
-	
-	    return this.props.suggest && isSuggestion
-	  },
-	
-	  accept: function(removeCaret){
-	    var val = this.getDOMNode().value || ''
-	      , end = val.length;
-	
-	    this._last = null
-	    removeCaret && caretPos(this.getDOMNode(), end, end)
-	  },
-	
-	  _change: function(e){
-	    var val = e.target.value
-	    this._last = val;
-	    this.props.onChange(e, val)
-	  },
-	
-	  focus: function(){
-	    this.getDOMNode().focus()
-	  }
-	});
-
-
-/***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	
-	module.exports = {
-	
-		elementType: createChainableTypeChecker(
-	    function (props, propName, componentName, location) {
-	
-	      if( typeof props[propName] !== 'function'){
-	        if ( React.isValidElement(props[propName]))
-	          return new Error(
-	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
-	            ' Expected an Element `type`, not an actual Element')
-	
-	        if (typeof props[propName] !== 'string')
-	          return new Error(
-	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
-	            ' Expected an Element `type` such as a tag name or return value of React.createClass(...)')
-	      }
-	      return true
-	    })
-	}
-	
-	
-	function createChainableTypeChecker(validate) {
-	
-	  function checkType(isRequired, props, propName, componentName, location) {
-	    componentName = componentName || '<<anonymous>>';
-	    if (props[propName] == null) {
-	      if (isRequired) {
-	        return new Error(
-	          "Required prop `" + propName + "` was not specified in  `" + componentName + "`.");
-	      }
-	    } 
-	    else 
-	      return validate(props, propName, componentName, location);
-	  }
-	
-	  var chainedCheckType = checkType.bind(null, false);
-	  chainedCheckType.isRequired = checkType.bind(null, true);
-	
-	  return chainedCheckType
-	}
-
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(77)
-	  , cx = __webpack_require__(13)
-	  , _  = __webpack_require__(15)
-	  , scrollTo  = __webpack_require__(97);
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'List',
-	
-	  mixins: [ 
-	    __webpack_require__(92),
-	    __webpack_require__(98)
-	  ],
-	
-	  propTypes: {
-	    data:          React.PropTypes.array,
-	    onSelect:      React.PropTypes.func,
-	    onMove:        React.PropTypes.func,
-	    itemComponent: CustomPropTypes.elementType,
-	
-	    selectedIndex: React.PropTypes.number,
-	    focusedIndex:  React.PropTypes.number,
-	    valueField:    React.PropTypes.string,
-	    textField:     React.PropTypes.string,
-	
-	    optID:         React.PropTypes.string,
-	
-	    messages:      React.PropTypes.shape({
-	      emptyList:   React.PropTypes.string
-	    }),
-	  },
-	
-	
-	  getDefaultProps: function(){
-	    return {
-	      optID:         '',
-	      onSelect:      function(){},
-	      data:          [],
-	      messages: {
-	        emptyList:   "There are no items in this list"
-	      }
-	    }
-	  },
-	
-	  getInitialState:function(){
-	    return {}
-	  },
-	
-	
-	  componentDidMount:function(prevProps, prevState){
-	    this._setScrollPosition()
-	  },
-	
-	  componentDidUpdate:function(prevProps, prevState){
-	    if ( prevState.focused !== this.props.focused)
-	      this._setScrollPosition()
-	  },
-	
-		render:function(){
-	    var $__0=     _.omit(this.props, ['data']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , ItemComponent = this.props.itemComponent
-	      , items;
-	    
-	    items = !this.props.data.length 
-	      ? React.createElement("li", null,  this.props.messages.emptyList)
-	      : this.props.data.map(function(item, idx) {
-	          var focused  = item === this.props.focused 
-	            , selected = item === this.props.selected;
-	
-	          return (React.createElement("li", {
-	            key: 'item_' + idx, 
-	            role: "option", 
-	            id:  focused ? this.props.optID : undefined, 
-	            'aria-selected': selected, 
-	            className: cx({ 
-	              'rw-list-option':    true,
-	              'rw-state-focus':    focused,
-	              'rw-state-selected': selected,
-	            }), 
-	            onClick: this.props.onSelect.bind(null, item)}, 
-	             ItemComponent
-	                ? React.createElement(ItemComponent, {item: item})
-	                : this._dataText(item)
-	            
-	          ))
-	        }.bind(this));
-	    
-			return (
-				React.createElement("ul", React.__spread({},   props , 
-	        {className:  (className + '') + ' rw-list', 
-	        ref: "scrollable", 
-	        role: "listbox"}), 
-	          items 
-				)
-			)
-		},
-	
-	
-	  _data:function(){ 
-	    return this.props.data 
-	  },
-	
-	  _setScrollPosition: function(){
-	    var list = this.getDOMNode()
-	      , idx  = this._data().indexOf(this.props.focused)
-	      , selected = list.children[idx]
-	      , handler  = this.props.onMove || scrollTo;
-	
-	    if( !selected ) return 
-	
-	    // timeout allows for element to become visible
-	    setTimeout(function()  {return handler(selected);})
-	  }
-	
-	})
-
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(77)
-	  , cx = __webpack_require__(13)
-	  , _  = __webpack_require__(15)
-	  , scrollTo  = __webpack_require__(97);
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'List',
-	
-	  mixins: [ 
-	    __webpack_require__(92),
-	    __webpack_require__(98)
-	  ],
-	
-	  propTypes: {
-	    data:           React.PropTypes.array,
-	    onSelect:       React.PropTypes.func,
-	    onMove:         React.PropTypes.func,
-	
-	    ItemComponent:  CustomPropTypes.elementType,
-	    GroupComponent: CustomPropTypes.elementType,
-	
-	    selected:       React.PropTypes.any,
-	    focused:        React.PropTypes.any,
-	
-	    valueField:     React.PropTypes.string,
-	    textField:      React.PropTypes.string,
-	 
-	    optID:          React.PropTypes.string,
-	
-	    groupBy:        React.PropTypes.oneOfType([
-	                     React.PropTypes.func,
-	                     React.PropTypes.string
-	                    ]),
-	
-	    messages:       React.PropTypes.shape({
-	      emptyList:    React.PropTypes.string
-	    }),
-	  },
-	
-	
-	  getDefaultProps: function(){
-	    return {
-	      optID:         '',
-	      onSelect:      function(){},
-	      data:          [],
-	      messages: {
-	        emptyList:   "There are no items in this list"
-	      }
-	    }
-	  },
-	
-	  getInitialState: function() {
-	    var keys = [];
-	
-	    return {
-	      groups: this._group(this.props.groupBy, this.props.data, keys),
-	
-	      sortedKeys: keys
-	    };
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var keys = [];
-	
-	    if(nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy)
-	      this.setState({ 
-	        groups: this._group(nextProps.groupBy, nextProps.data, keys),
-	        sortedKeys: keys
-	      })
-	  },
-	
-	  componentDidMount: function(prevProps, prevState){
-	    this._setScrollPosition()
-	  },
-	
-	  componentDidUpdate: function(prevProps, prevState){
-	    if ( prevProps.focused !== this.props.focused)
-	      this._setScrollPosition()
-	  },
-	
-	  render: function(){
-	    var $__0= 
-	        
-	          _.omit(this.props, ['data', 'selectedIndex']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
-	      , groups = this.state.groups
-	      , items = []
-	      , idx = -1
-	      , group;
-	    
-	    if ( this.props.data.length ){
-	      items = this.state.sortedKeys
-	        .reduce( function(items, key)  {
-	          group = groups[key]
-	          items.push(this._renderGroupHeader(key))
-	
-	          for (var itemIdx = 0; itemIdx < group.length; itemIdx++) 
-	            items.push(
-	              this._renderItem(key, group[itemIdx], ++idx))
-	
-	          return items
-	        }.bind(this), [])
-	    }
-	    else 
-	      items = React.createElement("li", null,  this.props.messages.emptyList)
-	
-	    return (
-	      React.createElement("ul", React.__spread({},   props , 
-	        {className:  (className + '') + ' rw-list  rw-list-grouped', 
-	        ref: "scrollable", 
-	        role: "listbox"}), 
-	        items 
-	      )
-	    )
-	  },
-	
-	  _renderGroupHeader:function(group){
-	    var ItemComponent = this.props.groupComponent;
-	
-	    return (React.createElement("li", {
-	      key: 'item_' + group, 
-	      tabIndex: "-1", 
-	      role: "separator", 
-	      className: "rw-list-optgroup"}, 
-	         ItemComponent ? React.createElement(ItemComponent, {item: group}) : group
-	    ))
-	  },
-	
-	  _renderItem:function(group, item, idx){
-	    var focused  = this.props.focused  === item
-	      , selected = this.props.selected === item
-	      , ItemComponent = this.props.itemComponent;
-	
-	    //console.log('hi')
-	    return (
-	      React.createElement("li", {
-	        key: 'item_' + group + '_' + idx, 
-	        role: "option", 
-	        id:  focused ? this.props.optID : undefined, 
-	        'aria-selected': selected, 
-	        onClick: this.props.onSelect.bind(null, item), 
-	        className: cx({ 
-	          'rw-state-focus':    focused,
-	          'rw-state-selected': selected,
-	          'rw-list-option':    true
-	        })}, 
-	           ItemComponent
-	              ? React.createElement(ItemComponent, {item: item})
-	              : this._dataText(item)
-	          
-	      ))
-	  },
-	
-	  _isIndexOf:function(idx, item){
-	    return this.props.data[idx] === item
-	  },
-	
-	  _group:function(groupBy, data, keys){
-	    var iter = typeof groupBy === 'function' ? groupBy : function(item)  {return item[groupBy];}
-	
-	    // the keys array ensures that groups are rendered in the order they came in
-	    // which means that if you sort the data array it will render sorted, 
-	    // so long as you also sorted by group
-	    keys = keys || []
-	
-	    return data.reduce( function(grps, item)  {
-	      var group = iter(item);
-	
-	      _.has(grps, group) 
-	        ? grps[group].push(item)
-	        : (keys.push(group), grps[group] = [item])
-	
-	      return grps
-	    }, {}) 
-	  },
-	
-	  _data:function(){ 
-	    var groups = this.state.groups;
-	
-	    return this.state.sortedKeys
-	      .reduce( function(flat, grp)  {return flat.concat(groups[grp]);}, [])
-	  },
-	
-	  _setScrollPosition: function(){
-	    var selected = this.getItemDOMNode(this.props.focused)
-	      , handler  = this.props.onMove || scrollTo;
-	
-	    if( !selected ) return 
-	
-	    setTimeout(function()  {return handler(selected);})
-	  },
-	
-	  getItemDOMNode:function(item){
-	    var list = this.getDOMNode()
-	      , groups = this.state.groups
-	      , idx = -1
-	      , itemIdx, child;
-	
-	    this.state.sortedKeys.some(function(group)  {
-	      itemIdx = groups[group].indexOf(item)
-	      idx++;
-	
-	      if( itemIdx !== -1) 
-	        return !!(child = list.children[idx + itemIdx + 1])
-	
-	      idx += groups[group].length
-	    })
-	
-	    return child
-	  }
-	
-	})
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var METHODS = ['next','prev', 'first', 'last'];
-	
-	module.exports = function validateListComponent(list){
-	
-	  if( true){
-	    METHODS.forEach( function(method)  
-	      {return assert(typeof list[method] === 'function', 'List components must implement a `' + method +'()` method');} )
-	  }
-	}
-	
-	function assert(condition, msg){
-	  var error
-	
-	  if ( !condition){
-	    error = new Error(msg)
-	    error.framesToPop = 1;
-	    throw error;
-	  }  
-	}
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , setter  = __webpack_require__(99)
-	  , globalize = __webpack_require__(101);
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'NumberPickerInput', 
-	
-	  propTypes: {
-	    value:        React.PropTypes.number,
-	    format:       React.PropTypes.string,
-	    min:          React.PropTypes.number,
-	    
-	    onChange:     React.PropTypes.func.isRequired,
-	    onKeyDown:    React.PropTypes.func,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: null,
-	      format: 'd',
-	      editing: false,
-	    }
-	  },
-	
-	  getInitialState: function() {
-	    var value = this.props.editing 
-	          ? this.props.value
-	          : globalize.format(this.props.value, this.props.format)
-	
-	    return { 
-	      stringValue: value
-	    }
-	  },
-	  
-	  componentWillReceiveProps: function(nextProps) {
-	    var value = nextProps.editing 
-	          ? nextProps.value
-	          : globalize.format(nextProps.value, nextProps.format)
-	
-	    if ( isNaN(nextProps.value) ) 
-	      value = ''
-	
-	    this.current(value)
-	  },
-	
-	  render: function(){
-	    var value = this.state.stringValue;
-	
-	    return (
-	      React.createElement("input", React.__spread({},  this.props, 
-	        {type: "text", 
-	        className: "rw-input", 
-	        onChange: this._change, 
-	        onBlur: this._finish, 
-	        'aria-disabled': this.props.disabled, 
-	        'aria-readonly': this.props.readOnly, 
-	        disabled: this.props.disabled, 
-	        readOnly: this.props.readOnly, 
-	        value: value}))
-	    )
-	  },
-	
-	  _change: function(e){
-	    var val = e.target.value
-	      , number = +e.target.value
-	      , isNull = val !== 0 && !val
-	      , hasMin = isFinite(this.props.min)
-	
-	    //console.log(hasMin, this.props.min)
-	    //a null value is only possible when there is no min
-	    if(!hasMin && isNull)
-	      return this.props.onChange(null)
-	
-	    if(this.isValid(number) && number !== this.props.value)
-	      return this.props.onChange(number)
-	
-	    //console.log(val !== 0 && !val)
-	    this.current(e.target.value)
-	  },
-	
-	  _finish: function(e){
-	    var number = +this.state.stringValue
-	
-	    // if number is below the min
-	    // we need to flush low values eventually, onBlur is definativly no typing
-	    if(!isNaN(number) && number < this.props.min) {
-	      this.props.onChange(number)
-	    }
-	  },
-	
-	  isValid: function(value) {
-	    var num = +value;
-	
-	    if(isNaN(num)) return false
-	    return num >= this.props.min
-	  },
-	
-	  //this intermediate state is for when one runs into the decimal or are typing the number
-	  current: setter('stringValue'),
-	
-	});
-
-
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	module.exports = React.createClass({
-	  
-	  displayName: 'MultiselectInput',
-	
-	  propTypes: {
-	    value:        React.PropTypes.string,
-	    onChange:     React.PropTypes.func.isRequired,
-	
-	    disabled:     React.PropTypes.bool,
-	    readOnly:     React.PropTypes.bool,
-	  },
-	
-	
-	  componentDidUpdate: function() {
-	    this.props.focused && this.focus()
-	  },
-	
-	  render: function(){
-	      var value = this.props.value
-	        , placeholder = this.props.placeholder
-	        , size = Math.max((value || placeholder).length, 1);
-	
-	      return (
-	        React.createElement("input", React.__spread({},  this.props, 
-	          {type: "text", 
-	          className: "rw-input", 
-	          'aria-disabled': this.props.disabled, 
-	          'aria-readonly': this.props.readOnly, 
-	          disabled: this.props.disabled, 
-	          readOnly: this.props.readOnly, 
-	          size: size}))
-	      )
-	  },
-	
-	  focus: function(){
-	    this.getDOMNode().focus()
-	  }
-	
-	})
-
-
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _     = __webpack_require__(15)
-	  , cx    = __webpack_require__(13)
-	  , Btn   = __webpack_require__(75)
-	
-	module.exports = React.createClass({
-	  
-	  displayName: 'MultiselectTagList',
-	
-	  mixins: [
-	    __webpack_require__(92),
-	    __webpack_require__(88)
-	  ],
-	
-	  propTypes: {
-	    value:          React.PropTypes.array,
-	
-	    valueField:     React.PropTypes.string,
-	    textField:      React.PropTypes.string,
-	
-	    valueComponent: React.PropTypes.func,
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.array,
-	                      React.PropTypes.oneOf(['disabled'])
-	                    ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.array,
-	                      React.PropTypes.oneOf(['readonly'])
-	                    ])
-	  },
-	
-	
-	  getInitialState: function(){
-	    return {
-	      focused: null
-	    }
-	  },
-	
-	  render: function(){
-	      var ValueComponent = this.props.valueComponent
-	        , props     = _.omit(this.props, ['value', 'disabled', 'readOnly'])
-	        , focusIdx  = this.state.focused
-	        , value     = this.props.value;
-	
-	      return (
-	        React.createElement("ul", React.__spread({},  props, 
-	          {className: "rw-multiselect-taglist"}), 
-	           value.map( function(item, i)  {
-	            var disabled = this.isDisabled(item)
-	              , readonly = this.isReadOnly(item);
-	
-	            return (
-	              React.createElement("li", {key: i, 
-	                  className: cx({
-	                    'rw-state-focus': !disabled && focusIdx === i,
-	                    'rw-state-disabled': disabled,
-	                    'rw-state-readonly': readonly})
-	                  }, 
-	                 ValueComponent
-	                    ? React.createElement(ValueComponent, {item: item })
-	                    : this._dataText(item), 
-	                
-	                React.createElement(Btn, {tabIndex: "-1", onClick: !(disabled || readonly) && this._delete.bind(null, item), 
-	                  'aria-disabled': disabled, 
-	                  disabled: disabled}, 
-	                  "×", React.createElement("span", {className: "rw-sr"},  "Remove " + this._dataText(item))
-	                )
-	              ))
-	          }.bind(this))
-	        )
-	      )
-	  },
-	
-	  _delete: function(val, e){
-	    this.props.onDelete(val)
-	  },
-	
-	  removeCurrent: function(){
-	    var val = this.props.value[this.state.focused];
-	
-	    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
-	      this.props.onDelete(val)
-	  },
-	
-	  isDisabled: function(val, isIdx) {
-	    if(isIdx) val = this.props.value[val]
-	
-	    return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
-	  },
-	
-	  isReadOnly: function(val, isIdx) {
-	    if(isIdx) val = this.props.value[val]
-	
-	    return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
-	  },
-	
-	  removeNext: function(){
-	    var val = this.props.value[this.props.value.length - 1];
-	
-	    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
-	      this.props.onDelete(val)
-	  },
-	
-	  clear: function(){
-	    this.setState({ focused: null })
-	  },
-	
-	  first: function(){
-	    var idx = 0
-	      , l = this.props.value.length;
-	
-	    while( idx < l && this.isDisabled(idx, true) )
-	      idx++
-	
-	    if (idx !== l)
-	      this.setState({ focused: idx })
-	  },
-	
-	  last: function(){
-	    var idx = this.props.value.length - 1;
-	
-	    while( idx > -1 && this.isDisabled(idx, true) )
-	      idx--
-	
-	    if (idx >= 0)
-	      this.setState({ focused: idx })
-	  },
-	
-	  next: function(){
-	    var nextIdx = this.state.focused + 1
-	      , l = this.props.value.length;
-	
-	    while( nextIdx < l && this.isDisabled(nextIdx, true) )
-	      nextIdx++
-	
-	    if ( this.state.focused === null )
-	      return
-	
-	    if ( nextIdx >= l )
-	      return this.clear();
-	
-	    this.setState({ focused: nextIdx })
-	  },
-	
-	  prev: function(){
-	    var nextIdx = this.state.focused;
-	
-	    if ( nextIdx === null )
-	      nextIdx = this.props.value.length
-	
-	    nextIdx--;
-	
-	    while( nextIdx > -1 && this.isDisabled(nextIdx, true) )
-	      nextIdx--
-	
-	    if ( nextIdx >= 0 )
-	      this.setState({ focused: nextIdx  })
-	  }
-	})
-
-
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(70)
-	  , List = __webpack_require__(78)
-	  , CustomPropTypes  = __webpack_require__(77)
-	  , _ = __webpack_require__(15) // omit
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'TimeList',
-	
-	  propTypes: {
-	    value:          React.PropTypes.instanceOf(Date),
-	    min:            React.PropTypes.instanceOf(Date),
-	    max:            React.PropTypes.instanceOf(Date),
-	    step:           React.PropTypes.number,
-	    itemComponent:  CustomPropTypes.elementType,
-	    onSelect:       React.PropTypes.func,
-	    preserveDate:   React.PropTypes.bool,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      step:   30,
-	      format: 't',
-	      onSelect: function(){},
-	      preserveDate: true,
-	      delay: 300
-	    }
-	  },
-	
-	  getInitialState: function(){
-	    var data = this._dates(this.props)
-	      , focusedItem = this._closestDate(data, this.props.value);
-	
-	    return { 
-	      focusedItem: focusedItem || data[0],
-	      dates: data
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    var data = this._dates(nextProps)
-	      , focusedItem = this._closestDate(data, this.props.value);
-	
-	    if ( nextProps.value !== this.props.value)
-	      this.setState({ 
-	        focusedItem: focusedItem || data[0],
-	        dates: data
-	      })
-	  },
-	
-	  render: function(){
-	    var times = this.state.dates
-	      , date  = this._closestDate(times, this.props.value);
-	
-	    return (
-	      React.createElement(List, React.__spread({},  _.omit(this.props, 'value'), 
-	        {ref: "list", 
-	        data: times, 
-	        textField: "label", 
-	        valueField: "date", 
-	        selected: date, 
-	        focused: this.state.focusedItem, 
-	        itemComponent: this.props.itemComponent, 
-	        onSelect: this.props.onSelect}))
-	    )
-	  },
-	
-	  _closestDate: function(times, date){
-	    var roundTo = 1000 * 60 * this.props.step
-	      , inst = null
-	      , label;
-	
-	    if( !date) return null
-	
-	    date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
-	    label = dates.format(date, this.props.format)
-	
-	    times.some( function(time)  {
-	      if( time.label === label ) 
-	        return (inst = time)
-	    })
-	
-	    return inst
-	  },
-	
-	  _data:function(){ 
-	    return this.state.dates
-	  },
-	
-	  _dates: function(props){
-	    var times  = [], i = 0
-	      , values = this._dateValues(props)
-	      , start  = values.min
-	      , startDay = dates.date(start);
-	
-	    // debugger;
-	    while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
-	      i++
-	      times.push({ date: start, label: dates.format(start, props.format) })
-	      start = dates.add(start, props.step || 30, 'minutes')
-	    }
-	    return times
-	  },
-	
-	  _dateValues: function(props){
-	    var value = props.value || dates.today()
-	      , useDate = props.preserveDate
-	      , min = props.min
-	      , max = props.max
-	      , start, end;
-	
-	    //compare just the time regradless of whether they fall on the same day
-	    if(!useDate) {
-	      start = dates.startOf(dates.merge(new Date, min), 'minutes')
-	      end   = dates.startOf(dates.merge(new Date, max), 'minutes')
-	
-	      if( dates.lte(end, start) && dates.gt(max, min, 'day'))
-	        end = dates.tomorrow()
-	
-	      return {
-	        min: start,
-	        max: end
-	      }
-	    }
-	
-	    //date parts are equal
-	    return {
-	      min: dates.eq(value, min, 'day') ? min : dates.today(),
-	      max: dates.eq(value, max, 'day') ? min : dates.tomorrow()
-	    }
-	
-	  },
-	
-	  _keyDown: function(e){
-	    var key = e.key
-	      , character = String.fromCharCode(e.keyCode)
-	      , focusedItem  = this.state.focusedItem
-	      , list = this.refs.list;
-	
-	    if ( key === 'End' )
-	      this.setState({ focusedItem: list.last() })
-	
-	    else if ( key === 'Home' )
-	      this.setState({ focusedItem: list.first() })
-	
-	    else if ( key === 'Enter' )
-	      this.props.onSelect(focusedItem)
-	
-	    else if ( key === 'ArrowDown' ) {
-	      e.preventDefault()
-	      this.setState({ focusedItem: list.next(focusedItem) })
-	    }
-	    else if ( key === 'ArrowUp' ) {
-	      e.preventDefault()
-	      this.setState({ focusedItem: list.prev(focusedItem) })
-	    }
-	    else {
-	      e.preventDefault()
-	
-	      this.search(character, function(item)  {
-	        this.setState({ focusedItem: item })
-	      }.bind(this))
-	    }
-	  },
-	
-	  search: function(character, cb){
-	    var word = ((this._searchTerm || '') + character).toLowerCase();
-	      
-	    clearTimeout(this._timer)
-	    this._searchTerm = word 
-	
-	    this._timer = setTimeout(function()  {
-	      var list = this.refs.list
-	        , item = list.next(this.state.focusedItem, word);
-	      
-	      this._searchTerm = ''
-	      if (item) cb(item)
-	
-	    }.bind(this), this.props.delay)
-	  },
-	
-	});
-
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx = __webpack_require__(13)
-	  , dates = __webpack_require__(70);
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'DatePickerInput',
-	
-	
-	  propTypes: {
-	    format:       React.PropTypes.string,
-	    parse:        React.PropTypes.func.isRequired,
-	
-	    value:        React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      textValue: ''
-	    }
-	  },
-	
-	  componentWillReceiveProps: function(nextProps) {
-	    this.setState({
-	      textValue: formatDate(
-	            nextProps.value
-	          , nextProps.editing && nextProps.editFormat 
-	              ? nextProps.editFormat 
-	              : nextProps.format)
-	    })
-	  },
-	
-	  getInitialState: function(){
-	    var text = formatDate(
-	            this.props.value
-	          , this.props.editing && this.props.editFormat 
-	              ? this.props.editFormat 
-	              : this.props.format)
-	
-	    this.lastValue = text
-	    return {
-	      textValue: text
-	    }
-	  },
-	
-	  render: function(){
-	    var value = this.state.textValue
-	
-	    return (
-	      React.createElement("input", React.__spread({},  
-	        this.props, 
-	        {type: "text", 
-	        className: cx({'rw-input': true }), 
-	        value: value, 
-	        'aria-disabled': this.props.disabled, 
-	        'aria-readonly': this.props.readOnly, 
-	        disabled: this.props.disabled, 
-	        readOnly: this.props.readOnly, 
-	        onChange: this._change, 
-	        onBlur: chain(this.props.blur, this._blur, this)}))
-	    )
-	  },
-	
-	  _change: function(e){
-	    this.setState({ textValue: e.target.value });
-	  },
-	
-	  _blur: function(e){
-	    var val = e.target.value 
-	    
-	    //console.log('blur', val, e.target, '\nlast', this.lastValue)
-	
-	    if ( val === this.lastValue) return
-	
-	    this.lastValue = val;
-	    this.props.onChange(this.props.parse(val), val);
-	    
-	  },
-	
-	  focus: function(){
-	    this.getDOMNode().focus()
-	  }
-	
-	});
-	
-	function isValid(d) {
-	  return !isNaN(d.getTime());
-	}
-	
-	function formatDate(date, format){
-	  var val = ''
-	
-	  if ( (date instanceof Date) && isValid(date) )
-	    val = dates.format(date, format)
-	
-	  return val;
-	}
-	
-	function chain(a,b, thisArg){
-	  return function(){
-	    a && a.apply(thisArg, arguments)
-	    b && b.apply(thisArg, arguments)
-	  }
-	}
-
-/***/ },
-/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(Buffer) {//  Chance.js 0.7.1
@@ -20089,7 +17542,2554 @@
 	    }
 	})();
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(102).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(101).Buffer))
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _ = __webpack_require__(15) //invert, transform
+	  , React = __webpack_require__(1)
+	  , compat = __webpack_require__(93)
+	
+	
+	function compatPropType(handler, propType) {
+	
+	  return compat.propType(function(props, propName, componentName, location){
+	    if(props[propName] !== undefined){
+	      if ( !props[handler] )
+	        return new Error(
+	            'ReactWidgets: you have provided a `' + propName + '` prop to ' 
+	          + '`' + componentName + '` without an `' + handler + '` handler. This will render a read-only field. ' 
+	          + 'If the field should be mutable use `' + defaultKey(propName) + '`. Otherwise, set `' + handler + '`')
+	
+	      return propType && propType(props, propName, componentName, location)
+	    }
+	  })
+	}
+	
+	module.exports = {
+	
+	  createControlledClass: function(Component, controlledValues, taps) {
+	    // var publicMethods 
+	    //       = _.transform(publicApi || [], function(obj, method) {
+	    //           obj[method] = function (...args){ 
+	    //             return this.refs[this._innerRef][method](args) 
+	    //           }
+	    //         }, {})
+	
+	    var types = _.transform(controlledValues, function(obj, handler, prop){
+	          var type = Component.type.propTypes[prop];
+	
+	          obj[prop] = compatPropType(handler, type)
+	          obj[defaultKey(prop)] = type
+	        }, {});
+	
+	    taps = taps || {}
+	
+	    return React.createClass({
+	
+	      displayName: Component.displayName,
+	
+	      propTypes: types,
+	
+	      getInitialState: function(){
+	        var props = this.props
+	          , keys  = Object.keys(controlledValues);
+	
+	        return _.transform(keys, function(state, key){
+	          state[key] = props[defaultKey(key)]
+	        }, {})
+	      },
+	
+	      shouldComponentUpdate: function() {
+	        //let the setState trigger the update
+	        return !this._notifying || !this._notifying.length;
+	      },
+	
+	      render: function(){
+	        var props, handles;
+	
+	        props = _.transform(controlledValues, function(obj, handle, prop)  {
+	          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
+	        }.bind(this), {})
+	        
+	        handles = _.transform(controlledValues, function(obj, handle, prop)  {
+	          obj[handle] = setAndNotify.bind(this, prop)
+	        }.bind(this), {})
+	
+	        props = _.merge(this.props, props, handles)
+	
+	        for(var k in taps) if (_.has(props, k)) {
+	          props[k] = chain(this, taps[k], props[k])
+	        }
+	        //this._innerRef = props.ref = props.ref || 'component'
+	
+	        return React.createElement(Component, props, this.props.children);
+	      }
+	    })
+	
+	    function setAndNotify(prop, value){
+	      /*jshint validthis:true */
+	      var handler    = controlledValues[prop]
+	        , controlled = handler && isProp(this.props, prop)
+	        , st = {}
+	        , args;
+	
+	      if ( !this._notifying ) this._notifying = [];
+	
+	      if( this.props[handler] ) {
+	        args = [].slice.call(arguments, 1)
+	        this._notifying.push(true)
+	        this.props[handler].apply(this, args)
+	        this._notifying.pop()
+	      }
+	        
+	      st[prop] = value
+	      this.setState(st)
+	
+	      return !controlled
+	    }
+	
+	    function isProp(props, prop){
+	      return props[prop] !== undefined;
+	    }
+	  }
+	}
+	
+	
+	// function invert(controlledValues){
+	//   return _.transform(controlledValues, (val, key ) => ,)
+	// }
+	
+	function defaultKey(key){
+	  return 'default' + key.charAt(0).toUpperCase() + key.substr(1)
+	}
+	
+	function chain(thisArg, a, b){
+	  return function chainedFunction(){
+	    a && a.apply(thisArg, arguments)
+	    b && b.apply(thisArg, arguments)
+	  }
+	}
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	
+	module.exports = {
+	
+		elementType: createChainableTypeChecker(
+	    function (props, propName, componentName, location) {
+	
+	      if( typeof props[propName] !== 'function'){
+	        if ( React.isValidElement(props[propName]))
+	          return new Error(
+	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
+	            ' Expected an Element `type`, not an actual Element')
+	
+	        if (typeof props[propName] !== 'string')
+	          return new Error(
+	            'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
+	            ' Expected an Element `type` such as a tag name or return value of React.createClass(...)')
+	      }
+	      return true
+	    })
+	}
+	
+	
+	function createChainableTypeChecker(validate) {
+	
+	  function checkType(isRequired, props, propName, componentName, location) {
+	    componentName = componentName || '<<anonymous>>';
+	    if (props[propName] == null) {
+	      if (isRequired) {
+	        return new Error(
+	          "Required prop `" + propName + "` was not specified in  `" + componentName + "`.");
+	      }
+	    } 
+	    else 
+	      return validate(props, propName, componentName, location);
+	  }
+	
+	  var chainedCheckType = checkType.bind(null, false);
+	  chainedCheckType.isRequired = checkType.bind(null, true);
+	
+	  return chainedCheckType
+	}
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React  = __webpack_require__(1)
+	  , $ = __webpack_require__(71);
+	
+	
+	var PopupContent = React.createClass({displayName: 'PopupContent',
+	  render: function(){
+	    var Content = React.Children.only(this.props.children)
+	
+	    Content.props.className = (Content.props.className || '') + ' rw-popup rw-widget';
+	
+	    return Content
+	  }
+	})
+	
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+		propTypes: {
+	    duration:       React.PropTypes.number,
+	    onRequestClose: React.PropTypes.func.isRequired,
+	    onClosing:      React.PropTypes.func,
+	    onOpening:      React.PropTypes.func,
+	    onClose:        React.PropTypes.func,
+	    onOpen:         React.PropTypes.func
+		},
+	
+	  getDefaultProps: function(){
+	    return {
+	      duration:    200,
+	      open:        false,
+	      onClosing:   function(){},
+	      onOpening:   function(){},
+	      onClose:     function(){},
+	      onOpen:      function(){},
+	    }
+	  },
+	
+		componentDidMount: function(){
+	    !this.props.open && this.close(0)
+		},
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    this.setState({
+	      contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
+	    })
+	  },
+	
+	  componentDidUpdate: function(pvProps, pvState){
+	    var closing =  pvProps.open && !this.props.open
+	      , opening = !pvProps.open && this.props.open;
+	
+	    if (opening)      this.open()
+	    else if (closing) this.close()
+	  },
+	
+		render: function(){
+	    var $__0=      this.props,className=$__0.className,open=$__0.open,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1,open:1})
+	
+			return (
+	      React.createElement("div", React.__spread({},  props, {className:  (className ||'') + " rw-popup-container"}), 
+	        React.createElement(PopupContent, {ref: "content"}, 
+	           this.props.children
+	        )
+	      )
+			)
+		},
+	
+	  dimensions: function(){
+	    var el = this.getDOMNode();
+	
+	    el.style.display = 'block'
+	    el.style.height  = $.height(this.refs.content.getDOMNode()) + 'px'
+	  },
+	
+	  open: function(){
+	    var self = this
+	      , anim = this.getDOMNode()
+	      , el   = this.refs.content.getDOMNode();
+	
+	    this.ORGINAL_POSITION = $.css(el, 'position')
+	
+	    this._isOpening = true
+	    this.dimensions()
+	    this.props.onOpening()
+	
+	    el.style.position = 'absolute'
+	
+	    $.animate(el
+	      , { top: 0 }
+	      , self.props.duration
+	      , function(){
+	          if ( !self._isOpening ) return
+	          el.style.position = self.ORGINAL_POSITION
+	          anim.style.overflow = 'visible'
+	          self.ORGINAL_POSITION = null
+	          self.props.onOpen()
+	        })
+	  },
+	
+	  close: function(dur){
+	    var self = this
+	      , el   = this.refs.content.getDOMNode()
+	      , anim = this.getDOMNode();
+	
+	    this.ORGINAL_POSITION = $.css(el, 'position')
+	
+	    this._isOpening = false
+	    this.dimensions()
+	    this.props.onClosing()
+	
+	    anim.style.overflow = 'hidden'
+	    el.style.position = 'absolute'
+	
+	    $.animate(el
+	      , { top: '-100%' }
+	      , dur === undefined ? this.props.duration : dur
+	      , function() {
+	          if ( self._isOpening ) return
+	          el.style.position = self.ORGINAL_POSITION
+	
+	          anim.style.display = 'none'
+	          self.ORGINAL_POSITION = null
+	          self.props.onClose()
+	        })
+	  }
+	
+	})
+	
+	
+	function childKey(children){
+	  var nextChildMapping = React.Children.map(children, function(c)  {return c;} );
+	  for(var key in nextChildMapping) return key
+	}
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , CustomPropTypes  = __webpack_require__(66)
+	  , cx = __webpack_require__(13)
+	  , _  = __webpack_require__(15)
+	  , scrollTo  = __webpack_require__(94);
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'List',
+	
+	  mixins: [ 
+	    __webpack_require__(89),
+	    __webpack_require__(95)
+	  ],
+	
+	  propTypes: {
+	    data:          React.PropTypes.array,
+	    onSelect:      React.PropTypes.func,
+	    onMove:        React.PropTypes.func,
+	    itemComponent: CustomPropTypes.elementType,
+	
+	    selectedIndex: React.PropTypes.number,
+	    focusedIndex:  React.PropTypes.number,
+	    valueField:    React.PropTypes.string,
+	    textField:     React.PropTypes.string,
+	
+	    optID:         React.PropTypes.string,
+	
+	    messages:      React.PropTypes.shape({
+	      emptyList:   React.PropTypes.string
+	    }),
+	  },
+	
+	
+	  getDefaultProps: function(){
+	    return {
+	      optID:         '',
+	      onSelect:      function(){},
+	      data:          [],
+	      messages: {
+	        emptyList:   "There are no items in this list"
+	      }
+	    }
+	  },
+	
+	  getInitialState:function(){
+	    return {}
+	  },
+	
+	
+	  componentDidMount:function(prevProps, prevState){
+	    this._setScrollPosition()
+	  },
+	
+	  componentDidUpdate:function(prevProps, prevState){
+	    if ( prevState.focused !== this.props.focused)
+	      this._setScrollPosition()
+	  },
+	
+		render:function(){
+	    var $__0=     _.omit(this.props, ['data']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , ItemComponent = this.props.itemComponent
+	      , items;
+	    
+	    items = !this.props.data.length 
+	      ? React.createElement("li", null,  this.props.messages.emptyList)
+	      : this.props.data.map(function(item, idx) {
+	          var focused  = item === this.props.focused 
+	            , selected = item === this.props.selected;
+	
+	          return (React.createElement("li", {
+	            key: 'item_' + idx, 
+	            role: "option", 
+	            id:  focused ? this.props.optID : undefined, 
+	            'aria-selected': selected, 
+	            className: cx({ 
+	              'rw-list-option':    true,
+	              'rw-state-focus':    focused,
+	              'rw-state-selected': selected,
+	            }), 
+	            onClick: this.props.onSelect.bind(null, item)}, 
+	             ItemComponent
+	                ? React.createElement(ItemComponent, {item: item})
+	                : this._dataText(item)
+	            
+	          ))
+	        }.bind(this));
+	    
+			return (
+				React.createElement("ul", React.__spread({},   props , 
+	        {className:  (className + '') + ' rw-list', 
+	        ref: "scrollable", 
+	        role: "listbox"}), 
+	          items 
+				)
+			)
+		},
+	
+	
+	  _data:function(){ 
+	    return this.props.data 
+	  },
+	
+	  _setScrollPosition: function(){
+	    var list = this.getDOMNode()
+	      , idx  = this._data().indexOf(this.props.focused)
+	      , selected = list.children[idx]
+	      , handler  = this.props.onMove || scrollTo;
+	
+	    if( !selected ) return 
+	
+	    // timeout allows for element to become visible
+	    setTimeout(function()  {return handler(selected);})
+	  }
+	
+	})
+
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , CustomPropTypes  = __webpack_require__(66)
+	  , cx = __webpack_require__(13)
+	  , _  = __webpack_require__(15)
+	  , scrollTo  = __webpack_require__(94);
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'List',
+	
+	  mixins: [ 
+	    __webpack_require__(89),
+	    __webpack_require__(95)
+	  ],
+	
+	  propTypes: {
+	    data:           React.PropTypes.array,
+	    onSelect:       React.PropTypes.func,
+	    onMove:         React.PropTypes.func,
+	
+	    ItemComponent:  CustomPropTypes.elementType,
+	    GroupComponent: CustomPropTypes.elementType,
+	
+	    selected:       React.PropTypes.any,
+	    focused:        React.PropTypes.any,
+	
+	    valueField:     React.PropTypes.string,
+	    textField:      React.PropTypes.string,
+	 
+	    optID:          React.PropTypes.string,
+	
+	    groupBy:        React.PropTypes.oneOfType([
+	                     React.PropTypes.func,
+	                     React.PropTypes.string
+	                    ]),
+	
+	    messages:       React.PropTypes.shape({
+	      emptyList:    React.PropTypes.string
+	    }),
+	  },
+	
+	
+	  getDefaultProps: function(){
+	    return {
+	      optID:         '',
+	      onSelect:      function(){},
+	      data:          [],
+	      messages: {
+	        emptyList:   "There are no items in this list"
+	      }
+	    }
+	  },
+	
+	  getInitialState: function() {
+	    var keys = [];
+	
+	    return {
+	      groups: this._group(this.props.groupBy, this.props.data, keys),
+	
+	      sortedKeys: keys
+	    };
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var keys = [];
+	
+	    if(nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy)
+	      this.setState({ 
+	        groups: this._group(nextProps.groupBy, nextProps.data, keys),
+	        sortedKeys: keys
+	      })
+	  },
+	
+	  componentDidMount: function(prevProps, prevState){
+	    this._setScrollPosition()
+	  },
+	
+	  componentDidUpdate: function(prevProps, prevState){
+	    if ( prevProps.focused !== this.props.focused)
+	      this._setScrollPosition()
+	  },
+	
+	  render: function(){
+	    var $__0= 
+	        
+	          _.omit(this.props, ['data', 'selectedIndex']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	      , groups = this.state.groups
+	      , items = []
+	      , idx = -1
+	      , group;
+	    
+	    if ( this.props.data.length ){
+	      items = this.state.sortedKeys
+	        .reduce( function(items, key)  {
+	          group = groups[key]
+	          items.push(this._renderGroupHeader(key))
+	
+	          for (var itemIdx = 0; itemIdx < group.length; itemIdx++) 
+	            items.push(
+	              this._renderItem(key, group[itemIdx], ++idx))
+	
+	          return items
+	        }.bind(this), [])
+	    }
+	    else 
+	      items = React.createElement("li", null,  this.props.messages.emptyList)
+	
+	    return (
+	      React.createElement("ul", React.__spread({},   props , 
+	        {className:  (className + '') + ' rw-list  rw-list-grouped', 
+	        ref: "scrollable", 
+	        role: "listbox"}), 
+	        items 
+	      )
+	    )
+	  },
+	
+	  _renderGroupHeader:function(group){
+	    var ItemComponent = this.props.groupComponent;
+	
+	    return (React.createElement("li", {
+	      key: 'item_' + group, 
+	      tabIndex: "-1", 
+	      role: "separator", 
+	      className: "rw-list-optgroup"}, 
+	         ItemComponent ? React.createElement(ItemComponent, {item: group}) : group
+	    ))
+	  },
+	
+	  _renderItem:function(group, item, idx){
+	    var focused  = this.props.focused  === item
+	      , selected = this.props.selected === item
+	      , ItemComponent = this.props.itemComponent;
+	
+	    //console.log('hi')
+	    return (
+	      React.createElement("li", {
+	        key: 'item_' + group + '_' + idx, 
+	        role: "option", 
+	        id:  focused ? this.props.optID : undefined, 
+	        'aria-selected': selected, 
+	        onClick: this.props.onSelect.bind(null, item), 
+	        className: cx({ 
+	          'rw-state-focus':    focused,
+	          'rw-state-selected': selected,
+	          'rw-list-option':    true
+	        })}, 
+	           ItemComponent
+	              ? React.createElement(ItemComponent, {item: item})
+	              : this._dataText(item)
+	          
+	      ))
+	  },
+	
+	  _isIndexOf:function(idx, item){
+	    return this.props.data[idx] === item
+	  },
+	
+	  _group:function(groupBy, data, keys){
+	    var iter = typeof groupBy === 'function' ? groupBy : function(item)  {return item[groupBy];}
+	
+	    // the keys array ensures that groups are rendered in the order they came in
+	    // which means that if you sort the data array it will render sorted, 
+	    // so long as you also sorted by group
+	    keys = keys || []
+	
+	    return data.reduce( function(grps, item)  {
+	      var group = iter(item);
+	
+	      _.has(grps, group) 
+	        ? grps[group].push(item)
+	        : (keys.push(group), grps[group] = [item])
+	
+	      return grps
+	    }, {}) 
+	  },
+	
+	  _data:function(){ 
+	    var groups = this.state.groups;
+	
+	    return this.state.sortedKeys
+	      .reduce( function(flat, grp)  {return flat.concat(groups[grp]);}, [])
+	  },
+	
+	  _setScrollPosition: function(){
+	    var selected = this.getItemDOMNode(this.props.focused)
+	      , handler  = this.props.onMove || scrollTo;
+	
+	    if( !selected ) return 
+	
+	    setTimeout(function()  {return handler(selected);})
+	  },
+	
+	  getItemDOMNode:function(item){
+	    var list = this.getDOMNode()
+	      , groups = this.state.groups
+	      , idx = -1
+	      , itemIdx, child;
+	
+	    this.state.sortedKeys.some(function(group)  {
+	      itemIdx = groups[group].indexOf(item)
+	      idx++;
+	
+	      if( itemIdx !== -1) 
+	        return !!(child = list.children[idx + itemIdx + 1])
+	
+	      idx += groups[group].length
+	    })
+	
+	    return child
+	  }
+	
+	})
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var METHODS = ['next','prev', 'first', 'last'];
+	
+	module.exports = function validateListComponent(list){
+	
+	  if( true){
+	    METHODS.forEach( function(method)  
+	      {return assert(typeof list[method] === 'function', 'List components must implement a `' + method +'()` method');} )
+	  }
+	}
+	
+	function assert(condition, msg){
+	  var error
+	
+	  if ( !condition){
+	    error = new Error(msg)
+	    error.framesToPop = 1;
+	    throw error;
+	  }  
+	}
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var has = Object.prototype.hasOwnProperty
+	  , transitionTiming, transitionDuration
+	  , transitionProperty, transitionDelay
+	  , notSupported, endEvent
+	  , prefix = ''
+	  , el = document.createElement('div')
+	  , reset = {}
+	  , transform ='transform'
+	  , transitions = {
+	      O:'otransitionend',
+	      Moz:'transitionend',
+	      Webkit:'webkitTransitionEnd'
+	    };
+	
+	var TRANSLATION_MAP = { 
+	      left: 'translateX', right: 'translateX'
+	    , top: 'translateY', bottom: 'translateY'}
+	
+	for(var vendor in transitions) if( has.call(transitions, vendor) )
+	{
+	  if (el.style[vendor + 'TransitionProperty'] !== undefined) {
+	    prefix = '-' + vendor.toLowerCase() + '-'
+	    endEvent = transitions[vendor];
+	    break
+	  }
+	}
+	
+	if (!endEvent && el.style.transitionProperty !== undefined)
+	  endEvent = 'transitionend'
+	
+	notSupported = !endEvent
+	
+	transform = prefix + transform
+	
+	reset[transitionProperty = prefix + 'transition-property'] =
+	reset[transitionDuration = prefix + 'transition-duration'] =
+	reset[transitionDelay    = prefix + 'transition-delay'] =
+	reset[transitionTiming   = prefix + 'transition-timing-function'] = ''
+	
+	var DOM = module.exports = {
+	
+	  width: function(node, client){
+	    var win = getWindow(node)
+	    return win ? win.innerWidth : client ? node.clientWidth : DOM.offset(node).width
+	  },
+	
+	  height: function(node, client){
+	    var win = getWindow(node)
+	    return win ? win.innerHeight : client ? node.clientHeight : DOM.offset(node).height
+	  },
+	
+	  hasFocus: function(node){
+	    var doc = node.ownerDocument
+	
+	    if ( doc.activeElement == null) return false
+	    return doc.activeElement === node
+	  },
+	
+	  offset: function (node) {
+	    var doc     = node.ownerDocument
+	      , docElem = doc && doc.documentElement
+	      , box     = { top: 0, left: 0 };
+	
+	    if ( !docElem ) return
+	
+	    if ( !DOM.contains(docElem, node))
+	      return box
+	
+	    if ( node.getBoundingClientRect !== undefined )
+	      box = node.getBoundingClientRect();
+	
+	    return {
+	      top: box.top + window.pageYOffset - docElem.clientTop,
+	      left: box.left + window.pageXOffset - docElem.clientLeft,
+	      width: box.width || node.offsetWidth,
+	      height: box.height || node.offsetHeight,
+	    };
+	  },
+	
+	  css: function(node, property, value){
+	      var css = ''
+	        , props = property;
+	
+	      if ( typeof property === 'string') {
+	        if ( value === undefined)
+	          return node.style[camelize(property)] || getComputedStyle(node).getPropertyValue(property)
+	        else
+	          (props = {})[property] = value
+	      }
+	
+	      for(var key in props) if ( has.call(props, key) ) 
+	      {
+	        !props[key] && props[key] !== 0
+	          ? node.style.removeProperty(dasherize(key))
+	          : (css += dasherize(key) + ':' + props[key] + ';')
+	      }
+	
+	      node.style.cssText += ';' + css
+	  },
+	
+	  contains: (function(){
+	    var root = document.documentElement
+	
+	    return (root && root.contains)
+	      ? function(context, node){ return context.contains(node); }
+	      : (root && root.compareDocumentPosition)
+	          ? function(context, node){
+	            return context === node || !!(context.compareDocumentPosition(node) & 16);
+	          }
+	          : function(context, node){
+	            if (node) do {
+	              if (node === context) return true;
+	            } while ((node = node.parentNode));
+	
+	            return false;
+	          }
+	  })(),
+	
+	  scrollParent: function(node){
+	    var position = DOM.css(node, "position" )
+	      , excludeStatic = position === "absolute";
+	
+	    if (position === 'fixed') 
+	      return node.ownerDocument || document
+	
+	    while ( (node = node.parentNode) && node.nodeType !== 9){
+	      var isStatic = excludeStatic && DOM.css(node, "position" ) === "static"
+	        , style    = DOM.css(node, 'overflow') 
+	                   + DOM.css(node, 'overflow-y') 
+	                   + DOM.css(node, 'overflow-x');
+	
+	      if (isStatic) continue
+	      if ( (/(auto|scroll)/).test(style) && DOM.height(node) < node.scrollHeight )
+	        return node
+	    }
+	
+	    return (node && node.ownerDocument) || document
+	  },
+	
+	  scrollTop: function(node, val){
+	    var win = getWindow(node);
+	
+	    if ( val === undefined )
+	      return win 
+	        ? ('pageYOffset' in win) 
+	          ? win.pageYOffset
+	          : win.document.documentElement.scrollTop 
+	        : node.scrollTop;
+	    
+	    if ( win ) 
+	      win.scrollTo(('pageXOffset' in win) 
+	        ? win.pageXOffset 
+	        : win.document.documentElement.scrollLeft, val)
+	    else       
+	      node.scrollTop = val
+	  },
+	
+	
+	  on: function(node, eventName, handler){
+	    if (node.addEventListener)
+	      node.addEventListener(eventName, handler, false);
+	
+	    else if (node.attachEvent)
+	      node.attachEvent('on' + eventName, handler);
+	
+	    else
+	      node['on' + eventName] = handler;
+	  },
+	
+	  off: function(node, eventName, handler){
+	    if (node.addEventListener)
+	      node.removeEventListener(eventName, handler, false);
+	    else if (node.attachEvent)
+	      node.detachEvent('on' + eventName, handler);
+	    else
+	      node['on' + eventName] = null;
+	  },
+	
+	  trigger: function(node, type){
+	    var event = document.createEvent('Events')
+	    event.initEvent(type, true, true)
+	    node.dispatchEvent(event);
+	  },
+	
+	  /* code in part from: Zepto 1.1.4 | zeptojs.com/license */
+	  // super lean animate function for transitions
+	  // doesn't support translations to keep it matching the jquery API
+	  animate: function(node, properties, duration, easing, callback){
+	    var cssProperties = []
+	      , fakeEvent = { target: node, currentTarget: node }
+	      , cssValues = {}
+	      , transforms =''
+	      , fired;
+	
+	    if ( typeof easing === 'function' )
+	      callback = easing, easing = null
+	
+	    if ( notSupported )           duration = 0
+	    if ( duration === undefined ) duration = 200
+	
+	    for(var key in properties) if ( has.call(properties, key) ) {
+	      if( /(top|bottom)/.test(key) ) 
+	        transforms += TRANSLATION_MAP[key] +'(' + properties[key] + ') '
+	      else{
+	        cssValues[key] = properties[key]
+	        cssProperties.push(dasherize(key))
+	      }
+	    }
+	
+	    if (transforms) {
+	      cssValues[transform] = transforms
+	      cssProperties.push(transform)
+	    }
+	
+	    if (duration > 0 ) {
+	      cssValues[transitionProperty] = cssProperties.join(', ')
+	      cssValues[transitionDuration] = (duration / 1000) + 's'
+	      cssValues[transitionDelay]    = 0 + 's'
+	      cssValues[transitionTiming]   = easing || 'linear'
+	
+	      DOM.on(node, endEvent, done)
+	
+	      setTimeout(function(){
+	        if (!fired) done(fakeEvent)
+	      }, duration + 25)
+	    }
+	
+	    // trigger page reflow
+	    node.clientLeft
+	
+	    DOM.css(node, cssValues)
+	
+	    if (duration <= 0)
+	      setTimeout(done.bind(null, fakeEvent), 0)
+	
+	    function done(event) {
+	      if (event.target !== event.currentTarget) return
+	
+	      fired = true
+	
+	      DOM.off(event.target, endEvent, done)
+	      DOM.css(node, reset)
+	      callback && callback.call(this)
+	    }
+	  }
+	}
+	
+	
+	function getWindow( node ) {
+	  return node === node.window
+	    ? node : node.nodeType === 9 && node.defaultView;
+	}
+	
+	function camelize(str){
+	  return str.replace(/-+(.)?/g, function(match, chr){ return chr ? chr.toUpperCase() : '' })
+	}
+	
+	function dasherize(str) {
+	  return str.replace(/[A-Z]/g, function(char, index) {
+	    return (index !== 0 ? '-' : '') + char.toLowerCase();
+	  });
+	}
+	
+	function getComputedStyle(node) {
+	  if( !node) throw new Error()
+	  var doc = node.ownerDocument;
+	
+	  return "defaultView" in doc 
+	    ? doc.defaultView.opener
+	      ? node.ownerDocument.defaultView.getComputedStyle( node, null )
+	      : window.getComputedStyle(node, null)
+	    : ie8(node)
+	}
+	
+	function ie8(el) {
+	  return {
+	    getPropertyValue:function(prop) {
+	      var re = /(\-([a-z]){1})/g;
+	      if (prop == 'float') prop = 'styleFloat';
+	      if (re.test(prop)) {
+	          prop = prop.replace(re, function () {
+	              return arguments[2].toUpperCase();
+	          });
+	      }
+	      return el.currentStyle[prop] ? el.currentStyle[prop] : null;
+	    }
+	  }
+	}
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var common = {
+	      eq:   function(a, b){ return a === b },
+	      neq:  function(a, b){ return a !== b },
+	      gt:   function(a, b){ return a > b   },
+	      gte:  function(a, b){ return a >= b  },
+	      lt:   function(a, b){ return a < b   },
+	      lte:  function(a, b){ return a <= b  },
+	
+	      contains: function(a, b){
+	        return a.indexOf(b) !== -1
+	      },
+	
+	      startsWith: function(a, b) {
+	        return a.lastIndexOf(b, 0) === 0;
+	      },
+	
+	      endsWith: function(a, b) {
+	        var pos = a.length - b.length
+	          , lastIndex = a.indexOf(b, pos);
+	
+	        return  lastIndex !== -1 && lastIndex === pos;
+	      }
+	    }
+	
+	module.exports = common
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  render: function(){
+	  	var $__0=     this.props,className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1});
+	
+	    return (
+	      React.createElement("button", React.__spread({},  props, {type: "button", className: (className  || '') + ' rw-btn'}), 
+	        this.props.children
+	      )
+	  	)
+	  }
+	})
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , caretPos = __webpack_require__(96);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    value:        React.PropTypes.string,
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	
+	  // hello
+	  componentDidUpdate: function() {
+	    var input = this.getDOMNode()
+	      , val = this.props.value;
+	
+	    if ( this.isSuggesting() ){
+	      var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
+	        , end   = val.length - start
+	
+	      if ( start >= 0) {
+	        caretPos(input, start, start + end)
+	      }
+	    }
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: ''
+	    }
+	  },
+	
+	  render: function(){
+	    return (
+	      React.createElement("input", React.__spread({},  
+	        this.props , 
+	        {type: "text", 
+	        className: this.props.className + ' rw-input', 
+	        onKeyDown: this.props.onKeyDown, 
+	        onChange: this._change, 
+	        value: this.props.value == null ? '' : this.props.value}))
+	    )
+	  },
+	
+	  isSuggesting: function(){
+	    var val = this.props.value
+	      , isSuggestion = this._last != null
+	          && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
+	
+	    return this.props.suggest && isSuggestion
+	  },
+	
+	  accept: function(removeCaret){
+	    var val = this.getDOMNode().value || ''
+	      , end = val.length;
+	
+	    this._last = null
+	    removeCaret && caretPos(this.getDOMNode(), end, end)
+	  },
+	
+	  _change: function(e){
+	    var val = e.target.value
+	    this._last = val;
+	    this.props.onChange(e, val)
+	  },
+	
+	  focus: function(){
+	    this.getDOMNode().focus()
+	  }
+	});
+
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var dateMath = __webpack_require__(49)
+	  , globalize = __webpack_require__(102)
+	  , _ = __webpack_require__(15); //extend
+	
+	var dates = module.exports = _.extend(dateMath, {
+	  // wrapper methods for isolating globalize use throughout the lib
+	  // looking forward towards the 1.0 release
+	  culture: function(){
+	    return globalize.culture()
+	  },
+	
+	  startOfWeek: function(date){
+	    var culture = globalize.culture()
+	
+	    if (!culture || !culture.calendar)
+	      return 0
+	
+	    return culture.calendar.firstDay || 0
+	  },
+	
+	  parse: function(date, format, culture){
+	    return globalize.parseDate(date, format, culture)
+	  },
+	
+	  format: function(date, format, culture){
+	    return globalize.format(date, format, culture)
+	  },
+	  //-------------------------------------
+	
+	  shortDaysOfWeek: function (){
+	    var culture = dates.culture()
+	      , start = dates.startOfWeek()
+	      , days, front;
+	
+	    if (culture && culture.calendar){
+	      days = culture.calendar.days.namesShort.slice()
+	
+	      if(start === 0 ) 
+	        return days
+	      
+	      front = days.splice(0, start)
+	      days  = days.concat(front)
+	      return days
+	    }
+	  },
+	
+	  daysOfWeek: function(date, format){
+	    var range = [0,1,2,3,4,5,6]
+	    if (arguments.length === 1){
+	      format = date
+	      date = new Date()
+	    }
+	
+	    format = format || 'do'
+	
+	    return range.map(function(i)  {return dates.format(dates.weekday(date, i), format);} )
+	  },
+	
+	  months: function(date, format){
+	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	
+	    if (arguments.length === 1){
+	      format = date
+	      date = new Date()
+	    }
+	    format = format || dates.formats.DAY_NAME_ABRV
+	
+	    return months.map( function(i)  {return dates.format(dates.month(date, i), format);})
+	  },
+	
+	  monthsInYear: function(year){
+	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	      , date   = new Date(year, 0, 1)
+	
+	    return  months.map( function(i)  {return dates.month(date, i);})
+	  },
+	
+	  firstOfDecade: function(date){
+	    var decade = dates.year(date) % 10
+	
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfDecade: function(date){
+	    return dates.add(dates.firstOfDecade(date), 9, 'year')
+	  },
+	
+	  firstOfCentury: function(date){
+	    var decade = dates.year(date) % 100
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfCentury: function(date){
+	    return dates.add(dates.firstOfCentury(date), 99, 'year')
+	  },
+	
+	  firstVisibleDay: function(date){
+	    var firstOfMonth = dates.startOf(date, 'month')
+	    return dates.startOf(firstOfMonth, 'week');
+	  },
+	
+	  lastVisibleDay: function(date){
+	    var endOfMonth = dates.endOf(date, 'month')
+	    return dates.endOf(endOfMonth, 'week');
+	  },
+	
+	  visibleDays: function(date){
+	    var current = dates.firstVisibleDay(date)
+	      , last = dates.lastVisibleDay(date)
+	      , days = [];
+	
+	    while( dates.lte(current, last, 'day') ) {
+	      days.push(current)
+	      current = dates.add(current, 1, 'day')
+	    }
+	
+	    return days
+	  },
+	
+	  merge: function(date, time){
+	    if( time == null && date == null)
+	      return null
+	
+	    if( time == null) time = new Date()
+	    if( date == null) date = new Date()
+	
+	    date = dates.startOf(date, 'day')
+	    date = dates.hours(date,        dates.hours(time))
+	    date = dates.minutes(date,      dates.minutes(time))
+	    date = dates.seconds(date,      dates.seconds(time))
+	    return dates.milliseconds(date, dates.milliseconds(time))
+	  },
+	
+	  sameMonth: function(dateA, dateB){
+	    return dates.eq(dateA, dateB, 'month')
+	  },
+	
+	  today: function() {
+	    return this.startOf(new Date(), 'day')
+	  },
+	
+	  yesterday: function() {
+	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
+	  },
+	
+	  tomorrow: function() {
+	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
+	  },
+	
+	  formats: {
+	    DAY_OF_MONTH:    'dd',
+	    DAY_NAME_SHORT:  null,
+	    MONTH_NAME_ABRV: 'MMM',
+	    MONTH_YEAR:      'MMMM yyyy',
+	    YEAR:            'yyyy'
+	  }
+	
+	})
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _ = __webpack_require__(15); //object
+	
+	var views = {
+	    MONTH:   'month',
+	    YEAR:    'year',
+	    DECADE:  'decade',
+	    CENTURY: 'century'
+	  }
+	
+	module.exports = {
+	
+	  directions: {
+	    LEFT:  'LEFT',
+	    RIGHT: 'RIGHT',
+	    UP:    'UP',
+	    DOWN:  'DOWN'
+	  },
+	
+	  datePopups: {
+	    TIME:     'time',
+	    CALENDAR: 'calendar'
+	  },
+	
+	  calendarViews: views,
+	
+	  calendarViewHierarchy: _.object([
+	    [views.MONTH,   views.YEAR],
+	    [views.YEAR,    views.DECADE],
+	    [views.DECADE,  views.CENTURY]
+	  ]),
+	
+	  calendarViewUnits: _.object([
+	    [views.MONTH,   views.DAY],
+	    [views.YEAR,    views.MONTH],
+	    [views.DECADE,  views.YEAR],
+	    [views.CENTURY, views.DECADE],
+	  ])
+	}
+
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , dates = __webpack_require__(75)
+	  , List = __webpack_require__(68)
+	  , CustomPropTypes  = __webpack_require__(66)
+	  , _ = __webpack_require__(15) // omit
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'TimeList',
+	
+	  propTypes: {
+	    value:          React.PropTypes.instanceOf(Date),
+	    min:            React.PropTypes.instanceOf(Date),
+	    max:            React.PropTypes.instanceOf(Date),
+	    step:           React.PropTypes.number,
+	    itemComponent:  CustomPropTypes.elementType,
+	    onSelect:       React.PropTypes.func,
+	    preserveDate:   React.PropTypes.bool,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      step:   30,
+	      format: 't',
+	      onSelect: function(){},
+	      preserveDate: true,
+	      delay: 300
+	    }
+	  },
+	
+	  getInitialState: function(){
+	    var data = this._dates(this.props)
+	      , focusedItem = this._closestDate(data, this.props.value);
+	
+	    return { 
+	      focusedItem: focusedItem || data[0],
+	      dates: data
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    var data = this._dates(nextProps)
+	      , focusedItem = this._closestDate(data, this.props.value);
+	
+	    if ( nextProps.value !== this.props.value)
+	      this.setState({ 
+	        focusedItem: focusedItem || data[0],
+	        dates: data
+	      })
+	  },
+	
+	  render: function(){
+	    var times = this.state.dates
+	      , date  = this._closestDate(times, this.props.value);
+	
+	    return (
+	      React.createElement(List, React.__spread({},  _.omit(this.props, 'value'), 
+	        {ref: "list", 
+	        data: times, 
+	        textField: "label", 
+	        valueField: "date", 
+	        selected: date, 
+	        focused: this.state.focusedItem, 
+	        itemComponent: this.props.itemComponent, 
+	        onSelect: this.props.onSelect}))
+	    )
+	  },
+	
+	  _closestDate: function(times, date){
+	    var roundTo = 1000 * 60 * this.props.step
+	      , inst = null
+	      , label;
+	
+	    if( !date) return null
+	
+	    date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
+	    label = dates.format(date, this.props.format)
+	
+	    times.some( function(time)  {
+	      if( time.label === label ) 
+	        return (inst = time)
+	    })
+	
+	    return inst
+	  },
+	
+	  _data:function(){ 
+	    return this.state.dates
+	  },
+	
+	  _dates: function(props){
+	    var times  = [], i = 0
+	      , values = this._dateValues(props)
+	      , start  = values.min
+	      , startDay = dates.date(start);
+	
+	    // debugger;
+	    while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
+	      i++
+	      times.push({ date: start, label: dates.format(start, props.format) })
+	      start = dates.add(start, props.step || 30, 'minutes')
+	    }
+	    return times
+	  },
+	
+	  _dateValues: function(props){
+	    var value = props.value || dates.today()
+	      , useDate = props.preserveDate
+	      , min = props.min
+	      , max = props.max
+	      , start, end;
+	
+	    //compare just the time regradless of whether they fall on the same day
+	    if(!useDate) {
+	      start = dates.startOf(dates.merge(new Date, min), 'minutes')
+	      end   = dates.startOf(dates.merge(new Date, max), 'minutes')
+	
+	      if( dates.lte(end, start) && dates.gt(max, min, 'day'))
+	        end = dates.tomorrow()
+	
+	      return {
+	        min: start,
+	        max: end
+	      }
+	    }
+	
+	    //date parts are equal
+	    return {
+	      min: dates.eq(value, min, 'day') ? min : dates.today(),
+	      max: dates.eq(value, max, 'day') ? min : dates.tomorrow()
+	    }
+	
+	  },
+	
+	  _keyDown: function(e){
+	    var key = e.key
+	      , character = String.fromCharCode(e.keyCode)
+	      , focusedItem  = this.state.focusedItem
+	      , list = this.refs.list;
+	
+	    if ( key === 'End' )
+	      this.setState({ focusedItem: list.last() })
+	
+	    else if ( key === 'Home' )
+	      this.setState({ focusedItem: list.first() })
+	
+	    else if ( key === 'Enter' )
+	      this.props.onSelect(focusedItem)
+	
+	    else if ( key === 'ArrowDown' ) {
+	      e.preventDefault()
+	      this.setState({ focusedItem: list.next(focusedItem) })
+	    }
+	    else if ( key === 'ArrowUp' ) {
+	      e.preventDefault()
+	      this.setState({ focusedItem: list.prev(focusedItem) })
+	    }
+	    else {
+	      e.preventDefault()
+	
+	      this.search(character, function(item)  {
+	        this.setState({ focusedItem: item })
+	      }.bind(this))
+	    }
+	  },
+	
+	  search: function(character, cb){
+	    var word = ((this._searchTerm || '') + character).toLowerCase();
+	      
+	    clearTimeout(this._timer)
+	    this._searchTerm = word 
+	
+	    this._timer = setTimeout(function()  {
+	      var list = this.refs.list
+	        , item = list.next(this.state.focusedItem, word);
+	      
+	      this._searchTerm = ''
+	      if (item) cb(item)
+	
+	    }.bind(this), this.props.delay)
+	  },
+	
+	});
+
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx = __webpack_require__(13)
+	  , dates = __webpack_require__(75);
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'DatePickerInput',
+	
+	
+	  propTypes: {
+	    format:       React.PropTypes.string,
+	    parse:        React.PropTypes.func.isRequired,
+	
+	    value:        React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      textValue: ''
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    this.setState({
+	      textValue: formatDate(
+	            nextProps.value
+	          , nextProps.editing && nextProps.editFormat 
+	              ? nextProps.editFormat 
+	              : nextProps.format)
+	    })
+	  },
+	
+	  getInitialState: function(){
+	    var text = formatDate(
+	            this.props.value
+	          , this.props.editing && this.props.editFormat 
+	              ? this.props.editFormat 
+	              : this.props.format)
+	
+	    this.lastValue = text
+	    return {
+	      textValue: text
+	    }
+	  },
+	
+	  render: function(){
+	    var value = this.state.textValue
+	
+	    return (
+	      React.createElement("input", React.__spread({},  
+	        this.props, 
+	        {type: "text", 
+	        className: cx({'rw-input': true }), 
+	        value: value, 
+	        'aria-disabled': this.props.disabled, 
+	        'aria-readonly': this.props.readOnly, 
+	        disabled: this.props.disabled, 
+	        readOnly: this.props.readOnly, 
+	        onChange: this._change, 
+	        onBlur: chain(this.props.blur, this._blur, this)}))
+	    )
+	  },
+	
+	  _change: function(e){
+	    this.setState({ textValue: e.target.value });
+	  },
+	
+	  _blur: function(e){
+	    var val = e.target.value 
+	    
+	    //console.log('blur', val, e.target, '\nlast', this.lastValue)
+	
+	    if ( val === this.lastValue) return
+	
+	    this.lastValue = val;
+	    this.props.onChange(this.props.parse(val), val);
+	    
+	  },
+	
+	  focus: function(){
+	    this.getDOMNode().focus()
+	  }
+	
+	});
+	
+	function isValid(d) {
+	  return !isNaN(d.getTime());
+	}
+	
+	function formatDate(date, format){
+	  var val = ''
+	
+	  if ( (date instanceof Date) && isValid(date) )
+	    val = dates.format(date, format)
+	
+	  return val;
+	}
+	
+	function chain(a,b, thisArg){
+	  return function(){
+	    a && a.apply(thisArg, arguments)
+	    b && b.apply(thisArg, arguments)
+	  }
+	}
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Btn = __webpack_require__(73);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    label:          React.PropTypes.string.isRequired,
+	    labelId:        React.PropTypes.string,
+	
+	    upDisabled:     React.PropTypes.bool.isRequired,
+	    prevDisabled:   React.PropTypes.bool.isRequired,
+	    nextDisabled:   React.PropTypes.bool.isRequired,
+	    onViewChange:   React.PropTypes.func.isRequired,
+	    onMoveLeft:     React.PropTypes.func.isRequired,
+	    onMoveRight:    React.PropTypes.func.isRequired,
+	
+	    messages:       React.PropTypes.shape({
+	      moveBack:     React.PropTypes.string,
+	      moveForward:  React.PropTypes.string
+	    })
+	  },
+	
+	  mixins: [
+	    __webpack_require__(88),
+	    __webpack_require__(97)
+	  ],
+	
+	  getDefaultProps: function(){
+	    return {
+	      messages: {
+	        moveBack:     'navigate back',
+	        moveForward:  'navigate forward',
+	      }
+	    }
+	  },
+	
+	  render: function(){
+	    var rtl = this.isRtl();
+	
+	    return (
+	      React.createElement("div", {className: "rw-header"}, 
+	        React.createElement(Btn, {className: "rw-btn-left", 
+	          onClick: this.props.onMoveLeft, 
+	          disabled: this.props.prevDisabled, 
+	          'aria-disabled': this.props.prevDisabled, 
+	          title: this.props.moveBack}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-view", 
+	          id: this.props.labelId, 
+	          onClick: this.props.onViewChange, 
+	          disabled: this.props.upDisabled, 
+	          'aria-disabled': this.props.upDisabled}, 
+	           this.props.label
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-right", 
+	          onClick: this.props.onMoveRight, 
+	          disabled: this.props.nextDisabled, 
+	          'aria-disabled': this.props.nextDisabled, 
+	          title: this.props.moveForward}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
+	        )
+	      )
+	    )
+	  }
+	})
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(13)
+	  , dates = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , _   = __webpack_require__(15)
+	  , Btn = __webpack_require__(73);
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'MonthView',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(97),
+	    __webpack_require__(98)('month', 'day'),
+	  ],
+	
+	  propTypes: {
+	    culture:          React.PropTypes.array,
+	    value:            React.PropTypes.instanceOf(Date),
+	    selectedDate:     React.PropTypes.instanceOf(Date),
+	    min:              React.PropTypes.instanceOf(Date),
+	    max:              React.PropTypes.instanceOf(Date),
+	
+	    format:           React.PropTypes.string,
+	
+	    onChange:         React.PropTypes.func.isRequired, //value is chosen
+	    onMoveLeft:       React.PropTypes.func,
+	    onMoveRight:      React.PropTypes.func
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , month = dates.visibleDays(this.props.value)
+	      , rows  = _.chunk(month, 7 );
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {role: "grid", 
+	        tabIndex: this.props.disabled ? '-1' : "0", 
+	        className: "rw-calendar-grid", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("thead", null, 
+	          React.createElement("tr", null,  this._headers() )
+	        ), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	    
+	    return (
+	      React.createElement("tr", {key: 'week_' + i}, 
+	       row.map( function(day, idx)  {
+	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
+	          , selected = dates.eq(day, this.props.selectedDate, 'day');
+	
+	        return !dates.inRange(day, this.props.min, this.props.max)
+	            ? React.createElement("td", {key: 'day_' + idx, className: "rw-empty-cell"}, " ")
+	            : (React.createElement("td", {key: 'day_' + idx}, 
+	                React.createElement(Btn, {
+	                  tabIndex: "-1", 
+	                  onClick: this.props.onChange.bind(null, day), 
+	                  'aria-selected': selected, 
+	                  'aria-disabled': this.props.disabled, 
+	                  disabled: this.props.disabled, 
+	                  className: cx({
+	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
+	                    'rw-state-focus':    focused,
+	                    'rw-state-selected': selected,
+	                  }), 
+	                  id: focused ? id : undefined}, 
+	                  dates.format(day, 'dd')
+	                )
+	              ))
+	      }.bind(this))
+	      )
+	    )
+	  },
+	
+	
+	  _headers: function(format){
+	    var days = dates.shortDaysOfWeek(format);
+	
+	    return days.map( function(day, i)  
+	      {return React.createElement("th", {key: "header_" + i}, day);})
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'day', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'day',min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -1, 'week', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 1, 'week', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	
+	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
+	}
+
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(13)
+	  , dates      = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , Btn        = __webpack_require__(73)
+	  , _          = __webpack_require__(15)
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'YearView',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(97),
+	    __webpack_require__(98)('year', 'month')
+	  ],
+	
+	  propTypes: {
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	
+	  render: function(){
+	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , months = dates.monthsInYear(dates.year(this.props.value))
+	      , rows = _.chunk(months, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},   props , 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        ref: "table", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item');
+	    
+	    return (
+	      React.createElement("tr", {key: i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
+	          , selected = dates.eq(date, this.props.value,  'month');
+	
+	        return dates.inRange(date, this.props.min, this.props.max, 'month')
+	          ? (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id: focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected
+	                })}, 
+	                 dates.format(date, dates.formats.MONTH_NAME_ABRV) 
+	              )
+	            ))
+	          : React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	      }.bind(this))
+	    ))
+	  },
+	
+	  focus: function(){
+	    this.refs.table.getDOMNode().focus();
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'month', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'month', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'month', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'month', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
+	}
+
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _ = __webpack_require__(15)
+	  , cx    = __webpack_require__(13)
+	  , dates = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , Btn = __webpack_require__(73); 
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'DecadeView',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(97),
+	    __webpack_require__(98)('decade', 'year')
+	  ],
+	
+	  propTypes: {
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , years = getDecadeYears(this.props.value)
+	      , rows  = _.chunk(years, 4)
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	
+	        React.createElement("tbody", null, 
+	          rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
+	          , selected = dates.eq(date, this.props.value,  'year');
+	
+	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
+	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':      !inDecade(date, this.props.value),
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected,
+	                })}, 
+	                 dates.format(date, dates.formats.YEAR) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'year', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'year', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'year', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'year', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function inDecade(date, start){
+	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
+	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
+	}
+	
+	function getDecadeYears(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
+	
+	  return days.map( 
+	    function(i)  {return date = dates.add(date, 1, 'year');})
+	}
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
+	}
+
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(13)
+	  , dates      = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions
+	  , Btn        = __webpack_require__(73)
+	  , _          = __webpack_require__(15); //omit
+	
+	var opposite = {
+	  LEFT:  directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'CenturyView',
+	
+	  mixins: [
+	    __webpack_require__(87),
+	    __webpack_require__(88),
+	    __webpack_require__(97),
+	    __webpack_require__(98)('century', 'decade')
+	  ],
+	
+	  propTypes: {
+	    value:         React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
+	      , years = getCenturyDecades(this.props.value)
+	      , rows  = _.chunk(years, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
+	          , selected = dates.eq(date, this.props.value,  'decade')
+	          , d        = inRangeDate(date, this.props.min, this.props.max);
+	
+	        return !inRange(date, this.props.min, this.props.max)
+	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
+	                tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':       !inCentury(date, this.props.value),
+	                  'rw-state-focus':     focused,
+	                  'rw-state-selected':  selected,
+	                 })}, 
+	                 label(date) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'decade', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'decade', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'decade', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'decade', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function label(date){
+	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
+	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
+	}
+	
+	function inRangeDate(decade, min, max){
+	  return dates.max( dates.min(decade, max), min)
+	}
+	
+	function inRange(decade, min, max){
+	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
+	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
+	}
+	
+	function inCentury(date, start){
+	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
+	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
+	}
+	
+	function getCenturyDecades(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
+	
+	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
+	}
+	
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
+	}
+
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , setter  = __webpack_require__(99)
+	  , globalize = __webpack_require__(102);
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'NumberPickerInput', 
+	
+	  propTypes: {
+	    value:        React.PropTypes.number,
+	    format:       React.PropTypes.string,
+	    min:          React.PropTypes.number,
+	    
+	    onChange:     React.PropTypes.func.isRequired,
+	    onKeyDown:    React.PropTypes.func,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: null,
+	      format: 'd',
+	      editing: false,
+	    }
+	  },
+	
+	  getInitialState: function() {
+	    var value = this.props.editing 
+	          ? this.props.value
+	          : globalize.format(this.props.value, this.props.format)
+	
+	    return { 
+	      stringValue: value
+	    }
+	  },
+	  
+	  componentWillReceiveProps: function(nextProps) {
+	    var value = nextProps.editing 
+	          ? nextProps.value
+	          : globalize.format(nextProps.value, nextProps.format)
+	
+	    if ( isNaN(nextProps.value) ) 
+	      value = ''
+	
+	    this.current(value)
+	  },
+	
+	  render: function(){
+	    var value = this.state.stringValue;
+	
+	    return (
+	      React.createElement("input", React.__spread({},  this.props, 
+	        {type: "text", 
+	        className: "rw-input", 
+	        onChange: this._change, 
+	        onBlur: this._finish, 
+	        'aria-disabled': this.props.disabled, 
+	        'aria-readonly': this.props.readOnly, 
+	        disabled: this.props.disabled, 
+	        readOnly: this.props.readOnly, 
+	        value: value}))
+	    )
+	  },
+	
+	  _change: function(e){
+	    var val = e.target.value
+	      , number = +e.target.value
+	      , isNull = val !== 0 && !val
+	      , hasMin = isFinite(this.props.min)
+	
+	    //console.log(hasMin, this.props.min)
+	    //a null value is only possible when there is no min
+	    if(!hasMin && isNull)
+	      return this.props.onChange(null)
+	
+	    if(this.isValid(number) && number !== this.props.value)
+	      return this.props.onChange(number)
+	
+	    //console.log(val !== 0 && !val)
+	    this.current(e.target.value)
+	  },
+	
+	  _finish: function(e){
+	    var number = +this.state.stringValue
+	
+	    // if number is below the min
+	    // we need to flush low values eventually, onBlur is definativly no typing
+	    if(!isNaN(number) && number < this.props.min) {
+	      this.props.onChange(number)
+	    }
+	  },
+	
+	  isValid: function(value) {
+	    var num = +value;
+	
+	    if(isNaN(num)) return false
+	    return num >= this.props.min
+	  },
+	
+	  //this intermediate state is for when one runs into the decimal or are typing the number
+	  current: setter('stringValue'),
+	
+	});
+
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	module.exports = React.createClass({
+	  
+	  displayName: 'MultiselectInput',
+	
+	  propTypes: {
+	    value:        React.PropTypes.string,
+	    onChange:     React.PropTypes.func.isRequired,
+	
+	    disabled:     React.PropTypes.bool,
+	    readOnly:     React.PropTypes.bool,
+	  },
+	
+	
+	  componentDidUpdate: function() {
+	    this.props.focused && this.focus()
+	  },
+	
+	  render: function(){
+	      var value = this.props.value
+	        , placeholder = this.props.placeholder
+	        , size = Math.max((value || placeholder).length, 1);
+	
+	      return (
+	        React.createElement("input", React.__spread({},  this.props, 
+	          {type: "text", 
+	          className: "rw-input", 
+	          'aria-disabled': this.props.disabled, 
+	          'aria-readonly': this.props.readOnly, 
+	          disabled: this.props.disabled, 
+	          readOnly: this.props.readOnly, 
+	          size: size}))
+	      )
+	  },
+	
+	  focus: function(){
+	    this.getDOMNode().focus()
+	  }
+	
+	})
+
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _     = __webpack_require__(15)
+	  , cx    = __webpack_require__(13)
+	  , Btn   = __webpack_require__(73)
+	
+	module.exports = React.createClass({
+	  
+	  displayName: 'MultiselectTagList',
+	
+	  mixins: [
+	    __webpack_require__(89),
+	    __webpack_require__(88)
+	  ],
+	
+	  propTypes: {
+	    value:          React.PropTypes.array,
+	
+	    valueField:     React.PropTypes.string,
+	    textField:      React.PropTypes.string,
+	
+	    valueComponent: React.PropTypes.func,
+	
+	    disabled:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.array,
+	                      React.PropTypes.oneOf(['disabled'])
+	                    ]),
+	
+	    readOnly:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.array,
+	                      React.PropTypes.oneOf(['readonly'])
+	                    ])
+	  },
+	
+	
+	  getInitialState: function(){
+	    return {
+	      focused: null
+	    }
+	  },
+	
+	  render: function(){
+	      var ValueComponent = this.props.valueComponent
+	        , props     = _.omit(this.props, ['value', 'disabled', 'readOnly'])
+	        , focusIdx  = this.state.focused
+	        , value     = this.props.value;
+	
+	      return (
+	        React.createElement("ul", React.__spread({},  props, 
+	          {className: "rw-multiselect-taglist"}), 
+	           value.map( function(item, i)  {
+	            var disabled = this.isDisabled(item)
+	              , readonly = this.isReadOnly(item);
+	
+	            return (
+	              React.createElement("li", {key: i, 
+	                  className: cx({
+	                    'rw-state-focus': !disabled && focusIdx === i,
+	                    'rw-state-disabled': disabled,
+	                    'rw-state-readonly': readonly})
+	                  }, 
+	                 ValueComponent
+	                    ? React.createElement(ValueComponent, {item: item })
+	                    : this._dataText(item), 
+	                
+	                React.createElement(Btn, {tabIndex: "-1", onClick: !(disabled || readonly) && this._delete.bind(null, item), 
+	                  'aria-disabled': disabled, 
+	                  disabled: disabled}, 
+	                  "×", React.createElement("span", {className: "rw-sr"},  "Remove " + this._dataText(item))
+	                )
+	              ))
+	          }.bind(this))
+	        )
+	      )
+	  },
+	
+	  _delete: function(val, e){
+	    this.props.onDelete(val)
+	  },
+	
+	  removeCurrent: function(){
+	    var val = this.props.value[this.state.focused];
+	
+	    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
+	      this.props.onDelete(val)
+	  },
+	
+	  isDisabled: function(val, isIdx) {
+	    if(isIdx) val = this.props.value[val]
+	
+	    return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
+	  },
+	
+	  isReadOnly: function(val, isIdx) {
+	    if(isIdx) val = this.props.value[val]
+	
+	    return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
+	  },
+	
+	  removeNext: function(){
+	    var val = this.props.value[this.props.value.length - 1];
+	
+	    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
+	      this.props.onDelete(val)
+	  },
+	
+	  clear: function(){
+	    this.setState({ focused: null })
+	  },
+	
+	  first: function(){
+	    var idx = 0
+	      , l = this.props.value.length;
+	
+	    while( idx < l && this.isDisabled(idx, true) )
+	      idx++
+	
+	    if (idx !== l)
+	      this.setState({ focused: idx })
+	  },
+	
+	  last: function(){
+	    var idx = this.props.value.length - 1;
+	
+	    while( idx > -1 && this.isDisabled(idx, true) )
+	      idx--
+	
+	    if (idx >= 0)
+	      this.setState({ focused: idx })
+	  },
+	
+	  next: function(){
+	    var nextIdx = this.state.focused + 1
+	      , l = this.props.value.length;
+	
+	    while( nextIdx < l && this.isDisabled(nextIdx, true) )
+	      nextIdx++
+	
+	    if ( this.state.focused === null )
+	      return
+	
+	    if ( nextIdx >= l )
+	      return this.clear();
+	
+	    this.setState({ focused: nextIdx })
+	  },
+	
+	  prev: function(){
+	    var nextIdx = this.state.focused;
+	
+	    if ( nextIdx === null )
+	      nextIdx = this.props.value.length
+	
+	    nextIdx--;
+	
+	    while( nextIdx > -1 && this.isDisabled(nextIdx, true) )
+	      nextIdx--
+	
+	    if ( nextIdx >= 0 )
+	      this.setState({ focused: nextIdx  })
+	  }
+	})
+
 
 /***/ },
 /* 87 */
@@ -20164,6 +20164,68 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
+	  , _ =  __webpack_require__(15)
+	
+	module.exports = {
+	  
+	  propTypes: {    
+	    valueField: React.PropTypes.string,
+	    textField:  React.PropTypes.string,
+	  },
+	
+	  _dataValue: function(item){
+	    var field = this.props.valueField;
+	
+	        return field && item && _.has(item, field)
+	      ? item[field]
+	      : item
+	  },
+	
+	  _dataText: function(item){
+	    var field = this.props.textField;
+	
+	    return (field && item && _.has(item, field)
+	      ? item[field]
+	      : item) + ''
+	  },
+	
+	  _dataIndexOf: function(data, item){
+	    return _.findIndex(data, this._valueMatcher.bind(null, item), this)
+	  },
+	
+	  _valueMatcher: function(a, b){
+	    return _.isShallowEqual(
+	        this._dataValue(a)
+	      , this._dataValue(b)) 
+	  },
+	
+	  _dataItem: function(data, item){
+	    var first = data[0]
+	      , field = this.props.valueField
+	      , idx;
+	
+	    // make an attempt to see if we were passed in dataItem vs just a valueField value
+	    // either an object with the right prop, or a primitive
+	    // { valueField: 5 } || "hello" [ "hello" ]
+	    if( _.has(item, field) || typeof(first) === typeof(val))
+	      return item
+	
+	    idx = this._dataIndexOf(data, this._dataValue(item))
+	
+	    if (idx !== -1)
+	      return data[idx]
+	
+	    return item
+	  }
+	}
+
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
 	
 	module.exports = {
 	  
@@ -20192,13 +20254,13 @@
 	}
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React  = __webpack_require__(1)
-	  , filter = __webpack_require__(73)
-	  , helper = __webpack_require__(92)
+	  , filter = __webpack_require__(72)
+	  , helper = __webpack_require__(89)
 	  , _      = __webpack_require__(15);
 	
 	module.exports = {
@@ -20239,13 +20301,13 @@
 	}
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , filters = __webpack_require__(73)
-	  , helper  = __webpack_require__(92)
+	  , filters = __webpack_require__(72)
+	  , helper  = __webpack_require__(89)
 	  , _      = __webpack_require__(15);
 	
 	var filterTypes = Object.keys(filters).filter( function(i)  {return i !== 'filter';})
@@ -20321,69 +20383,203 @@
 
 
 /***/ },
-/* 92 */
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	var compat = module.exports = {
+	
+	  version: function(){
+	    return React.version.split('.').map(parseFloat);
+	  },
+	
+	  propType: function(fn) {
+	
+	    return function validator(props, propName, componentName, location){
+	      var ver = compat.version()
+	        , err = fn.call(this, props, propName, componentName, location)
+	
+	      if ( err && err !== true ) {
+	        if( ver[0] === 0 && ver[1] < 11 )
+	          return void 0
+	
+	        return err
+	      }
+	
+	    }
+	  }
+	}
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var $ = __webpack_require__(71)
+	
+	module.exports = function scrollTo( selected, scrollParent ) {
+	  var offset = $.offset(selected)
+	    , poff   = { top: 0, left: 0 }
+	    , list, scrollTop, selectedTop
+	    , selectedHeight, listHeight, bottom;
+	
+	    if( !selected ) return 
+	
+	    list       = scrollParent || $.scrollParent(selected) // if we know the parent skip this step for perf (maybe)
+	    scrollTop  = $.scrollTop(list)
+	    listHeight = $.height(list, true)
+	
+	    if (!getWindow(list)) 
+	      poff = $.offset(list)
+	
+	    offset     = {
+	      top:    offset.top  - poff.top,
+	      left:   offset.left - poff.left,
+	      height: offset.height,
+	      width:  offset.width
+	    }
+	
+	    selectedHeight = offset.height
+	    selectedTop    = offset.top  + scrollTop
+	    bottom         = selectedTop + selectedHeight
+	
+	    scrollTop = scrollTop > selectedTop
+	          ? selectedTop
+	          : bottom > (scrollTop + listHeight) 
+	              ? (bottom - listHeight)
+	              : scrollTop
+	
+	    $.scrollTop(list, scrollTop)
+	}
+	
+	function getWindow( node ) {
+	  return node === node.window
+	    ? node : node.nodeType === 9 && node.defaultView;
+	}
+
+/***/ },
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , _ =  __webpack_require__(15)
+	  , filter = __webpack_require__(72)
+	  , helper = __webpack_require__(89)
 	
 	module.exports = {
 	  
 	  propTypes: {    
-	    valueField: React.PropTypes.string,
 	    textField:  React.PropTypes.string,
 	  },
 	
-	  _dataValue: function(item){
-	    var field = this.props.valueField;
-	
-	        return field && item && _.has(item, field)
-	      ? item[field]
-	      : item
+	  first:function(){
+	    return this._data()[0]
 	  },
 	
-	  _dataText: function(item){
-	    var field = this.props.textField;
-	
-	    return (field && item && _.has(item, field)
-	      ? item[field]
-	      : item) + ''
+	  last:function(){
+	    var data = this._data()
+	    return data[data.length-1]
 	  },
 	
-	  _dataIndexOf: function(data, item){
-	    return _.findIndex(data, this._valueMatcher.bind(null, item), this)
+	  prev:function(item, word){
+	    var data = this._data()
+	      , idx  = data.indexOf(item)
+	
+	    if (idx === -1) idx = data.length;
+	
+	    return word 
+	      ? findNextInstance(this,  data, word, idx, 'prev')
+	      : --idx < 0 ? data[0] : data[idx]
 	  },
 	
-	  _valueMatcher: function(a, b){
-	    return _.isShallowEqual(
-	        this._dataValue(a)
-	      , this._dataValue(b)) 
-	  },
+	  next:function(item, word){
+	    var data = this._data()
+	      , idx  = data.indexOf(item)
 	
-	  _dataItem: function(data, item){
-	    var first = data[0]
-	      , field = this.props.valueField
-	      , idx;
-	
-	    // make an attempt to see if we were passed in dataItem vs just a valueField value
-	    // either an object with the right prop, or a primitive
-	    // { valueField: 5 } || "hello" [ "hello" ]
-	    if( _.has(item, field) || typeof(first) === typeof(val))
-	      return item
-	
-	    idx = this._dataIndexOf(data, this._dataValue(item))
-	
-	    if (idx !== -1)
-	      return data[idx]
-	
-	    return item
+	    return word 
+	      ? findNextInstance(this, data, word, idx, 'next')
+	      : ++idx === data.length ? data[data.length - 1] : data[idx]
 	  }
+	
+	}
+	
+	function findNextInstance(ctx, data, word, current, dir){
+	  var matcher = filter.startsWith;
+	    
+	  return _.find(data, function(item, i)  { 
+	    return (dir === 'next' ? i > current : i < current)
+	        && matcher(
+	            helper._dataText.call(ctx, item).toLowerCase()
+	          , word.toLowerCase())
+	  });    
 	}
 
 
 /***/ },
-/* 93 */
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = function caret(el, start, end ){
+	
+	  if ( start === undefined)
+	    return get(el)
+	  
+	  set(el, start, end)
+	}
+	
+	function get(el){
+	  var start, end, rangeEl, clone;
+	
+	  if( el.selectionStart !== undefined){
+	    start = el.selectionStart
+	    end = el.selectionEnd
+	  }
+	  else {
+	    try {
+	      el.focus()
+	      rangeEl = el.createTextRange()
+	      clone = rangeEl.duplicate()
+	
+	      rangeEl.moveToBookmark(document.selection.createRange().getBookmark());
+	      clone.setEndPoint('EndToStart', rangeEl);
+	
+	      start = clone.text.length;
+	      end   = start + rangeEl.text.length
+	    }
+	    catch(e) { /* not focused or not visible */ }
+	  }
+	  
+	  return { start:start, end:end }
+	}
+	
+	function set(el, start, end){
+	  var rangeEl;
+	
+	  
+	  try {
+	    if( el.selectionStart !== undefined){
+	      el.focus()
+	      el.setSelectionRange(start, end)
+	    }
+	    else {
+	      el.focus();
+	      rangeEl = el.createTextRange();
+	      rangeEl.collapse(true);
+	      rangeEl.moveStart("character", start);
+	      rangeEl.moveEnd("character", end - start);
+	      rangeEl.select();
+	    }
+	  }
+	  catch(e) { /* not focused or not visible */ }
+	}
+
+/***/ },
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20402,13 +20598,13 @@
 	}
 
 /***/ },
-/* 94 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(70)
-	  , directions = __webpack_require__(71).directions;
+	  , dates = __webpack_require__(75)
+	  , directions = __webpack_require__(76).directions;
 	
 	module.exports = function(viewUnit, smallUnit){
 	
@@ -20481,202 +20677,6 @@
 	}
 
 /***/ },
-/* 95 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	var compat = module.exports = {
-	
-	  version: function(){
-	    return React.version.split('.').map(parseFloat);
-	  },
-	
-	  propType: function(fn) {
-	
-	    return function validator(props, propName, componentName, location){
-	      var ver = compat.version()
-	        , err = fn.call(this, props, propName, componentName, location)
-	
-	      if ( err && err !== true ) {
-	        if( ver[0] === 0 && ver[1] < 11 )
-	          return void 0
-	
-	        return err
-	      }
-	
-	    }
-	  }
-	}
-
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = function caret(el, start, end ){
-	
-	  if ( start === undefined)
-	    return get(el)
-	  
-	  set(el, start, end)
-	}
-	
-	function get(el){
-	  var start, end, rangeEl, clone;
-	
-	  if( el.selectionStart !== undefined){
-	    start = el.selectionStart
-	    end = el.selectionEnd
-	  }
-	  else {
-	    try {
-	      el.focus()
-	      rangeEl = el.createTextRange()
-	      clone = rangeEl.duplicate()
-	
-	      rangeEl.moveToBookmark(document.selection.createRange().getBookmark());
-	      clone.setEndPoint('EndToStart', rangeEl);
-	
-	      start = clone.text.length;
-	      end   = start + rangeEl.text.length
-	    }
-	    catch(e) { /* not focused or not visible */ }
-	  }
-	  
-	  return { start:start, end:end }
-	}
-	
-	function set(el, start, end){
-	  var rangeEl;
-	
-	  
-	  try {
-	    if( el.selectionStart !== undefined){
-	      el.focus()
-	      el.setSelectionRange(start, end)
-	    }
-	    else {
-	      el.focus();
-	      rangeEl = el.createTextRange();
-	      rangeEl.collapse(true);
-	      rangeEl.moveStart("character", start);
-	      rangeEl.moveEnd("character", end - start);
-	      rangeEl.select();
-	    }
-	  }
-	  catch(e) { /* not focused or not visible */ }
-	}
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var $ = __webpack_require__(72)
-	
-	module.exports = function scrollTo( selected, scrollParent ) {
-	  var offset = $.offset(selected)
-	    , poff   = { top: 0, left: 0 }
-	    , list, scrollTop, selectedTop
-	    , selectedHeight, listHeight, bottom;
-	
-	    if( !selected ) return 
-	
-	    list       = scrollParent || $.scrollParent(selected) // if we know the parent skip this step for perf (maybe)
-	    scrollTop  = $.scrollTop(list)
-	    listHeight = $.height(list, true)
-	
-	    if (!getWindow(list)) 
-	      poff = $.offset(list)
-	
-	    offset     = {
-	      top:    offset.top  - poff.top,
-	      left:   offset.left - poff.left,
-	      height: offset.height,
-	      width:  offset.width
-	    }
-	
-	    selectedHeight = offset.height
-	    selectedTop    = offset.top  + scrollTop
-	    bottom         = selectedTop + selectedHeight
-	
-	    scrollTop = scrollTop > selectedTop
-	          ? selectedTop
-	          : bottom > (scrollTop + listHeight) 
-	              ? (bottom - listHeight)
-	              : scrollTop
-	
-	    $.scrollTop(list, scrollTop)
-	}
-	
-	function getWindow( node ) {
-	  return node === node.window
-	    ? node : node.nodeType === 9 && node.defaultView;
-	}
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _ =  __webpack_require__(15)
-	  , filter = __webpack_require__(73)
-	  , helper = __webpack_require__(92)
-	
-	module.exports = {
-	  
-	  propTypes: {    
-	    textField:  React.PropTypes.string,
-	  },
-	
-	  first:function(){
-	    return this._data()[0]
-	  },
-	
-	  last:function(){
-	    var data = this._data()
-	    return data[data.length-1]
-	  },
-	
-	  prev:function(item, word){
-	    var data = this._data()
-	      , idx  = data.indexOf(item)
-	
-	    if (idx === -1) idx = data.length;
-	
-	    return word 
-	      ? findNextInstance(this,  data, word, idx, 'prev')
-	      : --idx < 0 ? data[0] : data[idx]
-	  },
-	
-	  next:function(item, word){
-	    var data = this._data()
-	      , idx  = data.indexOf(item)
-	
-	    return word 
-	      ? findNextInstance(this, data, word, idx, 'next')
-	      : ++idx === data.length ? data[data.length - 1] : data[idx]
-	  }
-	
-	}
-	
-	function findNextInstance(ctx, data, word, current, dir){
-	  var matcher = filter.startsWith;
-	    
-	  return _.find(data, function(item, i)  { 
-	    return (dir === 'next' ? i > current : i < current)
-	        && matcher(
-	            helper._dataText.call(ctx, item).toLowerCase()
-	          , word.toLowerCase())
-	  });    
-	}
-
-
-/***/ },
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -20710,6 +20710,1064 @@
 
 /***/ },
 /* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
+	 * The buffer module from node.js, for the browser.
+	 *
+	 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+	 * @license  MIT
+	 */
+	
+	var base64 = __webpack_require__(105)
+	var ieee754 = __webpack_require__(103)
+	var isArray = __webpack_require__(104)
+	
+	exports.Buffer = Buffer
+	exports.SlowBuffer = Buffer
+	exports.INSPECT_MAX_BYTES = 50
+	Buffer.poolSize = 8192 // not used by this implementation
+	
+	var kMaxLength = 0x3fffffff
+	
+	/**
+	 * If `Buffer.TYPED_ARRAY_SUPPORT`:
+	 *   === true    Use Uint8Array implementation (fastest)
+	 *   === false   Use Object implementation (most compatible, even IE6)
+	 *
+	 * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+	 * Opera 11.6+, iOS 4.2+.
+	 *
+	 * Note:
+	 *
+	 * - Implementation must support adding new properties to `Uint8Array` instances.
+	 *   Firefox 4-29 lacked support, fixed in Firefox 30+.
+	 *   See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+	 *
+	 *  - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+	 *
+	 *  - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+	 *    incorrect length in some situations.
+	 *
+	 * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they will
+	 * get the Object implementation, which is slower but will work correctly.
+	 */
+	Buffer.TYPED_ARRAY_SUPPORT = (function () {
+	  try {
+	    var buf = new ArrayBuffer(0)
+	    var arr = new Uint8Array(buf)
+	    arr.foo = function () { return 42 }
+	    return 42 === arr.foo() && // typed array instances can be augmented
+	        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+	        new Uint8Array(1).subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+	  } catch (e) {
+	    return false
+	  }
+	})()
+	
+	/**
+	 * Class: Buffer
+	 * =============
+	 *
+	 * The Buffer constructor returns instances of `Uint8Array` that are augmented
+	 * with function properties for all the node `Buffer` API functions. We use
+	 * `Uint8Array` so that square bracket notation works as expected -- it returns
+	 * a single octet.
+	 *
+	 * By augmenting the instances, we can avoid modifying the `Uint8Array`
+	 * prototype.
+	 */
+	function Buffer (subject, encoding, noZero) {
+	  if (!(this instanceof Buffer))
+	    return new Buffer(subject, encoding, noZero)
+	
+	  var type = typeof subject
+	
+	  // Find the length
+	  var length
+	  if (type === 'number')
+	    length = subject > 0 ? subject >>> 0 : 0
+	  else if (type === 'string') {
+	    if (encoding === 'base64')
+	      subject = base64clean(subject)
+	    length = Buffer.byteLength(subject, encoding)
+	  } else if (type === 'object' && subject !== null) { // assume object is array-like
+	    if (subject.type === 'Buffer' && isArray(subject.data))
+	      subject = subject.data
+	    length = +subject.length > 0 ? Math.floor(+subject.length) : 0
+	  } else
+	    throw new TypeError('must start with number, buffer, array or string')
+	
+	  if (this.length > kMaxLength)
+	    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+	      'size: 0x' + kMaxLength.toString(16) + ' bytes')
+	
+	  var buf
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    // Preferred: Return an augmented `Uint8Array` instance for best performance
+	    buf = Buffer._augment(new Uint8Array(length))
+	  } else {
+	    // Fallback: Return THIS instance of Buffer (created by `new`)
+	    buf = this
+	    buf.length = length
+	    buf._isBuffer = true
+	  }
+	
+	  var i
+	  if (Buffer.TYPED_ARRAY_SUPPORT && typeof subject.byteLength === 'number') {
+	    // Speed optimization -- use set if we're copying from a typed array
+	    buf._set(subject)
+	  } else if (isArrayish(subject)) {
+	    // Treat array-ish objects as a byte array
+	    if (Buffer.isBuffer(subject)) {
+	      for (i = 0; i < length; i++)
+	        buf[i] = subject.readUInt8(i)
+	    } else {
+	      for (i = 0; i < length; i++)
+	        buf[i] = ((subject[i] % 256) + 256) % 256
+	    }
+	  } else if (type === 'string') {
+	    buf.write(subject, 0, encoding)
+	  } else if (type === 'number' && !Buffer.TYPED_ARRAY_SUPPORT && !noZero) {
+	    for (i = 0; i < length; i++) {
+	      buf[i] = 0
+	    }
+	  }
+	
+	  return buf
+	}
+	
+	Buffer.isBuffer = function (b) {
+	  return !!(b != null && b._isBuffer)
+	}
+	
+	Buffer.compare = function (a, b) {
+	  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b))
+	    throw new TypeError('Arguments must be Buffers')
+	
+	  var x = a.length
+	  var y = b.length
+	  for (var i = 0, len = Math.min(x, y); i < len && a[i] === b[i]; i++) {}
+	  if (i !== len) {
+	    x = a[i]
+	    y = b[i]
+	  }
+	  if (x < y) return -1
+	  if (y < x) return 1
+	  return 0
+	}
+	
+	Buffer.isEncoding = function (encoding) {
+	  switch (String(encoding).toLowerCase()) {
+	    case 'hex':
+	    case 'utf8':
+	    case 'utf-8':
+	    case 'ascii':
+	    case 'binary':
+	    case 'base64':
+	    case 'raw':
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      return true
+	    default:
+	      return false
+	  }
+	}
+	
+	Buffer.concat = function (list, totalLength) {
+	  if (!isArray(list)) throw new TypeError('Usage: Buffer.concat(list[, length])')
+	
+	  if (list.length === 0) {
+	    return new Buffer(0)
+	  } else if (list.length === 1) {
+	    return list[0]
+	  }
+	
+	  var i
+	  if (totalLength === undefined) {
+	    totalLength = 0
+	    for (i = 0; i < list.length; i++) {
+	      totalLength += list[i].length
+	    }
+	  }
+	
+	  var buf = new Buffer(totalLength)
+	  var pos = 0
+	  for (i = 0; i < list.length; i++) {
+	    var item = list[i]
+	    item.copy(buf, pos)
+	    pos += item.length
+	  }
+	  return buf
+	}
+	
+	Buffer.byteLength = function (str, encoding) {
+	  var ret
+	  str = str + ''
+	  switch (encoding || 'utf8') {
+	    case 'ascii':
+	    case 'binary':
+	    case 'raw':
+	      ret = str.length
+	      break
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      ret = str.length * 2
+	      break
+	    case 'hex':
+	      ret = str.length >>> 1
+	      break
+	    case 'utf8':
+	    case 'utf-8':
+	      ret = utf8ToBytes(str).length
+	      break
+	    case 'base64':
+	      ret = base64ToBytes(str).length
+	      break
+	    default:
+	      ret = str.length
+	  }
+	  return ret
+	}
+	
+	// pre-set for values that may exist in the future
+	Buffer.prototype.length = undefined
+	Buffer.prototype.parent = undefined
+	
+	// toString(encoding, start=0, end=buffer.length)
+	Buffer.prototype.toString = function (encoding, start, end) {
+	  var loweredCase = false
+	
+	  start = start >>> 0
+	  end = end === undefined || end === Infinity ? this.length : end >>> 0
+	
+	  if (!encoding) encoding = 'utf8'
+	  if (start < 0) start = 0
+	  if (end > this.length) end = this.length
+	  if (end <= start) return ''
+	
+	  while (true) {
+	    switch (encoding) {
+	      case 'hex':
+	        return hexSlice(this, start, end)
+	
+	      case 'utf8':
+	      case 'utf-8':
+	        return utf8Slice(this, start, end)
+	
+	      case 'ascii':
+	        return asciiSlice(this, start, end)
+	
+	      case 'binary':
+	        return binarySlice(this, start, end)
+	
+	      case 'base64':
+	        return base64Slice(this, start, end)
+	
+	      case 'ucs2':
+	      case 'ucs-2':
+	      case 'utf16le':
+	      case 'utf-16le':
+	        return utf16leSlice(this, start, end)
+	
+	      default:
+	        if (loweredCase)
+	          throw new TypeError('Unknown encoding: ' + encoding)
+	        encoding = (encoding + '').toLowerCase()
+	        loweredCase = true
+	    }
+	  }
+	}
+	
+	Buffer.prototype.equals = function (b) {
+	  if(!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+	  return Buffer.compare(this, b) === 0
+	}
+	
+	Buffer.prototype.inspect = function () {
+	  var str = ''
+	  var max = exports.INSPECT_MAX_BYTES
+	  if (this.length > 0) {
+	    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+	    if (this.length > max)
+	      str += ' ... '
+	  }
+	  return '<Buffer ' + str + '>'
+	}
+	
+	Buffer.prototype.compare = function (b) {
+	  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+	  return Buffer.compare(this, b)
+	}
+	
+	// `get` will be removed in Node 0.13+
+	Buffer.prototype.get = function (offset) {
+	  console.log('.get() is deprecated. Access using array indexes instead.')
+	  return this.readUInt8(offset)
+	}
+	
+	// `set` will be removed in Node 0.13+
+	Buffer.prototype.set = function (v, offset) {
+	  console.log('.set() is deprecated. Access using array indexes instead.')
+	  return this.writeUInt8(v, offset)
+	}
+	
+	function hexWrite (buf, string, offset, length) {
+	  offset = Number(offset) || 0
+	  var remaining = buf.length - offset
+	  if (!length) {
+	    length = remaining
+	  } else {
+	    length = Number(length)
+	    if (length > remaining) {
+	      length = remaining
+	    }
+	  }
+	
+	  // must be an even number of digits
+	  var strLen = string.length
+	  if (strLen % 2 !== 0) throw new Error('Invalid hex string')
+	
+	  if (length > strLen / 2) {
+	    length = strLen / 2
+	  }
+	  for (var i = 0; i < length; i++) {
+	    var byte = parseInt(string.substr(i * 2, 2), 16)
+	    if (isNaN(byte)) throw new Error('Invalid hex string')
+	    buf[offset + i] = byte
+	  }
+	  return i
+	}
+	
+	function utf8Write (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(utf8ToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	function asciiWrite (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(asciiToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	function binaryWrite (buf, string, offset, length) {
+	  return asciiWrite(buf, string, offset, length)
+	}
+	
+	function base64Write (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(base64ToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	function utf16leWrite (buf, string, offset, length) {
+	  var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length)
+	  return charsWritten
+	}
+	
+	Buffer.prototype.write = function (string, offset, length, encoding) {
+	  // Support both (string, offset, length, encoding)
+	  // and the legacy (string, encoding, offset, length)
+	  if (isFinite(offset)) {
+	    if (!isFinite(length)) {
+	      encoding = length
+	      length = undefined
+	    }
+	  } else {  // legacy
+	    var swap = encoding
+	    encoding = offset
+	    offset = length
+	    length = swap
+	  }
+	
+	  offset = Number(offset) || 0
+	  var remaining = this.length - offset
+	  if (!length) {
+	    length = remaining
+	  } else {
+	    length = Number(length)
+	    if (length > remaining) {
+	      length = remaining
+	    }
+	  }
+	  encoding = String(encoding || 'utf8').toLowerCase()
+	
+	  var ret
+	  switch (encoding) {
+	    case 'hex':
+	      ret = hexWrite(this, string, offset, length)
+	      break
+	    case 'utf8':
+	    case 'utf-8':
+	      ret = utf8Write(this, string, offset, length)
+	      break
+	    case 'ascii':
+	      ret = asciiWrite(this, string, offset, length)
+	      break
+	    case 'binary':
+	      ret = binaryWrite(this, string, offset, length)
+	      break
+	    case 'base64':
+	      ret = base64Write(this, string, offset, length)
+	      break
+	    case 'ucs2':
+	    case 'ucs-2':
+	    case 'utf16le':
+	    case 'utf-16le':
+	      ret = utf16leWrite(this, string, offset, length)
+	      break
+	    default:
+	      throw new TypeError('Unknown encoding: ' + encoding)
+	  }
+	  return ret
+	}
+	
+	Buffer.prototype.toJSON = function () {
+	  return {
+	    type: 'Buffer',
+	    data: Array.prototype.slice.call(this._arr || this, 0)
+	  }
+	}
+	
+	function base64Slice (buf, start, end) {
+	  if (start === 0 && end === buf.length) {
+	    return base64.fromByteArray(buf)
+	  } else {
+	    return base64.fromByteArray(buf.slice(start, end))
+	  }
+	}
+	
+	function utf8Slice (buf, start, end) {
+	  var res = ''
+	  var tmp = ''
+	  end = Math.min(buf.length, end)
+	
+	  for (var i = start; i < end; i++) {
+	    if (buf[i] <= 0x7F) {
+	      res += decodeUtf8Char(tmp) + String.fromCharCode(buf[i])
+	      tmp = ''
+	    } else {
+	      tmp += '%' + buf[i].toString(16)
+	    }
+	  }
+	
+	  return res + decodeUtf8Char(tmp)
+	}
+	
+	function asciiSlice (buf, start, end) {
+	  var ret = ''
+	  end = Math.min(buf.length, end)
+	
+	  for (var i = start; i < end; i++) {
+	    ret += String.fromCharCode(buf[i])
+	  }
+	  return ret
+	}
+	
+	function binarySlice (buf, start, end) {
+	  return asciiSlice(buf, start, end)
+	}
+	
+	function hexSlice (buf, start, end) {
+	  var len = buf.length
+	
+	  if (!start || start < 0) start = 0
+	  if (!end || end < 0 || end > len) end = len
+	
+	  var out = ''
+	  for (var i = start; i < end; i++) {
+	    out += toHex(buf[i])
+	  }
+	  return out
+	}
+	
+	function utf16leSlice (buf, start, end) {
+	  var bytes = buf.slice(start, end)
+	  var res = ''
+	  for (var i = 0; i < bytes.length; i += 2) {
+	    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+	  }
+	  return res
+	}
+	
+	Buffer.prototype.slice = function (start, end) {
+	  var len = this.length
+	  start = ~~start
+	  end = end === undefined ? len : ~~end
+	
+	  if (start < 0) {
+	    start += len;
+	    if (start < 0)
+	      start = 0
+	  } else if (start > len) {
+	    start = len
+	  }
+	
+	  if (end < 0) {
+	    end += len
+	    if (end < 0)
+	      end = 0
+	  } else if (end > len) {
+	    end = len
+	  }
+	
+	  if (end < start)
+	    end = start
+	
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    return Buffer._augment(this.subarray(start, end))
+	  } else {
+	    var sliceLen = end - start
+	    var newBuf = new Buffer(sliceLen, undefined, true)
+	    for (var i = 0; i < sliceLen; i++) {
+	      newBuf[i] = this[i + start]
+	    }
+	    return newBuf
+	  }
+	}
+	
+	/*
+	 * Need to make sure that buffer isn't trying to write out of bounds.
+	 */
+	function checkOffset (offset, ext, length) {
+	  if ((offset % 1) !== 0 || offset < 0)
+	    throw new RangeError('offset is not uint')
+	  if (offset + ext > length)
+	    throw new RangeError('Trying to access beyond buffer length')
+	}
+	
+	Buffer.prototype.readUInt8 = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 1, this.length)
+	  return this[offset]
+	}
+	
+	Buffer.prototype.readUInt16LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  return this[offset] | (this[offset + 1] << 8)
+	}
+	
+	Buffer.prototype.readUInt16BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  return (this[offset] << 8) | this[offset + 1]
+	}
+	
+	Buffer.prototype.readUInt32LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return ((this[offset]) |
+	      (this[offset + 1] << 8) |
+	      (this[offset + 2] << 16)) +
+	      (this[offset + 3] * 0x1000000)
+	}
+	
+	Buffer.prototype.readUInt32BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return (this[offset] * 0x1000000) +
+	      ((this[offset + 1] << 16) |
+	      (this[offset + 2] << 8) |
+	      this[offset + 3])
+	}
+	
+	Buffer.prototype.readInt8 = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 1, this.length)
+	  if (!(this[offset] & 0x80))
+	    return (this[offset])
+	  return ((0xff - this[offset] + 1) * -1)
+	}
+	
+	Buffer.prototype.readInt16LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  var val = this[offset] | (this[offset + 1] << 8)
+	  return (val & 0x8000) ? val | 0xFFFF0000 : val
+	}
+	
+	Buffer.prototype.readInt16BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 2, this.length)
+	  var val = this[offset + 1] | (this[offset] << 8)
+	  return (val & 0x8000) ? val | 0xFFFF0000 : val
+	}
+	
+	Buffer.prototype.readInt32LE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return (this[offset]) |
+	      (this[offset + 1] << 8) |
+	      (this[offset + 2] << 16) |
+	      (this[offset + 3] << 24)
+	}
+	
+	Buffer.prototype.readInt32BE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	
+	  return (this[offset] << 24) |
+	      (this[offset + 1] << 16) |
+	      (this[offset + 2] << 8) |
+	      (this[offset + 3])
+	}
+	
+	Buffer.prototype.readFloatLE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	  return ieee754.read(this, offset, true, 23, 4)
+	}
+	
+	Buffer.prototype.readFloatBE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 4, this.length)
+	  return ieee754.read(this, offset, false, 23, 4)
+	}
+	
+	Buffer.prototype.readDoubleLE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 8, this.length)
+	  return ieee754.read(this, offset, true, 52, 8)
+	}
+	
+	Buffer.prototype.readDoubleBE = function (offset, noAssert) {
+	  if (!noAssert)
+	    checkOffset(offset, 8, this.length)
+	  return ieee754.read(this, offset, false, 52, 8)
+	}
+	
+	function checkInt (buf, value, offset, ext, max, min) {
+	  if (!Buffer.isBuffer(buf)) throw new TypeError('buffer must be a Buffer instance')
+	  if (value > max || value < min) throw new TypeError('value is out of bounds')
+	  if (offset + ext > buf.length) throw new TypeError('index out of range')
+	}
+	
+	Buffer.prototype.writeUInt8 = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 1, 0xff, 0)
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+	  this[offset] = value
+	  return offset + 1
+	}
+	
+	function objectWriteUInt16 (buf, value, offset, littleEndian) {
+	  if (value < 0) value = 0xffff + value + 1
+	  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; i++) {
+	    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+	      (littleEndian ? i : 1 - i) * 8
+	  }
+	}
+	
+	Buffer.prototype.writeUInt16LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0xffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = value
+	    this[offset + 1] = (value >>> 8)
+	  } else objectWriteUInt16(this, value, offset, true)
+	  return offset + 2
+	}
+	
+	Buffer.prototype.writeUInt16BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0xffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 8)
+	    this[offset + 1] = value
+	  } else objectWriteUInt16(this, value, offset, false)
+	  return offset + 2
+	}
+	
+	function objectWriteUInt32 (buf, value, offset, littleEndian) {
+	  if (value < 0) value = 0xffffffff + value + 1
+	  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; i++) {
+	    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+	  }
+	}
+	
+	Buffer.prototype.writeUInt32LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0xffffffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset + 3] = (value >>> 24)
+	    this[offset + 2] = (value >>> 16)
+	    this[offset + 1] = (value >>> 8)
+	    this[offset] = value
+	  } else objectWriteUInt32(this, value, offset, true)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeUInt32BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0xffffffff, 0)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 24)
+	    this[offset + 1] = (value >>> 16)
+	    this[offset + 2] = (value >>> 8)
+	    this[offset + 3] = value
+	  } else objectWriteUInt32(this, value, offset, false)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeInt8 = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 1, 0x7f, -0x80)
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+	  if (value < 0) value = 0xff + value + 1
+	  this[offset] = value
+	  return offset + 1
+	}
+	
+	Buffer.prototype.writeInt16LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = value
+	    this[offset + 1] = (value >>> 8)
+	  } else objectWriteUInt16(this, value, offset, true)
+	  return offset + 2
+	}
+	
+	Buffer.prototype.writeInt16BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 8)
+	    this[offset + 1] = value
+	  } else objectWriteUInt16(this, value, offset, false)
+	  return offset + 2
+	}
+	
+	Buffer.prototype.writeInt32LE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = value
+	    this[offset + 1] = (value >>> 8)
+	    this[offset + 2] = (value >>> 16)
+	    this[offset + 3] = (value >>> 24)
+	  } else objectWriteUInt32(this, value, offset, true)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeInt32BE = function (value, offset, noAssert) {
+	  value = +value
+	  offset = offset >>> 0
+	  if (!noAssert)
+	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+	  if (value < 0) value = 0xffffffff + value + 1
+	  if (Buffer.TYPED_ARRAY_SUPPORT) {
+	    this[offset] = (value >>> 24)
+	    this[offset + 1] = (value >>> 16)
+	    this[offset + 2] = (value >>> 8)
+	    this[offset + 3] = value
+	  } else objectWriteUInt32(this, value, offset, false)
+	  return offset + 4
+	}
+	
+	function checkIEEE754 (buf, value, offset, ext, max, min) {
+	  if (value > max || value < min) throw new TypeError('value is out of bounds')
+	  if (offset + ext > buf.length) throw new TypeError('index out of range')
+	}
+	
+	function writeFloat (buf, value, offset, littleEndian, noAssert) {
+	  if (!noAssert)
+	    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+	  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+	  return offset + 4
+	}
+	
+	Buffer.prototype.writeFloatLE = function (value, offset, noAssert) {
+	  return writeFloat(this, value, offset, true, noAssert)
+	}
+	
+	Buffer.prototype.writeFloatBE = function (value, offset, noAssert) {
+	  return writeFloat(this, value, offset, false, noAssert)
+	}
+	
+	function writeDouble (buf, value, offset, littleEndian, noAssert) {
+	  if (!noAssert)
+	    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+	  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+	  return offset + 8
+	}
+	
+	Buffer.prototype.writeDoubleLE = function (value, offset, noAssert) {
+	  return writeDouble(this, value, offset, true, noAssert)
+	}
+	
+	Buffer.prototype.writeDoubleBE = function (value, offset, noAssert) {
+	  return writeDouble(this, value, offset, false, noAssert)
+	}
+	
+	// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+	Buffer.prototype.copy = function (target, target_start, start, end) {
+	  var source = this
+	
+	  if (!start) start = 0
+	  if (!end && end !== 0) end = this.length
+	  if (!target_start) target_start = 0
+	
+	  // Copy 0 bytes; we're done
+	  if (end === start) return
+	  if (target.length === 0 || source.length === 0) return
+	
+	  // Fatal error conditions
+	  if (end < start) throw new TypeError('sourceEnd < sourceStart')
+	  if (target_start < 0 || target_start >= target.length)
+	    throw new TypeError('targetStart out of bounds')
+	  if (start < 0 || start >= source.length) throw new TypeError('sourceStart out of bounds')
+	  if (end < 0 || end > source.length) throw new TypeError('sourceEnd out of bounds')
+	
+	  // Are we oob?
+	  if (end > this.length)
+	    end = this.length
+	  if (target.length - target_start < end - start)
+	    end = target.length - target_start + start
+	
+	  var len = end - start
+	
+	  if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+	    for (var i = 0; i < len; i++) {
+	      target[i + target_start] = this[i + start]
+	    }
+	  } else {
+	    target._set(this.subarray(start, start + len), target_start)
+	  }
+	}
+	
+	// fill(value, start=0, end=buffer.length)
+	Buffer.prototype.fill = function (value, start, end) {
+	  if (!value) value = 0
+	  if (!start) start = 0
+	  if (!end) end = this.length
+	
+	  if (end < start) throw new TypeError('end < start')
+	
+	  // Fill 0 bytes; we're done
+	  if (end === start) return
+	  if (this.length === 0) return
+	
+	  if (start < 0 || start >= this.length) throw new TypeError('start out of bounds')
+	  if (end < 0 || end > this.length) throw new TypeError('end out of bounds')
+	
+	  var i
+	  if (typeof value === 'number') {
+	    for (i = start; i < end; i++) {
+	      this[i] = value
+	    }
+	  } else {
+	    var bytes = utf8ToBytes(value.toString())
+	    var len = bytes.length
+	    for (i = start; i < end; i++) {
+	      this[i] = bytes[i % len]
+	    }
+	  }
+	
+	  return this
+	}
+	
+	/**
+	 * Creates a new `ArrayBuffer` with the *copied* memory of the buffer instance.
+	 * Added in Node 0.12. Only available in browsers that support ArrayBuffer.
+	 */
+	Buffer.prototype.toArrayBuffer = function () {
+	  if (typeof Uint8Array !== 'undefined') {
+	    if (Buffer.TYPED_ARRAY_SUPPORT) {
+	      return (new Buffer(this)).buffer
+	    } else {
+	      var buf = new Uint8Array(this.length)
+	      for (var i = 0, len = buf.length; i < len; i += 1) {
+	        buf[i] = this[i]
+	      }
+	      return buf.buffer
+	    }
+	  } else {
+	    throw new TypeError('Buffer.toArrayBuffer not supported in this browser')
+	  }
+	}
+	
+	// HELPER FUNCTIONS
+	// ================
+	
+	var BP = Buffer.prototype
+	
+	/**
+	 * Augment a Uint8Array *instance* (not the Uint8Array class!) with Buffer methods
+	 */
+	Buffer._augment = function (arr) {
+	  arr.constructor = Buffer
+	  arr._isBuffer = true
+	
+	  // save reference to original Uint8Array get/set methods before overwriting
+	  arr._get = arr.get
+	  arr._set = arr.set
+	
+	  // deprecated, will be removed in node 0.13+
+	  arr.get = BP.get
+	  arr.set = BP.set
+	
+	  arr.write = BP.write
+	  arr.toString = BP.toString
+	  arr.toLocaleString = BP.toString
+	  arr.toJSON = BP.toJSON
+	  arr.equals = BP.equals
+	  arr.compare = BP.compare
+	  arr.copy = BP.copy
+	  arr.slice = BP.slice
+	  arr.readUInt8 = BP.readUInt8
+	  arr.readUInt16LE = BP.readUInt16LE
+	  arr.readUInt16BE = BP.readUInt16BE
+	  arr.readUInt32LE = BP.readUInt32LE
+	  arr.readUInt32BE = BP.readUInt32BE
+	  arr.readInt8 = BP.readInt8
+	  arr.readInt16LE = BP.readInt16LE
+	  arr.readInt16BE = BP.readInt16BE
+	  arr.readInt32LE = BP.readInt32LE
+	  arr.readInt32BE = BP.readInt32BE
+	  arr.readFloatLE = BP.readFloatLE
+	  arr.readFloatBE = BP.readFloatBE
+	  arr.readDoubleLE = BP.readDoubleLE
+	  arr.readDoubleBE = BP.readDoubleBE
+	  arr.writeUInt8 = BP.writeUInt8
+	  arr.writeUInt16LE = BP.writeUInt16LE
+	  arr.writeUInt16BE = BP.writeUInt16BE
+	  arr.writeUInt32LE = BP.writeUInt32LE
+	  arr.writeUInt32BE = BP.writeUInt32BE
+	  arr.writeInt8 = BP.writeInt8
+	  arr.writeInt16LE = BP.writeInt16LE
+	  arr.writeInt16BE = BP.writeInt16BE
+	  arr.writeInt32LE = BP.writeInt32LE
+	  arr.writeInt32BE = BP.writeInt32BE
+	  arr.writeFloatLE = BP.writeFloatLE
+	  arr.writeFloatBE = BP.writeFloatBE
+	  arr.writeDoubleLE = BP.writeDoubleLE
+	  arr.writeDoubleBE = BP.writeDoubleBE
+	  arr.fill = BP.fill
+	  arr.inspect = BP.inspect
+	  arr.toArrayBuffer = BP.toArrayBuffer
+	
+	  return arr
+	}
+	
+	var INVALID_BASE64_RE = /[^+\/0-9A-z]/g
+	
+	function base64clean (str) {
+	  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+	  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+	  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+	  while (str.length % 4 !== 0) {
+	    str = str + '='
+	  }
+	  return str
+	}
+	
+	function stringtrim (str) {
+	  if (str.trim) return str.trim()
+	  return str.replace(/^\s+|\s+$/g, '')
+	}
+	
+	function isArrayish (subject) {
+	  return isArray(subject) || Buffer.isBuffer(subject) ||
+	      subject && typeof subject === 'object' &&
+	      typeof subject.length === 'number'
+	}
+	
+	function toHex (n) {
+	  if (n < 16) return '0' + n.toString(16)
+	  return n.toString(16)
+	}
+	
+	function utf8ToBytes (str) {
+	  var byteArray = []
+	  for (var i = 0; i < str.length; i++) {
+	    var b = str.charCodeAt(i)
+	    if (b <= 0x7F) {
+	      byteArray.push(b)
+	    } else {
+	      var start = i
+	      if (b >= 0xD800 && b <= 0xDFFF) i++
+	      var h = encodeURIComponent(str.slice(start, i+1)).substr(1).split('%')
+	      for (var j = 0; j < h.length; j++) {
+	        byteArray.push(parseInt(h[j], 16))
+	      }
+	    }
+	  }
+	  return byteArray
+	}
+	
+	function asciiToBytes (str) {
+	  var byteArray = []
+	  for (var i = 0; i < str.length; i++) {
+	    // Node's code seems to be doing this and not & 0x7F..
+	    byteArray.push(str.charCodeAt(i) & 0xFF)
+	  }
+	  return byteArray
+	}
+	
+	function utf16leToBytes (str) {
+	  var c, hi, lo
+	  var byteArray = []
+	  for (var i = 0; i < str.length; i++) {
+	    c = str.charCodeAt(i)
+	    hi = c >> 8
+	    lo = c % 256
+	    byteArray.push(lo)
+	    byteArray.push(hi)
+	  }
+	
+	  return byteArray
+	}
+	
+	function base64ToBytes (str) {
+	  return base64.toByteArray(str)
+	}
+	
+	function blitBuffer (src, dst, offset, length) {
+	  for (var i = 0; i < length; i++) {
+	    if ((i + offset >= dst.length) || (i >= src.length))
+	      break
+	    dst[i + offset] = src[i]
+	  }
+	  return i
+	}
+	
+	function decodeUtf8Char (str) {
+	  try {
+	    return decodeURIComponent(str)
+	  } catch (err) {
+	    return String.fromCharCode(0xFFFD) // UTF 8 invalid char
+	  }
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(101).Buffer))
+
+/***/ },
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -22297,1064 +23355,6 @@
 	
 	}( this ));
 
-
-/***/ },
-/* 102 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
-	 * The buffer module from node.js, for the browser.
-	 *
-	 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
-	 * @license  MIT
-	 */
-	
-	var base64 = __webpack_require__(105)
-	var ieee754 = __webpack_require__(103)
-	var isArray = __webpack_require__(104)
-	
-	exports.Buffer = Buffer
-	exports.SlowBuffer = Buffer
-	exports.INSPECT_MAX_BYTES = 50
-	Buffer.poolSize = 8192 // not used by this implementation
-	
-	var kMaxLength = 0x3fffffff
-	
-	/**
-	 * If `Buffer.TYPED_ARRAY_SUPPORT`:
-	 *   === true    Use Uint8Array implementation (fastest)
-	 *   === false   Use Object implementation (most compatible, even IE6)
-	 *
-	 * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
-	 * Opera 11.6+, iOS 4.2+.
-	 *
-	 * Note:
-	 *
-	 * - Implementation must support adding new properties to `Uint8Array` instances.
-	 *   Firefox 4-29 lacked support, fixed in Firefox 30+.
-	 *   See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
-	 *
-	 *  - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
-	 *
-	 *  - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
-	 *    incorrect length in some situations.
-	 *
-	 * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they will
-	 * get the Object implementation, which is slower but will work correctly.
-	 */
-	Buffer.TYPED_ARRAY_SUPPORT = (function () {
-	  try {
-	    var buf = new ArrayBuffer(0)
-	    var arr = new Uint8Array(buf)
-	    arr.foo = function () { return 42 }
-	    return 42 === arr.foo() && // typed array instances can be augmented
-	        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
-	        new Uint8Array(1).subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
-	  } catch (e) {
-	    return false
-	  }
-	})()
-	
-	/**
-	 * Class: Buffer
-	 * =============
-	 *
-	 * The Buffer constructor returns instances of `Uint8Array` that are augmented
-	 * with function properties for all the node `Buffer` API functions. We use
-	 * `Uint8Array` so that square bracket notation works as expected -- it returns
-	 * a single octet.
-	 *
-	 * By augmenting the instances, we can avoid modifying the `Uint8Array`
-	 * prototype.
-	 */
-	function Buffer (subject, encoding, noZero) {
-	  if (!(this instanceof Buffer))
-	    return new Buffer(subject, encoding, noZero)
-	
-	  var type = typeof subject
-	
-	  // Find the length
-	  var length
-	  if (type === 'number')
-	    length = subject > 0 ? subject >>> 0 : 0
-	  else if (type === 'string') {
-	    if (encoding === 'base64')
-	      subject = base64clean(subject)
-	    length = Buffer.byteLength(subject, encoding)
-	  } else if (type === 'object' && subject !== null) { // assume object is array-like
-	    if (subject.type === 'Buffer' && isArray(subject.data))
-	      subject = subject.data
-	    length = +subject.length > 0 ? Math.floor(+subject.length) : 0
-	  } else
-	    throw new TypeError('must start with number, buffer, array or string')
-	
-	  if (this.length > kMaxLength)
-	    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
-	      'size: 0x' + kMaxLength.toString(16) + ' bytes')
-	
-	  var buf
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    // Preferred: Return an augmented `Uint8Array` instance for best performance
-	    buf = Buffer._augment(new Uint8Array(length))
-	  } else {
-	    // Fallback: Return THIS instance of Buffer (created by `new`)
-	    buf = this
-	    buf.length = length
-	    buf._isBuffer = true
-	  }
-	
-	  var i
-	  if (Buffer.TYPED_ARRAY_SUPPORT && typeof subject.byteLength === 'number') {
-	    // Speed optimization -- use set if we're copying from a typed array
-	    buf._set(subject)
-	  } else if (isArrayish(subject)) {
-	    // Treat array-ish objects as a byte array
-	    if (Buffer.isBuffer(subject)) {
-	      for (i = 0; i < length; i++)
-	        buf[i] = subject.readUInt8(i)
-	    } else {
-	      for (i = 0; i < length; i++)
-	        buf[i] = ((subject[i] % 256) + 256) % 256
-	    }
-	  } else if (type === 'string') {
-	    buf.write(subject, 0, encoding)
-	  } else if (type === 'number' && !Buffer.TYPED_ARRAY_SUPPORT && !noZero) {
-	    for (i = 0; i < length; i++) {
-	      buf[i] = 0
-	    }
-	  }
-	
-	  return buf
-	}
-	
-	Buffer.isBuffer = function (b) {
-	  return !!(b != null && b._isBuffer)
-	}
-	
-	Buffer.compare = function (a, b) {
-	  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b))
-	    throw new TypeError('Arguments must be Buffers')
-	
-	  var x = a.length
-	  var y = b.length
-	  for (var i = 0, len = Math.min(x, y); i < len && a[i] === b[i]; i++) {}
-	  if (i !== len) {
-	    x = a[i]
-	    y = b[i]
-	  }
-	  if (x < y) return -1
-	  if (y < x) return 1
-	  return 0
-	}
-	
-	Buffer.isEncoding = function (encoding) {
-	  switch (String(encoding).toLowerCase()) {
-	    case 'hex':
-	    case 'utf8':
-	    case 'utf-8':
-	    case 'ascii':
-	    case 'binary':
-	    case 'base64':
-	    case 'raw':
-	    case 'ucs2':
-	    case 'ucs-2':
-	    case 'utf16le':
-	    case 'utf-16le':
-	      return true
-	    default:
-	      return false
-	  }
-	}
-	
-	Buffer.concat = function (list, totalLength) {
-	  if (!isArray(list)) throw new TypeError('Usage: Buffer.concat(list[, length])')
-	
-	  if (list.length === 0) {
-	    return new Buffer(0)
-	  } else if (list.length === 1) {
-	    return list[0]
-	  }
-	
-	  var i
-	  if (totalLength === undefined) {
-	    totalLength = 0
-	    for (i = 0; i < list.length; i++) {
-	      totalLength += list[i].length
-	    }
-	  }
-	
-	  var buf = new Buffer(totalLength)
-	  var pos = 0
-	  for (i = 0; i < list.length; i++) {
-	    var item = list[i]
-	    item.copy(buf, pos)
-	    pos += item.length
-	  }
-	  return buf
-	}
-	
-	Buffer.byteLength = function (str, encoding) {
-	  var ret
-	  str = str + ''
-	  switch (encoding || 'utf8') {
-	    case 'ascii':
-	    case 'binary':
-	    case 'raw':
-	      ret = str.length
-	      break
-	    case 'ucs2':
-	    case 'ucs-2':
-	    case 'utf16le':
-	    case 'utf-16le':
-	      ret = str.length * 2
-	      break
-	    case 'hex':
-	      ret = str.length >>> 1
-	      break
-	    case 'utf8':
-	    case 'utf-8':
-	      ret = utf8ToBytes(str).length
-	      break
-	    case 'base64':
-	      ret = base64ToBytes(str).length
-	      break
-	    default:
-	      ret = str.length
-	  }
-	  return ret
-	}
-	
-	// pre-set for values that may exist in the future
-	Buffer.prototype.length = undefined
-	Buffer.prototype.parent = undefined
-	
-	// toString(encoding, start=0, end=buffer.length)
-	Buffer.prototype.toString = function (encoding, start, end) {
-	  var loweredCase = false
-	
-	  start = start >>> 0
-	  end = end === undefined || end === Infinity ? this.length : end >>> 0
-	
-	  if (!encoding) encoding = 'utf8'
-	  if (start < 0) start = 0
-	  if (end > this.length) end = this.length
-	  if (end <= start) return ''
-	
-	  while (true) {
-	    switch (encoding) {
-	      case 'hex':
-	        return hexSlice(this, start, end)
-	
-	      case 'utf8':
-	      case 'utf-8':
-	        return utf8Slice(this, start, end)
-	
-	      case 'ascii':
-	        return asciiSlice(this, start, end)
-	
-	      case 'binary':
-	        return binarySlice(this, start, end)
-	
-	      case 'base64':
-	        return base64Slice(this, start, end)
-	
-	      case 'ucs2':
-	      case 'ucs-2':
-	      case 'utf16le':
-	      case 'utf-16le':
-	        return utf16leSlice(this, start, end)
-	
-	      default:
-	        if (loweredCase)
-	          throw new TypeError('Unknown encoding: ' + encoding)
-	        encoding = (encoding + '').toLowerCase()
-	        loweredCase = true
-	    }
-	  }
-	}
-	
-	Buffer.prototype.equals = function (b) {
-	  if(!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
-	  return Buffer.compare(this, b) === 0
-	}
-	
-	Buffer.prototype.inspect = function () {
-	  var str = ''
-	  var max = exports.INSPECT_MAX_BYTES
-	  if (this.length > 0) {
-	    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
-	    if (this.length > max)
-	      str += ' ... '
-	  }
-	  return '<Buffer ' + str + '>'
-	}
-	
-	Buffer.prototype.compare = function (b) {
-	  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
-	  return Buffer.compare(this, b)
-	}
-	
-	// `get` will be removed in Node 0.13+
-	Buffer.prototype.get = function (offset) {
-	  console.log('.get() is deprecated. Access using array indexes instead.')
-	  return this.readUInt8(offset)
-	}
-	
-	// `set` will be removed in Node 0.13+
-	Buffer.prototype.set = function (v, offset) {
-	  console.log('.set() is deprecated. Access using array indexes instead.')
-	  return this.writeUInt8(v, offset)
-	}
-	
-	function hexWrite (buf, string, offset, length) {
-	  offset = Number(offset) || 0
-	  var remaining = buf.length - offset
-	  if (!length) {
-	    length = remaining
-	  } else {
-	    length = Number(length)
-	    if (length > remaining) {
-	      length = remaining
-	    }
-	  }
-	
-	  // must be an even number of digits
-	  var strLen = string.length
-	  if (strLen % 2 !== 0) throw new Error('Invalid hex string')
-	
-	  if (length > strLen / 2) {
-	    length = strLen / 2
-	  }
-	  for (var i = 0; i < length; i++) {
-	    var byte = parseInt(string.substr(i * 2, 2), 16)
-	    if (isNaN(byte)) throw new Error('Invalid hex string')
-	    buf[offset + i] = byte
-	  }
-	  return i
-	}
-	
-	function utf8Write (buf, string, offset, length) {
-	  var charsWritten = blitBuffer(utf8ToBytes(string), buf, offset, length)
-	  return charsWritten
-	}
-	
-	function asciiWrite (buf, string, offset, length) {
-	  var charsWritten = blitBuffer(asciiToBytes(string), buf, offset, length)
-	  return charsWritten
-	}
-	
-	function binaryWrite (buf, string, offset, length) {
-	  return asciiWrite(buf, string, offset, length)
-	}
-	
-	function base64Write (buf, string, offset, length) {
-	  var charsWritten = blitBuffer(base64ToBytes(string), buf, offset, length)
-	  return charsWritten
-	}
-	
-	function utf16leWrite (buf, string, offset, length) {
-	  var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length)
-	  return charsWritten
-	}
-	
-	Buffer.prototype.write = function (string, offset, length, encoding) {
-	  // Support both (string, offset, length, encoding)
-	  // and the legacy (string, encoding, offset, length)
-	  if (isFinite(offset)) {
-	    if (!isFinite(length)) {
-	      encoding = length
-	      length = undefined
-	    }
-	  } else {  // legacy
-	    var swap = encoding
-	    encoding = offset
-	    offset = length
-	    length = swap
-	  }
-	
-	  offset = Number(offset) || 0
-	  var remaining = this.length - offset
-	  if (!length) {
-	    length = remaining
-	  } else {
-	    length = Number(length)
-	    if (length > remaining) {
-	      length = remaining
-	    }
-	  }
-	  encoding = String(encoding || 'utf8').toLowerCase()
-	
-	  var ret
-	  switch (encoding) {
-	    case 'hex':
-	      ret = hexWrite(this, string, offset, length)
-	      break
-	    case 'utf8':
-	    case 'utf-8':
-	      ret = utf8Write(this, string, offset, length)
-	      break
-	    case 'ascii':
-	      ret = asciiWrite(this, string, offset, length)
-	      break
-	    case 'binary':
-	      ret = binaryWrite(this, string, offset, length)
-	      break
-	    case 'base64':
-	      ret = base64Write(this, string, offset, length)
-	      break
-	    case 'ucs2':
-	    case 'ucs-2':
-	    case 'utf16le':
-	    case 'utf-16le':
-	      ret = utf16leWrite(this, string, offset, length)
-	      break
-	    default:
-	      throw new TypeError('Unknown encoding: ' + encoding)
-	  }
-	  return ret
-	}
-	
-	Buffer.prototype.toJSON = function () {
-	  return {
-	    type: 'Buffer',
-	    data: Array.prototype.slice.call(this._arr || this, 0)
-	  }
-	}
-	
-	function base64Slice (buf, start, end) {
-	  if (start === 0 && end === buf.length) {
-	    return base64.fromByteArray(buf)
-	  } else {
-	    return base64.fromByteArray(buf.slice(start, end))
-	  }
-	}
-	
-	function utf8Slice (buf, start, end) {
-	  var res = ''
-	  var tmp = ''
-	  end = Math.min(buf.length, end)
-	
-	  for (var i = start; i < end; i++) {
-	    if (buf[i] <= 0x7F) {
-	      res += decodeUtf8Char(tmp) + String.fromCharCode(buf[i])
-	      tmp = ''
-	    } else {
-	      tmp += '%' + buf[i].toString(16)
-	    }
-	  }
-	
-	  return res + decodeUtf8Char(tmp)
-	}
-	
-	function asciiSlice (buf, start, end) {
-	  var ret = ''
-	  end = Math.min(buf.length, end)
-	
-	  for (var i = start; i < end; i++) {
-	    ret += String.fromCharCode(buf[i])
-	  }
-	  return ret
-	}
-	
-	function binarySlice (buf, start, end) {
-	  return asciiSlice(buf, start, end)
-	}
-	
-	function hexSlice (buf, start, end) {
-	  var len = buf.length
-	
-	  if (!start || start < 0) start = 0
-	  if (!end || end < 0 || end > len) end = len
-	
-	  var out = ''
-	  for (var i = start; i < end; i++) {
-	    out += toHex(buf[i])
-	  }
-	  return out
-	}
-	
-	function utf16leSlice (buf, start, end) {
-	  var bytes = buf.slice(start, end)
-	  var res = ''
-	  for (var i = 0; i < bytes.length; i += 2) {
-	    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
-	  }
-	  return res
-	}
-	
-	Buffer.prototype.slice = function (start, end) {
-	  var len = this.length
-	  start = ~~start
-	  end = end === undefined ? len : ~~end
-	
-	  if (start < 0) {
-	    start += len;
-	    if (start < 0)
-	      start = 0
-	  } else if (start > len) {
-	    start = len
-	  }
-	
-	  if (end < 0) {
-	    end += len
-	    if (end < 0)
-	      end = 0
-	  } else if (end > len) {
-	    end = len
-	  }
-	
-	  if (end < start)
-	    end = start
-	
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    return Buffer._augment(this.subarray(start, end))
-	  } else {
-	    var sliceLen = end - start
-	    var newBuf = new Buffer(sliceLen, undefined, true)
-	    for (var i = 0; i < sliceLen; i++) {
-	      newBuf[i] = this[i + start]
-	    }
-	    return newBuf
-	  }
-	}
-	
-	/*
-	 * Need to make sure that buffer isn't trying to write out of bounds.
-	 */
-	function checkOffset (offset, ext, length) {
-	  if ((offset % 1) !== 0 || offset < 0)
-	    throw new RangeError('offset is not uint')
-	  if (offset + ext > length)
-	    throw new RangeError('Trying to access beyond buffer length')
-	}
-	
-	Buffer.prototype.readUInt8 = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 1, this.length)
-	  return this[offset]
-	}
-	
-	Buffer.prototype.readUInt16LE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 2, this.length)
-	  return this[offset] | (this[offset + 1] << 8)
-	}
-	
-	Buffer.prototype.readUInt16BE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 2, this.length)
-	  return (this[offset] << 8) | this[offset + 1]
-	}
-	
-	Buffer.prototype.readUInt32LE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	
-	  return ((this[offset]) |
-	      (this[offset + 1] << 8) |
-	      (this[offset + 2] << 16)) +
-	      (this[offset + 3] * 0x1000000)
-	}
-	
-	Buffer.prototype.readUInt32BE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	
-	  return (this[offset] * 0x1000000) +
-	      ((this[offset + 1] << 16) |
-	      (this[offset + 2] << 8) |
-	      this[offset + 3])
-	}
-	
-	Buffer.prototype.readInt8 = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 1, this.length)
-	  if (!(this[offset] & 0x80))
-	    return (this[offset])
-	  return ((0xff - this[offset] + 1) * -1)
-	}
-	
-	Buffer.prototype.readInt16LE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 2, this.length)
-	  var val = this[offset] | (this[offset + 1] << 8)
-	  return (val & 0x8000) ? val | 0xFFFF0000 : val
-	}
-	
-	Buffer.prototype.readInt16BE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 2, this.length)
-	  var val = this[offset + 1] | (this[offset] << 8)
-	  return (val & 0x8000) ? val | 0xFFFF0000 : val
-	}
-	
-	Buffer.prototype.readInt32LE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	
-	  return (this[offset]) |
-	      (this[offset + 1] << 8) |
-	      (this[offset + 2] << 16) |
-	      (this[offset + 3] << 24)
-	}
-	
-	Buffer.prototype.readInt32BE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	
-	  return (this[offset] << 24) |
-	      (this[offset + 1] << 16) |
-	      (this[offset + 2] << 8) |
-	      (this[offset + 3])
-	}
-	
-	Buffer.prototype.readFloatLE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	  return ieee754.read(this, offset, true, 23, 4)
-	}
-	
-	Buffer.prototype.readFloatBE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 4, this.length)
-	  return ieee754.read(this, offset, false, 23, 4)
-	}
-	
-	Buffer.prototype.readDoubleLE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 8, this.length)
-	  return ieee754.read(this, offset, true, 52, 8)
-	}
-	
-	Buffer.prototype.readDoubleBE = function (offset, noAssert) {
-	  if (!noAssert)
-	    checkOffset(offset, 8, this.length)
-	  return ieee754.read(this, offset, false, 52, 8)
-	}
-	
-	function checkInt (buf, value, offset, ext, max, min) {
-	  if (!Buffer.isBuffer(buf)) throw new TypeError('buffer must be a Buffer instance')
-	  if (value > max || value < min) throw new TypeError('value is out of bounds')
-	  if (offset + ext > buf.length) throw new TypeError('index out of range')
-	}
-	
-	Buffer.prototype.writeUInt8 = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 1, 0xff, 0)
-	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
-	  this[offset] = value
-	  return offset + 1
-	}
-	
-	function objectWriteUInt16 (buf, value, offset, littleEndian) {
-	  if (value < 0) value = 0xffff + value + 1
-	  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; i++) {
-	    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
-	      (littleEndian ? i : 1 - i) * 8
-	  }
-	}
-	
-	Buffer.prototype.writeUInt16LE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 2, 0xffff, 0)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = value
-	    this[offset + 1] = (value >>> 8)
-	  } else objectWriteUInt16(this, value, offset, true)
-	  return offset + 2
-	}
-	
-	Buffer.prototype.writeUInt16BE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 2, 0xffff, 0)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = (value >>> 8)
-	    this[offset + 1] = value
-	  } else objectWriteUInt16(this, value, offset, false)
-	  return offset + 2
-	}
-	
-	function objectWriteUInt32 (buf, value, offset, littleEndian) {
-	  if (value < 0) value = 0xffffffff + value + 1
-	  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; i++) {
-	    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
-	  }
-	}
-	
-	Buffer.prototype.writeUInt32LE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 4, 0xffffffff, 0)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset + 3] = (value >>> 24)
-	    this[offset + 2] = (value >>> 16)
-	    this[offset + 1] = (value >>> 8)
-	    this[offset] = value
-	  } else objectWriteUInt32(this, value, offset, true)
-	  return offset + 4
-	}
-	
-	Buffer.prototype.writeUInt32BE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 4, 0xffffffff, 0)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = (value >>> 24)
-	    this[offset + 1] = (value >>> 16)
-	    this[offset + 2] = (value >>> 8)
-	    this[offset + 3] = value
-	  } else objectWriteUInt32(this, value, offset, false)
-	  return offset + 4
-	}
-	
-	Buffer.prototype.writeInt8 = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 1, 0x7f, -0x80)
-	  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
-	  if (value < 0) value = 0xff + value + 1
-	  this[offset] = value
-	  return offset + 1
-	}
-	
-	Buffer.prototype.writeInt16LE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = value
-	    this[offset + 1] = (value >>> 8)
-	  } else objectWriteUInt16(this, value, offset, true)
-	  return offset + 2
-	}
-	
-	Buffer.prototype.writeInt16BE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = (value >>> 8)
-	    this[offset + 1] = value
-	  } else objectWriteUInt16(this, value, offset, false)
-	  return offset + 2
-	}
-	
-	Buffer.prototype.writeInt32LE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = value
-	    this[offset + 1] = (value >>> 8)
-	    this[offset + 2] = (value >>> 16)
-	    this[offset + 3] = (value >>> 24)
-	  } else objectWriteUInt32(this, value, offset, true)
-	  return offset + 4
-	}
-	
-	Buffer.prototype.writeInt32BE = function (value, offset, noAssert) {
-	  value = +value
-	  offset = offset >>> 0
-	  if (!noAssert)
-	    checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-	  if (value < 0) value = 0xffffffff + value + 1
-	  if (Buffer.TYPED_ARRAY_SUPPORT) {
-	    this[offset] = (value >>> 24)
-	    this[offset + 1] = (value >>> 16)
-	    this[offset + 2] = (value >>> 8)
-	    this[offset + 3] = value
-	  } else objectWriteUInt32(this, value, offset, false)
-	  return offset + 4
-	}
-	
-	function checkIEEE754 (buf, value, offset, ext, max, min) {
-	  if (value > max || value < min) throw new TypeError('value is out of bounds')
-	  if (offset + ext > buf.length) throw new TypeError('index out of range')
-	}
-	
-	function writeFloat (buf, value, offset, littleEndian, noAssert) {
-	  if (!noAssert)
-	    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
-	  ieee754.write(buf, value, offset, littleEndian, 23, 4)
-	  return offset + 4
-	}
-	
-	Buffer.prototype.writeFloatLE = function (value, offset, noAssert) {
-	  return writeFloat(this, value, offset, true, noAssert)
-	}
-	
-	Buffer.prototype.writeFloatBE = function (value, offset, noAssert) {
-	  return writeFloat(this, value, offset, false, noAssert)
-	}
-	
-	function writeDouble (buf, value, offset, littleEndian, noAssert) {
-	  if (!noAssert)
-	    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
-	  ieee754.write(buf, value, offset, littleEndian, 52, 8)
-	  return offset + 8
-	}
-	
-	Buffer.prototype.writeDoubleLE = function (value, offset, noAssert) {
-	  return writeDouble(this, value, offset, true, noAssert)
-	}
-	
-	Buffer.prototype.writeDoubleBE = function (value, offset, noAssert) {
-	  return writeDouble(this, value, offset, false, noAssert)
-	}
-	
-	// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
-	Buffer.prototype.copy = function (target, target_start, start, end) {
-	  var source = this
-	
-	  if (!start) start = 0
-	  if (!end && end !== 0) end = this.length
-	  if (!target_start) target_start = 0
-	
-	  // Copy 0 bytes; we're done
-	  if (end === start) return
-	  if (target.length === 0 || source.length === 0) return
-	
-	  // Fatal error conditions
-	  if (end < start) throw new TypeError('sourceEnd < sourceStart')
-	  if (target_start < 0 || target_start >= target.length)
-	    throw new TypeError('targetStart out of bounds')
-	  if (start < 0 || start >= source.length) throw new TypeError('sourceStart out of bounds')
-	  if (end < 0 || end > source.length) throw new TypeError('sourceEnd out of bounds')
-	
-	  // Are we oob?
-	  if (end > this.length)
-	    end = this.length
-	  if (target.length - target_start < end - start)
-	    end = target.length - target_start + start
-	
-	  var len = end - start
-	
-	  if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
-	    for (var i = 0; i < len; i++) {
-	      target[i + target_start] = this[i + start]
-	    }
-	  } else {
-	    target._set(this.subarray(start, start + len), target_start)
-	  }
-	}
-	
-	// fill(value, start=0, end=buffer.length)
-	Buffer.prototype.fill = function (value, start, end) {
-	  if (!value) value = 0
-	  if (!start) start = 0
-	  if (!end) end = this.length
-	
-	  if (end < start) throw new TypeError('end < start')
-	
-	  // Fill 0 bytes; we're done
-	  if (end === start) return
-	  if (this.length === 0) return
-	
-	  if (start < 0 || start >= this.length) throw new TypeError('start out of bounds')
-	  if (end < 0 || end > this.length) throw new TypeError('end out of bounds')
-	
-	  var i
-	  if (typeof value === 'number') {
-	    for (i = start; i < end; i++) {
-	      this[i] = value
-	    }
-	  } else {
-	    var bytes = utf8ToBytes(value.toString())
-	    var len = bytes.length
-	    for (i = start; i < end; i++) {
-	      this[i] = bytes[i % len]
-	    }
-	  }
-	
-	  return this
-	}
-	
-	/**
-	 * Creates a new `ArrayBuffer` with the *copied* memory of the buffer instance.
-	 * Added in Node 0.12. Only available in browsers that support ArrayBuffer.
-	 */
-	Buffer.prototype.toArrayBuffer = function () {
-	  if (typeof Uint8Array !== 'undefined') {
-	    if (Buffer.TYPED_ARRAY_SUPPORT) {
-	      return (new Buffer(this)).buffer
-	    } else {
-	      var buf = new Uint8Array(this.length)
-	      for (var i = 0, len = buf.length; i < len; i += 1) {
-	        buf[i] = this[i]
-	      }
-	      return buf.buffer
-	    }
-	  } else {
-	    throw new TypeError('Buffer.toArrayBuffer not supported in this browser')
-	  }
-	}
-	
-	// HELPER FUNCTIONS
-	// ================
-	
-	var BP = Buffer.prototype
-	
-	/**
-	 * Augment a Uint8Array *instance* (not the Uint8Array class!) with Buffer methods
-	 */
-	Buffer._augment = function (arr) {
-	  arr.constructor = Buffer
-	  arr._isBuffer = true
-	
-	  // save reference to original Uint8Array get/set methods before overwriting
-	  arr._get = arr.get
-	  arr._set = arr.set
-	
-	  // deprecated, will be removed in node 0.13+
-	  arr.get = BP.get
-	  arr.set = BP.set
-	
-	  arr.write = BP.write
-	  arr.toString = BP.toString
-	  arr.toLocaleString = BP.toString
-	  arr.toJSON = BP.toJSON
-	  arr.equals = BP.equals
-	  arr.compare = BP.compare
-	  arr.copy = BP.copy
-	  arr.slice = BP.slice
-	  arr.readUInt8 = BP.readUInt8
-	  arr.readUInt16LE = BP.readUInt16LE
-	  arr.readUInt16BE = BP.readUInt16BE
-	  arr.readUInt32LE = BP.readUInt32LE
-	  arr.readUInt32BE = BP.readUInt32BE
-	  arr.readInt8 = BP.readInt8
-	  arr.readInt16LE = BP.readInt16LE
-	  arr.readInt16BE = BP.readInt16BE
-	  arr.readInt32LE = BP.readInt32LE
-	  arr.readInt32BE = BP.readInt32BE
-	  arr.readFloatLE = BP.readFloatLE
-	  arr.readFloatBE = BP.readFloatBE
-	  arr.readDoubleLE = BP.readDoubleLE
-	  arr.readDoubleBE = BP.readDoubleBE
-	  arr.writeUInt8 = BP.writeUInt8
-	  arr.writeUInt16LE = BP.writeUInt16LE
-	  arr.writeUInt16BE = BP.writeUInt16BE
-	  arr.writeUInt32LE = BP.writeUInt32LE
-	  arr.writeUInt32BE = BP.writeUInt32BE
-	  arr.writeInt8 = BP.writeInt8
-	  arr.writeInt16LE = BP.writeInt16LE
-	  arr.writeInt16BE = BP.writeInt16BE
-	  arr.writeInt32LE = BP.writeInt32LE
-	  arr.writeInt32BE = BP.writeInt32BE
-	  arr.writeFloatLE = BP.writeFloatLE
-	  arr.writeFloatBE = BP.writeFloatBE
-	  arr.writeDoubleLE = BP.writeDoubleLE
-	  arr.writeDoubleBE = BP.writeDoubleBE
-	  arr.fill = BP.fill
-	  arr.inspect = BP.inspect
-	  arr.toArrayBuffer = BP.toArrayBuffer
-	
-	  return arr
-	}
-	
-	var INVALID_BASE64_RE = /[^+\/0-9A-z]/g
-	
-	function base64clean (str) {
-	  // Node strips out invalid characters like \n and \t from the string, base64-js does not
-	  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
-	  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
-	  while (str.length % 4 !== 0) {
-	    str = str + '='
-	  }
-	  return str
-	}
-	
-	function stringtrim (str) {
-	  if (str.trim) return str.trim()
-	  return str.replace(/^\s+|\s+$/g, '')
-	}
-	
-	function isArrayish (subject) {
-	  return isArray(subject) || Buffer.isBuffer(subject) ||
-	      subject && typeof subject === 'object' &&
-	      typeof subject.length === 'number'
-	}
-	
-	function toHex (n) {
-	  if (n < 16) return '0' + n.toString(16)
-	  return n.toString(16)
-	}
-	
-	function utf8ToBytes (str) {
-	  var byteArray = []
-	  for (var i = 0; i < str.length; i++) {
-	    var b = str.charCodeAt(i)
-	    if (b <= 0x7F) {
-	      byteArray.push(b)
-	    } else {
-	      var start = i
-	      if (b >= 0xD800 && b <= 0xDFFF) i++
-	      var h = encodeURIComponent(str.slice(start, i+1)).substr(1).split('%')
-	      for (var j = 0; j < h.length; j++) {
-	        byteArray.push(parseInt(h[j], 16))
-	      }
-	    }
-	  }
-	  return byteArray
-	}
-	
-	function asciiToBytes (str) {
-	  var byteArray = []
-	  for (var i = 0; i < str.length; i++) {
-	    // Node's code seems to be doing this and not & 0x7F..
-	    byteArray.push(str.charCodeAt(i) & 0xFF)
-	  }
-	  return byteArray
-	}
-	
-	function utf16leToBytes (str) {
-	  var c, hi, lo
-	  var byteArray = []
-	  for (var i = 0; i < str.length; i++) {
-	    c = str.charCodeAt(i)
-	    hi = c >> 8
-	    lo = c % 256
-	    byteArray.push(lo)
-	    byteArray.push(hi)
-	  }
-	
-	  return byteArray
-	}
-	
-	function base64ToBytes (str) {
-	  return base64.toByteArray(str)
-	}
-	
-	function blitBuffer (src, dst, offset, length) {
-	  for (var i = 0; i < length; i++) {
-	    if ((i + offset >= dst.length) || (i >= src.length))
-	      break
-	    dst[i + offset] = src[i]
-	  }
-	  return i
-	}
-	
-	function decodeUtf8Char (str) {
-	  try {
-	    return decodeURIComponent(str)
-	  } catch (err) {
-	    return String.fromCharCode(0xFFFD) // UTF 8 invalid char
-	  }
-	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(102).Buffer))
 
 /***/ },
 /* 103 */
