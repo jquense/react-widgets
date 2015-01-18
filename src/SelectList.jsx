@@ -21,7 +21,7 @@ var propTypes = {
     multiple:       React.PropTypes.bool,
 
     itemComponent:  CustomPropTypes.elementType,
-    list:           CustomPropTypes.elementType,
+    listComponent:  CustomPropTypes.elementType,
 
     valueField:     React.PropTypes.string,
     textField:      React.PropTypes.string,
@@ -106,7 +106,7 @@ var SelectList = React.createClass({
       , focus = this._maybeHandle(this._focus.bind(null, true), true)
       , optID = this._id('_selected_option')
       , blur  = this._focus.bind(null, false)
-      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList
+      , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       , focusedItem = this.state.focused 
                     && !this.isDisabled() 
                     && !this.isReadOnly() 

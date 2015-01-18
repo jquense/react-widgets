@@ -29,7 +29,7 @@ var propTypes = {
 
       tagComponent:    CustomPropTypes.elementType,
       itemComponent:   CustomPropTypes.elementType,
-      list:            CustomPropTypes.elementType,
+      listComponent:   CustomPropTypes.elementType,
 
       groupComponent:  CustomPropTypes.elementType,
       groupBy:         React.PropTypes.oneOfType([
@@ -127,7 +127,7 @@ var Select = React.createClass({
       , optID  = this._id('_option')
       , items  = this._data()
       , values = this.state.dataItems
-      , List   = this.props.list || (this.props.groupBy && GroupableList) || PlainList;
+      , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList;
 
     return (
       <div {...props}

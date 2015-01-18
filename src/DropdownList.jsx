@@ -24,7 +24,7 @@ var propTypes = {
 
   valueComponent: CustomPropTypes.elementType,
   itemComponent:  CustomPropTypes.elementType,
-  list:           CustomPropTypes.elementType,
+  listComponent:  CustomPropTypes.elementType,
 
   groupComponent: CustomPropTypes.elementType,
   groupBy:        React.PropTypes.oneOfType([
@@ -111,7 +111,7 @@ var DropdownList = React.createClass({
       , ValueComponent = this.props.valueComponent
       , valueItem = this._dataItem( this._data(), this.props.value )
       , optID = this._id('_option')
-      , List  = this.props.list || (this.props.groupBy && GroupableList) || PlainList
+      , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       ;
 
 		return (
