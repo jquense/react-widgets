@@ -81,7 +81,7 @@ module.exports = React.createClass({
                     'rw-state-selected': selected,
                   })}
                   id={focused ? id : undefined}>
-                  {dates.format(day, 'dd')}
+                  {dates.format(day, 'dd', this.props.culture)}
                 </Btn>
               </td>)
       })}
@@ -91,7 +91,7 @@ module.exports = React.createClass({
 
 
   _headers: function(format){
-    var days = dates.shortDaysOfWeek(format);
+    var days = dates.shortDaysOfWeek(this.props.culture);
 
     return days.map( (day, i) => 
       <th key={"header_" + i }>{day}</th>)

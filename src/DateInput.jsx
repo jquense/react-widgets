@@ -28,7 +28,8 @@ module.exports = React.createClass({
             nextProps.value
           , nextProps.editing && nextProps.editFormat 
               ? nextProps.editFormat 
-              : nextProps.format)
+              : nextProps.format
+          , nextProps.culture)
     })
   },
 
@@ -37,7 +38,8 @@ module.exports = React.createClass({
             this.props.value
           , this.props.editing && this.props.editFormat 
               ? this.props.editFormat 
-              : this.props.format)
+              : this.props.format
+          , this.props.culture)
 
     this.lastValue = text
     return {
@@ -89,11 +91,11 @@ function isValid(d) {
   return !isNaN(d.getTime());
 }
 
-function formatDate(date, format){
+function formatDate(date, format, culture){
   var val = ''
 
   if ( (date instanceof Date) && isValid(date) )
-    val = dates.format(date, format)
+    val = dates.format(date, format, culture)
 
   return val;
 }

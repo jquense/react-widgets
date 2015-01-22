@@ -262,21 +262,22 @@ var Calendar = React.createClass({
 
   _label: function() {
     var view = this.state.view
-      , dt   = this.state.currentDate;
+      , dt   = this.state.currentDate
+      , culture = this.props.culture;
 
     if ( view === 'month')
-      return dates.format(dt, dates.formats.MONTH_YEAR)
+      return dates.format(dt, dates.formats.MONTH_YEAR, culture)
 
     else if ( view === 'year')
       return dates.format(dt, dates.formats.YEAR)
 
     else if ( view === 'decade')
-      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR)
-        + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR)
+      return dates.format(dates.firstOfDecade(dt),     dates.formats.YEAR, culture)
+        + ' - ' + dates.format(dates.lastOfDecade(dt), dates.formats.YEAR, culture)
 
     else if ( view === 'century')
-      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR)
-        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR)
+      return dates.format(dates.firstOfCentury(dt),     dates.formats.YEAR, culture)
+        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR, culture)
   },
 
   inRangeValue: function(value){

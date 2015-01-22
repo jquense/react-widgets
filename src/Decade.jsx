@@ -56,7 +56,7 @@ module.exports = React.createClass({
     return (
       <tr key={'row_' + i}>
       { row.map( (date, i) => {
-        var focused  = dates.eq(date,  this.state.focusedDate,  'year')
+        var focused  = dates.eq(date, this.state.focusedDate,  'year')
           , selected = dates.eq(date, this.props.value,  'year');
 
         return !dates.inRange(date, this.props.min, this.props.max, 'year')
@@ -72,7 +72,7 @@ module.exports = React.createClass({
                   'rw-state-focus':    focused,
                   'rw-state-selected': selected,
                 })}>
-                { dates.format(date, dates.formats.YEAR) }
+                { dates.format(date, dates.formats.YEAR, this.props.culture) }
               </Btn>
             </td>)
       })}

@@ -275,7 +275,7 @@ var DateTimePicker = React.createClass({
 
   _selectDate: function(date){
     var dateTime = dates.merge(date, this.props.value)
-      , dateStr  = formatDate(date, this.props.format) 
+      , dateStr  = formatDate(date, this.props.format, this.props.culture) 
 
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
@@ -284,7 +284,7 @@ var DateTimePicker = React.createClass({
 
   _selectTime: function(datum){
     var dateTime = dates.merge(this.props.value, datum.date)
-      , dateStr  = formatDate(datum.date, this.props.format) 
+      , dateStr  = formatDate(datum.date, this.props.format, this.props.culture) 
 
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
@@ -299,7 +299,9 @@ var DateTimePicker = React.createClass({
   _parse: function(string){
     var parser = typeof this.props.parse === 'function'
           ? this.props.parse
-          : formatsParser.bind(null, _.splat(this.props.format).concat(this.props.parse));
+          : formatsParser.bind(null
+              , _.splat(this.props.format).concat(this.props.parse)
+              , this.props.culture);
 
     return parser(string)
   },
@@ -338,24 +340,24 @@ module.exports = controlledInput.createControlledClass(
     DateTimePicker
   , { open: 'onToggle', value: 'onChange' });
 
-function formatDate(date, format){
+function formatDate(date, format, culture){
   var val = ''
 
   if ( (date instanceof Date) && !isNaN(date.getTime()) )
-    val = dates.format(date, format)
+    val = dates.format(date, format, culture)
 
   return val;
 }
 
 module.exports.BaseDateTimePicker = DateTimePicker
 
-function formatsParser(formats, str){
+function formatsParser(formats, str, culture){
   var date;
 
   formats = [].concat(formats)
 
   for(var i=0; i < formats.length; i++ ){
-    date = dates.parse(str, formats[i])
+    date = dates.parse(str, formats[i], culture)
     if( date) return date
   }
   return null

@@ -11,8 +11,8 @@ var dates = module.exports = _.extend(dateMath, {
     return globalize.culture()
   },
 
-  startOfWeek: function(date){
-    var culture = globalize.culture()
+  startOfWeek: function(date, culture){
+    culture = culture || dates.culture()
 
     if (!culture || !culture.calendar)
       return 0
@@ -29,10 +29,11 @@ var dates = module.exports = _.extend(dateMath, {
   },
   //-------------------------------------
 
-  shortDaysOfWeek: function (){
-    var culture = dates.culture()
-      , start = dates.startOfWeek()
+  shortDaysOfWeek: function (culture){
+    var start   = dates.startOfWeek()
       , days, front;
+
+    culture = culture || dates.culture()
 
     if (culture && culture.calendar){
       days = culture.calendar.days.namesShort.slice()
@@ -46,29 +47,29 @@ var dates = module.exports = _.extend(dateMath, {
     }
   },
 
-  daysOfWeek: function(date, format){
-    var range = [0,1,2,3,4,5,6]
-    if (arguments.length === 1){
-      format = date
-      date = new Date()
-    }
+  // daysOfWeek: function(date, format, culture){
+  //   var range = [0,1,2,3,4,5,6]
+  //   if (arguments.length === 1){
+  //     format = date
+  //     date = new Date()
+  //   }
 
-    format = format || 'do'
+  //   format = format || 'do'
 
-    return range.map(i => dates.format(dates.weekday(date, i), format) )
-  },
+  //   return range.map(i => dates.format(dates.weekday(date, i), format, culture) )
+  // },
 
-  months: function(date, format){
-    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+  // months: function(date, format, culture){
+  //   var months = [0,1,2,3,4,5,6,7,8,9,10,11]
 
-    if (arguments.length === 1){
-      format = date
-      date = new Date()
-    }
-    format = format || dates.formats.DAY_NAME_ABRV
+  //   if (arguments.length === 1){
+  //     format = date
+  //     date = new Date()
+  //   }
+  //   format = format || dates.formats.DAY_NAME_ABRV
 
-    return months.map( i => dates.format(dates.month(date, i), format))
-  },
+  //   return months.map( i => dates.format(dates.month(date, i), format, culture))
+  // },
 
   monthsInYear: function(year){
     var months = [0,1,2,3,4,5,6,7,8,9,10,11]

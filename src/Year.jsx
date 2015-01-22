@@ -69,7 +69,7 @@ module.exports = React.createClass({
                   'rw-state-focus':    focused,
                   'rw-state-selected': selected
                 })}>
-                { dates.format(date, dates.formats.MONTH_NAME_ABRV) }
+                { dates.format(date, dates.formats.MONTH_NAME_ABRV, this.props.culture) }
               </Btn>
             </td>)
           : <td key={i} className='rw-empty-cell'>&nbsp;</td>

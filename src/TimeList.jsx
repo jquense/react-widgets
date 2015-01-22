@@ -76,7 +76,7 @@ module.exports = React.createClass({
     if( !date) return null
 
     date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
-    label = dates.format(date, this.props.format)
+    label = dates.format(date, this.props.format, this.props.culture)
 
     times.some( time => {
       if( time.label === label ) 
@@ -99,7 +99,7 @@ module.exports = React.createClass({
     // debugger;
     while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
       i++
-      times.push({ date: start, label: dates.format(start, props.format) })
+      times.push({ date: start, label: dates.format(start, props.format, props.culture) })
       start = dates.add(start, props.step || 30, 'minutes')
     }
     return times

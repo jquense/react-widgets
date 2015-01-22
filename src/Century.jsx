@@ -74,7 +74,7 @@ module.exports = React.createClass({
                   'rw-state-focus':     focused,
                   'rw-state-selected':  selected,
                  })}>
-                { label(date) }
+                { label(date, this.props.culture) }
               </Btn>
             </td>)
       })}
@@ -106,9 +106,9 @@ module.exports = React.createClass({
 
 });
 
-function label(date){
-  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR)
-    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR)
+function label(date, culture){
+  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR, culture)
+    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR, culture)
 }
 
 function inRangeDate(decade, min, max){
