@@ -6,7 +6,8 @@ var React = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   , PlainList        = require('./List.jsx')
   , GroupableList = require('./ListGroupable.jsx')
-  , validateList    = require('./util/validateListInterface');
+  , validateList    = require('./util/validateListInterface')
+  , scrollTo  = require('./util/scroll');
 
 var propTypes = {
 
@@ -133,12 +134,13 @@ var SelectList = React.createClass({
           'rw-rtl':            this.isRtl(),
           'rw-loading-mask':   this.props.busy
         })}>
-
         <List ref='list' 
           data={this._data()}
           focused={focusedItem}
           optID ={optID}
-          itemComponent={this.state.ListItem}/>
+          itemComponent={this.state.ListItem}
+
+          onMove={ selected => scrollTo(selected) }/> {/* we need to kill the scroll parent on this one */}
       </div> 
     );
   },

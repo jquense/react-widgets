@@ -112,7 +112,7 @@ module.exports = React.createClass({
     if( !selected ) return 
 
     // timeout allows for element to become visible
-    setTimeout(() => handler(selected))
+    setTimeout(() => handler(selected, list))
   }
 
 })

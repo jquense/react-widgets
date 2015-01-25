@@ -190,7 +190,7 @@ module.exports = React.createClass({
 
     if( !selected ) return 
 
-    setTimeout(() => handler(selected))
+    setTimeout(() => handler(selected, this.getDOMNode()))
   },
 
   getItemDOMNode(item){
