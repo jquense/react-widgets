@@ -2,7 +2,7 @@
 
 module.exports = function (config) {
   
-  console.log(process.env.TRAVIS_CI)
+  //console.log(process.env.TRAVIS_CI)
 
   config.set({
 
@@ -23,7 +23,6 @@ module.exports = function (config) {
     autoWatch: process.env.TRAVIS_CI ? false : true,
     singleRun: process.env.TRAVIS_CI ? true : false,
 
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
     browsers: [ 'PhantomJS'],

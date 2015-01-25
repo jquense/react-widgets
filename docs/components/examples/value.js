@@ -1,14 +1,15 @@
 'use strict';
-module.exports = function(widgetName){
+module.exports = function(widgetName, isArray){
+  var value = !isArray ? '"orange"' : '["orange", "red"]'
 var code = 
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 
 var colors = ['orange', 'red', 'blue', 'purple'];
-var widget = 
-    <${widgetName} defaultValue='orange' data={colors}/>
 
-React.render(widget, mountNode);`
+React.render(
+    <${widgetName} defaultValue={${value}} data={colors}/>
+  , mountNode);`
 
 return code
 }

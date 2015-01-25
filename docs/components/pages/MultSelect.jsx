@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react')
   , Default = require('../default.jsx')
-  , Example = require('../example.jsx')
+  , EditableExample = require('../EditableExample')
   , DDButton = require('../../bootstrap').DropdownButton
   , MenuItem = require('../ApiMenuItem.jsx')
   , PropHeader = require('../PropHeader.jsx')
@@ -55,19 +55,20 @@ var Multiselect = React.createClass({
           A select listbox alternative
         </p>
         <MultiselectExample/>
-        <Example code={initialExample}/>
 
         <h2>Props</h2>
         <PropHeader type='Array<Any>' handler="onChange" controllable>value</PropHeader>
         <p>
-          The current values of the ${widgetName}. The value should can <code>null</code>, or an array
+          The current values of the {widgetName}. The value should can <code>null</code>, or an array
           of <code>valieField</code> values, or an array of objects (such as a few items in the <code>data</code> array)
         </p>
+        <EditableExample codeText={require('../examples/value')(widgetName, true)}/>
 
         <PropHeader type='Function(Array<Any> values)'>onChange</PropHeader>
         <p>
           change event Handler that is called when the value is changed. The handler is called with an array of values
         </p>
+        <EditableExample codeText={require('../examples/onChange')(widgetName, true)}/>
 
         <h3 className='prop-header' id={ prefix +"onSelect" }>
           onSelect <small>{"Function(Any value)"}</small></h3>
@@ -82,7 +83,7 @@ var Multiselect = React.createClass({
           This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic, 
           a common implementation is shown below, where the new tag is selected and added to the data list.
         </p>
-        <Example code={onCreateExample}/>
+        <EditableExample codeText={require('../examples/onCreate')(widgetName)}/>
 
         <h3 className='prop-header' id={ prefix +"data" }>
           data <small>Array</small></h3>
@@ -98,6 +99,7 @@ var Multiselect = React.createClass({
           A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
           the widget will use strict equality checks to locate the data item, if it exists.
         </p>
+        <EditableExample codeText={require('../examples/valueField')(widgetName, true)}/>
 
         <h3 className='prop-header' id={ prefix +"textField" }>
           textField <small>String</small></h3>
@@ -105,6 +107,7 @@ var Multiselect = React.createClass({
           This prop determines which data item field to display in the {widgetName} list andselected item This prop is
           unnecessary when an <code>itemComponent</code> and <code>tagComponent</code> are provided.
         </p>
+        <EditableExample codeText={require('../examples/textField')(widgetName, true)}/>
 
         <h3 className='prop-header' id={ prefix +"tagComponent" }>
           tagComponent <small>Component</small></h3>
@@ -112,6 +115,7 @@ var Multiselect = React.createClass({
           This component is used to render each selected item. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
+        <EditableExample codeText={require('../examples/tagComponent')(widgetName, true)}/>
 
         <h3 className='prop-header' id={ prefix +"itemComponent" }>
           itemComponent <small>Component</small></h3>
@@ -119,6 +123,8 @@ var Multiselect = React.createClass({
           This component is used to render each possible item in the list. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
+        <EditableExample codeText={require('../examples/itemComponent')(widgetName, true)}/>
+
         <h3 className='prop-header' id={ prefix +"groupBy" }>
           groupBy <small>String | Function(Any dataItem)}</small>
         </h3>
@@ -126,41 +132,15 @@ var Multiselect = React.createClass({
           Determines how to group the {widgetName} dropdown list. Providing a <code>string</code> will group 
           the <code>data</code> array by that property. You can also provide a {'function'} which should return the group value.
         </p>
-
-<Example>{
-`function groupBy(item) {
-  return item.length
-}
-
-return (<${widgetName} data={[ john, jim, jill, sam]} groupBy={groupBy}/>)
-`}
-</Example>
+        <EditableExample codeText={require('../examples/groupby')(widgetName, true)}/>
 
         <PropHeader type='Component' >groupComponent</PropHeader>
         <p>
           This component is used to render each option group, when <code>groupBy</code> is specified. By 
           default the <code>groupBy</code> value will be used.
         </p>
-<Example>{
-`function groupBy(item) {
-  return item.length
-}
+        <EditableExample codeText={require('../examples/groupComponent')(widgetName, true)}/>
 
-var Group = React.createClass({
-  render() {
-    return this.props.item.length + ' letters long'; //return a helpful sring
-  }
-});
-
-module.exports = ;
-return (
-  <${widgetName} 
-    data={[ john, jim, jill, sam]} 
-    groupBy={groupBy}
-    groupComponent={Group}/>
-)
-`}
-</Example>
         <PropHeader type='String' handler='onSearch' controllable>placeholder</PropHeader>
         <p>
           The same as an input placeholder, only works in browsers that support the placeholder attribute for inputs
@@ -186,6 +166,8 @@ return (
           opening and closing internally. The <code>defaultOpen</code> prop can be used to {'set'} an
           initialization value for uncontrolled widgets.
         </p>
+        <EditableExample codeText={require('../examples/open')(widgetName, true)}/>
+
         <PropHeader type='Function(Boolean isOpen)'>onToggle</PropHeader>
         <p>
           Called when the {widgetName} is about to open or close. <code>onToggle</code> should be used
@@ -205,18 +187,19 @@ return (
         <p>
           Disable the widget, If an <code>Array</code> of values is passed in only the tags specified will be disabled.
         </p>
+        <EditableExample codeText={require('../examples/disabled')(widgetName, 'disabled')}/>
 
         <PropHeader type='[Boolean, Array]'>readOnly</PropHeader>
         <p>
           Place the widget in a readonly mode, If an <code>Array</code> of values is passed in only the tags specified will be readonly.
         </p>
+        <EditableExample codeText={require('../examples/disabled')(widgetName, 'readOnly')}/>
 
         <PropHeader type='Boolean' default="false">isRtl</PropHeader>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
            a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
         </p>
-
 
         <PropHeader type='Object'>messages</PropHeader>
         <p>

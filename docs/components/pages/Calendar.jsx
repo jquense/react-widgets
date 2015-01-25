@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , Example = require('../example.jsx')
+  , EditableExample = require('../EditableExample')
   , DDButton = require('../../bootstrap').DropdownButton
   , MenuItem = require('../ApiMenuItem.jsx')
   , PropHeader = require('../PropHeader.jsx')
@@ -30,7 +30,7 @@ var Calendar = React.createClass({
               <MenuItem>duration</MenuItem>
               <MenuItem>isRtl</MenuItem>
               <MenuItem>messages</MenuItem>
-              <MenuItem divider={true}/>
+              <MenuItem divider/>
               <MenuItem>Keyboard Navigation</MenuItem>
             </DDButton>
           </span>
@@ -39,26 +39,6 @@ var Calendar = React.createClass({
           Calendar widget.
         </p>
         <CalendarExample/>
-        <Example code={
-          "render: function(){\n"+
-          "  //... \n\n" +
-          "  return (\n"+
-          "    <Calendar \n"+
-          "      value={this.state.value}\n"+
-          "      onChange={this._change}/>\n"+
-          "   \n"+
-          "    <Calendar \n"+
-          "      ...\n"+
-          "      min={new Date(2014, 0, 1)}\n"+
-          "      max={new Date(2015, 12, 15)}/>\n"+
-          "    \n"+
-          "    <Calendar \n"+
-          "      ...\n"+
-          "      initialView='year'\n"+
-          "      finalView='decade'/>\n"+
-          "   \n"+
-          "}"
-        }/>
 
         <h2>Props</h2>
 
@@ -66,11 +46,13 @@ var Calendar = React.createClass({
         <p>
           The current selected date, should be a Date object or null.
         </p>
+        <EditableExample codeText={require('../examples/valuePicker')(widgetName, ['new Date()'])}/>
 
         <PropHeader type='Function( Date? date )'>onChange</PropHeader>
         <p>
           Change event Handler that is called when the value is changed. The handler is called with the Date object
         </p>
+        <EditableExample codeText={require('../examples/onChangePicker')(widgetName, ['new Date()'])}/>
 
         <PropHeader type='Date'>min</PropHeader>
         <p>
@@ -90,6 +72,7 @@ var Calendar = React.createClass({
           Acceptable values are:
           <code>"month"</code> <code>"year"</code> <code>"decade"</code> <code>"century"</code>
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'initialView', '"year"')}/>
 
         <PropHeader type='Enum' default='"century"'>finalView</PropHeader>
         <p>
@@ -100,7 +83,8 @@ var Calendar = React.createClass({
           Acceptable values are:
           <code>"month"</code> <code>"year"</code> <code>"decade"</code> <code>"century"</code>
         </p>
-
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'finalView', '"year"')}/>
+        
         <PropHeader type='Boolean' default="false">isRtl</PropHeader>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through

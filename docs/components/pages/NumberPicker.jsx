@@ -1,12 +1,13 @@
 'use strict';
 var React = require('react')
-  , Example = require('../example.jsx')
+  , EditableExample = require('../EditableExample')
   , DDButton = require('../../bootstrap').DropdownButton
   , PropHeader = require('../PropHeader.jsx')
   , MenuItem = require('../ApiMenuItem.jsx')
   , NumberPickerExample = require('../demos/numberpicker.jsx');
 
 var prefix = 'number-picker/'
+var widgetName = 'NumberPicker'
 var NumberPicker = React.createClass({
 
   mixins: [ require('../PageMixin')(prefix) ],
@@ -27,7 +28,6 @@ var NumberPicker = React.createClass({
               <MenuItem>max</MenuItem>
               <MenuItem>step</MenuItem>
 
-
               <MenuItem>isRtl</MenuItem>
               <MenuItem>messages</MenuItem>
               <MenuItem divider/>
@@ -40,32 +40,20 @@ var NumberPicker = React.createClass({
           Spinner for selecting numbers. Supports multiple formats for display and editing through Globalize.js
         </p>
         <NumberPickerExample/>
-        <Example code={
-          "render: function(){\n"+
-          "  //... \n\n" +
-          "  return (\n"+
-          "    <NumberPicker \n"+
-          "      value={this.state.value}\n"+
-          "      onChange={this._change}\n"+
-          "      min={2}\n"+
-          "      max={10}/>\n\n"+
-          "    <NumberPicker \n"+
-          "      format='c'\n" +
-          "      step={1.5}/>\n\n"+
-          "  )\n"+
-          "}"
-        }/>
+
         <h2>Props</h2>
         <PropHeader type='Number?' handler="onChange" controllable>value</PropHeader>
         <p>
           The current value of the NumberPicker.
         </p>
+        <EditableExample codeText={require('../examples/valuePicker')(widgetName, [1, null])}/>
 
         <PropHeader type='Function(Number? value)'>onChange</PropHeader>
         <p>
           Change event Handler that is called when the value is changed. The handler is called with the
           current numeric value or null.
         </p>
+        <EditableExample codeText={require('../examples/onChangePicker')(widgetName, [1, null])}/>
 
         <PropHeader type='String' default='d'>format</PropHeader>
         <p>
@@ -80,16 +68,19 @@ var NumberPicker = React.createClass({
         <p>
           The minimum number that the NumberPicker value.
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'min', 0)}/>
 
         <PropHeader type='Number' default='Infinity'>max</PropHeader>
         <p>
           The maximum number that the NumberPicker value.
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'max', 5)}/>
 
         <PropHeader type='Number' default='1'>step</PropHeader>
         <p>
           Amount to increase or decrease value when using the spinner buttons.
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'step', 5)}/>
 
         <PropHeader type='Boolean' default='false'>
           isRtl

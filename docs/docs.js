@@ -180,16 +180,16 @@
 	
 	
 	module.exports = {
-		Button: 		__webpack_require__(40),
-		ButtonGroup: 	__webpack_require__(41),
+		Button: 		__webpack_require__(48),
+		ButtonGroup: 	__webpack_require__(49),
 	
-		DropdownButton: __webpack_require__(42),
-		MenuItem: 		__webpack_require__(43),
+		DropdownButton: __webpack_require__(50),
+		MenuItem: 		__webpack_require__(51),
 	
-		Nav: __webpack_require__(44),
-		Navbar: __webpack_require__(45),
-		SubNav: __webpack_require__(46),
-		NavItem: __webpack_require__(47),
+		Nav: __webpack_require__(52),
+		Navbar: __webpack_require__(53),
+		SubNav: __webpack_require__(54),
+		NavItem: __webpack_require__(55),
 	}
 
 /***/ },
@@ -560,12 +560,11 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , Example = __webpack_require__(19)
 	  , MenuItem = __webpack_require__(17)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(18)
 	  , EditableExample = __webpack_require__(16)
-	  , ComboBoxExample = __webpack_require__(22);
+	  , ComboBoxExample = __webpack_require__(23);
 	
 	var prefix = 'combobox/'
 	var widgetName = 'Combobox'
@@ -787,11 +786,11 @@
 	'use strict';
 	var React = __webpack_require__(1)
 	  , Default = __webpack_require__(20)
-	  , Example = __webpack_require__(19)
+	  , EditableExample = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(17)
 	  , PropHeader = __webpack_require__(18)
-	  , MultiselectExample = __webpack_require__(23);
+	  , MultiselectExample = __webpack_require__(25);
 	
 	var prefix = 'multiselect/';
 	var widgetName = 'Multiselect'
@@ -841,19 +840,20 @@
 	          "A select listbox alternative"
 	        ), 
 	        React.createElement(MultiselectExample, null), 
-	        React.createElement(Example, {code: initialExample}), 
 	
 	        React.createElement("h2", null, "Props"), 
 	        React.createElement(PropHeader, {type: "Array<Any>", handler: "onChange", controllable: true}, "value"), 
 	        React.createElement("p", null, 
-	          "The current values of the $", widgetName, ". The value should can ", React.createElement("code", null, "null"), ", or an array" + ' ' +
+	          "The current values of the ", widgetName, ". The value should can ", React.createElement("code", null, "null"), ", or an array" + ' ' +
 	          "of ", React.createElement("code", null, "valieField"), " values, or an array of objects (such as a few items in the ", React.createElement("code", null, "data"), " array)"
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(28)(widgetName, true)}), 
 	
 	        React.createElement(PropHeader, {type: "Function(Array<Any> values)"}, "onChange"), 
 	        React.createElement("p", null, 
 	          "change event Handler that is called when the value is changed. The handler is called with an array of values"
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(29)(widgetName, true)}), 
 	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"onSelect"}, 
 	          "onSelect ", React.createElement("small", null, "Function(Any value)")), 
@@ -868,7 +868,7 @@
 	          "This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic," + ' ' + 
 	          "a common implementation is shown below, where the new tag is selected and added to the data list."
 	        ), 
-	        React.createElement(Example, {code: onCreateExample}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(43)(widgetName)}), 
 	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"data"}, 
 	          "data ", React.createElement("small", null, "Array")), 
@@ -884,6 +884,7 @@
 	          "A property name of a uniquely identifying field in the ", React.createElement("code", null, "data"), " array. If no valueField is provided," + ' ' +
 	          "the widget will use strict equality checks to locate the data item, if it exists."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(31)(widgetName, true)}), 
 	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"textField"}, 
 	          "textField ", React.createElement("small", null, "String")), 
@@ -891,6 +892,7 @@
 	          "This prop determines which data item field to display in the ", widgetName, " list andselected item This prop is" + ' ' +
 	          "unnecessary when an ", React.createElement("code", null, "itemComponent"), " and ", React.createElement("code", null, "tagComponent"), " are provided."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(32)(widgetName, true)}), 
 	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"tagComponent"}, 
 	          "tagComponent ", React.createElement("small", null, "Component")), 
@@ -898,6 +900,7 @@
 	          "This component is used to render each selected item. The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(44)(widgetName, true)}), 
 	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"itemComponent"}, 
 	          "itemComponent ", React.createElement("small", null, "Component")), 
@@ -905,6 +908,8 @@
 	          "This component is used to render each possible item in the list. The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(34)(widgetName, true)}), 
+	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"groupBy"}, 
 	          "groupBy ", React.createElement("small", null, "String | Function(Any dataItem)}")
 	        ), 
@@ -912,41 +917,15 @@
 	          "Determines how to group the ", widgetName, " dropdown list. Providing a ", React.createElement("code", null, "string"), " will group" + ' ' + 
 	          "the ", React.createElement("code", null, "data"), " array by that property. You can also provide a ", 'function', " which should return the group value."
 	        ), 
-	
-	React.createElement(Example, null, 
-	("function groupBy(item) {\n  return item.length\n}\n\nreturn (<" + 
-	
-	
-	
-	widgetName + " data={[ john, jim, jill, sam]} groupBy={groupBy}/>)\n"
-	)
-	), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(35)(widgetName, true)}), 
 	
 	        React.createElement(PropHeader, {type: "Component"}, "groupComponent"), 
 	        React.createElement("p", null, 
 	          "This component is used to render each option group, when ", React.createElement("code", null, "groupBy"), " is specified. By" + ' ' + 
 	          "default the ", React.createElement("code", null, "groupBy"), " value will be used."
 	        ), 
-	React.createElement(Example, null, 
-	("function groupBy(item) {\n  return item.length\n}\n\nvar Group = React.createClass({\n  render() {\n    return this.props.item.length + ' letters long'; //return a helpful sring\n  }\n});\n\nmodule.exports = ;\nreturn (\n  <" + 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(36)(widgetName, true)}), 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	widgetName + " \n    data={[ john, jim, jill, sam]} \n    groupBy={groupBy}\n    groupComponent={Group}/>\n)\n"
-	
-	
-	
-	
-	)
-	), 
 	        React.createElement(PropHeader, {type: "String", handler: "onSearch", controllable: true}, "placeholder"), 
 	        React.createElement("p", null, 
 	          "The same as an input placeholder, only works in browsers that support the placeholder attribute for inputs"
@@ -972,6 +951,8 @@
 	          "opening and closing internally. The ", React.createElement("code", null, "defaultOpen"), " prop can be used to ", 'set', " an" + ' ' +
 	          "initialization value for uncontrolled widgets."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(37)(widgetName, true)}), 
+	
 	        React.createElement(PropHeader, {type: "Function(Boolean isOpen)"}, "onToggle"), 
 	        React.createElement("p", null, 
 	          "Called when the ", widgetName, " is about to open or close. ", React.createElement("code", null, "onToggle"), " should be used" + ' ' +
@@ -991,18 +972,19 @@
 	        React.createElement("p", null, 
 	          "Disable the widget, If an ", React.createElement("code", null, "Array"), " of values is passed in only the tags specified will be disabled."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'disabled')}), 
 	
 	        React.createElement(PropHeader, {type: "[Boolean, Array]"}, "readOnly"), 
 	        React.createElement("p", null, 
 	          "Place the widget in a readonly mode, If an ", React.createElement("code", null, "Array"), " of values is passed in only the tags specified will be readonly."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'readOnly')}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean", default: "false"}, "isRtl"), 
 	        React.createElement("p", null, 
 	          "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through" + ' ' +
 	           "a ", React.createElement("code", null, "childContext"), " prop (", React.createElement("code", null, "isRtl"), ") this allows higher level application components to specify the direction."
 	        ), 
-	
 	
 	        React.createElement(PropHeader, {type: "Object"}, "messages"), 
 	        React.createElement("p", null, 
@@ -1113,7 +1095,7 @@
 	  , MenuItem = __webpack_require__(17)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(18)
-	  , SelectListExample = __webpack_require__(24);
+	  , SelectListExample = __webpack_require__(22);
 	
 	var prefix = 'selectlist/'
 	var widgetName = 'SelectList'
@@ -1279,11 +1261,11 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , Example = __webpack_require__(19)
+	  , EditableExample = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(17)
 	  , PropHeader = __webpack_require__(18)
-	  , CalendarExample = __webpack_require__(25);
+	  , CalendarExample = __webpack_require__(24);
 	
 	var prefix = 'calendar/'
 	var widgetName = "Calendar"
@@ -1318,26 +1300,6 @@
 	          "Calendar widget."
 	        ), 
 	        React.createElement(CalendarExample, null), 
-	        React.createElement(Example, {code: 
-	          "render: function(){\n"+
-	          "  //... \n\n" +
-	          "  return (\n"+
-	          "    <Calendar \n"+
-	          "      value={this.state.value}\n"+
-	          "      onChange={this._change}/>\n"+
-	          "   \n"+
-	          "    <Calendar \n"+
-	          "      ...\n"+
-	          "      min={new Date(2014, 0, 1)}\n"+
-	          "      max={new Date(2015, 12, 15)}/>\n"+
-	          "    \n"+
-	          "    <Calendar \n"+
-	          "      ...\n"+
-	          "      initialView='year'\n"+
-	          "      finalView='decade'/>\n"+
-	          "   \n"+
-	          "}"
-	        }), 
 	
 	        React.createElement("h2", null, "Props"), 
 	
@@ -1345,11 +1307,13 @@
 	        React.createElement("p", null, 
 	          "The current selected date, should be a Date object or null."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(40)(widgetName, ['new Date()'])}), 
 	
 	        React.createElement(PropHeader, {type: "Function( Date? date )"}, "onChange"), 
 	        React.createElement("p", null, 
 	          "Change event Handler that is called when the value is changed. The handler is called with the Date object"
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(41)(widgetName, ['new Date()'])}), 
 	
 	        React.createElement(PropHeader, {type: "Date"}, "min"), 
 	        React.createElement("p", null, 
@@ -1369,6 +1333,7 @@
 	          "Acceptable values are:", 
 	          React.createElement("code", null, "\"month\""), " ", React.createElement("code", null, "\"year\""), " ", React.createElement("code", null, "\"decade\""), " ", React.createElement("code", null, "\"century\"")
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'initialView', '"year"')}), 
 	
 	        React.createElement(PropHeader, {type: "Enum", default: "\"century\""}, "finalView"), 
 	        React.createElement("p", null, 
@@ -1379,7 +1344,8 @@
 	          "Acceptable values are:", 
 	          React.createElement("code", null, "\"month\""), " ", React.createElement("code", null, "\"year\""), " ", React.createElement("code", null, "\"decade\""), " ", React.createElement("code", null, "\"century\"")
 	        ), 
-	
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'finalView', '"year"')}), 
+	        
 	        React.createElement(PropHeader, {type: "Boolean", default: "false"}, "isRtl"), 
 	        React.createElement("p", null, 
 	          "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through" + ' ' +
@@ -1430,7 +1396,7 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , Example = __webpack_require__(19)
+	  , EditableExample = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(17)
 	  , PropHeader = __webpack_require__(18)
@@ -1492,35 +1458,13 @@
 	          "the same is true for the keyboard navigation!"
 	        ), 
 	        React.createElement(DatePickerExample, null), 
-	        React.createElement(Example, {code: 
-	          "render: function(){\n"+
-	          "  var DateTimePicker = require('react-widgets').DateTimePicker\n"+
-	          "  //... \n\n" +
-	          "  return (\n"+
-	          "    <DateTimePicker \n"+
-	          "      value={this.state.value}\n"+
-	          "      onChange={this._change}/>\n"+
-	          "   \n"+
-	          "    <DateTimePicker \n"+
-	          "      ...\n"+
-	          "      time={false}\n"+
-	          "      format='MMM dd yyyy'\n"+
-	          "      min={new Date(2014, 0, 1)}\n"+
-	          "      max={new Date(2015, 12, 15)}/>\n"+
-	          "   \n"+
-	          "    <DateTimePicker \n"+
-	          "      ...\n"+
-	          "      calendar={false}\n"+
-	          "      format='H:mm tt'\n"+
-	          "   )\n"+
-	          "}"
-	        }), 
-	
+	       
 	        React.createElement("h2", null, "Props"), 
 	        React.createElement(PropHeader, {type: "Date?", handler: "onChange", controllable: true}, "value"), 
 	        React.createElement("p", null, 
 	          "The current selected date, should be a ", React.createElement("code", null, "Date"), " instance or ", React.createElement("code", null, "null"), "."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(40)(widgetName, ['new Date()'])}), 
 	
 	        React.createElement(PropHeader, {type: "Function(Date? date, String dateStr)"}, "onChange"), 
 	        React.createElement("p", null, 
@@ -1528,22 +1472,26 @@
 	          "current ", React.createElement("code", null, "Date"), " object (or null if it was not parseable), and the second argument is" + ' ' +
 	          "a ", React.createElement("code", null, "string"), " representation of the date value, formated by the ", React.createElement("code", null, "format"), " prop."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(41)(widgetName, ['new Date()'])}), 
 	
 	        React.createElement(PropHeader, {type: "Function(Date? value)"}, "onSelect"), 
 	        React.createElement("p", null, 
 	          "This handler fires when an item has been selected from the list or calendar. It fires before the ", React.createElement("code", null, "onChange"), " handler, and fires" + ' ' + 
 	          "regardless of whether the value has actually changed."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(46)(widgetName)}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean", default: "true"}, "calendar"), 
 	        React.createElement("p", null, 
 	          "Whether to show the date picker button."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'calendar', false)}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean", default: "true"}, "time"), 
 	        React.createElement("p", null, 
 	          "Whether to show the time picker button."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'time', false)}), 
 	
 	        React.createElement(PropHeader, {type: "Date", default: ">Date(1900, 0, 1)"}, "min"), 
 	        React.createElement("p", null, 
@@ -1551,6 +1499,7 @@
 	          "can be typed or pasted into the widget. If you need this behavior you can constrain values via" + ' ' +
 	          "the ", React.createElement("code", null, "onChange"), " handler."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'min', 'new Date()')}), 
 	
 	        React.createElement(PropHeader, {type: "Date", default: "Date(2099, 11, 31)"}, "max"), 
 	        React.createElement("p", null, 
@@ -1558,6 +1507,7 @@
 	          "can be typed or pasted into the widget. If you need this behavior you can constrain values via" + ' ' +
 	          "the ", React.createElement("code", null, "onChange"), " handler."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'max', 'new Date()')}), 
 	
 	        React.createElement(PropHeader, {type: "String", default: "\"M/d/yyyy h:mm tt\""}, "format"), 
 	        React.createElement("p", null, 
@@ -1566,13 +1516,14 @@
 	            "Globalize.js documentation ", React.createElement("i", {className: "fa fa-external-link"})
 	          )
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'format', '"MMM dd yyyy"')}), 
 	
 	        React.createElement(PropHeader, {type: "[Function, Array<String>]"}, "parse"), 
 	        React.createElement("p", null, 
 	          "Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try," + ' ' +
-	          "or p" + ' ' +
-	          "rovide a ", 'function', " that returns a date to handle parsing yourself"
+	          "or provide a ", 'function', " that returns a date to handle parsing yourself."
 	        ), 
+	         React.createElement(EditableExample, {codeText: __webpack_require__(47)(widgetName)}), 
 	
 	        React.createElement(PropHeader, {type: "Enum", default: "\"month\""}, "initialView"), 
 	        React.createElement("p", null, 
@@ -1664,13 +1615,14 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , Example = __webpack_require__(19)
+	  , EditableExample = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(18)
 	  , MenuItem = __webpack_require__(17)
 	  , NumberPickerExample = __webpack_require__(27);
 	
 	var prefix = 'number-picker/'
+	var widgetName = 'NumberPicker'
 	var NumberPicker = React.createClass({displayName: 'NumberPicker',
 	
 	  mixins: [ __webpack_require__(14)(prefix) ],
@@ -1691,7 +1643,6 @@
 	              React.createElement(MenuItem, null, "max"), 
 	              React.createElement(MenuItem, null, "step"), 
 	
-	
 	              React.createElement(MenuItem, null, "isRtl"), 
 	              React.createElement(MenuItem, null, "messages"), 
 	              React.createElement(MenuItem, {divider: true}), 
@@ -1704,32 +1655,20 @@
 	          "Spinner for selecting numbers. Supports multiple formats for display and editing through Globalize.js"
 	        ), 
 	        React.createElement(NumberPickerExample, null), 
-	        React.createElement(Example, {code: 
-	          "render: function(){\n"+
-	          "  //... \n\n" +
-	          "  return (\n"+
-	          "    <NumberPicker \n"+
-	          "      value={this.state.value}\n"+
-	          "      onChange={this._change}\n"+
-	          "      min={2}\n"+
-	          "      max={10}/>\n\n"+
-	          "    <NumberPicker \n"+
-	          "      format='c'\n" +
-	          "      step={1.5}/>\n\n"+
-	          "  )\n"+
-	          "}"
-	        }), 
+	
 	        React.createElement("h2", null, "Props"), 
 	        React.createElement(PropHeader, {type: "Number?", handler: "onChange", controllable: true}, "value"), 
 	        React.createElement("p", null, 
 	          "The current value of the NumberPicker."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(40)(widgetName, [1, null])}), 
 	
 	        React.createElement(PropHeader, {type: "Function(Number? value)"}, "onChange"), 
 	        React.createElement("p", null, 
 	          "Change event Handler that is called when the value is changed. The handler is called with the" + ' ' +
 	          "current numeric value or null."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(41)(widgetName, [1, null])}), 
 	
 	        React.createElement(PropHeader, {type: "String", default: "d"}, "format"), 
 	        React.createElement("p", null, 
@@ -1744,16 +1683,19 @@
 	        React.createElement("p", null, 
 	          "The minimum number that the NumberPicker value."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'min', 0)}), 
 	
 	        React.createElement(PropHeader, {type: "Number", default: "Infinity"}, "max"), 
 	        React.createElement("p", null, 
 	          "The maximum number that the NumberPicker value."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'max', 5)}), 
 	
 	        React.createElement(PropHeader, {type: "Number", default: "1"}, "step"), 
 	        React.createElement("p", null, 
 	          "Amount to increase or decrease value when using the spinner buttons."
 	        ), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'step', 5)}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean", default: "false"}, 
 	          "isRtl"
@@ -1946,9 +1888,9 @@
 	
 	    has: has,
 	    
-	    merge:  __webpack_require__(71),
+	    merge:  __webpack_require__(70),
 	
-	    extend: __webpack_require__(61),
+	    extend: __webpack_require__(69),
 	
 	    isShallowEqual: function (a, b) {
 	      if (a === b) return true;
@@ -2065,9 +2007,9 @@
 	'use strict';
 	
 	var React = __webpack_require__(1)
-	  , CodeMirrorEditor = __webpack_require__(48)
-	  , ReactWidgets = __webpack_require__(49)
-	  , genData = __webpack_require__(50);
+	  , CodeMirrorEditor = __webpack_require__(56)
+	  , ReactWidgets = __webpack_require__(57)
+	  , genData = __webpack_require__(58);
 	
 	function listOfPeople(){
 	  return genData(15)
@@ -2127,7 +2069,6 @@
 	            React.createElement("div", {className: "text-danger editable-error"}, this.state.error)
 	          
 	        )
-	        
 	      )
 	      );
 	  },
@@ -2264,7 +2205,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1)
-	  , _ = __webpack_require__(73);
+	  , _ = __webpack_require__(81);
 	
 	
 	module.exports = React.createClass({displayName: 'exports',
@@ -2315,9 +2256,9 @@
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , Dropdown = __webpack_require__(49).DropdownList
-	  , NumberPicker = __webpack_require__(49).NumberPicker
-	  , genData = __webpack_require__(50);
+	  , Dropdown = __webpack_require__(57).DropdownList
+	  , NumberPicker = __webpack_require__(57).NumberPicker
+	  , genData = __webpack_require__(58);
 	
 	var valueComp = React.createClass({displayName: 'valueComp',
 	  render: function() {
@@ -2467,7 +2408,159 @@
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(49);
+	  , RW = __webpack_require__(57);
+	
+	
+	// var valueComp = React.createClass({
+	//   render: function() {
+	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
+	//   }
+	// });
+	
+	// var itemComp = React.createClass({
+	//   render: function() {
+	//     var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	//     return (
+	//       <div>
+	//         <i className={'fa fa-' + this._icon}></i>
+	//         { '  ' + this.props.item.label}
+	//       </div>
+	//     );
+	//   }
+	// });
+	
+	// function getRandomInt(min, max) {
+	//   return Math.floor(Math.random() * (max - min + 1)) + min;
+	// }
+	
+	var list = [
+	        { label: 'orange', id: 1 },
+	        { label: 'blue',   id: 2 },
+	        { label: 'red',    id: 3 },
+	        { label: 'maroon', id: 4 },
+	        { label: 'purple', id: 5 },
+	        { label: 'mauve',  id: 6 },
+	      ];
+	
+	var DropdownApi = React.createClass({displayName: 'DropdownApi',
+	
+	  getInitialState: function(){
+	
+	    return {
+	      duration: 250,
+	    }
+	  },
+	
+	  render: function() {
+	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(RW.SelectList, {
+	                disabled: disabled ? this.state.disabled : false, 
+	                readOnly: this.state.disabled === 'readonly', 
+	                value: this.state.value, 
+	                data: list, 
+	                multiple: this.state.multiple, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            )
+	          ), 
+	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.multiple, 
+	                  onChange: this._set.bind(null, 'multiple', !this.state.multiple)}), 
+	                  "Is Multiple"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Disable Values"), 
+	              React.createElement(RW.Multiselect, {
+	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
+	                  data: list, 
+	                  textField: "label", 
+	                  valueField: "id", 
+	                  disabled: this.state.disabled === true, 
+	                  onChange: this._set.bind(null, 'disabled')})
+	            )
+	          )
+	        )
+	      )
+	    );
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === true ? false : true
+	    this.setState({ disabled: val })
+	  }
+	});
+	
+	module.exports = DropdownApi;
+	
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW = __webpack_require__(57);
 	
 	var i = 0
 	  , list = [
@@ -2633,15 +2726,137 @@
 	}
 
 /***/ },
-/* 23 */
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React       = __webpack_require__(1)
+	  , Button      = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW          = __webpack_require__(57);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	  getInitialState: function(){
+	    return {
+	      format: ''
+	    }
+	  },
+	
+	  render: function(){
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
+	            React.createElement(RW.Calendar, {
+	                value: this.state.value, 
+	                onChange: this._change, 
+	                max: this.state.max, 
+	                min: this.state.min, 
+	                finalView: this.state.finalView, 
+	                initialView: this.state.initialView, 
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                isRtl: this.state.isRtl})
+	          ), 
+	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              )
+	            ), 
+	            React.createElement("div", {className: "row"}, 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "form-label"}, "Initial View"), 
+	                React.createElement(RW.DropdownList, {
+	                    value: this.state.initialView || 'month', 
+	                    data: ["month", "year", "decade", "century"], 
+	                    onChange: this._set.bind(null, 'initialView')})
+	              ), 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "form-label"}, "Final View"), 
+	                React.createElement(RW.DropdownList, {
+	                    value: this.state.finalView || 'century', 
+	                    data: ["month", "year", "decade", "century"], 
+	                    onChange: this._set.bind(null, 'finalView')})
+	              )
+	            ), 
+	            React.createElement("div", {className: "row"}, 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "control-label"}, "min"), 
+	                React.createElement(RW.DateTimePicker, {
+	                    time: false, 
+	                    format: "MMM dd, yyyy", 
+	                    value: this.state.min, 
+	                    onChange: this._set.bind(null, 'min')})
+	              ), 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "control-label"}, "max"), 
+	                React.createElement(RW.DateTimePicker, {
+	                    time: false, 
+	                    format: "MMM dd yyyy", 
+	                    value: this.state.max, 
+	                    onChange: this._set.bind(null, 'max')})
+	              )
+	            )
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	
+	})
+	
+	          
+
+
+/***/ },
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(49)
-	  , genData = __webpack_require__(50);
+	  , RW = __webpack_require__(57)
+	  , genData = __webpack_require__(58);
 	
 	var list = genData(50);
 	
@@ -2829,289 +3044,15 @@
 
 
 /***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(49);
-	
-	
-	// var valueComp = React.createClass({
-	//   render: function() {
-	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
-	//   }
-	// });
-	
-	// var itemComp = React.createClass({
-	//   render: function() {
-	//     var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	//     return (
-	//       <div>
-	//         <i className={'fa fa-' + this._icon}></i>
-	//         { '  ' + this.props.item.label}
-	//       </div>
-	//     );
-	//   }
-	// });
-	
-	// function getRandomInt(min, max) {
-	//   return Math.floor(Math.random() * (max - min + 1)) + min;
-	// }
-	
-	var list = [
-	        { label: 'orange', id: 1 },
-	        { label: 'blue',   id: 2 },
-	        { label: 'red',    id: 3 },
-	        { label: 'maroon', id: 4 },
-	        { label: 'purple', id: 5 },
-	        { label: 'mauve',  id: 6 },
-	      ];
-	
-	var DropdownApi = React.createClass({displayName: 'DropdownApi',
-	
-	  getInitialState: function(){
-	
-	    return {
-	      duration: 250,
-	    }
-	  },
-	
-	  render: function() {
-	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(RW.SelectList, {
-	                disabled: disabled ? this.state.disabled : false, 
-	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value, 
-	                data: list, 
-	                multiple: this.state.multiple, 
-	                busy: this.state.busy, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl, 
-	                valueField: "id", 
-	                textField: "label"}
-	                )
-	            )
-	          ), 
-	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.multiple, 
-	                  onChange: this._set.bind(null, 'multiple', !this.state.multiple)}), 
-	                  "Is Multiple"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              ), 
-	              React.createElement(Button, {style: { marginLeft: 10}, 
-	                active: this.state.busy, 
-	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
-	                "Busy"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Disable Values"), 
-	              React.createElement(RW.Multiselect, {
-	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
-	                  data: list, 
-	                  textField: "label", 
-	                  valueField: "id", 
-	                  disabled: this.state.disabled === true, 
-	                  onChange: this._set.bind(null, 'disabled')})
-	            )
-	          )
-	        )
-	      )
-	    );
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === true ? false : true
-	    this.setState({ disabled: val })
-	  }
-	});
-	
-	module.exports = DropdownApi;
-	
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React       = __webpack_require__(1)
-	  , Button      = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW          = __webpack_require__(49);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	  getInitialState: function(){
-	    return {
-	      format: ''
-	    }
-	  },
-	
-	  render: function(){
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
-	            React.createElement(RW.Calendar, {
-	                value: this.state.value, 
-	                onChange: this._change, 
-	                max: this.state.max, 
-	                min: this.state.min, 
-	                finalView: this.state.finalView, 
-	                initialView: this.state.initialView, 
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                isRtl: this.state.isRtl})
-	          ), 
-	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              )
-	            ), 
-	            React.createElement("div", {className: "row"}, 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "form-label"}, "Initial View"), 
-	                React.createElement(RW.DropdownList, {
-	                    value: this.state.initialView || 'month', 
-	                    data: ["month", "year", "decade", "century"], 
-	                    onChange: this._set.bind(null, 'initialView')})
-	              ), 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "form-label"}, "Final View"), 
-	                React.createElement(RW.DropdownList, {
-	                    value: this.state.finalView || 'century', 
-	                    data: ["month", "year", "decade", "century"], 
-	                    onChange: this._set.bind(null, 'finalView')})
-	              )
-	            ), 
-	            React.createElement("div", {className: "row"}, 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "control-label"}, "min"), 
-	                React.createElement(RW.DateTimePicker, {
-	                    time: false, 
-	                    format: "MMM dd, yyyy", 
-	                    value: this.state.min, 
-	                    onChange: this._set.bind(null, 'min')})
-	              ), 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "control-label"}, "max"), 
-	                React.createElement(RW.DateTimePicker, {
-	                    time: false, 
-	                    format: "MMM dd yyyy", 
-	                    value: this.state.max, 
-	                    onChange: this._set.bind(null, 'max')})
-	              )
-	            )
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
-	    this.setState({ disabled: val })
-	  },
-	
-	})
-	
-	          
-
-
-/***/ },
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(72)
+	  , dates = __webpack_require__(80)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(49);
+	  , RW = __webpack_require__(57);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	  getInitialState: function(){
@@ -3292,7 +3233,7 @@
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(49);
+	  , RW = __webpack_require__(57);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	  getInitialState: function(){
@@ -3413,15 +3354,16 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = function(widgetName){
+	module.exports = function(widgetName, isArray){
+	  var value = !isArray ? '"orange"' : '["orange", "red"]'
 	var code = 
 	("\nvar " + 
-	widgetName + " = ReactWidgets." + widgetName + ";\n\nvar colors = ['orange', 'red', 'blue', 'purple'];\nvar widget = \n    <" + 
+	widgetName + " = ReactWidgets." + widgetName + ";\n\nvar colors = ['orange', 'red', 'blue', 'purple'];\n\nReact.render(\n    <" + 
 	
 	
 	
-	widgetName + " defaultValue='orange' data={colors}/>\n\nReact.render(widget, mountNode);"
 	
+	widgetName + " defaultValue={" + value + "} data={colors}/>\n  , mountNode);"
 	)
 	
 	return code
@@ -3435,23 +3377,22 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = function(widgetName){
+	module.exports = function(widgetName, isArray){
+	var value = !isArray ? 'colors[0]' : 'colors.slice(0,1)'
 	var code = 
 	("\nvar " + 
-	widgetName + " = ReactWidgets." + widgetName + "\n  , colors = ['orange', 'red', 'blue', 'purple'];\n\nvar Example = React.createClass({\n\n  getInitialState() {\n    return { value: colors[0] };\n  },\n\n  render() {\n    var change = value => this.setState({ value });\n\n    return (\n      <" + 
+	widgetName + " = ReactWidgets." + widgetName + "\n  , colors = ['orange', 'red', 'blue', 'purple'];\n\nvar Example = React.createClass({\n\n  getInitialState() {\n    return { value: " + 
 	
 	
 	
 	
 	
+	value + " };\n  },\n\n  render() {\n    return (\n      <" + 
 	
 	
 	
 	
-	
-	
-	
-	widgetName + " \n        data={colors} \n        value={this.state.value}\n        onChange={change}/>)\n  }\n});\n\nReact.render(<Example/>, mountNode);"
+	widgetName + " \n        data={colors} \n        value={this.state.value}\n        onChange={value => this.setState({ value })}/>)\n  }\n});\n\nReact.render(<Example/>, mountNode);"
 	
 	
 	
@@ -3460,7 +3401,8 @@
 	
 	)
 	
-	return code
+	  return code
+	
 	}
 
 /***/ },
@@ -3490,7 +3432,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = function(widgetName){
+	module.exports = function(widgetName, isArray){
+	var value = !isArray ? '0' : '[0, 1]'
 	var code = 
 	("\nvar " + 
 	widgetName + " = ReactWidgets." + widgetName + ";\nvar colors = [\n  { id: 0, name: 'orange'},\n  { id: 1, name: 'purple'},\n  { id: 2, name: 'red' },\n  { id: 3, name: 'blue' },\n];\n\nvar widget = \n    <" + 
@@ -3502,10 +3445,10 @@
 	
 	
 	
-	widgetName + " \n      valeField='id' textField='name'\n      data={colors}\n      defaultValue={colors[0]}/>\n\nReact.render(widget, mountNode);"
+	widgetName + " \n      valueField='id' textField='name'\n      data={colors}\n      defaultValue={" + 
 	
 	
-	
+	value + "}/>\n\nReact.render(widget, mountNode);"
 	
 	)
 	
@@ -3519,7 +3462,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = function(widgetName){
+	module.exports = function(widgetName, isArray){
+	var value = !isArray ? 'colors[0]' : 'colors.slice(0,2)'
 	var code = 
 	("\nvar " + 
 	widgetName + " = ReactWidgets." + widgetName + ";\n\nvar colors = [\n  { id: 0, name: 'orange'},\n  { id: 1, name: 'purple'},\n  { id: 2, name: 'red' },\n  { id: 3, name: 'blue' },\n];\n\nvar widget = \n    <" + 
@@ -3532,9 +3476,9 @@
 	
 	
 	
-	widgetName + " \n      textField='name'\n      defaultValue={colors[0]} \n      data={colors}/>\n\nReact.render(widget, mountNode);"
+	widgetName + " \n      textField='name'\n      defaultValue={" + 
 	
-	
+	value + "} \n      data={colors}/>\n\nReact.render(widget, mountNode);"
 	
 	
 	)
@@ -3756,14 +3700,11 @@
 	
 	var code = 
 	("\nvar " + 
-	widgetName + " = ReactWidgets." + widgetName + ";\n\nvar people = listOfPeople();\n\nvar widgets =(\n  <div>\n    <" + 
+	widgetName + " = ReactWidgets." + widgetName + ";\nvar people = listOfPeople();\n\nvar widgets =(<div>\n    <" + 
 	
 	
 	
-	
-	
-	widgetName + " \n      data={people} defaultValue={people[0]}\n      textField='name' \n      filter='contains'/>\n\n    <" + 
-	
+	widgetName + " \n      data={people} defaultValue={people[0]}\n      textField='name' \n      filter='contains'/>\n    <" + 
 	
 	
 	
@@ -3792,10 +3733,263 @@
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	module.exports = function(widgetName, values){
+	  var open = values.length > 1 ? "(<div>" : ''
+	    , close = values.length > 1 ? "</div>)" : ''
+	  var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + ";\n\nvar widgets = " + 
+	
+	open + "\n    " + 
+	values.map(getWidget).join('').trim() + "\n  " + 
+	close + "\n    \nReact.render(widgets, mountNode);"
+	
+	)
+	
+	  return code
+	
+	  function getWidget(v){
+	    return ("\n    <" + 
+	widgetName + " defaultValue={" + v + "} />")
+	  }
+	}
+	
+	
+	
+	
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	module.exports = function(widgetName, values){
+	  var open = values.length > 1 ? "(<div>" : ''
+	    , close = values.length > 1 ? "</div>)" : ''
+	  var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + ";\n\nvar Example = React.createClass({\n\n  getInitialState() {\n    return { " + 
+	
+	
+	
+	
+	 values.map(getValue).join(', ') + " };\n  },\n\n  render() {\n    var change = (name, value) => {\n      var state = {}\n      state['value' + name] = value\n      this.setState(state)\n    };\n\n    return " + 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	open + "\n      " + 
+	values.map(getWidget).join('').trim() + "\n    " + 
+	close + "\n  }\n});\n\nReact.render(<Example/>, mountNode);"
+	
+	
+	
+	)
+	
+	return code
+	
+	  function getValue(v, idx){
+	    return ("value" + idx + ": " + v)
+	  }
+	
+	  function getWidget(v, idx){
+	    return ("\n      <" + 
+	widgetName + " \n        value={this.state.value" + 
+	idx + "} \n        onChange={change.bind(null, '" + 
+	idx + "')}/>")
+	  }
+	}
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	module.exports = function(widgetName, prop, value){
+	var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + ";\n\nReact.render(\n  <" + 
+	
+	
+	widgetName + " " + prop + "={" + value + "} />, mountNode);")
+	
+	return code
+	}
+	
+	
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	module.exports = function(widgetName){
+	var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + "\n  , people = listOfPeople();\n\nvar Example = React.createClass({\n\n  getInitialState() {\n    return { value: people.slice(0,2) };\n  },\n\n  _create(name){\n    var tag = { name, id: people.length + 1 } \n    var value = this.state.value.concat(tag)\n    // add new tag to the data list\n    people.push(tag) \n    //add new tag to the list of values\n    this.setState({ value }) \n  },\n\n  render(){\n    // create a tag object\n    return (\n      <Multiselect data={people}\n        value={this.state.value} \n        textField=\"name\"\n        onCreate={this._create}\n        onChange={value => this.setState({ value })}/>\n    )\n  }\n});\n\nReact.render(<Example/>, mountNode);"
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	)
+	
+	return code
+	}
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = function(widgetName) {
+	
+	var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + ";\nvar people = listOfPeople();\n\nvar TagItem = React.createClass({\n  render() {\n    var person = this.props.item;\n    return (\n      <span>\n        <strong>{ person.firstName }</strong>\n        { \" \" + person.lastName }\n      </span>);\n  }\n})\n\nvar widget =(\n    <" + 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	widgetName + " \n      data={people} \n      textField='name'\n      tagComponent={TagItem}/>) \n\nReact.render(widget, mountNode)"
+	
+	
+	
+	
+	)
+	
+	return code
+	}
+	
+	
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	module.exports = function(widgetName, prop){
+	var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + "\n  , colors = ['orange', 'red', 'blue', 'purple'];\n\nvar Example = React.createClass({\n\n  render() {\n    return (<div>\n      <" + 
+	
+	
+	
+	
+	
+	
+	widgetName + " " + prop + " />\n      <" + 
+	widgetName + " " + prop + "={colors.slice(1,2)}\n        data={colors}\n        defaultValue={colors.slice(0,2)}/>\n    </div>)\n  }\n});\n\nReact.render(<Example/>, mountNode);"
+	
+	
+	
+	
+	
+	
+	)
+	
+	return code
+	}
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	module.exports = function(widgetName){
+	var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + "\n\nvar widget =\n      <" + 
+	
+	
+	widgetName + " \n        onSelect={() => alert('selected!')} \n        onChange={() => alert('changed!')}/>\n\nReact.render(widget, mountNode);"
+	
+	
+	
+	)
+	
+	return code
+	}
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	module.exports = function(widgetName, isArray){
+	  var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + ";\nvar formats = [\n  'MMM d yyyy', \n  'MMM d yy', \n  'd'\n];\n\nvar widgets = (<div>\n    <" + 
+	
+	
+	
+	
+	
+	
+	
+	widgetName + " parse={formats}/>\n{/* the naive approach: just use the Date constructor */}\n    <" + 
+	
+	widgetName + " parse={str => new Date(str)}/>\n  </div>)\n\nReact.render(widgets, mountNode);"
+	
+	
+	)
+	
+	  return code
+	}
+
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var classSet = __webpack_require__(56);
-	var BootstrapMixin = __webpack_require__(51);
+	var joinClasses = __webpack_require__(63);
+	var classSet = __webpack_require__(64);
+	var BootstrapMixin = __webpack_require__(59);
 	
 	var Button = React.createClass({displayName: 'Button',
 	  mixins: [BootstrapMixin],
@@ -3880,14 +4074,14 @@
 
 
 /***/ },
-/* 41 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var classSet = __webpack_require__(56);
-	var BootstrapMixin = __webpack_require__(51);
-	var Button = __webpack_require__(40);
+	var joinClasses = __webpack_require__(63);
+	var classSet = __webpack_require__(64);
+	var BootstrapMixin = __webpack_require__(59);
+	var Button = __webpack_require__(48);
 	
 	var ButtonGroup = React.createClass({displayName: 'ButtonGroup',
 	  mixins: [BootstrapMixin],
@@ -3922,21 +4116,21 @@
 	module.exports = ButtonGroup;
 
 /***/ },
-/* 42 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var classSet = __webpack_require__(56);
-	var cloneWithProps = __webpack_require__(58);
+	var joinClasses = __webpack_require__(63);
+	var classSet = __webpack_require__(64);
+	var cloneWithProps = __webpack_require__(66);
 	
-	var createChainedFunction = __webpack_require__(60);
-	var BootstrapMixin = __webpack_require__(51);
-	var DropdownStateMixin = __webpack_require__(53);
-	var Button = __webpack_require__(40);
-	var ButtonGroup = __webpack_require__(41);
-	var DropdownMenu = __webpack_require__(54);
-	var ValidComponentChildren = __webpack_require__(59);
+	var createChainedFunction = __webpack_require__(68);
+	var BootstrapMixin = __webpack_require__(59);
+	var DropdownStateMixin = __webpack_require__(61);
+	var Button = __webpack_require__(48);
+	var ButtonGroup = __webpack_require__(49);
+	var DropdownMenu = __webpack_require__(62);
+	var ValidComponentChildren = __webpack_require__(67);
 	
 	
 	var DropdownButton = React.createClass({displayName: 'DropdownButton',
@@ -4050,12 +4244,12 @@
 	module.exports = DropdownButton;
 
 /***/ },
-/* 43 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var classSet = __webpack_require__(56);
+	var joinClasses = __webpack_require__(63);
+	var classSet = __webpack_require__(64);
 	
 	var MenuItem = React.createClass({displayName: 'MenuItem',
 	  propTypes: {
@@ -4113,19 +4307,19 @@
 	module.exports = MenuItem;
 
 /***/ },
-/* 44 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var BootstrapMixin = __webpack_require__(51);
-	var CollapsableMixin = __webpack_require__(52);
-	var classSet = __webpack_require__(56);
-	var domUtils = __webpack_require__(57);
-	var cloneWithProps = __webpack_require__(58);
+	var joinClasses = __webpack_require__(63);
+	var BootstrapMixin = __webpack_require__(59);
+	var CollapsableMixin = __webpack_require__(60);
+	var classSet = __webpack_require__(64);
+	var domUtils = __webpack_require__(65);
+	var cloneWithProps = __webpack_require__(66);
 	
-	var ValidComponentChildren = __webpack_require__(59);
-	var createChainedFunction = __webpack_require__(60);
+	var ValidComponentChildren = __webpack_require__(67);
+	var createChainedFunction = __webpack_require__(68);
 	
 	
 	var Nav = React.createClass({displayName: 'Nav',
@@ -4231,18 +4425,18 @@
 
 
 /***/ },
-/* 45 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var BootstrapMixin = __webpack_require__(51);
-	var classSet = __webpack_require__(56);
-	var cloneWithProps = __webpack_require__(58);
+	var joinClasses = __webpack_require__(63);
+	var BootstrapMixin = __webpack_require__(59);
+	var classSet = __webpack_require__(64);
+	var cloneWithProps = __webpack_require__(66);
 	
-	var ValidComponentChildren = __webpack_require__(59);
-	var createChainedFunction = __webpack_require__(60);
-	var Nav = __webpack_require__(44);
+	var ValidComponentChildren = __webpack_require__(67);
+	var createChainedFunction = __webpack_require__(68);
+	var Nav = __webpack_require__(52);
 	
 	
 	var Navbar = React.createClass({displayName: 'Navbar',
@@ -4376,17 +4570,17 @@
 
 
 /***/ },
-/* 46 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var classSet = __webpack_require__(56);
-	var cloneWithProps = __webpack_require__(58);
+	var joinClasses = __webpack_require__(63);
+	var classSet = __webpack_require__(64);
+	var cloneWithProps = __webpack_require__(66);
 	
-	var ValidComponentChildren = __webpack_require__(59);
-	var createChainedFunction = __webpack_require__(60);
-	var BootstrapMixin = __webpack_require__(51);
+	var ValidComponentChildren = __webpack_require__(67);
+	var createChainedFunction = __webpack_require__(68);
+	var BootstrapMixin = __webpack_require__(59);
 	
 	
 	var SubNav = React.createClass({displayName: 'SubNav',
@@ -4510,13 +4704,13 @@
 
 
 /***/ },
-/* 47 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var classSet = __webpack_require__(56);
-	var BootstrapMixin = __webpack_require__(51);
+	var joinClasses = __webpack_require__(63);
+	var classSet = __webpack_require__(64);
+	var BootstrapMixin = __webpack_require__(59);
 	
 	var NavItem = React.createClass({displayName: 'NavItem',
 	  mixins: [BootstrapMixin],
@@ -4576,7 +4770,7 @@
 	module.exports = NavItem;
 
 /***/ },
-/* 48 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4642,36 +4836,36 @@
 	module.exports = CodeMirrorEditor;
 
 /***/ },
-/* 49 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
 	
 	module.exports = {
 	
-	  DropdownList:     __webpack_require__(62),
-	  Combobox:         __webpack_require__(63),
+	  DropdownList:     __webpack_require__(71),
+	  Combobox:         __webpack_require__(72),
 	
-	  Calendar:         __webpack_require__(64),
-	  DateTimePicker:   __webpack_require__(65),
+	  Calendar:         __webpack_require__(73),
+	  DateTimePicker:   __webpack_require__(74),
 	
-	  NumberPicker:     __webpack_require__(66),
+	  NumberPicker:     __webpack_require__(75),
 	  
-	  Multiselect:      __webpack_require__(67),
-	  SelectList:       __webpack_require__(68),
+	  Multiselect:      __webpack_require__(76),
+	  SelectList:       __webpack_require__(77),
 	
 	  utils: {
-	    ReplaceTransitionGroup: __webpack_require__(69),
-	    SlideTransition:        __webpack_require__(70),
+	    ReplaceTransitionGroup: __webpack_require__(78),
+	    SlideTransition:        __webpack_require__(79),
 	  }
 	}
 
 /***/ },
-/* 50 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var chance = new (__webpack_require__(101))
+	var chance = new (__webpack_require__(109))
 	
 	chance.set('lastNames', ['Smith', 'Williams', 'Chang', 'Diaz', 'Morales'])
 	
@@ -4688,11 +4882,11 @@
 
 
 /***/ },
-/* 51 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var constants = __webpack_require__(74);
+	var constants = __webpack_require__(82);
 	
 	var BootstrapMixin = {
 	  propTypes: {
@@ -4728,11 +4922,11 @@
 	module.exports = BootstrapMixin;
 
 /***/ },
-/* 52 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var TransitionEvents = __webpack_require__(75);
+	var TransitionEvents = __webpack_require__(84);
 	
 	var CollapsableMixin = {
 	
@@ -4854,11 +5048,11 @@
 
 
 /***/ },
-/* 53 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var EventListener = __webpack_require__(76);
+	var EventListener = __webpack_require__(83);
 	
 	/**
 	 * Checks whether a node is within
@@ -4939,16 +5133,16 @@
 	module.exports = DropdownStateMixin;
 
 /***/ },
-/* 54 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var classSet = __webpack_require__(56);
-	var cloneWithProps = __webpack_require__(58);
+	var joinClasses = __webpack_require__(63);
+	var classSet = __webpack_require__(64);
+	var cloneWithProps = __webpack_require__(66);
 	
-	var createChainedFunction = __webpack_require__(60);
-	var ValidComponentChildren = __webpack_require__(59);
+	var createChainedFunction = __webpack_require__(68);
+	var ValidComponentChildren = __webpack_require__(67);
 	
 	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
 	  propTypes: {
@@ -4990,7 +5184,7 @@
 	module.exports = DropdownMenu;
 
 /***/ },
-/* 55 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5036,7 +5230,7 @@
 
 
 /***/ },
-/* 56 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5080,7 +5274,7 @@
 	module.exports = cx;
 
 /***/ },
-/* 57 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -5194,7 +5388,7 @@
 	};
 
 /***/ },
-/* 58 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5216,8 +5410,8 @@
 	 */
 	
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(55);
-	var assign = __webpack_require__(77);
+	var joinClasses = __webpack_require__(63);
+	var assign = __webpack_require__(85);
 	
 	/**
 	 * Creates a transfer strategy that will merge prop values using the supplied
@@ -5342,7 +5536,7 @@
 	module.exports = cloneWithProps;
 
 /***/ },
-/* 59 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -5437,7 +5631,7 @@
 	};
 
 /***/ },
-/* 60 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5467,7 +5661,7 @@
 	module.exports = createChainedFunction;
 
 /***/ },
-/* 61 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = extend
@@ -5488,19 +5682,42 @@
 
 
 /***/ },
-/* 62 */
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = extend
+	
+	function extend() {
+	    var target = {}
+	
+	    for (var i = 0; i < arguments.length; i++) {
+	        var source = arguments[i]
+	
+	        for (var key in source) {
+	            if (source.hasOwnProperty(key)) {
+	                target[key] = source[key]
+	            }
+	        }
+	    }
+	
+	    return target
+	}
+
+
+/***/ },
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React           = __webpack_require__(1)
 	  , _               = __webpack_require__(15)
 	  , cx              = __webpack_require__(13)
-	  , controlledInput = __webpack_require__(78)
-	  , CustomPropTypes = __webpack_require__(79)
-	  , Popup           = __webpack_require__(80)
-	  , PlainList       = __webpack_require__(81)
-	  , GroupableList   = __webpack_require__(82)
-	  , validateList    = __webpack_require__(83);
+	  , controlledInput = __webpack_require__(86)
+	  , CustomPropTypes = __webpack_require__(87)
+	  , Popup           = __webpack_require__(88)
+	  , PlainList       = __webpack_require__(89)
+	  , GroupableList   = __webpack_require__(90)
+	  , validateList    = __webpack_require__(91);
 	  
 	
 	var propTypes = {
@@ -5552,10 +5769,10 @@
 	  displayName: 'DropdownList',
 	
 	  mixins: [
-	    __webpack_require__(102),
-	    __webpack_require__(103),
-	    __webpack_require__(104),
-	    __webpack_require__(105)
+	    __webpack_require__(110),
+	    __webpack_require__(111),
+	    __webpack_require__(112),
+	    __webpack_require__(113)
 	  ],
 	
 	  propTypes: propTypes,
@@ -5787,24 +6004,24 @@
 	module.exports.BaseDropdownList = DropdownList
 
 /***/ },
-/* 63 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React           = __webpack_require__(1)
 	  , cx              = __webpack_require__(13)
 	  , _               = __webpack_require__(15)
-	  , $               = __webpack_require__(91)
-	  , filter          = __webpack_require__(92)
-	  , Popup           = __webpack_require__(80)
-	  , Btn             = __webpack_require__(93)
-	  , Input           = __webpack_require__(94)
+	  , $               = __webpack_require__(99)
+	  , filter          = __webpack_require__(100)
+	  , Popup           = __webpack_require__(88)
+	  , Btn             = __webpack_require__(101)
+	  , Input           = __webpack_require__(102)
 	
-	  , controlledInput = __webpack_require__(78)
-	  , CustomPropTypes = __webpack_require__(79)
-	  , PlainList       = __webpack_require__(81)
-	  , GroupableList   = __webpack_require__(82)
-	  , validateList    = __webpack_require__(83);
+	  , controlledInput = __webpack_require__(86)
+	  , CustomPropTypes = __webpack_require__(87)
+	  , PlainList       = __webpack_require__(89)
+	  , GroupableList   = __webpack_require__(90)
+	  , validateList    = __webpack_require__(91);
 	
 	var propTypes = {
 	      //-- controlled props -----------
@@ -5858,11 +6075,11 @@
 	  displayName: 'ComboBox',
 	
 	  mixins: [
-	    __webpack_require__(102),
-	    __webpack_require__(106),
-	    __webpack_require__(107),
-	    __webpack_require__(104),
-	    __webpack_require__(105)
+	    __webpack_require__(110),
+	    __webpack_require__(114),
+	    __webpack_require__(115),
+	    __webpack_require__(112),
+	    __webpack_require__(113)
 	  ],
 	
 	  propTypes: propTypes,
@@ -6183,21 +6400,21 @@
 	module.exports.BaseComboBox = ComboBox
 
 /***/ },
-/* 64 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React           = __webpack_require__(1)
-	  , Header          = __webpack_require__(84)
-	  , Month           = __webpack_require__(85)
-	  , Year            = __webpack_require__(86)
-	  , Decade          = __webpack_require__(87)
-	  , Century         = __webpack_require__(88)
+	  , Header          = __webpack_require__(92)
+	  , Month           = __webpack_require__(93)
+	  , Year            = __webpack_require__(94)
+	  , Decade          = __webpack_require__(95)
+	  , Century         = __webpack_require__(96)
 	  , cx              = __webpack_require__(13)
-	  , controlledInput = __webpack_require__(78)
-	  , SlideTransition = __webpack_require__(70)
-	  , dates           = __webpack_require__(89)
-	  , constants       = __webpack_require__(90)
+	  , controlledInput = __webpack_require__(86)
+	  , SlideTransition = __webpack_require__(79)
+	  , dates           = __webpack_require__(97)
+	  , constants       = __webpack_require__(98)
 	  , _               = __webpack_require__(15); //values, omit, object
 	
 	var dir = constants.directions;
@@ -6228,9 +6445,9 @@
 	  displayName: 'Calendar',
 	
 	  mixins: [
-	    __webpack_require__(102),
-	    __webpack_require__(103),
-	    __webpack_require__(105)
+	    __webpack_require__(110),
+	    __webpack_require__(111),
+	    __webpack_require__(113)
 	  ],
 	
 	
@@ -6267,17 +6484,19 @@
 	  },
 	
 	  getInitialState: function(){
+	    var value = this.inRangeValue(this.props.value);
+	
 	    return {
 	      selectedIndex: 0,
 	      view:          this.props.initialView || 'month',
-	      currentDate:   this.inRangeValue(new Date(this.props.value))
+	      currentDate:   value ? new Date(value) : new Date()
 	    }
 	  },
 	
 	  getDefaultProps: function(){
 	    return {
 	      open:  false,
-	      value: new Date,
+	      value: null,
 	      min:   new Date(1900,0, 1),
 	      max:   new Date(2099,11, 31),
 	
@@ -6293,7 +6512,7 @@
 	      , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
 	      , current = VIEW_OPTIONS.indexOf(this.state.view)
 	      , view    = this.state.view
-	      , val     = this.inRangeValue(new Date(nextProps.value));
+	      , val     = this.inRangeValue(nextProps.value);
 	
 	    if( current < bottom )
 	      this.setState({ view: view = nextProps.initialView })
@@ -6301,9 +6520,9 @@
 	      this.setState({ view: view = nextProps.finalView })
 	
 	    //if the value changes reset views to the new one
-	    if ( !dates.eq(val, this.props.value, VIEW_UNIT[view]))
+	    if ( !dates.eq(val, dateOrNull(this.props.value), VIEW_UNIT[view]))
 	      this.setState({
-	        currentDate: val
+	        currentDate: val ? new Date(val) : new Date()
 	      })
 	  },
 	
@@ -6333,6 +6552,7 @@
 	        React.createElement(Header, {
 	          label: this._label(), 
 	          labelId: labelId, 
+	          tabIndex: !this.props.maintainFocus ? '-1' : null, 
 	          messages: this.props.messages, 
 	          upDisabled:   disabled || this.state.view === this.props.finalView, 
 	          prevDisabled: disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit), 
@@ -6406,6 +6626,8 @@
 	  },
 	
 	  change: function(date){
+	    setTimeout( function()  {return this._focus(true);}.bind(this))
+	
 	    if ( this.props.onChange && this.state.view === this.props.initialView)
 	      return this.notify('onChange', date)
 	
@@ -6471,8 +6693,10 @@
 	        + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR, culture)
 	  },
 	
-	  inRangeValue: function(value){
-	    if( value == null)
+	  inRangeValue: function(_value){
+	    var value = dateOrNull(_value)
+	
+	    if( value === null)
 	      return value
 	
 	    return dates.max(
@@ -6489,30 +6713,35 @@
 	  }
 	});
 	
+	function dateOrNull(dt){
+	  if(dt && !isNaN(dt.getTime())) return dt
+	  return null
+	}
+	
 	module.exports = controlledInput.createControlledClass(
 	    Calendar, { value: 'onChange' });
 	
 	module.exports.BaseCalendar = Calendar
 
 /***/ },
-/* 65 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React  = __webpack_require__(1)
 	  , cx     = __webpack_require__(13)
 	  , _      = __webpack_require__(15) //pick, omit, has
-	  , dates  = __webpack_require__(89)
-	  , views  = __webpack_require__(90).calendarViews
-	  , popups = __webpack_require__(90).datePopups
+	  , dates  = __webpack_require__(97)
+	  , views  = __webpack_require__(98).calendarViews
+	  , popups = __webpack_require__(98).datePopups
 	
-	  , Popup     = __webpack_require__(80)
-	  , Calendar  = __webpack_require__(64).BaseCalendar
-	  , Time      = __webpack_require__(95)
-	  , DateInput = __webpack_require__(96)
-	  , Btn       = __webpack_require__(93)
-	  , CustomPropTypes = __webpack_require__(79)
-	  , controlledInput = __webpack_require__(78);
+	  , Popup     = __webpack_require__(88)
+	  , Calendar  = __webpack_require__(73).BaseCalendar
+	  , Time      = __webpack_require__(103)
+	  , DateInput = __webpack_require__(104)
+	  , Btn       = __webpack_require__(101)
+	  , CustomPropTypes = __webpack_require__(87)
+	  , controlledInput = __webpack_require__(86);
 	
 	var viewEnum  = Object.keys(views).map( function(k)  {return views[k];} )
 	
@@ -6567,9 +6796,9 @@
 	  displayName: 'DateTimePicker',
 	
 	  mixins: [
-	    __webpack_require__(102),
-	    __webpack_require__(103),
-	    __webpack_require__(105)
+	    __webpack_require__(110),
+	    __webpack_require__(111),
+	    __webpack_require__(113)
 	  ],
 	
 	  propTypes: propTypes,
@@ -6610,6 +6839,7 @@
 	      , timeListID = this._id('_time_listbox')
 	      , timeOptID  = this._id('_time_option')
 	      , dateListID = this._id('_cal')
+	      , value = dateOrNull(this.props.value)
 	      , owns;
 	
 	    if (dateListID && this.props.calendar ) owns = dateListID
@@ -6646,7 +6876,7 @@
 	          disabled: this.isDisabled(), 
 	          readOnly: this.isReadOnly(), 
 	          role: "combobox", 
-	          value: this.props.value, 
+	          value: value, 
 	          focused: this.state.focused, 
 	          format: this.props.format, 
 	          editFormat: this.props.editFormat, 
@@ -6686,7 +6916,7 @@
 	                optID: timeOptID, 
 	                'aria-hidden':  !this.props.open, 
 	                style: { maxHeight: 200, height: 'auto'}, 
-	                value: this.props.value, 
+	                value: value, 
 	                min: this.props.min, 
 	                max: this.props.max, 
 	                culture: this.props.culture, 
@@ -6704,7 +6934,7 @@
 	          React.createElement(Calendar, React.__spread({},  calProps , 
 	            {ref: "calPopup", 
 	            id: dateListID, 
-	            value: this.props.value || new Date, 
+	            value: value, 
 	            maintainFocus: false, 
 	            'aria-hidden':  !this.props.open, 
 	            onChange: this._maybeHandle(this._selectDate)}))
@@ -6851,9 +7081,9 @@
 	  return val;
 	}
 	
-	module.exports.BaseDateTimePicker = DateTimePicker
 	
-	function formatsParser(formats, str, culture){
+	
+	function formatsParser(formats, culture, str){
 	  var date;
 	
 	  formats = [].concat(formats)
@@ -6864,20 +7094,27 @@
 	  }
 	  return null
 	}
+	
+	function dateOrNull(dt){
+	  if(dt && !isNaN(dt.getTime())) return dt
+	  return null
+	}
+	
+	module.exports.BaseDateTimePicker = DateTimePicker
 
 /***/ },
-/* 66 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , cx    = __webpack_require__(13)
 	  , _     = __webpack_require__(15) //omit
-	  , controlledInput  = __webpack_require__(78)
-	  , directions = __webpack_require__(90).directions
-	  , Input = __webpack_require__(100);
+	  , controlledInput  = __webpack_require__(86)
+	  , directions = __webpack_require__(98).directions
+	  , Input = __webpack_require__(105);
 	
-	var Btn = __webpack_require__(93)
+	var Btn = __webpack_require__(101)
 	  , propTypes = {
 	
 	      // -- controlled props -----------
@@ -6921,9 +7158,9 @@
 	  displayName: 'NumberPicker',
 	
 	  mixins: [
-	    __webpack_require__(102),
-	    __webpack_require__(103),
-	    __webpack_require__(105),
+	    __webpack_require__(110),
+	    __webpack_require__(111),
+	    __webpack_require__(113),
 	  ],
 	
 	  propTypes: propTypes,
@@ -7120,21 +7357,21 @@
 	module.exports.BaseNumberPicker = NumberPicker
 
 /***/ },
-/* 67 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React           = __webpack_require__(1)
 	  , cx              = __webpack_require__(13)
 	  , _               = __webpack_require__(15)
-	  , SelectInput     = __webpack_require__(97)
-	  , TagList         = __webpack_require__(98)
-	  , Popup           = __webpack_require__(80)
-	  , PlainList       = __webpack_require__(81)
-	  , GroupableList   = __webpack_require__(82)
-	  , validateList    = __webpack_require__(83)
-	  , controlledInput = __webpack_require__(78)
-	  , CustomPropTypes = __webpack_require__(79);
+	  , SelectInput     = __webpack_require__(106)
+	  , TagList         = __webpack_require__(107)
+	  , Popup           = __webpack_require__(88)
+	  , PlainList       = __webpack_require__(89)
+	  , GroupableList   = __webpack_require__(90)
+	  , validateList    = __webpack_require__(91)
+	  , controlledInput = __webpack_require__(86)
+	  , CustomPropTypes = __webpack_require__(87);
 	
 	var propTypes = {
 	      data:            React.PropTypes.array,
@@ -7193,10 +7430,10 @@
 	  displayName: 'Select',
 	
 	  mixins: [
-	    __webpack_require__(102),
-	    __webpack_require__(107),
-	    __webpack_require__(104),
-	    __webpack_require__(105)
+	    __webpack_require__(110),
+	    __webpack_require__(115),
+	    __webpack_require__(112),
+	    __webpack_require__(113)
 	  ],
 	
 	  propTypes: propTypes,
@@ -7217,13 +7454,13 @@
 	  },
 	
 	  getInitialState: function(){
-	    var values = _.splat(this.props.value)
-	      , data   = this.process(this.props.data, values, this.props.searchTerm)
+	    var dataItems = _.splat(this.props.value).map( function(item)  {return this._dataItem(this.props.data, item);}.bind(this)) 
+	      , data = this.process(this.props.data, dataItems, this.props.searchTerm)
 	
 	    return {
 	      focusedItem:   data[0],
 	      processedData: data,
-	      dataItems:     values.map( function(item)  {return this._dataItem(this.props.data, item);}.bind(this))
+	      dataItems:     dataItems
 	    }
 	  },
 	
@@ -7525,19 +7762,19 @@
 	module.exports.BaseMultiselect = Select
 
 /***/ },
-/* 68 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , _  = __webpack_require__(15)
 	  , cx = __webpack_require__(13)
-	  , controlledInput  = __webpack_require__(78)
-	  , CustomPropTypes  = __webpack_require__(79)
-	  , PlainList        = __webpack_require__(81)
-	  , GroupableList = __webpack_require__(82)
-	  , validateList    = __webpack_require__(83)
-	  , scrollTo  = __webpack_require__(99);
+	  , controlledInput  = __webpack_require__(86)
+	  , CustomPropTypes  = __webpack_require__(87)
+	  , PlainList        = __webpack_require__(89)
+	  , GroupableList = __webpack_require__(90)
+	  , validateList    = __webpack_require__(91)
+	  , scrollTo  = __webpack_require__(108);
 	
 	var propTypes = {
 	
@@ -7584,10 +7821,10 @@
 	  propTypes: propTypes,
 	
 	  mixins: [
-	    __webpack_require__(102),
-	    __webpack_require__(106),
-	    __webpack_require__(104),
-	    __webpack_require__(105)
+	    __webpack_require__(110),
+	    __webpack_require__(114),
+	    __webpack_require__(112),
+	    __webpack_require__(113)
 	  ],
 	
 	  getDefaultProps:function(){
@@ -7877,7 +8114,7 @@
 	module.exports.BaseSelectList = SelectList
 
 /***/ },
-/* 69 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7890,7 +8127,7 @@
 	"use strict";
 	
 	var React = __webpack_require__(1)
-	  , $     = __webpack_require__(91)
+	  , $     = __webpack_require__(99)
 	  , _     = __webpack_require__(15);
 	
 	module.exports = React.createClass({
@@ -8079,14 +8316,14 @@
 	}
 
 /***/ },
-/* 70 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , ReplaceTransitionGroup  = __webpack_require__(69)
+	  , ReplaceTransitionGroup  = __webpack_require__(78)
 	  , _ = __webpack_require__(15)
-	  , $  =  __webpack_require__(91);
+	  , $  =  __webpack_require__(99);
 	
 	
 	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
@@ -8189,30 +8426,7 @@
 
 
 /***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = extend
-	
-	function extend() {
-	    var target = {}
-	
-	    for (var i = 0; i < arguments.length; i++) {
-	        var source = arguments[i]
-	
-	        for (var key in source) {
-	            if (source.hasOwnProperty(key)) {
-	                target[key] = source[key]
-	            }
-	        }
-	    }
-	
-	    return target
-	}
-
-
-/***/ },
-/* 72 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var MILI 		= 'milliseconds'
@@ -8430,7 +8644,7 @@
 
 
 /***/ },
-/* 73 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -15591,10 +15805,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(114)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122)(module), (function() { return this; }())))
 
 /***/ },
-/* 74 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -15842,7 +16056,67 @@
 
 
 /***/ },
-/* 75 */
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * This file contains a modified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/EventListener.js
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * TODO: remove in favour of solution provided by:
+	 *  https://github.com/facebook/react/issues/285
+	 */
+	
+	/**
+	 * Does not take into account specific nature of platform.
+	 */
+	var EventListener = {
+	  /**
+	   * Listen to DOM events during the bubble phase.
+	   *
+	   * @param {DOMEventTarget} target DOM element to register listener on.
+	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+	   * @param {function} callback Callback function.
+	   * @return {object} Object with a `remove` method.
+	   */
+	  listen: function(target, eventType, callback) {
+	    if (target.addEventListener) {
+	      target.addEventListener(eventType, callback, false);
+	      return {
+	        remove: function() {
+	          target.removeEventListener(eventType, callback, false);
+	        }
+	      };
+	    } else if (target.attachEvent) {
+	      target.attachEvent('on' + eventType, callback);
+	      return {
+	        remove: function() {
+	          target.detachEvent('on' + eventType, callback);
+	        }
+	      };
+	    }
+	  }
+	};
+	
+	module.exports = EventListener;
+
+
+/***/ },
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15961,67 +16235,7 @@
 
 
 /***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * This file contains a modified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/EventListener.js
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * TODO: remove in favour of solution provided by:
-	 *  https://github.com/facebook/react/issues/285
-	 */
-	
-	/**
-	 * Does not take into account specific nature of platform.
-	 */
-	var EventListener = {
-	  /**
-	   * Listen to DOM events during the bubble phase.
-	   *
-	   * @param {DOMEventTarget} target DOM element to register listener on.
-	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-	   * @param {function} callback Callback function.
-	   * @return {object} Object with a `remove` method.
-	   */
-	  listen: function(target, eventType, callback) {
-	    if (target.addEventListener) {
-	      target.addEventListener(eventType, callback, false);
-	      return {
-	        remove: function() {
-	          target.removeEventListener(eventType, callback, false);
-	        }
-	      };
-	    } else if (target.attachEvent) {
-	      target.attachEvent('on' + eventType, callback);
-	      return {
-	        remove: function() {
-	          target.detachEvent('on' + eventType, callback);
-	        }
-	      };
-	    }
-	  }
-	};
-	
-	module.exports = EventListener;
-
-
-/***/ },
-/* 77 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16074,13 +16288,13 @@
 
 
 /***/ },
-/* 78 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var _ = __webpack_require__(15) //invert, transform
 	  , React = __webpack_require__(1)
-	  , compat = __webpack_require__(108)
+	  , compat = __webpack_require__(116)
 	
 	
 	function compatPropType(handler, propType) {
@@ -16204,7 +16418,7 @@
 	}
 
 /***/ },
-/* 79 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16252,12 +16466,12 @@
 	}
 
 /***/ },
-/* 80 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React  = __webpack_require__(1)
-	  , $ = __webpack_require__(91);
+	  , $ = __webpack_require__(99);
 	
 	
 	var PopupContent = React.createClass({displayName: 'PopupContent',
@@ -16391,15 +16605,15 @@
 	}
 
 /***/ },
-/* 81 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(79)
+	  , CustomPropTypes  = __webpack_require__(87)
 	  , cx = __webpack_require__(13)
 	  , _  = __webpack_require__(15)
-	  , scrollTo  = __webpack_require__(99);
+	  , scrollTo  = __webpack_require__(108);
 	
 	
 	module.exports = React.createClass({
@@ -16407,8 +16621,8 @@
 	  displayName: 'List',
 	
 	  mixins: [ 
-	    __webpack_require__(104),
-	    __webpack_require__(109)
+	    __webpack_require__(112),
+	    __webpack_require__(117)
 	  ],
 	
 	  propTypes: {
@@ -16515,15 +16729,15 @@
 
 
 /***/ },
-/* 82 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , CustomPropTypes  = __webpack_require__(79)
+	  , CustomPropTypes  = __webpack_require__(87)
 	  , cx = __webpack_require__(13)
 	  , _  = __webpack_require__(15)
-	  , scrollTo  = __webpack_require__(99);
+	  , scrollTo  = __webpack_require__(108);
 	
 	
 	module.exports = React.createClass({
@@ -16531,8 +16745,8 @@
 	  displayName: 'List',
 	
 	  mixins: [ 
-	    __webpack_require__(104),
-	    __webpack_require__(109)
+	    __webpack_require__(112),
+	    __webpack_require__(117)
 	  ],
 	
 	  propTypes: {
@@ -16735,7 +16949,7 @@
 	})
 
 /***/ },
-/* 83 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16760,12 +16974,12 @@
 	}
 
 /***/ },
-/* 84 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , Btn = __webpack_require__(93);
+	  , Btn = __webpack_require__(101);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -16787,8 +17001,8 @@
 	  },
 	
 	  mixins: [
-	    __webpack_require__(103),
-	    __webpack_require__(110)
+	    __webpack_require__(111),
+	    __webpack_require__(118)
 	  ],
 	
 	  getDefaultProps: function(){
@@ -16806,6 +17020,7 @@
 	    return (
 	      React.createElement("div", {className: "rw-header"}, 
 	        React.createElement(Btn, {className: "rw-btn-left", 
+	          tabIndex: this.props.tabIndex, 
 	          onClick: this.props.onMoveLeft, 
 	          disabled: this.props.prevDisabled, 
 	          'aria-disabled': this.props.prevDisabled, 
@@ -16815,12 +17030,14 @@
 	        ), 
 	        React.createElement(Btn, {className: "rw-btn-view", 
 	          id: this.props.labelId, 
+	          tabIndex: this.props.tabIndex, 
 	          onClick: this.props.onViewChange, 
 	          disabled: this.props.upDisabled, 
 	          'aria-disabled': this.props.upDisabled}, 
 	           this.props.label
 	        ), 
 	        React.createElement(Btn, {className: "rw-btn-right", 
+	          tabIndex: this.props.tabIndex, 
 	          onClick: this.props.onMoveRight, 
 	          disabled: this.props.nextDisabled, 
 	          'aria-disabled': this.props.nextDisabled, 
@@ -16834,16 +17051,16 @@
 	})
 
 /***/ },
-/* 85 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(89)
-	  , directions = __webpack_require__(90).directions
+	  , dates = __webpack_require__(97)
+	  , directions = __webpack_require__(98).directions
 	  , _   = __webpack_require__(15)
-	  , Btn = __webpack_require__(93);
+	  , Btn = __webpack_require__(101);
 	
 	var opposite = {
 	  LEFT: directions.RIGHT,
@@ -16855,9 +17072,9 @@
 	  displayName: 'MonthView',
 	
 	  mixins: [
-	    __webpack_require__(102),
 	    __webpack_require__(110),
-	    __webpack_require__(111)('month', 'day'),
+	    __webpack_require__(118),
+	    __webpack_require__(119)('month', 'day'),
 	  ],
 	
 	  propTypes: {
@@ -16882,7 +17099,7 @@
 	    return (
 	      React.createElement("table", React.__spread({},  props, 
 	        {role: "grid", 
-	        tabIndex: this.props.disabled ? '-1' : "0", 
+	        tabIndex: this.props.disabled ? '-1' : null, 
 	        className: "rw-calendar-grid", 
 	        'aria-activedescendant': this._id('_selected_item'), 
 	        onKeyUp: this._keyUp}), 
@@ -16968,15 +17185,15 @@
 
 
 /***/ },
-/* 86 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React      = __webpack_require__(1)
 	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(89)
-	  , directions = __webpack_require__(90).directions
-	  , Btn        = __webpack_require__(93)
+	  , dates      = __webpack_require__(97)
+	  , directions = __webpack_require__(98).directions
+	  , Btn        = __webpack_require__(101)
 	  , _          = __webpack_require__(15)
 	
 	var opposite = {
@@ -16989,9 +17206,9 @@
 	  displayName: 'YearView',
 	
 	  mixins: [
-	    __webpack_require__(102),
 	    __webpack_require__(110),
-	    __webpack_require__(111)('year', 'month')
+	    __webpack_require__(118),
+	    __webpack_require__(119)('year', 'month')
 	  ],
 	
 	  propTypes: {
@@ -17086,16 +17303,16 @@
 
 
 /***/ },
-/* 87 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , _ = __webpack_require__(15)
 	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(89)
-	  , directions = __webpack_require__(90).directions
-	  , Btn = __webpack_require__(93); 
+	  , dates = __webpack_require__(97)
+	  , directions = __webpack_require__(98).directions
+	  , Btn = __webpack_require__(101); 
 	
 	var opposite = {
 	  LEFT: directions.RIGHT,
@@ -17108,10 +17325,10 @@
 	  displayName: 'DecadeView',
 	
 	  mixins: [
-	    __webpack_require__(102),
-	    __webpack_require__(103),
 	    __webpack_require__(110),
-	    __webpack_require__(111)('decade', 'year')
+	    __webpack_require__(111),
+	    __webpack_require__(118),
+	    __webpack_require__(119)('decade', 'year')
 	  ],
 	
 	  propTypes: {
@@ -17216,15 +17433,15 @@
 
 
 /***/ },
-/* 88 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React      = __webpack_require__(1)
 	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(89)
-	  , directions = __webpack_require__(90).directions
-	  , Btn        = __webpack_require__(93)
+	  , dates      = __webpack_require__(97)
+	  , directions = __webpack_require__(98).directions
+	  , Btn        = __webpack_require__(101)
 	  , _          = __webpack_require__(15); //omit
 	
 	var opposite = {
@@ -17238,10 +17455,10 @@
 	  displayName: 'CenturyView',
 	
 	  mixins: [
-	    __webpack_require__(102),
-	    __webpack_require__(103),
 	    __webpack_require__(110),
-	    __webpack_require__(111)('century', 'decade')
+	    __webpack_require__(111),
+	    __webpack_require__(118),
+	    __webpack_require__(119)('century', 'decade')
 	  ],
 	
 	  propTypes: {
@@ -17362,13 +17579,13 @@
 
 
 /***/ },
-/* 89 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var dateMath = __webpack_require__(72)
-	  , globalize = __webpack_require__(116)
+	var dateMath = __webpack_require__(80)
+	  , globalize = __webpack_require__(124)
 	  , _ = __webpack_require__(15); //extend
 	
 	var dates = module.exports = _.extend(dateMath, {
@@ -17531,7 +17748,7 @@
 	})
 
 /***/ },
-/* 90 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17576,7 +17793,7 @@
 
 
 /***/ },
-/* 91 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17870,7 +18087,7 @@
 	}
 
 /***/ },
-/* 92 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17902,7 +18119,7 @@
 	module.exports = common
 
 /***/ },
-/* 93 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17922,12 +18139,12 @@
 	})
 
 /***/ },
-/* 94 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , caretPos = __webpack_require__(112);
+	  , caretPos = __webpack_require__(120);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -17999,14 +18216,14 @@
 
 
 /***/ },
-/* 95 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(89)
-	  , List = __webpack_require__(81)
-	  , CustomPropTypes  = __webpack_require__(79)
+	  , dates = __webpack_require__(97)
+	  , List = __webpack_require__(89)
+	  , CustomPropTypes  = __webpack_require__(87)
 	  , _ = __webpack_require__(15) // omit
 	
 	
@@ -18191,13 +18408,13 @@
 
 
 /***/ },
-/* 96 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , cx = __webpack_require__(13)
-	  , dates = __webpack_require__(89);
+	  , dates = __webpack_require__(97);
 	
 	module.exports = React.createClass({
 	
@@ -18305,7 +18522,117 @@
 	}
 
 /***/ },
-/* 97 */
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React   = __webpack_require__(1)
+	  , setter  = __webpack_require__(121)
+	  , globalize = __webpack_require__(124);
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'NumberPickerInput', 
+	
+	  propTypes: {
+	    value:        React.PropTypes.number,
+	    format:       React.PropTypes.string,
+	    min:          React.PropTypes.number,
+	    
+	    onChange:     React.PropTypes.func.isRequired,
+	    onKeyDown:    React.PropTypes.func,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: null,
+	      format: 'd',
+	      editing: false,
+	    }
+	  },
+	
+	  getInitialState: function() {
+	    var value = this.props.editing 
+	          ? this.props.value
+	          : globalize.format(this.props.value, this.props.format)
+	
+	    return { 
+	      stringValue: value
+	    }
+	  },
+	  
+	  componentWillReceiveProps: function(nextProps) {
+	    var value = nextProps.editing 
+	          ? nextProps.value
+	          : globalize.format(nextProps.value, nextProps.format)
+	
+	    if ( isNaN(nextProps.value) ) 
+	      value = ''
+	
+	    this.current(value)
+	  },
+	
+	  render: function(){
+	    var value = this.state.stringValue;
+	
+	    return (
+	      React.createElement("input", React.__spread({},  this.props, 
+	        {type: "text", 
+	        className: "rw-input", 
+	        onChange: this._change, 
+	        onBlur: this._finish, 
+	        'aria-disabled': this.props.disabled, 
+	        'aria-readonly': this.props.readOnly, 
+	        disabled: this.props.disabled, 
+	        readOnly: this.props.readOnly, 
+	        value: value}))
+	    )
+	  },
+	
+	  _change: function(e){
+	    var val = e.target.value
+	      , number = +e.target.value
+	      , isNull = val !== 0 && !val
+	      , hasMin = isFinite(this.props.min)
+	
+	    //console.log(hasMin, this.props.min)
+	    //a null value is only possible when there is no min
+	    if(!hasMin && isNull)
+	      return this.props.onChange(null)
+	
+	    if(this.isValid(number) && number !== this.props.value)
+	      return this.props.onChange(number)
+	
+	    //console.log(val !== 0 && !val)
+	    this.current(e.target.value)
+	  },
+	
+	  _finish: function(e){
+	    var number = +this.state.stringValue
+	
+	    // if number is below the min
+	    // we need to flush low values eventually, onBlur is definativly no typing
+	    if(!isNaN(number) && number < this.props.min) {
+	      this.props.onChange(number)
+	    }
+	  },
+	
+	  isValid: function(value) {
+	    var num = +value;
+	
+	    if(isNaN(num)) return false
+	    return num >= this.props.min
+	  },
+	
+	  //this intermediate state is for when one runs into the decimal or are typing the number
+	  current: setter('stringValue'),
+	
+	});
+
+
+/***/ },
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18353,22 +18680,22 @@
 
 
 /***/ },
-/* 98 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , _     = __webpack_require__(15)
 	  , cx    = __webpack_require__(13)
-	  , Btn   = __webpack_require__(93)
+	  , Btn   = __webpack_require__(101)
 	
 	module.exports = React.createClass({
 	  
 	  displayName: 'MultiselectTagList',
 	
 	  mixins: [
-	    __webpack_require__(104),
-	    __webpack_require__(103)
+	    __webpack_require__(112),
+	    __webpack_require__(111)
 	  ],
 	
 	  propTypes: {
@@ -18523,11 +18850,11 @@
 
 
 /***/ },
-/* 99 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $ = __webpack_require__(91)
+	var $ = __webpack_require__(99)
 	
 	module.exports = function scrollTo( selected, scrollParent ) {
 	  var offset = $.offset(selected)
@@ -18570,117 +18897,7 @@
 	}
 
 /***/ },
-/* 100 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , setter  = __webpack_require__(113)
-	  , globalize = __webpack_require__(116);
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'NumberPickerInput', 
-	
-	  propTypes: {
-	    value:        React.PropTypes.number,
-	    format:       React.PropTypes.string,
-	    min:          React.PropTypes.number,
-	    
-	    onChange:     React.PropTypes.func.isRequired,
-	    onKeyDown:    React.PropTypes.func,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: null,
-	      format: 'd',
-	      editing: false,
-	    }
-	  },
-	
-	  getInitialState: function() {
-	    var value = this.props.editing 
-	          ? this.props.value
-	          : globalize.format(this.props.value, this.props.format)
-	
-	    return { 
-	      stringValue: value
-	    }
-	  },
-	  
-	  componentWillReceiveProps: function(nextProps) {
-	    var value = nextProps.editing 
-	          ? nextProps.value
-	          : globalize.format(nextProps.value, nextProps.format)
-	
-	    if ( isNaN(nextProps.value) ) 
-	      value = ''
-	
-	    this.current(value)
-	  },
-	
-	  render: function(){
-	    var value = this.state.stringValue;
-	
-	    return (
-	      React.createElement("input", React.__spread({},  this.props, 
-	        {type: "text", 
-	        className: "rw-input", 
-	        onChange: this._change, 
-	        onBlur: this._finish, 
-	        'aria-disabled': this.props.disabled, 
-	        'aria-readonly': this.props.readOnly, 
-	        disabled: this.props.disabled, 
-	        readOnly: this.props.readOnly, 
-	        value: value}))
-	    )
-	  },
-	
-	  _change: function(e){
-	    var val = e.target.value
-	      , number = +e.target.value
-	      , isNull = val !== 0 && !val
-	      , hasMin = isFinite(this.props.min)
-	
-	    //console.log(hasMin, this.props.min)
-	    //a null value is only possible when there is no min
-	    if(!hasMin && isNull)
-	      return this.props.onChange(null)
-	
-	    if(this.isValid(number) && number !== this.props.value)
-	      return this.props.onChange(number)
-	
-	    //console.log(val !== 0 && !val)
-	    this.current(e.target.value)
-	  },
-	
-	  _finish: function(e){
-	    var number = +this.state.stringValue
-	
-	    // if number is below the min
-	    // we need to flush low values eventually, onBlur is definativly no typing
-	    if(!isNaN(number) && number < this.props.min) {
-	      this.props.onChange(number)
-	    }
-	  },
-	
-	  isValid: function(value) {
-	    var num = +value;
-	
-	    if(isNaN(num)) return false
-	    return num >= this.props.min
-	  },
-	
-	  //this intermediate state is for when one runs into the decimal or are typing the number
-	  current: setter('stringValue'),
-	
-	});
-
-
-/***/ },
-/* 101 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(Buffer) {//  Chance.js 0.7.1
@@ -20652,10 +20869,10 @@
 	    }
 	})();
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(115).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(123).Buffer))
 
 /***/ },
-/* 102 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20704,7 +20921,7 @@
 	}
 
 /***/ },
-/* 103 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20722,7 +20939,7 @@
 
 
 /***/ },
-/* 104 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20784,7 +21001,7 @@
 
 
 /***/ },
-/* 105 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20817,13 +21034,13 @@
 	}
 
 /***/ },
-/* 106 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React  = __webpack_require__(1)
-	  , filter = __webpack_require__(92)
-	  , helper = __webpack_require__(104)
+	  , filter = __webpack_require__(100)
+	  , helper = __webpack_require__(112)
 	  , _      = __webpack_require__(15);
 	
 	module.exports = {
@@ -20864,13 +21081,13 @@
 	}
 
 /***/ },
-/* 107 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , filters = __webpack_require__(92)
-	  , helper  = __webpack_require__(104)
+	  , filters = __webpack_require__(100)
+	  , helper  = __webpack_require__(112)
 	  , _      = __webpack_require__(15);
 	
 	var filterTypes = Object.keys(filters).filter( function(i)  {return i !== 'filter';})
@@ -20944,7 +21161,7 @@
 	}
 
 /***/ },
-/* 108 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20974,14 +21191,14 @@
 	}
 
 /***/ },
-/* 109 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
 	  , _ =  __webpack_require__(15)
-	  , filter = __webpack_require__(92)
-	  , helper = __webpack_require__(104)
+	  , filter = __webpack_require__(100)
+	  , helper = __webpack_require__(112)
 	
 	module.exports = {
 	  
@@ -21033,7 +21250,7 @@
 
 
 /***/ },
-/* 110 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21052,13 +21269,13 @@
 	}
 
 /***/ },
-/* 111 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(89)
-	  , directions = __webpack_require__(90).directions;
+	  , dates = __webpack_require__(97)
+	  , directions = __webpack_require__(98).directions;
 	
 	module.exports = function(viewUnit, smallUnit){
 	
@@ -21091,8 +21308,10 @@
 	        , current = this.state.focusedDate
 	        , date = current;
 	
-	      if ( key === 'Enter')
+	      if ( key === 'Enter'){
+	        e.preventDefault()
 	        return this.props.onChange(date)
+	      }
 	      
 	      if ( key === 'ArrowLeft')
 	        date = this.move(date, directions.LEFT)
@@ -21131,7 +21350,7 @@
 	}
 
 /***/ },
-/* 112 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21191,7 +21410,7 @@
 	}
 
 /***/ },
-/* 113 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21207,7 +21426,7 @@
 	}
 
 /***/ },
-/* 114 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module) {
@@ -21223,7 +21442,7 @@
 
 
 /***/ },
-/* 115 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
@@ -21233,9 +21452,9 @@
 	 * @license  MIT
 	 */
 	
-	var base64 = __webpack_require__(119)
-	var ieee754 = __webpack_require__(117)
-	var isArray = __webpack_require__(118)
+	var base64 = __webpack_require__(127)
+	var ieee754 = __webpack_require__(125)
+	var isArray = __webpack_require__(126)
 	
 	exports.Buffer = Buffer
 	exports.SlowBuffer = Buffer
@@ -22278,10 +22497,10 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(115).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(123).Buffer))
 
 /***/ },
-/* 116 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -23871,7 +24090,7 @@
 
 
 /***/ },
-/* 117 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports.read = function(buffer, offset, isLE, mLen, nBytes) {
@@ -23961,7 +24180,7 @@
 
 
 /***/ },
-/* 118 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -24000,7 +24219,7 @@
 
 
 /***/ },
-/* 119 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';

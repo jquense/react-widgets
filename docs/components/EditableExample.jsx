@@ -64,7 +64,6 @@ module.exports = React.createClass({
             <div className='text-danger editable-error'>{this.state.error}</div>
           }
         </div>
-        
       </div>
       );
   },

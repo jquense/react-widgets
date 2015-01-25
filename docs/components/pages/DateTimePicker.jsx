@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , Example = require('../example.jsx')
+  , EditableExample = require('../EditableExample')
   , DDButton = require('../../bootstrap').DropdownButton
   , MenuItem = require('../ApiMenuItem.jsx')
   , PropHeader = require('../PropHeader.jsx')
@@ -62,35 +62,13 @@ var DateTimePicker = React.createClass({
           the same is true for the keyboard navigation!
         </p>
         <DatePickerExample/>
-        <Example code={
-          "render: function(){\n"+
-          "  var DateTimePicker = require('react-widgets').DateTimePicker\n"+
-          "  //... \n\n" +
-          "  return (\n"+
-          "    <DateTimePicker \n"+
-          "      value={this.state.value}\n"+
-          "      onChange={this._change}/>\n"+
-          "   \n"+
-          "    <DateTimePicker \n"+
-          "      ...\n"+
-          "      time={false}\n"+
-          "      format='MMM dd yyyy'\n"+
-          "      min={new Date(2014, 0, 1)}\n"+
-          "      max={new Date(2015, 12, 15)}/>\n"+
-          "   \n"+
-          "    <DateTimePicker \n"+
-          "      ...\n"+
-          "      calendar={false}\n"+
-          "      format='H:mm tt'\n"+
-          "   )\n"+
-          "}"
-        }/>
-
+       
         <h2>Props</h2>
         <PropHeader type='Date?' handler="onChange" controllable>value</PropHeader>
         <p>
           The current selected date, should be a <code>Date</code> instance or <code>null</code>.
         </p>
+        <EditableExample codeText={require('../examples/valuePicker')(widgetName, ['new Date()'])}/>
 
         <PropHeader type='Function(Date? date, String dateStr)'>onChange</PropHeader>
         <p>
@@ -98,22 +76,26 @@ var DateTimePicker = React.createClass({
           current <code>Date</code> object (or null if it was not parseable), and the second argument is
           a <code>string</code> representation of the date value, formated by the <code>format</code> prop.
         </p>
+        <EditableExample codeText={require('../examples/onChangePicker')(widgetName, ['new Date()'])}/>
 
         <PropHeader type='Function(Date? value)'>onSelect</PropHeader>
         <p>
           This handler fires when an item has been selected from the list or calendar. It fires before the <code>onChange</code> handler, and fires 
           regardless of whether the value has actually changed.
         </p>
+        <EditableExample codeText={require('../examples/onSelectPicker')(widgetName)}/>
 
         <PropHeader type='Boolean' default='true'>calendar</PropHeader>
         <p>
           Whether to show the date picker button.
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'calendar', false)}/>
 
         <PropHeader type='Boolean' default='true'>time</PropHeader>
         <p>
           Whether to show the time picker button.
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'time', false)}/>
 
         <PropHeader type='Date' default='>Date(1900, 0, 1)'>min</PropHeader>
         <p>
@@ -121,6 +103,7 @@ var DateTimePicker = React.createClass({
           can be typed or pasted into the widget. If you need this behavior you can constrain values via
           the <code>onChange</code> handler.
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'min', 'new Date()')}/>
 
         <PropHeader type='Date' default='Date(2099, 11, 31)'>max</PropHeader>
         <p>
@@ -128,6 +111,7 @@ var DateTimePicker = React.createClass({
           can be typed or pasted into the widget. If you need this behavior you can constrain values via
           the <code>onChange</code> handler.
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'max', 'new Date()')}/>
 
         <PropHeader type='String' default='"M/d/yyyy h:mm tt"'>format</PropHeader>
         <p>
@@ -136,13 +120,14 @@ var DateTimePicker = React.createClass({
             Globalize.js documentation <i className="fa fa-external-link"></i>
           </a>
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'format', '"MMM dd yyyy"')}/>
 
         <PropHeader type='[Function, Array<String>]'>parse</PropHeader>
         <p>
           Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
-          or p
-          rovide a {'function'} that returns a date to handle parsing yourself
+          or provide a {'function'} that returns a date to handle parsing yourself.
         </p>
+         <EditableExample codeText={require('../examples/parse')(widgetName)}/>
 
         <PropHeader type='Enum' default='"month"'>initialView</PropHeader>
         <p>

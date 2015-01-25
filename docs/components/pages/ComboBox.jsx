@@ -1,6 +1,5 @@
 'use strict';
 var React = require('react')
-  , Example = require('../example.jsx')
   , MenuItem = require('../ApiMenuItem.jsx')
   , DDButton = require('../../bootstrap').DropdownButton
   , PropHeader = require('../PropHeader.jsx')

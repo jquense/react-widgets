@@ -1,5 +1,6 @@
 'use strict';
-module.exports = function(widgetName){
+module.exports = function(widgetName, isArray){
+var value = !isArray ? 'colors[0]' : 'colors.slice(0,2)'
 var code = 
 `
 var ${widgetName} = ReactWidgets.${widgetName};
@@ -14,7 +15,7 @@ var colors = [
 var widget = 
     <${widgetName} 
       textField='name'
-      defaultValue={colors[0]} 
+      defaultValue={${value}} 
       data={colors}/>
 
 React.render(widget, mountNode);`
