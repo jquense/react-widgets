@@ -20,8 +20,8 @@ module.exports = React.createClass({
     onSelect:       React.PropTypes.func,
     onMove:         React.PropTypes.func,
 
-    ItemComponent:  CustomPropTypes.elementType,
-    GroupComponent: CustomPropTypes.elementType,
+    itemComponent:  CustomPropTypes.elementType,
+    groupComponent: CustomPropTypes.elementType,
 
     selected:       React.PropTypes.any,
     focused:        React.PropTypes.any,
