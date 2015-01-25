@@ -30,21 +30,13 @@ module.exports = {
       var idx = -1
         , matches = typeof this.props.filter === 'function'
             ? this.props.filter
-            : filters[this.props.filter || 'eq'];
+            : getFilter(filters[this.props.filter || 'eq'], searchTerm, this);
 
       if ( !searchTerm || !searchTerm.trim() || (this.props.filter && searchTerm.length < (this.props.minLength || 1)))
         return -1
 
-      if ( !this.props.caseSensitive)
-        searchTerm = searchTerm.toLowerCase();
-
       items.every( (item, i) => {
-        var val = helper._dataText.call(this, item);
-
-        if ( !this.props.caseSensitive) 
-          val = val.toLowerCase();
-
-        if (matches(val, searchTerm.toLowerCase()))
+        if (matches(item, searchTerm))
           return (idx = i), false
 
         return true
@@ -55,22 +47,29 @@ module.exports = {
 
     filter: function(items, searchTerm){
       var matches = typeof this.props.filter === 'string'
-            ? filters[this.props.filter]
+            ? getFilter(filters[this.props.filter], searchTerm, this)
             : this.props.filter;
 
       if ( !matches || !searchTerm || !searchTerm.trim() || searchTerm.length < (this.props.minLength || 1))
         return items
 
-      if ( !this.props.caseSensitive)
-        searchTerm = searchTerm.toLowerCase();
-
-      return items.filter( item => {
-        var val = helper._dataText.call(this, item);
-
-        if ( !this.props.caseSensitive)
-          val = val.toLowerCase();
-
-        return matches(val, searchTerm.toLowerCase())
-      })
+      return items.filter( 
+        item => matches(item, searchTerm))
     }
   }
+
+
+function getFilter(matcher, searchTerm, ctx){
+  searchTerm = !ctx.caseSensitive 
+    ? searchTerm.toLowerCase() 
+    : searchTerm
+
+  return function(item) {
+    var val = helper._dataText.call(ctx, item);
+
+    if ( !ctx.caseSensitive )
+      val = val.toLowerCase();
+
+    return matcher(val, searchTerm)
+  }
+}
