@@ -5,39 +5,39 @@ module.exports = function(config) {
 
   // Use ENV vars on Travis and sauce.json locally to get credentials
   if (!process.env.SAUCE_USERNAME) {
-    process.env.SAUCE_USERNAME = 'jaquense';
-    process.env.SAUCE_ACCESS_KEY = '8044856f-a97e-45eb-b6e8-d3a5708ab263'
+    throw new Error('Missing Username and Access Key env variables')
   }
 
   // Browsers to run on Sauce Labs
   var customLaunchers = {
-    // 'SL_ie_8': {
+
+    // SL_ie_9: {
     //   base: 'SauceLabs',
     //   browserName: 'internet explorer',
-    //   version: '8'
+    //   version: '9'
     // },
-    'SL_ie_9': {
-      base: 'SauceLabs',
-      browserName: 'internet explorer',
-      version: '9'
-    },
-    'SL_ie_10': {
-      base: 'SauceLabs',
-      browserName: 'internet explorer',
-      version: '10'
-    },
-    // 'SL_chrome': {
+    // SL_ie_10: {
     //   base: 'SauceLabs',
-    //   browserName: 'chrome'
+    //   browserName: 'internet explorer',
+    //   version: '10'
     // },
-    // 'SL_firefox': {
+    SL_chrome: {
+      base: 'SauceLabs',
+      browserName: 'chrome'
+    },
+    // SL_firefox: {
     //   base: 'SauceLabs',
     //   browserName: 'firefox'
-    // }
+    // },
+    // sl_ios_safari: {
+    //   base: 'SauceLabs',
+    //   browserName: 'iphone',
+    //   platform: 'OS X 10.9',
+    //   version: '7.1'
+    // },
   };
 
   config.set({
-
 
     basePath: '',
     frameworks: ['mocha', 'expect'],
@@ -47,14 +47,11 @@ module.exports = function(config) {
       './vendor/es5-sham.min.js',
       './vendor/html5shiv.min.js',
       './vendor/phantomjs-shim.js',
-
-      './vendor/phantomjs-shim.js',
       './vendor/sinon-1.10.3.js',
       'test.js',
     ],
 
     reporters: ['progress', 'saucelabs'],
-
 
     port: 9876,
     colors: true,
@@ -77,6 +74,7 @@ module.exports = function(config) {
     browsers: Object.keys(customLaunchers),
 
     singleRun: process.env.TRAVIS_CI ? true : false,
+
     autoWatch: false,
 
     webpackServer: {
