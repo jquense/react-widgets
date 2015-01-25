@@ -41,6 +41,7 @@ module.exports = React.createClass({
     return (
       <div className='rw-header'>
         <Btn className="rw-btn-left"
+          tabIndex={this.props.tabIndex}
           onClick={this.props.onMoveLeft}
           disabled={this.props.prevDisabled}
           aria-disabled={this.props.prevDisabled}
@@ -50,12 +51,14 @@ module.exports = React.createClass({
         </Btn>
         <Btn className="rw-btn-view"
           id={this.props.labelId}
+          tabIndex={this.props.tabIndex}
           onClick={this.props.onViewChange}
           disabled={this.props.upDisabled}
           aria-disabled={this.props.upDisabled}>
           { this.props.label }
         </Btn>
         <Btn className="rw-btn-right"
+          tabIndex={this.props.tabIndex}
           onClick={this.props.onMoveRight}
           disabled={this.props.nextDisabled}
           aria-disabled={this.props.nextDisabled}
