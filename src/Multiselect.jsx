@@ -92,13 +92,13 @@ var Select = React.createClass({
   },
 
   getInitialState: function(){
-    var values = _.splat(this.props.value)
-      , data   = this.process(this.props.data, values, this.props.searchTerm)
+    var dataItems = _.splat(this.props.value).map( item => this._dataItem(this.props.data, item)) 
+      , data = this.process(this.props.data, dataItems, this.props.searchTerm)
 
     return {
       focusedItem:   data[0],
       processedData: data,
-      dataItems:     values.map( item => this._dataItem(this.props.data, item))
+      dataItems:     dataItems
     }
   },
 
