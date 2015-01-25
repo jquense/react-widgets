@@ -18,6 +18,7 @@ module.exports = React.createClass({
     itemComponent:  CustomPropTypes.elementType,
     onSelect:       React.PropTypes.func,
     preserveDate:   React.PropTypes.bool,
+    culture:        React.PropTypes.string,
   },
 
   getDefaultProps: function(){

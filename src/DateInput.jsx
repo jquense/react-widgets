@@ -14,6 +14,7 @@ module.exports = React.createClass({
 
     value:        React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
+    culture:      React.PropTypes.string,
   },
 
   getDefaultProps: function(){

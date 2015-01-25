@@ -2,9 +2,7 @@
 /*global it, describe, expect, sinon*/
 require('../vendor/phantomjs-shim')
 
-var React = require('react/addons');
-var DateTimePicker = require('../src/DateTimePicker.jsx')
-  , dateMath = require('date-arithmetic')
+var React = require('react/addons')
   , Calendar = require('../src/Calendar.jsx')
   , BaseCalendar = require('../src/Calendar.jsx').BaseCalendar
   , Header = require('../src/Header.jsx')
@@ -12,8 +10,7 @@ var DateTimePicker = require('../src/DateTimePicker.jsx')
   , Year = require('../src/Year.jsx')
   , Decade = require('../src/Decade.jsx')
   , Century = require('../src/Century.jsx')
-  , DOM = require('../src/util/dom')
-  , Globalize = require('globalize');
+  , DOM = require('../src/util/dom');
 
 
 var TestUtils = React.addons.TestUtils
@@ -21,7 +18,6 @@ var TestUtils = React.addons.TestUtils
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , findType = TestUtils.findRenderedComponentWithType
-  , findAllType = TestUtils.scryRenderedComponentsWithType
   , trigger = TestUtils.Simulate;
 
 describe('Calendar', function(){
@@ -166,6 +162,27 @@ describe('Calendar', function(){
         done()
       })
     })
+  })
+
+  it('should use passed in culture', function(){
+    require('globalize/lib/cultures/globalize.culture.es')
+
+    var date   = new Date(2014, 5, 15)
+      , picker = render(<BaseCalendar value={date} culture='es'  onChange={()=>{}}/>)
+      , headerBtn = findClass(picker, 'rw-btn-view').getDOMNode()
+      , head = findTag(picker, 'thead').getDOMNode();
+    
+    sinon.stub(DOM, 'animate', syncAnimate)
+
+    expect(headerBtn.textContent).to.equal('junio 2014')
+    expect(head.children[0].firstChild.textContent).to.equal('lu')
+
+    picker.setProps({ initialView: 'year' })
+
+    expect(findTag(picker, 'tbody').getDOMNode().children[0].firstChild.textContent)
+      .to.equal('ene')
+
+    DOM.animate.restore()
   })
 
 })

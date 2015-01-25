@@ -22,6 +22,7 @@ module.exports = React.createClass({
   ],
 
   propTypes: {
+    culture:      React.PropTypes.string,
     value:        React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),

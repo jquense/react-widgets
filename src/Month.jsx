@@ -22,7 +22,7 @@ module.exports = React.createClass({
   ],
 
   propTypes: {
-    culture:          React.PropTypes.array,
+    culture:          React.PropTypes.string,
     value:            React.PropTypes.instanceOf(Date),
     selectedDate:     React.PropTypes.instanceOf(Date),
     min:              React.PropTypes.instanceOf(Date),

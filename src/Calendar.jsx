@@ -67,6 +67,8 @@ var Calendar = React.createClass({
                       React.PropTypes.oneOf(['readOnly'])
                     ]),
 
+    culture:       React.PropTypes.string,
+
     messages:      React.PropTypes.shape({
       moveBack:    React.PropTypes.string,
       moveForward: React.PropTypes.string
@@ -160,6 +162,7 @@ var Calendar = React.createClass({
           <View ref='currentView'
             key={key}
             id={id}
+            culture={this.props.culture}
             aria-labeledby={labelId}
             selectedDate={this.props.value}
             value={this.state.currentDate}

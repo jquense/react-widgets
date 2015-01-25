@@ -151,6 +151,7 @@ var DateTimePicker = React.createClass({
           format={this.props.format}
           editFormat={this.props.editFormat}
           editing={this.state.focused}
+          culture={this.props.culture}
           parse={this._parse}
           onChange={this._change} />
         { (this.props.calendar || this.props.time) &&
@@ -188,6 +189,7 @@ var DateTimePicker = React.createClass({
                 value={this.props.value}
                 min={this.props.min}
                 max={this.props.max}
+                culture={this.props.culture}
                 preserveDate={!!this.props.calendar}
                 itemComponent={this.props.timeComponent}
                 onSelect={this._maybeHandle(this._selectTime)}/>

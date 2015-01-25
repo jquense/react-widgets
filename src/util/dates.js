@@ -7,12 +7,14 @@ var dateMath = require('date-arithmetic')
 var dates = module.exports = _.extend(dateMath, {
   // wrapper methods for isolating globalize use throughout the lib
   // looking forward towards the 1.0 release
-  culture: function(){
-    return globalize.culture()
+  culture: function(culture){
+    return culture
+      ? globalize.findClosestCulture(culture)
+      : globalize.culture()
   },
 
-  startOfWeek: function(date, culture){
-    culture = culture || dates.culture()
+  startOfWeek: function(culture){
+    culture = dates.culture(culture)
 
     if (!culture || !culture.calendar)
       return 0
@@ -27,13 +29,14 @@ var dates = module.exports = _.extend(dateMath, {
   format: function(date, format, culture){
     return globalize.format(date, format, culture)
   },
+  
   //-------------------------------------
 
   shortDaysOfWeek: function (culture){
-    var start   = dates.startOfWeek()
+    var start = dates.startOfWeek(culture)
       , days, front;
 
-    culture = culture || dates.culture()
+    culture = dates.culture(culture)
 
     if (culture && culture.calendar){
       days = culture.calendar.days.namesShort.slice()
