@@ -1,5 +1,6 @@
 'use strict';
 var React = require('react');
+var EditableExample = require('../EditableExample')
 
 var GettingStarted = React.createClass({
 

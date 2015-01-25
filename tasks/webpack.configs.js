@@ -50,10 +50,10 @@ module.exports = {
     
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader' }
+        { test: /\.jsx$/, loader: 'jsx-loader', exclude: /node_modules/ }
       ],
       postLoaders: [
-        { loader: path.join(__dirname, './jstransform-loader') }
+        { loader: path.join(__dirname, './jstransform-loader'), exclude: /node_modules/ }
       ]
     },
   },
@@ -78,12 +78,13 @@ module.exports = {
 
     module: {
       loaders: [
-        { test: /\.jsx$/, loader:  'jsx-loader' },
-        { test: /\.css$/, loader:  'style-loader!css-loader' },
-        { test: /\.less$/, loader: 'style-loader!css-loader!less-loader' },
+
+        { test: /\.jsx$/, loader:  'jsx-loader', exclude: /node_modules/ },
+        { test: /\.css$/, loader:  'style-loader!css-loader', exclude: /node_modules/ },
+        { test: /\.less$/, loader: 'style-loader!css-loader!less-loader', exclude: /node_modules/ },
       ],
       postLoaders: [
-        { loader: path.join(__dirname, './jstransform-loader') }
+        { loader: path.join(__dirname, './jstransform-loader'), exclude: /node_modules/ }
       ]
     },
 
@@ -107,12 +108,12 @@ module.exports = {
     cache: true,
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader?insertPragma=React.DOM' },
+        { test: /\.jsx$/, loader: 'jsx-loader', exclude: /node_modules/ },
         { test: /\.css$/, loader: 'style-loader!css-loader' },
         { test: /\.less$/, loader: 'style-loader!css-loader!less-loader' },
       ],
       postLoaders: [
-        { loader: path.join(__dirname, './jstransform-loader') }
+        { loader: path.join(__dirname, './jstransform-loader'), exclude: /node_modules/ }
       ]
     },
     //plugins: [ ProdDefine ]

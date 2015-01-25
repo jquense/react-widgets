@@ -4,6 +4,7 @@ var React = require('react')
   , MenuItem = require('../ApiMenuItem.jsx')
   , DDButton = require('../../bootstrap').DropdownButton
   , PropHeader = require('../PropHeader.jsx')
+  , EditableExample = require('../EditableExample')
   , ComboBoxExample = require('../demos/combobox.jsx');
 
 var prefix = 'combobox/'
@@ -49,29 +50,7 @@ var ComboBox = React.createClass({
           Select an item from the list, or input a custom value. The combobox can also make suggestions as you type
         </p>
         <ComboBoxExample/>
-        <Example code={
-          "render: function(){\n"+
-          "  //... \n\n" +
-          "  return (\n"+
-          "    <Combobox \n"+
-          "      data={list}\n"+
-          "      value={this.state.value}\n"+
-          "      onChange={this._change}\n"+
-          "      textField='label'\n"+
-          "      valueField='id'/>\n\n"+
-          "    <Combobox \n"+
-          "      data={list}\n"+
-          "      ...\n"+
-          "      suggest={true}\n"+
-          "      filter={false}/>\n\n"+
-          "    <Combobox \n"+
-          "      data={list}\n"+
-          "      value={this.state.value}\n"+
-          "      ...\n"+
-          "      filter={true}/>\n"+
-          "  )\n"+
-          "}"
-        }/>
+        
         <h2>Props</h2>
         <PropHeader type='Any' handler="onChange" controllable>value</PropHeader>
         <p>
@@ -79,6 +58,7 @@ var ComboBox = React.createClass({
           or a primitive value, hinted to by the <code>valueField</code>. The widget value does not need to be in
           the <code>data</code>, widgets can have values that are not in their list.
         </p>
+        <EditableExample codeText={require('../examples/value')(widgetName)}/>
 
         <PropHeader type='Function(Any value)'>onChange</PropHeader>
         <p>
@@ -86,12 +66,14 @@ var ComboBox = React.createClass({
           that item will be returned. In the case of a value not being found in the <code>data</code> array
           the string value of the combobox will be returned.
         </p>
+        <EditableExample codeText={require('../examples/onChange')(widgetName)}/>
 
         <PropHeader type='Function(Any value)'>onSelect</PropHeader>
         <p>
           This handler fires when an item has been selected from the list. It fires before the <code>onChange</code> handler, and fires 
           regardless of whether the value has actually changed.
         </p>
+        <EditableExample codeText={require('../examples/onSelect')(widgetName)}/>
 
         <PropHeader type='Array<Any>'>data</PropHeader>
         <p>
@@ -105,59 +87,35 @@ var ComboBox = React.createClass({
           A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
           the widget will use strict equality checks to locate the data item, if it exists.
         </p>
+        <EditableExample codeText={require('../examples/valueField')(widgetName)}/>
 
         <PropHeader type='String'>textField</PropHeader>
         <p>
           This prop determines which data item field to display in the dropdown list and the text value of combobox.
           This prop is unnecessary when an <code>itemComponent</code> is provided.
         </p>
+        <EditableExample codeText={require('../examples/textField')(widgetName)}/>
 
         <PropHeader type='Component'>itemComponent</PropHeader>
         <p>
           This component is used to render each possible item in the DropdownList. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
+        <EditableExample codeText={require('../examples/itemComponent')(widgetName)}/>
 
         <PropHeader type='String | Function(Any dataItem)' >groupBy</PropHeader>
         <p>
           Determines how to group the {widgetName} dropdown list. Providing a <code>string</code> will group 
           the <code>data</code> array by that property. You can also provide a {'function'} which should return the group value.
         </p>
-
-<Example>{
-`function groupBy(item) {
-  return item.length
-}
-
-return (<${widgetName} data={[ john, jim, jill, sam]} groupBy={groupBy}/>)
-`}
-</Example>
+        <EditableExample codeText={require('../examples/groupby')(widgetName)}/>
 
         <PropHeader type='Component' >groupComponent</PropHeader>
         <p>
           This component is used to render each option group, when <code>groupBy</code> is specified. By 
           default the <code>groupBy</code> value will be used.
         </p>
-<Example>{
-`function groupBy(item) {
-  return item.length
-}
-
-var Group = React.createClass({
-  render() {
-    return this.props.item.length + ' letters long'; //return a helpful sring
-  }
-});
-
-module.exports = ;
-return (
-  <${widgetName} 
-    data={[ john, jim, jill, sam]} 
-    groupBy={groupBy}
-    groupComponent={Group}/>
-)
-`}
-</Example>
+        <EditableExample codeText={require('../examples/groupComponent')(widgetName)}/>
 
         <PropHeader type='Boolean' default='false'>suggest</PropHeader>
         <p>
@@ -183,6 +141,8 @@ return (
           <code>false</code> <code>"startsWith"</code> <code>"endsWith"</code> <code>"contains"</code>&nbsp;
           <code>{'function(String item)'}</code>
         </p>
+        <EditableExample codeText={require('../examples/filter')(widgetName)}/>
+
 
         <PropHeader type='Boolean'>open</PropHeader>
         <p>
@@ -190,6 +150,7 @@ return (
           opening and closing internally. The <code>defaultOpen</code> prop can be used to {'set'} an
           initialization value for uncontrolled widgets.
         </p>
+        <EditableExample codeText={require('../examples/open')(widgetName)}/>
 
         <PropHeader type='Function(Boolean isOpen)'>onToggle</PropHeader>
         <p>
@@ -202,6 +163,7 @@ return (
           Mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful
           when loading data via an ajax call.
         </p>
+        <EditableExample codeText={require('../examples/busy')(widgetName)}/>
 
         <PropHeader type='Number' default="250">duration</PropHeader>
         <p>

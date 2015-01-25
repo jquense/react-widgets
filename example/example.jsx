@@ -12,7 +12,7 @@ var _ = require('lodash')
 
 
 // var g = require('globalize')
-// var culture = require('globalize/lib/cultures/globalize.culture.fi');
+var culture = require('globalize/lib/cultures/globalize.culture.es');
 // g.culture('fi');
 
 var ListItem = React.createClass({
@@ -77,7 +77,7 @@ var App = React.createClass({
     return (
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
-        <section className="example" style={{ height: '400px', overflow: 'auto' }}>
+        {/*<section className="example" style={{ height: '400px', overflow: 'auto' }}>
           <div style={{ height: 150 }}>
             sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
           </div>
@@ -92,8 +92,8 @@ var App = React.createClass({
             name="super_name"
             onChange={change.bind(null, 'selectValues')}/>
         </section>
-        
-          {/*<section className="example" style={{ marginBottom: 20 }}>
+        */}
+          <section className="example" style={{ marginBottom: 20 }}>
             <DropdownList
               isRtl={false}
               id='MyDropdownList'
@@ -109,6 +109,7 @@ var App = React.createClass({
             <Calendar
               value={ this.state.calValue }
               min={new Date(2014, 9, 15)}
+              culture='es'
               onChange={change.bind(null, 'calValue')}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
@@ -142,6 +143,7 @@ var App = React.createClass({
           <section className="example" style={{ marginBottom: 20 }}>
             <DatePicker
               isRtl={false}
+              culture='es'
               id='swweeeeet'
               format='f'
               min={new Date(2013,5,1,0,0,0)}/>
@@ -152,7 +154,7 @@ var App = React.createClass({
               format="D"
               value={this.state.numberValue}
               onChange={change.bind(null, 'numberValue')}/>
-          </section>*/}
+          </section>
         </div>
       </div>
 

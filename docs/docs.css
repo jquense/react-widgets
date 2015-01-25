@@ -184,12 +184,71 @@ pre {
   padding-top: 10px;
 }
 
+
+.editable-editor,
+.cm-s-neo.CodeMirror {
+  background-color: #F4F4F4;
+  height: auto;
+  min-height: 75px;
+}
+
+.CodeMirror{
+  font-size: 12px;
+}
+
+.editable-editor {
+  padding: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.editable-rendered {
+  position: relative;
+  padding: 40px 15px 15px 15px;
+}
+
+.editable-rendered .rw-widget + input,
+.editable-rendered .rw-widget + button,
+.editable-rendered input + .rw-widget,
+.editable-rendered button + .rw-widget,
+.editable-rendered .rw-widget + .rw-widget {
+  margin-top: 15px;
+}
+
+.editable-rendered:before {
+  position: absolute;
+  top: 3px;
+  left: 10px;
+  color: #959595;
+  content: 'Result';
+}
+
+.editable-error {
+  border-top: 1px solid #ddd;
+  background-color: white;
+  margin: 0 -15px;
+  margin-bottom: -15px;
+  padding: 10px;
+}
+
+.editable-example  {
+  position: relative;
+  margin:  0;
+  margin-bottom: 20px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+}
+
 @media (min-width: 992px) {
   .example .api-panel {
     margin-top: -10px;
     padding-top: 0;
     border-left: #ddd 1px solid;
     border-top-width: 0;
+  }
+
+  .editable-editor  {
+    border-top: none;
+    border-right: 1px solid #ddd;
   }
 }
 

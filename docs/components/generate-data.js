@@ -7,8 +7,8 @@ module.exports = function generateList(len, lastNames){
   var arr = new Array(len)
 
   for(var i = 0; i < arr.length; i++){
-    var first = chance.first(), last = chance.last()
-    arr[i] = { id: i + 1, name: `${first} ${last}`, first, last }
+    var firstName = chance.first(), lastName = chance.last()
+    arr[i] = { id: i + 1, name: `${firstName} ${lastName}`, firstName, lastName }
   }
 
   return arr
