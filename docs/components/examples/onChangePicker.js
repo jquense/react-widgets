@@ -1,7 +1,7 @@
 'use strict';
 module.exports = function(widgetName, values){
-  var open = values.length > 1 ? "(<div>" : ''
-    , close = values.length > 1 ? "</div>)" : ''
+  var open = values.length > 1 ? "(<div>" : '('
+    , close = values.length > 1 ? "</div>)" : ')'
   var code = 
 `
 var ${widgetName} = ReactWidgets.${widgetName};
