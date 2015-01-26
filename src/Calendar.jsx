@@ -89,7 +89,7 @@ var Calendar = React.createClass({
 
   getDefaultProps: function(){
     return {
-      open:  false,
+
       value: null,
       min:   new Date(1900,0, 1),
       max:   new Date(2099,11, 31),
@@ -97,7 +97,7 @@ var Calendar = React.createClass({
       initialView: 'month',
       finalView: 'century',
 
-      maintainFocus: true
+      tabIndex: '0',
     }
   },
 
@@ -135,7 +135,6 @@ var Calendar = React.createClass({
 
     return (
       <div {...props }
-        tabIndex={ +props.tabIndex === -1 ? null : '-1' }
         onKeyDown={this._keyDown}
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
@@ -182,10 +181,6 @@ var Calendar = React.createClass({
         </SlideTransition>
       </div>
     )
-
-    function finished(){
-      this._focus(true);
-    }
   },
 
   navigate: function(direction, date){
@@ -218,6 +213,7 @@ var Calendar = React.createClass({
 
 
   _focus: function(focused, e){
+
     if ( +this.props.tabIndex === -1)
       return 
 
@@ -227,7 +223,6 @@ var Calendar = React.createClass({
 
       if(focused) 
         this.getDOMNode().focus()
-
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)

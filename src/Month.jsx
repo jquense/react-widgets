@@ -43,7 +43,6 @@ module.exports = React.createClass({
     return (
       <table {...props}
         role='grid'
-        tabIndex={this.props.disabled ? '-1' : null}
         className='rw-calendar-grid'
         aria-activedescendant={this._id('_selected_item')}
         onKeyUp={this._keyUp}>
