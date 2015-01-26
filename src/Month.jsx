@@ -61,14 +61,14 @@ module.exports = React.createClass({
     var id = this._id('_selected_item')
     
     return (
-      <tr key={'week_' + i}>
+      <tr key={'week_' + i} role='row'>
       { row.map( (day, idx) => {
         var focused  = dates.eq(day, this.state.focusedDate, 'day')
           , selected = dates.eq(day, this.props.selectedDate, 'day');
 
         return !dates.inRange(day, this.props.min, this.props.max)
-            ? <td  key={'day_' + idx} className='rw-empty-cell'>&nbsp;</td>
-            : (<td key={'day_' + idx} >
+            ? <td  key={'day_' + idx} role='gridcell' className='rw-empty-cell' >&nbsp;</td>
+            : (<td key={'day_' + idx} role='gridcell'>
                 <Btn
                   tabIndex='-1'
                   onClick={this.props.onChange.bind(null, day)}

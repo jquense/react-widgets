@@ -54,13 +54,13 @@ module.exports = React.createClass({
     var id = this._id('_selected_item');
     
     return (
-      <tr key={i}>
+      <tr key={i} role='row'>
       { row.map( (date, i) => {
         var focused  = dates.eq(date, this.state.focusedDate,  'month')
           , selected = dates.eq(date, this.props.value,  'month');
 
         return dates.inRange(date, this.props.min, this.props.max, 'month')
-          ? (<td key={i}>
+          ? (<td key={i} role='gridcell'>
               <Btn onClick={this.props.onChange.bind(null, date)} tabIndex='-1'
                 id={focused ? id : undefined}
                 aria-selected={selected}
@@ -73,7 +73,7 @@ module.exports = React.createClass({
                 { dates.format(date, dates.formats.MONTH_NAME_ABRV, this.props.culture) }
               </Btn>
             </td>)
-          : <td key={i} className='rw-empty-cell'>&nbsp;</td>
+          : <td key={i} className='rw-empty-cell' role='gridcell'>&nbsp;</td>
       })}
     </tr>)
   },

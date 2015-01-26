@@ -55,15 +55,15 @@ module.exports = React.createClass({
     var id = this._id('_selected_item')
 
     return (
-      <tr key={'row_' + i}>
+      <tr key={'row_' + i} role='row'>
       { row.map( (date, i) => {
         var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
           , selected = dates.eq(date, this.props.value,  'decade')
           , d        = inRangeDate(date, this.props.min, this.props.max);
 
         return !inRange(date, this.props.min, this.props.max)
-          ? <td key={i} className='rw-empty-cell'>&nbsp;</td>
-          : (<td key={i}>
+          ? <td key={i} role='gridcell' className='rw-empty-cell'>&nbsp;</td>
+          : (<td key={i} role='gridcell'>
               <Btn onClick={this.props.onChange.bind(null, d)}
                 tabIndex='-1'
                 id={ focused ? id : undefined }
