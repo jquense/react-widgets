@@ -564,7 +564,7 @@
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(18)
 	  , EditableExample = __webpack_require__(16)
-	  , ComboBoxExample = __webpack_require__(23);
+	  , ComboBoxExample = __webpack_require__(22);
 	
 	var prefix = 'combobox/'
 	var widgetName = 'Combobox'
@@ -785,12 +785,12 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(20)
+	  , Default = __webpack_require__(19)
 	  , EditableExample = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(17)
 	  , PropHeader = __webpack_require__(18)
-	  , MultiselectExample = __webpack_require__(25);
+	  , MultiselectExample = __webpack_require__(23);
 	
 	var prefix = 'multiselect/';
 	var widgetName = 'Multiselect'
@@ -868,7 +868,7 @@
 	          "This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic," + ' ' + 
 	          "a common implementation is shown below, where the new tag is selected and added to the data list."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(43)(widgetName)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(40)(widgetName)}), 
 	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"data"}, 
 	          "data ", React.createElement("small", null, "Array")), 
@@ -900,7 +900,7 @@
 	          "This component is used to render each selected item. The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(44)(widgetName, true)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(41)(widgetName, true)}), 
 	
 	        React.createElement("h3", {className: "prop-header", id:  prefix +"itemComponent"}, 
 	          "itemComponent ", React.createElement("small", null, "Component")), 
@@ -972,13 +972,13 @@
 	        React.createElement("p", null, 
 	          "Disable the widget, If an ", React.createElement("code", null, "Array"), " of values is passed in only the tags specified will be disabled."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'disabled')}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'disabled')}), 
 	
 	        React.createElement(PropHeader, {type: "[Boolean, Array]"}, "readOnly"), 
 	        React.createElement("p", null, 
 	          "Place the widget in a readonly mode, If an ", React.createElement("code", null, "Array"), " of values is passed in only the tags specified will be readonly."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'readOnly')}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'readOnly')}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean", default: "false"}, "isRtl"), 
 	        React.createElement("p", null, 
@@ -1091,11 +1091,11 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , Example = __webpack_require__(19)
+	  , Example = __webpack_require__(20)
 	  , MenuItem = __webpack_require__(17)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(18)
-	  , SelectListExample = __webpack_require__(22);
+	  , SelectListExample = __webpack_require__(25);
 	
 	var prefix = 'selectlist/'
 	var widgetName = 'SelectList'
@@ -1307,13 +1307,13 @@
 	        React.createElement("p", null, 
 	          "The current selected date, should be a Date object or null."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(40)(widgetName, ['new Date()'])}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(43)(widgetName, ['new Date()'])}), 
 	
 	        React.createElement(PropHeader, {type: "Function( Date? date )"}, "onChange"), 
 	        React.createElement("p", null, 
 	          "Change event Handler that is called when the value is changed. The handler is called with the Date object"
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(41)(widgetName, ['new Date()'])}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(44)(widgetName, ['new Date()'])}), 
 	
 	        React.createElement(PropHeader, {type: "Date"}, "min"), 
 	        React.createElement("p", null, 
@@ -1333,7 +1333,7 @@
 	          "Acceptable values are:", 
 	          React.createElement("code", null, "\"month\""), " ", React.createElement("code", null, "\"year\""), " ", React.createElement("code", null, "\"decade\""), " ", React.createElement("code", null, "\"century\"")
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'initialView', '"year"')}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'initialView', '"year"')}), 
 	
 	        React.createElement(PropHeader, {type: "Enum", default: "\"century\""}, "finalView"), 
 	        React.createElement("p", null, 
@@ -1344,7 +1344,7 @@
 	          "Acceptable values are:", 
 	          React.createElement("code", null, "\"month\""), " ", React.createElement("code", null, "\"year\""), " ", React.createElement("code", null, "\"decade\""), " ", React.createElement("code", null, "\"century\"")
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'finalView', '"year"')}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'finalView', '"year"')}), 
 	        
 	        React.createElement(PropHeader, {type: "Boolean", default: "false"}, "isRtl"), 
 	        React.createElement("p", null, 
@@ -1464,7 +1464,7 @@
 	        React.createElement("p", null, 
 	          "The current selected date, should be a ", React.createElement("code", null, "Date"), " instance or ", React.createElement("code", null, "null"), "."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(40)(widgetName, ['new Date()'])}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(43)(widgetName, ['new Date()'])}), 
 	
 	        React.createElement(PropHeader, {type: "Function(Date? date, String dateStr)"}, "onChange"), 
 	        React.createElement("p", null, 
@@ -1472,7 +1472,7 @@
 	          "current ", React.createElement("code", null, "Date"), " object (or null if it was not parseable), and the second argument is" + ' ' +
 	          "a ", React.createElement("code", null, "string"), " representation of the date value, formated by the ", React.createElement("code", null, "format"), " prop."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(41)(widgetName, ['new Date()'])}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(44)(widgetName, ['new Date()'])}), 
 	
 	        React.createElement(PropHeader, {type: "Function(Date? value)"}, "onSelect"), 
 	        React.createElement("p", null, 
@@ -1485,13 +1485,13 @@
 	        React.createElement("p", null, 
 	          "Whether to show the date picker button."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'calendar', false)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'calendar', false)}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean", default: "true"}, "time"), 
 	        React.createElement("p", null, 
 	          "Whether to show the time picker button."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'time', false)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'time', false)}), 
 	
 	        React.createElement(PropHeader, {type: "Date", default: ">Date(1900, 0, 1)"}, "min"), 
 	        React.createElement("p", null, 
@@ -1499,7 +1499,7 @@
 	          "can be typed or pasted into the widget. If you need this behavior you can constrain values via" + ' ' +
 	          "the ", React.createElement("code", null, "onChange"), " handler."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'min', 'new Date()')}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'min', 'new Date()')}), 
 	
 	        React.createElement(PropHeader, {type: "Date", default: "Date(2099, 11, 31)"}, "max"), 
 	        React.createElement("p", null, 
@@ -1507,7 +1507,7 @@
 	          "can be typed or pasted into the widget. If you need this behavior you can constrain values via" + ' ' +
 	          "the ", React.createElement("code", null, "onChange"), " handler."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'max', 'new Date()')}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'max', 'new Date()')}), 
 	
 	        React.createElement(PropHeader, {type: "String", default: "\"M/d/yyyy h:mm tt\""}, "format"), 
 	        React.createElement("p", null, 
@@ -1516,7 +1516,7 @@
 	            "Globalize.js documentation ", React.createElement("i", {className: "fa fa-external-link"})
 	          )
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'format', '"MMM dd yyyy"')}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'format', '"MMM dd yyyy"')}), 
 	
 	        React.createElement(PropHeader, {type: "[Function, Array<String>]"}, "parse"), 
 	        React.createElement("p", null, 
@@ -1661,14 +1661,14 @@
 	        React.createElement("p", null, 
 	          "The current value of the NumberPicker."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(40)(widgetName, [1, null])}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(43)(widgetName, [1, null])}), 
 	
 	        React.createElement(PropHeader, {type: "Function(Number? value)"}, "onChange"), 
 	        React.createElement("p", null, 
 	          "Change event Handler that is called when the value is changed. The handler is called with the" + ' ' +
 	          "current numeric value or null."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(41)(widgetName, [1, null])}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(44)(widgetName, [1, null])}), 
 	
 	        React.createElement(PropHeader, {type: "String", default: "d"}, "format"), 
 	        React.createElement("p", null, 
@@ -1683,19 +1683,19 @@
 	        React.createElement("p", null, 
 	          "The minimum number that the NumberPicker value."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'min', 0)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'min', 0)}), 
 	
 	        React.createElement(PropHeader, {type: "Number", default: "Infinity"}, "max"), 
 	        React.createElement("p", null, 
 	          "The maximum number that the NumberPicker value."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'max', 5)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'max', 5)}), 
 	
 	        React.createElement(PropHeader, {type: "Number", default: "1"}, "step"), 
 	        React.createElement("p", null, 
 	          "Amount to increase or decrease value when using the spinner buttons."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(42)(widgetName, 'step', 5)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(45)(widgetName, 'step', 5)}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean", default: "false"}, 
 	          "isRtl"
@@ -1890,7 +1890,7 @@
 	    
 	    merge:  __webpack_require__(70),
 	
-	    extend: __webpack_require__(69),
+	    extend: __webpack_require__(63),
 	
 	    isShallowEqual: function (a, b) {
 	      if (a === b) return true;
@@ -2157,7 +2157,7 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , Default = __webpack_require__(20);
+	  , Default = __webpack_require__(19);
 	
 	var ApiPropHeader = React.createClass({displayName: 'ApiPropHeader',
 	
@@ -2204,6 +2204,27 @@
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	var defaultValue = React.createClass({displayName: 'defaultValue',
+	
+	  render: function() {
+	    return (
+	      React.createElement("span", {className: "default"}, 
+	        "(default: " + this.props.children + ")"
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = defaultValue;
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1)
 	  , _ = __webpack_require__(81);
 	
@@ -2226,27 +2247,6 @@
 	    )
 	  }
 	})
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	var defaultValue = React.createClass({displayName: 'defaultValue',
-	
-	  render: function() {
-	    return (
-	      React.createElement("span", {className: "default"}, 
-	        "(default: " + this.props.children + ")"
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = defaultValue;
 
 /***/ },
 /* 21 */
@@ -2402,158 +2402,6 @@
 
 /***/ },
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(57);
-	
-	
-	// var valueComp = React.createClass({
-	//   render: function() {
-	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
-	//   }
-	// });
-	
-	// var itemComp = React.createClass({
-	//   render: function() {
-	//     var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	//     return (
-	//       <div>
-	//         <i className={'fa fa-' + this._icon}></i>
-	//         { '  ' + this.props.item.label}
-	//       </div>
-	//     );
-	//   }
-	// });
-	
-	// function getRandomInt(min, max) {
-	//   return Math.floor(Math.random() * (max - min + 1)) + min;
-	// }
-	
-	var list = [
-	        { label: 'orange', id: 1 },
-	        { label: 'blue',   id: 2 },
-	        { label: 'red',    id: 3 },
-	        { label: 'maroon', id: 4 },
-	        { label: 'purple', id: 5 },
-	        { label: 'mauve',  id: 6 },
-	      ];
-	
-	var DropdownApi = React.createClass({displayName: 'DropdownApi',
-	
-	  getInitialState: function(){
-	
-	    return {
-	      duration: 250,
-	    }
-	  },
-	
-	  render: function() {
-	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(RW.SelectList, {
-	                disabled: disabled ? this.state.disabled : false, 
-	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value, 
-	                data: list, 
-	                multiple: this.state.multiple, 
-	                busy: this.state.busy, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl, 
-	                valueField: "id", 
-	                textField: "label"}
-	                )
-	            )
-	          ), 
-	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.multiple, 
-	                  onChange: this._set.bind(null, 'multiple', !this.state.multiple)}), 
-	                  "Is Multiple"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              ), 
-	              React.createElement(Button, {style: { marginLeft: 10}, 
-	                active: this.state.busy, 
-	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
-	                "Busy"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Disable Values"), 
-	              React.createElement(RW.Multiselect, {
-	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
-	                  data: list, 
-	                  textField: "label", 
-	                  valueField: "id", 
-	                  disabled: this.state.disabled === true, 
-	                  onChange: this._set.bind(null, 'disabled')})
-	            )
-	          )
-	        )
-	      )
-	    );
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === true ? false : true
-	    this.setState({ disabled: val })
-	  }
-	});
-	
-	module.exports = DropdownApi;
-	
-
-
-/***/ },
-/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2726,129 +2574,7 @@
 	}
 
 /***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React       = __webpack_require__(1)
-	  , Button      = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW          = __webpack_require__(57);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	  getInitialState: function(){
-	    return {
-	      format: ''
-	    }
-	  },
-	
-	  render: function(){
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
-	            React.createElement(RW.Calendar, {
-	                value: this.state.value, 
-	                onChange: this._change, 
-	                max: this.state.max, 
-	                min: this.state.min, 
-	                finalView: this.state.finalView, 
-	                initialView: this.state.initialView, 
-	                disabled: this.state.disabled === 'disabled', 
-	                readOnly: this.state.disabled === 'readonly', 
-	                isRtl: this.state.isRtl})
-	          ), 
-	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              )
-	            ), 
-	            React.createElement("div", {className: "row"}, 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "form-label"}, "Initial View"), 
-	                React.createElement(RW.DropdownList, {
-	                    value: this.state.initialView || 'month', 
-	                    data: ["month", "year", "decade", "century"], 
-	                    onChange: this._set.bind(null, 'initialView')})
-	              ), 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "form-label"}, "Final View"), 
-	                React.createElement(RW.DropdownList, {
-	                    value: this.state.finalView || 'century', 
-	                    data: ["month", "year", "decade", "century"], 
-	                    onChange: this._set.bind(null, 'finalView')})
-	              )
-	            ), 
-	            React.createElement("div", {className: "row"}, 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "control-label"}, "min"), 
-	                React.createElement(RW.DateTimePicker, {
-	                    time: false, 
-	                    format: "MMM dd, yyyy", 
-	                    value: this.state.min, 
-	                    onChange: this._set.bind(null, 'min')})
-	              ), 
-	              React.createElement("div", {className: "form-group col-xs-6"}, 
-	                React.createElement("label", {className: "control-label"}, "max"), 
-	                React.createElement(RW.DateTimePicker, {
-	                    time: false, 
-	                    format: "MMM dd yyyy", 
-	                    value: this.state.max, 
-	                    onChange: this._set.bind(null, 'max')})
-	              )
-	            )
-	          )
-	        )
-	      )
-	    )
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
-	    this.setState({ disabled: val })
-	  },
-	
-	})
-	
-	          
-
-
-/***/ },
-/* 25 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3041,6 +2767,280 @@
 	function getRandomInt(min, max) {
 	  return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
+
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React       = __webpack_require__(1)
+	  , Button      = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW          = __webpack_require__(57);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	  getInitialState: function(){
+	    return {
+	      format: ''
+	    }
+	  },
+	
+	  render: function(){
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
+	            React.createElement(RW.Calendar, {
+	                value: this.state.value, 
+	                onChange: this._change, 
+	                max: this.state.max, 
+	                min: this.state.min, 
+	                finalView: this.state.finalView, 
+	                initialView: this.state.initialView, 
+	                disabled: this.state.disabled === 'disabled', 
+	                readOnly: this.state.disabled === 'readonly', 
+	                isRtl: this.state.isRtl})
+	          ), 
+	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              )
+	            ), 
+	            React.createElement("div", {className: "row"}, 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "form-label"}, "Initial View"), 
+	                React.createElement(RW.DropdownList, {
+	                    value: this.state.initialView || 'month', 
+	                    data: ["month", "year", "decade", "century"], 
+	                    onChange: this._set.bind(null, 'initialView')})
+	              ), 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "form-label"}, "Final View"), 
+	                React.createElement(RW.DropdownList, {
+	                    value: this.state.finalView || 'century', 
+	                    data: ["month", "year", "decade", "century"], 
+	                    onChange: this._set.bind(null, 'finalView')})
+	              )
+	            ), 
+	            React.createElement("div", {className: "row"}, 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "control-label"}, "min"), 
+	                React.createElement(RW.DateTimePicker, {
+	                    time: false, 
+	                    format: "MMM dd, yyyy", 
+	                    value: this.state.min, 
+	                    onChange: this._set.bind(null, 'min')})
+	              ), 
+	              React.createElement("div", {className: "form-group col-xs-6"}, 
+	                React.createElement("label", {className: "control-label"}, "max"), 
+	                React.createElement(RW.DateTimePicker, {
+	                    time: false, 
+	                    format: "MMM dd yyyy", 
+	                    value: this.state.max, 
+	                    onChange: this._set.bind(null, 'max')})
+	              )
+	            )
+	          )
+	        )
+	      )
+	    )
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	
+	})
+	
+	          
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW = __webpack_require__(57);
+	
+	
+	// var valueComp = React.createClass({
+	//   render: function() {
+	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
+	//   }
+	// });
+	
+	// var itemComp = React.createClass({
+	//   render: function() {
+	//     var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	//     return (
+	//       <div>
+	//         <i className={'fa fa-' + this._icon}></i>
+	//         { '  ' + this.props.item.label}
+	//       </div>
+	//     );
+	//   }
+	// });
+	
+	// function getRandomInt(min, max) {
+	//   return Math.floor(Math.random() * (max - min + 1)) + min;
+	// }
+	
+	var list = [
+	        { label: 'orange', id: 1 },
+	        { label: 'blue',   id: 2 },
+	        { label: 'red',    id: 3 },
+	        { label: 'maroon', id: 4 },
+	        { label: 'purple', id: 5 },
+	        { label: 'mauve',  id: 6 },
+	      ];
+	
+	var DropdownApi = React.createClass({displayName: 'DropdownApi',
+	
+	  getInitialState: function(){
+	
+	    return {
+	      duration: 250,
+	    }
+	  },
+	
+	  render: function() {
+	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(RW.SelectList, {
+	                disabled: disabled ? this.state.disabled : false, 
+	                readOnly: this.state.disabled === 'readonly', 
+	                value: this.state.value, 
+	                data: list, 
+	                multiple: this.state.multiple, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            )
+	          ), 
+	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.multiple, 
+	                  onChange: this._set.bind(null, 'multiple', !this.state.multiple)}), 
+	                  "Is Multiple"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Disable Values"), 
+	              React.createElement(RW.Multiselect, {
+	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
+	                  data: list, 
+	                  textField: "label", 
+	                  valueField: "id", 
+	                  disabled: this.state.disabled === true, 
+	                  onChange: this._set.bind(null, 'disabled')})
+	            )
+	          )
+	        )
+	      )
+	    );
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === true ? false : true
+	    this.setState({ disabled: val })
+	  }
+	});
+	
+	module.exports = DropdownApi;
+	
 
 
 /***/ },
@@ -3734,6 +3734,115 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	module.exports = function(widgetName){
+	var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + "\n  , people = listOfPeople();\n\nvar Example = React.createClass({\n\n  getInitialState() {\n    return { value: people.slice(0,2) };\n  },\n\n  _create(name){\n    var tag = { name, id: people.length + 1 } \n    var value = this.state.value.concat(tag)\n    // add new tag to the data list\n    people.push(tag) \n    //add new tag to the list of values\n    this.setState({ value }) \n  },\n\n  render(){\n    // create a tag object\n    return (\n      <Multiselect data={people}\n        value={this.state.value} \n        textField=\"name\"\n        onCreate={this._create}\n        onChange={value => this.setState({ value })}/>\n    )\n  }\n});\n\nReact.render(<Example/>, mountNode);"
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	)
+	
+	return code
+	}
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = function(widgetName) {
+	
+	var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + ";\nvar people = listOfPeople();\n\nvar TagItem = React.createClass({\n  render() {\n    var person = this.props.item;\n    return (\n      <span>\n        <strong>{ person.firstName }</strong>\n        { \" \" + person.lastName }\n      </span>);\n  }\n})\n\nvar widget =(\n    <" + 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	widgetName + " \n      data={people} \n      textField='name'\n      tagComponent={TagItem}/>) \n\nReact.render(widget, mountNode)"
+	
+	
+	
+	
+	)
+	
+	return code
+	}
+	
+	
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	module.exports = function(widgetName, prop){
+	var code = 
+	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + "\n  , colors = ['orange', 'red', 'blue', 'purple'];\n\nvar Example = React.createClass({\n\n  render() {\n    return (<div>\n      <" + 
+	
+	
+	
+	
+	
+	
+	widgetName + " " + prop + " />\n      <" + 
+	widgetName + " " + prop + "={colors.slice(1,2)}\n        data={colors}\n        defaultValue={colors.slice(0,2)}/>\n    </div>)\n  }\n});\n\nReact.render(<Example/>, mountNode);"
+	
+	
+	
+	
+	
+	
+	)
+	
+	return code
+	}
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	module.exports = function(widgetName, values){
 	  var open = values.length > 1 ? "(<div>" : ''
 	    , close = values.length > 1 ? "</div>)" : ''
@@ -3761,7 +3870,7 @@
 
 
 /***/ },
-/* 41 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3808,7 +3917,7 @@
 	}
 
 /***/ },
-/* 42 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3825,115 +3934,6 @@
 	
 	
 
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	module.exports = function(widgetName){
-	var code = 
-	("\nvar " + 
-	widgetName + " = ReactWidgets." + widgetName + "\n  , people = listOfPeople();\n\nvar Example = React.createClass({\n\n  getInitialState() {\n    return { value: people.slice(0,2) };\n  },\n\n  _create(name){\n    var tag = { name, id: people.length + 1 } \n    var value = this.state.value.concat(tag)\n    // add new tag to the data list\n    people.push(tag) \n    //add new tag to the list of values\n    this.setState({ value }) \n  },\n\n  render(){\n    // create a tag object\n    return (\n      <Multiselect data={people}\n        value={this.state.value} \n        textField=\"name\"\n        onCreate={this._create}\n        onChange={value => this.setState({ value })}/>\n    )\n  }\n});\n\nReact.render(<Example/>, mountNode);"
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	)
-	
-	return code
-	}
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = function(widgetName) {
-	
-	var code = 
-	("\nvar " + 
-	widgetName + " = ReactWidgets." + widgetName + ";\nvar people = listOfPeople();\n\nvar TagItem = React.createClass({\n  render() {\n    var person = this.props.item;\n    return (\n      <span>\n        <strong>{ person.firstName }</strong>\n        { \" \" + person.lastName }\n      </span>);\n  }\n})\n\nvar widget =(\n    <" + 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	widgetName + " \n      data={people} \n      textField='name'\n      tagComponent={TagItem}/>) \n\nReact.render(widget, mountNode)"
-	
-	
-	
-	
-	)
-	
-	return code
-	}
-	
-	
-
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	module.exports = function(widgetName, prop){
-	var code = 
-	("\nvar " + 
-	widgetName + " = ReactWidgets." + widgetName + "\n  , colors = ['orange', 'red', 'blue', 'purple'];\n\nvar Example = React.createClass({\n\n  render() {\n    return (<div>\n      <" + 
-	
-	
-	
-	
-	
-	
-	widgetName + " " + prop + " />\n      <" + 
-	widgetName + " " + prop + "={colors.slice(1,2)}\n        data={colors}\n        defaultValue={colors.slice(0,2)}/>\n    </div>)\n  }\n});\n\nReact.render(<Example/>, mountNode);"
-	
-	
-	
-	
-	
-	
-	)
-	
-	return code
-	}
 
 /***/ },
 /* 46 */
@@ -3987,8 +3987,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
-	var classSet = __webpack_require__(64);
+	var joinClasses = __webpack_require__(64);
+	var classSet = __webpack_require__(65);
 	var BootstrapMixin = __webpack_require__(59);
 	
 	var Button = React.createClass({displayName: 'Button',
@@ -4078,8 +4078,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
-	var classSet = __webpack_require__(64);
+	var joinClasses = __webpack_require__(64);
+	var classSet = __webpack_require__(65);
 	var BootstrapMixin = __webpack_require__(59);
 	var Button = __webpack_require__(48);
 	
@@ -4120,17 +4120,17 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
-	var classSet = __webpack_require__(64);
+	var joinClasses = __webpack_require__(64);
+	var classSet = __webpack_require__(65);
 	var cloneWithProps = __webpack_require__(66);
 	
-	var createChainedFunction = __webpack_require__(68);
+	var createChainedFunction = __webpack_require__(67);
 	var BootstrapMixin = __webpack_require__(59);
-	var DropdownStateMixin = __webpack_require__(61);
+	var DropdownStateMixin = __webpack_require__(60);
 	var Button = __webpack_require__(48);
 	var ButtonGroup = __webpack_require__(49);
-	var DropdownMenu = __webpack_require__(62);
-	var ValidComponentChildren = __webpack_require__(67);
+	var DropdownMenu = __webpack_require__(61);
+	var ValidComponentChildren = __webpack_require__(68);
 	
 	
 	var DropdownButton = React.createClass({displayName: 'DropdownButton',
@@ -4248,8 +4248,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
-	var classSet = __webpack_require__(64);
+	var joinClasses = __webpack_require__(64);
+	var classSet = __webpack_require__(65);
 	
 	var MenuItem = React.createClass({displayName: 'MenuItem',
 	  propTypes: {
@@ -4311,15 +4311,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
+	var joinClasses = __webpack_require__(64);
 	var BootstrapMixin = __webpack_require__(59);
-	var CollapsableMixin = __webpack_require__(60);
-	var classSet = __webpack_require__(64);
-	var domUtils = __webpack_require__(65);
+	var CollapsableMixin = __webpack_require__(62);
+	var classSet = __webpack_require__(65);
+	var domUtils = __webpack_require__(69);
 	var cloneWithProps = __webpack_require__(66);
 	
-	var ValidComponentChildren = __webpack_require__(67);
-	var createChainedFunction = __webpack_require__(68);
+	var ValidComponentChildren = __webpack_require__(68);
+	var createChainedFunction = __webpack_require__(67);
 	
 	
 	var Nav = React.createClass({displayName: 'Nav',
@@ -4429,13 +4429,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
+	var joinClasses = __webpack_require__(64);
 	var BootstrapMixin = __webpack_require__(59);
-	var classSet = __webpack_require__(64);
+	var classSet = __webpack_require__(65);
 	var cloneWithProps = __webpack_require__(66);
 	
-	var ValidComponentChildren = __webpack_require__(67);
-	var createChainedFunction = __webpack_require__(68);
+	var ValidComponentChildren = __webpack_require__(68);
+	var createChainedFunction = __webpack_require__(67);
 	var Nav = __webpack_require__(52);
 	
 	
@@ -4574,12 +4574,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
-	var classSet = __webpack_require__(64);
+	var joinClasses = __webpack_require__(64);
+	var classSet = __webpack_require__(65);
 	var cloneWithProps = __webpack_require__(66);
 	
-	var ValidComponentChildren = __webpack_require__(67);
-	var createChainedFunction = __webpack_require__(68);
+	var ValidComponentChildren = __webpack_require__(68);
+	var createChainedFunction = __webpack_require__(67);
 	var BootstrapMixin = __webpack_require__(59);
 	
 	
@@ -4708,8 +4708,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
-	var classSet = __webpack_require__(64);
+	var joinClasses = __webpack_require__(64);
+	var classSet = __webpack_require__(65);
 	var BootstrapMixin = __webpack_require__(59);
 	
 	var NavItem = React.createClass({displayName: 'NavItem',
@@ -4926,6 +4926,142 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var EventListener = __webpack_require__(83);
+	
+	/**
+	 * Checks whether a node is within
+	 * a root nodes tree
+	 *
+	 * @param {DOMElement} node
+	 * @param {DOMElement} root
+	 * @returns {boolean}
+	 */
+	function isNodeInRoot(node, root) {
+	  while (node) {
+	    if (node === root) {
+	      return true;
+	    }
+	    node = node.parentNode;
+	  }
+	
+	  return false;
+	}
+	
+	var DropdownStateMixin = {
+	  getInitialState: function () {
+	    return {
+	      open: false
+	    };
+	  },
+	
+	  setDropdownState: function (newState, onStateChangeComplete) {
+	    if (newState) {
+	      this.bindRootCloseHandlers();
+	    } else {
+	      this.unbindRootCloseHandlers();
+	    }
+	
+	    this.setState({
+	      open: newState
+	    }, onStateChangeComplete);
+	  },
+	
+	  handleDocumentKeyUp: function (e) {
+	    if (e.keyCode === 27) {
+	      this.setDropdownState(false);
+	    }
+	  },
+	
+	  handleDocumentClick: function (e) {
+	    // If the click originated from within this component
+	    // don't do anything.
+	    if (isNodeInRoot(e.target, this.getDOMNode())) {
+	      return;
+	    }
+	
+	    this.setDropdownState(false);
+	  },
+	
+	  bindRootCloseHandlers: function () {
+	    this._onDocumentClickListener =
+	      EventListener.listen(document, 'click', this.handleDocumentClick);
+	    this._onDocumentKeyupListener =
+	      EventListener.listen(document, 'keyup', this.handleDocumentKeyUp);
+	  },
+	
+	  unbindRootCloseHandlers: function () {
+	    if (this._onDocumentClickListener) {
+	      this._onDocumentClickListener.remove();
+	    }
+	
+	    if (this._onDocumentKeyupListener) {
+	      this._onDocumentKeyupListener.remove();
+	    }
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.unbindRootCloseHandlers();
+	  }
+	};
+	
+	module.exports = DropdownStateMixin;
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var joinClasses = __webpack_require__(64);
+	var classSet = __webpack_require__(65);
+	var cloneWithProps = __webpack_require__(66);
+	
+	var createChainedFunction = __webpack_require__(67);
+	var ValidComponentChildren = __webpack_require__(68);
+	
+	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
+	  propTypes: {
+	    pullRight: React.PropTypes.bool,
+	    onSelect: React.PropTypes.func
+	  },
+	
+	  render: function () {
+	    var classes = {
+	        'dropdown-menu': true,
+	        'dropdown-menu-right': this.props.pullRight
+	      };
+	
+	    return (
+	        React.createElement("ul", React.__spread({}, 
+	          this.props, 
+	          {className: joinClasses(this.props.className, classSet(classes)), 
+	          role: "menu"}), 
+	          ValidComponentChildren.map(this.props.children, this.renderMenuItem)
+	        )
+	      );
+	  },
+	
+	  renderMenuItem: function (child, index) {
+	    return cloneWithProps(
+	      child,
+	      {
+	        // Capture onSelect events
+	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
+	
+	        // Force special props to be transferred
+	        key: child.key ? child.key : index,
+	        ref: child.ref
+	      }
+	    );
+	  }
+	});
+	
+	module.exports = DropdownMenu;
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
 	var TransitionEvents = __webpack_require__(84);
 	
 	var CollapsableMixin = {
@@ -5048,143 +5184,28 @@
 
 
 /***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var EventListener = __webpack_require__(83);
-	
-	/**
-	 * Checks whether a node is within
-	 * a root nodes tree
-	 *
-	 * @param {DOMElement} node
-	 * @param {DOMElement} root
-	 * @returns {boolean}
-	 */
-	function isNodeInRoot(node, root) {
-	  while (node) {
-	    if (node === root) {
-	      return true;
-	    }
-	    node = node.parentNode;
-	  }
-	
-	  return false;
-	}
-	
-	var DropdownStateMixin = {
-	  getInitialState: function () {
-	    return {
-	      open: false
-	    };
-	  },
-	
-	  setDropdownState: function (newState, onStateChangeComplete) {
-	    if (newState) {
-	      this.bindRootCloseHandlers();
-	    } else {
-	      this.unbindRootCloseHandlers();
-	    }
-	
-	    this.setState({
-	      open: newState
-	    }, onStateChangeComplete);
-	  },
-	
-	  handleDocumentKeyUp: function (e) {
-	    if (e.keyCode === 27) {
-	      this.setDropdownState(false);
-	    }
-	  },
-	
-	  handleDocumentClick: function (e) {
-	    // If the click originated from within this component
-	    // don't do anything.
-	    if (isNodeInRoot(e.target, this.getDOMNode())) {
-	      return;
-	    }
-	
-	    this.setDropdownState(false);
-	  },
-	
-	  bindRootCloseHandlers: function () {
-	    this._onDocumentClickListener =
-	      EventListener.listen(document, 'click', this.handleDocumentClick);
-	    this._onDocumentKeyupListener =
-	      EventListener.listen(document, 'keyup', this.handleDocumentKeyUp);
-	  },
-	
-	  unbindRootCloseHandlers: function () {
-	    if (this._onDocumentClickListener) {
-	      this._onDocumentClickListener.remove();
-	    }
-	
-	    if (this._onDocumentKeyupListener) {
-	      this._onDocumentKeyupListener.remove();
-	    }
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.unbindRootCloseHandlers();
-	  }
-	};
-	
-	module.exports = DropdownStateMixin;
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
-	var classSet = __webpack_require__(64);
-	var cloneWithProps = __webpack_require__(66);
-	
-	var createChainedFunction = __webpack_require__(68);
-	var ValidComponentChildren = __webpack_require__(67);
-	
-	var DropdownMenu = React.createClass({displayName: 'DropdownMenu',
-	  propTypes: {
-	    pullRight: React.PropTypes.bool,
-	    onSelect: React.PropTypes.func
-	  },
-	
-	  render: function () {
-	    var classes = {
-	        'dropdown-menu': true,
-	        'dropdown-menu-right': this.props.pullRight
-	      };
-	
-	    return (
-	        React.createElement("ul", React.__spread({}, 
-	          this.props, 
-	          {className: joinClasses(this.props.className, classSet(classes)), 
-	          role: "menu"}), 
-	          ValidComponentChildren.map(this.props.children, this.renderMenuItem)
-	        )
-	      );
-	  },
-	
-	  renderMenuItem: function (child, index) {
-	    return cloneWithProps(
-	      child,
-	      {
-	        // Capture onSelect events
-	        onSelect: createChainedFunction(child.props.onSelect, this.props.onSelect),
-	
-	        // Force special props to be transferred
-	        key: child.key ? child.key : index,
-	        ref: child.ref
-	      }
-	    );
-	  }
-	});
-	
-	module.exports = DropdownMenu;
-
-/***/ },
 /* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = extend
+	
+	function extend(target) {
+	    for (var i = 1; i < arguments.length; i++) {
+	        var source = arguments[i]
+	
+	        for (var key in source) {
+	            if (source.hasOwnProperty(key)) {
+	                target[key] = source[key]
+	            }
+	        }
+	    }
+	
+	    return target
+	}
+
+
+/***/ },
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5230,7 +5251,7 @@
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5274,120 +5295,6 @@
 	module.exports = cx;
 
 /***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Shortcut to compute element style
-	 *
-	 * @param {HTMLElement} elem
-	 * @returns {CssStyle}
-	 */
-	function getComputedStyles(elem) {
-	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
-	}
-	
-	/**
-	 * Get elements offset
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} DOMNode
-	 * @returns {{top: number, left: number}}
-	 */
-	function getOffset(DOMNode) {
-	  if (window.jQuery) {
-	    return window.jQuery(DOMNode).offset();
-	  }
-	
-	  var docElem = document.documentElement;
-	  var box = { top: 0, left: 0 };
-	
-	  // If we don't have gBCR, just use 0,0 rather than error
-	  // BlackBerry 5, iOS 3 (original iPhone)
-	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
-	    box = DOMNode.getBoundingClientRect();
-	  }
-	
-	  return {
-	    top: box.top + window.pageYOffset - docElem.clientTop,
-	    left: box.left + window.pageXOffset - docElem.clientLeft
-	  };
-	}
-	
-	/**
-	 * Get elements position
-	 *
-	 * TODO: REMOVE JQUERY!
-	 *
-	 * @param {HTMLElement} elem
-	 * @param {HTMLElement?} offsetParent
-	 * @returns {{top: number, left: number}}
-	 */
-	function getPosition(elem, offsetParent) {
-	  if (window.jQuery) {
-	    return window.jQuery(elem).position();
-	  }
-	
-	  var offset,
-	      parentOffset = {top: 0, left: 0};
-	
-	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
-	  if (getComputedStyles(elem).position === 'fixed' ) {
-	    // We assume that getBoundingClientRect is available when computed position is fixed
-	    offset = elem.getBoundingClientRect();
-	
-	  } else {
-	    if (!offsetParent) {
-	      // Get *real* offsetParent
-	      offsetParent = offsetParent(elem);
-	    }
-	
-	    // Get correct offsets
-	    offset = getOffset(elem);
-	    if ( offsetParent.nodeName !== 'HTML') {
-	      parentOffset = getOffset(offsetParent);
-	    }
-	
-	    // Add offsetParent borders
-	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
-	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
-	  }
-	
-	  // Subtract parent offsets and element margins
-	  return {
-	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
-	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
-	  };
-	}
-	
-	/**
-	 * Get parent element
-	 *
-	 * @param {HTMLElement?} elem
-	 * @returns {HTMLElement}
-	 */
-	function offsetParent(elem) {
-	  var docElem = document.documentElement;
-	  var offsetParent = elem.offsetParent || docElem;
-	
-	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
-	    getComputedStyles(offsetParent).position === 'static' ) ) {
-	    offsetParent = offsetParent.offsetParent;
-	  }
-	
-	  return offsetParent || docElem;
-	}
-	
-	module.exports = {
-	  getComputedStyles: getComputedStyles,
-	  getOffset: getOffset,
-	  getPosition: getPosition,
-	  offsetParent: offsetParent
-	};
-
-/***/ },
 /* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -5410,7 +5317,7 @@
 	 */
 	
 	var React = __webpack_require__(1);
-	var joinClasses = __webpack_require__(63);
+	var joinClasses = __webpack_require__(64);
 	var assign = __webpack_require__(85);
 	
 	/**
@@ -5539,6 +5446,36 @@
 /* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Safe chained function
+	 *
+	 * Will only create a new function if needed,
+	 * otherwise will pass back existing functions or null.
+	 *
+	 * @param {function} one
+	 * @param {function} two
+	 * @returns {function|null}
+	 */
+	function createChainedFunction(one, two) {
+	  var hasOne = typeof one === 'function';
+	  var hasTwo = typeof two === 'function';
+	
+	  if (!hasOne && !hasTwo) { return null; }
+	  if (!hasOne) { return two; }
+	  if (!hasTwo) { return one; }
+	
+	  return function chainedFunction() {
+	    one.apply(this, arguments);
+	    two.apply(this, arguments);
+	  };
+	}
+	
+	module.exports = createChainedFunction;
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1);
 	
 	/**
@@ -5631,55 +5568,118 @@
 	};
 
 /***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Safe chained function
-	 *
-	 * Will only create a new function if needed,
-	 * otherwise will pass back existing functions or null.
-	 *
-	 * @param {function} one
-	 * @param {function} two
-	 * @returns {function|null}
-	 */
-	function createChainedFunction(one, two) {
-	  var hasOne = typeof one === 'function';
-	  var hasTwo = typeof two === 'function';
-	
-	  if (!hasOne && !hasTwo) { return null; }
-	  if (!hasOne) { return two; }
-	  if (!hasTwo) { return one; }
-	
-	  return function chainedFunction() {
-	    one.apply(this, arguments);
-	    two.apply(this, arguments);
-	  };
-	}
-	
-	module.exports = createChainedFunction;
-
-/***/ },
 /* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = extend
 	
-	function extend(target) {
-	    for (var i = 1; i < arguments.length; i++) {
-	        var source = arguments[i]
+	/**
+	 * Shortcut to compute element style
+	 *
+	 * @param {HTMLElement} elem
+	 * @returns {CssStyle}
+	 */
+	function getComputedStyles(elem) {
+	  return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
+	}
 	
-	        for (var key in source) {
-	            if (source.hasOwnProperty(key)) {
-	                target[key] = source[key]
-	            }
-	        }
+	/**
+	 * Get elements offset
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} DOMNode
+	 * @returns {{top: number, left: number}}
+	 */
+	function getOffset(DOMNode) {
+	  if (window.jQuery) {
+	    return window.jQuery(DOMNode).offset();
+	  }
+	
+	  var docElem = document.documentElement;
+	  var box = { top: 0, left: 0 };
+	
+	  // If we don't have gBCR, just use 0,0 rather than error
+	  // BlackBerry 5, iOS 3 (original iPhone)
+	  if ( typeof DOMNode.getBoundingClientRect !== 'undefined' ) {
+	    box = DOMNode.getBoundingClientRect();
+	  }
+	
+	  return {
+	    top: box.top + window.pageYOffset - docElem.clientTop,
+	    left: box.left + window.pageXOffset - docElem.clientLeft
+	  };
+	}
+	
+	/**
+	 * Get elements position
+	 *
+	 * TODO: REMOVE JQUERY!
+	 *
+	 * @param {HTMLElement} elem
+	 * @param {HTMLElement?} offsetParent
+	 * @returns {{top: number, left: number}}
+	 */
+	function getPosition(elem, offsetParent) {
+	  if (window.jQuery) {
+	    return window.jQuery(elem).position();
+	  }
+	
+	  var offset,
+	      parentOffset = {top: 0, left: 0};
+	
+	  // Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
+	  if (getComputedStyles(elem).position === 'fixed' ) {
+	    // We assume that getBoundingClientRect is available when computed position is fixed
+	    offset = elem.getBoundingClientRect();
+	
+	  } else {
+	    if (!offsetParent) {
+	      // Get *real* offsetParent
+	      offsetParent = offsetParent(elem);
 	    }
 	
-	    return target
+	    // Get correct offsets
+	    offset = getOffset(elem);
+	    if ( offsetParent.nodeName !== 'HTML') {
+	      parentOffset = getOffset(offsetParent);
+	    }
+	
+	    // Add offsetParent borders
+	    parentOffset.top += parseInt(getComputedStyles(offsetParent).borderTopWidth, 10);
+	    parentOffset.left += parseInt(getComputedStyles(offsetParent).borderLeftWidth, 10);
+	  }
+	
+	  // Subtract parent offsets and element margins
+	  return {
+	    top: offset.top - parentOffset.top - parseInt(getComputedStyles(elem).marginTop, 10),
+	    left: offset.left - parentOffset.left - parseInt(getComputedStyles(elem).marginLeft, 10)
+	  };
 	}
-
+	
+	/**
+	 * Get parent element
+	 *
+	 * @param {HTMLElement?} elem
+	 * @returns {HTMLElement}
+	 */
+	function offsetParent(elem) {
+	  var docElem = document.documentElement;
+	  var offsetParent = elem.offsetParent || docElem;
+	
+	  while ( offsetParent && ( offsetParent.nodeName !== 'HTML' &&
+	    getComputedStyles(offsetParent).position === 'static' ) ) {
+	    offsetParent = offsetParent.offsetParent;
+	  }
+	
+	  return offsetParent || docElem;
+	}
+	
+	module.exports = {
+	  getComputedStyles: getComputedStyles,
+	  getOffset: getOffset,
+	  getPosition: getPosition,
+	  offsetParent: offsetParent
+	};
 
 /***/ },
 /* 70 */
@@ -6011,11 +6011,11 @@
 	var React           = __webpack_require__(1)
 	  , cx              = __webpack_require__(13)
 	  , _               = __webpack_require__(15)
-	  , $               = __webpack_require__(99)
-	  , filter          = __webpack_require__(100)
+	  , $               = __webpack_require__(92)
+	  , filter          = __webpack_require__(93)
 	  , Popup           = __webpack_require__(88)
-	  , Btn             = __webpack_require__(101)
-	  , Input           = __webpack_require__(102)
+	  , Btn             = __webpack_require__(94)
+	  , Input           = __webpack_require__(95)
 	
 	  , controlledInput = __webpack_require__(86)
 	  , CustomPropTypes = __webpack_require__(87)
@@ -6162,6 +6162,7 @@
 			return (
 				React.createElement("div", React.__spread({},  props , 
 	        {ref: "element", 
+	        role: "combobox", 
 	        onKeyDown: this._maybeHandle(this._keyDown), 
 	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
 	        onBlur: this._focus.bind(null, false), 
@@ -6187,7 +6188,6 @@
 	        React.createElement(Input, {
 	          ref: "input", 
 	          type: "text", 
-	          role: "combobox", 
 	          suggest: this.props.suggest, 
 	          name: this.props.name, 
 	          'aria-owns': listID, 
@@ -6405,16 +6405,16 @@
 
 	'use strict';
 	var React           = __webpack_require__(1)
-	  , Header          = __webpack_require__(92)
-	  , Month           = __webpack_require__(93)
-	  , Year            = __webpack_require__(94)
-	  , Decade          = __webpack_require__(95)
-	  , Century         = __webpack_require__(96)
+	  , Header          = __webpack_require__(96)
+	  , Month           = __webpack_require__(97)
+	  , Year            = __webpack_require__(98)
+	  , Decade          = __webpack_require__(99)
+	  , Century         = __webpack_require__(100)
 	  , cx              = __webpack_require__(13)
 	  , controlledInput = __webpack_require__(86)
 	  , SlideTransition = __webpack_require__(79)
-	  , dates           = __webpack_require__(97)
-	  , constants       = __webpack_require__(98)
+	  , dates           = __webpack_require__(101)
+	  , constants       = __webpack_require__(102)
 	  , _               = __webpack_require__(15); //values, omit, object
 	
 	var dir = constants.directions;
@@ -6439,6 +6439,36 @@
 	      [views.CENTURY, 100]
 	    ]);
 	
+	var propTypes = {
+	
+	  onChange:      React.PropTypes.func.isRequired,
+	  value:         React.PropTypes.instanceOf(Date),
+	
+	  min:           React.PropTypes.instanceOf(Date),
+	  max:           React.PropTypes.instanceOf(Date),
+	
+	  initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
+	  finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
+	
+	  disabled:       React.PropTypes.oneOfType([
+	                      React.PropTypes.bool,
+	                      React.PropTypes.oneOf(['disabled'])
+	                    ]),
+	
+	  readOnly:       React.PropTypes.oneOfType([
+	                    React.PropTypes.bool,
+	                    React.PropTypes.oneOf(['readOnly'])
+	                  ]),
+	
+	  culture:       React.PropTypes.string,
+	
+	  messages:      React.PropTypes.shape({
+	    moveBack:    React.PropTypes.string,
+	    moveForward: React.PropTypes.string
+	  }),
+	
+	  maintainFocus: React.PropTypes.bool,
+	}
 	
 	var Calendar = React.createClass({
 	
@@ -6450,38 +6480,7 @@
 	    __webpack_require__(113)
 	  ],
 	
-	
-	  propTypes: {
-	
-	    onChange:      React.PropTypes.func.isRequired,
-	    value:         React.PropTypes.instanceOf(Date),
-	
-	    min:           React.PropTypes.instanceOf(Date),
-	    max:           React.PropTypes.instanceOf(Date),
-	
-	    initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
-	    finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
-	
-	    disabled:       React.PropTypes.oneOfType([
-	                        React.PropTypes.bool,
-	                        React.PropTypes.oneOf(['disabled'])
-	                      ]),
-	
-	    readOnly:       React.PropTypes.oneOfType([
-	                      React.PropTypes.bool,
-	                      React.PropTypes.oneOf(['readOnly'])
-	                    ]),
-	
-	    culture:       React.PropTypes.string,
-	
-	    messages:      React.PropTypes.shape({
-	      moveBack:    React.PropTypes.string,
-	      moveForward: React.PropTypes.string
-	    }),
-	
-	    maintainFocus: React.PropTypes.bool,
-	
-	  },
+	  propTypes:propTypes,
 	
 	  getInitialState: function(){
 	    var value = this.inRangeValue(this.props.value);
@@ -6529,7 +6528,7 @@
 	  render: function(){
 	    var $__0=
 	        
-	          _.omit(this.props, ['value', 'min', 'max']),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
+	          _.omit(this.props, Object.keys(propTypes)),className=$__0.className,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{className:1})
 	      , View     = VIEW[this.state.view]
 	      , unit     = this.state.view
 	      
@@ -6541,10 +6540,14 @@
 	
 	    return (
 	      React.createElement("div", React.__spread({},  props , 
-	        {onKeyDown: this._keyDown, 
+	        {tabIndex:  +props.tabIndex === -1 ? null : '-1', 
+	        onKeyDown: this._keyDown, 
+	        onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
+	        onBlur: this._focus.bind(null, false), 
 	        className: cx(className, {
 	          'rw-calendar':       true,
 	          'rw-widget':         true,
+	          'rw-state-focus':    this.state.focused,
 	          'rw-state-disabled': this.props.disabled,
 	          'rw-state-readonly': this.props.readOnly,
 	          'rw-rtl':            this.isRtl()
@@ -6552,7 +6555,6 @@
 	        React.createElement(Header, {
 	          label: this._label(), 
 	          labelId: labelId, 
-	          tabIndex: !this.props.maintainFocus ? '-1' : null, 
 	          messages: this.props.messages, 
 	          upDisabled:   disabled || this.state.view === this.props.finalView, 
 	          prevDisabled: disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit), 
@@ -6565,18 +6567,17 @@
 	          ref: "animation", 
 	          duration: this.props.duration, 
 	          direction: this.state.slideDirection, 
-	          onAnimate: finished.bind(this)}, 
+	          onAnimate: function()  {return this._focus(true);}.bind(this)}, 
 	
 	          React.createElement(View, {ref: "currentView", 
 	            key: key, 
 	            id: id, 
 	            culture: this.props.culture, 
-	            'aria-labeledby': labelId, 
+	            'aria-labelledby': labelId, 
 	            selectedDate: this.props.value, 
 	            value: this.state.currentDate, 
 	            onChange: this._maybeHandle(this.change), 
 	            onKeyDown: this._maybeHandle(this._keyDown), 
-	            onFocus: this._maybeHandle(this._focus.bind(null, true), true), 
 	            onMoveLeft: this._maybeHandle(this.navigate.bind(null,  dir.LEFT)), 
 	            onMoveRight: this._maybeHandle(this.navigate.bind(null,  dir.RIGHT)), 
 	            disabled: this.props.disabled, 
@@ -6620,9 +6621,24 @@
 	    }
 	  },
 	
-	  _focus: function(val){
-	    if ( this.props.maintainFocus)
-	      val && this.refs.currentView.getDOMNode().focus()
+	
+	  _focus: function(focused, e){
+	    if ( +this.props.tabIndex === -1)
+	      return 
+	
+	    clearTimeout(this.timer)
+	
+	    this.timer = setTimeout(function() {
+	
+	      if(focused) 
+	        this.getDOMNode().focus()
+	
+	
+	      if( focused !== this.state.focused){
+	        this.notify(focused ? 'onFocus' : 'onBlur', e)
+	        this.setState({ focused: focused })
+	      }
+	    }.bind(this))
 	  },
 	
 	  change: function(date){
@@ -6731,15 +6747,15 @@
 	var React  = __webpack_require__(1)
 	  , cx     = __webpack_require__(13)
 	  , _      = __webpack_require__(15) //pick, omit, has
-	  , dates  = __webpack_require__(97)
-	  , views  = __webpack_require__(98).calendarViews
-	  , popups = __webpack_require__(98).datePopups
+	  , dates  = __webpack_require__(101)
+	  , views  = __webpack_require__(102).calendarViews
+	  , popups = __webpack_require__(102).datePopups
 	
 	  , Popup     = __webpack_require__(88)
 	  , Calendar  = __webpack_require__(73).BaseCalendar
 	  , Time      = __webpack_require__(103)
 	  , DateInput = __webpack_require__(104)
-	  , Btn       = __webpack_require__(101)
+	  , Btn       = __webpack_require__(94)
 	  , CustomPropTypes = __webpack_require__(87)
 	  , controlledInput = __webpack_require__(86);
 	
@@ -6933,9 +6949,9 @@
 	
 	          React.createElement(Calendar, React.__spread({},  calProps , 
 	            {ref: "calPopup", 
+	            tabIndex: "-1", 
 	            id: dateListID, 
 	            value: value, 
-	            maintainFocus: false, 
 	            'aria-hidden':  !this.props.open, 
 	            onChange: this._maybeHandle(this._selectDate)}))
 	        )
@@ -7111,10 +7127,10 @@
 	  , cx    = __webpack_require__(13)
 	  , _     = __webpack_require__(15) //omit
 	  , controlledInput  = __webpack_require__(86)
-	  , directions = __webpack_require__(98).directions
+	  , directions = __webpack_require__(102).directions
 	  , Input = __webpack_require__(105);
 	
-	var Btn = __webpack_require__(101)
+	var Btn = __webpack_require__(94)
 	  , propTypes = {
 	
 	      // -- controlled props -----------
@@ -8127,7 +8143,7 @@
 	"use strict";
 	
 	var React = __webpack_require__(1)
-	  , $     = __webpack_require__(99)
+	  , $     = __webpack_require__(92)
 	  , _     = __webpack_require__(15);
 	
 	module.exports = React.createClass({
@@ -8323,7 +8339,7 @@
 	var React   = __webpack_require__(1)
 	  , ReplaceTransitionGroup  = __webpack_require__(78)
 	  , _ = __webpack_require__(15)
-	  , $  =  __webpack_require__(99);
+	  , $  =  __webpack_require__(92);
 	
 	
 	var SlideChildGroup = React.createClass({displayName: 'SlideChildGroup',
@@ -16471,7 +16487,7 @@
 
 	'use strict';
 	var React  = __webpack_require__(1)
-	  , $ = __webpack_require__(99);
+	  , $ = __webpack_require__(92);
 	
 	
 	var PopupContent = React.createClass({displayName: 'PopupContent',
@@ -16977,825 +16993,6 @@
 /* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Btn = __webpack_require__(101);
-	
-	module.exports = React.createClass({displayName: 'exports',
-	
-	  propTypes: {
-	    label:          React.PropTypes.string.isRequired,
-	    labelId:        React.PropTypes.string,
-	
-	    upDisabled:     React.PropTypes.bool.isRequired,
-	    prevDisabled:   React.PropTypes.bool.isRequired,
-	    nextDisabled:   React.PropTypes.bool.isRequired,
-	    onViewChange:   React.PropTypes.func.isRequired,
-	    onMoveLeft:     React.PropTypes.func.isRequired,
-	    onMoveRight:    React.PropTypes.func.isRequired,
-	
-	    messages:       React.PropTypes.shape({
-	      moveBack:     React.PropTypes.string,
-	      moveForward:  React.PropTypes.string
-	    })
-	  },
-	
-	  mixins: [
-	    __webpack_require__(111),
-	    __webpack_require__(118)
-	  ],
-	
-	  getDefaultProps: function(){
-	    return {
-	      messages: {
-	        moveBack:     'navigate back',
-	        moveForward:  'navigate forward',
-	      }
-	    }
-	  },
-	
-	  render: function(){
-	    var rtl = this.isRtl();
-	
-	    return (
-	      React.createElement("div", {className: "rw-header"}, 
-	        React.createElement(Btn, {className: "rw-btn-left", 
-	          tabIndex: this.props.tabIndex, 
-	          onClick: this.props.onMoveLeft, 
-	          disabled: this.props.prevDisabled, 
-	          'aria-disabled': this.props.prevDisabled, 
-	          title: this.props.moveBack}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-view", 
-	          id: this.props.labelId, 
-	          tabIndex: this.props.tabIndex, 
-	          onClick: this.props.onViewChange, 
-	          disabled: this.props.upDisabled, 
-	          'aria-disabled': this.props.upDisabled}, 
-	           this.props.label
-	        ), 
-	        React.createElement(Btn, {className: "rw-btn-right", 
-	          tabIndex: this.props.tabIndex, 
-	          onClick: this.props.onMoveRight, 
-	          disabled: this.props.nextDisabled, 
-	          'aria-disabled': this.props.nextDisabled, 
-	          title: this.props.moveForward}, 
-	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
-	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
-	        )
-	      )
-	    )
-	  }
-	})
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(97)
-	  , directions = __webpack_require__(98).directions
-	  , _   = __webpack_require__(15)
-	  , Btn = __webpack_require__(101);
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'MonthView',
-	
-	  mixins: [
-	    __webpack_require__(110),
-	    __webpack_require__(118),
-	    __webpack_require__(119)('month', 'day'),
-	  ],
-	
-	  propTypes: {
-	    culture:          React.PropTypes.string,
-	    value:            React.PropTypes.instanceOf(Date),
-	    selectedDate:     React.PropTypes.instanceOf(Date),
-	    min:              React.PropTypes.instanceOf(Date),
-	    max:              React.PropTypes.instanceOf(Date),
-	
-	    format:           React.PropTypes.string,
-	
-	    onChange:         React.PropTypes.func.isRequired, //value is chosen
-	    onMoveLeft:       React.PropTypes.func,
-	    onMoveRight:      React.PropTypes.func
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , month = dates.visibleDays(this.props.value)
-	      , rows  = _.chunk(month, 7 );
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {role: "grid", 
-	        tabIndex: this.props.disabled ? '-1' : null, 
-	        className: "rw-calendar-grid", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("thead", null, 
-	          React.createElement("tr", null,  this._headers() )
-	        ), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	    
-	    return (
-	      React.createElement("tr", {key: 'week_' + i}, 
-	       row.map( function(day, idx)  {
-	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
-	          , selected = dates.eq(day, this.props.selectedDate, 'day');
-	
-	        return !dates.inRange(day, this.props.min, this.props.max)
-	            ? React.createElement("td", {key: 'day_' + idx, className: "rw-empty-cell"}, " ")
-	            : (React.createElement("td", {key: 'day_' + idx}, 
-	                React.createElement(Btn, {
-	                  tabIndex: "-1", 
-	                  onClick: this.props.onChange.bind(null, day), 
-	                  'aria-selected': selected, 
-	                  'aria-disabled': this.props.disabled, 
-	                  disabled: this.props.disabled, 
-	                  className: cx({
-	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
-	                    'rw-state-focus':    focused,
-	                    'rw-state-selected': selected,
-	                  }), 
-	                  id: focused ? id : undefined}, 
-	                  dates.format(day, 'dd', this.props.culture)
-	                )
-	              ))
-	      }.bind(this))
-	      )
-	    )
-	  },
-	
-	
-	  _headers: function(format){
-	    var days = dates.shortDaysOfWeek(this.props.culture);
-	
-	    return days.map( function(day, i)  
-	      {return React.createElement("th", {key: "header_" + i}, day);})
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'day', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'day',min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -1, 'week', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 1, 'week', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	
-	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
-	}
-
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(97)
-	  , directions = __webpack_require__(98).directions
-	  , Btn        = __webpack_require__(101)
-	  , _          = __webpack_require__(15)
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'YearView',
-	
-	  mixins: [
-	    __webpack_require__(110),
-	    __webpack_require__(118),
-	    __webpack_require__(119)('year', 'month')
-	  ],
-	
-	  propTypes: {
-	    culture:      React.PropTypes.string,
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	
-	  render: function(){
-	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , months = dates.monthsInYear(dates.year(this.props.value))
-	      , rows = _.chunk(months, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},   props , 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        ref: "table", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item');
-	    
-	    return (
-	      React.createElement("tr", {key: i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
-	          , selected = dates.eq(date, this.props.value,  'month');
-	
-	        return dates.inRange(date, this.props.min, this.props.max, 'month')
-	          ? (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id: focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected
-	                })}, 
-	                 dates.format(date, dates.formats.MONTH_NAME_ABRV, this.props.culture) 
-	              )
-	            ))
-	          : React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	      }.bind(this))
-	    ))
-	  },
-	
-	  focus: function(){
-	    this.refs.table.getDOMNode().focus();
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'month', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'month', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'month', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'month', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
-	}
-
-
-/***/ },
-/* 95 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , _ = __webpack_require__(15)
-	  , cx    = __webpack_require__(13)
-	  , dates = __webpack_require__(97)
-	  , directions = __webpack_require__(98).directions
-	  , Btn = __webpack_require__(101); 
-	
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'DecadeView',
-	
-	  mixins: [
-	    __webpack_require__(110),
-	    __webpack_require__(111),
-	    __webpack_require__(118),
-	    __webpack_require__(119)('decade', 'year')
-	  ],
-	
-	  propTypes: {
-	    culture:      React.PropTypes.string,
-	    
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-	      , years = getDecadeYears(this.props.value)
-	      , rows  = _.chunk(years, 4)
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	
-	        React.createElement("tbody", null, 
-	          rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date, this.state.focusedDate,  'year')
-	          , selected = dates.eq(date, this.props.value,  'year');
-	
-	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':      !inDecade(date, this.props.value),
-	                  'rw-state-focus':    focused,
-	                  'rw-state-selected': selected,
-	                })}, 
-	                 dates.format(date, dates.formats.YEAR, this.props.culture) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'year', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'year', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'year', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'year', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function inDecade(date, start){
-	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
-	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
-	}
-	
-	function getDecadeYears(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
-	
-	  return days.map( 
-	    function(i)  {return date = dates.add(date, 1, 'year');})
-	}
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
-	}
-
-
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React      = __webpack_require__(1)
-	  , cx         = __webpack_require__(13)
-	  , dates      = __webpack_require__(97)
-	  , directions = __webpack_require__(98).directions
-	  , Btn        = __webpack_require__(101)
-	  , _          = __webpack_require__(15); //omit
-	
-	var opposite = {
-	  LEFT:  directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'CenturyView',
-	
-	  mixins: [
-	    __webpack_require__(110),
-	    __webpack_require__(111),
-	    __webpack_require__(118),
-	    __webpack_require__(119)('century', 'decade')
-	  ],
-	
-	  propTypes: {
-	    culture:      React.PropTypes.string,
-	    value:        React.PropTypes.instanceOf(Date),
-	    min:          React.PropTypes.instanceOf(Date),
-	    max:          React.PropTypes.instanceOf(Date),
-	
-	    onChange:     React.PropTypes.func.isRequired
-	  },
-	
-	  render: function(){
-	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
-	      , years = getCenturyDecades(this.props.value)
-	      , rows  = _.chunk(years, 4);
-	
-	    return (
-	      React.createElement("table", React.__spread({},  props, 
-	        {tabIndex: this.props.disabled ? '-1' : "0", 
-	        role: "grid", 
-	        className: "rw-calendar-grid rw-nav-view", 
-	        'aria-activedescendant': this._id('_selected_item'), 
-	        onKeyUp: this._keyUp}), 
-	        React.createElement("tbody", null, 
-	           rows.map(this._row)
-	        )
-	      )
-	    )
-	  },
-	
-	  _row: function(row, i){
-	    var id = this._id('_selected_item')
-	
-	    return (
-	      React.createElement("tr", {key: 'row_' + i}, 
-	       row.map( function(date, i)  {
-	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
-	          , selected = dates.eq(date, this.props.value,  'decade')
-	          , d        = inRangeDate(date, this.props.min, this.props.max);
-	
-	        return !inRange(date, this.props.min, this.props.max)
-	          ? React.createElement("td", {key: i, className: "rw-empty-cell"}, " ")
-	          : (React.createElement("td", {key: i}, 
-	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
-	                tabIndex: "-1", 
-	                id:  focused ? id : undefined, 
-	                'aria-selected': selected, 
-	                'aria-disabled': this.props.disabled, 
-	                disabled: this.props.disabled, 
-	                className: cx({
-	                  'rw-off-range':       !inCentury(date, this.props.value),
-	                  'rw-state-focus':     focused,
-	                  'rw-state-selected':  selected,
-	                 })}, 
-	                 label(date, this.props.culture) 
-	              )
-	            ))
-	      }.bind(this))
-	    ))
-	  },
-	
-	
-	  move: function(date, direction){
-	    var min = this.props.min
-	      , max = this.props.max;
-	
-	    if ( this.isRtl() && opposite[direction])
-	      direction =  opposite[direction]
-	
-	    if ( direction === directions.LEFT)
-	      date = nextDate(date, -1, 'decade', min, max)
-	
-	    else if ( direction === directions.RIGHT)
-	      date = nextDate(date, 1, 'decade', min, max)
-	
-	    else if ( direction === directions.UP)
-	      date = nextDate(date, -4, 'decade', min, max)
-	
-	    else if ( direction === directions.DOWN)
-	      date = nextDate(date, 4, 'decade', min, max)
-	
-	    return date
-	  }
-	
-	});
-	
-	function label(date, culture){
-	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR, culture)
-	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR, culture)
-	}
-	
-	function inRangeDate(decade, min, max){
-	  return dates.max( dates.min(decade, max), min)
-	}
-	
-	function inRange(decade, min, max){
-	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
-	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
-	}
-	
-	function inCentury(date, start){
-	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
-	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
-	}
-	
-	function getCenturyDecades(_date){
-	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
-	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
-	
-	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
-	}
-	
-	
-	function nextDate(date, val, unit, min, max){
-	  var newDate = dates.add(date, val, unit)
-	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
-	}
-
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var dateMath = __webpack_require__(80)
-	  , globalize = __webpack_require__(124)
-	  , _ = __webpack_require__(15); //extend
-	
-	var dates = module.exports = _.extend(dateMath, {
-	  // wrapper methods for isolating globalize use throughout the lib
-	  // looking forward towards the 1.0 release
-	  culture: function(culture){
-	    return culture
-	      ? globalize.findClosestCulture(culture)
-	      : globalize.culture()
-	  },
-	
-	  startOfWeek: function(culture){
-	    culture = dates.culture(culture)
-	
-	    if (!culture || !culture.calendar)
-	      return 0
-	
-	    return culture.calendar.firstDay || 0
-	  },
-	
-	  parse: function(date, format, culture){
-	    return globalize.parseDate(date, format, culture)
-	  },
-	
-	  format: function(date, format, culture){
-	    return globalize.format(date, format, culture)
-	  },
-	  
-	  //-------------------------------------
-	
-	  shortDaysOfWeek: function (culture){
-	    var start = dates.startOfWeek(culture)
-	      , days, front;
-	
-	    culture = dates.culture(culture)
-	
-	    if (culture && culture.calendar){
-	      days = culture.calendar.days.namesShort.slice()
-	
-	      if(start === 0 ) 
-	        return days
-	      
-	      front = days.splice(0, start)
-	      days  = days.concat(front)
-	      return days
-	    }
-	  },
-	
-	  // daysOfWeek: function(date, format, culture){
-	  //   var range = [0,1,2,3,4,5,6]
-	  //   if (arguments.length === 1){
-	  //     format = date
-	  //     date = new Date()
-	  //   }
-	
-	  //   format = format || 'do'
-	
-	  //   return range.map(i => dates.format(dates.weekday(date, i), format, culture) )
-	  // },
-	
-	  // months: function(date, format, culture){
-	  //   var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	
-	  //   if (arguments.length === 1){
-	  //     format = date
-	  //     date = new Date()
-	  //   }
-	  //   format = format || dates.formats.DAY_NAME_ABRV
-	
-	  //   return months.map( i => dates.format(dates.month(date, i), format, culture))
-	  // },
-	
-	  monthsInYear: function(year){
-	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
-	      , date   = new Date(year, 0, 1)
-	
-	    return  months.map( function(i)  {return dates.month(date, i);})
-	  },
-	
-	  firstOfDecade: function(date){
-	    var decade = dates.year(date) % 10
-	
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfDecade: function(date){
-	    return dates.add(dates.firstOfDecade(date), 9, 'year')
-	  },
-	
-	  firstOfCentury: function(date){
-	    var decade = dates.year(date) % 100
-	    return dates.subtract(date, decade, 'year')
-	  },
-	
-	  lastOfCentury: function(date){
-	    return dates.add(dates.firstOfCentury(date), 99, 'year')
-	  },
-	
-	  firstVisibleDay: function(date){
-	    var firstOfMonth = dates.startOf(date, 'month')
-	    return dates.startOf(firstOfMonth, 'week');
-	  },
-	
-	  lastVisibleDay: function(date){
-	    var endOfMonth = dates.endOf(date, 'month')
-	    return dates.endOf(endOfMonth, 'week');
-	  },
-	
-	  visibleDays: function(date){
-	    var current = dates.firstVisibleDay(date)
-	      , last = dates.lastVisibleDay(date)
-	      , days = [];
-	
-	    while( dates.lte(current, last, 'day') ) {
-	      days.push(current)
-	      current = dates.add(current, 1, 'day')
-	    }
-	
-	    return days
-	  },
-	
-	  merge: function(date, time){
-	    if( time == null && date == null)
-	      return null
-	
-	    if( time == null) time = new Date()
-	    if( date == null) date = new Date()
-	
-	    date = dates.startOf(date, 'day')
-	    date = dates.hours(date,        dates.hours(time))
-	    date = dates.minutes(date,      dates.minutes(time))
-	    date = dates.seconds(date,      dates.seconds(time))
-	    return dates.milliseconds(date, dates.milliseconds(time))
-	  },
-	
-	  sameMonth: function(dateA, dateB){
-	    return dates.eq(dateA, dateB, 'month')
-	  },
-	
-	  today: function() {
-	    return this.startOf(new Date(), 'day')
-	  },
-	
-	  yesterday: function() {
-	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
-	  },
-	
-	  tomorrow: function() {
-	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
-	  },
-	
-	  formats: {
-	    DAY_OF_MONTH:    'dd',
-	    DAY_NAME_SHORT:  null,
-	    MONTH_NAME_ABRV: 'MMM',
-	    MONTH_YEAR:      'MMMM yyyy',
-	    YEAR:            'yyyy'
-	  }
-	
-	})
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _ = __webpack_require__(15); //object
-	
-	var views = {
-	    MONTH:   'month',
-	    YEAR:    'year',
-	    DECADE:  'decade',
-	    CENTURY: 'century'
-	  }
-	
-	module.exports = {
-	
-	  directions: {
-	    LEFT:  'LEFT',
-	    RIGHT: 'RIGHT',
-	    UP:    'UP',
-	    DOWN:  'DOWN'
-	  },
-	
-	  datePopups: {
-	    TIME:     'time',
-	    CALENDAR: 'calendar'
-	  },
-	
-	  calendarViews: views,
-	
-	  calendarViewHierarchy: _.object([
-	    [views.MONTH,   views.YEAR],
-	    [views.YEAR,    views.DECADE],
-	    [views.DECADE,  views.CENTURY]
-	  ]),
-	
-	  calendarViewUnits: _.object([
-	    [views.MONTH,   views.DAY],
-	    [views.YEAR,    views.MONTH],
-	    [views.DECADE,  views.YEAR],
-	    [views.CENTURY, views.DECADE],
-	  ])
-	}
-
-
-/***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 	var has = Object.prototype.hasOwnProperty
 	  , transitionTiming, transitionDuration
@@ -18087,7 +17284,7 @@
 	}
 
 /***/ },
-/* 100 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18119,7 +17316,7 @@
 	module.exports = common
 
 /***/ },
-/* 101 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18139,12 +17336,12 @@
 	})
 
 /***/ },
-/* 102 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , caretPos = __webpack_require__(120);
+	  , caretPos = __webpack_require__(121);
 	
 	module.exports = React.createClass({displayName: 'exports',
 	
@@ -18216,12 +17413,831 @@
 
 
 /***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Btn = __webpack_require__(94);
+	
+	module.exports = React.createClass({displayName: 'exports',
+	
+	  propTypes: {
+	    label:          React.PropTypes.string.isRequired,
+	    labelId:        React.PropTypes.string,
+	
+	    upDisabled:     React.PropTypes.bool.isRequired,
+	    prevDisabled:   React.PropTypes.bool.isRequired,
+	    nextDisabled:   React.PropTypes.bool.isRequired,
+	    onViewChange:   React.PropTypes.func.isRequired,
+	    onMoveLeft:     React.PropTypes.func.isRequired,
+	    onMoveRight:    React.PropTypes.func.isRequired,
+	
+	    messages:       React.PropTypes.shape({
+	      moveBack:     React.PropTypes.string,
+	      moveForward:  React.PropTypes.string
+	    })
+	  },
+	
+	  mixins: [
+	    __webpack_require__(111),
+	    __webpack_require__(118)
+	  ],
+	
+	  getDefaultProps: function(){
+	    return {
+	      messages: {
+	        moveBack:     'navigate back',
+	        moveForward:  'navigate forward',
+	      }
+	    }
+	  },
+	
+	  render: function(){
+	    var rtl = this.isRtl();
+	
+	    return (
+	      React.createElement("div", {className: "rw-header"}, 
+	        React.createElement(Btn, {className: "rw-btn-left", 
+	          tabIndex: "-1", 
+	          onClick: this.props.onMoveLeft, 
+	          disabled: this.props.prevDisabled, 
+	          'aria-disabled': this.props.prevDisabled, 
+	          title: this.props.moveBack}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveBack))
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-view", 
+	          id: this.props.labelId, 
+	          tabIndex: "-1", 
+	          onClick: this.props.onViewChange, 
+	          disabled: this.props.upDisabled, 
+	          'aria-disabled': this.props.upDisabled}, 
+	           this.props.label
+	        ), 
+	        React.createElement(Btn, {className: "rw-btn-right", 
+	          tabIndex: "-1", 
+	          onClick: this.props.onMoveRight, 
+	          disabled: this.props.nextDisabled, 
+	          'aria-disabled': this.props.nextDisabled, 
+	          title: this.props.moveForward}, 
+	          React.createElement("i", {className: "rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}, 
+	            React.createElement("span", {className: "rw-sr"}, this.props.moveForward))
+	        )
+	      )
+	    )
+	  }
+	})
+
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , cx    = __webpack_require__(13)
+	  , dates = __webpack_require__(101)
+	  , directions = __webpack_require__(102).directions
+	  , _   = __webpack_require__(15)
+	  , Btn = __webpack_require__(94);
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'MonthView',
+	
+	  mixins: [
+	    __webpack_require__(110),
+	    __webpack_require__(118),
+	    __webpack_require__(119)('month', 'day'),
+	  ],
+	
+	  propTypes: {
+	    culture:          React.PropTypes.string,
+	    value:            React.PropTypes.instanceOf(Date),
+	    selectedDate:     React.PropTypes.instanceOf(Date),
+	    min:              React.PropTypes.instanceOf(Date),
+	    max:              React.PropTypes.instanceOf(Date),
+	
+	    format:           React.PropTypes.string,
+	
+	    onChange:         React.PropTypes.func.isRequired, //value is chosen
+	    onMoveLeft:       React.PropTypes.func,
+	    onMoveRight:      React.PropTypes.func
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , month = dates.visibleDays(this.props.value)
+	      , rows  = _.chunk(month, 7 );
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {role: "grid", 
+	        tabIndex: this.props.disabled ? '-1' : null, 
+	        className: "rw-calendar-grid", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("thead", null, 
+	          React.createElement("tr", null,  this._headers() )
+	        ), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	    
+	    return (
+	      React.createElement("tr", {key: 'week_' + i, role: "row"}, 
+	       row.map( function(day, idx)  {
+	        var focused  = dates.eq(day, this.state.focusedDate, 'day')
+	          , selected = dates.eq(day, this.props.selectedDate, 'day');
+	
+	        return !dates.inRange(day, this.props.min, this.props.max)
+	            ? React.createElement("td", {key: 'day_' + idx, role: "gridcell", className: "rw-empty-cell"}, " ")
+	            : (React.createElement("td", {key: 'day_' + idx, role: "gridcell"}, 
+	                React.createElement(Btn, {
+	                  tabIndex: "-1", 
+	                  onClick: this.props.onChange.bind(null, day), 
+	                  'aria-selected': selected, 
+	                  'aria-disabled': this.props.disabled, 
+	                  disabled: this.props.disabled, 
+	                  className: cx({
+	                    'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
+	                    'rw-state-focus':    focused,
+	                    'rw-state-selected': selected,
+	                  }), 
+	                  id: focused ? id : undefined}, 
+	                  dates.format(day, 'dd', this.props.culture)
+	                )
+	              ))
+	      }.bind(this))
+	      )
+	    )
+	  },
+	
+	
+	  _headers: function(format){
+	    var days = dates.shortDaysOfWeek(this.props.culture);
+	
+	    return days.map( function(day, i)  
+	      {return React.createElement("th", {key: "header_" + i}, day);})
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'day', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'day',min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -1, 'week', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 1, 'week', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	
+	  return dates.inRange(newDate, min, max, 'day') ? newDate : date
+	}
+
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(13)
+	  , dates      = __webpack_require__(101)
+	  , directions = __webpack_require__(102).directions
+	  , Btn        = __webpack_require__(94)
+	  , _          = __webpack_require__(15)
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'YearView',
+	
+	  mixins: [
+	    __webpack_require__(110),
+	    __webpack_require__(118),
+	    __webpack_require__(119)('year', 'month')
+	  ],
+	
+	  propTypes: {
+	    culture:      React.PropTypes.string,
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	
+	  render: function(){
+	    var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , months = dates.monthsInYear(dates.year(this.props.value))
+	      , rows = _.chunk(months, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},   props , 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        ref: "table", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item');
+	    
+	    return (
+	      React.createElement("tr", {key: i, role: "row"}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date, this.state.focusedDate,  'month')
+	          , selected = dates.eq(date, this.props.value,  'month');
+	
+	        return dates.inRange(date, this.props.min, this.props.max, 'month')
+	          ? (React.createElement("td", {key: i, role: "gridcell"}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id: focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected
+	                })}, 
+	                 dates.format(date, dates.formats.MONTH_NAME_ABRV, this.props.culture) 
+	              )
+	            ))
+	          : React.createElement("td", {key: i, className: "rw-empty-cell", role: "gridcell"}, " ")
+	      }.bind(this))
+	    ))
+	  },
+	
+	  focus: function(){
+	    this.refs.table.getDOMNode().focus();
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'month', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'month', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'month', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'month', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'month') ? newDate : date
+	}
+
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , _ = __webpack_require__(15)
+	  , cx    = __webpack_require__(13)
+	  , dates = __webpack_require__(101)
+	  , directions = __webpack_require__(102).directions
+	  , Btn = __webpack_require__(94); 
+	
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'DecadeView',
+	
+	  mixins: [
+	    __webpack_require__(110),
+	    __webpack_require__(111),
+	    __webpack_require__(118),
+	    __webpack_require__(119)('decade', 'year')
+	  ],
+	
+	  propTypes: {
+	    culture:      React.PropTypes.string,
+	    
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
+	      , years = getDecadeYears(this.props.value)
+	      , rows  = _.chunk(years, 4)
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	
+	        React.createElement("tbody", null, 
+	          rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i, role: "row"}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date, this.state.focusedDate,  'year')
+	          , selected = dates.eq(date, this.props.value,  'year');
+	
+	        return !dates.inRange(date, this.props.min, this.props.max, 'year')
+	          ? React.createElement("td", {key: i, role: "gridcell", className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i, role: "gridcell"}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, date), tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':      !inDecade(date, this.props.value),
+	                  'rw-state-focus':    focused,
+	                  'rw-state-selected': selected,
+	                })}, 
+	                 dates.format(date, dates.formats.YEAR, this.props.culture) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'year', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'year', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'year', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'year', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function inDecade(date, start){
+	  return dates.gte(date, dates.startOf(start, 'decade'), 'year')
+	      && dates.lte(date, dates.endOf(start,'decade'),  'year')
+	}
+	
+	function getDecadeYears(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
+	
+	  return days.map( 
+	    function(i)  {return date = dates.add(date, 1, 'year');})
+	}
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'year') ? newDate : date
+	}
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React      = __webpack_require__(1)
+	  , cx         = __webpack_require__(13)
+	  , dates      = __webpack_require__(101)
+	  , directions = __webpack_require__(102).directions
+	  , Btn        = __webpack_require__(94)
+	  , _          = __webpack_require__(15); //omit
+	
+	var opposite = {
+	  LEFT:  directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'CenturyView',
+	
+	  mixins: [
+	    __webpack_require__(110),
+	    __webpack_require__(111),
+	    __webpack_require__(118),
+	    __webpack_require__(119)('century', 'decade')
+	  ],
+	
+	  propTypes: {
+	    culture:      React.PropTypes.string,
+	    value:        React.PropTypes.instanceOf(Date),
+	    min:          React.PropTypes.instanceOf(Date),
+	    max:          React.PropTypes.instanceOf(Date),
+	
+	    onChange:     React.PropTypes.func.isRequired
+	  },
+	
+	  render: function(){
+	    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
+	      , years = getCenturyDecades(this.props.value)
+	      , rows  = _.chunk(years, 4);
+	
+	    return (
+	      React.createElement("table", React.__spread({},  props, 
+	        {tabIndex: this.props.disabled ? '-1' : "0", 
+	        role: "grid", 
+	        className: "rw-calendar-grid rw-nav-view", 
+	        'aria-activedescendant': this._id('_selected_item'), 
+	        onKeyUp: this._keyUp}), 
+	        React.createElement("tbody", null, 
+	           rows.map(this._row)
+	        )
+	      )
+	    )
+	  },
+	
+	  _row: function(row, i){
+	    var id = this._id('_selected_item')
+	
+	    return (
+	      React.createElement("tr", {key: 'row_' + i, role: "row"}, 
+	       row.map( function(date, i)  {
+	        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
+	          , selected = dates.eq(date, this.props.value,  'decade')
+	          , d        = inRangeDate(date, this.props.min, this.props.max);
+	
+	        return !inRange(date, this.props.min, this.props.max)
+	          ? React.createElement("td", {key: i, role: "gridcell", className: "rw-empty-cell"}, " ")
+	          : (React.createElement("td", {key: i, role: "gridcell"}, 
+	              React.createElement(Btn, {onClick: this.props.onChange.bind(null, d), 
+	                tabIndex: "-1", 
+	                id:  focused ? id : undefined, 
+	                'aria-selected': selected, 
+	                'aria-disabled': this.props.disabled, 
+	                disabled: this.props.disabled, 
+	                className: cx({
+	                  'rw-off-range':       !inCentury(date, this.props.value),
+	                  'rw-state-focus':     focused,
+	                  'rw-state-selected':  selected,
+	                 })}, 
+	                 label(date, this.props.culture) 
+	              )
+	            ))
+	      }.bind(this))
+	    ))
+	  },
+	
+	
+	  move: function(date, direction){
+	    var min = this.props.min
+	      , max = this.props.max;
+	
+	    if ( this.isRtl() && opposite[direction])
+	      direction =  opposite[direction]
+	
+	    if ( direction === directions.LEFT)
+	      date = nextDate(date, -1, 'decade', min, max)
+	
+	    else if ( direction === directions.RIGHT)
+	      date = nextDate(date, 1, 'decade', min, max)
+	
+	    else if ( direction === directions.UP)
+	      date = nextDate(date, -4, 'decade', min, max)
+	
+	    else if ( direction === directions.DOWN)
+	      date = nextDate(date, 4, 'decade', min, max)
+	
+	    return date
+	  }
+	
+	});
+	
+	function label(date, culture){
+	  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR, culture)
+	    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR, culture)
+	}
+	
+	function inRangeDate(decade, min, max){
+	  return dates.max( dates.min(decade, max), min)
+	}
+	
+	function inRange(decade, min, max){
+	  return dates.gte(decade, dates.startOf(min, 'decade'), 'year')
+	      && dates.lte(decade, dates.endOf(max, 'decade'),  'year')
+	}
+	
+	function inCentury(date, start){
+	  return dates.gte(date, dates.startOf(start, 'century'), 'year')
+	      && dates.lte(date, dates.endOf(start, 'century'),  'year')
+	}
+	
+	function getCenturyDecades(_date){
+	  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+	    , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
+	
+	  return days.map( function(i)  {return date = dates.add(date, 10, 'year');})
+	}
+	
+	
+	function nextDate(date, val, unit, min, max){
+	  var newDate = dates.add(date, val, unit)
+	  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
+	}
+
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var dateMath = __webpack_require__(80)
+	  , globalize = __webpack_require__(124)
+	  , _ = __webpack_require__(15); //extend
+	
+	var dates = module.exports = _.extend(dateMath, {
+	  // wrapper methods for isolating globalize use throughout the lib
+	  // looking forward towards the 1.0 release
+	  culture: function(culture){
+	    return culture
+	      ? globalize.findClosestCulture(culture)
+	      : globalize.culture()
+	  },
+	
+	  startOfWeek: function(culture){
+	    culture = dates.culture(culture)
+	
+	    if (!culture || !culture.calendar)
+	      return 0
+	
+	    return culture.calendar.firstDay || 0
+	  },
+	
+	  parse: function(date, format, culture){
+	    return globalize.parseDate(date, format, culture)
+	  },
+	
+	  format: function(date, format, culture){
+	    return globalize.format(date, format, culture)
+	  },
+	  
+	  //-------------------------------------
+	
+	  shortDaysOfWeek: function (culture){
+	    var start = dates.startOfWeek(culture)
+	      , days, front;
+	
+	    culture = dates.culture(culture)
+	
+	    if (culture && culture.calendar){
+	      days = culture.calendar.days.namesShort.slice()
+	
+	      if(start === 0 ) 
+	        return days
+	      
+	      front = days.splice(0, start)
+	      days  = days.concat(front)
+	      return days
+	    }
+	  },
+	
+	  // daysOfWeek: function(date, format, culture){
+	  //   var range = [0,1,2,3,4,5,6]
+	  //   if (arguments.length === 1){
+	  //     format = date
+	  //     date = new Date()
+	  //   }
+	
+	  //   format = format || 'do'
+	
+	  //   return range.map(i => dates.format(dates.weekday(date, i), format, culture) )
+	  // },
+	
+	  // months: function(date, format, culture){
+	  //   var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	
+	  //   if (arguments.length === 1){
+	  //     format = date
+	  //     date = new Date()
+	  //   }
+	  //   format = format || dates.formats.DAY_NAME_ABRV
+	
+	  //   return months.map( i => dates.format(dates.month(date, i), format, culture))
+	  // },
+	
+	  monthsInYear: function(year){
+	    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+	      , date   = new Date(year, 0, 1)
+	
+	    return  months.map( function(i)  {return dates.month(date, i);})
+	  },
+	
+	  firstOfDecade: function(date){
+	    var decade = dates.year(date) % 10
+	
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfDecade: function(date){
+	    return dates.add(dates.firstOfDecade(date), 9, 'year')
+	  },
+	
+	  firstOfCentury: function(date){
+	    var decade = dates.year(date) % 100
+	    return dates.subtract(date, decade, 'year')
+	  },
+	
+	  lastOfCentury: function(date){
+	    return dates.add(dates.firstOfCentury(date), 99, 'year')
+	  },
+	
+	  firstVisibleDay: function(date){
+	    var firstOfMonth = dates.startOf(date, 'month')
+	    return dates.startOf(firstOfMonth, 'week');
+	  },
+	
+	  lastVisibleDay: function(date){
+	    var endOfMonth = dates.endOf(date, 'month')
+	    return dates.endOf(endOfMonth, 'week');
+	  },
+	
+	  visibleDays: function(date){
+	    var current = dates.firstVisibleDay(date)
+	      , last = dates.lastVisibleDay(date)
+	      , days = [];
+	
+	    while( dates.lte(current, last, 'day') ) {
+	      days.push(current)
+	      current = dates.add(current, 1, 'day')
+	    }
+	
+	    return days
+	  },
+	
+	  merge: function(date, time){
+	    if( time == null && date == null)
+	      return null
+	
+	    if( time == null) time = new Date()
+	    if( date == null) date = new Date()
+	
+	    date = dates.startOf(date, 'day')
+	    date = dates.hours(date,        dates.hours(time))
+	    date = dates.minutes(date,      dates.minutes(time))
+	    date = dates.seconds(date,      dates.seconds(time))
+	    return dates.milliseconds(date, dates.milliseconds(time))
+	  },
+	
+	  sameMonth: function(dateA, dateB){
+	    return dates.eq(dateA, dateB, 'month')
+	  },
+	
+	  today: function() {
+	    return this.startOf(new Date(), 'day')
+	  },
+	
+	  yesterday: function() {
+	    return this.add(this.startOf(new Date(), 'day'), -1, 'day')
+	  },
+	
+	  tomorrow: function() {
+	    return this.add(this.startOf(new Date(), 'day'), 1, 'day')
+	  },
+	
+	  formats: {
+	    DAY_OF_MONTH:    'dd',
+	    DAY_NAME_SHORT:  null,
+	    MONTH_NAME_ABRV: 'MMM',
+	    MONTH_YEAR:      'MMMM yyyy',
+	    YEAR:            'yyyy'
+	  }
+	
+	})
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _ = __webpack_require__(15); //object
+	
+	var views = {
+	    MONTH:   'month',
+	    YEAR:    'year',
+	    DECADE:  'decade',
+	    CENTURY: 'century'
+	  }
+	
+	module.exports = {
+	
+	  directions: {
+	    LEFT:  'LEFT',
+	    RIGHT: 'RIGHT',
+	    UP:    'UP',
+	    DOWN:  'DOWN'
+	  },
+	
+	  datePopups: {
+	    TIME:     'time',
+	    CALENDAR: 'calendar'
+	  },
+	
+	  calendarViews: views,
+	
+	  calendarViewHierarchy: _.object([
+	    [views.MONTH,   views.YEAR],
+	    [views.YEAR,    views.DECADE],
+	    [views.DECADE,  views.CENTURY]
+	  ]),
+	
+	  calendarViewUnits: _.object([
+	    [views.MONTH,   views.DAY],
+	    [views.YEAR,    views.MONTH],
+	    [views.DECADE,  views.YEAR],
+	    [views.CENTURY, views.DECADE],
+	  ])
+	}
+
+
+/***/ },
 /* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(97)
+	  , dates = __webpack_require__(101)
 	  , List = __webpack_require__(89)
 	  , CustomPropTypes  = __webpack_require__(87)
 	  , _ = __webpack_require__(15) // omit
@@ -18414,7 +18430,7 @@
 	'use strict';
 	var React = __webpack_require__(1)
 	  , cx = __webpack_require__(13)
-	  , dates = __webpack_require__(97);
+	  , dates = __webpack_require__(101);
 	
 	module.exports = React.createClass({
 	
@@ -18527,7 +18543,7 @@
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , setter  = __webpack_require__(121)
+	  , setter  = __webpack_require__(120)
 	  , globalize = __webpack_require__(124);
 	
 	
@@ -18687,7 +18703,7 @@
 	var React = __webpack_require__(1)
 	  , _     = __webpack_require__(15)
 	  , cx    = __webpack_require__(13)
-	  , Btn   = __webpack_require__(101)
+	  , Btn   = __webpack_require__(94)
 	
 	module.exports = React.createClass({
 	  
@@ -18854,7 +18870,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $ = __webpack_require__(99)
+	var $ = __webpack_require__(92)
 	
 	module.exports = function scrollTo( selected, scrollParent ) {
 	  var offset = $.offset(selected)
@@ -21039,7 +21055,7 @@
 
 	'use strict';
 	var React  = __webpack_require__(1)
-	  , filter = __webpack_require__(100)
+	  , filter = __webpack_require__(93)
 	  , helper = __webpack_require__(112)
 	  , _      = __webpack_require__(15);
 	
@@ -21086,7 +21102,7 @@
 
 	'use strict';
 	var React   = __webpack_require__(1)
-	  , filters = __webpack_require__(100)
+	  , filters = __webpack_require__(93)
 	  , helper  = __webpack_require__(112)
 	  , _      = __webpack_require__(15);
 	
@@ -21197,7 +21213,7 @@
 	'use strict';
 	var React = __webpack_require__(1)
 	  , _ =  __webpack_require__(15)
-	  , filter = __webpack_require__(100)
+	  , filter = __webpack_require__(93)
 	  , helper = __webpack_require__(112)
 	
 	module.exports = {
@@ -21274,8 +21290,8 @@
 
 	'use strict';
 	var React = __webpack_require__(1)
-	  , dates = __webpack_require__(97)
-	  , directions = __webpack_require__(98).directions;
+	  , dates = __webpack_require__(101)
+	  , directions = __webpack_require__(102).directions;
 	
 	module.exports = function(viewUnit, smallUnit){
 	
@@ -21353,6 +21369,22 @@
 /* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	module.exports = function stateSetter(key){
+	  return function(val){
+	    var state = {}
+	
+	    state[key] = val
+	    this.setState(state)
+	    return this
+	  }
+	}
+
+/***/ },
+/* 121 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	module.exports = function caret(el, start, end ){
@@ -21407,22 +21439,6 @@
 	    }
 	  }
 	  catch(e) { /* not focused or not visible */ }
-	}
-
-/***/ },
-/* 121 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	module.exports = function stateSetter(key){
-	  return function(val){
-	    var state = {}
-	
-	    state[key] = val
-	    this.setState(state)
-	    return this
-	  }
 	}
 
 /***/ },

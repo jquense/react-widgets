@@ -204,9 +204,9 @@ var DateTimePicker = React.createClass({
 
           <Calendar {...calProps }
             ref="calPopup"
+            tabIndex='-1'
             id={dateListID}
             value={value}
-            maintainFocus={false}
             aria-hidden={ !this.props.open }
             onChange={this._maybeHandle(this._selectDate)}/>
         </Popup>
