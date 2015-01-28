@@ -2,8 +2,7 @@
 var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   , cx = require('./util/cx')
-  , _  = require('./util/_')
-  , scrollTo  = require('./util/scroll');
+  , _  = require('./util/_');
 
 
 module.exports = React.createClass({
@@ -11,6 +10,7 @@ module.exports = React.createClass({
   displayName: 'List',
 
   mixins: [ 
+    require('./mixins/WidgetMixin'),
     require('./mixins/DataHelpersMixin'),
     require('./mixins/ListMovementMixin')
   ],
@@ -50,12 +50,12 @@ module.exports = React.createClass({
   },
 
 
-  componentDidMount(prevProps, prevState){
+  componentDidMount(){
     this._setScrollPosition()
   },
 
-  componentDidUpdate(prevProps, prevState){
-    if ( prevState.focused !== this.props.focused)
+  componentDidUpdate(prevProps){
+    if ( prevProps.focused !== this.props.focused)
       this._setScrollPosition()
   },
 
@@ -90,7 +90,7 @@ module.exports = React.createClass({
     
 		return (
 			<ul { ...props } 
-        className={ (className + '') + ' rw-list' } 
+        className={ (className || '') + ' rw-list' } 
         ref='scrollable'
         role='listbox'>
           { items }
@@ -106,13 +106,11 @@ module.exports = React.createClass({
   _setScrollPosition: function(){
     var list = this.getDOMNode()
       , idx  = this._data().indexOf(this.props.focused)
-      , selected = list.children[idx]
-      , handler  = this.props.onMove || scrollTo;
+      , selected = list.children[idx];
 
     if( !selected ) return 
 
-    // timeout allows for element to become visible
-    setTimeout(() => handler(selected, list))
+    this.notify('onMove', [selected, list])
   }
 
 })

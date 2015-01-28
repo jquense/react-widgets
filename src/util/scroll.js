@@ -1,5 +1,6 @@
 'use strict';
 var $ = require('./dom')
+  , raf = require('raf-component')
 
 module.exports = function scrollTo( selected, scrollParent ) {
   var offset = $.offset(selected)
@@ -34,7 +35,9 @@ module.exports = function scrollTo( selected, scrollParent ) {
               ? (bottom - listHeight)
               : scrollTop
 
-    $.scrollTop(list, scrollTop)
+    var id = raf(() => $.scrollTop(list, scrollTop))
+
+    return () => raf.cancel(id)
 }
 
 function getWindow( node ) {

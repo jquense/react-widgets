@@ -2,6 +2,7 @@
 var React           = require('react')
   , _               = require('./util/_')
   , cx              = require('./util/cx')
+  
   , controlledInput = require('./util/controlledInput')
   , CustomPropTypes = require('./util/propTypes')
   , Popup           = require('./Popup.jsx')
@@ -62,6 +63,7 @@ var DropdownList = React.createClass({
     require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/DataHelpersMixin'),
+    require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin')
   ],
 
@@ -149,7 +151,9 @@ var DropdownList = React.createClass({
               : this._dataText(valueItem)
           }
         </div>
-        <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
+        <Popup open={this.props.open} 
+          onRequestClose={this.close} 
+          duration={this.props.duration}>
           <div>
             <List ref="list" 
               {..._.pick(this.props, Object.keys(List.type.propTypes))}
@@ -157,7 +161,8 @@ var DropdownList = React.createClass({
               aria-hidden={!this.props.open}
               selected={this.state.selectedItem}
               focused ={this.props.open ? this.state.focusedItem : null}
-              onSelect={this._maybeHandle(this._onSelect)}/>
+              onSelect={this._maybeHandle(this._onSelect)}
+              onMove={this._scrollTo}/>
           </div>
         </Popup>
 			</div>

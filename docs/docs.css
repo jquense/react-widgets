@@ -231,6 +231,7 @@ pre {
 }
 
 .editable-example  {
+  display: flex;
   position: relative;
   margin:  0;
   margin-bottom: 20px;

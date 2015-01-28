@@ -77,7 +77,7 @@ var App = React.createClass({
     return (
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
-        <section className="example" style={{ height: '400px', overflow: 'auto' }}>
+        <section className="example">
           <div style={{ height: 150 }}>
             sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
           </div>
@@ -87,9 +87,9 @@ var App = React.createClass({
             data={this.state.data}
             value={this.state.selectValues}
             disabled={[1 ,6]}
-            onMove={()=>{}}
             busy={false}
             name="super_name"
+            multiple
             onChange={change.bind(null, 'selectValues')}/>
         </section>
        
@@ -126,7 +126,7 @@ var App = React.createClass({
               onChange={change.bind(null, 'comboboxValue')}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            <Select
+            {/*<Select
               isRtl={false}
               data={ this.state.data }
               placeholder="hi i am a placeholder"
@@ -138,7 +138,7 @@ var App = React.createClass({
               onCreate={create}
               tagComponent={ListItem}
               itemComponent={ListItem}
-              onChange={change.bind(null, 'selectValues')}/>
+              onChange={change.bind(null, 'selectValues')}/>*/}
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
             <DatePicker

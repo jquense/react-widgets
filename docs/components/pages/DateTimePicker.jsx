@@ -68,7 +68,7 @@ var DateTimePicker = React.createClass({
         <p>
           The current selected date, should be a <code>Date</code> instance or <code>null</code>.
         </p>
-        <EditableExample codeText={require('../examples/valuePicker')(widgetName, ['new Date()'])}/>
+        <EditableExample codeText={require('../examples/valuePicker')(widgetName, ['new Date()', null])}/>
 
         <PropHeader type='Function(Date? date, String dateStr)'>onChange</PropHeader>
         <p>
@@ -76,7 +76,7 @@ var DateTimePicker = React.createClass({
           current <code>Date</code> object (or null if it was not parseable), and the second argument is
           a <code>string</code> representation of the date value, formated by the <code>format</code> prop.
         </p>
-        <EditableExample codeText={require('../examples/onChangePicker')(widgetName, ['new Date()'])}/>
+        <EditableExample codeText={require('../examples/onChangePicker')(widgetName, ['new Date()', null])}/>
 
         <PropHeader type='Function(Date? value)'>onSelect</PropHeader>
         <p>
@@ -137,6 +137,7 @@ var DateTimePicker = React.createClass({
           Acceptable values are:
           <code>"month"</code> <code>"year"</code> <code>"decade"</code> <code>"century"</code>
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'initialView', '"year"')}/>
 
         <PropHeader type='Enum' default='"century"'>finalView</PropHeader>
         <p>
@@ -147,6 +148,7 @@ var DateTimePicker = React.createClass({
           Acceptable values are:
           <code>"month"</code> <code>"year"</code> <code>"decade"</code> <code>"century"</code>
         </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'finalView', '"year"')}/>
 
         <PropHeader type='[Boolean, String]' default='false' controllable handler='onToggle'>open</PropHeader>
         <p>
@@ -157,12 +159,14 @@ var DateTimePicker = React.createClass({
         <p>
           Acceptable values are: <code>false</code> <code>"calendar"</code> <code>"time"</code>
         </p>
+        <EditableExample codeText={require('../examples/openDateTime')(widgetName)}/>
 
         <PropHeader type='Function(Boolean isOpen)'>onToggle</PropHeader>
         <p>
           Called when the {widgetName} is about to open or close. <code>onToggle</code> should be used
           when the <code>open</code> prop is {'set'} otherwise the widget will never open or close.
         </p>
+
         <PropHeader type='Number' default="250">duration</PropHeader>
         <p>
           The speed, in milliseconds, of the either dropdown animation.

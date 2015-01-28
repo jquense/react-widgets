@@ -13,6 +13,7 @@ var widgets = (<div>
     <${widgetName} parse={formats}/>
 {/* the naive approach: just use the Date constructor */}
     <${widgetName} parse={str => new Date(str)}/>
+    <span>Try typing a date using the specified formats</span>
   </div>)
 
 React.render(widgets, mountNode);`

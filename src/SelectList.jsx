@@ -139,12 +139,22 @@ var SelectList = React.createClass({
           focused={focusedItem}
           optID ={optID}
           itemComponent={this.state.ListItem}
-
-          onMove={ selected => scrollTo(selected) }/> {/* we need to kill the scroll parent on this one */}
+          onMove={ this._scrollTo }/>
       </div> 
     );
   },
 
+  _scrollTo(selected, list) {
+    var handler = this.props.onMove; 
+
+    if ( handler ) 
+      handler(selected, list)
+    else {
+      this._scrollCancel && this._scrollCancel()
+      // default behavior is to scroll the whole page not just the widget
+      this._scrollCancel = scrollTo(selected) 
+    }
+  },
 
   _keyDown: function(e){
     var self = this
@@ -235,7 +245,7 @@ var SelectList = React.createClass({
 
     blacklist = Array.isArray(blacklist) ? blacklist : [];
 
-    if(this._contains(item, blacklist)) return 
+    //if(this._contains(item, blacklist)) return 
 
     if ( !multiple )
       return this.notify('onChange', checked ? item : null)

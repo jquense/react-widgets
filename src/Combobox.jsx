@@ -2,7 +2,6 @@
 var React           = require('react')
   , cx              = require('./util/cx')
   , _               = require('./util/_')
-  , $               = require('./util/dom')
   , filter          = require('./util/filter')
   , Popup           = require('./Popup.jsx')
   , Btn             = require('./WidgetButton.jsx')
@@ -70,6 +69,7 @@ var ComboBox = React.createClass({
     require('./mixins/TextSearchMixin'),
     require('./mixins/DataFilterMixin'),
     require('./mixins/DataHelpersMixin'),
+    require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin')
   ],
 
@@ -207,6 +207,7 @@ var ComboBox = React.createClass({
               selected={this.state.selectedItem}
               focused ={this.state.focusedItem}
               onSelect={this._maybeHandle(this._onSelect)}
+              onMove={this._scrollTo}
               messages={{
                 emptyList: this.props.data.length
                   ? this.props.messages.emptyFilter
@@ -217,14 +218,6 @@ var ComboBox = React.createClass({
 			</div>
 		)
 	},
-
-  setWidth: function() {
-    var width = $.width(this.getDOMNode())
-      , changed = width !== this.state.width;
-
-    if ( changed )
-      this.setState({ width: width })
-  },
 
   _onSelect: function(data){
     this.close()
