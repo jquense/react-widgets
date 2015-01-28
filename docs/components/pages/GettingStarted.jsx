@@ -7,7 +7,7 @@ var GettingStarted = React.createClass({
   render: function() {
     return (
       <section {...this.props}>
-        <h1 className="page-header">Getting Started <small className='pull-right' style={{marginTop: 15}}>current version 2.2.0</small></h1>
+        <h1 className="page-header">Getting Started <small className='pull-right' style={{marginTop: 15}}>current version {__VERSION__}</small></h1>
         <p>
           React-widgets offers a {'set'} UI widgets, built from scratch with React. The suite is based on the excellent
           work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By

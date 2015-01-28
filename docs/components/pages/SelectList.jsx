@@ -1,6 +1,7 @@
 'use strict';
 var React = require('react')
-  , Example = require('../example.jsx')
+  
+  , EditableExample = require('../EditableExample')
   , MenuItem = require('../ApiMenuItem.jsx')
   , DDButton = require('../../bootstrap').DropdownButton
   , PropHeader = require('../PropHeader.jsx')
@@ -43,31 +44,6 @@ var SelectList = React.createClass({
           Creates a list of radio buttons or checkboxes bound to a {'set'} of data.
         </p>
         <SelectListExample/>
-        <Example code={
-          "render: function(){\n"+
-          "  var SelectList = require('react-widgets').SelectList\n"+
-          "    , list = [\n"+
-          "      { label: 'orange', id: 1 },\n"+
-          "      { label: 'blue', id: 2 },\n"+
-          "      { label: 'red', id: 3 },\n"+
-          "    ]\n"+
-          "  return (\n"+
-          "    <SelectList \n"+
-          "      multiple\n" +
-          "      data={list}\n"+
-          "      value={this.state.value}\n"+
-          "      onChange={this._change}\n"+
-          "      textField='label'\n"+
-          "      valueField='id'/>\n"+
-          "  )\n"+
-          "},\n\n"+
-          "_change: function(value){\n"+
-          "  this.setState({\n"+
-          "    value: value\n"+
-          "  })\n"+
-          "}\n"
-        }/>
-
         <h2>Props</h2>
 
         <PropHeader type='Any|Array<Any>' handler="onChange" controllable>value</PropHeader>
@@ -76,12 +52,14 @@ var SelectList = React.createClass({
           or a primitive value, hinted to by the <code>valueField</code>. The widget value does not need to be in
           the <code>data</code> array; widgets can have values that are not in their list.
         </p>
+        <EditableExample codeText={require('../examples/value')(widgetName, true)}/>
 
         <PropHeader type='Function(Array<Any>|Any values)'>onChange</PropHeader>
         <p>
           Change event handler that is called when the value is changed. <code>values</code> will be an array 
           when <code>multiple</code> prop is set.
         </p>
+        <EditableExample codeText={require('../examples/onChange')(widgetName, true)}/>
 
         <PropHeader type='Array<Any>'>data</PropHeader>
         <p>
@@ -95,18 +73,20 @@ var SelectList = React.createClass({
           A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
           the {widgetName} will use strict equality checks to locate the data item, if it exists.
         </p>
+        <EditableExample codeText={require('../examples/valueField')(widgetName, true)}/>
 
         <PropHeader type='String'>textField</PropHeader>
         <p>
           This prop determines which data item field to display in the {widgetName}.
         </p>
+        <EditableExample codeText={require('../examples/textField')(widgetName, true)}/>
 
         <PropHeader type='Component'>itemComponent</PropHeader>
-
         <p>
           This component is used to render each item in the {widgetName}. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
+        <EditableExample codeText={require('../examples/itemComponent')(widgetName, true)}/>
 
         <PropHeader type='Boolean'>multiple</PropHeader>
         <p>
@@ -130,12 +110,14 @@ var SelectList = React.createClass({
         <p>
           Disable the widget, if an <code>Array</code> of values is passed in only those values will be disabled.
         </p>
+        <EditableExample codeText={require('../examples/disabled')(widgetName, 'disabled')}/>
 
         <PropHeader type='[Boolean, Array]'>readOnly</PropHeader>
         <p>
           Place the {widgetName} in a readonly mode, If an <code>Array</code> of values is passed in only those values will be readonly.
         </p>
-
+        <EditableExample codeText={require('../examples/disabled')(widgetName, 'readOnly')}/>
+        
         <PropHeader type='Boolean' default="false">isRtl</PropHeader>
         <p>
           mark whether the {widgetName} should render right-to-left. This property can also be implicitly passed to the widget through

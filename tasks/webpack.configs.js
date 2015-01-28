@@ -78,7 +78,6 @@ module.exports = {
 
     module: {
       loaders: [
-
         { test: /\.jsx$/, loader:  'jsx-loader', exclude: /node_modules/ },
         { test: /\.css$/, loader:  'style-loader!css-loader', exclude: /node_modules/ },
         { test: /\.less$/, loader: 'style-loader!css-loader!less-loader', exclude: /node_modules/ },
@@ -90,7 +89,8 @@ module.exports = {
 
     plugins: [
       new webpack.DefinePlugin({
-      "process.env": {
+        '__VERSION__': JSON.stringify(pkg.version),
+        "process.env": {
           // This has effect on the react lib size
           "NODE_ENV": JSON.stringify('development')
         }
