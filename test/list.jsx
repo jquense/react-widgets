@@ -37,14 +37,14 @@ describe('List', function(){
     var list = render(
           <List data={data} textField='label' valueField='id' />);
 
-    expect(list.getDOMNode().children[0].textContent)
+    expect($(list.getDOMNode()).find('li:first-child').text())
       .to.be('jimmy');
   }) 
 
   it('should render an empty list message', function(){
     var list = render(<List data={[]} textField='label' valueField='id' />);
 
-    expect(findTag(list, 'li').getDOMNode().textContent)
+    expect($(list.getDOMNode()).find('li').text())
       .to.be('There are no items in this list');
   }) 
 
@@ -57,7 +57,7 @@ describe('List', function(){
     
     var list = render(<List data={data} itemComponent={Templ} />);
 
-    expect( list.getDOMNode().children[0].textContent).to.be('hello - jimmy');
+    expect( $(list.getDOMNode()).find('li:first-child').text()).to.be('hello - jimmy');
   })
 
   it('should implement first()', function(){

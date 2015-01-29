@@ -52,7 +52,6 @@ var DOM = module.exports = {
 
   hasFocus: function(node){
     var doc = node.ownerDocument
-
     if ( doc.activeElement == null) return false
     return doc.activeElement === node
   },
@@ -60,7 +59,7 @@ var DOM = module.exports = {
   offset: function (node) {
     var doc     = node.ownerDocument
       , docElem = doc && doc.documentElement
-      , box     = { top: 0, left: 0 };
+      , box     = { top: 0, left: 0, height: 0, width: 0 };
 
     if ( !docElem ) return
 
@@ -92,7 +91,7 @@ var DOM = module.exports = {
       for(var key in props) if ( has.call(props, key) ) 
       {
         !props[key] && props[key] !== 0
-          ? node.style.removeProperty(dasherize(key))
+          ? removeStyle(node.style, dasherize(key))
           : (css += dasherize(key) + ':' + props[key] + ';')
       }
 
@@ -106,8 +105,8 @@ var DOM = module.exports = {
       ? function(context, node){ return context.contains(node); }
       : (root && root.compareDocumentPosition)
           ? function(context, node){
-            return context === node || !!(context.compareDocumentPosition(node) & 16);
-          }
+              return context === node || !!(context.compareDocumentPosition(node) & 16);
+            }
           : function(context, node){
             if (node) do {
               if (node === context) return true;
@@ -202,7 +201,7 @@ var DOM = module.exports = {
     for(var key in properties) if ( has.call(properties, key) ) {
       if( /(top|bottom)/.test(key) ) 
         transforms += TRANSLATION_MAP[key] +'(' + properties[key] + ') '
-      else{
+      else {
         cssValues[key] = properties[key]
         cssProperties.push(dasherize(key))
       }
@@ -228,7 +227,6 @@ var DOM = module.exports = {
 
     // trigger page reflow
     node.clientLeft
-
     DOM.css(node, cssValues)
 
     if (duration <= 0)
@@ -238,9 +236,9 @@ var DOM = module.exports = {
       if (event.target !== event.currentTarget) return
 
       fired = true
-
       DOM.off(event.target, endEvent, done)
       DOM.css(node, reset)
+
       callback && callback.call(this)
     }
   }
@@ -253,13 +251,19 @@ function getWindow( node ) {
 }
 
 function camelize(str){
-  return str.replace(/-+(.)?/g, function(match, chr){ return chr ? chr.toUpperCase() : '' })
+  return str.replace(/-+(.)?/g, (match, chr) => chr ? chr.toUpperCase() : '')
 }
 
 function dasherize(str) {
-  return str.replace(/[A-Z]/g, function(char, index) {
+  return str.replace(/[A-Z]/g, (char, index) => {
     return (index !== 0 ? '-' : '') + char.toLowerCase();
   });
+}
+
+function removeStyle(styles, key){
+  return ('removeProperty' in styles)
+    ? styles.removeProperty(key)
+    : styles.removeAttribute(key)
 }
 
 function getComputedStyle(node) {
@@ -270,20 +274,14 @@ function getComputedStyle(node) {
     ? doc.defaultView.opener
       ? node.ownerDocument.defaultView.getComputedStyle( node, null )
       : window.getComputedStyle(node, null)
-    : ie8(node)
-}
-
-function ie8(el) {
-  return {
-    getPropertyValue(prop) {
-      var re = /(\-([a-z]){1})/g;
-      if (prop == 'float') prop = 'styleFloat';
-      if (re.test(prop)) {
-          prop = prop.replace(re, function () {
-              return arguments[2].toUpperCase();
-          });
+    : { //ie 8 "magic"
+        getPropertyValue(prop) {
+          var re = /(\-([a-z]){1})/g;
+          if (prop == 'float') prop = 'styleFloat';
+          if (re.test(prop))
+              prop = prop.replace(re, () => arguments[2].toUpperCase())
+            
+          return node.currentStyle[prop] || null;
+        }
       }
-      return el.currentStyle[prop] ? el.currentStyle[prop] : null;
-    }
-  }
 }

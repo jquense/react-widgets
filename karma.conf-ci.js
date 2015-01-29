@@ -10,10 +10,17 @@ module.exports = function(config) {
 
   // Browsers to run on Sauce Labs
   var customLaunchers = {
+    SL_ie_8: {
+      base: 'SauceLabs',
+      browserName: 'internet explorer',
+      platform: 'Windows XP',
+      version: '8'
+    },
 
     // SL_ie_9: {
     //   base: 'SauceLabs',
     //   browserName: 'internet explorer',
+    //   platform: 'Windows 7',
     //   version: '9'
     // },
     // SL_ie_10: {
@@ -21,10 +28,10 @@ module.exports = function(config) {
     //   browserName: 'internet explorer',
     //   version: '10'
     // },
-    SL_chrome: {
-      base: 'SauceLabs',
-      browserName: 'chrome'
-    },
+    // SL_chrome: {
+    //   base: 'SauceLabs',
+    //   browserName: 'chrome'
+    // },
     // SL_firefox: {
     //   base: 'SauceLabs',
     //   browserName: 'firefox'
@@ -48,22 +55,14 @@ module.exports = function(config) {
       './vendor/html5shiv.min.js',
       './vendor/phantomjs-shim.js',
       './vendor/sinon-1.10.3.js',
+      './vendor/jquery-1.11.2.min.js',
       'test.js',
     ],
 
-    reporters: ['progress', 'saucelabs'],
+    reporters: ['mocha','saucelabs'],
 
     port: 9876,
     colors: true,
-
-    logLevel: config.LOG_INFO,
-
-    preprocessors: {
-      'test.js': ['webpack']
-    },
-
-    webpack: require('./tasks/webpack.configs').test,
-
     sauceLabs: {
       testName: 'Karma and Sauce Labs demo'
     },
@@ -73,12 +72,24 @@ module.exports = function(config) {
     customLaunchers: customLaunchers,
     browsers: Object.keys(customLaunchers),
 
-    singleRun: process.env.TRAVIS_CI ? true : false,
+    logLevel: config.LOG_INFO,
 
-    autoWatch: false,
+    preprocessors: {
+      'test.js': ['webpack']
+    },
 
+    webpack: require('./tasks/webpack.configs').test,
     webpackServer: {
       noInfo: true
     },
+
+    plugins: [
+      require("karma-mocha-reporter"),
+      require("karma-sauce-launcher"),
+      require("karma-webpack"),
+      require("karma-mocha"),
+      require("karma-expect"),
+    ]
+
   });
 };
