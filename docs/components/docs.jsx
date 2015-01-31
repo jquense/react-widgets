@@ -1,6 +1,13 @@
 'use strict';
-var React          = require('react')
-  , cx             = require('../../lib/util/cx')
+var React = require('react')
+  , { Route
+  , run
+  , HistoryLocation
+  , DefaultRoute
+  , RouteHandler
+  , Navigation
+  , Link } = require('react-router')
+
   , Navbar         = require('./topnavbar.jsx')
   , Tbs            = require('../bootstrap')
   , GettingStarted = require('./pages/GettingStarted.jsx')
@@ -24,6 +31,8 @@ var Docs = React.createClass({
 
   displayName: 'DocPage',
 
+  mixins: [ Navigation ],
+
   getInitialState: function () {
     return {
       sideHref: '#intro',
@@ -44,38 +53,33 @@ var Docs = React.createClass({
         <div className='container'>
           <aside className='col-sm-3 section'>
             <div className='nav-aside section-inner'>
-              <Tbs.Nav className='side-nav' activeHref={href} onSelect={this.handleNavItemSelect}>
-                <Tbs.SubNav key={0} href='#intro' text='Getting Started'>
-                  <Tbs.NavItem key={0} href="#intro/install">Install</Tbs.NavItem>
-                  <Tbs.NavItem key={1} href="#intro/deps">External Dependencies</Tbs.NavItem>
-                  <Tbs.NavItem key={2} href="#intro/browser">Older Browser Support</Tbs.NavItem>
-                  <Tbs.NavItem key={3} href="#intro/access">Accessibility</Tbs.NavItem>
-                  <Tbs.NavItem key={4} href="#intro/style">Styling</Tbs.NavItem>
-                </Tbs.SubNav>
-                <Tbs.NavItem key={1} href='#DropdownList'>Dropdown List</Tbs.NavItem>
-                <Tbs.NavItem key={2} href='#combobox'>Combobox</Tbs.NavItem>
-                <Tbs.NavItem key={3} href='#number-picker'>Number Picker</Tbs.NavItem>
-                <Tbs.NavItem key={4} href='#multiselect'>Multiselect</Tbs.NavItem>
-                <Tbs.NavItem key={5} href='#selectlist' >SelectList</Tbs.NavItem>
-                <Tbs.NavItem key={6} href='#calendar'>Calendar</Tbs.NavItem>
-                <Tbs.NavItem key={7} href='#date-picker'>{'Date &  Time Picker'}</Tbs.NavItem>
-
-                <Tbs.NavItem key={8} href='#migration'>Migrating to 2.x</Tbs.NavItem>
-              </Tbs.Nav>
+              <nav>
+                <ul className='nav'>
+                  <li>
+                    <Link to='/getting-started'>Getting Started</Link>
+                    <ul className='nav'>
+                      <li><Link to='/getting-started/install'>Install</Link></li>
+                      <li><Link to='/getting-started/deps'>External Dependencies</Link></li>
+                      <li><Link to='/getting-started/browser'>Older Browser Support</Link></li>
+                      <li><Link to='/getting-started/access'>Accessibility</Link></li>
+                      <li><Link to='/getting-started/style'>Styling</Link></li>
+                    </ul>
+                  </li>
+                  <li><Link to='dropdown-list'>Dropdown List</Link></li>
+                  <li><Link to='combobox' href='#combobox'>Combobox</Link></li>
+                  <li><Link to='number-picker' href='#number-picker'>Number Picker</Link></li>
+                  <li><Link to='multiselect' href='#multiselect'>Multiselect</Link></li>
+                  <li><Link to='selectlist'>SelectList</Link></li>
+                  <li><Link to='calendar'>Calendar</Link></li>
+                  <li><Link to='datetime-picker'>{'Date & Time Picker'}</Link></li>
+                  <li><Link to='migration'>Migrating to 2.x</Link></li>
+                </ul>
+              </nav>
             </div>
           </aside>
           <article className='col-sm-9 section'>
-            <div className='tab-content section-inner'>
-              <GettingStarted className ={cx({"tab-pane": true, "active": href.split('/')[0] === '#intro' })}/>
-              <DropdownList   className ={cx({"tab-pane": true, "active": href === '#DropdownList' })}/>
-              <ComboBox       className ={cx({"tab-pane": true, "active": href === '#combobox' })}/>
-              <NumberPicker   className ={cx({"tab-pane": true, "active": href === '#number-picker' })}/>
-              <MultiSelect    className ={cx({"tab-pane": true, "active": href === '#multiselect' })}/>
-              <SelectList     className ={cx({"tab-pane": true, "active": href === '#selectlist' })}/>
-              <Calendar       className ={cx({"tab-pane": true, "active": href === '#calendar' })}/>
-              <DatePicker     className ={cx({"tab-pane": true, "active": href === '#date-picker' })}/>
-              <Migration      className ={cx({"tab-pane": true, "active": href === '#migration' })}/>
-              
+            <div className='section-inner'>
+              <RouteHandler />
               <div className='clearfix'style={{ marginTop: 20 }}>
                 { locations.indexOf(href) > 0 && 
                   <button type='button' className='btn btn-link pull-left' onClick={this.prev}>« prev</button>
@@ -96,6 +100,7 @@ var Docs = React.createClass({
 
     this.navigate(href)
   },
+
   next: function(){
     var idx = locations.indexOf(this.state.sideHref)
       , href = locations[Math.min(idx + 1, locations.length -1)]
@@ -103,18 +108,55 @@ var Docs = React.createClass({
     this.navigate(href)
   },
 
-  handleNavItemSelect: function (key, href) {
-    this.navigate(href)
+  handleNavItemSelect: function (key) {
+    this.transitionTo(key)
   },
 
   navigate: function(href){
-    var change = this.state.sideHref.split('/')[0] !== href.split('/')[0]
-    this.setState({ sideHref: href });
-    window.location = href;
-    if(change)
-      window.scrollTo(0, 0)
+    // var change = this.state.sideHref.split('/')[0] !== href.split('/')[0]
+    // this.setState({ sideHref: href });
+    // window.location = href;
+    // if(change)
+    //   window.scrollTo(0, 0)
   }
 })
 
 
-React.render(<Docs/>, document.body);
+
+var routes = (
+  <Route name="app" path="/" handler={Docs}>
+    <DefaultRoute handler={GettingStarted} />
+
+    <Route name="getting-started" path='getting-started' handler={GettingStarted}>
+      <Route path=':topic' handler={GettingStarted}/>
+    </Route>
+
+    <Route name="dropdown-list" path='dropdown-list' handler={DropdownList}>
+      <Route path=':topic' handler={DropdownList}/>
+    </Route>
+    <Route name="combobox" handler={ComboBox}>
+      <Route path=':topic' handler={ComboBox}/>
+    </Route>
+    <Route name="multiselect" handler={MultiSelect}>
+      <Route path=':topic' handler={MultiSelect}/>
+    </Route>
+    <Route name="selectlist" handler={SelectList}>
+      <Route path=':topic' handler={SelectList}/>
+    </Route>
+    <Route name="calendar" handler={Calendar}>
+      <Route path=':topic' handler={Calendar}/>
+    </Route>
+    <Route name="datetime-picker" handler={DatePicker}>
+      <Route path=':topic' handler={DatePicker}/>
+    </Route>
+    <Route name="number-picker" handler={NumberPicker}>
+      <Route path=':topic' handler={NumberPicker}/>
+    </Route>
+
+    <Route name="migration" handler={Migration} />
+  </Route>
+);
+
+run(routes, function (Handler, state) {
+  React.render(<Handler params={state.params}/>, document.body);
+});

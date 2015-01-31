@@ -70,64 +70,55 @@ var Multiselect = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/onChange')(widgetName, true)}/>
 
-        <h3 className='prop-header' id={ prefix +"onSelect" }>
-          onSelect <small>{"Function(Any value)"}</small></h3>
+        <PropHeader type='Function(Any value)'>onSelect</PropHeader>
         <p>
           This handler fires when an item has been selected from the list. It fires before the <code>onChange</code> handler, and fires 
           regardless of whether the value has actually changed.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"onCreate" }>
-          onCreate <small>{"Function(String searchTerm)"}</small></h3>
+        <PropHeader type='Function(String searchTerm)'>onCreate</PropHeader>
         <p>
           This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic, 
           a common implementation is shown below, where the new tag is selected and added to the data list.
         </p>
         <EditableExample codeText={require('../examples/onCreate')(widgetName)}/>
 
-        <h3 className='prop-header' id={ prefix +"data" }>
-          data <small>Array</small></h3>
+        <PropHeader type='Array'>data</PropHeader>
         <p>
           provide an array of possible values for the {widgetName}. If an array of <code>objects</code> is provided you
           should use the <code>valueField</code> and <code>textField</code> props, to specify which object
           properties comprise the value field (such as an id) and the field used to label the item.
         </p>
 
-        <h3 className='prop-header' id={ prefix +"valueField" }>
-          valueField <small>String</small></h3>
+        <PropHeader type='String'>valueField</PropHeader>
         <p>
           A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
           the widget will use strict equality checks to locate the data item, if it exists.
         </p>
         <EditableExample codeText={require('../examples/valueField')(widgetName, true)}/>
 
-        <h3 className='prop-header' id={ prefix +"textField" }>
-          textField <small>String</small></h3>
+        <PropHeader type='String'>textField</PropHeader>
         <p>
           This prop determines which data item field to display in the {widgetName} list andselected item This prop is
           unnecessary when an <code>itemComponent</code> and <code>tagComponent</code> are provided.
         </p>
         <EditableExample codeText={require('../examples/textField')(widgetName, true)}/>
 
-        <h3 className='prop-header' id={ prefix +"tagComponent" }>
-          tagComponent <small>Component</small></h3>
+        <PropHeader type='Component'>tagComponent</PropHeader>
         <p>
           This component is used to render each selected item. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
         <EditableExample codeText={require('../examples/tagComponent')(widgetName, true)}/>
 
-        <h3 className='prop-header' id={ prefix +"itemComponent" }>
-          itemComponent <small>Component</small></h3>
+        <PropHeader type='Component'>itemComponent</PropHeader>
         <p>
           This component is used to render each possible item in the list. The default component
           renders the text of the selected item (specified by <code>textfield</code>)
         </p>
         <EditableExample codeText={require('../examples/itemComponent')(widgetName, true)}/>
 
-        <h3 className='prop-header' id={ prefix +"groupBy" }>
-          groupBy <small>String | Function(Any dataItem)}</small>
-        </h3>
+        <PropHeader type='String | Function(Any dataItem)'>groupBy</PropHeader>
         <p>
           Determines how to group the {widgetName} dropdown list. Providing a <code>string</code> will group 
           the <code>data</code> array by that property. You can also provide a {'function'} which should return the group value.

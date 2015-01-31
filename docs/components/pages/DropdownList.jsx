@@ -6,7 +6,7 @@ var React = require('react')
   , PropHeader = require('../PropHeader.jsx')
   , DropdownListExample = require('../demos/DropdownList.jsx')
 
-var prefix = 'DropdownList/'
+var prefix = 'dropdown-list/'
 var widgetName = 'DropdownList'
 var DropdownList = React.createClass({
 
@@ -18,7 +18,7 @@ var DropdownList = React.createClass({
         <h1 className="page-header">
           Dropdown List
           <span className='pull-right'>
-            <DDButton title='props' bsStyle='link' pullRight={true}>
+            <DDButton title='props' bsStyle='link' pullRight>
               <MenuItem>value</MenuItem>
               <MenuItem>onChange</MenuItem>
               <MenuItem>onSelect</MenuItem>

@@ -8,6 +8,12 @@ var ApiMenuItem = React.createClass({
     prefix: React.PropTypes.string.isRequired
   },
 
+  navigate(e){
+    var anchor = document.getElementById('/' + this.context.prefix + this.props.children.replace(' ', '_'))
+    e.preventDefault()
+    window.scrollTo(window.pageXOffset, anchor.offsetTop)
+  },
+
   render: function() {
 
     if( this.props.divider)
@@ -16,7 +22,7 @@ var ApiMenuItem = React.createClass({
     var child = this.props.children;
 
     return (
-       <MenuItem className="prop-item" href={'#' + this.context.prefix + child.replace(' ', '_')}>
+       <MenuItem className="prop-item" onClick={this.navigate}>
         {child}
        </MenuItem>
     );

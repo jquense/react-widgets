@@ -5,13 +5,24 @@ module.exports = function(prefix){
 
   return {
 
-    childContextTypes: {
-         prefix: React.PropTypes.string.isRequired
+    mixins: [
+      require('react-router').State
+    ],
+
+    componentDidMount: function() {
+      var path = this.getPathname()
+
+      var anchor = document.getElementById(path)
+      window.scrollTo(window.pageXOffset, anchor.offsetTop)
     },
 
-    getChildContext: function() {
-         return { prefix };
-    }
+    childContextTypes: {
+      prefix: React.PropTypes.string.isRequired
+    },
+
+    getChildContext() {
+      return { prefix };
+    },
 
   }
 }

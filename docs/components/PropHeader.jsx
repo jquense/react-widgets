@@ -18,7 +18,7 @@ var ApiPropHeader = React.createClass({
 
 
     return (
-       <h3 className='prop-header'id={ this.context.prefix + children.replace(' ', '_')}>
+       <h3 className='prop-header' id={`/${this.context.prefix + children.replace(' ', '_')}`}>
         { children }
         { type && 
           <small>
