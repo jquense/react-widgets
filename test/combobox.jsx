@@ -113,7 +113,6 @@ describe('ComboBox', function(){
       , input = findClass(comboBox, 'rw-input').getDOMNode();
 
     expect( input.hasAttribute('disabled')).to.be(true);
-    expect( input.getAttribute('disabled')).to.be('');
 
     trigger.click(findTag(comboBox, 'button').getDOMNode())
 
@@ -128,14 +127,13 @@ describe('ComboBox', function(){
       , input = findClass(comboBox, 'rw-input').getDOMNode();
 
     expect( input.hasAttribute('readonly')).to.be(true);
-    expect( input.getAttribute('readonly')).to.be('');
 
     trigger.click(findTag(comboBox, 'button').getDOMNode())
 
     setTimeout(function() {
       expect(comboBox.state.open).to.not.be(true)
       done()
-    }, 0)
+    }, 0) 
   })
 
   it('should call Select handler', function(done){

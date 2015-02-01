@@ -1,5 +1,5 @@
 'use strict';
-/*global it, describe, expect, sinon*/
+/*global it, describe, expect, sinon, $ */
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
@@ -16,7 +16,7 @@ var TestUtils = React.addons.TestUtils
 
 
 
-describe.only('Select', function(){
+describe('Multiselect', function(){
   var dataList = [
         { label: 'jimmy', id: 0 },
         { label: 'sally', id: 1 },
@@ -169,7 +169,6 @@ describe.only('Select', function(){
 
     expect( input.hasAttribute('readonly')).to.be(true);
     expect( input.getAttribute('aria-readonly')).to.be('true');
-    expect( input.getAttribute('readonly')).to.be('');
 
     trigger.click(findTag(select, 'button').getDOMNode())
 
@@ -350,7 +349,6 @@ describe.only('Select', function(){
 
     select.setProps({ open: true, value:[], onToggle: ()=>{} })
 
-    
     trigger.keyDown(select.getDOMNode(), { key: 'ArrowDown'})
     expect(list.children[1].className).to.match(/\brw-state-focus\b/)
 

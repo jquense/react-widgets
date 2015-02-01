@@ -28,14 +28,14 @@ describe('DROPDOWNS', function(){
     var dropdown = render(
           <Dropdown value={'hello'} onChange={_.noop} />);
 
-    expect( findClass(dropdown, 'rw-input').getDOMNode().textContent).to.be('hello');
+    expect($(findClass(dropdown, 'rw-input').getDOMNode()).text()).to.be('hello');
   })
 
   it('should respect textField and valueFields', function(){
     var dropdown = render(
           <Dropdown defaultValue={0} data={data} textField='label' valueField='id' />);
 
-    expect(findClass(dropdown, 'rw-input').getDOMNode().textContent)
+    expect($(findClass(dropdown, 'rw-input').getDOMNode()).text())
       .to.be('jimmy');
   })
 
@@ -62,7 +62,7 @@ describe('DROPDOWNS', function(){
 
     var dropdown = render(<Dropdown defaultValue={'jimmy'} valueComponent={templ} />);
 
-    expect( findClass(dropdown, 'rw-input').getDOMNode().textContent).to.be('hello - jimmy');
+    expect($(findClass(dropdown, 'rw-input').getDOMNode()).text()).to.be('hello - jimmy');
   })
 
   it('should open when clicked', function(done){

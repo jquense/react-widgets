@@ -118,23 +118,26 @@ var DOM = module.exports = {
 
   scrollParent: function(node){
     var position = DOM.css(node, "position" )
-      , excludeStatic = position === "absolute";
+      , excludeStatic = position === "absolute"
+      , ownerDoc = node.ownerDocument;
 
     if (position === 'fixed') 
-      return node.ownerDocument || document
+      return ownerDoc || document
 
     while ( (node = node.parentNode) && node.nodeType !== 9){
+      
       var isStatic = excludeStatic && DOM.css(node, "position" ) === "static"
         , style    = DOM.css(node, 'overflow') 
                    + DOM.css(node, 'overflow-y') 
                    + DOM.css(node, 'overflow-x');
 
       if (isStatic) continue
+
       if ( (/(auto|scroll)/).test(style) && DOM.height(node) < node.scrollHeight )
         return node
     }
 
-    return (node && node.ownerDocument) || document
+    return document
   },
 
   scrollTop: function(node, val){
@@ -151,7 +154,7 @@ var DOM = module.exports = {
       win.scrollTo(('pageXOffset' in win) 
         ? win.pageXOffset 
         : win.document.documentElement.scrollLeft, val)
-    else       
+    else 
       node.scrollTop = val
   },
 
