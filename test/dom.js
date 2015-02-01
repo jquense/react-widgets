@@ -4,15 +4,10 @@ require('../vendor/phantomjs-shim')
 
 var DOM = require('../src/util/dom')
 
+// not everything just stuff that ie hates
 describe('DOM Work', () => {
 
-  it('should get css values', () => {
-    $('body').html('<div><span /></div>')
-
-    expect(DOM.css($('body span')[0], 'height') ).to.be('auto');
-  })
-
-  it('should sett css values', () => {
+  it('should set css values', () => {
     $('body').html('<div/>')
 
     DOM.css($('body > div')[0], { height: '15px' })

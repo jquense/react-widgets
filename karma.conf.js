@@ -35,15 +35,16 @@ module.exports = function (config) {
     webpack: require('./tasks/webpack.configs').test,
     webpackServer: {
       noInfo: true
-    },
+    }
+    // },
 
-    plugins: [
-      require("karma-mocha-reporter"),
-      require("karma-phantomjs-launcher"),
-      require("karma-chrome-launcher"),
-      require("karma-webpack"),
-      require("karma-mocha"),
-      require("karma-expect"),
-    ]
+    // plugins: [
+    //   require("karma-mocha-reporter"),
+    //   require("karma-phantomjs-launcher"),
+    //   require("karma-chrome-launcher"),
+    //   require("karma-webpack"),
+    //   require("karma-mocha"),
+    //   require("karma-expect"),
+    // ]
   });
 };

@@ -2,7 +2,7 @@
 var React = require('react')
   , _     = require('./util/_')
   , cx    = require('./util/cx')
-  , Btn   = require('./WidgetButton.jsx')
+  , Btn   = require('./WidgetButton')
 
 module.exports = React.createClass({
   

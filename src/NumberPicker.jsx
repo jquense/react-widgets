@@ -4,9 +4,9 @@ var React = require('react')
   , _     = require('./util/_') //omit
   , controlledInput  = require('./util/controlledInput')
   , directions = require('./util/constants').directions
-  , Input = require('./NumberInput.jsx');
+  , Input = require('./NumberInput');
 
-var Btn = require('./WidgetButton.jsx')
+var Btn = require('./WidgetButton')
   , propTypes = {
 
       // -- controlled props -----------

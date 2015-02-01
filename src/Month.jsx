@@ -4,7 +4,7 @@ var React = require('react')
   , dates = require('./util/dates')
   , directions = require('./util/constants').directions
   , _   = require('./util/_')
-  , Btn = require('./WidgetButton.jsx');
+  , Btn = require('./WidgetButton');
 
 var opposite = {
   LEFT: directions.RIGHT,

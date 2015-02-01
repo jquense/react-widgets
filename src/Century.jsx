@@ -3,7 +3,7 @@ var React      = require('react')
   , cx         = require('./util/cx')
   , dates      = require('./util/dates')
   , directions = require('./util/constants').directions
-  , Btn        = require('./WidgetButton.jsx')
+  , Btn        = require('./WidgetButton')
   , _          = require('./util/_'); //omit
 
 var opposite = {

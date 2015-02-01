@@ -1,13 +1,20 @@
 var path = require('path')
   , webpack = require('webpack')
-  , pkg = require('../package.json')
-  , ProdDefine = new webpack.DefinePlugin({
-      "process.env": {
-        // This has effect on the react lib size
-        "NODE_ENV": JSON.stringify('production')
-      }
+  , pkg = require('./package.json');
 
-    })
+var compress = new webpack.optimize.UglifyJsPlugin();
+
+var prodDefine = new webpack.DefinePlugin({
+      "process.env": { 
+        "NODE_ENV": JSON.stringify('production') }
+    });
+
+var banner = new webpack.BannerPlugin( 
+      'v' + JSON.stringify(pkg.version) + ' | (c) ' + (new Date).getFullYear() + ' Jason Quense | '
+      + 'https://github.com/jquense/react-widgets/blob/master/License.txt'
+      , { entryOnly : true });
+
+
 var config = {
       experimental: true,
       loose: ['all'],
@@ -48,14 +55,7 @@ module.exports = {
     },
 
     plugins: [
-      ProdDefine,
-      
-      new webpack.BannerPlugin( 
-        'v' + JSON.stringify(pkg.version) + ' | (c) ' + (new Date).getFullYear() + ' Jason Quense | '
-        + 'https://github.com/jquense/react-widgets/blob/master/License.txt'
-        , { entryOnly : true }),
-
-      new webpack.optimize.UglifyJsPlugin()
+      prodDefine, banner, compress
     ],
   },
 
@@ -88,16 +88,17 @@ module.exports = {
 
   docs: {
     devtool: 'source-map',
+
     entry: './docs/components/docs.jsx',
     
     output: {
       path: path.join(__dirname, './docs'),
       filename: 'docs.js',
-      publicPath: 'docs/'
+      publicPath: '/docs'
     },
 
     resolve: {
-      extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
+      extensions: ['', '.js', '.jsx']
     },
 
     externals: {
@@ -106,28 +107,24 @@ module.exports = {
 
     module: {
       loaders: [
-        { test: /\.jsx$/, loader:  'jsx-loader', exclude: /node_modules/ },
         { test: /\.css$/, loader:  'style-loader!css-loader', exclude: /node_modules/ },
         { test: /\.less$/, loader: 'style-loader!css-loader!less-loader', exclude: /node_modules/ },
-      ],
-      postLoaders: [
-        { loader: path.join(__dirname, './jstransform-loader'), exclude: /node_modules/ }
+        { 
+          test: /\.jsx$|\.js$/, 
+          loader: '6to5-loader', 
+          exclude: /node_modules/,
+          query: config
+        }
       ]
     },
 
     plugins: [
+      banner,
       new webpack.DefinePlugin({
         '__VERSION__': JSON.stringify(pkg.version),
         "process.env": {
-          // This has effect on the react lib size
-          "NODE_ENV": JSON.stringify('development')
-        }
-      }),
-      new webpack.BannerPlugin( 
-        'v' + JSON.stringify(pkg.version) + ' | (c) ' + (new Date).getFullYear() + ' Jason Quense | '
-        + 'https://github.com/jaquense/react-widgets/blob/master/License.txt'
-        , { entryOnly : true }),
-     // new webpack.optimize.UglifyJsPlugin()
+          "NODE_ENV": JSON.stringify('development') }
+      })
     ],
   },
 

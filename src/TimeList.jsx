@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react')
   , dates = require('./util/dates')
-  , List = require('./List.jsx')
+  , List = require('./List')
   , CustomPropTypes  = require('./util/propTypes')
   , _ = require('./util/_') // omit
 

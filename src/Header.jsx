@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , Btn = require('./WidgetButton.jsx');
+  , Btn = require('./WidgetButton');
 
 module.exports = React.createClass({
 

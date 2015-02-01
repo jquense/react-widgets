@@ -20,7 +20,7 @@ var React = require('react')
   , NumberPicker   = require('./pages/NumberPicker.jsx')
   , Migration      = require('./pages/Migration.jsx');
 
-//require('../docs.css')
+require('../docs.css')
 
 var locations = [
       'getting-started','dropdown-list', 'combobox',

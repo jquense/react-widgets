@@ -3,14 +3,14 @@ var React           = require('react')
   , cx              = require('./util/cx')
   , _               = require('./util/_')
   , filter          = require('./util/filter')
-  , Popup           = require('./Popup.jsx')
-  , Btn             = require('./WidgetButton.jsx')
-  , Input           = require('./ComboboxInput.jsx')
+  , Popup           = require('./Popup')
+  , Btn             = require('./WidgetButton')
+  , Input           = require('./ComboboxInput')
 
   , controlledInput = require('./util/controlledInput')
   , CustomPropTypes = require('./util/propTypes')
-  , PlainList       = require('./List.jsx')
-  , GroupableList   = require('./ListGroupable.jsx')
+  , PlainList       = require('./List')
+  , GroupableList   = require('./ListGroupable')
   , validateList    = require('./util/validateListInterface');
 
 var propTypes = {

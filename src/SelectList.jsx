@@ -4,8 +4,8 @@ var React = require('react')
   , cx = require('./util/cx')
   , controlledInput  = require('./util/controlledInput')
   , CustomPropTypes  = require('./util/propTypes')
-  , PlainList        = require('./List.jsx')
-  , GroupableList = require('./ListGroupable.jsx')
+  , PlainList        = require('./List')
+  , GroupableList = require('./ListGroupable')
   , validateList    = require('./util/validateListInterface')
   , scrollTo  = require('./util/scroll');
 
@@ -308,6 +308,8 @@ function getListItem(parent){
 
   return React.createClass({
 
+    displayName: 'SelectItem',
+    
     render: function() {
       var {
           ...props } = this.props

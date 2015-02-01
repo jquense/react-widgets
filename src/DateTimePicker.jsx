@@ -7,11 +7,11 @@ var React  = require('react')
   , views  = require('./util/constants').calendarViews
   , popups = require('./util/constants').datePopups
 
-  , Popup     = require('./Popup.jsx')
-  , Calendar  = require('./Calendar.jsx').BaseCalendar
-  , Time      = require('./TimeList.jsx')
-  , DateInput = require('./DateInput.jsx')
-  , Btn       = require('./WidgetButton.jsx')
+  , Popup     = require('./Popup')
+  , Calendar  = require('./Calendar').BaseCalendar
+  , Time      = require('./TimeList')
+  , DateInput = require('./DateInput')
+  , Btn       = require('./WidgetButton')
   , CustomPropTypes = require('./util/propTypes')
   , controlledInput = require('./util/controlledInput');
 

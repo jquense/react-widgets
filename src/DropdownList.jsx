@@ -5,9 +5,9 @@ var React           = require('react')
   
   , controlledInput = require('./util/controlledInput')
   , CustomPropTypes = require('./util/propTypes')
-  , Popup           = require('./Popup.jsx')
-  , PlainList       = require('./List.jsx')
-  , GroupableList   = require('./ListGroupable.jsx')
+  , Popup           = require('./Popup')
+  , PlainList       = require('./List')
+  , GroupableList   = require('./ListGroupable')
   , validateList    = require('./util/validateListInterface');
   
 

@@ -1,6 +1,6 @@
 'use strict';
 var React   = require('react')
-  , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup.jsx')
+  , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup')
   , _ = require('./util/_')
   , $  =  require('./util/dom');
 
