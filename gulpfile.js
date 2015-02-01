@@ -57,6 +57,8 @@ gulp.task('docs',    [ 'lib', 'assets'], function(cb) {
 
 gulp.task('doc-watch', function() {
   
+  del('./docs/docs.js');
+
   new WebpackServer(
         webpack(configs.docs)
       , {  publicPath: "/docs", stats: { colors: true } }
