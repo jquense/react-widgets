@@ -1,5 +1,5 @@
 'use strict';
-/*global it, describe, expect, sinon*/
+/*global it, describe, expect, sinon, $*/
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons')
@@ -174,12 +174,12 @@ describe('Calendar', function(){
     
     sinon.stub(DOM, 'animate', syncAnimate)
 
-    expect(headerBtn.textContent).to.equal('junio 2014')
-    expect(head.children[0].firstChild.textContent).to.equal('lu')
+    expect($(headerBtn).text()).to.equal('junio 2014')
+    expect($(head.children[0].firstChild).text()).to.equal('lu')
 
     picker.setProps({ initialView: 'year' })
 
-    expect(findTag(picker, 'tbody').getDOMNode().children[0].firstChild.textContent)
+    expect($(findTag(picker, 'tbody').getDOMNode().children[0].firstChild).text())
       .to.equal('ene')
 
     DOM.animate.restore()

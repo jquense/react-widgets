@@ -39,14 +39,14 @@ describe('Groupable List', function(){
     var list = render(<List data={data} textField='first' valueField='id' groupBy='last'/>)
       , children =list.getDOMNode().children;
 
-    expect(children[0].textContent).to.be('smith');
-    expect(children[1].textContent).to.be('jimmy');
+    expect($(children[0]).text()).to.be('smith');
+    expect($(children[1]).text()).to.be('jimmy');
   }) 
 
   it('should render an empty list message', function(){
     var list = render(<List data={[]} textField='first' valueField='id' />);
 
-    expect(findTag(list, 'li').getDOMNode().textContent)
+    expect($(list.getDOMNode()).find('li').text())
       .to.be('There are no items in this list');
   }) 
 
@@ -60,7 +60,7 @@ describe('Groupable List', function(){
     var list = render(<List data={data} itemComponent={templ} />)
       , children =list.getDOMNode().children;
 
-    expect(children[1].textContent).to.be('hello - jimmy');
+    expect($(children[1]).text()).to.be('hello - jimmy');
   })
 
   it('should use a Group template', function(){
@@ -73,7 +73,7 @@ describe('Groupable List', function(){
     var list = render(<List data={data} groupComponent={templ} groupBy='last' />)
       , children =list.getDOMNode().children;
 
-    expect(children[0].textContent).to.be('hello - smith');
+    expect($(children[0]).text()).to.be('hello - smith');
   })
 
   it('should implement first()', function(){

@@ -77,7 +77,6 @@ module.exports = React.createClass({
     var self = this
       , anim = this.getDOMNode()
       , el   = this.refs.content.getDOMNode();
-
     this.ORGINAL_POSITION = $.css(el, 'position')
 
     this._isOpening = true

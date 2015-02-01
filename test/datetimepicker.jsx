@@ -126,7 +126,6 @@ describe('DateTimePicker', function(){
       , input = findClass(picker, 'rw-input').getDOMNode();
 
     expect( input.hasAttribute('disabled')).to.be(true);
-    expect( input.getAttribute('disabled')).to.be('');
 
     trigger.click(findClass(picker, 'rw-i-calendar').getDOMNode())
 
@@ -141,7 +140,6 @@ describe('DateTimePicker', function(){
       , input  = findClass(picker, 'rw-input').getDOMNode();
 
     expect( input.hasAttribute('readonly')).to.be(true);
-    expect( input.getAttribute('readonly')).to.be('');
 
     trigger.click(findClass(picker, 'rw-i-calendar').getDOMNode())
 

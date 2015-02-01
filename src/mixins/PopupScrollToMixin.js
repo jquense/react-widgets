@@ -3,7 +3,6 @@ var scrollTo = require('../util/scroll')
 
 module.exports = {
 
-
   _scrollTo(selected, list) {
     var handler = this.props.onMove; 
 

@@ -1,12 +1,11 @@
 'use strict';
-/*global it, describe, expect, sinon*/
+/*global it, describe, expect, sinon, $ */
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
 var Select = require('../src/Multiselect.jsx')
   , TagList = require('../src/MultiselectTagList.jsx')
   , _ = require('lodash');
-
 
 var TestUtils = React.addons.TestUtils
   , render = TestUtils.renderIntoDocument
@@ -15,7 +14,9 @@ var TestUtils = React.addons.TestUtils
   , findType = TestUtils.findRenderedComponentWithType
   , trigger = TestUtils.Simulate;
 
-describe('Select', function(){
+
+
+describe('Multiselect', function(){
   var dataList = [
         { label: 'jimmy', id: 0 },
         { label: 'sally', id: 1 },
@@ -26,14 +27,14 @@ describe('Select', function(){
     var select = render(<Select value={['hello']} onChange={_.noop} />)
       , tags   = findType(select, TagList).getDOMNode();
 
-    expect( tags.children[0].children[0].textContent).to.be('hello');
+    expect( $(tags).find('li:first-child > span').text() ).to.be('hello');
   })
 
   it('should respect textField and valueFields', function(){
     var select = render(<Select defaultValue={[0]} data={dataList} textField='label' valueField='id' />)
       , tags   = findType(select, TagList).getDOMNode();
 
-    expect( tags.children[0].children[0].textContent).to.be('jimmy');
+    expect( $(tags).find('li:first-child > span').text() ).to.be('jimmy');
   })
 
   it('should start closed', function(done){
@@ -45,7 +46,7 @@ describe('Select', function(){
     expect(findClass(select, 'rw-input').getDOMNode().getAttribute('aria-expanded')).to.be('false')
 
     setTimeout(function(){
-      expect(popup.getDOMNode().style.display).to.be('none')
+      expect($(popup.getDOMNode()).css('display')).to.be('none')
       done()
     }, 0)
   })
@@ -71,7 +72,7 @@ describe('Select', function(){
           <TagList value={[dataList[0], dataList[1]]} data={dataList} textField='label' valueField='id' onDelete={del}/>)
           .getDOMNode();
 
-    expect(tags.children.length).to.be(2)
+    expect($(tags).children().length).to.be(2)
     trigger.click(tags.children[1].children[1]) // click button
 
     expect(del.calledOnce).to.be(true)
@@ -83,7 +84,7 @@ describe('Select', function(){
       , select = render(<Select onChange={change} value={[dataList[0], dataList[1]]} data={dataList} textField='label' valueField='id' />)
       , tags   = findType(select, TagList).getDOMNode()
 
-    expect(tags.children.length).to.be(2)
+    expect($(tags).children().length).to.be(2)
     trigger.click(tags.children[1].children[1]) // click button
 
     expect(change.calledOnce).to.be(true)
@@ -133,7 +134,7 @@ describe('Select', function(){
 
     expect( input.hasAttribute('disabled')).to.be(true);
     expect( input.getAttribute('aria-disabled')).to.be('true');
-    expect( input.getAttribute('disabled')).to.be('');
+    //expect( input.getAttribute('disabled')).to.be('');
 
     trigger.click(findTag(select, 'button').getDOMNode())
 
@@ -168,7 +169,6 @@ describe('Select', function(){
 
     expect( input.hasAttribute('readonly')).to.be(true);
     expect( input.getAttribute('aria-readonly')).to.be('true');
-    expect( input.getAttribute('readonly')).to.be('');
 
     trigger.click(findTag(select, 'button').getDOMNode())
 
@@ -349,7 +349,6 @@ describe('Select', function(){
 
     select.setProps({ open: true, value:[], onToggle: ()=>{} })
 
-    
     trigger.keyDown(select.getDOMNode(), { key: 'ArrowDown'})
     expect(list.children[1].className).to.match(/\brw-state-focus\b/)
 

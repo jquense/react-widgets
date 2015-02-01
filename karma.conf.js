@@ -13,6 +13,7 @@ module.exports = function (config) {
     files: [
       './vendor/phantomjs-shim.js',
       './vendor/sinon-1.10.3.js',
+      './vendor/jquery-1.11.2.min.js',
       'test.js',
     ],
 
