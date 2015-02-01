@@ -16,14 +16,14 @@ var PopupContent = React.createClass({
 
 module.exports = React.createClass({
 
-	propTypes: {
+  propTypes: {
     duration:       React.PropTypes.number,
     onRequestClose: React.PropTypes.func.isRequired,
     onClosing:      React.PropTypes.func,
     onOpening:      React.PropTypes.func,
     onClose:        React.PropTypes.func,
     onOpen:         React.PropTypes.func
-	},
+  },
 
   getDefaultProps: function(){
     return {
@@ -36,9 +36,9 @@ module.exports = React.createClass({
     }
   },
 
-	componentDidMount: function(){
+  componentDidMount: function(){
     !this.props.open && this.close(0)
-	},
+  },
 
   componentWillReceiveProps: function(nextProps) {
     this.setState({
@@ -54,17 +54,17 @@ module.exports = React.createClass({
     else if (closing) this.close()
   },
 
-	render: function(){
+  render: function(){
     var { className, open, ...props } = this.props
 
-		return (
+    return (
       <div {...props} className={ (className ||'') + " rw-popup-container"}>
         <PopupContent ref='content'>
           { this.props.children }
         </PopupContent>
       </div>
-		)
-	},
+    )
+  },
 
   dimensions: function(){
     var el = this.getDOMNode()

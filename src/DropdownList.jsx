@@ -69,14 +69,14 @@ var DropdownList = React.createClass({
 
   propTypes: propTypes,
 
-	getInitialState: function(){
+  getInitialState: function(){
     var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
 
-		return {
+    return {
       selectedItem: this.props.data[initialIdx],
       focusedItem:  this.props.data[initialIdx] || this.props.data[0],
-		}
-	},
+    }
+  },
 
   getDefaultProps: function(){
     return {
@@ -106,8 +106,8 @@ var DropdownList = React.createClass({
     })
   },
 
-	render: function(){
-		var {
+  render: function(){
+    var {
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
       , ValueComponent = this.props.valueComponent
@@ -116,8 +116,8 @@ var DropdownList = React.createClass({
       , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       ;
 
-		return (
-			<div {...props}
+    return (
+      <div {...props}
         ref="element"
         onKeyDown={this._maybeHandle(this._keyDown)}
         onClick={this._maybeHandle(this.toggle)}
@@ -140,11 +140,11 @@ var DropdownList = React.createClass({
           'rw-rtl':             this.isRtl()
         })}>
 
-				<span className="rw-dropdownlist-picker rw-select rw-btn">
-					<i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
+        <span className="rw-dropdownlist-picker rw-select rw-btn">
+          <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
             <span className="rw-sr">{ this.props.messages.open }</span>
           </i>
-				</span>
+        </span>
         <div className="rw-input">
           { this.props.valueComponent
               ? <ValueComponent item={valueItem}/>
@@ -165,9 +165,9 @@ var DropdownList = React.createClass({
               onMove={this._scrollTo}/>
           </div>
         </Popup>
-			</div>
-		)
-	},
+      </div>
+    )
+  },
 
   _focus: function(focused, e){
     var self = this;
