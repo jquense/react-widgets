@@ -75,17 +75,17 @@ var ComboBox = React.createClass({
 
   propTypes: propTypes,
 
-	getInitialState: function(){
+  getInitialState: function(){
     var items = this.process(this.props.data, this.props.value)
       , idx   = this._dataIndexOf(items, this.props.value);
 
-		return {
-			selectedItem:  items[idx],
+    return {
+      selectedItem:  items[idx],
       focusedItem:   items[!~idx ? 0 : idx],
       processedData: items,
-			open:          false
-		}
-	},
+      open:          false
+    }
+  },
 
   getDefaultProps: function(){
     return {
@@ -139,8 +139,8 @@ var ComboBox = React.createClass({
     })
   },
 
-	render: function(){
-		var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
+  render: function(){
+    var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
       , valueItem = this._dataItem( this._data(), this.props.value )
       , items = this._data()
       , listID = this._id('_listbox')
@@ -150,8 +150,8 @@ var ComboBox = React.createClass({
           ? this.props.filter ? 'both' : 'inline'
           : this.props.filter ? 'list' : '';
 
-		return (
-			<div {...props }
+    return (
+      <div {...props }
         ref="element"
         role='combobox'
         onKeyDown={this._maybeHandle(this._keyDown)}
@@ -215,9 +215,9 @@ var ComboBox = React.createClass({
               }}/>
           </div>
         </Popup>
-			</div>
-		)
-	},
+      </div>
+    )
+  },
 
   _onSelect: function(data){
     this.close()

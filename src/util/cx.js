@@ -2,7 +2,7 @@
 var _ = require('./_')
 
 module.exports = function(existing, classes) {
-	if(arguments.length === 1 )
+  if(arguments.length === 1 )
     if( typeof existing === 'string' )
       classes = {}
     else 

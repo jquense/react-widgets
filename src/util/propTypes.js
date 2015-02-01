@@ -3,7 +3,7 @@ var React = require('react')
 
 module.exports = {
 
-	elementType: createChainableTypeChecker(
+  elementType: createChainableTypeChecker(
     function (props, propName, componentName, location) {
 
       if( typeof props[propName] !== 'function'){

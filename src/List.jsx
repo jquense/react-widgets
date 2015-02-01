@@ -59,7 +59,7 @@ module.exports = React.createClass({
       this._setScrollPosition()
   },
 
-	render(){
+  render(){
     var { className, ...props } = _.omit(this.props, ['data'])
       , ItemComponent = this.props.itemComponent
       , items;
@@ -88,15 +88,15 @@ module.exports = React.createClass({
           </li>)
         });
     
-		return (
-			<ul { ...props } 
+    return (
+      <ul { ...props } 
         className={ (className || '') + ' rw-list' } 
         ref='scrollable'
         role='listbox'>
           { items }
-			</ul>
-		)
-	},
+      </ul>
+    )
+  },
 
 
   _data(){ 
