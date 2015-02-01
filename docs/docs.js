@@ -53,7 +53,8 @@
 	   
 	   
 	   
-	      __webpack_require__(13),Route=$__0.Route,run=$__0.run,HistoryLocation=$__0.HistoryLocation,DefaultRoute=$__0.DefaultRoute,RouteHandler=$__0.RouteHandler,Navigation=$__0.Navigation,Link=$__0.Link
+	   
+	      __webpack_require__(13),Route=$__0.Route,run=$__0.run,HistoryLocation=$__0.HistoryLocation,DefaultRoute=$__0.DefaultRoute,RouteHandler=$__0.RouteHandler,Navigation=$__0.Navigation,State=$__0.State,Link=$__0.Link
 	
 	  , Navbar         = __webpack_require__(3)
 	  , Tbs            = __webpack_require__(2)
@@ -78,7 +79,7 @@
 	
 	  displayName: 'DocPage',
 	
-	  mixins: [ Navigation ],
+	  mixins: [ Navigation, State ],
 	
 	  getInitialState: function () {
 	    return {
@@ -100,9 +101,9 @@
 	        React.createElement("div", {className: "container"}, 
 	          React.createElement("aside", {className: "col-sm-3 section"}, 
 	            React.createElement("div", {className: "nav-aside section-inner"}, 
-	              React.createElement("nav", null, 
+	              React.createElement("nav", {className: "side-nav"}, 
 	                React.createElement("ul", {className: "nav"}, 
-	                  React.createElement("li", null, 
+	                  React.createElement("li", {className: this.getPathname().match(/\/getting-started/) ? 'active' : ''}, 
 	                    React.createElement(Link, {to: "/getting-started"}, "Getting Started"), 
 	                    React.createElement("ul", {className: "nav"}, 
 	                      React.createElement("li", null, React.createElement(Link, {to: "/getting-started/install"}, "Install")), 
@@ -126,15 +127,15 @@
 	          ), 
 	          React.createElement("article", {className: "col-sm-9 section"}, 
 	            React.createElement("div", {className: "section-inner"}, 
-	              React.createElement(RouteHandler, null), 
-	              React.createElement("div", {className: "clearfix", style: { marginTop: 20}}, 
-	                 locations.indexOf(href) > 0 && 
-	                  React.createElement("button", {type: "button", className: "btn btn-link pull-left", onClick: this.prev}, "« prev"), 
-	                
-	                 locations.indexOf(href) < (locations.length - 1) && 
-	                  React.createElement("button", {type: "button", className: "btn btn-link pull-right", onClick: this.next}, "next »")
-	                
-	              )
+	              React.createElement(RouteHandler, null)
+	              /*<div className='clearfix'style={{ marginTop: 20 }}>
+	                { locations.indexOf(href) > 0 && 
+	                  <button type='button' className='btn btn-link pull-left' onClick={this.prev}>« prev</button>
+	                }
+	                { locations.indexOf(href) < (locations.length - 1) && 
+	                  <button type='button' className='btn btn-link pull-right' onClick={this.next}>next »</button>
+	                }
+	              </div> */
 	            )
 	          )
 	        )
@@ -411,7 +412,7 @@
 	  , MenuItem = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(17)
-	  , DropdownListExample = __webpack_require__(20)
+	  , DropdownListExample = __webpack_require__(19)
 	
 	var prefix = 'dropdown-list/'
 	var widgetName = 'DropdownList'
@@ -504,21 +505,21 @@
 	          "This component is used to render the selected value of the combobox. The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(37)(widgetName)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(31)(widgetName)}), 
 	
 	        React.createElement(PropHeader, {type: "Component"}, "itemComponent"), 
 	        React.createElement("p", null, 
 	          "This component is used to render each possible item in the DropdownList. The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(31)(widgetName)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(32)(widgetName)}), 
 	
 	        React.createElement(PropHeader, {type: "String | Function(Any dataItem)"}, "groupBy"), 
 	        React.createElement("p", null, 
 	          "Determines how to group the ", widgetName, " dropdown list. Providing a ", React.createElement("code", null, "string"), " will group" + ' ' + 
 	          "the ", React.createElement("code", null, "data"), " array by that property. You can also provide a ", 'function', " which should return the group value."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(32)(widgetName)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(33)(widgetName)}), 
 	
 	        React.createElement(PropHeader, {type: "Component"}, "groupComponent"), 
 	        React.createElement("p", null, 
@@ -526,7 +527,7 @@
 	          "default the ", React.createElement("code", null, "groupBy"), " value will be used."
 	        ), 
 	
-	        React.createElement(EditableExample, {codeText: __webpack_require__(33)(widgetName)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(34)(widgetName)}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean"}, "open"), 
 	        React.createElement("p", null, 
@@ -606,7 +607,7 @@
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(17)
 	  , EditableExample = __webpack_require__(15)
-	  , ComboBoxExample = __webpack_require__(19);
+	  , ComboBoxExample = __webpack_require__(20);
 	
 	var prefix = 'combobox/'
 	var widgetName = 'Combobox'
@@ -702,21 +703,21 @@
 	          "This component is used to render each possible item in the DropdownList. The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(31)(widgetName)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(32)(widgetName)}), 
 	
 	        React.createElement(PropHeader, {type: "String | Function(Any dataItem)"}, "groupBy"), 
 	        React.createElement("p", null, 
 	          "Determines how to group the ", widgetName, " dropdown list. Providing a ", React.createElement("code", null, "string"), " will group" + ' ' + 
 	          "the ", React.createElement("code", null, "data"), " array by that property. You can also provide a ", 'function', " which should return the group value."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(32)(widgetName)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(33)(widgetName)}), 
 	
 	        React.createElement(PropHeader, {type: "Component"}, "groupComponent"), 
 	        React.createElement("p", null, 
 	          "This component is used to render each option group, when ", React.createElement("code", null, "groupBy"), " is specified. By" + ' ' + 
 	          "default the ", React.createElement("code", null, "groupBy"), " value will be used."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(33)(widgetName)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(34)(widgetName)}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean", default: "false"}, "suggest"), 
 	        React.createElement("p", null, 
@@ -742,7 +743,7 @@
 	          React.createElement("code", null, "false"), " ", React.createElement("code", null, "\"startsWith\""), " ", React.createElement("code", null, "\"endsWith\""), " ", React.createElement("code", null, "\"contains\""), " ", 
 	          React.createElement("code", null, 'function(String item)')
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(34)(widgetName)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(37)(widgetName)}), 
 	
 	
 	        React.createElement(PropHeader, {type: "Boolean"}, "open"), 
@@ -943,21 +944,21 @@
 	          "This component is used to render each possible item in the list. The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(31)(widgetName, true)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(32)(widgetName, true)}), 
 	
 	        React.createElement(PropHeader, {type: "String | Function(Any dataItem)"}, "groupBy"), 
 	        React.createElement("p", null, 
 	          "Determines how to group the ", widgetName, " dropdown list. Providing a ", React.createElement("code", null, "string"), " will group" + ' ' + 
 	          "the ", React.createElement("code", null, "data"), " array by that property. You can also provide a ", 'function', " which should return the group value."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(32)(widgetName, true)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(33)(widgetName, true)}), 
 	
 	        React.createElement(PropHeader, {type: "Component"}, "groupComponent"), 
 	        React.createElement("p", null, 
 	          "This component is used to render each option group, when ", React.createElement("code", null, "groupBy"), " is specified. By" + ' ' + 
 	          "default the ", React.createElement("code", null, "groupBy"), " value will be used."
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(33)(widgetName, true)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(34)(widgetName, true)}), 
 	
 	        React.createElement(PropHeader, {type: "String", handler: "onSearch", controllable: true}, "placeholder"), 
 	        React.createElement("p", null, 
@@ -1129,7 +1130,7 @@
 	  , MenuItem = __webpack_require__(16)
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(17)
-	  , SelectListExample = __webpack_require__(22);
+	  , SelectListExample = __webpack_require__(25);
 	
 	var prefix = 'selectlist/'
 	var widgetName = 'SelectList'
@@ -1210,7 +1211,7 @@
 	          "This component is used to render each item in the ", widgetName, ". The default component" + ' ' +
 	          "renders the text of the selected item (specified by ", React.createElement("code", null, "textfield"), ")"
 	        ), 
-	        React.createElement(EditableExample, {codeText: __webpack_require__(31)(widgetName, true)}), 
+	        React.createElement(EditableExample, {codeText: __webpack_require__(32)(widgetName, true)}), 
 	
 	        React.createElement(PropHeader, {type: "Boolean"}, "multiple"), 
 	        React.createElement("p", null, 
@@ -1280,7 +1281,7 @@
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(16)
 	  , PropHeader = __webpack_require__(17)
-	  , CalendarExample = __webpack_require__(23);
+	  , CalendarExample = __webpack_require__(22);
 	
 	var prefix = 'calendar/'
 	var widgetName = "Calendar"
@@ -1415,7 +1416,7 @@
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , MenuItem = __webpack_require__(16)
 	  , PropHeader = __webpack_require__(17)
-	  , DatePickerExample = __webpack_require__(24);
+	  , DatePickerExample = __webpack_require__(23);
 	
 	var prefix = 'date-picker/'
 	var widgetName = 'DateTimePicker'
@@ -1638,7 +1639,7 @@
 	  , DDButton = __webpack_require__(2).DropdownButton
 	  , PropHeader = __webpack_require__(17)
 	  , MenuItem = __webpack_require__(16)
-	  , NumberPickerExample = __webpack_require__(25);
+	  , NumberPickerExample = __webpack_require__(24);
 	
 	var prefix = 'number-picker/'
 	var widgetName = 'NumberPicker'
@@ -1891,6 +1892,13 @@
 	      __webpack_require__(13).State
 	    ],
 	
+	    componentDidMount: function() {
+	      var path = this.getPathname()
+	      var anchor = document.getElementById(path)
+	
+	      anchor && window.scrollTo(window.pageXOffset, anchor.offsetTop)
+	    },
+	
 	    childContextTypes: {
 	      prefix: React.PropTypes.string.isRequired
 	    },
@@ -2138,6 +2146,158 @@
 	var React = __webpack_require__(1)
 	  , Button = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , Dropdown = __webpack_require__(72).DropdownList
+	  , NumberPicker = __webpack_require__(72).NumberPicker
+	  , genData = __webpack_require__(73);
+	
+	var valueComp = React.createClass({displayName: 'valueComp',
+	  render: function() {
+	
+	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.name))
+	  }
+	});
+	
+	var itemComp = React.createClass({displayName: 'itemComp',
+	  render: function() {
+	    var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	    return (
+	      React.createElement("div", null, 
+	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
+	         '  ' + this.props.item.name
+	      )
+	    );
+	  }
+	});
+	
+	
+	function getRandomInt(min, max) {
+	  return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	
+	var list = genData(25);
+	
+	var DropdownApi = React.createClass({displayName: 'DropdownApi',
+	
+	  getInitialState: function(){
+	
+	    return {
+	      duration: 250,
+	    }
+	  },
+	
+	  render: function() {
+	    
+	    var props = {
+	      disabled: this.state.disabled === 'disabled',
+	      readOnly: this.state.disabled === 'readonly',
+	      groupBy: this.state.groupBy,
+	      defaultValue: 1,
+	      data: list,
+	      duration: this.state.duration,
+	      busy: this.state.busy,
+	      isRtl: this.state.isRtl,
+	      valueField: 'id',
+	      textField: 'name'
+	    }
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(Dropdown, React.__spread({},  props ))
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", null, "Custom Rendering"), 
+	              React.createElement(Dropdown, React.__spread({},  props , 
+	                {valueComponent: valueComp, 
+	                itemComponent: itemComp}))
+	            )
+	          ), 
+	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              ), 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.groupBy, 
+	                  onChange: this._set.bind(null, 'groupBy', !this.state.groupBy ? 'last' : null)}), 
+	                  "Group"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Duration"), 
+	              React.createElement(NumberPicker, {
+	                  value: this.state.duration, 
+	                  step: 200, 
+	                  min: 0, 
+	                  max: 1000, 
+	                  onChange: this._set.bind(null, 'duration')})
+	            )
+	          )
+	        )
+	      )
+	    );
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
+	    this.setState({ disabled: val })
+	  },
+	});
+	
+	module.exports = DropdownApi;
+	
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
 	  , RW = __webpack_require__(72);
 	
 	var i = 0
@@ -2302,158 +2462,6 @@
 	function getRandomInt(min, max) {
 	    return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , Dropdown = __webpack_require__(72).DropdownList
-	  , NumberPicker = __webpack_require__(72).NumberPicker
-	  , genData = __webpack_require__(73);
-	
-	var valueComp = React.createClass({displayName: 'valueComp',
-	  render: function() {
-	
-	    return (React.createElement("span", null, React.createElement("i", {className: "fa fa-comment"}),  '  ' + this.props.item.name))
-	  }
-	});
-	
-	var itemComp = React.createClass({displayName: 'itemComp',
-	  render: function() {
-	    var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	    this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	    return (
-	      React.createElement("div", null, 
-	        React.createElement("i", {className: 'fa fa-' + this._icon}), 
-	         '  ' + this.props.item.name
-	      )
-	    );
-	  }
-	});
-	
-	
-	function getRandomInt(min, max) {
-	  return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-	
-	var list = genData(25);
-	
-	var DropdownApi = React.createClass({displayName: 'DropdownApi',
-	
-	  getInitialState: function(){
-	
-	    return {
-	      duration: 250,
-	    }
-	  },
-	
-	  render: function() {
-	    
-	    var props = {
-	      disabled: this.state.disabled === 'disabled',
-	      readOnly: this.state.disabled === 'readonly',
-	      groupBy: this.state.groupBy,
-	      defaultValue: 1,
-	      data: list,
-	      duration: this.state.duration,
-	      busy: this.state.busy,
-	      isRtl: this.state.isRtl,
-	      valueField: 'id',
-	      textField: 'name'
-	    }
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(Dropdown, React.__spread({},  props ))
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", null, "Custom Rendering"), 
-	              React.createElement(Dropdown, React.__spread({},  props , 
-	                {valueComponent: valueComp, 
-	                itemComponent: itemComp}))
-	            )
-	          ), 
-	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              ), 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.groupBy, 
-	                  onChange: this._set.bind(null, 'groupBy', !this.state.groupBy ? 'last' : null)}), 
-	                  "Group"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              ), 
-	              React.createElement(Button, {style: { marginLeft: 10}, 
-	                active: this.state.busy, 
-	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
-	                "Busy"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Duration"), 
-	              React.createElement(NumberPicker, {
-	                  value: this.state.duration, 
-	                  step: 200, 
-	                  min: 0, 
-	                  max: 1000, 
-	                  onChange: this._set.bind(null, 'duration')})
-	            )
-	          )
-	        )
-	      )
-	    );
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === 'disabled' ? false : 'disabled'
-	    this.setState({ disabled: val })
-	  },
-	});
-	
-	module.exports = DropdownApi;
-	
-
 
 /***/ },
 /* 21 */
@@ -2656,158 +2664,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var React = __webpack_require__(1)
-	  , Button = __webpack_require__(2).Button
-	  , ButtonGroup = __webpack_require__(2).ButtonGroup
-	  , RW = __webpack_require__(72);
-	
-	
-	// var valueComp = React.createClass({
-	//   render: function() {
-	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
-	//   }
-	// });
-	
-	// var itemComp = React.createClass({
-	//   render: function() {
-	//     var icons =  ['bicycle', 'area-chart', 'anchor']
-	
-	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	//     return (
-	//       <div>
-	//         <i className={'fa fa-' + this._icon}></i>
-	//         { '  ' + this.props.item.label}
-	//       </div>
-	//     );
-	//   }
-	// });
-	
-	// function getRandomInt(min, max) {
-	//   return Math.floor(Math.random() * (max - min + 1)) + min;
-	// }
-	
-	var list = [
-	        { label: 'orange', id: 1 },
-	        { label: 'blue',   id: 2 },
-	        { label: 'red',    id: 3 },
-	        { label: 'maroon', id: 4 },
-	        { label: 'purple', id: 5 },
-	        { label: 'mauve',  id: 6 },
-	      ];
-	
-	var DropdownApi = React.createClass({displayName: 'DropdownApi',
-	
-	  getInitialState: function(){
-	
-	    return {
-	      duration: 250,
-	    }
-	  },
-	
-	  render: function() {
-	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
-	
-	    return (
-	      React.createElement("div", {className: "example"}, 
-	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(RW.SelectList, {
-	                disabled: disabled ? this.state.disabled : false, 
-	                readOnly: this.state.disabled === 'readonly', 
-	                value: this.state.value, 
-	                data: list, 
-	                multiple: this.state.multiple, 
-	                busy: this.state.busy, 
-	                onChange: this._change, 
-	                isRtl: this.state.isRtl, 
-	                valueField: "id", 
-	                textField: "label"}
-	                )
-	            )
-	          ), 
-	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.isRtl, 
-	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
-	                  "Right to Left"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "checkbox-inline"}, 
-	                React.createElement("input", {type: "checkbox", 
-	                  checked: this.state.multiple, 
-	                  onChange: this._set.bind(null, 'multiple', !this.state.multiple)}), 
-	                  "Is Multiple"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(ButtonGroup, null, 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'disabled', 
-	                  onClick: this.disabled}, 
-	                  "Disable"
-	                ), 
-	                React.createElement(Button, {
-	                  active: this.state.disabled === 'readonly', 
-	                  onClick: this.readOnly}, 
-	                  "Readonly"
-	                )
-	              ), 
-	              React.createElement(Button, {style: { marginLeft: 10}, 
-	                active: this.state.busy, 
-	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
-	                "Busy"
-	              )
-	            ), 
-	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement("label", {className: "form-label"}, "Disable Values"), 
-	              React.createElement(RW.Multiselect, {
-	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
-	                  data: list, 
-	                  textField: "label", 
-	                  valueField: "id", 
-	                  disabled: this.state.disabled === true, 
-	                  onChange: this._set.bind(null, 'disabled')})
-	            )
-	          )
-	        )
-	      )
-	    );
-	  },
-	
-	  _change: function(val){
-	    this.setState({ value: val })
-	  },
-	
-	  _set: function(field, value){
-	    var obj = {}
-	    obj[field] = value
-	    this.setState(obj)
-	  },
-	
-	  readOnly: function(){
-	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
-	    this.setState({ disabled: val })
-	  },
-	
-	  disabled: function(){
-	    var val = this.state.disabled === true ? false : true
-	    this.setState({ disabled: val })
-	  }
-	});
-	
-	module.exports = DropdownApi;
-	
-
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
 	var React       = __webpack_require__(1)
 	  , Button      = __webpack_require__(2).Button
 	  , ButtonGroup = __webpack_require__(2).ButtonGroup
@@ -2926,7 +2782,7 @@
 
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3108,7 +2964,7 @@
 	}
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3230,6 +3086,158 @@
 	    return fn(e.target.value)
 	  }
 	}
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1)
+	  , Button = __webpack_require__(2).Button
+	  , ButtonGroup = __webpack_require__(2).ButtonGroup
+	  , RW = __webpack_require__(72);
+	
+	
+	// var valueComp = React.createClass({
+	//   render: function() {
+	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
+	//   }
+	// });
+	
+	// var itemComp = React.createClass({
+	//   render: function() {
+	//     var icons =  ['bicycle', 'area-chart', 'anchor']
+	
+	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	//     return (
+	//       <div>
+	//         <i className={'fa fa-' + this._icon}></i>
+	//         { '  ' + this.props.item.label}
+	//       </div>
+	//     );
+	//   }
+	// });
+	
+	// function getRandomInt(min, max) {
+	//   return Math.floor(Math.random() * (max - min + 1)) + min;
+	// }
+	
+	var list = [
+	        { label: 'orange', id: 1 },
+	        { label: 'blue',   id: 2 },
+	        { label: 'red',    id: 3 },
+	        { label: 'maroon', id: 4 },
+	        { label: 'purple', id: 5 },
+	        { label: 'mauve',  id: 6 },
+	      ];
+	
+	var DropdownApi = React.createClass({displayName: 'DropdownApi',
+	
+	  getInitialState: function(){
+	
+	    return {
+	      duration: 250,
+	    }
+	  },
+	
+	  render: function() {
+	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
+	
+	    return (
+	      React.createElement("div", {className: "example"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-md-6 col-lg-7 demo"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(RW.SelectList, {
+	                disabled: disabled ? this.state.disabled : false, 
+	                readOnly: this.state.disabled === 'readonly', 
+	                value: this.state.value, 
+	                data: list, 
+	                multiple: this.state.multiple, 
+	                busy: this.state.busy, 
+	                onChange: this._change, 
+	                isRtl: this.state.isRtl, 
+	                valueField: "id", 
+	                textField: "label"}
+	                )
+	            )
+	          ), 
+	          React.createElement("div", {className: "col-md-6 col-lg-5 api-panel"}, 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.isRtl, 
+	                  onChange: this._set.bind(null, 'isRtl', !this.state.isRtl)}), 
+	                  "Right to Left"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "checkbox-inline"}, 
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: this.state.multiple, 
+	                  onChange: this._set.bind(null, 'multiple', !this.state.multiple)}), 
+	                  "Is Multiple"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement(ButtonGroup, null, 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'disabled', 
+	                  onClick: this.disabled}, 
+	                  "Disable"
+	                ), 
+	                React.createElement(Button, {
+	                  active: this.state.disabled === 'readonly', 
+	                  onClick: this.readOnly}, 
+	                  "Readonly"
+	                )
+	              ), 
+	              React.createElement(Button, {style: { marginLeft: 10}, 
+	                active: this.state.busy, 
+	                onClick: this._set.bind(null, 'busy', !this.state.busy)}, 
+	                "Busy"
+	              )
+	            ), 
+	            React.createElement("div", {className: "form-group"}, 
+	              React.createElement("label", {className: "form-label"}, "Disable Values"), 
+	              React.createElement(RW.Multiselect, {
+	                  value:  Array.isArray(this.state.disabled) ? this.state.disabled : [], 
+	                  data: list, 
+	                  textField: "label", 
+	                  valueField: "id", 
+	                  disabled: this.state.disabled === true, 
+	                  onChange: this._set.bind(null, 'disabled')})
+	            )
+	          )
+	        )
+	      )
+	    );
+	  },
+	
+	  _change: function(val){
+	    this.setState({ value: val })
+	  },
+	
+	  _set: function(field, value){
+	    var obj = {}
+	    obj[field] = value
+	    this.setState(obj)
+	  },
+	
+	  readOnly: function(){
+	    var val = this.state.disabled === 'readonly' ? false : 'readonly'
+	    this.setState({ disabled: val })
+	  },
+	
+	  disabled: function(){
+	    var val = this.state.disabled === true ? false : true
+	    this.setState({ disabled: val })
+	  }
+	});
+	
+	module.exports = DropdownApi;
+	
+
 
 /***/ },
 /* 26 */
@@ -3380,6 +3388,43 @@
 	
 	var code = 
 	("\nvar " + 
+	widgetName + " = ReactWidgets." + widgetName + ";\nvar people = listOfPeople();\n\nvar ValueInput = React.createClass({\n  render() {\n    return (\n      <span>\n        <strong>hi, </strong>{ this.props.item.name }\n      </span>);\n  }\n})\n\nvar widget =(\n    <" + 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	widgetName + " data={people} \n      textField='name'\n      defaultValue={people[0]}\n      valueComponent={ValueInput}/>\n  ) \n\nReact.render(widget, mountNode);"
+	
+	
+	
+	
+	
+	)
+	
+	return code
+	}
+	
+	
+
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = function(widgetName) {
+	
+	var code = 
+	("\nvar " + 
 	widgetName + " = ReactWidgets." + widgetName + ";\nvar people = listOfPeople();\n\nvar ListItem = React.createClass({\n  render() {\n    var person = this.props.item;\n\n    return (\n      <span>\n        <strong>{ person.firstName }</strong>\n        { \" \" + person.lastName }\n      </span>);\n  }\n})\n\nvar widget =(\n    <" + 
 	
 	
@@ -3411,7 +3456,7 @@
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3446,7 +3491,7 @@
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3468,45 +3513,6 @@
 	
 	
 	widgetName + " \n      data={people} defaultValue={people[0]}\n      textField='name' \n      groupBy={ person => person.name.length }\n      groupComponent={GroupByLength}/>\n  ) \n\nReact.render(widget, mountNode);"
-	
-	
-	
-	
-	
-	
-	)
-	
-	return code
-	}
-	
-	
-
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = function(widgetName) {
-	
-	var code = 
-	("\nvar " + 
-	widgetName + " = ReactWidgets." + widgetName + ";\nvar people = listOfPeople();\n\nvar widgets =(<div>\n    <" + 
-	
-	
-	
-	widgetName + " \n      data={people} defaultValue={people[0]}\n      textField='name' \n      filter='contains'/>\n    <" + 
-	
-	
-	
-	widgetName + " \n      data={people} defaultValue={people[0]}\n      textField='name' \n      filter={filterLastName}/>\n  </div>) \n\nfunction filterLastName(person, value) { \n  var lastname = person.lastName.toLowerCase()\n    , search   = value.toLowerCase();\n\n  return lastname.indexOf(search) === 0 \n}\n\nReact.render(widgets, mountNode);"
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -3584,7 +3590,15 @@
 	
 	var code = 
 	("\nvar " + 
-	widgetName + " = ReactWidgets." + widgetName + ";\nvar people = listOfPeople();\n\nvar ValueInput = React.createClass({\n  render() {\n    return (\n      <span>\n        <strong>hi, </strong>{ this.props.item.name }\n      </span>);\n  }\n})\n\nvar widget =(\n    <" + 
+	widgetName + " = ReactWidgets." + widgetName + ";\nvar people = listOfPeople();\n\nvar widgets =(<div>\n    <" + 
+	
+	
+	
+	widgetName + " \n      data={people} defaultValue={people[0]}\n      textField='name' \n      filter='contains'/>\n    <" + 
+	
+	
+	
+	widgetName + " \n      data={people} defaultValue={people[0]}\n      textField='name' \n      filter={filterLastName}/>\n  </div>) \n\nfunction filterLastName(person, value) { \n  var lastname = person.lastName.toLowerCase()\n    , search   = value.toLowerCase();\n\n  return lastname.indexOf(search) === 0 \n}\n\nReact.render(widgets, mountNode);"
 	
 	
 	
@@ -3592,12 +3606,6 @@
 	
 	
 	
-	
-	
-	
-	
-	
-	widgetName + " data={people} \n      textField='name'\n      defaultValue={people[0]}\n      valueComponent={ValueInput}/>\n  ) \n\nReact.render(widget, mountNode);"
 	
 	
 	
@@ -6182,7 +6190,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var constants = __webpack_require__(109);
+	var constants = __webpack_require__(107);
 	
 	var BootstrapMixin = {
 	  propTypes: {
@@ -6222,7 +6230,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var EventListener = __webpack_require__(107);
+	var EventListener = __webpack_require__(109);
 	
 	/**
 	 * Checks whether a node is within
@@ -9106,8 +9114,8 @@
 	
 	  , Popup     = __webpack_require__(120)
 	  , Calendar  = __webpack_require__(100).BaseCalendar
-	  , Time      = __webpack_require__(130)
-	  , DateInput = __webpack_require__(131)
+	  , Time      = __webpack_require__(131)
+	  , DateInput = __webpack_require__(132)
 	  , Btn       = __webpack_require__(123)
 	  , CustomPropTypes = __webpack_require__(140)
 	  , controlledInput = __webpack_require__(139);
@@ -9483,7 +9491,7 @@
 	  , _     = __webpack_require__(137) //omit
 	  , controlledInput  = __webpack_require__(139)
 	  , directions = __webpack_require__(144).directions
-	  , Input = __webpack_require__(132);
+	  , Input = __webpack_require__(130);
 	
 	var Btn = __webpack_require__(123)
 	  , propTypes = {
@@ -10812,185 +10820,6 @@
 /* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * This file contains a modified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/EventListener.js
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * TODO: remove in favour of solution provided by:
-	 *  https://github.com/facebook/react/issues/285
-	 */
-	
-	/**
-	 * Does not take into account specific nature of platform.
-	 */
-	var EventListener = {
-	  /**
-	   * Listen to DOM events during the bubble phase.
-	   *
-	   * @param {DOMEventTarget} target DOM element to register listener on.
-	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-	   * @param {function} callback Callback function.
-	   * @return {object} Object with a `remove` method.
-	   */
-	  listen: function(target, eventType, callback) {
-	    if (target.addEventListener) {
-	      target.addEventListener(eventType, callback, false);
-	      return {
-	        remove: function() {
-	          target.removeEventListener(eventType, callback, false);
-	        }
-	      };
-	    } else if (target.attachEvent) {
-	      target.attachEvent('on' + eventType, callback);
-	      return {
-	        remove: function() {
-	          target.detachEvent('on' + eventType, callback);
-	        }
-	      };
-	    }
-	  }
-	};
-	
-	module.exports = EventListener;
-
-
-/***/ },
-/* 108 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains a modified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/addons/transitions/ReactTransitionEvents.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-	
-	var canUseDOM = !!(
-	  typeof window !== 'undefined' &&
-	    window.document &&
-	    window.document.createElement
-	  );
-	
-	/**
-	 * EVENT_NAME_MAP is used to determine which event fired when a
-	 * transition/animation ends, based on the style property used to
-	 * define that event.
-	 */
-	var EVENT_NAME_MAP = {
-	  transitionend: {
-	    'transition': 'transitionend',
-	    'WebkitTransition': 'webkitTransitionEnd',
-	    'MozTransition': 'mozTransitionEnd',
-	    'OTransition': 'oTransitionEnd',
-	    'msTransition': 'MSTransitionEnd'
-	  },
-	
-	  animationend: {
-	    'animation': 'animationend',
-	    'WebkitAnimation': 'webkitAnimationEnd',
-	    'MozAnimation': 'mozAnimationEnd',
-	    'OAnimation': 'oAnimationEnd',
-	    'msAnimation': 'MSAnimationEnd'
-	  }
-	};
-	
-	var endEvents = [];
-	
-	function detectEvents() {
-	  var testEl = document.createElement('div');
-	  var style = testEl.style;
-	
-	  // On some platforms, in particular some releases of Android 4.x,
-	  // the un-prefixed "animation" and "transition" properties are defined on the
-	  // style object but the events that fire will still be prefixed, so we need
-	  // to check if the un-prefixed events are useable, and if not remove them
-	  // from the map
-	  if (!('AnimationEvent' in window)) {
-	    delete EVENT_NAME_MAP.animationend.animation;
-	  }
-	
-	  if (!('TransitionEvent' in window)) {
-	    delete EVENT_NAME_MAP.transitionend.transition;
-	  }
-	
-	  for (var baseEventName in EVENT_NAME_MAP) {
-	    var baseEvents = EVENT_NAME_MAP[baseEventName];
-	    for (var styleName in baseEvents) {
-	      if (styleName in style) {
-	        endEvents.push(baseEvents[styleName]);
-	        break;
-	      }
-	    }
-	  }
-	}
-	
-	if (canUseDOM) {
-	  detectEvents();
-	}
-	
-	// We use the raw {add|remove}EventListener() call because EventListener
-	// does not know how to remove event listeners and we really should
-	// clean up. Also, these events are not triggered in older browsers
-	// so we should be A-OK here.
-	
-	function addEventListener(node, eventName, eventListener) {
-	  node.addEventListener(eventName, eventListener, false);
-	}
-	
-	function removeEventListener(node, eventName, eventListener) {
-	  node.removeEventListener(eventName, eventListener, false);
-	}
-	
-	var ReactTransitionEvents = {
-	  addEndEventListener: function(node, eventListener) {
-	    if (endEvents.length === 0) {
-	      // If CSS transitions are not supported, trigger an "end animation"
-	      // event immediately.
-	      window.setTimeout(eventListener, 0);
-	      return;
-	    }
-	    endEvents.forEach(function(endEvent) {
-	      addEventListener(node, endEvent, eventListener);
-	    });
-	  },
-	
-	  removeEndEventListener: function(node, eventListener) {
-	    if (endEvents.length === 0) {
-	      return;
-	    }
-	    endEvents.forEach(function(endEvent) {
-	      removeEventListener(node, endEvent, eventListener);
-	    });
-	  }
-	};
-	
-	module.exports = ReactTransitionEvents;
-
-
-/***/ },
-/* 109 */
-/***/ function(module, exports, __webpack_require__) {
-
 	module.exports = {
 	  CLASSES: {
 	    'alert': 'alert',
@@ -11233,6 +11062,185 @@
 	    'tree-deciduous'
 	  ]
 	};
+
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains a modified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/addons/transitions/ReactTransitionEvents.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 */
+	
+	var canUseDOM = !!(
+	  typeof window !== 'undefined' &&
+	    window.document &&
+	    window.document.createElement
+	  );
+	
+	/**
+	 * EVENT_NAME_MAP is used to determine which event fired when a
+	 * transition/animation ends, based on the style property used to
+	 * define that event.
+	 */
+	var EVENT_NAME_MAP = {
+	  transitionend: {
+	    'transition': 'transitionend',
+	    'WebkitTransition': 'webkitTransitionEnd',
+	    'MozTransition': 'mozTransitionEnd',
+	    'OTransition': 'oTransitionEnd',
+	    'msTransition': 'MSTransitionEnd'
+	  },
+	
+	  animationend: {
+	    'animation': 'animationend',
+	    'WebkitAnimation': 'webkitAnimationEnd',
+	    'MozAnimation': 'mozAnimationEnd',
+	    'OAnimation': 'oAnimationEnd',
+	    'msAnimation': 'MSAnimationEnd'
+	  }
+	};
+	
+	var endEvents = [];
+	
+	function detectEvents() {
+	  var testEl = document.createElement('div');
+	  var style = testEl.style;
+	
+	  // On some platforms, in particular some releases of Android 4.x,
+	  // the un-prefixed "animation" and "transition" properties are defined on the
+	  // style object but the events that fire will still be prefixed, so we need
+	  // to check if the un-prefixed events are useable, and if not remove them
+	  // from the map
+	  if (!('AnimationEvent' in window)) {
+	    delete EVENT_NAME_MAP.animationend.animation;
+	  }
+	
+	  if (!('TransitionEvent' in window)) {
+	    delete EVENT_NAME_MAP.transitionend.transition;
+	  }
+	
+	  for (var baseEventName in EVENT_NAME_MAP) {
+	    var baseEvents = EVENT_NAME_MAP[baseEventName];
+	    for (var styleName in baseEvents) {
+	      if (styleName in style) {
+	        endEvents.push(baseEvents[styleName]);
+	        break;
+	      }
+	    }
+	  }
+	}
+	
+	if (canUseDOM) {
+	  detectEvents();
+	}
+	
+	// We use the raw {add|remove}EventListener() call because EventListener
+	// does not know how to remove event listeners and we really should
+	// clean up. Also, these events are not triggered in older browsers
+	// so we should be A-OK here.
+	
+	function addEventListener(node, eventName, eventListener) {
+	  node.addEventListener(eventName, eventListener, false);
+	}
+	
+	function removeEventListener(node, eventName, eventListener) {
+	  node.removeEventListener(eventName, eventListener, false);
+	}
+	
+	var ReactTransitionEvents = {
+	  addEndEventListener: function(node, eventListener) {
+	    if (endEvents.length === 0) {
+	      // If CSS transitions are not supported, trigger an "end animation"
+	      // event immediately.
+	      window.setTimeout(eventListener, 0);
+	      return;
+	    }
+	    endEvents.forEach(function(endEvent) {
+	      addEventListener(node, endEvent, eventListener);
+	    });
+	  },
+	
+	  removeEndEventListener: function(node, eventListener) {
+	    if (endEvents.length === 0) {
+	      return;
+	    }
+	    endEvents.forEach(function(endEvent) {
+	      removeEventListener(node, endEvent, eventListener);
+	    });
+	  }
+	};
+	
+	module.exports = ReactTransitionEvents;
+
+
+/***/ },
+/* 109 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * This file contains a modified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/EventListener.js
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * TODO: remove in favour of solution provided by:
+	 *  https://github.com/facebook/react/issues/285
+	 */
+	
+	/**
+	 * Does not take into account specific nature of platform.
+	 */
+	var EventListener = {
+	  /**
+	   * Listen to DOM events during the bubble phase.
+	   *
+	   * @param {DOMEventTarget} target DOM element to register listener on.
+	   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+	   * @param {function} callback Callback function.
+	   * @return {object} Object with a `remove` method.
+	   */
+	  listen: function(target, eventType, callback) {
+	    if (target.addEventListener) {
+	      target.addEventListener(eventType, callback, false);
+	      return {
+	        remove: function() {
+	          target.removeEventListener(eventType, callback, false);
+	        }
+	      };
+	    } else if (target.attachEvent) {
+	      target.attachEvent('on' + eventType, callback);
+	      return {
+	        remove: function() {
+	          target.detachEvent('on' + eventType, callback);
+	        }
+	      };
+	    }
+	  }
+	};
+	
+	module.exports = EventListener;
 
 
 /***/ },
@@ -13558,7 +13566,7 @@
 	    }
 	})();
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(162).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(160).Buffer))
 
 /***/ },
 /* 120 */
@@ -13643,7 +13651,6 @@
 	    var self = this
 	      , anim = this.getDOMNode()
 	      , el   = this.refs.content.getDOMNode();
-	
 	    this.ORGINAL_POSITION = $.css(el, 'position')
 	
 	    this._isOpening = true
@@ -13817,7 +13824,7 @@
 	
 	    if( !selected ) return 
 	
-	    this.notify('onMove', [selected, list])
+	    this.notify('onMove', [ selected, list ])
 	  }
 	
 	})
@@ -14748,6 +14755,116 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	var React   = __webpack_require__(1)
+	  , setter  = __webpack_require__(159)
+	  , globalize = __webpack_require__(166);
+	
+	
+	module.exports = React.createClass({
+	
+	  displayName: 'NumberPickerInput', 
+	
+	  propTypes: {
+	    value:        React.PropTypes.number,
+	    format:       React.PropTypes.string,
+	    min:          React.PropTypes.number,
+	    
+	    onChange:     React.PropTypes.func.isRequired,
+	    onKeyDown:    React.PropTypes.func,
+	  },
+	
+	  getDefaultProps: function(){
+	    return {
+	      value: null,
+	      format: 'd',
+	      editing: false,
+	    }
+	  },
+	
+	  getInitialState: function() {
+	    var value = this.props.editing 
+	          ? this.props.value
+	          : globalize.format(this.props.value, this.props.format)
+	
+	    return { 
+	      stringValue: value
+	    }
+	  },
+	  
+	  componentWillReceiveProps: function(nextProps) {
+	    var value = nextProps.editing 
+	          ? nextProps.value
+	          : globalize.format(nextProps.value, nextProps.format)
+	
+	    if ( isNaN(nextProps.value) ) 
+	      value = ''
+	
+	    this.current(value)
+	  },
+	
+	  render: function(){
+	    var value = this.state.stringValue;
+	
+	    return (
+	      React.createElement("input", React.__spread({},  this.props, 
+	        {type: "text", 
+	        className: "rw-input", 
+	        onChange: this._change, 
+	        onBlur: this._finish, 
+	        'aria-disabled': this.props.disabled, 
+	        'aria-readonly': this.props.readOnly, 
+	        disabled: this.props.disabled, 
+	        readOnly: this.props.readOnly, 
+	        value: value}))
+	    )
+	  },
+	
+	  _change: function(e){
+	    var val = e.target.value
+	      , number = +e.target.value
+	      , isNull = val !== 0 && !val
+	      , hasMin = isFinite(this.props.min)
+	
+	    //console.log(hasMin, this.props.min)
+	    //a null value is only possible when there is no min
+	    if(!hasMin && isNull)
+	      return this.props.onChange(null)
+	
+	    if(this.isValid(number) && number !== this.props.value)
+	      return this.props.onChange(number)
+	
+	    //console.log(val !== 0 && !val)
+	    this.current(e.target.value)
+	  },
+	
+	  _finish: function(e){
+	    var number = +this.state.stringValue
+	
+	    // if number is below the min
+	    // we need to flush low values eventually, onBlur is definativly no typing
+	    if(!isNaN(number) && number < this.props.min) {
+	      this.props.onChange(number)
+	    }
+	  },
+	
+	  isValid: function(value) {
+	    var num = +value;
+	
+	    if(isNaN(num)) return false
+	    return num >= this.props.min
+	  },
+	
+	  //this intermediate state is for when one runs into the decimal or are typing the number
+	  current: setter('stringValue'),
+	
+	});
+
+
+/***/ },
+/* 131 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	var React = __webpack_require__(1)
 	  , dates = __webpack_require__(143)
 	  , List = __webpack_require__(121)
@@ -14936,7 +15053,7 @@
 
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15048,116 +15165,6 @@
 	    b && b.apply(thisArg, arguments)
 	  }
 	}
-
-/***/ },
-/* 132 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React   = __webpack_require__(1)
-	  , setter  = __webpack_require__(159)
-	  , globalize = __webpack_require__(166);
-	
-	
-	module.exports = React.createClass({
-	
-	  displayName: 'NumberPickerInput', 
-	
-	  propTypes: {
-	    value:        React.PropTypes.number,
-	    format:       React.PropTypes.string,
-	    min:          React.PropTypes.number,
-	    
-	    onChange:     React.PropTypes.func.isRequired,
-	    onKeyDown:    React.PropTypes.func,
-	  },
-	
-	  getDefaultProps: function(){
-	    return {
-	      value: null,
-	      format: 'd',
-	      editing: false,
-	    }
-	  },
-	
-	  getInitialState: function() {
-	    var value = this.props.editing 
-	          ? this.props.value
-	          : globalize.format(this.props.value, this.props.format)
-	
-	    return { 
-	      stringValue: value
-	    }
-	  },
-	  
-	  componentWillReceiveProps: function(nextProps) {
-	    var value = nextProps.editing 
-	          ? nextProps.value
-	          : globalize.format(nextProps.value, nextProps.format)
-	
-	    if ( isNaN(nextProps.value) ) 
-	      value = ''
-	
-	    this.current(value)
-	  },
-	
-	  render: function(){
-	    var value = this.state.stringValue;
-	
-	    return (
-	      React.createElement("input", React.__spread({},  this.props, 
-	        {type: "text", 
-	        className: "rw-input", 
-	        onChange: this._change, 
-	        onBlur: this._finish, 
-	        'aria-disabled': this.props.disabled, 
-	        'aria-readonly': this.props.readOnly, 
-	        disabled: this.props.disabled, 
-	        readOnly: this.props.readOnly, 
-	        value: value}))
-	    )
-	  },
-	
-	  _change: function(e){
-	    var val = e.target.value
-	      , number = +e.target.value
-	      , isNull = val !== 0 && !val
-	      , hasMin = isFinite(this.props.min)
-	
-	    //console.log(hasMin, this.props.min)
-	    //a null value is only possible when there is no min
-	    if(!hasMin && isNull)
-	      return this.props.onChange(null)
-	
-	    if(this.isValid(number) && number !== this.props.value)
-	      return this.props.onChange(number)
-	
-	    //console.log(val !== 0 && !val)
-	    this.current(e.target.value)
-	  },
-	
-	  _finish: function(e){
-	    var number = +this.state.stringValue
-	
-	    // if number is below the min
-	    // we need to flush low values eventually, onBlur is definativly no typing
-	    if(!isNaN(number) && number < this.props.min) {
-	      this.props.onChange(number)
-	    }
-	  },
-	
-	  isValid: function(value) {
-	    var num = +value;
-	
-	    if(isNaN(num)) return false
-	    return num >= this.props.min
-	  },
-	
-	  //this intermediate state is for when one runs into the decimal or are typing the number
-	  current: setter('stringValue'),
-	
-	});
-
 
 /***/ },
 /* 133 */
@@ -15381,7 +15388,7 @@
 /* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(160);
+	module.exports = __webpack_require__(161);
 
 
 /***/ },
@@ -15528,7 +15535,7 @@
 	    }
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(162).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(160).Buffer))
 
 /***/ },
 /* 137 */
@@ -15684,7 +15691,7 @@
 	'use strict';
 	var _ = __webpack_require__(137) //invert, transform
 	  , React = __webpack_require__(1)
-	  , compat = __webpack_require__(161)
+	  , compat = __webpack_require__(162)
 	
 	
 	function compatPropType(handler, propType) {
@@ -16143,7 +16150,10 @@
 	    if( !selected ) return 
 	
 	    list       = scrollParent || $.scrollParent(selected) // if we know the parent skip this step for perf (maybe)
+	
+	    isWin      = getWindow(list)
 	    scrollTop  = $.scrollTop(list)
+	
 	    listHeight = $.height(list, true)
 	    isWin      = getWindow(list)
 	
@@ -16157,6 +16167,7 @@
 	      width:  offset.width
 	    }
 	
+	    
 	    selectedHeight = offset.height
 	    selectedTop    = offset.top  + (isWin ? 0 : scrollTop)
 	    bottom         = selectedTop + selectedHeight
@@ -16169,8 +16180,26 @@
 	
 	    var id = raf(function()  {return $.scrollTop(list, scrollTop);})
 	
-	    return function()  {return raf.cancel(id);}
+	    // raf-component throws an error in ie8 does not like when you windows.call()
+	    return function()  {return window[cancel](id);}
 	}
+	
+	var cancel;
+	var keys = [
+	      'cancelAnimationFrame'
+	    , 'webkitCancelAnimationFrame'
+	    , 'mozCancelAnimationFrame'
+	    , 'oCancelAnimationFrame'
+	    , 'msCancelAnimationFrame'
+	    , 'clearTimeout'
+	    ];
+	
+	for (var i = 0; i < keys.length; i++)
+	  if ( keys[i] in window){
+	    cancel = keys[i]
+	    break
+	  }
+	
 	
 	function getWindow( node ) {
 	  return node === node.window
@@ -16236,7 +16265,6 @@
 	
 	  hasFocus: function(node){
 	    var doc = node.ownerDocument
-	
 	    if ( doc.activeElement == null) return false
 	    return doc.activeElement === node
 	  },
@@ -16244,7 +16272,7 @@
 	  offset: function (node) {
 	    var doc     = node.ownerDocument
 	      , docElem = doc && doc.documentElement
-	      , box     = { top: 0, left: 0 };
+	      , box     = { top: 0, left: 0, height: 0, width: 0 };
 	
 	    if ( !docElem ) return
 	
@@ -16276,7 +16304,7 @@
 	      for(var key in props) if ( has.call(props, key) ) 
 	      {
 	        !props[key] && props[key] !== 0
-	          ? node.style.removeProperty(dasherize(key))
+	          ? removeStyle(node.style, dasherize(key))
 	          : (css += dasherize(key) + ':' + props[key] + ';')
 	      }
 	
@@ -16290,8 +16318,8 @@
 	      ? function(context, node){ return context.contains(node); }
 	      : (root && root.compareDocumentPosition)
 	          ? function(context, node){
-	            return context === node || !!(context.compareDocumentPosition(node) & 16);
-	          }
+	              return context === node || !!(context.compareDocumentPosition(node) & 16);
+	            }
 	          : function(context, node){
 	            if (node) do {
 	              if (node === context) return true;
@@ -16303,23 +16331,26 @@
 	
 	  scrollParent: function(node){
 	    var position = DOM.css(node, "position" )
-	      , excludeStatic = position === "absolute";
+	      , excludeStatic = position === "absolute"
+	      , ownerDoc = node.ownerDocument;
 	
 	    if (position === 'fixed') 
-	      return node.ownerDocument || document
+	      return ownerDoc || document
 	
 	    while ( (node = node.parentNode) && node.nodeType !== 9){
+	      
 	      var isStatic = excludeStatic && DOM.css(node, "position" ) === "static"
 	        , style    = DOM.css(node, 'overflow') 
 	                   + DOM.css(node, 'overflow-y') 
 	                   + DOM.css(node, 'overflow-x');
 	
 	      if (isStatic) continue
+	
 	      if ( (/(auto|scroll)/).test(style) && DOM.height(node) < node.scrollHeight )
 	        return node
 	    }
 	
-	    return (node && node.ownerDocument) || document
+	    return document
 	  },
 	
 	  scrollTop: function(node, val){
@@ -16336,7 +16367,7 @@
 	      win.scrollTo(('pageXOffset' in win) 
 	        ? win.pageXOffset 
 	        : win.document.documentElement.scrollLeft, val)
-	    else       
+	    else 
 	      node.scrollTop = val
 	  },
 	
@@ -16386,7 +16417,7 @@
 	    for(var key in properties) if ( has.call(properties, key) ) {
 	      if( /(top|bottom)/.test(key) ) 
 	        transforms += TRANSLATION_MAP[key] +'(' + properties[key] + ') '
-	      else{
+	      else {
 	        cssValues[key] = properties[key]
 	        cssProperties.push(dasherize(key))
 	      }
@@ -16412,7 +16443,6 @@
 	
 	    // trigger page reflow
 	    node.clientLeft
-	
 	    DOM.css(node, cssValues)
 	
 	    if (duration <= 0)
@@ -16422,9 +16452,9 @@
 	      if (event.target !== event.currentTarget) return
 	
 	      fired = true
-	
 	      DOM.off(event.target, endEvent, done)
 	      DOM.css(node, reset)
+	
 	      callback && callback.call(this)
 	    }
 	  }
@@ -16437,13 +16467,19 @@
 	}
 	
 	function camelize(str){
-	  return str.replace(/-+(.)?/g, function(match, chr){ return chr ? chr.toUpperCase() : '' })
+	  return str.replace(/-+(.)?/g, function(match, chr)  {return chr ? chr.toUpperCase() : '';})
 	}
 	
 	function dasherize(str) {
-	  return str.replace(/[A-Z]/g, function(char, index) {
+	  return str.replace(/[A-Z]/g, function(char, index)  {
 	    return (index !== 0 ? '-' : '') + char.toLowerCase();
 	  });
+	}
+	
+	function removeStyle(styles, key){
+	  return ('removeProperty' in styles)
+	    ? styles.removeProperty(key)
+	    : styles.removeAttribute(key)
 	}
 	
 	function getComputedStyle(node) {
@@ -16454,22 +16490,16 @@
 	    ? doc.defaultView.opener
 	      ? node.ownerDocument.defaultView.getComputedStyle( node, null )
 	      : window.getComputedStyle(node, null)
-	    : ie8(node)
-	}
-	
-	function ie8(el) {
-	  return {
-	    getPropertyValue:function(prop) {
-	      var re = /(\-([a-z]){1})/g;
-	      if (prop == 'float') prop = 'styleFloat';
-	      if (re.test(prop)) {
-	          prop = prop.replace(re, function () {
-	              return arguments[2].toUpperCase();
-	          });
+	    : { //ie 8 "magic"
+	        getPropertyValue:function(prop) {
+	          var re = /(\-([a-z]){1})/g;
+	          if (prop == 'float') prop = 'styleFloat';
+	          if (re.test(prop))
+	              prop = prop.replace(re, function()  {return arguments[2].toUpperCase();})
+	            
+	          return node.currentStyle[prop] || null;
+	        }
 	      }
-	      return el.currentStyle[prop] ? el.currentStyle[prop] : null;
-	    }
-	  }
 	}
 
 /***/ },
@@ -16609,7 +16639,6 @@
 	var scrollTo = __webpack_require__(145)
 	
 	module.exports = {
-	
 	
 	  _scrollTo:function(selected, list) {
 	    var handler = this.props.onMove; 
@@ -17062,57 +17091,6 @@
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// Load modules
-	
-	var Stringify = __webpack_require__(167);
-	var Parse = __webpack_require__(168);
-	
-	
-	// Declare internals
-	
-	var internals = {};
-	
-	
-	module.exports = {
-	    stringify: Stringify,
-	    parse: Parse
-	};
-
-
-/***/ },
-/* 161 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var React = __webpack_require__(1);
-	
-	var compat = module.exports = {
-	
-	  version: function(){
-	    return React.version.split('.').map(parseFloat);
-	  },
-	
-	  propType: function(fn) {
-	
-	    return function validator(props, propName, componentName, location){
-	      var ver = compat.version()
-	        , err = fn.call(this, props, propName, componentName, location)
-	
-	      if ( err && err !== true ) {
-	        if( ver[0] === 0 && ver[1] < 11 )
-	          return void 0
-	
-	        return err
-	      }
-	
-	    }
-	  }
-	}
-
-/***/ },
-/* 162 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
 	 * The buffer module from node.js, for the browser.
 	 *
@@ -17121,8 +17099,8 @@
 	 */
 	
 	var base64 = __webpack_require__(178)
-	var ieee754 = __webpack_require__(176)
-	var isArray = __webpack_require__(177)
+	var ieee754 = __webpack_require__(173)
+	var isArray = __webpack_require__(174)
 	
 	exports.Buffer = Buffer
 	exports.SlowBuffer = Buffer
@@ -18165,7 +18143,58 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(162).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(160).Buffer))
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Load modules
+	
+	var Stringify = __webpack_require__(167);
+	var Parse = __webpack_require__(168);
+	
+	
+	// Declare internals
+	
+	var internals = {};
+	
+	
+	module.exports = {
+	    stringify: Stringify,
+	    parse: Parse
+	};
+
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var React = __webpack_require__(1);
+	
+	var compat = module.exports = {
+	
+	  version: function(){
+	    return React.version.split('.').map(parseFloat);
+	  },
+	
+	  propType: function(fn) {
+	
+	    return function validator(props, propName, componentName, location){
+	      var ver = compat.version()
+	        , err = fn.call(this, props, propName, componentName, location)
+	
+	      if ( err && err !== true ) {
+	        if( ver[0] === 0 && ver[1] < 11 )
+	          return void 0
+	
+	        return err
+	      }
+	
+	    }
+	  }
+	}
 
 /***/ },
 /* 163 */
@@ -18187,7 +18216,7 @@
 		});
 	
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	})(__webpack_require__(175));
+	})(__webpack_require__(177));
 
 
 /***/ },
@@ -20891,7 +20920,7 @@
 			return Promise;
 		};
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}(__webpack_require__(175)));
+	}(__webpack_require__(177)));
 
 
 /***/ },
@@ -20905,7 +20934,7 @@
 	(function(define) { 'use strict';
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function(require) {
 	
-		var Queue = __webpack_require__(174);
+		var Queue = __webpack_require__(176);
 	
 		// Credit to Twisol (https://github.com/Twisol) for suggesting
 		// this type of extensible queue + trampoline approach for next-tick conflation.
@@ -20979,7 +21008,7 @@
 		return Scheduler;
 	
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}(__webpack_require__(175)));
+	}(__webpack_require__(177)));
 
 
 /***/ },
@@ -21033,7 +21062,7 @@
 				var vertx;
 				try {
 					// vert.x 1.x || 2.x
-					vertx = __webpack_require__(173);
+					vertx = __webpack_require__(175);
 				} catch (ignore) {}
 	
 				if (vertx) {
@@ -21056,101 +21085,12 @@
 	
 		return nextTick;
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}(__webpack_require__(175)));
+	}(__webpack_require__(177)));
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(179)))
 
 /***/ },
 /* 173 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* (ignored) */
-
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-2014 original author or authors */
-	/** @author Brian Cavalier */
-	/** @author John Hann */
-	
-	(function(define) { 'use strict';
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
-		/**
-		 * Circular queue
-		 * @param {number} capacityPow2 power of 2 to which this queue's capacity
-		 *  will be set initially. eg when capacityPow2 == 3, queue capacity
-		 *  will be 8.
-		 * @constructor
-		 */
-		function Queue(capacityPow2) {
-			this.head = this.tail = this.length = 0;
-			this.buffer = new Array(1 << capacityPow2);
-		}
-	
-		Queue.prototype.push = function(x) {
-			if(this.length === this.buffer.length) {
-				this._ensureCapacity(this.length * 2);
-			}
-	
-			this.buffer[this.tail] = x;
-			this.tail = (this.tail + 1) & (this.buffer.length - 1);
-			++this.length;
-			return this.length;
-		};
-	
-		Queue.prototype.shift = function() {
-			var x = this.buffer[this.head];
-			this.buffer[this.head] = void 0;
-			this.head = (this.head + 1) & (this.buffer.length - 1);
-			--this.length;
-			return x;
-		};
-	
-		Queue.prototype._ensureCapacity = function(capacity) {
-			var head = this.head;
-			var buffer = this.buffer;
-			var newBuffer = new Array(capacity);
-			var i = 0;
-			var len;
-	
-			if(head === 0) {
-				len = this.length;
-				for(; i<len; ++i) {
-					newBuffer[i] = buffer[i];
-				}
-			} else {
-				capacity = buffer.length;
-				len = this.tail;
-				for(; head<capacity; ++i, ++head) {
-					newBuffer[i] = buffer[head];
-				}
-	
-				for(head=0; head<len; ++i, ++head) {
-					newBuffer[i] = buffer[head];
-				}
-			}
-	
-			this.buffer = newBuffer;
-			this.head = 0;
-			this.tail = this.length;
-		};
-	
-		return Queue;
-	
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}(__webpack_require__(175)));
-
-
-/***/ },
-/* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function() { throw new Error("define cannot be used indirect"); };
-
-
-/***/ },
-/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports.read = function(buffer, offset, isLE, mLen, nBytes) {
@@ -21240,7 +21180,7 @@
 
 
 /***/ },
-/* 177 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -21276,6 +21216,95 @@
 	module.exports = isArray || function (val) {
 	  return !! val && '[object Array]' == str.call(val);
 	};
+
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* (ignored) */
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-2014 original author or authors */
+	/** @author Brian Cavalier */
+	/** @author John Hann */
+	
+	(function(define) { 'use strict';
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+		/**
+		 * Circular queue
+		 * @param {number} capacityPow2 power of 2 to which this queue's capacity
+		 *  will be set initially. eg when capacityPow2 == 3, queue capacity
+		 *  will be 8.
+		 * @constructor
+		 */
+		function Queue(capacityPow2) {
+			this.head = this.tail = this.length = 0;
+			this.buffer = new Array(1 << capacityPow2);
+		}
+	
+		Queue.prototype.push = function(x) {
+			if(this.length === this.buffer.length) {
+				this._ensureCapacity(this.length * 2);
+			}
+	
+			this.buffer[this.tail] = x;
+			this.tail = (this.tail + 1) & (this.buffer.length - 1);
+			++this.length;
+			return this.length;
+		};
+	
+		Queue.prototype.shift = function() {
+			var x = this.buffer[this.head];
+			this.buffer[this.head] = void 0;
+			this.head = (this.head + 1) & (this.buffer.length - 1);
+			--this.length;
+			return x;
+		};
+	
+		Queue.prototype._ensureCapacity = function(capacity) {
+			var head = this.head;
+			var buffer = this.buffer;
+			var newBuffer = new Array(capacity);
+			var i = 0;
+			var len;
+	
+			if(head === 0) {
+				len = this.length;
+				for(; i<len; ++i) {
+					newBuffer[i] = buffer[i];
+				}
+			} else {
+				capacity = buffer.length;
+				len = this.tail;
+				for(; head<capacity; ++i, ++head) {
+					newBuffer[i] = buffer[head];
+				}
+	
+				for(head=0; head<len; ++i, ++head) {
+					newBuffer[i] = buffer[head];
+				}
+			}
+	
+			this.buffer = newBuffer;
+			this.head = 0;
+			this.tail = this.length;
+		};
+	
+		return Queue;
+	
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}(__webpack_require__(177)));
+
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },

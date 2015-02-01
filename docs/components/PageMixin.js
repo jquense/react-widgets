@@ -11,9 +11,9 @@ module.exports = function(prefix){
 
     componentDidMount: function() {
       var path = this.getPathname()
-
       var anchor = document.getElementById(path)
-      window.scrollTo(window.pageXOffset, anchor.offsetTop)
+
+      anchor && window.scrollTo(window.pageXOffset, anchor.offsetTop)
     },
 
     childContextTypes: {

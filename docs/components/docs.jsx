@@ -6,6 +6,7 @@ var React = require('react')
   , DefaultRoute
   , RouteHandler
   , Navigation
+  , State
   , Link } = require('react-router')
 
   , Navbar         = require('./topnavbar.jsx')
@@ -31,7 +32,7 @@ var Docs = React.createClass({
 
   displayName: 'DocPage',
 
-  mixins: [ Navigation ],
+  mixins: [ Navigation, State ],
 
   getInitialState: function () {
     return {
@@ -53,9 +54,9 @@ var Docs = React.createClass({
         <div className='container'>
           <aside className='col-sm-3 section'>
             <div className='nav-aside section-inner'>
-              <nav>
+              <nav className='side-nav'>
                 <ul className='nav'>
-                  <li>
+                  <li className={this.getPathname().match(/\/getting-started/) ? 'active' : ''}>
                     <Link to='/getting-started'>Getting Started</Link>
                     <ul className='nav'>
                       <li><Link to='/getting-started/install'>Install</Link></li>
@@ -80,14 +81,14 @@ var Docs = React.createClass({
           <article className='col-sm-9 section'>
             <div className='section-inner'>
               <RouteHandler />
-              <div className='clearfix'style={{ marginTop: 20 }}>
+              {/*<div className='clearfix'style={{ marginTop: 20 }}>
                 { locations.indexOf(href) > 0 && 
                   <button type='button' className='btn btn-link pull-left' onClick={this.prev}>« prev</button>
                 }
                 { locations.indexOf(href) < (locations.length - 1) && 
                   <button type='button' className='btn btn-link pull-right' onClick={this.next}>next »</button>
                 }
-              </div>
+              </div> */}
             </div>
           </article>
         </div>
