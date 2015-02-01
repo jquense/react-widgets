@@ -3,23 +3,20 @@ var gulp    = require('gulp')
   , dev     = require('./tasks/development')
   , assets  = require('./tasks/assets')
   , configs = require('./tasks/webpack.configs')
-  , clean   = require('gulp-clean')
+  , del     = require('del')
   , webpack = require('gulp-webpack');
-
-
-
-
 
 gulp.task('assets-less',   assets.less)
 gulp.task('assets-fonts',  assets.fonts)
 
-gulp.task('lib-clean',     assets.clean)
+gulp.task('lib-clean', function(cb){
+  del('./lib', cb);
+})
+
 gulp.task('lib-compile',   ['lib-clean'], assets.compile)
 
-gulp.task('browser-clean', function(){
-  return gulp
-    .src('./browser/*.js', { read: false })
-    .pipe(clean())
+gulp.task('browser-clean', function(cb){
+  del('./browser/*.js', cb);
 })
 
 gulp.task('browser-build', ['lib', 'browser-clean'], function() {

@@ -2,9 +2,10 @@
 var gulp = require('gulp')
   , less = require('gulp-less')
   , replace = require('gulp-replace')
-  , clean = require('gulp-clean')
-  , gulpReact = require('gulp-react')
+  , rename = require('gulp-rename')
+  , toFive  = require("gulp-6to5")
   , plumber = require('gulp-plumber')
+  , configs = require('./webpack.configs')
   , stripDebug = require('gulp-strip-debug');
 
 module.exports = {
@@ -21,20 +22,16 @@ module.exports = {
         .pipe(gulp.dest('./dist/css'));
   },
 
-  clean: function(){
-      return gulp.src('./lib/*', { read: false })
-          .pipe(clean())
-  }, 
-
   compile: function(){
       gulp.src('./src/less/*.less')
         .pipe(gulp.dest('./lib/less'))
 
       return gulp.src(['./src/**/*.jsx', './src/**/*.js'])
           .pipe(plumber())
-          .pipe(gulpReact({ harmony: true }))
+          .pipe(toFive(configs.to5Config))
           .pipe(replace(/\.jsx/g, ''))
           .pipe(stripDebug())
+          .pipe(rename({ extname: '.js'}))
           .pipe(gulp.dest('./lib'));
   },
 

@@ -6,9 +6,30 @@ var path = require('path')
         // This has effect on the react lib size
         "NODE_ENV": JSON.stringify('production')
       }
+
     })
+var config = {
+      experimental: true,
+      loose: ['all'],
+
+      whitelist: [
+        'es6.classes',
+        'es6.modules',
+        'es6.arrowFunctions',
+        'es6.properties.computed',
+        'es6.properties.shorthand',
+        'es6.parameters.default',
+        'es6.parameters.rest',
+        'es6.templateLiterals',
+        'es6.destructuring',
+        'es7.objectSpread',
+        'react'
+      ]
+    }
 
 module.exports = {
+
+  to5Config: config,
 
   browser: {
 
@@ -39,7 +60,6 @@ module.exports = {
   },
 
   dev: {
-
     devtool: 'source-map',
     entry: './example/example.jsx',
     output: {
@@ -48,12 +68,20 @@ module.exports = {
       publicPath: 'example/'
     },
     
+    resolve: {
+      extensions: ['', '.js', '.jsx']
+    },
+
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader', exclude: /node_modules/ }
-      ],
-      postLoaders: [
-        { loader: path.join(__dirname, './jstransform-loader'), exclude: /node_modules/ }
+        { test: /\.css$/,  loader: "style-loader!css-loader" },
+        { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+        { 
+          test: /\.jsx$|\.js$/, 
+          loader: '6to5-loader', 
+          exclude: /node_modules/,
+          query: config
+        }
       ]
     },
   },
@@ -106,14 +134,20 @@ module.exports = {
   test: {
     devtool: 'inline-source-map',
     cache: true,
+    resolve: {
+      extensions: ['', '.js', '.jsx']
+    },
     module: {
       loaders: [
-        { test: /\.jsx$/, loader: 'jsx-loader', exclude: /node_modules/ },
-        { test: /\.css$/, loader: 'style-loader!css-loader' },
-        { test: /\.less$/, loader: 'style-loader!css-loader!less-loader' },
-      ],
-      postLoaders: [
-        { loader: path.join(__dirname, './jstransform-loader'), exclude: /node_modules/ }
+        { test: /\.css$/, loader: "style-loader!css-loader" },
+        { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+        { test: /sinon-chai/, loader: "imports?define=>false" },
+        { 
+          test: /\.jsx$|\.js$/, 
+          loader: '6to5-loader', 
+          exclude: /node_modules/,
+          query: config
+        }
       ]
     },
     //plugins: [ ProdDefine ]
