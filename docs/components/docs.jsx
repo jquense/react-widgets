@@ -2,7 +2,6 @@
 var React = require('react')
   , { Route
   , run
-  , HistoryLocation
   , DefaultRoute
   , RouteHandler
   , Navigation
