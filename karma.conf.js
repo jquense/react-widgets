@@ -32,7 +32,7 @@ module.exports = function (config) {
       'test.js': ['webpack']
     },
 
-    webpack: require('./tasks/webpack.configs').test,
+    webpack: require('./webpack.configs').test,
     webpackServer: {
       noInfo: true
     }
