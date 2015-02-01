@@ -10,7 +10,6 @@ var React = require('react')
   , Link } = require('react-router')
 
   , Navbar         = require('./topnavbar.jsx')
-  , Tbs            = require('../bootstrap')
   , GettingStarted = require('./pages/GettingStarted.jsx')
   , DropdownList   = require('./pages/DropdownList.jsx')
   , ComboBox       = require('./pages/ComboBox.jsx')
@@ -24,9 +23,9 @@ var React = require('react')
 //require('../docs.css')
 
 var locations = [
-      '#intro','#dropdown-list', '#combobox',
-      '#number-picker', '#selectlist', 
-      '#calendar', '#date-picker'];
+      'getting-started','dropdown-list', 'combobox',
+      'number-picker', 'multiselect', 'selectlist', 
+      'calendar', 'datetime-picker'];
 
 var Docs = React.createClass({
 
