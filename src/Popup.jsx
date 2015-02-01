@@ -67,22 +67,27 @@ module.exports = React.createClass({
 	},
 
   dimensions: function(){
-    var el = this.getDOMNode();
+    var el = this.getDOMNode()
+      , content = this.refs.content.getDOMNode()
+      , margin = parseInt($.css(content, 'margin-top'), 10)
+               + parseInt($.css(content, 'margin-bottom'), 10);
 
     el.style.display = 'block'
-    el.style.height  = $.height(this.refs.content.getDOMNode()) + 'px'
+    el.style.height  = $.height(content) + (isNaN(margin) ? 0 : margin ) + 'px'
   },
 
   open: function(){
     var self = this
       , anim = this.getDOMNode()
       , el   = this.refs.content.getDOMNode();
+
     this.ORGINAL_POSITION = $.css(el, 'position')
 
     this._isOpening = true
     this.dimensions()
     this.props.onOpening()
 
+    anim.className += ' rw-popup-animating'
     el.style.position = 'absolute'
 
     $.animate(el
@@ -91,9 +96,13 @@ module.exports = React.createClass({
       , 'ease'
       , function(){
           if ( !self._isOpening ) return
+
+          anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
+
           el.style.position = self.ORGINAL_POSITION
           anim.style.overflow = 'visible'
           self.ORGINAL_POSITION = null
+
           self.props.onOpen()
         })
   },
@@ -110,6 +119,7 @@ module.exports = React.createClass({
     this.props.onClosing()
 
     anim.style.overflow = 'hidden'
+    anim.className += ' rw-popup-animating'
     el.style.position = 'absolute'
 
     $.animate(el
@@ -118,7 +128,9 @@ module.exports = React.createClass({
       , 'ease'
       , function() {
           if ( self._isOpening ) return
+
           el.style.position = self.ORGINAL_POSITION
+          anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
 
           anim.style.display = 'none'
           self.ORGINAL_POSITION = null

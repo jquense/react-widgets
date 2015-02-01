@@ -1,24 +1,32 @@
+
 .rw-popup {
+  position: absolute;
   .box-shadow(0 5px 6px rgba(0,0,0,0.2));
   .border-top-radius(0);
   .border-bottom-radius(@border-radius-sm);
   border:           @popup-border 1px solid;
   background:       @popup-bg;
   padding:          2px;
-  width:            100%;
   overflow:         auto;
+  margin-bottom:    10px;
+  // the offset allows for drop shadow to not be clipped by the container
+  left:             10px;
+  right:            10px;
 }
 
 .rw-popup-container {
   position: absolute;
   top: 100%;
   margin-top: 1px;
-  left:  -@input-border-width;
-  right: -@input-border-width;
   z-index: @popup-zindex;
+  // offset for drop shadow on rw-popup
+  left:  -10px - @input-border-width;
+  right: -10px - @input-border-width;
+  
 
   &.rw-calendar-popup {
     right: auto;
     width: 200px; //15em; ?
   }
 }
+
