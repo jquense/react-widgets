@@ -146,7 +146,7 @@ var Select = React.createClass({
           'rw-open':           this.props.open,
           'rw-rtl':            this.isRtl()
         })}>
-        <div className='rw-multiselect-wrapper' onClick={this._maybeHandle(this._click)}>
+        <div className='rw-multiselect-wrapper'>
           { this.props.busy &&
             <i className="rw-i rw-loading"></i>
           }
@@ -220,10 +220,10 @@ var Select = React.createClass({
       this.state.dataItems.filter( d => d !== value))
   },
 
-  _click(e){
-    this._focus(true)
-    !this.props.open && this.open()
-  },
+  // _click(e){
+  //   this._focus(true)
+  //   !this.props.open && this.open()
+  // },
 
   _focus(focused, e){
     if (this.props.disabled === true )
@@ -232,7 +232,7 @@ var Select = React.createClass({
     clearTimeout(this.timer)
 
     this.timer = setTimeout(() => {
-      if(focused) this.refs.input.focus()
+      if( focused) this.refs.input.focus()
       else        {
         this.close()
         this.refs.tagList && this.refs.tagList.clear()
@@ -241,6 +241,7 @@ var Select = React.createClass({
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused: focused })
+        this.open()
       }
     })
   },
