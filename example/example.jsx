@@ -36,7 +36,7 @@ var App = React.createClass({
       dropdownValue: list[0],
       comboboxValue: 1,
       //comboboxValue: list[0],
-      selectValues: 3,
+      selectValues: [3,4,5,2],
       calDate: new Date,
       numberValue: 1,
       open: false
@@ -77,7 +77,7 @@ var App = React.createClass({
     return (
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
-        <section className="example">
+        {/*<section className="example">
           <div style={{ height: 150 }}>
             sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
           </div>
@@ -91,7 +91,7 @@ var App = React.createClass({
             name="super_name"
             multiple
             onChange={change.bind(null, 'selectValues')}/>
-        </section>
+        </section>*/}
        
           <section className="example" style={{ marginBottom: 20 }}>
             <DropdownList
@@ -126,19 +126,20 @@ var App = React.createClass({
               onChange={change.bind(null, 'comboboxValue')}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            {/*<Select
+            <Select
               isRtl={false}
               data={ this.state.data }
               placeholder="hi i am a placeholder"
               textField='name'
               valueField='id'
               value={ this.state.selectValues }
+              readOnly={this.state.selectValues.slice(0,1)}
               busy={false}
               allowCustomTags
               onCreate={create}
               tagComponent={ListItem}
               itemComponent={ListItem}
-              onChange={change.bind(null, 'selectValues')}/>*/}
+              onChange={change.bind(null, 'selectValues')}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
             <DatePicker

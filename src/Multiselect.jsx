@@ -63,9 +63,9 @@ var propTypes = {
       })
     };
 
-var Select = React.createClass({
+var Multiselect = React.createClass({
 
-  displayName: 'Select',
+  displayName: 'Multiselect',
 
   mixins: [
     require('./mixins/WidgetMixin'),
@@ -124,11 +124,14 @@ var Select = React.createClass({
         className
       , children
       , ...props } = _.omit(this.props, Object.keys(propTypes))
+
       , listID = this._id('_listbox')
       , optID  = this._id('_option')
       , items  = this._data()
       , values = this.state.dataItems
-      , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList;
+
+      , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
+      , listProps  = _.pick(this.props, Object.keys(List.type.propTypes));
 
     return (
       <div {...props}
@@ -179,7 +182,9 @@ var Select = React.createClass({
         <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
           <div>
             <List ref="list"
-              {..._.pick(this.props, Object.keys(List.type.propTypes))}
+              {...listProps}
+              readOnly={!!listProps.readOnly}
+              disabled={!!listProps.disabled}
               id={listID}
               optID={optID}
               aria-autocomplete='list'
@@ -232,7 +237,10 @@ var Select = React.createClass({
     clearTimeout(this.timer)
 
     this.timer = setTimeout(() => {
-      if( focused) this.refs.input.focus()
+      if( focused) {
+        this.refs.input.focus()
+        this.open()
+      }
       else        {
         this.close()
         this.refs.tagList && this.refs.tagList.clear()
@@ -241,7 +249,6 @@ var Select = React.createClass({
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused: focused })
-        this.open()
       }
     })
   },
@@ -390,7 +397,7 @@ var Select = React.createClass({
 })
 
 
-module.exports = controlledInput.createControlledClass(Select
+module.exports = controlledInput.createControlledClass(Multiselect
     , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
     , { onChange: defaultChange, onCreate: defaultChange });
 
@@ -400,4 +407,4 @@ function defaultChange(){
     this.setState({ searchTerm: '' })
 }
 
-module.exports.BaseMultiselect = Select
+module.exports.BaseMultiselect = Multiselect

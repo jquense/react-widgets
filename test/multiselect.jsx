@@ -51,11 +51,11 @@ describe('Multiselect', function(){
     }, 0)
   })
 
-  it('should open when clicked', function(done){
+  it('should open when focused', function(done){
     var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0}/>);
     var popup = findType(select, require('../src/Popup.jsx'))
 
-    trigger.click(findClass(select, 'rw-multiselect-wrapper').getDOMNode())
+    trigger.focus(select.getDOMNode())
 
     setTimeout(function() {
       expect(select.state.open).to.be(true)
@@ -63,7 +63,7 @@ describe('Multiselect', function(){
       expect(findClass(select, 'rw-input').getDOMNode().getAttribute('aria-expanded')).to.be('true')
       expect(popup.props.open).to.be(true)
       done()
-    }, 0)
+    })
   })
 
   it('should remove tag when clicked', function(){
@@ -156,7 +156,6 @@ describe('Multiselect', function(){
     trigger.click(tags.children[1].children[1]) // click button
 
     setTimeout(function() {
-      expect(select.state.open).to.be(true)
       expect(tags.children.length).to.be(2)
       done()
     }, 0)
@@ -184,16 +183,14 @@ describe('Multiselect', function(){
       , tags   = findType(select, TagList).getDOMNode();
 
     expect(tags.children.length).to.be(2)
+    expect(tags.children[1].className).to.match(/\brw-state-readonly\b/);
 
     trigger.click(tags.children[1].children[1]) // click button
 
     setTimeout(function() {
-      expect(select.state.open).to.be(true)
       expect(tags.children.length).to.be(2)
-      expect(select.getDOMNode().className).to.match(/\brw-state-focus\b/)
-
       done()
-    }, 10)
+    })
   })
 
   it('should call Select handler', function(done){
