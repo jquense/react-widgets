@@ -1,42 +1,48 @@
 "use strict";
-var has = Object.prototype.hasOwnProperty
-  , transitionTiming, transitionDuration
-  , transitionProperty, transitionDelay
-  , notSupported, endEvent
-  , prefix = ''
-  , el = document.createElement('div')
-  , reset = {}
-  , transform ='transform'
-  , transitions = {
-      O:'otransitionend',
-      Moz:'transitionend',
-      Webkit:'webkitTransitionEnd'
-    };
+var canUseDom = require('./canUseDom')
 
-var TRANSLATION_MAP = { 
-      left: 'translateX', right: 'translateX'
-    , top: 'translateY', bottom: 'translateY'}
+if ( canUseDom ){
+  var has = Object.prototype.hasOwnProperty
+    , raf = require('raf-component')
+    , transitionTiming, transitionDuration
+    , transitionProperty, transitionDelay
+    , notSupported, endEvent
+    , prefix = ''
+    , el = document.createElement('div')
+    , reset = {}
+    , transform ='transform'
+    , transitions = {
+        O:'otransitionend',
+        Moz:'transitionend',
+        Webkit:'webkitTransitionEnd'
+      };
 
-for(var vendor in transitions) if( has.call(transitions, vendor) )
-{
-  if (el.style[vendor + 'TransitionProperty'] !== undefined) {
-    prefix = '-' + vendor.toLowerCase() + '-'
-    endEvent = transitions[vendor];
-    break
+  var TRANSLATION_MAP = { 
+        left: 'translateX', right: 'translateX'
+      , top: 'translateY', bottom: 'translateY'}
+
+  for(var vendor in transitions) if( has.call(transitions, vendor) )
+  {
+    if (el.style[vendor + 'TransitionProperty'] !== undefined) {
+      prefix = '-' + vendor.toLowerCase() + '-'
+      endEvent = transitions[vendor];
+      break
+    }
   }
+
+  if (!endEvent && el.style.transitionProperty !== undefined)
+    endEvent = 'transitionend'
+
+  notSupported = !endEvent
+
+  transform = prefix + transform
+
+  reset[transitionProperty = prefix + 'transition-property'] =
+  reset[transitionDuration = prefix + 'transition-duration'] =
+  reset[transitionDelay    = prefix + 'transition-delay'] =
+  reset[transitionTiming   = prefix + 'transition-timing-function'] = ''
+
 }
-
-if (!endEvent && el.style.transitionProperty !== undefined)
-  endEvent = 'transitionend'
-
-notSupported = !endEvent
-
-transform = prefix + transform
-
-reset[transitionProperty = prefix + 'transition-property'] =
-reset[transitionDuration = prefix + 'transition-duration'] =
-reset[transitionDelay    = prefix + 'transition-delay'] =
-reset[transitionTiming   = prefix + 'transition-timing-function'] = ''
 
 var DOM = module.exports = {
 
@@ -99,7 +105,7 @@ var DOM = module.exports = {
   },
 
   contains: (function(){
-    var root = document.documentElement
+    var root = canUseDom && document.documentElement
 
     return (root && root.contains)
       ? function(context, node){ return context.contains(node); }
@@ -184,6 +190,30 @@ var DOM = module.exports = {
     event.initEvent(type, true, true)
     node.dispatchEvent(event);
   },
+
+  raf: (function(){
+    var compatRaf = cb => raf(cb)
+      , cancel = 'clearTimeout'
+      , keys = [
+            'cancelAnimationFrame'
+          , 'webkitCancelAnimationFrame'
+          , 'mozCancelAnimationFrame'
+          , 'oCancelAnimationFrame'
+          , 'msCancelAnimationFrame'
+          ];
+
+    if ( canUseDom ){
+      for (var i = 0; i < keys.length; i++)
+        if ( keys[i] in window){
+          cancel = keys[i]
+          break
+        }
+
+      compatRaf.cancel = id => window[cancel](id)
+    }
+
+    return compatRaf
+  })(),
 
   /* code in part from: Zepto 1.1.4 | zeptojs.com/license */
   // super lean animate function for transitions

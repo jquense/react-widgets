@@ -98,7 +98,6 @@ module.exports = React.createClass({
     )
   },
 
-
   _data(){ 
     return this.props.data 
   },

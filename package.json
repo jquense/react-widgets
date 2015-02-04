@@ -23,9 +23,11 @@
     "react-ui",
     "react-component"
   ],
+  
   "scripts": {
-    "test": "node ./node_modules/karma/bin/karma start karma.conf.js"
+    "test": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run"
   },
+
   "homepage": "http://jquense.github.io/react-widgets/docs/",
   "repository": {
     "type": "git",
@@ -76,8 +78,6 @@
     "react-bootstrap": "^0.13.0",
     "react-router": "^0.11.6",
     "rimraf": "^2.2.8",
-    "sinon": "~1.10.3",
-    "sinon-chai": "~2.5.0",
     "style-loader": "^0.7.0",
     "url-loader": "^0.5.5",
     "webpack": "^1.4.0",

@@ -1,6 +1,5 @@
 'use strict';
 var $ = require('./dom')
-  , raf = require('raf-component')
 
 module.exports = function scrollTo( selected, scrollParent ) {
   var offset = $.offset(selected)
@@ -39,28 +38,11 @@ module.exports = function scrollTo( selected, scrollParent ) {
               ? (bottom - listHeight)
               : scrollTop
 
-    var id = raf(() => $.scrollTop(list, scrollTop))
+    var id = $.raf(() => $.scrollTop(list, scrollTop))
 
-    // raf-component throws an error in ie8 does not like when you windows.call()
-    return () => window[cancel](id)
+
+    return () => $.raf.cancel(id)
 }
-
-var cancel;
-var keys = [
-      'cancelAnimationFrame'
-    , 'webkitCancelAnimationFrame'
-    , 'mozCancelAnimationFrame'
-    , 'oCancelAnimationFrame'
-    , 'msCancelAnimationFrame'
-    , 'clearTimeout'
-    ];
-
-for (var i = 0; i < keys.length; i++)
-  if ( keys[i] in window){
-    cancel = keys[i]
-    break
-  }
-
 
 function getWindow( node ) {
   return node === node.window
