@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "React widgets",
   "main": "index.js",
   "author": {
@@ -23,7 +23,7 @@
     "react-ui",
     "react-component"
   ],
-  
+
   "scripts": {
     "test": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run"
   },
