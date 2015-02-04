@@ -23,11 +23,9 @@
     "react-ui",
     "react-component"
   ],
-
   "scripts": {
     "test": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run"
   },
-
   "homepage": "http://jquense.github.io/react-widgets/docs/",
   "repository": {
     "type": "git",
@@ -57,7 +55,7 @@
     "gulp-uglify": "^0.3.0",
     "gulp-webpack": "^0.3.0",
     "imports-loader": "^0.6.3",
-    "karma": "~0.12.23",
+    "karma": "^0.12.31",
     "karma-chrome-launcher": "^0.1.5",
     "karma-expect": "~1.1.0",
     "karma-firefox-launcher": "^0.1.3",
