@@ -2,7 +2,7 @@
 var React   = require('react')
   , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup')
   , _ = require('./util/_')
-  , $  =  require('./util/dom');
+  , $ = require('./util/dom');
 
 
 var SlideChildGroup = React.createClass({
@@ -84,7 +84,7 @@ module.exports = React.createClass({
   render: function() {
     var { style, children, ...props } = this.props
 
-    style = _.merge(style, { position: 'relative', overflow: 'hidden' })
+    style = _.assign({}, style, { position: 'relative', overflow: 'hidden' })
 
     return (
       <ReplaceTransitionGroup 

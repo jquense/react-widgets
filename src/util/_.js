@@ -7,9 +7,7 @@ var _ =
 
     has: has,
     
-    merge:  require('xtend'),
-
-    extend: require('xtend/mutable'),
+    assign: require('react/lib/Object.assign'),
 
     isShallowEqual: function (a, b) {
       if (a === b) return true;
@@ -65,7 +63,7 @@ var _ =
         return result
       }
       else 
-        for(var key in arr) if(has(arr, key)) 
+        for(var key in arr) if( has(arr, key) ) 
           if( cb.call(thisArg, arr[key], key, arr) ) 
             return arr[key]; 
     },

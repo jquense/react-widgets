@@ -1,6 +1,5 @@
 'use strict';
 var React   = require('react')
-  , setter  = require('./util/stateSetter')
   , globalize = require('globalize');
 
 
@@ -99,6 +98,8 @@ module.exports = React.createClass({
   },
 
   //this intermediate state is for when one runs into the decimal or are typing the number
-  current: setter('stringValue'),
+  current: function(val){
+    this.setState({ stringValue: val })
+  }
 
 });

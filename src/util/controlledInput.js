@@ -22,19 +22,16 @@ function compatPropType(handler, propType) {
 module.exports = {
 
   createControlledClass: function(Component, controlledValues, taps) {
-    // var publicMethods 
-    //       = _.transform(publicApi || [], function(obj, method) {
-    //           obj[method] = function (...args){ 
-    //             return this.refs[this._innerRef][method](args) 
-    //           }
-    //         }, {})
+    var types = {}
 
-    var types = _.transform(controlledValues, function(obj, handler, prop){
-          var type = Component.type.propTypes[prop];
+    if ( process.env.NODE_ENV !== 'production') {
+      types = _.transform(controlledValues, function(obj, handler, prop){
+            var type = Component.type.propTypes[prop];
 
-          obj[prop] = compatPropType(handler, type)
-          obj[defaultKey(prop)] = type
-        }, {});
+            obj[prop] = compatPropType(handler, type)
+            obj[defaultKey(prop)] = type
+          }, {});
+    }
 
     taps = taps || {}
 
@@ -59,22 +56,21 @@ module.exports = {
       },
 
       render: function(){
-        var props, handles;
+        var props = {};
 
-        props = _.transform(controlledValues, (obj, handle, prop) => {
-          obj[prop] = isProp(this.props, prop) ? this.props[prop] : this.state[prop]
-        }, {})
-        
-        handles = _.transform(controlledValues, (obj, handle, prop) => {
-          obj[handle] = setAndNotify.bind(this, prop)
-        }, {})
+        _.each(controlledValues, (handle, prop) => {
+            
+          props[prop] = isProp(this.props, prop) 
+            ? this.props[prop] 
+            : this.state[prop] 
 
-        props = _.merge(this.props, props, handles)
+          props[handle] = setAndNotify.bind(this, prop)
+        })
 
-        for(var k in taps) if (_.has(props, k)) {
+        props = _.assign({}, this.props, props)
+
+        for(var k in taps) if (_.has(props, k)) 
           props[k] = chain(this, taps[k], props[k])
-        }
-        //this._innerRef = props.ref = props.ref || 'component'
 
         return React.createElement(Component, props, this.props.children);
       }
@@ -84,7 +80,7 @@ module.exports = {
       /*jshint validthis:true */
       var handler    = controlledValues[prop]
         , controlled = handler && isProp(this.props, prop)
-        , st = {}
+        , state = {}
         , args;
 
       if ( !this._notifying ) this._notifying = [];
@@ -96,8 +92,8 @@ module.exports = {
         this._notifying.pop()
       }
         
-      st[prop] = value
-      this.setState(st)
+      state[prop] = value
+      this.setState(state)
 
       return !controlled
     }
@@ -107,11 +103,6 @@ module.exports = {
     }
   }
 }
-
-
-// function invert(controlledValues){
-//   return _.transform(controlledValues, (val, key ) => ,)
-// }
 
 function defaultKey(key){
   return 'default' + key.charAt(0).toUpperCase() + key.substr(1)

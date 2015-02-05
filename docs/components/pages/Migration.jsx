@@ -28,9 +28,9 @@ var MigrationGuide = React.createClass({
         <h4>Required polyfills</h4>
         <p>
           Completing the movement away from utility library dependence, we have removed the last few handrolled es5 methods 
-          from the code base. This means that in addition to the polyfills required by React, for old browsers, React-widgets 
-          now requires a few more. You can use the 
-          excellent <a href="https://github.com/es-shims/es5-shim">kriskowal's es5-shim</a> for all of these.
+           from the code base. This means that in addition to the polyfills required by React, for old browsers, React-widgets 
+           now requires a few more. You can use the 
+           excellent <a href="https://github.com/es-shims/es5-shim">kriskowal's es5-shim</a> for all of these.
         </p>
         <ul>
           <li><code>Array.prototype.some</code></li>
@@ -41,7 +41,7 @@ var MigrationGuide = React.createClass({
         <h4>Exported Values</h4>
         <p>
           We have tried to make the consumption of react-widgets as consistent as possible, regardless of whether you require 
-          the entire suite, or just make use of a few widgets. To that end, names and locations of files have been changed to 
+          the entire suite, or just make use of a few widgets. To that end, names and locations of files have been changed to  
           make everything consistent. one of the biggest changes is that the <code>Select</code> widget has changed names
           to <code>Multiselect</code> which is more descriptive, and makes room for the new <code>SelectList</code> widget.
         </p>
