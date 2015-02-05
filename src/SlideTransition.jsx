@@ -78,7 +78,12 @@ module.exports = React.createClass({
   },
 
   _wrapChild: function(child, ref) {
-    return (<SlideChildGroup key={child.key} ref={ref} direction={this.props.direction} duration={this.props.duration}>{child}</SlideChildGroup>)
+    return (
+      <SlideChildGroup key={child.key} ref={ref} 
+        direction={this.props.direction} 
+        duration={this.props.duration}>
+        {child}
+      </SlideChildGroup>)
   },
 
   render: function() {
