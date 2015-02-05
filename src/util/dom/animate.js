@@ -13,7 +13,7 @@ var TRANSLATION_MAP = {
 
 var reset = {}
   , transform ='transform'
-  , transition
+  , transition = {}
   , transitionTiming, transitionDuration
   , transitionProperty, transitionDelay;
 
