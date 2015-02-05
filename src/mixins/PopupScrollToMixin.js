@@ -1,5 +1,5 @@
 'use strict';
-var scrollTo = require('../util/scroll')
+var scrollTo = require('../util/dom/scroll')
 
 module.exports = {
 

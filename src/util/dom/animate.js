@@ -1,7 +1,7 @@
 "use strict";
 var canUseDOM = require('react/lib/ExecutionEnvironment').canUseDOM
+  , hyphenate = require('react/lib/hyphenateStyleName')
   , has = Object.prototype.hasOwnProperty
-  , dasherize = require('../dasherize')
   , css = require('./css')
   , { 
     on
@@ -53,7 +53,7 @@ function animate(node, properties, duration, easing, callback){
         transforms += TRANSLATION_MAP[key] +'(' + properties[key] + ') '
       else {
         cssValues[key] = properties[key]
-        cssProperties.push(dasherize(key))
+        cssProperties.push(hyphenate(key))
       }
     }
 

@@ -1,7 +1,7 @@
 'use strict';
 
-var camelize = require('react/lib/camelizeStyleName') 
-  , dasherize = require('../dasherize')
+var camelize  = require('react/lib/camelizeStyleName') 
+  , hyphenate = require('react/lib/hyphenateStyleName')
   , has = Object.prototype.hasOwnProperty;
 
 module.exports = function cssFn(node, property, value){
@@ -18,8 +18,8 @@ module.exports = function cssFn(node, property, value){
   for(var key in props) if ( has.call(props, key) ) 
   {
     !props[key] && props[key] !== 0
-      ? removeStyle(node.style, dasherize(key))
-      : (css += dasherize(key) + ':' + props[key] + ';')
+      ? removeStyle(node.style, hyphenate(key))
+      : (css += hyphenate(key) + ':' + props[key] + ';')
   }
 
   node.style.cssText += ';' + css

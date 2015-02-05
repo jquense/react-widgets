@@ -6,8 +6,8 @@ var React = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   , PlainList        = require('./List')
   , GroupableList = require('./ListGroupable')
-  , validateList    = require('./util/validateListInterface')
-  , scrollTo  = require('./util/scroll');
+  , validateList = require('./util/validateListInterface')
+  , scrollTo = require('./util/dom/scroll');
 
 var propTypes = {
 
