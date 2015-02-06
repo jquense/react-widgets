@@ -26,7 +26,13 @@ module.exports = {
   },
 
   _dataIndexOf: function(data, item){
-    return _.findIndex(data, this._valueMatcher.bind(null, item), this)
+    var idx = -1, len = data.length
+      , finder = datum => this._valueMatcher(item, datum);
+
+    while (++idx < len)
+      if( finder(data[idx]) ) return idx
+    
+    return -1
   },
 
   _valueMatcher: function(a, b){

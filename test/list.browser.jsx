@@ -89,7 +89,6 @@ describe('List', function(){
     expect(list.next(selected, 'ja')).to.be(data[3]);
 
     expect(list.next(focused, 'na')).to.be(data[4]);
-    expect(list.next(focused, 'na')).to.be(data[4]);
   })
 
   it('should implement last()', function(){

@@ -10,6 +10,8 @@ var SelectList = require('../src/SelectList.jsx')
 var chance = new (require('chance'))
 var _ = require('lodash')
 
+var { ModalTrigger
+  , Modal } = require('react-bootstrap')
 
 // var g = require('globalize')
 var culture = require('globalize/lib/cultures/globalize.culture.es');
@@ -25,6 +27,26 @@ var ListItem = React.createClass({
 
 // var a = { a:1, b: 3};
 // var c = { ...a, x: 1 };
+
+var MyModal = React.createClass({
+  render: function() {
+    var list = generateList()
+    return (
+        <Modal {...this.props} title="Modal heading" animation={false}>
+          <DropdownList
+              isRtl={false}
+              id='MyDropdownList'
+              data={ list }
+              textField='name'
+              valueField='id'
+              defaultValue={list[1]}/>
+          <div className="modal-footer">
+            <button onClick={this.props.onRequestHide}>Close</button>
+          </div>
+        </Modal>
+      );
+  }
+});
 
 var App = React.createClass({
 
@@ -77,6 +99,9 @@ var App = React.createClass({
     return (
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
+          <ModalTrigger modal={<MyModal />}>
+            <button>Launch demo modal</button>
+          </ModalTrigger>
         {/*<section className="example">
           <div style={{ height: 150 }}>
             sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
@@ -94,6 +119,16 @@ var App = React.createClass({
         </section>*/}
        
           <section className="example" style={{ marginBottom: 20 }}>
+            <SelectList style={{ maxHeight: 300 }}
+              textField='name'
+              valueField='id'
+              data={this.state.data}
+              value={this.state.selectValues}
+              disabled={[1 ,6]}
+              busy={false}
+              name="super_name"
+              multiple
+              onChange={change.bind(null, 'selectValues')}/>
             <DropdownList
               isRtl={false}
               id='MyDropdownList'

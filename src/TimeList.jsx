@@ -21,7 +21,11 @@ module.exports = React.createClass({
     culture:        React.PropTypes.string,
   },
 
-  getDefaultProps: function(){
+  mixins: [
+    require('./mixins/TimeoutMixin')
+  ],
+
+  getDefaultProps(){
     return {
       step:   30,
       format: 't',
@@ -31,7 +35,7 @@ module.exports = React.createClass({
     }
   },
 
-  getInitialState: function(){
+  getInitialState(){
     var data = this._dates(this.props)
       , focusedItem = this._closestDate(data, this.props.value);
 
@@ -41,7 +45,7 @@ module.exports = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     var data = this._dates(nextProps)
       , focusedItem = this._closestDate(data, this.props.value);
 
@@ -170,10 +174,9 @@ module.exports = React.createClass({
   search: function(character, cb){
     var word = ((this._searchTerm || '') + character).toLowerCase();
       
-    clearTimeout(this._timer)
     this._searchTerm = word 
 
-    this._timer = setTimeout(() => {
+    this.setTimeout('search', () => {
       var list = this.refs.list
         , item = list.next(this.state.focusedItem, word);
       

@@ -71,6 +71,7 @@ var Calendar = React.createClass({
 
   mixins: [
     require('./mixins/WidgetMixin'),
+    require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/RtlParentContextMixin')
   ],
@@ -217,9 +218,7 @@ var Calendar = React.createClass({
     if ( +this.props.tabIndex === -1)
       return 
 
-    clearTimeout(this.timer)
-
-    this.timer = setTimeout(() =>{
+    this.setTimeout('focus', () => {
 
       if(focused) 
         this.getDOMNode().focus()
@@ -232,7 +231,7 @@ var Calendar = React.createClass({
   },
 
   change: function(date){
-    setTimeout( () => this._focus(true))
+    setTimeout(() => this._focus(true))
 
     if ( this.props.onChange && this.state.view === this.props.initialView)
       return this.notify('onChange', date)

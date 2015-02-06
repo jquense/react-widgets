@@ -50,9 +50,9 @@ describe('_ utils', function(){
     expect(_.pick({ a: 1, b: 2, c: 3}, ['b','c'])).to.eql({ b: 2, c: 3 })
   })
 
-  it('should FINDINDEX', function(){
-    expect(_.findIndex([1,2,3,4,5], v => v === 2)).to.equal(1)
-    expect(_.findIndex([1,2,3,4,5], (v, i) => i === 2)).to.equal(2)
+  it('should FIND', function(){
+    expect(_.find([1,2,3,4,5], v => v === 2)).to.equal(2)
+    expect(_.find([1,2,3,4,5], (v, i) => i === 2)).to.equal(3)
   })
 
   it('should UNIQUEID', function(){

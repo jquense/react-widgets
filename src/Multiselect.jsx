@@ -69,6 +69,7 @@ var Multiselect = React.createClass({
 
   mixins: [
     require('./mixins/WidgetMixin'),
+    require('./mixins/TimeoutMixin'),
     require('./mixins/DataFilterMixin'),
     require('./mixins/DataHelpersMixin'),
     require('./mixins/PopupScrollToMixin'),
@@ -234,9 +235,7 @@ var Multiselect = React.createClass({
     if (this.props.disabled === true )
       return
 
-    clearTimeout(this.timer)
-
-    this.timer = setTimeout(() => {
+    this.setTimeout('focus', () => {
       if( focused) {
         this.refs.input.focus()
         this.open()

@@ -51,6 +51,7 @@ var NumberPicker = React.createClass({
 
   mixins: [
     require('./mixins/WidgetMixin'),
+    require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/RtlParentContextMixin'),
   ],
@@ -182,9 +183,8 @@ var NumberPicker = React.createClass({
   },
 
   _focus: function(focused, e){
-    clearTimeout(this.timer)
 
-    this.timer = setTimeout(() =>{
+    this.setTimeout('focus', () => {
       var el = this.refs.input.getDOMNode()
 
       focused && el.focus()

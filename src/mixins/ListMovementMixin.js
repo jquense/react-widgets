@@ -26,7 +26,7 @@ module.exports = {
     if (idx === -1) idx = data.length;
 
     return word 
-      ? findNextInstance(this,  data, word, idx, 'prev')
+      ? findPrevInstance(this,  data, word, idx)
       : --idx < 0 ? data[0] : data[idx]
   },
 
@@ -35,19 +35,41 @@ module.exports = {
       , idx  = data.indexOf(item)
 
     return word 
-      ? findNextInstance(this, data, word, idx, 'next')
+      ? findNextInstance(this, data, word, idx)
       : ++idx === data.length ? data[data.length - 1] : data[idx]
   }
 
 }
 
-function findNextInstance(ctx, data, word, current, dir){
-  var matcher = filter.startsWith;
+function findNextInstance(ctx, data, word, startIndex){
+  var matches = filter.startsWith
+    , idx = -1
+    , len = data.length
+    , foundStart, itemText;
+
+  word = word.toLowerCase()
+
+  while (++idx < len){
+    foundStart = foundStart || idx > startIndex 
+    itemText   = foundStart && helper._dataText.call(ctx, data[idx]).toLowerCase()
+
+    if( foundStart && matches(itemText, word) )
+      return data[idx]
+  }  
+}
+
+function findPrevInstance(ctx, data, word, startIndex){
+  var matches = filter.startsWith
+    , idx = data.length
+    , foundStart, itemText;
+
+  word = word.toLowerCase()
+
+  while (--idx >= 0 ){
+    foundStart = foundStart || idx < startIndex 
+    itemText   = foundStart && helper._dataText.call(ctx, data[idx]).toLowerCase()
     
-  return _.find(data, (item, i) => { 
-    return (dir === 'next' ? i > current : i < current)
-        && matcher(
-            helper._dataText.call(ctx, item).toLowerCase()
-          , word.toLowerCase())
-  });    
+    if( foundStart && matches(itemText, word) )
+      return data[idx]
+  }  
 }

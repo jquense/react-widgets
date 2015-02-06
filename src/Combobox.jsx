@@ -66,7 +66,7 @@ var ComboBox = React.createClass({
 
   mixins: [
     require('./mixins/WidgetMixin'),
-    require('./mixins/TextSearchMixin'),
+    require('./mixins/TimeoutMixin'),
     require('./mixins/DataFilterMixin'),
     require('./mixins/DataHelpersMixin'),
     require('./mixins/PopupScrollToMixin'),

@@ -61,6 +61,7 @@ var DropdownList = React.createClass({
 
   mixins: [
     require('./mixins/WidgetMixin'),
+    require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/DataHelpersMixin'),
     require('./mixins/PopupScrollToMixin'),
@@ -71,6 +72,8 @@ var DropdownList = React.createClass({
 
   getInitialState: function(){
     var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
+
+    this._timers = Object.create(null);
 
     return {
       selectedItem: this.props.data[initialIdx],
@@ -90,7 +93,7 @@ var DropdownList = React.createClass({
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     validateList(this.refs.list)
   },
 
@@ -170,20 +173,17 @@ var DropdownList = React.createClass({
   },
 
   _focus: function(focused, e){
-    var self = this;
 
-    clearTimeout(self.timer)
-    self.timer = setTimeout(function(){
+    this.setTimeout('focus', () => {
 
-      if(focused) self.getDOMNode().focus()
-      else        self.close()
+      if(focused) this.getDOMNode().focus()
+      else        this.close()
 
-      if( focused !== self.state.focused){
-        self.notify(focused ? 'onFocus' : 'onBlur', e)
-        self.setState({ focused: focused })
+      if( focused !== this.state.focused){
+        this.notify(focused ? 'onFocus' : 'onBlur', e)
+        this.setState({ focused: focused })
       }
-
-    }, 0)
+    })
   },
 
   _onSelect: function(data){
@@ -262,10 +262,9 @@ var DropdownList = React.createClass({
   search: function(character, cb){
     var word = ((this._searchTerm || '') + character).toLowerCase();
       
-    clearTimeout(this._timer)
     this._searchTerm = word 
   
-    this._timer = setTimeout(() => {
+    this.setTimeout('search', () => {
       var list = this.refs.list
         , key  = this.props.open ? 'focusedItem' : 'selectedItem'
         , item = list.next(this.state[key], word);

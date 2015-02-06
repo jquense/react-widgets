@@ -7,6 +7,7 @@ var React = require('react')
   , PlainList        = require('./List')
   , GroupableList = require('./ListGroupable')
   , validateList = require('./util/validateListInterface')
+  , filter   = require('./util/filter')
   , scrollTo = require('./util/dom/scroll');
 
 var propTypes = {
@@ -29,6 +30,7 @@ var propTypes = {
 
     busy:           React.PropTypes.bool,
 
+    filter:         React.PropTypes.string,
     delay:          React.PropTypes.number, 
 
     disabled:       React.PropTypes.oneOfType([
@@ -55,7 +57,7 @@ var SelectList = React.createClass({
 
   mixins: [
     require('./mixins/WidgetMixin'),
-    require('./mixins/TextSearchMixin'),
+    require('./mixins/TimeoutMixin'),
     require('./mixins/DataHelpersMixin'),
     require('./mixins/RtlParentContextMixin')
   ],
@@ -135,6 +137,7 @@ var SelectList = React.createClass({
           'rw-loading-mask':   this.props.busy
         })}>
         <List ref='list' 
+          {..._.pick(this.props, Object.keys(List.type.propTypes))}
           data={this._data()}
           focused={focusedItem}
           optID ={optID}
@@ -196,9 +199,7 @@ var SelectList = React.createClass({
       this._selectAll() 
     }
     else
-      this.search(
-          String.fromCharCode(e.keyCode)
-        , this._locate)
+      this.search(String.fromCharCode(e.keyCode))
 
     function change(item, cked){
       if( item ){
@@ -258,17 +259,13 @@ var SelectList = React.createClass({
   },
 
   _focus: function(focused, e){
-    var self = this;
 
-    clearTimeout(self.timer)
-
-    self.timer = setTimeout(function(){
-      if( focused) self.getDOMNode().focus()
-      if( focused !== self.state.focused){
-        self.setState({ focused: focused })
-        //!focused && self.next(0)
+    this.setTimeout('focus', () => {
+      if( focused) this.getDOMNode().focus()
+      if( focused !== this.state.focused){
+        this.setState({ focused: focused })
       }
-    }, 0)
+    })
   },
 
   isDisabledItem: function(item) {
@@ -279,11 +276,21 @@ var SelectList = React.createClass({
     return this.isReadOnly() || this._contains(item, this.props.readOnly)
   },
 
-  _locate: function(word){
-    var idx = this.findNextWordIndex(word, this.state.focusedIndex);
+  search: function(character){
+    var word = ((this._searchTerm || '') + character).toLowerCase()
+      , list = this.refs.list;
+      
+    this._searchTerm = word 
 
-    if ( idx !== -1) 
-      this.setFocusedIndex(idx)
+    this.setTimeout('search', () => {
+      var focusedItem = list.next(this.state.focusedItem, word);
+
+      this._searchTerm = ''
+
+      if ( focusedItem) 
+        this.setState({ focusedItem })
+
+    }, this.props.delay) 
   },
 
   _data:function(){
@@ -303,6 +310,7 @@ var SelectList = React.createClass({
   }
 
 });
+
 
 function getListItem(parent){
 

@@ -69,6 +69,7 @@ var DateTimePicker = React.createClass({
 
   mixins: [
     require('./mixins/WidgetMixin'),
+    require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin')
@@ -265,9 +266,7 @@ var DateTimePicker = React.createClass({
   _focus: function(focused, e){
     var input =  this.refs.valueInput;
 
-    clearTimeout(this.timer)
-
-    this.timer = setTimeout(() =>{
+    this.setTimeout('focus', () => {
 
       if(focused) input.getDOMNode().focus()
       else        this.close()

@@ -68,15 +68,6 @@ var _ =
             return arr[key]; 
     },
 
-    findIndex: function(arr, cb, thisArg){
-      var idx = -1, len = arr.length;
-
-      while (++idx < len)
-        if( cb.call(thisArg, arr[idx], idx, arr) ) return idx
-      
-      return -1
-    },
-
     chunk: function(array, chunkSize) {
       var index = 0, length = array ? array.length : 0
         , result = [];
