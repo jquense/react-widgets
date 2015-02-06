@@ -38,7 +38,7 @@
     "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "6to5": "^3.0.14",
+    "6to5": "^3.3.12",
     "6to5-loader": "^3.0.0",
     "chance": "^0.7.1",
     "css-loader": "^0.7.1",

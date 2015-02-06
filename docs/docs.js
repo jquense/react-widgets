@@ -418,12 +418,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "React-widgets offers a ",
-	        "set",
-	        " UI widgets, built from scratch with React. The suite is based on the excellent",
-	        "work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By",
-	        "building each widget entirely in React, it can leavage all of the benefits of the React ecosystem",
-	        "and ",
+	        "React-widgets offers a set UI widgets, built from scratch with React. The suite is based on the excellent work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By building each widget entirely in React, it can leavage all of the benefits of the React ecosystem and ",
 	        React.createElement(
 	          "a",
 	          { href: "http://facebook.github.io/react/blog/2013/11/05/thinking-in-react.html", target: "_blank" },
@@ -435,8 +430,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "A big thanks to both of these libraries for solving most of the difficult problems already, and providing an",
-	        "excellent reference for what works, and what does not, in ui inputs."
+	        "A big thanks to both of these libraries for solving most of the difficult problems already, and providing an excellent reference for what works, and what does not, in ui inputs."
 	      ),
 	      React.createElement(
 	        "p",
@@ -460,24 +454,19 @@
 	          null,
 	          "uncontrolled"
 	        ),
-	        ". Like form inputs",
-	        "the value/onChange prop pair provides the main interface for widget interaction. If a ",
+	        ". Like form inputs the value/onChange prop pair provides the main interface for widget interaction. If a ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "value"
 	        ),
-	        " prop",
-	        "is ",
-	        "set",
-	        " the widget's value is said to be ",
+	        " prop is set the widget's value is said to be ",
 	        React.createElement(
 	          "em",
 	          null,
 	          "controlled"
 	        ),
-	        ", meaning the parent is responsible for managing its",
-	        "state. If the widget does not provide a ",
+	        ", meaning the parent is responsible for managing its state. If the widget does not provide a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -489,9 +478,7 @@
 	          null,
 	          "uncontrolled"
 	        ),
-	        " or responsible",
-	        "for managing its own value through internal state. To initialize an uncontrolled widget with a value you can use",
-	        "the ",
+	        " or responsible for managing its own value through internal state. To initialize an uncontrolled widget with a value you can use the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -503,8 +490,7 @@
 	          null,
 	          "value"
 	        ),
-	        " prop, widgets may allow other props",
-	        "(such as ",
+	        " prop, widgets may allow other props (such as ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -521,17 +507,13 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Some widgets can also be \"bound\" to a ",
-	        "set",
-	        " of data (traditionally an array of models) through",
-	        "a ",
+	        "Some widgets can also be \"bound\" to a set of data (traditionally an array of models) through a ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "data"
 	        ),
-	        " prop. While they work just as well with data primitives such as strings, numbers, and",
-	        "arrays, they really shine through the use of the ",
+	        " prop. While they work just as well with data primitives such as strings, numbers, and arrays, they really shine through the use of the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -543,8 +525,7 @@
 	          null,
 	          "textField"
 	        ),
-	        " props,",
-	        "which offer a quick way to display complex data structures."
+	        " props, which offer a quick way to display complex data structures."
 	      ),
 	      React.createElement(
 	        "h2",
@@ -561,16 +542,13 @@
 	          null,
 	          "npm install react-widgets"
 	        ),
-	        ") and make use of something like Webpack or",
-	        "Browserify to bundle the library. There is also a traditional browser build available for",
-	        "download in the ",
+	        ") and make use of something like Webpack or Browserify to bundle the library. There is also a traditional browser build available for download in the ",
 	        React.createElement(
 	          "strong",
 	          null,
 	          "browser"
 	        ),
-	        " folder. The browser build does not bundle any dependencies, and",
-	        "attaches itself to the ",
+	        " folder. The browser build does not bundle any dependencies, and attaches itself to the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -592,8 +570,7 @@
 	          null,
 	          "dist"
 	        ),
-	        " directory.",
-	        "Included icons are provided by - ",
+	        " directory. Included icons are provided by - ",
 	        React.createElement(
 	          "a",
 	          { href: "http://fontawesome.io" },
@@ -603,8 +580,7 @@
 	      React.createElement(
 	        "strong",
 	        null,
-	        "Note: versions prior to 1.1.0 require a build step (transpilation from JSX) when using the NPM package.",
-	        "As of 1.1.0 the package comes precompiled, and no build step is needed."
+	        "Note: versions prior to 1.1.0 require a build step (transpilation from JSX) when using the NPM package. As of 1.1.0 the package comes precompiled, and no build step is needed."
 	      ),
 	      React.createElement(
 	        "h2",
@@ -632,8 +608,7 @@
 	          null,
 	          "1.x"
 	        ),
-	        " branch supports",
-	        "React ",
+	        " branch supports React ",
 	        React.createElement(
 	          "b",
 	          null,
@@ -645,17 +620,12 @@
 	          null,
 	          "0.10.0"
 	        ),
-	        ". Either branch",
-	        "expects React to be bundled by you. Consumers of the NPM package should note that React is not listed as direct,",
-	        "or peer dependency. This is to help reduce the friction that Peer Dependencies can cause.",
-	        "This means that NPM will not warn you if you try to use react-widgets with an incompatible React version."
+	        ". Either branch expects React to be bundled by you. Consumers of the NPM package should note that React is not listed as direct, or peer dependency. This is to help reduce the friction that Peer Dependencies can cause. This means that NPM will not warn you if you try to use react-widgets with an incompatible React version."
 	      ),
 	      React.createElement(
 	        "p",
 	        null,
-	        "If you use Browserify or Webpack to build your projects, the dependencies listed below will automatically be",
-	        "included. They are listed for the sake of those who wish to externalize the lib dependencies to reduce",
-	        "duplication, or wish to use a different, compatible, library.",
+	        "If you use Browserify or Webpack to build your projects, the dependencies listed below will automatically be included. They are listed for the sake of those who wish to externalize the lib dependencies to reduce duplication, or wish to use a different, compatible, library.",
 	        React.createElement(
 	          "ul",
 	          null,
@@ -667,8 +637,7 @@
 	              { href: "https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468" },
 	              "Globalize"
 	            ),
-	            " ",
-	            "used for date and number localization. Requires a 0.x.x version (not the upcoming 1.0.0)"
+	            "  used for date and number localization. Requires a 0.x.x version (not the upcoming 1.0.0)"
 	          )
 	        )
 	      ),
@@ -680,17 +649,13 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Rather than including an entire utility library, like underscore, react widgets takes a hint from React itself,",
-	        "and instead relies on es5 (and transpiled es6) functionality. For most browsers this is will not be an issue, as es5",
-	        "is ",
+	        "Rather than including an entire utility library, like underscore, react widgets takes a hint from React itself, and instead relies on es5 (and transpiled es6) functionality. For most browsers this is will not be an issue, as es5 is ",
 	        React.createElement(
 	          "a",
 	          { href: "http://kangax.github.io/compat-table/es5/" },
 	          "very well supported"
 	        ),
-	        " by modern browsers. However older",
-	        "browsers will need the required functionality polyfilled. In most clases React already requires most of the needed shims",
-	        "(",
+	        " by modern browsers. However older browsers will need the required functionality polyfilled. In most clases React already requires most of the needed shims (",
 	        React.createElement(
 	          "a",
 	          { target: "_blank", href: "http://facebook.github.io/react/docs/working-with-the-browser.html#polyfills-needed-to-support-older-browsers" },
@@ -703,9 +668,7 @@
 	          { href: "https://github.com/es-shims/es5-shim" },
 	          "kriskowal's es5-shim"
 	        ),
-	        " then",
-	        "react-widgets propbably has everything it needs.",
-	        "For those interested in the specific additions needed by react-widgets they are:",
+	        " then react-widgets propbably has everything it needs. For those interested in the specific additions needed by react-widgets they are:",
 	        React.createElement(
 	          "ul",
 	          null,
@@ -753,9 +716,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for",
-	        "date and number localization, there is first class support for cultures and languages that read",
-	        "right to left (with the ",
+	        "React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for date and number localization, there is first class support for cultures and languages that read right to left (with the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -766,17 +727,13 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Each widget also has appropriate ARIA roles and attributes for the benefit of screen readers and visually",
-	        "impaired users. Keyboard only navigation of widgets is also supported, for those who prefer to not,",
-	        "or cannot use a mouse. to help ensure maximum accessibility, every widget should have",
-	        "an ",
+	        "Each widget also has appropriate ARIA roles and attributes for the benefit of screen readers and visually impaired users. Keyboard only navigation of widgets is also supported, for those who prefer to not, or cannot use a mouse. to help ensure maximum accessibility, every widget should have an ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "id"
 	        ),
-	        " attribute. If you do not wish to provide an id attrbute, the widget will generate",
-	        "the necessary id's to properly label and annotate the widget ARIA."
+	        " attribute. If you do not wish to provide an id attrbute, the widget will generate the necessary id's to properly label and annotate the widget ARIA."
 	      ),
 	      React.createElement(
 	        "h2",
@@ -786,9 +743,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Styling each widget should be a simple matter of adjusting the relevant LESS variables to suit your needs.",
-	        "Included by default is a \"Twitter Bootstrap\" theme that mimics the look and feel of Twitter Bootstrap 3.0.",
-	        "This is less an actual theme and more a neutral starting point for creating your own theme.",
+	        "Styling each widget should be a simple matter of adjusting the relevant LESS variables to suit your needs. Included by default is a \"Twitter Bootstrap\" theme that mimics the look and feel of Twitter Bootstrap 3.0. This is less an actual theme and more a neutral starting point for creating your own theme.",
 	        React.createElement(
 	          "ul",
 	          null,
@@ -980,15 +935,13 @@
 	          null,
 	          "data"
 	        ),
-	        " array)",
-	        "or a primitive value, hinted to by the ",
+	        " array) or a primitive value, hinted to by the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "valueField"
 	        ),
-	        ". The widget value does not need to be in",
-	        "the ",
+	        ". The widget value does not need to be in the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1022,8 +975,7 @@
 	          null,
 	          "onChange"
 	        ),
-	        " handler, and fires",
-	        "regardless of whether the value has actually changed."
+	        " handler, and fires regardless of whether the value has actually changed."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(24)(widgetName) }),
 	      React.createElement(
@@ -1040,8 +992,7 @@
 	          null,
 	          "objects"
 	        ),
-	        " is provided you",
-	        "should use the ",
+	        " is provided you should use the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1053,8 +1004,7 @@
 	          null,
 	          "textField"
 	        ),
-	        " props, to specify which object",
-	        "properties comprise the value field (such as an id) and the field used to label the item."
+	        " props, to specify which object properties comprise the value field (such as an id) and the field used to label the item."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -1070,8 +1020,7 @@
 	          null,
 	          "data"
 	        ),
-	        " array. If no valueField is provided,",
-	        "the widget will use strict equality checks to locate the data item, if it exists."
+	        " array. If no valueField is provided, the widget will use strict equality checks to locate the data item, if it exists."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(25)(widgetName) }),
 	      React.createElement(
@@ -1088,8 +1037,7 @@
 	          null,
 	          "textField"
 	        ),
-	        " prop",
-	        "may also also used as to find an item in the list as you type."
+	        " prop may also also used as to find an item in the list as you type."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(26)(widgetName) }),
 	      React.createElement(
@@ -1100,8 +1048,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "This component is used to render the selected value of the combobox. The default component",
-	        "renders the text of the selected item (specified by ",
+	        "This component is used to render the selected value of the combobox. The default component renders the text of the selected item (specified by ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1118,8 +1065,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "This component is used to render each possible item in the DropdownList. The default component",
-	        "renders the text of the selected item (specified by ",
+	        "This component is used to render each possible item in the DropdownList. The default component renders the text of the selected item (specified by ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1144,16 +1090,13 @@
 	          null,
 	          "string"
 	        ),
-	        " will group",
-	        "the ",
+	        " will group the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "data"
 	        ),
-	        " array by that property. You can also provide a ",
-	        "function",
-	        " which should return the group value."
+	        " array by that property. You can also provide a function which should return the group value."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(29)(widgetName) }),
 	      React.createElement(
@@ -1170,8 +1113,7 @@
 	          null,
 	          "groupBy"
 	        ),
-	        " is specified. By",
-	        "default the ",
+	        " is specified. By default the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1198,17 +1140,13 @@
 	        ),
 	        ") the ",
 	        widgetName,
-	        " will handle the",
-	        "opening and closing internally. The ",
+	        " will handle the opening and closing internally. The ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "defaultOpen"
 	        ),
-	        " prop can be used to ",
-	        "set",
-	        " an",
-	        "initialization value for uncontrolled widgets."
+	        " prop can be used to set an initialization value for uncontrolled widgets."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(31)(widgetName) }),
 	      React.createElement(
@@ -1227,16 +1165,13 @@
 	          null,
 	          "onToggle"
 	        ),
-	        " should be used",
-	        "when the ",
+	        " should be used when the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "open"
 	        ),
-	        " prop is ",
-	        "set",
-	        " otherwise the widget open buttons won't work."
+	        " prop is set otherwise the widget open buttons won't work."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -1252,8 +1187,7 @@
 	          null,
 	          "true"
 	        ),
-	        " the widget will display a spinner gif, useful",
-	        "when loading data via an ajax call."
+	        " the widget will display a spinner gif, useful when loading data via an ajax call."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(32)(widgetName) }),
 	      React.createElement(
@@ -1274,8 +1208,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through",
-	        "a ",
+	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1303,8 +1236,7 @@
 	          null,
 	          "messages"
 	        ),
-	        " object to",
-	        "localize widget text and increase accessibility."
+	        " object to localize widget text and increase accessibility."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -1566,15 +1498,13 @@
 	          null,
 	          "data"
 	        ),
-	        " array)",
-	        "or a primitive value, hinted to by the ",
+	        " array) or a primitive value, hinted to by the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "valueField"
 	        ),
-	        ". The widget value does not need to be in",
-	        "the ",
+	        ". The widget value does not need to be in the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1597,15 +1527,13 @@
 	          null,
 	          "data"
 	        ),
-	        " members",
-	        "that item will be returned. In the case of a value not being found in the ",
+	        " members that item will be returned. In the case of a value not being found in the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "data"
 	        ),
-	        " array",
-	        "the string value of the combobox will be returned."
+	        " array the string value of the combobox will be returned."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(23)(widgetName) }),
 	      React.createElement(
@@ -1622,8 +1550,7 @@
 	          null,
 	          "onChange"
 	        ),
-	        " handler, and fires",
-	        "regardless of whether the value has actually changed."
+	        " handler, and fires regardless of whether the value has actually changed."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(24)(widgetName) }),
 	      React.createElement(
@@ -1640,8 +1567,7 @@
 	          null,
 	          "objects"
 	        ),
-	        " is provided you",
-	        "should use  the ",
+	        " is provided you should use  the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1653,8 +1579,7 @@
 	          null,
 	          "textField"
 	        ),
-	        " props, to specify which object",
-	        "properties comprise the value field (such as an id) and the field used to label the item."
+	        " props, to specify which object properties comprise the value field (such as an id) and the field used to label the item."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -1670,8 +1595,7 @@
 	          null,
 	          "data"
 	        ),
-	        " array. If no valueField is provided,",
-	        "the widget will use strict equality checks to locate the data item, if it exists."
+	        " array. If no valueField is provided, the widget will use strict equality checks to locate the data item, if it exists."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(25)(widgetName) }),
 	      React.createElement(
@@ -1682,8 +1606,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "This prop determines which data item field to display in the dropdown list and the text value of combobox.",
-	        "This prop is unnecessary when an ",
+	        "This prop determines which data item field to display in the dropdown list and the text value of combobox. This prop is unnecessary when an ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1700,8 +1623,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "This component is used to render each possible item in the DropdownList. The default component",
-	        "renders the text of the selected item (specified by ",
+	        "This component is used to render each possible item in the DropdownList. The default component renders the text of the selected item (specified by ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1726,16 +1648,13 @@
 	          null,
 	          "string"
 	        ),
-	        " will group",
-	        "the ",
+	        " will group the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "data"
 	        ),
-	        " array by that property. You can also provide a ",
-	        "function",
-	        " which should return the group value."
+	        " array by that property. You can also provide a function which should return the group value."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(29)(widgetName) }),
 	      React.createElement(
@@ -1752,8 +1671,7 @@
 	          null,
 	          "groupBy"
 	        ),
-	        " is specified. By",
-	        "default the ",
+	        " is specified. By default the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1776,8 +1694,7 @@
 	          null,
 	          "true"
 	        ),
-	        " the Combobox will suggest, or fill in, values as you type. The suggestions",
-	        "are always \"startsWith\", meaning it will search from the start of the ",
+	        " the Combobox will suggest, or fill in, values as you type. The suggestions are always \"startsWith\", meaning it will search from the start of the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1793,22 +1710,19 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjuction with",
-	        "the ",
+	        "Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjuction with the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "suggest"
 	        ),
-	        " prop or instead of it. There are a few prebuilt filtering methods that can be specified",
-	        "by passing the ",
+	        " prop or instead of it. There are a few prebuilt filtering methods that can be specified by passing the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "String"
 	        ),
-	        " name. You can explicitly opt out of filtering by setting filter",
-	        "to ",
+	        " name. You can explicitly opt out of filtering by setting filter to ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1818,8 +1732,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "To handle custom filtering techniques provide",
-	        "a ",
+	        "To handle custom filtering techniques provide a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -1837,8 +1750,7 @@
 	          null,
 	          "false"
 	        ),
-	        " for each passed in item",
-	        "(just like the ",
+	        " for each passed in item (just like the ",
 	        React.createElement(
 	          "a",
 	          { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" },
@@ -1899,17 +1811,13 @@
 	        ),
 	        ") the ",
 	        widgetName,
-	        " will handle the",
-	        "opening and closing internally. The ",
+	        " will handle the opening and closing internally. The ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "defaultOpen"
 	        ),
-	        " prop can be used to ",
-	        "set",
-	        " an",
-	        "initialization value for uncontrolled widgets."
+	        " prop can be used to set an initialization value for uncontrolled widgets."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(31)(widgetName) }),
 	      React.createElement(
@@ -1928,16 +1836,13 @@
 	          null,
 	          "onToggle"
 	        ),
-	        " should be used",
-	        "when the ",
+	        " should be used when the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "open"
 	        ),
-	        " prop is ",
-	        "set",
-	        " otherwise the widget will never open or close."
+	        " prop is set otherwise the widget will never open or close."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -1953,8 +1858,7 @@
 	          null,
 	          "true"
 	        ),
-	        " the widget will display a spinner gif, useful",
-	        "when loading data via an ajax call."
+	        " the widget will display a spinner gif, useful when loading data via an ajax call."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(32)(widgetName) }),
 	      React.createElement(
@@ -1975,8 +1879,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through",
-	        "a ",
+	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -2004,8 +1907,7 @@
 	          null,
 	          "messages"
 	        ),
-	        " object to",
-	        "localize widget text and increase accessibility."
+	        " object to localize widget text and increase accessibility."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -2316,8 +2218,7 @@
 	          null,
 	          "null"
 	        ),
-	        ", or an array",
-	        "of ",
+	        ", or an array of ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -2357,8 +2258,7 @@
 	          null,
 	          "onChange"
 	        ),
-	        " handler, and fires",
-	        "regardless of whether the value has actually changed."
+	        " handler, and fires regardless of whether the value has actually changed."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -2368,8 +2268,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic,",
-	        "a common implementation is shown below, where the new tag is selected and added to the data list."
+	        "This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic, a common implementation is shown below, where the new tag is selected and added to the data list."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(37)(widgetName) }),
 	      React.createElement(
@@ -2388,8 +2287,7 @@
 	          null,
 	          "objects"
 	        ),
-	        " is provided you",
-	        "should use the ",
+	        " is provided you should use the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -2401,8 +2299,7 @@
 	          null,
 	          "textField"
 	        ),
-	        " props, to specify which object",
-	        "properties comprise the value field (such as an id) and the field used to label the item."
+	        " props, to specify which object properties comprise the value field (such as an id) and the field used to label the item."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -2418,8 +2315,7 @@
 	          null,
 	          "data"
 	        ),
-	        " array. If no valueField is provided,",
-	        "the widget will use strict equality checks to locate the data item, if it exists."
+	        " array. If no valueField is provided, the widget will use strict equality checks to locate the data item, if it exists."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(25)(widgetName, true) }),
 	      React.createElement(
@@ -2432,8 +2328,7 @@
 	        null,
 	        "This prop determines which data item field to display in the ",
 	        widgetName,
-	        " list andselected item This prop is",
-	        "unnecessary when an ",
+	        " list andselected item This prop is unnecessary when an ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -2456,8 +2351,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "This component is used to render each selected item. The default component",
-	        "renders the text of the selected item (specified by ",
+	        "This component is used to render each selected item. The default component renders the text of the selected item (specified by ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -2474,8 +2368,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "This component is used to render each possible item in the list. The default component",
-	        "renders the text of the selected item (specified by ",
+	        "This component is used to render each possible item in the list. The default component renders the text of the selected item (specified by ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -2500,16 +2393,13 @@
 	          null,
 	          "string"
 	        ),
-	        " will group",
-	        "the ",
+	        " will group the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "data"
 	        ),
-	        " array by that property. You can also provide a ",
-	        "function",
-	        " which should return the group value."
+	        " array by that property. You can also provide a function which should return the group value."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(29)(widgetName, true) }),
 	      React.createElement(
@@ -2526,8 +2416,7 @@
 	          null,
 	          "groupBy"
 	        ),
-	        " is specified. By",
-	        "default the ",
+	        " is specified. By default the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -2556,8 +2445,7 @@
 	        null,
 	        "The string value of the current search being typed into the ",
 	        widgetName,
-	        ". When",
-	        "unset (",
+	        ". When unset (",
 	        React.createElement(
 	          "code",
 	          null,
@@ -2565,16 +2453,13 @@
 	        ),
 	        ") the ",
 	        widgetName,
-	        " will handle the filtering internally.",
-	        "The ",
+	        " will handle the filtering internally. The ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "defaultSearchTerm"
 	        ),
-	        " prop can be used to ",
-	        "set",
-	        " an initialization value for uncontrolled widgets."
+	        " prop can be used to set an initialization value for uncontrolled widgets."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -2596,10 +2481,7 @@
 	          null,
 	          "searchTerm"
 	        ),
-	        " prop",
-	        "is ",
-	        "set",
-	        "."
+	        " prop is set."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -2619,17 +2501,13 @@
 	        ),
 	        ") the ",
 	        widgetName,
-	        " will handle the",
-	        "opening and closing internally. The ",
+	        " will handle the opening and closing internally. The ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "defaultOpen"
 	        ),
-	        " prop can be used to ",
-	        "set",
-	        " an",
-	        "initialization value for uncontrolled widgets."
+	        " prop can be used to set an initialization value for uncontrolled widgets."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(31)(widgetName, true) }),
 	      React.createElement(
@@ -2648,16 +2526,13 @@
 	          null,
 	          "onToggle"
 	        ),
-	        " should be used",
-	        "when the ",
+	        " should be used when the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "open"
 	        ),
-	        " prop is ",
-	        "set",
-	        " otherwise the widget will never open or close."
+	        " prop is set otherwise the widget will never open or close."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -2673,8 +2548,7 @@
 	          null,
 	          "true"
 	        ),
-	        " the widget will display a spinner gif, useful",
-	        "when loading data via an ajax call."
+	        " the widget will display a spinner gif, useful when loading data via an ajax call."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -2728,8 +2602,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through",
-	        "a ",
+	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -2757,8 +2630,7 @@
 	          null,
 	          "messages"
 	        ),
-	        " object to",
-	        "localize widget text and increase accessibility."
+	        " object to localize widget text and increase accessibility."
 	      ),
 	      React.createElement(
 	        "h3",
@@ -3053,9 +2925,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Creates a list of radio buttons or checkboxes bound to a ",
-	        "set",
-	        " of data."
+	        "Creates a list of radio buttons or checkboxes bound to a set of data."
 	      ),
 	      React.createElement(SelectListExample, null),
 	      React.createElement(
@@ -3079,15 +2949,13 @@
 	          null,
 	          "data"
 	        ),
-	        " array)",
-	        "or a primitive value, hinted to by the ",
+	        " array) or a primitive value, hinted to by the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "valueField"
 	        ),
-	        ". The widget value does not need to be in",
-	        "the ",
+	        ". The widget value does not need to be in the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3110,8 +2978,7 @@
 	          null,
 	          "values"
 	        ),
-	        " will be an array",
-	        "when ",
+	        " will be an array when ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3136,8 +3003,7 @@
 	          null,
 	          "objects"
 	        ),
-	        " is provided you",
-	        "should use the ",
+	        " is provided you should use the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3149,8 +3015,7 @@
 	          null,
 	          "textField"
 	        ),
-	        " props, to specify which object",
-	        "properties comprise the value field (such as an id) and the field used to label the item."
+	        " props, to specify which object properties comprise the value field (such as an id) and the field used to label the item."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -3166,8 +3031,7 @@
 	          null,
 	          "data"
 	        ),
-	        " array. If no valueField is provided,",
-	        "the ",
+	        " array. If no valueField is provided, the ",
 	        widgetName,
 	        " will use strict equality checks to locate the data item, if it exists."
 	      ),
@@ -3195,8 +3059,7 @@
 	        null,
 	        "This component is used to render each item in the ",
 	        widgetName,
-	        ". The default component",
-	        "renders the text of the selected item (specified by ",
+	        ". The default component renders the text of the selected item (specified by ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3223,8 +3086,7 @@
 	        ),
 	        " the ",
 	        widgetName,
-	        " will",
-	        "render as a list of radio buttons, and checkboxes when ",
+	        " will render as a list of radio buttons, and checkboxes when ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3242,8 +3104,7 @@
 	        null,
 	        "A handler called when focus shifts on the ",
 	        widgetName,
-	        ". Internally this is used to ensure the focused item is in view.",
-	        "If you want to define your own \"scrollTo\" behavior or just disable the default one specify an ",
+	        ". Internally this is used to ensure the focused item is in view. If you want to define your own \"scrollTo\" behavior or just disable the default one specify an ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3265,8 +3126,7 @@
 	          null,
 	          "true"
 	        ),
-	        " the widget will display a spinner gif, useful",
-	        "when loading data via an ajax call."
+	        " the widget will display a spinner gif, useful when loading data via an ajax call."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -3314,8 +3174,7 @@
 	        null,
 	        "mark whether the ",
 	        widgetName,
-	        " should render right-to-left. This property can also be implicitly passed to the widget through",
-	        "a ",
+	        " should render right-to-left. This property can also be implicitly passed to the widget through a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3610,8 +3469,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "The highest level view the calendar can navigate up to. This value should be higher",
-	        "than ",
+	        "The highest level view the calendar can navigate up to. This value should be higher than ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3655,8 +3513,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through",
-	        "a ",
+	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3684,8 +3541,7 @@
 	          null,
 	          "messages"
 	        ),
-	        " object to",
-	        "localize widget text and increase accessibility."
+	        " object to localize widget text and increase accessibility."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -3930,33 +3786,25 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Datepicker widget. Allows you to ",
-	        "set",
-	        " different parts of a javascript ",
+	        "Datepicker widget. Allows you to set different parts of a javascript ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "Date"
 	        ),
-	        " object. Since dates",
-	        "are ",
+	        " object. Since dates are ",
 	        React.createElement(
 	          "em",
 	          null,
 	          "highly"
 	        ),
-	        " localized we make use of the",
-	        "excellent ",
+	        " localized we make use of the excellent ",
 	        React.createElement(
 	          "a",
 	          { target: "_blank", href: "https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468" },
 	          "Globalize.js"
 	        ),
-	        " library",
-	        "internally to format and parse dates from Strings. It is up to you to ",
-	        "set",
-	        " the culture via",
-	        "the ",
+	        " library internally to format and parse dates from Strings. It is up to you to set the culture via the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -3968,8 +3816,7 @@
 	        React.createElement(
 	          "strong",
 	          null,
-	          "Note: we expect a pre 1.0.0 version as  1.0 will dramatically change the Globalize API, once 1.0 is stable we",
-	          "will switch to it as well"
+	          "Note: we expect a pre 1.0.0 version as  1.0 will dramatically change the Globalize API, once 1.0 is stable we will switch to it as well"
 	        )
 	      ),
 	      React.createElement(
@@ -3981,11 +3828,7 @@
 	          null,
 	          "calendar"
 	        ),
-	        " prop",
-	        "is ",
-	        "set",
-	        " the widget takes all props vailable to the Calendar widget (see above),",
-	        "the same is true for the keyboard navigation!"
+	        " prop is set the widget takes all props vailable to the Calendar widget (see above), the same is true for the keyboard navigation!"
 	      ),
 	      React.createElement(DatePickerExample, null),
 	      React.createElement(
@@ -4024,15 +3867,13 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "change event Handler that is called when the value is changed. The handler is called with both the",
-	        "current ",
+	        "change event Handler that is called when the value is changed. The handler is called with both the current ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "Date"
 	        ),
-	        " object (or null if it was not parseable), and the second argument is",
-	        "a ",
+	        " object (or null if it was not parseable), and the second argument is a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -4061,8 +3902,7 @@
 	          null,
 	          "onChange"
 	        ),
-	        " handler, and fires",
-	        "regardless of whether the value has actually changed."
+	        " handler, and fires regardless of whether the value has actually changed."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(46)(widgetName) }),
 	      React.createElement(
@@ -4095,9 +3935,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that",
-	        "can be typed or pasted into the widget. If you need this behavior you can constrain values via",
-	        "the ",
+	        "The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that can be typed or pasted into the widget. If you need this behavior you can constrain values via the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -4114,9 +3952,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "The maximum Date that can be selected. Max only limits selection, it doesn't constrain the date values that",
-	        "can be typed or pasted into the widget. If you need this behavior you can constrain values via",
-	        "the ",
+	        "The maximum Date that can be selected. Max only limits selection, it doesn't constrain the date values that can be typed or pasted into the widget. If you need this behavior you can constrain values via the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -4133,8 +3969,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "A string format used to display the date value. For more information on prefined and custom formats",
-	        "visit the ",
+	        "A string format used to display the date value. For more information on prefined and custom formats visit the ",
 	        React.createElement(
 	          "a",
 	          { href: "https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates" },
@@ -4151,10 +3986,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,",
-	        "or provide a ",
-	        "function",
-	        " that returns a date to handle parsing yourself."
+	        "Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try, or provide a function that returns a date to handle parsing yourself."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(47)(widgetName) }),
 	      React.createElement(
@@ -4204,8 +4036,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "The highest level view the calendar can navigate up to. This value should be higher",
-	        "than ",
+	        "The highest level view the calendar can navigate up to. This value should be higher than ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -4259,17 +4090,13 @@
 	        ),
 	        ") the ",
 	        widgetName,
-	        " will handle the",
-	        "opening and closing internally. The ",
+	        " will handle the opening and closing internally. The ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "defaultOpen"
 	        ),
-	        " prop can be used to ",
-	        "set",
-	        " an",
-	        "initialization value for uncontrolled widgets."
+	        " prop can be used to set an initialization value for uncontrolled widgets."
 	      ),
 	      React.createElement(
 	        "p",
@@ -4310,16 +4137,13 @@
 	          null,
 	          "onToggle"
 	        ),
-	        " should be used",
-	        "when the ",
+	        " should be used when the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "open"
 	        ),
-	        " prop is ",
-	        "set",
-	        " otherwise the widget will never open or close."
+	        " prop is set otherwise the widget will never open or close."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -4339,8 +4163,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through",
-	        "a ",
+	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -4368,8 +4191,7 @@
 	          null,
 	          "messages"
 	        ),
-	        " object to",
-	        "localize widget text and increase accessibility."
+	        " object to localize widget text and increase accessibility."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -4611,8 +4433,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Change event Handler that is called when the value is changed. The handler is called with the",
-	        "current numeric value or null."
+	        "Change event Handler that is called when the value is changed. The handler is called with the current numeric value or null."
 	      ),
 	      React.createElement(EditableExample, { codeText: __webpack_require__(43)(widgetName, [1, null]) }),
 	      React.createElement(
@@ -4623,8 +4444,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "A format string used to display the number value. For more information on prefined and custom number and",
-	        "currency formats visit the ",
+	        "A format string used to display the number value. For more information on prefined and custom number and currency formats visit the ",
 	        React.createElement(
 	          "a",
 	          { href: "https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#number-formatting" },
@@ -4674,8 +4494,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through",
-	        "a ",
+	        "mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through a ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -4703,8 +4522,7 @@
 	          null,
 	          "messages"
 	        ),
-	        " object to",
-	        "localize widget text and increase accessibility."
+	        " object to localize widget text and increase accessibility."
 	      ),
 	      React.createElement(
 	        PropHeader,
@@ -4762,9 +4580,7 @@
 	            null,
 	            "home"
 	          ),
-	          " ",
-	          "set",
-	          " value to minimum value if finite"
+	          " set value to minimum value if finite"
 	        ),
 	        React.createElement(
 	          "li",
@@ -4774,9 +4590,7 @@
 	            null,
 	            "end"
 	          ),
-	          " ",
-	          "set",
-	          " value to maximum value if finite"
+	          " set value to maximum value if finite"
 	        )
 	      )
 	    );
@@ -4810,23 +4624,18 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Migration should be a relatively painless and easy process. The largest underlying reason for the major bump is",
-	        "the inability to adequately support React ",
+	        "Migration should be a relatively painless and easy process. The largest underlying reason for the major bump is the inability to adequately support React ",
 	        React.createElement(
 	          "b",
 	          null,
 	          "0.12"
 	        ),
-	        " along side previous versions. We do, however, take the",
-	        "opportunity of a major bump to remove some warts from the widget api and architecture.",
-	        "Most changes are consmetic and easily \"grep-able\", but should lead to less confusion and increase ease of use.",
-	        "Almost every change can be migrated to via \"find and replace\"."
+	        " along side previous versions. We do, however, take the opportunity of a major bump to remove some warts from the widget api and architecture. Most changes are consmetic and easily \"grep-able\", but should lead to less confusion and increase ease of use. Almost every change can be migrated to via \"find and replace\"."
 	      ),
 	      React.createElement(
 	        "p",
 	        null,
-	        "For those unwilling or unable to upgrade, the 1+ branch will continue to be supported for any applicable bug fixes.",
-	        "New features, however, will mostly likely only be added to the 2.0 branch."
+	        "For those unwilling or unable to upgrade, the 1+ branch will continue to be supported for any applicable bug fixes. New features, however, will mostly likely only be added to the 2.0 branch."
 	      ),
 	      React.createElement(
 	        "h4",
@@ -4846,10 +4655,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "Completing the movement away from utility library dependence, we have removed the last few handrolled es5 methods",
-	        "from the code base. This means that in addition to the polyfills required by React, for old browsers, React-widgets",
-	        "now requires a few more. You can use the",
-	        "excellent ",
+	        "Completing the movement away from utility library dependence, we have removed the last few handrolled es5 methods from the code base. This means that in addition to the polyfills required by React, for old browsers, React-widgets now requires a few more. You can use the excellent ",
 	        React.createElement(
 	          "a",
 	          { href: "https://github.com/es-shims/es5-shim" },
@@ -4896,16 +4702,13 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "We have tried to make the consumption of react-widgets as consistent as possible, regardless of whether you require",
-	        "the entire suite, or just make use of a few widgets. To that end, names and locations of files have been changed to",
-	        "make everything consistent. one of the biggest changes is that the ",
+	        "We have tried to make the consumption of react-widgets as consistent as possible, regardless of whether you require the entire suite, or just make use of a few widgets. To that end, names and locations of files have been changed to make everything consistent. one of the biggest changes is that the ",
 	        React.createElement(
 	          "code",
 	          null,
 	          "Select"
 	        ),
-	        " widget has changed names",
-	        "to ",
+	        " widget has changed names to ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -4961,10 +4764,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "File names and locations have also changed. Components now all have a consistent PascalCase names that match",
-	        "their exported value.",
-	        "To make it easier to require individual widgets all file structures for components have been flattened down",
-	        "to just the ",
+	        "File names and locations have also changed. Components now all have a consistent PascalCase names that match their exported value. To make it easier to require individual widgets all file structures for components have been flattened down to just the ",
 	        React.createElement(
 	          "code",
 	          null,
@@ -5074,8 +4874,7 @@
 	      React.createElement(
 	        "p",
 	        null,
-	        "For consumers who have made styling additions and changes outside of just altering LESS variables, a few",
-	        "css classes have also changed to match the naming changes in the files and widgets."
+	        "For consumers who have made styling additions and changes outside of just altering LESS variables, a few css classes have also changed to match the naming changes in the files and widgets."
 	      ),
 	      React.createElement(
 	        "ul",
@@ -9428,9 +9227,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var assign = __webpack_require__(101);
-	var reversedArray = __webpack_require__(106);
+	var reversedArray = __webpack_require__(107);
 	var Redirect = __webpack_require__(80);
-	var Promise = __webpack_require__(107);
+	var Promise = __webpack_require__(106);
 
 	/**
 	 * Runs all hook functions serially and calls callback(error) when finished.
@@ -10996,7 +10795,7 @@
 	      processedData: items,
 	      selectedItem: items[idx],
 	      focusedItem: items[idx === -1 ? focused !== -1 ? focused : 0 // focus the closest match
-	       : idx]
+	      : idx]
 	    });
 	  },
 
@@ -11217,16 +11016,16 @@
 	};
 
 	var React = __webpack_require__(1),
-	    Header = __webpack_require__(143),
-	    Month = __webpack_require__(144),
-	    Year = __webpack_require__(145),
-	    Decade = __webpack_require__(146),
-	    Century = __webpack_require__(147),
+	    Header = __webpack_require__(139),
+	    Month = __webpack_require__(140),
+	    Year = __webpack_require__(141),
+	    Decade = __webpack_require__(142),
+	    Century = __webpack_require__(143),
 	    cx = __webpack_require__(122),
 	    controlledInput = __webpack_require__(123),
 	    SlideTransition = __webpack_require__(99),
-	    dates = __webpack_require__(139),
-	    constants = __webpack_require__(140),
+	    dates = __webpack_require__(144),
+	    constants = __webpack_require__(145),
 	    _ = __webpack_require__(121); //values, omit, object
 
 	var dir = constants.directions;
@@ -11518,13 +11317,13 @@
 	    _ = __webpack_require__(121) //pick, omit, has
 
 	,
-	    dates = __webpack_require__(139),
-	    views = __webpack_require__(140).calendarViews,
-	    popups = __webpack_require__(140).datePopups,
+	    dates = __webpack_require__(144),
+	    views = __webpack_require__(145).calendarViews,
+	    popups = __webpack_require__(145).datePopups,
 	    Popup = __webpack_require__(125),
 	    Calendar = __webpack_require__(93).BaseCalendar,
-	    Time = __webpack_require__(141),
-	    DateInput = __webpack_require__(142),
+	    Time = __webpack_require__(146),
+	    DateInput = __webpack_require__(147),
 	    Btn = __webpack_require__(136),
 	    CustomPropTypes = __webpack_require__(124),
 	    controlledInput = __webpack_require__(123);
@@ -11834,7 +11633,7 @@
 	    _ = __webpack_require__(121) //omit
 	,
 	    controlledInput = __webpack_require__(123),
-	    directions = __webpack_require__(140).directions,
+	    directions = __webpack_require__(145).directions,
 	    Input = __webpack_require__(148);
 
 	var Btn = __webpack_require__(136),
@@ -12058,8 +11857,8 @@
 	var React = __webpack_require__(1),
 	    cx = __webpack_require__(122),
 	    _ = __webpack_require__(121),
-	    SelectInput = __webpack_require__(149),
-	    TagList = __webpack_require__(150),
+	    SelectInput = __webpack_require__(150),
+	    TagList = __webpack_require__(151),
 	    Popup = __webpack_require__(125),
 	    PlainList = __webpack_require__(126),
 	    GroupableList = __webpack_require__(127),
@@ -12421,7 +12220,7 @@
 	    GroupableList = __webpack_require__(127),
 	    validateList = __webpack_require__(128),
 	    filter = __webpack_require__(135),
-	    scrollTo = __webpack_require__(151);
+	    scrollTo = __webpack_require__(149);
 
 	var propTypes = {
 
@@ -12585,7 +12384,7 @@
 	    function change(item, cked) {
 	      if (item) {
 	        self._change(item, multiple ? !self._contains(item, self._values()) // toggle value
-	         : true);
+	        : true);
 	      }
 	    }
 
@@ -13333,23 +13132,23 @@
 /* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
-	function reversedArray(array) {
-	  return array.slice(0).reverse();
-	}
-
-	module.exports = reversedArray;
-
-
-/***/ },
-/* 107 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var Promise = __webpack_require__(172);
 
 	// TODO: Use process.env.NODE_ENV check + envify to enable
 	// when's promise monitor here when in dev.
 
 	module.exports = Promise;
+
+
+/***/ },
+/* 107 */
+/***/ function(module, exports, __webpack_require__) {
+
+	function reversedArray(array) {
+	  return array.slice(0).reverse();
+	}
+
+	module.exports = reversedArray;
 
 
 /***/ },
@@ -13506,7 +13305,7 @@
 
 	var React = __webpack_require__(1);
 	var joinClasses = __webpack_require__(108);
-	var assign = __webpack_require__(155);
+	var assign = __webpack_require__(156);
 
 	/**
 	 * Creates a transfer strategy that will merge prop values using the supplied
@@ -13665,7 +13464,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var EventListener = __webpack_require__(156);
+	var EventListener = __webpack_require__(155);
 
 	/**
 	 * Checks whether a node is within
@@ -17214,7 +17013,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var scrollTo = __webpack_require__(151);
+	var scrollTo = __webpack_require__(149);
 
 	module.exports = {
 
@@ -17498,6 +17297,504 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var React = __webpack_require__(1),
+	    Btn = __webpack_require__(136);
+
+	module.exports = React.createClass({
+	  displayName: "exports",
+
+
+	  propTypes: {
+	    label: React.PropTypes.string.isRequired,
+	    labelId: React.PropTypes.string,
+
+	    upDisabled: React.PropTypes.bool.isRequired,
+	    prevDisabled: React.PropTypes.bool.isRequired,
+	    nextDisabled: React.PropTypes.bool.isRequired,
+	    onViewChange: React.PropTypes.func.isRequired,
+	    onMoveLeft: React.PropTypes.func.isRequired,
+	    onMoveRight: React.PropTypes.func.isRequired,
+
+	    messages: React.PropTypes.shape({
+	      moveBack: React.PropTypes.string,
+	      moveForward: React.PropTypes.string
+	    })
+	  },
+
+	  mixins: [__webpack_require__(131), __webpack_require__(161)],
+
+	  getDefaultProps: function () {
+	    return {
+	      messages: {
+	        moveBack: "navigate back",
+	        moveForward: "navigate forward" }
+	    };
+	  },
+
+	  render: function () {
+	    var rtl = this.isRtl();
+
+	    return React.createElement("div", { className: "rw-header" }, React.createElement(Btn, { className: "rw-btn-left",
+	      tabIndex: "-1",
+	      onClick: this.props.onMoveLeft,
+	      disabled: this.props.prevDisabled,
+	      "aria-disabled": this.props.prevDisabled,
+	      title: this.props.moveBack }, React.createElement("i", { className: "rw-i rw-i-caret-" + (rtl ? "right" : "left") }, React.createElement("span", { className: "rw-sr" }, this.props.moveBack))), React.createElement(Btn, { className: "rw-btn-view",
+	      id: this.props.labelId,
+	      tabIndex: "-1",
+	      onClick: this.props.onViewChange,
+	      disabled: this.props.upDisabled,
+	      "aria-disabled": this.props.upDisabled }, this.props.label), React.createElement(Btn, { className: "rw-btn-right",
+	      tabIndex: "-1",
+	      onClick: this.props.onMoveRight,
+	      disabled: this.props.nextDisabled,
+	      "aria-disabled": this.props.nextDisabled,
+	      title: this.props.moveForward }, React.createElement("i", { className: "rw-i rw-i-caret-" + (rtl ? "left" : "right") }, React.createElement("span", { className: "rw-sr" }, this.props.moveForward))));
+	  }
+	});
+
+/***/ },
+/* 140 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1),
+	    cx = __webpack_require__(122),
+	    dates = __webpack_require__(144),
+	    directions = __webpack_require__(145).directions,
+	    _ = __webpack_require__(121),
+	    Btn = __webpack_require__(136);
+
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+
+	module.exports = React.createClass({
+
+	  displayName: "MonthView",
+
+	  mixins: [__webpack_require__(129), __webpack_require__(161), __webpack_require__(162)("month", "day")],
+
+	  propTypes: {
+	    culture: React.PropTypes.string,
+	    value: React.PropTypes.instanceOf(Date),
+	    selectedDate: React.PropTypes.instanceOf(Date),
+	    min: React.PropTypes.instanceOf(Date),
+	    max: React.PropTypes.instanceOf(Date),
+
+	    format: React.PropTypes.string,
+
+	    onChange: React.PropTypes.func.isRequired, //value is chosen
+	    onMoveLeft: React.PropTypes.func,
+	    onMoveRight: React.PropTypes.func
+	  },
+
+	  render: function () {
+	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
+	        month = dates.visibleDays(this.props.value),
+	        rows = _.chunk(month, 7);
+
+	    return React.createElement("table", _extends({}, props, {
+	      role: "grid",
+	      className: "rw-calendar-grid",
+	      "aria-activedescendant": this._id("_selected_item"),
+	      onKeyUp: this._keyUp }), React.createElement("thead", null, React.createElement("tr", null, this._headers())), React.createElement("tbody", null, rows.map(this._row)));
+	  },
+
+	  _row: function (row, i) {
+	    var _this = this;
+	    var id = this._id("_selected_item");
+
+	    return React.createElement("tr", { key: "week_" + i, role: "row" }, row.map(function (day, idx) {
+	      var focused = dates.eq(day, _this.state.focusedDate, "day"),
+	          selected = dates.eq(day, _this.props.selectedDate, "day");
+
+	      return !dates.inRange(day, _this.props.min, _this.props.max) ? React.createElement("td", { key: "day_" + idx, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: "day_" + idx, role: "gridcell" }, React.createElement(Btn, {
+	        tabIndex: "-1",
+	        onClick: _this.props.onChange.bind(null, day),
+	        "aria-selected": selected,
+	        "aria-disabled": _this.props.disabled,
+	        disabled: _this.props.disabled,
+	        className: cx({
+	          "rw-off-range": dates.month(day) !== dates.month(_this.state.focusedDate),
+	          "rw-state-focus": focused,
+	          "rw-state-selected": selected }),
+	        id: focused ? id : undefined }, dates.format(day, "dd", _this.props.culture)));
+	    }));
+	  },
+
+
+	  _headers: function (format) {
+	    var days = dates.shortDaysOfWeek(this.props.culture);
+
+	    return days.map(function (day, i) {
+	      return React.createElement("th", { key: "header_" + i }, day);
+	    });
+	  },
+
+	  move: function (date, direction) {
+	    var min = this.props.min,
+	        max = this.props.max;
+
+	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
+
+	    if (direction === directions.LEFT) date = nextDate(date, -1, "day", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "day", min, max);else if (direction === directions.UP) date = nextDate(date, -1, "week", min, max);else if (direction === directions.DOWN) date = nextDate(date, 1, "week", min, max);
+
+	    return date;
+	  }
+
+	});
+
+	function nextDate(date, val, unit, min, max) {
+	  var newDate = dates.add(date, val, unit);
+
+	  return dates.inRange(newDate, min, max, "day") ? newDate : date;
+	}
+
+/***/ },
+/* 141 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1),
+	    cx = __webpack_require__(122),
+	    dates = __webpack_require__(144),
+	    directions = __webpack_require__(145).directions,
+	    Btn = __webpack_require__(136),
+	    _ = __webpack_require__(121);
+
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+
+	module.exports = React.createClass({
+
+	  displayName: "YearView",
+
+	  mixins: [__webpack_require__(129), __webpack_require__(161), __webpack_require__(162)("year", "month")],
+
+	  propTypes: {
+	    culture: React.PropTypes.string,
+	    value: React.PropTypes.instanceOf(Date),
+	    min: React.PropTypes.instanceOf(Date),
+	    max: React.PropTypes.instanceOf(Date),
+	    onChange: React.PropTypes.func.isRequired
+	  },
+
+
+	  render: function () {
+	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
+	        months = dates.monthsInYear(dates.year(this.props.value)),
+	        rows = _.chunk(months, 4);
+
+	    return React.createElement("table", _extends({}, props, {
+	      tabIndex: this.props.disabled ? "-1" : "0",
+	      ref: "table",
+	      role: "grid",
+	      className: "rw-calendar-grid rw-nav-view",
+	      "aria-activedescendant": this._id("_selected_item"),
+	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
+	  },
+
+	  _row: function (row, i) {
+	    var _this = this;
+	    var id = this._id("_selected_item");
+
+	    return React.createElement("tr", { key: i, role: "row" }, row.map(function (date, i) {
+	      var focused = dates.eq(date, _this.state.focusedDate, "month"),
+	          selected = dates.eq(date, _this.props.value, "month");
+
+	      return dates.inRange(date, _this.props.min, _this.props.max, "month") ? React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, date), tabIndex: "-1",
+	        id: focused ? id : undefined,
+	        "aria-selected": selected,
+	        "aria-disabled": _this.props.disabled,
+	        disabled: _this.props.disabled,
+	        className: cx({
+	          "rw-state-focus": focused,
+	          "rw-state-selected": selected
+	        }) }, dates.format(date, dates.formats.MONTH_NAME_ABRV, _this.props.culture))) : React.createElement("td", { key: i, className: "rw-empty-cell", role: "gridcell" }, " ");
+	    }));
+	  },
+
+	  focus: function () {
+	    this.refs.table.getDOMNode().focus();
+	  },
+
+	  move: function (date, direction) {
+	    var min = this.props.min,
+	        max = this.props.max;
+
+	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
+
+	    if (direction === directions.LEFT) date = nextDate(date, -1, "month", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "month", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "month", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "month", min, max);
+
+	    return date;
+	  }
+
+	});
+
+	function nextDate(date, val, unit, min, max) {
+	  var newDate = dates.add(date, val, unit);
+	  return dates.inRange(newDate, min, max, "month") ? newDate : date;
+	}
+
+/***/ },
+/* 142 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1),
+	    _ = __webpack_require__(121),
+	    cx = __webpack_require__(122),
+	    dates = __webpack_require__(144),
+	    directions = __webpack_require__(145).directions,
+	    Btn = __webpack_require__(136);
+
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+
+
+	module.exports = React.createClass({
+
+	  displayName: "DecadeView",
+
+	  mixins: [__webpack_require__(129), __webpack_require__(131), __webpack_require__(161), __webpack_require__(162)("decade", "year")],
+
+	  propTypes: {
+	    culture: React.PropTypes.string,
+
+	    value: React.PropTypes.instanceOf(Date),
+	    min: React.PropTypes.instanceOf(Date),
+	    max: React.PropTypes.instanceOf(Date),
+	    onChange: React.PropTypes.func.isRequired
+	  },
+
+	  render: function () {
+	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
+	        years = getDecadeYears(this.props.value),
+	        rows = _.chunk(years, 4);
+
+	    return React.createElement("table", _extends({}, props, {
+	      tabIndex: this.props.disabled ? "-1" : "0",
+	      role: "grid",
+	      className: "rw-calendar-grid rw-nav-view",
+	      "aria-activedescendant": this._id("_selected_item"),
+	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
+	  },
+
+	  _row: function (row, i) {
+	    var _this = this;
+	    var id = this._id("_selected_item");
+
+	    return React.createElement("tr", { key: "row_" + i, role: "row" }, row.map(function (date, i) {
+	      var focused = dates.eq(date, _this.state.focusedDate, "year"),
+	          selected = dates.eq(date, _this.props.value, "year");
+
+	      return !dates.inRange(date, _this.props.min, _this.props.max, "year") ? React.createElement("td", { key: i, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, date), tabIndex: "-1",
+	        id: focused ? id : undefined,
+	        "aria-selected": selected,
+	        "aria-disabled": _this.props.disabled,
+	        disabled: _this.props.disabled,
+	        className: cx({
+	          "rw-off-range": !inDecade(date, _this.props.value),
+	          "rw-state-focus": focused,
+	          "rw-state-selected": selected }) }, dates.format(date, dates.formats.YEAR, _this.props.culture)));
+	    }));
+	  },
+
+	  move: function (date, direction) {
+	    var min = this.props.min,
+	        max = this.props.max;
+
+	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
+
+	    if (direction === directions.LEFT) date = nextDate(date, -1, "year", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "year", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "year", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "year", min, max);
+
+	    return date;
+	  }
+
+	});
+
+	function inDecade(date, start) {
+	  return dates.gte(date, dates.startOf(start, "decade"), "year") && dates.lte(date, dates.endOf(start, "decade"), "year");
+	}
+
+	function getDecadeYears(_date) {
+	  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	      date = dates.add(dates.startOf(_date, "decade"), -2, "year");
+
+	  return days.map(function (i) {
+	    return date = dates.add(date, 1, "year");
+	  });
+	}
+
+	function nextDate(date, val, unit, min, max) {
+	  var newDate = dates.add(date, val, unit);
+	  return dates.inRange(newDate, min, max, "year") ? newDate : date;
+	}
+
+/***/ },
+/* 143 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1),
+	    cx = __webpack_require__(122),
+	    dates = __webpack_require__(144),
+	    directions = __webpack_require__(145).directions,
+	    Btn = __webpack_require__(136),
+	    _ = __webpack_require__(121); //omit
+
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+
+
+	module.exports = React.createClass({
+
+	  displayName: "CenturyView",
+
+	  mixins: [__webpack_require__(129), __webpack_require__(131), __webpack_require__(161), __webpack_require__(162)("century", "decade")],
+
+	  propTypes: {
+	    culture: React.PropTypes.string,
+	    value: React.PropTypes.instanceOf(Date),
+	    min: React.PropTypes.instanceOf(Date),
+	    max: React.PropTypes.instanceOf(Date),
+
+	    onChange: React.PropTypes.func.isRequired
+	  },
+
+	  render: function () {
+	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
+	        years = getCenturyDecades(this.props.value),
+	        rows = _.chunk(years, 4);
+
+	    return React.createElement("table", _extends({}, props, {
+	      tabIndex: this.props.disabled ? "-1" : "0",
+	      role: "grid",
+	      className: "rw-calendar-grid rw-nav-view",
+	      "aria-activedescendant": this._id("_selected_item"),
+	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
+	  },
+
+	  _row: function (row, i) {
+	    var _this = this;
+	    var id = this._id("_selected_item");
+
+	    return React.createElement("tr", { key: "row_" + i, role: "row" }, row.map(function (date, i) {
+	      var focused = dates.eq(date, _this.state.focusedDate, "decade"),
+	          selected = dates.eq(date, _this.props.value, "decade"),
+	          d = inRangeDate(date, _this.props.min, _this.props.max);
+
+	      return !inRange(date, _this.props.min, _this.props.max) ? React.createElement("td", { key: i, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, d),
+	        tabIndex: "-1",
+	        id: focused ? id : undefined,
+	        "aria-selected": selected,
+	        "aria-disabled": _this.props.disabled,
+	        disabled: _this.props.disabled,
+	        className: cx({
+	          "rw-off-range": !inCentury(date, _this.props.value),
+	          "rw-state-focus": focused,
+	          "rw-state-selected": selected }) }, label(date, _this.props.culture)));
+	    }));
+	  },
+
+
+	  move: function (date, direction) {
+	    var min = this.props.min,
+	        max = this.props.max;
+
+	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
+
+	    if (direction === directions.LEFT) date = nextDate(date, -1, "decade", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "decade", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "decade", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "decade", min, max);
+
+	    return date;
+	  }
+
+	});
+
+	function label(date, culture) {
+	  return dates.format(dates.startOf(date, "decade"), dates.formats.YEAR, culture) + " - " + dates.format(dates.endOf(date, "decade"), dates.formats.YEAR, culture);
+	}
+
+	function inRangeDate(decade, min, max) {
+	  return dates.max(dates.min(decade, max), min);
+	}
+
+	function inRange(decade, min, max) {
+	  return dates.gte(decade, dates.startOf(min, "decade"), "year") && dates.lte(decade, dates.endOf(max, "decade"), "year");
+	}
+
+	function inCentury(date, start) {
+	  return dates.gte(date, dates.startOf(start, "century"), "year") && dates.lte(date, dates.endOf(start, "century"), "year");
+	}
+
+	function getCenturyDecades(_date) {
+	  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	      date = dates.add(dates.startOf(_date, "century"), -20, "year");
+
+	  return days.map(function (i) {
+	    return date = dates.add(date, 10, "year");
+	  });
+	}
+
+
+	function nextDate(date, val, unit, min, max) {
+	  var newDate = dates.add(date, val, unit);
+	  return dates.inRange(newDate, min, max, "decade") ? newDate : date;
+	}
+
+/***/ },
+/* 144 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 
 	var dateMath = __webpack_require__(90),
 	    globalize = __webpack_require__(174),
@@ -17637,7 +17934,7 @@
 	});
 
 /***/ },
-/* 140 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17672,7 +17969,7 @@
 	};
 
 /***/ },
-/* 141 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17687,7 +17984,7 @@
 	};
 
 	var React = __webpack_require__(1),
-	    dates = __webpack_require__(139),
+	    dates = __webpack_require__(144),
 	    List = __webpack_require__(126),
 	    CustomPropTypes = __webpack_require__(124),
 	    _ = __webpack_require__(121); // omit
@@ -17857,7 +18154,7 @@
 	  } });
 
 /***/ },
-/* 142 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17873,7 +18170,7 @@
 
 	var React = __webpack_require__(1),
 	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(139);
+	    dates = __webpack_require__(144);
 
 	module.exports = React.createClass({
 
@@ -17962,504 +18259,6 @@
 	    a && a.apply(thisArg, arguments);
 	    b && b.apply(thisArg, arguments);
 	  };
-	}
-
-/***/ },
-/* 143 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var React = __webpack_require__(1),
-	    Btn = __webpack_require__(136);
-
-	module.exports = React.createClass({
-	  displayName: "exports",
-
-
-	  propTypes: {
-	    label: React.PropTypes.string.isRequired,
-	    labelId: React.PropTypes.string,
-
-	    upDisabled: React.PropTypes.bool.isRequired,
-	    prevDisabled: React.PropTypes.bool.isRequired,
-	    nextDisabled: React.PropTypes.bool.isRequired,
-	    onViewChange: React.PropTypes.func.isRequired,
-	    onMoveLeft: React.PropTypes.func.isRequired,
-	    onMoveRight: React.PropTypes.func.isRequired,
-
-	    messages: React.PropTypes.shape({
-	      moveBack: React.PropTypes.string,
-	      moveForward: React.PropTypes.string
-	    })
-	  },
-
-	  mixins: [__webpack_require__(131), __webpack_require__(161)],
-
-	  getDefaultProps: function () {
-	    return {
-	      messages: {
-	        moveBack: "navigate back",
-	        moveForward: "navigate forward" }
-	    };
-	  },
-
-	  render: function () {
-	    var rtl = this.isRtl();
-
-	    return React.createElement("div", { className: "rw-header" }, React.createElement(Btn, { className: "rw-btn-left",
-	      tabIndex: "-1",
-	      onClick: this.props.onMoveLeft,
-	      disabled: this.props.prevDisabled,
-	      "aria-disabled": this.props.prevDisabled,
-	      title: this.props.moveBack }, React.createElement("i", { className: "rw-i rw-i-caret-" + (rtl ? "right" : "left") }, React.createElement("span", { className: "rw-sr" }, this.props.moveBack))), React.createElement(Btn, { className: "rw-btn-view",
-	      id: this.props.labelId,
-	      tabIndex: "-1",
-	      onClick: this.props.onViewChange,
-	      disabled: this.props.upDisabled,
-	      "aria-disabled": this.props.upDisabled }, this.props.label), React.createElement(Btn, { className: "rw-btn-right",
-	      tabIndex: "-1",
-	      onClick: this.props.onMoveRight,
-	      disabled: this.props.nextDisabled,
-	      "aria-disabled": this.props.nextDisabled,
-	      title: this.props.moveForward }, React.createElement("i", { className: "rw-i rw-i-caret-" + (rtl ? "left" : "right") }, React.createElement("span", { className: "rw-sr" }, this.props.moveForward))));
-	  }
-	});
-
-/***/ },
-/* 144 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(139),
-	    directions = __webpack_require__(140).directions,
-	    _ = __webpack_require__(121),
-	    Btn = __webpack_require__(136);
-
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-
-	module.exports = React.createClass({
-
-	  displayName: "MonthView",
-
-	  mixins: [__webpack_require__(129), __webpack_require__(161), __webpack_require__(162)("month", "day")],
-
-	  propTypes: {
-	    culture: React.PropTypes.string,
-	    value: React.PropTypes.instanceOf(Date),
-	    selectedDate: React.PropTypes.instanceOf(Date),
-	    min: React.PropTypes.instanceOf(Date),
-	    max: React.PropTypes.instanceOf(Date),
-
-	    format: React.PropTypes.string,
-
-	    onChange: React.PropTypes.func.isRequired, //value is chosen
-	    onMoveLeft: React.PropTypes.func,
-	    onMoveRight: React.PropTypes.func
-	  },
-
-	  render: function () {
-	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
-	        month = dates.visibleDays(this.props.value),
-	        rows = _.chunk(month, 7);
-
-	    return React.createElement("table", _extends({}, props, {
-	      role: "grid",
-	      className: "rw-calendar-grid",
-	      "aria-activedescendant": this._id("_selected_item"),
-	      onKeyUp: this._keyUp }), React.createElement("thead", null, React.createElement("tr", null, this._headers())), React.createElement("tbody", null, rows.map(this._row)));
-	  },
-
-	  _row: function (row, i) {
-	    var _this = this;
-	    var id = this._id("_selected_item");
-
-	    return React.createElement("tr", { key: "week_" + i, role: "row" }, row.map(function (day, idx) {
-	      var focused = dates.eq(day, _this.state.focusedDate, "day"),
-	          selected = dates.eq(day, _this.props.selectedDate, "day");
-
-	      return !dates.inRange(day, _this.props.min, _this.props.max) ? React.createElement("td", { key: "day_" + idx, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: "day_" + idx, role: "gridcell" }, React.createElement(Btn, {
-	        tabIndex: "-1",
-	        onClick: _this.props.onChange.bind(null, day),
-	        "aria-selected": selected,
-	        "aria-disabled": _this.props.disabled,
-	        disabled: _this.props.disabled,
-	        className: cx({
-	          "rw-off-range": dates.month(day) !== dates.month(_this.state.focusedDate),
-	          "rw-state-focus": focused,
-	          "rw-state-selected": selected }),
-	        id: focused ? id : undefined }, dates.format(day, "dd", _this.props.culture)));
-	    }));
-	  },
-
-
-	  _headers: function (format) {
-	    var days = dates.shortDaysOfWeek(this.props.culture);
-
-	    return days.map(function (day, i) {
-	      return React.createElement("th", { key: "header_" + i }, day);
-	    });
-	  },
-
-	  move: function (date, direction) {
-	    var min = this.props.min,
-	        max = this.props.max;
-
-	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
-
-	    if (direction === directions.LEFT) date = nextDate(date, -1, "day", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "day", min, max);else if (direction === directions.UP) date = nextDate(date, -1, "week", min, max);else if (direction === directions.DOWN) date = nextDate(date, 1, "week", min, max);
-
-	    return date;
-	  }
-
-	});
-
-	function nextDate(date, val, unit, min, max) {
-	  var newDate = dates.add(date, val, unit);
-
-	  return dates.inRange(newDate, min, max, "day") ? newDate : date;
-	}
-
-/***/ },
-/* 145 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(139),
-	    directions = __webpack_require__(140).directions,
-	    Btn = __webpack_require__(136),
-	    _ = __webpack_require__(121);
-
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-
-	module.exports = React.createClass({
-
-	  displayName: "YearView",
-
-	  mixins: [__webpack_require__(129), __webpack_require__(161), __webpack_require__(162)("year", "month")],
-
-	  propTypes: {
-	    culture: React.PropTypes.string,
-	    value: React.PropTypes.instanceOf(Date),
-	    min: React.PropTypes.instanceOf(Date),
-	    max: React.PropTypes.instanceOf(Date),
-	    onChange: React.PropTypes.func.isRequired
-	  },
-
-
-	  render: function () {
-	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
-	        months = dates.monthsInYear(dates.year(this.props.value)),
-	        rows = _.chunk(months, 4);
-
-	    return React.createElement("table", _extends({}, props, {
-	      tabIndex: this.props.disabled ? "-1" : "0",
-	      ref: "table",
-	      role: "grid",
-	      className: "rw-calendar-grid rw-nav-view",
-	      "aria-activedescendant": this._id("_selected_item"),
-	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
-	  },
-
-	  _row: function (row, i) {
-	    var _this = this;
-	    var id = this._id("_selected_item");
-
-	    return React.createElement("tr", { key: i, role: "row" }, row.map(function (date, i) {
-	      var focused = dates.eq(date, _this.state.focusedDate, "month"),
-	          selected = dates.eq(date, _this.props.value, "month");
-
-	      return dates.inRange(date, _this.props.min, _this.props.max, "month") ? React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, date), tabIndex: "-1",
-	        id: focused ? id : undefined,
-	        "aria-selected": selected,
-	        "aria-disabled": _this.props.disabled,
-	        disabled: _this.props.disabled,
-	        className: cx({
-	          "rw-state-focus": focused,
-	          "rw-state-selected": selected
-	        }) }, dates.format(date, dates.formats.MONTH_NAME_ABRV, _this.props.culture))) : React.createElement("td", { key: i, className: "rw-empty-cell", role: "gridcell" }, " ");
-	    }));
-	  },
-
-	  focus: function () {
-	    this.refs.table.getDOMNode().focus();
-	  },
-
-	  move: function (date, direction) {
-	    var min = this.props.min,
-	        max = this.props.max;
-
-	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
-
-	    if (direction === directions.LEFT) date = nextDate(date, -1, "month", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "month", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "month", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "month", min, max);
-
-	    return date;
-	  }
-
-	});
-
-	function nextDate(date, val, unit, min, max) {
-	  var newDate = dates.add(date, val, unit);
-	  return dates.inRange(newDate, min, max, "month") ? newDate : date;
-	}
-
-/***/ },
-/* 146 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var React = __webpack_require__(1),
-	    _ = __webpack_require__(121),
-	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(139),
-	    directions = __webpack_require__(140).directions,
-	    Btn = __webpack_require__(136);
-
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-
-
-	module.exports = React.createClass({
-
-	  displayName: "DecadeView",
-
-	  mixins: [__webpack_require__(129), __webpack_require__(131), __webpack_require__(161), __webpack_require__(162)("decade", "year")],
-
-	  propTypes: {
-	    culture: React.PropTypes.string,
-
-	    value: React.PropTypes.instanceOf(Date),
-	    min: React.PropTypes.instanceOf(Date),
-	    max: React.PropTypes.instanceOf(Date),
-	    onChange: React.PropTypes.func.isRequired
-	  },
-
-	  render: function () {
-	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
-	        years = getDecadeYears(this.props.value),
-	        rows = _.chunk(years, 4);
-
-	    return React.createElement("table", _extends({}, props, {
-	      tabIndex: this.props.disabled ? "-1" : "0",
-	      role: "grid",
-	      className: "rw-calendar-grid rw-nav-view",
-	      "aria-activedescendant": this._id("_selected_item"),
-	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
-	  },
-
-	  _row: function (row, i) {
-	    var _this = this;
-	    var id = this._id("_selected_item");
-
-	    return React.createElement("tr", { key: "row_" + i, role: "row" }, row.map(function (date, i) {
-	      var focused = dates.eq(date, _this.state.focusedDate, "year"),
-	          selected = dates.eq(date, _this.props.value, "year");
-
-	      return !dates.inRange(date, _this.props.min, _this.props.max, "year") ? React.createElement("td", { key: i, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, date), tabIndex: "-1",
-	        id: focused ? id : undefined,
-	        "aria-selected": selected,
-	        "aria-disabled": _this.props.disabled,
-	        disabled: _this.props.disabled,
-	        className: cx({
-	          "rw-off-range": !inDecade(date, _this.props.value),
-	          "rw-state-focus": focused,
-	          "rw-state-selected": selected }) }, dates.format(date, dates.formats.YEAR, _this.props.culture)));
-	    }));
-	  },
-
-	  move: function (date, direction) {
-	    var min = this.props.min,
-	        max = this.props.max;
-
-	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
-
-	    if (direction === directions.LEFT) date = nextDate(date, -1, "year", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "year", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "year", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "year", min, max);
-
-	    return date;
-	  }
-
-	});
-
-	function inDecade(date, start) {
-	  return dates.gte(date, dates.startOf(start, "decade"), "year") && dates.lte(date, dates.endOf(start, "decade"), "year");
-	}
-
-	function getDecadeYears(_date) {
-	  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-	      date = dates.add(dates.startOf(_date, "decade"), -2, "year");
-
-	  return days.map(function (i) {
-	    return date = dates.add(date, 1, "year");
-	  });
-	}
-
-	function nextDate(date, val, unit, min, max) {
-	  var newDate = dates.add(date, val, unit);
-	  return dates.inRange(newDate, min, max, "year") ? newDate : date;
-	}
-
-/***/ },
-/* 147 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(139),
-	    directions = __webpack_require__(140).directions,
-	    Btn = __webpack_require__(136),
-	    _ = __webpack_require__(121); //omit
-
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-
-
-	module.exports = React.createClass({
-
-	  displayName: "CenturyView",
-
-	  mixins: [__webpack_require__(129), __webpack_require__(131), __webpack_require__(161), __webpack_require__(162)("century", "decade")],
-
-	  propTypes: {
-	    culture: React.PropTypes.string,
-	    value: React.PropTypes.instanceOf(Date),
-	    min: React.PropTypes.instanceOf(Date),
-	    max: React.PropTypes.instanceOf(Date),
-
-	    onChange: React.PropTypes.func.isRequired
-	  },
-
-	  render: function () {
-	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
-	        years = getCenturyDecades(this.props.value),
-	        rows = _.chunk(years, 4);
-
-	    return React.createElement("table", _extends({}, props, {
-	      tabIndex: this.props.disabled ? "-1" : "0",
-	      role: "grid",
-	      className: "rw-calendar-grid rw-nav-view",
-	      "aria-activedescendant": this._id("_selected_item"),
-	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
-	  },
-
-	  _row: function (row, i) {
-	    var _this = this;
-	    var id = this._id("_selected_item");
-
-	    return React.createElement("tr", { key: "row_" + i, role: "row" }, row.map(function (date, i) {
-	      var focused = dates.eq(date, _this.state.focusedDate, "decade"),
-	          selected = dates.eq(date, _this.props.value, "decade"),
-	          d = inRangeDate(date, _this.props.min, _this.props.max);
-
-	      return !inRange(date, _this.props.min, _this.props.max) ? React.createElement("td", { key: i, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, d),
-	        tabIndex: "-1",
-	        id: focused ? id : undefined,
-	        "aria-selected": selected,
-	        "aria-disabled": _this.props.disabled,
-	        disabled: _this.props.disabled,
-	        className: cx({
-	          "rw-off-range": !inCentury(date, _this.props.value),
-	          "rw-state-focus": focused,
-	          "rw-state-selected": selected }) }, label(date, _this.props.culture)));
-	    }));
-	  },
-
-
-	  move: function (date, direction) {
-	    var min = this.props.min,
-	        max = this.props.max;
-
-	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
-
-	    if (direction === directions.LEFT) date = nextDate(date, -1, "decade", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "decade", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "decade", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "decade", min, max);
-
-	    return date;
-	  }
-
-	});
-
-	function label(date, culture) {
-	  return dates.format(dates.startOf(date, "decade"), dates.formats.YEAR, culture) + " - " + dates.format(dates.endOf(date, "decade"), dates.formats.YEAR, culture);
-	}
-
-	function inRangeDate(decade, min, max) {
-	  return dates.max(dates.min(decade, max), min);
-	}
-
-	function inRange(decade, min, max) {
-	  return dates.gte(decade, dates.startOf(min, "decade"), "year") && dates.lte(decade, dates.endOf(max, "decade"), "year");
-	}
-
-	function inCentury(date, start) {
-	  return dates.gte(date, dates.startOf(start, "century"), "year") && dates.lte(date, dates.endOf(start, "century"), "year");
-	}
-
-	function getCenturyDecades(_date) {
-	  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-	      date = dates.add(dates.startOf(_date, "century"), -20, "year");
-
-	  return days.map(function (i) {
-	    return date = dates.add(date, 10, "year");
-	  });
-	}
-
-
-	function nextDate(date, val, unit, min, max) {
-	  var newDate = dates.add(date, val, unit);
-	  return dates.inRange(newDate, min, max, "decade") ? newDate : date;
 	}
 
 /***/ },
@@ -18576,6 +18375,68 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var _require = __webpack_require__(164);
+
+	var getOffset = _require.offset;
+	var height = _require.height;
+	var getScrollParent = __webpack_require__(165);
+	var scrollTop = __webpack_require__(166);
+	var raf = __webpack_require__(167);
+
+	module.exports = function scrollTo(selected, scrollParent) {
+	    var offset = getOffset(selected),
+	        poff = { top: 0, left: 0 },
+	        list,
+	        listScrollTop,
+	        selectedTop,
+	        isWin,
+	        selectedHeight,
+	        listHeight,
+	        bottom;
+
+	    if (!selected) return;
+
+	    list = scrollParent || getScrollParent(selected);
+	    isWin = getWindow(list);
+	    listScrollTop = scrollTop(list);
+
+	    listHeight = height(list, true);
+	    isWin = getWindow(list);
+
+	    if (!isWin) poff = getOffset(list);
+
+	    offset = {
+	        top: offset.top - poff.top,
+	        left: offset.left - poff.left,
+	        height: offset.height,
+	        width: offset.width
+	    };
+
+
+	    selectedHeight = offset.height;
+	    selectedTop = offset.top + (isWin ? 0 : listScrollTop);
+	    bottom = selectedTop + selectedHeight;
+
+	    listScrollTop = listScrollTop > selectedTop ? selectedTop : bottom > listScrollTop + listHeight ? bottom - listHeight : listScrollTop;
+
+	    var id = raf(function () {
+	        return scrollTop(list, listScrollTop);
+	    });
+
+	    return function () {
+	        return raf.cancel(id);
+	    };
+	};
+
+	function getWindow(node) {
+	    return node === node.window ? node : node.nodeType === 9 && node.defaultView;
+	}
+
+/***/ },
+/* 150 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 	var _extends = Object.assign || function (target) {
 	  for (var i = 1; i < arguments.length; i++) {
 	    var source = arguments[i];for (var key in source) {
@@ -18626,7 +18487,7 @@
 	});
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18767,68 +18628,6 @@
 	    if (nextIdx >= 0) this.setState({ focused: nextIdx });
 	  }
 	});
-
-/***/ },
-/* 151 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _require = __webpack_require__(164);
-
-	var getOffset = _require.offset;
-	var height = _require.height;
-	var getScrollParent = __webpack_require__(165);
-	var scrollTop = __webpack_require__(166);
-	var raf = __webpack_require__(167);
-
-	module.exports = function scrollTo(selected, scrollParent) {
-	    var offset = getOffset(selected),
-	        poff = { top: 0, left: 0 },
-	        list,
-	        listScrollTop,
-	        selectedTop,
-	        isWin,
-	        selectedHeight,
-	        listHeight,
-	        bottom;
-
-	    if (!selected) return;
-
-	    list = scrollParent || getScrollParent(selected);
-	    isWin = getWindow(list);
-	    listScrollTop = scrollTop(list);
-
-	    listHeight = height(list, true);
-	    isWin = getWindow(list);
-
-	    if (!isWin) poff = getOffset(list);
-
-	    offset = {
-	        top: offset.top - poff.top,
-	        left: offset.left - poff.left,
-	        height: offset.height,
-	        width: offset.width
-	    };
-
-
-	    selectedHeight = offset.height;
-	    selectedTop = offset.top + (isWin ? 0 : listScrollTop);
-	    bottom = selectedTop + selectedHeight;
-
-	    listScrollTop = listScrollTop > selectedTop ? selectedTop : bottom > listScrollTop + listHeight ? bottom - listHeight : listScrollTop;
-
-	    var id = raf(function () {
-	        return scrollTop(list, listScrollTop);
-	    });
-
-	    return function () {
-	        return raf.cancel(id);
-	    };
-	};
-
-	function getWindow(node) {
-	    return node === node.window ? node : node.nodeType === 9 && node.defaultView;
-	}
 
 /***/ },
 /* 152 */
@@ -19161,59 +18960,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Copyright 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
-
-	function assign(target, sources) {
-	  if (target == null) {
-	    throw new TypeError('Object.assign target cannot be null or undefined');
-	  }
-
-	  var to = Object(target);
-	  var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-	  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
-	    var nextSource = arguments[nextIndex];
-	    if (nextSource == null) {
-	      continue;
-	    }
-
-	    var from = Object(nextSource);
-
-	    // We don't currently support accessors nor proxies. Therefore this
-	    // copy cannot throw. If we ever supported this then we must handle
-	    // exceptions and side-effects. We don't support symbols so they won't
-	    // be transferred.
-
-	    for (var key in from) {
-	      if (hasOwnProperty.call(from, key)) {
-	        to[key] = from[key];
-	      }
-	    }
-	  }
-
-	  return to;
-	};
-
-	module.exports = assign;
-
-
-/***/ },
-/* 156 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
 	 * This file contains a modified version of:
@@ -19267,6 +19013,59 @@
 	};
 
 	module.exports = EventListener;
+
+
+/***/ },
+/* 156 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 */
+
+	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
+
+	function assign(target, sources) {
+	  if (target == null) {
+	    throw new TypeError('Object.assign target cannot be null or undefined');
+	  }
+
+	  var to = Object(target);
+	  var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+	  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
+	    var nextSource = arguments[nextIndex];
+	    if (nextSource == null) {
+	      continue;
+	    }
+
+	    var from = Object(nextSource);
+
+	    // We don't currently support accessors nor proxies. Therefore this
+	    // copy cannot throw. If we ever supported this then we must handle
+	    // exceptions and side-effects. We don't support symbols so they won't
+	    // be transferred.
+
+	    for (var key in from) {
+	      if (hasOwnProperty.call(from, key)) {
+	        to[key] = from[key];
+	      }
+	    }
+	  }
+
+	  return to;
+	};
+
+	module.exports = assign;
 
 
 /***/ },
@@ -19569,8 +19368,8 @@
 
 	"use strict";
 	var React = __webpack_require__(1),
-	    dates = __webpack_require__(139),
-	    directions = __webpack_require__(140).directions;
+	    dates = __webpack_require__(144),
+	    directions = __webpack_require__(145).directions;
 
 	module.exports = function (viewUnit, smallUnit) {
 	  return {
@@ -22908,7 +22707,7 @@
 
 	"use strict";
 
-	var camelize = __webpack_require__(186);
+	var camelize = __webpack_require__(187);
 
 	var msPattern = /^-ms-/;
 
@@ -22954,7 +22753,7 @@
 
 	"use strict";
 
-	var hyphenate = __webpack_require__(187);
+	var hyphenate = __webpack_require__(186);
 
 	var msPattern = /^ms-/;
 
@@ -24103,42 +23902,6 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule camelize
-	 * @typechecks
-	 */
-
-	var _hyphenPattern = /-(.)/g;
-
-	/**
-	 * Camelcases a hyphenated string, for example:
-	 *
-	 *   > camelize('background-color')
-	 *   < "backgroundColor"
-	 *
-	 * @param {string} string
-	 * @return {string}
-	 */
-	function camelize(string) {
-	  return string.replace(_hyphenPattern, function(_, character) {
-	    return character.toUpperCase();
-	  });
-	}
-
-	module.exports = camelize;
-
-
-/***/ },
-/* 187 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
 	 * @providesModule hyphenate
 	 * @typechecks
 	 */
@@ -24162,6 +23925,42 @@
 	}
 
 	module.exports = hyphenate;
+
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule camelize
+	 * @typechecks
+	 */
+
+	var _hyphenPattern = /-(.)/g;
+
+	/**
+	 * Camelcases a hyphenated string, for example:
+	 *
+	 *   > camelize('background-color')
+	 *   < "backgroundColor"
+	 *
+	 * @param {string} string
+	 * @return {string}
+	 */
+	function camelize(string) {
+	  return string.replace(_hyphenPattern, function(_, character) {
+	    return character.toUpperCase();
+	  });
+	}
+
+	module.exports = camelize;
 
 
 /***/ },

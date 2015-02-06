@@ -10,9 +10,9 @@ var GettingStarted = React.createClass({
         <h1 className="page-header">Getting Started <small className='pull-right' style={{marginTop: 15}}>current version {__VERSION__}</small></h1>
         <p>
           React-widgets offers a {'set'} UI widgets, built from scratch with React. The suite is based on the excellent
-          work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By
-          building each widget entirely in React, it can leavage all of the benefits of the React ecosystem
-          and <a href='http://facebook.github.io/react/blog/2013/11/05/thinking-in-react.html' target="_blank">
+           work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By
+           building each widget entirely in React, it can leavage all of the benefits of the React ecosystem
+           and <a href='http://facebook.github.io/react/blog/2013/11/05/thinking-in-react.html' target="_blank">
             philosophy <i className="fa fa-external-link"></i>
           </a>.
         </p>
@@ -24,49 +24,49 @@ var GettingStarted = React.createClass({
           In keeping with the&nbsp;
           <a href='http://facebook.github.io/react/docs/forms.html#controlled-components' target="_blank">
             React approach <i className="fa fa-external-link"></i>
-          </a> to form input components, each widget can be <em>controlled</em> or <em>uncontrolled</em>. Like form inputs
-          the value/onChange prop pair provides the main interface for widget interaction. If a <code>value</code> prop
-          is {'set'} the widget's value is said to be <em>controlled</em>, meaning the parent is responsible for managing its
-          state. If the widget does not provide a <code>value</code> prop, the widget becomes <em>uncontrolled</em> or responsible
-          for managing its own value through internal state. To initialize an uncontrolled widget with a value you can use
-            the <code>defaultValue</code> prop. In addition to the <code>value</code> prop, widgets may allow other props
-          (such as <code>open</code> or <code>search</code>) to be controlled by the parent component.
+          </a> to form input components, each widget can be <em>controlled</em> or <em>uncontrolled</em>. Like form inputs 
+           the value/onChange prop pair provides the main interface for widget interaction. If a <code>value</code> prop 
+           is {'set'} the widget's value is said to be <em>controlled</em>, meaning the parent is responsible for managing its 
+           state. If the widget does not provide a <code>value</code> prop, the widget becomes <em>uncontrolled</em> or responsible 
+           for managing its own value through internal state. To initialize an uncontrolled widget with a value you can use 
+           the <code>defaultValue</code> prop. In addition to the <code>value</code> prop, widgets may allow other props 
+           (such as <code>open</code> or <code>search</code>) to be controlled by the parent component. 
         </p>
         <p>
           Some widgets can also be "bound" to a {'set'} of data (traditionally an array of models) through
-          a <code>data</code> prop. While they work just as well with data primitives such as strings, numbers, and
-          arrays, they really shine through the use of the <code>valueField</code> and <code>textField</code> props,
-          which offer a quick way to display complex data structures.
+           a <code>data</code> prop. While they work just as well with data primitives such as strings, numbers, and
+           arrays, they really shine through the use of the <code>valueField</code> and <code>textField</code> props,
+           which offer a quick way to display complex data structures.
         </p>
 
         <h2 id='intro/install' className='prop-header'>Install <a/></h2>
         <p>
-          The prefered way to install is NPM (<code>npm install react-widgets</code>) and make use of something like Webpack or
-          Browserify to bundle the library. There is also a traditional browser build available for 
-          download in the <strong>browser</strong> folder. The browser build does not bundle any dependencies, and
-          attaches itself to the <code>window</code> as <code>ReactWidgets</code>
+          The prefered way to install is NPM (<code>npm install react-widgets</code>) and make use of something like Webpack or 
+           Browserify to bundle the library. There is also a traditional browser build available for 
+           download in the <strong>browser</strong> folder. The browser build does not bundle any dependencies, and 
+           attaches itself to the <code>window</code> as <code>ReactWidgets</code>
         </p>
         <p>
           Compiled CSS, images, and fonts are found in the <code>dist</code> directory.
-          Included icons are provided by - <a href="http://fontawesome.io">Font Awesome by Dave Gandy</a>
+           Included icons are provided by - <a href="http://fontawesome.io">Font Awesome by Dave Gandy</a>
         </p>
         <strong>
           Note: versions prior to 1.1.0 require a build step (transpilation from JSX) when using the NPM package.
-          As of 1.1.0 the package comes precompiled, and no build step is needed.
+           As of 1.1.0 the package comes precompiled, and no build step is needed.
         </strong>
 
         <h2 id='intro/deps' className='prop-header'>External Dependencies</h2>
         <p>
           React-widgets <b>2.x</b> is compatible with React <b>0.12.0+</b>, while the <b>1.x</b> branch supports
-           React <b>0.9.0</b> to <b>0.10.0</b>. Either branch
-           expects React to be bundled by you. Consumers of the NPM package should note that React is not listed as direct, 
+           React <b>0.9.0</b> to <b>0.10.0</b>. Either branch expects React to be bundled by you. Consumers of the NPM package should note that 
+           React is not listed as direct, 
            or peer dependency. This is to help reduce the friction that Peer Dependencies can cause. 
            This means that NPM will not warn you if you try to use react-widgets with an incompatible React version.
         </p>
         <p>
           If you use Browserify or Webpack to build your projects, the dependencies listed below will automatically be
-          included. They are listed for the sake of those who wish to externalize the lib dependencies to reduce
-          duplication, or wish to use a different, compatible, library.
+           included. They are listed for the sake of those who wish to externalize the lib dependencies to reduce
+           duplication, or wish to use a different, compatible, library.
 
           <ul>
             <li>
