@@ -73,8 +73,6 @@ var DropdownList = React.createClass({
   getInitialState: function(){
     var initialIdx = this._dataIndexOf(this.props.data, this.props.value);
 
-    this._timers = Object.create(null);
-
     return {
       selectedItem: this.props.data[initialIdx],
       focusedItem:  this.props.data[initialIdx] || this.props.data[0],

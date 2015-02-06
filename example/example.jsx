@@ -92,7 +92,7 @@ var App = React.createClass({
         data: data,
         selectValues: []
           .concat(self.state.selectValues)
-          .concat(tag)
+          .concat(tag.id)
       })
     }
 
