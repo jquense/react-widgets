@@ -44,7 +44,7 @@ function _getComputedStyle(node) {
           var re = /(\-([a-z]){1})/g;
           if (prop == 'float') prop = 'styleFloat';
           if (re.test(prop))
-              prop = prop.replace(re, () => arguments[2].toUpperCase())
+            prop = prop.replace(re, (...args) => args[2].toUpperCase())
             
           return node.currentStyle[prop] || null;
         }

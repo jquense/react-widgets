@@ -83,6 +83,12 @@ module.exports = function(config) {
       noInfo: true
     },
 
+    client: {
+      mocha: {
+        timeout: 4000
+      }
+    },
+
     plugins: [
       require("karma-mocha-reporter"),
       require("karma-sauce-launcher"),

@@ -1,4 +1,4 @@
-/*! v"2.2.4" | (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! v"2.2.5" | (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -412,7 +412,7 @@
 	          "small",
 	          { className: "pull-right", style: { marginTop: 15 } },
 	          "current version ",
-	          ("2.2.4")
+	          ("2.2.5")
 	        )
 	      ),
 	      React.createElement(
@@ -2828,7 +2828,7 @@
 	    MenuItem = __webpack_require__(18),
 	    DDButton = __webpack_require__(15).DropdownButton,
 	    PropHeader = __webpack_require__(19),
-	    SelectListExample = __webpack_require__(40);
+	    SelectListExample = __webpack_require__(49);
 
 	var prefix = "selectlist/";
 	var widgetName = "SelectList";
@@ -3290,7 +3290,7 @@
 	    DDButton = __webpack_require__(15).DropdownButton,
 	    MenuItem = __webpack_require__(18),
 	    PropHeader = __webpack_require__(19),
-	    CalendarExample = __webpack_require__(41);
+	    CalendarExample = __webpack_require__(48);
 
 	var prefix = "calendar/";
 	var widgetName = "Calendar";
@@ -3390,7 +3390,7 @@
 	        null,
 	        "The current selected date, should be a Date object or null."
 	      ),
-	      React.createElement(EditableExample, { codeText: __webpack_require__(42)(widgetName, ["new Date()"]) }),
+	      React.createElement(EditableExample, { codeText: __webpack_require__(41)(widgetName, ["new Date()"]) }),
 	      React.createElement(
 	        PropHeader,
 	        { type: "Function( Date? date )" },
@@ -3401,7 +3401,7 @@
 	        null,
 	        "Change event Handler that is called when the value is changed. The handler is called with the Date object"
 	      ),
-	      React.createElement(EditableExample, { codeText: __webpack_require__(43)(widgetName, ["new Date()"]) }),
+	      React.createElement(EditableExample, { codeText: __webpack_require__(42)(widgetName, ["new Date()"]) }),
 	      React.createElement(
 	        PropHeader,
 	        { type: "Date" },
@@ -3669,7 +3669,7 @@
 	    DDButton = __webpack_require__(15).DropdownButton,
 	    MenuItem = __webpack_require__(18),
 	    PropHeader = __webpack_require__(19),
-	    DatePickerExample = __webpack_require__(45);
+	    DatePickerExample = __webpack_require__(40);
 
 	var prefix = "date-picker/";
 	var widgetName = "DateTimePicker";
@@ -3858,7 +3858,7 @@
 	        ),
 	        "."
 	      ),
-	      React.createElement(EditableExample, { codeText: __webpack_require__(42)(widgetName, ["new Date()", null]) }),
+	      React.createElement(EditableExample, { codeText: __webpack_require__(41)(widgetName, ["new Date()", null]) }),
 	      React.createElement(
 	        PropHeader,
 	        { type: "Function(Date? date, String dateStr)" },
@@ -3887,7 +3887,7 @@
 	        ),
 	        " prop."
 	      ),
-	      React.createElement(EditableExample, { codeText: __webpack_require__(43)(widgetName, ["new Date()", null]) }),
+	      React.createElement(EditableExample, { codeText: __webpack_require__(42)(widgetName, ["new Date()", null]) }),
 	      React.createElement(
 	        PropHeader,
 	        { type: "Function(Date? value)" },
@@ -3904,7 +3904,7 @@
 	        ),
 	        " handler, and fires regardless of whether the value has actually changed."
 	      ),
-	      React.createElement(EditableExample, { codeText: __webpack_require__(46)(widgetName) }),
+	      React.createElement(EditableExample, { codeText: __webpack_require__(43)(widgetName) }),
 	      React.createElement(
 	        PropHeader,
 	        { type: "Boolean", default: "true" },
@@ -3988,7 +3988,7 @@
 	        null,
 	        "Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try, or provide a function that returns a date to handle parsing yourself."
 	      ),
-	      React.createElement(EditableExample, { codeText: __webpack_require__(47)(widgetName) }),
+	      React.createElement(EditableExample, { codeText: __webpack_require__(45)(widgetName) }),
 	      React.createElement(
 	        PropHeader,
 	        { type: "Enum", default: "\"month\"" },
@@ -4120,7 +4120,7 @@
 	          "\"time\""
 	        )
 	      ),
-	      React.createElement(EditableExample, { codeText: __webpack_require__(48)(widgetName) }),
+	      React.createElement(EditableExample, { codeText: __webpack_require__(46)(widgetName) }),
 	      React.createElement(
 	        PropHeader,
 	        { type: "Function(Boolean isOpen)" },
@@ -4328,7 +4328,7 @@
 	    DDButton = __webpack_require__(15).DropdownButton,
 	    PropHeader = __webpack_require__(19),
 	    MenuItem = __webpack_require__(18),
-	    NumberPickerExample = __webpack_require__(49);
+	    NumberPickerExample = __webpack_require__(47);
 
 	var prefix = "number-picker/";
 	var widgetName = "NumberPicker";
@@ -4424,7 +4424,7 @@
 	        null,
 	        "The current value of the NumberPicker."
 	      ),
-	      React.createElement(EditableExample, { codeText: __webpack_require__(42)(widgetName, [1, null]) }),
+	      React.createElement(EditableExample, { codeText: __webpack_require__(41)(widgetName, [1, null]) }),
 	      React.createElement(
 	        PropHeader,
 	        { type: "Function(Number? value)" },
@@ -4435,7 +4435,7 @@
 	        null,
 	        "Change event Handler that is called when the value is changed. The handler is called with the current numeric value or null."
 	      ),
-	      React.createElement(EditableExample, { codeText: __webpack_require__(43)(widgetName, [1, null]) }),
+	      React.createElement(EditableExample, { codeText: __webpack_require__(42)(widgetName, [1, null]) }),
 	      React.createElement(
 	        PropHeader,
 	        { type: "String", default: "d" },
@@ -6196,393 +6196,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var React = __webpack_require__(1),
-	    Button = __webpack_require__(15).Button,
-	    ButtonGroup = __webpack_require__(15).ButtonGroup,
-	    RW = __webpack_require__(67);
-
-
-	// var valueComp = React.createClass({
-	//   render: function() {
-	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
-	//   }
-	// });
-
-	// var itemComp = React.createClass({
-	//   render: function() {
-	//     var icons =  ['bicycle', 'area-chart', 'anchor']
-
-	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
-	//     return (
-	//       <div>
-	//         <i className={'fa fa-' + this._icon}></i>
-	//         { '  ' + this.props.item.label}
-	//       </div>
-	//     );
-	//   }
-	// });
-
-	// function getRandomInt(min, max) {
-	//   return Math.floor(Math.random() * (max - min + 1)) + min;
-	// }
-
-	var list = [{ label: "orange", id: 1 }, { label: "blue", id: 2 }, { label: "red", id: 3 }, { label: "maroon", id: 4 }, { label: "purple", id: 5 }, { label: "mauve", id: 6 }];
-
-	var DropdownApi = React.createClass({
-	  displayName: "DropdownApi",
-
-
-	  getInitialState: function () {
-	    return {
-	      duration: 250 };
-	  },
-
-	  render: function () {
-	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
-
-	    return React.createElement(
-	      "div",
-	      { className: "example" },
-	      React.createElement(
-	        "div",
-	        { className: "row" },
-	        React.createElement(
-	          "div",
-	          { className: "col-md-6 col-lg-7 demo" },
-	          React.createElement(
-	            "div",
-	            { className: "form-group" },
-	            React.createElement(RW.SelectList, {
-	              disabled: disabled ? this.state.disabled : false,
-	              readOnly: this.state.disabled === "readonly",
-	              value: this.state.value,
-	              data: list,
-	              multiple: this.state.multiple,
-	              busy: this.state.busy,
-	              onChange: this._change,
-	              isRtl: this.state.isRtl,
-	              valueField: "id",
-	              textField: "label"
-	            })
-	          )
-	        ),
-	        React.createElement(
-	          "div",
-	          { className: "col-md-6 col-lg-5 api-panel" },
-	          React.createElement(
-	            "div",
-	            { className: "form-group" },
-	            React.createElement(
-	              "label",
-	              { className: "checkbox-inline" },
-	              React.createElement("input", { type: "checkbox",
-	                checked: this.state.isRtl,
-	                onChange: this._set.bind(null, "isRtl", !this.state.isRtl) }),
-	              "Right to Left"
-	            )
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "form-group" },
-	            React.createElement(
-	              "label",
-	              { className: "checkbox-inline" },
-	              React.createElement("input", { type: "checkbox",
-	                checked: this.state.multiple,
-	                onChange: this._set.bind(null, "multiple", !this.state.multiple) }),
-	              "Is Multiple"
-	            )
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "form-group" },
-	            React.createElement(
-	              ButtonGroup,
-	              null,
-	              React.createElement(
-	                Button,
-	                {
-	                  active: this.state.disabled === "disabled",
-	                  onClick: this.disabled },
-	                "Disable"
-	              ),
-	              React.createElement(
-	                Button,
-	                {
-	                  active: this.state.disabled === "readonly",
-	                  onClick: this.readOnly },
-	                "Readonly"
-	              )
-	            ),
-	            React.createElement(
-	              Button,
-	              { style: { marginLeft: 10 },
-	                active: this.state.busy,
-	                onClick: this._set.bind(null, "busy", !this.state.busy) },
-	              "Busy"
-	            )
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "form-group" },
-	            React.createElement(
-	              "label",
-	              { className: "form-label" },
-	              "Disable Values"
-	            ),
-	            React.createElement(RW.Multiselect, {
-	              value: Array.isArray(this.state.disabled) ? this.state.disabled : [],
-	              data: list,
-	              textField: "label",
-	              valueField: "id",
-	              disabled: this.state.disabled === true,
-	              onChange: this._set.bind(null, "disabled") })
-	          )
-	        )
-	      )
-	    );
-	  },
-
-	  _change: function (val) {
-	    this.setState({ value: val });
-	  },
-
-	  _set: function (field, value) {
-	    var obj = {};
-	    obj[field] = value;
-	    this.setState(obj);
-	  },
-
-	  readOnly: function () {
-	    var val = this.state.disabled === "readonly" ? false : "readonly";
-	    this.setState({ disabled: val });
-	  },
-
-	  disabled: function () {
-	    var val = this.state.disabled === true ? false : true;
-	    this.setState({ disabled: val });
-	  }
-	});
-
-	module.exports = DropdownApi;
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var React = __webpack_require__(1),
-	    Button = __webpack_require__(15).Button,
-	    ButtonGroup = __webpack_require__(15).ButtonGroup,
-	    RW = __webpack_require__(67);
-
-	module.exports = React.createClass({
-	  displayName: "exports",
-	  getInitialState: function () {
-	    return {
-	      format: ""
-	    };
-	  },
-
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "example" },
-	      React.createElement(
-	        "div",
-	        { className: "row" },
-	        React.createElement(
-	          "div",
-	          { className: "col-md-6 col-lg-7 demo" },
-	          React.createElement(RW.Calendar, {
-	            value: this.state.value,
-	            onChange: this._change,
-	            max: this.state.max,
-	            min: this.state.min,
-	            finalView: this.state.finalView,
-	            initialView: this.state.initialView,
-	            disabled: this.state.disabled === "disabled",
-	            readOnly: this.state.disabled === "readonly",
-	            isRtl: this.state.isRtl })
-	        ),
-	        React.createElement(
-	          "div",
-	          { className: "col-md-6 col-lg-5 api-panel" },
-	          React.createElement(
-	            "div",
-	            { className: "form-group" },
-	            React.createElement(
-	              "label",
-	              { className: "checkbox-inline" },
-	              React.createElement("input", { type: "checkbox",
-	                checked: this.state.isRtl,
-	                onChange: this._set.bind(null, "isRtl", !this.state.isRtl) }),
-	              "Right to Left"
-	            )
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "form-group" },
-	            React.createElement(
-	              ButtonGroup,
-	              null,
-	              React.createElement(
-	                Button,
-	                {
-	                  active: this.state.disabled === "disabled",
-	                  onClick: this.disabled },
-	                "Disable"
-	              ),
-	              React.createElement(
-	                Button,
-	                {
-	                  active: this.state.disabled === "readonly",
-	                  onClick: this.readOnly },
-	                "Readonly"
-	              )
-	            )
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "row" },
-	            React.createElement(
-	              "div",
-	              { className: "form-group col-xs-6" },
-	              React.createElement(
-	                "label",
-	                { className: "form-label" },
-	                "Initial View"
-	              ),
-	              React.createElement(RW.DropdownList, {
-	                value: this.state.initialView || "month",
-	                data: ["month", "year", "decade", "century"],
-	                onChange: this._set.bind(null, "initialView") })
-	            ),
-	            React.createElement(
-	              "div",
-	              { className: "form-group col-xs-6" },
-	              React.createElement(
-	                "label",
-	                { className: "form-label" },
-	                "Final View"
-	              ),
-	              React.createElement(RW.DropdownList, {
-	                value: this.state.finalView || "century",
-	                data: ["month", "year", "decade", "century"],
-	                onChange: this._set.bind(null, "finalView") })
-	            )
-	          ),
-	          React.createElement(
-	            "div",
-	            { className: "row" },
-	            React.createElement(
-	              "div",
-	              { className: "form-group col-xs-6" },
-	              React.createElement(
-	                "label",
-	                { className: "control-label" },
-	                "min"
-	              ),
-	              React.createElement(RW.DateTimePicker, {
-	                time: false,
-	                format: "MMM dd, yyyy",
-	                value: this.state.min,
-	                onChange: this._set.bind(null, "min") })
-	            ),
-	            React.createElement(
-	              "div",
-	              { className: "form-group col-xs-6" },
-	              React.createElement(
-	                "label",
-	                { className: "control-label" },
-	                "max"
-	              ),
-	              React.createElement(RW.DateTimePicker, {
-	                time: false,
-	                format: "MMM dd yyyy",
-	                value: this.state.max,
-	                onChange: this._set.bind(null, "max") })
-	            )
-	          )
-	        )
-	      )
-	    );
-	  },
-
-	  _change: function (val) {
-	    this.setState({ value: val });
-	  },
-
-	  _set: function (field, value) {
-	    var obj = {};
-	    obj[field] = value;
-	    this.setState(obj);
-	  },
-
-	  readOnly: function () {
-	    var val = this.state.disabled === "readonly" ? false : "readonly";
-	    this.setState({ disabled: val });
-	  },
-
-	  disabled: function () {
-	    var val = this.state.disabled === "disabled" ? false : "disabled";
-	    this.setState({ disabled: val });
-	  } });
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	module.exports = function (widgetName, values) {
-	  var open = values.length > 1 ? "(<div>" : "",
-	      close = values.length > 1 ? "</div>)" : "";
-	  var code = "\nvar " + widgetName + " = ReactWidgets." + widgetName + ";\n\nvar widgets = " + open + "\n    " + values.map(getWidget).join("").trim() + "\n  " + close + "\n    \nReact.render(widgets, mountNode);";
-
-	  return code;
-
-	  function getWidget(v) {
-	    return "\n    <" + widgetName + " defaultValue={" + v + "} />";
-	  }
-	};
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	module.exports = function (widgetName, values) {
-	  var open = values.length > 1 ? "(<div>" : "(",
-	      close = values.length > 1 ? "</div>)" : ")";
-	  var code = "\nvar " + widgetName + " = ReactWidgets." + widgetName + ";\n\nvar Example = React.createClass({\n\n  getInitialState() {\n    return { " + values.map(getValue).join(", ") + " };\n  },\n\n  render() {\n    var change = (name, value) => {\n      var state = {}\n      state['value' + name] = value\n      this.setState(state)\n    };\n\n    return " + open + "\n      " + values.map(getWidget).join("").trim() + "\n    " + close + "\n  }\n});\n\nReact.render(<Example/>, mountNode);";
-
-	  return code;
-
-	  function getValue(v, idx) {
-	    return "value" + idx + ": " + v;
-	  }
-
-	  function getWidget(v, idx) {
-	    return "\n      <" + widgetName + " \n        value={this.state.value" + idx + "} \n        onChange={change.bind(null, '" + idx + "')}/>";
-	  }
-	};
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	module.exports = function (widgetName, prop, value) {
-	  var code = "\nvar " + widgetName + " = ReactWidgets." + widgetName + ";\n\nReact.render(\n  <" + widgetName + " " + prop + "={" + value + "} />, mountNode);";
-
-	  return code;
-	};
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var React = __webpack_require__(1),
@@ -6827,7 +6440,45 @@
 	}
 
 /***/ },
-/* 46 */
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	module.exports = function (widgetName, values) {
+	  var open = values.length > 1 ? "(<div>" : "",
+	      close = values.length > 1 ? "</div>)" : "";
+	  var code = "\nvar " + widgetName + " = ReactWidgets." + widgetName + ";\n\nvar widgets = " + open + "\n    " + values.map(getWidget).join("").trim() + "\n  " + close + "\n    \nReact.render(widgets, mountNode);";
+
+	  return code;
+
+	  function getWidget(v) {
+	    return "\n    <" + widgetName + " defaultValue={" + v + "} />";
+	  }
+	};
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	module.exports = function (widgetName, values) {
+	  var open = values.length > 1 ? "(<div>" : "(",
+	      close = values.length > 1 ? "</div>)" : ")";
+	  var code = "\nvar " + widgetName + " = ReactWidgets." + widgetName + ";\n\nvar Example = React.createClass({\n\n  getInitialState() {\n    return { " + values.map(getValue).join(", ") + " };\n  },\n\n  render() {\n    var change = (name, value) => {\n      var state = {}\n      state['value' + name] = value\n      this.setState(state)\n    };\n\n    return " + open + "\n      " + values.map(getWidget).join("").trim() + "\n    " + close + "\n  }\n});\n\nReact.render(<Example/>, mountNode);";
+
+	  return code;
+
+	  function getValue(v, idx) {
+	    return "value" + idx + ": " + v;
+	  }
+
+	  function getWidget(v, idx) {
+	    return "\n      <" + widgetName + " \n        value={this.state.value" + idx + "} \n        onChange={change.bind(null, '" + idx + "')}/>";
+	  }
+	};
+
+/***/ },
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6838,7 +6489,18 @@
 	};
 
 /***/ },
-/* 47 */
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	module.exports = function (widgetName, prop, value) {
+	  var code = "\nvar " + widgetName + " = ReactWidgets." + widgetName + ";\n\nReact.render(\n  <" + widgetName + " " + prop + "={" + value + "} />, mountNode);";
+
+	  return code;
+	};
+
+/***/ },
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6849,7 +6511,7 @@
 	};
 
 /***/ },
-/* 48 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6860,7 +6522,7 @@
 	};
 
 /***/ },
-/* 49 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7019,6 +6681,344 @@
 	    return fn(e.target.value);
 	  };
 	}
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(1),
+	    Button = __webpack_require__(15).Button,
+	    ButtonGroup = __webpack_require__(15).ButtonGroup,
+	    RW = __webpack_require__(67);
+
+	module.exports = React.createClass({
+	  displayName: "exports",
+	  getInitialState: function () {
+	    return {
+	      format: ""
+	    };
+	  },
+
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "example" },
+	      React.createElement(
+	        "div",
+	        { className: "row" },
+	        React.createElement(
+	          "div",
+	          { className: "col-md-6 col-lg-7 demo" },
+	          React.createElement(RW.Calendar, {
+	            value: this.state.value,
+	            onChange: this._change,
+	            max: this.state.max,
+	            min: this.state.min,
+	            finalView: this.state.finalView,
+	            initialView: this.state.initialView,
+	            disabled: this.state.disabled === "disabled",
+	            readOnly: this.state.disabled === "readonly",
+	            isRtl: this.state.isRtl })
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "col-md-6 col-lg-5 api-panel" },
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              "label",
+	              { className: "checkbox-inline" },
+	              React.createElement("input", { type: "checkbox",
+	                checked: this.state.isRtl,
+	                onChange: this._set.bind(null, "isRtl", !this.state.isRtl) }),
+	              "Right to Left"
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              ButtonGroup,
+	              null,
+	              React.createElement(
+	                Button,
+	                {
+	                  active: this.state.disabled === "disabled",
+	                  onClick: this.disabled },
+	                "Disable"
+	              ),
+	              React.createElement(
+	                Button,
+	                {
+	                  active: this.state.disabled === "readonly",
+	                  onClick: this.readOnly },
+	                "Readonly"
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "row" },
+	            React.createElement(
+	              "div",
+	              { className: "form-group col-xs-6" },
+	              React.createElement(
+	                "label",
+	                { className: "form-label" },
+	                "Initial View"
+	              ),
+	              React.createElement(RW.DropdownList, {
+	                value: this.state.initialView || "month",
+	                data: ["month", "year", "decade", "century"],
+	                onChange: this._set.bind(null, "initialView") })
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "form-group col-xs-6" },
+	              React.createElement(
+	                "label",
+	                { className: "form-label" },
+	                "Final View"
+	              ),
+	              React.createElement(RW.DropdownList, {
+	                value: this.state.finalView || "century",
+	                data: ["month", "year", "decade", "century"],
+	                onChange: this._set.bind(null, "finalView") })
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "row" },
+	            React.createElement(
+	              "div",
+	              { className: "form-group col-xs-6" },
+	              React.createElement(
+	                "label",
+	                { className: "control-label" },
+	                "min"
+	              ),
+	              React.createElement(RW.DateTimePicker, {
+	                time: false,
+	                format: "MMM dd, yyyy",
+	                value: this.state.min,
+	                onChange: this._set.bind(null, "min") })
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "form-group col-xs-6" },
+	              React.createElement(
+	                "label",
+	                { className: "control-label" },
+	                "max"
+	              ),
+	              React.createElement(RW.DateTimePicker, {
+	                time: false,
+	                format: "MMM dd yyyy",
+	                value: this.state.max,
+	                onChange: this._set.bind(null, "max") })
+	            )
+	          )
+	        )
+	      )
+	    );
+	  },
+
+	  _change: function (val) {
+	    this.setState({ value: val });
+	  },
+
+	  _set: function (field, value) {
+	    var obj = {};
+	    obj[field] = value;
+	    this.setState(obj);
+	  },
+
+	  readOnly: function () {
+	    var val = this.state.disabled === "readonly" ? false : "readonly";
+	    this.setState({ disabled: val });
+	  },
+
+	  disabled: function () {
+	    var val = this.state.disabled === "disabled" ? false : "disabled";
+	    this.setState({ disabled: val });
+	  } });
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(1),
+	    Button = __webpack_require__(15).Button,
+	    ButtonGroup = __webpack_require__(15).ButtonGroup,
+	    RW = __webpack_require__(67);
+
+
+	// var valueComp = React.createClass({
+	//   render: function() {
+	//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
+	//   }
+	// });
+
+	// var itemComp = React.createClass({
+	//   render: function() {
+	//     var icons =  ['bicycle', 'area-chart', 'anchor']
+
+	//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
+	//     return (
+	//       <div>
+	//         <i className={'fa fa-' + this._icon}></i>
+	//         { '  ' + this.props.item.label}
+	//       </div>
+	//     );
+	//   }
+	// });
+
+	// function getRandomInt(min, max) {
+	//   return Math.floor(Math.random() * (max - min + 1)) + min;
+	// }
+
+	var list = [{ label: "orange", id: 1 }, { label: "blue", id: 2 }, { label: "red", id: 3 }, { label: "maroon", id: 4 }, { label: "purple", id: 5 }, { label: "mauve", id: 6 }];
+
+	var DropdownApi = React.createClass({
+	  displayName: "DropdownApi",
+
+
+	  getInitialState: function () {
+	    return {
+	      duration: 250 };
+	  },
+
+	  render: function () {
+	    var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
+
+	    return React.createElement(
+	      "div",
+	      { className: "example" },
+	      React.createElement(
+	        "div",
+	        { className: "row" },
+	        React.createElement(
+	          "div",
+	          { className: "col-md-6 col-lg-7 demo" },
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(RW.SelectList, {
+	              disabled: disabled ? this.state.disabled : false,
+	              readOnly: this.state.disabled === "readonly",
+	              value: this.state.value,
+	              data: list,
+	              multiple: this.state.multiple,
+	              busy: this.state.busy,
+	              onChange: this._change,
+	              isRtl: this.state.isRtl,
+	              valueField: "id",
+	              textField: "label"
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "col-md-6 col-lg-5 api-panel" },
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              "label",
+	              { className: "checkbox-inline" },
+	              React.createElement("input", { type: "checkbox",
+	                checked: this.state.isRtl,
+	                onChange: this._set.bind(null, "isRtl", !this.state.isRtl) }),
+	              "Right to Left"
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              "label",
+	              { className: "checkbox-inline" },
+	              React.createElement("input", { type: "checkbox",
+	                checked: this.state.multiple,
+	                onChange: this._set.bind(null, "multiple", !this.state.multiple) }),
+	              "Is Multiple"
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              ButtonGroup,
+	              null,
+	              React.createElement(
+	                Button,
+	                {
+	                  active: this.state.disabled === "disabled",
+	                  onClick: this.disabled },
+	                "Disable"
+	              ),
+	              React.createElement(
+	                Button,
+	                {
+	                  active: this.state.disabled === "readonly",
+	                  onClick: this.readOnly },
+	                "Readonly"
+	              )
+	            ),
+	            React.createElement(
+	              Button,
+	              { style: { marginLeft: 10 },
+	                active: this.state.busy,
+	                onClick: this._set.bind(null, "busy", !this.state.busy) },
+	              "Busy"
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              "label",
+	              { className: "form-label" },
+	              "Disable Values"
+	            ),
+	            React.createElement(RW.Multiselect, {
+	              value: Array.isArray(this.state.disabled) ? this.state.disabled : [],
+	              data: list,
+	              textField: "label",
+	              valueField: "id",
+	              disabled: this.state.disabled === true,
+	              onChange: this._set.bind(null, "disabled") })
+	          )
+	        )
+	      )
+	    );
+	  },
+
+	  _change: function (val) {
+	    this.setState({ value: val });
+	  },
+
+	  _set: function (field, value) {
+	    var obj = {};
+	    obj[field] = value;
+	    this.setState(obj);
+	  },
+
+	  readOnly: function () {
+	    var val = this.state.disabled === "readonly" ? false : "readonly";
+	    this.setState({ disabled: val });
+	  },
+
+	  disabled: function () {
+	    var val = this.state.disabled === true ? false : true;
+	    this.setState({ disabled: val });
+	  }
+	});
+
+	module.exports = DropdownApi;
 
 /***/ },
 /* 50 */
@@ -9227,9 +9227,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var assign = __webpack_require__(101);
-	var reversedArray = __webpack_require__(107);
+	var reversedArray = __webpack_require__(106);
 	var Redirect = __webpack_require__(80);
-	var Promise = __webpack_require__(106);
+	var Promise = __webpack_require__(107);
 
 	/**
 	 * Runs all hook functions serially and calls callback(error) when finished.
@@ -10421,14 +10421,14 @@
 	};
 
 	var React = __webpack_require__(1),
-	    _ = __webpack_require__(121),
-	    cx = __webpack_require__(122),
-	    controlledInput = __webpack_require__(123),
-	    CustomPropTypes = __webpack_require__(124),
-	    Popup = __webpack_require__(125),
-	    PlainList = __webpack_require__(126),
-	    GroupableList = __webpack_require__(127),
-	    validateList = __webpack_require__(128);
+	    _ = __webpack_require__(130),
+	    cx = __webpack_require__(126),
+	    controlledInput = __webpack_require__(127),
+	    CustomPropTypes = __webpack_require__(135),
+	    Popup = __webpack_require__(136),
+	    PlainList = __webpack_require__(137),
+	    GroupableList = __webpack_require__(138),
+	    validateList = __webpack_require__(139);
 
 
 	var propTypes = {
@@ -10469,7 +10469,7 @@
 
 	  displayName: "DropdownList",
 
-	  mixins: [__webpack_require__(129), __webpack_require__(130), __webpack_require__(131), __webpack_require__(132), __webpack_require__(133), __webpack_require__(134)],
+	  mixins: [__webpack_require__(131), __webpack_require__(132), __webpack_require__(133), __webpack_require__(140), __webpack_require__(141), __webpack_require__(134)],
 
 	  propTypes: propTypes,
 
@@ -10682,17 +10682,17 @@
 	};
 
 	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    _ = __webpack_require__(121),
-	    filter = __webpack_require__(135),
-	    Popup = __webpack_require__(125),
-	    Btn = __webpack_require__(136),
-	    Input = __webpack_require__(137),
-	    controlledInput = __webpack_require__(123),
-	    CustomPropTypes = __webpack_require__(124),
-	    PlainList = __webpack_require__(126),
-	    GroupableList = __webpack_require__(127),
-	    validateList = __webpack_require__(128);
+	    cx = __webpack_require__(126),
+	    _ = __webpack_require__(130),
+	    filter = __webpack_require__(142),
+	    Popup = __webpack_require__(136),
+	    Btn = __webpack_require__(143),
+	    Input = __webpack_require__(144),
+	    controlledInput = __webpack_require__(127),
+	    CustomPropTypes = __webpack_require__(135),
+	    PlainList = __webpack_require__(137),
+	    GroupableList = __webpack_require__(138),
+	    validateList = __webpack_require__(139);
 
 	var propTypes = {
 	  //-- controlled props -----------
@@ -10736,7 +10736,7 @@
 
 	  displayName: "ComboBox",
 
-	  mixins: [__webpack_require__(129), __webpack_require__(130), __webpack_require__(138), __webpack_require__(132), __webpack_require__(133), __webpack_require__(134)],
+	  mixins: [__webpack_require__(131), __webpack_require__(132), __webpack_require__(145), __webpack_require__(140), __webpack_require__(141), __webpack_require__(134)],
 
 	  propTypes: propTypes,
 
@@ -11016,17 +11016,17 @@
 	};
 
 	var React = __webpack_require__(1),
-	    Header = __webpack_require__(139),
-	    Month = __webpack_require__(140),
-	    Year = __webpack_require__(141),
-	    Decade = __webpack_require__(142),
-	    Century = __webpack_require__(143),
-	    cx = __webpack_require__(122),
-	    controlledInput = __webpack_require__(123),
+	    Header = __webpack_require__(121),
+	    Month = __webpack_require__(122),
+	    Year = __webpack_require__(123),
+	    Decade = __webpack_require__(124),
+	    Century = __webpack_require__(125),
+	    cx = __webpack_require__(126),
+	    controlledInput = __webpack_require__(127),
 	    SlideTransition = __webpack_require__(99),
-	    dates = __webpack_require__(144),
-	    constants = __webpack_require__(145),
-	    _ = __webpack_require__(121); //values, omit, object
+	    dates = __webpack_require__(128),
+	    constants = __webpack_require__(129),
+	    _ = __webpack_require__(130); //values, omit, object
 
 	var dir = constants.directions;
 
@@ -11071,7 +11071,7 @@
 
 	  displayName: "Calendar",
 
-	  mixins: [__webpack_require__(129), __webpack_require__(130), __webpack_require__(131), __webpack_require__(134)],
+	  mixins: [__webpack_require__(131), __webpack_require__(132), __webpack_require__(133), __webpack_require__(134)],
 
 	  propTypes: propTypes,
 
@@ -11313,20 +11313,20 @@
 	};
 
 	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    _ = __webpack_require__(121) //pick, omit, has
+	    cx = __webpack_require__(126),
+	    _ = __webpack_require__(130) //pick, omit, has
 
 	,
-	    dates = __webpack_require__(144),
-	    views = __webpack_require__(145).calendarViews,
-	    popups = __webpack_require__(145).datePopups,
-	    Popup = __webpack_require__(125),
+	    dates = __webpack_require__(128),
+	    views = __webpack_require__(129).calendarViews,
+	    popups = __webpack_require__(129).datePopups,
+	    Popup = __webpack_require__(136),
 	    Calendar = __webpack_require__(93).BaseCalendar,
 	    Time = __webpack_require__(146),
 	    DateInput = __webpack_require__(147),
-	    Btn = __webpack_require__(136),
-	    CustomPropTypes = __webpack_require__(124),
-	    controlledInput = __webpack_require__(123);
+	    Btn = __webpack_require__(143),
+	    CustomPropTypes = __webpack_require__(135),
+	    controlledInput = __webpack_require__(127);
 
 	var viewEnum = Object.keys(views).map(function (k) {
 	  return views[k];
@@ -11371,7 +11371,7 @@
 	var DateTimePicker = React.createClass({
 	  displayName: "DateTimePicker",
 
-	  mixins: [__webpack_require__(129), __webpack_require__(130), __webpack_require__(131), __webpack_require__(133), __webpack_require__(134)],
+	  mixins: [__webpack_require__(131), __webpack_require__(132), __webpack_require__(133), __webpack_require__(141), __webpack_require__(134)],
 
 	  propTypes: propTypes,
 
@@ -11629,14 +11629,14 @@
 	};
 
 	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    _ = __webpack_require__(121) //omit
+	    cx = __webpack_require__(126),
+	    _ = __webpack_require__(130) //omit
 	,
-	    controlledInput = __webpack_require__(123),
-	    directions = __webpack_require__(145).directions,
+	    controlledInput = __webpack_require__(127),
+	    directions = __webpack_require__(129).directions,
 	    Input = __webpack_require__(148);
 
-	var Btn = __webpack_require__(136),
+	var Btn = __webpack_require__(143),
 	    propTypes = {
 
 	  // -- controlled props -----------
@@ -11669,7 +11669,7 @@
 
 	  displayName: "NumberPicker",
 
-	  mixins: [__webpack_require__(129), __webpack_require__(130), __webpack_require__(131), __webpack_require__(134)],
+	  mixins: [__webpack_require__(131), __webpack_require__(132), __webpack_require__(133), __webpack_require__(134)],
 
 	  propTypes: propTypes,
 
@@ -11855,16 +11855,16 @@
 	};
 
 	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    _ = __webpack_require__(121),
+	    cx = __webpack_require__(126),
+	    _ = __webpack_require__(130),
 	    SelectInput = __webpack_require__(150),
 	    TagList = __webpack_require__(151),
-	    Popup = __webpack_require__(125),
-	    PlainList = __webpack_require__(126),
-	    GroupableList = __webpack_require__(127),
-	    validateList = __webpack_require__(128),
-	    controlledInput = __webpack_require__(123),
-	    CustomPropTypes = __webpack_require__(124);
+	    Popup = __webpack_require__(136),
+	    PlainList = __webpack_require__(137),
+	    GroupableList = __webpack_require__(138),
+	    validateList = __webpack_require__(139),
+	    controlledInput = __webpack_require__(127),
+	    CustomPropTypes = __webpack_require__(135);
 
 	var propTypes = {
 	  data: React.PropTypes.array,
@@ -11911,7 +11911,7 @@
 
 	  displayName: "Multiselect",
 
-	  mixins: [__webpack_require__(129), __webpack_require__(130), __webpack_require__(138), __webpack_require__(132), __webpack_require__(133), __webpack_require__(134)],
+	  mixins: [__webpack_require__(131), __webpack_require__(132), __webpack_require__(145), __webpack_require__(140), __webpack_require__(141), __webpack_require__(134)],
 
 	  propTypes: propTypes,
 
@@ -12212,14 +12212,14 @@
 	};
 
 	var React = __webpack_require__(1),
-	    _ = __webpack_require__(121),
-	    cx = __webpack_require__(122),
-	    controlledInput = __webpack_require__(123),
-	    CustomPropTypes = __webpack_require__(124),
-	    PlainList = __webpack_require__(126),
-	    GroupableList = __webpack_require__(127),
-	    validateList = __webpack_require__(128),
-	    filter = __webpack_require__(135),
+	    _ = __webpack_require__(130),
+	    cx = __webpack_require__(126),
+	    controlledInput = __webpack_require__(127),
+	    CustomPropTypes = __webpack_require__(135),
+	    PlainList = __webpack_require__(137),
+	    GroupableList = __webpack_require__(138),
+	    validateList = __webpack_require__(139),
+	    filter = __webpack_require__(142),
 	    scrollTo = __webpack_require__(149);
 
 	var propTypes = {
@@ -12257,7 +12257,7 @@
 
 	  propTypes: propTypes,
 
-	  mixins: [__webpack_require__(129), __webpack_require__(130), __webpack_require__(132), __webpack_require__(134)],
+	  mixins: [__webpack_require__(131), __webpack_require__(132), __webpack_require__(140), __webpack_require__(134)],
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -12552,7 +12552,7 @@
 
 	var React = __webpack_require__(1),
 	    $ = __webpack_require__(152),
-	    _ = __webpack_require__(121);
+	    _ = __webpack_require__(130);
 
 	module.exports = React.createClass({
 
@@ -12748,7 +12748,7 @@
 
 	var React = __webpack_require__(1),
 	    ReplaceTransitionGroup = __webpack_require__(98),
-	    _ = __webpack_require__(121),
+	    _ = __webpack_require__(130),
 	    $ = __webpack_require__(152);
 
 
@@ -13132,23 +13132,23 @@
 /* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Promise = __webpack_require__(172);
+	function reversedArray(array) {
+	  return array.slice(0).reverse();
+	}
 
-	// TODO: Use process.env.NODE_ENV check + envify to enable
-	// when's promise monitor here when in dev.
-
-	module.exports = Promise;
+	module.exports = reversedArray;
 
 
 /***/ },
 /* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
-	function reversedArray(array) {
-	  return array.slice(0).reverse();
-	}
+	var Promise = __webpack_require__(172);
 
-	module.exports = reversedArray;
+	// TODO: Use process.env.NODE_ENV check + envify to enable
+	// when's promise monitor here when in dev.
+
+	module.exports = Promise;
 
 
 /***/ },
@@ -13305,7 +13305,7 @@
 
 	var React = __webpack_require__(1);
 	var joinClasses = __webpack_require__(108);
-	var assign = __webpack_require__(156);
+	var assign = __webpack_require__(155);
 
 	/**
 	 * Creates a transfer strategy that will merge prop values using the supplied
@@ -13464,7 +13464,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var EventListener = __webpack_require__(155);
+	var EventListener = __webpack_require__(156);
 
 	/**
 	 * Checks whether a node is within
@@ -16075,110 +16075,505 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var idCount = 0;
+	var React = __webpack_require__(1),
+	    Btn = __webpack_require__(143);
 
-	var _ = module.exports = {
+	module.exports = React.createClass({
+	  displayName: "exports",
 
-	  has: has,
 
-	  assign: __webpack_require__(101),
+	  propTypes: {
+	    label: React.PropTypes.string.isRequired,
+	    labelId: React.PropTypes.string,
 
-	  isShallowEqual: function (a, b) {
-	    if (a === b) return true;
-	    if (a instanceof Date && b instanceof Date) return a.getTime() === b.getTime();
+	    upDisabled: React.PropTypes.bool.isRequired,
+	    prevDisabled: React.PropTypes.bool.isRequired,
+	    nextDisabled: React.PropTypes.bool.isRequired,
+	    onViewChange: React.PropTypes.func.isRequired,
+	    onMoveLeft: React.PropTypes.func.isRequired,
+	    onMoveRight: React.PropTypes.func.isRequired,
 
-	    if (typeof a != "object" && typeof b != "object") return a === b;
-
-	    if (typeof a != typeof b) return false;
-
-	    return shallowEqual(a, b);
+	    messages: React.PropTypes.shape({
+	      moveBack: React.PropTypes.string,
+	      moveForward: React.PropTypes.string
+	    })
 	  },
 
-	  transform: function (obj, cb, seed) {
-	    _.each(obj, cb.bind(null, seed = seed || (Array.isArray(obj) ? [] : {})));
-	    return seed;
+	  mixins: [__webpack_require__(133), __webpack_require__(158)],
+
+	  getDefaultProps: function () {
+	    return {
+	      messages: {
+	        moveBack: "navigate back",
+	        moveForward: "navigate forward" }
+	    };
 	  },
 
-	  each: function (obj, cb, thisArg) {
-	    if (Array.isArray(obj)) return obj.forEach(cb, thisArg);
+	  render: function () {
+	    var rtl = this.isRtl();
 
-	    for (var key in obj) if (has(obj, key)) cb.call(thisArg, obj[key], key, obj);
-	  },
-
-	  object: function (arr) {
-	    return _.transform(arr, function (obj, val) {
-	      return obj[val[0]] = val[1];
-	    }, {});
-	  },
-
-	  pick: function (obj, keys) {
-	    keys = [].concat(keys);
-	    return _.transform(obj, function (mapped, val, key) {
-	      if (keys.indexOf(key) !== -1) mapped[key] = val;
-	    }, {});
-	  },
-
-	  omit: function (obj, keys) {
-	    keys = [].concat(keys);
-	    return _.transform(obj, function (mapped, val, key) {
-	      if (keys.indexOf(key) === -1) mapped[key] = val;
-	    }, {});
-	  },
-
-	  find: function (arr, cb, thisArg) {
-	    var result;
-	    if (Array.isArray(arr)) {
-	      arr.every(function (val, idx) {
-	        if (cb.call(thisArg, val, idx, arr)) return (result = val, false);
-	        return true;
-	      });
-	      return result;
-	    } else for (var key in arr) if (has(arr, key)) if (cb.call(thisArg, arr[key], key, arr)) return arr[key];
-	  },
-
-	  chunk: function (array, chunkSize) {
-	    var index = 0,
-	        length = array ? array.length : 0,
-	        result = [];
-
-	    chunkSize = Math.max(+chunkSize || 1, 1);
-
-	    while (index < length) result.push(array.slice(index, index += chunkSize));
-
-	    return result;
-	  },
-
-	  splat: function (obj) {
-	    return obj == null ? [] : [].concat(obj);
-	  },
-
-	  noop: function () {},
-
-	  uniqueId: function (prefix) {
-	    return "" + ((prefix == null ? "" : prefix) + ++idCount);
+	    return React.createElement("div", { className: "rw-header" }, React.createElement(Btn, { className: "rw-btn-left",
+	      tabIndex: "-1",
+	      onClick: this.props.onMoveLeft,
+	      disabled: this.props.prevDisabled,
+	      "aria-disabled": this.props.prevDisabled,
+	      title: this.props.moveBack }, React.createElement("i", { className: "rw-i rw-i-caret-" + (rtl ? "right" : "left") }, React.createElement("span", { className: "rw-sr" }, this.props.moveBack))), React.createElement(Btn, { className: "rw-btn-view",
+	      id: this.props.labelId,
+	      tabIndex: "-1",
+	      onClick: this.props.onViewChange,
+	      disabled: this.props.upDisabled,
+	      "aria-disabled": this.props.upDisabled }, this.props.label), React.createElement(Btn, { className: "rw-btn-right",
+	      tabIndex: "-1",
+	      onClick: this.props.onMoveRight,
+	      disabled: this.props.nextDisabled,
+	      "aria-disabled": this.props.nextDisabled,
+	      title: this.props.moveForward }, React.createElement("i", { className: "rw-i rw-i-caret-" + (rtl ? "left" : "right") }, React.createElement("span", { className: "rw-sr" }, this.props.moveForward))));
 	  }
-	};
-
-	function has(o, k) {
-	  return o ? Object.prototype.hasOwnProperty.call(o, k) : false;
-	}
-
-	function shallowEqual(objA, objB) {
-	  var key;
-
-	  for (key in objA) if (has(objA, key) && (!has(objB, key) || objA[key] !== objB[key])) return false;
-
-	  for (key in objB) if (has(objB, key) && !has(objA, key)) return false;
-
-	  return true;
-	}
+	});
 
 /***/ },
 /* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var _ = __webpack_require__(121);
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1),
+	    cx = __webpack_require__(126),
+	    dates = __webpack_require__(128),
+	    directions = __webpack_require__(129).directions,
+	    _ = __webpack_require__(130),
+	    Btn = __webpack_require__(143);
+
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+
+	module.exports = React.createClass({
+
+	  displayName: "MonthView",
+
+	  mixins: [__webpack_require__(131), __webpack_require__(158), __webpack_require__(159)("month", "day")],
+
+	  propTypes: {
+	    culture: React.PropTypes.string,
+	    value: React.PropTypes.instanceOf(Date),
+	    selectedDate: React.PropTypes.instanceOf(Date),
+	    min: React.PropTypes.instanceOf(Date),
+	    max: React.PropTypes.instanceOf(Date),
+
+	    format: React.PropTypes.string,
+
+	    onChange: React.PropTypes.func.isRequired, //value is chosen
+	    onMoveLeft: React.PropTypes.func,
+	    onMoveRight: React.PropTypes.func
+	  },
+
+	  render: function () {
+	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
+	        month = dates.visibleDays(this.props.value),
+	        rows = _.chunk(month, 7);
+
+	    return React.createElement("table", _extends({}, props, {
+	      role: "grid",
+	      className: "rw-calendar-grid",
+	      "aria-activedescendant": this._id("_selected_item"),
+	      onKeyUp: this._keyUp }), React.createElement("thead", null, React.createElement("tr", null, this._headers())), React.createElement("tbody", null, rows.map(this._row)));
+	  },
+
+	  _row: function (row, i) {
+	    var _this = this;
+	    var id = this._id("_selected_item");
+
+	    return React.createElement("tr", { key: "week_" + i, role: "row" }, row.map(function (day, idx) {
+	      var focused = dates.eq(day, _this.state.focusedDate, "day"),
+	          selected = dates.eq(day, _this.props.selectedDate, "day");
+
+	      return !dates.inRange(day, _this.props.min, _this.props.max) ? React.createElement("td", { key: "day_" + idx, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: "day_" + idx, role: "gridcell" }, React.createElement(Btn, {
+	        tabIndex: "-1",
+	        onClick: _this.props.onChange.bind(null, day),
+	        "aria-selected": selected,
+	        "aria-disabled": _this.props.disabled,
+	        disabled: _this.props.disabled,
+	        className: cx({
+	          "rw-off-range": dates.month(day) !== dates.month(_this.state.focusedDate),
+	          "rw-state-focus": focused,
+	          "rw-state-selected": selected }),
+	        id: focused ? id : undefined }, dates.format(day, "dd", _this.props.culture)));
+	    }));
+	  },
+
+
+	  _headers: function (format) {
+	    var days = dates.shortDaysOfWeek(this.props.culture);
+
+	    return days.map(function (day, i) {
+	      return React.createElement("th", { key: "header_" + i }, day);
+	    });
+	  },
+
+	  move: function (date, direction) {
+	    var min = this.props.min,
+	        max = this.props.max;
+
+	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
+
+	    if (direction === directions.LEFT) date = nextDate(date, -1, "day", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "day", min, max);else if (direction === directions.UP) date = nextDate(date, -1, "week", min, max);else if (direction === directions.DOWN) date = nextDate(date, 1, "week", min, max);
+
+	    return date;
+	  }
+
+	});
+
+	function nextDate(date, val, unit, min, max) {
+	  var newDate = dates.add(date, val, unit);
+
+	  return dates.inRange(newDate, min, max, "day") ? newDate : date;
+	}
+
+/***/ },
+/* 123 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1),
+	    cx = __webpack_require__(126),
+	    dates = __webpack_require__(128),
+	    directions = __webpack_require__(129).directions,
+	    Btn = __webpack_require__(143),
+	    _ = __webpack_require__(130);
+
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+
+	module.exports = React.createClass({
+
+	  displayName: "YearView",
+
+	  mixins: [__webpack_require__(131), __webpack_require__(158), __webpack_require__(159)("year", "month")],
+
+	  propTypes: {
+	    culture: React.PropTypes.string,
+	    value: React.PropTypes.instanceOf(Date),
+	    min: React.PropTypes.instanceOf(Date),
+	    max: React.PropTypes.instanceOf(Date),
+	    onChange: React.PropTypes.func.isRequired
+	  },
+
+
+	  render: function () {
+	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
+	        months = dates.monthsInYear(dates.year(this.props.value)),
+	        rows = _.chunk(months, 4);
+
+	    return React.createElement("table", _extends({}, props, {
+	      tabIndex: this.props.disabled ? "-1" : "0",
+	      ref: "table",
+	      role: "grid",
+	      className: "rw-calendar-grid rw-nav-view",
+	      "aria-activedescendant": this._id("_selected_item"),
+	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
+	  },
+
+	  _row: function (row, i) {
+	    var _this = this;
+	    var id = this._id("_selected_item");
+
+	    return React.createElement("tr", { key: i, role: "row" }, row.map(function (date, i) {
+	      var focused = dates.eq(date, _this.state.focusedDate, "month"),
+	          selected = dates.eq(date, _this.props.value, "month");
+
+	      return dates.inRange(date, _this.props.min, _this.props.max, "month") ? React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, date), tabIndex: "-1",
+	        id: focused ? id : undefined,
+	        "aria-selected": selected,
+	        "aria-disabled": _this.props.disabled,
+	        disabled: _this.props.disabled,
+	        className: cx({
+	          "rw-state-focus": focused,
+	          "rw-state-selected": selected
+	        }) }, dates.format(date, dates.formats.MONTH_NAME_ABRV, _this.props.culture))) : React.createElement("td", { key: i, className: "rw-empty-cell", role: "gridcell" }, " ");
+	    }));
+	  },
+
+	  focus: function () {
+	    this.refs.table.getDOMNode().focus();
+	  },
+
+	  move: function (date, direction) {
+	    var min = this.props.min,
+	        max = this.props.max;
+
+	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
+
+	    if (direction === directions.LEFT) date = nextDate(date, -1, "month", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "month", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "month", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "month", min, max);
+
+	    return date;
+	  }
+
+	});
+
+	function nextDate(date, val, unit, min, max) {
+	  var newDate = dates.add(date, val, unit);
+	  return dates.inRange(newDate, min, max, "month") ? newDate : date;
+	}
+
+/***/ },
+/* 124 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1),
+	    _ = __webpack_require__(130),
+	    cx = __webpack_require__(126),
+	    dates = __webpack_require__(128),
+	    directions = __webpack_require__(129).directions,
+	    Btn = __webpack_require__(143);
+
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+
+
+	module.exports = React.createClass({
+
+	  displayName: "DecadeView",
+
+	  mixins: [__webpack_require__(131), __webpack_require__(133), __webpack_require__(158), __webpack_require__(159)("decade", "year")],
+
+	  propTypes: {
+	    culture: React.PropTypes.string,
+
+	    value: React.PropTypes.instanceOf(Date),
+	    min: React.PropTypes.instanceOf(Date),
+	    max: React.PropTypes.instanceOf(Date),
+	    onChange: React.PropTypes.func.isRequired
+	  },
+
+	  render: function () {
+	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
+	        years = getDecadeYears(this.props.value),
+	        rows = _.chunk(years, 4);
+
+	    return React.createElement("table", _extends({}, props, {
+	      tabIndex: this.props.disabled ? "-1" : "0",
+	      role: "grid",
+	      className: "rw-calendar-grid rw-nav-view",
+	      "aria-activedescendant": this._id("_selected_item"),
+	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
+	  },
+
+	  _row: function (row, i) {
+	    var _this = this;
+	    var id = this._id("_selected_item");
+
+	    return React.createElement("tr", { key: "row_" + i, role: "row" }, row.map(function (date, i) {
+	      var focused = dates.eq(date, _this.state.focusedDate, "year"),
+	          selected = dates.eq(date, _this.props.value, "year");
+
+	      return !dates.inRange(date, _this.props.min, _this.props.max, "year") ? React.createElement("td", { key: i, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, date), tabIndex: "-1",
+	        id: focused ? id : undefined,
+	        "aria-selected": selected,
+	        "aria-disabled": _this.props.disabled,
+	        disabled: _this.props.disabled,
+	        className: cx({
+	          "rw-off-range": !inDecade(date, _this.props.value),
+	          "rw-state-focus": focused,
+	          "rw-state-selected": selected }) }, dates.format(date, dates.formats.YEAR, _this.props.culture)));
+	    }));
+	  },
+
+	  move: function (date, direction) {
+	    var min = this.props.min,
+	        max = this.props.max;
+
+	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
+
+	    if (direction === directions.LEFT) date = nextDate(date, -1, "year", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "year", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "year", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "year", min, max);
+
+	    return date;
+	  }
+
+	});
+
+	function inDecade(date, start) {
+	  return dates.gte(date, dates.startOf(start, "decade"), "year") && dates.lte(date, dates.endOf(start, "decade"), "year");
+	}
+
+	function getDecadeYears(_date) {
+	  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	      date = dates.add(dates.startOf(_date, "decade"), -2, "year");
+
+	  return days.map(function (i) {
+	    return date = dates.add(date, 1, "year");
+	  });
+	}
+
+	function nextDate(date, val, unit, min, max) {
+	  var newDate = dates.add(date, val, unit);
+	  return dates.inRange(newDate, min, max, "year") ? newDate : date;
+	}
+
+/***/ },
+/* 125 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1),
+	    cx = __webpack_require__(126),
+	    dates = __webpack_require__(128),
+	    directions = __webpack_require__(129).directions,
+	    Btn = __webpack_require__(143),
+	    _ = __webpack_require__(130); //omit
+
+	var opposite = {
+	  LEFT: directions.RIGHT,
+	  RIGHT: directions.LEFT
+	};
+
+
+	module.exports = React.createClass({
+
+	  displayName: "CenturyView",
+
+	  mixins: [__webpack_require__(131), __webpack_require__(133), __webpack_require__(158), __webpack_require__(159)("century", "decade")],
+
+	  propTypes: {
+	    culture: React.PropTypes.string,
+	    value: React.PropTypes.instanceOf(Date),
+	    min: React.PropTypes.instanceOf(Date),
+	    max: React.PropTypes.instanceOf(Date),
+
+	    onChange: React.PropTypes.func.isRequired
+	  },
+
+	  render: function () {
+	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
+	        years = getCenturyDecades(this.props.value),
+	        rows = _.chunk(years, 4);
+
+	    return React.createElement("table", _extends({}, props, {
+	      tabIndex: this.props.disabled ? "-1" : "0",
+	      role: "grid",
+	      className: "rw-calendar-grid rw-nav-view",
+	      "aria-activedescendant": this._id("_selected_item"),
+	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
+	  },
+
+	  _row: function (row, i) {
+	    var _this = this;
+	    var id = this._id("_selected_item");
+
+	    return React.createElement("tr", { key: "row_" + i, role: "row" }, row.map(function (date, i) {
+	      var focused = dates.eq(date, _this.state.focusedDate, "decade"),
+	          selected = dates.eq(date, _this.props.value, "decade"),
+	          d = inRangeDate(date, _this.props.min, _this.props.max);
+
+	      return !inRange(date, _this.props.min, _this.props.max) ? React.createElement("td", { key: i, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, d),
+	        tabIndex: "-1",
+	        id: focused ? id : undefined,
+	        "aria-selected": selected,
+	        "aria-disabled": _this.props.disabled,
+	        disabled: _this.props.disabled,
+	        className: cx({
+	          "rw-off-range": !inCentury(date, _this.props.value),
+	          "rw-state-focus": focused,
+	          "rw-state-selected": selected }) }, label(date, _this.props.culture)));
+	    }));
+	  },
+
+
+	  move: function (date, direction) {
+	    var min = this.props.min,
+	        max = this.props.max;
+
+	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
+
+	    if (direction === directions.LEFT) date = nextDate(date, -1, "decade", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "decade", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "decade", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "decade", min, max);
+
+	    return date;
+	  }
+
+	});
+
+	function label(date, culture) {
+	  return dates.format(dates.startOf(date, "decade"), dates.formats.YEAR, culture) + " - " + dates.format(dates.endOf(date, "decade"), dates.formats.YEAR, culture);
+	}
+
+	function inRangeDate(decade, min, max) {
+	  return dates.max(dates.min(decade, max), min);
+	}
+
+	function inRange(decade, min, max) {
+	  return dates.gte(decade, dates.startOf(min, "decade"), "year") && dates.lte(decade, dates.endOf(max, "decade"), "year");
+	}
+
+	function inCentury(date, start) {
+	  return dates.gte(date, dates.startOf(start, "century"), "year") && dates.lte(date, dates.endOf(start, "century"), "year");
+	}
+
+	function getCenturyDecades(_date) {
+	  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	      date = dates.add(dates.startOf(_date, "century"), -20, "year");
+
+	  return days.map(function (i) {
+	    return date = dates.add(date, 10, "year");
+	  });
+	}
+
+
+	function nextDate(date, val, unit, min, max) {
+	  var newDate = dates.add(date, val, unit);
+	  return dates.inRange(newDate, min, max, "decade") ? newDate : date;
+	}
+
+/***/ },
+/* 126 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _ = __webpack_require__(130);
 
 	module.exports = function (existing, classes) {
 	  if (arguments.length === 1) if (typeof existing === "string") classes = {};else classes = existing, existing = "";
@@ -16191,14 +16586,14 @@
 	};
 
 /***/ },
-/* 123 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var _ = __webpack_require__(121) //invert, transform
+	var _ = __webpack_require__(130) //invert, transform
 	,
 	    React = __webpack_require__(1),
-	    compat = __webpack_require__(158);
+	    compat = __webpack_require__(160);
 
 
 	function compatPropType(handler, propType) {
@@ -16305,7 +16700,412 @@
 	}
 
 /***/ },
-/* 124 */
+/* 128 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var dateMath = __webpack_require__(90),
+	    globalize = __webpack_require__(174),
+	    _ = __webpack_require__(130); //extend
+
+	var dates = module.exports = _.assign(dateMath, {
+	  // wrapper methods for isolating globalize use throughout the lib
+	  // looking forward towards the 1.0 release
+	  culture: function (culture) {
+	    return culture ? globalize.findClosestCulture(culture) : globalize.culture();
+	  },
+
+	  startOfWeek: function (culture) {
+	    culture = dates.culture(culture);
+
+	    if (!culture || !culture.calendar) return 0;
+
+	    return culture.calendar.firstDay || 0;
+	  },
+
+	  parse: function (date, format, culture) {
+	    return globalize.parseDate(date, format, culture);
+	  },
+
+	  format: function (date, format, culture) {
+	    return globalize.format(date, format, culture);
+	  },
+
+	  //-------------------------------------
+
+	  shortDaysOfWeek: function (culture) {
+	    var start = dates.startOfWeek(culture),
+	        days,
+	        front;
+
+	    culture = dates.culture(culture);
+
+	    if (culture && culture.calendar) {
+	      days = culture.calendar.days.namesShort.slice();
+
+	      if (start === 0) return days;
+
+	      front = days.splice(0, start);
+	      days = days.concat(front);
+	      return days;
+	    }
+	  },
+
+	  monthsInYear: function (year) {
+	    var months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+	        date = new Date(year, 0, 1);
+
+	    return months.map(function (i) {
+	      return dates.month(date, i);
+	    });
+	  },
+
+	  firstOfDecade: function (date) {
+	    var decade = dates.year(date) % 10;
+
+	    return dates.subtract(date, decade, "year");
+	  },
+
+	  lastOfDecade: function (date) {
+	    return dates.add(dates.firstOfDecade(date), 9, "year");
+	  },
+
+	  firstOfCentury: function (date) {
+	    var decade = dates.year(date) % 100;
+	    return dates.subtract(date, decade, "year");
+	  },
+
+	  lastOfCentury: function (date) {
+	    return dates.add(dates.firstOfCentury(date), 99, "year");
+	  },
+
+	  firstVisibleDay: function (date) {
+	    var firstOfMonth = dates.startOf(date, "month");
+	    return dates.startOf(firstOfMonth, "week");
+	  },
+
+	  lastVisibleDay: function (date) {
+	    var endOfMonth = dates.endOf(date, "month");
+	    return dates.endOf(endOfMonth, "week");
+	  },
+
+	  visibleDays: function (date) {
+	    var current = dates.firstVisibleDay(date),
+	        last = dates.lastVisibleDay(date),
+	        days = [];
+
+	    while (dates.lte(current, last, "day")) {
+	      days.push(current);
+	      current = dates.add(current, 1, "day");
+	    }
+
+	    return days;
+	  },
+
+	  merge: function (date, time) {
+	    if (time == null && date == null) return null;
+
+	    if (time == null) time = new Date();
+	    if (date == null) date = new Date();
+
+	    date = dates.startOf(date, "day");
+	    date = dates.hours(date, dates.hours(time));
+	    date = dates.minutes(date, dates.minutes(time));
+	    date = dates.seconds(date, dates.seconds(time));
+	    return dates.milliseconds(date, dates.milliseconds(time));
+	  },
+
+	  sameMonth: function (dateA, dateB) {
+	    return dates.eq(dateA, dateB, "month");
+	  },
+
+	  today: function () {
+	    return this.startOf(new Date(), "day");
+	  },
+
+	  yesterday: function () {
+	    return this.add(this.startOf(new Date(), "day"), -1, "day");
+	  },
+
+	  tomorrow: function () {
+	    return this.add(this.startOf(new Date(), "day"), 1, "day");
+	  },
+
+	  formats: {
+	    DAY_OF_MONTH: "dd",
+	    DAY_NAME_SHORT: null,
+	    MONTH_NAME_ABRV: "MMM",
+	    MONTH_YEAR: "MMMM yyyy",
+	    YEAR: "yyyy"
+	  }
+
+	});
+
+/***/ },
+/* 129 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _ = __webpack_require__(130); //object
+
+	var views = {
+	  MONTH: "month",
+	  YEAR: "year",
+	  DECADE: "decade",
+	  CENTURY: "century"
+	};
+
+	module.exports = {
+
+	  directions: {
+	    LEFT: "LEFT",
+	    RIGHT: "RIGHT",
+	    UP: "UP",
+	    DOWN: "DOWN"
+	  },
+
+	  datePopups: {
+	    TIME: "time",
+	    CALENDAR: "calendar"
+	  },
+
+	  calendarViews: views,
+
+	  calendarViewHierarchy: _.object([[views.MONTH, views.YEAR], [views.YEAR, views.DECADE], [views.DECADE, views.CENTURY]]),
+
+	  calendarViewUnits: _.object([[views.MONTH, views.DAY], [views.YEAR, views.MONTH], [views.DECADE, views.YEAR], [views.CENTURY, views.DECADE]])
+	};
+
+/***/ },
+/* 130 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var idCount = 0;
+
+	var _ = module.exports = {
+
+	  has: has,
+
+	  assign: __webpack_require__(101),
+
+	  isShallowEqual: function (a, b) {
+	    if (a === b) return true;
+	    if (a instanceof Date && b instanceof Date) return a.getTime() === b.getTime();
+
+	    if (typeof a != "object" && typeof b != "object") return a === b;
+
+	    if (typeof a != typeof b) return false;
+
+	    return shallowEqual(a, b);
+	  },
+
+	  transform: function (obj, cb, seed) {
+	    _.each(obj, cb.bind(null, seed = seed || (Array.isArray(obj) ? [] : {})));
+	    return seed;
+	  },
+
+	  each: function (obj, cb, thisArg) {
+	    if (Array.isArray(obj)) return obj.forEach(cb, thisArg);
+
+	    for (var key in obj) if (has(obj, key)) cb.call(thisArg, obj[key], key, obj);
+	  },
+
+	  object: function (arr) {
+	    return _.transform(arr, function (obj, val) {
+	      return obj[val[0]] = val[1];
+	    }, {});
+	  },
+
+	  pick: function (obj, keys) {
+	    keys = [].concat(keys);
+	    return _.transform(obj, function (mapped, val, key) {
+	      if (keys.indexOf(key) !== -1) mapped[key] = val;
+	    }, {});
+	  },
+
+	  omit: function (obj, keys) {
+	    keys = [].concat(keys);
+	    return _.transform(obj, function (mapped, val, key) {
+	      if (keys.indexOf(key) === -1) mapped[key] = val;
+	    }, {});
+	  },
+
+	  find: function (arr, cb, thisArg) {
+	    var result;
+	    if (Array.isArray(arr)) {
+	      arr.every(function (val, idx) {
+	        if (cb.call(thisArg, val, idx, arr)) return (result = val, false);
+	        return true;
+	      });
+	      return result;
+	    } else for (var key in arr) if (has(arr, key)) if (cb.call(thisArg, arr[key], key, arr)) return arr[key];
+	  },
+
+	  chunk: function (array, chunkSize) {
+	    var index = 0,
+	        length = array ? array.length : 0,
+	        result = [];
+
+	    chunkSize = Math.max(+chunkSize || 1, 1);
+
+	    while (index < length) result.push(array.slice(index, index += chunkSize));
+
+	    return result;
+	  },
+
+	  splat: function (obj) {
+	    return obj == null ? [] : [].concat(obj);
+	  },
+
+	  noop: function () {},
+
+	  uniqueId: function (prefix) {
+	    return "" + ((prefix == null ? "" : prefix) + ++idCount);
+	  }
+	};
+
+	function has(o, k) {
+	  return o ? Object.prototype.hasOwnProperty.call(o, k) : false;
+	}
+
+	function shallowEqual(objA, objB) {
+	  var key;
+
+	  for (key in objA) if (has(objA, key) && (!has(objB, key) || objA[key] !== objB[key])) return false;
+
+	  for (key in objB) if (has(objB, key) && !has(objA, key)) return false;
+
+	  return true;
+	}
+
+/***/ },
+/* 131 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(1),
+	    _ = __webpack_require__(130); //uniqueID
+
+	module.exports = {
+
+	  propTypes: {
+
+	    disabled: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.oneOf(["disabled"])]),
+
+	    readOnly: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.oneOf(["readOnly"])]) },
+
+	  isDisabled: function () {
+	    return this.props.disabled === true || this.props.disabled === "disabled";
+	  },
+
+	  isReadOnly: function () {
+	    return this.props.readOnly === true || this.props.readOnly === "readonly";
+	  },
+
+	  notify: function (handler, args) {
+	    this.props[handler] && this.props[handler].apply(null, [].concat(args));
+	  },
+
+	  _id: function (suffix) {
+	    this._id_ || (this._id_ = _.uniqueId("rw_"));
+	    return (this.props.id || this._id_) + suffix;
+	  },
+
+	  _maybeHandle: function (handler, disabledOnly) {
+	    if (!(this.isDisabled() || !disabledOnly && this.isReadOnly())) return handler;
+	    return function () {};
+	  } };
+
+/***/ },
+/* 132 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _require = __webpack_require__(130);
+
+	var has = _require.has;
+
+
+
+	module.exports = {
+
+	  componentWillUnmount: function componentWillUnmount() {
+	    var timers = this._timers || {};
+
+	    for (var k in timers) if (has(timers, k)) clearTimeout(timers[k]);
+	  },
+
+	  setTimeout: (function (_setTimeout) {
+	    var _setTimeoutWrapper = function setTimeout() {
+	      return _setTimeout.apply(this, arguments);
+	    };
+
+	    _setTimeoutWrapper.toString = function () {
+	      return _setTimeout.toString();
+	    };
+
+	    return _setTimeoutWrapper;
+	  })(function (key, cb, duration) {
+	    var timers = this._timers || (this._timers = Object.create(null));
+
+	    clearTimeout(timers[key]);
+	    timers[key] = setTimeout(cb, duration);
+	  })
+
+	};
+
+/***/ },
+/* 133 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var _ = __webpack_require__(130);
+
+	//backport PureRenderEqual
+	module.exports = {
+
+	  shouldComponentUpdate: function (nextProps, nextState) {
+	    return !_.isShallowEqual(this.props, nextProps) || !_.isShallowEqual(this.state, nextState);
+	  }
+	};
+
+/***/ },
+/* 134 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(1);
+
+	module.exports = {
+
+	  propTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+
+	  contextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+
+	  childContextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+
+	  getChildContext: function () {
+	    return {
+	      isRtl: this.props.isRtl || this.context && this.context.isRtl
+	    };
+	  },
+
+	  isRtl: function () {
+	    return !!(this.props.isRtl || this.context && this.context.isRtl);
+	  }
+
+	};
+
+/***/ },
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16341,7 +17141,7 @@
 	}
 
 /***/ },
-/* 125 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16499,7 +17299,7 @@
 	}
 
 /***/ },
-/* 126 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16520,16 +17320,16 @@
 	};
 
 	var React = __webpack_require__(1),
-	    CustomPropTypes = __webpack_require__(124),
-	    cx = __webpack_require__(122),
-	    _ = __webpack_require__(121);
+	    CustomPropTypes = __webpack_require__(135),
+	    cx = __webpack_require__(126),
+	    _ = __webpack_require__(130);
 
 
 	module.exports = React.createClass({
 
 	  displayName: "List",
 
-	  mixins: [__webpack_require__(129), __webpack_require__(132), __webpack_require__(159)],
+	  mixins: [__webpack_require__(131), __webpack_require__(140), __webpack_require__(161)],
 
 	  propTypes: {
 	    data: React.PropTypes.array,
@@ -16621,7 +17421,7 @@
 	});
 
 /***/ },
-/* 127 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16642,16 +17442,16 @@
 	};
 
 	var React = __webpack_require__(1),
-	    CustomPropTypes = __webpack_require__(124),
-	    cx = __webpack_require__(122),
-	    _ = __webpack_require__(121);
+	    CustomPropTypes = __webpack_require__(135),
+	    cx = __webpack_require__(126),
+	    _ = __webpack_require__(130);
 
 
 	module.exports = React.createClass({
 
 	  displayName: "List",
 
-	  mixins: [__webpack_require__(129), __webpack_require__(132), __webpack_require__(159)],
+	  mixins: [__webpack_require__(131), __webpack_require__(140), __webpack_require__(161)],
 
 	  propTypes: {
 	    data: React.PropTypes.array,
@@ -16832,7 +17632,7 @@
 	});
 
 /***/ },
-/* 128 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16857,103 +17657,12 @@
 	}
 
 /***/ },
-/* 129 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var React = __webpack_require__(1),
-	    _ = __webpack_require__(121); //uniqueID
-
-	module.exports = {
-
-	  propTypes: {
-
-	    disabled: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.oneOf(["disabled"])]),
-
-	    readOnly: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.oneOf(["readOnly"])]) },
-
-	  isDisabled: function () {
-	    return this.props.disabled === true || this.props.disabled === "disabled";
-	  },
-
-	  isReadOnly: function () {
-	    return this.props.readOnly === true || this.props.readOnly === "readonly";
-	  },
-
-	  notify: function (handler, args) {
-	    this.props[handler] && this.props[handler].apply(null, [].concat(args));
-	  },
-
-	  _id: function (suffix) {
-	    this._id_ || (this._id_ = _.uniqueId("rw_"));
-	    return (this.props.id || this._id_) + suffix;
-	  },
-
-	  _maybeHandle: function (handler, disabledOnly) {
-	    if (!(this.isDisabled() || !disabledOnly && this.isReadOnly())) return handler;
-	    return function () {};
-	  } };
-
-/***/ },
-/* 130 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _require = __webpack_require__(121);
-
-	var has = _require.has;
-
-
-
-	module.exports = {
-
-	  componentWillUnmount: function componentWillUnmount() {
-	    var timers = this._timers || {};
-
-	    for (var k in timers) if (has(timers, k)) clearTimeout(timers[k]);
-	  },
-
-	  setTimeout: (function (_setTimeout) {
-	    var _setTimeoutWrapper = function setTimeout() {
-	      return _setTimeout.apply(this, arguments);
-	    };
-
-	    _setTimeoutWrapper.toString = function () {
-	      return _setTimeout.toString();
-	    };
-
-	    return _setTimeoutWrapper;
-	  })(function (key, cb, duration) {
-	    var timers = this._timers || (this._timers = Object.create(null));
-
-	    clearTimeout(timers[key]);
-	    timers[key] = setTimeout(cb, duration);
-	  })
-
-	};
-
-/***/ },
-/* 131 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _ = __webpack_require__(121);
-
-	//backport PureRenderEqual
-	module.exports = {
-
-	  shouldComponentUpdate: function (nextProps, nextState) {
-	    return !_.isShallowEqual(this.props, nextProps) || !_.isShallowEqual(this.state, nextState);
-	  }
-	};
-
-/***/ },
-/* 132 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var React = __webpack_require__(1),
-	    _ = __webpack_require__(121);
+	    _ = __webpack_require__(130);
 
 	module.exports = {
 
@@ -17009,7 +17718,7 @@
 	};
 
 /***/ },
-/* 133 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17029,40 +17738,7 @@
 	  } };
 
 /***/ },
-/* 134 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var React = __webpack_require__(1);
-
-	module.exports = {
-
-	  propTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-
-	  contextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-
-	  childContextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-
-	  getChildContext: function () {
-	    return {
-	      isRtl: this.props.isRtl || this.context && this.context.isRtl
-	    };
-	  },
-
-	  isRtl: function () {
-	    return !!(this.props.isRtl || this.context && this.context.isRtl);
-	  }
-
-	};
-
-/***/ },
-/* 135 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17106,7 +17782,7 @@
 	module.exports = common;
 
 /***/ },
-/* 136 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17141,7 +17817,7 @@
 	});
 
 /***/ },
-/* 137 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17156,7 +17832,7 @@
 	};
 
 	var React = __webpack_require__(1),
-	    caretPos = __webpack_require__(160);
+	    caretPos = __webpack_require__(162);
 
 	module.exports = React.createClass({
 	  displayName: "exports",
@@ -17225,13 +17901,13 @@
 	});
 
 /***/ },
-/* 138 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var React = __webpack_require__(1),
-	    filters = __webpack_require__(135),
-	    helper = __webpack_require__(132);
+	    filters = __webpack_require__(142),
+	    helper = __webpack_require__(140);
 
 	var filterTypes = Object.keys(filters).filter(function (i) {
 	  return i !== "filter";
@@ -17293,682 +17969,6 @@
 	}
 
 /***/ },
-/* 139 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var React = __webpack_require__(1),
-	    Btn = __webpack_require__(136);
-
-	module.exports = React.createClass({
-	  displayName: "exports",
-
-
-	  propTypes: {
-	    label: React.PropTypes.string.isRequired,
-	    labelId: React.PropTypes.string,
-
-	    upDisabled: React.PropTypes.bool.isRequired,
-	    prevDisabled: React.PropTypes.bool.isRequired,
-	    nextDisabled: React.PropTypes.bool.isRequired,
-	    onViewChange: React.PropTypes.func.isRequired,
-	    onMoveLeft: React.PropTypes.func.isRequired,
-	    onMoveRight: React.PropTypes.func.isRequired,
-
-	    messages: React.PropTypes.shape({
-	      moveBack: React.PropTypes.string,
-	      moveForward: React.PropTypes.string
-	    })
-	  },
-
-	  mixins: [__webpack_require__(131), __webpack_require__(161)],
-
-	  getDefaultProps: function () {
-	    return {
-	      messages: {
-	        moveBack: "navigate back",
-	        moveForward: "navigate forward" }
-	    };
-	  },
-
-	  render: function () {
-	    var rtl = this.isRtl();
-
-	    return React.createElement("div", { className: "rw-header" }, React.createElement(Btn, { className: "rw-btn-left",
-	      tabIndex: "-1",
-	      onClick: this.props.onMoveLeft,
-	      disabled: this.props.prevDisabled,
-	      "aria-disabled": this.props.prevDisabled,
-	      title: this.props.moveBack }, React.createElement("i", { className: "rw-i rw-i-caret-" + (rtl ? "right" : "left") }, React.createElement("span", { className: "rw-sr" }, this.props.moveBack))), React.createElement(Btn, { className: "rw-btn-view",
-	      id: this.props.labelId,
-	      tabIndex: "-1",
-	      onClick: this.props.onViewChange,
-	      disabled: this.props.upDisabled,
-	      "aria-disabled": this.props.upDisabled }, this.props.label), React.createElement(Btn, { className: "rw-btn-right",
-	      tabIndex: "-1",
-	      onClick: this.props.onMoveRight,
-	      disabled: this.props.nextDisabled,
-	      "aria-disabled": this.props.nextDisabled,
-	      title: this.props.moveForward }, React.createElement("i", { className: "rw-i rw-i-caret-" + (rtl ? "left" : "right") }, React.createElement("span", { className: "rw-sr" }, this.props.moveForward))));
-	  }
-	});
-
-/***/ },
-/* 140 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(144),
-	    directions = __webpack_require__(145).directions,
-	    _ = __webpack_require__(121),
-	    Btn = __webpack_require__(136);
-
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-
-	module.exports = React.createClass({
-
-	  displayName: "MonthView",
-
-	  mixins: [__webpack_require__(129), __webpack_require__(161), __webpack_require__(162)("month", "day")],
-
-	  propTypes: {
-	    culture: React.PropTypes.string,
-	    value: React.PropTypes.instanceOf(Date),
-	    selectedDate: React.PropTypes.instanceOf(Date),
-	    min: React.PropTypes.instanceOf(Date),
-	    max: React.PropTypes.instanceOf(Date),
-
-	    format: React.PropTypes.string,
-
-	    onChange: React.PropTypes.func.isRequired, //value is chosen
-	    onMoveLeft: React.PropTypes.func,
-	    onMoveRight: React.PropTypes.func
-	  },
-
-	  render: function () {
-	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
-	        month = dates.visibleDays(this.props.value),
-	        rows = _.chunk(month, 7);
-
-	    return React.createElement("table", _extends({}, props, {
-	      role: "grid",
-	      className: "rw-calendar-grid",
-	      "aria-activedescendant": this._id("_selected_item"),
-	      onKeyUp: this._keyUp }), React.createElement("thead", null, React.createElement("tr", null, this._headers())), React.createElement("tbody", null, rows.map(this._row)));
-	  },
-
-	  _row: function (row, i) {
-	    var _this = this;
-	    var id = this._id("_selected_item");
-
-	    return React.createElement("tr", { key: "week_" + i, role: "row" }, row.map(function (day, idx) {
-	      var focused = dates.eq(day, _this.state.focusedDate, "day"),
-	          selected = dates.eq(day, _this.props.selectedDate, "day");
-
-	      return !dates.inRange(day, _this.props.min, _this.props.max) ? React.createElement("td", { key: "day_" + idx, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: "day_" + idx, role: "gridcell" }, React.createElement(Btn, {
-	        tabIndex: "-1",
-	        onClick: _this.props.onChange.bind(null, day),
-	        "aria-selected": selected,
-	        "aria-disabled": _this.props.disabled,
-	        disabled: _this.props.disabled,
-	        className: cx({
-	          "rw-off-range": dates.month(day) !== dates.month(_this.state.focusedDate),
-	          "rw-state-focus": focused,
-	          "rw-state-selected": selected }),
-	        id: focused ? id : undefined }, dates.format(day, "dd", _this.props.culture)));
-	    }));
-	  },
-
-
-	  _headers: function (format) {
-	    var days = dates.shortDaysOfWeek(this.props.culture);
-
-	    return days.map(function (day, i) {
-	      return React.createElement("th", { key: "header_" + i }, day);
-	    });
-	  },
-
-	  move: function (date, direction) {
-	    var min = this.props.min,
-	        max = this.props.max;
-
-	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
-
-	    if (direction === directions.LEFT) date = nextDate(date, -1, "day", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "day", min, max);else if (direction === directions.UP) date = nextDate(date, -1, "week", min, max);else if (direction === directions.DOWN) date = nextDate(date, 1, "week", min, max);
-
-	    return date;
-	  }
-
-	});
-
-	function nextDate(date, val, unit, min, max) {
-	  var newDate = dates.add(date, val, unit);
-
-	  return dates.inRange(newDate, min, max, "day") ? newDate : date;
-	}
-
-/***/ },
-/* 141 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(144),
-	    directions = __webpack_require__(145).directions,
-	    Btn = __webpack_require__(136),
-	    _ = __webpack_require__(121);
-
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-
-	module.exports = React.createClass({
-
-	  displayName: "YearView",
-
-	  mixins: [__webpack_require__(129), __webpack_require__(161), __webpack_require__(162)("year", "month")],
-
-	  propTypes: {
-	    culture: React.PropTypes.string,
-	    value: React.PropTypes.instanceOf(Date),
-	    min: React.PropTypes.instanceOf(Date),
-	    max: React.PropTypes.instanceOf(Date),
-	    onChange: React.PropTypes.func.isRequired
-	  },
-
-
-	  render: function () {
-	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
-	        months = dates.monthsInYear(dates.year(this.props.value)),
-	        rows = _.chunk(months, 4);
-
-	    return React.createElement("table", _extends({}, props, {
-	      tabIndex: this.props.disabled ? "-1" : "0",
-	      ref: "table",
-	      role: "grid",
-	      className: "rw-calendar-grid rw-nav-view",
-	      "aria-activedescendant": this._id("_selected_item"),
-	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
-	  },
-
-	  _row: function (row, i) {
-	    var _this = this;
-	    var id = this._id("_selected_item");
-
-	    return React.createElement("tr", { key: i, role: "row" }, row.map(function (date, i) {
-	      var focused = dates.eq(date, _this.state.focusedDate, "month"),
-	          selected = dates.eq(date, _this.props.value, "month");
-
-	      return dates.inRange(date, _this.props.min, _this.props.max, "month") ? React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, date), tabIndex: "-1",
-	        id: focused ? id : undefined,
-	        "aria-selected": selected,
-	        "aria-disabled": _this.props.disabled,
-	        disabled: _this.props.disabled,
-	        className: cx({
-	          "rw-state-focus": focused,
-	          "rw-state-selected": selected
-	        }) }, dates.format(date, dates.formats.MONTH_NAME_ABRV, _this.props.culture))) : React.createElement("td", { key: i, className: "rw-empty-cell", role: "gridcell" }, " ");
-	    }));
-	  },
-
-	  focus: function () {
-	    this.refs.table.getDOMNode().focus();
-	  },
-
-	  move: function (date, direction) {
-	    var min = this.props.min,
-	        max = this.props.max;
-
-	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
-
-	    if (direction === directions.LEFT) date = nextDate(date, -1, "month", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "month", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "month", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "month", min, max);
-
-	    return date;
-	  }
-
-	});
-
-	function nextDate(date, val, unit, min, max) {
-	  var newDate = dates.add(date, val, unit);
-	  return dates.inRange(newDate, min, max, "month") ? newDate : date;
-	}
-
-/***/ },
-/* 142 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var React = __webpack_require__(1),
-	    _ = __webpack_require__(121),
-	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(144),
-	    directions = __webpack_require__(145).directions,
-	    Btn = __webpack_require__(136);
-
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-
-
-	module.exports = React.createClass({
-
-	  displayName: "DecadeView",
-
-	  mixins: [__webpack_require__(129), __webpack_require__(131), __webpack_require__(161), __webpack_require__(162)("decade", "year")],
-
-	  propTypes: {
-	    culture: React.PropTypes.string,
-
-	    value: React.PropTypes.instanceOf(Date),
-	    min: React.PropTypes.instanceOf(Date),
-	    max: React.PropTypes.instanceOf(Date),
-	    onChange: React.PropTypes.func.isRequired
-	  },
-
-	  render: function () {
-	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
-	        years = getDecadeYears(this.props.value),
-	        rows = _.chunk(years, 4);
-
-	    return React.createElement("table", _extends({}, props, {
-	      tabIndex: this.props.disabled ? "-1" : "0",
-	      role: "grid",
-	      className: "rw-calendar-grid rw-nav-view",
-	      "aria-activedescendant": this._id("_selected_item"),
-	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
-	  },
-
-	  _row: function (row, i) {
-	    var _this = this;
-	    var id = this._id("_selected_item");
-
-	    return React.createElement("tr", { key: "row_" + i, role: "row" }, row.map(function (date, i) {
-	      var focused = dates.eq(date, _this.state.focusedDate, "year"),
-	          selected = dates.eq(date, _this.props.value, "year");
-
-	      return !dates.inRange(date, _this.props.min, _this.props.max, "year") ? React.createElement("td", { key: i, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, date), tabIndex: "-1",
-	        id: focused ? id : undefined,
-	        "aria-selected": selected,
-	        "aria-disabled": _this.props.disabled,
-	        disabled: _this.props.disabled,
-	        className: cx({
-	          "rw-off-range": !inDecade(date, _this.props.value),
-	          "rw-state-focus": focused,
-	          "rw-state-selected": selected }) }, dates.format(date, dates.formats.YEAR, _this.props.culture)));
-	    }));
-	  },
-
-	  move: function (date, direction) {
-	    var min = this.props.min,
-	        max = this.props.max;
-
-	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
-
-	    if (direction === directions.LEFT) date = nextDate(date, -1, "year", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "year", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "year", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "year", min, max);
-
-	    return date;
-	  }
-
-	});
-
-	function inDecade(date, start) {
-	  return dates.gte(date, dates.startOf(start, "decade"), "year") && dates.lte(date, dates.endOf(start, "decade"), "year");
-	}
-
-	function getDecadeYears(_date) {
-	  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-	      date = dates.add(dates.startOf(_date, "decade"), -2, "year");
-
-	  return days.map(function (i) {
-	    return date = dates.add(date, 1, "year");
-	  });
-	}
-
-	function nextDate(date, val, unit, min, max) {
-	  var newDate = dates.add(date, val, unit);
-	  return dates.inRange(newDate, min, max, "year") ? newDate : date;
-	}
-
-/***/ },
-/* 143 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(144),
-	    directions = __webpack_require__(145).directions,
-	    Btn = __webpack_require__(136),
-	    _ = __webpack_require__(121); //omit
-
-	var opposite = {
-	  LEFT: directions.RIGHT,
-	  RIGHT: directions.LEFT
-	};
-
-
-	module.exports = React.createClass({
-
-	  displayName: "CenturyView",
-
-	  mixins: [__webpack_require__(129), __webpack_require__(131), __webpack_require__(161), __webpack_require__(162)("century", "decade")],
-
-	  propTypes: {
-	    culture: React.PropTypes.string,
-	    value: React.PropTypes.instanceOf(Date),
-	    min: React.PropTypes.instanceOf(Date),
-	    max: React.PropTypes.instanceOf(Date),
-
-	    onChange: React.PropTypes.func.isRequired
-	  },
-
-	  render: function () {
-	    var props = _.omit(this.props, ["max", "min", "value", "onChange"]),
-	        years = getCenturyDecades(this.props.value),
-	        rows = _.chunk(years, 4);
-
-	    return React.createElement("table", _extends({}, props, {
-	      tabIndex: this.props.disabled ? "-1" : "0",
-	      role: "grid",
-	      className: "rw-calendar-grid rw-nav-view",
-	      "aria-activedescendant": this._id("_selected_item"),
-	      onKeyUp: this._keyUp }), React.createElement("tbody", null, rows.map(this._row)));
-	  },
-
-	  _row: function (row, i) {
-	    var _this = this;
-	    var id = this._id("_selected_item");
-
-	    return React.createElement("tr", { key: "row_" + i, role: "row" }, row.map(function (date, i) {
-	      var focused = dates.eq(date, _this.state.focusedDate, "decade"),
-	          selected = dates.eq(date, _this.props.value, "decade"),
-	          d = inRangeDate(date, _this.props.min, _this.props.max);
-
-	      return !inRange(date, _this.props.min, _this.props.max) ? React.createElement("td", { key: i, role: "gridcell", className: "rw-empty-cell" }, " ") : React.createElement("td", { key: i, role: "gridcell" }, React.createElement(Btn, { onClick: _this.props.onChange.bind(null, d),
-	        tabIndex: "-1",
-	        id: focused ? id : undefined,
-	        "aria-selected": selected,
-	        "aria-disabled": _this.props.disabled,
-	        disabled: _this.props.disabled,
-	        className: cx({
-	          "rw-off-range": !inCentury(date, _this.props.value),
-	          "rw-state-focus": focused,
-	          "rw-state-selected": selected }) }, label(date, _this.props.culture)));
-	    }));
-	  },
-
-
-	  move: function (date, direction) {
-	    var min = this.props.min,
-	        max = this.props.max;
-
-	    if (this.isRtl() && opposite[direction]) direction = opposite[direction];
-
-	    if (direction === directions.LEFT) date = nextDate(date, -1, "decade", min, max);else if (direction === directions.RIGHT) date = nextDate(date, 1, "decade", min, max);else if (direction === directions.UP) date = nextDate(date, -4, "decade", min, max);else if (direction === directions.DOWN) date = nextDate(date, 4, "decade", min, max);
-
-	    return date;
-	  }
-
-	});
-
-	function label(date, culture) {
-	  return dates.format(dates.startOf(date, "decade"), dates.formats.YEAR, culture) + " - " + dates.format(dates.endOf(date, "decade"), dates.formats.YEAR, culture);
-	}
-
-	function inRangeDate(decade, min, max) {
-	  return dates.max(dates.min(decade, max), min);
-	}
-
-	function inRange(decade, min, max) {
-	  return dates.gte(decade, dates.startOf(min, "decade"), "year") && dates.lte(decade, dates.endOf(max, "decade"), "year");
-	}
-
-	function inCentury(date, start) {
-	  return dates.gte(date, dates.startOf(start, "century"), "year") && dates.lte(date, dates.endOf(start, "century"), "year");
-	}
-
-	function getCenturyDecades(_date) {
-	  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-	      date = dates.add(dates.startOf(_date, "century"), -20, "year");
-
-	  return days.map(function (i) {
-	    return date = dates.add(date, 10, "year");
-	  });
-	}
-
-
-	function nextDate(date, val, unit, min, max) {
-	  var newDate = dates.add(date, val, unit);
-	  return dates.inRange(newDate, min, max, "decade") ? newDate : date;
-	}
-
-/***/ },
-/* 144 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var dateMath = __webpack_require__(90),
-	    globalize = __webpack_require__(174),
-	    _ = __webpack_require__(121); //extend
-
-	var dates = module.exports = _.assign(dateMath, {
-	  // wrapper methods for isolating globalize use throughout the lib
-	  // looking forward towards the 1.0 release
-	  culture: function (culture) {
-	    return culture ? globalize.findClosestCulture(culture) : globalize.culture();
-	  },
-
-	  startOfWeek: function (culture) {
-	    culture = dates.culture(culture);
-
-	    if (!culture || !culture.calendar) return 0;
-
-	    return culture.calendar.firstDay || 0;
-	  },
-
-	  parse: function (date, format, culture) {
-	    return globalize.parseDate(date, format, culture);
-	  },
-
-	  format: function (date, format, culture) {
-	    return globalize.format(date, format, culture);
-	  },
-
-	  //-------------------------------------
-
-	  shortDaysOfWeek: function (culture) {
-	    var start = dates.startOfWeek(culture),
-	        days,
-	        front;
-
-	    culture = dates.culture(culture);
-
-	    if (culture && culture.calendar) {
-	      days = culture.calendar.days.namesShort.slice();
-
-	      if (start === 0) return days;
-
-	      front = days.splice(0, start);
-	      days = days.concat(front);
-	      return days;
-	    }
-	  },
-
-	  monthsInYear: function (year) {
-	    var months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-	        date = new Date(year, 0, 1);
-
-	    return months.map(function (i) {
-	      return dates.month(date, i);
-	    });
-	  },
-
-	  firstOfDecade: function (date) {
-	    var decade = dates.year(date) % 10;
-
-	    return dates.subtract(date, decade, "year");
-	  },
-
-	  lastOfDecade: function (date) {
-	    return dates.add(dates.firstOfDecade(date), 9, "year");
-	  },
-
-	  firstOfCentury: function (date) {
-	    var decade = dates.year(date) % 100;
-	    return dates.subtract(date, decade, "year");
-	  },
-
-	  lastOfCentury: function (date) {
-	    return dates.add(dates.firstOfCentury(date), 99, "year");
-	  },
-
-	  firstVisibleDay: function (date) {
-	    var firstOfMonth = dates.startOf(date, "month");
-	    return dates.startOf(firstOfMonth, "week");
-	  },
-
-	  lastVisibleDay: function (date) {
-	    var endOfMonth = dates.endOf(date, "month");
-	    return dates.endOf(endOfMonth, "week");
-	  },
-
-	  visibleDays: function (date) {
-	    var current = dates.firstVisibleDay(date),
-	        last = dates.lastVisibleDay(date),
-	        days = [];
-
-	    while (dates.lte(current, last, "day")) {
-	      days.push(current);
-	      current = dates.add(current, 1, "day");
-	    }
-
-	    return days;
-	  },
-
-	  merge: function (date, time) {
-	    if (time == null && date == null) return null;
-
-	    if (time == null) time = new Date();
-	    if (date == null) date = new Date();
-
-	    date = dates.startOf(date, "day");
-	    date = dates.hours(date, dates.hours(time));
-	    date = dates.minutes(date, dates.minutes(time));
-	    date = dates.seconds(date, dates.seconds(time));
-	    return dates.milliseconds(date, dates.milliseconds(time));
-	  },
-
-	  sameMonth: function (dateA, dateB) {
-	    return dates.eq(dateA, dateB, "month");
-	  },
-
-	  today: function () {
-	    return this.startOf(new Date(), "day");
-	  },
-
-	  yesterday: function () {
-	    return this.add(this.startOf(new Date(), "day"), -1, "day");
-	  },
-
-	  tomorrow: function () {
-	    return this.add(this.startOf(new Date(), "day"), 1, "day");
-	  },
-
-	  formats: {
-	    DAY_OF_MONTH: "dd",
-	    DAY_NAME_SHORT: null,
-	    MONTH_NAME_ABRV: "MMM",
-	    MONTH_YEAR: "MMMM yyyy",
-	    YEAR: "yyyy"
-	  }
-
-	});
-
-/***/ },
-/* 145 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var _ = __webpack_require__(121); //object
-
-	var views = {
-	  MONTH: "month",
-	  YEAR: "year",
-	  DECADE: "decade",
-	  CENTURY: "century"
-	};
-
-	module.exports = {
-
-	  directions: {
-	    LEFT: "LEFT",
-	    RIGHT: "RIGHT",
-	    UP: "UP",
-	    DOWN: "DOWN"
-	  },
-
-	  datePopups: {
-	    TIME: "time",
-	    CALENDAR: "calendar"
-	  },
-
-	  calendarViews: views,
-
-	  calendarViewHierarchy: _.object([[views.MONTH, views.YEAR], [views.YEAR, views.DECADE], [views.DECADE, views.CENTURY]]),
-
-	  calendarViewUnits: _.object([[views.MONTH, views.DAY], [views.YEAR, views.MONTH], [views.DECADE, views.YEAR], [views.CENTURY, views.DECADE]])
-	};
-
-/***/ },
 /* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -17984,10 +17984,10 @@
 	};
 
 	var React = __webpack_require__(1),
-	    dates = __webpack_require__(144),
-	    List = __webpack_require__(126),
-	    CustomPropTypes = __webpack_require__(124),
-	    _ = __webpack_require__(121); // omit
+	    dates = __webpack_require__(128),
+	    List = __webpack_require__(137),
+	    CustomPropTypes = __webpack_require__(135),
+	    _ = __webpack_require__(130); // omit
 
 
 	module.exports = React.createClass({
@@ -18004,7 +18004,7 @@
 	    preserveDate: React.PropTypes.bool,
 	    culture: React.PropTypes.string },
 
-	  mixins: [__webpack_require__(130)],
+	  mixins: [__webpack_require__(132)],
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -18169,8 +18169,8 @@
 	};
 
 	var React = __webpack_require__(1),
-	    cx = __webpack_require__(122),
-	    dates = __webpack_require__(144);
+	    cx = __webpack_require__(126),
+	    dates = __webpack_require__(128);
 
 	module.exports = React.createClass({
 
@@ -18502,15 +18502,15 @@
 	};
 
 	var React = __webpack_require__(1),
-	    _ = __webpack_require__(121),
-	    cx = __webpack_require__(122),
-	    Btn = __webpack_require__(136);
+	    _ = __webpack_require__(130),
+	    cx = __webpack_require__(126),
+	    Btn = __webpack_require__(143);
 
 	module.exports = React.createClass({
 
 	  displayName: "MultiselectTagList",
 
-	  mixins: [__webpack_require__(132), __webpack_require__(131)],
+	  mixins: [__webpack_require__(140), __webpack_require__(133)],
 
 	  propTypes: {
 	    value: React.PropTypes.array,
@@ -18960,6 +18960,59 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * Copyright 2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This file contains an unmodified version of:
+	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
+	 *
+	 * This source code is licensed under the BSD-style license found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
+	 * An additional grant of patent rights can be found here:
+	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
+	 */
+
+	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
+
+	function assign(target, sources) {
+	  if (target == null) {
+	    throw new TypeError('Object.assign target cannot be null or undefined');
+	  }
+
+	  var to = Object(target);
+	  var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+	  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
+	    var nextSource = arguments[nextIndex];
+	    if (nextSource == null) {
+	      continue;
+	    }
+
+	    var from = Object(nextSource);
+
+	    // We don't currently support accessors nor proxies. Therefore this
+	    // copy cannot throw. If we ever supported this then we must handle
+	    // exceptions and side-effects. We don't support symbols so they won't
+	    // be transferred.
+
+	    for (var key in from) {
+	      if (hasOwnProperty.call(from, key)) {
+	        to[key] = from[key];
+	      }
+	    }
+	  }
+
+	  return to;
+	};
+
+	module.exports = assign;
+
+
+/***/ },
+/* 156 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
 	 * This file contains a modified version of:
@@ -19013,59 +19066,6 @@
 	};
 
 	module.exports = EventListener;
-
-
-/***/ },
-/* 156 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
-
-	function assign(target, sources) {
-	  if (target == null) {
-	    throw new TypeError('Object.assign target cannot be null or undefined');
-	  }
-
-	  var to = Object(target);
-	  var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-	  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
-	    var nextSource = arguments[nextIndex];
-	    if (nextSource == null) {
-	      continue;
-	    }
-
-	    var from = Object(nextSource);
-
-	    // We don't currently support accessors nor proxies. Therefore this
-	    // copy cannot throw. If we ever supported this then we must handle
-	    // exceptions and side-effects. We don't support symbols so they won't
-	    // be transferred.
-
-	    for (var key in from) {
-	      if (hasOwnProperty.call(from, key)) {
-	        to[key] = from[key];
-	      }
-	    }
-	  }
-
-	  return to;
-	};
-
-	module.exports = assign;
 
 
 /***/ },
@@ -19194,6 +19194,91 @@
 	"use strict";
 	var React = __webpack_require__(1);
 
+	module.exports = {
+
+	  contextTypes: {
+	    isRtl: React.PropTypes.bool
+	  },
+
+	  isRtl: function () {
+	    return !!this.context.isRtl;
+	  }
+
+	};
+
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(1),
+	    dates = __webpack_require__(128),
+	    directions = __webpack_require__(129).directions;
+
+	module.exports = function (viewUnit, smallUnit) {
+	  return {
+	    propTypes: {
+	      value: React.PropTypes.instanceOf(Date),
+	      min: React.PropTypes.instanceOf(Date),
+	      max: React.PropTypes.instanceOf(Date) },
+
+	    getInitialState: function () {
+	      return {
+	        focusedDate: constrainValue(this.props.value, this.props.min, this.props.max)
+	      };
+	    },
+
+	    componentWillReceiveProps: function (nextProps) {
+	      var focused = this.state.focusedDate;
+
+	      //!dates.inRange(focused, nextProps.min, nextProps.max)
+
+	      if (!dates.eq(nextProps.value, focused, smallUnit)) this.setState({
+	        focusedDate: nextProps.value
+	      });
+	    },
+
+	    _keyDown: function (e) {
+	      var key = e.key,
+	          current = this.state.focusedDate,
+	          date = current;
+
+	      if (key === "Enter") {
+	        e.preventDefault();
+	        return this.props.onChange(date);
+	      }
+
+	      if (key === "ArrowLeft") date = this.move(date, directions.LEFT);else if (key === "ArrowRight") date = this.move(date, directions.RIGHT);else if (key === "ArrowUp") date = this.move(date, directions.UP);else if (key === "ArrowDown") date = this.move(date, directions.DOWN);
+
+
+	      if (!dates.eq(current, date, smallUnit)) {
+	        e.preventDefault();
+
+	        if (dates.gt(date, this.props.value, viewUnit)) return this.props.onMoveRight(date);
+
+	        if (dates.lt(date, this.props.value, viewUnit)) return this.props.onMoveLeft(date);
+
+	        this.setState({
+	          focusedDate: date
+	        });
+	      }
+	    }
+	  };
+	};
+
+
+	function constrainValue(value, min, max) {
+	  if (value == null) return value;
+	  return dates.max(dates.min(value, max), min);
+	}
+
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(1);
+
 	var compat = module.exports = {
 
 	  version: function () {
@@ -19215,14 +19300,14 @@
 	};
 
 /***/ },
-/* 159 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var React = __webpack_require__(1),
-	    _ = __webpack_require__(121),
-	    filter = __webpack_require__(135),
-	    helper = __webpack_require__(132);
+	    _ = __webpack_require__(130),
+	    filter = __webpack_require__(142),
+	    helper = __webpack_require__(140);
 
 	module.exports = {
 
@@ -19290,7 +19375,7 @@
 	}
 
 /***/ },
-/* 160 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19342,91 +19427,6 @@
 	  } catch (e) {}
 	}
 	/* not focused or not visible */ /* not focused or not visible */
-
-/***/ },
-/* 161 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var React = __webpack_require__(1);
-
-	module.exports = {
-
-	  contextTypes: {
-	    isRtl: React.PropTypes.bool
-	  },
-
-	  isRtl: function () {
-	    return !!this.context.isRtl;
-	  }
-
-	};
-
-/***/ },
-/* 162 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var React = __webpack_require__(1),
-	    dates = __webpack_require__(144),
-	    directions = __webpack_require__(145).directions;
-
-	module.exports = function (viewUnit, smallUnit) {
-	  return {
-	    propTypes: {
-	      value: React.PropTypes.instanceOf(Date),
-	      min: React.PropTypes.instanceOf(Date),
-	      max: React.PropTypes.instanceOf(Date) },
-
-	    getInitialState: function () {
-	      return {
-	        focusedDate: constrainValue(this.props.value, this.props.min, this.props.max)
-	      };
-	    },
-
-	    componentWillReceiveProps: function (nextProps) {
-	      var focused = this.state.focusedDate;
-
-	      //!dates.inRange(focused, nextProps.min, nextProps.max)
-
-	      if (!dates.eq(nextProps.value, focused, smallUnit)) this.setState({
-	        focusedDate: nextProps.value
-	      });
-	    },
-
-	    _keyDown: function (e) {
-	      var key = e.key,
-	          current = this.state.focusedDate,
-	          date = current;
-
-	      if (key === "Enter") {
-	        e.preventDefault();
-	        return this.props.onChange(date);
-	      }
-
-	      if (key === "ArrowLeft") date = this.move(date, directions.LEFT);else if (key === "ArrowRight") date = this.move(date, directions.RIGHT);else if (key === "ArrowUp") date = this.move(date, directions.UP);else if (key === "ArrowDown") date = this.move(date, directions.DOWN);
-
-
-	      if (!dates.eq(current, date, smallUnit)) {
-	        e.preventDefault();
-
-	        if (dates.gt(date, this.props.value, viewUnit)) return this.props.onMoveRight(date);
-
-	        if (dates.lt(date, this.props.value, viewUnit)) return this.props.onMoveLeft(date);
-
-	        this.setState({
-	          focusedDate: date
-	        });
-	      }
-	    }
-	  };
-	};
-
-
-	function constrainValue(value, min, max) {
-	  if (value == null) return value;
-	  return dates.max(dates.min(value, max), min);
-	}
 
 /***/ },
 /* 163 */
@@ -19634,11 +19634,14 @@
 
 	  return "defaultView" in doc ? doc.defaultView.opener ? node.ownerDocument.defaultView.getComputedStyle(node, null) : window.getComputedStyle(node, null) : { //ie 8 "magic"
 	    getPropertyValue: function getPropertyValue(prop) {
-	      var _arguments = arguments;
 	      var re = /(\-([a-z]){1})/g;
 	      if (prop == "float") prop = "styleFloat";
 	      if (re.test(prop)) prop = prop.replace(re, function () {
-	        return _arguments[2].toUpperCase();
+	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	          args[_key] = arguments[_key];
+	        }
+
+	        return args[2].toUpperCase();
 	      });
 
 	      return node.currentStyle[prop] || null;
@@ -19813,7 +19816,7 @@
 		});
 
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	})(__webpack_require__(182));
+	})(__webpack_require__(183));
 
 
 /***/ },
@@ -23579,7 +23582,7 @@
 			return Promise;
 		};
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}(__webpack_require__(182)));
+	}(__webpack_require__(183)));
 
 
 /***/ },
@@ -23667,7 +23670,7 @@
 		return Scheduler;
 
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}(__webpack_require__(182)));
+	}(__webpack_require__(183)));
 
 
 /***/ },
@@ -23721,7 +23724,7 @@
 				var vertx;
 				try {
 					// vert.x 1.x || 2.x
-					vertx = __webpack_require__(183);
+					vertx = __webpack_require__(182);
 				} catch (ignore) {}
 
 				if (vertx) {
@@ -23744,7 +23747,7 @@
 
 		return nextTick;
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}(__webpack_require__(182)));
+	}(__webpack_require__(183)));
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(190)))
 
@@ -23752,14 +23755,14 @@
 /* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = function() { throw new Error("define cannot be used indirect"); };
-
+	/* (ignored) */
 
 /***/ },
 /* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* (ignored) */
+	module.exports = function() { throw new Error("define cannot be used indirect"); };
+
 
 /***/ },
 /* 184 */
@@ -24036,7 +24039,7 @@
 		return Queue;
 
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}(__webpack_require__(182)));
+	}(__webpack_require__(183)));
 
 
 /***/ },

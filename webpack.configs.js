@@ -29,7 +29,7 @@ var config = {
         'es6.parameters.rest',
         'es6.templateLiterals',
         'es6.destructuring',
-        'es7.objectSpread',
+        'es7.objectRestSpread',
         'react'
       ]
     }
