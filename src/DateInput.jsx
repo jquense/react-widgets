@@ -43,6 +43,7 @@ module.exports = React.createClass({
           , this.props.culture)
 
     this.lastValue = text
+
     return {
       textValue: text
     }
@@ -71,15 +72,10 @@ module.exports = React.createClass({
   },
 
   _blur: function(e){
-    var val = e.target.value 
-    
-    //console.log('blur', val, e.target, '\nlast', this.lastValue)
+    var val = e.target.value;
 
-    if ( val === this.lastValue) return
-
-    this.lastValue = val;
-    this.props.onChange(this.props.parse(val), val);
-    
+    this.props.onChange(
+      this.props.parse(val), val);
   },
 
   focus: function(){
