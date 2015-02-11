@@ -11,4 +11,6 @@ module.exports = {
 	Navbar: require('react-bootstrap/Navbar'),
 	SubNav: require('react-bootstrap/SubNav'),
 	NavItem: require('react-bootstrap/NavItem'),
+
+  Affix: require('react-bootstrap/Affix'),
 }

@@ -9,11 +9,12 @@ module.exports = function(prefix){
       require('react-router').State
     ],
 
-    componentDidMount: function() {
-      var path = this.getPathname()
-      var anchor = document.getElementById(path)
+    componentDidMount() {
+      scrollTo(this.getPathname())
+    },
 
-      anchor && window.scrollTo(window.pageXOffset, anchor.offsetTop)
+    componentDidUpdate() {
+      scrollTo(this.getPathname())
     },
 
     childContextTypes: {
@@ -25,4 +26,10 @@ module.exports = function(prefix){
     },
 
   }
+}
+
+function scrollTo(pathname){
+  var anchor = document.getElementById(pathname)
+
+  anchor && window.scrollTo(window.pageXOffset, anchor.offsetTop)
 }

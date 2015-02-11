@@ -4,6 +4,10 @@ var EditableExample = require('../EditableExample')
 
 var GettingStarted = React.createClass({
 
+  mixins: [
+    require('../PageMixin')('getting-started')
+  ],
+
   render: function() {
     return (
       <section {...this.props}>
@@ -39,7 +43,7 @@ var GettingStarted = React.createClass({
            which offer a quick way to display complex data structures.
         </p>
 
-        <h2 id='intro/install' className='prop-header'>Install <a/></h2>
+        <h2 id='/getting-started/install' className='prop-header'>Install <a/></h2>
         <p>
           The prefered way to install is NPM (<code>npm install react-widgets</code>) and make use of something like Webpack or 
            Browserify to bundle the library. There is also a traditional browser build available for 
@@ -55,7 +59,7 @@ var GettingStarted = React.createClass({
            As of 1.1.0 the package comes precompiled, and no build step is needed.
         </strong>
 
-        <h2 id='intro/deps' className='prop-header'>External Dependencies</h2>
+        <h2 id='/getting-started/deps' className='prop-header'>External Dependencies</h2>
         <p>
           React-widgets <b>2.x</b> is compatible with React <b>0.12.0+</b>, while the <b>1.x</b> branch supports
            React <b>0.9.0</b> to <b>0.10.0</b>. Either branch expects React to be bundled by you. Consumers of the NPM package should note that 
@@ -75,7 +79,7 @@ var GettingStarted = React.createClass({
             </li>
           </ul>
         </p>
-        <h2 id='intro/browser'>Older Browser Support</h2>
+        <h2 id='/getting-started/browser'>Older Browser Support</h2>
         <p>
           Rather than including an entire utility library, like underscore, react widgets takes a hint from React itself, 
           and instead relies on es5 (and transpiled es6) functionality. For most browsers this is will not be an issue, as es5 
@@ -97,7 +101,7 @@ var GettingStarted = React.createClass({
           You can use the excellent <a href="https://github.com/es-shims/es5-shim">kriskowal's es5-shim</a> for all of these.
         </p>
 
-        <h2 id='intro/access'>Accessibility and Read Direction</h2>
+        <h2 id='/getting-started/access'>Accessibility and Read Direction</h2>
         <p>
           React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for
           date and number localization, there is first class support for cultures and languages that read
@@ -111,7 +115,7 @@ var GettingStarted = React.createClass({
           the necessary id's to properly label and annotate the widget ARIA.
         </p>
 
-        <h2 id='intro/style' className='prop-header'>Styling</h2>
+        <h2 id='/getting-started/style' className='prop-header'>Styling</h2>
         <p>
           Styling each widget should be a simple matter of adjusting the relevant LESS variables to suit your needs.
           Included by default is a "Twitter Bootstrap" theme that mimics the look and feel of Twitter Bootstrap 3.0.

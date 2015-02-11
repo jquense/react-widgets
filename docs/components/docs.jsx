@@ -1,13 +1,14 @@
 'use strict';
 var React = require('react')
   , { Route
-  , run
+  , create: createRouter
   , DefaultRoute
   , RouteHandler
   , Navigation
   , State
   , Link } = require('react-router')
 
+  , Affix          = require('../bootstrap').Affix
   , Navbar         = require('./topnavbar.jsx')
   , GettingStarted = require('./pages/GettingStarted.jsx')
   , DropdownList   = require('./pages/DropdownList.jsx')
@@ -47,12 +48,12 @@ var Docs = React.createClass({
     var href = this.state.sideHref;
 
     return (
-      <div style={{ marginTop: 72 }}>
+      <div>
         <Navbar page={this.props.page}/>
         <div className='container'>
           <aside className='col-sm-3 section'>
-            <div className='nav-aside section-inner'>
-              <nav className='side-nav'>
+            <Affix className='nav-aside section-inner' offsetTop={52}>
+              <nav>
                 <ul className='nav'>
                   <li className={this.getPathname().match(/\/getting-started/) ? 'active' : ''}>
                     <Link to='/getting-started'>Getting Started</Link>
@@ -74,7 +75,7 @@ var Docs = React.createClass({
                   <li><Link to='migration'>Migrating to 2.x</Link></li>
                 </ul>
               </nav>
-            </div>
+            </Affix>
           </aside>
           <article className='col-sm-9 section'>
             <div className='section-inner'>
@@ -126,9 +127,7 @@ var routes = (
   <Route name="app" path="/" handler={Docs}>
     <DefaultRoute handler={GettingStarted} />
 
-    <Route name="getting-started" path='getting-started' handler={GettingStarted}>
-      <Route path=':topic' handler={GettingStarted}/>
-    </Route>
+    <Route name="getting-started" path='getting-started/?:topic?' handler={GettingStarted}/>
 
     <Route name="dropdown-list" path='dropdown-list' handler={DropdownList}>
       <Route path=':topic' handler={DropdownList}/>
@@ -156,6 +155,29 @@ var routes = (
   </Route>
 );
 
-run(routes, function (Handler, state) {
-  React.render(<Handler params={state.params}/>, document.body);
-});
+createRouter({ 
+    routes, 
+    scrollBehavior: {
+      updateScrollPosition(pos, action){
+        var anchor = document.getElementById(location.hash.substr(1))
+
+        pos = pos || {}
+
+        if( anchor)
+          return window.scrollTo(pos ? pos.x : window.pageXOffset, anchor.offsetTop)
+
+        switch (action) {
+          case 'push':
+          case 'replace':
+            window.scrollTo(0, 0);
+            break;
+          case 'pop':
+            window.scrollTo(pos.x || 0, pos.y || 0);
+            break;
+        }
+      }
+    }
+  })
+  .run(function (Handler, state) {
+    React.render(<Handler params={state.params}/>, document.body);
+  });

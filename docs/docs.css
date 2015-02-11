@@ -98,11 +98,9 @@ h3 > strong {
   max-width: 300px;
 }
 
-.nav-aside {
-  position: fixed;
-  top: 72px;
+.nav-aside.affix {
+  top: 20px;
 }
-
 
 @media (min-width: 768px) {
   .nav-aside {
@@ -116,6 +114,10 @@ h3 > strong {
 }
 
 @media (min-width: 992px) {
+  .editable-example  {
+    display: flex;
+  }
+
   .nav-aside {
     width: 215px;
   }
@@ -127,9 +129,16 @@ h3 > strong {
   }
 }
 
+@media (min-width: 1400px){
+  .nav-aside {
+    width: 303px;
+  }
+}
+
+
 
 @media (max-width: 767px) {
-
+  
   .nav-aside {
     position: static;
   }
@@ -231,7 +240,6 @@ pre {
 }
 
 .editable-example  {
-  display: flex;
   position: relative;
   margin:  0;
   margin-bottom: 20px;

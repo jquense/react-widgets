@@ -10,7 +10,7 @@ module.exports = React.createClass({
   render: function(){
 
     return (
-      <Tbs.Navbar fixedTop activeKey={this.props.page} brand='React Widgets'>
+      <Tbs.Navbar staticTop activeKey={this.props.page} brand='React Widgets'>
         <Tbs.Nav role='navigation' selectKey={0} activeKey='docs' className='navbar-nav main-nav' >
           <Tbs.NavItem key='docs' href="#">Docs</Tbs.NavItem>
           <Tbs.NavItem key='dl' href="https://github.com/jquense/react-widgets/releases">Download</Tbs.NavItem>

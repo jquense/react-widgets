@@ -22,7 +22,7 @@ var ApiMenuItem = React.createClass({
     var child = this.props.children;
 
     return (
-       <MenuItem className="prop-item" onClick={this.navigate}>
+       <MenuItem className="prop-item" href={'#/' + this.context.prefix + this.props.children.replace(' ', '_')}>
         {child}
        </MenuItem>
     );
