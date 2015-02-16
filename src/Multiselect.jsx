@@ -236,16 +236,17 @@ var Multiselect = React.createClass({
       return
 
     this.setTimeout('focus', () => {
-      if( focused) {
+      if( focused) 
         this.refs.input.focus()
-        this.open()
-      }
-      else        {
-        this.close()
+
+      else 
         this.refs.tagList && this.refs.tagList.clear()
-      }
       
       if( focused !== this.state.focused){
+        focused 
+          ? this.open() 
+          : this.close();
+
         this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused: focused })
       }
@@ -266,11 +267,11 @@ var Multiselect = React.createClass({
     this.notify('onSearch', [ e.target.value ])
     this.open()
   },
- 
+
   _onSelect: function(data){
 
-    if( data === undefined ){
-      if( this.props.onCreate && this.props.searchTerm)
+    if (data === undefined) {
+      if (this.props.onCreate)
         this._onCreate(this.props.searchTerm)
  
       return
