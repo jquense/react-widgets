@@ -53,7 +53,7 @@ var Docs = React.createClass({
         <div className='container'>
           <aside className='col-sm-3 section'>
             <Affix className='nav-aside section-inner' offsetTop={52}>
-              <nav>
+              <nav className='side-nav'>
                 <ul className='nav'>
                   <li className={this.getPathname().match(/\/getting-started/) ? 'active' : ''}>
                     <Link to='/getting-started'>Getting Started</Link>
