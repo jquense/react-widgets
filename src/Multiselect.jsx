@@ -266,11 +266,15 @@ var Multiselect = React.createClass({
     this.notify('onSearch', [ e.target.value ])
     this.open()
   },
-
+ 
   _onSelect: function(data){
 
-    if( data === undefined && this.props.onCreate )
-      return this._onCreate(this.props.searchTerm)
+    if( data === undefined ){
+      if( this.props.onCreate && this.props.searchTerm)
+        this._onCreate(this.props.searchTerm)
+ 
+      return
+    }
 
     this.notify('onSelect', data)
     this.change(this.state.dataItems.concat(data))
