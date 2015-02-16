@@ -219,17 +219,17 @@ describe('Multiselect', function(){
     })
   })
 
-  it('should clear SearchTerm when uncontrolled', function(){
-    var ms = render(<Select data={dataList}/>);
+  it.only('should clear SearchTerm when uncontrolled', function(){
+    var ms = render(<Select data={dataList} defaultSearchTerm='ji' open textField='label' valueField='id' onToggle={()=>{}}/>);
 
-    var input = findTag(ms, 'input').getDOMNode()
-    input.value = "ji"
-  
-    trigger.change(input, {})
-    expect(input.value).to.be('ji')
+    var input = findType(ms, Select.BaseMultiselect)
+
+    expect(input.props.searchTerm).to.be('ji')
 
     trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
-    expect(input.value).to.be('')
+
+    expect(input.props.searchTerm).to.be('')
+
   })
 
 

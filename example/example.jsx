@@ -119,16 +119,6 @@ var App = React.createClass({
         </section>*/}
        
           <section className="example" style={{ marginBottom: 20 }}>
-            <SelectList style={{ maxHeight: 300 }}
-              textField='name'
-              valueField='id'
-              data={this.state.data}
-              value={this.state.selectValues}
-              disabled={[1 ,6]}
-              busy={false}
-              name="super_name"
-              multiple
-              onChange={change.bind(null, 'selectValues')}/>
             <DropdownList
               isRtl={false}
               id='MyDropdownList'
@@ -162,19 +152,9 @@ var App = React.createClass({
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
             <Select
-              isRtl={false}
               data={ this.state.data }
-              placeholder="hi i am a placeholder"
               textField='name'
-              valueField='id'
-              value={ this.state.selectValues }
-              readOnly={this.state.selectValues.slice(0,1)}
-              busy={false}
-              allowCustomTags
-              onCreate={create}
-              tagComponent={ListItem}
-              itemComponent={ListItem}
-              onChange={change.bind(null, 'selectValues')}/>
+              valueField='id'/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
             <DatePicker
