@@ -1,6 +1,6 @@
 'use strict';
 var React      = require('react')
-  , cx         = require('./util/cx')
+  , cx         = require('classnames')
   , dates      = require('./util/dates')
   , directions = require('./util/constants').directions
   , Btn        = require('./WidgetButton')

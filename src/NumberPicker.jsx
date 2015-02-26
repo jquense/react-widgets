@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , cx    = require('./util/cx')
+  , cx    = require('classnames')
   , _     = require('./util/_') //omit
   , controlledInput  = require('./util/controlledInput')
   , directions = require('./util/constants').directions
@@ -100,9 +100,7 @@ var NumberPicker = React.createClass({
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
-        className={cx(className, {
-          'rw-numberpicker':   true,
-          'rw-widget':          true,
+        className={cx(className, 'rw-numberpicker', 'rw-widget', {
           'rw-state-focus':     this.state.focused,
           'rw-state-disabled':  this.props.disabled,
           'rw-state-readonly':  this.props.readOnly,

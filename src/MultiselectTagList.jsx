@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react')
   , _     = require('./util/_')
-  , cx    = require('./util/cx')
+  , cx    = require('classnames')
   , Btn   = require('./WidgetButton')
 
 module.exports = React.createClass({

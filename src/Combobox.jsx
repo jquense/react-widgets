@@ -1,6 +1,6 @@
 'use strict';
 var React           = require('react')
-  , cx              = require('./util/cx')
+  , cx              = require('classnames')
   , _               = require('./util/_')
   , filter          = require('./util/filter')
   , Popup           = require('./Popup')
@@ -50,7 +50,9 @@ var propTypes = {
       suggest:        React.PropTypes.bool,
       busy:           React.PropTypes.bool,
 
+      dropUp:          React.PropTypes.bool,
       duration:       React.PropTypes.number, //popup
+
       placeholder:    React.PropTypes.string,
 
       messages:       React.PropTypes.shape({
@@ -140,11 +142,14 @@ var ComboBox = React.createClass({
   },
 
   render: function(){
-    var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
+    var { 
+        className
+      , ...props } = _.omit(this.props, Object.keys(propTypes))
       , valueItem = this._dataItem( this._data(), this.props.value )
       , items = this._data()
       , listID = this._id('_listbox')
       , optID  = this._id( '_option')
+      , dropUp = this.props.dropUp
       , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       , completeType = this.props.suggest
           ? this.props.filter ? 'both' : 'inline'
@@ -158,14 +163,13 @@ var ComboBox = React.createClass({
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
-        className={cx(className, {
-          'rw-combobox':        true,
-          'rw-widget':          true,
+        className={cx(className, 'rw-combobox', 'rw-widget', {
           'rw-state-focus':     this.state.focused,
-          'rw-open':            this.props.open,
           'rw-state-disabled':  this.props.disabled,
           'rw-state-readonly':  this.props.readOnly,
-          'rw-rtl':             this.isRtl()
+          'rw-rtl':             this.isRtl(),
+
+          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
          })}>
         <Btn
           tabIndex='-1'
@@ -195,7 +199,8 @@ var ComboBox = React.createClass({
           onChange={this._inputTyping}
           onKeyDown={this._inputKeyDown}/>
 
-        <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
+        <Popup {..._.pick(this.props, Object.keys(Popup.type.propTypes))}
+          onRequestClose={this.close}>
           <div>
             <List ref="list"
               {..._.pick(this.props, Object.keys(List.type.propTypes))}

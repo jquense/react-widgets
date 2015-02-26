@@ -32,20 +32,21 @@
     "url": "https://github.com/jquense/react-widgets"
   },
   "dependencies": {
+    "classnames": "^1.1.4",
     "date-arithmetic": "^2.0.0",
     "globalize": "~0.1.1",
     "raf-component": "^1.1.2",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "6to5": "^3.3.12",
-    "6to5-loader": "^3.0.0",
+    "babel": "^4.0.0",
+    "babel-loader": "^4.0.0",
     "chance": "^0.7.1",
     "css-loader": "^0.7.1",
     "del": "^1.1.1",
     "file-loader": "^0.6.1",
     "gulp": "^3.6.2",
-    "gulp-6to5": "^3.0.0",
+    "gulp-babel": "^4.0.0",
     "gulp-concat": "^2.2.0",
     "gulp-header": "^1.0.2",
     "gulp-less": "^1.2.3",

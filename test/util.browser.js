@@ -7,25 +7,11 @@ delete require.cache[require.resolve('../src/util/_')]
 
 var React   = require('react')
   , filters = require('../src/util/filter')
-  , cx      = require('../src/util/cx')
   , _       = require('../src/util/_')
   , propTypes = require('../src/util/propTypes')
   , validateList = require('../src/util/validateListInterface');
 
 
-describe('when using Class Set', function(){
-
-  it('should concat names', function(){
-    expect(cx({ 'a': true, b: true, c: false, d: true})).to.be('a b d')
-    expect(cx('first', { 'a': true, b: true, c: false, d: true})).to.be('first a b d')
-  })
-
-  it('should ignore empty', function(){
-    expect(cx({ 'a': '', b: 0, c: false, d: true})).to.be('d')
-    expect(cx('first', { 'a': '', b: 0, c: false, d: true})).to.be('first d')
-  })
-  
-})
 
 describe('_ utils', function(){
 

@@ -219,7 +219,7 @@ describe('Multiselect', function(){
     })
   })
 
-  it.only('should clear SearchTerm when uncontrolled', function(){
+  it('should clear SearchTerm when uncontrolled', function(){
     var ms = render(<Select data={dataList} defaultSearchTerm='ji' open textField='label' valueField='id' onToggle={()=>{}}/>);
 
     var input = findType(ms, Select.BaseMultiselect)

@@ -1,7 +1,7 @@
 'use strict';
 var React           = require('react')
   , _               = require('./util/_')
-  , cx              = require('./util/cx')
+  , cx              = require('classnames')
   
   , controlledInput = require('./util/controlledInput')
   , CustomPropTypes = require('./util/propTypes')
@@ -38,12 +38,14 @@ var propTypes = {
   busy:           React.PropTypes.bool,
 
   delay:          React.PropTypes.number,
+
+  dropUp:         React.PropTypes.bool,
   duration:       React.PropTypes.number, //popup
 
   disabled:       React.PropTypes.oneOfType([
-                        React.PropTypes.bool,
-                        React.PropTypes.oneOf(['disabled'])
-                      ]),
+                    React.PropTypes.bool,
+                    React.PropTypes.oneOf(['disabled'])
+                  ]),
 
   readOnly:       React.PropTypes.oneOfType([
                     React.PropTypes.bool,
@@ -114,8 +116,8 @@ var DropdownList = React.createClass({
       , ValueComponent = this.props.valueComponent
       , valueItem = this._dataItem( this._data(), this.props.value )
       , optID = this._id('_option')
-      , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
-      ;
+      , dropUp = this.props.dropUp
+      , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList;
 
     return (
       <div {...props}
@@ -131,14 +133,13 @@ var DropdownList = React.createClass({
         aria-disabled={ this.props.disabled }
         aria-readonly={ this.props.readOnly }
         tabIndex={this.props.disabled ? '-1' : "0"}
-        className={cx(className, {
-          'rw-dropdownlist':   true,
-          'rw-widget':          true,
+        className={cx(className, 'rw-dropdownlist', 'rw-widget', {
           'rw-state-disabled':  this.props.disabled,
           'rw-state-readonly':  this.props.readOnly,
           'rw-state-focus':     this.state.focused,
-          'rw-open':            this.props.open,
-          'rw-rtl':             this.isRtl()
+          'rw-rtl':             this.isRtl(),
+
+          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
         })}>
 
         <span className="rw-dropdownlist-picker rw-select rw-btn">
@@ -152,9 +153,9 @@ var DropdownList = React.createClass({
               : this._dataText(valueItem)
           }
         </div>
-        <Popup open={this.props.open} 
-          onRequestClose={this.close} 
-          duration={this.props.duration}>
+        <Popup {..._.pick(this.props, Object.keys(Popup.type.propTypes))}
+          onRequestClose={this.close}>
+
           <div>
             <List ref="list" 
               {..._.pick(this.props, Object.keys(List.type.propTypes))}

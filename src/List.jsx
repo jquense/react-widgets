@@ -1,7 +1,7 @@
 'use strict';
 var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
-  , cx = require('./util/cx')
+  , cx = require('classnames')
   , _  = require('./util/_');
 
 

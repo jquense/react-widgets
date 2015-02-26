@@ -78,7 +78,7 @@ module.exports = {
         { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
         { 
           test: /\.jsx$|\.js$/, 
-          loader: '6to5-loader', 
+          loader: 'babel-loader', 
           exclude: /node_modules/,
           query: config
         }

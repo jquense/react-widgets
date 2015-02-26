@@ -1,6 +1,7 @@
 'use strict';
 var React  = require('react')
-  , $ = require('./util/dom');
+  , $ = require('./util/dom')
+  , cx = require('classnames');
 
 
 var PopupContent = React.createClass({
@@ -17,7 +18,10 @@ var PopupContent = React.createClass({
 module.exports = React.createClass({
 
   propTypes: {
+    open:           React.PropTypes.bool,
+    dropUp:         React.PropTypes.bool,
     duration:       React.PropTypes.number,
+
     onRequestClose: React.PropTypes.func.isRequired,
     onClosing:      React.PropTypes.func,
     onOpening:      React.PropTypes.func,
@@ -55,10 +59,14 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var { className, open, ...props } = this.props
+    var { 
+        className
+      , open
+      , dropUp
+      , ...props } = this.props
 
     return (
-      <div {...props} className={ (className ||'') + " rw-popup-container"}>
+      <div {...props} className={cx(className, "rw-popup-container", { "rw-dropup": dropUp })}>
         <PopupContent ref='content'>
           { this.props.children }
         </PopupContent>
@@ -123,7 +131,7 @@ module.exports = React.createClass({
     el.style.position = 'absolute'
 
     $.animate(el
-      , { top: '-100%' }
+      , { top: this.props.dropUp ? '100%' : '-100%' }
       , dur === undefined ? this.props.duration : dur
       , 'ease'
       , function() {

@@ -5,7 +5,7 @@ var React           = require('react')
   , Year            = require('./Year')
   , Decade          = require('./Decade')
   , Century         = require('./Century')
-  , cx              = require('./util/cx')
+  , cx              = require('classnames')
   , controlledInput = require('./util/controlledInput')
   , SlideTransition = require('./SlideTransition')
   , dates           = require('./util/dates')
@@ -139,9 +139,7 @@ var Calendar = React.createClass({
         onKeyDown={this._keyDown}
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
-        className={cx(className, {
-          'rw-calendar':       true,
-          'rw-widget':         true,
+        className={cx(className, 'rw-calendar', 'rw-widget', {
           'rw-state-focus':    this.state.focused,
           'rw-state-disabled': this.props.disabled,
           'rw-state-readonly': this.props.readOnly,

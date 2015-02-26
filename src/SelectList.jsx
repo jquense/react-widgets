@@ -1,13 +1,12 @@
 'use strict';
 var React = require('react')
   , _  = require('./util/_')
-  , cx = require('./util/cx')
+  , cx = require('classnames')
   , controlledInput  = require('./util/controlledInput')
   , CustomPropTypes  = require('./util/propTypes')
   , PlainList        = require('./List')
   , GroupableList = require('./ListGroupable')
   , validateList = require('./util/validateListInterface')
-  , filter   = require('./util/filter')
   , scrollTo = require('./util/dom/scroll');
 
 var propTypes = {
@@ -127,9 +126,7 @@ var SelectList = React.createClass({
         aria-activedescendent={ this.state.focused ? optID : undefined }
         aria-disabled={ this.isDisabled() }
         aria-readonly={ this.isReadOnly() }
-        className={cx(className, { 
-          'rw-widget':         true,
-          'rw-selectlist':     true,
+        className={cx(className, 'rw-widget', 'rw-selectlist', { 
           'rw-state-focus':    this.state.focused,
           'rw-state-disabled': this.isDisabled(),
           'rw-state-readonly': this.isReadOnly(),

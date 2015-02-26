@@ -1,6 +1,6 @@
 'use strict';
 var React           = require('react')
-  , cx              = require('./util/cx')
+  , cx              = require('classnames')
   , _               = require('./util/_')
   , SelectInput     = require('./MultiselectInput')
   , TagList         = require('./MultiselectTagList')
@@ -40,6 +40,7 @@ var propTypes = {
       onSelect:        React.PropTypes.func,
       onCreate:        React.PropTypes.func,
 
+      dropUp:          React.PropTypes.bool,
       duration:        React.PropTypes.number, //popup
 
       placeholder:     React.PropTypes.string,
@@ -130,6 +131,7 @@ var Multiselect = React.createClass({
       , optID  = this._id('_option')
       , items  = this._data()
       , values = this.state.dataItems
+      , dropUp = this.props.dropUp
 
       , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       , listProps  = _.pick(this.props, Object.keys(List.type.propTypes));
@@ -141,14 +143,14 @@ var Multiselect = React.createClass({
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
-        className={cx(className, {
-          'rw-multiselect':    true,
-          'rw-widget':         true,
+        className={cx(className, 'rw-multiselect', 'rw-widget', {
           'rw-state-focus':    this.state.focused,
           'rw-state-disabled': this.props.disabled === true,
           'rw-state-readonly': this.props.readOnly === true,
-          'rw-open':           this.props.open,
-          'rw-rtl':            this.isRtl()
+          'rw-rtl':            this.isRtl(),
+
+          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
+
         })}>
         <div className='rw-multiselect-wrapper'>
           { this.props.busy &&
@@ -180,7 +182,9 @@ var Multiselect = React.createClass({
             onKeyUp={this._searchgKeyUp}
             onChange={this._typing}/>
         </div>
-        <Popup open={this.props.open} onRequestClose={this.close} duration={this.props.duration}>
+        <Popup {..._.pick(this.props, Object.keys(Popup.type.propTypes))}
+          onRequestClose={this.close}>
+
           <div>
             <List ref="list"
               {...listProps}

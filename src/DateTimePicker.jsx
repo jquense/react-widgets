@@ -1,6 +1,6 @@
 'use strict';
 var React  = require('react')
-  , cx     = require('./util/cx')
+  , cx     = require('classnames')
   , _      = require('./util/_') //pick, omit, has
 
   , dates  = require('./util/dates')
@@ -39,6 +39,8 @@ var propTypes = {
     time:           React.PropTypes.bool,
 
     timeComponent:  CustomPropTypes.elementType,
+
+    dropUp:         React.PropTypes.bool,
     duration:       React.PropTypes.number, //popup
 
     placeholder:    React.PropTypes.string,
@@ -108,11 +110,14 @@ var DateTimePicker = React.createClass({
   },
 
   render: function(){
-    var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
+    var { 
+        className
+      , ...props } = _.omit(this.props, Object.keys(propTypes))
       , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
       , timeListID = this._id('_time_listbox')
       , timeOptID  = this._id('_time_option')
       , dateListID = this._id('_cal')
+      , dropUp = this.props.dropUp
       , value = dateOrNull(this.props.value)
       , owns;
 
@@ -126,16 +131,15 @@ var DateTimePicker = React.createClass({
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
-        className={cx(className, {
-          'rw-datetimepicker':     true,
-          'rw-widget':          true,
-          'rw-open':            this.props.open,
+        className={cx(className, 'rw-datetimepicker', 'rw-widget', {
           'rw-state-focus':     this.state.focused,
           'rw-state-disabled':  this.isDisabled(),
           'rw-state-readonly':  this.isReadOnly(),
           'rw-has-both':        this.props.calendar && this.props.time,
           'rw-has-neither':     !this.props.calendar && !this.props.time,
-          'rw-rtl':             this.isRtl()
+          'rw-rtl':             this.isRtl(),
+
+          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
         })}>
         <DateInput ref='valueInput'
           aria-activedescendant={ this.props.open
@@ -180,10 +184,10 @@ var DateTimePicker = React.createClass({
           }
         </span>
         }
-        <Popup
+        <Popup 
+          dropUp={dropUp}
           open={ this.props.open === popups.TIME }
-          onRequestClose={this.close}
-          duration={this.props.duration}>
+          onRequestClose={this.close}>
             <div>
               <Time ref="timePopup"
                 id={timeListID}
@@ -202,6 +206,7 @@ var DateTimePicker = React.createClass({
         </Popup>
         <Popup
           className='rw-calendar-popup'
+          dropUp={dropUp}
           open={ this.props.open === popups.CALENDAR}
           duration={this.props.duration}
           onRequestClose={this.close}>
