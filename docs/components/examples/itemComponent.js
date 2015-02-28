@@ -30,5 +30,3 @@ React.render(widget, mountNode);`
 
 return code
 }
-
-
