@@ -1,5 +1,5 @@
 'use strict';
-var { has } = require('../util/_')
+var { has } = require('../util/_');
 
 
 module.exports = {

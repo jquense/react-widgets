@@ -9,8 +9,6 @@ module.exports = React.createClass({
     onChange:     React.PropTypes.func.isRequired
   },
 
-
-  // hello
   componentDidUpdate: function() {
     var input = this.getDOMNode()
       , val = this.props.value;
@@ -25,13 +23,13 @@ module.exports = React.createClass({
     }
   },
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       value: ''
     }
   },
 
-  render: function(){
+  render(){
     return (
       <input 
         {...this.props }

@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('../util/_')
+var _ = require('../util/_');
 
 //backport PureRenderEqual
 module.exports = {
