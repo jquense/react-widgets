@@ -1,7 +1,7 @@
 {
   "name": "react-widgets",
   "version": "2.2.6",
-  "description": "React widgets",
+  "description": "A set of input widgets for React",
   "main": "index.js",
   "author": {
     "name": "Jason",

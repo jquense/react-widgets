@@ -46,8 +46,8 @@ var GettingStarted = React.createClass({
         <h2 id='/getting-started/install' className='prop-header'>Install <a/></h2>
         <p>
           The prefered way to install is NPM (<code>npm install react-widgets</code>) and make use of something like Webpack or 
-           Browserify to bundle the library. There is also a traditional browser build available for 
-           download in the <strong>browser</strong> folder. The browser build does not bundle any dependencies, and 
+           Browserify to bundle the library. You can also install via Bower or use the traditional browser build available for 
+           download in the <strong>dist</strong> folder. The browser build does not bundle any dependencies, and 
            attaches itself to the <code>window</code> as <code>ReactWidgets</code>
         </p>
         <p>
@@ -104,7 +104,7 @@ var GettingStarted = React.createClass({
         <h2 id='/getting-started/access'>Accessibility and Read Direction</h2>
         <p>
           React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for
-          date and number localization, there is first class support for cultures and languages that read
+          date and number localization, there is first {'class'} support for cultures and languages that read
           right to left (with the <code>isRtl</code> prop).
         </p>
         <p>

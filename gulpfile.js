@@ -10,7 +10,7 @@ var gulp    = require('gulp')
   , toFive  = require("gulp-babel")
   , plumber = require('gulp-plumber')
   , configs = require('./webpack.configs')
-  , stripDebug = require('gulp-strip-debug');
+  , stripDebug = require('gulp-strip-debug')
 
 
 gulp.task('assets',   function(){
@@ -41,15 +41,11 @@ gulp.task('lib-compile', [ 'lib-clean' ], function(){
 gulp.task('lib', [ 'lib-clean', 'lib-compile'])
 
 
-gulp.task('browser-clean', function(cb){
-  del('./browser/*.js', cb);
+gulp.task('dist-build', [ 'lib' ], function(cb) {
+  del('./dist/*.js', function(){
+     webpack(configs.browser, cb);
+  });
 })
-
-gulp.task('browser-build', ['lib', 'browser-clean'], function(cb) {
-  webpack(configs.browser, cb);
-})
-
-gulp.task('browser', [ 'browser-clean', 'browser-build'])
 
 gulp.task('docs',    [ 'lib', 'assets'], function(cb) {
   webpack(assign({}, configs.docs, { devtool: '' }), cb);
@@ -81,4 +77,6 @@ gulp.task('dev', function() {
 
 gulp.task('dev-docs', ['lib', 'doc-watch'])
 
-gulp.task('release', [ 'lib', 'assets', 'docs', 'browser']);
+gulp.task('dist', ['assets', 'dist-build'])
+
+gulp.task('release', [ 'lib', 'dist', 'docs']);
