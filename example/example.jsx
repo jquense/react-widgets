@@ -119,7 +119,7 @@ var App = React.createClass({
         </section>*/}
        
           <section className="example" style={{ marginBottom: 20 }}>
-            <DropdownList
+            <DropdownList dropUp
               isRtl={false}
               id='MyDropdownList'
               data={ this.state.data }
@@ -151,13 +151,13 @@ var App = React.createClass({
               onChange={change.bind(null, 'comboboxValue')}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            <Select
+            <Select dropUp
               data={ this.state.data }
               textField='name'
               valueField='id'/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker
+            <DatePicker dropUp
               isRtl={false}
               culture='es'
               id='swweeeeet'

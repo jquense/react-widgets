@@ -7,7 +7,7 @@ var gulp    = require('gulp')
   , less = require('gulp-less')
   , assign = require('lodash/object/assign')
   , rename = require('gulp-rename')
-  , toFive  = require("gulp-6to5")
+  , toFive  = require("gulp-babel")
   , plumber = require('gulp-plumber')
   , configs = require('./webpack.configs')
   , stripDebug = require('gulp-strip-debug');
@@ -69,7 +69,7 @@ gulp.task('doc-watch', function() {
 
 gulp.task('dev', function() {
 
-  gulp.watch('./src/less/**/*.less',  ['watch-less']);
+  gulp.watch('./src/less/**/*.less',  ['assets']);
   
   new WebpackServer(
         webpack(configs.dev)
