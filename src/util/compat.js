@@ -10,16 +10,10 @@ var compat = module.exports = {
   propType: function(fn) {
 
     return function validator(props, propName, componentName, location){
-      var ver = compat.version()
-        , err = fn.call(this, props, propName, componentName, location)
+      var err = fn.call(this, props, propName, componentName, location)
 
-      if ( err && err !== true ) {
-        if( ver[0] === 0 && ver[1] < 11 )
-          return console.warn(err instanceof Error ? err.message : err)
-
+      if ( err && err !== true ) 
         return err
-      }
-
     }
   }
 }

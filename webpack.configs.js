@@ -111,7 +111,7 @@ module.exports = {
         { test: /\.less$/, loader: 'style-loader!css-loader!less-loader', exclude: /node_modules/ },
         { 
           test: /\.jsx$|\.js$/, 
-          loader: '6to5-loader', 
+          loader: 'babel-loader', 
           exclude: /node_modules/,
           query: config
         }
@@ -141,7 +141,7 @@ module.exports = {
         { test: /sinon-chai/, loader: "imports?define=>false" },
         { 
           test: /\.jsx$|\.js$/, 
-          loader: '6to5-loader', 
+          loader: 'babel-loader', 
           exclude: /node_modules/,
           query: config
         }

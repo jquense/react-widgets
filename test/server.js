@@ -1,7 +1,7 @@
 'use strict';
 /*global it, describe */
 
-require('6to5/register')(
+require('babel/register')(
   require('../webpack.configs').to5Config)
 
 var assert = require('assert')
