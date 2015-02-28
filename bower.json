@@ -28,14 +28,16 @@
   "ignore": [
       "src",
       "test",
-      "browser",
+      "docs",
       "example",
       "lib",
       "vendor",
       ".bowerrc",
       ".gitignore",
+      ".gitattributes",
       ".npmignore",
       ".eslintrc",
+      ".travis.yaml",
       "bower.json",
       "gulpfile.js",
       "package.json",
@@ -45,7 +47,8 @@
       "test.js",
       "karma.conf.js",
       "karma.conf-ci.js",
-      "webpack.config.js",
+      "webpack.configs.js",
+      "fontello-config.json",
       "README.md"
   ]
 }
