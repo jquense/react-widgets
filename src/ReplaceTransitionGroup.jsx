@@ -59,7 +59,7 @@ module.exports = React.createClass({
     else if ( last && !next && !isLastChild) {
       //new child
       stack.push(nextChild)
-      this.leaving = last 
+      this.leaving  = last 
       this.entering = nextChild
     }
     else if ( last && next && !isLastChild && !isNextChild) {
@@ -171,13 +171,15 @@ module.exports = React.createClass({
     
     delete this.animatingKeys[leavekey];
 
+
     if (key(this.props.children) === leavekey )
       this.performEnter(leavekey); // This entered again before it fully left. Add it again.
-    else {
-      var newChildren = this.state.children.filter( c => key(c) !== leavekey);
-      this.setState({ children: newChildren });
-    }
 
+    else if ( this.isMounted() )
+      this.setState({ 
+        children: this.state.children.filter( c => key(c) !== leavekey) 
+      });
+    
     this._tryFinish() 
   },
 
@@ -191,7 +193,6 @@ function getChild(children){
   return React.Children.only(children)
 }
 
-//CHANGE 0.12.0
 function key(child){
   return child && child.key
 }
