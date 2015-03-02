@@ -57,7 +57,8 @@ module.exports = React.createClass({
       <tr key={i} role='row'>
       { row.map( (date, i) => {
         var focused  = dates.eq(date, this.state.focusedDate,  'month')
-          , selected = dates.eq(date, this.props.value,  'month');
+          , selected = dates.eq(date, this.props.value,  'month')
+          , currentMonth = dates.eq(date, this.props.today, 'month');
 
         return dates.inRange(date, this.props.min, this.props.max, 'month')
           ? (<td key={i} role='gridcell'>
@@ -68,7 +69,8 @@ module.exports = React.createClass({
                 disabled={this.props.disabled}
                 className={cx({
                   'rw-state-focus':    focused,
-                  'rw-state-selected': selected
+                  'rw-state-selected': selected,
+                  'rw-now':            currentMonth
                 })}>
                 { dates.format(date, dates.formats.MONTH_NAME_ABRV, this.props.culture) }
               </Btn>

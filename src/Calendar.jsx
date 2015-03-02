@@ -125,14 +125,15 @@ var Calendar = React.createClass({
     var {
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , View     = VIEW[this.state.view]
-      , unit     = this.state.view
-      
-      , disabled = this.props.disabled || this.props.readOnly
-      , date     = this.state.currentDate
-      , labelId  = this._id('_view_label')
-      , key      = this.state.view + '_' + dates[this.state.view](date)
-      , id       = this._id('_view');
+      , View       = VIEW[this.state.view]
+      , unit       = this.state.view
+
+      , disabled   = this.props.disabled || this.props.readOnly
+      , date       = this.state.currentDate
+      , todaysDate = new Date()
+      , labelId    = this._id('_view_label')
+      , key        = this.state.view + '_' + dates[this.state.view](date)
+      , id         = this._id('_view');
 
     return (
       <div {...props }
@@ -168,6 +169,7 @@ var Calendar = React.createClass({
             culture={this.props.culture}
             aria-labelledby={labelId}
             selectedDate={this.props.value}
+            today={todaysDate}
             value={this.state.currentDate}
             onChange={this._maybeHandle(this.change)}
             onKeyDown={this._maybeHandle(this._keyDown)}
