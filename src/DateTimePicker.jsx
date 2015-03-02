@@ -40,8 +40,9 @@ var propTypes = {
 
     timeComponent:  CustomPropTypes.elementType,
 
+    //popup
     dropUp:         React.PropTypes.bool,
-    duration:       React.PropTypes.number, //popup
+    duration:       React.PropTypes.number,
 
     placeholder:    React.PropTypes.string,
     name:           React.PropTypes.string,
@@ -94,8 +95,8 @@ var DateTimePicker = React.createClass({
     return {
       value:            null,
       format:           both || neither
-        ? 'M/d/yyyy h:mm tt'
-        : cal ? 'M/d/yyyy' : 'h:mm tt',
+                          ? 'M/d/yyyy h:mm tt'
+                          : cal ? 'M/d/yyyy' : 'h:mm tt',
       min:              new Date(1900,  0,  1),
       max:              new Date(2099, 11, 31),
       calendar:         true,
@@ -113,7 +114,8 @@ var DateTimePicker = React.createClass({
     var { 
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
+      , calProps   = _.pick(this.props, Object.keys(Calendar.propTypes))
+
       , timeListID = this._id('_time_listbox')
       , timeOptID  = this._id('_time_option')
       , dateListID = this._id('_cal')
@@ -162,6 +164,7 @@ var DateTimePicker = React.createClass({
           culture={this.props.culture}
           parse={this._parse}
           onChange={this._change} />
+          
         { (this.props.calendar || this.props.time) &&
         <span className='rw-select'>
           { this.props.calendar &&

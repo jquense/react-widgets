@@ -108,17 +108,17 @@ module.exports = React.createClass({
   },
 
   performEnter: function(key) {
-    var component = this.refs[key];
+    var component = this.refs[key]
 
     if(!component) return
 
-    this.animatingKeys[key] = true;
+    this.animatingKeys[key] = true
 
     if (component.componentWillEnter) 
       component.componentWillEnter(
-        this._handleDoneEntering.bind(this, key));
+        this._handleDoneEntering.bind(this, key))
     else 
-      this._handleDoneEntering(key);
+      this._handleDoneEntering(key)
   },
 
   _tryFinish: function(){
@@ -136,12 +136,12 @@ module.exports = React.createClass({
     var component = this.refs[enterkey];
 
     if (component && component.componentDidEnter) 
-      component.componentDidEnter();
+      component.componentDidEnter()
     
-    delete this.animatingKeys[enterkey];
+    delete this.animatingKeys[enterkey]
 
     if ( key(this.props.children) !== enterkey) 
-      this.performLeave(enterkey); // This was removed before it had fully entered. Remove it.
+      this.performLeave(enterkey) // This was removed before it had fully entered. Remove it.
     
     this._tryFinish()
   },
@@ -151,34 +151,33 @@ module.exports = React.createClass({
   },
 
   performLeave: function(key) {
-    var component = this.refs[key];
+    var component = this.refs[key]
 
     if(!component) return
 
-    this.animatingKeys[key] = true;
+    this.animatingKeys[key] = true
 
     if (component.componentWillLeave) 
       component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
     else 
-      this._handleDoneLeaving(key);
+      this._handleDoneLeaving(key)
   },
 
   _handleDoneLeaving: function(leavekey) {
     var component = this.refs[leavekey];
 
     if (component && component.componentDidLeave) 
-      component.componentDidLeave();
+      component.componentDidLeave()
     
-    delete this.animatingKeys[leavekey];
-
+    delete this.animatingKeys[leavekey]
 
     if (key(this.props.children) === leavekey )
-      this.performEnter(leavekey); // This entered again before it fully left. Add it again.
+      this.performEnter(leavekey) // This entered again before it fully left. Add it again.
 
     else if ( this.isMounted() )
       this.setState({ 
         children: this.state.children.filter( c => key(c) !== leavekey) 
-      });
+      })
     
     this._tryFinish() 
   },

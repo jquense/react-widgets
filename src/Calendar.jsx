@@ -45,24 +45,22 @@ var propTypes = {
   initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
   finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
 
-  disabled:       React.PropTypes.oneOfType([
-                      React.PropTypes.bool,
-                      React.PropTypes.oneOf(['disabled'])
-                    ]),
+  disabled:      React.PropTypes.oneOfType([
+                   React.PropTypes.bool,
+                   React.PropTypes.oneOf(['disabled'])
+                 ]),
 
-  readOnly:       React.PropTypes.oneOfType([
-                    React.PropTypes.bool,
-                    React.PropTypes.oneOf(['readOnly'])
-                  ]),
+  readOnly:      React.PropTypes.oneOfType([
+                   React.PropTypes.bool,
+                   React.PropTypes.oneOf(['readOnly'])
+                 ]),
 
   culture:       React.PropTypes.string,
 
   messages:      React.PropTypes.shape({
     moveBack:    React.PropTypes.string,
     moveForward: React.PropTypes.string
-  }),
-
-  maintainFocus: React.PropTypes.bool,
+  })
 }
 
 var Calendar = React.createClass({
@@ -211,7 +209,6 @@ var Calendar = React.createClass({
       })
     }
   },
-
 
   _focus: function(focused, e){
 

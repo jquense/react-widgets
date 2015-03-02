@@ -8,7 +8,8 @@ var React   = require('react')
 var SlideChildGroup = React.createClass({
 
   propTypes: {
-    direction: React.PropTypes.oneOf(['left', 'right'])
+    direction: React.PropTypes.oneOf(['left', 'right']),
+    duration:  React.PropTypes.number
   },
 
   componentWillEnter: function(done) {
