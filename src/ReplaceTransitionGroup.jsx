@@ -122,12 +122,12 @@ module.exports = React.createClass({
   },
 
   _tryFinish: function(){
-    var node = this.getDOMNode()
 
     if ( this.isTransitioning() )
       return 
 
-    $.css(node, { overflow: 'visible', height: '', width: '' })
+    if ( this.isMounted() )
+      $.css(this.getDOMNode(), { overflow: 'visible', height: '', width: '' })
 
     this.props.onAnimate() 
   }, 
