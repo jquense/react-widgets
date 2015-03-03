@@ -57,9 +57,10 @@ module.exports = React.createClass({
     return (
       <tr key={'row_' + i} role='row'>
       { row.map( (date, i) => {
-        var focused  = dates.eq(date,  this.state.focusedDate,  'decade')
-          , selected = dates.eq(date, this.props.value,  'decade')
-          , d        = inRangeDate(date, this.props.min, this.props.max);
+        var focused       = dates.eq(date,  this.state.focusedDate,  'decade')
+          , selected      = dates.eq(date, this.props.value,  'decade')
+          , d             = inRangeDate(date, this.props.min, this.props.max)
+          , currentDecade = dates.eq(date, this.props.today, 'decade');
 
         return !inRange(date, this.props.min, this.props.max)
           ? <td key={i} role='gridcell' className='rw-empty-cell'>&nbsp;</td>
@@ -74,6 +75,7 @@ module.exports = React.createClass({
                   'rw-off-range':       !inCentury(date, this.props.value),
                   'rw-state-focus':     focused,
                   'rw-state-selected':  selected,
+                  'rw-now':             currentDecade
                  })}>
                 { label(date, this.props.culture) }
               </Btn>

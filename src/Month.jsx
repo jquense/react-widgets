@@ -63,7 +63,8 @@ module.exports = React.createClass({
       <tr key={'week_' + i} role='row'>
       { row.map( (day, idx) => {
         var focused  = dates.eq(day, this.state.focusedDate, 'day')
-          , selected = dates.eq(day, this.props.selectedDate, 'day');
+          , selected = dates.eq(day, this.props.selectedDate, 'day')
+          , today = dates.eq(day, this.props.today, 'day');
 
         return !dates.inRange(day, this.props.min, this.props.max)
             ? <td  key={'day_' + idx} role='gridcell' className='rw-empty-cell' >&nbsp;</td>
@@ -78,6 +79,7 @@ module.exports = React.createClass({
                     'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),
                     'rw-state-focus':    focused,
                     'rw-state-selected': selected,
+                    'rw-now': today
                   })}
                   id={focused ? id : undefined}>
                   {dates.format(day, 'dd', this.props.culture)}
