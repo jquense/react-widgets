@@ -3,7 +3,10 @@
 
 var React = require('react')
   , CodeMirrorEditor = require('./codemirror')
+  , babel = require('babel/browser')
+  , config  = require('../../package.json').babel
   , ReactWidgets = require('../../index')
+  , MultiselectTagList = require('../../lib/MultiselectTagList')
   , genData = require('./generate-data');
 
 function listOfPeople(){
@@ -11,7 +14,7 @@ function listOfPeople(){
 }
 
 function scopedEval(code, mountNode)  {
-  var context = { ReactWidgets, listOfPeople, mountNode, React }
+  var context = { ReactWidgets: { ...ReactWidgets, MultiselectTagList }, listOfPeople, mountNode, React }
 
   return (new Function( "with(this) { " + code + "}")).call(context);
 }
@@ -27,7 +30,7 @@ module.exports = React.createClass({
   getDefaultProps: function() {
     return {
       transformer: function(code) {
-        return JSXTransformer.transform(code, { harmony: true }).code;
+        return babel.transform(code, {}).code;
       }
     };
   },
@@ -43,7 +46,6 @@ module.exports = React.createClass({
       () => this.executeCode());
     
   },
-
 
   compileCode: function() {
     return this.props.transformer(this.state.code);

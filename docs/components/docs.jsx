@@ -18,7 +18,8 @@ var React = require('react')
   , Calendar       = require('./pages/Calendar.jsx')
   , DatePicker     = require('./pages/DateTimePicker.jsx')
   , NumberPicker   = require('./pages/NumberPicker.jsx')
-  , Migration      = require('./pages/Migration.jsx');
+  , Migration      = require('./pages/Migration.jsx')
+  , Advanced       = require('./pages/Advanced.jsx');
 
 require('../docs.css')
 
@@ -73,6 +74,8 @@ var Docs = React.createClass({
                   <li><Link to='calendar'>Calendar</Link></li>
                   <li><Link to='datetime-picker'>{'Date & Time Picker'}</Link></li>
                   <li><Link to='migration'>Migrating to 2.x</Link></li>
+
+                  <li><Link to='advanced'>Advanced</Link></li>
                 </ul>
               </nav>
             </Affix>
@@ -150,6 +153,8 @@ var routes = (
     <Route name="number-picker" handler={NumberPicker}>
       <Route path=':topic' handler={NumberPicker}/>
     </Route>
+
+    <Route name="advanced" handler={Advanced} />
 
     <Route name="migration" handler={Migration} />
   </Route>

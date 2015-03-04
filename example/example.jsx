@@ -1,189 +1,90 @@
 'use strict';
 var React = require('react/addons')
 var DropdownList = require('../src/DropdownList.jsx')
-var Select = require('../src/Multiselect.jsx')
+var Multiselect = require('../src/Multiselect.jsx')
 var Calendar = require('../src/Calendar.jsx')
 var DatePicker = require('../src/DateTimepicker.jsx')
 var NumberPicker = require('../src/NumberPicker.jsx')
 var ComboBox = require('../src/Combobox.jsx')
 var SelectList = require('../src/SelectList.jsx')
 var chance = new (require('chance'))
-var _ = require('lodash')
+var _ = require('lodash');
 
-var { ModalTrigger
-  , Modal } = require('react-bootstrap')
+
+var TagList = require('../src/MultiselectTagList.jsx');
+var list = generateList();
 
 // var g = require('globalize')
-var culture = require('globalize/lib/cultures/globalize.culture.es');
+// var culture = require('globalize/lib/cultures/globalize.culture.es');
 // g.culture('fi');
 
-var ListItem = React.createClass({
+// var TaglessMultiSelect = React.createClass({
 
-  render: function(){
+//   mixins: [
+//     require('./src/mixins/DataHelpersMixin')
+//   ],
 
-    return (<span>{ "hi: " + this.props.item.name}</span>)
-  }
-})
+//   render(){
+//     var {
+//       value,
+//       data,
+//       ...props } = this.props;
 
-// var a = { a:1, b: 3};
-// var c = { ...a, x: 1 };
+//     //remove the selected values from data list
+//     data = data.filter( i => !value.some( this._valueMatcher.bind(null, i), this))
 
-var MyModal = React.createClass({
-  render: function() {
-    var list = generateList()
-    return (
-        <Modal {...this.props} title="Modal heading" animation={false}>
-          <DropdownList
-              isRtl={false}
-              id='MyDropdownList'
-              data={ list }
-              textField='name'
-              valueField='id'
-              defaultValue={list[1]}/>
-          <div className="modal-footer">
-            <button onClick={this.props.onRequestHide}>Close</button>
-          </div>
-        </Modal>
-      );
-  }
-});
+//     return <Multiselect {...props} data={data} value={[]} onChange={this._change}/>
+//   },
+
+//   _change(values){
+//     this.props.onChange && 
+//       this.props.onChange(
+//         this.props.value.concat(values)) // return all the values
+//   }
+// });
 
 var App = React.createClass({
 
   getInitialState: function(){
-    var list = generateList()
+    
     return {
       data: list,
-      suggestdata: suggestList(),
-      dropdownValue: list[0],
-      comboboxValue: 1,
-      //comboboxValue: list[0],
-      selectValues: [3,4,5,2],
-      calDate: new Date,
-      numberValue: 1,
-      open: false
+      values: [],
     }
   },
 
   render: function(){
     var self = this;
 
-    function change(field, data) {
-      var obj = {}
-
-      if(field === 'selectValues' && Array.isArray(data))
-        data = _.pluck(data, 'id')
-
-      if(field === 'open') console.log(field, data)
-
-      obj[field] = _.has(data, 'id') ? data.id : data
-
-      self.setState(obj)
-      //console.log('example: set field: ' + field, data)
-    }
-
-    function create(tag){
-      var data;
-
-      tag = { id: self.state.data.length + 1, name: tag }
-      data = self.state.data.concat(tag)
+    function onChange([val]){
 
       self.setState({
-        data: data,
-        selectValues: []
-          .concat(self.state.selectValues)
-          .concat(tag.id)
+        values: self.state.values.concat(val),
+        data:   self.state.data.filter( v => v !== val)
+      })
+    }
+
+    function onDelete(val){
+      self.setState({
+        values: self.state.values.filter( v => v !== val),
+        data:   self.state.data.concat(val)
       })
     }
 
     return (
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
-          <ModalTrigger modal={<MyModal />}>
-            <button>Launch demo modal</button>
-          </ModalTrigger>
-        {/*<section className="example">
-          <div style={{ height: 150 }}>
-            sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
-          </div>
-          <SelectList
-            textField='name'
-            valueField='id'
-            data={this.state.data}
-            value={this.state.selectValues}
-            disabled={[1 ,6]}
-            busy={false}
-            name="super_name"
-            multiple
-            onChange={change.bind(null, 'selectValues')}/>
-        </section>*/}
-       
-          <section className="example" style={{ marginBottom: 20 }}>
-            <DropdownList dropUp
-              isRtl={false}
-              id='MyDropdownList'
-              data={ this.state.data }
-              textField='name'
-              valueField='id'
-              busy={false}
-              groupBy='surname'
-              value={this.state.dropdownValue}
-              onChange={change.bind(null, 'dropdownValue')}/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-            <Calendar
-              value={ this.state.calValue }
-              min={new Date(2014, 9, 15)}
-              culture='es'
-              onChange={change.bind(null, 'calValue')}/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-          <ComboBox
-              isRtl={true}
-              data={ this.state.suggestdata }
-              textField='name'
-              valueField='id'
-              filter={'startsWith'}
-              suggest={true}
-              busy={false}
-              disabled={false}
-              value={ this.state.comboboxValue}
-              onChange={change.bind(null, 'comboboxValue')}/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-            <Select dropUp
-              data={ this.state.data }
-              textField='name'
-              valueField='id'/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker dropUp
-              isRtl={false}
-              culture='es'
-              id='swweeeeet'
-              format='f'
-              min={new Date(2013,5,1,0,0,0)}/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-            <NumberPicker id='AwesomeNumPicker'
-              isRtl={false}
-              format="D"
-              value={this.state.numberValue}
-              onChange={change.bind(null, 'numberValue')}/>
+          <section>
+            <Multiselect data={this.state.data} value={[]} onChange={onChange} />
+            <TagList value={this.state.values} onDelete={onDelete} />
           </section>
         </div>
       </div>
-
     )
-
-
   },
-
-
 })
 
 React.render(<App/>, document.body);
-
 
 
 function generateList(){
@@ -191,23 +92,8 @@ function generateList(){
 
   for(var i = 0; i < arr.length; i++){
     var first = chance.first(), last = chance.last()
-    arr[i] = { id: i + 1, name: `${first} ${last}`, first, surname: last }
+    arr[i] = `${first} ${last}`
   }
 
   return arr
-}
-
-function suggestList(){
-  var i = 0;
-
-  return [
-    { id: i += 1, name: "james" },
-    { id: i += 1, name: "jan" },
-    { id: i += 1, name: "jase" },
-    { id: i += 1, name: "jason" },
-    { id: i += 1, name: "jim" },
-    { id: i += 1, name: "jimmy" },
-    { id: i += 1, name: "jimmy smith" },
-    { id: i += 1, name: "john" }
-  ]
 }

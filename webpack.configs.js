@@ -15,28 +15,20 @@ var banner = new webpack.BannerPlugin(
       , { entryOnly : true });
 
 
-var config = {
-      experimental: true,
-      loose: ['all'],
-
-      whitelist: [
-        'es6.classes',
-        'es6.modules',
-        'es6.arrowFunctions',
-        'es6.properties.computed',
-        'es6.properties.shorthand',
-        'es6.parameters.default',
-        'es6.parameters.rest',
-        'es6.templateLiterals',
-        'es6.destructuring',
-        'es7.objectRestSpread',
-        'react'
-      ]
-    }
+var loaders = [
+  { test: /\.css$/,  loader: "style-loader!css-loader" },
+  { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+  { 
+    test: /\.jsx$|\.js$/, 
+    loader: 'babel-loader', 
+    exclude: /node_modules/,
+    query: pkg.babel
+  }
+];
 
 module.exports = {
 
-  to5Config: config,
+  to5Config: pkg.babel,
 
   browser: {
 
@@ -73,16 +65,7 @@ module.exports = {
     },
 
     module: {
-      loaders: [
-        { test: /\.css$/,  loader: "style-loader!css-loader" },
-        { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-        { 
-          test: /\.jsx$|\.js$/, 
-          loader: 'babel-loader', 
-          exclude: /node_modules/,
-          query: config
-        }
-      ]
+      loaders: loaders
     },
   },
 
@@ -106,16 +89,9 @@ module.exports = {
     },
 
     module: {
-      loaders: [
-        { test: /\.css$/, loader:  'style-loader!css-loader', exclude: /node_modules/ },
-        { test: /\.less$/, loader: 'style-loader!css-loader!less-loader', exclude: /node_modules/ },
-        { 
-          test: /\.jsx$|\.js$/, 
-          loader: 'babel-loader', 
-          exclude: /node_modules/,
-          query: config
-        }
-      ]
+      loaders: loaders.concat([
+          { test: /\.json$/, loader: "json" }
+        ])
     },
 
     plugins: [
@@ -135,17 +111,9 @@ module.exports = {
       extensions: ['', '.js', '.jsx']
     },
     module: {
-      loaders: [
-        { test: /\.css$/, loader: "style-loader!css-loader" },
-        { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-        { test: /sinon-chai/, loader: "imports?define=>false" },
-        { 
-          test: /\.jsx$|\.js$/, 
-          loader: 'babel-loader', 
-          exclude: /node_modules/,
-          query: config
-        }
-      ]
+      loaders: loaders.concat([
+        { test: /sinon-chai/, loader: "imports?define=>false" }
+      ])
     },
     //plugins: [ ProdDefine ]
   }
