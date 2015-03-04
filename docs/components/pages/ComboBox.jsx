@@ -61,7 +61,7 @@ var ComboBox = React.createClass({
 
         <PropHeader type='Function(Any value)'>onChange</PropHeader>
         <p>
-          Called when the value is changed. If the value is on of the <code>data</code> members
+          Called when the value is changed. If the value is one of the <code>data</code> members
           that item will be returned. In the case of a value not being found in the <code>data</code> array
           the string value of the combobox will be returned.
         </p>
