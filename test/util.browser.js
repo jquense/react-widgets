@@ -9,7 +9,8 @@ var React   = require('react')
   , filters = require('../src/util/filter')
   , _       = require('../src/util/_')
   , propTypes = require('../src/util/propTypes')
-  , validateList = require('../src/util/validateListInterface');
+  , validateList = require('../src/util/validateListInterface')
+  , dates = require('../src/util/dates');
 
 
 
@@ -149,4 +150,53 @@ describe('when using custom PropTypes', function(){
     expect(
       propTypes.elementType(props, 'type', 'component')).to.be.an(Error)
   })
+})
+
+describe('dates util', function(){
+
+  describe('includesOrEquals', function(){
+    var day = new Date(2015, 0, 1);
+
+    it('should allow ranges', function() {
+      var dayRangeInclusive = [new Date(2014, 11, 31), new Date(2015, 0, 2)]
+        , dayRangeNonInclusive = [new Date(2014, 11, 30), new Date(2014, 11, 31)]
+        , yearRangeInclusive = [new Date(2015, 0, 1), new Date(2015, 11, 31)]
+        , yearRangeNonInclusive = [new Date(2014, 0, 1), new Date(2014, 11, 31)]
+        , decadeRangeInclusive = [new Date(2010, 0, 1), new Date(2019, 0, 1)]
+        , decadeRangeNonInclusive = [new Date(2020, 0, 1), new Date(2029, 0, 1)]
+        , nullStartInclusive = [null, new Date(2015, 0, 1)]
+        , nullStartNoneInclusive = [null, new Date(2014, 11, 31)]
+        , nullEndInclusive = [new Date(2015, 0, 1), null]
+        , nullEndNoneInclusive = [new Date(2014, 11, 31), null]
+
+      expect(dates.includesOrEquals(day, dayRangeInclusive, 'day')).to.equal(true)
+      expect(dates.includesOrEquals(day, dayRangeNonInclusive, 'day')).to.equal(false)
+      expect(dates.includesOrEquals(day, yearRangeInclusive, 'year')).to.equal(true)
+      expect(dates.includesOrEquals(day, yearRangeNonInclusive, 'year')).to.equal(false)
+      expect(dates.includesOrEquals(day, decadeRangeInclusive, 'decade')).to.equal(true)
+      expect(dates.includesOrEquals(day, decadeRangeNonInclusive, 'decade')).to.equal(false)
+      expect(dates.includesOrEquals(day, nullStartInclusive, 'day')).to.equal(true)
+      expect(dates.includesOrEquals(day, nullStartNoneInclusive, 'day')).to.equal(false)
+      expect(dates.includesOrEquals(day, nullEndInclusive, 'day')).to.equal(true)
+      expect(dates.includesOrEquals(day, nullEndNoneInclusive, 'day')).to.equal(false)
+    })
+
+    it('should allow single dates', function() {
+      var dayInclusive = day
+        , dayNonInclusive = new Date(2015, 0, 2)
+        , yearInclusive = new Date(2015, 4, 1)
+        , yearNonInclusive = new Date(2014, 0, 2)
+        , decadeInclusive = new Date(2010, 0, 1)
+        , decadeNonInclusive = new Date(2020, 0, 1)
+
+      expect(dates.includesOrEquals(day, dayInclusive, 'day')).to.equal(true)
+      expect(dates.includesOrEquals(day, dayNonInclusive, 'day')).to.equal(false)
+      expect(dates.includesOrEquals(day, yearInclusive, 'year')).to.equal(true)
+      expect(dates.includesOrEquals(day, yearNonInclusive, 'year')).to.equal(false)
+      expect(dates.includesOrEquals(day, decadeInclusive, 'decade')).to.equal(true)
+      expect(dates.includesOrEquals(day, decadeNonInclusive, 'decade')).to.equal(false)
+    })
+
+  })
+
 })

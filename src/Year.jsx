@@ -57,7 +57,7 @@ module.exports = React.createClass({
       <tr key={i} role='row'>
       { row.map( (date, i) => {
         var focused  = dates.eq(date, this.state.focusedDate,  'month')
-          , selected = dates.eq(date, this.props.value,  'month')
+          , selected = dates.includesOrEquals(date, this.props.value, 'month')
           , currentMonth = dates.eq(date, this.props.today, 'month');
 
         return dates.inRange(date, this.props.min, this.props.max, 'month')

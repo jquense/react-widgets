@@ -42,9 +42,9 @@ var Calendar = React.createClass({
 
         <h2>Props</h2>
 
-        <PropHeader type='Date?' handler="onChange" controllable>value</PropHeader>
+        <PropHeader type='Date? | Array<Date>' handler="onChange" controllable>value</PropHeader>
         <p>
-          The current selected date, should be a Date object or null.
+          The current selected date, should be a Date object, null, or an Array of Date objects.
         </p>
         <EditableExample codeText={require('../examples/valuePicker')(widgetName, ['new Date()'])}/>
 

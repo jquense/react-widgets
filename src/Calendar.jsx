@@ -37,7 +37,10 @@ var MULTIPLIER = _.object([
 var propTypes = {
 
   onChange:      React.PropTypes.func.isRequired,
-  value:         React.PropTypes.instanceOf(Date),
+  value:         React.PropTypes.oneOfType([
+                   React.PropTypes.instanceOf(Date),
+                   React.PropTypes.array,
+                 ]),
 
   min:           React.PropTypes.instanceOf(Date),
   max:           React.PropTypes.instanceOf(Date),
@@ -77,12 +80,12 @@ var Calendar = React.createClass({
   propTypes,
 
   getInitialState: function(){
-    var value = this.inRangeValue(this.props.value);
+    var value = this.normalizeValue(this.props.value);
 
     return {
       selectedIndex: 0,
-      view:          this.props.initialView || 'month',
-      currentDate:   value ? new Date(value) : new Date()
+      view: this.props.initialView || 'month',
+      currentDateRange: value ? value : [new Date(), null]
     }
   },
 
@@ -105,7 +108,8 @@ var Calendar = React.createClass({
       , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
       , current = VIEW_OPTIONS.indexOf(this.state.view)
       , view    = this.state.view
-      , val     = this.inRangeValue(nextProps.value);
+      , value   = this.normalizeValue(nextProps.value)
+      , prev    = this.normalizeValue(this.props.value);
 
     if( current < bottom )
       this.setState({ view: view = nextProps.initialView })
@@ -113,9 +117,10 @@ var Calendar = React.createClass({
       this.setState({ view: view = nextProps.finalView })
 
     //if the value changes reset views to the new one
-    if ( !dates.eq(val, dateOrNull(this.props.value), VIEW_UNIT[view]))
+    if (!dates.eq(value[0], prev[0], VIEW_UNIT[view]) ||
+        !dates.eq(value[1], prev[1], VIEW_UNIT[view]))
       this.setState({
-        currentDate: val ? new Date(val) : new Date()
+        currentDateRange: value
       })
   },
 
@@ -127,10 +132,10 @@ var Calendar = React.createClass({
       , unit       = this.state.view
 
       , disabled   = this.props.disabled || this.props.readOnly
-      , date       = this.state.currentDate
+      , dateRange  = this.state.currentDateRange
       , todaysDate = new Date()
       , labelId    = this._id('_view_label')
-      , key        = this.state.view + '_' + dates[this.state.view](date)
+      , key        = this.state.view + '_' + dates[this.state.view](dateRange[0])
       , id         = this._id('_view');
 
     return (
@@ -166,9 +171,9 @@ var Calendar = React.createClass({
             id={id}
             culture={this.props.culture}
             aria-labelledby={labelId}
-            selectedDate={this.props.value}
+            selectedDate={this.normalizeValue(this.props.value)}
             today={todaysDate}
-            value={this.state.currentDate}
+            value={dateRange[0]}
             onChange={this._maybeHandle(this.change)}
             onKeyDown={this._maybeHandle(this._keyDown)}
             onMoveLeft ={this._maybeHandle(this.navigate.bind(null,  dir.LEFT))}
@@ -230,8 +235,27 @@ var Calendar = React.createClass({
   change: function(date){
     setTimeout(() => this._focus(true))
 
-    if ( this.props.onChange && this.state.view === this.props.initialView)
-      return this.notify('onChange', date)
+    if ( this.props.onChange && this.state.view === this.props.initialView) {
+      var dateRange = [
+        this.state.currentDateRange[0],
+        this.state.currentDateRange[1] || this.state.currentDateRange[0],
+      ];
+      var middle = new Date((dateRange[0].getTime() + dateRange[1].getTime()) / 2);
+
+      if (dateRange[0] == null ||
+          date < dateRange[0] ||
+          date < middle) {
+
+        dateRange[0] = date;
+      } else if (dateRange[1] == null ||
+                 date > dateRange[1] ||
+                 date >= middle) {
+
+        dateRange[1] = date;
+      }
+
+      return this.notify('onChange', [dateRange]);
+    }
 
     this.navigate(dir.DOWN, date)
   },
@@ -277,7 +301,7 @@ var Calendar = React.createClass({
 
   _label: function() {
     var view = this.state.view
-      , dt   = this.state.currentDate
+      , dt   = this.state.currentDateRange[0]
       , culture = this.props.culture;
 
     if ( view === 'month')
@@ -295,15 +319,20 @@ var Calendar = React.createClass({
         + ' - ' + dates.format(dates.lastOfCentury(dt), dates.formats.YEAR, culture)
   },
 
-  inRangeValue: function(_value){
-    var value = dateOrNull(_value)
+  normalizeValue: function(value){
+    var values = value instanceof Array ?
+      value : [value, null]
+      , start = dateOrNull(values[0])
+      , end = dateOrNull(values[1]);
 
-    if( value === null)
-      return value
-
-    return dates.max(
-        dates.min(value, this.props.max)
-      , this.props.min)
+    return [
+      start === null ?
+        start :
+        dates.scopeToRange(start, this.props.min, this.props.max),
+      end === null ?
+        end :
+        dates.scopeToRange(end, this.props.min, this.props.max)
+    ];
   },
 
   isValidView: function(next) {

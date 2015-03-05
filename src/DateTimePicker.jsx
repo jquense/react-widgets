@@ -230,7 +230,7 @@ var DateTimePicker = React.createClass({
     var change = this.props.onChange
 
     if(constrain)
-      date = this.inRangeValue(date)
+      date = dates.scopeToRange(date, this.props.min, this.props.max)
 
     if( change ) {
       if( date == null || this.props.value == null){
@@ -336,14 +336,6 @@ var DateTimePicker = React.createClass({
   close: function(){
     if ( this.props.open )
       this.notify('onToggle', false)
-  },
-
-  inRangeValue: function(value){
-    if( value == null) return value
-
-    return dates.max(
-        dates.min(value, this.props.max)
-      , this.props.min)
   },
 
 });

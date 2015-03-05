@@ -58,8 +58,8 @@ module.exports = React.createClass({
       <tr key={'row_' + i} role='row'>
       { row.map( (date, i) => {
         var focused       = dates.eq(date,  this.state.focusedDate,  'decade')
-          , selected      = dates.eq(date, this.props.value,  'decade')
-          , d             = inRangeDate(date, this.props.min, this.props.max)
+          , selected      = dates.includesOrEquals(date, this.props.value, 'decade')
+          , d             = dates.scopeToRange(date, this.props.min, this.props.max)
           , currentDecade = dates.eq(date, this.props.today, 'decade');
 
         return !inRange(date, this.props.min, this.props.max)
@@ -112,10 +112,6 @@ module.exports = React.createClass({
 function label(date, culture){
   return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR, culture)
     + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR, culture)
-}
-
-function inRangeDate(decade, min, max){
-  return dates.max( dates.min(decade, max), min)
 }
 
 function inRange(decade, min, max){

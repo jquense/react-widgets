@@ -129,6 +129,28 @@ var dates = module.exports = _.assign(dateMath, {
     return this.add(this.startOf(new Date(), 'day'), 1, 'day')
   },
 
+  scopeToRange: function(date, min, max) {
+    if (date == null) return date;
+    return dates.max(dates.min(date, max), min)
+  },
+
+  includesOrEquals: function(day, valueOrRange, unit) {
+    var isRange = valueOrRange instanceof Array;
+
+    if (isRange) {
+      var start = valueOrRange[0] || valueOrRange[1]
+        , end = valueOrRange[1] || valueOrRange[0];
+
+      if (!start || !end) {
+        return false;
+      }
+
+      return dates.inRange(day, start, end, unit)
+    }
+
+    return dates.eq(day, valueOrRange, unit);
+  },
+
   formats: {
     DAY_OF_MONTH:    'dd',
     DAY_NAME_SHORT:  null,
