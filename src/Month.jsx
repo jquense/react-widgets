@@ -24,7 +24,10 @@ module.exports = React.createClass({
   propTypes: {
     culture:          React.PropTypes.string,
     value:            React.PropTypes.instanceOf(Date),
-    selectedDate:     React.PropTypes.instanceOf(Date),
+    selectedDate:     React.PropTypes.oneOfType([
+      React.PropTypes.instanceOf(Date),
+      React.PropTypes.array,
+    ]),
     min:              React.PropTypes.instanceOf(Date),
     max:              React.PropTypes.instanceOf(Date),
 
@@ -63,7 +66,7 @@ module.exports = React.createClass({
       <tr key={'week_' + i} role='row'>
       { row.map( (day, idx) => {
         var focused  = dates.eq(day, this.state.focusedDate, 'day')
-          , selected = dates.eq(day, this.props.selectedDate, 'day')
+          , selected = dates.includesOrEquals(day, this.props.selectedDate, 'day')
           , today = dates.eq(day, this.props.today, 'day');
 
         return !dates.inRange(day, this.props.min, this.props.max)

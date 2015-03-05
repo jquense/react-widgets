@@ -58,7 +58,7 @@ module.exports = React.createClass({
       <tr key={'row_' + i} role='row'>
       { row.map( (date, i) => {
         var focused       = dates.eq(date,  this.state.focusedDate,  'decade')
-          , selected      = dates.eq(date, this.props.value,  'decade')
+          , selected      = dates.includesOrEquals(date, this.props.value, 'decade')
           , d             = inRangeDate(date, this.props.min, this.props.max)
           , currentDecade = dates.eq(date, this.props.today, 'decade');
 

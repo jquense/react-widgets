@@ -41,4 +41,26 @@ describe('Month Component', function(){
     expect(picker.move(date, directions.DOWN))
       .to.eql(date)
   })
+
+  it('should select date ranges', function(){
+    var range1  = [new Date(2014, 0, 16), new Date(2014, 0, 20)]
+      , range2  = [null, null]
+      , picker1 = render(<Month value={range1[0]} selectedDate={range1} onChange={()=>{}}/>)
+      , picker2 = render(<Month value={new Date()} selectedDate={range2} onChange={()=>{}}/>)
+
+
+    expect($(picker1.getDOMNode()).find('.rw-state-selected').length)
+      .to.equal(5);
+
+    expect($(picker2.getDOMNode()).find('.rw-state-selected').length)
+      .to.equal(0);
+  })
+
+  it('should select single dates', function(){
+    var day  = new Date(2014, 0, 16)
+      , picker = render(<Month value={day} selectedDate={day} onChange={()=>{}}/>);
+
+    expect($(picker.getDOMNode()).find('.rw-state-selected').length)
+      .to.equal(1);
+  })
 })
