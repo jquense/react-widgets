@@ -13,6 +13,8 @@ var _ = require('lodash')
 var { ModalTrigger
   , Modal } = require('react-bootstrap')
 
+var Month = require('../src/Month.jsx');
+
 // var g = require('globalize')
 var culture = require('globalize/lib/cultures/globalize.culture.es');
 // g.culture('fi');
@@ -95,85 +97,12 @@ var App = React.createClass({
           .concat(tag.id)
       })
     }
+    var start = new Date(2015,0,1);
+    var end = new Date(2015,0,5);
+    var noop = function(){};
 
     return (
-      <div style={{ fontSize: 14 }}>
-        <div style={{ maxWidth: 600 }}>
-          <ModalTrigger modal={<MyModal />}>
-            <button>Launch demo modal</button>
-          </ModalTrigger>
-        {/*<section className="example">
-          <div style={{ height: 150 }}>
-            sgsdgsdg sdgdg<br/>assdgsdgsdg<br/>asdasdasdasdasd
-          </div>
-          <SelectList
-            textField='name'
-            valueField='id'
-            data={this.state.data}
-            value={this.state.selectValues}
-            disabled={[1 ,6]}
-            busy={false}
-            name="super_name"
-            multiple
-            onChange={change.bind(null, 'selectValues')}/>
-        </section>*/}
-       
-          <section className="example" style={{ marginBottom: 20 }}>
-            <DropdownList dropUp
-              isRtl={false}
-              id='MyDropdownList'
-              data={ this.state.data }
-              textField='name'
-              valueField='id'
-              busy={false}
-              groupBy='surname'
-              value={this.state.dropdownValue}
-              onChange={change.bind(null, 'dropdownValue')}/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-            <Calendar
-              value={ this.state.calValue }
-              min={new Date(2014, 9, 15)}
-              culture='es'
-              onChange={change.bind(null, 'calValue')}/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-          <ComboBox
-              isRtl={true}
-              data={ this.state.suggestdata }
-              textField='name'
-              valueField='id'
-              filter={'startsWith'}
-              suggest={true}
-              busy={false}
-              disabled={false}
-              value={ this.state.comboboxValue}
-              onChange={change.bind(null, 'comboboxValue')}/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-            <Select dropUp
-              data={ this.state.data }
-              textField='name'
-              valueField='id'/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker dropUp
-              isRtl={false}
-              culture='es'
-              id='swweeeeet'
-              format='f'
-              min={new Date(2013,5,1,0,0,0)}/>
-          </section>
-          <section className="example" style={{ marginBottom: 20 }}>
-            <NumberPicker id='AwesomeNumPicker'
-              isRtl={false}
-              format="D"
-              value={this.state.numberValue}
-              onChange={change.bind(null, 'numberValue')}/>
-          </section>
-        </div>
-      </div>
-
+      <Calendar defaultValue={[start,null]}/>
     )
 
 

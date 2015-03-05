@@ -14,7 +14,7 @@ module.exports = function(viewUnit, smallUnit){
 
     getInitialState: function(){
       return {
-        focusedDate:   constrainValue(this.props.value, this.props.min, this.props.max)
+        focusedDate:   dates.scopeToRange(this.props.value, this.props.min, this.props.max)
       }
     },
 
@@ -67,10 +67,4 @@ module.exports = function(viewUnit, smallUnit){
       }
     }
   }
-}
-
-
-function constrainValue(value, min, max){
-  if( value == null) return value
-  return dates.max(dates.min(value, max), min)
 }
