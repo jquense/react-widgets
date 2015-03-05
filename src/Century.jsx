@@ -29,7 +29,12 @@ module.exports = React.createClass({
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
 
-    onChange:     React.PropTypes.func.isRequired
+    onChange:     React.PropTypes.func.isRequired,
+    
+    format:       React.PropTypes.oneOfType([
+                    React.PropTypes.string, 
+                    React.PropTypes.func
+                  ]),
   },
 
   render: function(){
@@ -77,7 +82,7 @@ module.exports = React.createClass({
                   'rw-state-selected':  selected,
                   'rw-now':             currentDecade
                  })}>
-                { label(date, this.props.culture) }
+                { label(date, this.props.format, this.props.culture) }
               </Btn>
             </td>)
       })}
@@ -109,9 +114,9 @@ module.exports = React.createClass({
 
 });
 
-function label(date, culture){
-  return dates.format(dates.startOf(date, 'decade'),    dates.formats.YEAR, culture)
-    + ' - ' + dates.format(dates.endOf(date, 'decade'), dates.formats.YEAR, culture)
+function label(date, format, culture){
+  return dates.format(dates.startOf(date, 'decade'),    format, culture)
+    + ' - ' + dates.format(dates.endOf(date, 'decade'), format, culture)
 }
 
 function inRangeDate(decade, min, max){

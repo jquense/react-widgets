@@ -34,10 +34,10 @@ var _ =
         cb.call(thisArg, obj[key], key, obj)
     },
 
-    object: function(arr){
-      return _.transform(arr, 
-        (obj, val) => obj[val[0]] = val[1], {})
-    },
+    // object: function(arr){
+    //   return _.transform(arr, 
+    //     (obj, val) => obj[val[0]] = val[1], {})
+    // },
 
     pick: function(obj, keys){
       keys = [].concat(keys);

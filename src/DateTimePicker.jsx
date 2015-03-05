@@ -32,8 +32,8 @@ var propTypes = {
     max:            React.PropTypes.instanceOf(Date),
 
     culture:        React.PropTypes.string,
-    format:         React.PropTypes.string,
-    editFormat:     React.PropTypes.string,
+    format:         CustomPropTypes.dateFormat,
+    editFormat:     CustomPropTypes.dateFormat,
 
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
@@ -65,6 +65,15 @@ var propTypes = {
                       React.PropTypes.string,
                       React.PropTypes.func
                     ]),
+
+    messages:      React.PropTypes.shape({
+      moveBack:     React.PropTypes.string,
+      moveForward:  React.PropTypes.string,
+      yearFormat:   CustomPropTypes.dateFormat,
+      dateFormat:   CustomPropTypes.dateFormat,
+      monthFormat:  CustomPropTypes.dateFormat,
+      headerFormat: CustomPropTypes.dateFormat,
+    })
   }
 
 var DateTimePicker = React.createClass({
@@ -114,7 +123,7 @@ var DateTimePicker = React.createClass({
     var { 
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , calProps   = _.pick(this.props, Object.keys(Calendar.propTypes))
+      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
 
       , timeListID = this._id('_time_listbox')
       , timeOptID  = this._id('_time_option')
@@ -157,9 +166,10 @@ var DateTimePicker = React.createClass({
           readOnly={this.isReadOnly()}
           role={ this.props.time ? 'combobox' : null }
           value={value}
-          focused={this.state.focused}
+          
           format={this.props.format}
           editFormat={this.props.editFormat}
+
           editing={this.state.focused}
           culture={this.props.culture}
           parse={this._parse}

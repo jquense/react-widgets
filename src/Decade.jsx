@@ -29,7 +29,12 @@ module.exports = React.createClass({
     value:        React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
-    onChange:     React.PropTypes.func.isRequired
+    onChange:     React.PropTypes.func.isRequired,
+
+    format:       React.PropTypes.oneOfType([
+                    React.PropTypes.string, 
+                    React.PropTypes.func
+                  ]),
   },
 
   render: function(){
@@ -76,7 +81,7 @@ module.exports = React.createClass({
                   'rw-state-selected': selected,
                   'rw-now':            currentYear
                 })}>
-                { dates.format(date, dates.formats.YEAR, this.props.culture) }
+                { dates.format(date, this.props.format, this.props.culture) }
               </Btn>
             </td>)
       })}

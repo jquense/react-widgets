@@ -26,7 +26,12 @@ module.exports = React.createClass({
     value:        React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
-    onChange:     React.PropTypes.func.isRequired
+    onChange:     React.PropTypes.func.isRequired,
+
+    format:       React.PropTypes.oneOfType([
+                    React.PropTypes.string, 
+                    React.PropTypes.func
+                  ]),
   },
 
 
@@ -72,7 +77,7 @@ module.exports = React.createClass({
                   'rw-state-selected': selected,
                   'rw-now':            currentMonth
                 })}>
-                { dates.format(date, dates.formats.MONTH_NAME_ABRV, this.props.culture) }
+                { dates.format(date, this.props.format, this.props.culture) }
               </Btn>
             </td>)
           : <td key={i} className='rw-empty-cell' role='gridcell'>&nbsp;</td>
