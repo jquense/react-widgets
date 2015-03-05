@@ -22,11 +22,17 @@ var dates = module.exports = _.assign(dateMath, {
     return culture.calendar.firstDay || 0
   },
 
-  parse: function(date, format, culture){
+  parse: function(date, format, culture) {
+    if ( typeof format === 'function')
+      return format(date, culture)
+
     return globalize.parseDate(date, format, culture)
   },
 
   format: function(date, format, culture){
+    if ( typeof format === 'function')
+      return format(date, culture)
+
     return globalize.format(date, format, culture)
   },
   
