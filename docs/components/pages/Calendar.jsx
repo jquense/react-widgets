@@ -27,6 +27,15 @@ var Calendar = React.createClass({
               <MenuItem>initialView</MenuItem>
               <MenuItem>finalView</MenuItem>
 
+              <MenuItem divider/>
+              <MenuItem>headerFormat</MenuItem>
+              <MenuItem>dayFormat</MenuItem>
+              <MenuItem>dateFormat</MenuItem>
+              <MenuItem>monthFormat</MenuItem>
+              <MenuItem>decadeFormat</MenuItem>
+              <MenuItem>centuryFormat</MenuItem>
+              <MenuItem divider/>
+
               <MenuItem>duration</MenuItem>
               <MenuItem>isRtl</MenuItem>
               <MenuItem>messages</MenuItem>
@@ -85,6 +94,19 @@ var Calendar = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/prop')(widgetName, 'finalView', '"year"')}/>
         
+
+        <PropHeader type='String | Function(Date? date)' default="false">headerFormat</PropHeader>
+        <p>
+          mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
+          a <code>childContext</code> prop (<code>isRtl</code>) this allows higher level application components to specify the direction.
+        </p>
+
+              <MenuItem>dayFormat</MenuItem>
+              <MenuItem>dateFormat</MenuItem>
+              <MenuItem>monthFormat</MenuItem>
+              <MenuItem>decadeFormat</MenuItem>
+              <MenuItem>centuryFormat</MenuItem>
+
         <PropHeader type='Boolean' default="false">isRtl</PropHeader>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through

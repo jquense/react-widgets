@@ -3,6 +3,7 @@ var React = require('react')
   , cx    = require('classnames')
   , dates = require('./util/dates')
   , directions = require('./util/constants').directions
+  , CustomPropTypes = require('./util/propTypes')
   , _   = require('./util/_')
   , Btn = require('./WidgetButton');
 
@@ -28,10 +29,8 @@ module.exports = React.createClass({
     min:              React.PropTypes.instanceOf(Date),
     max:              React.PropTypes.instanceOf(Date),
 
-    format:           React.PropTypes.oneOfType([
-                        React.PropTypes.string, 
-                        React.PropTypes.func
-                      ]),
+    dayFormat:        CustomPropTypes.dateFormat.isRequired,
+    dateFormat:       CustomPropTypes.dateFormat.isRequired,
 
     onChange:         React.PropTypes.func.isRequired, //value is chosen
     onMoveLeft:       React.PropTypes.func,
@@ -50,7 +49,7 @@ module.exports = React.createClass({
         aria-activedescendant={this._id('_selected_item')}
         onKeyUp={this._keyUp}>
         <thead>
-          <tr>{ this._headers() }</tr>
+          <tr>{this._headers(props.dayFormat, props.culture)}</tr>
         </thead>
         <tbody>
           { rows.map(this._row)}
@@ -85,7 +84,7 @@ module.exports = React.createClass({
                     'rw-now': today
                   })}
                   id={focused ? id : undefined}>
-                  {dates.format(day, this.props.format, this.props.culture)}
+                  {dates.format(day, this.props.dateFormat, this.props.culture)}
                 </Btn>
               </td>)
       })}
@@ -94,11 +93,9 @@ module.exports = React.createClass({
   },
 
 
-  _headers: function(format){
-    var days = dates.shortDaysOfWeek(this.props.culture);
-
-    return days.map( (day, i) => 
-      <th key={"header_" + i }>{day}</th>)
+  _headers: function(format, culture){
+    return [0,1,2,3,4,5,6].map( (day) => 
+      <th key={"header_" + day }>{dates.format(day, format, culture)}</th>)
   },
 
   move: function(date, direction){

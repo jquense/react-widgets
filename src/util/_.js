@@ -88,6 +88,18 @@ var _ =
 
     uniqueId: function (prefix) {
       return ''+ ((prefix == null ? '' : prefix) + (++idCount));
+    },
+
+    ifNotDisabled: function (disabledOnly, fn){
+      if (argument.length === 1)
+        fn = disabledOnly, disabledOnly = false;
+
+      return function(...args){
+        if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
+          return
+
+        return fn.apply(this, args)
+      }
     }
   }
 

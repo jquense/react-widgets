@@ -4,6 +4,7 @@ var React = require('react')
   , cx    = require('classnames')
   , dates = require('./util/dates')
   , directions = require('./util/constants').directions
+  , CustomPropTypes = require('./util/propTypes')
   , Btn = require('./WidgetButton'); 
 
 var opposite = {
@@ -31,10 +32,8 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
 
-    format:       React.PropTypes.oneOfType([
-                    React.PropTypes.string, 
-                    React.PropTypes.func
-                  ]),
+    yearFormat:   CustomPropTypes.dateFormat.isRequired
+
   },
 
   render: function(){
@@ -81,7 +80,7 @@ module.exports = React.createClass({
                   'rw-state-selected': selected,
                   'rw-now':            currentYear
                 })}>
-                { dates.format(date, this.props.format, this.props.culture) }
+                { dates.format(date, this.props.yearFormat, this.props.culture) }
               </Btn>
             </td>)
       })}

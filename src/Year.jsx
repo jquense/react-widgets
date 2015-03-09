@@ -5,6 +5,7 @@ var React      = require('react')
   , directions = require('./util/constants').directions
   , Btn        = require('./WidgetButton')
   , _          = require('./util/_')
+  , CustomPropTypes = require('./util/propTypes');
 
 var opposite = {
   LEFT: directions.RIGHT,
@@ -28,10 +29,7 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
 
-    format:       React.PropTypes.oneOfType([
-                    React.PropTypes.string, 
-                    React.PropTypes.func
-                  ]),
+    monthFormat:  CustomPropTypes.dateFormat.isRequired
   },
 
 
@@ -77,7 +75,7 @@ module.exports = React.createClass({
                   'rw-state-selected': selected,
                   'rw-now':            currentMonth
                 })}>
-                { dates.format(date, this.props.format, this.props.culture) }
+                { dates.format(date, this.props.monthFormat, this.props.culture) }
               </Btn>
             </td>)
           : <td key={i} className='rw-empty-cell' role='gridcell'>&nbsp;</td>

@@ -185,6 +185,35 @@ describe('Calendar', function(){
     DOM.animate.restore()
   })
 
+  it('should pass on format', function(){
+    var date    = new Date(2014, 5, 15)
+      , first   = () => $(calendar.getDOMNode()).find('td:first')
+      , formats = _.transform(
+            ['dateFormat', 'monthFormat', 'yearFormat', 'decadeFormat' ]
+          , (o, v) => o[v] = v)
+      , calendar;
+    
+    sinon.stub(DOM, 'animate', syncAnimate)
+
+    calendar = render(<BaseCalendar {...formats} value={date} onChange={()=>{}} />)
+
+    expect(findType(calendar, Month).props.format).to.equal('dateFormat')
+
+    calendar.setProps({ initialView: 'year' })
+
+    expect(findType(calendar, Year).props.format).to.equal('monthFormat')
+
+    calendar.setProps({ initialView: 'decade' })
+
+    expect(findType(calendar, Decade).props.format).to.equal('yearFormat')
+
+    calendar.setProps({ initialView: 'century' })
+
+    expect(findType(calendar, Century).props.format).to.equal('decadeFormat')
+
+    DOM.animate.restore()
+  })
+
 })
 
 

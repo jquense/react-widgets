@@ -1,6 +1,7 @@
 'use strict';
 var React  = require('react')
   , cx     = require('classnames')
+  , compat = require('./util/compat')
   , _      = require('./util/_') //pick, omit, has
 
   , dates  = require('./util/dates')
@@ -32,8 +33,18 @@ var propTypes = {
     max:            React.PropTypes.instanceOf(Date),
 
     culture:        React.PropTypes.string,
+
     format:         CustomPropTypes.dateFormat,
     editFormat:     CustomPropTypes.dateFormat,
+
+    headerFormat:   CustomPropTypes.dateFormat,
+
+    dayFormat:      CustomPropTypes.dateFormat,
+    dateFormat:     CustomPropTypes.dateFormat,
+    monthFormat:    CustomPropTypes.dateFormat,
+    yearFormat:     CustomPropTypes.dateFormat,
+    decadeFormat:   CustomPropTypes.dateFormat,
+    centuryFormat:  CustomPropTypes.dateFormat,
 
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
@@ -68,13 +79,20 @@ var propTypes = {
 
     messages:      React.PropTypes.shape({
       moveBack:     React.PropTypes.string,
-      moveForward:  React.PropTypes.string,
-      yearFormat:   CustomPropTypes.dateFormat,
-      dateFormat:   CustomPropTypes.dateFormat,
-      monthFormat:  CustomPropTypes.dateFormat,
-      headerFormat: CustomPropTypes.dateFormat,
+      moveForward:  React.PropTypes.string, 
     })
   }
+
+function getFormat(props){
+  var cal  = props[popups.CALENDAR] != null ? props.calendar : true
+    , time = props[popups.TIME] != null ? props.time : true;
+
+  return props.format 
+    ? props.format 
+    : (cal && time) || (!cal && !time)
+      ? 'M/d/yyyy h:mm tt'
+      : cal ? 'd' : 't'
+}
 
 var DateTimePicker = React.createClass({
   displayName: 'DateTimePicker',
@@ -96,16 +114,10 @@ var DateTimePicker = React.createClass({
   },
 
   getDefaultProps: function(){
-    var cal  = _.has(this.props, popups.CALENDAR) ? this.props.calendar : true
-      , time = _.has(this.props, popups.TIME) ? this.props.time : true
-      , both = cal && time
-      , neither = !cal && !time;
 
     return {
       value:            null,
-      format:           both || neither
-                          ? 'M/d/yyyy h:mm tt'
-                          : cal ? 'M/d/yyyy' : 'h:mm tt',
+      
       min:              new Date(1900,  0,  1),
       max:              new Date(2099, 11, 31),
       calendar:         true,
@@ -123,7 +135,7 @@ var DateTimePicker = React.createClass({
     var { 
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , calProps   = _.pick(this.props, Object.keys(Calendar.type.propTypes))
+      , calProps   = _.pick(this.props, Object.keys(compat.type(Calendar).propTypes))
 
       , timeListID = this._id('_time_listbox')
       , timeOptID  = this._id('_time_option')
@@ -167,7 +179,7 @@ var DateTimePicker = React.createClass({
           role={ this.props.time ? 'combobox' : null }
           value={value}
           
-          format={this.props.format}
+          format={getFormat(this.props)}
           editFormat={this.props.editFormat}
 
           editing={this.state.focused}
@@ -297,8 +309,9 @@ var DateTimePicker = React.createClass({
   },
 
   _selectDate: function(date){
-    var dateTime = dates.merge(date, this.props.value)
-      , dateStr  = formatDate(date, this.props.format, this.props.culture) 
+    var format   = getFormat(this.props) 
+      , dateTime = dates.merge(date, this.props.value)
+      , dateStr  = formatDate(date, format, this.props.culture) 
 
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
@@ -306,8 +319,9 @@ var DateTimePicker = React.createClass({
   },
 
   _selectTime: function(datum){
-    var dateTime = dates.merge(this.props.value, datum.date)
-      , dateStr  = formatDate(datum.date, this.props.format, this.props.culture) 
+    var format   = getFormat(this.props) 
+      , dateTime = dates.merge(this.props.value, datum.date)
+      , dateStr  = formatDate(datum.date, format, this.props.culture) 
 
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
@@ -320,10 +334,11 @@ var DateTimePicker = React.createClass({
   },
 
   _parse: function(string){
-    var parser = typeof this.props.parse === 'function'
+    var format   = getFormat(this.props) 
+      , parser = typeof this.props.parse === 'function'
           ? this.props.parse
           : formatsParser.bind(null
-              , _.splat(this.props.format).concat(this.props.parse)
+              , _.splat(format).concat(this.props.parse)
               , this.props.culture);
 
     return parser(string)
@@ -366,28 +381,24 @@ module.exports = controlledInput.createControlledClass(
 function formatDate(date, format, culture){
   var val = ''
 
-  if ( (date instanceof Date) && !isNaN(date.getTime()) )
+  if ((date instanceof Date) && !isNaN(date.getTime()))
     val = dates.format(date, format, culture)
 
   return val;
 }
 
-
-
 function formatsParser(formats, culture, str){
   var date;
 
-  formats = [].concat(formats)
-
-  for(var i=0; i < formats.length; i++ ){
+  for (var i=0; i < formats.length; i++ ){
     date = dates.parse(str, formats[i], culture)
-    if( date) return date
+    if (date) return date
   }
   return null
 }
 
 function dateOrNull(dt){
-  if(dt && !isNaN(dt.getTime())) return dt
+  if (dt && !isNaN(dt.getTime())) return dt
   return null
 }
 

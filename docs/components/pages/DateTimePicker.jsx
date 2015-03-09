@@ -28,6 +28,7 @@ var DateTimePicker = React.createClass({
               <MenuItem>min</MenuItem>
               <MenuItem>max</MenuItem>
               <MenuItem>format</MenuItem>
+              
               <MenuItem>parse</MenuItem>
               <MenuItem>initialView</MenuItem>
               <MenuItem>finalView</MenuItem>
