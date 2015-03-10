@@ -72,19 +72,21 @@ gulp.task('docs', ['lib', 'assets'], function(cb) {
 
 gulp.task('doc-watch', function() {
   
-  del('./docs/docs.js');
+  del('./docs/docs.js', function(cb){
 
-  new WebpackServer(
-        webpack(configs.docs)
-      , {  publicPath: "/docs", hot: true, stats: { colors: true } }
-    )
-    .listen(8081, "localhost");
+      new WebpackServer(webpack(configs.docs), { 
+          publicPath: "/docs", 
+          hot: true, 
+          hotComponent: true,
+          stats: { colors: true } 
+        }
+      )
+      .listen(8081, "localhost", cb);
+  });
 })
 
-gulp.task('dev', function() {
+gulp.task('dev', function(cb) {
 
-  gulp.watch('./src/less/**/*.less',  ['assets']);
-  
   new WebpackServer(webpack(configs.dev), {
     publicPath: "/dev",
     hot: true,
@@ -96,6 +98,8 @@ gulp.task('dev', function() {
       return console.log(err);
     
     console.log('Listening at localhost:8080');
+
+    cb()
   });
 })
 
