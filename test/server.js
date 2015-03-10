@@ -50,5 +50,4 @@ describe('server rendering', function() {
       assert.ok(typeof comp === 'string')
     })
   })
-
 })

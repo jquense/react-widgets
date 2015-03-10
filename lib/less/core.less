@@ -31,9 +31,8 @@
 .rw-input {
   color:          @input-color;
   height:         @input-height;
-  line-height:     @input-height;
-  padding:         @input-padding;
-  //text-indent:     0.64em;
+  line-height:    @input-height;
+  padding:        @input-padding;
 
   &[disabled] {
     .state-disabled();
@@ -48,7 +47,7 @@
 }
 
 .rw-i.rw-loading {
-  background: url("./loading.gif") no-repeat center;
+  background: url("../img/loading.gif") no-repeat center;
   width: 16px;
   height: 100%;
 
@@ -64,7 +63,7 @@
 
   &:after{
     content: '';
-    background: url("./loader-big.gif") no-repeat center;
+    background: url("../img/loader-big.gif") no-repeat center;
     position:   absolute;
     background-color: #fff;
     opacity: 0.7;

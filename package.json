@@ -39,6 +39,7 @@
     "whitelist": [
       "es6.classes",
       "es6.modules",
+      "es6.spread",
       "es6.arrowFunctions",
       "es6.properties.computed",
       "es6.properties.shorthand",
@@ -53,19 +54,17 @@
   "dependencies": {
     "classnames": "^1.1.4",
     "date-arithmetic": "^2.0.0",
-    "globalize": "~0.1.1",
-    "raf-component": "^1.1.2",
-    "xtend": "^4.0.0"
+    "globalize": "~0.1.1"
   },
   "devDependencies": {
-    "babel": "^4.0.0",
+    "babel": "^4.7.2",
     "babel-loader": "^4.0.0",
     "chance": "^0.7.1",
     "css-loader": "^0.7.1",
     "del": "^1.1.1",
-    "file-loader": "^0.6.1",
+    "file-loader": "^0.8.1",
     "gulp": "^3.6.2",
-    "gulp-babel": "^4.0.0",
+    "gulp-babel-helpers": "^1.1.2",
     "gulp-concat": "^2.2.0",
     "gulp-header": "^1.0.2",
     "gulp-less": "^1.2.3",
@@ -90,16 +89,17 @@
     "less": "^1.7.4",
     "less-loader": "^0.7.7",
     "lodash": "^3.0.0",
+    "merge-stream": "^0.1.7",
     "mocha": "~1.21.4",
     "phantomjs": "~1.9.10",
     "raw-loader": "^0.5.1",
     "react": "^0.12.0",
     "react-bootstrap": "^0.13.0",
+    "react-hot-loader": "^1.2.0",
     "react-router": "^0.11.6",
-    "rimraf": "^2.2.8",
     "style-loader": "^0.7.0",
     "url-loader": "^0.5.5",
-    "webpack": "^1.4.0",
-    "webpack-dev-server": "^1.6.0"
+    "webpack": "^1.7.0",
+    "webpack-dev-server": "^1.7.0"
   }
 }
