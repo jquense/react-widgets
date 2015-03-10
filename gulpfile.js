@@ -36,7 +36,7 @@ gulp.task('lib-compile', [ 'lib-clean' ], function(){
   return gulp.src(['./src/**/*.js', './src/**/*.jsx'])
       .pipe(plumber())
       .pipe(babelTransform(
-          configs.babel
+          assign({}, configs.babel)
         , './util/babelHelpers.js'
         , './lib/util/babelHelpers.js'))
       .pipe(rename({ extname: '.js' }))
