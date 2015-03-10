@@ -71,6 +71,7 @@ module.exports = React.createClass({
             , selected = item === this.props.selected;
 
           return (<li 
+            tabIndex='-1'
             key={'item_' + idx}
             role='option'
             id={ focused ? this.props.optID : undefined }

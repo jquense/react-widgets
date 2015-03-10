@@ -1,14 +1,14 @@
 'use strict';
 var React = require('react');
-
+var cn = require('classnames');
 module.exports = React.createClass({
 
   render: function(){
-    var { className, ...props } = this.props;
+    var { className, children, ...props} = this.props;
 
     return (
-      <button {...props} type='button' className={(className  || '') + ' rw-btn'}>
-        {this.props.children}
+      <button {...props} type='button' className={cn(className, 'rw-btn')}>
+        { children }
       </button>
     )
   }

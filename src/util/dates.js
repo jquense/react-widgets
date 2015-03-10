@@ -149,7 +149,8 @@ var dates = module.exports = _.assign(dateMath, {
     DAY_NAME_SHORT:  null,
     MONTH_NAME_ABRV: 'MMM',
     MONTH_YEAR:      'MMMM yyyy',
-    YEAR:            'yyyy'
+    YEAR:            'yyyy',
+    FOOTER:          'D'
   }
 
 })

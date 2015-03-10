@@ -57,6 +57,22 @@
       }
     }
   }
+
+  .rw-footer {
+    border-top: 1px solid @input-border;
+    
+    .rw-btn {
+      width: 100%;
+
+      &:hover {
+        background-color:   @state-bg-hover;
+      }
+
+      &[disabled] {
+        .state-disabled()
+      }
+    }
+  }
 }
 
 

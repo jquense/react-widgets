@@ -3,6 +3,7 @@ var React           = require('react')
   , cx              = require('classnames')
   , compat          = require('./util/compat')
   , Header          = require('./Header')
+  , Footer          = require('./Footer')
   , Month           = require('./Month')
   , Year            = require('./Year')
   , Decade          = require('./Decade')
@@ -65,6 +66,8 @@ var propTypes = {
                  ]),
 
   culture:       React.PropTypes.string,
+  
+  footer:        React.PropTypes.bool,
 
   headerFormat:  CustomPropTypes.localeFormat,
   dayFormat:     CustomPropTypes.localeFormat,
@@ -99,7 +102,7 @@ var Calendar = React.createClass({
     return {
       selectedIndex: 0,
       view:          this.props.initialView || 'month',
-      currentDate:   value ? new Date(value) : new Date()
+      currentDate:   value ? new Date(value) : this.inRangeValue(new Date())
     }
   },
 
@@ -114,8 +117,10 @@ var Calendar = React.createClass({
       finalView:    'century',
 
       tabIndex:     '0',
-      
+      footer:        true,
+
       headerFormat:  dates.formats.MONTH_YEAR,
+      footerFormat:  dates.formats.FOOTER,
 
       dayFormat:     dates.shortDay,
       dateFormat:    dates.formats.DAY_OF_MONTH,
@@ -163,6 +168,7 @@ var Calendar = React.createClass({
       , disabled   = this.props.disabled || this.props.readOnly
       , date       = this.state.currentDate
       , todaysDate = new Date()
+      , todayNotInRange = !dates.inRange(todaysDate, this.props.min, this.props.max, unit)
       , labelId    = this._id('_view_label')
       , key        = this.state.view + '_' + dates[this.state.view](date)
       , id         = this._id('_view');
@@ -209,6 +215,13 @@ var Calendar = React.createClass({
             onMoveRight={this._maybeHandle(this.navigate.bind(null,  dir.RIGHT))}/>
 
         </SlideTransition>
+        <Footer 
+          value={todaysDate}
+          format={this.props.footerFormat}
+          disabled={ this.props.disabled || todayNotInRange}
+          readOnly={this.props.readOnly}
+          onClick={this._maybeHandle(this.select)}
+        />
       </div>
     )
   },
@@ -257,13 +270,33 @@ var Calendar = React.createClass({
     })
   },
 
-  change: function(date){
+  change(date){
     setTimeout(() => this._focus(true))
 
     if ( this.props.onChange && this.state.view === this.props.initialView)
       return this.notify('onChange', date)
 
     this.navigate(dir.DOWN, date)
+  },
+
+  select(date){
+    var view = this.props.initialView
+      , slideDir = view !== this.state.view || dates.gt(date, this.state.currentDate)
+          ? 'left' // move down to a the view
+          : 'right';
+
+    this.notify('onChange', date)
+
+    if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
+      this._focus(true, 'nav');
+
+      this.setState({
+        currentDate:    date,
+        slideDirection: slideDir,
+        view: view
+      })
+    }
+
   },
 
   nextDate: function(direction){
