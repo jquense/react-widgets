@@ -7,7 +7,8 @@ var React       = require('react')
 module.exports = React.createClass({
   getInitialState: function(){
     return {
-      format: ''
+      format: '',
+      footer: true,
     }
   },
 
@@ -22,6 +23,7 @@ module.exports = React.createClass({
                 onChange={this._change}
                 max={this.state.max}
                 min={this.state.min}
+                footer={this.state.footer}
                 finalView={this.state.finalView}
                 initialView={this.state.initialView}
                 disabled={this.state.disabled === 'disabled'}
@@ -50,6 +52,12 @@ module.exports = React.createClass({
                   Readonly
                 </Button>
               </ButtonGroup>
+              <label className='checkbox-inline'>
+                <input type='checkbox'
+                  checked={this.state.footer}
+                  onChange={this._set.bind(null, 'footer', !this.state.footer)}/>
+                  Footer
+              </label>
             </div>
             <div className="row">
               <div className='form-group col-xs-6'>
