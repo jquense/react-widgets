@@ -215,13 +215,15 @@ var Calendar = React.createClass({
             onMoveRight={this._maybeHandle(this.navigate.bind(null,  dir.RIGHT))}/>
 
         </SlideTransition>
-        <Footer 
-          value={todaysDate}
-          format={this.props.footerFormat}
-          disabled={ this.props.disabled || todayNotInRange}
-          readOnly={this.props.readOnly}
-          onClick={this._maybeHandle(this.select)}
-        />
+        { this.props.footer &&
+          <Footer 
+            value={todaysDate}
+            format={this.props.footerFormat}
+            disabled={ this.props.disabled || todayNotInRange}
+            readOnly={this.props.readOnly}
+            onClick={this._maybeHandle(this.select)}
+          />
+        } 
       </div>
     )
   },
