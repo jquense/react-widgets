@@ -24,6 +24,7 @@ var Calendar = React.createClass({
               <MenuItem divider/>
               <MenuItem>min</MenuItem>
               <MenuItem>max</MenuItem>
+              <MenuItem>footer</MenuItem>
               <MenuItem>initialView</MenuItem>
               <MenuItem>finalView</MenuItem>
 
@@ -73,6 +74,11 @@ var Calendar = React.createClass({
         <p>
           The maximum date that the Calendar can navigate to.
         </p>
+        <PropHeader type='Boolean' default='true'>footer</PropHeader>
+        <p>
+          Show or hide the Calendar footer.
+        </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'footer', 'false')}/>
 
         <PropHeader type='Enum' default='"month"'>initialView</PropHeader>
         <p>
@@ -99,6 +105,10 @@ var Calendar = React.createClass({
         <PropHeader type='String | Function(Date? date)' default="'MMMM yyyy'">headerFormat</PropHeader>
         <p>
           A formatter for the header button of the month view
+        </p>
+        <PropHeader type='String | Function(Date? date)' default="'D'">footerFormat</PropHeader>
+        <p>
+          A formatter for the Calendar footer, formats Today's Date as a string.
         </p>
 
         <PropHeader type='String | Function(Number dayOfTheWeek)' default="Function()">dayFormat</PropHeader>
