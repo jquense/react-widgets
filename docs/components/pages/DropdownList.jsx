@@ -52,7 +52,7 @@ var DropdownList = React.createClass({
 
         <PropHeader type='Any' handler="onChange" controllable>value</PropHeader>
         <p>
-          The current value of the ${widgetName}. This can be an object (such as a member of the <code>data</code> array)
+          The current value of the {widgetName}. This can be an object (such as a member of the <code>data</code> array)
           or a primitive value, hinted to by the <code>valueField</code>. The widget value does not need to be in
           the <code>data</code> array; widgets can have values that are not in their list.
         </p>

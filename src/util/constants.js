@@ -24,16 +24,16 @@ module.exports = {
 
   calendarViews: views,
 
-  calendarViewHierarchy: _.object([
-    [views.MONTH,   views.YEAR],
-    [views.YEAR,    views.DECADE],
-    [views.DECADE,  views.CENTURY]
-  ]),
+  calendarViewHierarchy: {
+    [views.MONTH]:   views.YEAR,
+    [views.YEAR]:    views.DECADE,
+    [views.DECADE]:  views.CENTURY
+  },
 
-  calendarViewUnits: _.object([
-    [views.MONTH,   views.DAY],
-    [views.YEAR,    views.MONTH],
-    [views.DECADE,  views.YEAR],
-    [views.CENTURY, views.DECADE],
-  ])
+  calendarViewUnits: {
+    [views.MONTH]:   views.DAY,
+    [views.YEAR]:    views.MONTH,
+    [views.DECADE]:  views.YEAR,
+    [views.CENTURY]: views.DECADE,
+  }
 }

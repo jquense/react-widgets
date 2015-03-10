@@ -1,7 +1,8 @@
 'use strict';
 var React = require('react')
   , cx = require('classnames')
-  , dates = require('./util/dates');
+  , dates = require('./util/dates')
+  , CustomPropTypes = require('./util/propTypes');
 
 module.exports = React.createClass({
 
@@ -9,7 +10,7 @@ module.exports = React.createClass({
 
 
   propTypes: {
-    format:       React.PropTypes.string,
+    format:       CustomPropTypes.localeFormat,
     parse:        React.PropTypes.func.isRequired,
 
     value:        React.PropTypes.instanceOf(Date),

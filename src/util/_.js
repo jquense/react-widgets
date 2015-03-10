@@ -34,10 +34,10 @@ var _ =
         cb.call(thisArg, obj[key], key, obj)
     },
 
-    object: function(arr){
-      return _.transform(arr, 
-        (obj, val) => obj[val[0]] = val[1], {})
-    },
+    // object: function(arr){
+    //   return _.transform(arr, 
+    //     (obj, val) => obj[val[0]] = val[1], {})
+    // },
 
     pick: function(obj, keys){
       keys = [].concat(keys);
@@ -88,6 +88,18 @@ var _ =
 
     uniqueId: function (prefix) {
       return ''+ ((prefix == null ? '' : prefix) + (++idCount));
+    },
+
+    ifNotDisabled: function (disabledOnly, fn){
+      if (argument.length === 1)
+        fn = disabledOnly, disabledOnly = false;
+
+      return function(...args){
+        if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
+          return
+
+        return fn.apply(this, args)
+      }
     }
   }
 

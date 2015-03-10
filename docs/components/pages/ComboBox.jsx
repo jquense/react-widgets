@@ -46,14 +46,14 @@ var ComboBox = React.createClass({
           </span>
         </h1>
         <p>
-          Select an item from the list, or input a custom value. The combobox can also make suggestions as you type
+          Select an item from the list, or input a custom value. The {widgetName} can also make suggestions as you type
         </p>
         <ComboBoxExample/>
         
         <h2>Props</h2>
         <PropHeader type='Any' handler="onChange" controllable>value</PropHeader>
         <p>
-          The current value of the Combobox. This can be an object (such as a member of the <code>data</code> array)
+          The current value of the {widgetName}. This can be an object (such as a member of the <code>data</code> array)
           or a primitive value, hinted to by the <code>valueField</code>. The widget value does not need to be in
           the <code>data</code>, widgets can have values that are not in their list.
         </p>
@@ -63,7 +63,7 @@ var ComboBox = React.createClass({
         <p>
           Called when the value is changed. If the value is one of the <code>data</code> members
           that item will be returned. In the case of a value not being found in the <code>data</code> array
-          the string value of the combobox will be returned.
+          the string value of the {widgetName} will be returned.
         </p>
         <EditableExample codeText={require('../examples/onChange')(widgetName)}/>
 
@@ -76,7 +76,7 @@ var ComboBox = React.createClass({
 
         <PropHeader type='Array<Any>'>data</PropHeader>
         <p>
-          An array of possible values for the combobox. If an array of <code>objects</code> is provided you
+          An array of possible values for the {widgetName}. If an array of <code>objects</code> is provided you
           should use  the <code>valueField</code> and <code>textField</code> props, to specify which object
           properties comprise the value field (such as an id) and the field used to label the item.
         </p>
@@ -90,7 +90,7 @@ var ComboBox = React.createClass({
 
         <PropHeader type='String'>textField</PropHeader>
         <p>
-          This prop determines which data item field to display in the dropdown list and the text value of combobox.
+          This prop determines which data item field to display in the dropdown list and the text value of {widgetName}.
           This prop is unnecessary when an <code>itemComponent</code> is provided.
         </p>
         <EditableExample codeText={require('../examples/textField')(widgetName)}/>
@@ -118,7 +118,7 @@ var ComboBox = React.createClass({
 
         <PropHeader type='Boolean' default='false'>suggest</PropHeader>
         <p>
-          When <code>true</code> the Combobox will suggest, or fill in, values as you type. The suggestions
+          When <code>true</code> the {widgetName} will suggest, or fill in, values as you type. The suggestions
           are always "startsWith", meaning it will search from the start of the <code>textField</code> property
         </p>
 
@@ -183,7 +183,7 @@ var ComboBox = React.createClass({
 
         <PropHeader type='String' default='"Open Combobox"'>messages.open</PropHeader>
         <p>
-          Combobox button text for screen readers
+          {widgetName} button text for screen readers
         </p>
 
         <PropHeader type='String' default='"There are no items in this list"'>messages.emptyList</PropHeader>

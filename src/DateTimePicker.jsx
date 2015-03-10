@@ -1,6 +1,8 @@
 'use strict';
 var React  = require('react')
+  , invariant = require('react/lib/invariant')
   , cx     = require('classnames')
+  , compat = require('./util/compat')
   , _      = require('./util/_') //pick, omit, has
 
   , dates  = require('./util/dates')
@@ -15,7 +17,8 @@ var React  = require('react')
   , CustomPropTypes = require('./util/propTypes')
   , controlledInput = require('./util/controlledInput');
 
-var viewEnum  = Object.keys(views).map( k => views[k] )
+var viewEnum  = Object.keys(views).map( k => views[k] );
+var SHORT_FULL_FORMAT = (dt, culture) => `${dates.format(dt, 'd', culture)} ${dates.format(dt, 't', culture)}`;
 
 var propTypes = {
 
@@ -32,8 +35,18 @@ var propTypes = {
     max:            React.PropTypes.instanceOf(Date),
 
     culture:        React.PropTypes.string,
-    format:         React.PropTypes.string,
-    editFormat:     React.PropTypes.string,
+
+    format:         CustomPropTypes.localeFormat,
+    editFormat:     CustomPropTypes.localeFormat,
+
+    headerFormat:   CustomPropTypes.localeFormat,
+
+    dayFormat:      CustomPropTypes.localeFormat,
+    dateFormat:     CustomPropTypes.localeFormat,
+    monthFormat:    CustomPropTypes.localeFormat,
+    yearFormat:     CustomPropTypes.localeFormat,
+    decadeFormat:   CustomPropTypes.localeFormat,
+    centuryFormat:  CustomPropTypes.localeFormat,
 
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
@@ -65,9 +78,26 @@ var propTypes = {
                       React.PropTypes.string,
                       React.PropTypes.func
                     ]),
+
+    messages:      React.PropTypes.shape({
+      moveBack:     React.PropTypes.string,
+      moveForward:  React.PropTypes.string, 
+    })
   }
 
+function getFormat(props){
+  var cal  = props[popups.CALENDAR] != null ? props.calendar : true
+    , time = props[popups.TIME] != null ? props.time : true;
+ 
+  return props.format 
+    ? props.format 
+    : (cal && time) || (!cal && !time)
+      ? 'f'
+      : cal ? 'd' : 't'
+}
+
 var DateTimePicker = React.createClass({
+
   displayName: 'DateTimePicker',
 
   mixins: [
@@ -87,21 +117,16 @@ var DateTimePicker = React.createClass({
   },
 
   getDefaultProps: function(){
-    var cal  = _.has(this.props, popups.CALENDAR) ? this.props.calendar : true
-      , time = _.has(this.props, popups.TIME) ? this.props.time : true
-      , both = cal && time
-      , neither = !cal && !time;
 
     return {
       value:            null,
-      format:           both || neither
-                          ? 'M/d/yyyy h:mm tt'
-                          : cal ? 'M/d/yyyy' : 'h:mm tt',
+      
       min:              new Date(1900,  0,  1),
       max:              new Date(2099, 11, 31),
       calendar:         true,
       time:             true,
       open:             false,
+
       messages: {
         calendarButton: 'Select Date',
         timeButton:     'Select Time',
@@ -114,7 +139,7 @@ var DateTimePicker = React.createClass({
     var { 
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , calProps   = _.pick(this.props, Object.keys(Calendar.propTypes))
+      , calProps   = _.pick(this.props, Object.keys(compat.type(Calendar).propTypes))
 
       , timeListID = this._id('_time_listbox')
       , timeOptID  = this._id('_time_option')
@@ -157,9 +182,10 @@ var DateTimePicker = React.createClass({
           readOnly={this.isReadOnly()}
           role={ this.props.time ? 'combobox' : null }
           value={value}
-          focused={this.state.focused}
-          format={this.props.format}
+          
+          format={getFormat(this.props)}
           editFormat={this.props.editFormat}
+
           editing={this.state.focused}
           culture={this.props.culture}
           parse={this._parse}
@@ -287,8 +313,9 @@ var DateTimePicker = React.createClass({
   },
 
   _selectDate: function(date){
-    var dateTime = dates.merge(date, this.props.value)
-      , dateStr  = formatDate(date, this.props.format, this.props.culture) 
+    var format   = getFormat(this.props) 
+      , dateTime = dates.merge(date, this.props.value)
+      , dateStr  = formatDate(date, format, this.props.culture) 
 
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
@@ -296,8 +323,9 @@ var DateTimePicker = React.createClass({
   },
 
   _selectTime: function(datum){
-    var dateTime = dates.merge(this.props.value, datum.date)
-      , dateStr  = formatDate(datum.date, this.props.format, this.props.culture) 
+    var format   = getFormat(this.props) 
+      , dateTime = dates.merge(this.props.value, datum.date)
+      , dateStr  = formatDate(datum.date, format, this.props.culture) 
 
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
@@ -310,13 +338,24 @@ var DateTimePicker = React.createClass({
   },
 
   _parse: function(string){
-    var parser = typeof this.props.parse === 'function'
-          ? this.props.parse
-          : formatsParser.bind(null
-              , _.splat(this.props.format).concat(this.props.parse)
-              , this.props.culture);
+    var format = getFormat(this.props, true)
+      , formats = [];
 
-    return parser(string)
+    if ( this.props.parse === 'function' )
+      return this.props.parse(string, v)
+
+    if ( typeof format !== 'function')
+      formats.push(format)
+
+    if (this.props.parse)
+      formats = formats.concat(props.parse)
+
+    invariant(formats.length, 
+      'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
+      'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
+      'please provide either a parse function or Globalize.js compatible string format', string);
+
+    return formatsParser(formats, this.props.culture, string);
   },
 
   toggle: function(view, e) {
@@ -356,28 +395,24 @@ module.exports = controlledInput.createControlledClass(
 function formatDate(date, format, culture){
   var val = ''
 
-  if ( (date instanceof Date) && !isNaN(date.getTime()) )
+  if ((date instanceof Date) && !isNaN(date.getTime()))
     val = dates.format(date, format, culture)
 
   return val;
 }
 
-
-
 function formatsParser(formats, culture, str){
   var date;
 
-  formats = [].concat(formats)
-
-  for(var i=0; i < formats.length; i++ ){
+  for (var i=0; i < formats.length; i++ ){
     date = dates.parse(str, formats[i], culture)
-    if( date) return date
+    if (date) return date
   }
   return null
 }
 
 function dateOrNull(dt){
-  if(dt && !isNaN(dt.getTime())) return dt
+  if (dt && !isNaN(dt.getTime())) return dt
   return null
 }
 

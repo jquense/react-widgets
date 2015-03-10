@@ -4,7 +4,7 @@
 var React = require('react')
   , CodeMirrorEditor = require('./codemirror')
   , babel = require('babel/browser')
-  , config  = require('../../package.json').babel
+  , { whitelist, ...config } = require('../../package.json').babel
   , ReactWidgets = require('../../index')
   , MultiselectTagList = require('../../lib/MultiselectTagList')
   , genData = require('./generate-data');
@@ -30,7 +30,7 @@ module.exports = React.createClass({
   getDefaultProps: function() {
     return {
       transformer: function(code) {
-        return babel.transform(code, {}).code;
+        return babel.transform(code, config).code;
       }
     };
   },

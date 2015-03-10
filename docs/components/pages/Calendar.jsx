@@ -27,6 +27,16 @@ var Calendar = React.createClass({
               <MenuItem>initialView</MenuItem>
               <MenuItem>finalView</MenuItem>
 
+              <MenuItem divider/>
+              <MenuItem>headerFormat</MenuItem>
+              <MenuItem>dayFormat</MenuItem>
+              <MenuItem>dateFormat</MenuItem>
+              <MenuItem>monthFormat</MenuItem>
+              <MenuItem>yearFormat</MenuItem>
+              <MenuItem>decadeFormat</MenuItem>
+              <MenuItem>centuryFormat</MenuItem>
+              <MenuItem divider/>
+
               <MenuItem>duration</MenuItem>
               <MenuItem>isRtl</MenuItem>
               <MenuItem>messages</MenuItem>
@@ -85,6 +95,39 @@ var Calendar = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/prop')(widgetName, 'finalView', '"year"')}/>
         
+
+        <PropHeader type='String | Function(Date? date)' default="'MMMM yyyy'">headerFormat</PropHeader>
+        <p>
+          A formatter for the header button of the month view
+        </p>
+
+        <PropHeader type='String | Function(Number dayOfTheWeek)' default="Function()">dayFormat</PropHeader>
+        <p>
+          A formatter calendar days of the week, the default formats each day as a Narrow name: "Mo", "Tu", etc.
+        </p>
+
+        <PropHeader type='String | Function(Date? date)' default="'dd'">dateFormat</PropHeader>
+        <p>
+          A formatter for day of the month
+        </p>
+        <PropHeader type='String | Function(Date? date)' default="'MMM'">monthFormat</PropHeader>
+        <p>
+          A formatter for month name.
+        </p>
+
+        <PropHeader type='String | Function(Date? date)' default="'YYYY'">yearFormat</PropHeader>
+        <p>
+          A formatter for the year.
+        </p>
+        <PropHeader type='String | Function(Date? date)' default="Function()">decadeFormat</PropHeader>
+        <p>
+          A formatter for decade, the default formats the first and last year of the decade like: 2000 - 2009.
+        </p>
+        <PropHeader type='String | Function(Date? date)' default="Function()">centuryFormat</PropHeader>
+        <p>
+          A formatter for century, the default formats the first and last year of the century like: 1900 - 1999.
+        </p>
+
         <PropHeader type='Boolean' default="false">isRtl</PropHeader>
         <p>
           mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through

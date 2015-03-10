@@ -40,5 +40,28 @@ describe('Month Component', function(){
 
     expect(picker.move(date, directions.DOWN))
       .to.eql(date)
+  }) 
+
+  it('should use the right format', () => {
+    var date   = new Date(2015, 1, 16, 0, 0, 0)
+      , formatter = sinon.spy(() => 'hi')
+      , picker = render(<Month value={date} onChange={()=>{}} format='dd'/>)
+      , first  = () => $(picker.getDOMNode()).find('td:first');
+
+    expect(first().text()).to.equal('01')
+
+    picker = render(<Month value={date} onChange={()=>{}} format='-d'/>)
+
+    expect(first().text()).to.equal('-1')
+
+    picker = render(<Month value={date} onChange={()=>{}} format={formatter} culture='en' />)
+
+    expect(formatter.called).to.be.ok();
+
+    expect(formatter.args[0].length).to.equal(2);
+    expect(formatter.args[0][0]).to.be.a(Date);
+    expect(formatter.args[0][1]).to.be.a('string').and.to.equal('en');
+
+    expect(first().text()).to.equal('hi')
   })
 })

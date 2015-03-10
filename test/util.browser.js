@@ -12,7 +12,6 @@ var React   = require('react')
   , validateList = require('../src/util/validateListInterface');
 
 
-
 describe('_ utils', function(){
 
   it('should EACH', function(){
@@ -44,10 +43,6 @@ describe('_ utils', function(){
   it('should UNIQUEID', function(){
     expect(_.uniqueId('gello_')).to.equal('gello_' + 1)
     expect(_.uniqueId('ello_')).to.equal('ello_' + 2)
-  })
-
-  it('should OBJECT', function(){
-    expect(_.object([[1,2], [2,3]])).to.eql({ 1:2, 2: 3})
   })
 
   it('should SHALLOW EQUAL', function(){

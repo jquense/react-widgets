@@ -18,7 +18,12 @@ module.exports = {
             ' Expected an Element `type` such as a tag name or return value of React.createClass(...)')
       }
       return true
-    })
+    }),
+
+    localeFormat: React.PropTypes.oneOfType([
+                    React.PropTypes.string, 
+                    React.PropTypes.func
+                  ]),
 }
 
 

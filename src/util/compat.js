@@ -1,10 +1,12 @@
 'use strict';
-var React = require('react');
+var React = require('react')
+  , version = React.version.split('.').map(parseFloat);
+
 
 var compat = module.exports = {
 
   version: function(){
-    return React.version.split('.').map(parseFloat);
+    return version;
   },
 
   propType: function(fn) {
@@ -15,5 +17,13 @@ var compat = module.exports = {
       if ( err && err !== true ) 
         return err
     }
+  },
+
+  type: function(component){
+    if( version[0] === 0 && version[1] >= 13)
+      return component
+
+    return component.type
   }
 }
+

@@ -4,6 +4,8 @@ var dateMath = require('date-arithmetic')
   , globalize = require('globalize')
   , _ = require('./_'); //extend
 
+var shortNames = {};
+
 var dates = module.exports = _.assign(dateMath, {
   // wrapper methods for isolating globalize use throughout the lib
   // looking forward towards the 1.0 release
@@ -22,15 +24,28 @@ var dates = module.exports = _.assign(dateMath, {
     return culture.calendar.firstDay || 0
   },
 
-  parse: function(date, format, culture){
+  parse: function(date, format, culture) {
+    if ( typeof format === 'function')
+      return format(date, culture)
+
     return globalize.parseDate(date, format, culture)
   },
 
   format: function(date, format, culture){
+    if ( typeof format === 'function')
+      return format(date, culture)
+
     return globalize.format(date, format, culture)
   },
   
   //-------------------------------------
+
+  shortDay: function(dayOfTheWeek){
+    var culture = arguments[1] === undefined ? "default" : arguments[1];
+    var names = shortNames[culture] || (shortNames[culture] = dates.shortDaysOfWeek(culture));
+
+    return names[dayOfTheWeek];
+  },
 
   shortDaysOfWeek: function (culture){
     var start = dates.startOfWeek(culture)
