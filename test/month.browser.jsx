@@ -18,7 +18,7 @@ describe('Month Component', function(){
 
   it('should move to an appropriate date', function(){
     var date   = new Date(2014, 0, 16, 0, 0, 0)
-      , picker = render(<Month value={date} onChange={()=>{}}/>);
+      , picker = render(<Month value={date} onChange={()=>{}} dateFormat='dd' dayFormat='d'/>);
 
     expect(picker.move(date, directions.RIGHT).toString())
       .to.equal((new Date(2014, 0, 17, 0, 0, 0)).toString())
@@ -45,16 +45,16 @@ describe('Month Component', function(){
   it('should use the right format', () => {
     var date   = new Date(2015, 1, 16, 0, 0, 0)
       , formatter = sinon.spy(() => 'hi')
-      , picker = render(<Month value={date} onChange={()=>{}} format='dd'/>)
+      , picker = render(<Month value={date} onChange={()=>{}} dateFormat='dd' dayFormat='d'/>)
       , first  = () => $(picker.getDOMNode()).find('td:first');
 
     expect(first().text()).to.equal('01')
 
-    picker = render(<Month value={date} onChange={()=>{}} format='-d'/>)
+    picker = render(<Month value={date} onChange={()=>{}} dateFormat='-d' dayFormat='d'/>)
 
     expect(first().text()).to.equal('-1')
 
-    picker = render(<Month value={date} onChange={()=>{}} format={formatter} culture='en' />)
+    picker = render(<Month value={date} onChange={()=>{}} dateFormat={formatter} culture='en' dayFormat='d'/>)
 
     expect(formatter.called).to.be.ok();
 

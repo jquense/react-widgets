@@ -189,7 +189,7 @@ describe('Calendar', function(){
     var date    = new Date(2014, 5, 15)
       , first   = () => $(calendar.getDOMNode()).find('td:first')
       , formats = _.transform(
-            ['dateFormat', 'monthFormat', 'yearFormat', 'decadeFormat' ]
+            ['dayFormat', 'dateFormat', 'monthFormat', 'yearFormat', 'decadeFormat' ]
           , (o, v) => o[v] = v)
       , calendar;
     
@@ -197,19 +197,20 @@ describe('Calendar', function(){
 
     calendar = render(<BaseCalendar {...formats} value={date} onChange={()=>{}} />)
 
-    expect(findType(calendar, Month).props.format).to.equal('dateFormat')
+    expect(findType(calendar, Month).props.dayFormat).to.equal('dayFormat')
+    expect(findType(calendar, Month).props.dateFormat).to.equal('dateFormat')
 
     calendar.setProps({ initialView: 'year' })
 
-    expect(findType(calendar, Year).props.format).to.equal('monthFormat')
+    expect(findType(calendar, Year).props.monthFormat).to.equal('monthFormat')
 
     calendar.setProps({ initialView: 'decade' })
 
-    expect(findType(calendar, Decade).props.format).to.equal('yearFormat')
+    expect(findType(calendar, Decade).props.yearFormat).to.equal('yearFormat')
 
     calendar.setProps({ initialView: 'century' })
 
-    expect(findType(calendar, Century).props.format).to.equal('decadeFormat')
+    expect(findType(calendar, Century).props.decadeFormat).to.equal('decadeFormat')
 
     DOM.animate.restore()
   })
