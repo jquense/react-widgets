@@ -2,6 +2,7 @@
 var React = require('react')
   , cx    = require('classnames')
   , _     = require('./util/_') //omit
+  , CustomPropTypes = require('./util/propTypes')
   , controlledInput  = require('./util/controlledInput')
   , directions = require('./util/constants').directions
   , Input = require('./NumberInput');
@@ -19,15 +20,12 @@ var Btn = require('./WidgetButton')
       step:           React.PropTypes.number,
 
       culture:        React.PropTypes.string,
-      format:         React.PropTypes.string,
+
+      format:         CustomPropTypes.localeFormat,
 
       name:           React.PropTypes.string,
 
-      parse:          React.PropTypes.oneOfType([
-                        React.PropTypes.arrayOf(React.PropTypes.string),
-                        React.PropTypes.string,
-                        React.PropTypes.func
-                      ]),
+      parse:          React.PropTypes.func,
 
       disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.bool,
@@ -135,6 +133,7 @@ var NumberPicker = React.createClass({
           value={val}
           editing={this.state.focused}
           format={this.props.format}
+          parse={this.props.parse}
           name={this.props.name}
           role='spinbutton'
           min={this.props.min}

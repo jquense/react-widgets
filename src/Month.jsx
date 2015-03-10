@@ -29,8 +29,8 @@ module.exports = React.createClass({
     min:              React.PropTypes.instanceOf(Date),
     max:              React.PropTypes.instanceOf(Date),
 
-    dayFormat:        CustomPropTypes.dateFormat.isRequired,
-    dateFormat:       CustomPropTypes.dateFormat.isRequired,
+    dayFormat:        CustomPropTypes.localeFormat.isRequired,
+    dateFormat:       CustomPropTypes.localeFormat.isRequired,
 
     onChange:         React.PropTypes.func.isRequired, //value is chosen
     onMoveLeft:       React.PropTypes.func,

@@ -32,7 +32,7 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
 
-    yearFormat:   CustomPropTypes.dateFormat.isRequired
+    yearFormat:   CustomPropTypes.localeFormat.isRequired
 
   },
 

@@ -23,7 +23,10 @@ var NumberPicker = React.createClass({
               <MenuItem>value</MenuItem>
               <MenuItem>onChange</MenuItem>
               <MenuItem divider/>
+
               <MenuItem>format</MenuItem>
+              <MenuItem>parse</MenuItem>
+
               <MenuItem>min</MenuItem>
               <MenuItem>max</MenuItem>
               <MenuItem>step</MenuItem>
@@ -55,13 +58,20 @@ var NumberPicker = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/onChangePicker')(widgetName, [1, null])}/>
 
-        <PropHeader type='String' default='d'>format</PropHeader>
+        <PropHeader type='Function(String str) | String' default='d'>format</PropHeader>
         <p>
           A format string used to display the number value. For more information on prefined and custom number and
           currency formats visit the&nbsp;
           <a href='https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#number-formatting'>
             Globalize.js documentation <i className="fa fa-external-link"></i>
-          </a>.
+          </a> You provide a <code>Function</code> as a format if you wish to not use Globalize, or 
+          just want to provide some custom behavior.
+        </p>
+
+        <PropHeader type='Function(String str, String culture) | Array<String>'>parse</PropHeader>
+        <p>
+          Determines how the {widgetName} parses a number from the localized string representation. You can 
+          also provide a parser <code>Function</code> to pair with a custom <code>format</code>.
         </p>
 
         <PropHeader type='Number' default='-Infinity'>min</PropHeader>

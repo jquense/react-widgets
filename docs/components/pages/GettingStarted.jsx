@@ -75,9 +75,13 @@ var GettingStarted = React.createClass({
           <ul>
             <li>
               <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468" >Globalize</a>&nbsp;
-              used for date and number localization. Requires a 0.x.x version (not the upcoming 1.0.0)
+              used for date and number localization. Requires a 0.x.x version (not the upcoming 1.0.0). 
             </li>
           </ul>
+          <strong>
+            Note: As of verison <code>2.3.0</code> you can completely swap out the Globalize dependency for any localization 
+            solution you wish through widget format and parse props.
+          </strong>
         </p>
         <h2 id='/getting-started/browser'>Older Browser Support</h2>
         <p>

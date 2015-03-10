@@ -1,5 +1,6 @@
 'use strict';
 var React  = require('react')
+  , invariant = require('react/lib/invariant')
   , cx     = require('classnames')
   , compat = require('./util/compat')
   , _      = require('./util/_') //pick, omit, has
@@ -16,7 +17,8 @@ var React  = require('react')
   , CustomPropTypes = require('./util/propTypes')
   , controlledInput = require('./util/controlledInput');
 
-var viewEnum  = Object.keys(views).map( k => views[k] )
+var viewEnum  = Object.keys(views).map( k => views[k] );
+var SHORT_FULL_FORMAT = (dt, culture) => `${dates.format(dt, 'd', culture)} ${dates.format(dt, 't', culture)}`;
 
 var propTypes = {
 
@@ -34,17 +36,17 @@ var propTypes = {
 
     culture:        React.PropTypes.string,
 
-    format:         CustomPropTypes.dateFormat,
-    editFormat:     CustomPropTypes.dateFormat,
+    format:         CustomPropTypes.localeFormat,
+    editFormat:     CustomPropTypes.localeFormat,
 
-    headerFormat:   CustomPropTypes.dateFormat,
+    headerFormat:   CustomPropTypes.localeFormat,
 
-    dayFormat:      CustomPropTypes.dateFormat,
-    dateFormat:     CustomPropTypes.dateFormat,
-    monthFormat:    CustomPropTypes.dateFormat,
-    yearFormat:     CustomPropTypes.dateFormat,
-    decadeFormat:   CustomPropTypes.dateFormat,
-    centuryFormat:  CustomPropTypes.dateFormat,
+    dayFormat:      CustomPropTypes.localeFormat,
+    dateFormat:     CustomPropTypes.localeFormat,
+    monthFormat:    CustomPropTypes.localeFormat,
+    yearFormat:     CustomPropTypes.localeFormat,
+    decadeFormat:   CustomPropTypes.localeFormat,
+    centuryFormat:  CustomPropTypes.localeFormat,
 
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
@@ -86,15 +88,16 @@ var propTypes = {
 function getFormat(props){
   var cal  = props[popups.CALENDAR] != null ? props.calendar : true
     , time = props[popups.TIME] != null ? props.time : true;
-
+ 
   return props.format 
     ? props.format 
     : (cal && time) || (!cal && !time)
-      ? 'M/d/yyyy h:mm tt'
+      ? 'f'
       : cal ? 'd' : 't'
 }
 
 var DateTimePicker = React.createClass({
+
   displayName: 'DateTimePicker',
 
   mixins: [
@@ -123,6 +126,7 @@ var DateTimePicker = React.createClass({
       calendar:         true,
       time:             true,
       open:             false,
+
       messages: {
         calendarButton: 'Select Date',
         timeButton:     'Select Time',
@@ -334,14 +338,24 @@ var DateTimePicker = React.createClass({
   },
 
   _parse: function(string){
-    var format   = getFormat(this.props) 
-      , parser = typeof this.props.parse === 'function'
-          ? this.props.parse
-          : formatsParser.bind(null
-              , _.splat(format).concat(this.props.parse)
-              , this.props.culture);
+    var format = getFormat(this.props, true)
+      , formats = [];
 
-    return parser(string)
+    if ( this.props.parse === 'function' )
+      return this.props.parse(string, v)
+
+    if ( typeof format !== 'function')
+      formats.push(format)
+
+    if (this.props.parse)
+      formats = formats.concat(props.parse)
+
+    invariant(formats.length, 
+      'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
+      'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
+      'please provide either a parse function or Globalize.js compatible string format', string);
+
+    return formatsParser(formats, this.props.culture, string);
   },
 
   toggle: function(view, e) {

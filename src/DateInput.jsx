@@ -10,7 +10,7 @@ module.exports = React.createClass({
 
 
   propTypes: {
-    format:       CustomPropTypes.dateFormat,
+    format:       CustomPropTypes.localeFormat,
     parse:        React.PropTypes.func.isRequired,
 
     value:        React.PropTypes.instanceOf(Date),

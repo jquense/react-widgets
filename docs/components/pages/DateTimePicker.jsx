@@ -114,7 +114,7 @@ var DateTimePicker = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/prop')(widgetName, 'max', 'new Date()')}/>
 
-        <PropHeader type='String' default='"M/d/yyyy h:mm tt"'>format</PropHeader>
+        <PropHeader type='String' default='"f"'>format</PropHeader>
         <p>
           A string format used to display the date value. For more information on prefined and custom formats
           visit the <a href='https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates'>
@@ -123,12 +123,13 @@ var DateTimePicker = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/prop')(widgetName, 'format', '"MMM dd yyyy"')}/>
 
-        <PropHeader type='[Function, Array<String>]'>parse</PropHeader>
+        <PropHeader type='[Function(String str), Array<String>]'>parse</PropHeader>
         <p>
           Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
-          or provide a {'function'} that returns a date to handle parsing yourself.
+          or provide a {'function'} that returns a date to handle parsing yourself. When <code>parse</code> is unspecified and 
+          the <code>format</code> prop is a <code>String</code> parse will automatically use that format as its default
         </p>
-         <EditableExample codeText={require('../examples/parse')(widgetName)}/>
+        <EditableExample codeText={require('../examples/parse')(widgetName)}/>
 
         <PropHeader type='Enum' default='"month"'>initialView</PropHeader>
         <p>

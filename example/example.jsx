@@ -13,7 +13,7 @@ var _ = require('lodash')
 var { ModalTrigger
   , Modal } = require('react-bootstrap')
 
-// var g = require('globalize')
+var g = require('globalize')
 var culture = require('globalize/lib/cultures/globalize.culture.es');
 // g.culture('fi');
 
@@ -110,12 +110,9 @@ var App = React.createClass({
               }}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker dropUp
-              isRtl={false}
+            <DatePicker
               culture='es'
-              id='swweeeeet'
-              format='f'
-              min={new Date(2013,5,1,0,0,0)}/>
+              id='swweeeeet'/>
           </section>
         </div>
       </div>

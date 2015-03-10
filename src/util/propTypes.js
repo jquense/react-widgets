@@ -20,10 +20,10 @@ module.exports = {
       return true
     }),
 
-    dateFormat: React.PropTypes.oneOfType([
-                  React.PropTypes.string, 
-                  React.PropTypes.func
-                ]),
+    localeFormat: React.PropTypes.oneOfType([
+                    React.PropTypes.string, 
+                    React.PropTypes.func
+                  ]),
 }
 
 

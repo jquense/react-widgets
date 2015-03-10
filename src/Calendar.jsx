@@ -66,13 +66,13 @@ var propTypes = {
 
   culture:       React.PropTypes.string,
 
-  headerFormat:  CustomPropTypes.dateFormat,
-  dayFormat:     CustomPropTypes.dateFormat,
-  dateFormat:    CustomPropTypes.dateFormat,
-  monthFormat:   CustomPropTypes.dateFormat,
-  yearFormat:    CustomPropTypes.dateFormat,
-  decadeFormat:  CustomPropTypes.dateFormat,
-  centuryFormat: CustomPropTypes.dateFormat,
+  headerFormat:  CustomPropTypes.localeFormat,
+  dayFormat:     CustomPropTypes.localeFormat,
+  dateFormat:    CustomPropTypes.localeFormat,
+  monthFormat:   CustomPropTypes.localeFormat,
+  yearFormat:    CustomPropTypes.localeFormat,
+  decadeFormat:  CustomPropTypes.localeFormat,
+  centuryFormat: CustomPropTypes.localeFormat,
 
   messages:      React.PropTypes.shape({
     moveBack:     React.PropTypes.string,
