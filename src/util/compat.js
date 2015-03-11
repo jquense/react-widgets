@@ -40,7 +40,7 @@ var compat = module.exports = {
 
     //just mutate if pre 0.13
     _.each(props, 
-      (value, prop) => child.props[key] = value)
+      (value, prop) => child.props[prop] = value)
 
     return child
   }
