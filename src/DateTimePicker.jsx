@@ -302,7 +302,7 @@ var DateTimePicker = React.createClass({
 
     this.setTimeout('focus', () => {
 
-      if(focused) input.getDOMNode().focus()
+      if(focused) compat.findDOMNode(input).focus()
       else        this.close()
 
       if( focused !== this.state.focused){

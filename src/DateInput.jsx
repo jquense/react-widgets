@@ -2,6 +2,7 @@
 var React = require('react')
   , cx = require('classnames')
   , dates = require('./util/dates')
+  , compat = require('./util/compat')
   , CustomPropTypes = require('./util/propTypes');
 
 module.exports = React.createClass({
@@ -80,7 +81,7 @@ module.exports = React.createClass({
   },
 
   focus: function(){
-    this.getDOMNode().focus()
+    compat.findDOMNode(this).focus()
   }
 
 });

@@ -6,7 +6,7 @@ var _ = require('./_') //invert, transform
 
 function compatPropType(handler, propType) {
 
-  return compat.propType(function(props, propName, componentName, location){
+  return function(props, propName, componentName, location){
     if(props[propName] !== undefined){
       if ( !props[handler] )
         return new Error(
@@ -16,7 +16,7 @@ function compatPropType(handler, propType) {
 
       return propType && propType(props, propName, componentName, location)
     }
-  })
+  }
 }
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
 
     if ( process.env.NODE_ENV !== 'production') {
       types = _.transform(controlledValues, function(obj, handler, prop){
-            var type = Component.type.propTypes[prop];
+            var type = compat.type(Component).propTypes[prop];
 
             obj[prop] = compatPropType(handler, type)
             obj[defaultKey(prop)] = type

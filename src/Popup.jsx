@@ -1,16 +1,17 @@
 'use strict';
 var React  = require('react')
   , $ = require('./util/dom')
-  , cx = require('classnames');
+  , cn = require('classnames')
+  , compat = require('./util/compat');
 
 
 var PopupContent = React.createClass({
   render: function(){
-    var Content = React.Children.only(this.props.children)
+    var child = React.Children.only(this.props.children)
 
-    Content.props.className = (Content.props.className || '') + ' rw-popup rw-widget';
-
-    return Content
+    return compat.cloneElement(child, { 
+      className: cn(child.props.className, 'rw-popup rw-widget') 
+    });
   }
 })
 
@@ -65,8 +66,9 @@ module.exports = React.createClass({
       , dropUp
       , ...props } = this.props
 
+
     return (
-      <div {...props} className={cx(className, "rw-popup-container", { "rw-dropup": dropUp })}>
+      <div {...props} className={cn(className, "rw-popup-container", { "rw-dropup": dropUp })}>
         <PopupContent ref='content'>
           { this.props.children }
         </PopupContent>
@@ -75,8 +77,8 @@ module.exports = React.createClass({
   },
 
   dimensions: function(){
-    var el = this.getDOMNode()
-      , content = this.refs.content.getDOMNode()
+    var el = compat.findDOMNode(this)
+      , content = compat.findDOMNode(this.refs.content)
       , margin = parseInt($.css(content, 'margin-top'), 10)
                + parseInt($.css(content, 'margin-bottom'), 10);
 
@@ -86,8 +88,8 @@ module.exports = React.createClass({
 
   open: function(){
     var self = this
-      , anim = this.getDOMNode()
-      , el   = this.refs.content.getDOMNode();
+      , anim = compat.findDOMNode(this)
+      , el   = compat.findDOMNode(this.refs.content);
 
     this.ORGINAL_POSITION = $.css(el, 'position')
 
@@ -117,8 +119,8 @@ module.exports = React.createClass({
 
   close: function(dur){
     var self = this
-      , el   = this.refs.content.getDOMNode()
-      , anim = this.getDOMNode();
+      , el   = compat.findDOMNode(this.refs.content)
+      , anim = compat.findDOMNode(this);
 
     this.ORGINAL_POSITION = $.css(el, 'position')
 

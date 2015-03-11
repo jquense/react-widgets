@@ -2,6 +2,7 @@
 var React           = require('react')
   , cx              = require('classnames')
   , _               = require('./util/_')
+  , compat          = require('./util/compat')
   , SelectInput     = require('./MultiselectInput')
   , TagList         = require('./MultiselectTagList')
   , Popup           = require('./Popup')
@@ -134,7 +135,7 @@ var Multiselect = React.createClass({
       , dropUp = this.props.dropUp
 
       , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
-      , listProps  = _.pick(this.props, Object.keys(List.type.propTypes));
+      , listProps  = _.pick(this.props, Object.keys(compat.type(List).propTypes));
 
     return (
       <div {...props}
@@ -182,7 +183,7 @@ var Multiselect = React.createClass({
             onKeyUp={this._searchgKeyUp}
             onChange={this._typing}/>
         </div>
-        <Popup {..._.pick(this.props, Object.keys(Popup.type.propTypes))}
+        <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
           onRequestClose={this.close}>
 
           <div>

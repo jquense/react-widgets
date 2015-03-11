@@ -3,6 +3,7 @@ var React           = require('react')
   , _               = require('./util/_')
   , cx              = require('classnames')
   
+  , compat          = require('./util/compat')
   , controlledInput = require('./util/controlledInput')
   , CustomPropTypes = require('./util/propTypes')
   , Popup           = require('./Popup')
@@ -153,12 +154,15 @@ var DropdownList = React.createClass({
               : this._dataText(valueItem)
           }
         </div>
-        <Popup {..._.pick(this.props, Object.keys(Popup.type.propTypes))}
+        <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
           onRequestClose={this.close}>
 
           <div>
             <List ref="list" 
-              {..._.pick(this.props, Object.keys(List.type.propTypes))}
+              {..._.pick(
+                  this.props
+                , Object.keys(compat.type(List).propTypes))
+              }
               optID={optID}
               aria-hidden={!this.props.open}
               selected={this.state.selectedItem}
@@ -175,7 +179,7 @@ var DropdownList = React.createClass({
 
     this.setTimeout('focus', () => {
 
-      if(focused) this.getDOMNode().focus()
+      if(focused) compat.findDOMNode(this).focus()
       else        this.close()
 
       if( focused !== this.state.focused){
