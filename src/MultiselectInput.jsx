@@ -8,6 +8,7 @@ module.exports = React.createClass({
   propTypes: {
     value:        React.PropTypes.string,
     onChange:     React.PropTypes.func.isRequired,
+    onFocus:      React.PropTypes.func,
 
     disabled:     React.PropTypes.bool,
     readOnly:     React.PropTypes.bool,

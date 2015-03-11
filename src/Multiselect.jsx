@@ -180,7 +180,8 @@ var Multiselect = React.createClass({
             placeholder={this._placeholder()}
             onKeyDown={this._searchKeyDown}
             onKeyUp={this._searchgKeyUp}
-            onChange={this._typing}/>
+            onChange={this._typing}
+            onFocus={this._inputFocus}/>
         </div>
         <Popup {..._.pick(this.props, Object.keys(Popup.type.propTypes))}
           onRequestClose={this.close}>
@@ -230,10 +231,10 @@ var Multiselect = React.createClass({
       this.state.dataItems.filter( d => d !== value))
   },
 
-  // _click(e){
-  //   this._focus(true)
-  //   !this.props.open && this.open()
-  // },
+  _inputFocus(e){
+    this._focus(true)
+    !this.props.open && this.open()
+  },
 
   _focus(focused, e){
     if (this.props.disabled === true )
