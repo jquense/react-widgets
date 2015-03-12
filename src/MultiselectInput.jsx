@@ -7,6 +7,7 @@ module.exports = React.createClass({
 
   propTypes: {
     value:        React.PropTypes.string,
+    maxLength:    React.PropTypes.number,
     onChange:     React.PropTypes.func.isRequired,
     onFocus:      React.PropTypes.func,
 
