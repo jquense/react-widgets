@@ -2,7 +2,7 @@
 var React = require('react')
   , _  = require('./util/_')
   , cx = require('classnames')
-  , controlledInput  = require('./util/controlledInput')
+  , createUncontrolledWidget = require('uncontrollable')
   , CustomPropTypes  = require('./util/propTypes')
   , PlainList        = require('./List')
   , GroupableList = require('./ListGroupable')
@@ -358,7 +358,7 @@ function getListItem(parent){
 
 module.exports = SelectList;
 
-module.exports = controlledInput.createControlledClass(
+module.exports = createUncontrolledWidget(
     SelectList, { value: 'onChange' });
 
 module.exports.BaseSelectList = SelectList

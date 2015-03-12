@@ -9,7 +9,7 @@ var React           = require('react')
   , Decade          = require('./Decade')
   , Century         = require('./Century') 
   , CustomPropTypes = require('./util/propTypes')
-  , controlledInput = require('./util/controlledInput')
+  , createUncontrolledWidget = require('uncontrollable')
   , SlideTransition = require('./SlideTransition')
   , dates           = require('./util/dates')
   , constants       = require('./util/constants')
@@ -408,12 +408,13 @@ function formats(obj){
     
     centuryFormat: (dt, culture) => 
       `${dates.format(dt, dates.formats.YEAR, culture)} - ${dates.format(dates.endOf(dt, 'century'), dates.formats.YEAR, culture)}`,
+      
     ...obj
   }
 }
 
 
-module.exports = controlledInput.createControlledClass(
+module.exports = createUncontrolledWidget(
     Calendar, { value: 'onChange' });
 
 module.exports.BaseCalendar = Calendar

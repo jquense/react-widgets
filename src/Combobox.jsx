@@ -7,7 +7,7 @@ var React           = require('react')
   , Btn             = require('./WidgetButton')
   , Input           = require('./ComboboxInput')
 
-  , controlledInput = require('./util/controlledInput')
+  , createUncontrolledWidget = require('uncontrollable')
   , CustomPropTypes = require('./util/propTypes')
   , PlainList       = require('./List')
   , GroupableList   = require('./ListGroupable')
@@ -383,7 +383,7 @@ var ComboBox = React.createClass({
   }
 })
 
-module.exports = controlledInput.createControlledClass(
+module.exports = createUncontrolledWidget(
       ComboBox, { open: 'onToggle', value: 'onChange' });
 
 module.exports.BaseComboBox = ComboBox

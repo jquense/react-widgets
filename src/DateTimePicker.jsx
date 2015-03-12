@@ -15,7 +15,7 @@ var React  = require('react')
   , DateInput = require('./DateInput')
   , Btn       = require('./WidgetButton')
   , CustomPropTypes = require('./util/propTypes')
-  , controlledInput = require('./util/controlledInput');
+  , createUncontrolledWidget = require('uncontrollable');
 
 var viewEnum  = Object.keys(views).map( k => views[k] );
 
@@ -376,7 +376,7 @@ var DateTimePicker = React.createClass({
 });
 
 
-module.exports = controlledInput.createControlledClass(
+module.exports = createUncontrolledWidget(
     DateTimePicker
   , { open: 'onToggle', value: 'onChange' });
 

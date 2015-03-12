@@ -2,7 +2,7 @@
 /*global it, describe */
 
 require('babel/register')(
-  require('../webpack.configs').to5Config)
+  require('../webpack.configs').babel)
 
 var assert = require('assert')
 var React = require('react');

@@ -54,7 +54,8 @@
   "dependencies": {
     "classnames": "^1.1.4",
     "date-arithmetic": "^2.0.0",
-    "globalize": "~0.1.1"
+    "globalize": "~0.1.1",
+    "uncontrollable": "^1.1.1"
   },
   "devDependencies": {
     "babel": "^4.7.2",

@@ -8,7 +8,7 @@ var React           = require('react')
   , PlainList       = require('./List')
   , GroupableList   = require('./ListGroupable')
   , validateList    = require('./util/validateListInterface')
-  , controlledInput = require('./util/controlledInput')
+  , createUncontrolledWidget = require('uncontrollable')
   , CustomPropTypes = require('./util/propTypes');
 
 var propTypes = {
@@ -407,7 +407,7 @@ var Multiselect = React.createClass({
 })
 
 
-module.exports = controlledInput.createControlledClass(Multiselect
+module.exports = createUncontrolledWidget(Multiselect
     , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
     , { onChange: defaultChange, onCreate: defaultChange });
 

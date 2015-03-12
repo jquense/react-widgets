@@ -3,7 +3,7 @@ var React           = require('react')
   , _               = require('./util/_')
   , cx              = require('classnames')
   
-  , controlledInput = require('./util/controlledInput')
+  , createUncontrolledWidget = require('uncontrollable')
   , CustomPropTypes = require('./util/propTypes')
   , Popup           = require('./Popup')
   , PlainList       = require('./List')
@@ -291,7 +291,7 @@ var DropdownList = React.createClass({
 })
 
 
-module.exports = controlledInput.createControlledClass(
+module.exports = createUncontrolledWidget(
     DropdownList, { open: 'onToggle', value: 'onChange' });
 
 module.exports.BaseDropdownList = DropdownList

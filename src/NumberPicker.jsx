@@ -3,7 +3,7 @@ var React = require('react')
   , cx    = require('classnames')
   , _     = require('./util/_') //omit
   , CustomPropTypes = require('./util/propTypes')
-  , controlledInput  = require('./util/controlledInput')
+  , createUncontrolledWidget = require('uncontrollable')
   , directions = require('./util/constants').directions
   , Input = require('./NumberInput');
 
@@ -240,7 +240,7 @@ var NumberPicker = React.createClass({
 
 })
 
-module.exports = controlledInput.createControlledClass(
+module.exports = createUncontrolledWidget(
     NumberPicker, { value: 'onChange' });
 
 module.exports.BaseNumberPicker = NumberPicker
