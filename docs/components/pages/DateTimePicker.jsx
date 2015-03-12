@@ -6,7 +6,7 @@ var React = require('react')
   , PropHeader = require('../PropHeader.jsx')
   , DatePickerExample = require('../demos/datepicker.jsx');
 
-var prefix = 'date-picker/'
+var prefix = 'datetime-picker/'
 var widgetName = 'DateTimePicker'
 var DateTimePicker = React.createClass({
 

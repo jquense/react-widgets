@@ -5,8 +5,8 @@ var React = require('react')
   , CodeMirrorEditor = require('./codemirror')
   , babel = require('babel/browser')
   , { whitelist, ...config } = require('../../package.json').babel
-  , ReactWidgets = require('../../index')
-  , MultiselectTagList = require('../../lib/MultiselectTagList')
+  , ReactWidgets = require('../../src/index')
+  , MultiselectTagList = require('../../src/MultiselectTagList')
   , genData = require('./generate-data');
 
 function listOfPeople(){

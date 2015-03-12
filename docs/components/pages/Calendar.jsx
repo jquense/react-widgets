@@ -106,29 +106,44 @@ var Calendar = React.createClass({
         <p>
           A formatter for the header button of the month view
         </p>
+        <EditableExample codeText={
+          require('../examples/prop')(widgetName, 'headerFormat', '"D"')}/>
+
         <PropHeader type='String | Function(Date? date)' default="'D'">footerFormat</PropHeader>
         <p>
           A formatter for the Calendar footer, formats Today's Date as a string.
         </p>
+        <EditableExample codeText={require('../examples/prop')(
+          widgetName, { footerFormat: "\"'today is:' dddd\"", footer: true })}/>
 
         <PropHeader type='String | Function(Number dayOfTheWeek)' default="Function()">dayFormat</PropHeader>
         <p>
           A formatter calendar days of the week, the default formats each day as a Narrow name: "Mo", "Tu", etc.
         </p>
+        <EditableExample codeText={require('../examples/prop')(
+          widgetName, { dayFormat: "day => ['M', 'T','W','Th', 'F', '!', '!'][day]" })}/>
 
         <PropHeader type='String | Function(Date? date)' default="'dd'">dateFormat</PropHeader>
         <p>
           A formatter for day of the month
         </p>
+        <EditableExample codeText={require('../examples/prop')(
+          widgetName, { dateFormat: "dt => dt.getDate()", footer: true })}/>
+
         <PropHeader type='String | Function(Date? date)' default="'MMM'">monthFormat</PropHeader>
         <p>
           A formatter for month name.
         </p>
+        <EditableExample codeText={require('../examples/prop')(
+          widgetName, { monthFormat: "'MMMM'", initialView: "'year'" })}/>
 
         <PropHeader type='String | Function(Date? date)' default="'YYYY'">yearFormat</PropHeader>
         <p>
           A formatter for the year.
         </p>
+        <EditableExample codeText={require('../examples/prop')(
+          widgetName, { yearFormat: "'yy'", initialView: "'decade'" })}/>
+
         <PropHeader type='String | Function(Date? date)' default="Function()">decadeFormat</PropHeader>
         <p>
           A formatter for decade, the default formats the first and last year of the decade like: 2000 - 2009.

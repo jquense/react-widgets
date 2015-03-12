@@ -3,7 +3,7 @@ var React = require('react')
   , dates = require('date-arithmetic')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
-  , RW = require('../../../index');
+  , RW = require('../../../src/index');
 
 module.exports = React.createClass({
   getInitialState: function(){

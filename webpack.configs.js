@@ -87,12 +87,15 @@ module.exports = {
   docs: {
     devtool: 'source-map',
 
-    entry: './docs/components/docs.jsx',
-    
+    entry: [
+      'webpack-dev-server/client?http://localhost:8081',
+      'webpack/hot/only-dev-server',
+      './docs/components/docs.jsx'
+    ],
+
     output: {
       path: path.join(__dirname, './docs'),
-      filename: 'docs.js',
-      publicPath: '/docs'
+      filename: 'docs.js'
     },
 
     resolve: {
@@ -104,13 +107,15 @@ module.exports = {
     },
 
     module: {
-      loaders: loaders.concat([
+      loaders: loadersWithHotModule().concat([
           { test: /\.json$/, loader: "json" }
         ])
     },
 
     plugins: [
       banner,
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoErrorsPlugin(),
       new webpack.DefinePlugin({
         '__VERSION__': JSON.stringify(pkg.version),
         "process.env": {

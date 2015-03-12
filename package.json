@@ -2,7 +2,7 @@
   "name": "react-widgets",
   "version": "2.2.6",
   "description": "A set of input widgets for React",
-  "main": "index.js",
+  "main": "lib/index.js",
   "author": {
     "name": "Jason",
     "email": "monastic.panic@gmail.com"

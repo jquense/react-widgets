@@ -54,11 +54,6 @@ code {
   padding: 10px 0;
 }
 
-.prop-header {
-  position: relative;
-  overflow: visible;
-}
-
 .prop-header:before {
   display: block;
   content: " ";

@@ -2,7 +2,7 @@
 var React = require('react')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
-  , RW = require('../../../index');
+  , RW = require('../../../src/index');
 
 module.exports = React.createClass({
   getInitialState: function(){

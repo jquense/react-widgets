@@ -21,6 +21,7 @@ var React = require('react')
   , Migration      = require('./pages/Migration.jsx')
   , Advanced       = require('./pages/Advanced.jsx');
 
+require('../../src/less/react-widgets.less')
 require('../docs.css')
 
 var locations = [
@@ -160,6 +161,8 @@ var routes = (
   </Route>
 );
 
+var rootInstance = null;
+
 createRouter({ 
     routes, 
     scrollBehavior: {
@@ -184,5 +187,15 @@ createRouter({
     }
   })
   .run(function (Handler, state) {
-    React.render(<Handler params={state.params}/>, document.body);
+    rootInstance = React.render(<Handler params={state.params}/>, document.body);
   });
+
+
+if (module.hot) {
+  require('react-hot-loader/Injection').RootInstanceProvider.injectProvider({
+    getRootInstances: function () {
+      // Help React Hot Loader figure out the root component instances on the page:
+      return [rootInstance];
+    }
+  });
+}

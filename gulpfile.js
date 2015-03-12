@@ -70,21 +70,6 @@ gulp.task('docs', ['lib', 'assets'], function(cb) {
   webpack(assign({}, configs.docs, { devtool: '' }), cb);
 })
 
-gulp.task('doc-watch', function() {
-  
-  del('./docs/docs.js', function(cb){
-
-      new WebpackServer(webpack(configs.docs), { 
-          publicPath: "/docs", 
-          hot: true, 
-          hotComponent: true,
-          stats: { colors: true } 
-        }
-      )
-      .listen(8081, "localhost", cb);
-  });
-})
-
 gulp.task('dev', function(cb) {
 
   new WebpackServer(webpack(configs.dev), {
@@ -94,16 +79,31 @@ gulp.task('dev', function(cb) {
     stats: { colors: true }
   })
   .listen(8080, 'localhost', function (err, result) {
-    if (err) 
-      return console.log(err);
+    if (err) return console.log(err);
     
     console.log('Listening at localhost:8080');
-
     cb()
   });
 })
 
-gulp.task('dev-docs', ['lib', 'doc-watch'])
+gulp.task('dev-docs', function(cb) {
+  
+  del('./docs/docs.js', function(){
+
+      new WebpackServer(webpack(configs.docs), { 
+        publicPath: "/docs", 
+        hot: true, 
+        hotComponent: true,
+        stats: { colors: true } 
+      })
+      .listen(8081, "localhost", function (err, result) {
+        if (err) return console.log(err);
+        
+        console.log('Listening at localhost:8080');
+        cb()
+      });
+  });
+})
 
 gulp.task('dist', ['dist-assets', 'dist-build'])
 

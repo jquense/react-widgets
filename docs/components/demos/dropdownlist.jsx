@@ -2,8 +2,8 @@
 var React = require('react')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
-  , Dropdown = require('../../../index').DropdownList
-  , NumberPicker = require('../../../index').NumberPicker
+  , Dropdown = require('../../../src/index').DropdownList
+  , NumberPicker = require('../../../src/index').NumberPicker
   , genData = require('../generate-data');
 
 var valueComp = React.createClass({
