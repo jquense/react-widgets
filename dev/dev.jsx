@@ -1,7 +1,7 @@
 'use strict';
 require('../src/less/react-widgets.less')
 
-require('react-a11y')();
+//require('react-a11y')();
 
 var React = require('react/addons')
 var DropdownList = require('../src/DropdownList.jsx')
@@ -113,7 +113,7 @@ var App = React.createClass({
               }}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker />
+            <DatePicker footerFormat={'dd'}/>
           </section>
         </div>
       </div>

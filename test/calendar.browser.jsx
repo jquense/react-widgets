@@ -6,11 +6,14 @@ var React = require('react/addons')
   , Calendar = require('../src/Calendar.jsx')
   , BaseCalendar = require('../src/Calendar.jsx').BaseCalendar
   , Header = require('../src/Header.jsx')
+  , Footer = require('../src/Footer.jsx')
   , Month  =  require('../src/Month.jsx')
   , Year = require('../src/Year.jsx')
   , Decade = require('../src/Decade.jsx')
   , Century = require('../src/Century.jsx')
-  , DOM = require('../src/util/dom');
+  , DOM = require('../src/util/dom')
+  , dates = require('../src/util/dates')
+  , globalize = require('globalize');
 
 
 var TestUtils = React.addons.TestUtils
@@ -20,7 +23,12 @@ var TestUtils = React.addons.TestUtils
   , findType = TestUtils.findRenderedComponentWithType
   , trigger = TestUtils.Simulate;
 
-describe('Calendar', function(){
+describe('Calendar', () => {
+
+  afterEach(()=> {
+    DOM.animate.restore && 
+      DOM.animate.restore()
+  })
 
   it('should set Initial View', function(){
     var date = new Date()
@@ -88,7 +96,7 @@ describe('Calendar', function(){
       , leftBtn = findClass(header, 'rw-btn-left').getDOMNode()
       , navBtn  = findClass(header, 'rw-btn-view').getDOMNode();
 
-    sinon.stub(DOM, 'animate', syncAnimate)
+    syncAnimate()
 
     trigger.click(leftBtn)
 
@@ -108,8 +116,6 @@ describe('Calendar', function(){
     trigger.click(leftBtn)
 
     expect(findType(picker, Century).state.focusedDate.getFullYear()).to.be(1903);
-
-    DOM.animate.restore()
   })
 
   it('should navigate into the future', function(){
@@ -119,7 +125,7 @@ describe('Calendar', function(){
       , rightBtn = findClass(header, 'rw-btn-right').getDOMNode()
       , navBtn   = findClass(header, 'rw-btn-view').getDOMNode();
 
-    sinon.stub(DOM, 'animate', syncAnimate)
+    syncAnimate()
 
     trigger.click(rightBtn)
 
@@ -139,11 +145,54 @@ describe('Calendar', function(){
     trigger.click(rightBtn)
 
     expect(findType(picker, Century).state.focusedDate.getFullYear()).to.be(2125);
-
-    DOM.animate.restore()
   })
 
-  it('should constrain movement by min and max', function(done){
+  it('should have a footer', function(){
+    var picker = render(<BaseCalendar/>)
+      , footer;
+
+    expect(() => findType(picker, Footer))
+      .to.throwException()
+
+    picker = render(<BaseCalendar footer/>)
+
+    expect(() => footer = findType(picker, Footer))
+      .to.not.throwException()
+
+    expect($(footer.getDOMNode()).text())
+      .to.equal(
+        globalize.format(new Date, 'D'))
+  })
+
+  it('should accept footer format', function(){
+    var formatter = sinon.spy((dt, culture) => {
+      expect(dt).to.be.a(Date)
+      expect(culture).to.be.a('string').and.equal('en')
+      return 'test'
+    })
+
+    var picker = render(<BaseCalendar footer footerFormat={formatter} culture='en'/>)
+      , footer = findType(picker, Footer);
+
+    expect($(footer.getDOMNode()).text())
+      .to.equal('test')
+
+    expect(formatter.calledOnce).to.be.ok()
+  })
+
+  it('should navigate to footer date', () => {
+    var picker = render(<BaseCalendar footer value={new Date(2013, 5, 15)}/>)
+      , footer = findType(picker, Footer);
+
+    trigger.click(
+      findClass(footer, 'rw-btn').getDOMNode())
+
+    expect(
+      dates.eq(picker.state.currentDate, new Date(), 'day'))
+        .to.be.ok()
+  })
+
+  it('should constrain movement by min and max', () => {
     var date     = new Date(2014, 5, 15)
       , picker   = render(<BaseCalendar value={date} max={new Date(2014, 5, 25)}  min={new Date(2014, 5, 5)} onChange={()=>{}}/>)
       , header   = findType(picker, Header)
@@ -152,16 +201,12 @@ describe('Calendar', function(){
 
     trigger.click(rightBtn)
 
-    setTimeout(() => {
-      expect(picker.state.currentDate).to.eql(date)
+    expect(picker.state.currentDate).to.eql(date)
 
-      trigger.click(leftBtn)
+    trigger.click(leftBtn)
 
-      setTimeout(() => {
-        expect(picker.state.currentDate).to.eql(date)
-        done()
-      })
-    })
+    expect(picker.state.currentDate).to.eql(date)
+
   })
 
   it('should use passed in culture', function(){
@@ -172,7 +217,7 @@ describe('Calendar', function(){
       , headerBtn = findClass(picker, 'rw-btn-view').getDOMNode()
       , head = findTag(picker, 'thead').getDOMNode();
     
-    sinon.stub(DOM, 'animate', syncAnimate)
+    syncAnimate()
 
     expect($(headerBtn).text()).to.equal('junio 2014')
     expect($(head.children[0].firstChild).text()).to.equal('lu')
@@ -181,8 +226,6 @@ describe('Calendar', function(){
 
     expect($(findTag(picker, 'tbody').getDOMNode().children[0].firstChild).text())
       .to.equal('ene')
-
-    DOM.animate.restore()
   })
 
   it('should pass on format', function(){
@@ -193,7 +236,7 @@ describe('Calendar', function(){
           , (o, v) => o[v] = v)
       , calendar;
     
-    sinon.stub(DOM, 'animate', syncAnimate)
+    syncAnimate()
 
     calendar = render(<BaseCalendar {...formats} value={date} onChange={()=>{}} />)
 
@@ -211,13 +254,13 @@ describe('Calendar', function(){
     calendar.setProps({ initialView: 'century' })
 
     expect(findType(calendar, Century).props.decadeFormat).to.equal('decadeFormat')
-
-    DOM.animate.restore()
   })
 
 })
 
 
-function syncAnimate(node, properties, duration, easing, callback){
-  typeof easing === 'function' ? easing() : callback()
+function syncAnimate(){
+  return sinon.stub(DOM, 'animate', function(node, properties, duration, easing, callback){
+    typeof easing === 'function' ? easing() : callback()
+  })
 }

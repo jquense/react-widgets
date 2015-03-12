@@ -18,9 +18,10 @@ var React  = require('react')
   , controlledInput = require('./util/controlledInput');
 
 var viewEnum  = Object.keys(views).map( k => views[k] );
-var SHORT_FULL_FORMAT = (dt, culture) => `${dates.format(dt, 'd', culture)} ${dates.format(dt, 't', culture)}`;
 
 var propTypes = {
+
+    ...compat.type(Calendar).propTypes,
 
     //-- controlled props -----------
     value:          React.PropTypes.instanceOf(Date),
@@ -38,15 +39,6 @@ var propTypes = {
 
     format:         CustomPropTypes.localeFormat,
     editFormat:     CustomPropTypes.localeFormat,
-
-    headerFormat:   CustomPropTypes.localeFormat,
-
-    dayFormat:      CustomPropTypes.localeFormat,
-    dateFormat:     CustomPropTypes.localeFormat,
-    monthFormat:    CustomPropTypes.localeFormat,
-    yearFormat:     CustomPropTypes.localeFormat,
-    decadeFormat:   CustomPropTypes.localeFormat,
-    centuryFormat:  CustomPropTypes.localeFormat,
 
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
@@ -79,22 +71,13 @@ var propTypes = {
                       React.PropTypes.func
                     ]),
 
+
     messages:      React.PropTypes.shape({
-      moveBack:     React.PropTypes.string,
-      moveForward:  React.PropTypes.string, 
+      calendarButton: React.PropTypes.string, 
+      timeButton:     React.PropTypes.string, 
     })
   }
 
-function getFormat(props){
-  var cal  = props[popups.CALENDAR] != null ? props.calendar : true
-    , time = props[popups.TIME] != null ? props.time : true;
- 
-  return props.format 
-    ? props.format 
-    : (cal && time) || (!cal && !time)
-      ? 'f'
-      : cal ? 'd' : 't'
-}
 
 var DateTimePicker = React.createClass({
 
@@ -127,10 +110,12 @@ var DateTimePicker = React.createClass({
       time:             true,
       open:             false,
 
+      //calendar override
+      footer:           true,
+
       messages: {
         calendarButton: 'Select Date',
         timeButton:     'Select Time',
-        next:           'Next Date',
       }
     }
   },
@@ -168,6 +153,7 @@ var DateTimePicker = React.createClass({
 
           ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
         })}>
+
         <DateInput ref='valueInput'
           aria-activedescendant={ this.props.open
             ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
@@ -193,7 +179,8 @@ var DateTimePicker = React.createClass({
           
         { (this.props.calendar || this.props.time) &&
         <span className='rw-select'>
-          { this.props.calendar &&
+          { 
+            this.props.calendar &&
             <Btn tabIndex='-1'
               className='rw-btn-calendar'
               disabled={this.isDisabled() || this.isReadOnly()}
@@ -217,21 +204,22 @@ var DateTimePicker = React.createClass({
           dropUp={dropUp}
           open={ this.props.open === popups.TIME }
           onRequestClose={this.close}>
-            <div>
-              <Time ref="timePopup"
-                id={timeListID}
-                optID={timeOptID}
-                aria-hidden={ !this.props.open }
-                style={{ maxHeight: 200, height: 'auto' }}
-                value={value}
-                min={this.props.min}
-                max={this.props.max}
-                culture={this.props.culture}
-                onMove={this._scrollTo}
-                preserveDate={!!this.props.calendar}
-                itemComponent={this.props.timeComponent}
-                onSelect={this._maybeHandle(this._selectTime)}/>
-            </div>
+
+          <div>
+            <Time ref="timePopup"
+              id={timeListID}
+              optID={timeOptID}
+              aria-hidden={ !this.props.open }
+              style={{ maxHeight: 200, height: 'auto' }}
+              value={value}
+              min={this.props.min}
+              max={this.props.max}
+              culture={this.props.culture}
+              onMove={this._scrollTo}
+              preserveDate={!!this.props.calendar}
+              itemComponent={this.props.timeComponent}
+              onSelect={this._maybeHandle(this._selectTime)}/>
+          </div>
         </Popup>
         <Popup
           className='rw-calendar-popup'
@@ -392,6 +380,19 @@ module.exports = controlledInput.createControlledClass(
     DateTimePicker
   , { open: 'onToggle', value: 'onChange' });
 
+module.exports.BaseDateTimePicker = DateTimePicker
+
+function getFormat(props){
+  var cal  = props[popups.CALENDAR] != null ? props.calendar : true
+    , time = props[popups.TIME] != null ? props.time : true;
+ 
+  return props.format 
+    ? props.format 
+    : (cal && time) || (!cal && !time)
+      ? 'f'
+      : cal ? 'd' : 't'
+}
+
 function formatDate(date, format, culture){
   var val = ''
 
@@ -416,4 +417,3 @@ function dateOrNull(dt){
   return null
 }
 
-module.exports.BaseDateTimePicker = DateTimePicker

@@ -46,7 +46,7 @@ var VIEW_FORMATS  = {
 
 var propTypes = {
 
-  onChange:      React.PropTypes.func.isRequired,
+  onChange:      React.PropTypes.func,
   value:         React.PropTypes.instanceOf(Date),
 
   min:           React.PropTypes.instanceOf(Date),
@@ -70,6 +70,8 @@ var propTypes = {
   footer:        React.PropTypes.bool,
 
   headerFormat:  CustomPropTypes.localeFormat,
+  footerFormat:  CustomPropTypes.localeFormat,
+  
   dayFormat:     CustomPropTypes.localeFormat,
   dateFormat:    CustomPropTypes.localeFormat,
   monthFormat:   CustomPropTypes.localeFormat,
@@ -117,7 +119,7 @@ var Calendar = React.createClass({
       finalView:    'century',
 
       tabIndex:     '0',
-      footer:        true,
+      footer:        false,
 
       headerFormat:  dates.formats.MONTH_YEAR,
       footerFormat:  dates.formats.FOOTER,
@@ -219,6 +221,7 @@ var Calendar = React.createClass({
           <Footer 
             value={todaysDate}
             format={this.props.footerFormat}
+            culture={this.props.culture}
             disabled={ this.props.disabled || todayNotInRange}
             readOnly={this.props.readOnly}
             onClick={this._maybeHandle(this.select)}

@@ -21,6 +21,7 @@ var components = [
     ];
 
 describe('server rendering', function() {
+  this.timeout(5000)
 
   components.forEach(function(file){
 
