@@ -9,6 +9,7 @@
 
 var React = require('react')
   , $     = require('./util/dom')
+  , compat = require('./util/compat')
   , _     = require('./util/_');
 
 module.exports = React.createClass({
@@ -88,8 +89,8 @@ module.exports = React.createClass({
     var entering = this.entering
       , leaving  = this.leaving
       , first    = this.refs[key(entering) || key(leaving)]
-      , node     = this.getDOMNode()
-      , el       = first && first.getDOMNode();
+      , node     = compat.findDOMNode(this)
+      , el       = first && compat.findDOMNode(first);
 
     if( el )
       $.css(node, {
@@ -127,7 +128,7 @@ module.exports = React.createClass({
       return 
 
     if ( this.isMounted() )
-      $.css(this.getDOMNode(), { overflow: 'visible', height: '', width: '' })
+      $.css(compat.findDOMNode(this), { overflow: 'visible', height: '', width: '' })
 
     this.props.onAnimate() 
   }, 

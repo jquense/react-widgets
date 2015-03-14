@@ -1,5 +1,6 @@
 'use strict';
-var React = require('react');
+var React = require('react')
+  , compat = require('./util/compat');
 
 module.exports = React.createClass({
   
@@ -38,7 +39,7 @@ module.exports = React.createClass({
   },
 
   focus: function(){
-    this.getDOMNode().focus()
+    compat.findDOMNode(this).focus()
   }
 
 })

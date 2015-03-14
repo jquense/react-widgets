@@ -8,6 +8,7 @@ delete require.cache[require.resolve('../src/util/_')]
 var React   = require('react')
   , filters = require('../src/util/filter')
   , _       = require('../src/util/_')
+  , compat  = require('../src/util/compat')
   , propTypes = require('../src/util/propTypes')
   , validateList = require('../src/util/validateListInterface');
 

@@ -1,6 +1,7 @@
 'use strict';
 var React = require('react')
-  , caretPos = require('./util/caret');
+  , caretPos = require('./util/caret')
+  , compat = require('./util/compat');
 
 module.exports = React.createClass({
 
@@ -10,7 +11,7 @@ module.exports = React.createClass({
   },
 
   componentDidUpdate: function() {
-    var input = this.getDOMNode()
+    var input = compat.findDOMNode(this)
       , val = this.props.value;
 
     if ( this.isSuggesting() ){
@@ -50,11 +51,11 @@ module.exports = React.createClass({
   },
 
   accept: function(removeCaret){
-    var val = this.getDOMNode().value || ''
+    var val = compat.findDOMNode(this).value || ''
       , end = val.length;
 
     this._last = null
-    removeCaret && caretPos(this.getDOMNode(), end, end)
+    removeCaret && caretPos(compat.findDOMNode(this), end, end)
   },
 
   _change: function(e){
@@ -64,6 +65,6 @@ module.exports = React.createClass({
   },
 
   focus: function(){
-    this.getDOMNode().focus()
+    compat.findDOMNode(this).focus()
   }
 });

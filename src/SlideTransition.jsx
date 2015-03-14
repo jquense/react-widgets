@@ -2,6 +2,7 @@
 var React   = require('react')
   , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup')
   , _ = require('./util/_')
+  , compat = require('./util/compat')
   , $ = require('./util/dom');
 
 
@@ -13,7 +14,7 @@ var SlideChildGroup = React.createClass({
   },
 
   componentWillEnter: function(done) {
-    var node  = this.getDOMNode()
+    var node  = compat.findDOMNode(this)
       , width = $.width(node)
       , direction = this.props.direction;
 
@@ -36,7 +37,7 @@ var SlideChildGroup = React.createClass({
   },
 
   componentWillLeave: function(done) {
-    var node  = this.getDOMNode()
+    var node  = compat.findDOMNode(this)
       , width = $.width(node)
       , direction = this.props.direction;
 

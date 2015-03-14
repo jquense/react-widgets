@@ -2,6 +2,7 @@
 var React = require('react')
   , cx    = require('classnames')
   , _     = require('./util/_') //omit
+  , compat = require('./util/compat')
   , CustomPropTypes = require('./util/propTypes')
   , createUncontrolledWidget = require('uncontrollable')
   , directions = require('./util/constants').directions
@@ -182,7 +183,7 @@ var NumberPicker = React.createClass({
   _focus: function(focused, e){
 
     this.setTimeout('focus', () => {
-      var el = this.refs.input.getDOMNode()
+      var el = compat.findDOMNode(this.refs.input)
 
       focused && el.focus()
 

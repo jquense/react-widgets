@@ -1,6 +1,7 @@
 'use strict';
 var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
+  , compat = require('./util/compat')
   , cx = require('classnames')
   , _  = require('./util/_');
 
@@ -189,11 +190,11 @@ module.exports = React.createClass({
 
     if( !selected ) return 
 
-    this.notify('onMove', [ selected, this.getDOMNode() ])
+    this.notify('onMove', [ selected, compat.findDOMNode(this) ])
   },
 
   getItemDOMNode(item){
-    var list = this.getDOMNode()
+    var list = compat.findDOMNode(this)
       , groups = this.state.groups
       , idx = -1
       , itemIdx, child;

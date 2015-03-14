@@ -2,13 +2,13 @@
 var React           = require('react')
   , _               = require('./util/_')
   , cx              = require('classnames')
-  
-  , createUncontrolledWidget = require('uncontrollable')
+  , compat          = require('./util/compat')
   , CustomPropTypes = require('./util/propTypes')
   , Popup           = require('./Popup')
   , PlainList       = require('./List')
   , GroupableList   = require('./ListGroupable')
-  , validateList    = require('./util/validateListInterface');
+  , validateList    = require('./util/validateListInterface')
+  , createUncontrolledWidget = require('uncontrollable');
   
 
 var propTypes = {
@@ -153,12 +153,15 @@ var DropdownList = React.createClass({
               : this._dataText(valueItem)
           }
         </div>
-        <Popup {..._.pick(this.props, Object.keys(Popup.type.propTypes))}
+        <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
           onRequestClose={this.close}>
 
           <div>
             <List ref="list" 
-              {..._.pick(this.props, Object.keys(List.type.propTypes))}
+              {..._.pick(
+                  this.props
+                , Object.keys(compat.type(List).propTypes))
+              }
               optID={optID}
               aria-hidden={!this.props.open}
               selected={this.state.selectedItem}
@@ -175,7 +178,7 @@ var DropdownList = React.createClass({
 
     this.setTimeout('focus', () => {
 
-      if(focused) this.getDOMNode().focus()
+      if(focused) compat.findDOMNode(this).focus()
       else        this.close()
 
       if( focused !== this.state.focused){

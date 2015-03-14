@@ -73,10 +73,10 @@ describe('DateTimePicker', function(){
       , picker = render(<DateTimePicker time={false} calendar={false} onToggle={spy = sinon.spy()}/>);
     
     expect(() => findClass(picker, 'rw-btn-time')).to
-      .throwException(/Did not find exactly one match for class:rw-btn-time/)
+      .throwException(/Did not find exactly one match.+/)
 
     expect(() => findClass(picker, 'rw-btn-calendar')).to
-      .throwException(/Did not find exactly one match for class:rw-btn-calendar/)
+      .throwException(/Did not find exactly one match.+/)
 
     //make sure keyboard shortcuts don't work either
     trigger.keyDown(picker.getDOMNode(), { altKey: true })

@@ -5,6 +5,7 @@ var React      = require('react')
   , directions = require('./util/constants').directions
   , Btn        = require('./WidgetButton')
   , _          = require('./util/_')
+  , compat     = require('./util/compat')
   , CustomPropTypes = require('./util/propTypes');
 
 var opposite = {
@@ -84,7 +85,7 @@ module.exports = React.createClass({
   },
 
   focus: function(){
-    this.refs.table.getDOMNode().focus();
+    compat.findDOMNode(this.refs.table).focus();
   },
 
   move: function(date, direction){

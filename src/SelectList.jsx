@@ -2,7 +2,12 @@
 var React = require('react')
   , _  = require('./util/_')
   , cx = require('classnames')
+<<<<<<< HEAD
   , createUncontrolledWidget = require('uncontrollable')
+=======
+  , compat = require('./util/compat')
+  , controlledInput  = require('./util/controlledInput')
+>>>>>>> react-0.13
   , CustomPropTypes  = require('./util/propTypes')
   , PlainList        = require('./List')
   , GroupableList = require('./ListGroupable')
@@ -134,7 +139,10 @@ var SelectList = React.createClass({
           'rw-loading-mask':   this.props.busy
         })}>
         <List ref='list' 
-          {..._.pick(this.props, Object.keys(List.type.propTypes))}
+          {..._.pick(
+              this.props
+            , Object.keys(compat.type(List).propTypes))
+          }
           data={this._data()}
           focused={focusedItem}
           optID ={optID}
@@ -258,7 +266,7 @@ var SelectList = React.createClass({
   _focus: function(focused, e){
 
     this.setTimeout('focus', () => {
-      if( focused) this.getDOMNode().focus()
+      if( focused) compat.findDOMNode(this).focus()
       if( focused !== this.state.focused){
         this.setState({ focused: focused })
       }

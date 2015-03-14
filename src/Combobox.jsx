@@ -6,12 +6,12 @@ var React           = require('react')
   , Popup           = require('./Popup')
   , Btn             = require('./WidgetButton')
   , Input           = require('./ComboboxInput')
-
-  , createUncontrolledWidget = require('uncontrollable')
+  , compat          = require('./util/compat')
   , CustomPropTypes = require('./util/propTypes')
   , PlainList       = require('./List')
   , GroupableList   = require('./ListGroupable')
-  , validateList    = require('./util/validateListInterface');
+  , validateList    = require('./util/validateListInterface')
+  , createUncontrolledWidget = require('uncontrollable');
 
 var propTypes = {
       //-- controlled props -----------
@@ -199,11 +199,15 @@ var ComboBox = React.createClass({
           onChange={this._inputTyping}
           onKeyDown={this._inputKeyDown}/>
 
-        <Popup {..._.pick(this.props, Object.keys(Popup.type.propTypes))}
+        <Popup 
+          {..._.pick(
+              this.props
+            , Object.keys(compat.type(Popup).propTypes))
+          }
           onRequestClose={this.close}>
           <div>
             <List ref="list"
-              {..._.pick(this.props, Object.keys(List.type.propTypes))}
+              {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
               id={listID}
               optID={optID}
               aria-hidden={ !this.props.open }
@@ -318,7 +322,7 @@ var ComboBox = React.createClass({
     
     function select(item, fromList) {
       if(!item)
-        return self.change(self.refs.input.getDOMNode().value, false)
+        return self.change(compat.findDOMNode(self.refs.input).value, false)
 
       self.refs.input.accept(true); //removes caret
 

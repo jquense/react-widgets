@@ -105,13 +105,14 @@ var Calendar = React.createClass({
         <p>
           A formatter for the header button of the month view
         </p>
+
         <EditableExample codeText={
           require('../examples/prop')(widgetName, 'headerFormat', '"MMM yy"')}/>
-
         <PropHeader type='String | Function(Date? date)' default="'D'">footerFormat</PropHeader>
         <p>
           A formatter for the Calendar footer, formats Today's Date as a string.
         </p>
+
         <EditableExample codeText={require('../examples/prop')(
           widgetName, { footerFormat: "\"'today is:' dddd\"", footer: true })}/>
 

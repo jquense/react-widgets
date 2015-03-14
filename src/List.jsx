@@ -1,6 +1,7 @@
 'use strict';
 var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
+  , compat = require('./util/compat')
   , cx = require('classnames')
   , _  = require('./util/_');
 
@@ -104,7 +105,7 @@ module.exports = React.createClass({
   },
 
   _setScrollPosition: function(){
-    var list = this.getDOMNode()
+    var list = compat.findDOMNode(this)
       , idx  = this._data().indexOf(this.props.focused)
       , selected = list.children[idx];
 

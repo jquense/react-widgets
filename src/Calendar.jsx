@@ -276,7 +276,7 @@ var Calendar = React.createClass({
     this.setTimeout('focus', () => {
 
       if(focused) 
-        this.getDOMNode().focus()
+        compat.findDOMNode(this).focus()
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
