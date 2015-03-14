@@ -10,7 +10,9 @@ webpackConfig.externals = {
   'react/addons':  'window.React'
 }
 
+
 var SUPPORTED_VERSIONS = ["0.12.2", "0.13.0"];
+
 
 series(SUPPORTED_VERSIONS, function(version, idx, next){
   console.log('-------------------------------------------');

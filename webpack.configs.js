@@ -146,10 +146,7 @@ module.exports = {
 
     styleName: 'docs.css',
 
-    entry: {
-      app: './docs/components/docs.jsx',
-      vendor: ["babel/browser"],
-    },
+    entry: './docs/components/docs.jsx',
 
     output: {
       path: path.join(__dirname, './docs/public'),
@@ -161,11 +158,10 @@ module.exports = {
       'babel/browser': 'window.babel'
     },
 
-    loaders: [{ test: /\.json$/, loader: "json" }],
-
-    plugins: [
-      new webpack.optimize.CommonsChunkPlugin("babel", "babel-browser.js")
+    loaders: [
+      { test: /\.json$/, loader: "json" }
     ]
+
   }),
 
   docServer: makeConfig({

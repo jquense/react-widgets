@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "2.2.7",
+  "version": "2.3.0",
   "main": "dist/react-widgets.js",
   "description": "A set of input widgets for React",
   "main": "dist/react-widgets.js",
@@ -44,7 +44,8 @@
       "node_modules",
       "bower_components",
       "index.js",
-      "test.js",
+      "_test-versions.js",
+      "_test-bootstrap.js",
       "karma.conf.js",
       "karma.conf-ci.js",
       "webpack.configs.js",

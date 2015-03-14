@@ -2,12 +2,9 @@
 var React = require('react')
   , _  = require('./util/_')
   , cx = require('classnames')
-<<<<<<< HEAD
   , createUncontrolledWidget = require('uncontrollable')
-=======
   , compat = require('./util/compat')
-  , controlledInput  = require('./util/controlledInput')
->>>>>>> react-0.13
+
   , CustomPropTypes  = require('./util/propTypes')
   , PlainList        = require('./List')
   , GroupableList = require('./ListGroupable')

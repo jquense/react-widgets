@@ -13,6 +13,10 @@ var gulp    = require('gulp')
   , configs = require('./webpack.configs');
 
 
+gulp.task('dist-clean', function(cb){
+  del('./dist', cb);
+})
+
 gulp.task('lib-clean', function(cb){
   del('./lib', cb);
 })
@@ -46,10 +50,11 @@ gulp.task('lib-compile', [ 'lib-clean' ], function(){
 
 gulp.task('lib', [ 'lib-clean', 'lib-assets', 'lib-compile'])
 
-gulp.task('dist-assets', function(){
+gulp.task('dist-assets', ['dist-clean'], function(){
 
   return merge(
-    gulp.src('./src/less/*.css')
+    gulp.src('./src/less/react-widgets.less')
+      .pipe(less({ compress: true }))
       .pipe(gulp.dest('./dist/css')),
 
     gulp.src('./src/img/*')
@@ -60,7 +65,7 @@ gulp.task('dist-assets', function(){
   );
 })
 
-gulp.task('dist-build', [ 'lib' ], function(cb) {
+gulp.task('dist-build', function(cb) {
   del('./dist/*.js', function(){
      webpack(configs.browser, cb);
   });
@@ -73,7 +78,6 @@ gulp.task('test-build', function(cb) {
 })
 
 gulp.task('docs', function(cb) {
-  console.log(configs.docBuild.module.loaders[0])
   webpack(configs.docBuild, cb);
 })
 
