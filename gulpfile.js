@@ -12,13 +12,12 @@ var gulp    = require('gulp')
   , plumber = require('gulp-plumber')
   , configs = require('./webpack.configs');
 
-
 gulp.task('dist-clean', function(cb){
-  del('./dist', cb);
+  del('./dist/*', cb);
 })
 
 gulp.task('lib-clean', function(cb){
-  del('./lib', cb);
+  del('./lib/*', cb);
 })
 
 gulp.task('lib-assets', [ 'lib-clean' ], function(){
@@ -50,7 +49,7 @@ gulp.task('lib-compile', [ 'lib-clean' ], function(){
 
 gulp.task('lib', [ 'lib-clean', 'lib-assets', 'lib-compile'])
 
-gulp.task('dist-assets', ['dist-clean'], function(){
+gulp.task('dist-assets', function(){
 
   return merge(
     gulp.src('./src/less/react-widgets.less')
@@ -65,10 +64,9 @@ gulp.task('dist-assets', ['dist-clean'], function(){
   );
 })
 
-gulp.task('dist-build', function(cb) {
-  del('./dist/*.js', function(){
-     webpack(configs.browser, cb);
-  });
+gulp.task('dist-build', ['lib', 'dist-assets'], function(cb) {
+  webpack(configs.browser, cb);
+
 })
 
 gulp.task('test-build', function(cb) {
@@ -116,6 +114,4 @@ gulp.task('dev-docs', function(cb) {
   });
 })
 
-gulp.task('dist', ['dist-assets', 'dist-build'])
-
-gulp.task('release', [ 'lib', 'dist', 'docs']);
+gulp.task('release', [ 'lib', 'dist-build', 'docs']);

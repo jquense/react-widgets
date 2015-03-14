@@ -52,14 +52,12 @@
       "react"
     ]
   },
-  
   "dependencies": {
     "classnames": "^1.1.4",
     "date-arithmetic": "^2.0.0",
     "globalize": "~0.1.1",
     "uncontrollable": "^1.1.1"
   },
-
   "devDependencies": {
     "babel": "^4.7.2",
     "babel-loader": "^4.0.0",
@@ -98,14 +96,11 @@
     "mocha": "~1.21.4",
     "phantomjs": "~1.9.10",
     "raw-loader": "^0.5.1",
-
+    "react": "^0.12.2",
     "react-bootstrap": "^0.13.0",
     "react-hot-loader": "^1.2.0",
-
     "react-router": "^0.11.6",
     "scriptjs": "^2.5.7",
-    "react": "^0.12.2",
-
     "style-loader": "^0.7.0",
     "url-loader": "^0.5.5",
     "webpack": "^1.7.0",
