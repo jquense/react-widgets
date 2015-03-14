@@ -197,19 +197,13 @@ module.exports = {
 
     devtool: 'inline-source-map',
 
-    entry:'./test.js',
+    // entry:'./test.js',
 
-
-    output: {
-      path: __dirname,
-      filename: '_test.bundle.js'
-    },
-
-    externals: {
-      react:  'window.React',
-      'react/addons':  'window.React'
-    },
-
+    // output: {
+    //   path: __dirname,
+    //   filename: '_test.bundle.js'
+    // },
+    
     loaders: [
       { test: /sinon-chai/, loader: "imports?define=>false" }
     ]

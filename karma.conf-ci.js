@@ -56,7 +56,7 @@ module.exports = function(config) {
       './vendor/phantomjs-shim.js',
       './vendor/sinon-1.10.3.js',
       './vendor/jquery-1.11.2.min.js',
-      'test.js',
+      '_test-bootstrap.js',
     ],
 
     reporters: ['mocha','saucelabs'],
@@ -75,7 +75,7 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     preprocessors: {
-      'test.js': ['webpack']
+      '_test-bootstrap.js': ['webpack']
     },
 
     webpack: require('./webpack.configs').test,

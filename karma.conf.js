@@ -16,7 +16,7 @@ module.exports = function (config) {
       'https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.js',
       './vendor/sinon-1.10.3.js',
       './vendor/jquery-1.11.2.min.js',
-      'test.js',
+      '_test-bootstrap.js',
     ],
 
     reporters: ['mocha'],
@@ -31,7 +31,7 @@ module.exports = function (config) {
     browsers: [ 'PhantomJS'],
 
     preprocessors: {
-      'test.js': ['webpack']
+      '_test-bootstrap.js': ['webpack']
     },
 
     webpack: require('./webpack.configs').test,

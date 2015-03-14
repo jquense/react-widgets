@@ -1,7 +1,5 @@
 /* global it, describe, expect, sinon */
 'use strict';
-require('../vendor/phantomjs-shim')
-
 var React    = require('react/addons')
   , Dropdown = require('../src/DropdownList.jsx');
 
