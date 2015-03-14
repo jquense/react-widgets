@@ -3,9 +3,7 @@
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
-var List = require('../src/ListGroupable.jsx')
-  , _ = require('lodash')
-  , chance = new (require('chance'));
+var List = require('../src/ListGroupable.jsx');
 
 //console.log(sinon)
 var TestUtils = React.addons.TestUtils
@@ -29,7 +27,7 @@ describe('Groupable List', function(){
   ];
 
   it('should set initial values', function(){
-    var list = render(<List data={data} onChange={_.noop} groupBy='last' />);
+    var list = render(<List data={data} onChange={()=>{}} groupBy='last' />);
 
     //children with the headers
     expect( list.getDOMNode().children.length).to.be(6 + 4);
@@ -114,14 +112,3 @@ describe('Groupable List', function(){
     expect(list.last()).to.be(data[5]);
   })
 })
-
-// function generateList(len){
-//   var arr = new Array(len)
-
-//   for(var i = 0; i < arr.length; i++){
-//     var first = chance.first(), last = chance.last()
-//     arr[i] = { id: i + 1, name: `${first} ${last}`, first, surname: last }
-//   }
-
-//   return arr
-// }

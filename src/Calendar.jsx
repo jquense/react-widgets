@@ -44,6 +44,8 @@ var VIEW_FORMATS  = {
       [views.CENTURY]: 'decadeFormat'
     }
 
+
+
 var propTypes = {
 
   onChange:      React.PropTypes.func,
@@ -53,7 +55,15 @@ var propTypes = {
   max:           React.PropTypes.instanceOf(Date),
 
   initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
-  finalView:     React.PropTypes.oneOf(VIEW_OPTIONS),
+
+  finalView:     function (props, propname, componentName){
+                    var err = React.PropTypes.oneOf(VIEW_OPTIONS)(props, propname, componentName)
+
+                    if ( err) return err
+                    if ( VIEW_OPTIONS.indexOf(props[propname]) < VIEW_OPTIONS.indexOf(props.initialView) )
+                      return new Error(`The \`${propname}\` prop: \`${props[propname]}\` cannot be 'lower' than the \`initialView\` 
+                        prop. This creates a range that cannot be rendered.`.replace(/\n\t/g, ''))
+                 },
 
   disabled:      React.PropTypes.oneOfType([
                    React.PropTypes.bool,
@@ -64,7 +74,7 @@ var propTypes = {
                    React.PropTypes.bool,
                    React.PropTypes.oneOf(['readOnly'])
                  ]),
-
+  
   culture:       React.PropTypes.string,
   
   footer:        React.PropTypes.bool,

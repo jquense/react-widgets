@@ -74,11 +74,11 @@ var Calendar = React.createClass({
         <p>
           The maximum date that the Calendar can navigate to.
         </p>
-        <PropHeader type='Boolean' default='true'>footer</PropHeader>
+        <PropHeader type='Boolean' default='false'>footer</PropHeader>
         <p>
           Show or hide the Calendar footer.
         </p>
-        <EditableExample codeText={require('../examples/prop')(widgetName, 'footer', 'false')}/>
+        <EditableExample codeText={require('../examples/prop')(widgetName, 'footer', 'true')}/>
 
         <PropHeader type='Enum' default='"month"'>initialView</PropHeader>
         <p>
@@ -100,14 +100,13 @@ var Calendar = React.createClass({
           <code>"month"</code> <code>"year"</code> <code>"decade"</code> <code>"century"</code>
         </p>
         <EditableExample codeText={require('../examples/prop')(widgetName, 'finalView', '"year"')}/>
-        
-
+      
         <PropHeader type='String | Function(Date? date)' default="'MMMM yyyy'">headerFormat</PropHeader>
         <p>
           A formatter for the header button of the month view
         </p>
         <EditableExample codeText={
-          require('../examples/prop')(widgetName, 'headerFormat', '"D"')}/>
+          require('../examples/prop')(widgetName, 'headerFormat', '"MMM yy"')}/>
 
         <PropHeader type='String | Function(Date? date)' default="'D'">footerFormat</PropHeader>
         <p>

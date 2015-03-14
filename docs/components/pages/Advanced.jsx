@@ -1,8 +1,22 @@
 'use strict';
-var React = require('react');
+var React = require('react')
+  , scriptjs = require('scriptjs');
 var EditableExample = require('../EditableExample')
 
 var AdvancedPage = React.createClass({
+
+  componentDidMount() {
+    if( !this.state.momentLoaded)
+      scriptjs('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js', () =>{
+        this.setState({ momentLoaded: true })
+      })
+  },
+
+  getInitialState() {
+    return {
+      momentLoaded: !!window.moment
+    };
+  },
 
   render(){
 
@@ -23,8 +37,11 @@ var AdvancedPage = React.createClass({
           parsing function, and date format to the DateTimePicker.
           `}
         </p>
-        <EditableExample codeText={require('../examples/advanced/defaultDatePicker')()}/>
-
+        { this.state.momentLoaded 
+          ? <EditableExample codeText={require('../examples/advanced/defaultDatePicker')()}/>
+          : <div><i className='rw-i rw-loading'/><em>{"Loading..."}</em></div>
+        }
+      
         <h3>Changing behavior for fun and profit</h3>
         <p>{`
           The power of the react approach to input state is that it makes changing component behavior trivial. Since 

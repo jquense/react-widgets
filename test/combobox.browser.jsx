@@ -3,8 +3,7 @@
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
-var ComboBox = require('../src/Combobox.jsx')
-  , _ = require('lodash');
+var ComboBox = require('../src/Combobox.jsx');
 
 var TestUtils = React.addons.TestUtils
   , render = TestUtils.renderIntoDocument
@@ -22,7 +21,7 @@ describe('ComboBox', function(){
 
   it('should set initial values', function(){
     var dropdown = render(
-          <ComboBox value={'hello'} onChange={_.noop} />);
+          <ComboBox value={'hello'} onChange={()=>{}} />);
 
     expect( findClass(dropdown, 'rw-input').getDOMNode().value).to.be('hello');
   })

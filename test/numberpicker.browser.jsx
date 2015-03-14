@@ -3,8 +3,7 @@
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
-var NumberPicker = require('../src/NumberPicker.jsx')
-  , _ = require('lodash');
+var NumberPicker = require('../src/NumberPicker.jsx');
 
 //console.log(sinon)
 var TestUtils = React.addons.TestUtils
@@ -21,7 +20,7 @@ describe('Numberpicker', function(){
 
 
   it('should set values correctly', function(done){
-    var picker = render(<NumberPicker value={15} format='D' onChange={_.noop} />)
+    var picker = render(<NumberPicker value={15} format='D' onChange={()=>{}} />)
       , input  = findClass(picker, 'rw-input').getDOMNode();
 
     expect(input.value).to.be('15');
@@ -46,7 +45,7 @@ describe('Numberpicker', function(){
   })
 
   it('should pass NAME down', function(){
-    var picker = render(<NumberPicker value={15} format='D' onChange={_.noop} name='hello'/>)
+    var picker = render(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)
       , input  = findClass(picker, 'rw-input').getDOMNode();
 
     expect(input.hasAttribute('name')).to.be(true)

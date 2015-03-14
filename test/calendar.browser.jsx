@@ -13,7 +13,8 @@ var React = require('react/addons')
   , Century = require('../src/Century.jsx')
   , DOM = require('../src/util/dom')
   , dates = require('../src/util/dates')
-  , globalize = require('globalize');
+  , globalize = require('globalize')
+  , transform = require('../src/util/_').transform;
 
 
 var TestUtils = React.addons.TestUtils
@@ -231,7 +232,7 @@ describe('Calendar', () => {
   it('should pass on format', function(){
     var date    = new Date(2014, 5, 15)
       , first   = () => $(calendar.getDOMNode()).find('td:first')
-      , formats = _.transform(
+      , formats = transform(
             ['dayFormat', 'dateFormat', 'monthFormat', 'yearFormat', 'decadeFormat' ]
           , (o, v) => o[v] = v)
       , calendar;

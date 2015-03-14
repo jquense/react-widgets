@@ -3,8 +3,7 @@
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
-var List = require('../src/List.jsx')
-  , _ = require('lodash');
+var List = require('../src/List.jsx');
 
 //console.log(sinon)
 var TestUtils = React.addons.TestUtils
@@ -28,7 +27,7 @@ describe('List', function(){
 
   it('should set initial values', function(){
     var list = render(
-          <List data={data} onChange={_.noop} />);
+          <List data={data} onChange={()=>{}} />);
 
     expect( list.getDOMNode().children.length).to.be(5);
   })

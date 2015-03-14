@@ -113,7 +113,7 @@ var App = React.createClass({
               }}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker footerFormat={'dd'}/>
+            <NumberPicker format={'d{2}'}/>
           </section>
         </div>
       </div>

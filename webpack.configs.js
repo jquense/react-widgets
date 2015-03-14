@@ -1,41 +1,115 @@
 var path = require('path')
   , webpack = require('webpack')
+  , ExtractTextPlugin = require("extract-text-webpack-plugin")
   , pkg = require('./package.json');
 
-var compress = new webpack.optimize.UglifyJsPlugin();
+function makeConfig(options){
+  var entry = options.entry
+    , plugins = options.plugins || []
 
-var prodDefine = new webpack.DefinePlugin({
-      "process.env": { 
-        "NODE_ENV": JSON.stringify('production') }
-    });
+  var loaders = [
+    { test: /\.css$/,  loader: options.extractStyles 
+        ? ExtractTextPlugin.extract("style-loader", "css-loader") 
+        : "style-loader!css-loader" },
 
-var banner = new webpack.BannerPlugin( 
-      'v' + JSON.stringify(pkg.version) + ' | (c) ' + (new Date).getFullYear() + ' Jason Quense | '
-      + 'https://github.com/jquense/react-widgets/blob/master/License.txt'
-      , { entryOnly : true });
+    { test: /\.less$/, loader: options.extractStyles  
+        ? ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")  
+        : "style-loader!css-loader!less-loader" },
 
+    { test: /\.gif$/, loader: "url-loader?mimetype=image/png" },
+    { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+    { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader?name=[name].[ext]" },
 
-var loaders = [
-  { test: /\.css$/,  loader: "style-loader!css-loader" },
-  { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-  { test: /\.gif$/, loader: "url-loader?mimetype=image/png" },
-  { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
-  { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
-  { 
-    test: /\.jsx$|\.js$/, 
-    loader: 'babel-loader', 
-    exclude: /node_modules/,
-    query: pkg.babel
+    { test: /\.jsx$|\.js$/, loader: 'babel-loader', exclude: /node_modules/, query: pkg.babel }
+  ];
+
+  if (options.hot){
+    loaders.splice(loaders.length - 1,0, 
+      { test: /\.jsx$|\.js$/, loader: 'react-hot-loader', exclude: /node_modules/ })
+
+    plugins.push(
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoErrorsPlugin())
+
+    entry = [
+      'webpack-dev-server/client?http://localhost:8080',
+      'webpack/hot/only-dev-server',
+      entry
+    ]
   }
-];
+
+  if (options.loaders)
+    loaders = loaders.concat(options.loaders)
+
+
+  if (options.minimize) 
+    plugins.push(
+      new webpack.optimize.UglifyJsPlugin(),
+      new webpack.optimize.DedupePlugin(),
+      new webpack.DefinePlugin({
+        '__VERSION__': JSON.stringify(pkg.version),
+        "process.env": { NODE_ENV: JSON.stringify("production") }
+      }),
+      new webpack.NoErrorsPlugin())
+  else
+    plugins.push(
+      new webpack.DefinePlugin({
+        '__VERSION__': JSON.stringify(pkg.version)
+      }));
+  
+  if (options.extractStyles)
+    plugins.push(
+      new ExtractTextPlugin(options.styleName || "styles.css", {
+          allChunks: true
+      }))
+
+  if (options.banner) {
+    plugins.push(
+      new webpack.BannerPlugin( 
+        'v' + JSON.stringify(pkg.version) + ' | (c) ' + (new Date).getFullYear() + ' Jason Quense | '
+        + 'https://github.com/jquense/react-widgets/blob/master/License.txt'
+        , { entryOnly : true }))
+  }
+
+  return {
+    cache: true,
+
+    devtool: options.devtool,
+
+    entry: entry,
+
+    output: options.output,
+
+    externals: options.externals,
+
+    resolve: {
+      extensions: ['', '.js', '.jsx']
+    },
+
+    module: {
+      loaders: loaders
+    },
+
+    plugins: plugins,
+
+    node: {
+      Buffer: false
+    }
+  }
+}
+
 
 module.exports = {
 
   babel: pkg.babel,
 
-  browser: {
+  browser: makeConfig({
 
-    entry: './index.js',
+    banner: true,
+
+    minimize: true,
+
+    entry: './lib/index.js',
 
     output: {
       path: path.join(__dirname, './dist'),
@@ -47,103 +121,97 @@ module.exports = {
     externals: {
       globalize: 'Globalize',
       react:  'React'
-    },
+    }
+  }),
 
-    plugins: [
-      prodDefine, banner, compress
-    ],
-  },
+  dev: makeConfig({
 
-  dev: {
+    hot: true,
+
     devtool: 'source-map',
-    
-    cache: true,
 
-    entry: [
-      'webpack-dev-server/client?http://localhost:8080',
-      'webpack/hot/only-dev-server',
-      './dev/dev.jsx'
-    ],
+    entry: './dev/dev.jsx',
 
     output: {
       filename: 'bundle.js',
       path: __dirname
-    },
-
-    plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin()
-    ],
-
-    resolve: {
-      extensions: ['', '.js', '.jsx']
-    },
-
-    module: {
-      loaders: loadersWithHotModule(),
     }
-  },
+  }),
 
-  docs: {
-    devtool: 'source-map',
+  docBuild: makeConfig({
 
-    entry: [
-      'webpack-dev-server/client?http://localhost:8081',
-      'webpack/hot/only-dev-server',
-      './docs/components/docs.jsx'
-    ],
+    minimize: true,
+
+    extractStyles: true,
+
+    styleName: 'docs.css',
+
+    entry: {
+      app: './docs/components/docs.jsx',
+      vendor: ["babel/browser"],
+    },
 
     output: {
-      path: path.join(__dirname, './docs'),
+      path: path.join(__dirname, './docs/public'),
       filename: 'docs.js'
     },
 
-    resolve: {
-      extensions: ['', '.js', '.jsx']
+    externals: {
+      react:  'window.React',
+      'babel/browser': 'window.babel'
+    },
+
+    loaders: [{ test: /\.json$/, loader: "json" }],
+
+    plugins: [
+      new webpack.optimize.CommonsChunkPlugin("babel", "babel-browser.js")
+    ]
+  }),
+
+  docServer: makeConfig({
+
+    devtool: 'source-map',
+
+    hot: true,
+
+    extractStyles: true,
+
+    styleName: 'docs.css',
+
+    entry:'./docs/components/docs.jsx',
+
+    output: {
+      path: path.join(__dirname, './docs/public'),
+      filename: 'docs.js'
     },
 
     externals: {
-      react:  'window.React'
+      react: 'window.React',
+      'babel/browser': 'window.babel'
     },
 
-    module: {
-      loaders: loadersWithHotModule().concat([
-          { test: /\.json$/, loader: "json" }
-        ])
-    },
+    loaders: [{ test: /\.json$/, loader: "json" }],
+  }),
 
-    plugins: [
-      banner,
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin(),
-      new webpack.DefinePlugin({
-        '__VERSION__': JSON.stringify(pkg.version),
-        "process.env": {
-          "NODE_ENV": JSON.stringify('development') }
-      })
-    ],
-  },
+  test: makeConfig({
 
-  test: {
     devtool: 'inline-source-map',
-    cache: true,
-    resolve: {
-      extensions: ['', '.js', '.jsx']
-    },
-    module: {
-      loaders: loaders.concat([
-        { test: /sinon-chai/, loader: "imports?define=>false" }
-      ])
-    },
-    //plugins: [ ProdDefine ]
-  }
-}
 
-function loadersWithHotModule(){
-  return loaders.reduce(function (current, next, idx){
-      if(next.loader === 'babel-loader')
-        current.push({ test: /\.jsx$|\.js$/, loader: 'react-hot-loader', exclude: /node_modules/ }) 
+    entry:'./test.js',
 
-      return current.concat(next);
-  }, [])
+
+    output: {
+      path: __dirname,
+      filename: '_test.bundle.js'
+    },
+
+    externals: {
+      react:  'window.React',
+      'react/addons':  'window.React'
+    },
+
+    loaders: [
+      { test: /sinon-chai/, loader: "imports?define=>false" }
+    ]
+  })
 }

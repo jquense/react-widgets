@@ -3,8 +3,7 @@
 require('../vendor/phantomjs-shim')
 
 var React    = require('react/addons')
-  , Dropdown = require('../src/DropdownList.jsx')
-  , _        = require('lodash');
+  , Dropdown = require('../src/DropdownList.jsx');
 
 //console.log(sinon)
 var TestUtils = React.addons.TestUtils
@@ -26,7 +25,7 @@ describe('DROPDOWNS', function(){
 
   it('should set initial values', function(){
     var dropdown = render(
-          <Dropdown value={'hello'} onChange={_.noop} />);
+          <Dropdown value={'hello'} onChange={()=>{}} />);
 
     expect($(findClass(dropdown, 'rw-input').getDOMNode()).text()).to.be('hello');
   })

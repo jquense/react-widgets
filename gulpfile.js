@@ -66,8 +66,15 @@ gulp.task('dist-build', [ 'lib' ], function(cb) {
   });
 })
 
-gulp.task('docs', ['lib', 'assets'], function(cb) {
-  webpack(assign({}, configs.docs, { devtool: '' }), cb);
+gulp.task('test-build', function(cb) {
+  del('./_test.bundle.js', function(){
+     webpack(configs.test, cb);
+  });
+})
+
+gulp.task('docs', function(cb) {
+  console.log(configs.docBuild.module.loaders[0])
+  webpack(configs.docBuild, cb);
 })
 
 gulp.task('dev', function(cb) {
@@ -90,13 +97,13 @@ gulp.task('dev-docs', function(cb) {
   
   del('./docs/docs.js', function(){
 
-      new WebpackServer(webpack(configs.docs), { 
+      new WebpackServer(webpack(configs.docServer), { 
         publicPath: "/docs", 
         hot: true, 
         hotComponent: true,
         stats: { colors: true } 
       })
-      .listen(8081, "localhost", function (err, result) {
+      .listen(8080, "localhost", function (err, result) {
         if (err) return console.log(err);
         
         console.log('Listening at localhost:8080');

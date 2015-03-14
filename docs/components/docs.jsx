@@ -21,6 +21,10 @@ var React = require('react')
   , Migration      = require('./pages/Migration.jsx')
   , Advanced       = require('./pages/Advanced.jsx');
 
+
+require('../vendor/codemirror.css')
+require('../vendor/neo.css')
+require('../vendor/styles.css')
 require('../../src/less/react-widgets.less')
 require('../docs.css')
 
@@ -76,7 +80,7 @@ var Docs = React.createClass({
                   <li><Link to='datetime-picker'>{'Date & Time Picker'}</Link></li>
                   <li><Link to='migration'>Migrating to 2.x</Link></li>
 
-                  <li><Link to='advanced'>Advanced</Link></li>
+                  {/* <li><Link to='advanced'>Advanced</Link></li> */}
                 </ul>
               </nav>
             </Affix>

@@ -4,8 +4,7 @@ require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
 var Select = require('../src/Multiselect.jsx')
-  , TagList = require('../src/MultiselectTagList.jsx')
-  , _ = require('lodash');
+  , TagList = require('../src/MultiselectTagList.jsx');
 
 var TestUtils = React.addons.TestUtils
   , render = TestUtils.renderIntoDocument
@@ -24,7 +23,7 @@ describe('Multiselect', function(){
       ];
 
   it('should set initial values', function(){
-    var select = render(<Select value={['hello']} onChange={_.noop} />)
+    var select = render(<Select value={['hello']} onChange={()=>{}} />)
       , tags   = findType(select, TagList).getDOMNode();
 
     expect( $(tags).find('li:first-child > span').text() ).to.be('hello');
@@ -244,7 +243,7 @@ describe('Multiselect', function(){
 
 
   it('should show create tag correctly', function(){
-    var ms = render(<Select searchTerm="custom tag" onCreate={_.noop} data={dataList} onSearch={()=>{}}/>);
+    var ms = render(<Select searchTerm="custom tag" onCreate={()=>{}} data={dataList} onSearch={()=>{}}/>);
 
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.not.throwException()

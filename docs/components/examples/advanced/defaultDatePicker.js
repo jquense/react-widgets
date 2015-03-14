@@ -6,7 +6,7 @@ var code =
 `
 var MomentDateTimePicker = React.createClass({
 
-  proppTypes: {
+  propTypes: {
     value: function(props, name){
       if( !moment.isMoment(props[name]))
         return new Error(\`\$\{name\} must be a moment.js date instance\`)
@@ -32,7 +32,7 @@ var MomentDateTimePicker = React.createClass({
         /* convert the value to a normal date */
         value={value ? value.toDate() : null} 
         /* convert back to a Moment instance */
-        onChange={(date, str) => onChange && onChange(moment(date), str) }
+        onChange={(date, str) => onChange(moment(date), str) }
         format={formatter} 
         parse={parser}/>
     )
