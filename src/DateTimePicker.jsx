@@ -329,8 +329,8 @@ var DateTimePicker = React.createClass({
     var format = getFormat(this.props, true)
       , formats = [];
 
-    if ( this.props.parse === 'function' )
-      return this.props.parse(string, v)
+    if ( typeof this.props.parse === 'function' )
+      return this.props.parse(string, this.props.culture)
 
     if ( typeof format !== 'function')
       formats.push(format)
