@@ -336,7 +336,7 @@ var DateTimePicker = React.createClass({
       formats.push(format)
 
     if (this.props.parse)
-      formats = formats.concat(props.parse)
+      formats = formats.concat(this.props.parse)
 
     invariant(formats.length, 
       'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
