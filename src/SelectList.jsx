@@ -212,13 +212,14 @@ var SelectList = React.createClass({
     }
 
     function move(dir, item){
-      var stop = dir === 'next' ? list.last() : list.first()
+      var isDisabled = item => self.isDisabledItem(item) || self.isReadOnlyItem(item)
+        , stop = dir === 'next' ? list.last() : list.first()
         , next = list[dir](item);
       
-      while( next !== stop && self.isDisabledItem(next) ) 
+      while( next !== stop && isDisabled(next)) 
         next = list[dir](next)
 
-      return self.isDisabledItem(next) ? item : next
+      return isDisabled(next) ? item  : next
     }
   },
 
