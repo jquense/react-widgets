@@ -2,6 +2,7 @@
 var React = require('react')
   , dates = require('./util/dates')
   , List = require('./List')
+  , compat  = require('./util/compat')
   , CustomPropTypes  = require('./util/propTypes')
   , _ = require('./util/_') // omit
 
@@ -62,8 +63,15 @@ module.exports = React.createClass({
     var times = this.state.dates
       , date  = this._closestDate(times, this.props.value);
 
+
+    
+    function select(){
+
+      console.log('render')
+    }
+
     return (
-      <List {..._.omit(this.props, 'value')}
+      <List {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
         ref="list"
         data={times}
         textField='label'

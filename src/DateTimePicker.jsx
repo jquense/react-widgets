@@ -1,6 +1,7 @@
 'use strict';
 var React  = require('react')
   , invariant = require('react/lib/invariant')
+  , activeElement = require('react/lib/getActiveElement')
   , cx     = require('classnames')
   , compat = require('./util/compat')
   , _      = require('./util/_') //pick, omit, has
@@ -203,7 +204,8 @@ var DateTimePicker = React.createClass({
         <Popup 
           dropUp={dropUp}
           open={ this.props.open === popups.TIME }
-          onRequestClose={this.close}>
+          onRequestClose={this.close}
+          onOpening={() => this.refs.timePopup.forceUpdate()}>
 
           <div>
             <Time ref="timePopup"
@@ -221,7 +223,7 @@ var DateTimePicker = React.createClass({
               onSelect={this._maybeHandle(this._selectTime)}/>
           </div>
         </Popup>
-        <Popup
+        <Popup 
           className='rw-calendar-popup'
           dropUp={dropUp}
           open={ this.props.open === popups.CALENDAR}
@@ -254,6 +256,8 @@ var DateTimePicker = React.createClass({
       else if (!dates.eq(date, this.props.value))
         change(date, str)
     }
+
+    //this._focus(true)
   },
 
   _keyDown: function(e){
@@ -285,17 +289,17 @@ var DateTimePicker = React.createClass({
   },
 
   //timeout prevents transitions from breaking focus
-  _focus: function(focused, e){
-    var input =  this.refs.valueInput;
+  _focus: function(focused, isOnFocusEvent, e){
+    var inputFocused = activeElement() === this.refs.valueInput.getDOMNode();
 
     this.setTimeout('focus', () => {
-
-      if(focused) compat.findDOMNode(input).focus()
-      else        this.close()
+      //var el = this.refs.valueInput
+      if( focused ) this.refs.valueInput.focus()
+      else          this.close()
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
-        this.setState({ focused: focused })
+        this.setState({ focused })
       }
     })
   },

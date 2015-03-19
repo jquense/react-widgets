@@ -204,6 +204,7 @@ var ComboBox = React.createClass({
               this.props
             , Object.keys(compat.type(Popup).propTypes))
           }
+          onOpening={() => this.refs.list.forceUpdate()}
           onRequestClose={this.close}>
           <div>
             <List ref="list"

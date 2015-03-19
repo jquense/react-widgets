@@ -18,9 +18,9 @@ var { ModalTrigger, Modal } = require('react-bootstrap')
 
 
 
-var g = require('globalize')
+// var g = require('globalize')
 var culture = require('globalize/lib/cultures/globalize.culture.es');
- g.culture('es');
+// g.culture('fi');
 
 var ListItem = React.createClass({
 
@@ -62,7 +62,7 @@ var App = React.createClass({
       comboboxValue: 1,
       //comboboxValue: list[0],
       selectValues: [3,4,5,2],
-      calDate: new Date,
+      calDate: new Date(),
       numberValue: 1,
       open: false
     }
@@ -113,9 +113,7 @@ var App = React.createClass({
               }}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker style={{ width: 100 }}/>
-
-            <DatePicker defaultValue={new Date()} max={new Date(2015,2,20,9,30)} min={new Date(2015,2,15,12)}/>
+            <DatePicker defaultValue={new Date()}/>
           </section>
         </div>
       </div>
