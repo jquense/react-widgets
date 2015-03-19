@@ -74,8 +74,8 @@ module.exports = React.createClass({
                 <Btn
                   tabIndex='-1'
                   onClick={this.props.onChange.bind(null, day)}
-                  aria-selected={selected}
-                  aria-disabled={this.props.disabled}
+                  aria-pressed={selected}
+                  aria-disabled={this.props.disabled || undefined}
                   disabled={this.props.disabled}
                   className={cx({
                     'rw-off-range':      dates.month(day) !== dates.month(this.state.focusedDate),

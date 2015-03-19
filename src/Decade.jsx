@@ -71,9 +71,9 @@ module.exports = React.createClass({
           : (<td key={i} role='gridcell'>
               <Btn onClick={this.props.onChange.bind(null, date)} tabIndex='-1'
                 id={ focused ? id : undefined }
-                aria-selected={selected}
+                aria-pressed={selected}
                 aria-disabled={this.props.disabled}
-                disabled={this.props.disabled}
+                disabled={this.props.disabled || undefined}
                 className={cx({
                   'rw-off-range':      !inDecade(date, this.props.value),
                   'rw-state-focus':    focused,

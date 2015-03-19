@@ -156,6 +156,7 @@ var DateTimePicker = React.createClass({
         })}>
 
         <DateInput ref='valueInput'
+          aria-labelledby={this.props['aria-labelledby']}
           aria-activedescendant={ this.props.open
             ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
             : undefined }
