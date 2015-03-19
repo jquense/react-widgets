@@ -18,9 +18,9 @@ var { ModalTrigger, Modal } = require('react-bootstrap')
 
 
 
-// var g = require('globalize')
+var g = require('globalize')
 var culture = require('globalize/lib/cultures/globalize.culture.es');
-// g.culture('fi');
+ g.culture('es');
 
 var ListItem = React.createClass({
 
@@ -113,7 +113,9 @@ var App = React.createClass({
               }}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            <NumberPicker format={'d{2}'}/>
+            <DatePicker style={{ width: 100 }}/>
+
+            <DatePicker defaultValue={new Date()} max={new Date(2015,2,20,9,30)} min={new Date(2015,2,15,12)}/>
           </section>
         </div>
       </div>

@@ -172,7 +172,7 @@ module.exports = {
 
     extractStyles: true,
 
-    styleName: 'docs.css',
+    styleName: 'public/docs.css',
 
     entry:'./docs/components/docs.jsx',
 

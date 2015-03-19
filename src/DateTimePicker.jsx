@@ -227,7 +227,7 @@ var DateTimePicker = React.createClass({
           open={ this.props.open === popups.CALENDAR}
           duration={this.props.duration}
           onRequestClose={this.close}>
-
+          
           <Calendar {...calProps }
             ref="calPopup"
             tabIndex='-1'
