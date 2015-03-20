@@ -56,8 +56,8 @@ module.exports = React.createClass({
   },
 
   componentDidUpdate(prevProps){
-    if ( prevProps.focused !== this.props.focused)
-      this._setScrollPosition()
+    //if ( prevProps.focused !== this.props.focused)
+    this._setScrollPosition()
   },
 
   render(){
@@ -108,7 +108,7 @@ module.exports = React.createClass({
     var list = compat.findDOMNode(this)
       , idx  = this._data().indexOf(this.props.focused)
       , selected = list.children[idx];
-
+      
     if( !selected ) return 
 
     this.notify('onMove', [ selected, list ])

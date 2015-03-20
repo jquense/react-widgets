@@ -4,7 +4,7 @@ var gulp    = require('gulp')
   , merge   = require('merge-stream')
   , webpack = require('webpack')
   , WebpackServer = require("webpack-dev-server")
-
+  , concat = require('gulp-concat')
   , less = require('gulp-less')
   , assign = require('lodash/object/assign')
   , rename = require('gulp-rename')
@@ -53,7 +53,7 @@ gulp.task('dist-assets', function(){
 
   return merge(
     gulp.src('./src/less/react-widgets.less')
-      .pipe(less({ compress: true }))
+      .pipe(less({ compress: false }))
       .pipe(gulp.dest('./dist/css')),
 
     gulp.src('./src/img/*')
@@ -112,6 +112,20 @@ gulp.task('dev-docs', function(cb) {
         cb()
       });
   });
+})
+
+
+gulp.task('less-test', function(){
+
+  return gulp.src([
+      './src/less/variables.less', 
+      './src/less/mixins.less',
+      './src/less/bootstrap-theme.less',
+      './src/less/core.less',
+    ])
+    .pipe(concat('core.less'))
+    .pipe(less({ compress: false }))
+    .pipe(gulp.dest('./dist/css'))
 })
 
 gulp.task('release', [ 'lib', 'dist-build', 'docs']);

@@ -2,6 +2,7 @@
 var React = require('react')
   , dates = require('./util/dates')
   , List = require('./List')
+  , compat  = require('./util/compat')
   , CustomPropTypes  = require('./util/propTypes')
   , _ = require('./util/_') // omit
 
@@ -30,6 +31,8 @@ module.exports = React.createClass({
       step:   30,
       format: 't',
       onSelect: function(){},
+      min: new Date(1900,  0,  1),
+      max: new Date(2099, 11, 31),
       preserveDate: true,
       delay: 300
     }
@@ -60,8 +63,15 @@ module.exports = React.createClass({
     var times = this.state.dates
       , date  = this._closestDate(times, this.props.value);
 
+
+    
+    function select(){
+
+      console.log('render')
+    }
+
     return (
-      <List {..._.omit(this.props, 'value')}
+      <List {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
         ref="list"
         data={times}
         textField='label'
@@ -101,7 +111,6 @@ module.exports = React.createClass({
       , start  = values.min
       , startDay = dates.date(start);
 
-    // debugger;
     while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
       i++
       times.push({ date: start, label: dates.format(start, props.format, props.culture) })
@@ -131,10 +140,12 @@ module.exports = React.createClass({
       }
     }
 
+    start = dates.today()
+    end = dates.tomorrow()
     //date parts are equal
     return {
-      min: dates.eq(value, min, 'day') ? min : dates.today(),
-      max: dates.eq(value, max, 'day') ? min : dates.tomorrow()
+      min: dates.eq(value, min, 'day') ? dates.merge(start, min) : start,
+      max: dates.eq(value, max, 'day') ? dates.merge(start, max) : end
     }
 
   },

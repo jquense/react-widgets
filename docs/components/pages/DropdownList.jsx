@@ -33,6 +33,7 @@ var DropdownList = React.createClass({
 
               <MenuItem>open</MenuItem>
               <MenuItem>onToggle</MenuItem>
+              <MenuItem>step</MenuItem>
 
               <MenuItem>busy</MenuItem>
               <MenuItem>duration</MenuItem>
@@ -135,6 +136,11 @@ var DropdownList = React.createClass({
           when the <code>open</code> prop is {'set'} otherwise the widget open buttons won't work.
         </p>
 
+        <PropHeader type='Number' default="false">step</PropHeader>
+        <p>
+          `The amount of minutes between each entry in the time list.`
+        </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, { step: 90, open: 'time'})}/>
 
         <PropHeader type='Boolean' default="false">busy</PropHeader>
         <p>

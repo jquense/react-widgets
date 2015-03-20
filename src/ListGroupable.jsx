@@ -79,8 +79,8 @@ module.exports = React.createClass({
   },
 
   componentDidUpdate(prevProps){
-    if ( prevProps.focused !== this.props.focused)
-      this._setScrollPosition()
+    //if ( prevProps.focused !== this.props.focused)
+    this._setScrollPosition()
   },
 
   render: function(){

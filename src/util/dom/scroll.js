@@ -43,7 +43,7 @@ module.exports = function scrollTo( selected, scrollParent ) {
               : listScrollTop
 
     var id = raf(() => scrollTop(list, listScrollTop))
-
+    
     return () => raf.cancel(id)
 }
 

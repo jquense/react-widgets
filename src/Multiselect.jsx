@@ -186,6 +186,7 @@ var Multiselect = React.createClass({
             maxLength={this.props.maxLength}/>
         </div>
         <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
+          onOpening={()=> this.refs.list.forceUpdate()}
           onRequestClose={this.close}>
 
           <div>

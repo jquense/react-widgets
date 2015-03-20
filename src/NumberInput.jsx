@@ -79,7 +79,7 @@ module.exports = React.createClass({
     if(!hasMin && isNull)
       return this.props.onChange(null)
 
-    if(this.isValid(number) && number !== this.props.value)
+    if(this.isValid(number) && number !== this.props.value && !this.isAtDecimal(number, val))
       return this.props.onChange(number)
 
     //console.log(val !== 0 && !val)
@@ -87,15 +87,27 @@ module.exports = React.createClass({
   },
 
   _finish(e){
-    var number = this.props.parse(
-            this.state.stringValue
-          , this.props.culture);
+    var str = this.state.stringValue
+      , number = this.props.parse(str, this.props.culture);
 
     // if number is below the min
-    // we need to flush low values eventually, onBlur means i'm done inputing
-    if(!isNaN(number) && number < this.props.min) {
+    // we need to flush low values and decimal stops, onBlur means i'm done inputing
+    if(!isNaN(number) && (number < this.props.min || this.isAtDecimal(number, str)) ) {
       this.props.onChange(number)
     }
+  },
+
+  isAtDecimal(num, str){
+    var next;
+
+    if ( str.length <= 1) return false
+
+    next = this.props.parse(
+      str.substr(0, str.length - 1), this.props.culture)
+
+    return typeof next === 'number' 
+        && !isNaN(next)
+        && next === num
   },
 
   isValid(num) {

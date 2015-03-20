@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "2.3.0",
+  "version": "2.3.2",
   "main": "dist/react-widgets.js",
   "description": "A set of input widgets for React",
   "main": "dist/react-widgets.js",

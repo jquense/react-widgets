@@ -27,6 +27,7 @@ var DateTimePicker = React.createClass({
               <MenuItem>time</MenuItem>
               <MenuItem>min</MenuItem>
               <MenuItem>max</MenuItem>
+              <MenuItem>step</MenuItem>
               <MenuItem>format</MenuItem>
               
               <MenuItem>parse</MenuItem>
@@ -123,6 +124,12 @@ var DateTimePicker = React.createClass({
           </a>
         </p>
         <EditableExample codeText={require('../examples/prop')(widgetName, 'format', '"MMM dd yyyy"')}/>
+
+        <PropHeader type='Number' default="false">step</PropHeader>
+        <p>
+          The amount of minutes between each entry in the time list.
+        </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, { step: 90 })}/>
 
         <PropHeader type='[Function(String str), Array<String>]'>parse</PropHeader>
         <p>

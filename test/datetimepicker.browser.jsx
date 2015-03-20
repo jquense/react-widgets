@@ -4,6 +4,7 @@ require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
 var DateTimePicker = require('../src/DateTimePicker.jsx')
+  , TimeList = require('../src/TimeList.jsx')
   , Calendar = require('../src/Calendar.jsx').BaseCalendar
   , Globalize = require('globalize');
 
@@ -194,4 +195,66 @@ describe('DateTimePicker', function(){
     trigger.keyDown(picker.getDOMNode(), { key: 'ArrowDown' })
     expect(timelist[timelist.length-1].className).to.match(/\brw-state-focus\b/)
   })
+
+
+  describe('TimeList', function(){
+
+    it('should render max correctly', ()=>{
+      var date = new Date(2014,0,16, 9,30)
+        , inst = render(<TimeList value={new Date(2014,0,16, 8)} max={date} preserveDate/>)
+
+      var time = inst.state.dates[inst.state.dates.length - 1]
+
+      expect(time.date.getHours()).to.eql(9)
+      expect(time.date.getMinutes()).to.eql(30)
+      expect(time.date.getSeconds()).to.eql(0)
+
+      inst = render(<TimeList value={new Date(2014,0,15, 8)} max={date} preserveDate/>)
+
+      var time = inst.state.dates[inst.state.dates.length - 1]
+
+      expect(time.date.getHours()).to.eql(23)
+      expect(time.date.getMinutes()).to.eql(30)
+      expect(time.date.getSeconds()).to.eql(0)
+    })
+
+    it('should render min correctly', ()=>{
+      var date = new Date(2014,0, 16, 9,30)
+        , inst = render(<TimeList value={new Date(2014,0,16, 12)} min={date} preserveDate/>)
+
+      var time = inst.state.dates[0]
+
+      expect(time.date.getHours()).to.eql(9)
+      expect(time.date.getMinutes()).to.eql(30)
+      expect(time.date.getSeconds()).to.eql(0)
+
+      inst = render(<TimeList value={new Date(2014,0,18, 8)} min={date} preserveDate/>)
+
+      var time = inst.state.dates[0]
+
+      expect(time.date.getHours()).to.eql(0)
+      expect(time.date.getMinutes()).to.eql(0)
+      expect(time.date.getSeconds()).to.eql(0)
+    })
+
+
+    it('should set the step property', ()=>{
+      var date = new Date(2014,0, 16, 9,30)
+        , inst = render(<DateTimePicker step={60}/>);
+
+      var dates = findType(inst, TimeList).state.dates
+
+      expect(dates[0].date.getHours()).to.eql(0)
+      expect(dates[1].date.getHours()).to.eql(1)
+      expect(dates[2].date.getHours()).to.eql(2)
+
+      inst = render(<DateTimePicker step={120}/>)
+      dates = findType(inst, TimeList).state.dates
+
+      expect(dates[0].date.getHours()).to.eql(0)
+      expect(dates[1].date.getHours()).to.eql(2)
+      expect(dates[2].date.getHours()).to.eql(4)
+    })
+  })
+
 })

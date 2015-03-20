@@ -213,7 +213,8 @@ var Calendar = React.createClass({
           direction={this.state.slideDirection}
           onAnimate={() => this._focus(true)}>
 
-          <View {...viewProps}
+          <View {...viewProps} 
+            tabIndex='-1'
             ref='currentView'
             key={key}
             id={id}

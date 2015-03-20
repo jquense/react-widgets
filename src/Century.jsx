@@ -71,9 +71,9 @@ module.exports = React.createClass({
               <Btn onClick={this.props.onChange.bind(null, d)}
                 tabIndex='-1'
                 id={ focused ? id : undefined }
-                aria-selected={selected}
+                aria-pressed={selected}
                 aria-disabled={this.props.disabled}
-                disabled={this.props.disabled}
+                disabled={this.props.disabled || undefined}
                 className={cx({
                   'rw-off-range':       !inCentury(date, this.props.value),
                   'rw-state-focus':     focused,

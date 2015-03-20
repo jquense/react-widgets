@@ -62,7 +62,7 @@ var App = React.createClass({
       comboboxValue: 1,
       //comboboxValue: list[0],
       selectValues: [3,4,5,2],
-      calDate: new Date,
+      calDate: new Date(),
       numberValue: 1,
       open: false
     }
@@ -113,7 +113,7 @@ var App = React.createClass({
               }}/>
           </section>
           <section className="example" style={{ marginBottom: 20 }}>
-            <NumberPicker format={'d{2}'}/>
+            <DatePicker defaultValue={new Date()}/>
           </section>
         </div>
       </div>

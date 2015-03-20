@@ -214,7 +214,7 @@ describe('Calendar', () => {
     require('globalize/lib/cultures/globalize.culture.es')
 
     var date   = new Date(2014, 5, 15)
-      , picker = render(<BaseCalendar value={date} culture='es'  onChange={()=>{}}/>)
+      , picker = render(<BaseCalendar value={date} culture='es' onChange={()=>{}}/>)
       , headerBtn = findClass(picker, 'rw-btn-view').getDOMNode()
       , head = findTag(picker, 'thead').getDOMNode();
     
