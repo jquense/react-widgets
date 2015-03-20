@@ -7,7 +7,7 @@ var React = require('react/addons')
 var DropdownList = require('../src/DropdownList.jsx')
 var Select = require('../src/Multiselect.jsx')
 var Calendar = require('../src/Calendar.jsx')
-var DatePicker = require('../src/DateTimepicker.jsx')
+var DatePicker = require('../src/DateTimePicker.jsx')
 var NumberPicker = require('../src/NumberPicker.jsx')
 var ComboBox = require('../src/Combobox.jsx')
 var SelectList = require('../src/SelectList.jsx')
@@ -102,16 +102,6 @@ var App = React.createClass({
     return (
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
-          <section className="example" style={{ marginBottom: 20 }}>
-            <Calendar
-              value={ this.state.calValue }
-              min={new Date(2014, 9, 15)}
-              culture='es'
-              onChange={change.bind(null, 'calValue')}
-              messages={{
-                dateFormat: str => 'hi'
-              }}/>
-          </section>
           <section className="example" style={{ marginBottom: 20 }}>
             <DatePicker defaultValue={new Date()}/>
           </section>

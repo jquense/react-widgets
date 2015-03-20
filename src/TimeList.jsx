@@ -52,11 +52,13 @@ module.exports = React.createClass({
     var data = this._dates(nextProps)
       , focusedItem = this._closestDate(data, this.props.value);
 
-    if ( nextProps.value !== this.props.value)
+    if ( !dates.eq(nextProps.value, this.props.value, 'minutes')){
       this.setState({ 
         focusedItem: focusedItem || data[0],
         dates: data
       })
+    }
+      
   },
 
   render: function(){
