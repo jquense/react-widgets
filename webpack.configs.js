@@ -72,7 +72,7 @@ function makeConfig(options){
   }
 
   return {
-    cache: false,
+    cache: true,
 
     devtool: options.devtool,
 

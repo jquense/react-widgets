@@ -13,7 +13,6 @@ module.exports = function (config) {
 
     files: [
       './vendor/phantomjs-shim.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.js',
       './vendor/sinon-1.10.3.js',
       './vendor/jquery-1.11.2.min.js',
       '_test-bootstrap.js',

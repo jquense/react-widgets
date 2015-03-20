@@ -108,8 +108,7 @@ module.exports = React.createClass({
     var list = compat.findDOMNode(this)
       , idx  = this._data().indexOf(this.props.focused)
       , selected = list.children[idx];
-
-    console.log('scroll')
+      
     if( !selected ) return 
 
     this.notify('onMove', [ selected, list ])

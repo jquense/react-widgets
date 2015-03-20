@@ -41,8 +41,10 @@ var dates = module.exports = _.assign(dateMath, {
   //-------------------------------------
 
   shortDay: function(dayOfTheWeek){
-    var culture = dates.culture(arguments[1]);
-    var names = shortNames[culture] || (shortNames[culture] = dates.shortDaysOfWeek(culture));
+    var culture = dates.culture(arguments[1])
+      , name = typeof culture === 'string' ? culture : culture.name;
+
+    var names = shortNames[name] || (shortNames[name] = dates.shortDaysOfWeek(culture));
 
     return names[dayOfTheWeek];
   },
