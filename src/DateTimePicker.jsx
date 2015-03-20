@@ -215,6 +215,7 @@ var DateTimePicker = React.createClass({
               aria-hidden={ !this.props.open }
               style={{ maxHeight: 200, height: 'auto' }}
               value={value}
+              step={this.props.step}
               min={this.props.min}
               max={this.props.max}
               culture={this.props.culture}

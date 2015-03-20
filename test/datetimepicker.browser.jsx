@@ -197,7 +197,7 @@ describe('DateTimePicker', function(){
   })
 
 
-  describe.only('TimeList', function(){
+  describe('TimeList', function(){
 
     it('should render max correctly', ()=>{
       var date = new Date(2014,0,16, 9,30)
@@ -235,6 +235,25 @@ describe('DateTimePicker', function(){
       expect(time.date.getHours()).to.eql(0)
       expect(time.date.getMinutes()).to.eql(0)
       expect(time.date.getSeconds()).to.eql(0)
+    })
+
+
+    it('should set the step property', ()=>{
+      var date = new Date(2014,0, 16, 9,30)
+        , inst = render(<DateTimePicker step={60}/>);
+
+      var dates = findType(inst, TimeList).state.dates
+
+      expect(dates[0].date.getHours()).to.eql(0)
+      expect(dates[1].date.getHours()).to.eql(1)
+      expect(dates[2].date.getHours()).to.eql(2)
+
+      inst = render(<DateTimePicker step={120}/>)
+      dates = findType(inst, TimeList).state.dates
+
+      expect(dates[0].date.getHours()).to.eql(0)
+      expect(dates[1].date.getHours()).to.eql(2)
+      expect(dates[2].date.getHours()).to.eql(4)
     })
   })
 
