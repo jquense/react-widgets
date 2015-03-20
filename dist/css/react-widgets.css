@@ -386,6 +386,9 @@ ul.rw-list.rw-list-grouped > li.rw-list-option,
   background-color: transparent;
   padding-top: 0;
   padding-bottom: 0;
+  padding-right: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .rw-dropdownlist > .rw-select,
 .rw-dropdownlist > .rw-select.rw-rtl {
@@ -608,6 +611,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option,
   border-width: 0;
   line-height: normal;
   width: auto;
+  max-width: 100%;
 }
 .rw-multiselect-wrapper > .rw-input::-moz-placeholder {
   color: #999999;

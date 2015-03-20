@@ -108,8 +108,7 @@
   }
 }
 
-ul.rw-list,
-ul.rw-selectlist {
+ul.rw-list {
   .list-unstyled();
   padding: 5px 0;
   overflow: auto;
@@ -311,8 +310,11 @@ ul.rw-list {
 
   > .rw-input {
     background-color:   transparent;
-    padding-top: 0;
+    padding-top:    0;
     padding-bottom: 0;
+    padding-right:  0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   > .rw-select,
