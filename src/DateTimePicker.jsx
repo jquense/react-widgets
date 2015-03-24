@@ -289,11 +289,6 @@ var DateTimePicker = React.createClass({
 
   //timeout prevents transitions from breaking focus
   _focus: function(focused, e){
-    var inputFocused = activeElement() === this.refs.valueInput.getDOMNode();
-
-    // if ( arguments.length === 2)
-    //   e = isFocus, isFocus = null;
-
     this.setTimeout('focus', () => {
       if( !focused )
         this.close()

@@ -50,27 +50,22 @@ module.exports = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     var data = this._dates(nextProps)
-      , focusedItem = this._closestDate(data, this.props.value);
+      , focusedItem = this._closestDate(data, nextProps.value)
+      , valChanged  = !dates.eq(nextProps.value, this.props.value, 'minutes')
+      , minChanged  = !dates.eq(nextProps.min, this.props.min, 'minutes')
+      , maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes');
 
-    if ( !dates.eq(nextProps.value, this.props.value, 'minutes')){
+    if ( valChanged || minChanged || maxChanged){
       this.setState({ 
         focusedItem: focusedItem || data[0],
         dates: data
       })
-    }
-      
+    } 
   },
 
   render: function(){
     var times = this.state.dates
       , date  = this._closestDate(times, this.props.value);
-
-
-    
-    function select(){
-
-      console.log('render')
-    }
 
     return (
       <List {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
@@ -182,6 +177,11 @@ module.exports = React.createClass({
         this.setState({ focusedItem: item })
       })
     }
+  },
+
+  scrollTo(){
+    this.refs.list.move 
+      && this.refs.list.move()
   },
 
   search: function(character, cb){
