@@ -1,6 +1,7 @@
 'use strict';
 var React = require('react');
 var EditableExample = require('../EditableExample')
+var { Link } = require('react-router')
 
 var GettingStarted = React.createClass({
 
@@ -78,6 +79,11 @@ var GettingStarted = React.createClass({
               used for date and number localization. Requires a 0.x.x version (not the upcoming 1.0.0). 
             </li>
           </ul>
+          <p>
+            You need to ensure that your app or library only includes one instance of Globalize. In that sense it is a peer dependency 
+            of react-widgets. However since peer dependencies cannot be optional, and your use of globalize is optional, it is not included as one. 
+            see <Link to='/getting-started/configuration'>the section below</Link> for more info.
+          </p>
           <strong>
             Note: As of verison <code>2.3.0</code> you can completely swap out the Globalize dependency for any localization 
             solution you wish through widget format and parse props.
@@ -134,6 +140,37 @@ var GettingStarted = React.createClass({
             </li>
           </ul>
         </p>
+
+        <h2 id='/getting-started/configuration' className='prop-header'>Configuration</h2>
+        <p>
+          There are a few configuration options designed to give both flexibility and increase ease of use. To set an option you can either use 
+          the exported <code>configure</code> (<code>require('react-widgets').configure</code>) name space or require 
+          it directly: <code>require('react-widgets/lib/configure')</code>.
+        </p>
+        <h4>Globalize</h4>
+        <p>
+          Peer Dependencies can be a pain, and can't be optional, so we don't do use them. This means you will need to ensure that only one 
+          instance is included in your app at a time. If you are using Browserify or Webpack, you can make use of their configuration options 
+          to ensure this. You can also use <code>npm dedupe</code> to ensure only one copy is included, 
+          or you can explicitly define the Globalize instance that the widgets should use.
+        </p>
+        <pre>
+          <code className='js'>
+          {`configure.setGlobalizeInstance(window.globalize)`}
+          </code>
+        </pre>
+
+        <h4>Animation</h4>
+        <p>
+          By default, react-widgets uses CSS animations for everything. While this works great on modern browsers older IE does not support them. 
+          If you want to swap out the animation method for these cases you can. The built in method mirrors the jQuery animate API closely so it 
+          and easily be swapped out for jQuery.
+        </p>
+        <pre>
+          <code className='js'>
+          {`configure.setAnimate((element, ...animationArgs) => $(el).animate(...animationArgs))`}
+          </code>
+        </pre>
       </section>
     );
   }

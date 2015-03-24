@@ -10,6 +10,8 @@ var React   = require('react')
   , _       = require('../src/util/_')
   , compat  = require('../src/util/compat')
   , propTypes = require('../src/util/propTypes')
+  , config  = require('../src/util/configuration')
+  , configure  = require('../src/configure')
   , validateList = require('../src/util/validateListInterface');
 
 
@@ -144,5 +146,22 @@ describe('when using custom PropTypes', function(){
     props.type = true
     expect(
       propTypes.elementType(props, 'type', 'component')).to.be.an(Error)
+  })
+})
+
+describe.only('when configuring dependencies', function(){
+
+  it('should use the instances provided', function(){
+    var globalize = {}
+      , animate = ()=>{};
+
+    expect(config.globalize).to.not.equal(globalize)
+    expect(config.animate).to.not.equal(animate)
+
+    configure.setGlobalizeInstance(globalize)
+    configure.setAnimate(animate)
+
+    expect(config.globalize).to.equal(globalize)
+    expect(config.animate).to.equal(animate)
   })
 })

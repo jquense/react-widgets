@@ -1,7 +1,7 @@
 "use strict";
 
 var dateMath = require('date-arithmetic')
-  , globalize = require('globalize')
+  , config = require('./configuration')
   , _ = require('./_'); //extend
 
 var shortNames = {};
@@ -11,8 +11,8 @@ var dates = module.exports = _.assign(dateMath, {
   // looking forward towards the 1.0 release
   culture: function(culture){
     return culture
-      ? globalize.findClosestCulture(culture)
-      : globalize.culture()
+      ? config.globalize.findClosestCulture(culture)
+      : config.globalize.culture()
   },
 
   startOfWeek: function(culture){
@@ -28,14 +28,14 @@ var dates = module.exports = _.assign(dateMath, {
     if ( typeof format === 'function')
       return format(date, culture)
 
-    return globalize.parseDate(date, format, culture)
+    return config.globalize.parseDate(date, format, culture)
   },
 
   format: function(date, format, culture){
     if ( typeof format === 'function')
       return format(date, culture)
 
-    return globalize.format(date, format, culture)
+    return config.globalize.format(date, format, culture)
   },
   
   //-------------------------------------

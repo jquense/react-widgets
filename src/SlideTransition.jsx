@@ -3,7 +3,8 @@ var React   = require('react')
   , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup')
   , _ = require('./util/_')
   , compat = require('./util/compat')
-  , $ = require('./util/dom');
+  , $ = require('./util/dom')
+  , animate = require('./util/configuration').animate;
 
 
 var SlideChildGroup = React.createClass({
@@ -24,7 +25,7 @@ var SlideChildGroup = React.createClass({
     
     $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
 
-    $.animate(node, { left: 0 }, this.props.duration, () => {
+    animate(node, { left: 0 }, this.props.duration, () => {
 
         $.css(node, { 
           position:  this.ORGINAL_POSITION, 
@@ -47,7 +48,7 @@ var SlideChildGroup = React.createClass({
 
     $.css(node, { position: 'absolute', top: 0, left: 0})
 
-    $.animate(node, { left: width + 'px' }, this.props.duration, () => {
+    animate(node, { left: width + 'px' }, this.props.duration, () => {
         $.css(node, { 
           position: this.ORGINAL_POSITION, 
           overflow: 'hidden'

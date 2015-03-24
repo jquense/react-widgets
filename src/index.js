@@ -13,6 +13,8 @@ module.exports = {
   Multiselect:      require('./Multiselect'),
   SelectList:       require('./SelectList'),
 
+  configure:        require('./configure'),
+  
   utils: {
     ReplaceTransitionGroup: require('./ReplaceTransitionGroup'),
     SlideTransition:        require('./SlideTransition'),
