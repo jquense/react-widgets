@@ -144,7 +144,7 @@ var GettingStarted = React.createClass({
         <h2 id='/getting-started/configuration' className='prop-header'>Configuration</h2>
         <p>
           There are a few configuration options designed to give both flexibility and increase ease of use. To set an option you can either use 
-          the exported <code>configure</code> (<code>require('react-widgets').configure</code>) name space or require 
+          the exported <code>configure</code> (<code>require('react-widgets').configure</code>) namespace or require 
           it directly: <code>require('react-widgets/lib/configure')</code>.
         </p>
         <h4>Globalize</h4>
