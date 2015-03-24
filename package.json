@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "description": "A set of input widgets for React",
   "main": "lib/index.js",
   "author": {
