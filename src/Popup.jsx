@@ -1,7 +1,7 @@
 'use strict';
 var React  = require('react')
   , $ = require('./util/dom')
-  , animate = require('./util/configuration').animate
+  , config = require('./util/configuration')
   , cn = require('classnames')
   , compat = require('./util/compat');
 
@@ -101,7 +101,7 @@ module.exports = React.createClass({
     anim.className += ' rw-popup-animating'
     el.style.position = 'absolute'
 
-    animate(el
+    config.animate(el
       , { top: 0 }
       , self.props.duration
       , 'ease'
@@ -133,7 +133,7 @@ module.exports = React.createClass({
     anim.className += ' rw-popup-animating'
     el.style.position = 'absolute'
 
-    animate(el
+    config.animate(el
       , { top: this.props.dropUp ? '100%' : '-100%' }
       , dur === undefined ? this.props.duration : dur
       , 'ease'

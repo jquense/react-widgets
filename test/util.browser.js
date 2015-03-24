@@ -149,7 +149,7 @@ describe('when using custom PropTypes', function(){
   })
 })
 
-describe.only('when configuring dependencies', function(){
+describe('when configuring dependencies', function(){
 
   it('should use the instances provided', function(){
     var globalize = {}
