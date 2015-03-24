@@ -1,4 +1,16 @@
 
+var invariant = require('react/lib/invariant')
+
+if ("production" !== process.env.NODE_ENV) {
+  [
+    Array.prototype.some,
+    Array.prototype.filter,
+    Array.prototype.reduce,
+  ].forEach(method => {
+    if ( !method ) throw new Error(
+      'One or more ES5 features is not available to ReactWidgets: http://jquense.github.io/react-widgets/docs/#/getting-started/browser' )
+  })
+}
 
 module.exports = {
 
