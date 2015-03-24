@@ -26,13 +26,17 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      textValue: formatDate(
+     var text = formatDate(
             nextProps.value
           , nextProps.editing && nextProps.editFormat 
               ? nextProps.editFormat 
               : nextProps.format
           , nextProps.culture)
+
+    this.startValue = text
+
+    this.setState({
+      textValue: text
     })
   },
 
@@ -44,7 +48,7 @@ module.exports = React.createClass({
               : this.props.format
           , this.props.culture)
 
-    this.lastValue = text
+    this.startValue = text
 
     return {
       textValue: text
@@ -71,13 +75,17 @@ module.exports = React.createClass({
 
   _change: function(e){
     this.setState({ textValue: e.target.value });
+    this._needsFlush = true
   },
 
   _blur: function(e){
     var val = e.target.value;
 
-    this.props.onChange(
-      this.props.parse(val), val);
+    if ( this._needsFlush ){
+      this._needsFlush = false
+      this.props.onChange(
+        this.props.parse(val), val);
+    }
   },
 
   focus: function(){

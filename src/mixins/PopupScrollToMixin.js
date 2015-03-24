@@ -3,15 +3,25 @@ var scrollTo = require('../util/dom/scroll')
 
 module.exports = {
 
-  _scrollTo(selected, list) {
-    var handler = this.props.onMove; 
+  _scrollTo(selected, list, focused) {
+    var state   = this._scrollState || (this._scrollState = {})
+      , handler = this.props.onMove
+      , lastVisible = state.visible
+      , lastItem    = state.focused
+      , shown, changed; 
 
-    if ( this.props.open){
+    state.visible = !(!list.offsetWidth || !list.offsetHeight)
+    state.focused = focused
+
+    changed = lastItem !== focused
+    shown   = state.visible && !lastVisible
+
+    if ( shown || (state.visible && changed) ){
       if ( handler ) 
-        handler(selected, list)
+        handler(selected, list, focused)
       else {
-        this._scrollCancel && this._scrollCancel()
-        this._scrollCancel = scrollTo(selected, list)
+        state.scrollCancel && state.scrollCancel()
+        state.scrollCancel = scrollTo(selected, list)
       }
     }
   },

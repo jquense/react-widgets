@@ -69,6 +69,7 @@ var Docs = React.createClass({
                       <li><Link to='/getting-started/browser'>Older Browser Support</Link></li>
                       <li><Link to='/getting-started/access'>Accessibility</Link></li>
                       <li><Link to='/getting-started/style'>Styling</Link></li>
+                      <li><Link to='/getting-started/configuration'>Configuration</Link></li>
                     </ul>
                   </li>
                   <li><Link to='dropdown-list'>Dropdown List</Link></li>

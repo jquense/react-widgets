@@ -11,7 +11,7 @@ var React = require('react/addons')
   , Year = require('../src/Year.jsx')
   , Decade = require('../src/Decade.jsx')
   , Century = require('../src/Century.jsx')
-  , DOM = require('../src/util/dom')
+  , config = require('../src/util/configuration')
   , dates = require('../src/util/dates')
   , globalize = require('globalize')
   , transform = require('../src/util/_').transform;
@@ -27,8 +27,8 @@ var TestUtils = React.addons.TestUtils
 describe('Calendar', () => {
 
   afterEach(()=> {
-    DOM.animate.restore && 
-      DOM.animate.restore()
+    config.animate.restore && 
+      config.animate.restore()
   })
 
   it('should set Initial View', function(){
@@ -261,7 +261,8 @@ describe('Calendar', () => {
 
 
 function syncAnimate(){
-  return sinon.stub(DOM, 'animate', function(node, properties, duration, easing, callback){
+
+  return sinon.stub(config, 'animate', function(node, properties, duration, easing, callback){
     typeof easing === 'function' ? easing() : callback()
   })
 }

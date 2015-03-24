@@ -94,10 +94,12 @@ var SelectList = React.createClass({
           render as a list of radio buttons, and checkboxes when <code>true</code>.
         </p>
 
-        <PropHeader type='Function(HTMLElement)'>onMove</PropHeader>
+        <PropHeader type='Function(HTMLElement list, HTMLElement focusedNode, Any focusedItem)'>onMove</PropHeader>
         <p>
           A handler called when focus shifts on the {widgetName}. Internally this is used to ensure the focused item is in view.
-          If you want to define your own "scrollTo" behavior or just disable the default one specify an <code>onMove</code> handler.
+          If you want to define your own "scrollTo" behavior or just disable the default one specify an <code>onMove</code> handler. 
+          The handler is called with the relevant DOM nodes needed to implement scroll behavior: the list element, 
+          the element that is currently focused, and a focused value.
         </p>
 
         <PropHeader type='Boolean' default="false">busy</PropHeader>

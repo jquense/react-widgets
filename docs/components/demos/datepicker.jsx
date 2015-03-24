@@ -17,6 +17,10 @@ module.exports = React.createClass({
   render: function(){
     var props;
 
+    var format = this.state.time && this.state.calendar
+      ? 'MM/dd/yyyy h:mm tt'
+      : this.state.time ? 't' : 'd'
+
     props = {
       format: this.state.format,
       max: this.state.max || undefined,
@@ -104,16 +108,16 @@ module.exports = React.createClass({
               <div className='form-group col-xs-6'>
                 <label className='control-label'>min</label>
                 <RW.DateTimePicker 
-                    time={false}
-                    format='MMM dd, yyyy'
+                    time={this.state.time} calendar={this.state.calendar}
+                    format={format}
                     value={this.state.min} 
                     onChange={this._set.bind(null, 'min')}/>
               </div>
               <div className='form-group col-xs-6'>
                 <label className='control-label'>max</label>
                 <RW.DateTimePicker 
-                    time={false}
-                    format='MMM dd yyyy'
+                    time={this.state.time} calendar={this.state.calendar}
+                    format={format}
                     value={this.state.max} 
                     onChange={this._set.bind(null, 'max')}/>
               </div>

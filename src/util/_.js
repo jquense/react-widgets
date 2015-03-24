@@ -110,11 +110,16 @@ function has(o, k){
 function shallowEqual(objA, objB) {
   var key;
 
-  for (key in objA) if ( has(objA, key) && (!has(objB, key) || objA[key] !== objB[key])) 
+  for (key in objA) if ( has(objA, key) && (!has(objB, key) || !eql(objA[key], objB[key]))) 
     return false;
      
   for (key in objB) if ( has(objB, key) && !has(objA, key)) 
     return false;
     
   return true;
+}
+
+function eql(a, b){
+
+  return a === b
 }

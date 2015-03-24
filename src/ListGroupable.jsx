@@ -75,12 +75,11 @@ module.exports = React.createClass({
   },
 
   componentDidMount(prevProps, prevState){
-    this._setScrollPosition()
+    this.move()
   },
 
-  componentDidUpdate(prevProps){
-    //if ( prevProps.focused !== this.props.focused)
-    this._setScrollPosition()
+  componentDidUpdate(prevProps) {
+    this.move()
   },
 
   render: function(){
@@ -185,12 +184,12 @@ module.exports = React.createClass({
       .reduce( (flat, grp) => flat.concat(groups[grp]), [])
   },
 
-  _setScrollPosition: function(){
+  move() {
     var selected = this.getItemDOMNode(this.props.focused);
 
     if( !selected ) return 
 
-    this.notify('onMove', [ selected, compat.findDOMNode(this) ])
+    this.notify('onMove', [ selected, compat.findDOMNode(this), this.props.focused ])
   },
 
   getItemDOMNode(item){

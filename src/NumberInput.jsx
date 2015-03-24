@@ -1,7 +1,7 @@
 'use strict';
 var React   = require('react')
   , CustomPropTypes = require('./util/propTypes')
-  , globalize = require('globalize');
+  , config = require('./util/configuration');
 
 
 module.exports = React.createClass({
@@ -26,7 +26,7 @@ module.exports = React.createClass({
       value: null,
       format: 'd',
       editing: false,
-      parse: (number, culture) => globalize.parseFloat(number, 10, culture)
+      parse: (number, culture) => config.globalize.parseFloat(number, 10, culture)
     }
   },
 
@@ -128,12 +128,12 @@ function parseLocaleFloat(number, parser, culture) {
   if ( typeof format === 'function')
     return format(number, culture)
 
-  return globalize.parseFloat(number, 10, culture)
+  return config.globalize.parseFloat(number, 10, culture)
 }
 
 function formatNumber(number, format, culture){
   if ( typeof format === 'function')
     return format(number, culture)
 
-  return globalize.format(number, format, culture)
+  return config.globalize.format(number, format, culture)
 }

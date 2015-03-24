@@ -207,13 +207,12 @@ var DateTimePicker = React.createClass({
           open={ this.props.open === popups.TIME }
           onRequestClose={this.close}
           onOpening={() => this.refs.timePopup.forceUpdate()}>
-
+          
           <div>
             <Time ref="timePopup"
               id={timeListID}
               optID={timeOptID}
               aria-hidden={ !this.props.open }
-              style={{ maxHeight: 200, height: 'auto' }}
               value={value}
               step={this.props.step}
               min={this.props.min}
@@ -258,8 +257,6 @@ var DateTimePicker = React.createClass({
       else if (!dates.eq(date, this.props.value))
         change(date, str)
     }
-
-    //this._focus(true)
   },
 
   _keyDown: function(e){
@@ -291,19 +288,21 @@ var DateTimePicker = React.createClass({
   },
 
   //timeout prevents transitions from breaking focus
-  _focus: function(focused, isOnFocusEvent, e){
-    var inputFocused = activeElement() === this.refs.valueInput.getDOMNode();
-
+  _focus: function(focused, e){
     this.setTimeout('focus', () => {
-      //var el = this.refs.valueInput
-      if( focused ) this.refs.valueInput.focus()
-      else          this.close()
+      if( !focused )
+        this.close()
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused })
       }
     })
+  },
+
+  focus(){
+    if ( activeElement() !== this.refs.valueInput.getDOMNode())
+      this.refs.valueInput.focus()
   },
 
   _selectDate: function(date){
@@ -314,6 +313,7 @@ var DateTimePicker = React.createClass({
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
     this._change(dateTime, dateStr, true)
+    this.focus()
   },
 
   _selectTime: function(datum){
@@ -324,10 +324,11 @@ var DateTimePicker = React.createClass({
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
     this._change(dateTime, dateStr, true)
+    this.focus()
   },
 
   _click: function(view, e){
-    this._focus(true)
+    this.focus()
     this.toggle(view, e)
   },
 

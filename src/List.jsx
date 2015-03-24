@@ -3,7 +3,8 @@ var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   , compat = require('./util/compat')
   , cx = require('classnames')
-  , _  = require('./util/_');
+  , _  = require('./util/_')
+  , $  = require('./util/dom');
 
 
 module.exports = React.createClass({
@@ -52,12 +53,11 @@ module.exports = React.createClass({
 
 
   componentDidMount(){
-    this._setScrollPosition()
+    this.move()
   },
 
   componentDidUpdate(prevProps){
-    //if ( prevProps.focused !== this.props.focused)
-    this._setScrollPosition()
+    this.move()
   },
 
   render(){
@@ -104,14 +104,14 @@ module.exports = React.createClass({
     return this.props.data 
   },
 
-  _setScrollPosition: function(){
+  move(){
     var list = compat.findDOMNode(this)
       , idx  = this._data().indexOf(this.props.focused)
       , selected = list.children[idx];
       
     if( !selected ) return 
 
-    this.notify('onMove', [ selected, list ])
+    this.notify('onMove', [ selected, list, this.props.focused ])
   }
 
 })
