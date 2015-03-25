@@ -15,7 +15,7 @@ module.exports = React.createClass({
 
       return (
         <div className='rw-footer'>
-          <Btn 
+          <Btn tabIndex='-1'
             aria-disabled={!!this.props.disabled}
             aria-readonly={!!this.props.readOnly}
             disabled={this.props.disabled}

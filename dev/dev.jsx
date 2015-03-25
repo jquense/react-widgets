@@ -103,7 +103,7 @@ var App = React.createClass({
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
           <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker defaultValue={new Date()} culture='en-GB'/>
+            <DatePicker min={new Date()}/>
           </section>
         </div>
       </div>
