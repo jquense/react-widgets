@@ -24,7 +24,7 @@ module.exports = React.createClass({
   render: function(){
       var value = this.props.value
         , placeholder = this.props.placeholder
-        , size = Math.max((value || placeholder).length, 1);
+        , size = Math.max((value || placeholder).length, 1) + 1;
 
       return (
         <input {...this.props}
