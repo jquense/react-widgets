@@ -206,6 +206,7 @@ var DateTimePicker = React.createClass({
           dropUp={dropUp}
           open={ this.props.open === popups.TIME }
           onRequestClose={this.close}
+          duration={this.props.duration}
           onOpening={() => this.refs.timePopup.forceUpdate()}>
           
           <div>
@@ -290,7 +291,13 @@ var DateTimePicker = React.createClass({
   //timeout prevents transitions from breaking focus
   _focus: function(focused, e){
     this.setTimeout('focus', () => {
-      if( !focused )
+      var calendarOpen = this.props.open === popups.CALENDAR;
+
+      // #75: need to aggressively reclaim focus from the calendar otherwise 
+      // disabled header/footer buttons will drop focus completely from the widget
+      if(focused) 
+        calendarOpen && this.refs.valueInput.focus() 
+      else 
         this.close()
 
       if( focused !== this.state.focused){

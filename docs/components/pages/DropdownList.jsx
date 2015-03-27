@@ -136,12 +136,6 @@ var DropdownList = React.createClass({
           when the <code>open</code> prop is {'set'} otherwise the widget open buttons won't work.
         </p>
 
-        <PropHeader type='Number' default="false">step</PropHeader>
-        <p>
-          `The amount of minutes between each entry in the time list.`
-        </p>
-        <EditableExample codeText={require('../examples/prop')(widgetName, { step: 90, open: 'time'})}/>
-
         <PropHeader type='Boolean' default="false">busy</PropHeader>
         <p>
           mark whether the widget is in a busy or loading state. If <code>true</code> the widget will display a spinner gif, useful

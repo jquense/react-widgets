@@ -15,7 +15,7 @@ var TestUtils = React.addons.TestUtils
 
 
 
-describe('Multiselect', function(){
+describe.only('Multiselect', function(){
   var dataList = [
         { label: 'jimmy', id: 0 },
         { label: 'sally', id: 1 },
@@ -254,6 +254,11 @@ describe('Multiselect', function(){
       findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
 
     ms.setProps({ onCreate: null }) 
+
+    expect(function err() {
+      findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
+
+    ms.setProps({ onCreate: null, searchTerm: 'asfasfas' }) 
 
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()

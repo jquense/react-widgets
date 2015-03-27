@@ -287,6 +287,7 @@ var Multiselect = React.createClass({
 
     this.notify('onSelect', data)
     this.change(this.state.dataItems.concat(data))
+
     this.close()
     this._focus(true)
   },
@@ -296,6 +297,9 @@ var Multiselect = React.createClass({
       return
 
     this.notify('onCreate', tag)
+    this.props.searchTerm
+      && this.notify('onSearch', [ '' ])
+
     this.close()
     this._focus(true)
   },
@@ -311,10 +315,10 @@ var Multiselect = React.createClass({
       , list    = this.refs.list;
 
     if ( key === 'ArrowDown') {
-      var next = list.next('focused')
+      var next = list.next(focusedItem)
         , creating = (this._shouldShowCreate() && focusedItem === next) || focusedItem === null;
         
-      next = creating ? null : list.next(focusedItem)
+      next = creating ? null : next
 
       e.preventDefault()
       if ( isOpen ) this.setState({ focusedItem: next })
@@ -338,8 +342,8 @@ var Multiselect = React.createClass({
       if ( isOpen ) this.setState({ focusedItem: list.first() })
       else          tagList && tagList.first()
     }
-    else if ( isOpen && key === 'Enter' )
-      ctrl && this.props.onCreate
+    else if ( isOpen && key === 'Enter')
+      (ctrl && this.props.onCreate) || focusedItem === null
         ? this._onCreate(this.props.searchTerm)
         : this._onSelect(this.state.focusedItem)
 
@@ -363,6 +367,8 @@ var Multiselect = React.createClass({
 
   change: function(data){
     this.notify('onChange', [data])
+    this.props.searchTerm 
+      && this.notify('onSearch', [ '' ])
   },
 
   open: function(){
@@ -374,13 +380,13 @@ var Multiselect = React.createClass({
     this.notify('onToggle', false)
   },
 
-  toggle: function(e){
+  toggle(e){
     this.props.open
       ? this.close()
       : this.open()
   },
 
-  process: function(data, values, searchTerm){
+  process(data, values, searchTerm){
     var items = data.filter( i => !values.some( this._valueMatcher.bind(null, i), this), this)
 
     if( searchTerm)
@@ -392,7 +398,9 @@ var Multiselect = React.createClass({
   _shouldShowCreate(){
     var text = this.props.searchTerm;
 
-    if ( !(this.props.onCreate && text) ) 
+    //console.log('should ', this.props.onCreate)
+
+    if ( !this.props.onCreate || !text ) 
       return false
 
     // if there is an exact match on textFields: "john" => { name: "john" }, don't show
@@ -400,7 +408,7 @@ var Multiselect = React.createClass({
         && !this.state.dataItems.some( v => this._dataText(v) === text) 
   },
 
-  _placeholder: function(){
+  _placeholder(){
     return (this.props.value || []).length
       ? ''
       : (this.props.placeholder || '')
@@ -410,13 +418,12 @@ var Multiselect = React.createClass({
 
 
 module.exports = createUncontrolledWidget(Multiselect
-    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }
-    , { onChange: defaultChange, onCreate: defaultChange });
+    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
 
 
-function defaultChange(){
-  if ( this.props.searchTerm === undefined )
-    this.setState({ searchTerm: '' })
-}
+// function defaultChange(){
+//   if ( this.props.searchTerm === undefined )
+//     this.setState({ searchTerm: '' })
+// }
 
 module.exports.BaseMultiselect = Multiselect
