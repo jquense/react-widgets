@@ -60,7 +60,7 @@ var Multiselect = React.createClass({
         <PropHeader type='Array<Any>' handler="onChange" controllable>value</PropHeader>
         <p>
           The current values of the {widgetName}. The value should can <code>null</code>, or an array
-          of <code>valieField</code> values, or an array of objects (such as a few items in the <code>data</code> array)
+          of <code>valueField</code> values, or an array of objects (such as a few items in the <code>data</code> array)
         </p>
         <EditableExample codeText={require('../examples/value')(widgetName, true)}/>
 
