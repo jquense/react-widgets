@@ -135,14 +135,14 @@ gulp.task('publish', ['release'], release)
 
 gulp.task('publish-docs', ['docs'], function(finish){
   
-  run('git cm "rebuild docs" ', function(){
+  run('git cm "rebuild docs"', function(){
     run('git co gh-pages && git merge master" ', function(){
       run('git push origin gh-pages" ', finish)
     })
   })
 
   function run(cmd, cb){
-    exec('git cm "rebuild docs" ', function(err, stdout, stderr){
+    exec(cmd, function(err, stdout, stderr){
       if (err) return finish(err);
       console.log(stdout);
       console.log(stderr);
