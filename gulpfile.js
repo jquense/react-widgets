@@ -9,6 +9,7 @@ var gulp    = require('gulp')
   , less = require('gulp-less')
   , assign = require('lodash/object/assign')
   , rename = require('gulp-rename')
+  , exec = require('child_process').exec
   , babelTransform = require('gulp-babel-helpers')
   , plumber = require('gulp-plumber')
   , configs = require('./webpack.configs');
@@ -128,8 +129,24 @@ gulp.task('less-test', function(){
     .pipe(gulp.dest('./dist/css'))
 })
 
-gulp.task('release', [ 'lib', 'dist-build', 'docs']);
+gulp.task('release', [ 'lib', 'dist-build']);
 
 gulp.task('publish', ['release'], release)
 
+gulp.task('publish-docs', ['docs'], function(finish){
+  
+  run('git cm "rebuild docs" ', function(){
+    run('git co gh-pages && git merge master" ', function(){
+      run('git push origin gh-pages" ', finish)
+    })
+  })
 
+  function run(cmd, cb){
+    exec('git cm "rebuild docs" ', function(err, stdout, stderr){
+      if (err) return finish(err);
+      console.log(stdout);
+      console.log(stderr);
+      cb()
+    })
+  }
+})
