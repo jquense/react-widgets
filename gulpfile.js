@@ -3,6 +3,7 @@ var gulp    = require('gulp')
   , del     = require('del')
   , merge   = require('merge-stream')
   , webpack = require('webpack')
+  , release = require('rf-release')
   , WebpackServer = require("webpack-dev-server")
   , concat = require('gulp-concat')
   , less = require('gulp-less')
@@ -110,10 +111,9 @@ gulp.task('dev-docs', function(cb) {
         
         console.log('Listening at localhost:8080');
         cb()
-      });
-  });
+      })
+  })
 })
-
 
 gulp.task('less-test', function(){
 
@@ -129,3 +129,7 @@ gulp.task('less-test', function(){
 })
 
 gulp.task('release', [ 'lib', 'dist-build', 'docs']);
+
+gulp.task('publish', ['release'], release)
+
+

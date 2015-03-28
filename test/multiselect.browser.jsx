@@ -15,7 +15,7 @@ var TestUtils = React.addons.TestUtils
 
 
 
-describe.only('Multiselect', function(){
+describe('Multiselect', function(){
   var dataList = [
         { label: 'jimmy', id: 0 },
         { label: 'sally', id: 1 },
