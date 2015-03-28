@@ -195,6 +195,14 @@ ul.rw-list,
   outline: 0;
   height: 100%;
 }
+ul.rw-list > li,
+.rw-selectlist > li {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 ul.rw-list > li.rw-list-optgroup,
 .rw-selectlist > li.rw-list-optgroup {
   font-weight: bold;
