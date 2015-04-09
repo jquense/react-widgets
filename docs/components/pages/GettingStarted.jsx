@@ -168,7 +168,7 @@ var GettingStarted = React.createClass({
         </p>
         <pre>
           <code className='js'>
-          {`configure.setAnimate((element, ...animationArgs) => $(el).animate(...animationArgs))`}
+          {`configure.setAnimate((element, ...animationArgs) => $(element).animate(...animationArgs))`}
           </code>
         </pre>
       </section>
