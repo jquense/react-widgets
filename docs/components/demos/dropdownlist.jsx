@@ -7,7 +7,7 @@ var React = require('react')
   , genData = require('../generate-data');
 
 var valueComp = React.createClass({
-  render: function() {
+  render() {
 
     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.name }</span>)
   }
@@ -83,7 +83,7 @@ var DropdownApi = React.createClass({
               <label className='checkbox-inline'>
                 <input type='checkbox'
                   checked={this.state.groupBy}
-                  onChange={this._set.bind(null, 'groupBy', !this.state.groupBy ? 'last' : null )}/>
+                  onChange={this._set.bind(null, 'groupBy', !this.state.groupBy ? 'lastName' : null )}/>
                   Group
               </label>
             </div>

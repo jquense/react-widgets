@@ -116,7 +116,9 @@ var NumberPicker = React.createClass({
             disabled={val === this.props.max || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
 
-            <i className="rw-i rw-i-caret-up"><span className="rw-sr">{ this.props.messages.increment }</span></i>
+            <i className="rw-i rw-i-caret-up">
+              <span className="rw-sr">{ this.props.messages.increment }</span>
+            </i>
           </Btn> 
           <Btn
             tabIndex='-1'
@@ -126,7 +128,10 @@ var NumberPicker = React.createClass({
             onClick={this._maybeHandle(this._focus.bind(null, true))}
             disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
-            <i className="rw-i rw-i-caret-down"><span className="rw-sr">{ this.props.messages.decrement }</span></i>
+
+            <i className="rw-i rw-i-caret-down">
+              <span className="rw-sr">{ this.props.messages.decrement }</span>
+            </i>
           </Btn>
         </span>
         <Input
