@@ -46,9 +46,14 @@ var Calendar = React.createClass({
             </DDButton>
           </span>
         </h1>
-        <p>
-          Calendar widget.
-        </p>
+        <pre className='component-export'>
+          <code>
+          <div>Widget Suite:</div>
+          {` ${widgetName}`} = require(<span className='str'>'react-widgets'</span>){`.${widgetName}`}<br/>
+          <div>Individual Component:</div>
+          {` ${widgetName}`} = require(<span className='str'>{`'react-widgets/lib/${widgetName}'`}</span>)
+          </code>
+        </pre>
         <CalendarExample/>
 
         <h2>Props</h2>

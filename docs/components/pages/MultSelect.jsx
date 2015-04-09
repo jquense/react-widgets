@@ -54,6 +54,14 @@ var Multiselect = React.createClass({
         <p>
           A select listbox alternative
         </p>
+        <pre className='component-export'>
+          <code>
+          <div>Widget Suite:</div>
+          {` ${widgetName}`} = require(<span className='str'>'react-widgets'</span>){`.${widgetName}`}<br/>
+          <div>Individual Component:</div>
+          {` ${widgetName}`} = require(<span className='str'>{`'react-widgets/lib/${widgetName}'`}</span>)
+          </code>
+        </pre>
         <MultiselectExample/>
 
         <h2>Props</h2>

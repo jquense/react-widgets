@@ -48,6 +48,14 @@ var ComboBox = React.createClass({
         <p>
           Select an item from the list, or input a custom value. The {widgetName} can also make suggestions as you type
         </p>
+        <pre className='component-export'>
+          <code>
+          <div>Widget Suite:</div>
+          {` ${widgetName}`} = require(<span className='str'>'react-widgets'</span>){`.${widgetName}`}<br/>
+          <div>Individual Component:</div>
+          {` ${widgetName}`} = require(<span className='str'>{`'react-widgets/lib/${widgetName}'`}</span>)
+          </code>
+        </pre>
         <ComboBoxExample/>
         
         <h2>Props</h2>

@@ -41,8 +41,16 @@ var SelectList = React.createClass({
           </span>
         </h1>
         <p>
-          Creates a list of radio buttons or checkboxes bound to a {'set'} of data.
+          Creates a list of radio buttons or checkboxes bound to a dataset.
         </p>
+        <pre className='component-export'>
+          <code>
+          <div>Widget Suite:</div>
+          {` ${widgetName}`} = require(<span className='str'>'react-widgets'</span>){`.${widgetName}`}<br/>
+          <div>Individual Component:</div>
+          {` ${widgetName}`} = require(<span className='str'>{`'react-widgets/lib/${widgetName}'`}</span>)
+          </code>
+        </pre>
         <SelectListExample/>
         <h2>Props</h2>
 

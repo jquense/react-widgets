@@ -4,7 +4,7 @@ var React = require('react')
   , MenuItem = require('../ApiMenuItem.jsx')
   , DDButton = require('../../bootstrap').DropdownButton
   , PropHeader = require('../PropHeader.jsx')
-  , DropdownListExample = require('../demos/DropdownList.jsx')
+  , DropdownListExample = require('../demos/dropdownlist.jsx')
 
 var prefix = 'dropdown-list/'
 var widgetName = 'DropdownList'
@@ -45,8 +45,16 @@ var DropdownList = React.createClass({
           </span>
         </h1>
         <p>
-          A <code>{'<select/>'}</code> tag replacement that offers additional functionality. the Dropdown list
+          A <code>{'<select/>'}</code> tag replacement that offers additional functionality.
         </p>
+        <pre className='component-export'>
+          <code>
+          <div>Widget Suite:</div>
+          {` ${widgetName}`} = require(<span className='str'>'react-widgets'</span>){`.${widgetName}`}<br/>
+          <div>Individual Component:</div>
+          {` ${widgetName}`} = require(<span className='str'>{`'react-widgets/lib/${widgetName}'`}</span>)
+          </code>
+        </pre>
         <DropdownListExample/>
 
         <h2>Props</h2>

@@ -317,12 +317,21 @@ ul.rw-list {
   }
 
   > .rw-input {
+
     background-color:   transparent;
     padding-top:    0;
     padding-bottom: 0;
     padding-right:  0;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &.rw-rtl > .rw-input {
+    padding:  @input-padding; // grumble resets
+    padding-top:    0;
+    padding-bottom: 0;
+    padding-left: 0;
   }
 
   > .rw-select,

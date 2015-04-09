@@ -17,6 +17,11 @@ h4 {
 
 }*/
 
+pre + .example {
+  margin-top: -10px;
+  border-top-width: 0;
+}
+
 .example {
   background-color: white;
   margin-top: 20px;
@@ -84,6 +89,29 @@ h3 > strong {
   color:  #AF006E;
   font-size: 65%;
   font-style: italic;
+}
+
+.component-export {
+  position: relative;
+  padding-top: 5px;
+
+}
+
+/*.component-export:before {
+  position: absolute;
+  top: 2px;
+  left: 10px;
+  color: #959595;
+  content: 'Usage';
+}*/
+
+.component-export div {
+  color:  #3aaa64;
+  font-size: 90%;
+  margin-top: 5px;
+}
+.component-export .str {
+  color:  #b35e14;
 }
 
 .demo .rw-widget:not(.rw-calendar) {

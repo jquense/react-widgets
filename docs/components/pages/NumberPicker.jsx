@@ -42,6 +42,14 @@ var NumberPicker = React.createClass({
         <p>
           Spinner for selecting numbers. Supports multiple formats for display and editing through Globalize.js
         </p>
+        <pre className='component-export'>
+          <code>
+          <div>Widget Suite:</div>
+          {` ${widgetName}`} = require(<span className='str'>'react-widgets'</span>){`.${widgetName}`}<br/>
+          <div>Individual Component:</div>
+          {` ${widgetName}`} = require(<span className='str'>{`'react-widgets/lib/${widgetName}'`}</span>)
+          </code>
+        </pre>
         <NumberPickerExample/>
 
         <h2>Props</h2>

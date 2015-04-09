@@ -69,26 +69,26 @@ var GettingStarted = React.createClass({
            This means that NPM will not warn you if you try to use react-widgets with an incompatible React version.
         </p>
         <p>
-          If you use Browserify or Webpack to build your projects, the dependencies listed below will automatically be
-           included. They are listed for the sake of those who wish to externalize the lib dependencies to reduce
-           duplication, or wish to use a different, compatible, library.
-
-          <ul>
-            <li>
-              <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468" >Globalize</a>&nbsp;
-              used for date and number localization. Requires a 0.x.x version (not the upcoming 1.0.0). 
-            </li>
-          </ul>
-          <p>
-            You need to ensure that your app or library only includes one instance of Globalize. In that sense it is a peer dependency 
-            of react-widgets. However since peer dependencies cannot be optional, and your use of globalize is optional, it is not included as one. 
-            see <Link to='/getting-started/configuration'>the section below</Link> for more info.
-          </p>
-          <strong>
-            Note: As of verison <code>2.3.0</code> you can completely swap out the Globalize dependency for any localization 
-            solution you wish through widget format and parse props.
-          </strong>
+          If you use Browserify or Webpack to build your projects, the dependencies listed below will automatically be 
+          included. They are listed for the sake of those who wish to externalize the lib dependencies to reduce 
+          duplication, or wish to use a different, compatible, library.
         </p>
+        <ul>
+          <li>
+            <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468" >Globalize</a>&nbsp;
+            used for date and number localization. Requires a 0.x.x version (not the upcoming 1.0.0). 
+          </li>
+        </ul>
+        <p>
+          You need to ensure that your app or library only includes one instance of Globalize. In that sense it is a peer dependency 
+          of react-widgets. However since peer dependencies cannot be optional, and your use of globalize is optional, it is not included as one. 
+          see <Link to='/getting-started/configuration'>the section below</Link> for more info.
+        </p>
+        <strong>
+          Note: As of verison <code>2.3.0</code> you can completely swap out the Globalize dependency for any localization 
+          solution you wish through widget format and parse props.
+        </strong>
+        
         <h2 id='/getting-started/browser'>Older Browser Support</h2>
         <p>
           Rather than including an entire utility library, like underscore, react widgets takes a hint from React itself, 

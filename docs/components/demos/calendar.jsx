@@ -52,7 +52,7 @@ module.exports = React.createClass({
                   Readonly
                 </Button>
               </ButtonGroup>
-              <label className='checkbox-inline'>
+              <label className='checkbox-inline' style={{marginLeft: 10}}>
                 <input type='checkbox'
                   checked={this.state.footer}
                   onChange={this._set.bind(null, 'footer', !this.state.footer)}/>

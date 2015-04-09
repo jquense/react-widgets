@@ -322,9 +322,7 @@ function getListItem(parent){
     displayName: 'SelectItem',
     
     render: function() {
-      var {
-          ...props } = this.props
-        , item      = this.props.item
+      var item      = this.props.item
         , checked   = parent._contains(item, parent._values())
         , change    = parent._change.bind(null, item)
         , disabled  = parent.isDisabledItem(item)
@@ -338,7 +336,7 @@ function getListItem(parent){
             'rw-state-disabled': disabled,
             'rw-state-readonly': readonly
           })}>
-          <input { ...props} 
+          <input { ...this.props} 
             tabIndex='-1'
             name={name}
             type={parent.props.multiple ? 'checkbox' : 'radio'}

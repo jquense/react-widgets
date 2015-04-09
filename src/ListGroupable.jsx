@@ -1,5 +1,6 @@
 'use strict';
 var React   = require('react')
+  , warning = require('react/lib/warning')
   , CustomPropTypes  = require('./util/propTypes')
   , compat = require('./util/compat')
   , cx = require('classnames')
@@ -165,6 +166,10 @@ module.exports = React.createClass({
     // which means that if you sort the data array it will render sorted, 
     // so long as you also sorted by group
     keys = keys || []
+
+    warning(typeof groupBy !== 'string' || !data.length || _.has(data[0], groupBy)
+      , `[React Widgets] You are seem to be trying to group this list by a ` 
+      + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
 
     return data.reduce( (grps, item) => {
       var group = iter(item);
