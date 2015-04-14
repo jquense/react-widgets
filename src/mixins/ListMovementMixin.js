@@ -10,16 +10,16 @@ module.exports = {
     textField:  React.PropTypes.string,
   },
 
-  first(){
+  first() {
     return this._data()[0]
   },
 
-  last(){
+  last() {
     var data = this._data()
     return data[data.length-1]
   },
 
-  prev(item, word){
+  prev(item, word) {
     var data = this._data()
       , idx  = data.indexOf(item)
 
@@ -30,7 +30,7 @@ module.exports = {
       : --idx < 0 ? data[0] : data[idx]
   },
 
-  next(item, word){
+  next(item, word) {
     var data = this._data()
       , idx  = data.indexOf(item)
 

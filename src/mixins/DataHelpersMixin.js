@@ -9,15 +9,15 @@ module.exports = {
     textField:  React.PropTypes.string,
   },
 
-  _dataValue: function(item){
+  _dataValue(item){
     var field = this.props.valueField;
 
-        return field && item && _.has(item, field)
+    return field && item && _.has(item, field)
       ? item[field]
       : item
   },
 
-  _dataText: function(item){
+  _dataText(item){
     var field = this.props.textField;
 
     return (field && item && _.has(item, field)
@@ -25,7 +25,7 @@ module.exports = {
       : item) + ''
   },
 
-  _dataIndexOf: function(data, item){
+  _dataIndexOf(data, item){
     var idx = -1, len = data.length
       , finder = datum => this._valueMatcher(item, datum);
 
@@ -35,13 +35,13 @@ module.exports = {
     return -1
   },
 
-  _valueMatcher: function(a, b){
+  _valueMatcher(a, b){
     return _.isShallowEqual(
         this._dataValue(a)
       , this._dataValue(b)) 
   },
 
-  _dataItem: function(data, item){
+  _dataItem(data, item){
     var first = data[0]
       , field = this.props.valueField
       , idx;
