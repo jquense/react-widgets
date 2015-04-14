@@ -6,6 +6,7 @@ var React = require('react')
   , CustomPropTypes = require('./util/propTypes')
   , createUncontrolledWidget = require('uncontrollable')
   , directions = require('./util/constants').directions
+  , repeater = require('./util/repeater')
   , Input = require('./NumberInput');
 
 var Btn = require('./WidgetButton')
@@ -172,8 +173,8 @@ var NumberPicker = React.createClass({
     if( !((dir === directions.UP && val === this.props.max)
       || (dir === directions.DOWN && val === this.props.min)))
     {
-      if(!this.interval)
-        this.interval = setInterval(this._mouseDown, 500, dir)
+      if(!this._cancelRepeater)
+        this._cancelRepeater = repeater(500, this._mouseDown.bind(null, dir))
     }
     else
       this._mouseUp()
@@ -181,9 +182,9 @@ var NumberPicker = React.createClass({
 
   _mouseUp(direction, e ){
     this.setState({ active: false })
-    clearInterval(this.interval)
-    this.interval = null;
-  },
+    this._cancelRepeater()
+    this._cancelRepeater = null;
+  }),
 
   _focus(focused, e){
 
@@ -225,7 +226,7 @@ var NumberPicker = React.createClass({
 
   decrement(){
     this.change(this.constrainValue((this.props.value || 0) - this.props.step))
-  },
+  }),
 
   change(val){
     val = this.constrainValue(val)
