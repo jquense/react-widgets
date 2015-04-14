@@ -30,7 +30,7 @@ module.exports = function (config) {
     browsers: [ 'PhantomJS'],
 
     preprocessors: {
-      '_test-bootstrap.js': ['webpack']
+      '_test-bootstrap.js': ['webpack', 'sourcemap']
     },
 
     webpack: require('./webpack.configs').test,

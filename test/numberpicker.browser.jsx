@@ -166,7 +166,7 @@ describe('Numberpicker', function(){
     expect(change.calledWithExactly(null)).to.be(true)
   })
 
-  it.only('should not trigger change at delimiter', function() {
+  it('should not trigger change at delimiter', function() {
     var change = sinon.spy()
       , picker = render(<NumberPicker value={1.5} min={12} onChange={change} />)
       , input  = findClass(picker, 'rw-input').getDOMNode();

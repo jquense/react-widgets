@@ -29,14 +29,11 @@ module.exports = React.createClass({
     focused:        React.PropTypes.any,
 
     valueField:     React.PropTypes.string,
-    textField:      React.PropTypes.string,
+    textField:      CustomPropTypes.accessor,
  
     optID:          React.PropTypes.string,
 
-    groupBy:        React.PropTypes.oneOfType([
-                     React.PropTypes.func,
-                     React.PropTypes.string
-                    ]),
+    groupBy:        CustomPropTypes.accessor,
 
     messages:       React.PropTypes.shape({
       emptyList:    React.PropTypes.string

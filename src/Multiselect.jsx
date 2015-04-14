@@ -26,17 +26,14 @@ var propTypes = {
       //-------------------------------------------
 
       valueField:      React.PropTypes.string,
-      textField:       React.PropTypes.string,
+      textField:       CustomPropTypes.accessor,
 
       tagComponent:    CustomPropTypes.elementType,
       itemComponent:   CustomPropTypes.elementType,
       listComponent:   CustomPropTypes.elementType,
 
       groupComponent:  CustomPropTypes.elementType,
-      groupBy:         React.PropTypes.oneOfType([
-                         React.PropTypes.func,
-                         React.PropTypes.string
-                       ]),
+      groupBy:         CustomPropTypes.accessor,
 
       onSelect:        React.PropTypes.func,
       onCreate:        React.PropTypes.func,

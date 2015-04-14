@@ -34,19 +34,41 @@ describe('when using DATA HELPER MIXIN', function(){
     expect(instance._dataValue({ value: { a: 3 } })).to.eql({ a: 3 })
   })
 
-  it('should get Text Out', function(){
-    var instance = render(React.createElement(Component))
+  describe('Reading Data Text', () => {
 
-    expect(instance._dataText('hi')).to.equal('hi')
-    expect(instance._dataText({ a: 3 })).to.equal('[object Object]')
+    it('should always return a string', function(){
+      var instance = render(React.createElement(Component))
 
-    instance = render(React.createElement(Component, { textField: 'text'}))
+      expect(instance._dataText('hi')).to.be.a('string')
+      expect(instance._dataText({ a: 3 })).to.be.a('string')
+      expect(instance._dataText(null)).to.be.a('string')
+      expect(instance._dataText(4)).to.be.a('string')
+    })
 
-    expect(instance._dataText('hi')).to.equal('hi')
-    expect(instance._dataText({ text: 'hi' })).to.equal('hi')
-    expect(instance._dataText({ text: { a: 3 } })).to.eql('[object Object]')
+    it('should use specified field', function(){
+      var instance = render(React.createElement(Component, { textField: 'text'}))
+
+      expect(instance._dataText('hi')).to.equal('hi')
+      expect(instance._dataText({ text: 'hi' })).to.equal('hi')
+      expect(instance._dataText({ text: { a: 3 } })).to.eql('[object Object]')
+    })
+
+    it('should fall back to item when missing field', function(){
+      var instance = render(React.createElement(Component, { textField: 'text'}))
+
+      expect(instance._dataText('hi')).to.equal('hi')
+      expect(instance._dataText({ missing: 'hi' })).to.equal('[object Object]')
+    })
+
+    it('should work as a function accessor', function(){
+      var instance = render(React.createElement(Component, { textField: item => item.text + ' hi'}))
+
+      expect(instance._dataText({ text: 'hi' })).to.equal('hi hi')
+      expect(instance._dataText({ text: 'john' })).to.equal('john hi')
+      expect(instance._dataText({ text: { a: 3 } })).to.eql('[object Object] hi')
+    })
   })
-
+  
 
   it('should work with indexOf', function(){
     var instance = render(React.createElement(Component))

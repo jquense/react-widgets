@@ -27,7 +27,7 @@ var propTypes = {
     listComponent:  CustomPropTypes.elementType,
 
     valueField:     React.PropTypes.string,
-    textField:      React.PropTypes.string,
+    textField:      CustomPropTypes.accessor,
 
     busy:           React.PropTypes.bool,
 
