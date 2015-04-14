@@ -101,7 +101,7 @@ var SelectList = React.createClass({
     return this.setState(this.getDefaultState(nextProps))
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     validateList(this.refs.list)
   },
 
@@ -161,7 +161,7 @@ var SelectList = React.createClass({
     }
   },
 
-  _keyDown: function(e){
+  _keyDown(e) {
     var self = this
       , key = e.key
       , multiple = !!this.props.multiple
@@ -223,7 +223,7 @@ var SelectList = React.createClass({
     }
   },
 
-  _selectAll: function(){
+  _selectAll(){
     var values = this.state.dataItems
       , disabled = this.props.disabled || this.props.readOnly
       , data = this._data()
@@ -242,7 +242,7 @@ var SelectList = React.createClass({
     this.notify('onChange', [data])
   },
 
-  _change: function(item, checked){
+  _change(item, checked){
     var multiple  = !!this.props.multiple
       , blacklist = this.props.disabled || this.props.readOnly 
       , values    = this.state.dataItems;
@@ -261,7 +261,7 @@ var SelectList = React.createClass({
     this.notify('onChange', [values || []])
   },
 
-  _focus: function(focused, e){
+  _focus(focused, e){
 
     this.setTimeout('focus', () => {
       if( focused) compat.findDOMNode(this).focus()
@@ -271,15 +271,15 @@ var SelectList = React.createClass({
     })
   },
 
-  isDisabledItem: function(item) {
+  isDisabledItem(item) {
     return this.isDisabled() || this._contains(item, this.props.disabled)
   },
 
-  isReadOnlyItem: function(item) {
+  isReadOnlyItem(item) {
     return this.isReadOnly() || this._contains(item, this.props.readOnly)
   },
 
-  search: function(character){
+  search(character) {
     var word = ((this._searchTerm || '') + character).toLowerCase()
       , list = this.refs.list;
       
@@ -296,17 +296,17 @@ var SelectList = React.createClass({
     }, this.props.delay) 
   },
 
-  _data:function(){
+  _data() {
     return this.props.data
   },
 
-  _contains: function(item, values){
+  _contains(item, values) {
     return Array.isArray(values) 
       ? values.some(this._valueMatcher.bind(null, item))
       : this._valueMatcher(item, values)
   },
 
-  _values: function(){
+  _values() {
     return !!this.props.multiple 
       ? this.state.dataItems
       : this.props.value
@@ -359,8 +359,6 @@ function getListItem(parent){
     }
   })
 }
-
-module.exports = SelectList;
 
 module.exports = createUncontrolledWidget(
     SelectList, { value: 'onChange' });

@@ -103,14 +103,11 @@ var App = React.createClass({
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
           <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker min={new Date()}/>
+            <NumberPicker min={10} max={100} readOnly/>
           </section>
         </div>
       </div>
-
     )
-
-
   },
 
 

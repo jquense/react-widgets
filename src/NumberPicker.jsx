@@ -96,8 +96,8 @@ var NumberPicker = React.createClass({
     return (
       <div {...props }
         ref="element"
-        onKeyDown={this._maybeHandle(this._keyDown)}
-        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onKeyDown={this._keyDown}
+        onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
         className={cx(className, 'rw-numberpicker', 'rw-widget', {
@@ -111,9 +111,9 @@ var NumberPicker = React.createClass({
           <Btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.UP})}
-            onMouseDown={this._maybeHandle(this._mouseDown.bind(null, directions.UP))}
-            onMouseUp={this._maybeHandle(this._mouseUp.bind(null, directions.UP))}
-            onClick={this._maybeHandle(this._focus.bind(null, true))}
+            onMouseDown={this._mouseDown.bind(null, directions.UP)}
+            onMouseUp={this._mouseUp.bind(null, directions.UP)}
+            onClick={this._focus.bind(null, true)}
             disabled={val === this.props.max || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
 
@@ -124,9 +124,9 @@ var NumberPicker = React.createClass({
           <Btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
-            onMouseDown={this._maybeHandle(this._mouseDown.bind(null, directions.DOWN))}
-            onMouseUp={this._maybeHandle(this._mouseUp.bind(null, directions.DOWN))}
-            onClick={this._maybeHandle(this._focus.bind(null, true))}
+            onMouseDown={this._mouseDown.bind(null, directions.DOWN)}
+            onMouseUp={this._mouseUp.bind(null, directions.DOWN)}
+            onClick={this._focus.bind(null, true)}
             disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
 
@@ -160,7 +160,7 @@ var NumberPicker = React.createClass({
   },
 
   //allow for styling, focus stealing keeping me from the normal what have you
-  _mouseDown(dir) {
+  _mouseDown: _.ifNotDisabled(function (dir) {
     var val = dir === directions.UP
         ? (this.props.value || 0) + this.props.step
         : (this.props.value || 0) - this.props.step
@@ -178,15 +178,15 @@ var NumberPicker = React.createClass({
     }
     else
       this._mouseUp()
-  },
+  }),
 
-  _mouseUp(direction, e ){
+  _mouseUp: _.ifNotDisabled(function (direction, e ){
     this.setState({ active: false })
     this._cancelRepeater()
     this._cancelRepeater = null;
   }),
 
-  _focus(focused, e){
+  _focus: _.ifNotDisabled(true, function(focused, e){
 
     this.setTimeout('focus', () => {
       var el = compat.findDOMNode(this.refs.input)
@@ -199,9 +199,9 @@ var NumberPicker = React.createClass({
       }
 
     }, 0)
-  },
+  }),
 
-  _keyDown(e){
+  _keyDown: _.ifNotDisabled(function(e) {
     var key = e.key;
 
     if ( key === 'End'  && isFinite(this.props.max))
@@ -218,7 +218,7 @@ var NumberPicker = React.createClass({
       e.preventDefault()
       this.increment()
     }
-  },
+  }),
 
   increment() {
     this.change(this.constrainValue((this.props.value || 0) + this.props.step))
@@ -226,7 +226,7 @@ var NumberPicker = React.createClass({
 
   decrement(){
     this.change(this.constrainValue((this.props.value || 0) - this.props.step))
-  }),
+  },
 
   change(val){
     val = this.constrainValue(val)

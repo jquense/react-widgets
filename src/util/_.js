@@ -9,7 +9,7 @@ var _ =
     
     assign: require('react/lib/Object.assign'),
 
-    isShallowEqual: function (a, b) {
+    isShallowEqual(a, b) {
       if (a === b) return true;
       if (a instanceof Date && b instanceof Date)
         return a.getTime() === b.getTime()
@@ -22,38 +22,34 @@ var _ =
       return shallowEqual(a, b)
     }, 
 
-    transform: function(obj, cb, seed){
+    transform(obj, cb, seed) {
       _.each(obj, cb.bind(null, seed = seed || (Array.isArray(obj) ? [] : {})))
       return seed
     },
 
-    each: function(obj, cb, thisArg){
+    each(obj, cb, thisArg) {
       if( Array.isArray(obj)) return obj.forEach(cb, thisArg)
 
       for(var key in obj) if(has(obj, key)) 
         cb.call(thisArg, obj[key], key, obj)
     },
 
-    // object: function(arr){
-    //   return _.transform(arr, 
-    //     (obj, val) => obj[val[0]] = val[1], {})
-    // },
 
-    pick: function(obj, keys){
+    pick(obj, keys) {
       keys = [].concat(keys);
       return _.transform(obj, function(mapped, val, key){
         if( keys.indexOf(key) !== -1) mapped[key] = val
       }, {})
     },
 
-    omit: function(obj, keys){
+    omit(obj, keys) {
       keys = [].concat(keys);
       return _.transform(obj, function(mapped, val, key){
         if( keys.indexOf(key) === -1) mapped[key] = val
       }, {})
     },
 
-    find: function(arr, cb, thisArg){
+    find(arr, cb, thisArg) {
       var result;
       if( Array.isArray(arr)) {
         arr.every(function(val, idx){
@@ -68,7 +64,7 @@ var _ =
             return arr[key]; 
     },
 
-    chunk: function(array, chunkSize) {
+    chunk(array, chunkSize) {
       var index = 0, length = array ? array.length : 0
         , result = [];
 
@@ -80,25 +76,25 @@ var _ =
       return result
     },
 
-    splat: function(obj){
+    splat(obj) {
       return obj == null ? [] : [].concat(obj)
     },
 
-    noop: function(){},
+    noop(){},
 
-    uniqueId: function (prefix) {
+    uniqueId (prefix) {
       return ''+ ((prefix == null ? '' : prefix) + (++idCount));
     },
 
-    ifNotDisabled: function (disabledOnly, fn){
-      if (argument.length === 1)
+    ifNotDisabled(disabledOnly, fn) {
+      if (arguments.length === 1)
         fn = disabledOnly, disabledOnly = false;
 
+      //console.log('create method')
       return function(...args){
+        //console.log('called', disabledOnly)
         if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
-          return
-
-        return fn.apply(this, args)
+          return fn.apply(this, args)
       }
     }
   }
@@ -107,19 +103,29 @@ function has(o, k){
   return o ? Object.prototype.hasOwnProperty.call(o, k) : false
 }
 
-function shallowEqual(objA, objB) {
-  var key;
+function eql(a, b){
+  return a === b
+}
 
-  for (key in objA) if ( has(objA, key) && (!has(objB, key) || !eql(objA[key], objB[key]))) 
+/**
+ * Copyright 2013-2015, Facebook, Inc.
+ * All rights reserved.
+ */
+function shallowEqual(objA, objB) {
+
+  if (objA == null || objB == null)
     return false;
-     
-  for (key in objB) if ( has(objB, key) && !has(objA, key)) 
+
+  var keysA = Object.keys(objA)
+    , keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length)
     return false;
-    
+
+  for (var i = 0; i < keysA.length; i++)
+    if ( !has(objB, keysA[i]) || !eql(objA[keysA[i]], objB[keysA[i]])) 
+      return false;
+
   return true;
 }
 
-function eql(a, b){
-
-  return a === b
-}

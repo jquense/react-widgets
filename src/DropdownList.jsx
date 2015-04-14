@@ -94,7 +94,7 @@ var DropdownList = React.createClass({
     validateList(this.refs.list)
   },
 
-  componentWillReceiveProps: function(props){
+  componentWillReceiveProps(props){
     if ( _.isShallowEqual(props.value, this.props.value) && props.data === this.props.data)
       return
 
@@ -106,7 +106,7 @@ var DropdownList = React.createClass({
     })
   },
 
-  render: function(){
+  render() {
     var {
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
@@ -119,9 +119,9 @@ var DropdownList = React.createClass({
     return (
       <div {...props}
         ref="element"
-        onKeyDown={this._maybeHandle(this._keyDown)}
-        onClick={this._maybeHandle(this.toggle)}
-        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onKeyDown={this._keyDown}
+        onClick={this.toggle}
+        onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
         aria-expanded={ this.props.open }
         aria-haspopup={true}
@@ -164,7 +164,7 @@ var DropdownList = React.createClass({
               aria-hidden={!this.props.open}
               selected={this.state.selectedItem}
               focused ={this.props.open ? this.state.focusedItem : null}
-              onSelect={this._maybeHandle(this._onSelect)}
+              onSelect={this._onSelect}
               onMove={this._scrollTo}/>
           </div>
         </Popup>
@@ -172,7 +172,7 @@ var DropdownList = React.createClass({
     )
   },
 
-  _focus: function(focused, e){
+  _focus: _.ifNotDisabled(true, function(focused, e){
 
     this.setTimeout('focus', () => {
 
@@ -184,15 +184,15 @@ var DropdownList = React.createClass({
         this.setState({ focused: focused })
       }
     })
-  },
+  }),
 
-  _onSelect: function(data){
+  _onSelect: _.ifNotDisabled(function(data){
     this.close()
     this.notify('onSelect', data)
     this.change(data)
-  },
+  }),
 
-  _keyDown: function(e){
+  _keyDown: _.ifNotDisabled(function (e){
     var self = this
       , key = e.key
       , alt = e.altKey
@@ -246,20 +246,20 @@ var DropdownList = React.createClass({
 
       self.change(item)
     }
-  },
+  }),
 
-  change: function(data){
+  change(data){
     if ( !_.isShallowEqual(data, this.props.value) ) {
       this.notify('onChange', data)
       this.close()
     }
   },
 
-  _data: function(){
+  _data(){
     return this.props.data
   },
 
-  search: function(character, cb){
+  search(character, cb){
     var word = ((this._searchTerm || '') + character).toLowerCase();
       
     this._searchTerm = word 
@@ -275,19 +275,19 @@ var DropdownList = React.createClass({
     }, this.props.delay)
   },
 
-  open: function(){
+  open(){
     this.notify('onToggle', true)
   },
 
-  close: function(){
+  close(){
     this.notify('onToggle', false)
   },
 
-  toggle: function(e){
+  toggle: _.ifNotDisabled(function(e){
     this.props.open
       ? this.close()
       : this.open()
-  }
+  })
 
 })
 
