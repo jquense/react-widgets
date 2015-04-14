@@ -180,6 +180,7 @@ var Multiselect = React.createClass({
             onKeyUp={this._searchgKeyUp}
             onChange={this._typing}
             onFocus={this._inputFocus}
+            onClick={this._inputFocus}
             maxLength={this.props.maxLength}/>
         </div>
         <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}

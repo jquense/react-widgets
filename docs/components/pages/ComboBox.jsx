@@ -91,18 +91,23 @@ var ComboBox = React.createClass({
 
         <PropHeader type='String'>valueField</PropHeader>
         <p>
-          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
-          the widget will use strict equality checks to locate the data item, if it exists.
+          A dataItem field name for uniquely identifying items in the <code>data</code> list. A <code>valueField</code> is required 
+          when the <code>value</code> prop is not itself a dataItem. A <code>valueField</code> is useful when specifying the selected item, by
+          its <code>id</code> instead of using the model as the value.
+        </p>
+        <p>
+          When a <code>valueField</code> is not provided, the {widgetName} will use strict equality checks (<code>===</code>) to locate 
+          the <code>value</code> in the <code>data</code> list.
         </p>
         <EditableExample codeText={require('../examples/valueField')(widgetName)}/>
 
-        <PropHeader type='String'>textField</PropHeader>
+        <PropHeader type='String | Function(dataItem)'>textField</PropHeader>
         <p>
-          This prop determines which data item field to display in the dropdown list and the text value of {widgetName}.
-          This prop is unnecessary when an <code>itemComponent</code> is provided.
+          {`Specify which data item field to display in the ${widgetName} and selected item. The `}<code>textField</code>{`prop 
+          may also also used as to find an item in the list as you type. Providing an accessor function allows for computed text values`}
         </p>
         <EditableExample codeText={require('../examples/textField')(widgetName)}/>
-
+        
         <PropHeader type='Component'>itemComponent</PropHeader>
         <p>
           This component is used to render each possible item in the DropdownList. The default component
