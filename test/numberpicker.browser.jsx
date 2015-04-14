@@ -25,11 +25,10 @@ describe('Numberpicker', function(){
 
     expect(input.value).to.be('15');
 
-    picker.setProps({ value: null }, function(){
+    picker.setProps({ value: null, min: 10, max: 10 }, function(){
       expect(input.value).to.be('');
 
-      picker.setProps({ value: null, min: 10 }, function(){
-        //only allow null when min is not set
+      picker.setProps({ value: 1, min: 10 }, function(){
         expect(input.value).to.be('10');
 
         picker.setProps({ value: 20, max: 10 }, function(){
@@ -154,6 +153,43 @@ describe('Numberpicker', function(){
       trigger.mouseDown(dwnBtn)
       expect(change.called).to.be(false)
     }, 0)
+  })
+
+  it('should allow null values with min', function(){
+    var change = sinon.spy()
+      , picker = render(<NumberPicker value={0} min={12} onChange={change} />)
+      , input  = findClass(picker, 'rw-input').getDOMNode();
+
+    trigger.change(input, { target: { value: '' } })
+
+    expect(change.calledOnce).to.be(true)
+    expect(change.calledWithExactly(null)).to.be(true)
+  })
+
+  it.only('should not trigger change at delimiter', function() {
+    var change = sinon.spy()
+      , picker = render(<NumberPicker value={1.5} min={12} onChange={change} />)
+      , input  = findClass(picker, 'rw-input').getDOMNode();
+
+    trigger.change(input, { target: { value: '1.' } })
+    trigger.change(input, { target: { value: '12 221 ' } })
+    trigger.change(input, { target: { value: '221,' } })
+
+    expect(change.callCount).to.be(0)
+  })
+
+  it('should not trigger change while below min', function() {
+    var change = sinon.spy()
+      , picker = render(<NumberPicker value={1.5} min={12} onChange={change} />)
+      , input  = findClass(picker, 'rw-input').getDOMNode();
+
+    trigger.change(input, { target: { value: '11' } })
+
+    expect(change.callCount).to.be(0)
+
+    trigger.change(input, { target: { value: '111' } })
+
+    expect(change.callCount).to.be(1)
   })
 
   it('should do nothing when readonly', function(){

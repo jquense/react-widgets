@@ -57,7 +57,7 @@ var NumberPicker = React.createClass({
 
   propTypes: propTypes,
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       value: null,
       open: false,
@@ -75,7 +75,7 @@ var NumberPicker = React.createClass({
     }
   },
 
-  getInitialState: function(){
+  getInitialState(){
     return {
       focused: false,
       active: false,
@@ -83,14 +83,14 @@ var NumberPicker = React.createClass({
   },
 
 
-  render: function(){
+  render(){
     var {
         className
       , onKeyDown
       , onKeyPress
       , onKeyUp
       , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , val = this.inRangeValue(this.props.value)
+      , val = this.constrainValue(this.props.value)
 
     return (
       <div {...props }
@@ -159,12 +159,12 @@ var NumberPicker = React.createClass({
   },
 
   //allow for styling, focus stealing keeping me from the normal what have you
-  _mouseDown: function(dir) {
+  _mouseDown(dir) {
     var val = dir === directions.UP
         ? (this.props.value || 0) + this.props.step
         : (this.props.value || 0) - this.props.step
 
-    val = this.inRangeValue(val)
+    val = this.constrainValue(val)
 
     this.setState({ active: dir })
     this.change(val);
@@ -179,13 +179,13 @@ var NumberPicker = React.createClass({
       this._mouseUp()
   },
 
-  _mouseUp: function(direction, e ){
+  _mouseUp(direction, e ){
     this.setState({ active: false })
     clearInterval(this.interval)
     this.interval = null;
   },
 
-  _focus: function(focused, e){
+  _focus(focused, e){
 
     this.setTimeout('focus', () => {
       var el = compat.findDOMNode(this.refs.input)
@@ -200,7 +200,7 @@ var NumberPicker = React.createClass({
     }, 0)
   },
 
-  _keyDown: function(e){
+  _keyDown(e){
     var key = e.key;
 
     if ( key === 'End'  && isFinite(this.props.max))
@@ -219,27 +219,27 @@ var NumberPicker = React.createClass({
     }
   },
 
-  increment: function() {
-    this.change(this.inRangeValue((this.props.value || 0) + this.props.step))
+  increment() {
+    this.change(this.constrainValue((this.props.value || 0) + this.props.step))
   },
 
-  decrement: function(){
-    this.change(this.inRangeValue((this.props.value || 0) - this.props.step))
+  decrement(){
+    this.change(this.constrainValue((this.props.value || 0) - this.props.step))
   },
 
-  change: function(val){
-    val = this.inRangeValue(val === '' ? null : val)
+  change(val){
+    val = this.constrainValue(val)
 
     if ( this.props.value !== val )
       this.notify('onChange', val)
   },
 
-  inRangeValue: function(value){
+  constrainValue(value){
     var max = this.props.max == null ? Infinity : this.props.max
       , min = this.props.min == null ? -Infinity : this.props.min;
 
-    if( !isFinite(min) && value == null )
-      return value
+    if( value == null || value === '' )
+      return null
 
     return Math.max(Math.min(value, max), min)
   }
