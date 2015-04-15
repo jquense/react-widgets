@@ -10,7 +10,7 @@ function accessor(data, field){
     value = field(data)
   else if ( data == null )
     value = data
-  else if ( typeof field === 'string' && has(data, field) )
+  else if ( typeof field === 'string' && typeof data === 'object' && field in data )
     value = data[field]
 
   return value
