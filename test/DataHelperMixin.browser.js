@@ -49,6 +49,8 @@ describe('when using DATA HELPER MIXIN', function(){
       var instance = render(React.createElement(Component, { textField: 'text'}))
 
       expect(instance._dataText('hi')).to.equal('hi')
+      expect(instance._dataText(Object.create({ text: 'hi' }, {}))).to.equal('hi')
+      expect(instance._dataText(Object.create(null, { text: { value: 'hi' } }))).to.equal('hi')
       expect(instance._dataText({ text: 'hi' })).to.equal('hi')
       expect(instance._dataText({ text: { a: 3 } })).to.eql('[object Object]')
     })
