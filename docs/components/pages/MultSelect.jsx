@@ -40,6 +40,7 @@ var Multiselect = React.createClass({
               <MenuItem>open</MenuItem>
               <MenuItem>onToggle</MenuItem>
 
+              <MenuItem>filter</MenuItem>
               <MenuItem>busy</MenuItem>
               <MenuItem>disabled</MenuItem>
               <MenuItem>readonly</MenuItem>
@@ -177,6 +178,26 @@ var Multiselect = React.createClass({
           Called when the {widgetName} is about to open or close. <code>onToggle</code> should be used
           when the <code>open</code> prop is {'set'} otherwise the widget will never open or close.
         </p>
+
+        <PropHeader type='[String, Function(dataItem, searchTerm)]' default='startsWith'>filter</PropHeader>
+        <p>
+          Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjuction with
+          the <code>suggest</code> prop or instead of it. There are a few prebuilt filtering methods that can be specified
+          by passing the <code>String</code> name. You can explicitly opt out of filtering by setting filter
+          to <code>false</code>
+        </p>
+        <p>
+          To handle custom filtering techniques provide
+          a <code>{'function'}</code> that returns <code>true</code> or <code>false</code> for each passed in item
+          (analogous to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+          array.filter</a> builtin)
+        </p>
+        <p>
+          Acceptable values for filter are:&nbsp;
+          <code>false</code> <code>"startsWith"</code> <code>"endsWith"</code> <code>"contains"</code>&nbsp;
+          <code>{'function(String item)'}</code>
+        </p>
+        <EditableExample codeText={require('../examples/filter')(widgetName)}/>
 
         <PropHeader type='Boolean' default="false">busy</PropHeader>
         <p>

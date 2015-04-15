@@ -135,7 +135,7 @@ var ComboBox = React.createClass({
           are always "startsWith", meaning it will search from the start of the <code>textField</code> property
         </p>
 
-        <PropHeader type='[Boolean, String, Function(String item)]' default='false'>filter</PropHeader>
+        <PropHeader type='[Boolean, String, Function(dataItem, searchTerm)]' default='false'>filter</PropHeader>
         <p>
           Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjuction with
           the <code>suggest</code> prop or instead of it. There are a few prebuilt filtering methods that can be specified
@@ -145,7 +145,7 @@ var ComboBox = React.createClass({
         <p>
           To handle custom filtering techniques provide
           a <code>{'function'}</code> that returns <code>true</code> or <code>false</code> for each passed in item
-          (just like the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+          (analogous to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
           array.filter</a> builtin)
         </p>
         <p>
