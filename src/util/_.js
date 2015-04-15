@@ -100,7 +100,7 @@ var _ =
   }
 
 function has(o, k){
-  return o ? Object.prototype.hasOwnProperty.call(o, k) : false
+  return (o && typeof o === 'object') ? k in o : false
 }
 
 function eql(a, b){

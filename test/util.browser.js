@@ -87,6 +87,19 @@ describe('_ utils', function(){
     expect( _.transform([ 0, 1 ], 
       (o, v ) => o[v] = ++v, {})).to.eql({ 0:1, 1: 2})
   })
+
+  it('should HAS', function(){
+    var obj = { a: 42 },
+        withoutPrototype = _.assign(Object.create(null), { a: 42 }),
+        withPropInPrototypeChain = Object.create({ a: 42 }, { b: { value: 13 } })
+
+      expect(_.has(obj, 'a')).to.be(true);
+      expect(_.has(obj, 'b')).to.be(false);
+      expect(_.has(withoutPrototype, 'a')).to.be(true);
+      expect(_.has(withoutPrototype, 'b')).to.be(false);
+      expect(_.has(withPropInPrototypeChain, 'a')).to.be(true);
+      expect(_.has(withPropInPrototypeChain, 'b')).to.be(true);
+  })
 })
 
 describe('when using array filter helpers', function(){
