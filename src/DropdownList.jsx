@@ -1,5 +1,6 @@
 'use strict';
 var React           = require('react')
+  , activeElement   = require('react/lib/getActiveElement')
   , _               = require('./util/_')
   , cx              = require('classnames')
   , compat          = require('./util/compat')
@@ -173,11 +174,13 @@ var DropdownList = React.createClass({
   },
 
   _focus: _.ifNotDisabled(true, function(focused, e){
+   
+    if( !focused)  console.log(e)
 
     this.setTimeout('focus', () => {
-
-      if(focused) compat.findDOMNode(this).focus()
-      else        this.close()
+      console.log(focused)
+      if( !focused) 
+        this.close()
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
@@ -199,7 +202,8 @@ var DropdownList = React.createClass({
       , list = this.refs.list
       , focusedItem = this.state.focusedItem
       , selectedItem = this.state.selectedItem
-      , isOpen = this.props.open;
+      , isOpen = this.props.open
+      , closeWithFocus = () => { this.close(), this.focus()};
 
 
     if ( key === 'End' ) {
@@ -213,7 +217,7 @@ var DropdownList = React.createClass({
       e.preventDefault()
     }
     else if ( key === 'Escape' && isOpen ) {
-      this.close()
+      closeWithFocus()
     }
     else if ( (key === 'Enter' || key === ' ') && isOpen ) {
       change(this.state.focusedItem, true)
@@ -225,7 +229,7 @@ var DropdownList = React.createClass({
       e.preventDefault()
     }
     else if ( key === 'ArrowUp' ) {
-      if ( alt )         this.close()
+      if ( alt )         closeWithFocus()
       else if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
       else               change(list.prev(selectedItem))
       e.preventDefault()
@@ -253,6 +257,12 @@ var DropdownList = React.createClass({
       this.notify('onChange', data)
       this.close()
     }
+    this.focus()
+  },
+
+  focus(){
+    if ( activeElement() !== compat.findDOMNode(this))
+      compat.findDOMNode(this).focus()
   },
 
   _data(){
