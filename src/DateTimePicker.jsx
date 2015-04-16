@@ -308,11 +308,11 @@ var DateTimePicker = React.createClass({
   },
 
   focus(){
-    if ( activeElement() !== this.refs.valueInput.getDOMNode())
+    if ( activeElement() !== compat.findDOMNode(this.refs.valueInput))
       this.refs.valueInput.focus()
   },
 
-  _selectDate: function(date){
+  _selectDate(date){
     var format   = getFormat(this.props) 
       , dateTime = dates.merge(date, this.props.value)
       , dateStr  = formatDate(date, format, this.props.culture) 
@@ -323,7 +323,7 @@ var DateTimePicker = React.createClass({
     this.focus()
   },
 
-  _selectTime: function(datum){
+  _selectTime(datum){
     var format   = getFormat(this.props) 
       , dateTime = dates.merge(this.props.value, datum.date)
       , dateStr  = formatDate(datum.date, format, this.props.culture) 
