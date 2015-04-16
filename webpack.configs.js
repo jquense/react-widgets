@@ -159,7 +159,8 @@ module.exports = {
     },
 
     loaders: [
-      { test: /\.json$/, loader: "json" }
+      { test: /\.json$/, loader: "json" },
+      { test: /\.raw$/, loader: "raw" }
     ]
 
   }),
@@ -186,7 +187,10 @@ module.exports = {
       'babel/browser': 'window.babel'
     },
 
-    loaders: [{ test: /\.json$/, loader: "json" }],
+    loaders: [
+      { test: /\.json$/, loader: "json" },
+      { test: /\.raw$/, loader: "raw" }
+    ],
   }),
 
   test: makeConfig({

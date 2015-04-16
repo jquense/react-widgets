@@ -3,6 +3,8 @@ var React = require('react')
   , scriptjs = require('scriptjs');
 var EditableExample = require('../EditableExample')
 
+require('../examples/advanced/advanced.less')
+
 var AdvancedPage = React.createClass({
 
   componentDidMount() {
@@ -22,6 +24,8 @@ var AdvancedPage = React.createClass({
 
     return (
       <section {...this.props}>
+        <EditableExample codeText={require('../examples/advanced/filterableDropdown.raw')}/>
+
         <h2>Extending Widgets</h2>
         <p>{`
           While we work to try and make react-widgets as useful as we can, definately can't cover everyone's use cases. To make that
