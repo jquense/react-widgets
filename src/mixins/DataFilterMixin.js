@@ -59,14 +59,14 @@ module.exports = {
 
 
 function getFilter(matcher, searchTerm, ctx){
-  searchTerm = !ctx.caseSensitive 
+  searchTerm = !ctx.props.caseSensitive 
     ? searchTerm.toLowerCase() 
     : searchTerm
 
   return function(item) {
     var val = helper._dataText.call(ctx, item);
 
-    if ( !ctx.caseSensitive )
+    if ( !ctx.props.caseSensitive )
       val = val.toLowerCase();
 
     return matcher(val, searchTerm)

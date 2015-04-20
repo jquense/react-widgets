@@ -151,6 +151,7 @@ var MyDropdownList = React.createClass({
       
     return (
       <DropdownList {...this.props}
+        filter='startsWith'
         disabled={disabled}
         listComponent={DisabledList} 
         disabledItems={items}
@@ -211,11 +212,12 @@ var App = React.createClass({
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
           <section className="example" style={{ marginBottom: 20 }}>
-            <MyDropdownList 
+            <DropdownList
+              placeholder='hi...'
+              filter='contains'
               valueField='id'
               textField='name'
               data={this.state.data}
-              disabled={[2,4]}
             />
           </section>
         </div>
