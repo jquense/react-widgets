@@ -210,7 +210,7 @@ var App = React.createClass({
 
     return (
       <div style={{ fontSize: 14 }}>
-        <div style={{ maxWidth: 600 }}>
+        <div style={{ maxWidth: 600, height: 1500 }}>
           <section className="example" style={{ marginBottom: 20 }}>
             <DropdownList
               placeholder='hi...'

@@ -168,7 +168,8 @@ var DropdownList = React.createClass({
           }
         </div>
         <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
-          onOpening={() => (this.refs.list.forceUpdate(), this.focus())}
+          onOpen={this.focus}
+          onOpening={() => this.refs.list.forceUpdate() }
           onRequestClose={this.close}>
 
           <div>
