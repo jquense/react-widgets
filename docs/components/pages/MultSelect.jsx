@@ -37,10 +37,18 @@ var Multiselect = React.createClass({
 
               <MenuItem>placeholder</MenuItem>
 
+              <MenuItem>searchTerm</MenuItem>
+              <MenuItem>onSearch</MenuItem>
+
               <MenuItem>open</MenuItem>
               <MenuItem>onToggle</MenuItem>
 
+              <MenuItem divider></MenuItem>
               <MenuItem>filter</MenuItem>
+              <MenuItem>caseSensitive</MenuItem>
+              <MenuItem>minLength</MenuItem>
+              <MenuItem divider></MenuItem>
+
               <MenuItem>busy</MenuItem>
               <MenuItem>disabled</MenuItem>
               <MenuItem>readonly</MenuItem>
@@ -146,7 +154,7 @@ var Multiselect = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/groupComponent')(widgetName, true)}/>
 
-        <PropHeader type='String' handler='onSearch' controllable>placeholder</PropHeader>
+        <PropHeader type='String'>placeholder</PropHeader>
         <p>
           The same as an input placeholder, only works in browsers that support the placeholder attribute for inputs
         </p>
@@ -181,10 +189,9 @@ var Multiselect = React.createClass({
 
         <PropHeader type='[String, Function(dataItem, searchTerm)]' default='startsWith'>filter</PropHeader>
         <p>
-          Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjuction with
-          the <code>suggest</code> prop or instead of it. There are a few prebuilt filtering methods that can be specified
-          by passing the <code>String</code> name. You can explicitly opt out of filtering by setting filter
-          to <code>false</code>
+          Specify a filtering method used to reduce the items in the dropdown as you type. There are a few prebuilt filtering 
+          methods that can be specified by passing the <code>String</code> name. You can explicitly opt out of filtering by 
+          setting filter to <code>false</code>
         </p>
         <p>
           To handle custom filtering techniques provide
@@ -198,6 +205,12 @@ var Multiselect = React.createClass({
           <code>{'function(String item)'}</code>
         </p>
         <EditableExample codeText={require('../examples/filter')(widgetName)}/>
+
+        <PropHeader type='Boolean' default='false'>caseSensitive</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Filter the list without regard for case. This only applies to non function values for `}<code>filter</code></p>
+
+        <PropHeader type='Boolean' default='1'>minLength</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Start filtering the list only after the value has reached a minimum length.`}</p>
 
         <PropHeader type='Boolean' default="false">busy</PropHeader>
         <p>

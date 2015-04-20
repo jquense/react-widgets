@@ -212,7 +212,7 @@ var DropdownList = React.createClass({
     var type = e.type
 
     this.setTimeout('focus', () => {
-      console.log(type, focused)
+      //console.log(type, focused)
       if( focused) this.focus()
       else this.close()
 
@@ -230,7 +230,7 @@ var DropdownList = React.createClass({
   }),
 
   _click: _.ifNotDisabled(function(e){
-    let wrapper = this.refs.filterWrapper
+    var wrapper = this.refs.filterWrapper
 
     if( !this.props.filter || !this.props.open )
       this.toggle()

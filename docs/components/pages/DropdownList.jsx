@@ -31,9 +31,19 @@ var DropdownList = React.createClass({
               <MenuItem>groupComponent</MenuItem>
               <MenuItem>groupBy</MenuItem>
 
+              <MenuItem>placeholder</MenuItem>
+
+              <MenuItem>searchTerm</MenuItem>
+              <MenuItem>onSearch</MenuItem>
+
               <MenuItem>open</MenuItem>
               <MenuItem>onToggle</MenuItem>
-              <MenuItem>step</MenuItem>
+
+              <MenuItem divider></MenuItem>
+              <MenuItem>filter</MenuItem>
+              <MenuItem>caseSensitive</MenuItem>
+              <MenuItem>minLength</MenuItem>
+              <MenuItem divider></MenuItem>
 
               <MenuItem>busy</MenuItem>
               <MenuItem>duration</MenuItem>
@@ -135,6 +145,26 @@ var DropdownList = React.createClass({
 
         <EditableExample codeText={require('../examples/groupComponent')(widgetName)}/>
 
+        <PropHeader type='String'>placeholder</PropHeader>
+        <p>
+          Text to display when the value is empty.
+        </p>
+
+        <PropHeader type='String' handler='onSearch' controllable>searchTerm</PropHeader>
+        <p>
+          The string value of the current search being typed into the {widgetName}. When
+          unset (<code>undefined</code>) the {widgetName} will handle the filtering internally.
+          The <code>defaultSearchTerm</code> prop can be used to {'set'} an initialization value for uncontrolled widgets. searchTerm is only
+          relevant when the <code>filter</code> prop is set.
+        </p>
+
+        <PropHeader type='Function(String searchTerm)'>onSearch</PropHeader>
+        <p>
+          Called when the value of the filter input changes either from typing or a pasted value.&nbsp;
+          <code>onSearch</code> should be used when the <code>searchTerm</code> prop
+          is {'set'}.
+        </p>
+
         <PropHeader type='Boolean'>open</PropHeader>
         <p>
           Whether or not the {widgetName} is open. When unset (<code>undefined</code>) the {widgetName} will handle the
@@ -148,6 +178,31 @@ var DropdownList = React.createClass({
           Called when the {widgetName} is about to open or close. <code>onToggle</code> should be used
           when the <code>open</code> prop is {'set'} otherwise the widget open buttons won't work.
         </p>
+
+        <PropHeader type='[String, Function(dataItem, searchTerm)]' default='false'>filter</PropHeader>
+        <p>
+          Specify a filtering method used to reduce the items in the dropdown as you type. There are a few prebuilt filtering 
+          methods that can be specified by passing the <code>String</code> name.
+        </p>
+        <p>
+          To handle custom filtering techniques provide
+          a <code>{'function'}</code> that returns <code>true</code> or <code>false</code> for each passed in item
+          (analogous to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+          array.filter</a> builtin)
+        </p>
+        <p>
+          Acceptable values for filter are:&nbsp;
+          <code>false</code> <code>"startsWith"</code> <code>"endsWith"</code> <code>"contains"</code>&nbsp;
+          <code>{'function(String item)'}</code>
+        </p>
+        <EditableExample codeText={require('../examples/filter')(widgetName)}/>
+
+        <PropHeader type='Boolean' default='false'>caseSensitive</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Filter the list without regard for case. This only applies to non function values for `}<code>filter</code></p>
+
+        <PropHeader type='Boolean' default='1'>minLength</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Start filtering the list only after the value has reached a minimum length.`}</p>
+
 
         <PropHeader type='Boolean' default="false">busy</PropHeader>
         <p>
@@ -175,6 +230,21 @@ var DropdownList = React.createClass({
         <PropHeader type='String' default='"Open Dropdown"'>messages.open</PropHeader>
         <p>
           Dropdown button text for screen readers
+        </p>
+
+        <PropHeader type='String'>messages.filterPlaceholder</PropHeader>
+        <p>
+          The placeholder text for the filter input.
+        </p>
+
+        <PropHeader type='String' default='"There are no items in this list"'>messages.emptyList</PropHeader>
+        <p>
+          Text to display when the <code>data</code> prop array is empty
+        </p>
+
+        <PropHeader type='String' default='"The filter returned no results"'>messages.emptyFilter</PropHeader>
+        <p>
+          Text to display when the the current filter does not return any results
         </p>
 
         <h2 id={ prefix +"keyboard" }>Keyboard Navigation</h2>

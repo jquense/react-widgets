@@ -46,16 +46,15 @@ var DateTimePicker = React.createClass({
           </span>
         </h1>
         <p>
-          Manipulate the different parts of a javascript <code>Date</code> object with ease. Date formats
+          Manipulate different parts of a JavaScript <code>Date</code> object with ease. Date formats
           are <em>highly</em> localized, and localization is hard, rather than provide a half baked solution 
           react-widgets includes a default strategy for that via <a target='_blank' href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468">Globalize.js</a>. 
           You can pass in a <code>culture</code> string to the widgets, but you are responsible for loading the globalize culture file yourself. 
-          You can also completely replace globalize by providing format and parsing for each relevant prop.
+          You can also completely replace globalize by providing format and parsing props.
         </p>
         <p>
-          {`Dates are never mutated but always return and operate on a new Date instance. When the `}<code>calendar</code>{` prop
-          is set the widget takes all props available to the Calendar widget,
-          the same is true for the keyboard navigation!`} 
+          {`Dates are never mutated but always return and operate on a new Date instance. When the `}<code>date</code>{` prop
+          is used the ${widgetName} will pass through the relevant props to the Calendar Widget and Calendar keyboard navigation keys will also work.`} 
         </p>
         <pre className='component-export'>
           <code>

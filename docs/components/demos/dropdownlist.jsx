@@ -3,7 +3,7 @@ var React = require('react')
   , Button = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
   , Dropdown = require('../../../src/index').DropdownList
-  , NumberPicker = require('../../../src/index').NumberPicker
+  , RW = require('../../../src/index')
   , genData = require('../generate-data');
 
 var valueComp = React.createClass({
@@ -51,6 +51,7 @@ var DropdownApi = React.createClass({
       groupBy: this.state.groupBy,
       defaultValue: 1,
       data: list,
+      filter: this.state.filter || false,
       duration: this.state.duration,
       busy: this.state.busy,
       isRtl: this.state.isRtl,
@@ -106,14 +107,23 @@ var DropdownApi = React.createClass({
                 Busy
               </Button>
             </div>
-            <div className='form-group'>
-              <label className='form-label'>Duration</label>
-              <NumberPicker 
-                  value={this.state.duration} 
-                  step={200}
-                  min={0}
-                  max={1000}
-                  onChange={this._set.bind(null, 'duration')}/>
+            <div className='row'>
+              <div className='form-group col-xs-6'>
+                <label className='form-label'>Filter</label>
+                <RW.DropdownList 
+                    value={this.state.filter || false} 
+                    data={[false, 'startsWith', 'endsWith', 'contains']}
+                    onChange={this._set.bind(null, 'filter')}/>
+              </div>
+              <div className='form-group col-xs-6'>
+                <label className='form-label'>Duration</label>
+                <RW.NumberPicker 
+                    value={this.state.duration} 
+                    step={200}
+                    min={0}
+                    max={1000}
+                    onChange={this._set.bind(null, 'duration')}/>
+              </div>
             </div>
           </div>
         </div>

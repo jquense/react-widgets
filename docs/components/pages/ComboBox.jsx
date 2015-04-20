@@ -31,7 +31,12 @@ var ComboBox = React.createClass({
               <MenuItem>groupBy</MenuItem>
               
               <MenuItem>suggest</MenuItem>
+
+              <MenuItem divider></MenuItem>
               <MenuItem>filter</MenuItem>
+              <MenuItem>caseSensitive</MenuItem>
+              <MenuItem>minLength</MenuItem>
+              <MenuItem divider></MenuItem>
 
               <MenuItem>open</MenuItem>
               <MenuItem>onToggle</MenuItem>
@@ -137,7 +142,7 @@ var ComboBox = React.createClass({
 
         <PropHeader type='[Boolean, String, Function(dataItem, searchTerm)]' default='false'>filter</PropHeader>
         <p>
-          Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjuction with
+          Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjunction with
           the <code>suggest</code> prop or instead of it. There are a few prebuilt filtering methods that can be specified
           by passing the <code>String</code> name. You can explicitly opt out of filtering by setting filter
           to <code>false</code>
@@ -155,6 +160,11 @@ var ComboBox = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/filter')(widgetName)}/>
 
+        <PropHeader type='Boolean' default='false'>caseSensitive</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Filter the list without regard for case. This only applies to non function values for `}<code>filter</code></p>
+
+        <PropHeader type='Boolean' default='1'>minLength</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Start filtering the list only after the value has reached a minimum length.`}</p>
 
         <PropHeader type='Boolean'>open</PropHeader>
         <p>
