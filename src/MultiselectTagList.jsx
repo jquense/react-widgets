@@ -69,7 +69,7 @@ module.exports = React.createClass({
                 <Btn tabIndex='-1' onClick={!(disabled || readonly) && this._delete.bind(null, item)}
                   aria-disabled={disabled}
                   disabled={disabled}>
-                  &times;<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
+                  { "\u00d7" }<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
                 </Btn>
               </li>)
           })}
