@@ -37,8 +37,17 @@ var Multiselect = React.createClass({
 
               <MenuItem>placeholder</MenuItem>
 
+              <MenuItem>searchTerm</MenuItem>
+              <MenuItem>onSearch</MenuItem>
+
               <MenuItem>open</MenuItem>
               <MenuItem>onToggle</MenuItem>
+
+              <MenuItem divider></MenuItem>
+              <MenuItem>filter</MenuItem>
+              <MenuItem>caseSensitive</MenuItem>
+              <MenuItem>minLength</MenuItem>
+              <MenuItem divider></MenuItem>
 
               <MenuItem>busy</MenuItem>
               <MenuItem>disabled</MenuItem>
@@ -100,15 +109,20 @@ var Multiselect = React.createClass({
 
         <PropHeader type='String'>valueField</PropHeader>
         <p>
-          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
-          the widget will use strict equality checks to locate the data item, if it exists.
+          A dataItem field name for uniquely identifying items in the <code>data</code> list. A <code>valueField</code> is required 
+          when the <code>value</code> prop is not itself a dataItem. A <code>valueField</code> is useful when specifying the selected item, by
+          its <code>id</code> instead of using the model as the value.
+        </p>
+        <p>
+          When a <code>valueField</code> is not provided, the {widgetName} will use strict equality checks (<code>===</code>) to locate 
+          the <code>value</code> in the <code>data</code> list.
         </p>
         <EditableExample codeText={require('../examples/valueField')(widgetName, true)}/>
 
-        <PropHeader type='String'>textField</PropHeader>
+        <PropHeader type='String | Function(dataItem)'>textField</PropHeader>
         <p>
-          This prop determines which data item field to display in the {widgetName} list andselected item This prop is
-          unnecessary when an <code>itemComponent</code> and <code>tagComponent</code> are provided.
+          {`Specify which data item field to display in the ${widgetName} and selected item. The `}<code>textField</code>{`prop 
+          may also also used as to find an item in the list as you type. Providing an accessor function allows for computed text values`}
         </p>
         <EditableExample codeText={require('../examples/textField')(widgetName, true)}/>
 
@@ -140,7 +154,7 @@ var Multiselect = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/groupComponent')(widgetName, true)}/>
 
-        <PropHeader type='String' handler='onSearch' controllable>placeholder</PropHeader>
+        <PropHeader type='String'>placeholder</PropHeader>
         <p>
           The same as an input placeholder, only works in browsers that support the placeholder attribute for inputs
         </p>
@@ -172,6 +186,31 @@ var Multiselect = React.createClass({
           Called when the {widgetName} is about to open or close. <code>onToggle</code> should be used
           when the <code>open</code> prop is {'set'} otherwise the widget will never open or close.
         </p>
+
+        <PropHeader type='[String, Function(dataItem, searchTerm)]' default='startsWith'>filter</PropHeader>
+        <p>
+          Specify a filtering method used to reduce the items in the dropdown as you type. There are a few prebuilt filtering 
+          methods that can be specified by passing the <code>String</code> name. You can explicitly opt out of filtering by 
+          setting filter to <code>false</code>
+        </p>
+        <p>
+          To handle custom filtering techniques provide
+          a <code>{'function'}</code> that returns <code>true</code> or <code>false</code> for each passed in item
+          (analogous to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+          array.filter</a> builtin)
+        </p>
+        <p>
+          Acceptable values for filter are:&nbsp;
+          <code>false</code> <code>"startsWith"</code> <code>"endsWith"</code> <code>"contains"</code>&nbsp;
+          <code>{'function(String item)'}</code>
+        </p>
+        <EditableExample codeText={require('../examples/filter')(widgetName)}/>
+
+        <PropHeader type='Boolean' default='false'>caseSensitive</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Filter the list without regard for case. This only applies to non function values for `}<code>filter</code></p>
+
+        <PropHeader type='Boolean' default='1'>minLength</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Start filtering the list only after the value has reached a minimum length.`}</p>
 
         <PropHeader type='Boolean' default="false">busy</PropHeader>
         <p>

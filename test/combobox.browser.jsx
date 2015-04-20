@@ -27,7 +27,7 @@ describe('ComboBox', function(){
   })
 
   it('should respect textField and valueFields', function(){
-    var comboBox = render(<ComboBox defaultValue={0} data={dataList} textField='label' valueField='id' />);
+    var comboBox = render(<ComboBox defaultValue={0} data={dataList} textField={ i => i.label } valueField='id' />);
 
     expect(findClass(comboBox, 'rw-input').getDOMNode().value)
       .to.be('jimmy');

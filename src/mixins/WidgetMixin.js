@@ -17,26 +17,26 @@ module.exports = {
                     ]),
   },
 
-  isDisabled: function(){
+  isDisabled(){
     return this.props.disabled === true || this.props.disabled === 'disabled'
   },
 
-  isReadOnly: function(){
+  isReadOnly(){
     return this.props.readOnly === true
       || this.props.readOnly === 'readonly'
   },
 
-  notify: function(handler, args){
+  notify(handler, args){
     this.props[handler]
       && this.props[handler].apply(null, [].concat(args))
   },
 
-  _id: function(suffix){
+  _id(suffix){
     this._id_ || (this._id_ = _.uniqueId('rw_'))
     return (this.props.id || this._id_)  + suffix
   },
 
-  _maybeHandle: function(handler, disabledOnly){
+  _maybeHandle(handler, disabledOnly){
     if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
       return handler
     return function(){}

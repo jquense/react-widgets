@@ -41,8 +41,32 @@
     border-color: @input-border;
   }
 
-  &[readonly]{
+  &[readonly] {
     cursor: not-allowed;
+  }
+}
+
+.rw-filter-input {
+  position: relative;
+  width: 100%;
+  padding-right: 1.9em;
+  border: @input-border @input-border-width solid;
+  border-radius: @input-border-radius;
+  margin-bottom: 2px;
+
+  .rw-rtl &{
+    padding-left: 1.9em;
+    padding-right:  0;
+  }
+
+  > .rw-input {
+    width: 100%;
+    border: none;
+    outline: none;
+  }
+
+  > span {
+    margin-top: -2px;
   }
 }
 
@@ -257,6 +281,9 @@ ul.rw-list {
   }
 }
 
+.rw-placeholder {
+  color: @input-color-placeholder;
+}
 
 .rw-select {
   position: absolute;
@@ -335,7 +362,7 @@ ul.rw-list {
   }
 
   > .rw-select,
-  > .rw-select.rw-rtl {
+  &.rw-rtl > .rw-select {
     border-width: 0;
   }
 }

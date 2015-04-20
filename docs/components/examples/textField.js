@@ -1,24 +1,23 @@
 'use strict';
 module.exports = function(widgetName, isArray){
-var value = !isArray ? 'colors[0]' : 'colors.slice(0,2)'
+var value = !isArray ? 'people[0]' : 'people.slice(0,2)'
 var code = 
 `
 var ${widgetName} = ReactWidgets.${widgetName};
+var people = listOfPeople();
 
-var colors = [
-  { id: 0, name: 'orange'},
-  { id: 1, name: 'purple'},
-  { id: 2, name: 'red' },
-  { id: 3, name: 'blue' },
-];
-
-var widget = 
+var widgets = (<div>
     <${widgetName} 
-      textField='name'
+      textField='firstName'
       defaultValue={${value}} 
-      data={colors}/>
-
-React.render(widget, mountNode);`
+      data={people}/>
+    <${widgetName} 
+      textField={item => item.firstName + ' ' + item.lastName}
+      defaultValue={${value}} 
+      data={people}/>
+  </div>) 
+    
+React.render(widgets, mountNode);`
 
 return code
 }

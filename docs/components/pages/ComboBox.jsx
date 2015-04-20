@@ -31,7 +31,12 @@ var ComboBox = React.createClass({
               <MenuItem>groupBy</MenuItem>
               
               <MenuItem>suggest</MenuItem>
+
+              <MenuItem divider></MenuItem>
               <MenuItem>filter</MenuItem>
+              <MenuItem>caseSensitive</MenuItem>
+              <MenuItem>minLength</MenuItem>
+              <MenuItem divider></MenuItem>
 
               <MenuItem>open</MenuItem>
               <MenuItem>onToggle</MenuItem>
@@ -91,18 +96,23 @@ var ComboBox = React.createClass({
 
         <PropHeader type='String'>valueField</PropHeader>
         <p>
-          A property name of a uniquely identifying field in the <code>data</code> array. If no valueField is provided,
-          the widget will use strict equality checks to locate the data item, if it exists.
+          A dataItem field name for uniquely identifying items in the <code>data</code> list. A <code>valueField</code> is required 
+          when the <code>value</code> prop is not itself a dataItem. A <code>valueField</code> is useful when specifying the selected item, by
+          its <code>id</code> instead of using the model as the value.
+        </p>
+        <p>
+          When a <code>valueField</code> is not provided, the {widgetName} will use strict equality checks (<code>===</code>) to locate 
+          the <code>value</code> in the <code>data</code> list.
         </p>
         <EditableExample codeText={require('../examples/valueField')(widgetName)}/>
 
-        <PropHeader type='String'>textField</PropHeader>
+        <PropHeader type='String | Function(dataItem)'>textField</PropHeader>
         <p>
-          This prop determines which data item field to display in the dropdown list and the text value of {widgetName}.
-          This prop is unnecessary when an <code>itemComponent</code> is provided.
+          {`Specify which data item field to display in the ${widgetName} and selected item. The `}<code>textField</code>{`prop 
+          may also also used as to find an item in the list as you type. Providing an accessor function allows for computed text values`}
         </p>
         <EditableExample codeText={require('../examples/textField')(widgetName)}/>
-
+        
         <PropHeader type='Component'>itemComponent</PropHeader>
         <p>
           This component is used to render each possible item in the DropdownList. The default component
@@ -130,9 +140,9 @@ var ComboBox = React.createClass({
           are always "startsWith", meaning it will search from the start of the <code>textField</code> property
         </p>
 
-        <PropHeader type='[Boolean, String, Function(String item)]' default='false'>filter</PropHeader>
+        <PropHeader type='[Boolean, String, Function(dataItem, searchTerm)]' default='false'>filter</PropHeader>
         <p>
-          Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjuction with
+          Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjunction with
           the <code>suggest</code> prop or instead of it. There are a few prebuilt filtering methods that can be specified
           by passing the <code>String</code> name. You can explicitly opt out of filtering by setting filter
           to <code>false</code>
@@ -140,7 +150,7 @@ var ComboBox = React.createClass({
         <p>
           To handle custom filtering techniques provide
           a <code>{'function'}</code> that returns <code>true</code> or <code>false</code> for each passed in item
-          (just like the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+          (analogous to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
           array.filter</a> builtin)
         </p>
         <p>
@@ -150,6 +160,11 @@ var ComboBox = React.createClass({
         </p>
         <EditableExample codeText={require('../examples/filter')(widgetName)}/>
 
+        <PropHeader type='Boolean' default='false'>caseSensitive</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Filter the list without regard for case. This only applies to non function values for `}<code>filter</code></p>
+
+        <PropHeader type='Boolean' default='1'>minLength</PropHeader>
+        <p>{`Use in conjunction with the filter prop. Start filtering the list only after the value has reached a minimum length.`}</p>
 
         <PropHeader type='Boolean'>open</PropHeader>
         <p>

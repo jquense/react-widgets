@@ -26,20 +26,20 @@ var propTypes = {
       //-------------------------------------------
 
       valueField:      React.PropTypes.string,
-      textField:       React.PropTypes.string,
+      textField:       CustomPropTypes.accessor,
 
       tagComponent:    CustomPropTypes.elementType,
       itemComponent:   CustomPropTypes.elementType,
       listComponent:   CustomPropTypes.elementType,
 
       groupComponent:  CustomPropTypes.elementType,
-      groupBy:         React.PropTypes.oneOfType([
-                         React.PropTypes.func,
-                         React.PropTypes.string
-                       ]),
+      groupBy:         CustomPropTypes.accessor,
 
       onSelect:        React.PropTypes.func,
-      onCreate:        React.PropTypes.func,
+      onCreate:        React.PropTypes.oneOfType([ 
+                         React.PropTypes.oneOf([false]),
+                         React.PropTypes.func
+                       ]),
 
       dropUp:          React.PropTypes.bool,
       duration:        React.PropTypes.number, //popup
@@ -183,6 +183,7 @@ var Multiselect = React.createClass({
             onKeyUp={this._searchgKeyUp}
             onChange={this._typing}
             onFocus={this._inputFocus}
+            onClick={this._inputFocus}
             maxLength={this.props.maxLength}/>
         </div>
         <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}

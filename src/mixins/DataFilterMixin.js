@@ -18,14 +18,14 @@ module.exports = {
       minLength:      React.PropTypes.number,
     },
 
-    getDefaultProps: function(){
+    getDefaultProps(){
       return {
         caseSensitive: false,
         minLength: 1
       }
     },
 
-    filterIndexOf: function(items, searchTerm){
+    filterIndexOf(items, searchTerm){
       var idx = -1
         , matches = typeof this.props.filter === 'function'
             ? this.props.filter
@@ -35,7 +35,7 @@ module.exports = {
         return -1
 
       items.every( (item, i) => {
-        if (matches(item, searchTerm))
+        if (matches(item, searchTerm, i))
           return (idx = i), false
 
         return true
@@ -44,7 +44,7 @@ module.exports = {
       return idx  
     },
 
-    filter: function(items, searchTerm){
+    filter(items, searchTerm){
       var matches = typeof this.props.filter === 'string'
             ? getFilter(filters[this.props.filter], searchTerm, this)
             : this.props.filter;
@@ -53,20 +53,20 @@ module.exports = {
         return items
 
       return items.filter( 
-        item => matches(item, searchTerm))
+        (item, idx) => matches(item, searchTerm, idx))
     }
   }
 
 
 function getFilter(matcher, searchTerm, ctx){
-  searchTerm = !ctx.caseSensitive 
+  searchTerm = !ctx.props.caseSensitive 
     ? searchTerm.toLowerCase() 
     : searchTerm
 
   return function(item) {
     var val = helper._dataText.call(ctx, item);
 
-    if ( !ctx.caseSensitive )
+    if ( !ctx.props.caseSensitive )
       val = val.toLowerCase();
 
     return matcher(val, searchTerm)

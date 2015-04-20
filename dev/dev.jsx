@@ -12,6 +12,7 @@ var DatePicker = require('../src/DateTimePicker.jsx')
 var NumberPicker = require('../src/NumberPicker.jsx')
 var ComboBox = require('../src/Combobox.jsx')
 var SelectList = require('../src/SelectList.jsx')
+var List = require('../src/List.jsx')
 var configure = require('../src/configure')
 var chance = new (require('chance'))
 var _ = require('lodash')
@@ -22,34 +23,142 @@ window.Globalize.culture('en-GB');
 
 configure.setGlobalizeInstance(window.Globalize);
 
-var ListItem = React.createClass({
+var FilterList = React.createClass({
 
-  render: function(){
+  propTypes: {
+    open: React.PropTypes.bool,
+    ...List.type.propTypes,
+  },
 
-    return (<span>{ "hi: " + this.props.item.name}</span>)
+  componentDidUpdate(prevProps){
+    if (!prevProps.open && this.props.open)
+      setTimeout(() => this.refs.input.getDOMNode().focus())
+  },
+
+  render(){
+
+    return (
+      <div>
+        <input ref='input' type='text' onClick={ e => e.stopPropagation()}/>
+        <List ref='list' {...this.props}/>
+      </div>
+    )
+  },
+
+  first(...args){
+    return this.refs.list.first(...args)
+  },
+
+  last(...args){
+    return this.refs.list.last(...args)
+  },
+
+  next(...args){
+    return this.refs.list.next(...args)
+  },
+
+  prev(...args){
+    return this.refs.list.prev(...args)
   }
+
 })
 
 
-var MyModal = React.createClass({
-  render: function() {
-    var list = generateList()
+var DisabledList = React.createClass({
+
+  // proptypes tell the parent widget what to pass into it
+  // the DropdownList will inspect propTypes and _.pick() those keys to pass in
+  propTypes: {
+    disabledItems: React.PropTypes.array,
+    ...List.type.propTypes,
+  },
+
+  componentWillMount(){
+    var parent = this
+
+    // we need to use a closure to allow the list item to know whether its disabled or not
+    // do this infrequently though b/c it is costly, hence we save it in state
+    this.setState({
+      listItem: React.createClass({
+        render() {
+          // add css rules to make it look "disabled"
+          var classes = parent.isDisabled(this.props.item) ? 'rw-state-disabled' : ''
+
+          return <div className={classes}>{this.props.item.name}</div>
+        }
+      })
+    })
+  },
+
+  render() {
     return (
-        <Modal {...this.props} title="Modal heading" animation={false}>
-          <DropdownList
-              isRtl={false}
-              id='MyDropdownList'
-              data={ list }
-              textField='name'
-              valueField='id'
-              defaultValue={list[1]}/>
-          <div className="modal-footer">
-            <button onClick={this.props.onRequestHide}>Close</button>
-          </div>
-        </Modal>
-      );
+      <List {...this.props} 
+        ref='list' 
+        itemComponent={this.state.listItem}
+        onSelect={ item => {
+          if (!this.isDisabled(item))
+            this.props.onSelect(item) // only allow selection of non-disabled items
+        }}
+      />
+    )
+  },
+
+  isDisabled(item){
+    return this.props.disabledItems 
+      && this.props.disabledItems.some( id => id === item.id )
+  },
+
+  // Get the next item in teh sequence, but keep going if the next one is disabled
+  move(dir, item){
+    var stop = dir === 'next' ? this.refs.list.last() : this.refs.list.first()
+      , next = this.refs.list[dir](item);
+    
+    while( next !== stop && this.isDisabled(next)) 
+      next = this.refs.list[dir](next)
+
+    return this.isDisabled(next) ? item  : next
+  },
+
+
+  // -- These are the basic List methods that must be implemented
+  first() {
+    this.move('next', null)
+  },
+
+  last() {
+    this.move('prev', null)
+  },
+
+  next(...args){
+    var item = this.refs.list.next(...args)
+
+    return this.move('next', item)
+  },
+
+  prev(...args){
+    var item = this.refs.list.prev(...args)
+
+    return this.move('prev', item)
   }
-});
+
+})
+
+var MyDropdownList = React.createClass({
+
+  render(){
+    var disabled = this.props.disabled && !Array.isArray(this.props.disabled)
+      , items = Array.isArray(this.props.disabled) ? this.props.disabled : [];
+      
+    return (
+      <DropdownList {...this.props}
+        filter='startsWith'
+        disabled={disabled}
+        listComponent={DisabledList} 
+        disabledItems={items}
+      />
+    )
+  }
+})
 
 var App = React.createClass({
 
@@ -103,14 +212,17 @@ var App = React.createClass({
       <div style={{ fontSize: 14 }}>
         <div style={{ maxWidth: 600 }}>
           <section className="example" style={{ marginBottom: 20 }}>
-            <DatePicker min={new Date()}/>
+            <DropdownList
+              placeholder='hi...'
+              filter='contains'
+              valueField='id'
+              textField='name'
+              data={this.state.data}
+            />
           </section>
         </div>
       </div>
-
     )
-
-
   },
 
 

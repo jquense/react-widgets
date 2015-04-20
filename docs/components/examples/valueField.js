@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(widgetName, isArray){
-var value = !isArray ? '0' : '[0, 1]'
+var value = !isArray ? '1' : '[1,2]'
 var code = 
 `
 var ${widgetName} = ReactWidgets.${widgetName};

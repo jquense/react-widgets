@@ -25,14 +25,11 @@ var propTypes = {
       listComponent:  CustomPropTypes.elementType,
 
       groupComponent: CustomPropTypes.elementType,
-      groupBy:        React.PropTypes.oneOfType([
-                        React.PropTypes.func,
-                        React.PropTypes.string
-                      ]),
+      groupBy:        CustomPropTypes.accessor,
 
       data:           React.PropTypes.array,
       valueField:     React.PropTypes.string,
-      textField:      React.PropTypes.string,
+      textField:      CustomPropTypes.accessor,
       name:           React.PropTypes.string,
 
       onSelect:       React.PropTypes.func,
@@ -77,7 +74,7 @@ var ComboBox = React.createClass({
 
   propTypes: propTypes,
 
-  getInitialState: function(){
+  getInitialState(){
     var items = this.process(this.props.data, this.props.value)
       , idx   = this._dataIndexOf(items, this.props.value);
 
@@ -89,7 +86,7 @@ var ComboBox = React.createClass({
     }
   },
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       data: [],
       value: '',
@@ -106,11 +103,11 @@ var ComboBox = React.createClass({
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     validateList(this.refs.list)
   },
 
-  shouldComponentUpdate: function(nextProps, nextState){
+  shouldComponentUpdate(nextProps, nextState){
     var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
       , stateChanged = !_.isShallowEqual(nextState, this.state)
       , valueChanged = !_.isShallowEqual(nextProps, this.props)
@@ -118,7 +115,7 @@ var ComboBox = React.createClass({
     return isSuggesting || stateChanged || valueChanged
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     var rawIdx = this._dataIndexOf(nextProps.data, nextProps.value)
       , valueItem = rawIdx == -1 ? nextProps.value : nextProps.data[rawIdx]
       , isSuggesting = this.refs.input.isSuggesting()
@@ -141,7 +138,7 @@ var ComboBox = React.createClass({
     })
   },
 
-  render: function(){
+  render(){
     var { 
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
@@ -159,8 +156,8 @@ var ComboBox = React.createClass({
       <div {...props }
         ref="element"
         role='combobox'
-        onKeyDown={this._maybeHandle(this._keyDown)}
-        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onKeyDown={this._keyDown}
+        onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex="-1"
         className={cx(className, 'rw-combobox', 'rw-widget', {
@@ -174,7 +171,7 @@ var ComboBox = React.createClass({
         <Btn
           tabIndex='-1'
           className='rw-select'
-          onClick={this._maybeHandle(this.toggle)}
+          onClick={this.toggle}
           disabled={!!(this.props.disabled || this.props.readOnly)}>
           <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
             <span className="rw-sr">{ this.props.messages.open }</span>
@@ -216,7 +213,7 @@ var ComboBox = React.createClass({
               data={items}
               selected={this.state.selectedItem}
               focused ={this.state.focusedItem}
-              onSelect={this._maybeHandle(this._onSelect)}
+              onSelect={this._onSelect}
               onMove={this._scrollTo}
               messages={{
                 emptyList: this.props.data.length
@@ -229,19 +226,19 @@ var ComboBox = React.createClass({
     )
   },
 
-  _onSelect: function(data){
+  _onSelect: _.ifNotDisabled(function(data){
     this.close()
     this.notify('onSelect', data)
     this.change(data)
     this._focus(true);
-  },
+  }),
 
-  _inputKeyDown: function(e){
+  _inputKeyDown(e){
     this._deleting = e.key === 'Backspace' || e.key === 'Delete'
     this._isTyping = true
   },
 
-  _inputTyping: function(e){
+  _inputTyping(e){
     var self = this
       , shouldSuggest = !!this.props.suggest
       , strVal  = e.target.value
@@ -262,7 +259,7 @@ var ComboBox = React.createClass({
     this.open()
   },
 
-  _focus: function(focused, e){
+  _focus: _.ifNotDisabled(true, function(focused, e){
     clearTimeout(this.timer)
     !focused && this.refs.input.accept() //not suggesting anymore
 
@@ -275,9 +272,9 @@ var ComboBox = React.createClass({
         this.setState({ focused })
       }
     }, 0)
-  },
+  }),
 
-  _keyDown: function(e){
+  _keyDown: _.ifNotDisabled(function(e){
     var self = this
       , key  = e.key
       , alt  = e.altKey
@@ -332,32 +329,32 @@ var ComboBox = React.createClass({
 
       self.change(item, false)
     }
-  },
+  }),
 
-  change: function(data, typing){
+  change(data, typing){
     this._typedChange = !!typing
     this.notify('onChange', data)
   },
 
-  open: function(){
+  open(){
     if ( !this.props.open )
       this.notify('onToggle', true)
   },
 
-  close: function(){
+  close(){
     if ( this.props.open )
       this.notify('onToggle', false)
   },
 
-  toggle: function(e){
+  toggle: _.ifNotDisabled(function(e){
     this._focus(true)
 
     this.props.open
       ? this.close()
       : this.open()
-  },
+  }),
 
-  suggest: function(data, value){
+  suggest(data, value){
     var word = this._dataText(value)
       , matcher = filter.startsWith
       , suggestion = typeof value === 'string'
@@ -376,11 +373,11 @@ var ComboBox = React.createClass({
     }
   },
 
-  _data: function(){
+  _data(){
     return this.state.processedData
   },
 
-  process: function(data, values, searchTerm){
+  process(data, values, searchTerm){
     if( this.props.filter && searchTerm)
       data = this.filter(data, searchTerm)
 

@@ -7,21 +7,19 @@ module.exports = function(viewUnit, smallUnit){
 
   return { 
     propTypes: {
-      value:        React.PropTypes.instanceOf(Date),
-      min:          React.PropTypes.instanceOf(Date),
-      max:          React.PropTypes.instanceOf(Date),
+      value: React.PropTypes.instanceOf(Date),
+      min:   React.PropTypes.instanceOf(Date),
+      max:   React.PropTypes.instanceOf(Date),
     },
 
-    getInitialState: function(){
+    getInitialState() {
       return {
-        focusedDate:   constrainValue(this.props.value, this.props.min, this.props.max)
+        focusedDate: constrainValue(this.props.value, this.props.min, this.props.max)
       }
     },
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps(nextProps) {
       var focused = this.state.focusedDate
-
-      //!dates.inRange(focused, nextProps.min, nextProps.max)
 
       if ( !dates.eq(nextProps.value, focused, smallUnit) ) 
         this.setState({
@@ -29,7 +27,7 @@ module.exports = function(viewUnit, smallUnit){
         })
     },
 
-    _keyDown: function(e){
+    _keyDown(e) {
       var key = e.key
         , current = this.state.focusedDate
         , date = current;

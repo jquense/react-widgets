@@ -26,7 +26,7 @@ module.exports = React.createClass({
     selectedIndex: React.PropTypes.number,
     focusedIndex:  React.PropTypes.number,
     valueField:    React.PropTypes.string,
-    textField:     React.PropTypes.string,
+    textField:     CustomPropTypes.accessor,
 
     optID:         React.PropTypes.string,
 

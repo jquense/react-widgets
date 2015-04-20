@@ -7,6 +7,7 @@ var React = require('react')
   , { whitelist, ...config } = require('../../package.json').babel
   , ReactWidgets = require('../../src/index')
   , MultiselectTagList = require('../../src/MultiselectTagList')
+  , List = require('../../src/List')
   , genData = require('./generate-data');
 
 function listOfPeople(){
@@ -14,7 +15,7 @@ function listOfPeople(){
 }
 
 function scopedEval(code, mountNode)  {
-  var context = { ReactWidgets: { ...ReactWidgets, MultiselectTagList }, listOfPeople, mountNode, React }
+  var context = { ReactWidgets: { ...ReactWidgets, MultiselectTagList, List }, listOfPeople, mountNode, React }
 
   return (new Function( "with(this) { " + code + "}")).call(context);
 }

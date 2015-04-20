@@ -20,8 +20,10 @@ var TagItem = React.createClass({
 
 var widget =(
     <${widgetName} 
-      data={people} 
+      data={people}
+      defaultValue={people.slice(0, 1)} 
       textField='name'
+
       tagComponent={TagItem}/>) 
 
 React.render(widget, mountNode)`

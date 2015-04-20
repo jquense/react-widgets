@@ -24,6 +24,11 @@ module.exports = {
                     React.PropTypes.string, 
                     React.PropTypes.func
                   ]),
+
+    accessor:     React.PropTypes.oneOfType([
+                    React.PropTypes.string, 
+                    React.PropTypes.func
+                  ]),
 }
 
 

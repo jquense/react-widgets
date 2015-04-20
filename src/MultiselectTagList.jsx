@@ -3,6 +3,7 @@ var React = require('react')
   , _     = require('./util/_')
   , cx    = require('classnames')
   , Btn   = require('./WidgetButton')
+  , CustomPropTypes = require('./util/propTypes');
 
 module.exports = React.createClass({
   
@@ -17,7 +18,7 @@ module.exports = React.createClass({
     value:          React.PropTypes.array,
 
     valueField:     React.PropTypes.string,
-    textField:      React.PropTypes.string,
+    textField:      CustomPropTypes.accessor,
 
     valueComponent: React.PropTypes.func,
 
