@@ -36,7 +36,10 @@ var propTypes = {
       groupBy:         CustomPropTypes.accessor,
 
       onSelect:        React.PropTypes.func,
-      onCreate:        React.PropTypes.func,
+      onCreate:        React.PropTypes.oneOfType([ 
+                         React.PropTypes.oneOf([false]),
+                         React.PropTypes.func
+                       ]),
 
       dropUp:          React.PropTypes.bool,
       duration:        React.PropTypes.number, //popup
