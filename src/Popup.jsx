@@ -31,7 +31,9 @@ module.exports = React.createClass({
     onOpen:         React.PropTypes.func
   },
 
-  getDefaultProps: function(){
+  getInitialState(){ return {} },
+
+  getDefaultProps(){
     return {
       duration:    200,
       open:        false,
@@ -42,25 +44,27 @@ module.exports = React.createClass({
     }
   },
 
-  componentDidMount: function(){
+  componentDidMount(){
     !this.props.open && this.close(0)
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.setState({
       contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
     })
   },
 
-  componentDidUpdate: function(pvProps, pvState){
+  componentDidUpdate(pvProps, pvState){
     var closing =  pvProps.open && !this.props.open
-      , opening = !pvProps.open && this.props.open;
+      , opening = !pvProps.open && this.props.open
+      , open    =  this.props.open;
 
     if (opening)      this.open()
     else if (closing) this.close()
+    else if (open)    this.height()
   },
 
-  render: function(){
+  render() {
     var { 
         className
       , open
@@ -69,7 +73,14 @@ module.exports = React.createClass({
 
 
     return (
-      <div {...props} className={cn(className, "rw-popup-container", { "rw-dropup": dropUp })}>
+      <div {...props} 
+        style={{ 
+          display: open ? 'block' : void 0,
+          height: this.state.height,
+          ...props.style 
+        }} 
+        className={cn(className, "rw-popup-container", { "rw-dropup": dropUp })}
+      >
         <PopupContent ref='content'>
           { this.props.children }
         </PopupContent>
@@ -77,17 +88,22 @@ module.exports = React.createClass({
     )
   },
 
-  dimensions: function(){
+
+  height(){
     var el = compat.findDOMNode(this)
       , content = compat.findDOMNode(this.refs.content)
       , margin = parseInt($.css(content, 'margin-top'), 10)
                + parseInt($.css(content, 'margin-bottom'), 10);
 
-    el.style.display = 'block'
-    el.style.height  = $.height(content) + (isNaN(margin) ? 0 : margin ) + 'px'
+    var height = $.height(content) + (isNaN(margin) ? 0 : margin )
+
+    if( this.state.height !== height) {
+      el.style.height  = height + 'px'
+      this.setState({ height })
+    }
   },
 
-  open: function(){
+  open() {
     var self = this
       , anim = compat.findDOMNode(this)
       , el   = compat.findDOMNode(this.refs.content);
@@ -95,7 +111,7 @@ module.exports = React.createClass({
     this.ORGINAL_POSITION = $.css(el, 'position')
 
     this._isOpening = true
-    this.dimensions()
+    this.height()
     this.props.onOpening()
 
     anim.className += ' rw-popup-animating'
@@ -118,7 +134,7 @@ module.exports = React.createClass({
         })
   },
 
-  close: function(dur){
+  close(dur) {
     var self = this
       , el   = compat.findDOMNode(this.refs.content)
       , anim = compat.findDOMNode(this);
@@ -126,7 +142,7 @@ module.exports = React.createClass({
     this.ORGINAL_POSITION = $.css(el, 'position')
 
     this._isOpening = false
-    this.dimensions()
+    this.height()
     this.props.onClosing()
 
     anim.style.overflow = 'hidden'

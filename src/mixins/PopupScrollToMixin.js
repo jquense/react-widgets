@@ -16,13 +16,13 @@ module.exports = {
     changed = lastItem !== focused
     shown   = state.visible && !lastVisible
 
-    // if ( shown || (state.visible && changed) ){
-    //   if ( handler ) 
-    //     handler(selected, list, focused)
-    //   else {
-    //     state.scrollCancel && state.scrollCancel()
-    //     state.scrollCancel = scrollTo(selected, list)
-    //   }
-    // }
+    if ( shown || (state.visible && changed) ){
+      if ( handler ) 
+        handler(selected, list, focused)
+      else {
+        state.scrollCancel && state.scrollCancel()
+        state.scrollCancel = scrollTo(selected, list)
+      }
+    }
   },
 }
