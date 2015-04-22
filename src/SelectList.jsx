@@ -266,6 +266,7 @@ var SelectList = React.createClass({
     this.setTimeout('focus', () => {
       if( focused) compat.findDOMNode(this).focus()
       if( focused !== this.state.focused){
+        this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused: focused })
       }
     })
