@@ -103,9 +103,8 @@ var DropdownList = React.createClass({
     }
   },
 
-  
-  componentDidMount() {
-    validateList(this.refs.list)
+  componentDidUpdate() {
+    this.refs.list && validateList(this.refs.list)
   },
 
   componentWillReceiveProps(props){
@@ -129,6 +128,7 @@ var DropdownList = React.createClass({
       , valueItem = this._dataItem(data, this.props.value )
       , optID = this._id('_option')
       , dropUp = this.props.dropUp
+      , renderList = _.isFirstFocusedRender(this) || this.props.open
       , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList;
 
     return (
@@ -174,7 +174,8 @@ var DropdownList = React.createClass({
 
           <div>
             { this.props.filter && this._renderFilter() }
-            <List ref="list" 
+            { renderList && 
+              <List ref="list" 
               {..._.pick(
                   this.props
                 , Object.keys(compat.type(List).propTypes))
@@ -191,6 +192,7 @@ var DropdownList = React.createClass({
                   ? this.props.messages.emptyFilter
                   : this.props.messages.emptyList
               }}/>
+            }           
           </div>
         </Popup>
       </div>
@@ -217,7 +219,7 @@ var DropdownList = React.createClass({
       if( focused) this.focus()
       else this.close()
 
-      if( focused !== this.state.focused){
+      if( focused !== this.state.focused) {
         this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused: focused })
       }

@@ -5,10 +5,25 @@ var React  = require('react')
   , cn = require('classnames')
   , compat = require('./util/compat');
 
+var transform = config.animate.transform
+  , support = !!config.animate.endEvent
+
+function properties(prop, value){
+  var TRANSLATION_MAP = config.animate.TRANSLATION_MAP
+  
+  if( TRANSLATION_MAP && TRANSLATION_MAP[prop])
+    return { [transform]: `${TRANSLATION_MAP[prop]}(${value})` } 
+
+  return { [prop]: value }
+}
 
 var PopupContent = React.createClass({
   render: function(){
-    var child = React.Children.only(this.props.children)
+    var child = this.props.children;
+
+    if ( !child ) return <span className='rw-popup rw-widget' />
+
+    child = React.Children.only(this.props.children)
 
     return compat.cloneElement(child, { 
       className: cn(child.props.className, 'rw-popup rw-widget') 
@@ -18,6 +33,8 @@ var PopupContent = React.createClass({
 
 
 module.exports = React.createClass({
+
+  displayName: 'Popup',
 
   propTypes: {
     open:           React.PropTypes.bool,
@@ -44,8 +61,11 @@ module.exports = React.createClass({
     }
   },
 
-  componentDidMount(){
-    !this.props.open && this.close(0)
+  // componentDidMount(){
+  //   !this.props.open && this.close(0)
+  // },
+  componentWillMount(){
+    !this.props.open && (this._initialPosition = true)
   },
 
   componentWillReceiveProps(nextProps) {
@@ -70,12 +90,17 @@ module.exports = React.createClass({
       , open
       , dropUp
       , ...props } = this.props
+      , display = open ? 'block' : void 0
+      , styles = {};
 
+    if (this._initialPosition) {
+      display = 'none'
+    }
 
     return (
       <div {...props} 
         style={{ 
-          display: open ? 'block' : void 0,
+          display,
           height: this.state.height,
           ...props.style 
         }} 
@@ -88,6 +113,15 @@ module.exports = React.createClass({
     )
   },
 
+  reset(){
+    var container = compat.findDOMNode(this)
+      , content   = compat.findDOMNode(this.refs.content)
+      , style = { display: 'block', overflow: 'hidden'}
+    
+    $.css(container, style)
+    this.height();
+    $.css(content, properties('top', this.props.dropUp ? '100%' : '-100%'))
+  },
 
   height(){
     var el = compat.findDOMNode(this)
@@ -109,9 +143,15 @@ module.exports = React.createClass({
       , el   = compat.findDOMNode(this.refs.content);
 
     this.ORGINAL_POSITION = $.css(el, 'position')
-
     this._isOpening = true
-    this.height()
+
+    if (this._initialPosition) {
+      this._initialPosition = false
+      this.reset();
+    }
+    else
+      this.height()
+
     this.props.onOpening()
 
     anim.className += ' rw-popup-animating'

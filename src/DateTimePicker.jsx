@@ -94,13 +94,13 @@ var DateTimePicker = React.createClass({
 
   propTypes: propTypes,
 
-  getInitialState: function(){
+  getInitialState() {
     return {
       focused: false,
     }
   },
 
-  getDefaultProps: function(){
+  getDefaultProps() {
 
     return {
       value:            null,
@@ -131,6 +131,7 @@ var DateTimePicker = React.createClass({
       , timeOptID  = this._id('_time_option')
       , dateListID = this._id('_cal')
       , dropUp = this.props.dropUp
+      , renderPopup = _.isFirstFocusedRender(this) || this.props.open
       , value = dateOrNull(this.props.value)
       , owns;
 
@@ -202,27 +203,30 @@ var DateTimePicker = React.createClass({
           }
         </span>
         }
+
         <Popup 
           dropUp={dropUp}
           open={ this.props.open === popups.TIME }
           onRequestClose={this.close}
           duration={this.props.duration}
           onOpening={() => this.refs.timePopup.forceUpdate()}>
-          
+
           <div>
-            <Time ref="timePopup"
-              id={timeListID}
-              optID={timeOptID}
-              aria-hidden={ !this.props.open }
-              value={value}
-              step={this.props.step}
-              min={this.props.min}
-              max={this.props.max}
-              culture={this.props.culture}
-              onMove={this._scrollTo}
-              preserveDate={!!this.props.calendar}
-              itemComponent={this.props.timeComponent}
-              onSelect={this._maybeHandle(this._selectTime)}/>
+            { renderPopup &&
+              <Time ref="timePopup"
+                id={timeListID}
+                optID={timeOptID}
+                aria-hidden={ !this.props.open }
+                value={value}
+                step={this.props.step}
+                min={this.props.min}
+                max={this.props.max}
+                culture={this.props.culture}
+                onMove={this._scrollTo}
+                preserveDate={!!this.props.calendar}
+                itemComponent={this.props.timeComponent}
+                onSelect={this._maybeHandle(this._selectTime)}/>
+            }
           </div>
         </Popup>
         <Popup 
@@ -232,13 +236,15 @@ var DateTimePicker = React.createClass({
           duration={this.props.duration}
           onRequestClose={this.close}>
           
-          <Calendar {...calProps }
-            ref="calPopup"
-            tabIndex='-1'
-            id={dateListID}
-            value={value}
-            aria-hidden={ !this.props.open }
-            onChange={this._maybeHandle(this._selectDate)}/>
+          { renderPopup &&
+            <Calendar {...calProps }
+              ref="calPopup"
+              tabIndex='-1'
+              id={dateListID}
+              value={value}
+              aria-hidden={ !this.props.open }
+              onChange={this._maybeHandle(this._selectDate)}/>
+          }
         </Popup>
       </div>
     )

@@ -86,6 +86,13 @@ var _ =
       return ''+ ((prefix == null ? '' : prefix) + (++idCount));
     },
 
+    //-- Really specific Component Utilities --
+
+    isFirstFocusedRender(component){
+      return component._firstFocus || (component.state.focused && (component._firstFocus = true))
+    },
+
+    
     ifNotDisabled(disabledOnly, fn) {
       if (arguments.length === 1)
         fn = disabledOnly, disabledOnly = false;

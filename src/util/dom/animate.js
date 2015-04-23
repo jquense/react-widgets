@@ -29,6 +29,8 @@ if ( canUseDOM ) {
 }
 
 animate.endEvent = transition.endEvent
+animate.transform = transform
+animate.TRANSLATION_MAP = TRANSLATION_MAP
 
 module.exports = animate
 
@@ -45,7 +47,7 @@ function animate(node, properties, duration, easing, callback){
     if ( typeof easing === 'function' )
       callback = easing, easing = null
 
-    if ( !transition.endEvent )              duration = 0
+    if ( !transition.endEvent )   duration = 0
     if ( duration === undefined ) duration = 200
 
     for(var key in properties) if ( has.call(properties, key) ) {

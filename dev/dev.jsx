@@ -4,9 +4,10 @@ require('../src/less/react-widgets.less')
 //require('react-a11y')();
 
 var React = require('react/addons')
+//var jquery = require('jquery')
 var index = require('../src')
 var DropdownList = require('../src/DropdownList.jsx')
-var Select = require('../src/Multiselect.jsx')
+var Multiselect = require('../src/Multiselect.jsx')
 var Calendar = require('../src/Calendar.jsx')
 var DatePicker = require('../src/DateTimePicker.jsx')
 var NumberPicker = require('../src/NumberPicker.jsx')
@@ -22,24 +23,10 @@ var { ModalTrigger, Modal } = require('react-bootstrap')
 window.Globalize.culture('en-GB');
 
 configure.setGlobalizeInstance(window.Globalize);
+// configure.setAnimate((element, props, duration, ease, callback) => {
+//   return jquery(element).animate(props, duration, callback)
+// })
 
-
-var MyDropdownList = React.createClass({
-
-  render(){
-    var disabled = this.props.disabled && !Array.isArray(this.props.disabled)
-      , items = Array.isArray(this.props.disabled) ? this.props.disabled : [];
-      
-    return (
-      <DropdownList {...this.props}
-        filter='startsWith'
-        disabled={disabled}
-        listComponent={DisabledList} 
-        disabledItems={items}
-      />
-    )
-  }
-})
 
 var App = React.createClass({
 
@@ -61,7 +48,7 @@ var App = React.createClass({
   dropdowns(){
     var i = 0, dropdowns = [];
 
-    while (i++ < 100) {
+    while (i++ < 50) {
       dropdowns.push(<DropdownList
         valueField='id'
         textField='name'
@@ -103,11 +90,7 @@ var App = React.createClass({
 
           <section className="example" style={{ marginBottom: 20 }}>
           <button onClick={() => this.dropdowns()}>add</button>
-          <DropdownList
-            valueField='id'
-            textField='name'
-            data={generateList()}
-          />
+          <DatePicker/>
           { 
             this.state.dropdowns
           }

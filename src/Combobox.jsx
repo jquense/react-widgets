@@ -103,8 +103,8 @@ var ComboBox = React.createClass({
     }
   },
 
-  componentDidMount() {
-    validateList(this.refs.list)
+  componentDidUpdate() {
+    this.refs.list && validateList(this.refs.list)
   },
 
   shouldComponentUpdate(nextProps, nextState){
@@ -147,6 +147,7 @@ var ComboBox = React.createClass({
       , listID = this._id('_listbox')
       , optID  = this._id( '_option')
       , dropUp = this.props.dropUp
+      , renderList = _.isFirstFocusedRender(this) || this.props.open
       , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       , completeType = this.props.suggest
           ? this.props.filter ? 'both' : 'inline'
@@ -204,22 +205,24 @@ var ComboBox = React.createClass({
           onOpening={() => this.refs.list.forceUpdate()}
           onRequestClose={this.close}>
           <div>
-            <List ref="list"
-              {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
-              id={listID}
-              optID={optID}
-              aria-hidden={ !this.props.open }
-              aria-live={ completeType && 'polite' }
-              data={items}
-              selected={this.state.selectedItem}
-              focused ={this.state.focusedItem}
-              onSelect={this._onSelect}
-              onMove={this._scrollTo}
-              messages={{
-                emptyList: this.props.data.length
-                  ? this.props.messages.emptyFilter
-                  : this.props.messages.emptyList
-              }}/>
+            { renderList && 
+              <List ref="list"
+                {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
+                id={listID}
+                optID={optID}
+                aria-hidden={ !this.props.open }
+                aria-live={ completeType && 'polite' }
+                data={items}
+                selected={this.state.selectedItem}
+                focused ={this.state.focusedItem}
+                onSelect={this._onSelect}
+                onMove={this._scrollTo}
+                messages={{
+                  emptyList: this.props.data.length
+                    ? this.props.messages.emptyFilter
+                    : this.props.messages.emptyList
+                }}/>
+            }
           </div>
         </Popup>
       </div>
