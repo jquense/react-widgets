@@ -1,8 +1,14 @@
 'use strict';
 var React       = require('react')
+  , Globalize   = require('globalize')
   , Button      = require('../../bootstrap').Button
   , ButtonGroup = require('../../bootstrap').ButtonGroup
   , RW          = require('../../../src/index');
+
+require('globalize/lib/cultures/globalize.culture.en-GB');
+require('globalize/lib/cultures/globalize.culture.es');
+require('globalize/lib/cultures/globalize.culture.fr');
+require('globalize/lib/cultures/globalize.culture.ar-AE');
 
 module.exports = React.createClass({
   getInitialState: function(){
@@ -13,6 +19,7 @@ module.exports = React.createClass({
   },
 
   render: function(){
+    let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
 
     return (
       <div className='example'>
@@ -23,6 +30,7 @@ module.exports = React.createClass({
                 onChange={this._change}
                 max={this.state.max}
                 min={this.state.min}
+                culture={this.state.culture}
                 footer={this.state.footer}
                 finalView={this.state.finalView}
                 initialView={this.state.initialView}
@@ -52,12 +60,26 @@ module.exports = React.createClass({
                   Readonly
                 </Button>
               </ButtonGroup>
-              <label className='checkbox-inline' style={{marginLeft: 10}}>
-                <input type='checkbox'
-                  checked={this.state.footer}
-                  onChange={this._set.bind(null, 'footer', !this.state.footer)}/>
-                  Footer
-              </label>
+            </div>
+            <div className="row">
+              <div className='form-group col-xs-6'>
+                <label className='control-label'>culture</label>
+                <RW.DropdownList 
+                    value={this.state.culture || cultures[0]} 
+                    data={cultures}
+                    onChange={this._set.bind(null, 'culture')}/>
+              </div>
+              <div className='form-group col-xs-6'>
+                <label className='control-label'>&nbsp;</label>
+                <div className='checkbox'>
+                  <label>
+                    <input type='checkbox'
+                      checked={this.state.footer}
+                      onChange={this._set.bind(null, 'footer', !this.state.footer)}/>
+                    Footer
+                  </label>
+                </div>
+              </div>
             </div>
             <div className="row">
               <div className='form-group col-xs-6'>
@@ -93,6 +115,7 @@ module.exports = React.createClass({
                     onChange={this._set.bind(null, 'max')}/>
               </div>
             </div>
+            
           </div>
         </div>
       </div>
