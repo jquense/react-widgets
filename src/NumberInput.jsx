@@ -122,12 +122,12 @@ module.exports = React.createClass({
 });
 
 
-function parseLocaleFloat(number, parser, culture) {
-  if ( typeof format === 'function')
-    return format(number, culture)
+// function parseLocaleFloat(number, parser, culture) {
+//   if ( typeof format === 'function')
+//     return format(number, culture)
 
-  return config.globalize.parseFloat(number, 10, culture)
-}
+//   return config.globalize.parseFloat(number, 10, culture)
+// }
 
 function formatNumber(number, format, culture){
   if ( typeof format === 'function')

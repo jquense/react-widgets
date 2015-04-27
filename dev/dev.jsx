@@ -23,6 +23,7 @@ var { ModalTrigger, Modal } = require('react-bootstrap')
 window.Globalize.culture('en-GB');
 
 configure.setGlobalizeInstance(window.Globalize);
+
 // configure.setAnimate((element, props, duration, ease, callback) => {
 //   return jquery(element).animate(props, duration, callback)
 // })

@@ -1,7 +1,7 @@
 "use strict";
 
 var dateMath = require('date-arithmetic')
-  , config = require('./configuration')
+  , locale = require('./configuration').locale
   , _ = require('./_'); //extend
 
 var shortNames = {};
@@ -9,63 +9,49 @@ var shortNames = {};
 var dates = module.exports = _.assign(dateMath, {
   // wrapper methods for isolating globalize use throughout the lib
   // looking forward towards the 1.0 release
-  culture: function(culture){
-    return culture
-      ? config.globalize.findClosestCulture(culture)
-      : config.globalize.culture()
-  },
+  // culture: function(culture){
+  //   return culture
+  //     ? config.globalize.findClosestCulture(culture)
+  //     : config.globalize.culture()
+  // },
 
-  startOfWeek: function(culture){
-    culture = dates.culture(culture)
-
-    if (!culture || !culture.calendar)
-      return 0
-
-    return culture.calendar.firstDay || 0
-  },
 
   parse: function(date, format, culture) {
-    if ( typeof format === 'function')
-      return format(date, culture)
-
-    return config.globalize.parseDate(date, format, culture)
+    return locale.date.parse(date, format, culture)
   },
 
   format: function(date, format, culture){
-    if ( typeof format === 'function')
-      return format(date, culture)
-
-    return config.globalize.format(date, format, culture)
+    return locale.date.format(date, format, culture)
   },
   
-  //-------------------------------------
+  // //-------------------------------------
 
-  shortDay: function(dayOfTheWeek){
-    var culture = dates.culture(arguments[1])
-      , name = typeof culture === 'string' ? culture : culture.name;
+  // shortDay: function(dayOfTheWeek){
+  //   var culture = dates.culture(arguments[1])
+  //     , name = typeof culture === 'string' ? culture : culture.name;
 
-    var names = shortNames[name] || (shortNames[name] = dates.shortDaysOfWeek(culture));
+  //   var names = shortNames[name] || (shortNames[name] = dates.shortDaysOfWeek(culture));
 
-    return names[dayOfTheWeek];
-  },
+  //   return names[dayOfTheWeek];
+  // },
 
-  shortDaysOfWeek: function (culture){
-    var start = dates.startOfWeek(culture)
-      , days, front;
+  // shortDaysOfWeek: function (culture){
+  //   var start = dates.startOfWeek(culture)
+  //     , days, front;
 
-    culture = dates.culture(culture)
+  //   culture = dates.culture(culture)
 
-    if (culture && culture.calendar){
-      days = culture.calendar.days.namesShort.slice()
+  //   if (culture && culture.calendar){
+  //     days = culture.calendar.days.namesShort.slice()
 
-      if(start === 0 ) 
-        return days
+  //     if(start === 0 ) 
+  //       return days
       
-      front = days.splice(0, start)
-      days  = days.concat(front)
-      return days
-    }
-  },
+  //     front = days.splice(0, start)
+  //     days  = days.concat(front)
+  //     return days
+  //   }
+  // },
 
   monthsInYear: function(year){
     var months = [0,1,2,3,4,5,6,7,8,9,10,11]
@@ -93,21 +79,16 @@ var dates = module.exports = _.assign(dateMath, {
     return dates.add(dates.firstOfCentury(date), 99, 'year')
   },
 
-  firstVisibleDay: function(date){
   firstVisibleDay: function(date, culture){
     var firstOfMonth = dates.startOf(date, 'month')
-    return dates.startOf(firstOfMonth, 'week');
+    return dates.startOf(firstOfMonth, 'week', locale.date.startOfWeek(culture));
   },
 
-  lastVisibleDay: function(date){
   lastVisibleDay: function(date, culture){
     var endOfMonth = dates.endOf(date, 'month')
-    return dates.endOf(endOfMonth, 'week');
+    return dates.endOf(endOfMonth, 'week', locale.date.startOfWeek(culture));
   },
 
-  visibleDays: function(date){
-    var current = dates.firstVisibleDay(date)
-      , last = dates.lastVisibleDay(date)
   visibleDays: function(date, culture){
     var current = dates.firstVisibleDay(date, culture)
       , last = dates.lastVisibleDay(date, culture)

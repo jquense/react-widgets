@@ -8,6 +8,7 @@ var React           = require('react')
   , Year            = require('./Year')
   , Decade          = require('./Decade')
   , Century         = require('./Century') 
+  , localizers      = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes')
   , createUncontrolledWidget = require('uncontrollable')
   , SlideTransition = require('./SlideTransition')
@@ -134,7 +135,7 @@ var Calendar = React.createClass({
       headerFormat:  dates.formats.MONTH_YEAR,
       footerFormat:  dates.formats.FOOTER,
 
-      dayFormat:     dates.shortDay,
+      dayFormat:     localizers.date.formats.weekday,
       dateFormat:    dates.formats.DAY_OF_MONTH,
       monthFormat:   dates.formats.MONTH_NAME_ABRV,
       yearFormat:    dates.formats.YEAR,
