@@ -155,7 +155,7 @@ var DateTimePicker = React.createClass({
 
           ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
         })}>
-
+        
         <DateInput ref='valueInput'
           aria-labelledby={this.props['aria-labelledby']}
           aria-activedescendant={ this.props.open
@@ -347,21 +347,26 @@ var DateTimePicker = React.createClass({
 
   _parse: function(string){
     var format = getFormat(this.props, true)
+      , editFormat = this.props.editFormat
+      , parse = this.props.parse
       , formats = [];
 
-    if ( typeof this.props.parse === 'function' )
-      return this.props.parse(string, this.props.culture)
+    if ( typeof parse === 'function' )
+      return parse(string, this.props.culture)
 
-    if ( typeof format !== 'function')
+    if ( typeof format === 'string')
       formats.push(format)
 
-    if (this.props.parse)
+    if ( typeof editFormat === 'string')
+      formats.push(editFormat)
+
+    if ( parse )
       formats = formats.concat(this.props.parse)
 
     invariant(formats.length, 
       'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
       'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
-      'please provide either a parse function or Globalize.js compatible string format', string);
+      'please provide either a parse function or Globalize.js compatible string for `format`', string);
 
     return formatsParser(formats, this.props.culture, string);
   },

@@ -134,7 +134,7 @@ var DateTimePicker = React.createClass({
             Globalize.js documentation <i className="fa fa-external-link"></i>
           </a>
         </p>
-        <EditableExample codeText={require('../examples/prop')(widgetName, { editFormat: 'd', format: '"MMM dd yyyy"'})}/>
+        <EditableExample codeText={require('../examples/prop')(widgetName, { defaultValue: 'new Date()', editFormat: '"d"', format: '"MMM dd yyyy"'})}/>
 
 
         <PropHeader type='Number' default="false">step</PropHeader>

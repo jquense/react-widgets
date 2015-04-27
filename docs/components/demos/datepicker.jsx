@@ -5,6 +5,11 @@ var React = require('react')
   , ButtonGroup = require('../../bootstrap').ButtonGroup
   , RW = require('../../../src/index');
 
+require('globalize/lib/cultures/globalize.culture.en-GB');
+require('globalize/lib/cultures/globalize.culture.es');
+require('globalize/lib/cultures/globalize.culture.fr');
+require('globalize/lib/cultures/globalize.culture.ar-AE');
+
 module.exports = React.createClass({
   getInitialState: function(){
     return {
@@ -17,7 +22,9 @@ module.exports = React.createClass({
   render: function(){
     var props;
 
-    var format = this.state.time && this.state.calendar
+    let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE'];
+
+    let format = this.state.time && this.state.calendar
       ? 'MM/dd/yyyy h:mm tt'
       : this.state.time ? 't' : 'd'
 
@@ -25,6 +32,7 @@ module.exports = React.createClass({
       format: this.state.format,
       max: this.state.max || undefined,
       min: this.state.min || undefined,
+      culture: this.state.culture,
       calendar: this.state.calendar,
       time: this.state.time,
       finalView: this.state.finalView,
@@ -40,7 +48,7 @@ module.exports = React.createClass({
         <div className='row'>
           <div className='col-md-6 demo'>
             <div className='form-group'>
-              <RW.DateTimePicker {...props}/>
+              <RW.DateTimePicker defaultValue={new Date()} {...props}/>
             </div>
             <div className='form-group'>
               <label>Custom Rendering</label>
@@ -48,13 +56,25 @@ module.exports = React.createClass({
             </div>
           </div>
           <div className='col-md-6 api-panel'>
-            <div className='form-group'>
-              <label className='checkbox-inline'>
-                <input type='checkbox'
-                  checked={this.state.isRtl}
-                  onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
-                  Right to Left
-              </label>
+            <div className="row">
+              <div className='form-group col-xs-6'>
+                <label className='control-label'>{' '}</label>
+                <div className='checkbox'>
+                  <label>
+                    <input type='checkbox'
+                      checked={this.state.isRtl}
+                      onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
+                      Right to Left
+                  </label>
+                </div>
+              </div>
+              <div className='form-group col-xs-6'>
+                <label className='control-label'>culture</label>
+                <RW.DropdownList 
+                    value={this.state.culture || cultures[0]} 
+                    data={cultures}
+                    onChange={this._set.bind(null, 'culture')}/>
+              </div>
             </div>
             <div className="row">
               <div className='form-group col-xs-7'>
