@@ -94,11 +94,13 @@ var dates = module.exports = _.assign(dateMath, {
   },
 
   firstVisibleDay: function(date){
+  firstVisibleDay: function(date, culture){
     var firstOfMonth = dates.startOf(date, 'month')
     return dates.startOf(firstOfMonth, 'week');
   },
 
   lastVisibleDay: function(date){
+  lastVisibleDay: function(date, culture){
     var endOfMonth = dates.endOf(date, 'month')
     return dates.endOf(endOfMonth, 'week');
   },
@@ -106,6 +108,9 @@ var dates = module.exports = _.assign(dateMath, {
   visibleDays: function(date){
     var current = dates.firstVisibleDay(date)
       , last = dates.lastVisibleDay(date)
+  visibleDays: function(date, culture){
+    var current = dates.firstVisibleDay(date, culture)
+      , last = dates.lastVisibleDay(date, culture)
       , days = [];
 
     while( dates.lte(current, last, 'day') ) {
