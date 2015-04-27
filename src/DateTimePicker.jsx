@@ -94,13 +94,13 @@ var DateTimePicker = React.createClass({
 
   propTypes: propTypes,
 
-  getInitialState: function(){
+  getInitialState() {
     return {
       focused: false,
     }
   },
 
-  getDefaultProps: function(){
+  getDefaultProps() {
 
     return {
       value:            null,
@@ -131,6 +131,7 @@ var DateTimePicker = React.createClass({
       , timeOptID  = this._id('_time_option')
       , dateListID = this._id('_cal')
       , dropUp = this.props.dropUp
+      , renderPopup = _.isFirstFocusedRender(this) || this.props.open
       , value = dateOrNull(this.props.value)
       , owns;
 
@@ -154,7 +155,7 @@ var DateTimePicker = React.createClass({
 
           ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
         })}>
-
+        
         <DateInput ref='valueInput'
           aria-labelledby={this.props['aria-labelledby']}
           aria-activedescendant={ this.props.open
@@ -202,27 +203,30 @@ var DateTimePicker = React.createClass({
           }
         </span>
         }
+
         <Popup 
           dropUp={dropUp}
           open={ this.props.open === popups.TIME }
           onRequestClose={this.close}
           duration={this.props.duration}
           onOpening={() => this.refs.timePopup.forceUpdate()}>
-          
+
           <div>
-            <Time ref="timePopup"
-              id={timeListID}
-              optID={timeOptID}
-              aria-hidden={ !this.props.open }
-              value={value}
-              step={this.props.step}
-              min={this.props.min}
-              max={this.props.max}
-              culture={this.props.culture}
-              onMove={this._scrollTo}
-              preserveDate={!!this.props.calendar}
-              itemComponent={this.props.timeComponent}
-              onSelect={this._maybeHandle(this._selectTime)}/>
+            { renderPopup &&
+              <Time ref="timePopup"
+                id={timeListID}
+                optID={timeOptID}
+                aria-hidden={ !this.props.open }
+                value={value}
+                step={this.props.step}
+                min={this.props.min}
+                max={this.props.max}
+                culture={this.props.culture}
+                onMove={this._scrollTo}
+                preserveDate={!!this.props.calendar}
+                itemComponent={this.props.timeComponent}
+                onSelect={this._maybeHandle(this._selectTime)}/>
+            }
           </div>
         </Popup>
         <Popup 
@@ -232,13 +236,15 @@ var DateTimePicker = React.createClass({
           duration={this.props.duration}
           onRequestClose={this.close}>
           
-          <Calendar {...calProps }
-            ref="calPopup"
-            tabIndex='-1'
-            id={dateListID}
-            value={value}
-            aria-hidden={ !this.props.open }
-            onChange={this._maybeHandle(this._selectDate)}/>
+          { renderPopup &&
+            <Calendar {...calProps }
+              ref="calPopup"
+              tabIndex='-1'
+              id={dateListID}
+              value={value}
+              aria-hidden={ !this.props.open }
+              onChange={this._maybeHandle(this._selectDate)}/>
+          }
         </Popup>
       </div>
     )
@@ -341,21 +347,26 @@ var DateTimePicker = React.createClass({
 
   _parse: function(string){
     var format = getFormat(this.props, true)
+      , editFormat = this.props.editFormat
+      , parse = this.props.parse
       , formats = [];
 
-    if ( typeof this.props.parse === 'function' )
-      return this.props.parse(string, this.props.culture)
+    if ( typeof parse === 'function' )
+      return parse(string, this.props.culture)
 
-    if ( typeof format !== 'function')
+    if ( typeof format === 'string')
       formats.push(format)
 
-    if (this.props.parse)
+    if ( typeof editFormat === 'string')
+      formats.push(editFormat)
+
+    if ( parse )
       formats = formats.concat(this.props.parse)
 
     invariant(formats.length, 
       'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
       'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
-      'please provide either a parse function or Globalize.js compatible string format', string);
+      'please provide either a parse function or Globalize.js compatible string for `format`', string);
 
     return formatsParser(formats, this.props.culture, string);
   },

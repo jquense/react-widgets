@@ -2,6 +2,11 @@
 /* global it, expect */
 'use strict';
 var React = require('react');
+var _ = require('./src/util/_')
+
+//disable this particular optimization
+sinon.stub(_, 'isFirstFocusedRender', ()=> true)
+
 var testsContext = require.context("./test", true, /\.browser\.(js$|jsx$)/);
 
 if ( typeof __REACT_VERSION__ !== 'undefined' ) {

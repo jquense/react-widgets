@@ -5,12 +5,14 @@ var React = require('react')
 
 module.exports = React.createClass({
 
+  displayName: 'ComboboxInput',
+
   propTypes: {
     value:        React.PropTypes.string,
     onChange:     React.PropTypes.func.isRequired
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     var input = compat.findDOMNode(this)
       , val = this.props.value;
 
@@ -42,7 +44,7 @@ module.exports = React.createClass({
     )
   },
 
-  isSuggesting: function(){
+  isSuggesting() {
     var val = this.props.value
       , isSuggestion = this._last != null
           && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
@@ -50,7 +52,7 @@ module.exports = React.createClass({
     return this.props.suggest && isSuggestion
   },
 
-  accept: function(removeCaret){
+  accept(removeCaret) {
     var val = compat.findDOMNode(this).value || ''
       , end = val.length;
 
@@ -58,13 +60,13 @@ module.exports = React.createClass({
     removeCaret && caretPos(compat.findDOMNode(this), end, end)
   },
 
-  _change: function(e){
+  _change(e) {
     var val = e.target.value
     this._last = val;
     this.props.onChange(e, val)
   },
 
-  focus: function(){
+  focus() {
     compat.findDOMNode(this).focus()
   }
 });

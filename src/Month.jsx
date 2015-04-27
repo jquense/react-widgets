@@ -39,7 +39,7 @@ module.exports = React.createClass({
 
   render: function(){
     var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-      , month = dates.visibleDays(this.props.value)
+      , month = dates.visibleDays(this.props.value, this.props.culture)
       , rows  = _.chunk(month, 7 );
 
     return (

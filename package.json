@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "description": "A set of input widgets for React",
   "main": "lib/index.js",
   "author": {
@@ -41,6 +41,7 @@
       "es6.classes",
       "es6.modules",
       "es6.spread",
+      "es6.blockScoping",
       "es6.arrowFunctions",
       "es6.properties.computed",
       "es6.properties.shorthand",
@@ -54,7 +55,7 @@
   },
   "dependencies": {
     "classnames": "^1.1.4",
-    "date-arithmetic": "^2.0.0",
+    "date-arithmetic": "^3.0.0",
     "globalize": "~0.1.1",
     "uncontrollable": "^1.1.3"
   },

@@ -29,6 +29,7 @@ var DateTimePicker = React.createClass({
               <MenuItem>max</MenuItem>
               <MenuItem>step</MenuItem>
               <MenuItem>format</MenuItem>
+              <MenuItem>editFormat</MenuItem>
               
               <MenuItem>parse</MenuItem>
               <MenuItem>initialView</MenuItem>
@@ -124,6 +125,17 @@ var DateTimePicker = React.createClass({
           </a>
         </p>
         <EditableExample codeText={require('../examples/prop')(widgetName, 'format', '"MMM dd yyyy"')}/>
+
+        <PropHeader type='String'>editFormat</PropHeader>
+        <p>
+          A string format to be used while the date input has focus. Useful for showing a simpler format for inputing. 
+          For more information on prefined and custom formats visit 
+          the <a href='https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates'>
+            Globalize.js documentation <i className="fa fa-external-link"></i>
+          </a>
+        </p>
+        <EditableExample codeText={require('../examples/prop')(widgetName, { defaultValue: 'new Date()', editFormat: '"d"', format: '"MMM dd yyyy"'})}/>
+
 
         <PropHeader type='Number' default="false">step</PropHeader>
         <p>

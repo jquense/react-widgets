@@ -80,7 +80,7 @@ var Multiselect = React.createClass({
 
   propTypes: propTypes,
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       data: [],
       filter: 'startsWith',
@@ -95,7 +95,7 @@ var Multiselect = React.createClass({
     }
   },
 
-  getInitialState: function(){
+  getInitialState(){
     var dataItems = _.splat(this.props.value).map( item => this._dataItem(this.props.data, item)) 
       , data = this.process(this.props.data, dataItems, this.props.searchTerm)
 
@@ -106,11 +106,11 @@ var Multiselect = React.createClass({
     }
   },
 
-  componentDidMount: function() {
-    validateList(this.refs.list)
+  componentDidUpdate() {
+    this.refs.list && validateList(this.refs.list)
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     var values = _.splat(nextProps.value)
       , current = this.state.focusedItem
       , items  = this.process(nextProps.data, values, nextProps.searchTerm)
@@ -122,7 +122,7 @@ var Multiselect = React.createClass({
     })
   },
 
-  render: function(){
+  render() {
     var { 
         className
       , children
@@ -133,7 +133,7 @@ var Multiselect = React.createClass({
       , items  = this._data()
       , values = this.state.dataItems
       , dropUp = this.props.dropUp
-
+      , renderPopup = _.isFirstFocusedRender(this) || this.props.open
       , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       , listProps  = _.pick(this.props, Object.keys(compat.type(List).propTypes));
 
@@ -191,7 +191,8 @@ var Multiselect = React.createClass({
           onRequestClose={this.close}>
 
           <div>
-            <List ref="list"
+          { renderPopup && [
+            <List ref="list" key='0'
               {...listProps}
               readOnly={!!listProps.readOnly}
               disabled={!!listProps.disabled}
@@ -207,9 +208,9 @@ var Multiselect = React.createClass({
                 emptyList: this.props.data.length
                   ? this.props.messages.emptyFilter
                   : this.props.messages.emptyList
-              }}/>
-              { this._shouldShowCreate() &&
-                <ul className="rw-list rw-multiselect-create-tag">
+              }}/>,
+              this._shouldShowCreate() &&
+                <ul className="rw-list rw-multiselect-create-tag" key='1'>
                   <li onClick={this._onCreate.bind(null, this.props.searchTerm)} 
                       className={cx({
                         'rw-list-option': true,
@@ -218,8 +219,10 @@ var Multiselect = React.createClass({
                     <strong>{`"${this.props.searchTerm}"`}</strong> { this.props.messages.createNew }
                   </li>
                 </ul>
-              }
+            ]
+          }
           </div>
+        
         </Popup>
       </div>
     )

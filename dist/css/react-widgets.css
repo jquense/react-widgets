@@ -120,6 +120,7 @@ input.rw-input::-moz-focus-inner {
   height: 2.286em;
   line-height: 2.286em;
   padding: 0.429em 0.857em;
+  background-color: #ffffff;
 }
 .rw-input[disabled] {
   -webkit-box-shadow: none;

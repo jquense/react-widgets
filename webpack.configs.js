@@ -42,14 +42,11 @@ function makeConfig(options){
     loaders = loaders.concat(options.loaders)
 
 
+  
   if (options.minimize) 
     plugins.push(
       new webpack.optimize.UglifyJsPlugin(),
       new webpack.optimize.DedupePlugin(),
-      new webpack.DefinePlugin({
-        '__VERSION__': JSON.stringify(pkg.version),
-        "process.env": { NODE_ENV: JSON.stringify("production") }
-      }),
       new webpack.NoErrorsPlugin())
   else
     plugins.push(
@@ -57,6 +54,12 @@ function makeConfig(options){
         '__VERSION__': JSON.stringify(pkg.version)
       }));
   
+  if ( options.production || options.minimize )
+    plugins.push(new webpack.DefinePlugin({
+        '__VERSION__': JSON.stringify(pkg.version),
+        "process.env": { NODE_ENV: JSON.stringify("production") }
+      }))
+
   if (options.extractStyles)
     plugins.push(
       new ExtractTextPlugin(options.styleName || "styles.css", {
@@ -126,7 +129,8 @@ module.exports = {
 
   dev: makeConfig({
 
-    hot: true,
+    hot: false,
+    production: false,
 
     devtool: 'source-map',
 
