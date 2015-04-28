@@ -31,6 +31,18 @@ var views        = constants.calendarViews
       [views.CENTURY]: Century
     };
 
+var ARROWS_TO_DIRECTION = {
+  ArrowDown:  dir.DOWN,
+  ArrowUp:    dir.UP,
+  ArrowRight: dir.RIGHT,
+  ArrowLeft:  dir.LEFT
+}
+
+var OPPOSITE_DIRECTION = {
+  [dir.LEFT]:  dir.RIGHT,
+  [dir.RIGHT]: dir.LEFT
+};
+
 var MULTIPLIER = {
       [views.YEAR]:    1,
       [views.DECADE]:  10,
@@ -214,20 +226,16 @@ var Calendar = React.createClass({
           onAnimate={() => this._focus(true)}>
 
           <View {...viewProps} 
-            tabIndex='-1'
-            ref='currentView'
-            key={key}
-            id={id}
+            tabIndex='-1' key={key} id={id}
             aria-labelledby={labelId}
-            selectedDate={this.props.value}
             today={todaysDate}
-            value={this.state.currentDate}
+            value={this.props.value}
+            focused={this.state.currentDate}
             onChange={this._maybeHandle(this.change)}
-            onKeyDown={this._maybeHandle(this._keyDown)}
-            onMoveLeft ={this._maybeHandle(this.navigate.bind(null,  dir.LEFT))}
-            onMoveRight={this._maybeHandle(this.navigate.bind(null,  dir.RIGHT))}/>
+            onKeyDown={this._maybeHandle(this._keyDown)} />
 
         </SlideTransition>
+
         { this.props.footer &&
           <Footer 
             value={todaysDate}
@@ -281,7 +289,7 @@ var Calendar = React.createClass({
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
-        this.setState({ focused: focused })
+        this.setState({ focused })
       }
     })
   },
@@ -326,29 +334,42 @@ var Calendar = React.createClass({
 
   _keyDown: function(e){
     var ctrl = e.ctrlKey
-      , key  = e.key;
+      , key  = e.key
+      , direction = ARROWS_TO_DIRECTION[key]
+      , current = this.state.currentDate
+      , view = this.state.view
+      , unit = VIEW_UNIT[view]
+      , currentDate = current;
 
-    if ( ctrl ) {
-      if ( key === 'ArrowDown' ) {
+    if ( key === 'Enter'){
+      e.preventDefault()
+      return this.change(current)
+    }
+
+    if ( direction ) {
+      if ( ctrl ) {
         e.preventDefault()
-        this.navigate(dir.DOWN)
+        this.navigate(direction)
       }
-      if ( key === 'ArrowUp' ) {
-        e.preventDefault()
-        this.navigate(dir.UP)
+      else {
+        if ( this.isRtl() && OPPOSITE_DIRECTION[direction] )
+          direction = OPPOSITE_DIRECTION[direction]
+
+        currentDate = dates.move(currentDate, this.props.min, this.props.max, view, direction)
+
+        if ( !dates.eq(current, currentDate, unit) ) {
+          e.preventDefault()
+
+          if ( dates.gt(currentDate, current, view))
+            this.navigate(dir.RIGHT, currentDate)
+
+          else if ( dates.lt(currentDate, current, view))
+            this.navigate(dir.LEFT, currentDate)
+
+          else
+            this.setState({ currentDate })
+        }
       }
-      if ( key === 'ArrowLeft' ) {
-        e.preventDefault()
-        this.navigate(dir.LEFT)
-      }
-      if ( key === 'ArrowRight' ) {
-        e.preventDefault()
-        this.navigate(dir.RIGHT)
-      }
-    } 
-    else {
-      this.refs.currentView._keyDown
-        && this.refs.currentView._keyDown(e)
     }
 
     this.notify('onKeyDown', [e])
@@ -377,8 +398,7 @@ var Calendar = React.createClass({
   inRangeValue: function(_value){
     var value = dateOrNull(_value)
 
-    if( value === null)
-      return value
+    if( value === null) return value
 
     return dates.max(
         dates.min(value, this.props.max)

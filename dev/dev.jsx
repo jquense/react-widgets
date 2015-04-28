@@ -90,10 +90,7 @@ var App = React.createClass({
 
           <section className="example" style={{ marginBottom: 20 }}>
           <button onClick={() => this.dropdowns()}>add</button>
-          <DatePicker/>
-          { 
-            this.state.dropdowns
-          }
+          <Calendar/>
           </section>
         </div>
       </div>

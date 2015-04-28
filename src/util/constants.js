@@ -31,7 +31,7 @@ module.exports = {
   },
 
   calendarViewUnits: {
-    [views.MONTH]:   views.DAY,
+    [views.MONTH]:   'day',
     [views.YEAR]:    views.MONTH,
     [views.DECADE]:  views.YEAR,
     [views.CENTURY]: views.DECADE,

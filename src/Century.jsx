@@ -7,11 +7,6 @@ var React      = require('react')
   , _          = require('./util/_')
   , CustomPropTypes = require('./util/propTypes'); //omit
 
-var opposite = {
-  LEFT:  directions.RIGHT,
-  RIGHT: directions.LEFT
-};
-
 
 module.exports = React.createClass({
 
@@ -20,8 +15,7 @@ module.exports = React.createClass({
   mixins: [
     require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlChildContextMixin'),
-    require('./mixins/DateFocusMixin')('century', 'decade')
+    require('./mixins/RtlChildContextMixin')
   ],
 
   propTypes: {
@@ -37,7 +31,7 @@ module.exports = React.createClass({
 
   render: function(){
     var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
-      , years = getCenturyDecades(this.props.value)
+      , years = getCenturyDecades(this.props.focused)
       , rows  = _.chunk(years, 4);
 
     return (
@@ -60,7 +54,7 @@ module.exports = React.createClass({
     return (
       <tr key={'row_' + i} role='row'>
       { row.map( (date, i) => {
-        var focused       = dates.eq(date,  this.state.focusedDate,  'decade')
+        var focused       = dates.eq(date,  this.props.focused,  'decade')
           , selected      = dates.eq(date, this.props.value,  'decade')
           , d             = inRangeDate(date, this.props.min, this.props.max)
           , currentDecade = dates.eq(date, this.props.today, 'decade');
@@ -75,7 +69,7 @@ module.exports = React.createClass({
                 aria-disabled={this.props.disabled}
                 disabled={this.props.disabled || undefined}
                 className={cx({
-                  'rw-off-range':       !inCentury(date, this.props.value),
+                  'rw-off-range':       !inCentury(date, this.props.focused),
                   'rw-state-focus':     focused,
                   'rw-state-selected':  selected,
                   'rw-now':             currentDecade
@@ -85,29 +79,6 @@ module.exports = React.createClass({
             </td>)
       })}
     </tr>)
-  },
-
-
-  move: function(date, direction){
-    var min = this.props.min
-      , max = this.props.max;
-
-    if ( this.isRtl() && opposite[direction])
-      direction =  opposite[direction]
-
-    if ( direction === directions.LEFT)
-      date = nextDate(date, -1, 'decade', min, max)
-
-    else if ( direction === directions.RIGHT)
-      date = nextDate(date, 1, 'decade', min, max)
-
-    else if ( direction === directions.UP)
-      date = nextDate(date, -4, 'decade', min, max)
-
-    else if ( direction === directions.DOWN)
-      date = nextDate(date, 4, 'decade', min, max)
-
-    return date
   }
 
 });
@@ -136,10 +107,4 @@ function getCenturyDecades(_date){
     , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
 
   return days.map( i => (date = dates.add(date, 10, 'year')))
-}
-
-
-function nextDate(date, val, unit, min, max){
-  var newDate = dates.add(date, val, unit)
-  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
 }

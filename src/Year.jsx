@@ -8,24 +8,19 @@ var React      = require('react')
   , compat     = require('./util/compat')
   , CustomPropTypes = require('./util/propTypes');
 
-var opposite = {
-  LEFT: directions.RIGHT,
-  RIGHT: directions.LEFT
-};
-
 module.exports = React.createClass({
 
   displayName: 'YearView',
 
   mixins: [
     require('./mixins/WidgetMixin'),
-    require('./mixins/RtlChildContextMixin'),
-    require('./mixins/DateFocusMixin')('year', 'month')
+    require('./mixins/RtlChildContextMixin')
   ],
 
   propTypes: {
     culture:      React.PropTypes.string,
     value:        React.PropTypes.instanceOf(Date),
+    focused:      React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
@@ -36,7 +31,7 @@ module.exports = React.createClass({
 
   render: function(){
     var props =  _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-      , months = dates.monthsInYear(dates.year(this.props.value))
+      , months = dates.monthsInYear(dates.year(this.props.focused))
       , rows = _.chunk(months, 4);
 
     return (
@@ -60,7 +55,7 @@ module.exports = React.createClass({
     return (
       <tr key={i} role='row'>
       { row.map( (date, i) => {
-        var focused  = dates.eq(date, this.state.focusedDate,  'month')
+        var focused  = dates.eq(date, this.props.focused,  'month')
           , selected = dates.eq(date, this.props.value,  'month')
           , currentMonth = dates.eq(date, this.props.today, 'month');
 
@@ -86,33 +81,6 @@ module.exports = React.createClass({
 
   focus: function(){
     compat.findDOMNode(this.refs.table).focus();
-  },
-
-  move: function(date, direction){
-    var min = this.props.min
-      , max = this.props.max;
-
-    if ( this.isRtl() && opposite[direction])
-      direction =  opposite[direction]
-
-    if ( direction === directions.LEFT)
-      date = nextDate(date, -1, 'month', min, max)
-
-    else if ( direction === directions.RIGHT)
-      date = nextDate(date, 1, 'month', min, max)
-
-    else if ( direction === directions.UP)
-      date = nextDate(date, -4, 'month', min, max)
-
-    else if ( direction === directions.DOWN)
-      date = nextDate(date, 4, 'month', min, max)
-
-    return date
   }
 
 });
-
-function nextDate(date, val, unit, min, max){
-  var newDate = dates.add(date, val, unit)
-  return dates.inRange(newDate, min, max, 'month') ? newDate : date
-}

@@ -1,10 +1,15 @@
 "use strict";
 
 var dateMath = require('date-arithmetic')
+  , { 
+    directions
+  , calendarViewUnits } = require('./constants')
   , config = require('./configuration')
   , _ = require('./_'); //extend
 
 var shortNames = {};
+
+var isUpOrDown = dir => dir === directions.UP || dir === directions.DOWN
 
 var dates = module.exports = _.assign(dateMath, {
   // wrapper methods for isolating globalize use throughout the lib
@@ -114,6 +119,24 @@ var dates = module.exports = _.assign(dateMath, {
     }
 
     return days
+  },
+
+  move(date, min, max, unit, direction){
+    var isMonth = unit === 'month'
+      , isUpOrDown = direction === directions.UP || direction === directions.DOWN
+      , rangeUnit = calendarViewUnits[unit]
+      , addUnit = isMonth && isUpOrDown ? 'week' : calendarViewUnits[unit]
+      , amount = isMonth || !isUpOrDown ? 1 : 4
+      , newDate;
+
+    if ( direction === directions.UP || direction === directions.LEFT)
+      amount *= -1
+
+    newDate = dates.add(date, amount, addUnit)
+
+    return dates.inRange(newDate, min, max, rangeUnit) 
+      ? newDate 
+      : date
   },
 
   merge: function(date, time){
