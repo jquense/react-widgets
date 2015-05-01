@@ -352,7 +352,7 @@ var Multiselect = React.createClass({
         : this._onSelect(this.state.focusedItem)
 
     else if ( key === 'Escape')
-      isOpen ? this.close() : tagList && this.refs.tagList.clear()
+      isOpen ? this.close() : tagList && tagList.clear()
 
     else if ( noSearch && key === 'ArrowLeft')
      tagList && tagList.prev()
