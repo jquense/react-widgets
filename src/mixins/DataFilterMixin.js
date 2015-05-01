@@ -1,19 +1,17 @@
 'use strict';
 var React   = require('react')
   , filters = require('../util/filter')
+  , CustomPropTypes = require('../util/propTypes')
   , helper  = require('./DataHelpersMixin');
 
-var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
+var dflt = f => f === true ? 'startsWith' : f ? f : 'eq'
 
 module.exports = {
   
     propTypes: {
       data:           React.PropTypes.array,
       value:          React.PropTypes.any,
-      filter:         React.PropTypes.oneOfType([
-                        React.PropTypes.func,
-                        React.PropTypes.oneOf(filterTypes.concat(false))
-                      ]),
+      filter:         CustomPropTypes.filter,
       caseSensitive:  React.PropTypes.bool,
       minLength:      React.PropTypes.number,
     },
@@ -29,7 +27,7 @@ module.exports = {
       var idx = -1
         , matches = typeof this.props.filter === 'function'
             ? this.props.filter
-            : getFilter(filters[this.props.filter || 'eq'], searchTerm, this);
+            : getFilter(filters[dflt(this.props.filter)], searchTerm, this);
 
       if ( !searchTerm || !searchTerm.trim() || (this.props.filter && searchTerm.length < (this.props.minLength || 1)))
         return -1

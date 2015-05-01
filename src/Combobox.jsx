@@ -13,6 +13,8 @@ var React           = require('react')
   , validateList    = require('./util/validateListInterface')
   , createUncontrolledWidget = require('uncontrollable');
 
+var defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
+
 var propTypes = {
       //-- controlled props -----------
       value:          React.PropTypes.any,
@@ -44,10 +46,12 @@ var propTypes = {
                         React.PropTypes.oneOf(['readOnly'])
                       ]),
 
-      suggest:        React.PropTypes.bool,
+      suggest:        CustomPropTypes.filter,
+      filter:         CustomPropTypes.filter,
+
       busy:           React.PropTypes.bool,
 
-      dropUp:          React.PropTypes.bool,
+      dropUp:         React.PropTypes.bool,
       duration:       React.PropTypes.number, //popup
 
       placeholder:    React.PropTypes.string,
@@ -359,21 +363,20 @@ var ComboBox = React.createClass({
 
   suggest(data, value){
     var word = this._dataText(value)
-      , matcher = filter.startsWith
-      , suggestion = typeof value === 'string'
-          ? _.find(data, finder, this)
-          : value
+      , suggest = defaultSuggest(this.props.suggest)
+      , suggestion; 
+
+    if ( !(word || '').trim() || word.length < (this.props.minLength || 1))
+      return ''
+
+    suggestion = typeof value === 'string'
+        ? _.find(data, getFilter(suggest, word, this)) 
+        : value
 
     if ( suggestion && (!this.state || !this.state.deleting))
       return this._dataText(suggestion)
 
     return ''
-
-    function finder(item){
-      return matcher(
-          this._dataText(item).toLowerCase()
-        , word.toLowerCase())
-    }
   },
 
   _data(){
@@ -387,6 +390,14 @@ var ComboBox = React.createClass({
     return data
   }
 })
+
+
+
+function getFilter(suggest, word, ctx){
+  return typeof suggest === 'string'
+      ? item => filter[suggest](ctx._dataText(item).toLowerCase(), word.toLowerCase())
+      : item => suggest(item, word)
+}
 
 module.exports = createUncontrolledWidget(
       ComboBox, { open: 'onToggle', value: 'onChange' });

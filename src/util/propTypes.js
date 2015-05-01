@@ -1,5 +1,8 @@
 'use strict';
 var React = require('react')
+  , filters = require('./filter');
+
+var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
 
 module.exports = {
 
@@ -28,6 +31,12 @@ module.exports = {
     accessor:     React.PropTypes.oneOfType([
                     React.PropTypes.string, 
                     React.PropTypes.func
+                  ]),
+
+    filter:       React.PropTypes.oneOfType([
+                    React.PropTypes.func,
+                    React.PropTypes.bool,
+                    React.PropTypes.oneOf(filterTypes)
                   ]),
 }
 
