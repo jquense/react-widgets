@@ -182,7 +182,7 @@ var NumberPicker = React.createClass({
 
   _mouseUp: _.ifNotDisabled(function (direction, e ){
     this.setState({ active: false })
-    this._cancelRepeater()
+    this._cancelRepeater && this._cancelRepeater()
     this._cancelRepeater = null;
   }),
 
