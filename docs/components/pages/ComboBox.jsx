@@ -111,7 +111,7 @@ var ComboBox = React.createClass({
           {`Specify which data item field to display in the ${widgetName} and selected item. The `}<code>textField</code>{`prop 
           may also also used as to find an item in the list as you type. Providing an accessor function allows for computed text values`}
         </p>
-        <EditableExample codeText={require('../examples/textField')(widgetName)}/>
+        <EditableExample codeText={require('../examples/textField')(widgetName, false, true)}/>
         
         <PropHeader type='Component'>itemComponent</PropHeader>
         <p>
