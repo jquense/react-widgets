@@ -374,7 +374,7 @@ var DateTimePicker = React.createClass({
   toggle: function(view, e) {
 
     this.props.open
-      ? this.state.view !== view
+      ? this.props.open !== view
           ? this.open(view)
           : this.close(view)
       : this.open(view)
