@@ -64,6 +64,13 @@ module.exports = React.createClass({
 
   _change(e) {
     var val = e.target.value
+      , pl = !!this.props.placeholder
+
+    // IE fires input events when setting/unsetting placeholders.
+    // issue #112
+    if ( pl && !val && val === (this.props.value || '') ) 
+      return
+    
     this._last = val;
     this.props.onChange(e, val)
   },
