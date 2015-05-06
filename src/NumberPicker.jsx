@@ -174,7 +174,7 @@ var NumberPicker = React.createClass({
       || (dir === directions.DOWN && val === this.props.min)))
     {
       if(!this._cancelRepeater)
-        this._cancelRepeater = repeater(500, this._mouseDown.bind(null, dir))
+        this._cancelRepeater = repeater(this._mouseDown.bind(null, dir))
     }
     else
       this._mouseUp()
@@ -188,11 +188,9 @@ var NumberPicker = React.createClass({
 
   _focus: _.ifNotDisabled(true, function(focused, e){
 
+    focused && compat.findDOMNode(this.refs.input).focus()
+
     this.setTimeout('focus', () => {
-      var el = compat.findDOMNode(this.refs.input)
-
-      focused && el.focus()
-
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused: focused })

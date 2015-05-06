@@ -267,18 +267,19 @@ var ComboBox = React.createClass({
   },
 
   _focus: _.ifNotDisabled(true, function(focused, e){
-    clearTimeout(this.timer)
-    !focused && this.refs.input.accept() //not suggesting anymore
+    focused 
+      ? this.refs.input.focus() 
+      : this.refs.input.accept() //not suggesting anymore
 
-    this.timer = setTimeout(() =>{
-      if(focused) this.refs.input.focus()
-      else        this.close()
+    this.setTimeout('focus', () => {
+      //console.log(type, focused)
+      if( !focused) this.close()
 
-      if( focused !== this.state.focused){
+      if( focused !== this.state.focused) {
         this.notify(focused ? 'onFocus' : 'onBlur', e)
-        this.setState({ focused })
+        this.setState({ focused: focused })
       }
-    }, 0)
+    })
   }),
 
   _keyDown: _.ifNotDisabled(function(e){

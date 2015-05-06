@@ -125,7 +125,7 @@ var DropdownList = React.createClass({
       , ...props } = _.omit(this.props, Object.keys(propTypes))
       , ValueComponent = this.props.valueComponent
       , data = this._data()
-      , valueItem = this._dataItem(data, this.props.value )
+      , valueItem = this._dataItem(this.props.data, this.props.value ) // take value from the raw data
       , optID = this._id('_option')
       , dropUp = this.props.dropUp
       , renderList = _.isFirstFocusedRender(this) || this.props.open
@@ -168,7 +168,7 @@ var DropdownList = React.createClass({
           }
         </div>
         <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
-          onOpen={this.focus}
+          onOpen={() => this.focus() }
           onOpening={() => this.refs.list.forceUpdate() }
           onRequestClose={this.close}>
 
@@ -214,10 +214,10 @@ var DropdownList = React.createClass({
   _focus: _.ifNotDisabled(true, function(focused, e){
     var type = e.type
 
+    //focused && (this.focus(), console.log('_focus'))
+
     this.setTimeout('focus', () => {
-      //console.log(type, focused)
-      if( focused) this.focus()
-      else this.close()
+      if( !focused) this.close()
 
       if( focused !== this.state.focused) {
         this.notify(focused ? 'onFocus' : 'onBlur', e)
@@ -230,6 +230,7 @@ var DropdownList = React.createClass({
     this.close()
     this.notify('onSelect', data)
     this.change(data)
+    this.focus(this)
   }),
 
   _click: _.ifNotDisabled(function(e){
@@ -294,9 +295,9 @@ var DropdownList = React.createClass({
     
     function change(item, fromList){
       if(!item) return
-      if(fromList) self.notify('onSelect', item)
-
-      self.change(item)
+      fromList 
+        ? self._onSelect(item)
+        : self.change(item)
     }
   }),
 
@@ -306,11 +307,10 @@ var DropdownList = React.createClass({
       this.notify('onSearch', '')
       this.close()
     }
-    compat.findDOMNode(this).focus()
   },
 
-  focus(){
-    var inst = this.props.filter && this.props.open ? this.refs.filter : this;
+  focus(target){
+    var inst = target || (this.props.filter && this.props.open ? this.refs.filter : this);
 
     if ( activeElement() !== compat.findDOMNode(inst))
       compat.findDOMNode(inst).focus()

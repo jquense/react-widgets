@@ -294,17 +294,16 @@ var DateTimePicker = React.createClass({
     this.notify('onKeyDown', [e])
   },
 
-  //timeout prevents transitions from breaking focus
   _focus: function(focused, e){
-    this.setTimeout('focus', () => {
-      var calendarOpen = this.props.open === popups.CALENDAR;
+    var calendarOpen = this.props.open === popups.CALENDAR;
 
-      // #75: need to aggressively reclaim focus from the calendar otherwise 
-      // disabled header/footer buttons will drop focus completely from the widget
-      if(focused) 
-        calendarOpen && this.refs.valueInput.focus() 
-      else 
-        this.close()
+    // #75: need to aggressively reclaim focus from the calendar otherwise 
+    // disabled header/footer buttons will drop focus completely from the widget
+    if(focused) 
+      calendarOpen && this.refs.valueInput.focus() 
+
+    this.setTimeout('focus', () => {
+      if(!focused) this.close()
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)

@@ -37,8 +37,7 @@ module.exports = React.createClass({
       <table {...props}
         role='grid'
         className='rw-calendar-grid'
-        aria-activedescendant={this._id('_selected_item')}
-        onKeyUp={this._keyUp}>
+        aria-activedescendant={this._id('_selected_item')}>
         <thead>
           <tr>{this._headers(props.dayFormat, props.culture)}</tr>
         </thead>

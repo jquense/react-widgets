@@ -36,12 +36,9 @@ module.exports = React.createClass({
 
     return (
       <table { ...props }
-        tabIndex={this.props.disabled ? '-1' : "0"}
-        ref='table'
         role='grid'
         className='rw-calendar-grid rw-nav-view'
-        aria-activedescendant={this._id('_selected_item')}
-        onKeyUp={this._keyUp}>
+        aria-activedescendant={this._id('_selected_item')}>
         <tbody >
           { rows.map(this._row)}
         </tbody>
@@ -77,10 +74,6 @@ module.exports = React.createClass({
           : <td key={i} className='rw-empty-cell' role='gridcell'>&nbsp;</td>
       })}
     </tr>)
-  },
-
-  focus: function(){
-    compat.findDOMNode(this.refs.table).focus();
   }
 
 });

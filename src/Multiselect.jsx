@@ -153,7 +153,7 @@ var Multiselect = React.createClass({
           ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
 
         })}>
-        <div className='rw-multiselect-wrapper'>
+        <div className='rw-multiselect-wrapper' ref='wrapper'>
           { this.props.busy &&
             <i className="rw-i rw-loading"></i>
           }
@@ -247,11 +247,10 @@ var Multiselect = React.createClass({
     if (this.props.disabled === true )
       return
 
-    this.setTimeout('focus', () => {
-      if( focused) 
-        this.refs.input.focus()
+    if( focused) this.refs.input.focus()
 
-      else 
+    this.setTimeout('focus', () => {
+      if( !focused)  
         this.refs.tagList && this.refs.tagList.clear()
       
       if( focused !== this.state.focused){
@@ -355,7 +354,7 @@ var Multiselect = React.createClass({
       isOpen ? this.close() : tagList && tagList.clear()
 
     else if ( noSearch && key === 'ArrowLeft')
-     tagList && tagList.prev()
+      tagList && tagList.prev()
 
     else if ( noSearch && key === 'ArrowRight')
       tagList && tagList.next()
@@ -401,8 +400,6 @@ var Multiselect = React.createClass({
 
   _shouldShowCreate(){
     var text = this.props.searchTerm;
-
-    //console.log('should ', this.props.onCreate)
 
     if ( !this.props.onCreate || !text ) 
       return false
