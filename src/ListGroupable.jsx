@@ -146,7 +146,7 @@ module.exports = React.createClass({
           'rw-list-option':    true
         })}>
           { ItemComponent
-              ? <ItemComponent item={item}/>
+              ? <ItemComponent item={item} value={this._dataValue(item)} text={this._dataText(item)}/>
               : this._dataText(item)
           }
       </li>)

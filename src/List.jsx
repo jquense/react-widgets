@@ -84,7 +84,7 @@ module.exports = React.createClass({
             })}
             onClick={this.props.onSelect.bind(null, item)}>
             { ItemComponent
-                ? <ItemComponent item={item}/>
+                ? <ItemComponent item={item} value={this._dataValue(item)} text={this._dataText(item)}/>
                 : this._dataText(item)
             }
           </li>)
