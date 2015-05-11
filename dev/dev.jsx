@@ -25,7 +25,8 @@ var { ModalTrigger, Modal } = require('react-bootstrap')
 
 var moment = require('moment')
 
-require('moment/locale/fr')
+var endOfDecade = date => moment(date).add(10, 'year').add(-1, 'millisecond').toDate()
+var endOfCentury = date => moment(date).add(100, 'year').add(-1, 'millisecond').toDate()
 
 configure.setDateLocalizer({
   formats: {
@@ -34,32 +35,36 @@ configure.setDateLocalizer({
     default: 'lll',
     header: 'MMMM YYYY',
     footer: 'LL',
-    weekday: day => moment().weekday(day).format('dd'),
+    weekday: (day, culture, localizer) => moment().locale(culture).weekday(day).format('dd'),
+
     dayOfMonth: 'DD',
     month: 'MMM',
     year: 'YYYY',
 
-    decade: (date) => {
-      return moment(date).format('YYYY') + ' - ' + moment(date).add(10, 'year').add(-1, 'millisecond').format('YYYY')
+    decade: (date, culture, localizer) => {
+      return localizer.format(date, 'YYYY', culture) 
+        + ' - ' + localizer.format(endOfDecade(date), 'YYYY', culture)
     },
     
-    century: (date) => {
-      return moment(date).format('YYYY') + ' - ' + moment(date).add(100, 'year').add(-1, 'millisecond').format('YYYY')
+    century: (date, culture, localizer) => {
+      return localizer.format(date, 'YYYY', culture)
+        + ' - ' + localizer.format(endOfCentury(date), 'YYYY', culture)
     }
   },
 
-  firstOfWeek(){ 
-    return moment().weekday(0).day()
+  firstOfWeek(culture){ 
+    return moment.localeData(culture).firstDayOfWeek()
   },
 
   parse(value, format, culture){
-    return moment(value, format).toDate()
+    return moment(value, format).locale(culture).toDate()
   },
 
   format(value, format, culture){
-    return moment(value).format(format)
+    return moment(value).locale(culture).format(format)
   }
 })
+
 
 // configure.setAnimate((element, props, duration, ease, callback) => {
 //   return jquery(element).animate(props, duration, callback)
@@ -128,7 +133,7 @@ var App = React.createClass({
 
           <section className="example" style={{ marginBottom: 20 }}>
           <button onClick={() => this.dropdowns()}>add</button>
-          <DatePicker time={false}/>
+          <DatePicker culture='fr'/>
           <NumberPicker />
           </section>
         </div>

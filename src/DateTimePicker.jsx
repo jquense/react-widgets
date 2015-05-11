@@ -40,6 +40,7 @@ var propTypes = {
     culture:        React.PropTypes.string,
 
     format:         CustomPropTypes.dateFormat,
+    timeFormat:     CustomPropTypes.dateFormat,
     editFormat:     CustomPropTypes.dateFormat,
 
     calendar:       React.PropTypes.bool,
@@ -219,6 +220,7 @@ var DateTimePicker = React.createClass({
                 optID={timeOptID}
                 aria-hidden={ !this.props.open }
                 value={value}
+                format={this.props.timeFormat}
                 step={this.props.step}
                 min={this.props.min}
                 max={this.props.max}
