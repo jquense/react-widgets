@@ -7,14 +7,6 @@ var dateMath = require('date-arithmetic')
 var shortNames = {};
 
 var dates = module.exports = _.assign(dateMath, {
-  // wrapper methods for isolating globalize use throughout the lib
-  // looking forward towards the 1.0 release
-  // culture: function(culture){
-  //   return culture
-  //     ? config.globalize.findClosestCulture(culture)
-  //     : config.globalize.culture()
-  // },
-
 
   parse: function(date, format, culture) {
     return locale.date.parse(date, format, culture)
@@ -24,35 +16,6 @@ var dates = module.exports = _.assign(dateMath, {
     return locale.date.format(date, format, culture)
   },
   
-  // //-------------------------------------
-
-  // shortDay: function(dayOfTheWeek){
-  //   var culture = dates.culture(arguments[1])
-  //     , name = typeof culture === 'string' ? culture : culture.name;
-
-  //   var names = shortNames[name] || (shortNames[name] = dates.shortDaysOfWeek(culture));
-
-  //   return names[dayOfTheWeek];
-  // },
-
-  // shortDaysOfWeek: function (culture){
-  //   var start = dates.startOfWeek(culture)
-  //     , days, front;
-
-  //   culture = dates.culture(culture)
-
-  //   if (culture && culture.calendar){
-  //     days = culture.calendar.days.namesShort.slice()
-
-  //     if(start === 0 ) 
-  //       return days
-      
-  //     front = days.splice(0, start)
-  //     days  = days.concat(front)
-  //     return days
-  //   }
-  // },
-
   monthsInYear: function(year){
     var months = [0,1,2,3,4,5,6,7,8,9,10,11]
       , date   = new Date(year, 0, 1)
@@ -130,15 +93,5 @@ var dates = module.exports = _.assign(dateMath, {
 
   tomorrow: function() {
     return this.add(this.startOf(new Date(), 'day'), 1, 'day')
-  },
-
-  formats: {
-    DAY_OF_MONTH:    'dd',
-    DAY_NAME_SHORT:  null,
-    MONTH_NAME_ABRV: 'MMM',
-    MONTH_YEAR:      'MMMM yyyy',
-    YEAR:            'yyyy',
-    FOOTER:          'D'
   }
-
 })

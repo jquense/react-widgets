@@ -3,6 +3,7 @@ var React = require('react')
   , _ = require('./util/_')
   , cx    = require('classnames')
   , dates = require('./util/dates')
+  , localizers  = require('./util/configuration').locale
   , directions = require('./util/constants').directions
   , CustomPropTypes = require('./util/propTypes')
   , Btn = require('./WidgetButton'); 
@@ -12,6 +13,7 @@ var opposite = {
   RIGHT: directions.LEFT
 };
 
+var format = props => props.yearFormat || localizers.date.formats.year
 
 module.exports = React.createClass({
 
@@ -32,7 +34,7 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
 
-    yearFormat:   CustomPropTypes.localeFormat.isRequired
+    yearFormat:   CustomPropTypes.dateFormat.isRequired
 
   },
 
@@ -80,7 +82,9 @@ module.exports = React.createClass({
                   'rw-state-selected': selected,
                   'rw-now':            currentYear
                 })}>
-                { dates.format(date, this.props.yearFormat, this.props.culture) }
+                { 
+                  localizers.date.format(date, format(this.props), this.props.culture) 
+                }
               </Btn>
             </td>)
       })}

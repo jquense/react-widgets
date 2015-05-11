@@ -7,8 +7,8 @@ function GlobalizeDateLocalizer(globalize){
 
   function getCulture(culture){
     return culture 
-        ? globalize.findClosestCulture(culture)
-        : globalize.culture()
+        ? (localizer.globalize || globalize).findClosestCulture(culture)
+        : (localizer.globalize || globalize).culture()
   }
 
   function firstOfWeek(culture) {
@@ -30,7 +30,7 @@ function GlobalizeDateLocalizer(globalize){
     return names[dayOfTheWeek];
   }
 
-  return new DateLocalizer({
+  var localizer = new DateLocalizer({
 
     formats: {
       date: 'd',
@@ -52,18 +52,23 @@ function GlobalizeDateLocalizer(globalize){
 
     firstOfWeek,
 
-    parse(value, formats, culture){
-      return globalize.parseDate(value, formats, culture)
+    parse(value, format, culture){
+      return (this.globalize || globalize).parseDate(value, format, culture)
     },
 
     format(value, format, culture){
-      return globalize.format(value, format, culture)
+      return (this.globalize || globalize).format(value, format, culture)
     }
   })
+
+  // Back-compat cruft, expose the globalize instance so setGlobalizeInstance can mutate it after initialization
+  // this works b/c there is no need to change the default prop values
+  localizer.globalize = globalize
+  return localizer
 }
 
-function GlobalizeNumberLocalizer(globalize){
-  return new NumberLocalizer({
+function GlobalizeNumberLocalizer(globalize) {
+  var localizer = new NumberLocalizer({
 
     propType: propType = propTypes.LocaleFormat,
 
@@ -72,13 +77,17 @@ function GlobalizeNumberLocalizer(globalize){
     },
 
     parse(value, culture){
-      return globalize.parseFloat(value, 10, culture)
+      return (this.globalize || globalize).parseFloat(value, 10, culture)
     },
 
     format(value, format, culture){
-      return globalize.format(value, format, culture)
+      return (this.globalize || globalize).format(value, format, culture)
     }
   })
+
+  // see point above
+  localizer.globalize = globalize
+  return localizer
 }
 
 module.exports = {

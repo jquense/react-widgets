@@ -1,6 +1,9 @@
 var React = require('react')
   , Btn = require('./WidgetButton')
-  , dates = require('./util/dates');
+  , dates = require('./util/dates')
+  , localizers = require('./util/configuration').locale;
+
+var format = props => props.format || localizers.date.formats.footer
 
 module.exports = React.createClass({
 
@@ -8,9 +11,9 @@ module.exports = React.createClass({
 
     render() {
       var now = this.props.value
-        , formatted = dates.format(
+        , formatted = localizers.date.format(
             now
-          , this.props.format
+          , format(this.props)
           , this.props.culture);
 
       return (

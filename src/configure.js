@@ -10,7 +10,7 @@ var warning = require('react/lib/warning')
 module.exports = {
 
   setGlobalizeInstance: depreciateMethod(function (globalize) {
-    configuration.locale.date   = GlobalizeDateLocalizer(globalize)
+    configuration.locale.date =  GlobalizeDateLocalizer(globalize)
     configuration.locale.number = GlobalizeNumberLocalizer(globalize)
   }),
 

@@ -7,6 +7,7 @@ var React  = require('react')
   , _      = require('./util/_') //pick, omit, has
 
   , dates  = require('./util/dates')
+  , localizers = require('./util/configuration').locale
   , views  = require('./util/constants').calendarViews
   , popups = require('./util/constants').datePopups
 
@@ -38,8 +39,8 @@ var propTypes = {
 
     culture:        React.PropTypes.string,
 
-    format:         CustomPropTypes.localeFormat,
-    editFormat:     CustomPropTypes.localeFormat,
+    format:         CustomPropTypes.dateFormat,
+    editFormat:     CustomPropTypes.dateFormat,
 
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
@@ -409,15 +410,15 @@ function getFormat(props){
   return props.format 
     ? props.format 
     : (cal && time) || (!cal && !time)
-      ? 'f'
-      : cal ? 'd' : 't'
+      ? localizers.date.formats.default
+      : localizers.date.formats[cal ? 'date' : 'time'] 
 }
 
 function formatDate(date, format, culture){
   var val = ''
 
   if ((date instanceof Date) && !isNaN(date.getTime()))
-    val = dates.format(date, format, culture)
+    val = localizers.date.format(date, format, culture)
 
   return val;
 }
@@ -426,7 +427,7 @@ function formatsParser(formats, culture, str){
   var date;
 
   for (var i=0; i < formats.length; i++ ){
-    date = dates.parse(str, formats[i], culture)
+    date = localizers.date.parse(str, formats[i], culture)
     if (date) return date
   }
   return null

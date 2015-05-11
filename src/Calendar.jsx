@@ -45,7 +45,7 @@ var VIEW_FORMATS  = {
       [views.CENTURY]: 'decadeFormat'
     }
 
-
+var format = (props, f) => props[f + 'Format'] || localizers.date.formats[f]
 
 var propTypes = {
 
@@ -80,15 +80,15 @@ var propTypes = {
   
   footer:        React.PropTypes.bool,
 
-  headerFormat:  CustomPropTypes.localeFormat,
-  footerFormat:  CustomPropTypes.localeFormat,
+  headerFormat:  CustomPropTypes.dateFormat,
+  footerFormat:  CustomPropTypes.dateFormat,
   
-  dayFormat:     CustomPropTypes.localeFormat,
-  dateFormat:    CustomPropTypes.localeFormat,
-  monthFormat:   CustomPropTypes.localeFormat,
-  yearFormat:    CustomPropTypes.localeFormat,
-  decadeFormat:  CustomPropTypes.localeFormat,
-  centuryFormat: CustomPropTypes.localeFormat,
+  dayFormat:     CustomPropTypes.dateFormat,
+  dateFormat:    CustomPropTypes.dateFormat,
+  monthFormat:   CustomPropTypes.dateFormat,
+  yearFormat:    CustomPropTypes.dateFormat,
+  decadeFormat:  CustomPropTypes.dateFormat,
+  centuryFormat: CustomPropTypes.dateFormat,
 
   messages:      React.PropTypes.shape({
     moveBack:     React.PropTypes.string,
@@ -131,20 +131,6 @@ var Calendar = React.createClass({
 
       tabIndex:     '0',
       footer:        false,
-
-      headerFormat:  dates.formats.MONTH_YEAR,
-      footerFormat:  dates.formats.FOOTER,
-
-      dayFormat:     localizers.date.formats.weekday,
-      dateFormat:    dates.formats.DAY_OF_MONTH,
-      monthFormat:   dates.formats.MONTH_NAME_ABRV,
-      yearFormat:    dates.formats.YEAR,
-
-      decadeFormat:  (dt, culture) => 
-        `${dates.format(dt, dates.formats.YEAR, culture)} - ${dates.format(dates.endOf(dt, 'decade'), dates.formats.YEAR, culture)}`,
-      
-      centuryFormat: (dt, culture) => 
-        `${dates.format(dt, dates.formats.YEAR, culture)} - ${dates.format(dates.endOf(dt, 'century'), dates.formats.YEAR, culture)}`,
 
       messages: msgs({})
     }
@@ -363,16 +349,16 @@ var Calendar = React.createClass({
       , dt   = this.state.currentDate;
 
     if ( view === 'month')
-      return dates.format(dt, props.headerFormat, culture)
+      return localizers.date.format(dt, format(props, 'header'), culture)
 
     else if ( view === 'year')
-      return dates.format(dt, props.yearFormat, culture)
+      return localizers.date.format(dt, format(props, 'year'), culture)
 
     else if ( view === 'decade')
-      return dates.format(dates.startOf(dt, 'decade'), props.decadeFormat, culture)
+      return localizers.date.format(dates.startOf(dt, 'decade'), format(props, 'decade'), culture)
 
     else if ( view === 'century')
-      return dates.format(dates.startOf(dt, 'century'), props.centuryFormat, culture)
+      return localizers.date.format(dates.startOf(dt, 'century'), format(props, 'century'), culture)
   },
 
   inRangeValue: function(_value){
@@ -405,23 +391,6 @@ function msgs(msgs){
     moveBack:     'navigate back',
     moveForward:  'navigate forward',
     ...msgs
-  }
-}
-
-function formats(obj){
-  return {
-    headerFormat:  dates.formats.MONTH_YEAR,
-    dateFormat:    dates.formats.DAY_OF_MONTH,
-    monthFormat:   dates.formats.MONTH_NAME_ABRV,
-    yearFormat:    dates.formats.YEAR,
-
-    decadeFormat:  (dt, culture) => 
-      `${dates.format(dt, dates.formats.YEAR, culture)} - ${dates.format(dates.endOf(dt, 'decade'), dates.formats.YEAR, culture)}`,
-    
-    centuryFormat: (dt, culture) => 
-      `${dates.format(dt, dates.formats.YEAR, culture)} - ${dates.format(dates.endOf(dt, 'century'), dates.formats.YEAR, culture)}`,
-      
-    ...obj
   }
 }
 

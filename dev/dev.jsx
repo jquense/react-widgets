@@ -3,7 +3,8 @@ require('../src/less/react-widgets.less')
 
 //require('react-a11y')();
 var configure = require('../src/configure')
-configure.setGlobalizeInstance(window.Globalize);
+
+//configure.setGlobalizeInstance(window.Globalize);
 
 var React = require('react/addons')
 //var jquery = require('jquery')
@@ -22,9 +23,43 @@ var _ = require('lodash')
 
 var { ModalTrigger, Modal } = require('react-bootstrap')
 
- window.Globalize.culture('en-GB');
+var moment = require('moment')
 
-// configure.setGlobalizeInstance(window.Globalize);
+require('moment/locale/fr')
+
+configure.setDateLocalizer({
+  formats: {
+    date: 'L',
+    time: 'LT',
+    default: 'lll',
+    header: 'MMMM YYYY',
+    footer: 'LL',
+    weekday: day => moment().weekday(day).format('dd'),
+    dayOfMonth: 'DD',
+    month: 'MMM',
+    year: 'YYYY',
+
+    decade: (date) => {
+      return moment(date).format('YYYY') + ' - ' + moment(date).add(10, 'year').add(-1, 'millisecond').format('YYYY')
+    },
+    
+    century: (date) => {
+      return moment(date).format('YYYY') + ' - ' + moment(date).add(100, 'year').add(-1, 'millisecond').format('YYYY')
+    }
+  },
+
+  firstOfWeek(){ 
+    return moment().weekday(0).day()
+  },
+
+  parse(value, format, culture){
+    return moment(value, format).toDate()
+  },
+
+  format(value, format, culture){
+    return moment(value).format(format)
+  }
+})
 
 // configure.setAnimate((element, props, duration, ease, callback) => {
 //   return jquery(element).animate(props, duration, callback)
@@ -93,10 +128,8 @@ var App = React.createClass({
 
           <section className="example" style={{ marginBottom: 20 }}>
           <button onClick={() => this.dropdowns()}>add</button>
-          <DatePicker/>
-          { 
-            this.state.dropdowns
-          }
+          <DatePicker time={false}/>
+          <NumberPicker />
           </section>
         </div>
       </div>

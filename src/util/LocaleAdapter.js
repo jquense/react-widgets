@@ -1,8 +1,13 @@
 var invariant = require('react/lib/invariant')
 var { has } = require('./_')
-var propTypes = require('./propTypes')
+var React = require('react')
 
 const REQUIRED_NUMBER_FORMATS = [ 'default' ]
+
+const localePropType = React.PropTypes.oneOfType([
+        React.PropTypes.string, 
+        React.PropTypes.func
+      ])
 
 const REQUIRED_DATE_FORMATS = [
       'default',
@@ -19,7 +24,7 @@ const REQUIRED_DATE_FORMATS = [
 function _format(localizer, formatter, value, format, culture) {
   let result = typeof format === 'function' 
     ? format(value, culture, localizer)
-    : formatter(value, format, culture)
+    : formatter.call(localizer, value, format, culture)
 
   invariant(result == null || typeof result === 'string'
     , '`localizer format(..)` must return a string, null, or undefined')
@@ -42,13 +47,13 @@ class NumberLocalizer {
       , 'number localizer `parse(..)` must be a function')
     checkFormats(REQUIRED_NUMBER_FORMATS, formats)
     
-    this.propType = propType || propTypes.LocaleFormat
+    this.propType = propType || localePropType
     this.formats = formats
 
-    this.format = (value, format, culture) => _format(this, spec.format, value, format, culture)
+    this.format = (value, str, culture) => _format(this, format, value, str, culture)
 
     this.parse = (value, culture) => {
-      let result = spec.parse(value, format, culture)
+      let result = parse.call(this, value, culture)
 
       invariant(result == null || typeof result === 'number'
         , 'number localizer `parse(..)` must return a number, null, or undefined')
@@ -69,15 +74,14 @@ class DateLocalizer {
       , 'date localizer `firstOfWeek(..)` must be a function')
     checkFormats(REQUIRED_DATE_FORMATS, spec.formats)
 
-    this.propType = spec.propType || propTypes.LocaleFormat
+    this.propType = spec.propType || localePropType
     this.formats  = spec.formats
-
     this.startOfWeek = spec.firstOfWeek
-    
+
     this.format = (value, format, culture) => _format(this, spec.format, value, format, culture)
 
-    this.parse = (value, culture) => {
-      let result = spec.parse(value, culture)
+    this.parse = (value, format, culture) => {
+      let result = spec.parse.call(this, value, format, culture)
 
       invariant(result == null 
         || (result instanceof Date && !isNaN(result.getTime()))

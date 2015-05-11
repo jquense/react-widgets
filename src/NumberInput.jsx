@@ -1,8 +1,9 @@
 'use strict';
 var React   = require('react')
   , CustomPropTypes = require('./util/propTypes')
-  , config = require('./util/configuration');
+  , localizers  = require('./util/configuration').locale;
 
+var format = props => props.format || localizers.number.formats.default
 
 module.exports = React.createClass({
 
@@ -11,7 +12,7 @@ module.exports = React.createClass({
   propTypes: {
     value:        React.PropTypes.number,
 
-    format:       CustomPropTypes.localeFormat.isRequired,
+    format:       CustomPropTypes.numberFormat.isRequired,
     parse:        React.PropTypes.func.isRequired,
     culture:      React.PropTypes.string,
 
@@ -24,16 +25,15 @@ module.exports = React.createClass({
   getDefaultProps(){
     return {
       value: null,
-      format: 'd',
       editing: false,
-      parse: (number, culture) => config.globalize.parseFloat(number, 10, culture)
+      parse: (number, culture) => localizers.number.parse(number, culture)
     }
   },
 
   getDefaultState(props){
     var value = props.editing 
           ? props.value
-          : formatNumber(props.value, props.format, props.culture)
+          : formatNumber(props.value, format(props), props.culture)
 
     if ( value == null || isNaN(props.value) ) 
       value = ''
@@ -130,8 +130,5 @@ module.exports = React.createClass({
 // }
 
 function formatNumber(number, format, culture){
-  if ( typeof format === 'function')
-    return format(number, culture)
-
-  return config.globalize.format(number, format, culture)
+  return localizers.number.format(number, format, culture)
 }
