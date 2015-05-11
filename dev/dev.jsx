@@ -2,6 +2,8 @@
 require('../src/less/react-widgets.less')
 
 //require('react-a11y')();
+var configure = require('../src/configure')
+configure.setGlobalizeInstance(window.Globalize);
 
 var React = require('react/addons')
 //var jquery = require('jquery')
@@ -14,15 +16,15 @@ var NumberPicker = require('../src/NumberPicker.jsx')
 var ComboBox = require('../src/Combobox.jsx')
 var SelectList = require('../src/SelectList.jsx')
 var List = require('../src/List.jsx')
-var configure = require('../src/configure')
+
 var chance = new (require('chance'))
 var _ = require('lodash')
 
 var { ModalTrigger, Modal } = require('react-bootstrap')
 
-window.Globalize.culture('en-GB');
+ window.Globalize.culture('en-GB');
 
-configure.setGlobalizeInstance(window.Globalize);
+// configure.setGlobalizeInstance(window.Globalize);
 
 // configure.setAnimate((element, props, duration, ease, callback) => {
 //   return jquery(element).animate(props, duration, callback)
