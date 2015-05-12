@@ -151,15 +151,21 @@ var GettingStarted = React.createClass({
         <p>
           Peer Dependencies can be a pain, and can't be optional, so we don't do use them. This means you will need to ensure that only one 
           instance is included in your app at a time. If you are using Browserify or Webpack, you can make use of their configuration options 
-          to ensure this. You can also use <code>npm dedupe</code> to ensure only one copy is included, 
-          or you can explicitly define the Globalize instance that the widgets should use.
+          to ensure this. You can also use <code>npm dedupe</code> to ensure only one copy is included. If all else fails you 
+          can explicitly pass the correct Globalize instance to <code>react-widgets</code> with the include Globalize Localizers.
         </p>
-        <pre>
-          <code className='js'>
-          {`configure.setGlobalizeInstance(window.globalize)`}
-          </code>
-        </pre>
+<pre>
+<code className='js'>
+{`var { 
+    GlobalizeNumberLocalizer
+  , GlobalizeDateLocalizer } = require('react-widgets/lib/globalize-localizer')
 
+configure.setNumberLocalizer(GlobalizeNumberLocalizer(window.globalize))
+
+configure.setDateLocalizer(GlobalizeDateLocalizer(window.globalize))
+`}
+</code>
+</pre>
         <h4>Animation</h4>
         <p>
           By default, react-widgets uses CSS animations for everything. While this works great on modern browsers older IE does not support them. 

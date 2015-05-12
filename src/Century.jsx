@@ -34,7 +34,7 @@ module.exports = React.createClass({
 
     onChange:     React.PropTypes.func.isRequired,
     
-    decadeFormat: CustomPropTypes.dateFormat.isRequired
+    decadeFormat: CustomPropTypes.dateFormat
   },
 
   render: function(){

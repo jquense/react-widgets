@@ -33,7 +33,7 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
 
-    monthFormat:  CustomPropTypes.dateFormat.isRequired
+    monthFormat:  CustomPropTypes.dateFormat
   },
 
 
