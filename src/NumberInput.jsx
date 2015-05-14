@@ -12,7 +12,7 @@ module.exports = React.createClass({
   propTypes: {
     value:        React.PropTypes.number,
 
-    format:       CustomPropTypes.numberFormat.isRequired,
+    format:       CustomPropTypes.numberFormat,
     parse:        React.PropTypes.func.isRequired,
     culture:      React.PropTypes.string,
 

@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , localizers = require('./configuration').localizers
+  , localizers = require('./configuration').locale
 
 module.exports = {
 

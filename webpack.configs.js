@@ -141,9 +141,9 @@ module.exports = {
       path: __dirname
     },
 
-    plugins: [
-      new webpack.IgnorePlugin(/globalize$/)
-    ]
+    // plugins: [
+    //   new webpack.IgnorePlugin(/globalize$/)
+    //]
   }),
 
   docBuild: makeConfig({

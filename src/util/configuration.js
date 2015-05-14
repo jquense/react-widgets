@@ -1,7 +1,7 @@
 var globalize
   , { 
     GlobalizeNumberLocalizer
-  , GlobalizeDateLocalizer } = require('./globalize-localizer')
+  , GlobalizeDateLocalizer } = require('../globalize-localizer')
 
 try {
   globalize = require('globalize')
@@ -18,6 +18,7 @@ try {
   }
 }
 
+console.log('hhhher', globalize)
 var config = module.exports = {
 
   animate: require('./dom/animate'),

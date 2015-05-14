@@ -58,7 +58,7 @@ describe('Month Component', function(){
 
     expect(formatter.called).to.be.ok();
 
-    expect(formatter.args[0].length).to.equal(2);
+    expect(formatter.args[0].length).to.equal(3);
     expect(formatter.args[0][0]).to.be.a(Date);
     expect(formatter.args[0][1]).to.be.a('string').and.to.equal('en');
 

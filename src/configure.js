@@ -2,10 +2,10 @@ var warning = require('react/lib/warning')
   , configuration = require('./util/configuration')
   , { 
     NumberLocalizer
-  , DateLocalizer } = require('./util/LocaleAdapter')
+  , DateLocalizer } = require('./util/localizers')
   , { 
     GlobalizeNumberLocalizer
-  , GlobalizeDateLocalizer } = require('./util/globalize-localizer')
+  , GlobalizeDateLocalizer } = require('./globalize-localizer')
 
 module.exports = {
 

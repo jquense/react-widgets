@@ -48,7 +48,7 @@ var Calendar = React.createClass({
           automatically by the localizer with the <code>value</code>, the <code>culture</code> string and the localizer instance.
         </p>
         <strong>
-          For a practical example of creating a Localizer check out <a href="https://github.com/jquense/react-widgets-moment-adapter">this MomentJs Localizer</a>
+          For a practical example of creating a Localizer check out <a href="https://github.com/jquense/react-widgets-localizer-moment">this MomentJs Localizer</a>
         </strong>
         <br/><br/>
         <pre>
@@ -75,7 +75,6 @@ var Calendar = React.createClass({
   format(value, format, cultureStr){
     return formattedDateString
   }
-}
 `}
           </code>
         </pre>

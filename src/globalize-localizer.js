@@ -1,6 +1,6 @@
-var { NumberLocalizer, DateLocalizer } = require('./LocaleAdapter')
+var { NumberLocalizer, DateLocalizer } = require('./util/localizers')
 var dates = require('date-arithmetic')
-var propTypes = require('./propTypes')
+var propTypes = require('./util/propTypes')
 
 function GlobalizeDateLocalizer(globalize){
   const shortNames = Object.create(null);

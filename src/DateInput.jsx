@@ -6,7 +6,6 @@ var React = require('react')
   , localizers = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes');
 
-var format = (props, f) => props[f + 'Format'] || localizers.date.formats[f + 'Format']
 
 module.exports = React.createClass({
 
