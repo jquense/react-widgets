@@ -118,7 +118,6 @@ input.rw-input::-moz-focus-inner {
 .rw-input {
   color: #555555;
   height: 2.286em;
-  line-height: 2.286em;
   padding: 0.429em 0.857em;
   background-color: #ffffff;
 }
@@ -418,6 +417,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option,
   cursor: not-allowed;
 }
 .rw-dropdownlist > .rw-input {
+  line-height: 2.286em;
   background-color: transparent;
   padding-top: 0;
   padding-bottom: 0;
