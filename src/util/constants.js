@@ -1,6 +1,4 @@
 'use strict';
-var _ = require('./_'); //object
-
 var views = {
     MONTH:   'month',
     YEAR:    'year',

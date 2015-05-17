@@ -20,7 +20,7 @@ module.exports = {
       return
     
     clearTimeout(timers[key])
-    timers[key] = setTimeout(cb, duration)
+    timers[key] = window.setTimeout(cb, duration)
   }
 
 }

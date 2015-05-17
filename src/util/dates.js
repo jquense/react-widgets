@@ -4,14 +4,13 @@ var dateMath = require('date-arithmetic')
   , { 
     directions
   , calendarViewUnits } = require('./constants')
-  , config = require('./configuration')
-  , _ = require('./_'); //extend
+  , config = require('./configuration');
 
 var shortNames = {};
 
 var isUpOrDown = dir => dir === directions.UP || dir === directions.DOWN
 
-var dates = module.exports = _.assign(dateMath, {
+var dates = module.exports = Object.assign(dateMath, {
   // wrapper methods for isolating globalize use throughout the lib
   // looking forward towards the 1.0 release
   culture: function(culture){

@@ -8,7 +8,9 @@
 "use strict";
 
 var React = require('react')
-  , $     = require('./util/dom')
+  , css = require('dom-helpers/style')
+  , height = require('dom-helpers/query/height')
+  , width  = require('dom-helpers/query/width')
   , compat = require('./util/compat')
   , _     = require('./util/_');
 
@@ -93,10 +95,10 @@ module.exports = React.createClass({
       , el       = first && compat.findDOMNode(first);
 
     if( el )
-      $.css(node, {
+      css(node, {
         overflow: 'hidden',
-        height: $.height(el) + 'px',
-        width:  $.width(el) + 'px'
+        height: height(el) + 'px',
+        width:  width(el) + 'px'
       })
     
     this.props.onAnimating();
@@ -128,7 +130,7 @@ module.exports = React.createClass({
       return 
 
     if ( this.isMounted() )
-      $.css(compat.findDOMNode(this), { overflow: 'visible', height: '', width: '' })
+      css(compat.findDOMNode(this), { overflow: 'visible', height: '', width: '' })
 
     this.props.onAnimate() 
   }, 

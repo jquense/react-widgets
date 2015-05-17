@@ -5,10 +5,8 @@ var _ =
 
   module.exports = {
 
-    has: has,
+    has,
     
-    assign: require('react/lib/Object.assign'),
-
     isShallowEqual(a, b) {
       if (a === b) return true;
       if (a instanceof Date && b instanceof Date)
@@ -33,7 +31,6 @@ var _ =
       for(var key in obj) if(has(obj, key)) 
         cb.call(thisArg, obj[key], key, obj)
     },
-
 
     pick(obj, keys) {
       keys = [].concat(keys);

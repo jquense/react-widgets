@@ -9,7 +9,7 @@ var React = require('react')
   , PlainList        = require('./List')
   , GroupableList = require('./ListGroupable')
   , validateList = require('./util/validateListInterface')
-  , scrollTo = require('./util/dom/scroll');
+  , scrollTo = require('dom-helpers/util/scrollTo');
 
 var propTypes = {
 

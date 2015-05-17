@@ -2,7 +2,7 @@
 var React           = require('react')
   , activeElement   = require('react/lib/getActiveElement')
   , _               = require('./util/_')
-  , $               = require('./util/dom')
+  , contains        = require('dom-helpers/query/contains')
   , cx              = require('classnames')
   , compat          = require('./util/compat')
   , CustomPropTypes = require('./util/propTypes')
@@ -239,7 +239,7 @@ var DropdownList = React.createClass({
     if( !this.props.filter || !this.props.open )
       this.toggle()
 
-    else if( !$.contains(compat.findDOMNode(wrapper), e.target))
+    else if( !contains(compat.findDOMNode(wrapper), e.target))
       this.close()
 
     this.notify('onClick', e)

@@ -16,7 +16,6 @@ var SelectList = require('../src/SelectList.jsx')
 var List = require('../src/List.jsx')
 var configure = require('../src/configure')
 var chance = new (require('chance'))
-var _ = require('lodash')
 
 var { ModalTrigger, Modal } = require('react-bootstrap')
 
@@ -74,11 +73,11 @@ var App = React.createClass({
       var obj = {}
 
       if(field === 'selectValues' && Array.isArray(data))
-        data = _.pluck(data, 'id')
+        data = data.map( d => d.id)
 
       if(field === 'open') console.log(field, data)
 
-      obj[field] = _.has(data, 'id') ? data.id : data
+      obj[field] = data.hasOwnProperty('id') ? data.id : data
 
       self.setState(obj)
       //console.log('example: set field: ' + field, data)

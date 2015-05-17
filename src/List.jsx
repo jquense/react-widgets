@@ -3,8 +3,7 @@ var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   , compat = require('./util/compat')
   , cx = require('classnames')
-  , _  = require('./util/_')
-  , $  = require('./util/dom');
+  , _  = require('./util/_');
 
 
 module.exports = React.createClass({

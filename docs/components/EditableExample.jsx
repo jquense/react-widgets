@@ -4,7 +4,7 @@
 var React = require('react')
   , CodeMirrorEditor = require('./codemirror')
   , babel = require('babel/browser')
-  , { whitelist, ...config } = require('../../package.json').babel
+  , config = require('json!../../.babelrc')
   , ReactWidgets = require('../../src/index')
   , MultiselectTagList = require('../../src/MultiselectTagList')
   , List = require('../../src/List')
@@ -85,7 +85,7 @@ module.exports = React.createClass({
 
   setTimeout: function() {
     clearTimeout(this.timeoutID);
-    this.timeoutID = setTimeout.apply(null, arguments);
+    this.timeoutID = window.setTimeout.apply(null, arguments);
   },
 
   componentWillUnmount: function() {

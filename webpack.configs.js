@@ -20,7 +20,7 @@ function makeConfig(options){
     { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
     { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader?name=[name].[ext]" },
 
-    { test: /\.jsx$|\.js$/, loader: 'babel-loader', exclude: /node_modules/, query: pkg.babel }
+    { test: /\.jsx$|\.js$/, loader: 'babel-loader', exclude: /node_modules/ }
   ];
 
   if (options.hot){
@@ -45,7 +45,9 @@ function makeConfig(options){
   
   if (options.minimize) 
     plugins.push(
-      new webpack.optimize.UglifyJsPlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: { warnings: false, dead_code: true }
+      }),
       new webpack.optimize.DedupePlugin(),
       new webpack.NoErrorsPlugin())
   else
@@ -103,8 +105,6 @@ function makeConfig(options){
 
 
 module.exports = {
-
-  babel: pkg.babel,
 
   browser: makeConfig({
 
