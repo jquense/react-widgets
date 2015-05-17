@@ -2,6 +2,7 @@
 var React           = require('react')
   , cx              = require('classnames')
   , _               = require('./util/_')
+  , support         = require('./util/dom/support')
   , compat          = require('./util/compat')
   , SelectInput     = require('./MultiselectInput')
   , TagList         = require('./MultiselectTagList')
@@ -108,6 +109,12 @@ var Multiselect = React.createClass({
 
   componentDidUpdate() {
     this.refs.list && validateList(this.refs.list)
+  },
+
+  componentDidMount() {
+    // https://github.com/facebook/react/issues/1169
+    if( support.ios ) 
+      compat.findDOMNode(this.refs.wrapper).onClick = ()=>{}
   },
 
   componentWillReceiveProps(nextProps) {

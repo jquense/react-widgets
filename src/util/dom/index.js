@@ -7,6 +7,7 @@ var {
   , width
   , offset } = require('./dimensions')
 
+
 module.exports = {
 
   height, 
@@ -30,4 +31,6 @@ module.exports = {
   raf: require('./requestAnimationFrame'),
 
   animate: require('./animate'),
+
+  support: require('./support'),
 }
