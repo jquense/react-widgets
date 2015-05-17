@@ -1,4 +1,3 @@
-/*global JSXTransformer */
 'use strict';
 
 var React = require('react')
