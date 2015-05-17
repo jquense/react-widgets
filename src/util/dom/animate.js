@@ -15,10 +15,10 @@ var has = Object.prototype.hasOwnProperty
       bottom: 'translateY'
     };
 
-reset[transitionProps.property] =
-reset[transitionProps.duration] =
-reset[transitionProps.delay]    =
-reset[transitionProps.timing]   = ''
+reset[transitionProps.property]  =
+ reset[transitionProps.duration] =
+ reset[transitionProps.delay]    =
+ reset[transitionProps.timing]   = ''
 
 animate.endEvent = transitionProps.end
 animate.transform = transitionProps.transform
@@ -26,9 +26,11 @@ animate.TRANSLATION_MAP = TRANSLATION_MAP
 
 module.exports = animate
 
-/* code in part from: Zepto 1.1.4 | zeptojs.com/license */
 // super lean animate function for transitions
 // doesn't support all translations to keep it matching the jquery API
+/** 
+ * code in part from: Zepto 1.1.4 | zeptojs.com/license
+ */
 function animate(node, properties, duration, easing, callback){
   var cssProperties = []
     , fakeEvent  = { target: node, currentTarget: node }
