@@ -18,6 +18,7 @@ var Calendar = React.createClass({
         <h1 className="page-header">
           Localization
         </h1>
+
         <p>
           In order to handle the international differences in number and date 
           formats <code>react-widgets</code> uses Globalize.js as the default localization strategy. 
@@ -25,6 +26,35 @@ var Calendar = React.createClass({
           both number and date pickers. Of course not everyone needs as robust localization support, so you 
           are free to swap out Globalize for whatever tool you wish.
         </p>
+        <h2>Use with multiple locales</h2>
+        <p>
+          Globalize comes with the 'en' culture loaded by default, but provides many many others as well. To load additional culture files just 
+          require them via <code>require('globalize/lib/cultures/globalize.culture.[culture string]')</code>. If you are using Globalize as 
+          an external module, simply load the files you want in a <code>{'<link/>'}</code> tag.
+        </p>
+        <p>
+          You can load multiple culture files at once and switch between them by passing the culture string (e.g. 'ar-ZA') to individual widgets 
+          or set the culture globally for all widgets with <code>globalize.culture('ar-ZA')</code>.
+        </p>
+
+        <h4>Bundling Caveats</h4>
+        <p>
+          Loading globalize cultures mutates the "Globalize" object, this means you need to ensure that only one instance of Globalize 
+          included in your app at a time. If you are using Browserify or Webpack, 
+          you can make use of their configuration options to ensure this. You can also use <code>npm dedupe</code> to ensure only one copy is included. 
+          If all else fails you can explicitly pass the correct Globalize instance to <code>react-widgets</code> with the included Globalize Localizers.
+        </p>
+<pre>
+<code className='js'>
+{`var { 
+    GlobalizeNumberLocalizer
+  , GlobalizeDateLocalizer } = require('react-widgets/lib/globalize-localizer')
+
+configure.setNumberLocalizer(GlobalizeNumberLocalizer(globalize))
+configure.setDateLocalizer(GlobalizeDateLocalizer(globalize))
+`}
+</code>
+</pre>
         <h2>Localizers</h2>
         <p>
           All localization functionality is contained in "Localizers", making it easy to swap out 
@@ -152,19 +182,19 @@ configure.setNumberLocalizer(myNumberLocalizer)
         <h4>required formats</h4>
         <em>Localizers must provide default values for each required format.</em>
         <ul>
-          <li><code>default</code> the default date pattern, generally a "long" format showing both date and time</li>
-          <li><code>date</code> Just the date part of the <code>Date</code> object</li>
-          <li><code>time</code> Just the time part of the <code>Date</code> object</li>
-          <li><code>header</code> The heading of the month view of the Calendar widget</li>
-          <li><code>footer</code> The footer of the Calendar widget</li>
-          <li><code>dayOfMonth</code> disaply the day of the month, in the Calendar</li>
-          <li><code>month</code> Short Month name</li>
-          <li><code>year</code> format for displaying the year</li>
-          <li><code>decade</code> format for displaying the decade</li>
-          <li><code>century</code> format for displaying the century</li>
+          <li><code>default</code>: the default date diaplay format, generally a "long" format showing both date and time</li>
+          <li><code>date</code>: A date only format</li>
+          <li><code>time</code>: A time only format</li>
+          <li><code>header</code>: The heading of the Calendar month view, contextuals the current month, e.g. "Jan 2014"</li>
+          <li><code>footer</code>: The Calendar footer format, for displaying Today's date</li>
+          <li><code>dayOfMonth</code>: The day of the month</li>
+          <li><code>month</code>: Month name, used in the Year view of the Calendar</li>
+          <li><code>year</code>: year format, used in the Decade view of the Calendar</li>
+          <li><code>decade</code>: a decade format, used in the Century view of the Calendar, eg. "2010 - 2019"</li>
+          <li><code>century</code>: A century format, used the in the Calendar heading</li>
         </ul>
         <h4><code>propType</code> (optional)</h4>
-        <p>A React PropType that is used to validate the nuDatember formats</p>
+        <p>A React PropType that is used to validate the Date formats</p>
         <h4><code>parse</code></h4>
         <p>Convert a locale formatted string to a JavaScript Date object.</p>
 <pre><code>
