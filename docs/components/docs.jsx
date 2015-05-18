@@ -19,7 +19,8 @@ var React = require('react')
   , DatePicker     = require('./pages/DateTimePicker.jsx')
   , NumberPicker   = require('./pages/NumberPicker.jsx')
   , Migration      = require('./pages/Migration.jsx')
-  , Advanced       = require('./pages/Advanced.jsx');
+  , Advanced       = require('./pages/Advanced.jsx')
+  , Locale         = require('./pages/i18n.jsx');
 
 
 require('../vendor/codemirror.css')
@@ -161,7 +162,7 @@ var routes = (
     </Route>
 
     <Route name="advanced" handler={Advanced} />
-
+    <Route name="i18n" handler={Locale} />
     <Route name="migration" handler={Migration} />
   </Route>
 );

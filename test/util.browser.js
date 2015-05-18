@@ -155,13 +155,13 @@ describe('when configuring dependencies', function(){
     var globalize = {}
       , animate = ()=>{};
 
-    expect(config.globalize).to.not.equal(globalize)
+    //expect(config.globalize).to.not.equal(globalize)
     expect(config.animate).to.not.equal(animate)
 
-    configure.setGlobalizeInstance(globalize)
+    //configure.setGlobalizeInstance(globalize)
     configure.setAnimate(animate)
 
-    expect(config.globalize).to.equal(globalize)
+    //expect(config.globalize).to.equal(globalize)
     expect(config.animate).to.equal(animate)
   })
 })

@@ -2,9 +2,14 @@
 var React = require('react')
   , cx    = require('classnames')
   , dates = require('./util/dates')
+  , localizers = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes')
   , _   = require('./util/_')
   , Btn = require('./WidgetButton');
+
+var dayFormat = props => props.dayFormat || localizers.date.formats.weekday
+  , dateFormat = props => props.dateFormat || localizers.date.formats.dayOfMonth
+
 
 module.exports = React.createClass({
 
@@ -22,8 +27,8 @@ module.exports = React.createClass({
     min:              React.PropTypes.instanceOf(Date),
     max:              React.PropTypes.instanceOf(Date),
 
-    dayFormat:        CustomPropTypes.localeFormat.isRequired,
-    dateFormat:       CustomPropTypes.localeFormat.isRequired,
+    dayFormat:        CustomPropTypes.dateFormat,
+    dateFormat:       CustomPropTypes.dateFormat,
 
     onChange:         React.PropTypes.func.isRequired, //value is chosen
   },
@@ -39,7 +44,7 @@ module.exports = React.createClass({
         className='rw-calendar-grid'
         aria-activedescendant={this._id('_selected_item')}>
         <thead>
-          <tr>{this._headers(props.dayFormat, props.culture)}</tr>
+          <tr>{this._headers(dayFormat(this.props), props.culture)}</tr>
         </thead>
         <tbody>
           { rows.map(this._row)}
@@ -74,7 +79,9 @@ module.exports = React.createClass({
                     'rw-now': today
                   })}
                   id={focused ? id : undefined}>
-                  {dates.format(day, this.props.dateFormat, this.props.culture)}
+                  {
+                    localizers.date.format(day, dateFormat(this.props), this.props.culture)
+                  }
                 </Btn>
               </td>)
       })}
@@ -84,7 +91,7 @@ module.exports = React.createClass({
 
   _headers: function(format, culture){
     return [0,1,2,3,4,5,6].map( (day) => 
-      <th key={"header_" + day }>{dates.format(day, format, culture)}</th>)
+      <th key={'header_' + day }>{ localizers.date.format(day, format, culture) }</th>)
   }
 
 });

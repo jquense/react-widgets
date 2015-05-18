@@ -2,11 +2,13 @@
 var React      = require('react')
   , cx         = require('classnames')
   , dates      = require('./util/dates')
+  , localizers = require('./util/configuration').locale
   , directions = require('./util/constants').directions
   , Btn        = require('./WidgetButton')
   , _          = require('./util/_')
   , CustomPropTypes = require('./util/propTypes'); //omit
 
+var format = props => props.decadeFormat || localizers.date.formats.decade
 
 module.exports = React.createClass({
 
@@ -26,7 +28,7 @@ module.exports = React.createClass({
 
     onChange:     React.PropTypes.func.isRequired,
     
-    decadeFormat: CustomPropTypes.localeFormat.isRequired
+    decadeFormat: CustomPropTypes.dateFormat
   },
 
   render: function(){
@@ -72,7 +74,9 @@ module.exports = React.createClass({
                   'rw-state-selected':  selected,
                   'rw-now':             currentDecade
                  })}>
-                { dates.format(dates.startOf(date, 'decade'), this.props.decadeFormat, this.props.culture) }
+                { 
+                  localizers.date.format(dates.startOf(date, 'decade'), format(this.props), this.props.culture) 
+                }
               </Btn>
             </td>)
       })}
@@ -80,11 +84,6 @@ module.exports = React.createClass({
   }
 
 });
-
-function label(date, format, culture){
-  return dates.format(dates.startOf(date, 'decade'),    format, culture)
-    + ' - ' + dates.format(dates.endOf(date, 'decade'), format, culture)
-}
 
 function inRangeDate(decade, min, max){
   return dates.max( dates.min(decade, max), min)

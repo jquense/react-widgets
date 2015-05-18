@@ -1,5 +1,6 @@
 'use strict';
 var React = require('react')
+  , localizers = require('./configuration').locale
   , filters = require('./filter');
 
 var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
@@ -23,12 +24,13 @@ module.exports = {
       return true
     }),
 
-    localeFormat: React.PropTypes.oneOfType([
-                    React.PropTypes.string, 
-                    React.PropTypes.func
-                  ]),
+  numberFormat: createChainableTypeChecker(
+    (...args) => localizers.number.propType(...args)),
 
-    accessor:     React.PropTypes.oneOfType([
+  dateFormat: createChainableTypeChecker(
+    (...args) => localizers.date.propType(...args)),
+
+  accessor:     React.PropTypes.oneOfType([
                     React.PropTypes.string, 
                     React.PropTypes.func
                   ]),
@@ -37,7 +39,7 @@ module.exports = {
                     React.PropTypes.func,
                     React.PropTypes.bool,
                     React.PropTypes.oneOf(filterTypes)
-                  ]),
+                  ])
 }
 
 

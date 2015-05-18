@@ -2,11 +2,15 @@
 var React      = require('react')
   , cx         = require('classnames')
   , dates      = require('./util/dates')
+  , localizers = require('./util/configuration').locale
   , directions = require('./util/constants').directions
   , Btn        = require('./WidgetButton')
   , _          = require('./util/_')
   , compat     = require('./util/compat')
   , CustomPropTypes = require('./util/propTypes');
+
+
+var format = props => props.monthFormat || localizers.date.formats.month
 
 module.exports = React.createClass({
 
@@ -25,7 +29,7 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
 
-    monthFormat:  CustomPropTypes.localeFormat.isRequired
+    monthFormat:  CustomPropTypes.dateFormat
   },
 
 
@@ -68,7 +72,7 @@ module.exports = React.createClass({
                   'rw-state-selected': selected,
                   'rw-now':            currentMonth
                 })}>
-                { dates.format(date, this.props.monthFormat, this.props.culture) }
+                { localizers.date.format(date, format(this.props), this.props.culture) }
               </Btn>
             </td>)
           : <td key={i} className='rw-empty-cell' role='gridcell'>&nbsp;</td>

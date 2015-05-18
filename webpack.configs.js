@@ -139,7 +139,11 @@ module.exports = {
     output: {
       filename: 'bundle.js',
       path: __dirname
-    }
+    },
+
+    // plugins: [
+    //   new webpack.IgnorePlugin(/globalize$/)
+    //]
   }),
 
   docBuild: makeConfig({

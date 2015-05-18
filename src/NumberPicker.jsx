@@ -23,7 +23,7 @@ var Btn = require('./WidgetButton')
 
       culture:        React.PropTypes.string,
 
-      format:         CustomPropTypes.localeFormat,
+      format:         CustomPropTypes.numberFormat,
 
       name:           React.PropTypes.string,
 
@@ -62,8 +62,6 @@ var NumberPicker = React.createClass({
     return {
       value: null,
       open: false,
-
-      format: 'd',
 
       min: -Infinity,
       max:  Infinity,

@@ -3,8 +3,11 @@ var React = require('react')
   , _ = require('./util/_')
   , cx    = require('classnames')
   , dates = require('./util/dates')
+  , localizers  = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes')
   , Btn = require('./WidgetButton'); 
+
+var format = props => props.yearFormat || localizers.date.formats.year
 
 module.exports = React.createClass({
 
@@ -26,7 +29,7 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
 
-    yearFormat:   CustomPropTypes.localeFormat.isRequired
+    yearFormat:   CustomPropTypes.dateFormat
 
   },
 
@@ -72,7 +75,9 @@ module.exports = React.createClass({
                   'rw-state-selected': selected,
                   'rw-now':            currentYear
                 })}>
-                { dates.format(date, this.props.yearFormat, this.props.culture) }
+                { 
+                  localizers.date.format(date, format(this.props), this.props.culture) 
+                }
               </Btn>
             </td>)
       })}
@@ -82,13 +87,12 @@ module.exports = React.createClass({
 
 function inDecade(date, start){
   return dates.gte(date, dates.startOf(start, 'decade'), 'year')
-      && dates.lte(date, dates.endOf(start,'decade'),  'year')
+      && dates.lte(date, dates.endOf(start, 'decade'),  'year')
 }
 
 function getDecadeYears(_date){
   var days = [1,2,3,4,5,6,7,8,9,10,11,12]
     , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
 
-  return days.map( 
-    i => date = dates.add(date, 1, 'year'))
+  return days.map(() => date = dates.add(date, 1, 'year'))
 }

@@ -2,6 +2,9 @@
 require('../src/less/react-widgets.less')
 
 //require('react-a11y')();
+var configure = require('../src/configure')
+
+//configure.setGlobalizeInstance(window.Globalize);
 
 var React = require('react/addons')
 //var jquery = require('jquery')
@@ -14,14 +17,54 @@ var NumberPicker = require('../src/NumberPicker.jsx')
 var ComboBox = require('../src/Combobox.jsx')
 var SelectList = require('../src/SelectList.jsx')
 var List = require('../src/List.jsx')
-var configure = require('../src/configure')
+
 var chance = new (require('chance'))
 
 var { ModalTrigger, Modal } = require('react-bootstrap')
 
-window.Globalize.culture('en-GB');
+var moment = require('moment')
 
-configure.setGlobalizeInstance(window.Globalize);
+var endOfDecade = date => moment(date).add(10, 'year').add(-1, 'millisecond').toDate()
+var endOfCentury = date => moment(date).add(100, 'year').add(-1, 'millisecond').toDate()
+
+configure.setDateLocalizer({
+  formats: {
+    date: 'L',
+    time: 'LT',
+    default: 'lll',
+    header: 'MMMM YYYY',
+    footer: 'LL',
+    weekday: (day, culture, localizer) => moment().locale(culture).weekday(day).format('dd'),
+
+    dayOfMonth: 'DD',
+    month: 'MMM',
+    year: 'YYYY',
+
+    decade: (date, culture, localizer) => {
+      return localizer.format(date, 'YYYY', culture) 
+        + ' - ' + localizer.format(endOfDecade(date), 'YYYY', culture)
+    },
+    
+    century: (date, culture, localizer) => {
+      return localizer.format(date, 'YYYY', culture)
+        + ' - ' + localizer.format(endOfCentury(date), 'YYYY', culture)
+    }
+  },
+
+  firstOfWeek(culture){ 
+    return moment.localeData(culture).firstDayOfWeek()
+  },
+
+  parse(value, format, culture){
+    return moment(value, format).locale(culture).toDate()
+  },
+
+  format(value, format, culture){
+    return moment(value).locale(culture).format(format)
+  }
+})
+
+
 // configure.setAnimate((element, props, duration, ease, callback) => {
 //   return jquery(element).animate(props, duration, callback)
 // })
@@ -89,7 +132,10 @@ var App = React.createClass({
 
           <section className="example" style={{ marginBottom: 20 }}>
           <button onClick={() => this.dropdowns()}>add</button>
-          <Calendar/>
+
+          <DatePicker culture='fr'/>
+          <NumberPicker />
+
           </section>
         </div>
       </div>

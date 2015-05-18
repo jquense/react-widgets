@@ -18,24 +18,19 @@ var GettingStarted = React.createClass({
            work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By
            building each widget entirely in React, it can leavage all of the benefits of the React ecosystem
            and <a href='http://facebook.github.io/react/blog/2013/11/05/thinking-in-react.html' target="_blank">
-            philosophy <i className="fa fa-external-link"></i>
-          </a>.
-        </p>
-        <p>
-          A big thanks to both of these libraries for solving most of the difficult problems already, and providing an
-          excellent reference for what works, and what does not, in ui inputs.
+            philosophy <i className="fa fa-external-link"></i> 
+          </a>. A big thanks to both of these libraries for solving most of the difficult problems already.
         </p>
         <p>
           In keeping with the&nbsp;
           <a href='http://facebook.github.io/react/docs/forms.html#controlled-components' target="_blank">
             React approach <i className="fa fa-external-link"></i>
-          </a> to form input components, each widget can be <em>controlled</em> or <em>uncontrolled</em>. Like form inputs 
-           the value/onChange prop pair provides the main interface for widget interaction. If a <code>value</code> prop 
+          </a> to form input components, each widget can be <em>controlled</em> or <em>uncontrolled</em>. If a <code>value</code> prop 
            is {'set'} the widget's value is said to be <em>controlled</em>, meaning the parent is responsible for managing its 
            state. If the widget does not provide a <code>value</code> prop, the widget becomes <em>uncontrolled</em> or responsible 
-           for managing its own value through internal state. To initialize an uncontrolled widget with a value you can use 
+           for managing its own value with no other input, you can set a starting value for an uncontrolled widget with 
            the <code>defaultValue</code> prop. In addition to the <code>value</code> prop, widgets may allow other props 
-           (such as <code>open</code> or <code>search</code>) to be controlled by the parent component. 
+           (such as <code>open</code> or <code>search</code>) to be controlled as well. 
         </p>
         <p>
           Some widgets can also be "bound" to a {'set'} of data (traditionally an array of models) through
@@ -45,50 +40,58 @@ var GettingStarted = React.createClass({
         </p>
 
         <h2 id='/getting-started/install' className='prop-header'>Install <a/></h2>
-        <p>
-          The prefered way to install is NPM (<code>npm install react-widgets</code>) and make use of something like Webpack or 
-           Browserify to bundle the library. You can also install via Bower or use the traditional browser build available for 
-           download in the <strong>dist</strong> folder. The browser build does not bundle any dependencies, and 
-           attaches itself to the <code>window</code> as <code>ReactWidgets</code>
-        </p>
-        <p>
-          Compiled CSS, images, and fonts are found in the <code>dist</code> directory.
-           Included icons are provided by - <a href="http://fontawesome.io">Font Awesome by Dave Gandy</a>
-        </p>
-        <strong>
-          Note: versions prior to 1.1.0 require a build step (transpilation from JSX) when using the NPM package.
-           As of 1.1.0 the package comes precompiled, and no build step is needed.
-        </strong>
 
-        <h2 id='/getting-started/deps' className='prop-header'>External Dependencies</h2>
+        <pre className='component-export'>
+          <code>
+          <div>npm</div>
+          {` npm install react-widgets --save`}<br/>
+          <div>Bower</div>
+          {` bower install react-widgets --save`}<br/>
+          <div>Old School</div>
+          {` <script src='globalize.js'></script>
+ <script src='react-widgets.js'></script>
+ <script>
+   ReactWidgets.DropdownList
+ </script>`}
+          <br/>
+          </code>
+        </pre>
+
         <p>
-          React-widgets <b>2.x</b> is compatible with React <b>0.12.0+</b>, while the <b>1.x</b> branch supports
-           React <b>0.9.0</b> to <b>0.10.0</b>. Either branch expects React to be bundled by you. Consumers of the NPM package should note that 
-           React is not listed as direct, 
-           or peer dependency. This is to help reduce the friction that Peer Dependencies can cause. 
-           This means that NPM will not warn you if you try to use react-widgets with an incompatible React version.
+          The npm build offers an additional advantage of allowing you to only require the individual widgets allowing front end bundlers like Webpack 
+          and Browserify to only package up the pieces you use saving you bytes. The global browser build will also need to 
+          include <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468" >Globalize</a>&nbsp;, a library for handling 
+          number and date localization (see the <Link to='i18n'>Localization page</Link> for more info on Globalize, or using other libraries).
         </p>
         <p>
-          If you use Browserify or Webpack to build your projects, the dependencies listed below will automatically be 
-          included. They are listed for the sake of those who wish to externalize the lib dependencies to reduce 
-          duplication, or wish to use a different, compatible, library.
+          Stylesheets, images, and fonts are found in the <code>dist</code> directory. You can use webpack to <code>require()</code> the styles,
+          or include the css normally. The included icons are provided by - <a href="http://fontawesome.io">Font Awesome by Dave Gandy</a>
         </p>
-        <ul>
-          <li>
-            <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468" >Globalize</a>&nbsp;
-            used for date and number localization. Requires a 0.x.x version (not the upcoming 1.0.0). 
-          </li>
-        </ul>
+        <pre className='component-export'>
+          <code>
+          <div>Browser</div>
+          {` <link href="dist/css/react-widgets.css" rel="stylesheet"/>`}<br/>
+          <div>Webpack css</div>
+          {` require('react-widgets/dist/react-widgets.css')`}<br/>
+          <div>Webpack LESS</div>
+          {` require('react-widgets/lib/react-widgets.less')`}<br/>
+          </code>
+        </pre>
+
+        <h2 id='/getting-started/access'>Accessibility and Read Direction</h2>
         <p>
-          You need to ensure that your app or library only includes one instance of Globalize. In that sense it is a peer dependency 
-          of react-widgets. However since peer dependencies cannot be optional, and your use of globalize is optional, it is not included as one. 
-          see <Link to='/getting-started/configuration'>the section below</Link> for more info.
+          React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for
+          date and number localization, there is first {'class'} support for cultures and languages that read
+          right to left (with the <code>isRtl</code> prop).
         </p>
-        <strong>
-          Note: As of verison <code>2.3.0</code> you can completely swap out the Globalize dependency for any localization 
-          solution you wish through widget format and parse props.
-        </strong>
-        
+        <p>
+          Each widget also has appropriate ARIA roles and attributes for the benefit of screen readers and visually
+          impaired users. Keyboard only navigation of widgets is also supported, for those who prefer to not,
+          or cannot use a mouse. to help ensure maximum accessibility, every widget should have
+          an <code>id</code> attribute. If you do not wish to provide an id attrbute, the widget will generate
+          the necessary id's to properly label and annotate the widget ARIA.
+        </p>
+
         <h2 id='/getting-started/browser'>Older Browser Support</h2>
         <p>
           Rather than including an entire utility library, like underscore, react widgets takes a hint from React itself, 
@@ -108,22 +111,25 @@ var GettingStarted = React.createClass({
             <li><code>Array.prototype.reduce</code></li>
           </ul>
 
-          You can use the excellent <a href="https://github.com/es-shims/es5-shim">kriskowal's es5-shim</a> for all of these.
+          You can use the excellent <a href="https://github.com/es-shims/es5-shim">kriskowal's es5-shim</a> for all of these. If you want 
+          to support animation in browsers that do not support CSS transitions you can replace the default animation utility to a more robust solution.
         </p>
-
-        <h2 id='/getting-started/access'>Accessibility and Read Direction</h2>
-        <p>
-          React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for
-          date and number localization, there is first {'class'} support for cultures and languages that read
-          right to left (with the <code>isRtl</code> prop).
-        </p>
-        <p>
-          Each widget also has appropriate ARIA roles and attributes for the benefit of screen readers and visually
-          impaired users. Keyboard only navigation of widgets is also supported, for those who prefer to not,
-          or cannot use a mouse. to help ensure maximum accessibility, every widget should have
-          an <code>id</code> attribute. If you do not wish to provide an id attrbute, the widget will generate
-          the necessary id's to properly label and annotate the widget ARIA.
-        </p>
+        <h4>Animation</h4>
+          <p>
+            react-widgets uses CSS animations which are not supported in older IE. If you want to replace the default the animation method 
+            for these cases you can. The built in method mirrors the jQuery animate API closely so it 
+            and easily be swapped out for jQuery.
+          </p>
+          <pre>
+            <code className='component-export'>
+            <div>With the Configure module</div>
+            {` require('react-widgets/lib/configure') \n` +
+             `   .setAnimate((element, props, duration, ease, callback) => $(element).animate(props, duration, callback))`}<br/>
+            <div>From the main export</div>
+            {` require('react-widgets').configure \n` +
+             `   .setAnimate((element, props, duration, ease, callback) => $(element).animate(props, duration, callback))`}<br/>
+            </code>
+          </pre>
 
         <h2 id='/getting-started/style' className='prop-header'>Styling</h2>
         <p>
@@ -140,37 +146,6 @@ var GettingStarted = React.createClass({
             </li>
           </ul>
         </p>
-
-        <h2 id='/getting-started/configuration' className='prop-header'>Configuration</h2>
-        <p>
-          There are a few configuration options designed to give both flexibility and increase ease of use. To set an option you can either use 
-          the exported <code>configure</code> (<code>require('react-widgets').configure</code>) namespace or require 
-          it directly: <code>require('react-widgets/lib/configure')</code>.
-        </p>
-        <h4>Globalize</h4>
-        <p>
-          Peer Dependencies can be a pain, and can't be optional, so we don't do use them. This means you will need to ensure that only one 
-          instance is included in your app at a time. If you are using Browserify or Webpack, you can make use of their configuration options 
-          to ensure this. You can also use <code>npm dedupe</code> to ensure only one copy is included, 
-          or you can explicitly define the Globalize instance that the widgets should use.
-        </p>
-        <pre>
-          <code className='js'>
-          {`configure.setGlobalizeInstance(window.globalize)`}
-          </code>
-        </pre>
-
-        <h4>Animation</h4>
-        <p>
-          By default, react-widgets uses CSS animations for everything. While this works great on modern browsers older IE does not support them. 
-          If you want to swap out the animation method for these cases you can. The built in method mirrors the jQuery animate API closely so it 
-          and easily be swapped out for jQuery.
-        </p>
-        <pre>
-          <code className='js'>
-          {`configure.setAnimate((element, props, duration, ease, callback) => $(element).animate(props, duration, callback))`}
-          </code>
-        </pre>
       </section>
     );
   }
