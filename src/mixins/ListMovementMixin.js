@@ -1,13 +1,12 @@
 'use strict';
 var React = require('react')
-  , _ =  require('../util/_')
   , filter = require('../util/filter')
   , helper = require('./DataHelpersMixin')
 
 module.exports = {
   
   propTypes: {    
-    textField:  React.PropTypes.string,
+    textField:  React.PropTypes.string
   },
 
   first() {

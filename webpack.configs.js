@@ -197,8 +197,9 @@ module.exports = {
 
     loaders: [
       { test: /\.json$/, loader: "json" },
-      { test: /\.raw$/, loader: "raw" }
-    ],
+      { test: /\.raw$/,  loader: "raw" },
+      { test: /\.md$/,   loader: 'babel-loader!' + path.join(__dirname, './docs/vendor/mdLoader') }
+    ]
   }),
 
   test: makeConfig({

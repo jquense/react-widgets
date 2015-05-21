@@ -1,8 +1,7 @@
 var { NumberLocalizer, DateLocalizer } = require('./util/localizers')
 var dates = require('date-arithmetic')
-var propTypes = require('./util/propTypes')
 
-function GlobalizeDateLocalizer(globalize){
+function globalizeDateLocalizer(globalize){
   const shortNames = Object.create(null);
 
   function getCulture(culture){
@@ -47,7 +46,7 @@ function GlobalizeDateLocalizer(globalize){
         `${l.format(dt, l.formats.year, culture)} - ${l.format(dates.endOf(dt, 'decade'), l.formats.year, culture)}`,
       
       century: (dt, culture, l) => 
-        `${l.format(dt, l.formats.year, culture)} - ${l.format(dates.endOf(dt, 'century'), l.formats.year, culture)}`,
+        `${l.format(dt, l.formats.year, culture)} - ${l.format(dates.endOf(dt, 'century'), l.formats.year, culture)}`
     },
 
     firstOfWeek,
@@ -67,7 +66,7 @@ function GlobalizeDateLocalizer(globalize){
   return localizer
 }
 
-function GlobalizeNumberLocalizer(globalize) {
+function globalizeNumberLocalizer(globalize) {
   var localizer = new NumberLocalizer({
 
     formats: {
@@ -89,5 +88,5 @@ function GlobalizeNumberLocalizer(globalize) {
 }
 
 module.exports = {
-  GlobalizeNumberLocalizer, GlobalizeDateLocalizer
+  globalizeNumberLocalizer, globalizeDateLocalizer
 }

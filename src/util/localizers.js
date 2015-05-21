@@ -33,9 +33,9 @@ function _format(localizer, formatter, value, format, culture) {
 }
 
 function checkFormats(requiredFormats, formats){
-  if( "production" !== process.env.NODE_ENV)
+  if( process.env.NODE_ENV !== 'production' )
     requiredFormats.forEach(
-      f => invariant(has(formats , f), 'localizer missing required format: `%s`', f ))
+      f => invariant(has(formats, f), 'localizer missing required format: `%s`', f ))
 }
 
 class NumberLocalizer {

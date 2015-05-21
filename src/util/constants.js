@@ -32,6 +32,6 @@ module.exports = {
     [views.MONTH]:   'day',
     [views.YEAR]:    views.MONTH,
     [views.DECADE]:  views.YEAR,
-    [views.CENTURY]: views.DECADE,
+    [views.CENTURY]: views.DECADE
   }
 }

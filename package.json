@@ -24,10 +24,11 @@
     "react-component"
   ],
   "scripts": {
-    "test": "mocha -R spec ./test/server.js && node _test-versions.js",
+    "test": "npm run lint && mocha -R spec ./test/server.js && node _test-versions.js",
     "test-dev": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run=true",
     "build": "gulp lib",
     "docs": "gulp docs",
+    "lint": "eslint src",
     "dist": "gulp dist-build"
   },
   "homepage": "http://jquense.github.io/react-widgets/docs/",

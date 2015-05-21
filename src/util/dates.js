@@ -18,7 +18,7 @@ var dates = module.exports = Object.assign(dateMath, {
   },
   
   monthsInYear: function(year){
-    var months = [0,1,2,3,4,5,6,7,8,9,10,11]
+    var months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       , date   = new Date(year, 0, 1)
 
     return  months.map( i => dates.month(date, i))

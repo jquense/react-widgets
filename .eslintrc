@@ -25,6 +25,8 @@
     "no-use-before-define": 0,
     "key-spacing": 0,
     "consistent-return": 0,
+    "no-shadow": 0,
+    "no-sequences": 0,
     "no-return-assign": 0
   }
 }

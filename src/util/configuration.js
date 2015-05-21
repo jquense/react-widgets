@@ -1,7 +1,8 @@
-var globalize
-  , { 
-    GlobalizeNumberLocalizer
-  , GlobalizeDateLocalizer } = require('../globalize-localizer')
+var { 
+    globalizeNumberLocalizer
+  , globalizeDateLocalizer } = require('../globalize-localizers')
+
+var globalize;
 
 try {
   globalize = require('globalize')
@@ -10,21 +11,20 @@ try {
   if ( process.env.NODE_ENV !== 'production') {
     var desc = { get(){ 
         throw new Error(
-          "Globalize.js is available but is still set as the localization strategy. " +
-          "Please include Globalize.js or provide an alternative localization strategy.") 
+          'Globalize.js is available but is still set as the localization strategy. ' +
+          'Please include Globalize.js or provide an alternative localization strategy.') 
       }}
     Object.defineProperties(globalize, 
       { format: desc, parseDate: desc, parseFloat: desc, findClosestCulture: desc, culture: desc })
   }
 }
 
-console.log('hhhher', globalize)
-var config = module.exports = {
+module.exports = {
 
   animate: require('./dom/animate'),
 
   locale: {
-    date:   GlobalizeDateLocalizer(globalize),
-    number: GlobalizeNumberLocalizer(globalize)
+    date:   globalizeDateLocalizer(globalize),
+    number: globalizeNumberLocalizer(globalize)
   }
 }

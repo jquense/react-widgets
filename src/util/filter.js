@@ -1,5 +1,4 @@
-"use strict";
-
+'use strict';
 var common = {
       eq:   function(a, b){ return a === b },
       neq:  function(a, b){ return a !== b },

@@ -13,7 +13,7 @@ module.exports = {
       value:          React.PropTypes.any,
       filter:         CustomPropTypes.filter,
       caseSensitive:  React.PropTypes.bool,
-      minLength:      React.PropTypes.number,
+      minLength:      React.PropTypes.number
     },
 
     getDefaultProps(){

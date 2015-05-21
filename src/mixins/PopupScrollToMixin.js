@@ -24,5 +24,5 @@ module.exports = {
         state.scrollCancel = scrollTo(selected, list)
       }
     }
-  },
+  }
 }

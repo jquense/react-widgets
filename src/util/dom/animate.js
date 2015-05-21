@@ -1,6 +1,5 @@
-"use strict";
-var canUseDOM = require('dom-helpers/util/inDOM')
-  , hyphenate = require('dom-helpers/util/hyphenate')
+'use strict';
+var hyphenate = require('dom-helpers/util/hyphenate')
   , css = require('dom-helpers/style')
   , on  = require('dom-helpers/events/on')
   , off = require('dom-helpers/events/off')
@@ -35,7 +34,7 @@ function animate(node, properties, duration, easing, callback){
   var cssProperties = []
     , fakeEvent  = { target: node, currentTarget: node }
     , cssValues  = {}
-    , transforms =''
+    , transforms = ''
     , fired;
 
   if ( typeof easing === 'function' )

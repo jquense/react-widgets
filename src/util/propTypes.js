@@ -8,7 +8,7 @@ var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
 module.exports = {
 
   elementType: createChainableTypeChecker(
-    function (props, propName, componentName, location) {
+    function (props, propName, componentName) {
 
       if( typeof props[propName] !== 'function'){
         if ( React.isValidElement(props[propName]))
@@ -50,7 +50,7 @@ function createChainableTypeChecker(validate) {
     if (props[propName] == null) {
       if (isRequired) {
         return new Error(
-          "Required prop `" + propName + "` was not specified in  `" + componentName + "`.");
+          'Required prop `' + propName + '` was not specified in  `' + componentName + '`.');
       }
     } 
     else 

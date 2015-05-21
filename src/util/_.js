@@ -12,10 +12,10 @@ var _ =
       if (a instanceof Date && b instanceof Date)
         return a.getTime() === b.getTime()
 
-      if(typeof a != 'object' && typeof b != 'object')
+      if(typeof a !== 'object' && typeof b !== 'object')
         return a === b
 
-      if(typeof a != typeof b ) return false
+      if(typeof a !== typeof b ) return false
 
       return shallowEqual(a, b)
     }, 

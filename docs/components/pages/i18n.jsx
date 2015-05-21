@@ -47,11 +47,11 @@ var Calendar = React.createClass({
 <pre>
 <code className='js'>
 {`var { 
-    GlobalizeNumberLocalizer
-  , GlobalizeDateLocalizer } = require('react-widgets/lib/globalize-localizer')
+    globalizeNumberLocalizer
+  , globalizeDateLocalizer } = require('react-widgets/lib/globalize-localizers')
 
-configure.setNumberLocalizer(GlobalizeNumberLocalizer(globalize))
-configure.setDateLocalizer(GlobalizeDateLocalizer(globalize))
+configure.setNumberLocalizer(globalizeNumberLocalizer(globalize))
+configure.setDateLocalizer(globalizeDateLocalizer(globalize))
 `}
 </code>
 </pre>

@@ -4,14 +4,14 @@ var warning = require('react/lib/warning')
     NumberLocalizer
   , DateLocalizer } = require('./util/localizers')
   , { 
-    GlobalizeNumberLocalizer
-  , GlobalizeDateLocalizer } = require('./globalize-localizer')
+    globalizeNumberLocalizer
+  , globalizeDateLocalizer } = require('./globalize-localizers')
 
 module.exports = {
 
   setGlobalizeInstance: depreciateMethod(function (globalize) {
-    configuration.locale.date =  GlobalizeDateLocalizer(globalize)
-    configuration.locale.number = GlobalizeNumberLocalizer(globalize)
+    configuration.locale.date   = globalizeDateLocalizer(globalize)
+    configuration.locale.number = globalizeNumberLocalizer(globalize)
   }),
 
   setAnimate(animatefn) {
