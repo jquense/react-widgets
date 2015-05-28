@@ -10,18 +10,17 @@ var React = require('react')
 
   , Affix          = require('../bootstrap').Affix
   , Navbar         = require('./topnavbar.jsx')
-  , GettingStarted = require('./pages/GettingStarted.jsx')
-  , DropdownList   = require('./pages/DropdownList.jsx')
-  , ComboBox       = require('./pages/ComboBox.jsx')
-  , MultiSelect    = require('./pages/MultSelect.jsx')
+  , GettingStarted = require('./pages/GettingStarted.md')
+  , DropdownList   = require('./pages/DropdownList.api.md')
+  , ComboBox       = require('./pages/ComboBox.api.md')
+  , MultiSelect    = require('./pages/Multiselect.api.md')
   , SelectList     = require('./pages/SelectList.jsx')
-  , Calendar       = require('./pages/Calendar.jsx')
-  , DatePicker     = require('./pages/DateTimePicker.jsx')
-  , NumberPicker   = require('./pages/NumberPicker.jsx')
+  , Calendar       = require('./pages/Calendar.api.md')
+  , DatePicker     = require('./pages/DateTimePicker.api.md')
+  , NumberPicker   = require('./pages/NumberPicker.api.md')
   , Migration      = require('./pages/Migration.jsx')
   , Advanced       = require('./pages/Advanced.jsx')
-  , Locale         = require('./pages/i18n.jsx');
-
+  , Locale         = require('./pages/i18n.MD');
 
 require('../vendor/codemirror.css')
 require('../vendor/neo.css')
@@ -66,16 +65,16 @@ var Docs = React.createClass({
                     <Link to='/getting-started'>Getting Started</Link>
                     <ul className='nav'>
                       <li><Link to='/getting-started/install'>Install</Link></li>
-                      <li><Link to='/getting-started/deps'>External Dependencies</Link></li>
                       <li><Link to='/getting-started/browser'>Older Browser Support</Link></li>
                       <li><Link to='/getting-started/access'>Accessibility</Link></li>
-                      <li><Link to='/getting-started/style'>Styling</Link></li>
                       <li><Link to='/getting-started/configuration'>Configuration</Link></li>
+                      <li><Link to='/getting-started/style'>Theming</Link></li>
+                      
                     </ul>
                   </li>
                   <li><Link to='dropdown-list'>Dropdown List</Link></li>
                   <li><Link to='combobox' href='#combobox'>Combobox</Link></li>
-                  <li><Link to='number-picker' href='#number-picker'>Number Picker</Link></li>
+                  <li><Link to='numberpicker' href='#number-picker'>Number Picker</Link></li>
                   <li><Link to='multiselect' href='#multiselect'>Multiselect</Link></li>
                   <li><Link to='selectlist'>SelectList</Link></li>
                   <li><Link to='calendar'>Calendar</Link></li>
@@ -157,7 +156,7 @@ var routes = (
     <Route name="datetime-picker" handler={DatePicker}>
       <Route path=':topic' handler={DatePicker}/>
     </Route>
-    <Route name="number-picker" handler={NumberPicker}>
+    <Route name="numberpicker" handler={NumberPicker}>
       <Route path=':topic' handler={NumberPicker}/>
     </Route>
 

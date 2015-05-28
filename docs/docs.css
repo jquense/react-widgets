@@ -22,6 +22,13 @@ pre + .example {
   border-top-width: 0;
 }
 
+pre {
+  background-color: #f5f5f5;
+  border-radius: 0;
+  border: none;
+  border-left: 4px solid #ccc;
+}
+
 .example {
   background-color: white;
   margin-top: 20px;
@@ -74,7 +81,12 @@ h3 {
   overflow: hidden;
 }
 
-h3 > small {
+h3 > a,
+h3 > a:hover {
+  color: #778492;
+}
+
+h3 > a > small {
   margin-left: 5px;
   color: #555;
   font-weight: bold;
@@ -82,7 +94,7 @@ h3 > small {
   font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-h3 > strong {
+h3 > a > strong {
   float: right;
   font-weight: normal;
   line-height: 1;
@@ -308,3 +320,67 @@ pre {
   color: #bd362f;
 }
 
+.t.blockParams {
+  padding-left: 2ch;
+}
+
+// TODO: not random colors
+
+.token.punctuation,
+.token.ignore,
+.t.interfaceDef,
+.t.member,
+.t.callSig {
+  color: #808890;
+}
+
+.token.function,
+.token.class-name,
+.token.qualifier,
+.t.fnQualifier,
+.t.fnName {
+  color: #32308E;
+}
+
+.token.primitive,
+.t.primitive {
+  color: #922;
+}
+
+.token.number,
+.t.typeParam {
+  color: #905;
+}
+
+.t.typeQualifier,
+.t.typeName {
+  color: #013679;
+}
+
+.t.param {
+  color: #945277;
+}
+
+.t.memberName {
+  color: teal;
+}
+
+.token.block-keyword,
+.token.keyword,
+.t.keyword {
+  color: #A51;
+}
+
+.token.string,
+.token.regex {
+  color: #df5050;
+}
+
+.token.operator {
+  color: #a67f59;
+}
+
+.token.comment {
+  color: #998;
+  font-style: italic;
+}

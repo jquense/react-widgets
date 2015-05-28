@@ -19,6 +19,8 @@ function scopedEval(code, mountNode)  {
   return (new Function( "with(this) { " + code + "}")).call(context);
 }
 
+config.plugins = []
+
 module.exports = React.createClass({
 
   propTypes: {

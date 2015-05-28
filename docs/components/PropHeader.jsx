@@ -16,9 +16,11 @@ var ApiPropHeader = React.createClass({
        , controllable
        , ...props } = this.props;
 
+    var id = this.context.prefix + children.replace(' ', '_')
 
     return (
-       <h3 className='prop-header' id={`/${this.context.prefix + children.replace(' ', '_')}`}>
+       <h3 className='prop-header' id={`/${id}`}>
+        <a href={'#/' + id }>
         { children }
         { type && 
           <small>
@@ -31,6 +33,7 @@ var ApiPropHeader = React.createClass({
         { controllable && 
           <strong>{`controllable (${handler}, ${defaultKey(children)})`}</strong>
         }
+        </a>
        </h3>
     );
   }

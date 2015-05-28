@@ -198,7 +198,8 @@ module.exports = {
     loaders: [
       { test: /\.json$/, loader: "json" },
       { test: /\.raw$/,  loader: "raw" },
-      { test: /\.md$/,   loader: 'babel-loader!' + path.join(__dirname, './docs/vendor/mdLoader') }
+      { test: /\.api\.md$/, loader: 'babel-loader!' + path.join(__dirname, './docs/vendor/apiLoader') },
+      { test: /.md$/, loader: 'babel-loader!' + path.join(__dirname, './docs/vendor/mdLoader'), exclude: /\.api\.md$/ }
     ]
   }),
 
