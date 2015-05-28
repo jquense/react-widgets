@@ -15,7 +15,7 @@ module.exports = {
 
   last() {
     var data = this._data()
-    return data[data.length-1]
+    return data[data.length - 1]
   },
 
   prev(item, word) {

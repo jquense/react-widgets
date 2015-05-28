@@ -5,7 +5,7 @@ module.exports = function validateListComponent(list){
 
   if( process.env.NODE_ENV !== 'production' ){
     METHODS.forEach( method => 
-      assert(typeof list[method] === 'function', 'List components must implement a `' + method +'()` method') )
+      assert(typeof list[method] === 'function', 'List components must implement a `' + method + '()` method') )
   }
 }
 

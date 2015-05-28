@@ -45,7 +45,7 @@ function animate(node, properties, duration, easing, callback){
 
   for(var key in properties) if ( has.call(properties, key) ) {
     if( /(top|bottom)/.test(key) ) 
-      transforms += TRANSLATION_MAP[key] +'(' + properties[key] + ') '
+      transforms += TRANSLATION_MAP[key] + '(' + properties[key] + ') '
     else {
       cssValues[key] = properties[key]
       cssProperties.push(hyphenate(key))

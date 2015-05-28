@@ -80,7 +80,7 @@ var _ =
     noop(){},
 
     uniqueId (prefix) {
-      return ''+ ((prefix == null ? '' : prefix) + (++idCount));
+      return '' + ((prefix == null ? '' : prefix) + (++idCount));
     },
 
     //-- Really specific Component Utilities --

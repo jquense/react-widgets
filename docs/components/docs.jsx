@@ -20,7 +20,7 @@ var React = require('react')
   , NumberPicker   = require('./pages/NumberPicker.api.md')
   , Migration      = require('./pages/Migration.jsx')
   , Advanced       = require('./pages/Advanced.jsx')
-  , Locale         = require('./pages/i18n.MD');
+  , Locale         = require('./pages/i18n.md');
 
 require('../vendor/codemirror.css')
 require('../vendor/neo.css')
