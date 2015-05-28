@@ -250,6 +250,7 @@ var DropdownList = React.createClass({
       , key = e.key
       , alt = e.altKey
       , list = this.refs.list
+      , filtering = this.props.filter
       , focusedItem = this.state.focusedItem
       , selectedItem = this.state.selectedItem
       , isOpen = this.props.open
@@ -268,7 +269,7 @@ var DropdownList = React.createClass({
     else if ( key === 'Escape' && isOpen ) {
       closeWithFocus()
     }
-    else if ( (key === 'Enter' || key === ' ') && isOpen ) {
+    else if ( (key === 'Enter' || (key === ' ' && !filtering)) && isOpen ) {
       change(this.state.focusedItem, true)
     }
     else if ( key === 'ArrowDown' ) {
