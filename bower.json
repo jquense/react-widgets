@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "main": "dist/react-widgets.js",
   "description": "A set of input widgets for React",
   "homepage": "http://jquense.github.io/react-widgets/docs",

@@ -32,9 +32,10 @@ module.exports = {
   },
 
   _dataText(item){
-    var field = this.props.textField;
+    var field = this.props.textField
+      , value = accessor(item, field);
 
-    return accessor(item, field) + ''
+    return value == null ? '' : (value + '')
   },
 
   _dataIndexOf(data, item){

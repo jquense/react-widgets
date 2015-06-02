@@ -24,7 +24,7 @@ JsxRenderer.prototype.heading = function (text, level) {
   var escapedText = text.toLowerCase().trim().replace(/[^\w]+/g, '-');
 
   return '<h' + level + '><a name="' + escapedText + '" class="anchor" href="#' 
-    + escapedText + '"><span class="header-link"></span></a>' + text + '</h' + level + '>';
+    + escapedText + '"><span className="header-link"></span>' + text + '</a></h' + level + '>';
 },
 
 JsxRenderer.prototype.link = function(href, title, text){

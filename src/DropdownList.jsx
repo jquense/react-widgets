@@ -318,7 +318,7 @@ var DropdownList = React.createClass({
   },
 
   _data() {
-    return this.state.filteredData || this.props.data
+    return this.state.filteredData || this.props.data.concat()
   },
 
   search(character, cb) {

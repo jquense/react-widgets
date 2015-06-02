@@ -39,10 +39,10 @@ describe('when using DATA HELPER MIXIN', function(){
     it('should always return a string', function(){
       var instance = render(React.createElement(Component))
 
-      expect(instance._dataText('hi')).to.be.a('string')
-      expect(instance._dataText({ a: 3 })).to.be.a('string')
-      expect(instance._dataText(null)).to.be.a('string')
-      expect(instance._dataText(4)).to.be.a('string')
+      expect(instance._dataText('hi')).to.be.a('string').and.to.equal('hi')
+      expect(instance._dataText({ a: 3 })).to.be.a('string').and.to.equal('[object Object]')
+      expect(instance._dataText(null)).to.be.a('string').and.to.equal('')
+      expect(instance._dataText(4)).to.be.a('string').and.to.equal('4')
     })
 
     it('should use specified field', function(){
