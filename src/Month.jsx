@@ -27,6 +27,8 @@ module.exports = React.createClass({
     min:              React.PropTypes.instanceOf(Date),
     max:              React.PropTypes.instanceOf(Date),
 
+    dayComponent:     CustomPropTypes.elementType,
+
     dayFormat:        CustomPropTypes.dateFormat,
     dateFormat:       CustomPropTypes.dateFormat,
 
@@ -55,13 +57,16 @@ module.exports = React.createClass({
 
   _row: function(row, i){
     var id = this._id('_selected_item')
+      , DayComponent = this.props.dayComponent
+
     
     return (
       <tr key={'week_' + i} role='row'>
       { row.map( (day, idx) => {
         var focused  = dates.eq(day, this.props.focused, 'day')
           , selected = dates.eq(day, this.props.value, 'day')
-          , today = dates.eq(day, this.props.today, 'day');
+          , today = dates.eq(day, this.props.today, 'day')
+          , date = localizers.date.format(day, dateFormat(this.props), this.props.culture);
 
         return !dates.inRange(day, this.props.min, this.props.max)
             ? <td  key={'day_' + idx} role='gridcell' className='rw-empty-cell' >&nbsp;</td>
@@ -80,7 +85,9 @@ module.exports = React.createClass({
                   })}
                   id={focused ? id : undefined}>
                   {
-                    localizers.date.format(day, dateFormat(this.props), this.props.culture)
+                    DayComponent 
+                      ? <DayComponent date={day} label={date}/>
+                      : date
                   }
                 </Btn>
               </td>)

@@ -50,13 +50,6 @@ var MULTIPLIER = {
       [views.CENTURY]: 100
     };
 
-var VIEW_FORMATS  = {
-      [views.MONTH]:   'dateFormat',
-      [views.YEAR]:    'monthFormat',
-      [views.DECADE]:  'yearFormat',
-      [views.CENTURY]: 'decadeFormat'
-    }
-
 var format = (props, f) => props[f + 'Format'] || localizers.date.formats[f]
 
 var propTypes = {
@@ -92,6 +85,7 @@ var propTypes = {
   
   footer:        React.PropTypes.bool,
 
+  dayComponent:  CustomPropTypes.elementType,
   headerFormat:  CustomPropTypes.dateFormat,
   footerFormat:  CustomPropTypes.dateFormat,
   
@@ -310,7 +304,7 @@ var Calendar = React.createClass({
 
   },
 
-  nextDate: function(direction){
+  nextDate(direction){
     var method = direction === dir.LEFT ? 'subtract' : 'add'
       , view   = this.state.view
       , unit   = view === views.MONTH ? view : views.YEAR
@@ -319,7 +313,7 @@ var Calendar = React.createClass({
     return dates[method](this.state.currentDate, 1 * multi, unit)
   },
 
-  _keyDown: function(e){
+  _keyDown(e){
     var ctrl = e.ctrlKey
       , key  = e.key
       , direction = ARROWS_TO_DIRECTION[key]
