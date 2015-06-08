@@ -3,77 +3,134 @@ var React = require('react')
   , DDButton = require('../../bootstrap').DropdownButton
   , MenuItem = require('../ApiMenuItem')
   , PropHeader = require('../PropHeader')
-  , WidgetDemo = require('../demos/NumberPicker');
+  , WidgetDemo = require('../demos/DateTimePicker');
 
-var widgetName = 'NumberPicker';
+var widgetName = 'DateTimePicker';
 
 module.exports = React.createClass({
-    mixins: [ require('../PageMixin')('numberpicker/') ],
+    mixins: [ require('../PageMixin')('datetimepicker/') ],
     render: function(){
       return (
         <section {...this.props}>
           <h1 className="page-header">
-            NumberPicker
+            DateTimePicker
             <span className='pull-right'>
               <DDButton title='props' bsStyle='link' pullRight={true}>
                 <MenuItem>value</MenuItem>
 <MenuItem>onChange</MenuItem>
-<MenuItem>format</MenuItem>
-<MenuItem>parse</MenuItem>
+<MenuItem>onSelect</MenuItem>
+<MenuItem>calendar</MenuItem>
+<MenuItem>time</MenuItem>
 <MenuItem>min</MenuItem>
 <MenuItem>max</MenuItem>
+<MenuItem>format</MenuItem>
+<MenuItem>editFormat</MenuItem>
 <MenuItem>step</MenuItem>
+<MenuItem>parse</MenuItem>
+<MenuItem>initialView</MenuItem>
+<MenuItem>finalView</MenuItem>
+<MenuItem>open</MenuItem>
+<MenuItem>onToggle</MenuItem>
+<MenuItem>duration</MenuItem>
 <MenuItem>isRtl</MenuItem>
 <MenuItem>messages</MenuItem>
-<MenuItem>messages.increment</MenuItem>
-<MenuItem>messages.decrement</MenuItem>
+<MenuItem>messages.calendarButton</MenuItem>
+<MenuItem>messages.timeButton</MenuItem>
               </DDButton>
             </span>
           </h1>
-          <p>Spinner for selecting numbers. Supports multiple formats for display and editing through <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468">Globalize.js</a>.</p>
+          <p>Manipulate different parts of a JavaScript <code>{`Date`}</code> object with ease. Date formats are <em>highly</em> localized, and localization is hard, rather than provide a half baked solution react-widgets includes a default strategy for that via <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468">Globalize.js</a>. You can pass in a <code>{`culture`}</code> string to the widgets, but you are responsible for loading the globalize culture file yourself. You can also completely replace globalize by providing format and parsing props. </p>
+<p>Dates are never mutated but always return and operate on a new Date instance. When the <code>{`date`}</code> prop is used the DateTimePicker will pass through the relevant props to the Calendar Widget and Calendar keyboard navigation keys will also work. </p>
 
           <pre className='component-export'>
             <code>
               <div>Widget Suite:</div>
-              NumberPicker = require(<span className='str'>'react-widgets'</span>).NumberPicker<br/>
+              DateTimePicker = require(<span className='str'>'react-widgets'</span>).DateTimePicker<br/>
               <div>Individual Component:</div>
-              NumberPicker = require(<span className='str'>'react-widgets/lib/NumberPicker'</span>)
+              DateTimePicker = require(<span className='str'>'react-widgets/lib/DateTimePicker'</span>)
             </code>
           </pre>
           <WidgetDemo/>
           <h2>Props</h2>
-          <PropHeader {...{ type: 'Number?', handler: "onChange", controllable: true }}>value</PropHeader><p>The current value of the {widgetName}.</p>
-<EditableExample codeText={require('../examples/valuePicker')(widgetName, [1, null])}/>
+          <PropHeader {...{ type: 'Date?', handler: "onChange", controllable: true }}>value</PropHeader><p>The current selected date, should be a <code>{`Date`}</code> instance or <code>{`null`}</code>.</p>
+<EditableExample codeText={require('../examples/valuePicker')(widgetName, ['new Date()', null])}/>
 
-<PropHeader {...{ type: 'Function(Number? value)' }}>onChange</PropHeader><p>Change event Handler that is called when the value is changed. The handler is called with the
-current numeric value or null.</p>
-<EditableExample codeText={require('../examples/onChangePicker')(widgetName, [1, null])}/>
+<PropHeader {...{ type: 'Function(Date? date, String dateStr)' }}>onChange</PropHeader><p>change event Handler that is called when the value is changed. The handler is called with both the
+current <code>{`Date`}</code> object (or null if it was not parseable), and the second argument is
+a <code>{`string`}</code> representation of the date value, formated by the <code>{`format`}</code> prop.</p>
+<EditableExample codeText={require('../examples/onChangePicker')(widgetName, ['new Date()', null])}/>
 
-<PropHeader {...{ type: 'Function(String str) | String', default: 'd' }}>format</PropHeader><p>A format string used to display the number value. For more information on prefined and custom number and currency formats visit the <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#number-formatting&#39;">Globalize.js documentation</a> You provide a <code>{`Function`}</code> as a format if you wish to not use Globalize, or just want to provide some custom behavior.</p>
-<PropHeader {...{ type: 'Function(String str, String culture) | Array<String>' }}>parse</PropHeader><p>Determines how the {widgetName} parses a number from the localized string representation. You can also provide a parser <code>{`Function`}</code> to pair with a custom <code>{`format`}</code>.</p>
-<PropHeader {...{ type: 'Number', default: '-Infinity' }}>min</PropHeader><p>  The minimum number that the {widgetName} value.</p>
-<EditableExample codeText={require('../examples/prop')(widgetName, 'min', 0)}/>
+<PropHeader {...{ type: 'Function(Date? value)' }}>onSelect</PropHeader><p>This handler fires when an item has been selected from the list or calendar. It fires before the <code>{`onChange`}</code> handler, and fires regardless of whether the value has actually changed.</p>
+<EditableExample codeText={require('../examples/onSelectPicker')(widgetName)}/>
 
-<PropHeader {...{ type: 'Number', default: 'Infinity' }}>max</PropHeader><p>The maximum number that the {widgetName} value.</p>
-<EditableExample codeText={require('../examples/prop')(widgetName, 'max', 5)}/>
+<PropHeader {...{ type: 'Boolean', default: 'true' }}>calendar</PropHeader><p>Whether to show the date picker button.</p>
+<EditableExample codeText={require('../examples/prop')(widgetName, 'calendar', false)}/>
 
-<PropHeader {...{ type: 'Number', default: '1' }}>step</PropHeader><p>Amount to increase or decrease value when using the spinner buttons.</p>
-<EditableExample codeText={require('../examples/prop')(widgetName, 'step', 5)}/>
+<PropHeader {...{ type: 'Boolean', default: 'true' }}>time</PropHeader><p>Whether to show the time picker button.</p>
+<EditableExample codeText={require('../examples/prop')(widgetName, 'time', false)}/>
 
-<PropHeader {...{ type: 'Boolean', default: 'false' }}>isRtl</PropHeader><p>mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
-a <code>{`childContext`}</code> prop (<code>{`isRtl`}</code>) this allows higher level application components to specify the direction.</p>
+<PropHeader {...{ type: 'Date', default: 'Date(1900, 0, 1)' }}>min</PropHeader><p>The minimum Date that can be selected. Min only limits selection, it doesn&#39;t constrain the date values that
+can be typed or pasted into the widget. If you need this behavior you can constrain values via
+the <code>{`onChange`}</code> handler.</p>
+<EditableExample codeText={require('../examples/prop')(widgetName, 'min', 'new Date()')}/>
+
+<PropHeader {...{ type: 'Date', default: 'Date(2099, 11, 31)' }}>max</PropHeader><p>The maximum Date that can be selected. Max only limits selection, it doesn&#39;t constrain the date values that
+can be typed or pasted into the widget. If you need this behavior you can constrain values via
+the <code>{`onChange`}</code> handler.</p>
+<EditableExample codeText={require('../examples/prop')(widgetName, 'max', 'new Date()')}/>
+
+<PropHeader {...{ type: 'String', default: '"fdt"' }}>format</PropHeader><p>A string format used to display the date value. For more information on prefined and custom formats
+visit the <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates">Globalize.js documentation</a></p>
+<EditableExample codeText={require('../examples/prop')(widgetName, 'format', '"MMM dd yyyy"')}/>
+
+<PropHeader {...{ type: 'String' }}>editFormat</PropHeader><p>A string format to be used while the date input has focus. Useful for showing a simpler format for inputing. 
+For more information on prefined and custom formats visit 
+the <a href="https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates">Globalize.js documentation</a></p>
+<EditableExample codeText={require('../examples/prop')(widgetName, { defaultValue: 'new Date()', editFormat: '"d"', format: '"MMM dd yyyy"'})}/>
+
+<PropHeader {...{ type: 'Number', default: "false" }}>step</PropHeader><p>The amount of minutes between each entry in the time list.</p>
+<EditableExample codeText={require('../examples/prop')(widgetName, { step: 90 })}/>
+
+<PropHeader {...{ type: '[Function(String str), Array<String>]' }}>parse</PropHeader><p>Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
+or provide a function that returns a date to handle parsing yourself. When <code>{`parse`}</code> is unspecified and 
+the <code>{`format`}</code> prop is a <code>{`String`}</code> parse will automatically use that format as its default</p>
+<EditableExample codeText={require('../examples/parse')(widgetName)}/>
+
+<PropHeader {...{ type: 'Enum', default: '"month"' }}>initialView</PropHeader><p>The starting and lowest level view the calendar can navigate down to.</p>
+<p>Acceptable values are: <code>{`"month"`}</code> <code>{`"year"`}</code> <code>{`"decade"`}</code> <code>{`"century"`}</code></p>
+<EditableExample codeText={require('../examples/prop')(widgetName, 'initialView', '"year"')}/>
+
+<PropHeader {...{ type: 'Enum', default: '"century"' }}>finalView</PropHeader><p>The highest level view the calendar can navigate up to. This value should be higher
+than <code>{`initialView`}</code></p>
+<p>Acceptable values are:
+<code>{`"month"`}</code> <code>{`"year"`}</code> <code>{`"decade"`}</code> <code>{`"century"`}</code></p>
+<EditableExample codeText={require('../examples/prop')(widgetName, 'finalView', '"year"')}/>
+
+<PropHeader {...{ type: '[Boolean, String]', default: 'false', controllable: true, handler: 'onToggle' }}>open</PropHeader><p>Whether or not the {widgetName} is open. When unset (<code>{`undefined`}</code>) the {widgetName} will handle the
+opening and closing internally. The <code>{`defaultOpen`}</code> prop can be used to set an
+initialization value for uncontrolled widgets.</p>
+<p>Acceptable values are: <code>{`false`}</code> <code>{`"calendar"`}</code> <code>{`"time"`}</code></p>
+<EditableExample codeText={require('../examples/openDateTime')(widgetName)}/>
+
+<PropHeader {...{ type: 'Function(Boolean isOpen)' }}>onToggle</PropHeader><p>Called when the {widgetName} is about to open or close. <code>{`onToggle`}</code> should be used
+when the <code>{`open`}</code> prop is set otherwise the widget will never open or close.</p>
+<PropHeader {...{ type: 'Number', default: "250" }}>duration</PropHeader><p>The speed, in milliseconds, of the either dropdown animation.</p>
+<PropHeader {...{ type: 'Boolean', default: "false" }}>isRtl</PropHeader><p>mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through a <code>{`childContext`}</code> prop (<code>{`isRtl`}</code>) this allows higher level application components to specify the direction.</p>
 <PropHeader {...{ type: 'Object' }}>messages</PropHeader><p>Object hash containing display text and/or text for screen readers. Use the <code>{`messages`}</code> object to
 localize widget text and increase accessibility.</p>
-<PropHeader {...{ type: 'String', default: '"increment value"' }}>messages.increment</PropHeader><p>Number picker spinner up button text for screen readers</p>
-<PropHeader {...{ type: 'String', default: '"decrement value"' }}>messages.decrement</PropHeader><p>Number picker spinner down button text for screen readers </p>
+<PropHeader {...{ type: 'String', default: '"Select Date"' }}>messages.calendarButton</PropHeader><p>title and screen reader text for the left arrow button.</p>
+<PropHeader {...{ type: 'String', default: '"Select Time"' }}>messages.timeButton</PropHeader><p>title and screen reader text for the right arrow button.</p>
 <h2 id="keyboard-navigation">Keyboard Navigation</h2>
 <ul>
-<li><kbd>down arrow</kbd> decrement value</li>
-<li><p><kbd>up arrow</kbd> increment value</p>
-</li>
-<li><p><kbd>home</kbd> set value to minimum value if finite</p>
-</li>
-<li><kbd>end</kbd> set value to maximum value if finite</li>
+<li><strong>All Calendar keyboard navigation work here as well</strong></li>
+<li><kbd>alt + down arrow</kbd> open calendar or times</li>
+<li><kbd>alt + up arrow</kbd> close calendar or times</li>
+<li><kbd>down arrow</kbd> move focus to next time</li>
+<li><kbd>up arrow</kbd> move focus to previous time</li>
+<li><kbd>home</kbd> move focus to first time</li>
+<li><kbd>end</kbd> move focus to last time</li>
+<li><kbd>enter</kbd> select focused item</li>
+<li><kbd>any key</kbd> search list for time starting with key</li>
 </ul>
 
         </section>
