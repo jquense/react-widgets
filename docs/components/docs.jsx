@@ -131,7 +131,7 @@ var routes = (
 
     <Route name="getting-started" path='getting-started/?:topic?' handler={GettingStarted}/>
 
-    <Route name="dropdown-list" path='dropdown-list' handler={DropdownList}>
+    <Route name="dropdownlist" path='dropdownlist' handler={DropdownList}>
       <Route path=':topic' handler={DropdownList}/>
     </Route>
     <Route name="combobox" handler={ComboBox}>
