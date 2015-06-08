@@ -25,6 +25,15 @@ Show or hide the Calendar footer.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'footer', 'true')}/>
 
+### dayComponent?{ type: 'Component' }
+
+Provide a custom component to render the days of the month. The Component is provided the following props
+
+- `date`: a `Date` object for the day of the month to render
+- `label`: a formatted `String` of the date to render. To adjust the format of the `label` string use the `dateFormat` prop, listed below.
+
+<EditableExample codeText={require('../examples/dayComponent')(widgetName)}/>
+
 ### initialView?{ type: 'Enum', default: '"month"' }
 
 The starting and lowest level view the calendar can navigate down to.

@@ -20,12 +20,12 @@ JsxRenderer.unescape = function unescape(html) {
     .replace(/&#39;/g, "'");
 }
 
-JsxRenderer.prototype.heading = function (text, level) {
-  var escapedText = text.toLowerCase().trim().replace(/[^\w]+/g, '-');
+// JsxRenderer.prototype.heading = function (text, level) {
+//   var escapedText = text.toLowerCase().trim().replace(/[^\w]+/g, '-');
 
-  return '<h' + level + '><a name="' + escapedText + '" class="anchor" href="#' 
-    + escapedText + '"><span className="header-link"></span>' + text + '</a></h' + level + '>';
-},
+//   return '<h' + level + '><a name="' + escapedText + '" class="anchor" href="#' 
+//     + escapedText + '"><span className="header-link"></span>' + text + '</a></h' + level + '>';
+// },
 
 JsxRenderer.prototype.link = function(href, title, text){
   return href.indexOf('http') !== -1 
@@ -34,22 +34,24 @@ JsxRenderer.prototype.link = function(href, title, text){
 }
 
 JsxRenderer.prototype.codespan = function(text) {
-  return '<code>{`' + unescape(text) + '`}</code>';
+  return '<code>{`' + JsxRenderer.unescape(text) + '`}</code>';
 };
 
 JsxRenderer.prototype.code = function(code, lang, escaped) {
+
+  if ( lang === 'editable' ) {
+    return '<Playground lang="js" theme="neo" scope={this.props.scope} codeText={`'+ code +'`} ' 
+        + (code.indexOf('React.render(') === -1 ? 'noRender' :'') + '/>\n\n'
+  }
+
   if (this.options.highlight) {
     var out = this.options.highlight(code, lang);
     if (out != null && out !== code) {
-      escaped = true;
-      code = out.replace(/class/g, 'className');
+      return '<pre><code className="' + (lang || '') + '" dangerouslySetInnerHTML={{ __html: `' + out.replace(/"/g, '\\"') + '` }}/></pre>\n';;
     }
   }
 
-  return lang === 'editable' 
-    ? '<Playground lang="js" theme="neo" scope={this.props.scope} codeText={`'+ code +'`} ' 
-        + (code.indexOf('React.render(') === -1 ? 'noRender' :'') + '/>\n\n'
-    : '<pre><code className="' + (lang || '') + '">'+ (escaped ? code : '{`' + escape(code, true) + '`}') + '\n</code></pre>\n';
+  return '<pre><code className="' + (lang || '') + '">'+ (escaped ? code : '{`' + escape(code, true) + '`}') + '\n</code></pre>\n';
 };
 
 

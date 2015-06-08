@@ -19,7 +19,6 @@ return code
 function map(o) {
   var str = '';
 
-  
   for (var key in o) if ( o.hasOwnProperty(key) ) 
     str += ` \n\t\t${key}={${o[key]}}`
 

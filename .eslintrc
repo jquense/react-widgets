@@ -6,6 +6,9 @@
     "node": true,
     "mocha": true
   },
+  "ecmaFeatures": {
+    "jsx": true
+  },
   "rules": {
     "no-eval": 2,
     "strict": 0,
@@ -27,6 +30,12 @@
     "consistent-return": 0,
     "no-shadow": 0,
     "no-sequences": 0,
-    "no-return-assign": 0
+    "no-return-assign": 0,
+    "react/jsx-no-undef": 1,
+    "react/jsx-uses-react": 1,
+    "react/jsx-uses-vars": 1,
+    "react/react-in-jsx-scope": 1,
+    "react/self-closing-comp": 1,
+    "react/sort-comp": 1
   }
 }

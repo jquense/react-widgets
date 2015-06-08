@@ -37,7 +37,7 @@ The npm build offers an additional advantage of allowing you to only require the
 and Browserify to only package up the pieces you use saving you bytes. The global browser build will also need to 
 include [Globalize.js](https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468), a library for handling number and date localization (see the [Localization page](i18n) for more info on Globalize, or using other libraries).
 
-Stylesheets, images, and fonts are found in the `dist` directory. You can use webpack to `require()` the styles,
+Stylesheets, images, and fonts are found in the `dist` directory. You can use Webpack to `require()` the styles,
 or include the css normally. The included icons are provided by - <a href="http://fontawesome.io">Font Awesome by Dave Gandy</a>
 
 
@@ -47,16 +47,25 @@ or include the css normally. The included icons are provided by - <a href="http:
  <link href="dist/css/react-widgets.css" rel="stylesheet"/>
 ```
 
-##### Webpack css
+##### Webpack
 
 ```js
- require('react-widgets/dist/react-widgets.css')
+ // css
+ require('react-widgets/dist/css/react-widgets.css')
+ // or using less
+ require('react-widgets/lib/less/react-widgets.less')
 ```
 
-##### Webpack LESS
+If are using Webpack to handle styles in your application you are probably already configured to load the `react-widgets` styles without any additional work. If not you will have to use the `css-loader`, `style-loader`, `file-loader`, `url-loader` and, optionally, the `less-loader`. Below is a common configuration:
 
 ```js
- require('react-widgets/lib/react-widgets.less')
+  loaders: [
+    { test: /\.css$/,  loader: "style-loader!css-loader" },
+    { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+    { test: /\.gif$/, loader: "url-loader?mimetype=image/png" },
+    { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?mimetype=application/font-woff" },
+    { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader?name=[name].[ext]" },
+  ]
 ```
 
 ## Accessibility and Read Direction

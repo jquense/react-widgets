@@ -12,13 +12,13 @@ var React = require('react')
   , Navbar         = require('./topnavbar.jsx')
   , GettingStarted = require('./pages/GettingStarted.md')
   , DropdownList   = require('./pages/DropdownList.api.md')
-  , ComboBox       = require('./pages/ComboBox.api.md')
+  , ComboBox       = require('./pages/Combobox.api.md')
   , MultiSelect    = require('./pages/Multiselect.api.md')
-  , SelectList     = require('./pages/SelectList.jsx')
+  , SelectList     = require('./pages/SelectList.api.md')
   , Calendar       = require('./pages/Calendar.api.md')
   , DatePicker     = require('./pages/DateTimePicker.api.md')
   , NumberPicker   = require('./pages/NumberPicker.api.md')
-  , Migration      = require('./pages/Migration.jsx')
+  //, Migration      = require('./pages/Migration.jsx')
   , Advanced       = require('./pages/Advanced.jsx')
   , Locale         = require('./pages/i18n.md');
 
@@ -63,15 +63,9 @@ var Docs = React.createClass({
                 <ul className='nav'>
                   <li className={this.getPathname().match(/\/getting-started/) ? 'active' : ''}>
                     <Link to='/getting-started'>Getting Started</Link>
-                    <ul className='nav'>
-                      <li><Link to='/getting-started/install'>Install</Link></li>
-                      <li><Link to='/getting-started/browser'>Older Browser Support</Link></li>
-                      <li><Link to='/getting-started/access'>Accessibility</Link></li>
-                      <li><Link to='/getting-started/configuration'>Configuration</Link></li>
-                      <li><Link to='/getting-started/style'>Theming</Link></li>
-                      
-                    </ul>
                   </li>
+                  <li><Link to='i18n'>Localization</Link></li>
+                  <li className='side-divider'>API</li>
                   <li><Link to='dropdown-list'>Dropdown List</Link></li>
                   <li><Link to='combobox' href='#combobox'>Combobox</Link></li>
                   <li><Link to='numberpicker' href='#number-picker'>Number Picker</Link></li>
@@ -79,7 +73,6 @@ var Docs = React.createClass({
                   <li><Link to='selectlist'>SelectList</Link></li>
                   <li><Link to='calendar'>Calendar</Link></li>
                   <li><Link to='datetime-picker'>{'Date & Time Picker'}</Link></li>
-                  <li><Link to='migration'>Migrating to 2.x</Link></li>
 
                   {/* <li><Link to='advanced'>Advanced</Link></li> */}
                 </ul>
@@ -162,7 +155,6 @@ var routes = (
 
     <Route name="advanced" handler={Advanced} />
     <Route name="i18n" handler={Locale} />
-    <Route name="migration" handler={Migration} />
   </Route>
 );
 

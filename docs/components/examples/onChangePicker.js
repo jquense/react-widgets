@@ -13,11 +13,9 @@ var Example = React.createClass({
   },
 
   render() {
-    var change = (name, value) => {
-      var state = {}
-      state['value' + name] = value
-      this.setState(state)
-    };
+    var change = (name, value) => this.setState({
+        ['value' + name]: value
+      });
 
     return ${open}
       ${values.map(getWidget).join('').trim()}
@@ -39,4 +37,16 @@ return code
         value={this.state.value${idx}} 
         onChange={change.bind(null, '${idx}')}/>`
   }
+}
+
+function map(o) {
+  var str = '';
+
+  for (var key in o) if ( o.hasOwnProperty(key) ) 
+    str += ` \n\t\t${key}={${o[key]}}`
+
+  if (Object.keys(o).length === 1)
+    return str.trim()
+
+  return str.substr(1)
 }
