@@ -14,7 +14,7 @@ module.exports = {
     readOnly:       React.PropTypes.oneOfType([
                       React.PropTypes.bool,
                       React.PropTypes.oneOf(['readOnly'])
-                    ]),
+                    ])
   },
 
   isDisabled(){
@@ -40,5 +40,5 @@ module.exports = {
     if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
       return handler
     return function(){}
-  },
+  }
 }

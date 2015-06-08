@@ -11,6 +11,7 @@ var React = require('react/addons')
   , Year = require('../src/Year.jsx')
   , Decade = require('../src/Decade.jsx')
   , Century = require('../src/Century.jsx')
+  , directions = require('../src/util/constants').directions
   , config = require('../src/util/configuration')
   , dates = require('../src/util/dates')
   , globalize = require('globalize')
@@ -24,12 +25,15 @@ var TestUtils = React.addons.TestUtils
   , findType = TestUtils.findRenderedComponentWithType
   , trigger = TestUtils.Simulate;
 
+
+
 describe('Calendar', () => {
 
   afterEach(()=> {
     config.animate.restore && 
       config.animate.restore()
   })
+
 
   it('should set Initial View', function(){
     var date = new Date()
@@ -101,22 +105,22 @@ describe('Calendar', () => {
 
     trigger.click(leftBtn)
 
-    expect(findType(picker, Month).state.focusedDate.getMonth()).to.be(4);
+    expect(findType(picker, Month).props.focused.getMonth()).to.be(4);
 
     trigger.click(navBtn)
     trigger.click(leftBtn)
 
-    expect(findType(picker, Year).state.focusedDate.getFullYear()).to.be(2013);
+    expect(findType(picker, Year).props.focused.getFullYear()).to.be(2013);
 
     trigger.click(navBtn)
     trigger.click(leftBtn)
 
-    expect(findType(picker, Decade).state.focusedDate.getFullYear()).to.be(2003);
+    expect(findType(picker, Decade).props.focused.getFullYear()).to.be(2003);
 
     trigger.click(navBtn)
     trigger.click(leftBtn)
 
-    expect(findType(picker, Century).state.focusedDate.getFullYear()).to.be(1903);
+    expect(findType(picker, Century).props.focused.getFullYear()).to.be(1903);
   })
 
   it('should navigate into the future', function(){
@@ -130,22 +134,22 @@ describe('Calendar', () => {
 
     trigger.click(rightBtn)
 
-    expect(findType(picker, Month).state.focusedDate.getMonth()).to.be(6);
+    expect(findType(picker, Month).props.focused.getMonth()).to.be(6);
 
     trigger.click(navBtn)
     trigger.click(rightBtn)
 
-    expect(findType(picker, Year).state.focusedDate.getFullYear()).to.be(2015);
+    expect(findType(picker, Year).props.focused.getFullYear()).to.be(2015);
 
     trigger.click(navBtn)
     trigger.click(rightBtn)
 
-    expect(findType(picker, Decade).state.focusedDate.getFullYear()).to.be(2025);
+    expect(findType(picker, Decade).props.focused.getFullYear()).to.be(2025);
 
     trigger.click(navBtn)
     trigger.click(rightBtn)
 
-    expect(findType(picker, Century).state.focusedDate.getFullYear()).to.be(2125);
+    expect(findType(picker, Century).props.focused.getFullYear()).to.be(2125);
   })
 
   it('should have a footer', function(){
@@ -256,6 +260,114 @@ describe('Calendar', () => {
 
     expect(findType(calendar, Century).props.decadeFormat).to.equal('decadeFormat')
   })
+
+  describe('Date Helpers', () => {
+    
+    it('should move to the proper day', function(){
+      var date = new Date(2014, 0, 16, 0, 0, 0)
+        , min, max;
+
+      expect(dates.move(date, min, max, 'month', directions.LEFT).toString())
+        .to.equal((new Date(2014, 0, 15, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'month', directions.RIGHT).toString())
+        .to.equal((new Date(2014, 0, 17, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'month', directions.UP).toString())
+        .to.equal((new Date(2014, 0, 9, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'month', directions.DOWN).toString())
+        .to.equal((new Date(2014, 0, 23, 0, 0, 0)).toString())
+
+      min = new Date(2014, 0, 11, 0, 0, 0),
+      max = new Date(2014, 0, 20, 0, 0, 0)
+
+      expect(dates.move(date, min, max, 'month', directions.UP))
+        .to.eql(date)
+
+      expect(dates.move(date, min, max, 'month', directions.DOWN))
+        .to.eql(date)
+    })
+
+    it('should move to the proper month', function(){
+      var date = new Date(2014, 6, 16, 0, 0, 0)
+        , min, max;
+
+      expect(dates.move(date, min, max, 'year', directions.LEFT).toString())
+        .to.equal((new Date(2014, 5, 16, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'year', directions.RIGHT).toString())
+        .to.equal((new Date(2014, 7, 16, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'year', directions.UP).toString())
+        .to.equal((new Date(2014, 2, 16, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'year', directions.DOWN).toString())
+        .to.equal((new Date(2014, 10, 16, 0, 0, 0)).toString())
+
+      min = new Date(2014, 3, 16, 0, 0, 0),
+      max = new Date(2014, 8, 16, 0, 0, 0)
+
+      expect(dates.move(date, min, max, 'year', directions.UP))
+        .to.eql(date)
+
+      expect(dates.move(date, min, max, 'year', directions.DOWN))
+        .to.eql(date)
+    })
+
+    it('should move to the proper year', function(){
+      var date = new Date(2015, 6, 16, 0, 0, 0)
+        , min, max;
+
+      expect(dates.move(date, min, max, 'decade', directions.LEFT).toString())
+        .to.equal((new Date(2014, 6, 16, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'decade', directions.RIGHT).toString())
+        .to.equal((new Date(2016, 6, 16, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'decade', directions.UP).toString())
+        .to.equal((new Date(2011, 6, 16, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'decade', directions.DOWN).toString())
+        .to.equal((new Date(2019, 6, 16, 0, 0, 0)).toString())
+
+      min = new Date(2014, 6, 16, 0, 0, 0),
+      max = new Date(2016, 6, 16, 0, 0, 0)
+
+      expect(dates.move(date, min, max, 'decade', directions.UP))
+        .to.eql(date)
+
+      expect(dates.move(date, min, max, 'decade', directions.DOWN))
+        .to.eql(date)
+    })
+
+    it('should move to the proper decade', function(){
+      var date = new Date(2055, 6, 16, 0, 0, 0)
+        , min, max;
+
+      expect(dates.move(date, min, max, 'century', directions.LEFT).toString())
+        .to.equal((new Date(2045, 6, 16, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'century', directions.RIGHT).toString())
+        .to.equal((new Date(2065, 6, 16, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'century', directions.UP).toString())
+        .to.equal((new Date(2015, 6, 16, 0, 0, 0)).toString())
+
+      expect(dates.move(date, min, max, 'century', directions.DOWN).toString())
+        .to.equal((new Date(2095, 6, 16, 0, 0, 0)).toString())
+
+      min = new Date(2045, 6, 16, 0, 0, 0),
+      max = new Date(2065, 6, 16, 0, 0, 0)
+
+      expect(dates.move(date, min, max, 'century', directions.UP))
+        .to.eql(date)
+
+      expect(dates.move(date, min, max, 'century', directions.DOWN))
+        .to.eql(date)
+    })
+  })
+
 
 })
 

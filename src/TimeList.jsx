@@ -3,8 +3,11 @@ var React = require('react')
   , dates = require('./util/dates')
   , List = require('./List')
   , compat  = require('./util/compat')
+  , localizers = require('./util/configuration').locale
   , CustomPropTypes  = require('./util/propTypes')
   , _ = require('./util/_') // omit
+
+var format = props => props.format || localizers.date.formats.time
 
 
 module.exports = React.createClass({
@@ -17,6 +20,7 @@ module.exports = React.createClass({
     max:            React.PropTypes.instanceOf(Date),
     step:           React.PropTypes.number,
     itemComponent:  CustomPropTypes.elementType,
+    format:         CustomPropTypes.dateFormat,
     onSelect:       React.PropTypes.func,
     preserveDate:   React.PropTypes.bool,
     culture:        React.PropTypes.string,
@@ -29,7 +33,6 @@ module.exports = React.createClass({
   getDefaultProps(){
     return {
       step:   30,
-      format: 't',
       onSelect: function(){},
       min: new Date(1900,  0,  1),
       max: new Date(2099, 11, 31),
@@ -110,7 +113,7 @@ module.exports = React.createClass({
 
     while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
       i++
-      times.push({ date: start, label: dates.format(start, props.format, props.culture) })
+      times.push({ date: start, label: localizers.date.format(start, format(props), props.culture) })
       start = dates.add(start, props.step || 30, 'minutes')
     }
     return times
@@ -184,7 +187,7 @@ module.exports = React.createClass({
       && this.refs.list.move()
   },
 
-  search: function(character, cb){
+  search(character, cb){
     var word = ((this._searchTerm || '') + character).toLowerCase();
       
     this._searchTerm = word 

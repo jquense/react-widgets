@@ -1,0 +1,14 @@
+var React = require('react')
+  , EditableExample = require('../EditableExample')
+  , { Link } = require('react-router');
+
+module.exports = React.createClass({
+    mixins: [ require('../PageMixin')('${prefix}') ],
+    render: function(){
+      return (
+        <section {...this.props}>
+          ${html}
+        </section>
+      )
+   }
+})

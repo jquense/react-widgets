@@ -1,10 +1,14 @@
 'use strict';
 var React = require('react')
+  , localizers = require('./configuration').locale
+  , filters = require('./filter');
+
+var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
 
 module.exports = {
 
   elementType: createChainableTypeChecker(
-    function (props, propName, componentName, location) {
+    function (props, propName, componentName) {
 
       if( typeof props[propName] !== 'function'){
         if ( React.isValidElement(props[propName]))
@@ -20,15 +24,27 @@ module.exports = {
       return true
     }),
 
-    localeFormat: React.PropTypes.oneOfType([
+  numberFormat: createChainableTypeChecker(
+    (...args) => localizers.number.propType(...args)),
+
+  dateFormat: createChainableTypeChecker(
+    (...args) => localizers.date.propType(...args)),
+
+  accessor:     React.PropTypes.oneOfType([
                     React.PropTypes.string, 
                     React.PropTypes.func
                   ]),
 
-    accessor:     React.PropTypes.oneOfType([
-                    React.PropTypes.string, 
-                    React.PropTypes.func
-                  ]),
+  message:      React.PropTypes.oneOfType([
+                  React.PropTypes.func,
+                  React.PropTypes.string
+                ]),
+
+  filter:       React.PropTypes.oneOfType([
+                  React.PropTypes.func,
+                  React.PropTypes.bool,
+                  React.PropTypes.oneOf(filterTypes)
+                ])
 }
 
 
@@ -39,7 +55,7 @@ function createChainableTypeChecker(validate) {
     if (props[propName] == null) {
       if (isRequired) {
         return new Error(
-          "Required prop `" + propName + "` was not specified in  `" + componentName + "`.");
+          'Required prop `' + propName + '` was not specified in  `' + componentName + '`.');
       }
     } 
     else 

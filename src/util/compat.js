@@ -1,10 +1,10 @@
 'use strict';
 var React = require('react')
   , _ = require('./_')
-  , version = React.version.split('.').map(parseFloat);
 
+var version = React.version.split('.').map(parseFloat);
 
-var compat = module.exports = {
+module.exports = {
 
   version(){
     return version;

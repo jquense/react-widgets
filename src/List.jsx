@@ -3,8 +3,7 @@ var React   = require('react')
   , CustomPropTypes  = require('./util/propTypes')
   , compat = require('./util/compat')
   , cx = require('classnames')
-  , _  = require('./util/_')
-  , $  = require('./util/dom');
+  , _  = require('./util/_');
 
 
 module.exports = React.createClass({
@@ -31,7 +30,7 @@ module.exports = React.createClass({
     optID:         React.PropTypes.string,
 
     messages:      React.PropTypes.shape({
-      emptyList:   React.PropTypes.string
+      emptyList:   CustomPropTypes.message
     }),
   },
 
@@ -66,7 +65,7 @@ module.exports = React.createClass({
       , items;
     
     items = !this.props.data.length 
-      ? <li>{ this.props.messages.emptyList }</li>
+      ? <li className='rw-list-empty'>{ _.result(this.props.messages.emptyList, this.props) }</li>
       : this.props.data.map((item, idx) =>{
           var focused  = item === this.props.focused 
             , selected = item === this.props.selected;
@@ -84,7 +83,7 @@ module.exports = React.createClass({
             })}
             onClick={this.props.onSelect.bind(null, item)}>
             { ItemComponent
-                ? <ItemComponent item={item}/>
+                ? <ItemComponent item={item} value={this._dataValue(item)} text={this._dataText(item)}/>
                 : this._dataText(item)
             }
           </li>)

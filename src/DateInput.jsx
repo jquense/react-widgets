@@ -3,7 +3,9 @@ var React = require('react')
   , cx = require('classnames')
   , dates = require('./util/dates')
   , compat = require('./util/compat')
+  , localizers = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes');
+
 
 module.exports = React.createClass({
 
@@ -11,7 +13,8 @@ module.exports = React.createClass({
 
 
   propTypes: {
-    format:       CustomPropTypes.localeFormat,
+    format:       CustomPropTypes.dateFormat.isRequired,
+    editFormat:   CustomPropTypes.dateFormat,
     parse:        React.PropTypes.func.isRequired,
 
     value:        React.PropTypes.instanceOf(Date),
@@ -102,7 +105,7 @@ function formatDate(date, format, culture){
   var val = ''
 
   if ( (date instanceof Date) && isValid(date) )
-    val = dates.format(date, format, culture)
+    val = localizers.date.format(date, format, culture)
 
   return val;
 }

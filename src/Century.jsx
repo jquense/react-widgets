@@ -2,16 +2,13 @@
 var React      = require('react')
   , cx         = require('classnames')
   , dates      = require('./util/dates')
+  , localizers = require('./util/configuration').locale
   , directions = require('./util/constants').directions
   , Btn        = require('./WidgetButton')
   , _          = require('./util/_')
   , CustomPropTypes = require('./util/propTypes'); //omit
 
-var opposite = {
-  LEFT:  directions.RIGHT,
-  RIGHT: directions.LEFT
-};
-
+var format = props => props.decadeFormat || localizers.date.formats.decade
 
 module.exports = React.createClass({
 
@@ -20,8 +17,7 @@ module.exports = React.createClass({
   mixins: [
     require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlChildContextMixin'),
-    require('./mixins/DateFocusMixin')('century', 'decade')
+    require('./mixins/RtlChildContextMixin')
   ],
 
   propTypes: {
@@ -32,21 +28,19 @@ module.exports = React.createClass({
 
     onChange:     React.PropTypes.func.isRequired,
     
-    decadeFormat: CustomPropTypes.localeFormat.isRequired
+    decadeFormat: CustomPropTypes.dateFormat
   },
 
   render: function(){
     var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
-      , years = getCenturyDecades(this.props.value)
+      , years = getCenturyDecades(this.props.focused)
       , rows  = _.chunk(years, 4);
 
     return (
       <table {...props} 
-        tabIndex={this.props.disabled ? '-1' : "0"}
         role='grid'
         className='rw-calendar-grid rw-nav-view'
-        aria-activedescendant={this._id('_selected_item')}
-        onKeyUp={this._keyUp}>
+        aria-activedescendant={this._id('_selected_item')}>
         <tbody>
           { rows.map(this._row)}
         </tbody>
@@ -60,7 +54,7 @@ module.exports = React.createClass({
     return (
       <tr key={'row_' + i} role='row'>
       { row.map( (date, i) => {
-        var focused       = dates.eq(date,  this.state.focusedDate,  'decade')
+        var focused       = dates.eq(date,  this.props.focused,  'decade')
           , selected      = dates.eq(date, this.props.value,  'decade')
           , d             = inRangeDate(date, this.props.min, this.props.max)
           , currentDecade = dates.eq(date, this.props.today, 'decade');
@@ -75,47 +69,21 @@ module.exports = React.createClass({
                 aria-disabled={this.props.disabled}
                 disabled={this.props.disabled || undefined}
                 className={cx({
-                  'rw-off-range':       !inCentury(date, this.props.value),
+                  'rw-off-range':       !inCentury(date, this.props.focused),
                   'rw-state-focus':     focused,
                   'rw-state-selected':  selected,
                   'rw-now':             currentDecade
                  })}>
-                { dates.format(dates.startOf(date, 'decade'), this.props.decadeFormat, this.props.culture) }
+                { 
+                  localizers.date.format(dates.startOf(date, 'decade'), format(this.props), this.props.culture) 
+                }
               </Btn>
             </td>)
       })}
     </tr>)
-  },
-
-
-  move: function(date, direction){
-    var min = this.props.min
-      , max = this.props.max;
-
-    if ( this.isRtl() && opposite[direction])
-      direction =  opposite[direction]
-
-    if ( direction === directions.LEFT)
-      date = nextDate(date, -1, 'decade', min, max)
-
-    else if ( direction === directions.RIGHT)
-      date = nextDate(date, 1, 'decade', min, max)
-
-    else if ( direction === directions.UP)
-      date = nextDate(date, -4, 'decade', min, max)
-
-    else if ( direction === directions.DOWN)
-      date = nextDate(date, 4, 'decade', min, max)
-
-    return date
   }
 
 });
-
-function label(date, format, culture){
-  return dates.format(dates.startOf(date, 'decade'),    format, culture)
-    + ' - ' + dates.format(dates.endOf(date, 'decade'), format, culture)
-}
 
 function inRangeDate(decade, min, max){
   return dates.max( dates.min(decade, max), min)
@@ -136,10 +104,4 @@ function getCenturyDecades(_date){
     , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
 
   return days.map( i => (date = dates.add(date, 10, 'year')))
-}
-
-
-function nextDate(date, val, unit, min, max){
-  var newDate = dates.add(date, val, unit)
-  return dates.inRange(newDate, min, max, 'decade') ? newDate : date
 }

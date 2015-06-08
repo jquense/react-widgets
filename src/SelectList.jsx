@@ -9,7 +9,7 @@ var React = require('react')
   , PlainList        = require('./List')
   , GroupableList = require('./ListGroupable')
   , validateList = require('./util/validateListInterface')
-  , scrollTo = require('./util/dom/scroll');
+  , scrollTo = require('dom-helpers/util/scrollTo');
 
 var propTypes = {
 
@@ -263,8 +263,9 @@ var SelectList = React.createClass({
 
   _focus(focused, e){
 
+    if( focused) compat.findDOMNode(this).focus()
+
     this.setTimeout('focus', () => {
-      if( focused) compat.findDOMNode(this).focus()
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused: focused })

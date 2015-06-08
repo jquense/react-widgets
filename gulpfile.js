@@ -3,11 +3,11 @@ var gulp    = require('gulp')
   , del     = require('del')
   , merge   = require('merge-stream')
   , webpack = require('webpack')
-  , release = require('rf-release')
+  , release = require('jq-release')
   , WebpackServer = require("webpack-dev-server")
   , concat = require('gulp-concat')
   , less = require('gulp-less')
-  , assign = require('lodash/object/assign')
+  //, assign = require('react/lib/Object.assign')
   , rename = require('gulp-rename')
   , exec = require('child_process').exec
   , babelTransform = require('gulp-babel-helpers')
@@ -40,10 +40,7 @@ gulp.task('lib-compile', [ 'lib-clean' ], function(){
 
   return gulp.src(['./src/**/*.js', './src/**/*.jsx'])
       .pipe(plumber())
-      .pipe(babelTransform(
-          assign({}, configs.babel)
-        , './util/babelHelpers.js'
-        , './lib/util/babelHelpers.js'))
+      .pipe(babelTransform('./util/babelHelpers.js'))
       .pipe(rename({ extname: '.js' }))
       .pipe(gulp.dest('./lib'));
 })
@@ -67,8 +64,10 @@ gulp.task('dist-assets', function(){
 })
 
 gulp.task('dist-build', ['lib', 'dist-assets'], function(cb) {
-  webpack(configs.browser, cb);
-
+  webpack(configs.browser, function(err, stats){
+    console.log(stats.toString({ colors: true }))
+    cb()
+  });
 })
 
 gulp.task('test-build', function(cb) {

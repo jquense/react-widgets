@@ -20,7 +20,7 @@ module.exports = {
   
   propTypes: {    
     valueField: React.PropTypes.string,
-    textField:  propTypes.accessor,
+    textField:  propTypes.accessor
   },
 
   _dataValue(item){
@@ -32,9 +32,10 @@ module.exports = {
   },
 
   _dataText(item){
-    var field = this.props.textField;
+    var field = this.props.textField
+      , value = accessor(item, field);
 
-    return accessor(item, field) + ''
+    return value == null ? '' : (value + '')
   },
 
   _dataIndexOf(data, item){
@@ -61,7 +62,7 @@ module.exports = {
     // make an attempt to see if we were passed in dataItem vs just a valueField value
     // either an object with the right prop, or a primitive
     // { valueField: 5 } || "hello" [ "hello" ]
-    if( has(item, field) || typeof(first) === typeof(val))
+    if( has(item, field) || typeof first === typeof val)
       return item
 
     idx = this._dataIndexOf(data, this._dataValue(item))

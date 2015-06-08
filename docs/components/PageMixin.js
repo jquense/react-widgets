@@ -23,8 +23,7 @@ module.exports = function(prefix){
 
     getChildContext() {
       return { prefix };
-    },
-
+    }
   }
 }
 

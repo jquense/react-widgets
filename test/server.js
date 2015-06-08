@@ -1,8 +1,7 @@
 'use strict';
 /*global it, describe */
 
-require('babel/register')(
-  require('../webpack.configs').babel)
+require('babel-core/register')()
 
 var assert = require('assert')
 var React = require('react');

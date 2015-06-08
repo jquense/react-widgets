@@ -1,6 +1,10 @@
 'use strict';
-module.exports = function(widgetName, isArray){
+module.exports = function(widgetName, isArray, isCmbo){
 var value = !isArray ? 'people[0]' : 'people.slice(0,2)'
+var text = isCmbo 
+  ? "item => typeof item === 'string' ? item : item.firstName + ' ' + item.lastName" 
+  : "item => item.firstName + ' ' + item.lastName"
+
 var code = 
 `
 var ${widgetName} = ReactWidgets.${widgetName};
@@ -12,7 +16,7 @@ var widgets = (<div>
       defaultValue={${value}} 
       data={people}/>
     <${widgetName} 
-      textField={item => item.firstName + ' ' + item.lastName}
+      textField={${text}}
       defaultValue={${value}} 
       data={people}/>
   </div>) 

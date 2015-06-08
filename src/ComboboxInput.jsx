@@ -37,6 +37,8 @@ module.exports = React.createClass({
       <input 
         {...this.props }
         type='text' 
+        aria-disabled={this.props.disabled}
+        aria-readonly={this.props.readOnly}
         className={this.props.className + ' rw-input'}
         onKeyDown={this.props.onKeyDown}
         onChange={this._change}
@@ -62,6 +64,13 @@ module.exports = React.createClass({
 
   _change(e) {
     var val = e.target.value
+      , pl = !!this.props.placeholder
+
+    // IE fires input events when setting/unsetting placeholders.
+    // issue #112
+    if ( pl && !val && val === (this.props.value || '') ) 
+      return
+    
     this._last = val;
     this.props.onChange(e, val)
   },

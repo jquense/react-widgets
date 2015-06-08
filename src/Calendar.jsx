@@ -8,6 +8,7 @@ var React           = require('react')
   , Year            = require('./Year')
   , Decade          = require('./Decade')
   , Century         = require('./Century') 
+  , localizers      = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes')
   , createUncontrolledWidget = require('uncontrollable')
   , SlideTransition = require('./SlideTransition')
@@ -31,20 +32,25 @@ var views        = constants.calendarViews
       [views.CENTURY]: Century
     };
 
+var ARROWS_TO_DIRECTION = {
+  ArrowDown:  dir.DOWN,
+  ArrowUp:    dir.UP,
+  ArrowRight: dir.RIGHT,
+  ArrowLeft:  dir.LEFT
+}
+
+var OPPOSITE_DIRECTION = {
+  [dir.LEFT]:  dir.RIGHT,
+  [dir.RIGHT]: dir.LEFT
+};
+
 var MULTIPLIER = {
       [views.YEAR]:    1,
       [views.DECADE]:  10,
       [views.CENTURY]: 100
     };
 
-var VIEW_FORMATS  = {
-      [views.MONTH]:   'dateFormat',
-      [views.YEAR]:    'monthFormat',
-      [views.DECADE]:  'yearFormat',
-      [views.CENTURY]: 'decadeFormat'
-    }
-
-
+var format = (props, f) => props[f + 'Format'] || localizers.date.formats[f]
 
 var propTypes = {
 
@@ -79,15 +85,16 @@ var propTypes = {
   
   footer:        React.PropTypes.bool,
 
-  headerFormat:  CustomPropTypes.localeFormat,
-  footerFormat:  CustomPropTypes.localeFormat,
+  dayComponent:  CustomPropTypes.elementType,
+  headerFormat:  CustomPropTypes.dateFormat,
+  footerFormat:  CustomPropTypes.dateFormat,
   
-  dayFormat:     CustomPropTypes.localeFormat,
-  dateFormat:    CustomPropTypes.localeFormat,
-  monthFormat:   CustomPropTypes.localeFormat,
-  yearFormat:    CustomPropTypes.localeFormat,
-  decadeFormat:  CustomPropTypes.localeFormat,
-  centuryFormat: CustomPropTypes.localeFormat,
+  dayFormat:     CustomPropTypes.dateFormat,
+  dateFormat:    CustomPropTypes.dateFormat,
+  monthFormat:   CustomPropTypes.dateFormat,
+  yearFormat:    CustomPropTypes.dateFormat,
+  decadeFormat:  CustomPropTypes.dateFormat,
+  centuryFormat: CustomPropTypes.dateFormat,
 
   messages:      React.PropTypes.shape({
     moveBack:     React.PropTypes.string,
@@ -130,20 +137,6 @@ var Calendar = React.createClass({
 
       tabIndex:     '0',
       footer:        false,
-
-      headerFormat:  dates.formats.MONTH_YEAR,
-      footerFormat:  dates.formats.FOOTER,
-
-      dayFormat:     dates.shortDay,
-      dateFormat:    dates.formats.DAY_OF_MONTH,
-      monthFormat:   dates.formats.MONTH_NAME_ABRV,
-      yearFormat:    dates.formats.YEAR,
-
-      decadeFormat:  (dt, culture) => 
-        `${dates.format(dt, dates.formats.YEAR, culture)} - ${dates.format(dates.endOf(dt, 'decade'), dates.formats.YEAR, culture)}`,
-      
-      centuryFormat: (dt, culture) => 
-        `${dates.format(dt, dates.formats.YEAR, culture)} - ${dates.format(dates.endOf(dt, 'century'), dates.formats.YEAR, culture)}`,
 
       messages: msgs({})
     }
@@ -214,20 +207,16 @@ var Calendar = React.createClass({
           onAnimate={() => this._focus(true)}>
 
           <View {...viewProps} 
-            tabIndex='-1'
-            ref='currentView'
-            key={key}
-            id={id}
+            tabIndex='-1' key={key} id={id}
             aria-labelledby={labelId}
-            selectedDate={this.props.value}
             today={todaysDate}
-            value={this.state.currentDate}
+            value={this.props.value}
+            focused={this.state.currentDate}
             onChange={this._maybeHandle(this.change)}
-            onKeyDown={this._maybeHandle(this._keyDown)}
-            onMoveLeft ={this._maybeHandle(this.navigate.bind(null,  dir.LEFT))}
-            onMoveRight={this._maybeHandle(this.navigate.bind(null,  dir.RIGHT))}/>
+            onKeyDown={this._maybeHandle(this._keyDown)} />
 
         </SlideTransition>
+
         { this.props.footer &&
           <Footer 
             value={todaysDate}
@@ -281,7 +270,7 @@ var Calendar = React.createClass({
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
-        this.setState({ focused: focused })
+        this.setState({ focused })
       }
     })
   },
@@ -315,7 +304,7 @@ var Calendar = React.createClass({
 
   },
 
-  nextDate: function(direction){
+  nextDate(direction){
     var method = direction === dir.LEFT ? 'subtract' : 'add'
       , view   = this.state.view
       , unit   = view === views.MONTH ? view : views.YEAR
@@ -324,31 +313,44 @@ var Calendar = React.createClass({
     return dates[method](this.state.currentDate, 1 * multi, unit)
   },
 
-  _keyDown: function(e){
+  _keyDown(e){
     var ctrl = e.ctrlKey
-      , key  = e.key;
+      , key  = e.key
+      , direction = ARROWS_TO_DIRECTION[key]
+      , current = this.state.currentDate
+      , view = this.state.view
+      , unit = VIEW_UNIT[view]
+      , currentDate = current;
 
-    if ( ctrl ) {
-      if ( key === 'ArrowDown' ) {
+    if ( key === 'Enter'){
+      e.preventDefault()
+      return this.change(current)
+    }
+
+    if ( direction ) {
+      if ( ctrl ) {
         e.preventDefault()
-        this.navigate(dir.DOWN)
+        this.navigate(direction)
       }
-      if ( key === 'ArrowUp' ) {
-        e.preventDefault()
-        this.navigate(dir.UP)
+      else {
+        if ( this.isRtl() && OPPOSITE_DIRECTION[direction] )
+          direction = OPPOSITE_DIRECTION[direction]
+
+        currentDate = dates.move(currentDate, this.props.min, this.props.max, view, direction)
+
+        if ( !dates.eq(current, currentDate, unit) ) {
+          e.preventDefault()
+
+          if ( dates.gt(currentDate, current, view))
+            this.navigate(dir.RIGHT, currentDate)
+
+          else if ( dates.lt(currentDate, current, view))
+            this.navigate(dir.LEFT, currentDate)
+
+          else
+            this.setState({ currentDate })
+        }
       }
-      if ( key === 'ArrowLeft' ) {
-        e.preventDefault()
-        this.navigate(dir.LEFT)
-      }
-      if ( key === 'ArrowRight' ) {
-        e.preventDefault()
-        this.navigate(dir.RIGHT)
-      }
-    } 
-    else {
-      this.refs.currentView._keyDown
-        && this.refs.currentView._keyDown(e)
     }
 
     this.notify('onKeyDown', [e])
@@ -362,23 +364,22 @@ var Calendar = React.createClass({
       , dt   = this.state.currentDate;
 
     if ( view === 'month')
-      return dates.format(dt, props.headerFormat, culture)
+      return localizers.date.format(dt, format(props, 'header'), culture)
 
     else if ( view === 'year')
-      return dates.format(dt, props.yearFormat, culture)
+      return localizers.date.format(dt, format(props, 'year'), culture)
 
     else if ( view === 'decade')
-      return dates.format(dates.startOf(dt, 'decade'), props.decadeFormat, culture)
+      return localizers.date.format(dates.startOf(dt, 'decade'), format(props, 'decade'), culture)
 
     else if ( view === 'century')
-      return dates.format(dates.startOf(dt, 'century'), props.centuryFormat, culture)
+      return localizers.date.format(dates.startOf(dt, 'century'), format(props, 'century'), culture)
   },
 
   inRangeValue: function(_value){
     var value = dateOrNull(_value)
 
-    if( value === null)
-      return value
+    if( value === null) return value
 
     return dates.max(
         dates.min(value, this.props.max)
@@ -404,23 +405,6 @@ function msgs(msgs){
     moveBack:     'navigate back',
     moveForward:  'navigate forward',
     ...msgs
-  }
-}
-
-function formats(obj){
-  return {
-    headerFormat:  dates.formats.MONTH_YEAR,
-    dateFormat:    dates.formats.DAY_OF_MONTH,
-    monthFormat:   dates.formats.MONTH_NAME_ABRV,
-    yearFormat:    dates.formats.YEAR,
-
-    decadeFormat:  (dt, culture) => 
-      `${dates.format(dt, dates.formats.YEAR, culture)} - ${dates.format(dates.endOf(dt, 'decade'), dates.formats.YEAR, culture)}`,
-    
-    centuryFormat: (dt, culture) => 
-      `${dates.format(dt, dates.formats.YEAR, culture)} - ${dates.format(dates.endOf(dt, 'century'), dates.formats.YEAR, culture)}`,
-      
-    ...obj
   }
 }
 

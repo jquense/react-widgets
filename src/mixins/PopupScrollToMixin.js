@@ -1,5 +1,5 @@
 'use strict';
-var scrollTo = require('../util/dom/scroll')
+var scrollTo = require('dom-helpers/util/scrollTo')
 
 module.exports = {
 
@@ -24,5 +24,5 @@ module.exports = {
         state.scrollCancel = scrollTo(selected, list)
       }
     }
-  },
+  }
 }

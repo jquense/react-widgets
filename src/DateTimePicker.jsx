@@ -7,6 +7,7 @@ var React  = require('react')
   , _      = require('./util/_') //pick, omit, has
 
   , dates  = require('./util/dates')
+  , localizers = require('./util/configuration').locale
   , views  = require('./util/constants').calendarViews
   , popups = require('./util/constants').datePopups
 
@@ -38,8 +39,9 @@ var propTypes = {
 
     culture:        React.PropTypes.string,
 
-    format:         CustomPropTypes.localeFormat,
-    editFormat:     CustomPropTypes.localeFormat,
+    format:         CustomPropTypes.dateFormat,
+    timeFormat:     CustomPropTypes.dateFormat,
+    editFormat:     CustomPropTypes.dateFormat,
 
     calendar:       React.PropTypes.bool,
     time:           React.PropTypes.bool,
@@ -218,6 +220,7 @@ var DateTimePicker = React.createClass({
                 optID={timeOptID}
                 aria-hidden={ !this.props.open }
                 value={value}
+                format={this.props.timeFormat}
                 step={this.props.step}
                 min={this.props.min}
                 max={this.props.max}
@@ -294,17 +297,16 @@ var DateTimePicker = React.createClass({
     this.notify('onKeyDown', [e])
   },
 
-  //timeout prevents transitions from breaking focus
   _focus: function(focused, e){
-    this.setTimeout('focus', () => {
-      var calendarOpen = this.props.open === popups.CALENDAR;
+    var calendarOpen = this.props.open === popups.CALENDAR;
 
-      // #75: need to aggressively reclaim focus from the calendar otherwise 
-      // disabled header/footer buttons will drop focus completely from the widget
-      if(focused) 
-        calendarOpen && this.refs.valueInput.focus() 
-      else 
-        this.close()
+    // #75: need to aggressively reclaim focus from the calendar otherwise 
+    // disabled header/footer buttons will drop focus completely from the widget
+    if(focused) 
+      calendarOpen && this.refs.valueInput.focus() 
+
+    this.setTimeout('focus', () => {
+      if(!focused) this.close()
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
@@ -374,7 +376,7 @@ var DateTimePicker = React.createClass({
   toggle: function(view, e) {
 
     this.props.open
-      ? this.state.view !== view
+      ? this.props.open !== view
           ? this.open(view)
           : this.close(view)
       : this.open(view)
@@ -414,15 +416,15 @@ function getFormat(props){
   return props.format 
     ? props.format 
     : (cal && time) || (!cal && !time)
-      ? 'f'
-      : cal ? 'd' : 't'
+      ? localizers.date.formats.default
+      : localizers.date.formats[cal ? 'date' : 'time'] 
 }
 
 function formatDate(date, format, culture){
   var val = ''
 
   if ((date instanceof Date) && !isNaN(date.getTime()))
-    val = dates.format(date, format, culture)
+    val = localizers.date.format(date, format, culture)
 
   return val;
 }
@@ -431,7 +433,7 @@ function formatsParser(formats, culture, str){
   var date;
 
   for (var i=0; i < formats.length; i++ ){
-    date = dates.parse(str, formats[i], culture)
+    date = localizers.date.parse(str, formats[i], culture)
     if (date) return date
   }
   return null

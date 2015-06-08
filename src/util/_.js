@@ -5,19 +5,19 @@ var _ =
 
   module.exports = {
 
-    has: has,
-    
-    assign: require('react/lib/Object.assign'),
+    has,
 
+    result: (value, ...args) =>  typeof value === 'function' ? value(...args) : value,
+    
     isShallowEqual(a, b) {
       if (a === b) return true;
       if (a instanceof Date && b instanceof Date)
         return a.getTime() === b.getTime()
 
-      if(typeof a != 'object' && typeof b != 'object')
+      if(typeof a !== 'object' && typeof b !== 'object')
         return a === b
 
-      if(typeof a != typeof b ) return false
+      if(typeof a !== typeof b ) return false
 
       return shallowEqual(a, b)
     }, 
@@ -33,7 +33,6 @@ var _ =
       for(var key in obj) if(has(obj, key)) 
         cb.call(thisArg, obj[key], key, obj)
     },
-
 
     pick(obj, keys) {
       keys = [].concat(keys);
@@ -83,7 +82,7 @@ var _ =
     noop(){},
 
     uniqueId (prefix) {
-      return ''+ ((prefix == null ? '' : prefix) + (++idCount));
+      return '' + ((prefix == null ? '' : prefix) + (++idCount));
     },
 
     //-- Really specific Component Utilities --

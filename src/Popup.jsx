@@ -1,6 +1,7 @@
 'use strict';
 var React  = require('react')
-  , $ = require('./util/dom')
+  , css = require('dom-helpers/style')
+  , getHeight = require('dom-helpers/query/height')
   , config = require('./util/configuration')
   , cn = require('classnames')
   , compat = require('./util/compat');
@@ -118,18 +119,18 @@ module.exports = React.createClass({
       , content   = compat.findDOMNode(this.refs.content)
       , style = { display: 'block', overflow: 'hidden'}
     
-    $.css(container, style)
+    css(container, style)
     this.height();
-    $.css(content, properties('top', this.props.dropUp ? '100%' : '-100%'))
+    css(content, properties('top', this.props.dropUp ? '100%' : '-100%'))
   },
 
   height(){
     var el = compat.findDOMNode(this)
       , content = compat.findDOMNode(this.refs.content)
-      , margin = parseInt($.css(content, 'margin-top'), 10)
-               + parseInt($.css(content, 'margin-bottom'), 10);
+      , margin = parseInt(css(content, 'margin-top'), 10)
+               + parseInt(css(content, 'margin-bottom'), 10);
 
-    var height = $.height(content) + (isNaN(margin) ? 0 : margin )
+    var height = getHeight(content) + (isNaN(margin) ? 0 : margin )
 
     if( this.state.height !== height) {
       el.style.height  = height + 'px'
@@ -142,7 +143,7 @@ module.exports = React.createClass({
       , anim = compat.findDOMNode(this)
       , el   = compat.findDOMNode(this.refs.content);
 
-    this.ORGINAL_POSITION = $.css(el, 'position')
+    this.ORGINAL_POSITION = css(el, 'position')
     this._isOpening = true
 
     if (this._initialPosition) {
@@ -179,7 +180,7 @@ module.exports = React.createClass({
       , el   = compat.findDOMNode(this.refs.content)
       , anim = compat.findDOMNode(this);
 
-    this.ORGINAL_POSITION = $.css(el, 'position')
+    this.ORGINAL_POSITION = css(el, 'position')
 
     this._isOpening = false
     this.height()

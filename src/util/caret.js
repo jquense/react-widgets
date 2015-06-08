@@ -1,6 +1,7 @@
+/*eslint-disable no-empty */
 'use strict';
-module.exports = function caret(el, start, end ){
 
+module.exports = function caret(el, start, end ){
   if ( start === undefined)
     return get(el)
   
@@ -45,8 +46,8 @@ function set(el, start, end){
       el.focus();
       rangeEl = el.createTextRange();
       rangeEl.collapse(true);
-      rangeEl.moveStart("character", start);
-      rangeEl.moveEnd("character", end - start);
+      rangeEl.moveStart('character', start);
+      rangeEl.moveEnd('character', end - start);
       rangeEl.select();
     }
   }

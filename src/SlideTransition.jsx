@@ -1,9 +1,9 @@
 'use strict';
 var React   = require('react')
   , ReplaceTransitionGroup  = require('./ReplaceTransitionGroup')
-  , _ = require('./util/_')
   , compat = require('./util/compat')
-  , $ = require('./util/dom')
+  , css = require('dom-helpers/style')
+  , getWidth  = require('dom-helpers/query/width')
   , config = require('./util/configuration');
 
 
@@ -16,18 +16,18 @@ var SlideChildGroup = React.createClass({
 
   componentWillEnter: function(done) {
     var node  = compat.findDOMNode(this)
-      , width = $.width(node)
+      , width = getWidth(node)
       , direction = this.props.direction;
 
     width = direction === 'left' ? width : -width
 
     this.ORGINAL_POSITION = node.style.position;
     
-    $.css(node, { position: 'absolute', left: width + 'px' , top: 0 })
+    css(node, { position: 'absolute', left: width + 'px' , top: 0 })
 
     config.animate(node, { left: 0 }, this.props.duration, () => {
 
-        $.css(node, { 
+        css(node, { 
           position:  this.ORGINAL_POSITION, 
           overflow: 'hidden'
         });
@@ -39,17 +39,17 @@ var SlideChildGroup = React.createClass({
 
   componentWillLeave: function(done) {
     var node  = compat.findDOMNode(this)
-      , width = $.width(node)
+      , width = getWidth(node)
       , direction = this.props.direction;
 
     width = direction === 'left' ? -width : width
 
     this.ORGINAL_POSITION = node.style.position
 
-    $.css(node, { position: 'absolute', top: 0, left: 0})
+    css(node, { position: 'absolute', top: 0, left: 0})
 
     config.animate(node, { left: width + 'px' }, this.props.duration, () => {
-        $.css(node, { 
+        css(node, { 
           position: this.ORGINAL_POSITION, 
           overflow: 'hidden'
         });
@@ -92,7 +92,7 @@ module.exports = React.createClass({
   render: function() {
     var { style, children, ...props } = this.props
 
-    style = _.assign({}, style, { position: 'relative', overflow: 'hidden' })
+    style = Object.assign({}, style, { position: 'relative', overflow: 'hidden' })
 
     return (
       <ReplaceTransitionGroup 
