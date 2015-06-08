@@ -57,9 +57,9 @@ var propTypes = {
       placeholder:    React.PropTypes.string,
 
       messages:       React.PropTypes.shape({
-        open:         React.PropTypes.string,
-        emptyList:    React.PropTypes.string,
-        emptyFilter:  React.PropTypes.string
+        open:         CustomPropTypes.message,
+        emptyList:    CustomPropTypes.message,
+        emptyFilter:  CustomPropTypes.message
       })
     };
 
@@ -99,11 +99,7 @@ var ComboBox = React.createClass({
       filter: false,
       delay: 500,
 
-      messages: {
-        open: 'open combobox',
-        emptyList:   "There are no items in this list",
-        emptyFilter: "The filter returned no results"
-      }
+      messages: msgs()
     }
   },
 
@@ -151,6 +147,7 @@ var ComboBox = React.createClass({
       , listID = this._id('_listbox')
       , optID  = this._id( '_option')
       , dropUp = this.props.dropUp
+      , messages = msgs(this.props.messages)
       , renderList = _.isFirstFocusedRender(this) || this.props.open
       , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       , completeType = this.props.suggest
@@ -179,7 +176,7 @@ var ComboBox = React.createClass({
           onClick={this.toggle}
           disabled={!!(this.props.disabled || this.props.readOnly)}>
           <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
-            <span className="rw-sr">{ this.props.messages.open }</span>
+            <span className="rw-sr">{ _.result(messages.open, this.props) }</span>
           </i>
         </Btn>
         <Input
@@ -223,8 +220,8 @@ var ComboBox = React.createClass({
                 onMove={this._scrollTo}
                 messages={{
                   emptyList: this.props.data.length
-                    ? this.props.messages.emptyFilter
-                    : this.props.messages.emptyList
+                    ? messages.emptyFilter
+                    : messages.emptyList
                 }}/>
             }
           </div>
@@ -393,6 +390,14 @@ var ComboBox = React.createClass({
 })
 
 
+function msgs(msgs){
+  return {
+    open: 'open combobox',
+    emptyList:   "There are no items in this list",
+    emptyFilter: "The filter returned no results",
+    ...msgs
+  }
+}
 
 function getFilter(suggest, word, ctx){
   return typeof suggest === 'string'

@@ -30,7 +30,7 @@ module.exports = React.createClass({
     optID:         React.PropTypes.string,
 
     messages:      React.PropTypes.shape({
-      emptyList:   React.PropTypes.string
+      emptyList:   CustomPropTypes.message
     }),
   },
 
@@ -65,7 +65,7 @@ module.exports = React.createClass({
       , items;
     
     items = !this.props.data.length 
-      ? <li>{ this.props.messages.emptyList }</li>
+      ? <li className='rw-list-empty'>{ _.result(this.props.messages.emptyList, this.props) }</li>
       : this.props.data.map((item, idx) =>{
           var focused  = item === this.props.focused 
             , selected = item === this.props.selected;

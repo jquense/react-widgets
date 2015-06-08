@@ -35,11 +35,16 @@ module.exports = {
                     React.PropTypes.func
                   ]),
 
-    filter:       React.PropTypes.oneOfType([
-                    React.PropTypes.func,
-                    React.PropTypes.bool,
-                    React.PropTypes.oneOf(filterTypes)
-                  ])
+  message:      React.PropTypes.oneOfType([
+                  React.PropTypes.func,
+                  React.PropTypes.string,
+                ]),
+
+  filter:       React.PropTypes.oneOfType([
+                  React.PropTypes.func,
+                  React.PropTypes.bool,
+                  React.PropTypes.oneOf(filterTypes)
+                ])
 }
 
 

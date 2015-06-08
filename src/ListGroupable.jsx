@@ -36,7 +36,7 @@ module.exports = React.createClass({
     groupBy:        CustomPropTypes.accessor,
 
     messages:       React.PropTypes.shape({
-      emptyList:    React.PropTypes.string
+      emptyList:    CustomPropTypes.message
     }),
   },
 
@@ -103,7 +103,7 @@ module.exports = React.createClass({
         }, [])
     }
     else 
-      items = <li>{ this.props.messages.emptyList }</li>
+      items = <li className='rw-list-empty'>{ _.result(this.props.messages.emptyList, this.props) }</li>
 
     return (
       <ul { ...props }

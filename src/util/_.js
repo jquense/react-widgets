@@ -6,6 +6,8 @@ var _ =
   module.exports = {
 
     has,
+
+    result: (value, ...args) =>  typeof value === 'function' ? value(...args) : value,
     
     isShallowEqual(a, b) {
       if (a === b) return true;

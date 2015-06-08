@@ -55,7 +55,10 @@ var propTypes = {
                   ]),
 
   messages:       React.PropTypes.shape({
-    open:         React.PropTypes.string,
+    open:              CustomPropTypes.message,
+    emptyList:         CustomPropTypes.message,
+    emptyFilter:       CustomPropTypes.message,
+    filterPlaceholder: CustomPropTypes.message
   })
 };
 
@@ -82,12 +85,7 @@ var DropdownList = React.createClass({
       open: false,
       data: [],
       searchTerm: '',
-      messages: {
-        open: 'open dropdown',
-        filterPlaceholder: '',
-        emptyList:   "There are no items in this list",
-        emptyFilter: "The filter returned no results"
-      }
+      messages: msgs()
     }
   },
 
@@ -129,6 +127,7 @@ var DropdownList = React.createClass({
       , optID = this._id('_option')
       , dropUp = this.props.dropUp
       , renderList = _.isFirstFocusedRender(this) || this.props.open
+      , messages = msgs(this.props.messages)
       , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList;
 
     return (
@@ -156,7 +155,7 @@ var DropdownList = React.createClass({
 
         <span className="rw-dropdownlist-picker rw-select rw-btn">
           <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
-            <span className="rw-sr">{ this.props.messages.open }</span>
+            <span className="rw-sr">{ _.result(messages.open, this.props) }</span>
           </i>
         </span>
         <div className="rw-input">
@@ -173,7 +172,7 @@ var DropdownList = React.createClass({
           onRequestClose={this.close}>
 
           <div>
-            { this.props.filter && this._renderFilter() }
+            { this.props.filter && this._renderFilter(messages) }
             { renderList && 
               <List ref="list" 
               {..._.pick(
@@ -189,8 +188,8 @@ var DropdownList = React.createClass({
               onMove={this._scrollTo}
               messages={{
                 emptyList: this.props.data.length
-                  ? this.props.messages.emptyFilter
-                  : this.props.messages.emptyList
+                  ? messages.emptyFilter
+                  : messages.emptyList
               }}/>
             }           
           </div>
@@ -199,12 +198,12 @@ var DropdownList = React.createClass({
     )
   },
 
-  _renderFilter(){
+  _renderFilter(messages){
     return (
       <div ref='filterWrapper' className='rw-filter-input'>
         <span className='rw-select rw-btn'><i className='rw-i rw-i-search'/></span>
         <input ref='filter' className='rw-input'
-          placeholder={this.props.messages.filterPlaceholder}
+          placeholder={_.result(messages.filterPlaceholder, this.props)}
           value={this.props.searchTerm }
           onChange={ e => this.notify('onSearch', e.target.value)}/>
       </div>
@@ -353,6 +352,15 @@ var DropdownList = React.createClass({
 
 })
 
+function msgs(msgs){
+  return {
+    open: 'open dropdown',
+    filterPlaceholder: '',
+    emptyList:   "There are no items in this list",
+    emptyFilter: "The filter returned no results",
+    ...msgs
+  }
+}
 
 module.exports = createUncontrolledWidget(
     DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });

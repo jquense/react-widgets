@@ -13,6 +13,10 @@ var React           = require('react')
   , createUncontrolledWidget = require('uncontrollable')
   , CustomPropTypes = require('./util/propTypes');
 
+var compatCreate = (props, msgs) => typeof msgs.create === 'function'
+  ? msgs.create(props) : [<strong>{`"${props.searchTerm}"`}</strong>, msgs.create]
+
+
 var propTypes = {
       data:            React.PropTypes.array,
       //-- controlled props --
@@ -35,6 +39,8 @@ var propTypes = {
 
       groupComponent:  CustomPropTypes.elementType,
       groupBy:         CustomPropTypes.accessor,
+
+      createComponent: CustomPropTypes.elementType,
 
       onSelect:        React.PropTypes.func,
       onCreate:        React.PropTypes.oneOfType([ 
@@ -60,9 +66,10 @@ var propTypes = {
                        ]),
 
       messages:        React.PropTypes.shape({
-        open:          React.PropTypes.string,
-        emptyList:     React.PropTypes.string,
-        emptyFilter:   React.PropTypes.string
+        open:          CustomPropTypes.message,
+        emptyList:     CustomPropTypes.message,
+        emptyFilter:   CustomPropTypes.message,
+        createNew:     CustomPropTypes.message
       })
     };
 
@@ -140,6 +147,7 @@ var Multiselect = React.createClass({
       , items  = this._data()
       , values = this.state.dataItems
       , dropUp = this.props.dropUp
+      , messages = msgs(this.props.messages)
       , renderPopup = _.isFirstFocusedRender(this) || this.props.open
       , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       , listProps  = _.pick(this.props, Object.keys(compat.type(List).propTypes));
@@ -213,8 +221,8 @@ var Multiselect = React.createClass({
               onMove={this._scrollTo}
               messages={{
                 emptyList: this.props.data.length
-                  ? this.props.messages.emptyFilter
-                  : this.props.messages.emptyList
+                  ? messages.emptyFilter
+                  : messages.emptyList
               }}/>,
               this._shouldShowCreate() &&
                 <ul className="rw-list rw-multiselect-create-tag" key='1'>
@@ -223,13 +231,12 @@ var Multiselect = React.createClass({
                         'rw-list-option': true,
                         'rw-state-focus': !this._data().length || this.state.focusedItem === null 
                       })}>
-                    <strong>{`"${this.props.searchTerm}"`}</strong> { this.props.messages.createNew }
+                    { compatCreate(this.props, messages) }
                   </li>
                 </ul>
             ]
           }
           </div>
-        
         </Popup>
       </div>
     )
@@ -423,6 +430,15 @@ var Multiselect = React.createClass({
   }
 
 })
+
+function msgs(msgs){
+  return {
+    createNew:   "(create new tag)",
+    emptyList:   "There are no items in this list",
+    emptyFilter: "The filter returned no results",
+    ...msgs
+  }
+}
 
 
 module.exports = createUncontrolledWidget(Multiselect

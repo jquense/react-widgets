@@ -156,11 +156,15 @@ ul.rw-list {
     font-weight: bold;
   }
 
+  > li.rw-list-option,
+  > li.rw-list-empty {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   > li.rw-list-option {
     cursor: pointer;
     border: 1px solid transparent;
-    padding-left: 10px;
-    padding-right: 10px;
     border-radius: @border-radius-sm;
 
     &:hover {
