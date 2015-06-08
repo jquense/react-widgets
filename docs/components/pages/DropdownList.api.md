@@ -143,19 +143,19 @@ mark whether the widget should render right-to-left. This property can also be i
 Object hash containing display text and/or text for screen readers. Use the `messages` object to
 localize widget text and increase accessibility.
 
-### messages.open?{ type: 'String', default: '"Open Dropdown"' }
+### messages.open?{ type: 'String | Function(props)', default: '"Open Dropdown"' }
 
 Dropdown button text for screen readers.
 
-### messages.filterPlaceholder?{ type: 'String' }
+### messages.filterPlaceholder?{ type: 'String | Function(props)' }
 
 The placeholder text for the filter input.
 
-### messages.emptyList?{ type: 'String', default: '"There are no items in this list"' }
+### messages.emptyList?{ type: 'String | Function(props)', default: '"There are no items in this list"' }
 
 Text to display when the `data` prop array is empty.
 
-### messages.emptyFilter?{ type: 'String', default: '"The filter returned no results"' }
+### messages.emptyFilter?{ type: 'String | Function(props)', default: '"The filter returned no results"' }
 
 Text to display when the the current filter does not return any results.
 

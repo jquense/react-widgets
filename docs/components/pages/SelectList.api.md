@@ -80,13 +80,18 @@ Place the {widgetName} in a readonly mode, If an `Array` of values is passed in 
 
 ### isRtl?{ type: 'Boolean', default:"false" }
 
-mark whether the {widgetName} should render right-to-left. This property can also be implicitly passed to the widget through
- a `childContext` prop (`isRtl`) this allows higher level application components to specify the direction.
+mark whether the {widgetName} should render right-to-left. This property can also be implicitly passed to the widget through a `childContext` prop (`isRtl`) this allows higher level application components to specify the direction.
 
+### messages?{ type: 'Object' } 
 
+Object hash containing display text and/or text for screen readers. Use the `messages` object to
+localize widget text and increase accessibility.
 
-## Keyboard Navigation<
+### messages.emptyList?{ type: 'String | Function(props)', default: '"There are no items in this list"' }
 
+Text to display when the `data` prop array is empty
+
+## Keyboard Navigation
 
 - <kbd>down arrow</kbd> move focus to or select next item
 - <kbd>up arrow</kbd> move focus to or select previous item

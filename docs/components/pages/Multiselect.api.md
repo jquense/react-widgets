@@ -160,15 +160,15 @@ Object hash containing display text and/or text for screen readers. Use the `mes
 localize widget text and increase accessibility.
 
 
-### messages.createNew?{type: 'String', default: '"(create new tag)"' }
+### messages.createNew?{type: 'String | Function(props)', default: '"(create new tag)"' }
 
 The text label for creating new tags
 
-### messages.emptyList?{ type: 'String', default: '"There are no items in this list"' }
+### messages.emptyList?{ type: 'String | Function(props)', default: '"There are no items in this list"' }
 
 Text to display when the `data` prop array is empty
 
-### messages.emptyFilter?{ type: 'String', default: '"The filter returned no results"' }
+### messages.emptyFilter?{ type: 'String | Function(props)', default: '"The filter returned no results"' }
 
 Text to display when the the current filter does not return any results
 
