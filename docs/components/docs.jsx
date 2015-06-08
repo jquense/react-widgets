@@ -66,11 +66,11 @@ var Docs = React.createClass({
                   </li>
                   <li><Link to='i18n'>Localization</Link></li>
                   <li className='side-divider'>API</li>
-                  <li><Link to='dropdown-list'>Dropdown List</Link></li>
+                  <li><Link to='dropdownlist'>Dropdown List</Link></li>
                   <li><Link to='combobox' href='#combobox'>Combobox</Link></li>
                   <li><Link to='numberpicker' href='#number-picker'>Number Picker</Link></li>
                   <li><Link to='multiselect' href='#multiselect'>Multiselect</Link></li>
-                  <li><Link to='selectlist'>SelectList</Link></li>
+                  <li><Link to='selectlist'>Select List</Link></li>
                   <li><Link to='calendar'>Calendar</Link></li>
                   <li><Link to='datetime-picker'>{'Date & Time Picker'}</Link></li>
 
