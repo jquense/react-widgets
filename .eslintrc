@@ -9,6 +9,9 @@
   "ecmaFeatures": {
     "jsx": true
   },
+  "plugins": [
+    "eslint-plugin-react"
+  ],
   "rules": {
     "no-eval": 2,
     "strict": 0,

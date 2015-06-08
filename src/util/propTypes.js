@@ -37,7 +37,7 @@ module.exports = {
 
   message:      React.PropTypes.oneOfType([
                   React.PropTypes.func,
-                  React.PropTypes.string,
+                  React.PropTypes.string
                 ]),
 
   filter:       React.PropTypes.oneOfType([
