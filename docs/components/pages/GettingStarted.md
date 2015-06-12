@@ -2,7 +2,7 @@
 
 React-widgets offers a set of html form inputs, built from scratch with React. The suite is based on the excellent 
 work done by Kendo UI Core, and jQuery UI, but built as true components, and not library wrappers. By 
-building each widget entirely in React, it can leavage all of the benefits of the React ecosystem 
+building each widget entirely in React, it can leverage all of the benefits of the React ecosystem 
 and [philosophy](http://facebook.github.io/react/blog/2013/11/05/thinking-in-react.html). A big thanks to both of these libraries for solving most of the difficult problems already.
 
 In keeping with the [React approach](http://facebook.github.io/react/docs/forms.html#controlled-components) to form input components, each widget can be <em>controlled</em> or <em>uncontrolled</em>. If a `value` prop 
