@@ -23,7 +23,7 @@ module.exports = React.createClass({
     format:         CustomPropTypes.dateFormat,
     onSelect:       React.PropTypes.func,
     preserveDate:   React.PropTypes.bool,
-    culture:        React.PropTypes.string,
+    culture:        React.PropTypes.string
   },
 
   mixins: [
@@ -45,7 +45,7 @@ module.exports = React.createClass({
     var data = this._dates(this.props)
       , focusedItem = this._closestDate(data, this.props.value);
 
-    return { 
+    return {
       focusedItem: focusedItem || data[0],
       dates: data
     }
@@ -59,11 +59,11 @@ module.exports = React.createClass({
       , maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes');
 
     if ( valChanged || minChanged || maxChanged){
-      this.setState({ 
+      this.setState({
         focusedItem: focusedItem || data[0],
         dates: data
       })
-    } 
+    }
   },
 
   render: function(){
@@ -94,14 +94,14 @@ module.exports = React.createClass({
     label = dates.format(date, this.props.format, this.props.culture)
 
     times.some( time => {
-      if( time.label === label ) 
+      if( time.label === label )
         return (inst = time)
     })
 
     return inst
   },
 
-  _data(){ 
+  _data(){
     return this.state.dates
   },
 
@@ -183,19 +183,19 @@ module.exports = React.createClass({
   },
 
   scrollTo(){
-    this.refs.list.move 
+    this.refs.list.move
       && this.refs.list.move()
   },
 
   search(character, cb){
     var word = ((this._searchTerm || '') + character).toLowerCase();
-      
-    this._searchTerm = word 
+
+    this._searchTerm = word
 
     this.setTimeout('search', () => {
       var list = this.refs.list
         , item = list.next(this.state.focusedItem, word);
-      
+
       this._searchTerm = ''
       if (item) cb(item)
 

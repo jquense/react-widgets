@@ -10,7 +10,7 @@ module.exports = React.createClass({
 
   displayName: 'List',
 
-  mixins: [ 
+  mixins: [
     require('./mixins/WidgetMixin'),
     require('./mixins/DataHelpersMixin'),
     require('./mixins/ListMovementMixin')
@@ -31,7 +31,7 @@ module.exports = React.createClass({
 
     messages:      React.PropTypes.shape({
       emptyList:   CustomPropTypes.message
-    }),
+    })
   },
 
 
@@ -41,7 +41,7 @@ module.exports = React.createClass({
       onSelect:      ()=>{},
       data:          [],
       messages: {
-        emptyList:   "There are no items in this list"
+        emptyList:   'There are no items in this list'
       }
     }
   },
@@ -55,7 +55,7 @@ module.exports = React.createClass({
     this.move()
   },
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(){
     this.move()
   },
 
@@ -63,23 +63,23 @@ module.exports = React.createClass({
     var { className, ...props } = _.omit(this.props, ['data'])
       , ItemComponent = this.props.itemComponent
       , items;
-    
-    items = !this.props.data.length 
+
+    items = !this.props.data.length
       ? <li className='rw-list-empty'>{ _.result(this.props.messages.emptyList, this.props) }</li>
       : this.props.data.map((item, idx) =>{
-          var focused  = item === this.props.focused 
+          var focused  = item === this.props.focused
             , selected = item === this.props.selected;
 
-          return (<li 
+          return (<li
             tabIndex='-1'
             key={'item_' + idx}
             role='option'
             id={ focused ? this.props.optID : undefined }
             aria-selected={selected}
-            className={cx({ 
+            className={cx({
               'rw-list-option':    true,
               'rw-state-focus':    focused,
-              'rw-state-selected': selected,
+              'rw-state-selected': selected
             })}
             onClick={this.props.onSelect.bind(null, item)}>
             { ItemComponent
@@ -88,10 +88,10 @@ module.exports = React.createClass({
             }
           </li>)
         });
-    
+
     return (
-      <ul { ...props } 
-        className={ (className || '') + ' rw-list' } 
+      <ul { ...props }
+        className={ (className || '') + ' rw-list' }
         ref='scrollable'
         role='listbox'>
           { items }
@@ -99,16 +99,16 @@ module.exports = React.createClass({
     )
   },
 
-  _data(){ 
-    return this.props.data 
+  _data(){
+    return this.props.data
   },
 
   move(){
     var list = compat.findDOMNode(this)
       , idx  = this._data().indexOf(this.props.focused)
       , selected = list.children[idx];
-      
-    if( !selected ) return 
+
+    if( !selected ) return
 
     this.notify('onMove', [ selected, list, this.props.focused ])
   }

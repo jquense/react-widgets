@@ -35,7 +35,7 @@ var propTypes = {
       name:           React.PropTypes.string,
 
       onSelect:       React.PropTypes.func,
-      
+
       disabled:       React.PropTypes.oneOfType([
                         React.PropTypes.bool,
                         React.PropTypes.oneOf(['disabled'])
@@ -117,7 +117,7 @@ var ComboBox = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     var rawIdx = this._dataIndexOf(nextProps.data, nextProps.value)
-      , valueItem = rawIdx == -1 ? nextProps.value : nextProps.data[rawIdx]
+      , valueItem = rawIdx === -1 ? nextProps.value : nextProps.data[rawIdx]
       , isSuggesting = this.refs.input.isSuggesting()
       , items = this.process(
           nextProps.data
@@ -139,7 +139,7 @@ var ComboBox = React.createClass({
   },
 
   render(){
-    var { 
+    var {
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
       , valueItem = this._dataItem( this._data(), this.props.value )
@@ -161,7 +161,7 @@ var ComboBox = React.createClass({
         onKeyDown={this._keyDown}
         onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
-        tabIndex="-1"
+        tabIndex={'-1'}
         className={cx(className, 'rw-combobox', 'rw-widget', {
           'rw-state-focus':     this.state.focused,
           'rw-state-disabled':  this.props.disabled,
@@ -175,13 +175,14 @@ var ComboBox = React.createClass({
           className='rw-select'
           onClick={this.toggle}
           disabled={!!(this.props.disabled || this.props.readOnly)}>
-          <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
+          <i className={cx('rw-i rw-i-caret-down', { ' rw-loading': this.props.busy })}>
             <span className="rw-sr">{ _.result(messages.open, this.props) }</span>
           </i>
         </Btn>
         <Input
           ref='input'
           type='text'
+          tabIndex={props.tabIndex}
           suggest={this.props.suggest}
           name={this.props.name}
           aria-owns={listID}
@@ -198,7 +199,7 @@ var ComboBox = React.createClass({
           onChange={this._inputTyping}
           onKeyDown={this._inputKeyDown}/>
 
-        <Popup 
+        <Popup
           {..._.pick(
               this.props
             , Object.keys(compat.type(Popup).propTypes))
@@ -206,7 +207,7 @@ var ComboBox = React.createClass({
           onOpening={() => this.refs.list.forceUpdate()}
           onRequestClose={this.close}>
           <div>
-            { renderList && 
+            { renderList &&
               <List ref="list"
                 {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
                 id={listID}
@@ -234,7 +235,7 @@ var ComboBox = React.createClass({
     this.close()
     this.notify('onSelect', data)
     this.change(data)
-    this._focus(true);
+    this.focus();
   }),
 
   _inputKeyDown(e){
@@ -253,7 +254,7 @@ var ComboBox = React.createClass({
 
     suggestion = suggestion || strVal
 
-    data = _.find(self.props.data, 
+    data = _.find(self.props.data,
       item => this._dataText(item).toLowerCase() === suggestion.toLowerCase())
 
     this.change(!this._deleting && data
@@ -263,13 +264,16 @@ var ComboBox = React.createClass({
     this.open()
   },
 
+  focus() {
+    this.refs.input.focus()
+  },
+
   _focus: _.ifNotDisabled(true, function(focused, e){
-    focused 
-      ? this.refs.input.focus() 
-      : this.refs.input.accept() //not suggesting anymore
+
+    !focused && this.refs.input.accept() //not suggesting anymore
 
     this.setTimeout('focus', () => {
-      //console.log(type, focused)
+
       if( !focused) this.close()
 
       if( focused !== this.state.focused) {
@@ -300,7 +304,6 @@ var ComboBox = React.createClass({
       this.close()
 
     else if ( key === 'Enter' && isOpen ) {
-      this.close()
       select(this.state.focusedItem, true)
     }
 
@@ -322,15 +325,15 @@ var ComboBox = React.createClass({
     }
 
     this.notify('onKeyDown', [e])
-    
+
     function select(item, fromList) {
       if(!item)
         return self.change(compat.findDOMNode(self.refs.input).value, false)
 
       self.refs.input.accept(true); //removes caret
 
-      if(fromList) 
-        self.notify('onSelect', item)
+      if(fromList)
+        return self._onSelect(item)
 
       self.change(item, false)
     }
@@ -351,24 +354,24 @@ var ComboBox = React.createClass({
       this.notify('onToggle', false)
   },
 
-  toggle: _.ifNotDisabled(function(e){
-    this._focus(true)
+  toggle: _.ifNotDisabled(function(){
+    this.focus()
 
     this.props.open
       ? this.close()
       : this.open()
   }),
 
-  suggest(data, value){
+  suggest(data, value) {
     var word = this._dataText(value)
       , suggest = defaultSuggest(this.props.suggest)
-      , suggestion; 
+      , suggestion;
 
     if ( !(word || '').trim() || word.length < (this.props.minLength || 1))
       return ''
 
     suggestion = typeof value === 'string'
-        ? _.find(data, getFilter(suggest, word, this)) 
+        ? _.find(data, getFilter(suggest, word, this))
         : value
 
     if ( suggestion && (!this.state || !this.state.deleting))
@@ -377,11 +380,11 @@ var ComboBox = React.createClass({
     return ''
   },
 
-  _data(){
+  _data() {
     return this.state.processedData
   },
 
-  process(data, values, searchTerm){
+  process(data, values, searchTerm) {
     if( this.props.filter && searchTerm)
       data = this.filter(data, searchTerm)
 
@@ -393,8 +396,8 @@ var ComboBox = React.createClass({
 function msgs(msgs){
   return {
     open: 'open combobox',
-    emptyList:   "There are no items in this list",
-    emptyFilter: "The filter returned no results",
+    emptyList:   'There are no items in this list',
+    emptyFilter: 'The filter returned no results',
     ...msgs
   }
 }

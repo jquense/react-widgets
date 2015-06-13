@@ -43,7 +43,7 @@ var propTypes = {
       createComponent: CustomPropTypes.elementType,
 
       onSelect:        React.PropTypes.func,
-      onCreate:        React.PropTypes.oneOfType([ 
+      onCreate:        React.PropTypes.oneOfType([
                          React.PropTypes.oneOf([false]),
                          React.PropTypes.func
                        ]),
@@ -104,7 +104,7 @@ var Multiselect = React.createClass({
   },
 
   getInitialState(){
-    var dataItems = _.splat(this.props.value).map( item => this._dataItem(this.props.data, item)) 
+    var dataItems = _.splat(this.props.value).map( item => this._dataItem(this.props.data, item))
       , data = this.process(this.props.data, dataItems, this.props.searchTerm)
 
     return {
@@ -120,7 +120,7 @@ var Multiselect = React.createClass({
 
   componentDidMount() {
     // https://github.com/facebook/react/issues/1169
-    if( support.ios ) 
+    if( support.ios )
       compat.findDOMNode(this.refs.wrapper).onClick = ()=>{}
   },
 
@@ -131,13 +131,13 @@ var Multiselect = React.createClass({
 
     this.setState({
       processedData: items,
-      focusedItem: items.indexOf(current) === -1 ? items[0]: current,
+      focusedItem: items.indexOf(current) === -1 ? items[0] : current,
       dataItems: values.map( item => this._dataItem(nextProps.data, item))
     })
   },
 
   render() {
-    var { 
+    var {
         className
       , children
       , ...props } = _.omit(this.props, Object.keys(propTypes))
@@ -158,7 +158,7 @@ var Multiselect = React.createClass({
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
-        tabIndex="-1"
+        tabIndex={'-1'}
         className={cx(className, 'rw-multiselect', 'rw-widget', {
           'rw-state-focus':    this.state.focused,
           'rw-state-disabled': this.props.disabled === true,
@@ -183,8 +183,9 @@ var Multiselect = React.createClass({
               readOnly={this.props.readOnly}
               onDelete={this._delete}/>
           }
-          <SelectInput 
+          <SelectInput
             ref='input'
+            tabIndex={props.tabIndex}
             aria-activedescendent={ this.props.open ? optID : undefined }
             aria-expanded={ this.props.open }
             aria-busy={!!this.props.busy}
@@ -226,10 +227,10 @@ var Multiselect = React.createClass({
               }}/>,
               this._shouldShowCreate() &&
                 <ul className="rw-list rw-multiselect-create-tag" key='1'>
-                  <li onClick={this._onCreate.bind(null, this.props.searchTerm)} 
+                  <li onClick={this._onCreate.bind(null, this.props.searchTerm)}
                       className={cx({
                         'rw-list-option': true,
-                        'rw-state-focus': !this._data().length || this.state.focusedItem === null 
+                        'rw-state-focus': !this._data().length || this.state.focusedItem === null
                       })}>
                     { compatCreate(this.props, messages) }
                   </li>
@@ -252,7 +253,7 @@ var Multiselect = React.createClass({
       this.state.dataItems.filter( d => d !== value))
   },
 
-  _inputFocus(e){
+  _inputFocus(){
     this._focus(true)
     !this.props.open && this.open()
   },
@@ -264,12 +265,12 @@ var Multiselect = React.createClass({
     if( focused) this.refs.input.focus()
 
     this.setTimeout('focus', () => {
-      if( !focused)  
+      if( !focused)
         this.refs.tagList && this.refs.tagList.clear()
-      
+
       if( focused !== this.state.focused){
-        focused 
-          ? this.open() 
+        focused
+          ? this.open()
           : this.close();
 
         this.notify(focused ? 'onFocus' : 'onBlur', e)
@@ -278,13 +279,13 @@ var Multiselect = React.createClass({
     })
   },
 
-  _searchKeyDown(e){ 
+  _searchKeyDown(e){
     if (e.key === 'Backspace' && e.target.value && !this._deletingText)
       this._deletingText = true
   },
 
-  _searchgKeyUp(e){ 
-    if (e.key === 'Backspace' && this._deletingText) 
+  _searchgKeyUp(e){
+    if (e.key === 'Backspace' && this._deletingText)
       this._deletingText = false
   },
 
@@ -298,7 +299,7 @@ var Multiselect = React.createClass({
     if (data === undefined) {
       if (this.props.onCreate)
         this._onCreate(this.props.searchTerm)
- 
+
       return
     }
 
@@ -310,7 +311,7 @@ var Multiselect = React.createClass({
   },
 
   _onCreate: function(tag){
-    if (tag.trim() === '' ) 
+    if (tag.trim() === '' )
       return
 
     this.notify('onCreate', tag)
@@ -334,7 +335,7 @@ var Multiselect = React.createClass({
     if ( key === 'ArrowDown') {
       var next = list.next(focusedItem)
         , creating = (this._shouldShowCreate() && focusedItem === next) || focusedItem === null;
-        
+
       next = creating ? null : next
 
       e.preventDefault()
@@ -342,8 +343,8 @@ var Multiselect = React.createClass({
       else          this.open()
     }
     else if ( key === 'ArrowUp') {
-      var prev = focusedItem === null 
-        ? list.last() 
+      var prev = focusedItem === null
+        ? list.last()
         : list.prev(focusedItem)
 
       e.preventDefault()
@@ -382,22 +383,22 @@ var Multiselect = React.createClass({
     this.notify('onKeyDown', [e])
   },
 
-  change: function(data){
+  change(data){
     this.notify('onChange', [data])
-    this.props.searchTerm 
+    this.props.searchTerm
       && this.notify('onSearch', [ '' ])
   },
 
-  open: function(){
+  open(){
     if (!(this.props.disabled === true || this.props.readOnly === true))
       this.notify('onToggle', true)
   },
 
-  close: function(){
+  close(){
     this.notify('onToggle', false)
   },
 
-  toggle(e){
+  toggle(){
     this.props.open
       ? this.close()
       : this.open()
@@ -415,12 +416,12 @@ var Multiselect = React.createClass({
   _shouldShowCreate(){
     var text = this.props.searchTerm;
 
-    if ( !this.props.onCreate || !text ) 
+    if ( !this.props.onCreate || !text )
       return false
 
     // if there is an exact match on textFields: "john" => { name: "john" }, don't show
-    return !this._data().some( v => this._dataText(v) === text) 
-        && !this.state.dataItems.some( v => this._dataText(v) === text) 
+    return !this._data().some( v => this._dataText(v) === text)
+        && !this.state.dataItems.some( v => this._dataText(v) === text)
   },
 
   _placeholder(){
@@ -433,9 +434,9 @@ var Multiselect = React.createClass({
 
 function msgs(msgs){
   return {
-    createNew:   "(create new tag)",
-    emptyList:   "There are no items in this list",
-    emptyFilter: "The filter returned no results",
+    createNew:   '(create new tag)',
+    emptyList:   'There are no items in this list',
+    emptyFilter: 'The filter returned no results',
     ...msgs
   }
 }
