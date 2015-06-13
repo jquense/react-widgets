@@ -7,7 +7,7 @@ var React           = require('react')
   , Month           = require('./Month')
   , Year            = require('./Year')
   , Decade          = require('./Decade')
-  , Century         = require('./Century') 
+  , Century         = require('./Century')
   , localizers      = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes')
   , createUncontrolledWidget = require('uncontrollable')
@@ -67,7 +67,7 @@ var propTypes = {
 
                     if ( err) return err
                     if ( VIEW_OPTIONS.indexOf(props[propname]) < VIEW_OPTIONS.indexOf(props.initialView) )
-                      return new Error(`The \`${propname}\` prop: \`${props[propname]}\` cannot be 'lower' than the \`initialView\` 
+                      return new Error(`The \`${propname}\` prop: \`${props[propname]}\` cannot be 'lower' than the \`initialView\`
                         prop. This creates a range that cannot be rendered.`.replace(/\n\t/g, ''))
                  },
 
@@ -80,15 +80,15 @@ var propTypes = {
                    React.PropTypes.bool,
                    React.PropTypes.oneOf(['readOnly'])
                  ]),
-  
+
   culture:       React.PropTypes.string,
-  
+
   footer:        React.PropTypes.bool,
 
   dayComponent:  CustomPropTypes.elementType,
   headerFormat:  CustomPropTypes.dateFormat,
   footerFormat:  CustomPropTypes.dateFormat,
-  
+
   dayFormat:     CustomPropTypes.dateFormat,
   dateFormat:    CustomPropTypes.dateFormat,
   monthFormat:   CustomPropTypes.dateFormat,
@@ -206,7 +206,7 @@ var Calendar = React.createClass({
           direction={this.state.slideDirection}
           onAnimate={() => this._focus(true)}>
 
-          <View {...viewProps} 
+          <View {...viewProps}
             tabIndex='-1' key={key} id={id}
             aria-labelledby={labelId}
             today={todaysDate}
@@ -218,7 +218,7 @@ var Calendar = React.createClass({
         </SlideTransition>
 
         { this.props.footer &&
-          <Footer 
+          <Footer
             value={todaysDate}
             format={this.props.footerFormat}
             culture={this.props.culture}
@@ -226,7 +226,7 @@ var Calendar = React.createClass({
             readOnly={this.props.readOnly}
             onClick={this._maybeHandle(this.select)}
           />
-        } 
+        }
       </div>
     )
   },
@@ -249,6 +249,7 @@ var Calendar = React.createClass({
       view = NEXT_VIEW[view] || view
 
     if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
+      this.notify('onNavigate', [date, slideDir, view])
       this._focus(true, 'nav');
 
       this.setState({
@@ -261,12 +262,11 @@ var Calendar = React.createClass({
 
   _focus: function(focused, e){
     if ( +this.props.tabIndex === -1)
-      return 
+      return
 
     this.setTimeout('focus', () => {
 
-      if(focused) 
-        compat.findDOMNode(this).focus()
+      if(focused) compat.findDOMNode(this).focus()
 
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
@@ -277,6 +277,9 @@ var Calendar = React.createClass({
 
   change(date){
     setTimeout(() => this._focus(true))
+
+
+    console.log('click')
 
     if ( this.props.onChange && this.state.view === this.props.initialView)
       return this.notify('onChange', date)
@@ -357,7 +360,7 @@ var Calendar = React.createClass({
   },
 
   _label: function() {
-    var { 
+    var {
         culture
       , ...props } = this.props
       , view = this.state.view
