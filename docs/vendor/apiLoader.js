@@ -71,7 +71,7 @@ module.exports = function(markdown) {
       markdown = markdown.substr(idx + match[0].length)
     }
 
-    var file = t(docPage, { 
+    var file = t(docPage, {
       html: marked(markdown, { renderer: renderer }),
       desc: desc || '',
       prefix: prefix,
@@ -81,7 +81,6 @@ module.exports = function(markdown) {
       }).join('\n')
     })
 
-    fs.writeFileSync('./test.jsx', file)
     callback(null, file)
   })
 };
@@ -95,7 +94,7 @@ function parsePropHeader(text){
 
 
 function t(str, data){
-  for(var p in data) 
+  for(var p in data)
     str = str.replace(new RegExp('\\${' + p + '}','g'), data[p]);
   return str;
 }
