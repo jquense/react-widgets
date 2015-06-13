@@ -275,9 +275,6 @@ var DateTimePicker = React.createClass({
 
   _keyDown: function(e){
 
-    if( e.key === 'Tab')
-      return
-
     if ( e.key === 'Escape' && this.props.open )
       this.close()
 
