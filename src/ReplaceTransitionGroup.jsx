@@ -2,10 +2,9 @@
  * A streamlined version of TransitionGroup built for managing at most two active children
  * also provides additional hooks for animation start/end
  * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
- * relevent code is licensed accordingly 
+ * relevent code is licensed accordingly
  */
-
-"use strict";
+'use strict';
 
 var React = require('react')
   , css = require('dom-helpers/style')
@@ -26,7 +25,7 @@ module.exports = React.createClass({
     childFactory: React.PropTypes.func,
 
     onAnimating:  React.PropTypes.func,
-    onAnimate:    React.PropTypes.func,
+    onAnimate:    React.PropTypes.func
   },
 
   getDefaultProps: function() {
@@ -62,7 +61,7 @@ module.exports = React.createClass({
     else if ( last && !next && !isLastChild) {
       //new child
       stack.push(nextChild)
-      this.leaving  = last 
+      this.leaving  = last
       this.entering = nextChild
     }
     else if ( last && next && !isLastChild && !isNextChild) {
@@ -74,10 +73,10 @@ module.exports = React.createClass({
       this.entering = nextChild
     }
     //new child that just needs to be re-rendered
-    else if (isLastChild) stack.splice(0, 1, nextChild) 
+    else if (isLastChild) stack.splice(0, 1, nextChild)
     else if (isNextChild) stack.splice(1, 1, nextChild)
 
-    if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] ) 
+    if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] )
       this.setState({ children: stack });
   },
 
@@ -100,7 +99,7 @@ module.exports = React.createClass({
         height: height(el) + 'px',
         width:  width(el) + 'px'
       })
-    
+
     this.props.onAnimating();
 
     this.entering = null;
@@ -117,35 +116,35 @@ module.exports = React.createClass({
 
     this.animatingKeys[key] = true
 
-    if (component.componentWillEnter) 
+    if (component.componentWillEnter)
       component.componentWillEnter(
         this._handleDoneEntering.bind(this, key))
-    else 
+    else
       this._handleDoneEntering(key)
   },
 
   _tryFinish: function(){
 
     if ( this.isTransitioning() )
-      return 
+      return
 
     if ( this.isMounted() )
       css(compat.findDOMNode(this), { overflow: 'visible', height: '', width: '' })
 
-    this.props.onAnimate() 
-  }, 
+    this.props.onAnimate()
+  },
 
   _handleDoneEntering: function(enterkey) {
     var component = this.refs[enterkey];
 
-    if (component && component.componentDidEnter) 
+    if (component && component.componentDidEnter)
       component.componentDidEnter()
-    
+
     delete this.animatingKeys[enterkey]
 
-    if ( key(this.props.children) !== enterkey) 
+    if ( key(this.props.children) !== enterkey)
       this.performLeave(enterkey) // This was removed before it had fully entered. Remove it.
-    
+
     this._tryFinish()
   },
 
@@ -160,29 +159,29 @@ module.exports = React.createClass({
 
     this.animatingKeys[key] = true
 
-    if (component.componentWillLeave) 
+    if (component.componentWillLeave)
       component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
-    else 
+    else
       this._handleDoneLeaving(key)
   },
 
   _handleDoneLeaving: function(leavekey) {
     var component = this.refs[leavekey];
 
-    if (component && component.componentDidLeave) 
+    if (component && component.componentDidLeave)
       component.componentDidLeave()
-    
+
     delete this.animatingKeys[leavekey]
 
     if (key(this.props.children) === leavekey )
       this.performEnter(leavekey) // This entered again before it fully left. Add it again.
 
     else if ( this.isMounted() )
-      this.setState({ 
-        children: this.state.children.filter( c => key(c) !== leavekey) 
+      this.setState({
+        children: this.state.children.filter( c => key(c) !== leavekey)
       })
-    
-    this._tryFinish() 
+
+    this._tryFinish()
   },
 
   render: function() {

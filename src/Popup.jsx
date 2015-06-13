@@ -7,13 +7,12 @@ var React  = require('react')
   , compat = require('./util/compat');
 
 var transform = config.animate.transform
-  , support = !!config.animate.endEvent
 
 function properties(prop, value){
   var TRANSLATION_MAP = config.animate.TRANSLATION_MAP
-  
+
   if( TRANSLATION_MAP && TRANSLATION_MAP[prop])
-    return { [transform]: `${TRANSLATION_MAP[prop]}(${value})` } 
+    return { [transform]: `${TRANSLATION_MAP[prop]}(${value})` }
 
   return { [prop]: value }
 }
@@ -26,8 +25,8 @@ var PopupContent = React.createClass({
 
     child = React.Children.only(this.props.children)
 
-    return compat.cloneElement(child, { 
-      className: cn(child.props.className, 'rw-popup rw-widget') 
+    return compat.cloneElement(child, {
+      className: cn(child.props.className, 'rw-popup rw-widget')
     });
   }
 })
@@ -58,7 +57,7 @@ module.exports = React.createClass({
       onClosing:   function(){},
       onOpening:   function(){},
       onClose:     function(){},
-      onOpen:      function(){},
+      onOpen:      function(){}
     }
   },
 
@@ -75,7 +74,7 @@ module.exports = React.createClass({
     })
   },
 
-  componentDidUpdate(pvProps, pvState){
+  componentDidUpdate(pvProps){
     var closing =  pvProps.open && !this.props.open
       , opening = !pvProps.open && this.props.open
       , open    =  this.props.open;
@@ -86,26 +85,25 @@ module.exports = React.createClass({
   },
 
   render() {
-    var { 
+    var {
         className
       , open
       , dropUp
       , ...props } = this.props
-      , display = open ? 'block' : void 0
-      , styles = {};
+      , display = open ? 'block' : void 0;
 
     if (this._initialPosition) {
       display = 'none'
     }
 
     return (
-      <div {...props} 
-        style={{ 
+      <div {...props}
+        style={{
           display,
           height: this.state.height,
-          ...props.style 
-        }} 
-        className={cn(className, "rw-popup-container", { "rw-dropup": dropUp })}
+          ...props.style
+        }}
+        className={cn(className, 'rw-popup-container', { 'rw-dropup': dropUp })}
       >
         <PopupContent ref='content'>
           { this.props.children }
@@ -118,7 +116,7 @@ module.exports = React.createClass({
     var container = compat.findDOMNode(this)
       , content   = compat.findDOMNode(this.refs.content)
       , style = { display: 'block', overflow: 'hidden'}
-    
+
     css(container, style)
     this.height();
     css(content, properties('top', this.props.dropUp ? '100%' : '-100%'))
