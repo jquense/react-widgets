@@ -98,7 +98,7 @@ var propTypes = {
 
   messages:      React.PropTypes.shape({
     moveBack:     React.PropTypes.string,
-    moveForward:  React.PropTypes.string,
+    moveForward:  React.PropTypes.string
   })
 }
 
@@ -129,8 +129,8 @@ var Calendar = React.createClass({
     return {
 
       value:        null,
-      min:          new Date(1900,0, 1),
-      max:          new Date(2099,11, 31),
+      min:          new Date(1900, 0, 1),
+      max:          new Date(2099, 11, 31),
 
       initialView:  'month',
       finalView:    'century',
@@ -277,9 +277,6 @@ var Calendar = React.createClass({
 
   change(date){
     setTimeout(() => this._focus(true))
-
-
-    console.log('click')
 
     if ( this.props.onChange && this.state.view === this.props.initialView)
       return this.notify('onChange', date)

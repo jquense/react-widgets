@@ -175,7 +175,7 @@ var ComboBox = React.createClass({
           className='rw-select'
           onClick={this.toggle}
           disabled={!!(this.props.disabled || this.props.readOnly)}>
-          <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
+          <i className={cx('rw-i rw-i-caret-down', { ' rw-loading': this.props.busy })}>
             <span className="rw-sr">{ _.result(messages.open, this.props) }</span>
           </i>
         </Btn>
@@ -235,7 +235,7 @@ var ComboBox = React.createClass({
     this.close()
     this.notify('onSelect', data)
     this.change(data)
-    this._focus(true);
+    this.focus();
   }),
 
   _inputKeyDown(e){
@@ -264,13 +264,16 @@ var ComboBox = React.createClass({
     this.open()
   },
 
+  focus() {
+    this.refs.input.focus()
+  },
+
   _focus: _.ifNotDisabled(true, function(focused, e){
-    focused
-      ? this.refs.input.focus()
-      : this.refs.input.accept() //not suggesting anymore
+
+    !focused && this.refs.input.accept() //not suggesting anymore
 
     this.setTimeout('focus', () => {
-      //console.log(type, focused)
+
       if( !focused) this.close()
 
       if( focused !== this.state.focused) {
@@ -301,7 +304,6 @@ var ComboBox = React.createClass({
       this.close()
 
     else if ( key === 'Enter' && isOpen ) {
-      this.close()
       select(this.state.focusedItem, true)
     }
 
@@ -331,7 +333,7 @@ var ComboBox = React.createClass({
       self.refs.input.accept(true); //removes caret
 
       if(fromList)
-        self.notify('onSelect', item)
+        return self._onSelect(item)
 
       self.change(item, false)
     }
@@ -352,15 +354,15 @@ var ComboBox = React.createClass({
       this.notify('onToggle', false)
   },
 
-  toggle: _.ifNotDisabled(function(e){
-    this._focus(true)
+  toggle: _.ifNotDisabled(function(){
+    this.focus()
 
     this.props.open
       ? this.close()
       : this.open()
   }),
 
-  suggest(data, value){
+  suggest(data, value) {
     var word = this._dataText(value)
       , suggest = defaultSuggest(this.props.suggest)
       , suggestion;
@@ -378,11 +380,11 @@ var ComboBox = React.createClass({
     return ''
   },
 
-  _data(){
+  _data() {
     return this.state.processedData
   },
 
-  process(data, values, searchTerm){
+  process(data, values, searchTerm) {
     if( this.props.filter && searchTerm)
       data = this.filter(data, searchTerm)
 
@@ -394,8 +396,8 @@ var ComboBox = React.createClass({
 function msgs(msgs){
   return {
     open: 'open combobox',
-    emptyList:   "There are no items in this list",
-    emptyFilter: "The filter returned no results",
+    emptyList:   'There are no items in this list',
+    emptyFilter: 'The filter returned no results',
     ...msgs
   }
 }
