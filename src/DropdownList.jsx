@@ -11,7 +11,7 @@ var React           = require('react')
   , GroupableList   = require('./ListGroupable')
   , validateList    = require('./util/validateListInterface')
   , createUncontrolledWidget = require('uncontrollable');
-  
+
 
 var propTypes = {
   //-- controlled props -----------
@@ -33,7 +33,7 @@ var propTypes = {
   groupBy:        CustomPropTypes.accessor,
 
   onSelect:       React.PropTypes.func,
-  
+
   searchTerm:     React.PropTypes.string,
   onSearch:       React.PropTypes.func,
 
@@ -91,13 +91,13 @@ var DropdownList = React.createClass({
 
   getInitialState: function(){
     var filter = this.props.open && this.props.filter
-      , data = filter ? this.filter(this.props.data, props.searchTerm) : this.props.data
+      , data = filter ? this.filter(this.props.data, this.props.searchTerm) : this.props.data
       , initialIdx = this._dataIndexOf(this.props.data, this.props.value);
 
     return {
       filteredData: filter && data,
       selectedItem: data[initialIdx],
-      focusedItem:  data[initialIdx] || data[0],
+      focusedItem:  data[initialIdx] || data[0]
     }
   },
 
@@ -110,7 +110,7 @@ var DropdownList = React.createClass({
       , data = filter ? this.filter(props.data, props.searchTerm) : props.data
       , idx = this._dataIndexOf(data, props.value);
 
-    this.setState({ 
+    this.setState({
       filteredData: filter && data,
       selectedItem: data[idx],
       focusedItem:  data[!~idx ? 0 : idx]
@@ -143,7 +143,7 @@ var DropdownList = React.createClass({
         aria-activedescendent={ this.props.open ? optID : undefined }
         aria-disabled={ this.props.disabled }
         aria-readonly={ this.props.readOnly }
-        tabIndex={this.props.disabled ? '-1' : "0"}
+        tabIndex={props.tabIndex || '-1'}
         className={cx(className, 'rw-dropdownlist', 'rw-widget', {
           'rw-state-disabled':  this.props.disabled,
           'rw-state-readonly':  this.props.readOnly,
@@ -154,7 +154,7 @@ var DropdownList = React.createClass({
         })}>
 
         <span className="rw-dropdownlist-picker rw-select rw-btn">
-          <i className={"rw-i rw-i-caret-down" + (this.props.busy ? ' rw-loading' : "")}>
+          <i className={'rw-i rw-i-caret-down' + (this.props.busy ? ' rw-loading' : '')}>
             <span className="rw-sr">{ _.result(messages.open, this.props) }</span>
           </i>
         </span>
@@ -173,8 +173,8 @@ var DropdownList = React.createClass({
 
           <div>
             { this.props.filter && this._renderFilter(messages) }
-            { renderList && 
-              <List ref="list" 
+            { renderList &&
+              <List ref="list"
               {..._.pick(
                   this.props
                 , Object.keys(compat.type(List).propTypes))
@@ -191,7 +191,7 @@ var DropdownList = React.createClass({
                   ? messages.emptyFilter
                   : messages.emptyList
               }}/>
-            }           
+            }
           </div>
         </Popup>
       </div>
@@ -211,9 +211,6 @@ var DropdownList = React.createClass({
   },
 
   _focus: _.ifNotDisabled(true, function(focused, e){
-    var type = e.type
-
-    //focused && (this.focus(), console.log('_focus'))
 
     this.setTimeout('focus', () => {
       if( !focused) this.close()
@@ -285,17 +282,17 @@ var DropdownList = React.createClass({
     }
     else if ( !(this.props.filter && isOpen) )
       this.search(String.fromCharCode(e.keyCode), item => {
-        isOpen 
+        isOpen
           ? this.setState({ focusedItem: item })
           : change(item)
       })
 
 
     this.notify('onKeyDown', [e])
-    
+
     function change(item, fromList){
       if(!item) return
-      fromList 
+      fromList
         ? self._onSelect(item)
         : self.change(item)
     }
@@ -322,14 +319,14 @@ var DropdownList = React.createClass({
 
   search(character, cb) {
     var word = ((this._searchTerm || '') + character).toLowerCase();
-      
-    this._searchTerm = word 
-  
+
+    this._searchTerm = word
+
     this.setTimeout('search', () => {
       var list = this.refs.list
         , key  = this.props.open ? 'focusedItem' : 'selectedItem'
         , item = list.next(this.state[key], word);
-      
+
       this._searchTerm = ''
       if ( item) cb(item)
 
@@ -356,8 +353,8 @@ function msgs(msgs){
   return {
     open: 'open dropdown',
     filterPlaceholder: '',
-    emptyList:   "There are no items in this list",
-    emptyFilter: "The filter returned no results",
+    emptyList:   'There are no items in this list',
+    emptyFilter: 'The filter returned no results',
     ...msgs
   }
 }

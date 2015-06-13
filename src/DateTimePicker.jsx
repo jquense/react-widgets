@@ -143,7 +143,7 @@ var DateTimePicker = React.createClass({
     return (
       <div {...props}
         ref="element"
-        tabIndex="-1"
+        tabIndex={'-1'}
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
@@ -159,6 +159,7 @@ var DateTimePicker = React.createClass({
         })}>
 
         <DateInput ref='valueInput'
+          tabIndex={props.tabIndex}
           aria-labelledby={this.props['aria-labelledby']}
           aria-activedescendant={ this.props.open
             ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID

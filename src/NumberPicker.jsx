@@ -77,7 +77,7 @@ var NumberPicker = React.createClass({
   getInitialState(){
     return {
       focused: false,
-      active: false,
+      active: false
     }
   },
 
@@ -97,7 +97,7 @@ var NumberPicker = React.createClass({
         onKeyDown={this._keyDown}
         onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
-        tabIndex="-1"
+        tabIndex={'-1'}
         className={cx(className, 'rw-numberpicker', 'rw-widget', {
           'rw-state-focus':     this.state.focused,
           'rw-state-disabled':  this.props.disabled,
@@ -118,7 +118,7 @@ var NumberPicker = React.createClass({
             <i className="rw-i rw-i-caret-up">
               <span className="rw-sr">{ this.props.messages.increment }</span>
             </i>
-          </Btn> 
+          </Btn>
           <Btn
             tabIndex='-1'
             className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
@@ -135,6 +135,7 @@ var NumberPicker = React.createClass({
         </span>
         <Input
           ref='input'
+          tabIndex={props.tabIndex}
           value={val}
           editing={this.state.focused}
           format={this.props.format}
@@ -178,7 +179,7 @@ var NumberPicker = React.createClass({
       this._mouseUp()
   }),
 
-  _mouseUp: _.ifNotDisabled(function (direction, e ){
+  _mouseUp: _.ifNotDisabled(function() {
     this.setState({ active: false })
     this._cancelRepeater && this._cancelRepeater()
     this._cancelRepeater = null;
