@@ -111,7 +111,7 @@ module.exports = React.createClass({
       , start  = values.min
       , startDay = dates.date(start);
 
-    while( i < 100 && (dates.date(start) === startDay && dates.lte(start, values.max) ) ) {
+    while (dates.date(start) === startDay && dates.lte(start, values.max)) {
       i++
       times.push({ date: start, label: localizers.date.format(start, format(props), props.culture) })
       start = dates.add(start, props.step || 30, 'minutes')
@@ -128,8 +128,8 @@ module.exports = React.createClass({
 
     //compare just the time regradless of whether they fall on the same day
     if(!useDate) {
-      start = dates.startOf(dates.merge(new Date, min), 'minutes')
-      end   = dates.startOf(dates.merge(new Date, max), 'minutes')
+      start = dates.startOf(dates.merge(new Date(), min), 'minutes')
+      end   = dates.startOf(dates.merge(new Date(), max), 'minutes')
 
       if( dates.lte(end, start) && dates.gt(max, min, 'day'))
         end = dates.tomorrow()
@@ -200,6 +200,6 @@ module.exports = React.createClass({
       if (item) cb(item)
 
     }, this.props.delay)
-  },
+  }
 
 });
