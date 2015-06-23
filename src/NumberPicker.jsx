@@ -7,10 +7,14 @@ var React = require('react')
   , createUncontrolledWidget = require('uncontrollable')
   , directions = require('./util/constants').directions
   , repeater = require('./util/repeater')
+  , localizers = require('./util/configuration').locale
   , Input = require('./NumberInput');
 
 var Btn = require('./WidgetButton')
-  , propTypes = {
+
+var format = props => props.format || localizers.number.formats.default
+
+var propTypes = {
 
       // -- controlled props -----------
       value:          React.PropTypes.number,
@@ -20,6 +24,7 @@ var Btn = require('./WidgetButton')
       min:            React.PropTypes.number,
       max:            React.PropTypes.number,
       step:           React.PropTypes.number,
+      decimals:       React.PropTypes.number,
 
       culture:        React.PropTypes.string,
 
@@ -53,7 +58,7 @@ var NumberPicker = React.createClass({
     require('./mixins/WidgetMixin'),
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/RtlParentContextMixin')
   ],
 
   propTypes: propTypes,
@@ -160,14 +165,14 @@ var NumberPicker = React.createClass({
 
   //allow for styling, focus stealing keeping me from the normal what have you
   _mouseDown: _.ifNotDisabled(function (dir) {
-    var val = dir === directions.UP
-        ? (this.props.value || 0) + this.props.step
-        : (this.props.value || 0) - this.props.step
+    var method = dir === directions.UP
+      ? this.increment
+      : this.decrement
 
-    val = this.constrainValue(val)
 
     this.setState({ active: dir })
-    this.change(val);
+
+    var val = method.call(this)
 
     if( !((dir === directions.UP && val === this.props.max)
       || (dir === directions.DOWN && val === this.props.min)))
@@ -218,14 +223,27 @@ var NumberPicker = React.createClass({
   }),
 
   increment() {
-    this.change(this.constrainValue((this.props.value || 0) + this.props.step))
+    return this.step(this.props.step)
   },
 
-  decrement(){
-    this.change(this.constrainValue((this.props.value || 0) - this.props.step))
+  decrement() {
+    return this.step(-this.props.step)
   },
 
-  change(val){
+  step(amount) {
+    var value = (this.props.value || 0) + amount
+
+    var decimals = this.props.precision != null
+      ? this.props.precision
+      : localizers.number.precision(format(this.props))
+
+    this.change(
+      decimals != null ? round(value, decimals) : value)
+
+    return value
+  },
+
+  change(val) {
     val = this.constrainValue(val)
 
     if ( this.props.value !== val )
@@ -243,6 +261,20 @@ var NumberPicker = React.createClass({
   }
 
 })
+
+// thank you kendo ui core
+// https://github.com/telerik/kendo-ui-core/blob/master/src/kendo.core.js#L1036
+function round(value, precision) {
+  precision = precision || 0;
+
+  value = ('' + value).split('e');
+  value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + precision) : precision)));
+
+  value = ('' + value).split('e');
+  value = +(value[0] + 'e' + (value[1] ? (+value[1] - precision) : -precision));
+
+  return value.toFixed(precision);
+}
 
 module.exports = createUncontrolledWidget(
     NumberPicker, { value: 'onChange' });
