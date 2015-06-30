@@ -5,8 +5,9 @@ react-widgets
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][downloads-url]
 
-A set of the basic UI widgets built from scratch with React, based on the excellent Kendo UI Core and jQuery UI. 
+An à la carte set of polished, extensible, and accessible form inputs built for React, based on the excellent Kendo UI Core and jQuery UI. 
 
+Pick and choose one, or more of the following Components
 - DropdownList
 - ComboBox
 - Multiselect
@@ -35,11 +36,7 @@ Patches welcome! Please try to match the style of the repo (comma first, 2 space
 
 ### Old Browser Support
 
-The goal is to support IE8+, but currently it is difficult for me to test a wide variety of browsers so there is no guarantee 
-it will work (patches welcome!).
-
-One aspect that is definately true is that animation is not supported for browsers that do not support CSS Transitions.
-
+The goal is to support IE8+, but currently it is difficult for me to test a wide variety of browsers so there is no guarantee it will work (patches welcome!).
 
 [npm-image]: https://img.shields.io/npm/v/react-widgets.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/react-widgets

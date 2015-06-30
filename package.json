@@ -1,7 +1,7 @@
 {
   "name": "react-widgets",
   "version": "2.7.1",
-  "description": "A set of input widgets for React",
+  "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
   "author": {
     "name": "Jason",
@@ -20,6 +20,8 @@
     "radio group",
     "checkbox list",
     "multiselect",
+    "form",
+    "input",
     "react-ui",
     "react-component"
   ],
