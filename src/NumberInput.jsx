@@ -81,7 +81,7 @@ module.exports = React.createClass({
       return this.props.onChange(number)
 
     //console.log(val !== 0 && !val)
-    if ( valid || this.isAtDelimiter(number, val))
+    if ( !isNaN(number) || this.isAtDelimiter(number, val))
       this.current(e.target.value)
   },
 
@@ -110,7 +110,7 @@ module.exports = React.createClass({
   },
 
   isValid(num) {
-    if(typeof num !== 'number' || isNaN(num))
+    if (typeof num !== 'number' || isNaN(num))
       return false
     return num >= this.props.min
   },
