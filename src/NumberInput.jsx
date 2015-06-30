@@ -71,16 +71,18 @@ module.exports = React.createClass({
 
   _change(e){
     var val = e.target.value
-      , number = this.props.parse(e.target.value, this.props.culture);
+      , number = this.props.parse(e.target.value, this.props.culture)
+      , valid = this.isValid(number);
 
     if( val == null || val.trim() === '' )
       return this.props.onChange(null)
 
-    if(this.isValid(number) && number !== this.props.value && !this.isAtDelimiter(number, val))
+    if( valid && number !== this.props.value && !this.isAtDelimiter(number, val))
       return this.props.onChange(number)
 
     //console.log(val !== 0 && !val)
-    this.current(e.target.value)
+    if ( valid || this.isAtDelimiter(number, val))
+      this.current(e.target.value)
   },
 
   _finish() {

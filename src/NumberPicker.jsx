@@ -24,7 +24,8 @@ var propTypes = {
       min:            React.PropTypes.number,
       max:            React.PropTypes.number,
       step:           React.PropTypes.number,
-      decimals:       React.PropTypes.number,
+
+      precision:      React.PropTypes.number,
 
       culture:        React.PropTypes.string,
 
