@@ -5,7 +5,7 @@ function globalizeDateLocalizer(globalize){
   const shortNames = Object.create(null);
 
   function getCulture(culture){
-    return culture 
+    return culture
         ? (localizer.globalize || globalize).findClosestCulture(culture)
         : (localizer.globalize || globalize).culture()
   }
@@ -42,10 +42,10 @@ function globalizeDateLocalizer(globalize){
       month: 'MMM',
       year: 'yyyy',
 
-      decade: (dt, culture, l) => 
+      decade: (dt, culture, l) =>
         `${l.format(dt, l.formats.year, culture)} - ${l.format(dates.endOf(dt, 'decade'), l.formats.year, culture)}`,
-      
-      century: (dt, culture, l) => 
+
+      century: (dt, culture, l) =>
         `${l.format(dt, l.formats.year, culture)} - ${l.format(dates.endOf(dt, 'century'), l.formats.year, culture)}`
     },
 
@@ -67,6 +67,13 @@ function globalizeDateLocalizer(globalize){
 }
 
 function globalizeNumberLocalizer(globalize) {
+
+  function getCulture(culture){
+    return culture
+        ? (localizer.globalize || globalize).findClosestCulture(culture)
+        : (localizer.globalize || globalize).culture()
+  }
+
   var localizer = new NumberLocalizer({
 
     formats: {
@@ -79,6 +86,23 @@ function globalizeNumberLocalizer(globalize) {
 
     format(value, format, culture){
       return (this.globalize || globalize).format(value, format, culture)
+    },
+
+    precision(format, _culture){
+      var culture = getCulture(_culture)
+        , numFormat = culture.numberFormat
+
+      if ( typeof format === 'string') {
+        if ( format.length > 1 )
+          return parseFloat(format.substr(1))
+
+        if ( format.indexOf('p') !== -1 ) numFormat = numFormat.percent
+        if ( format.indexOf('c') !== -1 ) numFormat = numFormat.curency
+
+        return numFormat.decimals || null
+      }
+
+      return null
     }
   })
 

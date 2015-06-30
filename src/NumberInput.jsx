@@ -7,7 +7,7 @@ var format = props => props.format || localizers.number.formats.default
 
 module.exports = React.createClass({
 
-  displayName: 'NumberPickerInput', 
+  displayName: 'NumberPickerInput',
 
   propTypes: {
     value:        React.PropTypes.number,
@@ -17,9 +17,9 @@ module.exports = React.createClass({
     culture:      React.PropTypes.string,
 
     min:          React.PropTypes.number,
-    
+
     onChange:     React.PropTypes.func.isRequired,
-    onKeyDown:    React.PropTypes.func,
+    onKeyDown:    React.PropTypes.func
   },
 
   getDefaultProps(){
@@ -31,15 +31,15 @@ module.exports = React.createClass({
   },
 
   getDefaultState(props){
-    var value = props.editing 
+    var value = props.editing
           ? props.value
           : formatNumber(props.value, format(props), props.culture)
 
-    if ( value == null || isNaN(props.value) ) 
+    if ( value == null || isNaN(props.value) )
       value = ''
 
-    return { 
-      stringValue: ""+ value
+    return {
+      stringValue: '' + value
     }
   },
 
@@ -57,7 +57,7 @@ module.exports = React.createClass({
 
     return (
       <input {...this.props}
-        type='text' 
+        type='text'
         className='rw-input'
         onChange={this._change}
         onBlur={this._finish}
@@ -72,19 +72,20 @@ module.exports = React.createClass({
   _change(e){
     var val = e.target.value
       , number = this.props.parse(e.target.value, this.props.culture)
-      , hasMin = this.props.min && isFinite(this.props.min)
+      , valid = this.isValid(number);
 
     if( val == null || val.trim() === '' )
       return this.props.onChange(null)
 
-    if(this.isValid(number) && number !== this.props.value && !this.isAtDelimiter(number, val))
+    if( valid && number !== this.props.value && !this.isAtDelimiter(number, val))
       return this.props.onChange(number)
 
     //console.log(val !== 0 && !val)
-    this.current(e.target.value)
+    if ( !isNaN(number) || this.isAtDelimiter(number, val))
+      this.current(e.target.value)
   },
 
-  _finish(e){
+  _finish() {
     var str = this.state.stringValue
       , number = this.props.parse(str, this.props.culture);
 
@@ -103,13 +104,13 @@ module.exports = React.createClass({
     next = this.props.parse(
       str.substr(0, str.length - 1), this.props.culture)
 
-    return typeof next === 'number' 
+    return typeof next === 'number'
         && !isNaN(next)
         && next === num
   },
 
   isValid(num) {
-    if(typeof num !== 'number' || isNaN(num)) 
+    if (typeof num !== 'number' || isNaN(num))
       return false
     return num >= this.props.min
   },

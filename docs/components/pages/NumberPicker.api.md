@@ -42,6 +42,11 @@ Amount to increase or decrease value when using the spinner buttons.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'step', 5)}/>
 
+### precision?{ type: 'Number' }
+
+Specify how precise the `value` should be when typing, incrementing, or decrementing the value. When empty, precision 
+is parsed from the current `format` and culture.
+
 ### isRtl?{ type: 'Boolean', default: 'false' }
 
 mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through

@@ -67,6 +67,11 @@ the [Globalize.js documentation](https://github.com/jquery/globalize/tree/79ae65
 
 <EditableExample codeText={require('../examples/prop')(widgetName, { defaultValue: 'new Date()', editFormat: '"d"', format: '"MMM dd yyyy"'})}/>
 
+### timeFormat?{ type: 'String' }
+
+A string format used by the time dropdown to render times. For more information on prefined and custom formats
+visit the [Globalize.js documentation](https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates)
+
 ### step?{ type: 'Number', default: "false" }
 
 The amount of minutes between each entry in the time list.

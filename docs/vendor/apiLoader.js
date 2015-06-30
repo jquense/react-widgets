@@ -56,8 +56,7 @@ module.exports = function(markdown) {
   this.addDependency(templatePath);
 
   fs.readFile(templatePath, 'utf8', function(err, docPage){
-    var headers = [], i = 0
-      , desc;
+    var desc;
 
     if ( err ) return callback(err)
 

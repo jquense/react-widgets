@@ -5,7 +5,7 @@ var React = require('react')
 const REQUIRED_NUMBER_FORMATS = [ 'default' ]
 
 const localePropType = React.PropTypes.oneOfType([
-        React.PropTypes.string, 
+        React.PropTypes.string,
         React.PropTypes.func
       ])
 
@@ -22,7 +22,7 @@ const REQUIRED_DATE_FORMATS = [
       'century']
 
 function _format(localizer, formatter, value, format, culture) {
-  let result = typeof format === 'function' 
+  let result = typeof format === 'function'
     ? format(value, culture, localizer)
     : formatter.call(localizer, value, format, culture)
 
@@ -40,15 +40,20 @@ function checkFormats(requiredFormats, formats){
 
 class NumberLocalizer {
 
-  constructor({ format, parse, formats, propType }){
+  constructor({ format, parse, precision, formats, propType }){
     invariant(typeof format === 'function'
       , 'number localizer `format(..)` must be a function')
     invariant(typeof parse === 'function'
       , 'number localizer `parse(..)` must be a function')
+
+    // invariant(typeof precision === 'function'
+    //   , 'number localizer `precision(..)` must be a function')
+
     checkFormats(REQUIRED_NUMBER_FORMATS, formats)
-    
+
     this.propType = propType || localePropType
     this.formats = formats
+    this.precision = precision || (() => null)
 
     this.format = (value, str, culture) => _format(this, format, value, str, culture)
 
@@ -83,7 +88,7 @@ class DateLocalizer {
     this.parse = (value, format, culture) => {
       let result = spec.parse.call(this, value, format, culture)
 
-      invariant(result == null 
+      invariant(result == null
         || (result instanceof Date && !isNaN(result.getTime()))
         , 'date localizer `parse(..)` must return a valid Date, null, or undefined')
 
