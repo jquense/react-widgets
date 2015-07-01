@@ -5,7 +5,7 @@ react-widgets
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][downloads-url]
 
-An à la carte set of polished, extensible, and accessible form inputs built for React, based on the excellent Kendo UI Core and jQuery UI. 
+An à la carte set of polished, extensible, and accessible form inputs built for React, based on the excellent Kendo UI Core and jQuery UI.
 
 Pick and choose one, or more of the following Components
 - DropdownList
@@ -13,8 +13,8 @@ Pick and choose one, or more of the following Components
 - Multiselect
 - SelectList (checkbox and radio group)
 - DateTimePicker
-- Calendar 
-- NumberPicker 
+- Calendar
+- NumberPicker
 
 __Demos and Documentation [here](http://jquense.github.io/react-widgets/docs/)__
 
@@ -28,9 +28,9 @@ Migration guide can be found [here](http://jquense.github.io/react-widgets/docs/
 
 ### Building local docs
 
-The docs are a simple React app hosted on gh-pages, you build and run locally with `gulp` and the command `gulp doc-server` and open up `docs/index.html`
+The docs are a simple React app hosted on gh-pages, you build and run locally with `gulp` and the command `gulp dev-docs` and open up `http://localhost:8080/docs/index.htm#/`
 
-### Contributing 
+### Contributing
 
 Patches welcome! Please try to match the style of the repo (comma first, 2 spaces, etc), squash large pull requests (a few commits is fine), and provide tests if relevant. It is also a good idea to open an issue and start a conversation before implementing new features or widgets.
 
