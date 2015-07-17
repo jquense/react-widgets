@@ -118,7 +118,7 @@ module.exports = {
       path: path.join(__dirname, './dist'),
       filename: 'react-widgets.js',
       library:  'ReactWidgets',
-      libraryTarget: 'this'
+      libraryTarget: 'umd'
     },
 
     externals: {
