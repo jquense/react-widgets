@@ -12,6 +12,7 @@ var React = require('react')
   , Navbar         = require('./topnavbar.jsx')
   , GettingStarted = require('./pages/GettingStarted.md')
   , DropdownList   = require('./pages/DropdownList.api.md')
+  , SearchBar      = require('./pages/SearchBar.api.md')
   , ComboBox       = require('./pages/Combobox.api.md')
   , MultiSelect    = require('./pages/Multiselect.api.md')
   , SelectList     = require('./pages/SelectList.api.md')
@@ -67,6 +68,7 @@ var Docs = React.createClass({
                   <li><Link to='i18n'>Localization</Link></li>
                   <li className='side-divider'>API</li>
                   <li><Link to='dropdownlist'>Dropdown List</Link></li>
+                  <li><Link to='searchbar'>Search Bar</Link></li>
                   <li><Link to='combobox' href='#combobox'>Combobox</Link></li>
                   <li><Link to='numberpicker' href='#number-picker'>Number Picker</Link></li>
                   <li><Link to='multiselect' href='#multiselect'>Multiselect</Link></li>
@@ -134,6 +136,11 @@ var routes = (
     <Route name="dropdownlist" path='dropdownlist' handler={DropdownList}>
       <Route path=':topic' handler={DropdownList}/>
     </Route>
+
+    <Route name="searchbar" path='search-bar' handler={SearchBar}>
+      <Route path=':topic' handler={SearchBar}/>
+    </Route>
+
     <Route name="combobox" handler={ComboBox}>
       <Route path=':topic' handler={ComboBox}/>
     </Route>
