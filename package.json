@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
   "author": {
@@ -30,6 +30,7 @@
     "test-dev": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run=true",
     "build": "gulp lib",
     "docs": "gulp docs",
+    "docs:watch": "gulp dev-docs",
     "lint": "eslint src",
     "dist": "gulp dist-build"
   },

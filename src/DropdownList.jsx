@@ -143,7 +143,7 @@ var DropdownList = React.createClass({
         aria-activedescendent={ this.props.open ? optID : undefined }
         aria-disabled={ this.props.disabled }
         aria-readonly={ this.props.readOnly }
-        tabIndex={props.tabIndex || '-1'}
+        tabIndex={props.tabIndex || '0'}
         className={cx(className, 'rw-dropdownlist', 'rw-widget', {
           'rw-state-disabled':  this.props.disabled,
           'rw-state-readonly':  this.props.readOnly,
