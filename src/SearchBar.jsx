@@ -29,7 +29,12 @@ var SearchBar = React.createClass({
 			readOnly:false,
 			busy:false,
 			dropUp:false,
-			messages: msgs()
+			messages: msgs(),
+			filter:function(search){
+				return (name)=>{
+					return name.split("").splice(0, search.length).join("").indexOf(search) != -1
+				}
+			}
 		}
 	},
 
@@ -42,6 +47,7 @@ var SearchBar = React.createClass({
 			selected:data[initialIdx],
 			focused:data[initialIdx] || data[0],
 			search:'',
+			filter:this.props.filter,
 		}
 	},
 
@@ -56,12 +62,13 @@ var SearchBar = React.createClass({
 	},
 
 	_data(data = this.props.data, search = this.state.search){
+		const{
+			filter,
+			} = this.props;
 
 		if(!search.length) return data;
 
-		return data.filter((name)=>{
-			return name.split("").splice(0, search.length).join("").indexOf(search) != -1
-		});
+		return data.filter(filter(search));
 	},
 
 	render(){
