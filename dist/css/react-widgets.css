@@ -448,6 +448,10 @@ ul.rw-list.rw-list-grouped > li.rw-list-option,
   width: 100%;
   border-width: 0;
 }
+.rw-searchbar .rw-input {
+  width: 100%;
+  border: none;
+}
 .rw-popup {
   position: absolute;
   -webkit-box-shadow: 0 5px 6px rgba(0, 0, 0, 0.2);

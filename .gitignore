@@ -65,3 +65,6 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+
+#Webstorm IDE settings
+.idea

@@ -11,6 +11,7 @@ if (process.env.NODE_ENV !== 'production' ) {
 }
 
 module.exports = {
+	SearchBar:       require('./SearchBar'),
 
   DropdownList:     require('./DropdownList'),
   Combobox:         require('./Combobox'),
