@@ -1,19 +1,16 @@
-var React           = require('react/addons')
-	,{LinkedStateMixin} = React.addons
+var React           = require('react')
 	, Popup           = require('./Popup')
 	, activeElement   = require('react/lib/getActiveElement')
 	, List 						= require('./List')
 	, compat          = require('./util/compat')
 	, _               = require('./util/_')
 	, cx 							= require('classnames')
-	, _clone 					= require('lodash/lang/clone')
 	, PlainList       = require('./List')
 	, createUncontrolledWidget = require('uncontrollable');
 
 var SearchBar = React.createClass({
 
 	mixins: [
-		LinkedStateMixin,
 		require('./mixins/WidgetMixin'),
 		require('./mixins/TimeoutMixin'),
 		require('./mixins/PureRenderMixin'),
@@ -32,13 +29,13 @@ var SearchBar = React.createClass({
 			readOnly:false,
 			busy:false,
 			dropUp:false,
-			messages: msgs(),
+			messages: msgs()
 		}
 	},
 
 	getInitialState: function(){
-		const data = this._data()
-			, initialIdx = this._dataIndexOf(this.props.data, this.props.value);
+		const data = this.props.data
+			, initialIdx = this._dataIndexOf(data, this.props.value);
 
 
 		return {
@@ -51,12 +48,20 @@ var SearchBar = React.createClass({
 	componentWillReceiveProps(props){
 			const data = props.data
 			, idx = this._dataIndexOf(data, props.value);
-
 		this.setState({
 			search: data[idx],
 			selected: data[idx],
 			focused:  data[!~idx ? 0 : idx]
 		})
+	},
+
+	_data(data = this.props.data, search = this.state.search){
+
+		if(!search.length) return data;
+
+		return data.filter((name)=>{
+			return name.split("").splice(0, search.length).join("").indexOf(search) != -1
+		});
 	},
 
 	render(){
@@ -84,12 +89,13 @@ var SearchBar = React.createClass({
 					'rw-rtl':             this.isRtl(),
 				})}
 				>
-					<span className='rw-select rw-btn'><i className='rw-i rw-i-search'/></span>
+					<span className='rw-select rw-btn' onClick={this._handleSubmit}><i className='rw-i rw-i-search'/></span>
 				<input
 					type="text"
-					valueLink={this.linkState('search')}
+					ref="input"
+					value={search}
+					onChange={this._handleInputChange}
 					onFocus={this.open}
-					onBlur={this.close}
 					className="rw-input"/>
 				<Popup
 					{..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
@@ -104,9 +110,9 @@ var SearchBar = React.createClass({
 								}
 								optID={optID}
 								focused={open ? focused : null}
-								data={this._data(data,search)}
+								data={this._data()}
 								selected={selected}
-								onSelect={()=>{console.log('selecting')}}
+								onSelect={this._onSelect}
 								onMove={this._scrollTo}
 								messages={{emptyList: data.length ? messages.emptyFilter: messages.emptyList}}
 							/>
@@ -116,27 +122,33 @@ var SearchBar = React.createClass({
 		)
 	},
 
-	_data(data = this.props.data, search = ''){
+	_handleSubmit(){
+		const{
+			search,
+			focused,
+			} = this.state;
 
-		if(!search.length) return data;
+		this.change(focused || search)
+	},
 
-		return data.filter((name)=>{
-			return name.indexOf(search) != -1
-		});
+	_handleInputChange(e){
+		this.setState({search:e.target.value})
 	},
 
 	_onSelect: _.ifNotDisabled(function(data){
-		this.close()
-		this.notify('onSelect', data)
-		this.change(data)
-		this.focus(this)
+		this.notify('onSelect', data);
+		this.change(data);
 	}),
 
 
 	_keyDown: _.ifNotDisabled(function (e){
 		const key = e.key;
 		const{
+			data,
+			} = this.props;
+		const{
 			focused,
+			search,
 			} = this.state;
 
 		 if(key == 'ArrowDown'){
@@ -144,7 +156,9 @@ var SearchBar = React.createClass({
 		 }else if(key == 'ArrowUp'){
 			 this.setState({focused: this.prev(focused)})
 		 }else if(key == 'Enter'){
-			 this.change(focused, true);
+			 this._handleSubmit();
+		 }else{
+			 this.setState({focused:this._data()[0] || null})
 		 }
 
 	}),
@@ -154,18 +168,18 @@ var SearchBar = React.createClass({
 	},
 
 	close(){
-		this.setState({open:false})
+		this.setState({open:false},()=>{
+			compat.findDOMNode(this.refs.input).blur();
+		})
 	},
 
 	change(data){
 		const{
 			search,
 			} = this.state;
-		if ( !_.isShallowEqual(data, this.props.value) ) {
-			this.notify('onChange', data)
-			this.notify('onSearch', search);
-			this.close();
-		}
+		this.notify('onChange', data)
+		this.notify('onSearch', search);
+		this.close();
 	},
 
 });
