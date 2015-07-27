@@ -265,7 +265,7 @@ var DateTimePicker = React.createClass({
 
     if( change ) {
       if( date == null || this.props.value == null){
-        if( date != this.props.value ) //eslint-disable-line eqeqeq
+        if (date != this.props.value) //eslint-disable-line eqeqeq
           change(date, str)
       }
       else if (!dates.eq(date, this.props.value))
