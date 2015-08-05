@@ -3,8 +3,7 @@
 
   "env": {
     "browser": true,
-    "node": true,
-    "mocha": true
+    "node": true
   },
   "ecmaFeatures": {
     "jsx": true

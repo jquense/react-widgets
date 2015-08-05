@@ -3,7 +3,6 @@ var React      = require('react')
   , cx         = require('classnames')
   , dates      = require('./util/dates')
   , localizers = require('./util/configuration').locale
-  , directions = require('./util/constants').directions
   , Btn        = require('./WidgetButton')
   , _          = require('./util/_')
   , CustomPropTypes = require('./util/propTypes'); //omit
@@ -27,7 +26,7 @@ module.exports = React.createClass({
     max:          React.PropTypes.instanceOf(Date),
 
     onChange:     React.PropTypes.func.isRequired,
-    
+
     decadeFormat: CustomPropTypes.dateFormat
   },
 
@@ -37,7 +36,7 @@ module.exports = React.createClass({
       , rows  = _.chunk(years, 4);
 
     return (
-      <table {...props} 
+      <table {...props}
         role='grid'
         className='rw-calendar-grid rw-nav-view'
         aria-activedescendant={this._id('_selected_item')}>
@@ -74,8 +73,8 @@ module.exports = React.createClass({
                   'rw-state-selected':  selected,
                   'rw-now':             currentDecade
                  })}>
-                { 
-                  localizers.date.format(dates.startOf(date, 'decade'), format(this.props), this.props.culture) 
+                {
+                  localizers.date.format(dates.startOf(date, 'decade'), format(this.props), this.props.culture)
                 }
               </Btn>
             </td>)
@@ -100,8 +99,8 @@ function inCentury(date, start){
 }
 
 function getCenturyDecades(_date){
-  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
 
-  return days.map( i => (date = dates.add(date, 10, 'year')))
+  return days.map(() => (date = dates.add(date, 10, 'year')))
 }

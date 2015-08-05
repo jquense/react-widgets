@@ -96,9 +96,9 @@ var Multiselect = React.createClass({
       open: false,
       searchTerm: '',
       messages: {
-        createNew:   "(create new tag)",
-        emptyList:   "There are no items in this list",
-        emptyFilter: "The filter returned no results"
+        createNew:   '(create new tag)',
+        emptyList:   'There are no items in this list',
+        emptyFilter: 'The filter returned no results'
       }
     }
   },
@@ -143,7 +143,7 @@ var Multiselect = React.createClass({
       , ...props } = _.omit(this.props, Object.keys(propTypes))
 
       , listID = this._id('_listbox')
-      , optID  = this._id('_option')
+      , optID  = listID + '_selected_option'
       , items  = this._data()
       , values = this.state.dataItems
       , dropUp = this.props.dropUp

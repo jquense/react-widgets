@@ -62,6 +62,8 @@ module.exports = React.createClass({
   render(){
     var { className, ...props } = _.omit(this.props, ['data'])
       , ItemComponent = this.props.itemComponent
+      , id = this.props.id || this._id('_list')
+      , optID = this.props.optID
       , items;
 
     items = !this.props.data.length
@@ -74,7 +76,7 @@ module.exports = React.createClass({
             tabIndex='-1'
             key={'item_' + idx}
             role='option'
-            id={ focused ? this.props.optID : undefined }
+            id={ focused ? optID : id + '_option_' + idx }
             aria-selected={selected}
             className={cx({
               'rw-list-option':    true,

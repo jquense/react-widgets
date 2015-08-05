@@ -1,15 +1,13 @@
 'use strict';
-var React      = require('react')
-  , cx         = require('classnames')
-  , dates      = require('./util/dates')
-  , localizers = require('./util/configuration').locale
-  , directions = require('./util/constants').directions
-  , Btn        = require('./WidgetButton')
-  , _          = require('./util/_')
-  , compat     = require('./util/compat')
-  , CustomPropTypes = require('./util/propTypes');
+import React from 'react';
+import cx from 'classnames';
+import dates from './util/dates';
+import config from './util/configuration';
+import Btn  from './WidgetButton';
+import _  from './util/_';
+import CustomPropTypes from './util/propTypes';
 
-
+var localizers = config.locale
 var format = props => props.monthFormat || localizers.date.formats.month
 
 module.exports = React.createClass({
@@ -52,7 +50,7 @@ module.exports = React.createClass({
 
   _row: function(row, i){
     var id = this._id('_selected_item');
-    
+
     return (
       <tr key={i} role='row'>
       { row.map( (date, i) => {

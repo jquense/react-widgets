@@ -32,7 +32,7 @@ module.exports = React.createClass({
     dayFormat:        CustomPropTypes.dateFormat,
     dateFormat:       CustomPropTypes.dateFormat,
 
-    onChange:         React.PropTypes.func.isRequired, //value is chosen
+    onChange:         React.PropTypes.func.isRequired
   },
 
   render: function(){
@@ -59,7 +59,7 @@ module.exports = React.createClass({
     var id = this._id('_selected_item')
       , DayComponent = this.props.dayComponent
 
-    
+
     return (
       <tr key={'week_' + i} role='row'>
       { row.map( (day, idx) => {
@@ -85,7 +85,7 @@ module.exports = React.createClass({
                   })}
                   id={focused ? id : undefined}>
                   {
-                    DayComponent 
+                    DayComponent
                       ? <DayComponent date={day} label={date}/>
                       : date
                   }
@@ -97,7 +97,7 @@ module.exports = React.createClass({
   },
 
   _headers: function(format, culture){
-    return [0,1,2,3,4,5,6].map( (day) => 
+    return [0, 1, 2, 3, 4, 5, 6].map( (day) =>
       <th key={'header_' + day }>{ localizers.date.format(day, format, culture) }</th>)
   }
 

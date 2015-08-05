@@ -130,7 +130,7 @@ var DateTimePicker = React.createClass({
       , calProps   = _.pick(this.props, Object.keys(compat.type(Calendar).propTypes))
 
       , timeListID = this._id('_time_listbox')
-      , timeOptID  = this._id('_time_option')
+      , timeOptID  = timeListID + '_selected_option'
       , dateListID = this._id('_cal')
       , dropUp = this.props.dropUp
       , renderPopup = _.isFirstFocusedRender(this) || this.props.open

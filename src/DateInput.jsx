@@ -1,7 +1,6 @@
 'use strict';
 var React = require('react')
   , cx = require('classnames')
-  , dates = require('./util/dates')
   , compat = require('./util/compat')
   , localizers = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes');
@@ -19,7 +18,7 @@ module.exports = React.createClass({
 
     value:        React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
-    culture:      React.PropTypes.string,
+    culture:      React.PropTypes.string
   },
 
   getDefaultProps: function(){
@@ -113,7 +112,7 @@ function formatDate(date, format, culture){
   return val;
 }
 
-function chain(a,b, thisArg){
+function chain(a, b, thisArg){
   return function(){
     a && a.apply(thisArg, arguments)
     b && b.apply(thisArg, arguments)

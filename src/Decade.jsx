@@ -5,7 +5,7 @@ var React = require('react')
   , dates = require('./util/dates')
   , localizers  = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes')
-  , Btn = require('./WidgetButton'); 
+  , Btn = require('./WidgetButton');
 
 var format = props => props.yearFormat || localizers.date.formats.year
 
@@ -16,13 +16,12 @@ module.exports = React.createClass({
   mixins: [
     require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlChildContextMixin'),
-    //require('./mixins/DateFocusMixin')('decade', 'year')
+    require('./mixins/RtlChildContextMixin')
   ],
 
   propTypes: {
     culture:      React.PropTypes.string,
-    
+
     value:        React.PropTypes.instanceOf(Date),
     focused:      React.PropTypes.instanceOf(Date),
     min:          React.PropTypes.instanceOf(Date),
@@ -39,7 +38,7 @@ module.exports = React.createClass({
       , rows  = _.chunk(years, 4)
 
     return (
-      <table {...props} 
+      <table {...props}
         role='grid'
         className='rw-calendar-grid rw-nav-view'
         aria-activedescendant={this._id('_selected_item')}>
@@ -75,8 +74,8 @@ module.exports = React.createClass({
                   'rw-state-selected': selected,
                   'rw-now':            currentYear
                 })}>
-                { 
-                  localizers.date.format(date, format(this.props), this.props.culture) 
+                {
+                  localizers.date.format(date, format(this.props), this.props.culture)
                 }
               </Btn>
             </td>)
@@ -91,7 +90,7 @@ function inDecade(date, start){
 }
 
 function getDecadeYears(_date){
-  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     , date = dates.add(dates.startOf(_date, 'decade'), -2, 'year')
 
   return days.map(() => date = dates.add(date, 1, 'year'))

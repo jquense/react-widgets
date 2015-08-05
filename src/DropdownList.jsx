@@ -124,7 +124,8 @@ var DropdownList = React.createClass({
       , ValueComponent = this.props.valueComponent
       , data = this._data()
       , valueItem = this._dataItem(this.props.data, this.props.value ) // take value from the raw data
-      , optID = this._id('_option')
+      , listID = this._id('_listbox')
+      , optID = listID + '_selected_option'
       , dropUp = this.props.dropUp
       , renderList = _.isFirstFocusedRender(this) || this.props.open
       , messages = msgs(this.props.messages)
@@ -133,12 +134,14 @@ var DropdownList = React.createClass({
     return (
       <div {...props}
         ref="element"
+        role='combobox'
         onKeyDown={this._keyDown}
         onClick={this._click}
         onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
         aria-expanded={ this.props.open }
         aria-haspopup={true}
+        aria-owns={listID}
         aria-busy={!!this.props.busy}
         aria-activedescendent={ this.props.open ? optID : undefined }
         aria-disabled={ this.props.disabled }
@@ -175,22 +178,21 @@ var DropdownList = React.createClass({
             { this.props.filter && this._renderFilter(messages) }
             { renderList &&
               <List ref="list"
-              {..._.pick(
-                  this.props
-                , Object.keys(compat.type(List).propTypes))
-              }
-              data={data}
-              optID={optID}
-              aria-hidden={!this.props.open}
-              selected={this.state.selectedItem}
-              focused ={this.props.open ? this.state.focusedItem : null}
-              onSelect={this._onSelect}
-              onMove={this._scrollTo}
-              messages={{
-                emptyList: this.props.data.length
-                  ? messages.emptyFilter
-                  : messages.emptyList
-              }}/>
+                {..._.pick(
+                  this.props, Object.keys(compat.type(List).propTypes))}
+                data={data}
+                id={listID}
+                optID={optID}
+                aria-hidden={!this.props.open}
+                selected={this.state.selectedItem}
+                focused ={this.props.open ? this.state.focusedItem : null}
+                onSelect={this._onSelect}
+                onMove={this._scrollTo}
+                messages={{
+                  emptyList: this.props.data.length
+                    ? messages.emptyFilter
+                    : messages.emptyList
+                }}/>
             }
           </div>
         </Popup>

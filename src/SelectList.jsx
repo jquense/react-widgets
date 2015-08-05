@@ -48,7 +48,7 @@ var propTypes = {
 
     messages:       React.PropTypes.shape({
       emptyList:    React.PropTypes.string
-    }),
+    })
   }
 
 
@@ -107,10 +107,11 @@ var SelectList = React.createClass({
 
   render() {
     var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
-      , focus = this._maybeHandle(this._focus.bind(null, true), true)
-      , optID = this._id('_selected_option')
-      , blur  = this._focus.bind(null, false)
-      , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
+      , focus  = this._maybeHandle(this._focus.bind(null, true), true)
+      , listID = this._id('_listbox')
+      , optID  = listID + '_selected_option'
+      , blur   = this._focus.bind(null, false)
+      , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
       , focusedItem = this.state.focused
                     && !this.isDisabled()
                     && !this.isReadOnly()
@@ -142,6 +143,7 @@ var SelectList = React.createClass({
           }
           data={this._data()}
           focused={focusedItem}
+          id={listID}
           optID ={optID}
           itemComponent={this.state.ListItem}
           onMove={ this._scrollTo }/>

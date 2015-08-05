@@ -65,6 +65,13 @@ describe('Multiselect', function(){
     })
   })
 
+  it('should set id on list', function(){
+    var instance = render(<Select />)
+      , list = React.findDOMNode(findTag(instance, 'ul'));
+
+    expect(list.hasAttribute('id')).to.be(true);
+  })
+
   it('should remove tag when clicked', function(){
     var del = sinon.spy()
       , tags = render(
@@ -205,13 +212,13 @@ describe('Multiselect', function(){
 
       expect(select.calledOnce).to.be(true)
       expect(change.calledAfter(select)).to.be(true)
-      
+
       select.reset()
       change.reset()
 
       trigger.keyDown(ms.getDOMNode(), { key: 'ArrowDown'}) //move to different value so change fires
       trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
-      
+
       expect(select.calledOnce).to.be(true)
       expect(change.calledAfter(select)).to.be(true)
       done()
@@ -253,12 +260,12 @@ describe('Multiselect', function(){
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
 
-    ms.setProps({ onCreate: null }) 
+    ms.setProps({ onCreate: null })
 
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
 
-    ms.setProps({ onCreate: null, searchTerm: 'asfasfas' }) 
+    ms.setProps({ onCreate: null, searchTerm: 'asfasfas' })
 
     expect(function err() {
       findClass(ms, 'rw-multiselect-create-tag') }).to.throwException()
@@ -266,11 +273,11 @@ describe('Multiselect', function(){
 
   it('should call onCreate', function(){
     var create = sinon.spy()
-      , ms = render(<Select 
-          open={true} 
-          searchTerm="custom tag" 
-          data={dataList} 
-          onCreate={create} 
+      , ms = render(<Select
+          open={true}
+          searchTerm="custom tag"
+          data={dataList}
+          onCreate={create}
           onSearch={()=>{}} onToggle={()=>{}}/>)
 
       , createLi = findClass(ms, 'rw-multiselect-create-tag').getDOMNode().children[0];

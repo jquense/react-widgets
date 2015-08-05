@@ -22,13 +22,13 @@ var SlideChildGroup = React.createClass({
     width = direction === 'left' ? width : -width
 
     this.ORGINAL_POSITION = node.style.position;
-    
-    css(node, { position: 'absolute', left: width + 'px' , top: 0 })
+
+    css(node, { position: 'absolute', left: width + 'px', top: 0 })
 
     config.animate(node, { left: 0 }, this.props.duration, () => {
 
-        css(node, { 
-          position:  this.ORGINAL_POSITION, 
+        css(node, {
+          position:  this.ORGINAL_POSITION,
           overflow: 'hidden'
         });
 
@@ -49,8 +49,8 @@ var SlideChildGroup = React.createClass({
     css(node, { position: 'absolute', top: 0, left: 0})
 
     config.animate(node, { left: width + 'px' }, this.props.duration, () => {
-        css(node, { 
-          position: this.ORGINAL_POSITION, 
+        css(node, {
+          position: this.ORGINAL_POSITION,
           overflow: 'hidden'
         });
 
@@ -82,8 +82,8 @@ module.exports = React.createClass({
 
   _wrapChild: function(child, ref) {
     return (
-      <SlideChildGroup key={child.key} ref={ref} 
-        direction={this.props.direction} 
+      <SlideChildGroup key={child.key} ref={ref}
+        direction={this.props.direction}
         duration={this.props.duration}>
         {child}
       </SlideChildGroup>)
@@ -95,9 +95,9 @@ module.exports = React.createClass({
     style = Object.assign({}, style, { position: 'relative', overflow: 'hidden' })
 
     return (
-      <ReplaceTransitionGroup 
+      <ReplaceTransitionGroup
         {...props}
-        ref='container' 
+        ref='container'
         childFactory={this._wrapChild}
         style={style}
         component={'div'}>

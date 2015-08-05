@@ -6,7 +6,7 @@ var React = require('react')
   , CustomPropTypes = require('./util/propTypes');
 
 module.exports = React.createClass({
-  
+
   displayName: 'MultiselectTagList',
 
   mixins: [
@@ -49,7 +49,7 @@ module.exports = React.createClass({
         , value     = this.props.value;
 
       return (
-        <ul {...props} 
+        <ul {...props}
           className='rw-multiselect-taglist'>
           { value.map( (item, i) => {
             var disabled = this.isDisabled(item)
@@ -69,7 +69,7 @@ module.exports = React.createClass({
                 <Btn tabIndex='-1' onClick={!(disabled || readonly) && this._delete.bind(null, item)}
                   aria-disabled={disabled}
                   disabled={disabled}>
-                  &times;<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
+                  &times;<span className="rw-sr">{ 'Remove ' + this._dataText(item) }</span>
                 </Btn>
               </li>)
           })}
@@ -77,41 +77,41 @@ module.exports = React.createClass({
       )
   },
 
-  _delete: function(val, e){
+  _delete(val){
     this.props.onDelete(val)
   },
 
-  removeCurrent: function(){
+  removeCurrent(){
     var val = this.props.value[this.state.focused];
 
     if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
       this.props.onDelete(val)
   },
 
-  isDisabled: function(val, isIdx) {
+  isDisabled(val, isIdx) {
     if(isIdx) val = this.props.value[val]
 
     return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
   },
 
-  isReadOnly: function(val, isIdx) {
+  isReadOnly(val, isIdx) {
     if(isIdx) val = this.props.value[val]
 
     return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
   },
 
-  removeNext: function(){
+  removeNext(){
     var val = this.props.value[this.props.value.length - 1];
 
     if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
       this.props.onDelete(val)
   },
 
-  clear: function(){
+  clear(){
     this.setState({ focused: null })
   },
 
-  first: function(){
+  first(){
     var idx = 0
       , l = this.props.value.length;
 
@@ -122,7 +122,7 @@ module.exports = React.createClass({
       this.setState({ focused: idx })
   },
 
-  last: function(){
+  last(){
     var idx = this.props.value.length - 1;
 
     while( idx > -1 && this.isDisabled(idx, true) )
@@ -132,7 +132,7 @@ module.exports = React.createClass({
       this.setState({ focused: idx })
   },
 
-  next: function(){
+  next(){
     var nextIdx = this.state.focused + 1
       , l = this.props.value.length;
 
@@ -148,7 +148,7 @@ module.exports = React.createClass({
     this.setState({ focused: nextIdx })
   },
 
-  prev: function(){
+  prev(){
     var nextIdx = this.state.focused;
 
     if ( nextIdx === null )

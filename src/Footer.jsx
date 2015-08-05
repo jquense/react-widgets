@@ -1,6 +1,5 @@
 var React = require('react')
   , Btn = require('./WidgetButton')
-  , dates = require('./util/dates')
   , localizers = require('./util/configuration').locale;
 
 var format = props => props.format || localizers.date.formats.footer

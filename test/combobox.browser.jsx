@@ -132,7 +132,14 @@ describe('ComboBox', function(){
     setTimeout(function() {
       expect(comboBox.state.open).to.not.be(true)
       done()
-    }, 0) 
+    }, 0)
+  })
+
+  it('should set id on list', function(){
+    var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0} readOnly={true}/>)
+      , list = React.findDOMNode(findTag(comboBox, 'ul'));
+
+    expect(list.hasAttribute('id')).to.be(true);
   })
 
   it('should call Select handler', function(done){
@@ -152,7 +159,7 @@ describe('ComboBox', function(){
       select.reset()
       comboBox.setProps({ value: [] })
       trigger.keyDown(comboBox.getDOMNode(), { key: 'Enter'})
-      
+
       expect(select.calledOnce).to.be(true)
       expect(change.calledAfter(select)).to.be(true)
 
@@ -191,5 +198,5 @@ describe('ComboBox', function(){
     expect(change.calledWith(dataList[2])).to.be(true)
   })
 
-  
+
 })

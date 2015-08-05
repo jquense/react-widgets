@@ -35,28 +35,42 @@ describe('Groupable List', function(){
 
   it('should respect textField and valueFields', function(){
     var list = render(<List data={data} textField='first' valueField='id' groupBy='last'/>)
-      , children =list.getDOMNode().children;
+      , children = list.getDOMNode().children;
 
     expect($(children[0]).text()).to.be('smith');
     expect($(children[1]).text()).to.be('jimmy');
-  }) 
+  })
 
   it('should render an empty list message', function(){
     var list = render(<List data={[]} textField='first' valueField='id' />);
 
     expect($(list.getDOMNode()).find('li').text())
       .to.be('There are no items in this list');
-  }) 
+  })
+
+  it.only('should generate ids', function(){
+    var focused = data[2]
+      , list = render(<List data={data} focused={focused} />);
+
+    let seen = [];
+
+    $(React.findDOMNode(list)).children().each(
+      function(){
+        expect(this.hasAttribute('id')).to.equal(true);
+        expect(seen.indexOf(this.id)).to.equal(-1);
+        seen.push(this.id);
+      })
+  })
 
   it('should use a Item template', function(){
     var templ  = React.createClass({
       render: function() {
-        return (<span>{"hello - " + this.props.item.first}</span>);
+        return (<span>{'hello - ' + this.props.item.first}</span>);
       }
     });
-    
+
     var list = render(<List data={data} itemComponent={templ} />)
-      , children =list.getDOMNode().children;
+      , children = list.getDOMNode().children;
 
     expect($(children[1]).text()).to.be('hello - jimmy');
   })
@@ -64,12 +78,12 @@ describe('Groupable List', function(){
   it('should use a Group template', function(){
     var templ  = React.createClass({
       render: function() {
-        return (<span>{"hello - " + this.props.item}</span>);
+        return (<span>{'hello - ' + this.props.item}</span>);
       }
     });
-    
+
     var list = render(<List data={data} groupComponent={templ} groupBy='last' />)
-      , children =list.getDOMNode().children;
+      , children = list.getDOMNode().children;
 
     expect($(children[0]).text()).to.be('hello - smith');
   })

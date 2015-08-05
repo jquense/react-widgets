@@ -72,7 +72,7 @@ module.exports = React.createClass({
       })
   },
 
-  componentDidMount(prevProps){
+  componentDidMount(){
     this.move()
   },
 
@@ -116,28 +116,34 @@ module.exports = React.createClass({
   },
 
   _renderGroupHeader(group){
-    var ItemComponent = this.props.groupComponent;
+    var GroupComponent = this.props.groupComponent
+      , id = this.props.id || this._id('_list');
 
-    return (<li
-      key={'item_' + group}
-      tabIndex='-1'
-      role="separator"
-      className='rw-list-optgroup'>
-        { ItemComponent ? <ItemComponent item={group}/> : group }
-    </li>)
+    return (
+      <li
+        key={'item_' + group}
+        tabIndex='-1'
+        role="separator"
+        id={id + '_group_' + group}
+        className='rw-list-optgroup'
+      >
+        { GroupComponent ? <GroupComponent item={group}/> : group }
+      </li>
+    )
   },
 
   _renderItem(group, item, idx){
     var focused  = this.props.focused  === item
       , selected = this.props.selected === item
+      , id = this.props.id || this._id('_list')
+      , optID = this.props.optID
       , ItemComponent = this.props.itemComponent;
 
-    //console.log('hi')
     return (
       <li
         key={'item_' + group + '_' + idx}
         role='option'
-        id={ focused ? this.props.optID : undefined }
+        id={ focused ? optID : (id + '_option_' + idx) }
         aria-selected={selected}
         onClick={this.props.onSelect.bind(null, item)}
         className={cx({
@@ -149,7 +155,8 @@ module.exports = React.createClass({
               ? <ItemComponent item={item} value={this._dataValue(item)} text={this._dataText(item)}/>
               : this._dataText(item)
           }
-      </li>)
+      </li>
+    )
   },
 
   _isIndexOf(idx, item){

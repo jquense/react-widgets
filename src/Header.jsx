@@ -30,7 +30,7 @@ module.exports = React.createClass({
     return {
       messages: {
         moveBack:     'navigate back',
-        moveForward:  'navigate forward',
+        moveForward:  'navigate forward'
       }
     }
   },
@@ -45,8 +45,9 @@ module.exports = React.createClass({
           onClick={this.props.onMoveLeft}
           disabled={this.props.prevDisabled}
           aria-disabled={this.props.prevDisabled}
-          title={this.props.moveBack}>
-          <i className={"rw-i rw-i-caret-" + (rtl ? 'right' : 'left')}></i>
+          title={this.props.moveBack}
+        >
+          <i className={'rw-i rw-i-caret-' + (rtl ? 'right' : 'left')}></i>
           <span className="rw-sr">{this.props.messages.moveBack}</span>
         </Btn>
         <Btn className="rw-btn-view"
@@ -63,7 +64,7 @@ module.exports = React.createClass({
           disabled={this.props.nextDisabled}
           aria-disabled={this.props.nextDisabled}
           title={this.props.moveForward}>
-          <i className={"rw-i rw-i-caret-" + (rtl ? 'left' : 'right')}></i>
+          <i className={'rw-i rw-i-caret-' + (rtl ? 'left' : 'right')}></i>
           <span className="rw-sr">{this.props.messages.moveForward}</span>
         </Btn>
       </div>

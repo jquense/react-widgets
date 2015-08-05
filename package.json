@@ -31,7 +31,7 @@
     "build": "gulp lib",
     "docs": "gulp docs",
     "docs:watch": "gulp dev-docs",
-    "lint": "eslint src",
+    "lint": "eslint --ext .jsx --ext .js src",
     "dist": "gulp dist-build"
   },
   "homepage": "http://jquense.github.io/react-widgets/docs/",
@@ -45,7 +45,7 @@
     "date-arithmetic": "^3.0.0",
     "dom-helpers": "^1.3.2",
     "globalize": "~0.1.1",
-    "uncontrollable": "^1.2.0"
+    "uncontrollable": "^1.4.0"
   },
   "devDependencies": {
     "babel-core": "^5.4.0",

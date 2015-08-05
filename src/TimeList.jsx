@@ -74,6 +74,7 @@ module.exports = React.createClass({
       <List {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
         ref="list"
         data={times}
+        id={this.props.id}
         textField='label'
         valueField='date'
         selected={date}

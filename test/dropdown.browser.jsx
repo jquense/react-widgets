@@ -77,6 +77,13 @@ describe('DROPDOWNS', function(){
     }, 0)
   })
 
+  it('should set id on list', function(){
+    var instance = render(<Dropdown />)
+      , list = React.findDOMNode(findTag(instance, 'ul'));
+
+    expect(list.hasAttribute('id')).to.be(true);
+  })
+
   it('should trigger focus/blur events', function(done){
     var blur = sinon.spy()
       , focus = sinon.spy()
@@ -159,13 +166,13 @@ describe('DROPDOWNS', function(){
 
       expect(select.calledOnce).to.be(true)
       expect(change.calledAfter(select)).to.be(true)
-      
+
       select.reset()
       change.reset()
 
       trigger.keyDown(dropdown.getDOMNode(), { key: 'ArrowDown'}) //move to different value so change fires
       trigger.keyDown(dropdown.getDOMNode(), { key: 'Enter'})
-      
+
       expect(select.calledOnce).to.be(true)
       expect(change.calledAfter(select)).to.be(true)
       done()

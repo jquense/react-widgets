@@ -3,7 +3,7 @@ var React = require('react')
   , compat = require('./util/compat');
 
 module.exports = React.createClass({
-  
+
   displayName: 'MultiselectInput',
 
   propTypes: {
@@ -13,7 +13,7 @@ module.exports = React.createClass({
     onFocus:      React.PropTypes.func,
 
     disabled:     React.PropTypes.bool,
-    readOnly:     React.PropTypes.bool,
+    readOnly:     React.PropTypes.bool
   },
 
 
@@ -28,7 +28,7 @@ module.exports = React.createClass({
 
       return (
         <input {...this.props}
-          type='text' 
+          type='text'
           className='rw-input'
           aria-disabled={this.props.disabled}
           aria-readonly={this.props.readOnly}
