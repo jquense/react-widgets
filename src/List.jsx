@@ -60,7 +60,7 @@ module.exports = React.createClass({
   },
 
   render(){
-    var { className, ...props } = _.omit(this.props, ['data'])
+    var { className, role, ...props } = _.omit(this.props, ['data'])
       , ItemComponent = this.props.itemComponent
       , id = this.props.id || this._id('_list')
       , optID = this.props.optID
@@ -70,14 +70,17 @@ module.exports = React.createClass({
       ? <li className='rw-list-empty'>{ _.result(this.props.messages.emptyList, this.props) }</li>
       : this.props.data.map((item, idx) =>{
           var focused  = item === this.props.focused
-            , selected = item === this.props.selected;
+            , selected = item === this.props.selected
+            , defaultOptID = id + '_option_' + idx;
+
+          optID = optID || defaultOptID;
 
           return (<li
             tabIndex='-1'
             key={'item_' + idx}
-            role='option'
-            id={ focused ? optID : id + '_option_' + idx }
-            aria-selected={selected}
+            role={role === 'listbox' ? 'option' : 'presentation'}
+            id={focused ? optID : defaultOptID}
+            aria-selected={selected || void 0}
             className={cx({
               'rw-list-option':    true,
               'rw-state-focus':    focused,
@@ -93,9 +96,12 @@ module.exports = React.createClass({
 
     return (
       <ul { ...props }
+        tabIndex={props.tabIndex || '-1'}
         className={ (className || '') + ' rw-list' }
         ref='scrollable'
-        role='listbox'>
+        role={role !== undefined ? role : 'listbox'}
+       // aria-activedescendant={optID ? optID : undefined}
+      >
           { items }
       </ul>
     )

@@ -44,7 +44,7 @@ var DropdownApi = React.createClass({
   },
 
   render: function() {
-    
+
     var props = {
       disabled: this.state.disabled === 'disabled',
       readOnly: this.state.disabled === 'readonly',
@@ -60,7 +60,7 @@ var DropdownApi = React.createClass({
     }
 
     return (
-      <div className='example'>
+      <div className='example' role='application'>
         <div className='row'>
           <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>
@@ -110,15 +110,15 @@ var DropdownApi = React.createClass({
             <div className='row'>
               <div className='form-group col-xs-6'>
                 <label className='form-label'>Filter</label>
-                <RW.DropdownList 
-                    value={this.state.filter || false} 
+                <RW.DropdownList
+                    value={this.state.filter || false}
                     data={[false, 'startsWith', 'endsWith', 'contains']}
                     onChange={this._set.bind(null, 'filter')}/>
               </div>
               <div className='form-group col-xs-6'>
                 <label className='form-label'>Duration</label>
-                <RW.NumberPicker 
-                    value={this.state.duration} 
+                <RW.NumberPicker
+                    value={this.state.duration}
                     step={200}
                     min={0}
                     max={1000}

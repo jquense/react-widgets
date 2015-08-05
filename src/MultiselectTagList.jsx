@@ -3,7 +3,9 @@ var React = require('react')
   , _     = require('./util/_')
   , cx    = require('classnames')
   , Btn   = require('./WidgetButton')
-  , CustomPropTypes = require('./util/propTypes');
+  , CustomPropTypes = require('./util/propTypes')
+
+import WidgetMixin from './mixins/WidgetMixin';
 
 module.exports = React.createClass({
 
@@ -16,7 +18,9 @@ module.exports = React.createClass({
 
   propTypes: {
     value:          React.PropTypes.array,
+    focused:        React.PropTypes.number,
 
+    focusID:        React.PropTypes.string,
     valueField:     React.PropTypes.string,
     textField:      CustomPropTypes.accessor,
 
@@ -35,41 +39,46 @@ module.exports = React.createClass({
                     ])
   },
 
-
-  getInitialState: function(){
-    return {
-      focused: null
-    }
-  },
-
-  render: function(){
+  render() {
       var ValueComponent = this.props.valueComponent
         , props     = _.omit(this.props, ['value', 'disabled', 'readOnly'])
-        , focusIdx  = this.state.focused
-        , value     = this.props.value;
+        , { focused, focusID, value }  = this.props;
 
       return (
         <ul {...props}
-          className='rw-multiselect-taglist'>
+          className='rw-multiselect-taglist'
+        >
           { value.map( (item, i) => {
-            var disabled = this.isDisabled(item)
-              , readonly = this.isReadOnly(item);
+            var isDisabled = this.isDisabled(item)
+              , isReadonly = this.isReadOnly(item)
+              , isFocused  = !isDisabled && focused === i
+              , id = WidgetMixin._id.call(this, '_tag_option_' + i);
+
+            id = isFocused ? focusID || id : id
 
             return (
-              <li key={i}
-                  className={cx({
-                    'rw-state-focus': !disabled && focusIdx === i,
-                    'rw-state-disabled': disabled,
-                    'rw-state-readonly': readonly})
-                  }>
+              <li
+                key={i}
+                id={id}
+                tabIndex='-1'
+                className={cx({
+                  'rw-state-focus':    isFocused,
+                  'rw-state-disabled': isDisabled,
+                  'rw-state-readonly': isReadonly
+                })}
+              >
                 { ValueComponent
-                    ? <ValueComponent item={item }/>
-                    : this._dataText(item)
+                  ? <ValueComponent item={item }/>
+                  : this._dataText(item)
                 }
-                <Btn tabIndex='-1' onClick={!(disabled || readonly) && this._delete.bind(null, item)}
-                  aria-disabled={disabled}
-                  disabled={disabled}>
-                  &times;<span className="rw-sr">{ 'Remove ' + this._dataText(item) }</span>
+                <Btn
+                  tabIndex='-1'
+                  onClick={!(isDisabled || isReadonly) && this._delete.bind(null, item)}
+                  aria-disabled={isDisabled}
+                  aria-label='Remove selected item'
+                  disabled={isDisabled}
+                >
+                  <span aria-hidden="true">&times;</span>
                 </Btn>
               </li>)
           })}
@@ -81,30 +90,30 @@ module.exports = React.createClass({
     this.props.onDelete(val)
   },
 
-  removeCurrent(){
-    var val = this.props.value[this.state.focused];
+  remove(idx){
+    var val = this.props.value[idx];
 
-    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
+    if (val && !(this.isDisabled(val)  || this.isReadOnly(val)) )
       this.props.onDelete(val)
-  },
-
-  isDisabled(val, isIdx) {
-    if(isIdx) val = this.props.value[val]
-
-    return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
-  },
-
-  isReadOnly(val, isIdx) {
-    if(isIdx) val = this.props.value[val]
-
-    return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
   },
 
   removeNext(){
     var val = this.props.value[this.props.value.length - 1];
 
-    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
+    if (val && !(this.isDisabled(val) || this.isReadOnly(val)))
       this.props.onDelete(val)
+  },
+
+  isDisabled(val, isIdx) {
+    if (isIdx) val = this.props.value[val]
+
+    return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
+  },
+
+  isReadOnly(val, isIdx) {
+    if (isIdx) val = this.props.value[val]
+
+    return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
   },
 
   clear(){
@@ -119,47 +128,44 @@ module.exports = React.createClass({
       idx++
 
     if (idx !== l)
-      this.setState({ focused: idx })
+      return idx
   },
 
   last(){
     var idx = this.props.value.length - 1;
 
-    while( idx > -1 && this.isDisabled(idx, true) )
+    while (idx > -1 && this.isDisabled(idx, true))
       idx--
 
     if (idx >= 0)
-      this.setState({ focused: idx })
+      return idx
   },
 
-  next(){
-    var nextIdx = this.state.focused + 1
+  next(current) {
+    var nextIdx = current + 1
       , l = this.props.value.length;
 
-    while( nextIdx < l && this.isDisabled(nextIdx, true) )
+    while (nextIdx < l && this.isDisabled(nextIdx, true))
       nextIdx++
 
-    if ( this.state.focused === null )
-      return
+    if (current === null || nextIdx >= l)
+      return null;
 
-    if ( nextIdx >= l )
-      return this.clear();
-
-    this.setState({ focused: nextIdx })
+    return nextIdx
   },
 
-  prev(){
-    var nextIdx = this.state.focused;
+  prev(current){
+    var nextIdx = current;
 
     if ( nextIdx === null )
       nextIdx = this.props.value.length
 
     nextIdx--;
 
-    while( nextIdx > -1 && this.isDisabled(nextIdx, true) )
+    while (nextIdx > -1 && this.isDisabled(nextIdx, true))
       nextIdx--
 
-    if ( nextIdx >= 0 )
-      this.setState({ focused: nextIdx  })
+    if (nextIdx >= 0)
+      return nextIdx
   }
 })

@@ -13,9 +13,10 @@ var React           = require('react')
   , createUncontrolledWidget = require('uncontrollable')
   , CustomPropTypes = require('./util/propTypes');
 
-var compatCreate = (props, msgs) => typeof msgs.create === 'function'
-  ? msgs.create(props) : [<strong>{`"${props.searchTerm}"`}</strong>, msgs.create]
+var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
+  ? msgs.createNew(props) : [<strong>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
 
+let { omit, pick, result, splat } = _;
 
 var propTypes = {
       data:            React.PropTypes.array,
@@ -98,16 +99,19 @@ var Multiselect = React.createClass({
       messages: {
         createNew:   '(create new tag)',
         emptyList:   'There are no items in this list',
-        emptyFilter: 'The filter returned no results'
+        emptyFilter: 'The filter returned no results',
+        tagsLabel:   'Multiselect selected items',
+        removeLabel: 'remove selected item'
       }
     }
   },
 
   getInitialState(){
-    var dataItems = _.splat(this.props.value).map( item => this._dataItem(this.props.data, item))
+    var dataItems = splat(this.props.value).map( item => this._dataItem(this.props.data, item))
       , data = this.process(this.props.data, dataItems, this.props.searchTerm)
 
     return {
+      focusedTag:    null,
       focusedItem:   data[0],
       processedData: data,
       dataItems:     dataItems
@@ -137,100 +141,134 @@ var Multiselect = React.createClass({
   },
 
   render() {
-    var {
-        className
-      , children
-      , ...props } = _.omit(this.props, Object.keys(propTypes))
+    let {
+        searchTerm, maxLength
+      , className, children, tabIndex
+      , groupBy, messages, data, busy, dropUp
+      , placeholder, value, open, disabled, readOnly
+      , tagComponent: TagComponent
+      , listComponent: List } = this.props;
 
+    List = List || (groupBy && GroupableList) || PlainList
+
+    messages = msgs(messages);
+
+    let elementProps = omit(this.props, Object.keys(propTypes));
+    let tagsProps    = pick(this.props, [ 'valueField', 'textField']);
+    let inputProps   = pick(this.props, [ 'maxLength', 'searchTerm']);
+    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
+    let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
+
+    let {
+        focusedTag, focusedItem, selectedItem
+      , focused, dataItems } = this.state;
+
+    var items  = this._data()
+      , tagsID = this._id('_taglist')
       , listID = this._id('_listbox')
-      , optID  = listID + '_selected_option'
-      , items  = this._data()
-      , values = this.state.dataItems
-      , dropUp = this.props.dropUp
-      , messages = msgs(this.props.messages)
-      , renderPopup = _.isFirstFocusedRender(this) || this.props.open
-      , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
-      , listProps  = _.pick(this.props, Object.keys(compat.type(List).propTypes));
+      , createID = this._id('_createlist')
+      , optID    = this._id('_listbox_option_focused');
+
+    let shouldRenderTags = !!dataItems.length
+      , shouldRenderPopup = _.isFirstFocusedRender(this) || open
+      , shouldShowCreate = this._shouldShowCreate()
+      , createIsFocused = !items.length || focusedItem === null;
 
     return (
-      <div {...props}
+      <div {...elementProps}
         ref="element"
+        id={this._id()}
+        aria-label='persons multiselect'
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex={'-1'}
-        className={cx(className, 'rw-multiselect', 'rw-widget', {
-          'rw-state-focus':    this.state.focused,
-          'rw-state-disabled': this.props.disabled === true,
-          'rw-state-readonly': this.props.readOnly === true,
+        className={cx(className, 'rw-widget', 'rw-multiselect',  {
+          'rw-state-focus':    focused,
+          'rw-state-disabled': disabled === true,
+          'rw-state-readonly': readOnly === true,
           'rw-rtl':            this.isRtl(),
-
-          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
-
+          [`rw-open${dropUp ? '-up' : ''}`]: open
         })}>
         <div className='rw-multiselect-wrapper' ref='wrapper'>
-          { this.props.busy &&
+          { busy &&
             <i className="rw-i rw-loading"></i>
           }
-          { !!values.length &&
-            <TagList
+          { shouldRenderTags &&
+            <TagList {...tagsProps}
               ref='tagList'
-              value={values}
-              textField={this.props.textField}
-              valueField={this.props.valueField}
-              valueComponent={this.props.tagComponent}
-              disabled={this.props.disabled}
-              readOnly={this.props.readOnly}
-              onDelete={this._delete}/>
+              id={tagsID}
+              aria-label={messages.tagsLabel}
+              focusID={focusedTag != null && optID}
+              value={dataItems}
+              focused={focusedTag}
+              disabled={disabled}
+              readOnly={readOnly}
+              onDelete={this._delete}
+              valueComponent={TagComponent}
+            />
           }
           <SelectInput
+            {...inputProps}
             ref='input'
-            tabIndex={props.tabIndex}
-            aria-activedescendent={ this.props.open ? optID : undefined }
-            aria-expanded={ this.props.open }
-            aria-busy={!!this.props.busy}
-            aria-owns={listID}
+            tabIndex={tabIndex || 0}
+            role='listbox'
+            aria-activedescendant={optID}
+            aria-expanded={open}
+            aria-busy={!!busy}
+            aria-owns={listID
+              + (shouldRenderTags ? (' ' + tagsID) : '')
+              + (shouldShowCreate ? (' ' + createID) : '')
+            }
             aria-haspopup={true}
-            value={this.props.searchTerm}
-            disabled={this.props.disabled === true}
-            readOnly={this.props.readOnly === true}
+            value={searchTerm}
+            maxLength={maxLength}
+            disabled={disabled === true}
+            readOnly={readOnly === true}
             placeholder={this._placeholder()}
             onKeyDown={this._searchKeyDown}
             onKeyUp={this._searchgKeyUp}
             onChange={this._typing}
             onFocus={this._inputFocus}
             onClick={this._inputFocus}
-            maxLength={this.props.maxLength}/>
+          />
         </div>
-        <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
+        <Popup {...popupProps}
           onOpening={()=> this.refs.list.forceUpdate()}
-          onRequestClose={this.close}>
-
+          onRequestClose={this.close}
+        >
           <div>
-          { renderPopup && [
-            <List ref="list" key='0'
+          { shouldRenderPopup && [
+            <List ref="list"
+              key='0'
               {...listProps}
-              readOnly={!!listProps.readOnly}
-              disabled={!!listProps.disabled}
+              //aria-label={messages.listLabel}
+              readOnly={!!readOnly}
+              disabled={!!disabled}
               id={listID}
-              optID={optID}
-              aria-autocomplete='list'
-              aria-hidden={!this.props.open}
+              optID={focusedTag == null && optID}
+              //aria-activedescendant={optID}
+              aria-live='polite'
+              aria-labelledBy={this._id()}
+              aria-hidden={!open}
               data={items}
-              focused={this.state.focusedItem}
+              focused={focusedItem}
               onSelect={this._maybeHandle(this._onSelect)}
               onMove={this._scrollTo}
               messages={{
-                emptyList: this.props.data.length
+                emptyList: data.length
                   ? messages.emptyFilter
                   : messages.emptyList
               }}/>,
-              this._shouldShowCreate() &&
-                <ul className="rw-list rw-multiselect-create-tag" key='1'>
-                  <li onClick={this._onCreate.bind(null, this.props.searchTerm)}
+              shouldShowCreate &&
+                <ul role='listbox' id={createID} className="rw-list rw-multiselect-create-tag" key='1'>
+                  <li onClick={this._onCreate.bind(null, searchTerm)}
+                      role='option'
+                      //aria-label='create new message'
+                      id={createIsFocused ? optID : this._id('_create_option')}
                       className={cx({
                         'rw-list-option': true,
-                        'rw-state-focus': !this._data().length || this.state.focusedItem === null
+                        'rw-state-focus': createIsFocused
                       })}>
                     { compatCreate(this.props, messages) }
                   </li>
@@ -266,7 +304,7 @@ var Multiselect = React.createClass({
 
     this.setTimeout('focus', () => {
       if( !focused)
-        this.refs.tagList && this.refs.tagList.clear()
+        this.refs.tagList && this.setState({ focusedTag: null })
 
       if( focused !== this.state.focused){
         focused
@@ -289,12 +327,12 @@ var Multiselect = React.createClass({
       this._deletingText = false
   },
 
-  _typing: function(e){
+  _typing(e){
     this.notify('onSearch', [ e.target.value ])
     this.open()
   },
 
-  _onSelect: function(data){
+  _onSelect(data){
 
     if (data === undefined) {
       if (this.props.onCreate)
@@ -310,7 +348,7 @@ var Multiselect = React.createClass({
     this._focus(true)
   },
 
-  _onCreate: function(tag){
+  _onCreate(tag){
     if (tag.trim() === '' )
       return
 
@@ -323,14 +361,13 @@ var Multiselect = React.createClass({
   },
 
   _keyDown: function(e){
-    var key = e.key
-      , alt = e.altKey
-      , ctrl = e.ctrlKey
+    let { key, altKey, ctrlKey } = e
       , noSearch = !this.props.searchTerm && !this._deletingText
-      , isOpen  = this.props.open
-      , focusedItem = this.state.focusedItem
-      , tagList = this.refs.tagList
-      , list    = this.refs.list;
+      , isOpen  = this.props.open;
+
+    let { focusedTag, focusedItem } = this.state;
+    let { list, tagList } = this.refs;
+    let nullTag = { focusedTag: null };
 
     if ( key === 'ArrowDown') {
       var next = list.next(focusedItem)
@@ -339,45 +376,45 @@ var Multiselect = React.createClass({
       next = creating ? null : next
 
       e.preventDefault()
-      if ( isOpen ) this.setState({ focusedItem: next })
+      if (isOpen) this.setState({ focusedItem: next, ...nullTag })
       else          this.open()
     }
-    else if ( key === 'ArrowUp') {
+    else if (key === 'ArrowUp') {
       var prev = focusedItem === null
         ? list.last()
         : list.prev(focusedItem)
 
       e.preventDefault()
 
-      if ( alt)          this.close()
-      else if ( isOpen ) this.setState({ focusedItem: prev })
+      if (altKey)      this.close()
+      else if (isOpen) this.setState({ focusedItem: prev, ...nullTag })
     }
-    else if ( key === 'End'){
-      if ( isOpen ) this.setState({ focusedItem: list.last() })
+    else if (key === 'End'){
+      if ( isOpen ) this.setState({ focusedItem: list.last(), ...nullTag })
       else          tagList && tagList.last()
     }
-    else if (  key === 'Home'){
-      if ( isOpen ) this.setState({ focusedItem: list.first() })
+    else if (key === 'Home'){
+      if (isOpen) this.setState({ focusedItem: list.first(), ...nullTag  })
       else          tagList && tagList.first()
     }
-    else if ( isOpen && key === 'Enter')
-      (ctrl && this.props.onCreate) || focusedItem === null
+    else if (isOpen && key === 'Enter')
+      (ctrlKey && this.props.onCreate) || focusedItem === null
         ? this._onCreate(this.props.searchTerm)
         : this._onSelect(this.state.focusedItem)
 
-    else if ( key === 'Escape')
-      isOpen ? this.close() : tagList && tagList.clear()
+    else if (key === 'Escape')
+      isOpen ? this.close() : tagList && this.setState(nullTag)
 
-    else if ( noSearch && key === 'ArrowLeft')
-      tagList && tagList.prev()
+    else if (noSearch && key === 'ArrowLeft')
+      tagList && this.setState({ focusedTag: tagList.prev(focusedTag) })
 
-    else if ( noSearch && key === 'ArrowRight')
-      tagList && tagList.next()
+    else if (noSearch && key === 'ArrowRight')
+      tagList && this.setState({ focusedTag: tagList.next(focusedTag) })
 
-    else if ( noSearch && key === 'Delete')
-      tagList && tagList.removeCurrent()
+    else if (noSearch && key === 'Delete')
+      tagList && tagList.removeCurrent(focusedTag)
 
-    else if ( noSearch && key === 'Backspace')
+    else if (noSearch && key === 'Backspace')
       tagList && tagList.removeNext()
 
     this.notify('onKeyDown', [e])
@@ -434,9 +471,11 @@ var Multiselect = React.createClass({
 
 function msgs(msgs){
   return {
-    createNew:   '(create new tag)',
     emptyList:   'There are no items in this list',
     emptyFilter: 'The filter returned no results',
+    listLabel:   'Multiselect available items',
+    tagsLabel:   'Multiselect selected items',
+    removeLabel: 'remove selected item',
     ...msgs
   }
 }

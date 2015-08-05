@@ -12,6 +12,9 @@ var React           = require('react')
   , validateList    = require('./util/validateListInterface')
   , createUncontrolledWidget = require('uncontrollable');
 
+let { omit, pick, result } = _;
+
+const FOCUSED_ID = '_listbox_option_selected';
 
 var propTypes = {
   //-- controlled props -----------
@@ -102,6 +105,9 @@ var DropdownList = React.createClass({
   },
 
   componentDidUpdate() {
+    React.findDOMNode(this)
+      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
+
     this.refs.list && validateList(this.refs.list)
   },
 
@@ -118,78 +124,96 @@ var DropdownList = React.createClass({
   },
 
   render() {
-    var {
-        className
-      , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , ValueComponent = this.props.valueComponent
-      , data = this._data()
-      , valueItem = this._dataItem(this.props.data, this.props.value ) // take value from the raw data
+    let {
+        className, tabIndex, filter
+      , groupBy, messages, data, busy, dropUp
+      , placeholder, value, open, disabled, readOnly
+      , valueComponent: ValueComponent
+      , listComponent: List } = this.props;
+
+    List = List || (groupBy && GroupableList) || PlainList
+
+    let elementProps = omit(this.props, Object.keys(propTypes));
+    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
+    let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
+
+    let { focusedItem, selectedItem, focused } = this.state;
+
+    let processedData = this._data()
+      , valueItem = this._dataItem(data, value) // take value from the raw data
       , listID = this._id('_listbox')
-      , optID = listID + '_selected_option'
-      , dropUp = this.props.dropUp
-      , renderList = _.isFirstFocusedRender(this) || this.props.open
-      , messages = msgs(this.props.messages)
-      , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList;
+      , optID = this._id(FOCUSED_ID);
+
+    let shouldRenderList = _.isFirstFocusedRender(this) || open;
+
+    messages = msgs(messages)
 
     return (
-      <div {...props}
-        ref="element"
+      <div {...elementProps}
+        ref="input"
         role='combobox'
+        tabIndex={tabIndex || '0'}
+        aria-expanded={open }
+        aria-haspopup={true}
+        aria-owns={listID}
+        aria-busy={!!busy}
+        aria-live={!open && 'polite'}
+        //aria-labelledby={!open && optID}
+        aria-autocomplete="list"
+        aria-disabled={disabled }
+        aria-readonly={readOnly }
         onKeyDown={this._keyDown}
         onClick={this._click}
         onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
-        aria-expanded={ this.props.open }
-        aria-haspopup={true}
-        aria-owns={listID}
-        aria-busy={!!this.props.busy}
-        aria-activedescendent={ this.props.open ? optID : undefined }
-        aria-disabled={ this.props.disabled }
-        aria-readonly={ this.props.readOnly }
-        tabIndex={props.tabIndex || '0'}
         className={cx(className, 'rw-dropdownlist', 'rw-widget', {
-          'rw-state-disabled':  this.props.disabled,
-          'rw-state-readonly':  this.props.readOnly,
-          'rw-state-focus':     this.state.focused,
+          'rw-state-disabled':  disabled,
+          'rw-state-readonly':  readOnly,
+          'rw-state-focus':     focused,
           'rw-rtl':             this.isRtl(),
 
-          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
+          ['rw-open' + (dropUp ? '-up' : '')]: open
         })}>
 
         <span className="rw-dropdownlist-picker rw-select rw-btn">
-          <i className={'rw-i rw-i-caret-down' + (this.props.busy ? ' rw-loading' : '')}>
-            <span className="rw-sr">{ _.result(messages.open, this.props) }</span>
+          <i className={'rw-i rw-i-caret-down' + (busy ? ' rw-loading' : '')}>
+            <span className="rw-sr">
+              { result(messages.open, this.props) }
+            </span>
           </i>
         </span>
-        <div className="rw-input">
-          { !valueItem && props.placeholder
-            ? <span className='rw-placeholder'>{props.placeholder}</span>
+        <div
+          className="rw-input"
+        >
+          { !valueItem && placeholder
+            ? <span className='rw-placeholder'>{placeholder}</span>
             : this.props.valueComponent
               ? <ValueComponent item={valueItem}/>
               : this._dataText(valueItem)
           }
         </div>
-        <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
+        <Popup {...popupProps}
           onOpen={() => this.focus() }
           onOpening={() => this.refs.list.forceUpdate() }
           onRequestClose={this.close}>
 
           <div>
-            { this.props.filter && this._renderFilter(messages) }
-            { renderList &&
+            { filter && this._renderFilter(messages) }
+            { shouldRenderList &&
               <List ref="list"
-                {..._.pick(
-                  this.props, Object.keys(compat.type(List).propTypes))}
-                data={data}
+                {...listProps}
+                data={processedData}
                 id={listID}
                 optID={optID}
+                aria-live={open && 'polite'}
+                aria-labelledby={this._id()}
                 aria-hidden={!this.props.open}
-                selected={this.state.selectedItem}
-                focused ={this.props.open ? this.state.focusedItem : null}
+                selected={selectedItem}
+                focused ={open ? focusedItem : null}
                 onSelect={this._onSelect}
                 onMove={this._scrollTo}
                 messages={{
-                  emptyList: this.props.data.length
+                  emptyList: data.length
                     ? messages.emptyFilter
                     : messages.emptyList
                 }}/>
@@ -309,7 +333,7 @@ var DropdownList = React.createClass({
   },
 
   focus(target){
-    var inst = target || (this.props.filter && this.props.open ? this.refs.filter : this);
+    var inst = target || (this.props.filter && this.props.open ? this.refs.filter : this.refs.input);
 
     if ( activeElement() !== compat.findDOMNode(inst))
       compat.findDOMNode(inst).focus()

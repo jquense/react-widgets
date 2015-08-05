@@ -51,11 +51,11 @@ var DropdownApi = React.createClass({
     var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 
     return (
-      <div className='example'>
+      <div className='example'  role='application'>
         <div className='row'>
           <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>
-              <RW.SelectList 
+              <RW.SelectList
                 disabled={disabled ? this.state.disabled : false}
                 readOnly={this.state.disabled === 'readonly'}
                 value={this.state.value}
@@ -107,8 +107,8 @@ var DropdownApi = React.createClass({
             </div>
             <div className='form-group'>
               <label className='form-label'>Disable Values</label>
-              <RW.Multiselect 
-                  value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] } 
+              <RW.Multiselect
+                  value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] }
                   data={list}
                   textField='label'
                   valueField='id'

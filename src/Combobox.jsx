@@ -14,6 +14,10 @@ import createUncontrolledWidget from 'uncontrollable';
 
 let defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
 
+let { omit, pick, result } = _;
+
+const FOCUSED_ID = '_listbox_option_focused';
+
 let propTypes = {
       //-- controlled props -----------
       value:          React.PropTypes.any,
@@ -103,6 +107,9 @@ var ComboBox = React.createClass({
   },
 
   componentDidUpdate() {
+    React.findDOMNode(this.refs.input)
+      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
+
     this.refs.list && validateList(this.refs.list)
   },
 
@@ -138,88 +145,104 @@ var ComboBox = React.createClass({
   },
 
   render(){
-    var {
-        className
-      , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , valueItem = this._dataItem( this._data(), this.props.value )
-      , items = this._data()
+    let {
+        className, tabIndex, filter, suggest
+      , groupBy, messages, data, busy, dropUp, name
+      , placeholder, value, open, disabled, readOnly
+      , listComponent: List } = this.props;
+
+    List = List || (groupBy && GroupableList) || PlainList
+
+    let elementProps = omit(this.props, Object.keys(propTypes));
+    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
+    let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
+
+    let { focusedItem, selectedItem, focused } = this.state;
+
+    let items = this._data()
+      , valueItem = this._dataItem(data, value) // take value from the raw data
+      , inputID = this._id('_input')
       , listID = this._id('_listbox')
-      , optID  = listID + '_selected_option'
-      , dropUp = this.props.dropUp
-      , messages = msgs(this.props.messages)
-      , renderList = _.isFirstFocusedRender(this) || this.props.open
-      , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
+      , optID  = this._id(FOCUSED_ID)
       , completeType = this.props.suggest
           ? this.props.filter ? 'both' : 'inline'
           : this.props.filter ? 'list' : '';
 
+    let shouldRenderList = _.isFirstFocusedRender(this) || open;
+
+    messages = msgs(messages)
+
     return (
-      <div {...props }
+      <div {...elementProps}
         ref="element"
-        role='combobox'
         onKeyDown={this._keyDown}
         onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex={'-1'}
         className={cx(className, 'rw-combobox', 'rw-widget', {
-          'rw-state-focus':     this.state.focused,
-          'rw-state-disabled':  this.props.disabled,
-          'rw-state-readonly':  this.props.readOnly,
+          'rw-state-focus':     focused,
+          'rw-state-disabled':  disabled,
+          'rw-state-readonly':  readOnly,
           'rw-rtl':             this.isRtl(),
 
-          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
+          ['rw-open' + (dropUp ? '-up' : '')]: open
          })}>
         <Btn
           tabIndex='-1'
           className='rw-select'
           onClick={this.toggle}
-          disabled={!!(this.props.disabled || this.props.readOnly)}>
-          <i className={cx('rw-i rw-i-caret-down', { ' rw-loading': this.props.busy })}>
-            <span className="rw-sr">{ _.result(messages.open, this.props) }</span>
+          disabled={!!(this.props.disabled || this.props.readOnly)}
+        >
+          <i className={cx('rw-i rw-i-caret-down', {'rw-loading': busy})}>
+            <span className="rw-sr">
+              { _.result(messages.open, this.props) }
+            </span>
           </i>
         </Btn>
         <Input
           ref='input'
-          type='text'
-          tabIndex={props.tabIndex}
-          suggest={this.props.suggest}
-          name={this.props.name}
+          id={inputID}
+          tabIndex={tabIndex}
+          suggest={suggest}
+          name={name}
+          role='combobox'
           aria-owns={listID}
-          aria-busy={!!this.props.busy}
+          aria-busy={!!busy}
+          //aria-live={!open && 'polite'}
           aria-autocomplete={completeType}
-          aria-activedescendent={ this.props.open ? optID : undefined }
-          aria-expanded={ this.props.open }
+          aria-activedescendant={optID}
+          aria-expanded={open}
           aria-haspopup={true}
-          placeholder={this.props.placeholder}
-          disabled={this.props.disabled}
-          readOnly={this.props.readOnly}
+          placeholder={placeholder}
+          disabled={disabled}
+          readOnly={readOnly}
           className='rw-input'
           value={ this._dataText(valueItem) }
           onChange={this._inputTyping}
-          onKeyDown={this._inputKeyDown}/>
-
+          onKeyDown={this._inputKeyDown}
+        />
         <Popup
-          {..._.pick(
-              this.props
-            , Object.keys(compat.type(Popup).propTypes))
-          }
+          {...popupProps}
           onOpening={() => this.refs.list.forceUpdate()}
-          onRequestClose={this.close}>
+          onRequestClose={this.close}
+        >
           <div>
-            { renderList &&
+            { shouldRenderList &&
               <List ref="list"
-                {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
+                {...listProps}
                 id={listID}
                 optID={optID}
-                aria-hidden={ !this.props.open }
-                aria-live={ completeType && 'polite' }
                 data={items}
-                selected={this.state.selectedItem}
-                focused ={this.state.focusedItem}
+                selected={selectedItem}
+                focused ={focusedItem}
+                aria-hidden={!open}
+                aria-labelledby={inputID}
+                aria-activedescendant={optID}
+                aria-live={open && 'polite'}
                 onSelect={this._onSelect}
                 onMove={this._scrollTo}
                 messages={{
-                  emptyList: this.props.data.length
+                  emptyList: data.length
                     ? messages.emptyFilter
                     : messages.emptyList
                 }}/>
