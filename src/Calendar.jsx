@@ -181,7 +181,7 @@ var Calendar = React.createClass({
     return (
       <div {...props }
         onKeyDown={this._keyDown}
-        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
         className={cx(className, 'rw-calendar', 'rw-widget', {
           'rw-state-focus':    this.state.focused,
@@ -196,15 +196,15 @@ var Calendar = React.createClass({
           upDisabled={  disabled || this.state.view === this.props.finalView}
           prevDisabled={disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit)}
           nextDisabled={disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max, unit)}
-          onViewChange={this._maybeHandle(this.navigate.bind(null, dir.UP, null))}
-          onMoveLeft ={this._maybeHandle(this.navigate.bind(null,  dir.LEFT, null))}
-          onMoveRight={this._maybeHandle(this.navigate.bind(null,  dir.RIGHT, null))}/>
+          onViewChange={this.navigate.bind(null, dir.UP, null)}
+          onMoveLeft ={this.navigate.bind(null,  dir.LEFT, null)}
+          onMoveRight={this.navigate.bind(null,  dir.RIGHT, null)}/>
 
         <SlideTransition
           ref='animation'
           duration={props.duration}
           direction={this.state.slideDirection}
-          onAnimate={() => this._focus(true)}>
+          onAnimate={() => this.focus(true)}>
 
           <View {...viewProps}
             tabIndex='-1' key={key} id={id}
@@ -213,7 +213,7 @@ var Calendar = React.createClass({
             value={this.props.value}
             focused={this.state.currentDate}
             onChange={this._maybeHandle(this.change)}
-            onKeyDown={this._maybeHandle(this._keyDown)} />
+            onKeyDown={this._keyDown} />
 
         </SlideTransition>
 
@@ -231,7 +231,7 @@ var Calendar = React.createClass({
     )
   },
 
-  navigate: function(direction, date){
+  navigate: _.ifNotDisabled(function (direction, date){
     var view     =  this.state.view
       , slideDir = (direction === dir.LEFT || direction === dir.UP)
           ? 'right'
@@ -250,7 +250,7 @@ var Calendar = React.createClass({
 
     if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
       this.notify('onNavigate', [date, slideDir, view])
-      this._focus(true, 'nav');
+      this.focus(true);
 
       this.setState({
         currentDate:    date,
@@ -258,28 +258,33 @@ var Calendar = React.createClass({
         view: view
       })
     }
+  }),
+
+  focus() {
+    if (+this.props.tabIndex > -1)
+      compat.findDOMNode(this).focus()
+
+    //console.log(document.activeElement)
   },
 
-  _focus: function(focused, e){
+  _focus: _.ifNotDisabled(true, function(focused, e){
     if ( +this.props.tabIndex === -1)
       return
 
     this.setTimeout('focus', () => {
-
-      if(focused) compat.findDOMNode(this).focus()
-
       if( focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused })
       }
     })
-  },
+  }),
 
   change(date){
-    setTimeout(() => this._focus(true))
-
-    if ( this.props.onChange && this.state.view === this.props.initialView)
-      return this.notify('onChange', date)
+    if (this.state.view === this.props.initialView){
+      this.notify('onChange', date)
+      this.focus();
+      return;
+    }
 
     this.navigate(dir.DOWN, date)
   },
@@ -293,7 +298,7 @@ var Calendar = React.createClass({
     this.notify('onChange', date)
 
     if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
-      this._focus(true, 'nav');
+      this.focus();
 
       this.setState({
         currentDate:    date,
@@ -313,7 +318,7 @@ var Calendar = React.createClass({
     return dates[method](this.state.currentDate, 1 * multi, unit)
   },
 
-  _keyDown(e){
+  _keyDown: _.ifNotDisabled(function(e){
     var ctrl = e.ctrlKey
       , key  = e.key
       , direction = ARROWS_TO_DIRECTION[key]
@@ -354,9 +359,9 @@ var Calendar = React.createClass({
     }
 
     this.notify('onKeyDown', [e])
-  },
+  }),
 
-  _label: function() {
+  _label() {
     var {
         culture
       , ...props } = this.props
@@ -376,7 +381,7 @@ var Calendar = React.createClass({
       return localizers.date.format(dates.startOf(dt, 'century'), format(props, 'century'), culture)
   },
 
-  inRangeValue: function(_value){
+  inRangeValue(_value){
     var value = dateOrNull(_value)
 
     if( value === null) return value
@@ -386,7 +391,7 @@ var Calendar = React.createClass({
       , this.props.min)
   },
 
-  isValidView: function(next) {
+  isValidView(next) {
     var bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
       , top     = VIEW_OPTIONS.indexOf(this.props.finalView)
       , current = VIEW_OPTIONS.indexOf(next);
