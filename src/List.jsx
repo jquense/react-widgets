@@ -60,7 +60,7 @@ module.exports = React.createClass({
   },
 
   render(){
-    var { className, role, ...props } = _.omit(this.props, ['data'])
+    var { className, ...props } = _.omit(this.props, ['data'])
       , ItemComponent = this.props.itemComponent
       , id = this.props.id || this._id('_list')
       , optID = this.props.optID
@@ -78,7 +78,7 @@ module.exports = React.createClass({
           return (<li
             tabIndex='-1'
             key={'item_' + idx}
-            role={role === 'listbox' ? 'option' : 'presentation'}
+            role='option'
             id={focused ? optID : defaultOptID}
             aria-selected={selected || void 0}
             className={cx({
@@ -96,10 +96,10 @@ module.exports = React.createClass({
 
     return (
       <ul { ...props }
-        tabIndex={props.tabIndex || '-1'}
+        tabIndex='-1'
         className={ (className || '') + ' rw-list' }
         ref='scrollable'
-        role={role !== undefined ? role : 'listbox'}
+        role='listbox'
        // aria-activedescendant={optID ? optID : undefined}
       >
           { items }
