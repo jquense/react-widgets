@@ -258,18 +258,18 @@ var DateTimePicker = React.createClass({
   },
 
   _change: function(date, str, constrain){
-    var change = this.props.onChange
+    let { onChange, value, calendar } = this.props;
 
-    if(constrain)
+    if (constrain)
       date = this.inRangeValue(date)
 
-    if( change ) {
-      if( date == null || this.props.value == null){
-        if (date != this.props.value) //eslint-disable-line eqeqeq
-          change(date, str)
+    if (onChange) {
+      if (date == null || value == null){
+        if (date != value) //eslint-disable-line eqeqeq
+          onChange(date, str)
       }
-      else if (!dates.eq(date, this.props.value))
-        change(date, str)
+      else if (!dates.eq(date, value))
+        onChange(date, str)
     }
   },
 
