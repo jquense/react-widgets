@@ -1,15 +1,15 @@
-'use strict';
-var React      = require('react')
-  , cx         = require('classnames')
-  , dates      = require('./util/dates')
-  , localizers = require('./util/configuration').locale
-  , Btn        = require('./WidgetButton')
-  , _          = require('./util/_')
-  , CustomPropTypes = require('./util/propTypes'); //omit
+import React      from 'react';
+import cx         from 'classnames';
+import dates      from './util/dates';
+import config from './util/configuration';
+import Btn        from './WidgetButton';
+import _          from './util/_';
+import CustomPropTypes from './util/propTypes';
 
-var format = props => props.decadeFormat || localizers.date.formats.decade
+let localizers   = config.locale;
+let format = props => props.decadeFormat || localizers.date.formats.decade
 
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'CenturyView',
 

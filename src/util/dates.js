@@ -1,6 +1,6 @@
 'use strict';
 var dateMath = require('date-arithmetic')
-  , { 
+  , {
     directions
   , calendarViewUnits } = require('./constants')
   , locale = require('./configuration').locale
@@ -16,7 +16,7 @@ var dates = module.exports = Object.assign(dateMath, {
   format: function(date, format, culture){
     return locale.date.format(date, format, culture)
   },
-  
+
   monthsInYear: function(year){
     var months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       , date   = new Date(year, 0, 1)
@@ -63,8 +63,8 @@ var dates = module.exports = Object.assign(dateMath, {
 
     newDate = dates.add(date, amount, addUnit)
 
-    return dates.inRange(newDate, min, max, rangeUnit) 
-      ? newDate 
+    return dates.inRange(newDate, min, max, rangeUnit)
+      ? newDate
       : date
   },
 

@@ -8,7 +8,7 @@ module.exports = {
       , handler = this.props.onMove
       , lastVisible = state.visible
       , lastItem    = state.focused
-      , shown, changed; 
+      , shown, changed;
 
     state.visible = !(!list.offsetWidth || !list.offsetHeight)
     state.focused = focused
@@ -17,7 +17,7 @@ module.exports = {
     shown   = state.visible && !lastVisible
 
     if ( shown || (state.visible && changed) ){
-      if ( handler ) 
+      if ( handler )
         handler(selected, list, focused)
       else {
         state.scrollCancel && state.scrollCancel()

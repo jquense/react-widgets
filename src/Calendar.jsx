@@ -1,26 +1,26 @@
-'use strict';
-var React           = require('react')
-  , cx              = require('classnames')
-  , compat          = require('./util/compat')
-  , Header          = require('./Header')
-  , Footer          = require('./Footer')
-  , Month           = require('./Month')
-  , Year            = require('./Year')
-  , Decade          = require('./Decade')
-  , Century         = require('./Century')
-  , localizers      = require('./util/configuration').locale
-  , CustomPropTypes = require('./util/propTypes')
-  , createUncontrolledWidget = require('uncontrollable')
-  , SlideTransition = require('./SlideTransition')
-  , dates           = require('./util/dates')
-  , constants       = require('./util/constants')
-  , _               = require('./util/_'); //values, omit
+import React    from 'react';
+import cx       from 'classnames';
+import compat   from './util/compat';
+import Header   from './Header';
+import Footer   from './Footer';
+import Month    from './Month';
+import Year     from './Year';
+import Decade   from './Decade';
+import Century  from './Century';
+import config   from './util/configuration';
+import CustomPropTypes from './util/propTypes';
+import createUncontrolledWidget from 'uncontrollable';
+import SlideTransition from './SlideTransition';
+import dates from './util/dates';
+import constants from './util/constants';
+import _ from './util/_'; //values, omit
 
-var dir    = constants.directions
+let dir    = constants.directions
   , values = obj => Object.keys(obj).map( k => obj[k] )
   , invert = obj => _.transform(obj, (o, val, key) => { o[val] = key }, {});
 
-var views        = constants.calendarViews
+let localizers   = config.locale
+  , views        = constants.calendarViews
   , VIEW_OPTIONS = values(views)
   , ALT_VIEW     = invert(constants.calendarViewHierarchy)
   , NEXT_VIEW    = constants.calendarViewHierarchy
@@ -32,27 +32,27 @@ var views        = constants.calendarViews
       [views.CENTURY]: Century
     };
 
-var ARROWS_TO_DIRECTION = {
+let ARROWS_TO_DIRECTION = {
   ArrowDown:  dir.DOWN,
   ArrowUp:    dir.UP,
   ArrowRight: dir.RIGHT,
   ArrowLeft:  dir.LEFT
 }
 
-var OPPOSITE_DIRECTION = {
+let OPPOSITE_DIRECTION = {
   [dir.LEFT]:  dir.RIGHT,
   [dir.RIGHT]: dir.LEFT
 };
 
-var MULTIPLIER = {
+let MULTIPLIER = {
       [views.YEAR]:    1,
       [views.DECADE]:  10,
       [views.CENTURY]: 100
     };
 
-var format = (props, f) => props[f + 'Format'] || localizers.date.formats[f]
+let format = (props, f) => props[f + 'Format'] || localizers.date.formats[f]
 
-var propTypes = {
+let propTypes = {
 
   onChange:      React.PropTypes.func,
   value:         React.PropTypes.instanceOf(Date),
@@ -62,14 +62,14 @@ var propTypes = {
 
   initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
 
-  finalView:     function (props, propname, componentName){
-                    var err = React.PropTypes.oneOf(VIEW_OPTIONS)(props, propname, componentName)
+  finalView(props, propname, componentName){
+    var err = React.PropTypes.oneOf(VIEW_OPTIONS)(props, propname, componentName)
 
-                    if ( err) return err
-                    if ( VIEW_OPTIONS.indexOf(props[propname]) < VIEW_OPTIONS.indexOf(props.initialView) )
-                      return new Error(`The \`${propname}\` prop: \`${props[propname]}\` cannot be 'lower' than the \`initialView\`
-                        prop. This creates a range that cannot be rendered.`.replace(/\n\t/g, ''))
-                 },
+    if (err) return err
+    if (VIEW_OPTIONS.indexOf(props[propname]) < VIEW_OPTIONS.indexOf(props.initialView))
+      return new Error(`The \`${propname}\` prop: \`${props[propname]}\` cannot be 'lower' than the \`initialView\`
+        prop. This creates a range that cannot be rendered.`.replace(/\n\t/g, ''))
+  },
 
   disabled:      React.PropTypes.oneOfType([
                    React.PropTypes.bool,
@@ -414,7 +414,9 @@ function msgs(msgs){
 }
 
 
-module.exports = createUncontrolledWidget(
+let UncontrolledCalendar = createUncontrolledWidget(
     Calendar, { value: 'onChange' });
 
-module.exports.BaseCalendar = Calendar
+UncontrolledCalendar.BaseCalendar = Calendar
+
+export default UncontrolledCalendar;

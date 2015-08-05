@@ -7,10 +7,10 @@ var hyphenate = require('dom-helpers/util/hyphenate')
 
 var has = Object.prototype.hasOwnProperty
   , reset = {}
-  , TRANSLATION_MAP = { 
-      left:   'translateX', 
-      right:  'translateX', 
-      top:    'translateY', 
+  , TRANSLATION_MAP = {
+      left:   'translateX',
+      right:  'translateX',
+      top:    'translateY',
       bottom: 'translateY'
     };
 
@@ -27,7 +27,7 @@ module.exports = animate
 
 // super lean animate function for transitions
 // doesn't support all translations to keep it matching the jquery API
-/** 
+/**
  * code in part from: Zepto 1.1.4 | zeptojs.com/license
  */
 function animate(node, properties, duration, easing, callback){
@@ -44,7 +44,7 @@ function animate(node, properties, duration, easing, callback){
   if ( duration === undefined ) duration = 200
 
   for(var key in properties) if ( has.call(properties, key) ) {
-    if( /(top|bottom)/.test(key) ) 
+    if( /(top|bottom)/.test(key) )
       transforms += TRANSLATION_MAP[key] + '(' + properties[key] + ') '
     else {
       cssValues[key] = properties[key]

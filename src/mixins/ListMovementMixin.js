@@ -4,8 +4,8 @@ var React = require('react')
   , helper = require('./DataHelpersMixin')
 
 module.exports = {
-  
-  propTypes: {    
+
+  propTypes: {
     textField:  React.PropTypes.string
   },
 
@@ -24,7 +24,7 @@ module.exports = {
 
     if (idx === -1) idx = data.length;
 
-    return word 
+    return word
       ? findPrevInstance(this,  data, word, idx)
       : --idx < 0 ? data[0] : data[idx]
   },
@@ -33,7 +33,7 @@ module.exports = {
     var data = this._data()
       , idx  = data.indexOf(item)
 
-    return word 
+    return word
       ? findNextInstance(this, data, word, idx)
       : ++idx === data.length ? data[data.length - 1] : data[idx]
   }
@@ -49,12 +49,12 @@ function findNextInstance(ctx, data, word, startIndex){
   word = word.toLowerCase()
 
   while (++idx < len){
-    foundStart = foundStart || idx > startIndex 
+    foundStart = foundStart || idx > startIndex
     itemText   = foundStart && helper._dataText.call(ctx, data[idx]).toLowerCase()
 
     if( foundStart && matches(itemText, word) )
       return data[idx]
-  }  
+  }
 }
 
 function findPrevInstance(ctx, data, word, startIndex){
@@ -65,10 +65,10 @@ function findPrevInstance(ctx, data, word, startIndex){
   word = word.toLowerCase()
 
   while (--idx >= 0 ){
-    foundStart = foundStart || idx < startIndex 
+    foundStart = foundStart || idx < startIndex
     itemText   = foundStart && helper._dataText.call(ctx, data[idx]).toLowerCase()
-    
+
     if( foundStart && matches(itemText, word) )
       return data[idx]
-  }  
+  }
 }

@@ -1,27 +1,28 @@
-'use strict';
-var React  = require('react')
-  , invariant = require('react/lib/invariant')
-  , activeElement = require('react/lib/getActiveElement')
-  , cx     = require('classnames')
-  , compat = require('./util/compat')
-  , _      = require('./util/_') //pick, omit, has
+import React  from 'react';
+import invariant from 'react/lib/invariant';
+import activeElement from 'react/lib/getActiveElement';
+import cx     from 'classnames';
+import compat from './util/compat';
+import _      from './util/_'; //pick, omit, has
 
-  , dates  = require('./util/dates')
-  , localizers = require('./util/configuration').locale
-  , views  = require('./util/constants').calendarViews
-  , popups = require('./util/constants').datePopups
+import dates  from './util/dates';
+import config from './util/configuration';
+import constants  from './util/constants';
 
-  , Popup     = require('./Popup')
-  , Calendar  = require('./Calendar').BaseCalendar
-  , Time      = require('./TimeList')
-  , DateInput = require('./DateInput')
-  , Btn       = require('./WidgetButton')
-  , CustomPropTypes = require('./util/propTypes')
-  , createUncontrolledWidget = require('uncontrollable');
+import Popup     from './Popup';
+import _Calendar  from './Calendar';
+import Time      from './TimeList';
+import DateInput from './DateInput';
+import Btn       from './WidgetButton';
+import CustomPropTypes from './util/propTypes';
+import createUncontrolledWidget from 'uncontrollable';
 
-var viewEnum  = Object.keys(views).map( k => views[k] );
+let { calendarViews: views, datePopups: popups } = constants;
+let Calendar = _Calendar.BaseCalendar;
+let localizers = config.locale;
+let viewEnum  = Object.keys(views).map( k => views[k] );
 
-var propTypes = {
+let propTypes = {
 
     ...compat.type(Calendar).propTypes,
 
@@ -94,7 +95,7 @@ var DateTimePicker = React.createClass({
     require('./mixins/RtlParentContextMixin')
   ],
 
-  propTypes: propTypes,
+  propTypes,
 
   getInitialState() {
     return {
@@ -123,7 +124,7 @@ var DateTimePicker = React.createClass({
     }
   },
 
-  render: function(){
+  render() {
     var {
         className
       , ...props } = _.omit(this.props, Object.keys(propTypes))
@@ -137,8 +138,8 @@ var DateTimePicker = React.createClass({
       , value = dateOrNull(this.props.value)
       , owns;
 
-    if (dateListID && this.props.calendar ) owns = dateListID
-    if (timeListID && this.props.time )     owns += ' ' + timeListID
+    if (dateListID && this.props.calendar) owns = dateListID
+    if (timeListID && this.props.time)     owns += ' ' + timeListID
 
     return (
       <div {...props}
@@ -257,14 +258,14 @@ var DateTimePicker = React.createClass({
     )
   },
 
-  _change: function(date, str, constrain){
-    let { onChange, value, calendar } = this.props;
+  _change(date, str, constrain){
+    let { onChange, value } = this.props;
 
     if (constrain)
       date = this.inRangeValue(date)
 
     if (onChange) {
-      if (date == null || value == null){
+      if (date == null || value == null) {
         if (date != value) //eslint-disable-line eqeqeq
           onChange(date, str)
       }
@@ -273,25 +274,25 @@ var DateTimePicker = React.createClass({
     }
   },
 
-  _keyDown: function(e){
+  _keyDown(e){
 
-    if ( e.key === 'Escape' && this.props.open )
+    if (e.key === 'Escape' && this.props.open)
       this.close()
 
     else if ( e.altKey ) {
       e.preventDefault()
 
-      if ( e.key === 'ArrowDown')
+      if (e.key === 'ArrowDown')
         this.open(this.props.open === popups.CALENDAR
               ? popups.TIME
               : popups.CALENDAR)
-      else if ( e.key === 'ArrowUp')
+      else if (e.key === 'ArrowUp')
         this.close()
-
-    } else if (this.props.open ) {
-      if( this.props.open === popups.CALENDAR )
+    }
+    else if (this.props.open) {
+      if (this.props.open === popups.CALENDAR )
         this.refs.calPopup._keyDown(e)
-      if( this.props.open === popups.TIME )
+      if (this.props.open === popups.TIME )
         this.refs.timePopup._keyDown(e)
     }
 
@@ -301,9 +302,9 @@ var DateTimePicker = React.createClass({
   _focus: function(focused, e){
 
     this.setTimeout('focus', () => {
-      if(!focused) this.close()
+      if (!focused) this.close()
 
-      if( focused !== this.state.focused){
+      if (focused !== this.state.focused){
         this.notify(focused ? 'onFocus' : 'onBlur', e)
         this.setState({ focused })
       }
@@ -311,14 +312,14 @@ var DateTimePicker = React.createClass({
   },
 
   focus(){
-    if ( activeElement() !== compat.findDOMNode(this.refs.valueInput))
+    if (activeElement() !== compat.findDOMNode(this.refs.valueInput))
       this.refs.valueInput.focus()
   },
 
   _selectDate(date){
     var format   = getFormat(this.props)
       , dateTime = dates.merge(date, this.props.value)
-      , dateStr  = formatDate(date, format, this.props.culture)
+      , dateStr  = formatDate(date, format, this.props.culture);
 
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
@@ -329,7 +330,7 @@ var DateTimePicker = React.createClass({
   _selectTime(datum){
     var format   = getFormat(this.props)
       , dateTime = dates.merge(this.props.value, datum.date)
-      , dateStr  = formatDate(datum.date, format, this.props.culture)
+      , dateStr  = formatDate(datum.date, format, this.props.culture);
 
     this.close()
     this.notify('onSelect', [dateTime, dateStr])
@@ -337,27 +338,27 @@ var DateTimePicker = React.createClass({
     this.focus()
   },
 
-  _click: function(view, e){
+  _click(view, e){
     this.focus()
     this.toggle(view, e)
   },
 
-  _parse: function(string){
+  _parse(string){
     var format = getFormat(this.props, true)
       , editFormat = this.props.editFormat
       , parse = this.props.parse
       , formats = [];
 
-    if ( typeof parse === 'function' )
+    if (typeof parse === 'function')
       return parse(string, this.props.culture)
 
-    if ( typeof format === 'string')
+    if (typeof format === 'string')
       formats.push(format)
 
-    if ( typeof editFormat === 'string')
+    if (typeof editFormat === 'string')
       formats.push(editFormat)
 
-    if ( parse )
+    if (parse)
       formats = formats.concat(this.props.parse)
 
     invariant(formats.length,
@@ -368,8 +369,7 @@ var DateTimePicker = React.createClass({
     return formatsParser(formats, this.props.culture, string);
   },
 
-  toggle: function(view) {
-
+  toggle(view) {
     this.props.open
       ? this.props.open !== view
           ? this.open(view)
@@ -377,18 +377,18 @@ var DateTimePicker = React.createClass({
       : this.open(view)
   },
 
-  open: function(view){
-    if ( this.props.open !== view && this.props[view] === true )
+  open(view){
+    if (this.props.open !== view && this.props[view] === true)
       this.notify('onToggle', view)
   },
 
-  close: function(){
-    if ( this.props.open )
+  close(){
+    if (this.props.open)
       this.notify('onToggle', false)
   },
 
-  inRangeValue: function(value){
-    if( value == null) return value
+  inRangeValue(value){
+    if (value == null) return value
 
     return dates.max(
         dates.min(value, this.props.max)
@@ -398,11 +398,15 @@ var DateTimePicker = React.createClass({
 });
 
 
-module.exports = createUncontrolledWidget(
+let UncontrolledDateTimePicker = createUncontrolledWidget(
     DateTimePicker
   , { open: 'onToggle', value: 'onChange' });
 
-module.exports.BaseDateTimePicker = DateTimePicker
+UncontrolledDateTimePicker.BaseDateTimePicker = DateTimePicker
+
+export default UncontrolledDateTimePicker;
+
+
 
 function getFormat(props){
   var cal  = props[popups.CALENDAR] != null ? props.calendar : true
@@ -438,4 +442,3 @@ function dateOrNull(dt){
   if (dt && !isNaN(dt.getTime())) return dt
   return null
 }
-

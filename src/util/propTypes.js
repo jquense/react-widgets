@@ -31,7 +31,7 @@ module.exports = {
     (...args) => localizers.date.propType(...args)),
 
   accessor:     React.PropTypes.oneOfType([
-                    React.PropTypes.string, 
+                    React.PropTypes.string,
                     React.PropTypes.func
                   ]),
 
@@ -57,8 +57,8 @@ function createChainableTypeChecker(validate) {
         return new Error(
           'Required prop `' + propName + '` was not specified in  `' + componentName + '`.');
       }
-    } 
-    else 
+    }
+    else
       return validate(props, propName, componentName, location);
   }
 

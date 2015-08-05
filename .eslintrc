@@ -14,7 +14,7 @@
   "rules": {
     "no-eval": 2,
     "strict": 0,
-    "eol-last": 0,
+    "eol-last": 2,
     "dot-notation": [2, { "allowKeywords": true }],
     "semi": [0, "never"],
     "curly": 0,

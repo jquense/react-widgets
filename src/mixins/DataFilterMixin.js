@@ -7,7 +7,7 @@ var React   = require('react')
 var dflt = f => f === true ? 'startsWith' : f ? f : 'eq'
 
 module.exports = {
-  
+
     propTypes: {
       data:           React.PropTypes.array,
       value:          React.PropTypes.any,
@@ -39,7 +39,7 @@ module.exports = {
         return true
       })
 
-      return idx  
+      return idx
     },
 
     filter(items, searchTerm){
@@ -50,15 +50,15 @@ module.exports = {
       if ( !matches || !searchTerm || !searchTerm.trim() || searchTerm.length < (this.props.minLength || 1))
         return items
 
-      return items.filter( 
+      return items.filter(
         (item, idx) => matches(item, searchTerm, idx))
     }
   }
 
 
 function getFilter(matcher, searchTerm, ctx){
-  searchTerm = !ctx.props.caseSensitive 
-    ? searchTerm.toLowerCase() 
+  searchTerm = !ctx.props.caseSensitive
+    ? searchTerm.toLowerCase()
     : searchTerm
 
   return function(item) {

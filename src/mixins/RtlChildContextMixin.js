@@ -2,7 +2,7 @@
 var React = require('react')
 
 module.exports = {
-  
+
   contextTypes: {
     isRtl: React.PropTypes.bool
   },

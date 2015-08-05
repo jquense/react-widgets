@@ -1,21 +1,20 @@
-'use strict';
-var React           = require('react')
-  , cx              = require('classnames')
-  , _               = require('./util/_')
-  , filter          = require('./util/filter')
-  , Popup           = require('./Popup')
-  , Btn             = require('./WidgetButton')
-  , Input           = require('./ComboboxInput')
-  , compat          = require('./util/compat')
-  , CustomPropTypes = require('./util/propTypes')
-  , PlainList       = require('./List')
-  , GroupableList   = require('./ListGroupable')
-  , validateList    = require('./util/validateListInterface')
-  , createUncontrolledWidget = require('uncontrollable');
+import React from 'react';
+import cx from 'classnames';
+import _  from './util/_';
+import filter from './util/filter';
+import Popup           from './Popup';
+import Btn             from './WidgetButton';
+import Input           from './ComboboxInput';
+import compat          from './util/compat';
+import CustomPropTypes from './util/propTypes';
+import PlainList       from './List';
+import GroupableList   from './ListGroupable';
+import validateList    from './util/validateListInterface';
+import createUncontrolledWidget from 'uncontrollable';
 
-var defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
+let defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
 
-var propTypes = {
+let propTypes = {
       //-- controlled props -----------
       value:          React.PropTypes.any,
       onChange:       React.PropTypes.func,
@@ -392,7 +391,6 @@ var ComboBox = React.createClass({
   }
 })
 
-
 function msgs(msgs){
   return {
     open: 'open combobox',
@@ -408,7 +406,9 @@ function getFilter(suggest, word, ctx){
       : item => suggest(item, word)
 }
 
-module.exports = createUncontrolledWidget(
+let UncontrolledComboBox = createUncontrolledWidget(
       ComboBox, { open: 'onToggle', value: 'onChange' });
 
-module.exports.BaseComboBox = ComboBox
+UncontrolledComboBox.BaseComboBox = ComboBox
+
+export default UncontrolledComboBox;
