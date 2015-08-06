@@ -36,36 +36,50 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    var rtl = this.isRtl();
+    let {
+        messages, label, labelId
+      , onMoveRight, onMoveLeft, onViewChange
+      , prevDisabled, upDisabled, nextDisabled } = this.props;
+
+    let rtl = this.isRtl();
 
     return (
       <div className='rw-header'>
         <Btn className="rw-btn-left"
           tabIndex='-1'
-          onClick={this.props.onMoveLeft}
-          disabled={this.props.prevDisabled}
-          aria-disabled={this.props.prevDisabled}
-          title={this.props.moveBack}
+          onClick={onMoveLeft}
+          disabled={prevDisabled}
+          aria-disabled={prevDisabled}
+          aria-label={messages.moveBack}
+          title={messages.moveBack}
         >
-          <i className={'rw-i rw-i-caret-' + (rtl ? 'right' : 'left')}></i>
-          <span className="rw-sr">{this.props.messages.moveBack}</span>
+          <i aria-hidden='false'
+            className={'rw-i rw-i-caret-' + (rtl ? 'right' : 'left')}
+          />
         </Btn>
-        <Btn className="rw-btn-view"
-          id={this.props.labelId}
+        <Btn
+          id={labelId}
           tabIndex='-1'
-          onClick={this.props.onViewChange}
-          disabled={this.props.upDisabled}
-          aria-disabled={this.props.upDisabled}>
-          { this.props.label }
+          className="rw-btn-view"
+          disabled={upDisabled}
+          aria-disabled={upDisabled}
+          aria-live="polite"
+          aria-atomic="true"
+          onClick={onViewChange}
+        >
+          { label }
         </Btn>
         <Btn className="rw-btn-right"
           tabIndex='-1'
-          onClick={this.props.onMoveRight}
-          disabled={this.props.nextDisabled}
-          aria-disabled={this.props.nextDisabled}
-          title={this.props.moveForward}>
-          <i className={'rw-i rw-i-caret-' + (rtl ? 'left' : 'right')}></i>
-          <span className="rw-sr">{this.props.messages.moveForward}</span>
+          onClick={onMoveRight}
+          disabled={nextDisabled}
+          title={messages.moveForward}
+          aria-label={messages.moveForward}
+          aria-disabled={nextDisabled}
+        >
+          <i aria-hidden='false'
+            className={'rw-i rw-i-caret-' + (rtl ? 'left' : 'right')}
+          />
         </Btn>
       </div>
     )

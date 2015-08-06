@@ -52,6 +52,8 @@ let MULTIPLIER = {
 
 let format = (props, f) => props[f + 'Format'] || localizers.date.formats[f]
 
+const FOCUSED_ID = '_calendar_cell_focused';
+
 let propTypes = {
 
   onChange:      React.PropTypes.func,
@@ -115,7 +117,7 @@ var Calendar = React.createClass({
 
   propTypes,
 
-  getInitialState: function(){
+  getInitialState(){
     var value = this.inRangeValue(this.props.value);
 
     return {
@@ -125,7 +127,7 @@ var Calendar = React.createClass({
     }
   },
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
 
       value:        null,
@@ -142,7 +144,12 @@ var Calendar = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentDidUpdate() {
+    React.findDOMNode(this)
+      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
+  },
+
+  componentWillReceiveProps(nextProps) {
     var bottom  = VIEW_OPTIONS.indexOf(nextProps.initialView)
       , top     = VIEW_OPTIONS.indexOf(nextProps.finalView)
       , current = VIEW_OPTIONS.indexOf(this.state.view)
@@ -161,69 +168,84 @@ var Calendar = React.createClass({
       })
   },
 
-  render: function(){
-    var {
-        className
-      , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , View       = VIEW[this.state.view]
-      , viewProps  = _.pick(this.props, Object.keys(compat.type(View).propTypes))
-      , unit       = this.state.view
-      , messages   = msgs(this.props.messages)
+  render() {
 
-      , disabled   = this.props.disabled || this.props.readOnly
-      , date       = this.state.currentDate
+    let {
+        className, value, footerFormat
+      , disabled, readOnly, finalView, footer
+      , messages, min, max, culture, duration } = this.props
+
+    let { view, currentDate, slideDirection, focused } = this.state;
+
+    var View = VIEW[view]
+      , unit = view
       , todaysDate = new Date()
-      , todayNotInRange = !dates.inRange(todaysDate, this.props.min, this.props.max, unit)
-      , labelId    = this._id('_view_label')
-      , key        = this.state.view + '_' + dates[this.state.view](date)
-      , id         = this._id('_view');
+      , todayNotInRange = !dates.inRange(todaysDate, min, max, unit)
+
+    let viewID = this._id('_calendar')
+      , labelID = this._id('_calendar_label')
+      , focusID = this._id(FOCUSED_ID)
+      , key = view + '_' + dates[view](currentDate);
+
+    let elementProps = _.omit(this.props, Object.keys(propTypes))
+      , viewProps  = _.pick(this.props, Object.keys(compat.type(View).propTypes))
+
+    let isDisabled = disabled || readOnly
+
+    messages = msgs(this.props.messages)
 
     return (
-      <div {...props }
+      <div {...elementProps}
+        role='group'
         onKeyDown={this._keyDown}
         onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
         className={cx(className, 'rw-calendar', 'rw-widget', {
-          'rw-state-focus':    this.state.focused,
-          'rw-state-disabled': this.props.disabled,
-          'rw-state-readonly': this.props.readOnly,
+          'rw-state-focus':    focused,
+          'rw-state-disabled': disabled,
+          'rw-state-readonly': readOnly,
           'rw-rtl':            this.isRtl()
-        })}>
+        })}
+      >
         <Header
           label={this._label()}
-          labelId={labelId}
+          labelId={labelID}
           messages={messages}
-          upDisabled={  disabled || this.state.view === this.props.finalView}
-          prevDisabled={disabled || !dates.inRange(this.nextDate(dir.LEFT), this.props.min, this.props.max, unit)}
-          nextDisabled={disabled || !dates.inRange(this.nextDate(dir.RIGHT), this.props.min, this.props.max, unit)}
+          upDisabled={  isDisabled || view === finalView}
+          prevDisabled={isDisabled || !dates.inRange(this.nextDate(dir.LEFT), min, max, unit)}
+          nextDisabled={isDisabled || !dates.inRange(this.nextDate(dir.RIGHT), min, max, unit)}
           onViewChange={this.navigate.bind(null, dir.UP, null)}
           onMoveLeft ={this.navigate.bind(null,  dir.LEFT, null)}
-          onMoveRight={this.navigate.bind(null,  dir.RIGHT, null)}/>
-
+          onMoveRight={this.navigate.bind(null,  dir.RIGHT, null)}
+        />
         <SlideTransition
           ref='animation'
-          duration={props.duration}
-          direction={this.state.slideDirection}
-          onAnimate={() => this.focus(true)}>
-
+          duration={duration}
+          direction={slideDirection}
+          onAnimate={() => this.focus(true)}
+        >
           <View {...viewProps}
-            tabIndex='-1' key={key} id={id}
-            aria-labelledby={labelId}
+            tabIndex='-1'
+            key={key}
+            id={viewID}
+            focusID={focusID}
+            className='rw-calendar-grid'
+            aria-activedescendant={focusID}
+            aria-labelledby={labelID}
             today={todaysDate}
-            value={this.props.value}
-            focused={this.state.currentDate}
+            value={value}
+            focused={currentDate}
             onChange={this._maybeHandle(this.change)}
-            onKeyDown={this._keyDown} />
-
+            onKeyDown={this._keyDown}
+          />
         </SlideTransition>
-
-        { this.props.footer &&
+        { footer &&
           <Footer
             value={todaysDate}
-            format={this.props.footerFormat}
-            culture={this.props.culture}
-            disabled={ this.props.disabled || todayNotInRange}
-            readOnly={this.props.readOnly}
+            format={footerFormat}
+            culture={culture}
+            disabled={disabled || todayNotInRange}
+            readOnly={readOnly}
             onClick={this._maybeHandle(this.select)}
           />
         }

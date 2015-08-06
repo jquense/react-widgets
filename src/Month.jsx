@@ -1,17 +1,34 @@
-'use strict';
-var React = require('react')
-  , cx    = require('classnames')
-  , dates = require('./util/dates')
-  , localizers = require('./util/configuration').locale
-  , CustomPropTypes = require('./util/propTypes')
-  , _   = require('./util/_')
-  , Btn = require('./WidgetButton');
+import React from 'react';
+import cn from 'classnames';
+import dates from './util/dates';
+import config from './util/configuration'
+import CustomPropTypes from './util/propTypes';
+import _   from './util/_';
+import Btn from './WidgetButton';
 
-var dayFormat = props => props.dayFormat || localizers.date.formats.weekday
+var localizers = config.locale
+  , dayFormat = props => props.dayFormat || localizers.date.formats.weekday
   , dateFormat = props => props.dateFormat || localizers.date.formats.dayOfMonth
 
+let propTypes = {
+  focusID:          React.PropTypes.string,
 
-module.exports = React.createClass({
+  culture:          React.PropTypes.string,
+  value:            React.PropTypes.instanceOf(Date),
+  focused:          React.PropTypes.instanceOf(Date),
+  min:              React.PropTypes.instanceOf(Date),
+  max:              React.PropTypes.instanceOf(Date),
+
+  dayComponent:     CustomPropTypes.elementType,
+
+  dayFormat:        CustomPropTypes.dateFormat,
+  dateFormat:       CustomPropTypes.dateFormat,
+  footerFormat:     CustomPropTypes.dateFormat,
+
+  onChange:         React.PropTypes.func.isRequired
+};
+
+export default React.createClass({
 
   displayName: 'MonthView',
 
@@ -20,78 +37,82 @@ module.exports = React.createClass({
     require('./mixins/RtlChildContextMixin')
   ],
 
-  propTypes: {
-    culture:          React.PropTypes.string,
-    value:            React.PropTypes.instanceOf(Date),
-    focused:          React.PropTypes.instanceOf(Date),
-    min:              React.PropTypes.instanceOf(Date),
-    max:              React.PropTypes.instanceOf(Date),
+  propTypes,
 
-    dayComponent:     CustomPropTypes.elementType,
+  render(){
+    var { className, focused, focusID, culture } = this.props
+      , month = dates.visibleDays(focused, culture)
+      , rows  = _.chunk(month, 7);
 
-    dayFormat:        CustomPropTypes.dateFormat,
-    dateFormat:       CustomPropTypes.dateFormat,
-
-    onChange:         React.PropTypes.func.isRequired
-  },
-
-  render: function(){
-    var props = _.omit(this.props, ['max', 'min', 'value', 'onChange'])
-      , month = dates.visibleDays(this.props.focused, this.props.culture)
-      , rows  = _.chunk(month, 7 );
+    var elementProps = _.omit(this.props, Object.keys(propTypes));
 
     return (
-      <table {...props}
+      <table {...elementProps}
         role='grid'
-        className='rw-calendar-grid'
-        aria-activedescendant={this._id('_selected_item')}>
+        aria-activedescendant={focusID}
+      >
         <thead>
-          <tr>{this._headers(dayFormat(this.props), props.culture)}</tr>
+          <tr>{this._headers(dayFormat(this.props), culture)}</tr>
         </thead>
         <tbody>
-          { rows.map(this._row)}
+          {rows.map(this._row)}
         </tbody>
       </table>
     )
   },
 
-  _row: function(row, i){
-    var id = this._id('_selected_item')
-      , DayComponent = this.props.dayComponent
-
+  _row(row, i){
+    let {
+        focusID, id = this._id('_month')
+      , focused, selected, disabled, onChange
+      , value, today, culture, min, max
+      , dayComponent: Day } = this.props
+      , labelFormat = localizers.date.formats.footer;
 
     return (
       <tr key={'week_' + i} role='row'>
-      { row.map( (day, idx) => {
-        var focused  = dates.eq(day, this.props.focused, 'day')
-          , selected = dates.eq(day, this.props.value, 'day')
-          , today = dates.eq(day, this.props.today, 'day')
-          , date = localizers.date.format(day, dateFormat(this.props), this.props.culture);
+        { row.map( (day, idx) => {
 
-        return !dates.inRange(day, this.props.min, this.props.max)
-            ? <td  key={'day_' + idx} role='gridcell' className='rw-empty-cell' >&nbsp;</td>
-            : (<td key={'day_' + idx} role='gridcell'>
-                <Btn
-                  tabIndex='-1'
-                  onClick={this.props.onChange.bind(null, day)}
-                  aria-pressed={selected}
-                  aria-disabled={this.props.disabled || undefined}
-                  disabled={this.props.disabled}
-                  className={cx({
-                    'rw-off-range':      dates.month(day) !== dates.month(this.props.focused),
-                    'rw-state-focus':    focused,
-                    'rw-state-selected': selected,
-                    'rw-now': today
-                  })}
-                  id={focused ? id : undefined}>
-                  {
-                    DayComponent
-                      ? <DayComponent date={day} label={date}/>
-                      : date
-                  }
-                </Btn>
-              </td>)
-      })}
+          var isFocused  = dates.eq(day, focused, 'day')
+            , isSelected = dates.eq(day, value, 'day')
+            , today = dates.eq(day, today, 'day')
+            , date = localizers.date.format(day, dateFormat(this.props), culture)
+            , label = localizers.date.format(day, labelFormat, culture);
+
+          var optionID = id + '_week_' + i + '_day_' + idx;
+          optionID = isFocused ? (focusID || optionID) : optionID;
+
+          return !dates.inRange(day, min, max)
+              ? <td  key={'day_' + idx} role='presentation' className='rw-empty-cell'>&nbsp;</td>
+              : (
+                <td
+                  key={'day_' + idx}
+                  role='gridcell'
+                  id={optionID}
+                  title={label}
+                  aria-selected={isSelected}
+                  aria-label={label}
+                  aria-readonly={disabled}
+                >
+                  <span
+                    aria-labelledby={optionID}
+                    onClick={onChange.bind(null, day)}
+                    className={cn('rw-btn', {
+                      'rw-off-range':      dates.month(day) !== dates.month(focused),
+                      'rw-state-focus':    isFocused,
+                      'rw-state-selected': isSelected,
+                      'rw-now': today
+                    })}
+                  >
+                    {
+                      Day
+                        ? <Day date={day} label={date}/>
+                        : date
+                    }
+                  </span>
+                </td>
+              )
+        })}
       </tr>
     )
   },

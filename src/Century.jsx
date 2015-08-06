@@ -1,13 +1,21 @@
 import React      from 'react';
-import cx         from 'classnames';
+import cn         from 'classnames';
 import dates      from './util/dates';
-import config from './util/configuration';
-import Btn        from './WidgetButton';
-import _          from './util/_';
+import config from './util/configuration';import _          from './util/_';
 import CustomPropTypes from './util/propTypes';
 
 let localizers   = config.locale;
 let format = props => props.decadeFormat || localizers.date.formats.decade
+
+let propTypes = {
+  culture:      React.PropTypes.string,
+  value:        React.PropTypes.instanceOf(Date),
+  min:          React.PropTypes.instanceOf(Date),
+  max:          React.PropTypes.instanceOf(Date),
+
+  onChange:     React.PropTypes.func.isRequired,
+  decadeFormat: CustomPropTypes.dateFormat
+};
 
 export default React.createClass({
 
@@ -19,66 +27,73 @@ export default React.createClass({
     require('./mixins/RtlChildContextMixin')
   ],
 
-  propTypes: {
-    culture:      React.PropTypes.string,
-    value:        React.PropTypes.instanceOf(Date),
-    min:          React.PropTypes.instanceOf(Date),
-    max:          React.PropTypes.instanceOf(Date),
-
-    onChange:     React.PropTypes.func.isRequired,
-
-    decadeFormat: CustomPropTypes.dateFormat
-  },
+  propTypes,
 
   render: function(){
-    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
-      , years = getCenturyDecades(this.props.focused)
-      , rows  = _.chunk(years, 4);
+    let { className, focused } = this.props
+      , years = getCenturyDecades(focused)
+      , rows = _.chunk(years, 4);
+
+    var elementProps = _.omit(this.props, Object.keys(propTypes));
 
     return (
-      <table {...props}
+      <table { ...elementProps}
         role='grid'
-        className='rw-calendar-grid rw-nav-view'
-        aria-activedescendant={this._id('_selected_item')}>
-        <tbody>
+        className={cn(className, 'rw-nav-view')}
+      >
+        <tbody >
           { rows.map(this._row)}
         </tbody>
       </table>
     )
   },
 
-  _row: function(row, i){
-    var id = this._id('_selected_item')
+  _row(row, rowIdx) {
+    let {
+        focusID, id = this._id('_century')
+      , focused, selected, disabled, onChange
+      , value, today, culture, min, max } = this.props;
 
     return (
-      <tr key={'row_' + i} role='row'>
-      { row.map( (date, i) => {
-        var focused       = dates.eq(date,  this.props.focused,  'decade')
-          , selected      = dates.eq(date, this.props.value,  'decade')
-          , d             = inRangeDate(date, this.props.min, this.props.max)
-          , currentDecade = dates.eq(date, this.props.today, 'decade');
+      <tr key={'row_' + rowIdx} role='row'>
+        { row.map( (date, i) => {
+          var isFocused  = dates.eq(date,  focused,  'decade')
+            , isSelected = dates.eq(date, value,  'decade')
+            , currentDecade = dates.eq(date, today, 'decade')
+            , label = localizers.date.format(
+                dates.startOf(date, 'decade'), format(this.props), culture);
 
-        return !inRange(date, this.props.min, this.props.max)
-          ? <td key={i} role='gridcell' className='rw-empty-cell'>&nbsp;</td>
-          : (<td key={i} role='gridcell'>
-              <Btn onClick={this.props.onChange.bind(null, d)}
-                tabIndex='-1'
-                id={ focused ? id : undefined }
-                aria-pressed={selected}
-                aria-disabled={this.props.disabled}
-                disabled={this.props.disabled || undefined}
-                className={cx({
-                  'rw-off-range':       !inCentury(date, this.props.focused),
-                  'rw-state-focus':     focused,
-                  'rw-state-selected':  selected,
-                  'rw-now':             currentDecade
-                 })}>
-                {
-                  localizers.date.format(dates.startOf(date, 'decade'), format(this.props), this.props.culture)
-                }
-              </Btn>
-            </td>)
-      })}
+          var optionID = id + '_' + rowIdx + '_decade_' + i
+
+          optionID = isFocused ? (focusID || optionID) : optionID;
+
+          return !inRange(date, min, max)
+            ? <td key={i} role='gridcell' className='rw-empty-cell'>&nbsp;</td>
+            : (
+              <td
+                key={i}
+                role='gridcell'
+                id={optionID}
+                title={label}
+                aria-selected={isSelected}
+                aria-label={label}
+                aria-readonly={disabled}
+              >
+                <span
+                  aria-labelledby={optionID}
+                  onClick={onChange.bind(null, inRangeDate(date, min, max))}
+                  className={cn('rw-btn', {
+                    'rw-off-range':       !inCentury(date, focused),
+                    'rw-state-focus':     isFocused,
+                    'rw-state-selected':  isSelected,
+                    'rw-now':             currentDecade
+                   })}
+                >
+                  { label }
+                </span>
+              </td>
+            )
+        })}
     </tr>)
   }
 

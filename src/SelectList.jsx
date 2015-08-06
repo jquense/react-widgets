@@ -400,7 +400,9 @@ function getListItem(parent){
   })
 }
 
-module.exports = createUncontrolledWidget(
+let UncontrolledSelectList = createUncontrolledWidget(
     SelectList, { value: 'onChange' });
 
-module.exports.BaseSelectList = SelectList
+UncontrolledSelectList.BaseSelectList = SelectList
+
+export default UncontrolledSelectList;
