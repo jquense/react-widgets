@@ -177,7 +177,7 @@ h3 > a > strong {
 
 
 @media (max-width: 767px) {
-  
+
   .nav-aside {
     position: static;
   }
@@ -232,6 +232,9 @@ pre {
   padding-top: 10px;
 }
 
+.editable-rendered .rw-selectlist label{
+  font-weight: normal;
+}
 
 .editable-editor,
 .cm-s-neo.CodeMirror {

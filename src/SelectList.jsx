@@ -1,17 +1,20 @@
-'use strict';
-var React = require('react')
-  , _  = require('./util/_')
-  , cx = require('classnames')
-  , createUncontrolledWidget = require('uncontrollable')
-  , compat = require('./util/compat')
+import React from 'react';
+import _  from './util/_';
+import cx from 'classnames';
+import createUncontrolledWidget from 'uncontrollable';
+import compat from './util/compat';
 
-  , CustomPropTypes  = require('./util/propTypes')
-  , PlainList        = require('./List')
-  , GroupableList = require('./ListGroupable')
-  , validateList = require('./util/validateListInterface')
-  , scrollTo = require('dom-helpers/util/scrollTo');
+import CustomPropTypes  from './util/propTypes';
+import PlainList        from './List';
+import GroupableList from './ListGroupable';
+import validateList from './util/validateListInterface';
+import scrollTo from 'dom-helpers/util/scrollTo';
 
-var propTypes = {
+let { omit, pick, result } = _;
+
+const FOCUSED_ID = '_listbox_option_focused';
+
+let propTypes = {
 
     data:           React.PropTypes.array,
     value:          React.PropTypes.oneOfType([
@@ -105,48 +108,69 @@ var SelectList = React.createClass({
     validateList(this.refs.list)
   },
 
+  componentDidUpdate() {
+    React.findDOMNode(this.refs.list)
+      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
+
+    React.findDOMNode(this)
+      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
+  },
+
   render() {
-    var { className, ...props } = _.omit(this.props, Object.keys(propTypes))
-      , focus  = this._maybeHandle(this._focus.bind(null, true), true)
+    let {
+        className, tabIndex, filter, suggest
+      , groupBy, messages, data, busy, dropUp, name
+      , placeholder, value, open, disabled, readOnly
+      , listComponent: List } = this.props;
+
+    List = List || (groupBy && GroupableList) || PlainList
+
+    let elementProps = omit(this.props, Object.keys(propTypes));
+    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
+
+    let { ListItem, focusedItem, selectedItem, focused } = this.state;
+
+    let items = this._data()
       , listID = this._id('_listbox')
-      , optID  = listID + '_selected_option'
-      , blur   = this._focus.bind(null, false)
-      , List   = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList
-      , focusedItem = this.state.focused
-                    && !this.isDisabled()
-                    && !this.isReadOnly()
-                    && this.state.focusedItem;
+      , optID  = this._id(FOCUSED_ID);
+
+    focusedItem = focused
+      && !this.isDisabled()
+      && !this.isReadOnly()
+      && focusedItem;
 
     return (
-
-      <div {...props}
+      <div {...elementProps}
         onKeyDown={this._maybeHandle(this._keyDown)}
-        onFocus={focus}
-        onBlur={blur}
-        tabIndex={props.tabIndex || '0'}
-        role='listbox'
-        aria-busy={!!this.props.busy}
-        aria-activedescendent={ this.state.focused ? optID : undefined }
-        aria-disabled={ this.isDisabled() }
-        aria-readonly={ this.isReadOnly() }
+        onFocus={this._focus.bind(null, true)}
+        onBlur={this._focus.bind(null, false)}
+        role={'radiogroup'}
+        aria-busy={!!busy}
+        aria-activedescendant={optID}
+        aria-disabled={this.isDisabled()}
+        aria-readonly={this.isReadOnly()}
+        tabIndex={'-1'}
         className={cx(className, 'rw-widget', 'rw-selectlist', {
-          'rw-state-focus':    this.state.focused,
+          'rw-state-focus':    focused,
           'rw-state-disabled': this.isDisabled(),
           'rw-state-readonly': this.isReadOnly(),
           'rw-rtl':            this.isRtl(),
-          'rw-loading-mask':   this.props.busy
-        })}>
+          'rw-loading-mask':   busy
+        })}
+      >
         <List ref='list'
-          {..._.pick(
-              this.props
-            , Object.keys(compat.type(List).propTypes))
-          }
-          data={this._data()}
-          focused={focusedItem}
+          {...listProps}
           id={listID}
-          optID ={optID}
-          itemComponent={this.state.ListItem}
-          onMove={ this._scrollTo }/>
+          optID={optID}
+          role={'radiogroup'}
+          tabIndex={tabIndex || '0'}
+          data={items}
+          aria-activedescendant={optID}
+          focused={focusedItem}
+          optionComponent={ListItem}
+          itemComponent={this.props.itemComponent}
+          onMove={this._scrollTo}
+        />
       </div>
     );
   },
@@ -263,9 +287,9 @@ var SelectList = React.createClass({
     this.notify('onChange', [values || []])
   },
 
-  _focus(focused, e){
+  _focus: _.ifNotDisabled(true, function(focused, e) {
 
-    if( focused) compat.findDOMNode(this).focus()
+    if( focused) compat.findDOMNode(this.refs.list).focus()
 
     this.setTimeout('focus', () => {
       if( focused !== this.state.focused){
@@ -273,7 +297,7 @@ var SelectList = React.createClass({
         this.setState({ focused: focused })
       }
     })
-  },
+  }),
 
   isDisabledItem(item) {
     return this.isDisabled() || this._contains(item, this.props.disabled)
@@ -325,39 +349,51 @@ function getListItem(parent){
 
     displayName: 'SelectItem',
 
-    render: function() {
-      var item      = this.props.item
-        , checked   = parent._contains(item, parent._values())
+    render() {
+      let {
+          children, focused, selected
+        , dataItem: item
+        , ...props } = this.props;
+
+      let { multiple, name = parent._id('_name') } = parent.props;
+
+      let checked   = parent._contains(item, parent._values())
         , change    = parent._change.bind(null, item)
         , disabled  = parent.isDisabledItem(item)
         , readonly  = parent.isReadOnlyItem(item)
-        , Component = parent.props.itemComponent
-        , name      = parent.props.name || parent._id('_name');
+        , type = multiple ? 'checkbox' : 'radio';
 
       return (
-        <label
-          className={cx({
+        <li
+          {...props}
+          tabIndex='-1'
+          role={type}
+          aria-checked={!!checked}
+          aria-disabled={disabled || readonly}
+          className={cx('rw-list-option', {
+            'rw-state-focus':    focused,
+            'rw-state-selected': selected,
             'rw-state-disabled': disabled,
             'rw-state-readonly': readonly
-          })}>
-          <input { ...this.props}
-            tabIndex='-1'
-            name={name}
-            type={parent.props.multiple ? 'checkbox' : 'radio'}
-
-            onChange={onChange}
-            checked={checked}
-            disabled={disabled || readonly}
-            aria-disabled={disabled || readonly}/>
-            { Component
-                ? <Component item={item}/>
-                : parent._dataText(item)
-            }
-        </label>
+          })}
+        >
+          <label>
+            <input
+              name={name}
+              tabIndex='-1'
+              role='presentation'
+              type={type}
+              onChange={onChange}
+              checked={checked}
+              disabled={disabled || readonly}
+            />
+              { children }
+          </label>
+        </li>
       );
 
       function onChange(e){
-        if( !disabled && !readonly)
+        if (!disabled && !readonly)
           change(e.target.checked)
       }
     }

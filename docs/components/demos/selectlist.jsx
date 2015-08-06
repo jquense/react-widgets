@@ -38,12 +38,13 @@ var list = [
         { label: 'mauve',  id: 6 },
       ];
 
-var DropdownApi = React.createClass({
+var SelectListApi = React.createClass({
 
   getInitialState: function(){
 
     return {
       duration: 250,
+      value: list[0]
     }
   },
 
@@ -66,7 +67,7 @@ var DropdownApi = React.createClass({
                 isRtl={this.state.isRtl}
                 valueField='id'
                 textField='label'
-                />
+              />
             </div>
           </div>
           <div className='col-md-6 col-lg-5 api-panel'>
@@ -142,5 +143,5 @@ var DropdownApi = React.createClass({
   }
 });
 
-module.exports = DropdownApi;
+module.exports = SelectListApi;
 
