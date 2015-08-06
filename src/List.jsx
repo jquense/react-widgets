@@ -1,12 +1,12 @@
-'use strict';
-var React   = require('react')
-  , CustomPropTypes  = require('./util/propTypes')
-  , compat = require('./util/compat')
-  , cx = require('classnames')
-  , _  = require('./util/_');
+import React   from 'react';
+import ListOption from './ListOption';
+import CustomPropTypes from './util/propTypes';
+import compat from './util/compat';
+import cn from 'classnames';
+import _  from './util/_';
 
 
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'List',
 
@@ -20,7 +20,9 @@ module.exports = React.createClass({
     data:          React.PropTypes.array,
     onSelect:      React.PropTypes.func,
     onMove:        React.PropTypes.func,
-    itemComponent: CustomPropTypes.elementType,
+
+    optionComponent: CustomPropTypes.elementType,
+    itemComponent:   CustomPropTypes.elementType,
 
     selectedIndex: React.PropTypes.number,
     focusedIndex:  React.PropTypes.number,
@@ -35,21 +37,17 @@ module.exports = React.createClass({
   },
 
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
-      optID:         '',
-      onSelect:      ()=>{},
-      data:          [],
+      optID:  '',
+      onSelect: ()=>{},
+      optionComponent: ListOption,
+      data: [],
       messages: {
         emptyList:   'There are no items in this list'
       }
     }
   },
-
-  getInitialState(){
-    return {}
-  },
-
 
   componentDidMount(){
     this.move()
@@ -60,49 +58,48 @@ module.exports = React.createClass({
   },
 
   render(){
-    var { className, ...props } = _.omit(this.props, ['data'])
-      , ItemComponent = this.props.itemComponent
-      , id = this.props.id || this._id('_list')
-      , optID = this.props.optID
+    var {
+        className, role, data, optID, id = this._id('_list')
+      , focused, selected, messages, onSelect
+      , itemComponent: ItemComponent
+      , optionComponent: Option
+      , ...props  } = this.props
       , items;
 
-    items = !this.props.data.length
-      ? <li className='rw-list-empty'>{ _.result(this.props.messages.emptyList, this.props) }</li>
-      : this.props.data.map((item, idx) =>{
-          var focused  = item === this.props.focused
-            , selected = item === this.props.selected
-            , defaultOptID = id + '_option_' + idx;
 
-          optID = optID || defaultOptID;
+    items = !data.length
+      ? (
+        <li className='rw-list-empty'>
+          {_.result(messages.emptyList, this.props)}
+        </li>
+      ) : data.map((item, idx) =>{
+          var defaultOptID = id + '_option_' + idx;
 
-          return (<li
-            tabIndex='-1'
-            key={'item_' + idx}
-            role='option'
-            id={focused ? optID : defaultOptID}
-            aria-selected={selected || void 0}
-            className={cx({
-              'rw-list-option':    true,
-              'rw-state-focus':    focused,
-              'rw-state-selected': selected
-            })}
-            onClick={this.props.onSelect.bind(null, item)}>
-            { ItemComponent
+          return (
+            <Option
+              key={'item_' + idx}
+              id={item === focused ? (optID || defaultOptID) : defaultOptID}
+              dataItem={item}
+              focused={focused === item}
+              selected={selected === item}
+              onClick={onSelect.bind(null, item)}
+            >
+              { ItemComponent
                 ? <ItemComponent item={item} value={this._dataValue(item)} text={this._dataText(item)}/>
                 : this._dataText(item)
-            }
-          </li>)
+              }
+            </Option>
+          )
         });
 
     return (
-      <ul { ...props }
+      <ul
         tabIndex='-1'
-        className={ (className || '') + ' rw-list' }
-        ref='scrollable'
-        role='listbox'
-       // aria-activedescendant={optID ? optID : undefined}
+        className={cn(className, 'rw-list')}
+        role={role === undefined ? 'listbox' : role}
+        { ...props }
       >
-          { items }
+        { items }
       </ul>
     )
   },

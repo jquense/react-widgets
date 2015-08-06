@@ -1,13 +1,13 @@
-'use strict';
-var React   = require('react')
-  , warning = require('react/lib/warning')
-  , CustomPropTypes  = require('./util/propTypes')
-  , compat = require('./util/compat')
-  , cx = require('classnames')
-  , _  = require('./util/_');
+import React   from 'react';
+import ListOption from './ListOption';
+import CustomPropTypes from './util/propTypes';
+import compat from './util/compat';
+import cn from 'classnames';
+import _  from './util/_';
+import warning from 'react/lib/warning';
 
 
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'List',
 
@@ -22,8 +22,9 @@ module.exports = React.createClass({
     onSelect:       React.PropTypes.func,
     onMove:         React.PropTypes.func,
 
-    itemComponent:  CustomPropTypes.elementType,
-    groupComponent: CustomPropTypes.elementType,
+    optionComponent: CustomPropTypes.elementType,
+    itemComponent:   CustomPropTypes.elementType,
+    groupComponent:  CustomPropTypes.elementType,
 
     selected:       React.PropTypes.any,
     focused:        React.PropTypes.any,
@@ -41,18 +42,19 @@ module.exports = React.createClass({
   },
 
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       optID:         '',
       onSelect:      function(){},
       data:          [],
+      optionComponent: ListOption,
       messages: {
         emptyList:   'There are no items in this list'
       }
     }
   },
 
-  getInitialState: function() {
+  getInitialState() {
     var keys = [];
 
     return {
@@ -65,7 +67,7 @@ module.exports = React.createClass({
   componentWillReceiveProps(nextProps) {
     var keys = [];
 
-    if(nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy)
+    if (nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy)
       this.setState({
         groups: this._group(nextProps.groupBy, nextProps.data, keys),
         sortedKeys: keys
@@ -82,15 +84,18 @@ module.exports = React.createClass({
 
   render: function(){
     var {
-        className
-      , ...props } = _.omit(this.props, ['data', 'selectedIndex'])
-      , groups = this.state.groups
-      , items = []
+        className, role, data
+      , messages, onSelect, selectedIndex
+      , ...props } = this.props;
+
+    let { sortedKeys, groups } = this.state;
+
+    let items = []
       , idx = -1
       , group;
 
-    if ( this.props.data.length ){
-      items = this.state.sortedKeys
+    if (data.length) {
+      items = sortedKeys
         .reduce( (items, key) => {
           group = groups[key]
           items.push(this._renderGroupHeader(key))
@@ -103,13 +108,16 @@ module.exports = React.createClass({
         }, [])
     }
     else
-      items = <li className='rw-list-empty'>{ _.result(this.props.messages.emptyList, this.props) }</li>
+      items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>
 
     return (
-      <ul { ...props }
-        className={ (className || '') + ' rw-list  rw-list-grouped' }
+      <ul
         ref='scrollable'
-        role='listbox'>
+        tabIndex='-1'
+        className={cn(className, 'rw-list', 'rw-list-grouped')}
+        role={role === undefined ? 'listbox' : role }
+        { ...props }
+      >
         { items }
       </ul>
     )
@@ -133,29 +141,33 @@ module.exports = React.createClass({
   },
 
   _renderItem(group, item, idx){
-    var focused  = this.props.focused  === item
-      , selected = this.props.selected === item
-      , id = this.props.id || this._id('_list')
-      , optID = this.props.optID
-      , ItemComponent = this.props.itemComponent;
+    let {
+        focused, selected, onSelect
+      , optID
+      , id = this._id('_list')
+      , itemComponent: ItemComponent
+      , optionComponent: Option } = this.props
+
+    let defaultOptID = id + '_option_' + idx;
 
     return (
-      <li
+      <Option
         key={'item_' + group + '_' + idx}
-        role='option'
-        id={ focused ? optID : (id + '_option_' + idx) }
-        aria-selected={selected}
-        onClick={this.props.onSelect.bind(null, item)}
-        className={cx({
-          'rw-state-focus':    focused,
-          'rw-state-selected': selected,
-          'rw-list-option':    true
-        })}>
-          { ItemComponent
-              ? <ItemComponent item={item} value={this._dataValue(item)} text={this._dataText(item)}/>
-              : this._dataText(item)
-          }
-      </li>
+        id={item === focused ? (optID || defaultOptID) : defaultOptID}
+        dataItem={item}
+        focused={focused === item}
+        selected={selected === item}
+        onClick={onSelect.bind(null, item)}
+      >
+        { ItemComponent
+            ? <ItemComponent
+                item={item}
+                value={this._dataValue(item)}
+                text={this._dataText(item)}
+              />
+            : this._dataText(item)
+        }
+      </Option>
     )
   },
 
