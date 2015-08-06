@@ -178,7 +178,6 @@ var Multiselect = React.createClass({
       <div {...elementProps}
         ref="element"
         id={this._id()}
-        aria-label='persons multiselect'
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
