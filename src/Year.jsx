@@ -2,7 +2,6 @@ import React from 'react';
 import cn from 'classnames';
 import dates from './util/dates';
 import config from './util/configuration';
-import Btn  from './WidgetButton';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 
@@ -10,7 +9,7 @@ var localizers = config.locale
 var format = props => props.monthFormat || localizers.date.formats.month
 
 let propTypes = {
-  focusID:      React.PropTypes.string,
+  optionID:     React.PropTypes.func,
   culture:      React.PropTypes.string,
   value:        React.PropTypes.instanceOf(Date),
   focused:      React.PropTypes.instanceOf(Date),
@@ -21,16 +20,25 @@ let propTypes = {
   monthFormat:  CustomPropTypes.dateFormat
 };
 
-export default React.createClass({
+let isEqual = (dateA, dateB) => dates.eq(dateA, dateB, 'month')
+let optionId = (id, date) => `${id}__year_${dates.year(date)}-${dates.month(date)}`;
+
+let YearView = React.createClass({
 
   displayName: 'YearView',
 
   mixins: [
     require('./mixins/WidgetMixin'),
-    require('./mixins/RtlChildContextMixin')
+    require('./mixins/RtlChildContextMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes,
+
+  componentDidUpdate() {
+    let activeId = optionId(this._id(), this.props.focused);
+    this.ariaActiveDescendant(activeId)
+  },
 
   render(){
     let { className, focused } = this.props
@@ -53,38 +61,35 @@ export default React.createClass({
 
   _row(row, rowIdx){
     let {
-        focusID, id = this._id('_year')
-      , focused, selected, disabled, onChange
+        focused, selected, disabled, onChange
       , value, today, culture, min, max
       , dayComponent: Day } = this.props
+      , id = this._id()
       , labelFormat = localizers.date.formats.header;
-
 
     return (
       <tr key={rowIdx} role='row'>
-        { row.map( (date, i) => {
-          var isFocused  = dates.eq(date, focused,  'month')
-            , isSelected = dates.eq(date, value,  'month')
-            , currentMonth = dates.eq(date, today, 'month')
+        { row.map( (date, colIdx) => {
+          var isFocused  = isEqual(date, focused)
+            , isSelected = isEqual(date, value)
+            , currentMonth = isEqual(date, today)
             , label = localizers.date.format(date, labelFormat, culture);
 
-          var optionID = id + '_' + rowIdx + '_month_' + i;
-
-          optionID = isFocused ? (focusID || optionID) : optionID;
+          var currentID = optionId(id, date);
 
           return dates.inRange(date, min, max, 'month')
             ? (
               <td
-                key={i}
+                key={colIdx}
                 role='gridcell'
-                id={optionID}
+                id={currentID}
                 title={label}
                 aria-selected={isSelected}
                 aria-readonly={disabled}
                 aria-label={label}
               >
                 <span
-                  aria-labelledby={optionID}
+                  aria-labelledby={currentID}
                   onClick={onChange.bind(null, date)}
                   className={cn('rw-btn', {
                     'rw-state-focus':    isFocused,
@@ -96,9 +101,11 @@ export default React.createClass({
                 </span>
               </td>
             )
-            : <td key={i} className='rw-empty-cell' role='presentation'>&nbsp;</td>
+            : <td key={colIdx} className='rw-empty-cell' role='presentation'>&nbsp;</td>
         })}
     </tr>)
   }
 
 });
+
+export default YearView;

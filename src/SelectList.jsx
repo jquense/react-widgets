@@ -12,8 +12,6 @@ import scrollTo from 'dom-helpers/util/scrollTo';
 
 let { omit, pick, result } = _;
 
-const FOCUSED_ID = '_listbox_option_focused';
-
 let propTypes = {
 
     data:           React.PropTypes.array,
@@ -63,7 +61,8 @@ var SelectList = React.createClass({
     require('./mixins/WidgetMixin'),
     require('./mixins/TimeoutMixin'),
     require('./mixins/DataHelpersMixin'),
-    require('./mixins/RtlParentContextMixin')
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   getDefaultProps(){
@@ -71,6 +70,7 @@ var SelectList = React.createClass({
       delay: 250,
       value: [],
       data:  [],
+      ariaActiveDescendantKey: 'selectlist',
       messages: {
         emptyList: 'There are no items in this list'
       }
@@ -108,14 +108,6 @@ var SelectList = React.createClass({
     validateList(this.refs.list)
   },
 
-  componentDidUpdate() {
-    React.findDOMNode(this.refs.list)
-      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
-
-    React.findDOMNode(this)
-      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
-  },
-
   render() {
     let {
         className, tabIndex, filter, suggest
@@ -131,8 +123,7 @@ var SelectList = React.createClass({
     let { ListItem, focusedItem, selectedItem, focused } = this.state;
 
     let items = this._data()
-      , listID = this._id('_listbox')
-      , optID  = this._id(FOCUSED_ID);
+      , listID = this._id('_listbox');
 
     focusedItem = focused
       && !this.isDisabled()
@@ -146,7 +137,6 @@ var SelectList = React.createClass({
         onBlur={this._focus.bind(null, false)}
         role={'radiogroup'}
         aria-busy={!!busy}
-        aria-activedescendant={optID}
         aria-disabled={this.isDisabled()}
         aria-readonly={this.isReadOnly()}
         tabIndex={'-1'}
@@ -158,14 +148,13 @@ var SelectList = React.createClass({
           'rw-loading-mask':   busy
         })}
       >
-        <List ref='list'
+        <List
           {...listProps}
+          ref='list'
           id={listID}
-          optID={optID}
           role={'radiogroup'}
           tabIndex={tabIndex || '0'}
           data={items}
-          aria-activedescendant={optID}
           focused={focusedItem}
           optionComponent={ListItem}
           itemComponent={this.props.itemComponent}
@@ -274,8 +263,6 @@ var SelectList = React.createClass({
       , values    = this.state.dataItems;
 
     blacklist = Array.isArray(blacklist) ? blacklist : [];
-
-    //if(this._contains(item, blacklist)) return
 
     if ( !multiple )
       return this.notify('onChange', checked ? item : null)

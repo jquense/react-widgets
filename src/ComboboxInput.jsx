@@ -41,7 +41,8 @@ export default React.createClass({
         className={this.props.className + ' rw-input'}
         onKeyDown={this.props.onKeyDown}
         onChange={this._change}
-        value={this.props.value == null ? '' : this.props.value}/>
+        value={this.props.value == null ? '' : this.props.value}
+      />
     )
   },
 

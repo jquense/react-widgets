@@ -112,7 +112,8 @@ var Calendar = React.createClass({
     require('./mixins/WidgetMixin'),
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlParentContextMixin')
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes,
@@ -140,13 +141,9 @@ var Calendar = React.createClass({
       tabIndex:     '0',
       footer:        false,
 
+      ariaActiveDescendantKey: 'calendar',
       messages: msgs({})
     }
-  },
-
-  componentDidUpdate() {
-    React.findDOMNode(this)
-      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
   },
 
   componentWillReceiveProps(nextProps) {
@@ -178,13 +175,14 @@ var Calendar = React.createClass({
     let { view, currentDate, slideDirection, focused } = this.state;
 
     var View = VIEW[view]
-      , unit = view
+      , unit = VIEW_UNIT[view]
       , todaysDate = new Date()
-      , todayNotInRange = !dates.inRange(todaysDate, min, max, unit)
+      , todayNotInRange = !dates.inRange(todaysDate, min, max, view)
+
+    unit = unit === 'day' ? 'date' : unit
 
     let viewID = this._id('_calendar')
       , labelID = this._id('_calendar_label')
-      , focusID = this._id(FOCUSED_ID)
       , key = view + '_' + dates[view](currentDate);
 
     let elementProps = _.omit(this.props, Object.keys(propTypes))
@@ -212,8 +210,8 @@ var Calendar = React.createClass({
           labelId={labelID}
           messages={messages}
           upDisabled={  isDisabled || view === finalView}
-          prevDisabled={isDisabled || !dates.inRange(this.nextDate(dir.LEFT), min, max, unit)}
-          nextDisabled={isDisabled || !dates.inRange(this.nextDate(dir.RIGHT), min, max, unit)}
+          prevDisabled={isDisabled || !dates.inRange(this.nextDate(dir.LEFT), min, max, view)}
+          nextDisabled={isDisabled || !dates.inRange(this.nextDate(dir.RIGHT), min, max, view)}
           onViewChange={this.navigate.bind(null, dir.UP, null)}
           onMoveLeft ={this.navigate.bind(null,  dir.LEFT, null)}
           onMoveRight={this.navigate.bind(null,  dir.RIGHT, null)}
@@ -228,15 +226,14 @@ var Calendar = React.createClass({
             tabIndex='-1'
             key={key}
             id={viewID}
-            focusID={focusID}
             className='rw-calendar-grid'
-            aria-activedescendant={focusID}
             aria-labelledby={labelID}
             today={todaysDate}
             value={value}
             focused={currentDate}
             onChange={this._maybeHandle(this.change)}
             onKeyDown={this._keyDown}
+            ariaActiveDescendantKey='calendarView'
           />
         </SlideTransition>
         { footer &&
@@ -365,7 +362,7 @@ var Calendar = React.createClass({
 
         currentDate = dates.move(currentDate, this.props.min, this.props.max, view, direction)
 
-        if ( !dates.eq(current, currentDate, unit) ) {
+        if (!dates.eq(current, currentDate, unit)) {
           e.preventDefault()
 
           if ( dates.gt(currentDate, current, view))

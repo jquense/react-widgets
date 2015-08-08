@@ -7,7 +7,11 @@ import CustomPropTypes from './util/propTypes';
 let localizers   = config.locale;
 let format = props => props.decadeFormat || localizers.date.formats.decade
 
+let isEqual = (dateA, dateB) => dates.eq(dateA, dateB, 'decade')
+let optionId = (id, date) => `${id}__century_${dates.year(date)}`;
+
 let propTypes = {
+  optionID:     React.PropTypes.func,
   culture:      React.PropTypes.string,
   value:        React.PropTypes.instanceOf(Date),
   min:          React.PropTypes.instanceOf(Date),
@@ -24,12 +28,18 @@ export default React.createClass({
   mixins: [
     require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlChildContextMixin')
+    require('./mixins/RtlChildContextMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes,
 
-  render: function(){
+  componentDidUpdate() {
+    let activeId = optionId(this._id(), this.props.focused);
+    this.ariaActiveDescendant(activeId)
+  },
+
+  render(){
     let { className, focused } = this.props
       , years = getCenturyDecades(focused)
       , rows = _.chunk(years, 4);
@@ -50,37 +60,35 @@ export default React.createClass({
 
   _row(row, rowIdx) {
     let {
-        focusID, id = this._id('_century')
-      , focused, selected, disabled, onChange
-      , value, today, culture, min, max } = this.props;
+        focused, selected, disabled, onChange
+      , value, today, culture, min, max } = this.props
+      , id = this._id('_century');
 
     return (
       <tr key={'row_' + rowIdx} role='row'>
-        { row.map( (date, i) => {
-          var isFocused  = dates.eq(date,  focused,  'decade')
-            , isSelected = dates.eq(date, value,  'decade')
-            , currentDecade = dates.eq(date, today, 'decade')
+        { row.map( (date, colIdx) => {
+          var isFocused = isEqual(date, focused)
+            , isSelected = isEqual(date, value)
+            , currentDecade = isEqual(date, today)
             , label = localizers.date.format(
                 dates.startOf(date, 'decade'), format(this.props), culture);
 
-          var optionID = id + '_' + rowIdx + '_decade_' + i
-
-          optionID = isFocused ? (focusID || optionID) : optionID;
+          var currentID = optionId(id, date);
 
           return !inRange(date, min, max)
-            ? <td key={i} role='gridcell' className='rw-empty-cell'>&nbsp;</td>
+            ? <td key={colIdx} role='gridcell' className='rw-empty-cell'>&nbsp;</td>
             : (
               <td
-                key={i}
+                key={colIdx}
                 role='gridcell'
-                id={optionID}
+                id={currentID}
                 title={label}
                 aria-selected={isSelected}
                 aria-label={label}
                 aria-readonly={disabled}
               >
                 <span
-                  aria-labelledby={optionID}
+                  aria-labelledby={currentID}
                   onClick={onChange.bind(null, inRangeDate(date, min, max))}
                   className={cn('rw-btn', {
                     'rw-off-range':       !inCentury(date, focused),

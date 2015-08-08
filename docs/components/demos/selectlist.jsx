@@ -5,37 +5,13 @@ var React = require('react')
   , RW = require('../../../src/index');
 
 
-// var valueComp = React.createClass({
-//   render: function() {
-//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
-//   }
-// });
-
-// var itemComp = React.createClass({
-//   render: function() {
-//     var icons =  ['bicycle', 'area-chart', 'anchor']
-
-//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
-//     return (
-//       <div>
-//         <i className={'fa fa-' + this._icon}></i>
-//         { '  ' + this.props.item.label}
-//       </div>
-//     );
-//   }
-// });
-
-// function getRandomInt(min, max) {
-//   return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
-
 var list = [
         { label: 'orange', id: 1 },
         { label: 'blue',   id: 2 },
         { label: 'red',    id: 3 },
         { label: 'maroon', id: 4 },
         { label: 'purple', id: 5 },
-        { label: 'mauve',  id: 6 },
+        { label: 'mauve',  id: 6 }
       ];
 
 var SelectListApi = React.createClass({
@@ -52,7 +28,7 @@ var SelectListApi = React.createClass({
     var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 
     return (
-      <div className='example'  role='application'>
+      <div className='example' role='application'>
         <div className='row'>
           <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>

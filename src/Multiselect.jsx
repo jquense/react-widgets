@@ -84,7 +84,20 @@ var Multiselect = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/DataHelpersMixin'),
     require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin')
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/AriaDescendantMixin')('input', function(key, id){
+      let { ariaActiveDescendantKey: myKey } = this.props;
+
+      let createIsActive =
+            (!this._data().length || this.state.focusedItem === null)
+            && key === myKey;
+
+      let tagIsActive = this.state.focusedTag != null && key === 'taglist';
+      let listIsActive = this.state.focusedTag == null && key === 'list';
+
+      if (createIsActive || tagIsActive || listIsActive)
+        return id;
+    })
   ],
 
   propTypes: propTypes,
@@ -96,12 +109,15 @@ var Multiselect = React.createClass({
       value: [],
       open: false,
       searchTerm: '',
+      ariaActiveDescendantKey: 'multiselect',
       messages: {
-        createNew:   '(create new tag)',
-        emptyList:   'There are no items in this list',
-        emptyFilter: 'The filter returned no results',
-        tagsLabel:   'Multiselect selected items',
-        removeLabel: 'remove selected item'
+        createNew:     '(create new tag)',
+        emptyList:     'There are no items in this list',
+        emptyFilter:   'The filter returned no results',
+        tagsLabel:     'selected items',
+        selectedItems: 'selected items',
+        noneSelected:  'no selected items',
+        removeLabel:   'remove selected item'
       }
     }
   },
@@ -119,6 +135,9 @@ var Multiselect = React.createClass({
   },
 
   componentDidUpdate() {
+    this.ariaActiveDescendant(
+      this._id('__createlist_option'))
+
     this.refs.list && validateList(this.refs.list)
   },
 
@@ -132,6 +151,7 @@ var Multiselect = React.createClass({
     var values = _.splat(nextProps.value)
       , current = this.state.focusedItem
       , items  = this.process(nextProps.data, values, nextProps.searchTerm)
+
 
     this.setState({
       processedData: items,
@@ -165,14 +185,20 @@ var Multiselect = React.createClass({
 
     var items  = this._data()
       , tagsID = this._id('_taglist')
-      , listID = this._id('_listbox')
-      , createID = this._id('_createlist')
-      , optID    = this._id('_listbox_option_focused');
+      , listID = this._id('__listbox')
+      , createID = this._id('__createlist')
+      , createOptionID = this._id('__createlist_option');
 
     let shouldRenderTags = !!dataItems.length
       , shouldRenderPopup = _.isFirstFocusedRender(this) || open
       , shouldShowCreate = this._shouldShowCreate()
       , createIsFocused = !items.length || focusedItem === null;
+
+    if (focused) {
+      var notify = dataItems.length
+            ? (messages.selectedItems + ': ' + dataItems.map(this._dataText).join(', '))
+            : messages.noneSelected
+    }
 
     return (
       <div {...elementProps}
@@ -189,6 +215,19 @@ var Multiselect = React.createClass({
           'rw-rtl':            this.isRtl(),
           [`rw-open${dropUp ? '-up' : ''}`]: open
         })}>
+
+        <span
+          ref='status'
+          id={this._id('__notify')}
+          role="status"
+          className='sr-only'
+          aria-live='assertive'
+          aria-atomic="true"
+          aria-relevant="additions removals text"
+        >
+          { notify }
+        </span>
+
         <div className='rw-multiselect-wrapper' ref='wrapper'>
           { busy &&
             <i className="rw-i rw-loading"></i>
@@ -198,13 +237,13 @@ var Multiselect = React.createClass({
               ref='tagList'
               id={tagsID}
               aria-label={messages.tagsLabel}
-              focusID={focusedTag != null && optID}
               value={dataItems}
               focused={focusedTag}
               disabled={disabled}
               readOnly={readOnly}
               onDelete={this._delete}
               valueComponent={TagComponent}
+              ariaActiveDescendantKey='taglist'
             />
           }
           <SelectInput
@@ -212,10 +251,10 @@ var Multiselect = React.createClass({
             ref='input'
             tabIndex={tabIndex || 0}
             role='listbox'
-            aria-activedescendant={optID}
             aria-expanded={open}
             aria-busy={!!busy}
             aria-owns={listID
+              + ' ' + this._id('__notify')
               + (shouldRenderTags ? (' ' + tagsID) : '')
               + (shouldShowCreate ? (' ' + createID) : '')
             }
@@ -238,33 +277,31 @@ var Multiselect = React.createClass({
         >
           <div>
           { shouldRenderPopup && [
-            <List ref="list"
-              key='0'
-              {...listProps}
-              //aria-label={messages.listLabel}
-              readOnly={!!readOnly}
-              disabled={!!disabled}
-              id={listID}
-              optID={focusedTag == null && optID}
-              //aria-activedescendant={optID}
-              aria-live='polite'
-              aria-labelledBy={this._id()}
-              aria-hidden={!open}
-              data={items}
-              focused={focusedItem}
-              onSelect={this._maybeHandle(this._onSelect)}
-              onMove={this._scrollTo}
-              messages={{
-                emptyList: data.length
-                  ? messages.emptyFilter
-                  : messages.emptyList
-              }}/>,
+              <List ref="list"
+                key='0'
+                {...listProps}
+                readOnly={!!readOnly}
+                disabled={!!disabled}
+                id={listID}
+                aria-live='polite'
+                aria-labelledby={this._id()}
+                aria-hidden={!open}
+                ariaActiveDescendantKey='list'
+                data={items}
+                focused={focusedItem}
+                onSelect={this._maybeHandle(this._onSelect)}
+                onMove={this._scrollTo}
+                messages={{
+                  emptyList: data.length
+                    ? messages.emptyFilter
+                    : messages.emptyList
+                }}
+              />,
               shouldShowCreate &&
                 <ul role='listbox' id={createID} className="rw-list rw-multiselect-create-tag" key='1'>
                   <li onClick={this._onCreate.bind(null, searchTerm)}
                       role='option'
-                      //aria-label='create new message'
-                      id={createIsFocused ? optID : this._id('_create_option')}
+                      id={createOptionID}
                       className={cx({
                         'rw-list-option': true,
                         'rw-state-focus': createIsFocused
@@ -299,13 +336,13 @@ var Multiselect = React.createClass({
     if (this.props.disabled === true )
       return
 
-    if( focused) this.refs.input.focus()
+    if(focused) this.refs.input.focus()
 
     this.setTimeout('focus', () => {
-      if( !focused)
+      if(!focused)
         this.refs.tagList && this.setState({ focusedTag: null })
 
-      if( focused !== this.state.focused){
+      if(focused !== this.state.focused) {
         focused
           ? this.open()
           : this.close();
@@ -388,13 +425,13 @@ var Multiselect = React.createClass({
       if (altKey)      this.close()
       else if (isOpen) this.setState({ focusedItem: prev, ...nullTag })
     }
-    else if (key === 'End'){
+    else if (key === 'End') {
       if ( isOpen ) this.setState({ focusedItem: list.last(), ...nullTag })
-      else          tagList && tagList.last()
+      else          tagList && this.setState({ focusedTag: tagList.last() })
     }
-    else if (key === 'Home'){
-      if (isOpen) this.setState({ focusedItem: list.first(), ...nullTag  })
-      else          tagList && tagList.first()
+    else if (key === 'Home') {
+      if (isOpen) this.setState({ focusedItem: list.first(), ...nullTag })
+      else          tagList && this.setState({ focusedTag: tagList.first() })
     }
     else if (isOpen && key === 'Enter')
       (ctrlKey && this.props.onCreate) || focusedItem === null
@@ -411,13 +448,17 @@ var Multiselect = React.createClass({
       tagList && this.setState({ focusedTag: tagList.next(focusedTag) })
 
     else if (noSearch && key === 'Delete')
-      tagList && tagList.removeCurrent(focusedTag)
+      tagList && tagList.remove(focusedTag)
 
     else if (noSearch && key === 'Backspace')
       tagList && tagList.removeNext()
 
     this.notify('onKeyDown', [e])
   },
+
+  // _firstFocus(){
+  //   this.open()
+  // }
 
   change(data){
     this.notify('onChange', [data])
@@ -470,11 +511,12 @@ var Multiselect = React.createClass({
 
 function msgs(msgs){
   return {
-    emptyList:   'There are no items in this list',
-    emptyFilter: 'The filter returned no results',
-    listLabel:   'Multiselect available items',
-    tagsLabel:   'Multiselect selected items',
-    removeLabel: 'remove selected item',
+    createNew:     '(create new tag)',
+    emptyList:     'There are no items in this list',
+    emptyFilter:   'The filter returned no results',
+    tagsLabel:     'selected items',
+    selectedItems: 'selected items',
+    removeLabel:   'remove selected item',
     ...msgs
   }
 }

@@ -2,7 +2,6 @@
 var React = require('react')
   , dates = require('./util/dates')
   , List = require('./List')
-  , compat  = require('./util/compat')
   , localizers = require('./util/configuration').locale
   , CustomPropTypes  = require('./util/propTypes')
   , _ = require('./util/_') // omit
@@ -58,7 +57,7 @@ module.exports = React.createClass({
       , minChanged  = !dates.eq(nextProps.min, this.props.min, 'minutes')
       , maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes');
 
-    if ( valChanged || minChanged || maxChanged){
+    if (valChanged || minChanged || maxChanged){
       this.setState({
         focusedItem: focusedItem || data[0],
         dates: data
@@ -66,25 +65,25 @@ module.exports = React.createClass({
     }
   },
 
-  render: function(){
+  render(){
+    let { min, max, value, step, ...props } = this.props;
+
     var times = this.state.dates
-      , date  = this._closestDate(times, this.props.value);
+      , date  = this._closestDate(times, value);
 
     return (
-      <List {..._.pick(this.props, Object.keys(compat.type(List).propTypes))}
+      <List {...props}
         ref="list"
         data={times}
-        id={this.props.id}
         textField='label'
         valueField='date'
         selected={date}
         focused={this.state.focusedItem}
-        itemComponent={this.props.itemComponent}
-        onSelect={this.props.onSelect}/>
+      />
     )
   },
 
-  _closestDate: function(times, date){
+  _closestDate(times, date) {
     var roundTo = 1000 * 60 * this.props.step
       , inst = null
       , label;
@@ -106,7 +105,7 @@ module.exports = React.createClass({
     return this.state.dates
   },
 
-  _dates: function(props){
+  _dates(props){
     var times  = [], i = 0
       , values = this._dateValues(props)
       , start  = values.min
@@ -120,7 +119,7 @@ module.exports = React.createClass({
     return times
   },
 
-  _dateValues: function(props){
+  _dateValues(props){
     var value = props.value || dates.today()
       , useDate = props.preserveDate
       , min = props.min
@@ -148,7 +147,6 @@ module.exports = React.createClass({
       min: dates.eq(value, min, 'day') ? dates.merge(start, min) : start,
       max: dates.eq(value, max, 'day') ? dates.merge(start, max) : end
     }
-
   },
 
   _keyDown: function(e){

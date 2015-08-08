@@ -76,7 +76,8 @@ var ComboBox = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/DataHelpersMixin'),
     require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin')
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/AriaDescendantMixin')('input')
   ],
 
   propTypes: propTypes,
@@ -102,15 +103,9 @@ var ComboBox = React.createClass({
       filter: false,
       delay: 500,
 
-      messages: msgs()
+      messages: msgs(),
+      ariaActiveDescendantKey: 'combobox'
     }
-  },
-
-  componentDidUpdate() {
-    React.findDOMNode(this.refs.input)
-      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
-
-    this.refs.list && validateList(this.refs.list)
   },
 
   shouldComponentUpdate(nextProps, nextState){
@@ -163,7 +158,6 @@ var ComboBox = React.createClass({
       , valueItem = this._dataItem(data, value) // take value from the raw data
       , inputID = this._id('_input')
       , listID = this._id('_listbox')
-      , optID  = this._id(FOCUSED_ID)
       , completeType = this.props.suggest
           ? this.props.filter ? 'both' : 'inline'
           : this.props.filter ? 'list' : '';
@@ -173,7 +167,8 @@ var ComboBox = React.createClass({
     messages = msgs(messages)
 
     return (
-      <div {...elementProps}
+      <div
+        {...elementProps}
         ref="element"
         onKeyDown={this._keyDown}
         onFocus={this._focus.bind(null, true)}
@@ -186,7 +181,8 @@ var ComboBox = React.createClass({
           'rw-rtl':             this.isRtl(),
 
           ['rw-open' + (dropUp ? '-up' : '')]: open
-         })}>
+         })}
+      >
         <Btn
           tabIndex='-1'
           className='rw-select'
@@ -208,9 +204,7 @@ var ComboBox = React.createClass({
           role='combobox'
           aria-owns={listID}
           aria-busy={!!busy}
-          //aria-live={!open && 'polite'}
           aria-autocomplete={completeType}
-          aria-activedescendant={optID}
           aria-expanded={open}
           aria-haspopup={true}
           placeholder={placeholder}
@@ -231,13 +225,11 @@ var ComboBox = React.createClass({
               <List ref="list"
                 {...listProps}
                 id={listID}
-                optID={optID}
                 data={items}
                 selected={selectedItem}
                 focused ={focusedItem}
                 aria-hidden={!open}
                 aria-labelledby={inputID}
-                aria-activedescendant={optID}
                 aria-live={open && 'polite'}
                 onSelect={this._onSelect}
                 onMove={this._scrollTo}

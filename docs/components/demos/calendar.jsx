@@ -22,10 +22,10 @@ module.exports = React.createClass({
     let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
 
     return (
-      <div className='example'>
+      <div className='example' role='application'>
         <div className='row'>
           <div className='col-md-6 col-lg-7 demo'>
-            <RW.Calendar 
+            <RW.Calendar
                 value={this.state.value}
                 onChange={this._change}
                 max={this.state.max}
@@ -64,8 +64,8 @@ module.exports = React.createClass({
             <div className="row">
               <div className='form-group col-xs-6'>
                 <label className='control-label'>culture</label>
-                <RW.DropdownList 
-                    value={this.state.culture || cultures[0]} 
+                <RW.DropdownList
+                    value={this.state.culture || cultures[0]}
                     data={cultures}
                     onChange={this._set.bind(null, 'culture')}/>
               </div>
@@ -84,15 +84,15 @@ module.exports = React.createClass({
             <div className="row">
               <div className='form-group col-xs-6'>
                 <label className='form-label'>Initial View</label>
-                <RW.DropdownList 
-                    value={this.state.initialView || 'month'} 
+                <RW.DropdownList
+                    value={this.state.initialView || 'month'}
                     data={["month", "year", "decade", "century"]}
                     onChange={this._set.bind(null, 'initialView')}/>
               </div>
               <div className='form-group col-xs-6'>
                 <label className='form-label'>Final View</label>
-                <RW.DropdownList 
-                    value={this.state.finalView || 'century'} 
+                <RW.DropdownList
+                    value={this.state.finalView || 'century'}
                     data={["month", "year", "decade", "century"]}
                     onChange={this._set.bind(null, 'finalView')}/>
               </div>
@@ -100,22 +100,22 @@ module.exports = React.createClass({
             <div className="row">
               <div className='form-group col-xs-6'>
                 <label className='control-label'>min</label>
-                <RW.DateTimePicker 
+                <RW.DateTimePicker
                     time={false}
                     format='MMM dd, yyyy'
-                    value={this.state.min} 
+                    value={this.state.min}
                     onChange={this._set.bind(null, 'min')}/>
               </div>
               <div className='form-group col-xs-6'>
                 <label className='control-label'>max</label>
-                <RW.DateTimePicker 
+                <RW.DateTimePicker
                     time={false}
                     format='MMM dd yyyy'
-                    value={this.state.max} 
+                    value={this.state.max}
                     onChange={this._set.bind(null, 'max')}/>
               </div>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -144,4 +144,4 @@ module.exports = React.createClass({
 
 })
 
-          
+

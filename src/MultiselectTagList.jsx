@@ -2,10 +2,12 @@
 var React = require('react')
   , _     = require('./util/_')
   , cx    = require('classnames')
-  , Btn   = require('./WidgetButton')
   , CustomPropTypes = require('./util/propTypes')
 
 import WidgetMixin from './mixins/WidgetMixin';
+
+let optionId = (id, idx)=> `${id}__option__${idx}`;
+
 
 module.exports = React.createClass({
 
@@ -13,14 +15,14 @@ module.exports = React.createClass({
 
   mixins: [
     require('./mixins/DataHelpersMixin'),
-    require('./mixins/PureRenderMixin')
+    require('./mixins/PureRenderMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes: {
     value:          React.PropTypes.array,
     focused:        React.PropTypes.number,
 
-    focusID:        React.PropTypes.string,
     valueField:     React.PropTypes.string,
     textField:      CustomPropTypes.accessor,
 
@@ -39,28 +41,45 @@ module.exports = React.createClass({
                     ])
   },
 
+  getDefaultProps(){
+    return {
+      ariaActiveDescendantKey: 'taglist',
+    }
+  },
+
+  componentDidUpdate(){
+    let { value, focused } = this.props
+      , activeId = optionId(WidgetMixin._id.call(this), focused)
+
+    this.ariaActiveDescendant(
+      (focused == null || this.isDisabled(focused)) ? null : activeId)
+  },
+
   render() {
       var ValueComponent = this.props.valueComponent
         , props     = _.omit(this.props, ['value', 'disabled', 'readOnly'])
-        , { focused, focusID, value }  = this.props;
+        , { focused, optionID, value }  = this.props;
+
+      var id = WidgetMixin._id.call(this);
 
       return (
         <ul {...props}
+          role='listbox'
+          tabIndex='-1'
           className='rw-multiselect-taglist'
         >
           { value.map( (item, i) => {
             var isDisabled = this.isDisabled(item)
               , isReadonly = this.isReadOnly(item)
               , isFocused  = !isDisabled && focused === i
-              , id = WidgetMixin._id.call(this, '_tag_option_' + i);
-
-            id = isFocused ? focusID || id : id
+              , currentID  = optionId(id, i);
 
             return (
               <li
                 key={i}
-                id={id}
+                id={currentID}
                 tabIndex='-1'
+                role='option'
                 className={cx({
                   'rw-state-focus':    isFocused,
                   'rw-state-disabled': isDisabled,
@@ -71,15 +90,15 @@ module.exports = React.createClass({
                   ? <ValueComponent item={item }/>
                   : this._dataText(item)
                 }
-                <Btn
+                <span
                   tabIndex='-1'
                   onClick={!(isDisabled || isReadonly) && this._delete.bind(null, item)}
                   aria-disabled={isDisabled}
-                  aria-label='Remove selected item'
+                  aria-label='Unselect'
                   disabled={isDisabled}
                 >
-                  <span aria-hidden="true">&times;</span>
-                </Btn>
+                  <span className='rw-tag-btn' aria-hidden="true">&times;</span>
+                </span>
               </li>)
           })}
         </ul>
@@ -127,8 +146,7 @@ module.exports = React.createClass({
     while( idx < l && this.isDisabled(idx, true) )
       idx++
 
-    if (idx !== l)
-      return idx
+    return idx !== l ? idx : null
   },
 
   last(){
@@ -137,8 +155,7 @@ module.exports = React.createClass({
     while (idx > -1 && this.isDisabled(idx, true))
       idx--
 
-    if (idx >= 0)
-      return idx
+    return idx >= 0 ? idx : null
   },
 
   next(current) {
@@ -157,7 +174,7 @@ module.exports = React.createClass({
   prev(current){
     var nextIdx = current;
 
-    if ( nextIdx === null )
+    if ( nextIdx === null || nextIdx === 0 )
       nextIdx = this.props.value.length
 
     nextIdx--;
@@ -165,7 +182,6 @@ module.exports = React.createClass({
     while (nextIdx > -1 && this.isDisabled(nextIdx, true))
       nextIdx--
 
-    if (nextIdx >= 0)
-      return nextIdx
+    return nextIdx >= 0 ? nextIdx : null;
   }
 })

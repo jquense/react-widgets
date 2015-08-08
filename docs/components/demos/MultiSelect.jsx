@@ -43,9 +43,9 @@ module.exports = React.createClass({
       var parts = tag.split(' ')
       //list.push(tag)
       this.setState({
-        value: [].concat(this.state.value, { 
-          id: list.length + 1, 
-          name: tag, 
+        value: [].concat(this.state.value, {
+          id: list.length + 1,
+          name: tag,
           first: parts[0],
           last: parts[1],
         }),
@@ -53,7 +53,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <div className='example'>
+      <div className='example' role='application'>
         <div className='row'>
           <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>
@@ -110,8 +110,8 @@ module.exports = React.createClass({
             </div>
             <div className='form-group'>
               <label className='form-label'>Disable Multiselect Values</label>
-              <RW.Multiselect 
-                  value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] } 
+              <RW.Multiselect
+                  value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] }
                   data={allVals}
                   textField='name'
                   valueField='id'
@@ -119,18 +119,18 @@ module.exports = React.createClass({
                   messages={{ emptyList: "no values selected to the right"}}
                   onChange={this._set.bind(null, 'disabled')}/>
             </div>
-            <div className='row'>  
+            <div className='row'>
               <div className='form-group col-xs-7'>
                 <label className='control-label'>Placeholder</label>
                 <input className='form-control' type='text'
-                    value={this.state.placeholder} 
+                    value={this.state.placeholder}
                     onChange={extract(this._set.bind(null, 'placeholder'))}/>
               </div>
 
               <div className='form-group col-xs-5'>
                 <label className='control-label'>Duration</label>
-                <RW.NumberPicker 
-                    value={this.state.duration} 
+                <RW.NumberPicker
+                    value={this.state.duration}
                     step={200}
                     min={0}
                     max={1000}

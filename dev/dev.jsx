@@ -134,7 +134,7 @@ var App = React.createClass({
           <button onClick={() => this.dropdowns()}>add</button>
 
           <DatePicker editFormat='d' onChange={(...args)=> console.log(args)}/>
-          <NumberPicker step={0.1}/>
+
 
           </section>
         </div>

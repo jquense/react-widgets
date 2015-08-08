@@ -45,7 +45,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <div className='example'>
+      <div className='example' role='application'>
         <div className='row'>
           <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>
@@ -65,7 +65,7 @@ module.exports = React.createClass({
                   Right to Left
               </label>
             </div>
-            
+
             <div className='form-group'>
               <ButtonGroup>
                 <Button
@@ -85,8 +85,8 @@ module.exports = React.createClass({
                 Busy
               </Button>
             </div>
-            
-            
+
+
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
@@ -105,16 +105,16 @@ module.exports = React.createClass({
             <div className='row'>
               <div className='form-group col-xs-6'>
                 <label className='form-label'>Filter</label>
-                <RW.DropdownList 
-                    value={this.state.filter || false} 
+                <RW.DropdownList
+                    value={this.state.filter || false}
                     data={[false, 'startsWith', 'endsWith', 'contains']}
                     onChange={this._set.bind(null, 'filter')}/>
               </div>
 
               <div className='form-group  col-xs-6'>
                 <label className='form-label'>Duration</label>
-                <RW.NumberPicker 
-                    value={this.state.duration} 
+                <RW.NumberPicker
+                    value={this.state.duration}
                     step={200}
                     min={0}
                     max={1000}

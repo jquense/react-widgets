@@ -48,7 +48,7 @@ describe('Groupable List', function(){
       .to.be('There are no items in this list');
   })
 
-  it.only('should generate ids', function(){
+  it('should generate ids', function(){
     var focused = data[2]
       , list = render(<List data={data} focused={focused} />);
 

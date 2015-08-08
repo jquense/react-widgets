@@ -6,6 +6,7 @@ import cn from 'classnames';
 import _  from './util/_';
 import warning from 'react/lib/warning';
 
+let optionId = (id, idx)=> `${id}__option__${idx}`;
 
 export default React.createClass({
 
@@ -14,7 +15,8 @@ export default React.createClass({
   mixins: [
     require('./mixins/WidgetMixin'),
     require('./mixins/DataHelpersMixin'),
-    require('./mixins/ListMovementMixin')
+    require('./mixins/ListMovementMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes: {
@@ -48,6 +50,7 @@ export default React.createClass({
       onSelect:      function(){},
       data:          [],
       optionComponent: ListOption,
+      ariaActiveDescendantKey: 'groupedList',
       messages: {
         emptyList:   'There are no items in this list'
       }
@@ -78,21 +81,30 @@ export default React.createClass({
     this.move()
   },
 
+
   componentDidUpdate() {
+    let { data, focused } = this.props
+      , idx = data.indexOf(focused)
+      , activeId = optionId(this._id(), idx)
+
+    this.ariaActiveDescendant(this._currentActiveID)
     this.move()
   },
 
-  render: function(){
+  render(){
     var {
         className, role, data
       , messages, onSelect, selectedIndex
-      , ...props } = this.props;
+      , ...props } = this.props
+      , id = this._id();
 
     let { sortedKeys, groups } = this.state;
 
     let items = []
       , idx = -1
       , group;
+
+    this._currentActiveID = null;
 
     if (data.length) {
       items = sortedKeys
@@ -113,6 +125,7 @@ export default React.createClass({
     return (
       <ul
         ref='scrollable'
+        id={id}
         tabIndex='-1'
         className={cn(className, 'rw-list', 'rw-list-grouped')}
         role={role === undefined ? 'listbox' : role }
@@ -125,7 +138,7 @@ export default React.createClass({
 
   _renderGroupHeader(group){
     var GroupComponent = this.props.groupComponent
-      , id = this.props.id || this._id('_list');
+      , id = this._id();
 
     return (
       <li
@@ -143,17 +156,18 @@ export default React.createClass({
   _renderItem(group, item, idx){
     let {
         focused, selected, onSelect
-      , optID
-      , id = this._id('_list')
       , itemComponent: ItemComponent
       , optionComponent: Option } = this.props
 
-    let defaultOptID = id + '_option_' + idx;
+    let currentID = optionId(this._id(), idx);
+
+    if (focused === item)
+      this._currentActiveID = currentID;
 
     return (
       <Option
         key={'item_' + group + '_' + idx}
-        id={item === focused ? (optID || defaultOptID) : defaultOptID}
+        id={currentID}
         dataItem={item}
         focused={focused === item}
         selected={selected === item}

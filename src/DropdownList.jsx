@@ -14,8 +14,6 @@ var React           = require('react')
 
 let { omit, pick, result } = _;
 
-const FOCUSED_ID = '_listbox_option_selected';
-
 var propTypes = {
   //-- controlled props -----------
   value:          React.PropTypes.any,
@@ -76,23 +74,25 @@ var DropdownList = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/DataHelpersMixin'),
     require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin')
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes: propTypes,
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       delay: 500,
       value: '',
       open: false,
       data: [],
       searchTerm: '',
-      messages: msgs()
+      messages: msgs(),
+      ariaActiveDescendantKey: 'dropdownlist'
     }
   },
 
-  getInitialState: function(){
+  getInitialState(){
     var filter = this.props.open && this.props.filter
       , data = filter ? this.filter(this.props.data, this.props.searchTerm) : this.props.data
       , initialIdx = this._dataIndexOf(this.props.data, this.props.value);
@@ -105,9 +105,6 @@ var DropdownList = React.createClass({
   },
 
   componentDidUpdate() {
-    React.findDOMNode(this)
-      .setAttribute('aria-activedescendant', this._id(FOCUSED_ID))
-
     this.refs.list && validateList(this.refs.list)
   },
 
@@ -139,10 +136,9 @@ var DropdownList = React.createClass({
 
     let { focusedItem, selectedItem, focused } = this.state;
 
-    let processedData = this._data()
+    let items = this._data()
       , valueItem = this._dataItem(data, value) // take value from the raw data
-      , listID = this._id('_listbox')
-      , optID = this._id(FOCUSED_ID);
+      , listID = this._id('__listbox');
 
     let shouldRenderList = _.isFirstFocusedRender(this) || open;
 
@@ -158,7 +154,7 @@ var DropdownList = React.createClass({
         aria-owns={listID}
         aria-busy={!!busy}
         aria-live={!open && 'polite'}
-        //aria-labelledby={!open && optID}
+        //aria-activedescendant={activeID}
         aria-autocomplete="list"
         aria-disabled={disabled }
         aria-readonly={readOnly }
@@ -195,16 +191,15 @@ var DropdownList = React.createClass({
         <Popup {...popupProps}
           onOpen={() => this.focus() }
           onOpening={() => this.refs.list.forceUpdate() }
-          onRequestClose={this.close}>
-
+          onRequestClose={this.close}
+        >
           <div>
             { filter && this._renderFilter(messages) }
             { shouldRenderList &&
               <List ref="list"
                 {...listProps}
-                data={processedData}
+                data={items}
                 id={listID}
-                optID={optID}
                 aria-live={open && 'polite'}
                 aria-labelledby={this._id()}
                 aria-hidden={!this.props.open}

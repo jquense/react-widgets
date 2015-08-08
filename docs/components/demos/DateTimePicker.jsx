@@ -13,7 +13,7 @@ require('globalize/lib/cultures/globalize.culture.ar-AE');
 module.exports = React.createClass({
   getInitialState: function(){
     return {
-      calendar: true,
+      calendar: false,
       time: true,
       format: 'f',
     }
@@ -44,7 +44,7 @@ module.exports = React.createClass({
 
 
     return (
-      <div className='example'>
+      <div className='example' role='application'>
         <div className='row'>
           <div className='col-md-6 demo'>
             <div className='form-group'>
@@ -70,8 +70,8 @@ module.exports = React.createClass({
               </div>
               <div className='form-group col-xs-6'>
                 <label className='control-label'>culture</label>
-                <RW.DropdownList 
-                    value={this.state.culture || cultures[0]} 
+                <RW.DropdownList
+                    value={this.state.culture || cultures[0]}
                     data={cultures}
                     onChange={this._set.bind(null, 'culture')}/>
               </div>
@@ -108,18 +108,18 @@ module.exports = React.createClass({
                     value={this.state.format}
                     data={['MMM dd, yyyy', 'f', 'dd, MMM yyyy HH:mm']}
                     onChange={this._set.bind(null, 'format')}/>
-              </div> 
+              </div>
               <div className='form-group col-xs-4 col-md-6 col-lg-4'>
                 <label className='form-label'>Initial View</label>
-                <RW.DropdownList 
-                    value={this.state.initialView || 'month'} 
+                <RW.DropdownList
+                    value={this.state.initialView || 'month'}
                     data={["month", "year", "decade", "century"]}
                     onChange={this._set.bind(null, 'initialView')}/>
               </div>
               <div className='form-group col-xs-4 col-md-6 col-lg-4'>
                 <label className='form-label'>Final View</label>
-                <RW.DropdownList 
-                    value={this.state.finalView || 'century'} 
+                <RW.DropdownList
+                    value={this.state.finalView || 'century'}
                     data={["month", "year", "decade", "century"]}
                     onChange={this._set.bind(null, 'finalView')}/>
               </div>
@@ -127,18 +127,18 @@ module.exports = React.createClass({
             <div className="row">
               <div className='form-group col-xs-6'>
                 <label className='control-label'>min</label>
-                <RW.DateTimePicker 
+                <RW.DateTimePicker
                     time={this.state.time} calendar={this.state.calendar}
                     format={format}
-                    value={this.state.min} 
+                    value={this.state.min}
                     onChange={this._set.bind(null, 'min')}/>
               </div>
               <div className='form-group col-xs-6'>
                 <label className='control-label'>max</label>
-                <RW.DateTimePicker 
+                <RW.DateTimePicker
                     time={this.state.time} calendar={this.state.calendar}
                     format={format}
-                    value={this.state.max} 
+                    value={this.state.max}
                     onChange={this._set.bind(null, 'max')}/>
               </div>
             </div>
@@ -173,7 +173,7 @@ module.exports = React.createClass({
 
 var itemComp = React.createClass({
   render: function() {
-    var date   = merge(new Date, this.props.item.date) 
+    var date   = merge(new Date, this.props.item.date)
       , inPast = dates.lt(date, new Date, 'minutes')
 
     return (

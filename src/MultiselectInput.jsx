@@ -16,14 +16,11 @@ module.exports = React.createClass({
     readOnly:     React.PropTypes.bool
   },
 
-  componentDidUpdate: function() {
-    React.findDOMNode(this)
-      .setAttribute('aria-activedescendant', this.props['aria-activedescendant'])
-
+  componentDidUpdate() {
     this.props.focused && this.focus()
   },
 
-  render: function(){
+  render(){
       var value = this.props.value
         , placeholder = this.props.placeholder
         , size = Math.max((value || placeholder).length, 1) + 1;
@@ -31,7 +28,7 @@ module.exports = React.createClass({
       return (
         <input {...this.props}
           className='rw-input'
-          autocomplete='off'
+          autoComplete='off'
           aria-disabled={this.props.disabled}
           aria-readonly={this.props.readOnly}
           disabled={this.props.disabled}
@@ -41,7 +38,7 @@ module.exports = React.createClass({
       )
   },
 
-  focus: function(){
+  focus(){
     compat.findDOMNode(this).focus()
   }
 

@@ -9,15 +9,15 @@ var dateMath = require('date-arithmetic')
 var dates = module.exports = Object.assign(dateMath, {
 
 
-  parse: function(date, format, culture) {
+  parse(date, format, culture) {
     return locale.date.parse(date, format, culture)
   },
 
-  format: function(date, format, culture){
+  format(date, format, culture){
     return locale.date.format(date, format, culture)
   },
 
-  monthsInYear: function(year){
+  monthsInYear(year){
     var months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       , date   = new Date(year, 0, 1)
 
@@ -25,19 +25,19 @@ var dates = module.exports = Object.assign(dateMath, {
   },
 
 
-  firstVisibleDay: function(date, culture){
+  firstVisibleDay(date, culture){
     var firstOfMonth = dates.startOf(date, 'month')
 
     return dates.startOf(firstOfMonth, 'week', locale.date.startOfWeek(culture));
   },
 
-  lastVisibleDay: function(date, culture){
+  lastVisibleDay(date, culture){
     var endOfMonth = dates.endOf(date, 'month')
 
     return dates.endOf(endOfMonth, 'week', locale.date.startOfWeek(culture));
   },
 
-  visibleDays: function(date, culture){
+  visibleDays(date, culture){
     var current = dates.firstVisibleDay(date, culture)
       , last = dates.lastVisibleDay(date, culture)
       , days = [];
@@ -68,7 +68,7 @@ var dates = module.exports = Object.assign(dateMath, {
       : date
   },
 
-  merge: function(date, time){
+  merge(date, time){
     if( time == null && date == null)
       return null
 
@@ -86,15 +86,15 @@ var dates = module.exports = Object.assign(dateMath, {
     return dates.eq(dateA, dateB, 'month')
   },
 
-  today: function() {
+  today() {
     return this.startOf(new Date(), 'day')
   },
 
-  yesterday: function() {
+  yesterday() {
     return this.add(this.startOf(new Date(), 'day'), -1, 'day')
   },
 
-  tomorrow: function() {
+  tomorrow() {
     return this.add(this.startOf(new Date(), 'day'), 1, 'day')
   }
 })

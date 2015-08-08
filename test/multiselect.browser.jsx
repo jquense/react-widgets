@@ -14,6 +14,10 @@ var TestUtils = React.addons.TestUtils
   , trigger = TestUtils.Simulate;
 
 
+$.fn.myText = function(){
+  return this.contents().filter(function(){ return this.nodeType === 3; })[0].nodeValue
+}
+
 
 describe('Multiselect', function(){
   var dataList = [
@@ -26,14 +30,14 @@ describe('Multiselect', function(){
     var select = render(<Select value={['hello']} onChange={()=>{}} />)
       , tags   = findType(select, TagList).getDOMNode();
 
-    expect( $(tags).find('li:first-child > span').text() ).to.be('hello');
+    expect($(tags).find('li:first-child > span').myText()).to.be('hello');
   })
 
   it('should respect textField and valueFields', function(){
     var select = render(<Select defaultValue={[0]} data={dataList} textField='label' valueField='id' />)
       , tags   = findType(select, TagList).getDOMNode();
 
-    expect( $(tags).find('li:first-child > span').text() ).to.be('jimmy');
+    expect( $(tags).find('li:first-child > span').myText() ).to.be('jimmy');
   })
 
   it('should start closed', function(done){
@@ -142,7 +146,7 @@ describe('Multiselect', function(){
     expect( input.getAttribute('aria-disabled')).to.be('true');
     //expect( input.getAttribute('disabled')).to.be('');
 
-    trigger.click(findTag(select, 'button').getDOMNode())
+    trigger.click(findClass(select, 'rw-tag-btn').getDOMNode())
 
     setTimeout(function() {
       expect(select.state.open).to.not.be(true)
@@ -153,7 +157,7 @@ describe('Multiselect', function(){
   })
 
   it('should disable only certain tags', function(done){
-    var select = render(<Select defaultValue={[0,1]} data={dataList} disabled={[1]}  textField='label' valueField='id'/>)
+    var select = render(<Select defaultValue={[0, 1]} data={dataList} disabled={[1]}  textField='label' valueField='id'/>)
       , tags   = findType(select, TagList).getDOMNode();
 
     expect(tags.children.length).to.be(2)
@@ -175,7 +179,7 @@ describe('Multiselect', function(){
     expect( input.hasAttribute('readonly')).to.be(true);
     expect( input.getAttribute('aria-readonly')).to.be('true');
 
-    trigger.click(findTag(select, 'button').getDOMNode())
+    trigger.click(findClass(select, 'rw-tag-btn').getDOMNode())
 
     setTimeout(function() {
       expect(select.state.open).to.not.be(true)
@@ -285,14 +289,14 @@ describe('Multiselect', function(){
     trigger.click(createLi)
 
     expect(create.calledOnce).to.ok()
-    expect(create.calledWith("custom tag")).to.ok()
+    expect(create.calledWith('custom tag')).to.ok()
 
     // only option is create
     create.reset()
     trigger.keyDown(ms.getDOMNode(), { key: 'Enter'})
 
     expect(create.calledOnce).to.ok()
-    expect(create.calledWith("custom tag")).to.ok()
+    expect(create.calledWith('custom tag')).to.ok()
 
     // other values have focus
     ms = render(<Select open={true} searchTerm="custom tag" data={['custom tag time']}  onCreate={create} onSearch={()=>{}} onToggle={()=>{}}/>)
@@ -304,18 +308,16 @@ describe('Multiselect', function(){
     trigger.keyDown(ms.getDOMNode(), { key: 'Enter', ctrlKey: true })
 
     expect(create.calledOnce).to.ok()
-    expect(create.calledWith("custom tag")).to.ok()
+    expect(create.calledWith('custom tag')).to.ok()
   })
 
   it('should change values on key down', function(){
     var change = sinon.spy()
-      , select = render(<Select value={[0,1,2]} data={dataList} textField='label' valueField='id' onChange={change}/>)
+      , select = render(<Select value={[0, 1, 2]} data={dataList} textField='label' valueField='id' onChange={change}/>)
       , tags   = findType(select, TagList).getDOMNode()
       , list   = findClass(select, 'rw-list').getDOMNode();
 
-
     trigger.keyDown(select.getDOMNode(), { key: 'ArrowLeft'})
-
 
     expect(tags.children[2].className).to.match(/\brw-state-focus\b/)
     expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)

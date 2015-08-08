@@ -2,7 +2,6 @@ import React from 'react';
 import cn from 'classnames';
 import dates from './util/dates';
 import config from './util/configuration';
-import Btn  from './WidgetButton';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 
@@ -11,7 +10,7 @@ var localizers = config.locale
 var format = props => props.yearFormat || localizers.date.formats.year
 
 let propTypes = {
-  focusID:      React.PropTypes.string,
+  optionID:     React.PropTypes.func,
   culture:      React.PropTypes.string,
 
   value:        React.PropTypes.instanceOf(Date),
@@ -23,6 +22,9 @@ let propTypes = {
   yearFormat:   CustomPropTypes.dateFormat
 };
 
+let isEqual = (dataA, dateB) => dates.eq(dataA, dateB,  'year')
+let optionId = (id, date) => `${id}__decade_${dates.year(date)}`;
+
 export default React.createClass({
 
   displayName: 'DecadeView',
@@ -30,10 +32,16 @@ export default React.createClass({
   mixins: [
     require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlChildContextMixin')
+    require('./mixins/RtlChildContextMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes,
+
+  componentDidUpdate() {
+    let activeId = optionId(this._id(), this.props.focused);
+    this.ariaActiveDescendant(activeId)
+  },
 
   render(){
     let { className, focused } = this.props
@@ -56,38 +64,36 @@ export default React.createClass({
 
   _row(row, rowIdx){
     let {
-        focusID, id = this._id('_decade')
-      , focused, selected, disabled, onChange
+        focused, selected, disabled, onChange
       , value, today, culture, min, max
-      , dayComponent: Day } = this.props;
+      , dayComponent: Day } = this.props
+      , id = this._id();
 
     return (
       <tr key={'row_' + rowIdx} role='row'>
       {
-        row.map((date, i) => {
-          var isFocused = dates.eq(date, focused,  'year')
-            , isSelected = dates.eq(date, value,  'year')
-            , currentYear = dates.eq(date, today, 'year')
+        row.map((date, colIdx) => {
+          var isFocused = isEqual(date, focused)
+            , isSelected = isEqual(date, value)
+            , currentYear = isEqual(date, today)
             , label = localizers.date.format(date, format(this.props), culture);
 
-          var optionID = id + '_' + rowIdx + '_year_' + i
-
-          optionID = isFocused ? (focusID || optionID) : optionID;
+          var currentID = optionId(id, date);
 
           return !dates.inRange(date, min, max, 'year')
-            ? <td key={i} role='presentation' className='rw-empty-cell'>&nbsp;</td>
+            ? <td key={colIdx} role='presentation' className='rw-empty-cell'>&nbsp;</td>
             : (
               <td
-                key={i}
+                key={colIdx}
                 role='gridcell'
-                id={optionID}
+                id={currentID}
                 title={label}
                 aria-selected={isSelected}
                 aria-label={label}
                 aria-readonly={disabled}
               >
                 <span
-                  aria-labelledby={optionID}
+                  aria-labelledby={currentID}
                   onClick={onChange.bind(null, date)}
                   className={cn('rw-btn', {
                     'rw-off-range':      !inDecade(date, focused),

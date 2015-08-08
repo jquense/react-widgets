@@ -22,6 +22,11 @@ let Calendar = _Calendar.BaseCalendar;
 let localizers = config.locale;
 let viewEnum  = Object.keys(views).map( k => views[k] );
 
+let { omit, pick, result } = _;
+
+const TIME_FOCUSED_ID = '_timelist_option_focused';
+const CAL_FOCUSED_ID = '_calendar_option_focused';
+
 let propTypes = {
 
     ...compat.type(Calendar).propTypes,
@@ -75,6 +80,7 @@ let propTypes = {
                       React.PropTypes.func
                     ]),
 
+    'aria-labelledby': React.PropTypes.string,
 
     messages:      React.PropTypes.shape({
       calendarButton: React.PropTypes.string,
@@ -92,7 +98,16 @@ var DateTimePicker = React.createClass({
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin')
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/AriaDescendantMixin')('valueInput', function(key, id){
+      var { open } = this.props
+        , current = this.ariaActiveDescendant()
+        , calIsActive = open === popups.CALENDAR && key === 'calendar'
+        , timeIsActive = open === popups.TIME && key === 'timelist';
+
+      if (!current || (timeIsActive || calIsActive))
+        return id
+    })
   ],
 
   propTypes,
@@ -120,138 +135,165 @@ var DateTimePicker = React.createClass({
       messages: {
         calendarButton: 'Select Date',
         timeButton:     'Select Time'
-      }
+      },
+
+      ariaActiveDescendantKey: 'dropdownlist'
     }
   },
 
   render() {
-    var {
-        className
-      , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , calProps   = _.pick(this.props, Object.keys(compat.type(Calendar).propTypes))
+    let {
+        className, calendar, time, open
+      , tabIndex, value, format, editFormat, timeFormat
+      , culture, duration, step, messages, min, max, busy
+      , placeholder, disabled, readOnly, name, dropUp
+      , timeComponent
+      , 'aria-labelledby': ariaLabelledby} = this.props;
 
+    let { focused } = this.state;
+
+    let inputID = this._id('_input')
       , timeListID = this._id('_time_listbox')
-      , timeOptID  = timeListID + '_selected_option'
       , dateListID = this._id('_cal')
-      , dropUp = this.props.dropUp
-      , renderPopup = _.isFirstFocusedRender(this) || this.props.open
-      , value = dateOrNull(this.props.value)
-      , owns;
+      , owns = '';
 
-    if (dateListID && this.props.calendar) owns = dateListID
-    if (timeListID && this.props.time)     owns += ' ' + timeListID
+    let elementProps = omit(this.props, Object.keys(propTypes))
+      , calProps = pick(this.props, Object.keys(compat.type(Calendar).propTypes))
+
+    let shouldRenderList = _.isFirstFocusedRender(this) || open
+      , disabledOrReadonly = this.isDisabled() || this.isReadOnly()
+      , calendarIsOpen = open === popups.CALENDAR
+      , timeIsOpen = open === popups.TIME;
+
+    if (calendar) owns += dateListID
+    if (time)     owns += ' ' + timeListID
+
+    value = dateOrNull(value)
 
     return (
-      <div {...props}
+      <div {...elementProps}
         ref="element"
         tabIndex={'-1'}
         onKeyDown={this._maybeHandle(this._keyDown)}
         onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
         onBlur ={this._focus.bind(null, false)}
         className={cx(className, 'rw-datetimepicker', 'rw-widget', {
-          'rw-state-focus':     this.state.focused,
+          'rw-state-focus':     focused,
           'rw-state-disabled':  this.isDisabled(),
           'rw-state-readonly':  this.isReadOnly(),
-          'rw-has-both':        this.props.calendar && this.props.time,
-          'rw-has-neither':     !this.props.calendar && !this.props.time,
+          'rw-has-both':         calendar && time,
+          'rw-has-neither':     !calendar && !time,
           'rw-rtl':             this.isRtl(),
 
-          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
-        })}>
-
-        <DateInput ref='valueInput'
-          tabIndex={props.tabIndex}
-          aria-labelledby={this.props['aria-labelledby']}
-          aria-activedescendant={ this.props.open
-            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
-            : undefined }
-          aria-expanded={ !!this.props.open }
-          aria-busy={!!this.props.busy}
-          aria-owns={owns}
+          ['rw-open' + (dropUp ? '-up' : '')]: open
+        })}
+      >
+        <DateInput
+          ref='valueInput'
+          id={inputID}
+          tabIndex={tabIndex || 0}
+          role='combobox'
+          aria-expanded={!!open}
+          aria-busy={!!busy}
+          aria-owns={owns.trim()}
           aria-haspopup={true}
-          placeholder={this.props.placeholder}
-          name={this.props.name}
+          placeholder={placeholder}
+          name={name}
           disabled={this.isDisabled()}
           readOnly={this.isReadOnly()}
-          role={ this.props.time ? 'combobox' : null }
           value={value}
-
           format={getFormat(this.props)}
-          editFormat={this.props.editFormat}
-
-          editing={this.state.focused}
-          culture={this.props.culture}
+          editFormat={editFormat}
+          editing={focused}
+          culture={culture}
           parse={this._parse}
-          onChange={this._change} />
+          onChange={this._change}
+        />
 
-        { (this.props.calendar || this.props.time) &&
+        { (calendar || time) &&
         <span className='rw-select'>
-          {
-            this.props.calendar &&
-            <Btn tabIndex='-1'
+        {
+          calendar &&
+            <Btn
+              tabIndex='-1'
               className='rw-btn-calendar'
-              disabled={this.isDisabled() || this.isReadOnly()}
-              aria-disabled={this.isDisabled() || this.isReadOnly()}
-              onClick={this._maybeHandle(this._click.bind(null, popups.CALENDAR))}>
-              <i className="rw-i rw-i-calendar"><span className="rw-sr">{ this.props.messages.calendarButton }</span></i>
+              disabled={disabledOrReadonly}
+              aria-disabled={disabledOrReadonly}
+              aria-label={messages.calendarButton}
+              onClick={this._maybeHandle(this._click.bind(null, popups.CALENDAR))}
+            >
+              <i className="rw-i rw-i-calendar"
+                aria-hidden='true'
+              />
             </Btn>
-          }
-          { this.props.time &&
-            <Btn tabIndex='-1'
+        }
+        { time &&
+            <Btn
+              tabIndex='-1'
               className='rw-btn-time'
-              disabled={this.isDisabled() || this.isReadOnly()}
-              aria-disabled={this.isDisabled() || this.isReadOnly()}
-              onClick={this._maybeHandle(this._click.bind(null, popups.TIME))}>
-              <i className="rw-i rw-i-clock-o"><span className="rw-sr">{ this.props.messages.timeButton }</span></i>
+              disabled={disabledOrReadonly}
+              aria-disabled={disabledOrReadonly}
+              aria-label={messages.timeButton}
+              onClick={this._maybeHandle(this._click.bind(null, popups.TIME))}
+            >
+              <i className="rw-i rw-i-clock-o"
+                aria-hidden='true'
+              />
             </Btn>
-          }
+        }
         </span>
         }
-
         <Popup
           dropUp={dropUp}
-          open={ this.props.open === popups.TIME }
+          open={timeIsOpen}
           onRequestClose={this.close}
-          duration={this.props.duration}
-          onOpening={() => this.refs.timePopup.forceUpdate()}>
-
+          duration={duration}
+          onOpening={() => this.refs.timePopup.forceUpdate()}
+        >
           <div>
-            { renderPopup &&
+            { shouldRenderList &&
               <Time ref="timePopup"
                 id={timeListID}
-                optID={timeOptID}
-                aria-hidden={ !this.props.open }
+                ariaActiveDescendantKey='timelist'
+                aria-labelledby={inputID}
+                aria-live={open && 'polite'}
+                aria-hidden={!open}
                 value={value}
-                format={this.props.timeFormat}
-                step={this.props.step}
-                min={this.props.min}
-                max={this.props.max}
-                culture={this.props.culture}
+                format={timeFormat}
+                step={step}
+                min={min}
+                max={max}
+                culture={culture}
                 onMove={this._scrollTo}
-                preserveDate={!!this.props.calendar}
-                itemComponent={this.props.timeComponent}
-                onSelect={this._maybeHandle(this._selectTime)}/>
+                preserveDate={!!calendar}
+                itemComponent={timeComponent}
+                onSelect={this._maybeHandle(this._selectTime)}
+              />
             }
           </div>
         </Popup>
         <Popup
           className='rw-calendar-popup'
           dropUp={dropUp}
-          open={ this.props.open === popups.CALENDAR}
-          duration={this.props.duration}
-          onRequestClose={this.close}>
-
-          { renderPopup &&
-            <Calendar {...calProps }
+          open={calendarIsOpen}
+          duration={duration}
+          onRequestClose={this.close}
+        >
+          { shouldRenderList &&
+            <Calendar
+              {...calProps}
               ref="calPopup"
               tabIndex='-1'
               id={dateListID}
               value={value}
-              aria-hidden={ !this.props.open }
+              aria-hidden={!open}
+              aria-live={'polite'}
+              ariaActiveDescendantKey='calendar'
               onChange={this._maybeHandle(this._selectDate)}
               // #75: need to aggressively reclaim focus from the calendar otherwise
               // disabled header/footer buttons will drop focus completely from the widget
-              onNavigate={() => this.focus()}/>
+              onNavigate={() => this.focus()}
+            />
           }
         </Popup>
       </div>
@@ -275,24 +317,29 @@ var DateTimePicker = React.createClass({
   },
 
   _keyDown(e){
+    let { open, calendar, time } = this.props;
 
-    if (e.key === 'Escape' && this.props.open)
+    if (e.key === 'Escape' && open)
       this.close()
 
     else if ( e.altKey ) {
       e.preventDefault()
 
-      if (e.key === 'ArrowDown')
-        this.open(this.props.open === popups.CALENDAR
-              ? popups.TIME
-              : popups.CALENDAR)
+      if (e.key === 'ArrowDown'){
+        if (calendar && time)
+          this.open(open === popups.CALENDAR
+                ? popups.TIME
+                : popups.CALENDAR)
+        else if (time)     this.open(popups.TIME)
+        else if (calendar) this.open(popups.CALENDAR)
+      }
       else if (e.key === 'ArrowUp')
         this.close()
     }
-    else if (this.props.open) {
-      if (this.props.open === popups.CALENDAR )
+    else if (open) {
+      if (open === popups.CALENDAR )
         this.refs.calPopup._keyDown(e)
-      if (this.props.open === popups.TIME )
+      if (open === popups.TIME )
         this.refs.timePopup._keyDown(e)
     }
 
