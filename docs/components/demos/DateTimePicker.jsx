@@ -13,9 +13,9 @@ require('globalize/lib/cultures/globalize.culture.ar-AE');
 module.exports = React.createClass({
   getInitialState: function(){
     return {
-      calendar: false,
+      calendar: true,
       time: true,
-      format: 'f',
+      format: 'f'
     }
   },
 
@@ -39,7 +39,7 @@ module.exports = React.createClass({
       initialView: this.state.initialView,
       disabled: this.state.disabled === 'disabled',
       readOnly: this.state.disabled === 'readonly',
-      isRtl: this.state.isRtl,
+      isRtl: this.state.isRtl
     }
 
 

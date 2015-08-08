@@ -189,7 +189,7 @@ describe('Multiselect', function(){
   })
 
   it('should readonly only certain tags', function(done){
-    var select = render(<Select defaultValue={[0,1]} data={dataList} readOnly={[1]}  textField='label' valueField='id'/>)
+    var select = render(<Select defaultValue={[0, 1]} data={dataList} readOnly={[1]}  textField='label' valueField='id'/>)
       , tags   = findType(select, TagList).getDOMNode();
 
     expect(tags.children.length).to.be(2)
