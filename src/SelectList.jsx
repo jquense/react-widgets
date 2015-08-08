@@ -9,6 +9,7 @@ import PlainList        from './List';
 import GroupableList from './ListGroupable';
 import validateList from './util/validateListInterface';
 import scrollTo from 'dom-helpers/util/scrollTo';
+import ifNotDisabled from './util/ifNotDisabled';
 
 let { omit, pick, result } = _;
 
@@ -132,7 +133,7 @@ var SelectList = React.createClass({
 
     return (
       <div {...elementProps}
-        onKeyDown={this._maybeHandle(this._keyDown)}
+        onKeyDown={this._keyDown}
         onFocus={this._focus.bind(null, true)}
         onBlur={this._focus.bind(null, false)}
         role={'radiogroup'}
@@ -176,6 +177,7 @@ var SelectList = React.createClass({
     }
   },
 
+  @ifNotDisabled
   _keyDown(e) {
     var self = this
       , key = e.key
@@ -274,7 +276,8 @@ var SelectList = React.createClass({
     this.notify('onChange', [values || []])
   },
 
-  _focus: _.ifNotDisabled(true, function(focused, e) {
+  @ifNotDisabled(true)
+  _focus(focused, e) {
 
     if( focused) compat.findDOMNode(this.refs.list).focus()
 
@@ -284,7 +287,7 @@ var SelectList = React.createClass({
         this.setState({ focused: focused })
       }
     })
-  }),
+  },
 
   isDisabledItem(item) {
     return this.isDisabled() || this._contains(item, this.props.disabled)

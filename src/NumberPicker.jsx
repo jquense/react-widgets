@@ -10,6 +10,8 @@ var React = require('react')
   , localizers = require('./util/configuration').locale
   , Input = require('./NumberInput');
 
+import ifNotDisabled from './util/ifNotDisabled';
+
 var Btn = require('./WidgetButton')
 
 var format = props => props.format || localizers.number.formats.default
@@ -165,7 +167,8 @@ var NumberPicker = React.createClass({
   },
 
   //allow for styling, focus stealing keeping me from the normal what have you
-  _mouseDown: _.ifNotDisabled(function (dir) {
+  @ifNotDisabled
+  _mouseDown(dir) {
     var method = dir === directions.UP
       ? this.increment
       : this.decrement
@@ -183,15 +186,17 @@ var NumberPicker = React.createClass({
     }
     else
       this._mouseUp()
-  }),
+  },
 
-  _mouseUp: _.ifNotDisabled(function() {
+  @ifNotDisabled
+  _mouseUp() {
     this.setState({ active: false })
     this._cancelRepeater && this._cancelRepeater()
     this._cancelRepeater = null;
-  }),
+  },
 
-  _focus: _.ifNotDisabled(true, function(focused, e){
+  @ifNotDisabled(true)
+  _focus(focused, e){
 
     focused && compat.findDOMNode(this.refs.input).focus()
 
@@ -202,9 +207,10 @@ var NumberPicker = React.createClass({
       }
 
     }, 0)
-  }),
+  },
 
-  _keyDown: _.ifNotDisabled(function(e) {
+  @ifNotDisabled
+  _keyDown(e) {
     var key = e.key;
 
     if ( key === 'End'  && isFinite(this.props.max))
@@ -221,7 +227,7 @@ var NumberPicker = React.createClass({
       e.preventDefault()
       this.increment()
     }
-  }),
+  },
 
   increment() {
     return this.step(this.props.step)
