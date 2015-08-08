@@ -24,9 +24,6 @@ let viewEnum  = Object.keys(views).map( k => views[k] );
 
 let { omit, pick, result } = _;
 
-const TIME_FOCUSED_ID = '_timelist_option_focused';
-const CAL_FOCUSED_ID = '_calendar_option_focused';
-
 let propTypes = {
 
     ...compat.type(Calendar).propTypes,

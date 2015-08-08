@@ -8,7 +8,6 @@ import WidgetMixin from './mixins/WidgetMixin';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
-
 module.exports = React.createClass({
 
   displayName: 'MultiselectTagList',
@@ -43,7 +42,7 @@ module.exports = React.createClass({
 
   getDefaultProps(){
     return {
-      ariaActiveDescendantKey: 'taglist',
+      ariaActiveDescendantKey: 'taglist'
     }
   },
 

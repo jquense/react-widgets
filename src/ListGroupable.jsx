@@ -81,12 +81,7 @@ export default React.createClass({
     this.move()
   },
 
-
   componentDidUpdate() {
-    let { data, focused } = this.props
-      , idx = data.indexOf(focused)
-      , activeId = optionId(this._id(), idx)
-
     this.ariaActiveDescendant(this._currentActiveID)
     this.move()
   },

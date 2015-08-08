@@ -16,7 +16,6 @@ let defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
 
 let { omit, pick, result } = _;
 
-const FOCUSED_ID = '_listbox_option_focused';
 
 let propTypes = {
       //-- controlled props -----------
@@ -106,6 +105,10 @@ var ComboBox = React.createClass({
       messages: msgs(),
       ariaActiveDescendantKey: 'combobox'
     }
+  },
+
+  componentDidUpdate() {
+    this.refs.list && validateList(this.refs.list)
   },
 
   shouldComponentUpdate(nextProps, nextState){

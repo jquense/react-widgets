@@ -52,7 +52,6 @@ let MULTIPLIER = {
 
 let format = (props, f) => props[f + 'Format'] || localizers.date.formats[f]
 
-const FOCUSED_ID = '_calendar_cell_focused';
 
 let propTypes = {
 

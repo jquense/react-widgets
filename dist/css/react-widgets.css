@@ -29,30 +29,6 @@ input.rw-input::-moz-focus-inner {
   padding: 0;
 }
 /* -------------- */
-.rw-sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-.rw-widget,
-.rw-widget * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.rw-widget:before,
-.rw-widget *:before,
-.rw-widget:after,
-.rw-widget *:after {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
 @font-face {
   font-family: 'RwWidgets';
   src: url('../fonts/rw-widgets.eot?v=4.1.0');
@@ -93,6 +69,30 @@ input.rw-input::-moz-focus-inner {
   content: '\e806';
 }
 /* for debugging */
+.rw-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.rw-widget,
+.rw-widget * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.rw-widget:before,
+.rw-widget *:before,
+.rw-widget:after,
+.rw-widget *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 .rw-widget {
   outline: 0;
   -moz-background-clip: border-box;
@@ -378,6 +378,7 @@ ul.rw-list.rw-list-grouped > li.rw-list-option,
   width: 1.9em;
   height: 100%;
   right: 0;
+  top: 0;
 }
 .rw-select.rw-btn,
 .rw-select > .rw-btn {

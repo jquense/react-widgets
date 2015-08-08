@@ -3,8 +3,7 @@ var React = require('react')
   , dates = require('./util/dates')
   , List = require('./List')
   , localizers = require('./util/configuration').locale
-  , CustomPropTypes  = require('./util/propTypes')
-  , _ = require('./util/_') // omit
+  , CustomPropTypes  = require('./util/propTypes');
 
 var format = props => props.format || localizers.date.formats.time
 
