@@ -14,6 +14,7 @@ import SlideTransition from './SlideTransition';
 import dates from './util/dates';
 import constants from './util/constants';
 import _ from './util/_'; //values, omit
+import ifNotDisabled from './util/ifNotDisabled';
 
 let dir    = constants.directions
   , values = obj => Object.keys(obj).map( k => obj[k] )
@@ -230,7 +231,7 @@ var Calendar = React.createClass({
             today={todaysDate}
             value={value}
             focused={currentDate}
-            onChange={this._maybeHandle(this.change)}
+            onChange={this.change}
             onKeyDown={this._keyDown}
             ariaActiveDescendantKey='calendarView'
           />
@@ -242,14 +243,15 @@ var Calendar = React.createClass({
             culture={culture}
             disabled={disabled || todayNotInRange}
             readOnly={readOnly}
-            onClick={this._maybeHandle(this.select)}
+            onClick={this.select}
           />
         }
       </div>
     )
   },
 
-  navigate: _.ifNotDisabled(function (direction, date){
+  @ifNotDisabled
+  navigate(direction, date){
     var view     =  this.state.view
       , slideDir = (direction === dir.LEFT || direction === dir.UP)
           ? 'right'
@@ -276,7 +278,7 @@ var Calendar = React.createClass({
         view: view
       })
     }
-  }),
+  },
 
   focus() {
     if (+this.props.tabIndex > -1)
@@ -285,7 +287,8 @@ var Calendar = React.createClass({
     //console.log(document.activeElement)
   },
 
-  _focus: _.ifNotDisabled(true, function(focused, e){
+  @ifNotDisabled(true)
+  _focus(focused, e){
     if ( +this.props.tabIndex === -1)
       return
 
@@ -295,8 +298,9 @@ var Calendar = React.createClass({
         this.setState({ focused })
       }
     })
-  }),
+  },
 
+  @ifNotDisabled
   change(date){
     if (this.state.view === this.props.initialView){
       this.notify('onChange', date)
@@ -307,6 +311,7 @@ var Calendar = React.createClass({
     this.navigate(dir.DOWN, date)
   },
 
+  @ifNotDisabled
   select(date){
     var view = this.props.initialView
       , slideDir = view !== this.state.view || dates.gt(date, this.state.currentDate)
@@ -336,7 +341,8 @@ var Calendar = React.createClass({
     return dates[method](this.state.currentDate, 1 * multi, unit)
   },
 
-  _keyDown: _.ifNotDisabled(function(e){
+   @ifNotDisabled
+  _keyDown(e){
     var ctrl = e.ctrlKey
       , key  = e.key
       , direction = ARROWS_TO_DIRECTION[key]
@@ -377,7 +383,7 @@ var Calendar = React.createClass({
     }
 
     this.notify('onKeyDown', [e])
-  }),
+  },
 
   _label() {
     var {

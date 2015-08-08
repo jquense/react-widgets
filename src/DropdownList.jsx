@@ -12,6 +12,8 @@ var React           = require('react')
   , validateList    = require('./util/validateListInterface')
   , createUncontrolledWidget = require('uncontrollable');
 
+import ifNotDisabled from './util/ifNotDisabled';
+
 let { omit, pick, result } = _;
 
 var propTypes = {
@@ -231,7 +233,8 @@ var DropdownList = React.createClass({
     )
   },
 
-  _focus: _.ifNotDisabled(true, function(focused, e){
+  @ifNotDisabled(true)
+  _focus(focused, e){
 
     this.setTimeout('focus', () => {
       if( !focused) this.close()
@@ -241,16 +244,18 @@ var DropdownList = React.createClass({
         this.setState({ focused: focused })
       }
     })
-  }),
+  },
 
-  _onSelect: _.ifNotDisabled(function(data){
+  @ifNotDisabled
+  _onSelect(data){
     this.close()
     this.notify('onSelect', data)
     this.change(data)
     this.focus(this)
-  }),
+  },
 
-  _click: _.ifNotDisabled(function(e){
+  @ifNotDisabled
+  _click(e){
     var wrapper = this.refs.filterWrapper
 
     if( !this.props.filter || !this.props.open )
@@ -260,9 +265,10 @@ var DropdownList = React.createClass({
       this.close()
 
     this.notify('onClick', e)
-  }),
+  },
 
-  _keyDown: _.ifNotDisabled(function (e){
+  @ifNotDisabled
+  _keyDown(e){
     var self = this
       , key = e.key
       , alt = e.altKey
@@ -317,7 +323,7 @@ var DropdownList = React.createClass({
         ? self._onSelect(item)
         : self.change(item)
     }
-  }),
+  },
 
   change(data){
     if ( !_.isShallowEqual(data, this.props.value) ) {

@@ -11,6 +11,7 @@ import PlainList       from './List';
 import GroupableList   from './ListGroupable';
 import validateList    from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
+import ifNotDisabled from './util/ifNotDisabled';
 
 let defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
 
@@ -248,12 +249,13 @@ var ComboBox = React.createClass({
     )
   },
 
-  _onSelect: _.ifNotDisabled(function(data){
+  @ifNotDisabled
+  _onSelect(data){
     this.close()
     this.notify('onSelect', data)
     this.change(data)
     this.focus();
-  }),
+  },
 
   _inputKeyDown(e){
     this._deleting = e.key === 'Backspace' || e.key === 'Delete'
@@ -285,7 +287,8 @@ var ComboBox = React.createClass({
     this.refs.input.focus()
   },
 
-  _focus: _.ifNotDisabled(true, function(focused, e){
+  @ifNotDisabled(true)
+  _focus(focused, e){
 
     !focused && this.refs.input.accept() //not suggesting anymore
 
@@ -298,9 +301,10 @@ var ComboBox = React.createClass({
         this.setState({ focused: focused })
       }
     })
-  }),
+  },
 
-  _keyDown: _.ifNotDisabled(function(e){
+  @ifNotDisabled
+  _keyDown(e){
     var self = this
       , key  = e.key
       , alt  = e.altKey
@@ -354,7 +358,7 @@ var ComboBox = React.createClass({
 
       self.change(item, false)
     }
-  }),
+  },
 
   change(data, typing){
     this._typedChange = !!typing
@@ -371,13 +375,14 @@ var ComboBox = React.createClass({
       this.notify('onToggle', false)
   },
 
-  toggle: _.ifNotDisabled(function(){
+  @ifNotDisabled
+  toggle(){
     this.focus()
 
     this.props.open
       ? this.close()
       : this.open()
-  }),
+  },
 
   suggest(data, value) {
     var word = this._dataText(value)

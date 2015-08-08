@@ -34,11 +34,5 @@ module.exports = {
   _id(suffix = ''){
     this._id_ || (this._id_ = _.uniqueId('rw_'))
     return (this.props.id || this._id_)  + suffix
-  },
-
-  _maybeHandle(handler, disabledOnly){
-    if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
-      return handler
-    return function(){}
   }
 }

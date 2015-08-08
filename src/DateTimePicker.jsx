@@ -16,6 +16,7 @@ import DateInput from './DateInput';
 import Btn       from './WidgetButton';
 import CustomPropTypes from './util/propTypes';
 import createUncontrolledWidget from 'uncontrollable';
+import ifNotDisabled from './util/ifNotDisabled';
 
 let { calendarViews: views, datePopups: popups } = constants;
 let Calendar = _Calendar.BaseCalendar;
@@ -171,9 +172,9 @@ var DateTimePicker = React.createClass({
       <div {...elementProps}
         ref="element"
         tabIndex={'-1'}
-        onKeyDown={this._maybeHandle(this._keyDown)}
-        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
-        onBlur ={this._focus.bind(null, false)}
+        onKeyDown={this._keyDown}
+        onFocus={this._focus.bind(null, true)}
+        onBlur={this._focus.bind(null, false)}
         className={cx(className, 'rw-datetimepicker', 'rw-widget', {
           'rw-state-focus':     focused,
           'rw-state-disabled':  this.isDisabled(),
@@ -217,7 +218,7 @@ var DateTimePicker = React.createClass({
               disabled={disabledOrReadonly}
               aria-disabled={disabledOrReadonly}
               aria-label={messages.calendarButton}
-              onClick={this._maybeHandle(this._click.bind(null, popups.CALENDAR))}
+              onClick={this._click.bind(null, popups.CALENDAR)}
             >
               <i className="rw-i rw-i-calendar"
                 aria-hidden='true'
@@ -231,7 +232,7 @@ var DateTimePicker = React.createClass({
               disabled={disabledOrReadonly}
               aria-disabled={disabledOrReadonly}
               aria-label={messages.timeButton}
-              onClick={this._maybeHandle(this._click.bind(null, popups.TIME))}
+              onClick={this._click.bind(null, popups.TIME)}
             >
               <i className="rw-i rw-i-clock-o"
                 aria-hidden='true'
@@ -264,7 +265,7 @@ var DateTimePicker = React.createClass({
                 onMove={this._scrollTo}
                 preserveDate={!!calendar}
                 itemComponent={timeComponent}
-                onSelect={this._maybeHandle(this._selectTime)}
+                onSelect={this._selectTime}
               />
             }
           </div>
@@ -286,7 +287,7 @@ var DateTimePicker = React.createClass({
               aria-hidden={!open}
               aria-live={'polite'}
               ariaActiveDescendantKey='calendar'
-              onChange={this._maybeHandle(this._selectDate)}
+              onChange={this._selectDate}
               // #75: need to aggressively reclaim focus from the calendar otherwise
               // disabled header/footer buttons will drop focus completely from the widget
               onNavigate={() => this.focus()}
@@ -297,6 +298,7 @@ var DateTimePicker = React.createClass({
     )
   },
 
+  @ifNotDisabled
   _change(date, str, constrain){
     let { onChange, value } = this.props;
 
@@ -313,6 +315,7 @@ var DateTimePicker = React.createClass({
     }
   },
 
+  @ifNotDisabled
   _keyDown(e){
     let { open, calendar, time } = this.props;
 
@@ -343,7 +346,8 @@ var DateTimePicker = React.createClass({
     this.notify('onKeyDown', [e])
   },
 
-  _focus: function(focused, e){
+  @ifNotDisabled(true)
+  _focus(focused, e){
 
     this.setTimeout('focus', () => {
       if (!focused) this.close()
@@ -360,6 +364,7 @@ var DateTimePicker = React.createClass({
       this.refs.valueInput.focus()
   },
 
+  @ifNotDisabled
   _selectDate(date){
     var format   = getFormat(this.props)
       , dateTime = dates.merge(date, this.props.value)
@@ -371,6 +376,7 @@ var DateTimePicker = React.createClass({
     this.focus()
   },
 
+  @ifNotDisabled
   _selectTime(datum){
     var format   = getFormat(this.props)
       , dateTime = dates.merge(this.props.value, datum.date)
@@ -382,6 +388,7 @@ var DateTimePicker = React.createClass({
     this.focus()
   },
 
+  @ifNotDisabled
   _click(view, e){
     this.focus()
     this.toggle(view, e)

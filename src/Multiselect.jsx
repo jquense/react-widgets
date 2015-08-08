@@ -13,6 +13,8 @@ var React           = require('react')
   , createUncontrolledWidget = require('uncontrollable')
   , CustomPropTypes = require('./util/propTypes');
 
+import ifNotDisabled from './util/ifNotDisabled';
+
 var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
   ? msgs.createNew(props) : [<strong>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
 
@@ -204,8 +206,8 @@ var Multiselect = React.createClass({
       <div {...elementProps}
         ref="element"
         id={this._id()}
-        onKeyDown={this._maybeHandle(this._keyDown)}
-        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
+        onKeyDown={this._keyDown}
+        onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
         tabIndex={'-1'}
         className={cx(className, 'rw-widget', 'rw-multiselect',  {
@@ -289,7 +291,7 @@ var Multiselect = React.createClass({
                 ariaActiveDescendantKey='list'
                 data={items}
                 focused={focusedItem}
-                onSelect={this._maybeHandle(this._onSelect)}
+                onSelect={this._onSelect}
                 onMove={this._scrollTo}
                 messages={{
                   emptyList: data.length
@@ -332,6 +334,7 @@ var Multiselect = React.createClass({
     !this.props.open && this.open()
   },
 
+  @ifNotDisabled(true)
   _focus(focused, e){
     if (this.props.disabled === true )
       return
@@ -368,6 +371,7 @@ var Multiselect = React.createClass({
     this.open()
   },
 
+  @ifNotDisabled
   _onSelect(data){
 
     if (data === undefined) {
@@ -384,6 +388,7 @@ var Multiselect = React.createClass({
     this._focus(true)
   },
 
+  @ifNotDisabled
   _onCreate(tag){
     if (tag.trim() === '' )
       return
@@ -396,7 +401,8 @@ var Multiselect = React.createClass({
     this._focus(true)
   },
 
-  _keyDown: function(e){
+  @ifNotDisabled
+  _keyDown(e) {
     let { key, altKey, ctrlKey } = e
       , noSearch = !this.props.searchTerm && !this._deletingText
       , isOpen  = this.props.open;
@@ -456,10 +462,7 @@ var Multiselect = React.createClass({
     this.notify('onKeyDown', [e])
   },
 
-  // _firstFocus(){
-  //   this.open()
-  // }
-
+  @ifNotDisabled
   change(data){
     this.notify('onChange', [data])
     this.props.searchTerm
