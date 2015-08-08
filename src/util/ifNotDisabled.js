@@ -6,6 +6,15 @@ function isReadOnly(readOnly){
   return readOnly === true || readOnly === 'readonly'
 }
 
+function wrap(method, disabledOnly){
+  return function decoratedMethod(...args){
+    let { disabled, readOnly } = this.props;
+
+    if (!(isDisabled(disabled) || (!disabledOnly && isReadOnly(readOnly))))
+      return method.apply(this, args)
+  }
+}
+
 export default function disabledOrReadonly(...args){
   let isDecorator = args.length === 3
     , disabledOnly = isDecorator ? false : args[0];
@@ -16,18 +25,11 @@ export default function disabledOrReadonly(...args){
   function decorate(target, key, desc){
     if (desc.initializer) {
       let init = desc.initializer
-      desc.initializer = ()=> wrap(init())
+      desc.initializer = ()=> wrap(init(), disabledOnly)
     }
-    else desc.value = wrap(desc.value)
+    else desc.value = wrap(desc.value, disabledOnly)
     return desc
   }
-
-  function wrap(method){
-    return function decoratedMethod(...args){
-      let { disabled, readOnly } = this.props;
-
-      if (!(isDisabled(disabled) || (!disabledOnly && isReadOnly(readOnly))))
-        return method.apply(this, args)
-    }
-  }
 }
+
+
