@@ -3,6 +3,7 @@ import cn         from 'classnames';
 import dates      from './util/dates';
 import config from './util/configuration';import _          from './util/_';
 import CustomPropTypes from './util/propTypes';
+import { instanceId } from './util/widgetHelpers';
 
 let localizers   = config.locale;
 let format = props => props.decadeFormat || localizers.date.formats.decade
@@ -26,7 +27,6 @@ export default React.createClass({
   displayName: 'CenturyView',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/RtlChildContextMixin'),
     require('./mixins/AriaDescendantMixin')()
@@ -35,7 +35,7 @@ export default React.createClass({
   propTypes,
 
   componentDidUpdate() {
-    let activeId = optionId(this._id(), this.props.focused);
+    let activeId = optionId(instanceId(this), this.props.focused);
     this.ariaActiveDescendant(activeId)
   },
 
@@ -60,9 +60,9 @@ export default React.createClass({
 
   _row(row, rowIdx) {
     let {
-        focused, selected, disabled, onChange
+        focused, disabled, onChange
       , value, today, culture, min, max } = this.props
-      , id = this._id('_century');
+      , id = instanceId(this, '_century');
 
     return (
       <tr key={'row_' + rowIdx} role='row'>

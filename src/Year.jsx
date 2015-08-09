@@ -4,6 +4,7 @@ import dates from './util/dates';
 import config from './util/configuration';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
+import { instanceId } from './util/widgetHelpers';
 
 var localizers = config.locale
 var format = props => props.monthFormat || localizers.date.formats.month
@@ -28,7 +29,6 @@ let YearView = React.createClass({
   displayName: 'YearView',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/RtlChildContextMixin'),
     require('./mixins/AriaDescendantMixin')()
   ],
@@ -36,7 +36,7 @@ let YearView = React.createClass({
   propTypes,
 
   componentDidUpdate() {
-    let activeId = optionId(this._id(), this.props.focused);
+    let activeId = optionId(instanceId(this), this.props.focused);
     this.ariaActiveDescendant(activeId)
   },
 
@@ -61,10 +61,9 @@ let YearView = React.createClass({
 
   _row(row, rowIdx){
     let {
-        focused, selected, disabled, onChange
-      , value, today, culture, min, max
-      , dayComponent: Day } = this.props
-      , id = this._id()
+        focused, disabled, onChange
+      , value, today, culture, min, max } = this.props
+      , id = instanceId(this)
       , labelFormat = localizers.date.formats.header;
 
     return (

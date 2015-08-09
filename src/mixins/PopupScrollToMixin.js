@@ -1,7 +1,6 @@
-'use strict';
-var scrollTo = require('dom-helpers/util/scrollTo')
+import scrollTo from 'dom-helpers/util/scrollTo';
 
-module.exports = {
+export default {
 
   _scrollTo(selected, list, focused) {
     var state   = this._scrollState || (this._scrollState = {})

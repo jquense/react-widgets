@@ -83,13 +83,8 @@ var _ =
 
     uniqueId (prefix) {
       return '' + ((prefix == null ? '' : prefix) + (++idCount));
-    },
-
-    //-- Really specific Component Utilities --
-
-    isFirstFocusedRender(component){
-      return component._firstFocus || (component.state.focused && (component._firstFocus = true))
     }
+
   }
 
 function has(o, k){

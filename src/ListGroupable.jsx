@@ -5,6 +5,8 @@ import compat from './util/compat';
 import cn from 'classnames';
 import _  from './util/_';
 import warning from 'react/lib/warning';
+import { dataText, dataValue } from './util/dataHelpers';
+import { instanceId, notify } from './util/widgetHelpers';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
@@ -13,8 +15,6 @@ export default React.createClass({
   displayName: 'List',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
-    require('./mixins/DataHelpersMixin'),
     require('./mixins/ListMovementMixin'),
     require('./mixins/AriaDescendantMixin')()
   ],
@@ -91,7 +91,7 @@ export default React.createClass({
         className, role, data
       , messages, onSelect, selectedIndex
       , ...props } = this.props
-      , id = this._id();
+      , id = instanceId(this) ;
 
     let { sortedKeys, groups } = this.state;
 
@@ -133,7 +133,7 @@ export default React.createClass({
 
   _renderGroupHeader(group){
     var GroupComponent = this.props.groupComponent
-      , id = this._id();
+      , id = instanceId(this) ;
 
     return (
       <li
@@ -151,10 +151,11 @@ export default React.createClass({
   _renderItem(group, item, idx){
     let {
         focused, selected, onSelect
+      , textField, valueField
       , itemComponent: ItemComponent
       , optionComponent: Option } = this.props
 
-    let currentID = optionId(this._id(), idx);
+    let currentID = optionId(instanceId(this), idx);
 
     if (focused === item)
       this._currentActiveID = currentID;
@@ -171,10 +172,10 @@ export default React.createClass({
         { ItemComponent
             ? <ItemComponent
                 item={item}
-                value={this._dataValue(item)}
-                text={this._dataText(item)}
+                value={dataValue(item, valueField)}
+                text={dataText(item, textField)}
               />
-            : this._dataText(item)
+            : dataText(item, textField)
         }
       </Option>
     )
@@ -219,7 +220,7 @@ export default React.createClass({
 
     if( !selected ) return
 
-    this.notify('onMove', [ selected, compat.findDOMNode(this), this.props.focused ])
+    notify(this.props.onMove, [ selected, compat.findDOMNode(this), this.props.focused ])
   },
 
   getItemDOMNode(item){

@@ -1,8 +1,8 @@
 'use strict';
-var React   = require('react')
-  , filters = require('../util/filter')
-  , CustomPropTypes = require('../util/propTypes')
-  , helper  = require('./DataHelpersMixin');
+import React  from 'react';
+import filters from '../util/filter';
+import CustomPropTypes from '../util/propTypes';
+import { dataText } from '../util/dataHelpers';
 
 var dflt = f => f === true ? 'startsWith' : f ? f : 'eq'
 
@@ -62,7 +62,7 @@ function getFilter(matcher, searchTerm, ctx){
     : searchTerm
 
   return function(item) {
-    var val = helper._dataText.call(ctx, item);
+    var val = dataText(item, ctx.props.textField);
 
     if ( !ctx.props.caseSensitive )
       val = val.toLowerCase();

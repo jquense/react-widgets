@@ -4,6 +4,8 @@ import CustomPropTypes from './util/propTypes';
 import compat from './util/compat';
 import cn from 'classnames';
 import _  from './util/_';
+import { dataText, dataValue } from './util/dataHelpers';
+import { instanceId, notify } from './util/widgetHelpers';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
@@ -12,8 +14,6 @@ export default React.createClass({
   displayName: 'List',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
-    require('./mixins/DataHelpersMixin'),
     require('./mixins/ListMovementMixin'),
     require('./mixins/AriaDescendantMixin')()
   ],
@@ -59,7 +59,7 @@ export default React.createClass({
   componentDidUpdate(){
     let { data, focused } = this.props
       , idx = data.indexOf(focused)
-      , activeId = optionId(this._id(), idx)
+      , activeId = optionId(instanceId(this), idx)
 
     this.ariaActiveDescendant(idx !== -1 ? activeId : null)
 
@@ -68,13 +68,13 @@ export default React.createClass({
 
   render(){
     var {
-        className, role, data
+        className, role, data, textField, valueField
       , focused, selected, messages, onSelect
       , itemComponent: ItemComponent
       , optionComponent: Option
       , optionID
       , ...props  } = this.props
-      , id = this._id()
+      , id = instanceId(this)
       , items;
 
     items = !data.length
@@ -85,21 +85,22 @@ export default React.createClass({
       ) : data.map((item, idx) => {
           var currentId = optionId(id, idx);
 
-          // if (focused === item)
-          //   this._activeID = currentId;
-
           return (
             <Option
               key={'item_' + idx}
               id={currentId}
               dataItem={item}
-              focused={focused === item}
+              focused={focused === item}z
               selected={selected === item}
               onClick={onSelect.bind(null, item)}
             >
               { ItemComponent
-                ? <ItemComponent item={item} value={this._dataValue(item)} text={this._dataText(item)}/>
-                : this._dataText(item)
+                ? <ItemComponent
+                    item={item}
+                    value={dataValue(item, valueField)}
+                    text={dataText(item, textField)}
+                  />
+                : dataText(item, textField)
               }
             </Option>
           )
@@ -129,7 +130,7 @@ export default React.createClass({
 
     if( !selected ) return
 
-    this.notify('onMove', [ selected, list, this.props.focused ])
+    notify(this.props.onMove, [ selected, list, this.props.focused ])
   }
 
 })

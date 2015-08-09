@@ -1,7 +1,7 @@
 'use strict';
-var React = require('react')
-  , filter = require('../util/filter')
-  , helper = require('./DataHelpersMixin')
+import React from 'react';
+import filter from '../util/filter';
+import { dataText } from '../util/dataHelpers';
 
 module.exports = {
 
@@ -19,28 +19,30 @@ module.exports = {
   },
 
   prev(item, word) {
-    var data = this._data()
+    var textField = this.props.textField
+      , data = this._data()
       , idx  = data.indexOf(item)
 
     if (idx === -1) idx = data.length;
 
     return word
-      ? findPrevInstance(this,  data, word, idx)
+      ? findPrevInstance(textField,  data, word, idx)
       : --idx < 0 ? data[0] : data[idx]
   },
 
   next(item, word) {
-    var data = this._data()
+    var textField = this.props.textField
+      , data = this._data()
       , idx  = data.indexOf(item)
 
     return word
-      ? findNextInstance(this, data, word, idx)
+      ? findNextInstance(textField, data, word, idx)
       : ++idx === data.length ? data[data.length - 1] : data[idx]
   }
 
 }
 
-function findNextInstance(ctx, data, word, startIndex){
+function findNextInstance(textField, data, word, startIndex){
   var matches = filter.startsWith
     , idx = -1
     , len = data.length
@@ -50,14 +52,14 @@ function findNextInstance(ctx, data, word, startIndex){
 
   while (++idx < len){
     foundStart = foundStart || idx > startIndex
-    itemText   = foundStart && helper._dataText.call(ctx, data[idx]).toLowerCase()
+    itemText   = foundStart && dataText(data[idx], textField).toLowerCase()
 
     if( foundStart && matches(itemText, word) )
       return data[idx]
   }
 }
 
-function findPrevInstance(ctx, data, word, startIndex){
+function findPrevInstance(textField, data, word, startIndex){
   var matches = filter.startsWith
     , idx = data.length
     , foundStart, itemText;
@@ -66,7 +68,7 @@ function findPrevInstance(ctx, data, word, startIndex){
 
   while (--idx >= 0 ){
     foundStart = foundStart || idx < startIndex
-    itemText   = foundStart && helper._dataText.call(ctx, data[idx]).toLowerCase()
+    itemText   = foundStart && dataText(data[idx], textField).toLowerCase()
 
     if( foundStart && matches(itemText, word) )
       return data[idx]

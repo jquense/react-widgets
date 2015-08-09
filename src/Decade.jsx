@@ -4,6 +4,7 @@ import dates from './util/dates';
 import config from './util/configuration';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
+import { instanceId } from './util/widgetHelpers';
 
 var localizers = config.locale
 
@@ -30,7 +31,6 @@ export default React.createClass({
   displayName: 'DecadeView',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/RtlChildContextMixin'),
     require('./mixins/AriaDescendantMixin')()
@@ -39,7 +39,7 @@ export default React.createClass({
   propTypes,
 
   componentDidUpdate() {
-    let activeId = optionId(this._id(), this.props.focused);
+    let activeId = optionId(instanceId(this), this.props.focused);
     this.ariaActiveDescendant(activeId)
   },
 
@@ -64,10 +64,9 @@ export default React.createClass({
 
   _row(row, rowIdx){
     let {
-        focused, selected, disabled, onChange
-      , value, today, culture, min, max
-      , dayComponent: Day } = this.props
-      , id = this._id();
+        focused, disabled, onChange
+      , value, today, culture, min, max } = this.props
+      , id = instanceId(this);
 
     return (
       <tr key={'row_' + rowIdx} role='row'>

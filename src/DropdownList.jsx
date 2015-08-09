@@ -1,18 +1,19 @@
-'use strict';
-var React           = require('react')
-  , activeElement   = require('react/lib/getActiveElement')
-  , _               = require('./util/_')
-  , contains        = require('dom-helpers/query/contains')
-  , cx              = require('classnames')
-  , compat          = require('./util/compat')
-  , CustomPropTypes = require('./util/propTypes')
-  , Popup           = require('./Popup')
-  , PlainList       = require('./List')
-  , GroupableList   = require('./ListGroupable')
-  , validateList    = require('./util/validateListInterface')
-  , createUncontrolledWidget = require('uncontrollable');
+import React from 'react';
+import activeElement from 'react/lib/getActiveElement';
+import contains from'dom-helpers/query/contains';
+import cx from 'classnames';
+import _  from './util/_';
+import Popup           from './Popup';
+import compat          from './util/compat';
+import CustomPropTypes from './util/propTypes';
+import PlainList       from './List';
+import GroupableList   from './ListGroupable';
+import validateList    from './util/validateListInterface';
+import createUncontrolledWidget from 'uncontrollable';
 
-import ifNotDisabled from './util/ifNotDisabled';
+import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
+import { widgetEditable, widgetEnabled } from './util/interaction';
+import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let { omit, pick, result } = _;
 
@@ -47,15 +48,9 @@ var propTypes = {
   dropUp:         React.PropTypes.bool,
   duration:       React.PropTypes.number, //popup
 
-  disabled:       React.PropTypes.oneOfType([
-                    React.PropTypes.bool,
-                    React.PropTypes.oneOf(['disabled'])
-                  ]),
+  disabled:       CustomPropTypes.disabled,
 
-  readOnly:       React.PropTypes.oneOfType([
-                    React.PropTypes.bool,
-                    React.PropTypes.oneOf(['readOnly'])
-                  ]),
+  readOnly:       CustomPropTypes.readOnly,
 
   messages:       React.PropTypes.shape({
     open:              CustomPropTypes.message,
@@ -70,11 +65,9 @@ var DropdownList = React.createClass({
   displayName: 'DropdownList',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/DataFilterMixin'),
-    require('./mixins/DataHelpersMixin'),
     require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin'),
     require('./mixins/AriaDescendantMixin')()
@@ -95,37 +88,41 @@ var DropdownList = React.createClass({
   },
 
   getInitialState(){
-    var filter = this.props.open && this.props.filter
-      , data = filter ? this.filter(this.props.data, this.props.searchTerm) : this.props.data
-      , initialIdx = this._dataIndexOf(this.props.data, this.props.value);
+    let { open, filter, value, data, searchTerm, valueField } = this.props;
+
+    var processed = filter ? this.filter(data, searchTerm) : data
+      , initialIdx = dataIndexOf(data, value, valueField);
 
     return {
-      filteredData: filter && data,
-      selectedItem: data[initialIdx],
-      focusedItem:  data[initialIdx] || data[0]
+      filteredData: (open && filter) ? processed : null,
+      selectedItem: processed[initialIdx],
+      focusedItem:  processed[initialIdx] || data[0]
     }
   },
 
   componentDidUpdate() {
-    this.refs.list && validateList(this.refs.list)
+    this.refs.list
+        && validateList(this.refs.list)
   },
 
   componentWillReceiveProps(props){
-    var filter = props.open && props.filter
-      , data = filter ? this.filter(props.data, props.searchTerm) : props.data
-      , idx = this._dataIndexOf(data, props.value);
+    let { open, filter, value, data, searchTerm, valueField } = props;
+
+    var processed = filter ? this.filter(data, searchTerm) : data
+      , idx = dataIndexOf(data, value, valueField);
 
     this.setState({
-      filteredData: filter && data,
-      selectedItem: data[idx],
-      focusedItem:  data[!~idx ? 0 : idx]
+      filteredData: (open && filter) ? processed : null,
+      selectedItem: processed[idx],
+      focusedItem:  processed[!~idx ? 0 : idx]
     })
   },
 
   render() {
     let {
         className, tabIndex, filter
-      , groupBy, messages, data, busy, dropUp
+      , valueField, textField, groupBy
+      , messages, data, busy, dropUp
       , placeholder, value, open, disabled, readOnly
       , valueComponent: ValueComponent
       , listComponent: List } = this.props;
@@ -139,10 +136,10 @@ var DropdownList = React.createClass({
     let { focusedItem, selectedItem, focused } = this.state;
 
     let items = this._data()
-      , valueItem = this._dataItem(data, value) // take value from the raw data
-      , listID = this._id('__listbox');
+      , valueItem = dataItem(data, value, valueField) // take value from the raw data
+      , listID = instanceId(this, '__listbox');
 
-    let shouldRenderList = _.isFirstFocusedRender(this) || open;
+    let shouldRenderList = isFirstFocusedRender(this) || open;
 
     messages = msgs(messages)
 
@@ -187,7 +184,7 @@ var DropdownList = React.createClass({
             ? <span className='rw-placeholder'>{placeholder}</span>
             : this.props.valueComponent
               ? <ValueComponent item={valueItem}/>
-              : this._dataText(valueItem)
+              : dataText(valueItem, textField)
           }
         </div>
         <Popup {...popupProps}
@@ -203,7 +200,7 @@ var DropdownList = React.createClass({
                 data={items}
                 id={listID}
                 aria-live={open && 'polite'}
-                aria-labelledby={this._id()}
+                aria-labelledby={instanceId(this)}
                 aria-hidden={!this.props.open}
                 selected={selectedItem}
                 focused ={open ? focusedItem : null}
@@ -228,33 +225,33 @@ var DropdownList = React.createClass({
         <input ref='filter' className='rw-input'
           placeholder={_.result(messages.filterPlaceholder, this.props)}
           value={this.props.searchTerm }
-          onChange={ e => this.notify('onSearch', e.target.value)}/>
+          onChange={ e => notify(this.props.onSearch, e.target.value)}/>
       </div>
     )
   },
 
-  @ifNotDisabled(true)
+  @widgetEnabled
   _focus(focused, e){
 
     this.setTimeout('focus', () => {
       if( !focused) this.close()
 
       if( focused !== this.state.focused) {
-        this.notify(focused ? 'onFocus' : 'onBlur', e)
+        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
         this.setState({ focused: focused })
       }
     })
   },
 
-  @ifNotDisabled
+  @widgetEditable
   _onSelect(data){
     this.close()
-    this.notify('onSelect', data)
+    notify(this.props.onSelect, data)
     this.change(data)
     this.focus(this)
   },
 
-  @ifNotDisabled
+  @widgetEditable
   _click(e){
     var wrapper = this.refs.filterWrapper
 
@@ -264,10 +261,10 @@ var DropdownList = React.createClass({
     else if( !contains(compat.findDOMNode(wrapper), e.target))
       this.close()
 
-    this.notify('onClick', e)
+    notify(this.props.onClick, e)
   },
 
-  @ifNotDisabled
+  @widgetEditable
   _keyDown(e){
     var self = this
       , key = e.key
@@ -315,7 +312,7 @@ var DropdownList = React.createClass({
       })
 
 
-    this.notify('onKeyDown', [e])
+    notify(this.props.onKeyDown, [e])
 
     function change(item, fromList){
       if(!item) return
@@ -327,8 +324,8 @@ var DropdownList = React.createClass({
 
   change(data){
     if ( !_.isShallowEqual(data, this.props.value) ) {
-      this.notify('onChange', data)
-      this.notify('onSearch', '')
+      notify(this.props.onChange, data)
+      notify(this.props.onSearch, '')
       this.close()
     }
   },
@@ -361,11 +358,11 @@ var DropdownList = React.createClass({
   },
 
   open() {
-    this.notify('onToggle', true)
+    notify(this.props.onToggle, true)
   },
 
   close() {
-    this.notify('onToggle', false)
+    notify(this.props.onToggle, false)
   },
 
   toggle() {

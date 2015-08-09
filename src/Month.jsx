@@ -4,6 +4,7 @@ import dates from './util/dates';
 import config from './util/configuration'
 import CustomPropTypes from './util/propTypes';
 import _   from './util/_';
+import { instanceId } from './util/widgetHelpers';
 
 var localizers = config.locale
   , dayFormat = props => props.dayFormat || localizers.date.formats.weekday
@@ -40,7 +41,6 @@ let MonthView = React.createClass({
   },
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/RtlChildContextMixin'),
     require('./mixins/AriaDescendantMixin')()
   ],
@@ -48,12 +48,12 @@ let MonthView = React.createClass({
   propTypes,
 
   componentDidUpdate() {
-    let activeId = optionId(this._id(), this.props.focused);
+    let activeId = optionId(instanceId(this), this.props.focused);
     this.ariaActiveDescendant(activeId, null)
   },
 
   render(){
-    var { className, focused, focusID, culture } = this.props
+    var { focused, culture } = this.props
       , month = dates.visibleDays(focused, culture)
       , rows  = _.chunk(month, 7);
 
@@ -75,10 +75,10 @@ let MonthView = React.createClass({
 
   _row(row, rowIdx){
     let {
-        focused, selected, disabled, onChange
-      , value, today, culture, min, max
+        focused, today, disabled, onChange
+      , value, culture, min, max
       , dayComponent: Day } = this.props
-      , id = this._id()
+      , id = instanceId(this)
       , labelFormat = localizers.date.formats.footer;
 
     return (
@@ -87,7 +87,7 @@ let MonthView = React.createClass({
 
           var isFocused  = isEqual(day, focused)
             , isSelected = isEqual(day, value)
-            , today = isEqual(day, today)
+            , isToday = isEqual(day, today)
             , date = localizers.date.format(day, dateFormat(this.props), culture)
             , label = localizers.date.format(day, labelFormat, culture);
 
@@ -112,7 +112,7 @@ let MonthView = React.createClass({
                       'rw-off-range':      dates.month(day) !== dates.month(focused),
                       'rw-state-focus':    isFocused,
                       'rw-state-selected': isSelected,
-                      'rw-now': today
+                      'rw-now':            isToday
                     })}
                   >
                     {

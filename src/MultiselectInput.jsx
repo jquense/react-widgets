@@ -1,8 +1,9 @@
-'use strict';
-var React = require('react')
-  , compat = require('./util/compat');
+import React from 'react';
+import compat from './util/compat';
+import CustomPropTypes from './util/propTypes';
 
-module.exports = React.createClass({
+
+export default React.createClass({
 
   displayName: 'MultiselectInput',
 
@@ -12,8 +13,8 @@ module.exports = React.createClass({
     onChange:     React.PropTypes.func.isRequired,
     onFocus:      React.PropTypes.func,
 
-    disabled:     React.PropTypes.bool,
-    readOnly:     React.PropTypes.bool
+    disabled:     CustomPropTypes.disabled,
+    readOnly:     CustomPropTypes.readOnly
   },
 
   componentDidUpdate() {

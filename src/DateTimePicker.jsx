@@ -16,14 +16,15 @@ import DateInput from './DateInput';
 import Btn       from './WidgetButton';
 import CustomPropTypes from './util/propTypes';
 import createUncontrolledWidget from 'uncontrollable';
-import ifNotDisabled from './util/ifNotDisabled';
+import { widgetEditable, widgetEnabled } from './util/interaction';
+import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let { calendarViews: views, datePopups: popups } = constants;
 let Calendar = _Calendar.BaseCalendar;
 let localizers = config.locale;
 let viewEnum  = Object.keys(views).map( k => views[k] );
 
-let { omit, pick, result } = _;
+let { omit, pick } = _;
 
 let propTypes = {
 
@@ -62,15 +63,8 @@ let propTypes = {
     initialView:    React.PropTypes.oneOf(viewEnum),
     finalView:      React.PropTypes.oneOf(viewEnum),
 
-    disabled:       React.PropTypes.oneOfType([
-                        React.PropTypes.bool,
-                        React.PropTypes.oneOf(['disabled'])
-                      ]),
-
-    readOnly:       React.PropTypes.oneOfType([
-                      React.PropTypes.bool,
-                      React.PropTypes.oneOf(['readOnly'])
-                    ]),
+    disabled:       CustomPropTypes.disabled,
+    readOnly:       CustomPropTypes.readOnly,
 
     parse:          React.PropTypes.oneOfType([
                       React.PropTypes.arrayOf(React.PropTypes.string),
@@ -92,7 +86,6 @@ var DateTimePicker = React.createClass({
   displayName: 'DateTimePicker',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/PopupScrollToMixin'),
@@ -142,24 +135,24 @@ var DateTimePicker = React.createClass({
   render() {
     let {
         className, calendar, time, open
-      , tabIndex, value, format, editFormat, timeFormat
+      , tabIndex, value,  editFormat, timeFormat
       , culture, duration, step, messages, min, max, busy
       , placeholder, disabled, readOnly, name, dropUp
       , timeComponent
-      , 'aria-labelledby': ariaLabelledby} = this.props;
+      , 'aria-labelledby': ariaLabelledby } = this.props;
 
     let { focused } = this.state;
 
-    let inputID = this._id('_input')
-      , timeListID = this._id('_time_listbox')
-      , dateListID = this._id('_cal')
+    let inputID = instanceId(this, '_input')
+      , timeListID = instanceId(this, '_time_listbox')
+      , dateListID = instanceId(this, '_cal')
       , owns = '';
 
     let elementProps = omit(this.props, Object.keys(propTypes))
       , calProps = pick(this.props, Object.keys(compat.type(Calendar).propTypes))
 
-    let shouldRenderList = _.isFirstFocusedRender(this) || open
-      , disabledOrReadonly = this.isDisabled() || this.isReadOnly()
+    let shouldRenderList = isFirstFocusedRender(this) || open
+      , disabledOrReadonly = disabled || readOnly
       , calendarIsOpen = open === popups.CALENDAR
       , timeIsOpen = open === popups.TIME;
 
@@ -177,8 +170,8 @@ var DateTimePicker = React.createClass({
         onBlur={this._focus.bind(null, false)}
         className={cx(className, 'rw-datetimepicker', 'rw-widget', {
           'rw-state-focus':     focused,
-          'rw-state-disabled':  this.isDisabled(),
-          'rw-state-readonly':  this.isReadOnly(),
+          'rw-state-disabled':  disabled,
+          'rw-state-readonly':  readOnly,
           'rw-has-both':         calendar && time,
           'rw-has-neither':     !calendar && !time,
           'rw-rtl':             this.isRtl(),
@@ -191,14 +184,15 @@ var DateTimePicker = React.createClass({
           id={inputID}
           tabIndex={tabIndex || 0}
           role='combobox'
+          aria-labelledby={ariaLabelledby}
           aria-expanded={!!open}
           aria-busy={!!busy}
           aria-owns={owns.trim()}
           aria-haspopup={true}
           placeholder={placeholder}
           name={name}
-          disabled={this.isDisabled()}
-          readOnly={this.isReadOnly()}
+          disabled={disabled}
+          readOnly={readOnly}
           value={value}
           format={getFormat(this.props)}
           editFormat={editFormat}
@@ -298,7 +292,7 @@ var DateTimePicker = React.createClass({
     )
   },
 
-  @ifNotDisabled
+  @widgetEditable
   _change(date, str, constrain){
     let { onChange, value } = this.props;
 
@@ -315,7 +309,7 @@ var DateTimePicker = React.createClass({
     }
   },
 
-  @ifNotDisabled
+  @widgetEditable
   _keyDown(e){
     let { open, calendar, time } = this.props;
 
@@ -343,17 +337,17 @@ var DateTimePicker = React.createClass({
         this.refs.timePopup._keyDown(e)
     }
 
-    this.notify('onKeyDown', [e])
+    notify(this.props.onKeyDown, [e])
   },
 
-  @ifNotDisabled(true)
+  @widgetEnabled
   _focus(focused, e){
 
     this.setTimeout('focus', () => {
       if (!focused) this.close()
 
       if (focused !== this.state.focused){
-        this.notify(focused ? 'onFocus' : 'onBlur', e)
+        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
         this.setState({ focused })
       }
     })
@@ -364,31 +358,31 @@ var DateTimePicker = React.createClass({
       this.refs.valueInput.focus()
   },
 
-  @ifNotDisabled
+  @widgetEditable
   _selectDate(date){
     var format   = getFormat(this.props)
       , dateTime = dates.merge(date, this.props.value)
       , dateStr  = formatDate(date, format, this.props.culture);
 
     this.close()
-    this.notify('onSelect', [dateTime, dateStr])
+    notify(this.props.onSelect, [dateTime, dateStr])
     this._change(dateTime, dateStr, true)
     this.focus()
   },
 
-  @ifNotDisabled
+  @widgetEditable
   _selectTime(datum){
     var format   = getFormat(this.props)
       , dateTime = dates.merge(this.props.value, datum.date)
       , dateStr  = formatDate(datum.date, format, this.props.culture);
 
     this.close()
-    this.notify('onSelect', [dateTime, dateStr])
+    notify(this.props.onSelect, [dateTime, dateStr])
     this._change(dateTime, dateStr, true)
     this.focus()
   },
 
-  @ifNotDisabled
+  @widgetEditable
   _click(view, e){
     this.focus()
     this.toggle(view, e)
@@ -430,12 +424,12 @@ var DateTimePicker = React.createClass({
 
   open(view){
     if (this.props.open !== view && this.props[view] === true)
-      this.notify('onToggle', view)
+      notify(this.props.onToggle, view)
   },
 
   close(){
     if (this.props.open)
-      this.notify('onToggle', false)
+      notify(this.props.onToggle, false)
   },
 
   inRangeValue(value){

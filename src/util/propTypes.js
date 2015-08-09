@@ -1,9 +1,19 @@
 'use strict';
-var React = require('react')
-  , localizers = require('./configuration').locale
-  , filters = require('./filter');
+import React, { PropTypes } from 'react';
+import config from'./configuration';
+import filters from'./filter';
 
+let localizers = config.locale
 var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
+
+function getInteractionPropType(key){
+  var types = [ PropTypes.bool, PropTypes.oneOf([key]) ]
+    , propType = PropTypes.oneOfType(types);
+
+  propType.acceptsArray = PropTypes.oneOfType(types.concat(PropTypes.array))
+
+  return propType
+}
 
 module.exports = {
 
@@ -29,6 +39,9 @@ module.exports = {
 
   dateFormat: createChainableTypeChecker(
     (...args) => localizers.date.propType(...args)),
+
+  disabled: getInteractionPropType('disabled'),
+  readOnly: getInteractionPropType('readOnly'),
 
   accessor:     React.PropTypes.oneOfType([
                     React.PropTypes.string,

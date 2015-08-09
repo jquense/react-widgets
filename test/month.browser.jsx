@@ -4,12 +4,7 @@ var React = require('react/addons');
 var Month = require('../src/Month.jsx');
 
 var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
-  , findTag = TestUtils.findRenderedDOMComponentWithTag
-  , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findType = TestUtils.findRenderedComponentWithType
-  , findAllType = TestUtils.scryRenderedComponentsWithType
-  , trigger = TestUtils.Simulate;
+  , render = TestUtils.renderIntoDocument;
 
 describe('Month Component', function(){
 

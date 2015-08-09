@@ -14,7 +14,8 @@ import SlideTransition from './SlideTransition';
 import dates from './util/dates';
 import constants from './util/constants';
 import _ from './util/_'; //values, omit
-import ifNotDisabled from './util/ifNotDisabled';
+import { instanceId, notify } from './util/widgetHelpers';
+import { widgetEditable, widgetEnabled } from './util/interaction';
 
 let dir    = constants.directions
   , values = obj => Object.keys(obj).map( k => obj[k] )
@@ -56,6 +57,9 @@ let format = (props, f) => props[f + 'Format'] || localizers.date.formats[f]
 
 let propTypes = {
 
+  disabled:       CustomPropTypes.disabled,
+  readOnly:       CustomPropTypes.readOnly,
+
   onChange:      React.PropTypes.func,
   value:         React.PropTypes.instanceOf(Date),
 
@@ -72,16 +76,6 @@ let propTypes = {
       return new Error(`The \`${propname}\` prop: \`${props[propname]}\` cannot be 'lower' than the \`initialView\`
         prop. This creates a range that cannot be rendered.`.replace(/\n\t/g, ''))
   },
-
-  disabled:      React.PropTypes.oneOfType([
-                   React.PropTypes.bool,
-                   React.PropTypes.oneOf(['disabled'])
-                 ]),
-
-  readOnly:      React.PropTypes.oneOfType([
-                   React.PropTypes.bool,
-                   React.PropTypes.oneOf(['readOnly'])
-                 ]),
 
   culture:       React.PropTypes.string,
 
@@ -109,7 +103,6 @@ var Calendar = React.createClass({
   displayName: 'Calendar',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/RtlParentContextMixin'),
@@ -181,8 +174,8 @@ var Calendar = React.createClass({
 
     unit = unit === 'day' ? 'date' : unit
 
-    let viewID = this._id('_calendar')
-      , labelID = this._id('_calendar_label')
+    let viewID = instanceId(this, '_calendar')
+      , labelID = instanceId(this, '_calendar_label')
       , key = view + '_' + dates[view](currentDate);
 
     let elementProps = _.omit(this.props, Object.keys(propTypes))
@@ -250,7 +243,7 @@ var Calendar = React.createClass({
     )
   },
 
-  @ifNotDisabled
+  @widgetEditable
   navigate(direction, date){
     var view     =  this.state.view
       , slideDir = (direction === dir.LEFT || direction === dir.UP)
@@ -269,7 +262,7 @@ var Calendar = React.createClass({
       view = NEXT_VIEW[view] || view
 
     if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
-      this.notify('onNavigate', [date, slideDir, view])
+      notify(this.props.onNavigate, [date, slideDir, view])
       this.focus(true);
 
       this.setState({
@@ -287,23 +280,23 @@ var Calendar = React.createClass({
     //console.log(document.activeElement)
   },
 
-  @ifNotDisabled(true)
+  @widgetEnabled
   _focus(focused, e){
     if ( +this.props.tabIndex === -1)
       return
 
     this.setTimeout('focus', () => {
       if( focused !== this.state.focused){
-        this.notify(focused ? 'onFocus' : 'onBlur', e)
+        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
         this.setState({ focused })
       }
     })
   },
 
-  @ifNotDisabled
+  @widgetEditable
   change(date){
     if (this.state.view === this.props.initialView){
-      this.notify('onChange', date)
+      notify(this.props.onChange, date)
       this.focus();
       return;
     }
@@ -311,14 +304,14 @@ var Calendar = React.createClass({
     this.navigate(dir.DOWN, date)
   },
 
-  @ifNotDisabled
+  @widgetEditable
   select(date){
     var view = this.props.initialView
       , slideDir = view !== this.state.view || dates.gt(date, this.state.currentDate)
           ? 'left' // move down to a the view
           : 'right';
 
-    this.notify('onChange', date)
+    notify(this.props.onChange, date)
 
     if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
       this.focus();
@@ -329,7 +322,6 @@ var Calendar = React.createClass({
         view: view
       })
     }
-
   },
 
   nextDate(direction){
@@ -341,7 +333,7 @@ var Calendar = React.createClass({
     return dates[method](this.state.currentDate, 1 * multi, unit)
   },
 
-   @ifNotDisabled
+   @widgetEditable
   _keyDown(e){
     var ctrl = e.ctrlKey
       , key  = e.key
@@ -382,7 +374,7 @@ var Calendar = React.createClass({
       }
     }
 
-    this.notify('onKeyDown', [e])
+    notify(this.props.onKeyDown, [e])
   },
 
   _label() {

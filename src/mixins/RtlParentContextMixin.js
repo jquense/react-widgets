@@ -15,13 +15,13 @@ module.exports = {
     isRtl: React.PropTypes.bool
   },
 
-  getChildContext: function() {
+  getChildContext() {
     return {
       isRtl: this.props.isRtl || (this.context && this.context.isRtl)
     }
   },
 
-  isRtl: function() {
+  isRtl() {
     return !!(this.props.isRtl || (this.context && this.context.isRtl))
   }
 

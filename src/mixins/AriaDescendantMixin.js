@@ -18,7 +18,6 @@ function flushAriaToNode(id, nodeOrComponent, ctx) {
             : ctx
 
   if (node) {
-    //console.log('flushing!', node.constructor.displayName)
     if (id)
       React.findDOMNode(node).setAttribute('aria-activedescendant', id)
     else

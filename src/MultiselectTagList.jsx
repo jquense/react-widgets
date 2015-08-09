@@ -1,19 +1,22 @@
-'use strict';
-var React = require('react')
-  , _     = require('./util/_')
-  , cx    = require('classnames')
-  , CustomPropTypes = require('./util/propTypes')
+import React from 'react';
+import _  from './util/_';
+import cx from 'classnames';
+import CustomPropTypes from './util/propTypes';
+import { instanceId } from './util/widgetHelpers';
+import { dataText } from './util/dataHelpers';
 
-import WidgetMixin from './mixins/WidgetMixin';
+import {
+    move, contains
+  , isDisabled, isReadOnly
+  , isDisabledItem, isReadOnlyItem } from './util/interaction';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'MultiselectTagList',
 
   mixins: [
-    require('./mixins/DataHelpersMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/AriaDescendantMixin')()
   ],
@@ -27,17 +30,8 @@ module.exports = React.createClass({
 
     valueComponent: React.PropTypes.func,
 
-    disabled:       React.PropTypes.oneOfType([
-                      React.PropTypes.bool,
-                      React.PropTypes.array,
-                      React.PropTypes.oneOf(['disabled'])
-                    ]),
-
-    readOnly:       React.PropTypes.oneOfType([
-                      React.PropTypes.bool,
-                      React.PropTypes.array,
-                      React.PropTypes.oneOf(['readonly'])
-                    ])
+    disabled:       CustomPropTypes.disabled.acceptsArray,
+    readOnly:       CustomPropTypes.readOnly.acceptsArray
   },
 
   getDefaultProps(){
@@ -47,19 +41,20 @@ module.exports = React.createClass({
   },
 
   componentDidUpdate(){
-    let { value, focused } = this.props
-      , activeId = optionId(WidgetMixin._id.call(this), focused)
+    let { focused } = this.props
+      , activeId = optionId(instanceId(this), focused)
 
     this.ariaActiveDescendant(
-      (focused == null || this.isDisabled(focused)) ? null : activeId)
+      (focused == null || isDisabledItem(focused, this.props)) ? null : activeId)
   },
 
   render() {
-      var ValueComponent = this.props.valueComponent
-        , props     = _.omit(this.props, ['value', 'disabled', 'readOnly'])
-        , { focused, optionID, value }  = this.props;
+      var props = _.omit(this.props, ['value', 'disabled', 'readOnly'])
+        , {
+          focused, value, textField
+        , valueComponent: ValueComponent }  = this.props;
 
-      var id = WidgetMixin._id.call(this);
+      var id = instanceId(this);
 
       return (
         <ul {...props}
@@ -68,8 +63,8 @@ module.exports = React.createClass({
           className='rw-multiselect-taglist'
         >
           { value.map( (item, i) => {
-            var isDisabled = this.isDisabled(item)
-              , isReadonly = this.isReadOnly(item)
+            var isDisabled = isDisabledItem(item, this.props)
+              , isReadonly = isReadOnlyItem(item, this.props)
               , isFocused  = !isDisabled && focused === i
               , currentID  = optionId(id, i);
 
@@ -87,7 +82,7 @@ module.exports = React.createClass({
               >
                 { ValueComponent
                   ? <ValueComponent item={item }/>
-                  : this._dataText(item)
+                  : dataText(item, textField)
                 }
                 <span
                   tabIndex='-1'
@@ -111,28 +106,17 @@ module.exports = React.createClass({
   remove(idx){
     var val = this.props.value[idx];
 
-    if (val && !(this.isDisabled(val)  || this.isReadOnly(val)) )
+    if (val && !(isDisabledItem(val, this.props)  || isReadOnlyItem(val, this.props)) )
       this.props.onDelete(val)
   },
 
   removeNext(){
     var val = this.props.value[this.props.value.length - 1];
 
-    if (val && !(this.isDisabled(val) || this.isReadOnly(val)))
+    if (val && !(isDisabledItem(val, this.props) || isReadOnlyItem(val, this.props)))
       this.props.onDelete(val)
   },
 
-  isDisabled(val, isIdx) {
-    if (isIdx) val = this.props.value[val]
-
-    return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
-  },
-
-  isReadOnly(val, isIdx) {
-    if (isIdx) val = this.props.value[val]
-
-    return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
-  },
 
   clear(){
     this.setState({ focused: null })
@@ -140,18 +124,20 @@ module.exports = React.createClass({
 
   first(){
     var idx = 0
-      , l = this.props.value.length;
+      , value = this.props.value
+      , l = value.length;
 
-    while( idx < l && this.isDisabled(idx, true) )
+    while( idx < l && isDisabledItem(value[idx], this.props) )
       idx++
 
     return idx !== l ? idx : null
   },
 
   last(){
-    var idx = this.props.value.length - 1;
+    var value = this.props.value
+      , idx = value.length - 1;
 
-    while (idx > -1 && this.isDisabled(idx, true))
+    while (idx > -1 && isDisabledItem(value[idx], this.props))
       idx--
 
     return idx >= 0 ? idx : null
@@ -159,9 +145,10 @@ module.exports = React.createClass({
 
   next(current) {
     var nextIdx = current + 1
-      , l = this.props.value.length;
+      , value = this.props.value
+      , l = value.length;
 
-    while (nextIdx < l && this.isDisabled(nextIdx, true))
+    while (nextIdx < l && isDisabledItem(nextIdx, this.props))
       nextIdx++
 
     if (current === null || nextIdx >= l)
@@ -171,14 +158,15 @@ module.exports = React.createClass({
   },
 
   prev(current){
-    var nextIdx = current;
+    var nextIdx = current
+      , value = this.props.value;
 
     if ( nextIdx === null || nextIdx === 0 )
-      nextIdx = this.props.value.length
+      nextIdx = value.length
 
     nextIdx--;
 
-    while (nextIdx > -1 && this.isDisabled(nextIdx, true))
+    while (nextIdx > -1 && isDisabledItem(value[nextIdx], this.props))
       nextIdx--
 
     return nextIdx >= 0 ? nextIdx : null;
