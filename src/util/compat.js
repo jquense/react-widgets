@@ -1,6 +1,6 @@
-'use strict';
-var React = require('react')
-  , _ = require('./_')
+import React  from 'react';
+import ReactDOM  from 'react-dom';
+import _ from './_';
 
 var version = React.version.split('.').map(parseFloat);
 
@@ -18,10 +18,7 @@ module.exports = {
   },
 
   findDOMNode(component){
-    if( React.findDOMNode )
-      return React.findDOMNode(component)
-
-    return component.getDOMNode()
+    return ReactDOM.findDOMNode(component)
   },
 
   cloneElement(child, props){
@@ -29,7 +26,7 @@ module.exports = {
       return React.cloneElement(child, props)
 
     //just mutate if pre 0.13
-    _.each(props, 
+    _.each(props,
       (value, prop) => child.props[prop] = value)
 
     return child

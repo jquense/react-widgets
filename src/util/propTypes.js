@@ -31,7 +31,7 @@ module.exports = {
             'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
             ' Expected an Element `type` such as a tag name or return value of React.createClass(...)')
       }
-      return true
+      return null
     }),
 
   numberFormat: createChainableTypeChecker(

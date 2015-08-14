@@ -1,6 +1,6 @@
 import React  from 'react';
-import invariant from 'react/lib/invariant';
-import activeElement from 'react/lib/getActiveElement';
+import invariant from 'invariant';
+import activeElement from 'dom-helpers/activeElement';
 import cx     from 'classnames';
 import compat from './util/compat';
 import _      from './util/_'; //pick, omit, has

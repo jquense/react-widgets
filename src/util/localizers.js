@@ -1,4 +1,4 @@
-var invariant = require('react/lib/invariant')
+var invariant = require('invariant')
 var { has } = require('./_')
 var React = require('react')
 

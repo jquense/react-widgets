@@ -86,7 +86,7 @@ export default React.createClass({
                 }
                 <span
                   tabIndex='-1'
-                  onClick={!(isDisabled || isReadonly) && this._delete.bind(null, item)}
+                  onClick={!(isDisabled || isReadonly) ? this._delete.bind(null, item) : undefined}
                   aria-disabled={isDisabled}
                   aria-label='Unselect'
                   disabled={isDisabled}

@@ -47,9 +47,11 @@
   "dependencies": {
     "classnames": "^2.1.2",
     "date-arithmetic": "^3.0.0",
-    "dom-helpers": "^1.3.2",
+    "dom-helpers": "^2.2.4",
     "globalize": "~0.1.1",
-    "uncontrollable": "^3.0.0"
+    "invariant": "^2.1.0",
+    "uncontrollable": "^3.0.2",
+    "warning": "^2.0.0"
   },
   "devDependencies": {
     "babel-core": "^5.8.21",
@@ -73,7 +75,7 @@
     "imports-loader": "^0.6.3",
     "jq-release": "*",
     "json-loader": "^0.5.2",
-    "karma": "^0.12.37",
+    "karma": "~0.13.3",
     "karma-chrome-launcher": "^0.2.0",
     "karma-expect": "~1.1.0",
     "karma-firefox-launcher": "^0.1.3",
@@ -82,7 +84,7 @@
     "karma-phantomjs-launcher": "^0.2.1",
     "karma-sauce-launcher": "^0.2.14",
     "karma-sourcemap-loader": "^0.3.5",
-    "karma-webpack": "^1.5.1",
+    "karma-webpack": "^1.7.0",
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
     "marked": "^0.3.5",
@@ -99,7 +101,7 @@
     "scriptjs": "^2.5.7",
     "style-loader": "^0.12.3",
     "url-loader": "^0.5.5",
-    "webpack": "^1.11.0",
+    "webpack": "^1.10.5",
     "webpack-dev-server": "^1.10.1"
   }
 }

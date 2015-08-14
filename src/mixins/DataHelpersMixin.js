@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-import warning from'react/lib/warning';
+import warning from 'warning';
 import propTypes from '../util/propTypes';
 import * as dataHelpers from '../util/dataHelpers';
 
