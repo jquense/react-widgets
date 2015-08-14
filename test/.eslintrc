@@ -4,6 +4,7 @@
   },
   "globals": {
     "$": true,
+    "sinon": true,
     "expect": true,
     "__REACT_VERSION__": true
   }

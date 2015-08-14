@@ -4,7 +4,7 @@ import CustomPropTypes from './util/propTypes';
 import compat from './util/compat';
 import cn from 'classnames';
 import _  from './util/_';
-import warning from 'react/lib/warning';
+import warning from 'warning';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
 

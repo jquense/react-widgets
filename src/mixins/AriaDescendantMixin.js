@@ -1,6 +1,7 @@
 'use strict';
 import React from 'react';
 import compat from '../util/compat'
+
 let shape = React.PropTypes.shape({
   //setActive: React.PropTypes.func,
   reconcile: React.PropTypes.func

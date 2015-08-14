@@ -2,19 +2,15 @@
 'use strict';
 require('../vendor/phantomjs-shim')
 
+import ReactDOM from 'react-dom';
+
 var React = require('react/addons');
 var List = require('../src/ListGroupable.jsx');
 
+
 //console.log(sinon)
 var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
-  , findTag = TestUtils.findRenderedDOMComponentWithTag
-  , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findAllTag = TestUtils.scryRenderedDOMComponentsWithTag
-  , findAllClass = TestUtils.scryRenderedDOMComponentsWithClass
-  , findType = TestUtils.findRenderedComponentWithType
-  , findAllType = TestUtils.scryRenderedComponentWithType
-  , trigger = TestUtils.Simulate;
+  , render = TestUtils.renderIntoDocument;
 
 describe('Groupable List', function(){
   var data = [
@@ -30,12 +26,12 @@ describe('Groupable List', function(){
     var list = render(<List data={data} onChange={()=>{}} groupBy='last' />);
 
     //children with the headers
-    expect( list.getDOMNode().children.length).to.be(6 + 4);
+    expect(ReactDOM.findDOMNode(list).children.length).to.be(6 + 4);
   })
 
   it('should respect textField and valueFields', function(){
     var list = render(<List data={data} textField='first' valueField='id' groupBy='last'/>)
-      , children = list.getDOMNode().children;
+      , children =  ReactDOM.findDOMNode(list).children;
 
     expect($(children[0]).text()).to.be('smith');
     expect($(children[1]).text()).to.be('jimmy');
@@ -44,7 +40,7 @@ describe('Groupable List', function(){
   it('should render an empty list message', function(){
     var list = render(<List data={[]} textField='first' valueField='id' />);
 
-    expect($(list.getDOMNode()).find('li').text())
+    expect($(ReactDOM.findDOMNode(list)).find('li').text())
       .to.be('There are no items in this list');
   })
 
@@ -54,7 +50,7 @@ describe('Groupable List', function(){
 
     let seen = [];
 
-    $(list.getDOMNode()).children().each(
+    $(ReactDOM.findDOMNode(list)).children().each(
       function(){
         expect(this.hasAttribute('id')).to.equal(true);
         expect(seen.indexOf(this.id)).to.equal(-1);
@@ -70,7 +66,7 @@ describe('Groupable List', function(){
     });
 
     var list = render(<List data={data} itemComponent={templ} />)
-      , children = list.getDOMNode().children;
+      , children =  ReactDOM.findDOMNode(list).children;
 
     expect($(children[1]).text()).to.be('hello - jimmy');
   })
@@ -83,7 +79,7 @@ describe('Groupable List', function(){
     });
 
     var list = render(<List data={data} groupComponent={templ} groupBy='last' />)
-      , children = list.getDOMNode().children;
+      , children =  ReactDOM.findDOMNode(list).children;
 
     expect($(children[0]).text()).to.be('hello - smith');
   })

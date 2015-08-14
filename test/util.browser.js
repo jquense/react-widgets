@@ -1,14 +1,8 @@
-'use strict';
-/*global it, describe, expect */
-
-require('../vendor/phantomjs-shim')
-
 delete require.cache[require.resolve('../src/util/_')]
 
 var React   = require('react')
   , filters = require('../src/util/filter')
   , _       = require('../src/util/_')
-  , compat  = require('../src/util/compat')
   , propTypes = require('../src/util/propTypes')
   , config  = require('../src/util/configuration')
   , configure  = require('../src/configure')
@@ -29,18 +23,18 @@ describe('_ utils', function(){
 
     expect(cnt).to.equal(3)
     cnt = 0
-    _.each([1,2,3], () => cnt++)
+    _.each([1, 2, 3], () => cnt++)
     expect(cnt).to.equal(3)
   })
 
   it('should OMIT and PICK', function(){
-    expect(_.omit({ a: 1, b: 2, c: 3}, ['b','c'])).to.eql({ a: 1 })
-    expect(_.pick({ a: 1, b: 2, c: 3}, ['b','c'])).to.eql({ b: 2, c: 3 })
+    expect(_.omit({ a: 1, b: 2, c: 3}, ['b', 'c'])).to.eql({ a: 1 })
+    expect(_.pick({ a: 1, b: 2, c: 3}, ['b', 'c'])).to.eql({ b: 2, c: 3 })
   })
 
   it('should FIND', function(){
-    expect(_.find([1,2,3,4,5], v => v === 2)).to.equal(2)
-    expect(_.find([1,2,3,4,5], (v, i) => i === 2)).to.equal(3)
+    expect(_.find([1, 2, 3, 4, 5], v => v === 2)).to.equal(2)
+    expect(_.find([1, 2, 3, 4, 5], (v, i) => i === 2)).to.equal(3)
   })
 
   it('should UNIQUEID', function(){
@@ -49,8 +43,8 @@ describe('_ utils', function(){
   })
 
   it('should SHALLOW EQUAL', function(){
-    expect( _.isShallowEqual(1,1) ).to.be(true)
-    expect( _.isShallowEqual(1,'1') ).to.be(false)
+    expect( _.isShallowEqual(1, 1) ).to.be(true)
+    expect( _.isShallowEqual(1, '1') ).to.be(false)
     expect( _.isShallowEqual(1, 1.4) ).to.be(false)
     expect( _.isShallowEqual('hi', 'hi') ).to.be(true)
     expect( _.isShallowEqual('hi', 'hiw') ).to.be(false)
@@ -58,10 +52,10 @@ describe('_ utils', function(){
     expect( _.isShallowEqual(null, null) ).to.be(true)
     expect( _.isShallowEqual(null, undefined) ).to.be(false)
 
-    expect( _.isShallowEqual([1,2], [1,2]) ).to.be(true)
-    expect( _.isShallowEqual([1,2], [1,3]) ).to.be(false)
+    expect( _.isShallowEqual([1, 2], [1, 2]) ).to.be(true)
+    expect( _.isShallowEqual([1, 2], [1, 3]) ).to.be(false)
 
-    expect( _.isShallowEqual([1,2], { 0: 1, 1: 2}) ).to.be(true)
+    expect( _.isShallowEqual([1, 2], { 0: 1, 1: 2}) ).to.be(true)
 
     expect( _.isShallowEqual({ a: 1, b: 2}, { b: 2, a: 1 }) ).to.be(true)
     expect( _.isShallowEqual({ a: 1, b: 2}, { a: 1, c: 'hi' }) ).to.be(false)
@@ -69,22 +63,22 @@ describe('_ utils', function(){
 
   it('should TRANSFORM', function(){
 
-    _.transform([1], function(o, v,i){ 
+    _.transform([1], function(o, v,i){
       expect(o).to.eql([])
       expect(v).to.equal(1)
       expect(i).to.equal(0)
     })
 
-    _.transform({ key: 1 }, (o, v, i) => { 
+    _.transform({ key: 1 }, (o, v, i) => {
       expect(o).to.eql({})
       expect(v).to.equal(1)
       expect(i).to.equal('key')
     })
 
-    expect( _.transform({ a:0, b:1 }, 
+    expect( _.transform({ a:0, b:1 },
       (o, v, i) => o[i] = ++v )).to.eql({ a:1, b: 2})
 
-    expect( _.transform([ 0, 1 ], 
+    expect( _.transform([ 0, 1 ],
       (o, v ) => o[v] = ++v, {})).to.eql({ 0:1, 1: 2})
   })
 })
@@ -99,8 +93,8 @@ describe('when using array filter helpers', function(){
     expect(filters.lte(1, 1)).to.equal(true)
     expect(filters.gt(2, 1)).to.equal(true)
     expect(filters.gte(1, 1)).to.equal(true)
-   
-    expect(filters.contains([1,2], 1)).to.equal(true)
+
+    expect(filters.contains([1, 2], 1)).to.equal(true)
     expect(filters.contains('hello', 'll')).to.equal(true)
 
     expect(filters.startsWith('hello', 'hel')).to.equal(true)
@@ -119,9 +113,9 @@ describe('when validating Lists', function(){
   it('should fail quietly in production', function(){
     var List = { prev: ()=>{}, next: ()=>{}, last: ()=>{}, first: 'wrong type' }
 
-    process.env.NODE_ENV = "production"
+    process.env.NODE_ENV = 'production'
     expect(()=> validateList(List)).to.not.throwException()
-    process.env.NODE_ENV = "test"
+    process.env.NODE_ENV = 'test'
   })
 
 })
@@ -132,11 +126,12 @@ describe('when using custom PropTypes', function(){
     var props = { type: 'span' }
 
     expect(propTypes.elementType(props, 'type', 'component'))
-      .to.equal(true)
+      .to.equal(null)
 
     props.type = function(){}
+
     expect(propTypes.elementType(props, 'type', 'component'))
-      .to.equal(true)
+      .to.equal(null)
 
     props.type = React.createElement('span')
 
@@ -152,16 +147,12 @@ describe('when using custom PropTypes', function(){
 describe('when configuring dependencies', function(){
 
   it('should use the instances provided', function(){
-    var globalize = {}
-      , animate = ()=>{};
+    var animate = ()=>{};
 
-    //expect(config.globalize).to.not.equal(globalize)
     expect(config.animate).to.not.equal(animate)
 
-    //configure.setGlobalizeInstance(globalize)
     configure.setAnimate(animate)
 
-    //expect(config.globalize).to.equal(globalize)
     expect(config.animate).to.equal(animate)
   })
 })

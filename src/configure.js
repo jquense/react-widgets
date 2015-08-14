@@ -1,4 +1,4 @@
-var warning = require('react/lib/warning')
+var warning = require('warning')
   , configuration = require('./util/configuration')
   , {
     NumberLocalizer
