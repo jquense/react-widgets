@@ -6282,7 +6282,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var views = _utilConstants2['default'].calendarViews;
 	var popups = _utilConstants2['default'].datePopups;
 
-	var Calendar = _Calendar3['default'].BaseCalendar;
+	var Calendar = _Calendar3['default'].ControlledComponent;
 	var localizers = _utilConfiguration2['default'].locale;
 	var viewEnum = Object.keys(views).map(function (k) {
 	  return views[k];
