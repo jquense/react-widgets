@@ -2,7 +2,7 @@
 
 module.exports = function(widgetName) {
 
-var code = 
+var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 
@@ -18,11 +18,11 @@ var DayComponent = React.createClass({
 })
 
 var widget = (
-    <${widgetName} 
+    <${widgetName}
       dayComponent={DayComponent}/>
-  ) 
+  )
 
-React.render(widget, mountNode);`
+ReactDOM.render(widget, mountNode);`
 
 return code
 }

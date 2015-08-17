@@ -1,5 +1,5 @@
 let List = ReactWidgets.List
-let DropdownList = ReactWidgets.DropdownList  
+let DropdownList = ReactWidgets.DropdownList
 
 class FilterList extends React.Component {
 
@@ -10,12 +10,12 @@ class FilterList extends React.Component {
 
   componentDidUpdate(prevProps){
     if (!prevProps.open && this.props.open)
-      setTimeout(() => this.refs.input.getDOMNode().focus())
+      setTimeout(() => this.refs.input.focus())
   }
 
   componentDidMount(prevProps){
     if (this.props.open)
-      setTimeout(() => this.refs.input.getDOMNode().focus())
+      setTimeout(() => this.refs.input.focus())
   }
 
   render(){
@@ -24,13 +24,13 @@ class FilterList extends React.Component {
 
     return (
       <div>
-        <input ref='input' 
+        <input ref='input'
           className='form-control'
           value={filter}
           onChange={ e => this.setState({ filter: e.target.value })}
           onClick={e => e.stopPropagation()}/>
-        <List {...this.props} 
-          ref='list' 
+        <List {...this.props}
+          ref='list'
           data={data}
           onSelect={ item => {
             this.setState({ filter: ''})
@@ -44,8 +44,8 @@ class FilterList extends React.Component {
     var filter = this.state.filter.toLowerCase().trim()
 
     return !filter || !this.props.open
-      ? this.props.data 
-      : this.props.data.filter( 
+      ? this.props.data
+      : this.props.data.filter(
           d => d.name.toLowerCase().indexOf(filter) !== -1);
   }
 
@@ -60,11 +60,11 @@ FilterList.propTypes = {
   ...List.type.propTypes,
 }
 
-React.render(
-    <DropdownList 
-      data={listOfPeople()} 
-      valueField='id' 
-      textField='name' 
-      listComponent={FilterList} 
+ReactDOM.render(
+    <DropdownList
+      data={listOfPeople()}
+      valueField='id'
+      textField='name'
+      listComponent={FilterList}
     />
   , mountNode)

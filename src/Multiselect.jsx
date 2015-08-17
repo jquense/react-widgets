@@ -522,7 +522,5 @@ function msgs(msgs){
   }
 }
 
-module.exports = createUncontrolledWidget(Multiselect
+export default createUncontrolledWidget(Multiselect
     , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
-
-module.exports.BaseMultiselect = Multiselect

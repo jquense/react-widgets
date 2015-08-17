@@ -98,7 +98,7 @@ let propTypes = {
   })
 }
 
-var Calendar = React.createClass({
+let Calendar = React.createClass({
 
   displayName: 'Calendar',
 
@@ -430,9 +430,5 @@ function msgs(msgs){
 }
 
 
-let UncontrolledCalendar = createUncontrolledWidget(
+export default createUncontrolledWidget(
     Calendar, { value: 'onChange' });
-
-UncontrolledCalendar.BaseCalendar = Calendar
-
-export default UncontrolledCalendar;

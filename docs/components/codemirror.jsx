@@ -1,5 +1,6 @@
 'use strict';
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var IS_MOBILE = (
   navigator.userAgent.match(/Android/i)
@@ -16,7 +17,7 @@ var CodeMirrorEditor = React.createClass({
   componentDidMount: function() {
     if (IS_MOBILE) return;
 
-    this.editor = CodeMirror.fromTextArea(this.refs.editor.getDOMNode(), {
+    this.editor = CodeMirror.fromTextArea(this.refs.editor, {
       mode: 'javascript',
       lineNumbers: false,
       lineWrapping: true,
@@ -46,7 +47,7 @@ var CodeMirrorEditor = React.createClass({
   },
 
   render: function() {
-    var editor = IS_MOBILE 
+    var editor = IS_MOBILE
       ? <pre style={{overflow: 'scroll'}}>{this.props.value}</pre>
       : <textarea ref="editor" defaultValue={this.props.value} />;
 

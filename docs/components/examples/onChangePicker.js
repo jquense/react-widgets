@@ -2,7 +2,7 @@
 module.exports = function(widgetName, values){
   var open = values.length > 1 ? "(<div>" : '('
     , close = values.length > 1 ? "</div>)" : ')'
-  var code = 
+  var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 
@@ -23,7 +23,7 @@ var Example = React.createClass({
   }
 });
 
-React.render(<Example/>, mountNode);`
+ReactDOM.render(<Example/>, mountNode);`
 
 return code
 
@@ -33,8 +33,8 @@ return code
 
   function getWidget(v, idx){
     return `
-      <${widgetName} 
-        value={this.state.value${idx}} 
+      <${widgetName}
+        value={this.state.value${idx}}
         onChange={change.bind(null, '${idx}')}/>`
   }
 }
@@ -42,7 +42,7 @@ return code
 function map(o) {
   var str = '';
 
-  for (var key in o) if ( o.hasOwnProperty(key) ) 
+  for (var key in o) if ( o.hasOwnProperty(key) )
     str += ` \n\t\t${key}={${o[key]}}`
 
   if (Object.keys(o).length === 1)

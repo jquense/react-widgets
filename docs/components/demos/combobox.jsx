@@ -6,14 +6,14 @@ var React = require('react')
 
 var i = 0
   , list = [
-    { id: i += 1, name: "James" },
-    { id: i += 1, name: "Jan" },
-    { id: i += 1, name: "Jase" },
-    { id: i += 1, name: "Jason" },
-    { id: i += 1, name: "Jim" },
-    { id: i += 1, name: "Jimmy" },
-    { id: i += 1, name: "Jimmy Smith" },
-    { id: i += 1, name: "John" }
+    { id: i += 1, name: 'James' },
+    { id: i += 1, name: 'Jan' },
+    { id: i += 1, name: 'Jase' },
+    { id: i += 1, name: 'Jason' },
+    { id: i += 1, name: 'Jim' },
+    { id: i += 1, name: 'Jimmy' },
+    { id: i += 1, name: 'Jimmy Smith' },
+    { id: i += 1, name: 'John' }
   ];
 
 module.exports = React.createClass({

@@ -1,11 +1,11 @@
 'use strict';
 module.exports = function(widgetName, isArray){
-  var code = 
+  var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 var formats = [
-  'MMM d yyyy', 
-  'MMM d yy', 
+  'MMM d yyyy',
+  'MMM d yy',
   'd'
 ];
 
@@ -16,7 +16,7 @@ var widgets = (<div>
     <span>Try typing a date using the specified formats</span>
   </div>)
 
-React.render(widgets, mountNode);`
+ReactDOM.render(widgets, mountNode);`
 
   return code
 }

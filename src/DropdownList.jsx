@@ -383,7 +383,5 @@ function msgs(msgs){
   }
 }
 
-module.exports = createUncontrolledWidget(
+export default createUncontrolledWidget(
     DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
-
-module.exports.BaseDropdownList = DropdownList

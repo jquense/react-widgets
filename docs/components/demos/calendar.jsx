@@ -1,9 +1,7 @@
-'use strict';
 var React       = require('react')
-  , Globalize   = require('globalize')
-  , Button      = require('../../bootstrap').Button
-  , ButtonGroup = require('../../bootstrap').ButtonGroup
-  , RW          = require('../../../src/index');
+var Button      = require('../../bootstrap').Button
+var ButtonGroup = require('../../bootstrap').ButtonGroup
+var RW          = require('react-widgets');
 
 require('globalize/lib/cultures/globalize.culture.en-GB');
 require('globalize/lib/cultures/globalize.culture.es');
@@ -14,7 +12,7 @@ module.exports = React.createClass({
   getInitialState: function(){
     return {
       format: '',
-      footer: true,
+      footer: true
     }
   },
 

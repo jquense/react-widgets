@@ -232,7 +232,7 @@ describe('Multiselect', function(){
   it('should clear SearchTerm when uncontrolled', function(){
     var select = render(<Select data={dataList} defaultSearchTerm='ji' open textField='label' valueField='id' onToggle={()=>{}}/>);
 
-    var input = findType(select, Select.BaseMultiselect)
+    var input = findType(select, Select.ControlledComponent)
 
     expect(input.props.searchTerm).to.be('ji')
 
