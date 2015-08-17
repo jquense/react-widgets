@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "3.0.0-alpha1",
+  "version": "3.0.0-alpha2",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
   "author": {
@@ -27,30 +27,22 @@
   ],
   "scripts": {
     "test": "npm run lint && mocha -R spec ./test/server.js && node _test-versions.js",
-
     "test:all": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run=true",
-
     "tdd": "karma start",
     "less": "lessc -x src/less/react-widgets.less dist/css/react-widgets.css",
-
     "assets:lib": "cpy src/img/* lib/img/ && cpy src/fonts/* lib/fonts/ && cpy src/less/* lib/less/",
     "assets:docs": "cpy node_modules/babel-core/browser.min.js docs/vendor",
     "assets:dist": "cpy src/img/* dist/img/ && cpy src/fonts/* dist/fonts/",
-
     "clean:lib": "rimraf ./lib/*",
     "clean:dist": "rimraf ./dist/*",
     "clean:docs": "rimraf ./docs/public/*",
-
     "compile:lib": "node build/babel src --out-dir lib",
     "compile:docs": "webpack --config build/docs.config.js --production",
     "compile:dist": "webpack --config build/browser.config.js",
-
     "build:lib": "npm run clean:lib && npm run compile:lib && npm run assets:lib",
     "build:docs": "npm run clean:docs && npm run compile:docs && npm run assets:docs",
     "build:dist": "npm run clean:dist && npm run compile:dist && npm run less && npm run assets:dist",
-
     "build": "build:lib && build:dist & build:docs",
-
     "docs": "npm run clean:docs && webpack-dev-server --config ./build/docs.config.js --hot",
     "dev": "webpack-dev-server --config ./build/dev.config.js --hot"
   },
@@ -113,7 +105,7 @@
     "react-bootstrap": "0.24.5-react-pre.0",
     "react-dom": "^0.14.0-beta3",
     "react-router": "^1.0.0-beta3",
-    "react-widgets-globalize-localizer": "file:../react-widgets-globalize-localizer",
+    "react-widgets-globalize-localizer": "^1.0.0-alpha",
     "rimraf": "^2.4.2",
     "scriptjs": "^2.5.7",
     "style-loader": "^0.12.3",
