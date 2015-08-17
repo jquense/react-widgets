@@ -1,23 +1,24 @@
-'use strict';
-var React = require('react')
-  , cx    = require('classnames')
-  , _     = require('./util/_') //omit
-  , compat = require('./util/compat')
-  , CustomPropTypes = require('./util/propTypes')
-  , createUncontrolledWidget = require('uncontrollable')
-  , directions = require('./util/constants').directions
-  , repeater = require('./util/repeater')
-  , localizers = require('./util/configuration').locale
-  , Input = require('./NumberInput');
+import React from 'react';
+import cx    from 'classnames';
+import _     from './util/_';
+import compat from './util/compat';
+import CustomPropTypes from './util/propTypes';
+import createUncontrolledWidget from 'uncontrollable';
+import constants from './util/constants';
+import repeater from './util/repeater';
+import config from './util/configuration';
+import Input from './NumberInput';
+import Btn from './WidgetButton';
 
 import { widgetEditable, widgetEnabled } from './util/interaction';
 import { notify } from './util/widgetHelpers';
 
-var Btn = require('./WidgetButton')
+let { directions } = constants;
+let localizers = config.locale
 
-var format = props => props.format || localizers.number.formats.default
+let format = props => props.format || localizers.number.formats.default
 
-var propTypes = {
+let propTypes = {
 
       // -- controlled props -----------
       value:          React.PropTypes.number,
@@ -47,7 +48,7 @@ var propTypes = {
       })
     };
 
-var NumberPicker = React.createClass({
+let NumberPicker = React.createClass({
 
   displayName: 'NumberPicker',
 
@@ -262,6 +263,12 @@ var NumberPicker = React.createClass({
 
 })
 
+
+export default createUncontrolledWidget(
+    NumberPicker, { value: 'onChange' });
+
+
+
 // thank you kendo ui core
 // https://github.com/telerik/kendo-ui-core/blob/master/src/kendo.core.js#L1036
 function round(value, precision) {
@@ -275,8 +282,3 @@ function round(value, precision) {
 
   return value.toFixed(precision);
 }
-
-module.exports = createUncontrolledWidget(
-    NumberPicker, { value: 'onChange' });
-
-module.exports.BaseNumberPicker = NumberPicker

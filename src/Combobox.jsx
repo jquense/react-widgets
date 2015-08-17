@@ -414,6 +414,13 @@ var ComboBox = React.createClass({
   }
 })
 
+
+
+export default createUncontrolledWidget(
+      ComboBox, { open: 'onToggle', value: 'onChange' });
+
+
+
 function msgs(msgs){
   return {
     open: 'open combobox',
@@ -428,10 +435,3 @@ function getFilter(suggest, word, textField){
       ? item => filter[suggest](dataText(item, textField).toLowerCase(), word.toLowerCase())
       : item => suggest(item, word)
 }
-
-let UncontrolledComboBox = createUncontrolledWidget(
-      ComboBox, { open: 'onToggle', value: 'onChange' });
-
-UncontrolledComboBox.BaseComboBox = ComboBox
-
-export default UncontrolledComboBox;

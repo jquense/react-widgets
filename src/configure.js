@@ -1,21 +1,19 @@
-var warning = require('warning')
-  , configuration = require('./util/configuration')
-  , {
+import configuration from './util/configuration';
+import localizers from './util/localizers';
+
+let {
     NumberLocalizer
-  , DateLocalizer } = require('./util/localizers')
-  , {
-    globalizeNumberLocalizer
-  , globalizeDateLocalizer } = require('./globalize-localizers')
+  , DateLocalizer } = localizers
 
-module.exports = {
-
-  setGlobalizeInstance: depreciateMethod(function (globalize) {
-    configuration.locale.date   = globalizeDateLocalizer(globalize)
-    configuration.locale.number = globalizeNumberLocalizer(globalize)
-  }),
+export default {
 
   setAnimate(animatefn) {
     configuration.animate = animatefn
+  },
+
+  setLocalizers({ date, number }) {
+    this.setDateLocalizer(date)
+    this.setNumberLocalizer(number)
   },
 
   setDateLocalizer(spec) {
@@ -24,16 +22,5 @@ module.exports = {
 
   setNumberLocalizer(spec) {
     configuration.locale.number = new NumberLocalizer(spec)
-  }
-}
-
-
-function depreciateMethod(fn) {
-  return function () {
-    warning(false,
-      `setGlobalizeInstance() is depreciated. use setDateLocalizer() and setNumberLocalizer() with the Globalize localizers. ` +
-      ` TODO DOC LINK`);
-
-    return fn.apply(this, arguments);
   }
 }

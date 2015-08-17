@@ -2,7 +2,7 @@
 
 module.exports = function() {
 
-var code = 
+var code =
 `
 var MomentDateTimePicker = React.createClass({
 
@@ -20,26 +20,26 @@ var MomentDateTimePicker = React.createClass({
       , onChange = ()=>{}     // noop
       , ...props } = this.props;
 
-    let parser = dateStr => 
+    let parser = dateStr =>
       dateStr ? moment(dateStr, format).toDate() : null;
 
-    let formatter = date => 
+    let formatter = date =>
       date ? moment(date).format(format) : '';
 
     return (
-      <ReactWidgets.DateTimePicker 
-        {...props} 
+      <ReactWidgets.DateTimePicker
+        {...props}
         /* convert the value to a normal date */
-        value={value ? value.toDate() : null} 
+        value={value ? value.toDate() : null}
         /* convert back to a Moment instance */
         onChange={(date, str) => onChange(moment(date), str) }
-        format={formatter} 
+        format={formatter}
         parse={parser}/>
     )
   },
 })
 
-React.render(
+ReactDOM.render(
     <MomentDateTimePicker value={moment()}/>
   , mountNode);`
 

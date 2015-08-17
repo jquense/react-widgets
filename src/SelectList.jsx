@@ -361,9 +361,5 @@ function getListItem(parent){
   })
 }
 
-let UncontrolledSelectList = createUncontrolledWidget(
+export default createUncontrolledWidget(
     SelectList, { value: 'onChange' });
-
-UncontrolledSelectList.BaseSelectList = SelectList
-
-export default UncontrolledSelectList;

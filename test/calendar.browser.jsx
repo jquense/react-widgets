@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 
 var React = require('react/addons')
   , Calendar = require('../src/Calendar.jsx')
-  , BaseCalendar = require('../src/Calendar.jsx').BaseCalendar
+  , BaseCalendar = require('../src/Calendar.jsx').ControlledComponent
   , Header = require('../src/Header.jsx')
   , Footer = require('../src/Footer.jsx')
   , Month  =  require('../src/Month.jsx')

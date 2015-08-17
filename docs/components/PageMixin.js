@@ -10,11 +10,11 @@ module.exports = function(prefix){
     ],
 
     componentDidMount() {
-      scrollTo(this.getPathname())
+      scrollTo(this.props.route.path)
     },
 
     componentDidUpdate() {
-      scrollTo(this.getPathname())
+      scrollTo(this.props.route.path)
     },
 
     childContextTypes: {

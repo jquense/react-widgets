@@ -1,30 +1,23 @@
-var {
-    globalizeNumberLocalizer
-  , globalizeDateLocalizer } = require('../globalize-localizers')
+import animate from './dom/animate';
 
-var globalize;
-
-try {
-  globalize = require('globalize')
-} catch (err) {
-  globalize = {}
-  if ( process.env.NODE_ENV !== 'production') {
-    var desc = { get(){
-        throw new Error(
-          'Globalize.js is available but is still set as the localization strategy. ' +
-          'Please include Globalize.js or provide an alternative localization strategy.')
-      }}
-    Object.defineProperties(globalize,
-      { format: desc, parseDate: desc, parseFloat: desc, findClosestCulture: desc, culture: desc })
-  }
+function error(){
+  throw new Error(
+    '[React Widgets] You are attempting to use a widget that requires localization (DateTimePicker, NumberPicker)' +
+    'but there is no localizer set. IN order to use these widgets please install a localizer')
 }
 
-module.exports = {
+let dummy = {
+  parse: error,
+  format:error,
+  firstOfWeek: error
+}
 
-  animate: require('./dom/animate'),
+export default {
+
+  animate,
 
   locale: {
-    date:   globalizeDateLocalizer(globalize),
-    number: globalizeNumberLocalizer(globalize)
+    date:   dummy,
+    number: dummy
   }
 }

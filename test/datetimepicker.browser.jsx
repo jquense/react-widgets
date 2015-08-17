@@ -7,7 +7,7 @@ import { findDOMNode } from 'react-dom';
 var React = require('react/addons');
 var DateTimePicker = require('../src/DateTimePicker.jsx')
   , TimeList = require('../src/TimeList.jsx')
-  , Calendar = require('../src/Calendar.jsx').BaseCalendar
+  , Calendar = require('../src/Calendar.jsx').ControlledComponent
   , Globalize = require('globalize');
 
 

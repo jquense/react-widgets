@@ -519,13 +519,5 @@ function msgs(msgs){
 }
 
 
-module.exports = createUncontrolledWidget(Multiselect
+export default createUncontrolledWidget(Multiselect
     , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
-
-
-// function defaultChange(){
-//   if ( this.props.searchTerm === undefined )
-//     this.setState({ searchTerm: '' })
-// }
-
-module.exports.BaseMultiselect = Multiselect

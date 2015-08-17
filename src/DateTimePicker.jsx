@@ -20,7 +20,7 @@ import { widgetEditable, widgetEnabled } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let { calendarViews: views, datePopups: popups } = constants;
-let Calendar = _Calendar.BaseCalendar;
+let Calendar = _Calendar.ControlledComponent;
 let localizers = config.locale;
 let viewEnum  = Object.keys(views).map( k => views[k] );
 
@@ -443,13 +443,10 @@ var DateTimePicker = React.createClass({
 });
 
 
-let UncontrolledDateTimePicker = createUncontrolledWidget(
+export default  createUncontrolledWidget(
     DateTimePicker
   , { open: 'onToggle', value: 'onChange' });
 
-UncontrolledDateTimePicker.BaseDateTimePicker = DateTimePicker
-
-export default UncontrolledDateTimePicker;
 
 
 
