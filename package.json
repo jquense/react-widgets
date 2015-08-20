@@ -60,6 +60,7 @@
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.1",
     "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1",
     "gulp-babel-helpers": "^2.1.0",
     "gulp-concat": "^2.5.2",
     "gulp-header": "^1.0.2",
