@@ -2,10 +2,10 @@
 /* global it, expect */
 'use strict';
 var React = require('react');
-var _ = require('./src/util/_')
+var widgetHelpers = require('./src/util/widgetHelpers')
 
 //disable this particular optimization
-sinon.stub(_, 'isFirstFocusedRender', ()=> true)
+sinon.stub(widgetHelpers, 'isFirstFocusedRender', ()=> true)
 
 var testsContext = require.context("./test", true, /\.browser\.(js$|jsx$)/);
 

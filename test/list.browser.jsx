@@ -1,4 +1,3 @@
-/* global it, describe, expect */
 'use strict';
 require('../vendor/phantomjs-shim')
 
@@ -7,14 +6,7 @@ var List = require('../src/List.jsx');
 
 //console.log(sinon)
 var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
-  , findTag = TestUtils.findRenderedDOMComponentWithTag
-  , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findAllTag = TestUtils.scryRenderedDOMComponentsWithTag
-  , findAllClass = TestUtils.scryRenderedDOMComponentsWithClass
-  , findType = TestUtils.findRenderedComponentWithType
-  , findAllType = TestUtils.scryRenderedComponentWithType
-  , trigger = TestUtils.Simulate;
+  , render = TestUtils.renderIntoDocument;
 
 describe('List', function(){
   var data = [
@@ -32,28 +24,42 @@ describe('List', function(){
     expect( list.getDOMNode().children.length).to.be(5);
   })
 
+  it('should generate ids', function(){
+    var focused = data[2]
+      , list = render(<List data={data} focused={focused} />);
+
+    let seen = [];
+
+    $(React.findDOMNode(list)).children().each(
+      function(){
+        expect(this.hasAttribute('id')).to.equal(true);
+        expect(seen.indexOf(this.id)).to.equal(-1);
+        seen.push(this.id);
+      })
+  })
+
   it('should respect textField and valueFields', function(){
     var list = render(
           <List data={data} textField='label' valueField='id' />);
 
     expect($(list.getDOMNode()).find('li:first-child').text())
       .to.be('jimmy');
-  }) 
+  })
 
   it('should render an empty list message', function(){
     var list = render(<List data={[]} textField='label' valueField='id' />);
 
     expect($(list.getDOMNode()).find('li').text())
       .to.be('There are no items in this list');
-  }) 
+  })
 
   it('should use a Item template', function(){
     var Templ  = React.createClass({
       render: function() {
-        return (<span>{"hello - " + this.props.item.label}</span>);
+        return (<span>{'hello - ' + this.props.item.label}</span>);
       }
     });
-    
+
     var list = render(<List data={data} itemComponent={Templ} />);
 
     expect( $(list.getDOMNode()).find('li:first-child').text()).to.be('hello - jimmy');

@@ -1,4 +1,4 @@
-var { 
+var {
     globalizeNumberLocalizer
   , globalizeDateLocalizer } = require('../globalize-localizers')
 
@@ -9,12 +9,12 @@ try {
 } catch (err) {
   globalize = {}
   if ( process.env.NODE_ENV !== 'production') {
-    var desc = { get(){ 
+    var desc = { get(){
         throw new Error(
           'Globalize.js is available but is still set as the localization strategy. ' +
-          'Please include Globalize.js or provide an alternative localization strategy.') 
+          'Please include Globalize.js or provide an alternative localization strategy.')
       }}
-    Object.defineProperties(globalize, 
+    Object.defineProperties(globalize,
       { format: desc, parseDate: desc, parseFloat: desc, findClosestCulture: desc, culture: desc })
   }
 }

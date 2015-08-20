@@ -4,7 +4,7 @@ var METHODS = ['next', 'prev', 'first', 'last'];
 module.exports = function validateListComponent(list){
 
   if( process.env.NODE_ENV !== 'production' ){
-    METHODS.forEach( method => 
+    METHODS.forEach( method =>
       assert(typeof list[method] === 'function', 'List components must implement a `' + method + '()` method') )
   }
 }
@@ -16,5 +16,5 @@ function assert(condition, msg){
     error = new Error(msg)
     error.framesToPop = 1;
     throw error;
-  }  
+  }
 }

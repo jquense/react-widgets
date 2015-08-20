@@ -1,9 +1,10 @@
-'use strict';
-var React = require('react')
-  , compat = require('./util/compat');
+import React from 'react';
+import compat from './util/compat';
+import CustomPropTypes from './util/propTypes';
 
-module.exports = React.createClass({
-  
+
+export default React.createClass({
+
   displayName: 'MultiselectInput',
 
   propTypes: {
@@ -12,33 +13,33 @@ module.exports = React.createClass({
     onChange:     React.PropTypes.func.isRequired,
     onFocus:      React.PropTypes.func,
 
-    disabled:     React.PropTypes.bool,
-    readOnly:     React.PropTypes.bool,
+    disabled:     CustomPropTypes.disabled,
+    readOnly:     CustomPropTypes.readOnly
   },
 
-
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     this.props.focused && this.focus()
   },
 
-  render: function(){
+  render(){
       var value = this.props.value
         , placeholder = this.props.placeholder
         , size = Math.max((value || placeholder).length, 1) + 1;
 
       return (
         <input {...this.props}
-          type='text' 
           className='rw-input'
+          autoComplete='off'
           aria-disabled={this.props.disabled}
           aria-readonly={this.props.readOnly}
           disabled={this.props.disabled}
           readOnly={this.props.readOnly}
-          size={size}/>
+          size={size}
+        />
       )
   },
 
-  focus: function(){
+  focus(){
     compat.findDOMNode(this).focus()
   }
 

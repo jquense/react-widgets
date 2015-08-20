@@ -9,17 +9,17 @@ module.exports = React.createClass({
     return {
       value: 15,
       format: 'D',
-      step: 1,
+      step: 1
     }
   },
 
   render: function(){
 
     return (
-      <div className='example'>
+      <div className='example' role='application'>
         <div className='row'>
           <div className='col-md-6 col-lg-7 demo'>
-            <RW.NumberPicker 
+            <RW.NumberPicker
                 value={this.state.value}
                 onChange={this._change}
                 max={this.state.max}
@@ -83,7 +83,7 @@ module.exports = React.createClass({
                     value={this.state.max}
                     onChange={this._set.bind(null, 'max')}/>
               </div>
-            </div> 
+            </div>
           </div>
         </div>
       </div>

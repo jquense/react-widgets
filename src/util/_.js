@@ -1,14 +1,14 @@
 'use strict';
 var idCount = 0;
 
-var _ = 
+var _ =
 
   module.exports = {
 
     has,
 
     result: (value, ...args) =>  typeof value === 'function' ? value(...args) : value,
-    
+
     isShallowEqual(a, b) {
       if (a === b) return true;
       if (a instanceof Date && b instanceof Date)
@@ -20,7 +20,7 @@ var _ =
       if(typeof a !== typeof b ) return false
 
       return shallowEqual(a, b)
-    }, 
+    },
 
     transform(obj, cb, seed) {
       _.each(obj, cb.bind(null, seed = seed || (Array.isArray(obj) ? [] : {})))
@@ -30,7 +30,7 @@ var _ =
     each(obj, cb, thisArg) {
       if( Array.isArray(obj)) return obj.forEach(cb, thisArg)
 
-      for(var key in obj) if(has(obj, key)) 
+      for(var key in obj) if(has(obj, key))
         cb.call(thisArg, obj[key], key, obj)
     },
 
@@ -57,10 +57,10 @@ var _ =
         })
         return result
       }
-      else 
-        for(var key in arr) if( has(arr, key) ) 
-          if( cb.call(thisArg, arr[key], key, arr) ) 
-            return arr[key]; 
+      else
+        for(var key in arr) if( has(arr, key) )
+          if( cb.call(thisArg, arr[key], key, arr) )
+            return arr[key];
     },
 
     chunk(array, chunkSize) {
@@ -83,26 +83,8 @@ var _ =
 
     uniqueId (prefix) {
       return '' + ((prefix == null ? '' : prefix) + (++idCount));
-    },
-
-    //-- Really specific Component Utilities --
-
-    isFirstFocusedRender(component){
-      return component._firstFocus || (component.state.focused && (component._firstFocus = true))
-    },
-
-    
-    ifNotDisabled(disabledOnly, fn) {
-      if (arguments.length === 1)
-        fn = disabledOnly, disabledOnly = false;
-
-      //console.log('create method')
-      return function(...args){
-        //console.log('called', disabledOnly)
-        if ( !(this.isDisabled() || (!disabledOnly && this.isReadOnly())) )
-          return fn.apply(this, args)
-      }
     }
+
   }
 
 function has(o, k){
@@ -129,7 +111,7 @@ function shallowEqual(objA, objB) {
     return false;
 
   for (var i = 0; i < keysA.length; i++)
-    if ( !has(objB, keysA[i]) || !eql(objA[keysA[i]], objB[keysA[i]])) 
+    if ( !has(objB, keysA[i]) || !eql(objA[keysA[i]], objB[keysA[i]]))
       return false;
 
   return true;

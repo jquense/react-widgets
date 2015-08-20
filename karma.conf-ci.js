@@ -56,7 +56,7 @@ module.exports = function(config) {
       './vendor/phantomjs-shim.js',
       './vendor/sinon-1.10.3.js',
       './vendor/jquery-1.11.2.min.js',
-      '_test-bootstrap.js',
+      '_test-bootstrap.js'
     ],
 
     reporters: ['mocha','saucelabs'],

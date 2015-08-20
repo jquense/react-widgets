@@ -5,45 +5,22 @@ var React = require('react')
   , RW = require('../../../src/index');
 
 
-// var valueComp = React.createClass({
-//   render: function() {
-//     return (<span><i className='fa fa-comment'></i>{ '  ' + this.props.item.label }</span>)
-//   }
-// });
-
-// var itemComp = React.createClass({
-//   render: function() {
-//     var icons =  ['bicycle', 'area-chart', 'anchor']
-
-//     this._icon || (this._icon = icons[getRandomInt(0, 2)])
-//     return (
-//       <div>
-//         <i className={'fa fa-' + this._icon}></i>
-//         { '  ' + this.props.item.label}
-//       </div>
-//     );
-//   }
-// });
-
-// function getRandomInt(min, max) {
-//   return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
-
 var list = [
         { label: 'orange', id: 1 },
         { label: 'blue',   id: 2 },
         { label: 'red',    id: 3 },
         { label: 'maroon', id: 4 },
         { label: 'purple', id: 5 },
-        { label: 'mauve',  id: 6 },
+        { label: 'mauve',  id: 6 }
       ];
 
-var DropdownApi = React.createClass({
+var SelectListApi = React.createClass({
 
   getInitialState: function(){
 
     return {
       duration: 250,
+      value: list[0]
     }
   },
 
@@ -51,11 +28,11 @@ var DropdownApi = React.createClass({
     var disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 
     return (
-      <div className='example'>
+      <div className='example' role='application'>
         <div className='row'>
           <div className='col-md-6 col-lg-7 demo'>
             <div className='form-group'>
-              <RW.SelectList 
+              <RW.SelectList
                 disabled={disabled ? this.state.disabled : false}
                 readOnly={this.state.disabled === 'readonly'}
                 value={this.state.value}
@@ -66,7 +43,7 @@ var DropdownApi = React.createClass({
                 isRtl={this.state.isRtl}
                 valueField='id'
                 textField='label'
-                />
+              />
             </div>
           </div>
           <div className='col-md-6 col-lg-5 api-panel'>
@@ -107,8 +84,8 @@ var DropdownApi = React.createClass({
             </div>
             <div className='form-group'>
               <label className='form-label'>Disable Values</label>
-              <RW.Multiselect 
-                  value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] } 
+              <RW.Multiselect
+                  value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] }
                   data={list}
                   textField='label'
                   valueField='id'
@@ -142,5 +119,5 @@ var DropdownApi = React.createClass({
   }
 });
 
-module.exports = DropdownApi;
+module.exports = SelectListApi;
 

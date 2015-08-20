@@ -2,7 +2,7 @@
 var React = require('react')
 
 module.exports = {
-  
+
   propTypes: {
     isRtl: React.PropTypes.bool
   },
@@ -15,13 +15,13 @@ module.exports = {
     isRtl: React.PropTypes.bool
   },
 
-  getChildContext: function() {
-    return { 
+  getChildContext() {
+    return {
       isRtl: this.props.isRtl || (this.context && this.context.isRtl)
     }
   },
 
-  isRtl: function() {
+  isRtl() {
     return !!(this.props.isRtl || (this.context && this.context.isRtl))
   }
 

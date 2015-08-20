@@ -1,9 +1,8 @@
-'use strict';
-var React = require('react')
-  , caretPos = require('./util/caret')
-  , compat = require('./util/compat');
+import React from 'react';
+import caretPos from './util/caret';
+import compat from './util/compat';
 
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'ComboboxInput',
 
@@ -34,15 +33,16 @@ module.exports = React.createClass({
 
   render(){
     return (
-      <input 
+      <input
         {...this.props }
-        type='text' 
+        type='text'
         aria-disabled={this.props.disabled}
         aria-readonly={this.props.readOnly}
         className={this.props.className + ' rw-input'}
         onKeyDown={this.props.onKeyDown}
         onChange={this._change}
-        value={this.props.value == null ? '' : this.props.value}/>
+        value={this.props.value == null ? '' : this.props.value}
+      />
     )
   },
 
@@ -68,9 +68,9 @@ module.exports = React.createClass({
 
     // IE fires input events when setting/unsetting placeholders.
     // issue #112
-    if ( pl && !val && val === (this.props.value || '') ) 
+    if ( pl && !val && val === (this.props.value || '') )
       return
-    
+
     this._last = val;
     this.props.onChange(e, val)
   },

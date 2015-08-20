@@ -22,7 +22,7 @@ series(SUPPORTED_VERSIONS, function(version, idx, next){
   server.start(
       config(version)
     , function(exitCode) {
-        if ( exitCode ) 
+        if ( exitCode )
           process.exit(exitCode)
 
         next();
@@ -32,7 +32,7 @@ series(SUPPORTED_VERSIONS, function(version, idx, next){
 })
 
 function config(version){
-  
+
   webpackConfig.plugins = plugins.concat(
     new webpack.DefinePlugin({
       '__REACT_VERSION__': JSON.stringify(version),
@@ -47,10 +47,10 @@ function config(version){
 
     files: [
       './vendor/phantomjs-shim.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/react/'+ version + '/react-with-addons.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/react/' + version + '/react-with-addons.js',
       './vendor/sinon-1.10.3.js',
       './vendor/jquery-1.11.2.min.js',
-      '_test-bootstrap.js',
+      '_test-bootstrap.js'
     ],
 
     reporters: ['mocha'],
@@ -79,9 +79,9 @@ function config(version){
 function series(versions, iter, cb){
 
   (function next(idx){
-    if( idx === versions.length) 
+    if( idx === versions.length)
       return cb && cb()
-   
+
     iter(versions[idx], idx, next.bind(null, idx + 1))
 
   })(0)

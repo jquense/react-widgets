@@ -1,13 +1,12 @@
-'use strict';
-var React = require('react')
+import  React from 'react';
 
-module.exports = {
-  
+export default {
+
   contextTypes: {
     isRtl: React.PropTypes.bool
   },
 
-  isRtl: function() {
+  isRtl() {
     return !!this.context.isRtl
   }
 

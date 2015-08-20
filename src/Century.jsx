@@ -1,85 +1,107 @@
-'use strict';
-var React      = require('react')
-  , cx         = require('classnames')
-  , dates      = require('./util/dates')
-  , localizers = require('./util/configuration').locale
-  , directions = require('./util/constants').directions
-  , Btn        = require('./WidgetButton')
-  , _          = require('./util/_')
-  , CustomPropTypes = require('./util/propTypes'); //omit
+import React      from 'react';
+import cn         from 'classnames';
+import dates      from './util/dates';
+import config from './util/configuration';import _          from './util/_';
+import CustomPropTypes from './util/propTypes';
+import { instanceId } from './util/widgetHelpers';
 
-var format = props => props.decadeFormat || localizers.date.formats.decade
+let localizers   = config.locale;
+let format = props => props.decadeFormat || localizers.date.formats.decade
 
-module.exports = React.createClass({
+let isEqual = (dateA, dateB) => dates.eq(dateA, dateB, 'decade')
+let optionId = (id, date) => `${id}__century_${dates.year(date)}`;
+
+let propTypes = {
+  optionID:     React.PropTypes.func,
+  culture:      React.PropTypes.string,
+  value:        React.PropTypes.instanceOf(Date),
+  min:          React.PropTypes.instanceOf(Date),
+  max:          React.PropTypes.instanceOf(Date),
+
+  onChange:     React.PropTypes.func.isRequired,
+  decadeFormat: CustomPropTypes.dateFormat
+};
+
+export default React.createClass({
 
   displayName: 'CenturyView',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlChildContextMixin')
+    require('./mixins/RtlChildContextMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
-  propTypes: {
-    culture:      React.PropTypes.string,
-    value:        React.PropTypes.instanceOf(Date),
-    min:          React.PropTypes.instanceOf(Date),
-    max:          React.PropTypes.instanceOf(Date),
+  propTypes,
 
-    onChange:     React.PropTypes.func.isRequired,
-    
-    decadeFormat: CustomPropTypes.dateFormat
+  componentDidUpdate() {
+    let activeId = optionId(instanceId(this), this.props.focused);
+    this.ariaActiveDescendant(activeId)
   },
 
-  render: function(){
-    var props = _.omit(this.props,  ['max', 'min', 'value', 'onChange'])
-      , years = getCenturyDecades(this.props.focused)
-      , rows  = _.chunk(years, 4);
+  render(){
+    let { className, focused } = this.props
+      , years = getCenturyDecades(focused)
+      , rows = _.chunk(years, 4);
+
+    var elementProps = _.omit(this.props, Object.keys(propTypes));
 
     return (
-      <table {...props} 
+      <table { ...elementProps}
         role='grid'
-        className='rw-calendar-grid rw-nav-view'
-        aria-activedescendant={this._id('_selected_item')}>
-        <tbody>
+        className={cn(className, 'rw-nav-view')}
+      >
+        <tbody >
           { rows.map(this._row)}
         </tbody>
       </table>
     )
   },
 
-  _row: function(row, i){
-    var id = this._id('_selected_item')
+  _row(row, rowIdx) {
+    let {
+        focused, disabled, onChange
+      , value, today, culture, min, max } = this.props
+      , id = instanceId(this, '_century');
 
     return (
-      <tr key={'row_' + i} role='row'>
-      { row.map( (date, i) => {
-        var focused       = dates.eq(date,  this.props.focused,  'decade')
-          , selected      = dates.eq(date, this.props.value,  'decade')
-          , d             = inRangeDate(date, this.props.min, this.props.max)
-          , currentDecade = dates.eq(date, this.props.today, 'decade');
+      <tr key={'row_' + rowIdx} role='row'>
+        { row.map( (date, colIdx) => {
+          var isFocused = isEqual(date, focused)
+            , isSelected = isEqual(date, value)
+            , currentDecade = isEqual(date, today)
+            , label = localizers.date.format(
+                dates.startOf(date, 'decade'), format(this.props), culture);
 
-        return !inRange(date, this.props.min, this.props.max)
-          ? <td key={i} role='gridcell' className='rw-empty-cell'>&nbsp;</td>
-          : (<td key={i} role='gridcell'>
-              <Btn onClick={this.props.onChange.bind(null, d)}
-                tabIndex='-1'
-                id={ focused ? id : undefined }
-                aria-pressed={selected}
-                aria-disabled={this.props.disabled}
-                disabled={this.props.disabled || undefined}
-                className={cx({
-                  'rw-off-range':       !inCentury(date, this.props.focused),
-                  'rw-state-focus':     focused,
-                  'rw-state-selected':  selected,
-                  'rw-now':             currentDecade
-                 })}>
-                { 
-                  localizers.date.format(dates.startOf(date, 'decade'), format(this.props), this.props.culture) 
-                }
-              </Btn>
-            </td>)
-      })}
+          var currentID = optionId(id, date);
+
+          return !inRange(date, min, max)
+            ? <td key={colIdx} role='gridcell' className='rw-empty-cell'>&nbsp;</td>
+            : (
+              <td
+                key={colIdx}
+                role='gridcell'
+                id={currentID}
+                title={label}
+                aria-selected={isSelected}
+                aria-label={label}
+                aria-readonly={disabled}
+              >
+                <span
+                  aria-labelledby={currentID}
+                  onClick={onChange.bind(null, inRangeDate(date, min, max))}
+                  className={cn('rw-btn', {
+                    'rw-off-range':       !inCentury(date, focused),
+                    'rw-state-focus':     isFocused,
+                    'rw-state-selected':  isSelected,
+                    'rw-now':             currentDecade
+                   })}
+                >
+                  { label }
+                </span>
+              </td>
+            )
+        })}
     </tr>)
   }
 
@@ -100,8 +122,8 @@ function inCentury(date, start){
 }
 
 function getCenturyDecades(_date){
-  var days = [1,2,3,4,5,6,7,8,9,10,11,12]
+  var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     , date = dates.add(dates.startOf(_date, 'century'), -20, 'year')
 
-  return days.map( i => (date = dates.add(date, 10, 'year')))
+  return days.map(() => (date = dates.add(date, 10, 'year')))
 }

@@ -1,17 +1,21 @@
-'use strict';
-var React           = require('react')
-  , activeElement   = require('react/lib/getActiveElement')
-  , _               = require('./util/_')
-  , contains        = require('dom-helpers/query/contains')
-  , cx              = require('classnames')
-  , compat          = require('./util/compat')
-  , CustomPropTypes = require('./util/propTypes')
-  , Popup           = require('./Popup')
-  , PlainList       = require('./List')
-  , GroupableList   = require('./ListGroupable')
-  , validateList    = require('./util/validateListInterface')
-  , createUncontrolledWidget = require('uncontrollable');
+import React from 'react';
+import activeElement from 'react/lib/getActiveElement';
+import contains from'dom-helpers/query/contains';
+import cx from 'classnames';
+import _  from './util/_';
+import Popup           from './Popup';
+import compat          from './util/compat';
+import CustomPropTypes from './util/propTypes';
+import PlainList       from './List';
+import GroupableList   from './ListGroupable';
+import validateList    from './util/validateListInterface';
+import createUncontrolledWidget from 'uncontrollable';
 
+import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
+import { widgetEditable, widgetEnabled } from './util/interaction';
+import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
+
+let { omit, pick, result } = _;
 
 var propTypes = {
   //-- controlled props -----------
@@ -44,15 +48,9 @@ var propTypes = {
   dropUp:         React.PropTypes.bool,
   duration:       React.PropTypes.number, //popup
 
-  disabled:       React.PropTypes.oneOfType([
-                    React.PropTypes.bool,
-                    React.PropTypes.oneOf(['disabled'])
-                  ]),
+  disabled:       CustomPropTypes.disabled,
 
-  readOnly:       React.PropTypes.oneOfType([
-                    React.PropTypes.bool,
-                    React.PropTypes.oneOf(['readOnly'])
-                  ]),
+  readOnly:       CustomPropTypes.readOnly,
 
   messages:       React.PropTypes.shape({
     open:              CustomPropTypes.message,
@@ -67,130 +65,152 @@ var DropdownList = React.createClass({
   displayName: 'DropdownList',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/DataFilterMixin'),
-    require('./mixins/DataHelpersMixin'),
     require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin')
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes: propTypes,
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       delay: 500,
       value: '',
       open: false,
       data: [],
       searchTerm: '',
-      messages: msgs()
+      messages: msgs(),
+      ariaActiveDescendantKey: 'dropdownlist'
     }
   },
 
-  getInitialState: function(){
-    var filter = this.props.open && this.props.filter
-      , data = filter ? this.filter(this.props.data, this.props.searchTerm) : this.props.data
-      , initialIdx = this._dataIndexOf(this.props.data, this.props.value);
+  getInitialState(){
+    let { open, filter, value, data, searchTerm, valueField } = this.props;
+
+    var processed = filter ? this.filter(data, searchTerm) : data
+      , initialIdx = dataIndexOf(data, value, valueField);
 
     return {
-      filteredData: filter && data,
-      selectedItem: data[initialIdx],
-      focusedItem:  data[initialIdx] || data[0]
+      filteredData: (open && filter) ? processed : null,
+      selectedItem: processed[initialIdx],
+      focusedItem:  processed[initialIdx] || data[0]
     }
   },
 
   componentDidUpdate() {
-    this.refs.list && validateList(this.refs.list)
+    this.refs.list
+        && validateList(this.refs.list)
   },
 
   componentWillReceiveProps(props){
-    var filter = props.open && props.filter
-      , data = filter ? this.filter(props.data, props.searchTerm) : props.data
-      , idx = this._dataIndexOf(data, props.value);
+    let { open, filter, value, data, searchTerm, valueField } = props;
+
+    var processed = filter ? this.filter(data, searchTerm) : data
+      , idx = dataIndexOf(data, value, valueField);
 
     this.setState({
-      filteredData: filter && data,
-      selectedItem: data[idx],
-      focusedItem:  data[!~idx ? 0 : idx]
+      filteredData: (open && filter) ? processed : null,
+      selectedItem: processed[idx],
+      focusedItem:  processed[!~idx ? 0 : idx]
     })
   },
 
   render() {
-    var {
-        className
-      , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , ValueComponent = this.props.valueComponent
-      , data = this._data()
-      , valueItem = this._dataItem(this.props.data, this.props.value ) // take value from the raw data
-      , optID = this._id('_option')
-      , dropUp = this.props.dropUp
-      , renderList = _.isFirstFocusedRender(this) || this.props.open
-      , messages = msgs(this.props.messages)
-      , List  = this.props.listComponent || (this.props.groupBy && GroupableList) || PlainList;
+    let {
+        className, tabIndex, filter
+      , valueField, textField, groupBy
+      , messages, data, busy, dropUp
+      , placeholder, value, open, disabled, readOnly
+      , valueComponent: ValueComponent
+      , listComponent: List } = this.props;
+
+    List = List || (groupBy && GroupableList) || PlainList
+
+    let elementProps = omit(this.props, Object.keys(propTypes));
+    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
+    let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
+
+    let { focusedItem, selectedItem, focused } = this.state;
+
+    let items = this._data()
+      , valueItem = dataItem(data, value, valueField) // take value from the raw data
+      , listID = instanceId(this, '__listbox');
+
+    let shouldRenderList = isFirstFocusedRender(this) || open;
+
+    messages = msgs(messages)
 
     return (
-      <div {...props}
-        ref="element"
+      <div {...elementProps}
+        ref="input"
+        role='combobox'
+        tabIndex={tabIndex || '0'}
+        aria-expanded={open }
+        aria-haspopup={true}
+        aria-owns={listID}
+        aria-busy={!!busy}
+        aria-live={!open && 'polite'}
+        //aria-activedescendant={activeID}
+        aria-autocomplete="list"
+        aria-disabled={disabled }
+        aria-readonly={readOnly }
         onKeyDown={this._keyDown}
         onClick={this._click}
         onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
-        aria-expanded={ this.props.open }
-        aria-haspopup={true}
-        aria-busy={!!this.props.busy}
-        aria-activedescendent={ this.props.open ? optID : undefined }
-        aria-disabled={ this.props.disabled }
-        aria-readonly={ this.props.readOnly }
-        tabIndex={props.tabIndex || '-1'}
         className={cx(className, 'rw-dropdownlist', 'rw-widget', {
-          'rw-state-disabled':  this.props.disabled,
-          'rw-state-readonly':  this.props.readOnly,
-          'rw-state-focus':     this.state.focused,
+          'rw-state-disabled':  disabled,
+          'rw-state-readonly':  readOnly,
+          'rw-state-focus':     focused,
           'rw-rtl':             this.isRtl(),
 
-          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
+          ['rw-open' + (dropUp ? '-up' : '')]: open
         })}>
 
         <span className="rw-dropdownlist-picker rw-select rw-btn">
-          <i className={'rw-i rw-i-caret-down' + (this.props.busy ? ' rw-loading' : '')}>
-            <span className="rw-sr">{ _.result(messages.open, this.props) }</span>
+          <i className={'rw-i rw-i-caret-down' + (busy ? ' rw-loading' : '')}>
+            <span className="rw-sr">
+              { result(messages.open, this.props) }
+            </span>
           </i>
         </span>
-        <div className="rw-input">
-          { !valueItem && props.placeholder
-            ? <span className='rw-placeholder'>{props.placeholder}</span>
+        <div
+          className="rw-input"
+        >
+          { !valueItem && placeholder
+            ? <span className='rw-placeholder'>{placeholder}</span>
             : this.props.valueComponent
               ? <ValueComponent item={valueItem}/>
-              : this._dataText(valueItem)
+              : dataText(valueItem, textField)
           }
         </div>
-        <Popup {..._.pick(this.props, Object.keys(compat.type(Popup).propTypes))}
+        <Popup {...popupProps}
           onOpen={() => this.focus() }
           onOpening={() => this.refs.list.forceUpdate() }
-          onRequestClose={this.close}>
-
+          onRequestClose={this.close}
+        >
           <div>
-            { this.props.filter && this._renderFilter(messages) }
-            { renderList &&
+            { filter && this._renderFilter(messages) }
+            { shouldRenderList &&
               <List ref="list"
-              {..._.pick(
-                  this.props
-                , Object.keys(compat.type(List).propTypes))
-              }
-              data={data}
-              optID={optID}
-              aria-hidden={!this.props.open}
-              selected={this.state.selectedItem}
-              focused ={this.props.open ? this.state.focusedItem : null}
-              onSelect={this._onSelect}
-              onMove={this._scrollTo}
-              messages={{
-                emptyList: this.props.data.length
-                  ? messages.emptyFilter
-                  : messages.emptyList
-              }}/>
+                {...listProps}
+                data={items}
+                id={listID}
+                aria-live={open && 'polite'}
+                aria-labelledby={instanceId(this)}
+                aria-hidden={!this.props.open}
+                selected={selectedItem}
+                focused ={open ? focusedItem : null}
+                onSelect={this._onSelect}
+                onMove={this._scrollTo}
+                messages={{
+                  emptyList: data.length
+                    ? messages.emptyFilter
+                    : messages.emptyList
+                }}/>
             }
           </div>
         </Popup>
@@ -205,31 +225,34 @@ var DropdownList = React.createClass({
         <input ref='filter' className='rw-input'
           placeholder={_.result(messages.filterPlaceholder, this.props)}
           value={this.props.searchTerm }
-          onChange={ e => this.notify('onSearch', e.target.value)}/>
+          onChange={ e => notify(this.props.onSearch, e.target.value)}/>
       </div>
     )
   },
 
-  _focus: _.ifNotDisabled(true, function(focused, e){
+  @widgetEnabled
+  _focus(focused, e){
 
     this.setTimeout('focus', () => {
       if( !focused) this.close()
 
       if( focused !== this.state.focused) {
-        this.notify(focused ? 'onFocus' : 'onBlur', e)
+        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
         this.setState({ focused: focused })
       }
     })
-  }),
+  },
 
-  _onSelect: _.ifNotDisabled(function(data){
+  @widgetEditable
+  _onSelect(data){
     this.close()
-    this.notify('onSelect', data)
+    notify(this.props.onSelect, data)
     this.change(data)
     this.focus(this)
-  }),
+  },
 
-  _click: _.ifNotDisabled(function(e){
+  @widgetEditable
+  _click(e){
     var wrapper = this.refs.filterWrapper
 
     if( !this.props.filter || !this.props.open )
@@ -238,10 +261,11 @@ var DropdownList = React.createClass({
     else if( !contains(compat.findDOMNode(wrapper), e.target))
       this.close()
 
-    this.notify('onClick', e)
-  }),
+    notify(this.props.onClick, e)
+  },
 
-  _keyDown: _.ifNotDisabled(function (e){
+  @widgetEditable
+  _keyDown(e){
     var self = this
       , key = e.key
       , alt = e.altKey
@@ -288,7 +312,7 @@ var DropdownList = React.createClass({
       })
 
 
-    this.notify('onKeyDown', [e])
+    notify(this.props.onKeyDown, [e])
 
     function change(item, fromList){
       if(!item) return
@@ -296,18 +320,18 @@ var DropdownList = React.createClass({
         ? self._onSelect(item)
         : self.change(item)
     }
-  }),
+  },
 
   change(data){
     if ( !_.isShallowEqual(data, this.props.value) ) {
-      this.notify('onChange', data)
-      this.notify('onSearch', '')
+      notify(this.props.onChange, data)
+      notify(this.props.onSearch, '')
       this.close()
     }
   },
 
   focus(target){
-    var inst = target || (this.props.filter && this.props.open ? this.refs.filter : this);
+    var inst = target || (this.props.filter && this.props.open ? this.refs.filter : this.refs.input);
 
     if ( activeElement() !== compat.findDOMNode(inst))
       compat.findDOMNode(inst).focus()
@@ -334,11 +358,11 @@ var DropdownList = React.createClass({
   },
 
   open() {
-    this.notify('onToggle', true)
+    notify(this.props.onToggle, true)
   },
 
   close() {
-    this.notify('onToggle', false)
+    notify(this.props.onToggle, false)
   },
 
   toggle() {

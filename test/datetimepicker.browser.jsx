@@ -38,7 +38,7 @@ describe('DateTimePicker', function(){
 
     setTimeout(function(){
       expect(popups.length).to.be(2)
-      popups.forEach( popup => expect(popup.getDOMNode().style.display).to.be('none')) 
+      popups.forEach( popup => expect(popup.getDOMNode().style.display).to.be('none'))
       done()
     })
   })
@@ -69,10 +69,17 @@ describe('DateTimePicker', function(){
     expect(change.calledTwice).to.be(true)
   })
 
+  it('should set id on list', function(){
+    var instance = render(<DateTimePicker />)
+      , list = React.findDOMNode(findTag(instance, 'ul'));
+
+    expect(list.hasAttribute('id')).to.be(true);
+  })
+
   it('should not show time button when not selected', function(){
     var spy
       , picker = render(<DateTimePicker time={false} calendar={false} onToggle={spy = sinon.spy()}/>);
-    
+
     expect(() => findClass(picker, 'rw-btn-time')).to
       .throwException(/Did not find exactly one match.+/)
 

@@ -1,13 +1,13 @@
 'use strict';
-var React   = require('react')
-  , filters = require('../util/filter')
-  , CustomPropTypes = require('../util/propTypes')
-  , helper  = require('./DataHelpersMixin');
+import React  from 'react';
+import filters from '../util/filter';
+import CustomPropTypes from '../util/propTypes';
+import { dataText } from '../util/dataHelpers';
 
 var dflt = f => f === true ? 'startsWith' : f ? f : 'eq'
 
 module.exports = {
-  
+
     propTypes: {
       data:           React.PropTypes.array,
       value:          React.PropTypes.any,
@@ -39,7 +39,7 @@ module.exports = {
         return true
       })
 
-      return idx  
+      return idx
     },
 
     filter(items, searchTerm){
@@ -50,19 +50,19 @@ module.exports = {
       if ( !matches || !searchTerm || !searchTerm.trim() || searchTerm.length < (this.props.minLength || 1))
         return items
 
-      return items.filter( 
+      return items.filter(
         (item, idx) => matches(item, searchTerm, idx))
     }
   }
 
 
 function getFilter(matcher, searchTerm, ctx){
-  searchTerm = !ctx.props.caseSensitive 
-    ? searchTerm.toLowerCase() 
+  searchTerm = !ctx.props.caseSensitive
+    ? searchTerm.toLowerCase()
     : searchTerm
 
   return function(item) {
-    var val = helper._dataText.call(ctx, item);
+    var val = dataText(item, ctx.props.textField);
 
     if ( !ctx.props.caseSensitive )
       val = val.toLowerCase();

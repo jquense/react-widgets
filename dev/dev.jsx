@@ -133,14 +133,14 @@ var App = React.createClass({
           <section className="example" style={{ marginBottom: 20 }}>
           <button onClick={() => this.dropdowns()}>add</button>
 
-          <DatePicker culture='fr'/>
-          <NumberPicker step={0.1}/>
+          <DatePicker editFormat='d' onChange={(...args)=> console.log(args)}/>
+
 
           </section>
         </div>
       </div>
     )
-  },
+  }
 
 
 })

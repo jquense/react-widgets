@@ -6,7 +6,7 @@ function Repeater(callback){
 
   id = setInterval(()=> {
     cancel()
-    id = setInterval(callback, 35) 
+    id = setInterval(callback, 35)
     callback() //fire after everything in case the user cancels on the first call
   }, 500)
 

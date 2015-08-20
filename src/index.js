@@ -19,12 +19,12 @@ module.exports = {
   DateTimePicker:   require('./DateTimePicker'),
 
   NumberPicker:     require('./NumberPicker'),
-  
+
   Multiselect:      require('./Multiselect'),
   SelectList:       require('./SelectList'),
 
   configure:        require('./configure'),
-  
+
   utils: {
     ReplaceTransitionGroup: require('./ReplaceTransitionGroup'),
     SlideTransition:        require('./SlideTransition')

@@ -1,0 +1,10 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "$": true,
+    "expect": true,
+    "__REACT_VERSION__": true
+  }
+}

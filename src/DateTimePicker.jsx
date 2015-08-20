@@ -1,27 +1,32 @@
-'use strict';
-var React  = require('react')
-  , invariant = require('react/lib/invariant')
-  , activeElement = require('react/lib/getActiveElement')
-  , cx     = require('classnames')
-  , compat = require('./util/compat')
-  , _      = require('./util/_') //pick, omit, has
+import React  from 'react';
+import invariant from 'react/lib/invariant';
+import activeElement from 'react/lib/getActiveElement';
+import cx     from 'classnames';
+import compat from './util/compat';
+import _      from './util/_'; //pick, omit, has
 
-  , dates  = require('./util/dates')
-  , localizers = require('./util/configuration').locale
-  , views  = require('./util/constants').calendarViews
-  , popups = require('./util/constants').datePopups
+import dates  from './util/dates';
+import config from './util/configuration';
+import constants  from './util/constants';
 
-  , Popup     = require('./Popup')
-  , Calendar  = require('./Calendar').BaseCalendar
-  , Time      = require('./TimeList')
-  , DateInput = require('./DateInput')
-  , Btn       = require('./WidgetButton')
-  , CustomPropTypes = require('./util/propTypes')
-  , createUncontrolledWidget = require('uncontrollable');
+import Popup     from './Popup';
+import _Calendar  from './Calendar';
+import Time      from './TimeList';
+import DateInput from './DateInput';
+import Btn       from './WidgetButton';
+import CustomPropTypes from './util/propTypes';
+import createUncontrolledWidget from 'uncontrollable';
+import { widgetEditable, widgetEnabled } from './util/interaction';
+import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
-var viewEnum  = Object.keys(views).map( k => views[k] );
+let { calendarViews: views, datePopups: popups } = constants;
+let Calendar = _Calendar.BaseCalendar;
+let localizers = config.locale;
+let viewEnum  = Object.keys(views).map( k => views[k] );
 
-var propTypes = {
+let { omit, pick } = _;
+
+let propTypes = {
 
     ...compat.type(Calendar).propTypes,
 
@@ -58,15 +63,8 @@ var propTypes = {
     initialView:    React.PropTypes.oneOf(viewEnum),
     finalView:      React.PropTypes.oneOf(viewEnum),
 
-    disabled:       React.PropTypes.oneOfType([
-                        React.PropTypes.bool,
-                        React.PropTypes.oneOf(['disabled'])
-                      ]),
-
-    readOnly:       React.PropTypes.oneOfType([
-                      React.PropTypes.bool,
-                      React.PropTypes.oneOf(['readOnly'])
-                    ]),
+    disabled:       CustomPropTypes.disabled,
+    readOnly:       CustomPropTypes.readOnly,
 
     parse:          React.PropTypes.oneOfType([
                       React.PropTypes.arrayOf(React.PropTypes.string),
@@ -74,6 +72,7 @@ var propTypes = {
                       React.PropTypes.func
                     ]),
 
+    'aria-labelledby': React.PropTypes.string,
 
     messages:      React.PropTypes.shape({
       calendarButton: React.PropTypes.string,
@@ -87,14 +86,22 @@ var DateTimePicker = React.createClass({
   displayName: 'DateTimePicker',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin')
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/AriaDescendantMixin')('valueInput', function(key, id){
+      var { open } = this.props
+        , current = this.ariaActiveDescendant()
+        , calIsActive = open === popups.CALENDAR && key === 'calendar'
+        , timeIsActive = open === popups.TIME && key === 'timelist';
+
+      if (!current || (timeIsActive || calIsActive))
+        return id
+    })
   ],
 
-  propTypes: propTypes,
+  propTypes,
 
   getInitialState() {
     return {
@@ -119,245 +126,284 @@ var DateTimePicker = React.createClass({
       messages: {
         calendarButton: 'Select Date',
         timeButton:     'Select Time'
-      }
+      },
+
+      ariaActiveDescendantKey: 'dropdownlist'
     }
   },
 
-  render: function(){
-    var {
-        className
-      , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , calProps   = _.pick(this.props, Object.keys(compat.type(Calendar).propTypes))
+  render() {
+    let {
+        className, calendar, time, open
+      , tabIndex, value,  editFormat, timeFormat
+      , culture, duration, step, messages, min, max, busy
+      , placeholder, disabled, readOnly, name, dropUp
+      , timeComponent
+      , 'aria-labelledby': ariaLabelledby } = this.props;
 
-      , timeListID = this._id('_time_listbox')
-      , timeOptID  = this._id('_time_option')
-      , dateListID = this._id('_cal')
-      , dropUp = this.props.dropUp
-      , renderPopup = _.isFirstFocusedRender(this) || this.props.open
-      , value = dateOrNull(this.props.value)
-      , owns;
+    let { focused } = this.state;
 
-    if (dateListID && this.props.calendar ) owns = dateListID
-    if (timeListID && this.props.time )     owns += ' ' + timeListID
+    let inputID = instanceId(this, '_input')
+      , timeListID = instanceId(this, '_time_listbox')
+      , dateListID = instanceId(this, '_cal')
+      , owns = '';
+
+    let elementProps = omit(this.props, Object.keys(propTypes))
+      , calProps = pick(this.props, Object.keys(compat.type(Calendar).propTypes))
+
+    let shouldRenderList = isFirstFocusedRender(this) || open
+      , disabledOrReadonly = disabled || readOnly
+      , calendarIsOpen = open === popups.CALENDAR
+      , timeIsOpen = open === popups.TIME;
+
+    if (calendar) owns += dateListID
+    if (time)     owns += ' ' + timeListID
+
+    value = dateOrNull(value)
 
     return (
-      <div {...props}
+      <div {...elementProps}
         ref="element"
         tabIndex={'-1'}
-        onKeyDown={this._maybeHandle(this._keyDown)}
-        onFocus={this._maybeHandle(this._focus.bind(null, true), true)}
-        onBlur ={this._focus.bind(null, false)}
+        onKeyDown={this._keyDown}
+        onFocus={this._focus.bind(null, true)}
+        onBlur={this._focus.bind(null, false)}
         className={cx(className, 'rw-datetimepicker', 'rw-widget', {
-          'rw-state-focus':     this.state.focused,
-          'rw-state-disabled':  this.isDisabled(),
-          'rw-state-readonly':  this.isReadOnly(),
-          'rw-has-both':        this.props.calendar && this.props.time,
-          'rw-has-neither':     !this.props.calendar && !this.props.time,
+          'rw-state-focus':     focused,
+          'rw-state-disabled':  disabled,
+          'rw-state-readonly':  readOnly,
+          'rw-has-both':         calendar && time,
+          'rw-has-neither':     !calendar && !time,
           'rw-rtl':             this.isRtl(),
 
-          ['rw-open' + (dropUp ? '-up' : '')]: this.props.open
-        })}>
-
-        <DateInput ref='valueInput'
-          tabIndex={props.tabIndex}
-          aria-labelledby={this.props['aria-labelledby']}
-          aria-activedescendant={ this.props.open
-            ? this.props.open === popups.CALENDAR ? this._id('_cal_view_selected_item') : timeOptID
-            : undefined }
-          aria-expanded={ !!this.props.open }
-          aria-busy={!!this.props.busy}
-          aria-owns={owns}
+          ['rw-open' + (dropUp ? '-up' : '')]: open
+        })}
+      >
+        <DateInput
+          ref='valueInput'
+          id={inputID}
+          tabIndex={tabIndex || 0}
+          role='combobox'
+          aria-labelledby={ariaLabelledby}
+          aria-expanded={!!open}
+          aria-busy={!!busy}
+          aria-owns={owns.trim()}
           aria-haspopup={true}
-          placeholder={this.props.placeholder}
-          name={this.props.name}
-          disabled={this.isDisabled()}
-          readOnly={this.isReadOnly()}
-          role={ this.props.time ? 'combobox' : null }
+          placeholder={placeholder}
+          name={name}
+          disabled={disabled}
+          readOnly={readOnly}
           value={value}
-
           format={getFormat(this.props)}
-          editFormat={this.props.editFormat}
-
-          editing={this.state.focused}
-          culture={this.props.culture}
+          editFormat={editFormat}
+          editing={focused}
+          culture={culture}
           parse={this._parse}
-          onChange={this._change} />
+          onChange={this._change}
+        />
 
-        { (this.props.calendar || this.props.time) &&
+        { (calendar || time) &&
         <span className='rw-select'>
-          {
-            this.props.calendar &&
-            <Btn tabIndex='-1'
+        {
+          calendar &&
+            <Btn
+              tabIndex='-1'
               className='rw-btn-calendar'
-              disabled={this.isDisabled() || this.isReadOnly()}
-              aria-disabled={this.isDisabled() || this.isReadOnly()}
-              onClick={this._maybeHandle(this._click.bind(null, popups.CALENDAR))}>
-              <i className="rw-i rw-i-calendar"><span className="rw-sr">{ this.props.messages.calendarButton }</span></i>
+              disabled={disabledOrReadonly}
+              aria-disabled={disabledOrReadonly}
+              aria-label={messages.calendarButton}
+              onClick={this._click.bind(null, popups.CALENDAR)}
+            >
+              <i className="rw-i rw-i-calendar"
+                aria-hidden='true'
+              />
             </Btn>
-          }
-          { this.props.time &&
-            <Btn tabIndex='-1'
+        }
+        { time &&
+            <Btn
+              tabIndex='-1'
               className='rw-btn-time'
-              disabled={this.isDisabled() || this.isReadOnly()}
-              aria-disabled={this.isDisabled() || this.isReadOnly()}
-              onClick={this._maybeHandle(this._click.bind(null, popups.TIME))}>
-              <i className="rw-i rw-i-clock-o"><span className="rw-sr">{ this.props.messages.timeButton }</span></i>
+              disabled={disabledOrReadonly}
+              aria-disabled={disabledOrReadonly}
+              aria-label={messages.timeButton}
+              onClick={this._click.bind(null, popups.TIME)}
+            >
+              <i className="rw-i rw-i-clock-o"
+                aria-hidden='true'
+              />
             </Btn>
-          }
+        }
         </span>
         }
-
         <Popup
           dropUp={dropUp}
-          open={ this.props.open === popups.TIME }
+          open={timeIsOpen}
           onRequestClose={this.close}
-          duration={this.props.duration}
-          onOpening={() => this.refs.timePopup.forceUpdate()}>
-
+          duration={duration}
+          onOpening={() => this.refs.timePopup.forceUpdate()}
+        >
           <div>
-            { renderPopup &&
+            { shouldRenderList &&
               <Time ref="timePopup"
                 id={timeListID}
-                optID={timeOptID}
-                aria-hidden={ !this.props.open }
+                ariaActiveDescendantKey='timelist'
+                aria-labelledby={inputID}
+                aria-live={open && 'polite'}
+                aria-hidden={!open}
                 value={value}
-                format={this.props.timeFormat}
-                step={this.props.step}
-                min={this.props.min}
-                max={this.props.max}
-                culture={this.props.culture}
+                format={timeFormat}
+                step={step}
+                min={min}
+                max={max}
+                culture={culture}
                 onMove={this._scrollTo}
-                preserveDate={!!this.props.calendar}
-                itemComponent={this.props.timeComponent}
-                onSelect={this._maybeHandle(this._selectTime)}/>
+                preserveDate={!!calendar}
+                itemComponent={timeComponent}
+                onSelect={this._selectTime}
+              />
             }
           </div>
         </Popup>
         <Popup
           className='rw-calendar-popup'
           dropUp={dropUp}
-          open={ this.props.open === popups.CALENDAR}
-          duration={this.props.duration}
-          onRequestClose={this.close}>
-
-          { renderPopup &&
-            <Calendar {...calProps }
+          open={calendarIsOpen}
+          duration={duration}
+          onRequestClose={this.close}
+        >
+          { shouldRenderList &&
+            <Calendar
+              {...calProps}
               ref="calPopup"
               tabIndex='-1'
               id={dateListID}
               value={value}
-              aria-hidden={ !this.props.open }
-              onChange={this._maybeHandle(this._selectDate)}
+              aria-hidden={!open}
+              aria-live={'polite'}
+              ariaActiveDescendantKey='calendar'
+              onChange={this._selectDate}
               // #75: need to aggressively reclaim focus from the calendar otherwise
               // disabled header/footer buttons will drop focus completely from the widget
-              onNavigate={() => this.focus()}/>
+              onNavigate={() => this.focus()}
+            />
           }
         </Popup>
       </div>
     )
   },
 
-  _change: function(date, str, constrain){
-    var change = this.props.onChange
+  @widgetEditable
+  _change(date, str, constrain){
+    let { onChange, value } = this.props;
 
-    if(constrain)
+    if (constrain)
       date = this.inRangeValue(date)
 
-    if( change ) {
-      if( date == null || this.props.value == null){
-        if( date != this.props.value ) //eslint-disable-line eqeqeq
-          change(date, str)
+    if (onChange) {
+      if (date == null || value == null) {
+        if (date != value) //eslint-disable-line eqeqeq
+          onChange(date, str)
       }
-      else if (!dates.eq(date, this.props.value))
-        change(date, str)
+      else if (!dates.eq(date, value))
+        onChange(date, str)
     }
   },
 
-  _keyDown: function(e){
+  @widgetEditable
+  _keyDown(e){
+    let { open, calendar, time } = this.props;
 
-    if ( e.key === 'Escape' && this.props.open )
+    if (e.key === 'Escape' && open)
       this.close()
 
     else if ( e.altKey ) {
       e.preventDefault()
 
-      if ( e.key === 'ArrowDown')
-        this.open(this.props.open === popups.CALENDAR
-              ? popups.TIME
-              : popups.CALENDAR)
-      else if ( e.key === 'ArrowUp')
+      if (e.key === 'ArrowDown'){
+        if (calendar && time)
+          this.open(open === popups.CALENDAR
+                ? popups.TIME
+                : popups.CALENDAR)
+        else if (time)     this.open(popups.TIME)
+        else if (calendar) this.open(popups.CALENDAR)
+      }
+      else if (e.key === 'ArrowUp')
         this.close()
-
-    } else if (this.props.open ) {
-      if( this.props.open === popups.CALENDAR )
+    }
+    else if (open) {
+      if (open === popups.CALENDAR )
         this.refs.calPopup._keyDown(e)
-      if( this.props.open === popups.TIME )
+      if (open === popups.TIME )
         this.refs.timePopup._keyDown(e)
     }
 
-    this.notify('onKeyDown', [e])
+    notify(this.props.onKeyDown, [e])
   },
 
-  _focus: function(focused, e){
+  @widgetEnabled
+  _focus(focused, e){
 
     this.setTimeout('focus', () => {
-      if(!focused) this.close()
+      if (!focused) this.close()
 
-      if( focused !== this.state.focused){
-        this.notify(focused ? 'onFocus' : 'onBlur', e)
+      if (focused !== this.state.focused){
+        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
         this.setState({ focused })
       }
     })
   },
 
   focus(){
-    if ( activeElement() !== compat.findDOMNode(this.refs.valueInput))
+    if (activeElement() !== compat.findDOMNode(this.refs.valueInput))
       this.refs.valueInput.focus()
   },
 
+  @widgetEditable
   _selectDate(date){
     var format   = getFormat(this.props)
       , dateTime = dates.merge(date, this.props.value)
-      , dateStr  = formatDate(date, format, this.props.culture)
+      , dateStr  = formatDate(date, format, this.props.culture);
 
     this.close()
-    this.notify('onSelect', [dateTime, dateStr])
+    notify(this.props.onSelect, [dateTime, dateStr])
     this._change(dateTime, dateStr, true)
     this.focus()
   },
 
+  @widgetEditable
   _selectTime(datum){
     var format   = getFormat(this.props)
       , dateTime = dates.merge(this.props.value, datum.date)
-      , dateStr  = formatDate(datum.date, format, this.props.culture)
+      , dateStr  = formatDate(datum.date, format, this.props.culture);
 
     this.close()
-    this.notify('onSelect', [dateTime, dateStr])
+    notify(this.props.onSelect, [dateTime, dateStr])
     this._change(dateTime, dateStr, true)
     this.focus()
   },
 
-  _click: function(view, e){
+  @widgetEditable
+  _click(view, e){
     this.focus()
     this.toggle(view, e)
   },
 
-  _parse: function(string){
+  _parse(string){
     var format = getFormat(this.props, true)
       , editFormat = this.props.editFormat
       , parse = this.props.parse
       , formats = [];
 
-    if ( typeof parse === 'function' )
+    if (typeof parse === 'function')
       return parse(string, this.props.culture)
 
-    if ( typeof format === 'string')
+    if (typeof format === 'string')
       formats.push(format)
 
-    if ( typeof editFormat === 'string')
+    if (typeof editFormat === 'string')
       formats.push(editFormat)
 
-    if ( parse )
+    if (parse)
       formats = formats.concat(this.props.parse)
 
     invariant(formats.length,
@@ -368,8 +414,7 @@ var DateTimePicker = React.createClass({
     return formatsParser(formats, this.props.culture, string);
   },
 
-  toggle: function(view) {
-
+  toggle(view) {
     this.props.open
       ? this.props.open !== view
           ? this.open(view)
@@ -377,18 +422,18 @@ var DateTimePicker = React.createClass({
       : this.open(view)
   },
 
-  open: function(view){
-    if ( this.props.open !== view && this.props[view] === true )
-      this.notify('onToggle', view)
+  open(view){
+    if (this.props.open !== view && this.props[view] === true)
+      notify(this.props.onToggle, view)
   },
 
-  close: function(){
-    if ( this.props.open )
-      this.notify('onToggle', false)
+  close(){
+    if (this.props.open)
+      notify(this.props.onToggle, false)
   },
 
-  inRangeValue: function(value){
-    if( value == null) return value
+  inRangeValue(value){
+    if (value == null) return value
 
     return dates.max(
         dates.min(value, this.props.max)
@@ -398,11 +443,15 @@ var DateTimePicker = React.createClass({
 });
 
 
-module.exports = createUncontrolledWidget(
+let UncontrolledDateTimePicker = createUncontrolledWidget(
     DateTimePicker
   , { open: 'onToggle', value: 'onChange' });
 
-module.exports.BaseDateTimePicker = DateTimePicker
+UncontrolledDateTimePicker.BaseDateTimePicker = DateTimePicker
+
+export default UncontrolledDateTimePicker;
+
+
 
 function getFormat(props){
   var cal  = props[popups.CALENDAR] != null ? props.calendar : true
@@ -438,4 +487,3 @@ function dateOrNull(dt){
   if (dt && !isNaN(dt.getTime())) return dt
   return null
 }
-

@@ -1,165 +1,174 @@
-'use strict';
-var React = require('react')
-  , _     = require('./util/_')
-  , cx    = require('classnames')
-  , Btn   = require('./WidgetButton')
-  , CustomPropTypes = require('./util/propTypes');
+import React from 'react';
+import _  from './util/_';
+import cx from 'classnames';
+import CustomPropTypes from './util/propTypes';
+import { instanceId } from './util/widgetHelpers';
+import { dataText } from './util/dataHelpers';
 
-module.exports = React.createClass({
-  
+import {
+    move, contains
+  , isDisabled, isReadOnly
+  , isDisabledItem, isReadOnlyItem } from './util/interaction';
+
+let optionId = (id, idx)=> `${id}__option__${idx}`;
+
+export default React.createClass({
+
   displayName: 'MultiselectTagList',
 
   mixins: [
-    require('./mixins/DataHelpersMixin'),
-    require('./mixins/PureRenderMixin')
+    require('./mixins/PureRenderMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes: {
     value:          React.PropTypes.array,
+    focused:        React.PropTypes.number,
 
     valueField:     React.PropTypes.string,
     textField:      CustomPropTypes.accessor,
 
     valueComponent: React.PropTypes.func,
 
-    disabled:       React.PropTypes.oneOfType([
-                      React.PropTypes.bool,
-                      React.PropTypes.array,
-                      React.PropTypes.oneOf(['disabled'])
-                    ]),
-
-    readOnly:       React.PropTypes.oneOfType([
-                      React.PropTypes.bool,
-                      React.PropTypes.array,
-                      React.PropTypes.oneOf(['readonly'])
-                    ])
+    disabled:       CustomPropTypes.disabled.acceptsArray,
+    readOnly:       CustomPropTypes.readOnly.acceptsArray
   },
 
-
-  getInitialState: function(){
+  getDefaultProps(){
     return {
-      focused: null
+      ariaActiveDescendantKey: 'taglist'
     }
   },
 
-  render: function(){
-      var ValueComponent = this.props.valueComponent
-        , props     = _.omit(this.props, ['value', 'disabled', 'readOnly'])
-        , focusIdx  = this.state.focused
-        , value     = this.props.value;
+  componentDidUpdate(){
+    let { focused } = this.props
+      , activeId = optionId(instanceId(this), focused)
+
+    this.ariaActiveDescendant(
+      (focused == null || isDisabledItem(focused, this.props)) ? null : activeId)
+  },
+
+  render() {
+      var props = _.omit(this.props, ['value', 'disabled', 'readOnly'])
+        , {
+          focused, value, textField
+        , valueComponent: ValueComponent }  = this.props;
+
+      var id = instanceId(this);
 
       return (
-        <ul {...props} 
-          className='rw-multiselect-taglist'>
+        <ul {...props}
+          role='listbox'
+          tabIndex='-1'
+          className='rw-multiselect-taglist'
+        >
           { value.map( (item, i) => {
-            var disabled = this.isDisabled(item)
-              , readonly = this.isReadOnly(item);
+            var isDisabled = isDisabledItem(item, this.props)
+              , isReadonly = isReadOnlyItem(item, this.props)
+              , isFocused  = !isDisabled && focused === i
+              , currentID  = optionId(id, i);
 
             return (
-              <li key={i}
-                  className={cx({
-                    'rw-state-focus': !disabled && focusIdx === i,
-                    'rw-state-disabled': disabled,
-                    'rw-state-readonly': readonly})
-                  }>
+              <li
+                key={i}
+                id={currentID}
+                tabIndex='-1'
+                role='option'
+                className={cx({
+                  'rw-state-focus':    isFocused,
+                  'rw-state-disabled': isDisabled,
+                  'rw-state-readonly': isReadonly
+                })}
+              >
                 { ValueComponent
-                    ? <ValueComponent item={item }/>
-                    : this._dataText(item)
+                  ? <ValueComponent item={item }/>
+                  : dataText(item, textField)
                 }
-                <Btn tabIndex='-1' onClick={!(disabled || readonly) && this._delete.bind(null, item)}
-                  aria-disabled={disabled}
-                  disabled={disabled}>
-                  &times;<span className="rw-sr">{ "Remove " + this._dataText(item) }</span>
-                </Btn>
+                <span
+                  tabIndex='-1'
+                  onClick={!(isDisabled || isReadonly) && this._delete.bind(null, item)}
+                  aria-disabled={isDisabled}
+                  aria-label='Unselect'
+                  disabled={isDisabled}
+                >
+                  <span className='rw-tag-btn' aria-hidden="true">&times;</span>
+                </span>
               </li>)
           })}
         </ul>
       )
   },
 
-  _delete: function(val, e){
+  _delete(val){
     this.props.onDelete(val)
   },
 
-  removeCurrent: function(){
-    var val = this.props.value[this.state.focused];
+  remove(idx){
+    var val = this.props.value[idx];
 
-    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
+    if (val && !(isDisabledItem(val, this.props)  || isReadOnlyItem(val, this.props)) )
       this.props.onDelete(val)
   },
 
-  isDisabled: function(val, isIdx) {
-    if(isIdx) val = this.props.value[val]
-
-    return this.props.disabled === true || this._dataIndexOf(this.props.disabled || [], val) !== -1
-  },
-
-  isReadOnly: function(val, isIdx) {
-    if(isIdx) val = this.props.value[val]
-
-    return this.props.readOnly === true || this._dataIndexOf(this.props.readOnly || [], val) !== -1
-  },
-
-  removeNext: function(){
+  removeNext(){
     var val = this.props.value[this.props.value.length - 1];
 
-    if ( val && !(this.isDisabled(val)  || this.isReadOnly(val) ))
+    if (val && !(isDisabledItem(val, this.props) || isReadOnlyItem(val, this.props)))
       this.props.onDelete(val)
   },
 
-  clear: function(){
+
+  clear(){
     this.setState({ focused: null })
   },
 
-  first: function(){
+  first(){
     var idx = 0
-      , l = this.props.value.length;
+      , value = this.props.value
+      , l = value.length;
 
-    while( idx < l && this.isDisabled(idx, true) )
+    while( idx < l && isDisabledItem(value[idx], this.props) )
       idx++
 
-    if (idx !== l)
-      this.setState({ focused: idx })
+    return idx !== l ? idx : null
   },
 
-  last: function(){
-    var idx = this.props.value.length - 1;
+  last(){
+    var value = this.props.value
+      , idx = value.length - 1;
 
-    while( idx > -1 && this.isDisabled(idx, true) )
+    while (idx > -1 && isDisabledItem(value[idx], this.props))
       idx--
 
-    if (idx >= 0)
-      this.setState({ focused: idx })
+    return idx >= 0 ? idx : null
   },
 
-  next: function(){
-    var nextIdx = this.state.focused + 1
-      , l = this.props.value.length;
+  next(current) {
+    var nextIdx = current + 1
+      , value = this.props.value
+      , l = value.length;
 
-    while( nextIdx < l && this.isDisabled(nextIdx, true) )
+    while (nextIdx < l && isDisabledItem(nextIdx, this.props))
       nextIdx++
 
-    if ( this.state.focused === null )
-      return
+    if (current === null || nextIdx >= l)
+      return null;
 
-    if ( nextIdx >= l )
-      return this.clear();
-
-    this.setState({ focused: nextIdx })
+    return nextIdx
   },
 
-  prev: function(){
-    var nextIdx = this.state.focused;
+  prev(current){
+    var nextIdx = current
+      , value = this.props.value;
 
-    if ( nextIdx === null )
-      nextIdx = this.props.value.length
+    if ( nextIdx === null || nextIdx === 0 )
+      nextIdx = value.length
 
     nextIdx--;
 
-    while( nextIdx > -1 && this.isDisabled(nextIdx, true) )
+    while (nextIdx > -1 && isDisabledItem(value[nextIdx], this.props))
       nextIdx--
 
-    if ( nextIdx >= 0 )
-      this.setState({ focused: nextIdx  })
+    return nextIdx >= 0 ? nextIdx : null;
   }
 })

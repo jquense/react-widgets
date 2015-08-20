@@ -1,33 +1,37 @@
-'use strict';
-var React   = require('react')
-  , CustomPropTypes  = require('./util/propTypes')
-  , compat = require('./util/compat')
-  , cx = require('classnames')
-  , _  = require('./util/_');
+import React   from 'react';
+import ListOption from './ListOption';
+import CustomPropTypes from './util/propTypes';
+import compat from './util/compat';
+import cn from 'classnames';
+import _  from './util/_';
+import { dataText, dataValue } from './util/dataHelpers';
+import { instanceId, notify } from './util/widgetHelpers';
 
+let optionId = (id, idx)=> `${id}__option__${idx}`;
 
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'List',
 
   mixins: [
-    require('./mixins/WidgetMixin'),
-    require('./mixins/DataHelpersMixin'),
-    require('./mixins/ListMovementMixin')
+    require('./mixins/ListMovementMixin'),
+    require('./mixins/AriaDescendantMixin')()
   ],
 
   propTypes: {
     data:          React.PropTypes.array,
     onSelect:      React.PropTypes.func,
     onMove:        React.PropTypes.func,
-    itemComponent: CustomPropTypes.elementType,
+
+    optionComponent: CustomPropTypes.elementType,
+    itemComponent:   CustomPropTypes.elementType,
 
     selectedIndex: React.PropTypes.number,
     focusedIndex:  React.PropTypes.number,
     valueField:    React.PropTypes.string,
     textField:     CustomPropTypes.accessor,
 
-    optID:         React.PropTypes.string,
+    optionID:      React.PropTypes.func,
 
     messages:      React.PropTypes.shape({
       emptyList:   CustomPropTypes.message
@@ -35,66 +39,82 @@ module.exports = React.createClass({
   },
 
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
-      optID:         '',
-      onSelect:      ()=>{},
-      data:          [],
+      optID:  '',
+      onSelect: ()=>{},
+      optionComponent: ListOption,
+      ariaActiveDescendantKey: 'list',
+      data: [],
       messages: {
         emptyList:   'There are no items in this list'
       }
     }
   },
 
-  getInitialState(){
-    return {}
-  },
-
-
   componentDidMount(){
     this.move()
   },
 
   componentDidUpdate(){
+    let { data, focused } = this.props
+      , idx = data.indexOf(focused)
+      , activeId = optionId(instanceId(this), idx)
+
+    this.ariaActiveDescendant(idx !== -1 ? activeId : null)
+
     this.move()
   },
 
   render(){
-    var { className, ...props } = _.omit(this.props, ['data'])
-      , ItemComponent = this.props.itemComponent
+    var {
+        className, role, data, textField, valueField
+      , focused, selected, messages, onSelect
+      , itemComponent: ItemComponent
+      , optionComponent: Option
+      , optionID
+      , ...props  } = this.props
+      , id = instanceId(this)
       , items;
 
-    items = !this.props.data.length
-      ? <li className='rw-list-empty'>{ _.result(this.props.messages.emptyList, this.props) }</li>
-      : this.props.data.map((item, idx) =>{
-          var focused  = item === this.props.focused
-            , selected = item === this.props.selected;
+    items = !data.length
+      ? (
+        <li className='rw-list-empty'>
+          {_.result(messages.emptyList, this.props)}
+        </li>
+      ) : data.map((item, idx) => {
+          var currentId = optionId(id, idx);
 
-          return (<li
-            tabIndex='-1'
-            key={'item_' + idx}
-            role='option'
-            id={ focused ? this.props.optID : undefined }
-            aria-selected={selected}
-            className={cx({
-              'rw-list-option':    true,
-              'rw-state-focus':    focused,
-              'rw-state-selected': selected
-            })}
-            onClick={this.props.onSelect.bind(null, item)}>
-            { ItemComponent
-                ? <ItemComponent item={item} value={this._dataValue(item)} text={this._dataText(item)}/>
-                : this._dataText(item)
-            }
-          </li>)
+          return (
+            <Option
+              key={'item_' + idx}
+              id={currentId}
+              dataItem={item}
+              focused={focused === item}z
+              selected={selected === item}
+              onClick={onSelect.bind(null, item)}
+            >
+              { ItemComponent
+                ? <ItemComponent
+                    item={item}
+                    value={dataValue(item, valueField)}
+                    text={dataText(item, textField)}
+                  />
+                : dataText(item, textField)
+              }
+            </Option>
+          )
         });
 
     return (
-      <ul { ...props }
-        className={ (className || '') + ' rw-list' }
-        ref='scrollable'
-        role='listbox'>
-          { items }
+      <ul
+        id={id}
+        tabIndex='-1'
+        className={cn(className, 'rw-list')}
+        role={role === undefined ? 'listbox' : role}
+        { ...props }
+      >
+        { items }
       </ul>
     )
   },
@@ -110,7 +130,7 @@ module.exports = React.createClass({
 
     if( !selected ) return
 
-    this.notify('onMove', [ selected, list, this.props.focused ])
+    notify(this.props.onMove, [ selected, list, this.props.focused ])
   }
 
 })

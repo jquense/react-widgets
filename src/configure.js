@@ -1,9 +1,9 @@
 var warning = require('react/lib/warning')
   , configuration = require('./util/configuration')
-  , { 
+  , {
     NumberLocalizer
   , DateLocalizer } = require('./util/localizers')
-  , { 
+  , {
     globalizeNumberLocalizer
   , globalizeDateLocalizer } = require('./globalize-localizers')
 

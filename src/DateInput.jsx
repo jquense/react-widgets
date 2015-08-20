@@ -1,7 +1,6 @@
 'use strict';
 var React = require('react')
   , cx = require('classnames')
-  , dates = require('./util/dates')
   , compat = require('./util/compat')
   , localizers = require('./util/configuration').locale
   , CustomPropTypes = require('./util/propTypes');
@@ -19,7 +18,7 @@ module.exports = React.createClass({
 
     value:        React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
-    culture:      React.PropTypes.string,
+    culture:      React.PropTypes.string
   },
 
   getDefaultProps: function(){
@@ -31,8 +30,8 @@ module.exports = React.createClass({
   componentWillReceiveProps: function(nextProps) {
      var text = formatDate(
             nextProps.value
-          , nextProps.editing && nextProps.editFormat 
-              ? nextProps.editFormat 
+          , nextProps.editing && nextProps.editFormat
+              ? nextProps.editFormat
               : nextProps.format
           , nextProps.culture)
 
@@ -46,8 +45,8 @@ module.exports = React.createClass({
   getInitialState: function(){
     var text = formatDate(
             this.props.value
-          , this.props.editing && this.props.editFormat 
-              ? this.props.editFormat 
+          , this.props.editing && this.props.editFormat
+              ? this.props.editFormat
               : this.props.format
           , this.props.culture)
 
@@ -62,16 +61,16 @@ module.exports = React.createClass({
     var value = this.state.textValue
 
     return (
-      <input 
+      <input
         {...this.props}
-        type='text' 
-        className={cx({'rw-input': true })} 
-        value={value} 
+        type='text'
+        className={cx({'rw-input': true })}
+        value={value}
         aria-disabled={this.props.disabled}
         aria-readonly={this.props.readOnly}
         disabled={this.props.disabled}
         readOnly={this.props.readOnly}
-        onChange={this._change} 
+        onChange={this._change}
         onBlur={chain(this.props.blur, this._blur, this)} />
     )
   },
@@ -82,12 +81,15 @@ module.exports = React.createClass({
   },
 
   _blur: function(e){
-    var val = e.target.value;
+    var val = e.target.value
+      , date;
 
     if ( this._needsFlush ){
-      this._needsFlush = false
+      this._needsFlush = false;
+      date = this.props.parse(val)
+
       this.props.onChange(
-        this.props.parse(val), val);
+        date, formatDate(date, this.props.format, this.props.culture));
     }
   },
 
@@ -110,7 +112,7 @@ function formatDate(date, format, culture){
   return val;
 }
 
-function chain(a,b, thisArg){
+function chain(a, b, thisArg){
   return function(){
     a && a.apply(thisArg, arguments)
     b && b.apply(thisArg, arguments)

@@ -4,7 +4,7 @@
 module.exports = function caret(el, start, end ){
   if ( start === undefined)
     return get(el)
-  
+
   set(el, start, end)
 }
 
@@ -29,14 +29,14 @@ function get(el){
     }
     catch(e) { /* not focused or not visible */ }
   }
-  
+
   return { start, end }
 }
 
 function set(el, start, end){
   var rangeEl;
 
-  
+
   try {
     if( el.selectionStart !== undefined){
       el.focus()
