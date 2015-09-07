@@ -293,7 +293,7 @@ var DateTimePicker = React.createClass({
   },
 
   @widgetEditable
-  _change(date, str, constrain){
+  _change(date, str, constrain, source){
     let { onChange, value } = this.props;
 
     if (constrain)
@@ -302,10 +302,10 @@ var DateTimePicker = React.createClass({
     if (onChange) {
       if (date == null || value == null) {
         if (date != value) //eslint-disable-line eqeqeq
-          onChange(date, str)
+          onChange(date, str, source)
       }
       else if (!dates.eq(date, value))
-        onChange(date, str)
+        onChange(date, str, source)
     }
   },
 
@@ -366,7 +366,7 @@ var DateTimePicker = React.createClass({
 
     this.close()
     notify(this.props.onSelect, [dateTime, dateStr])
-    this._change(dateTime, dateStr, true)
+    this._change(dateTime, dateStr, true, popups.CALENDAR)
     this.focus()
   },
 
@@ -378,7 +378,7 @@ var DateTimePicker = React.createClass({
 
     this.close()
     notify(this.props.onSelect, [dateTime, dateStr])
-    this._change(dateTime, dateStr, true)
+    this._change(dateTime, dateStr, tru, popups.TIME)
     this.focus()
   },
 
