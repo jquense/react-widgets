@@ -378,7 +378,7 @@ var DateTimePicker = React.createClass({
 
     this.close()
     notify(this.props.onSelect, [dateTime, dateStr])
-    this._change(dateTime, dateStr, tru, popups.TIME)
+    this._change(dateTime, dateStr, true, popups.TIME)
     this.focus()
   },
 
