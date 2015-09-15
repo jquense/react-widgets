@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.3",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
   "author": {
@@ -46,7 +46,6 @@
     "build": "npm run build:lib && npm run build:dist & npm run build:docs",
     "docs": "npm run clean:docs && webpack-dev-server --config ./build/docs.config.js --hot",
     "dev": "webpack-dev-server --config ./build/dev.config.js --hot",
-
     "major": "release major",
     "minor": "release minor",
     "patch": "release patch",
