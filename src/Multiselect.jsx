@@ -57,6 +57,7 @@ var propTypes = {
 
       placeholder:     React.PropTypes.string,
 
+      autoFocus:      React.PropTypes.bool,
       disabled:       CustomPropTypes.disabled.acceptsArray,
 
       readOnly:       CustomPropTypes.readOnly.acceptsArray,
@@ -118,7 +119,8 @@ var Multiselect = React.createClass({
   getInitialState(){
     var { data, value, valueField, searchTerm } = this.props
       , dataItems = splat(value).map( item => dataItem(data, item, valueField))
-      , data = this.process(data, dataItems, searchTerm)
+
+    data = this.process(data, dataItems, searchTerm)
 
     return {
       focusedTag:    null,
@@ -215,7 +217,7 @@ var Multiselect = React.createClass({
           ref='status'
           id={instanceId(this, '__notify')}
           role="status"
-          className='sr-only'
+          className='rw-sr'
           aria-live='assertive'
           aria-atomic="true"
           aria-relevant="additions removals text"
@@ -248,6 +250,7 @@ var Multiselect = React.createClass({
             role='listbox'
             aria-expanded={open}
             aria-busy={!!busy}
+            autoFocus={this.props.autoFocus}
             aria-owns={listID
               + ' ' + instanceId(this, '__notify')
               + (shouldRenderTags ? (' ' + tagsID) : '')
