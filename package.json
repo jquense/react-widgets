@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "2.8.0",
+  "version": "3.0.0-alpha.2",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
   "author": {
@@ -27,32 +27,31 @@
   ],
   "scripts": {
     "test": "npm run lint && mocha -R spec ./test/server.js && node _test-versions.js",
-
     "test:all": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run=true",
-
     "tdd": "karma start",
+    "lint": "eslint src --ext .jsx --ext .js",
     "less": "lessc -x src/less/react-widgets.less dist/css/react-widgets.css",
-
     "assets:lib": "cpy src/img/* lib/img/ && cpy src/fonts/* lib/fonts/ && cpy src/less/* lib/less/",
     "assets:docs": "cpy node_modules/babel-core/browser.min.js docs/vendor",
     "assets:dist": "cpy src/img/* dist/img/ && cpy src/fonts/* dist/fonts/",
-
     "clean:lib": "rimraf ./lib/*",
     "clean:dist": "rimraf ./dist/*",
     "clean:docs": "rimraf ./docs/public/*",
-
     "compile:lib": "node build/babel src --out-dir lib",
     "compile:docs": "webpack --config build/docs.config.js --production",
     "compile:dist": "webpack --config build/browser.config.js",
-
     "build:lib": "npm run clean:lib && npm run compile:lib && npm run assets:lib",
     "build:docs": "npm run clean:docs && npm run compile:docs && npm run assets:docs",
     "build:dist": "npm run clean:dist && npm run compile:dist && npm run less && npm run assets:dist",
-
     "build": "build:lib && build:dist & build:docs",
-
     "docs": "npm run clean:docs && webpack-dev-server --config ./build/docs.config.js --hot",
-    "dev": "webpack-dev-server --config ./build/dev.config.js --hot"
+    "dev": "webpack-dev-server --config ./build/dev.config.js --hot",
+
+    "major": "release major",
+    "minor": "release minor",
+    "patch": "release patch",
+    "alpha": "release --preid beta",
+    "beta": "release --preid beta"
   },
   "homepage": "http://jquense.github.io/react-widgets/docs/",
   "license": "MIT",
@@ -87,7 +86,6 @@
     "file-loader": "^0.8.1",
     "glob": "^5.0.14",
     "imports-loader": "^0.6.3",
-    "jq-release": "*",
     "json-loader": "^0.5.2",
     "karma": "~0.13.3",
     "karma-chrome-launcher": "^0.2.0",
@@ -104,6 +102,7 @@
     "marked": "^0.3.5",
     "merge-stream": "^0.1.8",
     "mocha": "^2.2.5",
+    "mt-changelog": "^0.6.2",
     "multiline": "^1.0.2",
     "node-libs-browser": "^0.5.2",
     "output-file-sync": "^1.1.1",
@@ -114,6 +113,7 @@
     "react-dom": "^0.14.0-beta3",
     "react-router": "^1.0.0-beta3",
     "react-widgets-globalize-localizer": "file:../react-widgets-globalize-localizer",
+    "release-script": "^0.2.7",
     "rimraf": "^2.4.2",
     "scriptjs": "^2.5.7",
     "style-loader": "^0.12.3",
