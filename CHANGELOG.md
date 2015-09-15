@@ -1,0 +1,8 @@
+v3.0.0-alpha.3 - Tue, 15 Sep 2015 10:27:55 GMT
+----------------------------------------------
+
+- [e74a2ed](../../commit/e74a2ed) [changed] globalize localizer now a function that takes a globalize instance
+- [180bc31](../../commit/180bc31) [added] autoFocus support
+
+
+
