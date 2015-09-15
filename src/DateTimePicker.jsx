@@ -63,6 +63,7 @@ let propTypes = {
     initialView:    React.PropTypes.oneOf(viewEnum),
     finalView:      React.PropTypes.oneOf(viewEnum),
 
+    autoFocus:      React.PropTypes.bool,
     disabled:       CustomPropTypes.disabled,
     readOnly:       CustomPropTypes.readOnly,
     autoFocus:      React.PropTypes.bool,
@@ -186,6 +187,7 @@ var DateTimePicker = React.createClass({
           autoFocus={autoFocus}
           tabIndex={tabIndex || 0}
           role='combobox'
+          autoFocus={this.props.autoFocus}
           aria-labelledby={ariaLabelledby}
           aria-expanded={!!open}
           aria-busy={!!busy}

@@ -39,6 +39,7 @@ let propTypes = {
 
       parse:          React.PropTypes.func,
 
+      autoFocus:      React.PropTypes.bool,
       disabled:       CustomPropTypes.disabled,
       readOnly:       CustomPropTypes.readOnly,
       autoFocus:      React.PropTypes.bool,
@@ -153,6 +154,7 @@ let NumberPicker = React.createClass({
           name={this.props.name}
           role='spinbutton'
           min={this.props.min}
+          autoFocus={this.props.autoFocus}
           aria-valuenow={val}
           aria-valuemin={isFinite(this.props.min) ? this.props.min : null }
           aria-valuemax={isFinite(this.props.max) ? this.props.max : null }
