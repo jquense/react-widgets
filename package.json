@@ -26,7 +26,7 @@
     "react-component"
   ],
   "scripts": {
-    "test": "npm run lint && mocha -R spec ./test/server.js && node _test-versions.js",
+    "test": "npm run lint && npm run test:all",
     "test:all": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run=true",
     "tdd": "karma start",
     "lint": "eslint src --ext .jsx --ext .js",
@@ -43,14 +43,14 @@
     "build:lib": "npm run clean:lib && npm run compile:lib && npm run assets:lib",
     "build:docs": "npm run clean:docs && npm run compile:docs && npm run assets:docs",
     "build:dist": "npm run clean:dist && npm run compile:dist && npm run less && npm run assets:dist",
-    "build": "build:lib && build:dist & build:docs",
+    "build": "npm run build:lib && npm run build:dist & npm run build:docs",
     "docs": "npm run clean:docs && webpack-dev-server --config ./build/docs.config.js --hot",
     "dev": "webpack-dev-server --config ./build/dev.config.js --hot",
 
     "major": "release major",
     "minor": "release minor",
     "patch": "release patch",
-    "alpha": "release --preid beta",
+    "alpha": "release --preid alpha",
     "beta": "release --preid beta"
   },
   "homepage": "http://jquense.github.io/react-widgets/docs/",
@@ -112,7 +112,6 @@
     "react-bootstrap": "0.24.5-react-pre.0",
     "react-dom": "^0.14.0-beta3",
     "react-router": "^1.0.0-beta3",
-    "react-widgets-globalize-localizer": "file:../react-widgets-globalize-localizer",
     "release-script": "^0.2.7",
     "rimraf": "^2.4.2",
     "scriptjs": "^2.5.7",
