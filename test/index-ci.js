@@ -1,17 +1,19 @@
 'use strict';
-var server = require('karma').server
+var Server = require('karma').Server
   , webpack = require('webpack')
-  , webpackConfig = require('./webpack.configs').test;
+  , webpackConfig = require('../build/test.config');
 
 var plugins = webpackConfig.plugins || [];
 
 webpackConfig.externals = {
-  'react':  'window.React',
-  'react/addons':  'window.React'
+  'react': 'window.React',
+  'react-dom': 'window.React',
+  'react/addons': 'window.React',
+  'react-dom/server': 'window.React'
 }
 
 
-var SUPPORTED_VERSIONS = ["0.12.2", "0.13.0"];
+var SUPPORTED_VERSIONS = ['0.14.0-rc'];
 
 
 series(SUPPORTED_VERSIONS, function(version, idx, next){
@@ -19,23 +21,22 @@ series(SUPPORTED_VERSIONS, function(version, idx, next){
   console.log('------- Testing React version: ' + version );
   console.log('-------------------------------------------');
 
-  server.start(
-      config(version)
-    , function(exitCode) {
-        if ( exitCode )
-          process.exit(exitCode)
+  var server = new Server(config(version), function(exitCode) {
+    if ( exitCode )
+      process.exit(exitCode)
 
-        next();
-      });
-}, function(){
-  process.exit(0)
+    next();
+  });
+
+
+  server.start();
 })
 
 function config(version){
 
   webpackConfig.plugins = plugins.concat(
     new webpack.DefinePlugin({
-      '__REACT_VERSION__': JSON.stringify(version),
+      '__REACT_VERSION__': JSON.stringify(version)
     })
   )
 
@@ -50,7 +51,7 @@ function config(version){
       'https://cdnjs.cloudflare.com/ajax/libs/react/' + version + '/react-with-addons.js',
       './vendor/sinon-1.10.3.js',
       './vendor/jquery-1.11.2.min.js',
-      '_test-bootstrap.js'
+      './test/index.js'
     ],
 
     reporters: ['mocha'],
@@ -65,7 +66,7 @@ function config(version){
     browsers: ['PhantomJS'],
 
     preprocessors: {
-      '_test-bootstrap.js': ['webpack']
+      'test/index.js': ['webpack']
     },
 
     webpack: webpackConfig,

@@ -279,7 +279,7 @@ var Multiselect = React.createClass({
           <div>
           { shouldRenderPopup && [
               <List ref="list"
-                key='0'
+                key={0}
                 {...listProps}
                 readOnly={!!readOnly}
                 disabled={!!disabled}
@@ -299,7 +299,7 @@ var Multiselect = React.createClass({
                 }}
               />,
               shouldShowCreate &&
-                <ul role='listbox' id={createID} className="rw-list rw-multiselect-create-tag" key='1'>
+                <ul key={1} role='listbox' id={createID} className="rw-list rw-multiselect-create-tag">
                   <li onClick={this._onCreate.bind(null, searchTerm)}
                       role='option'
                       id={createOptionID}
