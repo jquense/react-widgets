@@ -1,13 +1,12 @@
-var { NumberLocalizer, DateLocalizer } = require('./util/localizers')
-var dates = require('date-arithmetic')
+import dates from './util/dates';
 
-function globalizeDateLocalizer(globalize){
+export default function globalizeLocalizers(globalize) {
   const shortNames = Object.create(null);
 
   function getCulture(culture){
     return culture
-        ? (localizer.globalize || globalize).findClosestCulture(culture)
-        : (localizer.globalize || globalize).culture()
+        ? globalize.findClosestCulture(culture)
+        : globalize.culture()
   }
 
   function firstOfWeek(culture) {
@@ -29,7 +28,7 @@ function globalizeDateLocalizer(globalize){
     return names[dayOfTheWeek];
   }
 
-  var localizer = new DateLocalizer({
+  var date = {
 
     formats: {
       date: 'd',
@@ -52,40 +51,26 @@ function globalizeDateLocalizer(globalize){
     firstOfWeek,
 
     parse(value, format, culture){
-      return (this.globalize || globalize).parseDate(value, format, culture)
+      return globalize.parseDate(value, format, culture)
     },
 
     format(value, format, culture){
-      return (this.globalize || globalize).format(value, format, culture)
+      return globalize.format(value, format, culture)
     }
-  })
-
-  // Back-compat cruft, expose the globalize instance so setGlobalizeInstance can mutate it after initialization
-  // this works b/c there is no need to change the default prop values
-  localizer.globalize = globalize
-  return localizer
-}
-
-function globalizeNumberLocalizer(globalize) {
-
-  function getCulture(culture){
-    return culture
-        ? (localizer.globalize || globalize).findClosestCulture(culture)
-        : (localizer.globalize || globalize).culture()
   }
 
-  var localizer = new NumberLocalizer({
+  var number = {
 
     formats: {
       default: 'D'
     },
 
     parse(value, culture){
-      return (this.globalize || globalize).parseFloat(value, 10, culture)
+      return globalize.parseFloat(value, 10, culture)
     },
 
     format(value, format, culture){
-      return (this.globalize || globalize).format(value, format, culture)
+      return globalize.format(value, format, culture)
     },
 
     precision(format, _culture){
@@ -104,13 +89,7 @@ function globalizeNumberLocalizer(globalize) {
 
       return null
     }
-  })
+  }
 
-  // see point above
-  localizer.globalize = globalize
-  return localizer
-}
-
-module.exports = {
-  globalizeNumberLocalizer, globalizeDateLocalizer
+  return { date, number}
 }
