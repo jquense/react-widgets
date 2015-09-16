@@ -49,8 +49,8 @@
     "major": "release major",
     "minor": "release minor",
     "patch": "release patch",
-    "alpha": "release --preid alpha",
-    "beta": "release --preid beta"
+    "alpha": "release --preid alpha --tag next",
+    "beta": "release --preid beta --tag next"
   },
   "homepage": "http://jquense.github.io/react-widgets/docs/",
   "license": "MIT",
@@ -111,7 +111,7 @@
     "react-bootstrap": "0.24.5-react-pre.0",
     "react-dom": "^0.14.0-beta3",
     "react-router": "^1.0.0-beta3",
-    "release-script": "^0.2.7",
+    "release-script": "^0.3.0",
     "rimraf": "^2.4.2",
     "scriptjs": "^2.5.7",
     "style-loader": "^0.12.3",
