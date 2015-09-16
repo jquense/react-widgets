@@ -90,7 +90,7 @@ module.exports = React.createClass({
     if( !date) return null
 
     date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
-    label = dates.format(date, this.props.format, this.props.culture)
+    label = localizers.date.format(date, format(this.props), this.props.culture)
 
     times.some( time => {
       if( time.label === label )
