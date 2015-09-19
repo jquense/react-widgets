@@ -42,6 +42,7 @@ let propTypes = {
 
       disabled:       CustomPropTypes.disabled,
       readOnly:       CustomPropTypes.readOnly,
+      autoFocus:      React.PropTypes.bool,
 
       suggest:        CustomPropTypes.filter,
       filter:         CustomPropTypes.filter,
@@ -142,7 +143,7 @@ var ComboBox = React.createClass({
     let {
         className, tabIndex, filter, suggest
       , valueField, textField, groupBy
-      , messages, data, busy, dropUp, name
+      , messages, data, busy, dropUp, name, autoFocus
       , placeholder, value, open, disabled, readOnly
       , listComponent: List } = this.props;
 
@@ -198,6 +199,7 @@ var ComboBox = React.createClass({
         <Input
           ref='input'
           id={inputID}
+          autoFocus={autoFocus}
           tabIndex={tabIndex}
           suggest={suggest}
           name={name}

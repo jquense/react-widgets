@@ -40,6 +40,7 @@ var propTypes = {
 
       disabled:       CustomPropTypes.disabled,
       readOnly:       CustomPropTypes.readOnly,
+      autoFocus:      React.PropTypes.bool,
 
       messages:       React.PropTypes.shape({
         increment:    React.PropTypes.string,
@@ -89,6 +90,7 @@ var NumberPicker = React.createClass({
       , onKeyDown
       , onKeyPress
       , onKeyUp
+      , autoFocus
       , ...props } = _.omit(this.props, Object.keys(propTypes))
       , val = this.constrainValue(this.props.value)
 
@@ -138,6 +140,7 @@ var NumberPicker = React.createClass({
           ref='input'
           tabIndex={props.tabIndex}
           value={val}
+          autoFocus={autoFocus}
           editing={this.state.focused}
           format={this.props.format}
           parse={this.props.parse}

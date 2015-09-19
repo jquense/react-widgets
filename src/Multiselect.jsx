@@ -57,9 +57,9 @@ var propTypes = {
 
       placeholder:     React.PropTypes.string,
 
-      disabled:       CustomPropTypes.disabled.acceptsArray,
-
-      readOnly:       CustomPropTypes.readOnly.acceptsArray,
+      disabled:        CustomPropTypes.disabled.acceptsArray,
+      readOnly:        CustomPropTypes.readOnly.acceptsArray,
+      autoFocus:       React.PropTypes.bool,
 
       messages:        React.PropTypes.shape({
         open:          CustomPropTypes.message,
@@ -116,9 +116,10 @@ var Multiselect = React.createClass({
   },
 
   getInitialState(){
-    var { data, value, valueField, searchTerm } = this.props
-      , dataItems = splat(value).map( item => dataItem(data, item, valueField))
-      , data = this.process(data, dataItems, searchTerm)
+    var { data, value, valueField, searchTerm, autoFocus } = this.props
+      , dataItems = splat(value).map( item => dataItem(data, item, valueField));
+
+    data = this.process(data, dataItems, searchTerm)
 
     return {
       focusedTag:    null,
@@ -170,7 +171,7 @@ var Multiselect = React.createClass({
 
     let elementProps = omit(this.props, Object.keys(propTypes));
     let tagsProps    = pick(this.props, [ 'valueField', 'textField']);
-    let inputProps   = pick(this.props, [ 'maxLength', 'searchTerm']);
+    let inputProps   = pick(this.props, [ 'maxLength', 'searchTerm', 'autoFocus']);
     let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
     let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
 

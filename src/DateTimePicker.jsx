@@ -65,6 +65,7 @@ let propTypes = {
 
     disabled:       CustomPropTypes.disabled,
     readOnly:       CustomPropTypes.readOnly,
+    autoFocus:      React.PropTypes.bool,
 
     parse:          React.PropTypes.oneOfType([
                       React.PropTypes.arrayOf(React.PropTypes.string),
@@ -138,7 +139,7 @@ var DateTimePicker = React.createClass({
       , tabIndex, value,  editFormat, timeFormat
       , culture, duration, step, messages, min, max, busy
       , placeholder, disabled, readOnly, name, dropUp
-      , timeComponent
+      , timeComponent, autoFocus
       , 'aria-labelledby': ariaLabelledby } = this.props;
 
     let { focused } = this.state;
@@ -182,6 +183,7 @@ var DateTimePicker = React.createClass({
         <DateInput
           ref='valueInput'
           id={inputID}
+          autoFocus={autoFocus}
           tabIndex={tabIndex || 0}
           role='combobox'
           aria-labelledby={ariaLabelledby}
