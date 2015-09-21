@@ -78,10 +78,8 @@ export default React.createClass({
             , label = localizers.date.format(date, format(this.props), culture);
 
           var currentID = optionId(id, date);
-
-          return !dates.inRange(date, min, max, 'year')
-            ? <td key={colIdx} role='presentation' className='rw-empty-cell'>&nbsp;</td>
-            : (
+          var emptyCellClass = !dates.inRange(date, min, max, 'year') ? "rw-empty-cell" : "";
+          return (
               <td
                 key={colIdx}
                 role='gridcell'
@@ -90,6 +88,7 @@ export default React.createClass({
                 aria-selected={isSelected}
                 aria-label={label}
                 aria-readonly={disabled}
+                className={emptyCellClass}
               >
                 <span
                   aria-labelledby={currentID}

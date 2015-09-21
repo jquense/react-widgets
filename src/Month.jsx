@@ -92,10 +92,8 @@ let MonthView = React.createClass({
             , label = localizers.date.format(day, labelFormat, culture);
 
           var currentID = optionId(id, day);
-
-          return !dates.inRange(day, min, max)
-              ? <td  key={'day_' + colIdx} role='presentation' className='rw-empty-cell'>&nbsp;</td>
-              : (
+          var emptyCellClass = !dates.inRange(day, min, max) ? "rw-empty-cell" : "";
+          return (
                 <td
                   key={'day_' + colIdx}
                   role='gridcell'
@@ -104,6 +102,7 @@ let MonthView = React.createClass({
                   aria-selected={isSelected}
                   aria-label={label}
                   aria-readonly={disabled}
+                  className={emptyCellClass}
                 >
                   <span
                     aria-labelledby={currentID}
