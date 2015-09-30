@@ -3,24 +3,26 @@ require('../src/less/react-widgets.less')
 
 //require('react-a11y')();
 var configure = require('../src/configure')
+var localizers = require('../src/globalize-localizers')
+
+configure.setLocalizers(localizers(window.Globalize))
 
 //configure.setGlobalizeInstance(window.Globalize);
 
 var React = require('react/addons')
 //var jquery = require('jquery')
 var index = require('../src')
+var dates = require('../src/util/dates')
 var DropdownList = require('../src/DropdownList.jsx')
 var Multiselect = require('../src/Multiselect.jsx')
 var Calendar = require('../src/Calendar.jsx')
-var DatePicker = require('../src/DateTimePicker.jsx')
-var NumberPicker = require('../src/NumberPicker.jsx')
-var ComboBox = require('../src/Combobox.jsx')
-var SelectList = require('../src/SelectList.jsx')
-var List = require('../src/List.jsx')
+// var DatePicker = require('../src/DateTimePicker.jsx')
+// var NumberPicker = require('../src/NumberPicker.jsx')
+// var ComboBox = require('../src/Combobox.jsx')
+// var SelectList = require('../src/SelectList.jsx')
+// var List = require('../src/List.jsx')
 
 var chance = new (require('chance'))
-
-var { ModalTrigger, Modal } = require('react-bootstrap')
 
 // var moment = require('moment')
 
@@ -131,11 +133,18 @@ var App = React.createClass({
         <div style={{ maxWidth: 600, height: 1500 }}>
 
           <section className="example" style={{ marginBottom: 20 }}>
-          <button onClick={() => this.dropdowns()}>add</button>
+            <button
+              onClick={() => this.setState({
+                calDate: dates.add(this.state.calDate, 1, 'month')
+              })}
+            >
+              add
+            </button>
 
-          <DatePicker editFormat='d' onChange={(...args)=> console.log(args)}/>
-
-
+            <Calendar
+              value={this.state.calDate}
+              onChange={calDate => this.setState({ calDate })}
+            />
           </section>
         </div>
       </div>

@@ -1,6 +1,5 @@
 var path = require('path')
   , makeConfig = require('./make-config');
-  , args = require('yargs').argv;
 
 module.exports = makeConfig({
 
@@ -10,11 +9,12 @@ module.exports = makeConfig({
 
   devtool: 'source-map',
 
-  entry:  path.join(__dirname,'../dev/dev.jsx'),
+  entry:  path.join(__dirname, '../dev/dev.jsx'),
 
   output: {
     filename: 'bundle.js',
-    path: __dirname
+    path: __dirname,
+    publicPath: '/dev'
   }
 
 })
