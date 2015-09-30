@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "3.0.0-alpha.4",
+  "version": "3.0.0-alpha.5",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
   "author": {
@@ -27,7 +27,6 @@
   ],
   "scripts": {
     "test": "npm run lint && npm run test:all",
-
     "test:all": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run=true",
     "tdd": "karma start",
     "lint": "eslint src --ext .jsx --ext .js",
