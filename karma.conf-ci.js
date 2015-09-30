@@ -78,7 +78,7 @@ module.exports = function(config) {
       '_test-bootstrap.js': ['webpack']
     },
 
-    webpack: require('./webpack.configs').test,
+    webpack: require('./build/test.config'),
     webpackServer: {
       noInfo: true
     },

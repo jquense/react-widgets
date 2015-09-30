@@ -40,6 +40,7 @@ let propTypes = {
 
       onSelect:       React.PropTypes.func,
 
+      autoFocus:      React.PropTypes.bool,
       disabled:       CustomPropTypes.disabled,
       readOnly:       CustomPropTypes.readOnly,
 
@@ -202,6 +203,7 @@ var ComboBox = React.createClass({
           suggest={suggest}
           name={name}
           role='combobox'
+          autoFocus={this.props.autoFocus}
           aria-owns={listID}
           aria-busy={!!busy}
           aria-autocomplete={completeType}
