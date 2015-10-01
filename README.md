@@ -18,10 +18,6 @@ Pick and choose one, or more of the following Components
 
 __Demos and Documentation [here](http://jquense.github.io/react-widgets/docs/)__
 
-### Migration: 2.0
-
-Migration guide can be found [here](http://jquense.github.io/react-widgets/docs/index.htm#migration)
-
 ### Install
 
 `npm install react-widgets`
