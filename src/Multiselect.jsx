@@ -16,9 +16,12 @@ import { dataItem, dataText, valueMatcher } from './util/dataHelpers';
 import { widgetEditable, widgetEnabled } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
+
 var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
   ? msgs.createNew(props) : [<strong>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
 
+React.initializeTouchEvents(true);                             
+                             
 let { omit, pick, splat } = _;
 
 var propTypes = {
@@ -204,6 +207,7 @@ var Multiselect = React.createClass({
         onKeyDown={this._keyDown}
         onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
+        onTouchEnd={this._focus.bind(null, true)}
         tabIndex={'-1'}
         className={cx(className, 'rw-widget', 'rw-multiselect',  {
           'rw-state-focus':    focused,
@@ -267,6 +271,7 @@ var Multiselect = React.createClass({
             onChange={this._typing}
             onFocus={this._inputFocus}
             onClick={this._inputFocus}
+            onTouchEnd={this._inputFocus}
           />
         </div>
         <Popup {...popupProps}
