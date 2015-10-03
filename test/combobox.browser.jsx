@@ -137,7 +137,7 @@ describe('ComboBox', function(){
 
   it('should set id on list', function(){
     var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0} readOnly={true}/>)
-      , list = React.findDOMNode(findTag(comboBox, 'ul'));
+      , list = findTag(comboBox, 'ul').getDOMNode();
 
     expect(list.hasAttribute('id')).to.be(true);
   })

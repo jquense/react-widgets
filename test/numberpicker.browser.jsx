@@ -46,10 +46,10 @@ describe('Numberpicker', function(){
   it('should be able to accept a placeholder', function(done){
     var picker = render(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
       , input  = findClass(picker, 'rw-input').getDOMNode();
-    
+
      expect(input.placeholder).to.be('enter number here');
      done();
-  }
+  })
 
   it('should pass NAME down', function(){
     var picker = render(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)

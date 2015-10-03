@@ -71,7 +71,7 @@ describe('DateTimePicker', function(){
 
   it('should set id on list', function(){
     var instance = render(<DateTimePicker />)
-      , list = React.findDOMNode(findTag(instance, 'ul'));
+      , list = findTag(instance, 'ul').getDOMNode();
 
     expect(list.hasAttribute('id')).to.be(true);
   })

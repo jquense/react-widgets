@@ -30,7 +30,7 @@ describe('List', function(){
 
     let seen = [];
 
-    $(React.findDOMNode(list)).children().each(
+    $(list.getDOMNode()).children().each(
       function(){
         expect(this.hasAttribute('id')).to.equal(true);
         expect(seen.indexOf(this.id)).to.equal(-1);
