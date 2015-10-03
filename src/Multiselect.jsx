@@ -120,12 +120,12 @@ var Multiselect = React.createClass({
   getInitialState(){
     var { data, value, valueField, searchTerm } = this.props
       , dataItems = splat(value).map( item => dataItem(data, item, valueField))
-      , data = this.process(data, dataItems, searchTerm)
+      , processedData = this.process(this.props.data, dataItems, searchTerm)
 
     return {
       focusedTag:    null,
-      focusedItem:   data[0],
-      processedData: data,
+      focusedItem:   processedData[0],
+      processedData: processedData,
       dataItems:     dataItems
     }
   },
