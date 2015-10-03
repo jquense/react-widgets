@@ -141,7 +141,8 @@ var DateTimePicker = React.createClass({
       , culture, duration, step, messages, min, max, busy
       , placeholder, disabled, readOnly, name, dropUp
       , timeComponent, autoFocus
-      , 'aria-labelledby': ariaLabelledby } = this.props;
+      , 'aria-labelledby': ariaLabelledby
+      , 'aria-describedby': ariaDescribedby } = this.props;
 
     let { focused } = this.state;
 
@@ -187,8 +188,8 @@ var DateTimePicker = React.createClass({
           autoFocus={autoFocus}
           tabIndex={tabIndex || 0}
           role='combobox'
-          autoFocus={this.props.autoFocus}
           aria-labelledby={ariaLabelledby}
+          aria-describedby ={ariaDescribedby}
           aria-expanded={!!open}
           aria-busy={!!busy}
           aria-owns={owns.trim()}
