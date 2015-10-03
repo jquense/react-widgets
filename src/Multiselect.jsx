@@ -138,18 +138,11 @@ var Multiselect = React.createClass({
     this.refs.list && validateList(this.refs.list)
   },
 
-  componentDidMount() {
-    // https://github.com/facebook/react/issues/1169
-    if( support.ios )
-      compat.findDOMNode(this.refs.wrapper).onClick = ()=>{}
-  },
-
   componentWillReceiveProps(nextProps) {
     var { data, value, valueField, searchTerm } = nextProps
       , values = _.splat(value)
       , current = this.state.focusedItem
       , items  = this.process(data, values, searchTerm)
-
 
     this.setState({
       processedData: items,
@@ -418,7 +411,7 @@ var Multiselect = React.createClass({
 
       e.preventDefault()
       if (isOpen) this.setState({ focusedItem: next, ...nullTag })
-      else          this.open()
+      else        this.open()
     }
     else if (key === 'ArrowUp') {
       var prev = focusedItem === null
