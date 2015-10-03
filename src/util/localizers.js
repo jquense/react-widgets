@@ -1,6 +1,6 @@
-var invariant = require('invariant')
-var { has } = require('./_')
-var React = require('react')
+import invariant from 'invariant';
+import { has } from './_';
+import React from 'react';
 
 const REQUIRED_NUMBER_FORMATS = [ 'default' ]
 

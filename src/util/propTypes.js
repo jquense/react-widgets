@@ -1,4 +1,3 @@
-'use strict';
 import React, { PropTypes } from 'react';
 import config from'./configuration';
 import filters from'./filter';

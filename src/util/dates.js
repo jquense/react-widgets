@@ -6,8 +6,7 @@ var dateMath = require('date-arithmetic')
   , locale = require('./configuration').locale
 
 
-var dates = module.exports = Object.assign(dateMath, {
-
+var dates = Object.assign(dateMath, {
 
   parse(date, format, culture) {
     return locale.date.parse(date, format, culture)
@@ -23,7 +22,6 @@ var dates = module.exports = Object.assign(dateMath, {
 
     return  months.map( i => dates.month(date, i))
   },
-
 
   firstVisibleDay(date, culture){
     var firstOfMonth = dates.startOf(date, 'month')
@@ -82,7 +80,7 @@ var dates = module.exports = Object.assign(dateMath, {
     return dates.milliseconds(date, dates.milliseconds(time))
   },
 
-  sameMonth: function(dateA, dateB){
+  sameMonth(dateA, dateB){
     return dates.eq(dateA, dateB, 'month')
   },
 
@@ -98,3 +96,5 @@ var dates = module.exports = Object.assign(dateMath, {
     return this.add(this.startOf(new Date(), 'day'), 1, 'day')
   }
 })
+
+export default dates;

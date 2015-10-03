@@ -17,7 +17,7 @@ function listOfPeople(){
 function scopedEval(code, mountNode)  {
   var context = { ReactWidgets: { ...ReactWidgets, MultiselectTagList, List }, listOfPeople, mountNode, React, ReactDOM }
 
-  return (new Function( "with(this) { " + code + "}")).call(context);
+  return (new Function( 'with(this) { ' + code + '}')).call(context);
 }
 
 config.plugins = []

@@ -28,7 +28,7 @@ let { omit, pick } = _;
 
 let propTypes = {
 
-    ...compat.type(Calendar).propTypes,
+    ...Calendar.propTypes,
 
     //-- controlled props -----------
     value:          React.PropTypes.instanceOf(Date),
@@ -66,7 +66,6 @@ let propTypes = {
     autoFocus:      React.PropTypes.bool,
     disabled:       CustomPropTypes.disabled,
     readOnly:       CustomPropTypes.readOnly,
-    autoFocus:      React.PropTypes.bool,
 
     parse:          React.PropTypes.oneOfType([
                       React.PropTypes.arrayOf(React.PropTypes.string),
@@ -152,7 +151,7 @@ var DateTimePicker = React.createClass({
       , owns = '';
 
     let elementProps = omit(this.props, Object.keys(propTypes))
-      , calProps = pick(this.props, Object.keys(compat.type(Calendar).propTypes))
+      , calProps = pick(this.props, Object.keys(Calendar.propTypes))
 
     let shouldRenderList = isFirstFocusedRender(this) || open
       , disabledOrReadonly = disabled || readOnly

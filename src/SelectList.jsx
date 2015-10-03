@@ -115,7 +115,7 @@ var SelectList = React.createClass({
     List = List ||  PlainList
 
     let elementProps = omit(this.props, Object.keys(propTypes));
-    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
+    let listProps    = pick(this.props, Object.keys(List.propTypes));
 
     let { ListItem, focusedItem, focused } = this.state;
 

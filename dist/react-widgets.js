@@ -121,7 +121,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        currentQueue = queue;
 	        queue = [];
 	        while (++queueIndex < len) {
-	            currentQueue[queueIndex].run();
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
 	        }
 	        queueIndex = -1;
 	        len = queue.length;
@@ -173,7 +175,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new Error('process.binding is not supported');
 	};
 
-	// TODO(shtylman)
 	process.cwd = function () { return '/' };
 	process.chdir = function (dir) {
 	    throw new Error('process.chdir is not supported');
@@ -893,12 +894,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
 	*/
+	/* global define */
 
 	(function () {
 		'use strict';
 
-		function classNames () {
+		var hasOwn = {}.hasOwnProperty;
 
+		function classNames () {
 			var classes = '';
 
 			for (var i = 0; i < arguments.length; i++) {
@@ -907,15 +910,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				var argType = typeof arg;
 
-				if ('string' === argType || 'number' === argType) {
+				if (argType === 'string' || argType === 'number') {
 					classes += ' ' + arg;
-
 				} else if (Array.isArray(arg)) {
 					classes += ' ' + classNames.apply(null, arg);
-
-				} else if ('object' === argType) {
+				} else if (argType === 'object') {
 					for (var key in arg) {
-						if (arg.hasOwnProperty(key) && arg[key]) {
+						if (hasOwn.call(arg, key) && arg[key]) {
 							classes += ' ' + key;
 						}
 					}
@@ -927,15 +928,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		if (typeof module !== 'undefined' && module.exports) {
 			module.exports = classNames;
-		} else if (true){
-			// AMD. Register as an anonymous module.
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
 			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
 			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}
-
 	}());
 
 
@@ -3602,6 +3602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  autoFocus: _react2['default'].PropTypes.bool,
 	  disabled: _utilPropTypes2['default'].disabled,
 	  readOnly: _utilPropTypes2['default'].readOnly,
+	  autoFocus: _react2['default'].PropTypes.bool,
 
 	  suggest: _utilPropTypes2['default'].filter,
 	  filter: _utilPropTypes2['default'].filter,
@@ -3724,6 +3725,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var busy = _props2.busy;
 	    var dropUp = _props2.dropUp;
 	    var name = _props2.name;
+	    var autoFocus = _props2.autoFocus;
 	    var placeholder = _props2.placeholder;
 	    var value = _props2.value;
 	    var open = _props2.open;
@@ -3790,6 +3792,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _react2['default'].createElement(_ComboboxInput2['default'], {
 	        ref: 'input',
 	        id: inputID,
+	        autoFocus: autoFocus,
 	        tabIndex: tabIndex,
 	        suggest: suggest,
 	        name: name,
@@ -5189,7 +5192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      case DAY:
 	        return dates.date(date, dates.date(date) + num)
 	      case WEEK:
-	        return dates.date(date, dates.date(date) + (7 * num)) 
+	        return dates.date(date, dates.date(date) + (7 * num))
 	      case MONTH:
 	        return monthMath(date, num)
 	      case DECADE:
@@ -5226,18 +5229,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	          date = dates.milliseconds(date, 0);
 	    }
 
-	    if (unit === DECADE) 
+	    if (unit === DECADE)
 	      date = dates.subtract(date, dates.year(date) % 10, 'year')
-	    
-	    if (unit === CENTURY) 
+
+	    if (unit === CENTURY)
 	      date = dates.subtract(date, dates.year(date) % 100, 'year')
 
-	    if (unit === WEEK) 
+	    if (unit === WEEK)
 	      date = dates.weekday(date, 0, firstOfWeek);
 
 	    return date
 	  },
-
 
 	  endOf: function(date, unit, firstOfWeek){
 	    date = new Date(date)
@@ -5261,7 +5263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  max: function(){
 	    return new Date(Math.max.apply(Math, arguments))
 	  },
-	  
+
 	  inRange: function(day, min, max, unit){
 	    unit = unit || 'day'
 
@@ -5279,13 +5281,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  year:           createAccessor('FullYear'),
 
 	  decade: function (date, val) {
-	    return val === undefined 
+	    return val === undefined
 	      ? dates.year(dates.startOf(date, DECADE))
 	      : dates.add(date, val + 10, YEAR);
 	  },
 
 	  century: function (date, val) {
-	    return val === undefined 
+	    return val === undefined
 	      ? dates.year(dates.startOf(date, CENTURY))
 	      : dates.add(date, val + 100, YEAR);
 	  },
@@ -5293,8 +5295,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  weekday: function (date, val, firstDay) {
 	      var weekday = (dates.day(date) + 7 - (firstDay || 0) ) % 7;
 
-	      return val === undefined 
-	        ? weekday 
+	      return val === undefined
+	        ? weekday
 	        : dates.add(date, val - weekday, DAY);
 	  }
 	}
@@ -5307,7 +5309,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    date = dates.month(date, newMonth)
 
 	    if (newMonth < 0 ) newMonth = 12 + val
-	      
+
 	    //month rollover
 	    if ( dates.month(date) !== ( newMonth % 12))
 	      date = dates.date(date, 0) //move to last of month
@@ -5327,8 +5329,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function createComparer(operator) {
-	  return function (a, b, unit) {
-	    return operator(+dates.startOf(a, unit), +dates.startOf(b, unit))
+	  return function (a, b, unit, maybeFoW) {
+	    return operator(+dates.startOf(a, unit, maybeFoW), +dates.startOf(b, unit, maybeFoW))
 	  };
 	}
 
@@ -6344,6 +6346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  autoFocus: _react2['default'].PropTypes.bool,
 	  disabled: _utilPropTypes2['default'].disabled,
 	  readOnly: _utilPropTypes2['default'].readOnly,
+	  autoFocus: _react2['default'].PropTypes.bool,
 
 	  parse: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string), _react2['default'].PropTypes.string, _react2['default'].PropTypes.func]),
 
@@ -6436,7 +6439,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var name = _props.name;
 	    var dropUp = _props.dropUp;
 	    var timeComponent = _props.timeComponent;
+	    var autoFocus = _props.autoFocus;
 	    var ariaLabelledby = _props['aria-labelledby'];
+	    var ariaDescribedby = _props['aria-describedby'];
 	    var focused = this.state.focused;
 
 	    var inputID = _utilWidgetHelpers.instanceId(this, '_input'),
@@ -6478,10 +6483,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _react2['default'].createElement(_DateInput2['default'], {
 	        ref: 'valueInput',
 	        id: inputID,
+	        autoFocus: autoFocus,
 	        tabIndex: tabIndex || 0,
 	        role: 'combobox',
-	        autoFocus: this.props.autoFocus,
 	        'aria-labelledby': ariaLabelledby,
+	        'aria-describedby': ariaDescribedby,
 	        'aria-expanded': !!open,
 	        'aria-busy': !!busy,
 	        'aria-owns': owns.trim(),
@@ -7164,11 +7170,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  autoFocus: _react2['default'].PropTypes.bool,
 	  disabled: _utilPropTypes2['default'].disabled,
 	  readOnly: _utilPropTypes2['default'].readOnly,
+	  autoFocus: _react2['default'].PropTypes.bool,
 
 	  messages: _react2['default'].PropTypes.shape({
 	    increment: _react2['default'].PropTypes.string,
 	    decrement: _react2['default'].PropTypes.string
-	  })
+	  }),
+
+	  placeholder: _react2['default'].PropTypes.string
 	};
 
 	var NumberPicker = _react2['default'].createClass(babelHelpers.createDecoratedObject([{
@@ -7220,7 +7229,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var onKeyDown = _$omit.onKeyDown;
 	    var onKeyPress = _$omit.onKeyPress;
 	    var onKeyUp = _$omit.onKeyUp;
-	    var props = babelHelpers.objectWithoutProperties(_$omit, ['className', 'onKeyDown', 'onKeyPress', 'onKeyUp']);
+	    var autoFocus = _$omit.autoFocus;
+	    var props = babelHelpers.objectWithoutProperties(_$omit, ['className', 'onKeyDown', 'onKeyPress', 'onKeyUp', 'autoFocus']);
 	    var val = this.constrainValue(this.props.value);
 
 	    return _react2['default'].createElement(
@@ -7247,6 +7257,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            className: _classnames2['default']({ 'rw-state-active': this.state.active === directions.UP }),
 	            onMouseDown: this._mouseDown.bind(null, directions.UP),
 	            onMouseUp: this._mouseUp.bind(null, directions.UP),
+	            onMouseOut: this._mouseUp.bind(null, directions.UP),
 	            onClick: this._focus.bind(null, true),
 	            disabled: val === this.props.max || this.props.disabled,
 	            'aria-disabled': val === this.props.max || this.props.disabled },
@@ -7267,6 +7278,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            className: _classnames2['default']({ 'rw-state-active': this.state.active === directions.DOWN }),
 	            onMouseDown: this._mouseDown.bind(null, directions.DOWN),
 	            onMouseUp: this._mouseUp.bind(null, directions.DOWN),
+	            onMouseOut: this._mouseUp.bind(null, directions.DOWN),
 	            onClick: this._focus.bind(null, true),
 	            disabled: val === this.props.min || this.props.disabled,
 	            'aria-disabled': val === this.props.min || this.props.disabled },
@@ -7284,7 +7296,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _react2['default'].createElement(_NumberInput2['default'], {
 	        ref: 'input',
 	        tabIndex: props.tabIndex,
+	        placeholder: this.props.placeholder,
 	        value: val,
+	        autoFocus: autoFocus,
 	        editing: this.state.focused,
 	        format: this.props.format,
 	        parse: this.props.parse,
@@ -7462,6 +7476,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  propTypes: {
 	    value: React.PropTypes.number,
+	    placeholder: React.PropTypes.string,
 
 	    format: CustomPropTypes.numberFormat,
 	    parse: React.PropTypes.func.isRequired,
@@ -7513,6 +7528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      'aria-readonly': this.props.readOnly,
 	      disabled: this.props.disabled,
 	      readOnly: this.props.readOnly,
+	      placeholder: this.props.placeholder,
 	      value: value }));
 	  },
 
@@ -7521,7 +7537,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        number = this.props.parse(e.target.value, this.props.culture),
 	        valid = this.isValid(number);
 
-	    if (val == null || val.trim() === '') return this.props.onChange(null);
+	    if (val == null || val.trim() === '' || val.trim() === '-') return this.props.onChange(null);
 
 	    if (valid && number !== this.props.value && !this.isAtDelimiter(number, val)) return this.props.onChange(number);
 
@@ -7649,6 +7665,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ), ' ' + msgs.createNew];
 	};
 
+	_react2['default'].initializeTouchEvents(true);
+
 	var omit = _util_2['default'].omit;
 	var pick = _util_2['default'].pick;
 	var splat = _util_2['default'].splat;
@@ -7688,7 +7706,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  autoFocus: _react2['default'].PropTypes.bool,
 	  disabled: _utilPropTypes2['default'].disabled.acceptsArray,
-
 	  readOnly: _utilPropTypes2['default'].readOnly.acceptsArray,
 
 	  messages: _react2['default'].PropTypes.shape({
@@ -7755,13 +7772,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var dataItems = splat(value).map(function (item) {
 	      return _utilDataHelpers.dataItem(data, item, valueField);
 	    });
-
-	    data = this.process(data, dataItems, searchTerm);
+	    var processedData = this.process(data, dataItems, searchTerm);
 
 	    return {
 	      focusedTag: null,
-	      focusedItem: data[0],
-	      processedData: data,
+	      focusedItem: processedData[0],
+	      processedData: processedData,
 	      dataItems: dataItems
 	    };
 	  }
@@ -7771,12 +7787,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.ariaActiveDescendant(_utilWidgetHelpers.instanceId(this, '__createlist_option'));
 
 	    this.refs.list && _utilValidateListInterface2['default'](this.refs.list);
-	  }
-	}, {
-	  key: 'componentDidMount',
-	  value: function componentDidMount() {
-	    // https://github.com/facebook/react/issues/1169
-	    if (_utilDomSupport2['default'].ios) _utilCompat2['default'].findDOMNode(this.refs.wrapper).onClick = function () {};
 	  }
 	}, {
 	  key: 'componentWillReceiveProps',
@@ -7826,7 +7836,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var elementProps = omit(this.props, Object.keys(propTypes));
 	    var tagsProps = pick(this.props, ['valueField', 'textField']);
-	    var inputProps = pick(this.props, ['maxLength', 'searchTerm']);
+	    var inputProps = pick(this.props, ['maxLength', 'searchTerm', 'autoFocus']);
 	    var listProps = pick(this.props, Object.keys(_utilCompat2['default'].type(List).propTypes));
 	    var popupProps = pick(this.props, Object.keys(_utilCompat2['default'].type(_Popup2['default']).propTypes));
 
@@ -7861,6 +7871,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        onKeyDown: this._keyDown,
 	        onFocus: this._focus.bind(null, true),
 	        onBlur: this._focus.bind(null, false),
+	        onTouchEnd: this._focus.bind(null, true),
 	        tabIndex: '-1',
 	        className: _classnames2['default'](className, 'rw-widget', 'rw-multiselect', (_cx = {
 	          'rw-state-focus': focused,
@@ -7915,7 +7926,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          onKeyUp: this._searchgKeyUp,
 	          onChange: this._typing,
 	          onFocus: this._inputFocus,
-	          onClick: this._inputFocus
+	          onClick: this._inputFocus,
+	          onTouchEnd: this._inputFocus
 	        }))
 	      ),
 	      _react2['default'].createElement(
@@ -8944,9 +8956,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  invariant(typeof format === 'function', 'number localizer `format(..)` must be a function');
 	  invariant(typeof parse === 'function', 'number localizer `parse(..)` must be a function');
-
-	  // invariant(typeof precision === 'function'
-	  //   , 'number localizer `precision(..)` must be a function')
 
 	  checkFormats(REQUIRED_NUMBER_FORMATS, formats);
 

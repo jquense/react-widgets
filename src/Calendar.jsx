@@ -179,7 +179,7 @@ let Calendar = React.createClass({
       , key = view + '_' + dates[view](currentDate);
 
     let elementProps = _.omit(this.props, Object.keys(propTypes))
-      , viewProps  = _.pick(this.props, Object.keys(compat.type(View).propTypes))
+      , viewProps  = _.pick(this.props, Object.keys(View.propTypes))
 
     let isDisabled = disabled || readOnly
 

@@ -1,9 +1,8 @@
-'use strict';
-var hyphenate = require('dom-helpers/util/hyphenate')
-  , css = require('dom-helpers/style')
-  , on  = require('dom-helpers/events/on')
-  , off = require('dom-helpers/events/off')
-  , transitionProps = require('dom-helpers/transition/properties');
+import hyphenate from 'dom-helpers/util/hyphenate'
+import css from 'dom-helpers/style'
+import on  from 'dom-helpers/events/on'
+import off from 'dom-helpers/events/off'
+import transitionProps from 'dom-helpers/transition/properties'
 
 var has = Object.prototype.hasOwnProperty
   , reset = {}
@@ -23,14 +22,12 @@ animate.endEvent = transitionProps.end
 animate.transform = transitionProps.transform
 animate.TRANSLATION_MAP = TRANSLATION_MAP
 
-module.exports = animate
-
 // super lean animate function for transitions
 // doesn't support all translations to keep it matching the jquery API
 /**
  * code in part from: Zepto 1.1.4 | zeptojs.com/license
  */
-function animate(node, properties, duration, easing, callback){
+export default function animate(node, properties, duration, easing, callback){
   var cssProperties = []
     , fakeEvent  = { target: node, currentTarget: node }
     , cssValues  = {}

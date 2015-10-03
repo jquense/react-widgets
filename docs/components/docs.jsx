@@ -31,8 +31,12 @@ require('../vendor/styles.css')
 require('react-widgets/less/react-widgets.less')
 require('../docs.css')
 
-require('react-widgets/configure').setLocalizers(
-  require('react-widgets-globalize-localizer'))
+var configure = require('../../src/configure')
+var localizers = require('../../src/globalize-localizers')
+
+configure.setLocalizers(
+  localizers(require('globalize'))
+)
 
 var locations = [
       'getting-started', 'dropdown-list', 'combobox',

@@ -130,8 +130,8 @@ var DropdownList = React.createClass({
     List = List || (groupBy && GroupableList) || PlainList
 
     let elementProps = omit(this.props, Object.keys(propTypes));
-    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
-    let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
+    let listProps    = pick(this.props, Object.keys(List.propTypes));
+    let popupProps   = pick(this.props, Object.keys(Popup.propTypes));
 
     let { focusedItem, selectedItem, focused } = this.state;
 

@@ -1,6 +1,6 @@
+/*global CodeMirror */
 'use strict';
 var React = require('react');
-var ReactDOM = require('react-dom');
 
 var IS_MOBILE = (
   navigator.userAgent.match(/Android/i)
@@ -29,7 +29,6 @@ var CodeMirrorEditor = React.createClass({
     });
 
     this.editor.on('change', this.handleChange);
-    //setTimeout( () => this.editor.refresh() )
   },
 
   componentDidUpdate: function() {

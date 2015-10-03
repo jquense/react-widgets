@@ -1,12 +1,9 @@
-'use strict';
 import React from 'react';
 import cx from 'classnames';
 import _  from './util/_';
 import Popup from './Popup';
-import support from'./util/dom/support';
 import SelectInput from './MultiselectInput';
 import TagList from './MultiselectTagList';
-import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
@@ -18,8 +15,6 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
   ? msgs.createNew(props) : [<strong>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
-
-React.initializeTouchEvents(true);
 
 let { omit, pick, splat } = _;
 
@@ -167,8 +162,8 @@ var Multiselect = React.createClass({
     let elementProps = omit(this.props, Object.keys(propTypes));
     let tagsProps    = pick(this.props, [ 'valueField', 'textField']);
     let inputProps   = pick(this.props, [ 'maxLength', 'searchTerm', 'autoFocus']);
-    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
-    let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
+    let listProps    = pick(this.props, Object.keys(List.propTypes));
+    let popupProps   = pick(this.props, Object.keys(Popup.propTypes));
 
     let {
         focusedTag, focusedItem
@@ -479,6 +474,8 @@ var Multiselect = React.createClass({
     var { valueField } = this.props;
     var items = data.filter( i =>
       !values.some(v => valueMatcher(i, v, valueField)))
+
+    this._lengthWithoutValues = items.length;
 
     if (searchTerm)
       items = this.filter(items, searchTerm)

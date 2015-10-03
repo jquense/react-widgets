@@ -42,7 +42,6 @@ let propTypes = {
       autoFocus:      React.PropTypes.bool,
       disabled:       CustomPropTypes.disabled,
       readOnly:       CustomPropTypes.readOnly,
-      autoFocus:      React.PropTypes.bool,
 
       messages:       React.PropTypes.shape({
         increment:    React.PropTypes.string,
