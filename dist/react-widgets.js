@@ -1498,10 +1498,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _domAnimate2 = babelHelpers.interopRequireDefault(_domAnimate);
 
 	function error() {
-	  throw new Error('[React Widgets] You are attempting to use a widget that requires localization (DateTimePicker, NumberPicker)' + 'but there is no localizer set. IN order to use these widgets please install a localizer');
+	  throw new Error('[React Widgets] You are attempting to use a widget that requires localization (DateTimePicker, NumberPicker)' + 'but there is no localizer set. In order to use these widgets please install a localizer');
 	}
 
 	var dummy = {
+	  formats: error,
 	  parse: error,
 	  format: error,
 	  firstOfWeek: error
@@ -2816,19 +2817,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return uncontrollable;
 
 	  function uncontrollable(Component, controlledValues) {
+	    var methods = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+
 	    var displayName = Component.displayName || Component.name || 'Component',
 	        basePropTypes = utils.getType(Component).propTypes,
 	        propTypes;
 
 	    propTypes = utils.uncontrolledPropTypes(controlledValues, basePropTypes, displayName);
 
-	    var component = _react2['default'].createClass({
+	    methods = utils.transform(methods, function (obj, method) {
+	      obj[method] = function () {
+	        var _refs$inner;
+
+	        return (_refs$inner = this.refs.inner)[method].apply(_refs$inner, arguments);
+	      };
+	    }, {});
+
+	    var component = _react2['default'].createClass(_extends({
 
 	      displayName: 'Uncontrolled(' + displayName + ')',
 
 	      mixins: mixins,
 
-	      propTypes: propTypes,
+	      propTypes: propTypes
+
+	    }, methods, {
 
 	      componentWillMount: function componentWillMount() {
 	        var props = this.props,
@@ -2862,11 +2875,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	          newProps[handle] = setAndNotify.bind(_this, propName);
 	        });
 
-	        newProps = _extends({}, props, newProps);
+	        newProps = _extends({}, props, newProps, { ref: 'inner' });
 
 	        return _react2['default'].createElement(Component, newProps);
 	      }
-	    });
+	    }));
 
 	    component.ControlledComponent = Component;
 
@@ -3586,6 +3599,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  onSelect: _react2['default'].PropTypes.func,
 
+	  autoFocus: _react2['default'].PropTypes.bool,
 	  disabled: _utilPropTypes2['default'].disabled,
 	  readOnly: _utilPropTypes2['default'].readOnly,
 
@@ -3780,6 +3794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        suggest: suggest,
 	        name: name,
 	        role: 'combobox',
+	        autoFocus: this.props.autoFocus,
 	        'aria-owns': listID,
 	        'aria-busy': !!busy,
 	        'aria-autocomplete': completeType,
@@ -4476,7 +4491,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          duration: duration,
 	          direction: slideDirection,
 	          onAnimate: function () {
-	            return _this.focus(true);
+	            return focused && _this.focus();
 	          }
 	        },
 	        _react2['default'].createElement(View, babelHelpers._extends({}, viewProps, {
@@ -6326,6 +6341,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  initialView: _react2['default'].PropTypes.oneOf(viewEnum),
 	  finalView: _react2['default'].PropTypes.oneOf(viewEnum),
 
+	  autoFocus: _react2['default'].PropTypes.bool,
 	  disabled: _utilPropTypes2['default'].disabled,
 	  readOnly: _utilPropTypes2['default'].readOnly,
 
@@ -6464,6 +6480,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        id: inputID,
 	        tabIndex: tabIndex || 0,
 	        role: 'combobox',
+	        autoFocus: this.props.autoFocus,
 	        'aria-labelledby': ariaLabelledby,
 	        'aria-expanded': !!open,
 	        'aria-busy': !!busy,
@@ -6843,7 +6860,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!date) return null;
 
 	    date = new Date(Math.floor(date.getTime() / roundTo) * roundTo);
-	    label = dates.format(date, this.props.format, this.props.culture);
+	    label = localizers.date.format(date, format(this.props), this.props.culture);
 
 	    times.some(function (time) {
 	      if (time.label === label) return inst = time;
@@ -7144,6 +7161,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  parse: _react2['default'].PropTypes.func,
 
+	  autoFocus: _react2['default'].PropTypes.bool,
 	  disabled: _utilPropTypes2['default'].disabled,
 	  readOnly: _utilPropTypes2['default'].readOnly,
 
@@ -7273,6 +7291,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        name: this.props.name,
 	        role: 'spinbutton',
 	        min: this.props.min,
+	        autoFocus: this.props.autoFocus,
 	        'aria-valuenow': val,
 	        'aria-valuemin': isFinite(this.props.min) ? this.props.min : null,
 	        'aria-valuemax': isFinite(this.props.max) ? this.props.max : null,
@@ -7667,6 +7686,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  placeholder: _react2['default'].PropTypes.string,
 
+	  autoFocus: _react2['default'].PropTypes.bool,
 	  disabled: _utilPropTypes2['default'].disabled.acceptsArray,
 
 	  readOnly: _utilPropTypes2['default'].readOnly.acceptsArray,
@@ -7735,7 +7755,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var dataItems = splat(value).map(function (item) {
 	      return _utilDataHelpers.dataItem(data, item, valueField);
 	    });
-	    var data = this.process(data, dataItems, searchTerm);
+
+	    data = this.process(data, dataItems, searchTerm);
 
 	    return {
 	      focusedTag: null,
@@ -7853,7 +7874,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          ref: 'status',
 	          id: _utilWidgetHelpers.instanceId(this, '__notify'),
 	          role: 'status',
-	          className: 'sr-only',
+	          className: 'rw-sr',
 	          'aria-live': 'assertive',
 	          'aria-atomic': 'true',
 	          'aria-relevant': 'additions removals text'
@@ -7882,6 +7903,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          role: 'listbox',
 	          'aria-expanded': open,
 	          'aria-busy': !!busy,
+	          autoFocus: this.props.autoFocus,
 	          'aria-owns': listID + ' ' + _utilWidgetHelpers.instanceId(this, '__notify') + (shouldRenderTags ? ' ' + tagsID : '') + (shouldShowCreate ? ' ' + createID : ''),
 	          'aria-haspopup': true,
 	          value: searchTerm,
@@ -7908,7 +7930,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'div',
 	          null,
 	          shouldRenderPopup && [_react2['default'].createElement(List, babelHelpers._extends({ ref: 'list',
-	            key: '0'
+	            key: 0
 	          }, listProps, {
 	            readOnly: !!readOnly,
 	            disabled: !!disabled,
@@ -7926,7 +7948,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	          })), shouldShowCreate && _react2['default'].createElement(
 	            'ul',
-	            { role: 'listbox', id: createID, className: 'rw-list rw-multiselect-create-tag', key: '1' },
+	            { key: 1, role: 'listbox', id: createID, className: 'rw-list rw-multiselect-create-tag' },
 	            _react2['default'].createElement(
 	              'li',
 	              { onClick: this._onCreate.bind(null, searchTerm),
