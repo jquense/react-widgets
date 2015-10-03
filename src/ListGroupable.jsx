@@ -91,7 +91,7 @@ export default React.createClass({
         className, role, data
       , messages, onSelect, selectedIndex
       , ...props } = this.props
-      , id = instanceId(this) ;
+      , id = instanceId(this);
 
     let { sortedKeys, groups } = this.state;
 
@@ -133,7 +133,7 @@ export default React.createClass({
 
   _renderGroupHeader(group){
     var GroupComponent = this.props.groupComponent
-      , id = instanceId(this) ;
+      , id = instanceId(this);
 
     return (
       <li
