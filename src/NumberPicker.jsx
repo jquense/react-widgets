@@ -44,7 +44,9 @@ var propTypes = {
       messages:       React.PropTypes.shape({
         increment:    React.PropTypes.string,
         decrement:    React.PropTypes.string
-      })
+      }),
+
+      placeholder: React.PropTypes.string
     };
 
 var NumberPicker = React.createClass({
@@ -137,6 +139,7 @@ var NumberPicker = React.createClass({
         <Input
           ref='input'
           tabIndex={props.tabIndex}
+          placeholder={this.props.placeholder}
           value={val}
           editing={this.state.focused}
           format={this.props.format}

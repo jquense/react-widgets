@@ -11,6 +11,7 @@ module.exports = React.createClass({
 
   propTypes: {
     value:        React.PropTypes.number,
+    placeholder: React.PropTypes.string,
 
     format:       CustomPropTypes.numberFormat,
     parse:        React.PropTypes.func.isRequired,
@@ -65,6 +66,7 @@ module.exports = React.createClass({
         aria-readonly={this.props.readOnly}
         disabled={this.props.disabled}
         readOnly={this.props.readOnly}
+        placeholder={this.props.placeholder}
         value={value}/>
     )
   },
