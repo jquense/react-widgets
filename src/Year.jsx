@@ -75,9 +75,8 @@ let YearView = React.createClass({
             , label = localizers.date.format(date, labelFormat, culture);
 
           var currentID = optionId(id, date);
-
-          return dates.inRange(date, min, max, 'month')
-            ? (
+          var emptyCellClass = !dates.inRange(date, min, max, 'month') ? "rw-empty-cell" : "";
+          return (
               <td
                 key={colIdx}
                 role='gridcell'
@@ -86,6 +85,7 @@ let YearView = React.createClass({
                 aria-selected={isSelected}
                 aria-readonly={disabled}
                 aria-label={label}
+                className={emptyCellClass}
               >
                 <span
                   aria-labelledby={currentID}
@@ -100,7 +100,6 @@ let YearView = React.createClass({
                 </span>
               </td>
             )
-            : <td key={colIdx} className='rw-empty-cell' role='presentation'>&nbsp;</td>
         })}
     </tr>)
   }

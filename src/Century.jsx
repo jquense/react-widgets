@@ -74,10 +74,8 @@ export default React.createClass({
                 dates.startOf(date, 'decade'), format(this.props), culture);
 
           var currentID = optionId(id, date);
-
-          return !inRange(date, min, max)
-            ? <td key={colIdx} role='gridcell' className='rw-empty-cell'>&nbsp;</td>
-            : (
+          var emptyCellClass = !inRange(date, min, max) ? "rw-empty-cell" : ""
+          return (
               <td
                 key={colIdx}
                 role='gridcell'
@@ -86,6 +84,7 @@ export default React.createClass({
                 aria-selected={isSelected}
                 aria-label={label}
                 aria-readonly={disabled}
+                className={emptyCellClass}
               >
                 <span
                   aria-labelledby={currentID}
