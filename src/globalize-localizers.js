@@ -77,12 +77,12 @@ export default function globalizeLocalizers(globalize) {
       var culture = getCulture(_culture)
         , numFormat = culture.numberFormat
 
-      if ( typeof format === 'string') {
-        if ( format.length > 1 )
+      if (typeof format === 'string') {
+        if (format.length > 1)
           return parseFloat(format.substr(1))
 
-        if ( format.indexOf('p') !== -1 ) numFormat = numFormat.percent
-        if ( format.indexOf('c') !== -1 ) numFormat = numFormat.curency
+        if (format.indexOf('p') !== -1) numFormat = numFormat.percent
+        if (format.indexOf('c') !== -1) numFormat = numFormat.curency
 
         return numFormat.decimals || null
       }
@@ -91,5 +91,5 @@ export default function globalizeLocalizers(globalize) {
     }
   }
 
-  return { date, number}
+  return { date, number }
 }

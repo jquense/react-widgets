@@ -46,9 +46,6 @@ class NumberLocalizer {
     invariant(typeof parse === 'function'
       , 'number localizer `parse(..)` must be a function')
 
-    // invariant(typeof precision === 'function'
-    //   , 'number localizer `precision(..)` must be a function')
-
     checkFormats(REQUIRED_NUMBER_FORMATS, formats)
 
     this.propType = propType || localePropType
