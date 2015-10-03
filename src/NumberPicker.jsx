@@ -114,6 +114,7 @@ var NumberPicker = React.createClass({
             className={cx({ 'rw-state-active': this.state.active === directions.UP})}
             onMouseDown={this._mouseDown.bind(null, directions.UP)}
             onMouseUp={this._mouseUp.bind(null, directions.UP)}
+            onMouseOut={this._mouseUp.bind(null, directions.UP)}
             onClick={this._focus.bind(null, true)}
             disabled={val === this.props.max || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
@@ -127,6 +128,7 @@ var NumberPicker = React.createClass({
             className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
             onMouseDown={this._mouseDown.bind(null, directions.DOWN)}
             onMouseUp={this._mouseUp.bind(null, directions.DOWN)}
+            onMouseOut={this._mouseUp.bind(null, directions.DOWN)}
             onClick={this._focus.bind(null, true)}
             disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
