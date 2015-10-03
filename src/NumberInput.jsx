@@ -74,7 +74,7 @@ module.exports = React.createClass({
       , number = this.props.parse(e.target.value, this.props.culture)
       , valid = this.isValid(number);
 
-    if( val == null || val.trim() === '' )
+    if( val == null || val.trim() === '' || val.trim() === '-')
       return this.props.onChange(null)
 
     if( valid && number !== this.props.value && !this.isAtDelimiter(number, val))
