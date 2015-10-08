@@ -10,6 +10,10 @@ Change event Handler that is called when the value is changed. The handler is ca
 
 <EditableExample codeText={require('../examples/onChangePicker')(widgetName, ['new Date()'])}/>
 
+### onNavigate?{ type: 'Function( Date? date, direction string, view string )' }
+
+Callback fired when the Calendar navigates between views, or forward and backwards in time.
+
 ### min?{ type: 'Date' }
 
 The minimum date that the Calendar can navigate from.
