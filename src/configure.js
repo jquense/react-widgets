@@ -1,9 +1,6 @@
 import configuration from './util/configuration';
-import localizers from './util/localizers';
+import * as localizers from './util/localizers';
 
-let {
-    NumberLocalizer
-  , DateLocalizer } = localizers
 
 export default {
 
@@ -12,15 +9,11 @@ export default {
   },
 
   setLocalizers({ date, number }) {
-    this.setDateLocalizer(date)
-    this.setNumberLocalizer(number)
+    date && this.setDateLocalizer(date)
+    number && this.setNumberLocalizer(number)
   },
 
-  setDateLocalizer(spec) {
-    configuration.locale.date = new DateLocalizer(spec)
-  },
+  setDateLocalizer: localizers.setDate,
 
-  setNumberLocalizer(spec) {
-    configuration.locale.number = new NumberLocalizer(spec)
-  }
+  setNumberLocalizer: localizers.setNumber
 }

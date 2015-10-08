@@ -8,6 +8,7 @@ module.exports = function makeConfig(options){
     , plugins = options.plugins || []
 
   var loaders = [
+    { test: /\.json$/, loader: 'json-loader' },
     { test: /\.css$/,  loader: options.extractStyles
         ? ExtractTextPlugin.extract('style-loader', 'css-loader')
         : 'style-loader!css-loader' },

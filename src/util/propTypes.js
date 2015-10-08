@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
-import config from'./configuration';
+import localizers from './localizers';
 import filters from'./filter';
 
-let localizers = config.locale
 var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
 
 function getInteractionPropType(key){

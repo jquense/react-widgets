@@ -6,7 +6,7 @@ import compat from './util/compat';
 import _      from './util/_'; //pick, omit, has
 
 import dates  from './util/dates';
-import config from './util/configuration';
+import { date as dateLocalizer } from './util/localizers';
 import constants  from './util/constants';
 
 import Popup     from './Popup';
@@ -21,7 +21,6 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let { calendarViews: views, datePopups: popups } = constants;
 let Calendar = _Calendar.ControlledComponent;
-let localizers = config.locale;
 let viewEnum  = Object.keys(views).map( k => views[k] );
 
 let { omit, pick } = _;
@@ -461,15 +460,15 @@ function getFormat(props){
   return props.format
     ? props.format
     : (cal && time) || (!cal && !time)
-      ? localizers.date.formats.default
-      : localizers.date.formats[cal ? 'date' : 'time']
+      ? dateLocalizer.getFormat('default')
+      : dateLocalizer.getFormat(cal ? 'date' : 'time')
 }
 
 function formatDate(date, format, culture){
   var val = ''
 
   if ((date instanceof Date) && !isNaN(date.getTime()))
-    val = localizers.date.format(date, format, culture)
+    val = dateLocalizer.format(date, format, culture)
 
   return val;
 }
@@ -478,7 +477,7 @@ function formatsParser(formats, culture, str){
   var date;
 
   for (var i = 0; i < formats.length; i++ ){
-    date = localizers.date.parse(str, formats[i], culture)
+    date = dateLocalizer.parse(str, formats[i], culture)
     if (date) return date
   }
   return null

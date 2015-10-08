@@ -8,10 +8,8 @@ var assert = require('assert')
 var React = require('react');
 var renderToString = require('react-dom/server').renderToString
 var globalize = require('globalize')
-var configure = require('../src/configure')
-var localizers = require('../src/globalize-localizers')
 
-configure.setLocalizers(localizers(globalize))
+require('../src/localizers/globalize')(globalize)
 
 var components = [
       'Calendar',

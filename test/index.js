@@ -2,10 +2,8 @@
 var React = require('react');
 var widgetHelpers = require('../src/util/widgetHelpers')
 var globalize = require('globalize')
-var configure = require('../src/configure')
-var localizers = require('../src/globalize-localizers')
 
-configure.setLocalizers(localizers(globalize))
+require('../src/localizers/globalize')(globalize)
 
 //disable this particular optimization
 sinon.stub(widgetHelpers, 'isFirstFocusedRender', ()=> true)

@@ -204,7 +204,6 @@ var ComboBox = React.createClass({
           suggest={suggest}
           name={name}
           role='combobox'
-          autoFocus={this.props.autoFocus}
           aria-owns={listID}
           aria-busy={!!busy}
           aria-autocomplete={completeType}

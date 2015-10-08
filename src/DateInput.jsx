@@ -1,10 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import compat from './util/compat';
-import config from './util/configuration';
+import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
-
-let localizers = config.locale;
 
 export default React.createClass({
 
@@ -106,7 +104,7 @@ function formatDate(date, format, culture){
   var val = ''
 
   if ( (date instanceof Date) && isValid(date) )
-    val = localizers.date.format(date, format, culture)
+    val = dateLocalizer.format(date, format, culture)
 
   return val;
 }

@@ -31,12 +31,11 @@ require('../vendor/styles.css')
 require('react-widgets/less/react-widgets.less')
 require('../docs.css')
 
-var configure = require('../../src/configure')
-var localizers = require('../../src/globalize-localizers')
 
-configure.setLocalizers(
-  localizers(require('globalize'))
-)
+var localizers = require('../../src/localizers/globalize')
+
+localizers(require('globalize'))
+
 
 var locations = [
       'getting-started', 'dropdown-list', 'combobox',
@@ -51,7 +50,7 @@ var Docs = React.createClass({
 
   getInitialState: function () {
     return {
-      sideHref: '#intro',
+      sideHref: '#intro'
     }
   },
 

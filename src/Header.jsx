@@ -1,9 +1,8 @@
-'use strict';
-var React = require('react')
-  , Btn = require('./WidgetButton');
+import React from 'react';
+import Btn from './WidgetButton';
 
-module.exports = React.createClass({
-
+export default React.createClass({
+  displayName: 'Header',
   propTypes: {
     label:          React.PropTypes.string.isRequired,
     labelId:        React.PropTypes.string,
@@ -26,7 +25,7 @@ module.exports = React.createClass({
     require('./mixins/RtlChildContextMixin')
   ],
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       messages: {
         moveBack:     'navigate back',
@@ -35,7 +34,7 @@ module.exports = React.createClass({
     }
   },
 
-  render: function(){
+  render(){
     let {
         messages, label, labelId
       , onMoveRight, onMoveLeft, onViewChange

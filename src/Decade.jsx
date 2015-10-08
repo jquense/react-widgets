@@ -1,14 +1,10 @@
 import React from 'react';
 import cn from 'classnames';
 import dates from './util/dates';
-import config from './util/configuration';
+import { date as dateLocalizer } from './util/localizers';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 import { instanceId } from './util/widgetHelpers';
-
-var localizers = config.locale
-
-var format = props => props.yearFormat || localizers.date.formats.year
 
 let propTypes = {
   optionID:     React.PropTypes.func,
@@ -75,7 +71,9 @@ export default React.createClass({
           var isFocused = isEqual(date, focused)
             , isSelected = isEqual(date, value)
             , currentYear = isEqual(date, today)
-            , label = localizers.date.format(date, format(this.props), culture);
+            , label = dateLocalizer.format(date,
+                dateLocalizer.getFormat('year', this.props.yearFormat)
+              , culture);
 
           var currentID = optionId(id, date);
 

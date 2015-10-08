@@ -7,7 +7,7 @@ import Month    from './Month';
 import Year     from './Year';
 import Decade   from './Decade';
 import Century  from './Century';
-import config   from './util/configuration';
+import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
 import createUncontrolledWidget from 'uncontrollable';
 import SlideTransition from './SlideTransition';
@@ -21,8 +21,7 @@ let dir    = constants.directions
   , values = obj => Object.keys(obj).map( k => obj[k] )
   , invert = obj => _.transform(obj, (o, val, key) => { o[val] = key }, {});
 
-let localizers   = config.locale
-  , views        = constants.calendarViews
+let views        = constants.calendarViews
   , VIEW_OPTIONS = values(views)
   , ALT_VIEW     = invert(constants.calendarViewHierarchy)
   , NEXT_VIEW    = constants.calendarViewHierarchy
@@ -52,7 +51,7 @@ let MULTIPLIER = {
       [views.CENTURY]: 100
     };
 
-let format = (props, f) => props[f + 'Format'] || localizers.date.formats[f]
+let format = (props, f) => dateLocalizer.getFormat(f, props[f + 'Format'])
 
 
 let propTypes = {
@@ -385,16 +384,16 @@ let Calendar = React.createClass({
       , dt   = this.state.currentDate;
 
     if ( view === 'month')
-      return localizers.date.format(dt, format(props, 'header'), culture)
+      return dateLocalizer.format(dt, format(props, 'header'), culture)
 
     else if ( view === 'year')
-      return localizers.date.format(dt, format(props, 'year'), culture)
+      return dateLocalizer.format(dt, format(props, 'year'), culture)
 
     else if ( view === 'decade')
-      return localizers.date.format(dates.startOf(dt, 'decade'), format(props, 'decade'), culture)
+      return dateLocalizer.format(dates.startOf(dt, 'decade'), format(props, 'decade'), culture)
 
     else if ( view === 'century')
-      return localizers.date.format(dates.startOf(dt, 'century'), format(props, 'century'), culture)
+      return dateLocalizer.format(dates.startOf(dt, 'century'), format(props, 'century'), culture)
   },
 
   inRangeValue(_value){

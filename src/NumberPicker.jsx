@@ -6,7 +6,7 @@ import CustomPropTypes from './util/propTypes';
 import createUncontrolledWidget from 'uncontrollable';
 import constants from './util/constants';
 import repeater from './util/repeater';
-import config from './util/configuration';
+import { number as numberLocalizer } from './util/localizers';
 import Input from './NumberInput';
 import Btn from './WidgetButton';
 
@@ -14,9 +14,8 @@ import { widgetEditable, widgetEnabled } from './util/interaction';
 import { notify } from './util/widgetHelpers';
 
 let { directions } = constants;
-let localizers = config.locale
 
-let format = props => props.format || localizers.number.formats.default
+var format = props => numberLocalizer.getFormat('default', props.format)
 
 let propTypes = {
 
@@ -153,7 +152,6 @@ let NumberPicker = React.createClass({
           name={this.props.name}
           role='spinbutton'
           min={this.props.min}
-          autoFocus={this.props.autoFocus}
           aria-valuenow={val}
           aria-valuemin={isFinite(this.props.min) ? this.props.min : null }
           aria-valuemax={isFinite(this.props.max) ? this.props.max : null }
@@ -245,7 +243,7 @@ let NumberPicker = React.createClass({
 
     var decimals = this.props.precision != null
       ? this.props.precision
-      : localizers.number.precision(format(this.props))
+      : numberLocalizer.precision(format(this.props))
 
     this.change(
       decimals != null ? round(value, decimals) : value)

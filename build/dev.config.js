@@ -11,6 +11,16 @@ module.exports = makeConfig({
 
   entry:  path.join(__dirname, '../dev/dev.jsx'),
 
+  loaders: [
+    {
+      test: /globalize/,
+      loader: 'imports?define=>false'
+    },
+    {
+      test: /cldr-data.+\.js$/,
+      loader: 'imports?define=>false'
+    }
+  ],
   output: {
     filename: 'bundle.js',
     path: __dirname,
