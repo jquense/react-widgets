@@ -281,7 +281,7 @@ var Multiselect = React.createClass({
                 onSelect={this._onSelect}
                 onMove={this._scrollTo}
                 messages={{
-                  emptyList: data.length
+                  emptyList: this._lengthWithoutValues
                     ? messages.emptyFilter
                     : messages.emptyList
                 }}
