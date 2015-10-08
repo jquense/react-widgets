@@ -53,9 +53,11 @@ export default React.createClass({
       , focusedItem = this._closestDate(data, nextProps.value)
       , valChanged  = !dates.eq(nextProps.value, this.props.value, 'minutes')
       , minChanged  = !dates.eq(nextProps.min, this.props.min, 'minutes')
-      , maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes');
+      , maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes')
+      , localeChanged = this.props.format !== nextProps.format
+                     || this.props.culture !== nextProps.culture;
 
-    if (valChanged || minChanged || maxChanged){
+    if (valChanged || minChanged || maxChanged || localeChanged){
       this.setState({
         focusedItem: focusedItem || data[0],
         dates: data
