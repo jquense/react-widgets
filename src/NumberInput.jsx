@@ -1,11 +1,10 @@
-'use strict';
-var React   = require('react')
-  , CustomPropTypes = require('./util/propTypes')
-  , localizers  = require('./util/configuration').locale;
+import React from 'react';
+import CustomPropTypes from './util/propTypes';
+import { number as numberLocalizer }  from './util/localizers';
 
-var format = props => props.format || localizers.number.formats.default
+var format = props => numberLocalizer.getFormat('default', props.format)
 
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'NumberPickerInput',
 
@@ -27,7 +26,7 @@ module.exports = React.createClass({
     return {
       value: null,
       editing: false,
-      parse: (number, culture) => localizers.number.parse(number, culture)
+      parse: (number, culture) => numberLocalizer.parse(number, culture)
     }
   },
 
@@ -133,5 +132,5 @@ module.exports = React.createClass({
 // }
 
 function formatNumber(number, format, culture){
-  return localizers.number.format(number, format, culture)
+  return numberLocalizer.format(number, format, culture)
 }

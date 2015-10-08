@@ -29,8 +29,7 @@ var renderer = new Renderer()
   , props;
 
 renderer.heading = function (text, level, raw) {
-  var parts = parsePropHeader(text)
-    , valid = true;
+  var parts = parsePropHeader(text);
 
   if ( level === 3 && parts.props ){
     if ( parts.text )

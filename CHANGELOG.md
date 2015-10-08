@@ -1,0 +1,38 @@
+v3.0.0-beta.0 - Thu, 08 Oct 2015 20:51:46 GMT
+---------------------------------------------
+
+- [5457935](../../commit/5457935) [added] localizers of different types
+- [f865da1](../../commit/f865da1) [removed] IOS click hack, since react 0.14 handles this correctly
+- [3be1c86](../../commit/3be1c86) [added] pass describedBy to datepicker
+- [804db61](../../commit/804db61) [fixed] Calendar only refocuses itself when previously focused
+- [3fc44c3](../../commit/3fc44c3) [fixed] properly compare TimeList labels
+- [31c5479](../../commit/31c5479) [changed] globalize localizer now a function that takes a globalize instance
+- [44818fd](../../commit/44818fd) [added] autoFocus support
+
+
+
+v3.0.0-alpha.5 - Wed, 30 Sep 2015 14:33:16 GMT
+----------------------------------------------
+
+- [ac46a2a](../../commit/ac46a2a) [fixed] Calendar only refocuses itself when previously focused
+- [1fc7c38](../../commit/1fc7c38) [fixed] properly compare TimeList labels
+- [e74a2ed](../../commit/e74a2ed) [changed] globalize localizer now a function that takes a globalize instance
+- [180bc31](../../commit/180bc31) [added] autoFocus support
+
+
+
+v3.0.0-alpha.4 - Wed, 16 Sep 2015 09:42:02 GMT
+----------------------------------------------
+
+- [1fc7c38](../../commit/1fc7c38) [fixed] properly compare TimeList labels
+
+
+
+v3.0.0-alpha.3 - Tue, 15 Sep 2015 10:27:55 GMT
+----------------------------------------------
+
+- [e74a2ed](../../commit/e74a2ed) [changed] globalize localizer now a function that takes a globalize instance
+- [180bc31](../../commit/180bc31) [added] autoFocus support
+
+
+

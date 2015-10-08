@@ -1,13 +1,12 @@
 import React from 'react';
 import cn from 'classnames';
 import dates from './util/dates';
-import config from './util/configuration';
+import { date as dateLocalizer } from './util/localizers';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 import { instanceId } from './util/widgetHelpers';
 
-var localizers = config.locale
-var format = props => props.monthFormat || localizers.date.formats.month
+var format = props => dateLocalizer.getFormat('month', props.monthFormat)
 
 let propTypes = {
   optionID:     React.PropTypes.func,
@@ -64,7 +63,7 @@ let YearView = React.createClass({
         focused, disabled, onChange
       , value, today, culture, min, max } = this.props
       , id = instanceId(this)
-      , labelFormat = localizers.date.formats.header;
+      , labelFormat = dateLocalizer.getFormat('header');
 
     return (
       <tr key={rowIdx} role='row'>
@@ -72,7 +71,7 @@ let YearView = React.createClass({
           var isFocused  = isEqual(date, focused)
             , isSelected = isEqual(date, value)
             , currentMonth = isEqual(date, today)
-            , label = localizers.date.format(date, labelFormat, culture);
+            , label = dateLocalizer.format(date, labelFormat, culture);
 
           var currentID = optionId(id, date);
 
@@ -96,7 +95,7 @@ let YearView = React.createClass({
                     'rw-now':            currentMonth
                   })}
                 >
-                  {localizers.date.format(date, format(this.props), culture) }
+                  {dateLocalizer.format(date, format(this.props), culture) }
                 </span>
               </td>
             )

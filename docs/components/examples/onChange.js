@@ -1,7 +1,7 @@
 'use strict';
 module.exports = function(widgetName, isArray){
 var value = !isArray ? 'colors[0]' : 'colors.slice(0,1)'
-var code = 
+var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName}
   , colors = ['orange', 'red', 'blue', 'purple'];
@@ -14,14 +14,14 @@ var Example = React.createClass({
 
   render() {
     return (
-      <${widgetName} 
-        data={colors} 
+      <${widgetName}
+        data={colors}
         value={this.state.value}
         onChange={value => this.setState({ value })}/>)
   }
 });
 
-React.render(<Example/>, mountNode);`
+ReactDOM.render(<Example/>, mountNode);`
 
   return code
 

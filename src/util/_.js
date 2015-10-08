@@ -84,7 +84,6 @@ var _ =
     uniqueId (prefix) {
       return '' + ((prefix == null ? '' : prefix) + (++idCount));
     }
-
   }
 
 function has(o, k){
@@ -111,9 +110,8 @@ function shallowEqual(objA, objB) {
     return false;
 
   for (var i = 0; i < keysA.length; i++)
-    if ( !has(objB, keysA[i]) || !eql(objA[keysA[i]], objB[keysA[i]]))
+    if (!has(objB, keysA[i]) || !eql(objA[keysA[i]], objB[keysA[i]]))
       return false;
 
   return true;
 }
-

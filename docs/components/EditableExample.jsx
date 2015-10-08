@@ -1,12 +1,13 @@
 'use strict';
 
 var React = require('react')
+  , ReactDOM = require('react-dom')
   , CodeMirrorEditor = require('./codemirror')
   , babel = require('babel/browser')
   , config = require('json!../../.babelrc')
   , ReactWidgets = require('../../src/index')
-  , MultiselectTagList = require('../../src/MultiselectTagList')
-  , List = require('../../src/List')
+  , MultiselectTagList = require('react-widgets/MultiselectTagList')
+  , List = require('react-widgets/List')
   , genData = require('./generate-data');
 
 function listOfPeople(){
@@ -14,9 +15,9 @@ function listOfPeople(){
 }
 
 function scopedEval(code, mountNode)  {
-  var context = { ReactWidgets: { ...ReactWidgets, MultiselectTagList, List }, listOfPeople, mountNode, React }
+  var context = { ReactWidgets: { ...ReactWidgets, MultiselectTagList, List }, listOfPeople, mountNode, React, ReactDOM }
 
-  return (new Function( "with(this) { " + code + "}")).call(context);
+  return (new Function( 'with(this) { ' + code + '}')).call(context);
 }
 
 config.plugins = []
@@ -44,9 +45,9 @@ module.exports = React.createClass({
   },
 
   handleCodeChange: function(value) {
-    this.setState({code: value, error: null }, 
+    this.setState({code: value, error: null },
       () => this.executeCode());
-    
+
   },
 
   compileCode: function() {
@@ -80,7 +81,7 @@ module.exports = React.createClass({
     clearTimeout(this.timeoutID);
     // execute code only when the state's not being updated by switching tab
     // this avoids re-displaying the error, which comes after a certain delay
-    if (this.state.code !== nextState.code) 
+    if (this.state.code !== nextState.code)
       setTimeout(() => this.executeCode());
   },
 
@@ -90,25 +91,25 @@ module.exports = React.createClass({
   },
 
   componentWillUnmount: function() {
-    var mountNode = this.refs.mount.getDOMNode();
-    
+    var mountNode = this.refs.mount;
+
     try {
-      React.unmountComponentAtNode(mountNode);
-    } 
+      ReactDOM.unmountComponentAtNode(mountNode);
+    }
     catch (e) { }
   },
 
   executeCode: function() {
-    var mountNode = this.refs.mount.getDOMNode();
+    var mountNode = this.refs.mount;
 
     try {
-      React.unmountComponentAtNode(mountNode);
-    } 
+      ReactDOM.unmountComponentAtNode(mountNode);
+    }
     catch (e) { }
 
     try {
       scopedEval(this.compileCode(), mountNode);
-    } 
+    }
     catch (err) {
       this.setTimeout(() => {
         this.setState({ error: err.toString() })

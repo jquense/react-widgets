@@ -1,16 +1,16 @@
 
 
 module.exports = {
-	Button: 		require('react-bootstrap/Button'),
-	ButtonGroup: 	require('react-bootstrap/ButtonGroup'),
+	Button: 		require('react-bootstrap/lib/Button'),
+	ButtonGroup: 	require('react-bootstrap/lib/ButtonGroup'),
 
-	DropdownButton: require('react-bootstrap/DropdownButton'),
-	MenuItem: 		require('react-bootstrap/MenuItem'),
+	DropdownButton: require('react-bootstrap/lib/DropdownButton'),
+	MenuItem: 		require('react-bootstrap/lib/MenuItem'),
 
-	Nav: require('react-bootstrap/Nav'),
-	Navbar: require('react-bootstrap/Navbar'),
-	SubNav: require('react-bootstrap/SubNav'),
-	NavItem: require('react-bootstrap/NavItem'),
+	Nav: require('react-bootstrap/lib/Nav'),
+	Navbar: require('react-bootstrap/lib/Navbar'),
+	SubNav: require('react-bootstrap/lib/SubNav'),
+	NavItem: require('react-bootstrap/lib/NavItem'),
 
-  Affix: require('react-bootstrap/Affix')
+  Affix: require('react-bootstrap/lib/Affix')
 }

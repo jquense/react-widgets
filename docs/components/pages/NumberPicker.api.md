@@ -1,5 +1,6 @@
 
-Spinner for selecting numbers. Supports multiple formats for display and editing through [Globalize.js](https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468).
+Spinner for selecting numbers. The NumberPicker is a _localized_ widget and so __requires__ a localizer to
+be specified.  You can read more about localizers here: [localization](i18n).
 
 <--------------->
 
@@ -16,13 +17,14 @@ current numeric value or null.
 
 <EditableExample codeText={require('../examples/onChangePicker')(widgetName, [1, null])}/>
 
-### format?{ type: 'Function(String str) | String', default: 'd' }
+### format?{ localizable: true }
 
-A format string used to display the number value. For more information on prefined and custom number and currency formats visit the [Globalize.js documentation](https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#number-formatting') You provide a `Function` as a format if you wish to not use Globalize, or just want to provide some custom behavior.
+A format string used to display the number value. Localizer dependent, read [localization](i18n) for more info.
 
 ### parse?{ type: 'Function(String str, String culture) | Array<String>' }
 
-Determines how the {widgetName} parses a number from the localized string representation. You can also provide a parser `Function` to pair with a custom `format`.
+Determines how the {widgetName} parses a number from the localized string representation.
+You can also provide a parser `Function` to pair with a custom `format`.
 
 ### min?{ type: 'Number', default: '-Infinity' }
 
@@ -44,7 +46,7 @@ Amount to increase or decrease value when using the spinner buttons.
 
 ### precision?{ type: 'Number' }
 
-Specify how precise the `value` should be when typing, incrementing, or decrementing the value. When empty, precision 
+Specify how precise the `value` should be when typing, incrementing, or decrementing the value. When empty, precision
 is parsed from the current `format` and culture.
 
 ### isRtl?{ type: 'Boolean', default: 'false' }
@@ -62,7 +64,7 @@ localize widget text and increase accessibility.
 Number picker spinner up button text for screen readers
 
 ### messages.decrement?{ type: 'String', default: '"decrement value"' }
-Number picker spinner down button text for screen readers 
+Number picker spinner down button text for screen readers
 
 ## Keyboard Navigation
 

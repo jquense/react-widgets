@@ -1,20 +1,9 @@
-'use strict';
+import invariant from 'invariant'
 var METHODS = ['next', 'prev', 'first', 'last'];
 
-module.exports = function validateListComponent(list){
-
-  if( process.env.NODE_ENV !== 'production' ){
-    METHODS.forEach( method =>
-      assert(typeof list[method] === 'function', 'List components must implement a `' + method + '()` method') )
-  }
-}
-
-function assert(condition, msg){
-  var error
-
-  if ( !condition){
-    error = new Error(msg)
-    error.framesToPop = 1;
-    throw error;
+export default function validateListComponent(list){
+  if (process.env.NODE_ENV !== 'production') {
+    METHODS.forEach(method =>
+      invariant(typeof list[method] === 'function', 'List components must implement a `' + method + '()` method') )
   }
 }

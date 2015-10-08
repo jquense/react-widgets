@@ -1,74 +1,39 @@
 'use strict';
 require('../src/less/react-widgets.less')
 
-//require('react-a11y')();
-var configure = require('../src/configure')
+var Globalize = require('globalize')
+var localizers = require('../src/localizers/globalize')
+var numberLocalizer = require('../src/localizers/simple-number')
 
-//configure.setGlobalizeInstance(window.Globalize);
+Globalize.load(
+	require('cldr-data/main/en-GB/ca-gregorian.json'),
+	require('cldr-data/main/en-GB/currencies.json'),
+	require('cldr-data/main/en-GB/dateFields.json'),
+	require('cldr-data/main/en-GB/numbers.json'),
+  require('cldr-data/supplemental/numberingSystems.json'),
+	require('cldr-data/supplemental/currencyData.json'),
+	require('cldr-data/supplemental/likelySubtags.json'),
+	require('cldr-data/supplemental/timeData.json'),
+	require('cldr-data/supplemental/weekData.json')
+);
+Globalize.locale('en-GB')
+
+localizers(Globalize)
+numberLocalizer()
 
 var React = require('react/addons')
-//var jquery = require('jquery')
 var index = require('../src')
+var dates = require('../src/util/dates')
 var DropdownList = require('../src/DropdownList.jsx')
 var Multiselect = require('../src/Multiselect.jsx')
 var Calendar = require('../src/Calendar.jsx')
-var DatePicker = require('../src/DateTimePicker.jsx')
+var DateTimePicker = require('../src/DateTimePicker.jsx')
 var NumberPicker = require('../src/NumberPicker.jsx')
-var ComboBox = require('../src/Combobox.jsx')
-var SelectList = require('../src/SelectList.jsx')
-var List = require('../src/List.jsx')
+// var ComboBox = require('../src/Combobox.jsx')
+// var SelectList = require('../src/SelectList.jsx')
+// var List = require('../src/List.jsx')
 
 var chance = new (require('chance'))
-
-var { ModalTrigger, Modal } = require('react-bootstrap')
-
-// var moment = require('moment')
-
-// var endOfDecade = date => moment(date).add(10, 'year').add(-1, 'millisecond').toDate()
-// var endOfCentury = date => moment(date).add(100, 'year').add(-1, 'millisecond').toDate()
-
-// configure.setDateLocalizer({
-//   formats: {
-//     date: 'L',
-//     time: 'LT',
-//     default: 'lll',
-//     header: 'MMMM YYYY',
-//     footer: 'LL',
-//     weekday: (day, culture, localizer) => moment().locale(culture).weekday(day).format('dd'),
-
-//     dayOfMonth: 'DD',
-//     month: 'MMM',
-//     year: 'YYYY',
-
-//     decade: (date, culture, localizer) => {
-//       return localizer.format(date, 'YYYY', culture)
-//         + ' - ' + localizer.format(endOfDecade(date), 'YYYY', culture)
-//     },
-
-//     century: (date, culture, localizer) => {
-//       return localizer.format(date, 'YYYY', culture)
-//         + ' - ' + localizer.format(endOfCentury(date), 'YYYY', culture)
-//     }
-//   },
-
-//   firstOfWeek(culture){
-//     return moment.localeData(culture).firstDayOfWeek()
-//   },
-
-//   parse(value, format, culture){
-//     return moment(value, format).locale(culture).toDate()
-//   },
-
-//   format(value, format, culture){
-//     return moment(value).locale(culture).format(format)
-//   }
-// })
-
-
-// configure.setAnimate((element, props, duration, ease, callback) => {
-//   return jquery(element).animate(props, duration, callback)
-// })
-
 
 var App = React.createClass({
 
@@ -131,11 +96,19 @@ var App = React.createClass({
         <div style={{ maxWidth: 600, height: 1500 }}>
 
           <section className="example" style={{ marginBottom: 20 }}>
-          <button onClick={() => this.dropdowns()}>add</button>
-
-          <DatePicker editFormat='d' onChange={(...args)=> console.log(args)}/>
-
-
+            <button
+              onClick={() => this.setState({
+                calDate: dates.add(this.state.calDate, 1, 'month')
+              })}
+            >
+              add
+            </button>
+            <DateTimePicker/>
+            <Calendar
+              value={this.state.calDate}
+              onChange={calDate => this.setState({ calDate })}
+            />
+            <NumberPicker />
           </section>
         </div>
       </div>

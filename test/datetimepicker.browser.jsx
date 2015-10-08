@@ -2,10 +2,12 @@
 /*global it, describe, expect, sinon*/
 require('../vendor/phantomjs-shim')
 
+import { findDOMNode } from 'react-dom';
+
 var React = require('react/addons');
 var DateTimePicker = require('../src/DateTimePicker.jsx')
   , TimeList = require('../src/TimeList.jsx')
-  , Calendar = require('../src/Calendar.jsx').BaseCalendar
+  , Calendar = require('../src/Calendar.jsx').ControlledComponent
   , Globalize = require('globalize');
 
 
@@ -21,46 +23,46 @@ describe('DateTimePicker', function(){
 
   it('should set initial values', function(){
     var date = new Date()
-      , picker = render(<DateTimePicker defaultValue={date} format="MM-dd-yyyy"/>)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+      , instance = render(<DateTimePicker defaultValue={date} format="MM-dd-yyyy"/>)
+      , input  = findClass(instance, 'rw-input');
 
     expect( input.value).to.be(Globalize.format(date, 'MM-dd-yyyy'));
   })
 
   it('should start closed', function(done){
-    var picker = render(<DateTimePicker defaultValue={new Date()} />);
-    var popups = findAllType(picker, require('../src/Popup.jsx'));
+    var instance = render(<DateTimePicker defaultValue={new Date()} />);
+    var popups = findAllType(instance, require('../src/Popup.jsx'));
 
-    expect(picker.state.open).to.not.be(true)
-    expect(picker.getDOMNode().className).to.not.match(/\brw-open\b/)
+    expect(instance._values.open).to.not.be(true)
+    expect(findDOMNode(instance).className).to.not.match(/\brw-open\b/)
 
-    expect(findClass(picker, 'rw-input').getDOMNode().getAttribute('aria-expanded')).to.be('false')
+    expect(findClass(instance, 'rw-input').getAttribute('aria-expanded')).to.be('false')
 
     setTimeout(function(){
       expect(popups.length).to.be(2)
-      popups.forEach( popup => expect(popup.getDOMNode().style.display).to.be('none'))
+      popups.forEach( popup => expect(findDOMNode(popup).style.display).to.be('none'))
       done()
     })
   })
 
   it('should open when clicked', function(){
     var onOpen = sinon.spy()
-      , picker = render(<DateTimePicker onToggle={onOpen} />);
+      , instance = render(<DateTimePicker onToggle={onOpen} />);
 
-    trigger.click(findClass(picker, 'rw-btn-calendar').getDOMNode())
+    trigger.click(findClass(instance, 'rw-btn-calendar'))
 
     expect(onOpen.calledOnce).to.be(true)
 
-    trigger.click(findClass(picker, 'rw-btn-time').getDOMNode())
+    trigger.click(findClass(instance, 'rw-btn-time'))
 
     expect(onOpen.calledTwice).to.be(true)
   })
 
   it('should change when selecting a time or date', function(){
     var change   = sinon.spy()
-      , picker   = render(<DateTimePicker onChange={change} open='calendar' onToggle={()=>{}} />)
-      , calendar = findType(picker, Calendar)
-      , timelist = findType(picker, require('../src/List.jsx')).getDOMNode().children
+      , instance   = render(<DateTimePicker onChange={change} open='calendar' onToggle={()=>{}} />)
+      , calendar = findType(instance, Calendar)
+      , timelist = findDOMNode(findType(instance, require('../src/List.jsx'))).children
 
     calendar.change(new Date())
     expect(change.calledOnce).to.be(true)
@@ -71,25 +73,26 @@ describe('DateTimePicker', function(){
 
   it('should set id on list', function(){
     var instance = render(<DateTimePicker />)
-      , list = findTag(instance, 'ul').getDOMNode();
+      , list = findTag(instance, 'ul');
 
     expect(list.hasAttribute('id')).to.be(true);
   })
 
   it('should not show time button when not selected', function(){
     var spy
-      , picker = render(<DateTimePicker time={false} calendar={false} onToggle={spy = sinon.spy()}/>);
+      , instance = render(<DateTimePicker time={false} calendar={false} onToggle={spy = sinon.spy()}/>);
 
-    expect(() => findClass(picker, 'rw-btn-time')).to
+    expect(() => findClass(instance, 'rw-btn-time')).to
       .throwException(/Did not find exactly one match.+/)
 
-    expect(() => findClass(picker, 'rw-btn-calendar')).to
+    expect(() => findClass(instance, 'rw-btn-calendar')).to
       .throwException(/Did not find exactly one match.+/)
 
     //make sure keyboard shortcuts don't work either
-    trigger.keyDown(picker.getDOMNode(), { altKey: true })
+    trigger.keyDown(findDOMNode(instance), { altKey: true })
     expect(spy.callCount).to.be(0)
-    trigger.keyDown(picker.getDOMNode(), { altKey: true })
+
+    trigger.keyDown(findDOMNode(instance), { altKey: true })
     expect(spy.callCount).to.be(0)
   })
 
@@ -97,16 +100,16 @@ describe('DateTimePicker', function(){
   it('should trigger focus/blur events', function(done){
     var blur = sinon.spy()
       , focus = sinon.spy()
-      , picker = render(<DateTimePicker onBlur={blur} onFocus={focus}/>);
+      , instance = render(<DateTimePicker onBlur={blur} onFocus={focus}/>);
 
     expect(focus.calledOnce).to.be(false)
     expect(blur.calledOnce).to.be(false)
 
-    trigger.focus(picker.getDOMNode())
+    trigger.focus(findDOMNode(instance))
 
     setTimeout(() => {
       expect(focus.calledOnce).to.be(true)
-      trigger.blur(picker.getDOMNode())
+      trigger.blur(findDOMNode(instance))
 
       setTimeout(() => {
         expect(blur.calledOnce).to.be(true)
@@ -117,8 +120,8 @@ describe('DateTimePicker', function(){
 
   it('should trigger key events', function(){
     var kp = sinon.spy(), kd = sinon.spy(), ku = sinon.spy()
-      , picker = render(<DateTimePicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+      , instance = render(<DateTimePicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
+      , input  = findClass(instance, 'rw-input');
 
     trigger.keyPress(input)
     trigger.keyDown(input)
@@ -130,38 +133,38 @@ describe('DateTimePicker', function(){
   })
 
   it('should do nothing when disabled', function(done){
-    var picker = render(<DateTimePicker defaultValue={new Date} disabled/>)
-      , input = findClass(picker, 'rw-input').getDOMNode();
+    var instance = render(<DateTimePicker defaultValue={new Date()} disabled/>)
+      , input = findClass(instance, 'rw-input');
 
     expect( input.hasAttribute('disabled')).to.be(true);
 
-    trigger.click(findClass(picker, 'rw-i-calendar').getDOMNode())
+    trigger.click(findClass(instance, 'rw-i-calendar'))
 
     setTimeout(() => {
-      expect(picker.state.open).to.not.be(true)
+      expect(instance._values.open).to.not.be(true)
       done()
     })
   })
 
   it('should do nothing when readonly', function(done){
-    var picker = render(<DateTimePicker defaultValue={new Date} readOnly/>)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+    var instance = render(<DateTimePicker defaultValue={new Date()} readOnly/>)
+      , input  = findClass(instance, 'rw-input');
 
     expect( input.hasAttribute('readonly')).to.be(true);
 
-    trigger.click(findClass(picker, 'rw-i-calendar').getDOMNode())
+    trigger.click(findClass(instance, 'rw-i-calendar'))
 
     setTimeout(() => {
-      expect(picker.state.open).to.not.be(true)
+      expect(instance._values.open).to.not.be(true)
       done()
     })
   })
 
   it('should call Select handler', function(){
     var change   = sinon.spy(), select = sinon.spy()
-      , picker   = render(<DateTimePicker onChange={change} onSelect={select}/>)
-      , calendar = findType(picker, Calendar)
-      , timelist = findType(picker, require('../src/List.jsx')).getDOMNode().children;
+      , instance   = render(<DateTimePicker onChange={change} onSelect={select}/>)
+      , calendar = findType(instance, Calendar)
+      , timelist = findDOMNode(findType(instance, require('../src/List.jsx'))).children;
 
     calendar.change(new Date())
 
@@ -179,28 +182,28 @@ describe('DateTimePicker', function(){
 
   it('should change values on key down', function(){
     var change = sinon.spy()
-      , picker = render(<DateTimePicker onChange={change} />)
-      , timelist = findType(picker, require('../src/List.jsx')).getDOMNode().children;
+      , instance = render(<DateTimePicker onChange={change} />)
+      , timelist = findDOMNode(findType(instance, require('../src/List.jsx'))).children;
 
-    trigger.keyDown(picker.getDOMNode(), { key: 'ArrowDown', altKey: true })
-    expect(picker.state.open).to.be('calendar')
+    trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown', altKey: true })
+    expect(instance._values.open).to.be('calendar')
 
-    trigger.keyDown(picker.getDOMNode(), { key: 'ArrowDown', altKey: true })
-    expect(picker.state.open).to.be('time')
+    trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown', altKey: true })
+    expect(instance._values.open).to.be('time')
 
-    trigger.keyDown(picker.getDOMNode(), { key: 'Home'})
+    trigger.keyDown(findDOMNode(instance), { key: 'Home'})
 
     expect(timelist[0].className).to.match(/\brw-state-focus\b/)
 
-    trigger.keyDown(picker.getDOMNode(), { key: 'End'})
+    trigger.keyDown(findDOMNode(instance), { key: 'End'})
 
-    expect(timelist[timelist.length-1].className).to.match(/\brw-state-focus\b/)
+    expect(timelist[timelist.length - 1].className).to.match(/\brw-state-focus\b/)
 
-    trigger.keyDown(picker.getDOMNode(), { key: 'ArrowUp' })
-    expect(timelist[timelist.length-2].className).to.match(/\brw-state-focus\b/)
+    trigger.keyDown(findDOMNode(instance), { key: 'ArrowUp' })
+    expect(timelist[timelist.length - 2].className).to.match(/\brw-state-focus\b/)
 
-    trigger.keyDown(picker.getDOMNode(), { key: 'ArrowDown' })
-    expect(timelist[timelist.length-1].className).to.match(/\brw-state-focus\b/)
+    trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown' })
+    expect(timelist[timelist.length - 1].className).to.match(/\brw-state-focus\b/)
   })
 
 
@@ -216,7 +219,7 @@ describe('DateTimePicker', function(){
       expect(time.date.getMinutes()).to.eql(30)
       expect(time.date.getSeconds()).to.eql(0)
 
-      inst = render(<TimeList value={new Date(2014,0,15, 8)} max={date} preserveDate/>)
+      inst = render(<TimeList value={new Date(2014, 0,15, 8)} max={date} preserveDate/>)
 
       var time = inst.state.dates[inst.state.dates.length - 1]
 
@@ -226,8 +229,8 @@ describe('DateTimePicker', function(){
     })
 
     it('should render min correctly', ()=>{
-      var date = new Date(2014,0, 16, 9,30)
-        , inst = render(<TimeList value={new Date(2014,0,16, 12)} min={date} preserveDate/>)
+      var date = new Date(2014, 0, 16, 9, 30)
+        , inst = render(<TimeList value={new Date(2014, 0,16, 12)} min={date} preserveDate/>)
 
       var time = inst.state.dates[0]
 
@@ -235,7 +238,7 @@ describe('DateTimePicker', function(){
       expect(time.date.getMinutes()).to.eql(30)
       expect(time.date.getSeconds()).to.eql(0)
 
-      inst = render(<TimeList value={new Date(2014,0,18, 8)} min={date} preserveDate/>)
+      inst = render(<TimeList value={new Date(2014, 0,18, 8)} min={date} preserveDate/>)
 
       var time = inst.state.dates[0]
 
@@ -246,7 +249,7 @@ describe('DateTimePicker', function(){
 
 
     it('should set the step property', ()=>{
-      var date = new Date(2014,0, 16, 9,30)
+      var date = new Date(2014, 0, 16, 9, 30)
         , inst = render(<DateTimePicker step={60}/>);
 
       var dates = findType(inst, TimeList).state.dates

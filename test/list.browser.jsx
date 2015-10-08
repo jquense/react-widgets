@@ -2,6 +2,7 @@
 require('../vendor/phantomjs-shim')
 
 var React = require('react/addons');
+import ReactDOM from 'react-dom';
 var List = require('../src/List.jsx');
 
 //console.log(sinon)
@@ -21,7 +22,7 @@ describe('List', function(){
     var list = render(
           <List data={data} onChange={()=>{}} />);
 
-    expect( list.getDOMNode().children.length).to.be(5);
+    expect(ReactDOM.findDOMNode(list).children.length).to.be(5);
   })
 
   it('should generate ids', function(){
@@ -30,7 +31,7 @@ describe('List', function(){
 
     let seen = [];
 
-    $(list.getDOMNode()).children().each(
+    $(ReactDOM.findDOMNode(list)).children().each(
       function(){
         expect(this.hasAttribute('id')).to.equal(true);
         expect(seen.indexOf(this.id)).to.equal(-1);
@@ -42,14 +43,14 @@ describe('List', function(){
     var list = render(
           <List data={data} textField='label' valueField='id' />);
 
-    expect($(list.getDOMNode()).find('li:first-child').text())
+    expect($(ReactDOM.findDOMNode(list)).find('li:first-child').text())
       .to.be('jimmy');
   })
 
   it('should render an empty list message', function(){
     var list = render(<List data={[]} textField='label' valueField='id' />);
 
-    expect($(list.getDOMNode()).find('li').text())
+    expect($(ReactDOM.findDOMNode(list)).find('li').text())
       .to.be('There are no items in this list');
   })
 
@@ -62,7 +63,7 @@ describe('List', function(){
 
     var list = render(<List data={data} itemComponent={Templ} />);
 
-    expect( $(list.getDOMNode()).find('li:first-child').text()).to.be('hello - jimmy');
+    expect($(ReactDOM.findDOMNode(list)).find('li:first-child').text()).to.be('hello - jimmy');
   })
 
   it('should implement first()', function(){

@@ -1,12 +1,12 @@
 import React  from 'react';
-import invariant from 'react/lib/invariant';
-import activeElement from 'react/lib/getActiveElement';
+import invariant from 'invariant';
+import activeElement from 'dom-helpers/activeElement';
 import cx     from 'classnames';
 import compat from './util/compat';
 import _      from './util/_'; //pick, omit, has
 
 import dates  from './util/dates';
-import config from './util/configuration';
+import { date as dateLocalizer } from './util/localizers';
 import constants  from './util/constants';
 
 import Popup     from './Popup';
@@ -20,15 +20,14 @@ import { widgetEditable, widgetEnabled } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let { calendarViews: views, datePopups: popups } = constants;
-let Calendar = _Calendar.BaseCalendar;
-let localizers = config.locale;
+let Calendar = _Calendar.ControlledComponent;
 let viewEnum  = Object.keys(views).map( k => views[k] );
 
 let { omit, pick } = _;
 
 let propTypes = {
 
-    ...compat.type(Calendar).propTypes,
+    ...Calendar.propTypes,
 
     //-- controlled props -----------
     value:          React.PropTypes.instanceOf(Date),
@@ -63,9 +62,9 @@ let propTypes = {
     initialView:    React.PropTypes.oneOf(viewEnum),
     finalView:      React.PropTypes.oneOf(viewEnum),
 
+    autoFocus:      React.PropTypes.bool,
     disabled:       CustomPropTypes.disabled,
     readOnly:       CustomPropTypes.readOnly,
-    autoFocus:      React.PropTypes.bool,
 
     parse:          React.PropTypes.oneOfType([
                       React.PropTypes.arrayOf(React.PropTypes.string),
@@ -140,7 +139,8 @@ var DateTimePicker = React.createClass({
       , culture, duration, step, messages, min, max, busy
       , placeholder, disabled, readOnly, name, dropUp
       , timeComponent, autoFocus
-      , 'aria-labelledby': ariaLabelledby } = this.props;
+      , 'aria-labelledby': ariaLabelledby
+      , 'aria-describedby': ariaDescribedby } = this.props;
 
     let { focused } = this.state;
 
@@ -150,7 +150,7 @@ var DateTimePicker = React.createClass({
       , owns = '';
 
     let elementProps = omit(this.props, Object.keys(propTypes))
-      , calProps = pick(this.props, Object.keys(compat.type(Calendar).propTypes))
+      , calProps = pick(this.props, Object.keys(Calendar.propTypes))
 
     let shouldRenderList = isFirstFocusedRender(this) || open
       , disabledOrReadonly = disabled || readOnly
@@ -187,6 +187,7 @@ var DateTimePicker = React.createClass({
           tabIndex={tabIndex || 0}
           role='combobox'
           aria-labelledby={ariaLabelledby}
+          aria-describedby ={ariaDescribedby}
           aria-expanded={!!open}
           aria-busy={!!busy}
           aria-owns={owns.trim()}
@@ -315,10 +316,15 @@ var DateTimePicker = React.createClass({
   _keyDown(e){
     let { open, calendar, time } = this.props;
 
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
     if (e.key === 'Escape' && open)
       this.close()
 
-    else if ( e.altKey ) {
+    else if (e.altKey) {
       e.preventDefault()
 
       if (e.key === 'ArrowDown'){
@@ -339,7 +345,7 @@ var DateTimePicker = React.createClass({
         this.refs.timePopup._keyDown(e)
     }
 
-    notify(this.props.onKeyDown, [e])
+
   },
 
   @widgetEnabled
@@ -445,13 +451,10 @@ var DateTimePicker = React.createClass({
 });
 
 
-let UncontrolledDateTimePicker = createUncontrolledWidget(
+export default  createUncontrolledWidget(
     DateTimePicker
   , { open: 'onToggle', value: 'onChange' });
 
-UncontrolledDateTimePicker.BaseDateTimePicker = DateTimePicker
-
-export default UncontrolledDateTimePicker;
 
 
 
@@ -462,15 +465,15 @@ function getFormat(props){
   return props.format
     ? props.format
     : (cal && time) || (!cal && !time)
-      ? localizers.date.formats.default
-      : localizers.date.formats[cal ? 'date' : 'time']
+      ? dateLocalizer.getFormat('default')
+      : dateLocalizer.getFormat(cal ? 'date' : 'time')
 }
 
 function formatDate(date, format, culture){
   var val = ''
 
   if ((date instanceof Date) && !isNaN(date.getTime()))
-    val = localizers.date.format(date, format, culture)
+    val = dateLocalizer.format(date, format, culture)
 
   return val;
 }
@@ -479,7 +482,7 @@ function formatsParser(formats, culture, str){
   var date;
 
   for (var i = 0; i < formats.length; i++ ){
-    date = localizers.date.parse(str, formats[i], culture)
+    date = dateLocalizer.parse(str, formats[i], culture)
     if (date) return date
   }
   return null

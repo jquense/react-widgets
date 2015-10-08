@@ -2,7 +2,7 @@
 
 module.exports = function(widgetName) {
 
-var code = 
+var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 var people = listOfPeople();
@@ -17,13 +17,13 @@ var ValueInput = React.createClass({
 })
 
 var widget =(
-    <${widgetName} data={people} 
+    <${widgetName} data={people}
       textField='name'
       defaultValue={people[0]}
       valueComponent={ValueInput}/>
-  ) 
+  )
 
-React.render(widget, mountNode);`
+ReactDOM.render(widget, mountNode);`
 
 return code
 }

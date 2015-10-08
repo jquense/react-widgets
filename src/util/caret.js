@@ -1,7 +1,5 @@
 /*eslint-disable no-empty */
-'use strict';
-
-module.exports = function caret(el, start, end ){
+export default function caret(el, start, end ){
   if ( start === undefined)
     return get(el)
 

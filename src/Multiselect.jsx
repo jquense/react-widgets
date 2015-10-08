@@ -1,12 +1,9 @@
-'use strict';
 import React from 'react';
 import cx from 'classnames';
 import _  from './util/_';
 import Popup from './Popup';
-import support from'./util/dom/support';
 import SelectInput from './MultiselectInput';
 import TagList from './MultiselectTagList';
-import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
@@ -18,8 +15,6 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
   ? msgs.createNew(props) : [<strong>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
-
-React.initializeTouchEvents(true);
 
 let { omit, pick, splat } = _;
 
@@ -59,9 +54,10 @@ var propTypes = {
 
       placeholder:     React.PropTypes.string,
 
-      disabled:        CustomPropTypes.disabled.acceptsArray,
-      readOnly:        CustomPropTypes.readOnly.acceptsArray,
-      autoFocus:       React.PropTypes.bool,
+      autoFocus:      React.PropTypes.bool,
+      disabled:       CustomPropTypes.disabled.acceptsArray,
+      readOnly:       CustomPropTypes.readOnly.acceptsArray,
+
 
       messages:        React.PropTypes.shape({
         open:          CustomPropTypes.message,
@@ -120,7 +116,7 @@ var Multiselect = React.createClass({
   getInitialState(){
     var { data, value, valueField, searchTerm } = this.props
       , dataItems = splat(value).map( item => dataItem(data, item, valueField))
-      , processedData = this.process(this.props.data, dataItems, searchTerm)
+      , processedData = this.process(data, dataItems, searchTerm)
 
     return {
       focusedTag:    null,
@@ -137,18 +133,11 @@ var Multiselect = React.createClass({
     this.refs.list && validateList(this.refs.list)
   },
 
-  componentDidMount() {
-    // https://github.com/facebook/react/issues/1169
-    if( support.ios )
-      compat.findDOMNode(this.refs.wrapper).onClick = ()=>{}
-  },
-
   componentWillReceiveProps(nextProps) {
     var { data, value, valueField, searchTerm } = nextProps
       , values = _.splat(value)
       , current = this.state.focusedItem
       , items  = this.process(data, values, searchTerm)
-
 
     this.setState({
       processedData: items,
@@ -173,8 +162,8 @@ var Multiselect = React.createClass({
     let elementProps = omit(this.props, Object.keys(propTypes));
     let tagsProps    = pick(this.props, [ 'valueField', 'textField']);
     let inputProps   = pick(this.props, [ 'maxLength', 'searchTerm', 'autoFocus']);
-    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
-    let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
+    let listProps    = pick(this.props, Object.keys(List.propTypes));
+    let popupProps   = pick(this.props, Object.keys(Popup.propTypes));
 
     let {
         focusedTag, focusedItem
@@ -251,6 +240,7 @@ var Multiselect = React.createClass({
             role='listbox'
             aria-expanded={open}
             aria-busy={!!busy}
+            autoFocus={this.props.autoFocus}
             aria-owns={listID
               + ' ' + instanceId(this, '__notify')
               + (shouldRenderTags ? (' ' + tagsID) : '')
@@ -277,7 +267,7 @@ var Multiselect = React.createClass({
           <div>
           { shouldRenderPopup && [
               <List ref="list"
-                key='0'
+                key={0}
                 {...listProps}
                 readOnly={!!readOnly}
                 disabled={!!disabled}
@@ -291,13 +281,13 @@ var Multiselect = React.createClass({
                 onSelect={this._onSelect}
                 onMove={this._scrollTo}
                 messages={{
-                  emptyList: data.length
+                  emptyList: this._lengthWithoutValues
                     ? messages.emptyFilter
                     : messages.emptyList
                 }}
               />,
               shouldShowCreate &&
-                <ul role='listbox' id={createID} className="rw-list rw-multiselect-create-tag" key='1'>
+                <ul key={1} role='listbox' id={createID} className="rw-list rw-multiselect-create-tag">
                   <li onClick={this._onCreate.bind(null, searchTerm)}
                       role='option'
                       id={createOptionID}
@@ -408,6 +398,11 @@ var Multiselect = React.createClass({
     let { list, tagList } = this.refs;
     let nullTag = { focusedTag: null };
 
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
     if ( key === 'ArrowDown') {
       var next = list.next(focusedItem)
         , creating = (this._shouldShowCreate() && focusedItem === next) || focusedItem === null;
@@ -416,7 +411,7 @@ var Multiselect = React.createClass({
 
       e.preventDefault()
       if (isOpen) this.setState({ focusedItem: next, ...nullTag })
-      else          this.open()
+      else        this.open()
     }
     else if (key === 'ArrowUp') {
       var prev = focusedItem === null
@@ -456,7 +451,6 @@ var Multiselect = React.createClass({
     else if (noSearch && key === 'Backspace')
       tagList && tagList.removeNext()
 
-    notify(this.props.onKeyDown, [e])
   },
 
   @widgetEditable
@@ -484,6 +478,8 @@ var Multiselect = React.createClass({
     var { valueField } = this.props;
     var items = data.filter( i =>
       !values.some(v => valueMatcher(i, v, valueField)))
+
+    this._lengthWithoutValues = items.length;
 
     if (searchTerm)
       items = this.filter(items, searchTerm)
@@ -522,7 +518,5 @@ function msgs(msgs){
   }
 }
 
-module.exports = createUncontrolledWidget(Multiselect
+export default createUncontrolledWidget(Multiselect
     , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
-
-module.exports.BaseMultiselect = Multiselect

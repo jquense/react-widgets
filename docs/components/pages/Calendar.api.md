@@ -10,6 +10,10 @@ Change event Handler that is called when the value is changed. The handler is ca
 
 <EditableExample codeText={require('../examples/onChangePicker')(widgetName, ['new Date()'])}/>
 
+### onNavigate?{ type: 'Function( Date? date, direction string, view string )' }
+
+Callback fired when the Calendar navigates between views, or forward and backwards in time.
+
 ### min?{ type: 'Date' }
 
 The minimum date that the Calendar can navigate from.
@@ -52,50 +56,50 @@ Acceptable values are: `"month"` `"year"` `"decade"` `"century"`
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'finalView', '"year"')}/>
 
-### headerFormat?{ type: 'String | Function(Date? date)', default: "'MMMM yyyy'" }
+### headerFormat?{ localizable: true }
 
 A formatter for the header button of the month view
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'headerFormat', '"MMM yy"')}/>
 
-### footerFormat?{ type: 'String | Function(Date? date)', default: "'D'" }
+### footerFormat?{ localizable: true }
 
 A formatter for the Calendar footer, formats Today's Date as a string.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, { footerFormat: "\"'today is:' dddd\"", footer: true })}/>
 
-### dayFormat?{ type: 'String | Function(Number dayOfTheWeek)', default: "Function()" }
+### dayFormat?{ localizable: true }
 
 A formatter calendar days of the week, the default formats each day as a Narrow name: "Mo", "Tu", etc.
 
 <EditableExample codeText={require('../examples/prop')(
-widgetName, { dayFormat: "day => ['M', 'T','W','Th', 'F', '!', '!'][day]" })}/>
+widgetName, { dayFormat: "day => ['M', 'T','W','Th', 'F', '!', '!'][day.getDay()]" })}/>
 
-### dateFormat?{ type: 'String | Function(Date? date)', default: "'dd'" }
+### dateFormat?{ localizable: true }
 
 A formatter for day of the month
 <EditableExample codeText={require('../examples/prop')(
   widgetName, { dateFormat: "dt => dt.getDate()", footer: true })}/>
 
-### monthFormat?{ type: 'String | Function(Date? date)', default: "'MMM'" }
+### monthFormat?{ localizable: true }
 
 A formatter for month name.
 
 <EditableExample codeText={require('../examples/prop')(
 widgetName, { monthFormat: "'MMMM'", initialView: "'year'" })}/>
 
-### yearFormat?{ type: 'String | Function(Date? date)', default: "'YYYY'" }
+### yearFormat?{ localizable: true }
 
 A formatter for the year.
 
 <EditableExample codeText={require('../examples/prop')(
 widgetName, { yearFormat: "'yy'", initialView: "'decade'" })}/>
 
-### decadeFormat?{ type: 'String | Function(Date? date)', default: "Function()" }
+### decadeFormat?{ localizable: true }
 
 A formatter for decade, the default formats the first and last year of the decade like: 2000 - 2009.
 
-### centuryFormat?{ type: 'String | Function(Date? date)', default: "Function()" }
+### centuryFormat?{ localizable: true }
 
 A formatter for century, the default formats the first and last year of the century like: 1900 - 1999.
 
