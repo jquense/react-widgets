@@ -276,6 +276,11 @@ var DropdownList = React.createClass({
       , isOpen = this.props.open
       , closeWithFocus = () => { this.close(), compat.findDOMNode(this).focus()};
 
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
     if ( key === 'End' ) {
       if ( isOpen) this.setState({ focusedItem: list.last() })
       else         change(list.last())
@@ -310,9 +315,6 @@ var DropdownList = React.createClass({
           ? this.setState({ focusedItem: item })
           : change(item)
       })
-
-
-    notify(this.props.onKeyDown, [e])
 
     function change(item, fromList){
       if(!item) return

@@ -398,6 +398,11 @@ var Multiselect = React.createClass({
     let { list, tagList } = this.refs;
     let nullTag = { focusedTag: null };
 
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
     if ( key === 'ArrowDown') {
       var next = list.next(focusedItem)
         , creating = (this._shouldShowCreate() && focusedItem === next) || focusedItem === null;
@@ -446,7 +451,6 @@ var Multiselect = React.createClass({
     else if (noSearch && key === 'Backspace')
       tagList && tagList.removeNext()
 
-    notify(this.props.onKeyDown, [e])
   },
 
   @widgetEditable

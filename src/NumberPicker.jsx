@@ -214,6 +214,11 @@ let NumberPicker = React.createClass({
   _keyDown(e) {
     var key = e.key;
 
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+      
     if ( key === 'End'  && isFinite(this.props.max))
       this.change(this.props.max)
 

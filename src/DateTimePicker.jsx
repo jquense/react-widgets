@@ -316,10 +316,15 @@ var DateTimePicker = React.createClass({
   _keyDown(e){
     let { open, calendar, time } = this.props;
 
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
     if (e.key === 'Escape' && open)
       this.close()
 
-    else if ( e.altKey ) {
+    else if (e.altKey) {
       e.preventDefault()
 
       if (e.key === 'ArrowDown'){
@@ -340,7 +345,7 @@ var DateTimePicker = React.createClass({
         this.refs.timePopup._keyDown(e)
     }
 
-    notify(this.props.onKeyDown, [e])
+
   },
 
   @widgetEnabled

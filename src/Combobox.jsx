@@ -312,6 +312,11 @@ var ComboBox = React.createClass({
       , selectedItem = this.state.selectedItem
       , isOpen = this.props.open;
 
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
     if ( key === 'End' )
       if ( isOpen ) this.setState({ focusedItem: list.last() })
       else          select(list.last(), true)
@@ -343,8 +348,6 @@ var ComboBox = React.createClass({
         else          select(list.prev(selectedItem), true)
       }
     }
-
-    notify(this.props.onKeyDown, [e])
 
     function select(item, fromList) {
       if(!item)
