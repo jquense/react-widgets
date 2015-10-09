@@ -150,7 +150,7 @@ var Multiselect = React.createClass({
     let {
         searchTerm, maxLength
       , className, tabIndex, textField
-      , groupBy, messages, data, busy, dropUp
+      , groupBy, messages, busy, dropUp
       , open, disabled, readOnly
       , tagComponent: TagComponent
       , listComponent: List } = this.props;
