@@ -38,7 +38,7 @@ describe('NumberPicker', function(){
 
   it('should be able to accept a placeholder', function(done){
     var picker = render(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+      , input  = findClass(picker, 'rw-input');
 
      expect(input.placeholder).to.be('enter number here');
      done();

@@ -47,9 +47,7 @@
     "build": "npm run build:lib && npm run build:dist & npm run build:docs",
     "docs": "npm run clean:docs && webpack-dev-server --config ./build/docs.config.js --hot",
     "dev": "webpack-dev-server --config ./build/dev.config.js --hot",
-    "major": "release major",
-    "minor": "release minor",
-    "patch": "release patch",
+    "release": "release",
     "alpha": "release --preid alpha --tag next",
     "beta": "release --preid beta --tag next"
   },
@@ -60,8 +58,8 @@
     "url": "https://github.com/jquense/react-widgets"
   },
   "peerDependencies": {
-    "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3"
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0"
   },
   "dependencies": {
     "classnames": "^2.1.2",
@@ -82,7 +80,6 @@
     "babel-plugin-external-helpers": "^1.1.1",
     "babel-plugin-object-assign": "^1.2.1",
     "chance": "^0.7.6",
-    "cldr-data": "^28.0.2",
     "cpy": "^3.4.0",
     "css-loader": "^0.15.6",
     "eslint": "^0.24.1",
@@ -108,6 +105,7 @@
     "marked": "^0.3.5",
     "merge-stream": "^0.1.8",
     "mocha": "^2.2.5",
+    "moment": "^2.10.6",
     "mt-changelog": "^0.6.2",
     "multiline": "^1.0.2",
     "node-libs-browser": "^0.5.2",
@@ -115,12 +113,11 @@
     "phantomjs": "^1.9.17",
     "raw-loader": "^0.5.1",
     "react": "^0.14.0-beta3",
-    "react-bootstrap": "0.24.5-react-pre.0",
-    "react-dom": "^0.14.0-beta3",
+    "react-bootstrap": "0.27.0",
+    "react-dom": "0.14.0",
     "react-router": "1.0.0-beta3",
     "release-script": "^0.3.0",
     "rimraf": "^2.4.2",
-    "scriptjs": "^2.5.7",
     "style-loader": "^0.12.3",
     "url-loader": "^0.5.5",
     "webpack": "^1.10.5",
