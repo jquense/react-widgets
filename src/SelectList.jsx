@@ -225,13 +225,13 @@ var SelectList = React.createClass({
     }
     else if (multiple && e.keyCode === 65 && e.ctrlKey ) {
       e.preventDefault()
-      this._selectAll()
+      this.selectAll()
     }
     else
       this.search(String.fromCharCode(e.keyCode))
   },
 
-  _selectAll(){
+  selectAll(){
     var { disabled, readOnly, valueField } = this.props
       , values = this.state.dataItems
       , data = this._data()
@@ -243,7 +243,7 @@ var SelectList = React.createClass({
     blacklist = disabled.filter(v => !contains(v, values, valueField))
     data      = data.filter( v => !contains(v, blacklist, valueField))
 
-    if ( data.length === values.length) {
+    if (data.length === values.length) {
       data = disabled.filter(item => contains(item, values, valueField))
       data = data.map(item => dataItem(this._data(), item, valueField))
     }
@@ -368,4 +368,4 @@ function getListItem(parent){
 }
 
 export default createUncontrolledWidget(
-    SelectList, { value: 'onChange' });
+    SelectList, { value: 'onChange' }, ['selectAll']);

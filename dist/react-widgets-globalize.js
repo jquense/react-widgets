@@ -1,5 +1,4 @@
 /*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
-var ReactWidgetLocalizer =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -140,7 +139,11 @@ var ReactWidgetLocalizer =
 	    },
 
 	    format: function format(value, _format2, culture) {
-	      return value == null ? value : locale(culture).formatNumber(value, _format2);
+	      if (value == null) return value;
+
+	      if (_format2 && _format2.currency) return locale(culture).formatCurrency(value, _format2.currency, _format2);
+
+	      return locale(culture).formatNumber(value, _format2);
 	    },
 
 	    precision: function precision(format) {
@@ -165,10 +168,8 @@ var ReactWidgetLocalizer =
 	  function shortDay(dayOfTheWeek) {
 	    var culture = getCulture(arguments[1]),
 	        name = culture.name,
-	        start = firstOfWeek(culture),
 	        days = function days() {
-	      var days = culture.calendar.days.namesShort.slice();
-	      return start === 0 ? days : days.concat(days.splice(0, start));
+	      return culture.calendar.days.namesShort.slice();
 	    };
 
 	    var names = shortNames[name] || (shortNames[name] = days());

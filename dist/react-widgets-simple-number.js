@@ -1,5 +1,4 @@
 /*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
-var ReactWidgetLocalizer =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};

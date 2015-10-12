@@ -1,5 +1,4 @@
 /*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
-var ReactWidgetLocalizer =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -112,7 +111,7 @@ var ReactWidgetLocalizer =
 	    },
 
 	    format: function format(value, _format, culture) {
-	      return getMoment(culture, value, _format).format(_format);
+	      return getMoment(culture, value).format(_format);
 	    }
 	  };
 
