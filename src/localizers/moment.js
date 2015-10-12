@@ -61,7 +61,7 @@ export default function(moment){
     },
 
     format(value, format, culture) {
-      return getMoment(culture, value, format).format(format)
+      return getMoment(culture, value).format(format)
     }
   }
 
