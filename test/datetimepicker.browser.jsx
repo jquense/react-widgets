@@ -210,8 +210,8 @@ describe('DateTimePicker', function(){
   describe('TimeList', function(){
 
     it('should render max correctly', ()=>{
-      var date = new Date(2014,0,16, 9,30)
-        , inst = render(<TimeList value={new Date(2014,0,16, 8)} max={date} preserveDate/>)
+      var date = new Date(2014, 0, 16, 9, 30)
+        , inst = render(<TimeList value={new Date(2014, 0, 16, 8)} max={date} preserveDate/>)
 
       var time = inst.state.dates[inst.state.dates.length - 1]
 
@@ -219,9 +219,9 @@ describe('DateTimePicker', function(){
       expect(time.date.getMinutes()).to.eql(30)
       expect(time.date.getSeconds()).to.eql(0)
 
-      inst = render(<TimeList value={new Date(2014, 0,15, 8)} max={date} preserveDate/>)
+      inst = render(<TimeList value={new Date(2014, 0, 15, 8)} max={date} preserveDate/>)
 
-      var time = inst.state.dates[inst.state.dates.length - 1]
+      time = inst.state.dates[inst.state.dates.length - 1]
 
       expect(time.date.getHours()).to.eql(23)
       expect(time.date.getMinutes()).to.eql(30)
@@ -230,7 +230,7 @@ describe('DateTimePicker', function(){
 
     it('should render min correctly', ()=>{
       var date = new Date(2014, 0, 16, 9, 30)
-        , inst = render(<TimeList value={new Date(2014, 0,16, 12)} min={date} preserveDate/>)
+        , inst = render(<TimeList value={new Date(2014, 0, 16, 12)} min={date} preserveDate/>)
 
       var time = inst.state.dates[0]
 
@@ -238,9 +238,9 @@ describe('DateTimePicker', function(){
       expect(time.date.getMinutes()).to.eql(30)
       expect(time.date.getSeconds()).to.eql(0)
 
-      inst = render(<TimeList value={new Date(2014, 0,18, 8)} min={date} preserveDate/>)
+      inst = render(<TimeList value={new Date(2014, 0, 18, 8)} min={date} preserveDate/>)
 
-      var time = inst.state.dates[0]
+      time = inst.state.dates[0]
 
       expect(time.date.getHours()).to.eql(0)
       expect(time.date.getMinutes()).to.eql(0)
@@ -249,9 +249,7 @@ describe('DateTimePicker', function(){
 
 
     it('should set the step property', ()=>{
-      var date = new Date(2014, 0, 16, 9, 30)
-        , inst = render(<DateTimePicker step={60}/>);
-
+      var inst = render(<DateTimePicker step={60}/>);
       var dates = findType(inst, TimeList).state.dates
 
       expect(dates[0].date.getHours()).to.eql(0)

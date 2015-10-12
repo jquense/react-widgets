@@ -23,7 +23,7 @@ series(SUPPORTED_VERSIONS, function(version, idx, next){
 
   var server = new Server(config(version), function(exitCode) {
     if ( exitCode )
-      process.exit(exitCode)
+      process.exit(exitCode) //eslint-disable-line
 
     next();
   });

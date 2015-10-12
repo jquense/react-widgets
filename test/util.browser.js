@@ -63,7 +63,7 @@ describe('_ utils', function(){
 
   it('should TRANSFORM', function(){
 
-    _.transform([1], function(o, v,i){
+    _.transform([1], function(o, v, i){
       expect(o).to.eql([])
       expect(v).to.equal(1)
       expect(i).to.equal(0)

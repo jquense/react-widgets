@@ -89,7 +89,6 @@ let NumberPicker = React.createClass({
   render(){
     var {
         className
-      , onKeyDown
       , onKeyPress
       , onKeyUp
       , autoFocus
@@ -160,7 +159,6 @@ let NumberPicker = React.createClass({
           disabled={this.props.disabled}
           readOnly={this.props.readOnly}
           onChange={this.change}
-          onKeyDown={onKeyDown}
           onKeyPress={onKeyPress}
           onKeyUp={onKeyUp}/>
       </div>
@@ -214,11 +212,12 @@ let NumberPicker = React.createClass({
   _keyDown(e) {
     var key = e.key;
 
+    console.log('hiii')
     notify(this.props.onKeyDown, [e])
 
     if (e.defaultPrevented)
       return
-      
+
     if ( key === 'End'  && isFinite(this.props.max))
       this.change(this.props.max)
 

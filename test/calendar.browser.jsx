@@ -127,7 +127,7 @@ describe('Calendar', () => {
 
   it('should navigate into the future', function(){
     var date     = new Date(2014, 5, 15, 0, 0, 0)
-      , picker   = render(<Calendar defaultValue={date} max={new Date(2199,11, 31)} />)
+      , picker   = render(<Calendar defaultValue={date} max={new Date(2199, 11, 31)} />)
       , header   = findType(picker, Header)
       , rightBtn = findClass(header, 'rw-btn-right')
       , navBtn   = findClass(header, 'rw-btn-view');
@@ -168,7 +168,7 @@ describe('Calendar', () => {
 
     expect($(ReactDOM.findDOMNode(footer)).text())
       .to.equal(
-        globalize.format(new Date, 'D'))
+        globalize.format(new Date(), 'D'))
   })
 
   it('should accept footer format', function(){
