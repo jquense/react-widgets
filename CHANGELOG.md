@@ -1,3 +1,14 @@
+v3.0.0-beta.1 - Mon, 12 Oct 2015 13:09:20 GMT
+---------------------------------------------
+
+- [65e94f9](../../commit/65e94f9) [fixed] moment localizer
+- [bf468be](../../commit/bf468be) [fixed] recalc timeList when locale info changes
+- [f002680](../../commit/f002680) [fixed] add onNavigate to docs
+- [8ba4202](../../commit/8ba4202) [fixed] wrong list message displayed when all items selected on the multiselect
+- [3be1b7d](../../commit/3be1b7d) [changed] reorder onKeyDown and respect preventDefault
+
+
+
 v3.0.0-beta.0 - Thu, 08 Oct 2015 20:51:46 GMT
 ---------------------------------------------
 
