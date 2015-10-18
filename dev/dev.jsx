@@ -1,23 +1,25 @@
 'use strict';
-require('../src/less/react-widgets.less')
-require('./configure-moment')
 
-var numberLocalizer = require('../src/localizers/simple-number')
+//
+// var numberLocalizer = require('../src/localizers/simple-number')
+//
+//
+// numberLocalizer()
 
+var React = require('react')
 
-numberLocalizer()
-
-var React = require('react/addons')
-var index = require('../src')
 var dates = require('../src/util/dates')
 var DropdownList = require('../src/DropdownList.jsx')
 var Multiselect = require('../src/Multiselect.jsx')
 var Calendar = require('../src/Calendar.jsx')
-var DateTimePicker = require('../src/DateTimePicker.jsx')
+var DateTimePicker = require('../lib/DateTimePicker')
 var NumberPicker = require('../src/NumberPicker.jsx')
 // var ComboBox = require('../src/Combobox.jsx')
 // var SelectList = require('../src/SelectList.jsx')
 // var List = require('../src/List.jsx')
+
+require('../src/less/react-widgets.less')
+require('./configure-moment')
 
 var chance = new (require('chance'))
 
@@ -89,12 +91,7 @@ var App = React.createClass({
             >
               add
             </button>
-            <DateTimePicker/>
-            <Calendar
-              value={this.state.calDate}
-              onChange={calDate => this.setState({ calDate })}
-            />
-            <NumberPicker />
+            <DateTimePicker format='YYYY-MM-DD' value={new Date()} time={false}/>
           </section>
         </div>
       </div>

@@ -1,4 +1,4 @@
 var moment = require('moment')
-var localizers = require('../src/localizers/moment')
+var localizers = require('../lib/localizers/moment')
 
 localizers(moment)
