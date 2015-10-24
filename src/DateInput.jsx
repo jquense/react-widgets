@@ -1,15 +1,12 @@
-'use strict';
-var React = require('react')
-  , cx = require('classnames')
-  , compat = require('./util/compat')
-  , localizers = require('./util/configuration').locale
-  , CustomPropTypes = require('./util/propTypes');
+import React from 'react';
+import cx from 'classnames';
+import compat from './util/compat';
+import { date as dateLocalizer } from './util/localizers';
+import CustomPropTypes from './util/propTypes';
 
-
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'DatePickerInput',
-
 
   propTypes: {
     format:       CustomPropTypes.dateFormat.isRequired,
@@ -21,13 +18,13 @@ module.exports = React.createClass({
     culture:      React.PropTypes.string
   },
 
-  getDefaultProps: function(){
+  getDefaultProps(){
     return {
       textValue: ''
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
      var text = formatDate(
             nextProps.value
           , nextProps.editing && nextProps.editFormat
@@ -42,7 +39,7 @@ module.exports = React.createClass({
     })
   },
 
-  getInitialState: function(){
+  getInitialState(){
     var text = formatDate(
             this.props.value
           , this.props.editing && this.props.editFormat
@@ -57,7 +54,7 @@ module.exports = React.createClass({
     }
   },
 
-  render: function(){
+  render(){
     var value = this.state.textValue
 
     return (
@@ -75,12 +72,12 @@ module.exports = React.createClass({
     )
   },
 
-  _change: function(e){
+  _change(e){
     this.setState({ textValue: e.target.value });
     this._needsFlush = true
   },
 
-  _blur: function(e){
+  _blur(e){
     var val = e.target.value
       , date;
 
@@ -93,7 +90,7 @@ module.exports = React.createClass({
     }
   },
 
-  focus: function(){
+  focus(){
     compat.findDOMNode(this).focus()
   }
 
@@ -107,7 +104,7 @@ function formatDate(date, format, culture){
   var val = ''
 
   if ( (date instanceof Date) && isValid(date) )
-    val = localizers.date.format(date, format, culture)
+    val = dateLocalizer.format(date, format, culture)
 
   return val;
 }

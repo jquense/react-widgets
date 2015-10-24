@@ -1,21 +1,16 @@
 'use strict';
 
 module.exports = function (config) {
-  
-  
-  //console.log(process.env.TRAVIS_CI)
 
   config.set({
 
     basePath: '',
 
-    frameworks: ['mocha', 'expect'],
+    frameworks: ['mocha', 'expect', 'sinon'],
 
     files: [
-      './vendor/phantomjs-shim.js',
-      './vendor/sinon-1.10.3.js',
       './vendor/jquery-1.11.2.min.js',
-      '_test-bootstrap.js',
+      './test/index.js'
     ],
 
     reporters: ['mocha'],
@@ -27,13 +22,13 @@ module.exports = function (config) {
 
     logLevel: config.LOG_INFO,
 
-    browsers: [ 'PhantomJS'],
+    browsers: ['Chrome'],
 
     preprocessors: {
-      '_test-bootstrap.js': ['webpack', 'sourcemap']
+      'test/index.js': ['webpack', 'sourcemap']
     },
 
-    webpack: require('./webpack.configs').test,
+    webpack: require('./build/test.config'),
     webpackServer: {
       noInfo: true
     }

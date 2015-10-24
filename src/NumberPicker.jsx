@@ -1,23 +1,23 @@
-'use strict';
-var React = require('react')
-  , cx    = require('classnames')
-  , _     = require('./util/_') //omit
-  , compat = require('./util/compat')
-  , CustomPropTypes = require('./util/propTypes')
-  , createUncontrolledWidget = require('uncontrollable')
-  , directions = require('./util/constants').directions
-  , repeater = require('./util/repeater')
-  , localizers = require('./util/configuration').locale
-  , Input = require('./NumberInput');
+import React from 'react';
+import cx    from 'classnames';
+import _     from './util/_';
+import compat from './util/compat';
+import CustomPropTypes from './util/propTypes';
+import createUncontrolledWidget from 'uncontrollable';
+import constants from './util/constants';
+import repeater from './util/repeater';
+import { number as numberLocalizer } from './util/localizers';
+import Input from './NumberInput';
+import Btn from './WidgetButton';
 
 import { widgetEditable, widgetEnabled } from './util/interaction';
 import { notify } from './util/widgetHelpers';
 
-var Btn = require('./WidgetButton')
+let { directions } = constants;
 
-var format = props => props.format || localizers.number.formats.default
+var format = props => numberLocalizer.getFormat('default', props.format)
 
-var propTypes = {
+let propTypes = {
 
       // -- controlled props -----------
       value:          React.PropTypes.number,
@@ -38,16 +38,19 @@ var propTypes = {
 
       parse:          React.PropTypes.func,
 
+      autoFocus:      React.PropTypes.bool,
       disabled:       CustomPropTypes.disabled,
       readOnly:       CustomPropTypes.readOnly,
 
       messages:       React.PropTypes.shape({
         increment:    React.PropTypes.string,
         decrement:    React.PropTypes.string
-      })
+      }),
+
+      placeholder: React.PropTypes.string
     };
 
-var NumberPicker = React.createClass({
+let NumberPicker = React.createClass({
 
   displayName: 'NumberPicker',
 
@@ -86,9 +89,9 @@ var NumberPicker = React.createClass({
   render(){
     var {
         className
-      , onKeyDown
       , onKeyPress
       , onKeyUp
+      , autoFocus
       , ...props } = _.omit(this.props, Object.keys(propTypes))
       , val = this.constrainValue(this.props.value)
 
@@ -112,6 +115,7 @@ var NumberPicker = React.createClass({
             className={cx({ 'rw-state-active': this.state.active === directions.UP})}
             onMouseDown={this._mouseDown.bind(null, directions.UP)}
             onMouseUp={this._mouseUp.bind(null, directions.UP)}
+            onMouseOut={this._mouseUp.bind(null, directions.UP)}
             onClick={this._focus.bind(null, true)}
             disabled={val === this.props.max || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
@@ -125,6 +129,7 @@ var NumberPicker = React.createClass({
             className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
             onMouseDown={this._mouseDown.bind(null, directions.DOWN)}
             onMouseUp={this._mouseUp.bind(null, directions.DOWN)}
+            onMouseOut={this._mouseUp.bind(null, directions.DOWN)}
             onClick={this._focus.bind(null, true)}
             disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
@@ -137,7 +142,9 @@ var NumberPicker = React.createClass({
         <Input
           ref='input'
           tabIndex={props.tabIndex}
+          placeholder={this.props.placeholder}
           value={val}
+          autoFocus={autoFocus}
           editing={this.state.focused}
           format={this.props.format}
           parse={this.props.parse}
@@ -152,7 +159,6 @@ var NumberPicker = React.createClass({
           disabled={this.props.disabled}
           readOnly={this.props.readOnly}
           onChange={this.change}
-          onKeyDown={onKeyDown}
           onKeyPress={onKeyPress}
           onKeyUp={onKeyUp}/>
       </div>
@@ -206,6 +212,12 @@ var NumberPicker = React.createClass({
   _keyDown(e) {
     var key = e.key;
 
+    console.log('hiii')
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
     if ( key === 'End'  && isFinite(this.props.max))
       this.change(this.props.max)
 
@@ -235,7 +247,7 @@ var NumberPicker = React.createClass({
 
     var decimals = this.props.precision != null
       ? this.props.precision
-      : localizers.number.precision(format(this.props))
+      : numberLocalizer.precision(format(this.props))
 
     this.change(
       decimals != null ? round(value, decimals) : value)
@@ -262,6 +274,12 @@ var NumberPicker = React.createClass({
 
 })
 
+
+export default createUncontrolledWidget(
+    NumberPicker, { value: 'onChange' });
+
+
+
 // thank you kendo ui core
 // https://github.com/telerik/kendo-ui-core/blob/master/src/kendo.core.js#L1036
 function round(value, precision) {
@@ -275,8 +293,3 @@ function round(value, precision) {
 
   return value.toFixed(precision);
 }
-
-module.exports = createUncontrolledWidget(
-    NumberPicker, { value: 'onChange' });
-
-module.exports.BaseNumberPicker = NumberPicker

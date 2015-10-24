@@ -1,14 +1,13 @@
 'use strict';
-var React = require('react')
-  , dates = require('./util/dates')
-  , List = require('./List')
-  , localizers = require('./util/configuration').locale
-  , CustomPropTypes  = require('./util/propTypes');
+import React from 'react';
+import dates from './util/dates';
+import List from './List';
+import { date as dateLocalizer } from './util/localizers';
+import CustomPropTypes from './util/propTypes';
 
-var format = props => props.format || localizers.date.formats.time
+var format = props => dateLocalizer.getFormat('time', props.format)
 
-
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'TimeList',
 
@@ -54,9 +53,11 @@ module.exports = React.createClass({
       , focusedItem = this._closestDate(data, nextProps.value)
       , valChanged  = !dates.eq(nextProps.value, this.props.value, 'minutes')
       , minChanged  = !dates.eq(nextProps.min, this.props.min, 'minutes')
-      , maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes');
+      , maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes')
+      , localeChanged = this.props.format !== nextProps.format
+                     || this.props.culture !== nextProps.culture;
 
-    if (valChanged || minChanged || maxChanged){
+    if (valChanged || minChanged || maxChanged || localeChanged){
       this.setState({
         focusedItem: focusedItem || data[0],
         dates: data
@@ -90,7 +91,7 @@ module.exports = React.createClass({
     if( !date) return null
 
     date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
-    label = dates.format(date, this.props.format, this.props.culture)
+    label = dateLocalizer.format(date, format(this.props), this.props.culture)
 
     times.some( time => {
       if( time.label === label )
@@ -112,7 +113,7 @@ module.exports = React.createClass({
 
     while (dates.date(start) === startDay && dates.lte(start, values.max)) {
       i++
-      times.push({ date: start, label: localizers.date.format(start, format(props), props.culture) })
+      times.push({ date: start, label: dateLocalizer.format(start, format(props), props.culture) })
       start = dates.add(start, props.step || 30, 'minutes')
     }
     return times

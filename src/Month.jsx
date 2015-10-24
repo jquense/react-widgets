@@ -1,14 +1,13 @@
 import React from 'react';
 import cn from 'classnames';
 import dates from './util/dates';
-import config from './util/configuration'
+import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
 import _   from './util/_';
 import { instanceId } from './util/widgetHelpers';
 
-var localizers = config.locale
-  , dayFormat = props => props.dayFormat || localizers.date.formats.weekday
-  , dateFormat = props => props.dateFormat || localizers.date.formats.dayOfMonth
+var dayFormat = props => dateLocalizer.getFormat('weekday', props.dayFormat)
+  , dateFormat = props => dateLocalizer.getFormat('dayOfMonth', props.dateFormat)
 
 let optionId = (id, date) => `${id}__month_${dates.month(date)}-${dates.date(date)}`;
 
@@ -64,7 +63,7 @@ let MonthView = React.createClass({
         role='grid'
       >
         <thead>
-          <tr>{this._headers(dayFormat(this.props), culture)}</tr>
+          <tr>{this._headers(rows[0], dayFormat(this.props), culture)}</tr>
         </thead>
         <tbody>
           {rows.map(this._row)}
@@ -79,7 +78,7 @@ let MonthView = React.createClass({
       , value, culture, min, max
       , dayComponent: Day } = this.props
       , id = instanceId(this)
-      , labelFormat = localizers.date.formats.footer;
+      , labelFormat = dateLocalizer.getFormat('footer');
 
     return (
       <tr key={'week_' + rowIdx} role='row'>
@@ -88,8 +87,8 @@ let MonthView = React.createClass({
           var isFocused  = isEqual(day, focused)
             , isSelected = isEqual(day, value)
             , isToday = isEqual(day, today)
-            , date = localizers.date.format(day, dateFormat(this.props), culture)
-            , label = localizers.date.format(day, labelFormat, culture);
+            , date = dateLocalizer.format(day, dateFormat(this.props), culture)
+            , label = dateLocalizer.format(day, labelFormat, culture);
 
           var currentID = optionId(id, day);
 
@@ -128,9 +127,14 @@ let MonthView = React.createClass({
     )
   },
 
-  _headers(format, culture){
-    return [0, 1, 2, 3, 4, 5, 6].map( (day) =>
-      <th key={'header_' + day }>{ localizers.date.format(day, format, culture) }</th>)
+  _headers(week, format, culture){
+    return week.map(date => {
+      return (
+        <th key={'header_' + dates.weekday(date, undefined, dateLocalizer.startOfWeek(culture)) }>
+          { dateLocalizer.format(date, format, culture) }
+        </th>
+      )
+    })
   }
 
 });

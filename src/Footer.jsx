@@ -1,8 +1,8 @@
-var React = require('react')
-  , Btn = require('./WidgetButton')
-  , localizers = require('./util/configuration').locale;
+import React from 'react';
+import Btn from './WidgetButton';
+import { date as dateLocalizer } from './util/localizers';
 
-var format = props => props.format || localizers.date.formats.footer
+var format = props => dateLocalizer.getFormat('footer', props.format)
 
 module.exports = React.createClass({
 
@@ -10,7 +10,7 @@ module.exports = React.createClass({
 
     render() {
       var now = this.props.value
-        , formatted = localizers.date.format(
+        , formatted = dateLocalizer.format(
             now
           , format(this.props)
           , this.props.culture);

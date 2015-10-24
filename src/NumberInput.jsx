@@ -1,16 +1,16 @@
-'use strict';
-var React   = require('react')
-  , CustomPropTypes = require('./util/propTypes')
-  , localizers  = require('./util/configuration').locale;
+import React from 'react';
+import CustomPropTypes from './util/propTypes';
+import { number as numberLocalizer }  from './util/localizers';
 
-var format = props => props.format || localizers.number.formats.default
+var format = props => numberLocalizer.getFormat('default', props.format)
 
-module.exports = React.createClass({
+export default React.createClass({
 
   displayName: 'NumberPickerInput',
 
   propTypes: {
     value:        React.PropTypes.number,
+    placeholder: React.PropTypes.string,
 
     format:       CustomPropTypes.numberFormat,
     parse:        React.PropTypes.func.isRequired,
@@ -26,7 +26,7 @@ module.exports = React.createClass({
     return {
       value: null,
       editing: false,
-      parse: (number, culture) => localizers.number.parse(number, culture)
+      parse: (number, culture) => numberLocalizer.parse(number, culture)
     }
   },
 
@@ -65,6 +65,7 @@ module.exports = React.createClass({
         aria-readonly={this.props.readOnly}
         disabled={this.props.disabled}
         readOnly={this.props.readOnly}
+        placeholder={this.props.placeholder}
         value={value}/>
     )
   },
@@ -74,7 +75,7 @@ module.exports = React.createClass({
       , number = this.props.parse(e.target.value, this.props.culture)
       , valid = this.isValid(number);
 
-    if( val == null || val.trim() === '' )
+    if( val == null || val.trim() === '' || val.trim() === '-')
       return this.props.onChange(null)
 
     if( valid && number !== this.props.value && !this.isAtDelimiter(number, val))
@@ -131,5 +132,5 @@ module.exports = React.createClass({
 // }
 
 function formatNumber(number, format, culture){
-  return localizers.number.format(number, format, culture)
+  return numberLocalizer.format(number, format, culture)
 }

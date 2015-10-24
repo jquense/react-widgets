@@ -3,7 +3,8 @@ var React = require('react')
   , DDButton = require('../../bootstrap').DropdownButton
   , MenuItem = require('../ApiMenuItem')
   , PropHeader = require('../PropHeader')
-  , WidgetDemo = require('../demos/${widgetName}');
+  , WidgetDemo = require('../demos/${widgetName}')
+  , { Link } = require('react-router');
 
 var widgetName = '${widgetName}';
 

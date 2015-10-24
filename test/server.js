@@ -3,20 +3,25 @@
 
 require('babel-core/register')()
 
+
 var assert = require('assert')
 var React = require('react');
+var renderToString = require('react-dom/server').renderToString
+var globalize = require('globalize')
+
+require('../src/localizers/globalize')(globalize)
 
 var components = [
-      'Calendar', 
-      'Combobox', 
-      'DateTimePicker', 
-      'DropdownList', 
-      'Multiselect', 
-      'SelectList', 
+      'Calendar',
+      'Combobox',
+      'DateTimePicker',
+      'DropdownList',
+      'Multiselect',
+      'SelectList',
       'List',
       'ListGroupable',
-      'ReplaceTransitionGroup', 
-      'NumberPicker',
+      'ReplaceTransitionGroup',
+      'NumberPicker'
     ];
 
 describe('server rendering', function() {
@@ -28,7 +33,7 @@ describe('server rendering', function() {
       var Type = require('../src/' + file + '.jsx')
 
       assert.doesNotThrow(function(){
-        var comp = React.renderToString( React.createElement(Type) );
+        var comp = renderToString( React.createElement(Type) );
 
         assert.ok(typeof comp === 'string')
       })
@@ -41,13 +46,13 @@ describe('server rendering', function() {
     var Type = require('../src/Popup.jsx')
 
     assert.doesNotThrow(function(){
-      var comp = React.renderToString( 
-        React.createElement(Type, { onRequestClose: function(){} },  
+      var comp = renderToString(
+        React.createElement(Type, { onRequestClose: function(){} },
           React.createElement('div')
-        ) 
-      )  
-      
+        )
+      )
+
       assert.ok(typeof comp === 'string')
     })
   })
-})
+});

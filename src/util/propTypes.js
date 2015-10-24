@@ -1,9 +1,7 @@
-'use strict';
 import React, { PropTypes } from 'react';
-import config from'./configuration';
+import localizers from './localizers';
 import filters from'./filter';
 
-let localizers = config.locale
 var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
 
 function getInteractionPropType(key){
@@ -31,7 +29,7 @@ module.exports = {
             'Invalid prop `' + propName + '` specified in  `' + componentName + '`.' +
             ' Expected an Element `type` such as a tag name or return value of React.createClass(...)')
       }
-      return true
+      return null
     }),
 
   numberFormat: createChainableTypeChecker(

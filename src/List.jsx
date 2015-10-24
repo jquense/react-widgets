@@ -90,7 +90,7 @@ export default React.createClass({
               key={'item_' + idx}
               id={currentId}
               dataItem={item}
-              focused={focused === item}z
+              focused={focused === item}
               selected={selected === item}
               onClick={onSelect.bind(null, item)}
             >

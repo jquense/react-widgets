@@ -115,7 +115,7 @@ var SelectList = React.createClass({
     List = List ||  PlainList
 
     let elementProps = omit(this.props, Object.keys(propTypes));
-    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
+    let listProps    = pick(this.props, Object.keys(List.propTypes));
 
     let { ListItem, focusedItem, focused } = this.state;
 
@@ -181,6 +181,7 @@ var SelectList = React.createClass({
       , focusedItem = this.state.focusedItem
       , props = this.props;
 
+
     let moveItem = (dir, item)=> move(dir, item, props, list);
     let change = (item) => {
       if (item)
@@ -188,6 +189,11 @@ var SelectList = React.createClass({
             ? !contains(item, this._values(), valueField) // toggle value
             : true)
     }
+
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
 
     if (key === 'End') {
       e.preventDefault()
@@ -219,13 +225,13 @@ var SelectList = React.createClass({
     }
     else if (multiple && e.keyCode === 65 && e.ctrlKey ) {
       e.preventDefault()
-      this._selectAll()
+      this.selectAll()
     }
     else
       this.search(String.fromCharCode(e.keyCode))
   },
 
-  _selectAll(){
+  selectAll(){
     var { disabled, readOnly, valueField } = this.props
       , values = this.state.dataItems
       , data = this._data()
@@ -237,7 +243,7 @@ var SelectList = React.createClass({
     blacklist = disabled.filter(v => !contains(v, values, valueField))
     data      = data.filter( v => !contains(v, blacklist, valueField))
 
-    if ( data.length === values.length) {
+    if (data.length === values.length) {
       data = disabled.filter(item => contains(item, values, valueField))
       data = data.map(item => dataItem(this._data(), item, valueField))
     }
@@ -361,9 +367,5 @@ function getListItem(parent){
   })
 }
 
-let UncontrolledSelectList = createUncontrolledWidget(
-    SelectList, { value: 'onChange' });
-
-UncontrolledSelectList.BaseSelectList = SelectList
-
-export default UncontrolledSelectList;
+export default createUncontrolledWidget(
+    SelectList, { value: 'onChange' }, ['selectAll']);

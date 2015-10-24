@@ -1,7 +1,5 @@
 import { valueMatcher } from './dataHelpers';
 
-
-
 export function isDisabled(props){
   return props.disabled === true
     || props.disabled === 'disabled'
@@ -59,4 +57,3 @@ function interactionDecorator(disabledOnly){
     return desc
   }
 }
-

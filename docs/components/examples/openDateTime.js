@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(widgetName){
-var code = 
+var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 
@@ -16,15 +16,15 @@ var Example = React.createClass({
 
     return (<div>
       <label>
-        <input onChange={toggle} type='radio' value='false' name='r'/> 
+        <input onChange={toggle} type='radio' value='false' name='r'/>
         Closed
       </label>
       <label>
-        <input onChange={toggle} type='radio' value='calendar' name='r'/> 
-        Calendar 
+        <input onChange={toggle} type='radio' value='calendar' name='r'/>
+        Calendar
       </label>
       <label>
-        <input onChange={toggle} type='radio' value='time' name='r'/> 
+        <input onChange={toggle} type='radio' value='time' name='r'/>
         Time List
       </label>
       <${widgetName} open={open}/>
@@ -32,7 +32,7 @@ var Example = React.createClass({
   }
 });
 
-React.render(<Example/>, mountNode);`
+ReactDOM.render(<Example/>, mountNode);`
 
 return code
 }

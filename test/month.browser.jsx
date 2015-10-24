@@ -1,5 +1,5 @@
-'use strict';
-/*global it, describe, expect, sinon*/
+import { findDOMNode } from 'react-dom';
+
 var React = require('react/addons');
 var Month = require('../src/Month.jsx');
 
@@ -12,7 +12,7 @@ describe('Month Component', function(){
     var date   = new Date(2015, 1, 16, 0, 0, 0)
       , formatter = sinon.spy(() => 'hi')
       , picker = render(<Month value={date} focused={date} onChange={()=>{}} dateFormat='dd' dayFormat='d'/>)
-      , first  = () => $(picker.getDOMNode()).find('td:first');
+      , first  = () => $(findDOMNode(picker)).find('td:first');
 
     expect(first().text()).to.equal('01')
 

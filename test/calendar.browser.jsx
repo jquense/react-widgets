@@ -2,9 +2,11 @@
 /*global it, describe, expect, sinon, $*/
 require('../vendor/phantomjs-shim')
 
+import ReactDOM from 'react-dom';
+
 var React = require('react/addons')
   , Calendar = require('../src/Calendar.jsx')
-  , BaseCalendar = require('../src/Calendar.jsx').BaseCalendar
+  , BaseCalendar = require('../src/Calendar.jsx').ControlledComponent
   , Header = require('../src/Header.jsx')
   , Footer = require('../src/Footer.jsx')
   , Month  =  require('../src/Month.jsx')
@@ -30,7 +32,7 @@ var TestUtils = React.addons.TestUtils
 describe('Calendar', () => {
 
   afterEach(()=> {
-    config.animate.restore && 
+    config.animate.restore &&
       config.animate.restore()
   })
 
@@ -39,7 +41,7 @@ describe('Calendar', () => {
     var date = new Date()
       , picker = render(<Calendar defaultValue={date} initialView='year'/>);
 
-    expect(() => 
+    expect(() =>
       findType(picker, require('../src/Year.jsx'))).to.not.throwException();
   })
 
@@ -47,24 +49,24 @@ describe('Calendar', () => {
     var date = new Date()
       , picker = render(<Calendar defaultValue={date} />)
       , header = findType(picker, Header)
-      , navBtn = findClass(header, 'rw-btn-view').getDOMNode();
+      , navBtn = findClass(header, 'rw-btn-view');
 
-    expect(() => 
+    expect(() =>
       findType(picker, Month)).to.not.throwException();
 
     trigger.click(navBtn)
 
-    expect(() => 
+    expect(() =>
       findType(picker, Year)).to.not.throwException();
 
     trigger.click(navBtn)
 
-    expect(() => 
+    expect(() =>
       findType(picker, Decade)).to.not.throwException();
 
     trigger.click(navBtn)
 
-    expect(() => 
+    expect(() =>
       findType(picker, Century)).to.not.throwException();
 
     expect(navBtn.hasAttribute('disabled')).to.be(true)
@@ -74,22 +76,22 @@ describe('Calendar', () => {
     var date = new Date()
       , picker = render(<Calendar defaultValue={date} />);
 
-    expect(() => 
+    expect(() =>
       findType(picker, Month)).to.not.throwException();
 
-    trigger.keyDown(picker.getDOMNode(), { ctrlKey: true, key: 'ArrowUp' })
+    trigger.keyDown(ReactDOM.findDOMNode(picker), { ctrlKey: true, key: 'ArrowUp' })
 
-    expect(() => 
+    expect(() =>
       findType(picker, Year)).to.not.throwException();
 
-    trigger.keyDown(picker.getDOMNode(), { ctrlKey: true, key: 'ArrowUp' })
+    trigger.keyDown(ReactDOM.findDOMNode(picker), { ctrlKey: true, key: 'ArrowUp' })
 
-    expect(() => 
+    expect(() =>
       findType(picker, Decade)).to.not.throwException();
 
-    trigger.keyDown(picker.getDOMNode(), { ctrlKey: true, key: 'ArrowUp' })
+    trigger.keyDown(ReactDOM.findDOMNode(picker), { ctrlKey: true, key: 'ArrowUp' })
 
-    expect(() => 
+    expect(() =>
       findType(picker, Century)).to.not.throwException();
 
   })
@@ -98,8 +100,8 @@ describe('Calendar', () => {
     var date    = new Date(2014, 5, 15, 0, 0, 0)
       , picker  = render(<Calendar defaultValue={date} />)
       , header  = findType(picker, Header)
-      , leftBtn = findClass(header, 'rw-btn-left').getDOMNode()
-      , navBtn  = findClass(header, 'rw-btn-view').getDOMNode();
+      , leftBtn = findClass(header, 'rw-btn-left')
+      , navBtn  = findClass(header, 'rw-btn-view');
 
     syncAnimate()
 
@@ -125,10 +127,10 @@ describe('Calendar', () => {
 
   it('should navigate into the future', function(){
     var date     = new Date(2014, 5, 15, 0, 0, 0)
-      , picker   = render(<Calendar defaultValue={date} max={new Date(2199,11, 31)} />)
+      , picker   = render(<Calendar defaultValue={date} max={new Date(2199, 11, 31)} />)
       , header   = findType(picker, Header)
-      , rightBtn = findClass(header, 'rw-btn-right').getDOMNode()
-      , navBtn   = findClass(header, 'rw-btn-view').getDOMNode();
+      , rightBtn = findClass(header, 'rw-btn-right')
+      , navBtn   = findClass(header, 'rw-btn-view');
 
     syncAnimate()
 
@@ -164,9 +166,9 @@ describe('Calendar', () => {
     expect(() => footer = findType(picker, Footer))
       .to.not.throwException()
 
-    expect($(footer.getDOMNode()).text())
+    expect($(ReactDOM.findDOMNode(footer)).text())
       .to.equal(
-        globalize.format(new Date, 'D'))
+        globalize.format(new Date(), 'D'))
   })
 
   it('should accept footer format', function(){
@@ -179,7 +181,7 @@ describe('Calendar', () => {
     var picker = render(<BaseCalendar footer footerFormat={formatter} culture='en'/>)
       , footer = findType(picker, Footer);
 
-    expect($(footer.getDOMNode()).text())
+    expect($(ReactDOM.findDOMNode(footer)).text())
       .to.equal('test')
 
     expect(formatter.calledOnce).to.be.ok()
@@ -190,7 +192,7 @@ describe('Calendar', () => {
       , footer = findType(picker, Footer);
 
     trigger.click(
-      findClass(footer, 'rw-btn').getDOMNode())
+      findClass(footer, 'rw-btn'))
 
     expect(
       dates.eq(picker.state.currentDate, new Date(), 'day'))
@@ -201,8 +203,8 @@ describe('Calendar', () => {
     var date     = new Date(2014, 5, 15)
       , picker   = render(<BaseCalendar value={date} max={new Date(2014, 5, 25)}  min={new Date(2014, 5, 5)} onChange={()=>{}}/>)
       , header   = findType(picker, Header)
-      , rightBtn = findClass(header, 'rw-btn-right').getDOMNode()
-      , leftBtn  = findClass(header, 'rw-btn-left').getDOMNode();
+      , rightBtn = findClass(header, 'rw-btn-right')
+      , leftBtn  = findClass(header, 'rw-btn-left');
 
     trigger.click(rightBtn)
 
@@ -219,28 +221,27 @@ describe('Calendar', () => {
 
     var date   = new Date(2014, 5, 15)
       , picker = render(<BaseCalendar value={date} culture='es' onChange={()=>{}}/>)
-      , headerBtn = findClass(picker, 'rw-btn-view').getDOMNode()
-      , head = findTag(picker, 'thead').getDOMNode();
-    
+      , headerBtn = findClass(picker, 'rw-btn-view')
+      , head = findTag(picker, 'thead');
+
     syncAnimate()
 
     expect($(headerBtn).text()).to.equal('junio 2014')
     expect($(head.children[0].firstChild).text()).to.equal('lu')
 
-    picker.setProps({ initialView: 'year' })
+    picker = render(<BaseCalendar initialView='year' value={date} culture='es' onChange={()=>{}}/>)
 
-    expect($(findTag(picker, 'tbody').getDOMNode().children[0].firstChild).text())
+    expect($(findTag(picker, 'tbody').children[0].firstChild).text())
       .to.equal('ene')
   })
 
   it('should pass on format', function(){
     var date    = new Date(2014, 5, 15)
-      , first   = () => $(calendar.getDOMNode()).find('td:first')
       , formats = transform(
             ['dayFormat', 'dateFormat', 'monthFormat', 'yearFormat', 'decadeFormat' ]
           , (o, v) => o[v] = v)
       , calendar;
-    
+
     syncAnimate()
 
     calendar = render(<BaseCalendar {...formats} value={date} onChange={()=>{}} />)
@@ -248,21 +249,21 @@ describe('Calendar', () => {
     expect(findType(calendar, Month).props.dayFormat).to.equal('dayFormat')
     expect(findType(calendar, Month).props.dateFormat).to.equal('dateFormat')
 
-    calendar.setProps({ initialView: 'year' })
+    calendar = render(<BaseCalendar {...formats} initialView='year' value={date} onChange={()=>{}} />)
 
     expect(findType(calendar, Year).props.monthFormat).to.equal('monthFormat')
 
-    calendar.setProps({ initialView: 'decade' })
+    calendar = render(<BaseCalendar {...formats} initialView='decade' value={date} onChange={()=>{}} />)
 
     expect(findType(calendar, Decade).props.yearFormat).to.equal('yearFormat')
 
-    calendar.setProps({ initialView: 'century' })
+    calendar = render(<BaseCalendar {...formats} initialView='century' value={date} onChange={()=>{}} />)
 
     expect(findType(calendar, Century).props.decadeFormat).to.equal('decadeFormat')
   })
 
   describe('Date Helpers', () => {
-    
+
     it('should move to the proper day', function(){
       var date = new Date(2014, 0, 16, 0, 0, 0)
         , min, max;

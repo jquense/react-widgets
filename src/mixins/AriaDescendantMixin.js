@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import compat from '../util/compat'
 
 let shape = React.PropTypes.shape({
   //setActive: React.PropTypes.func,
@@ -19,9 +20,9 @@ function flushAriaToNode(id, nodeOrComponent, ctx) {
 
   if (node) {
     if (id)
-      React.findDOMNode(node).setAttribute('aria-activedescendant', id)
+      compat.findDOMNode(node).setAttribute('aria-activedescendant', id)
     else
-      React.findDOMNode(node).removeAttribute('aria-activedescendant')
+      compat.findDOMNode(node).removeAttribute('aria-activedescendant')
   }
 }
 

@@ -1,0 +1,165 @@
+/*
+Name:       Base16 Oceanic Next Dark
+Author:     Dmitri Voronianski (http://pixelhunter.me)
+Prism template by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/prism/)
+Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)
+*/
+
+code[class*="language-"],
+pre[class*="language-"] {
+  font-family: Consolas, Menlo, Monaco, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", "Courier New", Courier, monospace;
+  font-size: 14px;
+  line-height: 1.375;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  background: #1B2B34;
+  color: #C0C5CE;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+  text-shadow: none;
+  background: #A7ADBA;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+  text-shadow: none;
+  background: #A7ADBA;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: 1em;
+  margin: .5em 0;
+  overflow: auto;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #65737E;
+}
+
+.token.punctuation {
+  color: #C0C5CE;
+}
+
+.token.namespace {
+  opacity: .7;
+}
+
+.token.operator,
+.token.boolean,
+.token.number {
+  color: #F99157;
+}
+.token.property {
+  color: #FAC863;
+}
+.token.tag > .token.tag,
+.token.tag > .token.punctuation {
+  color: #EB606B;
+}
+
+/*.token.tag > .token.script.language-javascript {
+  color: #FAC863;
+}*/
+
+/*.token.tag > .token.script.language-javascript > .operator:nth-child(1) {
+  color: #C0C5CE;
+}*/
+
+/* jsx-bracket */
+.token.tag > .token.script.language-javascript > .punctuation:first-child + .punctuation,
+.token.tag > .token.script.language-javascript > .punctuation:last-child {
+  color: #FAC863;
+}
+
+.token.attr-value,
+.token.string {
+  color: #FAC863;
+}
+
+.token.selector {
+  color: #C594C5;
+}
+.token.attr-name {
+  color: #99C794;
+}
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #5FB3B3;
+}
+
+
+
+.token.keyword,
+.token.control,
+.token.directive,
+.token.unit {
+  color: #C594C5;
+}
+
+.token.statement,
+.token.regex,
+.token.atrule {
+  color: #5FB3B3;
+}
+
+.token.placeholder,
+.token.variable {
+  color: #6699CC;
+}
+
+.token.deleted {
+  text-decoration: line-through;
+}
+
+.token.inserted {
+  border-bottom: 1px dotted #D8DEE9;
+  text-decoration: none;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.important {
+  color: #EC5f67;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+pre > code.highlight {
+  outline: .4em solid #EC5f67;
+  outline-offset: .4em;
+}

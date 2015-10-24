@@ -1,10 +1,9 @@
-'use strict';
-var React  = require('react')
-  , css = require('dom-helpers/style')
-  , getHeight = require('dom-helpers/query/height')
-  , config = require('./util/configuration')
-  , cn = require('classnames')
-  , compat = require('./util/compat');
+import React, { cloneElement } from 'react';
+import css from 'dom-helpers/style';
+import getHeight from 'dom-helpers/query/height';
+import config from './util/configuration';
+import cn from 'classnames';
+import compat from './util/compat';
 
 var transform = config.animate.transform
 
@@ -25,7 +24,7 @@ var PopupContent = React.createClass({
 
     child = React.Children.only(this.props.children)
 
-    return compat.cloneElement(child, {
+    return cloneElement(child, {
       className: cn(child.props.className, 'rw-popup rw-widget')
     });
   }

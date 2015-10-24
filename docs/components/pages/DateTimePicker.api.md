@@ -1,7 +1,17 @@
-Manipulate different parts of a JavaScript `Date` object with ease. Date formats are <em>highly</em> localized, and localization is hard, rather than provide a half baked solution react-widgets includes a default strategy for that via [Globalize.js](https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468). You can pass in a `culture` string to the widgets, but you are responsible for loading the globalize culture file yourself. You can also completely replace globalize by providing format and parsing props. 
 
-Dates are never mutated but always return and operate on a new Date instance. When the `date` prop is used the ${widgetName} will pass through the relevant props to the Calendar Widget and Calendar keyboard navigation keys will also work. 
+<div className='alert alert-warning'>
+ <i className='fa fa-exclamation-triangle'/>
+ You must configure a <a href='#/i18n'>localizer</a> to use this component!
+</div>
 
+Manipulate different parts of a JavaScript `Date` object with ease.
+Date formats are <em>highly</em> localized, and localization is hard, rather than provide a half baked
+solution react-widgets requires that you specify a __localizer__ in order for the widget to work. You can read more
+about localizers here: [localization](i18n).
+
+Dates are never mutated but always return and operate on a new Date instance.
+When the `date` prop is used the ${widgetName} will pass through the relevant
+props to the Calendar Widget and Calendar keyboard navigation keys will also work.
 <--------------->
 
 ### value?{ type: 'Date?', handler: "onChange", controllable: true }
@@ -52,25 +62,24 @@ the `onChange` handler.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'max', 'new Date()')}/>
 
-### format?{ type: 'String', default: '"fdt"' }
+### format?{ localizable: true }
 
-A string format used to display the date value. For more information on prefined and custom formats
-visit the [Globalize.js documentation](https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates)
+A string format used to display the date value. For more information about formats
+visit the [Localization page](i18n)
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'format', '"MMM dd yyyy"')}/>
 
-### editFormat?{ type: 'String' }
+### editFormat?{ localizable: true }
 
-A string format to be used while the date input has focus. Useful for showing a simpler format for inputing. 
-For more information on prefined and custom formats visit 
-the [Globalize.js documentation](https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates)
+A string format to be used while the date input has focus. Useful for showing a simpler format for inputing.
+For more information about formats visit the [Localization page](i18n)
 
 <EditableExample codeText={require('../examples/prop')(widgetName, { defaultValue: 'new Date()', editFormat: '"d"', format: '"MMM dd yyyy"'})}/>
 
-### timeFormat?{ type: 'String' }
+### timeFormat?{ localizable: true }
 
-A string format used by the time dropdown to render times. For more information on prefined and custom formats
-visit the [Globalize.js documentation](https://github.com/jquery/globalize/tree/79ae658b842f75f58199d6e9074e01f7ce207468#dates)
+A string format used by the time dropdown to render times. For more information about formats visit
+the [Localization page](i18n)
 
 ### step?{ type: 'Number', default: "false" }
 
@@ -81,7 +90,7 @@ The amount of minutes between each entry in the time list.
 ### parse?{ type: '[Function(String str), Array<String>]' }
 
 Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
-or provide a function that returns a date to handle parsing yourself. When `parse` is unspecified and 
+or provide a function that returns a date to handle parsing yourself. When `parse` is unspecified and
 the `format` prop is a `String` parse will automatically use that format as its default
 
 <EditableExample codeText={require('../examples/parse')(widgetName)}/>
@@ -125,7 +134,8 @@ The speed, in milliseconds, of the either dropdown animation.
 
 ### isRtl?{ type: 'Boolean', default: "false" }
 
-mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through a `childContext` prop (`isRtl`) this allows higher level application components to specify the direction.
+mark whether the widget should render right-to-left. This property can also be implicitly passed to the
+widget through a `childContext` prop (`isRtl`) this allows higher level application components to specify the direction.
 
 ### messages?{ type: 'Object' }
 

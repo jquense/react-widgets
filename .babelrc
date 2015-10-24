@@ -3,6 +3,7 @@
   "loose": [
     "all"
   ],
+
   "blacklist": [
     "es6.tailCall",
     "es6.forOf",
@@ -10,5 +11,14 @@
     "es7.comprehensions",
     "es7.exportExtensions"
   ],
-  "plugins": ["babel-plugin-object-assign"]
+
+  "plugins": [
+    "babel-plugin-object-assign"
+  ],
+  "extra": {
+    "externalHelperPlugin": {
+      "path": "util/babelHelpers.js",
+      "base": "src"
+    }
+  }
 }

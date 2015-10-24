@@ -2,15 +2,15 @@
 module.exports = function(widgetName, values){
   var open = values.length > 1 ? "(<div>" : ''
     , close = values.length > 1 ? "</div>)" : ''
-  var code = 
+  var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 
 var widgets = ${open}
     ${values.map(getWidget).join('').trim()}
   ${close}
-    
-React.render(widgets, mountNode);`
+
+ReactDOM.render(widgets, mountNode);`
 
   return code
 

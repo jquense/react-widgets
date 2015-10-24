@@ -1,10 +1,10 @@
 'use strict';
 module.exports = function(widgetName){
-var code = 
+var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 
-React.render(
+ReactDOM.render(
   <${widgetName} busy />, mountNode);`
 
 return code

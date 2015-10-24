@@ -2,7 +2,7 @@
 
 module.exports = function() {
 
-var code = 
+var code =
 `
 var Multiselect = ReactWidgets.Multiselect;
 //not a public component, but you can use it via require()
@@ -23,7 +23,7 @@ var Example = React.createClass({
       values: this.state.values.concat(val),
       data:   this.state.data.filter( v => v !== val)
     })
-    
+
     let remove = val => this.setState({
       values: this.state.values.filter( v => v !== val),
       data:   this.state.data.concat(val)
@@ -32,23 +32,23 @@ var Example = React.createClass({
     return (
       <div>
         <strong>{'Normal multiselect'}</strong>
-        <Multiselect 
-          defaultValue={this.state.values} data={this.state.data} 
+        <Multiselect
+          defaultValue={this.state.values} data={this.state.data}
           valueField='id' textField='name' />
         <hr/>
         <strong>{'Look no wrapper!'}</strong>
-        <Multiselect 
-          value={[]} data={this.state.data} 
-          onChange={change} 
+        <Multiselect
+          value={[]} data={this.state.data}
+          onChange={change}
           valueField='id' textField='name' />
-        <TagList 
+        <TagList
           value={this.state.values} onDelete={remove}
           valueField='id' textField='name' />
       </div>)
   },
 })
 
-React.render(<Example/>, mountNode);`
+ReactDOM.render(<Example/>, mountNode);`
 
 return code
 }

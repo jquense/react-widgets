@@ -1,13 +1,17 @@
 
 body {
+  font-size: 16px;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+.example,
+.editable-rendered {
   font-size: 14px;
 }
-
-h4 {
-  margin-top: 20px;
-}
-
-
 
 /*h3 {
   color: #284C6D;
@@ -183,14 +187,11 @@ h3 > a > strong {
   }
 }
 
-pre > code.hljs {
-  background: none;
-}
-
 pre {
   background: #F4F4F4;
   border-radius: 0;
   border-color: #DAE3E7;
+  line-height: normal;
 }
 
 
@@ -232,40 +233,54 @@ pre {
   padding-top: 10px;
 }
 
-.editable-rendered .rw-selectlist label{
-  font-weight: normal;
-}
 
-.editable-editor,
-.cm-s-neo.CodeMirror {
-  background-color: #F4F4F4;
+pre,
+.playgroundCode,
+.CodeMirror {
+  color: #C0C5CE;
+  background: #1B2B34;
   height: auto;
-  min-height: 75px;
 }
 
 .CodeMirror{
-  font-size: 12px;
+  font-size: 14px;
+  min-height: 75px;
 }
 
-.editable-editor {
+.playgroundCode {
   padding: 15px;
-  border-top: 1px solid #ddd;
 }
 
-.editable-rendered {
+@media (min-width: 992px) {
+  .playground {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .playgroundCode {
+    flex-grow: 1.75;
+  }
+}
+
+.playgroundPreview {
   position: relative;
   padding: 40px 15px 15px 15px;
+  min-width: 250px;
 }
 
-.editable-rendered .rw-widget + input,
-.editable-rendered .rw-widget + button,
-.editable-rendered input + .rw-widget,
-.editable-rendered button + .rw-widget,
-.editable-rendered .rw-widget + .rw-widget {
+.playgroundPreview .rw-widget + input,
+.playgroundPreview .rw-widget + button,
+.playgroundPreview input + .rw-widget,
+.playgroundPreview button + .rw-widget,
+.playgroundPreview .rw-widget + .rw-widget {
   margin-top: 15px;
 }
 
-.editable-rendered:before {
+.playgroundPreview .rw-selectlist label{
+  font-weight: normal;
+}
+
+.playgroundPreview:before {
   position: absolute;
   top: 3px;
   left: 10px;
@@ -273,20 +288,12 @@ pre {
   content: 'Result';
 }
 
-.editable-error {
-  border-top: 1px solid #ddd;
-  background-color: white;
-  margin: 0 -15px;
-  margin-bottom: -15px;
-  padding: 10px;
-}
 
-.editable-example  {
+.playground  {
   position: relative;
   margin:  0;
   margin-bottom: 20px;
-  border-radius: 3px;
-  border: 1px solid #ddd;
+  border-left: 4px solid #ccc;
 }
 
 @media (min-width: 992px) {
@@ -295,11 +302,6 @@ pre {
     padding-top: 0;
     border-left: #ddd 1px solid;
     border-top-width: 0;
-  }
-
-  .editable-editor  {
-    border-top: none;
-    border-right: 1px solid #ddd;
   }
 }
 
@@ -326,69 +328,12 @@ pre {
   float: right!important;
 }
 
+.alert-info {
+  border-width: 0;
+  border-left: 4px solid;
+  padding: 10px;
+  border-radius: 0;
+}
 .overdue {
   color: #bd362f;
-}
-
-
-.t.blockParams {
-  padding-left: 2ch;
-}
-
-.token.punctuation,
-.token.ignore,
-.t.interfaceDef,
-.t.member,
-.t.callSig {
-  color: #2e383c;
-}
-
-.token.function,
-.token.class-name,
-.token.qualifier,
-.t.fnQualifier,
-.t.fnName {
-  color: #047d65;
-}
-
-.token.primitive,
-.t.primitive {
-  color: #75438a;
-}
-
-.token.number,
-.t.typeParam {
-  color: #75438a;
-}
-
-.t.typeQualifier,
-.t.typeName {
-  color: #013679;
-}
-
-.t.param {
-  color: #945277;
-}
-
-.t.memberName {
-  color: teal;
-}
-
-.token.block-keyword,
-.token.keyword,
-.t.keyword {
-  color: #1d75b3;
-}
-
-.token.string,
-.token.regex {
-  color: #b35e14;
-}
-
-.token.operator {
-  color: #2e383c;
-}
-
-.token.comment {
-  color: #75787b;
 }

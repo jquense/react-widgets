@@ -9,7 +9,7 @@ var ApiPropHeader = React.createClass({
   },
 
   render: function() {
-    var { 
+    var {
          children
        , handler
        , type
@@ -22,20 +22,39 @@ var ApiPropHeader = React.createClass({
        <h3 className='prop-header' id={`/${id}`}>
         <a href={'#/' + id }>
         { children }
-        { type && 
+        { type &&
           <small>
             { type }
-            { props.default && 
+            { props.default &&
               <Default>{props.default}</Default>
             }
           </small>
         }
-        { controllable && 
+        { controllable &&
           <strong>{`controllable (${handler}, ${defaultKey(children)})`}</strong>
         }
         </a>
        </h3>
     );
+  },
+
+  localizable(prop, localizers) {
+    let locales = localizers.reduce((obj, l) => {
+      obj[l] = require('../../src/localizers/' + l)
+      return obj
+    }, {})
+    
+    let select = e => locales[e.target.value]()
+
+    return (
+      <span>
+        <select>
+          {
+            localizers.map(l => <option>{l}</option>)
+          }
+        </select>
+      </span>
+    )
   }
 
 });

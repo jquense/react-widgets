@@ -1,6 +1,4 @@
-'use strict';
-/*global it, describe, expect, sinon*/
-require('../vendor/phantomjs-shim')
+import { findDOMNode } from 'react-dom';
 
 var React = require('react/addons');
 var NumberPicker = require('../src/NumberPicker.jsx');
@@ -8,33 +6,28 @@ var NumberPicker = require('../src/NumberPicker.jsx');
 //console.log(sinon)
 var TestUtils = React.addons.TestUtils
   , render = TestUtils.renderIntoDocument
-  , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findAllTag = TestUtils.scryRenderedDOMComponentsWithTag
-  , findAllClass = TestUtils.scryRenderedDOMComponentsWithClass
-  , findType = TestUtils.findRenderedComponentWithType
-  , findAllType = TestUtils.scryRenderedComponentWithType
   , trigger = TestUtils.Simulate;
 
-describe('Numberpicker', function(){
+describe('NumberPicker', function(){
 
 
   it('should set values correctly', function(done){
-    var picker = render(<NumberPicker value={15} format='D' onChange={()=>{}} />)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+    var instance = render(<NumberPicker value={15} format='D' onChange={()=>{}} />)
+      , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     expect(input.value).to.be('15');
 
-    picker.setProps({ value: null, min: 10, max: 10 }, function(){
+    instance.setProps({ value: null, min: 10, max: 10 }, function(){
       expect(input.value).to.be('');
 
-      picker.setProps({ value: 1, min: 10 }, function(){
+      instance.setProps({ value: 1, min: 10 }, function(){
         expect(input.value).to.be('10');
 
-        picker.setProps({ value: 20, max: 10 }, function(){
+        instance.setProps({ value: 20, max: 10 }, function(){
           expect(input.value).to.be('10');
 
-          picker.setProps({ value: 10, format: 'c' }, function(){
+          instance.setProps({ value: 10, format: 'c' }, function(){
             expect(input.value).to.be('$10.00');
             done()
           })
@@ -43,17 +36,25 @@ describe('Numberpicker', function(){
     })
   })
 
+  it('should be able to accept a placeholder', function(done){
+    var picker = render(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
+      , input  = findClass(picker, 'rw-input');
+
+     expect(input.placeholder).to.be('enter number here');
+     done();
+  })
+
   it('should pass NAME down', function(){
-    var picker = render(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+    var instance = render(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)
+      , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     expect(input.hasAttribute('name')).to.be(true)
   })
 
   it('should not fire change until there is a valid value', function(done){
     var change = sinon.spy()
-      , picker = render(<NumberPicker value={150} format='D' min={100} onChange={change} />)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+      , instance = render(<NumberPicker value={150} format='D' min={100} onChange={change} />)
+      , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     input.value = '15'
     trigger.change(input)
@@ -67,7 +68,7 @@ describe('Numberpicker', function(){
 
     //should call change on a null value when no min
     change.reset()
-    picker.setProps({ value: 15, min: -Infinity }, function(){
+    instance.setProps({ value: 15, min: -Infinity }, function(){
 
       input.value = ''
       trigger.change(input)
@@ -78,10 +79,10 @@ describe('Numberpicker', function(){
 
   it('should change value when spinner is clicked', function(){
     var change = sinon.spy()
-      , picker = render(<NumberPicker value={1} format='D' onChange={change} />)
-      , upBtn  = findClass(picker, 'rw-select').getDOMNode().children[0]
-      , dwnBtn  = findClass(picker, 'rw-select').getDOMNode().children[1]
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+      , instance = render(<NumberPicker value={1} format='D' onChange={change} />)
+      , upBtn  = findClass(instance, 'rw-select').children[0]
+      , dwnBtn  = findClass(instance, 'rw-select').children[1]
+      , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     //increment
     expect(input.value).to.be('1')
@@ -102,16 +103,16 @@ describe('Numberpicker', function(){
   it('should trigger focus/blur events', function(done){
     var blur = sinon.spy()
       , focus = sinon.spy()
-      , picker = render(<NumberPicker onBlur={blur} onFocus={focus}/>);
+      , instance = render(<NumberPicker onBlur={blur} onFocus={focus}/>);
 
     expect(focus.calledOnce).to.be(false)
     expect(blur.calledOnce).to.be(false)
 
-    trigger.focus(picker.getDOMNode())
+    trigger.focus(findDOMNode(instance))
 
     setTimeout(() => {
       expect(focus.calledOnce).to.be(true)
-      trigger.blur(picker.getDOMNode())
+      trigger.blur(findDOMNode(instance))
 
       setTimeout(() => {
         expect(blur.calledOnce).to.be(true)
@@ -122,8 +123,8 @@ describe('Numberpicker', function(){
 
   it('should trigger key events', function(){
     var kp = sinon.spy(), kd = sinon.spy(), ku = sinon.spy()
-      , picker = render(<NumberPicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+      , instance = render(<NumberPicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
+      , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     trigger.keyPress(input)
     trigger.keyDown(input)
@@ -136,16 +137,16 @@ describe('Numberpicker', function(){
 
   it('should do nothing when disabled', function(){
     var change = sinon.spy()
-      , picker = render(<NumberPicker value={0} disabled={true} onChange={change} />)
-      , input  = findClass(picker, 'rw-input').getDOMNode()
-      , upBtn  = findClass(picker, 'rw-select').getDOMNode().children[0]
-      , dwnBtn = findClass(picker, 'rw-select').getDOMNode().children[1];
+      , instance = render(<NumberPicker value={0} disabled={true} onChange={change} />)
+      , input  = findDOMNode(findClass(instance, 'rw-input'))
+      , upBtn  = findClass(instance, 'rw-select').children[0]
+      , dwnBtn = findClass(instance, 'rw-select').children[1];
 
     trigger.focus(input)
 
     setTimeout(function(){
-      expect(picker.getDOMNode().className).to.not.match(/\brw-state-focus\b/)
-      expect(picker.getDOMNode().className).to.match(/\brw-state-disabled\b/)
+      expect(findDOMNode(instance).className).to.not.match(/\brw-state-focus\b/)
+      expect(findDOMNode(instance).className).to.match(/\brw-state-disabled\b/)
       expect(input.hasAttribute('aria-disabled')).to.be(true)
       expect(input.getAttribute('aria-disabled')).to.be('true')
 
@@ -157,8 +158,8 @@ describe('Numberpicker', function(){
 
   it('should allow null values with min', function(){
     var change = sinon.spy()
-      , picker = render(<NumberPicker value={0} min={12} onChange={change} />)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+      , instance = render(<NumberPicker value={0} min={12} onChange={change} />)
+      , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     trigger.change(input, { target: { value: '' } })
 
@@ -168,8 +169,8 @@ describe('Numberpicker', function(){
 
   it('should not trigger change at delimiter', function() {
     var change = sinon.spy()
-      , picker = render(<NumberPicker value={1.5} min={12} onChange={change} />)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+      , instance = render(<NumberPicker value={1.5} min={12} onChange={change} />)
+      , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     trigger.change(input, { target: { value: '1.' } })
     trigger.change(input, { target: { value: '12 221 ' } })
@@ -180,8 +181,8 @@ describe('Numberpicker', function(){
 
   it('should not trigger change while below min', function() {
     var change = sinon.spy()
-      , picker = render(<NumberPicker value={1.5} min={12} onChange={change} />)
-      , input  = findClass(picker, 'rw-input').getDOMNode();
+      , instance = render(<NumberPicker value={1.5} min={12} onChange={change} />)
+      , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     trigger.change(input, { target: { value: '11' } })
 
@@ -194,16 +195,16 @@ describe('Numberpicker', function(){
 
   it('should do nothing when readonly', function(){
     var change = sinon.spy()
-      , picker = render(<NumberPicker value={0} readOnly={true} onChange={change} />)
-      , input  = findClass(picker, 'rw-input').getDOMNode()
-      , upBtn  = findClass(picker, 'rw-select').getDOMNode().children[0]
-      , dwnBtn = findClass(picker, 'rw-select').getDOMNode().children[1];
+      , instance = render(<NumberPicker value={0} readOnly={true} onChange={change} />)
+      , input  = findDOMNode(findClass(instance, 'rw-input'))
+      , upBtn  = findClass(instance, 'rw-select').children[0]
+      , dwnBtn = findClass(instance, 'rw-select').children[1];
 
     trigger.focus(input)
 
     setTimeout(function(){
-      expect(picker.getDOMNode().className).to.match(/\brw-state-focus\b/)
-      expect(picker.getDOMNode().className).to.match(/\brw-state-readonly\b/)
+      expect(findDOMNode(instance).className).to.match(/\brw-state-focus\b/)
+      expect(findDOMNode(instance).className).to.match(/\brw-state-readonly\b/)
       expect(input.hasAttribute('aria-readonly')).to.be(true)
       expect(input.getAttribute('aria-readonly')).to.be('true')
 
@@ -216,8 +217,8 @@ describe('Numberpicker', function(){
 
   it('should change values on key down', function(done){
     var change = sinon.spy()
-      , picker = render(<NumberPicker value={10} onChange={change} />)
-      , input  = picker.getDOMNode();
+      , instance = render(<NumberPicker value={10} onChange={change} />)
+      , input  = findDOMNode(instance);
 
     trigger.keyDown(input, { key: 'End'})
     trigger.keyDown(input, { key: 'Home'})
@@ -235,7 +236,7 @@ describe('Numberpicker', function(){
 
     change.reset()
 
-    picker.setProps({ min: 5, max: 15 }, function(){
+    instance.setProps({ min: 5, max: 15 }, function(){
 
       trigger.keyDown(input, { key: 'End'})
       expect(change.calledOnce).to.be(true)

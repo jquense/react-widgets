@@ -40,6 +40,7 @@ let propTypes = {
 
       onSelect:       React.PropTypes.func,
 
+      autoFocus:      React.PropTypes.bool,
       disabled:       CustomPropTypes.disabled,
       readOnly:       CustomPropTypes.readOnly,
 
@@ -142,15 +143,15 @@ var ComboBox = React.createClass({
     let {
         className, tabIndex, filter, suggest
       , valueField, textField, groupBy
-      , messages, data, busy, dropUp, name
+      , messages, data, busy, dropUp, name, autoFocus
       , placeholder, value, open, disabled, readOnly
       , listComponent: List } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
 
     let elementProps = omit(this.props, Object.keys(propTypes));
-    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
-    let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
+    let listProps    = pick(this.props, Object.keys(List.propTypes));
+    let popupProps   = pick(this.props, Object.keys(Popup.propTypes));
 
     let { focusedItem, selectedItem, focused } = this.state;
 
@@ -198,6 +199,7 @@ var ComboBox = React.createClass({
         <Input
           ref='input'
           id={inputID}
+          autoFocus={autoFocus}
           tabIndex={tabIndex}
           suggest={suggest}
           name={name}
@@ -310,6 +312,11 @@ var ComboBox = React.createClass({
       , selectedItem = this.state.selectedItem
       , isOpen = this.props.open;
 
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
     if ( key === 'End' )
       if ( isOpen ) this.setState({ focusedItem: list.last() })
       else          select(list.last(), true)
@@ -341,8 +348,6 @@ var ComboBox = React.createClass({
         else          select(list.prev(selectedItem), true)
       }
     }
-
-    notify(this.props.onKeyDown, [e])
 
     function select(item, fromList) {
       if(!item)
@@ -414,6 +419,13 @@ var ComboBox = React.createClass({
   }
 })
 
+
+
+export default createUncontrolledWidget(
+      ComboBox, { open: 'onToggle', value: 'onChange' });
+
+
+
 function msgs(msgs){
   return {
     open: 'open combobox',
@@ -428,10 +440,3 @@ function getFilter(suggest, word, textField){
       ? item => filter[suggest](dataText(item, textField).toLowerCase(), word.toLowerCase())
       : item => suggest(item, word)
 }
-
-let UncontrolledComboBox = createUncontrolledWidget(
-      ComboBox, { open: 'onToggle', value: 'onChange' });
-
-UncontrolledComboBox.BaseComboBox = ComboBox
-
-export default UncontrolledComboBox;

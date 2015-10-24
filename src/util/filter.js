@@ -1,21 +1,20 @@
-'use strict';
-var common = {
-      eq:   function(a, b){ return a === b },
-      neq:  function(a, b){ return a !== b },
-      gt:   function(a, b){ return a > b   },
-      gte:  function(a, b){ return a >= b  },
-      lt:   function(a, b){ return a < b   },
-      lte:  function(a, b){ return a <= b  },
+let common = {
+      eq(a, b){ return a === b },
+      neq(a, b){ return a !== b },
+      gt(a, b){ return a > b   },
+      gte(a, b){ return a >= b  },
+      lt(a, b){ return a < b   },
+      lte(a, b){ return a <= b  },
 
-      contains: function(a, b){
+      contains(a, b){
         return a.indexOf(b) !== -1
       },
 
-      startsWith: function(a, b) {
+      startsWith(a, b) {
         return a.lastIndexOf(b, 0) === 0;
       },
 
-      endsWith: function(a, b) {
+      endsWith(a, b) {
         var pos = a.length - b.length
           , lastIndex = a.indexOf(b, pos);
 
@@ -23,4 +22,4 @@ var common = {
       }
     }
 
-module.exports = common
+export default common;
