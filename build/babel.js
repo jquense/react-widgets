@@ -19,7 +19,7 @@ args._.forEach(function (input) {
       , data = babel.transformFileSync(file, {
           externalHelpers: true,
           plugins: [
-            "babel-plugin-external-helpers:after"
+            'babel-plugin-external-helpers:after'
           ]
         });
 

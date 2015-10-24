@@ -14,7 +14,7 @@ var ApiMenuItem = React.createClass({
     window.scrollTo(window.pageXOffset, anchor.offsetTop)
   },
 
-  render: function() {
+  render() {
 
     if( this.props.divider)
       return  <MenuItem divider={true}></MenuItem>

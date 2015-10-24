@@ -1,19 +1,5 @@
 import configure from '../configure'
 
-function endOfDecade(date) {
-  date = new Date(date)
-  date.setFullYear(date.getFullYear() + 10)
-  date.setMilliseconds(date.getMilliseconds() - 1)
-  return date
-}
-
-function endOfCentury(date) {
-  date = new Date(date)
-  date.setFullYear(date.getFullYear() + 100)
-  date.setMilliseconds(date.getMilliseconds() - 1)
-  return date
-}
-
 export default function(moment){
   if (typeof moment !== 'function')
     throw new TypeError('You must provide a valid moment object')
@@ -27,6 +13,14 @@ export default function(moment){
 
   function getMoment(culture, value, format){
     return culture ? moment(value, format)[localField](culture) : moment(value, format)
+  }
+
+  function endOfDecade(date) {
+    return moment(date).add(10, 'year').add(-1, 'millisecond').toDate()
+  }
+
+  function endOfCentury(date) {
+    return moment(date).add(100, 'year').add(-1, 'millisecond').toDate()
   }
 
   let localizer = {

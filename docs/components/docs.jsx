@@ -21,13 +21,15 @@ var NumberPicker   = require('./pages/NumberPicker.api.md')
 //var Migration      = require('./pages/Migration.jsx')
 var Advanced       = require('./pages/Advanced.jsx')
 var Locale         = require('./pages/i18n.md');
+var Controllables  = require('./pages/controllables.md');
 
 var history = require('react-router/lib/HashHistory').history
 
 
 require('../vendor/codemirror.css')
-require('../vendor/neo.css')
 require('../vendor/styles.css')
+require('../vendor/oceanic-prism.css')
+require('../vendor/oceanic-codemirror.css')
 require('react-widgets/less/react-widgets.less')
 require('../docs.css')
 
@@ -172,6 +174,7 @@ ReactDOM.render((
 
       <Route path="advanced" component={Advanced} />
       <Route path="i18n" component={Locale} />
+      <Route path="controllables" component={Controllables} />
     </Route>
   </Router>
 ), document.getElementById('app-mount'));
