@@ -8971,12 +8971,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (multiple) this.setState({ focusedItem: moveItem('prev', focusedItem) });else change(moveItem('prev', focusedItem));
 	    } else if (multiple && e.keyCode === 65 && e.ctrlKey) {
 	      e.preventDefault();
-	      this._selectAll();
+	      this.selectAll();
 	    } else this.search(String.fromCharCode(e.keyCode));
 	  }
 	}, {
-	  key: '_selectAll',
-	  value: function _selectAll() {
+	  key: 'selectAll',
+	  value: function selectAll() {
 	    var _this2 = this;
 
 	    var _props3 = this.props;
@@ -9130,7 +9130,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}
 
-	exports['default'] = _uncontrollable2['default'](SelectList, { value: 'onChange' });
+	exports['default'] = _uncontrollable2['default'](SelectList, { value: 'onChange' }, ['selectAll']);
 	module.exports = exports['default'];
 
 /***/ }
