@@ -21,7 +21,13 @@
     .border-bottom-radius(0);
     .box-shadow(0 0 6px rgba(0,0,0,0.2));
   }
+  .tether-element & {
+    right: 0;
+    left: 0;
+    z-index: 100;
+  }
 }
+
 
 .rw-popup-container {
   position: absolute;
@@ -31,6 +37,11 @@
   // offset for drop shadow on rw-popup
   left:  -10px - @input-border-width;
   right: -10px - @input-border-width;
+
+  &.rw-tether{
+    left: 0;
+    right: 0;
+  }
   
   &.rw-dropup {
     top:    auto;
