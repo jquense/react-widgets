@@ -1,14 +1,14 @@
 /*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("react"), require("react-dom"));
+		module.exports = factory(require("react"));
 	else if(typeof define === 'function' && define.amd)
-		define([, ], factory);
+		define([], factory);
 	else if(typeof exports === 'object')
-		exports["ReactWidgets"] = factory(require("react"), require("react-dom"));
+		exports["ReactWidgets"] = factory(require("react"));
 	else
-		root["ReactWidgets"] = factory(root["React"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_21__, __WEBPACK_EXTERNAL_MODULE_50__) {
+		root["ReactWidgets"] = factory(root["React"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_21__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -69,16 +69,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = babelHelpers._extends({}, configure, {
 	  DropdownList: __webpack_require__(22),
-	  Combobox: __webpack_require__(61),
-	  Calendar: __webpack_require__(65),
-	  DateTimePicker: __webpack_require__(79),
-	  NumberPicker: __webpack_require__(82),
-	  Multiselect: __webpack_require__(85),
-	  SelectList: __webpack_require__(88),
+	  Combobox: __webpack_require__(60),
+	  Calendar: __webpack_require__(64),
+	  DateTimePicker: __webpack_require__(78),
+	  NumberPicker: __webpack_require__(81),
+	  Multiselect: __webpack_require__(84),
+	  SelectList: __webpack_require__(87),
 
 	  utils: {
-	    ReplaceTransitionGroup: __webpack_require__(77),
-	    SlideTransition: __webpack_require__(76)
+	    ReplaceTransitionGroup: __webpack_require__(76),
+	    SlideTransition: __webpack_require__(75)
 	  }
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -1196,7 +1196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilDataHelpers = __webpack_require__(36);
 
-	var _utilInteraction = __webpack_require__(51);
+	var _utilInteraction = __webpack_require__(50);
 
 	var _utilWidgetHelpers = __webpack_require__(37);
 
@@ -1257,7 +1257,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(52), __webpack_require__(53), __webpack_require__(54), __webpack_require__(55), __webpack_require__(60), __webpack_require__(39)()];
+	    return [__webpack_require__(51), __webpack_require__(52), __webpack_require__(53), __webpack_require__(54), __webpack_require__(59), __webpack_require__(39)()];
 	  }
 	}, {
 	  key: 'propTypes',
@@ -3689,10 +3689,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = babelHelpers.interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(50);
-
-	var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
-
 	var TetherElement = (function () {
 		function TetherElement(component, options) {
 			babelHelpers.classCallCheck(this, TetherElement);
@@ -3710,7 +3706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			var component = arguments.length <= 0 || arguments[0] === undefined ? this.component : arguments[0];
 
-			_reactDom2['default'].render(component, this.node, function () {
+			_react2['default'].render(component, this.node, function () {
 				return _this.tether.position();
 			});
 
@@ -3718,7 +3714,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		};
 
 		TetherElement.prototype.destroy = function destroy() {
-			_reactDom2['default'].unmountComponentAtNode(this.node);
+			_react2['default'].unmountComponentAtNode(this.node);
 			this.node.parentNode.removeChild(this.node);
 			this.tether.destroy();
 		};
@@ -5452,12 +5448,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 50 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_50__;
-
-/***/ },
-/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5537,7 +5527,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 52 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5568,7 +5558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 53 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5583,7 +5573,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 54 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5664,7 +5654,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5673,7 +5663,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.__esModule = true;
 
-	var _domHelpersUtilScrollTo = __webpack_require__(56);
+	var _domHelpersUtilScrollTo = __webpack_require__(55);
 
 	var _domHelpersUtilScrollTo2 = babelHelpers.interopRequireDefault(_domHelpersUtilScrollTo);
 
@@ -5704,15 +5694,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 56 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var getOffset = __webpack_require__(29),
 	    height = __webpack_require__(28),
-	    getScrollParent = __webpack_require__(57),
-	    scrollTop = __webpack_require__(58),
-	    raf = __webpack_require__(59),
+	    getScrollParent = __webpack_require__(56),
+	    scrollTop = __webpack_require__(57),
+	    raf = __webpack_require__(58),
 	    getWindow = __webpack_require__(30);
 
 	module.exports = function scrollTo(selected, scrollParent) {
@@ -5760,7 +5750,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 57 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5789,7 +5779,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 58 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5804,7 +5794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 59 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5855,7 +5845,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = compatRaf;
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5888,7 +5878,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5917,11 +5907,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Popup2 = babelHelpers.interopRequireDefault(_Popup);
 
-	var _WidgetButton = __webpack_require__(62);
+	var _WidgetButton = __webpack_require__(61);
 
 	var _WidgetButton2 = babelHelpers.interopRequireDefault(_WidgetButton);
 
-	var _ComboboxInput = __webpack_require__(63);
+	var _ComboboxInput = __webpack_require__(62);
 
 	var _ComboboxInput2 = babelHelpers.interopRequireDefault(_ComboboxInput);
 
@@ -5951,7 +5941,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilDataHelpers = __webpack_require__(36);
 
-	var _utilInteraction = __webpack_require__(51);
+	var _utilInteraction = __webpack_require__(50);
 
 	var _utilWidgetHelpers = __webpack_require__(37);
 
@@ -6012,7 +6002,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(52), __webpack_require__(54), __webpack_require__(55), __webpack_require__(60), __webpack_require__(39)('input')];
+	    return [__webpack_require__(51), __webpack_require__(53), __webpack_require__(54), __webpack_require__(59), __webpack_require__(39)('input')];
 	  }
 	}, {
 	  key: 'propTypes',
@@ -6400,7 +6390,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 62 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6436,7 +6426,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 63 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6449,7 +6439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = babelHelpers.interopRequireDefault(_react);
 
-	var _utilCaret = __webpack_require__(64);
+	var _utilCaret = __webpack_require__(63);
 
 	var _utilCaret2 = babelHelpers.interopRequireDefault(_utilCaret);
 
@@ -6532,7 +6522,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports) {
 
 	/*eslint-disable no-empty */
@@ -6590,7 +6580,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6613,27 +6603,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilCompat2 = babelHelpers.interopRequireDefault(_utilCompat);
 
-	var _Header = __webpack_require__(66);
+	var _Header = __webpack_require__(65);
 
 	var _Header2 = babelHelpers.interopRequireDefault(_Header);
 
-	var _Footer = __webpack_require__(68);
+	var _Footer = __webpack_require__(67);
 
 	var _Footer2 = babelHelpers.interopRequireDefault(_Footer);
 
-	var _Month = __webpack_require__(69);
+	var _Month = __webpack_require__(68);
 
 	var _Month2 = babelHelpers.interopRequireDefault(_Month);
 
-	var _Year = __webpack_require__(73);
+	var _Year = __webpack_require__(72);
 
 	var _Year2 = babelHelpers.interopRequireDefault(_Year);
 
-	var _Decade = __webpack_require__(74);
+	var _Decade = __webpack_require__(73);
 
 	var _Decade2 = babelHelpers.interopRequireDefault(_Decade);
 
-	var _Century = __webpack_require__(75);
+	var _Century = __webpack_require__(74);
 
 	var _Century2 = babelHelpers.interopRequireDefault(_Century);
 
@@ -6647,15 +6637,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
-	var _SlideTransition = __webpack_require__(76);
+	var _SlideTransition = __webpack_require__(75);
 
 	var _SlideTransition2 = babelHelpers.interopRequireDefault(_SlideTransition);
 
-	var _utilDates = __webpack_require__(70);
+	var _utilDates = __webpack_require__(69);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
-	var _utilConstants = __webpack_require__(72);
+	var _utilConstants = __webpack_require__(71);
 
 	var _utilConstants2 = babelHelpers.interopRequireDefault(_utilConstants);
 
@@ -6667,7 +6657,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilWidgetHelpers = __webpack_require__(37);
 
-	var _utilInteraction = __webpack_require__(51);
+	var _utilInteraction = __webpack_require__(50);
 
 	var dir = _utilConstants2['default'].directions,
 	    values = function values(obj) {
@@ -6752,7 +6742,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(52), __webpack_require__(53), __webpack_require__(60), __webpack_require__(39)()];
+	    return [__webpack_require__(51), __webpack_require__(52), __webpack_require__(59), __webpack_require__(39)()];
 	  }
 	}, {
 	  key: 'propTypes',
@@ -7077,7 +7067,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7090,7 +7080,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = babelHelpers.interopRequireDefault(_react);
 
-	var _WidgetButton = __webpack_require__(62);
+	var _WidgetButton = __webpack_require__(61);
 
 	var _WidgetButton2 = babelHelpers.interopRequireDefault(_WidgetButton);
 
@@ -7113,7 +7103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    })
 	  },
 
-	  mixins: [__webpack_require__(53), __webpack_require__(67)],
+	  mixins: [__webpack_require__(52), __webpack_require__(66)],
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -7189,7 +7179,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 67 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7216,7 +7206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7227,7 +7217,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = babelHelpers.interopRequireDefault(_react);
 
-	var _WidgetButton = __webpack_require__(62);
+	var _WidgetButton = __webpack_require__(61);
 
 	var _WidgetButton2 = babelHelpers.interopRequireDefault(_WidgetButton);
 
@@ -7265,7 +7255,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7282,7 +7272,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
 
-	var _utilDates = __webpack_require__(70);
+	var _utilDates = __webpack_require__(69);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -7339,7 +7329,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    isEqual: isEqual
 	  },
 
-	  mixins: [__webpack_require__(67), __webpack_require__(39)()],
+	  mixins: [__webpack_require__(66), __webpack_require__(39)()],
 
 	  propTypes: propTypes,
 
@@ -7458,7 +7448,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7467,11 +7457,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.__esModule = true;
 
-	var _dateArithmetic = __webpack_require__(71);
+	var _dateArithmetic = __webpack_require__(70);
 
 	var _dateArithmetic2 = babelHelpers.interopRequireDefault(_dateArithmetic);
 
-	var _constants = __webpack_require__(72);
+	var _constants = __webpack_require__(71);
 
 	var _constants2 = babelHelpers.interopRequireDefault(_constants);
 
@@ -7572,7 +7562,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 71 */
+/* 70 */
 /***/ function(module, exports) {
 
 	var MILI    = 'milliseconds'
@@ -7745,7 +7735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 72 */
+/* 71 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7781,7 +7771,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 73 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7798,7 +7788,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
 
-	var _utilDates = __webpack_require__(70);
+	var _utilDates = __webpack_require__(69);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -7841,7 +7831,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'YearView',
 
-	  mixins: [__webpack_require__(67), __webpack_require__(39)()],
+	  mixins: [__webpack_require__(66), __webpack_require__(39)()],
 
 	  propTypes: propTypes,
 
@@ -7938,7 +7928,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 74 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7955,7 +7945,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
 
-	var _utilDates = __webpack_require__(70);
+	var _utilDates = __webpack_require__(69);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -7995,7 +7985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'DecadeView',
 
-	  mixins: [__webpack_require__(53), __webpack_require__(67), __webpack_require__(39)()],
+	  mixins: [__webpack_require__(52), __webpack_require__(66), __webpack_require__(39)()],
 
 	  propTypes: propTypes,
 
@@ -8102,7 +8092,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 75 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8119,7 +8109,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
 
-	var _utilDates = __webpack_require__(70);
+	var _utilDates = __webpack_require__(69);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -8161,7 +8151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'CenturyView',
 
-	  mixins: [__webpack_require__(53), __webpack_require__(67), __webpack_require__(39)()],
+	  mixins: [__webpack_require__(52), __webpack_require__(66), __webpack_require__(39)()],
 
 	  propTypes: propTypes,
 
@@ -8277,7 +8267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 76 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8285,10 +8275,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var babelHelpers = __webpack_require__(2);
 
 	var React = __webpack_require__(21),
-	    ReplaceTransitionGroup = __webpack_require__(77),
+	    ReplaceTransitionGroup = __webpack_require__(76),
 	    compat = __webpack_require__(31),
 	    css = __webpack_require__(7),
-	    getWidth = __webpack_require__(78),
+	    getWidth = __webpack_require__(77),
 	    config = __webpack_require__(4);
 
 	var SlideChildGroup = React.createClass({
@@ -8404,7 +8394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 77 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8418,7 +8408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__(21),
 	    css = __webpack_require__(7),
 	    height = __webpack_require__(28),
-	    width = __webpack_require__(78),
+	    width = __webpack_require__(77),
 	    compat = __webpack_require__(31),
 	    _ = __webpack_require__(20);
 
@@ -8598,7 +8588,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 78 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8612,7 +8602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 79 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8647,13 +8637,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	//pick, omit, has
 
-	var _utilDates = __webpack_require__(70);
+	var _utilDates = __webpack_require__(69);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
 	var _utilLocalizers = __webpack_require__(18);
 
-	var _utilConstants = __webpack_require__(72);
+	var _utilConstants = __webpack_require__(71);
 
 	var _utilConstants2 = babelHelpers.interopRequireDefault(_utilConstants);
 
@@ -8661,19 +8651,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Popup2 = babelHelpers.interopRequireDefault(_Popup);
 
-	var _Calendar2 = __webpack_require__(65);
+	var _Calendar2 = __webpack_require__(64);
 
 	var _Calendar3 = babelHelpers.interopRequireDefault(_Calendar2);
 
-	var _TimeList = __webpack_require__(80);
+	var _TimeList = __webpack_require__(79);
 
 	var _TimeList2 = babelHelpers.interopRequireDefault(_TimeList);
 
-	var _DateInput = __webpack_require__(81);
+	var _DateInput = __webpack_require__(80);
 
 	var _DateInput2 = babelHelpers.interopRequireDefault(_DateInput);
 
-	var _WidgetButton = __webpack_require__(62);
+	var _WidgetButton = __webpack_require__(61);
 
 	var _WidgetButton2 = babelHelpers.interopRequireDefault(_WidgetButton);
 
@@ -8685,7 +8675,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
-	var _utilInteraction = __webpack_require__(51);
+	var _utilInteraction = __webpack_require__(50);
 
 	var _utilWidgetHelpers = __webpack_require__(37);
 
@@ -8757,7 +8747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(52), __webpack_require__(53), __webpack_require__(55), __webpack_require__(60), __webpack_require__(39)('valueInput', function (key, id) {
+	    return [__webpack_require__(51), __webpack_require__(52), __webpack_require__(54), __webpack_require__(59), __webpack_require__(39)('valueInput', function (key, id) {
 	      var open = this.props.open;
 	      var current = this.ariaActiveDescendant();
 	      var calIsActive = open === popups.CALENDAR && key === 'calendar';
@@ -9159,7 +9149,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 80 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9172,7 +9162,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = babelHelpers.interopRequireDefault(_react);
 
-	var _utilDates = __webpack_require__(70);
+	var _utilDates = __webpack_require__(69);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -9206,7 +9196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    culture: _react2['default'].PropTypes.string
 	  },
 
-	  mixins: [__webpack_require__(52)],
+	  mixins: [__webpack_require__(51)],
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -9379,7 +9369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 81 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9505,7 +9495,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 82 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9538,25 +9528,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
-	var _utilConstants = __webpack_require__(72);
+	var _utilConstants = __webpack_require__(71);
 
 	var _utilConstants2 = babelHelpers.interopRequireDefault(_utilConstants);
 
-	var _utilRepeater = __webpack_require__(83);
+	var _utilRepeater = __webpack_require__(82);
 
 	var _utilRepeater2 = babelHelpers.interopRequireDefault(_utilRepeater);
 
 	var _utilLocalizers = __webpack_require__(18);
 
-	var _NumberInput = __webpack_require__(84);
+	var _NumberInput = __webpack_require__(83);
 
 	var _NumberInput2 = babelHelpers.interopRequireDefault(_NumberInput);
 
-	var _WidgetButton = __webpack_require__(62);
+	var _WidgetButton = __webpack_require__(61);
 
 	var _WidgetButton2 = babelHelpers.interopRequireDefault(_WidgetButton);
 
-	var _utilInteraction = __webpack_require__(51);
+	var _utilInteraction = __webpack_require__(50);
 
 	var _utilWidgetHelpers = __webpack_require__(37);
 
@@ -9607,7 +9597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(52), __webpack_require__(53), __webpack_require__(60)];
+	    return [__webpack_require__(51), __webpack_require__(52), __webpack_require__(59)];
 	  }
 	}, {
 	  key: 'propTypes',
@@ -9851,7 +9841,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	//allow for styling, focus stealing keeping me from the normal what have you
 
 /***/ },
-/* 83 */
+/* 82 */
 /***/ function(module, exports) {
 
 	// my tests in ie11/chrome/FF indicate that keyDown repeats
@@ -9879,7 +9869,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports["default"];
 
 /***/ },
-/* 84 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10023,7 +10013,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 85 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10048,11 +10038,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Popup2 = babelHelpers.interopRequireDefault(_Popup);
 
-	var _MultiselectInput = __webpack_require__(86);
+	var _MultiselectInput = __webpack_require__(85);
 
 	var _MultiselectInput2 = babelHelpers.interopRequireDefault(_MultiselectInput);
 
-	var _MultiselectTagList = __webpack_require__(87);
+	var _MultiselectTagList = __webpack_require__(86);
 
 	var _MultiselectTagList2 = babelHelpers.interopRequireDefault(_MultiselectTagList);
 
@@ -10078,7 +10068,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilDataHelpers = __webpack_require__(36);
 
-	var _utilInteraction = __webpack_require__(51);
+	var _utilInteraction = __webpack_require__(50);
 
 	var _utilWidgetHelpers = __webpack_require__(37);
 
@@ -10147,7 +10137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(52), __webpack_require__(54), __webpack_require__(55), __webpack_require__(60), __webpack_require__(39)('input', function (key, id) {
+	    return [__webpack_require__(51), __webpack_require__(53), __webpack_require__(54), __webpack_require__(59), __webpack_require__(39)('input', function (key, id) {
 	      var myKey = this.props.ariaActiveDescendantKey;
 
 	      var createIsActive = (!this._data().length || this.state.focusedItem === null) && key === myKey;
@@ -10603,7 +10593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 86 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10666,7 +10656,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 87 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10695,7 +10685,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilDataHelpers = __webpack_require__(36);
 
-	var _utilInteraction = __webpack_require__(51);
+	var _utilInteraction = __webpack_require__(50);
 
 	var optionId = function optionId(id, idx) {
 	  return id + '__option__' + idx;
@@ -10705,7 +10695,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'MultiselectTagList',
 
-	  mixins: [__webpack_require__(53), __webpack_require__(39)()],
+	  mixins: [__webpack_require__(52), __webpack_require__(39)()],
 
 	  propTypes: {
 	    value: _react2['default'].PropTypes.array,
@@ -10859,7 +10849,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 88 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10900,13 +10890,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilValidateListInterface2 = babelHelpers.interopRequireDefault(_utilValidateListInterface);
 
-	var _domHelpersUtilScrollTo = __webpack_require__(56);
+	var _domHelpersUtilScrollTo = __webpack_require__(55);
 
 	var _domHelpersUtilScrollTo2 = babelHelpers.interopRequireDefault(_domHelpersUtilScrollTo);
 
 	var _utilDataHelpers = __webpack_require__(36);
 
-	var _utilInteraction = __webpack_require__(51);
+	var _utilInteraction = __webpack_require__(50);
 
 	var _utilWidgetHelpers = __webpack_require__(37);
 
@@ -10954,7 +10944,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(52), __webpack_require__(60), __webpack_require__(39)()];
+	    return [__webpack_require__(51), __webpack_require__(59), __webpack_require__(39)()];
 	  }
 	}, {
 	  key: 'getDefaultProps',
