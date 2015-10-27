@@ -3,7 +3,6 @@ import activeElement from 'dom-helpers/activeElement';
 import contains from'dom-helpers/query/contains';
 import cx from 'classnames';
 import _  from './util/_';
-import { OnResize } from 'react-window-mixins';
 import Popup           from './Popup';
 import compat          from './util/compat';
 import CustomPropTypes from './util/propTypes';
@@ -69,7 +68,6 @@ var DropdownList = React.createClass({
   displayName: 'DropdownList',
 
   mixins: [
-    OnResize,
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/DataFilterMixin'),

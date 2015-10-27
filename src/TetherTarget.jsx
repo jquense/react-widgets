@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import TetherElement from './util/tetherElement';
-import ReactDOM from 'react-dom';
+import compat from './util/compat';
 
 class TetherTarget extends React.Component {
 
@@ -32,7 +32,7 @@ class TetherTarget extends React.Component {
       options: tetherOptions,
     } = this.props;
 
-    const options = {... tetherOptions, target: ReactDOM.findDOMNode(this)};
+    const options = {... tetherOptions, target: compat.findDOMNode(this)};
     this.tethered = new TetherElement(tether, options);
   }
 

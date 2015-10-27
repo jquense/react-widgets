@@ -5,7 +5,6 @@ import config from './util/configuration';
 import cn from 'classnames';
 import compat from './util/compat';
 import TetherTarget from './TetherTarget';
-import ReactDOM from 'react-dom';
 
 var transform = config.animate.transform
 
@@ -88,7 +87,7 @@ module.exports = React.createClass({
       wrap,
     } = this.refs;
 
-    const placeholderEl = ReactDOM.findDOMNode(placeholder);
+    const placeholderEl = compat.findDOMNode(placeholder);
     const width = placeholderEl.offsetWidth;
 
     this.setState({ width });
@@ -102,7 +101,7 @@ module.exports = React.createClass({
         placeholder,
         } = this.refs;
 
-    const placeholderEl = ReactDOM.findDOMNode(placeholder);
+    const placeholderEl = compat.findDOMNode(placeholder);
 
     const width = placeholderEl.offsetWidth;
 
@@ -152,7 +151,7 @@ module.exports = React.createClass({
 
     if(!placeholder) return false;
 
-    const el = ReactDOM.findDOMNode(placeholder);
+    const el = compat.findDOMNode(placeholder);
     const width = el.offsetWidth;
 
     if(width !== this.state.width) this.setState({ width });
