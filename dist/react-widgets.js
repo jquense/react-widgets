@@ -3489,6 +3489,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var props = babelHelpers.objectWithoutProperties(_props, ['className', 'open', 'dropUp', 'style']);
 
 	    var opacity = open ? 1 : 0;
+	    var pointerEvents = open ? 'all' : 'none';
 	    var width = this.state.width;
 
 	    return _react2['default'].createElement(
@@ -3502,7 +3503,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        {
 	          tether: _react2['default'].createElement(
 	            PopupContent,
-	            { ref: 'content', style: { width: width, opacity: opacity } },
+	            { ref: 'content', style: { width: width, opacity: opacity, pointerEvents: pointerEvents } },
 	            _react2['default'].createElement(
 	              'div',
 	              { ref: 'wrap' },

@@ -119,6 +119,7 @@ module.exports = React.createClass({
       , ...props } = this.props;
 
     const opacity = open ? 1 : 0;
+    const pointerEvents = open ? 'all' : 'none';
     const { width } = this.state;
 
     return (
@@ -130,7 +131,7 @@ module.exports = React.createClass({
       >
         <TetherTarget
           tether={
-            <PopupContent ref='content' style={{ width, opacity  }}>
+            <PopupContent ref='content' style={{ width, opacity, pointerEvents  }}>
               <div ref='wrap'>
                 { this.props.children }
               </div>
