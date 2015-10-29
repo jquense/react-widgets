@@ -1,40 +1,36 @@
-'use strict';
-var dateMath = require('date-arithmetic')
-  , {
-    directions
-  , calendarViewUnits } = require('./constants')
-  , locale = require('./configuration').locale
+import dateMath from 'date-arithmetic';
+import constants from './constants';
+import { date as dateLocalizer } from './localizers';
+
+let { directions, calendarViewUnits } = constants
 
 
-var dates = module.exports = Object.assign(dateMath, {
-
+var dates = Object.assign(dateMath, {
 
   parse(date, format, culture) {
-    return locale.date.parse(date, format, culture)
+    return dateLocalizer.parse(date, format, culture)
   },
 
   format(date, format, culture){
-    return locale.date.format(date, format, culture)
+    return dateLocalizer.format(date, format, culture)
   },
 
   monthsInYear(year){
     var months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       , date   = new Date(year, 0, 1)
 
-    return  months.map( i => dates.month(date, i))
+    return  months.map(i => dates.month(date, i))
   },
-
 
   firstVisibleDay(date, culture){
     var firstOfMonth = dates.startOf(date, 'month')
-
-    return dates.startOf(firstOfMonth, 'week', locale.date.startOfWeek(culture));
+    return dates.startOf(firstOfMonth, 'week', dateLocalizer.startOfWeek(culture));
   },
 
   lastVisibleDay(date, culture){
     var endOfMonth = dates.endOf(date, 'month')
 
-    return dates.endOf(endOfMonth, 'week', locale.date.startOfWeek(culture));
+    return dates.endOf(endOfMonth, 'week', dateLocalizer.startOfWeek(culture));
   },
 
   visibleDays(date, culture){
@@ -82,7 +78,7 @@ var dates = module.exports = Object.assign(dateMath, {
     return dates.milliseconds(date, dates.milliseconds(time))
   },
 
-  sameMonth: function(dateA, dateB){
+  sameMonth(dateA, dateB){
     return dates.eq(dateA, dateB, 'month')
   },
 
@@ -98,3 +94,5 @@ var dates = module.exports = Object.assign(dateMath, {
     return this.add(this.startOf(new Date(), 'day'), 1, 'day')
   }
 })
+
+export default dates;

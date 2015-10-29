@@ -1,5 +1,5 @@
 import React from 'react';
-import activeElement from 'react/lib/getActiveElement';
+import activeElement from 'dom-helpers/activeElement';
 import contains from'dom-helpers/query/contains';
 import cx from 'classnames';
 import _  from './util/_';
@@ -130,8 +130,8 @@ var DropdownList = React.createClass({
     List = List || (groupBy && GroupableList) || PlainList
 
     let elementProps = omit(this.props, Object.keys(propTypes));
-    let listProps    = pick(this.props, Object.keys(compat.type(List).propTypes));
-    let popupProps   = pick(this.props, Object.keys(compat.type(Popup).propTypes));
+    let listProps    = pick(this.props, Object.keys(List.propTypes));
+    let popupProps   = pick(this.props, Object.keys(Popup.propTypes));
 
     let { focusedItem, selectedItem, focused } = this.state;
 
@@ -276,6 +276,11 @@ var DropdownList = React.createClass({
       , isOpen = this.props.open
       , closeWithFocus = () => { this.close(), compat.findDOMNode(this).focus()};
 
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
     if ( key === 'End' ) {
       if ( isOpen) this.setState({ focusedItem: list.last() })
       else         change(list.last())
@@ -310,9 +315,6 @@ var DropdownList = React.createClass({
           ? this.setState({ focusedItem: item })
           : change(item)
       })
-
-
-    notify(this.props.onKeyDown, [e])
 
     function change(item, fromList){
       if(!item) return
@@ -383,7 +385,5 @@ function msgs(msgs){
   }
 }
 
-module.exports = createUncontrolledWidget(
+export default createUncontrolledWidget(
     DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
-
-module.exports.BaseDropdownList = DropdownList

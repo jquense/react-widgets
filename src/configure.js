@@ -1,39 +1,19 @@
-var warning = require('react/lib/warning')
-  , configuration = require('./util/configuration')
-  , {
-    NumberLocalizer
-  , DateLocalizer } = require('./util/localizers')
-  , {
-    globalizeNumberLocalizer
-  , globalizeDateLocalizer } = require('./globalize-localizers')
+import configuration from './util/configuration';
+import * as localizers from './util/localizers';
 
-module.exports = {
 
-  setGlobalizeInstance: depreciateMethod(function (globalize) {
-    configuration.locale.date   = globalizeDateLocalizer(globalize)
-    configuration.locale.number = globalizeNumberLocalizer(globalize)
-  }),
+export default {
 
   setAnimate(animatefn) {
     configuration.animate = animatefn
   },
 
-  setDateLocalizer(spec) {
-    configuration.locale.date = new DateLocalizer(spec)
+  setLocalizers({ date, number }) {
+    date && this.setDateLocalizer(date)
+    number && this.setNumberLocalizer(number)
   },
 
-  setNumberLocalizer(spec) {
-    configuration.locale.number = new NumberLocalizer(spec)
-  }
-}
+  setDateLocalizer: localizers.setDate,
 
-
-function depreciateMethod(fn) {
-  return function () {
-    warning(false,
-      `setGlobalizeInstance() is depreciated. use setDateLocalizer() and setNumberLocalizer() with the Globalize localizers. ` +
-      ` TODO DOC LINK`);
-
-    return fn.apply(this, arguments);
-  }
+  setNumberLocalizer: localizers.setNumber
 }

@@ -1,9 +1,9 @@
-'use strict';
-var React = require('react');
-var cn = require('classnames');
-module.exports = React.createClass({
+import React from 'react';
+import cn from 'classnames';
 
-  render: function(){
+export default React.createClass({
+
+  render(){
     var { className, children, ...props} = this.props;
 
     return (

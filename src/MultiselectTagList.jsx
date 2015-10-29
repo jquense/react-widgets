@@ -5,10 +5,7 @@ import CustomPropTypes from './util/propTypes';
 import { instanceId } from './util/widgetHelpers';
 import { dataText } from './util/dataHelpers';
 
-import {
-    move, contains
-  , isDisabled, isReadOnly
-  , isDisabledItem, isReadOnlyItem } from './util/interaction';
+import { isDisabled, isDisabledItem, isReadOnlyItem } from './util/interaction';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
@@ -86,7 +83,7 @@ export default React.createClass({
                 }
                 <span
                   tabIndex='-1'
-                  onClick={!(isDisabled || isReadonly) && this._delete.bind(null, item)}
+                  onClick={!(isDisabled || isReadonly) ? this._delete.bind(null, item) : undefined}
                   aria-disabled={isDisabled}
                   aria-label='Unselect'
                   disabled={isDisabled}

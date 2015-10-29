@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(widgetName, prop){
-var code = 
+var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName}
   , colors = ['orange', 'red', 'blue', 'purple'];
@@ -17,7 +17,7 @@ var Example = React.createClass({
   }
 });
 
-React.render(<Example/>, mountNode);`
+ReactDOM.render(<Example/>, mountNode);`
 
 return code
 }

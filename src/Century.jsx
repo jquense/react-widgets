@@ -1,12 +1,12 @@
 import React      from 'react';
 import cn         from 'classnames';
 import dates      from './util/dates';
-import config from './util/configuration';import _          from './util/_';
+import { date as dateLocalizer } from './util/localizers';
+import _          from './util/_';
 import CustomPropTypes from './util/propTypes';
 import { instanceId } from './util/widgetHelpers';
 
-let localizers   = config.locale;
-let format = props => props.decadeFormat || localizers.date.formats.decade
+let format = props => dateLocalizer.getFormat('decade', props.decadeFormat)
 
 let isEqual = (dateA, dateB) => dates.eq(dateA, dateB, 'decade')
 let optionId = (id, date) => `${id}__century_${dates.year(date)}`;
@@ -70,7 +70,7 @@ export default React.createClass({
           var isFocused = isEqual(date, focused)
             , isSelected = isEqual(date, value)
             , currentDecade = isEqual(date, today)
-            , label = localizers.date.format(
+            , label = dateLocalizer.format(
                 dates.startOf(date, 'decade'), format(this.props), culture);
 
           var currentID = optionId(id, date);

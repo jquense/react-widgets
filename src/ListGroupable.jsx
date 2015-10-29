@@ -4,7 +4,7 @@ import CustomPropTypes from './util/propTypes';
 import compat from './util/compat';
 import cn from 'classnames';
 import _  from './util/_';
-import warning from 'react/lib/warning';
+import warning from 'warning';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
 
@@ -91,7 +91,7 @@ export default React.createClass({
         className, role, data
       , messages, onSelect, selectedIndex
       , ...props } = this.props
-      , id = instanceId(this) ;
+      , id = instanceId(this);
 
     let { sortedKeys, groups } = this.state;
 
@@ -133,7 +133,7 @@ export default React.createClass({
 
   _renderGroupHeader(group){
     var GroupComponent = this.props.groupComponent
-      , id = instanceId(this) ;
+      , id = instanceId(this);
 
     return (
       <li

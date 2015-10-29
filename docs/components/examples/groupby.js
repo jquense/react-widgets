@@ -2,7 +2,7 @@
 
 module.exports = function(widgetName) {
 
-var code = 
+var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 
@@ -10,18 +10,18 @@ var people = listOfPeople();
 
 var widgets =(
   <div>
-    <${widgetName} 
+    <${widgetName}
       data={people} defaultValue={people[0]}
-      textField='name' 
+      textField='name'
       groupBy='lastName'/>
 
-    <${widgetName} 
+    <${widgetName}
       data={people} defaultValue={people[0]}
-      textField='name' 
+      textField='name'
       groupBy={ person => person.name.length }/>
-  </div>) 
+  </div>)
 
-React.render(widgets, mountNode);`
+ReactDOM.render(widgets, mountNode);`
 
 return code
 }

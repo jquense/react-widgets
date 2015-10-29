@@ -5,11 +5,11 @@ module.exports = function(widgetName, prop, value){
   if (arguments.length === 3)
     props = { [prop]: value }
 
-var code = 
+var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName};
 
-React.render(
+ReactDOM.render(
   <${widgetName} ${map(props)}/>, mountNode);`
 
 return code
@@ -19,7 +19,7 @@ return code
 function map(o) {
   var str = '';
 
-  for (var key in o) if ( o.hasOwnProperty(key) ) 
+  for (var key in o) if ( o.hasOwnProperty(key) )
     str += ` \n\t\t${key}={${o[key]}}`
 
   if (Object.keys(o).length === 1)
