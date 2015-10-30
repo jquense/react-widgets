@@ -28,8 +28,12 @@ var PopupContent = React.createClass({
 
     return cloneElement(child, {
       ... props,
-      className: cn(child.props.className, 'rw-popup rw-widget')
+      className: cn(child.props.className, 'rw-popup rw-widget'),
     });
+  },
+
+  componentDidUpdate(){
+    compat.findDOMNode(this).focus();
   }
 })
 
@@ -47,6 +51,7 @@ module.exports = React.createClass({
     onClosing:      React.PropTypes.func,
     onOpening:      React.PropTypes.func,
     onClose:        React.PropTypes.func,
+    onBlur:         React.PropTypes.func,
     onOpen:         React.PropTypes.func,
     dropDownHeight: React.PropTypes.number,
   },
@@ -82,10 +87,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount(){
-    const {
-      placeholder,
-      wrap,
-    } = this.refs;
+    const { placeholder } = this.refs;
 
     const placeholderEl = compat.findDOMNode(placeholder);
     const width = placeholderEl.offsetWidth;
@@ -97,9 +99,7 @@ module.exports = React.createClass({
     var closing =  pvProps.open && !this.props.open
       , opening = !pvProps.open && this.props.open
 
-    const {
-        placeholder,
-        } = this.refs;
+    const { placeholder } = this.refs;
 
     const placeholderEl = compat.findDOMNode(placeholder);
 
@@ -116,6 +116,7 @@ module.exports = React.createClass({
       , open
       , dropUp
       , style: propStyle
+      , onBlur
       , ...props } = this.props;
 
     const opacity = open ? 1 : 0;
@@ -131,7 +132,7 @@ module.exports = React.createClass({
       >
         <TetherTarget
           tether={
-            <PopupContent ref='content' style={{ width, opacity, pointerEvents  }}>
+            <PopupContent onBlur={onBlur} ref='content' style={{ width, opacity, pointerEvents  }}>
               <div ref='wrap'>
                 { this.props.children }
               </div>
@@ -146,9 +147,8 @@ module.exports = React.createClass({
   },
 
   onResize(){
-    const {
-      placeholder,
-    } = this.refs;
+
+    const { placeholder } = this.refs;
 
     if(!placeholder) return false;
 
@@ -173,7 +173,9 @@ module.exports = React.createClass({
   open() {
     var self = this
       , anim = compat.findDOMNode(this)
-      , el   = compat.findDOMNode(this.refs.content);
+      , contentEl   = compat.findDOMNode(this.refs.content);
+
+    const { onOpen } = this.props;
 
     this._isOpening = true
 
@@ -182,11 +184,11 @@ module.exports = React.createClass({
       this.reset();
     }
 
-    this.props.onOpening()
+    this.props.onOpening();
 
     anim.className += ' rw-popup-animating'
 
-    config.animate(el
+    config.animate(contentEl
       , { opacity: 1 }
       , self.props.duration
       , 'ease'
@@ -195,9 +197,9 @@ module.exports = React.createClass({
 
           anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
 
-          anim.style.overflow = 'visible'
+          anim.style.overflofw = 'visible'
 
-          self.props.onOpen()
+          onOpen && onOpen();
         })
   },
 
@@ -205,7 +207,6 @@ module.exports = React.createClass({
     var self = this
       , el   = compat.findDOMNode(this.refs.content)
       , anim = compat.findDOMNode(this);
-
 
     this._isOpening = false;
     this.props.onClosing();

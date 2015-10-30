@@ -1387,7 +1387,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        onKeyDown: this._keyDown,
 	        onClick: this._click,
 	        onFocus: this._focus.bind(null, true),
-	        onBlur: this._focus.bind(null, false),
 	        className: _classnames2['default'](className, 'rw-dropdownlist', 'rw-widget', (_cx = {
 	          'rw-state-disabled': disabled,
 	          'rw-state-readonly': readOnly,
@@ -1422,9 +1421,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _react2['default'].createElement(
 	        PopupComponent,
 	        babelHelpers._extends({}, popupProps, {
-	          onOpen: function () {
+	          onOpen: tetherPopup ? null : function () {
 	            return _this.focus();
 	          },
+	          onBlur: tetherPopup ? this._focus.bind(null, false) : null,
 	          onOpening: function () {
 	            return _this.refs.list.forceUpdate();
 	          },
@@ -1492,9 +1492,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  key: '_onSelect',
 	  decorators: [_utilInteraction.widgetEditable],
 	  value: function _onSelect(data) {
-	    this.close();
 	    _utilWidgetHelpers.notify(this.props.onSelect, data);
 	    this.change(data);
+	    this.close();
 	    this.focus(this);
 	  }
 	}, {
@@ -1601,6 +1601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'close',
 	  value: function close() {
+
 	    _utilWidgetHelpers.notify(this.props.onToggle, false);
 	  }
 	}, {
@@ -3406,6 +3407,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _react.cloneElement(child, babelHelpers._extends({}, props, {
 	      className: _classnames2['default'](child.props.className, 'rw-popup rw-widget')
 	    }));
+	  },
+
+	  componentDidUpdate: function componentDidUpdate() {
+	    _utilCompat2['default'].findDOMNode(this).focus();
 	  }
 	});
 
@@ -3422,6 +3427,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    onClosing: _react2['default'].PropTypes.func,
 	    onOpening: _react2['default'].PropTypes.func,
 	    onClose: _react2['default'].PropTypes.func,
+	    onBlur: _react2['default'].PropTypes.func,
 	    onOpen: _react2['default'].PropTypes.func,
 	    dropDownHeight: _react2['default'].PropTypes.number
 	  },
@@ -3457,9 +3463,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  componentDidMount: function componentDidMount() {
-	    var _refs = this.refs;
-	    var placeholder = _refs.placeholder;
-	    var wrap = _refs.wrap;
+	    var placeholder = this.refs.placeholder;
 
 	    var placeholderEl = _utilCompat2['default'].findDOMNode(placeholder);
 	    var width = placeholderEl.offsetWidth;
@@ -3486,7 +3490,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var open = _props.open;
 	    var dropUp = _props.dropUp;
 	    var propStyle = _props.style;
-	    var props = babelHelpers.objectWithoutProperties(_props, ['className', 'open', 'dropUp', 'style']);
+	    var onBlur = _props.onBlur;
+	    var props = babelHelpers.objectWithoutProperties(_props, ['className', 'open', 'dropUp', 'style', 'onBlur']);
 
 	    var opacity = open ? 1 : 0;
 	    var pointerEvents = open ? 'all' : 'none';
@@ -3503,7 +3508,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        {
 	          tether: _react2['default'].createElement(
 	            PopupContent,
-	            { ref: 'content', style: { width: width, opacity: opacity, pointerEvents: pointerEvents } },
+	            { onBlur: onBlur, ref: 'content', style: { width: width, opacity: opacity, pointerEvents: pointerEvents } },
 	            _react2['default'].createElement(
 	              'div',
 	              { ref: 'wrap' },
@@ -3540,7 +3545,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  open: function open() {
 	    var self = this,
 	        anim = _utilCompat2['default'].findDOMNode(this),
-	        el = _utilCompat2['default'].findDOMNode(this.refs.content);
+	        contentEl = _utilCompat2['default'].findDOMNode(this.refs.content);
+
+	    var onOpen = this.props.onOpen;
 
 	    this._isOpening = true;
 
@@ -3553,14 +3560,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    anim.className += ' rw-popup-animating';
 
-	    _utilConfiguration2['default'].animate(el, { opacity: 1 }, self.props.duration, 'ease', function () {
+	    _utilConfiguration2['default'].animate(contentEl, { opacity: 1 }, self.props.duration, 'ease', function () {
 	      if (!self._isOpening) return;
 
 	      anim.className = anim.className.replace(/ ?rw-popup-animating/g, '');
 
-	      anim.style.overflow = 'visible';
+	      anim.style.overflofw = 'visible';
 
-	      self.props.onOpen();
+	      onOpen && onOpen();
 	    });
 	  },
 
