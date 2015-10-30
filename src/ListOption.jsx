@@ -5,14 +5,18 @@ let ListOption = React.createClass({
   propTypes: {
     dataItem: React.PropTypes.any,
     focused:  React.PropTypes.bool,
-    selected: React.PropTypes.bool
+    selected: React.PropTypes.bool,
+    disabled: React.PropTypes.bool,
+    readOnly: React.PropTypes.bool
   },
 
   render() {
-    let { className, children, focused, selected, ...props } = this.props;
+    let { className, children, focused, selected, disabled, readOnly, ...props } = this.props;
     let classes = {
       'rw-state-focus':    focused,
-      'rw-state-selected': selected
+      'rw-state-selected': selected,
+      'rw-state-disabled': disabled,
+      'rw-state-readonly': readOnly
     };
 
     return (

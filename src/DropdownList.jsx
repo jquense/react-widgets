@@ -12,7 +12,7 @@ import validateList    from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
 
 import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
-import { widgetEditable, widgetEnabled } from './util/interaction';
+import { widgetEditable, widgetEnabled, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let { omit, pick, result } = _;
@@ -123,7 +123,7 @@ var DropdownList = React.createClass({
         className, tabIndex, filter
       , valueField, textField, groupBy
       , messages, data, busy, dropUp
-      , placeholder, value, open, disabled, readOnly
+      , placeholder, value, open
       , valueComponent: ValueComponent
       , listComponent: List } = this.props;
 
@@ -136,6 +136,8 @@ var DropdownList = React.createClass({
     let { focusedItem, selectedItem, focused } = this.state;
 
     let items = this._data()
+      , disabled = isDisabled(this.props)
+      , readOnly = isReadOnly(this.props)
       , valueItem = dataItem(data, value, valueField) // take value from the raw data
       , listID = instanceId(this, '__listbox');
 

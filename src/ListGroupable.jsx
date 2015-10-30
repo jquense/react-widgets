@@ -7,6 +7,7 @@ import _  from './util/_';
 import warning from 'warning';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
+import { isDisabledItem, isReadOnlyItem }  from './util/interaction';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
@@ -31,10 +32,11 @@ export default React.createClass({
     selected:       React.PropTypes.any,
     focused:        React.PropTypes.any,
 
-    valueField:     React.PropTypes.string,
+    valueField:     CustomPropTypes.accessor,
     textField:      CustomPropTypes.accessor,
 
-    optID:          React.PropTypes.string,
+    disabled:       CustomPropTypes.disabled.acceptsArray,
+    readOnly:       CustomPropTypes.readOnly.acceptsArray,
 
     groupBy:        CustomPropTypes.accessor,
 
@@ -46,7 +48,6 @@ export default React.createClass({
 
   getDefaultProps(){
     return {
-      optID:         '',
       onSelect:      function(){},
       data:          [],
       optionComponent: ListOption,
@@ -155,7 +156,9 @@ export default React.createClass({
       , itemComponent: ItemComponent
       , optionComponent: Option } = this.props
 
-    let currentID = optionId(instanceId(this), idx);
+    let currentID = optionId(instanceId(this), idx)
+      , isDisabled = isDisabledItem(item, this.props)
+      , isReadOnly = isReadOnlyItem(item, this.props);
 
     if (focused === item)
       this._currentActiveID = currentID;
@@ -167,13 +170,17 @@ export default React.createClass({
         dataItem={item}
         focused={focused === item}
         selected={selected === item}
-        onClick={onSelect.bind(null, item)}
+        disabled={isDisabled}
+        readOnly={isReadOnly}
+        onClick={isDisabled || isReadOnly ? undefined : onSelect.bind(null, item)}
       >
         { ItemComponent
             ? <ItemComponent
                 item={item}
                 value={dataValue(item, valueField)}
                 text={dataText(item, textField)}
+                disabled={isDisabled}
+                readOnly={isReadOnly}
               />
             : dataText(item, textField)
         }
@@ -197,7 +204,7 @@ export default React.createClass({
       , `[React Widgets] You are seem to be trying to group this list by a `
       + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
 
-    return data.reduce( (grps, item) => {
+    return data.reduce((grps, item) => {
       var group = iter(item);
 
       _.has(grps, group)
@@ -215,7 +222,7 @@ export default React.createClass({
       .reduce( (flat, grp) => flat.concat(groups[grp]), [])
   },
 
-  move() {
+  move(){
     var selected = this.getItemDOMNode(this.props.focused);
 
     if( !selected ) return
