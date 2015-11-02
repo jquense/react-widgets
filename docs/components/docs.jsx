@@ -22,6 +22,7 @@ var NumberPicker   = require('./pages/NumberPicker.api.md')
 var Advanced       = require('./pages/Advanced.jsx')
 var Locale         = require('./pages/i18n.md');
 var Controllables  = require('./pages/controllables.md');
+var OtherProjects  = require('./pages/OtherProjects.md');
 
 var history = require('react-router/lib/HashHistory').history
 
@@ -86,6 +87,7 @@ var Docs = React.createClass({
                   <li><Link to='/calendar'>Calendar</Link></li>
                   <li><Link to='/datetime-picker'>{'Date & Time Picker'}</Link></li>
 
+                  <li><Link to='/others'>{'Other projects'}</Link></li>
                   {/*<li><Link to='advanced'>Advanced</Link></li> */}
                 </ul>
               </nav>
@@ -94,14 +96,6 @@ var Docs = React.createClass({
           <article className='col-sm-9 section'>
             <div className='section-inner'>
               {this.props.children}
-              {/*<div className='clearfix'style={{ marginTop: 20 }}>
-                { locations.indexOf(href) > 0 &&
-                  <button type='button' className='btn btn-link pull-left' onClick={this.prev}>« prev</button>
-                }
-                { locations.indexOf(href) < (locations.length - 1) &&
-                  <button type='button' className='btn btn-link pull-right' onClick={this.next}>next »</button>
-                }
-              </div> */}
             </div>
           </article>
         </div>
@@ -117,7 +111,7 @@ var Docs = React.createClass({
 
   next: function(){
     var idx = locations.indexOf(this.state.sideHref)
-      , href = locations[Math.min(idx + 1, locations.length -1)]
+      , href = locations[Math.min(idx + 1, locations.length - 1)]
 
     this.navigate(href)
   },
@@ -126,7 +120,7 @@ var Docs = React.createClass({
     this.transitionTo(key)
   },
 
-  navigate: function(href){
+  navigate: function(){
     // var change = this.state.sideHref.split('/')[0] !== href.split('/')[0]
     // this.setState({ sideHref: href });
     // window.location = href;
@@ -172,7 +166,9 @@ ReactDOM.render((
         <Route path=':topic' component={NumberPicker}/>
       </Route>
 
+
       <Route path="advanced" component={Advanced} />
+      <Route path="others" component={OtherProjects} />
       <Route path="i18n" component={Locale} />
       <Route path="controllables" component={Controllables} />
     </Route>

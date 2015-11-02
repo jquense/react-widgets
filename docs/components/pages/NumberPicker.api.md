@@ -1,4 +1,9 @@
 
+<div className='alert alert-warning'>
+ <i className='fa fa-exclamation-triangle'/>
+ You must configure a <a href='#/i18n'>localizer</a> to use this component!
+</div>
+
 Spinner for selecting numbers. The NumberPicker is a _localized_ widget and so __requires__ a localizer to
 be specified.  You can read more about localizers here: [localization](i18n).
 
