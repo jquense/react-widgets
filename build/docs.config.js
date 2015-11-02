@@ -28,7 +28,7 @@ module.exports = makeConfig({
     plugins: [
       new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
     ],
-
+    
     loaders: [
       { test: /\.json$/, loader: 'json' },
       { test: /\.raw$/, loader: 'raw' },

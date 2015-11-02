@@ -1,9 +1,9 @@
 react-widgets
 =============
 
-[![Join the chat at https://gitter.im/jquense/react-widgets](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jquense/react-widgets?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][downloads-url]
+[![#react-widgets channel on reactiflux discord](https://img.shields.io/badge/discord-%23react--widgets-blue.svg?style=flat-square)](https://discord.gg/0ZcbPKXt5bY4znh9)
 
 An à la carte set of polished, extensible, and accessible form inputs built for React, based on the excellent Kendo UI Core and jQuery UI.
 

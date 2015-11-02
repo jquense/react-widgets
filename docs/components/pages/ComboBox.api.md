@@ -21,7 +21,7 @@ the string value of the {widgetName} will be returned.
 
 ### onSelect?{ type: 'Function(Any value)' }
 
-This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires 
+This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires
 regardless of whether the value has actually changed.
 
 <EditableExample codeText={require('../examples/onSelect')(widgetName)}/>
@@ -29,45 +29,57 @@ regardless of whether the value has actually changed.
 ### data?{ type: 'Array<Any>' }
 
 An array of possible values for the {widgetName}. If an array of `objects` is provided you
-should usethe `valueField` and `textField` props, to specify which object
+should use the `valueField` and `textField` props, to specify which object
 properties comprise the value field (such as an id) and the field used to label the item.
 
 ### valueField?{ type: 'String' }
 
-A dataItem field name for uniquely identifying items in the `data` list. A `valueField` is required 
+A dataItem field name for uniquely identifying items in the `data` list. A `valueField` is required
 when the `value` prop is not itself a dataItem. A `valueField` is useful when specifying the selected item, by
 its `id` instead of using the model as the value.
 
 
-When a `valueField` is not provided, the {widgetName} will use strict equality checks (`===`) to locate 
+When a `valueField` is not provided, the {widgetName} will use strict equality checks (`===`) to locate
 the `value` in the `data` list.
 
 <EditableExample codeText={require('../examples/valueField')(widgetName)}/>
 
 ### textField?{ type: 'String | Function(dataItem)' }
 
-Specify which data item field to display in the ${widgetName} and selected item. The textField` prop 
+Specify which data item field to display in the ${widgetName} and selected item. The textField` prop
 may also also used as to find an item in the list as you type. Providing an accessor function allows for computed text values
 
 <EditableExample codeText={require('../examples/textField')(widgetName, false, true)}/>
 
 ### itemComponent?{ type: 'Component' }
 
-This component is used to render each possible item in the DropdownList. The default component
+This component is used to render each possible item in the ${widgetName}. The default component
 renders the text of the selected item (specified by `textfield`)
 
 <EditableExample codeText={require('../examples/itemComponent')(widgetName)}/>
 
+### disabled?{ type: '[Boolean, Array]' }
+
+Disable the widget, if an `Array` of values is passed in only those values will be disabled.
+
+<EditableExample codeText={require('../examples/disabled')(widgetName, 'disabled', false)}/>
+
+### readOnly?{ type: '[Boolean, Array]' }
+
+Place the {widgetName} in a read-only mode, If an `Array` of values is passed in only those values will be read-only.
+
+<EditableExample codeText={require('../examples/disabled')(widgetName, 'readOnly', false)}/>
+
 ### groupBy?{ type: 'String | Function(Any dataItem)' }
 
-Determines how to group the {widgetName} dropdown list. Providing a `string` will group 
+Determines how to group the {widgetName}. Providing a `string` will group
 the `data` array by that property. You can also provide a function which should return the group value.
 
 <EditableExample codeText={require('../examples/groupby')(widgetName)}/>
 
 ### groupComponent?{ type: 'Component' }
 
-This component is used to render each option group, when `groupBy` is specified. By 
+This component is used to render each option group, when `groupBy` is specified. By
 default the `groupBy` value will be used.
 
 <EditableExample codeText={require('../examples/groupComponent')(widgetName)}/>
@@ -80,7 +92,7 @@ are always "startsWith", meaning it will search from the start of the `textField
 ### filter?{ type: '[Boolean, String, Function(dataItem, searchTerm)]', default: 'false' }
 
 Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjunction with
-the `suggest` prop or instead of it. There are a few prebuilt filtering methods that can be specified
+the `suggest` prop or instead of it. There are a few built-in filtering methods that can be specified
 by passing the `String` name. You can explicitly opt out of filtering by setting filter
 to `false`
 

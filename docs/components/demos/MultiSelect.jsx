@@ -47,8 +47,8 @@ module.exports = React.createClass({
           id: list.length + 1,
           name: tag,
           first: parts[0],
-          last: parts[1],
-        }),
+          last: parts[1]
+        })
       })
     }
 

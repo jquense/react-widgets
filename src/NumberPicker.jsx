@@ -212,7 +212,6 @@ let NumberPicker = React.createClass({
   _keyDown(e) {
     var key = e.key;
 
-    console.log('hiii')
     notify(this.props.onKeyDown, [e])
 
     if (e.defaultPrevented)

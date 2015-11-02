@@ -6,6 +6,7 @@ import cn from 'classnames';
 import _  from './util/_';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
+import { isDisabledItem, isReadOnlyItem }  from './util/interaction';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
@@ -26,12 +27,13 @@ export default React.createClass({
     optionComponent: CustomPropTypes.elementType,
     itemComponent:   CustomPropTypes.elementType,
 
-    selectedIndex: React.PropTypes.number,
-    focusedIndex:  React.PropTypes.number,
-    valueField:    React.PropTypes.string,
+    selected:      React.PropTypes.any,
+    focused:       React.PropTypes.any,
+    valueField:    CustomPropTypes.accessor,
     textField:     CustomPropTypes.accessor,
 
-    optionID:      React.PropTypes.func,
+    disabled:      CustomPropTypes.disabled.acceptsArray,
+    readOnly:      CustomPropTypes.readOnly.acceptsArray,
 
     messages:      React.PropTypes.shape({
       emptyList:   CustomPropTypes.message
@@ -41,7 +43,6 @@ export default React.createClass({
 
   getDefaultProps(){
     return {
-      optID:  '',
       onSelect: ()=>{},
       optionComponent: ListOption,
       ariaActiveDescendantKey: 'list',
@@ -72,7 +73,6 @@ export default React.createClass({
       , focused, selected, messages, onSelect
       , itemComponent: ItemComponent
       , optionComponent: Option
-      , optionID
       , ...props  } = this.props
       , id = instanceId(this)
       , items;
@@ -83,22 +83,28 @@ export default React.createClass({
           {_.result(messages.emptyList, this.props)}
         </li>
       ) : data.map((item, idx) => {
-          var currentId = optionId(id, idx);
+          var currentId = optionId(id, idx)
+            , isDisabled = isDisabledItem(item, props)
+            , isReadOnly = isReadOnlyItem(item, props);
 
           return (
             <Option
               key={'item_' + idx}
               id={currentId}
               dataItem={item}
+              disabled={isDisabled}
+              readOnly={isReadOnly}
               focused={focused === item}
               selected={selected === item}
-              onClick={onSelect.bind(null, item)}
+              onClick={isDisabled || isReadOnly ? undefined : onSelect.bind(null, item)}
             >
               { ItemComponent
                 ? <ItemComponent
                     item={item}
                     value={dataValue(item, valueField)}
                     text={dataText(item, textField)}
+                    disabled={isDisabled}
+                    readOnly={isReadOnly}
                   />
                 : dataText(item, textField)
               }

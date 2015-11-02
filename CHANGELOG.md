@@ -1,3 +1,19 @@
+v3.1.0 - Mon, 02 Nov 2015 17:56:43 GMT
+--------------------------------------
+
+- [bd399d9](../../commit/bd399d9) [added] grouping SelectList items
+- [1058e3f](../../commit/1058e3f) [added] disable individual dropdown/combobox options
+- [5d1b530](../../commit/5d1b530) [fixed] missing key on Multiselect
+
+
+
+v3.0.1 - Fri, 30 Oct 2015 04:27:39 GMT
+--------------------------------------
+
+- [3d25273](../../commit/3d25273) [fixed] missing dev dep
+
+
+
 v3.0.0 - Sat, 24 Oct 2015 01:55:25 GMT
 --------------------------------------
 

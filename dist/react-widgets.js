@@ -1138,21 +1138,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _List2 = babelHelpers.interopRequireDefault(_List);
 
-	var _ListGroupable = __webpack_require__(41);
+	var _ListGroupable = __webpack_require__(42);
 
 	var _ListGroupable2 = babelHelpers.interopRequireDefault(_ListGroupable);
 
-	var _utilValidateListInterface = __webpack_require__(43);
+	var _utilValidateListInterface = __webpack_require__(44);
 
 	var _utilValidateListInterface2 = babelHelpers.interopRequireDefault(_utilValidateListInterface);
 
-	var _uncontrollable = __webpack_require__(44);
+	var _uncontrollable = __webpack_require__(45);
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
 	var _utilDataHelpers = __webpack_require__(37);
 
-	var _utilInteraction = __webpack_require__(47);
+	var _utilInteraction = __webpack_require__(39);
 
 	var _utilWidgetHelpers = __webpack_require__(38);
 
@@ -1191,9 +1191,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  dropUp: _react2['default'].PropTypes.bool,
 	  duration: _react2['default'].PropTypes.number, //popup
 
-	  disabled: _utilPropTypes2['default'].disabled,
-
-	  readOnly: _utilPropTypes2['default'].readOnly,
+	  disabled: _utilPropTypes2['default'].disabled.acceptsArray,
+	  readOnly: _utilPropTypes2['default'].readOnly.acceptsArray,
 
 	  messages: _react2['default'].PropTypes.shape({
 	    open: _utilPropTypes2['default'].message,
@@ -1211,7 +1210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(48), __webpack_require__(49), __webpack_require__(50), __webpack_require__(51), __webpack_require__(56), __webpack_require__(40)()];
+	    return [__webpack_require__(48), __webpack_require__(49), __webpack_require__(50), __webpack_require__(51), __webpack_require__(56), __webpack_require__(41)()];
 	  }
 	}, {
 	  key: 'propTypes',
@@ -1295,8 +1294,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var placeholder = _props2.placeholder;
 	    var value = _props2.value;
 	    var open = _props2.open;
-	    var disabled = _props2.disabled;
-	    var readOnly = _props2.readOnly;
 	    var ValueComponent = _props2.valueComponent;
 	    var List = _props2.listComponent;
 
@@ -1312,6 +1309,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var focused = _state.focused;
 
 	    var items = this._data(),
+	        disabled = _utilInteraction.isDisabled(this.props),
+	        readOnly = _utilInteraction.isReadOnly(this.props),
 	        valueItem = _utilDataHelpers.dataItem(data, value, valueField),
 	        // take value from the raw data
 	    listID = _utilWidgetHelpers.instanceId(this, '__listbox');
@@ -1651,14 +1650,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
 	*/
-	/* global define */
 
 	(function () {
 		'use strict';
 
-		var hasOwn = {}.hasOwnProperty;
-
 		function classNames () {
+
 			var classes = '';
 
 			for (var i = 0; i < arguments.length; i++) {
@@ -1667,13 +1664,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				var argType = typeof arg;
 
-				if (argType === 'string' || argType === 'number') {
+				if ('string' === argType || 'number' === argType) {
 					classes += ' ' + arg;
+
 				} else if (Array.isArray(arg)) {
 					classes += ' ' + classNames.apply(null, arg);
-				} else if (argType === 'object') {
+
+				} else if ('object' === argType) {
 					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
+						if (arg.hasOwnProperty(key) && arg[key]) {
 							classes += ' ' + key;
 						}
 					}
@@ -1685,14 +1684,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		if (typeof module !== 'undefined' && module.exports) {
 			module.exports = classNames;
-		} else if (true) {
-			// register as 'classnames', consistent with npm package name
+		} else if (true){
+			// AMD. Register as an anonymous module.
 			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
 			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}
+
 	}());
 
 
@@ -2190,6 +2190,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilWidgetHelpers = __webpack_require__(38);
 
+	var _utilInteraction = __webpack_require__(39);
+
 	var optionId = function optionId(id, idx) {
 	  return id + '__option__' + idx;
 	};
@@ -2198,7 +2200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'List',
 
-	  mixins: [__webpack_require__(39), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(40), __webpack_require__(41)()],
 
 	  propTypes: {
 	    data: _react2['default'].PropTypes.array,
@@ -2208,12 +2210,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    optionComponent: _utilPropTypes2['default'].elementType,
 	    itemComponent: _utilPropTypes2['default'].elementType,
 
-	    selectedIndex: _react2['default'].PropTypes.number,
-	    focusedIndex: _react2['default'].PropTypes.number,
-	    valueField: _react2['default'].PropTypes.string,
+	    selected: _react2['default'].PropTypes.any,
+	    focused: _react2['default'].PropTypes.any,
+	    valueField: _utilPropTypes2['default'].accessor,
 	    textField: _utilPropTypes2['default'].accessor,
 
-	    optionID: _react2['default'].PropTypes.func,
+	    disabled: _utilPropTypes2['default'].disabled.acceptsArray,
+	    readOnly: _utilPropTypes2['default'].readOnly.acceptsArray,
 
 	    messages: _react2['default'].PropTypes.shape({
 	      emptyList: _utilPropTypes2['default'].message
@@ -2222,7 +2225,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      optID: '',
 	      onSelect: function onSelect() {},
 	      optionComponent: _ListOption2['default'],
 	      ariaActiveDescendantKey: 'list',
@@ -2262,8 +2264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var onSelect = _props2.onSelect;
 	    var ItemComponent = _props2.itemComponent;
 	    var Option = _props2.optionComponent;
-	    var optionID = _props2.optionID;
-	    var props = babelHelpers.objectWithoutProperties(_props2, ['className', 'role', 'data', 'textField', 'valueField', 'focused', 'selected', 'messages', 'onSelect', 'itemComponent', 'optionComponent', 'optionID']);
+	    var props = babelHelpers.objectWithoutProperties(_props2, ['className', 'role', 'data', 'textField', 'valueField', 'focused', 'selected', 'messages', 'onSelect', 'itemComponent', 'optionComponent']);
 	    var id = _utilWidgetHelpers.instanceId(this);
 	    var items;
 
@@ -2272,7 +2273,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      { className: 'rw-list-empty' },
 	      _util_2['default'].result(messages.emptyList, this.props)
 	    ) : data.map(function (item, idx) {
-	      var currentId = optionId(id, idx);
+	      var currentId = optionId(id, idx),
+	          isDisabled = _utilInteraction.isDisabledItem(item, props),
+	          isReadOnly = _utilInteraction.isReadOnlyItem(item, props);
 
 	      return _react2['default'].createElement(
 	        Option,
@@ -2280,14 +2283,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	          key: 'item_' + idx,
 	          id: currentId,
 	          dataItem: item,
+	          disabled: isDisabled,
+	          readOnly: isReadOnly,
 	          focused: focused === item,
 	          selected: selected === item,
-	          onClick: onSelect.bind(null, item)
+	          onClick: isDisabled || isReadOnly ? undefined : onSelect.bind(null, item)
 	        },
 	        ItemComponent ? _react2['default'].createElement(ItemComponent, {
 	          item: item,
 	          value: _utilDataHelpers.dataValue(item, valueField),
-	          text: _utilDataHelpers.dataText(item, textField)
+	          text: _utilDataHelpers.dataText(item, textField),
+	          disabled: isDisabled,
+	          readOnly: isReadOnly
 	        }) : _utilDataHelpers.dataText(item, textField)
 	      );
 	    });
@@ -2345,7 +2352,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  propTypes: {
 	    dataItem: _react2['default'].PropTypes.any,
 	    focused: _react2['default'].PropTypes.bool,
-	    selected: _react2['default'].PropTypes.bool
+	    selected: _react2['default'].PropTypes.bool,
+	    disabled: _react2['default'].PropTypes.bool,
+	    readOnly: _react2['default'].PropTypes.bool
 	  },
 
 	  render: function render() {
@@ -2354,18 +2363,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var children = _props.children;
 	    var focused = _props.focused;
 	    var selected = _props.selected;
-	    var props = babelHelpers.objectWithoutProperties(_props, ['className', 'children', 'focused', 'selected']);
+	    var disabled = _props.disabled;
+	    var readOnly = _props.readOnly;
+	    var props = babelHelpers.objectWithoutProperties(_props, ['className', 'children', 'focused', 'selected', 'disabled', 'readOnly']);
 
 	    var classes = {
 	      'rw-state-focus': focused,
-	      'rw-state-selected': selected
+	      'rw-state-selected': selected,
+	      'rw-state-disabled': disabled,
+	      'rw-state-readonly': readOnly
 	    };
 
 	    return _react2['default'].createElement(
 	      'li',
 	      babelHelpers._extends({
 	        role: 'option',
-	        tabIndex: '-1',
+	        tabIndex: !(disabled || readOnly) ? '-1' : undefined,
 	        'aria-selected': !!selected,
 	        className: _classnames2['default']('rw-list-option', className, classes)
 	      }, props),
@@ -2475,11 +2488,89 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	exports.__esModule = true;
+	exports.isDisabled = isDisabled;
+	exports.isReadOnly = isReadOnly;
+	exports.isDisabledItem = isDisabledItem;
+	exports.isReadOnlyItem = isReadOnlyItem;
+	exports.contains = contains;
+	exports.move = move;
+
+	var _dataHelpers = __webpack_require__(37);
+
+	function isDisabled(props) {
+	  return props.disabled === true || props.disabled === 'disabled';
+	}
+
+	function isReadOnly(props) {
+	  return props.readOnly === true || props.readOnly === 'readOnly';
+	}
+
+	function isDisabledItem(item, props) {
+	  return isDisabled(props) || contains(item, props.disabled, props.valueField);
+	}
+
+	function isReadOnlyItem(item, props) {
+	  return isReadOnly(props) || contains(item, props.readOnly, props.valueField);
+	}
+
+	function contains(item, values, valueField) {
+	  return Array.isArray(values) ? values.some(function (value) {
+	    return _dataHelpers.valueMatcher(item, value, valueField);
+	  }) : _dataHelpers.valueMatcher(item, values, valueField);
+	}
+
+	function move(dir, item, props, list) {
+	  var isDisabledOrReadonly = function isDisabledOrReadonly(item) {
+	    return isDisabledItem(item, props) || isReadOnlyItem(item, props);
+	  },
+	      stop = dir === 'next' ? list.last() : list.first(),
+	      next = list[dir](item);
+
+	  while (next !== stop && isDisabledOrReadonly(next)) next = list[dir](next);
+
+	  return isDisabledOrReadonly(next) ? item : next;
+	}
+
+	var widgetEnabled = interactionDecorator(true);
+
+	exports.widgetEnabled = widgetEnabled;
+	var widgetEditable = interactionDecorator(false);
+
+	exports.widgetEditable = widgetEditable;
+	function interactionDecorator(disabledOnly) {
+	  function wrap(method) {
+	    return function decoratedMethod() {
+	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	        args[_key] = arguments[_key];
+	      }
+
+	      if (!(isDisabled(this.props) || !disabledOnly && isReadOnly(this.props))) return method.apply(this, args);
+	    };
+	  }
+
+	  return function decorate(target, key, desc) {
+	    if (desc.initializer) {
+	      (function () {
+	        var init = desc.initializer;
+	        desc.initializer = function () {
+	          return wrap(init());
+	        };
+	      })();
+	    } else desc.value = wrap(desc.value);
+	    return desc;
+	  };
+	}
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	var babelHelpers = __webpack_require__(2);
 
-	var _react = __webpack_require__(21);
-
-	var _react2 = babelHelpers.interopRequireDefault(_react);
+	exports.__esModule = true;
 
 	var _utilFilter = __webpack_require__(34);
 
@@ -2487,76 +2578,78 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilDataHelpers = __webpack_require__(37);
 
-	module.exports = {
+	var _utilPropTypes = __webpack_require__(33);
+
+	var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
+
+	var _utilInteraction = __webpack_require__(39);
+
+	var EMPTY_VALUE = {};
+
+	var isDisabledOrReadonly = function isDisabledOrReadonly(item, props) {
+	  return _utilInteraction.isDisabledItem(item, props) || _utilInteraction.isReadOnlyItem(item, props);
+	};
+
+	exports['default'] = {
 
 	  propTypes: {
-	    textField: _react2['default'].PropTypes.string
+	    textField: _utilPropTypes2['default'].accessor,
+	    valueField: _utilPropTypes2['default'].accessor,
+	    disabled: _utilPropTypes2['default'].disabled.acceptsArray,
+	    readOnly: _utilPropTypes2['default'].readOnly.acceptsArray
 	  },
 
 	  first: function first() {
-	    return this._data()[0];
+	    return this.next(EMPTY_VALUE);
 	  },
 
 	  last: function last() {
-	    var data = this._data();
-	    return data[data.length - 1];
+	    var data = this._data(),
+	        item = data[data.length - 1];
+
+	    return isDisabledOrReadonly(item, this.props) ? this.prev(item) : item;
 	  },
 
 	  prev: function prev(item, word) {
-	    var textField = this.props.textField,
-	        data = this._data(),
-	        idx = data.indexOf(item);
+	    var data = this._data(),
+	        nextIdx = data.indexOf(item),
+	        matches = matcher(word, item, this.props.textField);
 
-	    if (idx === -1) idx = data.length;
+	    if (nextIdx < 0 || nextIdx == null) nextIdx = 0;
 
-	    return word ? findPrevInstance(textField, data, word, idx) : --idx < 0 ? data[0] : data[idx];
+	    nextIdx--;
+
+	    while (nextIdx > -1 && (isDisabledOrReadonly(data[nextIdx], this.props) || !matches(data[nextIdx]))) nextIdx--;
+
+	    return nextIdx >= 0 ? data[nextIdx] : item;
 	  },
 
 	  next: function next(item, word) {
-	    var textField = this.props.textField,
-	        data = this._data(),
-	        idx = data.indexOf(item);
+	    var data = this._data(),
+	        nextIdx = data.indexOf(item) + 1,
+	        len = data.length,
+	        matches = matcher(word, item, this.props.textField);
 
-	    return word ? findNextInstance(textField, data, word, idx) : ++idx === data.length ? data[data.length - 1] : data[idx];
+	    while (nextIdx < len && (isDisabledOrReadonly(data[nextIdx], this.props) || !matches(data[nextIdx]))) nextIdx++;
+
+	    return nextIdx < len ? data[nextIdx] : item;
 	  }
-
 	};
 
-	function findNextInstance(textField, data, word, startIndex) {
-	  var matches = _utilFilter2['default'].startsWith,
-	      idx = -1,
-	      len = data.length,
-	      foundStart,
-	      itemText;
+	function matcher(word, item, textField) {
+	  if (!word) return function () {
+	    return true;
+	  };
 
 	  word = word.toLowerCase();
-
-	  while (++idx < len) {
-	    foundStart = foundStart || idx > startIndex;
-	    itemText = foundStart && _utilDataHelpers.dataText(data[idx], textField).toLowerCase();
-
-	    if (foundStart && matches(itemText, word)) return data[idx];
-	  }
+	  return function (item) {
+	    return _utilFilter2['default'].startsWith(_utilDataHelpers.dataText(item, textField).toLowerCase(), word);
+	  };
 	}
-
-	function findPrevInstance(textField, data, word, startIndex) {
-	  var matches = _utilFilter2['default'].startsWith,
-	      idx = data.length,
-	      foundStart,
-	      itemText;
-
-	  word = word.toLowerCase();
-
-	  while (--idx >= 0) {
-	    foundStart = foundStart || idx < startIndex;
-	    itemText = foundStart && _utilDataHelpers.dataText(data[idx], textField).toLowerCase();
-
-	    if (foundStart && matches(itemText, word)) return data[idx];
-	  }
-	}
+	module.exports = exports['default'];
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2641,7 +2734,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2674,13 +2767,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _util_2 = babelHelpers.interopRequireDefault(_util_);
 
-	var _warning = __webpack_require__(42);
+	var _warning = __webpack_require__(43);
 
 	var _warning2 = babelHelpers.interopRequireDefault(_warning);
 
 	var _utilDataHelpers = __webpack_require__(37);
 
 	var _utilWidgetHelpers = __webpack_require__(38);
+
+	var _utilInteraction = __webpack_require__(39);
 
 	var optionId = function optionId(id, idx) {
 	  return id + '__option__' + idx;
@@ -2690,7 +2785,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'List',
 
-	  mixins: [__webpack_require__(39), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(40), __webpack_require__(41)()],
 
 	  propTypes: {
 	    data: _react2['default'].PropTypes.array,
@@ -2704,10 +2799,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    selected: _react2['default'].PropTypes.any,
 	    focused: _react2['default'].PropTypes.any,
 
-	    valueField: _react2['default'].PropTypes.string,
+	    valueField: _utilPropTypes2['default'].accessor,
 	    textField: _utilPropTypes2['default'].accessor,
 
-	    optID: _react2['default'].PropTypes.string,
+	    disabled: _utilPropTypes2['default'].disabled.acceptsArray,
+	    readOnly: _utilPropTypes2['default'].readOnly.acceptsArray,
 
 	    groupBy: _utilPropTypes2['default'].accessor,
 
@@ -2718,7 +2814,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      optID: '',
 	      onSelect: function onSelect() {},
 	      data: [],
 	      optionComponent: _ListOption2['default'],
@@ -2833,7 +2928,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var ItemComponent = _props2.itemComponent;
 	    var Option = _props2.optionComponent;
 
-	    var currentID = optionId(_utilWidgetHelpers.instanceId(this), idx);
+	    var currentID = optionId(_utilWidgetHelpers.instanceId(this), idx),
+	        isDisabled = _utilInteraction.isDisabledItem(item, this.props),
+	        isReadOnly = _utilInteraction.isReadOnlyItem(item, this.props);
 
 	    if (focused === item) this._currentActiveID = currentID;
 
@@ -2845,12 +2942,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        dataItem: item,
 	        focused: focused === item,
 	        selected: selected === item,
-	        onClick: onSelect.bind(null, item)
+	        disabled: isDisabled,
+	        readOnly: isReadOnly,
+	        onClick: isDisabled || isReadOnly ? undefined : onSelect.bind(null, item)
 	      },
 	      ItemComponent ? _react2['default'].createElement(ItemComponent, {
 	        item: item,
 	        value: _utilDataHelpers.dataValue(item, valueField),
-	        text: _utilDataHelpers.dataText(item, textField)
+	        text: _utilDataHelpers.dataText(item, textField),
+	        disabled: isDisabled,
+	        readOnly: isReadOnly
 	      }) : _utilDataHelpers.dataText(item, textField)
 	    );
 	  },
@@ -2919,7 +3020,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -2986,7 +3087,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -3014,7 +3115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3023,13 +3124,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _createUncontrollable = __webpack_require__(45);
+	var _createUncontrollable = __webpack_require__(46);
 
 	var _createUncontrollable2 = _interopRequireDefault(_createUncontrollable);
 
 	var mixin = {
 	  shouldComponentUpdate: function shouldComponentUpdate() {
-	    //let the forceUpdate trigger the update
+	    //let the setState trigger the update
 	    return !this._notifying;
 	  }
 	};
@@ -3049,7 +3150,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3070,7 +3171,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utils = __webpack_require__(46);
+	var _utils = __webpack_require__(47);
 
 	var utils = _interopRequireWildcard(_utils);
 
@@ -3114,25 +3215,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, {});
 	      },
 
-	      /**
-	       * If a prop switches from controlled to Uncontrolled
-	       * reset its value to the defaultValue
-	       */
-	      componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	        var _this = this;
-
-	        var props = this.props,
-	            keys = Object.keys(controlledValues);
-
-	        keys.forEach(function (key) {
-	          if (utils.getValue(nextProps, key) === undefined && utils.getValue(props, key) !== undefined) {
-	            _this._values[key] = nextProps[utils.defaultKey(key)];
-	          }
-	        });
-	      },
-
 	      render: function render() {
-	        var _this2 = this;
+	        var _this = this;
 
 	        var newProps = {};
 	        var _props = this.props;
@@ -3143,22 +3227,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        utils.each(controlledValues, function (handle, propName) {
 	          var linkPropName = utils.getLinkName(propName),
-	              prop = _this2.props[propName];
+	              prop = _this.props[propName];
 
-	          if (linkPropName && !isProp(_this2.props, propName) && isProp(_this2.props, linkPropName)) {
-	            prop = _this2.props[linkPropName].value;
+	          if (linkPropName && !isProp(_this.props, propName) && isProp(_this.props, linkPropName)) {
+	            prop = _this.props[linkPropName].value;
 	          }
 
-	          newProps[propName] = prop !== undefined ? prop : _this2._values[propName];
+	          newProps[propName] = prop !== undefined ? prop : _this._values[propName];
 
-	          newProps[handle] = setAndNotify.bind(_this2, propName);
+	          newProps[handle] = setAndNotify.bind(_this, propName);
 	        });
 
 	        newProps = _extends({}, props, newProps, { ref: 'inner' });
 
 	        return _react2['default'].createElement(Component, newProps);
 	      }
-
 	    }));
 
 	    component.ControlledComponent = Component;
@@ -3189,7 +3272,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -3198,7 +3281,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.customPropType = customPropType;
 	exports.uncontrolledPropTypes = uncontrolledPropTypes;
 	exports.getType = getType;
-	exports.getValue = getValue;
 	exports.getLinkName = getLinkName;
 	exports.defaultKey = defaultKey;
 	exports.chain = chain;
@@ -3218,7 +3300,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function customPropType(handler, propType, name) {
 
-	  return function (props, propName) {
+	  return function (props, propName, componentName) {
 
 	    if (props[propName] !== undefined) {
 	      if (!props[handler]) {
@@ -3258,18 +3340,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return component.type;
 	}
 
-	function getValue(props, name) {
-	  var linkPropName = getLinkName(name);
-
-	  if (linkPropName && !isProp(props, name) && isProp(props, linkPropName)) return props[linkPropName].value;
-
-	  return props[name];
-	}
-
-	function isProp(props, prop) {
-	  return props[prop] !== undefined;
-	}
-
 	function getLinkName(name) {
 	  return name === 'value' ? 'valueLink' : name === 'checked' ? 'checkedLink' : null;
 	}
@@ -3304,86 +3374,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return o ? Object.prototype.hasOwnProperty.call(o, k) : false;
 	}
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-	exports.isDisabled = isDisabled;
-	exports.isReadOnly = isReadOnly;
-	exports.isDisabledItem = isDisabledItem;
-	exports.isReadOnlyItem = isReadOnlyItem;
-	exports.contains = contains;
-	exports.move = move;
-
-	var _dataHelpers = __webpack_require__(37);
-
-	function isDisabled(props) {
-	  return props.disabled === true || props.disabled === 'disabled';
-	}
-
-	function isReadOnly(props) {
-	  return props.readOnly === true || props.readOnly === 'readOnly';
-	}
-
-	function isDisabledItem(item, props) {
-	  return isDisabled(props) || contains(item, props.disabled, props.valueField);
-	}
-
-	function isReadOnlyItem(item, props) {
-	  return isReadOnly(props) || contains(item, props.readOnly, props.valueField);
-	}
-
-	function contains(item, values, valueField) {
-	  return Array.isArray(values) ? values.some(function (value) {
-	    return _dataHelpers.valueMatcher(item, value, valueField);
-	  }) : _dataHelpers.valueMatcher(item, values, valueField);
-	}
-
-	function move(dir, item, props, list) {
-	  var isDisabledOrReadonly = function isDisabledOrReadonly(item) {
-	    return isDisabledItem(item, props) || isReadOnlyItem(item, props);
-	  },
-	      stop = dir === 'next' ? list.last() : list.first(),
-	      next = list[dir](item);
-
-	  while (next !== stop && isDisabledOrReadonly(next)) next = list[dir](next);
-
-	  return isDisabledOrReadonly(next) ? item : next;
-	}
-
-	var widgetEnabled = interactionDecorator(true);
-
-	exports.widgetEnabled = widgetEnabled;
-	var widgetEditable = interactionDecorator(false);
-
-	exports.widgetEditable = widgetEditable;
-	function interactionDecorator(disabledOnly) {
-	  function wrap(method) {
-	    return function decoratedMethod() {
-	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	        args[_key] = arguments[_key];
-	      }
-
-	      if (!(isDisabled(this.props) || !disabledOnly && isReadOnly(this.props))) return method.apply(this, args);
-	    };
-	  }
-
-	  return function decorate(target, key, desc) {
-	    if (desc.initializer) {
-	      (function () {
-	        var init = desc.initializer;
-	        desc.initializer = function () {
-	          return wrap(init());
-	        };
-	      })();
-	    } else desc.value = wrap(desc.value);
-	    return desc;
-	  };
-	}
 
 /***/ },
 /* 48 */
@@ -3786,21 +3776,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _List2 = babelHelpers.interopRequireDefault(_List);
 
-	var _ListGroupable = __webpack_require__(41);
+	var _ListGroupable = __webpack_require__(42);
 
 	var _ListGroupable2 = babelHelpers.interopRequireDefault(_ListGroupable);
 
-	var _utilValidateListInterface = __webpack_require__(43);
+	var _utilValidateListInterface = __webpack_require__(44);
 
 	var _utilValidateListInterface2 = babelHelpers.interopRequireDefault(_utilValidateListInterface);
 
-	var _uncontrollable = __webpack_require__(44);
+	var _uncontrollable = __webpack_require__(45);
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
 	var _utilDataHelpers = __webpack_require__(37);
 
-	var _utilInteraction = __webpack_require__(47);
+	var _utilInteraction = __webpack_require__(39);
 
 	var _utilWidgetHelpers = __webpack_require__(38);
 
@@ -3833,8 +3823,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  onSelect: _react2['default'].PropTypes.func,
 
 	  autoFocus: _react2['default'].PropTypes.bool,
-	  disabled: _utilPropTypes2['default'].disabled,
-	  readOnly: _utilPropTypes2['default'].readOnly,
+	  disabled: _utilPropTypes2['default'].disabled.acceptsArray,
+	  readOnly: _utilPropTypes2['default'].readOnly.acceptsArray,
 
 	  suggest: _utilPropTypes2['default'].filter,
 	  filter: _utilPropTypes2['default'].filter,
@@ -3861,7 +3851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(48), __webpack_require__(50), __webpack_require__(51), __webpack_require__(56), __webpack_require__(40)('input')];
+	    return [__webpack_require__(48), __webpack_require__(50), __webpack_require__(51), __webpack_require__(56), __webpack_require__(41)('input')];
 	  }
 	}, {
 	  key: 'propTypes',
@@ -3961,8 +3951,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var placeholder = _props2.placeholder;
 	    var value = _props2.value;
 	    var open = _props2.open;
-	    var disabled = _props2.disabled;
-	    var readOnly = _props2.readOnly;
 	    var List = _props2.listComponent;
 
 	    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
@@ -3977,6 +3965,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var focused = _state.focused;
 
 	    var items = this._data(),
+	        disabled = _utilInteraction.isDisabled(this.props),
+	        readOnly = _utilInteraction.isReadOnly(this.props),
 	        valueItem = _utilDataHelpers.dataItem(data, value, valueField),
 	        // take value from the raw data
 	    inputID = _utilWidgetHelpers.instanceId(this, '_input'),
@@ -4492,7 +4482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
 
-	var _uncontrollable = __webpack_require__(44);
+	var _uncontrollable = __webpack_require__(45);
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
@@ -4516,7 +4506,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilWidgetHelpers = __webpack_require__(38);
 
-	var _utilInteraction = __webpack_require__(47);
+	var _utilInteraction = __webpack_require__(39);
 
 	var dir = _utilConstants2['default'].directions,
 	    values = function values(obj) {
@@ -4601,7 +4591,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(48), __webpack_require__(49), __webpack_require__(56), __webpack_require__(40)()];
+	    return [__webpack_require__(48), __webpack_require__(49), __webpack_require__(56), __webpack_require__(41)()];
 	  }
 	}, {
 	  key: 'propTypes',
@@ -5188,7 +5178,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    isEqual: isEqual
 	  },
 
-	  mixins: [__webpack_require__(63), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(63), __webpack_require__(41)()],
 
 	  propTypes: propTypes,
 
@@ -5690,7 +5680,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'YearView',
 
-	  mixins: [__webpack_require__(63), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(63), __webpack_require__(41)()],
 
 	  propTypes: propTypes,
 
@@ -5844,7 +5834,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'DecadeView',
 
-	  mixins: [__webpack_require__(49), __webpack_require__(63), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(49), __webpack_require__(63), __webpack_require__(41)()],
 
 	  propTypes: propTypes,
 
@@ -6010,7 +6000,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'CenturyView',
 
-	  mixins: [__webpack_require__(49), __webpack_require__(63), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(49), __webpack_require__(63), __webpack_require__(41)()],
 
 	  propTypes: propTypes,
 
@@ -6530,11 +6520,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
 
-	var _uncontrollable = __webpack_require__(44);
+	var _uncontrollable = __webpack_require__(45);
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
-	var _utilInteraction = __webpack_require__(47);
+	var _utilInteraction = __webpack_require__(39);
 
 	var _utilWidgetHelpers = __webpack_require__(38);
 
@@ -6606,7 +6596,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(48), __webpack_require__(49), __webpack_require__(51), __webpack_require__(56), __webpack_require__(40)('valueInput', function (key, id) {
+	    return [__webpack_require__(48), __webpack_require__(49), __webpack_require__(51), __webpack_require__(56), __webpack_require__(41)('valueInput', function (key, id) {
 	      var open = this.props.open;
 	      var current = this.ariaActiveDescendant();
 	      var calIsActive = open === popups.CALENDAR && key === 'calendar';
@@ -7383,7 +7373,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
 
-	var _uncontrollable = __webpack_require__(44);
+	var _uncontrollable = __webpack_require__(45);
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
@@ -7405,7 +7395,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _WidgetButton2 = babelHelpers.interopRequireDefault(_WidgetButton);
 
-	var _utilInteraction = __webpack_require__(47);
+	var _utilInteraction = __webpack_require__(39);
 
 	var _utilWidgetHelpers = __webpack_require__(38);
 
@@ -7627,7 +7617,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: function _keyDown(e) {
 	    var key = e.key;
 
-	    console.log('hiii');
 	    _utilWidgetHelpers.notify(this.props.onKeyDown, [e]);
 
 	    if (e.defaultPrevented) return;
@@ -7913,28 +7902,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _List2 = babelHelpers.interopRequireDefault(_List);
 
-	var _ListGroupable = __webpack_require__(41);
+	var _ListGroupable = __webpack_require__(42);
 
 	var _ListGroupable2 = babelHelpers.interopRequireDefault(_ListGroupable);
 
-	var _utilValidateListInterface = __webpack_require__(43);
+	var _utilValidateListInterface = __webpack_require__(44);
 
 	var _utilValidateListInterface2 = babelHelpers.interopRequireDefault(_utilValidateListInterface);
 
-	var _uncontrollable = __webpack_require__(44);
+	var _uncontrollable = __webpack_require__(45);
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
 	var _utilDataHelpers = __webpack_require__(37);
 
-	var _utilInteraction = __webpack_require__(47);
+	var _utilInteraction = __webpack_require__(39);
 
 	var _utilWidgetHelpers = __webpack_require__(38);
 
 	var compatCreate = function compatCreate(props, msgs) {
 	  return typeof msgs.createNew === 'function' ? msgs.createNew(props) : [_react2['default'].createElement(
 	    'strong',
-	    null,
+	    { key: 'dumb' },
 	    '"' + props.searchTerm + '"'
 	  ), ' ' + msgs.createNew];
 	};
@@ -7996,7 +7985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(48), __webpack_require__(50), __webpack_require__(51), __webpack_require__(56), __webpack_require__(40)('input', function (key, id) {
+	    return [__webpack_require__(48), __webpack_require__(50), __webpack_require__(51), __webpack_require__(56), __webpack_require__(41)('input', function (key, id) {
 	      var myKey = this.props.ariaActiveDescendantKey;
 
 	      var createIsActive = (!this._data().length || this.state.focusedItem === null) && key === myKey;
@@ -8544,7 +8533,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilDataHelpers = __webpack_require__(37);
 
-	var _utilInteraction = __webpack_require__(47);
+	var _utilInteraction = __webpack_require__(39);
 
 	var optionId = function optionId(id, idx) {
 	  return id + '__option__' + idx;
@@ -8554,7 +8543,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'MultiselectTagList',
 
-	  mixins: [__webpack_require__(49), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(49), __webpack_require__(41)()],
 
 	  propTypes: {
 	    value: _react2['default'].PropTypes.array,
@@ -8729,7 +8718,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
 
-	var _uncontrollable = __webpack_require__(44);
+	var _uncontrollable = __webpack_require__(45);
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
@@ -8745,7 +8734,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _List2 = babelHelpers.interopRequireDefault(_List);
 
-	var _utilValidateListInterface = __webpack_require__(43);
+	var _ListGroupable = __webpack_require__(42);
+
+	var _ListGroupable2 = babelHelpers.interopRequireDefault(_ListGroupable);
+
+	var _ListOption = __webpack_require__(36);
+
+	var _ListOption2 = babelHelpers.interopRequireDefault(_ListOption);
+
+	var _utilValidateListInterface = __webpack_require__(44);
 
 	var _utilValidateListInterface2 = babelHelpers.interopRequireDefault(_utilValidateListInterface);
 
@@ -8755,7 +8752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilDataHelpers = __webpack_require__(37);
 
-	var _utilInteraction = __webpack_require__(47);
+	var _utilInteraction = __webpack_require__(39);
 
 	var _utilWidgetHelpers = __webpack_require__(38);
 
@@ -8803,7 +8800,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'mixins',
 	  initializer: function initializer() {
-	    return [__webpack_require__(48), __webpack_require__(56), __webpack_require__(40)()];
+	    return [__webpack_require__(48), __webpack_require__(56), __webpack_require__(41)()];
 	  }
 	}, {
 	  key: 'getDefaultProps',
@@ -8864,9 +8861,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var className = _props.className;
 	    var tabIndex = _props.tabIndex;
 	    var busy = _props.busy;
+	    var groupBy = _props.groupBy;
 	    var List = _props.listComponent;
 
-	    List = List || _List2['default'];
+	    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
 
 	    var elementProps = omit(this.props, Object.keys(propTypes));
 	    var listProps = pick(this.props, Object.keys(List.propTypes));
@@ -8936,11 +8934,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var multiple = _props2.multiple;
 	    var list = this.refs.list;
 	    var focusedItem = this.state.focusedItem;
-	    var props = this.props;
 
-	    var moveItem = function moveItem(dir, item) {
-	      return _utilInteraction.move(dir, item, props, list);
-	    };
 	    var change = function change(item) {
 	      if (item) _this._change(item, multiple ? !_utilInteraction.contains(item, _this._values(), valueField) // toggle value
 	      : true);
@@ -8953,22 +8947,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (key === 'End') {
 	      e.preventDefault();
 
-	      if (multiple) this.setState({ focusedItem: moveItem('prev', null) });else change(moveItem('prev', null));
+	      if (multiple) this.setState({ focusedItem: list.last() });else change(list.last());
 	    } else if (key === 'Home') {
 	      e.preventDefault();
 
-	      if (multiple) this.setState({ focusedItem: moveItem('next', null) });else change(moveItem('next', null));
+	      if (multiple) this.setState({ focusedItem: list.first() });else change(list.first());
 	    } else if (key === 'Enter' || key === ' ') {
 	      e.preventDefault();
 	      change(focusedItem);
 	    } else if (key === 'ArrowDown' || key === 'ArrowRight') {
 	      e.preventDefault();
 
-	      if (multiple) this.setState({ focusedItem: moveItem('next', focusedItem) });else change(moveItem('next', focusedItem));
+	      if (multiple) this.setState({ focusedItem: list.next(focusedItem) });else change(list.next(focusedItem));
 	    } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
 	      e.preventDefault();
 
-	      if (multiple) this.setState({ focusedItem: moveItem('prev', focusedItem) });else change(moveItem('prev', focusedItem));
+	      if (multiple) this.setState({ focusedItem: list.prev(focusedItem) });else change(list.prev(focusedItem));
 	    } else if (multiple && e.keyCode === 65 && e.ctrlKey) {
 	      e.preventDefault();
 	      this.selectAll();
@@ -9078,10 +9072,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    render: function render() {
 	      var _props4 = this.props;
 	      var children = _props4.children;
-	      var focused = _props4.focused;
-	      var selected = _props4.selected;
+	      var disabled = _props4.disabled;
+	      var readonly = _props4.readonly;
 	      var item = _props4.dataItem;
-	      var props = babelHelpers.objectWithoutProperties(_props4, ['children', 'focused', 'selected', 'dataItem']);
 	      var _parent$props = parent.props;
 	      var multiple = _parent$props.multiple;
 	      var _parent$props$name = _parent$props.name;
@@ -9089,23 +9082,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var checked = _utilInteraction.contains(item, parent._values(), parent.props.valueField),
 	          change = parent._change.bind(null, item),
-	          disabled = _utilInteraction.isDisabledItem(item, parent.props),
-	          readonly = _utilInteraction.isReadOnlyItem(item, parent.props),
 	          type = multiple ? 'checkbox' : 'radio';
 
 	      return _react2['default'].createElement(
-	        'li',
-	        babelHelpers._extends({}, props, {
-	          tabIndex: '-1',
+	        _ListOption2['default'],
+	        babelHelpers._extends({}, this.props, {
 	          role: type,
-	          'aria-checked': !!checked,
-	          'aria-disabled': disabled || readonly,
-	          className: _classnames2['default']('rw-list-option', {
-	            'rw-state-focus': focused,
-	            'rw-state-selected': selected,
-	            'rw-state-disabled': disabled,
-	            'rw-state-readonly': readonly
-	          })
+	          'aria-checked': !!checked
 	        }),
 	        _react2['default'].createElement(
 	          'label',

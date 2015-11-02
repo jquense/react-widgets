@@ -6,6 +6,8 @@ import compat from './util/compat';
 
 import CustomPropTypes  from './util/propTypes';
 import PlainList        from './List';
+import GroupableList    from './ListGroupable';
+import ListOption       from './ListOption';
 
 import validateList from './util/validateListInterface';
 import scrollTo from 'dom-helpers/util/scrollTo';
@@ -14,10 +16,7 @@ import { dataItem } from './util/dataHelpers';
 import { widgetEditable, widgetEnabled } from './util/interaction';
 
 import { instanceId, notify } from './util/widgetHelpers';
-import {
-    move, contains
-  , isDisabled, isReadOnly
-  , isDisabledItem, isReadOnlyItem } from './util/interaction';
+import { isDisabled, isReadOnly, contains } from './util/interaction';
 
 let { omit, pick } = _;
 
@@ -51,6 +50,7 @@ let propTypes = {
       emptyList:    React.PropTypes.string
     })
   }
+
 
 
 var SelectList = React.createClass({
@@ -109,10 +109,10 @@ var SelectList = React.createClass({
 
   render() {
     let {
-        className, tabIndex, busy
+        className, tabIndex, busy, groupBy
       , listComponent: List } = this.props;
 
-    List = List ||  PlainList
+    List = List || (groupBy && GroupableList) || PlainList
 
     let elementProps = omit(this.props, Object.keys(propTypes));
     let listProps    = pick(this.props, Object.keys(List.propTypes));
@@ -178,11 +178,8 @@ var SelectList = React.createClass({
     var key = e.key
       , { valueField, multiple } = this.props
       , list = this.refs.list
-      , focusedItem = this.state.focusedItem
-      , props = this.props;
+      , focusedItem = this.state.focusedItem;
 
-
-    let moveItem = (dir, item)=> move(dir, item, props, list);
     let change = (item) => {
       if (item)
         this._change(item, multiple
@@ -198,14 +195,14 @@ var SelectList = React.createClass({
     if (key === 'End') {
       e.preventDefault()
 
-      if (multiple) this.setState({ focusedItem: moveItem('prev', null) })
-      else          change(moveItem('prev', null))
+      if (multiple) this.setState({ focusedItem: list.last() })
+      else          change(list.last())
     }
     else if (key === 'Home' ) {
       e.preventDefault()
 
-      if (multiple) this.setState({ focusedItem: moveItem('next', null) })
-      else          change(moveItem('next', null))
+      if (multiple) this.setState({ focusedItem: list.first() })
+      else          change(list.first())
     }
     else if (key === 'Enter' || key === ' ' ) {
       e.preventDefault()
@@ -214,14 +211,14 @@ var SelectList = React.createClass({
     else if (key === 'ArrowDown' || key === 'ArrowRight' ) {
       e.preventDefault()
 
-      if (multiple) this.setState({ focusedItem: moveItem('next', focusedItem) })
-      else          change(moveItem('next', focusedItem))
+      if (multiple) this.setState({ focusedItem: list.next(focusedItem) })
+      else          change(list.next(focusedItem))
     }
     else if (key === 'ArrowUp' || key === 'ArrowLeft'  ) {
       e.preventDefault()
 
-      if (multiple) this.setState({ focusedItem: moveItem('prev', focusedItem) })
-      else          change(moveItem('prev', focusedItem))
+      if (multiple) this.setState({ focusedItem: list.prev(focusedItem) })
+      else          change(list.prev(focusedItem))
     }
     else if (multiple && e.keyCode === 65 && e.ctrlKey ) {
       e.preventDefault()
@@ -318,31 +315,21 @@ function getListItem(parent){
 
     render() {
       let {
-          children, focused, selected
-        , dataItem: item
-        , ...props } = this.props;
+          children
+        , disabled, readonly
+        , dataItem: item } = this.props;
 
       let { multiple, name = instanceId(parent, '_name') } = parent.props;
 
-      let checked   = contains(item, parent._values(), parent.props.valueField)
-        , change    = parent._change.bind(null, item)
-        , disabled  = isDisabledItem(item, parent.props)
-        , readonly  = isReadOnlyItem(item, parent.props)
+      let checked = contains(item, parent._values(), parent.props.valueField)
+        , change = parent._change.bind(null, item)
         , type = multiple ? 'checkbox' : 'radio';
 
       return (
-        <li
-          {...props}
-          tabIndex='-1'
+        <ListOption
+          {...this.props}
           role={type}
           aria-checked={!!checked}
-          aria-disabled={disabled || readonly}
-          className={cx('rw-list-option', {
-            'rw-state-focus':    focused,
-            'rw-state-selected': selected,
-            'rw-state-disabled': disabled,
-            'rw-state-readonly': readonly
-          })}
         >
           <label>
             <input
@@ -356,7 +343,7 @@ function getListItem(parent){
             />
               { children }
           </label>
-        </li>
+        </ListOption>
       );
 
       function onChange(e){

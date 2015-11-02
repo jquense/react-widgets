@@ -12,7 +12,7 @@ import GroupableList   from './ListGroupable';
 import validateList    from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
 import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
-import { widgetEditable, widgetEnabled } from './util/interaction';
+import { widgetEditable, widgetEnabled, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
@@ -41,8 +41,8 @@ let propTypes = {
       onSelect:       React.PropTypes.func,
 
       autoFocus:      React.PropTypes.bool,
-      disabled:       CustomPropTypes.disabled,
-      readOnly:       CustomPropTypes.readOnly,
+      disabled:       CustomPropTypes.disabled.acceptsArray,
+      readOnly:       CustomPropTypes.readOnly.acceptsArray,
 
       suggest:        CustomPropTypes.filter,
       filter:         CustomPropTypes.filter,
@@ -144,7 +144,7 @@ var ComboBox = React.createClass({
         className, tabIndex, filter, suggest
       , valueField, textField, groupBy
       , messages, data, busy, dropUp, name, autoFocus
-      , placeholder, value, open, disabled, readOnly
+      , placeholder, value, open
       , listComponent: List } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
@@ -156,6 +156,8 @@ var ComboBox = React.createClass({
     let { focusedItem, selectedItem, focused } = this.state;
 
     let items = this._data()
+      , disabled = isDisabled(this.props)
+      , readOnly = isReadOnly(this.props)
       , valueItem = dataItem(data, value, valueField) // take value from the raw data
       , inputID = instanceId(this, '_input')
       , listID = instanceId(this, '_listbox')
