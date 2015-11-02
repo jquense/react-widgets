@@ -39,7 +39,7 @@ var DropdownApi = React.createClass({
   getInitialState: function(){
 
     return {
-      duration: 250,
+      duration: 250
     }
   },
 
@@ -58,6 +58,8 @@ var DropdownApi = React.createClass({
       valueField: 'id',
       textField: 'name'
     }
+
+    //let disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 
     return (
       <div className='example' role='application'>
@@ -153,4 +155,3 @@ var DropdownApi = React.createClass({
 });
 
 module.exports = DropdownApi;
-

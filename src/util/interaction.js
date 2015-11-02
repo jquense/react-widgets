@@ -29,7 +29,7 @@ export function move(dir, item, props, list) {
     , stop = dir === 'next' ? list.last() : list.first()
     , next = list[dir](item);
 
-  while( next !== stop && isDisabledOrReadonly(next))
+  while (next !== stop && isDisabledOrReadonly(next))
     next = list[dir](next)
 
   return isDisabledOrReadonly(next) ? item  : next
