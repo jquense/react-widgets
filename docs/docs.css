@@ -13,14 +13,6 @@ h1, h2, h3, h4 {
   font-size: 14px;
 }
 
-/*h3 {
-  color: #284C6D;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  font-size: 20px;
-
-}*/
-
 .side-divider {
   font-weight: 600;
   color: #778492;
@@ -119,14 +111,6 @@ h3 > a > strong {
   padding-top: 5px;
 
 }
-
-/*.component-export:before {
-  position: absolute;
-  top: 2px;
-  left: 10px;
-  color: #959595;
-  content: 'Usage';
-}*/
 
 .component-export div {
   color:  #3aaa64;
@@ -258,13 +242,14 @@ pre,
   }
 
   .playgroundCode {
-    flex-grow: 1.75;
+    flex: 0 0 70%;
   }
 }
 
 .playgroundPreview {
   position: relative;
   padding: 40px 15px 15px 15px;
+  flex: 0 0 30%;
   min-width: 250px;
 }
 
