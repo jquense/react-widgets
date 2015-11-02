@@ -95,7 +95,9 @@ module.exports = function makeConfig(options){
     resolve: {
       extensions: ['', '.js', '.jsx'],
       alias: {
-        'react-widgets': path.join(__dirname, '..', 'src')
+        react: path.resolve('./node_modules/react'),
+        'react-widgets': path.join(__dirname, '..', 'src'),
+        'react-dom': path.resolve('./node_modules/react-dom')
       }
     },
 

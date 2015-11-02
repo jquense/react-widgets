@@ -1,5 +1,6 @@
 'use strict';
-module.exports = function(widgetName, prop){
+module.exports = function(widgetName, prop, isArray=true){
+  var value = !isArray ? '"orange"' : '["orange", "red"]'
 var code =
 `
 var ${widgetName} = ReactWidgets.${widgetName}
@@ -9,10 +10,15 @@ var Example = React.createClass({
 
   render() {
     return (<div>
-      <${widgetName} ${prop} data={colors}/>
-      <${widgetName} ${prop}={colors.slice(1,2)}
+      <${widgetName} ${prop} 
         data={colors}
-        defaultValue={colors.slice(0,2)}/>
+        defaultValue={${value}}
+      />
+      <${widgetName}
+        ${prop}={colors.slice(1,2)}
+        data={colors}
+        defaultValue={${value}}
+      />
     </div>)
   }
 });

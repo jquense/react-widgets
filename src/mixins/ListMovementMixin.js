@@ -1,76 +1,68 @@
-'use strict';
-import React from 'react';
 import filter from '../util/filter';
 import { dataText } from '../util/dataHelpers';
+import CustomPropTypes  from '../util/propTypes';
+import { isDisabledItem, isReadOnlyItem }  from '../util/interaction';
 
-module.exports = {
+const EMPTY_VALUE = {};
+
+var isDisabledOrReadonly = (item, props) => isDisabledItem(item, props) || isReadOnlyItem(item, props)
+
+export default {
 
   propTypes: {
-    textField:  React.PropTypes.string
+    textField: CustomPropTypes.accessor,
+    valueField: CustomPropTypes.accessor,
+    disabled: CustomPropTypes.disabled.acceptsArray,
+    readOnly: CustomPropTypes.readOnly.acceptsArray
   },
 
   first() {
-    return this._data()[0]
+    return this.next(EMPTY_VALUE)
   },
 
   last() {
-    var data = this._data()
-    return data[data.length - 1]
+    let data = this._data()
+      , item = data[data.length - 1];
+
+    return isDisabledOrReadonly(item, this.props)
+      ? this.prev(item) : item
   },
 
-  prev(item, word) {
-    var textField = this.props.textField
-      , data = this._data()
-      , idx  = data.indexOf(item)
+  prev(item, word){
+    var data = this._data()
+      , nextIdx = data.indexOf(item)
+      , matches = matcher(word, item, this.props.textField);
 
-    if (idx === -1) idx = data.length;
+    if (nextIdx < 0 || nextIdx == null)
+      nextIdx = 0
 
-    return word
-      ? findPrevInstance(textField,  data, word, idx)
-      : --idx < 0 ? data[0] : data[idx]
+    nextIdx--;
+
+    while (nextIdx > -1 && (isDisabledOrReadonly(data[nextIdx], this.props) || !matches(data[nextIdx])))
+      nextIdx--
+
+    return nextIdx >= 0 ? data[nextIdx] : item;
   },
 
   next(item, word) {
-    var textField = this.props.textField
-      , data = this._data()
-      , idx  = data.indexOf(item)
+    var data = this._data()
+      , nextIdx = data.indexOf(item) + 1
+      , len = data.length
+      , matches = matcher(word, item, this.props.textField);
 
-    return word
-      ? findNextInstance(textField, data, word, idx)
-      : ++idx === data.length ? data[data.length - 1] : data[idx]
-  }
+    while (nextIdx < len && (isDisabledOrReadonly(data[nextIdx], this.props) || !matches(data[nextIdx])))
+      nextIdx++
 
-}
-
-function findNextInstance(textField, data, word, startIndex){
-  var matches = filter.startsWith
-    , idx = -1
-    , len = data.length
-    , foundStart, itemText;
-
-  word = word.toLowerCase()
-
-  while (++idx < len){
-    foundStart = foundStart || idx > startIndex
-    itemText   = foundStart && dataText(data[idx], textField).toLowerCase()
-
-    if( foundStart && matches(itemText, word) )
-      return data[idx]
+    return nextIdx < len ? data[nextIdx] : item
   }
 }
 
-function findPrevInstance(textField, data, word, startIndex){
-  var matches = filter.startsWith
-    , idx = data.length
-    , foundStart, itemText;
+function matcher(word, item, textField){
+  if (!word) return ()=> true
 
   word = word.toLowerCase()
-
-  while (--idx >= 0 ){
-    foundStart = foundStart || idx < startIndex
-    itemText   = foundStart && dataText(data[idx], textField).toLowerCase()
-
-    if( foundStart && matches(itemText, word) )
-      return data[idx]
-  }
+  return item => filter.startsWith(
+      dataText(item, textField).toLowerCase()
+    , word
+  )
 }

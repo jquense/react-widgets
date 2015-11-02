@@ -18,12 +18,12 @@ change event Handler that is called when the value is changed. The handler is ca
 
 ### onSelect?{ type:'Function(Any value)'}
 
-This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires 
+This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires
 regardless of whether the value has actually changed.
 
 ### onCreate?{ type: 'Function(String searchTerm)'}
 
-This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic, 
+This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic,
 a common implementation is shown below, where the new tag is selected and added to the data list.
 
 <EditableExample codeText={require('../examples/onCreate')(widgetName)}/>
@@ -36,18 +36,18 @@ properties comprise the value field (such as an id) and the field used to label 
 
 ### valueField?{ type: 'String' }
 
-A dataItem field name for uniquely identifying items in the `data` list. A `valueField` is required 
+A dataItem field name for uniquely identifying items in the `data` list. A `valueField` is required
 when the `value` prop is not itself a dataItem. A `valueField` is useful when specifying the selected item, by
 its `id` instead of using the model as the value.
 
-When a `valueField` is not provided, the {widgetName} will use strict equality checks (`===`) to locate 
+When a `valueField` is not provided, the {widgetName} will use strict equality checks (`===`) to locate
 the `value` in the `data` list.
 
 <EditableExample codeText={require('../examples/valueField')(widgetName, true)}/>
 
 ### textField?{ type: 'String | Function(dataItem)' }
 
-Specify which data item field to display in the ${widgetName} and selected item. The `textField` prop 
+Specify which data item field to display in the ${widgetName} and selected item. The `textField` prop
 may also also used as to find an item in the list as you type. Providing an accessor function allows for computed text values
 
 <EditableExample codeText={require('../examples/textField')(widgetName, true)}/>
@@ -68,14 +68,14 @@ renders the text of the selected item (specified by `textfield`)
 
 ### groupBy?{ type: 'String | Function(Any dataItem)' }
 
-Determines how to group the {widgetName} dropdown list. Providing a `string` will group 
+Determines how to group the {widgetName} values. Providing a `string` will group
 the `data` array by that property. You can also provide a 'function' which should return the group value.
 
 <EditableExample codeText={require('../examples/groupby')(widgetName, true)}/>
 
 ### groupComponent?{ type: 'Component' }
 
-This component is used to render each option group, when `groupBy` is specified. By 
+This component is used to render each option group, when `groupBy` is specified. By
 default the `groupBy` value will be used.
 
 <EditableExample codeText={require('../examples/groupComponent')(widgetName, true)}/>
@@ -93,7 +93,7 @@ The `defaultSearchTerm` prop can be used to set an initialization value for unco
 
 ### onSearch?{ type: 'Function(String searchTerm)' }
 
-Called when the value of the text box changes either from typing or a pasted value. `onSearch` should 
+Called when the value of the text box changes either from typing or a pasted value. `onSearch` should
 be used when the `searchTerm` prop is set.
 
 ### open?{ type: 'Boolean' }
@@ -110,8 +110,8 @@ when the `open` prop is set otherwise the widget will never open or close.
 
 ### filter?{ type: '[String, Function(dataItem, searchTerm)]', default: 'startsWith' }
 
-Specify a filtering method used to reduce the items in the dropdown as you type. There are a few prebuilt filtering 
-methods that can be specified by passing the `String` name. You can explicitly opt out of filtering by 
+Specify a filtering method used to reduce the items in the dropdown as you type. There are a few built-in filtering
+methods that can be specified by passing the `String` name. You can explicitly opt out of filtering by
 setting filter to `false`
 
 To handle custom filtering techniques provide a `function` that returns `true` or `false` for each passed in item
@@ -150,11 +150,11 @@ Place the widget in a readonly mode, If an `Array` of values is passed in only t
 
 ### isRtl?{ type: 'Boolean', default:"false" }
 
-mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through 
+mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
 a `childContext` prop (`isRtl`) this allows higher level application components to specify the direction.
 
 
-### messages?{ type: 'Object' } 
+### messages?{ type: 'Object' }
 
 Object hash containing display text and/or text for screen readers. Use the `messages` object to
 localize widget text and increase accessibility.
