@@ -12,59 +12,71 @@ Change event Handler that is called when the value is changed.
 
 ### onSelect?{ type: 'Function(Any value)' }
 
-This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires 
+This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires
 regardless of whether the value has actually changed.
 
 <EditableExample codeText={require('../examples/onSelect')(widgetName)}/>
 
 ### data?{ type: 'Array<Any>' }
 
-provide an array of possible values for the DropdownList. If an array of `objects` is provided you
+provide an array of possible values for the ${widgetName}. If an array of `objects` is provided you
 should use the `valueField` and `textField` props, to specify which object
 properties comprise the value field (such as an id) and the field used to label the item.
 
 ### valueField?{ type: 'String' }
 
-A dataItem field name for uniquely identifying items in the `data` list. A `valueField` is required 
+A dataItem field name for uniquely identifying items in the `data` list. A `valueField` is required
 when the `value` prop is not itself a dataItem. A `valueField` is useful when specifying the selected item, by
 its `id` instead of using the model as the value.
 
-When a `valueField` is not provided, the {widgetName} will use strict equality checks (`===`) to locate 
+When a `valueField` is not provided, the {widgetName} will use strict equality checks (`===`) to locate
 the `value` in the `data` list.
 
 <EditableExample codeText={require('../examples/valueField')(widgetName)}/>
 
 ### textField?{ type: 'String | Function(dataItem)' }
 
-{`Specify which data item field to display in the ${widgetName} and selected item. The `}`textField`{`prop 
+{`Specify which data item field to display in the ${widgetName} and selected item. The `}`textField`{`prop
 may also also used as to find an item in the list as you type. Providing an accessor function allows for computed text values`}
 
 <EditableExample codeText={require('../examples/textField')(widgetName)}/>
 
 ### valueComponent?{ type: 'Component' }
 
-This component is used to render the selected value of the combobox. The default component
+This component is used to render the selected value of the ${widgetName}. The default component
 renders the text of the selected item (specified by `textfield`)
 
 <EditableExample codeText={require('../examples/valueComponent')(widgetName)}/>
 
 ### itemComponent?{ type: 'Component' }
 
-This component is used to render each possible item in the DropdownList. The default component
+This component is used to render each possible item in the ${widgetName}. The default component
 renders the text of the selected item (specified by `textfield`)
 
 <EditableExample codeText={require('../examples/itemComponent')(widgetName)}/>
 
+### disabled?{ type: '[Boolean, Array]' }
+
+Disable the widget, if an `Array` of values is passed in only those values will be disabled.
+
+<EditableExample codeText={require('../examples/disabled')(widgetName, 'disabled', false)}/>
+
+### readOnly?{ type: '[Boolean, Array]' }
+
+Place the {widgetName} in a read-only mode, If an `Array` of values is passed in only those values will be read-only.
+
+<EditableExample codeText={require('../examples/disabled')(widgetName, 'readOnly', false)}/>
+
 ### groupBy?{ type: 'String | Function(Any dataItem)' }
 
-Determines how to group the {widgetName} dropdown list. Providing a `string` will group 
+Determines how to group the {widgetName}. Providing a `string` will group
 the `data` array by that property. You can also provide a function which should return the group value.
 
 <EditableExample codeText={require('../examples/groupby')(widgetName)}/>
 
 ### groupComponent?{ type: 'Component' }
 
-This component is used to render each option group, when `groupBy` is specified. By 
+This component is used to render each option group, when `groupBy` is specified. By
 default the `groupBy` value will be used.
 
 
@@ -79,7 +91,7 @@ Text to display when the value is empty.
 
 The string value of the current search being typed into the {widgetName}. When
 unset (`undefined`) the {widgetName} will handle the filtering internally.
-The `defaultSearchTerm` prop can be used to set an initialization value for uncontrolled widgets. searchTerm is only
+The `defaultSearchTerm` prop can be used to set an initialization value for uncontrolled widgets. `searchTerm` is only
 relevant when the `filter` prop is set.
 
 
@@ -105,7 +117,7 @@ when the `open` prop is set otherwise the widget open buttons won't work.
 
 ### filter?{ type: '[String, Function(dataItem, searchTerm)]', default: 'false' }
 
-Specify a filtering method used to reduce the items in the dropdown as you type. There are a few prebuilt filtering 
+Specify a filtering method used to reduce the items in the dropdown as you type. There are a few built-in filtering
 methods that can be specified by passing the `String` name.
 
 To handle custom filtering techniques provide a `function` that returns `true` or `false` for each passed in item
