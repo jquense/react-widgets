@@ -60,7 +60,10 @@ var propTypes = {
     emptyList:         CustomPropTypes.message,
     emptyFilter:       CustomPropTypes.message,
     filterPlaceholder: CustomPropTypes.message
-  })
+  }),
+
+  popupClassName: React.PropTypes.string,
+
 };
 
 var DropdownList = React.createClass({
@@ -128,7 +131,7 @@ var DropdownList = React.createClass({
       , valueField, textField, groupBy
       , messages, data, busy, dropUp
       , placeholder, value, open, disabled, readOnly
-      , valueComponent: ValueComponent, tetherPopup
+      , valueComponent: ValueComponent, tetherPopup, popupClassName
       , listComponent: List } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
@@ -193,6 +196,7 @@ var DropdownList = React.createClass({
           }
         </div>
         <PopupComponent {...popupProps}
+          className={popupClassName}
           onOpen={tetherPopup ? null : this.focus }
           onBlur={tetherPopup ? this._focus.bind(null, false) : null}
           onOpening={() => {this.refs.list.forceUpdate() }}

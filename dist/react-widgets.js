@@ -1246,7 +1246,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    emptyList: _utilPropTypes2['default'].message,
 	    emptyFilter: _utilPropTypes2['default'].message,
 	    filterPlaceholder: _utilPropTypes2['default'].message
-	  })
+	  }),
+
+	  popupClassName: _react2['default'].PropTypes.string
+
 	};
 
 	var DropdownList = _react2['default'].createClass(babelHelpers.createDecoratedObject([{
@@ -1346,6 +1349,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var readOnly = _props2.readOnly;
 	    var ValueComponent = _props2.valueComponent;
 	    var tetherPopup = _props2.tetherPopup;
+	    var popupClassName = _props2.popupClassName;
 	    var List = _props2.listComponent;
 
 	    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
@@ -1424,6 +1428,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _react2['default'].createElement(
 	        PopupComponent,
 	        babelHelpers._extends({}, popupProps, {
+	          className: popupClassName,
 	          onOpen: tetherPopup ? null : this.focus,
 	          onBlur: tetherPopup ? this._focus.bind(null, false) : null,
 	          onOpening: function () {
@@ -3406,7 +3411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    child = _react2['default'].Children.only(props.children);
 
 	    return _react.cloneElement(child, babelHelpers._extends({}, props, {
-	      className: _classnames2['default'](child.props.className, 'rw-popup rw-widget')
+	      className: _classnames2['default'](this.props.className, child.props.className, 'rw-popup rw-widget')
 	    }));
 	  }
 	});
@@ -3505,7 +3510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        {
 	          tether: _react2['default'].createElement(
 	            PopupContent,
-	            { tabIndex: 1, onBlur: function () {
+	            { className: className, tabIndex: 1, onBlur: function () {
 	                setTimeout(onBlur, 100);
 	              }, ref: 'content', style: { width: width, opacity: opacity, pointerEvents: pointerEvents } },
 	            _react2['default'].createElement(

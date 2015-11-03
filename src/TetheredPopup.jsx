@@ -28,7 +28,7 @@ var PopupContent = React.createClass({
 
     return cloneElement(child, {
       ... props,
-      className: cn(child.props.className, 'rw-popup rw-widget'),
+      className: cn(this.props.className, child.props.className, 'rw-popup rw-widget'),
     });
   }
 })
@@ -128,7 +128,7 @@ module.exports = React.createClass({
       >
         <TetherTarget
           tether={
-            <PopupContent tabIndex={1} onBlur={() => {setTimeout(onBlur, 100)}} ref='content' style={{ width, opacity, pointerEvents  }}>
+            <PopupContent className={className} tabIndex={1} onBlur={() => {setTimeout(onBlur, 100)}} ref='content' style={{ width, opacity, pointerEvents  }}>
               <div   ref='wrap'>
                 { this.props.children }
               </div>
@@ -188,7 +188,7 @@ module.exports = React.createClass({
       , { opacity: 1 }
       , self.props.duration
       , 'ease'
-      , function(){
+      , function() {
           if ( !self._isOpening ) return
 
           anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
