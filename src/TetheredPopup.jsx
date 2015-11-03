@@ -30,10 +30,6 @@ var PopupContent = React.createClass({
       ... props,
       className: cn(child.props.className, 'rw-popup rw-widget'),
     });
-  },
-
-  componentDidUpdate(){
-    compat.findDOMNode(this).focus();
   }
 })
 
@@ -132,8 +128,8 @@ module.exports = React.createClass({
       >
         <TetherTarget
           tether={
-            <PopupContent onBlur={onBlur} ref='content' style={{ width, opacity, pointerEvents  }}>
-              <div ref='wrap'>
+            <PopupContent tabIndex={1} onBlur={() => {setTimeout(onBlur, 100)}} ref='content' style={{ width, opacity, pointerEvents  }}>
+              <div   ref='wrap'>
                 { this.props.children }
               </div>
             </PopupContent>
@@ -175,7 +171,7 @@ module.exports = React.createClass({
       , anim = compat.findDOMNode(this)
       , contentEl   = compat.findDOMNode(this.refs.content);
 
-    const { onOpen } = this.props;
+    const { onOpen, onBlur } = this.props;
 
     this._isOpening = true
 
@@ -200,6 +196,10 @@ module.exports = React.createClass({
           anim.style.overflofw = 'visible'
 
           onOpen && onOpen();
+
+          const el = compat.findDOMNode(self.refs.content);
+          el.focus();
+
         })
   },
 
