@@ -1030,6 +1030,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return typeof value === 'function' ? value.apply(undefined, args) : value;
 	  },
 
+	  isFunction: function isFunction(check) {
+	    return typeof check === 'function';
+	  },
+
 	  isShallowEqual: function isShallowEqual(a, b) {
 	    if (a === b) return true;
 	    if (a instanceof Date && b instanceof Date) return a.getTime() === b.getTime();
@@ -1388,12 +1392,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'aria-autocomplete': 'list',
 	        'aria-disabled': disabled,
 	        'aria-readonly': readOnly,
-	        onKeyDown: this._keyDown,
+	        onKeyDown: tetherPopup ? null : this._keyDown,
 	        onClick: this._click,
 	        onFocus: tetherPopup ? function () {
 	          return _this.setState({ focused: true });
 	        } : this._focus.bind(null, true),
-	        onBlur: !tetherPopup ? this.close : null,
+	        onBlur: tetherPopup ? null : this._focus.bind(null, false),
 	        className: _classnames2['default'](className, 'rw-dropdownlist', 'rw-widget', (_cx = {
 	          'rw-state-disabled': disabled,
 	          'rw-state-readonly': readOnly,
@@ -1429,10 +1433,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        PopupComponent,
 	        babelHelpers._extends({}, popupProps, {
 	          className: popupClassName,
-	          onOpen: tetherPopup ? null : this.focus,
+	          getTetherFocus: filter ? function () {
+	            return _this.refs.filter;
+	          } : this.refs.list,
+	          onOpen: tetherPopup ? null : function () {
+	            return _this.focus();
+	          },
+	          onKeyDown: tetherPopup ? this._keyDown : null,
 	          onBlur: tetherPopup ? this._focus.bind(null, false) : null,
 	          onOpening: function () {
-	            _this.refs.list.forceUpdate();
+	            return _this.refs.list.forceUpdate();
 	          },
 	          onRequestClose: this.close
 	        }),
@@ -1520,7 +1530,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this4 = this;
 
 	    var self = this,
-	        key = e.key,
+	        key = e.keyCode,
 	        alt = e.altKey,
 	        list = this.refs.list,
 	        filtering = this.props.filter,
@@ -1530,25 +1540,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	        closeWithFocus = function closeWithFocus() {
 	      _this4.close(), _utilCompat2['default'].findDOMNode(_this4).focus();
 	    };
-
 	    _utilWidgetHelpers.notify(this.props.onKeyDown, [e]);
 
 	    if (e.defaultPrevented) return;
 
-	    if (key === 'End') {
+	    if (key === 35) {
 	      if (isOpen) this.setState({ focusedItem: list.last() });else change(list.last());
 	      e.preventDefault();
-	    } else if (key === 'Home') {
+	    } else if (key === 36) {
 	      if (isOpen) this.setState({ focusedItem: list.first() });else change(list.first());
 	      e.preventDefault();
-	    } else if (key === 'Escape' && isOpen) {
+	    } else if (key === 27 && isOpen) {
 	      closeWithFocus();
-	    } else if ((key === 'Enter' || key === ' ' && !filtering) && isOpen) {
+	    } else if ((key === 13 || key === ' ' && !filtering) && isOpen) {
 	      change(this.state.focusedItem, true);
-	    } else if (key === 'ArrowDown') {
+	    } else if (key === 40) {
 	      if (alt) this.open();else if (isOpen) this.setState({ focusedItem: list.next(focusedItem) });else change(list.next(selectedItem));
 	      e.preventDefault();
-	    } else if (key === 'ArrowUp') {
+	    } else if (key === 38) {
 	      if (alt) closeWithFocus();else if (isOpen) this.setState({ focusedItem: list.prev(focusedItem) });else change(list.prev(selectedItem));
 	      e.preventDefault();
 	    } else if (!(this.props.filter && isOpen)) this.search(String.fromCharCode(e.keyCode), function (item) {
@@ -3387,6 +3396,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _TetherTarget2 = babelHelpers.interopRequireDefault(_TetherTarget);
 
+	var _util_ = __webpack_require__(20);
+
 	var transform = _utilConfiguration2['default'].animate.transform;
 
 	function properties(prop, value) {
@@ -3431,6 +3442,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    onClose: _react2['default'].PropTypes.func,
 	    onBlur: _react2['default'].PropTypes.func,
 	    onOpen: _react2['default'].PropTypes.func,
+	    onKeyDown: _react2['default'].PropTypes.func,
 	    dropDownHeight: _react2['default'].PropTypes.number
 	  },
 
@@ -3510,9 +3522,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        {
 	          tether: _react2['default'].createElement(
 	            PopupContent,
-	            { className: className, tabIndex: 1, onBlur: function () {
-	                setTimeout(onBlur, 100);
-	              }, ref: 'content', style: { width: width, opacity: opacity, pointerEvents: pointerEvents } },
+	            { className: className, tabIndex: 1, ref: 'content', style: { width: width, opacity: opacity, pointerEvents: pointerEvents } },
 	            _react2['default'].createElement(
 	              'div',
 	              { ref: 'wrap' },
@@ -3547,13 +3557,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  open: function open() {
+	    var content = this.refs.content;
+
 	    var self = this,
 	        anim = _utilCompat2['default'].findDOMNode(this),
-	        contentEl = _utilCompat2['default'].findDOMNode(this.refs.content);
+	        contentEl = _utilCompat2['default'].findDOMNode(content);
 
 	    var _props2 = this.props;
 	    var onOpen = _props2.onOpen;
 	    var onBlur = _props2.onBlur;
+	    var onKeyDown = _props2.onKeyDown;
+	    var getTetherFocus = _props2.getTetherFocus;
+
+	    var focusComponent = content;
+	    var focusEl = undefined;
+
+	    if (_util_.isFunction(getTetherFocus)) focusComponent = getTetherFocus();
+	    if (focusComponent) focusEl = _utilCompat2['default'].findDOMNode(focusComponent);
 
 	    this._isOpening = true;
 
@@ -3575,8 +3595,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      onOpen && onOpen();
 
-	      var el = _utilCompat2['default'].findDOMNode(self.refs.content);
-	      el.focus();
+	      if (!focusEl) return false;
+
+	      focusEl.addEventListener('blur', function () {
+	        return setTimeout(onBlur, 200);
+	      });
+	      focusEl.addEventListener('keydown', onKeyDown);
+	      focusEl.focus();
 	    });
 	  },
 

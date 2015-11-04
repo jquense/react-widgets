@@ -5,6 +5,7 @@ import config from './util/configuration';
 import cn from 'classnames';
 import compat from './util/compat';
 import TetherTarget from './TetherTarget';
+import { isFunction } from './util/_';
 
 var transform = config.animate.transform
 
@@ -49,6 +50,7 @@ module.exports = React.createClass({
     onClose:        React.PropTypes.func,
     onBlur:         React.PropTypes.func,
     onOpen:         React.PropTypes.func,
+    onKeyDown:      React.PropTypes.func,
     dropDownHeight: React.PropTypes.number,
   },
 
@@ -167,15 +169,18 @@ module.exports = React.createClass({
 
 
   open() {
+    const { content } = this.refs;
     var self = this
       , anim = compat.findDOMNode(this)
-      , contentEl   = compat.findDOMNode(this.refs.content);
+      , contentEl   = compat.findDOMNode(content);
 
-    const { onOpen, onBlur, getTetherFocus } = this.props;
+    const { onOpen, onBlur, onKeyDown, getTetherFocus } = this.props;
 
-    let focusComponent =  self.refs.content;
-    if(getTetherFocus) focusComponent = getTetherFocus();
-    const focusEl = compat.findDOMNode(focusComponent);
+    let focusComponent = content;
+    let focusEl;
+
+    if(isFunction(getTetherFocus)) focusComponent = getTetherFocus();
+    if(focusComponent) focusEl = compat.findDOMNode(focusComponent);
 
     this._isOpening = true
 
@@ -201,7 +206,10 @@ module.exports = React.createClass({
 
           onOpen && onOpen();
 
+          if(!focusEl) return false;
+
           focusEl.addEventListener('blur', () => setTimeout(onBlur, 200) );
+          focusEl.addEventListener('keydown', onKeyDown);
           focusEl.focus();
       })
   },

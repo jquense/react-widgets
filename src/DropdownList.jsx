@@ -165,7 +165,7 @@ var DropdownList = React.createClass({
         aria-autocomplete="list"
         aria-disabled={disabled }
         aria-readonly={readOnly }
-        onKeyDown={this._keyDown}
+        onKeyDown={tetherPopup ? null : this._keyDown}
         onClick={this._click}
         onFocus={tetherPopup ? () => this.setState({focused:true}) : this._focus.bind(null, true)}
         onBlur={tetherPopup ? null : this._focus.bind(null, false)}
@@ -199,6 +199,7 @@ var DropdownList = React.createClass({
           className={popupClassName}
           getTetherFocus={filter ? () => this.refs.filter : this.refs.list}
           onOpen={tetherPopup ? null : () => this.focus() }
+          onKeyDown={tetherPopup ? this._keyDown : null}
           onBlur={tetherPopup ? this._focus.bind(null, false) : null}
           onOpening={ () => this.refs.list.forceUpdate() }
           onRequestClose={this.close}
@@ -277,7 +278,7 @@ var DropdownList = React.createClass({
   @widgetEditable
   _keyDown(e){
     var self = this
-      , key = e.key
+      , key = e.keyCode
       , alt = e.altKey
       , list = this.refs.list
       , filtering = this.props.filter
@@ -285,35 +286,35 @@ var DropdownList = React.createClass({
       , selectedItem = this.state.selectedItem
       , isOpen = this.props.open
       , closeWithFocus = () => { this.close(), compat.findDOMNode(this).focus()};
-
     notify(this.props.onKeyDown, [e])
+
 
     if (e.defaultPrevented)
       return
 
-    if ( key === 'End' ) {
+    if ( key === 35 ) {
       if ( isOpen) this.setState({ focusedItem: list.last() })
       else         change(list.last())
       e.preventDefault()
     }
-    else if ( key === 'Home' ) {
+    else if ( key === 36 ) {
       if ( isOpen) this.setState({ focusedItem: list.first() })
       else         change(list.first())
       e.preventDefault()
     }
-    else if ( key === 'Escape' && isOpen ) {
+    else if ( key === 27 && isOpen ) {
       closeWithFocus()
     }
-    else if ( (key === 'Enter' || (key === ' ' && !filtering)) && isOpen ) {
+    else if ( (key === 13 || (key === ' ' && !filtering)) && isOpen ) {
       change(this.state.focusedItem, true)
     }
-    else if ( key === 'ArrowDown' ) {
+    else if ( key === 40 ) {
       if ( alt )         this.open()
       else if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
       else               change(list.next(selectedItem))
       e.preventDefault()
     }
-    else if ( key === 'ArrowUp' ) {
+    else if ( key === 38 ) {
       if ( alt )         closeWithFocus()
       else if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
       else               change(list.prev(selectedItem))
