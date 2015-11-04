@@ -168,7 +168,7 @@ var DropdownList = React.createClass({
         onKeyDown={this._keyDown}
         onClick={this._click}
         onFocus={tetherPopup ? () => this.setState({focused:true}) : this._focus.bind(null, true)}
-        onBlur={!tetherPopup ? this.close : null}
+        onBlur={tetherPopup ? null : this._focus.bind(null, false)}
         className={cx(className, 'rw-dropdownlist', 'rw-widget', {
           'rw-state-disabled':  disabled,
           'rw-state-readonly':  readOnly,
@@ -197,9 +197,10 @@ var DropdownList = React.createClass({
         </div>
         <PopupComponent {...popupProps}
           className={popupClassName}
-          onOpen={tetherPopup ? null : this.focus }
+          getTetherFocus={filter ? () => this.refs.filter : this.refs.list}
+          onOpen={tetherPopup ? null : () => this.focus() }
           onBlur={tetherPopup ? this._focus.bind(null, false) : null}
-          onOpening={() => {this.refs.list.forceUpdate() }}
+          onOpening={ () => this.refs.list.forceUpdate() }
           onRequestClose={this.close}
         >
           <div>

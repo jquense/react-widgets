@@ -128,7 +128,7 @@ module.exports = React.createClass({
       >
         <TetherTarget
           tether={
-            <PopupContent className={className} tabIndex={1} onBlur={() => {setTimeout(onBlur, 100)}} ref='content' style={{ width, opacity, pointerEvents  }}>
+            <PopupContent className={className} tabIndex={1} ref='content' style={{ width, opacity, pointerEvents  }}>
               <div   ref='wrap'>
                 { this.props.children }
               </div>
@@ -171,7 +171,11 @@ module.exports = React.createClass({
       , anim = compat.findDOMNode(this)
       , contentEl   = compat.findDOMNode(this.refs.content);
 
-    const { onOpen, onBlur } = this.props;
+    const { onOpen, onBlur, getTetherFocus } = this.props;
+
+    let focusComponent =  self.refs.content;
+    if(getTetherFocus) focusComponent = getTetherFocus();
+    const focusEl = compat.findDOMNode(focusComponent);
 
     this._isOpening = true
 
@@ -188,7 +192,7 @@ module.exports = React.createClass({
       , { opacity: 1 }
       , self.props.duration
       , 'ease'
-      , function() {
+      , () => {
           if ( !self._isOpening ) return
 
           anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
@@ -197,10 +201,9 @@ module.exports = React.createClass({
 
           onOpen && onOpen();
 
-          const el = compat.findDOMNode(self.refs.content);
-          el.focus();
-
-        })
+          focusEl.addEventListener('blur', () => setTimeout(onBlur, 200) );
+          focusEl.focus();
+      })
   },
 
   close(dur) {

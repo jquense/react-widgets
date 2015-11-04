@@ -9,7 +9,21 @@ var Example = React.createClass({
 
 
   render() {
-    return <${widgetName} data={colors} tetherPopup popupClassName='tether-className-prop'/>
+    return (
+    	<span>
+    		<${widgetName}
+    			data={colors}
+    			tetherPopup
+    			popupClassName='tether-className-prop'
+    			/>
+    		<${widgetName}
+    			data={colors}
+    			tetherPopup
+    			filter='contains'
+    			popupClassName='tether-className-prop'
+    			/>
+    	</span>
+    )
   }
 });
 
