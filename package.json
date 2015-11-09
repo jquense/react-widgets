@@ -58,7 +58,7 @@
     "url": "https://github.com/jquense/react-widgets"
   },
   "peerDependencies": {
-    "react": "^0.14.0",
+    "react": "^0.13.3",
     "react-dom": "^0.14.0"
   },
   "dependencies": {
@@ -66,7 +66,6 @@
     "date-arithmetic": "^3.0.0",
     "dom-helpers": "^2.2.4",
     "invariant": "^2.1.0",
-    "react-dom": "^0.14.0",
     "react-window-mixins": "0.0.6",
     "scriptjs": "^2.5.8",
     "tether": "^1.1.1",

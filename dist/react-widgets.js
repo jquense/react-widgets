@@ -1074,7 +1074,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var result;
 	    if (Array.isArray(arr)) {
 	      arr.every(function (val, idx) {
-	        if (cb.call(thisArg, val, idx, arr)) return (result = val, false);
+	        if (cb.call(thisArg, val, idx, arr)) return result = val, false;
 	        return true;
 	      });
 	      return result;
@@ -1800,9 +1800,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var TRANSLATION_MAP = _utilConfiguration2['default'].animate.TRANSLATION_MAP;
 
-	  if (TRANSLATION_MAP && TRANSLATION_MAP[prop]) return (_ref = {}, _ref[transform] = TRANSLATION_MAP[prop] + '(' + value + ')', _ref);
+	  if (TRANSLATION_MAP && TRANSLATION_MAP[prop]) return _ref = {}, _ref[transform] = TRANSLATION_MAP[prop] + '(' + value + ')', _ref;
 
-	  return (_ref2 = {}, _ref2[prop] = value, _ref2);
+	  return _ref2 = {}, _ref2[prop] = value, _ref2;
 	}
 
 	var PopupContent = _react2['default'].createClass({
@@ -3405,9 +3405,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var TRANSLATION_MAP = _utilConfiguration2['default'].animate.TRANSLATION_MAP;
 
-	  if (TRANSLATION_MAP && TRANSLATION_MAP[prop]) return (_ref = {}, _ref[transform] = TRANSLATION_MAP[prop] + '(' + value + ')', _ref);
+	  if (TRANSLATION_MAP && TRANSLATION_MAP[prop]) return _ref = {}, _ref[transform] = TRANSLATION_MAP[prop] + '(' + value + ')', _ref;
 
-	  return (_ref2 = {}, _ref2[prop] = value, _ref2);
+	  return _ref2 = {}, _ref2[prop] = value, _ref2;
 	}
 
 	var PopupContent = _react2['default'].createClass({
@@ -5664,7 +5664,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!searchTerm || !searchTerm.trim() || this.props.filter && searchTerm.length < (this.props.minLength || 1)) return -1;
 
 	    items.every(function (item, i) {
-	      if (matches(item, searchTerm, i)) return (idx = i, false);
+	      if (matches(item, searchTerm, i)) return idx = i, false;
 
 	      return true;
 	    });
@@ -8795,7 +8795,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var calIsActive = open === popups.CALENDAR && key === 'calendar';
 	      var timeIsActive = open === popups.TIME && key === 'timelist';
 
-	      if (!current || (timeIsActive || calIsActive)) return id;
+	      if (!current || timeIsActive || calIsActive) return id;
 	    })];
 	  }
 	}, {
