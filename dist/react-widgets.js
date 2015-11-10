@@ -3440,7 +3440,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    onClosing: _react2['default'].PropTypes.func,
 	    onOpening: _react2['default'].PropTypes.func,
 	    onClose: _react2['default'].PropTypes.func,
-	    onBlur: _react2['default'].PropTypes.func,
 	    onOpen: _react2['default'].PropTypes.func,
 	    onKeyDown: _react2['default'].PropTypes.func,
 	    dropDownHeight: _react2['default'].PropTypes.number
@@ -3529,8 +3528,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	              this.props.children
 	            )
 	          ),
-	          options: { attachment: 'bottom right' }
+	          options: {
+	            attachment: 'bottom right',
+	            classes: {
+	              element: 'rw-popup-tether-element'
+	            }
+	          }
 	        },
+	        open && _react2['default'].createElement('div', { className: 'rw-tether-scrim', onClick: onBlur }),
 	        _react2['default'].createElement('div', { ref: 'placeholder', style: { width: '100%' } })
 	      )
 	    );
@@ -3565,7 +3570,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var _props2 = this.props;
 	    var onOpen = _props2.onOpen;
-	    var onBlur = _props2.onBlur;
 	    var onKeyDown = _props2.onKeyDown;
 	    var getTetherFocus = _props2.getTetherFocus;
 
@@ -3590,16 +3594,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!self._isOpening) return;
 
 	      anim.className = anim.className.replace(/ ?rw-popup-animating/g, '');
-
 	      anim.style.overflofw = 'visible';
 
-	      onOpen && onOpen();
+	      if (onOpen) onOpen();
 
 	      if (!focusEl) return false;
 
-	      focusEl.addEventListener('blur', function () {
-	        return setTimeout(onBlur, 200);
-	      });
 	      focusEl.addEventListener('keydown', onKeyDown);
 	      focusEl.focus();
 	    });
@@ -3679,6 +3679,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var tetherOptions = _props.options;
 
 	    var options = babelHelpers._extends({}, tetherOptions, { target: _utilCompat2['default'].findDOMNode(this) });
+
 	    this.tethered = new _utilTetherElement2['default'](tether, options);
 	  };
 

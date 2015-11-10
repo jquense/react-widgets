@@ -21,11 +21,25 @@
     .border-bottom-radius(0);
     .box-shadow(0 0 6px rgba(0,0,0,0.2));
   }
-  .tether-element & {
+  .rw-popup-tether-element & {
     right: 0;
     left: 0;
     z-index: 100;
   }
+}
+
+.rw-popup-tether-element {
+  z-index: 100000;
+}
+
+.rw-tether-scrim {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left:0;
+    cursor: default;
+    z-index: 20;
 }
 
 .rw-popup-container {
