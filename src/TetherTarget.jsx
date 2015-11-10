@@ -15,10 +15,8 @@ class TetherTarget extends React.Component {
   };
 
   render(){
-    const {
-      component: Component,
-    } = this.props;
-
+    const { component: Component } = this.props;
+    
     return (
       <Component {... this.props}>
         {this.props.children}
@@ -27,19 +25,14 @@ class TetherTarget extends React.Component {
   }
 
   componentDidMount(){
-    const {
-      tether,
-      options: tetherOptions,
-    } = this.props;
-
+    const { tether, options: tetherOptions } = this.props;
     const options = {... tetherOptions, target: compat.findDOMNode(this)};
+
     this.tethered = new TetherElement(tether, options);
   }
 
   componentDidUpdate(){
-    const {
-      tether,
-    } = this.props;
+    const { tether } = this.props;
 
     this.tethered.update(tether);
   }

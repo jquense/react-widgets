@@ -8,7 +8,7 @@
   background:       @popup-bg;
   padding:          2px;
   overflow:         auto;
-  
+
   // the offsets allows for drop shadow to not be clipped by the container
   margin-bottom:    10px;
   left:             10px;
@@ -21,13 +21,26 @@
     .border-bottom-radius(0);
     .box-shadow(0 0 6px rgba(0,0,0,0.2));
   }
-  .tether-element & {
+  .rw-popup-tether-element & {
     right: 0;
     left: 0;
     z-index: 100;
   }
 }
 
+.rw-popup-tether-element {
+  z-index: 100000;
+}
+
+.rw-tether-scrim {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left:0;
+    cursor: default;
+    z-index: 20;
+}
 
 .rw-popup-container {
   position: absolute;
@@ -42,7 +55,7 @@
     left: 0;
     right: 0;
   }
-  
+
   &.rw-dropup {
     top:    auto;
     bottom: 100%;
@@ -53,4 +66,3 @@
     width: 18em; //15em; ?
   }
 }
-

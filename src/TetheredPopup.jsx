@@ -48,7 +48,6 @@ module.exports = React.createClass({
     onClosing:      React.PropTypes.func,
     onOpening:      React.PropTypes.func,
     onClose:        React.PropTypes.func,
-    onBlur:         React.PropTypes.func,
     onOpen:         React.PropTypes.func,
     onKeyDown:      React.PropTypes.func,
     dropDownHeight: React.PropTypes.number,
@@ -136,8 +135,14 @@ module.exports = React.createClass({
               </div>
             </PopupContent>
           }
-          options={{ attachment: 'bottom right' }}
+          options={{
+            attachment: 'bottom right',
+            classes: {
+              element: 'rw-popup-tether-element'
+            }
+          }}
           >
+          {open && <div className='rw-tether-scrim' onClick={onBlur}/>}
           <div ref='placeholder' style={{ width: '100%'}} />
         </TetherTarget>
       </div>
@@ -174,7 +179,7 @@ module.exports = React.createClass({
       , anim = compat.findDOMNode(this)
       , contentEl   = compat.findDOMNode(content);
 
-    const { onOpen, onBlur, onKeyDown, getTetherFocus } = this.props;
+    const { onOpen, onKeyDown, getTetherFocus } = this.props;
 
     let focusComponent = content;
     let focusEl;
@@ -198,17 +203,15 @@ module.exports = React.createClass({
       , self.props.duration
       , 'ease'
       , () => {
-          if ( !self._isOpening ) return
+          if ( !self._isOpening ) return;
 
           anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
+          anim.style.overflofw = 'visible';
 
-          anim.style.overflofw = 'visible'
+          if (onOpen) onOpen();
 
-          onOpen && onOpen();
+          if (!focusEl) return false;
 
-          if(!focusEl) return false;
-
-          focusEl.addEventListener('blur', () => setTimeout(onBlur, 200) );
           focusEl.addEventListener('keydown', onKeyDown);
           focusEl.focus();
       })
