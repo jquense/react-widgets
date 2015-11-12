@@ -1223,6 +1223,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  valueComponent: _utilPropTypes2['default'].elementType,
 	  itemComponent: _utilPropTypes2['default'].elementType,
 	  listComponent: _utilPropTypes2['default'].elementType,
+	  afterListComponent: _utilPropTypes2['default'].elementType,
 
 	  groupComponent: _utilPropTypes2['default'].elementType,
 	  groupBy: _utilPropTypes2['default'].accessor,
@@ -1282,7 +1283,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      searchTerm: '',
 	      messages: msgs(),
 	      ariaActiveDescendantKey: 'dropdownlist',
-	      tetherPopup: false
+	      tetherPopup: false,
+	      afterComponent: null
 	    };
 	  }
 	}, {
@@ -1346,6 +1348,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var data = _props2.data;
 	    var busy = _props2.busy;
 	    var dropUp = _props2.dropUp;
+	    var searchTerm = _props2.searchTerm;
+	    var onChange = _props2.onChange;
 	    var placeholder = _props2.placeholder;
 	    var value = _props2.value;
 	    var open = _props2.open;
@@ -1354,6 +1358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var ValueComponent = _props2.valueComponent;
 	    var tetherPopup = _props2.tetherPopup;
 	    var popupClassName = _props2.popupClassName;
+	    var afterListComponent = _props2.afterListComponent;
 	    var List = _props2.listComponent;
 
 	    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
@@ -1361,6 +1366,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var elementProps = omit(this.props, Object.keys(propTypes));
 	    var listProps = pick(this.props, Object.keys(List.propTypes));
 	    var popupProps = pick(this.props, Object.keys(_Popup2['default'].propTypes));
+
+	    var PopupComponent = tetherPopup ? _TetheredPopup2['default'] : _Popup2['default'];
 
 	    var _state = this.state;
 	    var focusedItem = _state.focusedItem;
@@ -1375,7 +1382,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var shouldRenderList = _utilWidgetHelpers.isFirstFocusedRender(this) || open;
 
 	    messages = msgs(messages);
-	    var PopupComponent = tetherPopup ? _TetheredPopup2['default'] : _Popup2['default'];
 
 	    return _react2['default'].createElement(
 	      'div',
@@ -1463,7 +1469,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            onMove: this._scrollTo,
 	            messages: {
 	              emptyList: data.length ? messages.emptyFilter : messages.emptyList
-	            } }))
+	            }
+	          })),
+	          afterListComponent && _react2['default'].cloneElement(afterListComponent, { value: value, searchTerm: searchTerm, data: data, onChange: onChange })
 	        )
 	      )
 	    );

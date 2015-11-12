@@ -33,6 +33,7 @@ var propTypes = {
   valueComponent: CustomPropTypes.elementType,
   itemComponent:  CustomPropTypes.elementType,
   listComponent:  CustomPropTypes.elementType,
+  afterListComponent: CustomPropTypes.elementType,
 
   groupComponent: CustomPropTypes.elementType,
   groupBy:        CustomPropTypes.accessor,
@@ -91,6 +92,7 @@ var DropdownList = React.createClass({
       messages: msgs(),
       ariaActiveDescendantKey: 'dropdownlist',
       tetherPopup: false,
+      afterComponent: null,
     }
   },
 
@@ -129,16 +131,18 @@ var DropdownList = React.createClass({
     let {
         className, tabIndex, filter
       , valueField, textField, groupBy
-      , messages, data, busy, dropUp
+      , messages, data, busy, dropUp, searchTerm, onChange
       , placeholder, value, open, disabled, readOnly
       , valueComponent: ValueComponent, tetherPopup, popupClassName
-      , listComponent: List } = this.props;
+      , afterListComponent, listComponent: List } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
 
     let elementProps = omit(this.props, Object.keys(propTypes));
     let listProps    = pick(this.props, Object.keys(List.propTypes));
     let popupProps   = pick(this.props, Object.keys(Popup.propTypes));
+
+    const PopupComponent =  tetherPopup ? TetheredPopUp : Popup;
 
     let { focusedItem, selectedItem, focused } = this.state;
 
@@ -149,7 +153,6 @@ var DropdownList = React.createClass({
     let shouldRenderList = isFirstFocusedRender(this) || open;
 
     messages = msgs(messages);
-    const PopupComponent =  tetherPopup ? TetheredPopUp : Popup;
 
     return (
       <div {...elementProps}
@@ -206,7 +209,7 @@ var DropdownList = React.createClass({
         >
           <div>
             { filter && this._renderFilter(messages) }
-            { shouldRenderList &&
+            { shouldRenderList && (
               <List ref="list"
                 {...listProps}
                 data={items}
@@ -222,8 +225,15 @@ var DropdownList = React.createClass({
                   emptyList: data.length
                     ? messages.emptyFilter
                     : messages.emptyList
-                }}/>
-            }
+                  }}
+              />
+            )}
+            {afterListComponent && (
+              React.cloneElement(
+                afterListComponent,
+                {value, searchTerm, data, onChange, }
+              )
+            )}
           </div>
         </PopupComponent>
       </div>
@@ -375,7 +385,7 @@ var DropdownList = React.createClass({
   },
 
   close() {
-    
+
     notify(this.props.onToggle, false)
   },
 
