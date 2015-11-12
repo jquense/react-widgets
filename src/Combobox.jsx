@@ -29,7 +29,7 @@ let propTypes = {
 
       itemComponent:  CustomPropTypes.elementType,
       listComponent:  CustomPropTypes.elementType,
-
+      afterListComponent: CustomPropTypes.elementType,
       groupComponent: CustomPropTypes.elementType,
       groupBy:        CustomPropTypes.accessor,
 
@@ -145,6 +145,7 @@ var ComboBox = React.createClass({
       , valueField, textField, groupBy
       , messages, data, busy, dropUp, name, autoFocus
       , placeholder, value, open, disabled, readOnly
+      , afterListComponent, searchTerm, onChange
       , listComponent: List } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
@@ -241,6 +242,12 @@ var ComboBox = React.createClass({
                     : messages.emptyList
                 }}/>
             }
+            {afterListComponent && (
+              React.cloneElement(
+                afterListComponent,
+                {value, searchTerm, data, onChange, }
+              )
+            )}
           </div>
         </Popup>
       </div>

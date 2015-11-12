@@ -6013,7 +6013,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  itemComponent: _utilPropTypes2['default'].elementType,
 	  listComponent: _utilPropTypes2['default'].elementType,
-
+	  afterListComponent: _utilPropTypes2['default'].elementType,
 	  groupComponent: _utilPropTypes2['default'].elementType,
 	  groupBy: _utilPropTypes2['default'].accessor,
 
@@ -6155,6 +6155,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var open = _props2.open;
 	    var disabled = _props2.disabled;
 	    var readOnly = _props2.readOnly;
+	    var afterListComponent = _props2.afterListComponent;
+	    var searchTerm = _props2.searchTerm;
+	    var onChange = _props2.onChange;
 	    var List = _props2.listComponent;
 
 	    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
@@ -6258,7 +6261,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            onMove: this._scrollTo,
 	            messages: {
 	              emptyList: data.length ? messages.emptyFilter : messages.emptyList
-	            } }))
+	            } })),
+	          afterListComponent && _react2['default'].cloneElement(afterListComponent, { value: value, searchTerm: searchTerm, data: data, onChange: onChange })
 	        )
 	      )
 	    );

@@ -23,8 +23,6 @@ var Example = React.createClass({
     			afterListComponent={(
             <AddButton parentProp="parent prop" />
           )}
-          tetherPopup
-    			popupClassName='tether-className-prop'
     			/>
     )
   }
