@@ -191,7 +191,6 @@ var DropdownList = React.createClass({
         <Popup {...popupProps}
           onOpen={() => this.focus() }
           onOpening={() => this.refs.list.forceUpdate() }
-          onRequestClose={this.close}
         >
           <div>
             { filter && this._renderFilter(messages) }

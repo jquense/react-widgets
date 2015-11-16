@@ -47,7 +47,7 @@ describe('server rendering', function() {
 
     assert.doesNotThrow(function(){
       var comp = renderToString(
-        React.createElement(Type, { onRequestClose: function(){} },
+        React.createElement(Type, null,
           React.createElement('div')
         )
       )

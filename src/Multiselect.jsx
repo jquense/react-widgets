@@ -262,7 +262,6 @@ var Multiselect = React.createClass({
         </div>
         <Popup {...popupProps}
           onOpening={()=> this.refs.list.forceUpdate()}
-          onRequestClose={this.close}
         >
           <div>
           { shouldRenderPopup && [

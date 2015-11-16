@@ -241,7 +241,6 @@ var DateTimePicker = React.createClass({
         <Popup
           dropUp={dropUp}
           open={timeIsOpen}
-          onRequestClose={this.close}
           duration={duration}
           onOpening={() => this.refs.timePopup.forceUpdate()}
         >
@@ -272,7 +271,6 @@ var DateTimePicker = React.createClass({
           dropUp={dropUp}
           open={calendarIsOpen}
           duration={duration}
-          onRequestClose={this.close}
         >
           { shouldRenderList &&
             <Calendar

@@ -40,7 +40,6 @@ module.exports = React.createClass({
     dropUp:         React.PropTypes.bool,
     duration:       React.PropTypes.number,
 
-    onRequestClose: React.PropTypes.func.isRequired,
     onClosing:      React.PropTypes.func,
     onOpening:      React.PropTypes.func,
     onClose:        React.PropTypes.func,
