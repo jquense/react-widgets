@@ -91,7 +91,7 @@ var App = React.createClass({
             >
               add
             </button>
-            <DateTimePicker format='YYYY-MM-DD' value={new Date()} time={false}/>
+            <DateTimePicker format='YYYY-MM-DD' min={new Date()} time={false}/>
           </section>
         </div>
       </div>

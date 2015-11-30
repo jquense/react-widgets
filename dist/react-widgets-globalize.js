@@ -1,5 +1,15 @@
 /*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("react"), require("ReactWidgets"));
+	else if(typeof define === 'function' && define.amd)
+		define([, "ReactWidgets"], factory);
+	else if(typeof exports === 'object')
+		exports["ReactWidgets"] = factory(require("react"), require("ReactWidgets"));
+	else
+		root["ReactWidgets"] = factory(root["React"], root["ReactWidgets"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_21__, __WEBPACK_EXTERNAL_MODULE_85__) {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
@@ -41,20 +51,21 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var babelHelpers = __webpack_require__(1);
+	var babelHelpers = __webpack_require__(2);
 
 	exports.__esModule = true;
 	exports['default'] = globalizeLocalizers;
 
-	var _react = __webpack_require__(2);
+	var _react = __webpack_require__(21);
 
-	var _configure = __webpack_require__(3);
+	var _configure = __webpack_require__(85);
 
 	var _configure2 = babelHelpers.interopRequireDefault(_configure);
 
@@ -246,7 +257,8 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1 */
+
+/***/ 2:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -346,16 +358,21 @@
 	})
 
 /***/ },
-/* 2 */
+
+/***/ 21:
 /***/ function(module, exports) {
 
-	module.exports = window.React;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_21__;
 
 /***/ },
-/* 3 */
+
+/***/ 85:
 /***/ function(module, exports) {
 
-	module.exports = window.ReactWidgets;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_85__;
 
 /***/ }
-/******/ ]);
+
+/******/ })
+});
+;
