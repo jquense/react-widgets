@@ -1,3 +1,11 @@
+v3.1.1 - Fri, 04 Dec 2015 18:48:40 GMT
+--------------------------------------
+
+- [39f2dc0](../../commit/39f2dc0) [fixed] dropdown correctly checks value equality
+- [88bc7b0](../../commit/88bc7b0) [fixed]  list searches correctly happen on keyPress and not keyDown
+
+
+
 v3.1.0 - Mon, 02 Nov 2015 17:56:43 GMT
 --------------------------------------
 
