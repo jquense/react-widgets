@@ -149,9 +149,8 @@ export default React.createClass({
     }
   },
 
-  _keyDown: function(e){
+  _keyDown(e) {
     var key = e.key
-      , character = String.fromCharCode(e.keyCode)
       , focusedItem  = this.state.focusedItem
       , list = this.refs.list;
 
@@ -172,13 +171,15 @@ export default React.createClass({
       e.preventDefault()
       this.setState({ focusedItem: list.prev(focusedItem) })
     }
-    else {
-      e.preventDefault()
+  },
 
-      this.search(character, item => {
+  _keyPress(e) {
+    e.preventDefault();
+
+    this.search(String.fromCharCode(e.which), item => {
+      this.isMounted() &&
         this.setState({ focusedItem: item })
-      })
-    }
+    })
   },
 
   scrollTo(){
