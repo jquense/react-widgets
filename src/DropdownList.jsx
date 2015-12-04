@@ -11,7 +11,7 @@ import GroupableList   from './ListGroupable';
 import validateList    from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
 
-import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
+import { dataItem, dataText, dataIndexOf, valueMatcher } from './util/dataHelpers';
 import { widgetEditable, widgetEnabled, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
@@ -154,11 +154,11 @@ var DropdownList = React.createClass({
         aria-owns={listID}
         aria-busy={!!busy}
         aria-live={!open && 'polite'}
-        onKeyPress={this._keyPress}
         aria-autocomplete="list"
         aria-disabled={disabled }
         aria-readonly={readOnly }
         onKeyDown={this._keyDown}
+        onKeyPress={this._keyPress}
         onClick={this._click}
         onFocus={this._focus.bind(null, true)}
         onBlur ={this._focus.bind(null, false)}
@@ -334,7 +334,7 @@ var DropdownList = React.createClass({
   },
 
   change(data){
-    if ( !_.isShallowEqual(data, this.props.value) ) {
+    if (!valueMatcher(data, this.props.value, this.props.valueField)) {
       notify(this.props.onChange, data)
       notify(this.props.onSearch, '')
       this.close()

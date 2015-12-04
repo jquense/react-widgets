@@ -210,15 +210,25 @@ describe('DROPDOWNS', function(){
     var change = sinon.spy()
       , instance = render(<Dropdown.ControlledComponent value={data[0]} data={data} duration={0} delay={0} onChange={change} textField='label' />);
 
-    trigger.keyDown(findDOMNode(instance), { keyCode: 80, key: 'p' })
+    trigger.keyPress(findDOMNode(instance), { which: 80, key: 'p' })
 
     setTimeout(() => {
       expect(change.calledOnce).to.be(true)
       expect(change.calledWith(data[2])).to.be(true)
 
-      instance = render(<Dropdown.ControlledComponent open onToggle={()=>{}} value={data[0]} data={data} duration={0} delay={0} onChange={change} textField='label' />);
+      instance = render(
+        <Dropdown.ControlledComponent open
+          onToggle={()=>{}}
+          value={data[0]}
+          data={data} 
+          duration={0}
+          delay={0}
+          onChange={change}
+          textField='label'
+        />
+      );
 
-      trigger.keyDown(findDOMNode(instance), { keyCode: 80, key: 'p' })
+      trigger.keyPress(findDOMNode(instance), { which: 80, key: 'p' })
 
       setTimeout(() => {
         expect(instance.state.focusedItem).to.be(data[2])
