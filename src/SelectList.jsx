@@ -130,6 +130,7 @@ var SelectList = React.createClass({
     return (
       <div {...elementProps}
         onKeyDown={this._keyDown}
+        onKeyPress={this._keyPress}
         onFocus={this._focus.bind(null, true)}
         onBlur={this._focus.bind(null, false)}
         role={'radiogroup'}
@@ -224,8 +225,16 @@ var SelectList = React.createClass({
       e.preventDefault()
       this.selectAll()
     }
-    else
-      this.search(String.fromCharCode(e.keyCode))
+  },
+
+  @widgetEditable
+  _keyPress(e) {
+    notify(this.props.onKeyPress, [e])
+
+    if (e.defaultPrevented)
+      return
+
+    this.search(String.fromCharCode(e.which))
   },
 
   selectAll(){
@@ -254,7 +263,7 @@ var SelectList = React.createClass({
 
     multiple  = !!multiple
 
-    if ( !multiple )
+    if (!multiple)
       return notify(this.props.onChange, checked ? item : null)
 
     values = checked
@@ -266,11 +275,11 @@ var SelectList = React.createClass({
 
   @widgetEnabled
   _focus(focused, e) {
-
-    if( focused) compat.findDOMNode(this.refs.list).focus()
+    if (focused)
+      compat.findDOMNode(this.refs.list).focus()
 
     this.setTimeout('focus', () => {
-      if( focused !== this.state.focused){
+      if (focused !== this.state.focused) {
         notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
         this.setState({ focused: focused })
       }
@@ -279,7 +288,11 @@ var SelectList = React.createClass({
 
   search(character) {
     var word = ((this._searchTerm || '') + character).toLowerCase()
-      , list = this.refs.list;
+      , list = this.refs.list
+      , multiple = this.props.multiple;
+
+    if (!character)
+      return
 
     this._searchTerm = word
 
@@ -288,9 +301,11 @@ var SelectList = React.createClass({
 
       this._searchTerm = ''
 
-      if ( focusedItem)
-        this.setState({ focusedItem })
-
+      if (focusedItem) {
+        !multiple
+          ? this._change(focusedItem, true)
+          : this.setState({ focusedItem })
+      }
     }, this.props.delay)
   },
 

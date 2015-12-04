@@ -154,7 +154,7 @@ var DropdownList = React.createClass({
         aria-owns={listID}
         aria-busy={!!busy}
         aria-live={!open && 'polite'}
-        //aria-activedescendant={activeID}
+        onKeyPress={this._keyPress}
         aria-autocomplete="list"
         aria-disabled={disabled }
         aria-readonly={readOnly }
@@ -234,9 +234,9 @@ var DropdownList = React.createClass({
   _focus(focused, e){
 
     this.setTimeout('focus', () => {
-      if( !focused) this.close()
+      if (!focused) this.close()
 
-      if( focused !== this.state.focused) {
+      if (focused !== this.state.focused) {
         notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
         this.setState({ focused: focused })
       }
@@ -281,40 +281,34 @@ var DropdownList = React.createClass({
     if (e.defaultPrevented)
       return
 
-    if ( key === 'End' ) {
-      if ( isOpen) this.setState({ focusedItem: list.last() })
-      else         change(list.last())
+    if (key === 'End') {
+      if (isOpen) this.setState({ focusedItem: list.last() })
+      else        change(list.last())
       e.preventDefault()
     }
-    else if ( key === 'Home' ) {
-      if ( isOpen) this.setState({ focusedItem: list.first() })
-      else         change(list.first())
+    else if (key === 'Home') {
+      if (isOpen) this.setState({ focusedItem: list.first() })
+      else        change(list.first())
       e.preventDefault()
     }
-    else if ( key === 'Escape' && isOpen ) {
+    else if (key === 'Escape' && isOpen) {
       closeWithFocus()
     }
-    else if ( (key === 'Enter' || (key === ' ' && !filtering)) && isOpen ) {
+    else if ((key === 'Enter' || (key === ' ' && !filtering)) && isOpen ) {
       change(this.state.focusedItem, true)
     }
-    else if ( key === 'ArrowDown' ) {
-      if ( alt )         this.open()
-      else if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
-      else               change(list.next(selectedItem))
+    else if (key === 'ArrowDown') {
+      if (alt)         this.open()
+      else if (isOpen) this.setState({ focusedItem: list.next(focusedItem) })
+      else             change(list.next(selectedItem))
       e.preventDefault()
     }
-    else if ( key === 'ArrowUp' ) {
-      if ( alt )         closeWithFocus()
-      else if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
-      else               change(list.prev(selectedItem))
+    else if (key === 'ArrowUp') {
+      if (alt)         closeWithFocus()
+      else if (isOpen) this.setState({ focusedItem: list.prev(focusedItem) })
+      else             change(list.prev(selectedItem))
       e.preventDefault()
     }
-    else if ( !(this.props.filter && isOpen) )
-      this.search(String.fromCharCode(e.keyCode), item => {
-        isOpen
-          ? this.setState({ focusedItem: item })
-          : change(item)
-      })
 
     function change(item, fromList){
       if(!item) return
@@ -322,6 +316,21 @@ var DropdownList = React.createClass({
         ? self._onSelect(item)
         : self.change(item)
     }
+  },
+
+  @widgetEditable
+  _keyPress(e) {
+    notify(this.props.onKeyPress, [e])
+
+    if (e.defaultPrevented)
+      return
+
+    if (!(this.props.filter && this.props.open))
+      this.search(String.fromCharCode(e.which), item => {
+        this.isMounted() && this.props.open
+          ? this.setState({ focusedItem: item })
+          : item && this.change(item)
+      })
   },
 
   change(data){
@@ -335,7 +344,7 @@ var DropdownList = React.createClass({
   focus(target){
     var inst = target || (this.props.filter && this.props.open ? this.refs.filter : this.refs.input);
 
-    if ( activeElement() !== compat.findDOMNode(inst))
+    if (activeElement() !== compat.findDOMNode(inst))
       compat.findDOMNode(inst).focus()
   },
 
@@ -346,6 +355,9 @@ var DropdownList = React.createClass({
   search(character, cb) {
     var word = ((this._searchTerm || '') + character).toLowerCase();
 
+    if (!character)
+      return
+
     this._searchTerm = word
 
     this.setTimeout('search', () => {
@@ -354,7 +366,7 @@ var DropdownList = React.createClass({
         , item = list.next(this.state[key], word);
 
       this._searchTerm = ''
-      if ( item) cb(item)
+      if (item) cb(item)
 
     }, this.props.delay)
   },
