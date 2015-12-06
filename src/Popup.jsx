@@ -126,7 +126,7 @@ module.exports = React.createClass({
       , margin = parseInt(css(content, 'margin-top'), 10)
                + parseInt(css(content, 'margin-bottom'), 10);
 
-    var height = getHeight(content) + (isNaN(margin) ? 0 : margin )
+    var height = (getHeight(content) || 0) + (isNaN(margin) ? 0 : margin)
 
     if( this.state.height !== height) {
       el.style.height  = height + 'px'

@@ -134,16 +134,18 @@ export default { number, date }
 function createWrapper(){
   let dummy = {};
 
-  ['formats', 'parse', 'format', 'firstOfWeek', 'precision']
-    .forEach(name => Object.defineProperty(dummy, name, {
-      enumerable: true,
-      get(){
-        throw new Error(
-          '[React Widgets] You are attempting to use a widget that requires localization ' +
-          '(Calendar, DateTimePicker, NumberPicker). ' +
-          'However there is no localizer set. Please configure a localizer. \n\n' +
-          'see http://jquense.github.io/react-widgets/docs/#/i18n for more info.')
-      }
-    }))
+  if (process.env.NODE_ENV !== 'production' ) {
+    ['formats', 'parse', 'format', 'firstOfWeek', 'precision']
+      .forEach(name => Object.defineProperty(dummy, name, {
+        enumerable: true,
+        get(){
+          throw new Error(
+            '[React Widgets] You are attempting to use a widget that requires localization ' +
+            '(Calendar, DateTimePicker, NumberPicker). ' +
+            'However there is no localizer set. Please configure a localizer. \n\n' +
+            'see http://jquense.github.io/react-widgets/docs/#/i18n for more info.')
+        }
+      }))
+  }
   return dummy
 }
