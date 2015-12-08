@@ -428,6 +428,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  if (duration <= 0) setTimeout(done.bind(null, fakeEvent), 0);
 
+	  return {
+	    cancel: function cancel() {
+	      if (fired) return;
+	      fired = true;
+	      _domHelpersEventsOff2['default'](event.target, _domHelpersTransitionProperties2['default'].end, done);
+	      _domHelpersStyle2['default'](node, reset);
+	    }
+	  };
+
 	  function done(event) {
 	    if (event.target !== event.currentTarget) return;
 
@@ -899,14 +908,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function createWrapper() {
 	  var dummy = {};
 
-	  ['formats', 'parse', 'format', 'firstOfWeek', 'precision'].forEach(function (name) {
-	    return Object.defineProperty(dummy, name, {
-	      enumerable: true,
-	      get: function get() {
-	        throw new Error('[React Widgets] You are attempting to use a widget that requires localization ' + '(Calendar, DateTimePicker, NumberPicker). ' + 'However there is no localizer set. Please configure a localizer. \n\n' + 'see http://jquense.github.io/react-widgets/docs/#/i18n for more info.');
-	      }
+	  if (process.env.NODE_ENV !== 'production') {
+	    ['formats', 'parse', 'format', 'firstOfWeek', 'precision'].forEach(function (name) {
+	      return Object.defineProperty(dummy, name, {
+	        enumerable: true,
+	        get: function get() {
+	          throw new Error('[React Widgets] You are attempting to use a widget that requires localization ' + '(Calendar, DateTimePicker, NumberPicker). ' + 'However there is no localizer set. Please configure a localizer. \n\n' + 'see http://jquense.github.io/react-widgets/docs/#/i18n for more info.');
+	        }
+	      });
 	    });
-	  });
+	  }
 	  return dummy;
 	}
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -1742,6 +1753,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var transform = _utilConfiguration2['default'].animate.transform;
 
+	var CLOSING = 0,
+	    OPENING = 1,
+	    NONE = 2;
+
 	function properties(prop, value) {
 	  var _ref, _ref2;
 
@@ -1816,6 +1831,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        opening = !pvProps.open && this.props.open,
 	        open = this.props.open;
 
+	    if (pvProps.dropUp !== this.props.dropUp && this.transitionState !== NONE) {
+	      this._transition && this._transition.cancel();
+	      this.reset();
+	      opening = this.transitionState === OPENING;
+	      closing = this.transitionState === CLOSING;
+	    }
+
 	    if (opening) this.open();else if (closing) this.close();else if (open) this.height();
 	  },
 
@@ -1863,7 +1885,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        content = _utilCompat2['default'].findDOMNode(this.refs.content),
 	        margin = parseInt(_domHelpersStyle2['default'](content, 'margin-top'), 10) + parseInt(_domHelpersStyle2['default'](content, 'margin-bottom'), 10);
 
-	    var height = _domHelpersQueryHeight2['default'](content) + (isNaN(margin) ? 0 : margin);
+	    var height = (_domHelpersQueryHeight2['default'](content) || 0) + (isNaN(margin) ? 0 : margin);
 
 	    if (this.state.height !== height) {
 	      el.style.height = height + 'px';
@@ -1872,12 +1894,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  open: function open() {
+	    var _this = this;
+
 	    var self = this,
 	        anim = _utilCompat2['default'].findDOMNode(this),
 	        el = _utilCompat2['default'].findDOMNode(this.refs.content);
 
 	    this.ORGINAL_POSITION = _domHelpersStyle2['default'](el, 'position');
-	    this._isOpening = true;
+	    this.transitionState = OPENING;
 
 	    if (this._initialPosition) {
 	      this._initialPosition = false;
@@ -1889,27 +1913,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    anim.className += ' rw-popup-animating';
 	    el.style.position = 'absolute';
 
-	    _utilConfiguration2['default'].animate(el, { top: 0 }, self.props.duration, 'ease', function () {
-	      if (!self._isOpening) return;
+	    this._transition = _utilConfiguration2['default'].animate(el, { top: 0 }, self.props.duration, 'ease', function () {
+	      if (_this.transitionState !== OPENING) return;
 
+	      _this.transitionState = NONE;
 	      anim.className = anim.className.replace(/ ?rw-popup-animating/g, '');
 
 	      el.style.position = self.ORGINAL_POSITION;
 	      anim.style.overflow = 'visible';
-	      self.ORGINAL_POSITION = null;
+	      _this.ORGINAL_POSITION = null;
 
-	      self.props.onOpen();
+	      _this.props.onOpen();
 	    });
 	  },
 
 	  close: function close(dur) {
-	    var self = this,
-	        el = _utilCompat2['default'].findDOMNode(this.refs.content),
+	    var _this2 = this;
+
+	    var el = _utilCompat2['default'].findDOMNode(this.refs.content),
 	        anim = _utilCompat2['default'].findDOMNode(this);
 
 	    this.ORGINAL_POSITION = _domHelpersStyle2['default'](el, 'position');
 
-	    this._isOpening = false;
+	    this.transitionState = CLOSING;
+
 	    this.height();
 	    this.props.onClosing();
 
@@ -1917,15 +1944,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    anim.className += ' rw-popup-animating';
 	    el.style.position = 'absolute';
 
-	    _utilConfiguration2['default'].animate(el, { top: this.props.dropUp ? '100%' : '-100%' }, dur === undefined ? this.props.duration : dur, 'ease', function () {
-	      if (self._isOpening) return;
+	    this._transition = _utilConfiguration2['default'].animate(el, { top: this.props.dropUp ? '100%' : '-100%' }, dur === undefined ? this.props.duration : dur, 'ease', function () {
+	      if (_this2.transitionState !== CLOSING) return;
 
+	      _this2.transitionState = NONE;
 	      el.style.position = self.ORGINAL_POSITION;
 	      anim.className = anim.className.replace(/ ?rw-popup-animating/g, '');
 
 	      anim.style.display = 'none';
-	      self.ORGINAL_POSITION = null;
-	      self.props.onClose();
+	      _this2.ORGINAL_POSITION = null;
+	      _this2.props.onClose();
 	    });
 	  }
 
@@ -4958,7 +4986,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, msgs);
 	}
 
-	exports['default'] = _uncontrollable2['default'](Calendar, { value: 'onChange' });
+	exports['default'] = _uncontrollable2['default'](Calendar, {
+	  value: 'onChange',
+	  viewDate: 'onViewDateChange',
+	  view: 'onViewChange'
+	});
 	module.exports = exports['default'];
 
 /***/ },
@@ -8413,10 +8445,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (altKey) this.close();else if (isOpen) this.setState(babelHelpers._extends({ focusedItem: prev }, nullTag));
 	    } else if (key === 'End') {
+	      e.preventDefault();
 	      if (isOpen) this.setState(babelHelpers._extends({ focusedItem: list.last() }, nullTag));else tagList && this.setState({ focusedTag: tagList.last() });
 	    } else if (key === 'Home') {
+	      e.preventDefault();
 	      if (isOpen) this.setState(babelHelpers._extends({ focusedItem: list.first() }, nullTag));else tagList && this.setState({ focusedTag: tagList.first() });
-	    } else if (isOpen && key === 'Enter') ctrlKey && this.props.onCreate || focusedItem === null ? this._onCreate(this.props.searchTerm) : this._onSelect(this.state.focusedItem);else if (key === 'Escape') isOpen ? this.close() : tagList && this.setState(nullTag);else if (noSearch && key === 'ArrowLeft') tagList && this.setState({ focusedTag: tagList.prev(focusedTag) });else if (noSearch && key === 'ArrowRight') tagList && this.setState({ focusedTag: tagList.next(focusedTag) });else if (noSearch && key === 'Delete') tagList && tagList.remove(focusedTag);else if (noSearch && key === 'Backspace') tagList && tagList.removeNext();
+	    } else if (isOpen && key === 'Enter') {
+	      e.preventDefault();
+	      ctrlKey && this.props.onCreate || focusedItem === null ? this._onCreate(this.props.searchTerm) : this._onSelect(this.state.focusedItem);
+	    } else if (key === 'Escape') isOpen ? this.close() : tagList && this.setState(nullTag);else if (noSearch && key === 'ArrowLeft') tagList && this.setState({ focusedTag: tagList.prev(focusedTag) });else if (noSearch && key === 'ArrowRight') tagList && this.setState({ focusedTag: tagList.next(focusedTag) });else if (noSearch && key === 'Delete') tagList && tagList.remove(focusedTag);else if (noSearch && key === 'Backspace') tagList && tagList.removeNext();
 	  }
 	}, {
 	  key: 'change',
