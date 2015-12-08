@@ -1,11 +1,11 @@
 sudo: false
 language: node_js
 node_js:
-- 4
-cache:
-  directories:
-    - node_modules
+  - stable
 before_install:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+branches:
+  only:
+    - master

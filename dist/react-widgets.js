@@ -428,6 +428,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  if (duration <= 0) setTimeout(done.bind(null, fakeEvent), 0);
 
+	  return {
+	    cancel: function cancel() {
+	      if (fired) return;
+	      fired = true;
+	      _domHelpersEventsOff2['default'](event.target, _domHelpersTransitionProperties2['default'].end, done);
+	      _domHelpersStyle2['default'](node, reset);
+	    }
+	  };
+
 	  function done(event) {
 	    if (event.target !== event.currentTarget) return;
 
@@ -899,14 +908,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function createWrapper() {
 	  var dummy = {};
 
-	  ['formats', 'parse', 'format', 'firstOfWeek', 'precision'].forEach(function (name) {
-	    return Object.defineProperty(dummy, name, {
-	      enumerable: true,
-	      get: function get() {
-	        throw new Error('[React Widgets] You are attempting to use a widget that requires localization ' + '(Calendar, DateTimePicker, NumberPicker). ' + 'However there is no localizer set. Please configure a localizer. \n\n' + 'see http://jquense.github.io/react-widgets/docs/#/i18n for more info.');
-	      }
+	  if (process.env.NODE_ENV !== 'production') {
+	    ['formats', 'parse', 'format', 'firstOfWeek', 'precision'].forEach(function (name) {
+	      return Object.defineProperty(dummy, name, {
+	        enumerable: true,
+	        get: function get() {
+	          throw new Error('[React Widgets] You are attempting to use a widget that requires localization ' + '(Calendar, DateTimePicker, NumberPicker). ' + 'However there is no localizer set. Please configure a localizer. \n\n' + 'see http://jquense.github.io/react-widgets/docs/#/i18n for more info.');
+	        }
+	      });
 	    });
-	  });
+	  }
 	  return dummy;
 	}
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -1330,11 +1341,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'aria-owns': listID,
 	        'aria-busy': !!busy,
 	        'aria-live': !open && 'polite',
-	        //aria-activedescendant={activeID}
 	        'aria-autocomplete': 'list',
 	        'aria-disabled': disabled,
 	        'aria-readonly': readOnly,
 	        onKeyDown: this._keyDown,
+	        onKeyPress: this._keyPress,
 	        onClick: this._click,
 	        onFocus: this._focus.bind(null, true),
 	        onBlur: this._focus.bind(null, false),
@@ -1377,8 +1388,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          },
 	          onOpening: function () {
 	            return _this.refs.list.forceUpdate();
-	          },
-	          onRequestClose: this.close
+	          }
 	        }),
 	        _react2['default'].createElement(
 	          'div',
@@ -1495,9 +1505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else if (key === 'ArrowUp') {
 	      if (alt) closeWithFocus();else if (isOpen) this.setState({ focusedItem: list.prev(focusedItem) });else change(list.prev(selectedItem));
 	      e.preventDefault();
-	    } else if (!(this.props.filter && isOpen)) this.search(String.fromCharCode(e.keyCode), function (item) {
-	      isOpen ? _this4.setState({ focusedItem: item }) : change(item);
-	    });
+	    }
 
 	    function change(item, fromList) {
 	      if (!item) return;
@@ -1505,9 +1513,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 	}, {
+	  key: '_keyPress',
+	  decorators: [_utilInteraction.widgetEditable],
+	  value: function _keyPress(e) {
+	    var _this5 = this;
+
+	    _utilWidgetHelpers.notify(this.props.onKeyPress, [e]);
+
+	    if (e.defaultPrevented) return;
+
+	    if (!(this.props.filter && this.props.open)) this.search(String.fromCharCode(e.which), function (item) {
+	      _this5.isMounted() && _this5.props.open ? _this5.setState({ focusedItem: item }) : item && _this5.change(item);
+	    });
+	  }
+	}, {
 	  key: 'change',
 	  value: function change(data) {
-	    if (!_util_2['default'].isShallowEqual(data, this.props.value)) {
+	    if (!_utilDataHelpers.valueMatcher(data, this.props.value, this.props.valueField)) {
 	      _utilWidgetHelpers.notify(this.props.onChange, data);
 	      _utilWidgetHelpers.notify(this.props.onSearch, '');
 	      this.close();
@@ -1528,18 +1550,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, {
 	  key: 'search',
 	  value: function search(character, cb) {
-	    var _this5 = this;
+	    var _this6 = this;
 
 	    var word = ((this._searchTerm || '') + character).toLowerCase();
+
+	    if (!character) return;
 
 	    this._searchTerm = word;
 
 	    this.setTimeout('search', function () {
-	      var list = _this5.refs.list,
-	          key = _this5.props.open ? 'focusedItem' : 'selectedItem',
-	          item = list.next(_this5.state[key], word);
+	      var list = _this6.refs.list,
+	          key = _this6.props.open ? 'focusedItem' : 'selectedItem',
+	          item = list.next(_this6.state[key], word);
 
-	      _this5._searchTerm = '';
+	      _this6._searchTerm = '';
 	      if (item) cb(item);
 	    }, this.props.delay);
 	  }
@@ -1645,17 +1669,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2015 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
 	*/
+	/* global define */
 
 	(function () {
 		'use strict';
 
-		function classNames () {
+		var hasOwn = {}.hasOwnProperty;
 
+		function classNames () {
 			var classes = '';
 
 			for (var i = 0; i < arguments.length; i++) {
@@ -1664,15 +1690,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				var argType = typeof arg;
 
-				if ('string' === argType || 'number' === argType) {
+				if (argType === 'string' || argType === 'number') {
 					classes += ' ' + arg;
-
 				} else if (Array.isArray(arg)) {
 					classes += ' ' + classNames.apply(null, arg);
-
-				} else if ('object' === argType) {
+				} else if (argType === 'object') {
 					for (var key in arg) {
-						if (arg.hasOwnProperty(key) && arg[key]) {
+						if (hasOwn.call(arg, key) && arg[key]) {
 							classes += ' ' + key;
 						}
 					}
@@ -1684,15 +1708,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		if (typeof module !== 'undefined' && module.exports) {
 			module.exports = classNames;
-		} else if (true){
-			// AMD. Register as an anonymous module.
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}
-
 	}());
 
 
@@ -1730,6 +1753,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var transform = _utilConfiguration2['default'].animate.transform;
 
+	var CLOSING = 0,
+	    OPENING = 1,
+	    NONE = 2;
+
 	function properties(prop, value) {
 	  var _ref, _ref2;
 
@@ -1765,7 +1792,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    dropUp: _react2['default'].PropTypes.bool,
 	    duration: _react2['default'].PropTypes.number,
 
-	    onRequestClose: _react2['default'].PropTypes.func.isRequired,
 	    onClosing: _react2['default'].PropTypes.func,
 	    onOpening: _react2['default'].PropTypes.func,
 	    onClose: _react2['default'].PropTypes.func,
@@ -1804,6 +1830,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var closing = pvProps.open && !this.props.open,
 	        opening = !pvProps.open && this.props.open,
 	        open = this.props.open;
+
+	    if (pvProps.dropUp !== this.props.dropUp && this.transitionState !== NONE) {
+	      this._transition && this._transition.cancel();
+	      this.reset();
+	      opening = this.transitionState === OPENING;
+	      closing = this.transitionState === CLOSING;
+	    }
 
 	    if (opening) this.open();else if (closing) this.close();else if (open) this.height();
 	  },
@@ -1852,7 +1885,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        content = _utilCompat2['default'].findDOMNode(this.refs.content),
 	        margin = parseInt(_domHelpersStyle2['default'](content, 'margin-top'), 10) + parseInt(_domHelpersStyle2['default'](content, 'margin-bottom'), 10);
 
-	    var height = _domHelpersQueryHeight2['default'](content) + (isNaN(margin) ? 0 : margin);
+	    var height = (_domHelpersQueryHeight2['default'](content) || 0) + (isNaN(margin) ? 0 : margin);
 
 	    if (this.state.height !== height) {
 	      el.style.height = height + 'px';
@@ -1861,12 +1894,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  open: function open() {
+	    var _this = this;
+
 	    var self = this,
 	        anim = _utilCompat2['default'].findDOMNode(this),
 	        el = _utilCompat2['default'].findDOMNode(this.refs.content);
 
 	    this.ORGINAL_POSITION = _domHelpersStyle2['default'](el, 'position');
-	    this._isOpening = true;
+	    this.transitionState = OPENING;
 
 	    if (this._initialPosition) {
 	      this._initialPosition = false;
@@ -1878,27 +1913,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    anim.className += ' rw-popup-animating';
 	    el.style.position = 'absolute';
 
-	    _utilConfiguration2['default'].animate(el, { top: 0 }, self.props.duration, 'ease', function () {
-	      if (!self._isOpening) return;
+	    this._transition = _utilConfiguration2['default'].animate(el, { top: 0 }, self.props.duration, 'ease', function () {
+	      if (_this.transitionState !== OPENING) return;
 
+	      _this.transitionState = NONE;
 	      anim.className = anim.className.replace(/ ?rw-popup-animating/g, '');
 
 	      el.style.position = self.ORGINAL_POSITION;
 	      anim.style.overflow = 'visible';
-	      self.ORGINAL_POSITION = null;
+	      _this.ORGINAL_POSITION = null;
 
-	      self.props.onOpen();
+	      _this.props.onOpen();
 	    });
 	  },
 
 	  close: function close(dur) {
-	    var self = this,
-	        el = _utilCompat2['default'].findDOMNode(this.refs.content),
+	    var _this2 = this;
+
+	    var el = _utilCompat2['default'].findDOMNode(this.refs.content),
 	        anim = _utilCompat2['default'].findDOMNode(this);
 
 	    this.ORGINAL_POSITION = _domHelpersStyle2['default'](el, 'position');
 
-	    this._isOpening = false;
+	    this.transitionState = CLOSING;
+
 	    this.height();
 	    this.props.onClosing();
 
@@ -1906,15 +1944,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    anim.className += ' rw-popup-animating';
 	    el.style.position = 'absolute';
 
-	    _utilConfiguration2['default'].animate(el, { top: this.props.dropUp ? '100%' : '-100%' }, dur === undefined ? this.props.duration : dur, 'ease', function () {
-	      if (self._isOpening) return;
+	    this._transition = _utilConfiguration2['default'].animate(el, { top: this.props.dropUp ? '100%' : '-100%' }, dur === undefined ? this.props.duration : dur, 'ease', function () {
+	      if (_this2.transitionState !== CLOSING) return;
 
+	      _this2.transitionState = NONE;
 	      el.style.position = self.ORGINAL_POSITION;
 	      anim.className = anim.className.replace(/ ?rw-popup-animating/g, '');
 
 	      anim.style.display = 'none';
-	      self.ORGINAL_POSITION = null;
-	      self.props.onClose();
+	      _this2.ORGINAL_POSITION = null;
+	      _this2.props.onClose();
 	    });
 	  }
 
@@ -2433,6 +2472,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return -1;
 	}
+
+	/**
+	 * I don't know that the shallow equal makes sense here but am too afraid to
+	 * remove it.
+	 */
 
 	function valueMatcher(a, b, valueField) {
 	  return _.isShallowEqual(dataValue(a, valueField), dataValue(b, valueField));
@@ -3130,7 +3174,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var mixin = {
 	  shouldComponentUpdate: function shouldComponentUpdate() {
-	    //let the setState trigger the update
+	    //let the forceUpdate trigger the update
 	    return !this._notifying;
 	  }
 	};
@@ -3215,8 +3259,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, {});
 	      },
 
-	      render: function render() {
+	      /**
+	       * If a prop switches from controlled to Uncontrolled
+	       * reset its value to the defaultValue
+	       */
+	      componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	        var _this = this;
+
+	        var props = this.props,
+	            keys = Object.keys(controlledValues);
+
+	        keys.forEach(function (key) {
+	          if (utils.getValue(nextProps, key) === undefined && utils.getValue(props, key) !== undefined) {
+	            _this._values[key] = nextProps[utils.defaultKey(key)];
+	          }
+	        });
+	      },
+
+	      render: function render() {
+	        var _this2 = this;
 
 	        var newProps = {};
 	        var _props = this.props;
@@ -3227,21 +3288,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        utils.each(controlledValues, function (handle, propName) {
 	          var linkPropName = utils.getLinkName(propName),
-	              prop = _this.props[propName];
+	              prop = _this2.props[propName];
 
-	          if (linkPropName && !isProp(_this.props, propName) && isProp(_this.props, linkPropName)) {
-	            prop = _this.props[linkPropName].value;
+	          if (linkPropName && !isProp(_this2.props, propName) && isProp(_this2.props, linkPropName)) {
+	            prop = _this2.props[linkPropName].value;
 	          }
 
-	          newProps[propName] = prop !== undefined ? prop : _this._values[propName];
+	          newProps[propName] = prop !== undefined ? prop : _this2._values[propName];
 
-	          newProps[handle] = setAndNotify.bind(_this, propName);
+	          newProps[handle] = setAndNotify.bind(_this2, propName);
 	        });
 
 	        newProps = _extends({}, props, newProps, { ref: 'inner' });
 
 	        return _react2['default'].createElement(Component, newProps);
 	      }
+
 	    }));
 
 	    component.ControlledComponent = Component;
@@ -3281,6 +3343,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.customPropType = customPropType;
 	exports.uncontrolledPropTypes = uncontrolledPropTypes;
 	exports.getType = getType;
+	exports.getValue = getValue;
 	exports.getLinkName = getLinkName;
 	exports.defaultKey = defaultKey;
 	exports.chain = chain;
@@ -3300,7 +3363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function customPropType(handler, propType, name) {
 
-	  return function (props, propName, componentName) {
+	  return function (props, propName) {
 
 	    if (props[propName] !== undefined) {
 	      if (!props[handler]) {
@@ -3338,6 +3401,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (version[0] === 0 && version[1] >= 13) return component;
 
 	  return component.type;
+	}
+
+	function getValue(props, name) {
+	  var linkPropName = getLinkName(name);
+
+	  if (linkPropName && !isProp(props, name) && isProp(props, linkPropName)) return props[linkPropName].value;
+
+	  return props[name];
+	}
+
+	function isProp(props, prop) {
+	  return props[prop] !== undefined;
 	}
 
 	function getLinkName(name) {
@@ -4037,8 +4112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        babelHelpers._extends({}, popupProps, {
 	          onOpening: function () {
 	            return _this.refs.list.forceUpdate();
-	          },
-	          onRequestClose: this.close
+	          }
 	        }),
 	        _react2['default'].createElement(
 	          'div',
@@ -4912,7 +4986,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, msgs);
 	}
 
-	exports['default'] = _uncontrollable2['default'](Calendar, { value: 'onChange' });
+	exports['default'] = _uncontrollable2['default'](Calendar, {
+	  value: 'onChange',
+	  viewDate: 'onViewDateChange',
+	  view: 'onViewChange'
+	});
 	module.exports = exports['default'];
 
 /***/ },
@@ -6698,6 +6776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ref: 'element',
 	        tabIndex: '-1',
 	        onKeyDown: this._keyDown,
+	        onKeyPress: this._keyPress,
 	        onFocus: this._focus.bind(null, true),
 	        onBlur: this._focus.bind(null, false),
 	        className: _classnames2['default'](className, 'rw-datetimepicker', 'rw-widget', (_cx = {
@@ -6771,7 +6850,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        {
 	          dropUp: dropUp,
 	          open: timeIsOpen,
-	          onRequestClose: this.close,
 	          duration: duration,
 	          onOpening: function () {
 	            return _this.refs.timePopup.forceUpdate();
@@ -6805,8 +6883,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          className: 'rw-calendar-popup',
 	          dropUp: dropUp,
 	          open: calendarIsOpen,
-	          duration: duration,
-	          onRequestClose: this.close
+	          duration: duration
 	        },
 	        shouldRenderList && _react2['default'].createElement(Calendar, babelHelpers._extends({}, calProps, {
 	          ref: 'calPopup',
@@ -6866,6 +6943,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (open === popups.CALENDAR) this.refs.calPopup._keyDown(e);
 	      if (open === popups.TIME) this.refs.timePopup._keyDown(e);
 	    }
+	  }
+	}, {
+	  key: '_keyPress',
+	  decorators: [_utilInteraction.widgetEditable],
+	  value: function _keyPress(e) {
+	    _utilWidgetHelpers.notify(this.props.onKeyPress, [e]);
+
+	    if (e.defaultPrevented) return;
+
+	    if (this.props.open === popups.TIME) this.refs.timePopup._keyPress(e);
 	  }
 	}, {
 	  key: '_focus',
@@ -7172,10 +7259,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  _keyDown: function _keyDown(e) {
-	    var _this = this;
-
 	    var key = e.key,
-	        character = String.fromCharCode(e.keyCode),
 	        focusedItem = this.state.focusedItem,
 	        list = this.refs.list;
 
@@ -7185,13 +7269,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else if (key === 'ArrowUp') {
 	      e.preventDefault();
 	      this.setState({ focusedItem: list.prev(focusedItem) });
-	    } else {
-	      e.preventDefault();
-
-	      this.search(character, function (item) {
-	        _this.setState({ focusedItem: item });
-	      });
 	    }
+	  },
+
+	  _keyPress: function _keyPress(e) {
+	    var _this = this;
+
+	    e.preventDefault();
+
+	    this.search(String.fromCharCode(e.which), function (item) {
+	      _this.isMounted() && _this.setState({ focusedItem: item });
+	    });
 	  },
 
 	  scrollTo: function scrollTo() {
@@ -7514,7 +7602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            className: _classnames2['default']({ 'rw-state-active': this.state.active === directions.UP }),
 	            onMouseDown: this._mouseDown.bind(null, directions.UP),
 	            onMouseUp: this._mouseUp.bind(null, directions.UP),
-	            onMouseOut: this._mouseUp.bind(null, directions.UP),
+	            onMouseLeave: this._mouseUp.bind(null, directions.UP),
 	            onClick: this._focus.bind(null, true),
 	            disabled: val === this.props.max || this.props.disabled,
 	            'aria-disabled': val === this.props.max || this.props.disabled },
@@ -7535,7 +7623,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            className: _classnames2['default']({ 'rw-state-active': this.state.active === directions.DOWN }),
 	            onMouseDown: this._mouseDown.bind(null, directions.DOWN),
 	            onMouseUp: this._mouseUp.bind(null, directions.DOWN),
-	            onMouseOut: this._mouseUp.bind(null, directions.DOWN),
+	            onMouseLeave: this._mouseUp.bind(null, directions.DOWN),
 	            onClick: this._focus.bind(null, true),
 	            disabled: val === this.props.min || this.props.disabled,
 	            'aria-disabled': val === this.props.min || this.props.disabled },
@@ -8195,8 +8283,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        babelHelpers._extends({}, popupProps, {
 	          onOpening: function () {
 	            return _this.refs.list.forceUpdate();
-	          },
-	          onRequestClose: this.close
+	          }
 	        }),
 	        _react2['default'].createElement(
 	          'div',
@@ -8358,10 +8445,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (altKey) this.close();else if (isOpen) this.setState(babelHelpers._extends({ focusedItem: prev }, nullTag));
 	    } else if (key === 'End') {
+	      e.preventDefault();
 	      if (isOpen) this.setState(babelHelpers._extends({ focusedItem: list.last() }, nullTag));else tagList && this.setState({ focusedTag: tagList.last() });
 	    } else if (key === 'Home') {
+	      e.preventDefault();
 	      if (isOpen) this.setState(babelHelpers._extends({ focusedItem: list.first() }, nullTag));else tagList && this.setState({ focusedTag: tagList.first() });
-	    } else if (isOpen && key === 'Enter') ctrlKey && this.props.onCreate || focusedItem === null ? this._onCreate(this.props.searchTerm) : this._onSelect(this.state.focusedItem);else if (key === 'Escape') isOpen ? this.close() : tagList && this.setState(nullTag);else if (noSearch && key === 'ArrowLeft') tagList && this.setState({ focusedTag: tagList.prev(focusedTag) });else if (noSearch && key === 'ArrowRight') tagList && this.setState({ focusedTag: tagList.next(focusedTag) });else if (noSearch && key === 'Delete') tagList && tagList.remove(focusedTag);else if (noSearch && key === 'Backspace') tagList && tagList.removeNext();
+	    } else if (isOpen && key === 'Enter') {
+	      e.preventDefault();
+	      ctrlKey && this.props.onCreate || focusedItem === null ? this._onCreate(this.props.searchTerm) : this._onSelect(this.state.focusedItem);
+	    } else if (key === 'Escape') isOpen ? this.close() : tagList && this.setState(nullTag);else if (noSearch && key === 'ArrowLeft') tagList && this.setState({ focusedTag: tagList.prev(focusedTag) });else if (noSearch && key === 'ArrowRight') tagList && this.setState({ focusedTag: tagList.next(focusedTag) });else if (noSearch && key === 'Delete') tagList && tagList.remove(focusedTag);else if (noSearch && key === 'Backspace') tagList && tagList.removeNext();
 	  }
 	}, {
 	  key: 'change',
@@ -8883,6 +8975,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      'div',
 	      babelHelpers._extends({}, elementProps, {
 	        onKeyDown: this._keyDown,
+	        onKeyPress: this._keyPress,
 	        onFocus: this._focus.bind(null, true),
 	        onBlur: this._focus.bind(null, false),
 	        role: 'radiogroup',
@@ -8966,7 +9059,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else if (multiple && e.keyCode === 65 && e.ctrlKey) {
 	      e.preventDefault();
 	      this.selectAll();
-	    } else this.search(String.fromCharCode(e.keyCode));
+	    }
+	  }
+	}, {
+	  key: '_keyPress',
+	  decorators: [_utilInteraction.widgetEditable],
+	  value: function _keyPress(e) {
+	    _utilWidgetHelpers.notify(this.props.onKeyPress, [e]);
+
+	    if (e.defaultPrevented) return;
+
+	    this.search(String.fromCharCode(e.which));
 	  }
 	}, {
 	  key: 'selectAll',
@@ -9039,7 +9142,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this4 = this;
 
 	    var word = ((this._searchTerm || '') + character).toLowerCase(),
-	        list = this.refs.list;
+	        list = this.refs.list,
+	        multiple = this.props.multiple;
+
+	    if (!character) return;
 
 	    this._searchTerm = word;
 
@@ -9048,7 +9154,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      _this4._searchTerm = '';
 
-	      if (focusedItem) _this4.setState({ focusedItem: focusedItem });
+	      if (focusedItem) {
+	        !multiple ? _this4._change(focusedItem, true) : _this4.setState({ focusedItem: focusedItem });
+	      }
 	    }, this.props.delay);
 	  }
 	}, {

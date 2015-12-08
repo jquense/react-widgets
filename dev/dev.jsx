@@ -60,24 +60,29 @@ var App = React.createClass({
       console.log('rendered: ', +(new Date) - this.start)
       this.start = null
     }
+
+    if (this._changeDropUp) {
+      this._changeDropUp = false
+      this.setState({ dropUp: !this.state.dropUp })
+    }
   },
 
   render(){
     var self = this;
 
-    function change(field, data) {
-      var obj = {}
-
-      if(field === 'selectValues' && Array.isArray(data))
-        data = data.map( d => d.id)
-
-      if(field === 'open') console.log(field, data)
-
-      obj[field] = data.hasOwnProperty('id') ? data.id : data
-
-      self.setState(obj)
-      //console.log('example: set field: ' + field, data)
-    }
+    // function change(field, data) {
+    //   var obj = {}
+    //
+    //   if(field === 'selectValues' && Array.isArray(data))
+    //     data = data.map( d => d.id)
+    //
+    //   if(field === 'open') console.log(field, data)
+    //
+    //   obj[field] = data.hasOwnProperty('id') ? data.id : data
+    //
+    //   self.setState(obj)
+    //   //console.log('example: set field: ' + field, data)
+    // }
 
     return (
       <div style={{ fontSize: 14 }}>
@@ -91,11 +96,21 @@ var App = React.createClass({
             >
               add
             </button>
-            <DateTimePicker format='YYYY-MM-DD' value={new Date()} time={false}/>
+            <DropdownList
+              dropUp={this.state.dropUp}
+              open={this.state.open}
+              onToggle={this.onToggle}
+              data={this.state.data}
+            />
           </section>
         </div>
       </div>
     )
+  },
+
+  onToggle(open){
+    open && (this._changeDropUp = true)
+    this.setState({ open })
   }
 
 

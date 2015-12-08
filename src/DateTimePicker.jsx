@@ -167,6 +167,7 @@ var DateTimePicker = React.createClass({
         ref="element"
         tabIndex={'-1'}
         onKeyDown={this._keyDown}
+        onKeyPress={this._keyPress}
         onFocus={this._focus.bind(null, true)}
         onBlur={this._focus.bind(null, false)}
         className={cx(className, 'rw-datetimepicker', 'rw-widget', {
@@ -241,7 +242,6 @@ var DateTimePicker = React.createClass({
         <Popup
           dropUp={dropUp}
           open={timeIsOpen}
-          onRequestClose={this.close}
           duration={duration}
           onOpening={() => this.refs.timePopup.forceUpdate()}
         >
@@ -272,7 +272,6 @@ var DateTimePicker = React.createClass({
           dropUp={dropUp}
           open={calendarIsOpen}
           duration={duration}
-          onRequestClose={this.close}
         >
           { shouldRenderList &&
             <Calendar
@@ -344,8 +343,17 @@ var DateTimePicker = React.createClass({
       if (open === popups.TIME )
         this.refs.timePopup._keyDown(e)
     }
+  },
 
+  @widgetEditable
+  _keyPress(e) {
+    notify(this.props.onKeyPress, [e])
 
+    if (e.defaultPrevented)
+      return
+
+    if (this.props.open === popups.TIME )
+      this.refs.timePopup._keyPress(e)
   },
 
   @widgetEnabled
