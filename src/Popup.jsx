@@ -7,6 +7,10 @@ import compat from './util/compat';
 
 var transform = config.animate.transform
 
+const CLOSING = 0
+    , OPENING = 1
+    , NONE = 2;
+
 function properties(prop, value){
   var TRANSLATION_MAP = config.animate.TRANSLATION_MAP
 
@@ -75,7 +79,14 @@ module.exports = React.createClass({
   componentDidUpdate(pvProps){
     var closing =  pvProps.open && !this.props.open
       , opening = !pvProps.open && this.props.open
-      , open    =  this.props.open;
+      , open    = this.props.open;
+
+    if (pvProps.dropUp !== this.props.dropUp && this.transitionState !== NONE) {
+      this._transition && this._transition.cancel()
+      this.reset()
+      opening = this.transitionState === OPENING
+      closing = this.transitionState === CLOSING
+    }
 
     if (opening)      this.open()
     else if (closing) this.close()
@@ -110,7 +121,7 @@ module.exports = React.createClass({
     )
   },
 
-  reset(){
+  reset() {
     var container = compat.findDOMNode(this)
       , content   = compat.findDOMNode(this.refs.content)
       , style = { display: 'block', overflow: 'hidden'}
@@ -140,7 +151,7 @@ module.exports = React.createClass({
       , el   = compat.findDOMNode(this.refs.content);
 
     this.ORGINAL_POSITION = css(el, 'position')
-    this._isOpening = true
+    this.transitionState = OPENING;
 
     if (this._initialPosition) {
       this._initialPosition = false
@@ -154,31 +165,32 @@ module.exports = React.createClass({
     anim.className += ' rw-popup-animating'
     el.style.position = 'absolute'
 
-    config.animate(el
+    this._transition = config.animate(el
       , { top: 0 }
       , self.props.duration
       , 'ease'
-      , function(){
-          if ( !self._isOpening ) return
+      , () => {
+          if (this.transitionState !== OPENING) return
 
+          this.transitionState = NONE;
           anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
 
           el.style.position = self.ORGINAL_POSITION
           anim.style.overflow = 'visible'
-          self.ORGINAL_POSITION = null
+          this.ORGINAL_POSITION = null
 
-          self.props.onOpen()
+          this.props.onOpen()
         })
   },
 
   close(dur) {
-    var self = this
-      , el   = compat.findDOMNode(this.refs.content)
+    var el   = compat.findDOMNode(this.refs.content)
       , anim = compat.findDOMNode(this);
 
     this.ORGINAL_POSITION = css(el, 'position')
 
-    this._isOpening = false
+    this.transitionState = CLOSING;
+
     this.height()
     this.props.onClosing()
 
@@ -186,19 +198,20 @@ module.exports = React.createClass({
     anim.className += ' rw-popup-animating'
     el.style.position = 'absolute'
 
-    config.animate(el
+    this._transition = config.animate(el
       , { top: this.props.dropUp ? '100%' : '-100%' }
       , dur === undefined ? this.props.duration : dur
       , 'ease'
-      , function() {
-          if ( self._isOpening ) return
+      , () => {
+          if (this.transitionState !== CLOSING) return
 
+          this.transitionState = NONE;
           el.style.position = self.ORGINAL_POSITION
           anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
 
           anim.style.display = 'none'
-          self.ORGINAL_POSITION = null
-          self.props.onClose()
+          this.ORGINAL_POSITION = null
+          this.props.onClose()
         })
   }
 
