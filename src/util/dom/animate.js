@@ -73,6 +73,15 @@ export default function animate(node, properties, duration, easing, callback){
   if (duration <= 0)
     setTimeout(done.bind(null, fakeEvent), 0)
 
+  return {
+    cancel() {
+      if (fired) return
+      fired = true
+      off(event.target, transitionProps.end, done)
+      css(node, reset)
+    }
+  }
+
   function done(event) {
     if (event.target !== event.currentTarget) return
 
