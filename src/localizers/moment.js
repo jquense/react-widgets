@@ -51,7 +51,7 @@ export default function(moment){
     },
 
     parse(value, format, culture) {
-      return getMoment(culture, value, format).toDate()
+      return value ? getMoment(culture, value, format).toDate() : null
     },
 
     format(value, format, culture) {
