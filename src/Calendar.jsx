@@ -260,7 +260,7 @@ let Calendar = React.createClass({
     if (direction === dir.UP )
       view = NEXT_VIEW[view] || view
 
-    if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
+    if (this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
       notify(this.props.onNavigate, [date, slideDir, view])
       this.focus(true);
 
@@ -281,7 +281,7 @@ let Calendar = React.createClass({
 
   @widgetEnabled
   _focus(focused, e){
-    if ( +this.props.tabIndex === -1)
+    if (+this.props.tabIndex === -1)
       return
 
     this.setTimeout('focus', () => {
@@ -429,5 +429,8 @@ function msgs(msgs){
 }
 
 
-export default createUncontrolledWidget(
-    Calendar, { value: 'onChange' });
+export default createUncontrolledWidget(Calendar, {
+  value: 'onChange',
+  viewDate: 'onViewDateChange',
+  view: 'onViewChange'
+});
