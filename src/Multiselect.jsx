@@ -423,18 +423,21 @@ var Multiselect = React.createClass({
       else if (isOpen) this.setState({ focusedItem: prev, ...nullTag })
     }
     else if (key === 'End') {
+      e.preventDefault()
       if ( isOpen ) this.setState({ focusedItem: list.last(), ...nullTag })
       else          tagList && this.setState({ focusedTag: tagList.last() })
     }
     else if (key === 'Home') {
+      e.preventDefault()
       if (isOpen) this.setState({ focusedItem: list.first(), ...nullTag })
       else          tagList && this.setState({ focusedTag: tagList.first() })
     }
-    else if (isOpen && key === 'Enter')
+    else if (isOpen && key === 'Enter') {
+      e.preventDefault();
       (ctrlKey && this.props.onCreate) || focusedItem === null
         ? this._onCreate(this.props.searchTerm)
         : this._onSelect(this.state.focusedItem)
-
+    }
     else if (key === 'Escape')
       isOpen ? this.close() : tagList && this.setState(nullTag)
 
