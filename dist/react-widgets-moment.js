@@ -101,7 +101,7 @@
 	    },
 
 	    parse: function parse(value, format, culture) {
-	      return getMoment(culture, value, format).toDate();
+	      return value ? getMoment(culture, value, format).toDate() : null;
 	    },
 
 	    format: function format(value, _format, culture) {
