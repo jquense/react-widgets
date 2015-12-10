@@ -47,7 +47,7 @@ module.exports = {
             ? getFilter(filters[this.props.filter], searchTerm, this)
             : this.props.filter;
 
-      if ( !matches || !searchTerm || !searchTerm.trim() || searchTerm.length < (this.props.minLength || 1))
+      if ((this.props.minLength !== 0) && ( !matches || !searchTerm || !searchTerm.trim() || searchTerm.length < (this.props.minLength || 1)))
         return items
 
       return items.filter(
