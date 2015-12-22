@@ -35,7 +35,9 @@ export default React.createClass({
           ? props.value
           : formatNumber(props.value, format(props), props.culture)
 
-    if ( value == null || isNaN(props.value) )
+    this._beginningWithSign = false;
+
+    if (value == null || isNaN(props.value))
       value = ''
 
     return {
@@ -61,6 +63,7 @@ export default React.createClass({
         className='rw-input'
         onChange={this._change}
         onBlur={this._finish}
+        onKeyPress={this._typing}
         aria-disabled={this.props.disabled}
         aria-readonly={this.props.readOnly}
         disabled={this.props.disabled}
@@ -70,19 +73,30 @@ export default React.createClass({
     )
   },
 
-  _change(e){
+  _typing(e) {
+    var current = e.target.value
+      , newVal = e.key;
+
+    this._beginningWithSign = current.trim() === '' && this.isSign(newVal)
+  },
+
+  _change(e) {
     var val = e.target.value
       , number = this.props.parse(e.target.value, this.props.culture)
-      , valid = this.isValid(number);
+      , atSign = this.isSign(val.trim())
+      , startingWithSign = this._beginningWithSign;
 
-    if( val == null || val.trim() === '' || val.trim() === '-')
+    this._beginningWithSign = false;
+
+    if (val == null || val.trim() === '' || (atSign && !startingWithSign)) {
+      this.current('')
       return this.props.onChange(null)
+    }
 
-    if( valid && number !== this.props.value && !this.isAtDelimiter(number, val))
+    if (this.isFlushable(number, val))
       return this.props.onChange(number)
 
-    //console.log(val !== 0 && !val)
-    if ( !isNaN(number) || this.isAtDelimiter(number, val))
+    if (!isNaN(number) || (atSign && startingWithSign) || this.isAtDelimiter(number, val))
       this.current(e.target.value)
   },
 
@@ -97,10 +111,34 @@ export default React.createClass({
     }
   },
 
-  isAtDelimiter(num, str){
+  _parse(strVal) {
+    let culture = this.props.culture
+      , format = this.props.editFormat
+      , userParse = this.props.parse;
+
+    if (userParse)
+      return userParse(strVal, culture)
+
+    return format ? numberLocalizer.parse(strVal, culture) : +strVal
+  },
+
+  isFlushable(num, str) {
+    return (
+         this.isValid(num)
+      && num !== this.props.value
+      && !this.isAtDelimiter(num, str)
+      && !this.isSign(str)
+    )
+  },
+
+  isSign(val) {
+    return (val || '').trim() === '-';
+  },
+
+  isAtDelimiter(num, str) {
     var next;
 
-    if ( str.length <= 1) return false
+    if (str.length <= 1) return false
 
     next = this.props.parse(
       str.substr(0, str.length - 1), this.props.culture)
@@ -117,19 +155,12 @@ export default React.createClass({
   },
 
   //this intermediate state is for when one runs into the decimal or are typing the number
-  current(val){
+  current(val) {
     this.setState({ stringValue: val })
   }
 
 });
 
-
-// function parseLocaleFloat(number, parser, culture) {
-//   if ( typeof format === 'function')
-//     return format(number, culture)
-
-//   return config.globalize.parseFloat(number, 10, culture)
-// }
 
 function formatNumber(number, format, culture){
   return numberLocalizer.format(number, format, culture)
