@@ -33,6 +33,7 @@ var propTypes = {
   valueComponent: CustomPropTypes.elementType,
   itemComponent:  CustomPropTypes.elementType,
   listComponent:  CustomPropTypes.elementType,
+  beforeListComponent: CustomPropTypes.elementType,
   afterListComponent: CustomPropTypes.elementType,
 
   groupComponent: CustomPropTypes.elementType,
@@ -47,7 +48,9 @@ var propTypes = {
 
   delay:          React.PropTypes.number,
 
-  tetherPopup:   React.PropTypes.bool,
+  tetherPopup:    React.PropTypes.bool,
+
+  multi:          React.PropTypes.bool,
 
   dropUp:         React.PropTypes.bool,
   duration:       React.PropTypes.number, //popup
@@ -92,7 +95,9 @@ var DropdownList = React.createClass({
       messages: msgs(),
       ariaActiveDescendantKey: 'dropdownlist',
       tetherPopup: false,
-      afterComponent: null,
+      multi: false,
+      beforeListComponent: null,
+      afterListComponent: null,
     }
   },
 
@@ -133,8 +138,9 @@ var DropdownList = React.createClass({
       , valueField, textField, groupBy
       , messages, data, busy, dropUp, searchTerm, onChange
       , placeholder, value, open, disabled, readOnly
-      , valueComponent: ValueComponent, tetherPopup, popupClassName
-      , afterListComponent, listComponent: List } = this.props;
+      , valueComponent: ValueComponent, multi, tetherPopup, popupClassName
+      , beforeListComponent, afterListComponent
+      , listComponent: List } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
 
@@ -147,8 +153,12 @@ var DropdownList = React.createClass({
     let { focusedItem, selectedItem, focused } = this.state;
 
     let items = this._data()
-      , valueItem = dataItem(data, value, valueField) // take value from the raw data
+      , valueItem = false
       , listID = instanceId(this, '__listbox');
+
+    if (value !== null) {
+      valueItem = dataItem(data, value, valueField) // take value from the raw data
+    }
 
     let shouldRenderList = isFirstFocusedRender(this) || open;
 
@@ -209,6 +219,12 @@ var DropdownList = React.createClass({
         >
           <div>
             { filter && this._renderFilter(messages) }
+            {beforeListComponent && (
+              React.cloneElement(
+                beforeListComponent,
+                {value, searchTerm, data, onChange, }
+              )
+            )}
             { shouldRenderList && (
               <List ref="list"
                 {...listProps}
@@ -220,7 +236,7 @@ var DropdownList = React.createClass({
                 selected={selectedItem}
                 focused ={open ? focusedItem : null}
                 onSelect={this._onSelect}
-                onMove={this._scrollTo}
+                onMove={multi ? () => {} : this._scrollTo}
                 messages={{
                   emptyList: data.length
                     ? messages.emptyFilter
