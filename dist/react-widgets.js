@@ -962,8 +962,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
 	 */
 
 	'use strict';
@@ -997,9 +995,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var args = [a, b, c, d, e, f];
 	      var argIndex = 0;
 	      error = new Error(
-	        'Invariant Violation: ' +
 	        format.replace(/%s/g, function() { return args[argIndex++]; })
 	      );
+	      error.name = 'Invariant Violation';
 	    }
 
 	    error.framesToPop = 1; // we don't care about invariant's own frame
@@ -1223,6 +1221,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  valueComponent: _utilPropTypes2['default'].elementType,
 	  itemComponent: _utilPropTypes2['default'].elementType,
 	  listComponent: _utilPropTypes2['default'].elementType,
+	  beforeListComponent: _utilPropTypes2['default'].elementType,
 	  afterListComponent: _utilPropTypes2['default'].elementType,
 
 	  groupComponent: _utilPropTypes2['default'].elementType,
@@ -1238,6 +1237,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  delay: _react2['default'].PropTypes.number,
 
 	  tetherPopup: _react2['default'].PropTypes.bool,
+
+	  multi: _react2['default'].PropTypes.bool,
 
 	  dropUp: _react2['default'].PropTypes.bool,
 	  duration: _react2['default'].PropTypes.number, //popup
@@ -1284,7 +1285,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      messages: msgs(),
 	      ariaActiveDescendantKey: 'dropdownlist',
 	      tetherPopup: false,
-	      afterComponent: null
+	      multi: false,
+	      beforeListComponent: null,
+	      afterListComponent: null
 	    };
 	  }
 	}, {
@@ -1356,8 +1359,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var disabled = _props2.disabled;
 	    var readOnly = _props2.readOnly;
 	    var ValueComponent = _props2.valueComponent;
+	    var multi = _props2.multi;
 	    var tetherPopup = _props2.tetherPopup;
 	    var popupClassName = _props2.popupClassName;
+	    var beforeListComponent = _props2.beforeListComponent;
 	    var afterListComponent = _props2.afterListComponent;
 	    var List = _props2.listComponent;
 
@@ -1375,9 +1380,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var focused = _state.focused;
 
 	    var items = this._data(),
-	        valueItem = _utilDataHelpers.dataItem(data, value, valueField),
-	        // take value from the raw data
-	    listID = _utilWidgetHelpers.instanceId(this, '__listbox');
+	        valueItem = false,
+	        listID = _utilWidgetHelpers.instanceId(this, '__listbox');
+
+	    if (value !== null) {
+	      valueItem = _utilDataHelpers.dataItem(data, value, valueField); // take value from the raw data
+	    }
 
 	    var shouldRenderList = _utilWidgetHelpers.isFirstFocusedRender(this) || open;
 
@@ -1456,6 +1464,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'div',
 	          null,
 	          filter && this._renderFilter(messages),
+	          beforeListComponent && _react2['default'].cloneElement(beforeListComponent, { value: value, searchTerm: searchTerm, data: data, onChange: onChange }),
 	          shouldRenderList && _react2['default'].createElement(List, babelHelpers._extends({ ref: 'list'
 	          }, listProps, {
 	            data: items,
@@ -1466,7 +1475,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            selected: selectedItem,
 	            focused: open ? focusedItem : null,
 	            onSelect: this._onSelect,
-	            onMove: this._scrollTo,
+	            onMove: multi ? function () {} : this._scrollTo,
 	            messages: {
 	              emptyList: data.length ? messages.emptyFilter : messages.emptyList
 	            }
@@ -1719,7 +1728,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2015 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
@@ -1760,9 +1769,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			module.exports = classNames;
 		} else if (true) {
 			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}
@@ -3105,7 +3114,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  component._values[propName] = value;
-	  component.forceUpdate();
+
+	  if (component.isMounted()) component.forceUpdate();
 	}
 
 	exports['default'] = _createUncontrollable2['default']([mixin], set);
