@@ -173,10 +173,12 @@ describe('NumberPicker', function(){
       , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     trigger.change(input, { target: { value: '1.' } })
-    trigger.change(input, { target: { value: '12 221 ' } })
-    trigger.change(input, { target: { value: '221,' } })
 
     expect(change.callCount).to.be(0)
+
+    change = sinon.spy()
+    instance = render(<NumberPicker value={1.5} min={12} onChange={change} />)
+    input  = findDOMNode(findClass(instance, 'rw-input'))
   })
 
   it('should not trigger change while below min', function() {

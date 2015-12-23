@@ -82,6 +82,9 @@ export default React.createClass({
       , newVal = e.key;
 
     this._beginningWithSign = current.trim() === '' && this.isSign(newVal)
+
+    this.props.onKeyPress
+      && this.props.onKeyPress(e)
   },
 
   _change(e) {
@@ -104,7 +107,7 @@ export default React.createClass({
         this.setState(this.getDefaultState()) // 5. -> 5
     }
 
-    if ((atSign && startingWithSign) || this.isAtDelimiter(number, val))
+    if (number < this.props.min || (atSign && startingWithSign) || this.isAtDelimiter(number, val))
       this.current(e.target.value)
   },
 
@@ -114,7 +117,7 @@ export default React.createClass({
 
     // if number is below the min
     // we need to flush low values and decimal stops, onBlur means i'm done inputing
-    if(!isNaN(number) && (number < this.props.min || this.isAtDelimiter(number, str)) ) {
+    if (!isNaN(number) && (number < this.props.min || this.isAtDelimiter(number, str)) ) {
       this.props.onChange(number)
     }
   },
