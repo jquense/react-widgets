@@ -19,7 +19,8 @@ var NumberPicker = require('../src/NumberPicker.jsx')
 // var List = require('../src/List.jsx')
 
 require('../src/less/react-widgets.less')
-require('./configure-moment')
+require('./configure-globalize')
+//require('./configure-simplenumber')
 
 var chance = new (require('chance'))
 
@@ -96,12 +97,7 @@ var App = React.createClass({
             >
               add
             </button>
-            <DropdownList
-              dropUp={this.state.dropUp}
-              open={this.state.open}
-              onToggle={this.onToggle}
-              data={this.state.data}
-            />
+            <NumberPicker />
           </section>
         </div>
       </div>

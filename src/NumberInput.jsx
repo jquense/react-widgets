@@ -2,7 +2,7 @@ import React from 'react';
 import CustomPropTypes from './util/propTypes';
 import { number as numberLocalizer }  from './util/localizers';
 
-var format = props => numberLocalizer.getFormat('default', props.format)
+let getFormat = props => numberLocalizer.getFormat('default', props.format)
 
 export default React.createClass({
 
@@ -13,6 +13,7 @@ export default React.createClass({
     placeholder: React.PropTypes.string,
 
     format:       CustomPropTypes.numberFormat,
+
     parse:        React.PropTypes.func.isRequired,
     culture:      React.PropTypes.string,
 
@@ -25,20 +26,23 @@ export default React.createClass({
   getDefaultProps(){
     return {
       value: null,
-      editing: false,
-      parse: (number, culture) => numberLocalizer.parse(number, culture)
+      editing: false
     }
   },
 
-  getDefaultState(props){
-    var value = props.editing
-          ? props.value
-          : formatNumber(props.value, format(props), props.culture)
+  getDefaultState(props = this.props){
+    var value = props.value
+      , decimal = numberLocalizer.decimalChar(null, props.culture)
+      , format = getFormat(props);
 
     this._beginningWithSign = false;
 
     if (value == null || isNaN(props.value))
       value = ''
+    else
+      value = props.editing
+        ? ('' + value).replace('.', decimal)
+        : numberLocalizer.format(value, format, props.culture)
 
     return {
       stringValue: '' + value
@@ -46,7 +50,7 @@ export default React.createClass({
   },
 
   getInitialState() {
-    return this.getDefaultState(this.props)
+    return this.getDefaultState()
   },
 
   componentWillReceiveProps(nextProps) {
@@ -82,7 +86,7 @@ export default React.createClass({
 
   _change(e) {
     var val = e.target.value
-      , number = this.props.parse(e.target.value, this.props.culture)
+      , number = this._parse(e.target.value)
       , atSign = this.isSign(val.trim())
       , startingWithSign = this._beginningWithSign;
 
@@ -93,16 +97,20 @@ export default React.createClass({
       return this.props.onChange(null)
     }
 
-    if (this.isFlushable(number, val))
-      return this.props.onChange(number)
+    if (this.isFlushable(number, val)) {
+      if (number !== this.props.value)
+        return this.props.onChange(number)
+      else
+        this.setState(this.getDefaultState()) // 5. -> 5
+    }
 
-    if (!isNaN(number) || (atSign && startingWithSign) || this.isAtDelimiter(number, val))
+    if ((atSign && startingWithSign) || this.isAtDelimiter(number, val))
       this.current(e.target.value)
   },
 
   _finish() {
     var str = this.state.stringValue
-      , number = this.props.parse(str, this.props.culture);
+      , number = this._parse(str);
 
     // if number is below the min
     // we need to flush low values and decimal stops, onBlur means i'm done inputing
@@ -113,19 +121,21 @@ export default React.createClass({
 
   _parse(strVal) {
     let culture = this.props.culture
-      , format = this.props.editFormat
+      , delimChar = numberLocalizer.decimalChar(null, culture)
       , userParse = this.props.parse;
 
     if (userParse)
       return userParse(strVal, culture)
 
-    return format ? numberLocalizer.parse(strVal, culture) : +strVal
+    strVal = strVal.replace(delimChar, '.')
+    strVal = parseFloat(strVal);
+
+    return strVal
   },
 
   isFlushable(num, str) {
     return (
-         this.isValid(num)
-      && num !== this.props.value
+          this.isValid(num)
       && !this.isAtDelimiter(num, str)
       && !this.isSign(str)
     )
@@ -135,17 +145,17 @@ export default React.createClass({
     return (val || '').trim() === '-';
   },
 
-  isAtDelimiter(num, str) {
-    var next;
+  isAtDelimiter(num, str, props = this.props) {
+    var localeChar = numberLocalizer.decimalChar(null, props.culture)
+      , lastIndex = str.length - 1
+      , char;
 
     if (str.length <= 1) return false
 
-    next = this.props.parse(
-      str.substr(0, str.length - 1), this.props.culture)
+    char = str[lastIndex]
 
-    return typeof next === 'number'
-        && !isNaN(next)
-        && next === num
+    return char === localeChar
+      && str.indexOf(char) === lastIndex
   },
 
   isValid(num) {
@@ -160,8 +170,3 @@ export default React.createClass({
   }
 
 });
-
-
-function formatNumber(number, format, culture){
-  return numberLocalizer.format(number, format, culture)
-}

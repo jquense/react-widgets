@@ -195,7 +195,7 @@ let NumberPicker = React.createClass({
   },
 
   @widgetEnabled
-  _focus(focused, e){
+  _focus(focused, e) {
 
     focused && compat.findDOMNode(this.refs.input).focus()
 
