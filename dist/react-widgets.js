@@ -3551,7 +3551,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            { className: className, tabIndex: 1, ref: 'content', style: { width: width, opacity: opacity, pointerEvents: pointerEvents } },
 	            _react2['default'].createElement(
 	              'div',
-	              { ref: 'wrap' },
+	              null,
 	              this.props.children
 	            )
 	          ),

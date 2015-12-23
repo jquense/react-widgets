@@ -29,7 +29,7 @@ var PopupContent = React.createClass({
 
     return cloneElement(child, {
       ... props,
-      className: cn(this.props.className, child.props.className, 'rw-popup rw-widget'),
+      className: cn(this.props.className, child.props.className, 'rw-popup rw-widget')
     });
   }
 })
@@ -130,7 +130,7 @@ module.exports = React.createClass({
         <TetherTarget
           tether={
             <PopupContent className={className} tabIndex={1} ref='content' style={{ width, opacity, pointerEvents  }}>
-              <div   ref='wrap'>
+              <div>
                 { this.props.children }
               </div>
             </PopupContent>
