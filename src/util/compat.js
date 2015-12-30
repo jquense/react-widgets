@@ -1,5 +1,5 @@
 import React  from 'react';
-import ReactDOM  from 'react-dom';
+import { findDOMNode } from 'react-dom';
 
 var version = React.version.split('.').map(parseFloat);
 
@@ -10,7 +10,7 @@ module.exports = {
   },
 
   findDOMNode(component){
-    return ReactDOM.findDOMNode(component)
+    return findDOMNode(component)
   }
 
 }

@@ -66,6 +66,9 @@
     "date-arithmetic": "^3.0.0",
     "dom-helpers": "^2.2.4",
     "invariant": "^2.1.0",
+    "react-window-mixins": "0.0.6",
+    "scriptjs": "^2.5.8",
+    "tether": "^1.1.1",
     "uncontrollable": "^3.0.2",
     "warning": "^2.0.0"
   },
@@ -117,6 +120,7 @@
     "react-bootstrap": "0.27.0",
     "react-dom": "0.14.0",
     "react-router": "1.0.0-beta3",
+    "react-window-mixins": "0.0.6",
     "release-script": "^0.3.0",
     "rimraf": "^2.4.2",
     "style-loader": "^0.12.3",

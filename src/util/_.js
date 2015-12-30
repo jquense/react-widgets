@@ -9,6 +9,10 @@ var _ =
 
     result: (value, ...args) =>  typeof value === 'function' ? value(...args) : value,
 
+		isFunction(check){
+			return typeof check === 'function'
+		},
+
     isShallowEqual(a, b) {
       if (a === b) return true;
       if (a instanceof Date && b instanceof Date)

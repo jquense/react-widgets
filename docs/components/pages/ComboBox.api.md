@@ -21,7 +21,7 @@ the string value of the {widgetName} will be returned.
 
 ### onSelect?{ type: 'Function(Any value)' }
 
-This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires 
+This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires
 regardless of whether the value has actually changed.
 
 <EditableExample codeText={require('../examples/onSelect')(widgetName)}/>
@@ -34,19 +34,19 @@ properties comprise the value field (such as an id) and the field used to label 
 
 ### valueField?{ type: 'String' }
 
-A dataItem field name for uniquely identifying items in the `data` list. A `valueField` is required 
+A dataItem field name for uniquely identifying items in the `data` list. A `valueField` is required
 when the `value` prop is not itself a dataItem. A `valueField` is useful when specifying the selected item, by
 its `id` instead of using the model as the value.
 
 
-When a `valueField` is not provided, the {widgetName} will use strict equality checks (`===`) to locate 
+When a `valueField` is not provided, the {widgetName} will use strict equality checks (`===`) to locate
 the `value` in the `data` list.
 
 <EditableExample codeText={require('../examples/valueField')(widgetName)}/>
 
 ### textField?{ type: 'String | Function(dataItem)' }
 
-Specify which data item field to display in the ${widgetName} and selected item. The textField` prop 
+Specify which data item field to display in the ${widgetName} and selected item. The textField` prop
 may also also used as to find an item in the list as you type. Providing an accessor function allows for computed text values
 
 <EditableExample codeText={require('../examples/textField')(widgetName, false, true)}/>
@@ -60,14 +60,14 @@ renders the text of the selected item (specified by `textfield`)
 
 ### groupBy?{ type: 'String | Function(Any dataItem)' }
 
-Determines how to group the {widgetName} dropdown list. Providing a `string` will group 
+Determines how to group the {widgetName} dropdown list. Providing a `string` will group
 the `data` array by that property. You can also provide a function which should return the group value.
 
 <EditableExample codeText={require('../examples/groupby')(widgetName)}/>
 
 ### groupComponent?{ type: 'Component' }
 
-This component is used to render each option group, when `groupBy` is specified. By 
+This component is used to render each option group, when `groupBy` is specified. By
 default the `groupBy` value will be used.
 
 <EditableExample codeText={require('../examples/groupComponent')(widgetName)}/>
@@ -96,6 +96,19 @@ Use in conjunction with the filter prop. Filter the list without regard for case
 
 ### minLength?{ type: 'Boolean', default: '1' }
 Use in conjunction with the filter prop. Start filtering the list only after the value has reached a minimum length.
+
+### afterListComponent?{type: 'Component'}
+
+Place a component after the list. Use for custom widget areas, adder buttons, and more.
+
+The {widgetName} passes the following props to the `afterListComponent`:
+- value
+- onChange
+- data
+- filter
+- searchTerm
+
+<EditableExample codeText={require('../examples/afterListComponent')(widgetName)}/>
 
 ### open?{ type: 'Boolean' }
 
