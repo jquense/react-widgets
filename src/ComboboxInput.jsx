@@ -38,6 +38,8 @@ export default React.createClass({
         type='text'
         aria-disabled={this.props.disabled}
         aria-readonly={this.props.readOnly}
+        aria-autocomplete="none"
+        autoComplete="off"
         className={this.props.className + ' rw-input'}
         onKeyDown={this.props.onKeyDown}
         onChange={this._change}
