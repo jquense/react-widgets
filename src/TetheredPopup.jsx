@@ -87,6 +87,7 @@ module.exports = React.createClass({
     const { placeholder } = this.refs;
 
     const placeholderEl = compat.findDOMNode(placeholder);
+    if(!placeholder) return null;
     const width = placeholderEl.offsetWidth;
 
     this.setState({ width });
@@ -99,6 +100,8 @@ module.exports = React.createClass({
     const { placeholder } = this.refs;
 
     const placeholderEl = compat.findDOMNode(placeholder);
+
+    if (!placeholderEl) return null;
 
     const width = placeholderEl.offsetWidth;
 
@@ -120,6 +123,8 @@ module.exports = React.createClass({
     const pointerEvents = open ? 'all' : 'none';
     const { width } = this.state;
 
+    if (!open) return null;
+
     return (
       <div {...props}
         style={{
@@ -130,9 +135,7 @@ module.exports = React.createClass({
         <TetherTarget
           tether={
             <PopupContent className={className} tabIndex={1} ref='content' style={{ width, opacity, pointerEvents  }}>
-              <div>
-                { this.props.children }
-              </div>
+              { this.props.children }
             </PopupContent>
           }
           options={{

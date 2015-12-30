@@ -1537,7 +1537,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  decorators: [_utilInteraction.widgetEditable],
 	  value: function _click(e) {
 	    var wrapper = this.refs.filterWrapper;
-
 	    if (!this.props.filter || !this.props.open) this.toggle();else if (!_domHelpersQueryContains2['default'](_utilCompat2['default'].findDOMNode(wrapper), e.target)) this.close();
 
 	    _utilWidgetHelpers.notify(this.props.onClick, e);
@@ -3506,6 +3505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var placeholder = this.refs.placeholder;
 
 	    var placeholderEl = _utilCompat2['default'].findDOMNode(placeholder);
+	    if (!placeholder) return null;
 	    var width = placeholderEl.offsetWidth;
 
 	    this.setState({ width: width });
@@ -3518,6 +3518,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var placeholder = this.refs.placeholder;
 
 	    var placeholderEl = _utilCompat2['default'].findDOMNode(placeholder);
+
+	    if (!placeholderEl) return null;
 
 	    var width = placeholderEl.offsetWidth;
 
@@ -3537,6 +3539,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var pointerEvents = open ? 'all' : 'none';
 	    var width = this.state.width;
 
+	    if (!open) return null;
+
 	    return _react2['default'].createElement(
 	      'div',
 	      babelHelpers._extends({}, props, {
@@ -3549,11 +3553,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          tether: _react2['default'].createElement(
 	            PopupContent,
 	            { className: className, tabIndex: 1, ref: 'content', style: { width: width, opacity: opacity, pointerEvents: pointerEvents } },
-	            _react2['default'].createElement(
-	              'div',
-	              null,
-	              this.props.children
-	            )
+	            this.props.children
 	          ),
 	          options: {
 	            attachment: 'bottom right',
