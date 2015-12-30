@@ -291,7 +291,6 @@ var DropdownList = React.createClass({
   @widgetEditable
   _click(e){
     var wrapper = this.refs.filterWrapper
-
     if( !this.props.filter || !this.props.open )
       this.toggle()
 
