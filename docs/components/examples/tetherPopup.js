@@ -19,7 +19,6 @@ var Example = React.createClass({
     		<${widgetName}
     			data={colors}
     			tetherPopup
-    			filter='contains'
     			popupClassName='tether-className-prop'
     			/>
     	</span>
