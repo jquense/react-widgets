@@ -1,6 +1,5 @@
 import Tether from 'tether';
-import React from 'react';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 
 class TetherElement {
 	constructor(component, options){
@@ -25,7 +24,7 @@ class TetherElement {
 	}
 
 	destroy(){
-		React.unmountComponentAtNode(this.node);
+		unmountComponentAtNode(this.node);
 		this.node.parentNode.removeChild(this.node);
 		this.tether.destroy();
 	}
