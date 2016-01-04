@@ -1,4 +1,4 @@
-/*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("react"), require("react-dom"));
@@ -962,8 +962,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
 	 */
 
 	'use strict';
@@ -997,9 +995,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var args = [a, b, c, d, e, f];
 	      var argIndex = 0;
 	      error = new Error(
-	        'Invariant Violation: ' +
 	        format.replace(/%s/g, function() { return args[argIndex++]; })
 	      );
+	      error.name = 'Invariant Violation';
 	    }
 
 	    error.framesToPop = 1; // we don't care about invariant's own frame
@@ -1223,8 +1221,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  valueComponent: _utilPropTypes2['default'].elementType,
 	  itemComponent: _utilPropTypes2['default'].elementType,
 	  listComponent: _utilPropTypes2['default'].elementType,
-	  beforeListComponent: _utilPropTypes2['default'].elementType,
-	  afterListComponent: _utilPropTypes2['default'].elementType,
+	  beforeListComponent: _react2['default'].PropTypes.any,
+	  afterListComponent: _react2['default'].PropTypes.any,
 
 	  groupComponent: _utilPropTypes2['default'].elementType,
 	  groupBy: _utilPropTypes2['default'].accessor,
@@ -1729,7 +1727,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2015 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
@@ -1770,9 +1768,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			module.exports = classNames;
 		} else if (true) {
 			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}
@@ -3123,7 +3121,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  component._values[propName] = value;
-	  component.forceUpdate();
+
+	  if (component.isMounted()) component.forceUpdate();
 	}
 
 	exports['default'] = _createUncontrollable2['default']([mixin], set);
@@ -3243,6 +3242,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }));
 
 	    component.ControlledComponent = Component;
+
+	    /**
+	     * useful when wrapping a Component and you want to control
+	     * everything
+	     */
+	    component.deferControlTo = function (newComponent, additions, nextMethods) {
+	      if (additions === undefined) additions = {};
+
+	      return uncontrollable(newComponent, _extends({}, controlledValues, additions), nextMethods);
+	    };
 
 	    return component;
 
@@ -6034,7 +6043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  itemComponent: _utilPropTypes2['default'].elementType,
 	  listComponent: _utilPropTypes2['default'].elementType,
-	  afterListComponent: _utilPropTypes2['default'].elementType,
+	  afterListComponent: _react2['default'].PropTypes.any,
 	  groupComponent: _utilPropTypes2['default'].elementType,
 	  groupBy: _utilPropTypes2['default'].accessor,
 
