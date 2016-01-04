@@ -33,8 +33,8 @@ var propTypes = {
   valueComponent: CustomPropTypes.elementType,
   itemComponent:  CustomPropTypes.elementType,
   listComponent:  CustomPropTypes.elementType,
-  beforeListComponent: CustomPropTypes.elementType,
-  afterListComponent: CustomPropTypes.elementType,
+  beforeListComponent: React.PropTypes.any,
+  afterListComponent: React.PropTypes.any,
 
   groupComponent: CustomPropTypes.elementType,
   groupBy:        CustomPropTypes.accessor,

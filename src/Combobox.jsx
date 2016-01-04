@@ -29,7 +29,7 @@ let propTypes = {
 
       itemComponent:  CustomPropTypes.elementType,
       listComponent:  CustomPropTypes.elementType,
-      afterListComponent: CustomPropTypes.elementType,
+      afterListComponent: React.PropTypes.any,
       groupComponent: CustomPropTypes.elementType,
       groupBy:        CustomPropTypes.accessor,
 
