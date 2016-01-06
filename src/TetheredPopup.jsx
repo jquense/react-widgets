@@ -145,7 +145,7 @@ module.exports = React.createClass({
             }
           }}
           >
-          {open && <div className='rw-tether-scrim' onClick={onBlur}/>}
+          {open && <div className='rw-tether-scrim'/>}
           <div ref='placeholder' style={{ width: '100%'}} />
         </TetherTarget>
       </div>

@@ -211,10 +211,10 @@ var DropdownList = React.createClass({
         <PopupComponent {...popupProps}
           className={popupClassName}
           getTetherFocus={filter ? () => this.refs.filter : this.refs.list}
-          onOpen={tetherPopup ? null : () => this.focus() }
-          onKeyDown={tetherPopup ? this._keyDown : null}
-          onBlur={tetherPopup ? this._focus.bind(null, false) : null}
-          onOpening={ () => this.refs.list.forceUpdate() }
+          onOpen={() => this.focus()}
+          onKeyDown={this._keyDown}
+          onBlur={this._focus.bind(null, false)}
+          onOpening={() => this.refs.list.forceUpdate()}
           onRequestClose={this.close}
         >
           <div>
@@ -222,7 +222,7 @@ var DropdownList = React.createClass({
             {beforeListComponent && (
               React.cloneElement(
                 beforeListComponent,
-                {value, searchTerm, data, onChange, }
+                { value, searchTerm, data, onChange }
               )
             )}
             { shouldRenderList && (
@@ -234,7 +234,7 @@ var DropdownList = React.createClass({
                 aria-labelledby={instanceId(this)}
                 aria-hidden={!this.props.open}
                 selected={selectedItem}
-                focused ={open ? focusedItem : null}
+                focused ={open && focusedItem}
                 onSelect={this._onSelect}
                 onMove={multi ? () => {} : this._scrollTo}
                 messages={{
@@ -247,7 +247,7 @@ var DropdownList = React.createClass({
             {afterListComponent && (
               React.cloneElement(
                 afterListComponent,
-                {value, searchTerm, data, onChange, }
+                { value, searchTerm, data, onChange }
               )
             )}
           </div>
@@ -282,10 +282,12 @@ var DropdownList = React.createClass({
 
   @widgetEditable
   _onSelect(data){
-    notify(this.props.onSelect, data)
+    const { onSelect, tetherPopup } = this.props;
+    notify(onSelect, data)
     this.change(data);
     this.close();
-    this.focus(this)
+    if (tetherPopup) this._focus(false);
+    this.focus(this);
   },
 
   @widgetEditable
