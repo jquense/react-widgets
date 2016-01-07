@@ -146,10 +146,9 @@ var DropdownList = React.createClass({
 
     let elementProps = omit(this.props, Object.keys(propTypes));
     let listProps    = pick(this.props, Object.keys(List.propTypes));
-    let popupProps   = pick(this.props, Object.keys(Popup.propTypes));
-
     const PopupComponent =  tetherPopup ? TetheredPopUp : Popup;
 
+    let popupProps   = pick(this.props, Object.keys(PopupComponent.propTypes));
     let { focusedItem, selectedItem, focused } = this.state;
 
     let items = this._data()

@@ -1370,10 +1370,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var elementProps = omit(this.props, Object.keys(propTypes));
 	    var listProps = pick(this.props, Object.keys(List.propTypes));
-	    var popupProps = pick(this.props, Object.keys(_Popup2['default'].propTypes));
-
 	    var PopupComponent = tetherPopup ? _TetheredPopup2['default'] : _Popup2['default'];
 
+	    var popupProps = pick(this.props, Object.keys(PopupComponent.propTypes));
 	    var _state = this.state;
 	    var focusedItem = _state.focusedItem;
 	    var selectedItem = _state.selectedItem;
@@ -3482,7 +3481,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    onClose: _react2['default'].PropTypes.func,
 	    onOpen: _react2['default'].PropTypes.func,
 	    onKeyDown: _react2['default'].PropTypes.func,
-	    dropDownHeight: _react2['default'].PropTypes.number
+	    dropDownHeight: _react2['default'].PropTypes.number,
+	    onClickScrim: _react2['default'].PropTypes.func
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
@@ -3492,7 +3492,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      onClosing: function onClosing() {},
 	      onOpening: function onOpening() {},
 	      onClose: function onClose() {},
-	      onOpen: function onOpen() {}
+	      onOpen: function onOpen() {},
+	      onClickScrim: function onClickScrim() {}
 	    };
 	  },
 
@@ -3540,17 +3541,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (width !== this.state.width) this.setState({ width: width });else if (opening) this.open();else if (closing) this.close();
 	  },
 
-	  render: function render() {
+	  _onClickScrim: function _onClickScrim(e) {
 	    var _props = this.props;
-	    var className = _props.className;
-	    var open = _props.open;
-	    var dropUp = _props.dropUp;
-	    var propStyle = _props.style;
 	    var onBlur = _props.onBlur;
-	    var props = babelHelpers.objectWithoutProperties(_props, ['className', 'open', 'dropUp', 'style', 'onBlur']);
+	    var onClickScrim = _props.onClickScrim;
+
+	    onBlur(e);
+	    onClickScrim && onClickScrim();
+	  },
+
+	  render: function render() {
+	    var _props2 = this.props;
+	    var className = _props2.className;
+	    var open = _props2.open;
+	    var dropUp = _props2.dropUp;
+	    var propStyle = _props2.style;
+	    var onBlur = _props2.onBlur;
+	    var props = babelHelpers.objectWithoutProperties(_props2, ['className', 'open', 'dropUp', 'style', 'onBlur']);
 
 	    var opacity = open ? 1 : 0;
-	    var pointerEvents = open ? 'all' : 'none';
 	    var width = this.state.width;
 
 	    if (!open) return null;
@@ -3566,7 +3575,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        {
 	          tether: _react2['default'].createElement(
 	            PopupContent,
-	            { className: className, tabIndex: 1, ref: 'content', style: { width: width, opacity: opacity, pointerEvents: pointerEvents } },
+	            { className: className, tabIndex: 1, ref: 'content', style: { width: width, opacity: opacity } },
 	            this.props.children
 	          ),
 	          options: {
@@ -3576,7 +3585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	          }
 	        },
-	        open && _react2['default'].createElement('div', { className: 'rw-tether-scrim' }),
+	        open && _react2['default'].createElement('div', { onClick: this._onClickScrim, className: 'rw-tether-scrim' }),
 	        _react2['default'].createElement('div', { ref: 'placeholder', style: { width: '100%' } })
 	      )
 	    );
@@ -3609,10 +3618,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        anim = _utilCompat2['default'].findDOMNode(this),
 	        contentEl = _utilCompat2['default'].findDOMNode(content);
 
-	    var _props2 = this.props;
-	    var onOpen = _props2.onOpen;
-	    var onKeyDown = _props2.onKeyDown;
-	    var getTetherFocus = _props2.getTetherFocus;
+	    var _props3 = this.props;
+	    var onOpen = _props3.onOpen;
+	    var onKeyDown = _props3.onKeyDown;
+	    var getTetherFocus = _props3.getTetherFocus;
 
 	    var focusComponent = content;
 	    var focusEl = undefined;
