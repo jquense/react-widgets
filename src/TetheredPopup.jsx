@@ -51,6 +51,7 @@ module.exports = React.createClass({
     onOpen:         React.PropTypes.func,
     onKeyDown:      React.PropTypes.func,
     dropDownHeight: React.PropTypes.number,
+    onClickScrim:   React.PropTypes.func
   },
 
   getDefaultProps(){
@@ -60,13 +61,14 @@ module.exports = React.createClass({
       onClosing:   function(){},
       onOpening:   function(){},
       onClose:     function(){},
-      onOpen:      function(){}
+      onOpen:      function(){},
+      onClickScrim: () => {}
     }
   },
 
   getInitialState(){
     return {
-      width: 'auto',
+      width: 'auto'
     }
   },
 
@@ -110,6 +112,12 @@ module.exports = React.createClass({
     else if (closing) this.close();
   },
 
+  _onClickScrim(e) {
+    const { onBlur, onClickScrim } = this.props;
+    onBlur(e);
+    onClickScrim && onClickScrim();
+  },
+
   render() {
     var {
         className
@@ -120,7 +128,6 @@ module.exports = React.createClass({
       , ...props } = this.props;
 
     const opacity = open ? 1 : 0;
-    const pointerEvents = open ? 'all' : 'none';
     const { width } = this.state;
 
     if (!open) return null;
@@ -134,7 +141,7 @@ module.exports = React.createClass({
       >
         <TetherTarget
           tether={
-            <PopupContent className={className} tabIndex={1} ref='content' style={{ width, opacity, pointerEvents  }}>
+            <PopupContent className={className} tabIndex={1} ref='content' style={{ width, opacity }}>
               { this.props.children }
             </PopupContent>
           }
@@ -145,7 +152,7 @@ module.exports = React.createClass({
             }
           }}
           >
-          {open && <div className='rw-tether-scrim'/>}
+          {open && <div onClick={this._onClickScrim} className='rw-tether-scrim'/>}
           <div ref='placeholder' style={{ width: '100%'}} />
         </TetherTarget>
       </div>

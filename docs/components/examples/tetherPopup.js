@@ -14,6 +14,7 @@ var Example = React.createClass({
     		<${widgetName}
     			data={colors}
     			tetherPopup
+          onClickScrim={() => {console.log('clicking scrim')}}
     			popupClassName='tether-className-prop'
     			/>
     		<${widgetName}
