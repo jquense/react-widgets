@@ -69,7 +69,7 @@
     "react-window-mixins": "0.0.6",
     "scriptjs": "^2.5.8",
     "tether": "^1.1.1",
-    "uncontrollable": "^3.0.2",
+    "uncontrollable": "procore/uncontrollable.git",
     "warning": "^2.0.0"
   },
   "optionalDependencies": {

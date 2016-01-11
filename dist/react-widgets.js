@@ -3200,6 +3200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      /**
 	       * If a prop switches from controlled to Uncontrolled
+	       * or if the prop's default counterpart changes
 	       * reset its value to the defaultValue
 	       */
 	      componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
@@ -3210,6 +3211,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        keys.forEach(function (key) {
 	          if (utils.getValue(nextProps, key) === undefined && utils.getValue(props, key) !== undefined) {
+	            _this._values[key] = nextProps[utils.defaultKey(key)];
+	          } else if (utils.getValue(nextProps, utils.defaultKey(key)) !== utils.getValue(props, utils.defaultKey(key))) {
 	            _this._values[key] = nextProps[utils.defaultKey(key)];
 	          }
 	        });
