@@ -1,4 +1,4 @@
-/*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -45,9 +45,24 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*** IMPORTS FROM imports-loader ***/
+	var module = __webpack_require__(1);
+	var args = [];
+
+
+	if (typeof module === 'function') {
+	  module.apply(null, args || [])
+	}
+
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
-	var babelHelpers = __webpack_require__(1);
+	var babelHelpers = __webpack_require__(2);
 
 	exports.__esModule = true;
 	exports['default'] = simpleNumber;
@@ -111,7 +126,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -211,7 +226,6 @@
 	})
 
 /***/ },
-/* 2 */,
 /* 3 */
 /***/ function(module, exports) {
 
@@ -704,11 +718,19 @@
 	    var decim = number[1].slice(0, places);
 	    //if next digit was >= 5 we need to round up
 	    if (+(number[1].substr(places, 1)) >= 5) {
-	      decim = (+decim + 1) + ''
+	      //But first count leading zeros as converting to a number will loose them
+	      var leadingzeros = "";
+	      while (decim.charAt(0)==="0") {
+	        leadingzeros = leadingzeros + "0";
+	        decim = decim.substr(1);
+	      }
+	      //Then we can change decim to a number and add 1 before replacing leading zeros
+	      decim = (+decim + 1) + '';
+	      decim = leadingzeros + decim;
 	      if (decim.length > places) {
 	        //adding one has made it longer
-	        decim = decim.substring(1);   //ignore the 1 at the beginning which is the carry to the integer part
-	        number[0] = (+number[0]+1) + '' //add 1 to the integer part
+	        number[0] = (+number[0]+ +decim.charAt(0)) + ''; //add value of firstchar to the integer part
+	        decim = decim.substring(1);   //ignore the 1st char at the beginning which is the carry to the integer part
 	      }
 	    }
 	    number[1] = decim;
