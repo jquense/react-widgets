@@ -1,3 +1,11 @@
+v3.1.4 - Tue, 12 Jan 2016 22:14:45 GMT
+--------------------------------------
+
+- [438e30a](../../commit/438e30a) [fixed] extra timeout check, prevent setState after unmount
+- [4b6abc7](../../commit/4b6abc7) [fixed] localizer dist files
+
+
+
 v3.1.3 - Tue, 08 Dec 2015 19:20:18 GMT
 --------------------------------------
 
