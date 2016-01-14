@@ -223,6 +223,7 @@ var DropdownList = React.createClass({
       <div ref='filterWrapper' className='rw-filter-input'>
         <span className='rw-select rw-btn'><i className='rw-i rw-i-search'/></span>
         <input ref='filter' className='rw-input'
+          autoComplete='off'
           placeholder={_.result(messages.filterPlaceholder, this.props)}
           value={this.props.searchTerm }
           onChange={ e => notify(this.props.onSearch, e.target.value)}/>
