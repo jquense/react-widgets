@@ -267,33 +267,30 @@ describe('Multiselect', function(){
     expect(spy.calledOnce).to.equal(true);
   })
 
-  // it('should show create tag correctly', function(){
-  //   var select = $t(
-  //     <Select
-  //       searchTerm="custom tag"
-  //       onCreate={()=>{}}
-  //       data={dataList}
-  //       onSearch={()=>{}}
-  //     />
-  //   );
-  //
-  //   // select
-  //   //   .render()
-  //   //   .tap(s => s
-  //   //     .single('.rw-multiselect-create-tag')
-  //   //   )
-  //   //   .props('searchTerm', undefined)
-  //   //   .tap(s => {
-  //   //     s
-  //   //     .find('.rw-multiselect-create-tag').length
-  //   //     .should.equal(0)
-  //   //   })
-  //     // .props({searchTerm: 'custom', onCreate: undefined })
-  //     // .tap(s => s
-  //     //   .find('.rw-multiselect-create-tag').length
-  //     //   .should.equal(0)
-  //     // )
-  // })
+  it('should show create tag correctly', function(){
+    var select = $t(
+      <Select
+        searchTerm="custom tag"
+        onCreate={()=>{}}
+        data={dataList}
+        onSearch={()=>{}}
+      />
+    );
+
+    select
+      .render()
+      .tap(s => s
+        .single('.rw-multiselect-create-tag')
+      )
+      .props('searchTerm', undefined)
+      .tap(s => s
+        .none('.rw-multiselect-create-tag')
+      )
+      .props({searchTerm: 'custom', onCreate: undefined })
+      .tap(s => s
+        .none('.rw-multiselect-create-tag')
+      )
+  })
 
   it('should call onCreate', function(){
     var create = sinon.spy()
