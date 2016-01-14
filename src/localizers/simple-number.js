@@ -12,9 +12,9 @@ export default function simpleNumber(options) {
 
   let localizer = {
     formats: {
-      default: `-#${grouping}##0${decimal}`,
+      default: `-#${grouping}##0${decimal}`
     },
-    
+
     // TODO major bump consistent ordering
     parse(value, culture, format) {
       if (format) {

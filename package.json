@@ -125,7 +125,7 @@
     "scriptjs": "^2.5.8",
     "sinon": "^1.17.2",
     "style-loader": "^0.12.3",
-    "teaspoon": "^5.0.1",
+    "teaspoon": "^6.0.0",
     "url-loader": "^0.5.5",
     "webpack": "^1.10.5",
     "webpack-dev-server": "^1.10.1",

@@ -8,6 +8,7 @@ require('../src/localizers/globalize')(globalize)
 //disable this particular optimization
 sinon.stub(widgetHelpers, 'isFirstFocusedRender', ()=> true)
 
+
 var testsContext = require.context('../test', true, /\.browser\.(js$|jsx$)/);
 
 if ( typeof __REACT_VERSION__ !== 'undefined' ) {

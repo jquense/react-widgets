@@ -318,22 +318,22 @@ var ComboBox = React.createClass({
     if (e.defaultPrevented)
       return
 
-    if ( key === 'End' )
+    if (key === 'End')
       if ( isOpen ) this.setState({ focusedItem: list.last() })
       else          select(list.last(), true)
 
-    else if ( key === 'Home' )
-      if ( isOpen ) this.setState({ focusedItem: list.first() })
+    else if (key === 'Home')
+      if (isOpen) this.setState({ focusedItem: list.first() })
       else          select(list.first(), true)
 
-    else if ( key === 'Escape' && isOpen )
+    else if (key === 'Escape' && isOpen)
       this.close()
 
-    else if ( key === 'Enter' && isOpen ) {
+    else if (key === 'Enter' && isOpen) {
+      e.preventDefault();
       select(this.state.focusedItem, true)
     }
-
-    else if ( key === 'ArrowDown' ) {
+    else if (key === 'ArrowDown') {
       if ( alt )
         this.open()
       else {
