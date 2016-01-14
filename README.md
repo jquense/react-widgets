@@ -30,6 +30,10 @@ The docs are a simple React app hosted on gh-pages, you build and run locally wi
 
 Patches welcome! Please try to match the style of the repo (comma first, 2 spaces, etc), squash large pull requests (a few commits is fine), and provide tests if relevant. It is also a good idea to open an issue and start a conversation before implementing new features or widgets.
 
+### Test
+
+`npm run test`
+
 ### Old Browser Support
 
 The goal is to support IE8+, but currently it is difficult for me to test a wide variety of browsers so there is no guarantee it will work (patches welcome!).
