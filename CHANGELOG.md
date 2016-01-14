@@ -1,3 +1,14 @@
+v3.1.5 - Thu, 14 Jan 2016 15:45:04 GMT
+--------------------------------------
+
+- [9e1ada0](../../commit/9e1ada0) [fixed] add autoComplete off to combobox and dropdown filter
+- [39284b8](../../commit/39284b8) [fixed] preventDefault for Enter keys
+- [5b17d73](../../commit/5b17d73) [fixed] Multiselect not handling disabled items correctly
+- [c8bcb1e](../../commit/c8bcb1e) [fixed] correctly localize number when editing
+- [735c267](../../commit/735c267) [fixed] Can start typing negative numbers
+
+
+
 v3.1.4 - Tue, 12 Jan 2016 22:14:45 GMT
 --------------------------------------
 
