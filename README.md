@@ -34,6 +34,10 @@ Patches welcome! Please try to match the style of the repo (comma first, 2 space
 
 `npm run test`
 
+#### Development Watch Mode
+
+`npm run tdd`
+
 ### Old Browser Support
 
 The goal is to support IE8+, but currently it is difficult for me to test a wide variety of browsers so there is no guarantee it will work (patches welcome!).
