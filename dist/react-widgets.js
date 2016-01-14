@@ -1,4 +1,4 @@
-/*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("react"), require("react-dom"));
@@ -933,8 +933,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This source code is licensed under the BSD-style license found in the
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
 	 */
 
 	'use strict';
@@ -968,9 +966,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var args = [a, b, c, d, e, f];
 	      var argIndex = 0;
 	      error = new Error(
-	        'Invariant Violation: ' +
 	        format.replace(/%s/g, function() { return args[argIndex++]; })
 	      );
+	      error.name = 'Invariant Violation';
 	    }
 
 	    error.framesToPop = 1; // we don't care about invariant's own frame
@@ -1041,7 +1039,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var result;
 	    if (Array.isArray(arr)) {
 	      arr.every(function (val, idx) {
-	        if (cb.call(thisArg, val, idx, arr)) return (result = val, false);
+	        if (cb.call(thisArg, val, idx, arr)) return result = val, false;
 	        return true;
 	      });
 	      return result;
@@ -1670,7 +1668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2015 Jed Watson.
+	  Copyright (c) 2016 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
 	*/
@@ -1682,7 +1680,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		var hasOwn = {}.hasOwnProperty;
 
 		function classNames () {
-			var classes = '';
+			var classes = [];
 
 			for (var i = 0; i < arguments.length; i++) {
 				var arg = arguments[i];
@@ -1691,19 +1689,19 @@ return /******/ (function(modules) { // webpackBootstrap
 				var argType = typeof arg;
 
 				if (argType === 'string' || argType === 'number') {
-					classes += ' ' + arg;
+					classes.push(arg);
 				} else if (Array.isArray(arg)) {
-					classes += ' ' + classNames.apply(null, arg);
+					classes.push(classNames.apply(null, arg));
 				} else if (argType === 'object') {
 					for (var key in arg) {
 						if (hasOwn.call(arg, key) && arg[key]) {
-							classes += ' ' + key;
+							classes.push(key);
 						}
 					}
 				}
 			}
 
-			return classes.substr(1);
+			return classes.join(' ');
 		}
 
 		if (typeof module !== 'undefined' && module.exports) {
@@ -1762,9 +1760,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var TRANSLATION_MAP = _utilConfiguration2['default'].animate.TRANSLATION_MAP;
 
-	  if (TRANSLATION_MAP && TRANSLATION_MAP[prop]) return (_ref = {}, _ref[transform] = TRANSLATION_MAP[prop] + '(' + value + ')', _ref);
+	  if (TRANSLATION_MAP && TRANSLATION_MAP[prop]) return _ref = {}, _ref[transform] = TRANSLATION_MAP[prop] + '(' + value + ')', _ref;
 
-	  return (_ref2 = {}, _ref2[prop] = value, _ref2);
+	  return _ref2 = {}, _ref2[prop] = value, _ref2;
 	}
 
 	var PopupContent = _react2['default'].createClass({
@@ -3187,7 +3185,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  component._values[propName] = value;
-	  component.forceUpdate();
+
+	  if (component.isMounted()) component.forceUpdate();
 	}
 
 	exports['default'] = _createUncontrollable2['default']([mixin], set);
@@ -3307,6 +3306,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }));
 
 	    component.ControlledComponent = Component;
+
+	    /**
+	     * useful when wrapping a Component and you want to control
+	     * everything
+	     */
+	    component.deferControlTo = function (newComponent, additions, nextMethods) {
+	      if (additions === undefined) additions = {};
+
+	      return uncontrollable(newComponent, _extends({}, controlledValues, additions), nextMethods);
+	    };
 
 	    return component;
 
@@ -3471,14 +3480,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  setTimeout: function setTimeout(key, cb, duration) {
+	    var _this = this;
+
 	    var timers = this._timers || (this._timers = Object.create(null));
 
 	    if (this._unmounted) return;
 
 	    clearTimeout(timers[key]);
-	    timers[key] = window.setTimeout(cb, duration);
+	    timers[key] = window.setTimeout(function () {
+	      if (!_this._unmounted) cb();
+	    }, duration);
 	  }
-
 	};
 
 /***/ },
@@ -3546,7 +3558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!searchTerm || !searchTerm.trim() || this.props.filter && searchTerm.length < (this.props.minLength || 1)) return -1;
 
 	    items.every(function (item, i) {
-	      if (matches(item, searchTerm, i)) return (idx = i, false);
+	      if (matches(item, searchTerm, i)) return idx = i, false;
 
 	      return true;
 	    });
@@ -6680,7 +6692,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var calIsActive = open === popups.CALENDAR && key === 'calendar';
 	      var timeIsActive = open === popups.TIME && key === 'timelist';
 
-	      if (!current || (timeIsActive || calIsActive)) return id;
+	      if (!current || timeIsActive || calIsActive) return id;
 	    })];
 	  }
 	}, {

@@ -268,8 +268,8 @@ var Multiselect = React.createClass({
               <List ref="list"
                 key={0}
                 {...listProps}
-                readOnly={!!readOnly}
-                disabled={!!disabled}
+                readOnly={readOnly}
+                disabled={disabled}
                 id={listID}
                 aria-live='polite'
                 aria-labelledby={instanceId(this)}

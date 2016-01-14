@@ -1,6 +1,6 @@
 import configure from '../configure'
 
-export default function(moment){
+export default function(moment) {
   if (typeof moment !== 'function')
     throw new TypeError('You must provide a valid moment object')
 

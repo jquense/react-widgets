@@ -16,11 +16,12 @@ module.exports = {
   setTimeout(key, cb, duration){
     var timers = this._timers || (this._timers = Object.create(null));
 
-    if ( this._unmounted)
+    if (this._unmounted)
       return
 
     clearTimeout(timers[key])
-    timers[key] = window.setTimeout(cb, duration)
+    timers[key] = window.setTimeout(() => {
+      if (!this._unmounted) cb()
+    }, duration)
   }
-
 }
