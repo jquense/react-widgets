@@ -1,15 +1,17 @@
 import React, { cloneElement } from 'react';
 import css from 'dom-helpers/style';
 import getHeight from 'dom-helpers/query/height';
+import camelizeStyle from 'dom-helpers/util/camelizeStyle';
 import config from './util/configuration';
 import cn from 'classnames';
 import compat from './util/compat';
 
-var transform = config.animate.transform
+var transform = camelizeStyle(config.animate.transform)
 
 const CLOSING = 0
-    , OPENING = 1
-    , NONE = 2;
+    , CLOSED = 1
+    , OPENING = 2
+    , OPEN = 3;
 
 function properties(prop, value){
   var TRANSLATION_MAP = config.animate.TRANSLATION_MAP
@@ -20,19 +22,11 @@ function properties(prop, value){
   return { [prop]: value }
 }
 
-var PopupContent = React.createClass({
-  render: function(){
-    var child = this.props.children;
-
-    if ( !child ) return <span className='rw-popup rw-widget' />
-
-    child = React.Children.only(this.props.children)
-
-    return cloneElement(child, {
-      className: cn(child.props.className, 'rw-popup rw-widget')
-    });
-  }
-})
+let OVERFLOW = {
+  [CLOSED]:  'hidden',
+  [CLOSING]: 'hidden',
+  [OPENING]: 'hidden'
+}
 
 
 module.exports = React.createClass({
@@ -50,7 +44,11 @@ module.exports = React.createClass({
     onOpen:         React.PropTypes.func
   },
 
-  getInitialState(){ return {} },
+  getInitialState() {
+    return {
+      status: this.props.open ? OPENING : CLOSED
+    }
+  },
 
   getDefaultProps(){
     return {
@@ -63,156 +61,179 @@ module.exports = React.createClass({
     }
   },
 
-  // componentDidMount(){
-  //   !this.props.open && this.close(0)
-  // },
-  componentWillMount(){
-    !this.props.open && (this._initialPosition = true)
-  },
-
   componentWillReceiveProps(nextProps) {
     this.setState({
       contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
     })
   },
 
+  componentDidMount() {
+    if (this.state.status === OPENING) {
+      this.open();
+    }
+  },
+
   componentDidUpdate(pvProps){
     var closing =  pvProps.open && !this.props.open
       , opening = !pvProps.open && this.props.open
-      , open    = this.props.open;
+      , open    = this.props.open
+      , status  = this.state.status;
 
-    if (pvProps.dropUp !== this.props.dropUp && this.transitionState !== NONE) {
-      this._transition && this._transition.cancel()
-      this.reset()
-      opening = this.transitionState === OPENING
-      closing = this.transitionState === CLOSING
+    if (!!pvProps.dropUp !== !!this.props.dropUp) {
+      this.cancelNextCallback()
+      if (status === OPENING) this.open()
+      if (status === CLOSING) this.close()
+      return
     }
 
     if (opening)      this.open()
     else if (closing) this.close()
-    else if (open)    this.height()
+    else if (open) {
+      let height = this.height();
+      if (height !== this.state.height)
+        this.setState({ height })
+    }
   },
 
   render() {
-    var {
-        className
-      , open
-      , dropUp
-      , ...props } = this.props
-      , display = open ? 'block' : void 0;
+    var {className, open, dropUp, ...props } = this.props
+      , { status, height } = this.state;
 
-    if (this._initialPosition) {
-      display = 'none'
-    }
+    let overflow = OVERFLOW[status] || 'visible'
+      , display = status === CLOSED ? 'none' : 'block';
 
     return (
       <div {...props}
-        style={{
-          display,
-          height: this.state.height,
-          ...props.style
-        }}
-        className={cn(className, 'rw-popup-container', { 'rw-dropup': dropUp })}
+        style={{ display, overflow, height, ...props.style }}
+        className={cn(className, 'rw-popup-container', {
+          'rw-dropup': dropUp,
+          'rw-popup-animating': this.isTransitioning()
+        })}
       >
-        <PopupContent ref='content'>
-          { this.props.children }
-        </PopupContent>
+        { this.renderChildren() }
       </div>
     )
   },
 
-  reset() {
-    var container = compat.findDOMNode(this)
-      , content   = compat.findDOMNode(this.refs.content)
-      , style = { display: 'block', overflow: 'hidden'}
+  renderChildren() {
+    if (!this.props.children)
+      return <span className='rw-popup rw-widget' />
 
-    css(container, style)
-    this.height();
-    css(content, properties('top', this.props.dropUp ? '100%' : '-100%'))
-  },
+    let offset = this.getOffsetForStatus(this.state.status)
+      , child = React.Children.only(this.props.children)
 
-  height(){
-    var el = compat.findDOMNode(this)
-      , content = compat.findDOMNode(this.refs.content)
-      , margin = parseInt(css(content, 'margin-top'), 10)
-               + parseInt(css(content, 'margin-bottom'), 10);
-
-    var height = (getHeight(content) || 0) + (isNaN(margin) ? 0 : margin)
-
-    if( this.state.height !== height) {
-      el.style.height  = height + 'px'
-      this.setState({ height })
-    }
+    return cloneElement(child, {
+      style: {
+        ...child.props.style,
+        ...offset,
+        position: this.isTransitioning() ? 'absolute' : undefined
+      },
+      className: cn(child.props.className, 'rw-popup rw-widget')
+    });
   },
 
   open() {
-    var self = this
-      , anim = compat.findDOMNode(this)
-      , el   = compat.findDOMNode(this.refs.content);
-
-    this.ORGINAL_POSITION = css(el, 'position')
-    this.transitionState = OPENING;
-
-    if (this._initialPosition) {
-      this._initialPosition = false
-      this.reset();
-    }
-    else
-      this.height()
+    this.cancelNextCallback()
+    var el = compat.findDOMNode(this).firstChild
+      , height = this.height();
 
     this.props.onOpening()
 
-    anim.className += ' rw-popup-animating'
-    el.style.position = 'absolute'
+    this.safeSetState({ status: OPENING, height }, () => {
+      let offset = this.getOffsetForStatus(OPEN)
+        , duration = this.props.duration;
 
-    this._transition = config.animate(el
-      , { top: 0 }
-      , self.props.duration
-      , 'ease'
-      , () => {
-          if (this.transitionState !== OPENING) return
-
-          this.transitionState = NONE;
-          anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
-
-          el.style.position = self.ORGINAL_POSITION
-          anim.style.overflow = 'visible'
-          this.ORGINAL_POSITION = null
-
+      this.animate(el, offset, duration, 'ease', () => {
+        this.safeSetState({ status: OPEN }, ()=> {
           this.props.onOpen()
         })
+      })
+    })
   },
 
-  close(dur) {
-    var el   = compat.findDOMNode(this.refs.content)
-      , anim = compat.findDOMNode(this);
+  close() {
+    this.cancelNextCallback()
+    var el = compat.findDOMNode(this).firstChild
+      , height = this.height();
 
-    this.ORGINAL_POSITION = css(el, 'position')
-
-    this.transitionState = CLOSING;
-
-    this.height()
     this.props.onClosing()
 
-    anim.style.overflow = 'hidden'
-    anim.className += ' rw-popup-animating'
-    el.style.position = 'absolute'
+    this.safeSetState({ status: CLOSING, height }, () => {
+      let offset = this.getOffsetForStatus(CLOSED)
+        , duration = this.props.duration;
 
-    this._transition = config.animate(el
-      , { top: this.props.dropUp ? '100%' : '-100%' }
-      , dur === undefined ? this.props.duration : dur
-      , 'ease'
-      , () => {
-          if (this.transitionState !== CLOSING) return
-
-          this.transitionState = NONE;
-          el.style.position = self.ORGINAL_POSITION
-          anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
-
-          anim.style.display = 'none'
-          this.ORGINAL_POSITION = null
+      this.animate(el, offset, duration, 'ease', () =>
+        this.setState({ status: CLOSED }, () => {
           this.props.onClose()
         })
+      )
+    })
+  },
+
+  getOffsetForStatus(status){
+    let _in = properties('top', this.props.dropUp ? '100%' : '-100%')
+      , out = properties('top', 0)
+    return {
+      [CLOSED]: _in,
+      [CLOSING]: out,
+      [OPENING]: _in,
+      [OPEN]: out
+    }[status] || {}
+  },
+
+  height() {
+    var container = compat.findDOMNode(this)
+      , content = container.firstChild
+      , margin = parseInt(css(content, 'margin-top'), 10)
+               + parseInt(css(content, 'margin-bottom'), 10);
+
+    let old = container.style.display
+      , height;
+
+    container.style.display = 'block'
+    height = (getHeight(content) || 0) + (isNaN(margin) ? 0 : margin)
+    container.style.display = old
+    return height
+  },
+
+  isTransitioning() {
+    return this.state.status === OPENING
+        || this.state.status === CLOSED
+  },
+
+  animate(el, props, dur, easing, cb) {
+    this._transition =
+      config.animate(el, props, dur, easing, this.setNextCallback(cb))
+  },
+
+  cancelNextCallback() {
+    if (this._transition && this._transition.cancel) {
+      this._transition.cancel()
+      this._transition = null
+    }
+    if (this.nextCallback) {
+      this.nextCallback.cancel();
+      this.nextCallback = null;
+    }
+  },
+
+  safeSetState(nextState, callback) {
+    this.setState(nextState, this.setNextCallback(callback));
+  },
+
+  setNextCallback(callback) {
+    let active = true;
+
+    this.nextCallback = (event) => {
+      if (active) {
+        active = false;
+        this.nextCallback = null;
+        callback(event);
+      }
+    };
+
+    this.nextCallback.cancel = () => active = false;
+    return this.nextCallback;
   }
 
 })
