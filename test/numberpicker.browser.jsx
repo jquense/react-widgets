@@ -1,4 +1,5 @@
 import { findDOMNode } from 'react-dom';
+import $ from 'teaspoon';
 
 var React = require('react/addons');
 var NumberPicker = require('../src/NumberPicker.jsx');
@@ -12,69 +13,66 @@ var TestUtils = React.addons.TestUtils
 describe('NumberPicker', function(){
 
 
-  it('should set values correctly', function(done){
-    var instance = render(<NumberPicker value={15} format='D' onChange={()=>{}} />)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+  it('should set values correctly', function() {
+    let expectValueToBe = val =>
+      inst => expect(inst.find('.rw-input').dom().value).to.be(val)
 
-    expect(input.value).to.be('15');
-
-    instance.setProps({ value: null, min: 10, max: 10 }, function(){
-      expect(input.value).to.be('');
-
-      instance.setProps({ value: 1, min: 10 }, function(){
-        expect(input.value).to.be('10');
-
-        instance.setProps({ value: 20, max: 10 }, function(){
-          expect(input.value).to.be('10');
-
-          instance.setProps({ value: 10, format: 'c' }, function(){
-            expect(input.value).to.be('$10.00');
-            done()
-          })
-        })
-      })
-    })
+    $(<NumberPicker value={15} format='D' onChange={()=>{}} />)
+      .render()
+        .tap(expectValueToBe('15'))
+      .props({ value: null, min: 10, max: 10 })
+        .tap(expectValueToBe(''))
+      .props({ value: 1, min: 10 })
+        .tap(expectValueToBe('10'))
+      .props({ value: 20, max: 10 })
+        .tap(expectValueToBe('10'))
+      .props({ value: 10, format: 'c' })
+        .tap(expectValueToBe('$10.00'))
   })
 
-  it('should be able to accept a placeholder', function(done){
-    var picker = render(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
-      , input  = findClass(picker, 'rw-input');
+  it('should be able to accept a placeholder', function() {
+    let input = $(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
+      .render()
+      .find('.rw-input')
+      .dom()
 
      expect(input.placeholder).to.be('enter number here');
-     done();
   })
 
   it('should pass NAME down', function(){
-    var instance = render(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+    let input = $(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)
+      .render()
+      .find('.rw-input')
+      .dom()
 
     expect(input.hasAttribute('name')).to.be(true)
   })
 
-  it('should not fire change until there is a valid value', function(done){
+  it('should not fire change until there is a valid value', function(){
     var change = sinon.spy()
-      , instance = render(<NumberPicker value={150} format='D' min={100} onChange={change} />)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+    var input = $(<NumberPicker value={150} format='D' min={100} onChange={change} />)
+      .render()
+      .find('.rw-input')
 
-    input.value = '15'
-    trigger.change(input)
+    input.dom().value = '15'
+    input.trigger('change')
 
     expect(change.called).to.be(false);
-    expect(input.value).to.be('15');
 
-    input.value = '154'
-    trigger.change(input)
+    input.dom().value = '154'
+    input.trigger('change')
     expect(change.calledOnce).to.be(true);
 
     //should call change on a null value when no min
     change.reset()
-    instance.setProps({ value: 15, min: -Infinity }, function(){
 
-      input.value = ''
-      trigger.change(input)
-      expect(change.calledOnce).to.be(true)
-      done()
-    })
+    input = $(<NumberPicker value={15} format='D' min={-Infinity} onChange={change} />)
+      .render()
+      .find('.rw-input')
+
+    input.dom().value = ''
+    input.trigger('change')
+    expect(change.calledOnce).to.be(true)
   })
 
   it('should change value when spinner is clicked', function(){
