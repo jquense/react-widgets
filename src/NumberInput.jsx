@@ -14,7 +14,7 @@ export default React.createClass({
 
     format:       CustomPropTypes.numberFormat,
 
-    parse:        React.PropTypes.func.isRequired,
+    parse:        React.PropTypes.func,
     culture:      React.PropTypes.string,
 
     min:          React.PropTypes.number,
