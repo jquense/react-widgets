@@ -34,6 +34,8 @@ let propTypes = {
     onChange:       React.PropTypes.func,
     open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
     onToggle:       React.PropTypes.func,
+    currentDate:    React.PropTypes.instanceOf(Date),
+    onCurrentDateChange: React.PropTypes.func,
     //------------------------------------
 
     onSelect:       React.PropTypes.func,
@@ -263,6 +265,7 @@ var DateTimePicker = React.createClass({
                 step={step}
                 min={min}
                 max={max}
+                currentDate={this.props.currentDate}
                 culture={culture}
                 onMove={this._scrollTo}
                 preserveDate={!!calendar}
@@ -292,6 +295,8 @@ var DateTimePicker = React.createClass({
               // #75: need to aggressively reclaim focus from the calendar otherwise
               // disabled header/footer buttons will drop focus completely from the widget
               onNavigate={() => this.focus()}
+              currentDate={this.props.currentDate}
+              onCurrentDateChange={this.props.onCurrentDateChange}
             />
           }
         </Popup>
@@ -369,7 +374,7 @@ var DateTimePicker = React.createClass({
   @widgetEditable
   _selectDate(date){
     var format   = getFormat(this.props)
-      , dateTime = dates.merge(date, this.props.value)
+      , dateTime = dates.merge(date, this.props.value, this.props.currentDate)
       , dateStr  = formatDate(date, format, this.props.culture);
 
     this.close()
@@ -381,7 +386,7 @@ var DateTimePicker = React.createClass({
   @widgetEditable
   _selectTime(datum){
     var format   = getFormat(this.props)
-      , dateTime = dates.merge(this.props.value, datum.date)
+      , dateTime = dates.merge(this.props.value, datum.date, this.props.currentDate)
       , dateStr  = formatDate(datum.date, format, this.props.culture);
 
     this.close()
@@ -453,7 +458,7 @@ var DateTimePicker = React.createClass({
 
 export default  createUncontrolledWidget(
     DateTimePicker
-  , { open: 'onToggle', value: 'onChange' });
+  , { open: 'onToggle', value: 'onChange', currentDate: 'onCurrentDateChange' });
 
 
 
