@@ -86,6 +86,7 @@
     "cldr-data": "^28.0.3",
     "cpy": "^3.4.0",
     "css-loader": "^0.15.6",
+    "envify": "^3.0.0",
     "eslint": "^0.24.1",
     "eslint-plugin-mocha": "^0.5.1",
     "eslint-plugin-react": "^2.7.1",
@@ -130,5 +131,10 @@
     "webpack": "^1.10.5",
     "webpack-dev-server": "^1.10.1",
     "yargs": "^3.19.0"
+  },
+  "browserify": {
+    "transform": [
+      "envify"
+    ]
   }
 }
