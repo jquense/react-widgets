@@ -82,8 +82,6 @@
     "babel-plugin-external-helpers": "^1.1.1",
     "babel-plugin-object-assign": "^1.2.1",
     "chance": "^0.7.6",
-    "cldr": "^3.4.1",
-    "cldr-data": "^28.0.3",
     "cpy": "^3.4.0",
     "css-loader": "^0.15.6",
     "eslint": "^0.24.1",

@@ -13,13 +13,13 @@ var TestUtils = React.addons.TestUtils
 describe('NumberPicker', function(){
 
 
-  it('should set values correctly', function() {
+  it.only('should set values correctly', function() {
     let expectValueToBe = val =>
       inst => expect(inst.find('.rw-input').dom().value).to.be(val)
 
     let inst = $(<NumberPicker value={15} format='D' onChange={()=>{}} />);
 
-    console.log('element', inst[0])
+    console.error('element', inst[0])
 
     inst
       .render()
