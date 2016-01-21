@@ -1,12 +1,12 @@
 import { findDOMNode } from 'react-dom';
-import $ from 'teaspoon';
+import tsp from 'teaspoon';
 
-var React = require('react/addons');
+var React = require('react');
 var NumberPicker = require('../src/NumberPicker.jsx');
 
 //console.log(sinon)
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
+var TestUtils = require('react-addons-test-utils');
+var render = TestUtils.renderIntoDocument
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , trigger = TestUtils.Simulate;
 
@@ -17,7 +17,7 @@ describe('NumberPicker', function(){
     let expectValueToBe = val =>
       inst => expect(inst.find('.rw-input').dom().value).to.be(val)
 
-    $(<NumberPicker value={15} format='D' onChange={()=>{}} />)
+    tsp(<NumberPicker value={15} format='D' onChange={()=>{}} />)
       .render()
         .tap(expectValueToBe('15'))
       .props({ value: null, min: 10, max: 10 })
@@ -31,7 +31,7 @@ describe('NumberPicker', function(){
   })
 
   it('should be able to accept a placeholder', function() {
-    let input = $(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
+    let input = tsp(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
       .render()
       .find('.rw-input')
       .dom()
@@ -40,7 +40,7 @@ describe('NumberPicker', function(){
   })
 
   it('should pass NAME down', function(){
-    let input = $(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)
+    let input = tsp(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)
       .render()
       .find('.rw-input')
       .dom()
@@ -50,7 +50,7 @@ describe('NumberPicker', function(){
 
   it('should not fire change until there is a valid value', function(){
     var change = sinon.spy()
-    var input = $(<NumberPicker value={150} format='D' min={100} onChange={change} />)
+    var input = tsp(<NumberPicker value={150} format='D' min={100} onChange={change} />)
       .render()
       .find('.rw-input')
 
@@ -66,7 +66,7 @@ describe('NumberPicker', function(){
     //should call change on a null value when no min
     change.reset()
 
-    input = $(<NumberPicker value={15} format='D' min={-Infinity} onChange={change} />)
+    input = tsp(<NumberPicker value={15} format='D' min={-Infinity} onChange={change} />)
       .render()
       .find('.rw-input')
 
@@ -215,41 +215,42 @@ describe('NumberPicker', function(){
 
   })
 
-  it('should change values on key down', function(done){
-    var change = sinon.spy()
-      , instance = render(<NumberPicker value={10} onChange={change} />)
-      , input  = findDOMNode(instance);
+  it('should change values on key down', function() {
+    var change = sinon.spy();
 
-    trigger.keyDown(input, { key: 'End'})
-    trigger.keyDown(input, { key: 'Home'})
-    expect(change.called).to.be(false)
+    let instance = tsp(
+      <NumberPicker value={10} onChange={change} />
+    ).render()
 
-    trigger.keyDown(input, { key: 'ArrowDown'})
+    instance
+      .trigger('keyDown', { key: 'End'})
+      .trigger('keyDown', { key: 'Home'})
+      .tap(() => {
+        expect(change.called).to.be(false)
+      })
+      .trigger('keyDown', { key: 'ArrowDown'})
+      .tap(() => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(9)).to.be(true)
+
+        change.reset()
+      })
+      .trigger('keyDown', { key: 'ArrowUp'})
+      .tap(() => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(11)).to.be(true)
+        change.reset()
+      })
+      .props({ min: 5, max: 15 })
+      .trigger('keyDown', { key: 'End'})
+      .tap(() => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(15)).to.be(true)
+        change.reset()
+      })
+      .trigger('keyDown', { key: 'Home'})
+
     expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(9)).to.be(true)
-
-    change.reset()
-
-    trigger.keyDown(input, { key: 'ArrowUp'})
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(11)).to.be(true)
-
-    change.reset()
-
-    instance.setProps({ min: 5, max: 15 }, function(){
-
-      trigger.keyDown(input, { key: 'End'})
-      expect(change.calledOnce).to.be(true)
-      expect(change.calledWith(15)).to.be(true)
-
-      change.reset()
-
-      trigger.keyDown(input, { key: 'Home'})
-
-      expect(change.calledOnce).to.be(true)
-      expect(change.calledWith(5)).to.be(true)
-
-      done()
-    })
+    expect(change.calledWith(5)).to.be(true)
   })
 })

@@ -4,13 +4,13 @@ require('../vendor/phantomjs-shim')
 
 import ReactDOM from 'react-dom';
 
-var React = require('react/addons');
+var React = require('react');
 var List = require('../src/ListGroupable.jsx');
 
 
 //console.log(sinon)
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument;
+var TestUtils = require('react-addons-test-utils');
+var render = TestUtils.renderIntoDocument;
 
 describe('Groupable List', function(){
   var data = [

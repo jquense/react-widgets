@@ -1,10 +1,7 @@
 'use strict';
-/*global it, describe, expect, sinon, $*/
-require('../vendor/phantomjs-shim')
-
 import ReactDOM from 'react-dom';
 
-var React = require('react/addons')
+var React = require('react')
   , Calendar = require('../src/Calendar.jsx')
   , BaseCalendar = require('../src/Calendar.jsx').ControlledComponent
   , Header = require('../src/Header.jsx')
@@ -20,8 +17,8 @@ var React = require('react/addons')
   , transform = require('../src/util/_').transform;
 
 
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
+var TestUtils = require('react-addons-test-utils')
+var render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , findType = TestUtils.findRenderedComponentWithType

@@ -4,13 +4,13 @@ require('../vendor/phantomjs-shim')
 
 import { findDOMNode } from 'react-dom';
 
-var React = require('react/addons');
+var React = require('react');
 var ComboBox = require('../src/Combobox.jsx');
 var Popup = require('../src/Popup.jsx')
 var $ = require('teaspoon');
 
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
+var TestUtils = require('react-addons-test-utils');
+var render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , trigger = TestUtils.Simulate;

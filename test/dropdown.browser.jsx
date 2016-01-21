@@ -1,10 +1,10 @@
-var React    = require('react/addons')
+var React    = require('react')
   , Dropdown = require('../src/DropdownList.jsx');
 
 import { findDOMNode } from 'react-dom';
 
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
+var TestUtils = require('react-addons-test-utils');
+var render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , findType = TestUtils.findRenderedComponentWithType
@@ -220,7 +220,7 @@ describe('DROPDOWNS', function(){
         <Dropdown.ControlledComponent open
           onToggle={()=>{}}
           value={data[0]}
-          data={data} 
+          data={data}
           duration={0}
           delay={0}
           onChange={change}

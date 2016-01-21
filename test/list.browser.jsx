@@ -1,13 +1,13 @@
 'use strict';
 require('../vendor/phantomjs-shim')
 
-var React = require('react/addons');
+var React = require('react');
 import ReactDOM from 'react-dom';
 var List = require('../src/List.jsx');
 
 //console.log(sinon)
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument;
+var TestUtils = require('react-addons-test-utils');
+var render = TestUtils.renderIntoDocument;
 
 describe('List', function(){
   var data = [
