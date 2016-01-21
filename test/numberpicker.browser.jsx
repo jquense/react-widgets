@@ -17,7 +17,11 @@ describe('NumberPicker', function(){
     let expectValueToBe = val =>
       inst => expect(inst.find('.rw-input').dom().value).to.be(val)
 
-    $(<NumberPicker value={15} format='D' onChange={()=>{}} />)
+    let inst = $(<NumberPicker value={15} format='D' onChange={()=>{}} />);
+
+    console.log('element', inst[0])
+
+    inst
       .render()
         .tap(expectValueToBe('15'))
       .props({ value: null, min: 10, max: 10 })
