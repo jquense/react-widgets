@@ -13,21 +13,25 @@ var TestUtils = React.addons.TestUtils
 describe('NumberPicker', function(){
 
 
-  it('should set values correctly', function() {
+  it.only('should set values correctly', function() {
     let expectValueToBe = val =>
       inst => expect(inst.find('.rw-input').dom().value).to.be(val)
 
-    $(<NumberPicker value={15} format='D' onChange={()=>{}} />)
-      .render()
-        .tap(expectValueToBe('15'))
-      .props({ value: null, min: 10, max: 10 })
-        .tap(expectValueToBe(''))
-      .props({ value: 1, min: 10 })
-        .tap(expectValueToBe('10'))
-      .props({ value: 20, max: 10 })
-        .tap(expectValueToBe('10'))
-      .props({ value: 10, format: 'c' })
-        .tap(expectValueToBe('$10.00'))
+    let inst = $(<NumberPicker value={15} format='D' onChange={()=>{}} />);
+
+    console.error('element', inst)
+    console.error('element', inst.length)
+    // inst
+    //   .render()
+    //     .tap(expectValueToBe('15'))
+    //   .props({ value: null, min: 10, max: 10 })
+    //     .tap(expectValueToBe(''))
+    //   .props({ value: 1, min: 10 })
+    //     .tap(expectValueToBe('10'))
+    //   .props({ value: 20, max: 10 })
+    //     .tap(expectValueToBe('10'))
+    //   .props({ value: 10, format: 'c' })
+    //     .tap(expectValueToBe('$10.00'))
   })
 
   it('should be able to accept a placeholder', function() {
