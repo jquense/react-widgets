@@ -19,8 +19,8 @@ describe('NumberPicker', function(){
 
     let inst = $(<NumberPicker value={15} format='D' onChange={()=>{}} />);
 
-    console.error('element', inst[0])
-
+    console.error('element', inst)
+    console.error('element', inst.length)
     // inst
     //   .render()
     //     .tap(expectValueToBe('15'))
