@@ -26,7 +26,7 @@
     "react-component"
   ],
   "scripts": {
-    "test": "npm run lint && npm run test:all",
+    "test": "karma start karma.conf.js --single-run=true",
     "test:all": "mocha -R spec ./test/server.js && karma start karma.conf.js --single-run=true",
     "tdd": "karma start",
     "lint": "eslint src test --ext .jsx --ext .js",

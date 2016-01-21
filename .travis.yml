@@ -9,3 +9,6 @@ before_install:
 branches:
   only:
     - master
+cache:
+  directories:
+    - node_modules
