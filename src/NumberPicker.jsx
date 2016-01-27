@@ -91,7 +91,6 @@ let NumberPicker = React.createClass({
         className
       , onKeyPress
       , onKeyUp
-      , autoFocus
       , ...props } = _.omit(this.props, Object.keys(propTypes))
       , val = this.constrainValue(this.props.value)
 
@@ -144,7 +143,7 @@ let NumberPicker = React.createClass({
           tabIndex={props.tabIndex}
           placeholder={this.props.placeholder}
           value={val}
-          autoFocus={autoFocus}
+          autoFocus={this.props.autoFocus}
           editing={this.state.focused}
           format={this.props.format}
           parse={this.props.parse}
