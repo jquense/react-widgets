@@ -105,7 +105,13 @@ let Calendar = React.createClass({
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')()
+    require('./mixins/AriaDescendantMixin')(),
+    require('./mixins/FocusMixin')({
+      willHandle() {
+        if (+this.props.tabIndex === -1)
+          return false
+      }
+    })
   ],
 
   propTypes,
@@ -188,8 +194,8 @@ let Calendar = React.createClass({
       <div {...elementProps}
         role='group'
         onKeyDown={this._keyDown}
-        onFocus={this._focus.bind(null, true)}
-        onBlur ={this._focus.bind(null, false)}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}
         className={cx(className, 'rw-calendar', 'rw-widget', {
           'rw-state-focus':    focused,
           'rw-state-disabled': disabled,
@@ -275,23 +281,8 @@ let Calendar = React.createClass({
   focus() {
     if (+this.props.tabIndex > -1)
       compat.findDOMNode(this).focus()
-
-    //console.log(document.activeElement)
   },
-
-  @widgetEnabled
-  _focus(focused, e){
-    if (+this.props.tabIndex === -1)
-      return
-
-    this.setTimeout('focus', () => {
-      if( focused !== this.state.focused){
-        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
-        this.setState({ focused })
-      }
-    })
-  },
-
+  
   @widgetEditable
   change(date){
     if (this.state.view === this.props.initialView){

@@ -10,7 +10,7 @@ import GroupableList from './ListGroupable';
 import validateList from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
 import { dataItem, dataText, valueMatcher } from './util/dataHelpers';
-import { widgetEditable, widgetEnabled } from './util/interaction';
+import { widgetEditable } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
@@ -76,6 +76,20 @@ var Multiselect = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin'),
+    require('./mixins/FocusMixin')({
+      willHandle(focused) {
+        focused && this.focus()
+      },
+      didHandle(focused) {
+        if (!focused) this.close()
+
+        if (!focused && this.refs.tagList)
+          this.setState({ focusedTag: null })
+
+        if (focused && !this.props.open)
+          this.open()
+      }
+    }),
     require('./mixins/AriaDescendantMixin')('input', function(key, id){
       let { ariaActiveDescendantKey: myKey } = this.props;
 
@@ -191,9 +205,9 @@ var Multiselect = React.createClass({
         ref="element"
         id={instanceId(this)}
         onKeyDown={this._keyDown}
-        onFocus={this._focus.bind(null, true)}
-        onBlur ={this._focus.bind(null, false)}
-        onTouchEnd={this._focus.bind(null, true)}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}
+        onTouchEnd={this.handleFocus}
         tabIndex={'-1'}
         className={cx(className, 'rw-widget', 'rw-multiselect',  {
           'rw-state-focus':    focused,
@@ -255,9 +269,8 @@ var Multiselect = React.createClass({
             onKeyDown={this._searchKeyDown}
             onKeyUp={this._searchgKeyUp}
             onChange={this._typing}
-            onFocus={this._inputFocus}
-            onClick={this._inputFocus}
-            onTouchEnd={this._inputFocus}
+            onClick={this.handleInputInteraction}
+            onTouchEnd={this.handleInputInteraction}
           />
         </div>
         <Popup {...popupProps}
@@ -309,51 +322,29 @@ var Multiselect = React.createClass({
     return this.state.processedData
   },
 
-  _delete(value){
-    this._focus(true)
+  _delete(value) {
+    this.focus()
     this.change(
       this.state.dataItems.filter( d => d !== value))
   },
 
-  _inputFocus(){
-    this._focus(true)
-    !this.props.open && this.open()
-  },
-
-  @widgetEnabled
-  _focus(focused, e){
-    if (this.props.disabled === true )
-      return
-
-    if(focused) this.refs.input.focus()
-
-    this.setTimeout('focus', () => {
-      if(!focused)
-        this.refs.tagList && this.setState({ focusedTag: null })
-
-      if(focused !== this.state.focused) {
-        focused
-          ? this.open()
-          : this.close();
-
-        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
-        this.setState({ focused: focused })
-      }
-    })
-  },
-
-  _searchKeyDown(e){
+  _searchKeyDown(e) {
     if (e.key === 'Backspace' && e.target.value && !this._deletingText)
       this._deletingText = true
   },
 
-  _searchgKeyUp(e){
+  _searchgKeyUp(e) {
     if (e.key === 'Backspace' && this._deletingText)
       this._deletingText = false
   },
 
-  _typing(e){
+  _typing(e) {
     notify(this.props.onSearch, [ e.target.value ])
+    this.open()
+  },
+
+  @widgetEditable
+  handleInputInteraction() {
     this.open()
   },
 
@@ -371,7 +362,7 @@ var Multiselect = React.createClass({
     this.change(this.state.dataItems.concat(data))
 
     this.close()
-    this._focus(true)
+    this.focus()
   },
 
   @widgetEditable
@@ -384,7 +375,7 @@ var Multiselect = React.createClass({
       && notify(this.props.onSearch, [ '' ])
 
     this.close()
-    this._focus(true)
+    this.focus()
   },
 
   @widgetEditable
@@ -461,8 +452,12 @@ var Multiselect = React.createClass({
     notify(this.props.onSearch, [ '' ])
   },
 
-  open(){
-    if (!(this.props.disabled === true || this.props.readOnly === true))
+  focus() {
+    this.refs.input.focus()
+  },
+
+  open() {
+    if (!this.props.open)
       notify(this.props.onToggle, true)
   },
 
@@ -521,4 +516,4 @@ function msgs(msgs){
 }
 
 export default createUncontrolledWidget(Multiselect
-    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
+    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }, ['focus']);

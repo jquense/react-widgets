@@ -57,7 +57,12 @@ let NumberPicker = React.createClass({
   mixins: [
     require('./mixins/TimeoutMixin'),
     require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlParentContextMixin')
+    require('./mixins/RtlParentContextMixin'),
+    require('./mixins/FocusMixin')({
+      willHandle(focused) {
+        if (focused) this.focus()
+      }
+    })
   ],
 
   propTypes: propTypes,
@@ -98,8 +103,8 @@ let NumberPicker = React.createClass({
       <div {...props }
         ref="element"
         onKeyDown={this._keyDown}
-        onFocus={this._focus.bind(null, true)}
-        onBlur ={this._focus.bind(null, false)}
+        onFocus={this.handleFocus}
+        onBlur ={this.handleBlur}
         tabIndex={'-1'}
         className={cx(className, 'rw-numberpicker', 'rw-widget', {
           'rw-state-focus':     this.state.focused,
@@ -115,7 +120,7 @@ let NumberPicker = React.createClass({
             onMouseDown={this._mouseDown.bind(null, directions.UP)}
             onMouseUp={this._mouseUp.bind(null, directions.UP)}
             onMouseLeave={this._mouseUp.bind(null, directions.UP)}
-            onClick={this._focus.bind(null, true)}
+            onClick={this.handleFocus}
             disabled={val === this.props.max || this.props.disabled}
             aria-disabled={val === this.props.max || this.props.disabled}>
 
@@ -129,7 +134,7 @@ let NumberPicker = React.createClass({
             onMouseDown={this._mouseDown.bind(null, directions.DOWN)}
             onMouseUp={this._mouseUp.bind(null, directions.DOWN)}
             onMouseLeave={this._mouseUp.bind(null, directions.DOWN)}
-            onClick={this._focus.bind(null, true)}
+            onClick={this.handleFocus}
             disabled={val === this.props.min || this.props.disabled}
             aria-disabled={val === this.props.min || this.props.disabled}>
 
@@ -193,20 +198,6 @@ let NumberPicker = React.createClass({
     this._cancelRepeater = null;
   },
 
-  @widgetEnabled
-  _focus(focused, e) {
-
-    focused && compat.findDOMNode(this.refs.input).focus()
-
-    this.setTimeout('focus', () => {
-      if( focused !== this.state.focused){
-        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
-        this.setState({ focused: focused })
-      }
-
-    }, 0)
-  },
-
   @widgetEditable
   _keyDown(e) {
     var key = e.key;
@@ -230,6 +221,10 @@ let NumberPicker = React.createClass({
       e.preventDefault()
       this.increment()
     }
+  },
+
+  focus() {
+    compat.findDOMNode(this.refs.input).focus()
   },
 
   increment() {
