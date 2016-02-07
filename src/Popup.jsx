@@ -46,6 +46,7 @@ module.exports = React.createClass({
 
   getInitialState() {
     return {
+      initialRender: true,
       status: this.props.open ? OPENING : CLOSED
     }
   },
@@ -68,9 +69,14 @@ module.exports = React.createClass({
   },
 
   componentDidMount() {
-    if (this.state.status === OPENING) {
-      this.open();
-    }
+    let isOpen = this.state.status === OPENING;
+
+    compat.batchedUpdates(() => {
+      this.setState({ initialRender: false })
+      if (isOpen) {
+        this.open();
+      }
+    })
   },
 
   componentDidUpdate(pvProps){
@@ -170,7 +176,10 @@ module.exports = React.createClass({
     })
   },
 
-  getOffsetForStatus(status){
+  getOffsetForStatus(status) {
+    if (this.state.initialRender)
+      return {}
+
     let _in = properties('top', this.props.dropUp ? '100%' : '-100%')
       , out = properties('top', 0)
     return {
