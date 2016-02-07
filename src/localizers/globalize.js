@@ -17,7 +17,7 @@ function endOfCentury(date) {
 
 
 export default function globalizeLocalizers(globalize) {
-  let localizers = globalize.load
+  let localizers = (globalize.locale && !globalize.cultures)
       ? newGlobalize(globalize)
       : oldGlobalize(globalize)
 
