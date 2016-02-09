@@ -318,11 +318,14 @@ var DateTimePicker = React.createClass({
 
   @widgetEditable
   _keyDown(e){
-    let { open, calendar, time } = this.props;
+    let { open, calendar, time, disableKeyboard } = this.props;
 
     notify(this.props.onKeyDown, [e])
-
+    
     if (e.defaultPrevented)
+      return
+
+    if (disableKeyboard)
       return
 
     if (e.key === 'Escape' && open)
