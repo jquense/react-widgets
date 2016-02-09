@@ -176,13 +176,13 @@ var DropdownList = React.createClass({
           ['rw-open' + (dropUp ? '-up' : '')]: open
         })}>
 
-        <span className="rw-dropdownlist-picker rw-select rw-btn">
+        <button className="rw-dropdownlist-picker rw-select rw-btn">
           <i className={'rw-i rw-i-caret-down' + (busy ? ' rw-loading' : '')}>
             <span className="rw-sr">
               { result(messages.open, this.props) }
             </span>
           </i>
-        </span>
+        </button>
         <div
           className="rw-input"
         >
