@@ -169,7 +169,7 @@ module.exports = React.createClass({
         , duration = this.props.duration;
 
       this.animate(el, offset, duration, 'ease', () =>
-        this.setState({ status: CLOSED }, () => {
+        this.safeSetState({ status: CLOSED }, () => {
           this.props.onClose()
         })
       )
