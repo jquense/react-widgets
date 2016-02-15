@@ -76,8 +76,8 @@ let propTypes = {
         prop. This creates a range that cannot be rendered.`.replace(/\n\t/g, ''))
   },
 
+  onNavigate:    React.PropTypes.func,
   culture:       React.PropTypes.string,
-
   footer:        React.PropTypes.bool,
 
   dayComponent:  CustomPropTypes.elementType,
@@ -282,7 +282,7 @@ let Calendar = React.createClass({
     if (+this.props.tabIndex > -1)
       compat.findDOMNode(this).focus()
   },
-  
+
   @widgetEditable
   change(date){
     if (this.state.view === this.props.initialView){
