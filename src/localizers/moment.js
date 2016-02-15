@@ -51,7 +51,10 @@ export default function(moment) {
     },
 
     parse(value, format, culture) {
-      return value ? getMoment(culture, value, format).toDate() : null
+      if (!value) return null;
+      const m = getMoment(culture, value, format);
+      if (m.isValid()) return m.toDate();
+      return null;
     },
 
     format(value, format, culture) {
