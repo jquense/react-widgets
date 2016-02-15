@@ -13,14 +13,14 @@ export default function FocusMixin({ willHandle, didHandle }) {
       return
 
     inst.setTimeout('focus', () => {
-      //compat.batchedUpdates(() => {
+      compat.batchedUpdates(() => {
         if (didHandle) didHandle.call(inst, focused, event)
 
         if (focused !== inst.state.focused) {
           notify(handler, event)
           inst.setState({ focused })
         }
-      //})
+      })
     })
   }
 

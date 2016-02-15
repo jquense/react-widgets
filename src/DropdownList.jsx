@@ -12,7 +12,7 @@ import validateList    from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
 
 import { dataItem, dataText, dataIndexOf, valueMatcher } from './util/dataHelpers';
-import { widgetEditable, widgetEnabled, isDisabled, isReadOnly } from './util/interaction';
+import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let { omit, pick, result } = _;

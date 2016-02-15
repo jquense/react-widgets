@@ -12,6 +12,7 @@
     "mocha"
   ],
   "rules": {
-    "mocha/no-exclusive-tests": 2
+    "mocha/no-exclusive-tests": 2,
+    "no-console": 0
   }
 }

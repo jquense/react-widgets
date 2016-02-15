@@ -10,7 +10,7 @@ import { number as numberLocalizer } from './util/localizers';
 import Input from './NumberInput';
 import Btn from './WidgetButton';
 
-import { widgetEditable, widgetEnabled } from './util/interaction';
+import { widgetEditable } from './util/interaction';
 import { notify } from './util/widgetHelpers';
 
 let { directions } = constants;

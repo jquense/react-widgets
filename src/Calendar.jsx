@@ -15,7 +15,7 @@ import dates from './util/dates';
 import constants from './util/constants';
 import _ from './util/_'; //values, omit
 import { instanceId, notify } from './util/widgetHelpers';
-import { widgetEditable, widgetEnabled } from './util/interaction';
+import { widgetEditable } from './util/interaction';
 
 let dir    = constants.directions
   , values = obj => Object.keys(obj).map( k => obj[k] )
