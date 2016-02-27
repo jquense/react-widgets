@@ -79,22 +79,29 @@
 
 	var _deconstructNumberFormat2 = babelHelpers.interopRequireDefault(_deconstructNumberFormat);
 
-	function simpleNumber() {
+	var defaults = {
+	  decimal: '.',
+	  grouping: ','
+	};
+
+	function simpleNumber(options) {
+	  var _babelHelpers$_extends = babelHelpers._extends({}, defaults, options);
+
+	  var decimal = _babelHelpers$_extends.decimal;
+	  var grouping = _babelHelpers$_extends.grouping;
 
 	  var localizer = {
 	    formats: {
-	      'default': '-#,##0.'
+	      'default': '-#' + grouping + '##0' + decimal
 	    },
 
-	    parse: function parse(value, format) {
+	    // TODO major bump consistent ordering
+	    parse: function parse(value, culture, format) {
 	      if (format) {
-	        var data = _deconstructNumberFormat2['default'](format);
+	        var data = _deconstructNumberFormat2['default'](format),
+	            negative = data.negativeLeftSymbol && value.indexOf(data.negativeLeftSymbol) !== -1 || data.negativeRightSymbol && value.indexOf(data.negativeRightSymbol) !== -1;
 
-	        if (data.negativeLeftPos !== -1) value = value.substr(data.negativeLeftPos + 1);
-
-	        if (data.negativeRightPos !== -1) value = value.substring(0, data.negativeRightPos);
-
-	        value = value.replace(data.prefix, '').replace(data.suffix, '');
+	        value = value.replace(data.negativeLeftSymbol, '').replace(data.negativeRightSymbol, '').replace(data.prefix, '').replace(data.suffix, '');
 
 	        var halves = value.split(data.decimalChar);
 
@@ -102,15 +109,23 @@
 
 	        if (data.decimalsSeparator) halves[1] = halves[1].replace(new RegExp('\\' + data.decimalsSeparator, 'g'));
 
-	        value = halves.join(data.decimalChar);
-	      }
-	      var number = parseFloat(value);
+	        if (halves[1] === '') halves.pop();
 
-	      return number;
+	        value = halves.join('.');
+	        value = +value;
+
+	        if (negative) value = -1 * value;
+	      } else value = parseFloat(value);
+
+	      return isNaN(value) ? null : value;
 	    },
 
 	    format: function format(value, _format) {
 	      return _formatNumberWithString2['default'](value, _format);
+	    },
+
+	    decimalChar: function decimalChar(format) {
+	      return format && _deconstructNumberFormat2['default'](format).decimalsSeparator || '.';
 	    },
 
 	    precision: function precision(format) {
@@ -718,19 +733,11 @@
 	    var decim = number[1].slice(0, places);
 	    //if next digit was >= 5 we need to round up
 	    if (+(number[1].substr(places, 1)) >= 5) {
-	      //But first count leading zeros as converting to a number will loose them
-	      var leadingzeros = "";
-	      while (decim.charAt(0)==="0") {
-	        leadingzeros = leadingzeros + "0";
-	        decim = decim.substr(1);
-	      }
-	      //Then we can change decim to a number and add 1 before replacing leading zeros
-	      decim = (+decim + 1) + '';
-	      decim = leadingzeros + decim;
+	      decim = (+decim + 1) + ''
 	      if (decim.length > places) {
 	        //adding one has made it longer
-	        number[0] = (+number[0]+ +decim.charAt(0)) + ''; //add value of firstchar to the integer part
-	        decim = decim.substring(1);   //ignore the 1st char at the beginning which is the carry to the integer part
+	        decim = decim.substring(1);   //ignore the 1 at the beginning which is the carry to the integer part
+	        number[0] = (+number[0]+1) + '' //add 1 to the integer part
 	      }
 	    }
 	    number[1] = decim;
