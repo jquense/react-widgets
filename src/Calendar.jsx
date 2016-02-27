@@ -65,6 +65,9 @@ let propTypes = {
   min:           React.PropTypes.instanceOf(Date),
   max:           React.PropTypes.instanceOf(Date),
 
+  currentDate:         React.PropTypes.instanceOf(Date),
+  onCurrentDateChange: React.PropTypes.func,
+
   initialView:   React.PropTypes.oneOf(VIEW_OPTIONS),
 
   finalView(props, propname, componentName){
@@ -117,12 +120,9 @@ let Calendar = React.createClass({
   propTypes,
 
   getInitialState(){
-    var value = this.inRangeValue(this.props.value);
-
     return {
       selectedIndex: 0,
-      view:          this.props.initialView || 'month',
-      currentDate:   value ? new Date(value) : this.inRangeValue(new Date())
+      view:          this.props.initialView || 'month'
     }
   },
 
@@ -132,6 +132,7 @@ let Calendar = React.createClass({
       value:        null,
       min:          new Date(1900, 0, 1),
       max:          new Date(2099, 11, 31),
+      currentDate:  new Date(),
 
       initialView:  'month',
       finalView:    'century',
@@ -142,6 +143,10 @@ let Calendar = React.createClass({
       ariaActiveDescendantKey: 'calendar',
       messages: msgs({})
     }
+  },
+
+  componentWillMount() {
+    this.changeCurrentDate(this.props.value)
   },
 
   componentWillReceiveProps(nextProps) {
@@ -157,10 +162,9 @@ let Calendar = React.createClass({
       this.setState({ view: view = nextProps.finalView })
 
     //if the value changes reset views to the new one
-    if ( !dates.eq(val, dateOrNull(this.props.value), VIEW_UNIT[view]))
-      this.setState({
-        currentDate: val ? new Date(val) : new Date()
-      })
+    if ( !dates.eq(val, dateOrNull(this.props.value), VIEW_UNIT[view])) {
+      this.changeCurrentDate(val, nextProps.currentDate)
+    }
   },
 
   render() {
@@ -168,9 +172,9 @@ let Calendar = React.createClass({
     let {
         className, value, footerFormat
       , disabled, readOnly, finalView, footer
-      , messages, min, max, culture, duration } = this.props
+      , messages, min, max, culture, duration, currentDate } = this.props
 
-    let { view, currentDate, slideDirection, focused } = this.state;
+    let { view, slideDirection, focused } = this.state;
 
     var View = VIEW[view]
       , unit = VIEW_UNIT[view]
@@ -258,7 +262,7 @@ let Calendar = React.createClass({
     if ( !date )
       date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
         ? this.nextDate(direction)
-        : this.state.currentDate
+        : this.props.currentDate
 
     if (direction === dir.DOWN )
       view = ALT_VIEW[view] || view
@@ -270,8 +274,9 @@ let Calendar = React.createClass({
       notify(this.props.onNavigate, [date, slideDir, view])
       this.focus(true);
 
+      this.changeCurrentDate(date);
+
       this.setState({
-        currentDate:    date,
         slideDirection: slideDir,
         view: view
       })
@@ -286,12 +291,20 @@ let Calendar = React.createClass({
   @widgetEditable
   change(date){
     if (this.state.view === this.props.initialView){
+      this.changeCurrentDate(date)
       notify(this.props.onChange, date)
       this.focus();
       return;
     }
 
     this.navigate(dir.DOWN, date)
+  },
+
+  @widgetEditable
+  changeCurrentDate(date, currentDate = this.props.currentDate){
+    var inRangeDate = this.inRangeValue(date ? new Date(date) : currentDate)
+    if (dates.eq(inRangeDate, dateOrNull(currentDate), VIEW_UNIT[this.state.view])) return
+    notify(this.props.onCurrentDateChange, inRangeDate)
   },
 
   @widgetEditable
@@ -306,8 +319,9 @@ let Calendar = React.createClass({
     if ( this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
       this.focus();
 
+      this.changeCurrentDate(date);
+
       this.setState({
-        currentDate:    date,
         slideDirection: slideDir,
         view: view
       })
@@ -320,7 +334,7 @@ let Calendar = React.createClass({
       , unit   = view === views.MONTH ? view : views.YEAR
       , multi  = MULTIPLIER[view] || 1;
 
-    return dates[method](this.state.currentDate, 1 * multi, unit)
+    return dates[method](this.props.currentDate, 1 * multi, unit)
   },
 
    @widgetEditable
@@ -328,7 +342,7 @@ let Calendar = React.createClass({
     var ctrl = e.ctrlKey
       , key  = e.key
       , direction = ARROWS_TO_DIRECTION[key]
-      , current = this.state.currentDate
+      , current = this.props.currentDate
       , view = this.state.view
       , unit = VIEW_UNIT[view]
       , currentDate = current;
@@ -359,7 +373,7 @@ let Calendar = React.createClass({
             this.navigate(dir.LEFT, currentDate)
 
           else
-            this.setState({ currentDate })
+            this.changeCurrentDate(currentDate)
         }
       }
     }
@@ -372,7 +386,7 @@ let Calendar = React.createClass({
         culture
       , ...props } = this.props
       , view = this.state.view
-      , dt   = this.state.currentDate;
+      , dt   = this.props.currentDate;
 
     if ( view === 'month')
       return dateLocalizer.format(dt, format(props, 'header'), culture)
@@ -422,6 +436,6 @@ function msgs(msgs){
 
 export default createUncontrolledWidget(Calendar, {
   value: 'onChange',
-  viewDate: 'onViewDateChange',
+  currentDate: 'onCurrentDateChange',
   view: 'onViewChange'
 });

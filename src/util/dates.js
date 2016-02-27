@@ -64,12 +64,12 @@ var dates = Object.assign(dateMath, {
       : date
   },
 
-  merge(date, time){
+  merge(date, time, defaultDate){
     if( time == null && date == null)
       return null
 
-    if( time == null) time = new Date()
-    if( date == null) date = new Date()
+    if( time == null) time = defaultDate || new Date()
+    if( date == null) date = defaultDate || new Date()
 
     date = dates.startOf(date, 'day')
     date = dates.hours(date,        dates.hours(time))
