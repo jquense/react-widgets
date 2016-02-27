@@ -18,7 +18,8 @@ export default function FocusMixin({ willHandle, didHandle }) {
 
         if (focused !== inst.state.focused) {
           notify(handler, event)
-          inst.setState({ focused })
+          if (inst.isMounted())
+            inst.setState({ focused })
         }
       })
     })
