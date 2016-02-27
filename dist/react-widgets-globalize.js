@@ -1,4 +1,4 @@
-/*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -45,16 +45,31 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*** IMPORTS FROM imports-loader ***/
+	var module = __webpack_require__(1);
+	var args = [Globalize];
+
+
+	if (typeof module === 'function') {
+	  module.apply(null, args || [])
+	}
+
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
-	var babelHelpers = __webpack_require__(1);
+	var babelHelpers = __webpack_require__(2);
 
 	exports.__esModule = true;
 	exports['default'] = globalizeLocalizers;
 
-	var _react = __webpack_require__(2);
+	var _react = __webpack_require__(3);
 
-	var _configure = __webpack_require__(3);
+	var _configure = __webpack_require__(4);
 
 	var _configure2 = babelHelpers.interopRequireDefault(_configure);
 
@@ -73,7 +88,7 @@
 	}
 
 	function globalizeLocalizers(globalize) {
-	  var localizers = globalize.load ? newGlobalize(globalize) : oldGlobalize(globalize);
+	  var localizers = globalize.locale && !globalize.cultures ? newGlobalize(globalize) : oldGlobalize(globalize);
 
 	  _configure2['default'].setLocalizers(localizers);
 	  return localizers;
@@ -134,8 +149,9 @@
 
 	    propType: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.func]),
 
-	    parse: function parse(value, format, culture) {
-	      return locale(culture).parseNumber(value, format);
+	    // TODO major bump consistent ordering
+	    parse: function parse(value, culture) {
+	      return locale(culture).parseNumber(value);
 	    },
 
 	    format: function format(value, _format2, culture) {
@@ -144,6 +160,11 @@
 	      if (_format2 && _format2.currency) return locale(culture).formatCurrency(value, _format2.currency, _format2);
 
 	      return locale(culture).formatNumber(value, _format2);
+	    },
+
+	    decimalChar: function decimalChar(format, culture) {
+	      var str = this.format(1.1, { raw: '0.0' }, culture);
+	      return str[str.length - 2] || '.';
 	    },
 
 	    precision: function precision(format) {
@@ -210,12 +231,25 @@
 	    }
 	  };
 
+	  function formatData(format, _culture) {
+	    var culture = getCulture(_culture),
+	        numFormat = culture.numberFormat;
+
+	    if (typeof format === 'string') {
+	      if (format.indexOf('p') !== -1) numFormat = numFormat.percent;
+	      if (format.indexOf('c') !== -1) numFormat = numFormat.curency;
+	    }
+
+	    return numFormat;
+	  }
+
 	  var number = {
 
 	    formats: {
 	      'default': 'D'
 	    },
 
+	    // TODO major bump consistent ordering
 	    parse: function parse(value, culture) {
 	      return globalize.parseFloat(value, 10, culture);
 	    },
@@ -224,20 +258,17 @@
 	      return globalize.format(value, _format4, culture);
 	    },
 
+	    decimalChar: function decimalChar(format, culture) {
+	      var data = formatData(format, culture);
+	      return data['.'] || '.';
+	    },
+
 	    precision: function precision(format, _culture) {
-	      var culture = getCulture(_culture),
-	          numFormat = culture.numberFormat;
+	      var data = formatData(format, _culture);
 
-	      if (typeof format === 'string') {
-	        if (format.length > 1) return parseFloat(format.substr(1));
+	      if (typeof format === 'string' && format.length > 1) return parseFloat(format.substr(1));
 
-	        if (format.indexOf('p') !== -1) numFormat = numFormat.percent;
-	        if (format.indexOf('c') !== -1) numFormat = numFormat.curency;
-
-	        return numFormat.decimals || null;
-	      }
-
-	      return null;
+	      return data ? data.decimals : null;
 	    }
 	  };
 
@@ -246,7 +277,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -346,13 +377,13 @@
 	})
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	module.exports = window.React;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	module.exports = window.ReactWidgets;

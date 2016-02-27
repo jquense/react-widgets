@@ -8,7 +8,7 @@
   background:       @popup-bg;
   padding:          2px;
   overflow:         auto;
-  
+
   // the offsets allows for drop shadow to not be clipped by the container
   margin-bottom:    10px;
   left:             10px;
@@ -31,7 +31,11 @@
   // offset for drop shadow on rw-popup
   left:  -10px - @input-border-width;
   right: -10px - @input-border-width;
-  
+
+  .rw-widget.rw-state-focus & {
+    z-index: @popup-zindex + 10;
+  }
+
   &.rw-dropup {
     top:    auto;
     bottom: 100%;
@@ -42,4 +46,3 @@
     width: 18em; //15em; ?
   }
 }
-

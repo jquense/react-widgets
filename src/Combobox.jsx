@@ -12,7 +12,7 @@ import GroupableList   from './ListGroupable';
 import validateList    from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
 import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
-import { widgetEditable, widgetEnabled, isDisabled, isReadOnly } from './util/interaction';
+import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
@@ -70,7 +70,16 @@ var ComboBox = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')('input')
+    require('./mixins/AriaDescendantMixin')('input'),
+    require('./mixins/FocusMixin')({
+      willHandle(focused) {
+        // not suggesting anymore
+        !focused && this.refs.input.accept()
+      },
+      didHandle(focused) {
+        if (!focused) this.close()
+      }
+    })
   ],
 
   propTypes: propTypes,
@@ -174,8 +183,8 @@ var ComboBox = React.createClass({
         {...elementProps}
         ref="element"
         onKeyDown={this._keyDown}
-        onFocus={this._focus.bind(null, true)}
-        onBlur ={this._focus.bind(null, false)}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}
         tabIndex={'-1'}
         className={cx(className, 'rw-combobox', 'rw-widget', {
           'rw-state-focus':     focused,
@@ -287,22 +296,6 @@ var ComboBox = React.createClass({
     this.refs.input.focus()
   },
 
-  @widgetEnabled
-  _focus(focused, e){
-
-    !focused && this.refs.input.accept() //not suggesting anymore
-
-    this.setTimeout('focus', () => {
-
-      if( !focused) this.close()
-
-      if( focused !== this.state.focused) {
-        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
-        this.setState({ focused: focused })
-      }
-    })
-  },
-
   @widgetEditable
   _keyDown(e){
     var self = this
@@ -318,22 +311,22 @@ var ComboBox = React.createClass({
     if (e.defaultPrevented)
       return
 
-    if ( key === 'End' )
+    if (key === 'End')
       if ( isOpen ) this.setState({ focusedItem: list.last() })
       else          select(list.last(), true)
 
-    else if ( key === 'Home' )
-      if ( isOpen ) this.setState({ focusedItem: list.first() })
+    else if (key === 'Home')
+      if (isOpen) this.setState({ focusedItem: list.first() })
       else          select(list.first(), true)
 
-    else if ( key === 'Escape' && isOpen )
+    else if (key === 'Escape' && isOpen)
       this.close()
 
-    else if ( key === 'Enter' && isOpen ) {
+    else if (key === 'Enter' && isOpen) {
+      e.preventDefault();
       select(this.state.focusedItem, true)
     }
-
-    else if ( key === 'ArrowDown' ) {
+    else if (key === 'ArrowDown') {
       if ( alt )
         this.open()
       else {

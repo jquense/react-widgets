@@ -1,4 +1,4 @@
-/*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -45,9 +45,24 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*** IMPORTS FROM imports-loader ***/
+	var module = __webpack_require__(1);
+	var args = [];
+
+
+	if (typeof module === 'function') {
+	  module.apply(null, args || [])
+	}
+
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
-	var babelHelpers = __webpack_require__(1);
+	var babelHelpers = __webpack_require__(2);
 
 	exports.__esModule = true;
 	exports['default'] = simpleNumber;
@@ -64,22 +79,29 @@
 
 	var _deconstructNumberFormat2 = babelHelpers.interopRequireDefault(_deconstructNumberFormat);
 
-	function simpleNumber() {
+	var defaults = {
+	  decimal: '.',
+	  grouping: ','
+	};
+
+	function simpleNumber(options) {
+	  var _babelHelpers$_extends = babelHelpers._extends({}, defaults, options);
+
+	  var decimal = _babelHelpers$_extends.decimal;
+	  var grouping = _babelHelpers$_extends.grouping;
 
 	  var localizer = {
 	    formats: {
-	      'default': '-#,##0.'
+	      'default': '-#' + grouping + '##0' + decimal
 	    },
 
-	    parse: function parse(value, format) {
+	    // TODO major bump consistent ordering
+	    parse: function parse(value, culture, format) {
 	      if (format) {
-	        var data = _deconstructNumberFormat2['default'](format);
+	        var data = _deconstructNumberFormat2['default'](format),
+	            negative = data.negativeLeftSymbol && value.indexOf(data.negativeLeftSymbol) !== -1 || data.negativeRightSymbol && value.indexOf(data.negativeRightSymbol) !== -1;
 
-	        if (data.negativeLeftPos !== -1) value = value.substr(data.negativeLeftPos + 1);
-
-	        if (data.negativeRightPos !== -1) value = value.substring(0, data.negativeRightPos);
-
-	        value = value.replace(data.prefix, '').replace(data.suffix, '');
+	        value = value.replace(data.negativeLeftSymbol, '').replace(data.negativeRightSymbol, '').replace(data.prefix, '').replace(data.suffix, '');
 
 	        var halves = value.split(data.decimalChar);
 
@@ -87,15 +109,23 @@
 
 	        if (data.decimalsSeparator) halves[1] = halves[1].replace(new RegExp('\\' + data.decimalsSeparator, 'g'));
 
-	        value = halves.join(data.decimalChar);
-	      }
-	      var number = parseFloat(value);
+	        if (halves[1] === '') halves.pop();
 
-	      return number;
+	        value = halves.join('.');
+	        value = +value;
+
+	        if (negative) value = -1 * value;
+	      } else value = parseFloat(value);
+
+	      return isNaN(value) ? null : value;
 	    },
 
 	    format: function format(value, _format) {
 	      return _formatNumberWithString2['default'](value, _format);
+	    },
+
+	    decimalChar: function decimalChar(format) {
+	      return format && _deconstructNumberFormat2['default'](format).decimalsSeparator || '.';
 	    },
 
 	    precision: function precision(format) {
@@ -111,7 +141,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -211,7 +241,6 @@
 	})
 
 /***/ },
-/* 2 */,
 /* 3 */
 /***/ function(module, exports) {
 

@@ -19,7 +19,8 @@ var NumberPicker = require('../src/NumberPicker.jsx')
 // var List = require('../src/List.jsx')
 
 require('../src/less/react-widgets.less')
-require('./configure-moment')
+//require('./configure-globalize')
+//require('./configure-simplenumber')
 
 var chance = new (require('chance'))
 
@@ -90,17 +91,16 @@ var App = React.createClass({
 
           <section className="example" style={{ marginBottom: 20 }}>
             <button
-              onClick={() => this.setState({
-                calDate: dates.add(this.state.calDate, 1, 'month')
-              })}
+              onClick={this.onToggle}
             >
               add
             </button>
-            <DropdownList
-              dropUp={this.state.dropUp}
+            <DropdownList textField='name'
               open={this.state.open}
-              onToggle={this.onToggle}
+              dropUp={this.state.dropUp}
               data={this.state.data}
+              duration={3000}
+              filter='startsWith'
             />
           </section>
         </div>
@@ -108,9 +108,11 @@ var App = React.createClass({
     )
   },
 
-  onToggle(open){
-    open && (this._changeDropUp = true)
-    this.setState({ open })
+  onToggle() {
+    this.setState({ open: true }, () => {
+      setTimeout(() => this.setState({ dropUp: true }), 1500)
+    })
+    //this.setState({ dropUp: !this.state.dropUp })
   }
 
 

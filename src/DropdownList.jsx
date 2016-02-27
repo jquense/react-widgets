@@ -12,7 +12,7 @@ import validateList    from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
 
 import { dataItem, dataText, dataIndexOf, valueMatcher } from './util/dataHelpers';
-import { widgetEditable, widgetEnabled, isDisabled, isReadOnly } from './util/interaction';
+import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let { omit, pick, result } = _;
@@ -69,7 +69,12 @@ var DropdownList = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')()
+    require('./mixins/AriaDescendantMixin')(),
+    require('./mixins/FocusMixin')({
+      didHandle(focused) {
+        if (!focused) this.close()
+      }
+    })
   ],
 
   propTypes: propTypes,
@@ -160,8 +165,8 @@ var DropdownList = React.createClass({
         onKeyDown={this._keyDown}
         onKeyPress={this._keyPress}
         onClick={this._click}
-        onFocus={this._focus.bind(null, true)}
-        onBlur ={this._focus.bind(null, false)}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}
         className={cx(className, 'rw-dropdownlist', 'rw-widget', {
           'rw-state-disabled':  disabled,
           'rw-state-readonly':  readOnly,
@@ -223,24 +228,12 @@ var DropdownList = React.createClass({
       <div ref='filterWrapper' className='rw-filter-input'>
         <span className='rw-select rw-btn'><i className='rw-i rw-i-search'/></span>
         <input ref='filter' className='rw-input'
+          autoComplete='off'
           placeholder={_.result(messages.filterPlaceholder, this.props)}
           value={this.props.searchTerm }
           onChange={ e => notify(this.props.onSearch, e.target.value)}/>
       </div>
     )
-  },
-
-  @widgetEnabled
-  _focus(focused, e){
-
-    this.setTimeout('focus', () => {
-      if (!focused) this.close()
-
-      if (focused !== this.state.focused) {
-        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
-        this.setState({ focused: focused })
-      }
-    })
   },
 
   @widgetEditable
@@ -292,10 +285,16 @@ var DropdownList = React.createClass({
       e.preventDefault()
     }
     else if (key === 'Escape' && isOpen) {
+      e.preventDefault();
       closeWithFocus()
     }
     else if ((key === 'Enter' || (key === ' ' && !filtering)) && isOpen ) {
+      e.preventDefault();
       change(this.state.focusedItem, true)
+    }
+    else if (key === ' ' && !filtering && !isOpen) {
+      e.preventDefault();
+      this.open()
     }
     else if (key === 'ArrowDown') {
       if (alt)         this.open()

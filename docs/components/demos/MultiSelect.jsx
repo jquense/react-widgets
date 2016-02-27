@@ -112,7 +112,7 @@ module.exports = React.createClass({
               <label className='form-label'>Disable Multiselect Values</label>
               <RW.Multiselect
                   value={ Array.isArray(this.state.disabled) ? this.state.disabled : [] }
-                  data={allVals}
+                  data={list}
                   textField='name'
                   valueField='id'
                   disabled={this.state.disabled === true}

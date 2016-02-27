@@ -13,7 +13,7 @@ import validateList from './util/validateListInterface';
 import scrollTo from 'dom-helpers/util/scrollTo';
 
 import { dataItem } from './util/dataHelpers';
-import { widgetEditable, widgetEnabled } from './util/interaction';
+import { widgetEditable } from './util/interaction';
 
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabled, isReadOnly, contains } from './util/interaction';
@@ -60,7 +60,13 @@ var SelectList = React.createClass({
   mixins: [
     require('./mixins/TimeoutMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')()
+    require('./mixins/AriaDescendantMixin')(),
+    require('./mixins/FocusMixin')({
+      willHandle(focused) {
+        if (focused)
+          this.focus()
+      }
+    })
   ],
 
   getDefaultProps(){
@@ -131,8 +137,8 @@ var SelectList = React.createClass({
       <div {...elementProps}
         onKeyDown={this._keyDown}
         onKeyPress={this._keyPress}
-        onFocus={this._focus.bind(null, true)}
-        onBlur={this._focus.bind(null, false)}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}
         role={'radiogroup'}
         aria-busy={!!busy}
         aria-disabled={isDisabled(this.props)}
@@ -237,6 +243,10 @@ var SelectList = React.createClass({
     this.search(String.fromCharCode(e.which))
   },
 
+  focus() {
+    compat.findDOMNode(this.refs.list).focus()
+  },
+
   selectAll(){
     var { disabled, readOnly, valueField } = this.props
       , values = this.state.dataItems
@@ -271,19 +281,6 @@ var SelectList = React.createClass({
       : values.filter( v => v !== item)
 
     notify(this.props.onChange, [values || []])
-  },
-
-  @widgetEnabled
-  _focus(focused, e) {
-    if (focused)
-      compat.findDOMNode(this.refs.list).focus()
-
-    this.setTimeout('focus', () => {
-      if (focused !== this.state.focused) {
-        notify(this.props[focused ? 'onFocus' : 'onBlur'], e)
-        this.setState({ focused: focused })
-      }
-    })
   },
 
   search(character) {

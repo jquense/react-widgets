@@ -1,10 +1,7 @@
 'use strict';
-/*global it, describe, expect, sinon, $*/
-require('../vendor/phantomjs-shim')
-
 import ReactDOM from 'react-dom';
 
-var React = require('react/addons')
+var React = require('react')
   , Calendar = require('../src/Calendar.jsx')
   , BaseCalendar = require('../src/Calendar.jsx').ControlledComponent
   , Header = require('../src/Header.jsx')
@@ -20,9 +17,9 @@ var React = require('react/addons')
   , transform = require('../src/util/_').transform;
 
 
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
-  , findTag = TestUtils.findRenderedDOMComponentWithTag
+var TestUtils = require('react-addons-test-utils')
+var render = TestUtils.renderIntoDocument
+  , findMultiTag = TestUtils.scryRenderedDOMComponentsWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , findType = TestUtils.findRenderedComponentWithType
   , trigger = TestUtils.Simulate;
@@ -195,24 +192,23 @@ describe('Calendar', () => {
       findClass(footer, 'rw-btn'))
 
     expect(
-      dates.eq(picker.state.currentDate, new Date(), 'day'))
+      dates.eq(picker.props.currentDate, new Date(), 'day'))
         .to.be.ok()
   })
 
   it('should constrain movement by min and max', () => {
     var date     = new Date(2014, 5, 15)
-      , picker   = render(<BaseCalendar value={date} max={new Date(2014, 5, 25)}  min={new Date(2014, 5, 5)} onChange={()=>{}}/>)
+      , picker   = render(<Calendar value={date} max={new Date(2014, 5, 25)}  min={new Date(2014, 5, 5)} onChange={()=>{}}/>)
       , header   = findType(picker, Header)
       , rightBtn = findClass(header, 'rw-btn-right')
       , leftBtn  = findClass(header, 'rw-btn-left');
 
-    trigger.click(rightBtn)
 
-    expect(picker.state.currentDate).to.eql(date)
+    trigger.click(rightBtn)
+    expect(picker.refs.inner.props.currentDate).to.eql(date);
 
     trigger.click(leftBtn)
-
-    expect(picker.state.currentDate).to.eql(date)
+    expect(picker.refs.inner.props.currentDate).to.eql(date);
 
   })
 
@@ -220,18 +216,17 @@ describe('Calendar', () => {
     require('globalize/lib/cultures/globalize.culture.es')
 
     var date   = new Date(2014, 5, 15)
-      , picker = render(<BaseCalendar value={date} culture='es' onChange={()=>{}}/>)
+      , picker = render(<Calendar value={date} culture='es' onChange={()=>{}}/>)
       , headerBtn = findClass(picker, 'rw-btn-view')
-      , head = findTag(picker, 'thead');
 
     syncAnimate()
 
     expect($(headerBtn).text()).to.equal('junio 2014')
-    expect($(head.children[0].firstChild).text()).to.equal('lu')
+    expect($(findMultiTag(picker, 'thead')[0].children[0].firstChild).text()).to.equal('lu')
 
-    picker = render(<BaseCalendar initialView='year' value={date} culture='es' onChange={()=>{}}/>)
+    picker = render(<Calendar initialView='year' value={date} culture='es' onChange={()=>{}}/>)
 
-    expect($(findTag(picker, 'tbody').children[0].firstChild).text())
+    expect($(findMultiTag(picker, 'tbody')[0].children[0].firstChild).text())
       .to.equal('ene')
   })
 
@@ -260,6 +255,18 @@ describe('Calendar', () => {
     calendar = render(<BaseCalendar {...formats} initialView='century' value={date} onChange={()=>{}} />)
 
     expect(findType(calendar, Century).props.decadeFormat).to.equal('decadeFormat')
+  })
+
+  it('should accept a currentDate', function(){
+    var currentDate = new Date(2000, 1, 15)
+    var calendar = render(<Calendar currentDate={currentDate} onCurrentDateChange={()=>{}}/>)
+
+    expect(() => findType(calendar, Month)).to.not.throwException();
+
+    expect(findType(calendar, Month).props.focused.getFullYear()).to.be(2000);
+    expect(findType(calendar, Month).props.focused.getMonth()).to.be(1);
+    expect(findType(calendar, Month).props.focused.getDate()).to.be(15);
+
   })
 
   describe('Date Helpers', () => {

@@ -1,6 +1,6 @@
 import configure from '../configure'
 
-export default function(moment){
+export default function(moment) {
   if (typeof moment !== 'function')
     throw new TypeError('You must provide a valid moment object')
 
@@ -51,7 +51,10 @@ export default function(moment){
     },
 
     parse(value, format, culture) {
-      return getMoment(culture, value, format).toDate()
+      if (!value) return null;
+      const m = getMoment(culture, value, format);
+      if (m.isValid()) return m.toDate();
+      return null;
     },
 
     format(value, format, culture) {

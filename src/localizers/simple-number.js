@@ -2,24 +2,29 @@ import configure from '../configure'
 import formatNumber from 'format-number-with-string';
 import deconstruct from 'deconstruct-number-format';
 
-export default function simpleNumber(){
+let defaults = {
+  decimal: '.',
+  grouping: ','
+}
+
+export default function simpleNumber(options) {
+  let { decimal, grouping } = { ...defaults, ...options }
 
   let localizer = {
     formats: {
-      default: '-#,##0.'
+      default: `-#${grouping}##0${decimal}`
     },
 
-    parse(value, format){
+    // TODO major bump consistent ordering
+    parse(value, culture, format) {
       if (format) {
         let data = deconstruct(format)
-
-        if (data.negativeLeftPos !== -1)
-          value = value.substr(data.negativeLeftPos + 1)
-
-        if (data.negativeRightPos !== -1)
-          value = value.substring(0, data.negativeRightPos)
+          , negative = (data.negativeLeftSymbol && value.indexOf(data.negativeLeftSymbol) !== -1)
+                    || (data.negativeRightSymbol && value.indexOf(data.negativeRightSymbol) !== -1)
 
         value = value
+          .replace(data.negativeLeftSymbol, '')
+          .replace(data.negativeRightSymbol, '')
           .replace(data.prefix, '')
           .replace(data.suffix, '')
 
@@ -31,18 +36,29 @@ export default function simpleNumber(){
         if (data.decimalsSeparator)
           halves[1] = halves[1].replace(new RegExp('\\' + data.decimalsSeparator, 'g'))
 
-        value = halves.join(data.decimalChar)
-      }
-      let number = parseFloat(value)
+        if (halves[1] === '') halves.pop();
 
-      return number
+        value = halves.join('.')
+        value = +value
+
+        if (negative)
+          value = -1 * value
+      }
+      else
+        value = parseFloat(value)
+
+      return isNaN(value) ? null : value
     },
 
-    format(value, format){
+    format(value, format) {
       return formatNumber(value, format)
     },
 
-    precision(format){
+    decimalChar(format) {
+      return format && deconstruct(format).decimalsSeparator || '.'
+    },
+
+    precision(format) {
       let data = deconstruct(format)
       return data.maxRight !== -1 ? data.maxRight : null
     }

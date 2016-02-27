@@ -1,80 +1,78 @@
 import { findDOMNode } from 'react-dom';
+import tsp from 'teaspoon';
 
-var React = require('react/addons');
+var React = require('react');
 var NumberPicker = require('../src/NumberPicker.jsx');
 
 //console.log(sinon)
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
+var TestUtils = require('react-addons-test-utils');
+var render = TestUtils.renderIntoDocument
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , trigger = TestUtils.Simulate;
 
 describe('NumberPicker', function(){
 
 
-  it('should set values correctly', function(done){
-    var instance = render(<NumberPicker value={15} format='D' onChange={()=>{}} />)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+  it('should set values correctly', function() {
+    let expectValueToBe = val =>
+      inst => expect(inst.find('.rw-input').dom().value).to.be(val)
 
-    expect(input.value).to.be('15');
-
-    instance.setProps({ value: null, min: 10, max: 10 }, function(){
-      expect(input.value).to.be('');
-
-      instance.setProps({ value: 1, min: 10 }, function(){
-        expect(input.value).to.be('10');
-
-        instance.setProps({ value: 20, max: 10 }, function(){
-          expect(input.value).to.be('10');
-
-          instance.setProps({ value: 10, format: 'c' }, function(){
-            expect(input.value).to.be('$10.00');
-            done()
-          })
-        })
-      })
-    })
+    tsp(<NumberPicker value={15} format='D' onChange={()=>{}} />)
+      .render()
+        .tap(expectValueToBe('15'))
+      .props({ value: null, min: 10, max: 10 })
+        .tap(expectValueToBe(''))
+      .props({ value: 1, min: 10 })
+        .tap(expectValueToBe('10'))
+      .props({ value: 20, max: 10 })
+        .tap(expectValueToBe('10'))
+      .props({ value: 10, format: 'c' })
+        .tap(expectValueToBe('$10.00'))
   })
 
-  it('should be able to accept a placeholder', function(done){
-    var picker = render(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
-      , input  = findClass(picker, 'rw-input');
+  it('should be able to accept a placeholder', function() {
+    let input = tsp(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
+      .render()
+      .find('.rw-input')
+      .dom()
 
      expect(input.placeholder).to.be('enter number here');
-     done();
   })
 
   it('should pass NAME down', function(){
-    var instance = render(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+    let input = tsp(<NumberPicker value={15} format='D' onChange={()=>{}} name='hello'/>)
+      .render()
+      .find('.rw-input')
+      .dom()
 
     expect(input.hasAttribute('name')).to.be(true)
   })
 
-  it('should not fire change until there is a valid value', function(done){
+  it('should not fire change until there is a valid value', function(){
     var change = sinon.spy()
-      , instance = render(<NumberPicker value={150} format='D' min={100} onChange={change} />)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+    var input = tsp(<NumberPicker value={150} format='D' min={100} onChange={change} />)
+      .render()
+      .find('.rw-input')
 
-    input.value = '15'
-    trigger.change(input)
+    input.dom().value = '15'
+    input.trigger('change')
 
     expect(change.called).to.be(false);
-    expect(input.value).to.be('15');
 
-    input.value = '154'
-    trigger.change(input)
+    input.dom().value = '154'
+    input.trigger('change')
     expect(change.calledOnce).to.be(true);
 
     //should call change on a null value when no min
     change.reset()
-    instance.setProps({ value: 15, min: -Infinity }, function(){
 
-      input.value = ''
-      trigger.change(input)
-      expect(change.calledOnce).to.be(true)
-      done()
-    })
+    input = tsp(<NumberPicker value={15} format='D' min={-Infinity} onChange={change} />)
+      .render()
+      .find('.rw-input')
+
+    input.dom().value = ''
+    input.trigger('change')
+    expect(change.calledOnce).to.be(true)
   })
 
   it('should change value when spinner is clicked', function(){
@@ -173,10 +171,12 @@ describe('NumberPicker', function(){
       , input  = findDOMNode(findClass(instance, 'rw-input'));
 
     trigger.change(input, { target: { value: '1.' } })
-    trigger.change(input, { target: { value: '12 221 ' } })
-    trigger.change(input, { target: { value: '221,' } })
 
     expect(change.callCount).to.be(0)
+
+    change = sinon.spy()
+    instance = render(<NumberPicker value={1.5} min={12} onChange={change} />)
+    input  = findDOMNode(findClass(instance, 'rw-input'))
   })
 
   it('should not trigger change while below min', function() {
@@ -215,41 +215,42 @@ describe('NumberPicker', function(){
 
   })
 
-  it('should change values on key down', function(done){
-    var change = sinon.spy()
-      , instance = render(<NumberPicker value={10} onChange={change} />)
-      , input  = findDOMNode(instance);
+  it('should change values on key down', function() {
+    var change = sinon.spy();
 
-    trigger.keyDown(input, { key: 'End'})
-    trigger.keyDown(input, { key: 'Home'})
-    expect(change.called).to.be(false)
+    let instance = tsp(
+      <NumberPicker value={10} onChange={change} />
+    ).render()
 
-    trigger.keyDown(input, { key: 'ArrowDown'})
+    instance
+      .trigger('keyDown', { key: 'End'})
+      .trigger('keyDown', { key: 'Home'})
+      .tap(() => {
+        expect(change.called).to.be(false)
+      })
+      .trigger('keyDown', { key: 'ArrowDown'})
+      .tap(() => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(9)).to.be(true)
+
+        change.reset()
+      })
+      .trigger('keyDown', { key: 'ArrowUp'})
+      .tap(() => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(11)).to.be(true)
+        change.reset()
+      })
+      .props({ min: 5, max: 15 })
+      .trigger('keyDown', { key: 'End'})
+      .tap(() => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(15)).to.be(true)
+        change.reset()
+      })
+      .trigger('keyDown', { key: 'Home'})
+
     expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(9)).to.be(true)
-
-    change.reset()
-
-    trigger.keyDown(input, { key: 'ArrowUp'})
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(11)).to.be(true)
-
-    change.reset()
-
-    instance.setProps({ min: 5, max: 15 }, function(){
-
-      trigger.keyDown(input, { key: 'End'})
-      expect(change.calledOnce).to.be(true)
-      expect(change.calledWith(15)).to.be(true)
-
-      change.reset()
-
-      trigger.keyDown(input, { key: 'Home'})
-
-      expect(change.calledOnce).to.be(true)
-      expect(change.calledWith(5)).to.be(true)
-
-      done()
-    })
+    expect(change.calledWith(5)).to.be(true)
   })
 })

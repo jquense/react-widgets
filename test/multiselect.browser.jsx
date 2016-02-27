@@ -2,12 +2,13 @@ require('../vendor/phantomjs-shim')
 
 import { findDOMNode } from 'react-dom';
 
-var React = require('react/addons');
+var React = require('react');
 var Select = require('../src/Multiselect.jsx')
-  , TagList = require('../src/MultiselectTagList.jsx');
+  , TagList = require('../src/MultiselectTagList.jsx')
+  , $t = require('teaspoon');
 
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
+var TestUtils = require('react-addons-test-utils');
+var render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , findType = TestUtils.findRenderedComponentWithType
@@ -252,27 +253,43 @@ describe('Multiselect', function(){
     expect(input.value).to.be('jim')
   })
 
+  it('should not trigger form submission', function(){
+    let spy;
+    let select = $t(
+      <form action='/' onSubmit={() => { throw new Error('should not submit!') }}>
+        <Select searchTerm="jim" data={dataList} onSearch={()=>{}} onKeyDown={spy = sinon.spy()}/>
+      </form>
+    ).render();
+
+    select.find('input')
+      .trigger('keyDown', { key: 'Enter' })
+
+    expect(spy.calledOnce).to.equal(true);
+  })
 
   it('should show create tag correctly', function(){
-    var select = render(<Select searchTerm="custom tag" onCreate={()=>{}} data={dataList} onSearch={()=>{}}/>);
+    var select = $t(
+      <Select
+        searchTerm="custom tag"
+        onCreate={()=>{}}
+        data={dataList}
+        onSearch={()=>{}}
+      />
+    );
 
-    expect(function err() {
-      findClass(select, 'rw-multiselect-create-tag') }).to.not.throwException()
-
-    select = render(<Select onCreate={()=>{}} data={dataList} onSearch={()=>{}}/>)
-
-    expect(function err() {
-      findClass(select, 'rw-multiselect-create-tag') }).to.throwException()
-
-    select = render(<Select searchTerm="custom tag"  data={dataList} onSearch={()=>{}}/>)
-
-    expect(function err() {
-      findClass(select, 'rw-multiselect-create-tag') }).to.throwException()
-
-    select = render(<Select searchTerm="asfasfas tag" data={dataList} onSearch={()=>{}}/>)
-
-    expect(function err() {
-      findClass(select, 'rw-multiselect-create-tag') }).to.throwException()
+    select
+      .render()
+      .tap(s => s
+        .single('.rw-multiselect-create-tag')
+      )
+      .props('searchTerm', undefined)
+      .tap(s => s
+        .none('.rw-multiselect-create-tag')
+      )
+      .props({searchTerm: 'custom', onCreate: undefined })
+      .tap(s => s
+        .none('.rw-multiselect-create-tag')
+      )
   })
 
   it('should call onCreate', function(){

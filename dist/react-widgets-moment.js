@@ -1,4 +1,4 @@
-/*! (c) 2015 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -45,9 +45,24 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*** IMPORTS FROM imports-loader ***/
+	var module = __webpack_require__(1);
+	var args = [moment];
+
+
+	if (typeof module === 'function') {
+	  module.apply(null, args || [])
+	}
+
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
-	var babelHelpers = __webpack_require__(1);
+	var babelHelpers = __webpack_require__(2);
 
 	exports.__esModule = true;
 
@@ -101,7 +116,10 @@
 	    },
 
 	    parse: function parse(value, format, culture) {
-	      return getMoment(culture, value, format).toDate();
+	      if (!value) return null;
+	      var m = getMoment(culture, value, format);
+	      if (m.isValid()) return m.toDate();
+	      return null;
 	    },
 
 	    format: function format(value, _format, culture) {
@@ -117,7 +135,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -217,7 +235,6 @@
 	})
 
 /***/ },
-/* 2 */,
 /* 3 */
 /***/ function(module, exports) {
 

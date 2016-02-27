@@ -4,15 +4,17 @@ require('../vendor/phantomjs-shim')
 
 import { findDOMNode } from 'react-dom';
 
-var React = require('react/addons');
+var React = require('react');
 var ComboBox = require('../src/Combobox.jsx');
+var Popup = require('../src/Popup.jsx')
+var $ = require('teaspoon');
 
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
+var TestUtils = require('react-addons-test-utils');
+var render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findType = TestUtils.findRenderedComponentWithType
   , trigger = TestUtils.Simulate;
+
 
 describe('ComboBox', function(){
   var dataList = [
@@ -22,56 +24,89 @@ describe('ComboBox', function(){
       ];
 
   it('should set initial values', function(){
-    var dropdown = render(
-          <ComboBox value={'hello'} onChange={()=>{}} />);
-
-    expect( findClass(dropdown, 'rw-input').value).to.be('hello');
+    $(<ComboBox value={'hello'} onChange={()=>{}} />)
+      .render()
+      .find('input.rw-input')
+      .tap(c =>
+        expect(c.dom().value).to.be('hello'));
   })
 
   it('should respect textField and valueFields', function(){
-    var comboBox = render(<ComboBox defaultValue={0} data={dataList} textField={ i => i.label } valueField='id' />);
-
-    expect(findClass(comboBox, 'rw-input').value)
-      .to.be('jimmy');
+    $(
+      <ComboBox
+        defaultValue={0}
+        data={dataList}
+        textField={ i => i.label }
+        valueField='id'
+      />
+    ).render()
+      .find('input.rw-input')
+      .tap(c =>
+        expect(c.dom().value).to.be('jimmy'));
   })
 
   it('should pass NAME down', function(){
-    var comboBox = render(<ComboBox defaultValue={0} data={dataList} textField='label' valueField='id' name='hello'/>)
-      , input  = findClass(comboBox, 'rw-input');
-
-    expect(input.hasAttribute('name')).to.be(true)
+    $(
+      <ComboBox
+        defaultValue={0}
+        data={dataList}
+        textField='label'
+        valueField='id'
+        name='hello'
+      />
+    ).render()
+      .find(':dom.rw-input')
+      .tap(c =>
+        expect(c.dom().hasAttribute('name')).to.be(true));
   })
 
   it('should start closed', function(done){
-    var comboBox = render(<ComboBox defaultValue={0} data={dataList} textField='label' valueField='id' />)
-      , input = findClass(comboBox, 'rw-input')
-      , popup = findType(comboBox, require('../src/Popup.jsx'));
+    var inst = $(
+      <ComboBox
+        defaultValue={0}
+        data={dataList}
+        textField='label'
+        valueField='id'
+      />
+    ).render()
 
-    expect(comboBox._values.open).to.not.be(true)
+    let input = inst.find('.rw-input:dom').dom()
+      , popup = inst.find(Popup).dom();
 
-    expect(findDOMNode(comboBox).className).to.not.match(/\brw-open\b/)
+    expect(inst.unwrap()._values.open).to.not.be(true)
+
+    expect(inst.dom().className).to.not.match(/\brw-open\b/)
     expect(input.getAttribute('aria-expanded')).to.be('false')
 
     setTimeout(function(){
-      expect(findDOMNode(popup).style.display).to.be('none')
+      expect(popup.style.display).to.be('none')
       done()
     }, 0)
   })
 
   it('should open when clicked', function(done){
-    var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0}/>)
-      , input = findClass(comboBox, 'rw-input')
-      , popup = findType(comboBox, require('../src/Popup.jsx'))
+    var inst = $(
+      <ComboBox
+        defaultValue={0}
+        data={dataList}
+        textField='label'
+        valueField='id'
+      />
+    ).render()
 
-    trigger.click(findClass(comboBox, 'rw-select'))
+    let input = inst.find('.rw-input:dom').dom()
+      , popup = inst.find(Popup).unwrap();
 
-    setTimeout(function() {
-      expect(comboBox._values.open).to.be(true)
-      expect(findDOMNode(comboBox).className).to.match(/\brw-open\b/)
-      expect(input.getAttribute('aria-expanded')).to.be('true')
-      expect(popup.props.open).to.be(true)
-      done()
-    }, 10)
+    expect(inst.unwrap()._values.open).to.not.be(true)
+    expect(inst.dom().className).to.not.match(/\brw-open\b/)
+
+    inst.single('.rw-select:dom')
+      .trigger('click')
+
+    expect(input.getAttribute('aria-expanded')).to.be('true')
+    expect(popup.props.open).to.be(true)
+    done()
+
   })
 
   it('should trigger focus/blur events', function(done){
@@ -135,6 +170,20 @@ describe('ComboBox', function(){
       expect(comboBox._values.open).to.not.be(true)
       done()
     }, 0)
+  })
+
+  it('should not trigger form submission', function(){
+    let spy;
+    let select = $(
+      <form action='/' onSubmit={() => { throw new Error('should not submit!') }}>
+        <ComboBox data={dataList} onSearch={()=>{}} onKeyDown={spy = sinon.spy()}/>
+      </form>
+    ).render();
+
+    select.find('input')
+      .trigger('keyDown', { key: 'Enter' })
+
+    expect(spy.calledOnce).to.equal(true);
   })
 
   it('should set id on list', function(){

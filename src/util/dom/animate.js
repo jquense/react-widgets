@@ -77,7 +77,7 @@ export default function animate(node, properties, duration, easing, callback){
     cancel() {
       if (fired) return
       fired = true
-      off(event.target, transitionProps.end, done)
+      off(node, transitionProps.end, done)
       css(node, reset)
     }
   }

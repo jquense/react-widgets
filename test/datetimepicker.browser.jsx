@@ -4,15 +4,15 @@ require('../vendor/phantomjs-shim')
 
 import { findDOMNode } from 'react-dom';
 
-var React = require('react/addons');
+var React = require('react');
 var DateTimePicker = require('../src/DateTimePicker.jsx')
   , TimeList = require('../src/TimeList.jsx')
   , Calendar = require('../src/Calendar.jsx').ControlledComponent
   , Globalize = require('globalize');
 
 
-var TestUtils = React.addons.TestUtils
-  , render = TestUtils.renderIntoDocument
+var TestUtils = require('react-addons-test-utils');
+var render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , findType = TestUtils.findRenderedComponentWithType

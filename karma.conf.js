@@ -17,12 +17,14 @@ module.exports = function (config) {
 
     port: 9876,
     colors: true,
-    autoWatch: process.env.TRAVIS_CI ? false : true,
-    singleRun: process.env.TRAVIS_CI ? true : false,
+    autoWatch: process.env.TRAVIS ? false : true,
+    singleRun: process.env.TRAVIS ? true : false,
 
     logLevel: config.LOG_INFO,
 
-    browsers: ['Chrome'],
+    browsers:  process.env.TRAVIS
+      ? ['ChromeTravis']
+      : ['Chrome'],
 
     preprocessors: {
       'test/index.js': ['webpack', 'sourcemap']
@@ -31,6 +33,13 @@ module.exports = function (config) {
     webpack: require('./build/test.config'),
     webpackServer: {
       noInfo: true
+    },
+
+    customLaunchers: {
+      ChromeTravis: {
+          base: 'Chrome',
+          flags: ['--no-sandbox']
+      }
     }
   });
 };

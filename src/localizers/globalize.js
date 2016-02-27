@@ -17,7 +17,7 @@ function endOfCentury(date) {
 
 
 export default function globalizeLocalizers(globalize) {
-  let localizers = globalize.load
+  let localizers = (globalize.locale && !globalize.cultures)
       ? newGlobalize(globalize)
       : oldGlobalize(globalize)
 
@@ -77,11 +77,12 @@ function newGlobalize(globalize){
 
     propType: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 
-    parse(value, format, culture){
-      return locale(culture).parseNumber(value, format)
+    // TODO major bump consistent ordering
+    parse(value, culture) {
+      return locale(culture).parseNumber(value)
     },
 
-    format(value, format, culture){
+    format(value, format, culture) {
       if (value == null)
         return value
 
@@ -91,7 +92,12 @@ function newGlobalize(globalize){
       return locale(culture).formatNumber(value, format)
     },
 
-    precision(format){
+    decimalChar(format, culture) {
+      let str = this.format(1.1, { raw: '0.0' }, culture)
+      return str[str.length - 2] || '.'
+    },
+
+    precision(format) {
       return !format || format.maximumFractionDigits == null
         ? null : format.maximumFractionDigits
     }
@@ -154,13 +160,26 @@ function oldGlobalize(globalize){
     }
   }
 
+  function formatData(format, _culture){
+    var culture = getCulture(_culture)
+      , numFormat = culture.numberFormat
+
+    if (typeof format === 'string') {
+      if (format.indexOf('p') !== -1) numFormat = numFormat.percent
+      if (format.indexOf('c') !== -1) numFormat = numFormat.curency
+    }
+
+    return numFormat
+  }
+
   var number = {
 
     formats: {
       default: 'D'
     },
 
-    parse(value, culture){
+    // TODO major bump consistent ordering
+    parse(value, culture) {
       return globalize.parseFloat(value, 10, culture)
     },
 
@@ -168,21 +187,18 @@ function oldGlobalize(globalize){
       return globalize.format(value, format, culture)
     },
 
+    decimalChar(format, culture){
+      var data = formatData(format, culture)
+      return data['.'] || '.'
+    },
+
     precision(format, _culture){
-      var culture = getCulture(_culture)
-        , numFormat = culture.numberFormat
+      var data = formatData(format, _culture)
 
-      if (typeof format === 'string') {
-        if (format.length > 1)
-          return parseFloat(format.substr(1))
+      if (typeof format === 'string' && format.length > 1)
+        return parseFloat(format.substr(1))
 
-        if (format.indexOf('p') !== -1) numFormat = numFormat.percent
-        if (format.indexOf('c') !== -1) numFormat = numFormat.curency
-
-        return numFormat.decimals || null
-      }
-
-      return null
+      return data ? data.decimals : null
     }
   }
 

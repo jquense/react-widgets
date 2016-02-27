@@ -1,3 +1,57 @@
+v3.2.0 - Sat, 27 Feb 2016 16:48:04 GMT
+--------------------------------------
+
+- [8805757](../../commit/8805757) [fixed] guard against async setState
+- [f01fbfd](../../commit/f01fbfd) [fixed] focused popups have a higher zIndex than others
+- [93325fa](../../commit/93325fa) [fixed] add onNavigate to Calendar propTypes
+- [31151a8](../../commit/31151a8) [changed] Move focus handling to Mixin for consistency
+- [fd6bada](../../commit/fd6bada) [fixed] SSR rendering issue with popup
+- [665549d](../../commit/665549d) [fixed] Move envify to dependencies
+- [3b0499a](../../commit/3b0499a) [fixed] Better Globalize version sniffing...siiigh
+
+
+
+v3.1.7 - Thu, 21 Jan 2016 17:01:50 GMT
+--------------------------------------
+
+
+
+
+
+v3.1.6 - Fri, 15 Jan 2016 20:46:18 GMT
+--------------------------------------
+
+- [406c795](../../commit/406c795) [changed] popup animates onMount
+
+
+
+v3.1.5 - Thu, 14 Jan 2016 15:45:04 GMT
+--------------------------------------
+
+- [9e1ada0](../../commit/9e1ada0) [fixed] add autoComplete off to combobox and dropdown filter
+- [39284b8](../../commit/39284b8) [fixed] preventDefault for Enter keys
+- [5b17d73](../../commit/5b17d73) [fixed] Multiselect not handling disabled items correctly
+- [c8bcb1e](../../commit/c8bcb1e) [fixed] correctly localize number when editing
+- [735c267](../../commit/735c267) [fixed] Can start typing negative numbers
+
+
+
+v3.1.4 - Tue, 12 Jan 2016 22:14:45 GMT
+--------------------------------------
+
+- [438e30a](../../commit/438e30a) [fixed] extra timeout check, prevent setState after unmount
+- [4b6abc7](../../commit/4b6abc7) [fixed] localizer dist files
+
+
+
+v3.1.3 - Tue, 08 Dec 2015 19:20:18 GMT
+--------------------------------------
+
+- [c9bed37](../../commit/c9bed37) [fixed] moment localizer parse error
+- [edba4c1](../../commit/edba4c1) [fixed] changing dropUp during a transition will cancel and restart the correct animation
+
+
+
 v3.1.2 - Tue, 08 Dec 2015 19:12:58 GMT
 --------------------------------------
 
