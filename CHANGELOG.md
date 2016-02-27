@@ -1,3 +1,16 @@
+v3.2.0 - Sat, 27 Feb 2016 16:48:04 GMT
+--------------------------------------
+
+- [8805757](../../commit/8805757) [fixed] guard against async setState
+- [f01fbfd](../../commit/f01fbfd) [fixed] focused popups have a higher zIndex than others
+- [93325fa](../../commit/93325fa) [fixed] add onNavigate to Calendar propTypes
+- [31151a8](../../commit/31151a8) [changed] Move focus handling to Mixin for consistency
+- [fd6bada](../../commit/fd6bada) [fixed] SSR rendering issue with popup
+- [665549d](../../commit/665549d) [fixed] Move envify to dependencies
+- [3b0499a](../../commit/3b0499a) [fixed] Better Globalize version sniffing...siiigh
+
+
+
 v3.1.7 - Thu, 21 Jan 2016 17:01:50 GMT
 --------------------------------------
 
