@@ -32,6 +32,19 @@ describe('DROPDOWNS', function(){
       .to.be('jimmy');
   })
 
+  it('should accept array items and numeric textField and valueField', function(){
+    var arr = [
+      [ 0, 'jimmy' ],
+      [ 1, 'sally' ],
+      [ 2, 'pat' ]
+    ];
+    var instance = render(
+          <Dropdown defaultValue={0} data={arr} textField={1} valueField={0} />);
+
+    expect($(findClass(instance, 'rw-input')).text())
+      .to.be('jimmy');
+  })
+
   it('should start closed', function(done){
     var instance = render(<Dropdown defaultValue={0} data={data} textField='label' valueField='id' />);
     var popup = findType(instance, require('../src/Popup.jsx'));

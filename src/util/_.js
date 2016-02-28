@@ -87,6 +87,8 @@ var _ =
   }
 
 function has(o, k){
+  if(typeof o === 'string' || typeof o === 'number')
+    return false;
   return o ? Object.prototype.hasOwnProperty.call(o, k) : false
 }
 

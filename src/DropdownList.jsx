@@ -26,7 +26,10 @@ var propTypes = {
   //------------------------------------
 
   data:           React.PropTypes.array,
-  valueField:     React.PropTypes.string,
+  valueField:     React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.number
+  ]),
   textField:      CustomPropTypes.accessor,
 
   valueComponent: CustomPropTypes.elementType,
