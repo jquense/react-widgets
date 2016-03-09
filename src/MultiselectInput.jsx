@@ -17,10 +17,6 @@ export default React.createClass({
     readOnly:     CustomPropTypes.readOnly
   },
 
-  componentDidUpdate() {
-    this.props.focused && this.focus()
-  },
-
   render(){
       var value = this.props.value
         , placeholder = this.props.placeholder
