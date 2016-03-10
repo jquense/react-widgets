@@ -73,6 +73,7 @@ let propTypes = {
                       React.PropTypes.string,
                       React.PropTypes.func
                     ]),
+    filter:         React.PropTypes.instanceOf(RegExp),
 
     'aria-labelledby': React.PropTypes.string,
 
@@ -145,7 +146,7 @@ var DateTimePicker = React.createClass({
       , tabIndex, value,  editFormat, timeFormat
       , culture, duration, step, messages, min, max, busy
       , placeholder, disabled, readOnly, name, dropUp
-      , timeComponent, autoFocus
+      , timeComponent, autoFocus, filter
       , 'aria-labelledby': ariaLabelledby
       , 'aria-describedby': ariaDescribedby } = this.props;
 
@@ -210,6 +211,7 @@ var DateTimePicker = React.createClass({
           editing={focused}
           culture={culture}
           parse={this._parse}
+          filter={filter}
           onChange={this._change}
         />
 
