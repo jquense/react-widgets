@@ -36,6 +36,24 @@ function _setIn(obj, path, val) {
   return cloned;
 }
 
+function _stringifyPath(path) {
+  return path.join('>>>>'); // '>' seems a little arbitrary, but w/e...
+}
+
+function _pathsEqual(path1, path2) {
+  return stringify(path1) === stringify(path2);
+}
+
+function _pathListContains(pathList, toCheck) {
+  const formattedExisting = pathList.map(_stringifyPath);
+  const formattedToCheck = _stringifyPath(toCheck);
+
+  // console.warn('ListGroupable::_pathListContains::formattedExisting', formattedExisting);
+  // console.warn('ListGroupable::_pathListContains::formattedToCheck', formattedToCheck);
+
+  return formattedExisting.indexOf(formattedToCheck) !== -1;
+}
+
 export default React.createClass({
 
   displayName: 'List',
@@ -94,13 +112,18 @@ export default React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    var keys = [];
+    const keys = [];
+    const shouldSetState = nextProps.data !== this.props.data
+      || nextProps.groupBy !== this.props.groupBy;
 
-    if (nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy)
+    if (shouldSetState) {
+      const groups = this._group(nextProps.groupBy, nextProps.data, keys);
+
       this.setState({
-        groups: this._group(nextProps.groupBy, nextProps.data, keys),
+        groups,
         sortedKeys: keys
-      })
+      });
+    }
   },
 
   componentDidMount(){
@@ -211,15 +234,28 @@ export default React.createClass({
     return this.props.data[idx] === item
   },
 
-  _groupNested(groupFns, data, keys) {
+  _groupNested(groupFns, data, paths) {
+    // Haven't seen keys start out as anything other than [], but just gonna
+    // keep that style going...
+    //
+    // In this case, keys is going to really be a lot more like 'paths'
+    paths = paths || [];
+    const pathIsNew = p => !_pathListContains(paths, p);
+
     const result = data.reduce((seed, current) => {
       const path = groupFns.map(fn => fn(current));
       const existingLeaf = _getIn(seed, path) || [];
       const newLeaf = existingLeaf.concat(current);
 
+      if (pathIsNew(path)) {
+        paths.push(path);
+      }
+
+
       return _setIn(seed, path, newLeaf);
     }, {});
 
+    console.warn('ListGroupable::_groupNested::paths', paths);
     console.warn('ListGroupable::_groupNested::result', result);
 
     return result;
@@ -252,16 +288,10 @@ export default React.createClass({
       return grps
     }, {});
 
-    // console.warn(JSON.stringify(result, undefined, 2));
+    console.warn('ListGroupable::_group::keys', keys);
+    console.warn('ListGroupable::_group::result', result);
 
     return result;
-  },
-
-  _data(){
-    var groups = this.state.groups;
-
-    return this.state.sortedKeys
-      .reduce( (flat, grp) => flat.concat(groups[grp]), [])
   },
 
   move() {
