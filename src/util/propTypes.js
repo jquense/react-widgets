@@ -43,7 +43,9 @@ module.exports = {
 
   accessor:     React.PropTypes.oneOfType([
                     React.PropTypes.string,
-                    React.PropTypes.func
+                    React.PropTypes.func,
+                    // FIXME: Figure out something better to do about this
+                    React.PropTypes.array,
                   ]),
 
   message:      React.PropTypes.oneOfType([

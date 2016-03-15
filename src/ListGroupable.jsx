@@ -10,6 +10,32 @@ import { instanceId, notify } from './util/widgetHelpers';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
+function _getIn(obj, path) {
+  return path.reduce((seed, current) => {
+    return seed && typeof seed === 'object' && seed[current];
+  }, obj);
+}
+
+function _setIn(obj, path, val) {
+  // FIXME: Not truly a deep clone, but that doesn't really matter just yet
+  const cloned = Object.assign({}, obj);
+
+  path.reduce(
+    (seed, current, idx) => {
+      if (idx == path.length - 1) {
+        seed[current] = val;
+      } else if (!seed[current]) {
+        seed[current] = {};
+      }
+
+      return seed[current];
+    },
+    cloned
+  );
+
+  return cloned;
+}
+
 export default React.createClass({
 
   displayName: 'List',
@@ -185,7 +211,26 @@ export default React.createClass({
     return this.props.data[idx] === item
   },
 
+  _groupNested(groupFns, data, keys) {
+    const result = data.reduce((seed, current) => {
+      const path = groupFns.map(fn => fn(current));
+      const existingLeaf = _getIn(seed, path) || [];
+      const newLeaf = existingLeaf.concat(current);
+
+      return _setIn(seed, path, newLeaf);
+    }, {});
+
+    console.warn('ListGroupable::_groupNested::result', result);
+
+    return result;
+  },
+
   _group(groupBy, data, keys){
+    // If we have an array for nested optgroups, just short circuit for now...
+    if (Array.isArray(groupBy)) {
+      return this._groupNested(groupBy, data, keys);
+    }
+
     var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
 
     // the keys array ensures that groups are rendered in the order they came in
@@ -197,7 +242,7 @@ export default React.createClass({
       , `[React Widgets] You are seem to be trying to group this list by a `
       + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
 
-    return data.reduce( (grps, item) => {
+    var result = data.reduce( (grps, item) => {
       var group = iter(item);
 
       _.has(grps, group)
@@ -205,7 +250,11 @@ export default React.createClass({
         : (keys.push(group), grps[group] = [item])
 
       return grps
-    }, {})
+    }, {});
+
+    // console.warn(JSON.stringify(result, undefined, 2));
+
+    return result;
   },
 
   _data(){
