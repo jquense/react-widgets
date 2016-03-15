@@ -269,7 +269,7 @@ let NumberPicker = React.createClass({
 
 
 export default createUncontrolledWidget(
-    NumberPicker, { value: 'onChange' });
+    NumberPicker, { value: 'onChange' }, ['focus']);
 
 
 

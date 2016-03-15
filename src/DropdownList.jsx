@@ -397,4 +397,4 @@ function msgs(msgs){
 }
 
 export default createUncontrolledWidget(
-    DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
+    DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }, ['focus']);
