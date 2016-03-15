@@ -10,7 +10,12 @@ module.exports = {
     this._unmounted = true;
 
     for (var k in timers) if ( has(timers, k) )
-      clearTimeout(timers[k])
+      this.clearTimeout(k)
+  },
+  
+  clearTimeout(key) {
+    var timers = this._timers || {};
+    window.clearTimeout(timers[key]);
   },
 
   setTimeout(key, cb, duration){
@@ -19,7 +24,7 @@ module.exports = {
     if (this._unmounted)
       return
 
-    clearTimeout(timers[key])
+    this.clearTimeout(key)
     timers[key] = window.setTimeout(() => {
       if (!this._unmounted) cb()
     }, duration)
