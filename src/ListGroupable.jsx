@@ -119,6 +119,7 @@ export default React.createClass({
     if (shouldSetState) {
       const groups = this._group(nextProps.groupBy, nextProps.data, keys);
 
+      console.warn('ListGroupable::componentWillReceiveProps::keys', keys);
       this.setState({
         groups,
         sortedKeys: keys
