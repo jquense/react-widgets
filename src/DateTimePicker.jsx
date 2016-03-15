@@ -458,7 +458,7 @@ var DateTimePicker = React.createClass({
 
 export default  createUncontrolledWidget(
     DateTimePicker
-  , { open: 'onToggle', value: 'onChange', currentDate: 'onCurrentDateChange' });
+  , { open: 'onToggle', value: 'onChange', currentDate: 'onCurrentDateChange' }, ['focus']);
 
 
 

@@ -367,4 +367,4 @@ function getListItem(parent){
 }
 
 export default createUncontrolledWidget(
-    SelectList, { value: 'onChange' }, ['selectAll']);
+    SelectList, { value: 'onChange' }, ['selectAll', 'focus']);
