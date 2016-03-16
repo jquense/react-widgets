@@ -69,35 +69,25 @@ function _pathListContains(pathList, toCheck) {
   return formattedExisting.indexOf(formattedToCheck) !== -1;
 }
 
-// function _doForAllOrderedKeys(obj, fn) {
-//   if (obj._orderedKeys) {
-//     obj._orderedKeys.forEach(key => fn(obj, k));
-//   }
-// }
 
-function _flattenGroupsIntoArray(groups, array) {
+
+function _groupsObjectToList(groups, array, renderHeader, renderItems) {
   if (groups && groups._orderedKeys) {
     groups._orderedKeys.forEach(key => {
       const value = groups[key];
-      array.push(key);
+      array.push(renderHeader(key));
 
       if (Array.isArray(value)) {
-        array.push(value);
+        array.push(renderItems(value));
       } else {
         _flattenGroupsIntoArray(value, array);
       }
     });
   }
+}
 
-
-  // TODO: Haven't tested this yet. It's a little confusing, though
-  // _doForAllOrderedKeys(groups, (o, key) => {
-  //   if (o[key] && Array.isArray(o[key])) {
-  //     items.push(o[key]);
-  //   } else if (typeof o[key] === 'object') {
-  //     _flattenGroupsIntoArray(o, array);
-  //   }
-  // });
+function _flattenGroupsIntoArray(groups, array) {
+  _groupsObjectToList(groups, array, x => x, x => x);
 }
 
 export default React.createClass({
@@ -199,18 +189,12 @@ export default React.createClass({
 
     if (data.length) {
       if (Array.isArray(sortedKeys[0])) {
-        // TODO: handle nested optgroups
-        // NOTE: May not even need to worry about the idea of "sorted paths"
-        // const sortedPaths = sortedKeys;
-
-        // console.warn('ListGroupable::render::sortedPaths', sortedPaths);
-        // console.warn('ListGroupable::render', 'TODO: Would probably benefit from this being more of a tree structure...');
-
-        items = [];
-        // TODO: Finish this...
-        _flattenGroupsIntoArray(groups, items);
-
-        console.error('ITEMS ITEMS ITEMS', items);
+        _groupsObjectToList(
+          groups,
+          items,
+          this._renderGroupHeader,
+          items => items.map((current, idx) => this._renderItem('FIXME', current, idx))
+        );
       } else {
         items = sortedKeys
           .reduce( (items, key) => {
