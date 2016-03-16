@@ -69,6 +69,37 @@ function _pathListContains(pathList, toCheck) {
   return formattedExisting.indexOf(formattedToCheck) !== -1;
 }
 
+// function _doForAllOrderedKeys(obj, fn) {
+//   if (obj._orderedKeys) {
+//     obj._orderedKeys.forEach(key => fn(obj, k));
+//   }
+// }
+
+function _flattenGroupsIntoArray(groups, array) {
+  if (groups && groups._orderedKeys) {
+    groups._orderedKeys.forEach(key => {
+      const value = groups[key];
+      array.push(key);
+
+      if (Array.isArray(value)) {
+        array.push(value);
+      } else {
+        _flattenGroupsIntoArray(value, array);
+      }
+    });
+  }
+
+
+  // TODO: Haven't tested this yet. It's a little confusing, though
+  // _doForAllOrderedKeys(groups, (o, key) => {
+  //   if (o[key] && Array.isArray(o[key])) {
+  //     items.push(o[key]);
+  //   } else if (typeof o[key] === 'object') {
+  //     _flattenGroupsIntoArray(o, array);
+  //   }
+  // });
+}
+
 export default React.createClass({
 
   displayName: 'List',
@@ -174,6 +205,12 @@ export default React.createClass({
 
         // console.warn('ListGroupable::render::sortedPaths', sortedPaths);
         // console.warn('ListGroupable::render', 'TODO: Would probably benefit from this being more of a tree structure...');
+
+        items = [];
+        // TODO: Finish this...
+        _flattenGroupsIntoArray(groups, items);
+
+        console.error('ITEMS ITEMS ITEMS', items);
       } else {
         items = sortedKeys
           .reduce( (items, key) => {
