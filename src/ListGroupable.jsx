@@ -152,20 +152,31 @@ export default React.createClass({
     this._currentActiveID = null;
 
     if (data.length) {
-      items = sortedKeys
-        .reduce( (items, key) => {
-          group = groups[key]
-          items.push(this._renderGroupHeader(key))
+      if (Array.isArray(sortedKeys[0])) {
+        // TODO: handle nested optgroups
+        const sortedPaths = sortedKeys;
 
-          for (var itemIdx = 0; itemIdx < group.length; itemIdx++)
-            items.push(
-              this._renderItem(key, group[itemIdx], ++idx))
+        console.warn('ListGroupable::render::sortedPaths', sortedPaths);
+        console.warn('ListGroupable::render', 'TODO: Would probably benefit from this being more of a tree structure...');
+      } else {
+        items = sortedKeys
+          .reduce( (items, key) => {
+            group = groups[key]
+            items.push(this._renderGroupHeader(key))
 
-          return items
-        }, [])
+            for (var itemIdx = 0; itemIdx < group.length; itemIdx++)
+              items.push(
+                this._renderItem(key, group[itemIdx], ++idx))
+
+            return items
+          }, [])
+
+        console.warn('ListGroupable::render::items', items);
+      }
     }
-    else
-      items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>
+    else {
+      items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>;
+    }
 
     return (
       <ul
