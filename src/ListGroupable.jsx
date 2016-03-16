@@ -18,7 +18,11 @@ function _getIn(obj, path) {
 
 function _setIn(obj, path, val) {
   // FIXME: Not truly a deep clone, but that doesn't really matter just yet
-  const cloned = Object.assign({}, obj);
+  const cloned = Object.assign(
+    {},
+    obj,
+    { _orderedKeys: [] }
+  );
 
   path.reduce(
     (seed, current, idx) => {
@@ -154,10 +158,11 @@ export default React.createClass({
     if (data.length) {
       if (Array.isArray(sortedKeys[0])) {
         // TODO: handle nested optgroups
-        const sortedPaths = sortedKeys;
+        // NOTE: May not even need to worry about the idea of "sorted paths"
+        // const sortedPaths = sortedKeys;
 
-        console.warn('ListGroupable::render::sortedPaths', sortedPaths);
-        console.warn('ListGroupable::render', 'TODO: Would probably benefit from this being more of a tree structure...');
+        // console.warn('ListGroupable::render::sortedPaths', sortedPaths);
+        // console.warn('ListGroupable::render', 'TODO: Would probably benefit from this being more of a tree structure...');
       } else {
         items = sortedKeys
           .reduce( (items, key) => {
