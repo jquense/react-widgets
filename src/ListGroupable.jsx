@@ -63,9 +63,6 @@ function _pathListContains(pathList, toCheck) {
   const formattedExisting = pathList.map(_stringifyPath);
   const formattedToCheck = _stringifyPath(toCheck);
 
-  // console.warn('ListGroupable::_pathListContains::formattedExisting', formattedExisting);
-  // console.warn('ListGroupable::_pathListContains::formattedToCheck', formattedToCheck);
-
   return formattedExisting.indexOf(formattedToCheck) !== -1;
 }
 
@@ -155,7 +152,6 @@ export default React.createClass({
     if (shouldSetState) {
       const groups = this._group(nextProps.groupBy, nextProps.data, keys);
 
-      console.warn('ListGroupable::componentWillReceiveProps::keys', keys);
       this.setState({
         groups,
         sortedKeys: keys
@@ -193,7 +189,11 @@ export default React.createClass({
           groups,
           items,
           this._renderGroupHeader,
-          items => items.map((current, idx) => this._renderItem('FIXME', current, idx))
+          itms => {
+            return itms.map((current, idx) => {
+              return this._renderItem('FIXME', current, idx);
+            });
+          }
         );
       } else {
         items = sortedKeys
@@ -207,8 +207,6 @@ export default React.createClass({
 
             return items
           }, [])
-
-        console.warn('ListGroupable::render::items', items);
       }
     }
     else {
@@ -304,7 +302,6 @@ export default React.createClass({
       return _setIn(seed, path, newLeaf);
     }, {});
 
-    console.warn('ListGroupable::_groupNested::paths', paths);
     console.warn('ListGroupable::_groupNested::result', result);
 
     return result;
@@ -337,7 +334,6 @@ export default React.createClass({
       return grps
     }, {});
 
-    console.warn('ListGroupable::_group::keys', keys);
     console.warn('ListGroupable::_group::result', result);
 
     return result;
