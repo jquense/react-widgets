@@ -16,13 +16,21 @@ function _getIn(obj, path) {
   }, obj);
 }
 
+function _ensureOrderedKeysExists(obj) {
+  if (obj && !obj._orderedKeys) { obj._orderedKeys = []; }
+}
+
+function _pushNewOrderedKey(obj, key) {
+  const shouldPushKey = obj
+    && obj._orderedKeys
+    && obj._orderedKeys.indexOf(key) === -1;
+
+  shouldPushKey && obj._orderedKeys.push(key);
+}
+
 function _setIn(obj, path, val) {
   // FIXME: Not truly a deep clone, but that doesn't really matter just yet
-  const cloned = Object.assign(
-    {},
-    obj,
-    { _orderedKeys: [] }
-  );
+  const cloned = Object.assign({}, obj);
 
   path.reduce(
     (seed, current, idx) => {
@@ -31,6 +39,9 @@ function _setIn(obj, path, val) {
       } else if (!seed[current]) {
         seed[current] = {};
       }
+
+      _ensureOrderedKeysExists(seed);
+      _pushNewOrderedKey(seed, current);
 
       return seed[current];
     },
