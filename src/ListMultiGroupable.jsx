@@ -90,29 +90,36 @@ function _flattenGroups(groups, array) {
 
 function _renderGroupHeadersAndItems(groups, array, processHeader, processItems, traversed, indexOffset) {
   if (groups && groups._orderedKeys) {
-    groups._orderedKeys.forEach(key => {
-      const value = groups[key];
-      const newlyTraversed = _pushPathStep(traversed, key);
+    groups._orderedKeys.reduce(
+      (_offset, key) => {
+        const value = groups[key];
+        const newlyTraversed = _pushPathStep(traversed, key);
 
-      array.push(
-        processHeader(newlyTraversed, key)
-      );
-
-      if (Array.isArray(value)) {
         array.push(
-          processItems(value, newlyTraversed, indexOffset)
+          processHeader(newlyTraversed, key)
         );
-      } else {
-        _renderGroupHeadersAndItems(
-          value,
-          array,
-          processHeader,
-          processItems,
-          newlyTraversed,
-          0 // FIXME
-        );
-      }
-    });
+
+        if (Array.isArray(value)) {
+          array.push(
+            processItems(value, newlyTraversed, _offset)
+          );
+
+          return _offset + value.length;
+        } else {
+          _renderGroupHeadersAndItems(
+            value,
+            array,
+            processHeader,
+            processItems,
+            newlyTraversed,
+            _offset
+          );
+
+          return _offset;
+        }
+      },
+      indexOffset
+    );
   }
 }
 
@@ -265,7 +272,7 @@ export default React.createClass({
         offset + idx
       );
 
-      console.warn('ListMultiGroupable::_renderItems::rendered', rendered);
+      // console.warn('ListMultiGroupable::_renderItems::rendered', rendered);
 
       return rendered;
     });
@@ -360,7 +367,7 @@ export default React.createClass({
   getItemDOMNode(item) {
     var list = compat.findDOMNode(this);
 
-    console.warn('ListMultiGroupable::getItemDOMNode::list', list);
+    console.log('ListMultiGroupable::getItemDOMNode::list', list);
 
     // FIXME: Make this work!
     return undefined;
