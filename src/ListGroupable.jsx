@@ -228,6 +228,8 @@ export default React.createClass({
       , idx = -1
       , itemIdx, child;
 
+    console.warn('ListGroupable::getItemDOMNode::list', list);
+
     this.state.sortedKeys.some(group => {
       itemIdx = groups[group].indexOf(item)
       idx++;
