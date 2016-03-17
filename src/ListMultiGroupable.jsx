@@ -97,7 +97,6 @@ function _groupsObjectToList(groups, array, renderHeader, renderItems, traversed
 }
 
 export default React.createClass({
-
   displayName: 'List',
 
   mixins: [
@@ -128,7 +127,6 @@ export default React.createClass({
       emptyList:    CustomPropTypes.message
     })
   },
-
 
   getDefaultProps(){
     return {
@@ -388,4 +386,4 @@ export default React.createClass({
     return child
   }
 
-})
+});

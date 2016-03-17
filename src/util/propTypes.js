@@ -48,6 +48,12 @@ module.exports = {
                     React.PropTypes.array,
                   ]),
 
+  multiAccessor: React.PropTypes.oneOfType([
+                    React.PropTypes.string,
+                    React.PropTypes.func,
+                    React.PropTypes.array,
+                  ]),
+
   message:      React.PropTypes.oneOfType([
                   React.PropTypes.func,
                   React.PropTypes.string
