@@ -52,7 +52,7 @@ function _setIn(obj, path, val) {
 }
 
 function _stringifyPath(path) {
-  return path.join('>>>>'); // '>' seems a little arbitrary, but w/e...
+  return path.join('>-->'); // '>' seems a little arbitrary, but w/e...
 }
 
 function _pathsEqual(path1, path2) {
@@ -66,18 +66,31 @@ function _pathListContains(pathList, toCheck) {
   return formattedExisting.indexOf(formattedToCheck) !== -1;
 }
 
+function _pushPathStep(path, nextStep) {
+  if (!path || path.trim() === '') {
+    return nextStep;
+  }
 
+  return _stringifyPath([path, nextStep]);
+}
 
-function _groupsObjectToList(groups, array, renderHeader, renderItems) {
+function _groupsObjectToList(groups, array, renderHeader, renderItems, traversed) {
   if (groups && groups._orderedKeys) {
     groups._orderedKeys.forEach(key => {
       const value = groups[key];
       array.push(renderHeader(key));
+      const newlyTraversed = _pushPathStep(traversed, key);
 
       if (Array.isArray(value)) {
-        array.push(renderItems(value, key));
+        array.push(renderItems(value, newlyTraversed));
       } else {
-        _groupsObjectToList(value, array, renderHeader, renderItems);
+        _groupsObjectToList(
+          value,
+          array,
+          renderHeader,
+          renderItems,
+          newlyTraversed
+        );
       }
     });
   }
@@ -190,15 +203,16 @@ export default React.createClass({
           groups,
           items,
           this._renderGroupHeader,
-          (collection, groupName) => {
+          (collection, groupKey) => {
             return collection.map((current, idx) => {
-              const renderedItem = this._renderItem(groupName, current, idx);
+              const renderedItem = this._renderItem(groupKey, current, idx);
 
               console.warn('renderedItem', renderedItem);
 
               return renderedItem;
             });
-          }
+          },
+          undefined
         );
       } else {
         items = sortedKeys
