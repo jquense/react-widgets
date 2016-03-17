@@ -45,6 +45,7 @@
     "build:docs": "npm run clean:docs && npm run compile:docs && npm run assets:docs",
     "build:dist": "npm run clean:dist && npm run compile:dist & npm run compile:locale && npm run less && npm run assets:dist",
     "build": "npm run build:lib && npm run build:dist & npm run build:docs",
+    "b": "npm run build:lib && npm run build:dist",
     "docs": "npm run clean:docs && webpack-dev-server --config ./build/docs.config.js --hot",
     "dev": "webpack-dev-server --config ./build/dev.config.js --hot",
     "release": "release",
