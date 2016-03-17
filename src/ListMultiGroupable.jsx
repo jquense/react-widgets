@@ -89,38 +89,36 @@ function _flattenGroups(groups, array) {
 }
 
 function _renderGroupHeadersAndItems(groups, array, processHeader, processItems, traversed, indexOffset) {
-  if (groups && groups._orderedKeys) {
-    groups._orderedKeys.reduce(
-      (_offset, key) => {
-        const value = groups[key];
-        const newlyTraversed = _pushPathStep(traversed, key);
+  if (!groups || !groups._orderedKeys) { return 0; }
 
+  return groups._orderedKeys.reduce(
+    (_offset, key) => {
+      const value = groups[key];
+      const newlyTraversed = _pushPathStep(traversed, key);
+
+      array.push(
+        processHeader(newlyTraversed, key)
+      );
+
+      if (Array.isArray(value)) {
         array.push(
-          processHeader(newlyTraversed, key)
+          processItems(value, newlyTraversed, _offset)
         );
 
-        if (Array.isArray(value)) {
-          array.push(
-            processItems(value, newlyTraversed, _offset)
-          );
-
-          return _offset + value.length;
-        } else {
-          _renderGroupHeadersAndItems(
-            value,
-            array,
-            processHeader,
-            processItems,
-            newlyTraversed,
-            _offset
-          );
-
-          return _offset;
-        }
-      },
-      indexOffset
-    );
-  }
+        return _offset + value.length;
+      } else {
+        return _renderGroupHeadersAndItems(
+          value,
+          array,
+          processHeader,
+          processItems,
+          newlyTraversed,
+          _offset
+        );
+      }
+    },
+    indexOffset
+  );
 }
 
 export default React.createClass({
