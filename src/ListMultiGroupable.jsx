@@ -226,7 +226,7 @@ export default React.createClass({
       items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>;
     }
 
-    // console.warn('ListGroupable::render::items', items);
+    console.warn('ListMultiGroupable::render::items', items);
     return (
       <ul
         ref='scrollable'
@@ -321,7 +321,7 @@ export default React.createClass({
       return _setIn(seed, path, newLeaf);
     }, {});
 
-    // console.warn('ListGroupable::_groupNested::result', result);
+    console.warn('ListMultiGroupable::_groupNested::result', result);
 
     return result;
   },
@@ -353,7 +353,7 @@ export default React.createClass({
       return grps
     }, {});
 
-    // console.warn('ListGroupable::_group::result', result);
+    console.warn('ListMultiGroupable::_group::result', result);
 
     return result;
   },
@@ -367,6 +367,7 @@ export default React.createClass({
     // notify(this.props.onMove, [ selected, compat.findDOMNode(this), this.props.focused ])
   },
 
+  // FIXME: This hasn't been updated to work...
   getItemDOMNode(item){
     var list = compat.findDOMNode(this)
       , groups = this.state.groups

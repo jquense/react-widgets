@@ -9,11 +9,18 @@ import compat          from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import PlainList       from './List';
 import GroupableList   from './ListGroupable';
+import MultiGroupableList from './ListMultiGroupable';
 import validateList    from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
 import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
 import { widgetEditable, widgetEnabled } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
+
+function _resolveListGroupable(groupBy) {
+  return groupBy && Array.isArray(groupBy)
+    ? MultiGroupableList
+    : GroupableList;
+}
 
 let defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
 
@@ -148,7 +155,7 @@ var ComboBox = React.createClass({
       , afterListComponent, searchTerm, onChange
       , listComponent: List } = this.props;
 
-    List = List || (groupBy && GroupableList) || PlainList
+    List = List || _resolveListGroupable(groupBy) || PlainList
 
     let elementProps = omit(this.props, Object.keys(propTypes));
     let listProps    = pick(this.props, Object.keys(List.propTypes));
