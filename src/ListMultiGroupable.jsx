@@ -354,7 +354,7 @@ export default React.createClass({
     );
   },
 
-  getItemDOMNode(item){
+  getItemDOMNode(item) {
     // FIXME: Make this work!
     return undefined;
 
@@ -366,14 +366,15 @@ export default React.createClass({
     var child;
 
     this.state.sortedKeys.some(group => {
-      itemIdx = groups[group].indexOf(item)
+      itemIdx = groups[group].indexOf(item);
       idx++;
 
-      if( itemIdx !== -1)
-        return !!(child = list.children[idx + itemIdx + 1])
+      if (itemIdx !== -1) {
+        return !!(child = list.children[idx + itemIdx + 1]);
+      }
 
-      idx += groups[group].length
-    })
+      idx += groups[group].length;
+    });
 
     return child;
   }
