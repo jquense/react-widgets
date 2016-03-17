@@ -315,7 +315,12 @@ export default React.createClass({
     return result;
   },
 
-  // FIXME: Make this work
+  // FIXME: Make this work!
+  _data() {
+    return [];
+  },
+
+  // FIXME: Make this work!
   move() {
     // var selected = this.getItemDOMNode(this.props.focused);
 
@@ -324,7 +329,7 @@ export default React.createClass({
     // notify(this.props.onMove, [ selected, compat.findDOMNode(this), this.props.focused ])
   },
 
-  // FIXME: Make this work
+  // FIXME: Make this work!
   getItemDOMNode(item){
     var list = compat.findDOMNode(this)
       , groups = this.state.groups
