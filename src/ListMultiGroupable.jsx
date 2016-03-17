@@ -211,7 +211,8 @@ export default React.createClass({
       items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>;
     }
 
-    console.warn('ListMultiGroupable::render::items', items);
+    // console.warn('ListMultiGroupable::render::items', items);
+
     return (
       <ul
         ref='scrollable'
@@ -293,20 +294,23 @@ export default React.createClass({
     paths = paths || [];
     const pathIsNew = p => !_pathListContains(paths, p);
 
-    const result = data.reduce((seed, current) => {
-      const path = groupFns.map(fn => fn(current));
-      const existingLeaf = _getIn(seed, path) || [];
-      const newLeaf = existingLeaf.concat(current);
+    const result = data.reduce(
+      (seed, current) => {
+        const path = groupFns.map(fn => fn(current));
+        const existingLeaf = _getIn(seed, path) || [];
+        const newLeaf = existingLeaf.concat(current);
 
-      if (pathIsNew(path)) {
-        paths.push(path);
-      }
+        if (pathIsNew(path)) {
+          paths.push(path);
+        }
 
 
-      return _setIn(seed, path, newLeaf);
-    }, {});
+        return _setIn(seed, path, newLeaf);
+      },
+      {}
+    );
 
-    console.warn('ListMultiGroupable::_group::result', result);
+    // console.warn('ListMultiGroupable::_group::result', result);
 
     return result;
   },
