@@ -207,7 +207,7 @@ export default React.createClass({
             return collection.map((current, idx) => {
               const renderedItem = this._renderItem(groupKey, current, idx);
 
-              console.warn('renderedItem', renderedItem);
+              // console.warn('renderedItem', renderedItem);
 
               return renderedItem;
             });
@@ -233,7 +233,7 @@ export default React.createClass({
       items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>;
     }
 
-    console.warn('ListGroupable::render::items', items);
+    // console.warn('ListGroupable::render::items', items);
     return (
       <ul
         ref='scrollable'
@@ -327,7 +327,7 @@ export default React.createClass({
       return _setIn(seed, path, newLeaf);
     }, {});
 
-    console.warn('ListGroupable::_groupNested::result', result);
+    // console.warn('ListGroupable::_groupNested::result', result);
 
     return result;
   },
@@ -359,17 +359,18 @@ export default React.createClass({
       return grps
     }, {});
 
-    console.warn('ListGroupable::_group::result', result);
+    // console.warn('ListGroupable::_group::result', result);
 
     return result;
   },
 
+  // FIXME: Make move work again
   move() {
-    var selected = this.getItemDOMNode(this.props.focused);
+    // var selected = this.getItemDOMNode(this.props.focused);
 
-    if( !selected ) return
+    // if( !selected ) return
 
-    notify(this.props.onMove, [ selected, compat.findDOMNode(this), this.props.focused ])
+    // notify(this.props.onMove, [ selected, compat.findDOMNode(this), this.props.focused ])
   },
 
   getItemDOMNode(item){
