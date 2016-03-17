@@ -191,36 +191,21 @@ export default React.createClass({
     this._currentActiveID = null;
 
     if (data.length) {
-      if (Array.isArray(sortedKeys[0])) {
-        _groupsObjectToList(
-          groups,
-          items,
-          this._renderNestedGroupHeader,
-          (collection, groupKey) => {
-            return collection.map((current, idx) => {
-              const renderedItem = this._renderItem(groupKey, current, idx);
+      _groupsObjectToList(
+        groups,
+        items,
+        this._renderNestedGroupHeader,
+        (collection, groupKey) => {
+          return collection.map((current, idx) => {
+            const renderedItem = this._renderItem(groupKey, current, idx);
 
-              // console.warn('renderedItem', renderedItem);
+            // console.warn('renderedItem', renderedItem);
 
-              return renderedItem;
-            });
-          },
-          undefined
-        );
-      } else {
-        items = sortedKeys
-          .reduce( (items, key) => {
-            group = groups[key]
-            items.push(this._renderGroupHeader(key))
-
-            for (var itemIdx = 0; itemIdx < group.length; itemIdx++)
-              items.push(
-                this._renderItem(key, group[itemIdx], ++idx))
-
-            return items
-          }, [])
-
-      }
+            return renderedItem;
+          });
+        },
+        undefined
+      );
     }
     else {
       items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>;
@@ -300,7 +285,7 @@ export default React.createClass({
     return this.props.data[idx] === item
   },
 
-  _groupNested(groupFns, data, paths) {
+  _group(groupFns, data, paths) {
     // Haven't seen keys start out as anything other than [], but just gonna
     // keep that style going...
     //
@@ -321,44 +306,12 @@ export default React.createClass({
       return _setIn(seed, path, newLeaf);
     }, {});
 
-    console.warn('ListMultiGroupable::_groupNested::result', result);
-
-    return result;
-  },
-
-  _group(groupBy, data, keys){
-    // If we have an array for nested optgroups, just short circuit for now...
-    if (Array.isArray(groupBy)) {
-      return this._groupNested(groupBy, data, keys);
-    }
-
-    var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
-
-    // the keys array ensures that groups are rendered in the order they came in
-    // which means that if you sort the data array it will render sorted,
-    // so long as you also sorted by group
-    keys = keys || []
-
-    warning(typeof groupBy !== 'string' || !data.length || _.has(data[0], groupBy)
-      , `[React Widgets] You are seem to be trying to group this list by a `
-      + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
-
-    var result = data.reduce( (grps, item) => {
-      var group = iter(item);
-
-      _.has(grps, group)
-        ? grps[group].push(item)
-        : (keys.push(group), grps[group] = [item])
-
-      return grps
-    }, {});
-
     console.warn('ListMultiGroupable::_group::result', result);
 
     return result;
   },
 
-  // FIXME: Make move work again
+  // FIXME: Make this work
   move() {
     // var selected = this.getItemDOMNode(this.props.focused);
 
@@ -367,7 +320,7 @@ export default React.createClass({
     // notify(this.props.onMove, [ selected, compat.findDOMNode(this), this.props.focused ])
   },
 
-  // FIXME: This hasn't been updated to work...
+  // FIXME: Make this work
   getItemDOMNode(item){
     var list = compat.findDOMNode(this)
       , groups = this.state.groups
