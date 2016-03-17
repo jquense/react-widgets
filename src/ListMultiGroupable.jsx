@@ -84,7 +84,7 @@ function _flattenGroups(groups, array) {
       } else {
         _flattenGroups(value, array);
       }
-    }
+    });
   }
 }
 
@@ -335,12 +335,10 @@ export default React.createClass({
   },
 
   _data() {
-    const items = [];
     const groups = this.state.groups;
+    const items = [];
 
     _flattenGroups(groups, items);
-
-    console.warn('ListMultiGroupable::_data::items', items);
 
     return items;
   },

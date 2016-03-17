@@ -210,12 +210,8 @@ export default React.createClass({
 
   _data(){
     var groups = this.state.groups;
-    const result = this.state.sortedKeys
+    return result = this.state.sortedKeys
       .reduce( (flat, grp) => flat.concat(groups[grp]), []);
-
-    console.warn('ListGroupable::_data::result', result);
-
-    return result;
   },
 
   move() {
