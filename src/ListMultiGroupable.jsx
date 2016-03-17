@@ -121,6 +121,44 @@ function _renderGroupHeadersAndItemsToArray(groups, array, processHeader, proces
   );
 }
 
+function _getDOMNodeIndex(item, currentDataNode, offset, foundIndex) {
+  if (foundIndex) { return foundIndex; }
+  if (!currentDataNode || !currentDataNode._orderedKeys) { return -1; }
+  // TODO: Try this approach
+  // const stillLooking = _getDOMNodeIndex.bind(null, item);
+  // const eureka = _getDOMNodeIndex.bind(null, undefined, undefined, undefined);
+
+  return currentDataNode._orderedKeys.reduce(
+    (_offset, key) => {
+      const value = currentDataNode[key];
+
+      if (!Array.isArray(value)) {
+        return _getDOMNodeIndex(item, value, _offset + 1, undefined);
+      } else {
+        const arrayIndex = value.indexOf(item);
+
+        if (arrayIndex != -1) {
+          // FIXME: I kind of hate this... the only arg that actually matters
+          return _getDOMNodeIndex(
+            undefined,
+            undefined,
+            undefined,
+            arrayIndex + _offset
+          );
+        } else {
+          return _getDOMNodeIndex(
+            item,
+            value,
+            _offset + value.length,
+            undefined
+          );
+        }
+      }
+    },
+    offset
+  );
+}
+
 export default React.createClass({
   displayName: 'List',
 
@@ -363,6 +401,12 @@ export default React.createClass({
   },
 
   getItemDOMNode(item) {
+    return _findDOMNode(
+      this.state.groups,
+      item,
+      compat.findDOMNode
+    );
+
     var list = compat.findDOMNode(this);
 
     // console.log('ListMultiGroupable::getItemDOMNode::list', list);
