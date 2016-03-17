@@ -88,7 +88,7 @@ function _flattenGroups(groups, array) {
   }
 }
 
-function _renderGroupHeadersAndItems(groups, array, processHeader, processItems, traversed, indexOffset) {
+function _renderGroupHeadersAndItemsToArray(groups, array, processHeader, processItems, traversed, indexOffset) {
   if (!groups || !groups._orderedKeys) { return 0; }
 
   return groups._orderedKeys.reduce(
@@ -107,7 +107,7 @@ function _renderGroupHeadersAndItems(groups, array, processHeader, processItems,
 
         return _offset + value.length;
       } else {
-        return _renderGroupHeadersAndItems(
+        return _renderGroupHeadersAndItemsToArray(
           value,
           array,
           processHeader,
@@ -216,7 +216,7 @@ export default React.createClass({
     this._currentActiveID = null;
 
     if (data.length) {
-      _renderGroupHeadersAndItems(
+      _renderGroupHeadersAndItemsToArray(
         groups,
         items,
         this._renderGroupHeader,
