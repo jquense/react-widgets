@@ -78,8 +78,8 @@ function _groupsObjectToList(groups, array, renderHeader, renderItems, traversed
   if (groups && groups._orderedKeys) {
     groups._orderedKeys.forEach(key => {
       const value = groups[key];
-      array.push(renderHeader(key));
       const newlyTraversed = _pushPathStep(traversed, key);
+      array.push(renderHeader(newlyTraversed));
 
       if (Array.isArray(value)) {
         array.push(renderItems(value, newlyTraversed));
