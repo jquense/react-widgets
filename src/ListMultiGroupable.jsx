@@ -74,21 +74,26 @@ function _pushPathStep(path, nextStep) {
   return _stringifyPath([path, nextStep]);
 }
 
-function _groupsObjectToList(groups, array, renderHeader, renderItems, traversed) {
+function _toRenderableArray(groups, array, processHeader, processItems, traversed) {
   if (groups && groups._orderedKeys) {
     groups._orderedKeys.forEach(key => {
       const value = groups[key];
       const newlyTraversed = _pushPathStep(traversed, key);
-      array.push(renderHeader(newlyTraversed, key));
+
+      array.push(
+        processHeader(newlyTraversed, key)
+      );
 
       if (Array.isArray(value)) {
-        array.push(renderItems(value, newlyTraversed));
+        array.push(
+          processItems(value, newlyTraversed)
+        );
       } else {
-        _groupsObjectToList(
+        _toRenderableArray(
           value,
           array,
-          renderHeader,
-          renderItems,
+          processHeader,
+          processItems,
           newlyTraversed
         );
       }
@@ -191,7 +196,7 @@ export default React.createClass({
     this._currentActiveID = null;
 
     if (data.length) {
-      _groupsObjectToList(
+      _toRenderableArray(
         groups,
         items,
         this._renderNestedGroupHeader,
