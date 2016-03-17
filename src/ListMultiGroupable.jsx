@@ -343,21 +343,27 @@ export default React.createClass({
     return items;
   },
 
-  // FIXME: Make this work!
   move() {
-    // var selected = this.getItemDOMNode(this.props.focused);
+    const selected = this.getItemDOMNode(this.props.focused);
 
-    // if( !selected ) return
+    if (!selected) { return; }
 
-    // notify(this.props.onMove, [ selected, compat.findDOMNode(this), this.props.focused ])
+    notify(
+      this.props.onMove,
+      [selected, compat.findDOMNode(this), this.props.focused]
+    );
   },
 
-  // FIXME: Make this work!
   getItemDOMNode(item){
-    var list = compat.findDOMNode(this)
-      , groups = this.state.groups
-      , idx = -1
-      , itemIdx, child;
+    // FIXME: Make this work!
+    return undefined;
+
+    var list = compat.findDOMNode(this);
+    var groups = this.state.groups;
+    var idx = -1;
+
+    var itemIdx;
+    var child;
 
     this.state.sortedKeys.some(group => {
       itemIdx = groups[group].indexOf(item)
@@ -369,7 +375,7 @@ export default React.createClass({
       idx += groups[group].length
     })
 
-    return child
+    return child;
   }
 
 });
