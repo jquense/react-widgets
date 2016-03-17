@@ -74,6 +74,20 @@ function _pushPathStep(path, nextStep) {
   return _stringifyPath([path, nextStep]);
 }
 
+function _flattenGroups(groups, array) {
+  if (groups && groups._orderedKeys) {
+    groups._orderedKeys.forEach(key => {
+      const value = groups[key];
+
+      if (Array.isArray(value)) {
+        value.forEach(item => array.push(item));
+      } else {
+        _flattenGroups(value, array);
+      }
+    }
+  }
+}
+
 function _toRenderableArray(groups, array, processHeader, processItems, traversed) {
   if (groups && groups._orderedKeys) {
     groups._orderedKeys.forEach(key => {
@@ -320,9 +334,15 @@ export default React.createClass({
     return result;
   },
 
-  // FIXME: Make this work!
   _data() {
-    return [];
+    const items = [];
+    const groups = this.state.groups;
+
+    _flattenGroups(groups, items);
+
+    console.warn('ListMultiGroupable::_data::items', items);
+
+    return items;
   },
 
   // FIXME: Make this work!
