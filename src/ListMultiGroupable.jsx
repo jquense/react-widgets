@@ -88,7 +88,7 @@ function _flattenGroups(groups, array) {
   }
 }
 
-function _toRenderableArray(groups, array, processHeader, processItems, traversed) {
+function _renderGroupHeadersAndItems(groups, array, processHeader, processItems, traversed, indexOffset) {
   if (groups && groups._orderedKeys) {
     groups._orderedKeys.forEach(key => {
       const value = groups[key];
@@ -100,15 +100,16 @@ function _toRenderableArray(groups, array, processHeader, processItems, traverse
 
       if (Array.isArray(value)) {
         array.push(
-          processItems(value, newlyTraversed)
+          processItems(value, newlyTraversed, indexOffset)
         );
       } else {
-        _toRenderableArray(
+        _renderGroupHeadersAndItems(
           value,
           array,
           processHeader,
           processItems,
-          newlyTraversed
+          newlyTraversed,
+          0 // FIXME
         );
       }
     });
@@ -210,20 +211,13 @@ export default React.createClass({
     this._currentActiveID = null;
 
     if (data.length) {
-      _toRenderableArray(
+      _renderGroupHeadersAndItems(
         groups,
         items,
-        this._renderNestedGroupHeader,
-        (collection, groupKey) => {
-          return collection.map((current, idx) => {
-            const renderedItem = this._renderItem(groupKey, current, idx);
-
-            // console.warn('renderedItem', renderedItem);
-
-            return renderedItem;
-          });
-        },
-        undefined
+        this._renderGroupHeader,
+        this._renderItems,
+        undefined,
+        0
       );
     }
     else {
@@ -246,12 +240,7 @@ export default React.createClass({
     )
   },
 
-  // FIXME: This is just a temporary shim
-  _renderGroupHeader(group){
-    return this._renderNestedGroupHeader(group, group);
-  },
-
-  _renderNestedGroupHeader(group, label) {
+  _renderGroupHeader(group, label) {
     var GroupComponent = this.props.groupComponent;
     var id = instanceId(this);
 
@@ -266,6 +255,20 @@ export default React.createClass({
         { GroupComponent ? <GroupComponent item={label}/> : label }
       </li>
     )
+  },
+
+  _renderItems(items, groupKey, offset) {
+    return items.map((current, idx) => {
+      const rendered = this._renderItem(
+        groupKey,
+        current,
+        offset + idx
+      );
+
+      console.warn('ListMultiGroupable::_renderItems::rendered', rendered);
+
+      return rendered;
+    });
   },
 
   _renderItem(group, item, idx){
