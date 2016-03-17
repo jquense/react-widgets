@@ -355,10 +355,13 @@ export default React.createClass({
   },
 
   getItemDOMNode(item) {
+    var list = compat.findDOMNode(this);
+
+    console.warn('ListMultiGroupable::getItemDOMNode::list', list);
+
     // FIXME: Make this work!
     return undefined;
 
-    var list = compat.findDOMNode(this);
     var groups = this.state.groups;
     var idx = -1;
 
