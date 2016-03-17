@@ -75,14 +75,15 @@ function _groupsObjectToList(groups, array, renderHeader, renderItems) {
       array.push(renderHeader(key));
 
       if (Array.isArray(value)) {
-        array.push(renderItems(value));
+        array.push(renderItems(value, key));
       } else {
-        _flattenGroupsIntoArray(value, array);
+        _groupsObjectToList(value, array, renderHeader, renderItems);
       }
     });
   }
 }
 
+// DEPRECATED
 function _flattenGroupsIntoArray(groups, array) {
   _groupsObjectToList(groups, array, x => x, x => x);
 }
@@ -189,9 +190,13 @@ export default React.createClass({
           groups,
           items,
           this._renderGroupHeader,
-          itms => {
-            return itms.map((current, idx) => {
-              return this._renderItem('FIXME', current, idx);
+          (collection, groupName) => {
+            return collection.map((current, idx) => {
+              const renderedItem = this._renderItem(groupName, current, idx);
+
+              console.warn('renderedItem', renderedItem);
+
+              return renderedItem;
             });
           }
         );
@@ -207,12 +212,14 @@ export default React.createClass({
 
             return items
           }, [])
+
       }
     }
     else {
       items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>;
     }
 
+    console.warn('ListGroupable::render::items', items);
     return (
       <ul
         ref='scrollable'
