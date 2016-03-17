@@ -29,7 +29,7 @@ function _pushNewOrderedKey(obj, key) {
 }
 
 function _setIn(obj, path, val) {
-  // FIXME: Not truly a deep clone, but that doesn't really matter just yet
+  // NOTE: Not truly a deep clone, but that doesn't really matter just yet
   const cloned = Object.assign({}, obj);
 
   path.reduce(
@@ -79,7 +79,7 @@ function _groupsObjectToList(groups, array, renderHeader, renderItems, traversed
     groups._orderedKeys.forEach(key => {
       const value = groups[key];
       const newlyTraversed = _pushPathStep(traversed, key);
-      array.push(renderHeader(newlyTraversed));
+      array.push(renderHeader(newlyTraversed, key));
 
       if (Array.isArray(value)) {
         array.push(renderItems(value, newlyTraversed));
@@ -202,7 +202,7 @@ export default React.createClass({
         _groupsObjectToList(
           groups,
           items,
-          this._renderGroupHeader,
+          this._renderNestedGroupHeader,
           (collection, groupKey) => {
             return collection.map((current, idx) => {
               const renderedItem = this._renderItem(groupKey, current, idx);
@@ -249,8 +249,12 @@ export default React.createClass({
   },
 
   _renderGroupHeader(group){
-    var GroupComponent = this.props.groupComponent
-      , id = instanceId(this);
+    return this._renderNestedGroupHeader(group, group);
+  },
+
+  _renderNestedGroupHeader(group, label) {
+    var GroupComponent = this.props.groupComponent;
+    var id = instanceId(this);
 
     return (
       <li
@@ -260,7 +264,7 @@ export default React.createClass({
         id={id + '_group_' + group}
         className='rw-list-optgroup'
       >
-        { GroupComponent ? <GroupComponent item={group}/> : group }
+        { GroupComponent ? <GroupComponent item={label}/> : label }
       </li>
     )
   },
