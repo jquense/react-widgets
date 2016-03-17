@@ -10,92 +10,6 @@ import { instanceId, notify } from './util/widgetHelpers';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
-function _getIn(obj, path) {
-  return path.reduce((seed, current) => {
-    return seed && typeof seed === 'object' && seed[current];
-  }, obj);
-}
-
-function _ensureOrderedKeysExists(obj) {
-  if (obj && !obj._orderedKeys) { obj._orderedKeys = []; }
-}
-
-function _pushNewOrderedKey(obj, key) {
-  const shouldPushKey = obj
-    && obj._orderedKeys
-    && obj._orderedKeys.indexOf(key) === -1;
-
-  shouldPushKey && obj._orderedKeys.push(key);
-}
-
-function _setIn(obj, path, val) {
-  // NOTE: Not truly a deep clone, but that doesn't really matter just yet
-  const cloned = Object.assign({}, obj);
-
-  path.reduce(
-    (seed, current, idx) => {
-      if (idx == path.length - 1) {
-        seed[current] = val;
-      } else if (!seed[current]) {
-        seed[current] = {};
-      }
-
-      _ensureOrderedKeysExists(seed);
-      _pushNewOrderedKey(seed, current);
-
-      return seed[current];
-    },
-    cloned
-  );
-
-  return cloned;
-}
-
-function _stringifyPath(path) {
-  return path.join('>-->'); // '>' seems a little arbitrary, but w/e...
-}
-
-function _pathsEqual(path1, path2) {
-  return stringify(path1) === stringify(path2);
-}
-
-function _pathListContains(pathList, toCheck) {
-  const formattedExisting = pathList.map(_stringifyPath);
-  const formattedToCheck = _stringifyPath(toCheck);
-
-  return formattedExisting.indexOf(formattedToCheck) !== -1;
-}
-
-function _pushPathStep(path, nextStep) {
-  if (!path || path.trim() === '') {
-    return nextStep;
-  }
-
-  return _stringifyPath([path, nextStep]);
-}
-
-function _groupsObjectToList(groups, array, renderHeader, renderItems, traversed) {
-  if (groups && groups._orderedKeys) {
-    groups._orderedKeys.forEach(key => {
-      const value = groups[key];
-      const newlyTraversed = _pushPathStep(traversed, key);
-      array.push(renderHeader(newlyTraversed, key));
-
-      if (Array.isArray(value)) {
-        array.push(renderItems(value, newlyTraversed));
-      } else {
-        _groupsObjectToList(
-          value,
-          array,
-          renderHeader,
-          renderItems,
-          newlyTraversed
-        );
-      }
-    });
-  }
-}
-
 export default React.createClass({
 
   displayName: 'List',
@@ -154,18 +68,13 @@ export default React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    const keys = [];
-    const shouldSetState = nextProps.data !== this.props.data
-      || nextProps.groupBy !== this.props.groupBy;
+    var keys = [];
 
-    if (shouldSetState) {
-      const groups = this._group(nextProps.groupBy, nextProps.data, keys);
-
+    if (nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy)
       this.setState({
-        groups,
+        groups: this._group(nextProps.groupBy, nextProps.data, keys),
         sortedKeys: keys
-      });
-    }
+      })
   },
 
   componentDidMount(){
@@ -193,42 +102,21 @@ export default React.createClass({
     this._currentActiveID = null;
 
     if (data.length) {
-      if (Array.isArray(sortedKeys[0])) {
-        _groupsObjectToList(
-          groups,
-          items,
-          this._renderNestedGroupHeader,
-          (collection, groupKey) => {
-            return collection.map((current, idx) => {
-              const renderedItem = this._renderItem(groupKey, current, idx);
+      items = sortedKeys
+        .reduce( (items, key) => {
+          group = groups[key]
+          items.push(this._renderGroupHeader(key))
 
-              // console.warn('renderedItem', renderedItem);
+          for (var itemIdx = 0; itemIdx < group.length; itemIdx++)
+            items.push(
+              this._renderItem(key, group[itemIdx], ++idx))
 
-              return renderedItem;
-            });
-          },
-          undefined
-        );
-      } else {
-        items = sortedKeys
-          .reduce( (items, key) => {
-            group = groups[key]
-            items.push(this._renderGroupHeader(key))
-
-            for (var itemIdx = 0; itemIdx < group.length; itemIdx++)
-              items.push(
-                this._renderItem(key, group[itemIdx], ++idx))
-
-            return items
-          }, [])
-
-      }
+          return items
+        }, [])
     }
-    else {
-      items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>;
-    }
+    else
+      items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>
 
-    // console.warn('ListGroupable::render::items', items);
     return (
       <ul
         ref='scrollable'
@@ -243,14 +131,9 @@ export default React.createClass({
     )
   },
 
-  // FIXME: This is just a temporary shim
   _renderGroupHeader(group){
-    return this._renderNestedGroupHeader(group, group);
-  },
-
-  _renderNestedGroupHeader(group, label) {
-    var GroupComponent = this.props.groupComponent;
-    var id = instanceId(this);
+    var GroupComponent = this.props.groupComponent
+      , id = instanceId(this);
 
     return (
       <li
@@ -260,7 +143,7 @@ export default React.createClass({
         id={id + '_group_' + group}
         className='rw-list-optgroup'
       >
-        { GroupComponent ? <GroupComponent item={label}/> : label }
+        { GroupComponent ? <GroupComponent item={group}/> : group }
       </li>
     )
   },
@@ -302,38 +185,7 @@ export default React.createClass({
     return this.props.data[idx] === item
   },
 
-  _groupNested(groupFns, data, paths) {
-    // Haven't seen keys start out as anything other than [], but just gonna
-    // keep that style going...
-    //
-    // In this case, keys is going to really be a lot more like 'paths'
-    paths = paths || [];
-    const pathIsNew = p => !_pathListContains(paths, p);
-
-    const result = data.reduce((seed, current) => {
-      const path = groupFns.map(fn => fn(current));
-      const existingLeaf = _getIn(seed, path) || [];
-      const newLeaf = existingLeaf.concat(current);
-
-      if (pathIsNew(path)) {
-        paths.push(path);
-      }
-
-
-      return _setIn(seed, path, newLeaf);
-    }, {});
-
-    // console.warn('ListGroupable::_groupNested::result', result);
-
-    return result;
-  },
-
   _group(groupBy, data, keys){
-    // If we have an array for nested optgroups, just short circuit for now...
-    if (Array.isArray(groupBy)) {
-      return this._groupNested(groupBy, data, keys);
-    }
-
     var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
 
     // the keys array ensures that groups are rendered in the order they came in
@@ -345,7 +197,7 @@ export default React.createClass({
       , `[React Widgets] You are seem to be trying to group this list by a `
       + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
 
-    var result = data.reduce( (grps, item) => {
+    return data.reduce( (grps, item) => {
       var group = iter(item);
 
       _.has(grps, group)
@@ -353,20 +205,22 @@ export default React.createClass({
         : (keys.push(group), grps[group] = [item])
 
       return grps
-    }, {});
-
-    // console.warn('ListGroupable::_group::result', result);
-
-    return result;
+    }, {})
   },
 
-  // FIXME: Make move work again
+  _data(){
+    var groups = this.state.groups;
+
+    return this.state.sortedKeys
+      .reduce( (flat, grp) => flat.concat(groups[grp]), [])
+  },
+
   move() {
-    // var selected = this.getItemDOMNode(this.props.focused);
+    var selected = this.getItemDOMNode(this.props.focused);
 
-    // if( !selected ) return
+    if( !selected ) return
 
-    // notify(this.props.onMove, [ selected, compat.findDOMNode(this), this.props.focused ])
+    notify(this.props.onMove, [ selected, compat.findDOMNode(this), this.props.focused ])
   },
 
   getItemDOMNode(item){

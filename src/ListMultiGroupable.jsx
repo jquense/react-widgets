@@ -52,7 +52,7 @@ function _setIn(obj, path, val) {
 }
 
 function _stringifyPath(path) {
-  return path.join('>-->'); // '>' seems a little arbitrary, but w/e...
+  return path.join('>-->'); // seems a little arbitrary, but w/e...
 }
 
 function _pathsEqual(path1, path2) {
