@@ -9,6 +9,11 @@ import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
+const PATH_DELIMITER = '>-->'; // Seems a little arbitrary...
+
+function _stringifyPath(path) {
+  return path.join(PATH_DELIMITER);
+}
 
 function _getIn(obj, path) {
   return path.reduce((seed, current) => {
@@ -49,21 +54,6 @@ function _setIn(obj, path, val) {
   );
 
   return cloned;
-}
-
-function _stringifyPath(path) {
-  return path.join('>-->'); // seems a little arbitrary, but w/e...
-}
-
-function _pathsEqual(path1, path2) {
-  return stringify(path1) === stringify(path2);
-}
-
-function _pathListContains(pathList, toCheck) {
-  const formattedExisting = pathList.map(_stringifyPath);
-  const formattedToCheck = _stringifyPath(toCheck);
-
-  return formattedExisting.indexOf(formattedToCheck) !== -1;
 }
 
 function _pushPathStep(path, nextStep) {
@@ -229,26 +219,20 @@ export default React.createClass({
   },
 
   getInitialState() {
-    var keys = [];
-
     return {
-      groups: this._group(this.props.groupBy, this.props.data, keys),
-
-      sortedKeys: keys
+      groups: this._group(this.props.groupBy, this.props.data),
     };
   },
 
   componentWillReceiveProps(nextProps) {
-    const keys = [];
     const shouldSetState = nextProps.data !== this.props.data
       || nextProps.groupBy !== this.props.groupBy;
 
     if (shouldSetState) {
-      const groups = this._group(nextProps.groupBy, nextProps.data, keys);
+      const groups = this._group(nextProps.groupBy, nextProps.data);
 
       this.setState({
         groups,
-        sortedKeys: keys
       });
     }
   },
@@ -269,7 +253,7 @@ export default React.createClass({
       , ...props } = this.props
       , id = instanceId(this);
 
-    let { sortedKeys, groups } = this.state;
+    let { groups } = this.state;
 
     let items = []
       , idx = -1
@@ -371,24 +355,12 @@ export default React.createClass({
     return this.props.data[idx] === item
   },
 
-  _group(groupFns, data, paths) {
-    // Haven't seen keys start out as anything other than [], but just gonna
-    // keep that style going...
-    //
-    // In this case, keys is going to really be a lot more like 'paths'
-    paths = paths || [];
-    const pathIsNew = p => !_pathListContains(paths, p);
-
+  _group(groupFns, data) {
     const result = data.reduce(
       (seed, current) => {
         const path = groupFns.map(fn => fn(current));
         const existingLeaf = _getIn(seed, path) || [];
         const newLeaf = existingLeaf.concat(current);
-
-        if (pathIsNew(path)) {
-          paths.push(path);
-        }
-
 
         return _setIn(seed, path, newLeaf);
       },
