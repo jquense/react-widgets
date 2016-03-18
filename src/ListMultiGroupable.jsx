@@ -158,7 +158,7 @@ function _getOrderedIndexHelper(item, currentNode, state) {
 
         if (index !== -1) {
           return {
-            foundIndex: index,
+            foundIndex: _state.offset + index,
             offset: _state.offset,
           };
         } else {
