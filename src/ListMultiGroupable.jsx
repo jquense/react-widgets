@@ -56,6 +56,14 @@ function _setIn(obj, path, val) {
   return cloned;
 }
 
+function _validateOrderedKeyObject(obj) {
+  if (!(obj && obj._orderedKeys)) {
+    throw new Error(
+      "currentNode is null/undefined/falsy, or is missing `_orderedKeys`"
+    );
+  }
+}
+
 function _pushPathStep(path, nextStep) {
   if (!path || path.trim() === '') {
     return nextStep;
@@ -78,37 +86,73 @@ function _flattenGroups(groups, array) {
   }
 }
 
-function _renderGroupHeadersAndItemsToArray(groups, array, processHeader, processItems, traversed, indexOffset) {
-  if (!groups || !groups._orderedKeys) { return 0; }
+/*
+state: {
+  depth:     number,
+  offset:    number,
+  traversed: string,
+}
+*/
+function __processHeadersAndItems(currentNode, array, processHeader, processItems, state) {
+  _validateOrderedKeyObject(currentNode);
 
   return groups._orderedKeys.reduce(
-    (_offset, key) => {
-      const value = groups[key];
+    (_state, key) => {
+      const depth = _state.depth;
+      const offset = _state.offset;
+      const traversed = _state.traversed;
+      const value = currentNode[key];
+
       const newlyTraversed = _pushPathStep(traversed, key);
 
       array.push(
-        processHeader(newlyTraversed, key)
+        processHeader(newlyTraversed, key, depth);
       );
 
-      if (Array.isArray(value)) {
-        array.push(
-          processItems(value, newlyTraversed, _offset)
-        );
+      if (!Array.isArray(value)) {
+        const nextState = Object.assign({}, _state, {
+          depth: depth + 1,
+        });
 
-        return _offset + value.length;
-      } else {
-        return _renderGroupHeadersAndItemsToArray(
+        return _processHeadersAndItems(
           value,
           array,
           processHeader,
           processItems,
-          newlyTraversed,
-          _offset
+          nextState,
         );
+      } else {
+        // TODO: Make sure we don't have the same depth +1 issue here as before
+        array.push(
+          processItems(value, newlyTraversed, offset, depth)
+        );
+
+        return Object.assign({}, _state, {
+          offset: offset + value.length,
+        });
       }
     },
-    indexOffset
+    state
   );
+}
+
+function _renderHeadersAndItems(groupedData, processHeader, processItems) {
+  const outputArray = [];
+  const initialState = {
+    depth: 0,
+    offset: 0,
+    traversed: '',
+  };
+
+  __processHeadersAndItems(
+    groupedData,
+    outputArray,
+    processHeader,
+    processItems,
+    initialState
+  );
+
+  return outputArray;
 }
 
 function _setFoundIndex(state, foundIndex) {
@@ -123,12 +167,15 @@ function _setOffset(state, offset) {
   });
 }
 
+/*
+ state:
+ {
+   foundIndex: boolean,
+   offset:     number
+ }
+ */
 function _getOrderedIndexHelper(item, currentNode, state) {
-  if (!(currentNode && currentNode._orderedKeys)) {
-    throw new Error(
-      "currentNode is null/undefined/falsy, or is missing `_orderedKeys`"
-    );
-  }
+  _validateOrderedKeyObject(currentNode);
 
   return currentNode._orderedKeys.reduce(
     (_state, key) => {
@@ -265,13 +312,10 @@ export default React.createClass({
     this._currentActiveID = null;
 
     if (data.length) {
-      _renderGroupHeadersAndItemsToArray(
+      items = _renderHeadersAndItems(
         groups,
-        items,
         this._renderGroupHeader,
-        this._renderItems,
-        undefined,
-        0
+        this._renderItems
       );
     }
     else {
