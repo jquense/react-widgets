@@ -296,17 +296,18 @@ export default React.createClass({
     )
   },
 
-  _renderGroupHeader(group, label) {
+  _renderGroupHeader(groupKey, label, depth) {
     var GroupComponent = this.props.groupComponent;
     var id = instanceId(this);
+    const depthString = `rw-list-optgroup-depth-${depth || 0}`;
 
     return (
       <li
-        key={'item_' + group}
+        key={'item_' + groupKey}
         tabIndex='-1'
         role="separator"
-        id={id + '_group_' + group}
-        className='rw-list-optgroup'
+        id={id + '_group_' + groupKey}
+        className=`rw-list-optgroup ${depthString}`
       >
         { GroupComponent ? <GroupComponent item={label}/> : label }
       </li>
@@ -325,17 +326,23 @@ export default React.createClass({
     });
   },
 
-  _renderItem(group, item, idx){
+  _renderItem(group, item, idx, depth) {
     let {
-        focused, selected, onSelect
-      , textField, valueField
-      , itemComponent: ItemComponent
-      , optionComponent: Option } = this.props
-
+      focused,
+      selected,
+      onSelect,
+      textField,
+      valueField,
+      itemComponent: ItemComponent,
+      optionComponent: Option
+    } = this.props
     let currentID = optionId(instanceId(this), idx);
+    const onClick = onSelect.bind(null, item);
+    const depthString = `rs-list-opttion-depth-${depth || 0}`;
 
-    if (focused === item)
+    if (focused === item) {
       this._currentActiveID = currentID;
+    }
 
     return (
       <Option
@@ -344,7 +351,8 @@ export default React.createClass({
         dataItem={item}
         focused={focused === item}
         selected={selected === item}
-        onClick={onSelect.bind(null, item)}
+        onClick={onClick}
+        className={depthString}
       >
         { ItemComponent
             ? <ItemComponent
@@ -355,11 +363,11 @@ export default React.createClass({
             : dataText(item, textField)
         }
       </Option>
-    )
+    );
   },
 
   _isIndexOf(idx, item){
-    return this.props.data[idx] === item
+    return this.props.data[idx] === item;
   },
 
   _group(groupFns, data) {
