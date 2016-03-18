@@ -121,42 +121,64 @@ function _renderGroupHeadersAndItemsToArray(groups, array, processHeader, proces
   );
 }
 
-function _getDOMNodeIndex(item, currentDataNode, offset, foundIndex) {
-  if (foundIndex) { return foundIndex; }
-  if (!currentDataNode || !currentDataNode._orderedKeys) { return -1; }
-  // TODO: Try this approach
-  // const stillLooking = _getDOMNodeIndex.bind(null, item);
-  // const eureka = _getDOMNodeIndex.bind(null, undefined, undefined, undefined);
+function _getOrderedIndexHelper(item, currentNode, state) {
+  if (state.foundIndex) { return state; }
+  if (!(currentNode && currentNode._orderedKeys)) {
 
-  return currentDataNode._orderedKeys.reduce(
-    (_offset, key) => {
-      const value = currentDataNode[key];
+    throw new Error(
+      "currentNode is null/undefined/falsy, or is missing `_orderedKeys`"
+    );
+  }
 
+  return currentNode._orderedKeys.reduce(
+    (_state, key) => {
+      const value = currentNode[key];
       if (!Array.isArray(value)) {
-        return _getDOMNodeIndex(item, value, _offset + 1, undefined);
-      } else {
-        const arrayIndex = value.indexOf(item);
+        console.warn('NOT ARRAY');
+        console.warn('key', key);
+        console.warn('value', value);
+        console.warn('_state', state);
+        console.log('');
 
-        if (arrayIndex != -1) {
-          // FIXME: I kind of hate this... the only arg that actually matters
-          return _getDOMNodeIndex(
-            undefined,
-            undefined,
-            undefined,
-            arrayIndex + _offset
-          );
+        return _getOrderedIndexHelper(
+          item,
+          value,
+          {
+            foundIndex: _state.foundIndex,
+            offset: _state.offset + 1,
+          }
+        );
+      } else {
+        const index = value.indexOf(item);
+        console.warn('ARRAY');
+        console.warn('key', key);
+        console.warn('value', value);
+        console.warn('_state', state);
+        console.log('');
+
+        if (index !== -1) {
+          return {
+            foundIndex: index,
+            offset: _state.offset,
+          };
         } else {
-          return _getDOMNodeIndex(
-            item,
-            value,
-            _offset + value.length,
-            undefined
-          );
+          return {
+            foundIndex: _state.foundIndex,
+            offset: _state.offset + value.length,
+          };
         }
       }
     },
-    offset
+    state
   );
+}
+
+function _getOrderedIndex(item, object) {
+  const result = _getOrderedIndexHelper(item, object, { offset: 0 });
+
+  // console.warn('ListMultiGroupable::_getOrderedIndexHelper::result', result);
+
+  return result.foundIndex || -1;
 }
 
 export default React.createClass({
@@ -401,37 +423,18 @@ export default React.createClass({
   },
 
   getItemDOMNode(item) {
-    return _findDOMNode(
-      this.state.groups,
-      item,
-      compat.findDOMNode
-    );
+    const list = compat.findDOMNode(this);
+    const index = _getOrderedIndex(item, this.state.groups);
+    const node = index === -1
+      ? undefined
+      : list.children[index];
 
-    var list = compat.findDOMNode(this);
+    // console.warn('ListMultiGroupable::getItemDOMNode::list', list);
+    // console.warn('ListMultiGroupable::getItemDOMNode::index', index);
 
-    // console.log('ListMultiGroupable::getItemDOMNode::list', list);
+    console.warn('ListMultiGroupable::getItemDOMNode::item', item);
+    console.warn('ListMultiGroupable::getItemDOMNode::node', node);
 
-    // FIXME: Make this work!
-    return undefined;
-
-    var groups = this.state.groups;
-    var idx = -1;
-
-    var itemIdx;
-    var child;
-
-    this.state.sortedKeys.some(group => {
-      itemIdx = groups[group].indexOf(item);
-      idx++;
-
-      if (itemIdx !== -1) {
-        return !!(child = list.children[idx + itemIdx + 1]);
-      }
-
-      idx += groups[group].length;
-    });
-
-    return child;
+    return node;
   }
-
 });
