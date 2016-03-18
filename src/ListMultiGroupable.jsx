@@ -248,16 +248,19 @@ export default React.createClass({
 
   render(){
     var {
-        className, role, data
-      , messages, onSelect, selectedIndex
-      , ...props } = this.props
-      , id = instanceId(this);
-
+      className,
+      role,
+      data,
+      messages,
+      onSelect,
+      selectedIndex,
+      ...props
+    } = this.props;
+    var id = instanceId(this);
     let { groups } = this.state;
-
-    let items = []
-      , idx = -1
-      , group;
+    let items = [];
+    let idx = -1;
+    let group;
 
     this._currentActiveID = null;
 
@@ -272,7 +275,11 @@ export default React.createClass({
       );
     }
     else {
-      items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>;
+      items = (
+        <li className='rw-list-empty'>
+          { _.result(messages.emptyList, this.props) }
+        </li>
+      );
     }
 
     return (
@@ -356,7 +363,7 @@ export default React.createClass({
   },
 
   _group(groupFns, data) {
-    const result = data.reduce(
+    return data.reduce(
       (seed, current) => {
         const path = groupFns.map(fn => fn(current));
         const existingLeaf = _getIn(seed, path) || [];
@@ -366,8 +373,6 @@ export default React.createClass({
       },
       {}
     );
-
-    return result;
   },
 
   _data() {
