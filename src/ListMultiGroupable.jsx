@@ -121,12 +121,20 @@ function _renderGroupHeadersAndItemsToArray(groups, array, processHeader, proces
   );
 }
 
+function _setFoundIndex(state, foundIndex) {
+  return Object.assign({}, state, {
+    foundIndex,
+  });
+}
+
+function _setOffset(state, offset) {
+  return Object.assign({}, state, {
+    offset,
+  });
+}
+
 function _getOrderedIndexHelper(item, currentNode, state) {
-  // TODO: Make sure this is in the right spot...
-  if (state.foundIndex) { return state; }
-
   if (!(currentNode && currentNode._orderedKeys)) {
-
     throw new Error(
       "currentNode is null/undefined/falsy, or is missing `_orderedKeys`"
     );
@@ -134,41 +142,31 @@ function _getOrderedIndexHelper(item, currentNode, state) {
 
   return currentNode._orderedKeys.reduce(
     (_state, key) => {
+      if (_state.foundIndex) { return _state; }
 
       const value = currentNode[key];
       if (!Array.isArray(value)) {
-        console.warn('NOT ARRAY');
-        console.warn('key', key);
-        console.warn('value', value);
-        console.warn('_state', state);
-        console.log('');
-
         return _getOrderedIndexHelper(
           item,
           value,
-          {
-            foundIndex: _state.foundIndex,
-            offset: _state.offset + 1,
-          }
+          _setOffset(_state, _state.offset + 1)
         );
       } else {
         const index = value.indexOf(item);
-        console.warn('ARRAY');
-        console.warn('key', key);
-        console.warn('value', value);
-        console.warn('_state', state);
-        console.log('');
 
+        // IMPORTANT: We're kind of looking ahead one level in the heirarchy,
+        // so the index/offset actually needs to be incremented once extra.
+        //
+        // This could probably be done slightly differently to alleviate that,
+        // but that isn't worth doing just yet...
         if (index !== -1) {
-          return {
-            foundIndex: _state.offset + index,
-            offset: _state.offset,
-          };
+          const foundIndex = _state.offset + index + 1;
+
+          return _setFoundIndex(_state, foundIndex);
         } else {
-          return {
-            foundIndex: _state.foundIndex,
-            offset: _state.offset + value.length,
-          };
+          const offset = _state.offset + value.length + 1;
+
+          return _setOffset(_state, offset);
         }
       }
     },
@@ -177,9 +175,10 @@ function _getOrderedIndexHelper(item, currentNode, state) {
 }
 
 function _getOrderedIndex(item, object) {
-  const result = _getOrderedIndexHelper(item, object, { offset: 0 });
-
-  // console.warn('ListMultiGroupable::_getOrderedIndexHelper::result', result);
+  const result = _getOrderedIndexHelper(item, object, {
+    foundIndex: undefined,
+    offset: 0,
+  });
 
   return result.foundIndex || -1;
 }
@@ -292,8 +291,6 @@ export default React.createClass({
       items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>;
     }
 
-    // console.warn('ListMultiGroupable::render::items', items);
-
     return (
       <ul
         ref='scrollable'
@@ -332,8 +329,6 @@ export default React.createClass({
         current,
         offset + idx
       );
-
-      // console.warn('ListMultiGroupable::_renderItems::rendered', rendered);
 
       return rendered;
     });
@@ -400,8 +395,6 @@ export default React.createClass({
       {}
     );
 
-    // console.warn('ListMultiGroupable::_group::result', result);
-
     return result;
   },
 
@@ -428,16 +421,8 @@ export default React.createClass({
   getItemDOMNode(item) {
     const list = compat.findDOMNode(this);
     const index = _getOrderedIndex(item, this.state.groups);
-    const node = index === -1
-      ? undefined
-      : list.children[index];
 
-    // console.warn('ListMultiGroupable::getItemDOMNode::list', list);
-    // console.warn('ListMultiGroupable::getItemDOMNode::index', index);
-
-    console.warn('ListMultiGroupable::getItemDOMNode::item', item);
-    console.warn('ListMultiGroupable::getItemDOMNode::node', node);
-
-    return node;
+    // Conveniently, someArray[-1] gives undefined, which is just what we want
+    return list[index];
   }
 });
