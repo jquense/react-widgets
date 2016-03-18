@@ -122,7 +122,9 @@ function _renderGroupHeadersAndItemsToArray(groups, array, processHeader, proces
 }
 
 function _getOrderedIndexHelper(item, currentNode, state) {
+  // TODO: Make sure this is in the right spot...
   if (state.foundIndex) { return state; }
+
   if (!(currentNode && currentNode._orderedKeys)) {
 
     throw new Error(
@@ -132,6 +134,7 @@ function _getOrderedIndexHelper(item, currentNode, state) {
 
   return currentNode._orderedKeys.reduce(
     (_state, key) => {
+
       const value = currentNode[key];
       if (!Array.isArray(value)) {
         console.warn('NOT ARRAY');
