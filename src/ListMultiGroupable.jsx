@@ -15,6 +15,10 @@ function _stringifyPath(path) {
   return path.join(PATH_DELIMITER);
 }
 
+function _getDepthString(depth) {
+  return `rw-list-depth-${depth || 0}`;
+}
+
 function _getIn(obj, path) {
   return path.reduce((seed, current) => {
     return seed && typeof seed === 'object' && seed[current];
@@ -96,7 +100,7 @@ state: {
 function __processHeadersAndItems(currentNode, array, processHeader, processItems, state) {
   _validateOrderedKeyObject(currentNode);
 
-  return groups._orderedKeys.reduce(
+  return currentNode._orderedKeys.reduce(
     (_state, key) => {
       const depth = _state.depth;
       const offset = _state.offset;
@@ -106,7 +110,7 @@ function __processHeadersAndItems(currentNode, array, processHeader, processItem
       const newlyTraversed = _pushPathStep(traversed, key);
 
       array.push(
-        processHeader(newlyTraversed, key, depth);
+        processHeader(newlyTraversed, key, depth)
       );
 
       if (!Array.isArray(value)) {
@@ -114,17 +118,17 @@ function __processHeadersAndItems(currentNode, array, processHeader, processItem
           depth: depth + 1,
         });
 
-        return _processHeadersAndItems(
+        return __processHeadersAndItems(
           value,
           array,
           processHeader,
           processItems,
-          nextState,
+          nextState
         );
       } else {
         // TODO: Make sure we don't have the same depth +1 issue here as before
         array.push(
-          processItems(value, newlyTraversed, offset, depth)
+          processItems(value, newlyTraversed, offset, depth + 1)
         );
 
         return Object.assign({}, _state, {
@@ -343,7 +347,6 @@ export default React.createClass({
   _renderGroupHeader(groupKey, label, depth) {
     var GroupComponent = this.props.groupComponent;
     var id = instanceId(this);
-    const depthString = `rw-list-optgroup-depth-${depth || 0}`;
 
     return (
       <li
@@ -351,19 +354,20 @@ export default React.createClass({
         tabIndex='-1'
         role="separator"
         id={id + '_group_' + groupKey}
-        className=`rw-list-optgroup ${depthString}`
+        className={`rw-list-optgroup ${_getDepthString(depth)}`}
       >
         { GroupComponent ? <GroupComponent item={label}/> : label }
       </li>
     )
   },
 
-  _renderItems(items, groupKey, offset) {
+  _renderItems(items, groupKey, offset, depth) {
     return items.map((current, idx) => {
       const rendered = this._renderItem(
         groupKey,
         current,
-        offset + idx
+        offset + idx,
+        depth
       );
 
       return rendered;
@@ -382,7 +386,6 @@ export default React.createClass({
     } = this.props
     let currentID = optionId(instanceId(this), idx);
     const onClick = onSelect.bind(null, item);
-    const depthString = `rs-list-opttion-depth-${depth || 0}`;
 
     if (focused === item) {
       this._currentActiveID = currentID;
@@ -396,7 +399,7 @@ export default React.createClass({
         focused={focused === item}
         selected={selected === item}
         onClick={onClick}
-        className={depthString}
+        className={_getDepthString(depth)}
       >
         { ItemComponent
             ? <ItemComponent
