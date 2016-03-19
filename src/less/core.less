@@ -212,38 +212,31 @@ ul.rw-list {
 
 ul.rw-list {
   &.rw-list-grouped {
-    > li.rw-list-optgroup {
+    > li {
       &.rw-list-depth {
+        // TODO: There's probably some kind of expression syntax for this...
         &-0 {
           padding-left: 10px;
         }
 
         &-1 {
-          padding-left: 30px;
-        }
-
-        &-2 {
-          padding-left: 50px;
-        }
-      }
-    }
-
-    > li.rw-list-option {
-      &.rw-list-depth {
-        &-0 {
           padding-left: 20px;
         }
 
-        &-1 {
-          padding-left: 40px;
-        }
-
         &-2 {
-          padding-left: 60px;
+          padding-left: 30px;
         }
 
         &-3 {
-          padding-left: 80px;
+          padding-left: 40px;
+        }
+
+        &-4 {
+          padding-left: 50px;
+        }
+
+        &-5 {
+          padding-left: 60px;
         }
       }
     }
