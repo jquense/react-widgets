@@ -116,7 +116,10 @@
 	    },
 
 	    parse: function parse(value, format, culture) {
-	      return value ? getMoment(culture, value, format).toDate() : null;
+	      if (!value) return null;
+	      var m = getMoment(culture, value, format);
+	      if (m.isValid()) return m.toDate();
+	      return null;
 	    },
 
 	    format: function format(value, _format, culture) {
