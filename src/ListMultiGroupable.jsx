@@ -7,6 +7,7 @@ import _  from './util/_';
 import warning from 'warning';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
+import GroupHeader from './GroupHeader';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 const PATH_DELIMITER = '>-->'; // Seems a little arbitrary...
@@ -110,7 +111,7 @@ function __processHeadersAndItems(currentNode, array, processHeader, processItem
       const newlyTraversed = _pushPathStep(traversed, key);
 
       array.push(
-        processHeader(newlyTraversed, key, depth)
+        processHeader(newlyTraversed, key, _state)
       );
 
       if (!Array.isArray(value)) {
@@ -344,21 +345,20 @@ export default React.createClass({
     )
   },
 
-  _renderGroupHeader(groupKey, label, depth) {
-    var GroupComponent = this.props.groupComponent;
-    var id = instanceId(this);
+  _renderGroupHeader(groupKey, label, state) {
+    const className = `rw-list-optgroup ${_getDepthString(state.depth)}`;
+    const id = instanceId(this);
+    const key = `item_${state.traversed}_${groupKey}`;
 
     return (
-      <li
-        key={'item_' + groupKey}
-        tabIndex='-1'
-        role="separator"
-        id={id + '_group_' + groupKey}
-        className={`rw-list-optgroup ${_getDepthString(depth)}`}
-      >
-        { GroupComponent ? <GroupComponent item={label}/> : label }
-      </li>
-    )
+      <GroupHeader
+        className={className}
+        groupComponent={this.props.groupComponent}
+        id={id}
+        key={key}
+        label={label}
+      />
+    );
   },
 
   _renderItems(items, groupKey, offset, depth) {
