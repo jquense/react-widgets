@@ -1,3 +1,11 @@
+v3.2.1 - Tue, 29 Mar 2016 19:34:19 GMT
+--------------------------------------
+
+- [3bd3da4](../../commit/3bd3da4) [fixed] SelectList was too forceful refocusing
+- [db5fc11](../../commit/db5fc11) [fixed] SelectList focus logic
+
+
+
 v3.2.0 - Sat, 27 Feb 2016 16:48:04 GMT
 --------------------------------------
 
