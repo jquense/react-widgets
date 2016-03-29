@@ -71,10 +71,6 @@ var SelectList = React.createClass({
     require('./mixins/RtlParentContextMixin'),
     require('./mixins/AriaDescendantMixin')(),
     require('./mixins/FocusMixin')({
-      willHandle(focused) {
-        if (focused)
-          this.focus()
-      },
       didHandle(focused) {
         // the rigamarole here is to avoid flicker went clicking an item and
         // gaining focus at the same time.
@@ -381,7 +377,8 @@ function getListItem(parent){
           </label>
         </ListOption>
       );
-      function onMouseDown(e) {
+
+      function onMouseDown() {
         parent._clicking = true
       }
 
