@@ -8,6 +8,7 @@ import warning from 'warning';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
 import GroupHeader from './GroupHeader';
+import { depthFirst } from './util/objectTraversal';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 const PATH_DELIMITER = '>-->'; // Seems a little arbitrary...
@@ -139,6 +140,28 @@ function __processHeadersAndItems(currentNode, array, processHeader, processItem
     },
     state
   );
+}
+
+function _renderAllTheThings(groupedObj, renderGroupHeader, renderSingleItem) {
+  const outputArray = [];
+  const getChildren = obj => obj._orderedKeys;
+  const onInternal = (key, state) => {
+    outputArray.push(renderGroupHeader(key, state));
+  };
+  const onLeaf = (array, state) => {
+    array.forEach((item, idx) => {
+      outputArray.push(renderSingleItem(item, state, idx));
+    });
+  };
+
+  depthFirst(
+    groupedObj,
+    getChildren,
+    onInternal,
+    onLeaf
+  );
+
+  return outputArray;
 }
 
 function _renderHeadersAndItems(groupedData, processHeader, processItems) {
@@ -317,11 +340,16 @@ export default React.createClass({
     this._currentActiveID = null;
 
     if (data.length) {
-      items = _renderHeadersAndItems(
+      items = _renderAllTheThings(
         groups,
-        this._renderGroupHeader,
-        this._renderItems
+        this._rndrGrpHdr,
+        this._rndrSnglItm
       );
+      // items = _renderHeadersAndItems(
+      //   groups,
+      //   this._renderGroupHeader,
+      //   this._renderItems
+      // );
     }
     else {
       items = (
@@ -343,6 +371,25 @@ export default React.createClass({
         { items }
       </ul>
     )
+  },
+
+  _rndrGrpHdr(label, state) {
+    const depth = state.path.length;
+    const pathString = state.path.join('::');
+
+    const className = `rw-list-optgroup ${_getDepthString(depth)}`;
+    const id = instanceId(this);
+    const key = `item_${pathString}_${label}`;
+
+    return (
+      <GroupHeader
+        className={className}
+        groupComponent={this.props.groupComponent}
+        id={id}
+        key={key}
+        label={label}
+      />
+    );
   },
 
   _renderGroupHeader(groupKey, label, state) {
@@ -372,6 +419,49 @@ export default React.createClass({
 
       return rendered;
     });
+  },
+
+  _rndrSnglItm(item, state, idx) {
+    let {
+      focused,
+      selected,
+      onSelect,
+      textField,
+      valueField,
+      itemComponent: ItemComponent,
+      optionComponent: Option
+    } = this.props
+    const currentId = optionId(instanceId(this), idx); // FIXME?
+    const onClick = onSelect.bind(null, item);
+
+    if (focused === item) {
+      this._currentActiveID = currentId;
+    }
+
+    const depth = state.path.length;
+    const pathString = state.path.join('::');
+    const key = `item_${pathString}_${idx}`;
+
+    return (
+      <Option
+        key={key}
+        id={currentId}
+        dataItem={item}
+        focused={focused === item}
+        selected={selected === item}
+        onClick={onClick}
+        className={_getDepthString(depth)}
+      >
+        { ItemComponent
+            ? <ItemComponent
+                item={item}
+                value={dataValue(item, valueField)}
+                text={dataText(item, textField)}
+              />
+            : dataText(item, textField)
+        }
+      </Option>
+    )
   },
 
   _renderItem(group, item, idx, depth) {
