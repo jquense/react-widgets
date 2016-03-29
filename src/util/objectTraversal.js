@@ -5,10 +5,18 @@ function _getDefaultState() {
   };
 };
 
+function _getPoppedArrayClone(array) {
+  const clone = array.slice();
+  clone.pop();
+
+  return clone;
+}
+
 function _depthFirst(currentNode, getChildren, processInternal, processLeaf, state) {
+  // I kind of hate this
+  state = state || _getDefaultState();
+
   if (Array.isArray(currentNode)) {
-    // TODO: Consider just having processLeaf return a resulting state to be
-    // returned here...
     processLeaf(currentNode, state);
 
     return Object.assign({}, state, {
@@ -19,24 +27,28 @@ function _depthFirst(currentNode, getChildren, processInternal, processLeaf, sta
 
   return getChildren(currentNode).reduce(
     (_state, key) => {
-      // TODO: Consider just having processInternal return some resulting state
-      // to be used as `nextState` here...
       processInternal(key, _state);
 
-      const nextState = Object.assign({}, _state, {
+      const passDownState = Object.assign({}, _state, {
         offset: _state.offset + 1,
         path: _state.path.concat(key),
       });
 
-      return _depthFirst(
+      const resultingState = _depthFirst(
         currentNode[key],
         getChildren,
         processInternal,
         processLeaf,
-        nextState
+        passDownState
       );
+
+      const passUpState = Object.assign({}, resultingState, {
+        path: _getPoppedArrayClone(resultingState.path),
+      });
+
+      return passUpState;
     },
-    state || _getDefaultState()
+    state
   );
 }
 
@@ -119,14 +131,14 @@ function _doTheThing() {
   const array = [];
   function getChildren(obj) { return Object.keys(obj); }
   function stringifyState(state) {
-    return `<state: offset[${state.offset}];path[${state.path.join(':')}]>`;
+    return `<state: offset[${state.offset}];path[${state.path.join(':')}];depth[${state.path.length}]>`;
   };
   function processInternal(key, state) {
-    array.push(`${stringifyState(state)} <${key}>`);
+    array.push(`${stringifyState(state)}    { ${key} }`);
   };
   function processLeaf(leafArray, state) {
     leafArray.forEach(function(item, idx) {
-      array.push(`${stringifyState(state)} <id[${item.id}]> <localOffset: ${idx}>`);
+      array.push(`${stringifyState(state)} <localOffset: ${idx}>    { id[${item.id}] } `);
     });
   };
 
@@ -140,6 +152,8 @@ function _doTheThing() {
   console.log('resulting state:', resultingState);
   console.log(JSON.stringify(array, undefined, 2));
 }
+
+_doTheThing();
 
 module.exports = {
   _depthFirst,
