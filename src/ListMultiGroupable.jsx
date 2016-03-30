@@ -431,7 +431,7 @@ export default React.createClass({
       itemComponent: ItemComponent,
       optionComponent: Option
     } = this.props
-    const currentId = optionId(instanceId(this), idx); // FIXME?
+    const currentId = optionId(instanceId(this), state.offset + idx); // FIXME?
     const onClick = onSelect.bind(null, item);
 
     if (focused === item) {
