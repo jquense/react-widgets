@@ -47,7 +47,7 @@ module.exports = {
                   ]),
 
   message:      React.PropTypes.oneOfType([
-                  React.PropTypes.func,
+                  React.PropTypes.node,
                   React.PropTypes.string
                 ]),
 
