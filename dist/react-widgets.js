@@ -1746,9 +1746,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _props = this.props;
 	    var className = _props.className;
-	    var open = _props.open;
 	    var dropUp = _props.dropUp;
-	    var props = _objectWithoutProperties(_props, ['className', 'open', 'dropUp']);
+	    var props = _objectWithoutProperties(_props, ['className', 'dropUp']);
 	    var _state = this.state;
 	    var status = _state.status;
 	    var height = _state.height;
@@ -1756,6 +1755,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var overflow = OVERFLOW[status] || 'visible',
 	        display = status === CLOSED ? 'none' : 'block';
+
+	    delete props.open;
 
 	    return _react2.default.createElement(
 	      'div',
@@ -2828,13 +2829,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var role = _props.role;
 	    var data = _props.data;
 	    var messages = _props.messages;
-	    var onSelect = _props.onSelect;
-	    var selectedIndex = _props.selectedIndex;
-	    var props = _objectWithoutProperties(_props, ['className', 'role', 'data', 'messages', 'onSelect', 'selectedIndex']);
+	    var props = _objectWithoutProperties(_props, ['className', 'role', 'data', 'messages']);
 	    var id = (0, _widgetHelpers.instanceId)(this);var _state = this.state;
 	    var sortedKeys = _state.sortedKeys;
 	    var groups = _state.groups;
 
+
+	    delete props.onSelect;
 
 	    var items = [],
 	        idx = -1,
@@ -7158,15 +7159,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  render: function render() {
 	    var _props = this.props;
-	    var min = _props.min;
-	    var max = _props.max;
 	    var value = _props.value;
-	    var step = _props.step;
 
-	    var props = _objectWithoutProperties(_props, ['min', 'max', 'value', 'step']);
+	    var props = _objectWithoutProperties(_props, ['value']);
 
 	    var times = this.state.dates,
 	        date = this._closestDate(times, value);
+
+	    delete props.min;
+	    delete props.max;
+	    delete props.step;
 
 	    return _react2.default.createElement(_List2.default, _extends({}, props, {
 	      ref: 'list',
