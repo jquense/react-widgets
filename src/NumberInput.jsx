@@ -1,6 +1,6 @@
 import React from 'react';
 import CustomPropTypes from './util/propTypes';
-import { number as numberLocalizer }  from './util/localizers';
+import { number as numberLocalizer } from './util/localizers';
 
 let getFormat = props => numberLocalizer.getFormat('default', props.format)
 
@@ -9,21 +9,21 @@ export default React.createClass({
   displayName: 'NumberPickerInput',
 
   propTypes: {
-    value:        React.PropTypes.number,
+    value:       React.PropTypes.number,
     placeholder: React.PropTypes.string,
 
-    format:       CustomPropTypes.numberFormat,
+    format:      CustomPropTypes.numberFormat,
 
-    parse:        React.PropTypes.func,
-    culture:      React.PropTypes.string,
+    parse:       React.PropTypes.func,
+    culture:     React.PropTypes.string,
 
-    min:          React.PropTypes.number,
+    min:         React.PropTypes.number,
 
-    onChange:     React.PropTypes.func.isRequired,
-    onKeyDown:    React.PropTypes.func
+    onChange:    React.PropTypes.func.isRequired,
+    onKeyDown:   React.PropTypes.func
   },
 
-  getDefaultProps(){
+  getDefaultProps() {
     return {
       value: null,
       editing: false
@@ -34,8 +34,6 @@ export default React.createClass({
     var value = props.value
       , decimal = numberLocalizer.decimalChar(null, props.culture)
       , format = getFormat(props);
-
-    this._beginningWithSign = false;
 
     if (value == null || isNaN(props.value))
       value = ''
@@ -67,48 +65,35 @@ export default React.createClass({
         className='rw-input'
         onChange={this._change}
         onBlur={this._finish}
-        onKeyPress={this._typing}
         aria-disabled={this.props.disabled}
         aria-readonly={this.props.readOnly}
         disabled={this.props.disabled}
         readOnly={this.props.readOnly}
         placeholder={this.props.placeholder}
-        value={value}/>
+        value={value}
+      />
     )
-  },
-
-  _typing(e) {
-    var current = e.target.value
-      , newVal = e.key;
-
-    this._beginningWithSign = current.trim() === '' && this.isSign(newVal)
-
-    this.props.onKeyPress
-      && this.props.onKeyPress(e)
   },
 
   _change(e) {
     var val = e.target.value
       , number = this._parse(e.target.value)
-      , atSign = this.isSign(val.trim())
-      , startingWithSign = this._beginningWithSign;
 
-    this._beginningWithSign = false;
+    let isIntermediate = this.isIntermediateValue(number, val);
 
-    if (val == null || val.trim() === '' || (atSign && !startingWithSign)) {
+    if (val == null || val.trim() === '') {
       this.current('')
       return this.props.onChange(null)
     }
 
-    if (this.isFlushable(number, val)) {
-      if (number !== this.props.value)
+    if (!isIntermediate) {
+      if (number !== this.props.value) {
         return this.props.onChange(number)
-      else
-        this.setState(this.getDefaultState()) // 5. -> 5
+      }
     }
-
-    if (number < this.props.min || (atSign && startingWithSign) || this.isAtDelimiter(number, val))
+    else {
       this.current(e.target.value)
+    }
   },
 
   _finish() {
@@ -117,7 +102,10 @@ export default React.createClass({
 
     // if number is below the min
     // we need to flush low values and decimal stops, onBlur means i'm done inputing
-    if (!isNaN(number) && (number < this.props.min || this.isAtDelimiter(number, str)) ) {
+    if (this.isIntermediateValue(number, str)) {
+      if (isNaN(number)) {
+        number = null;
+      }
       this.props.onChange(number)
     }
   },
@@ -136,16 +124,27 @@ export default React.createClass({
     return strVal
   },
 
-  isFlushable(num, str) {
-    return (
-          this.isValid(num)
-      && !this.isAtDelimiter(num, str)
-      && !this.isSign(str)
-    )
+  isIntermediateValue(num, str) {
+    return !!(
+      num < this.props.min ||
+      this.isSign(str) ||
+      this.isAtDelimiter(num, str) ||
+      this.isPaddedZeros(str)
+    );
   },
 
   isSign(val) {
     return (val || '').trim() === '-';
+  },
+
+  isPaddedZeros(str) {
+    let localeChar = numberLocalizer.decimalChar(null, this.props.culture)
+    let [_, decimals] = str.split(localeChar);
+
+    return !!(
+      decimals &&
+      decimals.match(/0+$/)
+    )
   },
 
   isAtDelimiter(num, str, props = this.props) {
@@ -153,12 +152,14 @@ export default React.createClass({
       , lastIndex = str.length - 1
       , char;
 
-    if (str.length <= 1) return false
+    if (str.length < 1) return false
 
     char = str[lastIndex]
 
-    return char === localeChar
-      && str.indexOf(char) === lastIndex
+    return !!(
+      char === localeChar &&
+      str.indexOf(char) === lastIndex
+    )
   },
 
   isValid(num) {
@@ -168,8 +169,8 @@ export default React.createClass({
   },
 
   //this intermediate state is for when one runs into the decimal or are typing the number
-  current(val) {
-    this.setState({ stringValue: val })
+  current(stringValue) {
+    this.setState({ stringValue })
   }
 
 });
