@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react')
-  , Button = require('../../bootstrap').Button
-  , ButtonGroup = require('../../bootstrap').ButtonGroup
+var Button      = require('react-bootstrap/lib/Button')
+var ButtonGroup = require('react-bootstrap/lib/ButtonGroup')
   , RW = require('../../../src/index');
 
 
@@ -120,4 +120,3 @@ var SelectListApi = React.createClass({
 });
 
 module.exports = SelectListApi;
-

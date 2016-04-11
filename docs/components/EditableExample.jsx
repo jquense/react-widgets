@@ -1,6 +1,6 @@
 var React = require('react')
   , ReactDOM = require('react-dom')
-  , Playground = require('@jquense/component-playground')
+  , Playground = require('@monastic.panic/component-playground/Playground')
   , ReactWidgets = require('../../src/index')
   , MultiselectTagList = require('react-widgets/MultiselectTagList')
   , List = require('react-widgets/List')
@@ -21,9 +21,8 @@ module.exports = React.createClass({
     return (
       <Playground
         {...this.props}
-        mode='text/jsx'
+        mode='jsx'
         theme='oceanicnext'
-        babelConfig={{ stage: 0 }}
         scope={scope}
       />
     );

@@ -1,6 +1,6 @@
 var React       = require('react')
-var Button      = require('../../bootstrap').Button
-var ButtonGroup = require('../../bootstrap').ButtonGroup
+var Button      = require('react-bootstrap/lib/Button')
+var ButtonGroup = require('react-bootstrap/lib/ButtonGroup')
 var RW          = require('react-widgets');
 
 require('globalize/lib/cultures/globalize.culture.en-GB');
@@ -141,5 +141,3 @@ module.exports = React.createClass({
   },
 
 })
-
-

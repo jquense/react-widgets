@@ -1,6 +1,7 @@
 var React = require('react')
   , EditableExample = require('../EditableExample')
-  , DDButton = require('../../bootstrap').DropdownButton
+  , Editor = require('@monastic.panic/component-playground/Editor')
+  , DDButton = require('react-bootstrap/lib/DropdownButton')
   , MenuItem = require('../ApiMenuItem')
   , PropHeader = require('../PropHeader')
   , WidgetDemo = require('../demos/${widgetName}')

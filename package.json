@@ -58,8 +58,8 @@
     "url": "https://github.com/jquense/react-widgets"
   },
   "peerDependencies": {
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0"
+    "react": "^0.14.0 || ^15.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0"
   },
   "dependencies": {
     "classnames": "^2.1.2",
@@ -75,7 +75,7 @@
     "deconstruct-number-format": "0.0.1"
   },
   "devDependencies": {
-    "@jquense/component-playground": "jquense/component-playground",
+    "@monastic.panic/component-playground": "^2.0.0",
     "babel": "^5.8.29",
     "babel-core": "^5.8.21",
     "babel-eslint": "^5.0.0-beta4",
@@ -109,6 +109,7 @@
     "karma-webpack": "^1.7.0",
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
+    "markdown-jsx-loader": "^2.0.0",
     "marked": "^0.3.5",
     "mocha": "^2.3.4",
     "moment": "^2.10.6",
@@ -118,16 +119,17 @@
     "phantomjs": "^1.9.17",
     "prismjs": "^1.2.0",
     "raw-loader": "^0.5.1",
-    "react": "^0.14.3",
-    "react-bootstrap": "^0.27.3",
-    "react-dom": "^0.14.3",
+    "react": "^15.0.0",
+    "react-bootstrap": "^0.29.0-0",
+    "react-dom": "^15.0.0",
     "react-router": "1.0.0-beta3",
     "release-script": "^0.3.0",
     "rimraf": "^2.4.2",
     "scriptjs": "^2.5.8",
     "sinon": "^1.17.2",
     "style-loader": "^0.12.3",
-    "teaspoon": "^6.1.0",
+    "teaspoon": "^6.3.0",
+    "uncontrollable": "^3.2.3",
     "url-loader": "^0.5.5",
     "webpack": "^1.10.5",
     "webpack-dev-server": "^1.10.1",
@@ -135,7 +137,7 @@
   },
   "browserify": {
     "transform": [
-      "envify"
+      "loose-envify"
     ]
   }
 }

@@ -1,5 +1,6 @@
 var React = require('react')
   , EditableExample = require('../EditableExample')
+  , Editor = require('@monastic.panic/component-playground/Editor')
   , { Link } = require('react-router');
 
 module.exports = React.createClass({

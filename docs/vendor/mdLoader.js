@@ -1,17 +1,9 @@
 var marked = require('marked')
   , Renderer = require('./jsx-renderer')
   , fs = require('fs')
-  , prism = require('prismjs')
   , path = require('path');
 
-require('./prism-jsx')
-
-marked.setOptions({
-  xhtml: true,
-  highlight: function(code) {
-    return prism.highlight(code, prism.languages.jsx);
-  }
-})
+marked.setOptions({ xhtml: true })
 
 module.exports = function(markdown) {
   var templatePath = path.join(__dirname, '../templates/md-component')

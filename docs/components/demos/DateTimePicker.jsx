@@ -1,8 +1,8 @@
 'use strict';
 var React = require('react')
   , dates = require('date-arithmetic')
-  , Button = require('../../bootstrap').Button
-  , ButtonGroup = require('../../bootstrap').ButtonGroup
+var Button      = require('react-bootstrap/lib/Button')
+var ButtonGroup = require('react-bootstrap/lib/ButtonGroup')
   , RW = require('../../../src/index');
 
 require('globalize/lib/cultures/globalize.culture.en-GB');

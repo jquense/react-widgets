@@ -3,7 +3,7 @@ var chance = new (require('chance'))
 
 chance.set('lastNames', ['Smith', 'Williams', 'Chang', 'Diaz', 'Morales'])
 
-module.exports = function generateList(len, lastNames){
+module.exports = function generateList(len){
   var arr = new Array(len)
 
   for(var i = 0; i < arr.length; i++){

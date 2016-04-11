@@ -264,7 +264,7 @@ var SelectList = React.createClass({
     compat.findDOMNode(this.refs.list).focus()
   },
 
-  selectAll(){
+  selectAll() {
     var { disabled, readOnly, valueField } = this.props
       , values = this.state.dataItems
       , data = this._data()

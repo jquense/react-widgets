@@ -11,7 +11,7 @@ module.exports = makeConfig({
     //hot: !args.production,
 
     entry:  {
-      app: path.join(__dirname, '../docs/components/docs.jsx'),
+      app: path.join(__dirname, '../docs/components/Docs.jsx'),
       vendor: ['react', 'react-dom', 'globalize']
     },
 
@@ -28,7 +28,7 @@ module.exports = makeConfig({
     plugins: [
       new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
     ],
-    
+
     loaders: [
       { test: /\.json$/, loader: 'json' },
       { test: /\.raw$/, loader: 'raw' },
