@@ -21,10 +21,6 @@ module.exports = makeConfig({
       publicPath: '/docs/public'
     },
 
-    externals: {
-      'babel/browser': 'window.babel'
-    },
-
     plugins: [
       new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
     ],

@@ -60,7 +60,7 @@ module.exports = React.createClass({
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
-                  checked={this.state.isRtl}
+                  checked={!!this.state.isRtl}
                   onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>

@@ -32,6 +32,6 @@ JsxRenderer.prototype.codespan = function(text) {
 JsxRenderer.prototype.code = function(code, lang) {
   return '<Editor className="playgroundCode" mode="' + ('jsx') + '" '
       + ' theme="oceanicnext" scope={this.props.scope} codeText={`'+ code + '`} '
-      + (lang === 'editable' ? '' : (' readOnly="nocursor" '))
+      + (lang === 'editable' ? '' : (' readOnly="nocursor" lineWrapping '))
       + (code.indexOf('React.render(') === -1 ? 'noRender' :'') + '/>\n\n'
 };

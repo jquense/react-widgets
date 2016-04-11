@@ -50,7 +50,7 @@ var SelectListApi = React.createClass({
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
-                  checked={this.state.isRtl}
+                  checked={!!this.state.isRtl}
                   onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
@@ -58,7 +58,7 @@ var SelectListApi = React.createClass({
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
-                  checked={this.state.multiple}
+                  checked={!!this.state.multiple}
                   onChange={this._set.bind(null, 'multiple', !this.state.multiple)}/>
                   Is Multiple
               </label>

@@ -90,7 +90,7 @@ module.exports = function makeConfig(options){
 
     externals: options.externals,
 
-    babel: options.babel,
+    //babel: options.babel,
 
     resolve: {
       extensions: ['', '.js', '.jsx'],

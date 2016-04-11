@@ -67,10 +67,14 @@ export default React.createClass({
   },
 
   render(){
-    let { min, max, value, step, ...props } = this.props;
+    let { value, ...props } = this.props;
 
     var times = this.state.dates
       , date  = this._closestDate(times, value);
+
+    delete props.min;
+    delete props.max;
+    delete props.step;
 
     return (
       <List {...props}

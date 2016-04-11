@@ -62,7 +62,7 @@ module.exports = React.createClass({
                 <div className='checkbox'>
                   <label>
                     <input type='checkbox'
-                      checked={this.state.isRtl}
+                      checked={!!this.state.isRtl}
                       onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                       Right to Left
                   </label>

@@ -6,6 +6,7 @@ var {
   , Router
   , Navigation
   , State
+  , hashHistory
   , Link } = require('react-router')
 
 var Affix = require('react-overlays/lib/AutoAffix')
@@ -23,8 +24,6 @@ var NumberPicker   = require('./pages/NumberPicker.api.md')
 var Advanced       = require('./pages/Advanced.jsx')
 var Locale         = require('./pages/i18n.md');
 var Controllables  = require('./pages/controllables.md');
-
-var history = require('react-router/lib/HashHistory').history
 
 
 require('@monastic.panic/component-playground/codemirror.css')
@@ -129,7 +128,7 @@ var Docs = React.createClass({
 
 
 ReactDOM.render((
-  <Router history={history}>
+  <Router history={hashHistory}>
     <Route path="/" component={Docs} indexRoute={{ component: GettingStarted }}>
       <Route path='getting-started(/:topic)' component={GettingStarted}/>
 

@@ -1,7 +1,7 @@
 'use strict';
 var chance = new (require('chance'))
 
-chance.set('lastNames', ['Smith', 'Williams', 'Chang', 'Diaz', 'Morales'])
+chance.set('lastNames', { en: ['Smith', 'Williams', 'Chang', 'Diaz', 'Morales'] })
 
 module.exports = function generateList(len){
   var arr = new Array(len)

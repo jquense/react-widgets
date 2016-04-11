@@ -62,22 +62,25 @@
 
 	'use strict';
 
-	var babelHelpers = __webpack_require__(2);
-
 	exports.__esModule = true;
-	exports['default'] = simpleNumber;
 
-	var _configure = __webpack_require__(3);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _configure2 = babelHelpers.interopRequireDefault(_configure);
+	exports.default = simpleNumber;
 
-	var _formatNumberWithString = __webpack_require__(4);
+	var _configure = __webpack_require__(2);
 
-	var _formatNumberWithString2 = babelHelpers.interopRequireDefault(_formatNumberWithString);
+	var _configure2 = _interopRequireDefault(_configure);
 
-	var _deconstructNumberFormat = __webpack_require__(5);
+	var _formatNumberWithString = __webpack_require__(3);
 
-	var _deconstructNumberFormat2 = babelHelpers.interopRequireDefault(_deconstructNumberFormat);
+	var _formatNumberWithString2 = _interopRequireDefault(_formatNumberWithString);
+
+	var _deconstructNumberFormat = __webpack_require__(4);
+
+	var _deconstructNumberFormat2 = _interopRequireDefault(_deconstructNumberFormat);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var defaults = {
 	  decimal: '.',
@@ -85,20 +88,21 @@
 	};
 
 	function simpleNumber(options) {
-	  var _babelHelpers$_extends = babelHelpers._extends({}, defaults, options);
+	  var _defaults$options = _extends({}, defaults, options);
 
-	  var decimal = _babelHelpers$_extends.decimal;
-	  var grouping = _babelHelpers$_extends.grouping;
+	  var decimal = _defaults$options.decimal;
+	  var grouping = _defaults$options.grouping;
+
 
 	  var localizer = {
 	    formats: {
-	      'default': '-#' + grouping + '##0' + decimal
+	      default: '-#' + grouping + '##0' + decimal
 	    },
 
 	    // TODO major bump consistent ordering
 	    parse: function parse(value, culture, format) {
 	      if (format) {
-	        var data = _deconstructNumberFormat2['default'](format),
+	        var data = (0, _deconstructNumberFormat2.default)(format),
 	            negative = data.negativeLeftSymbol && value.indexOf(data.negativeLeftSymbol) !== -1 || data.negativeRightSymbol && value.indexOf(data.negativeRightSymbol) !== -1;
 
 	        value = value.replace(data.negativeLeftSymbol, '').replace(data.negativeRightSymbol, '').replace(data.prefix, '').replace(data.suffix, '');
@@ -119,141 +123,37 @@
 
 	      return isNaN(value) ? null : value;
 	    },
-
 	    format: function format(value, _format) {
-	      return _formatNumberWithString2['default'](value, _format);
+	      return (0, _formatNumberWithString2.default)(value, _format);
 	    },
-
 	    decimalChar: function decimalChar(format) {
-	      return format && _deconstructNumberFormat2['default'](format).decimalsSeparator || '.';
+	      return format && (0, _deconstructNumberFormat2.default)(format).decimalsSeparator || '.';
 	    },
-
 	    precision: function precision(format) {
-	      var data = _deconstructNumberFormat2['default'](format);
+	      var data = (0, _deconstructNumberFormat2.default)(format);
 	      return data.maxRight !== -1 ? data.maxRight : null;
 	    }
 	  };
 
-	  _configure2['default'].setNumberLocalizer(localizer);
+	  _configure2.default.setNumberLocalizer(localizer);
 	  return localizer;
 	}
-
 	module.exports = exports['default'];
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === "object") {
-	    factory(exports);
-	  } else {
-	    factory(root.babelHelpers = {});
-	  }
-	})(this, function (global) {
-	  var babelHelpers = global;
-
-	  babelHelpers.createDecoratedObject = function (descriptors) {
-	    var target = {};
-
-	    for (var i = 0; i < descriptors.length; i++) {
-	      var descriptor = descriptors[i];
-	      var decorators = descriptor.decorators;
-	      var key = descriptor.key;
-	      delete descriptor.key;
-	      delete descriptor.decorators;
-	      descriptor.enumerable = true;
-	      descriptor.configurable = true;
-	      if ("value" in descriptor || descriptor.initializer) descriptor.writable = true;
-
-	      if (decorators) {
-	        for (var f = 0; f < decorators.length; f++) {
-	          var decorator = decorators[f];
-
-	          if (typeof decorator === "function") {
-	            descriptor = decorator(target, key, descriptor) || descriptor;
-	          } else {
-	            throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator);
-	          }
-	        }
-	      }
-
-	      if (descriptor.initializer) {
-	        descriptor.value = descriptor.initializer.call(target);
-	      }
-
-	      Object.defineProperty(target, key, descriptor);
-	    }
-
-	    return target;
-	  };
-
-	  babelHelpers.objectWithoutProperties = function (obj, keys) {
-	    var target = {};
-
-	    for (var i in obj) {
-	      if (keys.indexOf(i) >= 0) continue;
-	      if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
-	      target[i] = obj[i];
-	    }
-
-	    return target;
-	  };
-
-	  babelHelpers.interopRequireWildcard = function (obj) {
-	    if (obj && obj.__esModule) {
-	      return obj;
-	    } else {
-	      var newObj = {};
-
-	      if (obj != null) {
-	        for (var key in obj) {
-	          if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-	        }
-	      }
-
-	      newObj["default"] = obj;
-	      return newObj;
-	    }
-	  };
-
-	  babelHelpers.interopRequireDefault = function (obj) {
-	    return obj && obj.__esModule ? obj : {
-	      "default": obj
-	    };
-	  };
-
-	  babelHelpers._extends = Object.assign || function (target) {
-	    for (var i = 1; i < arguments.length; i++) {
-	      var source = arguments[i];
-
-	      for (var key in source) {
-	        if (Object.prototype.hasOwnProperty.call(source, key)) {
-	          target[key] = source[key];
-	        }
-	      }
-	    }
-
-	    return target;
-	  };
-	})
-
-/***/ },
-/* 3 */
 /***/ function(module, exports) {
 
 	module.exports = window.ReactWidgets;
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deconstructNumberFormat = __webpack_require__(5);
-	var formatFactory = __webpack_require__(6);
+	var deconstructNumberFormat = __webpack_require__(4);
+	var formatFactory = __webpack_require__(5);
 
 	exports = module.exports = function formatNumberWithString(value, requiredFormat, overrideOptions) {
 
@@ -289,7 +189,7 @@
 	};
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -494,7 +394,7 @@
 	};
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports) {
 
 	

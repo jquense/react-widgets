@@ -1,24 +1,4 @@
 {
-  "stage": 0,
-  "loose": [
-    "all"
-  ],
-
-  "blacklist": [
-    "es6.tailCall",
-    "es6.forOf",
-    "es7.trailingFunctionCommas",
-    "es7.comprehensions",
-    "es7.exportExtensions"
-  ],
-
-  "plugins": [
-    "babel-plugin-object-assign"
-  ],
-  "extra": {
-    "externalHelperPlugin": {
-      "path": "util/babelHelpers.js",
-      "base": "src"
-    }
-  }
+  "presets": ["jason"],
+  "plugins": ["transform-decorators-legacy"]
 }
