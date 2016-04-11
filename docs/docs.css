@@ -109,16 +109,16 @@ h3 > a > strong {
 .component-export {
   position: relative;
   padding-top: 5px;
-
+  font-size: 14px;
 }
 
 .component-export div {
-  color:  #3aaa64;
+  color:  #99C794;
   font-size: 90%;
   margin-top: 5px;
 }
 .component-export .str {
-  color:  #b35e14;
+  color:  #F99157
 }
 
 .demo .rw-widget:not(.rw-calendar) {
@@ -177,7 +177,6 @@ pre {
   border-color: #DAE3E7;
   line-height: normal;
 }
-
 
 .side-nav .nav > li.active .nav {
   display: block;
@@ -243,6 +242,7 @@ pre,
 
   .playgroundCode {
     flex: 0 0 70%;
+    min-width: 0;
   }
 }
 

@@ -102,12 +102,14 @@ module.exports = React.createClass({
   },
 
   render() {
-    var {className, open, dropUp, ...props } = this.props
+    var { className, dropUp, ...props } = this.props
       , { status, height } = this.state;
 
     let overflow = OVERFLOW[status] || 'visible'
       , display = status === CLOSED ? 'none' : 'block';
 
+    delete props.open;
+    
     return (
       <div {...props}
         style={{ display, overflow, height, ...props.style }}

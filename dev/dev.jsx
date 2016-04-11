@@ -15,7 +15,7 @@ var Calendar = require('../src/Calendar.jsx')
 var DateTimePicker = require('../lib/DateTimePicker')
 var NumberPicker = require('../src/NumberPicker.jsx')
 // var ComboBox = require('../src/Combobox.jsx')
-// var SelectList = require('../src/SelectList.jsx')
+var SelectList = require('../src/SelectList.jsx')
 // var List = require('../src/List.jsx')
 
 require('../src/less/react-widgets.less')
@@ -95,13 +95,19 @@ var App = React.createClass({
             >
               add
             </button>
-            <DropdownList textField='name'
-              open={this.state.open}
-              dropUp={this.state.dropUp}
-              data={this.state.data}
-              duration={3000}
-              filter='startsWith'
-            />
+            <div style={{ height: 300, padding: 20,  overflow: 'auto' }}>
+              <div style={{ height: 150 }}>
+                <button>add</button>
+                <input />
+              </div>
+              <SelectList
+                multiple
+                textField='name'
+                style={{ height: 'auto', overflow: 'visible'}}
+                data={this.state.data}
+              />
+              <input />
+            </div>
           </section>
         </div>
       </div>

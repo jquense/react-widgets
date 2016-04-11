@@ -90,11 +90,12 @@ export default React.createClass({
   render(){
     var {
         className, role, data
-      , messages, onSelect, selectedIndex
-      , ...props } = this.props
+      , messages, ...props } = this.props
       , id = instanceId(this);
 
     let { sortedKeys, groups } = this.state;
+
+    delete props.onSelect;
 
     let items = []
       , idx = -1

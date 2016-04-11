@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , MenuItem = require('../bootstrap').MenuItem;
+  , MenuItem = require('react-bootstrap/lib/MenuItem');
 
 var ApiMenuItem = React.createClass({
 

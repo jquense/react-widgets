@@ -119,12 +119,16 @@ jQuery `$.animate()` API closely so you can use it as a drop in replacement.
 ##### With the Configure module
 ```js
 require('react-widgets/lib/configure')
-  .setAnimate((element, props, duration, ease, callback) => $(element).animate(props, duration, callback))
+  .setAnimate(function (element, props, duration, ease, callback) {
+    $(element).animate(props, duration, callback)
+  })
 ```
 ##### From the main export
 ```js
 require('react-widgets')
-  .setAnimate((element, props, duration, ease, callback) => $(element).animate(props, duration, callback))
+  .setAnimate(function (element, props, duration, ease, callback) {
+    $(element).animate(props, duration, callback)
+  })
 ```
 
 ## Theming

@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react')
-  , Button = require('../../bootstrap').Button
-  , ButtonGroup = require('../../bootstrap').ButtonGroup
+var Button      = require('react-bootstrap/lib/Button')
+var ButtonGroup = require('react-bootstrap/lib/ButtonGroup')
   , RW = require('../../../src/index');
 
 module.exports = React.createClass({
@@ -34,7 +34,7 @@ module.exports = React.createClass({
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
-                  checked={this.state.isRtl}
+                  checked={!!this.state.isRtl}
                   onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>

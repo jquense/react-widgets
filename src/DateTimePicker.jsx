@@ -194,6 +194,7 @@ var DateTimePicker = React.createClass({
           autoFocus={autoFocus}
           tabIndex={tabIndex || 0}
           role='combobox'
+          autoComplete='off'
           aria-labelledby={ariaLabelledby}
           aria-describedby ={ariaDescribedby}
           aria-expanded={!!open}
@@ -458,7 +459,7 @@ var DateTimePicker = React.createClass({
 
 export default  createUncontrolledWidget(
     DateTimePicker
-  , { open: 'onToggle', value: 'onChange', currentDate: 'onCurrentDateChange' });
+  , { open: 'onToggle', value: 'onChange', currentDate: 'onCurrentDateChange' }, ['focus']);
 
 
 

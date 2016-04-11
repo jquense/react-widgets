@@ -416,7 +416,7 @@ var ComboBox = React.createClass({
 
 
 export default createUncontrolledWidget(
-      ComboBox, { open: 'onToggle', value: 'onChange' });
+      ComboBox, { open: 'onToggle', value: 'onChange' }, ['focus']);
 
 
 

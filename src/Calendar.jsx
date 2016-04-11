@@ -438,4 +438,4 @@ export default createUncontrolledWidget(Calendar, {
   value: 'onChange',
   currentDate: 'onCurrentDateChange',
   view: 'onViewChange'
-});
+}, ['focus']);

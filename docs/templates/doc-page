@@ -1,6 +1,7 @@
 var React = require('react')
   , EditableExample = require('../EditableExample')
-  , DDButton = require('../../bootstrap').DropdownButton
+  , Editor = require('@monastic.panic/component-playground/Editor')
+  , DDButton = require('react-bootstrap/lib/DropdownButton')
   , MenuItem = require('../ApiMenuItem')
   , PropHeader = require('../PropHeader')
   , WidgetDemo = require('../demos/${widgetName}')
@@ -16,7 +17,7 @@ module.exports = React.createClass({
           <h1 className="page-header">
             ${widgetName}
             <span className='pull-right'>
-              <DDButton title='props' bsStyle='link' pullRight={true}>
+              <DDButton title='props' bsStyle='link' pullRight={true} id='props-${widgetName}'>
                 ${props}
               </DDButton>
             </span>

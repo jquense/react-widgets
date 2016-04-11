@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react')
-  , Button = require('../../bootstrap').Button
-  , ButtonGroup = require('../../bootstrap').ButtonGroup
+var Button      = require('react-bootstrap/lib/Button')
+var ButtonGroup = require('react-bootstrap/lib/ButtonGroup')
   , RW = require('../../../src/index');
 
 
@@ -50,7 +50,7 @@ var SelectListApi = React.createClass({
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
-                  checked={this.state.isRtl}
+                  checked={!!this.state.isRtl}
                   onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
@@ -58,7 +58,7 @@ var SelectListApi = React.createClass({
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
-                  checked={this.state.multiple}
+                  checked={!!this.state.multiple}
                   onChange={this._set.bind(null, 'multiple', !this.state.multiple)}/>
                   Is Multiple
               </label>
@@ -120,4 +120,3 @@ var SelectListApi = React.createClass({
 });
 
 module.exports = SelectListApi;
-

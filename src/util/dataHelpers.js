@@ -43,14 +43,14 @@ export function valueMatcher(a, b, valueField){
     dataValue(a, valueField), dataValue(b, valueField))
 }
 
-export function dataItem(data, item, valueField){
+export function dataItem(data, item, valueField) {
   var first = data[0]
     , idx;
 
   // make an attempt to see if we were passed in dataItem vs just a valueField value
   // either an object with the right prop, or a primitive
   // { valueField: 5 } || "hello" [ "hello" ]
-  if (has(item, valueField) || typeof first === typeof val)
+  if (has(item, valueField) || typeof first === typeof item)
     return item
 
   idx = dataIndexOf(data, dataValue(item, valueField), valueField)

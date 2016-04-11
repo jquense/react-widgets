@@ -6,7 +6,7 @@ var defaultValue = React.createClass({
   render: function() {
     return (
       <span className='default'>
-        {"(default: " + this.props.children + ")"}
+        {'(default: ' + this.props.children + ')'}
       </span>
     );
   }

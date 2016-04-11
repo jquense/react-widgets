@@ -1,9 +1,7 @@
-
 <div className='alert alert-warning'>
  <i className='fa fa-exclamation-triangle'/>
  You must configure a <a href='#/i18n'>localizer</a> to use this component!
 </div>
-
 <--------------->
 
 ### value?{ type: 'Date?', handler: "onChange", controllable: true }

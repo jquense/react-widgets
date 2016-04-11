@@ -62,16 +62,16 @@
 
 	'use strict';
 
-	var babelHelpers = __webpack_require__(2);
-
 	exports.__esModule = true;
-	exports['default'] = globalizeLocalizers;
+	exports.default = globalizeLocalizers;
 
-	var _react = __webpack_require__(3);
+	var _react = __webpack_require__(2);
 
-	var _configure = __webpack_require__(4);
+	var _configure = __webpack_require__(3);
 
-	var _configure2 = babelHelpers.interopRequireDefault(_configure);
+	var _configure2 = _interopRequireDefault(_configure);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function endOfDecade(date) {
 	  date = new Date(date);
@@ -90,7 +90,7 @@
 	function globalizeLocalizers(globalize) {
 	  var localizers = globalize.locale && !globalize.cultures ? newGlobalize(globalize) : oldGlobalize(globalize);
 
-	  _configure2['default'].setLocalizers(localizers);
+	  _configure2.default.setLocalizers(localizers);
 	  return localizers;
 	}
 
@@ -104,7 +104,7 @@
 	    formats: {
 	      date: { date: 'short' },
 	      time: { time: 'short' },
-	      'default': { datetime: 'medium' },
+	      default: { datetime: 'medium' },
 	      header: 'MMMM yyyy',
 	      footer: { date: 'full' },
 	      weekday: 'eeeeee',
@@ -130,12 +130,10 @@
 
 	      return Math.abs(date.getDay() - localeDay);
 	    },
-
 	    parse: function parse(value, format, culture) {
 	      format = typeof format === 'string' ? { raw: format } : format;
 	      return locale(culture).parseDate(value, format);
 	    },
-
 	    format: function format(value, _format, culture) {
 	      _format = typeof _format === 'string' ? { raw: _format } : _format;
 	      return locale(culture).formatDate(value, _format);
@@ -144,7 +142,7 @@
 
 	  var number = {
 	    formats: {
-	      'default': { maximumFractionDigits: 0 }
+	      default: { maximumFractionDigits: 0 }
 	    },
 
 	    propType: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.func]),
@@ -153,7 +151,6 @@
 	    parse: function parse(value, culture) {
 	      return locale(culture).parseNumber(value);
 	    },
-
 	    format: function format(value, _format2, culture) {
 	      if (value == null) return value;
 
@@ -161,12 +158,10 @@
 
 	      return locale(culture).formatNumber(value, _format2);
 	    },
-
 	    decimalChar: function decimalChar(format, culture) {
 	      var str = this.format(1.1, { raw: '0.0' }, culture);
 	      return str[str.length - 2] || '.';
 	    },
-
 	    precision: function precision(format) {
 	      return !format || format.maximumFractionDigits == null ? null : format.maximumFractionDigits;
 	    }
@@ -203,7 +198,7 @@
 	    formats: {
 	      date: 'd',
 	      time: 't',
-	      'default': 'f',
+	      default: 'f',
 	      header: 'MMMM yyyy',
 	      footer: 'D',
 	      weekday: shortDay,
@@ -225,7 +220,6 @@
 	    parse: function parse(value, format, culture) {
 	      return globalize.parseDate(value, format, culture);
 	    },
-
 	    format: function format(value, _format3, culture) {
 	      return globalize.format(value, _format3, culture);
 	    }
@@ -246,23 +240,20 @@
 	  var number = {
 
 	    formats: {
-	      'default': 'D'
+	      default: 'D'
 	    },
 
 	    // TODO major bump consistent ordering
 	    parse: function parse(value, culture) {
 	      return globalize.parseFloat(value, 10, culture);
 	    },
-
 	    format: function format(value, _format4, culture) {
 	      return globalize.format(value, _format4, culture);
 	    },
-
 	    decimalChar: function decimalChar(format, culture) {
 	      var data = formatData(format, culture);
 	      return data['.'] || '.';
 	    },
-
 	    precision: function precision(format, _culture) {
 	      var data = formatData(format, _culture);
 
@@ -278,112 +269,12 @@
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === "object") {
-	    factory(exports);
-	  } else {
-	    factory(root.babelHelpers = {});
-	  }
-	})(this, function (global) {
-	  var babelHelpers = global;
-
-	  babelHelpers.createDecoratedObject = function (descriptors) {
-	    var target = {};
-
-	    for (var i = 0; i < descriptors.length; i++) {
-	      var descriptor = descriptors[i];
-	      var decorators = descriptor.decorators;
-	      var key = descriptor.key;
-	      delete descriptor.key;
-	      delete descriptor.decorators;
-	      descriptor.enumerable = true;
-	      descriptor.configurable = true;
-	      if ("value" in descriptor || descriptor.initializer) descriptor.writable = true;
-
-	      if (decorators) {
-	        for (var f = 0; f < decorators.length; f++) {
-	          var decorator = decorators[f];
-
-	          if (typeof decorator === "function") {
-	            descriptor = decorator(target, key, descriptor) || descriptor;
-	          } else {
-	            throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator);
-	          }
-	        }
-	      }
-
-	      if (descriptor.initializer) {
-	        descriptor.value = descriptor.initializer.call(target);
-	      }
-
-	      Object.defineProperty(target, key, descriptor);
-	    }
-
-	    return target;
-	  };
-
-	  babelHelpers.objectWithoutProperties = function (obj, keys) {
-	    var target = {};
-
-	    for (var i in obj) {
-	      if (keys.indexOf(i) >= 0) continue;
-	      if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
-	      target[i] = obj[i];
-	    }
-
-	    return target;
-	  };
-
-	  babelHelpers.interopRequireWildcard = function (obj) {
-	    if (obj && obj.__esModule) {
-	      return obj;
-	    } else {
-	      var newObj = {};
-
-	      if (obj != null) {
-	        for (var key in obj) {
-	          if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-	        }
-	      }
-
-	      newObj["default"] = obj;
-	      return newObj;
-	    }
-	  };
-
-	  babelHelpers.interopRequireDefault = function (obj) {
-	    return obj && obj.__esModule ? obj : {
-	      "default": obj
-	    };
-	  };
-
-	  babelHelpers._extends = Object.assign || function (target) {
-	    for (var i = 1; i < arguments.length; i++) {
-	      var source = arguments[i];
-
-	      for (var key in source) {
-	        if (Object.prototype.hasOwnProperty.call(source, key)) {
-	          target[key] = source[key];
-	        }
-	      }
-	    }
-
-	    return target;
-	  };
-	})
-
-/***/ },
-/* 3 */
 /***/ function(module, exports) {
 
 	module.exports = window.React;
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports) {
 
 	module.exports = window.ReactWidgets;

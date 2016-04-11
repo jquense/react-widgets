@@ -12,13 +12,13 @@ import ListOption       from './ListOption';
 import validateList from './util/validateListInterface';
 import scrollTo from 'dom-helpers/util/scrollTo';
 
-import { dataItem } from './util/dataHelpers';
+import { dataItem, dataIndexOf } from './util/dataHelpers';
 import { widgetEditable } from './util/interaction';
 
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabled, isReadOnly, contains } from './util/interaction';
 
-let { omit, pick } = _;
+let { omit, pick, find } = _;
 
 let propTypes = {
 
@@ -51,7 +51,16 @@ let propTypes = {
     })
   }
 
+function getFirstValue(props) {
+  var { data, value, valueField } = props
+  value = _.splat(value);
 
+  if (value.length)
+    return find(data, d => dataIndexOf(value, d, valueField) !== -1)
+        || null
+
+  return null
+}
 
 var SelectList = React.createClass({
 
@@ -62,9 +71,18 @@ var SelectList = React.createClass({
     require('./mixins/RtlParentContextMixin'),
     require('./mixins/AriaDescendantMixin')(),
     require('./mixins/FocusMixin')({
-      willHandle(focused) {
-        if (focused)
-          this.focus()
+      didHandle(focused) {
+        // the rigamarole here is to avoid flicker went clicking an item and
+        // gaining focus at the same time.
+        if (focused !== this.state.focused) {
+          if (!focused)
+            this.setState({ focusedItem: null })
+          else if (focused && !this._clicking)
+            this.setState({
+              focusedItem: getFirstValue(this.props)
+            })
+          this._clicking = false
+        }
       }
     })
   ],
@@ -81,19 +99,12 @@ var SelectList = React.createClass({
     }
   },
 
-  getDefaultState(props){
+  getDefaultState(props) {
     var { data, value, valueField, multiple } = props
-      , isRadio = !multiple
-      , values  = _.splat(value)
-      , first   = isRadio && dataItem(data, values[0], valueField)
-
-    first = isRadio && first
-      ? first
-      : ((this.state || {}).focusedItem || null)
 
     return {
-      focusedItem: first,
-      dataItems:   !isRadio && values.map(item => dataItem(data, item, valueField))
+      dataItems: multiple &&
+        _.splat(value).map(item => dataItem(data, item, valueField))
     }
   },
 
@@ -106,7 +117,9 @@ var SelectList = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    return this.setState(this.getDefaultState(nextProps))
+    return this.setState(
+      this.getDefaultState(nextProps)
+    )
   },
 
   componentDidMount() {
@@ -201,15 +214,17 @@ var SelectList = React.createClass({
 
     if (key === 'End') {
       e.preventDefault()
+      focusedItem = list.last()
 
-      if (multiple) this.setState({ focusedItem: list.last() })
-      else          change(list.last())
+      this.setState({ focusedItem })
+      if (!multiple) change(focusedItem)
     }
     else if (key === 'Home' ) {
       e.preventDefault()
+      focusedItem = list.first()
 
-      if (multiple) this.setState({ focusedItem: list.first() })
-      else          change(list.first())
+      this.setState({ focusedItem })
+      if (!multiple) change(focusedItem)
     }
     else if (key === 'Enter' || key === ' ' ) {
       e.preventDefault()
@@ -217,15 +232,17 @@ var SelectList = React.createClass({
     }
     else if (key === 'ArrowDown' || key === 'ArrowRight' ) {
       e.preventDefault()
+      focusedItem = list.next(focusedItem)
 
-      if (multiple) this.setState({ focusedItem: list.next(focusedItem) })
-      else          change(list.next(focusedItem))
+      this.setState({ focusedItem })
+      if (!multiple) change(focusedItem)
     }
     else if (key === 'ArrowUp' || key === 'ArrowLeft'  ) {
       e.preventDefault()
+      focusedItem = list.prev(focusedItem)
 
-      if (multiple) this.setState({ focusedItem: list.prev(focusedItem) })
-      else          change(list.prev(focusedItem))
+      this.setState({ focusedItem })
+      if (!multiple) change(focusedItem)
     }
     else if (multiple && e.keyCode === 65 && e.ctrlKey ) {
       e.preventDefault()
@@ -247,7 +264,7 @@ var SelectList = React.createClass({
     compat.findDOMNode(this.refs.list).focus()
   },
 
-  selectAll(){
+  selectAll() {
     var { disabled, readOnly, valueField } = this.props
       , values = this.state.dataItems
       , data = this._data()
@@ -267,11 +284,14 @@ var SelectList = React.createClass({
     notify(this.props.onChange, [data])
   },
 
-  _change(item, checked){
+  _change(item, checked) {
     var { multiple } = this.props
       , values = this.state.dataItems;
 
     multiple  = !!multiple
+
+    this.clearTimeout('focusedItem')
+    this.setState({ focusedItem: item })
 
     if (!multiple)
       return notify(this.props.onChange, checked ? item : null)
@@ -343,7 +363,7 @@ function getListItem(parent){
           role={type}
           aria-checked={!!checked}
         >
-          <label>
+          <label onMouseDown={onMouseDown}>
             <input
               name={name}
               tabIndex='-1'
@@ -358,6 +378,10 @@ function getListItem(parent){
         </ListOption>
       );
 
+      function onMouseDown() {
+        parent._clicking = true
+      }
+
       function onChange(e){
         if (!disabled && !readonly)
           change(e.target.checked)
@@ -367,4 +391,4 @@ function getListItem(parent){
 }
 
 export default createUncontrolledWidget(
-    SelectList, { value: 'onChange' }, ['selectAll']);
+    SelectList, { value: 'onChange' }, ['selectAll', 'focus']);

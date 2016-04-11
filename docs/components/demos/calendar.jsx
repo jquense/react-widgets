@@ -1,6 +1,6 @@
 var React       = require('react')
-var Button      = require('../../bootstrap').Button
-var ButtonGroup = require('../../bootstrap').ButtonGroup
+var Button      = require('react-bootstrap/lib/Button')
+var ButtonGroup = require('react-bootstrap/lib/ButtonGroup')
 var RW          = require('react-widgets');
 
 require('globalize/lib/cultures/globalize.culture.en-GB');
@@ -40,7 +40,7 @@ module.exports = React.createClass({
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
-                  checked={this.state.isRtl}
+                  checked={!!this.state.isRtl}
                   onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
                   Right to Left
               </label>
@@ -141,5 +141,3 @@ module.exports = React.createClass({
   },
 
 })
-
-

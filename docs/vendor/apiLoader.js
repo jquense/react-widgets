@@ -1,19 +1,12 @@
 "use strict";
 var marked = require('marked')
   , Renderer = require('./jsx-renderer')
-  , prism = require('prismjs')
   , fs = require('fs')
   , path = require('path');
 
-require('./prism-jsx')
-
 marked.setOptions({
-  xhtml: true,
-  highlight: function(code) {
-    return prism.highlight(code, prism.languages.jsx);
-  }
+  xhtml: true
 })
-
 
 var renderer = new Renderer()
   , props;

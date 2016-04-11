@@ -24,7 +24,7 @@ __Demos and Documentation [here](http://jquense.github.io/react-widgets/docs/)__
 
 ### Building local docs
 
-The docs are a simple React app hosted on gh-pages, you build and run locally with `gulp` and the command `gulp dev-docs` and open up `http://localhost:8080/docs/index.htm#/`
+The docs are a simple React app hosted on gh-pages, you build and run locally with the command `npm run docs` and open up `http://localhost:8080/docs/index.htm#/`
 
 ### Contributing
 
