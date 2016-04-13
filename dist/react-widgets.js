@@ -1456,7 +1456,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          getTetherFocus: filter ? function () {
 	            return _this.refs.input;
 	          } : function () {
-	            return _this.refs.list.refs.foo;
+	            return _this.refs.list.refs.ul;
 	          },
 	          onOpen: tetherPopup ? this.handleFocus : function () {},
 	          onKeyDown: this._keyDown,
@@ -2395,7 +2395,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _react2['default'].createElement(
 	      'ul',
 	      babelHelpers._extends({
-	        ref: 'foo',
+	        ref: 'ul',
 	        id: id,
 	        tabIndex: '-1',
 	        className: _classnames2['default'](className, 'rw-list'),
@@ -3552,8 +3552,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var placeholderEl = _utilCompat2['default'].findDOMNode(placeholder);
 
-	    // if (!placeholderEl) return null;
-
 	    var width = placeholderEl && placeholderEl.offsetWidth;
 
 	    if (width !== this.state.width) this.setState({ width: width });
@@ -3683,8 +3681,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._isOpening = false;
 	    this.props.onClosing();
 
-	    anim.style.overflow = 'hidden';
-	    anim.className += ' rw-popup-animating';
+	    if (anim) {
+	      anim.style.overflow = 'hidden';
+	      anim.className += ' rw-popup-animating';
+	    }
 
 	    _utilConfiguration2['default'].animate(el, { opacity: 0 }, dur === undefined ? this.props.duration : dur, 'ease', function () {
 	      if (self._isOpening) return;

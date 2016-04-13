@@ -100,8 +100,6 @@ module.exports = React.createClass({
 
     const placeholderEl = compat.findDOMNode(placeholder);
 
-    // if (!placeholderEl) return null;
-
     const width = placeholderEl && placeholderEl.offsetWidth;
 
     if(width !== this.state.width) this.setState({ width });
@@ -233,8 +231,10 @@ module.exports = React.createClass({
     this._isOpening = false;
     this.props.onClosing();
 
-    anim.style.overflow = 'hidden';
-    anim.className += ' rw-popup-animating';
+    if (anim) {
+      anim.style.overflow = 'hidden';
+      anim.className += ' rw-popup-animating';
+    }
 
     config.animate(el
       , { opacity: 0 }
