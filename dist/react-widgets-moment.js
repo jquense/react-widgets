@@ -8,7 +8,7 @@
 		exports["ReactWidgets"] = factory(require("ReactWidgets"));
 	else
 		root["ReactWidgets"] = factory(root["ReactWidgets"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_92__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_93__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -62,7 +62,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.__esModule = true;
 
-	var _configure = __webpack_require__(92);
+	var _configure = __webpack_require__(93);
 
 	var _configure2 = babelHelpers.interopRequireDefault(_configure);
 
@@ -276,10 +276,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 92:
+/***/ 93:
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_92__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_93__;
 
 /***/ }
 

@@ -80,7 +80,12 @@ var DropdownList = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')()
+    require('./mixins/AriaDescendantMixin')(),
+    require('./mixins/FocusMixin')({
+      didHandle(focused) {
+        if (!focused) this.close()
+      }
+    })
   ],
 
   propTypes: propTypes,
@@ -179,8 +184,8 @@ var DropdownList = React.createClass({
         aria-readonly={readOnly }
         onKeyDown={tetherPopup ? null : this._keyDown}
         onClick={this._click}
-        onFocus={tetherPopup ? () => this.setState({focused:true}) : this._focus.bind(null, true)}
-        onBlur={tetherPopup ? null : this._focus.bind(null, false)}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
         className={cx(className, 'rw-dropdownlist', 'rw-widget', {
           'rw-state-disabled':  disabled,
           'rw-state-readonly':  readOnly,
@@ -233,7 +238,7 @@ var DropdownList = React.createClass({
                 aria-labelledby={instanceId(this)}
                 aria-hidden={!this.props.open}
                 selected={selectedItem}
-                focused ={open && focusedItem}
+                focused ={open ? focusedItem : null}
                 onSelect={this._onSelect}
                 onMove={multi ? () => {} : this._scrollTo}
                 messages={{
@@ -424,4 +429,4 @@ function msgs(msgs){
 }
 
 export default createUncontrolledWidget(
-    DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
+    DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }, ['focus']);
