@@ -1412,8 +1412,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'aria-readonly': readOnly,
 	        onKeyDown: tetherPopup ? null : this._keyDown,
 	        onClick: this._click,
-	        onFocus: this.handleFocus,
-	        onBlur: this.handleBlur,
+	        onFocus: tetherPopup ? function () {
+	          return _this.setState({ focused: true });
+	        } : this.handleFocus,
+	        onBlur: tetherPopup ? function () {
+	          return _this.setState({ focused: false });
+	        } : this.handleBlur,
 	        className: _classnames2['default'](className, 'rw-dropdownlist', 'rw-widget', (_cx = {
 	          'rw-state-disabled': disabled,
 	          'rw-state-readonly': readOnly,
@@ -1451,10 +1455,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          className: popupClassName,
 	          getTetherFocus: filter ? function () {
 	            return _this.refs.input;
-	          } : this.refs.list,
-	          onOpen: function () {
-	            return _this.focus();
+	          } : function () {
+	            return _this.refs.list.refs.foo;
 	          },
+	          onOpen: tetherPopup ? this.handleFocus : function () {},
 	          onKeyDown: this._keyDown,
 	          onBlur: this._focus.bind(null, false),
 	          onOpening: function () {
@@ -2391,6 +2395,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _react2['default'].createElement(
 	      'ul',
 	      babelHelpers._extends({
+	        ref: 'foo',
 	        id: id,
 	        tabIndex: '-1',
 	        className: _classnames2['default'](className, 'rw-list'),
@@ -3519,9 +3524,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 
-	  // componentDidMount(){
-	  //   !this.props.open && this.close(0)
-	  // },
 	  componentWillMount: function componentWillMount() {
 	    !this.props.open && (this._initialPosition = true);
 	  },
@@ -3550,11 +3552,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var placeholderEl = _utilCompat2['default'].findDOMNode(placeholder);
 
-	    if (!placeholderEl) return null;
+	    // if (!placeholderEl) return null;
 
-	    var width = placeholderEl.offsetWidth;
+	    var width = placeholderEl && placeholderEl.offsetWidth;
 
-	    if (width !== this.state.width) this.setState({ width: width });else if (opening) this.open();else if (closing) this.close();
+	    if (width !== this.state.width) this.setState({ width: width });
+
+	    if (opening) this.open();else if (closing) this.close();
 	  },
 
 	  _onClickScrim: function _onClickScrim(e) {
@@ -3642,7 +3646,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var focusComponent = content;
 	    var focusEl = undefined;
 
-	    if (_util_.isFunction(getTetherFocus)) focusComponent = getTetherFocus();
+	    focusComponent = getTetherFocus();
 	    if (focusComponent) focusEl = _utilCompat2['default'].findDOMNode(focusComponent);
 
 	    this._isOpening = true;

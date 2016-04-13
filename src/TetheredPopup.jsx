@@ -72,9 +72,6 @@ module.exports = React.createClass({
     }
   },
 
-  // componentDidMount(){
-  //   !this.props.open && this.close(0)
-  // },
   componentWillMount(){
     !this.props.open && (this._initialPosition = true)
   },
@@ -103,12 +100,13 @@ module.exports = React.createClass({
 
     const placeholderEl = compat.findDOMNode(placeholder);
 
-    if (!placeholderEl) return null;
+    // if (!placeholderEl) return null;
 
-    const width = placeholderEl.offsetWidth;
+    const width = placeholderEl && placeholderEl.offsetWidth;
 
     if(width !== this.state.width) this.setState({ width });
-    else if (opening) this.open();
+
+    if (opening) this.open();
     else if (closing) this.close();
   },
 
@@ -194,7 +192,7 @@ module.exports = React.createClass({
     let focusComponent = content;
     let focusEl;
 
-    if(isFunction(getTetherFocus)) focusComponent = getTetherFocus();
+    focusComponent = getTetherFocus();
     if(focusComponent) focusEl = compat.findDOMNode(focusComponent);
 
     this._isOpening = true

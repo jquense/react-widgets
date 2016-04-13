@@ -108,6 +108,7 @@ export default React.createClass({
 
     return (
       <ul
+        ref="foo"
         id={id}
         tabIndex='-1'
         className={cn(className, 'rw-list')}
