@@ -1450,7 +1450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        babelHelpers._extends({}, popupProps, {
 	          className: popupClassName,
 	          getTetherFocus: filter ? function () {
-	            return _this.refs.filter;
+	            return _this.refs.input;
 	          } : this.refs.list,
 	          onOpen: function () {
 	            return _this.focus();
@@ -2088,6 +2088,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _reactDom = __webpack_require__(32);
 
+	var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
+
 	var _version = _react2['default'].version.split('.').map(parseFloat);
 
 	module.exports = {
@@ -2097,7 +2099,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  findDOMNode: function findDOMNode(component) {
-	    return _reactDom.findDOMNode(component);
+	    return _reactDom2['default'].findDOMNode(component);
+	  },
+
+	  batchedUpdates: function batchedUpdates(cb) {
+	    _reactDom2['default'].unstable_batchedUpdates(cb);
 	  }
 
 	};

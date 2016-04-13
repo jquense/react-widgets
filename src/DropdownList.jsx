@@ -214,7 +214,7 @@ var DropdownList = React.createClass({
         </div>
         <PopupComponent {...popupProps}
           className={popupClassName}
-          getTetherFocus={filter ? () => this.refs.filter : this.refs.list}
+          getTetherFocus={filter ? () => this.refs.input : this.refs.list}
           onOpen={() => this.focus()}
           onKeyDown={this._keyDown}
           onBlur={this._focus.bind(null, false)}
