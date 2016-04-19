@@ -1,0 +1,70 @@
+let List = ReactWidgets.List
+let DropdownList = ReactWidgets.DropdownList
+
+class FilterList extends React.Component {
+
+  constructor(props){
+    super(props)
+    this.state = { filter: ''}
+  }
+
+  componentDidUpdate(prevProps){
+    if (!prevProps.open && this.props.open)
+      setTimeout(() => this.refs.input.focus())
+  }
+
+  componentDidMount(prevProps){
+    if (this.props.open)
+      setTimeout(() => this.refs.input.focus())
+  }
+
+  render(){
+    var filter = this.state.filter
+      , data = this.filter()
+
+    return (
+      <div>
+        <input ref='input'
+          className='form-control'
+          value={filter}
+          onChange={ e => this.setState({ filter: e.target.value })}
+          onClick={e => e.stopPropagation()}/>
+        <List {...this.props}
+          ref='list'
+          data={data}
+          onSelect={ item => {
+            this.setState({ filter: ''})
+            this.props.onSelect(item)
+          }}/>
+      </div>
+    )
+  }
+
+  filter(){
+    var filter = this.state.filter.toLowerCase().trim()
+
+    return !filter || !this.props.open
+      ? this.props.data
+      : this.props.data.filter(
+          d => d.name.toLowerCase().indexOf(filter) !== -1);
+  }
+
+  first(){ return this.refs.list.first() }
+  last() { return this.refs.list.last() }
+  next(...args){ return this.refs.list.next(...args) }
+  prev(...args){ return this.refs.list.prev(...args) }
+}
+
+FilterList.propTypes = {
+  open: React.PropTypes.bool,
+  ...List.type.propTypes,
+}
+
+ReactDOM.render(
+    <DropdownList
+      data={listOfPeople()}
+      valueField='id'
+      textField='name'
+      listComponent={FilterList}
+    />
+  , mountNode)
