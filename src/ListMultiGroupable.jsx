@@ -345,11 +345,6 @@ export default React.createClass({
         this._rndrGrpHdr,
         this._rndrSnglItm
       );
-      // items = _renderHeadersAndItems(
-      //   groups,
-      //   this._renderGroupHeader,
-      //   this._renderItems
-      // );
     }
     else {
       items = (
