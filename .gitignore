@@ -1,12 +1,4 @@
-##### TEMPORARY: PLEASE REMOVE THIS SECTION WHEN DONE DEVELOPING ##############
-#
-#
-dist/
-docs/
-lib/
-#
-#
-###############################################################################
+
 # Logs
 logs
 *.log
