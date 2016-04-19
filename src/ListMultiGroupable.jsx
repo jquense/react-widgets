@@ -342,8 +342,8 @@ export default React.createClass({
     if (data.length) {
       items = _renderAllTheThings(
         groups,
-        this._rndrGrpHdr,
-        this._rndrSnglItm
+        this._renderGroupHeader,
+        this._renderItem
       );
     }
     else {
@@ -368,7 +368,7 @@ export default React.createClass({
     )
   },
 
-  _rndrGrpHdr(label, state) {
+  _renderGroupHeader(label, state) {
     const depth = state.path.length;
     const pathString = state.path.join('::');
 
@@ -387,36 +387,7 @@ export default React.createClass({
     );
   },
 
-  _renderGroupHeader(groupKey, label, state) {
-    const className = `rw-list-optgroup ${_getDepthString(state.depth)}`;
-    const id = instanceId(this);
-    const key = `item_${state.traversed}_${groupKey}`;
-
-    return (
-      <GroupHeader
-        className={className}
-        groupComponent={this.props.groupComponent}
-        id={id}
-        key={key}
-        label={label}
-      />
-    );
-  },
-
-  _renderItems(items, groupKey, offset, depth) {
-    return items.map((current, idx) => {
-      const rendered = this._renderItem(
-        groupKey,
-        current,
-        offset + idx,
-        depth
-      );
-
-      return rendered;
-    });
-  },
-
-  _rndrSnglItm(item, state, idx) {
+  _renderItem(item, state, idx) {
     let {
       focused,
       selected,
@@ -457,45 +428,6 @@ export default React.createClass({
         }
       </Option>
     )
-  },
-
-  _renderItem(group, item, idx, depth) {
-    let {
-      focused,
-      selected,
-      onSelect,
-      textField,
-      valueField,
-      itemComponent: ItemComponent,
-      optionComponent: Option
-    } = this.props
-    let currentID = optionId(instanceId(this), idx);
-    const onClick = onSelect.bind(null, item);
-
-    if (focused === item) {
-      this._currentActiveID = currentID;
-    }
-
-    return (
-      <Option
-        key={'item_' + group + '_' + idx}
-        id={currentID}
-        dataItem={item}
-        focused={focused === item}
-        selected={selected === item}
-        onClick={onClick}
-        className={_getDepthString(depth)}
-      >
-        { ItemComponent
-            ? <ItemComponent
-                item={item}
-                value={dataValue(item, valueField)}
-                text={dataText(item, textField)}
-              />
-            : dataText(item, textField)
-        }
-      </Option>
-    );
   },
 
   _isIndexOf(idx, item){
