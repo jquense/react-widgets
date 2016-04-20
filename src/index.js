@@ -13,13 +13,14 @@ if (process.env.NODE_ENV !== 'production' ) {
 
 module.exports = {
   ...configure,
-  DropdownList:     require('./DropdownList'),
-  Combobox:         require('./Combobox'),
-  Calendar:         require('./Calendar'),
-  DateTimePicker:   require('./DateTimePicker'),
-  NumberPicker:     require('./NumberPicker'),
-  Multiselect:      require('./Multiselect'),
-  SelectList:       require('./SelectList'),
+  DropdownList:        require('./DropdownList'),
+  Combobox:            require('./Combobox'),
+  Calendar:            require('./Calendar'),
+  DateTimePicker:      require('./DateTimePicker'),
+  NumberPicker:        require('./NumberPicker'),
+  Multiselect:         require('./Multiselect'),
+  SelectList:          require('./SelectList'),
+  ListMultiGroupable:  require('./ListMultiGroupable'),
 
   utils: {
     ReplaceTransitionGroup: require('./ReplaceTransitionGroup'),
