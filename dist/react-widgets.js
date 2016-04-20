@@ -70,15 +70,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = babelHelpers._extends({}, configure, {
 	  DropdownList: __webpack_require__(22),
 	  Combobox: __webpack_require__(61),
-	  Calendar: __webpack_require__(68),
-	  DateTimePicker: __webpack_require__(82),
-	  NumberPicker: __webpack_require__(85),
-	  Multiselect: __webpack_require__(88),
-	  SelectList: __webpack_require__(91),
+	  Calendar: __webpack_require__(65),
+	  DateTimePicker: __webpack_require__(79),
+	  NumberPicker: __webpack_require__(82),
+	  Multiselect: __webpack_require__(85),
+	  SelectList: __webpack_require__(88),
+	  ListMultiGroupable: __webpack_require__(89),
 
 	  utils: {
-	    ReplaceTransitionGroup: __webpack_require__(80),
-	    SlideTransition: __webpack_require__(79)
+	    ReplaceTransitionGroup: __webpack_require__(77),
+	    SlideTransition: __webpack_require__(76)
 	  }
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -2969,7 +2970,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _data: function _data() {
 	    var groups = this.state.groups;
-	    return result = this.state.sortedKeys.reduce(function (flat, grp) {
+
+	    return this.state.sortedKeys.reduce(function (flat, grp) {
 	      return flat.concat(groups[grp]);
 	    }, []);
 	  },
@@ -6039,10 +6041,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _ListGroupable2 = babelHelpers.interopRequireDefault(_ListGroupable);
 
-	var _ListMultiGroupable = __webpack_require__(65);
-
-	var _ListMultiGroupable2 = babelHelpers.interopRequireDefault(_ListMultiGroupable);
-
 	var _utilValidateListInterface = __webpack_require__(43);
 
 	var _utilValidateListInterface2 = babelHelpers.interopRequireDefault(_utilValidateListInterface);
@@ -6056,10 +6054,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _utilInteraction = __webpack_require__(51);
 
 	var _utilWidgetHelpers = __webpack_require__(38);
-
-	function _resolveListGroupable(groupBy) {
-	  return groupBy && Array.isArray(groupBy) ? _ListMultiGroupable2['default'] : _ListGroupable2['default'];
-	}
 
 	var defaultSuggest = function defaultSuggest(f) {
 	  return f === true ? 'startsWith' : f ? f : 'eq';
@@ -6225,7 +6219,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var onChange = _props2.onChange;
 	    var List = _props2.listComponent;
 
-	    List = List || _resolveListGroupable(groupBy) || _List2['default'];
+	    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
 
 	    var elementProps = omit(this.props, Object.keys(propTypes));
 	    var listProps = pick(this.props, Object.keys(List.propTypes));
@@ -6711,581 +6705,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.__esModule = true;
 
-	var _react = __webpack_require__(21);
-
-	var _react2 = babelHelpers.interopRequireDefault(_react);
-
-	var _ListOption = __webpack_require__(36);
-
-	var _ListOption2 = babelHelpers.interopRequireDefault(_ListOption);
-
-	var _utilPropTypes = __webpack_require__(33);
-
-	var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
-
-	var _utilCompat = __webpack_require__(31);
-
-	var _utilCompat2 = babelHelpers.interopRequireDefault(_utilCompat);
-
-	var _classnames = __webpack_require__(26);
-
-	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
-
-	var _util_ = __webpack_require__(20);
-
-	var _util_2 = babelHelpers.interopRequireDefault(_util_);
-
-	var _warning = __webpack_require__(42);
-
-	var _warning2 = babelHelpers.interopRequireDefault(_warning);
-
-	var _utilDataHelpers = __webpack_require__(37);
-
-	var _utilWidgetHelpers = __webpack_require__(38);
-
-	var _GroupHeader = __webpack_require__(66);
-
-	var _GroupHeader2 = babelHelpers.interopRequireDefault(_GroupHeader);
-
-	var _utilObjectTraversal = __webpack_require__(67);
-
-	var optionId = function optionId(id, idx) {
-	  return id + '__option__' + idx;
-	};
-	var PATH_DELIMITER = '>-->'; // Seems a little arbitrary...
-
-	function _stringifyPath(path) {
-	  return path.join(PATH_DELIMITER);
-	}
-
-	function _getDepthString(depth) {
-	  return 'rw-list-depth-' + (depth || 0);
-	}
-
-	function _getIn(obj, path) {
-	  return path.reduce(function (seed, current) {
-	    return seed && typeof seed === 'object' && seed[current];
-	  }, obj);
-	}
-
-	function _ensureOrderedKeysExists(obj) {
-	  if (obj && !obj._orderedKeys) {
-	    obj._orderedKeys = [];
-	  }
-	}
-
-	function _pushNewOrderedKey(obj, key) {
-	  var shouldPushKey = obj && obj._orderedKeys && obj._orderedKeys.indexOf(key) === -1;
-
-	  shouldPushKey && obj._orderedKeys.push(key);
-	}
-
-	function _setIn(obj, path, val) {
-	  // NOTE: Not truly a deep clone, but that doesn't really matter just yet
-	  var cloned = babelHelpers._extends({}, obj);
-
-	  path.reduce(function (seed, current, idx) {
-	    if (idx == path.length - 1) {
-	      seed[current] = val;
-	    } else if (!seed[current]) {
-	      seed[current] = {};
-	    }
-
-	    _ensureOrderedKeysExists(seed);
-	    _pushNewOrderedKey(seed, current);
-
-	    return seed[current];
-	  }, cloned);
-
-	  return cloned;
-	}
-
-	function _validateOrderedKeyObject(obj) {
-	  if (!(obj && obj._orderedKeys)) {
-	    throw new Error("currentNode is null/undefined/falsy, or is missing `_orderedKeys`");
-	  }
-	}
-
-	function _pushPathStep(path, nextStep) {
-	  if (!path || path.trim() === '') {
-	    return nextStep;
-	  }
-
-	  return _stringifyPath([path, nextStep]);
-	}
-
-	function _flattenGroups(groups, array) {
-	  if (groups && groups._orderedKeys) {
-	    groups._orderedKeys.forEach(function (key) {
-	      var value = groups[key];
-
-	      if (Array.isArray(value)) {
-	        value.forEach(function (item) {
-	          return array.push(item);
-	        });
-	      } else {
-	        _flattenGroups(value, array);
-	      }
-	    });
-	  }
-	}
-
-	/*
-	state: {
-	  depth:     number,
-	  offset:    number,
-	  traversed: string,
-	}
-	*/
-	function __processHeadersAndItems(currentNode, array, processHeader, processItems, state) {
-	  _validateOrderedKeyObject(currentNode);
-
-	  return currentNode._orderedKeys.reduce(function (_state, key) {
-	    var depth = _state.depth;
-	    var offset = _state.offset;
-	    var traversed = _state.traversed;
-	    var value = currentNode[key];
-
-	    var newlyTraversed = _pushPathStep(traversed, key);
-
-	    array.push(processHeader(newlyTraversed, key, _state));
-
-	    if (!Array.isArray(value)) {
-	      var nextState = babelHelpers._extends({}, _state, {
-	        depth: depth + 1
-	      });
-
-	      return __processHeadersAndItems(value, array, processHeader, processItems, nextState);
-	    } else {
-	      // TODO: Make sure we don't have the same depth +1 issue here as before
-	      array.push(processItems(value, newlyTraversed, offset, depth + 1));
-
-	      return babelHelpers._extends({}, _state, {
-	        offset: offset + value.length
-	      });
-	    }
-	  }, state);
-	}
-
-	function _renderAllTheThings(groupedObj, renderGroupHeader, renderSingleItem) {
-	  var outputArray = [];
-	  var getChildren = function getChildren(obj) {
-	    return obj._orderedKeys;
-	  };
-	  var onInternal = function onInternal(key, state) {
-	    outputArray.push(renderGroupHeader(key, state));
-	  };
-	  var onLeaf = function onLeaf(array, state) {
-	    array.forEach(function (item, idx) {
-	      outputArray.push(renderSingleItem(item, state, idx));
-	    });
-	  };
-
-	  _utilObjectTraversal.depthFirst(groupedObj, getChildren, onInternal, onLeaf);
-
-	  return outputArray;
-	}
-
-	function _renderHeadersAndItems(groupedData, processHeader, processItems) {
-	  var outputArray = [];
-	  var initialState = {
-	    depth: 0,
-	    offset: 0,
-	    traversed: ''
-	  };
-
-	  __processHeadersAndItems(groupedData, outputArray, processHeader, processItems, initialState);
-
-	  return outputArray;
-	}
-
-	function _setFoundIndex(state, foundIndex) {
-	  return babelHelpers._extends({}, state, {
-	    foundIndex: foundIndex
-	  });
-	}
-
-	function _setOffset(state, offset) {
-	  return babelHelpers._extends({}, state, {
-	    offset: offset
-	  });
-	}
-
-	/*
-	 state:
-	 {
-	   foundIndex: boolean,
-	   offset:     number
-	 }
-	 */
-	function _getOrderedIndexHelper(item, currentNode, state) {
-	  _validateOrderedKeyObject(currentNode);
-
-	  return currentNode._orderedKeys.reduce(function (_state, key) {
-	    if (_state.foundIndex) {
-	      return _state;
-	    }
-
-	    var value = currentNode[key];
-	    if (!Array.isArray(value)) {
-	      return _getOrderedIndexHelper(item, value, _setOffset(_state, _state.offset + 1));
-	    } else {
-	      var index = value.indexOf(item);
-
-	      // IMPORTANT: We're kind of looking ahead one level in the heirarchy,
-	      // so the index/offset actually needs to be incremented once extra.
-	      //
-	      // This could probably be done slightly differently to alleviate that,
-	      // but that isn't worth doing just yet...
-	      if (index !== -1) {
-	        var foundIndex = _state.offset + index + 1;
-
-	        return _setFoundIndex(_state, foundIndex);
-	      } else {
-	        var offset = _state.offset + value.length + 1;
-
-	        return _setOffset(_state, offset);
-	      }
-	    }
-	  }, state);
-	}
-
-	function _getOrderedIndex(item, object) {
-	  var result = _getOrderedIndexHelper(item, object, {
-	    foundIndex: undefined,
-	    offset: 0
-	  });
-
-	  return result.foundIndex || -1;
-	}
-
-	exports['default'] = _react2['default'].createClass({
-	  displayName: 'List',
-
-	  mixins: [__webpack_require__(39), __webpack_require__(40)()],
-
-	  propTypes: {
-	    data: _react2['default'].PropTypes.array,
-	    onSelect: _react2['default'].PropTypes.func,
-	    onMove: _react2['default'].PropTypes.func,
-
-	    optionComponent: _utilPropTypes2['default'].elementType,
-	    itemComponent: _utilPropTypes2['default'].elementType,
-	    groupComponent: _utilPropTypes2['default'].elementType,
-
-	    selected: _react2['default'].PropTypes.any,
-	    focused: _react2['default'].PropTypes.any,
-
-	    valueField: _react2['default'].PropTypes.string,
-	    textField: _utilPropTypes2['default'].accessor,
-
-	    optID: _react2['default'].PropTypes.string,
-
-	    groupBy: _utilPropTypes2['default'].accessor,
-
-	    messages: _react2['default'].PropTypes.shape({
-	      emptyList: _utilPropTypes2['default'].message
-	    })
-	  },
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      optID: '',
-	      onSelect: function onSelect() {},
-	      data: [],
-	      optionComponent: _ListOption2['default'],
-	      ariaActiveDescendantKey: 'groupedList',
-	      messages: {
-	        emptyList: 'There are no items in this list'
-	      }
-	    };
-	  },
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      groups: this._group(this.props.groupBy, this.props.data)
-	    };
-	  },
-
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    var shouldSetState = nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy;
-
-	    if (shouldSetState) {
-	      var groups = this._group(nextProps.groupBy, nextProps.data);
-
-	      this.setState({
-	        groups: groups
-	      });
-	    }
-	  },
-
-	  componentDidMount: function componentDidMount() {
-	    this.move();
-	  },
-
-	  componentDidUpdate: function componentDidUpdate() {
-	    this.ariaActiveDescendant(this._currentActiveID);
-	    this.move();
-	  },
-
-	  render: function render() {
-	    var _props = this.props;
-	    var className = _props.className;
-	    var role = _props.role;
-	    var data = _props.data;
-	    var messages = _props.messages;
-	    var onSelect = _props.onSelect;
-	    var selectedIndex = _props.selectedIndex;
-	    var props = babelHelpers.objectWithoutProperties(_props, ['className', 'role', 'data', 'messages', 'onSelect', 'selectedIndex']);
-
-	    var id = _utilWidgetHelpers.instanceId(this);
-	    var groups = this.state.groups;
-
-	    var items = [];
-	    var idx = -1;
-	    var group = undefined;
-
-	    this._currentActiveID = null;
-
-	    if (data.length) {
-	      items = _renderAllTheThings(groups, this._renderGroupHeader, this._renderItem);
-	    } else {
-	      items = _react2['default'].createElement(
-	        'li',
-	        { className: 'rw-list-empty' },
-	        _util_2['default'].result(messages.emptyList, this.props)
-	      );
-	    }
-
-	    return _react2['default'].createElement(
-	      'ul',
-	      babelHelpers._extends({
-	        ref: 'scrollable',
-	        id: id,
-	        tabIndex: '-1',
-	        className: _classnames2['default'](className, 'rw-list', 'rw-list-grouped'),
-	        role: role === undefined ? 'listbox' : role
-	      }, props),
-	      items
-	    );
-	  },
-
-	  _renderGroupHeader: function _renderGroupHeader(label, state) {
-	    var depth = state.path.length;
-	    var pathString = state.path.join('::');
-
-	    var className = 'rw-list-optgroup ' + _getDepthString(depth);
-	    var id = _utilWidgetHelpers.instanceId(this);
-	    var key = 'item_' + pathString + '_' + label;
-
-	    return _react2['default'].createElement(_GroupHeader2['default'], {
-	      className: className,
-	      groupComponent: this.props.groupComponent,
-	      id: id,
-	      key: key,
-	      label: label
-	    });
-	  },
-
-	  _renderItem: function _renderItem(item, state, idx) {
-	    var _props2 = this.props;
-	    var focused = _props2.focused;
-	    var selected = _props2.selected;
-	    var onSelect = _props2.onSelect;
-	    var textField = _props2.textField;
-	    var valueField = _props2.valueField;
-	    var ItemComponent = _props2.itemComponent;
-	    var Option = _props2.optionComponent;
-
-	    var currentId = optionId(_utilWidgetHelpers.instanceId(this), state.offset + idx); // FIXME?
-	    var onClick = onSelect.bind(null, item);
-
-	    if (focused === item) {
-	      this._currentActiveID = currentId;
-	    }
-
-	    var depth = state.path.length;
-	    var pathString = state.path.join('::');
-	    var key = 'item_' + pathString + '_' + idx;
-
-	    return _react2['default'].createElement(
-	      Option,
-	      {
-	        key: key,
-	        id: currentId,
-	        dataItem: item,
-	        focused: focused === item,
-	        selected: selected === item,
-	        onClick: onClick,
-	        className: _getDepthString(depth)
-	      },
-	      ItemComponent ? _react2['default'].createElement(ItemComponent, {
-	        item: item,
-	        value: _utilDataHelpers.dataValue(item, valueField),
-	        text: _utilDataHelpers.dataText(item, textField)
-	      }) : _utilDataHelpers.dataText(item, textField)
-	    );
-	  },
-
-	  _isIndexOf: function _isIndexOf(idx, item) {
-	    return this.props.data[idx] === item;
-	  },
-
-	  _group: function _group(groupFns, data) {
-	    return data.reduce(function (seed, current) {
-	      var path = groupFns.map(function (fn) {
-	        return fn(current);
-	      });
-	      var existingLeaf = _getIn(seed, path) || [];
-	      var newLeaf = existingLeaf.concat(current);
-
-	      return _setIn(seed, path, newLeaf);
-	    }, {});
-	  },
-
-	  _data: function _data() {
-	    var groups = this.state.groups;
-	    var items = [];
-
-	    _flattenGroups(groups, items);
-
-	    return items;
-	  },
-
-	  move: function move() {
-	    var selected = this.getItemDOMNode(this.props.focused);
-
-	    if (!selected) {
-	      return;
-	    }
-
-	    _utilWidgetHelpers.notify(this.props.onMove, [selected, _utilCompat2['default'].findDOMNode(this), this.props.focused]);
-	  },
-
-	  getItemDOMNode: function getItemDOMNode(item) {
-	    var list = _utilCompat2['default'].findDOMNode(this);
-	    var index = _getOrderedIndex(item, this.state.groups);
-
-	    // Conveniently, someArray[-1] gives undefined, which is just what we want
-	    return list[index];
-	  }
-	});
-	module.exports = exports['default'];
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var babelHelpers = __webpack_require__(2);
-
-	exports.__esModule = true;
-
-	var _react = __webpack_require__(21);
-
-	var _react2 = babelHelpers.interopRequireDefault(_react);
-
-	var _utilPropTypes = __webpack_require__(33);
-
-	var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
-
-	function GroupHeader(props) {
-	  var GroupComponent = props.groupComponent;
-	  var label = props.label;
-
-	  return _react2['default'].createElement(
-	    'li',
-	    {
-	      className: props.className,
-	      id: props.id,
-	      role: 'separator',
-	      tabIndex: '-1'
-	    },
-	    GroupComponent ? _react2['default'].createElement(GroupComponent, { item: label }) : label
-	  );
-	}
-
-	GroupHeader.propTypes = {
-	  className: _react.PropTypes.string,
-	  groupComponent: _utilPropTypes2['default'].elementType,
-	  id: _react.PropTypes.string,
-	  key: _react.PropTypes.string,
-	  label: _react.PropTypes.string
-	};
-
-	exports['default'] = GroupHeader;
-	module.exports = exports['default'];
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var babelHelpers = __webpack_require__(2);
-
-	exports.__esModule = true;
-	exports.depthFirst = depthFirst;
-	function _getDefaultState() {
-	  return {
-	    offset: 0,
-	    path: []
-	  };
-	};
-
-	function _getPoppedArrayClone(array) {
-	  var clone = array.slice();
-	  clone.pop();
-
-	  return clone;
-	}
-
-	function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) {
-	  // I kind of hate this
-	  state = state || _getDefaultState();
-
-	  if (Array.isArray(currentNode)) {
-	    onLeaf && onLeaf(currentNode, state);
-
-	    return babelHelpers._extends({}, state, {
-	      offset: state.offset + currentNode.length,
-	      path: state.path.slice()
-	    });
-	  }
-
-	  return getChildren(currentNode).reduce(function (_state, key) {
-	    // IMPORTANT: Only `_state` should be used inside the body of this
-	    // function. Accidentally accessing `state` through closure will only get
-	    // confusing.
-
-	    onInternal(key, _state);
-
-	    var passDownState = babelHelpers._extends({}, _state, {
-	      offset: _state.offset + 1,
-	      path: _state.path.concat(key)
-	    });
-
-	    var resultingState = depthFirst(currentNode[key], getChildren, onInternal, onLeaf, passDownState);
-
-	    var passUpState = babelHelpers._extends({}, resultingState, {
-	      path: _getPoppedArrayClone(resultingState.path)
-	    });
-
-	    return passUpState;
-	  }, state);
-	}
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var babelHelpers = __webpack_require__(2);
-
-	exports.__esModule = true;
-
 	var _VIEW, _OPPOSITE_DIRECTION, _MULTIPLIER;
 
 	var _react = __webpack_require__(21);
@@ -7300,27 +6719,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _utilCompat2 = babelHelpers.interopRequireDefault(_utilCompat);
 
-	var _Header = __webpack_require__(69);
+	var _Header = __webpack_require__(66);
 
 	var _Header2 = babelHelpers.interopRequireDefault(_Header);
 
-	var _Footer = __webpack_require__(71);
+	var _Footer = __webpack_require__(68);
 
 	var _Footer2 = babelHelpers.interopRequireDefault(_Footer);
 
-	var _Month = __webpack_require__(72);
+	var _Month = __webpack_require__(69);
 
 	var _Month2 = babelHelpers.interopRequireDefault(_Month);
 
-	var _Year = __webpack_require__(76);
+	var _Year = __webpack_require__(73);
 
 	var _Year2 = babelHelpers.interopRequireDefault(_Year);
 
-	var _Decade = __webpack_require__(77);
+	var _Decade = __webpack_require__(74);
 
 	var _Decade2 = babelHelpers.interopRequireDefault(_Decade);
 
-	var _Century = __webpack_require__(78);
+	var _Century = __webpack_require__(75);
 
 	var _Century2 = babelHelpers.interopRequireDefault(_Century);
 
@@ -7334,15 +6753,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
-	var _SlideTransition = __webpack_require__(79);
+	var _SlideTransition = __webpack_require__(76);
 
 	var _SlideTransition2 = babelHelpers.interopRequireDefault(_SlideTransition);
 
-	var _utilDates = __webpack_require__(73);
+	var _utilDates = __webpack_require__(70);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
-	var _utilConstants = __webpack_require__(75);
+	var _utilConstants = __webpack_require__(72);
 
 	var _utilConstants2 = babelHelpers.interopRequireDefault(_utilConstants);
 
@@ -7764,7 +7183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 69 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7800,7 +7219,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    })
 	  },
 
-	  mixins: [__webpack_require__(53), __webpack_require__(70)],
+	  mixins: [__webpack_require__(53), __webpack_require__(67)],
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -7876,7 +7295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 70 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7903,7 +7322,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 71 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7952,7 +7371,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 72 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7969,7 +7388,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
 
-	var _utilDates = __webpack_require__(73);
+	var _utilDates = __webpack_require__(70);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -8026,7 +7445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    isEqual: isEqual
 	  },
 
-	  mixins: [__webpack_require__(70), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(67), __webpack_require__(40)()],
 
 	  propTypes: propTypes,
 
@@ -8145,7 +7564,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 73 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8154,11 +7573,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.__esModule = true;
 
-	var _dateArithmetic = __webpack_require__(74);
+	var _dateArithmetic = __webpack_require__(71);
 
 	var _dateArithmetic2 = babelHelpers.interopRequireDefault(_dateArithmetic);
 
-	var _constants = __webpack_require__(75);
+	var _constants = __webpack_require__(72);
 
 	var _constants2 = babelHelpers.interopRequireDefault(_constants);
 
@@ -8259,7 +7678,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 74 */
+/* 71 */
 /***/ function(module, exports) {
 
 	var MILI    = 'milliseconds'
@@ -8432,7 +7851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 75 */
+/* 72 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8468,7 +7887,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 76 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8485,7 +7904,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
 
-	var _utilDates = __webpack_require__(73);
+	var _utilDates = __webpack_require__(70);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -8528,7 +7947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'YearView',
 
-	  mixins: [__webpack_require__(70), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(67), __webpack_require__(40)()],
 
 	  propTypes: propTypes,
 
@@ -8625,7 +8044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 77 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8642,7 +8061,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
 
-	var _utilDates = __webpack_require__(73);
+	var _utilDates = __webpack_require__(70);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -8682,7 +8101,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'DecadeView',
 
-	  mixins: [__webpack_require__(53), __webpack_require__(70), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(53), __webpack_require__(67), __webpack_require__(40)()],
 
 	  propTypes: propTypes,
 
@@ -8789,7 +8208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 78 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8806,7 +8225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
 
-	var _utilDates = __webpack_require__(73);
+	var _utilDates = __webpack_require__(70);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -8848,7 +8267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'CenturyView',
 
-	  mixins: [__webpack_require__(53), __webpack_require__(70), __webpack_require__(40)()],
+	  mixins: [__webpack_require__(53), __webpack_require__(67), __webpack_require__(40)()],
 
 	  propTypes: propTypes,
 
@@ -8964,7 +8383,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 79 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8972,10 +8391,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var babelHelpers = __webpack_require__(2);
 
 	var React = __webpack_require__(21),
-	    ReplaceTransitionGroup = __webpack_require__(80),
+	    ReplaceTransitionGroup = __webpack_require__(77),
 	    compat = __webpack_require__(31),
 	    css = __webpack_require__(7),
-	    getWidth = __webpack_require__(81),
+	    getWidth = __webpack_require__(78),
 	    config = __webpack_require__(4);
 
 	var SlideChildGroup = React.createClass({
@@ -9091,7 +8510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 80 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9105,7 +8524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__(21),
 	    css = __webpack_require__(7),
 	    height = __webpack_require__(28),
-	    width = __webpack_require__(81),
+	    width = __webpack_require__(78),
 	    compat = __webpack_require__(31),
 	    _ = __webpack_require__(20);
 
@@ -9285,7 +8704,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 81 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9299,7 +8718,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 82 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9334,13 +8753,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	//pick, omit, has
 
-	var _utilDates = __webpack_require__(73);
+	var _utilDates = __webpack_require__(70);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
 	var _utilLocalizers = __webpack_require__(18);
 
-	var _utilConstants = __webpack_require__(75);
+	var _utilConstants = __webpack_require__(72);
 
 	var _utilConstants2 = babelHelpers.interopRequireDefault(_utilConstants);
 
@@ -9348,15 +8767,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Popup2 = babelHelpers.interopRequireDefault(_Popup);
 
-	var _Calendar2 = __webpack_require__(68);
+	var _Calendar2 = __webpack_require__(65);
 
 	var _Calendar3 = babelHelpers.interopRequireDefault(_Calendar2);
 
-	var _TimeList = __webpack_require__(83);
+	var _TimeList = __webpack_require__(80);
 
 	var _TimeList2 = babelHelpers.interopRequireDefault(_TimeList);
 
-	var _DateInput = __webpack_require__(84);
+	var _DateInput = __webpack_require__(81);
 
 	var _DateInput2 = babelHelpers.interopRequireDefault(_DateInput);
 
@@ -9846,7 +9265,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 83 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9859,7 +9278,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = babelHelpers.interopRequireDefault(_react);
 
-	var _utilDates = __webpack_require__(73);
+	var _utilDates = __webpack_require__(70);
 
 	var _utilDates2 = babelHelpers.interopRequireDefault(_utilDates);
 
@@ -10066,7 +9485,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 84 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10192,7 +9611,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 85 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10225,17 +9644,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
 
-	var _utilConstants = __webpack_require__(75);
+	var _utilConstants = __webpack_require__(72);
 
 	var _utilConstants2 = babelHelpers.interopRequireDefault(_utilConstants);
 
-	var _utilRepeater = __webpack_require__(86);
+	var _utilRepeater = __webpack_require__(83);
 
 	var _utilRepeater2 = babelHelpers.interopRequireDefault(_utilRepeater);
 
 	var _utilLocalizers = __webpack_require__(18);
 
-	var _NumberInput = __webpack_require__(87);
+	var _NumberInput = __webpack_require__(84);
 
 	var _NumberInput2 = babelHelpers.interopRequireDefault(_NumberInput);
 
@@ -10538,7 +9957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	//allow for styling, focus stealing keeping me from the normal what have you
 
 /***/ },
-/* 86 */
+/* 83 */
 /***/ function(module, exports) {
 
 	// my tests in ie11/chrome/FF indicate that keyDown repeats
@@ -10566,7 +9985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports["default"];
 
 /***/ },
-/* 87 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10710,7 +10129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 88 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10735,11 +10154,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Popup2 = babelHelpers.interopRequireDefault(_Popup);
 
-	var _MultiselectInput = __webpack_require__(89);
+	var _MultiselectInput = __webpack_require__(86);
 
 	var _MultiselectInput2 = babelHelpers.interopRequireDefault(_MultiselectInput);
 
-	var _MultiselectTagList = __webpack_require__(90);
+	var _MultiselectTagList = __webpack_require__(87);
 
 	var _MultiselectTagList2 = babelHelpers.interopRequireDefault(_MultiselectTagList);
 
@@ -11290,7 +10709,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 89 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11353,7 +10772,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 90 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11546,7 +10965,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 91 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11970,6 +11389,533 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports['default'] = _uncontrollable2['default'](SelectList, { value: 'onChange' });
 	module.exports = exports['default'];
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var babelHelpers = __webpack_require__(2);
+
+	exports.__esModule = true;
+
+	var _react = __webpack_require__(21);
+
+	var _react2 = babelHelpers.interopRequireDefault(_react);
+
+	var _ListOption = __webpack_require__(36);
+
+	var _ListOption2 = babelHelpers.interopRequireDefault(_ListOption);
+
+	var _utilPropTypes = __webpack_require__(33);
+
+	var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
+
+	var _utilCompat = __webpack_require__(31);
+
+	var _utilCompat2 = babelHelpers.interopRequireDefault(_utilCompat);
+
+	var _classnames = __webpack_require__(26);
+
+	var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
+
+	var _util_ = __webpack_require__(20);
+
+	var _util_2 = babelHelpers.interopRequireDefault(_util_);
+
+	var _warning = __webpack_require__(42);
+
+	var _warning2 = babelHelpers.interopRequireDefault(_warning);
+
+	var _utilDataHelpers = __webpack_require__(37);
+
+	var _utilWidgetHelpers = __webpack_require__(38);
+
+	var _GroupHeader = __webpack_require__(90);
+
+	var _GroupHeader2 = babelHelpers.interopRequireDefault(_GroupHeader);
+
+	var _utilObjectTraversal = __webpack_require__(91);
+
+	var optionId = function optionId(id, idx) {
+	  return id + '__option__' + idx;
+	};
+	var PATH_DELIMITER = '::';
+
+	function _stringifyPath(path) {
+	  return path.join(PATH_DELIMITER);
+	}
+
+	function _getDepthString(depth) {
+	  return 'rw-list-depth-' + (depth || 0);
+	}
+
+	function _getIn(obj, path) {
+	  return path.reduce(function (seed, current) {
+	    return seed && typeof seed === 'object' && seed[current];
+	  }, obj);
+	}
+
+	function _ensureOrderedKeysExists(obj) {
+	  if (obj && !obj._orderedKeys) {
+	    obj._orderedKeys = [];
+	  }
+	}
+
+	function _pushNewOrderedKey(obj, key) {
+	  var shouldPushKey = obj && obj._orderedKeys && obj._orderedKeys.indexOf(key) === -1;
+
+	  shouldPushKey && obj._orderedKeys.push(key);
+	}
+
+	function _setIn(obj, path, val) {
+	  var cloned = babelHelpers._extends({}, obj);
+
+	  path.reduce(function (seed, current, idx) {
+	    if (idx == path.length - 1) {
+	      seed[current] = val;
+	    } else if (!seed[current]) {
+	      seed[current] = {};
+	    }
+
+	    _ensureOrderedKeysExists(seed);
+	    _pushNewOrderedKey(seed, current);
+
+	    return seed[current];
+	  }, cloned);
+
+	  return cloned;
+	}
+
+	function _validateOrderedKeyObject(obj) {
+	  if (!(obj && obj._orderedKeys)) {
+	    throw new Error("currentNode is null/undefined/falsy, or is missing `_orderedKeys`");
+	  }
+	}
+
+	function _pushPathStep(path, nextStep) {
+	  if (!path || path.trim() === '') {
+	    return nextStep;
+	  }
+
+	  return _stringifyPath([path, nextStep]);
+	}
+
+	function _flattenGroups(groups, array) {
+	  if (groups && groups._orderedKeys) {
+	    groups._orderedKeys.forEach(function (key) {
+	      var value = groups[key];
+
+	      if (Array.isArray(value)) {
+	        value.forEach(function (item) {
+	          return array.push(item);
+	        });
+	      } else {
+	        _flattenGroups(value, array);
+	      }
+	    });
+	  }
+	}
+
+	function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem) {
+	  var outputArray = [];
+	  var getChildren = function getChildren(obj) {
+	    return obj._orderedKeys;
+	  };
+	  var onInternal = function onInternal(key, state) {
+	    outputArray.push(renderGroupHeader(key, state));
+	  };
+	  var onLeaf = function onLeaf(array, state) {
+	    array.forEach(function (item, idx) {
+	      outputArray.push(renderSingleItem(item, state, idx));
+	    });
+	  };
+
+	  _utilObjectTraversal.depthFirst(groupedObj, getChildren, onInternal, onLeaf);
+
+	  return outputArray;
+	}
+
+	function _setFoundIndex(state, foundIndex) {
+	  return babelHelpers._extends({}, state, {
+	    foundIndex: foundIndex
+	  });
+	}
+
+	function _setOffset(state, offset) {
+	  return babelHelpers._extends({}, state, {
+	    offset: offset
+	  });
+	}
+
+	/*
+	 state:
+	 {
+	   foundIndex: boolean,
+	   offset:     number
+	 }
+	 */
+	function _getOrderedIndexHelper(item, currentNode, state) {
+	  _validateOrderedKeyObject(currentNode);
+
+	  return currentNode._orderedKeys.reduce(function (_state, key) {
+	    if (_state.foundIndex) {
+	      return _state;
+	    }
+
+	    var value = currentNode[key];
+	    if (!Array.isArray(value)) {
+	      return _getOrderedIndexHelper(item, value, _setOffset(_state, _state.offset + 1));
+	    } else {
+	      var index = value.indexOf(item);
+
+	      // NOTE: We're kind of looking ahead one level in the heirarchy,
+	      // so the index/offset actually needs to be incremented once extra.
+	      //
+	      // This could probably be done slightly differently to alleviate that,
+	      // but that isn't worth doing just yet...
+	      if (index !== -1) {
+	        var foundIndex = _state.offset + index + 1;
+
+	        return _setFoundIndex(_state, foundIndex);
+	      } else {
+	        var offset = _state.offset + value.length + 1;
+
+	        return _setOffset(_state, offset);
+	      }
+	    }
+	  }, state);
+	}
+
+	function _getOrderedIndex(item, object) {
+	  var result = _getOrderedIndexHelper(item, object, {
+	    foundIndex: undefined,
+	    offset: 0
+	  });
+
+	  return result.foundIndex || -1;
+	}
+
+	exports['default'] = _react2['default'].createClass({
+	  displayName: 'List',
+
+	  mixins: [__webpack_require__(39), __webpack_require__(40)()],
+
+	  propTypes: {
+	    data: _react2['default'].PropTypes.array,
+	    onSelect: _react2['default'].PropTypes.func,
+	    onMove: _react2['default'].PropTypes.func,
+
+	    optionComponent: _utilPropTypes2['default'].elementType,
+	    itemComponent: _utilPropTypes2['default'].elementType,
+	    groupComponent: _utilPropTypes2['default'].elementType,
+
+	    selected: _react2['default'].PropTypes.any,
+	    focused: _react2['default'].PropTypes.any,
+
+	    valueField: _react2['default'].PropTypes.string,
+	    textField: _utilPropTypes2['default'].accessor,
+
+	    optID: _react2['default'].PropTypes.string,
+
+	    groupBy: _utilPropTypes2['default'].accessor,
+
+	    messages: _react2['default'].PropTypes.shape({
+	      emptyList: _utilPropTypes2['default'].message
+	    })
+	  },
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      optID: '',
+	      onSelect: function onSelect() {},
+	      data: [],
+	      optionComponent: _ListOption2['default'],
+	      ariaActiveDescendantKey: 'groupedList',
+	      messages: {
+	        emptyList: 'There are no items in this list'
+	      }
+	    };
+	  },
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      groups: this._group(this.props.groupBy, this.props.data)
+	    };
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    var shouldSetState = nextProps.data !== this.props.data || nextProps.groupBy !== this.props.groupBy;
+
+	    if (shouldSetState) {
+	      var groups = this._group(nextProps.groupBy, nextProps.data);
+
+	      this.setState({
+	        groups: groups
+	      });
+	    }
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    this.move();
+	  },
+
+	  componentDidUpdate: function componentDidUpdate() {
+	    this.ariaActiveDescendant(this._currentActiveID);
+	    this.move();
+	  },
+
+	  render: function render() {
+	    var _props = this.props;
+	    var className = _props.className;
+	    var role = _props.role;
+	    var data = _props.data;
+	    var messages = _props.messages;
+	    var onSelect = _props.onSelect;
+	    var selectedIndex = _props.selectedIndex;
+	    var props = babelHelpers.objectWithoutProperties(_props, ['className', 'role', 'data', 'messages', 'onSelect', 'selectedIndex']);
+
+	    var id = _utilWidgetHelpers.instanceId(this);
+	    var groups = this.state.groups;
+
+	    var items = [];
+	    var idx = -1;
+	    var group = undefined;
+
+	    this._currentActiveID = null;
+
+	    if (data.length) {
+	      items = _renderHeadersAndItems(groups, this._renderGroupHeader, this._renderItem);
+	    } else {
+	      items = _react2['default'].createElement(
+	        'li',
+	        { className: 'rw-list-empty' },
+	        _util_2['default'].result(messages.emptyList, this.props)
+	      );
+	    }
+
+	    return _react2['default'].createElement(
+	      'ul',
+	      babelHelpers._extends({
+	        ref: 'scrollable',
+	        id: id,
+	        tabIndex: '-1',
+	        className: _classnames2['default'](className, 'rw-list', 'rw-list-grouped'),
+	        role: role === undefined ? 'listbox' : role
+	      }, props),
+	      items
+	    );
+	  },
+
+	  _renderGroupHeader: function _renderGroupHeader(label, state) {
+	    var depth = state.path.length;
+	    var pathString = _stringifyPath(state.path);
+
+	    var className = 'rw-list-optgroup ' + _getDepthString(depth);
+	    var id = _utilWidgetHelpers.instanceId(this);
+	    var key = 'item_' + pathString + '_' + label;
+
+	    return _react2['default'].createElement(_GroupHeader2['default'], {
+	      className: className,
+	      groupComponent: this.props.groupComponent,
+	      id: id,
+	      key: key,
+	      label: label
+	    });
+	  },
+
+	  _renderItem: function _renderItem(item, state, idx) {
+	    var _props2 = this.props;
+	    var focused = _props2.focused;
+	    var selected = _props2.selected;
+	    var onSelect = _props2.onSelect;
+	    var textField = _props2.textField;
+	    var valueField = _props2.valueField;
+	    var ItemComponent = _props2.itemComponent;
+	    var Option = _props2.optionComponent;
+
+	    var currentId = optionId(_utilWidgetHelpers.instanceId(this), state.offset + idx);
+	    var onClick = onSelect.bind(null, item);
+
+	    if (focused === item) {
+	      this._currentActiveID = currentId;
+	    }
+
+	    var depth = state.path.length;
+	    var pathString = _stringifyPath(state.path);
+	    var key = 'item_' + pathString + '_' + idx;
+
+	    return _react2['default'].createElement(
+	      Option,
+	      {
+	        key: key,
+	        id: currentId,
+	        dataItem: item,
+	        focused: focused === item,
+	        selected: selected === item,
+	        onClick: onClick,
+	        className: _getDepthString(depth)
+	      },
+	      ItemComponent ? _react2['default'].createElement(ItemComponent, {
+	        item: item,
+	        value: _utilDataHelpers.dataValue(item, valueField),
+	        text: _utilDataHelpers.dataText(item, textField)
+	      }) : _utilDataHelpers.dataText(item, textField)
+	    );
+	  },
+
+	  _isIndexOf: function _isIndexOf(idx, item) {
+	    return this.props.data[idx] === item;
+	  },
+
+	  _group: function _group(groupFns, data) {
+	    return data.reduce(function (seed, current) {
+	      var path = groupFns.map(function (fn) {
+	        return fn(current);
+	      });
+	      var existingLeaf = _getIn(seed, path) || [];
+	      var newLeaf = existingLeaf.concat(current);
+
+	      return _setIn(seed, path, newLeaf);
+	    }, {});
+	  },
+
+	  _data: function _data() {
+	    var groups = this.state.groups;
+	    var items = [];
+
+	    _flattenGroups(groups, items);
+
+	    return items;
+	  },
+
+	  move: function move() {
+	    var selected = this.getItemDOMNode(this.props.focused);
+
+	    if (!selected) {
+	      return;
+	    }
+
+	    _utilWidgetHelpers.notify(this.props.onMove, [selected, _utilCompat2['default'].findDOMNode(this), this.props.focused]);
+	  },
+
+	  getItemDOMNode: function getItemDOMNode(item) {
+	    if (!item) {
+	      return undefined;
+	    }
+
+	    var list = _utilCompat2['default'].findDOMNode(this);
+	    var index = _getOrderedIndex(item, this.state.groups);
+
+	    // Conveniently, array[-1] gives undefined, which is just what we want
+	    return list[index];
+	  }
+	});
+	module.exports = exports['default'];
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var babelHelpers = __webpack_require__(2);
+
+	exports.__esModule = true;
+
+	var _react = __webpack_require__(21);
+
+	var _react2 = babelHelpers.interopRequireDefault(_react);
+
+	var _utilPropTypes = __webpack_require__(33);
+
+	var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
+
+	function GroupHeader(props) {
+	  var GroupComponent = props.groupComponent;
+	  var label = props.label;
+
+	  return _react2['default'].createElement(
+	    'li',
+	    {
+	      className: props.className,
+	      id: props.id,
+	      role: 'separator',
+	      tabIndex: '-1'
+	    },
+	    GroupComponent ? _react2['default'].createElement(GroupComponent, { item: label }) : label
+	  );
+	}
+
+	GroupHeader.propTypes = {
+	  className: _react.PropTypes.string,
+	  groupComponent: _utilPropTypes2['default'].elementType,
+	  id: _react.PropTypes.string,
+	  key: _react.PropTypes.string,
+	  label: _react.PropTypes.string
+	};
+
+	exports['default'] = GroupHeader;
+	module.exports = exports['default'];
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var babelHelpers = __webpack_require__(2);
+
+	exports.__esModule = true;
+	exports.depthFirst = depthFirst;
+	function _getDefaultState() {
+	  return {
+	    offset: 0,
+	    path: []
+	  };
+	};
+
+	function _getPoppedArrayClone(array) {
+	  var clone = array.slice();
+	  clone.pop();
+
+	  return clone;
+	}
+
+	function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) {
+	  state = state || _getDefaultState();
+
+	  if (Array.isArray(currentNode)) {
+	    onLeaf && onLeaf(currentNode, state);
+
+	    return babelHelpers._extends({}, state, {
+	      offset: state.offset + currentNode.length,
+	      path: state.path.slice()
+	    });
+	  }
+
+	  return getChildren(currentNode).reduce(function (_state, key) {
+	    // IMPORTANT: Only `_state` should be used inside the body of this
+	    // function. Accidentally accessing `state` through closure will only get
+	    // confusing.
+
+	    onInternal(key, _state);
+
+	    var passDownState = babelHelpers._extends({}, _state, {
+	      offset: _state.offset + 1,
+	      path: _state.path.concat(key)
+	    });
+
+	    var resultingState = depthFirst(currentNode[key], getChildren, onInternal, onLeaf, passDownState);
+
+	    var passUpState = babelHelpers._extends({}, resultingState, {
+	      path: _getPoppedArrayClone(resultingState.path)
+	    });
+
+	    return passUpState;
+	  }, state);
+	}
 
 /***/ }
 /******/ ])
