@@ -210,8 +210,9 @@ export default React.createClass({
 
   _data(){
     var groups = this.state.groups;
-    return result = this.state.sortedKeys
-      .reduce( (flat, grp) => flat.concat(groups[grp]), []);
+
+    return this.state.sortedKeys
+      .reduce( (flat, grp) => flat.concat(groups[grp]), [])
   },
 
   move() {
