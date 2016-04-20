@@ -11,7 +11,7 @@ import GroupHeader from './GroupHeader';
 import { depthFirst } from './util/objectTraversal';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
-const PATH_DELIMITER = '>-->'; // Seems a little arbitrary...
+const PATH_DELIMITER = '::';
 
 function _stringifyPath(path) {
   return path.join(PATH_DELIMITER);
@@ -370,7 +370,7 @@ export default React.createClass({
 
   _renderGroupHeader(label, state) {
     const depth = state.path.length;
-    const pathString = state.path.join('::');
+    const pathString = _stringifyPath(state.path);
 
     const className = `rw-list-optgroup ${_getDepthString(depth)}`;
     const id = instanceId(this);
@@ -405,7 +405,7 @@ export default React.createClass({
     }
 
     const depth = state.path.length;
-    const pathString = state.path.join('::');
+    const pathString = _stringifyPath(state.path);
     const key = `item_${pathString}_${idx}`;
 
     return (
