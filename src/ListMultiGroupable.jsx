@@ -468,6 +468,8 @@ export default React.createClass({
   },
 
   getItemDOMNode(item) {
+    if (!item) { return undefined; }
+
     const list = compat.findDOMNode(this);
     const index = _getOrderedIndex(item, this.state.groups);
 
