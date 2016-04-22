@@ -40,7 +40,6 @@ function _pushNewOrderedKey(obj, key) {
 }
 
 function _setIn(obj, path, val) {
-  // NOTE: Not truly a deep clone, but that doesn't really matter just yet
   const cloned = Object.assign({}, obj);
 
   path.reduce(
@@ -128,7 +127,6 @@ function __processHeadersAndItems(currentNode, array, processHeader, processItem
           nextState
         );
       } else {
-        // TODO: Make sure we don't have the same depth +1 issue here as before
         array.push(
           processItems(value, newlyTraversed, offset, depth + 1)
         );
@@ -219,7 +217,7 @@ function _getOrderedIndexHelper(item, currentNode, state) {
       } else {
         const index = value.indexOf(item);
 
-        // IMPORTANT: We're kind of looking ahead one level in the heirarchy,
+        // NOTE: We're kind of looking ahead one level in the heirarchy,
         // so the index/offset actually needs to be incremented once extra.
         //
         // This could probably be done slightly differently to alleviate that,
@@ -397,7 +395,7 @@ export default React.createClass({
       itemComponent: ItemComponent,
       optionComponent: Option
     } = this.props
-    const currentId = optionId(instanceId(this), state.offset + idx); // FIXME?
+    const currentId = optionId(instanceId(this), state.offset + idx);
     const onClick = onSelect.bind(null, item);
 
     if (focused === item) {
@@ -473,7 +471,7 @@ export default React.createClass({
     const list = compat.findDOMNode(this);
     const index = _getOrderedIndex(item, this.state.groups);
 
-    // Conveniently, someArray[-1] gives undefined, which is just what we want
+    // Conveniently, array[-1] gives undefined, which is just what we want
     return list[index];
   }
 });

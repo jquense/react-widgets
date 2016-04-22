@@ -13,7 +13,6 @@ function _getPoppedArrayClone(array) {
 }
 
 export function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) {
-  // I kind of hate this
   state = state || _getDefaultState();
 
   if (Array.isArray(currentNode)) {
