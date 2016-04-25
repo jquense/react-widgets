@@ -91,56 +91,7 @@ function _flattenGroups(groups, array) {
   }
 }
 
-/*
-state: {
-  depth:     number,
-  offset:    number,
-  traversed: string,
-}
-*/
-function __processHeadersAndItems(currentNode, array, processHeader, processItems, state) {
-  _validateOrderedKeyObject(currentNode);
-
-  return currentNode._orderedKeys.reduce(
-    (_state, key) => {
-      const depth = _state.depth;
-      const offset = _state.offset;
-      const traversed = _state.traversed;
-      const value = currentNode[key];
-
-      const newlyTraversed = _pushPathStep(traversed, key);
-
-      array.push(
-        processHeader(newlyTraversed, key, _state)
-      );
-
-      if (!Array.isArray(value)) {
-        const nextState = Object.assign({}, _state, {
-          depth: depth + 1,
-        });
-
-        return __processHeadersAndItems(
-          value,
-          array,
-          processHeader,
-          processItems,
-          nextState
-        );
-      } else {
-        array.push(
-          processItems(value, newlyTraversed, offset, depth + 1)
-        );
-
-        return Object.assign({}, _state, {
-          offset: offset + value.length,
-        });
-      }
-    },
-    state
-  );
-}
-
-function _renderAllTheThings(groupedObj, renderGroupHeader, renderSingleItem) {
+function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem) {
   const outputArray = [];
   const getChildren = obj => obj._orderedKeys;
   const onInternal = (key, state) => {
@@ -157,25 +108,6 @@ function _renderAllTheThings(groupedObj, renderGroupHeader, renderSingleItem) {
     getChildren,
     onInternal,
     onLeaf
-  );
-
-  return outputArray;
-}
-
-function _renderHeadersAndItems(groupedData, processHeader, processItems) {
-  const outputArray = [];
-  const initialState = {
-    depth: 0,
-    offset: 0,
-    traversed: '',
-  };
-
-  __processHeadersAndItems(
-    groupedData,
-    outputArray,
-    processHeader,
-    processItems,
-    initialState
   );
 
   return outputArray;
@@ -338,7 +270,7 @@ export default React.createClass({
     this._currentActiveID = null;
 
     if (data.length) {
-      items = _renderAllTheThings(
+      items = _renderHeadersAndItems(
         groups,
         this._renderGroupHeader,
         this._renderItem
