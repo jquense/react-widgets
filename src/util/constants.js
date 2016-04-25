@@ -7,7 +7,6 @@ var views = {
   }
 
 module.exports = {
-
   directions: {
     LEFT:  'LEFT',
     RIGHT: 'RIGHT',
@@ -33,5 +32,14 @@ module.exports = {
     [views.YEAR]:    views.MONTH,
     [views.DECADE]:  views.YEAR,
     [views.CENTURY]: views.DECADE
-  }
+  },
+
+  keyCodes: {
+    ENTER: 13,
+    ESCAPE: 27,
+    END: 35,
+    HOME: 36,
+    UP_ARROW: 38,
+    DOWN_ARROW: 40,
+  },
 }

@@ -187,11 +187,12 @@ module.exports = React.createClass({
 
     const { onOpen, onKeyDown, getTetherFocus } = this.props;
 
-    let focusComponent = content;
-    let focusEl;
+    let focusComponent = compat.findDOMNode(getTetherFocus());
 
-    focusComponent = getTetherFocus();
-    if(focusComponent) focusEl = compat.findDOMNode(focusComponent);
+    if(focusComponent) {
+      focusComponent.addEventListener('keydown', onKeyDown);
+      focusComponent.focus();
+    }
 
     this._isOpening = true
 
@@ -215,11 +216,6 @@ module.exports = React.createClass({
           anim.style.overflofw = 'visible';
 
           if (onOpen) onOpen();
-
-          if (!focusEl) return false;
-
-          focusEl.addEventListener('keydown', onKeyDown);
-          focusEl.focus();
       })
   },
 
