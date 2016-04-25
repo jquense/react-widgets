@@ -31,7 +31,7 @@ let propTypes = {
       listComponent:  CustomPropTypes.elementType,
       afterListComponent: React.PropTypes.any,
       groupComponent: CustomPropTypes.elementType,
-      groupBy:        CustomPropTypes.accessor,
+      groupBy:        CustomPropTypes.multiAccessor,
 
       data:           React.PropTypes.array,
       valueField:     React.PropTypes.string,
