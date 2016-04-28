@@ -239,7 +239,7 @@ var DropdownList = React.createClass({
                 aria-labelledby={instanceId(this)}
                 aria-hidden={!this.props.open}
                 selected={selectedItem}
-                focused ={open ? focusedItem : null}
+                focused ={open && focusedItem}
                 onSelect={this._onSelect}
                 onMove={multi ? () => {} : this._scrollTo}
                 messages={{

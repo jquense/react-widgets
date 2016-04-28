@@ -1481,7 +1481,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            'aria-labelledby': _utilWidgetHelpers.instanceId(this),
 	            'aria-hidden': !this.props.open,
 	            selected: selectedItem,
-	            focused: open ? focusedItem : null,
+	            focused: open && focusedItem,
 	            onSelect: this._onSelect,
 	            onMove: multi ? function () {} : this._scrollTo,
 	            messages: {
@@ -3728,13 +3728,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (anim) {
 	      anim.style.overflow = 'hidden';
 	      anim.className += ' rw-popup-animating';
+	      _utilConfiguration2['default'].animate(el, { opacity: 0 }, dur === undefined ? this.props.duration : dur, 'ease', function () {
+	        if (self._isOpening) return;
+	        anim.className = anim.className.replace(/ ?rw-popup-animating/g, '');
+	      });
 	    }
-
-	    _utilConfiguration2['default'].animate(el, { opacity: 0 }, dur === undefined ? this.props.duration : dur, 'ease', function () {
-	      if (self._isOpening) return;
-	      anim.className = anim.className.replace(/ ?rw-popup-animating/g, '');
-	      self.props.onClose();
-	    });
+	    self.props.onClose();
 	  }
 
 	});

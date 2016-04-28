@@ -102,7 +102,7 @@ module.exports = React.createClass({
 
     const width = placeholderEl && placeholderEl.offsetWidth;
 
-    if(width !== this.state.width) this.setState({ width });
+    if (width !== this.state.width) this.setState({ width });
 
     if (opening) this.open();
     else if (closing) this.close();
@@ -230,17 +230,16 @@ module.exports = React.createClass({
     if (anim) {
       anim.style.overflow = 'hidden';
       anim.className += ' rw-popup-animating';
-    }
-
-    config.animate(el
-      , { opacity: 0 }
-      , dur === undefined ? this.props.duration : dur
-      , 'ease'
-      , function() {
+      config.animate(el
+        , { opacity: 0 }
+        , dur === undefined ? this.props.duration : dur
+        , 'ease'
+        , function() {
           if ( self._isOpening ) return
           anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
-          self.props.onClose()
         })
+    }
+    self.props.onClose()
   }
 
 })
