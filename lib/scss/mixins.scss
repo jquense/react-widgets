@@ -5,8 +5,8 @@
   list-style: none;
 }
 
-.list-inline() {
-  @mixin list-unstyled();
+@mixin list-inline() {
+  @include list-unstyled();
   display: inline;
 
   > li {
@@ -18,7 +18,7 @@
 
 
 
-.border-left-radius($radius) {
+@mixin border-left-radius($radius) {
   border-bottom-left-radius: $radius;
      border-top-left-radius: $radius;
 }
@@ -60,13 +60,13 @@
   color:            $state-color-select;
 }
 
-.state-hover() {
+@mixin state-hover() {
   background-color: $state-bg-hover;
   border:           $state-border-hover 1px solid;
   color:            $state-color-hover;
 }
 
-.state-disabled() {
+@mixin state-disabled() {
   @include box-shadow(none);
   cursor: not-allowed;
 }
@@ -77,10 +77,10 @@
   color:            $state-color-focus;
 }
 
-.clearfix() {
+@mixin clearfix() {
   &:before,
   &:after {
-    content: " "; 
+    content: " ";
     display: table;
   }
   &:after {

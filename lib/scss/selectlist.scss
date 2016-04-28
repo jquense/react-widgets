@@ -4,7 +4,7 @@
 }
 
 .rw-selectlist {
-  &:extend(ul.rw-list all);
+  @extend ul.rw-list;
 
   > ul {
     height: 100%;
