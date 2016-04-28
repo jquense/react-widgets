@@ -31,6 +31,8 @@ export default React.createClass({
     valueField:    React.PropTypes.string,
     textField:     CustomPropTypes.accessor,
 
+    focused:       React.PropTypes.element,
+
     optionID:      React.PropTypes.func,
 
     messages:      React.PropTypes.shape({
@@ -108,6 +110,7 @@ export default React.createClass({
 
     return (
       <ul
+        ref="ul"
         id={id}
         tabIndex='-1'
         className={cn(className, 'rw-list')}

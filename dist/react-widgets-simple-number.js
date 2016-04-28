@@ -8,7 +8,7 @@
 		exports["ReactWidgets"] = factory(require("ReactWidgets"));
 	else
 		root["ReactWidgets"] = factory(root["ReactWidgets"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_92__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_93__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -63,15 +63,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.__esModule = true;
 	exports['default'] = simpleNumber;
 
-	var _configure = __webpack_require__(92);
+	var _configure = __webpack_require__(93);
 
 	var _configure2 = babelHelpers.interopRequireDefault(_configure);
 
-	var _formatNumberWithString = __webpack_require__(93);
+	var _formatNumberWithString = __webpack_require__(94);
 
 	var _formatNumberWithString2 = babelHelpers.interopRequireDefault(_formatNumberWithString);
 
-	var _deconstructNumberFormat = __webpack_require__(94);
+	var _deconstructNumberFormat = __webpack_require__(95);
 
 	var _deconstructNumberFormat2 = babelHelpers.interopRequireDefault(_deconstructNumberFormat);
 
@@ -264,20 +264,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 92:
+/***/ 93:
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_92__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_93__;
 
 /***/ },
 
-/***/ 93:
+/***/ 94:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deconstructNumberFormat = __webpack_require__(94);
-	var formatFactory = __webpack_require__(95);
+	var deconstructNumberFormat = __webpack_require__(95);
+	var formatFactory = __webpack_require__(96);
 
 	exports = module.exports = function formatNumberWithString(value, requiredFormat, overrideOptions) {
 
@@ -314,7 +314,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 94:
+/***/ 95:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -520,7 +520,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 95:
+/***/ 96:
 /***/ function(module, exports) {
 
 	

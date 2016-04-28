@@ -3,6 +3,7 @@ import activeElement from 'dom-helpers/activeElement';
 import contains from'dom-helpers/query/contains';
 import cx from 'classnames';
 import _  from './util/_';
+import { keyCodes } from './util/constants';
 import Popup           from './Popup';
 import compat          from './util/compat';
 import CustomPropTypes from './util/propTypes';
@@ -10,7 +11,7 @@ import PlainList       from './List';
 import GroupableList   from './ListGroupable';
 import validateList    from './util/validateListInterface';
 import createUncontrolledWidget from 'uncontrollable';
-import TetheredPopUp from './TetheredPopup';
+import TetheredPopup from './TetheredPopup';
 
 import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
 import { widgetEditable, widgetEnabled } from './util/interaction';
@@ -80,7 +81,12 @@ var DropdownList = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')()
+    require('./mixins/AriaDescendantMixin')(),
+    require('./mixins/FocusMixin')({
+      didHandle(focused) {
+        if (!focused) this.close()
+      }
+    })
   ],
 
   propTypes: propTypes,
@@ -146,7 +152,7 @@ var DropdownList = React.createClass({
 
     let elementProps = omit(this.props, Object.keys(propTypes));
     let listProps    = pick(this.props, Object.keys(List.propTypes));
-    const PopupComponent =  tetherPopup ? TetheredPopUp : Popup;
+    const PopupComponent =  tetherPopup ? TetheredPopup : Popup;
 
     let popupProps   = pick(this.props, Object.keys(PopupComponent.propTypes));
     let { focusedItem, selectedItem, focused } = this.state;
@@ -179,8 +185,8 @@ var DropdownList = React.createClass({
         aria-readonly={readOnly }
         onKeyDown={tetherPopup ? null : this._keyDown}
         onClick={this._click}
-        onFocus={tetherPopup ? () => this.setState({focused:true}) : this._focus.bind(null, true)}
-        onBlur={tetherPopup ? null : this._focus.bind(null, false)}
+        onFocus={tetherPopup ? () => this.setState({focused: true}) : this.handleFocus}
+        onBlur={tetherPopup ? () => this.setState({focused: false}) : this.handleBlur}
         className={cx(className, 'rw-dropdownlist', 'rw-widget', {
           'rw-state-disabled':  disabled,
           'rw-state-readonly':  readOnly,
@@ -209,8 +215,8 @@ var DropdownList = React.createClass({
         </div>
         <PopupComponent {...popupProps}
           className={popupClassName}
-          getTetherFocus={filter ? () => this.refs.filter : this.refs.list}
-          onOpen={() => this.focus()}
+          getTetherFocus={filter ? () => this.refs.filter : () => this.refs.list.refs.ul}
+          onOpen={tetherPopup ? this.handleFocus : this.focus}
           onKeyDown={this._keyDown}
           onBlur={this._focus.bind(null, false)}
           onOpening={() => this.refs.list.forceUpdate()}
@@ -318,29 +324,29 @@ var DropdownList = React.createClass({
     if (e.defaultPrevented)
       return
 
-    if ( key === 35 ) {
+    if ( key === keyCodes.END ) {
       if ( isOpen) this.setState({ focusedItem: list.last() })
       else         change(list.last())
       e.preventDefault()
     }
-    else if ( key === 36 ) {
+    else if ( key === keyCodes.HOME ) {
       if ( isOpen) this.setState({ focusedItem: list.first() })
       else         change(list.first())
       e.preventDefault()
     }
-    else if ( key === 27 && isOpen ) {
+    else if ( key === keyCodes.ESCAPE && isOpen ) {
       closeWithFocus()
     }
-    else if ( (key === 13 || (key === ' ' && !filtering)) && isOpen ) {
+    else if ( (key === keyCodes.ENTER || (key === ' ' && !filtering)) && isOpen ) {
       change(this.state.focusedItem, true)
     }
-    else if ( key === 40 ) {
+    else if ( key === keyCodes.DOWN_ARROW ) {
       if ( alt )         this.open()
       else if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
       else               change(list.next(selectedItem))
       e.preventDefault()
     }
-    else if ( key === 38 ) {
+    else if ( key === keyCodes.UP_ARROW ) {
       if ( alt )         closeWithFocus()
       else if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
       else               change(list.prev(selectedItem))
@@ -424,4 +430,4 @@ function msgs(msgs){
 }
 
 export default createUncontrolledWidget(
-    DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
+    DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }, ['focus']);

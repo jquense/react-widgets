@@ -72,9 +72,6 @@ module.exports = React.createClass({
     }
   },
 
-  // componentDidMount(){
-  //   !this.props.open && this.close(0)
-  // },
   componentWillMount(){
     !this.props.open && (this._initialPosition = true)
   },
@@ -103,12 +100,11 @@ module.exports = React.createClass({
 
     const placeholderEl = compat.findDOMNode(placeholder);
 
-    if (!placeholderEl) return null;
+    const width = placeholderEl && placeholderEl.offsetWidth;
 
-    const width = placeholderEl.offsetWidth;
+    if (width !== this.state.width) this.setState({ width });
 
-    if(width !== this.state.width) this.setState({ width });
-    else if (opening) this.open();
+    if (opening) this.open();
     else if (closing) this.close();
   },
 
@@ -191,11 +187,12 @@ module.exports = React.createClass({
 
     const { onOpen, onKeyDown, getTetherFocus } = this.props;
 
-    let focusComponent = content;
-    let focusEl;
+    let focusComponent = compat.findDOMNode(getTetherFocus());
 
-    if(isFunction(getTetherFocus)) focusComponent = getTetherFocus();
-    if(focusComponent) focusEl = compat.findDOMNode(focusComponent);
+    if(focusComponent) {
+      focusComponent.addEventListener('keydown', onKeyDown);
+      focusComponent.focus();
+    }
 
     this._isOpening = true
 
@@ -219,11 +216,6 @@ module.exports = React.createClass({
           anim.style.overflofw = 'visible';
 
           if (onOpen) onOpen();
-
-          if (!focusEl) return false;
-
-          focusEl.addEventListener('keydown', onKeyDown);
-          focusEl.focus();
       })
   },
 
@@ -235,18 +227,19 @@ module.exports = React.createClass({
     this._isOpening = false;
     this.props.onClosing();
 
-    anim.style.overflow = 'hidden';
-    anim.className += ' rw-popup-animating';
-
-    config.animate(el
-      , { opacity: 0 }
-      , dur === undefined ? this.props.duration : dur
-      , 'ease'
-      , function() {
+    if (anim) {
+      anim.style.overflow = 'hidden';
+      anim.className += ' rw-popup-animating';
+      config.animate(el
+        , { opacity: 0 }
+        , dur === undefined ? this.props.duration : dur
+        , 'ease'
+        , function() {
           if ( self._isOpening ) return
           anim.className = anim.className.replace(/ ?rw-popup-animating/g, '')
-          self.props.onClose()
         })
+    }
+    self.props.onClose()
   }
 
 })

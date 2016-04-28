@@ -1,5 +1,5 @@
 import React  from 'react';
-import { findDOMNode } from 'react-dom';
+import ReactDOM from 'react-dom';
 
 var version = React.version.split('.').map(parseFloat);
 
@@ -10,7 +10,11 @@ module.exports = {
   },
 
   findDOMNode(component){
-    return findDOMNode(component)
+    return ReactDOM.findDOMNode(component)
+  },
+
+  batchedUpdates(cb) {
+    ReactDOM.unstable_batchedUpdates(cb)
   }
 
 }
