@@ -227,6 +227,10 @@ let NumberPicker = React.createClass({
     compat.findDOMNode(this.refs.input).focus()
   },
 
+  select() {
+    compat.findDOMNode(this.refs.input).select()
+  },
+
   increment() {
     return this.step(this.props.step)
   },
@@ -269,7 +273,7 @@ let NumberPicker = React.createClass({
 
 
 export default createUncontrolledWidget(
-    NumberPicker, { value: 'onChange' }, ['focus']);
+    NumberPicker, { value: 'onChange' }, ['focus', 'select']);
 
 
 
