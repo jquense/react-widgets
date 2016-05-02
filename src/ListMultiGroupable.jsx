@@ -94,7 +94,7 @@ function _flattenGroups(groups, array) {
 function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, groupHeaderOrder) {
   const outputArray = [];
   const getChildren = groupHeaderOrder.map(compareFn => {
-    const compareIdentityFn = (_ => 0);
+    const compareIdentityFn = ((a, b) => 0);
     const compare = compareFn || compareIdentityFn;
 
     return obj => obj._orderedKeys.sort(compare);
