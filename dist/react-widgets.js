@@ -11596,11 +11596,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 
-	function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem) {
+	function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, groupHeaderOrder) {
 	  var outputArray = [];
-	  var getChildren = function getChildren(obj) {
-	    return obj._orderedKeys;
-	  };
+	  var getChildren = groupHeaderOrder.map(function (compareFn) {
+	    var compareIdentityFn = function compareIdentityFn(a, b) {
+	      return 0;
+	    };
+	    var compare = compareFn || compareIdentityFn;
+
+	    return function (obj) {
+	      return obj._orderedKeys.sort(compare);
+	    };
+	  });
 	  var onInternal = function onInternal(key, state) {
 	    outputArray.push(renderGroupHeader(key, state));
 	  };
@@ -11610,6 +11617,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  };
 
+	  console.info('rw::ListMultiGroupable::_renderHeadersAndItems', 'getChildren', getChildren);
 	  _utilObjectTraversal.depthFirst(groupedObj, getChildren, onInternal, onLeaf);
 
 	  return outputArray;
@@ -11697,7 +11705,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    optID: _react2['default'].PropTypes.string,
 
-	    groupBy: _utilPropTypes2['default'].accessor,
+	    groupBy: _utilPropTypes2['default'].multiAccessor,
+	    groupHeaderOrder: _utilPropTypes2['default'].multiAccessor,
 
 	    messages: _react2['default'].PropTypes.shape({
 	      emptyList: _utilPropTypes2['default'].message
@@ -11764,7 +11773,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._currentActiveID = null;
 
 	    if (data.length) {
-	      items = _renderHeadersAndItems(groups, this._renderGroupHeader, this._renderItem);
+	      items = _renderHeadersAndItems(groups, this._renderGroupHeader, this._renderItem, this.props.groupHeaderOrder);
 	    } else {
 	      items = _react2['default'].createElement(
 	        'li',
@@ -11861,6 +11870,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _data: function _data() {
 	    var groups = this.state.groups;
+	    var groupBy = this.props.groupBy;
 	    var items = [];
 
 	    _flattenGroups(groups, items);
@@ -11941,7 +11951,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var babelHelpers = __webpack_require__(2);
 
@@ -11972,8 +11982,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      path: state.path.slice()
 	    });
 	  }
+	  console.info('rw::objectTraversal::depthFirst', 'getChildren', getChildren);
 
-	  return getChildren(currentNode).reduce(function (_state, key) {
+	  return getChildren[0](currentNode).reduce(function (_state, key) {
 	    // IMPORTANT: Only `_state` should be used inside the body of this
 	    // function. Accidentally accessing `state` through closure will only get
 	    // confusing.
@@ -11985,7 +11996,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      path: _state.path.concat(key)
 	    });
 
-	    var resultingState = depthFirst(currentNode[key], getChildren, onInternal, onLeaf, passDownState);
+	    var resultingState = depthFirst(currentNode[key], getChildren.slice(1), onInternal, onLeaf, passDownState);
 
 	    var passUpState = babelHelpers._extends({}, resultingState, {
 	      path: _getPoppedArrayClone(resultingState.path)
