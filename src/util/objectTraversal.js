@@ -6,10 +6,7 @@ function _getDefaultState() {
 };
 
 function _getPoppedArrayClone(array) {
-  const clone = array.slice();
-  clone.pop();
-
-  return clone;
+  return array.slice(0, -1);
 }
 
 export function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) {
