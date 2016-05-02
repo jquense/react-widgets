@@ -91,9 +91,9 @@ function _flattenGroups(groups, array) {
   }
 }
 
-function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem) {
+function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, groupHeaderOrder) {
   const outputArray = [];
-  const getChildren = this.props.groupHeaderOrder.map(compareFn => {
+  const getChildren = groupHeaderOrder.map(compareFn => {
     const compareIdentityFn = (_ => 0);
     const compare = compareFn || compareIdentityFn;
 
@@ -108,6 +108,7 @@ function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem)
     });
   };
 
+  console.info('rw::ListMultiGroupable::_renderHeadersAndItems', 'getChildren', getChildren);
   depthFirst(
     groupedObj,
     getChildren,
@@ -279,7 +280,8 @@ export default React.createClass({
       items = _renderHeadersAndItems(
         groups,
         this._renderGroupHeader,
-        this._renderItem
+        this._renderItem,
+        this.props.groupHeaderOrder
       );
     }
     else {
