@@ -24,7 +24,7 @@ export function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) 
     });
   }
 
-  return getChildren(currentNode).reduce(
+  return getChildren.shift()(currentNode).reduce(
     (_state, key) => {
       // IMPORTANT: Only `_state` should be used inside the body of this
       // function. Accidentally accessing `state` through closure will only get

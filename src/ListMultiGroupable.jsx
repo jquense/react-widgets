@@ -93,7 +93,12 @@ function _flattenGroups(groups, array) {
 
 function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem) {
   const outputArray = [];
-  const getChildren = obj => obj._orderedKeys;
+  const getChildren = this.props.groupHeaderOrder.map(compareFn => {
+    const compareIdentityFn = (_ => 0);
+    const compare = compareFn || compareIdentityFn;
+
+    return obj => obj._orderedKeys.sort(compare);
+  });
   const onInternal = (key, state) => {
     outputArray.push(renderGroupHeader(key, state));
   };
@@ -203,7 +208,8 @@ export default React.createClass({
 
     optID:          React.PropTypes.string,
 
-    groupBy:        CustomPropTypes.accessor,
+    groupBy:          CustomPropTypes.multiAccessor,
+    groupHeaderOrder: CustomPropTypes.multiAccessor,
 
     messages:       React.PropTypes.shape({
       emptyList:    CustomPropTypes.message
@@ -348,7 +354,8 @@ export default React.createClass({
         onClick={onClick}
         className={_getDepthString(depth)}
       >
-        { ItemComponent
+        {
+          ItemComponent
             ? <ItemComponent
                 item={item}
                 value={dataValue(item, valueField)}
@@ -379,6 +386,7 @@ export default React.createClass({
 
   _data() {
     const groups = this.state.groups;
+    const groupBy = this.props.groupBy;
     const items = [];
 
     _flattenGroups(groups, items);
