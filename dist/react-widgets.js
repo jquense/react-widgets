@@ -11978,7 +11978,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  }
 
-	  var getCurrentChildren = getCurrentChildren[0] || function (x) {
+	  var getCurrentChildren = getChildren[0] || function (x) {
 	    return Object.keys(s);
 	  };
 
