@@ -21,7 +21,7 @@ export function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) 
     });
   }
 
-  const getCurrentChildren = getCurrentChildren[0] || (x => Object.keys(s));
+  const getCurrentChildren = getChildren[0] || (x => Object.keys(s));
 
   return getCurrentChildren(currentNode).reduce(
     (_state, key) => {
