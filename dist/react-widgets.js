@@ -11596,13 +11596,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 
-	function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, groupHeaderOrder) {
+	function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, headerComparisons) {
 	  var outputArray = [];
-	  var getChildren = groupHeaderOrder.map(function (compareFn) {
-	    var compareIdentityFn = function compareIdentityFn(a, b) {
+	  var getChildren = headerComparisons.map(function (fn) {
+	    var identityFn = function identityFn(a, b) {
 	      return 0;
 	    };
-	    var compare = compareFn || compareIdentityFn;
+	    var compare = fn || identityFn;
 
 	    return function (obj) {
 	      return obj._orderedKeys.sort(compare);
@@ -11706,7 +11706,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    optID: _react2['default'].PropTypes.string,
 
 	    groupBy: _utilPropTypes2['default'].multiAccessor,
-	    groupHeaderOrder: _utilPropTypes2['default'].multiAccessor,
 
 	    messages: _react2['default'].PropTypes.shape({
 	      emptyList: _utilPropTypes2['default'].message
@@ -11773,7 +11772,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._currentActiveID = null;
 
 	    if (data.length) {
-	      items = _renderHeadersAndItems(groups, this._renderGroupHeader, this._renderItem, this.props.groupHeaderOrder);
+	      items = _renderHeadersAndItems(groups, this._renderGroupHeader, this._renderItem, this.props.groupBy.map(function (x) {
+	        return x.compareHeaders;
+	      }));
 	    } else {
 	      items = _react2['default'].createElement(
 	        'li',
@@ -11856,10 +11857,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.props.data[idx] === item;
 	  },
 
-	  _group: function _group(groupFns, data) {
+	  _group: function _group(groupBy, data) {
 	    return data.reduce(function (seed, current) {
-	      var path = groupFns.map(function (fn) {
-	        return fn(current);
+	      var path = groupBy.map(function (x) {
+	        return x.getHeaders(current);
 	      });
 	      var existingLeaf = _getIn(seed, path) || [];
 	      var newLeaf = existingLeaf.concat(current);
@@ -11870,7 +11871,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _data: function _data() {
 	    var groups = this.state.groups;
-	    var groupBy = this.props.groupBy;
 	    var items = [];
 
 	    _flattenGroups(groups, items);
@@ -11965,10 +11965,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	function _getPoppedArrayClone(array) {
-	  var clone = array.slice();
-	  clone.pop();
-
-	  return clone;
+	  return array.slice(0, -1);
 	}
 
 	function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) {
