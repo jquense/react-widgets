@@ -91,11 +91,11 @@ function _flattenGroups(groups, array) {
   }
 }
 
-function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, groupHeaderOrder) {
+function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, headerComparisons) {
   const outputArray = [];
-  const getChildren = groupHeaderOrder.map(compareFn => {
-    const compareIdentityFn = ((a, b) => 0);
-    const compare = compareFn || compareIdentityFn;
+  const getChildren = headerComparisons.map(fn => {
+    const identityFn = ((a, b) => 0);
+    const compare = fn || identityFn;
 
     return obj => obj._orderedKeys.sort(compare);
   });
@@ -209,8 +209,7 @@ export default React.createClass({
 
     optID:          React.PropTypes.string,
 
-    groupBy:          CustomPropTypes.multiAccessor,
-    groupHeaderOrder: CustomPropTypes.multiAccessor,
+    groupBy:        CustomPropTypes.multiAccessor,
 
     messages:       React.PropTypes.shape({
       emptyList:    CustomPropTypes.message
@@ -281,7 +280,7 @@ export default React.createClass({
         groups,
         this._renderGroupHeader,
         this._renderItem,
-        this.props.groupHeaderOrder
+        this.props.groupBy.map(x => x.compareHeaders)
       );
     }
     else {
@@ -373,10 +372,10 @@ export default React.createClass({
     return this.props.data[idx] === item;
   },
 
-  _group(groupFns, data) {
+  _group(groupBy, data) {
     return data.reduce(
       (seed, current) => {
-        const path = groupFns.map(fn => fn(current));
+        const path = groupBy.map(x => x.getHeaders(current));
         const existingLeaf = _getIn(seed, path) || [];
         const newLeaf = existingLeaf.concat(current);
 
@@ -388,7 +387,6 @@ export default React.createClass({
 
   _data() {
     const groups = this.state.groups;
-    const groupBy = this.props.groupBy;
     const items = [];
 
     _flattenGroups(groups, items);
