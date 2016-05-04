@@ -20,9 +20,10 @@ export function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) 
       path: state.path.slice(),
     });
   }
-  console.info('rw::objectTraversal::depthFirst', 'getChildren', getChildren);
 
-  return getChildren[0](currentNode).reduce(
+  const getCurrentChildren = getCurrentChildren[0] || (x => Object.keys(s));
+
+  return getCurrentChildren(currentNode).reduce(
     (_state, key) => {
       // IMPORTANT: Only `_state` should be used inside the body of this
       // function. Accidentally accessing `state` through closure will only get
