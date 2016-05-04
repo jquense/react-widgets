@@ -2224,9 +2224,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  disabled: getInteractionPropType('disabled'),
 	  readOnly: getInteractionPropType('readOnly'),
 
-	  accessor: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.func,
-	  // FIXME: Figure out something better to do about this
-	  _react2['default'].PropTypes.array]),
+	  accessor: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.func]),
 
 	  multiAccessor: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.func, _react2['default'].PropTypes.array]),
 
