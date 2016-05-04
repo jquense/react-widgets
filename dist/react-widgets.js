@@ -11979,7 +11979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  var getCurrentChildren = getChildren[0] || function (x) {
-	    return Object.keys(s);
+	    return Object.keys(x);
 	  };
 
 	  return getCurrentChildren(currentNode).reduce(function (_state, key) {
