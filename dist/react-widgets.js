@@ -11949,7 +11949,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var babelHelpers = __webpack_require__(2);
 
@@ -11977,9 +11977,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      path: state.path.slice()
 	    });
 	  }
-	  console.info('rw::objectTraversal::depthFirst', 'getChildren', getChildren);
 
-	  return getChildren[0](currentNode).reduce(function (_state, key) {
+	  var getCurrentChildren = getCurrentChildren[0] || function (x) {
+	    return Object.keys(s);
+	  };
+
+	  return getCurrentChildren(currentNode).reduce(function (_state, key) {
 	    // IMPORTANT: Only `_state` should be used inside the body of this
 	    // function. Accidentally accessing `state` through closure will only get
 	    // confusing.
