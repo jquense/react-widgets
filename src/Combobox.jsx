@@ -128,7 +128,7 @@ var ComboBox = React.createClass({
 
     var rawIdx = dataIndexOf(data, value, valueField)
       , valueItem = rawIdx === -1 ? nextProps.value : nextProps.data[rawIdx]
-      , isSuggesting = this.refs.input.isSuggesting()
+      , isSuggesting = this.refs.input && this.refs.input.isSuggesting()
       , items = this.process(
           nextProps.data
         , nextProps.value
