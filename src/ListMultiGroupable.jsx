@@ -77,27 +77,31 @@ function _pushPathStep(path, nextStep) {
   return _stringifyPath([path, nextStep]);
 }
 
-function _flattenGroups(groups, array) {
-  if (groups && groups._orderedKeys) {
-    groups._orderedKeys.forEach(key => {
-      const value = groups[key];
+function _flattenGroups(groups, array, sortKeys) {
+  if (!(groups && groups._orderedKeys)) { return; }
 
-      if (Array.isArray(value)) {
-        value.forEach(item => array.push(item));
-      } else {
-        _flattenGroups(value, array);
-      }
-    });
-  }
+  const identity = (x => x);
+  const sort = sortKeys[0] || identity;
+  const keys = sort(groups._orderedKeys.slice());
+
+  keys.forEach(key => {
+    const value = groups[key];
+
+    if (Array.isArray(value)) {
+      value.forEach(item => array.push(item));
+    } else {
+      _flattenGroups(value, array, sortKeys.slice(1));
+    }
+  });
 }
 
-function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, headerComparisons) {
+function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, keySorts) {
   const outputArray = [];
-  const getChildren = headerComparisons.map(fn => {
-    const identityFn = ((a, b) => 0);
-    const compare = fn || identityFn;
+  const getChildren = keySorts.map(fn => {
+    const identity = x => x;
+    const sortKeys = fn || identity;
 
-    return obj => obj._orderedKeys.sort(compare);
+    return obj => sortKeys(obj._orderedKeys.slice());
   });
   const onInternal = (key, state) => {
     outputArray.push(renderGroupHeader(key, state));
@@ -108,7 +112,6 @@ function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem,
     });
   };
 
-  console.info('rw::ListMultiGroupable::_renderHeadersAndItems', 'getChildren', getChildren);
   depthFirst(
     groupedObj,
     getChildren,
@@ -141,7 +144,7 @@ function _setOffset(state, offset) {
 function _getOrderedIndexHelper(item, currentNode, state) {
   _validateOrderedKeyObject(currentNode);
 
-  return currentNode._orderedKeys.reduce(
+  return currentNode._orderedKeys.slice().reduce(
     (_state, key) => {
       if (_state.foundIndex) { return _state; }
 
@@ -280,7 +283,7 @@ export default React.createClass({
         groups,
         this._renderGroupHeader,
         this._renderItem,
-        this.props.groupBy.map(x => x.compareHeaders)
+        this.props.groupBy.map(x => x.sortKeys)
       );
     }
     else {
@@ -389,7 +392,11 @@ export default React.createClass({
     const groups = this.state.groups;
     const items = [];
 
-    _flattenGroups(groups, items);
+    _flattenGroups(
+      groups,
+      items,
+      this.props.groupBy.map(x => x.sortKeys)
+    );
 
     return items;
   },

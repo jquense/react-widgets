@@ -22,8 +22,9 @@ export function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) 
   }
 
   const getCurrentChildren = getChildren[0] || (x => Object.keys(x));
+  const currentChildKeys = getCurrentChildren(currentNode);
 
-  return getCurrentChildren(currentNode).reduce(
+  return currentChildKeys.reduce(
     (_state, key) => {
       // IMPORTANT: Only `_state` should be used inside the body of this
       // function. Accidentally accessing `state` through closure will only get
