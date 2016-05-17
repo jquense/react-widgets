@@ -77,23 +77,32 @@ function _pushPathStep(path, nextStep) {
   return _stringifyPath([path, nextStep]);
 }
 
-function _flattenGroups(groups, array) {
-  if (groups && groups._orderedKeys) {
-    groups._orderedKeys.forEach(key => {
-      const value = groups[key];
+function _flattenGroups(groups, array, sortKeys) {
+  if (!(groups && groups._orderedKeys)) { return; }
 
-      if (Array.isArray(value)) {
-        value.forEach(item => array.push(item));
-      } else {
-        _flattenGroups(value, array);
-      }
-    });
-  }
+  const identity = (x => x);
+  const sort = sortKeys[0] || identity;
+  const keys = sort(groups._orderedKeys.slice());
+
+  keys.forEach(key => {
+    const value = groups[key];
+
+    if (Array.isArray(value)) {
+      value.forEach(item => array.push(item));
+    } else {
+      _flattenGroups(value, array, sortKeys.slice(1));
+    }
+  });
 }
 
-function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem) {
+function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, keySorts) {
   const outputArray = [];
-  const getChildren = obj => obj._orderedKeys;
+  const getChildren = keySorts.map(fn => {
+    const identity = x => x;
+    const sortKeys = fn || identity;
+
+    return obj => sortKeys(obj._orderedKeys.slice());
+  });
   const onInternal = (key, state) => {
     outputArray.push(renderGroupHeader(key, state));
   };
@@ -135,7 +144,7 @@ function _setOffset(state, offset) {
 function _getOrderedIndexHelper(item, currentNode, state) {
   _validateOrderedKeyObject(currentNode);
 
-  return currentNode._orderedKeys.reduce(
+  return currentNode._orderedKeys.slice().reduce(
     (_state, key) => {
       if (_state.foundIndex) { return _state; }
 
@@ -203,7 +212,7 @@ export default React.createClass({
 
     optID:          React.PropTypes.string,
 
-    groupBy:        CustomPropTypes.accessor,
+    groupBy:        CustomPropTypes.multiAccessor,
 
     messages:       React.PropTypes.shape({
       emptyList:    CustomPropTypes.message
@@ -273,7 +282,8 @@ export default React.createClass({
       items = _renderHeadersAndItems(
         groups,
         this._renderGroupHeader,
-        this._renderItem
+        this._renderItem,
+        this.props.groupBy.map(x => x.sortKeys)
       );
     }
     else {
@@ -348,7 +358,8 @@ export default React.createClass({
         onClick={onClick}
         className={_getDepthString(depth)}
       >
-        { ItemComponent
+        {
+          ItemComponent
             ? <ItemComponent
                 item={item}
                 value={dataValue(item, valueField)}
@@ -364,10 +375,10 @@ export default React.createClass({
     return this.props.data[idx] === item;
   },
 
-  _group(groupFns, data) {
+  _group(groupBy, data) {
     return data.reduce(
       (seed, current) => {
-        const path = groupFns.map(fn => fn(current));
+        const path = groupBy.map(x => x.getHeaders(current));
         const existingLeaf = _getIn(seed, path) || [];
         const newLeaf = existingLeaf.concat(current);
 
@@ -381,7 +392,11 @@ export default React.createClass({
     const groups = this.state.groups;
     const items = [];
 
-    _flattenGroups(groups, items);
+    _flattenGroups(
+      groups,
+      items,
+      this.props.groupBy.map(x => x.sortKeys)
+    );
 
     return items;
   },

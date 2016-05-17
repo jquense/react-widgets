@@ -6,10 +6,7 @@ function _getDefaultState() {
 };
 
 function _getPoppedArrayClone(array) {
-  const clone = array.slice();
-  clone.pop();
-
-  return clone;
+  return array.slice(0, -1);
 }
 
 export function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) {
@@ -24,7 +21,10 @@ export function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) 
     });
   }
 
-  return getChildren(currentNode).reduce(
+  const getCurrentChildren = getChildren[0] || (x => Object.keys(x));
+  const currentChildKeys = getCurrentChildren(currentNode);
+
+  return currentChildKeys.reduce(
     (_state, key) => {
       // IMPORTANT: Only `_state` should be used inside the body of this
       // function. Accidentally accessing `state` through closure will only get
@@ -39,7 +39,7 @@ export function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) 
 
       const resultingState = depthFirst(
         currentNode[key],
-        getChildren,
+        getChildren.slice(1),
         onInternal,
         onLeaf,
         passDownState

@@ -2224,9 +2224,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  disabled: getInteractionPropType('disabled'),
 	  readOnly: getInteractionPropType('readOnly'),
 
-	  accessor: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.func,
-	  // FIXME: Figure out something better to do about this
-	  _react2['default'].PropTypes.array]),
+	  accessor: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.func]),
 
 	  multiAccessor: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.func, _react2['default'].PropTypes.array]),
 
@@ -11580,27 +11578,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return _stringifyPath([path, nextStep]);
 	}
 
-	function _flattenGroups(groups, array) {
-	  if (groups && groups._orderedKeys) {
-	    groups._orderedKeys.forEach(function (key) {
-	      var value = groups[key];
-
-	      if (Array.isArray(value)) {
-	        value.forEach(function (item) {
-	          return array.push(item);
-	        });
-	      } else {
-	        _flattenGroups(value, array);
-	      }
-	    });
+	function _flattenGroups(groups, array, sortKeys) {
+	  if (!(groups && groups._orderedKeys)) {
+	    return;
 	  }
+
+	  var identity = function identity(x) {
+	    return x;
+	  };
+	  var sort = sortKeys[0] || identity;
+	  var keys = sort(groups._orderedKeys.slice());
+
+	  keys.forEach(function (key) {
+	    var value = groups[key];
+
+	    if (Array.isArray(value)) {
+	      value.forEach(function (item) {
+	        return array.push(item);
+	      });
+	    } else {
+	      _flattenGroups(value, array, sortKeys.slice(1));
+	    }
+	  });
 	}
 
-	function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem) {
+	function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, keySorts) {
 	  var outputArray = [];
-	  var getChildren = function getChildren(obj) {
-	    return obj._orderedKeys;
-	  };
+	  var getChildren = keySorts.map(function (fn) {
+	    var identity = function identity(x) {
+	      return x;
+	    };
+	    var sortKeys = fn || identity;
+
+	    return function (obj) {
+	      return sortKeys(obj._orderedKeys.slice());
+	    };
+	  });
 	  var onInternal = function onInternal(key, state) {
 	    outputArray.push(renderGroupHeader(key, state));
 	  };
@@ -11637,7 +11650,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _getOrderedIndexHelper(item, currentNode, state) {
 	  _validateOrderedKeyObject(currentNode);
 
-	  return currentNode._orderedKeys.reduce(function (_state, key) {
+	  return currentNode._orderedKeys.slice().reduce(function (_state, key) {
 	    if (_state.foundIndex) {
 	      return _state;
 	    }
@@ -11697,7 +11710,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    optID: _react2['default'].PropTypes.string,
 
-	    groupBy: _utilPropTypes2['default'].accessor,
+	    groupBy: _utilPropTypes2['default'].multiAccessor,
 
 	    messages: _react2['default'].PropTypes.shape({
 	      emptyList: _utilPropTypes2['default'].message
@@ -11764,7 +11777,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._currentActiveID = null;
 
 	    if (data.length) {
-	      items = _renderHeadersAndItems(groups, this._renderGroupHeader, this._renderItem);
+	      items = _renderHeadersAndItems(groups, this._renderGroupHeader, this._renderItem, this.props.groupBy.map(function (x) {
+	        return x.sortKeys;
+	      }));
 	    } else {
 	      items = _react2['default'].createElement(
 	        'li',
@@ -11847,10 +11862,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.props.data[idx] === item;
 	  },
 
-	  _group: function _group(groupFns, data) {
+	  _group: function _group(groupBy, data) {
 	    return data.reduce(function (seed, current) {
-	      var path = groupFns.map(function (fn) {
-	        return fn(current);
+	      var path = groupBy.map(function (x) {
+	        return x.getHeaders(current);
 	      });
 	      var existingLeaf = _getIn(seed, path) || [];
 	      var newLeaf = existingLeaf.concat(current);
@@ -11863,7 +11878,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var groups = this.state.groups;
 	    var items = [];
 
-	    _flattenGroups(groups, items);
+	    _flattenGroups(groups, items, this.props.groupBy.map(function (x) {
+	      return x.sortKeys;
+	    }));
 
 	    return items;
 	  },
@@ -11955,10 +11972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	function _getPoppedArrayClone(array) {
-	  var clone = array.slice();
-	  clone.pop();
-
-	  return clone;
+	  return array.slice(0, -1);
 	}
 
 	function depthFirst(currentNode, getChildren, onInternal, onLeaf, state) {
@@ -11973,7 +11987,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  }
 
-	  return getChildren(currentNode).reduce(function (_state, key) {
+	  var getCurrentChildren = getChildren[0] || function (x) {
+	    return Object.keys(x);
+	  };
+	  var currentChildKeys = getCurrentChildren(currentNode);
+
+	  return currentChildKeys.reduce(function (_state, key) {
 	    // IMPORTANT: Only `_state` should be used inside the body of this
 	    // function. Accidentally accessing `state` through closure will only get
 	    // confusing.
@@ -11985,7 +12004,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      path: _state.path.concat(key)
 	    });
 
-	    var resultingState = depthFirst(currentNode[key], getChildren, onInternal, onLeaf, passDownState);
+	    var resultingState = depthFirst(currentNode[key], getChildren.slice(1), onInternal, onLeaf, passDownState);
 
 	    var passUpState = babelHelpers._extends({}, resultingState, {
 	      path: _getPoppedArrayClone(resultingState.path)

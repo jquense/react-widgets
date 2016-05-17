@@ -44,8 +44,6 @@ module.exports = {
   accessor:     React.PropTypes.oneOfType([
                     React.PropTypes.string,
                     React.PropTypes.func,
-                    // FIXME: Figure out something better to do about this
-                    React.PropTypes.array,
                   ]),
 
   multiAccessor: React.PropTypes.oneOfType([
