@@ -11578,32 +11578,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return _stringifyPath([path, nextStep]);
 	}
 
-	function _flattenGroups(groups, array) {
-	  if (groups && groups._orderedKeys) {
-	    groups._orderedKeys.forEach(function (key) {
-	      var value = groups[key];
-
-	      if (Array.isArray(value)) {
-	        value.forEach(function (item) {
-	          return array.push(item);
-	        });
-	      } else {
-	        _flattenGroups(value, array);
-	      }
-	    });
+	function _flattenGroups(groups, array, sortKeys) {
+	  if (!(groups && groups._orderedKeys)) {
+	    return;
 	  }
+
+	  var identity = function identity(x) {
+	    return x;
+	  };
+	  var sort = sortKeys[0] || identity;
+	  var keys = sort(groups._orderedKeys.slice());
+
+	  keys.forEach(function (key) {
+	    var value = groups[key];
+
+	    if (Array.isArray(value)) {
+	      value.forEach(function (item) {
+	        return array.push(item);
+	      });
+	    } else {
+	      _flattenGroups(value, array, sortKeys.slice(1));
+	    }
+	  });
 	}
 
-	function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, headerComparisons) {
+	function _renderHeadersAndItems(groupedObj, renderGroupHeader, renderSingleItem, keySorts) {
 	  var outputArray = [];
-	  var getChildren = headerComparisons.map(function (fn) {
-	    var identityFn = function identityFn(a, b) {
-	      return 0;
+	  var getChildren = keySorts.map(function (fn) {
+	    var identity = function identity(x) {
+	      return x;
 	    };
-	    var compare = fn || identityFn;
+	    var sortKeys = fn || identity;
 
 	    return function (obj) {
-	      return obj._orderedKeys.sort(compare);
+	      return sortKeys(obj._orderedKeys.slice());
 	    };
 	  });
 	  var onInternal = function onInternal(key, state) {
@@ -11615,7 +11623,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  };
 
-	  console.info('rw::ListMultiGroupable::_renderHeadersAndItems', 'getChildren', getChildren);
 	  _utilObjectTraversal.depthFirst(groupedObj, getChildren, onInternal, onLeaf);
 
 	  return outputArray;
@@ -11643,7 +11650,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _getOrderedIndexHelper(item, currentNode, state) {
 	  _validateOrderedKeyObject(currentNode);
 
-	  return currentNode._orderedKeys.reduce(function (_state, key) {
+	  return currentNode._orderedKeys.slice().reduce(function (_state, key) {
 	    if (_state.foundIndex) {
 	      return _state;
 	    }
@@ -11771,7 +11778,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (data.length) {
 	      items = _renderHeadersAndItems(groups, this._renderGroupHeader, this._renderItem, this.props.groupBy.map(function (x) {
-	        return x.compareHeaders;
+	        return x.sortKeys;
 	      }));
 	    } else {
 	      items = _react2['default'].createElement(
@@ -11871,7 +11878,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var groups = this.state.groups;
 	    var items = [];
 
-	    _flattenGroups(groups, items);
+	    _flattenGroups(groups, items, this.props.groupBy.map(function (x) {
+	      return x.sortKeys;
+	    }));
 
 	    return items;
 	  },
@@ -11981,8 +11990,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var getCurrentChildren = getChildren[0] || function (x) {
 	    return Object.keys(x);
 	  };
+	  var currentChildKeys = getCurrentChildren(currentNode);
 
-	  return getCurrentChildren(currentNode).reduce(function (_state, key) {
+	  return currentChildKeys.reduce(function (_state, key) {
 	    // IMPORTANT: Only `_state` should be used inside the body of this
 	    // function. Accidentally accessing `state` through closure will only get
 	    // confusing.
