@@ -1,6 +1,6 @@
 import React from 'react';
 import activeElement from 'dom-helpers/activeElement';
-import contains from'dom-helpers/query/contains';
+import contains from 'dom-helpers/query/contains';
 import cx from 'classnames';
 import _  from './util/_';
 import Popup           from './Popup';
