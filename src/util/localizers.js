@@ -141,7 +141,7 @@ function createWrapper(){
   let dummy = {};
 
   if (process.env.NODE_ENV !== 'production' ) {
-    ['formats', 'parse', 'format', 'firstOfWeek', 'precision']
+    ['formats', 'parse', 'format', 'firstOfWeek', 'precision', 'propType']
       .forEach(name => Object.defineProperty(dummy, name, {
         enumerable: true,
         get(){
