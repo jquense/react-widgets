@@ -23,13 +23,13 @@ $state-bg-hover:            darken($btn-bg, 10%);
 $state-border-hover:        darken($btn-border, 12%);
 $state-color-hover:         #333;
 
-$widget-bg:                 #fff;
-$widget-border:             #ccc;
-$line-height:               1.429em;
-
 $state-bg-focus:            $widget-bg;
 $state-border-focus:        #66afe9;
 $state-color-focus:         #333;
+
+$widget-bg:                 #fff;
+$widget-border:             #ccc;
+$line-height:               1.429em;
 
 $input-color:               $gray;
 $input-height:              2.286em;
@@ -44,13 +44,13 @@ $input-border-radius:       $border-radius;
 $input-border:              #ccc;
 $input-border-width:        1px;
 
+$input-bg-hover:            $gray-lighter;
+$input-border-hover:        $dropdown-border;  
+
+$input-border-focus:        $state-border-focus; 
+
 $dropdown-bg:               $input-bg;
 $dropdown-border:           $input-border;
-
-$input-bg-hover:            $gray-lighter;
-$input-border-hover:        $dropdown-border;
-
-$input-border-focus:        $state-border-focus;
 
 $list-bg-hover:             $state-bg-hover;
 $list-border-hover:         $state-border-hover;

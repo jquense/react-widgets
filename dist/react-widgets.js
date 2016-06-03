@@ -822,7 +822,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var dummy = {};
 
 	  if (process.env.NODE_ENV !== 'production') {
-	    ['formats', 'parse', 'format', 'firstOfWeek', 'precision'].forEach(function (name) {
+	    ['formats', 'parse', 'format', 'firstOfWeek', 'precision', 'propType'].forEach(function (name) {
 	      return Object.defineProperty(dummy, name, {
 	        enumerable: true,
 	        get: function get() {
@@ -4052,7 +4052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var rawIdx = (0, _dataHelpers.dataIndexOf)(data, value, valueField),
 	        valueItem = rawIdx === -1 ? nextProps.value : nextProps.data[rawIdx],
-	        isSuggesting = this.refs.input.isSuggesting(),
+	        isSuggesting = this.refs.input && this.refs.input.isSuggesting(),
 	        items = this.process(nextProps.data, nextProps.value, (rawIdx === -1 || isSuggesting) && (0, _dataHelpers.dataText)(valueItem, textField)),
 	        idx = (0, _dataHelpers.dataIndexOf)(items, value, valueField),
 	        focused = this.filterIndexOf(items, (0, _dataHelpers.dataText)(valueItem, textField));

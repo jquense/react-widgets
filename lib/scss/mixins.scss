@@ -5,8 +5,8 @@
   list-style: none;
 }
 
-@mixin list-inline() {
-  @include list-unstyled();
+.list-inline() {
+  @mixin list-unstyled();
   display: inline;
 
   > li {
@@ -18,7 +18,7 @@
 
 
 
-@mixin border-left-radius($radius) {
+.border-left-radius($radius) {
   border-bottom-left-radius: $radius;
      border-top-left-radius: $radius;
 }
@@ -60,13 +60,13 @@
   color:            $state-color-select;
 }
 
-@mixin state-hover() {
+.state-hover() {
   background-color: $state-bg-hover;
   border:           $state-border-hover 1px solid;
   color:            $state-color-hover;
 }
 
-@mixin state-disabled() {
+.state-disabled() {
   @include box-shadow(none);
   cursor: not-allowed;
 }
@@ -77,10 +77,10 @@
   color:            $state-color-focus;
 }
 
-@mixin clearfix() {
+.clearfix() {
   &:before,
   &:after {
-    content: " ";
+    content: " "; 
     display: table;
   }
   &:after {
