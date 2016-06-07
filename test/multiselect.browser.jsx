@@ -292,6 +292,8 @@ describe('Multiselect', function(){
         onCreate={()=>{}}
         data={dataList}
         onSearch={()=>{}}
+        textField='label'
+        valueField='id'
       />
     );
 
@@ -304,7 +306,35 @@ describe('Multiselect', function(){
       .tap(s => s
         .none('.rw-multiselect-create-tag')
       )
+      .props('searchTerm', 'JIMMY')
+      .tap(s => s
+        .none('.rw-multiselect-create-tag')
+      )
       .props({searchTerm: 'custom', onCreate: undefined })
+      .tap(s => s
+        .none('.rw-multiselect-create-tag')
+      )
+  })
+
+  it('should show create tag correctly when caseSensitive', function(){
+    var select = tsp(
+      <Select
+        searchTerm="Jimmy"
+        onCreate={()=>{}}
+        data={ dataList }
+        onSearch={()=>{}}
+        textField='label'
+        valueField='id'
+        caseSensitive={true}
+      />
+    );
+
+    select
+      .render()
+      .tap(s => s
+        .single('.rw-multiselect-create-tag')
+      )
+      .props('searchTerm', 'jimmy')
       .tap(s => s
         .none('.rw-multiselect-create-tag')
       )
