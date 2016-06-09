@@ -223,7 +223,6 @@ var ComboBox = React.createClass({
           placeholder={placeholder}
           disabled={disabled}
           readOnly={readOnly}
-          className='rw-input'
           value={dataText(valueItem, textField) }
           onChange={this._inputTyping}
           onKeyDown={this._inputKeyDown}
