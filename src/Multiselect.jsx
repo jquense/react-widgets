@@ -485,14 +485,16 @@ var Multiselect = React.createClass({
   },
 
   _shouldShowCreate(){
-    var { textField, searchTerm, onCreate } = this.props;
+    var { textField, searchTerm, onCreate, caseSensitive } = this.props;
 
     if ( !onCreate || !searchTerm )
       return false
 
+    var lower = text => caseSensitive ? text : text.toLowerCase();
+    var eq =  v => lower(dataText(v, textField)) === lower(searchTerm);
+
     // if there is an exact match on textFields: "john" => { name: "john" }, don't show
-    return !this._data().some( v => dataText(v, textField) === searchTerm)
-        && !this.state.dataItems.some( v => dataText(v, textField) === searchTerm)
+    return !this._data().some(eq) && !this.state.dataItems.some(eq)
   },
 
   _placeholder(){
