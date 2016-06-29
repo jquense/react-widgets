@@ -44,13 +44,13 @@ $input-border-radius:       $border-radius;
 $input-border:              #ccc;
 $input-border-width:        1px;
 
-$dropdown-bg:               $input-bg;
-$dropdown-border:           $input-border;
-
 $input-bg-hover:            $gray-lighter;
-$input-border-hover:        $dropdown-border;
+$input-border-hover:        $input-border;
 
 $input-border-focus:        $state-border-focus;
+
+$dropdown-bg:               $input-bg;
+$dropdown-border:           $input-border;
 
 $list-bg-hover:             $state-bg-hover;
 $list-border-hover:         $state-border-hover;

@@ -822,7 +822,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var dummy = {};
 
 	  if (process.env.NODE_ENV !== 'production') {
-	    ['formats', 'parse', 'format', 'firstOfWeek', 'precision'].forEach(function (name) {
+	    ['formats', 'parse', 'format', 'firstOfWeek', 'precision', 'propType'].forEach(function (name) {
 	      return Object.defineProperty(dummy, name, {
 	        enumerable: true,
 	        get: function get() {
@@ -4052,7 +4052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var rawIdx = (0, _dataHelpers.dataIndexOf)(data, value, valueField),
 	        valueItem = rawIdx === -1 ? nextProps.value : nextProps.data[rawIdx],
-	        isSuggesting = this.refs.input.isSuggesting(),
+	        isSuggesting = this.refs.input && this.refs.input.isSuggesting(),
 	        items = this.process(nextProps.data, nextProps.value, (rawIdx === -1 || isSuggesting) && (0, _dataHelpers.dataText)(valueItem, textField)),
 	        idx = (0, _dataHelpers.dataIndexOf)(items, value, valueField),
 	        focused = this.filterIndexOf(items, (0, _dataHelpers.dataText)(valueItem, textField));
@@ -4165,7 +4165,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        placeholder: placeholder,
 	        disabled: disabled,
 	        readOnly: readOnly,
-	        className: 'rw-input',
 	        value: (0, _dataHelpers.dataText)(valueItem, textField),
 	        onChange: this._inputTyping,
 	        onKeyDown: this._inputKeyDown
@@ -8494,16 +8493,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var textField = _props3.textField;
 	    var searchTerm = _props3.searchTerm;
 	    var onCreate = _props3.onCreate;
+	    var caseSensitive = _props3.caseSensitive;
 
 
 	    if (!onCreate || !searchTerm) return false;
 
+	    var lower = function lower(text) {
+	      return caseSensitive ? text : text.toLowerCase();
+	    };
+	    var eq = function eq(v) {
+	      return lower((0, _dataHelpers.dataText)(v, textField)) === lower(searchTerm);
+	    };
+
 	    // if there is an exact match on textFields: "john" => { name: "john" }, don't show
-	    return !this._data().some(function (v) {
-	      return (0, _dataHelpers.dataText)(v, textField) === searchTerm;
-	    }) && !this.state.dataItems.some(function (v) {
-	      return (0, _dataHelpers.dataText)(v, textField) === searchTerm;
-	    });
+	    return !this._data().some(eq) && !this.state.dataItems.some(eq);
 	  },
 	  _placeholder: function _placeholder() {
 	    return (this.props.value || []).length ? '' : this.props.placeholder || '';

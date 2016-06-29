@@ -54,7 +54,7 @@
           transition: $transition;
 }
 
-@mixin state-select(){
+@mixin state-select() {
   background-color: $state-bg-select;
   border:           $state-border-select 1px solid;
   color:            $state-color-select;
@@ -71,7 +71,7 @@
   cursor: not-allowed;
 }
 
-@mixin state-focus(){
+@mixin state-focus() {
   background-color: $state-bg-focus;
   border:           $state-border-focus 1px solid;
   color:            $state-color-focus;
@@ -80,7 +80,7 @@
 @mixin clearfix() {
   &:before,
   &:after {
-    content: " ";
+    content: " "; 
     display: table;
   }
   &:after {

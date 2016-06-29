@@ -3,8 +3,6 @@
 //   outline: 1px red solid !important;
 // }
 
-
-
 .rw-sr {
   position: absolute;
   width: 1px;
@@ -82,7 +80,7 @@
   border-radius: @input-border-radius;
   margin-bottom: 2px;
 
-  .rw-rtl &{
+  .rw-rtl & {
     padding-left: 1.9em;
     padding-right:  0;
   }
@@ -162,6 +160,7 @@
 
 ul.rw-list {
   .list-unstyled();
+
   padding: 5px 0;
   overflow: auto;
   outline: 0;
@@ -266,7 +265,7 @@ ul.rw-list {
   .rw-input {
     .border-left-radius(@input-border-radius);
 
-    .rw-rtl&{
+    .rw-rtl & {
       .border-left-radius(0);
       .border-right-radius(@input-border-radius);
     }
@@ -275,7 +274,7 @@ ul.rw-list {
   > .rw-select {
     border-left: @input-border 1px solid;
 
-    .rw-rtl&{
+    .rw-rtl & {
       border-right: @input-border 1px solid;
       border-left:  none;
     }
