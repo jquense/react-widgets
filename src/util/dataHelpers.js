@@ -7,14 +7,14 @@ function accessor(data, field){
     value = field(data)
   else if (data == null)
     value = data
-  else if (typeof field === 'string' && typeof data === 'object' && field in data)
+  else if ((typeof field === 'string' || typeof field === 'number') && typeof data === 'object' && field in data)
     value = data[field]
 
   return value
 }
 
 export function dataValue(item, valueField){
-  return valueField && item && has(item, valueField)
+  return valueField !== undefined && valueField !== null && item && has(item, valueField)
     ? item[valueField]
     : item
 }
@@ -53,7 +53,7 @@ export function dataItem(data, item, valueField) {
   if (has(item, valueField) || typeof first === typeof item)
     return item
 
-  idx = dataIndexOf(data, dataValue(item, valueField), valueField)
+  idx = dataIndexOf(data, item, valueField)
 
   if (idx !== -1)
     return data[idx]

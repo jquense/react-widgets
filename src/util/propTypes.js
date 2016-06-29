@@ -43,6 +43,7 @@ module.exports = {
 
   accessor:     React.PropTypes.oneOfType([
                     React.PropTypes.string,
+                    React.PropTypes.number,
                     React.PropTypes.func
                   ]),
 

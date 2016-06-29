@@ -45,6 +45,26 @@ describe('ComboBox', function(){
         expect(c.dom().value).to.be('jimmy'));
   })
 
+  it('should accept array items and numeric textField and valueField', function(){
+    var arr = [
+      [ 0, 'jimmy' ],
+      [ 1, 'sally' ],
+      [ 2, 'pat' ]
+    ];
+
+    $(
+      <ComboBox
+        defaultValue={0}
+        data={arr}
+        textField={1}
+        valueField={0}
+      />
+    ).render()
+      .find('input.rw-input')
+      .tap(c =>
+        expect(c.dom().value).to.be('jimmy'));
+  })
+
   it('should pass NAME down', function(){
     $(
       <ComboBox
