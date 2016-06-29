@@ -53,7 +53,7 @@
       border-radius:      $input-border-radius;
 
       &[disabled] {
-        .state-disabled()
+        @include state-disabled()
       }
     }
   }
@@ -70,7 +70,7 @@
       }
 
       &[disabled] {
-        .state-disabled()
+        @include state-disabled()
       }
     }
   }
