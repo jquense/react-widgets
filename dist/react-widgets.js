@@ -7088,10 +7088,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  focus: function focus() {
 	    if ((0, _activeElement2.default)() !== _compat2.default.findDOMNode(this.refs.valueInput)) {
-	      if (this.refs.valueInput.focus) {
-	        this.refs.valueInput.focus();
-	      } else {
+	      if (_compat2.default.findDOMNode(this).focus) {
 	        _compat2.default.findDOMNode(this).focus();
+	      } else {
+	        this.refs.valueInput.focus();
+	        // compat.findDOMNode(this).focus();
 	      }
 	      // console.log('did you make it here???', this, this.refs)
 	      // compat.findDOMNode(this);
