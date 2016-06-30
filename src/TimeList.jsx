@@ -75,7 +75,7 @@ export default React.createClass({
     delete props.min;
     delete props.max;
     delete props.step;
-    
+
     for (let i = 0; i < times.length; i++) {
       if(times[i] && times[i].date){
         const hour = times[i].date.getHours();

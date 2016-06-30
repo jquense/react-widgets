@@ -7088,7 +7088,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  focus: function focus() {
 	    if ((0, _activeElement2.default)() !== _compat2.default.findDOMNode(this.refs.valueInput)) {
-	      this.refs.valueInput.focus();
+	      if (this.refs.valueInput.focus) {
+	        this.refs.valueInput.focus();
+	      } else {
+	        _compat2.default.findDOMNode(this);
+	      }
 	      // console.log('did you make it here???', this, this.refs)
 	      // compat.findDOMNode(this);
 	    }

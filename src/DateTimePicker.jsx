@@ -369,7 +369,11 @@ var DateTimePicker = React.createClass({
 
   focus(){
     if (activeElement() !== compat.findDOMNode(this.refs.valueInput)){
-      this.refs.valueInput.focus()
+      if(this.refs.valueInput.focus){
+        this.refs.valueInput.focus()
+      } else {
+        compat.findDOMNode(this);        
+      }
       // console.log('did you make it here???', this, this.refs)
       // compat.findDOMNode(this);
     }
