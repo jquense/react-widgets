@@ -7091,7 +7091,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.refs.valueInput.focus) {
 	        this.refs.valueInput.focus();
 	      } else {
-	        _compat2.default.findDOMNode(this);
+	        _compat2.default.findDOMNode(this).focus();
 	      }
 	      // console.log('did you make it here???', this, this.refs)
 	      // compat.findDOMNode(this);
