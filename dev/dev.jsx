@@ -9,6 +9,7 @@
 var React = require('react')
 
 var dates = require('../src/util/dates')
+console.log('fuck you')
 var DropdownList = require('../src/DropdownList.jsx')
 var Multiselect = require('../src/Multiselect.jsx')
 var Calendar = require('../src/Calendar.jsx')

@@ -5378,7 +5378,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return !_dates2.default.inRange(day, min, max) ? _react2.default.createElement(
 	          'td',
 	          { key: 'day_' + colIdx, role: 'presentation', className: 'rw-empty-cell' },
-	          ' '
+	          _react2.default.createElement(
+	            'span',
+	            {
+	              'aria-labelledby': currentID,
+	              onClick: onChange.bind(null, day),
+	              className: (0, _classnames2.default)('rw-btn', {
+	                'rw-off-range': true,
+	                'rw-now': isToday
+	              })
+	            },
+	            Day ? _react2.default.createElement(Day, { date: day, label: date }) : date
+	          )
 	        ) : _react2.default.createElement(
 	          'td',
 	          {
@@ -7077,8 +7088,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  focus: function focus() {
 	    if ((0, _activeElement2.default)() !== _compat2.default.findDOMNode(this.refs.valueInput)) {
-	      // this.refs.valueInput.focus()
-	      _compat2.default.findDOMNode(this);
+	      this.refs.valueInput.focus();
+	      // console.log('did you make it here???', this, this.refs)
+	      // compat.findDOMNode(this);
 	    }
 	  },
 	  _selectDate: function _selectDate(date) {
@@ -7274,6 +7286,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    delete props.min;
 	    delete props.max;
 	    delete props.step;
+
+	    for (var i = 0; i < times.length; i++) {
+	      if (times[i] && times[i].date) {
+	        var hour = times[i].date.getHours();
+	        var minutes = times[i].date.getMinutes();
+	        if (hour < 8 || hour > 21 || hour === 21 && minutes === 30) {
+	          delete times[i];
+	        }
+	      }
+	    }
 
 	    return _react2.default.createElement(_List2.default, _extends({}, props, {
 	      ref: 'list',
