@@ -90,12 +90,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	// shim for using process in browser
 
 	var process = module.exports = {};
+
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+
+	(function () {
+	  try {
+	    cachedSetTimeout = setTimeout;
+	  } catch (e) {
+	    cachedSetTimeout = function () {
+	      throw new Error('setTimeout is not defined');
+	    }
+	  }
+	  try {
+	    cachedClearTimeout = clearTimeout;
+	  } catch (e) {
+	    cachedClearTimeout = function () {
+	      throw new Error('clearTimeout is not defined');
+	    }
+	  }
+	} ())
 	var queue = [];
 	var draining = false;
 	var currentQueue;
 	var queueIndex = -1;
 
 	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -111,7 +139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = setTimeout(cleanUpNextTick);
+	    var timeout = cachedSetTimeout(cleanUpNextTick);
 	    draining = true;
 
 	    var len = queue.length;
@@ -128,7 +156,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    clearTimeout(timeout);
+	    cachedClearTimeout(timeout);
 	}
 
 	process.nextTick = function (fun) {
@@ -140,7 +168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        setTimeout(drainQueue, 0);
+	        cachedSetTimeout(drainQueue, 0);
 	    }
 	};
 
@@ -1216,7 +1244,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({
 	      filteredData: open && filter ? processed : null,
 	      selectedItem: processed[idx],
-	      focusedItem: processed[! ~idx ? 0 : idx]
+	      focusedItem: processed[!~idx ? 0 : idx]
 	    });
 	  },
 	  render: function render() {
@@ -4015,7 +4043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return {
 	      selectedItem: items[idx],
-	      focusedItem: items[! ~idx ? 0 : idx],
+	      focusedItem: items[!~idx ? 0 : idx],
 	      processedData: items,
 	      open: false
 	    };
@@ -5349,7 +5377,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return !_dates2.default.inRange(day, min, max) ? _react2.default.createElement(
 	          'td',
 	          { key: 'day_' + colIdx, role: 'presentation', className: 'rw-empty-cell' },
-	          ' '
+	          _react2.default.createElement(
+	            'span',
+	            {
+	              'aria-labelledby': currentID,
+	              onClick: onChange.bind(null, day),
+	              className: (0, _classnames2.default)('rw-btn', {
+	                'rw-off-range': true,
+	                'rw-now': isToday
+	              })
+	            },
+	            Day ? _react2.default.createElement(Day, { date: day, label: date }) : date
+	          )
 	        ) : _react2.default.createElement(
 	          'td',
 	          {
@@ -5528,7 +5567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      case DAY:
 	        return dates.date(date, dates.date(date) + num)
 	      case WEEK:
-	        return dates.date(date, dates.date(date) + (7 * num))
+	        return dates.date(date, dates.date(date) + (7 * num)) 
 	      case MONTH:
 	        return monthMath(date, num)
 	      case DECADE:
@@ -5565,17 +5604,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	          date = dates.milliseconds(date, 0);
 	    }
 
-	    if (unit === DECADE)
+	    if (unit === DECADE) 
 	      date = dates.subtract(date, dates.year(date) % 10, 'year')
-
-	    if (unit === CENTURY)
+	    
+	    if (unit === CENTURY) 
 	      date = dates.subtract(date, dates.year(date) % 100, 'year')
 
-	    if (unit === WEEK)
+	    if (unit === WEEK) 
 	      date = dates.weekday(date, 0, firstOfWeek);
 
 	    return date
 	  },
+
 
 	  endOf: function(date, unit, firstOfWeek){
 	    date = new Date(date)
@@ -5599,7 +5639,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  max: function(){
 	    return new Date(Math.max.apply(Math, arguments))
 	  },
-
+	  
 	  inRange: function(day, min, max, unit){
 	    unit = unit || 'day'
 
@@ -5617,13 +5657,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  year:           createAccessor('FullYear'),
 
 	  decade: function (date, val) {
-	    return val === undefined
+	    return val === undefined 
 	      ? dates.year(dates.startOf(date, DECADE))
 	      : dates.add(date, val + 10, YEAR);
 	  },
 
 	  century: function (date, val) {
-	    return val === undefined
+	    return val === undefined 
 	      ? dates.year(dates.startOf(date, CENTURY))
 	      : dates.add(date, val + 100, YEAR);
 	  },
@@ -5631,12 +5671,65 @@ return /******/ (function(modules) { // webpackBootstrap
 	  weekday: function (date, val, firstDay) {
 	      var weekday = (dates.day(date) + 7 - (firstDay || 0) ) % 7;
 
-	      return val === undefined
-	        ? weekday
+	      return val === undefined 
+	        ? weekday 
 	        : dates.add(date, val - weekday, DAY);
-	  }
-	}
+	  },
 
+	  diff: function (date1, date2, unit, asFloat) {
+	    var dividend, divisor, result;
+
+	    switch (unit) {
+	      case MILI:
+	      case SECONDS:
+	      case MINUTES:
+	      case HOURS:
+	      case DAY:
+	      case WEEK:
+	        dividend = date2.getTime() - date1.getTime(); break;
+	      case MONTH:
+	      case YEAR:
+	      case DECADE:
+	      case CENTURY:
+	        dividend = (dates.year(date2) - dates.year(date1)) * 12 + dates.month(date2) - dates.month(date1); break;
+	      default:
+	        throw new TypeError('Invalid units: "' + unit + '"');
+	    }
+
+	    switch (unit) {
+	      case MILI:
+	          divisor = 1; break;
+	      case SECONDS:
+	          divisor = 1000; break;
+	      case MINUTES:
+	          divisor = 1000 * 60; break;
+	      case HOURS:
+	          divisor = 1000 * 60 * 60; break;
+	      case DAY:
+	          divisor = 1000 * 60 * 60 * 24; break;
+	      case WEEK:
+	          divisor = 1000 * 60 * 60 * 24 * 7; break;
+	      case MONTH:
+	          divisor = 1; break;
+	      case YEAR:
+	          divisor = 12; break;
+	      case DECADE:
+	          divisor = 120; break;
+	      case CENTURY:
+	          divisor = 1200; break;
+	      default:
+	        throw new TypeError('Invalid units: "' + unit + '"');
+	    }
+
+	    result = dividend / divisor;
+
+	    return asFloat ? result : absoluteFloor(result);
+	  }
+	};
+
+	function absoluteFloor(number) {
+	  return number < 0 ? Math.ceil(number) : Math.floor(number);
+	}
 
 	function monthMath(date, val){
 	  var current = dates.month(date)
@@ -5644,8 +5737,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    date = dates.month(date, newMonth)
 
-	    if (newMonth < 0 ) newMonth = 12 + val
-
+	    while (newMonth < 0 ) newMonth = 12 + newMonth
+	      
 	    //month rollover
 	    if ( dates.month(date) !== ( newMonth % 12))
 	      date = dates.date(date, 0) //move to last of month
@@ -5665,8 +5758,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function createComparer(operator) {
-	  return function (a, b, unit, maybeFoW) {
-	    return operator(+dates.startOf(a, unit, maybeFoW), +dates.startOf(b, unit, maybeFoW))
+	  return function (a, b, unit) {
+	    return operator(+dates.startOf(a, unit), +dates.startOf(b, unit))
 	  };
 	}
 
@@ -6993,7 +7086,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this.props.open === popups.TIME) this.refs.timePopup._keyPress(e);
 	  },
 	  focus: function focus() {
-	    if ((0, _activeElement2.default)() !== _compat2.default.findDOMNode(this.refs.valueInput)) this.refs.valueInput.focus();
+	    if ((0, _activeElement2.default)() !== _compat2.default.findDOMNode(this.refs.valueInput)) {
+	      if (_compat2.default.findDOMNode(this).focus) {
+	        _compat2.default.findDOMNode(this).focus();
+	      } else {
+	        this.refs.valueInput.focus();
+	        // compat.findDOMNode(this).focus();
+	      }
+	      // console.log('did you make it here???', this, this.refs)
+	      // compat.findDOMNode(this);
+	    }
 	  },
 	  _selectDate: function _selectDate(date) {
 	    var format = getFormat(this.props),
@@ -7188,6 +7290,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    delete props.min;
 	    delete props.max;
 	    delete props.step;
+
+	    for (var i = 0; i < times.length; i++) {
+	      if (times[i] && times[i].date) {
+	        var hour = times[i].date.getHours();
+	        var minutes = times[i].date.getMinutes();
+	        if (hour < 8 || hour > 21 || hour === 21 && minutes === 30) {
+	          delete times[i];
+	        }
+	      }
+	    }
 
 	    return _react2.default.createElement(_List2.default, _extends({}, props, {
 	      ref: 'list',
