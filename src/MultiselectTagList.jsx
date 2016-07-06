@@ -11,8 +11,6 @@ let optionId = (id, idx)=> `${id}__option__${idx}`;
 
 export default React.createClass({
 
-  displayName: 'MultiselectTagList',
-
   mixins: [
     require('./mixins/PureRenderMixin'),
     require('./mixins/AriaDescendantMixin')()
@@ -25,6 +23,7 @@ export default React.createClass({
     valueField:     React.PropTypes.string,
     textField:      CustomPropTypes.accessor,
 
+    onDelete:       React.PropTypes.func.isRequired,
     valueComponent: React.PropTypes.func,
 
     disabled:       CustomPropTypes.disabled.acceptsArray,
@@ -46,15 +45,16 @@ export default React.createClass({
   },
 
   render() {
-      var props = _.omit(this.props, ['value', 'disabled', 'readOnly'])
-        , {
+      let {
           focused, value, textField
         , valueComponent: ValueComponent }  = this.props;
 
       var id = instanceId(this);
+      var props = _.omitOwnProps(this)
 
       return (
-        <ul {...props}
+        <ul
+          {...props}
           role='listbox'
           tabIndex='-1'
           className='rw-multiselect-taglist'
@@ -168,4 +168,4 @@ export default React.createClass({
 
     return nextIdx >= 0 ? nextIdx : null;
   }
-})
+});
