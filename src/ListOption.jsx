@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import _  from './util/_';
 
 let ListOption = React.createClass({
   propTypes: {
@@ -11,7 +12,10 @@ let ListOption = React.createClass({
   },
 
   render() {
-    let { className, children, focused, selected, disabled, readOnly, ...props } = this.props;
+    let { className, children, focused, selected, disabled, readOnly } = this.props;
+
+    let props = _.omitOwnProps(this);
+
     let classes = {
       'rw-state-focus':    focused,
       'rw-state-selected': selected,

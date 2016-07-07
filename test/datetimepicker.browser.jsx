@@ -1,74 +1,119 @@
-'use strict';
-/*global it, describe, expect, sinon*/
-require('../vendor/phantomjs-shim')
-
+import React from 'react';
 import { findDOMNode } from 'react-dom';
+import Globalize from 'globalize';
+import tsp from 'teaspoon';
 
-var React = require('react');
-var DateTimePicker = require('../src/DateTimePicker.jsx')
-  , TimeList = require('../src/TimeList.jsx')
-  , Calendar = require('../src/Calendar.jsx').ControlledComponent
-  , Globalize = require('globalize');
+import DateTimePicker from '../src/DateTimePicker.jsx'
+import TimeList from '../src/TimeList.jsx'
+import BaseCalendar from '../src/Calendar.jsx'
 
+let Calendar = BaseCalendar.ControlledComponent;
+let ControlledDateTimePicker = DateTimePicker.ControlledComponent;
 
 var TestUtils = require('react-addons-test-utils');
 var render = TestUtils.renderIntoDocument
   , findTag = TestUtils.findRenderedDOMComponentWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , findType = TestUtils.findRenderedComponentWithType
-  , findAllType = TestUtils.scryRenderedComponentsWithType
   , trigger = TestUtils.Simulate;
 
 describe('DateTimePicker', function(){
 
   it('should set initial values', function(){
-    var date = new Date()
-      , instance = render(<DateTimePicker defaultValue={date} format="MM-dd-yyyy"/>)
-      , input  = findClass(instance, 'rw-input');
+    var date = new Date();
 
-    expect( input.value).to.be(Globalize.format(date, 'MM-dd-yyyy'));
+    expect(
+      tsp(<DateTimePicker defaultValue={date} format="MM-dd-yyyy"/>)
+        .render()
+        .find('.rw-input')
+        .dom().value
+    )
+    .to.be(Globalize.format(date, 'MM-dd-yyyy'))
+
   })
 
-  it('should start closed', function(done){
-    var instance = render(<DateTimePicker defaultValue={new Date()} />);
-    var popups = findAllType(instance, require('../src/Popup.jsx'));
+  it('should start closed', () => {
 
-    expect(instance._values.open).to.not.be(true)
-    expect(findDOMNode(instance).className).to.not.match(/\brw-open\b/)
+    let inst = tsp(<ControlledDateTimePicker />).shallowRender()
 
-    expect(findClass(instance, 'rw-input').getAttribute('aria-expanded')).to.be('false')
+    expect(inst.props('open')).to.not.equal(true)
+    expect(inst.find('Popup').props('open')).to.not.equal(true)
 
-    setTimeout(function(){
-      expect(popups.length).to.be(2)
-      popups.forEach( popup => expect(findDOMNode(popup).style.display).to.be('none'))
-      done()
-    })
+    inst.none('.rw-open')
+    inst.single(tsp.s`DateTimePickerInput[aria-expanded=${false}]`)
   })
 
   it('should open when clicked', function(){
     var onOpen = sinon.spy()
-      , instance = render(<DateTimePicker onToggle={onOpen} />);
 
-    trigger.click(findClass(instance, 'rw-btn-calendar'))
-
-    expect(onOpen.calledOnce).to.be(true)
-
-    trigger.click(findClass(instance, 'rw-btn-time'))
+    tsp(<ControlledDateTimePicker onToggle={onOpen} />)
+      .shallowRender()
+      .single('.rw-btn-calendar')
+        .trigger('click')
+        .end()
+      .single('.rw-btn-time')
+        .trigger('click');
 
     expect(onOpen.calledTwice).to.be(true)
   })
 
-  it('should change when selecting a time or date', function(){
-    var change   = sinon.spy()
-      , instance   = render(<DateTimePicker onChange={change} open='calendar' onToggle={()=>{}} />)
-      , calendar = findType(instance, Calendar)
-      , timelist = findDOMNode(findType(instance, require('../src/List.jsx'))).children
+  it('should change when selecting a date', function(){
+    let change = sinon.spy()
 
-    calendar.change(new Date())
+    tsp(
+      <ControlledDateTimePicker
+        open='calendar'
+        onChange={change}
+        onToggle={()=>{}}
+      />
+    )
+    .shallowRender()
+    .single(Calendar)
+    .trigger('change', new Date());
+
     expect(change.calledOnce).to.be(true)
-    trigger.click(timelist[0])
+  })
 
-    expect(change.calledTwice).to.be(true)
+  it('should change when selecting a time', function(){
+    let change = sinon.spy()
+      , select = sinon.spy()
+
+    tsp(
+      <ControlledDateTimePicker
+        open='calendar'
+        onChange={change}
+        onSelect={select}
+        onToggle={()=>{}}
+      />
+    )
+    .shallowRender()
+    .single(TimeList)
+    .trigger('select', { date: new Date() });
+
+    expect(select.calledOnce).to.be(true)
+    expect(change.calledAfter(select)).to.be(true)
+    expect(change.calledOnce).to.be(true)
+  })
+
+  it('should change when selecting a time', function(){
+    let change = sinon.spy()
+      , select = sinon.spy();
+
+    tsp(
+      <ControlledDateTimePicker
+        open='calendar'
+        onChange={change}
+        onSelect={select}
+        onToggle={()=>{}}
+      />
+    )
+    .shallowRender()
+    .single(TimeList)
+    .trigger('select', { date: new Date() });
+
+    expect(select.calledOnce).to.be(true)
+    expect(change.calledAfter(select)).to.be(true)
+    expect(change.calledOnce).to.be(true)
   })
 
   it('should set id on list', function(){
@@ -160,26 +205,6 @@ describe('DateTimePicker', function(){
     })
   })
 
-  it('should call Select handler', function(){
-    var change   = sinon.spy(), select = sinon.spy()
-      , instance   = render(<DateTimePicker onChange={change} onSelect={select}/>)
-      , calendar = findType(instance, Calendar)
-      , timelist = findDOMNode(findType(instance, require('../src/List.jsx'))).children;
-
-    calendar.change(new Date())
-
-    expect(select.calledOnce).to.be(true)
-    expect(change.calledAfter(select)).to.be(true)
-
-    select.reset()
-    change.reset()
-
-    trigger.click(timelist[0])
-    expect(select.calledOnce).to.be(true)
-    expect(change.calledAfter(select)).to.be(true)
-  })
-
-
   it('should change values on key down', function(){
     var change = sinon.spy()
       , instance = render(<DateTimePicker onChange={change} />)
@@ -252,16 +277,17 @@ describe('DateTimePicker', function(){
       var inst = render(<DateTimePicker step={60}/>);
       var dates = findType(inst, TimeList).state.dates
 
-      expect(dates[0].date.getHours()).to.eql(0)
-      expect(dates[1].date.getHours()).to.eql(1)
-      expect(dates[2].date.getHours()).to.eql(2)
+
+      expect(dates[0].date.getHours()).to.equal(0)
+      expect(dates[1].date.getHours()).to.equal(1)
+      expect(dates[2].date.getHours()).to.equal(2)
 
       inst = render(<DateTimePicker step={120}/>)
       dates = findType(inst, TimeList).state.dates
 
-      expect(dates[0].date.getHours()).to.eql(0)
-      expect(dates[1].date.getHours()).to.eql(2)
-      expect(dates[2].date.getHours()).to.eql(4)
+      expect(dates[0].date.getHours()).to.equal(0)
+      expect(dates[1].date.getHours()).to.equal(2)
+      expect(dates[2].date.getHours()).to.equal(4)
     })
   })
 

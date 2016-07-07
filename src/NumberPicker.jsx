@@ -4,16 +4,15 @@ import _     from './util/_';
 import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import createUncontrolledWidget from 'uncontrollable';
-import constants from './util/constants';
+import { directions } from './util/constants';
 import repeater from './util/repeater';
 import { number as numberLocalizer } from './util/localizers';
 import Input from './NumberInput';
-import Btn from './WidgetButton';
+import Button from './WidgetButton';
 
 import { widgetEditable } from './util/interaction';
 import { notify } from './util/widgetHelpers';
 
-let { directions } = constants;
 
 var format = props => numberLocalizer.getFormat('default', props.format)
 
@@ -92,15 +91,13 @@ let NumberPicker = React.createClass({
 
 
   render(){
-    var {
-        className
-      , onKeyPress
-      , onKeyUp
-      , ...props } = _.omit(this.props, Object.keys(propTypes))
-      , val = this.constrainValue(this.props.value)
+    let { className, onKeyPress, onKeyUp, ...props } = _.omitOwnProps(this);
+
+    let val = this.constrainValue(this.props.value);
 
     return (
-      <div {...props }
+      <div
+        {...props }
         ref="element"
         onKeyDown={this._keyDown}
         onFocus={this.handleFocus}
@@ -114,34 +111,26 @@ let NumberPicker = React.createClass({
         })}>
 
         <span className='rw-select'>
-          <Btn
-            tabIndex='-1'
-            className={cx({ 'rw-state-active': this.state.active === directions.UP})}
-            onMouseDown={this._mouseDown.bind(null, directions.UP)}
-            onMouseUp={this._mouseUp.bind(null, directions.UP)}
-            onMouseLeave={this._mouseUp.bind(null, directions.UP)}
+          <Button
+            icon="caret-up"
             onClick={this.handleFocus}
+            label={this.props.messages.increment}
+            active={this.state.active === directions.UP}
             disabled={val === this.props.max || this.props.disabled}
-            aria-disabled={val === this.props.max || this.props.disabled}>
-
-            <i className="rw-i rw-i-caret-up">
-              <span className="rw-sr">{ this.props.messages.increment }</span>
-            </i>
-          </Btn>
-          <Btn
-            tabIndex='-1'
-            className={cx({ 'rw-state-active': this.state.active === directions.DOWN})}
-            onMouseDown={this._mouseDown.bind(null, directions.DOWN)}
-            onMouseUp={this._mouseUp.bind(null, directions.DOWN)}
-            onMouseLeave={this._mouseUp.bind(null, directions.DOWN)}
+            onMouseUp={() => this.handleMouseUp(directions.UP)}
+            onMouseDown={() => this.handleMouseDown(directions.UP)}
+            onMouseLeave={() => this.handleMouseUp(directions.UP)}
+          />
+          <Button
+            icon="caret-down"
             onClick={this.handleFocus}
+            label={this.props.messages.decrement}
+            active={this.state.active === directions.UP}
             disabled={val === this.props.min || this.props.disabled}
-            aria-disabled={val === this.props.min || this.props.disabled}>
-
-            <i className="rw-i rw-i-caret-down">
-              <span className="rw-sr">{ this.props.messages.decrement }</span>
-            </i>
-          </Btn>
+            onMouseUp={() => this.handleMouseUp(directions.DOWN)}
+            onMouseDown={() => this.handleMouseDown(directions.DOWN)}
+            onMouseLeave={() => this.handleMouseUp(directions.DOWN)}
+          />
         </span>
         <Input
           ref='input'
@@ -171,7 +160,7 @@ let NumberPicker = React.createClass({
 
   //allow for styling, focus stealing keeping me from the normal what have you
   @widgetEditable
-  _mouseDown(dir) {
+  handleMouseDown(dir) {
     var method = dir === directions.UP
       ? this.increment
       : this.decrement
@@ -185,14 +174,14 @@ let NumberPicker = React.createClass({
       || (dir === directions.DOWN && val === this.props.min)))
     {
       if(!this._cancelRepeater)
-        this._cancelRepeater = repeater(this._mouseDown.bind(null, dir))
+        this._cancelRepeater = repeater(this.handleMouseDown.bind(null, dir))
     }
     else
-      this._mouseUp()
+      this.handleMouseUp()
   },
 
   @widgetEditable
-  _mouseUp() {
+  handleMouseUp() {
     this.setState({ active: false })
     this._cancelRepeater && this._cancelRepeater()
     this._cancelRepeater = null;

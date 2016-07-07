@@ -1,8 +1,6 @@
 import dateMath from 'date-arithmetic';
-import constants from './constants';
+import { directions, calendarViewUnits } from './constants';
 import { date as dateLocalizer } from './localizers';
-
-let { directions, calendarViewUnits } = constants
 
 
 var dates = Object.assign(dateMath, {

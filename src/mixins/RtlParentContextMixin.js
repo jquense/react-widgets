@@ -17,7 +17,7 @@ module.exports = {
 
   getChildContext() {
     return {
-      isRtl: this.props.isRtl || (this.context && this.context.isRtl)
+      isRtl: !!(this.props.isRtl || (this.context && this.context.isRtl))
     }
   },
 

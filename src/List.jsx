@@ -72,10 +72,12 @@ export default React.createClass({
         className, role, data, textField, valueField
       , focused, selected, messages, onSelect
       , itemComponent: ItemComponent
-      , optionComponent: Option
-      , ...props  } = this.props
-      , id = instanceId(this)
+      , optionComponent: Option } = this.props
+
+    let id = instanceId(this)
       , items;
+
+    let props = _.omitOwnProps(this);
 
     items = !data.length
       ? (
@@ -118,7 +120,7 @@ export default React.createClass({
         tabIndex='-1'
         className={cn(className, 'rw-list')}
         role={role === undefined ? 'listbox' : role}
-        { ...props }
+        {...props}
       >
         { items }
       </ul>

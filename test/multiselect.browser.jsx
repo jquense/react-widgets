@@ -61,9 +61,9 @@ describe('Multiselect', function() {
     let inst = tsp(<ControlledMultiselect open />).shallowRender()
 
     expect(inst.props('open')).to.equal(true)
-    expect(inst.find('Popup').props('open')).to.equal(true)
 
-    inst.single('.rw-open')
+    inst.single('Popup[open]')
+    inst.single('Widget[open]')
     inst.single('MultiselectInput[aria-expanded]')
   })
 

@@ -1,38 +1,27 @@
-'use strict';
+import React from 'react'
 import ReactDOM from 'react-dom';
+import Calendar from '../src/Calendar.jsx'
+import Header from '../src/Header.jsx';
+import Footer from '../src/Footer.jsx';
+import Month  from '../src/Month.jsx';
+import Year from '../src/Year.jsx';
+import Decade from '../src/Decade.jsx';
+import Century from '../src/Century.jsx';
+import { directions } from '../src/util/constants';
+import dates from '../src/util/dates';
+import globalize from 'globalize';
+import { transform } from '../src/util/_';
+import TestUtils from'react-addons-test-utils';
 
-var React = require('react')
-  , Calendar = require('../src/Calendar.jsx')
-  , BaseCalendar = require('../src/Calendar.jsx').ControlledComponent
-  , Header = require('../src/Header.jsx')
-  , Footer = require('../src/Footer.jsx')
-  , Month  =  require('../src/Month.jsx')
-  , Year = require('../src/Year.jsx')
-  , Decade = require('../src/Decade.jsx')
-  , Century = require('../src/Century.jsx')
-  , directions = require('../src/util/constants').directions
-  , config = require('../src/util/configuration')
-  , dates = require('../src/util/dates')
-  , globalize = require('globalize')
-  , transform = require('../src/util/_').transform;
-
-
-var TestUtils = require('react-addons-test-utils')
 var render = TestUtils.renderIntoDocument
   , findMultiTag = TestUtils.scryRenderedDOMComponentsWithTag
   , findClass = TestUtils.findRenderedDOMComponentWithClass
   , findType = TestUtils.findRenderedComponentWithType
   , trigger = TestUtils.Simulate;
 
-
+const BaseCalendar = Calendar.ControlledComponent;
 
 describe('Calendar', () => {
-
-  afterEach(()=> {
-    config.animate.restore &&
-      config.animate.restore()
-  })
-
 
   it('should set Initial View', function(){
     var date = new Date()
@@ -100,7 +89,6 @@ describe('Calendar', () => {
       , leftBtn = findClass(header, 'rw-btn-left')
       , navBtn  = findClass(header, 'rw-btn-view');
 
-    syncAnimate()
 
     trigger.click(leftBtn)
 
@@ -123,16 +111,14 @@ describe('Calendar', () => {
   })
 
   it('should navigate into the future', function(){
+
     var date     = new Date(2014, 5, 15, 0, 0, 0)
       , picker   = render(<Calendar defaultValue={date} max={new Date(2199, 11, 31)} />)
       , header   = findType(picker, Header)
       , rightBtn = findClass(header, 'rw-btn-right')
       , navBtn   = findClass(header, 'rw-btn-view');
 
-    syncAnimate()
-
     trigger.click(rightBtn)
-
     expect(findType(picker, Month).props.focused.getMonth()).to.be(6);
 
     trigger.click(navBtn)
@@ -219,7 +205,6 @@ describe('Calendar', () => {
       , picker = render(<Calendar value={date} culture='es' onChange={()=>{}}/>)
       , headerBtn = findClass(picker, 'rw-btn-view')
 
-    syncAnimate()
 
     expect($(headerBtn).text()).to.equal('junio 2014')
     expect($(findMultiTag(picker, 'thead')[0].children[0].firstChild).text()).to.equal('lu')
@@ -237,7 +222,6 @@ describe('Calendar', () => {
           , (o, v) => o[v] = v)
       , calendar;
 
-    syncAnimate()
 
     calendar = render(<BaseCalendar {...formats} value={date} onChange={()=>{}} />)
 
@@ -375,14 +359,4 @@ describe('Calendar', () => {
         .to.eql(date)
     })
   })
-
-
 })
-
-
-function syncAnimate(){
-
-  return sinon.stub(config, 'animate', function(node, properties, duration, easing, callback){
-    typeof easing === 'function' ? easing() : callback()
-  })
-}

@@ -133,8 +133,8 @@ var SelectList = React.createClass({
 
     List = List || (groupBy && GroupableList) || PlainList
 
-    let elementProps = omit(this.props, Object.keys(propTypes));
-    let listProps    = pick(this.props, Object.keys(List.propTypes));
+    let elementProps = _.omitOwnProps(this, List);
+    let listProps    = _.pickProps(this.props, List);
 
     let { ListItem, focusedItem, focused } = this.state;
 
@@ -147,7 +147,8 @@ var SelectList = React.createClass({
       && focusedItem;
 
     return (
-      <div {...elementProps}
+      <div
+        {...elementProps}
         onKeyDown={this._keyDown}
         onKeyPress={this._keyPress}
         onBlur={this.handleBlur}

@@ -39,7 +39,7 @@ module.exports = React.createClass({
       initialView: this.state.initialView,
       disabled: this.state.disabled === 'disabled',
       readOnly: this.state.disabled === 'readonly',
-      isRtl: this.state.isRtl
+      isRtl: !!this.state.isRtl
     }
 
 
@@ -63,8 +63,9 @@ module.exports = React.createClass({
                   <label>
                     <input type='checkbox'
                       checked={!!this.state.isRtl}
-                      onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
-                      Right to Left
+                      onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}
+                    />
+                    Right to Left
                   </label>
                 </div>
               </div>

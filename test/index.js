@@ -1,8 +1,9 @@
-'use strict';
-require('es5-shim')
-var React = require('react');
-var widgetHelpers = require('../src/util/widgetHelpers')
-var globalize = require('globalize')
+import 'es5-shim';
+import React from 'react';
+import * as widgetHelpers from '../src/util/widgetHelpers';
+import globalize from 'globalize';
+
+import config from '../src/util/configuration';
 
 require('../src/localizers/globalize')(globalize)
 
@@ -11,6 +12,10 @@ sinon.stub(widgetHelpers, 'isFirstFocusedRender', ()=> true)
 
 beforeEach(() => {
   sinon.stub(console, 'error');
+
+  sinon.stub(config, 'animate', function(...args) {
+    args.pop()()
+  })
 });
 
 afterEach(function () {
@@ -20,6 +25,9 @@ afterEach(function () {
 
     console.error.restore();
   }
+
+  config.animate.restore &&
+    config.animate.restore()
 });
 
 var testsContext = require.context('../test', true, /\.browser\.(js$|jsx$)/);

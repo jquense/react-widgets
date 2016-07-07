@@ -1,14 +1,17 @@
 import React from 'react';
 import cn from 'classnames';
 import _  from './util/_';
+import createUncontrolledWidget from 'uncontrollable';
+
+import Widget from './Widget';
 import Popup from './Popup';
 import SelectInput from './MultiselectInput';
 import TagList from './MultiselectTagList';
 import CustomPropTypes from './util/propTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
+
 import validateList from './util/validateListInterface';
-import createUncontrolledWidget from 'uncontrollable';
 import { dataItem, dataText, valueMatcher } from './util/dataHelpers';
 import { widgetEditable } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
@@ -336,25 +339,19 @@ var Multiselect = React.createClass({
     messages = msgs(messages);
 
     return (
-      <div
+      <Widget
         {...elementProps}
-        ref="element"
-        tabIndex="-1"
         id={instanceId(this)}
+        open={open}
+        dropUp={dropUp}
+        focused={focused}
+        disabled={disabled === true}
+        readOnly={readOnly === true}
         onKeyDown={this.handleKeyDown}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
         onTouchEnd={this.handleFocus}
-        className={cn(
-          className,
-          'rw-widget',
-          'rw-multiselect',
-          this.isRtl() && 'rw-rtl',
-          focused && 'rw-state-focus',
-          disabled === true && 'rw-state-disabled',
-          readOnly === true && 'rw-state-readonly',
-          open && [`rw-open${dropUp ? '-up' : ''}`],
-        )}
+        className={cn(className, 'rw-multiselect')}
       >
         {this.renderNotificationArea(notifyID, messages)}
 
@@ -383,7 +380,7 @@ var Multiselect = React.createClass({
             </div>
           </Popup>
         }
-      </div>
+      </Widget>
     )
   },
 
