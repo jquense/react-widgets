@@ -1,8 +1,15 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import CustomPropTypes from './util/propTypes';
 import { number as numberLocalizer } from './util/localizers';
 
 let getFormat = props => numberLocalizer.getFormat('default', props.format)
+
+// http://stackoverflow.com/a/32598826/25507
+const canUseDOM = !!(
+  (typeof window !== 'undefined' &&
+  window.document && window.document.createElement)
+);
 
 export default React.createClass({
 
@@ -56,6 +63,23 @@ export default React.createClass({
       this.getDefaultState(nextProps))
   },
 
+  componentWillUpdate(nextProps, nextState) {
+    if (canUseDOM) {
+      // Check if we need to restore text selection after pending update.
+      let node = ReactDOM.findDOMNode(this.refs.input);
+      this._selectAll = document.activeElement === node
+        && this.state.stringValue !== nextState.stringValue
+        && node.selectionStart === 0
+        && node.selectionEnd === this.refs.input.value.length;
+    }
+  },
+
+  componentDidUpdate() {
+    if (this._selectAll) {
+      ReactDOM.findDOMNode(this.refs.input).select();
+    }
+  },
+
   render(){
     var value = this.state.stringValue;
 
@@ -71,6 +95,7 @@ export default React.createClass({
         readOnly={this.props.readOnly}
         placeholder={this.props.placeholder}
         value={value}
+        ref='input'
       />
     )
   },
