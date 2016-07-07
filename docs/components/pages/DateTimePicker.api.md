@@ -131,6 +131,13 @@ Acceptable values are: `false` `"calendar"` `"time"`
 
 <EditableExample codeText={require('../examples/openDateTime')(widgetName)}/>
 
+### filter?{ type: 'RegExp', default: 'undefined' }
+
+Regular expression of what characters to disallow from the input field. Any matched characters will
+not show up in the input field.
+
+<EditableExample codeText={require('../examples/prop')(widgetName, 'filter', '/[^\\d]/g')}/>
+
 ### onToggle?{ type: 'Function(Boolean isOpen)' }
 
 Called when the {widgetName} is about to open or close. `onToggle` should be used

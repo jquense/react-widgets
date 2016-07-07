@@ -15,7 +15,8 @@ export default React.createClass({
 
     value:        React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
-    culture:      React.PropTypes.string
+    culture:      React.PropTypes.string,
+    filter:       React.PropTypes.instanceOf(RegExp)
   },
 
   getDefaultProps(){
@@ -73,7 +74,11 @@ export default React.createClass({
   },
 
   _change(e){
-    this.setState({ textValue: e.target.value });
+    var nextTextValue = e.target.value
+    if (this.props.filter) {
+      nextTextValue = nextTextValue.replace(this.props.filter, '')
+    }
+    this.setState({ textValue: nextTextValue })
     this._needsFlush = true
   },
 
