@@ -184,6 +184,7 @@ var Multiselect = React.createClass({
           onClick={() => this.handleCreate(searchTerm)}
           className={cn(
             'rw-list-option',
+            'rw-create-list-option',
             createIsFocused && 'rw-state-focus'
           )}
         >
@@ -517,7 +518,8 @@ var Multiselect = React.createClass({
   },
 
   focus() {
-    this.refs.input.focus()
+    this.refs.input &&
+      this.refs.input.focus()
   },
 
   open() {

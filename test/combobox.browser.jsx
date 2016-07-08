@@ -1,30 +1,19 @@
-'use strict';
-/*global it, describe, expect, sinon*/
-require('../vendor/phantomjs-shim')
+import React from 'react';
+import tsp from 'teaspoon';
 
-import { findDOMNode } from 'react-dom';
+import Combobox from '../src/Combobox.jsx';
 
-var React = require('react');
-var ComboBox = require('../src/Combobox.jsx');
-var Popup = require('../src/Popup.jsx')
-var $ = require('teaspoon');
+let ControlledCombobox = Combobox.ControlledComponent;
 
-var TestUtils = require('react-addons-test-utils');
-var render = TestUtils.renderIntoDocument
-  , findTag = TestUtils.findRenderedDOMComponentWithTag
-  , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , trigger = TestUtils.Simulate;
-
-
-describe('ComboBox', function(){
+describe('Combobox', function(){
   var dataList = [
-        { label: 'jimmy', id: 0 },
-        { label: 'sally', id: 1 },
-        { label: 'pat', id: 2 }
-      ];
+    { label: 'jimmy', id: 0 },
+    { label: 'sally', id: 1 },
+    { label: 'pat', id: 2 }
+  ];
 
   it('should set initial values', function(){
-    $(<ComboBox value={'hello'} onChange={()=>{}} />)
+    tsp(<Combobox value={'hello'} onChange={()=>{}} />)
       .render()
       .find('input.rw-input')
       .tap(c =>
@@ -32,8 +21,8 @@ describe('ComboBox', function(){
   })
 
   it('should respect textField and valueFields', function(){
-    $(
-      <ComboBox
+    tsp(
+      <Combobox
         defaultValue={0}
         data={dataList}
         textField={ i => i.label }
@@ -46,8 +35,8 @@ describe('ComboBox', function(){
   })
 
   it('should pass NAME down', function(){
-    $(
-      <ComboBox
+    tsp(
+      <Combobox
         defaultValue={0}
         data={dataList}
         textField='label'
@@ -60,194 +49,268 @@ describe('ComboBox', function(){
         expect(c.dom().hasAttribute('name')).to.be(true));
   })
 
-  it('should start closed', function(done){
-    var inst = $(
-      <ComboBox
-        defaultValue={0}
-        data={dataList}
-        textField='label'
-        valueField='id'
-      />
-    ).render()
 
-    let input = inst.find('.rw-input:dom').dom()
-      , popup = inst.find(Popup).dom();
+  it('should open when clicked', () => {
+    let openSpy = sinon.spy();
 
-    expect(inst.unwrap()._values.open).to.not.be(true)
-
-    expect(inst.dom().className).to.not.match(/\brw-open\b/)
-    expect(input.getAttribute('aria-expanded')).to.be('false')
-
-    setTimeout(function(){
-      expect(popup.style.display).to.be('none')
-      done()
-    }, 0)
-  })
-
-  it('should open when clicked', function(done){
-    var inst = $(
-      <ComboBox
-        defaultValue={0}
-        data={dataList}
-        textField='label'
-        valueField='id'
-      />
-    ).render()
-
-    let input = inst.find('.rw-input:dom').dom()
-      , popup = inst.find(Popup).unwrap();
-
-    expect(inst.unwrap()._values.open).to.not.be(true)
-    expect(inst.dom().className).to.not.match(/\brw-open\b/)
-
-    inst.single('.rw-select:dom')
+    tsp(<ControlledCombobox onToggle={openSpy} />)
+      .render()
+      .first('button')
       .trigger('click')
 
-    expect(input.getAttribute('aria-expanded')).to.be('true')
-    expect(popup.props.open).to.be(true)
-    done()
+    expect(openSpy.calledOnce).to.be(true);
+    expect(openSpy.calledWith(true)).to.be(true);
+  })
 
+  it('should not open when clicked while disabled or readOnly', () => {
+    let openSpy = sinon.spy();
+
+    tsp(<ControlledCombobox onToggle={openSpy} disabled />)
+      .render()
+      .first('button')
+      .trigger('click')
+
+    tsp(<ControlledCombobox onToggle={openSpy} readOnly />)
+      .render()
+      .first('button')
+      .trigger('click')
+
+    expect(openSpy.called).to.be(false);
+  })
+
+  it('should start closed', () => {
+    let inst = tsp(
+      <ControlledCombobox
+        value={dataList[0]}
+        data={dataList}
+        textField='label'
+        valueField='id'
+      />
+    )
+    .shallowRender()
+
+    expect(inst.props('open')).to.not.equal(true)
+    expect(inst.find('Popup').props('open')).to.not.equal(true)
+
+    inst.none('.rw-open')
+    inst.single(tsp.s`ComboboxInput[aria-expanded=${false}]`)
+  })
+
+  it('should toggle add aria when open', () => {
+
+    let inst = tsp(<ControlledCombobox open />).shallowRender()
+
+    expect(inst.props('open')).to.equal(true)
+
+    inst.single('Popup[open]')
+    inst.single('Widget[open]')
+    inst.single('ComboboxInput[aria-expanded]')
+  })
+
+  it('should foward props to Popup', () => {
+    let props = tsp(<ControlledCombobox open duration={2} dropUp />  )
+      .shallowRender()
+      .find('Popup')
+      .props()
+
+    expect(props.dropUp).to.equal(true)
+    expect(props.open).to.equal(true)
+    expect(props.duration).to.equal(2)
   })
 
   it('should trigger focus/blur events', function(done){
     var blur = sinon.spy()
       , focus = sinon.spy()
-      , picker = render(<ComboBox onBlur={blur} onFocus={focus}/>);
 
-    expect(focus.calledOnce).to.be(false)
-    expect(blur.calledOnce).to.be(false)
+    tsp(<Combobox onBlur={blur} onFocus={focus}/>)
+      .render()
+      .trigger('focus')
+      .tap(inst => {
+        setTimeout(() => {
+          inst.trigger('blur')
 
-    trigger.focus(findDOMNode(picker))
+          setTimeout(() => {
+            expect(focus.calledOnce).to.be(true)
+            expect(blur.calledOnce).to.be(true)
+            done()
+          })
+        })
+      });
+  })
 
-    setTimeout(() => {
-      expect(focus.calledOnce).to.be(true)
-      trigger.blur(findDOMNode(picker))
+  it('should not trigger focus/blur events when disabled', function(done){
+    var blur = sinon.spy()
+      , focus = sinon.spy()
 
-      setTimeout(() => {
-        expect(blur.calledOnce).to.be(true)
-        done()
-      })
-    })
+    tsp(<Combobox disabled onBlur={blur} onFocus={focus}/>)
+      .render()
+      .trigger('focus')
+      .tap(inst => {
+        setTimeout(() => {
+          inst.trigger('blur')
+
+          setTimeout(() => {
+            expect(focus.called).to.be(false)
+            expect(blur.called).to.be(false)
+            done()
+          })
+        })
+      });
   })
 
   it('should trigger key events', function(){
-    var kp = sinon.spy(), kd = sinon.spy(), ku = sinon.spy()
-      , comboBox = render(<ComboBox onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
-      , input    = findClass(comboBox, 'rw-input');
+    var kp = sinon.spy()
+      , kd = sinon.spy()
+      , ku = sinon.spy()
 
-    trigger.keyPress(input)
-    trigger.keyDown(input)
-    trigger.keyUp(input)
+    tsp(
+      <Combobox
+        onKeyPress={kp}
+        onKeyUp={ku}
+        onKeyDown={kd}
+      />
+    )
+    .render()
+    .trigger('keyPress')
+    .trigger('keyDown')
+    .trigger('keyUp')
 
     expect(kp.calledOnce).to.be(true)
     expect(kd.calledOnce).to.be(true)
     expect(ku.calledOnce).to.be(true)
   })
 
-  it('should do nothing when disabled', function(done){
-    var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0} disabled={true}/>)
-      , input = findClass(comboBox, 'rw-input');
+  it('should add correct markup when read-only', () => {
+    let input = tsp(<ControlledCombobox readOnly />)
+      .render()
+      .find('.rw-input')
+      .dom()
 
-    expect( input.hasAttribute('disabled')).to.be(true);
-
-    trigger.click(findTag(comboBox, 'button'))
-
-    setTimeout(function() {
-      expect(comboBox._values.open).to.not.be(true)
-      done()
-    }, 0)
+    expect(input.hasAttribute('readonly')).to.be(true);
+    expect(input.getAttribute('aria-readonly')).to.be('true');
   })
 
-  it('should do nothing when readonly', function(done){
-    var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0} readOnly={true}/>)
-      , input = findClass(comboBox, 'rw-input');
+  it('should add correct markup when disabled', () => {
+    let input = tsp(<ControlledCombobox disabled />)
+      .render()
+      .find('.rw-input')
+      .dom()
 
-    expect( input.hasAttribute('readonly')).to.be(true);
-
-    trigger.click(findTag(comboBox, 'button'))
-
-    setTimeout(function() {
-      expect(comboBox._values.open).to.not.be(true)
-      done()
-    }, 0)
+    expect(input.hasAttribute('disabled')).to.be(true);
+    expect(input.getAttribute('aria-disabled')).to.be('true');
   })
+
 
   it('should not trigger form submission', function(){
-    let spy;
-    let select = $(
-      <form action='/' onSubmit={() => { throw new Error('should not submit!') }}>
-        <ComboBox data={dataList} onSearch={()=>{}} onKeyDown={spy = sinon.spy()}/>
-      </form>
-    ).render();
+    let spy = sinon.spy()
 
-    select.find('input')
+    tsp(
+      <form
+        action='/'
+        onSubmit={() => {throw new Error('should not submit!')}}
+      >
+        <Combobox
+          data={dataList}
+          onSearch={()=>{}}
+          onKeyDown={spy}
+        />
+      </form>
+    )
+    .render()
+    .find('input')
       .trigger('keyDown', { key: 'Enter' })
 
     expect(spy.calledOnce).to.equal(true);
   })
 
-  it('should set id on list', function(){
-    var comboBox = render(<ComboBox defaultValue={'jimmy'} data={dataList} duration={0} readOnly={true}/>)
-      , list = findTag(comboBox, 'ul');
-
-    expect(list.hasAttribute('id')).to.be(true);
+  it('should set id on list', () =>{
+    expect(
+      tsp(<ControlledCombobox open />)
+        .shallowRender()
+        .find('List')
+        .props('id')
+      ).to.be.a('string');
   })
 
-  it('should call Select handler', function(done){
-    var change = sinon.spy(), select = sinon.spy()
-      , comboBox = render(<ComboBox open={true} value={dataList[1]} data={dataList} duration={0} onChange={change} onSelect={select} onToggle={()=>{}}/>)
-      , list = findClass(comboBox, 'rw-list');
+  it('should call Select handler', function(){
+    let change = sinon.spy()
+      , onSelect = sinon.spy();
 
-    findDOMNode(comboBox).focus()
+    tsp(
+      <ControlledCombobox
+        open
+        onToggle={() =>{}}
+        data={dataList}
+        onChange={change}
+        onSelect={onSelect}
+      />
+    )
+    .shallowRender()
+    .find('List')
+      .trigger('select', dataList[1])
 
-    setTimeout(function(){
-
-      trigger.click(findDOMNode(list).children[0])
-
-      expect(select.calledOnce).to.be(true)
-      expect(change.calledAfter(select)).to.be(true)
-
-      select.reset()
-      comboBox = render(<ComboBox open={true} value={[]} data={dataList} duration={0} onChange={change} onSelect={select} onToggle={()=>{}}/>)
-      trigger.keyDown(findDOMNode(comboBox), { key: 'Enter'})
-
-      expect(select.calledOnce).to.be(true)
-      expect(change.calledAfter(select)).to.be(true)
-
-      done()
-    })
-  })
-
-  it('should change values on key down', function(){
-    var change = sinon.spy()
-      , comboBox = render(<ComboBox value={dataList[1]} data={dataList} duration={0} onChange={change}/>);
-
-    trigger.keyDown(findDOMNode(comboBox), { key: 'ArrowDown'})
-
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(dataList[2])).to.be(true)
-
-    comboBox = render(<ComboBox value={dataList[1]} data={dataList} duration={0} onChange={change}/>)
-    change.reset()
-
-    trigger.keyDown(findDOMNode(comboBox), { key: 'ArrowUp'})
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(dataList[0])).to.be(true)
-
-    comboBox = render(<ComboBox value={dataList[1]} data={dataList} duration={0} onChange={change}/>)
-    change.reset()
-
-    trigger.keyDown(findDOMNode(comboBox), { key: 'Home'})
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(dataList[0])).to.be(true)
-
-    comboBox = render(<ComboBox value={dataList[1]} data={dataList} duration={0} onChange={change}/>)
-    change.reset()
-
-    trigger.keyDown(findDOMNode(comboBox), { key: 'End'})
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(dataList[2])).to.be(true)
+    expect(onSelect.calledOnce).to.be(true)
+    expect(change.calledAfter(onSelect)).to.be(true)
   })
 
 
+  it('should change values on keyDown', function(){
+    function assertChangedWithValue(itemIndex) {
+      return () => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(dataList[itemIndex])).to.be(true)
+        change.reset()
+      }
+    }
+
+    let change = sinon.spy()
+
+    tsp(
+      <Combobox
+        data={dataList}
+        onChange={change}
+        defaultValue={dataList[0]}
+      />
+    )
+    .render()
+    .trigger('keyDown', { key: 'ArrowDown' })
+      .tap(assertChangedWithValue(1))
+    .trigger('keyDown', { key: 'ArrowUp' })
+      .tap(assertChangedWithValue(0))
+    .trigger('keyDown', { key: 'End' })
+      .tap(assertChangedWithValue(dataList.length - 1))
+    .trigger('keyDown', { key: 'Home' })
+      .tap(assertChangedWithValue(0))
+  })
+
+  it('should navigate list', function(){
+    let change = sinon.spy();
+
+    let inst = tsp(
+      <Combobox
+        defaultOpen
+        data={dataList}
+        textField='label'
+        valueField='id'
+        onChange={change}
+      />
+    )
+    .render()
+
+    let listItems = inst.find('List').children();
+
+    listItems.first().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'ArrowDown' })
+    listItems.nth(1).is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'ArrowUp' })
+    listItems.first().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'End' })
+    listItems.last().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'Home' })
+    listItems.first().is('.rw-state-focus')
+  })
 })

@@ -328,7 +328,8 @@ var ComboBox = React.createClass({
   },
 
   focus() {
-    this.refs.input.focus()
+    this.refs.input &&
+      this.refs.input.focus()
   },
 
   @widgetEditable
@@ -342,7 +343,6 @@ var ComboBox = React.createClass({
       , isOpen = this.props.open;
 
     notify(this.props.onKeyDown, [e])
-
     if (e.defaultPrevented)
       return
 

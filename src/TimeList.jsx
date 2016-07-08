@@ -13,8 +13,6 @@ export default React.createClass({
   displayName: 'TimeList',
 
   propTypes: {
-    ...List.propTypes,
-
     value: React.PropTypes.instanceOf(Date),
     step: React.PropTypes.number,
     min: React.PropTypes.instanceOf(Date),
@@ -73,7 +71,7 @@ export default React.createClass({
   },
 
   render(){
-    let { value } = this.props;
+    let { value, onSelect } = this.props;
 
     var times = this.state.dates
       , date  = this._closestDate(times, value);
@@ -86,6 +84,7 @@ export default React.createClass({
         textField='label'
         valueField='date'
         selected={date}
+        onSelect={onSelect}
         focused={this.state.focusedItem}
       />
     )
@@ -162,12 +161,14 @@ export default React.createClass({
       , focusedItem  = this.state.focusedItem
       , list = this.refs.list;
 
-    if ( key === 'End' )
+    if (key === 'End') {
+      e.preventDefault()
       this.setState({ focusedItem: list.last() })
-
-    else if ( key === 'Home' )
+    }
+    else if ( key === 'Home' ) {
+      e.preventDefault()
       this.setState({ focusedItem: list.first() })
-
+    }
     else if ( key === 'Enter' )
       this.props.onSelect(focusedItem)
 
@@ -190,7 +191,7 @@ export default React.createClass({
     })
   },
 
-  scrollTo(){
+  scrollTo() {
     this.refs.list.move
       && this.refs.list.move()
   },

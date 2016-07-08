@@ -1,14 +1,10 @@
-var React    = require('react')
-  , Dropdown = require('../src/DropdownList.jsx');
+import React from 'react';
+import tsp from 'teaspoon';
 
-import { findDOMNode } from 'react-dom';
+import DropdownList from '../src/DropdownList.jsx';
 
-var TestUtils = require('react-addons-test-utils');
-var render = TestUtils.renderIntoDocument
-  , findTag = TestUtils.findRenderedDOMComponentWithTag
-  , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findType = TestUtils.findRenderedComponentWithType
-  , trigger = TestUtils.Simulate;
+let ControlledDropdownList = DropdownList.ControlledComponent;
+
 
 describe('DROPDOWNS', function(){
   var data = [
@@ -18,222 +14,295 @@ describe('DROPDOWNS', function(){
   ];
 
   it('should set initial values', function(){
-    var instance = render(
-          <Dropdown value={'hello'} onChange={()=>{}} />);
-
-    expect($(findClass(instance, 'rw-input')).text()).to.be('hello');
+    expect(
+      tsp(<ControlledDropdownList value={'hello'} />)
+      .render()
+      .find(':dom.rw-input')
+      .text()
+    ).to.be('hello');
   })
 
   it('should respect textField and valueFields', function(){
-    var instance = render(
-          <Dropdown defaultValue={0} data={data} textField='label' valueField='id' />);
-
-    expect($(findClass(instance, 'rw-input')).text())
-      .to.be('jimmy');
+    expect(
+      tsp(
+        <DropdownList
+          defaultValue={0}
+          data={data}
+          textField={i => i.label}
+          valueField='id'
+        />
+      )
+      .render()
+      .find(':dom.rw-input')
+      .text()
+    ).to.be('jimmy');
   })
 
-  it('should start closed', function(done){
-    var instance = render(<Dropdown defaultValue={0} data={data} textField='label' valueField='id' />);
-    var popup = findType(instance, require('../src/Popup.jsx'));
+  it('should open when clicked', () => {
+    let openSpy = sinon.spy();
 
-    expect(instance._values.open).to.not.be(true)
-    expect(findDOMNode(instance).className).to.not.match(/\brw-open\b/)
-    expect(findDOMNode(instance).getAttribute('aria-expanded')).to.be('false')
+    tsp(<ControlledDropdownList onToggle={openSpy} />)
+      .render()
+      .trigger('click')
 
-    setTimeout(function(){
-      expect(findDOMNode(popup).style.display).to.be('none')
-      done()
-    }, 0)
+    expect(openSpy.calledOnce).to.be(true);
+    expect(openSpy.calledWith(true)).to.be(true);
   })
 
-  it('should use a value template', function(){
-    var templ  = React.createClass({
-      render() {
-        return (<span>{'hello - ' + this.props.item}</span>);
-      }
-    });
+  it('should not open when clicked while disabled or readOnly', () => {
+    let openSpy = sinon.spy();
 
-    var instance = render(<Dropdown defaultValue={'jimmy'} valueComponent={templ} />);
+    tsp(<ControlledDropdownList onToggle={openSpy} disabled />)
+      .render()
+      .trigger('click')
 
-    expect($(findClass(instance, 'rw-input')).text()).to.be('hello - jimmy');
+    tsp(<ControlledDropdownList onToggle={openSpy} readOnly />)
+      .render()
+      .trigger('click')
+
+    expect(openSpy.called).to.be(false);
   })
 
-  it('should open when clicked', function(done){
-    var instance = render(<Dropdown defaultValue={'jimmy'} data={data} duration={0}/>);
-    var popup = findType(instance, require('../src/Popup.jsx'))
+  it('should start closed', () => {
+    let inst = tsp(
+      <ControlledDropdownList
+        value={data[0]}
+        data={data}
+        textField='label'
+        valueField='id'
+      />
+    )
+    .shallowRender()
 
-    trigger.click(findDOMNode(instance))
+    expect(inst.props('open')).to.not.equal(true)
+    expect(inst.find('Popup').props('open')).to.not.equal(true)
 
-    setTimeout(function() {
-      expect(instance._values.open).to.be(true)
-      expect(findDOMNode(instance).className).to.match(/\brw-open\b/)
-      expect(findDOMNode(instance).getAttribute('aria-expanded')).to.be('true')
-      expect(popup.props.open).to.be(true)
-      done()
-    }, 0)
+    inst.none('.rw-open')
+    inst.is(tsp.s`[aria-expanded=${false}]`)
   })
 
-  it('should set id on list', function(){
-    var instance = render(<Dropdown />)
-      , list = findTag(instance, 'ul');
+  it('should toggle add aria when open', () => {
 
-    expect(list.hasAttribute('id')).to.be(true);
+    let inst = tsp(<ControlledDropdownList open />).shallowRender()
+
+    expect(inst.props('open')).to.equal(true)
+
+    inst.is('[aria-expanded]')
+    inst.single('Popup[open]')
+    inst.single('Widget[open]')
+  })
+
+  it('should foward props to Popup', () => {
+    let props = tsp(<ControlledDropdownList open duration={2} dropUp />  )
+      .shallowRender()
+      .find('Popup')
+      .props()
+
+    expect(props.dropUp).to.equal(true)
+    expect(props.open).to.equal(true)
+    expect(props.duration).to.equal(2)
   })
 
   it('should trigger focus/blur events', function(done){
     var blur = sinon.spy()
       , focus = sinon.spy()
-      , instance = render(<Dropdown onBlur={blur} onFocus={focus}/>);
 
-    expect(focus.calledOnce).to.be(false)
-    expect(blur.calledOnce).to.be(false)
+    tsp(<DropdownList onBlur={blur} onFocus={focus}/>)
+      .render()
+      .trigger('focus')
+      .tap(inst => {
+        setTimeout(() => {
+          inst.trigger('blur')
 
-    trigger.focus(findDOMNode(instance))
+          setTimeout(() => {
+            expect(focus.calledOnce).to.be(true)
+            expect(blur.calledOnce).to.be(true)
+            done()
+          })
+        })
+      });
+  })
 
-    setTimeout(() => {
-      expect(focus.calledOnce).to.be(true)
-      trigger.blur(findDOMNode(instance))
+  it('should not trigger focus/blur events when disabled', function(done){
+    var blur = sinon.spy()
+      , focus = sinon.spy()
 
-      setTimeout(() => {
-        expect(blur.calledOnce).to.be(true)
-        done()
-      })
-    })
+    tsp(<DropdownList disabled onBlur={blur} onFocus={focus}/>)
+      .render()
+      .trigger('focus')
+      .tap(inst => {
+        setTimeout(() => {
+          inst.trigger('blur')
+
+          setTimeout(() => {
+            expect(focus.called).to.be(false)
+            expect(blur.called).to.be(false)
+            done()
+          })
+        })
+      });
   })
 
   it('should trigger key events', function(){
-    var kp = sinon.spy(), kd = sinon.spy(), ku = sinon.spy()
-      , instance = render(<Dropdown onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
-      , input  = findDOMNode(instance);
+    var kp = sinon.spy()
+      , kd = sinon.spy()
+      , ku = sinon.spy()
 
-    trigger.keyPress(input)
-    trigger.keyDown(input)
-    trigger.keyUp(input)
+    tsp(
+      <DropdownList
+        onKeyPress={kp}
+        onKeyUp={ku}
+        onKeyDown={kd}
+      />
+    )
+    .render()
+    .trigger('keyPress')
+    .trigger('keyDown')
+    .trigger('keyUp')
 
     expect(kp.calledOnce).to.be(true)
     expect(kd.calledOnce).to.be(true)
     expect(ku.calledOnce).to.be(true)
   })
 
-  it('should do nothing when disabled', function(done){
-    var instance = render(<Dropdown defaultValue={'jimmy'} data={data} duration={0} disabled={true}/>)
-      , input = findDOMNode(instance);
+  it('should add correct markup when read-only', () => {
+    let input = tsp(<ControlledDropdownList readOnly />)
+      .render()
+      .dom()
 
-    expect( input.className).to.not.match(/\brw-state-focus\b/)
-    expect( input.className).to.match(/\brw-state-disabled\b/)
-    expect( input.hasAttribute('aria-disabled')).to.be(true)
-    expect( input.getAttribute('aria-disabled')).to.be('true')
-
-    trigger.click(findDOMNode(instance))
-
-    setTimeout(function() {
-      expect(instance._values.open).to.not.be(true)
-      done()
-    }, 0)
+    expect(input.getAttribute('aria-readonly')).to.be('true');
   })
 
-  it('should do nothing when readonly', function(done){
-    var instance = render(<Dropdown defaultValue={'jimmy'} data={data} duration={0} readOnly={true}/>)
-      , input = findDOMNode(instance);
+  it('should add correct markup when disabled', () => {
+    let input = tsp(<ControlledDropdownList disabled />)
+      .render()
+      .dom()
 
-    expect( input.hasAttribute('aria-readonly')).to.be(true)
-    expect( input.getAttribute('aria-readonly')).to.be('true')
-
-    trigger.click(input)
-    trigger.focus(input)
-
-    setTimeout(function() {
-      expect(input.className).to.match(/\brw-state-focus\b/)
-      expect(instance._values.open).to.not.be(false)
-      done()
-    }, 0)
+    expect(input.getAttribute('aria-disabled')).to.be('true');
   })
 
-  it('should call Select handler', function(done){
-    var change = sinon.spy(), select = sinon.spy()
-      , instance = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change} onSelect={select}/>)
-      , list = findClass(instance, 'rw-list');
+  it('should use a value template', function(){
+    function ValueComponent({ item }) {
+      return <span>{'hello - ' + item}</span>;
+    }
 
-    findDOMNode(instance).focus()
-
-    setTimeout(function(){
-
-      trigger.click(list.children[0])
-
-      expect(select.calledOnce).to.be(true)
-      expect(change.calledAfter(select)).to.be(true)
-
-      select.reset()
-      change.reset()
-
-      trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown'}) //move to different value so change fires
-      trigger.keyDown(findDOMNode(instance), { key: 'Enter'})
-
-      expect(select.calledOnce).to.be(true)
-      expect(change.calledAfter(select)).to.be(true)
-      done()
-    })
+    expect(
+      tsp(
+        <DropdownList
+          defaultValue={'jimmy'}
+          valueComponent={ValueComponent}
+        />
+      )
+      .render()
+      .find(':dom.rw-input')
+      .text()
+    )
+    .to.be('hello - jimmy');
   })
 
-  it('should change values on key down', function(){
-    var change = sinon.spy()
-      , instance = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>);
+  it('should change values on keyDown', function(){
+    function assertChangedWithValue(itemIndex) {
+      return () => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(data[itemIndex])).to.be(true)
+        change.reset()
+      }
+    }
 
-    trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown'})
+    let change = sinon.spy()
 
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(data[2])).to.be(true)
-
-    instance = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>)
-    change.reset()
-
-    trigger.keyDown(findDOMNode(instance), { key: 'ArrowUp'})
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(data[0])).to.be(true)
-
-    instance = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>)
-    change.reset()
-
-    trigger.keyDown(findDOMNode(instance), { key: 'Home'})
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(data[0])).to.be(true)
-
-    instance = render(<Dropdown value={data[1]} data={data} duration={0} onChange={change}/>)
-    change.reset()
-
-    trigger.keyDown(findDOMNode(instance), { key: 'End'})
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(data[2])).to.be(true)
+    tsp(
+      <DropdownList
+        data={data}
+        onChange={change}
+        defaultValue={data[0]}
+      />
+    )
+    .render()
+    .trigger('keyDown', { key: 'ArrowDown' })
+      .tap(assertChangedWithValue(1))
+    .trigger('keyDown', { key: 'ArrowUp' })
+      .tap(assertChangedWithValue(0))
+    .trigger('keyDown', { key: 'End' })
+      .tap(assertChangedWithValue(data.length - 1))
+    .trigger('keyDown', { key: 'Home' })
+      .tap(assertChangedWithValue(0))
   })
 
-  it('should search values on typing', function(done){
-    var change = sinon.spy()
-      , instance = render(<Dropdown.ControlledComponent value={data[0]} data={data} duration={0} delay={0} onChange={change} textField='label' />);
+  it('should navigate list', function(){
+    let change = sinon.spy();
 
-    trigger.keyPress(findDOMNode(instance), { which: 80, key: 'p' })
+    let inst = tsp(
+      <DropdownList
+        defaultOpen
+        data={data}
+        textField='label'
+        valueField='id'
+        onChange={change}
+      />
+    )
+    .render()
+
+    let listItems = inst.find('List').children();
+
+    listItems.first().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'ArrowDown' })
+    listItems.nth(1).is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'ArrowUp' })
+    listItems.first().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'End' })
+    listItems.last().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'Home' })
+    listItems.first().is('.rw-state-focus')
+  })
+
+
+  it('should search and change values', done => {
+    let change = sinon.spy()
+
+    tsp(
+      <ControlledDropdownList
+        value={data[0]}
+        data={data}
+        delay={0}
+        onChange={change}
+        textField='label'
+      />
+    )
+    .render()
+    .trigger('keyPress', { which: 80, key: 'p' })
 
     setTimeout(() => {
       expect(change.calledOnce).to.be(true)
       expect(change.calledWith(data[2])).to.be(true)
 
-      instance = render(
-        <Dropdown.ControlledComponent open
-          onToggle={()=>{}}
-          value={data[0]}
-          data={data}
-          duration={0}
-          delay={0}
-          onChange={change}
-          textField='label'
-        />
-      );
+      done()
+    })
+  })
 
-      trigger.keyPress(findDOMNode(instance), { which: 80, key: 'p' })
+  it('should search values on typing', done => {
+    let change = sinon.spy()
 
-      setTimeout(() => {
-        expect(instance.state.focusedItem).to.be(data[2])
-        done()
-      })
+    let inst = tsp(
+      <ControlledDropdownList
+        open
+        value={data[0]}
+        data={data}
+        delay={0}
+        onChange={change}
+        textField='label'
+      />
+    )
+    .render()
+    .trigger('keyPress', { which: 80, key: 'p' })
+
+    setTimeout(() => {
+      expect(inst.state('focusedItem')).to.be(data[2])
+      done()
     })
   })
 })

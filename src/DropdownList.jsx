@@ -308,14 +308,16 @@ var DropdownList = React.createClass({
       return
 
     if (key === 'End') {
+      e.preventDefault()
+
       if (isOpen) this.setState({ focusedItem: list.last() })
       else        change(list.last())
-      e.preventDefault()
     }
     else if (key === 'Home') {
+      e.preventDefault()
+
       if (isOpen) this.setState({ focusedItem: list.first() })
       else        change(list.first())
-      e.preventDefault()
     }
     else if (key === 'Escape' && isOpen) {
       e.preventDefault();

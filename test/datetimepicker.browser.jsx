@@ -29,7 +29,6 @@ describe('DateTimePicker', function(){
         .dom().value
     )
     .to.be(Globalize.format(date, 'MM-dd-yyyy'))
-
   })
 
   it('should start closed', () => {

@@ -273,11 +273,11 @@ ul.rw-list {
 
   > .rw-select {
     border-left: @input-border 1px solid;
+  }
 
-    .rw-rtl & {
-      border-right: @input-border 1px solid;
-      border-left:  none;
-    }
+  &.rw-rtl > .rw-select {
+    border-right: @input-border 1px solid;
+    border-left:  none;
   }
 
   &.rw-state-focus,

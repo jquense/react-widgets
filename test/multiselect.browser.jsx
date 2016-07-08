@@ -1,15 +1,8 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
+import tsp from 'teaspoon';
 
-import Multiselect from '../src/Multiselect.jsx'
-import TagList from '../src/MultiselectTagList.jsx'
-import tsp from 'teaspoon'
-import TestUtils from 'react-addons-test-utils'
-
-var render = TestUtils.renderIntoDocument
-  , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findType = TestUtils.findRenderedComponentWithType
-  , trigger = TestUtils.Simulate;
+import Multiselect from '../src/Multiselect.jsx';
+import TagList from '../src/MultiselectTagList.jsx';
 
 
 describe('Multiselect', function() {
@@ -38,7 +31,6 @@ describe('Multiselect', function() {
   })
 
   it('should start closed', () => {
-
     let inst = tsp(
       <ControlledMultiselect
         value={dataList.slice(0, 2)}
@@ -330,32 +322,26 @@ describe('Multiselect', function() {
     expect(change.called).to.be(false)
   })
 
-  it('should call Select handler', function(done){
-    var change = sinon.spy()
-      , onSelect = sinon.spy()
-      , instance = render(<Multiselect value={[dataList[1]]} data={dataList} onChange={change} onSelect={onSelect}/>)
+  it('should call Select handler', function(){
+    let change = sinon.spy()
+      , onSelect = sinon.spy();
 
-    findDOMNode(instance).focus()
+    tsp(
+      <ControlledMultiselect
+        open
+        onToggle={() =>{}}
+        value={dataList.slice(1)}
+        data={dataList}
+        onChange={change}
+        onSelect={onSelect}
+      />
+    )
+    .shallowRender()
+    .find('List')
+      .trigger('select', dataList[1])
 
-    let list = findClass(instance, 'rw-list');
-
-    setTimeout(function(){
-
-      trigger.click(list.children[0])
-
-      expect(onSelect.calledOnce).to.be(true)
-      expect(change.calledAfter(onSelect)).to.be(true)
-
-      onSelect.reset()
-      change.reset()
-
-      trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown'}) //move to different value so change fires
-      trigger.keyDown(findDOMNode(instance), { key: 'Enter'})
-
-      expect(onSelect.calledOnce).to.be(true)
-      expect(change.calledAfter(onSelect)).to.be(true)
-      done()
-    })
+    expect(onSelect.calledOnce).to.be(true)
+    expect(change.calledAfter(onSelect)).to.be(true)
   })
 
   it('should clear searchTerm when an item is selected', () => {
@@ -379,14 +365,23 @@ describe('Multiselect', function() {
   })
 
   it('should not trigger form submission', function(){
-    let spy;
-    let select = tsp(
-      <form action='/' onSubmit={() => { throw new Error('should not submit!') }}>
-        <Multiselect searchTerm="jim" data={dataList} onSearch={()=>{}} onKeyDown={spy = sinon.spy()}/>
-      </form>
-    ).render();
+    let spy = sinon.spy()
 
-    select.find('input')
+    tsp(
+      <form
+        action='/'
+        onSubmit={() => {throw new Error('should not submit!')}}
+      >
+        <Multiselect
+          searchTerm="jim"
+          data={dataList}
+          onSearch={()=>{}}
+          onKeyDown={spy}
+        />
+      </form>
+    )
+    .render()
+    .find('input')
       .trigger('keyDown', { key: 'Enter' })
 
     expect(spy.calledOnce).to.equal(true);
@@ -446,98 +441,120 @@ describe('Multiselect', function() {
   })
 
   it('should call onCreate', function(){
-    var create = sinon.spy()
-      , select = render(<Multiselect
-          open={true}
-          searchTerm="custom tag"
-          data={dataList}
-          onCreate={create}
-          onSearch={()=>{}} onToggle={()=>{}}/>)
+    let create = sinon.spy()
 
-      , createLi = findClass(select, 'rw-multiselect-create-tag').children[0];
+    let assertOnCreateCalled = () => {
+      expect(create.calledOnce).to.equal(true)
+      expect(create.calledWith('custom tag')).to.equal(true)
+      create.reset()
+    };
 
-    trigger.click(createLi)
-
-    expect(create.calledOnce).to.ok()
-    expect(create.calledWith('custom tag')).to.ok()
-
-    // only option is create
-    create.reset()
-    trigger.keyDown(findDOMNode(select), { key: 'Enter'})
-
-    expect(create.calledOnce).to.ok()
-    expect(create.calledWith('custom tag')).to.ok()
-
-    // other values have focus
-    select = render(<Multiselect open={true} searchTerm="custom tag" data={['custom tag time']}  onCreate={create} onSearch={()=>{}} onToggle={()=>{}}/>)
-    create.reset()
-    trigger.keyDown(findDOMNode(select), { key: 'Enter'})
-
-    expect(create.called).to.be(false)
-
-    trigger.keyDown(findDOMNode(select), { key: 'Enter', ctrlKey: true })
-
-    expect(create.calledOnce).to.ok()
-    expect(create.calledWith('custom tag')).to.ok()
+    tsp(
+      <Multiselect
+        open
+        searchTerm="custom tag"
+        data={dataList}
+        onCreate={create}
+        onSearch={()=>{}}
+        onToggle={()=>{}}
+      />
+    )
+    .render()
+    .find('.rw-create-list-option')
+      .trigger('click')
+      .tap(assertOnCreateCalled)
+      .end()
+    .trigger('keyDown', { key: 'Enter'})
+      .tap(assertOnCreateCalled)
+    .trigger('keyDown', { key: 'Enter', ctrlKey: true })
+      .tap(assertOnCreateCalled)
   })
 
-  it('should change values on key down', function(){
-    var change = sinon.spy()
-      , select = render(<Multiselect value={[0, 1, 2]} data={dataList} textField='label' valueField='id' onChange={change}/>)
-      , tags   = findDOMNode(findType(select, TagList))
-      , list   = findClass(select, 'rw-list');
+  it('should navigate tags list', function(){
+    let change = sinon.spy();
+    let listHead = dataList.slice(0, 2);
 
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowLeft'})
+    let inst = tsp(
+      <Multiselect
+        value={[0, 1, 2]}
+        data={dataList}
+        textField='label'
+        valueField='id'
+        onChange={change}
+      />
+    )
+    .render()
 
-    expect(tags.children[2].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
+    let tags = inst.find(TagList).children();
 
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowLeft'})
+    inst.trigger('keyDown', { key: 'ArrowLeft' })
+    tags.last().is('.rw-state-focus')
 
-    expect(tags.children[1].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[2].className).to.not.match(/\brw-state-focus\b/)
+    inst.trigger('keyDown', { key: 'ArrowRight' })
+    tags.nth(1).is('.rw-state-focus')
 
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowRight'})
+    inst.trigger('keyDown', { key: 'Home' })
+    tags.first().is('.rw-state-focus')
 
-    expect(tags.children[2].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
+    inst.trigger('keyDown', { key: 'End' })
+    tags.last().is('.rw-state-focus')
 
-    trigger.keyDown(findDOMNode(select), { key: 'Home'})
-
-    expect(tags.children[0].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
-
-    trigger.keyDown(findDOMNode(select), { key: 'Delete'})
-
-    expect(change.calledOnce).to.be(true)
-    expect(change.args[0][0]).to.eql(dataList.slice(1, 3))
-    change.reset()
-
-    trigger.keyDown(findDOMNode(select), { key: 'End'})
-
-    expect(tags.children[2].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
-
-    trigger.keyDown(findDOMNode(select), { key: 'Backspace'})
+    inst.trigger('keyDown', { key: 'Delete' })
 
     expect(change.calledOnce).to.be(true)
-    expect(change.args[0][0]).to.eql(dataList.slice(0, 2))
+    expect(change.calledWith(listHead)).to.be(true)
     change.reset()
 
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowDown'})
-    expect(select._values.open).to.be(true)
+    inst.trigger('keyDown', { key: 'Backspace' })
 
-    select = render(<Multiselect open value={[]} onToggle={()=>{}} data={dataList} textField='label' valueField='id' onChange={change}/>)
-    list   = findClass(select, 'rw-list')
-
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowDown'})
-    expect(list.children[1].className).to.match(/\brw-state-focus\b/)
-
-    trigger.keyDown(findDOMNode(select), { key: 'End'})
-    expect(list.children[2].className).to.match(/\brw-state-focus\b/)
-
-    trigger.keyDown(findDOMNode(select), { key: 'Home'})
-    expect(list.children[0].className).to.match(/\brw-state-focus\b/)
+    expect(change.calledOnce).to.be(true)
+    expect(change.calledWith(listHead)).to.be(true)
   })
 
+  it('should open on ArrowDown', () => {
+    let openSpy = sinon.spy();
+
+    tsp(
+      <Multiselect
+        data={dataList}
+        onToggle={openSpy}
+      />
+    )
+    .render()
+    .trigger('keyDown', { key: 'ArrowDown' })
+
+    expect(openSpy.calledOnce).to.be(true)
+    expect(openSpy.calledWith(true)).to.be(true)
+  })
+
+  it('should navigate list', function(){
+    let change = sinon.spy();
+
+    let inst = tsp(
+      <Multiselect
+        defaultOpen
+        data={dataList}
+        textField='label'
+        valueField='id'
+        onChange={change}
+      />
+    )
+    .render()
+
+    let listItems = inst.find('List').children();
+
+    listItems.first().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'ArrowDown' })
+    listItems.nth(1).is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'ArrowUp' })
+    listItems.first().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'End' })
+    listItems.last().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'Home' })
+    listItems.first().is('.rw-state-focus')
+  })
 })

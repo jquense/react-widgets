@@ -145,8 +145,7 @@ module.exports = React.createClass({
   disabled: function(){
     var val = this.state.disabled === 'disabled' ? false : 'disabled'
     this.setState({ disabled: val })
-  },
-
+  }
 })
 
 var itemComp = React.createClass({
