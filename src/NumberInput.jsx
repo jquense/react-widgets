@@ -1,27 +1,31 @@
 import React from 'react';
+import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 import { number as numberLocalizer } from './util/localizers';
 
 let getFormat = props => numberLocalizer.getFormat('default', props.format)
 
+let propTypes = {
+  value:       React.PropTypes.number,
+  editing:     React.PropTypes.bool,
+  placeholder: React.PropTypes.string,
+
+  format:      CustomPropTypes.numberFormat,
+
+  parse:       React.PropTypes.func,
+  culture:     React.PropTypes.string,
+
+  min:         React.PropTypes.number,
+
+  onChange:    React.PropTypes.func.isRequired,
+  onKeyDown:   React.PropTypes.func
+};
+
 export default React.createClass({
 
   displayName: 'NumberPickerInput',
 
-  propTypes: {
-    value:       React.PropTypes.number,
-    placeholder: React.PropTypes.string,
-
-    format:      CustomPropTypes.numberFormat,
-
-    parse:       React.PropTypes.func,
-    culture:     React.PropTypes.string,
-
-    min:         React.PropTypes.number,
-
-    onChange:    React.PropTypes.func.isRequired,
-    onKeyDown:   React.PropTypes.func
-  },
+  propTypes,
 
   getDefaultProps() {
     return {
@@ -57,10 +61,12 @@ export default React.createClass({
   },
 
   render(){
-    var value = this.state.stringValue;
+    let value = this.state.stringValue;
+    let props = _.omitOwnProps(this);
 
     return (
-      <input {...this.props}
+      <input
+        {...props}
         type='text'
         className='rw-input'
         onChange={this._change}

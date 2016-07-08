@@ -1,5 +1,5 @@
 import React from 'react';
-import Btn from './WidgetButton';
+import Button from './WidgetButton';
 
 export default React.createClass({
   displayName: 'Header',
@@ -44,42 +44,30 @@ export default React.createClass({
 
     return (
       <div className='rw-header'>
-        <Btn className="rw-btn-left"
-          tabIndex='-1'
+        <Button
+          className="rw-btn-left"
           onClick={onMoveLeft}
           disabled={prevDisabled}
-          aria-disabled={prevDisabled}
-          aria-label={messages.moveBack}
-          title={messages.moveBack}
-        >
-          <i aria-hidden='false'
-            className={'rw-i rw-i-caret-' + (rtl ? 'right' : 'left')}
-          />
-        </Btn>
-        <Btn
+          label={messages.moveBack}
+          icon={`caret-${rtl ? 'right' : 'left'}`}
+        />
+        <Button
           id={labelId}
-          tabIndex='-1'
+          onClick={onViewChange}
           className="rw-btn-view"
           disabled={upDisabled}
-          aria-disabled={upDisabled}
           aria-live="polite"
           aria-atomic="true"
-          onClick={onViewChange}
         >
           { label }
-        </Btn>
-        <Btn className="rw-btn-right"
-          tabIndex='-1'
+        </Button>
+        <Button
+          className="rw-btn-right"
           onClick={onMoveRight}
           disabled={nextDisabled}
-          title={messages.moveForward}
-          aria-label={messages.moveForward}
-          aria-disabled={nextDisabled}
-        >
-          <i aria-hidden='false'
-            className={'rw-i rw-i-caret-' + (rtl ? 'left' : 'right')}
-          />
-        </Btn>
+          label={messages.moveForward}
+          icon={`caret-${rtl ? 'left' : 'right'}`}
+        />
       </div>
     )
   }

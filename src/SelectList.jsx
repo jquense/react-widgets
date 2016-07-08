@@ -1,13 +1,14 @@
 import React from 'react';
 import _  from './util/_';
-import cx from 'classnames';
+import cn from 'classnames';
 import createUncontrolledWidget from 'uncontrollable';
 import compat from './util/compat';
 
-import CustomPropTypes  from './util/propTypes';
-import PlainList        from './List';
-import GroupableList    from './ListGroupable';
-import ListOption       from './ListOption';
+import CustomPropTypes from './util/propTypes';
+import PlainList from './List';
+import GroupableList from './ListGroupable';
+import ListOption from './ListOption';
+import Widget from './Widget';
 
 import validateList from './util/validateListInterface';
 import scrollTo from 'dom-helpers/util/scrollTo';
@@ -18,7 +19,7 @@ import { widgetEditable } from './util/interaction';
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabled, isReadOnly, contains } from './util/interaction';
 
-let { omit, pick, find } = _;
+let { find } = _;
 
 let propTypes = {
 
@@ -128,18 +129,20 @@ var SelectList = React.createClass({
 
   render() {
     let {
-        className, tabIndex, busy, groupBy
+        className
+      , tabIndex
+      , busy
+      , groupBy
       , listComponent: List } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
 
-    let elementProps = omit(this.props, Object.keys(propTypes));
-    let listProps    = pick(this.props, Object.keys(List.propTypes));
+    let elementProps = _.omitOwnProps(this, List);
+    let listProps    = _.pickProps(this.props, List);
 
     let { ListItem, focusedItem, focused } = this.state;
 
-    let items = this._data()
-      , listID = instanceId(this, '_listbox');
+    let items = this._data();
 
     focusedItem = focused
       && !isDisabled(this.props)
@@ -147,37 +150,35 @@ var SelectList = React.createClass({
       && focusedItem;
 
     return (
-      <div {...elementProps}
-        onKeyDown={this._keyDown}
-        onKeyPress={this._keyPress}
+      <Widget
+        {...elementProps}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
+        onKeyDown={this.handleKeyDown}
+        onKeyPress={this.handleKeyPress}
+        disabled={isDisabled(this.props)}
+        readOnly={isReadOnly(this.props)}
         role={'radiogroup'}
         aria-busy={!!busy}
-        aria-disabled={isDisabled(this.props)}
-        aria-readonly={isReadOnly(this.props)}
-        tabIndex={'-1'}
-        className={cx(className, 'rw-widget', 'rw-selectlist', {
-          'rw-state-focus':    focused,
-          'rw-state-disabled': isDisabled(this.props),
-          'rw-state-readonly': isReadOnly(this.props),
-          'rw-rtl':            this.isRtl(),
-          'rw-loading-mask':   busy
-        })}
+        className={cn(
+          className,
+          'rw-selectlist',
+          busy && 'rw-loading-mask'
+        )}
       >
         <List
           {...listProps}
           ref='list'
-          id={listID}
-          role={'radiogroup'}
+          role="radiogroup"
           tabIndex={tabIndex || '0'}
+          id={instanceId(this, '_listbox')}
           data={items}
           focused={focusedItem}
           optionComponent={ListItem}
           itemComponent={this.props.itemComponent}
           onMove={this._scrollTo}
         />
-      </div>
+      </Widget>
     );
   },
 
@@ -194,7 +195,7 @@ var SelectList = React.createClass({
   },
 
   @widgetEditable
-  _keyDown(e) {
+  handleKeyDown(e) {
     var key = e.key
       , { valueField, multiple } = this.props
       , list = this.refs.list
@@ -202,7 +203,7 @@ var SelectList = React.createClass({
 
     let change = (item) => {
       if (item)
-        this._change(item, multiple
+        this.handleChange(item, multiple
             ? !contains(item, this._values(), valueField) // toggle value
             : true)
     }
@@ -251,7 +252,7 @@ var SelectList = React.createClass({
   },
 
   @widgetEditable
-  _keyPress(e) {
+  handleKeyPress(e) {
     notify(this.props.onKeyPress, [e])
 
     if (e.defaultPrevented)
@@ -284,7 +285,7 @@ var SelectList = React.createClass({
     notify(this.props.onChange, [data])
   },
 
-  _change(item, checked) {
+  handleChange(item, checked) {
     var { multiple } = this.props
       , values = this.state.dataItems;
 
@@ -320,7 +321,7 @@ var SelectList = React.createClass({
 
       if (focusedItem) {
         !multiple
-          ? this._change(focusedItem, true)
+          ? this.handleChange(focusedItem, true)
           : this.setState({ focusedItem })
       }
     }, this.props.delay)
@@ -345,16 +346,30 @@ function getListItem(parent){
 
     displayName: 'SelectItem',
 
+    handleChange(e) {
+      let { disabled, readonly, dataItem } = this.props;
+
+      if (!disabled && !readonly)
+        parent.handleChange(dataItem, e.target.checked)
+    },
+
+    handleMouseDown() {
+      parent._clicking = true
+    },
+
     render() {
       let {
           children
-        , disabled, readonly
+        , disabled
+        , readonly
         , dataItem: item } = this.props;
 
-      let { multiple, name = instanceId(parent, '_name') } = parent.props;
+      let {
+        multiple,
+        name = instanceId(parent, '_name')
+      } = parent.props;
 
       let checked = contains(item, parent._values(), parent.props.valueField)
-        , change = parent._change.bind(null, item)
         , type = multiple ? 'checkbox' : 'radio';
 
       return (
@@ -363,29 +378,22 @@ function getListItem(parent){
           role={type}
           aria-checked={!!checked}
         >
-          <label onMouseDown={onMouseDown}>
+          <label onMouseDown={this.handleMouseDown}>
             <input
               name={name}
+              type={type}
               tabIndex='-1'
               role='presentation'
-              type={type}
-              onChange={onChange}
               checked={checked}
               disabled={disabled || readonly}
+              onChange={this.handleChange}
             />
               { children }
           </label>
         </ListOption>
       );
 
-      function onMouseDown() {
-        parent._clicking = true
-      }
 
-      function onChange(e){
-        if (!disabled && !readonly)
-          change(e.target.checked)
-      }
     }
   })
 }

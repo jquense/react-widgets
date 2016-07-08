@@ -1,9 +1,10 @@
-'use strict';
+
 import React from 'react';
 import dates from './util/dates';
 import List from './List';
 import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
+import _ from './util/_';
 
 var format = props => dateLocalizer.getFormat('time', props.format)
 
@@ -12,16 +13,18 @@ export default React.createClass({
   displayName: 'TimeList',
 
   propTypes: {
-    value:          React.PropTypes.instanceOf(Date),
-    min:            React.PropTypes.instanceOf(Date),
-    max:            React.PropTypes.instanceOf(Date),
-    currentDate:    React.PropTypes.instanceOf(Date),
-    step:           React.PropTypes.number,
-    itemComponent:  CustomPropTypes.elementType,
-    format:         CustomPropTypes.dateFormat,
-    onSelect:       React.PropTypes.func,
-    preserveDate:   React.PropTypes.bool,
-    culture:        React.PropTypes.string
+    value: React.PropTypes.instanceOf(Date),
+    step: React.PropTypes.number,
+    min: React.PropTypes.instanceOf(Date),
+    max: React.PropTypes.instanceOf(Date),
+    currentDate: React.PropTypes.instanceOf(Date),
+
+    itemComponent: CustomPropTypes.elementType,
+    format: CustomPropTypes.dateFormat,
+    onSelect: React.PropTypes.func,
+    preserveDate: React.PropTypes.bool,
+    culture: React.PropTypes.string,
+    delay: React.PropTypes.number
   },
 
   mixins: [
@@ -30,12 +33,13 @@ export default React.createClass({
 
   getDefaultProps(){
     return {
-      step:   30,
-      onSelect: function(){},
+      step: 30,
+      onSelect: () => {},
       min: new Date(1900,  0,  1),
       max: new Date(2099, 11, 31),
       preserveDate: true,
-      delay: 300
+      delay: 300,
+      ariaActiveDescendantKey: 'timelist'
     }
   },
 
@@ -67,22 +71,20 @@ export default React.createClass({
   },
 
   render(){
-    let { value, ...props } = this.props;
+    let { value, onSelect } = this.props;
 
     var times = this.state.dates
       , date  = this._closestDate(times, value);
 
-    delete props.min;
-    delete props.max;
-    delete props.step;
-
     return (
-      <List {...props}
+      <List
+        {..._.omitOwnProps(this)}
         ref="list"
         data={times}
         textField='label'
         valueField='date'
         selected={date}
+        onSelect={onSelect}
         focused={this.state.focusedItem}
       />
     )
@@ -154,17 +156,19 @@ export default React.createClass({
     }
   },
 
-  _keyDown(e) {
+  handleKeyDown(e) {
     var key = e.key
       , focusedItem  = this.state.focusedItem
       , list = this.refs.list;
 
-    if ( key === 'End' )
+    if (key === 'End') {
+      e.preventDefault()
       this.setState({ focusedItem: list.last() })
-
-    else if ( key === 'Home' )
+    }
+    else if ( key === 'Home' ) {
+      e.preventDefault()
       this.setState({ focusedItem: list.first() })
-
+    }
     else if ( key === 'Enter' )
       this.props.onSelect(focusedItem)
 
@@ -178,7 +182,7 @@ export default React.createClass({
     }
   },
 
-  _keyPress(e) {
+  handleKeyPress(e) {
     e.preventDefault();
 
     this.search(String.fromCharCode(e.which), item => {
@@ -187,7 +191,7 @@ export default React.createClass({
     })
   },
 
-  scrollTo(){
+  scrollTo() {
     this.refs.list.move
       && this.refs.list.move()
   },

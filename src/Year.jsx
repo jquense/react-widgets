@@ -1,5 +1,6 @@
 import React from 'react';
-import cn from 'classnames';
+
+import CalendarView from './CalendarView'
 import dates from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
 import _  from './util/_';
@@ -9,8 +10,8 @@ import { instanceId } from './util/widgetHelpers';
 var format = props => dateLocalizer.getFormat('month', props.monthFormat)
 
 let propTypes = {
-  optionID:     React.PropTypes.func,
   culture:      React.PropTypes.string,
+  today:        React.PropTypes.instanceOf(Date),
   value:        React.PropTypes.instanceOf(Date),
   focused:      React.PropTypes.instanceOf(Date),
   min:          React.PropTypes.instanceOf(Date),
@@ -20,7 +21,6 @@ let propTypes = {
   monthFormat:  CustomPropTypes.dateFormat
 };
 
-let isEqual = (dateA, dateB) => dates.eq(dateA, dateB, 'month')
 let optionId = (id, date) => `${id}__year_${dates.year(date)}-${dates.month(date)}`;
 
 let YearView = React.createClass({
@@ -40,70 +40,59 @@ let YearView = React.createClass({
   },
 
   render(){
-    let { className, focused } = this.props
+    let { focused } = this.props
       , months = dates.monthsInYear(dates.year(focused))
-      , rows = _.chunk(months, 4);
-
-    var elementProps = _.omit(this.props, Object.keys(propTypes));
 
     return (
-      <table { ...elementProps}
-        role='grid'
-        className={cn(className, 'rw-nav-view')}
-      >
-        <tbody >
-          { rows.map(this._row)}
+      <CalendarView {..._.omitOwnProps(this)}>
+        <tbody>
+          {_.chunk(months, 4).map(this.renderRow)}
         </tbody>
-      </table>
+      </CalendarView>
     )
   },
 
-  _row(row, rowIdx){
+  renderRow(row, rowIdx) {
     let {
-        focused, disabled, onChange
-      , value, today, culture, min, max } = this.props
-      , id = instanceId(this)
+        focused
+      , disabled
+      , onChange
+      , value
+      , today
+      , culture
+      , min
+      , max } = this.props
+
+    let id = instanceId(this)
       , labelFormat = dateLocalizer.getFormat('header');
 
     return (
-      <tr key={rowIdx} role='row'>
-        { row.map( (date, colIdx) => {
-          var isFocused  = isEqual(date, focused)
-            , isSelected = isEqual(date, value)
-            , currentMonth = isEqual(date, today)
-            , label = dateLocalizer.format(date, labelFormat, culture);
+      <CalendarView.Row key={rowIdx}>
+        {row.map((date, colIdx) => {
+          var label = dateLocalizer.format(date, labelFormat, culture);
 
-          var currentID = optionId(id, date);
-
-          return dates.inRange(date, min, max, 'month')
-            ? (
-              <td
-                key={colIdx}
-                role='gridcell'
-                id={currentID}
-                title={label}
-                aria-selected={isSelected}
-                aria-readonly={disabled}
-                aria-label={label}
-              >
-                <span
-                  aria-labelledby={currentID}
-                  onClick={onChange.bind(null, date)}
-                  className={cn('rw-btn', {
-                    'rw-state-focus':    isFocused,
-                    'rw-state-selected': isSelected,
-                    'rw-now':            currentMonth
-                  })}
-                >
-                  {dateLocalizer.format(date, format(this.props), culture) }
-                </span>
-              </td>
-            )
-            : <td key={colIdx} className='rw-empty-cell' role='presentation'>&nbsp;</td>
+          return (
+            <CalendarView.Cell
+              key={colIdx}
+              id={optionId(id, date)}
+              label={label}
+              date={date}
+              now={today}
+              min={min}
+              max={max}
+              unit="month"
+              onChange={onChange}
+              focused={focused}
+              selected={value}
+              disabled={disabled}
+            >
+              {dateLocalizer.format(date, format(this.props), culture)}
+            </CalendarView.Cell>
+          )
         })}
-    </tr>)
+    </CalendarView.Row>
+    )
   }
-
 });
 
 export default YearView;

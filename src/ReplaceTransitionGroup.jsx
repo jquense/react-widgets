@@ -4,47 +4,51 @@
  * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
  * relevent code is licensed accordingly
  */
-'use strict';
+import React from 'react';
+import css from 'dom-helpers/style';
+import height from 'dom-helpers/query/height';
+import width  from 'dom-helpers/query/width';
+import compat from './util/compat';
+import _ from './util/_';
 
-var React = require('react')
-  , css = require('dom-helpers/style')
-  , height = require('dom-helpers/query/height')
-  , width  = require('dom-helpers/query/width')
-  , compat = require('./util/compat')
-  , _     = require('./util/_');
+function getChild(children){
+  return React.Children.only(children)
+}
 
-module.exports = React.createClass({
+function key(child){
+  return child && child.key
+}
+
+export default React.createClass({
 
   displayName: 'ReplaceTransitionGroup',
 
   propTypes: {
-    component:    React.PropTypes.oneOfType([
-                    React.PropTypes.element,
-                    React.PropTypes.string
-                  ]),
+    component: React.PropTypes.oneOfType([
+      React.PropTypes.element,
+      React.PropTypes.string
+    ]),
     childFactory: React.PropTypes.func,
-
-    onAnimating:  React.PropTypes.func,
-    onAnimate:    React.PropTypes.func
+    onAnimating: React.PropTypes.func,
+    onAnimate: React.PropTypes.func
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
-      component:    'span',
-      childFactory: function(a){ return a },
-
+      component: 'span',
+      childFactory: a => a,
       onAnimating: _.noop,
-      onAnimate:   _.noop
+      onAnimate: _.noop
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       children: _.splat(this.props.children)
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     var nextChild = getChild(nextProps.children)
       , stack     = this.state.children.slice()
       , next      = stack[1]
@@ -80,13 +84,13 @@ module.exports = React.createClass({
       this.setState({ children: stack });
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     this.animatingKeys = {};
     this.leaving  = null;
     this.entering = null;
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     var entering = this.entering
       , leaving  = this.leaving
       , first    = this.refs[key(entering) || key(leaving)]
@@ -109,7 +113,7 @@ module.exports = React.createClass({
     if (leaving)  this.performLeave(key(leaving))
   },
 
-  performEnter: function(key) {
+  performEnter(key) {
     var component = this.refs[key]
 
     if(!component) return
@@ -123,9 +127,9 @@ module.exports = React.createClass({
       this._handleDoneEntering(key)
   },
 
-  _tryFinish: function(){
+  _tryFinish() {
 
-    if ( this.isTransitioning() )
+    if (this.isTransitioning())
       return
 
     if ( this.isMounted() )
@@ -134,7 +138,7 @@ module.exports = React.createClass({
     this.props.onAnimate()
   },
 
-  _handleDoneEntering: function(enterkey) {
+  _handleDoneEntering(enterkey) {
     var component = this.refs[enterkey];
 
     if (component && component.componentDidEnter)
@@ -148,11 +152,7 @@ module.exports = React.createClass({
     this._tryFinish()
   },
 
-  isTransitioning: function(){
-    return Object.keys(this.animatingKeys).length !== 0
-  },
-
-  performLeave: function(key) {
+  performLeave(key) {
     var component = this.refs[key]
 
     if(!component) return
@@ -165,7 +165,7 @@ module.exports = React.createClass({
       this._handleDoneLeaving(key)
   },
 
-  _handleDoneLeaving: function(leavekey) {
+  _handleDoneLeaving(leavekey) {
     var component = this.refs[leavekey];
 
     if (component && component.componentDidLeave)
@@ -176,24 +176,25 @@ module.exports = React.createClass({
     if (key(this.props.children) === leavekey )
       this.performEnter(leavekey) // This entered again before it fully left. Add it again.
 
-    else if ( this.isMounted() )
+    else if (this.isMounted())
       this.setState({
         children: this.state.children.filter( c => key(c) !== leavekey)
       })
 
     this._tryFinish()
   },
+  
+  isTransitioning() {
+    return !!Object.keys(this.animatingKeys).length
+  },
 
-  render: function() {
-    var Component = this.props.component
-    return <Component {...this.props}>{ this.state.children.map(c => this.props.childFactory(c, key(c))) }</Component>;
+  render() {
+    var Component = this.props.component;
+
+    return (
+      <Component {..._.omitOwnProps(this)}>
+        {this.state.children.map(c => this.props.childFactory(c, key(c)))}
+      </Component>
+    );
   }
 });
-
-function getChild(children){
-  return React.Children.only(children)
-}
-
-function key(child){
-  return child && child.key
-}

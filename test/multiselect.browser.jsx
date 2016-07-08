@@ -1,73 +1,109 @@
-require('../vendor/phantomjs-shim')
+import React from 'react';
+import tsp from 'teaspoon';
 
-import { findDOMNode } from 'react-dom';
-
-var React = require('react');
-var Select = require('../src/Multiselect.jsx')
-  , TagList = require('../src/MultiselectTagList.jsx')
-  , tsp = require('teaspoon');
-
-var TestUtils = require('react-addons-test-utils');
-var render = TestUtils.renderIntoDocument
-  , findTag = TestUtils.findRenderedDOMComponentWithTag
-  , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findType = TestUtils.findRenderedComponentWithType
-  , trigger = TestUtils.Simulate;
+import Multiselect from '../src/Multiselect.jsx';
+import TagList from '../src/MultiselectTagList.jsx';
 
 
-describe('Multiselect', function(){
+describe('Multiselect', function() {
+  const ControlledMultiselect = Multiselect.ControlledComponent;
+
   var dataList = [
-        { label: 'jimmy', id: 0 },
-        { label: 'sally', id: 1 },
-        { label: 'pat', id: 2 }
-      ];
+    { label: 'jimmy', id: 0 },
+    { label: 'sally', id: 1 },
+    { label: 'pat', id: 2 }
+  ];
 
-  it('should set initial values', function(){
-    tsp(<Select value={['hello']} onChange={()=>{}} />)
+  it('should set initial values', function() {
+
+    tsp(<Multiselect value={['hello']} onChange={()=>{}} />)
+
+    tsp(<Multiselect value={['hello']} onChange={()=>{}} />)
       .render()
       .single(tsp.s`${TagList} li:textContent(hello)`)
   })
 
   it('should respect textField and valueFields', function(){
-    tsp(<Select defaultValue={[0]} data={dataList} textField='label' valueField='id' />)
+    tsp(<Multiselect defaultValue={[0]} data={dataList} textField='label' valueField='id' />)
+    tsp(<Multiselect defaultValue={[0]} data={dataList} textField='label' valueField='id' />)
       .render()
       .single(tsp.s`${TagList} li:textContent(jimmy)`)
   })
 
-  it('should start closed', function(done){
-    var select = render(<Select defaultValue={[0]} data={dataList} textField='label' valueField='id' />);
-    var popup = findType(select, require('../src/Popup.jsx'));
+  it('should start closed', () => {
+    let inst = tsp(
+      <ControlledMultiselect
+        value={dataList.slice(0, 2)}
+        data={dataList}
+        textField='label'
+        valueField='id'
+      />
+    )
+    .shallowRender()
 
-    expect(select._values.open).to.not.be(true)
-    expect(findDOMNode(select).className).to.not.match(/\brw-open\b/)
-    expect(findClass(select, 'rw-input').getAttribute('aria-expanded')).to.be('false')
+    expect(inst.props('open')).to.not.equal(true)
+    expect(inst.find('Popup').props('open')).to.not.equal(true)
 
-    setTimeout(function(){
-      expect(findDOMNode(popup).style.display).to.be('none')
-      done()
-    }, 0)
+    inst.none('.rw-open')
+    inst.single(tsp.s`MultiselectInput[aria-expanded=${false}]`)
   })
 
-  it('should open when focused', function(done){
-    var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0}/>);
-    var popup = findType(select, require('../src/Popup.jsx'))
+  it('should toggle add aria when open', () => {
 
-    trigger.focus(findDOMNode(select))
+    let inst = tsp(<ControlledMultiselect open />).shallowRender()
 
-    setTimeout(function() {
-      expect(select._values.open).to.be(true)
-      expect(findDOMNode(select).className).to.match(/\brw-open\b/)
-      expect(findClass(select, 'rw-input').getAttribute('aria-expanded')).to.be('true')
-      expect(popup.props.open).to.be(true)
+    expect(inst.props('open')).to.equal(true)
+
+    inst.single('Popup[open]')
+    inst.single('Widget[open]')
+    inst.single('MultiselectInput[aria-expanded]')
+  })
+
+  it('should foward props to Popup', () => {
+    let props = tsp(<ControlledMultiselect open duration={2} dropUp />  )
+      .shallowRender()
+      .find('Popup')
+      .props()
+
+    expect(props.dropUp).to.equal(true)
+    expect(props.open).to.equal(true)
+    expect(props.duration).to.equal(2)
+  })
+
+  it('should open when focused', (done) => {
+    let openSpy = sinon.spy();
+
+    tsp(<ControlledMultiselect onToggle={openSpy} />)
+      .render()
+      .trigger('focus')
+
+    setTimeout(() => {
+      expect(openSpy.calledOnce).to.be(true);
+      expect(openSpy.calledWith(true)).to.be(true);
       done()
     })
   })
 
-  it('should set id on list', function(){
-    var instance = render(<Select />)
-      , list = findTag(instance, 'ul');
+  it('should not open when disabled', (done) => {
+    let openSpy = sinon.spy();
 
-    expect(list.hasAttribute('id')).to.be(true);
+    tsp(<ControlledMultiselect onToggle={openSpy} disabled />)
+      .render()
+      .trigger('focus')
+
+    setTimeout(() => {
+      expect(openSpy.called).to.be(false);
+      done()
+    })
+  })
+
+  it('should set id on list', () =>{
+    expect(
+      tsp(<ControlledMultiselect open />)
+        .shallowRender()
+        .find('List')
+        .props('id')
+      ).to.be.a('string');
   })
 
   it('should remove tag when clicked', function(){
@@ -93,7 +129,7 @@ describe('Multiselect', function(){
     var change = sinon.spy()
 
     tsp(
-      <Select
+      <Multiselect
         onChange={change}
         value={dataList.slice(0, 2)}
         data={dataList}
@@ -112,32 +148,59 @@ describe('Multiselect', function(){
   it('should trigger focus/blur events', function(done){
     var blur = sinon.spy()
       , focus = sinon.spy()
-      , select = render(<Select onBlur={blur} onFocus={focus}/>);
 
-    expect(focus.calledOnce).to.be(false)
-    expect(blur.calledOnce).to.be(false)
+    tsp(<Multiselect onBlur={blur} onFocus={focus}/>)
+      .render()
+      .trigger('focus')
+      .tap(inst => {
+        setTimeout(() => {
+          inst.trigger('blur')
 
-    trigger.focus(findDOMNode(select))
+          setTimeout(() => {
+            expect(focus.calledOnce).to.be(true)
+            expect(blur.calledOnce).to.be(true)
+            done()
+          })
+        })
+      });
+  })
 
-    setTimeout(() => {
-      expect(focus.calledOnce).to.be(true)
-      trigger.blur(findDOMNode(select))
+  it('should not trigger focus/blur events when disabled', function(done){
+    var blur = sinon.spy()
+      , focus = sinon.spy()
 
-      setTimeout(() => {
-        expect(blur.calledOnce).to.be(true)
-        done()
-      })
-    })
+    tsp(<Multiselect disabled onBlur={blur} onFocus={focus}/>)
+      .render()
+      .trigger('focus')
+      .tap(inst => {
+        setTimeout(() => {
+          inst.trigger('blur')
+
+          setTimeout(() => {
+            expect(focus.called).to.be(false)
+            expect(blur.called).to.be(false)
+            done()
+          })
+        })
+      });
   })
 
   it('should trigger key events', function(){
-    var kp = sinon.spy(), kd = sinon.spy(), ku = sinon.spy()
-      , select = render(<Select onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
-      , input  = findDOMNode(findType(select, require('../src/MultiselectInput.jsx')));
+    var kp = sinon.spy()
+      , kd = sinon.spy()
+      , ku = sinon.spy()
 
-    trigger.keyPress(input)
-    trigger.keyDown(input)
-    trigger.keyUp(input)
+    tsp(
+      <Multiselect
+        onKeyPress={kp}
+        onKeyUp={ku}
+        onKeyDown={kd}
+      />
+    )
+    .render()
+    .trigger('keyPress')
+    .trigger('keyDown')
+    .trigger('keyUp')
 
     expect(kp.calledOnce).to.be(true)
     expect(kd.calledOnce).to.be(true)
@@ -145,29 +208,30 @@ describe('Multiselect', function(){
   })
 
 
-  it('should do nothing when disabled', function(done){
-    var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0} disabled={true}/>)
-      , input  = findDOMNode(findType(select, require('../src/MultiselectInput.jsx')))
-      , tags   = findDOMNode(findType(select, TagList));
+  it('should add correct markup when read-only', () => {
+    let input = tsp(<ControlledMultiselect readOnly />)
+      .render()
+      .find('.rw-input')
+      .dom()
 
-    expect( input.hasAttribute('disabled')).to.be(true);
-    expect( input.getAttribute('aria-disabled')).to.be('true');
-    //expect( input.getAttribute('disabled')).to.be('');
+    expect(input.hasAttribute('readonly')).to.be(true);
+    expect(input.getAttribute('aria-readonly')).to.be('true');
+  })
 
-    trigger.click(findClass(select, 'rw-tag-btn'))
+  it('should add correct markup when disabled', () => {
+    let input = tsp(<ControlledMultiselect disabled />)
+      .render()
+      .find('.rw-input')
+      .dom()
 
-    setTimeout(function() {
-      expect(select._values.open).to.not.be(true)
-      expect(tags.children.length).to.be(1)
-      expect(findDOMNode(select).className).to.not.match(/\brw-state-focus\b/)
-      done()
-    }, 0)
+    expect(input.hasAttribute('disabled')).to.be(true);
+    expect(input.getAttribute('aria-disabled')).to.be('true');
   })
 
   it('should disable only certain tags', function() {
     var change = sinon.spy()
     tsp(
-      <Select
+      <Multiselect
         onChange={change}
         defaultValue={[0, 1]}
         data={dataList}
@@ -184,29 +248,67 @@ describe('Multiselect', function(){
     expect(change.called).to.be(false)
   })
 
-  it('should do nothing when readonly', function(done){
-    var select = render(<Select defaultValue={['jimmy']} data={dataList} duration={0} readOnly={true}/>)
-      , input  = findDOMNode(findType(select, require('../src/MultiselectInput.jsx')))
-      , tags   = findDOMNode(findType(select, TagList));
+  it('should not remove tags when disabled', () => {
+    let changeSpy = sinon.spy();
 
-    expect( input.hasAttribute('readonly')).to.be(true);
-    expect( input.getAttribute('aria-readonly')).to.be('true');
+    tsp(
+      <Multiselect
+        disabled
+        onChange={changeSpy}
+        value={['jimmy']}
+        data={dataList}
+      />
+    )
+    .render()
+    .find('.rw-tag-btn')
+    .trigger('click')
 
-    trigger.click(findClass(select, 'rw-tag-btn'))
-
-    setTimeout(function() {
-      expect(select._values.open).to.not.be(true)
-      expect(tags.children.length).to.be(1)
-      done()
-    }, 0)
+    expect(changeSpy.called).to.be(false)
   })
 
-  it('should readonly only certain tags', function() {
-    var change = sinon.spy()
+  it('should not remove disabled tags', function() {
+    var change = sinon.spy();
     tsp(
-      <Select
+      <Multiselect
         onChange={change}
-        defaultValue={[0, 1]}
+        defaultValue={[1, 0]}
+        data={dataList}
+        disabled={[1]}
+        textField='label'
+        valueField='id'
+      />
+    )
+    .render()
+    .first('.rw-tag-btn')
+    .trigger('click')
+
+    expect(change.called).to.be(false)
+  })
+
+  it('should not remove tags when readOnly', () => {
+    let changeSpy = sinon.spy();
+
+    tsp(
+      <Multiselect
+        readOnly
+        onChange={changeSpy}
+        value={['jimmy']}
+        data={dataList}
+      />
+    )
+    .render()
+    .find('.rw-tag-btn')
+    .trigger('click')
+
+    expect(changeSpy.called).to.be(false)
+  })
+
+  it('should not remove readonly tags', function() {
+    var change = sinon.spy();
+    tsp(
+      <Multiselect
+        onChange={change}
+        defaultValue={[1, 0]}
         data={dataList}
         readOnly={[1]}
         textField='label'
@@ -214,72 +316,72 @@ describe('Multiselect', function(){
       />
     )
     .render()
-    .find(TagList)
-    .single('li.rw-state-readonly > span')
+    .first('.rw-tag-btn')
     .trigger('click')
 
     expect(change.called).to.be(false)
   })
 
-  it('should call Select handler', function(done){
-    var change = sinon.spy(), onSelect = sinon.spy()
-      , instance = render(<Select value={[dataList[1]]} data={dataList} onChange={change} onSelect={onSelect}/>)
+  it('should call Select handler', function(){
+    let change = sinon.spy()
+      , onSelect = sinon.spy();
 
-    findDOMNode(instance).focus()
+    tsp(
+      <ControlledMultiselect
+        open
+        onToggle={() =>{}}
+        value={dataList.slice(1)}
+        data={dataList}
+        onChange={change}
+        onSelect={onSelect}
+      />
+    )
+    .shallowRender()
+    .find('List')
+      .trigger('select', dataList[1])
 
-    let list = findClass(instance, 'rw-list');
-
-    setTimeout(function(){
-
-      trigger.click(list.children[0])
-
-      expect(onSelect.calledOnce).to.be(true)
-      expect(change.calledAfter(onSelect)).to.be(true)
-
-      onSelect.reset()
-      change.reset()
-
-      trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown'}) //move to different value so change fires
-      trigger.keyDown(findDOMNode(instance), { key: 'Enter'})
-
-      expect(onSelect.calledOnce).to.be(true)
-      expect(change.calledAfter(onSelect)).to.be(true)
-      done()
-    })
+    expect(onSelect.calledOnce).to.be(true)
+    expect(change.calledAfter(onSelect)).to.be(true)
   })
 
-  it('should clear SearchTerm when uncontrolled', function(){
-    var select = render(<Select data={dataList} defaultSearchTerm='ji' open textField='label' valueField='id' onToggle={()=>{}}/>);
+  it('should clear searchTerm when an item is selected', () => {
+    let searchSpy = sinon.spy();
 
-    var input = findType(select, Select.ControlledComponent)
+    tsp(
+      <Multiselect
+        defaultOpen
+        data={dataList}
+        textField='label'
+        valueField='id'
+        defaultSearchTerm='ji'
+        onSearch={searchSpy}
+      />
+    )
+    .render()
+    .trigger('keyDown', { key: 'Enter' })
 
-    expect(input.props.searchTerm).to.be('ji')
-
-    trigger.keyDown(findDOMNode(select), { key: 'Enter'})
-
-    expect(input.props.searchTerm).to.be('')
-
-  })
-
-
-  it('should not clear SearchTerm when controlled', function(){
-    var select = render(<Select searchTerm="jim" data={dataList} onSearch={()=>{}}/>);
-
-    var input = findTag(select, 'input')
-    trigger.keyDown(findDOMNode(select), { key: 'Enter'})
-
-    expect(input.value).to.be('jim')
+    expect(searchSpy.calledOnce).to.be(true)
+    expect(searchSpy.calledWith('')).to.be(true)
   })
 
   it('should not trigger form submission', function(){
-    let spy;
-    let select = tsp(
-      <form action='/' onSubmit={() => { throw new Error('should not submit!') }}>
-        <Select searchTerm="jim" data={dataList} onSearch={()=>{}} onKeyDown={spy = sinon.spy()}/>
-      </form>
-    ).render();
+    let spy = sinon.spy()
 
-    select.find('input')
+    tsp(
+      <form
+        action='/'
+        onSubmit={() => {throw new Error('should not submit!')}}
+      >
+        <Multiselect
+          searchTerm="jim"
+          data={dataList}
+          onSearch={()=>{}}
+          onKeyDown={spy}
+        />
+      </form>
+    )
+    .render()
+    .find('input')
       .trigger('keyDown', { key: 'Enter' })
 
     expect(spy.calledOnce).to.equal(true);
@@ -287,7 +389,7 @@ describe('Multiselect', function(){
 
   it('should show create tag correctly', function(){
     var select = tsp(
-      <Select
+      <Multiselect
         searchTerm="custom tag"
         onCreate={()=>{}}
         data={dataList}
@@ -317,8 +419,8 @@ describe('Multiselect', function(){
   })
 
   it('should show create tag correctly when caseSensitive', function(){
-    var select = tsp(
-      <Select
+    tsp(
+      <Multiselect
         searchTerm="Jimmy"
         onCreate={()=>{}}
         data={ dataList }
@@ -327,112 +429,132 @@ describe('Multiselect', function(){
         valueField='id'
         caseSensitive={true}
       />
-    );
-
-    select
-      .render()
-      .tap(s => s
-        .single('.rw-multiselect-create-tag')
-      )
-      .props('searchTerm', 'jimmy')
-      .tap(s => s
-        .none('.rw-multiselect-create-tag')
-      )
+    )
+    .render()
+    .tap(s => s
+      .single('.rw-multiselect-create-tag')
+    )
+    .props('searchTerm', 'jimmy')
+    .tap(s => s
+      .none('.rw-multiselect-create-tag')
+    )
   })
 
   it('should call onCreate', function(){
-    var create = sinon.spy()
-      , select = render(<Select
-          open={true}
-          searchTerm="custom tag"
-          data={dataList}
-          onCreate={create}
-          onSearch={()=>{}} onToggle={()=>{}}/>)
+    let create = sinon.spy()
 
-      , createLi = findClass(select, 'rw-multiselect-create-tag').children[0];
+    let assertOnCreateCalled = () => {
+      expect(create.calledOnce).to.equal(true)
+      expect(create.calledWith('custom tag')).to.equal(true)
+      create.reset()
+    };
 
-    trigger.click(createLi)
-
-    expect(create.calledOnce).to.ok()
-    expect(create.calledWith('custom tag')).to.ok()
-
-    // only option is create
-    create.reset()
-    trigger.keyDown(findDOMNode(select), { key: 'Enter'})
-
-    expect(create.calledOnce).to.ok()
-    expect(create.calledWith('custom tag')).to.ok()
-
-    // other values have focus
-    select = render(<Select open={true} searchTerm="custom tag" data={['custom tag time']}  onCreate={create} onSearch={()=>{}} onToggle={()=>{}}/>)
-    create.reset()
-    trigger.keyDown(findDOMNode(select), { key: 'Enter'})
-
-    expect(create.called).to.be(false)
-
-    trigger.keyDown(findDOMNode(select), { key: 'Enter', ctrlKey: true })
-
-    expect(create.calledOnce).to.ok()
-    expect(create.calledWith('custom tag')).to.ok()
+    tsp(
+      <Multiselect
+        open
+        searchTerm="custom tag"
+        data={dataList}
+        onCreate={create}
+        onSearch={()=>{}}
+        onToggle={()=>{}}
+      />
+    )
+    .render()
+    .find('.rw-create-list-option')
+      .trigger('click')
+      .tap(assertOnCreateCalled)
+      .end()
+    .trigger('keyDown', { key: 'Enter'})
+      .tap(assertOnCreateCalled)
+    .trigger('keyDown', { key: 'Enter', ctrlKey: true })
+      .tap(assertOnCreateCalled)
   })
 
-  it('should change values on key down', function(){
-    var change = sinon.spy()
-      , select = render(<Select value={[0, 1, 2]} data={dataList} textField='label' valueField='id' onChange={change}/>)
-      , tags   = findDOMNode(findType(select, TagList))
-      , list   = findClass(select, 'rw-list');
+  it('should navigate tags list', function(){
+    let change = sinon.spy();
+    let listHead = dataList.slice(0, 2);
 
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowLeft'})
+    let inst = tsp(
+      <Multiselect
+        value={[0, 1, 2]}
+        data={dataList}
+        textField='label'
+        valueField='id'
+        onChange={change}
+      />
+    )
+    .render()
 
-    expect(tags.children[2].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
+    let tags = inst.find(TagList).children();
 
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowLeft'})
+    inst.trigger('keyDown', { key: 'ArrowLeft' })
+    tags.last().is('.rw-state-focus')
 
-    expect(tags.children[1].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[2].className).to.not.match(/\brw-state-focus\b/)
+    inst.trigger('keyDown', { key: 'ArrowRight' })
+    tags.nth(1).is('.rw-state-focus')
 
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowRight'})
+    inst.trigger('keyDown', { key: 'Home' })
+    tags.first().is('.rw-state-focus')
 
-    expect(tags.children[2].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
+    inst.trigger('keyDown', { key: 'End' })
+    tags.last().is('.rw-state-focus')
 
-    trigger.keyDown(findDOMNode(select), { key: 'Home'})
-
-    expect(tags.children[0].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
-
-    trigger.keyDown(findDOMNode(select), { key: 'Delete'})
-
-    expect(change.calledOnce).to.be(true)
-    expect(change.args[0][0]).to.eql(dataList.slice(1, 3))
-    change.reset()
-
-    trigger.keyDown(findDOMNode(select), { key: 'End'})
-
-    expect(tags.children[2].className).to.match(/\brw-state-focus\b/)
-    expect(tags.children[1].className).to.not.match(/\brw-state-focus\b/)
-
-    trigger.keyDown(findDOMNode(select), { key: 'Backspace'})
+    inst.trigger('keyDown', { key: 'Delete' })
 
     expect(change.calledOnce).to.be(true)
-    expect(change.args[0][0]).to.eql(dataList.slice(0, 2))
+    expect(change.calledWith(listHead)).to.be(true)
     change.reset()
 
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowDown'})
-    expect(select._values.open).to.be(true)
+    inst.trigger('keyDown', { key: 'Backspace' })
 
-    select = render(<Select open value={[]} onToggle={()=>{}} data={dataList} textField='label' valueField='id' onChange={change}/>)
-    list   = findClass(select, 'rw-list')
-
-    trigger.keyDown(findDOMNode(select), { key: 'ArrowDown'})
-    expect(list.children[1].className).to.match(/\brw-state-focus\b/)
-
-    trigger.keyDown(findDOMNode(select), { key: 'End'})
-    expect(list.children[2].className).to.match(/\brw-state-focus\b/)
-
-    trigger.keyDown(findDOMNode(select), { key: 'Home'})
-    expect(list.children[0].className).to.match(/\brw-state-focus\b/)
+    expect(change.calledOnce).to.be(true)
+    expect(change.calledWith(listHead)).to.be(true)
   })
 
+  it('should open on ArrowDown', () => {
+    let openSpy = sinon.spy();
+
+    tsp(
+      <Multiselect
+        data={dataList}
+        onToggle={openSpy}
+      />
+    )
+    .render()
+    .trigger('keyDown', { key: 'ArrowDown' })
+
+    expect(openSpy.calledOnce).to.be(true)
+    expect(openSpy.calledWith(true)).to.be(true)
+  })
+
+  it('should navigate list', function(){
+    let change = sinon.spy();
+
+    let inst = tsp(
+      <Multiselect
+        defaultOpen
+        data={dataList}
+        textField='label'
+        valueField='id'
+        onChange={change}
+      />
+    )
+    .render()
+
+    let listItems = inst.find('List').children();
+
+    listItems.first().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'ArrowDown' })
+    listItems.nth(1).is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'ArrowUp' })
+    listItems.first().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'End' })
+    listItems.last().is('.rw-state-focus')
+
+    inst.trigger('keyDown', { key: 'Home' })
+    listItems.first().is('.rw-state-focus')
+  })
 })

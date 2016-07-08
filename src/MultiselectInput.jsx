@@ -1,42 +1,41 @@
 import React from 'react';
+import _  from './util/_';
 import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 
+class MultiselectInput extends React.Component {
 
-export default React.createClass({
-
-  displayName: 'MultiselectInput',
-
-  propTypes: {
+  static propTypes = {
     value:        React.PropTypes.string,
+    placeholder:  React.PropTypes.string,
     maxLength:    React.PropTypes.number,
     onChange:     React.PropTypes.func.isRequired,
-    onFocus:      React.PropTypes.func,
 
     disabled:     CustomPropTypes.disabled,
     readOnly:     CustomPropTypes.readOnly
-  },
+  };
 
-  render(){
-      var value = this.props.value
-        , placeholder = this.props.placeholder
-        , size = Math.max((value || placeholder).length, 1) + 1;
+  render() {
+      let { disabled, readOnly, ...props } = this.props
+      let size = Math.max((props.value || props.placeholder).length, 1) + 1;
 
       return (
-        <input {...this.props}
+        <input
+          {...props}
+          size={size}
           className='rw-input'
           autoComplete='off'
-          aria-disabled={this.props.disabled}
-          aria-readonly={this.props.readOnly}
-          disabled={this.props.disabled}
-          readOnly={this.props.readOnly}
-          size={size}
+          aria-disabled={disabled}
+          aria-readonly={readOnly}
+          disabled={disabled}
+          readOnly={readOnly}
         />
       )
-  },
-
-  focus(){
-    compat.findDOMNode(this).focus()
   }
 
-})
+  focus() {
+    compat.findDOMNode(this).focus()
+  }
+}
+
+export default MultiselectInput

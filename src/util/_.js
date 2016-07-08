@@ -41,11 +41,25 @@ var _ =
       }, {})
     },
 
+    pickProps(props, componentClass) {
+      return _.pick(props, Object.keys(componentClass.propTypes))
+    },
+
     omit(obj, keys) {
       keys = [].concat(keys);
       return _.transform(obj, function(mapped, val, key){
         if( keys.indexOf(key) === -1) mapped[key] = val
       }, {})
+    },
+
+    omitOwnProps(component, ...others) {
+      let keys = others
+        .reduce((arr, compClass) =>
+            arr.concat(Object.keys(compClass.propTypes))
+          , Object.keys(component.constructor.propTypes)
+        );
+
+      return _.omit(component.props, keys)
     },
 
     find(arr, cb, thisArg) {

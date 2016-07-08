@@ -1,4 +1,5 @@
 import React, { cloneElement } from 'react';
+import _ from './util/_';
 import css from 'dom-helpers/style';
 import getHeight from 'dom-helpers/query/height';
 import camelizeStyle from 'dom-helpers/util/camelizeStyle';
@@ -28,21 +29,22 @@ let OVERFLOW = {
   [OPENING]: 'hidden'
 }
 
+let propTypes = {
+  open:           React.PropTypes.bool,
+  dropUp:         React.PropTypes.bool,
+  duration:       React.PropTypes.number,
 
-module.exports = React.createClass({
+  onClosing:      React.PropTypes.func,
+  onOpening:      React.PropTypes.func,
+  onClose:        React.PropTypes.func,
+  onOpen:         React.PropTypes.func
+}
+
+export default React.createClass({
 
   displayName: 'Popup',
 
-  propTypes: {
-    open:           React.PropTypes.bool,
-    dropUp:         React.PropTypes.bool,
-    duration:       React.PropTypes.number,
-
-    onClosing:      React.PropTypes.func,
-    onOpening:      React.PropTypes.func,
-    onClose:        React.PropTypes.func,
-    onOpen:         React.PropTypes.func
-  },
+  propTypes,
 
   getInitialState() {
     return {
@@ -102,21 +104,25 @@ module.exports = React.createClass({
   },
 
   render() {
-    var { className, dropUp, ...props } = this.props
+    var { className, dropUp, style } = this.props
       , { status, height } = this.state;
 
     let overflow = OVERFLOW[status] || 'visible'
       , display = status === CLOSED ? 'none' : 'block';
 
-    delete props.open;
-    
     return (
-      <div {...props}
-        style={{ display, overflow, height, ...props.style }}
-        className={cn(className, 'rw-popup-container', {
-          'rw-dropup': dropUp,
-          'rw-popup-animating': this.isTransitioning()
-        })}
+      <div
+        style={{
+          display,
+          overflow,
+          height,
+          ...style
+        }}
+        className={cn(className,
+          'rw-popup-container',
+          dropUp && 'rw-dropup',
+          this.isTransitioning() && 'rw-popup-animating'
+        )}
       >
         { this.renderChildren() }
       </div>
