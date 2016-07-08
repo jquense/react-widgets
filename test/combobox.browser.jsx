@@ -211,7 +211,6 @@ describe('Combobox', function(){
       >
         <Combobox
           data={dataList}
-          onSearch={()=>{}}
           onKeyDown={spy}
         />
       </form>
