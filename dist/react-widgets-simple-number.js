@@ -8,7 +8,7 @@
 		exports["ReactWidgets"] = factory(require("ReactWidgets"));
 	else
 		root["ReactWidgets"] = factory(root["ReactWidgets"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_85__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_90__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,15 +64,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = simpleNumber;
 
-	var _configure = __webpack_require__(85);
+	var _configure = __webpack_require__(90);
 
 	var _configure2 = _interopRequireDefault(_configure);
 
-	var _formatNumberWithString = __webpack_require__(86);
+	var _formatNumberWithString = __webpack_require__(91);
 
 	var _formatNumberWithString2 = _interopRequireDefault(_formatNumberWithString);
 
-	var _deconstructNumberFormat = __webpack_require__(87);
+	var _deconstructNumberFormat = __webpack_require__(92);
 
 	var _deconstructNumberFormat2 = _interopRequireDefault(_deconstructNumberFormat);
 
@@ -138,20 +138,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 85:
+/***/ 90:
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_85__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_90__;
 
 /***/ },
 
-/***/ 86:
+/***/ 91:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deconstructNumberFormat = __webpack_require__(87);
-	var formatFactory = __webpack_require__(88);
+	var deconstructNumberFormat = __webpack_require__(92);
+	var formatFactory = __webpack_require__(93);
 
 	exports = module.exports = function formatNumberWithString(value, requiredFormat, overrideOptions) {
 
@@ -188,7 +188,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 87:
+/***/ 92:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -394,7 +394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 88:
+/***/ 93:
 /***/ function(module, exports) {
 
 	

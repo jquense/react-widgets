@@ -8,7 +8,7 @@
 		exports["ReactWidgets"] = factory(require("ReactWidgets"));
 	else
 		root["ReactWidgets"] = factory(root["ReactWidgets"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_85__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_90__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -119,7 +119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return localizer;
 	};
 
-	var _configure = __webpack_require__(85);
+	var _configure = __webpack_require__(90);
 
 	var _configure2 = _interopRequireDefault(_configure);
 
@@ -129,10 +129,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 85:
+/***/ 90:
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_85__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_90__;
 
 /***/ }
 

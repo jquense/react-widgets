@@ -273,11 +273,11 @@ $focus-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($in
 
   > .rw-select {
     border-left: $input-border 1px solid;
+  }
 
-    .rw-rtl & {
-      border-right: $input-border 1px solid;
-      border-left:  none;
-    }
+  &.rw-rtl > .rw-select {
+    border-right: $input-border 1px solid;
+    border-left:  none;
   }
 
   &.rw-state-focus,
