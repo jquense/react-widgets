@@ -1,3 +1,10 @@
+v3.4.0 - Mon, 11 Jul 2016 22:59:53 GMT
+--------------------------------------
+
+- [4168df5](../../commit/4168df5) [added] autoFocus support to dropdown, calendar, and selectlist
+
+
+
 v3.3.4 - Fri, 08 Jul 2016 16:14:15 GMT
 --------------------------------------
 
