@@ -69,6 +69,7 @@ var SelectList = React.createClass({
 
   mixins: [
     require('./mixins/TimeoutMixin'),
+    require('./mixins/AutoFocusMixin'),
     require('./mixins/RtlParentContextMixin'),
     require('./mixins/AriaDescendantMixin')(),
     require('./mixins/FocusMixin')({

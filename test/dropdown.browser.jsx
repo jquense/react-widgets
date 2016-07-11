@@ -49,6 +49,14 @@ describe('DROPDOWNS', function(){
     expect(openSpy.calledWith(true)).to.be(true);
   })
 
+  it('should respect autoFocus', () => {
+    expect(
+      tsp(<ControlledDropdownList autoFocus />)
+        .render(true)
+        .dom()
+    ).to.equal(document.activeElement);
+  })
+
   it('should not open when clicked while disabled or readOnly', () => {
     let openSpy = sinon.spy();
 

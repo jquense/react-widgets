@@ -112,6 +112,7 @@ let Calendar = React.createClass({
 
   mixins: [
     require('./mixins/TimeoutMixin'),
+    require('./mixins/AutoFocusMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/RtlParentContextMixin'),
     require('./mixins/AriaDescendantMixin')(),

@@ -239,6 +239,7 @@ var DateTimePicker = React.createClass({
           id={id}
           tabIndex='-1'
           value={value}
+          autoFocus={false}
           onChange={this.handleDateSelect}
           // #75: need to aggressively reclaim focus from the calendar otherwise
           // disabled header/footer buttons will drop focus completely from the widget

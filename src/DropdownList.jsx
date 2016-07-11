@@ -44,14 +44,10 @@ var propTypes = {
   groupBy:        CustomPropTypes.accessor,
 
   onSelect:       React.PropTypes.func,
-
   searchTerm:     React.PropTypes.string,
   onSearch:       React.PropTypes.func,
-
   busy:           React.PropTypes.bool,
-
   delay:          React.PropTypes.number,
-
   dropUp:         React.PropTypes.bool,
   duration:       React.PropTypes.number, //popup
 
@@ -72,6 +68,7 @@ var DropdownList = React.createClass({
 
   mixins: [
     require('./mixins/TimeoutMixin'),
+    require('./mixins/AutoFocusMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/DataFilterMixin'),
     require('./mixins/PopupScrollToMixin'),
