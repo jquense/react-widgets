@@ -18,9 +18,11 @@ var scope = {
 
 module.exports = React.createClass({
   render() {
+    let { codeText, ...props } = this.props;
     return (
       <Playground
-        {...this.props}
+        {...props}
+        codeText={codeText.trim()}
         mode='jsx'
         theme='oceanicnext'
         scope={scope}
