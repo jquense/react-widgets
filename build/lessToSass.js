@@ -69,7 +69,10 @@ function convertVariables(line) {
   // Matches any @ that doesn't have 'media ' or 'import ' after it.
   var atRegex = /@(?!(media|import|mixin|font-face|keyframes)(\s|\())/g;
 
-  return line.replace(atRegex, '$');
+  // Matches any Sass variable line
+  var variableRegex = /^(\$[\w\d-_]+:\s*(.(?!\!default))+);(.*)$/gm;
+
+  return line.replace(atRegex, '$$').replace(variableRegex, '$1 !default;$3');
 }
 
 function convertFileExtensions(line) {
