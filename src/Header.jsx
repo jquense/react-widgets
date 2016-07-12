@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './WidgetButton';
+import Button from './Button';
 
 export default React.createClass({
   displayName: 'Header',

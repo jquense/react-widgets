@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 
-export default React.createClass({
+class Button extends React.Component {
 
   render() {
     let {
@@ -15,11 +15,17 @@ export default React.createClass({
       , component: Tag = 'button'
       , ...props } = this.props;
 
+    let type = props.type;
+
+    if (Tag === 'button')
+     type = type || 'button';
+
     return (
       <Tag
         {...props}
         tabIndex="-1"
         title={label}
+        type={type}
         disabled={disabled}
         aria-disabled={disabled}
         aria-label={label}
@@ -43,4 +49,6 @@ export default React.createClass({
       </Tag>
     )
   }
-})
+}
+
+export default Button;
