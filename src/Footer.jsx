@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './WidgetButton';
+import Button from './Button';
 import { date as dateLocalizer } from './util/localizers';
 
 var format = props => dateLocalizer.getFormat('footer', props.format)

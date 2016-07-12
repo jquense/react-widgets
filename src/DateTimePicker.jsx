@@ -16,7 +16,7 @@ import Popup from './Popup';
 import BaseCalendar from './Calendar';
 import TimeList from './TimeList';
 import DateTimePickerInput from './DateTimePickerInput';
-import Button from './WidgetButton';
+import Button from './Button';
 import CustomPropTypes from './util/propTypes';
 import createUncontrolledWidget from 'uncontrollable';
 import { widgetEditable } from './util/interaction';

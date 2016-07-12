@@ -8,7 +8,7 @@ import { directions } from './util/constants';
 import repeater from './util/repeater';
 import { number as numberLocalizer } from './util/localizers';
 import Input from './NumberInput';
-import Button from './WidgetButton';
+import Button from './Button';
 
 import { widgetEditable } from './util/interaction';
 import { notify } from './util/widgetHelpers';
