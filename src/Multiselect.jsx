@@ -17,7 +17,8 @@ import { widgetEditable } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
-  ? msgs.createNew(props) : [<strong key='dumb'>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
+  ? msgs.createNew(props)
+  : [<strong key='dumb'>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
 
 let { splat } = _;
 
@@ -82,7 +83,6 @@ var Multiselect = React.createClass({
     require('./mixins/RtlParentContextMixin'),
     require('./mixins/FocusMixin')({
       willHandle(focused) {
-
         focused && this.focus()
       },
       didHandle(focused) {
@@ -110,9 +110,9 @@ var Multiselect = React.createClass({
     })
   ],
 
-  propTypes: propTypes,
+  propTypes,
 
-  getDefaultProps(){
+  getDefaultProps() {
     return {
       data: [],
       filter: 'startsWith',
@@ -325,8 +325,8 @@ var Multiselect = React.createClass({
     let elementProps = _.omitOwnProps(this, List);
 
     let shouldRenderTags = !!dataItems.length
-      , shouldRenderPopup = open || isFirstFocusedRender(this)
-      , shouldShowCreate = this._shouldShowCreate();
+      , shouldRenderPopup = isFirstFocusedRender(this) || open
+      , shouldShowCreate = this.shouldShowCreate();
 
     let tagsID = instanceId(this, '_taglist')
       , listID = instanceId(this, '__listbox')
@@ -460,7 +460,7 @@ var Multiselect = React.createClass({
 
     if ( key === 'ArrowDown') {
       var next = list.next(focusedItem)
-        , creating = (this._shouldShowCreate() && focusedItem === next) || focusedItem === null;
+        , creating = (this.shouldShowCreate() && focusedItem === next) || focusedItem === null;
 
       next = creating ? null : next
 
@@ -527,7 +527,7 @@ var Multiselect = React.createClass({
       notify(this.props.onToggle, true)
   },
 
-  close( ){
+  close() {
     notify(this.props.onToggle, false)
   },
 
@@ -550,7 +550,7 @@ var Multiselect = React.createClass({
     return items
   },
 
-  _shouldShowCreate() {
+  shouldShowCreate() {
     var { textField, searchTerm, onCreate, caseSensitive } = this.props;
 
     if ( !onCreate || !searchTerm )
