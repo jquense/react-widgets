@@ -1,3 +1,11 @@
+v3.4.2 - Wed, 20 Jul 2016 20:21:49 GMT
+--------------------------------------
+
+- [b5b8ff7](../../commit/b5b8ff7) [fixed] script tag distribution
+- [8a4c455](../../commit/8a4c455) [fixed] false positive on selecting item
+
+
+
 v3.4.1 - Tue, 12 Jul 2016 12:22:31 GMT
 --------------------------------------
 
