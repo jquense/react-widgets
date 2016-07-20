@@ -2187,13 +2187,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function dataIndexOf(data, item, valueField) {
 	  var idx = -1,
 	      len = data.length,
-	      finder = function finder(datum) {
+	      isValueEqual = function isValueEqual(datum) {
 	    return valueMatcher(item, datum, valueField);
 	  };
 
 	  while (++idx < len) {
-	    if (finder(data[idx])) return idx;
-	  }return -1;
+	    var datum = data[idx];
+	    if (datum === item || isValueEqual(datum)) return idx;
+	  }
+
+	  return -1;
 	}
 
 	/**
@@ -2205,15 +2208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function dataItem(data, item, valueField) {
-	  var first = data[0],
-	      idx;
-
-	  // make an attempt to see if we were passed in dataItem vs just a valueField value
-	  // either an object with the right prop, or a primitive
-	  // { valueField: 5 } || "hello" [ "hello" ]
-	  if ((0, _.has)(item, valueField) || (typeof first === 'undefined' ? 'undefined' : _typeof(first)) === (typeof item === 'undefined' ? 'undefined' : _typeof(item))) return item;
-
-	  idx = dataIndexOf(data, dataValue(item, valueField), valueField);
+	  var idx = dataIndexOf(data, dataValue(item, valueField), valueField);
 
 	  if (idx !== -1) return data[idx];
 
@@ -8715,7 +8710,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  mixins: [__webpack_require__(52), __webpack_require__(55), __webpack_require__(56), __webpack_require__(61), __webpack_require__(62)({
 	    willHandle: function willHandle(focused) {
-
 	      focused && this.focus();
 	    },
 	    didHandle: function didHandle(focused) {
@@ -8965,8 +8959,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var elementProps = _3.default.omitOwnProps(this, List);
 
 	    var shouldRenderTags = !!dataItems.length,
-	        shouldRenderPopup = open || (0, _widgetHelpers.isFirstFocusedRender)(this),
-	        shouldShowCreate = this._shouldShowCreate();
+	        shouldRenderPopup = (0, _widgetHelpers.isFirstFocusedRender)(this) || open,
+	        shouldShowCreate = this.shouldShowCreate();
 
 	    var tagsID = (0, _widgetHelpers.instanceId)(this, '_taglist'),
 	        listID = (0, _widgetHelpers.instanceId)(this, '__listbox'),
@@ -9082,7 +9076,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (key === 'ArrowDown') {
 	      var next = list.next(focusedItem),
-	          creating = this._shouldShowCreate() && focusedItem === next || focusedItem === null;
+	          creating = this.shouldShowCreate() && focusedItem === next || focusedItem === null;
 
 	      next = creating ? null : next;
 
@@ -9136,7 +9130,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return items;
 	  },
-	  _shouldShowCreate: function _shouldShowCreate() {
+	  shouldShowCreate: function shouldShowCreate() {
 	    var _props6 = this.props;
 	    var textField = _props6.textField;
 	    var searchTerm = _props6.searchTerm;

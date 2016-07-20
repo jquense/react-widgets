@@ -255,7 +255,7 @@ ul.rw-list {
   }
 }
 
-$focus-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($input-border-focus), .6);
+$focus-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($input-border-focus), .6) !default;
 
 .rw-widget {
   background-color:   $input-bg;
@@ -353,7 +353,7 @@ $focus-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($in
 .rw-combobox input.rw-input,
 .rw-datetimepicker input.rw-input,
 .rw-numberpicker input.rw-input {
-  @include box-shadow("inset 0 1px 1px rgba(0,0,0,.075)");
+  @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
 }
 
 

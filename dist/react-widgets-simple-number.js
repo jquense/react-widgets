@@ -1,15 +1,5 @@
 /*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("ReactWidgets"));
-	else if(typeof define === 'function' && define.amd)
-		define(["ReactWidgets"], factory);
-	else if(typeof exports === 'object')
-		exports["ReactWidgets"] = factory(require("ReactWidgets"));
-	else
-		root["ReactWidgets"] = factory(root["ReactWidgets"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_91__) {
-return /******/ (function(modules) { // webpackBootstrap
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
@@ -51,9 +41,23 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ({
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
 
-/***/ 0:
+	/*** IMPORTS FROM imports-loader ***/
+	var module = __webpack_require__(1);
+	var args = [];
+
+
+	if (typeof module === 'function') {
+	  module.apply(null, args || [])
+	}
+
+
+
+/***/ },
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64,15 +68,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = simpleNumber;
 
-	var _configure = __webpack_require__(91);
+	var _configure = __webpack_require__(2);
 
 	var _configure2 = _interopRequireDefault(_configure);
 
-	var _formatNumberWithString = __webpack_require__(92);
+	var _formatNumberWithString = __webpack_require__(3);
 
 	var _formatNumberWithString2 = _interopRequireDefault(_formatNumberWithString);
 
-	var _deconstructNumberFormat = __webpack_require__(93);
+	var _deconstructNumberFormat = __webpack_require__(4);
 
 	var _deconstructNumberFormat2 = _interopRequireDefault(_deconstructNumberFormat);
 
@@ -137,21 +141,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-
-/***/ 91:
+/* 2 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_91__;
+	module.exports = window.ReactWidgets;
 
 /***/ },
-
-/***/ 92:
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deconstructNumberFormat = __webpack_require__(93);
-	var formatFactory = __webpack_require__(94);
+	var deconstructNumberFormat = __webpack_require__(4);
+	var formatFactory = __webpack_require__(5);
 
 	exports = module.exports = function formatNumberWithString(value, requiredFormat, overrideOptions) {
 
@@ -187,8 +189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-
-/***/ 93:
+/* 4 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -393,8 +394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-
-/***/ 94:
+/* 5 */
 /***/ function(module, exports) {
 
 	
@@ -655,7 +655,4 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }
-
-/******/ })
-});
-;
+/******/ ]);
