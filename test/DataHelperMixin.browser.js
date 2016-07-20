@@ -43,6 +43,18 @@ describe('when using DATA HELPERS', function(){
     })
   })
 
+  it('should work with dataItem', function(){
+    var val = { value: 3 }
+
+    expect(helpers.dataItem([ 2, 3, 1], 1)).to.equal(1)
+
+    expect(helpers.dataItem([{}, val, {}], val)).to.equal(val)
+
+    expect(helpers.dataItem([{}, val, {}], { value: 3 })).to.equal(val)
+
+    expect(helpers.dataItem([{}, val, {}], 3, 'value')).to.equal(val)
+  })
+
 
   it('should work with indexOf', function(){
     var val = { value: 3 }

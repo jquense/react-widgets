@@ -26,10 +26,13 @@ export function dataText(item, textField){
 
 export function dataIndexOf(data, item, valueField){
   var idx = -1, len = data.length
-    , finder = datum => valueMatcher(item, datum, valueField);
+    , isValueEqual = datum => valueMatcher(item, datum, valueField);
 
-  while (++idx < len)
-    if (finder(data[idx])) return idx
+  while (++idx < len) {
+    var datum = data[idx];
+    if (datum === item || isValueEqual(datum))
+      return idx
+  }
 
   return -1
 }
@@ -44,16 +47,7 @@ export function valueMatcher(a, b, valueField){
 }
 
 export function dataItem(data, item, valueField) {
-  var first = data[0]
-    , idx;
-
-  // make an attempt to see if we were passed in dataItem vs just a valueField value
-  // either an object with the right prop, or a primitive
-  // { valueField: 5 } || "hello" [ "hello" ]
-  if (has(item, valueField) || typeof first === typeof item)
-    return item
-
-  idx = dataIndexOf(data, dataValue(item, valueField), valueField)
+  var idx = dataIndexOf(data, dataValue(item, valueField), valueField)
 
   if (idx !== -1)
     return data[idx]
