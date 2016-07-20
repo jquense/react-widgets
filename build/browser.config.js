@@ -10,10 +10,7 @@ module.exports = makeConfig({
   minimize: false,
 
   entry: {
-    'react-widgets': './lib/index.js',
-    'react-widgets-globalize': './lib/localizers/globalize.js',
-    'react-widgets-moment': './lib/localizers/moment.js',
-    'react-widgets-simple-number': './lib/localizers/simple-number.js'
+    'react-widgets': './lib/index.js'
   },
 
   output: {
@@ -23,10 +20,7 @@ module.exports = makeConfig({
     libraryTarget: 'umd'
   },
 
-  externals: {
-    '../configure': 'ReactWidgets',
-
-    'react-dom': {
+  externals: {   'react-dom': {
       root: 'ReactDOM',
       commonjs: 'react-dom',
       commonjs2: 'react-dom'
