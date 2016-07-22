@@ -91,14 +91,14 @@ export default React.createClass({
     let { className, role, data, messages } = this.props
     let { sortedKeys, groups } = this.state;
 
-    let props = _.omitOwnProps(this);
+    let elementProps = _.omitOwnProps(this);
 
     let items = []
       , idx = -1
       , group;
 
     let id = instanceId(this);
-    
+
     this._currentActiveID = null;
 
     if (data.length) {
@@ -124,7 +124,7 @@ export default React.createClass({
         tabIndex='-1'
         className={cn(className, 'rw-list', 'rw-list-grouped')}
         role={role === undefined ? 'listbox' : role }
-        { ...props }
+        {...elementProps}
       >
         { items }
       </ul>

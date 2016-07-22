@@ -77,7 +77,7 @@ export default React.createClass({
     let id = instanceId(this)
       , items;
 
-    let props = _.omitOwnProps(this);
+    let elementProps = _.omitOwnProps(this);
 
     items = !data.length
       ? (
@@ -86,8 +86,8 @@ export default React.createClass({
         </li>
       ) : data.map((item, idx) => {
           var currentId = optionId(id, idx)
-            , isDisabled = isDisabledItem(item, props)
-            , isReadOnly = isReadOnlyItem(item, props);
+            , isDisabled = isDisabledItem(item, this.props)
+            , isReadOnly = isReadOnlyItem(item, this.props);
 
           return (
             <Option
@@ -120,7 +120,7 @@ export default React.createClass({
         tabIndex='-1'
         className={cn(className, 'rw-list')}
         role={role === undefined ? 'listbox' : role}
-        {...props}
+        {...elementProps}
       >
         { items }
       </ul>
