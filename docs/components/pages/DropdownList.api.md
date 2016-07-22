@@ -97,7 +97,7 @@ relevant when the `filter` prop is set.
 
 ### onSearch?{ type: 'Function(String searchTerm)' }
 
-Called when the value of the filter input changes either from typing or a pasted value.
+Called when the value of the filter input changes either from typing or a pasted value.&nbsp;
 `onSearch` should be used when the `searchTerm` prop
 is set.
 
