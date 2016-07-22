@@ -6,20 +6,20 @@ The current value of the {widgetName}. This can be an object (such as a member o
 
 ### onChange?{ type: 'Function(Any value)' }
 
-Change event Handler that is called when the value is changed.
+This handler is called when the value is changed.
 
 <EditableExample codeText={require('../examples/onChange')(widgetName)}/>
 
 ### onSelect?{ type: 'Function(Any value)' }
 
-This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires
+This handler fires when an item has been selected from the list. It fires before the `onChange` handler and fires
 regardless of whether the value has actually changed.
 
 <EditableExample codeText={require('../examples/onSelect')(widgetName)}/>
 
 ### data?{ type: 'Array<Any>' }
 
-provide an array of possible values for the ${widgetName}. If an array of `objects` is provided you
+Provide an array of possible values for the ${widgetName}. If an array of `objects` is provided you
 should use the `valueField` and `textField` props, to specify which object
 properties comprise the value field (such as an id) and the field used to label the item.
 
@@ -36,28 +36,28 @@ the `value` in the `data` list.
 
 ### textField?{ type: 'String | Function(dataItem)' }
 
-{`Specify which data item field to display in the ${widgetName} and selected item. The `}`textField`{`prop
-may also also used as to find an item in the list as you type. Providing an accessor function allows for computed text values`}
+Specify which data item field to display in the ${widgetName} and selected item. The `textField`prop
+may also be used to find an item in the list as you type. Providing an accessor function allows for computed text values.
 
 <EditableExample codeText={require('../examples/textField')(widgetName)}/>
 
 ### valueComponent?{ type: 'Component' }
 
 This component is used to render the selected value of the ${widgetName}. The default component
-renders the text of the selected item (specified by `textfield`)
+renders the text of the selected item (specified by `textField`)
 
 <EditableExample codeText={require('../examples/valueComponent')(widgetName)}/>
 
 ### itemComponent?{ type: 'Component' }
 
 This component is used to render each possible item in the ${widgetName}. The default component
-renders the text of the selected item (specified by `textfield`)
+renders the text of the selected item (specified by `textField`)
 
 <EditableExample codeText={require('../examples/itemComponent')(widgetName)}/>
 
 ### disabled?{ type: '[Boolean, Array]' }
 
-Disable the widget, if an `Array` of values is passed in only those values will be disabled.
+Disable the widget; if an `Array` of values is passed in only those values will be disabled.
 
 <EditableExample codeText={require('../examples/disabled')(widgetName, 'disabled', false)}/>
 
@@ -121,7 +121,7 @@ Specify a filtering method used to reduce the items in the dropdown as you type.
 methods that can be specified by passing the `String` name.
 
 To handle custom filtering techniques provide a `function` that returns `true` or `false` for each passed in item
-(analogous to the [array.filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) builtin)
+(analogous to the [Array.filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) builtin)
 
 Acceptable values for filter are: `false` `"startsWith"` `"endsWith"` `"contains"` `function(String item)`
 
@@ -135,7 +135,7 @@ Use in conjunction with the filter prop. Start filtering the list only after the
 
 ### busy?{ type: 'Boolean', default: "false" }
 
-mark whether the widget is in a busy or loading state. If `true` the widget will display a spinner gif, useful
+Mark whether the widget is in a busy or loading state. If `true` the widget will display a spinner gif, useful
 when loading data via an ajax call.
 
 <EditableExample codeText={require('../examples/busy')(widgetName)}/>
@@ -147,7 +147,7 @@ The speed, in milliseconds, of the dropdown animation.
 
 ### isRtl?{ type: 'Boolean', default: "false" }
 
-mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
+Mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
  a `childContext` prop (`isRtl`) this allows higher level application components to specify the direction.
 
 ### messages?{ type: 'Object' }
