@@ -2,7 +2,7 @@
 /* Normalize.css */
 
 .rw-btn,
-.rw-input {
+.rw-input-reset {
   color: inherit;
   font: inherit;
   padding: 0;
@@ -13,16 +13,15 @@
   background-image: none;
 }
 
-button.rw-input {
-  overflow: visible;
+.rw-btn::-moz-focus-inner {
+  padding: 0;
+  border: 0;
 }
 
-button.rw-input,
 select.rw-input {
   text-transform: none;
 }
 
-button.rw-input,
 html input[type="button"].rw-input,
 input[type="reset"].rw-input,
 input[type="submit"].rw-input {

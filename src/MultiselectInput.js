@@ -23,7 +23,7 @@ class MultiselectInput extends React.Component {
         <input
           {...props}
           size={size}
-          className='rw-input'
+          className="rw-input-reset"
           autoComplete='off'
           aria-disabled={disabled}
           aria-readonly={readOnly}

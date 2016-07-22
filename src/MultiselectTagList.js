@@ -1,11 +1,12 @@
 import React from 'react';
+
+import MultiselectTag from './MultiselectTag';
 import _  from './util/_';
-import cn from 'classnames';
 import CustomPropTypes from './util/propTypes';
 import { instanceId } from './util/widgetHelpers';
 import { dataText } from './util/dataHelpers';
 
-import { isDisabled, isDisabledItem, isReadOnlyItem } from './util/interaction';
+import { isDisabledItem, isReadOnlyItem } from './util/interaction';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
@@ -61,44 +62,25 @@ export default React.createClass({
         role='listbox'
         className='rw-multiselect-taglist'
       >
-        { value.map( (item, i) => {
-          let isDisabled = isDisabledItem(item, this.props)
-            , isReadonly = isReadOnlyItem(item, this.props)
-            , isFocused  = !isDisabled && focused === i
-            , currentID  = optionId(id, i);
-
-          let clickHandler;
-          if (!isDisabled && !isReadonly)
-            clickHandler = this.handleDelete.bind(null, item);
+        {value.map( (item, i) => {
+          let currentID  = optionId(id, i);
 
           return (
-            <li
+            <MultiselectTag
               key={i}
               id={currentID}
-              tabIndex='-1'
-              role='option'
-              className={cn(
-                'rw-multiselect-tag',
-                isFocused && 'rw-state-focus',
-                isDisabled && 'rw-state-disabled',
-                isReadonly && 'rw-state-readonly'
-              )}
+              value={item}
+              focused={focused === i}
+              onClick={this.handleDelete}
+              disabled={isDisabledItem(item, this.props)}
+              readOnly={isReadOnlyItem(item, this.props)}
             >
               {ValueComponent
                 ? <ValueComponent item={item }/>
-                : dataText(item, textField)
+                : <span>{dataText(item, textField)}</span>
               }
-              <span
-                tabIndex='-1'
-                className='rw-tag-btn'
-                onClick={clickHandler}
-                aria-disabled={isDisabled}
-                aria-label='Unselect'
-                disabled={isDisabled}
-              >
-                <span aria-hidden="true">&times;</span>
-              </span>
-            </li>)
+            </MultiselectTag>
+          )
         })}
       </ul>
     )

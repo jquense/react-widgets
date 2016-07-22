@@ -66,7 +66,8 @@ export default React.createClass({
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      contentChanged: childKey(nextProps.children) !== childKey(this.props.children)
+      contentChanged:
+        childKey(nextProps.children) !== childKey(this.props.children)
     })
   },
 
@@ -124,26 +125,25 @@ export default React.createClass({
           this.isTransitioning() && 'rw-popup-animating'
         )}
       >
-        { this.renderChildren() }
+        {this.renderChildren()}
       </div>
     )
   },
 
   renderChildren() {
-    if (!this.props.children)
-      return <span className='rw-popup rw-widget' />
-
     let offset = this.getOffsetForStatus(this.state.status)
       , child = React.Children.only(this.props.children)
 
-    return cloneElement(child, {
-      style: {
-        ...child.props.style,
-        ...offset,
-        position: this.isTransitioning() ? 'absolute' : undefined
-      },
-      className: cn(child.props.className, 'rw-popup rw-widget')
-    });
+    return (
+      <div
+        className="rw-popup-animation-box"
+        style={offset}
+      >
+        {cloneElement(child, {
+          className: cn(child.props.className, 'rw-popup')
+        })}
+      </div>
+    );
   },
 
   open() {
@@ -235,7 +235,9 @@ export default React.createClass({
   },
 
   safeSetState(nextState, callback) {
-    this.setState(nextState, this.setNextCallback(callback));
+    if (this.isMounted()) {
+      this.setState(nextState, this.setNextCallback(callback));
+    }
   },
 
   setNextCallback(callback) {

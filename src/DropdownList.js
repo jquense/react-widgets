@@ -5,7 +5,7 @@ import cx from 'classnames';
 import _  from './util/_';
 
 import Widget from './Widget';
-import Input from './Input';
+import WidgetPicker from './WidgetPicker';
 import Select from './Select';
 import DropdownListInput from './DropdownListInput';
 import Popup           from './Popup';
@@ -53,7 +53,7 @@ var propTypes = {
   placeholder:    React.PropTypes.string,
 
   disabled:       CustomPropTypes.disabled.acceptsArray,
-  readOnly:       CustomPropTypes.readOnly.acceptsArray,
+  readOnly:       CustomPropTypes.readOnly,
 
   messages:       React.PropTypes.shape({
     open:              CustomPropTypes.message,
@@ -129,18 +129,19 @@ var DropdownList = React.createClass({
 
   renderFilter(messages){
     return (
-      <div
+       <WidgetPicker
         ref='filterWrapper'
-        className='rw-filter-input rw-widget rw-widget-picker'
+        className="rw-filter-input rw-input"
       >
-        <Select component='span' icon='search' />
-        <Input
+        <Select component="span" icon='search' />
+        <input
           ref='filter'
           value={this.props.searchTerm}
+          className="rw-input-reset"
           placeholder={_.result(messages.filterPlaceholder, this.props)}
           onChange={e => notify(this.props.onSearch, e.target.value)}
         />
-      </div>
+      </WidgetPicker>
     )
   },
 
@@ -153,8 +154,9 @@ var DropdownList = React.createClass({
 
     return (
       <div>
-        { filter && this.renderFilter(messages) }
-
+        {filter &&
+          this.renderFilter(messages)
+        }
         <List
           {...listProps}
           ref="list"
@@ -225,33 +227,36 @@ var DropdownList = React.createClass({
       <Widget
         {...elementProps}
         ref="input"
-        picker
-        open={open}
-        dropUp={dropUp}
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
-        className={cx(className, 'rw-dropdownlist')}
+        className={cx(className, 'rw-dropdown-list')}
       >
-        <Select
-          busy={busy}
-          icon="caret-down"
-          component='span'
-          className="rw-dropdownlist-picker"
-          label={result(messages.open, this.props)}
-        />
-        <DropdownListInput
-          value={valueItem}
-          textField={textField}
-          placeholder={placeholder}
-          valueComponent={valueComponent}
-        />
-
+        <WidgetPicker
+          open={open}
+          dropUp={dropUp}
+          focused={focused}
+          disabled={disabled}
+          readOnly={readOnly}
+          className="rw-widget-input"
+        >
+          <DropdownListInput
+            value={valueItem}
+            textField={textField}
+            placeholder={placeholder}
+            valueComponent={valueComponent}
+          />
+          <Select
+            busy={busy}
+            icon="caret-down"
+            role="presentational"
+            aria-hidden="true"
+            disabled={disabled || readOnly}
+            label={result(messages.open, this.props)}
+          />
+        </WidgetPicker>
         {shouldRenderPopup &&
           <Popup
             open={open}

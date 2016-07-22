@@ -2,97 +2,74 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import Container from './Container';
-import DropdownList from '../src/DropdownList';
+import Numberpicker from '../src/Numberpicker';
 
 let generateNames = global.generateNames;
 
 let props = {
-  data: generateNames(),
-  valueField: 'id',
-  textField: 'fullName'
+
 }
 
-storiesOf('DropdownList', module)
-  .add('DropdownList', () =>
+storiesOf('Numberpicker', module)
+  .add('Numberpicker', () =>
     <Container>
-      <DropdownList
+      <Numberpicker
         {...props}
-        filter="contains"
       />
     </Container>
   )
   .add('filter', () =>
     <Container>
-      <DropdownList
+      <Numberpicker
         {...props}
         open
         filter="contains"
       />
     </Container>
   )
-  .add('busy', () =>
-    <Container>
-      <DropdownList
-        {...props}
-        busy
-        defaultValue={props.data[1]}
-      />
-    </Container>
-  )
   .add('right to left', () =>
     <Container>
-      <DropdownList
+      <Numberpicker
         {...props}
         isRtl
-        busy
-        defaultValue={props.data[1]}
+        defaultValue={2405}
       />
     </Container>
   )
   .add('ellipsis', () =>
     <Container>
-      <DropdownList
+      <Numberpicker
         {...props}
         style={{ width: 80 }}
-        defaultValue={props.data[1]}
+        defaultValue={2405}
       />
     </Container>
   )
   .add('grouped', () =>
     <Container>
-      <DropdownList
+      <Numberpicker
         {...props}
         defaultOpen
-        defaultValue={props.data[1]}
+        defaultValue={2405}
         groupBy="last"
       />
     </Container>
   )
   .add('disabled', () =>
     <Container>
-      <DropdownList
+      <Numberpicker
         {...props}
         disabled
-        defaultValue={props.data[1]}
-      />
-    </Container>
-  )
-  .add('disabled items', () =>
-    <Container>
-      <DropdownList
-        {...props}
-        open
-        disabled={[props.data[2]]}
-        defaultValue={props.data[1]}
+        defaultValue={2405}
       />
     </Container>
   )
   .add('readonly', () =>
     <Container>
-      <DropdownList
+      <Numberpicker
         {...props}
         readOnly
-        defaultValue={props.data[1]}
+        defaultValue={2405}
       />
     </Container>
   )

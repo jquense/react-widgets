@@ -45,9 +45,9 @@ let YearView = React.createClass({
 
     return (
       <CalendarView {..._.omitOwnProps(this)}>
-        <tbody>
+        <CalendarView.Body>
           {_.chunk(months, 4).map(this.renderRow)}
-        </tbody>
+        </CalendarView.Body>
       </CalendarView>
     )
   },

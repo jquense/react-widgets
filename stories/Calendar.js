@@ -2,31 +2,36 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import Container from './Container';
-import DateTimePicker from '../src/DateTimePicker';
+import Calendar from '../src/Calendar';
 
 let generateNames = global.generateNames;
 
 
 
-storiesOf('DateTimePicker', module)
-  .add('DateTimePicker', () =>
+storiesOf('Calendar', module)
+  .add('Calendar', () =>
     <Container>
-      <DateTimePicker
-      />
+      <Calendar />
     </Container>
   )
-  .add('time', () =>
+  .add('min', () =>
     <Container>
-      <DateTimePicker
-        open="time"
-      />
+      <Calendar min={new Date()} />
     </Container>
   )
-  .add('calendar', () =>
+  .add('max', () =>
     <Container>
-      <DateTimePicker
-        open="calendar"
-      />
+      <Calendar max={new Date()}  />
+    </Container>
+  )
+  .add('disabled', () =>
+    <Container>
+      <Calendar disabled />
+    </Container>
+  )
+  .add('readOnly', () =>
+    <Container>
+      <Calendar readOnly />
     </Container>
   )
   .add('current date', () => {
@@ -37,7 +42,7 @@ storiesOf('DateTimePicker', module)
 
       render = () => (
         <Container>
-          <DateTimePicker
+          <Calendar
             value={this.state && this.state.value}
             onChange={this.onChange}
           />

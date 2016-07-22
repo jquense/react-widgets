@@ -2,6 +2,8 @@ import React  from 'react';
 import invariant from 'invariant';
 import activeElement from 'dom-helpers/activeElement';
 import cn from 'classnames';
+import createUncontrolledWidget from 'uncontrollable';
+
 import compat from './util/compat';
 import _      from './util/_'; //pick, omit, has
 
@@ -12,14 +14,15 @@ import {
   datePopups as popups }  from './util/constants';
 
 import Widget from './Widget';
+import WidgetPicker from './WidgetPicker';
 import Popup from './Popup';
-import BaseCalendar from './Calendar';
-import TimeList from './TimeList';
-import DateTimePickerInput from './DateTimePickerInput';
 import Button from './Button';
+import BaseCalendar from './Calendar';
+import DateTimePickerInput from './DateTimePickerInput';
+import Select  from './Select';
+import TimeList from './TimeList';
 import CustomPropTypes from './util/propTypes';
-import createUncontrolledWidget from 'uncontrollable';
-import { widgetEditable } from './util/interaction';
+import { widgetEditable, isReadOnly, isDisabled } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let Calendar = BaseCalendar.ControlledComponent;
@@ -186,33 +189,34 @@ var DateTimePicker = React.createClass({
   },
 
   renderButtons(messages) {
-    let { calendar, time, disabled, readOnly } = this.props;
+    let { calendar, time } = this.props;
 
     if (!calendar && !time) {
       return null;
     }
 
+    let disabled = isDisabled(this.props)
+    let readOnly = isReadOnly(this.props)
+
     return (
-      <span className='rw-select rw-select-bordered'>
+      <Select bordered>
         {calendar &&
           <Button
             icon="calendar"
-            className='rw-btn-calendar'
             label={messages.calendarButton}
-            disabled={!!(disabled || readOnly)}
+            disabled={disabled || readOnly}
             onClick={this._click.bind(null, popups.CALENDAR)}
           />
         }
         {time &&
           <Button
             icon="clock-o"
-            className='rw-btn-time'
             label={messages.timeButton}
-            disabled={!!(disabled || readOnly)}
+            disabled={disabled || readOnly}
             onClick={this._click.bind(null, popups.TIME)}
           />
         }
-      </span>
+      </Select>
     )
   },
 
@@ -301,8 +305,6 @@ var DateTimePicker = React.createClass({
       , time
       , open
       , messages
-      , disabled
-      , readOnly
       , dropUp} = this.props;
 
     let { focused } = this.state;
@@ -319,29 +321,29 @@ var DateTimePicker = React.createClass({
     if (calendar) owns += dateListID
     if (time)     owns += ' ' + timeListID
 
+    let disabled = isDisabled(this.props)
+    let readOnly = isReadOnly(this.props)
+
     return (
       <Widget
         {...elementProps}
-        picker
-        open={!!open}
-        dropUp={dropUp}
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
-        className={cn(
-          className,
-          'rw-datetimepicker',
-          calendar && time && 'rw-has-both',
-          !calendar && !time && 'rw-has-neither',
-        )}
+        className={cn(className, 'rw-datetime-picker')}
       >
-        {this.renderInput(inputID, owns.trim())}
+        <WidgetPicker
+          open={!!open}
+          dropUp={dropUp}
+          focused={focused}
+          disabled={disabled}
+          readOnly={readOnly}
+        >
+          {this.renderInput(inputID, owns.trim())}
 
-        {this.renderButtons(messages)}
+          {this.renderButtons(messages)}
+        </WidgetPicker>
 
         {shouldRenderList &&
           this.renderTimeList(timeListID, inputID)

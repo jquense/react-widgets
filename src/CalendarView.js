@@ -53,20 +53,29 @@ class CalendarViewCell extends React.Component {
   }
 
   isNow() {
-    return this.isEqual(this.props.now)
+    return this.props.now && this.isEqual(this.props.now)
   }
 
   isFocused() {
-    return this.isEqual(this.props.focused)
+    return (
+      !this.props.disabled &&
+      !this.isEmpty() &&
+      this.isEqual(this.props.focused)
+    )
   }
 
   isSelected() {
-    return this.isEqual(this.props.selected)
+    return this.props.selected && this.isEqual(this.props.selected)
   }
 
   isOffView() {
     let { viewUnit, focused, date } = this.props;
-    return viewUnit && dates[viewUnit](date) !== dates[viewUnit](focused);
+    return (
+      date &&
+      focused &&
+      viewUnit &&
+      dates[viewUnit](date) !== dates[viewUnit](focused)
+    )
   }
 
   handleChange = () => {
@@ -76,10 +85,8 @@ class CalendarViewCell extends React.Component {
 
   render()  {
     let { children, id, label, disabled } = this.props;
+    let isDisabled = disabled || this.isEmpty()
 
-    if (this.isEmpty()) {
-      return <td className='rw-empty-cell' role='presentation'>&nbsp;</td>
-    }
 
     return (
       <td
@@ -89,25 +96,24 @@ class CalendarViewCell extends React.Component {
         aria-label={label}
         aria-readonly={disabled}
         aria-selected={this.isSelected()}
+        onClick={!isDisabled ? this.handleChange : undefined}
+        className={cn(
+          'rw-cell',
+          this.isNow() && 'rw-now',
+          isDisabled && 'rw-state-disabled',
+          this.isEmpty() && 'rw-cell-not-allowed',
+          this.isOffView() && 'rw-cell-off-range',
+          this.isFocused() && 'rw-state-focus',
+          this.isSelected() && 'rw-state-selected'
+        )}
       >
-        <span
-          aria-labelledby={id}
-          onClick={this.handleChange}
-          className={cn(
-            'rw-btn',
-            this.isNow() && 'rw-now',
-            this.isOffView() && 'rw-off-range',
-            this.isFocused() && 'rw-state-focus',
-            this.isSelected() && 'rw-state-selected'
-          )}
-        >
-          {children}
-        </span>
+        {children}
       </td>
     )
   }
 }
 
+CalendarView.Body = props => <tbody className='rw-calendar-body' {...props} />;
 CalendarView.Row = props => <tr role='row' {...props} />;
 CalendarView.Cell = CalendarViewCell;
 

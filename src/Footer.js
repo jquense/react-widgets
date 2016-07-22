@@ -6,7 +6,7 @@ export default function Footer({
   disabled,
   readOnly,
   value,
-  onClick, 
+  onClick,
   culture,
   format
 }) {

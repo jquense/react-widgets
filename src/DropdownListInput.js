@@ -19,7 +19,7 @@ class DropdownListInput extends React.Component {
       , valueComponent: Component } = this.props;
 
     return (
-      <div className="rw-input">
+      <div className="rw-input rw-dropdown-list-input">
         {!value && placeholder
           ? <span className='rw-placeholder'>{placeholder}</span>
           : Component

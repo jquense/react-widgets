@@ -45,7 +45,7 @@ let propTypes = {
     delay:          React.PropTypes.number,
 
     disabled:       CustomPropTypes.disabled.acceptsArray,
-    readOnly:       CustomPropTypes.readOnly.acceptsArray,
+    readOnly:       CustomPropTypes.readOnly,
 
     messages:       React.PropTypes.shape({
       emptyList:    React.PropTypes.string
@@ -157,13 +157,16 @@ var SelectList = React.createClass({
         onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
+        focused={focused}
         disabled={isDisabled(this.props)}
         readOnly={isReadOnly(this.props)}
-        role={'radiogroup'}
+        role="radiogroup"
         aria-busy={!!busy}
         className={cn(
           className,
-          'rw-selectlist',
+          'rw-select-list',
+          'rw-widget-input',
+          'rw-widget-container',
           busy && 'rw-loading-mask'
         )}
       >
@@ -186,7 +189,7 @@ var SelectList = React.createClass({
   _scrollTo(selected, list) {
     var handler = this.props.onMove;
 
-    if ( handler )
+    if (handler)
       handler(selected, list)
     else {
       this._scrollCancel && this._scrollCancel()
@@ -362,7 +365,7 @@ function getListItem(parent){
       let {
           children
         , disabled
-        , readonly
+        , readOnly
         , dataItem: item } = this.props;
 
       let {
@@ -379,22 +382,24 @@ function getListItem(parent){
           role={type}
           aria-checked={!!checked}
         >
-          <label onMouseDown={this.handleMouseDown}>
+          <label
+            onMouseDown={this.handleMouseDown}
+            className="rw-select-list-label"
+          >
             <input
               name={name}
               type={type}
               tabIndex='-1'
               role='presentation'
               checked={checked}
-              disabled={disabled || readonly}
+              className="rw-select-list-input"
+              disabled={disabled || readOnly}
               onChange={this.handleChange}
             />
               { children }
           </label>
         </ListOption>
       );
-
-
     }
   })
 }
