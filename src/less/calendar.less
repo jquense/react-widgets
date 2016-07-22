@@ -1,0 +1,79 @@
+
+
+.rw-calendar-popup {
+  right: auto;
+  min-width: 0;
+  width: 18em;
+}
+
+.rw-calendar {
+  border-radius: @border-radius;
+  background-color: @calendar-bg;
+  border:           @widget-border 1px solid;
+}
+
+.rw-now {
+  font-weight: bold;
+}
+
+.rw-btn-left,
+.rw-btn-right {
+  width: 12.5%;
+}
+
+.rw-btn-view {
+  width: 75%;
+}
+
+.rw-footer {
+  border-top: 1px solid @input-border;
+
+  &:hover {
+    background-color: @state-bg-hover;
+  }
+}
+
+.rw-calendar-grid {
+  outline: none;
+  height: 200 / 14em;
+  table-layout: fixed;
+  border-spacing: 0;
+  width: 100%;
+
+  th {
+    text-align: right;
+    border-bottom: 1px solid @input-border;
+    padding: @calendar-cell-padding;
+  }
+}
+
+
+.rw-cell {
+  color: @btn-color;
+  border-radius: @input-border-radius;
+  cursor: pointer;
+  line-height: normal;
+  text-align: center;
+  border: 1px solid transparent;
+  padding: @calendar-cell-padding;
+
+  &:hover {
+    background-color: @state-bg-hover;
+  }
+
+  &.rw-state-disabled {
+    .disabled-color(@btn-color);
+
+    &:hover {
+      background: none;
+    }
+  }
+
+  .rw-calendar-month & {
+    text-align: right;
+  }
+}
+
+.rw-cell-off-range {
+  color: lighten(@btn-color, 40%)
+}

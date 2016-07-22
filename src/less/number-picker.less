@@ -1,0 +1,20 @@
+
+.rw-number-picker {
+  @half-width: @input-height / 2;
+
+  .rw-btn {
+    .make-btn-state();
+    .height-calc(@half-width, @input-border-width);
+
+    display: block;
+    border: none;
+  }
+
+  & .rw-select {
+    &,
+    &:hover,
+    &:active {
+      box-shadow: none;
+    }
+  }
+}

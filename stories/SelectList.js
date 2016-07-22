@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import Container from './Container';
-import Multiselect from '../src/Multiselect';
+import SelectList from '../src/SelectList';
 
 let generateNames = global.generateNames;
 
@@ -12,26 +12,26 @@ let props = {
   textField: 'fullName'
 }
 
-storiesOf('Multiselect', module)
-  .add('Multiselect', () =>
+storiesOf('SelectList', module)
+  .add('SelectList', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
-        defaultValue={props.data.slice(0, 2)}
       />
     </Container>
   )
-  .add('open', () =>
+  .add('multiple', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
-        open
+        multiple
+        defaultValue={props.data.slice(0, 3)}
       />
     </Container>
   )
   .add('busy', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
         busy
         defaultValue={props.data.slice(0, 3)}
@@ -40,7 +40,7 @@ storiesOf('Multiselect', module)
   )
   .add('right to left', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
         isRtl
         busy
@@ -50,33 +50,26 @@ storiesOf('Multiselect', module)
   )
   .add('disabled', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
         disabled
         defaultValue={props.data.slice(0, 3)}
       />
     </Container>
   )
-  .add('readonly', () =>
+  .add('disabled items', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
-        readOnly
-        defaultValue={props.data.slice(0, 3)}
+        disabled={props.data[2]}
       />
     </Container>
   )
-  .add('tag component', () =>
+  .add('readonly', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
-        tagComponent={({ item }) =>
-          <span>
-            <strong>{item.first}</strong>
-            {' '}
-            <em>{item.last}</em>
-          </span>
-        }
+        readOnly
         defaultValue={props.data.slice(0, 3)}
       />
     </Container>

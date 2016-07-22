@@ -1,13 +1,11 @@
 import { valueMatcher } from './dataHelpers';
 
-export function isDisabled(props){
-  return props.disabled === true
-    || props.disabled === 'disabled'
+export function isDisabled({ disabled }) {
+  return disabled === true || disabled === 'disabled'
 }
 
-export function isReadOnly(props){
-  return props.readOnly === true
-    || props.readOnly === 'readOnly'
+export function isReadOnly({ readOnly }){
+  return readOnly === true || readOnly === 'readOnly'
 }
 
 export function isDisabledItem(item, props){

@@ -1,53 +1,68 @@
 import React from 'react';
-import cx    from 'classnames';
-import _     from './util/_';
-import compat from './util/compat';
-import CustomPropTypes from './util/propTypes';
+import cn from 'classnames';
 import createUncontrolledWidget from 'uncontrollable';
-import { directions } from './util/constants';
-import repeater from './util/repeater';
-import { number as numberLocalizer } from './util/localizers';
+
+import Widget from './Widget';
+import WidgetPicker from './WidgetPicker';
+import Select from './Select';
 import Input from './NumberInput';
 import Button from './Button';
 
 import { widgetEditable } from './util/interaction';
 import { notify } from './util/widgetHelpers';
-
+import _     from './util/_';
+import compat from './util/compat';
+import CustomPropTypes from './util/propTypes';
+import { directions } from './util/constants';
+import repeater from './util/repeater';
+import { number as numberLocalizer } from './util/localizers';
 
 var format = props => numberLocalizer.getFormat('default', props.format)
 
+
+function clamp(value, min, max) {
+  max = max == null ? Infinity : max
+  min = min == null ? -Infinity : min;
+
+  if (value == null || value === '')
+    return null
+
+  return Math.max(Math.min(value, max), min)
+}
+
 let propTypes = {
 
-      // -- controlled props -----------
-      value:          React.PropTypes.number,
-      onChange:       React.PropTypes.func,
-      //------------------------------------
+  // -- controlled props -----------
+  value:          React.PropTypes.number,
+  onChange:       React.PropTypes.func,
+  //------------------------------------
 
-      min:            React.PropTypes.number,
-      max:            React.PropTypes.number,
-      step:           React.PropTypes.number,
+  min:            React.PropTypes.number,
+  max:            React.PropTypes.number,
+  step:           React.PropTypes.number,
 
-      precision:      React.PropTypes.number,
+  precision:      React.PropTypes.number,
 
-      culture:        React.PropTypes.string,
+  culture:        React.PropTypes.string,
 
-      format:         CustomPropTypes.numberFormat,
+  format:         CustomPropTypes.numberFormat,
 
-      name:           React.PropTypes.string,
+  name:           React.PropTypes.string,
 
-      parse:          React.PropTypes.func,
+  parse:          React.PropTypes.func,
 
-      autoFocus:      React.PropTypes.bool,
-      disabled:       CustomPropTypes.disabled,
-      readOnly:       CustomPropTypes.readOnly,
+  autoFocus:      React.PropTypes.bool,
+  disabled:       CustomPropTypes.disabled,
+  readOnly:       CustomPropTypes.readOnly,
 
-      messages:       React.PropTypes.shape({
-        increment:    React.PropTypes.string,
-        decrement:    React.PropTypes.string
-      }),
+  messages:       React.PropTypes.shape({
+    increment:    React.PropTypes.string,
+    decrement:    React.PropTypes.string
+  }),
 
-      placeholder: React.PropTypes.string
-    };
+  placeholder: React.PropTypes.string
+};
+
 
 let NumberPicker = React.createClass({
 
@@ -64,9 +79,9 @@ let NumberPicker = React.createClass({
     })
   ],
 
-  propTypes: propTypes,
+  propTypes,
 
-  getDefaultProps(){
+  getDefaultProps() {
     return {
       value: null,
       open: false,
@@ -82,135 +97,161 @@ let NumberPicker = React.createClass({
     }
   },
 
-  getInitialState(){
+  getInitialState() {
     return {
       focused: false,
-      active: false
     }
   },
 
-
-  render(){
-    let { className, onKeyPress, onKeyUp, ...props } = _.omitOwnProps(this);
-
-    let val = this.constrainValue(this.props.value);
+  renderInput(value) {
+    let {
+        placeholder
+      , autoFocus
+      , tabIndex
+      , parse
+      , name
+      , onKeyPress, onKeyUp
+      , min, max
+      , disabled, readOnly
+      , format } = this.props;
 
     return (
-      <div
-        {...props }
-        ref="element"
-        onKeyDown={this._keyDown}
-        onFocus={this.handleFocus}
-        onBlur ={this.handleBlur}
-        tabIndex={'-1'}
-        className={cx(className, 'rw-numberpicker', 'rw-widget', {
-          'rw-state-focus':     this.state.focused,
-          'rw-state-disabled':  this.props.disabled,
-          'rw-state-readonly':  this.props.readOnly,
-          'rw-rtl':             this.isRtl()
-        })}>
-
-        <span className='rw-select rw-select-bordered'>
-          <Button
-            icon="caret-up"
-            onClick={this.handleFocus}
-            label={this.props.messages.increment}
-            active={this.state.active === directions.UP}
-            disabled={val === this.props.max || this.props.disabled}
-            onMouseUp={() => this.handleMouseUp(directions.UP)}
-            onMouseDown={() => this.handleMouseDown(directions.UP)}
-            onMouseLeave={() => this.handleMouseUp(directions.UP)}
-          />
-          <Button
-            icon="caret-down"
-            onClick={this.handleFocus}
-            label={this.props.messages.decrement}
-            active={this.state.active === directions.DOWN}
-            disabled={val === this.props.min || this.props.disabled}
-            onMouseUp={() => this.handleMouseUp(directions.DOWN)}
-            onMouseDown={() => this.handleMouseDown(directions.DOWN)}
-            onMouseLeave={() => this.handleMouseUp(directions.DOWN)}
-          />
-        </span>
-        <Input
-          ref='input'
-          tabIndex={props.tabIndex}
-          placeholder={this.props.placeholder}
-          value={val}
-          autoFocus={this.props.autoFocus}
-          editing={this.state.focused}
-          format={this.props.format}
-          parse={this.props.parse}
-          name={this.props.name}
-          role='spinbutton'
-          min={this.props.min}
-          aria-valuenow={val}
-          aria-valuemin={isFinite(this.props.min) ? this.props.min : null }
-          aria-valuemax={isFinite(this.props.max) ? this.props.max : null }
-          aria-disabled={ this.props.disabled }
-          aria-readonly={ this.props.readonly }
-          disabled={this.props.disabled}
-          readOnly={this.props.readOnly}
-          onChange={this.change}
-          onKeyPress={onKeyPress}
-          onKeyUp={onKeyUp}
-        />
-      </div>
+      <Input
+        ref='input'
+        role='spinbutton'
+        tabIndex={tabIndex}
+        value={value}
+        placeholder={placeholder}
+        autoFocus={autoFocus}
+        editing={this.state.focused}
+        format={format}
+        parse={parse}
+        name={name}
+        min={min}
+        max={max}
+        disabled={disabled}
+        readOnly={readOnly}
+        onChange={this.handleChange}
+        onKeyPress={onKeyPress}
+        onKeyUp={onKeyUp}
+      />
     )
   },
 
-  //allow for styling, focus stealing keeping me from the normal what have you
+  render(){
+    let {
+        className
+      , disabled
+      , readOnly
+      , value
+      , messages
+      , min
+      , max } = this.props;
+
+    let { focused } = this.state;
+    let elementProps = _.omitOwnProps(this);
+
+    value = clamp(value, min, max);
+
+    return (
+      <Widget
+        {...elementProps}
+        onBlur ={this.handleBlur}
+        onFocus={this.handleFocus}
+        onKeyDown={this.handleKeyDown}
+        className={cn(className, 'rw-number-picker')}
+      >
+        <WidgetPicker
+          focused={focused}
+          disabled={disabled}
+          readOnly={readOnly}
+        >
+          {this.renderInput(value)}
+          <Select bordered>
+            <Button
+              icon="caret-up"
+              onClick={this.handleFocus}
+              label={messages.increment}
+              disabled={value === max || disabled}
+              onMouseUp={() => this.handleMouseUp(directions.UP)}
+              onMouseDown={() => this.handleMouseDown(directions.UP)}
+              onMouseLeave={() => this.handleMouseUp(directions.UP)}
+            />
+            <Button
+              icon="caret-down"
+              onClick={this.handleFocus}
+              label={messages.decrement}
+              disabled={value === min || disabled}
+              onMouseUp={() => this.handleMouseUp(directions.DOWN)}
+              onMouseDown={() => this.handleMouseDown(directions.DOWN)}
+              onMouseLeave={() => this.handleMouseUp(directions.DOWN)}
+            />
+          </Select>
+        </WidgetPicker>
+      </Widget>
+    )
+  },
+
   @widgetEditable
-  handleMouseDown(dir) {
-    var method = dir === directions.UP
+  handleMouseDown(direction) {
+    let { min, max } = this.props;
+
+    let method = direction === directions.UP
       ? this.increment
       : this.decrement
 
+    let value = method.call(this)
+      , atTop = direction === directions.UP && value === max
+      , atBottom = direction === directions.DOWN && value === min
 
-    this.setState({ active: dir })
-
-    var val = method.call(this)
-
-    if( !((dir === directions.UP && val === this.props.max)
-      || (dir === directions.DOWN && val === this.props.min)))
-    {
-      if(!this._cancelRepeater)
-        this._cancelRepeater = repeater(this.handleMouseDown.bind(null, dir))
-    }
-    else
+    if (atTop || atBottom)
       this.handleMouseUp()
+
+    else if (!this._cancelRepeater)
+      this._cancelRepeater = repeater(() =>
+        this.handleMouseDown(direction)
+      )
   },
 
   @widgetEditable
   handleMouseUp() {
-    this.setState({ active: false })
     this._cancelRepeater && this._cancelRepeater()
     this._cancelRepeater = null;
   },
 
   @widgetEditable
-  _keyDown(e) {
-    var key = e.key;
+  handleKeyDown(event) {
+    let { min, max, onKeyDown } = this.props;
+    let key = event.key;
 
-    notify(this.props.onKeyDown, [e])
+    notify(onKeyDown, [event])
 
-    if (e.defaultPrevented)
+    if (event.defaultPrevented)
       return
 
-    if ( key === 'End'  && isFinite(this.props.max))
-      this.change(this.props.max)
+    if (key === 'End' && isFinite(max))
+      this.handleChange(max)
 
-    else if ( key === 'Home' && isFinite(this.props.min))
-      this.change(this.props.min)
+    else if (key === 'Home' && isFinite(min))
+      this.handleChange(min)
 
-    else if ( key === 'ArrowDown' ){
-      e.preventDefault()
+    else if ( key === 'ArrowDown') {
+      event.preventDefault()
       this.decrement()
     }
-    else if ( key === 'ArrowUp' ){
-      e.preventDefault()
+    else if ( key === 'ArrowUp') {
+      event.preventDefault()
       this.increment()
     }
+  },
+
+  handleChange(newValue) {
+    let { onChange, value, min, max } = this.props;
+
+    newValue = clamp(newValue, min, max);
+
+    if (value !== newValue)
+      notify(onChange, newValue)
   },
 
   focus() {
@@ -232,29 +273,11 @@ let NumberPicker = React.createClass({
       ? this.props.precision
       : numberLocalizer.precision(format(this.props))
 
-    this.change(
+    this.handleChange(
       decimals != null ? round(value, decimals) : value)
 
     return value
   },
-
-  change(val) {
-    val = this.constrainValue(val)
-
-    if ( this.props.value !== val )
-      notify(this.props.onChange, val)
-  },
-
-  constrainValue(value){
-    var max = this.props.max == null ? Infinity : this.props.max
-      , min = this.props.min == null ? -Infinity : this.props.min;
-
-    if( value == null || value === '' )
-      return null
-
-    return Math.max(Math.min(value, max), min)
-  }
-
 })
 
 

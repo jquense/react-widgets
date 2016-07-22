@@ -44,11 +44,11 @@ export default React.createClass({
 
     return (
       <CalendarView {..._.omitOwnProps(this)}>
-        <tbody>
+        <CalendarView.Body>
           {_.chunk(getCenturyDecades(focused), 4)
             .map(this.renderRow)
           }
-        </tbody>
+        </CalendarView.Body>
       </CalendarView>
     )
   },

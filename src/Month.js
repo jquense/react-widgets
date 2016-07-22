@@ -53,7 +53,10 @@ let MonthView = React.createClass({
       , rows  = _.chunk(month, 7);
 
     return (
-      <CalendarView {..._.omitOwnProps(this)}>
+      <CalendarView
+        {..._.omitOwnProps(this)}
+        className="rw-calendar-month"
+      >
         <thead>
           <tr>
             {this.renderHeaders(
@@ -63,17 +66,21 @@ let MonthView = React.createClass({
             )}
           </tr>
         </thead>
-        <tbody>
+        <CalendarView.Body >
           {rows.map(this.renderRow)}
-        </tbody>
+        </CalendarView.Body>
       </CalendarView>
     )
   },
 
   renderRow(row, rowIdx) {
     let {
-        focused, today, disabled, onChange
-      , value, culture, min, max
+        focused
+      , today
+      , disabled
+      , onChange
+      , value
+      , culture, min, max
       , dayComponent: Day } = this.props
       , id = instanceId(this)
       , labelFormat = dateLocalizer.getFormat('footer');

@@ -4,6 +4,8 @@ import _  from './util/_';
 import createUncontrolledWidget from 'uncontrollable';
 
 import Widget from './Widget';
+import WidgetPicker from './WidgetPicker';
+import Select from './Select';
 import Popup from './Popup';
 import SelectInput from './MultiselectInput';
 import TagList from './MultiselectTagList';
@@ -13,7 +15,7 @@ import GroupableList from './ListGroupable';
 
 import validateList from './util/validateListInterface';
 import { dataItem, dataText, valueMatcher } from './util/dataHelpers';
-import { widgetEditable } from './util/interaction';
+import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
@@ -62,7 +64,7 @@ var propTypes = {
 
   autoFocus:      React.PropTypes.bool,
   disabled:       CustomPropTypes.disabled.acceptsArray,
-  readOnly:       CustomPropTypes.readOnly.acceptsArray,
+  readOnly:       CustomPropTypes.readOnly,
 
   messages:        React.PropTypes.shape({
     open:          CustomPropTypes.message,
@@ -91,8 +93,8 @@ var Multiselect = React.createClass({
         if (!focused && this.refs.tagList)
           this.setState({ focusedTag: null })
 
-        if (focused && !this.props.open)
-          this.open()
+        // if (focused && !this.props.open && !this.props.readOnly === true)
+        //   this.open()
       }
     }),
     require('./mixins/AriaDescendantMixin')('input', function(key, id){
@@ -200,9 +202,10 @@ var Multiselect = React.createClass({
       , maxLength
       , tabIndex
       , busy
-      , open
-      , disabled
-      , readOnly } = this.props;
+      , open } = this.props;
+
+    let disabled = isDisabled(this.props)
+    let readOnly = isReadOnly(this.props)
 
     return (
       <SelectInput
@@ -216,40 +219,35 @@ var Multiselect = React.createClass({
         aria-haspopup={true}
         value={searchTerm}
         maxLength={maxLength}
-        disabled={disabled === true}
-        readOnly={readOnly === true}
+        disabled={disabled}
+        readOnly={readOnly}
         placeholder={this.getPlaceholder()}
         onKeyDown={this.handleSearchKeyDown}
         onKeyUp={this.handleSearchKeyUp}
         onChange={this.handleInputChange}
-        onClick={this.handleInputInteraction}
-        onTouchEnd={this.handleInputInteraction}
       />
     )
   },
 
   renderList(List, id, messages) {
-    let { open, disabled, readOnly } = this.props;
+    let { open } = this.props;
     let { focusedItem } = this.state;
 
     let listProps = _.pickProps(this.props, List);
     let items  = this._data();
 
     return (
-      <List ref="list"
-        key={0}
+      <List ref="list" key={0}
         {...listProps}
-        readOnly={readOnly}
-        disabled={disabled}
         id={id}
-        aria-live='polite'
-        aria-labelledby={instanceId(this)}
-        aria-hidden={!open}
-        ariaActiveDescendantKey='list'
         data={items}
         focused={focusedItem}
         onSelect={this.handleSelect}
         onMove={this._scrollTo}
+        aria-live='polite'
+        aria-labelledby={instanceId(this)}
+        aria-hidden={!open}
+        ariaActiveDescendantKey='list'
         messages={{
           emptyList: this._lengthWithoutValues
             ? messages.emptyFilter
@@ -314,8 +312,6 @@ var Multiselect = React.createClass({
       , dropUp
       , open
       , duration
-      , disabled
-      , readOnly
       , listComponent: List } = this.props;
 
     let { focused, dataItems } = this.state;
@@ -337,31 +333,47 @@ var Multiselect = React.createClass({
       + (shouldRenderTags ? tagsID : '')
       + (shouldShowCreate ? createID : '');
 
+    let disabled = isDisabled(this.props)
+    let readOnly = isReadOnly(this.props)
+
     messages = msgs(messages);
 
     return (
       <Widget
         {...elementProps}
-        picker
         id={instanceId(this)}
-        open={open}
-        dropUp={dropUp}
-        focused={focused}
-        disabled={disabled === true}
-        readOnly={readOnly === true}
         onKeyDown={this.handleKeyDown}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
-        onTouchEnd={this.handleFocus}
         className={cn(className, 'rw-multiselect')}
       >
         {this.renderNotificationArea(notifyID, messages)}
-        {busy && <i className="rw-i rw-loading" />}
+        <WidgetPicker
+          open={open}
+          dropUp={dropUp}
+          focused={focused}
+          disabled={disabled}
+          readOnly={readOnly}
+          className="rw-widget-input"
+          onClick={this.handleClick}
+          onTouchEnd={this.handleClick}
+        >
+          <div>
+            {shouldRenderTags &&
+              this.renderTags(tagsID, messages)
+            }
+            {this.renderInput(inputOwns)}
+          </div>
 
-        {shouldRenderTags &&
-          this.renderTags(tagsID, messages)
-        }
-        {this.renderInput(inputOwns)}
+          <Select
+            busy={busy}
+            icon={focused ? 'caret-down' :''}
+            aria-hidden="true"
+            role="presentational"
+            disabled={disabled || readOnly}
+          />
+        </WidgetPicker>
+
 
         {shouldRenderPopup &&
           <Popup
@@ -409,7 +421,7 @@ var Multiselect = React.createClass({
   },
 
   @widgetEditable
-  handleInputInteraction() {
+  handleClick() {
     this.open()
   },
 
@@ -456,7 +468,7 @@ var Multiselect = React.createClass({
     if (e.defaultPrevented)
       return
 
-    if ( key === 'ArrowDown') {
+    if (key === 'ArrowDown') {
       var next = list.next(focusedItem)
         , creating = (this.shouldShowCreate() && focusedItem === next) || focusedItem === null;
 
@@ -507,6 +519,10 @@ var Multiselect = React.createClass({
     else if (noSearch && key === 'Backspace')
       tagList && tagList.removeNext()
 
+    else if (noSearch && key === ' ' && !isOpen) {
+      e.preventDefault()
+      this.open()
+    }
   },
 
   @widgetEditable

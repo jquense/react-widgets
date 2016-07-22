@@ -222,7 +222,7 @@ let Calendar = React.createClass({
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
-        className={cn(className, 'rw-calendar')}
+        className={cn(className, 'rw-calendar rw-widget-container')}
       >
         <Header
           label={this._label()}
@@ -247,6 +247,7 @@ let Calendar = React.createClass({
             id={viewID}
             value={value}
             today={todaysDate}
+            disabled={disabled}
             focused={currentDate}
             onChange={this.change}
             onKeyDown={this.handleKeyDown}

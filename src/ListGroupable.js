@@ -36,7 +36,6 @@ export default React.createClass({
     textField:      CustomPropTypes.accessor,
 
     disabled:       CustomPropTypes.disabled.acceptsArray,
-    readOnly:       CustomPropTypes.readOnly.acceptsArray,
 
     groupBy:        CustomPropTypes.accessor,
 
@@ -115,7 +114,11 @@ export default React.createClass({
         }, [])
     }
     else
-      items = <li className='rw-list-empty'>{ _.result(messages.emptyList, this.props) }</li>
+      items = (
+        <li className='rw-list-empty'>
+          {_.result(messages.emptyList, this.props)}
+        </li>
+      )
 
     return (
       <ul
@@ -156,8 +159,7 @@ export default React.createClass({
       , optionComponent: Option } = this.props
 
     let currentID = optionId(instanceId(this), idx)
-      , isDisabled = isDisabledItem(item, this.props)
-      , isReadOnly = isReadOnlyItem(item, this.props);
+      , isDisabled = isDisabledItem(item, this.props);
 
     if (focused === item)
       this._currentActiveID = currentID;
@@ -170,8 +172,7 @@ export default React.createClass({
         focused={focused === item}
         selected={selected === item}
         disabled={isDisabled}
-        readOnly={isReadOnly}
-        onClick={isDisabled || isReadOnly ? undefined : onSelect.bind(null, item)}
+        onClick={isDisabled ? undefined : onSelect.bind(null, item)}
       >
         { ItemComponent
             ? <ItemComponent
@@ -179,7 +180,6 @@ export default React.createClass({
                 value={dataValue(item, valueField)}
                 text={dataText(item, textField)}
                 disabled={isDisabled}
-                readOnly={isReadOnly}
               />
             : dataText(item, textField)
         }

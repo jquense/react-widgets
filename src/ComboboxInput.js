@@ -43,6 +43,7 @@ export default React.createClass({
     return (
       <Input
         {...props}
+        className="rw-widget-input"
         onKeyDown={onKeyDown}
         onChange={this.handleChange}
       />

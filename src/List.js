@@ -6,7 +6,7 @@ import cn from 'classnames';
 import _  from './util/_';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
-import { isDisabledItem, isReadOnlyItem }  from './util/interaction';
+import { isDisabledItem }  from './util/interaction';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 
@@ -33,7 +33,6 @@ export default React.createClass({
     textField:     CustomPropTypes.accessor,
 
     disabled:      CustomPropTypes.disabled.acceptsArray,
-    readOnly:      CustomPropTypes.readOnly.acceptsArray,
 
     messages:      React.PropTypes.shape({
       emptyList:   CustomPropTypes.message
@@ -69,8 +68,13 @@ export default React.createClass({
 
   render(){
     var {
-        className, role, data, textField, valueField
-      , focused, selected, messages, onSelect
+        className
+      , role
+      , data
+      , textField, valueField
+      , focused
+      , selected
+      , messages, onSelect
       , itemComponent: ItemComponent
       , optionComponent: Option } = this.props
 
@@ -86,8 +90,7 @@ export default React.createClass({
         </li>
       ) : data.map((item, idx) => {
           var currentId = optionId(id, idx)
-            , isDisabled = isDisabledItem(item, this.props)
-            , isReadOnly = isReadOnlyItem(item, this.props);
+            , isDisabled = isDisabledItem(item, this.props);
 
           return (
             <Option
@@ -95,10 +98,9 @@ export default React.createClass({
               id={currentId}
               dataItem={item}
               disabled={isDisabled}
-              readOnly={isReadOnly}
               focused={focused === item}
               selected={selected === item}
-              onClick={isDisabled || isReadOnly ? undefined : onSelect.bind(null, item)}
+              onClick={isDisabled ? undefined : onSelect.bind(null, item)}
             >
               { ItemComponent
                 ? <ItemComponent
@@ -106,7 +108,6 @@ export default React.createClass({
                     value={dataValue(item, valueField)}
                     text={dataText(item, textField)}
                     disabled={isDisabled}
-                    readOnly={isReadOnly}
                   />
                 : dataText(item, textField)
               }
@@ -131,7 +132,7 @@ export default React.createClass({
     return this.props.data
   },
 
-  move(){
+  move() {
     var list = compat.findDOMNode(this)
       , idx  = this._data().indexOf(this.props.focused)
       , selected = list.children[idx];

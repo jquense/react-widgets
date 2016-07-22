@@ -4,6 +4,7 @@ import _  from './util/_';
 import filter from './util/filter';
 
 import Widget from './Widget';
+import WidgetPicker from './WidgetPicker';
 import Popup from './Popup';
 import Select  from './Select';
 import ComboboxInput from './ComboboxInput';
@@ -46,7 +47,7 @@ let propTypes = {
 
   autoFocus:      React.PropTypes.bool,
   disabled:       CustomPropTypes.disabled.acceptsArray,
-  readOnly:       CustomPropTypes.readOnly.acceptsArray,
+  readOnly:       CustomPropTypes.readOnly,
 
   suggest:        CustomPropTypes.filter,
   filter:         CustomPropTypes.filter,
@@ -257,26 +258,29 @@ var ComboBox = React.createClass({
     return (
       <Widget
         {...elementProps}
-        picker
-        open={open}
-        dropUp={dropUp}
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
         className={cn(className, 'rw-combobox')}
       >
-        <Select
-          bordered
-          onClick={this.toggle}
-          disabled={!!(disabled || readOnly)}
-          busy={busy}
-          icon='caret-down'
-          label={_.result(messages.open, this.props)}
-        />
-        {this.renderInput(listID)}
+        <WidgetPicker
+          open={open}
+          dropUp={dropUp}
+          focused={focused}
+          disabled={disabled}
+          readOnly={readOnly}
+        >
+          {this.renderInput(listID)}
+          <Select
+            bordered
+            busy={busy}
+            icon='caret-down'
+            onClick={this.toggle}
+            disabled={disabled || readOnly}
+            label={_.result(messages.open, this.props)}
+          />
+        </WidgetPicker>
+
 
         {shouldRenderPopup &&
           <Popup

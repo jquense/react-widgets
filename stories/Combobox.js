@@ -31,6 +31,24 @@ storiesOf('Combobox', module)
       />
     </Container>
   )
+  .add('disabled', () =>
+    <Container>
+      <Combobox
+        {...props}
+        disabled
+        defaultValue={props.data[1]}
+      />
+    </Container>
+  )
+  .add('readOnly', () =>
+    <Container>
+      <Combobox
+        {...props}
+        readOnly
+        defaultValue={props.data[1]}
+      />
+    </Container>
+  )
   .add('right to left', () =>
     <Container>
       <Combobox

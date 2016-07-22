@@ -56,6 +56,7 @@ export default React.createClass({
       <Input
         {...props}
         type='text'
+        className="rw-widget-input"
         value={textValue}
         disabled={disabled}
         readOnly={readOnly}

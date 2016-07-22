@@ -12,6 +12,7 @@ class Button extends React.Component {
       , busy
       , active
       , children
+      , variant = 'primary'
       , component: Tag = 'button'
       , ...props } = this.props;
 
@@ -32,12 +33,13 @@ class Button extends React.Component {
         className={cn(
           className,
           'rw-btn',
-          active && !disabled && 'rw-state-active'
+          active && !disabled && 'rw-state-active',
+          variant && ('rw-btn-' + variant)
         )}
       >
-        {icon &&
+        {(icon || busy) &&
           <span
-            aria-hidden
+            aria-hidden="true"
             className={cn(
               'rw-i',
               `rw-i-${icon}`,
