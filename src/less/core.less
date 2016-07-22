@@ -28,6 +28,9 @@
   }
 }
 
+.rw-widget-picker {
+  .select-container(1.9em);
+}
 
 .rw-widget {
   outline: 0;
@@ -40,14 +43,11 @@
   color: @btn-color;
   line-height: @input-height;
   display: inline-block;
-  margin: 0;
   text-align: center;
   vertical-align: middle;
-  background: none;
-  background-image: none;
-  border: 1px solid transparent;
-  padding: 0;
   white-space: nowrap;
+  border: 1px solid transparent;
+  outline: none; // these are never individually focusable
 }
 
 .rw-rtl {
@@ -74,24 +74,17 @@
 
 .rw-filter-input {
   position: relative;
-  width: 100%;
-  padding-right: 1.9em;
-  border: @input-border @input-border-width solid;
-  border-radius: @input-border-radius;
   margin-bottom: 2px;
-
-  .rw-rtl & {
-    padding-left: 1.9em;
-    padding-right:  0;
-  }
+  width: 100%;
+  height: @input-height;
 
   > .rw-input {
     width: 100%;
     border: none;
-    outline: none;
+    height: 100%;
   }
 
-  > span {
+  > .rw-select {
     margin-top: -2px;
   }
 }
@@ -229,21 +222,6 @@ ul.rw-list {
   }
 }
 
-
-.rw-widget {
-  position: relative;
-}
-
-.rw-open.rw-widget,
-.rw-open > .rw-multiselect-wrapper {
-  .border-bottom-radius(0);
-}
-
-.rw-open-up.rw-widget,
-.rw-open-up > .rw-multiselect-wrapper {
-  .border-top-radius(0);
-}
-
 .rw-combobox,
 .rw-datetimepicker,
 .rw-numberpicker,
@@ -255,29 +233,32 @@ ul.rw-list {
   }
 }
 
-@focus-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
+@focus-rgba: rgba(
+  red(@input-border-focus),
+  green(@input-border-focus),
+  blue(@input-border-focus), .6);
 
 .rw-widget {
   background-color:   @input-bg;
   border:             @input-border @input-border-width solid;
   border-radius:      @input-border-radius;
+  position: relative;
 
-  .rw-input {
+  &.rw-open {
+    .border-bottom-radius(0);
+  }
+
+  &.rw-open-up {
+    .border-top-radius(0);
+  }
+
+  > .rw-input {
     .border-left-radius(@input-border-radius);
-
-    .rw-rtl & {
-      .border-left-radius(0);
-      .border-right-radius(@input-border-radius);
-    }
   }
 
-  > .rw-select {
-    border-left: @input-border 1px solid;
-  }
-
-  &.rw-rtl > .rw-select {
-    border-right: @input-border 1px solid;
-    border-left:  none;
+  &.rw-rtl > .rw-input {
+    .border-left-radius(0);
+    .border-right-radius(@input-border-radius);
   }
 
   &.rw-state-focus,
@@ -287,8 +268,7 @@ ul.rw-list {
     outline: 0;
   }
 
-  &.rw-state-readonly,
-  &.rw-state-readonly > .rw-multiselect-wrapper {
+  &.rw-state-readonly {
     cursor: not-allowed;
   }
 
@@ -303,24 +283,20 @@ ul.rw-list {
   }
 }
 
+.rw-select.rw-select-bordered {
+  border-left: @input-border 1px solid;
 
-.rw-combobox,
-.rw-datetimepicker,
-.rw-numberpicker,
-.rw-dropdownlist {
-  padding-right:    1.9em;
-
-  &.rw-rtl {
-    padding-right: 0;
-    padding-left: 1.9em;
+  .rw-rtl & {
+    border-right: @input-border 1px solid;
+    border-left:  none;
   }
+}
 
-  > .rw-input {
-    width: 100%;
-    border: none;
-    outline: 0;
-    .placeholder();
-  }
+.rw-widget > .rw-input {
+  width: 100%;
+  border: none;
+  outline: 0;
+  .placeholder();
 }
 
 .rw-placeholder {
@@ -329,16 +305,14 @@ ul.rw-list {
 
 .rw-select {
   position: absolute;
-  width: 1.9em;
   height: 100%;
   right: 0;
   top: 0;
 
-  &.rw-btn,
+  &,
   & > .rw-btn {
     height: 100%;
-    vertical-align: middle;
-    outline: 0;
+    border: none;
   }
 
   .rw-rtl & {
@@ -368,7 +342,6 @@ ul.rw-list {
     .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
   }
 }
-
 
 .rw-combobox,
 .rw-datetimepicker,
@@ -402,11 +375,6 @@ ul.rw-list {
     padding-top:    0;
     padding-bottom: 0;
     padding-left: 0;
-  }
-
-  > .rw-select,
-  &.rw-rtl > .rw-select {
-    border-width: 0;
   }
 }
 

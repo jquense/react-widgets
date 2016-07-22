@@ -15,6 +15,7 @@
     "no-eval": 2,
     "strict": 0,
     "eol-last": 2,
+    "comma-dangle": 0,
     "dot-notation": [2, { "allowKeywords": true }],
     "semi": [0, "never"],
     "semi-spacing": 0,

@@ -8,7 +8,8 @@ class Widget extends React.Component {
     disabled: PropTypes.bool,
     readOnly: PropTypes.bool,
     open: PropTypes.bool,
-    dropUp: PropTypes.bool
+    dropUp: PropTypes.bool,
+    picker: PropTypes.bool,
   };
 
   static contextTypes = {
@@ -17,8 +18,14 @@ class Widget extends React.Component {
 
   render() {
     let {
-       className, tabIndex, open, dropUp
-      , disabled, readOnly, focused, ...props } = this.props;
+        picker
+      , className
+      , tabIndex
+      , open
+      , dropUp
+      , disabled
+      , readOnly
+      , focused, ...props } = this.props;
 
     let isRtl = !!this.context.isRtl;
     let openClass = `rw-open${dropUp ? '-up' : ''}`
@@ -32,6 +39,7 @@ class Widget extends React.Component {
         className={cn(
           className,
           'rw-widget',
+          picker && 'rw-widget-picker',
           isRtl && 'rw-rtl',
           open && openClass,
           focused && 'rw-state-focus',

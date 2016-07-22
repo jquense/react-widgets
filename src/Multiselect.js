@@ -342,6 +342,7 @@ var Multiselect = React.createClass({
     return (
       <Widget
         {...elementProps}
+        picker
         id={instanceId(this)}
         open={open}
         dropUp={dropUp}
@@ -355,16 +356,13 @@ var Multiselect = React.createClass({
         className={cn(className, 'rw-multiselect')}
       >
         {this.renderNotificationArea(notifyID, messages)}
+        {busy && <i className="rw-i rw-loading" />}
 
-        <div className='rw-multiselect-wrapper'>
-          {busy && <span className="rw-i rw-loading" />}
+        {shouldRenderTags &&
+          this.renderTags(tagsID, messages)
+        }
+        {this.renderInput(inputOwns)}
 
-          {shouldRenderTags &&
-            this.renderTags(tagsID, messages)
-          }
-
-          {this.renderInput(inputOwns)}
-        </div>
         {shouldRenderPopup &&
           <Popup
             dropUp={dropUp}

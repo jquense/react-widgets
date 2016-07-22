@@ -257,6 +257,7 @@ var ComboBox = React.createClass({
     return (
       <Widget
         {...elementProps}
+        picker
         open={open}
         dropUp={dropUp}
         focused={focused}
@@ -268,6 +269,7 @@ var ComboBox = React.createClass({
         className={cn(className, 'rw-combobox')}
       >
         <Select
+          bordered
           onClick={this.toggle}
           disabled={!!(disabled || readOnly)}
           busy={busy}
