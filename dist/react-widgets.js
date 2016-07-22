@@ -2693,6 +2693,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.move();
 	  },
 	  render: function render() {
+	    var _this = this;
+
 	    var _props2 = this.props;
 	    var className = _props2.className;
 	    var role = _props2.role;
@@ -2710,7 +2712,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var id = (0, _widgetHelpers.instanceId)(this),
 	        items = void 0;
 
-	    var props = _3.default.omitOwnProps(this);
+	    var elementProps = _3.default.omitOwnProps(this);
 
 	    items = !data.length ? _react2.default.createElement(
 	      'li',
@@ -2718,8 +2720,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _3.default.result(messages.emptyList, this.props)
 	    ) : data.map(function (item, idx) {
 	      var currentId = optionId(id, idx),
-	          isDisabled = (0, _interaction.isDisabledItem)(item, props),
-	          isReadOnly = (0, _interaction.isReadOnlyItem)(item, props);
+	          isDisabled = (0, _interaction.isDisabledItem)(item, _this.props),
+	          isReadOnly = (0, _interaction.isReadOnlyItem)(item, _this.props);
 
 	      return _react2.default.createElement(
 	        Option,
@@ -2750,7 +2752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        tabIndex: '-1',
 	        className: (0, _classnames2.default)(className, 'rw-list'),
 	        role: role === undefined ? 'listbox' : role
-	      }, props),
+	      }, elementProps),
 	      items
 	    );
 	  },
@@ -3244,7 +3246,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var groups = _state.groups;
 
 
-	    var props = _3.default.omitOwnProps(this);
+	    var elementProps = _3.default.omitOwnProps(this);
 
 	    var items = [],
 	        idx = -1,
@@ -3277,7 +3279,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        tabIndex: '-1',
 	        className: (0, _classnames2.default)(className, 'rw-list', 'rw-list-grouped'),
 	        role: role === undefined ? 'listbox' : role
-	      }, props),
+	      }, elementProps),
 	      items
 	    );
 	  },
