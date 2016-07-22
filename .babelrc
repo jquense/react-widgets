@@ -1,4 +1,6 @@
 {
   "presets": ["jason"],
-  "plugins": ["transform-decorators-legacy"]
+  "plugins": [
+    "transform-decorators-legacy"
+  ]
 }

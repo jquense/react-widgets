@@ -16,7 +16,18 @@
   }
 }
 
+.select-container(@padding) {
+  padding-right: @padding;
 
+  > .rw-select {
+    width: @padding;
+  }
+
+  &.rw-rtl {
+    padding-right: 0;
+    padding-left: @padding;
+  }
+}
 
 .border-left-radius(@radius) {
   border-bottom-left-radius: @radius;
@@ -80,7 +91,7 @@
 .clearfix() {
   &:before,
   &:after {
-    content: " "; 
+    content: " ";
     display: table;
   }
   &:after {

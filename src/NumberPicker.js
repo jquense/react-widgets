@@ -110,7 +110,7 @@ let NumberPicker = React.createClass({
           'rw-rtl':             this.isRtl()
         })}>
 
-        <span className='rw-select'>
+        <span className='rw-select rw-select-bordered'>
           <Button
             icon="caret-up"
             onClick={this.handleFocus}
@@ -153,7 +153,8 @@ let NumberPicker = React.createClass({
           readOnly={this.props.readOnly}
           onChange={this.change}
           onKeyPress={onKeyPress}
-          onKeyUp={onKeyUp}/>
+          onKeyUp={onKeyUp}
+        />
       </div>
     )
   },

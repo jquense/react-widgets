@@ -1,6 +1,6 @@
 import React from 'react';
 import _  from './util/_';
-import cx from 'classnames';
+import cn from 'classnames';
 import CustomPropTypes from './util/propTypes';
 import { instanceId } from './util/widgetHelpers';
 import { dataText } from './util/dataHelpers';
@@ -45,82 +45,90 @@ export default React.createClass({
   },
 
   render() {
-      let {
-          focused, value, textField
-        , valueComponent: ValueComponent }  = this.props;
+    let {
+        focused
+      , value
+      , textField
+      , valueComponent: ValueComponent }  = this.props;
 
-      var id = instanceId(this);
-      var props = _.omitOwnProps(this)
+    let id = instanceId(this);
+    let props = _.omitOwnProps(this)
 
-      return (
-        <ul
-          {...props}
-          role='listbox'
-          tabIndex='-1'
-          className='rw-multiselect-taglist'
-        >
-          { value.map( (item, i) => {
-            var isDisabled = isDisabledItem(item, this.props)
-              , isReadonly = isReadOnlyItem(item, this.props)
-              , isFocused  = !isDisabled && focused === i
-              , currentID  = optionId(id, i);
+    return (
+      <ul
+        {...props}
+        tabIndex='-1'
+        role='listbox'
+        className='rw-multiselect-taglist'
+      >
+        { value.map( (item, i) => {
+          let isDisabled = isDisabledItem(item, this.props)
+            , isReadonly = isReadOnlyItem(item, this.props)
+            , isFocused  = !isDisabled && focused === i
+            , currentID  = optionId(id, i);
 
-            return (
-              <li
-                key={i}
-                id={currentID}
+          let clickHandler;
+          if (!isDisabled && !isReadonly)
+            clickHandler = this.handleDelete.bind(null, item);
+
+          return (
+            <li
+              key={i}
+              id={currentID}
+              tabIndex='-1'
+              role='option'
+              className={cn(
+                'rw-multiselect-tag',
+                isFocused && 'rw-state-focus',
+                isDisabled && 'rw-state-disabled',
+                isReadonly && 'rw-state-readonly'
+              )}
+            >
+              {ValueComponent
+                ? <ValueComponent item={item }/>
+                : dataText(item, textField)
+              }
+              <span
                 tabIndex='-1'
-                role='option'
-                className={cx({
-                  'rw-state-focus':    isFocused,
-                  'rw-state-disabled': isDisabled,
-                  'rw-state-readonly': isReadonly
-                })}
+                className='rw-tag-btn'
+                onClick={clickHandler}
+                aria-disabled={isDisabled}
+                aria-label='Unselect'
+                disabled={isDisabled}
               >
-                { ValueComponent
-                  ? <ValueComponent item={item }/>
-                  : dataText(item, textField)
-                }
-                <span
-                  tabIndex='-1'
-                  onClick={!(isDisabled || isReadonly) ? this._delete.bind(null, item) : undefined}
-                  aria-disabled={isDisabled}
-                  aria-label='Unselect'
-                  disabled={isDisabled}
-                >
-                  <span className='rw-tag-btn' aria-hidden="true">&times;</span>
-                </span>
-              </li>)
-          })}
-        </ul>
-      )
+                <span aria-hidden="true">&times;</span>
+              </span>
+            </li>)
+        })}
+      </ul>
+    )
   },
 
-  _delete(val){
+  handleDelete(val) {
     this.props.onDelete(val)
   },
 
-  remove(idx){
-    var val = this.props.value[idx];
+  remove(idx) {
+    let val = this.props.value[idx];
 
-    if (val && !(isDisabledItem(val, this.props)  || isReadOnlyItem(val, this.props)) )
+    if (val && !(isDisabledItem(val, this.props) || isReadOnlyItem(val, this.props)) )
       this.props.onDelete(val)
   },
 
-  removeNext(){
-    var val = this.props.value[this.props.value.length - 1];
+  removeNext() {
+    let val = this.props.value[this.props.value.length - 1];
 
     if (val && !(isDisabledItem(val, this.props) || isReadOnlyItem(val, this.props)))
       this.props.onDelete(val)
   },
 
 
-  clear(){
+  clear() {
     this.setState({ focused: null })
   },
 
-  first(){
-    var idx = 0
+  first() {
+    let idx = 0
       , value = this.props.value
       , l = value.length;
 
@@ -130,8 +138,8 @@ export default React.createClass({
     return idx !== l ? idx : null
   },
 
-  last(){
-    var value = this.props.value
+  last() {
+    let value = this.props.value
       , idx = value.length - 1;
 
     while (idx > -1 && isDisabledItem(value[idx], this.props))
@@ -141,7 +149,7 @@ export default React.createClass({
   },
 
   next(current) {
-    var nextIdx = current + 1
+    let nextIdx = current + 1
       , value = this.props.value
       , l = value.length;
 
@@ -154,8 +162,8 @@ export default React.createClass({
     return nextIdx
   },
 
-  prev(current){
-    var nextIdx = current
+  prev(current) {
+    let nextIdx = current
       , value = this.props.value;
 
     if ( nextIdx === null || nextIdx === 0 )

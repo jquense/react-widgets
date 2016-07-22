@@ -1,4 +1,4 @@
 
-if (typeof module === 'function') {
-  module.apply(null, args || [])
+if (typeof createLocalizer === 'function') {
+  createLocalizer.apply(null, args || [])
 }

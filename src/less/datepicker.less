@@ -1,6 +1,8 @@
 
 .rw-datetimepicker {
-  .rw-btn {
+  .select-container(1.9em);
+
+  & .rw-btn {
     width: 1.8em;
   }
 
@@ -14,17 +16,7 @@
   }
 
   &.rw-has-both {
-    padding-right: 3.8em;
-
-    &.rw-rtl {
-      padding-right: 0;
-      padding-left: 3.8em;
-    }
-  }
-
-  &.rw-has-both > .rw-select {
-    width: 3.8em;
-    height: 100%;
+    .select-container(3.8em);
   }
 }
 
@@ -36,9 +28,6 @@
     border-bottom: 2px solid @input-border;
   }
 
-  .rw-btn {
-
-  }
   .rw-header {
     padding-bottom: 5px;
 
