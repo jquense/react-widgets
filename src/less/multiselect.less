@@ -1,21 +1,27 @@
 
 .rw-multiselect {
-  background-color: @widget-bg;
+
 
   &:hover {
-    border-color: @state-border-hover;
+
   }
 }
 
-.rw-multiselect-wrapper {
-  border-radius:          @input-border-radius;
-  position:               relative;
-  cursor:                 text;
-  .clearfix();
-  
-  i.rw-loading {
+.rw-multiselect {
+  background-color: @widget-bg;
+  border-color:     @state-border-hover;
+  cursor:           text;
+
+  .rw-loading {
+    @padding: 5px;
+
     position: absolute;
-    right: 3px;
+    right: @padding;
+
+    .rw-rtl & {
+       left: @padding;
+       right: auto;
+    }
   }
 
   > .rw-input {
@@ -31,10 +37,6 @@
   .rw-state-disabled > & {
     cursor: not-allowed;
   }
-
-  .rw-rtl & > .rw-input{
-    float: right;
-  } 
 }
 
 .rw-multiselect-create-tag {
@@ -46,41 +48,45 @@
 .rw-multiselect-taglist {
   .list-inline();
   padding-right: 0;
+}
 
-  > li {
-    display:            inline-block;
-    margin:             1px;
-    padding:            0.214em 0.15em 0.214em 0.4em;
-    line-height:        1.4em;
-    text-align:         center;
-    white-space:        nowrap;
-    border-radius:      @border-radius-sm;
-    border:             1px solid @btn-border;
-    background-color:   @btn-border;
-    cursor:             pointer;
+.rw-multiselect-tag {
+   display:            inline-block;
+   margin:             1px;
+   padding:            0.214em 0.15em 0.214em 0.4em;
+   line-height:        1.4em;
+   text-align:         center;
+   white-space:        nowrap;
+   border-radius:      @border-radius-sm;
+   border:             1px solid @btn-border;
+   background-color:   @btn-border;
+   cursor:             pointer;
 
-    &.rw-state-focus {
-      .state-focus();
-    }
+   &.rw-state-focus {
+     .state-focus();
+   }
 
-    &.rw-state-readonly,
-    &.rw-state-disabled,
-    .rw-multiselect.rw-state-readonly &, 
-    .rw-multiselect.rw-state-disabled & {
-      cursor: not-allowed;
-      filter: alpha(opacity=65);
-      opacity: .65;
-    }
+   &.rw-state-readonly,
+   &.rw-state-disabled,
+   .rw-multiselect.rw-state-readonly &,
+   .rw-multiselect.rw-state-disabled & {
+     cursor: not-allowed;
+     filter: alpha(opacity=65);
+     opacity: .65;
+   }
 
-    .rw-btn {
-      outline:            0;
-      font-size:          115%;
-      line-height:        normal;
-    }
+   .rw-btn {
+     outline:            0;
+     font-size:          115%;
+     line-height:        normal;
+   }
+ }
+
+.rw-tag-btn {
+  margin-left: 4px;
+
+  .rw-rtl & {
+    margin-left: 0;
+    margin-right: 4px;
   }
-
-  .rw-rtl & > li {
-     float: right;
-  } 
-
 }

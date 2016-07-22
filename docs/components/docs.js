@@ -20,8 +20,7 @@ var SelectList     = require('./pages/SelectList.api.md')
 var Calendar       = require('./pages/Calendar.api.md')
 var DatePicker     = require('./pages/DateTimePicker.api.md')
 var NumberPicker   = require('./pages/NumberPicker.api.md')
-//var Migration      = require('./pages/Migration.jsx')
-var Advanced       = require('./pages/Advanced.jsx')
+var Advanced       = require('./pages/Advanced')
 var Locale         = require('./pages/i18n.md');
 var Controllables  = require('./pages/controllables.md');
 

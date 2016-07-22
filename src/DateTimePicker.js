@@ -121,7 +121,6 @@ var DateTimePicker = React.createClass({
 
     return {
       value: null,
-      currentDate: new Date(),
       min: new Date(1900,  0,  1),
       max: new Date(2099, 11, 31),
       calendar: true,
@@ -194,7 +193,7 @@ var DateTimePicker = React.createClass({
     }
 
     return (
-      <span className='rw-select'>
+      <span className='rw-select rw-select-bordered'>
         {calendar &&
           <Button
             icon="calendar"
@@ -233,7 +232,7 @@ var DateTimePicker = React.createClass({
         open={open === popups.CALENDAR}
         className='rw-calendar-popup'
       >
-        <Calendar
+        <BaseCalendar
           {...calendarProps}
           ref="calPopup"
           id={id}
@@ -323,6 +322,7 @@ var DateTimePicker = React.createClass({
     return (
       <Widget
         {...elementProps}
+        picker
         open={!!open}
         dropUp={dropUp}
         focused={focused}
@@ -400,7 +400,7 @@ var DateTimePicker = React.createClass({
     }
     else if (open) {
       if (open === popups.CALENDAR )
-        this.refs.calPopup.handleKeyDown(e)
+        this.refs.calPopup.refs.inner.handleKeyDown(e)
       if (open === popups.TIME )
         this.refs.timePopup.handleKeyDown(e)
     }
@@ -513,8 +513,7 @@ export default  createUncontrolledWidget(
     DateTimePicker
   , {
     open: 'onToggle',
-    value: 'onChange',
-    currentDate: 'onCurrentDateChange'
+    value: 'onChange'
   }, ['focus']
 );
 

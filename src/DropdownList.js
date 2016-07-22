@@ -23,8 +23,6 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 let { result } = _;
 
 var propTypes = {
-  ...Popup.propTypes,
-
   //-- controlled props -----------
   value:          React.PropTypes.any,
   onChange:       React.PropTypes.func,
@@ -47,9 +45,12 @@ var propTypes = {
   searchTerm:     React.PropTypes.string,
   onSearch:       React.PropTypes.func,
   busy:           React.PropTypes.bool,
+
   delay:          React.PropTypes.number,
   dropUp:         React.PropTypes.bool,
-  duration:       React.PropTypes.number, //popup
+  duration:       React.PropTypes.number,
+
+  placeholder:    React.PropTypes.string,
 
   disabled:       CustomPropTypes.disabled.acceptsArray,
   readOnly:       CustomPropTypes.readOnly.acceptsArray,
@@ -128,7 +129,10 @@ var DropdownList = React.createClass({
 
   renderFilter(messages){
     return (
-      <div ref='filterWrapper' className='rw-filter-input'>
+      <div
+        ref='filterWrapper'
+        className='rw-filter-input rw-widget rw-widget-picker'
+      >
         <Select component='span' icon='search' />
         <Input
           ref='filter'
@@ -136,7 +140,6 @@ var DropdownList = React.createClass({
           placeholder={_.result(messages.filterPlaceholder, this.props)}
           onChange={e => notify(this.props.onSearch, e.target.value)}
         />
-
       </div>
     )
   },
@@ -185,7 +188,9 @@ var DropdownList = React.createClass({
       , data
       , busy
       , dropUp
-      , placeholder, value, open
+      , placeholder
+      , value
+      , open
       , valueComponent
       , listComponent: List } = this.props;
 
@@ -198,7 +203,10 @@ var DropdownList = React.createClass({
       , valueItem = dataItem(data, value, valueField) // take value from the raw data
       , listID = instanceId(this, '__listbox');
 
+    let shouldRenderPopup = open || isFirstFocusedRender(this);
+
     let elementProps = Object.assign(_.omitOwnProps(this, List), {
+      name: undefined,
       role: 'combobox',
       tabIndex: tabIndex || 0,
       'aria-owns': listID,
@@ -211,15 +219,13 @@ var DropdownList = React.createClass({
       'aria-readonly': readOnly
     });
 
-    let shouldRenderPopup = open || isFirstFocusedRender(this);
-
     messages = msgs(messages)
 
     return (
       <Widget
         {...elementProps}
         ref="input"
-        className={cx(className, 'rw-dropdownlist')}
+        picker
         open={open}
         dropUp={dropUp}
         focused={focused}
@@ -230,6 +236,7 @@ var DropdownList = React.createClass({
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
+        className={cx(className, 'rw-dropdownlist')}
       >
         <Select
           busy={busy}
@@ -290,7 +297,10 @@ var DropdownList = React.createClass({
       , focusedItem = this.state.focusedItem
       , selectedItem = this.state.selectedItem
       , isOpen = this.props.open
-      , closeWithFocus = () => { this.close(), compat.findDOMNode(this).focus()};
+      , closeWithFocus = () => {
+        this.close(),
+        compat.findDOMNode(this).focus()
+      };
 
     notify(this.props.onKeyDown, [e])
 
@@ -320,11 +330,15 @@ var DropdownList = React.createClass({
       e.preventDefault();
       closeWithFocus()
     }
-    else if ((key === 'Enter' || (key === ' ' && !filtering)) && isOpen ) {
+    else if (
+      (key === 'Enter' ||
+      (key === ' ' && !filtering)) &&
+      isOpen
+    ) {
       e.preventDefault();
       change(this.state.focusedItem, true)
     }
-    else if (key === ' ' && !filtering && !isOpen) {
+    else if (key === ' ' && !isOpen) {
       e.preventDefault();
       this.open()
     }
@@ -425,4 +439,10 @@ function msgs(msgs){
 }
 
 export default createUncontrolledWidget(
-    DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }, ['focus']);
+  DropdownList, {
+    open: 'onToggle',
+    value: 'onChange',
+    searchTerm: 'onSearch'
+  },
+  ['focus']
+);

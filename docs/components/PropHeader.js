@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react')
-  , Default = require('./default.jsx');
+  , Default = require('./default');
 
 var ApiPropHeader = React.createClass({
 
@@ -43,7 +43,7 @@ var ApiPropHeader = React.createClass({
       obj[l] = require('../../src/localizers/' + l)
       return obj
     }, {})
-    
+
     let select = e => locales[e.target.value]()
 
     return (

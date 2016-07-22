@@ -6,7 +6,7 @@ import Button from './Button';
 class Select extends React.Component {
 
   render() {
-    let { className, ...props } = this.props;
+    let { className, bordered, ...props } = this.props;
 
     return (
       <Button
@@ -14,6 +14,7 @@ class Select extends React.Component {
         className={cn(
           className,
           'rw-select',
+          bordered && 'rw-select-bordered'
         )}
       />
     )

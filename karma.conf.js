@@ -30,7 +30,7 @@ module.exports = function (config) {
       'test/index.js': ['webpack', 'sourcemap']
     },
 
-    webpack: require('./build/test.config'),
+    webpack: require('./build/webpack.config'),
     webpackServer: {
       noInfo: true
     },
