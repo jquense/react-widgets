@@ -1,11 +1,11 @@
 import React   from 'react';
 import ListOption from './ListOption';
+import ListOptionItem from './ListOptionItem';
 import CustomPropTypes from './util/propTypes';
 import compat from './util/compat';
 import cn from 'classnames';
 import _  from './util/_';
 import warning from 'warning';
-import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabledItem, isReadOnlyItem }  from './util/interaction';
 
@@ -163,27 +163,20 @@ export default React.createClass({
       this._currentActiveID = currentID;
 
     return (
-      <Option
+      <ListOptionItem
         key={'item_' + group + '_' + idx}
         id={currentID}
         dataItem={item}
-        focused={focused === item}
-        selected={selected === item}
         disabled={isDisabled}
         readOnly={isReadOnly}
-        onClick={isDisabled || isReadOnly ? undefined : onSelect.bind(null, item)}
-      >
-        { ItemComponent
-            ? <ItemComponent
-                item={item}
-                value={dataValue(item, valueField)}
-                text={dataText(item, textField)}
-                disabled={isDisabled}
-                readOnly={isReadOnly}
-              />
-            : dataText(item, textField)
-        }
-      </Option>
+        focused={focused === item}
+        selected={selected === item}
+        onSelect={onSelect}
+        optionComponent={Option}
+        itemComponent={ItemComponent}
+        textField={textField}
+        valueField={valueField}
+      />
     )
   },
 
