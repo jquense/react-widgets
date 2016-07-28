@@ -49,19 +49,33 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 render(<DropdownList/>, document.getElementById('app-root'))
 ```
 
-If are using Webpack to handle styles in your application you are probably already configured to load
-the `react-widgets` styles without any additional work. If not, you will have to use
-the `css-loader`, `style-loader`, `file-loader`, `url-loader` and, optionally, the `less-loader`.
+If are using Webpack to handle styles in your application you are probably already configured
+loaders to make it work with appropriate file extensions. If not, you will have to use
+the `css-loader`, `style-loader`, `file-loader`, `url-loader` and, optionally, the `less-loader` or
+`scss-loader`.
+
 Below is a common configuration:
 
 ```js
 loaders: [
   { test: /\\.css$/,  loader: "style-loader!css-loader" },
-  { test: /\\.less$/, loader: "style-loader!css-loader!less-loader" },
+  { test: /\\.less$/, loader: "style-loader!css-loader!less-loader" }, // using less
+  // { test: /\\.scss$/, loader: "style-loader!css-loader!scss-loader" }, // using scss
   { test: /\\.gif$/, loader: "url-loader?mimetype=image/png" },
   { test: /\\.woff(2)?(\\?v=[0-9]+\\.[0-9]+\\.[0-9]+)?$/, loader: "url-loader?mimetype=application/font-woff" },
   { test: /\\.(ttf|eot|svg)(\\?v=[0-9]+\\.[0-9]+\\.[0-9]+)?$/, loader: "file-loader?name=[name].[ext]" },
 ]
+```
+
+Also you can encounter problems including `react-widgets` stylesheets if you are managing them with
+Webpack. In case you having problems providing correct path to `fonts` and `img` folders, you can
+override corresponding variables from `variables` file. In case of `scss` it should look similar to:
+
+```scss
+$rw-font-path: '~react-widgets/lib/fonts';
+$rw-img-path:  '~react-widgets/lib/img';
+
+@import '~react-widgets/lib/scss/react-widgets';
 ```
 
 #### Global Build
