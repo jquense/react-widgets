@@ -181,7 +181,7 @@ var ComboBox = React.createClass({
     return (
       <ComboboxInput
         ref='input'
-        id={instanceId(this)}
+        id={instanceId(this, '_input')}
         autoFocus={autoFocus}
         tabIndex={tabIndex}
         suggest={suggest}
