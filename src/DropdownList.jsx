@@ -295,7 +295,7 @@ var DropdownList = React.createClass({
     notify(this.props.onKeyDown, [e])
 
     let change = (item, fromList) => {
-      if(!item) return
+      if(item == null) return
       fromList
         ? this.handleSelect(item)
         : this.change(item)
