@@ -20,7 +20,7 @@ export default {
         handler(selected, list, focused)
       else {
         state.scrollCancel && state.scrollCancel()
-        state.scrollCancel = scrollTo(selected, list.parentNode)
+        state.scrollCancel = scrollTo(selected, list)
       }
     }
   }
