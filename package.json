@@ -45,7 +45,7 @@
     "compile:dist": "cross-env NODE_ENV=dist webpack --config build/webpack.config.js",
     "build:lib": "npm run clean:lib && npm run compile:lib && npm run styles && npm run assets:lib",
     "build:docs": "npm run clean:docs && npm run compile:docs",
-    "build:dist": "npm run clean:dist && npm run compile:dist & npm run compile:locale && npm run less && npm run assets:dist",
+    "build:dist": "npm run clean:dist && npm run compile:dist && npm run less && npm run assets:dist",
     "build": "npm run build:lib && npm run build:dist",
     "docs": "npm run clean:docs && cross-env NODE_ENV=docs webpack-dev-server --config ./build/webpack.config.js --inline",
     "dev": "start-storybook -p 9001",
