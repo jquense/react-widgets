@@ -1,4 +1,118 @@
-$rw-font-path:        "../fonts" !default; // for referencing Bootstrap CDN font files directly
-$rw-img-path:         "../img" !default;
-$rw-css-prefix:       rw-i !default;
-$rw-version:          "4.1.0" !default;
+
+$gray-base:              #000 !default;
+$gray-darker:            lighten($gray-base, 13.5%) !default; // #222
+$gray-dark:              lighten($gray-base, 20%) !default;   // #333
+$gray:                   lighten($gray-base, 33.5%) !default; // #555
+$gray-light:             lighten($gray-base, 46.7%) !default; // #777
+$gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
+
+$font-size:              1em !default;
+$text-color:             $gray-dark !default;
+
+$version:                   "4.1.0" !default;
+$font-path:                 "../fonts" !default; // for referencing Bootstrap CDN font files directly
+$img-path:                  "../img" !default;
+
+$border-radius:             4px !default;
+$border-radius-sm:          3px !default;
+
+$widget-bg:                 #fff !default;
+$widget-border:             #ccc !default;
+
+$btn-bg:                    #fff !default;
+$btn-color:                 $text-color !default;
+$btn-border:                #ccc !default;
+
+
+
+
+/**
+ * Widget States
+ **/
+$state-bg-select:           #337ab7 !default;
+$state-border-select:       $state-bg-select !default;
+$state-color-select:        white !default;
+
+$state-bg-hover:            darken($btn-bg, 10%) !default;
+$state-border-hover:        $state-bg-hover !default;
+$state-color-hover:         $text-color !default;
+
+$state-bg-focus:            $widget-bg !default;
+$state-border-focus:        #66afe9 !default;
+$state-color-focus:         $text-color !default;
+
+
+
+
+/**
+ * Picker inputs
+ **/
+$input-color:               $gray !default;
+$input-height:              2.286em !default;
+$input-padding-horizontal:  0.857em !default;
+$input-box-shadow:          inset 0 1px 1px rgba(0,0,0,.075) !default;
+
+$input-bg:                  #fff !default;
+$input-bg-disabled:         $gray-lighter !default;
+$input-color-placeholder:   #999 !default;
+
+$input-border-radius:       $border-radius !default;
+$input-border:              #ccc !default;
+$input-border-width:        1px !default;
+
+$input-bg-hover:            $gray-lighter !default;
+$input-border-hover:        $input-border !default;
+
+$input-border-focus:        $state-border-focus !default;
+$input-focus-color:         rgba(red($input-border-focus), green($input-border-focus), blue($input-border-focus), .6) !default;
+$input-focus-box-shadow:    0 0 8px $input-focus-color !default;
+
+
+/**
+ * List
+ **/
+$list-font-size:            $font-size !default;
+$list-bg-hover:             $state-bg-hover !default;
+$list-border-hover:         $state-border-hover !default;
+$list-text-color:           $text-color !default;
+$list-padding-vertical:     0.143em !default;
+$list-padding-horizontal:   0.750em !default;
+
+
+/**
+ * Popup
+ **/
+$popup-bg:                  $widget-bg !default;
+$popup-border:              $widget-border !default;
+$popup-box-shadow-offset:   6px !default;
+$popup-box-shadow:          0 5px $popup-box-shadow-offset rgba(0,0,0,0.2) !default;
+$popup-box-shadow-up:       0 0 $popup-box-shadow-offset rgba(0,0,0,0.2) !default;
+
+$popup-zindex:              1005 !default;
+$popup-zindex-focused:      $popup-zindex + 1 !default;
+
+
+
+/**
+ * Calendar
+ **/
+$calendar-bg:           $widget-bg !default;
+$calendar-cell-padding: .25em .3em .3em .1em !default;
+
+
+
+
+/**
+ * Multiselect
+ **/
+$multiselect-gutter-pt:           0.125 !default;
+$multiselect-tag-padding:         0.35em !default;
+$multiselect-tag-border:          $btn-border !default;
+$multiselect-tag-bg:              $gray-lighter !default;
+$multiselect-tag-height-pt:       1 - ($multiselect-gutter-pt * 2) !default;
+$multiselect-tag-gutter-fallback: $input-height * $multiselect-gutter-pt !default;
+$multiselect-tag-gutter:          "calc(#{$multiselect-tag-gutter-fallback} - #{$input-border-width})" !default;
+$multiselect-tag-height: $input-height * $multiselect-tag-height-pt !default;
+
+// $font-size: 16px;
+// $input-height: 2.5em;

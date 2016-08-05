@@ -1,86 +1,84 @@
 
 .rw-multiselect {
   background-color: @widget-bg;
+  border-color:     @state-border-hover;
+  cursor:           text;
 
-  &:hover {
-    border-color: @state-border-hover;
-  }
-}
+  .rw-input-reset {
+    .height-calc(@input-height, @input-border-width * 2);
 
-.rw-multiselect-wrapper {
-  border-radius:          @input-border-radius;
-  position:               relative;
-  cursor:                 text;
-  .clearfix();
-  
-  i.rw-loading {
-    position: absolute;
-    right: 3px;
+    border-width: 0;
+    width: auto;
+    max-width: 100%;
+    padding: 0 @input-padding-horizontal;
   }
 
-  > .rw-input {
-    .placeholder();
-    outline:              0;
-    border-width:         0;
-    line-height:          normal;
-    width:                auto;
-    max-width:            100%;
+  & .rw-select {
+    &,
+    &:hover,
+    &:active {
+      box-shadow: none;
+      background: none;
+    }
   }
-
-  .rw-state-readonly > &,
-  .rw-state-disabled > & {
-    cursor: not-allowed;
-  }
-
-  .rw-rtl & > .rw-input{
-    float: right;
-  } 
 }
 
 .rw-multiselect-create-tag {
   border-top:  1px @widget-border solid;
-  padding-top: 5px;
-  margin-top:  5px;
+  padding-top: 0.357em;
+  margin-top:  0.357em;
 }
 
 .rw-multiselect-taglist {
-  .list-inline();
-  padding-right: 0;
+  .list-inline;
+  outline: none;
+}
 
-  > li {
-    display:            inline-block;
-    margin:             1px;
-    padding:            0.214em 0.15em 0.214em 0.4em;
-    line-height:        1.4em;
-    text-align:         center;
-    white-space:        nowrap;
-    border-radius:      @border-radius-sm;
-    border:             1px solid @btn-border;
-    background-color:   @btn-border;
-    cursor:             pointer;
+.rw-multiselect-tag {
+   display:            inline-block;
+   padding:            0 @multiselect-tag-padding;
+   margin-left:        @multiselect-tag-gutter;
+   margin-top:         @multiselect-tag-gutter-fallback;
+   margin-top:         @multiselect-tag-gutter;
+   height:             @multiselect-tag-height;
+   border-radius:      @border-radius-sm;
+   background-color:   @multiselect-tag-bg;
+   border:             1px solid @multiselect-tag-border;
+   cursor:             default;
+   vertical-align:     top;
+   text-align:         center;
+   white-space:        nowrap;
 
-    &.rw-state-focus {
-      .state-focus();
-    }
+   & > * {
+      display: inline-block;
+      height: 100%;
+   }
 
-    &.rw-state-readonly,
-    &.rw-state-disabled,
-    .rw-multiselect.rw-state-readonly &, 
-    .rw-multiselect.rw-state-disabled & {
-      cursor: not-allowed;
-      filter: alpha(opacity=65);
-      opacity: .65;
-    }
+   &.rw-state-focus {
+     .state-focus();
+   }
 
-    .rw-btn {
-      outline:            0;
-      font-size:          115%;
-      line-height:        normal;
-    }
+   &.rw-state-readonly,
+   &.rw-state-disabled,
+   .rw-state-readonly &,
+   .rw-state-disabled & {
+     cursor: not-allowed;
+   }
+
+   &.rw-state-disabled,
+   .rw-state-disabled & {
+     cursor: not-allowed;
+     filter: alpha(opacity=65);
+     opacity: .65;
+   }
+ }
+
+.rw-multiselect-tag-btn {
+  margin-left: 0.25em;
+  vertical-align: initial;
+
+  .rw-rtl & {
+    margin-left: 0;
+    margin-right: 0.25em;
   }
-
-  .rw-rtl & > li {
-     float: right;
-  } 
-
 }

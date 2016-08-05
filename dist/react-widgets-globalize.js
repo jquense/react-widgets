@@ -1,4 +1,4 @@
-/*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! (c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -46,19 +46,27 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
-	var module = __webpack_require__(1);
+	var createLocalizer = __webpack_require__(1);
 	var args = [Globalize];
 
+	'use strict';
 
-	if (typeof module === 'function') {
-	  module.apply(null, args || [])
+	/*** IMPORTS FROM imports-loader ***/
+	var define = false;
+
+	if (typeof createLocalizer === 'function') {
+	  createLocalizer.apply(null, args || []);
 	}
-
 
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/*** IMPORTS FROM imports-loader ***/
+	var define = false;
 
 	'use strict';
 
@@ -71,7 +79,9 @@
 
 	var _configure2 = _interopRequireDefault(_configure);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
 
 	function endOfDecade(date) {
 	  date = new Date(date);

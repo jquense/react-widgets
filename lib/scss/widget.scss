@@ -1,0 +1,177 @@
+/* for debugging */
+// *:focus {
+//   outline: 1px red solid !important;
+// }
+
+.rw-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.rw-widget {
+  .border-box;
+  border: none;
+  color: $text-color;
+  font-size: $font-size;
+  outline: none;
+  position: relative;
+}
+
+
+.rw-widget-container {
+  background-color:   $input-bg;
+  border:             $input-border $input-border-width solid;
+  border-radius:      $input-border-radius;
+
+  &.rw-state-focus,
+  &.rw-state-focus:hover {
+    @include box-shadow($input-focus-box-shadow);
+    border-color: $input-border-focus;
+  }
+
+  &.rw-state-readonly {
+    cursor: not-allowed;
+  }
+
+  &.rw-state-disabled {
+    &,
+    &:hover,
+    &:active {
+      @include box-shadow(none);
+      @include state-disabled();
+      background-color: $input-bg-disabled;
+    }
+  }
+}
+
+.rw-widget-picker {
+  position: relative;
+  overflow: hidden;
+  border-radius: $input-border-radius;
+  border-collapse: separate;
+  display: table;
+  height: $input-height;
+
+  & > * {
+    position: relative;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    display: table-cell;
+  }
+
+  & > .rw-select {
+    vertical-align: middle;
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  &.rw-open {
+    @include border-bottom-radius(0);
+  }
+
+  &.rw-open-up {
+    @include border-top-radius(0);
+  }
+}
+
+
+.rw-select {
+  cursor: pointer;
+
+  & > * {
+    width: 1.9em;
+  }
+}
+
+
+.rw-select-bordered {
+  @include make-btn-state();
+  border: none;
+  border-left: $input-border 1px solid;
+
+  .rw-rtl & {
+    border-right: $input-border 1px solid;
+    border-left:  none;
+  }
+}
+
+
+.rw-rtl {
+  direction: rtl;
+}
+
+.rw-input-reset {
+  @include placeholder();
+  outline: 0;
+}
+
+.rw-input {
+  &:extend(.rw-input-reset);
+
+  color: $input-color;
+  padding: 0 $input-padding-horizontal;
+  background-color: $input-bg;
+
+  &[disabled] {
+    @include state-disabled();
+    opacity: 1;
+    background-color: $input-bg-disabled;
+    border-color: $input-border;
+  }
+
+  &[readonly] {
+    cursor: not-allowed;
+  }
+}
+
+.rw-i.rw-loading {
+  display: block;
+  background: url("#{$img-path}/loading.gif") no-repeat center;
+  min-width: 16px;
+  width: 1.9em;
+  height: 16px;
+
+  &:before {
+    content: ""
+  }
+}
+
+
+.rw-loading-mask {
+  border-radius:    $input-border-radius;
+  position:         relative;
+
+  &:after{
+    content: '';
+    background: url("#{$img-path}/loader-big.gif") no-repeat center;
+    position:   absolute;
+    background-color: #fff;
+    opacity: 0.7;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+
+.rw-placeholder {
+  color: $input-color-placeholder;
+}
+
+//input inset
+.rw-widget-input {
+  @include box-shadow($input-box-shadow);
+}
+
+.rw-widget-input.rw-state-focus {
+  @include box-shadow("#{$input-focus-box-shadow}, #{$input-box-shadow}");
+}

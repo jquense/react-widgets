@@ -1,12 +1,17 @@
 @import "./variables.scss";
-@import "./bootstrap-theme.scss";
 
-@import "mixins.scss";
-@import "normalize.scss";
-@import "icons.scss";
+@import "./mixins.scss";
+@import "./normalize.scss";
+@import "./icons.scss";
 
-@import "core.scss";
-@import "popup.scss";
-@import "datepicker.scss";
-@import "selectlist.scss";
-@import "multiselect.scss";
+@import "./button.scss";
+@import "./widget.scss";
+@import "./list.scss";
+@import "./dropdown-list.scss";
+@import "./number-picker.scss";
+@import "./calendar.scss";
+@import "./select-list.scss";
+@import "./multiselect.scss";
+
+@import "./popup.scss";
+@import "./state.scss";

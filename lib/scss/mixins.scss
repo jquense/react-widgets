@@ -1,22 +1,53 @@
 
+@mixin border-box() {
+  -webkit-background-clip: border-box;
+     -moz-background-clip: border-box;
+          background-clip: border-box;
+
+  &,
+  & * {
+    @include box-sizing(border-box);
+  }
+
+  &:before,
+  & *:before,
+  &:after,
+  & *:after, {
+    @include box-sizing(border-box);
+  }
+}
+
 @mixin list-unstyled() {
   margin: 0;
-  padding-left: 0;
+  padding: 0;
   list-style: none;
 }
 
 @mixin list-inline() {
   @include list-unstyled();
   display: inline;
+}
 
-  > li {
-    display: inline-block;
-    padding-left: 5px;
-    padding-right: 5px;
+@mixin select-container($padding) {
+  padding-right: $padding;
+
+  > .rw-select {
+    width: $padding;
+  }
+
+  &.rw-rtl {
+    padding-right: 0;
+    padding-left: $padding;
   }
 }
 
-
+@mixin user-select() {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
 
 @mixin border-left-radius($radius) {
   border-bottom-left-radius: $radius;
@@ -54,16 +85,28 @@
           transition: $transition;
 }
 
-@mixin state-select() {
-  background-color: $state-bg-select;
-  border:           $state-border-select 1px solid;
-  color:            $state-color-select;
-}
-
 @mixin state-hover() {
   background-color: $state-bg-hover;
   border:           $state-border-hover 1px solid;
   color:            $state-color-hover;
+}
+
+@mixin state-select() {
+  &,
+  &:hover {
+    background-color: $state-bg-select;
+    border:           $state-border-select 1px solid;
+    color:            $state-color-select;
+  }
+}
+
+@mixin state-focus() {
+  &,
+  &:hover {
+    background-color: $state-bg-focus;
+    border:           $state-border-focus 1px solid;
+    color:            $state-color-focus;
+  }
 }
 
 @mixin state-disabled() {
@@ -71,16 +114,18 @@
   cursor: not-allowed;
 }
 
-@mixin state-focus() {
-  background-color: $state-bg-focus;
-  border:           $state-border-focus 1px solid;
-  color:            $state-color-focus;
+
+
+@mixin disabled-color($color) {
+  color: lighten($color, 40%);
+  filter: alpha(opacity=7);
+  opacity: .7;
 }
 
 @mixin clearfix() {
   &:before,
   &:after {
-    content: " "; 
+    content: " ";
     display: table;
   }
   &:after {
@@ -96,4 +141,38 @@
   }
   &:-ms-input-placeholder { color: $color; } // Internet Explorer 10+
   &::-webkit-input-placeholder  { color: $color; } // Safari and Chrome
+}
+
+@mixin height-calc($total, $minus) {
+  height: "calc(#{$total} - #{$minus})";
+
+  /** ie8 fallback **/
+  margin-top: "-#{$minus}\9";
+  height: "#{$total}\9";
+    /** --- **/
+}
+
+@mixin make-btn-state() {
+  cursor: pointer;
+
+  &:hover,
+  &:active, {
+    background-color: $state-bg-hover;
+  }
+
+  &:active {
+    @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+
+  .rw-state-disabled &,
+  .rw-state-readonly & {
+    &,
+    &:hover,
+    &:active {
+      cursor: not-allowed;
+      background-color: inherit;
+      background-image: none;
+      @include box-shadow(none);
+    }
+  }
 }

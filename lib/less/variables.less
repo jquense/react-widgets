@@ -1,4 +1,118 @@
-@rw-font-path:        "../fonts"; // for referencing Bootstrap CDN font files directly
-@rw-img-path:         "../img";
-@rw-css-prefix:       rw-i;
-@rw-version:          "4.1.0";
+
+@gray-base:              #000;
+@gray-darker:            lighten(@gray-base, 13.5%); // #222
+@gray-dark:              lighten(@gray-base, 20%);   // #333
+@gray:                   lighten(@gray-base, 33.5%); // #555
+@gray-light:             lighten(@gray-base, 46.7%); // #777
+@gray-lighter:           lighten(@gray-base, 93.5%); // #eee
+
+@font-size:              1em;
+@text-color:             @gray-dark;
+
+@version:                   "4.1.0";
+@font-path:                 "../fonts"; // for referencing Bootstrap CDN font files directly
+@img-path:                  "../img";
+
+@border-radius:             4px;
+@border-radius-sm:          3px;
+
+@widget-bg:                 #fff;
+@widget-border:             #ccc;
+
+@btn-bg:                    #fff;
+@btn-color:                 @text-color;
+@btn-border:                #ccc;
+
+
+
+
+/**
+ * Widget States
+ **/
+@state-bg-select:           #337ab7;
+@state-border-select:       @state-bg-select;
+@state-color-select:        white;
+
+@state-bg-hover:            darken(@btn-bg, 10%);
+@state-border-hover:        @state-bg-hover;
+@state-color-hover:         @text-color;
+
+@state-bg-focus:            @widget-bg;
+@state-border-focus:        #66afe9;
+@state-color-focus:         @text-color;
+
+
+
+
+/**
+ * Picker inputs
+ **/
+@input-color:               @gray;
+@input-height:              2.286em;
+@input-padding-horizontal:  0.857em;
+@input-box-shadow:          inset 0 1px 1px rgba(0,0,0,.075);
+
+@input-bg:                  #fff;
+@input-bg-disabled:         @gray-lighter;
+@input-color-placeholder:   #999;
+
+@input-border-radius:       @border-radius;
+@input-border:              #ccc;
+@input-border-width:        1px;
+
+@input-bg-hover:            @gray-lighter;
+@input-border-hover:        @input-border;
+
+@input-border-focus:        @state-border-focus;
+@input-focus-color:         rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
+@input-focus-box-shadow:    0 0 8px @input-focus-color;
+
+
+/**
+ * List
+ **/
+@list-font-size:            @font-size;
+@list-bg-hover:             @state-bg-hover;
+@list-border-hover:         @state-border-hover;
+@list-text-color:           @text-color;
+@list-padding-vertical:     0.143em;
+@list-padding-horizontal:   0.750em;
+
+
+/**
+ * Popup
+ **/
+@popup-bg:                  @widget-bg;
+@popup-border:              @widget-border;
+@popup-box-shadow-offset:   6px;
+@popup-box-shadow:          0 5px @popup-box-shadow-offset rgba(0,0,0,0.2);
+@popup-box-shadow-up:       0 0 @popup-box-shadow-offset rgba(0,0,0,0.2);
+
+@popup-zindex:              1005;
+@popup-zindex-focused:      @popup-zindex + 1;
+
+
+
+/**
+ * Calendar
+ **/
+@calendar-bg:           @widget-bg;
+@calendar-cell-padding: .25em .3em .3em .1em;
+
+
+
+
+/**
+ * Multiselect
+ **/
+@multiselect-gutter-pt:           0.125;
+@multiselect-tag-padding:         0.35em;
+@multiselect-tag-border:          @btn-border;
+@multiselect-tag-bg:              @gray-lighter;
+@multiselect-tag-height-pt:       1 - (@multiselect-gutter-pt * 2);
+@multiselect-tag-gutter-fallback: @input-height * @multiselect-gutter-pt;
+@multiselect-tag-gutter:          ~"calc(@{multiselect-tag-gutter-fallback} - @{input-border-width})";
+@multiselect-tag-height: @input-height * @multiselect-tag-height-pt;
+
+// @font-size: 16px;
+// @input-height: 2.5em;

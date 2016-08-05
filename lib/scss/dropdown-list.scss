@@ -1,0 +1,50 @@
+
+.rw-dropdown-list-input {
+  background-color: transparent;
+  vertical-align: middle;
+  padding-right: 0;
+
+  /* ellipsis */ & {
+    max-width: 1px; // very hacky to force ellipsis
+    min-width: 10000px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .rw-rtl & {
+    padding-right:  $input-padding-horizontal;
+    padding-left: 0;
+  }
+}
+
+.rw-filter-input {
+  &:extend(.rw-input);
+  &:extend(.rw-widget-input);
+
+  position: relative;
+  margin: 4px;
+  padding-left: 0;
+
+  .rw-rtl {
+    padding-left: $input-padding-horizontal;
+    padding-right: 0;
+  }
+
+  .rw-select,
+  .rw-btn {
+    cursor: text;
+    opacity: 0.75;
+  }
+
+  > .rw-select {
+    &,
+    &:active,
+    &:hover {
+      background: none;
+      cursor: initial;
+      box-shadow: none;
+    }
+  }
+}
