@@ -7,7 +7,7 @@ import _  from './util/_';
 import warning from 'warning';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
-import { isDisabledItem, isReadOnlyItem }  from './util/interaction';
+import { isDisabledItem }  from './util/interaction';
 
 let optionId = (id, idx)=> `${id}__option__${idx}`;
 

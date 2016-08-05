@@ -1,17 +1,10 @@
-import { findDOMNode } from 'react-dom';
+import React from 'react';
 import tsp from 'teaspoon';
+import NumberPicker from '../src/NumberPicker';
 
-var React = require('react');
-var NumberPicker = require('../src/NumberPicker.jsx');
-
-//console.log(sinon)
-var TestUtils = require('react-addons-test-utils');
-var render = TestUtils.renderIntoDocument
-  , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , trigger = TestUtils.Simulate;
+let ControlledNumberPicker = NumberPicker.ControlledComponent;
 
 describe('NumberPicker', function(){
-
 
   it('should set values correctly', function() {
     let expectValueToBe = val =>
@@ -76,150 +69,176 @@ describe('NumberPicker', function(){
   })
 
   it('should change value when spinner is clicked', function(){
-    var change = sinon.spy()
-      , instance = render(<NumberPicker value={1} format='D' onChange={change} />)
-      , upBtn  = findClass(instance, 'rw-select').children[0]
-      , dwnBtn  = findClass(instance, 'rw-select').children[1]
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+    var changeSpy = sinon.spy();
+
+    let inst = tsp(
+      <NumberPicker
+        value={1}
+        format='D'
+        onChange={changeSpy}
+      />
+    )
+    .render();
 
     //increment
-    expect(input.value).to.be('1')
-    trigger.mouseDown(upBtn)
-    trigger.mouseUp(upBtn)
+    inst.first('Button')
+      .trigger('mouseDown')
+      .trigger('mouseUp');
 
-    expect(change.calledOnce).to.be(true)
-    expect(change.args[0][0]).to.be(2)
+    expect(changeSpy.calledOnce).to.be(true)
+    expect(changeSpy.args[0][0]).to.be(2)
 
     //decrement
-    trigger.mouseDown(dwnBtn)
-    trigger.mouseUp(dwnBtn)
+    inst.last('Button')
+      .trigger('mouseDown')
+      .trigger('mouseUp');
 
-    expect(change.calledTwice).to.be(true)
-    expect(change.args[1][0]).to.be(0)
+    expect(changeSpy.calledTwice).to.be(true)
+    expect(changeSpy.args[1][0]).to.be(0)
   })
 
   it('should trigger focus/blur events', function(done){
     var blur = sinon.spy()
       , focus = sinon.spy()
-      , instance = render(<NumberPicker onBlur={blur} onFocus={focus}/>);
 
-    expect(focus.calledOnce).to.be(false)
-    expect(blur.calledOnce).to.be(false)
+    tsp(<NumberPicker onBlur={blur} onFocus={focus}/>)
+      .render()
+      .trigger('focus')
+      .tap(inst => {
+        setTimeout(() => {
+          inst.trigger('blur')
 
-    trigger.focus(findDOMNode(instance))
+          setTimeout(() => {
+            expect(focus.calledOnce).to.be(true)
+            expect(blur.calledOnce).to.be(true)
+            done()
+          })
+        })
+      });
+  })
 
-    setTimeout(() => {
-      expect(focus.calledOnce).to.be(true)
-      trigger.blur(findDOMNode(instance))
+  it('should not trigger focus/blur events when disabled', function(done){
+    var blur = sinon.spy()
+      , focus = sinon.spy()
 
-      setTimeout(() => {
-        expect(blur.calledOnce).to.be(true)
-        done()
-      })
-    })
+    tsp(<NumberPicker disabled onBlur={blur} onFocus={focus}/>)
+      .render()
+      .trigger('focus')
+      .tap(inst => {
+        setTimeout(() => {
+          inst.trigger('blur')
+
+          setTimeout(() => {
+            expect(focus.called).to.be(false)
+            expect(blur.called).to.be(false)
+            done()
+          })
+        })
+      });
   })
 
   it('should trigger key events', function(){
-    var kp = sinon.spy(), kd = sinon.spy(), ku = sinon.spy()
-      , instance = render(<NumberPicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+    var kp = sinon.spy()
+      , kd = sinon.spy()
+      , ku = sinon.spy()
 
-    trigger.keyPress(input)
-    trigger.keyDown(input)
-    trigger.keyUp(input)
+    tsp(
+      <NumberPicker
+        onKeyPress={kp}
+        onKeyUp={ku}
+        onKeyDown={kd}
+      />
+    )
+    .render()
+    .trigger('keyPress')
+    .trigger('keyDown')
+    .trigger('keyUp')
 
     expect(kp.calledOnce).to.be(true)
     expect(kd.calledOnce).to.be(true)
     expect(ku.calledOnce).to.be(true)
   })
 
-  it('should do nothing when disabled', function(){
-    var change = sinon.spy()
-      , instance = render(<NumberPicker value={0} disabled={true} onChange={change} />)
-      , input  = findDOMNode(findClass(instance, 'rw-input'))
-      , upBtn  = findClass(instance, 'rw-select').children[0]
-      , dwnBtn = findClass(instance, 'rw-select').children[1];
+  it('should add correct markup when read-only', () => {
+    let input = tsp(<ControlledNumberPicker readOnly />)
+      .render()
+      .find('.rw-input')
+      .dom()
 
-    trigger.focus(input)
-
-    setTimeout(function(){
-      expect(findDOMNode(instance).className).to.not.match(/\brw-state-focus\b/)
-      expect(findDOMNode(instance).className).to.match(/\brw-state-disabled\b/)
-      expect(input.hasAttribute('aria-disabled')).to.be(true)
-      expect(input.getAttribute('aria-disabled')).to.be('true')
-
-      trigger.mouseDown(upBtn)
-      trigger.mouseDown(dwnBtn)
-      expect(change.called).to.be(false)
-    }, 0)
+    expect(input.getAttribute('aria-readonly')).to.be('true');
   })
 
+  it('should add correct markup when disabled', () => {
+    let input = tsp(<ControlledNumberPicker disabled />)
+      .render()
+      .find('.rw-input')
+      .dom()
+
+    expect(input.getAttribute('aria-disabled')).to.be('true');
+  })
+
+
   it('should allow null values with min', function(){
-    var change = sinon.spy()
-      , instance = render(<NumberPicker value={0} min={12} onChange={change} />)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+    let changeSpy = sinon.spy();
 
-    trigger.change(input, { target: { value: '' } })
+    tsp(
+      <NumberPicker
+        value={15}
+        min={12}
+        onChange={changeSpy}
+      />
+    )
+    .render()
+    .find('.rw-input')
+    .trigger('change', { target: { value: '' } })
 
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWithExactly(null)).to.be(true)
+    expect(changeSpy.calledOnce).to.be(true)
+    expect(changeSpy.calledWithExactly(null)).to.be(true)
   })
 
   it('should not trigger change at delimiter', function() {
-    var change = sinon.spy()
-      , instance = render(<NumberPicker value={1.5} min={12} onChange={change} />)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+    let changeSpy = sinon.spy();
 
-    trigger.change(input, { target: { value: '1.' } })
+    tsp(
+      <NumberPicker
+        value={1.5}
+        onChange={changeSpy}
+      />
+    )
+    .render()
+    .find('.rw-input')
+    .trigger('change', { target: { value: '1.' } })
 
-    expect(change.callCount).to.be(0)
-
-    change = sinon.spy()
-    instance = render(<NumberPicker value={1.5} min={12} onChange={change} />)
-    input  = findDOMNode(findClass(instance, 'rw-input'))
+    expect(changeSpy.callCount).to.be(0)
   })
 
-  it('should not trigger change while below min', function() {
-    var change = sinon.spy()
-      , instance = render(<NumberPicker value={1.5} min={12} onChange={change} />)
-      , input  = findDOMNode(findClass(instance, 'rw-input'));
+  it('should not trigger change while below min', () => {
+    let changeSpy = sinon.spy();
 
-    trigger.change(input, { target: { value: '11' } })
+    tsp(
+      <NumberPicker
+        value={1.5}
+        min={12}
+        onChange={changeSpy}
+      />
+    )
+    .render()
+    .find('.rw-input')
+    .trigger('change', { target: { value: '11' } })
+    .trigger('change', { target: { value: '111' } })
 
-    expect(change.callCount).to.be(0)
-
-    trigger.change(input, { target: { value: '111' } })
-
-    expect(change.callCount).to.be(1)
+    expect(changeSpy.calledOnce).to.be(true)
   })
 
-  it('should do nothing when readonly', function(){
-    var change = sinon.spy()
-      , instance = render(<NumberPicker value={0} readOnly={true} onChange={change} />)
-      , input  = findDOMNode(findClass(instance, 'rw-input'))
-      , upBtn  = findClass(instance, 'rw-select').children[0]
-      , dwnBtn = findClass(instance, 'rw-select').children[1];
-
-    trigger.focus(input)
-
-    setTimeout(function(){
-      expect(findDOMNode(instance).className).to.match(/\brw-state-focus\b/)
-      expect(findDOMNode(instance).className).to.match(/\brw-state-readonly\b/)
-      expect(input.hasAttribute('aria-readonly')).to.be(true)
-      expect(input.getAttribute('aria-readonly')).to.be('true')
-
-      trigger.mouseDown(upBtn)
-      trigger.mouseDown(dwnBtn)
-      expect(change.called).to.be(false)
-    }, 0)
-
-  })
 
   it('should change values on key down', function() {
     var change = sinon.spy();
 
     let instance = tsp(
-      <NumberPicker value={10} onChange={change} />
+      <NumberPicker
+        value={10}
+        onChange={change}
+      />
     ).render()
 
     instance

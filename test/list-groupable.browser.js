@@ -5,7 +5,7 @@ require('../vendor/phantomjs-shim')
 import ReactDOM from 'react-dom';
 
 var React = require('react');
-var List = require('../src/ListGroupable.jsx');
+var List = require('../src/ListGroupable');
 
 
 //console.log(sinon)

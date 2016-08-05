@@ -30,7 +30,7 @@ describe('server rendering', function() {
   components.forEach(function(file){
 
     it('should render: ' + file, function(){
-      var Type = require('../src/' + file + '.jsx')
+      var Type = require('../src/' + file)
 
       assert.doesNotThrow(function(){
         var comp = renderToString( React.createElement(Type) );
@@ -43,7 +43,7 @@ describe('server rendering', function() {
   })
 
   it('should render: Popup', function(){
-    var Type = require('../src/Popup.jsx')
+    var Type = require('../src/Popup')
 
     assert.doesNotThrow(function(){
       var comp = renderToString(

@@ -1,7 +1,7 @@
 import React from 'react';
 import tsp from 'teaspoon';
 
-import DropdownList from '../src/DropdownList.jsx';
+import DropdownList from '../src/DropdownList';
 
 let ControlledDropdownList = DropdownList.ControlledComponent;
 
@@ -97,7 +97,7 @@ describe('DROPDOWNS', function(){
 
     inst.is('[aria-expanded]')
     inst.single('Popup[open]')
-    inst.single('Widget[open]')
+    inst.single('WidgetPicker[open]')
   })
 
   it('should foward props to Popup', () => {

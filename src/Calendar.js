@@ -144,7 +144,7 @@ let Calendar = React.createClass({
       finalView:    'century',
 
       tabIndex:     '0',
-      footer:        false,
+      footer:        true,
 
       ariaActiveDescendantKey: 'calendar',
       messages: msgs({})

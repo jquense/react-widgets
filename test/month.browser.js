@@ -1,7 +1,7 @@
 import tsp from 'teaspoon';
 
 var React = require('react');
-var Month = require('../src/Month.jsx');
+var Month = require('../src/Month');
 
 describe('Month Component', function(){
 

@@ -3,7 +3,7 @@ require('../vendor/phantomjs-shim')
 
 var React = require('react');
 import ReactDOM from 'react-dom';
-var List = require('../src/List.jsx');
+var List = require('../src/List');
 
 //console.log(sinon)
 var TestUtils = require('react-addons-test-utils');
