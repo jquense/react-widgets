@@ -3,11 +3,10 @@ import { findDOMNode } from 'react-dom';
 import Globalize from 'globalize';
 import tsp from 'teaspoon';
 
-import DateTimePicker from '../src/DateTimePicker.jsx'
-import TimeList from '../src/TimeList.jsx'
-import BaseCalendar from '../src/Calendar.jsx'
+import DateTimePicker from '../src/DateTimePicker'
+import TimeList from '../src/TimeList'
+import Calendar from '../src/Calendar'
 
-let Calendar = BaseCalendar.ControlledComponent;
 let ControlledDateTimePicker = DateTimePicker.ControlledComponent;
 
 var TestUtils = require('react-addons-test-utils');
@@ -47,10 +46,10 @@ describe('DateTimePicker', function(){
 
     tsp(<ControlledDateTimePicker onToggle={onOpen} />)
       .shallowRender()
-      .single('.rw-btn-calendar')
+      .first('Button')
         .trigger('click')
-        .end()
-      .single('.rw-btn-time')
+        .end().end()
+      .last('Button')
         .trigger('click');
 
     expect(onOpen.calledTwice).to.be(true)
@@ -207,7 +206,7 @@ describe('DateTimePicker', function(){
   it('should change values on key down', function(){
     var change = sinon.spy()
       , instance = render(<DateTimePicker onChange={change} />)
-      , timelist = findDOMNode(findType(instance, require('../src/List.jsx'))).children;
+      , timelist = findDOMNode(findType(instance, require('../src/List'))).children;
 
     trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown', altKey: true })
     expect(instance._values.open).to.be('calendar')

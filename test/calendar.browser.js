@@ -1,12 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
-import Calendar from '../src/Calendar.jsx'
-import Header from '../src/Header.jsx';
-import Footer from '../src/Footer.jsx';
-import Month  from '../src/Month.jsx';
-import Year from '../src/Year.jsx';
-import Decade from '../src/Decade.jsx';
-import Century from '../src/Century.jsx';
+import tsp from 'teaspoon';
+
+import Calendar from '../src/Calendar'
+import Header from '../src/Header';
+import Footer from '../src/Footer';
+import Month  from '../src/Month';
+import Year from '../src/Year';
+import Decade from '../src/Decade';
+import Century from '../src/Century';
 import { directions } from '../src/util/constants';
 import dates from '../src/util/dates';
 import globalize from 'globalize';
@@ -28,7 +30,7 @@ describe('Calendar', () => {
       , picker = render(<Calendar defaultValue={date} initialView='year'/>);
 
     expect(() =>
-      findType(picker, require('../src/Year.jsx'))).to.not.throwException();
+      findType(picker, require('../src/Year'))).to.not.throwException();
   })
 
   it('should click up through views', function(){
@@ -138,20 +140,23 @@ describe('Calendar', () => {
   })
 
   it('should have a footer', function(){
-    var picker = render(<BaseCalendar/>)
-      , footer;
+    tsp(<BaseCalendar footer={false} />)
+      .shallowRender()
+      .none(Footer)
+        .end()
+      .props('footer', true)
+      .single(Footer);
 
-    expect(() => findType(picker, Footer))
-      .to.throwException()
+  })
 
-    picker = render(<BaseCalendar footer/>)
-
-    expect(() => footer = findType(picker, Footer))
-      .to.not.throwException()
-
-    expect($(ReactDOM.findDOMNode(footer)).text())
-      .to.equal(
-        globalize.format(new Date(), 'D'))
+  it('should display date in footer', function(){
+    expect(
+      tsp(<BaseCalendar />)
+        .render()
+        .single(Footer)
+        .text()
+    )
+    .to.equal(globalize.format(new Date(), 'D'));
   })
 
   it('should accept footer format', function(){
@@ -161,40 +166,63 @@ describe('Calendar', () => {
       return 'test'
     })
 
-    var picker = render(<BaseCalendar footer footerFormat={formatter} culture='en'/>)
-      , footer = findType(picker, Footer);
-
-    expect($(ReactDOM.findDOMNode(footer)).text())
-      .to.equal('test')
+    expect(
+      tsp(<BaseCalendar footerFormat={formatter} culture='en'/>)
+        .render()
+        .single(Footer)
+        .text()
+    )
+    .to.equal('test')
 
     expect(formatter.calledOnce).to.be.ok()
   })
 
   it('should navigate to footer date', () => {
-    var picker = render(<BaseCalendar footer value={new Date(2013, 5, 15)}/>)
-      , footer = findType(picker, Footer);
+    let changeSpy = sinon.spy();
 
-    trigger.click(
-      findClass(footer, 'rw-btn'))
+    tsp(
+      <BaseCalendar
+        value={new Date(2013, 5, 15)}
+        onChange={changeSpy}
+      />
+    )
+    .shallowRender()
+    .find(Footer)
+    .trigger('click')
 
     expect(
-      dates.eq(picker.props.currentDate, new Date(), 'day'))
-        .to.be.ok()
+      changeSpy.calledOnce
+    )
+    .to.equal(true)
   })
 
   it('should constrain movement by min and max', () => {
-    var date     = new Date(2014, 5, 15)
-      , picker   = render(<Calendar value={date} max={new Date(2014, 5, 25)}  min={new Date(2014, 5, 5)} onChange={()=>{}}/>)
-      , header   = findType(picker, Header)
-      , rightBtn = findClass(header, 'rw-btn-right')
-      , leftBtn  = findClass(header, 'rw-btn-left');
+    let changeSpy = sinon.spy();
+    let date = new Date(2014, 5, 15);
 
+    let cal = tsp(
+      <Calendar
+        defaultValue={date}
+        max={new Date(2014, 5, 25)}
+        min={new Date(2014, 5, 5)}
+        onCurrentDateChange={changeSpy}
+      />
+    )
+    .render()
 
-    trigger.click(rightBtn)
-    expect(picker.refs.inner.props.currentDate).to.eql(date);
+    cal.find('.rw-btn-right')
+      .tap(inst =>
+        inst.is('[disabled]')
+      )
+      .trigger('click')
 
-    trigger.click(leftBtn)
-    expect(picker.refs.inner.props.currentDate).to.eql(date);
+    cal.find('.rw-btn-left')
+      .tap(inst =>
+        inst.is('[disabled]')
+      )
+      .trigger('click')
+
+    expect(changeSpy.called).to.equal(false)
 
   })
 

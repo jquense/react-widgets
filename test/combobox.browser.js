@@ -1,7 +1,7 @@
 import React from 'react';
 import tsp from 'teaspoon';
 
-import Combobox from '../src/Combobox.jsx';
+import Combobox from '../src/Combobox';
 
 let ControlledCombobox = Combobox.ControlledComponent;
 
@@ -103,7 +103,7 @@ describe('Combobox', function(){
     expect(inst.props('open')).to.equal(true)
 
     inst.single('Popup[open]')
-    inst.single('Widget[open]')
+    inst.single('WidgetPicker[open]')
     inst.single('ComboboxInput[aria-expanded]')
   })
 

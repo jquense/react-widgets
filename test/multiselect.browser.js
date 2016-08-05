@@ -1,9 +1,9 @@
 import React from 'react';
 import tsp from 'teaspoon';
 
-import Multiselect from '../src/Multiselect.jsx';
-import TagList from '../src/MultiselectTagList.jsx';
-
+import Multiselect from '../src/Multiselect';
+import MultiselectTag from '../src/MultiselectTag';
+import MultiselectTagList from '../src/MultiselectTagList';
 
 describe('Multiselect', function() {
   const ControlledMultiselect = Multiselect.ControlledComponent;
@@ -20,14 +20,14 @@ describe('Multiselect', function() {
 
     tsp(<Multiselect value={['hello']} onChange={()=>{}} />)
       .render()
-      .single(tsp.s`${TagList} li:textContent(hello)`)
+      .single(tsp.s`${MultiselectTag} :textContent(hello)`)
   })
 
   it('should respect textField and valueFields', function(){
     tsp(<Multiselect defaultValue={[0]} data={dataList} textField='label' valueField='id' />)
     tsp(<Multiselect defaultValue={[0]} data={dataList} textField='label' valueField='id' />)
       .render()
-      .single(tsp.s`${TagList} li:textContent(jimmy)`)
+      .single(tsp.s`${MultiselectTag} :textContent(jimmy)`)
   })
 
   it('should start closed', () => {
@@ -55,7 +55,7 @@ describe('Multiselect', function() {
     expect(inst.props('open')).to.equal(true)
 
     inst.single('Popup[open]')
-    inst.single('Widget[open]')
+    inst.single('WidgetPicker[open]')
     inst.single('MultiselectInput[aria-expanded]')
   })
 
@@ -70,12 +70,13 @@ describe('Multiselect', function() {
     expect(props.duration).to.equal(2)
   })
 
-  it('should open when focused', (done) => {
+  it('should open when clicked', (done) => {
     let openSpy = sinon.spy();
 
     tsp(<ControlledMultiselect onToggle={openSpy} />)
       .render()
-      .trigger('focus')
+      .find('WidgetPicker')
+      .trigger('click')
 
     setTimeout(() => {
       expect(openSpy.calledOnce).to.be(true);
@@ -109,7 +110,7 @@ describe('Multiselect', function() {
   it('should remove tag when clicked', function(){
     var del = sinon.spy()
     tsp(
-      <TagList
+      <MultiselectTagList
         value={[dataList[0], dataList[1]]}
         data={dataList}
         textField='label'
@@ -117,8 +118,10 @@ describe('Multiselect', function() {
         onDelete={del}/>
     )
     .render()
-      .tap(inst => expect(inst.find('li').length).to.equal(2))
-    .find('li:first-child > span')
+    .tap(inst =>
+      expect(inst.find(MultiselectTag).length).to.equal(2)
+    )
+    .first('.rw-multiselect-tag-btn')
     .trigger('click', {});
 
     expect(del.calledOnce).to.be(true)
@@ -138,7 +141,7 @@ describe('Multiselect', function() {
       />
     )
     .render()
-    .find(tsp.s`${TagList} li:first-child > span`)
+    .first('.rw-multiselect-tag-btn')
     .trigger('click', {});
 
     expect(change.calledOnce).to.be(true)
@@ -211,7 +214,7 @@ describe('Multiselect', function() {
   it('should add correct markup when read-only', () => {
     let input = tsp(<ControlledMultiselect readOnly />)
       .render()
-      .find('.rw-input')
+      .single('.rw-input-reset')
       .dom()
 
     expect(input.hasAttribute('readonly')).to.be(true);
@@ -221,7 +224,7 @@ describe('Multiselect', function() {
   it('should add correct markup when disabled', () => {
     let input = tsp(<ControlledMultiselect disabled />)
       .render()
-      .find('.rw-input')
+      .single('.rw-input-reset')
       .dom()
 
     expect(input.hasAttribute('disabled')).to.be(true);
@@ -241,7 +244,7 @@ describe('Multiselect', function() {
       />
     )
     .render()
-    .find(TagList)
+    .find(MultiselectTagList)
     .single('li.rw-state-disabled > span')
     .trigger('click')
 
@@ -260,7 +263,7 @@ describe('Multiselect', function() {
       />
     )
     .render()
-    .find('.rw-tag-btn')
+    .find('.rw-multiselect-tag-btn')
     .trigger('click')
 
     expect(changeSpy.called).to.be(false)
@@ -279,7 +282,7 @@ describe('Multiselect', function() {
       />
     )
     .render()
-    .first('.rw-tag-btn')
+    .first('.rw-multiselect-tag-btn')
     .trigger('click')
 
     expect(change.called).to.be(false)
@@ -297,29 +300,10 @@ describe('Multiselect', function() {
       />
     )
     .render()
-    .find('.rw-tag-btn')
+    .find('.rw-multiselect-tag-btn')
     .trigger('click')
 
     expect(changeSpy.called).to.be(false)
-  })
-
-  it('should not remove readonly tags', function() {
-    var change = sinon.spy();
-    tsp(
-      <Multiselect
-        onChange={change}
-        defaultValue={[1, 0]}
-        data={dataList}
-        readOnly={[1]}
-        textField='label'
-        valueField='id'
-      />
-    )
-    .render()
-    .first('.rw-tag-btn')
-    .trigger('click')
-
-    expect(change.called).to.be(false)
   })
 
   it('should call Select handler', function(){
@@ -485,7 +469,7 @@ describe('Multiselect', function() {
     )
     .render()
 
-    let tags = inst.find(TagList).children();
+    let tags = inst.find(MultiselectTagList).children();
 
     inst.trigger('keyDown', { key: 'ArrowLeft' })
     tags.last().is('.rw-state-focus')
