@@ -1,7 +1,7 @@
 import { configure } from '@kadira/storybook';
 
 import './styles.less';
-import Globalize from './configure-globalize-new';
+import Globalize from './configure-globalize-old';
 
 import Chance from 'chance';
 
