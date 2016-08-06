@@ -4276,7 +4276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (shown || state.visible && changed) {
 	      if (handler) handler(selected, list, focused);else {
 	        state.scrollCancel && state.scrollCancel();
-	        state.scrollCancel = (0, _scrollTo3.default)(selected, list.parentNode);
+	        state.scrollCancel = (0, _scrollTo3.default)(selected, list);
 	      }
 	    }
 	  }
