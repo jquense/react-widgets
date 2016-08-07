@@ -42,7 +42,7 @@ class ReplaceTransitionGroup extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this.isMounted = mountManager(this);
+    this.mounted = mountManager(this);
     this.animatingKeys = {};
     this.leaving  = null;
     this.entering = null;
@@ -129,7 +129,7 @@ class ReplaceTransitionGroup extends React.Component {
     if (this.isTransitioning())
       return
 
-    if (this.isMounted())
+    if (this.mounted())
       css(findDOMNode(this), { overflow: 'visible', height: '', width: '' })
 
     this.props.onAnimate()
@@ -173,7 +173,7 @@ class ReplaceTransitionGroup extends React.Component {
     if (key(this.props.children) === leavekey )
       this.performEnter(leavekey) // This entered again before it fully left. Add it again.
 
-    else if (this.isMounted())
+    else if (this.mounted())
       this.setState({
         children: this.state.children.filter(c => key(c) !== leavekey)
       })
