@@ -1,8 +1,5 @@
 import React, { PropTypes } from 'react';
 import localizers from './localizers';
-import filters from'./filter';
-
-var filterTypes = Object.keys(filters).filter( i => i !== 'filter')
 
 function getInteractionPropType(key){
   var types = [ PropTypes.bool, PropTypes.oneOf([key]) ]
@@ -50,12 +47,6 @@ module.exports = {
                   React.PropTypes.node,
                   React.PropTypes.string
                 ]),
-
-  filter:       React.PropTypes.oneOfType([
-                  React.PropTypes.func,
-                  React.PropTypes.bool,
-                  React.PropTypes.oneOf(filterTypes)
-                ])
 }
 
 

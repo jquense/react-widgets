@@ -17,13 +17,9 @@ import createFocusManager from './util/focusManager';
 import withRightToLeft from './util/withRightToLeft';
 
 import validateList from './util/validateListInterface';
-import scrollTo from 'dom-helpers/util/scrollTo';
-
 import { dataItem, dataIndexOf } from './util/dataHelpers';
-import { widgetEditable } from './util/interaction';
-
+import { widgetEditable, isDisabled, isReadOnly, contains } from './util/interaction';
 import { instanceId, notify } from './util/widgetHelpers';
-import { isDisabled, isReadOnly, contains } from './util/interaction';
 
 let { find } = _;
 
@@ -93,7 +89,7 @@ class SelectList extends React.Component {
     this.focusManager = createFocusManager(this, {
       didHandle: this.handleFocusChanged
     })
-    
+
     this.ListItem = createSelectListItem(this)
     this.state = this.getDefaultState(this.props)
   }

@@ -21,12 +21,12 @@ storiesOf('DropdownList', module)
       />
     </Container>
   )
-  .add('filter', () =>
+  .add('no filter', () =>
     <Container>
       <DropdownList
         {...props}
         open
-        filter="contains"
+        filter={false}
       />
     </Container>
   )

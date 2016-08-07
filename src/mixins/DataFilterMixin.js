@@ -1,6 +1,6 @@
 'use strict';
 import React  from 'react';
-import filters from '../util/filter';
+import { presets } from '../util/Filter';
 import CustomPropTypes from '../util/propTypes';
 import { dataText } from '../util/dataHelpers';
 
@@ -27,7 +27,7 @@ module.exports = {
       var idx = -1
         , matches = typeof this.props.filter === 'function'
             ? this.props.filter
-            : getFilter(filters[dflt(this.props.filter)], searchTerm, this);
+            : getFilter(presets[dflt(this.props.filter)], searchTerm, this);
 
       if ( !searchTerm || !searchTerm.trim() || (this.props.filter && searchTerm.length < (this.props.minLength || 1)))
         return -1
@@ -44,7 +44,7 @@ module.exports = {
 
     filter(items, searchTerm){
       var matches = typeof this.props.filter === 'string'
-            ? getFilter(filters[this.props.filter], searchTerm, this)
+            ? getFilter(presets[this.props.filter], searchTerm, this)
             : this.props.filter;
 
       if ( !matches || !searchTerm || !searchTerm.trim() || searchTerm.length < (this.props.minLength || 1))

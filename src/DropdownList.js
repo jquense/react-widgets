@@ -2,6 +2,7 @@ import React from 'react';
 import activeElement from 'dom-helpers/activeElement';
 import contains from 'dom-helpers/query/contains';
 import cx from 'classnames';
+import uncontrollable from 'uncontrollable';
 import _  from './util/_';
 
 import Widget from './Widget';
@@ -13,8 +14,15 @@ import compat          from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import PlainList       from './List';
 import GroupableList   from './ListGroupable';
-import validateList    from './util/validateListInterface';
-import createUncontrolledWidget from 'uncontrollable';
+
+import autoFocus from './util/autoFocus';
+import * as Filter from './util/Filter';
+import createFocusManager from './util/focusManager';
+import createMountManager from './util/mountManager'
+import createScrollManager from './util/scrollManager';
+import createTimeoutManager from './util/timeoutManager';
+import shallowCompare from './util/shallowCompare';
+import withRightToLeft from './util/withRightToLeft';
 
 import { dataItem, dataIndexOf, valueMatcher } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
@@ -22,116 +30,124 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let { result } = _;
 
-var propTypes = {
-  //-- controlled props -----------
-  value:          React.PropTypes.any,
-  onChange:       React.PropTypes.func,
-  open:           React.PropTypes.bool,
-  onToggle:       React.PropTypes.func,
-  //------------------------------------
+class DropdownList extends React.Component {
+  static propTypes = {
+    ...Filter.propTypes,
 
-  data:           React.PropTypes.array,
-  valueField:     React.PropTypes.string,
-  textField:      CustomPropTypes.accessor,
+    //-- controlled props -----------
+    value:          React.PropTypes.any,
+    onChange:       React.PropTypes.func,
+    open:           React.PropTypes.bool,
+    onToggle:       React.PropTypes.func,
+    //------------------------------------
 
-  valueComponent: CustomPropTypes.elementType,
-  itemComponent:  CustomPropTypes.elementType,
-  listComponent:  CustomPropTypes.elementType,
+    data:           React.PropTypes.array,
+    valueField:     React.PropTypes.string,
+    textField:      CustomPropTypes.accessor,
 
-  groupComponent: CustomPropTypes.elementType,
-  groupBy:        CustomPropTypes.accessor,
+    valueComponent: CustomPropTypes.elementType,
+    itemComponent:  CustomPropTypes.elementType,
+    listComponent:  CustomPropTypes.elementType,
 
-  onSelect:       React.PropTypes.func,
-  searchTerm:     React.PropTypes.string,
-  onSearch:       React.PropTypes.func,
-  busy:           React.PropTypes.bool,
+    groupComponent: CustomPropTypes.elementType,
+    groupBy:        CustomPropTypes.accessor,
 
-  delay:          React.PropTypes.number,
-  dropUp:         React.PropTypes.bool,
-  duration:       React.PropTypes.number,
+    onSelect:       React.PropTypes.func,
+    searchTerm:     React.PropTypes.string,
+    onSearch:       React.PropTypes.func,
+    busy:           React.PropTypes.bool,
 
-  placeholder:    React.PropTypes.string,
+    delay:          React.PropTypes.number,
+    dropUp:         React.PropTypes.bool,
+    duration:       React.PropTypes.number,
 
-  disabled:       CustomPropTypes.disabled.acceptsArray,
-  readOnly:       CustomPropTypes.readOnly,
+    placeholder:    React.PropTypes.string,
 
-  messages:       React.PropTypes.shape({
-    open:              CustomPropTypes.message,
-    emptyList:         CustomPropTypes.message,
-    emptyFilter:       CustomPropTypes.message,
-    filterPlaceholder: CustomPropTypes.message
-  })
-};
+    disabled:       CustomPropTypes.disabled.acceptsArray,
+    readOnly:       CustomPropTypes.readOnly,
 
-var DropdownList = React.createClass({
-
-  displayName: 'DropdownList',
-
-  mixins: [
-    require('./mixins/TimeoutMixin'),
-    require('./mixins/AutoFocusMixin'),
-    require('./mixins/PureRenderMixin'),
-    require('./mixins/DataFilterMixin'),
-    require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/FocusMixin')({
-      didHandle(focused) {
-        if (!focused) this.close()
-      }
+    messages:       React.PropTypes.shape({
+      open:              CustomPropTypes.message,
+      emptyList:         CustomPropTypes.message,
+      emptyFilter:       CustomPropTypes.message,
+      filterPlaceholder: CustomPropTypes.message
     })
-  ],
+  };
 
-  propTypes: propTypes,
+  static defaultProps = {
+    delay: 500,
+    value: '',
+    open: false,
+    data: [],
+    searchTerm: '',
+    minLength: 1,
+    filter: true,
+    caseSensitive: false,
+    messages: msgs()
+  };
 
-  getDefaultProps(){
-    return {
-      delay: 500,
-      value: '',
-      open: false,
-      data: [],
-      searchTerm: '',
-      messages: msgs()
-    }
-  },
+  constructor(...args) {
+    super(...args)
 
-  getInitialState(){
-    let { open, filter, value, data, searchTerm, valueField } = this.props;
+    autoFocus(this)
 
-    var processed = filter ? this.filter(data, searchTerm) : data
-      , initialIdx = dataIndexOf(data, value, valueField);
-
-    return {
-      filteredData: (open && filter) ? processed : null,
-      selectedItem: processed[initialIdx],
-      focusedItem:  processed[initialIdx] || data[0]
-    }
-  },
-
-  componentWillMount() {
     this.inputId = instanceId(this, '_input')
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
-  },
 
-  componentDidUpdate() {
-    this.refs.list
-        && validateList(this.refs.list)
-  },
-
-  componentWillReceiveProps(props){
-    let { open, filter, value, data, searchTerm, valueField } = props;
-
-    var processed = filter ? this.filter(data, searchTerm) : data
-      , idx = dataIndexOf(data, value, valueField);
-
-    this.setState({
-      filteredData: (open && filter) ? processed : null,
-      selectedItem: processed[idx],
-      focusedItem:  processed[!~idx ? 0 : idx]
+    this.mounted = createMountManager(this)
+    this.timeouts = createTimeoutManager(this)
+    this.handleScroll = createScrollManager(this)
+    this.focusManager = createFocusManager(this, {
+      didHandle: this.handleFocusChanged
     })
-  },
 
-  renderFilter(messages){
+    this.state = this.getStateFromProps(this.props);
+  }
+
+  shouldComponentUpdate(...args) {
+    return shallowCompare(this, ...args)
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState(
+      this.getStateFromProps(props)
+    )
+  }
+
+  getStateFromProps(props) {
+    let {
+        value
+      , data
+      , searchTerm, valueField
+      , filter
+      , textField
+      , minLength
+      , caseSensitive
+    } = props;
+
+    let initialIdx = dataIndexOf(data, value, valueField);
+
+    data = Filter.filter(data, {
+      filter,
+      searchTerm,
+      minLength,
+      caseSensitive,
+      textField
+    })
+
+    return {
+      data,
+      selectedItem: data[initialIdx],
+      focusedItem: data[initialIdx] || data[0]
+    }
+  }
+
+  handleFocusChanged = (focused) => {
+    if (!focused) this.close()
+  };
+
+  renderFilter(messages) {
     return (
        <WidgetPicker
         ref='filterWrapper'
@@ -147,7 +163,7 @@ var DropdownList = React.createClass({
         />
       </WidgetPicker>
     )
-  },
+  }
 
   renderList(List, messages) {
     let { open, filter, data } = this.props;
@@ -173,7 +189,7 @@ var DropdownList = React.createClass({
           selected={selectedItem}
           focused ={open ? focusedItem : null}
           onSelect={this.handleSelect}
-          onMove={this._scrollTo}
+          onMove={this.handleScroll}
           messages={{
             emptyList: data.length
               ? messages.emptyFilter
@@ -181,7 +197,7 @@ var DropdownList = React.createClass({
           }}/>
       </div>
     )
-  },
+  }
 
   render() {
     let {
@@ -233,8 +249,8 @@ var DropdownList = React.createClass({
       <Widget
         {...elementProps}
         ref="input"
-        onBlur={this.handleBlur}
-        onFocus={this.handleFocus}
+        onBlur={this.focusManager.handleBlur}
+        onFocus={this.focusManager.handleFocus}
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
@@ -276,18 +292,18 @@ var DropdownList = React.createClass({
         }
       </Widget>
     )
-  },
+  }
 
   @widgetEditable
-  handleSelect(data){
+  handleSelect = (data) => {
     this.close()
     notify(this.props.onSelect, data)
     this.change(data)
     this.focus(this)
-  },
+  };
 
   @widgetEditable
-  handleClick(e){
+  handleClick = (e) => {
     var wrapper = this.refs.filterWrapper
 
     if( !this.props.filter || !this.props.open )
@@ -297,10 +313,10 @@ var DropdownList = React.createClass({
       this.close()
 
     notify(this.props.onClick, e)
-  },
+  };
 
   @widgetEditable
-  handleKeyDown(e){
+  handleKeyDown = (e) => {
     var key = e.key
       , alt = e.altKey
       , list = this.refs.list
@@ -365,10 +381,10 @@ var DropdownList = React.createClass({
       else             change(list.prev(selectedItem))
       e.preventDefault()
     }
-  },
+  };
 
   @widgetEditable
-  handleKeyPress(e) {
+  handleKeyPress = (e) => {
     notify(this.props.onKeyPress, [e])
 
     if (e.defaultPrevented)
@@ -376,21 +392,21 @@ var DropdownList = React.createClass({
 
     if (!(this.props.filter && this.props.open))
       this.search(String.fromCharCode(e.which), item => {
-        this.isMounted() && this.props.open
+        this.mounted() && this.props.open
           ? this.setState({ focusedItem: item })
           : item && this.change(item)
       })
-  },
+  };
 
-  change(data){
+  change(data) {
     if (!valueMatcher(data, this.props.value, this.props.valueField)) {
       notify(this.props.onChange, data)
       notify(this.props.onSearch, '')
       this.close()
     }
-  },
+  }
 
-  focus(target){
+  focus(target) {
     let { filter, open } = this.props;
     let inst = target || (filter && open ? this.refs.filter : this.refs.input);
 
@@ -398,11 +414,11 @@ var DropdownList = React.createClass({
 
     if (activeElement() !== inst)
       inst.focus()
-  },
+  }
 
   _data() {
-    return this.state.filteredData || this.props.data.concat()
-  },
+    return this.state.data
+  }
 
   search(character, cb) {
     var word = ((this._searchTerm || '') + character).toLowerCase();
@@ -412,7 +428,7 @@ var DropdownList = React.createClass({
 
     this._searchTerm = word
 
-    this.setTimeout('search', () => {
+    this.timeouts.set('search', () => {
       var list = this.refs.list
         , key  = this.props.open ? 'focusedItem' : 'selectedItem'
         , item = list.next(this.state[key], word);
@@ -421,23 +437,22 @@ var DropdownList = React.createClass({
       if (item) cb(item)
 
     }, this.props.delay)
-  },
+  }
 
   open() {
     notify(this.props.onToggle, true)
-  },
+  }
 
   close() {
     notify(this.props.onToggle, false)
-  },
+  }
 
   toggle() {
     this.props.open
       ? this.close()
       : this.open()
   }
-
-})
+}
 
 function msgs(msgs){
   return {
@@ -449,7 +464,7 @@ function msgs(msgs){
   }
 }
 
-export default createUncontrolledWidget(
+DropdownList = uncontrollable(
   DropdownList, {
     open: 'onToggle',
     value: 'onChange',
@@ -457,3 +472,7 @@ export default createUncontrolledWidget(
   },
   ['focus']
 );
+
+DropdownList = withRightToLeft(DropdownList)
+
+export default DropdownList

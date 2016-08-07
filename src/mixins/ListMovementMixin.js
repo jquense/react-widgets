@@ -1,4 +1,4 @@
-import filter from '../util/filter';
+import { presets } from '../util/Filter';
 import { dataText } from '../util/dataHelpers';
 import CustomPropTypes  from '../util/propTypes';
 import { isDisabledItem, isReadOnlyItem }  from '../util/interaction';
@@ -61,7 +61,7 @@ function matcher(word, item, textField){
   if (!word) return ()=> true
 
   word = word.toLowerCase()
-  return item => filter.startsWith(
+  return item => presets.startsWith(
       dataText(item, textField).toLowerCase()
     , word
   )
