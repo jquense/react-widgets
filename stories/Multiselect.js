@@ -21,6 +21,15 @@ storiesOf('Multiselect', module)
       />
     </Container>
   )
+  .add('Create tags', () =>
+    <Container>
+      <Multiselect
+        {...props}
+        onCreate={()=>{}}
+        defaultValue={props.data.slice(0, 2)}
+      />
+    </Container>
+  )
   .add('open', () =>
     <Container>
       <Multiselect

@@ -71,7 +71,6 @@ var SelectList = React.createClass({
     require('./mixins/TimeoutMixin'),
     require('./mixins/AutoFocusMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')(),
     require('./mixins/FocusMixin')({
       didHandle(focused) {
         // the rigamarole here is to avoid flicker went clicking an item and
@@ -118,6 +117,12 @@ var SelectList = React.createClass({
     return state
   },
 
+  componentWillMount() {
+    this.widgetId = instanceId(this, '_widget')
+    this.listId = instanceId(this, '_listbox')
+    this.activeId = instanceId(this, '_listbox_active_option')
+  },
+
   componentWillReceiveProps(nextProps) {
     return this.setState(
       this.getDefaultState(nextProps)
@@ -153,6 +158,7 @@ var SelectList = React.createClass({
     return (
       <Widget
         {...elementProps}
+        id={this.widgetId}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
@@ -162,6 +168,7 @@ var SelectList = React.createClass({
         readOnly={isReadOnly(this.props)}
         role="radiogroup"
         aria-busy={!!busy}
+        aria-activedescendant={this.activeId}
         className={cn(
           className,
           'rw-select-list',
@@ -175,7 +182,8 @@ var SelectList = React.createClass({
           ref='list'
           role="radiogroup"
           tabIndex={tabIndex || '0'}
-          id={instanceId(this, '_listbox')}
+          id={this.listId}
+          activeId={this.activeId}
           data={items}
           focused={focusedItem}
           optionComponent={ListItem}
