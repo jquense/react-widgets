@@ -5,45 +5,31 @@ import dates  from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
 import _ from './util/_';
 import CustomPropTypes from './util/propTypes';
-import { instanceId } from './util/widgetHelpers';
 
 let format = props => dateLocalizer.getFormat('decade', props.decadeFormat)
 
-let optionId = (id, date) => `${id}__century_${dates.year(date)}`;
+class CenturyView extends React.Component {
 
-let propTypes = {
-  culture: React.PropTypes.string,
-  today: React.PropTypes.instanceOf(Date),
-  value: React.PropTypes.instanceOf(Date),
-  focused: React.PropTypes.instanceOf(Date),
-  min: React.PropTypes.instanceOf(Date),
-  max: React.PropTypes.instanceOf(Date),
-  onChange: React.PropTypes.func.isRequired,
-  decadeFormat: CustomPropTypes.dateFormat
-};
-
-export default React.createClass({
-
-  displayName: 'CenturyView',
-
-  mixins: [
-    require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlChildContextMixin'),
-    require('./mixins/AriaDescendantMixin')()
-  ],
-
-  propTypes,
-
-  componentDidUpdate() {
-    let activeId = optionId(instanceId(this), this.props.focused);
-    this.ariaActiveDescendant(activeId)
-  },
+  static propTypes = {
+    activeId: React.PropTypes.string,
+    culture: React.PropTypes.string,
+    today: React.PropTypes.instanceOf(Date),
+    value: React.PropTypes.instanceOf(Date),
+    focused: React.PropTypes.instanceOf(Date),
+    min: React.PropTypes.instanceOf(Date),
+    max: React.PropTypes.instanceOf(Date),
+    onChange: React.PropTypes.func.isRequired,
+    decadeFormat: CustomPropTypes.dateFormat
+  };
 
   render(){
-    let { focused } = this.props;
+    let { focused, activeId } = this.props;
 
     return (
-      <CalendarView {..._.omitOwnProps(this)}>
+      <CalendarView
+        {..._.omitOwnProps(this)}
+        activeId={activeId}
+      >
         <CalendarView.Body>
           {_.chunk(getCenturyDecades(focused), 4)
             .map(this.renderRow)
@@ -51,11 +37,12 @@ export default React.createClass({
         </CalendarView.Body>
       </CalendarView>
     )
-  },
+  }
 
-  renderRow(row, rowIdx) {
+  renderRow = (row, rowIdx) => {
     let {
         focused
+      , activeId
       , disabled
       , onChange
       , value
@@ -64,18 +51,22 @@ export default React.createClass({
       , min
       , max } = this.props
 
-    let id = instanceId(this, '_century');
 
     return (
       <CalendarView.Row key={rowIdx}>
         {row.map((date, colIdx) => {
-          let label = dateLocalizer.format(dates.startOf(date, 'decade'), format(this.props), culture)
+
+          let label = dateLocalizer.format(
+              dates.startOf(date, 'decade')
+            , format(this.props)
+            , culture
+          )
 
           return (
             <CalendarView.Cell
               key={colIdx}
               unit="decade"
-              id={optionId(id, date)}
+              activeId={activeId}
               label={label}
               date={date}
               now={today}
@@ -93,8 +84,7 @@ export default React.createClass({
       </CalendarView.Row>
     )
   }
-
-});
+}
 
 function getCenturyDecades(_date){
   var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -102,3 +92,5 @@ function getCenturyDecades(_date){
 
   return days.map(() => (date = dates.add(date, 10, 'year')))
 }
+
+export default CenturyView;

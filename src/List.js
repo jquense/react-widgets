@@ -43,7 +43,6 @@ export default React.createClass({
     return {
       onSelect: ()=>{},
       optionComponent: ListOption,
-      ariaActiveDescendantKey: 'list',
       data: [],
       messages: {
         emptyList:   'There are no items in this list'

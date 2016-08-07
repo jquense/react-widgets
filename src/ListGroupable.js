@@ -49,7 +49,6 @@ export default React.createClass({
       onSelect:      function(){},
       data:          [],
       optionComponent: ListOption,
-      ariaActiveDescendantKey: 'groupedList',
       messages: {
         emptyList:   'There are no items in this list'
       }

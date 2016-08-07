@@ -58,17 +58,17 @@ let format = (props, f) => dateLocalizer.getFormat(f, props[f + 'Format'])
 
 
 let propTypes = {
+  activeId: React.PropTypes.string,
+  disabled: CustomPropTypes.disabled,
+  readOnly: CustomPropTypes.readOnly,
 
-  disabled:       CustomPropTypes.disabled,
-  readOnly:       CustomPropTypes.readOnly,
+  onChange: React.PropTypes.func,
+  value: React.PropTypes.instanceOf(Date),
 
-  onChange:      React.PropTypes.func,
-  value:         React.PropTypes.instanceOf(Date),
+  min: React.PropTypes.instanceOf(Date),
+  max: React.PropTypes.instanceOf(Date),
 
-  min:           React.PropTypes.instanceOf(Date),
-  max:           React.PropTypes.instanceOf(Date),
-
-  currentDate:         React.PropTypes.instanceOf(Date),
+  currentDate: React.PropTypes.instanceOf(Date),
   onCurrentDateChange: React.PropTypes.func,
 
   view: React.PropTypes.oneOf(VIEW_OPTIONS),
@@ -84,25 +84,25 @@ let propTypes = {
         prop. This creates a range that cannot be rendered.`.replace(/\n\t/g, ''))
   },
 
-  onViewChange:  React.PropTypes.func,
-  onNavigate:    React.PropTypes.func,
-  culture:       React.PropTypes.string,
-  footer:        React.PropTypes.bool,
+  onViewChange: React.PropTypes.func,
+  onNavigate: React.PropTypes.func,
+  culture: React.PropTypes.string,
+  footer: React.PropTypes.bool,
 
-  dayComponent:  CustomPropTypes.elementType,
-  headerFormat:  CustomPropTypes.dateFormat,
-  footerFormat:  CustomPropTypes.dateFormat,
+  dayComponent: CustomPropTypes.elementType,
+  headerFormat: CustomPropTypes.dateFormat,
+  footerFormat: CustomPropTypes.dateFormat,
 
-  dayFormat:     CustomPropTypes.dateFormat,
-  dateFormat:    CustomPropTypes.dateFormat,
-  monthFormat:   CustomPropTypes.dateFormat,
-  yearFormat:    CustomPropTypes.dateFormat,
-  decadeFormat:  CustomPropTypes.dateFormat,
+  dayFormat: CustomPropTypes.dateFormat,
+  dateFormat: CustomPropTypes.dateFormat,
+  monthFormat: CustomPropTypes.dateFormat,
+  yearFormat: CustomPropTypes.dateFormat,
+  decadeFormat: CustomPropTypes.dateFormat,
   centuryFormat: CustomPropTypes.dateFormat,
 
-  messages:      React.PropTypes.shape({
-    moveBack:     React.PropTypes.string,
-    moveForward:  React.PropTypes.string
+  messages: React.PropTypes.shape({
+    moveBack: React.PropTypes.string,
+    moveForward: React.PropTypes.string
   })
 }
 
@@ -115,7 +115,6 @@ let Calendar = React.createClass({
     require('./mixins/AutoFocusMixin'),
     require('./mixins/PureRenderMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')(),
     require('./mixins/FocusMixin')({
       willHandle() {
         if (+this.props.tabIndex === -1)
@@ -146,9 +145,17 @@ let Calendar = React.createClass({
       tabIndex:     '0',
       footer:        true,
 
-      ariaActiveDescendantKey: 'calendar',
       messages: msgs({})
     }
+  },
+
+  componentWillMount() {
+    this.viewId = instanceId(this, '_calendar')
+    this.labelId = instanceId(this, '_calendar_label')
+    this.activeId = (
+      this.props.activeId ||
+      instanceId(this, '_calendar_active_cell')
+    )
   },
 
   componentWillReceiveProps({ initialView, finalView, value, currentDate }) {
@@ -200,9 +207,7 @@ let Calendar = React.createClass({
 
     unit = unit === 'day' ? 'date' : unit
 
-    let viewID = instanceId(this, '_calendar')
-      , labelID = instanceId(this, '_calendar_label')
-      , key = view + '_' + dates[view](currentDate);
+    let key = view + '_' + dates[view](currentDate);
 
     let elementProps = _.omitOwnProps(this)
       , viewProps  = _.pickProps(this.props, View)
@@ -223,10 +228,11 @@ let Calendar = React.createClass({
         onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
         className={cn(className, 'rw-calendar rw-widget-container')}
+        aria-activedescendant={this.activeId}
       >
         <Header
           label={this._label()}
-          labelId={labelID}
+          labelId={this.labelId}
           messages={messages}
           upDisabled={  isDisabled || view === finalView}
           prevDisabled={isDisabled || !dates.inRange(this.nextDate(dir.LEFT), min, max, view)}
@@ -244,15 +250,15 @@ let Calendar = React.createClass({
           <View
             {...viewProps}
             key={key}
-            id={viewID}
+            id={this.viewId}
+            activeId={this.activeId}
             value={value}
             today={todaysDate}
             disabled={disabled}
             focused={currentDate}
             onChange={this.change}
             onKeyDown={this.handleKeyDown}
-            aria-labelledby={labelID}
-            ariaActiveDescendantKey='calendarView'
+            aria-labelledby={this.labelId}
           />
         </SlideTransition>
         {footer &&

@@ -1,9 +1,8 @@
 import React from 'react';
 import Button from './Button';
 
-export default React.createClass({
-  displayName: 'Header',
-  propTypes: {
+class Header extends React.Component {
+  static propTypes = {
     label:          React.PropTypes.string.isRequired,
     labelId:        React.PropTypes.string,
 
@@ -18,29 +17,27 @@ export default React.createClass({
       moveBack:     React.PropTypes.string,
       moveForward:  React.PropTypes.string
     })
-  },
+  };
 
-  mixins: [
-    require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlChildContextMixin')
-  ],
-
-  getDefaultProps(){
-    return {
-      messages: {
-        moveBack:     'navigate back',
-        moveForward:  'navigate forward'
-      }
+  static defaultProps = {
+    messages: {
+      moveBack:     'navigate back',
+      moveForward:  'navigate forward'
     }
-  },
+  };
 
-  render(){
+  static contextTypes = {
+    isRtl: React.PropTypes.bool
+  };
+
+
+  render() {
     let {
         messages, label, labelId
       , onMoveRight, onMoveLeft, onViewChange
       , prevDisabled, upDisabled, nextDisabled } = this.props;
 
-    let rtl = this.isRtl();
+    let rtl = this.context.isRtl;
 
     return (
       <div className='rw-header'>
@@ -71,4 +68,6 @@ export default React.createClass({
       </div>
     )
   }
-})
+}
+
+export default Header;

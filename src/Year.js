@@ -5,56 +5,43 @@ import dates from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
-import { instanceId } from './util/widgetHelpers';
 
 var format = props => dateLocalizer.getFormat('month', props.monthFormat)
 
-let propTypes = {
-  culture:      React.PropTypes.string,
-  today:        React.PropTypes.instanceOf(Date),
-  value:        React.PropTypes.instanceOf(Date),
-  focused:      React.PropTypes.instanceOf(Date),
-  min:          React.PropTypes.instanceOf(Date),
-  max:          React.PropTypes.instanceOf(Date),
-  onChange:     React.PropTypes.func.isRequired,
+class YearView extends React.Component {
 
-  monthFormat:  CustomPropTypes.dateFormat
-};
+  static propTypes = {
+    culture:      React.PropTypes.string,
+    today:        React.PropTypes.instanceOf(Date),
+    value:        React.PropTypes.instanceOf(Date),
+    focused:      React.PropTypes.instanceOf(Date),
+    min:          React.PropTypes.instanceOf(Date),
+    max:          React.PropTypes.instanceOf(Date),
+    onChange:     React.PropTypes.func.isRequired,
 
-let optionId = (id, date) => `${id}__year_${dates.year(date)}-${dates.month(date)}`;
+    monthFormat:  CustomPropTypes.dateFormat
+  };
 
-let YearView = React.createClass({
-
-  displayName: 'YearView',
-
-  mixins: [
-    require('./mixins/RtlChildContextMixin'),
-    require('./mixins/AriaDescendantMixin')()
-  ],
-
-  propTypes,
-
-  componentDidUpdate() {
-    let activeId = optionId(instanceId(this), this.props.focused);
-    this.ariaActiveDescendant(activeId)
-  },
-
-  render(){
-    let { focused } = this.props
+  render() {
+    let { focused, activeId } = this.props
       , months = dates.monthsInYear(dates.year(focused))
 
     return (
-      <CalendarView {..._.omitOwnProps(this)}>
+      <CalendarView
+        {..._.omitOwnProps(this)}
+        activeId={activeId}
+      >
         <CalendarView.Body>
           {_.chunk(months, 4).map(this.renderRow)}
         </CalendarView.Body>
       </CalendarView>
     )
-  },
+  }
 
-  renderRow(row, rowIdx) {
+  renderRow = (row, rowIdx) => {
     let {
         focused
+      , activeId
       , disabled
       , onChange
       , value
@@ -63,8 +50,7 @@ let YearView = React.createClass({
       , min
       , max } = this.props
 
-    let id = instanceId(this)
-      , labelFormat = dateLocalizer.getFormat('header');
+    let labelFormat = dateLocalizer.getFormat('header');
 
     return (
       <CalendarView.Row key={rowIdx}>
@@ -74,7 +60,7 @@ let YearView = React.createClass({
           return (
             <CalendarView.Cell
               key={colIdx}
-              id={optionId(id, date)}
+              activeId={activeId}
               label={label}
               date={date}
               now={today}
@@ -90,9 +76,9 @@ let YearView = React.createClass({
             </CalendarView.Cell>
           )
         })}
-    </CalendarView.Row>
+      </CalendarView.Row>
     )
   }
-});
+}
 
 export default YearView;
