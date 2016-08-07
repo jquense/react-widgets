@@ -39,7 +39,6 @@ export default React.createClass({
       max: new Date(2099, 11, 31),
       preserveDate: true,
       delay: 300,
-      ariaActiveDescendantKey: 'timelist'
     }
   },
 

@@ -1,25 +1,27 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import _  from './util/_';
 import caretPos from './util/caret';
-import compat from './util/compat';
 
 import Input from './Input';
 
-export default React.createClass({
+class ComboboxInput extends React.Component {
 
-  displayName: 'ComboboxInput',
-
-  propTypes: {
+  static propTypes = {
     value: React.PropTypes.string,
     suggest: React.PropTypes.bool,
     onChange: React.PropTypes.func.isRequired
-  },
+  };
+
+  static defaultProps = {
+    value: '',
+  };
 
   componentDidUpdate() {
-    var input = compat.findDOMNode(this)
+    var input = findDOMNode(this)
       , val = this.props.value;
 
-    if ( this.isSuggesting() ){
+    if (this.isSuggesting()) {
       var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
         , end   = val.length - start
 
@@ -27,13 +29,22 @@ export default React.createClass({
         caretPos(input, start, start + end)
       }
     }
-  },
+  }
 
-  getDefaultProps(){
-    return {
-      value: ''
-    }
-  },
+  handleChange = (e) => {
+    let { placeholder, value, onChange } = this.props;
+
+    var stringValue = e.target.value
+      , hasPlaceholder = !!placeholder
+
+    // IE fires input events when setting/unsetting placeholders.
+    // issue #112
+    if (hasPlaceholder && !stringValue && stringValue === (value || ''))
+      return
+
+    this._last = stringValue;
+    onChange(e, stringValue)
+  };
 
   render() {
     let { onKeyDown, ...props } = this.props;
@@ -48,38 +59,31 @@ export default React.createClass({
         onChange={this.handleChange}
       />
     )
-  },
+  }
 
   isSuggesting() {
-    var val = this.props.value
-      , isSuggestion = this._last != null
-          && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
+    let { value, suggest } = this.props;
 
-    return this.props.suggest && isSuggestion
-  },
+    if (!suggest) return false;
+
+    return (
+      this._last != null &&
+      value.toLowerCase().indexOf(this._last.toLowerCase()) !== -1
+    )
+  }
 
   accept(removeCaret) {
-    var val = compat.findDOMNode(this).value || ''
-      , end = val.length;
+    var value = findDOMNode(this).value || ''
+      , end = value.length;
 
     this._last = null
-    removeCaret && caretPos(compat.findDOMNode(this), end, end)
-  },
+    removeCaret && caretPos(findDOMNode(this), end, end)
+  }
 
-  handleChange(e) {
-    var val = e.target.value
-      , pl = !!this.props.placeholder
-
-    // IE fires input events when setting/unsetting placeholders.
-    // issue #112
-    if ( pl && !val && val === (this.props.value || '') )
-      return
-
-    this._last = val;
-    this.props.onChange(e, val)
-  },
 
   focus() {
-    compat.findDOMNode(this).focus()
+    findDOMNode(this).focus()
   }
-});
+}
+
+export default ComboboxInput

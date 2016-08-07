@@ -11,13 +11,14 @@ function clamp(date, min, max){
 
 class CalendarView extends React.Component {
   render() {
-    let { className } = this.props;
+    let { className, activeId } = this.props;
 
     return (
       <table
         {...this.props}
         role='grid'
         tabIndex='-1'
+        aria-activedescendant={activeId || null}
         className={cn(
           className,
           'rw-nav-view',
@@ -32,6 +33,7 @@ class CalendarView extends React.Component {
 class CalendarViewCell extends React.Component {
   static propTypes = {
     id: React.PropTypes.string,
+    activeId: React.PropTypes.string.isRequired,
     label: React.PropTypes.string,
     today: React.PropTypes.instanceOf(Date),
     selected: React.PropTypes.instanceOf(Date),
@@ -84,14 +86,14 @@ class CalendarViewCell extends React.Component {
   }
 
   render()  {
-    let { children, id, label, disabled } = this.props;
+    let { children, activeId, label, disabled } = this.props;
     let isDisabled = disabled || this.isEmpty()
 
 
     return (
       <td
         role='gridcell'
-        id={id}
+        id={this.isFocused() ? activeId : null}
         title={label}
         aria-label={label}
         aria-readonly={disabled}

@@ -3,21 +3,13 @@ import React from 'react';
 import MultiselectTag from './MultiselectTag';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
-import { instanceId } from './util/widgetHelpers';
 import { dataText } from './util/dataHelpers';
 
 import { isDisabledItem, isReadOnlyItem } from './util/interaction';
 
-let optionId = (id, idx)=> `${id}__option__${idx}`;
+class MultiselectTagList extends React.Component {
 
-export default React.createClass({
-
-  mixins: [
-    require('./mixins/PureRenderMixin'),
-    require('./mixins/AriaDescendantMixin')()
-  ],
-
-  propTypes: {
+  static propTypes ={
     id: React.PropTypes.string.isRequired,
     activeId: React.PropTypes.string.isRequired,
     label: React.PropTypes.string,
@@ -33,13 +25,11 @@ export default React.createClass({
 
     disabled: CustomPropTypes.disabled.acceptsArray,
     readOnly: CustomPropTypes.readOnly.acceptsArray
-  },
+  };
 
-  getDefaultProps(){
-    return {
-      ariaActiveDescendantKey: 'taglist'
-    }
-  },
+  handleDelete = (val) => {
+    this.props.onDelete(val)
+  };
 
   render() {
     let {
@@ -59,7 +49,7 @@ export default React.createClass({
         aria-label={label}
         className='rw-multiselect-taglist'
       >
-        {value.map( (item, i) => {
+        {value.map((item, i) => {
           let isFocused = focused === i;
 
           return (
@@ -73,7 +63,7 @@ export default React.createClass({
               readOnly={isReadOnlyItem(item, this.props)}
             >
               {ValueComponent
-                ? <ValueComponent item={item }/>
+                ? <ValueComponent item={item} />
                 : <span>{dataText(item, textField)}</span>
               }
             </MultiselectTag>
@@ -81,30 +71,26 @@ export default React.createClass({
         })}
       </ul>
     )
-  },
-
-  handleDelete(val) {
-    this.props.onDelete(val)
-  },
+  }
 
   remove(idx) {
     let val = this.props.value[idx];
 
     if (val && !(isDisabledItem(val, this.props) || isReadOnlyItem(val, this.props)) )
       this.props.onDelete(val)
-  },
+  }
 
   removeNext() {
     let val = this.props.value[this.props.value.length - 1];
 
     if (val && !(isDisabledItem(val, this.props) || isReadOnlyItem(val, this.props)))
       this.props.onDelete(val)
-  },
+  }
 
 
   clear() {
     this.setState({ focused: null })
-  },
+  }
 
   first() {
     let idx = 0
@@ -115,7 +101,7 @@ export default React.createClass({
       idx++
 
     return idx !== l ? idx : null
-  },
+  }
 
   last() {
     let value = this.props.value
@@ -125,7 +111,7 @@ export default React.createClass({
       idx--
 
     return idx >= 0 ? idx : null
-  },
+  }
 
   next(current) {
     let nextIdx = current + 1
@@ -139,7 +125,7 @@ export default React.createClass({
       return null;
 
     return nextIdx
-  },
+  }
 
   prev(current) {
     let nextIdx = current
@@ -155,4 +141,6 @@ export default React.createClass({
 
     return nextIdx >= 0 ? nextIdx : null;
   }
-});
+}
+
+export default MultiselectTagList

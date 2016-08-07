@@ -1,17 +1,14 @@
 import React from 'react';
 
-import _  from './util/_';
-
 import Input from './Input';
 import compat from './util/compat';
 import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
+import _  from './util/_';
 
-export default React.createClass({
+class DateTimePickerInput extends React.Component {
 
-  displayName: 'DateTimePickerInput',
-
-  propTypes: {
+  static propTypes = {
     format: CustomPropTypes.dateFormat.isRequired,
     editing: React.PropTypes.bool,
     editFormat: CustomPropTypes.dateFormat,
@@ -20,7 +17,21 @@ export default React.createClass({
     value: React.PropTypes.instanceOf(Date),
     onChange: React.PropTypes.func.isRequired,
     culture: React.PropTypes.string
-  },
+  };
+
+  constructor(...args) {
+    super(...args)
+
+    let { value, editing, editFormat, format, culture } = this.props;
+
+    this.state = {
+      textValue: formatDate(
+          value
+        , editing && editFormat ? editFormat : format
+        , culture
+      )
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     let { value, editing, editFormat, format, culture } = nextProps;
@@ -32,21 +43,27 @@ export default React.createClass({
         , culture
       )
     })
-  },
+  }
 
-  getInitialState() {
-    let { value, editing, editFormat, format, culture } = this.props;
+  handleChange = ({ target: { value } }) => {
+    this._needsFlush = true
+    this.setState({ textValue: value });
+  };
 
-    return {
-      textValue: formatDate(
-          value
-        , editing && editFormat ? editFormat : format
-        , culture
-      )
+  handleBlur = (event) => {
+    let { format, culture, parse, onChange, onBlur } = this.props;
+
+    onBlur && onBlur(event)
+
+    if (this._needsFlush) {
+      let date = parse(event.target.value);
+
+      this._needsFlush = false
+      onChange(date, formatDate(date, format, culture))
     }
-  },
+  };
 
-  render(){
+  render() {
     let { disabled, readOnly } = this.props
     let { textValue } = this.state
 
@@ -64,30 +81,14 @@ export default React.createClass({
         onBlur={this.handleBlur}
       />
     )
-  },
-
-  handleChange({ target: { value } }) {
-    this._needsFlush = true
-    this.setState({ textValue: value });
-  },
-
-  handleBlur(event) {
-    let { format, culture, parse, onChange, onBlur } = this.props;
-
-    onBlur && onBlur(event)
-
-    if (this._needsFlush) {
-      let date = parse(event.target.value);
-
-      this._needsFlush = false
-      onChange(date, formatDate(date, format, culture))
-    }
-  },
+  }
 
   focus(){
     compat.findDOMNode(this).focus()
   }
-});
+}
+
+export default DateTimePickerInput;
 
 function isValid(d) {
   return !isNaN(d.getTime());

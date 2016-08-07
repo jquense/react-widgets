@@ -19,11 +19,9 @@ function key(child){
   return child && child.key
 }
 
-export default React.createClass({
+class ReplaceTransitionGroup extends React.Component {
 
-  displayName: 'ReplaceTransitionGroup',
-
-  propTypes: {
+  static propTypes = {
     component: React.PropTypes.oneOfType([
       React.PropTypes.element,
       React.PropTypes.string
@@ -31,22 +29,26 @@ export default React.createClass({
     childFactory: React.PropTypes.func,
     onAnimating: React.PropTypes.func,
     onAnimate: React.PropTypes.func
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      component: 'span',
-      childFactory: a => a,
-      onAnimating: _.noop,
-      onAnimate: _.noop
-    };
-  },
+  static defaultProps = {
+    component: 'span',
+    childFactory: a => a,
+    onAnimating: _.noop,
+    onAnimate: _.noop
+  };
 
-  getInitialState() {
-    return {
+  constructor(...args) {
+    super(...args)
+
+    this.animatingKeys = {};
+    this.leaving  = null;
+    this.entering = null;
+
+    this.state = {
       children: _.splat(this.props.children)
     };
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     var nextChild = getChild(nextProps.children)
@@ -82,13 +84,8 @@ export default React.createClass({
 
     if( this.state.children[0] !== stack[0] || this.state.children[1] !== stack[1] )
       this.setState({ children: stack });
-  },
+  }
 
-  componentWillMount() {
-    this.animatingKeys = {};
-    this.leaving  = null;
-    this.entering = null;
-  },
 
   componentDidUpdate() {
     var entering = this.entering
@@ -111,7 +108,11 @@ export default React.createClass({
 
     if (entering) this.performEnter(key(entering))
     if (leaving)  this.performLeave(key(leaving))
-  },
+  }
+
+  componentWillUnmount() {
+    this.unmounted = true;
+  }
 
   performEnter(key) {
     var component = this.refs[key]
@@ -121,22 +122,20 @@ export default React.createClass({
     this.animatingKeys[key] = true
 
     if (component.componentWillEnter)
-      component.componentWillEnter(
-        this._handleDoneEntering.bind(this, key))
+      component.componentWillEnter(() => this._handleDoneEntering(key))
     else
       this._handleDoneEntering(key)
-  },
+  }
 
   _tryFinish() {
-
     if (this.isTransitioning())
       return
 
-    if ( this.isMounted() )
+    if (!this.unmounted)
       css(compat.findDOMNode(this), { overflow: 'visible', height: '', width: '' })
 
     this.props.onAnimate()
-  },
+  }
 
   _handleDoneEntering(enterkey) {
     var component = this.refs[enterkey];
@@ -146,11 +145,11 @@ export default React.createClass({
 
     delete this.animatingKeys[enterkey]
 
-    if ( key(this.props.children) !== enterkey)
+    if (key(this.props.children) !== enterkey)
       this.performLeave(enterkey) // This was removed before it had fully entered. Remove it.
 
     this._tryFinish()
-  },
+  }
 
   performLeave(key) {
     var component = this.refs[key]
@@ -160,10 +159,10 @@ export default React.createClass({
     this.animatingKeys[key] = true
 
     if (component.componentWillLeave)
-      component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
+      component.componentWillLeave(() => this._handleDoneLeaving(key));
     else
       this._handleDoneLeaving(key)
-  },
+  }
 
   _handleDoneLeaving(leavekey) {
     var component = this.refs[leavekey];
@@ -176,17 +175,17 @@ export default React.createClass({
     if (key(this.props.children) === leavekey )
       this.performEnter(leavekey) // This entered again before it fully left. Add it again.
 
-    else if (this.isMounted())
+    else if (!this.unmounted)
       this.setState({
-        children: this.state.children.filter( c => key(c) !== leavekey)
+        children: this.state.children.filter(c => key(c) !== leavekey)
       })
 
     this._tryFinish()
-  },
-  
+  }
+
   isTransitioning() {
     return !!Object.keys(this.animatingKeys).length
-  },
+  }
 
   render() {
     var Component = this.props.component;
@@ -197,4 +196,6 @@ export default React.createClass({
       </Component>
     );
   }
-});
+}
+
+export default ReplaceTransitionGroup

@@ -108,7 +108,6 @@ var Multiselect = React.createClass({
       value: [],
       open: false,
       searchTerm: '',
-      ariaActiveDescendantKey: 'multiselect',
       messages: {
         createNew:     '(create new tag)',
         emptyList:     'There are no items in this list',

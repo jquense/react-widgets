@@ -93,7 +93,6 @@ var SelectList = React.createClass({
       delay: 250,
       value: [],
       data:  [],
-      ariaActiveDescendantKey: 'selectlist',
       messages: {
         emptyList: 'There are no items in this list'
       }

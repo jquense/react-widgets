@@ -100,15 +100,6 @@ var DateTimePicker = React.createClass({
       didHandle(focused) {
         if (!focused) this.close()
       }
-    }),
-    require('./mixins/AriaDescendantMixin')('valueInput', function(key, id){
-      var { open } = this.props
-        , current = this.ariaActiveDescendant()
-        , calIsActive = open === popups.CALENDAR && key === 'calendar'
-        , timeIsActive = open === popups.TIME && key === 'timelist';
-
-      if (!current || (timeIsActive || calIsActive))
-        return id
     })
   ],
 
@@ -137,12 +128,18 @@ var DateTimePicker = React.createClass({
         calendarButton: 'Select Date',
         timeButton:     'Select Time'
       },
-
-      ariaActiveDescendantKey: 'dropdownlist'
     }
   },
 
-  renderInput(id, owns) {
+  componentWillMount() {
+    this.inputId = instanceId(this, '_input')
+    this.calendarId = instanceId(this, '_calendar')
+    this.listId = instanceId(this, '_listbox')
+    this.activeCalendarId = instanceId(this, '_calendar_active_cell')
+    this.activeOptionId = instanceId(this, '_listbox_active_option')
+  },
+
+  renderInput(owns) {
     let {
         open
       , value
@@ -160,9 +157,17 @@ var DateTimePicker = React.createClass({
 
     let { focused } = this.state;
 
+    let activeId = null;
+    if (open === popups.TIME) {
+      activeId = this.activeOptionId
+    }
+    else if (open === popups.CALENDAR) {
+      activeId = this.activeCalendarId
+    }
+
     return (
       <DateTimePickerInput
-        id={id}
+        id={this.inputId}
         ref='valueInput'
         role='combobox'
         name={name}
@@ -179,6 +184,7 @@ var DateTimePicker = React.createClass({
         parse={this._parse}
         onChange={this.handleChange}
         aria-haspopup
+        aria-activedescendant={activeId}
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
         aria-expanded={!!open}
@@ -220,7 +226,8 @@ var DateTimePicker = React.createClass({
     )
   },
 
-  renderCalendar(id, inputID) {
+  renderCalendar() {
+    let { activeCalendarId, inputId, calendarId } = this;
     let {
         open
       , value
@@ -239,7 +246,8 @@ var DateTimePicker = React.createClass({
         <BaseCalendar
           {...calendarProps}
           ref="calPopup"
-          id={id}
+          id={calendarId}
+          activeId={activeCalendarId}
           tabIndex='-1'
           value={value}
           autoFocus={false}
@@ -251,14 +259,14 @@ var DateTimePicker = React.createClass({
           onCurrentDateChange={this.props.onCurrentDateChange}
           aria-hidden={!open}
           aria-live='polite'
-          aria-labelledby={inputID}
-          ariaActiveDescendantKey='calendar'
+          aria-labelledby={inputId}
         />
       </Popup>
     )
   },
 
-  renderTimeList(id, inputID) {
+  renderTimeList() {
+    let { activeOptionId, inputId, listId } = this;
     let {
         open
       , value
@@ -281,17 +289,17 @@ var DateTimePicker = React.createClass({
           <TimeList
             {...timeListProps}
             ref="timePopup"
-            id={id}
+            id={listId}
+            activeId={activeOptionId}
             format={timeFormat}
             value={dateOrNull(value)}
             onMove={this._scrollTo}
             onSelect={this.handleTimeSelect}
             preserveDate={!!calendar}
             itemComponent={timeComponent}
-            aria-labelledby={inputID}
+            aria-labelledby={inputId}
             aria-live={open && 'polite'}
             aria-hidden={!open}
-            ariaActiveDescendantKey='timelist'
           />
         </div>
       </Popup>
@@ -309,17 +317,14 @@ var DateTimePicker = React.createClass({
 
     let { focused } = this.state;
 
-    let inputID = instanceId(this, '_input')
-      , timeListID = instanceId(this, '_time_listbox')
-      , dateListID = instanceId(this, '_cal')
-      , owns = '';
+    let owns = '';
 
     let elementProps = _.omitOwnProps(this, Calendar, TimeList)
 
     let shouldRenderList = open || isFirstFocusedRender(this);
 
-    if (calendar) owns += dateListID
-    if (time)     owns += ' ' + timeListID
+    if (calendar) owns += this.calendarId
+    if (time)     owns += ' ' + this.listId
 
     let disabled = isDisabled(this.props)
     let readOnly = isReadOnly(this.props)
@@ -340,16 +345,16 @@ var DateTimePicker = React.createClass({
           disabled={disabled}
           readOnly={readOnly}
         >
-          {this.renderInput(inputID, owns.trim())}
+          {this.renderInput(owns.trim())}
 
           {this.renderButtons(messages)}
         </WidgetPicker>
 
-        {shouldRenderList &&
-          this.renderTimeList(timeListID, inputID)
+        {shouldRenderList && time &&
+          this.renderTimeList()
         }
-        {shouldRenderList &&
-          this.renderCalendar(dateListID, inputID)
+        {shouldRenderList && calendar &&
+          this.renderCalendar()
         }
       </Widget>
     )

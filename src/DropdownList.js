@@ -74,7 +74,6 @@ var DropdownList = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')(),
     require('./mixins/FocusMixin')({
       didHandle(focused) {
         if (!focused) this.close()
@@ -91,8 +90,7 @@ var DropdownList = React.createClass({
       open: false,
       data: [],
       searchTerm: '',
-      messages: msgs(),
-      ariaActiveDescendantKey: 'dropdownlist'
+      messages: msgs()
     }
   },
 

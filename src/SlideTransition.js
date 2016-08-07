@@ -6,12 +6,11 @@ import getWidth from 'dom-helpers/query/width';
 import config from './util/configuration';
 import _ from './util/_';
 
-var SlideChildGroup = React.createClass({
-
-  propTypes: {
+class SlideChildGroup extends React.Component {
+  static propTypes = {
     direction: React.PropTypes.oneOf(['left', 'right']),
     duration:  React.PropTypes.number
-  },
+  };
 
   componentWillEnter(done) {
     var node  = compat.findDOMNode(this)
@@ -34,7 +33,7 @@ var SlideChildGroup = React.createClass({
         this.ORGINAL_POSITION = null
         done && done()
       })
-  },
+  }
 
   componentWillLeave(done) {
     var node  = compat.findDOMNode(this)
@@ -56,36 +55,35 @@ var SlideChildGroup = React.createClass({
         this.ORGINAL_POSITION = null
         done && done()
       })
-  },
+  }
 
   render() {
     return React.Children.only(this.props.children);
   }
-})
+}
 
 
-module.exports = React.createClass({
+class SlideTransition extends React.Component {
 
-  propTypes: {
+  static propTypes = {
     direction: React.PropTypes.oneOf(['left', 'right']),
     duration:  React.PropTypes.number
-  },
+  };
 
-  getDefaultProps(){
-    return {
-      direction: 'left',
-      duration: 250
-    }
-  },
+  static defaultProps = {
+    direction: 'left',
+    duration: 250
+  };
 
-  _wrapChild(child, ref) {
+  _wrapChild = (child, ref) => {
     return (
       <SlideChildGroup key={child.key} ref={ref}
         direction={this.props.direction}
         duration={this.props.duration}>
         {child}
-      </SlideChildGroup>)
-  },
+      </SlideChildGroup>
+    )
+  }
 
   render() {
     var { style, children } = this.props
@@ -108,4 +106,6 @@ module.exports = React.createClass({
       </ReplaceTransitionGroup>
     )
   }
-});
+}
+
+export default SlideTransition

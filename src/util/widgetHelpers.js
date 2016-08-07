@@ -4,7 +4,7 @@ export function notify(handler, args){
   handler && handler.apply(null, [].concat(args))
 }
 
-export function instanceId(component, suffix = ''){
+export function instanceId(component, suffix = '', ) {
   component.__id || (component.__id = uniqueId('rw_'))
   return (component.props.id || component.__id)  + suffix
 }

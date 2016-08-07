@@ -76,7 +76,6 @@ var ComboBox = React.createClass({
     require('./mixins/DataFilterMixin'),
     require('./mixins/PopupScrollToMixin'),
     require('./mixins/RtlParentContextMixin'),
-    require('./mixins/AriaDescendantMixin')('input'),
     require('./mixins/FocusMixin')({
       willHandle(focused) {
         // not suggesting anymore
@@ -113,7 +112,6 @@ var ComboBox = React.createClass({
       delay: 500,
 
       messages: msgs(),
-      ariaActiveDescendantKey: 'combobox'
     }
   },
 
@@ -362,14 +360,16 @@ var ComboBox = React.createClass({
     if (e.defaultPrevented)
       return
 
-    if (key === 'End')
+    if (key === 'End') {
+      e.preventDefault()
       if ( isOpen ) this.setState({ focusedItem: list.last() })
       else          select(list.last(), true)
-
-    else if (key === 'Home')
+    }
+    else if (key === 'Home') {
+      e.preventDefault()
       if (isOpen) this.setState({ focusedItem: list.first() })
-      else          select(list.first(), true)
-
+      else        select(list.first(), true)
+    }
     else if (key === 'Escape' && isOpen)
       this.close()
 
@@ -378,6 +378,7 @@ var ComboBox = React.createClass({
       select(this.state.focusedItem, true)
     }
     else if (key === 'ArrowDown') {
+      e.preventDefault()
       if ( alt )
         this.open()
       else {
@@ -386,6 +387,7 @@ var ComboBox = React.createClass({
       }
     }
     else if ( key === 'ArrowUp' ) {
+      e.preventDefault()
       if ( alt )
         this.close()
       else {
