@@ -9,38 +9,37 @@ import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabledItem }  from './util/interaction';
 
-let optionId = (id, idx)=> `${id}__option__${idx}`;
 
 export default React.createClass({
 
   displayName: 'List',
 
   mixins: [
-    require('./mixins/ListMovementMixin'),
-    require('./mixins/AriaDescendantMixin')()
+    require('./mixins/ListMovementMixin')
   ],
 
   propTypes: {
-    data:           React.PropTypes.array,
-    onSelect:       React.PropTypes.func,
-    onMove:         React.PropTypes.func,
+    data: React.PropTypes.array,
+    onSelect: React.PropTypes.func,
+    onMove: React.PropTypes.func,
 
+    activeId: React.PropTypes.string,
     optionComponent: CustomPropTypes.elementType,
-    itemComponent:   CustomPropTypes.elementType,
+    itemComponent: CustomPropTypes.elementType,
     groupComponent:  CustomPropTypes.elementType,
 
-    selected:       React.PropTypes.any,
-    focused:        React.PropTypes.any,
+    selected: React.PropTypes.any,
+    focused: React.PropTypes.any,
 
-    valueField:     CustomPropTypes.accessor,
-    textField:      CustomPropTypes.accessor,
+    valueField: CustomPropTypes.accessor,
+    textField: CustomPropTypes.accessor,
 
-    disabled:       CustomPropTypes.disabled.acceptsArray,
+    disabled: CustomPropTypes.disabled.acceptsArray,
 
-    groupBy:        CustomPropTypes.accessor,
+    groupBy: CustomPropTypes.accessor,
 
-    messages:       React.PropTypes.shape({
-      emptyList:    CustomPropTypes.message
+    messages: React.PropTypes.shape({
+      emptyList: CustomPropTypes.message
     })
   },
 
@@ -62,7 +61,6 @@ export default React.createClass({
 
     return {
       groups: this._group(this.props.groupBy, this.props.data, keys),
-
       sortedKeys: keys
     };
   },
@@ -82,7 +80,6 @@ export default React.createClass({
   },
 
   componentDidUpdate() {
-    this.ariaActiveDescendant(this._currentActiveID)
     this.move()
   },
 
@@ -113,12 +110,13 @@ export default React.createClass({
           return items
         }, [])
     }
-    else
+    else {
       items = (
         <li className='rw-list-empty'>
           {_.result(messages.emptyList, this.props)}
         </li>
       )
+    }
 
     return (
       <ul
@@ -153,21 +151,23 @@ export default React.createClass({
 
   _renderItem(group, item, idx){
     let {
-        focused, selected, onSelect
-      , textField, valueField
+        focused
+      , activeId
+      , selected
+      , onSelect
+      , textField
+      , valueField
       , itemComponent: ItemComponent
       , optionComponent: Option } = this.props
 
-    let currentID = optionId(instanceId(this), idx)
-      , isDisabled = isDisabledItem(item, this.props);
-
-    if (focused === item)
-      this._currentActiveID = currentID;
+    let isDisabled = isDisabledItem(item, this.props);
+    let isFocused = focused === item;
+    let id = isFocused ? activeId : undefined;
 
     return (
       <Option
         key={'item_' + group + '_' + idx}
-        id={currentID}
+        id={id}
         dataItem={item}
         focused={focused === item}
         selected={selected === item}

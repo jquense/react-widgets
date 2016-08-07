@@ -96,19 +96,6 @@ var Multiselect = React.createClass({
         // if (focused && !this.props.open && !this.props.readOnly === true)
         //   this.open()
       }
-    }),
-    require('./mixins/AriaDescendantMixin')('input', function(key, id){
-      let { ariaActiveDescendantKey: myKey } = this.props;
-
-      let createIsActive =
-            (!this._data().length || this.state.focusedItem === null)
-            && key === myKey;
-
-      let tagIsActive = this.state.focusedTag != null && key === 'taglist';
-      let listIsActive = this.state.focusedTag == null && key === 'list';
-
-      if (createIsActive || tagIsActive || listIsActive)
-        return id;
     })
   ],
 
@@ -147,10 +134,17 @@ var Multiselect = React.createClass({
     }
   },
 
-  componentDidUpdate() {
-    this.ariaActiveDescendant(
-      instanceId(this, '__createlist_option'))
+  componentWillMount() {
+    this.inputId = instanceId(this, '_input')
+    this.tagsId = instanceId(this, '_taglist')
+    this.notifyId = instanceId(this, '_notify_area')
+    this.listId = instanceId(this, '_listbox')
+    this.createId = instanceId(this, '_createlist_option')
+    this.activeTagId = instanceId(this, '_taglist_active_tag')
+    this.activeOptionId = instanceId(this, '_listbox_active_option')
+  },
 
+  componentDidUpdate() {
     this.refs.list && validateList(this.refs.list)
   },
 
@@ -167,23 +161,20 @@ var Multiselect = React.createClass({
     })
   },
 
-  renderCreateItem(id, messages) {
+  renderCreateItem(messages) {
     let { searchTerm } = this.props;
-    let { focusedItem } = this.state;
-
-    let createIsFocused = !this._data().length || focusedItem === null;
-    let optionID = instanceId(this, '__createlist_option');
+    let createIsFocused = this.isCreateTagFocused();
 
     return (
       <ul
-        id={id}
         role='listbox'
+        id={this.createId}
         className="rw-list rw-multiselect-create-tag"
       >
         <li
-          id={optionID}
           role='option'
           onClick={() => this.handleCreate(searchTerm)}
+          id={createIsFocused ? this.activeOptionId : null}
           className={cn(
             'rw-list-option',
             'rw-create-list-option',
@@ -196,27 +187,35 @@ var Multiselect = React.createClass({
     )
   },
 
-  renderInput(owns) {
+  renderInput(ownedIds) {
     let {
         searchTerm
       , maxLength
       , tabIndex
       , busy
+      , autoFocus
       , open } = this.props;
+
+    let { focusedItem, focusedTag } = this.state;
 
     let disabled = isDisabled(this.props)
     let readOnly = isReadOnly(this.props)
+    let active = open
+      ? (focusedItem || this.isCreateTagFocused())
+        && this.activeOptionId
+      : focusedTag && this.activeTagId;
 
     return (
       <SelectInput
         ref='input'
+        autoFocus={autoFocus}
         tabIndex={tabIndex || 0}
         role='listbox'
         aria-expanded={!!open}
         aria-busy={!!busy}
-        autoFocus={this.props.autoFocus}
-        aria-owns={owns}
+        aria-owns={ownedIds}
         aria-haspopup={true}
+        aria-activedescendant={active || null}
         value={searchTerm}
         maxLength={maxLength}
         disabled={disabled}
@@ -229,7 +228,8 @@ var Multiselect = React.createClass({
     )
   },
 
-  renderList(List, id, messages) {
+  renderList(List, messages) {
+    let { inputId, activeOptionId, listId } = this;
     let { open } = this.props;
     let { focusedItem } = this.state;
 
@@ -239,15 +239,15 @@ var Multiselect = React.createClass({
     return (
       <List ref="list" key={0}
         {...listProps}
-        id={id}
+        id={listId}
+        activeId={activeOptionId}
         data={items}
         focused={focusedItem}
         onSelect={this.handleSelect}
         onMove={this._scrollTo}
         aria-live='polite'
-        aria-labelledby={instanceId(this)}
+        aria-labelledby={inputId}
         aria-hidden={!open}
-        ariaActiveDescendantKey='list'
         messages={{
           emptyList: this._lengthWithoutValues
             ? messages.emptyFilter
@@ -257,13 +257,15 @@ var Multiselect = React.createClass({
     )
   },
 
-  renderNotificationArea(id, messages) {
+  renderNotificationArea(messages) {
     let { textField } = this.props;
     let { focused, dataItems } = this.state;
 
+    let itemText = dataItems.map(item => dataText(item, textField)).join(', ')
+
     return (
       <span
-        id={id}
+        id={this.notifyId}
         role="status"
         className='rw-sr'
         aria-live='assertive'
@@ -272,14 +274,14 @@ var Multiselect = React.createClass({
       >
         {focused && (
           dataItems.length
-            ? (messages.selectedItems + ': ' + dataItems.map(item => dataText(item, textField)).join(', '))
+            ? (messages.selectedItems + ': ' + itemText)
             : messages.noneSelected
         )}
       </span>
     )
   },
 
-  renderTags(id, messages) {
+  renderTags(messages) {
     let { disabled, readOnly, valueField, textField } = this.props;
     let { focusedTag, dataItems } = this.state;
 
@@ -288,17 +290,17 @@ var Multiselect = React.createClass({
     return (
       <TagList
         ref='tagList'
-        id={id}
+        id={this.tagsId}
+        activeId={this.activeTagId}
         valueField={valueField}
         textField={textField}
-        aria-label={messages.tagsLabel}
+        label={messages.tagsLabel}
         value={dataItems}
         focused={focusedTag}
         disabled={disabled}
         readOnly={readOnly}
         onDelete={this.handleDelete}
         valueComponent={Component}
-        ariaActiveDescendantKey='taglist'
       />
     )
   },
@@ -324,14 +326,9 @@ var Multiselect = React.createClass({
       , shouldRenderPopup = isFirstFocusedRender(this) || open
       , shouldShowCreate = this.shouldShowCreate();
 
-    let tagsID = instanceId(this, '_taglist')
-      , listID = instanceId(this, '__listbox')
-      , createID = instanceId(this, '__createlist')
-      , notifyID = instanceId(this, '__notify');
-
-    let inputOwns = `${listID} ${notifyID} `
-      + (shouldRenderTags ? tagsID : '')
-      + (shouldShowCreate ? createID : '');
+    let inputOwns = `${this.listId} ${this.notifyId} `
+      + (shouldRenderTags ? this.tagsId : '')
+      + (shouldShowCreate ? this.createId : '');
 
     let disabled = isDisabled(this.props)
     let readOnly = isReadOnly(this.props)
@@ -341,13 +338,12 @@ var Multiselect = React.createClass({
     return (
       <Widget
         {...elementProps}
-        id={instanceId(this)}
         onKeyDown={this.handleKeyDown}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
         className={cn(className, 'rw-multiselect')}
       >
-        {this.renderNotificationArea(notifyID, messages)}
+        {this.renderNotificationArea(messages)}
         <WidgetPicker
           open={open}
           dropUp={dropUp}
@@ -360,7 +356,7 @@ var Multiselect = React.createClass({
         >
           <div>
             {shouldRenderTags &&
-              this.renderTags(tagsID, messages)
+              this.renderTags(messages)
             }
             {this.renderInput(inputOwns)}
           </div>
@@ -383,10 +379,10 @@ var Multiselect = React.createClass({
             onOpening={()=> this.refs.list.forceUpdate()}
           >
             <div>
-              {this.renderList(List, listID, messages)}
+              {this.renderList(List, messages)}
 
               {shouldShowCreate &&
-                this.renderCreateItem(createID, messages)
+                this.renderCreateItem(messages)
               }
             </div>
           </Popup>
@@ -564,10 +560,19 @@ var Multiselect = React.createClass({
     return items
   },
 
+  isCreateTagFocused() {
+    let { focusedItem } = this.state;
+
+    if (!this.shouldShowCreate())
+      return false;
+
+    return !this._data().length || focusedItem === null;
+  },
+
   shouldShowCreate() {
     var { textField, searchTerm, onCreate, caseSensitive } = this.props;
 
-    if ( !onCreate || !searchTerm )
+    if (!onCreate || !searchTerm)
       return false
 
     var lower = text => caseSensitive ? text : text.toLowerCase();

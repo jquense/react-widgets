@@ -18,17 +18,21 @@ export default React.createClass({
   ],
 
   propTypes: {
-    value:          React.PropTypes.array,
-    focused:        React.PropTypes.number,
+    id: React.PropTypes.string.isRequired,
+    activeId: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string,
 
-    valueField:     React.PropTypes.string,
-    textField:      CustomPropTypes.accessor,
+    value: React.PropTypes.array,
+    focused: React.PropTypes.number,
 
-    onDelete:       React.PropTypes.func.isRequired,
+    valueField: React.PropTypes.string,
+    textField: CustomPropTypes.accessor,
+
+    onDelete: React.PropTypes.func.isRequired,
     valueComponent: React.PropTypes.func,
 
-    disabled:       CustomPropTypes.disabled.acceptsArray,
-    readOnly:       CustomPropTypes.readOnly.acceptsArray
+    disabled: CustomPropTypes.disabled.acceptsArray,
+    readOnly: CustomPropTypes.readOnly.acceptsArray
   },
 
   getDefaultProps(){
@@ -37,40 +41,33 @@ export default React.createClass({
     }
   },
 
-  componentDidUpdate(){
-    let { focused } = this.props
-      , activeId = optionId(instanceId(this), focused)
-
-    this.ariaActiveDescendant(
-      (focused == null || isDisabledItem(focused, this.props)) ? null : activeId)
-  },
-
   render() {
     let {
         focused
       , value
+      , id
+      , activeId
       , textField
+      , label
       , valueComponent: ValueComponent }  = this.props;
-
-    let id = instanceId(this);
-    let props = _.omitOwnProps(this)
 
     return (
       <ul
-        {...props}
+        id={id}
         tabIndex='-1'
         role='listbox'
+        aria-label={label}
         className='rw-multiselect-taglist'
       >
         {value.map( (item, i) => {
-          let currentID  = optionId(id, i);
+          let isFocused = focused === i;
 
           return (
             <MultiselectTag
               key={i}
-              id={currentID}
+              id={isFocused ? activeId : null }
               value={item}
-              focused={focused === i}
+              focused={isFocused}
               onClick={this.handleDelete}
               disabled={isDisabledItem(item, this.props)}
               readOnly={isReadOnlyItem(item, this.props)}

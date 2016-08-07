@@ -109,6 +109,12 @@ var DropdownList = React.createClass({
     }
   },
 
+  componentWillMount() {
+    this.inputId = instanceId(this, '_input')
+    this.listId = instanceId(this, '_listbox')
+    this.activeId = instanceId(this, '_listbox_active_option')
+  },
+
   componentDidUpdate() {
     this.refs.list
         && validateList(this.refs.list)
@@ -145,7 +151,7 @@ var DropdownList = React.createClass({
     )
   },
 
-  renderList(List, id, messages) {
+  renderList(List, messages) {
     let { open, filter, data } = this.props;
     let { selectedItem, focusedItem } = this.state;
 
@@ -160,10 +166,11 @@ var DropdownList = React.createClass({
         <List
           {...listProps}
           ref="list"
-          id={id}
+          id={this.listId}
+          activeId={this.activeId}
           data={items}
           aria-live={open && 'polite'}
-          aria-labelledby={instanceId(this)}
+          aria-labelledby={this.inputId}
           aria-hidden={!this.props.open}
           selected={selectedItem}
           focused ={open ? focusedItem : null}
@@ -203,15 +210,16 @@ var DropdownList = React.createClass({
     let disabled = isDisabled(this.props)
       , readOnly = isReadOnly(this.props)
       , valueItem = dataItem(data, value, valueField) // take value from the raw data
-      , listID = instanceId(this, '__listbox');
 
     let shouldRenderPopup = open || isFirstFocusedRender(this);
 
     let elementProps = Object.assign(_.omitOwnProps(this, List), {
       name: undefined,
       role: 'combobox',
+      id: this.inputId,
       tabIndex: tabIndex || 0,
-      'aria-owns': listID,
+      'aria-owns': this.listID,
+      'aria-activedescendant': open ? this.activeId : null,
       'aria-expanded': !!open,
       'aria-haspopup': true,
       'aria-busy': !!busy,
@@ -265,7 +273,7 @@ var DropdownList = React.createClass({
             onOpen={() => this.focus()}
             onOpening={() => this.refs.list.forceUpdate()}
           >
-            {this.renderList(List, listID, messages)}
+            {this.renderList(List, messages)}
           </Popup>
         }
       </Widget>

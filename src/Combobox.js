@@ -90,7 +90,7 @@ var ComboBox = React.createClass({
 
   propTypes: propTypes,
 
-  getInitialState(){
+  getInitialState() {
     var { value, data, valueField } = this.props
       , items = this.process(data, value)
       , idx   = dataIndexOf(items, value, valueField);
@@ -103,7 +103,7 @@ var ComboBox = React.createClass({
     }
   },
 
-  getDefaultProps(){
+  getDefaultProps() {
     return {
       data: [],
       value: '',
@@ -115,6 +115,12 @@ var ComboBox = React.createClass({
       messages: msgs(),
       ariaActiveDescendantKey: 'combobox'
     }
+  },
+
+  componentWillMount() {
+    this.inputId = instanceId(this, '_input')
+    this.listId = instanceId(this, '_listbox')
+    this.activeId = instanceId(this, '_listbox_active_option')
   },
 
   componentDidUpdate() {
@@ -156,7 +162,7 @@ var ComboBox = React.createClass({
     })
   },
 
-  renderInput(listID) {
+  renderInput() {
     let {
         suggest
       , filter
@@ -182,17 +188,18 @@ var ComboBox = React.createClass({
     return (
       <ComboboxInput
         ref='input'
-        id={instanceId(this, '_input')}
+        role='combobox'
+        name={name}
+        id={this.inputId}
         autoFocus={autoFocus}
         tabIndex={tabIndex}
         suggest={suggest}
-        name={name}
-        role='combobox'
         disabled={disabled}
         readOnly={readOnly}
-        aria-owns={listID}
         aria-busy={!!busy}
+        aria-owns={this.listId}
         aria-autocomplete={completeType}
+        aria-activedescendant={open ? this.activeId : null}
         aria-expanded={open}
         aria-haspopup={true}
         placeholder={placeholder}
@@ -203,7 +210,8 @@ var ComboBox = React.createClass({
     )
   },
 
-  renderList(List, id, messages) {
+  renderList(List, messages) {
+    let { activeId, inputId, listId } = this;
     let { open, data } = this.props;
     let { selectedItem, focusedItem } = this.state;
 
@@ -213,12 +221,13 @@ var ComboBox = React.createClass({
     return (
       <List ref="list"
         {...listProps}
-        id={id}
+        id={listId}
+        activeId={activeId}
         data={items}
         selected={selectedItem}
         focused ={focusedItem}
         aria-hidden={!open}
-        aria-labelledby={instanceId(this)}
+        aria-labelledby={inputId}
         aria-live={open && 'polite'}
         onSelect={this.handleSelect}
         onMove={this._scrollTo}
@@ -246,7 +255,6 @@ var ComboBox = React.createClass({
 
     let disabled = isDisabled(this.props)
       , readOnly = isReadOnly(this.props)
-      , listID = instanceId(this, '_listbox');
 
     List = List || (groupBy && GroupableList) || PlainList
 
@@ -270,7 +278,9 @@ var ComboBox = React.createClass({
           disabled={disabled}
           readOnly={readOnly}
         >
-          {this.renderInput(listID)}
+
+          {this.renderInput()}
+
           <Select
             bordered
             busy={busy}
@@ -290,7 +300,7 @@ var ComboBox = React.createClass({
             onOpening={() => this.refs.list.forceUpdate()}
           >
             <div>
-              {this.renderList(List, listID, messages)}
+              {this.renderList(List, messages)}
             </div>
           </Popup>
         }
