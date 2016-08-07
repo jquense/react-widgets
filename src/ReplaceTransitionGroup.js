@@ -5,11 +5,12 @@
  * relevent code is licensed accordingly
  */
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import css from 'dom-helpers/style';
 import height from 'dom-helpers/query/height';
 import width  from 'dom-helpers/query/width';
-import compat from './util/compat';
 import _ from './util/_';
+import mountManager from './util/mountManager';
 
 function getChild(children){
   return React.Children.only(children)
@@ -41,6 +42,7 @@ class ReplaceTransitionGroup extends React.Component {
   constructor(...args) {
     super(...args)
 
+    this.isMounted = mountManager(this);
     this.animatingKeys = {};
     this.leaving  = null;
     this.entering = null;
@@ -91,8 +93,8 @@ class ReplaceTransitionGroup extends React.Component {
     var entering = this.entering
       , leaving  = this.leaving
       , first    = this.refs[key(entering) || key(leaving)]
-      , node     = compat.findDOMNode(this)
-      , el       = first && compat.findDOMNode(first);
+      , node     = findDOMNode(this)
+      , el       = first && findDOMNode(first);
 
     if( el )
       css(node, {
@@ -108,10 +110,6 @@ class ReplaceTransitionGroup extends React.Component {
 
     if (entering) this.performEnter(key(entering))
     if (leaving)  this.performLeave(key(leaving))
-  }
-
-  componentWillUnmount() {
-    this.unmounted = true;
   }
 
   performEnter(key) {
@@ -131,8 +129,8 @@ class ReplaceTransitionGroup extends React.Component {
     if (this.isTransitioning())
       return
 
-    if (!this.unmounted)
-      css(compat.findDOMNode(this), { overflow: 'visible', height: '', width: '' })
+    if (this.isMounted())
+      css(findDOMNode(this), { overflow: 'visible', height: '', width: '' })
 
     this.props.onAnimate()
   }
@@ -175,7 +173,7 @@ class ReplaceTransitionGroup extends React.Component {
     if (key(this.props.children) === leavekey )
       this.performEnter(leavekey) // This entered again before it fully left. Add it again.
 
-    else if (!this.unmounted)
+    else if (this.isMounted())
       this.setState({
         children: this.state.children.filter(c => key(c) !== leavekey)
       })

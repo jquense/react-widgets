@@ -7,8 +7,8 @@ import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
-import ListOption from './ListOption';
 import Widget from './Widget';
+import createSelectListItem from './SelectListItem';
 
 import autoFocus from './util/autoFocus';
 import createScrollManager from './util/scrollManager';
@@ -30,32 +30,32 @@ let { find } = _;
 let propTypes = {
     ...autoFocus.propTypes,
 
-    data:           React.PropTypes.array,
-    value:          React.PropTypes.oneOfType([
-                      React.PropTypes.any,
-                      React.PropTypes.array
-                    ]),
-    onChange:       React.PropTypes.func,
-    onMove:         React.PropTypes.func,
+    data: React.PropTypes.array,
+    value: React.PropTypes.oneOfType([
+      React.PropTypes.any,
+      React.PropTypes.array
+    ]),
+    onChange: React.PropTypes.func,
+    onMove: React.PropTypes.func,
 
-    multiple:       React.PropTypes.bool,
+    multiple: React.PropTypes.bool,
 
-    itemComponent:  CustomPropTypes.elementType,
-    listComponent:  CustomPropTypes.elementType,
+    itemComponent: CustomPropTypes.elementType,
+    listComponent: CustomPropTypes.elementType,
 
-    valueField:     React.PropTypes.string,
-    textField:      CustomPropTypes.accessor,
+    valueField: React.PropTypes.string,
+    textField: CustomPropTypes.accessor,
 
-    busy:           React.PropTypes.bool,
+    busy: React.PropTypes.bool,
 
-    filter:         React.PropTypes.string,
-    delay:          React.PropTypes.number,
+    filter: React.PropTypes.string,
+    delay: React.PropTypes.number,
 
-    disabled:       CustomPropTypes.disabled.acceptsArray,
-    readOnly:       CustomPropTypes.readOnly,
+    disabled: CustomPropTypes.disabled.acceptsArray,
+    readOnly: CustomPropTypes.readOnly,
 
-    messages:       React.PropTypes.shape({
-      emptyList:    React.PropTypes.string
+    messages: React.PropTypes.shape({
+      emptyList: React.PropTypes.string
     })
   }
 
@@ -103,7 +103,7 @@ var SelectList = React.createClass({
     })
   },
 
-  getDefaultProps(){
+  getDefaultProps() {
     return {
       delay: 250,
       value: [],
@@ -126,7 +126,7 @@ var SelectList = React.createClass({
   getInitialState(){
     var state = this.getDefaultState(this.props)
 
-    state.ListItem = getListItem(this)
+    state.ListItem = createSelectListItem(this)
 
     return state
   },
@@ -358,67 +358,6 @@ var SelectList = React.createClass({
 
 });
 
-
-function getListItem(parent){
-
-  return React.createClass({
-
-    displayName: 'SelectItem',
-
-    handleChange(e) {
-      let { disabled, readonly, dataItem } = this.props;
-
-      if (!disabled && !readonly)
-        parent.handleChange(dataItem, e.target.checked)
-    },
-
-    handleMouseDown() {
-      parent._clicking = true
-    },
-
-    render() {
-      let {
-          children
-        , disabled
-        , dataItem: item } = this.props;
-
-      let {
-        multiple,
-        name = instanceId(parent, '_name')
-      } = parent.props;
-
-      let checked = contains(item, parent._values(), parent.props.valueField)
-        , type = multiple ? 'checkbox' : 'radio';
-
-      let readOnly = isReadOnly(parent.props);
-
-      return (
-        <ListOption
-          {...this.props}
-          role={type}
-          aria-checked={!!checked}
-        >
-          <label
-            onMouseDown={this.handleMouseDown}
-            className="rw-select-list-label"
-          >
-            <input
-              name={name}
-              type={type}
-              tabIndex='-1'
-              role='presentation'
-              checked={checked}
-              className="rw-select-list-input"
-              disabled={disabled || readOnly}
-              onChange={this.handleChange}
-            />
-              { children }
-          </label>
-        </ListOption>
-      );
-    }
-  })
-}
 
 SelectList = withRightToLeft(SelectList);
 
