@@ -38,11 +38,15 @@ export let widgetEnabled = interactionDecorator(true)
 export let widgetEditable = interactionDecorator(false)
 
 
-function interactionDecorator(disabledOnly){
+function interactionDecorator(disabledOnly) {
   function wrap(method){
-    return function decoratedMethod(...args){
-      if (!(isDisabled(this.props) || (!disabledOnly && isReadOnly(this.props))))
+    return function decoratedMethod(...args) {
+      if (
+        !(isDisabled(this.props) ||
+        (!disabledOnly && isReadOnly(this.props)))
+      ) {
         return method.apply(this, args)
+      }
     }
   }
 

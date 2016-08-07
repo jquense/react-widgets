@@ -10,6 +10,12 @@ import GroupableList from './ListGroupable';
 import ListOption from './ListOption';
 import Widget from './Widget';
 
+import autoFocus from './util/autoFocus';
+import createScrollManager from './util/scrollManager';
+import createTimeoutManager from './util/timeoutManager';
+import createFocusManager from './util/focusManager';
+import withRightToLeft from './util/withRightToLeft';
+
 import validateList from './util/validateListInterface';
 import scrollTo from 'dom-helpers/util/scrollTo';
 
@@ -22,6 +28,7 @@ import { isDisabled, isReadOnly, contains } from './util/interaction';
 let { find } = _;
 
 let propTypes = {
+    ...autoFocus.propTypes,
 
     data:           React.PropTypes.array,
     value:          React.PropTypes.oneOfType([
@@ -67,11 +74,19 @@ var SelectList = React.createClass({
 
   propTypes: propTypes,
 
-  mixins: [
-    require('./mixins/TimeoutMixin'),
-    require('./mixins/AutoFocusMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/FocusMixin')({
+  componentWillMount() {
+
+    this.widgetId = instanceId(this, '_widget')
+    this.listId = instanceId(this, '_listbox')
+    this.activeId = instanceId(this, '_listbox_active_option')
+
+    autoFocus(this);
+
+    this.handleScroll = createScrollManager(this, false);
+
+    this.timeouts = createTimeoutManager(this);
+
+    this.focusManager = createFocusManager(this, {
       didHandle(focused) {
         // the rigamarole here is to avoid flicker went clicking an item and
         // gaining focus at the same time.
@@ -86,7 +101,7 @@ var SelectList = React.createClass({
         }
       }
     })
-  ],
+  },
 
   getDefaultProps(){
     return {
@@ -114,12 +129,6 @@ var SelectList = React.createClass({
     state.ListItem = getListItem(this)
 
     return state
-  },
-
-  componentWillMount() {
-    this.widgetId = instanceId(this, '_widget')
-    this.listId = instanceId(this, '_listbox')
-    this.activeId = instanceId(this, '_listbox_active_option')
   },
 
   componentWillReceiveProps(nextProps) {
@@ -158,8 +167,8 @@ var SelectList = React.createClass({
       <Widget
         {...elementProps}
         id={this.widgetId}
-        onBlur={this.handleBlur}
-        onFocus={this.handleFocus}
+        onBlur={this.focusManager.handleBlur}
+        onFocus={this.focusManager.handleFocus}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
         focused={focused}
@@ -187,7 +196,7 @@ var SelectList = React.createClass({
           focused={focusedItem}
           optionComponent={ListItem}
           itemComponent={this.props.itemComponent}
-          onMove={this._scrollTo}
+          onMove={this.handleScroll}
         />
       </Widget>
     );
@@ -302,7 +311,6 @@ var SelectList = React.createClass({
 
     multiple  = !!multiple
 
-    this.clearTimeout('focusedItem')
     this.setState({ focusedItem: item })
 
     if (!multiple)
@@ -325,7 +333,7 @@ var SelectList = React.createClass({
 
     this._searchTerm = word
 
-    this.setTimeout('search', () => {
+    this.timeouts.set('search', () => {
       var focusedItem = list.next(this.state.focusedItem, word);
 
       this._searchTerm = ''
@@ -412,5 +420,13 @@ function getListItem(parent){
   })
 }
 
-export default createUncontrolledWidget(
-    SelectList, { value: 'onChange' }, ['selectAll', 'focus']);
+SelectList = withRightToLeft(SelectList);
+
+SelectList = createUncontrolledWidget(SelectList,
+  {
+    value: 'onChange'
+  },
+  ['selectAll', 'focus']
+);
+
+export default SelectList;
