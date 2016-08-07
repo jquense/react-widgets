@@ -39,7 +39,7 @@ export let widgetEditable = interactionDecorator(false)
 
 
 function interactionDecorator(disabledOnly) {
-  function wrap(method){
+  function wrap(method) {
     return function decoratedMethod(...args) {
       if (
         !(isDisabled(this.props) ||
@@ -53,7 +53,10 @@ function interactionDecorator(disabledOnly) {
   return function decorate(target, key, desc){
     if (desc.initializer) {
       let init = desc.initializer
-      desc.initializer = ()=> wrap(init())
+
+      desc.initializer = function () {
+        return wrap(init.call(this)).bind(this)
+      }
     }
     else desc.value = wrap(desc.value)
     return desc

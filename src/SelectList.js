@@ -27,7 +27,19 @@ import { isDisabled, isReadOnly, contains } from './util/interaction';
 
 let { find } = _;
 
-let propTypes = {
+function getFirstValue(props) {
+  var { data, value, valueField } = props
+  value = _.splat(value);
+
+  if (value.length)
+    return find(data, d => dataIndexOf(value, d, valueField) !== -1)
+        || null
+
+  return null
+}
+
+class SelectList extends React.Component {
+  static propTypes = {
     ...autoFocus.propTypes,
 
     data: React.PropTypes.array,
@@ -57,62 +69,34 @@ let propTypes = {
     messages: React.PropTypes.shape({
       emptyList: React.PropTypes.string
     })
-  }
+  };
 
-function getFirstValue(props) {
-  var { data, value, valueField } = props
-  value = _.splat(value);
+  static defaultProps = {
+    delay: 250,
+    value: [],
+    data:  [],
+    messages: {
+      emptyList: 'There are no items in this list'
+    }
+  };
 
-  if (value.length)
-    return find(data, d => dataIndexOf(value, d, valueField) !== -1)
-        || null
-
-  return null
-}
-
-var SelectList = React.createClass({
-
-  propTypes: propTypes,
-
-  componentWillMount() {
+  constructor(...args) {
+    super(...args);
+    autoFocus(this);
 
     this.widgetId = instanceId(this, '_widget')
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
 
-    autoFocus(this);
-
-    this.handleScroll = createScrollManager(this, false);
-
     this.timeouts = createTimeoutManager(this);
-
+    this.handleScroll = createScrollManager(this, false);
     this.focusManager = createFocusManager(this, {
-      didHandle(focused) {
-        // the rigamarole here is to avoid flicker went clicking an item and
-        // gaining focus at the same time.
-        if (focused !== this.state.focused) {
-          if (!focused)
-            this.setState({ focusedItem: null })
-          else if (focused && !this._clicking)
-            this.setState({
-              focusedItem: getFirstValue(this.props)
-            })
-          this._clicking = false
-        }
-      }
+      didHandle: this.handleFocusChanged
     })
-  },
-
-  getDefaultProps() {
-    return {
-      delay: 250,
-      value: [],
-      data:  [],
-      messages: {
-        emptyList: 'There are no items in this list'
-      }
-    }
-  },
+    
+    this.ListItem = createSelectListItem(this)
+    this.state = this.getDefaultState(this.props)
+  }
 
   getDefaultState(props) {
     var { data, value, valueField, multiple } = props
@@ -121,25 +105,31 @@ var SelectList = React.createClass({
       dataItems: multiple &&
         _.splat(value).map(item => dataItem(data, item, valueField))
     }
-  },
-
-  getInitialState(){
-    var state = this.getDefaultState(this.props)
-
-    state.ListItem = createSelectListItem(this)
-
-    return state
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     return this.setState(
       this.getDefaultState(nextProps)
     )
-  },
+  }
 
   componentDidMount() {
     validateList(this.refs.list)
-  },
+  }
+
+  handleFocusChanged = (focused) => {
+    // the rigamarole here is to avoid flicker went clicking an item and
+    // gaining focus at the same time.
+    if (focused !== this.state.focused) {
+      if (!focused)
+        this.setState({ focusedItem: null })
+      else if (focused && !this._clicking)
+        this.setState({
+          focusedItem: getFirstValue(this.props)
+        })
+      this._clicking = false
+    }
+  };
 
   render() {
     let {
@@ -154,9 +144,9 @@ var SelectList = React.createClass({
     let elementProps = _.omitOwnProps(this, List);
     let listProps    = _.pickProps(this.props, List);
 
-    let { ListItem, focusedItem, focused } = this.state;
-
-    let items = this._data();
+    let { focusedItem, focused } = this.state
+    let ListItem = this.ListItem
+    let items = this._data()
 
     focusedItem = focused
       && !isDisabled(this.props)
@@ -200,22 +190,10 @@ var SelectList = React.createClass({
         />
       </Widget>
     );
-  },
-
-  _scrollTo(selected, list) {
-    var handler = this.props.onMove;
-
-    if (handler)
-      handler(selected, list)
-    else {
-      this._scrollCancel && this._scrollCancel()
-      // default behavior is to scroll the whole page not just the widget
-      this._scrollCancel = scrollTo(selected)
-    }
-  },
+  }
 
   @widgetEditable
-  handleKeyDown(e) {
+  handleKeyDown = (e) => {
     var key = e.key
       , { valueField, multiple } = this.props
       , list = this.refs.list
@@ -269,21 +247,21 @@ var SelectList = React.createClass({
       e.preventDefault()
       this.selectAll()
     }
-  },
+  };
 
   @widgetEditable
-  handleKeyPress(e) {
+  handleKeyPress = (e) => {
     notify(this.props.onKeyPress, [e])
 
     if (e.defaultPrevented)
       return
 
     this.search(String.fromCharCode(e.which))
-  },
+  };
 
   focus() {
     compat.findDOMNode(this.refs.list).focus()
-  },
+  }
 
   selectAll() {
     var { disabled, readOnly, valueField } = this.props
@@ -303,9 +281,9 @@ var SelectList = React.createClass({
     }
 
     notify(this.props.onChange, [data])
-  },
+  }
 
-  handleChange(item, checked) {
+  handleChange = (item, checked) => {
     var { multiple } = this.props
       , values = this.state.dataItems;
 
@@ -321,7 +299,7 @@ var SelectList = React.createClass({
       : values.filter( v => v !== item)
 
     notify(this.props.onChange, [values || []])
-  },
+  };
 
   search(character) {
     var word = ((this._searchTerm || '') + character).toLowerCase()
@@ -344,19 +322,18 @@ var SelectList = React.createClass({
           : this.setState({ focusedItem })
       }
     }, this.props.delay)
-  },
+  }
 
   _data() {
     return this.props.data
-  },
+  }
 
   _values() {
     return this.props.multiple
       ? this.state.dataItems
       : this.props.value
   }
-
-});
+}
 
 
 SelectList = withRightToLeft(SelectList);
