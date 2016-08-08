@@ -30,6 +30,16 @@ storiesOf('DropdownList', module)
       />
     </Container>
   )
+  .add('drop up', () =>
+    <Container>
+      <DropdownList
+        {...props}
+        open
+        dropUp
+        filter={false}
+      />
+    </Container>
+  )
   .add('busy', () =>
     <Container>
       <DropdownList
