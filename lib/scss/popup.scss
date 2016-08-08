@@ -11,7 +11,7 @@
     bottom: 100%;
   }
 
-  .rw-state-focus & {
+  .rw-state-focus + & {
     z-index: $popup-zindex-focused;
   }
 }

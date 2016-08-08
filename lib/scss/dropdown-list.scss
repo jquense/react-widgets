@@ -6,7 +6,6 @@
 
   /* ellipsis */ & {
     max-width: 1px; // very hacky to force ellipsis
-    min-width: 10000px;
 
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -74,3 +74,17 @@ storiesOf('SelectList', module)
       />
     </Container>
   )
+  .add('Item component', () =>
+    <Container>
+      <SelectList
+        {...props}
+        defaultValue={props.data.slice(0, 3)}
+        itemComponent={({ item }) =>
+          <div>
+            <div>{item.first}</div>
+            <div>{item.last}</div>
+          </div>
+        }
+      />
+    </Container>
+  )

@@ -372,7 +372,6 @@ function getListItem(parent){
       let {
           children
         , disabled
-        , readOnly
         , dataItem: item } = this.props;
 
       let {
@@ -382,6 +381,8 @@ function getListItem(parent){
 
       let checked = contains(item, parent._values(), parent.props.valueField)
         , type = multiple ? 'checkbox' : 'radio';
+
+      let readOnly = isReadOnly(parent.props);
 
       return (
         <ListOption

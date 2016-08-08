@@ -1,5 +1,5 @@
 .rw-list {
-  .list-unstyled;
+  @include list-unstyled();
   font-size: $list-font-size;
   outline: 0;
   overflow:         auto;
@@ -7,7 +7,7 @@
 }
 
 .rw-list-option {
-  .user-select;
+  @include user-select();
   color: $list-text-color;
   cursor: pointer;
   border: 1px solid transparent;
