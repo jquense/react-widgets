@@ -1,19 +1,10 @@
-/* global it, describe, expect */
-'use strict';
-require('../vendor/phantomjs-shim')
+import React from 'react';
+import tsp from 'teaspoon';
 
-import ReactDOM from 'react-dom';
-
-var React = require('react');
-var List = require('../src/ListGroupable');
-
-
-//console.log(sinon)
-var TestUtils = require('react-addons-test-utils');
-var render = TestUtils.renderIntoDocument;
+import List from '../src/ListGroupable';
 
 describe('Groupable List', function(){
-  var data = [
+  let data = [
     { first: 'jimmy',   last: 'smith',  id: 0 },
     { first: 'sally',   last: 'smith',  id: 1 },
     { first: 'pat',     last: 'jones',  id: 2 },
@@ -23,78 +14,107 @@ describe('Groupable List', function(){
   ];
 
   it('should set initial values', function(){
-    var list = render(<List data={data} onChange={()=>{}} groupBy='last' />);
+    let numGroups = 4;
+    let numItems = 6;
 
-    //children with the headers
-    expect(ReactDOM.findDOMNode(list).children.length).to.be(6 + 4);
+    expect(
+      tsp(<List data={data} onChange={()=>{}} groupBy='last' />)
+        .render()
+        .find('li')
+        .length
+    )
+    .to.equal(numGroups + numItems)
   })
 
   it('should respect textField and valueFields', function(){
-    var list = render(<List data={data} textField='first' valueField='id' groupBy='last'/>)
-      , children =  ReactDOM.findDOMNode(list).children;
+    let items = tsp(
+      <List
+        data={data}
+        textField='first'
+        valueField='id'
+        groupBy='last'
+      />
+    )
+    .render()
+    .find('li')
 
-    expect($(children[0]).text()).to.be('smith');
-    expect($(children[1]).text()).to.be('jimmy');
+    expect(items.nth(0).text()).to.be('smith')
+    expect(items.nth(1).text()).to.be('jimmy')
   })
 
   it('should render an empty list message', function(){
-    var list = render(<List data={[]} textField='first' valueField='id' />);
-
-    expect($(ReactDOM.findDOMNode(list)).find('li').text())
+    expect(
+      tsp(
+        <List
+          data={[]}
+          textField='first'
+          valueField='id'
+          groupBy='last'
+        />
+      )
+      .render()
+      .first('li')
+      .text()
+    )
       .to.be('There are no items in this list');
   })
 
-  it('should generate ids', function(){
-    var focused = data[2]
-      , list = render(<List data={data} focused={focused} />);
+  it('should use activeId', function(){
+    let focused = data[2];
 
-    let seen = [];
-
-    $(ReactDOM.findDOMNode(list)).children().each(
-      function(){
-        expect(this.hasAttribute('id')).to.equal(true);
-        expect(seen.indexOf(this.id)).to.equal(-1);
-        seen.push(this.id);
-      })
+    expect(
+      tsp(<List data={data} focused={focused} activeId="foo" />)
+        .render()
+        .find('.rw-list-option')
+        .nth(2)
+        .props('id')
+    )
+    .to.equal('foo');
   })
 
   it('should use a Item template', function(){
-    var templ  = React.createClass({
-      render: function() {
-        return (<span>{'hello - ' + this.props.item.first}</span>);
-      }
-    });
+    function Item({ item }) {
+      return <span>{'hello - ' + item.first}</span>
+    }
 
-    var list = render(<List data={data} itemComponent={templ} />)
-      , children =  ReactDOM.findDOMNode(list).children;
-
-    expect($(children[1]).text()).to.be('hello - jimmy');
+    expect(
+      tsp(<List data={data} itemComponent={Item} />)
+        .render()
+        .first('.rw-list-option')
+        .text()
+    )
+    .to.be('hello - jimmy');
   })
 
   it('should use a Group template', function(){
-    var templ  = React.createClass({
-      render: function() {
-        return (<span>{'hello - ' + this.props.item}</span>);
-      }
-    });
+    function Item({ item }) {
+      return <span>{'hello - ' + item}</span>
+    }
 
-    var list = render(<List data={data} groupComponent={templ} groupBy='last' />)
-      , children =  ReactDOM.findDOMNode(list).children;
-
-    expect($(children[0]).text()).to.be('hello - smith');
+    expect(
+      tsp(<List data={data} groupComponent={Item} groupBy="last" />)
+        .render()
+        .first('.rw-list-optgroup')
+        .text()
+    )
+    .to.be('hello - smith');
   })
 
   it('should implement first()', function(){
-    var focused = data[2]
-      , list = render(<List data={data} selected={data[1]} focused={focused} />);
+    let focused = data[2]
+
+    let list = tsp(<List data={data} selected={data[1]} focused={focused} />)
+      .render().unwrap();
 
     expect(list.first(focused)).to.be(data[0]);
   })
 
   it('should implement prev()', function(){
-    var focused = data[4]
+    let focused = data[4]
       , selected = data[3]
-      , list = render(<List data={data} selected={selected} focused={focused} textField='first' />);
+
+    let list = tsp(<List data={data} selected={selected} focused={focused} textField='first' />)
+      .render().unwrap();
 
     expect(list.prev(selected)).to.be(data[2]);
     expect(list.prev(selected, 'sa')).to.be(data[1]);
@@ -104,9 +124,11 @@ describe('Groupable List', function(){
   })
 
   it('should implement next()', function(){
-    var focused = data[2]
+    let focused = data[2]
       , selected = data[1]
-      , list = render(<List data={data} selected={selected} focused={focused} textField='first' />);
+
+    let list = tsp(<List data={data} selected={selected} focused={focused} textField='first' />)
+      .render().unwrap();
 
     expect(list.next(selected)).to.be(data[2]);
     expect(list.next(selected, 'ja')).to.be(data[3]);
@@ -116,8 +138,9 @@ describe('Groupable List', function(){
   })
 
   it('should implement last()', function(){
-    var focused = data[2]
-      , list = render(<List data={data} selected={data[1]} focused={focused} />);
+    let focused = data[2]
+    let list = tsp(<List data={data} selected={data[1]} focused={focused} />)
+      .render().unwrap();
 
     expect(list.last()).to.be(data[5]);
   })

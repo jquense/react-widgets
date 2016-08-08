@@ -10,12 +10,16 @@ function clamp(date, min, max){
 }
 
 class CalendarView extends React.Component {
+  static propTypes = {
+    activeId: React.PropTypes.string,
+  };
+  
   render() {
-    let { className, activeId } = this.props;
+    let { className, activeId, ...props } = this.props;
 
     return (
       <table
-        {...this.props}
+        {...props}
         role='grid'
         tabIndex='-1'
         aria-activedescendant={activeId || null}

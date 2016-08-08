@@ -9,18 +9,27 @@
 
 .rw-select-list-label {
   display: block;
+  position: relative;
   cursor: inherit;
+  padding-left: 20px;
+
+  .rw-rtl & {
+    padding-left: 0;
+    padding-right: 20px;
+  }
 }
 
 input.rw-select-list-input {
-  vertical-align: top;
-  margin: .2em 0.4em 0 0;
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  margin: 0;
   line-height: normal;
   cursor: inherit;
 
   .rw-rtl & {
-    margin-right: 0;
-    margin-left: 0.4em;
+    left: auto;
+    right: 0;
   }
 }
 
