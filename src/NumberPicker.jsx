@@ -125,7 +125,7 @@ let NumberPicker = React.createClass({
             icon="caret-down"
             onClick={this.handleFocus}
             label={this.props.messages.decrement}
-            active={this.state.active === directions.UP}
+            active={this.state.active === directions.DOWN}
             disabled={val === this.props.min || this.props.disabled}
             onMouseUp={() => this.handleMouseUp(directions.DOWN)}
             onMouseDown={() => this.handleMouseDown(directions.DOWN)}
