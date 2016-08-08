@@ -63,7 +63,7 @@ class SelectList extends React.Component {
     readOnly: CustomPropTypes.readOnly,
 
     messages: React.PropTypes.shape({
-      emptyList: React.PropTypes.string
+      emptyList: CustomPropTypes.message,
     })
   };
 
