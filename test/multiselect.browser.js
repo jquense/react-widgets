@@ -111,6 +111,8 @@ describe('Multiselect', function() {
     var del = sinon.spy()
     tsp(
       <MultiselectTagList
+        id="list"
+        activeId="list_active"
         value={[dataList[0], dataList[1]]}
         data={dataList}
         textField='label'

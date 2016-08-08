@@ -16,7 +16,7 @@ describe('Month Component', function(){
         onChange={()=>{}}
         dateFormat='dd'
         dayFormat='d'
-        ariaActiveDescendantKey='month'
+        activeId='month'
       />
     )
     .render()

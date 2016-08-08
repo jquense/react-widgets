@@ -1,11 +1,9 @@
-'use strict';
-require('../vendor/phantomjs-shim')
-
-var React = require('react');
+import React from 'react';
 import ReactDOM from 'react-dom';
-var List = require('../src/List');
+import tsp from 'teaspoon';
 
-//console.log(sinon)
+import List from '../src/List';
+
 var TestUtils = require('react-addons-test-utils');
 var render = TestUtils.renderIntoDocument;
 
@@ -19,24 +17,28 @@ describe('List', function(){
   ];
 
   it('should set initial values', function(){
-    var list = render(
-          <List data={data} onChange={()=>{}} />);
+    let numItems = 5;
 
-    expect(ReactDOM.findDOMNode(list).children.length).to.be(5);
+    expect(
+      tsp(<List data={data} onChange={()=>{}} />)
+        .render()
+        .find('li')
+        .length
+    )
+    .to.equal( numItems)
   })
 
-  it('should generate ids', function(){
-    var focused = data[2]
-      , list = render(<List data={data} focused={focused} />);
+  it('should use activeId', function(){
+    let focused = data[2];
 
-    let seen = [];
-
-    $(ReactDOM.findDOMNode(list)).children().each(
-      function(){
-        expect(this.hasAttribute('id')).to.equal(true);
-        expect(seen.indexOf(this.id)).to.equal(-1);
-        seen.push(this.id);
-      })
+    expect(
+      tsp(<List data={data} focused={focused} activeId="foo" />)
+        .render()
+        .find('.rw-list-option')
+        .nth(2)
+        .props('id')
+    )
+    .to.equal('foo');
   })
 
   it('should respect textField and valueFields', function(){
