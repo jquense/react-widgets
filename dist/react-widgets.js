@@ -139,7 +139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout(cleanUpNextTick);
+	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
 	    draining = true;
 
 	    var len = queue.length;
@@ -156,7 +156,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout(timeout);
+	    cachedClearTimeout.call(null, timeout);
 	}
 
 	process.nextTick = function (fun) {
@@ -168,7 +168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout(drainQueue, 0);
+	        cachedSetTimeout.call(null, drainQueue, 0);
 	    }
 	};
 
@@ -2091,13 +2091,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function createChainableTypeChecker(validate) {
 
-	  function checkType(isRequired, props, propName, componentName, location) {
+	  function checkType(isRequired, props, propName, componentName) {
 	    componentName = componentName || '<<anonymous>>';
+
+	    for (var _len = arguments.length, args = Array(_len > 4 ? _len - 4 : 0), _key = 4; _key < _len; _key++) {
+	      args[_key - 4] = arguments[_key];
+	    }
+
 	    if (props[propName] == null) {
 	      if (isRequired) {
 	        return new Error('Required prop `' + propName + '` was not specified in  `' + componentName + '`.');
 	      }
-	    } else return validate(props, propName, componentName, location);
+	    } else return validate.apply(undefined, [props, propName, componentName].concat(args));
 	  }
 
 	  var chainedCheckType = checkType.bind(null, false);
@@ -4546,7 +4551,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return _react2.default.createElement(_ComboboxInput2.default, {
 	      ref: 'input',
-	      id: (0, _widgetHelpers.instanceId)(this),
+	      id: (0, _widgetHelpers.instanceId)(this, '_input'),
 	      autoFocus: autoFocus,
 	      tabIndex: tabIndex,
 	      suggest: suggest,
@@ -6911,8 +6916,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
 	 * relevent code is licensed accordingly
 	 */
-
-
 	function getChild(children) {
 	  return _react2.default.Children.only(children);
 	}
