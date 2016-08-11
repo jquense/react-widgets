@@ -61,7 +61,7 @@ module.exports = {
 
 function createChainableTypeChecker(validate) {
 
-  function checkType(isRequired, props, propName, componentName, location) {
+  function checkType(isRequired, props, propName, componentName, ...args) {
     componentName = componentName || '<<anonymous>>';
     if (props[propName] == null) {
       if (isRequired) {
@@ -70,7 +70,7 @@ function createChainableTypeChecker(validate) {
       }
     }
     else
-      return validate(props, propName, componentName, location);
+      return validate(props, propName, componentName, ...args);
   }
 
   var chainedCheckType = checkType.bind(null, false);
