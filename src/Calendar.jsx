@@ -75,8 +75,8 @@ let propTypes = {
   initialView: React.PropTypes.oneOf(VIEW_OPTIONS),
 
 
-  finalView(props, propName, componentName) {
-    var err = React.PropTypes.oneOf(VIEW_OPTIONS)(props, propName, componentName)
+  finalView(props, propName, componentName, ...args) {
+    var err = React.PropTypes.oneOf(VIEW_OPTIONS)(props, propName, componentName, ...args)
 
     if (err) return err
     if (VIEW_OPTIONS.indexOf(props[propName]) < VIEW_OPTIONS.indexOf(props.initialView))
