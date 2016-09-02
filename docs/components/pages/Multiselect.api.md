@@ -26,6 +26,8 @@ regardless of whether the value has actually changed.
 This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic,
 a common implementation is shown below, where the new tag is selected and added to the data list.
 
+Setting this to `false` will disable adding new tags.
+
 <EditableExample codeText={require('../examples/onCreate')(widgetName)}/>
 
 ### data?{ type: 'Array'}
