@@ -25,7 +25,7 @@ let propTypes = {
 
       min:            React.PropTypes.number,
       max:            React.PropTypes.number,
-      step:           React.PropTypes.number,
+      step:           React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.func]),
 
       precision:      React.PropTypes.number,
 
@@ -217,15 +217,29 @@ let NumberPicker = React.createClass({
   },
 
   increment() {
-    return this.step(this.props.step)
+    return this.step(true)
   },
 
   decrement() {
-    return this.step(-this.props.step)
+    return this.step(false)
   },
 
-  step(amount) {
-    var value = (this.props.value || 0) + amount
+  step(isUp) {
+    var typeStep = typeof this.props.step,
+        value = this.props.value || 0;
+
+    switch(typeStep) {
+      case 'function':
+        value = this.props.step(value, isUp)
+        break;
+      case 'number':
+        if(isUp) {
+          value += this.props.step
+        } else {
+          value -= this.props.step
+        }
+        break;
+    }
 
     var decimals = this.props.precision != null
       ? this.props.precision
