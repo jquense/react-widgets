@@ -1,17 +1,20 @@
-'use strict';
-module.exports = function(widgetName){
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName}
-  , colors = ['orange', 'red', 'blue', 'purple'];
+import { stripIndent } from 'common-tags';
 
-var widget =
+export default function(widgetName,) {
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets
+
+    let alertWhenSelected = () => alert('selected!');
+    let alertWhenChanged = () => alert('changed!');
+
+    let widget = (
       <${widgetName}
-        onSelect={() => alert('selected!')}
-        onChange={() => alert('changed!')}
-        data={colors} />
+        onSelect={alertWhenSelected}
+        onChange={alertWhenChanged}
+        data={['orange', 'red', 'blue', 'purple']}
+      />
+    )
 
-ReactDOM.render(widget, mountNode);`
-
-return code
+    ReactDOM.render(widget, mountNode);
+  `
 }

@@ -1,52 +1,34 @@
-'use strict';
-module.exports = function(widgetName, values){
-  var open = values.length > 1 ? "(<div>" : '('
-    , close = values.length > 1 ? "</div>)" : ')'
-  var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName};
+import { stripIndent } from 'common-tags';
 
-var Example = React.createClass({
+export default function(widgetName, values) {
+  let isMany = values.length > 1
+  let open = isMany ? '<div>' : ''
+  let close = isMany ? '</div>' : ''
 
-  getInitialState() {
-    return { ${ values.map(getValue).join(', ')} };
-  },
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
 
-  render() {
-    var change = (name, value) => this.setState({
-        ['value' + name]: value
-      });
+    class ChangeExample extends React.Component {
+      constructor(...args) {
+        super(...args)
+        this.state = { value: this.props.initialValue }
+      }
+      render() {
+        return (
+          <${widgetName}
+            value={this.state.value}
+            onChange={value => this.setState({ value })}
+          />
+        )
+      }
+    }
 
-    return ${open}
-      ${values.map(getWidget).join('').trim()}
-    ${close}
-  }
-});
+    let example${isMany ? 's' : ''} = (
+      ${open}${values.map(value => `
+        <ChangeExample initialValue={${value}} />`).join('')}
+      ${close}
+    )
 
-ReactDOM.render(<Example/>, mountNode);`
-
-return code
-
-  function getValue(v, idx){
-    return `value${idx}: ${v}`
-  }
-
-  function getWidget(v, idx){
-    return `
-      <${widgetName}
-        value={this.state.value${idx}}
-        onChange={change.bind(null, '${idx}')}/>`
-  }
-}
-
-function map(o) {
-  var str = '';
-
-  for (var key in o) if ( o.hasOwnProperty(key) )
-    str += ` \n\t\t${key}={${o[key]}}`
-
-  if (Object.keys(o).length === 1)
-    return str.trim()
-
-  return str.substr(1)
+    ReactDOM.render(examples, mountNode);
+  `
 }

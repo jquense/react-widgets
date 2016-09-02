@@ -1,53 +1,47 @@
-'use strict';
-var React = require('react')
-var ReactDOM = require('react-dom')
-var {
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {
     Route
   , Router
-  , Navigation
-  , State
-  , hashHistory
-  , Link } = require('react-router')
+  , hashHistory } from 'react-router';
 
-var Affix = require('react-overlays/lib/AutoAffix')
-var Navbar = require('./Navbar')
-var Nav = require('react-bootstrap/lib/Nav')
-var GettingStarted = require('./pages/GettingStarted.md')
-var DropdownList   = require('./pages/DropdownList.api.md')
-var ComboBox       = require('./pages/Combobox.api.md')
-var MultiSelect    = require('./pages/Multiselect.api.md')
-var SelectList     = require('./pages/SelectList.api.md')
-var Calendar       = require('./pages/Calendar.api.md')
-var DatePicker     = require('./pages/DateTimePicker.api.md')
-var NumberPicker   = require('./pages/NumberPicker.api.md')
-var Advanced       = require('./pages/Advanced')
-var Locale         = require('./pages/i18n.md');
-var Controllables  = require('./pages/controllables.md');
+import Navbar from './Navbar';
+import GettingStarted from './pages/GettingStarted.md';
+import DropdownList from './pages/DropdownList.api.md';
+import ComboBox from './pages/Combobox.api.md';
+import MultiSelect from './pages/Multiselect.api.md';
+import SelectList from './pages/SelectList.api.md';
+import Calendar from './pages/Calendar.api.md';
+import DatePicker from './pages/DateTimePicker.api.md';
+import NumberPicker from './pages/NumberPicker.api.md';
+import Advanced from './pages/Advanced.js';
+import Locale from './pages/i18n.md';
+import Controllables from './pages/controllables.md';
 
+import '@monastic.panic/component-playground/codemirror.css';
 
-require('@monastic.panic/component-playground/codemirror.css')
-require('@monastic.panic/component-playground/themes/oceanic.css')
-
-require('../vendor/styles.css')
-require('react-widgets/less/react-widgets.less')
-require('../docs.css')
+import 'react-widgets/less/react-widgets.less';
+import '../styles/docs.less';
 
 
 var localizers = require('../../src/localizers/globalize')
 
 localizers(require('globalize'))
 
-
 var locations = [
-      'getting-started', 'dropdown-list', 'combobox',
-      'number-picker', 'multiselect', 'selectlist',
-      'calendar', 'datetime-picker'];
+  'getting-started',
+  'dropdown-list',
+  'combobox',
+  'number-picker',
+  'multiselect',
+  'selectlist',
+  'calendar',
+  'datetime-picker'
+];
 
 var Docs = React.createClass({
 
   displayName: 'DocPage',
-
-  mixins: [ Navigation, State ],
 
   getInitialState: function () {
     return {
@@ -55,54 +49,18 @@ var Docs = React.createClass({
     }
   },
 
-  componentDidMount: function(){
-    if(location.hash)
-      this.setState({ sideHref: location.hash.split('/')[0] })
-  },
+  // componentDidMount: function(){
+  //   if (location.hash)
+  //     this.setState({ sideHref: location.hash.split('/')[0] })
+  // },
 
   render() {
     return (
       <div>
         <Navbar page={this.props.page}/>
-        <div className='container'>
-          <aside className='col-sm-3 section'>
-            <Affix viewportOffsetTop={20}>
-              <div className='nav-aside section-inner'>
-                <nav className='side-nav'>
-                  <Nav>
-                    <li className={'active'}>
-                      <Link to='/getting-started'>Getting Started</Link>
-                    </li>
-                    <li><Link to='i18n'>Localization</Link></li>
-                    <li className='side-divider'>API</li>
-                    <li><Link to='/dropdownlist'>Dropdown List</Link></li>
-                    <li><Link to='/combobox' href='#combobox'>Combobox</Link></li>
-                    <li><Link to='/numberpicker' href='#number-picker'>Number Picker</Link></li>
-                    <li><Link to='/multiselect' href='#multiselect'>Multiselect</Link></li>
-                    <li><Link to='/selectlist'>Select List</Link></li>
-                    <li><Link to='/calendar'>Calendar</Link></li>
-                    <li><Link to='/datetime-picker'>{'Date & Time Picker'}</Link></li>
-
-                    {/*<li><Link to='advanced'>Advanced</Link></li> */}
-                  </Nav>
-                </nav>
-              </div>
-            </Affix>
-          </aside>
-          <article className='col-sm-9 section'>
-            <div className='section-inner'>
-              {this.props.children}
-              {/*<div className='clearfix'style={{ marginTop: 20 }}>
-                { locations.indexOf(href) > 0 &&
-                  <button type='button' className='btn btn-link pull-left' onClick={this.prev}>« prev</button>
-                }
-                { locations.indexOf(href) < (locations.length - 1) &&
-                  <button type='button' className='btn btn-link pull-right' onClick={this.next}>next »</button>
-                }
-              </div> */}
-            </div>
-          </article>
-        </div>
+        <main className='pg-content'>
+          {this.props.children}
+        </main>
       </div>
     )
   },
@@ -149,7 +107,7 @@ ReactDOM.render((
       <Route path="datetime-picker" component={DatePicker}>
         <Route path=':topic' component={DatePicker}/>
       </Route>
-      <Route path="numberpicker" component={NumberPicker}>
+      <Route path="number-picker" component={NumberPicker}>
         <Route path=':topic' component={NumberPicker}/>
       </Route>
 
@@ -159,28 +117,3 @@ ReactDOM.render((
     </Route>
   </Router>
 ), document.getElementById('app-mount'));
-
-
-// createRouter({
-//     routes,
-//     scrollBehavior: {
-//       updateScrollPosition(pos, action){
-//         var anchor = document.getElementById(location.hash.substr(1))
-
-//         pos = pos || {}
-
-//         if( anchor)
-//           return window.scrollTo(pos ? pos.x : window.pageXOffset, anchor.offsetTop)
-
-//         switch (action) {
-//           case 'push':
-//           case 'replace':
-//             window.scrollTo(0, 0);
-//             break;
-//           case 'pop':
-//             window.scrollTo(pos.x || 0, pos.y || 0);
-//             break;
-//         }
-//       }
-//     }
-//   });

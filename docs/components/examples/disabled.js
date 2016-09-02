@@ -1,29 +1,27 @@
-'use strict';
-module.exports = function(widgetName, prop, isArray=true){
-  var value = !isArray ? '"orange"' : '["orange", "red"]'
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName}
-  , colors = ['orange', 'red', 'blue', 'purple'];
+import { stripIndent } from 'common-tags';
 
-var Example = React.createClass({
+export default function(widgetName, prop, isArray=true) {
+  var value = !isArray ? '"orange"' : '["orange", "red"]';
 
-  render() {
-    return (<div>
-      <${widgetName} ${prop} 
-        data={colors}
-        defaultValue={${value}}
-      />
-      <${widgetName}
-        ${prop}={colors.slice(1,2)}
-        data={colors}
-        defaultValue={${value}}
-      />
-    </div>)
-  }
-});
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets
 
-ReactDOM.render(<Example/>, mountNode);`
+    let colors = ['orange', 'red', 'blue', 'purple'];
 
-return code
+    let example = (
+      <div>
+        <${widgetName} ${prop}
+          data={colors}
+          defaultValue={${value}}
+        />
+        <${widgetName}
+          ${prop}={colors.slice(1,2)}
+          data={colors}
+          defaultValue={${value}}
+        />
+      </div>
+    )
+
+    ReactDOM.render(example, mountNode);
+  `
 }

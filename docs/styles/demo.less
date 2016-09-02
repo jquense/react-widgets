@@ -1,0 +1,43 @@
+
+
+.demo {
+  display: flex;
+  font-size: 14;
+}
+
+
+.demo-stage {
+  flex: 1;
+  margin: 20px auto 10px auto;
+}
+
+.demo-controls {
+  padding-top: 10px;
+  margin-top: 10px;
+  flex: 0 0 40%;
+  border-top: #ddd 1px solid;
+}
+
+.demo-vertical .demo-stage {
+  margin: 20px auto 30px auto;
+}
+
+.demo-vertical .demo-controls {
+  margin-top: 0;
+  border-top: #ddd 1px solid;
+  padding-top: 10px;
+}
+
+
+@media (min-width: 992px) {
+  .demo-controls {
+    margin-top: -10px;
+    padding-top: 0;
+    border-left: #ddd 1px solid;
+    border-top-width: 0;
+  }
+}
+
+.demo-stage .rw-widget:not(.rw-calendar) {
+  max-width: 300px;
+}

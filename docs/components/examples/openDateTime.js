@@ -1,38 +1,34 @@
-'use strict';
-module.exports = function(widgetName){
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName};
+import { stripIndent } from 'common-tags';
 
-var Example = React.createClass({
+export default function(widgetName){
+ return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
+    let values = [false, 'calendar', 'time'];
 
-  getInitialState() {
-    return { open: false };
-  },
+    class Example extends React.Component {
+      render() {
+        let { open } = this.state || {}
+        let toggle = e => this.setState({ open: e.target.value });
 
-  render() {
-    var open = this.state.open
-      , toggle = e => this.setState({ open: e.target.value });
+        return (
+          <div>
+            {values.map((value, idx) =>
+              <label key={idx}>
+                <input
+                  name='open-option'
+                  type='radio'
+                  value={value}
+                  onChange={toggle}
+                />
+                {'' + value}
+              </label>
+            )}
+            <${widgetName} open={open} />
+          </div>
+        )
+      }
+    };
 
-    return (<div>
-      <label>
-        <input onChange={toggle} type='radio' value='false' name='r'/>
-        Closed
-      </label>
-      <label>
-        <input onChange={toggle} type='radio' value='calendar' name='r'/>
-        Calendar
-      </label>
-      <label>
-        <input onChange={toggle} type='radio' value='time' name='r'/>
-        Time List
-      </label>
-      <${widgetName} open={open}/>
-    </div>)
-  }
-});
-
-ReactDOM.render(<Example/>, mountNode);`
-
-return code
+    ReactDOM.render(<Example/>, mountNode);
+  `
 }

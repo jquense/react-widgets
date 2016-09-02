@@ -1,28 +1,29 @@
-'use strict';
-module.exports = function(widgetName, isArray){
-var value = !isArray ? 'colors[0]' : 'colors.slice(0,1)'
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName}
-  , colors = ['orange', 'red', 'blue', 'purple'];
+import { stripIndent } from 'common-tags';
 
-var Example = React.createClass({
+export default function(widgetName, isArray){
+  let value = !isArray ? "'orange'" : "['orange', 'red']"
 
-  getInitialState() {
-    return { value: ${value} };
-  },
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets
+    let colors = ['orange', 'red', 'blue', 'purple'];
 
-  render() {
-    return (
-      <${widgetName}
-        data={colors}
-        value={this.state.value}
-        onChange={value => this.setState({ value })}/>)
-  }
-});
+    class Example extends React.Component {
+      constructor(...args) {
+        super(...args)
+        this.state = { value: ${value} }
+      }
 
-ReactDOM.render(<Example/>, mountNode);`
+      render() {
+        return (
+          <${widgetName}
+            data={colors}
+            value={this.state.value}
+            onChange={value => this.setState({ value })}
+          />
+        )
+      }
+    }
 
-  return code
-
+    ReactDOM.render(<Example/>, mountNode);
+  `
 }

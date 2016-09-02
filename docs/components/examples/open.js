@@ -1,32 +1,31 @@
-'use strict';
-module.exports = function(widgetName){
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName}
-  , colors = ['orange', 'red', 'blue', 'purple'];
+import { stripIndent } from 'common-tags';
 
-var Example = React.createClass({
 
-  getInitialState() {
-    return { open: false };
-  },
+export default function(widgetName){
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets
+    let colors = ['orange', 'red', 'blue', 'purple'];
 
-  render() {
-    var open = this.state.open
-      , toggle = () => this.setState({ open: !open});
+    class Example extends React.Component {
+      render() {
+        let { open } = this.state || {};
+        let toggleWidget = () => this.setState({ open: !open });
 
-    var noop = ()=>{};
+        return (
+          <div>
+            <button onClick={toggleWidget}>
+              {open ? 'close' : 'open'}
+            </button>
+            <${widgetName}
+              open={open}
+              data={colors}
+              onToggle={()=>{}}
+            />
+          </div>
+        )
+      }
+    };
 
-    return (<div>
-      <button onClick={toggle}>
-        { open ? 'close' : 'open'}
-      </button>
-      <${widgetName} open={open} data={colors} onToggle={noop} />
-    </div>)
-  }
-});
-
-ReactDOM.render(<Example/>, mountNode);`
-
-return code
+    ReactDOM.render(<Example/>, mountNode);
+  `
 }

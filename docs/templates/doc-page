@@ -1,13 +1,15 @@
-var React = require('react')
-  , EditableExample = require('../EditableExample')
-  , Editor = require('@monastic.panic/component-playground/Editor')
-  , DDButton = require('react-bootstrap/lib/DropdownButton')
-  , MenuItem = require('../ApiMenuItem')
-  , PropHeader = require('../PropHeader')
-  , WidgetDemo = require('../demos/${widgetName}')
-  , { Link } = require('react-router');
+import Editor from '@monastic.panic/component-playground/Editor';
+import React from 'react';
+import DDButton from 'react-bootstrap/lib/DropdownButton';
+import { Link } from 'react-router';
 
-var widgetName = '${widgetName}';
+import ImportSection from '../ImportSection';
+import MenuItem from '../ApiMenuItem';
+import PropHeader from '../PropHeader';
+import WidgetDemo from '../demos/${widgetName}';
+import EditableExample from '../EditableExample';
+
+let widgetName = '${widgetName}';
 
 module.exports = React.createClass({
     mixins: [ require('../PageMixin')('${prefix}') ],
@@ -23,14 +25,7 @@ module.exports = React.createClass({
             </span>
           </h1>
           ${desc}
-          <pre className='component-export'>
-            <code>
-              <div>Widget Suite:</div>
-              ${widgetName} = require(<span className='str'>'react-widgets'</span>).${widgetName}<br/>
-              <div>Individual Component:</div>
-              ${widgetName} = require(<span className='str'>'react-widgets/lib/${widgetName}'</span>)
-            </code>
-          </pre>
+          <ImportSection widgetName={widgetName} />
           <WidgetDemo/>
           <h2>Props</h2>
           ${html}

@@ -1,29 +1,25 @@
-'use strict';
+import { stripIndent } from 'common-tags';
 
-module.exports = function(widgetName) {
+export default function(widgetName) {
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
+    let people = listOfPeople();
 
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName};
+    let widgets = (
+      <div>
+        <${widgetName}
+          data={people}
+          textField='name'
+          groupBy='lastName'
+        />
+        <${widgetName}
+          data={people}
+          textField='name'
+          groupBy={person => person.name.length}
+        />
+      </div>
+    )
 
-var people = listOfPeople();
-
-var widgets =(
-  <div>
-    <${widgetName}
-      data={people} defaultValue={people[0]}
-      textField='name'
-      groupBy='lastName'/>
-
-    <${widgetName}
-      data={people} defaultValue={people[0]}
-      textField='name'
-      groupBy={ person => person.name.length }/>
-  </div>)
-
-ReactDOM.render(widgets, mountNode);`
-
-return code
+    ReactDOM.render(widgets, mountNode);
+  `
 }
-
-

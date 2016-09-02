@@ -1,10 +1,10 @@
-'use strict';
-var React = require('react')
-var Button      = require('react-bootstrap/lib/Button')
-var ButtonGroup = require('react-bootstrap/lib/ButtonGroup')
-  , Dropdown = require('../../../src/index').DropdownList
-  , RW = require('../../../src/index')
-  , genData = require('../generate-data');
+import React from 'react';
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import RW from 'react-widgets';
+
+import Demo from '../Demo';
+import genData from '../generate-data';
 
 var valueComp = React.createClass({
   render() {
@@ -62,74 +62,73 @@ var DropdownApi = React.createClass({
     //let disabled = this.state.disabled === true || Array.isArray(this.state.disabled);
 
     return (
-      <div className='example' role='application'>
-        <div className='row'>
-          <div className='col-md-6 col-lg-7 demo'>
-            <div className='form-group'>
-              <Dropdown {...props }/>
-            </div>
-            <div className='form-group'>
-              <label>Custom Rendering</label>
-              <Dropdown {...props }
-                valueComponent={valueComp}
-                itemComponent={itemComp}/>
-            </div>
+      <Demo>
+        <Demo.Stage>
+          <div className='form-group'>
+            <RW.DropdownList {...props }/>
           </div>
-          <div className='col-md-6 col-lg-5 api-panel'>
-            <div className='form-group'>
-              <label className='checkbox-inline'>
-                <input type='checkbox'
-                  checked={!!this.state.isRtl}
-                  onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
-                  Right to Left
-              </label>
-              <label className='checkbox-inline'>
-                <input type='checkbox'
-                  checked={!!this.state.groupBy}
-                  onChange={this._set.bind(null, 'groupBy', !this.state.groupBy ? 'lastName' : null )}/>
-                  Group
-              </label>
-            </div>
-            <div className='form-group'>
-              <ButtonGroup>
-                <Button
-                  active={this.state.disabled === 'disabled'}
-                  onClick={this.disabled}>
-                  Disable
-                </Button>
-                <Button
-                  active={this.state.disabled === 'readonly'}
-                  onClick={this.readOnly}>
-                  Readonly
-                </Button>
-              </ButtonGroup>
-              <Button style={{ marginLeft: 10 }}
-                active={this.state.busy}
-                onClick={this._set.bind(null, 'busy', !this.state.busy)}>
-                Busy
+          <div className='form-group'>
+            <label>Custom Rendering</label>
+            <RW.DropdownList {...props }
+              valueComponent={valueComp}
+              itemComponent={itemComp}
+            />
+          </div>
+        </Demo.Stage>
+        <Demo.Controls>
+          <div className='form-group'>
+            <label className='checkbox-inline'>
+              <input type='checkbox'
+                checked={!!this.state.isRtl}
+                onChange={this._set.bind(null, 'isRtl', !this.state.isRtl)}/>
+                Right to Left
+            </label>
+            <label className='checkbox-inline'>
+              <input type='checkbox'
+                checked={!!this.state.groupBy}
+                onChange={this._set.bind(null, 'groupBy', !this.state.groupBy ? 'lastName' : null )}/>
+                Group
+            </label>
+          </div>
+          <div className='form-group'>
+            <ButtonGroup>
+              <Button
+                active={this.state.disabled === 'disabled'}
+                onClick={this.disabled}>
+                Disable
               </Button>
+              <Button
+                active={this.state.disabled === 'readonly'}
+                onClick={this.readOnly}>
+                Readonly
+              </Button>
+            </ButtonGroup>
+            <Button style={{ marginLeft: 10 }}
+              active={this.state.busy}
+              onClick={this._set.bind(null, 'busy', !this.state.busy)}>
+              Busy
+            </Button>
+          </div>
+          <div className='row'>
+            <div className='form-group col-xs-6'>
+              <label className='form-label'>Filter</label>
+              <RW.DropdownList
+                  value={this.state.filter || false}
+                  data={[false, 'startsWith', 'endsWith', 'contains']}
+                  onChange={this._set.bind(null, 'filter')}/>
             </div>
-            <div className='row'>
-              <div className='form-group col-xs-6'>
-                <label className='form-label'>Filter</label>
-                <RW.DropdownList
-                    value={this.state.filter || false}
-                    data={[false, 'startsWith', 'endsWith', 'contains']}
-                    onChange={this._set.bind(null, 'filter')}/>
-              </div>
-              <div className='form-group col-xs-6'>
-                <label className='form-label'>Duration</label>
-                <RW.NumberPicker
-                    value={this.state.duration}
-                    step={200}
-                    min={0}
-                    max={1000}
-                    onChange={this._set.bind(null, 'duration')}/>
-              </div>
+            <div className='form-group col-xs-6'>
+              <label className='form-label'>Duration</label>
+              <RW.NumberPicker
+                  value={this.state.duration}
+                  step={200}
+                  min={0}
+                  max={1000}
+                  onChange={this._set.bind(null, 'duration')}/>
             </div>
           </div>
-        </div>
-      </div>
+        </Demo.Controls>
+      </Demo>
     );
   },
 

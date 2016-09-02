@@ -1,30 +1,21 @@
-'use strict';
+import { stripIndent } from 'common-tags';
 
-module.exports = function(widgetName) {
+export default function(widgetName) {
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
 
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName};
+    let DayComponent = ({ date, label }) => (
+      <div style={{ backgroundColor: date < new Date() && '#F57B7B' }}>
+        {label}
+      </div>
+    );
 
-var DayComponent = React.createClass({
-  render() {
-    var date = this.props.date
-      , style = { backgroundColor: date < new Date() && '#F57B7B' }
+    let widget = (
+      <${widgetName}
+        dayComponent={DayComponent}
+      />
+    )
 
-    return (<div style={style}>
-        {this.props.label}
-      </div>);
-  }
-})
-
-var widget = (
-    <${widgetName}
-      dayComponent={DayComponent}/>
-  )
-
-ReactDOM.render(widget, mountNode);`
-
-return code
+    ReactDOM.render(widget, mountNode);
+  `
 }
-
-

@@ -1,28 +1,31 @@
-'use strict';
-module.exports = function(widgetName, isArray, isCmbo){
-var value = !isArray ? 'people[0]' : 'people.slice(0,2)'
-var text = isCmbo
-  ? "item => typeof item === 'string' ? item : item.firstName + ' ' + item.lastName"
-  : "item => item.firstName + ' ' + item.lastName"
+import { stripIndent } from 'common-tags';
 
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName};
-var people = listOfPeople();
+export default function(widgetName, isArray, isCmbo){
+  let value = !isArray ? 'people[0]' : 'people.slice(0,2)'
+  let text = isCmbo
+    ? "item => typeof item === 'string' ? item : item.firstName + ' ' + item.lastName"
+    : "item => item.firstName + ' ' + item.lastName"
 
-var widgets = (<div>
-    <${widgetName}
-      textField='firstName'
-      defaultValue={${value}}
-      data={people}/>
-    <${widgetName}
-      textField={${text}}
-      defaultValue={${value}}
-      data={people}/>
-  </div>)
+ return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
 
-ReactDOM.render(widgets, mountNode);`
+    let people = listOfPeople();
 
-return code
+    let widgets = (
+      <div>
+        <${widgetName}
+          textField='firstName'
+          defaultValue={${value}}
+          data={people}
+        />
+        <${widgetName}
+          textField={${text}}
+          defaultValue={${value}}
+          data={people}
+        />
+      </div>
+    )
+
+    ReactDOM.render(widgets, mountNode);
+  `
 }
-

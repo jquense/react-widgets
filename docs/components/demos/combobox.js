@@ -1,8 +1,9 @@
-'use strict';
-var React = require('react')
-var Button      = require('react-bootstrap/lib/Button')
-var ButtonGroup = require('react-bootstrap/lib/ButtonGroup')
-  , RW = require('../../../src/index');
+import React from 'react';
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import RW from 'react-widgets';
+
+import Demo from '../Demo';
 
 var i = 0
   , list = [
@@ -45,9 +46,8 @@ module.exports = React.createClass({
     }
 
     return (
-      <div className='example' role='application'>
-        <div className='row'>
-          <div className='col-md-6 col-lg-7 demo'>
+      <Demo>
+          <Demo.Stage>
             <div className='form-group'>
               <RW.Combobox {...props}/>
             </div>
@@ -55,8 +55,8 @@ module.exports = React.createClass({
               <label>Custom list Rendering</label>
               <RW.Combobox {...props} itemComponent={itemComp}/>
             </div>
-          </div>
-          <div className='col-md-6 col-lg-5 api-panel'>
+          </Demo.Stage>
+          <Demo.Controls>
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
@@ -121,9 +121,8 @@ module.exports = React.createClass({
                     onChange={this._set.bind(null, 'duration')}/>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </Demo.Controls>
+      </Demo>
     )
   },
 

@@ -32,7 +32,7 @@ a `string` representation of the date value, formated by the `format` prop.
 
 This handler fires when an item has been selected from the list or calendar. It fires before the `onChange` handler, and fires regardless of whether the value has actually changed.
 
-<EditableExample codeText={require('../examples/onSelectPicker')(widgetName)}/>
+<EditableExample codeText={require('../examples/onSelect')(widgetName)}/>
 
 ### calendar?{ type: 'Boolean', default: 'true' }
 

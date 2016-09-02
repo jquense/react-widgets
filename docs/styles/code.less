@@ -1,0 +1,71 @@
+@import './theme/one-light.less';
+
+pre {
+  border-radius: 0;
+  border: none;
+}
+
+.prism-block {
+  background-color: @syntax-bg;
+  border-top: 1px solid @gray-lighter;
+  border-bottom: 1px solid @gray-lighter;
+}
+
+.CodeMirror,
+.playgroundCode {
+  height: auto;
+}
+
+@media (min-width: 992px) {
+  .playground {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .playgroundCode {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+
+.playgroundPreview {
+  position: relative;
+  padding: 40px 15px 15px 15px;
+  flex: 0 0 30%;
+  min-width: 250px;
+
+  &:before {
+    position: absolute;
+    top: 3px;
+    left: 10px;
+    color: #959595;
+    content: 'Result';
+  }
+
+  .rw-widget + input,
+  .rw-widget + button,
+  input + .rw-widget,
+  button + .rw-widget,
+  .rw-widget + .rw-widget {
+    margin-top: 15px;
+  }
+
+  .rw-selectlist label{
+    font-weight: normal;
+  }
+}
+
+
+.playground  {
+  background-color: @syntax-bg;
+  position: relative;
+  margin:  0;
+  margin-bottom: 20px;
+  border-top: 1px solid @gray-lighter;
+  border-bottom: 1px solid @gray-lighter;
+}
+
+.playgroundStage {
+  height: 100%;
+}

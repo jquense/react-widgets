@@ -1,13 +1,21 @@
-'use strict';
-module.exports = function(widgetName){
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName}
-  , colors = ['orange', 'red', 'blue', 'purple'];
+import { stripIndent } from 'common-tags';
 
-ReactDOM.render(
-    <${widgetName} dropUp data={colors} />
-  , mountNode);`
+export default function(widgetName) {
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets
 
-return code
+    let widget = (
+      <${widgetName}
+        dropUp
+        data={[
+          'orange',
+          'red',
+          'blue',
+          'purple'
+        ]}
+      />
+    );
+
+    ReactDOM.render(widget, mountNode);
+  `
 }

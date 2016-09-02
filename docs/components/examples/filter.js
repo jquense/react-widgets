@@ -1,35 +1,36 @@
-'use strict';
+import { stripIndent } from 'common-tags';
 
-module.exports = function(widgetName) {
+export default function(widgetName) {
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
+    let people = listOfPeople();
 
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName};
-var people = listOfPeople();
+    function filterLastName(person, value) {
+      let lastname = person.lastName.toLowerCase()
+      let search  = value.toLowerCase();
 
-var widgets =(<div>
-    <${widgetName}
-      data={people} defaultValue={people[0]}
-      textField='name'
-      caseSensitive={false}
-      minLength={3}
-      filter='contains'/>
-    <${widgetName}
-      data={people} defaultValue={people[0]}
-      textField='name'
-      filter={filterLastName}/>
-  </div>)
+      return lastname.indexOf(search) === 0
+    }
 
-function filterLastName(person, value) {
-  var lastname = person.lastName.toLowerCase()
-    , search   = value.toLowerCase();
+    let widgets =(
+      <div>
+        <${widgetName}
+          data={people}
+          defaultValue={people[0]}
+          textField='name'
+          caseSensitive={false}
+          minLength={3}
+          filter='contains'
+        />
+        <${widgetName}
+          data={people}
+          defaultValue={people[0]}
+          textField='name'
+          filter={filterLastName}
+        />
+      </div>
+    );
 
-  return lastname.indexOf(search) === 0
+    ReactDOM.render(widgets, mountNode);
+  `
 }
-
-ReactDOM.render(widgets, mountNode);`
-
-return code
-}
-
-

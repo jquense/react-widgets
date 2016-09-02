@@ -78,6 +78,7 @@ var propTypes = {
   })
 };
 
+
 @withRightToLeft
 class Multiselect extends React.Component {
 
@@ -151,6 +152,7 @@ class Multiselect extends React.Component {
       minLength,
       caseSensitive,
       textField,
+
     })
 
     let current = this.state && this.state.focusedItem;

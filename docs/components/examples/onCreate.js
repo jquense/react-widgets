@@ -1,38 +1,50 @@
-'use strict';
-module.exports = function(widgetName){
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName}
-  , people = listOfPeople();
+import { stripIndent } from 'common-tags';
 
-var Example = React.createClass({
 
-  getInitialState() {
-    return { value: people.slice(0,2) };
-  },
+export default
+function(widgetName){
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets
 
-  _create(name){
-    var tag = { name, id: people.length + 1 }
-    var value = this.state.value.concat(tag)
-    // add new tag to the data list
-    people.push(tag)
-    //add new tag to the list of values
-    this.setState({ value })
-  },
+    class CreateMultiselect extends React.Component {
+      constructor(...args) {
+        super(...args)
 
-  render(){
-    // create a tag object
-    return (
-      <Multiselect data={people}
-        value={this.state.value}
-        textField="name"
-        onCreate={this._create}
-        onChange={value => this.setState({ value })}/>
-    )
-  }
-});
+        this.state = {
+          value: [],
+          people: listOfPeople(),
+        }
+      }
 
-ReactDOM.render(<Example/>, mountNode);`
+      handleCreate(name) {
+        let { people, value } = this.state;
 
-return code
+        let newTag = {
+          name,
+          id: people.length + 1
+        }
+
+        this.setState({
+          value: [...value, newTag],  // select new tag
+          people: [...people, newTag] // add new tag to our dataset
+        })
+      }
+
+      render() {
+        let { value, people } = this.state;
+
+        return (
+          <Multiselect
+            data={people}
+            value={value}
+            onCreate={name => this.handleCreate(name)}
+            onChange={value => this.setState({ value })}
+            textField="name"
+          />
+        )
+      }
+    }
+
+    ReactDOM.render(<CreateMultiselect/>, mountNode);
+  `
 }

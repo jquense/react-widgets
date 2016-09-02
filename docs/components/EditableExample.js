@@ -6,6 +6,7 @@ var React = require('react')
   , List = require('react-widgets/List')
   , genData = require('./generate-data');
 
+import '../theme/one-light.less';
 
 var scope = {
   ReactWidgets: { ...ReactWidgets, MultiselectTagList, List },
@@ -24,8 +25,11 @@ module.exports = React.createClass({
         {...props}
         codeText={codeText.trim()}
         mode='jsx'
-        theme='oceanicnext'
+        theme='one-light'
         scope={scope}
+        babelConfig={{
+          presets: ['es2015-loose', 'react', 'stage-0']
+        }}
       />
     );
   }

@@ -1,25 +1,16 @@
-'use strict';
-module.exports = function(widgetName, values){
-  var open = values.length > 1 ? "(<div>" : ''
-    , close = values.length > 1 ? "</div>)" : ''
-  var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName};
+import { stripIndent } from 'common-tags';
 
-var widgets = ${open}
-    ${values.map(getWidget).join('').trim()}
-  ${close}
+export default function(widgetName, values){
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
 
-ReactDOM.render(widgets, mountNode);`
+    let widgets = (
+      <div>
+        ${values.map(v => `
+        <${widgetName} defaultValue={${v}} />`).join('').trim()}
+      </div>
+    )
 
-  return code
-
-  function getWidget(v){
-    return `
-    <${widgetName} defaultValue={${v}} />`
-  }
+    ReactDOM.render(widgets, mountNode);
+  `
 }
-
-
-
-

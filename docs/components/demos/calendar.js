@@ -1,7 +1,9 @@
-var React       = require('react')
-var Button      = require('react-bootstrap/lib/Button')
-var ButtonGroup = require('react-bootstrap/lib/ButtonGroup')
-var RW          = require('react-widgets');
+import React from 'react';
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import RW from 'react-widgets';
+
+import Demo from '../Demo';
 
 require('globalize/lib/cultures/globalize.culture.en-GB');
 require('globalize/lib/cultures/globalize.culture.es');
@@ -20,23 +22,22 @@ module.exports = React.createClass({
     let cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
 
     return (
-      <div className='example' role='application'>
-        <div className='row'>
-          <div className='col-md-6 col-lg-7 demo'>
-            <RW.Calendar
-                value={this.state.value}
-                onChange={this._change}
-                max={this.state.max}
-                min={this.state.min}
-                culture={this.state.culture}
-                footer={this.state.footer}
-                finalView={this.state.finalView}
-                initialView={this.state.initialView}
-                disabled={this.state.disabled === 'disabled'}
-                readOnly={this.state.disabled === 'readonly'}
-                isRtl={this.state.isRtl}/>
-          </div>
-          <div className='col-md-6 col-lg-5 api-panel'>
+      <Demo>
+        <Demo.Stage>
+          <RW.Calendar
+              value={this.state.value}
+              onChange={this._change}
+              max={this.state.max}
+              min={this.state.min}
+              culture={this.state.culture}
+              footer={this.state.footer}
+              finalView={this.state.finalView}
+              initialView={this.state.initialView}
+              disabled={this.state.disabled === 'disabled'}
+              readOnly={this.state.disabled === 'readonly'}
+              isRtl={this.state.isRtl}/>
+        </Demo.Stage>
+          <Demo.Controls>
             <div className='form-group'>
               <label className='checkbox-inline'>
                 <input type='checkbox'
@@ -84,14 +85,14 @@ module.exports = React.createClass({
                 <label className='form-label'>Initial View</label>
                 <RW.DropdownList
                     value={this.state.initialView || 'month'}
-                    data={["month", "year", "decade", "century"]}
+                    data={['month', 'year', 'decade', 'century']}
                     onChange={this._set.bind(null, 'initialView')}/>
               </div>
               <div className='form-group col-xs-6'>
                 <label className='form-label'>Final View</label>
                 <RW.DropdownList
                     value={this.state.finalView || 'century'}
-                    data={["month", "year", "decade", "century"]}
+                    data={['month', 'year', 'decade', 'century']}
                     onChange={this._set.bind(null, 'finalView')}/>
               </div>
             </div>
@@ -113,10 +114,8 @@ module.exports = React.createClass({
                     onChange={this._set.bind(null, 'max')}/>
               </div>
             </div>
-
-          </div>
-        </div>
-      </div>
+        </Demo.Controls>
+      </Demo>
     )
   },
 

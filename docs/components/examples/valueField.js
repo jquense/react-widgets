@@ -1,24 +1,25 @@
-'use strict';
-module.exports = function(widgetName, isArray){
-var value = !isArray ? '1' : '[1,2]'
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName};
-var colors = [
-  { id: 0, name: 'orange'},
-  { id: 1, name: 'purple'},
-  { id: 2, name: 'red' },
-  { id: 3, name: 'blue' },
-];
+import { stripIndent } from 'common-tags';
 
-var widget =
-    <${widgetName}
-      valueField='id' textField='name'
-      data={colors}
-      defaultValue={${value}}/>
+export default function(widgetName, isArray) {
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
 
-ReactDOM.render(widget, mountNode);`
+    let colors = [
+      { id: 0, name: 'orange'},
+      { id: 1, name: 'purple'},
+      { id: 2, name: 'red' },
+      { id: 3, name: 'blue' },
+    ];
 
-return code
+    let widget = (
+      <${widgetName}
+        data={colors}
+        valueField='id'
+        textField='name'
+        defaultValue={${!isArray ? '1' : '[1, 2]'}}
+      />
+    )
+
+    ReactDOM.render(widget, mountNode);
+  `
 }
-

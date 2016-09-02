@@ -1,12 +1,13 @@
-'use strict';
-module.exports = function(widgetName){
-var code =
-`
-var ${widgetName} = ReactWidgets.${widgetName};
+import { stripIndent } from 'common-tags';
 
-ReactDOM.render(
-  <${widgetName} busy />, mountNode);`
+export default function(widgetName){
+  return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
 
-return code
+    let widget = (
+      <${widgetName} busy />
+    )
+
+    ReactDOM.render(widget, mountNode);
+  `
 }
-
