@@ -3355,7 +3355,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // so long as you also sorted by group
 	    keys = keys || [];
 
-	    (0, _warning2.default)(typeof groupBy !== 'string' || !data.length || _3.default.has(data[0], groupBy), '[React Widgets] You are seem to be trying to group this list by a ' + ('property `' + groupBy + '` that doesn\'t exist in the dataset items, this may be a typo'));
+	    (0, _warning2.default)(typeof groupBy !== 'string' || !data.length || _3.default.has(data[0], groupBy), '[React Widgets] You seem to be trying to group this list by a ' + ('property `' + groupBy + '` that doesn\'t exist in the dataset items, this may be a typo'));
 
 	    return data.reduce(function (grps, item) {
 	      var group = iter(item);
@@ -6102,7 +6102,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      case DAY:
 	        return dates.date(date, dates.date(date) + num)
 	      case WEEK:
-	        return dates.date(date, dates.date(date) + (7 * num)) 
+	        return dates.date(date, dates.date(date) + (7 * num))
 	      case MONTH:
 	        return monthMath(date, num)
 	      case DECADE:
@@ -6139,13 +6139,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          date = dates.milliseconds(date, 0);
 	    }
 
-	    if (unit === DECADE) 
+	    if (unit === DECADE)
 	      date = dates.subtract(date, dates.year(date) % 10, 'year')
-	    
-	    if (unit === CENTURY) 
+
+	    if (unit === CENTURY)
 	      date = dates.subtract(date, dates.year(date) % 100, 'year')
 
-	    if (unit === WEEK) 
+	    if (unit === WEEK)
 	      date = dates.weekday(date, 0, firstOfWeek);
 
 	    return date
@@ -6174,7 +6174,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  max: function(){
 	    return new Date(Math.max.apply(Math, arguments))
 	  },
-	  
+
 	  inRange: function(day, min, max, unit){
 	    unit = unit || 'day'
 
@@ -6192,13 +6192,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  year:           createAccessor('FullYear'),
 
 	  decade: function (date, val) {
-	    return val === undefined 
+	    return val === undefined
 	      ? dates.year(dates.startOf(date, DECADE))
 	      : dates.add(date, val + 10, YEAR);
 	  },
 
 	  century: function (date, val) {
-	    return val === undefined 
+	    return val === undefined
 	      ? dates.year(dates.startOf(date, CENTURY))
 	      : dates.add(date, val + 100, YEAR);
 	  },
@@ -6206,8 +6206,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  weekday: function (date, val, firstDay) {
 	      var weekday = (dates.day(date) + 7 - (firstDay || 0) ) % 7;
 
-	      return val === undefined 
-	        ? weekday 
+	      return val === undefined
+	        ? weekday
 	        : dates.add(date, val - weekday, DAY);
 	  },
 
@@ -6273,7 +6273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    date = dates.month(date, newMonth)
 
 	    while (newMonth < 0 ) newMonth = 12 + newMonth
-	      
+
 	    //month rollover
 	    if ( dates.month(date) !== ( newMonth % 12))
 	      date = dates.date(date, 0) //move to last of month
