@@ -73,3 +73,8 @@ Number picker spinner down button text for screen readers
 
 - <kbd>home</kbd> set value to minimum value if finite
 - <kbd>end</kbd> set value to maximum value if finite
+
+## Mousewheel Navigation
+
+- <kbd>mouse wheel up</kbd> increment value
+- <kbd>mouse wheel down</kbd> decrement value

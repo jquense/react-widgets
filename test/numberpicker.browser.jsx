@@ -215,6 +215,28 @@ describe('NumberPicker', function(){
 
   })
 
+  it('should step when mousewheel is used', function() {
+    var change = sinon.spy();
+
+    let instance = tsp(
+        <NumberPicker value={10} step={1} onChange={change} />
+    ).render()
+
+    instance
+      .trigger('wheel', {deltaY: -10})
+      .tap(() => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(11)).to.be(true)
+        change.reset()
+      })
+      .trigger('wheel', {deltaY: 10})
+      .tap(() => {
+        expect(change.calledOnce).to.be(true)
+        expect(change.calledWith(9)).to.be(true)
+        change.reset()
+      })
+  })
+
   it('should change values on key down', function() {
     var change = sinon.spy();
 
