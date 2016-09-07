@@ -200,7 +200,7 @@ export default React.createClass({
     keys = keys || []
 
     warning(typeof groupBy !== 'string' || !data.length || _.has(data[0], groupBy)
-      , `[React Widgets] You are seem to be trying to group this list by a `
+      , `[React Widgets] You seem to be trying to group this list by a `
       + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
 
     return data.reduce((grps, item) => {
