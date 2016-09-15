@@ -1942,7 +1942,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'aria-label': label,
 	        className: (0, _classnames2.default)(className, 'rw-btn', active && !disabled && 'rw-state-active')
 	      }),
-	      icon && _react2.default.createElement('i', {
+	      icon && _react2.default.createElement('span', {
 	        'aria-hidden': true,
 	        className: (0, _classnames2.default)('rw-i', 'rw-i-' + icon, busy && 'rw-loading')
 	      }),
@@ -8995,7 +8995,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'rw-multiselect-wrapper' },
-	        busy && _react2.default.createElement('i', { className: 'rw-i rw-loading' }),
+	        busy && _react2.default.createElement('span', { className: 'rw-i rw-loading' }),
 	        shouldRenderTags && this.renderTags(tagsID, messages),
 	        this.renderInput(inputOwns)
 	      ),

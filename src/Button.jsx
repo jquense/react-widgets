@@ -36,7 +36,7 @@ class Button extends React.Component {
         )}
       >
         {icon &&
-          <i
+          <span
             aria-hidden
             className={cn(
               'rw-i',

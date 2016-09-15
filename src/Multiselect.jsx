@@ -357,7 +357,7 @@ var Multiselect = React.createClass({
         {this.renderNotificationArea(notifyID, messages)}
 
         <div className='rw-multiselect-wrapper'>
-          {busy && <i className="rw-i rw-loading" />}
+          {busy && <span className="rw-i rw-loading" />}
 
           {shouldRenderTags &&
             this.renderTags(tagsID, messages)
