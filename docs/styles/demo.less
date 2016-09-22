@@ -2,19 +2,19 @@
 
 .demo {
   display: flex;
-  font-size: 14;
+  flex-direction: column;
+  font-size: 14px;
 }
 
-
 .demo-stage {
-  flex: 1;
   margin: 20px auto 10px auto;
+  min-width: 400px;
+  padding: 0 20px;
 }
 
 .demo-controls {
-  padding-top: 10px;
+  padding: 10px 20px 20px 20px;
   margin-top: 10px;
-  flex: 0 0 40%;
   border-top: #ddd 1px solid;
 }
 
@@ -29,15 +29,20 @@
 }
 
 
-@media (min-width: 992px) {
+@media (min-width: @screen-md-min) {
+  .demo {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .demo-stage {
+    min-width: 300px;
+  }
+
   .demo-controls {
-    margin-top: -10px;
-    padding-top: 0;
+    padding: 20px;
+    flex: 0 0 40%;
     border-left: #ddd 1px solid;
     border-top-width: 0;
   }
-}
-
-.demo-stage .rw-widget:not(.rw-calendar) {
-  max-width: 300px;
 }

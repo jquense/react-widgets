@@ -1,16 +1,9 @@
-'use strict';
-var React = require('react');
+import React from 'react'
 
-var defaultValue = React.createClass({
-
-  render: function() {
-    return (
-      <span className='default'>
-        {'(default: ' + this.props.children + ')'}
-      </span>
-    );
-  }
-
-});
-
-module.exports = defaultValue;
+export default function Default({ children }) {
+  return (
+    <span className='prop-header__default'>
+      {'(default: ' + children + ')'}
+    </span>
+  );
+}

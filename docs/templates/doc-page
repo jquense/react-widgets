@@ -15,7 +15,10 @@ module.exports = React.createClass({
     mixins: [ require('../PageMixin')('${prefix}') ],
     render: function(){
       return (
-        <section {...this.props}>
+        <section
+          className={this.props.className} 
+          style={this.props.style}
+        >
           <h1 className="page-header">
             ${widgetName}
             <span className='pull-right'>

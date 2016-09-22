@@ -4,6 +4,28 @@ pre {
   border-radius: 0;
   border: none;
 }
+code {
+  background-color: @syntax-bg;
+  color: @hue-2;
+}
+
+.pg-code-section {
+  @half-width: @screen-md-min / 2;
+
+  background-color: @syntax-bg;
+  border-top: 1px solid @gray-lighter;
+  border-bottom: 1px solid @gray-lighter;
+
+  padding: ~"0 calc(50vw - @{half-width})";
+  margin: ~"0 calc(-1 * 50vw + @{half-width})";
+}
+
+@media (max-width: (@screen-sm-max + 60px)) {
+  .pg-code-section {
+    padding: 0 20px;
+    margin: 0 auto;
+  }
+}
 
 .prism-block {
   background-color: @syntax-bg;
@@ -16,10 +38,21 @@ pre {
   height: auto;
 }
 
-@media (min-width: 992px) {
+.playground {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+@media (min-width: @screen-md-min) {
   .playground {
-    display: flex;
     flex-direction: row-reverse;
+    align-items: flex-start;
+  }
+
+  .playgroundPreview {
+    flex: 0 0 40%;
+    min-width: 30px;
   }
 
   .playgroundCode {
@@ -32,16 +65,15 @@ pre {
 .playgroundPreview {
   position: relative;
   padding: 40px 15px 15px 15px;
-  flex: 0 0 30%;
-  min-width: 250px;
+  min-width: 400px;
 
-  &:before {
-    position: absolute;
-    top: 3px;
-    left: 10px;
-    color: #959595;
-    content: 'Result';
-  }
+  // &:before {
+  //   position: absolute;
+  //   top: 3px;
+  //   left: 10px;
+  //   color: #959595;
+  //   content: 'Result';
+  // }
 
   .rw-widget + input,
   .rw-widget + button,
@@ -62,8 +94,6 @@ pre {
   position: relative;
   margin:  0;
   margin-bottom: 20px;
-  border-top: 1px solid @gray-lighter;
-  border-bottom: 1px solid @gray-lighter;
 }
 
 .playgroundStage {

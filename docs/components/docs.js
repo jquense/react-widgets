@@ -57,7 +57,7 @@ var Docs = React.createClass({
   render() {
     return (
       <div>
-        <Navbar page={this.props.page}/>
+        <Navbar />
         <main className='pg-content'>
           {this.props.children}
         </main>

@@ -1,8 +1,8 @@
-'use strict';
-var React = require('react')
-  , Default = require('./default');
 
-var ApiPropHeader = React.createClass({
+import React from 'react';
+import Default from './Default';
+
+let ApiPropHeader = React.createClass({
 
   contextTypes: {
     prefix: React.PropTypes.string.isRequired
@@ -14,26 +14,30 @@ var ApiPropHeader = React.createClass({
        , handler
        , type
        , controllable
-       , ...props } = this.props;
+       , default: dflt } = this.props;
 
     var id = this.context.prefix + children.replace(' ', '_')
 
     return (
        <h3 className='prop-header' id={`/${id}`}>
         <a href={'#/' + id }>
-        { children }
-        { type &&
-          <small>
-            { type }
-            { props.default &&
-              <Default>{props.default}</Default>
-            }
-          </small>
-        }
-        { controllable &&
-          <strong>{`controllable (${handler}, ${defaultKey(children)})`}</strong>
-        }
+          <span>{children}</span>
+          {dflt &&
+            <Default>{dflt}</Default>
+          }
+
+          {controllable &&
+            <div className='prop-header__controllable'>
+              {`controllable (${handler}, ${defaultKey(children)})`}
+            </div>
+          }
         </a>
+        {type &&
+          <div className='prop-header__type'>
+            {type}
+
+          </div>
+        }
        </h3>
     );
   },

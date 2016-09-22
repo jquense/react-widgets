@@ -21,16 +21,18 @@ module.exports = React.createClass({
   render() {
     let { codeText, ...props } = this.props;
     return (
-      <Playground
-        {...props}
-        codeText={codeText.trim()}
-        mode='jsx'
-        theme='one-light'
-        scope={scope}
-        babelConfig={{
-          presets: ['es2015-loose', 'react', 'stage-0']
-        }}
-      />
+      <div className="pg-code-section">
+        <Playground
+          {...props}
+          codeText={codeText.trim()}
+          mode='jsx'
+          theme='one-light'
+          scope={scope}
+          babelConfig={{
+            presets: ['es2015-loose', 'react', 'stage-0']
+          }}
+        />
+      </div>
     );
   }
 });

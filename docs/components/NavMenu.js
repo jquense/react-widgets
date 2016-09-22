@@ -4,12 +4,9 @@ import MenuItem from 'react-bootstrap/lib/MenuItem';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 
 
-function NavMenu() {
+function NavMenu({ active }) {
   return (
-    <NavDropdown title='Documentation'>
-      <LinkContainer to='/getting-started'>
-        <MenuItem>Getting Started</MenuItem>
-      </LinkContainer>
+    <NavDropdown active={active} title='Documentation' id='docs-menu'>
       <LinkContainer to='i18n'>
         <MenuItem>Localization</MenuItem>
       </LinkContainer>
