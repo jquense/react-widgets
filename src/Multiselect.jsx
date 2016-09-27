@@ -488,7 +488,7 @@ var Multiselect = React.createClass({
       if (isOpen) this.setState({ focusedItem: list.first(), ...nullTag })
       else          tagList && this.setState({ focusedTag: tagList.first() })
     }
-    else if (isOpen && keyCode === 13) {
+    else if (isOpen && keyCode === 13) { // using keyCode to ignore enter for japanese IME
       e.preventDefault();
       (ctrlKey && this.props.onCreate) || focusedItem === null
         ? this.handleCreate(this.props.searchTerm)
