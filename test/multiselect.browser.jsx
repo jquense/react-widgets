@@ -358,7 +358,7 @@ describe('Multiselect', function() {
       />
     )
     .render()
-    .trigger('keyDown', { key: 'Enter' })
+    .trigger('keyDown', { keyCode: 13 })
 
     expect(searchSpy.calledOnce).to.be(true)
     expect(searchSpy.calledWith('')).to.be(true)
@@ -464,9 +464,9 @@ describe('Multiselect', function() {
       .trigger('click')
       .tap(assertOnCreateCalled)
       .end()
-    .trigger('keyDown', { key: 'Enter'})
+    .trigger('keyDown', { keyCode: 13 })
       .tap(assertOnCreateCalled)
-    .trigger('keyDown', { key: 'Enter', ctrlKey: true })
+    .trigger('keyDown', { keyCode: 13, ctrlKey: true })
       .tap(assertOnCreateCalled)
   })
 
