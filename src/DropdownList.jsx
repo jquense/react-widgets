@@ -370,7 +370,9 @@ var DropdownList = React.createClass({
   change(data){
     if ( !_.isShallowEqual(data, this.props.value) ) {
       notify(this.props.onChange, data)
-      notify(this.props.onSearch, '')
+      if (!this.props.multi){
+        notify(this.props.onSearch, '')
+      }
       this.close()
     }
   },
