@@ -15,10 +15,12 @@ import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import { directions } from './util/constants';
 import repeater from './util/repeater';
+import createFocusManager from './util/focusManager';
+import withRightToLeft from './util/withRightToLeft';
+
 import { number as numberLocalizer } from './util/localizers';
 
 var format = props => numberLocalizer.getFormat('default', props.format)
-
 
 function clamp(value, min, max) {
   max = max == null ? Infinity : max
@@ -30,78 +32,131 @@ function clamp(value, min, max) {
   return Math.max(Math.min(value, max), min)
 }
 
-let propTypes = {
+@withRightToLeft
+class NumberPicker extends React.Component {
 
-  // -- controlled props -----------
-  value:          React.PropTypes.number,
-  onChange:       React.PropTypes.func,
-  //------------------------------------
+  static propTypes = {
 
-  min:            React.PropTypes.number,
-  max:            React.PropTypes.number,
-  step:           React.PropTypes.number,
+    // -- controlled props -----------
+    value:          React.PropTypes.number,
+    onChange:       React.PropTypes.func,
+    //------------------------------------
 
-  precision:      React.PropTypes.number,
+    min:            React.PropTypes.number,
+    max:            React.PropTypes.number,
+    step:           React.PropTypes.number,
 
-  culture:        React.PropTypes.string,
+    precision:      React.PropTypes.number,
 
-  format:         CustomPropTypes.numberFormat,
+    culture:        React.PropTypes.string,
 
-  name:           React.PropTypes.string,
+    format:         CustomPropTypes.numberFormat,
 
-  parse:          React.PropTypes.func,
+    name:           React.PropTypes.string,
 
-  autoFocus:      React.PropTypes.bool,
-  disabled:       CustomPropTypes.disabled,
-  readOnly:       CustomPropTypes.readOnly,
+    parse:          React.PropTypes.func,
 
-  messages:       React.PropTypes.shape({
-    increment:    React.PropTypes.string,
-    decrement:    React.PropTypes.string
-  }),
+    autoFocus:      React.PropTypes.bool,
+    disabled:       CustomPropTypes.disabled,
+    readOnly:       CustomPropTypes.readOnly,
 
-  placeholder: React.PropTypes.string
-};
+    messages:       React.PropTypes.shape({
+      increment:    React.PropTypes.string,
+      decrement:    React.PropTypes.string
+    }),
 
+    placeholder: React.PropTypes.string
+  };
 
-let NumberPicker = React.createClass({
+  static defaultProps = {
+    value: null,
+    open: false,
 
-  displayName: 'NumberPicker',
+    min: -Infinity,
+    max:  Infinity,
+    step: 1,
 
-  mixins: [
-    require('./mixins/TimeoutMixin'),
-    require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/FocusMixin')({
-      willHandle(focused) {
+    messages: {
+      increment: 'increment value',
+      decrement:  'decrement value'
+    }
+  };
+
+  constructor(...args) {
+    super(...args)
+
+    this.focusManager = createFocusManager(this, {
+      willHandle: focused => {
         if (focused) this.focus()
       }
     })
-  ],
 
-  propTypes,
-
-  getDefaultProps() {
-    return {
-      value: null,
-      open: false,
-
-      min: -Infinity,
-      max:  Infinity,
-      step: 1,
-
-      messages: {
-        increment: 'increment value',
-        decrement:  'decrement value'
-      }
-    }
-  },
-
-  getInitialState() {
-    return {
+    this.state = {
       focused: false,
     }
-  },
+  }
+
+  @widgetEditable
+  handleMouseDown = (direction) => {
+    let { min, max } = this.props;
+
+    let method = direction === directions.UP
+      ? this.increment
+      : this.decrement
+
+    let value = method.call(this)
+      , atTop = direction === directions.UP && value === max
+      , atBottom = direction === directions.DOWN && value === min
+
+    if (atTop || atBottom)
+      this.handleMouseUp()
+
+    else if (!this._cancelRepeater)
+      this._cancelRepeater = repeater(() =>
+        this.handleMouseDown(direction)
+      )
+  };
+
+  @widgetEditable
+  handleMouseUp = () => {
+    this._cancelRepeater && this._cancelRepeater()
+    this._cancelRepeater = null;
+  };
+
+  @widgetEditable
+  handleKeyDown = (event) => {
+    let { min, max, onKeyDown } = this.props;
+    let key = event.key;
+
+    notify(onKeyDown, [event])
+
+    if (event.defaultPrevented)
+      return
+
+    if (key === 'End' && isFinite(max))
+      this.handleChange(max)
+
+    else if (key === 'Home' && isFinite(min))
+      this.handleChange(min)
+
+    else if ( key === 'ArrowDown') {
+      event.preventDefault()
+      this.decrement()
+    }
+    else if ( key === 'ArrowUp') {
+      event.preventDefault()
+      this.increment()
+    }
+  };
+
+  handleChange = (newValue) => {
+    let { onChange, value, min, max } = this.props;
+
+    newValue = clamp(newValue, min, max);
+
+    if (value !== newValue)
+      notify(onChange, newValue)
+  };
 
   renderInput(value) {
     let {
@@ -136,9 +191,9 @@ let NumberPicker = React.createClass({
         onKeyUp={onKeyUp}
       />
     )
-  },
+  }
 
-  render(){
+  render() {
     let {
         className
       , disabled
@@ -156,9 +211,9 @@ let NumberPicker = React.createClass({
     return (
       <Widget
         {...elementProps}
-        onBlur ={this.handleBlur}
-        onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
+        onBlur={this.focusManager.handleBlur}
+        onFocus={this.focusManager.handleFocus}
         className={cn(className, 'rw-number-picker')}
       >
         <WidgetPicker
@@ -190,81 +245,19 @@ let NumberPicker = React.createClass({
         </WidgetPicker>
       </Widget>
     )
-  },
-
-  @widgetEditable
-  handleMouseDown(direction) {
-    let { min, max } = this.props;
-
-    let method = direction === directions.UP
-      ? this.increment
-      : this.decrement
-
-    let value = method.call(this)
-      , atTop = direction === directions.UP && value === max
-      , atBottom = direction === directions.DOWN && value === min
-
-    if (atTop || atBottom)
-      this.handleMouseUp()
-
-    else if (!this._cancelRepeater)
-      this._cancelRepeater = repeater(() =>
-        this.handleMouseDown(direction)
-      )
-  },
-
-  @widgetEditable
-  handleMouseUp() {
-    this._cancelRepeater && this._cancelRepeater()
-    this._cancelRepeater = null;
-  },
-
-  @widgetEditable
-  handleKeyDown(event) {
-    let { min, max, onKeyDown } = this.props;
-    let key = event.key;
-
-    notify(onKeyDown, [event])
-
-    if (event.defaultPrevented)
-      return
-
-    if (key === 'End' && isFinite(max))
-      this.handleChange(max)
-
-    else if (key === 'Home' && isFinite(min))
-      this.handleChange(min)
-
-    else if ( key === 'ArrowDown') {
-      event.preventDefault()
-      this.decrement()
-    }
-    else if ( key === 'ArrowUp') {
-      event.preventDefault()
-      this.increment()
-    }
-  },
-
-  handleChange(newValue) {
-    let { onChange, value, min, max } = this.props;
-
-    newValue = clamp(newValue, min, max);
-
-    if (value !== newValue)
-      notify(onChange, newValue)
-  },
+  }
 
   focus() {
     compat.findDOMNode(this.refs.input).focus()
-  },
+  }
 
   increment() {
     return this.step(this.props.step)
-  },
+  }
 
   decrement() {
     return this.step(-this.props.step)
-  },
+  }
 
   step(amount) {
     var value = (this.props.value || 0) + amount
@@ -277,8 +270,8 @@ let NumberPicker = React.createClass({
       decimals != null ? round(value, decimals) : value)
 
     return value
-  },
-})
+  }
+}
 
 
 export default createUncontrolledWidget(

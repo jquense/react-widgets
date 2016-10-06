@@ -255,6 +255,24 @@ class SelectList extends React.Component {
     this.search(String.fromCharCode(e.which))
   };
 
+  handleChange = (item, checked) => {
+    var { multiple } = this.props
+      , values = this.state.dataItems;
+
+    multiple  = !!multiple
+
+    this.setState({ focusedItem: item })
+
+    if (!multiple)
+      return notify(this.props.onChange, checked ? item : null)
+
+    values = checked
+      ? values.concat(item)
+      : values.filter( v => v !== item)
+
+    notify(this.props.onChange, [values || []])
+  };
+
   focus() {
     compat.findDOMNode(this.refs.list).focus()
   }
@@ -279,23 +297,6 @@ class SelectList extends React.Component {
     notify(this.props.onChange, [data])
   }
 
-  handleChange = (item, checked) => {
-    var { multiple } = this.props
-      , values = this.state.dataItems;
-
-    multiple  = !!multiple
-
-    this.setState({ focusedItem: item })
-
-    if (!multiple)
-      return notify(this.props.onChange, checked ? item : null)
-
-    values = checked
-      ? values.concat(item)
-      : values.filter( v => v !== item)
-
-    notify(this.props.onChange, [values || []])
-  };
 
   search(character) {
     var word = ((this._searchTerm || '') + character).toLowerCase()
