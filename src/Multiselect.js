@@ -13,7 +13,11 @@ import CustomPropTypes from './util/propTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
 
+import * as Filter from './util/Filter';
 import validateList from './util/validateListInterface';
+import createScrollManager from './util/scrollManager';
+import createFocusManager from './util/focusManager';
+import withRightToLeft from './util/withRightToLeft';
 import { dataItem, dataText, valueMatcher } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
@@ -22,7 +26,6 @@ var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
   ? msgs.createNew(props)
   : [<strong key='dumb'>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
 
-let { splat } = _;
 
 var propTypes = {
   ...Popup.propTypes,
@@ -74,66 +77,31 @@ var propTypes = {
   })
 };
 
-var Multiselect = React.createClass({
+@withRightToLeft
+class Multiselect extends React.Component {
 
-  displayName: 'Multiselect',
+  static propTypes = propTypes;
 
-  mixins: [
-    require('./mixins/TimeoutMixin'),
-    require('./mixins/DataFilterMixin'),
-    require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/FocusMixin')({
-      willHandle(focused) {
-        focused && this.focus()
-      },
-      didHandle(focused) {
-        if (!focused) this.close()
-
-        if (!focused && this.refs.tagList)
-          this.setState({ focusedTag: null })
-
-        // if (focused && !this.props.open && !this.props.readOnly === true)
-        //   this.open()
-      }
-    })
-  ],
-
-  propTypes,
-
-  getDefaultProps() {
-    return {
-      data: [],
-      filter: 'startsWith',
-      value: [],
-      open: false,
-      searchTerm: '',
-      messages: {
-        createNew:     '(create new tag)',
-        emptyList:     'There are no items in this list',
-        emptyFilter:   'The filter returned no results',
-        tagsLabel:     'selected items',
-        selectedItems: 'selected items',
-        noneSelected:  'no selected items',
-        removeLabel:   'remove selected item'
-      }
+  static defaultProps = {
+    data: [],
+    filter: 'startsWith',
+    value: [],
+    open: false,
+    searchTerm: '',
+    messages: {
+      createNew:     '(create new tag)',
+      emptyList:     'There are no items in this list',
+      emptyFilter:   'The filter returned no results',
+      tagsLabel:     'selected items',
+      selectedItems: 'selected items',
+      noneSelected:  'no selected items',
+      removeLabel:   'remove selected item'
     }
-  },
+  };
 
-  getInitialState(){
-    var { data, value, valueField, searchTerm } = this.props
-      , dataItems = splat(value).map( item => dataItem(data, item, valueField))
-      , processedData = this.process(data, dataItems, searchTerm)
+  constructor(...args) {
+    super(...args);
 
-    return {
-      focusedTag:    null,
-      focusedItem:   processedData[0],
-      processedData: processedData,
-      dataItems:     dataItems
-    }
-  },
-
-  componentWillMount() {
     this.inputId = instanceId(this, '_input')
     this.tagsId = instanceId(this, '_taglist')
     this.notifyId = instanceId(this, '_notify_area')
@@ -141,24 +109,196 @@ var Multiselect = React.createClass({
     this.createId = instanceId(this, '_createlist_option')
     this.activeTagId = instanceId(this, '_taglist_active_tag')
     this.activeOptionId = instanceId(this, '_listbox_active_option')
-  },
+
+    this.handleScroll = createScrollManager(this)
+    this.focusManager = createFocusManager(this, {
+      willHandle: this.handleFocusWillChange,
+      didHandle: this.handleFocusDidChange,
+    })
+
+    this.state = {
+      focusedTag: null,
+      ...this.getStateFromProps(this.props),
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(this.getStateFromProps(nextProps))
+  }
 
   componentDidUpdate() {
     this.refs.list && validateList(this.refs.list)
-  },
+  }
 
-  componentWillReceiveProps(nextProps) {
-    var { data, value, valueField, searchTerm } = nextProps
-      , values = _.splat(value)
-      , current = this.state.focusedItem
-      , items  = this.process(data, values, searchTerm)
+  getStateFromProps(props) {
+    let {
+      data, valueField, textField, searchTerm, minLength, caseSensitive, filter
+    } = props
 
-    this.setState({
-      processedData: items,
-      focusedItem: items.indexOf(current) === -1 ? items[0] : current,
-      dataItems: values.map( item => dataItem(data, item, valueField))
+    let values = _.splat(props.value);
+    let dataItems = values.map(item => dataItem(data, item, valueField));
+
+    data = data.filter(i =>
+      !values.some(v => valueMatcher(i, v, valueField))
+    );
+
+    this._lengthWithoutValues = data.length;
+
+    data = Filter.filter(data, {
+      filter,
+      searchTerm,
+      minLength,
+      caseSensitive,
+      textField,
     })
-  },
+
+    let current = this.state && this.state.focusedItem;
+
+    return {
+      data,
+      dataItems,
+      focusedItem: data.indexOf(current) === -1 ? data[0] : current,
+    }
+  }
+
+  handleFocusWillChange = (focused) => {
+    if (focused) this.focus()
+  }
+
+  handleFocusDidChange = (focused) => {
+    if (focused) return
+
+    this.close()
+
+    if (this.refs.tagList)
+      this.setState({ focusedTag: null })
+  }
+
+  handleDelete = (value) => {
+    let { dataItems } = this.state;
+    this.focus()
+    this.change(dataItems.filter(d => d !== value))
+  };
+
+  handleSearchKeyDown = (e) => {
+    if (e.key === 'Backspace' && e.target.value && !this._deletingText)
+      this._deletingText = true
+  };
+
+  handleSearchKeyUp = (e) => {
+    if (e.key === 'Backspace' && this._deletingText)
+      this._deletingText = false
+  };
+
+  handleInputChange = (e) => {
+    notify(this.props.onSearch, [ e.target.value ])
+    this.open()
+  };
+
+  @widgetEditable
+  handleClick = () => {
+    this.open()
+  };
+
+  @widgetEditable
+  handleSelect = (data) => {
+    if (data === undefined) {
+      if (this.props.onCreate)
+        this.handleCreate(this.props.searchTerm)
+
+      return
+    }
+    notify(this.props.onSelect, data)
+    this.change(this.state.dataItems.concat(data))
+
+    this.close()
+    this.focus()
+  };
+
+  @widgetEditable
+  handleCreate = (tag) => {
+    if (tag.trim() === '' )
+      return
+
+    notify(this.props.onCreate, tag)
+    this.props.searchTerm
+      && notify(this.props.onSearch, [ '' ])
+
+    this.close()
+    this.focus()
+  };
+
+  @widgetEditable
+  handleKeyDown = (e) => {
+    let { key, altKey, ctrlKey } = e
+      , noSearch = !this.props.searchTerm && !this._deletingText
+      , isOpen  = this.props.open;
+
+    let { focusedTag, focusedItem } = this.state;
+    let { list, tagList } = this.refs;
+    let nullTag = { focusedTag: null };
+
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
+    if (key === 'ArrowDown') {
+      var next = list.next(focusedItem)
+        , creating = (this.shouldShowCreate() && focusedItem === next) || focusedItem === null;
+
+      next = creating ? null : next
+
+      e.preventDefault()
+      if (isOpen) this.setState({ focusedItem: next, ...nullTag })
+      else        this.open()
+    }
+    else if (key === 'ArrowUp') {
+      var prev = focusedItem === null
+        ? list.last()
+        : list.prev(focusedItem)
+
+      e.preventDefault()
+
+      if (altKey)      this.close()
+      else if (isOpen) this.setState({ focusedItem: prev, ...nullTag })
+    }
+    else if (key === 'End') {
+      e.preventDefault()
+      if ( isOpen ) this.setState({ focusedItem: list.last(), ...nullTag })
+      else          tagList && this.setState({ focusedTag: tagList.last() })
+    }
+    else if (key === 'Home') {
+      e.preventDefault()
+      if (isOpen) this.setState({ focusedItem: list.first(), ...nullTag })
+      else          tagList && this.setState({ focusedTag: tagList.first() })
+    }
+    else if (isOpen && key === 'Enter') {
+      e.preventDefault();
+      (ctrlKey && this.props.onCreate) || focusedItem === null
+        ? this.handleCreate(this.props.searchTerm)
+        : this.handleSelect(this.state.focusedItem)
+    }
+    else if (key === 'Escape')
+      isOpen ? this.close() : tagList && this.setState(nullTag)
+
+    else if (noSearch && key === 'ArrowLeft')
+      tagList && this.setState({ focusedTag: tagList.prev(focusedTag) })
+
+    else if (noSearch && key === 'ArrowRight')
+      tagList && this.setState({ focusedTag: tagList.next(focusedTag) })
+
+    else if (noSearch && key === 'Delete')
+      tagList && tagList.remove(focusedTag)
+
+    else if (noSearch && key === 'Backspace')
+      tagList && tagList.removeNext()
+
+    else if (noSearch && key === ' ' && !isOpen) {
+      e.preventDefault()
+      this.open()
+    }
+  };
 
   renderCreateItem(messages) {
     let { searchTerm } = this.props;
@@ -184,7 +324,7 @@ var Multiselect = React.createClass({
         </li>
       </ul>
     )
-  },
+  }
 
   renderInput(ownedIds) {
     let {
@@ -225,15 +365,14 @@ var Multiselect = React.createClass({
         onChange={this.handleInputChange}
       />
     )
-  },
+  }
 
   renderList(List, messages) {
     let { inputId, activeOptionId, listId } = this;
     let { open } = this.props;
-    let { focusedItem } = this.state;
+    let { focusedItem, data: items } = this.state;
 
     let listProps = _.pickProps(this.props, List);
-    let items  = this._data();
 
     return (
       <List ref="list" key={0}
@@ -243,7 +382,7 @@ var Multiselect = React.createClass({
         data={items}
         focused={focusedItem}
         onSelect={this.handleSelect}
-        onMove={this._scrollTo}
+        onMove={this.handleScroll}
         aria-live='polite'
         aria-labelledby={inputId}
         aria-hidden={!open}
@@ -254,7 +393,7 @@ var Multiselect = React.createClass({
         }}
       />
     )
-  },
+  }
 
   renderNotificationArea(messages) {
     let { textField } = this.props;
@@ -278,7 +417,7 @@ var Multiselect = React.createClass({
         )}
       </span>
     )
-  },
+  }
 
   renderTags(messages) {
     let { disabled, readOnly, valueField, textField } = this.props;
@@ -302,7 +441,7 @@ var Multiselect = React.createClass({
         valueComponent={Component}
       />
     )
-  },
+  }
 
   render() {
     let {
@@ -338,8 +477,8 @@ var Multiselect = React.createClass({
       <Widget
         {...elementProps}
         onKeyDown={this.handleKeyDown}
-        onBlur={this.handleBlur}
-        onFocus={this.handleFocus}
+        onBlur={this.focusManager.handleBlur}
+        onFocus={this.focusManager.handleFocus}
         className={cn(className, 'rw-multiselect')}
       >
         {this.renderNotificationArea(messages)}
@@ -388,206 +527,64 @@ var Multiselect = React.createClass({
         }
       </Widget>
     )
-  },
+  }
 
-  _data() {
-    return this.state.processedData
-  },
-
-  handleDelete(value) {
-    this.focus()
-    this.change(
-      this.state.dataItems.filter( d => d !== value))
-  },
-
-  handleSearchKeyDown(e) {
-    if (e.key === 'Backspace' && e.target.value && !this._deletingText)
-      this._deletingText = true
-  },
-
-  handleSearchKeyUp(e) {
-    if (e.key === 'Backspace' && this._deletingText)
-      this._deletingText = false
-  },
-
-  handleInputChange(e) {
-    notify(this.props.onSearch, [ e.target.value ])
-    this.open()
-  },
-
-  @widgetEditable
-  handleClick() {
-    this.open()
-  },
-
-  @widgetEditable
-  handleSelect(data) {
-    if (data === undefined) {
-      if (this.props.onCreate)
-        this.handleCreate(this.props.searchTerm)
-
-      return
-    }
-    notify(this.props.onSelect, data)
-    this.change(this.state.dataItems.concat(data))
-
-    this.close()
-    this.focus()
-  },
-
-  @widgetEditable
-  handleCreate(tag) {
-    if (tag.trim() === '' )
-      return
-
-    notify(this.props.onCreate, tag)
-    this.props.searchTerm
-      && notify(this.props.onSearch, [ '' ])
-
-    this.close()
-    this.focus()
-  },
-
-  @widgetEditable
-  handleKeyDown(e) {
-    let { key, keyCode, altKey, ctrlKey } = e
-      , noSearch = !this.props.searchTerm && !this._deletingText
-      , isOpen  = this.props.open;
-
-    let { focusedTag, focusedItem } = this.state;
-    let { list, tagList } = this.refs;
-    let nullTag = { focusedTag: null };
-
-    notify(this.props.onKeyDown, [e])
-
-    if (e.defaultPrevented)
-      return
-
-    if (key === 'ArrowDown') {
-      var next = list.next(focusedItem)
-        , creating = (this.shouldShowCreate() && focusedItem === next) || focusedItem === null;
-
-      next = creating ? null : next
-
-      e.preventDefault()
-      if (isOpen) this.setState({ focusedItem: next, ...nullTag })
-      else        this.open()
-    }
-    else if (key === 'ArrowUp') {
-      var prev = focusedItem === null
-        ? list.last()
-        : list.prev(focusedItem)
-
-      e.preventDefault()
-
-      if (altKey)      this.close()
-      else if (isOpen) this.setState({ focusedItem: prev, ...nullTag })
-    }
-    else if (key === 'End') {
-      e.preventDefault()
-      if ( isOpen ) this.setState({ focusedItem: list.last(), ...nullTag })
-      else          tagList && this.setState({ focusedTag: tagList.last() })
-    }
-    else if (key === 'Home') {
-      e.preventDefault()
-      if (isOpen) this.setState({ focusedItem: list.first(), ...nullTag })
-      else          tagList && this.setState({ focusedTag: tagList.first() })
-    }
-    else if (isOpen && keyCode === 13) { // using keyCode to ignore enter for japanese IME
-      e.preventDefault();
-      (ctrlKey && this.props.onCreate) || focusedItem === null
-        ? this.handleCreate(this.props.searchTerm)
-        : this.handleSelect(this.state.focusedItem)
-    }
-    else if (key === 'Escape')
-      isOpen ? this.close() : tagList && this.setState(nullTag)
-
-    else if (noSearch && key === 'ArrowLeft')
-      tagList && this.setState({ focusedTag: tagList.prev(focusedTag) })
-
-    else if (noSearch && key === 'ArrowRight')
-      tagList && this.setState({ focusedTag: tagList.next(focusedTag) })
-
-    else if (noSearch && key === 'Delete')
-      tagList && tagList.remove(focusedTag)
-
-    else if (noSearch && key === 'Backspace')
-      tagList && tagList.removeNext()
-
-    else if (noSearch && key === ' ' && !isOpen) {
-      e.preventDefault()
-      this.open()
-    }
-  },
-
-  @widgetEditable
   change(data) {
-    notify(this.props.onChange, [data])
-    notify(this.props.onSearch, [ '' ])
-  },
+    let { onChange, onSearch } = this.props;
+    notify(onChange, [data])
+    notify(onSearch, [ '' ])
+  }
 
   focus() {
     this.refs.input &&
       this.refs.input.focus()
-  },
+  }
 
   open() {
     if (!this.props.open)
       notify(this.props.onToggle, true)
-  },
+  }
 
   close() {
     notify(this.props.onToggle, false)
-  },
-
-  toggle() {
-    this.props.open
-      ? this.close()
-      : this.open()
-  },
-
-  process(data, values, searchTerm) {
-    var { valueField } = this.props;
-    var items = data.filter( i =>
-      !values.some(v => valueMatcher(i, v, valueField)))
-
-    this._lengthWithoutValues = items.length;
-
-    if (searchTerm)
-      items = this.filter(items, searchTerm)
-
-    return items
-  },
+  }
 
   isCreateTagFocused() {
-    let { focusedItem } = this.state;
+    let { data, focusedItem } = this.state;
 
     if (!this.shouldShowCreate())
       return false;
 
-    return !this._data().length || focusedItem === null;
-  },
+    return !data.length || focusedItem === null;
+  }
 
   shouldShowCreate() {
-    var { textField, searchTerm, onCreate, caseSensitive } = this.props;
+    let { textField, searchTerm, onCreate, caseSensitive } = this.props;
+    let { data, dataItems } = this.state;
 
     if (!onCreate || !searchTerm)
       return false
 
-    var lower = text => caseSensitive ? text : text.toLowerCase();
-    var eq =  v => lower(dataText(v, textField)) === lower(searchTerm);
+    let lower = text => caseSensitive ? text : text.toLowerCase();
+    let eq =  v => lower(dataText(v, textField)) === lower(searchTerm);
 
     // if there is an exact match on textFields: "john" => { name: "john" }, don't show
-    return !this._data().some(eq) && !this.state.dataItems.some(eq)
-  },
-
-  getPlaceholder() {
-    return (this.props.value || []).length
-      ? ''
-      : (this.props.placeholder || '')
+    return !data.some(eq) && !dataItems.some(eq)
   }
 
-})
+  getPlaceholder() {
+    let { value, placeholder } = this.props;
+    return (value && value.length ? '' : placeholder) || ''
+  }
+}
+
+
+export default createUncontrolledWidget(Multiselect, {
+  open: 'onToggle',
+  value: 'onChange',
+  searchTerm: 'onSearch'
+}, ['focus']);
+
 
 function msgs(msgs){
   return {
@@ -600,6 +597,3 @@ function msgs(msgs){
     ...msgs
   }
 }
-
-export default createUncontrolledWidget(Multiselect
-    , { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' }, ['focus']);

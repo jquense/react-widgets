@@ -34,6 +34,7 @@ function getFirstValue(props) {
   return null
 }
 
+@withRightToLeft
 class SelectList extends React.Component {
   static propTypes = {
     ...autoFocus.propTypes,
@@ -331,9 +332,6 @@ class SelectList extends React.Component {
       : this.props.value
   }
 }
-
-
-SelectList = withRightToLeft(SelectList);
 
 SelectList = createUncontrolledWidget(SelectList,
   {
