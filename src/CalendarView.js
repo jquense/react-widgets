@@ -5,7 +5,7 @@ import dates from './util/dates';
 
 const VIEW_UNITS = ['month', 'year', 'decade', 'century'];
 
-function clamp(date, min, max){
+function clamp(date, min, max) {
   return dates.max(dates.min(date, max), min)
 }
 
@@ -13,7 +13,7 @@ class CalendarView extends React.Component {
   static propTypes = {
     activeId: React.PropTypes.string,
   };
-  
+
   render() {
     let { className, activeId, ...props } = this.props;
 

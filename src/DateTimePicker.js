@@ -2,11 +2,10 @@ import React  from 'react';
 import invariant from 'invariant';
 import activeElement from 'dom-helpers/activeElement';
 import cn from 'classnames';
-import createUncontrolledWidget from 'uncontrollable';
+import uncontrollable from 'uncontrollable';
 
 import compat from './util/compat';
 import _      from './util/_'; //pick, omit, has
-
 import dates  from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
 import {
@@ -22,6 +21,9 @@ import DateTimePickerInput from './DateTimePickerInput';
 import Select  from './Select';
 import TimeList from './TimeList';
 import CustomPropTypes from './util/propTypes';
+import createFocusManager from './util/focusManager';
+import createScrollManager from './util/scrollManager';
+import withRightToLeft from './util/withRightToLeft';
 import { widgetEditable, isReadOnly, isDisabled } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
@@ -86,58 +88,150 @@ let propTypes = {
     })
   }
 
+@withRightToLeft
+class DateTimePicker extends React.Component {
+  static displayName = 'DateTimePicker';
 
-var DateTimePicker = React.createClass({
+  static propTypes = propTypes
 
-  displayName: 'DateTimePicker',
+  static defaultProps = {
+    value: null,
+    min: new Date(1900,  0,  1),
+    max: new Date(2099, 11, 31),
+    calendar: true,
+    time: true,
+    open: false,
 
-  mixins: [
-    require('./mixins/TimeoutMixin'),
-    require('./mixins/PureRenderMixin'),
-    require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/FocusMixin')({
-      didHandle(focused) {
-        if (!focused) this.close()
-      }
-    })
-  ],
+    //calendar override
+    footer: true,
 
-  propTypes,
+    messages: {
+      calendarButton: 'Select Date',
+      timeButton:     'Select Time'
+    },
+  }
 
-  getInitialState() {
-    return {
-      focused: false
-    }
-  },
+  constructor(...args) {
+    super(...args);
 
-  getDefaultProps() {
-
-    return {
-      value: null,
-      min: new Date(1900,  0,  1),
-      max: new Date(2099, 11, 31),
-      calendar: true,
-      time: true,
-      open: false,
-
-      //calendar override
-      footer: true,
-
-      messages: {
-        calendarButton: 'Select Date',
-        timeButton:     'Select Time'
-      },
-    }
-  },
-
-  componentWillMount() {
     this.inputId = instanceId(this, '_input')
     this.calendarId = instanceId(this, '_calendar')
     this.listId = instanceId(this, '_listbox')
     this.activeCalendarId = instanceId(this, '_calendar_active_cell')
     this.activeOptionId = instanceId(this, '_listbox_active_option')
-  },
+
+    this.handleScroll = createScrollManager(this)
+    this.focusManager = createFocusManager(this, {
+      didHandle: focused => {
+        if (!focused) this.close()
+      }
+    })
+
+    this.state = {
+      focused: false
+    };
+  }
+
+  @widgetEditable
+  handleChange = (date, str, constrain) => {
+    let { onChange, value } = this.props;
+
+    if (constrain)
+      date = this.inRangeValue(date)
+
+    if (onChange) {
+      if (date == null || value == null) {
+        if (date != value) //eslint-disable-line eqeqeq
+          onChange(date, str)
+      }
+      else if (!dates.eq(date, value)) {
+        onChange(date, str)
+
+      }
+    }
+  };
+
+  @widgetEditable
+  handleKeyDown = (e) => {
+    let { open, calendar, time } = this.props;
+
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
+    if (e.key === 'Escape' && open)
+      this.close()
+
+    else if (e.altKey) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        if (calendar && time)
+          this.open(open === popups.CALENDAR
+                ? popups.TIME
+                : popups.CALENDAR)
+        else if (time)     this.open(popups.TIME)
+        else if (calendar) this.open(popups.CALENDAR)
+      }
+      else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        this.close()
+      }
+    }
+    else if (open) {
+      if (open === popups.CALENDAR )
+        this.refs.calPopup.refs.inner.handleKeyDown(e)
+      if (open === popups.TIME )
+        this.refs.timePopup.handleKeyDown(e)
+    }
+  };
+
+  @widgetEditable
+  handleKeyPress = (e) => {
+    notify(this.props.onKeyPress, [e])
+
+    if (e.defaultPrevented)
+      return
+
+    if (this.props.open === popups.TIME)
+      this.refs.timePopup.handleKeyPress(e)
+  };
+
+  @widgetEditable
+  handleDateSelect = (date) => {
+    var format   = getFormat(this.props)
+      , dateTime = dates.merge(date, this.props.value, this.props.currentDate)
+      , dateStr  = formatDate(date, format, this.props.culture);
+
+    this.close()
+    notify(this.props.onSelect, [dateTime, dateStr])
+    this.handleChange(dateTime, dateStr, true)
+    this.focus()
+  };
+
+  @widgetEditable
+  handleTimeSelect = (datum) => {
+    var format   = getFormat(this.props)
+      , dateTime = dates.merge(this.props.value, datum.date, this.props.currentDate)
+      , dateStr  = formatDate(datum.date, format, this.props.culture);
+
+    this.close()
+    notify(this.props.onSelect, [dateTime, dateStr])
+    this.handleChange(dateTime, dateStr, true)
+    this.focus()
+  };
+
+  @widgetEditable
+  handleCalendarClick = () => {
+    this.focus()
+    this.toggle(popups.CALENDAR)
+  };
+
+  @widgetEditable
+  handleTimeClick = () => {
+    this.focus()
+    this.toggle(popups.TIME)
+  };
 
   renderInput(owns) {
     let {
@@ -181,7 +275,7 @@ var DateTimePicker = React.createClass({
         editFormat={editFormat}
         editing={focused}
         culture={culture}
-        parse={this._parse}
+        parse={this.parse}
         onChange={this.handleChange}
         aria-haspopup
         aria-activedescendant={activeId}
@@ -192,7 +286,7 @@ var DateTimePicker = React.createClass({
         aria-owns={owns}
       />
     )
-  },
+  }
 
   renderButtons(messages) {
     let { calendar, time } = this.props;
@@ -211,7 +305,7 @@ var DateTimePicker = React.createClass({
             icon="calendar"
             label={messages.calendarButton}
             disabled={disabled || readOnly}
-            onClick={this._click.bind(null, popups.CALENDAR)}
+            onClick={this.handleCalendarClick}
           />
         }
         {time &&
@@ -219,12 +313,12 @@ var DateTimePicker = React.createClass({
             icon="clock-o"
             label={messages.timeButton}
             disabled={disabled || readOnly}
-            onClick={this._click.bind(null, popups.TIME)}
+            onClick={this.handleTimeClick}
           />
         }
       </Select>
     )
-  },
+  }
 
   renderCalendar() {
     let { activeCalendarId, inputId, calendarId } = this;
@@ -263,7 +357,7 @@ var DateTimePicker = React.createClass({
         />
       </Popup>
     )
-  },
+  }
 
   renderTimeList() {
     let { activeOptionId, inputId, listId } = this;
@@ -293,7 +387,7 @@ var DateTimePicker = React.createClass({
             activeId={activeOptionId}
             format={timeFormat}
             value={dateOrNull(value)}
-            onMove={this._scrollTo}
+            onMove={this.handleScroll}
             onSelect={this.handleTimeSelect}
             preserveDate={!!calendar}
             itemComponent={timeComponent}
@@ -304,7 +398,7 @@ var DateTimePicker = React.createClass({
         </div>
       </Popup>
     )
-  },
+  }
 
   render() {
     let {
@@ -332,10 +426,10 @@ var DateTimePicker = React.createClass({
     return (
       <Widget
         {...elementProps}
-        onBlur={this.handleBlur}
-        onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
+        onBlur={this.focusManager.handleBlur}
+        onFocus={this.focusManager.handleFocus}
         className={cn(className, 'rw-datetime-picker')}
       >
         <WidgetPicker
@@ -358,110 +452,16 @@ var DateTimePicker = React.createClass({
         }
       </Widget>
     )
-  },
-
-  @widgetEditable
-  handleChange(date, str, constrain){
-    let { onChange, value } = this.props;
-
-    if (constrain)
-      date = this.inRangeValue(date)
-
-    if (onChange) {
-      if (date == null || value == null) {
-        if (date != value) //eslint-disable-line eqeqeq
-          onChange(date, str)
-      }
-      else if (!dates.eq(date, value)) {
-        onChange(date, str)
-
-      }
-    }
-  },
-
-  @widgetEditable
-  handleKeyDown(e){
-    let { open, calendar, time } = this.props;
-
-    notify(this.props.onKeyDown, [e])
-
-    if (e.defaultPrevented)
-      return
-
-    if (e.key === 'Escape' && open)
-      this.close()
-
-    else if (e.altKey) {
-      e.preventDefault()
-
-      if (e.key === 'ArrowDown'){
-        if (calendar && time)
-          this.open(open === popups.CALENDAR
-                ? popups.TIME
-                : popups.CALENDAR)
-        else if (time)     this.open(popups.TIME)
-        else if (calendar) this.open(popups.CALENDAR)
-      }
-      else if (e.key === 'ArrowUp')
-        this.close()
-    }
-    else if (open) {
-      if (open === popups.CALENDAR )
-        this.refs.calPopup.refs.inner.handleKeyDown(e)
-      if (open === popups.TIME )
-        this.refs.timePopup.handleKeyDown(e)
-    }
-  },
-
-  @widgetEditable
-  handleKeyPress(e) {
-    notify(this.props.onKeyPress, [e])
-
-    if (e.defaultPrevented)
-      return
-
-    if (this.props.open === popups.TIME )
-      this.refs.timePopup.handleKeyPress(e)
-  },
+  }
 
   focus() {
     let { valueInput } = this.refs;
 
     if (valueInput && activeElement() !== compat.findDOMNode(valueInput))
       valueInput.focus()
-  },
+  }
 
-  @widgetEditable
-  handleDateSelect(date){
-    var format   = getFormat(this.props)
-      , dateTime = dates.merge(date, this.props.value, this.props.currentDate)
-      , dateStr  = formatDate(date, format, this.props.culture);
-
-    this.close()
-    notify(this.props.onSelect, [dateTime, dateStr])
-    this.handleChange(dateTime, dateStr, true)
-    this.focus()
-  },
-
-  @widgetEditable
-  handleTimeSelect(datum){
-    var format   = getFormat(this.props)
-      , dateTime = dates.merge(this.props.value, datum.date, this.props.currentDate)
-      , dateStr  = formatDate(datum.date, format, this.props.culture);
-
-    this.close()
-    notify(this.props.onSelect, [dateTime, dateStr])
-    this.handleChange(dateTime, dateStr, true)
-    this.focus()
-  },
-
-  @widgetEditable
-  _click(view, e){
-    this.focus()
-    this.toggle(view, e)
-  },
-
-  _parse(string){
+  parse = (string) => {
     var format = getFormat(this.props, true)
       , editFormat = this.props.editFormat
       , parse = this.props.parse
@@ -485,7 +485,7 @@ var DateTimePicker = React.createClass({
       'please provide either a parse function or Globalize.js compatible string for `format`', string);
 
     return formatsParser(formats, this.props.culture, string);
-  },
+  }
 
   toggle(view) {
     this.props.open
@@ -493,30 +493,29 @@ var DateTimePicker = React.createClass({
           ? this.open(view)
           : this.close(view)
       : this.open(view)
-  },
+  }
 
-  open(view){
+  open(view) {
     if (this.props.open !== view && this.props[view] === true)
       notify(this.props.onToggle, view)
-  },
+  }
 
-  close(){
+  close() {
     if (this.props.open)
       notify(this.props.onToggle, false)
-  },
+  }
 
-  inRangeValue(value){
+  inRangeValue(value)  {
     if (value == null) return value
 
     return dates.max(
         dates.min(value, this.props.max)
       , this.props.min)
   }
+}
 
-});
 
-
-export default  createUncontrolledWidget(
+export default  uncontrollable(
     DateTimePicker
   , {
     open: 'onToggle',

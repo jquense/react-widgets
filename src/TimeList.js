@@ -4,15 +4,14 @@ import dates from './util/dates';
 import List from './List';
 import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
+import createTimeoutManager from './util/timeoutManager';
 import _ from './util/_';
 
 var format = props => dateLocalizer.getFormat('time', props.format)
 
-export default React.createClass({
+class TimeList extends React.Component {
 
-  displayName: 'TimeList',
-
-  propTypes: {
+  static propTypes = {
     value: React.PropTypes.instanceOf(Date),
     step: React.PropTypes.number,
     min: React.PropTypes.instanceOf(Date),
@@ -25,55 +24,90 @@ export default React.createClass({
     preserveDate: React.PropTypes.bool,
     culture: React.PropTypes.string,
     delay: React.PropTypes.number
-  },
+  }
 
-  mixins: [
-    require('./mixins/TimeoutMixin')
-  ],
+  static defaultProps = {
+    step: 30,
+    onSelect: () => {},
+    min: new Date(1900,  0,  1),
+    max: new Date(2099, 11, 31),
+    preserveDate: true,
+    delay: 300,
+  }
 
-  getDefaultProps(){
-    return {
-      step: 30,
-      onSelect: () => {},
-      min: new Date(1900,  0,  1),
-      max: new Date(2099, 11, 31),
-      preserveDate: true,
-      delay: 300,
-    }
-  },
+  constructor(...args) {
+    super(...args)
 
-  getInitialState(){
-    var data = this._dates(this.props)
-      , focusedItem = this._closestDate(data, this.props.value || this.props.currentDate);
+    this.timeouts = createTimeoutManager(this)
 
-    return {
+    let data = this.getDates(this.props)
+    let focusedItem = this.getClosestDate(data, this.props.value || this.props.currentDate)
+
+    this.state = {
       focusedItem: focusedItem || data[0],
-      dates: data
+      dates: data,
     }
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
-    var data = this._dates(nextProps)
-      , focusedItem = this._closestDate(data, nextProps.value || this.props.currentDate)
-      , valChanged  = !dates.eq(nextProps.value, this.props.value, 'minutes')
-      , minChanged  = !dates.eq(nextProps.min, this.props.min, 'minutes')
-      , maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes')
-      , localeChanged = this.props.format !== nextProps.format
+    let data = this.getDates(nextProps)
+    let focusedItem = this.getClosestDate(data, nextProps.value || nextProps.currentDate)
+
+    let valChanged  = !dates.eq(nextProps.value, this.props.value, 'minutes')
+    let minChanged  = !dates.eq(nextProps.min, this.props.min, 'minutes')
+    let maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes')
+
+    let localeChanged = this.props.format !== nextProps.format
                      || this.props.culture !== nextProps.culture;
 
-    if (valChanged || minChanged || maxChanged || localeChanged){
+    if (valChanged || minChanged || maxChanged || localeChanged) {
       this.setState({
         focusedItem: focusedItem || data[0],
         dates: data
       })
     }
-  },
+  }
 
-  render(){
+  handleKeyDown = (e) => {
+    var key = e.key
+      , focusedItem  = this.state.focusedItem
+      , list = this.refs.list;
+
+    if (key === 'End') {
+      e.preventDefault()
+      this.setState({ focusedItem: list.last() })
+    }
+    else if ( key === 'Home' ) {
+      e.preventDefault()
+      this.setState({ focusedItem: list.first() })
+    }
+    else if ( key === 'Enter' )
+      this.props.onSelect(focusedItem)
+
+    else if ( key === 'ArrowDown' ) {
+      e.preventDefault()
+      this.setState({ focusedItem: list.next(focusedItem) })
+    }
+    else if ( key === 'ArrowUp' ) {
+      e.preventDefault()
+      this.setState({ focusedItem: list.prev(focusedItem) })
+    }
+  }
+
+  handleKeyPress = (e) => {
+    e.preventDefault();
+
+    this.search(String.fromCharCode(e.which), item => {
+      this.isMounted() &&
+        this.setState({ focusedItem: item })
+    })
+  }
+
+  render() {
     let { value, onSelect } = this.props;
 
     var times = this.state.dates
-      , date  = this._closestDate(times, value);
+      , date  = this.getClosestDate(times, value);
 
     return (
       <List
@@ -87,9 +121,9 @@ export default React.createClass({
         focused={this.state.focusedItem}
       />
     )
-  },
+  }
 
-  _closestDate(times, date) {
+  getClosestDate(times, date) {
     var roundTo = 1000 * 60 * this.props.step
       , inst = null
       , label;
@@ -105,15 +139,11 @@ export default React.createClass({
     })
 
     return inst
-  },
+  }
 
-  _data(){
-    return this.state.dates
-  },
-
-  _dates(props){
+  getDates(props) {
     var times  = [], i = 0
-      , values = this._dateValues(props)
+      , values = this.getBounds(props)
       , start  = values.min
       , startDay = dates.date(start);
 
@@ -123,9 +153,9 @@ export default React.createClass({
       start = dates.add(start, props.step || 30, 'minutes')
     }
     return times
-  },
+  }
 
-  _dateValues(props){
+  getBounds(props) {
     var value = props.value || props.currentDate || dates.today()
       , useDate = props.preserveDate
       , min = props.min
@@ -153,54 +183,19 @@ export default React.createClass({
       min: dates.eq(value, min, 'day') ? dates.merge(start, min, props.currentDate) : start,
       max: dates.eq(value, max, 'day') ? dates.merge(start, max, props.currentDate) : end
     }
-  },
+  }
 
-  handleKeyDown(e) {
-    var key = e.key
-      , focusedItem  = this.state.focusedItem
-      , list = this.refs.list;
-
-    if (key === 'End') {
-      e.preventDefault()
-      this.setState({ focusedItem: list.last() })
-    }
-    else if ( key === 'Home' ) {
-      e.preventDefault()
-      this.setState({ focusedItem: list.first() })
-    }
-    else if ( key === 'Enter' )
-      this.props.onSelect(focusedItem)
-
-    else if ( key === 'ArrowDown' ) {
-      e.preventDefault()
-      this.setState({ focusedItem: list.next(focusedItem) })
-    }
-    else if ( key === 'ArrowUp' ) {
-      e.preventDefault()
-      this.setState({ focusedItem: list.prev(focusedItem) })
-    }
-  },
-
-  handleKeyPress(e) {
-    e.preventDefault();
-
-    this.search(String.fromCharCode(e.which), item => {
-      this.isMounted() &&
-        this.setState({ focusedItem: item })
-    })
-  },
-
-  scrollTo() {
+  scrollTo = () => {
     this.refs.list.move
       && this.refs.list.move()
-  },
+  }
 
-  search(character, cb){
+  search(character, cb) {
     var word = ((this._searchTerm || '') + character).toLowerCase();
 
     this._searchTerm = word
 
-    this.setTimeout('search', () => {
+    this.timeouts.set('search', () => {
       var list = this.refs.list
         , item = list.next(this.state.focusedItem, word);
 
@@ -209,5 +204,6 @@ export default React.createClass({
 
     }, this.props.delay)
   }
+}
 
-});
+export default TimeList
