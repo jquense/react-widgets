@@ -72,12 +72,12 @@ class ComboboxInput extends React.Component {
     )
   }
 
-  accept(removeCaret) {
+  accept() {
     var value = findDOMNode(this).value || ''
       , end = value.length;
 
     this._last = null
-    removeCaret && caretPos(findDOMNode(this), end, end)
+    caretPos(findDOMNode(this), end, end)
   }
 
 

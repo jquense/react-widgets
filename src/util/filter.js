@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomPropTypes from './propTypes';
 import { dataText } from './dataHelpers';
-
+import { find } from './_';
 
 export let presets = {
   eq:  (a, b) => a === b,
@@ -25,6 +25,7 @@ export let presets = {
 
 
 function normalizeFilterType(type) {
+  if (type === false) return null
   if (type === true) return 'startsWith'
   return type || 'eq'
 }
@@ -32,7 +33,7 @@ function normalizeFilterType(type) {
 function normalizeFilter({ filter, caseSensitive = false, textField }) {
   filter = normalizeFilterType(filter)
 
-  if (typeof filter === 'function') {
+  if (typeof filter === 'function' || !filter) {
     return filter
   }
 
@@ -68,7 +69,7 @@ export let propTypes = {
   ]),
 }
 
-export function filterIndexOf(data, { searchTerm = '', ...options }) {
+export function indexOf(data, { searchTerm = '', ...options }) {
   let { filter, minLength } = normalizeOptions(options);
 
   var idx = -1
@@ -103,4 +104,18 @@ export function filter(data, { searchTerm = '', ...options }) {
     return data
 
   return data.filter((item, idx) => filter(item, searchTerm, idx))
+}
+
+export function suggest(data, { searchTerm = '', ...options }) {
+  let { filter, minLength } = normalizeOptions(options);
+
+  if (
+    !filter ||
+    !searchTerm ||
+    !searchTerm.trim() ||
+    searchTerm.length < minLength
+  )
+    return searchTerm
+
+  return find(data, (item, idx) => filter(item, searchTerm, idx)) || searchTerm
 }

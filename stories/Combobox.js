@@ -8,12 +8,12 @@ let generateNames = global.generateNames;
 
 let suggestList = [
   { id: 1, fullName: 'Jimmy' },
-  { id: 1, fullName: 'jim' },
-  { id: 1, fullName: 'James' },
-  { id: 1, fullName: 'Jamie' },
-  { id: 1, fullName: 'Jamal' },
-  { id: 1, fullName: 'Jason' },
-  { id: 1, fullName: 'John' },
+  { id: 2, fullName: 'jim' },
+  { id: 3, fullName: 'James' },
+  { id: 4, fullName: 'Jamie' },
+  { id: 5, fullName: 'Jamal' },
+  { id: 6, fullName: 'Jason' },
+  { id: 7, fullName: 'John' },
 ]
 
 let props = {

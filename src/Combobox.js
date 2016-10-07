@@ -1,29 +1,29 @@
 import React from 'react';
 import cn from 'classnames';
+
+import createUncontrolledWidget from 'uncontrollable';
 import _  from './util/_';
-import filter from './util/filter';
+import * as Filter from './util/Filter';
 
 import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
 import Popup from './Popup';
 import Select  from './Select';
 import ComboboxInput from './ComboboxInput';
-
 import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
-
 import validateList from './util/validateListInterface';
-import createUncontrolledWidget from 'uncontrollable';
+import createScrollManager from './util/scrollManager';
+import createFocusManager from './util/focusManager';
+import withRightToLeft from './util/withRightToLeft';
 import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
-let defaultSuggest = f => f === true ? 'startsWith' : f ? f : 'eq'
-
 let propTypes = {
-  ...Popup.propTypes,
+  ...Filter.propTypes,
 
   //-- controlled props -----------
   value:          React.PropTypes.any,
@@ -49,14 +49,13 @@ let propTypes = {
   disabled:       CustomPropTypes.disabled.acceptsArray,
   readOnly:       CustomPropTypes.readOnly,
 
-  suggest:        CustomPropTypes.filter,
-  filter:         CustomPropTypes.filter,
+  suggest:        Filter.propTypes.filter,
 
   busy:           React.PropTypes.bool,
 
+  delay:          React.PropTypes.number,
   dropUp:         React.PropTypes.bool,
   duration:       React.PropTypes.number,
-  delay:          React.PropTypes.number,
 
   placeholder:    React.PropTypes.string,
 
@@ -67,98 +66,186 @@ let propTypes = {
   })
 };
 
-var ComboBox = React.createClass({
+@withRightToLeft
+class ComboBox extends React.Component {
 
-  displayName: 'ComboBox',
+  static propTypes = propTypes;
 
-  mixins: [
-    require('./mixins/TimeoutMixin'),
-    require('./mixins/DataFilterMixin'),
-    require('./mixins/PopupScrollToMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/FocusMixin')({
-      willHandle(focused) {
-        // not suggesting anymore
-        !focused && this.refs.input.accept()
-      },
-      didHandle(focused) {
-        if (!focused) this.close()
-      }
-    })
-  ],
+  static defaultProps = {
+    data: [],
+    value: '',
+    open: false,
+    suggest: false,
+    filter: false,
+    delay: 500,
 
-  propTypes: propTypes,
+    messages: msgs(),
+  };
 
-  getInitialState() {
-    var { value, data, valueField } = this.props
-      , items = this.process(data, value)
-      , idx   = dataIndexOf(items, value, valueField);
+  constructor(props, context) {
+    super(props, context);
 
-    return {
-      selectedItem:  items[idx],
-      focusedItem:   items[!~idx ? 0 : idx],
-      processedData: items,
-      open:          false
-    }
-  },
-
-  getDefaultProps() {
-    return {
-      data: [],
-      value: '',
-      open: false,
-      suggest: false,
-      filter: false,
-      delay: 500,
-
-      messages: msgs(),
-    }
-  },
-
-  componentWillMount() {
     this.inputId = instanceId(this, '_input')
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
-  },
 
-  componentDidUpdate() {
-    this.refs.list && validateList(this.refs.list)
-  },
+    this.handleScroll = createScrollManager(this)
+    this.focusManager = createFocusManager(this, {
+      willHandle: this.handleFocusWillChange,
+      didHandle: this.handleFocusChanged,
+    })
 
-  shouldComponentUpdate(nextProps, nextState){
-    var isSuggesting = this.refs.input && this.refs.input.isSuggesting()
+    this.state = {
+      ...this.getStateFromProps(props),
+      open: false,
+    };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    let isSuggesting = this.refs.input && this.refs.input.isSuggesting()
       , stateChanged = !_.isShallowEqual(nextState, this.state)
       , valueChanged = !_.isShallowEqual(nextProps, this.props)
 
     return isSuggesting || stateChanged || valueChanged
-  },
+  }
+
+  componentDidUpdate() {
+    this.refs.list && validateList(this.refs.list)
+  }
 
   componentWillReceiveProps(nextProps) {
-    let { value, data, valueField, textField } = nextProps
+    this.setState(this.getStateFromProps(nextProps))
+  }
 
-    var rawIdx = dataIndexOf(data, value, valueField)
-      , valueItem = rawIdx === -1 ? nextProps.value : nextProps.data[rawIdx]
-      , isSuggesting = this.refs.input && this.refs.input.isSuggesting()
+  getStateFromProps(props) {
+    let { value, data, filter, valueField, textField } = props;
 
-    let items = this.process(
-        nextProps.data
-      , nextProps.value
-      , (rawIdx === -1 || isSuggesting) && dataText(valueItem, textField)
-    )
+    let index = dataIndexOf(data, value, valueField);
+    let dataItem = index === -1 ? value : data[index]
+    let itemText = dataText(dataItem, textField);
 
-    let idx = dataIndexOf(items, value, valueField)
-      , focused = this.filterIndexOf(items, dataText(valueItem, textField));
+    let searchTerm
+    // filter only when the value is not an item in the data list
+    if (index === -1 || (this.refs.input && this.refs.input.isSuggesting())) {
+      searchTerm = itemText
+    }
 
-    this._searchTerm = '';
+    data = Filter.filter(data, { searchTerm, ...props })
 
-    this.setState({
-      processedData:  items,
-      selectedItem:   items[idx],
-      focusedItem:    items[idx === -1
-        ? focused !== -1 ? focused : 0 // focus the closest match
-        : idx]
-    })
-  },
+    let focusedIndex = index
+    // index may have changed after filtering
+    if (index !== -1) {
+      index = dataIndexOf(data, value, valueField)
+      focusedIndex = index;
+    }
+    else {
+      // value isn't a dataItem so find the close match
+      focusedIndex = Filter.indexOf(data, {
+        searchTerm,
+        textField,
+        filter: filter || true
+      })
+    }
+
+    return {
+      data: data,
+      selectedItem: data[index],
+      focusedItem: focusedIndex === -1 ? data[0] : data[focusedIndex]
+    }
+  }
+
+  handleFocusWillChange = (focused) => {
+    if (!focused && this.refs.input)
+      this.refs.input.accept()
+  };
+
+  handleFocusChanged = (focused) => {
+    if (!focused) this.close()
+  };
+
+  @widgetEditable
+  handleSelect = (data) => {
+    this.close()
+    notify(this.props.onSelect, data)
+    this.change(data)
+    this.focus();
+  };
+
+  handleInputKeyDown = (e) => {
+    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
+    this._isTyping = true
+  };
+
+  handleInputChange = (e) => {
+    let suggestion = this.suggest(e.target.value);
+
+    this.change(suggestion, true)
+    this.open()
+  };
+
+  @widgetEditable
+  handleKeyDown = (e) => {
+    let self = this
+      , key  = e.key
+      , alt  = e.altKey
+      , list = this.refs.list
+      , focusedItem = this.state.focusedItem
+      , selectedItem = this.state.selectedItem
+      , isOpen = this.props.open;
+
+    notify(this.props.onKeyDown, [e])
+
+    if (e.defaultPrevented)
+      return
+
+    if (key === 'End') {
+      e.preventDefault()
+      if ( isOpen ) this.setState({ focusedItem: list.last() })
+      else          select(list.last(), true)
+    }
+    else if (key === 'Home') {
+      e.preventDefault()
+      if (isOpen) this.setState({ focusedItem: list.first() })
+      else        select(list.first(), true)
+    }
+    else if (key === 'Escape' && isOpen)
+      this.close()
+
+    else if (key === 'Enter' && isOpen) {
+      e.preventDefault();
+      select(this.state.focusedItem, true)
+    }
+    else if (key === 'ArrowDown') {
+      e.preventDefault()
+      if (alt)
+        this.open()
+      else {
+        if (isOpen) this.setState({ focusedItem: list.next(focusedItem) })
+        else        select(list.next(selectedItem), true)
+      }
+    }
+    else if ( key === 'ArrowUp' ) {
+      e.preventDefault()
+      if ( alt )
+        this.close()
+      else {
+        if (isOpen) this.setState({ focusedItem: list.prev(focusedItem) })
+        else        select(list.prev(selectedItem), true)
+      }
+    }
+
+    function select(item, fromList) {
+      if (!item)
+        return self.change(compat.findDOMNode(self.refs.input).value, false)
+
+      self.refs.input.accept();
+
+      if (fromList)
+        return self.handleSelect(item)
+
+      self.change(item, false)
+    }
+  };
 
   renderInput() {
     let {
@@ -206,15 +293,14 @@ var ComboBox = React.createClass({
         onKeyDown={this.handleInputKeyDown}
       />
     )
-  },
+  }
 
   renderList(List, messages) {
     let { activeId, inputId, listId } = this;
     let { open, data } = this.props;
-    let { selectedItem, focusedItem } = this.state;
+    let { data: items, selectedItem, focusedItem } = this.state;
 
     let listProps = _.pickProps(this.props, List);
-    let items = this._data();
 
     return (
       <List ref="list"
@@ -228,7 +314,7 @@ var ComboBox = React.createClass({
         aria-labelledby={inputId}
         aria-live={open && 'polite'}
         onSelect={this.handleSelect}
-        onMove={this._scrollTo}
+        onMove={this.handleScroll}
         messages={{
           emptyList: data.length
             ? messages.emptyFilter
@@ -236,9 +322,9 @@ var ComboBox = React.createClass({
         }}
       />
     )
-  },
+  }
 
-  render(){
+  render() {
     let {
         className
       , duration
@@ -264,8 +350,8 @@ var ComboBox = React.createClass({
     return (
       <Widget
         {...elementProps}
-        onBlur={this.handleBlur}
-        onFocus={this.handleFocus}
+        onBlur={this.focusManager.handleBlur}
+        onFocus={this.focusManager.handleFocus}
         onKeyDown={this.handleKeyDown}
         className={cn(className, 'rw-combobox')}
       >
@@ -304,173 +390,56 @@ var ComboBox = React.createClass({
         }
       </Widget>
     )
-  },
-
-  @widgetEditable
-  handleSelect(data){
-    this.close()
-    notify(this.props.onSelect, data)
-    this.change(data)
-    this.focus();
-  },
-
-  handleInputKeyDown(e){
-    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
-    this._isTyping = true
-  },
-
-  handleInputChange(e){
-    let { data, textField } = this.props
-
-    var shouldSuggest = !!this.props.suggest
-      , strVal  = e.target.value
-      , suggestion;
-
-    suggestion = this._deleting || !shouldSuggest
-      ? strVal : this.suggest(this._data(), strVal)
-
-    suggestion = suggestion || strVal
-
-    data = _.find(data,
-      item => dataText(item, textField).toLowerCase() === suggestion.toLowerCase())
-
-    this.change(!this._deleting && data
-      ? data
-      : strVal, true)
-
-    this.open()
-  },
+  }
 
   focus() {
     this.refs.input &&
       this.refs.input.focus()
-  },
+  }
 
-  @widgetEditable
-  handleKeyDown(e){
-    var self = this
-      , key  = e.key
-      , alt  = e.altKey
-      , list = this.refs.list
-      , focusedItem = this.state.focusedItem
-      , selectedItem = this.state.selectedItem
-      , isOpen = this.props.open;
-
-    notify(this.props.onKeyDown, [e])
-    if (e.defaultPrevented)
-      return
-
-    if (key === 'End') {
-      e.preventDefault()
-      if ( isOpen ) this.setState({ focusedItem: list.last() })
-      else          select(list.last(), true)
-    }
-    else if (key === 'Home') {
-      e.preventDefault()
-      if (isOpen) this.setState({ focusedItem: list.first() })
-      else        select(list.first(), true)
-    }
-    else if (key === 'Escape' && isOpen)
-      this.close()
-
-    else if (key === 'Enter' && isOpen) {
-      e.preventDefault();
-      select(this.state.focusedItem, true)
-    }
-    else if (key === 'ArrowDown') {
-      e.preventDefault()
-      if ( alt )
-        this.open()
-      else {
-        if ( isOpen ) this.setState({ focusedItem: list.next(focusedItem) })
-        else          select(list.next(selectedItem), true)
-      }
-    }
-    else if ( key === 'ArrowUp' ) {
-      e.preventDefault()
-      if ( alt )
-        this.close()
-      else {
-        if ( isOpen ) this.setState({ focusedItem: list.prev(focusedItem) })
-        else          select(list.prev(selectedItem), true)
-      }
-    }
-
-    function select(item, fromList) {
-      if(!item)
-        return self.change(compat.findDOMNode(self.refs.input).value, false)
-
-      self.refs.input.accept(true); //removes caret
-
-      if(fromList)
-        return self.handleSelect(item)
-
-      self.change(item, false)
-    }
-  },
-
-  change(data, typing){
+  change(data, typing) {
     this._typedChange = !!typing
     notify(this.props.onChange, data)
-  },
+  }
 
-  open(){
-    if ( !this.props.open )
+  open() {
+    if (!this.props.open)
       notify(this.props.onToggle, true)
-  },
+  }
 
-  close(){
-    if ( this.props.open )
+  close() {
+    if (this.props.open)
       notify(this.props.onToggle, false)
-  },
+  }
 
   @widgetEditable
-  toggle(){
+  toggle = () => {
     this.focus()
 
     this.props.open
       ? this.close()
       : this.open()
-  },
+  };
 
-  suggest(data, value) {
+  suggest(searchTerm) {
     let { textField, suggest, minLength } = this.props
+    let { data } = this.state;
 
-    var word = dataText(value, textField)
-      , suggestion;
+    if (!this._deleting)
+      return Filter.suggest(data, {
+        minLength,
+        textField,
+        searchTerm,
+        filter: suggest,
+        caseSensitive: false
+      })
 
-    suggest = defaultSuggest(suggest)
-
-    if (!(word || '').trim() || word.length < (minLength || 1))
-      return ''
-
-    suggestion = typeof value === 'string'
-        ? _.find(data, getFilter(suggest, word, textField))
-        : value
-
-    if ( suggestion && (!this.state || !this.state.deleting))
-      return dataText(suggestion, textField)
-
-    return ''
-  },
-
-  _data() {
-    return this.state.processedData
-  },
-
-  process(data, values, searchTerm) {
-    if (this.props.filter && searchTerm)
-      data = this.filter(data, searchTerm)
-
-    return data
+    return searchTerm
   }
-})
-
-
+}
 
 export default createUncontrolledWidget(
       ComboBox, { open: 'onToggle', value: 'onChange' }, ['focus']);
-
 
 
 function msgs(msgs){
@@ -480,10 +449,4 @@ function msgs(msgs){
     emptyFilter: 'The filter returned no results',
     ...msgs
   }
-}
-
-function getFilter(suggest, word, textField){
-  return typeof suggest === 'string'
-      ? item => filter[suggest](dataText(item, textField).toLowerCase(), word.toLowerCase())
-      : item => suggest(item, word)
 }
