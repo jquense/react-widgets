@@ -8,6 +8,10 @@ export let isRtl = instance => !!(
 );
 
 export default function withRightToLeft(componentClass) {
+  componentClass.prototype.isRtl = function $isRtl() {
+    return isRtl(this)
+  }
+
   return mixInContext(componentClass, {
     propTypes: {
       isRtl: React.PropTypes.bool

@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import uncontrollable from 'uncontrollable';
 
 import compat from './util/compat';
 import Widget from './Widget';
@@ -9,13 +10,14 @@ import Month from './Month';
 import Year from './Year';
 import Decade from './Decade';
 import Century from './Century';
+import SlideTransition from './SlideTransition';
 import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
-
-import createUncontrolledWidget from 'uncontrollable';
-import SlideTransition from './SlideTransition';
 import dates from './util/dates';
 import * as constants from './util/constants';
+import autoFocus from './util/autoFocus';
+import createFocusManager from './util/focusManager';
+import withRightToLeft from './util/withRightToLeft';
 import _ from './util/_'; //values, omit
 import { instanceId, notify } from './util/widgetHelpers';
 import { widgetEditable } from './util/interaction';
@@ -58,6 +60,8 @@ let format = (props, f) => dateLocalizer.getFormat(f, props[f + 'Format'])
 
 
 let propTypes = {
+  ...autoFocus.propTypes,
+
   activeId: React.PropTypes.string,
   disabled: CustomPropTypes.disabled,
   readOnly: CustomPropTypes.readOnly,
@@ -74,9 +78,8 @@ let propTypes = {
   view: React.PropTypes.oneOf(VIEW_OPTIONS),
   initialView: React.PropTypes.oneOf(VIEW_OPTIONS),
 
-
   finalView(props, propName, componentName, ...args) {
-    var err = React.PropTypes.oneOf(VIEW_OPTIONS)(props, propName, componentName, ...args)
+    let err = React.PropTypes.oneOf(VIEW_OPTIONS)(props, propName, componentName, ...args)
 
     if (err) return err
     if (VIEW_OPTIONS.indexOf(props[propName]) < VIEW_OPTIONS.indexOf(props.initialView))
@@ -106,57 +109,47 @@ let propTypes = {
   })
 }
 
-let Calendar = React.createClass({
+@withRightToLeft
+class Calendar extends React.Component {
+  static displayName = 'Calendar';
 
-  displayName: 'Calendar',
+  static propTypes = propTypes;
 
-  mixins: [
-    require('./mixins/TimeoutMixin'),
-    require('./mixins/AutoFocusMixin'),
-    require('./mixins/PureRenderMixin'),
-    require('./mixins/RtlParentContextMixin'),
-    require('./mixins/FocusMixin')({
-      willHandle() {
-        if (+this.props.tabIndex === -1)
-          return false
-      }
-    })
-  ],
+  static defaultProps = {
 
-  propTypes,
+    value:        null,
+    min:          new Date(1900, 0, 1),
+    max:          new Date(2099, 11, 31),
 
-  getInitialState(){
-    return {
-      selectedIndex: 0,
-      view: this.props.initialView || 'month'
-    }
-  },
+    initialView:  'month',
+    finalView:    'century',
 
-  getDefaultProps() {
-    return {
+    tabIndex:     '0',
+    footer:        true,
 
-      value:        null,
-      min:          new Date(1900, 0, 1),
-      max:          new Date(2099, 11, 31),
+    messages: msgs({})
+  };
 
-      initialView:  'month',
-      finalView:    'century',
+  constructor(...args) {
+    super(...args)
 
-      tabIndex:     '0',
-      footer:        true,
-
-      messages: msgs({})
-    }
-  },
-
-  componentWillMount() {
     this.viewId = instanceId(this, '_calendar')
     this.labelId = instanceId(this, '_calendar_label')
     this.activeId = (
       this.props.activeId ||
       instanceId(this, '_calendar_active_cell')
     )
-  },
+
+    autoFocus(this);
+    this.focusManager = createFocusManager(this, {
+      didHandle: this.handleFocusChanged
+    })
+
+    this.state = {
+      selectedIndex: 0,
+      view: this.props.initialView || 'month'
+    }
+  }
 
   componentWillReceiveProps({ initialView, finalView, value, currentDate }) {
     let bottom  = VIEW_OPTIONS.indexOf(initialView)
@@ -174,145 +167,30 @@ let Calendar = React.createClass({
     if (!dates.eq(val, dateOrNull(this.props.value), VIEW_UNIT[view])) {
       this.setCurrentDate(val, currentDate)
     }
-  },
+  }
 
-  getCurrentDate() {
-    return this.props.currentDate || this.props.value || new Date()
-  },
-
-  render() {
-
-    let {
-        className
-      , value
-      , footerFormat
-      , disabled
-      , readOnly
-      , finalView
-      , footer
-      , messages
-      , min
-      , max
-      , culture
-      , duration
-      , tabIndex } = this.props
-
-    let { view, slideDirection, focused } = this.state;
-    let currentDate = this.getCurrentDate();
-
-    var View = VIEW[view]
-      , unit = VIEW_UNIT[view]
-      , todaysDate = new Date()
-      , todayNotInRange = !dates.inRange(todaysDate, min, max, view)
-
-    unit = unit === 'day' ? 'date' : unit
-
-    let key = view + '_' + dates[view](currentDate);
-
-    let elementProps = _.omitOwnProps(this)
-      , viewProps  = _.pickProps(this.props, View)
-
-    let isDisabled = disabled || readOnly
-
-    messages = msgs(this.props.messages)
-
-    return (
-      <Widget
-        {...elementProps}
-        role='group'
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
-        tabIndex={tabIndex || 0}
-        onBlur={this.handleBlur}
-        onFocus={this.handleFocus}
-        onKeyDown={this.handleKeyDown}
-        className={cn(className, 'rw-calendar rw-widget-container')}
-        aria-activedescendant={this.activeId}
-      >
-        <Header
-          label={this._label()}
-          labelId={this.labelId}
-          messages={messages}
-          upDisabled={  isDisabled || view === finalView}
-          prevDisabled={isDisabled || !dates.inRange(this.nextDate(dir.LEFT), min, max, view)}
-          nextDisabled={isDisabled || !dates.inRange(this.nextDate(dir.RIGHT), min, max, view)}
-          onViewChange={this.navigate.bind(null, dir.UP, null)}
-          onMoveLeft ={this.navigate.bind(null,  dir.LEFT, null)}
-          onMoveRight={this.navigate.bind(null,  dir.RIGHT, null)}
-        />
-        <SlideTransition
-          ref='animation'
-          duration={duration}
-          direction={slideDirection}
-          onAnimate={() => focused && this.focus()}
-        >
-          <View
-            {...viewProps}
-            key={key}
-            id={this.viewId}
-            activeId={this.activeId}
-            value={value}
-            today={todaysDate}
-            disabled={disabled}
-            focused={currentDate}
-            onChange={this.change}
-            onKeyDown={this.handleKeyDown}
-            aria-labelledby={this.labelId}
-          />
-        </SlideTransition>
-        {footer &&
-          <Footer
-            value={todaysDate}
-            format={footerFormat}
-            culture={culture}
-            disabled={disabled || todayNotInRange}
-            readOnly={readOnly}
-            onClick={this.select}
-          />
-        }
-      </Widget>
-    )
-  },
+  handleFocusChanged = () => {
+    if (+this.props.tabIndex === -1)
+      return false
+  }
 
   @widgetEditable
-  navigate(direction, date){
-    var view     =  this.state.view
-      , slideDir = (direction === dir.LEFT || direction === dir.UP)
-          ? 'right'
-          : 'left';
-
-    if ( !date )
-      date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
-        ? this.nextDate(direction)
-        : this.getCurrentDate()
-
-    if (direction === dir.DOWN )
-      view = ALT_VIEW[view] || view
-
-    if (direction === dir.UP )
-      view = NEXT_VIEW[view] || view
-
-    if (this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
-      notify(this.props.onNavigate, [date, slideDir, view])
-      this.focus(true);
-
-      this.setCurrentDate(date);
-
-      this.setState({
-        slideDirection: slideDir,
-        view: view
-      })
-    }
-  },
-
-  focus() {
-    if (+this.props.tabIndex > -1)
-      compat.findDOMNode(this).focus()
-  },
+  handleViewChange = () => {
+    this.navigate(dir.UP);
+  }
 
   @widgetEditable
-  change(date) {
+  handleMoveBack = () => {
+    this.navigate(dir.LEFT);
+  }
+
+  @widgetEditable
+  handleMoveForward = () => {
+    this.navigate(dir.RIGHT);
+  }
+
+  @widgetEditable
+  handleChange = (date) => {
     let isAtBottomView = this.state.view === this.props.initialView;
 
     if (isAtBottomView) {
@@ -325,18 +203,10 @@ let Calendar = React.createClass({
     }
 
     this.navigate(dir.DOWN, date)
-  },
-
-  setCurrentDate(date, currentDate = this.getCurrentDate()) {
-    var inRangeDate = this.inRangeValue(date ? new Date(date) : currentDate)
-
-    if (dates.eq(inRangeDate, dateOrNull(currentDate), VIEW_UNIT[this.state.view]))
-      return
-    notify(this.props.onCurrentDateChange, inRangeDate)
-  },
+  };
 
   @widgetEditable
-  select(date){
+  handleFooterClick = (date) => {
     let { initialView, min, max } = this.props;
     let { view: currentView } = this.state;
 
@@ -361,20 +231,11 @@ let Calendar = React.createClass({
         view: initialView
       })
     }
-  },
+  };
 
-  nextDate(direction) {
-    var method = direction === dir.LEFT ? 'subtract' : 'add'
-      , view   = this.state.view
-      , unit   = view === views.MONTH ? view : views.YEAR
-      , multi  = MULTIPLIER[view] || 1;
-
-    return dates[method](this.getCurrentDate(), 1 * multi, unit)
-  },
-
-   @widgetEditable
-  handleKeyDown(e) {
-    var ctrl = e.ctrlKey || e.metaKey
+  @widgetEditable
+  handleKeyDown = (e) => {
+    let ctrl = e.ctrlKey || e.metaKey
       , key  = e.key
       , direction = ARROWS_TO_DIRECTION[key]
       , currentDate = this.getCurrentDate()
@@ -383,7 +244,7 @@ let Calendar = React.createClass({
 
     if (key === 'Enter') {
       e.preventDefault()
-      return this.change(currentDate)
+      return this.handleChange(currentDate)
     }
 
     if (direction) {
@@ -419,10 +280,160 @@ let Calendar = React.createClass({
     }
 
     notify(this.props.onKeyDown, [e])
-  },
+  };
 
-  _label() {
-    var {
+  render() {
+    let {
+        className
+      , value
+      , footerFormat
+      , disabled
+      , readOnly
+      , finalView
+      , footer
+      , messages
+      , min
+      , max
+      , culture
+      , duration
+      , tabIndex } = this.props
+
+    let { view, slideDirection, focused } = this.state;
+    let currentDate = this.getCurrentDate();
+
+    let View = VIEW[view]
+      , unit = VIEW_UNIT[view]
+      , todaysDate = new Date()
+      , todayNotInRange = !dates.inRange(todaysDate, min, max, view)
+
+    unit = unit === 'day' ? 'date' : unit
+
+    let key = view + '_' + dates[view](currentDate);
+
+    let elementProps = _.omitOwnProps(this)
+      , viewProps  = _.pickProps(this.props, View)
+
+    let isDisabled = disabled || readOnly
+
+    messages = msgs(this.props.messages)
+
+    return (
+      <Widget
+        {...elementProps}
+        role='group'
+        focused={focused}
+        disabled={disabled}
+        readOnly={readOnly}
+        tabIndex={tabIndex || 0}
+        onKeyDown={this.handleKeyDown}
+        onBlur={this.focusManager.handleBlur}
+        onFocus={this.focusManager.handleFocus}
+        className={cn(className, 'rw-calendar rw-widget-container')}
+        aria-activedescendant={this.activeId}
+      >
+        <Header
+          label={this.getHeaderLabel()}
+          labelId={this.labelId}
+          messages={messages}
+          upDisabled={isDisabled || view === finalView}
+          prevDisabled={isDisabled || !dates.inRange(this.nextDate(dir.LEFT), min, max, view)}
+          nextDisabled={isDisabled || !dates.inRange(this.nextDate(dir.RIGHT), min, max, view)}
+          onViewChange={this.handleViewChange}
+          onMoveLeft ={this.handleMoveBack}
+          onMoveRight={this.handleMoveForward}
+        />
+        <SlideTransition
+          ref='animation'
+          duration={duration}
+          direction={slideDirection}
+          onAnimate={() => focused && this.focus()}
+        >
+          <View
+            {...viewProps}
+            key={key}
+            id={this.viewId}
+            activeId={this.activeId}
+            value={value}
+            today={todaysDate}
+            disabled={disabled}
+            focused={currentDate}
+            onChange={this.handleChange}
+            onKeyDown={this.handleKeyDown}
+            aria-labelledby={this.labelId}
+          />
+        </SlideTransition>
+        {footer &&
+          <Footer
+            value={todaysDate}
+            format={footerFormat}
+            culture={culture}
+            disabled={disabled || todayNotInRange}
+            readOnly={readOnly}
+            onClick={this.handleFooterClick}
+          />
+        }
+      </Widget>
+    )
+  }
+
+  navigate(direction, date) {
+    let view     =  this.state.view
+      , slideDir = (direction === dir.LEFT || direction === dir.UP)
+          ? 'right'
+          : 'left';
+
+    if ( !date )
+      date = [ dir.LEFT, dir.RIGHT ].indexOf(direction) !== -1
+        ? this.nextDate(direction)
+        : this.getCurrentDate()
+
+    if (direction === dir.DOWN )
+      view = ALT_VIEW[view] || view
+
+    if (direction === dir.UP )
+      view = NEXT_VIEW[view] || view
+
+    if (this.isValidView(view) && dates.inRange(date, this.props.min, this.props.max, view)) {
+      notify(this.props.onNavigate, [date, slideDir, view])
+      this.focus(true);
+
+      this.setCurrentDate(date);
+
+      this.setState({
+        slideDirection: slideDir,
+        view: view
+      })
+    }
+  }
+
+  focus() {
+    if (+this.props.tabIndex > -1)
+      compat.findDOMNode(this).focus()
+  }
+
+  getCurrentDate() {
+    return this.props.currentDate || this.props.value || new Date()
+  }
+
+  setCurrentDate(date, currentDate = this.getCurrentDate()) {
+    let inRangeDate = this.inRangeValue(date ? new Date(date) : currentDate)
+
+    if (dates.eq(inRangeDate, dateOrNull(currentDate), VIEW_UNIT[this.state.view]))
+      return
+    notify(this.props.onCurrentDateChange, inRangeDate)
+  }
+
+  nextDate(direction) {
+    let method = direction === dir.LEFT ? 'subtract' : 'add'
+      , view   = this.state.view
+      , unit   = view === views.MONTH ? view : views.YEAR
+      , multi  = MULTIPLIER[view] || 1;
+
+    return dates[method](this.getCurrentDate(), 1 * multi, unit)
+  }
+
+  getHeaderLabel() {
+    let {
         culture
       , ...props } = this.props
       , view = this.state.view
@@ -448,33 +459,33 @@ let Calendar = React.createClass({
           culture
         )
     }
-  },
+  }
 
-  inRangeValue(_value){
-    var value = dateOrNull(_value)
+  inRangeValue(_value) {
+    let value = dateOrNull(_value)
 
     if( value === null) return value
 
     return dates.max(
         dates.min(value, this.props.max)
       , this.props.min)
-  },
+  }
 
   isValidView(next) {
-    var bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
+    let bottom  = VIEW_OPTIONS.indexOf(this.props.initialView)
       , top     = VIEW_OPTIONS.indexOf(this.props.finalView)
       , current = VIEW_OPTIONS.indexOf(next);
 
     return current >= bottom && current <= top
   }
-});
+}
 
-function dateOrNull(dt){
-  if(dt && !isNaN(dt.getTime())) return dt
+function dateOrNull(dt) {
+  if (dt && !isNaN(dt.getTime())) return dt
   return null
 }
 
-function msgs(msgs){
+function msgs(msgs) {
   return {
     moveBack:     'navigate back',
     moveForward:  'navigate forward',
@@ -483,7 +494,7 @@ function msgs(msgs){
 }
 
 
-export default createUncontrolledWidget(Calendar, {
+export default uncontrollable(Calendar, {
   value: 'onChange',
   currentDate: 'onCurrentDateChange',
   view: 'onViewChange'
