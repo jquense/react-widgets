@@ -5,11 +5,13 @@ import Button from './Button';
 
 class MultiselectTag extends React.Component {
   static propTypes = {
+    id: React.PropTypes.string.isRequired,
     onClick: React.PropTypes.func.isRequired,
     focused: React.PropTypes.bool,
     readOnly: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
     label: React.PropTypes.string,
+    value: React.PropTypes.any,
   }
 
   onClick = () => {

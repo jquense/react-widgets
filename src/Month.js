@@ -24,7 +24,8 @@ class MonthView extends React.Component {
 
     dayComponent: CustomPropTypes.elementType,
     dayFormat: CustomPropTypes.dateFormat,
-    dateFormat: CustomPropTypes.dateFormat
+    dateFormat: CustomPropTypes.dateFormat,
+    disabled: React.PropTypes.bool,
   };
 
   static isEqual = isEqual;

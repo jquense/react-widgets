@@ -16,7 +16,11 @@ class DateTimePickerInput extends React.Component {
 
     value: React.PropTypes.instanceOf(Date),
     onChange: React.PropTypes.func.isRequired,
-    culture: React.PropTypes.string
+    onBlur: React.PropTypes.func,
+    culture: React.PropTypes.string,
+
+    disabled: CustomPropTypes.disabled,
+    readOnly: CustomPropTypes.readOnly,
   };
 
   constructor(...args) {

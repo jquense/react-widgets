@@ -142,14 +142,16 @@ class TimeList extends React.Component {
   }
 
   getDates(props) {
-    var times  = [], i = 0
-      , values = this.getBounds(props)
-      , start  = values.min
-      , startDay = dates.date(start);
+    let times  = [];
+    let values = this.getBounds(props)
+    let start  = values.min
+    let startDay = dates.date(start);
 
     while (dates.date(start) === startDay && dates.lte(start, values.max)) {
-      i++
-      times.push({ date: start, label: dateLocalizer.format(start, format(props), props.culture) })
+      times.push({
+        date: start,
+        label: dateLocalizer.format(start, format(props), props.culture)
+      })
       start = dates.add(start, props.step || 30, 'minutes')
     }
     return times

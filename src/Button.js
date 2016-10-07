@@ -2,6 +2,15 @@ import React from 'react';
 import cn from 'classnames';
 
 class Button extends React.Component {
+  static propTypes = {
+    disabled: React.PropTypes.bool,
+    label: React.PropTypes.string,
+    icon: React.PropTypes.string,
+    busy: React.PropTypes.bool,
+    active: React.PropTypes.bool,
+    variant: React.PropTypes.oneOf(['primary', 'select']),
+    component: React.PropTypes.any,
+  };
 
   render() {
     let {

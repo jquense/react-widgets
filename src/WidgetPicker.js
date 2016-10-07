@@ -2,6 +2,14 @@ import React from 'react';
 import cn from 'classnames';
 
 class WidgetPicker extends React.Component {
+  static propTypes = {
+    tabIndex: React.PropTypes.node,
+    focused: React.PropTypes.bool,
+    disabled: React.PropTypes.bool,
+    readOnly: React.PropTypes.bool,
+    open: React.PropTypes.bool,
+    dropUp: React.PropTypes.bool,
+  };
 
   render() {
     let {

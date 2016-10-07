@@ -302,11 +302,8 @@ class Calendar extends React.Component {
     let currentDate = this.getCurrentDate();
 
     let View = VIEW[view]
-      , unit = VIEW_UNIT[view]
       , todaysDate = new Date()
       , todayNotInRange = !dates.inRange(todaysDate, min, max, view)
-
-    unit = unit === 'day' ? 'date' : unit
 
     let key = view + '_' + dates[view](currentDate);
 

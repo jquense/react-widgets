@@ -2,6 +2,14 @@ import React from 'react';
 import cn from 'classnames';
 
 class Input extends React.Component {
+  static propTypes = {
+    disabled: React.PropTypes.bool,
+    readOnly: React.PropTypes.bool,
+    value: React.PropTypes.string,
+    tabIndex: React.PropTypes.string,
+    component: React.PropTypes.any,
+  };
+
   render() {
     let {
         className

@@ -39,14 +39,16 @@ class CalendarViewCell extends React.Component {
     id: React.PropTypes.string,
     activeId: React.PropTypes.string.isRequired,
     label: React.PropTypes.string,
-    today: React.PropTypes.instanceOf(Date),
+    now: React.PropTypes.instanceOf(Date),
+    date: React.PropTypes.instanceOf(Date),
     selected: React.PropTypes.instanceOf(Date),
     focused: React.PropTypes.instanceOf(Date),
     min: React.PropTypes.instanceOf(Date),
     max: React.PropTypes.instanceOf(Date),
     unit: React.PropTypes.oneOf(['day', ...VIEW_UNITS]),
     viewUnit: React.PropTypes.oneOf(VIEW_UNITS),
-    onChange: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func.isRequired,
+    disabled: React.PropTypes.bool,
   };
 
   isEqual(date) {

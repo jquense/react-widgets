@@ -7,10 +7,16 @@ import { contains } from './util/interaction';
 export default function getSelectListItem(parent) {
 
   class SelectListItem extends React.Component {
-    handleChange = (e) => {
-      let { disabled, readonly, dataItem } = this.props;
+    static propTypes = {
+      disabled: React.PropTypes.bool,
+      readOnly: React.PropTypes.bool,
+      dataItem: React.PropTypes.any,
+    };
 
-      if (!disabled && !readonly)
+    handleChange = (e) => {
+      let { disabled, readOnly, dataItem } = this.props;
+
+      if (!disabled && !readOnly)
         parent.handleChange(dataItem, e.target.checked)
     };
 
@@ -53,7 +59,7 @@ export default function getSelectListItem(parent) {
               disabled={disabled || readOnly}
               onChange={this.handleChange}
             />
-              { children }
+              {children}
           </label>
         </ListOption>
       );

@@ -19,7 +19,8 @@ class CenturyView extends React.Component {
     min: React.PropTypes.instanceOf(Date),
     max: React.PropTypes.instanceOf(Date),
     onChange: React.PropTypes.func.isRequired,
-    decadeFormat: CustomPropTypes.dateFormat
+    decadeFormat: CustomPropTypes.dateFormat,
+    disabled: React.PropTypes.bool,
   };
 
   render(){

@@ -10,7 +10,7 @@ function getInteractionPropType(key){
   return propType
 }
 
-module.exports = {
+export default {
 
   elementType: createChainableTypeChecker(
     function (props, propName, componentName) {

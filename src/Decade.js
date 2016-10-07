@@ -18,7 +18,8 @@ class DecadeView extends React.Component {
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
 
-    yearFormat:   CustomPropTypes.dateFormat
+    yearFormat:   CustomPropTypes.dateFormat,
+    disabled: React.PropTypes.bool,
   };
 
   render(){

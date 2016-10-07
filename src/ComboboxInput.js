@@ -9,8 +9,10 @@ class ComboboxInput extends React.Component {
 
   static propTypes = {
     value: React.PropTypes.string,
+    placeholder: React.PropTypes.string,
     suggest: React.PropTypes.bool,
-    onChange: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func.isRequired,
+    onKeyDown:  React.PropTypes.func,
   };
 
   static defaultProps = {

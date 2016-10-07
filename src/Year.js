@@ -6,11 +6,12 @@ import { date as dateLocalizer } from './util/localizers';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 
-var format = props => dateLocalizer.getFormat('month', props.monthFormat)
+let format = props => dateLocalizer.getFormat('month', props.monthFormat)
 
 class YearView extends React.Component {
 
   static propTypes = {
+    activeId: React.PropTypes.string,
     culture:      React.PropTypes.string,
     today:        React.PropTypes.instanceOf(Date),
     value:        React.PropTypes.instanceOf(Date),
@@ -19,7 +20,8 @@ class YearView extends React.Component {
     max:          React.PropTypes.instanceOf(Date),
     onChange:     React.PropTypes.func.isRequired,
 
-    monthFormat:  CustomPropTypes.dateFormat
+    monthFormat:  CustomPropTypes.dateFormat,
+    disabled: React.PropTypes.bool,
   };
 
   render() {

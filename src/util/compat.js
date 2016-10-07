@@ -3,13 +3,13 @@ import ReactDOM  from 'react-dom';
 
 var version = React.version.split('.').map(parseFloat);
 
-module.exports = {
+export default {
 
-  version(){
+  version() {
     return version;
   },
 
-  findDOMNode(component){
+  findDOMNode(component) {
     return ReactDOM.findDOMNode(component)
   },
 
