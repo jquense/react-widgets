@@ -29,6 +29,7 @@ var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
 
 var propTypes = {
   ...Popup.propTypes,
+  ...Filter.propTypes,
 
   data:            React.PropTypes.array,
   //-- controlled props --
