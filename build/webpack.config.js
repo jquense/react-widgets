@@ -1,7 +1,7 @@
 var merge = require('webpack-merge');
 var path = require('path')
   , webpack = require('webpack')
-  , ExtractTextPlugin = require('extract-text-webpack-plugin')
+//  , ExtractTextPlugin = require('extract-text-webpack-plugin')
   , pkg = require('../package.json');
 
 var TARGET = process.env.NODE_ENV || 'development';
