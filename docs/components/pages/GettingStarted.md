@@ -133,14 +133,14 @@ jQuery `$.animate()` API closely so you can use it as a drop in replacement.
 ##### With the Configure module
 ```js
 require('react-widgets/lib/configure')
-  .setAnimate(function (element, props, duration, ease, callback) {
+  .setAnimate((element, props, duration, ease, callback) => {
     $(element).animate(props, duration, callback)
   })
 ```
 ##### From the main export
 ```js
 require('react-widgets')
-  .setAnimate(function (element, props, duration, ease, callback) {
+  .setAnimate((element, props, duration, ease, callback) => {
     $(element).animate(props, duration, callback)
   })
 ```
@@ -151,5 +151,5 @@ Styling each widget should be a simple matter of adjusting the relevant LESS var
 Included by default is a "Twitter Bootstrap" theme that mimics the look and feel of Twitter Bootstrap 3.0.
 This is less an actual theme and more a neutral starting point for creating your own theme.
 
-- Widget styles with LESS variables (see `./lib/less/bootstrap-theme.less` for reference).
+- Widget styles with LESS variables (see `./lib/less/variables.less` for reference).
 - Icon fonts can be swapped out in the `./lib/less/icons.less` file

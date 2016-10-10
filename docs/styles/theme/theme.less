@@ -44,16 +44,16 @@
 
 @nav-link-hover-bg: transparent;
 
-.nav > li {
+.dropdown-menu > li {
   & > a {
     position: relative;
     color: @blue;
-    transition: all 150ms;
+    //transition: all 150ms;
 
     &:after {
       content: '';
       position: absolute;
-      bottom: 0; top: 0; right: 0;
+      bottom: 0; top: 0; left: 0;
       width: 4px;
       transition: all 150ms;
     }
@@ -66,7 +66,7 @@
     color: @dark-blue;
 
     &:after {
-      border-right: 4px solid @dark-blue;
+      border-left: 4px solid @dark-blue;
     }
   }
 }

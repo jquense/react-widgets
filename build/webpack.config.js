@@ -116,11 +116,11 @@ if (DOCS) {
         },
         {
           test: /\.api\.md$/,
-          loader: 'babel!' + path.join(__dirname, '../docs/vendor/apiLoader')
+          loader: 'babel!' + path.join(__dirname, '../docs/tools/apiLoader')
         },
         {
           test: /.md$/,
-          loader: 'babel!' + path.join(__dirname, '../docs/vendor/mdLoader'),
+          loader: 'babel!' + path.join(__dirname, '../docs/tools/mdLoader'),
           exclude: /\.api\.md$/
         }
       ]

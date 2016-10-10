@@ -200,7 +200,7 @@ class ComboBox extends React.Component {
 
     if (key === 'End') {
       e.preventDefault()
-      if ( isOpen ) this.setState({ focusedItem: list.last() })
+      if (isOpen) this.setState({ focusedItem: list.last() })
       else          select(list.last(), true)
     }
     else if (key === 'Home') {
@@ -214,6 +214,9 @@ class ComboBox extends React.Component {
     else if (key === 'Enter' && isOpen) {
       e.preventDefault();
       select(this.state.focusedItem, true)
+    }
+    else if (key === 'Tab') {
+      this.refs.input.accept();
     }
     else if (key === 'ArrowDown') {
       e.preventDefault()
