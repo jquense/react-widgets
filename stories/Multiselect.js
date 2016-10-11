@@ -75,6 +75,14 @@ storiesOf('Multiselect', module)
       />
     </Container>
   )
+  .add('long tags', () =>
+    <Container>
+      <Multiselect
+        style={{ width: 200 }}
+        defaultValue={['john jacob jingleheimer schmidt']}
+      />
+    </Container>
+  )
   .add('tag component', () =>
     <Container>
       <Multiselect

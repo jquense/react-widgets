@@ -11,7 +11,7 @@ export default function Footer({
   format
 }) {
   return (
-    <div className='rw-footer'>
+    <div className='rw-calendar-footer'>
       <Button
         disabled={!!(disabled || readOnly)}
         onClick={onClick.bind(null, value)}

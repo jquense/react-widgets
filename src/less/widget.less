@@ -15,12 +15,19 @@
 }
 
 .rw-widget {
-  .border-box;
+  .border-box();
+
   border: none;
   color: @text-color;
   font-size: @font-size;
   outline: none;
   position: relative;
+
+  // ensure that the "chrome" is the same width as the actual container
+  & > .rw-widget-container {
+    width: 100%;
+    margin: 0;
+  }
 }
 
 
@@ -31,7 +38,7 @@
 
   &.rw-state-focus,
   &.rw-state-focus:hover {
-    .box-shadow(@input-focus-box-shadow);
+    box-shadow: @input-focus-box-shadow;
     border-color: @input-border-focus;
   }
 
@@ -43,7 +50,7 @@
     &,
     &:hover,
     &:active {
-      .box-shadow(none);
+      box-shadow: none;
       .state-disabled();
       background-color: @input-bg-disabled;
     }
@@ -55,7 +62,7 @@
   overflow: hidden;
   border-radius: @input-border-radius;
   border-collapse: separate;
-  display: table;
+  display: inline-table;
   height: @input-height;
 
   & > * {
@@ -150,9 +157,9 @@
 
 //input inset
 .rw-widget-input {
-  .box-shadow(@input-box-shadow);
+  box-shadow: @input-box-shadow;
 }
 
 .rw-widget-input.rw-state-focus {
-  .box-shadow(~"@{input-focus-box-shadow}, @{input-box-shadow}");
+  box-shadow: ~"@{input-focus-box-shadow}, @{input-box-shadow}";
 }

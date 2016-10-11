@@ -9,23 +9,24 @@
 .rw-calendar {
   border-radius: @border-radius;
   background-color: @calendar-bg;
-  border:           @widget-border 1px solid;
+  border: @widget-border 1px solid;
+  overflow: hidden;
 }
 
-.rw-now {
+.rw-calendar-now {
   font-weight: bold;
 }
 
-.rw-btn-left,
-.rw-btn-right {
+.rw-calendar-btn-left,
+.rw-calendar-btn-right {
   width: 12.5%;
 }
 
-.rw-btn-view {
+.rw-calendar-btn-view {
   width: 75%;
 }
 
-.rw-footer {
+.rw-calendar-footer {
   border-top: 1px solid @input-border;
 
   &:hover {

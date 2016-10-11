@@ -33,7 +33,7 @@
     "tdd": "cross-env NODE_ENV=test karma start",
     "lint": "eslint src test --ext .js",
     "to-sass": "node ./build/lessToSass.js",
-    "less": "lessc -x --autoprefix=\"ie >= 9\" src/less/react-widgets.less dist/css/react-widgets.css",
+    "less": "lessc -x --autoprefix=\"ie >= 8\" src/less/react-widgets.less dist/css/react-widgets.css",
     "styles": "cpy src/less/* lib/less/ && npm run to-sass",
     "assets:lib": "cpy src/img/* lib/img/ && cpy src/fonts/* lib/fonts/",
     "assets:dist": "cpy src/img/* dist/img/ && cpy src/fonts/* dist/fonts/",

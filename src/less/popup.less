@@ -30,16 +30,17 @@
 }
 
 .rw-popup {
-  .box-shadow(@popup-box-shadow);
   .border-top-radius(0);
   .border-bottom-radius(@border-radius-sm);
 
+  box-shadow:       @popup-box-shadow;
   border:           @popup-border 1px solid;
   background:       @popup-bg;
 
   .rw-dropup & {
-    .box-shadow(@popup-box-shadow-up);
     .border-bottom-radius(0);
     .border-top-radius(@border-radius-sm);
+
+    box-shadow: @popup-box-shadow-up;
   }
 }

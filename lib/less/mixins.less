@@ -1,24 +1,20 @@
 
 .border-box() {
-  background-clip: border-box;
+  -webkit-background-clip: border-box;
+     -moz-background-clip: border-box;
+          background-clip: border-box;
 
   &,
   & * {
-    box-sizing: border-box;
+    .box-sizing(border-box);
   }
 
   &:before,
   & *:before,
   &:after,
   & *:after, {
-    box-sizing: border-box;
+    .box-sizing(border-box);
   }
-}
-
-.opacity(@opacity) {
-  opacity: @opacity;
-  @opacity-ie: (@opacity * 100);
-  filter: ~"alpha(opacity=@{opacity-ie})";
 }
 
 .unstyled-list() {
@@ -40,6 +36,18 @@
   }
 }
 
+.user-select() {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.border-left-radius(@radius) {
+  border-bottom-left-radius: @radius;
+     border-top-left-radius: @radius;
+}
 
 .border-bottom-radius(@radius) {
   border-bottom-right-radius: @radius;
@@ -49,6 +57,27 @@
 .border-top-radius(@radius) {
   border-top-right-radius: @radius;
    border-top-left-radius: @radius;
+}
+.border-right-radius(@radius) {
+  border-bottom-right-radius: @radius;
+     border-top-right-radius: @radius;
+}
+
+.box-sizing(@bm) {
+  -webkit-box-sizing: @bm;
+     -moz-box-sizing: @bm;
+          box-sizing: @bm;
+}
+
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow; // iOS <4.3 & Android <4.1
+          box-shadow: @shadow;
+}
+
+.transition(@transition) {
+  -webkit-transition: @transition;
+       -o-transition: @transition;
+          transition: @transition;
 }
 
 .state-hover() {
@@ -76,9 +105,10 @@
 }
 
 .state-disabled() {
-  box-shadow: none;
+  .box-shadow(none);
   cursor: not-allowed;
 }
+
 
 
 .disabled-color(@color) {
@@ -114,7 +144,7 @@
   /** ie8 fallback **/
   margin-top: ~"-@{minus}\9";
   height: ~"@{total}\9";
-  /** --- **/
+    /** --- **/
 }
 
 .make-btn-state() {
@@ -126,7 +156,7 @@
   }
 
   &:active {
-    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
   }
 
   .rw-state-disabled &,
@@ -137,7 +167,7 @@
       cursor: not-allowed;
       background-color: inherit;
       background-image: none;
-      box-shadow: none;
+      .box-shadow(none);
     }
   }
 }

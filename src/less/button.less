@@ -11,22 +11,20 @@
 }
 
 .rw-btn-select {
-  filter: alpha(opacity=75);
-  opacity: .75;
+  .opacity(.75);
   transition: opacity 150ms ease-in;
 
   &:hover,
   .rw-state-focus &,
   :hover > & {
-    opacity: 1;
+    .opacity(1);
   }
 }
 
 .rw-btn-primary[disabled],
 .rw-btn-select[disabled] {
   .state-disabled();
-  filter: alpha(opacity=65);
-  opacity: .65;
+  .opacity(.65);
   pointer-events: none;
 }
 

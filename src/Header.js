@@ -40,9 +40,9 @@ class Header extends React.Component {
     let rtl = this.context.isRtl;
 
     return (
-      <div className='rw-header'>
+      <div className='rw-calendar-header'>
         <Button
-          className="rw-btn-left"
+          className="rw-calendar-btn-left"
           onClick={onMoveLeft}
           disabled={prevDisabled}
           label={messages.moveBack}
@@ -51,7 +51,7 @@ class Header extends React.Component {
         <Button
           id={labelId}
           onClick={onViewChange}
-          className="rw-btn-view"
+          className="rw-calendar-btn-view"
           disabled={upDisabled}
           aria-live="polite"
           aria-atomic="true"
@@ -59,7 +59,7 @@ class Header extends React.Component {
           { label }
         </Button>
         <Button
-          className="rw-btn-right"
+          className="rw-calendar-btn-right"
           onClick={onMoveRight}
           disabled={nextDisabled}
           label={messages.moveForward}
