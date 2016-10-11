@@ -1,22 +1,18 @@
 import React from 'react';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-jsx.min';
+import Editor from '@monastic.panic/component-playground/Editor';
 
-const propTypes = {
-  code: React.PropTypes.string.isRequired
-};
 
-function CodeBlock({ code, lang = 'jsx' }) {
-  let syntax = Prism.languages[lang];
-  let highlighted = Prism.highlight(code, syntax);
-
+function CodeBlock(props) {
   return (
-    <pre className='prism-block prism-theme-one-light'>
-      <code dangerouslySetInnerHTML={{ __html: highlighted}} />
-    </pre>
+    <Editor
+      {...props}
+      mode="jsx"
+      lineWrapping
+      theme="one-light"
+      readOnly="nocursor"
+      className={'pg-code-section'}
+    />
   );
 }
-
-CodeBlock.propTypes = propTypes;
 
 export default CodeBlock;

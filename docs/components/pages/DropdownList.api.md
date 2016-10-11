@@ -41,14 +41,14 @@ may also be used to find an item in the list as you type. Providing an accessor 
 
 <EditableExample codeText={require('../examples/textField')(widgetName)}/>
 
-### valueComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### valueComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render the selected value of the ${widgetName}. The default component
 renders the text of the selected item (specified by `textField`)
 
 <EditableExample codeText={require('../examples/valueComponent')(widgetName)}/>
 
-### itemComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### itemComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render each possible item in the ${widgetName}. The default component
 renders the text of the selected item (specified by `textField`)
@@ -74,7 +74,7 @@ the `data` array by that property. You can also provide a function which should 
 
 <EditableExample codeText={require('../examples/groupby')(widgetName)}/>
 
-### groupComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### groupComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render each option group, when `groupBy` is specified. By
 default the `groupBy` value will be used.

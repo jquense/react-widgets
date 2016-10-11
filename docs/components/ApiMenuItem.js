@@ -2,32 +2,28 @@
 var React = require('react')
   , MenuItem = require('react-bootstrap/lib/MenuItem');
 
-var ApiMenuItem = React.createClass({
 
-  contextTypes: {
-    prefix: React.PropTypes.string.isRequired
-  },
+const propTypes = {
+  divider: React.PropTypes.bool,
+};
 
-  navigate(e){
-    var anchor = document.getElementById('/' + this.context.prefix + this.props.children.replace(' ', '_'))
-    e.preventDefault()
-    window.scrollTo(window.pageXOffset, anchor.offsetTop)
-  },
+const contextTypes = {
+  prefix: React.PropTypes.string.isRequired,
+};
 
-  render() {
+function ApiMenuItem({ divider, children }, { prefix }) {
+  if (divider)
+    return <MenuItem divider={true}></MenuItem>
 
-    if( this.props.divider)
-      return  <MenuItem divider={true}></MenuItem>
+  return (
+     <MenuItem className="prop-item" href={'#/' + prefix + children.replace(' ', '_')}>
+      {children}
+     </MenuItem>
+  );
+}
 
-    var child = this.props.children;
+ApiMenuItem.propTypes = propTypes;
+ApiMenuItem.contextTypes = contextTypes;
 
-    return (
-       <MenuItem className="prop-item" href={'#/' + this.context.prefix + this.props.children.replace(' ', '_')}>
-        {child}
-       </MenuItem>
-    );
-  }
-
-});
 
 module.exports = ApiMenuItem;

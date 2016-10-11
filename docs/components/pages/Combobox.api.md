@@ -51,7 +51,7 @@ may also also used as to find an item in the list as you type. Providing an acce
 
 <EditableExample codeText={require('../examples/textField')(widgetName, false, true)}/>
 
-### itemComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### itemComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render each possible item in the ${widgetName}. The default component
 renders the text of the selected item (specified by `textfield`)
@@ -77,7 +77,7 @@ the `data` array by that property. You can also provide a function which should 
 
 <EditableExample codeText={require('../examples/groupby')(widgetName)}/>
 
-### groupComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### groupComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render each option group, when `groupBy` is specified. By
 default the `groupBy` value will be used.
@@ -89,7 +89,7 @@ default the `groupBy` value will be used.
 When `true` the {widgetName} will suggest, or fill in, values as you type. The suggestions
 are always "startsWith", meaning it will search from the start of the `textField` property
 
-### filter?{ type: 'bool | string | function(dataItem: ?mixed, searchTerm: string) -> bool]', default: 'false' }
+### filter?{ type: 'bool | string | function(dataItem: ?mixed, searchTerm: string) -> bool', default: 'false' }
 
 Specify a filtering method used to reduce the items in the dropdown as you type. It can be used in conjunction with
 the `suggest` prop or instead of it. There are a few built-in filtering methods that can be specified
@@ -145,15 +145,15 @@ mark whether the widget should render right-to-left. This property can also be i
 Object hash containing display text and/or text for screen readers. Use the `messages` object to
 localize widget text and increase accessibility.
 
-### messages.open?{ type: 'string | function(props) -> node -> node', default: '"Open Combobox"' }
+### messages.open?{ type: 'string | function(props) -> node', default: '"Open Combobox"' }
 
 {widgetName} button text for screen readers
 
-### messages.emptyList?{ type: 'string | function(props) -> node -> node', default: '"There are no items in this list"' }
+### messages.emptyList?{ type: 'string | function(props) -> node', default: '"There are no items in this list"' }
 
 text to display when the `data` prop array is empty
 
-### messages.emptyFilter?{ type: 'string | function(props) -> node -> node', default: '"The filter returned no results"' }
+### messages.emptyFilter?{ type: 'string | function(props) -> node', default: '"The filter returned no results"' }
 
 text to display when the the current filter does not return any results
 

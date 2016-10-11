@@ -1,4 +1,5 @@
 var inherits = require('util').inherits
+  , stripIndent = require('common-tags').stripIndent
   , marked = require('marked')
 
 
@@ -29,9 +30,12 @@ JsxRenderer.prototype.codespan = function(text) {
   return '<code>{`' + JsxRenderer.unescape(text) + '`}</code>';
 };
 
-JsxRenderer.prototype.code = function(code, lang) {
-  return '<Editor mode="jsx" '
-      + ' theme="one-light" scope={this.props.scope} codeText={`'+ code + '`} '
-      + (lang === 'editable' ? '' : (' readOnly="nocursor" lineWrapping '))
-      + (code.indexOf('React.render(') === -1 ? 'noRender' :'') + '/>\n\n'
+JsxRenderer.prototype.code = function(code) {
+  return stripIndent`
+    <CodeBlock
+      codeText={\`${code}\`}
+      scope={this.props.scope}
+      ${code.indexOf('React.render(') === -1 ? 'noRender' : ''}
+    />
+  `;
 };

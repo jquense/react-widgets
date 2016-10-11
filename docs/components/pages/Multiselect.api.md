@@ -52,14 +52,14 @@ may also also used as to find an item in the list as you type. Providing an acce
 
 <EditableExample codeText={require('../examples/textField')(widgetName, true)}/>
 
-### tagComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### tagComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render each selected item. The default component
 renders the text of the selected item (specified by `textfield`)
 
 <EditableExample codeText={require('../examples/tagComponent')(widgetName, true)}/>
 
-### itemComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### itemComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render each possible item in the list. The default component
 renders the text of the selected item (specified by `textfield`)
@@ -73,7 +73,7 @@ the `data` array by that property. You can also provide a 'function' which shoul
 
 <EditableExample codeText={require('../examples/groupby')(widgetName, true)}/>
 
-### groupComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### groupComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render each option group, when `groupBy` is specified. By
 default the `groupBy` value will be used.
@@ -177,16 +177,12 @@ Text to display when the the current filter does not return any results
 * <kbd>down arrow</kbd> open dropdown, and move focus to next item
 * <kbd>up arrow</kbd> move focus to previous item
 * <kbd>alt + up arrow</kbd> close dropdown
-
 * <kbd>left arrow</kbd> move focus to previous selected tag
 * <kbd>right arrow</kbd> move focus to previous selected tag
 * <kbd>delete</kbd> unselect focused tag
 * <kbd>backspace</kbd> remove next selected tag
-
 * <kbd>home</kbd> move focus to first item
 * <kbd>end</kbd> move focus to last item
-
 * <kbd>enter</kbd> select focused item
 * <kbd>ctrl + enter</kbd> create new tag from current search term
-
 * <kbd>any key</kbd> search list for item starting with key

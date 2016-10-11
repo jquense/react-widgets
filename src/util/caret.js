@@ -7,7 +7,7 @@ export default function caret(el, start, end ){
 }
 
 function get(el){
-  var start, end, rangeEl, clone;
+  let start, end, rangeEl, clone;
 
   if( el.selectionStart !== undefined){
     start = el.selectionStart
@@ -32,16 +32,13 @@ function get(el){
 }
 
 function set(el, start, end){
-  var rangeEl;
-
+  let rangeEl;
 
   try {
-    if( el.selectionStart !== undefined){
-      el.focus()
+    if (el.selectionStart !== undefined) {
       el.setSelectionRange(start, end)
     }
     else {
-      el.focus();
       rangeEl = el.createTextRange();
       rangeEl.collapse(true);
       rangeEl.moveStart('character', start);

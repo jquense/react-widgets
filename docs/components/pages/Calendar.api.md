@@ -42,7 +42,7 @@ Show or hide the Calendar footer.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'footer', 'true')}/>
 
-### dayComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### dayComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 Provide a custom component to render the days of the month. The Component is provided the following props
 

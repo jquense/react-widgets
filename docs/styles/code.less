@@ -10,7 +10,7 @@ code {
 }
 
 .pg-code-section {
-  @half-width: @screen-md-min / 2;
+  @half-width: @screen-md-min / 2 + 8px;
 
   background-color: @syntax-bg;
   border-top: 1px solid @gray-lighter;
@@ -84,8 +84,9 @@ code {
     margin-top: 15px;
   }
 
-  .rw-selectlist label{
-    font-weight: normal;
+  .rw-select-list {
+    overflow: auto;
+    max-height: 200px;
   }
 }
 

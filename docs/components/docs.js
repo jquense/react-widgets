@@ -20,7 +20,6 @@ import Controllables from './pages/controllables.md';
 
 import '@monastic.panic/component-playground/codemirror.css';
 
-import 'react-widgets/less/react-widgets.less';
 import '../styles/docs.less';
 
 
@@ -83,9 +82,22 @@ var Docs = React.createClass({
   }
 })
 
+function onUpdate() {
+  const location = this.state.location;
+  setTimeout(() => {
+    if (location.action === 'PUSH')
+      return window.scrollTo(0, 0);
+    if (location.action !== 'POP') return;
+    let anchor = document.getElementById(location.pathname);
+
+    if (anchor) {
+      anchor.scrollIntoView();
+    }
+  })
+}
 
 ReactDOM.render((
-  <Router history={hashHistory}>
+  <Router history={hashHistory} onUpdate={onUpdate}>
     <Route path="/" component={Docs} indexRoute={{ component: GettingStarted }}>
       <Route path='getting-started(/:topic)' component={GettingStarted}/>
 

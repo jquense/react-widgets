@@ -1,6 +1,6 @@
 import Editor from '@monastic.panic/component-playground/Editor';
 import React from 'react';
-import DDButton from 'react-bootstrap/lib/DropdownButton';
+import DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import { Link } from 'react-router';
 
 import ImportSection from '../ImportSection';
@@ -13,18 +13,25 @@ let widgetName = '${widgetName}';
 
 module.exports = React.createClass({
     mixins: [ require('../PageMixin')('${prefix}') ],
+
     render: function(){
       return (
         <section
-          className={this.props.className} 
+          className={this.props.className}
           style={this.props.style}
         >
           <h1 className="page-header">
             ${widgetName}
             <span className='pull-right'>
-              <DDButton title='props' bsStyle='link' pullRight={true} id='props-${widgetName}'>
+              <DropdownButton
+                pullRight
+                bsSize="large"
+                bsStyle='link'
+                title='props'
+                id='props-${widgetName}'
+              >
                 ${props}
-              </DDButton>
+              </DropdownButton>
             </span>
           </h1>
           ${desc}

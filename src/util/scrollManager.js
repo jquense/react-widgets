@@ -30,7 +30,7 @@ export default function createScrollManager(
     let shown, changed;
 
     currentVisible = !(!list.offsetWidth || !list.offsetHeight)
-    currentVisible = nextFocused
+    currentFocused = nextFocused
 
     changed = lastItem !== nextFocused
     shown   = currentVisible && !lastVisible
@@ -48,4 +48,3 @@ export default function createScrollManager(
     }
   }
 }
-

@@ -29,6 +29,6 @@ export default function(widgetName, values) {
       ${close}
     )
 
-    ReactDOM.render(examples, mountNode);
+    ReactDOM.render(example${isMany ? 's' : ''}, mountNode);
   `
 }

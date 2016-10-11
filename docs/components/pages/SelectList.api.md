@@ -46,7 +46,7 @@ used as to find an item in the list as you type. Providing an accessor function 
 Whether or not the {widgetName} allows multiple selection or not. when `false` the {widgetName} will
 render as a list of radio buttons, and checkboxes when `true`.
 
-### itemComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### itemComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render each item in the {widgetName}. The default component
 renders the text of the selected item (specified by `textfield`)
@@ -60,7 +60,7 @@ the `data` array by that property. You can also provide a 'function' which shoul
 
 <EditableExample codeText={require('../examples/groupby')(widgetName, true)}/>
 
-### groupComponent?{ type: 'Component | function({ item: ?any }) -> ReactElement' }
+### groupComponent?{ type: 'Component | function({ item: ?mixed }) -> ReactElement' }
 
 This component is used to render each option group, when `groupBy` is specified. By
 default the `groupBy` value will be used.
@@ -103,7 +103,7 @@ mark whether the {widgetName} should render right-to-left. This property can als
 Object hash containing display text and/or text for screen readers. Use the `messages` object to
 localize widget text and increase accessibility.
 
-### messages.emptyList?{ type: 'string | Function(props)', default: '"There are no items in this list"' }
+### messages.emptyList?{ type: 'string | function(props) -> node', default: '"There are no items in this list"' }
 
 Text to display when the `data` prop array is empty
 

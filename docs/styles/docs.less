@@ -1,4 +1,5 @@
 @import "./theme/theme.less";
+@import '../../src/less/react-widgets.less';
 @import "./code.less";
 @import "./demo.less";
 
@@ -6,21 +7,26 @@ body {
   font-size: 16px;
 }
 
-h1, h2, h3, h4 {
-  margin-top: 25px;
+// kbd lists
+ul > li > p {
+  margin: 0;
+}
+
+h1.page-header, h2, h3, h4 {
+  padding-top: 25px + @navbar-height;
+  margin-top: -@navbar-height;
   margin-bottom: 15px;
 }
 
 .pg-content {
-  margin-top: @navbar-height + 30px;
-}
+  margin-top: @navbar-height + 20px;
+  margin-bottom: 50px;
 
-
-.pg-content > *  {
-  width: @screen-md-min;
-  margin-right: auto;
-  margin-left: auto;
-  box-sizing: content-box;
+  & > *  {
+    width: @screen-md-min;
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
 
 .side-divider {
@@ -133,7 +139,8 @@ h1, h2, h3, h4 {
 }
 
 
-.alert-info {
+.alert-info,
+.alert-warning {
   border-width: 0;
   border-left: 4px solid;
   padding: 10px;
