@@ -59,13 +59,13 @@ renders the text of the selected item (specified by `textField`)
 
 Disable the widget; if an `Array` of values is passed in only those values will be disabled.
 
-<EditableExample codeText={require('../examples/disabled')(widgetName, 'disabled', false)}/>
+<EditableExample codeText={require('../examples/disabled')(widgetName, 'disabled', { disableItems: true })}/>
 
-### readOnly?{ type: 'bool | array<mixed>' }
+### readOnly?{ type: 'bool' }
 
-Place the {widgetName} in a read-only mode, If an `Array` of values is passed in only those values will be read-only.
+Place the {widgetName} in a read-only mode.
 
-<EditableExample codeText={require('../examples/disabled')(widgetName, 'readOnly', false)}/>
+<EditableExample codeText={require('../examples/disabled')(widgetName, 'readOnly')}/>
 
 ### groupBy?{ type: 'string | function(dataItem: ?mixed) -> bool' }
 

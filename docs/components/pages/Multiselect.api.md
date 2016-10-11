@@ -136,17 +136,19 @@ when loading data via an ajax call.
 
 The speed, in milliseconds, of the dropdown animation.
 
+
+
 ### disabled?{ type: 'bool | array<?mixed>' }
 
 Disable the widget, If an `Array` of values is passed in only the tags specified will be disabled.
 
-<EditableExample codeText={require('../examples/disabled')(widgetName, 'disabled')}/>
+<EditableExample codeText={require('../examples/disabled')(widgetName, 'disabled', { disableItems: true, isArray: true })}/>
 
-### readOnly?{ type: 'bool | array<?mixed>' }
+### readOnly?{ type: 'bool' }
 
-Place the widget in a readonly mode, If an `Array` of values is passed in only the tags specified will be readonly.
+Place the widget in a readonly mode.
 
-<EditableExample codeText={require('../examples/disabled')(widgetName, 'readOnly')}/>
+<EditableExample codeText={require('../examples/disabled')(widgetName, 'readOnly', { isArray: true })}/>
 
 ### isRtl?{ type: 'bool', default:"false" }
 

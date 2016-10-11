@@ -262,8 +262,6 @@ class ComboBox extends React.Component {
       , valueField
       , autoFocus
       , tabIndex
-      , disabled
-      , readOnly
       , placeholder
       , open } = this.props;
 
@@ -282,8 +280,8 @@ class ComboBox extends React.Component {
         autoFocus={autoFocus}
         tabIndex={tabIndex}
         suggest={suggest}
-        disabled={disabled}
-        readOnly={readOnly}
+        disabled={isDisabled(this.props)}
+        readOnly={isReadOnly(this.props)}
         aria-busy={!!busy}
         aria-owns={this.listId}
         aria-autocomplete={completeType}
