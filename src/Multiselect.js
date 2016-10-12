@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import _  from './util/_';
+import { splat }  from './util/_';
 import createUncontrolledWidget from 'uncontrollable';
 
 import Widget from './Widget';
@@ -14,6 +14,7 @@ import PlainList from './List';
 import GroupableList from './ListGroupable';
 
 import * as Filter from './util/Filter';
+import * as Props from './util/Props';
 import validateList from './util/validateListInterface';
 import createScrollManager from './util/scrollManager';
 import createFocusManager from './util/focusManager';
@@ -137,7 +138,7 @@ class Multiselect extends React.Component {
       data, valueField, textField, searchTerm, minLength, caseSensitive, filter
     } = props
 
-    let values = _.splat(props.value);
+    let values = splat(props.value);
     let dataItems = values.map(item => dataItem(data, item, valueField));
 
     data = data.filter(i =>
@@ -375,7 +376,7 @@ class Multiselect extends React.Component {
     let { open } = this.props;
     let { focusedItem, data: items } = this.state;
 
-    let listProps = _.pickProps(this.props, List);
+    let listProps = Props.pick(this.props, List);
 
     return (
       <List ref="list" key={0}
@@ -461,7 +462,7 @@ class Multiselect extends React.Component {
 
     List = List || (groupBy && GroupableList) || PlainList
 
-    let elementProps = _.omitOwnProps(this, List);
+    let elementProps = Props.omitOwn(this, List);
 
     let shouldRenderTags = !!dataItems.length
       , shouldRenderPopup = isFirstFocusedRender(this) || open

@@ -5,6 +5,7 @@ import compat from './util/compat';
 import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
 import _  from './util/_';
+import * as Props from './util/Props';
 
 class DateTimePickerInput extends React.Component {
 
@@ -71,7 +72,7 @@ class DateTimePickerInput extends React.Component {
     let { disabled, readOnly } = this.props
     let { textValue } = this.state
 
-    let props = _.omitOwnProps(this);
+    let props = Props.omitOwn(this);
 
     return (
       <Input

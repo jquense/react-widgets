@@ -13,7 +13,7 @@ export default function(widgetName){
         return (
           <div>
             {values.map((value, idx) =>
-              <label key={idx}>
+              <label key={idx} className='radio-inline'>
                 <input
                   name='open-option'
                   type='radio'

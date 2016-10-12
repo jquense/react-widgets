@@ -4,27 +4,17 @@
  You must configure a <a href='#/i18n'>localizer</a> to use this component!
 </div>
 
-Manipulate different parts of a JavaScript `Date` object with ease.
-Date formats are <em>highly</em> localized, and localization is hard, rather than provide a half baked
-solution react-widgets requires that you specify a __localizer__ in order for the widget to work. You can read more
-about localizers here: [localization](i18n).
-
-Dates are never mutated but always return and operate on a new Date instance.
-When the `date` prop is used the ${widgetName} will pass through the relevant
-props to the Calendar Widget and Calendar keyboard navigation keys will also work.
 <--------------->
 
-### value?{ type: '?Date', handler: "onChange", controllable: true }
+### value?{ type: '?Date', controllable: "onChange" }
 
-The current selected date, should be a `Date` instance or `null`.
+${language.value}
 
 <EditableExample codeText={require('../examples/valuePicker')(widgetName, ['new Date()', null])}/>
 
-### onChange?{ type: 'function(date: ?Date, dateStr: string)' }
+### onChange?{ type: 'function(date: ?Date, dateStr: string)', controllable: 'value' }
 
-change event Handler that is called when the value is changed. The handler is called with both the
-current `Date` object (or null if it was not parseable), and the second argument is
-a `string` representation of the date value, formatted by the `format` prop.
+${language.onChange}
 
 <EditableExample codeText={require('../examples/onChangePicker')(widgetName, ['new Date()', null])}/>
 
@@ -62,11 +52,11 @@ the `onChange` handler.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'max', 'new Date()')}/>
 
-### currentDate?{ type: 'Date', default: 'new Date()', handler: 'onCurrentDateChange', controllable: true }
+### currentDate?{ type: 'Date', default: 'new Date()', controllable: 'onCurrentDateChange' }
 
 Default current date at which the calendar opens. If none is provided, opens at today's date or the `value` date (if any).
 
-### onCurrentDateChange?{ type: 'function(date: ?Date)' }
+### onCurrentDateChange?{ type: 'function(date: ?Date)', controllable: 'currentDate' }
 
 Change event Handler that is called when the currentDate is changed. The handler is called with the currentDate object
 
@@ -103,62 +93,36 @@ the `format` prop is a `string` parse will automatically use that format as its 
 
 <EditableExample codeText={require('../examples/parse')(widgetName)}/>
 
-### initialView?{ type: "'month'|'year'|'decade'|'century'", default: '"month"' }
 
-The starting and lowest level view the calendar can navigate down to.
+### open?{ type: 'false | "calendar" | "time"', default: 'false', controllable: 'onToggle' }
 
-Acceptable values are: `"month"` `"year"` `"decade"` `"century"`
-
-<EditableExample codeText={require('../examples/prop')(widgetName, 'initialView', '"year"')}/>
-
-### finalView?{ type: "'month'|'year'|'decade'|'century'", default: '"century"' }
-
-The highest level view the calendar can navigate up to. This value should be higher
-than `initialView`
-
-Acceptable values are:
-`"month"` `"year"` `"decade"` `"century"`
-
-<EditableExample codeText={require('../examples/prop')(widgetName, 'finalView', '"year"')}/>
-
-### open?{ type: 'bool | string', default: 'false', controllable: true, handler: 'onToggle' }
-
-Whether or not the {widgetName} is open. When unset (`undefined`) the {widgetName} will handle the
-opening and closing internally. The `defaultOpen` prop can be used to set an
-initialization value for uncontrolled widgets.
-
-Acceptable values are: `false` `"calendar"` `"time"`
+${language.open}
 
 <EditableExample codeText={require('../examples/openDateTime')(widgetName)}/>
 
-### onToggle?{ type: 'function(isOpen: bool)' }
+### onToggle?{ type: 'function(isOpen: bool)', controllable: 'open' }
 
-Called when the {widgetName} is about to open or close. `onToggle` should be used
-when the `open` prop is set otherwise the widget will never open or close.
+${language.onToggle}
 
 ### duration?{ type: 'number', default: "250" }
 
-The speed, in milliseconds, of the either dropdown animation.
+${language.duration}
 
 ### isRtl?{ type: 'bool', default: "false" }
 
-mark whether the widget should render right-to-left. This property can also be implicitly passed to the
-widget through a `childContext` prop (`isRtl`) this allows higher level application components to specify the direction.
+${language.isRtl}
 
 ### messages?{ type: 'object' }
 
-Object hash containing display text and/or text for screen readers. Use the `messages` object to
-localize widget text and increase accessibility.
+${language.messages}
 
 ### messages.calendarButton?{ type: 'string', default: '"Select Date"' }
 
 title and screen reader text for the left arrow button.
 
-
 ### messages.timeButton?{ type: 'string', default: '"Select Time"' }
 
 title and screen reader text for the right arrow button.
-
 
 ## Keyboard Navigation
 

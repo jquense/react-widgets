@@ -17,7 +17,7 @@ module.exports = React.createClass({
     render: function(){
       return (
         <section
-          className={this.props.className}
+          className={this.props.className + ' pg-api'}
           style={this.props.style}
         >
           <h1 className="page-header">
@@ -37,7 +37,7 @@ module.exports = React.createClass({
           ${desc}
           <ImportSection widgetName={widgetName} />
           <WidgetDemo/>
-          <h2>Props</h2>
+
           ${html}
         </section>
       )

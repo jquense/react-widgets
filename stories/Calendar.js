@@ -7,7 +7,6 @@ import Calendar from '../src/Calendar';
 let generateNames = global.generateNames;
 
 
-
 storiesOf('Calendar', module)
   .add('Calendar', () =>
     <Container>
@@ -32,6 +31,21 @@ storiesOf('Calendar', module)
   .add('readOnly', () =>
     <Container>
       <Calendar readOnly />
+    </Container>
+  )
+  .add('views', () =>
+    <Container>
+      <Calendar views={['year', 'decade']} />
+    </Container>
+  )
+  .add('defaultView', () =>
+    <Container>
+      <Calendar defaultView="decade" />
+    </Container>
+  )
+  .add('no animation', () =>
+    <Container>
+      <Calendar duration={0} />
     </Container>
   )
   .add('current date', () => {

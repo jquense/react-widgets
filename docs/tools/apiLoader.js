@@ -1,8 +1,9 @@
-"use strict";
 var marked = require('marked')
   , Renderer = require('./jsx-renderer')
   , fs = require('fs')
   , path = require('path');
+
+var language = require('./language');
 
 marked.setOptions({
   xhtml: true
@@ -14,15 +15,15 @@ var renderer = new Renderer()
 renderer.heading = function (text, level, raw) {
   var parts = parsePropHeader(text);
 
-  if ( level === 3 && parts.props ){
-    if ( parts.text )
+  if (level === 3 && parts.props) {
+    if (parts.text)
       props.push(parts.text)
 
     return '<PropHeader {...' + parts.props + '}>' + parts.text + '</PropHeader>'
   }
 
   return Renderer.prototype.heading.call(this, text, level, raw)
-},
+};
 
 
 module.exports = function(markdown) {
@@ -36,6 +37,7 @@ module.exports = function(markdown) {
     , prefix = widgetName.toLowerCase() + '/'
 
   this.addDependency(templatePath);
+  this.addDependency(require.resolve('./language'));
 
   fs.readFile(templatePath, 'utf8', function(err, docPage){
     var desc;
@@ -47,10 +49,12 @@ module.exports = function(markdown) {
     var match = markdown.match(/<-+>/g)
       , idx = match ? markdown.indexOf(match[0]) : -1
 
-    if ( idx !== -1){
+    if (idx !== -1) {
       desc = marked(markdown.substr(0, idx), { renderer: renderer })
       markdown = markdown.substr(idx + match[0].length)
     }
+
+    markdown = t(markdown, { widgetName: widgetName, language: language })
 
     var file = t(docPage, {
       html: marked(markdown, { renderer: renderer }),
@@ -74,8 +78,16 @@ function parsePropHeader(text){
 }
 
 
-function t(str, data){
-  for(var p in data)
-    str = str.replace(new RegExp('\\${' + p + '}', 'g'), data[p]);
+function t(str, data, path) {
+  path = path ? path + '.' : '';
+
+  for (var p in data) {
+    if (typeof data[p] ==='object') {
+      str = t(str, data[p], p)
+    }
+    else {
+      str = str.replace(new RegExp('\\${' + path + p + '}', 'g'), data[p]);
+    }
+  }
   return str;
 }

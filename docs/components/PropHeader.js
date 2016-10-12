@@ -1,6 +1,9 @@
 
 import React from 'react';
 import Default from './Default';
+import Controllable from './Controllable';
+import Type from './Type';
+import propId from './propId';
 
 let ApiPropHeader = React.createClass({
 
@@ -8,35 +11,26 @@ let ApiPropHeader = React.createClass({
     prefix: React.PropTypes.string.isRequired
   },
 
-  render: function() {
+  render() {
     var {
          children
-       , handler
        , type
        , controllable
        , default: dflt } = this.props;
 
-    var id = this.context.prefix + children.replace(' ', '_')
+    let id = propId(this.context.prefix, children)
 
     return (
-       <h3 className='prop-header' id={`/${id}`}>
-        <a href={'#/' + id }>
-          <span>{children}</span>
-          {dflt &&
-            <Default>{dflt}</Default>
-          }
-
-          {controllable &&
-            <div className='prop-header__controllable'>
-              {`controllable (${handler}, ${defaultKey(children)})`}
-            </div>
-          }
-        </a>
+       <h3 className='prop-header' id={id}>
+        <a href={'#' + id }>{children}</a>
         {type &&
-          <div className='prop-header__type'>
-            {type}
-
-          </div>
+          <Type>{type}</Type>
+        }
+        {dflt &&
+          <Default>{dflt}</Default>
+        }
+        {controllable &&
+          <Controllable other={controllable} propName={children} />
         }
        </h3>
     );
@@ -63,8 +57,6 @@ let ApiPropHeader = React.createClass({
 
 });
 
-function defaultKey(key){
-  return 'default' + key.charAt(0).toUpperCase() + key.substr(1)
-}
+
 
 module.exports = ApiPropHeader;

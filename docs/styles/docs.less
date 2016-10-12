@@ -29,6 +29,18 @@ h1.page-header, h2, h3, h4 {
   }
 }
 
+@media (max-width: @screen-sm-max) {
+  .pg-content > *  {
+    width: auto;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+}
+
+
+.pg-api ul {
+  margin: 0 auto;
+}
 .side-divider {
   font-weight: 600;
   color: #778492;
@@ -42,8 +54,10 @@ h1.page-header, h2, h3, h4 {
   border-bottom: 1px solid @gray-lighter;
   padding-top: 10px;
   display: flex;
+  flex-wrap: wrap;
 
   & > * { flex: 1; }
+  & * { white-space: nowrap; }
 
   & .import-section-label {
     color: @purple;
@@ -98,36 +112,40 @@ h1.page-header, h2, h3, h4 {
 
 .prop-header > a,
 .prop-header > a:hover {
-
-  color: #555;
+  //color: #555;
   display: flex;
   align-items: baseline;
+}
+
+.prop-header__label {
+  color: #555;
+  font-weight: normal;
 }
 
 .prop-header__type,
 .prop-header__default,
 .prop-header__controllable {
-  font-size: 80%;
+  font-size: 70%;
 }
 
-.prop-header__default {
-  margin-left: 10px;
-}
+// .prop-header__default {
+//   margin-left: 10px;
+// }
 
 .prop-header__type {
   color: #778492;
   font-weight: bold;
-  font-size: 80%;
   font-family:@font-family-monospace;
-  margin-top: 10px;
+  // margin-top: 10px;
 }
 
+.prop-header__label {
+  color: #555;
+}
+
+.prop-header__default,
 .prop-header__controllable {
-  margin-left: auto;
-  font-weight: normal;
-  line-height: 1;
-  color:  @purple;
-  font-style: italic;
+  margin-top: 5px;
 }
 
 .page-header {

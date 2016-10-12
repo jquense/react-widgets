@@ -5,7 +5,7 @@ import cn from 'classnames';
 import uncontrollable from 'uncontrollable';
 
 import compat from './util/compat';
-import _      from './util/_'; //pick, omit, has
+import * as Props from './util/Props';
 import dates  from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
 import {
@@ -32,8 +32,6 @@ let Calendar = BaseCalendar.ControlledComponent;
 let viewEnum  = Object.keys(views).map( k => views[k] );
 
 let propTypes = {
-
-    ...Calendar.propTypes,
 
     //-- controlled props -----------
     value:          React.PropTypes.instanceOf(Date),
@@ -81,6 +79,11 @@ let propTypes = {
                     ]),
 
     'aria-labelledby': React.PropTypes.string,
+
+    onKeyDown: React.PropTypes.func,
+    onKeyPress: React.PropTypes.func,
+    onBlur: React.PropTypes.func,
+    onFocus: React.PropTypes.func,
 
     messages:      React.PropTypes.shape({
       calendarButton: React.PropTypes.string,
@@ -153,9 +156,9 @@ class DateTimePicker extends React.Component {
 
   @widgetEditable
   handleKeyDown = (e) => {
-    let { open, calendar, time } = this.props;
+    let { open, calendar, time, onKeyDown } = this.props;
 
-    notify(this.props.onKeyDown, [e])
+    notify(onKeyDown, [e])
 
     if (e.defaultPrevented)
       return
@@ -328,7 +331,7 @@ class DateTimePicker extends React.Component {
       , duration
       , dropUp } = this.props;
 
-    let calendarProps = _.pickProps(this.props, Calendar);
+    let calendarProps = Props.pick(this.props, Calendar);
 
     return (
       <Popup
@@ -370,7 +373,7 @@ class DateTimePicker extends React.Component {
       , timeFormat
       , timeComponent } = this.props;
 
-    let timeListProps = _.pickProps(this.props, TimeList);
+    let timeListProps = Props.pick(this.props, TimeList);
 
     return (
       <Popup
@@ -411,12 +414,11 @@ class DateTimePicker extends React.Component {
 
     let { focused } = this.state;
 
-    let owns = '';
-
-    let elementProps = _.omitOwnProps(this, Calendar, TimeList)
+    let elementProps = Props.omitOwn(this, Calendar, Popup, TimeList)
 
     let shouldRenderList = open || isFirstFocusedRender(this);
 
+    let owns = '';
     if (calendar) owns += this.calendarId
     if (time)     owns += ' ' + this.listId
 

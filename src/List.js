@@ -3,7 +3,8 @@ import ListOption from './ListOption';
 import CustomPropTypes from './util/propTypes';
 import compat from './util/compat';
 import cn from 'classnames';
-import _  from './util/_';
+import { result }  from './util/_';
+import * as Props from './util/Props';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabledItem }  from './util/interaction';
@@ -18,6 +19,7 @@ export default React.createClass({
   ],
 
   propTypes: {
+    role: React.PropTypes.string,
     data: React.PropTypes.array,
     onSelect: React.PropTypes.func,
     onMove: React.PropTypes.func,
@@ -76,12 +78,12 @@ export default React.createClass({
     let id = instanceId(this)
       , items;
 
-    let elementProps = _.omitOwnProps(this);
+    let elementProps = Props.omitOwn(this);
 
     items = !data.length
       ? (
         <li className='rw-list-empty'>
-          {_.result(messages.emptyList, this.props)}
+          {result(messages.emptyList, this.props)}
         </li>
       ) : data.map((item, idx) => {
           let isDisabled = isDisabledItem(item, this.props);

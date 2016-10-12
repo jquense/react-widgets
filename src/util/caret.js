@@ -6,10 +6,10 @@ export default function caret(el, start, end ){
   set(el, start, end)
 }
 
-function get(el){
+function get(el) {
   let start, end, rangeEl, clone;
 
-  if( el.selectionStart !== undefined){
+  if (el.selectionStart !== undefined) {
     start = el.selectionStart
     end = el.selectionEnd
   }
@@ -31,7 +31,7 @@ function get(el){
   return { start, end }
 }
 
-function set(el, start, end){
+function set(el, start, end) {
   let rangeEl;
 
   try {

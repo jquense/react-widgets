@@ -7,6 +7,10 @@ pre {
 code {
   background-color: @syntax-bg;
   color: @hue-2;
+
+  & > a {
+    color: @hue-2;
+  }
 }
 
 .pg-code-section {
@@ -24,7 +28,7 @@ code {
 @media (max-width: (@screen-sm-max + 60px)) {
   .pg-code-section {
     padding: 0 20px;
-    margin: 0 auto;
+    margin: 0 -20px;
   }
 }
 
@@ -75,6 +79,10 @@ code {
   //   color: #959595;
   //   content: 'Result';
   // }
+
+  & .rw-widget-container {
+    max-width: 400px;
+  }
 
   .rw-widget + input,
   .rw-widget + button,

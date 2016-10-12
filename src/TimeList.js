@@ -1,11 +1,12 @@
-
 import React from 'react';
+
 import dates from './util/dates';
 import List from './List';
 import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
 import createTimeoutManager from './util/timeoutManager';
 import _ from './util/_';
+import * as Props from './util/Props';
 
 var format = props => dateLocalizer.getFormat('time', props.format)
 
@@ -111,7 +112,7 @@ class TimeList extends React.Component {
 
     return (
       <List
-        {..._.omitOwnProps(this)}
+        {...Props.omitOwn(this)}
         ref="list"
         data={times}
         textField='label'

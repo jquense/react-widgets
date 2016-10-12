@@ -1,28 +1,28 @@
 import React, { cloneElement } from 'react';
-import _ from './util/_';
+
+
 import css from 'dom-helpers/style';
 import getHeight from 'dom-helpers/query/height';
-import camelizeStyle from 'dom-helpers/util/camelizeStyle';
 import config from './util/configuration';
 import cn from 'classnames';
 import compat from './util/compat';
 import mountManager from './util/mountManager';
 
-var transform = camelizeStyle(config.animate.transform)
+// var transform = camelizeStyle(config.animate.transform)
 
 const CLOSING = 0
     , CLOSED = 1
     , OPENING = 2
     , OPEN = 3;
 
-function properties(prop, value){
-  var TRANSLATION_MAP = config.animate.TRANSLATION_MAP
-
-  if( TRANSLATION_MAP && TRANSLATION_MAP[prop])
-    return { [transform]: `${TRANSLATION_MAP[prop]}(${value})` }
-
-  return { [prop]: value }
-}
+// function properties(prop, value){
+//   var TRANSLATION_MAP = config.animate.TRANSLATION_MAP
+//
+//   if( TRANSLATION_MAP && TRANSLATION_MAP[prop])
+//     return { [transform]: `${TRANSLATION_MAP[prop]}(${value})` }
+//
+//   return { [prop]: value }
+// }
 
 let OVERFLOW = {
   [CLOSED]:  'hidden',
@@ -192,13 +192,14 @@ class Popup extends React.Component {
     if (this.state.initialRender)
       return {}
 
-    let _in = properties('top', this.props.dropUp ? '100%' : '-100%')
-      , out = properties('top', 0)
+    let enter = { translateY: this.props.dropUp ? '100%' : '-100%' }
+    let leave = { translateY: 0 }
+
     return {
-      [CLOSED]: _in,
-      [CLOSING]: out,
-      [OPENING]: _in,
-      [OPEN]: out
+      [CLOSED]: enter,
+      [CLOSING]: leave,
+      [OPENING]: enter,
+      [OPEN]: leave
     }[status] || {}
   }
 

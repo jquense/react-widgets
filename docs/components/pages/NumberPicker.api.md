@@ -4,16 +4,15 @@ be specified.  You can read more about localizers here: [localization](i18n).
 
 <--------------->
 
-### value?{ type: '?number', handler: "onChange", controllable: true }
+### value?{ type: '?number', controllable: "onChange" }
 
-The current value of the {widgetName}.
+${language.value}
 
 <EditableExample codeText={require('../examples/valuePicker')(widgetName, [1, null])}/>
 
-### onChange?{ type: 'function(value: ?number)' }
+### onChange?{ type: 'function(value: ?number)', controllable: "value"  }
 
-Change event Handler that is called when the value is changed. The handler is called with the
-current numeric value or null.
+${language.onChange}
 
 <EditableExample codeText={require('../examples/onChangePicker')(widgetName, [1, null])}/>
 
@@ -28,7 +27,7 @@ You can also provide a parser `function` to pair with a custom `format`.
 
 ### min?{ type: 'number', default: '-Infinity' }
 
-  The minimum number that the {widgetName} value.
+The minimum number that the {widgetName} value.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'min', 0)}/>
 
@@ -51,13 +50,11 @@ is parsed from the current `format` and culture.
 
 ### isRtl?{ type: 'bool', default: 'false' }
 
-mark whether the widget should render right-to-left. This property can also be implicitly passed to the widget through
-a `childContext` prop (`isRtl`) this allows higher level application components to specify the direction.
+${language.isRtl}
 
 ### messages?{ type: 'object' }
 
-Object hash containing display text and/or text for screen readers. Use the `messages` object to
-localize widget text and increase accessibility.
+${language.messages}
 
 ### messages.increment?{ type: 'string', default: '"increment value"' }
 

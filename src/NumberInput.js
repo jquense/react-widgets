@@ -1,9 +1,10 @@
 import React from 'react';
-import _  from './util/_';
-import CustomPropTypes from './util/propTypes';
-import { number as numberLocalizer } from './util/localizers';
 
 import Input from './Input';
+import _  from './util/_';
+import * as Props from './util/Props';
+import CustomPropTypes from './util/propTypes';
+import { number as numberLocalizer } from './util/localizers';
 
 let getFormat = props => numberLocalizer.getFormat('default', props.format)
 
@@ -165,7 +166,7 @@ class NumberPickerInput extends React.Component {
     let { disabled, readOnly, placeholder, min, max } = this.props;
 
     let value = this.state.stringValue;
-    let props = _.omitOwnProps(this);
+    let props = Props.omitOwn(this);
 
     return (
       <Input

@@ -1,6 +1,7 @@
-'use strict';
-var React = require('react')
-  , MenuItem = require('react-bootstrap/lib/MenuItem');
+import React from 'react'
+import MenuItem from 'react-bootstrap/lib/MenuItem'
+
+import propId from './propId'
 
 
 const propTypes = {
@@ -16,7 +17,7 @@ function ApiMenuItem({ divider, children }, { prefix }) {
     return <MenuItem divider={true}></MenuItem>
 
   return (
-     <MenuItem className="prop-item" href={'#/' + prefix + children.replace(' ', '_')}>
+     <MenuItem className="prop-item" href={'#' + propId(prefix, children)}>
       {children}
      </MenuItem>
   );

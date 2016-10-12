@@ -116,10 +116,10 @@ ReactDOM.render((
       <Route path="calendar" component={Calendar}>
         <Route path=':topic' component={Calendar}/>
       </Route>
-      <Route path="datetime-picker" component={DatePicker}>
+      <Route path="datetimepicker" component={DatePicker}>
         <Route path=':topic' component={DatePicker}/>
       </Route>
-      <Route path="number-picker" component={NumberPicker}>
+      <Route path="numberpicker" component={NumberPicker}>
         <Route path=':topic' component={NumberPicker}/>
       </Route>
 

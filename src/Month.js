@@ -1,9 +1,11 @@
 import React from 'react';
+
 import CalendarView from './CalendarView';
 import dates from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
-import _   from './util/_';
+import { chunk } from './util/_';
+import * as Props from './util/Props';
 
 let dayFormat = props => dateLocalizer.getFormat('weekday', props.dayFormat)
   , dateFormat = props => dateLocalizer.getFormat('dayOfMonth', props.dateFormat)
@@ -86,11 +88,11 @@ class MonthView extends React.Component {
   render() {
     let { focused, culture, activeId } = this.props
       , month = dates.visibleDays(focused, culture)
-      , rows  = _.chunk(month, 7);
+      , rows  = chunk(month, 7);
 
     return (
       <CalendarView
-        {..._.omitOwnProps(this)}
+        {...Props.omitOwn(this)}
         activeId={activeId}
         className="rw-calendar-month"
       >

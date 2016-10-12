@@ -1,4 +1,8 @@
-import { uniqueId } from'./_';
+
+let idCount = 0;
+function uniqueId (prefix) {
+  return '' + ((prefix == null ? '' : prefix) + (++idCount));
+}
 
 export function notify(handler, args){
   handler && handler.apply(null, [].concat(args))

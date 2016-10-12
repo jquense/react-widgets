@@ -9,7 +9,8 @@ import { findDOMNode } from 'react-dom';
 import css from 'dom-helpers/style';
 import height from 'dom-helpers/query/height';
 import width  from 'dom-helpers/query/width';
-import _ from './util/_';
+import { splat } from './util/_';
+import * as Props from './util/Props';
 import mountManager from './util/mountManager';
 
 function getChild(children){
@@ -35,8 +36,8 @@ class ReplaceTransitionGroup extends React.Component {
   static defaultProps = {
     component: 'span',
     childFactory: a => a,
-    onAnimating: _.noop,
-    onAnimate: _.noop
+    onAnimating: () => {},
+    onAnimate: () => {}
   };
 
   constructor(...args) {
@@ -48,7 +49,7 @@ class ReplaceTransitionGroup extends React.Component {
     this.entering = null;
 
     this.state = {
-      children: _.splat(this.props.children)
+      children: splat(this.props.children)
     };
   }
 
@@ -189,7 +190,7 @@ class ReplaceTransitionGroup extends React.Component {
     var Component = this.props.component;
 
     return (
-      <Component {..._.omitOwnProps(this)}>
+      <Component {...Props.omitOwn(this)}>
         {this.state.children.map(c => this.props.childFactory(c, key(c)))}
       </Component>
     );

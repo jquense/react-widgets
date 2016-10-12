@@ -8,9 +8,7 @@ var has = Object.prototype.hasOwnProperty
   , reset = {}
   , TRANSLATION_MAP = {
       left:   'translateX',
-      right:  'translateX',
       top:    'translateY',
-      bottom: 'translateY'
     };
 
 reset[transitionProps.property]  =
@@ -27,7 +25,7 @@ animate.TRANSLATION_MAP = TRANSLATION_MAP
 /**
  * code in part from: Zepto 1.1.4 | zeptojs.com/license
  */
-export default function animate(node, properties, duration, easing, callback){
+export default function animate(node, properties, duration, easing, callback) {
   var cssProperties = []
     , fakeEvent  = { target: node, currentTarget: node }
     , cssValues  = {}
@@ -41,7 +39,7 @@ export default function animate(node, properties, duration, easing, callback){
   if ( duration === undefined ) duration = 200
 
   for(var key in properties) if ( has.call(properties, key) ) {
-    if( /(top|bottom)/.test(key) )
+    if( /(top|left)/.test(key) )
       transforms += TRANSLATION_MAP[key] + '(' + properties[key] + ') '
     else {
       cssValues[key] = properties[key]

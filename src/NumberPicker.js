@@ -7,7 +7,7 @@ import WidgetPicker from './WidgetPicker';
 import Select from './Select';
 import Input from './NumberInput';
 import Button from './Button';
-
+import * as Props from './util/Props';
 import { widgetEditable } from './util/interaction';
 import { notify } from './util/widgetHelpers';
 import _     from './util/_';
@@ -204,7 +204,7 @@ class NumberPicker extends React.Component {
       , max } = this.props;
 
     let { focused } = this.state;
-    let elementProps = _.omitOwnProps(this);
+    let elementProps = Props.omitOwn(this);
 
     value = clamp(value, min, max);
 

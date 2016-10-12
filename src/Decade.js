@@ -3,7 +3,8 @@ import React from 'react';
 import CalendarView from './CalendarView';
 import dates from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
-import _  from './util/_';
+import { chunk }  from './util/_';
+import * as Props from './util/Props';
 import CustomPropTypes from './util/propTypes';
 
 class DecadeView extends React.Component {
@@ -27,11 +28,11 @@ class DecadeView extends React.Component {
 
     return (
       <CalendarView
-        {..._.omitOwnProps(this)}
+        {...Props.omitOwn(this)}
         activeId={activeId}
       >
         <CalendarView.Body>
-          {_.chunk(getDecadeYears(focused), 4)
+          {chunk(getDecadeYears(focused), 4)
             .map(this.renderRow)
           }
         </CalendarView.Body>

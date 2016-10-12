@@ -1,31 +1,30 @@
 import React from 'react';
-import _  from './util/_';
 import cn from 'classnames';
 import createUncontrolledWidget from 'uncontrollable';
-import compat from './util/compat';
 
+import { find, splat }  from './util/_';
+import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
 import Widget from './Widget';
 import createSelectListItem from './SelectListItem';
-
+import * as Props from './util/Props';
 import autoFocus from './util/autoFocus';
 import createScrollManager from './util/scrollManager';
 import createTimeoutManager from './util/timeoutManager';
 import createFocusManager from './util/focusManager';
 import withRightToLeft from './util/withRightToLeft';
-
 import validateList from './util/validateListInterface';
 import { dataItem, dataIndexOf } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly, contains } from './util/interaction';
 import { instanceId, notify } from './util/widgetHelpers';
 
-let { find } = _;
+
 
 function getFirstValue(props) {
   var { data, value, valueField } = props
-  value = _.splat(value);
+  value = splat(value);
 
   if (value.length)
     return find(data, d => dataIndexOf(value, d, valueField) !== -1)
@@ -100,7 +99,7 @@ class SelectList extends React.Component {
 
     return {
       dataItems: multiple &&
-        _.splat(value).map(item => dataItem(data, item, valueField))
+        splat(value).map(item => dataItem(data, item, valueField))
     }
   }
 
@@ -138,8 +137,8 @@ class SelectList extends React.Component {
 
     List = List || (groupBy && GroupableList) || PlainList
 
-    let elementProps = _.omitOwnProps(this, List);
-    let listProps    = _.pickProps(this.props, List);
+    let elementProps = Props.omitOwn(this, List);
+    let listProps    = Props.pick(this.props, List);
 
     let { focusedItem, focused } = this.state
     let ListItem = this.ListItem
@@ -333,11 +332,9 @@ class SelectList extends React.Component {
   }
 }
 
-SelectList = createUncontrolledWidget(SelectList,
+export default createUncontrolledWidget(SelectList,
   {
     value: 'onChange'
   },
   ['selectAll', 'focus']
 );
-
-export default SelectList;

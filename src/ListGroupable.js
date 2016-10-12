@@ -3,7 +3,8 @@ import ListOption from './ListOption';
 import CustomPropTypes from './util/propTypes';
 import compat from './util/compat';
 import cn from 'classnames';
-import _  from './util/_';
+import { result, has }  from './util/_';
+import * as Props from './util/Props';
 import warning from 'warning';
 import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
@@ -19,6 +20,7 @@ export default React.createClass({
   ],
 
   propTypes: {
+    role: React.PropTypes.string,
     data: React.PropTypes.array,
     onSelect: React.PropTypes.func,
     onMove: React.PropTypes.func,
@@ -86,7 +88,7 @@ export default React.createClass({
     let { className, role, data, messages } = this.props
     let { sortedKeys, groups } = this.state;
 
-    let elementProps = _.omitOwnProps(this);
+    let elementProps = Props.omitOwn(this);
 
     let items = []
       , idx = -1
@@ -112,7 +114,7 @@ export default React.createClass({
     else {
       items = (
         <li className='rw-list-empty'>
-          {_.result(messages.emptyList, this.props)}
+          {result(messages.emptyList, this.props)}
         </li>
       )
     }
@@ -190,7 +192,7 @@ export default React.createClass({
     return this.props.data[idx] === item
   },
 
-  _group(groupBy, data, keys){
+  _group(groupBy, data, keys) {
     var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
 
     // the keys array ensures that groups are rendered in the order they came in
@@ -198,16 +200,20 @@ export default React.createClass({
     // so long as you also sorted by group
     keys = keys || []
 
-    warning(typeof groupBy !== 'string' || !data.length || _.has(data[0], groupBy)
+    warning(typeof groupBy !== 'string' || !data.length || has(data[0], groupBy)
       , `[React Widgets] You seem to be trying to group this list by a `
       + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
 
     return data.reduce((grps, item) => {
-      var group = iter(item);
+      let group = iter(item);
 
-      _.has(grps, group)
-        ? grps[group].push(item)
-        : (keys.push(group), grps[group] = [item])
+      if (has(grps, group)) {
+        grps[group].push(item)
+      }
+      else {
+        keys.push(group)
+        grps[group] = [item]
+      }
 
       return grps
     }, {})

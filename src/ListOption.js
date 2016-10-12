@@ -1,6 +1,8 @@
 import React from 'react';
 import cn from 'classnames';
+
 import _  from './util/_';
+import * as Props from './util/Props';
 
 class ListOption extends React.Component {
   static propTypes = {
@@ -13,7 +15,7 @@ class ListOption extends React.Component {
   render() {
     let { className, children, focused, selected, disabled } = this.props;
 
-    let props = _.omitOwnProps(this);
+    let props = Props.omitOwn(this);
 
     let classes = {
       'rw-state-focus':    focused,

@@ -2,7 +2,8 @@ import React from 'react';
 import cn from 'classnames';
 
 import createUncontrolledWidget from 'uncontrollable';
-import _  from './util/_';
+import { isShallowEqual, result }  from './util/_';
+import * as Props from './util/Props';
 import * as Filter from './util/Filter';
 
 import Widget from './Widget';
@@ -103,8 +104,8 @@ class ComboBox extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     let isSuggesting = this.refs.input && this.refs.input.isSuggesting()
-      , stateChanged = !_.isShallowEqual(nextState, this.state)
-      , valueChanged = !_.isShallowEqual(nextProps, this.props)
+      , stateChanged = !isShallowEqual(nextState, this.state)
+      , valueChanged = !isShallowEqual(nextProps, this.props)
 
     return isSuggesting || stateChanged || valueChanged
   }
@@ -301,7 +302,7 @@ class ComboBox extends React.Component {
     let { open, data } = this.props;
     let { data: items, selectedItem, focusedItem } = this.state;
 
-    let listProps = _.pickProps(this.props, List);
+    let listProps = Props.pick(this.props, List);
 
     return (
       <List ref="list"
@@ -343,7 +344,7 @@ class ComboBox extends React.Component {
 
     List = List || (groupBy && GroupableList) || PlainList
 
-    let elementProps = _.omitOwnProps(this, List);
+    let elementProps = Props.omitOwn(this, List);
     let shouldRenderPopup = open || isFirstFocusedRender(this);
 
     messages = msgs(messages)
@@ -372,7 +373,7 @@ class ComboBox extends React.Component {
             icon='caret-down'
             onClick={this.toggle}
             disabled={disabled || readOnly}
-            label={_.result(messages.open, this.props)}
+            label={result(messages.open, this.props)}
           />
         </WidgetPicker>
 

@@ -16,7 +16,7 @@ function NavMenu({ active }) {
       <LinkContainer to='/combobox'>
         <MenuItem>Combobox</MenuItem>
       </LinkContainer>
-      <LinkContainer to='/number-picker'>
+      <LinkContainer to='/numberpicker'>
         <MenuItem>Number Picker</MenuItem>
       </LinkContainer>
       <LinkContainer to='/multiselect'>
@@ -28,7 +28,7 @@ function NavMenu({ active }) {
       <LinkContainer to='/calendar'>
         <MenuItem>Calendar</MenuItem>
       </LinkContainer>
-      <LinkContainer to='/datetime-picker'>
+      <LinkContainer to='/datetimepicker'>
         <MenuItem>DateTime Picker</MenuItem>
       </LinkContainer>
     </NavDropdown>

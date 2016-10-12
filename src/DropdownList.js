@@ -3,7 +3,6 @@ import activeElement from 'dom-helpers/activeElement';
 import contains from 'dom-helpers/query/contains';
 import cx from 'classnames';
 import uncontrollable from 'uncontrollable';
-import _  from './util/_';
 
 import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
@@ -15,6 +14,8 @@ import CustomPropTypes from './util/propTypes';
 import PlainList       from './List';
 import GroupableList   from './ListGroupable';
 
+import { result }  from './util/_';
+import * as Props from './util/Props';
 import autoFocus from './util/autoFocus';
 import * as Filter from './util/Filter';
 import createFocusManager from './util/focusManager';
@@ -28,8 +29,7 @@ import { dataItem, dataIndexOf, valueMatcher } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
-let { result } = _;
-
+@withRightToLeft
 class DropdownList extends React.Component {
   static propTypes = {
     ...Filter.propTypes,
@@ -158,7 +158,7 @@ class DropdownList extends React.Component {
           ref='filter'
           value={this.props.searchTerm}
           className="rw-input-reset"
-          placeholder={_.result(messages.filterPlaceholder, this.props)}
+          placeholder={result(messages.filterPlaceholder, this.props)}
           onChange={e => notify(this.props.onSearch, e.target.value)}
         />
       </WidgetPicker>
@@ -169,7 +169,7 @@ class DropdownList extends React.Component {
     let { open, filter, data } = this.props;
     let { selectedItem, focusedItem } = this.state;
 
-    let listProps = _.pickProps(this.props, List);
+    let listProps = Props.pick(this.props, List);
     let items = this._data();
 
     return (
@@ -227,7 +227,7 @@ class DropdownList extends React.Component {
 
     let shouldRenderPopup = open || isFirstFocusedRender(this);
 
-    let elementProps = Object.assign(_.omitOwnProps(this, List), {
+    let elementProps = Object.assign(Props.omitOwn(this, List), {
       name: undefined,
       role: 'combobox',
       id: this.inputId,
@@ -317,17 +317,18 @@ class DropdownList extends React.Component {
 
   @widgetEditable
   handleKeyDown = (e) => {
-    var key = e.key
+    let key = e.key
       , alt = e.altKey
       , list = this.refs.list
       , filtering = this.props.filter
       , focusedItem = this.state.focusedItem
       , selectedItem = this.state.selectedItem
       , isOpen = this.props.open
-      , closeWithFocus = () => {
-        this.close(),
-        compat.findDOMNode(this).focus()
-      };
+
+    let closeWithFocus = () => {
+      this.close();
+      compat.findDOMNode(this).focus()
+    }
 
     notify(this.props.onKeyDown, [e])
 
@@ -464,7 +465,7 @@ function msgs(msgs){
   }
 }
 
-DropdownList = uncontrollable(
+export default uncontrollable(
   DropdownList, {
     open: 'onToggle',
     value: 'onChange',
@@ -472,7 +473,3 @@ DropdownList = uncontrollable(
   },
   ['focus']
 );
-
-DropdownList = withRightToLeft(DropdownList)
-
-export default DropdownList

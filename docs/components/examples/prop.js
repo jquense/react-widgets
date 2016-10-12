@@ -11,7 +11,7 @@ export default function(widgetName, prop, value) {
 
     let widget = (
       <${widgetName} ${map(props, (k, v) => `
-        ${k}={${v}}`)}
+        ${k}=${wrap(v)}`)}
       />
     )
 
@@ -19,8 +19,8 @@ export default function(widgetName, prop, value) {
   `
 }
 
+let wrap = v => v[0] === "'" || v[0] === '"' ? `${v}` : `{${v}}`
 
-function map(o,fn) {
-  for (var key in o) if ( o.hasOwnProperty(key) )
-    fn(key, o[key])
+function map(o, fn) {
+  return Object.keys(o).map(key => fn(key, o[key])).join('')
 }
