@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import uncontrollable from 'uncontrollable';
+import { focusManager, autoFocus } from 'react-component-managers';
 
 import compat from './util/compat';
 import Widget from './Widget';
@@ -15,8 +16,6 @@ import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
 import dates from './util/dates';
 import * as constants from './util/constants';
-import autoFocus from './util/autoFocus';
-import createFocusManager from './util/focusManager';
 import withRightToLeft from './util/withRightToLeft';
 import * as Props from './util/Props';
 import { instanceId, notify } from './util/widgetHelpers';
@@ -136,8 +135,10 @@ class Calendar extends React.Component {
     )
 
     autoFocus(this);
-    this.focusManager = createFocusManager(this, {
-      willHandle: this.handleFocusWillChange
+    this.focusManager = focusManager(this, {
+      onChange: focused => this.setState({ focused }),
+      willHandle: this.handleFocusWillChange,
+      fireEventHandlers: true,
     })
 
     let { view, views } = this.props;

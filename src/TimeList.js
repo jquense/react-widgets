@@ -1,11 +1,10 @@
 import React from 'react';
+import { timeoutManager } from 'react-component-managers';
 
 import dates from './util/dates';
 import List from './List';
 import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
-import createTimeoutManager from './util/timeoutManager';
-import _ from './util/_';
 import * as Props from './util/Props';
 
 var format = props => dateLocalizer.getFormat('time', props.format)
@@ -39,7 +38,7 @@ class TimeList extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this.timeouts = createTimeoutManager(this)
+    this.timeouts = timeoutManager(this)
 
     let data = this.getDates(this.props)
     let focusedItem = this.getClosestDate(data, this.props.value || this.props.currentDate)

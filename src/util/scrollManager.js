@@ -1,5 +1,5 @@
 import scrollTo from 'dom-helpers/util/scrollTo';
-import spyOnComponent from 'spy-on-component';
+import { spyOnComponent } from 'react-component-managers';
 
 export default function createScrollManager(
   component,
@@ -17,6 +17,7 @@ export default function createScrollManager(
     componentWillReceiveProps({ onMove: nextOnMove }) {
       onMove = nextOnMove;
     },
+
     componentWillUnmount() {
       mounted = false
     }

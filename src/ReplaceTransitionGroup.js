@@ -9,9 +9,10 @@ import { findDOMNode } from 'react-dom';
 import css from 'dom-helpers/style';
 import height from 'dom-helpers/query/height';
 import width  from 'dom-helpers/query/width';
+import { mountManager } from 'react-component-managers';
+
 import { splat } from './util/_';
 import * as Props from './util/Props';
-import mountManager from './util/mountManager';
 
 function getChild(children){
   return React.Children.only(children)

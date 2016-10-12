@@ -1,5 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
+import { autoFocus, timeoutManager, focusManager }
+  from 'react-component-managers';
 import createUncontrolledWidget from 'uncontrollable';
 
 import { find, splat }  from './util/_';
@@ -10,10 +12,7 @@ import GroupableList from './ListGroupable';
 import Widget from './Widget';
 import createSelectListItem from './SelectListItem';
 import * as Props from './util/Props';
-import autoFocus from './util/autoFocus';
-import createScrollManager from './util/scrollManager';
-import createTimeoutManager from './util/timeoutManager';
-import createFocusManager from './util/focusManager';
+import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
 import validateList from './util/validateListInterface';
 import { dataItem, dataIndexOf } from './util/dataHelpers';
@@ -84,9 +83,11 @@ class SelectList extends React.Component {
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
 
-    this.timeouts = createTimeoutManager(this);
-    this.handleScroll = createScrollManager(this, false);
-    this.focusManager = createFocusManager(this, {
+    this.timeouts = timeoutManager(this);
+    this.handleScroll = scrollManager(this, false);
+    this.focusManager = focusManager(this, {
+      fireEventHandlers: true,
+      onChange: focused => this.setState({ focused }),
       didHandle: this.handleFocusChanged
     })
 

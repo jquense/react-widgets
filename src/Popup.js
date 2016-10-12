@@ -1,35 +1,23 @@
 import React, { cloneElement } from 'react';
-
+import { mountManager } from 'react-component-managers';
 
 import css from 'dom-helpers/style';
+import { transform } from 'dom-helpers/transition/properties';
 import getHeight from 'dom-helpers/query/height';
 import config from './util/configuration';
 import cn from 'classnames';
 import compat from './util/compat';
-import mountManager from './util/mountManager';
-
-// var transform = camelizeStyle(config.animate.transform)
 
 const CLOSING = 0
     , CLOSED = 1
     , OPENING = 2
     , OPEN = 3;
 
-// function properties(prop, value){
-//   var TRANSLATION_MAP = config.animate.TRANSLATION_MAP
-//
-//   if( TRANSLATION_MAP && TRANSLATION_MAP[prop])
-//     return { [transform]: `${TRANSLATION_MAP[prop]}(${value})` }
-//
-//   return { [prop]: value }
-// }
-
 let OVERFLOW = {
   [CLOSED]:  'hidden',
   [CLOSING]: 'hidden',
   [OPENING]: 'hidden'
 }
-
 
 class Popup extends React.Component {
   static propTypes = {
@@ -161,7 +149,7 @@ class Popup extends React.Component {
       let offset = this.getOffsetForStatus(OPEN)
         , duration = this.props.duration;
 
-      this.animate(el, offset, duration, 'ease', () => {
+      this.animate(el, offset, duration, 'ease-out', () => {
         this.safeSetState({ status: OPEN }, ()=> {
           this.props.onOpen()
         })
@@ -180,7 +168,7 @@ class Popup extends React.Component {
       let offset = this.getOffsetForStatus(CLOSED)
         , duration = this.props.duration;
 
-      this.animate(el, offset, duration, 'ease', () =>
+      this.animate(el, offset, duration, 'ease-in', () =>
         this.safeSetState({ status: CLOSED }, () => {
           this.props.onClose()
         })
@@ -191,9 +179,10 @@ class Popup extends React.Component {
   getOffsetForStatus(status) {
     if (this.state.initialRender)
       return {}
+    let { dropUp } = this.props;
 
-    let enter = { translateY: this.props.dropUp ? '100%' : '-100%' }
-    let leave = { translateY: 0 }
+    let enter = { [transform]: `translateY(${dropUp ? '100%' : '-100%'})` }
+    let leave = { [transform]: `translateY(0)` }
 
     return {
       [CLOSED]: enter,

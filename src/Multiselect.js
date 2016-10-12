@@ -1,7 +1,8 @@
 import React from 'react';
 import cn from 'classnames';
 import { splat }  from './util/_';
-import createUncontrolledWidget from 'uncontrollable';
+import uncontrollable from 'uncontrollable';
+import { focusManager } from 'react-component-managers';
 
 import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
@@ -16,8 +17,7 @@ import GroupableList from './ListGroupable';
 import * as Filter from './util/Filter';
 import * as Props from './util/Props';
 import validateList from './util/validateListInterface';
-import createScrollManager from './util/scrollManager';
-import createFocusManager from './util/focusManager';
+import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
 import { dataItem, dataText, valueMatcher } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
@@ -113,8 +113,10 @@ class Multiselect extends React.Component {
     this.activeTagId = instanceId(this, '_taglist_active_tag')
     this.activeOptionId = instanceId(this, '_listbox_active_option')
 
-    this.handleScroll = createScrollManager(this)
-    this.focusManager = createFocusManager(this, {
+    this.handleScroll = scrollManager(this)
+    this.focusManager = focusManager(this, {
+      fireEventHandlers: true,
+      onChange: focused => this.setState({ focused }),
       willHandle: this.handleFocusWillChange,
       didHandle: this.handleFocusDidChange,
     })
@@ -583,7 +585,7 @@ class Multiselect extends React.Component {
 }
 
 
-export default createUncontrolledWidget(Multiselect, {
+export default uncontrollable(Multiselect, {
   open: 'onToggle',
   value: 'onChange',
   searchTerm: 'onSearch'

@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
-import createUncontrolledWidget from 'uncontrollable';
+import { focusManager } from 'react-component-managers';
+import uncontrollable from 'uncontrollable';
 
 import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
@@ -10,14 +11,11 @@ import Button from './Button';
 import * as Props from './util/Props';
 import { widgetEditable } from './util/interaction';
 import { notify } from './util/widgetHelpers';
-import _     from './util/_';
 import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 import { directions } from './util/constants';
 import repeater from './util/repeater';
-import createFocusManager from './util/focusManager';
 import withRightToLeft from './util/withRightToLeft';
-
 import { number as numberLocalizer } from './util/localizers';
 
 var format = props => numberLocalizer.getFormat('default', props.format)
@@ -85,10 +83,12 @@ class NumberPicker extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this.focusManager = createFocusManager(this, {
+    this.focusManager = focusManager(this, {
+      fireEventHandlers: true,
+      onChange: focused => this.setState({ focused }),
       willHandle: focused => {
         if (focused) this.focus()
-      }
+      },
     })
 
     this.state = {
@@ -274,7 +274,7 @@ class NumberPicker extends React.Component {
 }
 
 
-export default createUncontrolledWidget(
+export default uncontrollable(
     NumberPicker, { value: 'onChange' }, ['focus']);
 
 

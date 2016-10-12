@@ -1,7 +1,9 @@
 import React from 'react';
 import activeElement from 'dom-helpers/activeElement';
 import contains from 'dom-helpers/query/contains';
-import cx from 'classnames';
+import cn from 'classnames';
+import { autoFocus, mountManager, timeoutManager, focusManager }
+  from 'react-component-managers';
 import uncontrollable from 'uncontrollable';
 
 import Widget from './Widget';
@@ -9,22 +11,16 @@ import WidgetPicker from './WidgetPicker';
 import Select from './Select';
 import DropdownListInput from './DropdownListInput';
 import Popup           from './Popup';
-import compat          from './util/compat';
-import CustomPropTypes from './util/propTypes';
 import PlainList       from './List';
 import GroupableList   from './ListGroupable';
-
 import { result }  from './util/_';
 import * as Props from './util/Props';
-import autoFocus from './util/autoFocus';
 import * as Filter from './util/Filter';
-import createFocusManager from './util/focusManager';
-import createMountManager from './util/mountManager'
-import createScrollManager from './util/scrollManager';
-import createTimeoutManager from './util/timeoutManager';
-import shallowCompare from './util/shallowCompare';
+import compat          from './util/compat';
+import CustomPropTypes from './util/propTypes';
+import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
-
+import shallowCompare from './util/shallowCompare';
 import { dataItem, dataIndexOf, valueMatcher } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
@@ -95,11 +91,13 @@ class DropdownList extends React.Component {
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
 
-    this.mounted = createMountManager(this)
-    this.timeouts = createTimeoutManager(this)
-    this.handleScroll = createScrollManager(this)
-    this.focusManager = createFocusManager(this, {
-      didHandle: this.handleFocusChanged
+    this.mounted = mountManager(this)
+    this.timeouts = timeoutManager(this)
+    this.handleScroll = scrollManager(this)
+    this.focusManager = focusManager(this, {
+      didHandle: this.handleFocusChanged,
+      onChange: focused => this.setState({ focused }),
+      fireEventHandlers: true,
     })
 
     this.state = this.getStateFromProps(this.props);
@@ -254,7 +252,7 @@ class DropdownList extends React.Component {
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
-        className={cx(className, 'rw-dropdown-list')}
+        className={cn(className, 'rw-dropdown-list')}
       >
         <WidgetPicker
           open={open}
