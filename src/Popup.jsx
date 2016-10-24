@@ -97,9 +97,15 @@ export default React.createClass({
     if (opening)      this.open()
     else if (closing) this.close()
     else if (open) {
-      let height = this.height();
-      if (height !== this.state.height)
-        this.setState({ height })
+      // this.height() returns a floating point number with the desired height
+      // for this popup. Because of potential rounding errors in floating point
+      // aritmetic we must allow an error margin when comparing to the current
+      // state, otherwise we can end up in an infinite loop where the height
+      // is never exactly equal to our target value.
+      const height = this.height()
+          , diff = Math.abs(height - this.state.height);
+      if (isNaN(diff) || diff > 0.1)
+        this.setState({ height });
     }
   },
 
