@@ -21,7 +21,7 @@ export function isReadOnlyItem(item, props){
 export function contains(item, values, valueField){
   return Array.isArray(values)
       ? values.some(value => valueMatcher(item, value, valueField))
-      : valueMatcher(item, values, valueField)
+      : false
 }
 
 export function move(dir, item, props, list) {
