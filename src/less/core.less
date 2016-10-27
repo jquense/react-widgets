@@ -358,9 +358,9 @@ ul.rw-list {
 
 
 .rw-combobox:active,
-.rw-datetimepicker:active,
 .rw-dropdownlist:active,
 .rw-header > .rw-btn:active,
+.rw-datetimepicker .rw-btn.rw-state-active,
 .rw-numberpicker .rw-btn.rw-state-active {
   &,
   &.rw-state-focus {
@@ -410,8 +410,13 @@ ul.rw-list {
   }
 }
 
-.rw-numberpicker {
+.rw-datetimepicker {
+  .rw-btn {
+    border-width: 0;
+  }
+}
 
+.rw-numberpicker {
   .rw-btn {
     display: block;
     height: @input-height / 2;
