@@ -70,15 +70,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = _extends({}, configure, {
 	  DropdownList: __webpack_require__(21),
 	  Combobox: __webpack_require__(63),
-	  Calendar: __webpack_require__(66),
-	  DateTimePicker: __webpack_require__(81),
-	  NumberPicker: __webpack_require__(84),
-	  Multiselect: __webpack_require__(87),
-	  SelectList: __webpack_require__(90),
+	  Calendar: __webpack_require__(67),
+	  DateTimePicker: __webpack_require__(82),
+	  NumberPicker: __webpack_require__(85),
+	  Multiselect: __webpack_require__(88),
+	  SelectList: __webpack_require__(91),
 
 	  utils: {
-	    ReplaceTransitionGroup: __webpack_require__(79),
-	    SlideTransition: __webpack_require__(78)
+	    ReplaceTransitionGroup: __webpack_require__(80),
+	    SlideTransition: __webpack_require__(79)
 	  }
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -233,8 +233,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _configuration2.default.animate = animatefn;
 	  },
 	  setLocalizers: function setLocalizers(_ref) {
-	    var date = _ref.date;
-	    var number = _ref.number;
+	    var date = _ref.date,
+	        number = _ref.number;
 
 	    date && this.setDateLocalizer(date);
 	    number && this.setNumberLocalizer(number);
@@ -723,18 +723,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _numberLocalizer = createWrapper('NumberPicker');
 
 	function setNumber(_ref) {
-	  var _format2 = _ref.format;
-	  var _parse = _ref.parse;
-	  var _ref$decimalChar = _ref.decimalChar;
-	  var decimalChar = _ref$decimalChar === undefined ? function () {
+	  var _format2 = _ref.format,
+	      _parse = _ref.parse,
+	      _ref$decimalChar = _ref.decimalChar,
+	      decimalChar = _ref$decimalChar === undefined ? function () {
 	    return '.';
-	  } : _ref$decimalChar;
-	  var _ref$precision = _ref.precision;
-	  var precision = _ref$precision === undefined ? function () {
+	  } : _ref$decimalChar,
+	      _ref$precision = _ref.precision,
+	      precision = _ref$precision === undefined ? function () {
 	    return null;
-	  } : _ref$precision;
-	  var formats = _ref.formats;
-	  var propType = _ref.propType;
+	  } : _ref$precision,
+	      formats = _ref.formats,
+	      propType = _ref.propType;
 
 	  (0, _invariant2.default)(typeof _format2 === 'function', 'number localizer `format(..)` must be a function');
 	  (0, _invariant2.default)(typeof _parse === 'function', 'number localizer `parse(..)` must be a function');
@@ -927,7 +927,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	var idCount = 0;
 
@@ -1233,13 +1233,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  getInitialState: function getInitialState() {
-	    var _props = this.props;
-	    var open = _props.open;
-	    var filter = _props.filter;
-	    var value = _props.value;
-	    var data = _props.data;
-	    var searchTerm = _props.searchTerm;
-	    var valueField = _props.valueField;
+	    var _props = this.props,
+	        open = _props.open,
+	        filter = _props.filter,
+	        value = _props.value,
+	        data = _props.data,
+	        searchTerm = _props.searchTerm,
+	        valueField = _props.valueField;
 
 
 	    var processed = filter ? this.filter(data, searchTerm) : data,
@@ -1255,12 +1255,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.refs.list && (0, _validateListInterface2.default)(this.refs.list);
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(props) {
-	    var open = props.open;
-	    var filter = props.filter;
-	    var value = props.value;
-	    var data = props.data;
-	    var searchTerm = props.searchTerm;
-	    var valueField = props.valueField;
+	    var open = props.open,
+	        filter = props.filter,
+	        value = props.value,
+	        data = props.data,
+	        searchTerm = props.searchTerm,
+	        valueField = props.valueField;
 
 
 	    var processed = filter ? this.filter(data, searchTerm) : data,
@@ -1290,13 +1290,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    );
 	  },
 	  renderList: function renderList(List, id, messages) {
-	    var _props2 = this.props;
-	    var open = _props2.open;
-	    var filter = _props2.filter;
-	    var data = _props2.data;
-	    var _state = this.state;
-	    var selectedItem = _state.selectedItem;
-	    var focusedItem = _state.focusedItem;
+	    var _props2 = this.props,
+	        open = _props2.open,
+	        filter = _props2.filter,
+	        data = _props2.data;
+	    var _state = this.state,
+	        selectedItem = _state.selectedItem,
+	        focusedItem = _state.focusedItem;
 
 
 	    var listProps = _3.default.pickProps(this.props, List);
@@ -1325,22 +1325,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _this2 = this;
 
-	    var _props3 = this.props;
-	    var className = _props3.className;
-	    var tabIndex = _props3.tabIndex;
-	    var duration = _props3.duration;
-	    var valueField = _props3.valueField;
-	    var textField = _props3.textField;
-	    var groupBy = _props3.groupBy;
-	    var messages = _props3.messages;
-	    var data = _props3.data;
-	    var busy = _props3.busy;
-	    var dropUp = _props3.dropUp;
-	    var placeholder = _props3.placeholder;
-	    var value = _props3.value;
-	    var open = _props3.open;
-	    var valueComponent = _props3.valueComponent;
-	    var List = _props3.listComponent;
+	    var _props3 = this.props,
+	        className = _props3.className,
+	        tabIndex = _props3.tabIndex,
+	        duration = _props3.duration,
+	        valueField = _props3.valueField,
+	        textField = _props3.textField,
+	        groupBy = _props3.groupBy,
+	        messages = _props3.messages,
+	        data = _props3.data,
+	        busy = _props3.busy,
+	        dropUp = _props3.dropUp,
+	        placeholder = _props3.placeholder,
+	        value = _props3.value,
+	        open = _props3.open,
+	        valueComponent = _props3.valueComponent,
+	        List = _props3.listComponent;
 
 
 	    List = List || groupBy && _ListGroupable2.default || _List2.default;
@@ -1447,7 +1447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    (0, _widgetHelpers.notify)(this.props.onKeyDown, [e]);
 
 	    var change = function change(item, fromList) {
-	      if (!item) return;
+	      if (item == null) return;
 	      fromList ? _this3.handleSelect(item) : _this3.change(item);
 	    };
 
@@ -1497,9 +1497,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  focus: function focus(target) {
-	    var _props4 = this.props;
-	    var filter = _props4.filter;
-	    var open = _props4.open;
+	    var _props4 = this.props,
+	        filter = _props4.filter,
+	        open = _props4.open;
 
 	    var inst = target || (filter && open ? this.refs.filter : this.refs.input);
 
@@ -1714,16 +1714,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  Widget.prototype.render = function render() {
-	    var _props = this.props;
-	    var className = _props.className;
-	    var tabIndex = _props.tabIndex;
-	    var open = _props.open;
-	    var dropUp = _props.dropUp;
-	    var disabled = _props.disabled;
-	    var readOnly = _props.readOnly;
-	    var focused = _props.focused;
-
-	    var props = _objectWithoutProperties(_props, ['className', 'tabIndex', 'open', 'dropUp', 'disabled', 'readOnly', 'focused']);
+	    var _props = this.props,
+	        className = _props.className,
+	        tabIndex = _props.tabIndex,
+	        open = _props.open,
+	        dropUp = _props.dropUp,
+	        disabled = _props.disabled,
+	        readOnly = _props.readOnly,
+	        focused = _props.focused,
+	        props = _objectWithoutProperties(_props, ['className', 'tabIndex', 'open', 'dropUp', 'disabled', 'readOnly', 'focused']);
 
 	    var isRtl = !!this.context.isRtl;
 	    var openClass = 'rw-open' + (dropUp ? '-up' : '');
@@ -1788,16 +1787,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  Input.prototype.render = function render() {
-	    var _props = this.props;
-	    var className = _props.className;
-	    var disabled = _props.disabled;
-	    var readOnly = _props.readOnly;
-	    var value = _props.value;
-	    var tabIndex = _props.tabIndex;
-	    var _props$component = _props.component;
-	    var Component = _props$component === undefined ? 'input' : _props$component;
-
-	    var props = _objectWithoutProperties(_props, ['className', 'disabled', 'readOnly', 'value', 'tabIndex', 'component']);
+	    var _props = this.props,
+	        className = _props.className,
+	        disabled = _props.disabled,
+	        readOnly = _props.readOnly,
+	        value = _props.value,
+	        tabIndex = _props.tabIndex,
+	        _props$component = _props.component,
+	        Component = _props$component === undefined ? 'input' : _props$component,
+	        props = _objectWithoutProperties(_props, ['className', 'disabled', 'readOnly', 'value', 'tabIndex', 'component']);
 
 	    return _react2.default.createElement(Component, _extends({}, props, {
 	      type: 'text',
@@ -1860,10 +1858,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  Select.prototype.render = function render() {
-	    var _props = this.props;
-	    var className = _props.className;
-
-	    var props = _objectWithoutProperties(_props, ['className']);
+	    var _props = this.props,
+	        className = _props.className,
+	        props = _objectWithoutProperties(_props, ['className']);
 
 	    return _react2.default.createElement(_Button2.default, _extends({}, props, {
 	      className: (0, _classnames2.default)(className, 'rw-select')
@@ -1914,18 +1911,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  Button.prototype.render = function render() {
-	    var _props = this.props;
-	    var className = _props.className;
-	    var disabled = _props.disabled;
-	    var label = _props.label;
-	    var icon = _props.icon;
-	    var busy = _props.busy;
-	    var active = _props.active;
-	    var children = _props.children;
-	    var _props$component = _props.component;
-	    var Tag = _props$component === undefined ? 'button' : _props$component;
-
-	    var props = _objectWithoutProperties(_props, ['className', 'disabled', 'label', 'icon', 'busy', 'active', 'children', 'component']);
+	    var _props = this.props,
+	        className = _props.className,
+	        disabled = _props.disabled,
+	        label = _props.label,
+	        icon = _props.icon,
+	        busy = _props.busy,
+	        active = _props.active,
+	        children = _props.children,
+	        _props$component = _props.component,
+	        Tag = _props$component === undefined ? 'button' : _props$component,
+	        props = _objectWithoutProperties(_props, ['className', 'disabled', 'label', 'icon', 'busy', 'active', 'children', 'component']);
 
 	    var type = props.type;
 
@@ -1994,11 +1990,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  DropdownListInput.prototype.render = function render() {
-	    var _props = this.props;
-	    var placeholder = _props.placeholder;
-	    var value = _props.value;
-	    var textField = _props.textField;
-	    var Component = _props.valueComponent;
+	    var _props = this.props,
+	        placeholder = _props.placeholder,
+	        value = _props.value,
+	        textField = _props.textField,
+	        Component = _props.valueComponent;
 
 
 	    return _react2.default.createElement(
@@ -2086,7 +2082,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  message: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.node, _react2.default.PropTypes.string]),
 
-	  filter: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.func, _react2.default.PropTypes.bool, _react2.default.PropTypes.oneOf(filterTypes)])
+	  filter: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.func, _react2.default.PropTypes.bool, _react2.default.PropTypes.oneOf(filterTypes)]),
+	  sort: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.func, _react2.default.PropTypes.bool])
 	};
 
 	function createChainableTypeChecker(validate) {
@@ -2162,7 +2159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.__esModule = true;
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	exports.dataValue = dataValue;
 	exports.dataText = dataText;
@@ -2349,18 +2346,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (opening) this.open();else if (closing) this.close();else if (open) {
-	      var height = this.height();
-	      if (height !== this.state.height) this.setState({ height: height });
+	      // this.height() returns a floating point number with the desired height
+	      // for this popup. Because of potential rounding errors in floating point
+	      // aritmetic we must allow an error margin when comparing to the current
+	      // state, otherwise we can end up in an infinite loop where the height
+	      // is never exactly equal to our target value.
+	      var height = this.height(),
+	          diff = Math.abs(height - this.state.height);
+	      if (isNaN(diff) || diff > 0.1) this.setState({ height: height });
 	    }
 	  },
 	  render: function render() {
-	    var _props = this.props;
-	    var className = _props.className;
-	    var dropUp = _props.dropUp;
-	    var style = _props.style;
-	    var _state = this.state;
-	    var status = _state.status;
-	    var height = _state.height;
+	    var _props = this.props,
+	        className = _props.className,
+	        dropUp = _props.dropUp,
+	        style = _props.style,
+	        _state = this.state,
+	        status = _state.status,
+	        height = _state.height;
 
 
 	    var overflow = OVERFLOW[status] || 'visible',
@@ -2687,11 +2690,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.move();
 	  },
 	  componentDidUpdate: function componentDidUpdate() {
-	    var _props = this.props;
-	    var data = _props.data;
-	    var focused = _props.focused;
-	    var idx = data.indexOf(focused);
-	    var activeId = optionId((0, _widgetHelpers.instanceId)(this), idx);
+	    var _props = this.props,
+	        data = _props.data,
+	        focused = _props.focused,
+	        idx = data.indexOf(focused),
+	        activeId = optionId((0, _widgetHelpers.instanceId)(this), idx);
+
 
 	    this.ariaActiveDescendant(idx !== -1 ? activeId : null);
 
@@ -2700,18 +2704,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _this = this;
 
-	    var _props2 = this.props;
-	    var className = _props2.className;
-	    var role = _props2.role;
-	    var data = _props2.data;
-	    var textField = _props2.textField;
-	    var valueField = _props2.valueField;
-	    var focused = _props2.focused;
-	    var selected = _props2.selected;
-	    var messages = _props2.messages;
-	    var onSelect = _props2.onSelect;
-	    var ItemComponent = _props2.itemComponent;
-	    var Option = _props2.optionComponent;
+	    var _props2 = this.props,
+	        className = _props2.className,
+	        role = _props2.role,
+	        data = _props2.data,
+	        textField = _props2.textField,
+	        valueField = _props2.valueField,
+	        focused = _props2.focused,
+	        selected = _props2.selected,
+	        messages = _props2.messages,
+	        onSelect = _props2.onSelect,
+	        ItemComponent = _props2.itemComponent,
+	        Option = _props2.optionComponent;
 
 
 	    var id = (0, _widgetHelpers.instanceId)(this),
@@ -2812,13 +2816,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  render: function render() {
-	    var _props = this.props;
-	    var className = _props.className;
-	    var children = _props.children;
-	    var focused = _props.focused;
-	    var selected = _props.selected;
-	    var disabled = _props.disabled;
-	    var readOnly = _props.readOnly;
+	    var _props = this.props,
+	        className = _props.className,
+	        children = _props.children,
+	        focused = _props.focused,
+	        selected = _props.selected,
+	        disabled = _props.disabled,
+	        readOnly = _props.readOnly;
 
 
 	    var props = _3.default.omitOwnProps(this);
@@ -2864,7 +2868,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function instanceId(component) {
-	  var suffix = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+	  var suffix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
 	  component.__id || (component.__id = (0, _.uniqueId)('rw_'));
 	  return (component.props.id || component.__id) + suffix;
@@ -3046,7 +3050,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.__esModule = true;
 
 	exports.default = function (nodeOrComponent) {
-	  var reconcileChildren = arguments.length <= 1 || arguments[1] === undefined ? defaultReconcile : arguments[1];
+	  var reconcileChildren = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultReconcile;
 
 
 	  return {
@@ -3063,7 +3067,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    ariaActiveDescendant: function ariaActiveDescendant(id) {
-	      var key = arguments.length <= 1 || arguments[1] === undefined ? this.props.ariaActiveDescendantKey : arguments[1];
+	      var key = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.props.ariaActiveDescendantKey;
 	      var activeDescendants = this.context.activeDescendants;
 
 	      var current = this.__ariaActiveDescendantId;
@@ -3241,14 +3245,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _this = this;
 
-	    var _props = this.props;
-	    var className = _props.className;
-	    var role = _props.role;
-	    var data = _props.data;
-	    var messages = _props.messages;
-	    var _state = this.state;
-	    var sortedKeys = _state.sortedKeys;
-	    var groups = _state.groups;
+	    var _props = this.props,
+	        className = _props.className,
+	        role = _props.role,
+	        data = _props.data,
+	        messages = _props.messages;
+	    var _state = this.state,
+	        sortedKeys = _state.sortedKeys,
+	        groups = _state.groups;
 
 
 	    var elementProps = _3.default.omitOwnProps(this);
@@ -3305,14 +3309,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    );
 	  },
 	  _renderItem: function _renderItem(group, item, idx) {
-	    var _props2 = this.props;
-	    var focused = _props2.focused;
-	    var selected = _props2.selected;
-	    var onSelect = _props2.onSelect;
-	    var textField = _props2.textField;
-	    var valueField = _props2.valueField;
-	    var ItemComponent = _props2.itemComponent;
-	    var Option = _props2.optionComponent;
+	    var _props2 = this.props,
+	        focused = _props2.focused,
+	        selected = _props2.selected,
+	        onSelect = _props2.onSelect,
+	        textField = _props2.textField,
+	        valueField = _props2.valueField,
+	        ItemComponent = _props2.itemComponent,
+	        Option = _props2.optionComponent;
 
 
 	    var currentID = optionId((0, _widgetHelpers.instanceId)(this), idx),
@@ -3576,6 +3580,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    propTypes = utils.uncontrolledPropTypes(controlledValues, basePropTypes, displayName);
 
 	    (0, _invariant2.default)(isCompositeComponent || !methods.length, '[uncontrollable] stateless function components cannot pass through methods ' + 'because they have no associated instances. Check component: ' + displayName + ', ' + 'attempting to pass through methods: ' + methods.join(', '));
+
 	    methods = utils.transform(methods, function (obj, method) {
 	      obj[method] = function () {
 	        var _refs$inner;
@@ -3620,6 +3625,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _this2._values[key] = nextProps[utils.defaultKey(key)];
 	          }
 	        });
+	      },
+	      getControlledInstance: function getControlledInstance() {
+	        return this.refs.inner;
 	      },
 	      render: function render() {
 	        var _this3 = this;
@@ -3703,7 +3711,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.__esModule = true;
 	exports.version = undefined;
-	exports.customPropType = customPropType;
 	exports.uncontrolledPropTypes = uncontrolledPropTypes;
 	exports.getType = getType;
 	exports.getValue = getValue;
@@ -3712,8 +3719,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.chain = chain;
 	exports.transform = transform;
 	exports.each = each;
-	exports.isReactComponent = isReactComponent;
 	exports.has = has;
+	exports.isReactComponent = isReactComponent;
 
 	var _react = __webpack_require__(20);
 
@@ -3725,16 +3732,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function customPropType(handler, propType, name) {
-
+	function readOnlyPropType(handler, name) {
 	  return function (props, propName) {
-
 	    if (props[propName] !== undefined) {
 	      if (!props[handler]) {
 	        return new Error('You have provided a `' + propName + '` prop to ' + '`' + name + '` without an `' + handler + '` handler. This will render a read-only field. ' + 'If the field should be mutable use `' + defaultKey(propName) + '`. Otherwise, set `' + handler + '`');
 	      }
-
-	      return propType && propType(props, propName, name);
 	    }
 	  };
 	}
@@ -3744,13 +3747,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  if (process.env.NODE_ENV !== 'production' && basePropTypes) {
 	    transform(controlledValues, function (obj, handler, prop) {
-	      var type = basePropTypes[prop];
-
 	      (0, _invariant2.default)(typeof handler === 'string' && handler.trim().length, 'Uncontrollable - [%s]: the prop `%s` needs a valid handler key name in order to make it uncontrollable', displayName, prop);
 
-	      obj[prop] = customPropType(handler, type, displayName);
-
-	      if (type !== undefined) obj[defaultKey(prop)] = type;
+	      obj[prop] = readOnlyPropType(handler, displayName);
 	    }, propTypes);
 	  }
 
@@ -3809,6 +3808,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 
+	function has(o, k) {
+	  return o ? Object.prototype.hasOwnProperty.call(o, k) : false;
+	}
+
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 * All rights reserved.
@@ -3820,10 +3823,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	function isReactComponent(component) {
 	  return !!(component && component.prototype && component.prototype.isReactComponent);
 	}
-
-	function has(o, k) {
-	  return o ? Object.prototype.hasOwnProperty.call(o, k) : false;
-	}
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
@@ -3832,10 +3831,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _require = __webpack_require__(19);
-
-	var has = _require.has;
-
+	var _require = __webpack_require__(19),
+	    has = _require.has;
 
 	module.exports = {
 	  componentWillUnmount: function componentWillUnmount() {
@@ -4262,8 +4259,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	function FocusMixin(_ref) {
 	  var _desc, _value, _obj;
 
-	  var willHandle = _ref.willHandle;
-	  var didHandle = _ref.didHandle;
+	  var willHandle = _ref.willHandle,
+	      didHandle = _ref.didHandle;
 
 	  function _handleFocus(inst, focused, event) {
 	    var handler = inst.props[focused ? 'onFocus' : 'onBlur'];
@@ -4432,6 +4429,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  suggest: _propTypes2.default.filter,
 	  filter: _propTypes2.default.filter,
+	  sort: _propTypes2.default.sort,
 
 	  busy: _react2.default.PropTypes.bool,
 
@@ -4452,7 +4450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'ComboBox',
 
-	  mixins: [__webpack_require__(52), __webpack_require__(55), __webpack_require__(56), __webpack_require__(61), __webpack_require__(45)('input'), __webpack_require__(62)({
+	  mixins: [__webpack_require__(52), __webpack_require__(55), __webpack_require__(66), __webpack_require__(56), __webpack_require__(61), __webpack_require__(45)('input'), __webpack_require__(62)({
 	    willHandle: function willHandle(focused) {
 	      // not suggesting anymore
 	      !focused && this.refs.input.accept();
@@ -4465,12 +4463,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  propTypes: propTypes,
 
 	  getInitialState: function getInitialState() {
-	    var _props = this.props;
-	    var value = _props.value;
-	    var data = _props.data;
-	    var valueField = _props.valueField;
-	    var items = this.process(data, value);
-	    var idx = (0, _dataHelpers.dataIndexOf)(items, value, valueField);
+	    var _props = this.props,
+	        value = _props.value,
+	        data = _props.data,
+	        valueField = _props.valueField,
+	        items = this.process(data, value),
+	        idx = (0, _dataHelpers.dataIndexOf)(items, value, valueField);
+
 
 	    return {
 	      selectedItem: items[idx],
@@ -4503,10 +4502,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return isSuggesting || stateChanged || valueChanged;
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    var value = nextProps.value;
-	    var data = nextProps.data;
-	    var valueField = nextProps.valueField;
-	    var textField = nextProps.textField;
+	    var value = nextProps.value,
+	        data = nextProps.data,
+	        valueField = nextProps.valueField,
+	        textField = nextProps.textField;
 
 
 	    var rawIdx = (0, _dataHelpers.dataIndexOf)(data, value, valueField),
@@ -4528,21 +4527,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 	  renderInput: function renderInput(listID) {
-	    var _props2 = this.props;
-	    var suggest = _props2.suggest;
-	    var filter = _props2.filter;
-	    var textField = _props2.textField;
-	    var busy = _props2.busy;
-	    var name = _props2.name;
-	    var data = _props2.data;
-	    var value = _props2.value;
-	    var valueField = _props2.valueField;
-	    var autoFocus = _props2.autoFocus;
-	    var tabIndex = _props2.tabIndex;
-	    var disabled = _props2.disabled;
-	    var readOnly = _props2.readOnly;
-	    var placeholder = _props2.placeholder;
-	    var open = _props2.open;
+	    var _props2 = this.props,
+	        suggest = _props2.suggest,
+	        filter = _props2.filter,
+	        textField = _props2.textField,
+	        busy = _props2.busy,
+	        name = _props2.name,
+	        data = _props2.data,
+	        value = _props2.value,
+	        valueField = _props2.valueField,
+	        autoFocus = _props2.autoFocus,
+	        tabIndex = _props2.tabIndex,
+	        disabled = _props2.disabled,
+	        readOnly = _props2.readOnly,
+	        placeholder = _props2.placeholder,
+	        open = _props2.open;
 
 
 	    var valueItem = (0, _dataHelpers.dataItem)(data, value, valueField); // take value from the raw data
@@ -4571,12 +4570,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 	  renderList: function renderList(List, id, messages) {
-	    var _props3 = this.props;
-	    var open = _props3.open;
-	    var data = _props3.data;
-	    var _state = this.state;
-	    var selectedItem = _state.selectedItem;
-	    var focusedItem = _state.focusedItem;
+	    var _props3 = this.props,
+	        open = _props3.open,
+	        data = _props3.data;
+	    var _state = this.state,
+	        selectedItem = _state.selectedItem,
+	        focusedItem = _state.focusedItem;
 
 
 	    var listProps = _3.default.pickProps(this.props, List);
@@ -4601,15 +4600,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _this = this;
 
-	    var _props4 = this.props;
-	    var className = _props4.className;
-	    var duration = _props4.duration;
-	    var groupBy = _props4.groupBy;
-	    var messages = _props4.messages;
-	    var busy = _props4.busy;
-	    var dropUp = _props4.dropUp;
-	    var open = _props4.open;
-	    var List = _props4.listComponent;
+	    var _props4 = this.props,
+	        className = _props4.className,
+	        duration = _props4.duration,
+	        groupBy = _props4.groupBy,
+	        messages = _props4.messages,
+	        busy = _props4.busy,
+	        dropUp = _props4.dropUp,
+	        open = _props4.open,
+	        List = _props4.listComponent;
 	    var focused = this.state.focused;
 
 
@@ -4674,9 +4673,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._isTyping = true;
 	  },
 	  handleInputChange: function handleInputChange(e) {
-	    var _props5 = this.props;
-	    var data = _props5.data;
-	    var textField = _props5.textField;
+	    var _props5 = this.props,
+	        data = _props5.data,
+	        textField = _props5.textField;
 
 
 	    var shouldSuggest = !!this.props.suggest,
@@ -4753,10 +4752,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.props.open ? this.close() : this.open();
 	  },
 	  suggest: function suggest(data, value) {
-	    var _props6 = this.props;
-	    var textField = _props6.textField;
-	    var suggest = _props6.suggest;
-	    var minLength = _props6.minLength;
+	    var _props6 = this.props,
+	        textField = _props6.textField,
+	        suggest = _props6.suggest,
+	        minLength = _props6.minLength;
 
 
 	    var word = (0, _dataHelpers.dataText)(value, textField),
@@ -4777,6 +4776,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  process: function process(data, values, searchTerm) {
 	    if (this.props.filter && searchTerm) data = this.filter(data, searchTerm);
+
+	    if (this.props.sort && searchTerm) data = this.sort(data, searchTerm);
 
 	    return data;
 	  }
@@ -4865,10 +4866,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  render: function render() {
-	    var _props = this.props;
-	    var onKeyDown = _props.onKeyDown;
-
-	    var props = _objectWithoutProperties(_props, ['onKeyDown']);
+	    var _props = this.props,
+	        onKeyDown = _props.onKeyDown,
+	        props = _objectWithoutProperties(_props, ['onKeyDown']);
 
 	    delete props.suggest;
 
@@ -4970,6 +4970,47 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var _react = __webpack_require__(20);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(31);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _dataHelpers = __webpack_require__(33);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = {
+
+	    propTypes: {
+	        data: _react2.default.PropTypes.array,
+	        sort: _propTypes2.default.sort
+	    },
+
+	    sort: function sort(items, searchTerm) {
+	        var _this = this;
+
+	        var compareFunction = typeof this.props.sort === "function" ? this.props.sort : function (itemA, itemB) {
+	            var dataTextA = (0, _dataHelpers.dataText)(itemA, _this.props.textField);
+	            var dataTextB = (0, _dataHelpers.dataText)(itemB, _this.props.textField);
+
+	            return dataTextA.localeCompare(dataTextB);
+	        };
+
+	        return [].concat(items).sort(function (itemA, itemB) {
+	            return compareFunction(itemA, itemB, searchTerm);
+	        });
+	    }
+	};
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	exports.__esModule = true;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -4993,27 +5034,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Widget2 = _interopRequireDefault(_Widget);
 
-	var _Header = __webpack_require__(67);
+	var _Header = __webpack_require__(68);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
-	var _Footer = __webpack_require__(69);
+	var _Footer = __webpack_require__(70);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
-	var _Month = __webpack_require__(70);
+	var _Month = __webpack_require__(71);
 
 	var _Month2 = _interopRequireDefault(_Month);
 
-	var _Year = __webpack_require__(75);
+	var _Year = __webpack_require__(76);
 
 	var _Year2 = _interopRequireDefault(_Year);
 
-	var _Decade = __webpack_require__(76);
+	var _Decade = __webpack_require__(77);
 
 	var _Decade2 = _interopRequireDefault(_Decade);
 
-	var _Century = __webpack_require__(77);
+	var _Century = __webpack_require__(78);
 
 	var _Century2 = _interopRequireDefault(_Century);
 
@@ -5027,15 +5068,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _uncontrollable2 = _interopRequireDefault(_uncontrollable);
 
-	var _SlideTransition = __webpack_require__(78);
+	var _SlideTransition = __webpack_require__(79);
 
 	var _SlideTransition2 = _interopRequireDefault(_SlideTransition);
 
-	var _dates = __webpack_require__(72);
+	var _dates = __webpack_require__(73);
 
 	var _dates2 = _interopRequireDefault(_dates);
 
-	var _constants = __webpack_require__(74);
+	var _constants = __webpack_require__(75);
 
 	var constants = _interopRequireWildcard(_constants);
 
@@ -5134,7 +5175,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  initialView: _react2.default.PropTypes.oneOf(VIEW_OPTIONS),
 
 	  finalView: function finalView(props, propName, componentName) {
-	    var err = _react2.default.PropTypes.oneOf(VIEW_OPTIONS)(props, propName, componentName);
+	    for (var _len = arguments.length, args = Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+	      args[_key - 3] = arguments[_key];
+	    }
+
+	    var err = _react2.default.PropTypes.oneOf(VIEW_OPTIONS).apply(undefined, [props, propName, componentName].concat(args));
 
 	    if (err) return err;
 	    if (VIEW_OPTIONS.indexOf(props[propName]) < VIEW_OPTIONS.indexOf(props.initialView)) return new Error(('The `' + propName + '` prop: `' + props[propName] + '` cannot be \'lower\' than the `initialView`\n        prop. This creates a range that cannot be rendered.').replace(/\n\t/g, ''));
@@ -5219,25 +5264,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _this = this;
 
-	    var _props = this.props;
-	    var className = _props.className;
-	    var value = _props.value;
-	    var footerFormat = _props.footerFormat;
-	    var disabled = _props.disabled;
-	    var readOnly = _props.readOnly;
-	    var finalView = _props.finalView;
-	    var footer = _props.footer;
-	    var messages = _props.messages;
-	    var min = _props.min;
-	    var max = _props.max;
-	    var culture = _props.culture;
-	    var duration = _props.duration;
-	    var tabIndex = _props.tabIndex;
-	    var currentDate = _props.currentDate;
-	    var _state = this.state;
-	    var view = _state.view;
-	    var slideDirection = _state.slideDirection;
-	    var focused = _state.focused;
+	    var _props = this.props,
+	        className = _props.className,
+	        value = _props.value,
+	        footerFormat = _props.footerFormat,
+	        disabled = _props.disabled,
+	        readOnly = _props.readOnly,
+	        finalView = _props.finalView,
+	        footer = _props.footer,
+	        messages = _props.messages,
+	        min = _props.min,
+	        max = _props.max,
+	        culture = _props.culture,
+	        duration = _props.duration,
+	        tabIndex = _props.tabIndex,
+	        currentDate = _props.currentDate;
+	    var _state = this.state,
+	        view = _state.view,
+	        slideDirection = _state.slideDirection,
+	        focused = _state.focused;
 
 
 	    var View = VIEW[view],
@@ -5350,7 +5395,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.navigate(dir.DOWN, date);
 	  },
 	  changeCurrentDate: function changeCurrentDate(date) {
-	    var currentDate = arguments.length <= 1 || arguments[1] === undefined ? this.props.currentDate : arguments[1];
+	    var currentDate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.props.currentDate;
 
 	    var inRangeDate = this.inRangeValue(date ? new Date(date) : currentDate);
 	    if (_dates2.default.eq(inRangeDate, dateOrNull(currentDate), VIEW_UNIT[this.state.view])) return;
@@ -5416,11 +5461,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    (0, _widgetHelpers.notify)(this.props.onKeyDown, [e]);
 	  },
 	  _label: function _label() {
-	    var _props2 = this.props;
-	    var culture = _props2.culture;
-	    var props = _objectWithoutProperties(_props2, ['culture']);
-	    var view = this.state.view;
-	    var dt = this.props.currentDate;
+	    var _props2 = this.props,
+	        culture = _props2.culture,
+	        props = _objectWithoutProperties(_props2, ['culture']),
+	        view = this.state.view,
+	        dt = this.props.currentDate;
 
 	    if (view === 'month') return _localizers.date.format(dt, format(props, 'header'), culture);else if (view === 'year') return _localizers.date.format(dt, format(props, 'year'), culture);else if (view === 'decade') return _localizers.date.format(_dates2.default.startOf(dt, 'decade'), format(props, 'decade'), culture);else if (view === 'century') return _localizers.date.format(_dates2.default.startOf(dt, 'century'), format(props, 'century'), culture);
 	  },
@@ -5460,7 +5505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5496,7 +5541,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    })
 	  },
 
-	  mixins: [__webpack_require__(54), __webpack_require__(68)],
+	  mixins: [__webpack_require__(54), __webpack_require__(69)],
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -5507,16 +5552,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  render: function render() {
-	    var _props = this.props;
-	    var messages = _props.messages;
-	    var label = _props.label;
-	    var labelId = _props.labelId;
-	    var onMoveRight = _props.onMoveRight;
-	    var onMoveLeft = _props.onMoveLeft;
-	    var onViewChange = _props.onViewChange;
-	    var prevDisabled = _props.prevDisabled;
-	    var upDisabled = _props.upDisabled;
-	    var nextDisabled = _props.nextDisabled;
+	    var _props = this.props,
+	        messages = _props.messages,
+	        label = _props.label,
+	        labelId = _props.labelId,
+	        onMoveRight = _props.onMoveRight,
+	        onMoveLeft = _props.onMoveLeft,
+	        onViewChange = _props.onViewChange,
+	        prevDisabled = _props.prevDisabled,
+	        upDisabled = _props.upDisabled,
+	        nextDisabled = _props.nextDisabled;
 
 
 	    var rtl = this.isRtl();
@@ -5556,7 +5601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5582,7 +5627,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5608,10 +5653,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  displayName: 'Footer',
 
 	  render: function render() {
-	    var _props = this.props;
-	    var disabled = _props.disabled;
-	    var readOnly = _props.readOnly;
-	    var value = _props.value;
+	    var _props = this.props,
+	        disabled = _props.disabled,
+	        readOnly = _props.readOnly,
+	        value = _props.value;
 
 
 	    return _react2.default.createElement(
@@ -5630,7 +5675,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5641,11 +5686,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _CalendarView = __webpack_require__(71);
+	var _CalendarView = __webpack_require__(72);
 
 	var _CalendarView2 = _interopRequireDefault(_CalendarView);
 
-	var _dates = __webpack_require__(72);
+	var _dates = __webpack_require__(73);
 
 	var _dates2 = _interopRequireDefault(_dates);
 
@@ -5700,7 +5745,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    isEqual: isEqual
 	  },
 
-	  mixins: [__webpack_require__(68), __webpack_require__(45)()],
+	  mixins: [__webpack_require__(69), __webpack_require__(45)()],
 
 	  propTypes: propTypes,
 
@@ -5709,11 +5754,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.ariaActiveDescendant(activeId, null);
 	  },
 	  render: function render() {
-	    var _props = this.props;
-	    var focused = _props.focused;
-	    var culture = _props.culture;
-	    var month = _dates2.default.visibleDays(focused, culture);
-	    var rows = _3.default.chunk(month, 7);
+	    var _props = this.props,
+	        focused = _props.focused,
+	        culture = _props.culture,
+	        month = _dates2.default.visibleDays(focused, culture),
+	        rows = _3.default.chunk(month, 7);
 
 	    return _react2.default.createElement(
 	      _CalendarView2.default,
@@ -5737,18 +5782,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  renderRow: function renderRow(row, rowIdx) {
 	    var _this = this;
 
-	    var _props2 = this.props;
-	    var focused = _props2.focused;
-	    var today = _props2.today;
-	    var disabled = _props2.disabled;
-	    var onChange = _props2.onChange;
-	    var value = _props2.value;
-	    var culture = _props2.culture;
-	    var min = _props2.min;
-	    var max = _props2.max;
-	    var Day = _props2.dayComponent;
-	    var id = (0, _widgetHelpers.instanceId)(this);
-	    var labelFormat = _localizers.date.getFormat('footer');
+	    var _props2 = this.props,
+	        focused = _props2.focused,
+	        today = _props2.today,
+	        disabled = _props2.disabled,
+	        onChange = _props2.onChange,
+	        value = _props2.value,
+	        culture = _props2.culture,
+	        min = _props2.min,
+	        max = _props2.max,
+	        Day = _props2.dayComponent,
+	        id = (0, _widgetHelpers.instanceId)(this),
+	        labelFormat = _localizers.date.getFormat('footer');
 
 	    return _react2.default.createElement(
 	      _CalendarView2.default.Row,
@@ -5794,7 +5839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5813,7 +5858,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _dates = __webpack_require__(72);
+	var _dates = __webpack_require__(73);
 
 	var _dates2 = _interopRequireDefault(_dates);
 
@@ -5867,11 +5912,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    return _ret = (_temp = (_this2 = _possibleConstructorReturn(this, _React$Component2.call.apply(_React$Component2, [this].concat(args))), _this2), _this2.handleChange = function () {
-	      var _this2$props = _this2.props;
-	      var onChange = _this2$props.onChange;
-	      var min = _this2$props.min;
-	      var max = _this2$props.max;
-	      var date = _this2$props.date;
+	      var _this2$props = _this2.props,
+	          onChange = _this2$props.onChange,
+	          min = _this2$props.min,
+	          max = _this2$props.max,
+	          date = _this2$props.date;
 
 	      onChange(clamp(date, min, max));
 	    }, _temp), _possibleConstructorReturn(_this2, _ret);
@@ -5882,11 +5927,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  CalendarViewCell.prototype.isEmpty = function isEmpty() {
-	    var _props = this.props;
-	    var unit = _props.unit;
-	    var min = _props.min;
-	    var max = _props.max;
-	    var date = _props.date;
+	    var _props = this.props,
+	        unit = _props.unit,
+	        min = _props.min,
+	        max = _props.max,
+	        date = _props.date;
 
 	    return !_dates2.default.inRange(date, min, max, unit);
 	  };
@@ -5904,27 +5949,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  CalendarViewCell.prototype.isOffView = function isOffView() {
-	    var _props2 = this.props;
-	    var viewUnit = _props2.viewUnit;
-	    var focused = _props2.focused;
-	    var date = _props2.date;
+	    var _props2 = this.props,
+	        viewUnit = _props2.viewUnit,
+	        focused = _props2.focused,
+	        date = _props2.date;
 
 	    return viewUnit && _dates2.default[viewUnit](date) !== _dates2.default[viewUnit](focused);
 	  };
 
 	  CalendarViewCell.prototype.render = function render() {
-	    var _props3 = this.props;
-	    var children = _props3.children;
-	    var id = _props3.id;
-	    var label = _props3.label;
-	    var disabled = _props3.disabled;
+	    var _props3 = this.props,
+	        children = _props3.children,
+	        id = _props3.id,
+	        label = _props3.label,
+	        disabled = _props3.disabled;
 
 
 	    if (this.isEmpty()) {
 	      return _react2.default.createElement(
 	        'td',
 	        { className: 'rw-empty-cell', role: 'presentation' },
-	        ' '
+	        '\xA0'
 	      );
 	    }
 
@@ -5974,7 +6019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5983,11 +6028,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _dateArithmetic = __webpack_require__(73);
+	var _dateArithmetic = __webpack_require__(74);
 
 	var _dateArithmetic2 = _interopRequireDefault(_dateArithmetic);
 
-	var _constants = __webpack_require__(74);
+	var _constants = __webpack_require__(75);
 
 	var _localizers = __webpack_require__(17);
 
@@ -6073,7 +6118,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports) {
 
 	var MILI    = 'milliseconds'
@@ -6102,7 +6147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      case DAY:
 	        return dates.date(date, dates.date(date) + num)
 	      case WEEK:
-	        return dates.date(date, dates.date(date) + (7 * num))
+	        return dates.date(date, dates.date(date) + (7 * num)) 
 	      case MONTH:
 	        return monthMath(date, num)
 	      case DECADE:
@@ -6139,13 +6184,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          date = dates.milliseconds(date, 0);
 	    }
 
-	    if (unit === DECADE)
+	    if (unit === DECADE) 
 	      date = dates.subtract(date, dates.year(date) % 10, 'year')
-
-	    if (unit === CENTURY)
+	    
+	    if (unit === CENTURY) 
 	      date = dates.subtract(date, dates.year(date) % 100, 'year')
 
-	    if (unit === WEEK)
+	    if (unit === WEEK) 
 	      date = dates.weekday(date, 0, firstOfWeek);
 
 	    return date
@@ -6174,7 +6219,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  max: function(){
 	    return new Date(Math.max.apply(Math, arguments))
 	  },
-
+	  
 	  inRange: function(day, min, max, unit){
 	    unit = unit || 'day'
 
@@ -6192,13 +6237,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  year:           createAccessor('FullYear'),
 
 	  decade: function (date, val) {
-	    return val === undefined
+	    return val === undefined 
 	      ? dates.year(dates.startOf(date, DECADE))
 	      : dates.add(date, val + 10, YEAR);
 	  },
 
 	  century: function (date, val) {
-	    return val === undefined
+	    return val === undefined 
 	      ? dates.year(dates.startOf(date, CENTURY))
 	      : dates.add(date, val + 100, YEAR);
 	  },
@@ -6206,8 +6251,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  weekday: function (date, val, firstDay) {
 	      var weekday = (dates.day(date) + 7 - (firstDay || 0) ) % 7;
 
-	      return val === undefined
-	        ? weekday
+	      return val === undefined 
+	        ? weekday 
 	        : dates.add(date, val - weekday, DAY);
 	  },
 
@@ -6273,7 +6318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    date = dates.month(date, newMonth)
 
 	    while (newMonth < 0 ) newMonth = 12 + newMonth
-
+	      
 	    //month rollover
 	    if ( dates.month(date) !== ( newMonth % 12))
 	      date = dates.date(date, 0) //move to last of month
@@ -6300,7 +6345,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6335,7 +6380,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var calendarViewUnits = exports.calendarViewUnits = (_calendarViewUnits = {}, _calendarViewUnits[views.MONTH] = 'day', _calendarViewUnits[views.YEAR] = views.MONTH, _calendarViewUnits[views.DECADE] = views.YEAR, _calendarViewUnits[views.CENTURY] = views.DECADE, _calendarViewUnits);
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6346,11 +6391,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _CalendarView = __webpack_require__(71);
+	var _CalendarView = __webpack_require__(72);
 
 	var _CalendarView2 = _interopRequireDefault(_CalendarView);
 
-	var _dates = __webpack_require__(72);
+	var _dates = __webpack_require__(73);
 
 	var _dates2 = _interopRequireDefault(_dates);
 
@@ -6392,7 +6437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'YearView',
 
-	  mixins: [__webpack_require__(68), __webpack_require__(45)()],
+	  mixins: [__webpack_require__(69), __webpack_require__(45)()],
 
 	  propTypes: propTypes,
 
@@ -6401,8 +6446,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.ariaActiveDescendant(activeId);
 	  },
 	  render: function render() {
-	    var focused = this.props.focused;
-	    var months = _dates2.default.monthsInYear(_dates2.default.year(focused));
+	    var focused = this.props.focused,
+	        months = _dates2.default.monthsInYear(_dates2.default.year(focused));
+
 
 	    return _react2.default.createElement(
 	      _CalendarView2.default,
@@ -6417,15 +6463,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  renderRow: function renderRow(row, rowIdx) {
 	    var _this = this;
 
-	    var _props = this.props;
-	    var focused = _props.focused;
-	    var disabled = _props.disabled;
-	    var onChange = _props.onChange;
-	    var value = _props.value;
-	    var today = _props.today;
-	    var culture = _props.culture;
-	    var min = _props.min;
-	    var max = _props.max;
+	    var _props = this.props,
+	        focused = _props.focused,
+	        disabled = _props.disabled,
+	        onChange = _props.onChange,
+	        value = _props.value,
+	        today = _props.today,
+	        culture = _props.culture,
+	        min = _props.min,
+	        max = _props.max;
 
 
 	    var id = (0, _widgetHelpers.instanceId)(this),
@@ -6464,7 +6510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6475,11 +6521,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _CalendarView = __webpack_require__(71);
+	var _CalendarView = __webpack_require__(72);
 
 	var _CalendarView2 = _interopRequireDefault(_CalendarView);
 
-	var _dates = __webpack_require__(72);
+	var _dates = __webpack_require__(73);
 
 	var _dates2 = _interopRequireDefault(_dates);
 
@@ -6517,7 +6563,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'DecadeView',
 
-	  mixins: [__webpack_require__(54), __webpack_require__(68), __webpack_require__(45)()],
+	  mixins: [__webpack_require__(54), __webpack_require__(69), __webpack_require__(45)()],
 
 	  propTypes: propTypes,
 
@@ -6540,16 +6586,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    );
 	  },
 	  renderRow: function renderRow(row, rowIdx) {
-	    var _props = this.props;
-	    var focused = _props.focused;
-	    var disabled = _props.disabled;
-	    var onChange = _props.onChange;
-	    var yearFormat = _props.yearFormat;
-	    var value = _props.value;
-	    var today = _props.today;
-	    var culture = _props.culture;
-	    var min = _props.min;
-	    var max = _props.max;
+	    var _props = this.props,
+	        focused = _props.focused,
+	        disabled = _props.disabled,
+	        onChange = _props.onChange,
+	        yearFormat = _props.yearFormat,
+	        value = _props.value,
+	        today = _props.today,
+	        culture = _props.culture,
+	        min = _props.min,
+	        max = _props.max;
 
 
 	    var id = (0, _widgetHelpers.instanceId)(this);
@@ -6595,7 +6641,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6606,11 +6652,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _CalendarView = __webpack_require__(71);
+	var _CalendarView = __webpack_require__(72);
 
 	var _CalendarView2 = _interopRequireDefault(_CalendarView);
 
-	var _dates = __webpack_require__(72);
+	var _dates = __webpack_require__(73);
 
 	var _dates2 = _interopRequireDefault(_dates);
 
@@ -6651,7 +6697,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  displayName: 'CenturyView',
 
-	  mixins: [__webpack_require__(54), __webpack_require__(68), __webpack_require__(45)()],
+	  mixins: [__webpack_require__(54), __webpack_require__(69), __webpack_require__(45)()],
 
 	  propTypes: propTypes,
 
@@ -6676,15 +6722,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  renderRow: function renderRow(row, rowIdx) {
 	    var _this = this;
 
-	    var _props = this.props;
-	    var focused = _props.focused;
-	    var disabled = _props.disabled;
-	    var onChange = _props.onChange;
-	    var value = _props.value;
-	    var today = _props.today;
-	    var culture = _props.culture;
-	    var min = _props.min;
-	    var max = _props.max;
+	    var _props = this.props,
+	        focused = _props.focused,
+	        disabled = _props.disabled,
+	        onChange = _props.onChange,
+	        value = _props.value,
+	        today = _props.today,
+	        culture = _props.culture,
+	        min = _props.min,
+	        max = _props.max;
 
 
 	    var id = (0, _widgetHelpers.instanceId)(this, '_century');
@@ -6730,7 +6776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6741,7 +6787,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ReplaceTransitionGroup = __webpack_require__(79);
+	var _ReplaceTransitionGroup = __webpack_require__(80);
 
 	var _ReplaceTransitionGroup2 = _interopRequireDefault(_ReplaceTransitionGroup);
 
@@ -6753,7 +6799,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _style2 = _interopRequireDefault(_style);
 
-	var _width = __webpack_require__(80);
+	var _width = __webpack_require__(81);
 
 	var _width2 = _interopRequireDefault(_width);
 
@@ -6853,9 +6899,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    );
 	  },
 	  render: function render() {
-	    var _props = this.props;
-	    var style = _props.style;
-	    var children = _props.children;
+	    var _props = this.props,
+	        style = _props.style,
+	        children = _props.children;
 
 
 	    style = _extends({}, style, {
@@ -6877,7 +6923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6896,7 +6942,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _height2 = _interopRequireDefault(_height);
 
-	var _width = __webpack_require__(80);
+	var _width = __webpack_require__(81);
 
 	var _width2 = _interopRequireDefault(_width);
 
@@ -7081,7 +7127,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7095,7 +7141,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7130,13 +7176,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _3 = _interopRequireDefault(_2);
 
-	var _dates = __webpack_require__(72);
+	var _dates = __webpack_require__(73);
 
 	var _dates2 = _interopRequireDefault(_dates);
 
 	var _localizers = __webpack_require__(17);
 
-	var _constants = __webpack_require__(74);
+	var _constants = __webpack_require__(75);
 
 	var _Widget = __webpack_require__(26);
 
@@ -7146,15 +7192,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Popup2 = _interopRequireDefault(_Popup);
 
-	var _Calendar = __webpack_require__(66);
+	var _Calendar = __webpack_require__(67);
 
 	var _Calendar2 = _interopRequireDefault(_Calendar);
 
-	var _TimeList = __webpack_require__(82);
+	var _TimeList = __webpack_require__(83);
 
 	var _TimeList2 = _interopRequireDefault(_TimeList);
 
-	var _DateTimePickerInput = __webpack_require__(83);
+	var _DateTimePickerInput = __webpack_require__(84);
 
 	var _DateTimePickerInput2 = _interopRequireDefault(_DateTimePickerInput);
 
@@ -7271,10 +7317,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!focused) this.close();
 	    }
 	  }), __webpack_require__(45)('valueInput', function (key, id) {
-	    var open = this.props.open;
-	    var current = this.ariaActiveDescendant();
-	    var calIsActive = open === _constants.datePopups.CALENDAR && key === 'calendar';
-	    var timeIsActive = open === _constants.datePopups.TIME && key === 'timelist';
+	    var open = this.props.open,
+	        current = this.ariaActiveDescendant(),
+	        calIsActive = open === _constants.datePopups.CALENDAR && key === 'calendar',
+	        timeIsActive = open === _constants.datePopups.TIME && key === 'timelist';
+
 
 	    if (!current || timeIsActive || calIsActive) return id;
 	  })],
@@ -7309,20 +7356,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  renderInput: function renderInput(id, owns) {
-	    var _props = this.props;
-	    var open = _props.open;
-	    var value = _props.value;
-	    var editFormat = _props.editFormat;
-	    var culture = _props.culture;
-	    var busy = _props.busy;
-	    var placeholder = _props.placeholder;
-	    var disabled = _props.disabled;
-	    var readOnly = _props.readOnly;
-	    var name = _props.name;
-	    var tabIndex = _props.tabIndex;
-	    var autoFocus = _props.autoFocus;
-	    var ariaLabelledby = _props['aria-labelledby'];
-	    var ariaDescribedby = _props['aria-describedby'];
+	    var _props = this.props,
+	        open = _props.open,
+	        value = _props.value,
+	        editFormat = _props.editFormat,
+	        culture = _props.culture,
+	        busy = _props.busy,
+	        placeholder = _props.placeholder,
+	        disabled = _props.disabled,
+	        readOnly = _props.readOnly,
+	        name = _props.name,
+	        tabIndex = _props.tabIndex,
+	        autoFocus = _props.autoFocus,
+	        ariaLabelledby = _props['aria-labelledby'],
+	        ariaDescribedby = _props['aria-describedby'];
 	    var focused = this.state.focused;
 
 
@@ -7352,11 +7399,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 	  renderButtons: function renderButtons(messages) {
-	    var _props2 = this.props;
-	    var calendar = _props2.calendar;
-	    var time = _props2.time;
-	    var disabled = _props2.disabled;
-	    var readOnly = _props2.readOnly;
+	    var _props2 = this.props,
+	        calendar = _props2.calendar,
+	        time = _props2.time,
+	        disabled = _props2.disabled,
+	        readOnly = _props2.readOnly;
 
 
 	    if (!calendar && !time) {
@@ -7385,11 +7432,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  renderCalendar: function renderCalendar(id, inputID) {
 	    var _this = this;
 
-	    var _props3 = this.props;
-	    var open = _props3.open;
-	    var value = _props3.value;
-	    var duration = _props3.duration;
-	    var dropUp = _props3.dropUp;
+	    var _props3 = this.props,
+	        open = _props3.open,
+	        value = _props3.value,
+	        duration = _props3.duration,
+	        dropUp = _props3.dropUp;
 
 
 	    var calendarProps = _3.default.pickProps(this.props, Calendar);
@@ -7426,14 +7473,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  renderTimeList: function renderTimeList(id, inputID) {
 	    var _this2 = this;
 
-	    var _props4 = this.props;
-	    var open = _props4.open;
-	    var value = _props4.value;
-	    var duration = _props4.duration;
-	    var dropUp = _props4.dropUp;
-	    var calendar = _props4.calendar;
-	    var timeFormat = _props4.timeFormat;
-	    var timeComponent = _props4.timeComponent;
+	    var _props4 = this.props,
+	        open = _props4.open,
+	        value = _props4.value,
+	        duration = _props4.duration,
+	        dropUp = _props4.dropUp,
+	        calendar = _props4.calendar,
+	        timeFormat = _props4.timeFormat,
+	        timeComponent = _props4.timeComponent;
 
 
 	    var timeListProps = _3.default.pickProps(this.props, _TimeList2.default);
@@ -7469,15 +7516,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    );
 	  },
 	  render: function render() {
-	    var _props5 = this.props;
-	    var className = _props5.className;
-	    var calendar = _props5.calendar;
-	    var time = _props5.time;
-	    var open = _props5.open;
-	    var messages = _props5.messages;
-	    var disabled = _props5.disabled;
-	    var readOnly = _props5.readOnly;
-	    var dropUp = _props5.dropUp;
+	    var _props5 = this.props,
+	        className = _props5.className,
+	        calendar = _props5.calendar,
+	        time = _props5.time,
+	        open = _props5.open,
+	        messages = _props5.messages,
+	        disabled = _props5.disabled,
+	        readOnly = _props5.readOnly,
+	        dropUp = _props5.dropUp;
 	    var focused = this.state.focused;
 
 
@@ -7514,9 +7561,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    );
 	  },
 	  handleChange: function handleChange(date, str, constrain) {
-	    var _props6 = this.props;
-	    var onChange = _props6.onChange;
-	    var value = _props6.value;
+	    var _props6 = this.props,
+	        onChange = _props6.onChange,
+	        value = _props6.value;
 
 
 	    if (constrain) date = this.inRangeValue(date);
@@ -7531,10 +7578,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  handleKeyDown: function handleKeyDown(e) {
-	    var _props7 = this.props;
-	    var open = _props7.open;
-	    var calendar = _props7.calendar;
-	    var time = _props7.time;
+	    var _props7 = this.props,
+	        open = _props7.open,
+	        calendar = _props7.calendar,
+	        time = _props7.time;
 
 
 	    (0, _widgetHelpers.notify)(this.props.onKeyDown, [e]);
@@ -7662,7 +7709,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7675,7 +7722,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _dates2 = __webpack_require__(72);
+	var _dates2 = __webpack_require__(73);
 
 	var _dates3 = _interopRequireDefault(_dates2);
 
@@ -7733,7 +7780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  getInitialState: function getInitialState() {
 	    var data = this._dates(this.props),
-	        focusedItem = this._closestDate(data, this.props.value);
+	        focusedItem = this._closestDate(data, this.props.value || this.props.currentDate);
 
 	    return {
 	      focusedItem: focusedItem || data[0],
@@ -7742,7 +7789,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    var data = this._dates(nextProps),
-	        focusedItem = this._closestDate(data, nextProps.value),
+	        focusedItem = this._closestDate(data, nextProps.value || this.props.currentDate),
 	        valChanged = !_dates3.default.eq(nextProps.value, this.props.value, 'minutes'),
 	        minChanged = !_dates3.default.eq(nextProps.min, this.props.min, 'minutes'),
 	        maxChanged = !_dates3.default.eq(nextProps.max, this.props.max, 'minutes'),
@@ -7756,9 +7803,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  render: function render() {
-	    var _props = this.props;
-	    var value = _props.value;
-	    var onSelect = _props.onSelect;
+	    var _props = this.props,
+	        value = _props.value,
+	        onSelect = _props.onSelect;
 
 
 	    var times = this.state.dates,
@@ -7886,7 +7933,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7935,11 +7982,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    var value = nextProps.value;
-	    var editing = nextProps.editing;
-	    var editFormat = nextProps.editFormat;
-	    var format = nextProps.format;
-	    var culture = nextProps.culture;
+	    var value = nextProps.value,
+	        editing = nextProps.editing,
+	        editFormat = nextProps.editFormat,
+	        format = nextProps.format,
+	        culture = nextProps.culture;
 
 
 	    this.setState({
@@ -7947,12 +7994,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 	  getInitialState: function getInitialState() {
-	    var _props = this.props;
-	    var value = _props.value;
-	    var editing = _props.editing;
-	    var editFormat = _props.editFormat;
-	    var format = _props.format;
-	    var culture = _props.culture;
+	    var _props = this.props,
+	        value = _props.value,
+	        editing = _props.editing,
+	        editFormat = _props.editFormat,
+	        format = _props.format,
+	        culture = _props.culture;
 
 
 	    return {
@@ -7960,9 +8007,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  render: function render() {
-	    var _props2 = this.props;
-	    var disabled = _props2.disabled;
-	    var readOnly = _props2.readOnly;
+	    var _props2 = this.props,
+	        disabled = _props2.disabled,
+	        readOnly = _props2.readOnly;
 	    var textValue = this.state.textValue;
 
 
@@ -7984,12 +8031,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({ textValue: value });
 	  },
 	  handleBlur: function handleBlur(event) {
-	    var _props3 = this.props;
-	    var format = _props3.format;
-	    var culture = _props3.culture;
-	    var parse = _props3.parse;
-	    var onChange = _props3.onChange;
-	    var onBlur = _props3.onBlur;
+	    var _props3 = this.props,
+	        format = _props3.format,
+	        culture = _props3.culture,
+	        parse = _props3.parse,
+	        onChange = _props3.onChange,
+	        onBlur = _props3.onBlur;
 
 
 	    onBlur && onBlur(event);
@@ -8021,7 +8068,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8056,15 +8103,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _uncontrollable2 = _interopRequireDefault(_uncontrollable);
 
-	var _constants = __webpack_require__(74);
+	var _constants = __webpack_require__(75);
 
-	var _repeater = __webpack_require__(85);
+	var _repeater = __webpack_require__(86);
 
 	var _repeater2 = _interopRequireDefault(_repeater);
 
 	var _localizers = __webpack_require__(17);
 
-	var _NumberInput = __webpack_require__(86);
+	var _NumberInput = __webpack_require__(87);
 
 	var _NumberInput2 = _interopRequireDefault(_NumberInput);
 
@@ -8182,13 +8229,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _this = this;
 
-	    var _$omitOwnProps = _3.default.omitOwnProps(this);
-
-	    var className = _$omitOwnProps.className;
-	    var onKeyPress = _$omitOwnProps.onKeyPress;
-	    var onKeyUp = _$omitOwnProps.onKeyUp;
-
-	    var props = _objectWithoutProperties(_$omitOwnProps, ['className', 'onKeyPress', 'onKeyUp']);
+	    var _$omitOwnProps = _3.default.omitOwnProps(this),
+	        className = _$omitOwnProps.className,
+	        onKeyPress = _$omitOwnProps.onKeyPress,
+	        onKeyUp = _$omitOwnProps.onKeyUp,
+	        props = _objectWithoutProperties(_$omitOwnProps, ['className', 'onKeyPress', 'onKeyUp']);
 
 	    var val = this.constrainValue(this.props.value);
 
@@ -8229,7 +8274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          icon: 'caret-down',
 	          onClick: this.handleFocus,
 	          label: this.props.messages.decrement,
-	          active: this.state.active === _constants.directions.UP,
+	          active: this.state.active === _constants.directions.DOWN,
 	          disabled: val === this.props.min || this.props.disabled,
 	          onMouseUp: function onMouseUp() {
 	            return _this.handleMouseUp(_constants.directions.DOWN);
@@ -8349,7 +8394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8375,7 +8420,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8433,7 +8478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  getDefaultState: function getDefaultState() {
-	    var props = arguments.length <= 0 || arguments[0] === undefined ? this.props : arguments[0];
+	    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props;
 
 	    var value = props.value,
 	        decimal = _localizers.number.decimalChar(null, props.culture),
@@ -8521,16 +8566,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  isPaddedZeros: function isPaddedZeros(str) {
 	    var localeChar = _localizers.number.decimalChar(null, this.props.culture);
 
-	    var _str$split = str.split(localeChar);
-
-	    var _ = _str$split[0];
-	    var decimals = _str$split[1];
-
+	    var _str$split = str.split(localeChar),
+	        _ = _str$split[0],
+	        decimals = _str$split[1];
 
 	    return !!(decimals && decimals.match(/0+$/));
 	  },
 	  isAtDelimiter: function isAtDelimiter(num, str) {
-	    var props = arguments.length <= 2 || arguments[2] === undefined ? this.props : arguments[2];
+	    var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.props;
 
 	    var localeChar = _localizers.number.decimalChar(null, props.culture),
 	        lastIndex = str.length - 1,
@@ -8556,7 +8599,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8591,11 +8634,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Popup2 = _interopRequireDefault(_Popup);
 
-	var _MultiselectInput = __webpack_require__(88);
+	var _MultiselectInput = __webpack_require__(89);
 
 	var _MultiselectInput2 = _interopRequireDefault(_MultiselectInput);
 
-	var _MultiselectTagList = __webpack_require__(89);
+	var _MultiselectTagList = __webpack_require__(90);
 
 	var _MultiselectTagList2 = _interopRequireDefault(_MultiselectTagList);
 
@@ -8758,15 +8801,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  getInitialState: function getInitialState() {
-	    var _props = this.props;
-	    var data = _props.data;
-	    var value = _props.value;
-	    var valueField = _props.valueField;
-	    var searchTerm = _props.searchTerm;
-	    var dataItems = splat(value).map(function (item) {
+	    var _props = this.props,
+	        data = _props.data,
+	        value = _props.value,
+	        valueField = _props.valueField,
+	        searchTerm = _props.searchTerm,
+	        dataItems = splat(value).map(function (item) {
 	      return (0, _dataHelpers.dataItem)(data, item, valueField);
-	    });
-	    var processedData = this.process(data, dataItems, searchTerm);
+	    }),
+	        processedData = this.process(data, dataItems, searchTerm);
+
 
 	    return {
 	      focusedTag: null,
@@ -8781,13 +8825,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.refs.list && (0, _validateListInterface2.default)(this.refs.list);
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    var data = nextProps.data;
-	    var value = nextProps.value;
-	    var valueField = nextProps.valueField;
-	    var searchTerm = nextProps.searchTerm;
-	    var values = _3.default.splat(value);
-	    var current = this.state.focusedItem;
-	    var items = this.process(data, values, searchTerm);
+	    var data = nextProps.data,
+	        value = nextProps.value,
+	        valueField = nextProps.valueField,
+	        searchTerm = nextProps.searchTerm,
+	        values = _3.default.splat(value),
+	        current = this.state.focusedItem,
+	        items = this.process(data, values, searchTerm);
 
 	    this.setState({
 	      processedData: items,
@@ -8829,14 +8873,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    );
 	  },
 	  renderInput: function renderInput(owns) {
-	    var _props2 = this.props;
-	    var searchTerm = _props2.searchTerm;
-	    var maxLength = _props2.maxLength;
-	    var tabIndex = _props2.tabIndex;
-	    var busy = _props2.busy;
-	    var open = _props2.open;
-	    var disabled = _props2.disabled;
-	    var readOnly = _props2.readOnly;
+	    var _props2 = this.props,
+	        searchTerm = _props2.searchTerm,
+	        maxLength = _props2.maxLength,
+	        tabIndex = _props2.tabIndex,
+	        busy = _props2.busy,
+	        open = _props2.open,
+	        disabled = _props2.disabled,
+	        readOnly = _props2.readOnly;
 
 
 	    return _react2.default.createElement(_MultiselectInput2.default, {
@@ -8861,10 +8905,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 	  renderList: function renderList(List, id, messages) {
-	    var _props3 = this.props;
-	    var open = _props3.open;
-	    var disabled = _props3.disabled;
-	    var readOnly = _props3.readOnly;
+	    var _props3 = this.props,
+	        open = _props3.open,
+	        disabled = _props3.disabled,
+	        readOnly = _props3.readOnly;
 	    var focusedItem = this.state.focusedItem;
 
 
@@ -8892,9 +8936,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  renderNotificationArea: function renderNotificationArea(id, messages) {
 	    var textField = this.props.textField;
-	    var _state = this.state;
-	    var focused = _state.focused;
-	    var dataItems = _state.dataItems;
+	    var _state = this.state,
+	        focused = _state.focused,
+	        dataItems = _state.dataItems;
 
 
 	    return _react2.default.createElement(
@@ -8913,14 +8957,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    );
 	  },
 	  renderTags: function renderTags(id, messages) {
-	    var _props4 = this.props;
-	    var disabled = _props4.disabled;
-	    var readOnly = _props4.readOnly;
-	    var valueField = _props4.valueField;
-	    var textField = _props4.textField;
-	    var _state2 = this.state;
-	    var focusedTag = _state2.focusedTag;
-	    var dataItems = _state2.dataItems;
+	    var _props4 = this.props,
+	        disabled = _props4.disabled,
+	        readOnly = _props4.readOnly,
+	        valueField = _props4.valueField,
+	        textField = _props4.textField;
+	    var _state2 = this.state,
+	        focusedTag = _state2.focusedTag,
+	        dataItems = _state2.dataItems;
 
 
 	    var Component = this.props.tagComponent;
@@ -8943,20 +8987,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _this2 = this;
 
-	    var _props5 = this.props;
-	    var className = _props5.className;
-	    var groupBy = _props5.groupBy;
-	    var messages = _props5.messages;
-	    var busy = _props5.busy;
-	    var dropUp = _props5.dropUp;
-	    var open = _props5.open;
-	    var duration = _props5.duration;
-	    var disabled = _props5.disabled;
-	    var readOnly = _props5.readOnly;
-	    var List = _props5.listComponent;
-	    var _state3 = this.state;
-	    var focused = _state3.focused;
-	    var dataItems = _state3.dataItems;
+	    var _props5 = this.props,
+	        className = _props5.className,
+	        groupBy = _props5.groupBy,
+	        messages = _props5.messages,
+	        busy = _props5.busy,
+	        dropUp = _props5.dropUp,
+	        open = _props5.open,
+	        duration = _props5.duration,
+	        disabled = _props5.disabled,
+	        readOnly = _props5.readOnly,
+	        List = _props5.listComponent;
+	    var _state3 = this.state,
+	        focused = _state3.focused,
+	        dataItems = _state3.dataItems;
 
 
 	    List = List || groupBy && _ListGroupable2.default || _List2.default;
@@ -9062,16 +9106,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.focus();
 	  },
 	  handleKeyDown: function handleKeyDown(e) {
-	    var key = e.key;
-	    var altKey = e.altKey;
-	    var ctrlKey = e.ctrlKey;
-	    var noSearch = !this.props.searchTerm && !this._deletingText;
-	    var isOpen = this.props.open;var _state4 = this.state;
-	    var focusedTag = _state4.focusedTag;
-	    var focusedItem = _state4.focusedItem;
-	    var _refs = this.refs;
-	    var list = _refs.list;
-	    var tagList = _refs.tagList;
+	    var key = e.key,
+	        keyCode = e.keyCode,
+	        altKey = e.altKey,
+	        ctrlKey = e.ctrlKey,
+	        noSearch = !this.props.searchTerm && !this._deletingText,
+	        isOpen = this.props.open;
+	    var _state4 = this.state,
+	        focusedTag = _state4.focusedTag,
+	        focusedItem = _state4.focusedItem;
+	    var _refs = this.refs,
+	        list = _refs.list,
+	        tagList = _refs.tagList;
 
 	    var nullTag = { focusedTag: null };
 
@@ -9099,7 +9145,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else if (key === 'Home') {
 	      e.preventDefault();
 	      if (isOpen) this.setState(_extends({ focusedItem: list.first() }, nullTag));else tagList && this.setState({ focusedTag: tagList.first() });
-	    } else if (isOpen && key === 'Enter') {
+	    } else if (isOpen && keyCode === 13) {
+	      // using keyCode to ignore enter for japanese IME
 	      e.preventDefault();
 	      ctrlKey && this.props.onCreate || focusedItem === null ? this.handleCreate(this.props.searchTerm) : this.handleSelect(this.state.focusedItem);
 	    } else if (key === 'Escape') isOpen ? this.close() : tagList && this.setState(nullTag);else if (noSearch && key === 'ArrowLeft') tagList && this.setState({ focusedTag: tagList.prev(focusedTag) });else if (noSearch && key === 'ArrowRight') tagList && this.setState({ focusedTag: tagList.next(focusedTag) });else if (noSearch && key === 'Delete') tagList && tagList.remove(focusedTag);else if (noSearch && key === 'Backspace') tagList && tagList.removeNext();
@@ -9136,11 +9183,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return items;
 	  },
 	  shouldShowCreate: function shouldShowCreate() {
-	    var _props6 = this.props;
-	    var textField = _props6.textField;
-	    var searchTerm = _props6.searchTerm;
-	    var onCreate = _props6.onCreate;
-	    var caseSensitive = _props6.caseSensitive;
+	    var _props6 = this.props,
+	        textField = _props6.textField,
+	        searchTerm = _props6.searchTerm,
+	        onCreate = _props6.onCreate,
+	        caseSensitive = _props6.caseSensitive;
 
 
 	    if (!onCreate || !searchTerm) return false;
@@ -9175,7 +9222,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9222,11 +9269,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  MultiselectInput.prototype.render = function render() {
-	    var _props = this.props;
-	    var disabled = _props.disabled;
-	    var readOnly = _props.readOnly;
-
-	    var props = _objectWithoutProperties(_props, ['disabled', 'readOnly']);
+	    var _props = this.props,
+	        disabled = _props.disabled,
+	        readOnly = _props.readOnly,
+	        props = _objectWithoutProperties(_props, ['disabled', 'readOnly']);
 
 	    var size = Math.max((props.value || props.placeholder).length, 1) + 1;
 
@@ -9259,7 +9305,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9322,19 +9368,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  componentDidUpdate: function componentDidUpdate() {
-	    var focused = this.props.focused;
-	    var activeId = optionId((0, _widgetHelpers.instanceId)(this), focused);
+	    var focused = this.props.focused,
+	        activeId = optionId((0, _widgetHelpers.instanceId)(this), focused);
+
 
 	    this.ariaActiveDescendant(focused == null || (0, _interaction.isDisabledItem)(focused, this.props) ? null : activeId);
 	  },
 	  render: function render() {
 	    var _this = this;
 
-	    var _props = this.props;
-	    var focused = _props.focused;
-	    var value = _props.value;
-	    var textField = _props.textField;
-	    var ValueComponent = _props.valueComponent;
+	    var _props = this.props,
+	        focused = _props.focused,
+	        value = _props.value,
+	        textField = _props.textField,
+	        ValueComponent = _props.valueComponent;
 
 
 	    var id = (0, _widgetHelpers.instanceId)(this);
@@ -9379,7 +9426,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _react2.default.createElement(
 	              'span',
 	              { className: 'rw-tag-btn', 'aria-hidden': 'true' },
-	              '×'
+	              '\xD7'
 	            )
 	          )
 	        );
@@ -9446,7 +9493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9574,9 +9621,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	function getFirstValue(props) {
-	  var data = props.data;
-	  var value = props.value;
-	  var valueField = props.valueField;
+	  var data = props.data,
+	      value = props.value,
+	      valueField = props.valueField;
 
 	  value = _3.default.splat(value);
 
@@ -9618,10 +9665,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  getDefaultState: function getDefaultState(props) {
-	    var data = props.data;
-	    var value = props.value;
-	    var valueField = props.valueField;
-	    var multiple = props.multiple;
+	    var data = props.data,
+	        value = props.value,
+	        valueField = props.valueField,
+	        multiple = props.multiple;
 
 
 	    return {
@@ -9644,12 +9691,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    (0, _validateListInterface2.default)(this.refs.list);
 	  },
 	  render: function render() {
-	    var _props = this.props;
-	    var className = _props.className;
-	    var tabIndex = _props.tabIndex;
-	    var busy = _props.busy;
-	    var groupBy = _props.groupBy;
-	    var List = _props.listComponent;
+	    var _props = this.props,
+	        className = _props.className,
+	        tabIndex = _props.tabIndex,
+	        busy = _props.busy,
+	        groupBy = _props.groupBy,
+	        List = _props.listComponent;
 
 
 	    List = List || groupBy && _ListGroupable2.default || _List2.default;
@@ -9657,10 +9704,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var elementProps = _3.default.omitOwnProps(this, List);
 	    var listProps = _3.default.pickProps(this.props, List);
 
-	    var _state = this.state;
-	    var ListItem = _state.ListItem;
-	    var focusedItem = _state.focusedItem;
-	    var focused = _state.focused;
+	    var _state = this.state,
+	        ListItem = _state.ListItem,
+	        focusedItem = _state.focusedItem,
+	        focused = _state.focused;
 
 
 	    var items = this._data();
@@ -9705,12 +9752,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  handleKeyDown: function handleKeyDown(e) {
 	    var _this = this;
 
-	    var key = e.key;
-	    var _props2 = this.props;
-	    var valueField = _props2.valueField;
-	    var multiple = _props2.multiple;
-	    var list = this.refs.list;
-	    var focusedItem = this.state.focusedItem;
+	    var key = e.key,
+	        _props2 = this.props,
+	        valueField = _props2.valueField,
+	        multiple = _props2.multiple,
+	        list = this.refs.list,
+	        focusedItem = this.state.focusedItem;
+
 
 	    var change = function change(item) {
 	      if (item) _this.handleChange(item, multiple ? !(0, _interaction.contains)(item, _this._values(), valueField) // toggle value
@@ -9766,13 +9814,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  selectAll: function selectAll() {
 	    var _this2 = this;
 
-	    var _props3 = this.props;
-	    var disabled = _props3.disabled;
-	    var readOnly = _props3.readOnly;
-	    var valueField = _props3.valueField;
-	    var values = this.state.dataItems;
-	    var data = this._data();
-	    var blacklist;
+	    var _props3 = this.props,
+	        disabled = _props3.disabled,
+	        readOnly = _props3.readOnly,
+	        valueField = _props3.valueField,
+	        values = this.state.dataItems,
+	        data = this._data(),
+	        blacklist;
 
 	    disabled = disabled || readOnly;
 	    disabled = Array.isArray(disabled) ? disabled : [];
@@ -9796,8 +9844,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    (0, _widgetHelpers.notify)(this.props.onChange, [data]);
 	  },
 	  handleChange: function handleChange(item, checked) {
-	    var multiple = this.props.multiple;
-	    var values = this.state.dataItems;
+	    var multiple = this.props.multiple,
+	        values = this.state.dataItems;
+
 
 	    multiple = !!multiple;
 
@@ -9848,10 +9897,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    displayName: 'SelectItem',
 
 	    handleChange: function handleChange(e) {
-	      var _props4 = this.props;
-	      var disabled = _props4.disabled;
-	      var readonly = _props4.readonly;
-	      var dataItem = _props4.dataItem;
+	      var _props4 = this.props,
+	          disabled = _props4.disabled,
+	          readonly = _props4.readonly,
+	          dataItem = _props4.dataItem;
 
 
 	      if (!disabled && !readonly) parent.handleChange(dataItem, e.target.checked);
@@ -9860,15 +9909,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      parent._clicking = true;
 	    },
 	    render: function render() {
-	      var _props5 = this.props;
-	      var children = _props5.children;
-	      var disabled = _props5.disabled;
-	      var readonly = _props5.readonly;
-	      var item = _props5.dataItem;
-	      var _parent$props = parent.props;
-	      var multiple = _parent$props.multiple;
-	      var _parent$props$name = _parent$props.name;
-	      var name = _parent$props$name === undefined ? (0, _widgetHelpers.instanceId)(parent, '_name') : _parent$props$name;
+	      var _props5 = this.props,
+	          children = _props5.children,
+	          disabled = _props5.disabled,
+	          readonly = _props5.readonly,
+	          item = _props5.dataItem;
+	      var _parent$props = parent.props,
+	          multiple = _parent$props.multiple,
+	          _parent$props$name = _parent$props.name,
+	          name = _parent$props$name === undefined ? (0, _widgetHelpers.instanceId)(parent, '_name') : _parent$props$name;
 
 
 	      var checked = (0, _interaction.contains)(item, parent._values(), parent.props.valueField),
