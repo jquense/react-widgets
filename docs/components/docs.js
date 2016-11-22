@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import {
     Route
   , Router
+  , IndexRoute
   , Link
   , hashHistory } from 'react-router';
 
-import Navbar from './Navbar';
-import WidgetList from './WidgetList';
+import Page from './Page';
+import ApiPage from './ApiPage';
+import LandingPage from './LandingPage';
 import GettingStarted from './pages/GettingStarted.md';
 import DropdownList from './pages/DropdownList.api.md';
 import ComboBox from './pages/Combobox.api.md';
@@ -39,45 +41,6 @@ var widgets = [
   'DateTimePicker'
 ];
 
-
-var Docs = React.createClass({
-
-
-  render() {
-    if (this.props.location.pathname.includes('getting-started')) {
-      return (
-        <div>
-          <div className="jumbotron">
-            <h1>react-widgets</h1>
-            <p>An à la carte set of polished, extensible, and accessible input components</p>
-            <div>
-              {`latest: ${__VERSION__}`}
-
-              {' | '}
-              <a target='_blank' href="https://github.com/intljusticemission/react-big-calendar">
-                <i className='fa fa-github'/> github
-              </a>
-            </div>
-          </div>
-          <WidgetList />
-          <main className='pg-content'>
-            {this.props.children}
-          </main>
-        </div>
-      )
-    }
-
-    return (
-      <div>
-        <Navbar />
-        <main className='pg-content'>
-          {this.props.children}
-        </main>
-      </div>
-    )
-  },
-})
-
 function onUpdate() {
   const location = this.state.location;
   setTimeout(() => {
@@ -94,34 +57,40 @@ function onUpdate() {
 
 ReactDOM.render((
   <Router history={hashHistory} onUpdate={onUpdate}>
-    <Route path="/" component={Docs} indexRoute={{ component: GettingStarted }}>
-      <Route path='getting-started(/:topic)' component={GettingStarted}/>
+    <Route path="/">
+      <Route component={LandingPage}>
+        <IndexRoute path='getting-started(/:topic)' component={GettingStarted}/>
+      </Route>
+      
+      <Route component={ApiPage}>
+        <Route  path='dropdownlist' component={DropdownList}>
+          <Route path=':topic' component={DropdownList}/>
+        </Route>
+        <Route path="combobox" component={ComboBox}>
+          <Route path=':topic' component={ComboBox}/>
+        </Route>
+        <Route path="multiselect" component={MultiSelect}>
+          <Route path=':topic' component={MultiSelect}/>
+        </Route>
+        <Route path="selectlist" component={SelectList}>
+          <Route path=':topic' component={SelectList}/>
+        </Route>
+        <Route path="calendar" component={Calendar}>
+          <Route path=':topic' component={Calendar}/>
+        </Route>
+        <Route path="datetimepicker" component={DatePicker}>
+          <Route path=':topic' component={DatePicker}/>
+        </Route>
+        <Route path="numberpicker" component={NumberPicker}>
+          <Route path=':topic' component={NumberPicker}/>
+        </Route>
+      </Route>
 
-      <Route  path='dropdownlist' component={DropdownList}>
-        <Route path=':topic' component={DropdownList}/>
+      <Route component={Page}>
+        <Route path="advanced" component={Advanced} />
+        <Route path="i18n" component={Locale} />
+        <Route path="controllables" component={Controllables} />
       </Route>
-      <Route path="combobox" component={ComboBox}>
-        <Route path=':topic' component={ComboBox}/>
-      </Route>
-      <Route path="multiselect" component={MultiSelect}>
-        <Route path=':topic' component={MultiSelect}/>
-      </Route>
-      <Route path="selectlist" component={SelectList}>
-        <Route path=':topic' component={SelectList}/>
-      </Route>
-      <Route path="calendar" component={Calendar}>
-        <Route path=':topic' component={Calendar}/>
-      </Route>
-      <Route path="datetimepicker" component={DatePicker}>
-        <Route path=':topic' component={DatePicker}/>
-      </Route>
-      <Route path="numberpicker" component={NumberPicker}>
-        <Route path=':topic' component={NumberPicker}/>
-      </Route>
-
-      <Route path="advanced" component={Advanced} />
-      <Route path="i18n" component={Locale} />
-      <Route path="controllables" component={Controllables} />
     </Route>
   </Router>
 ), document.getElementById('app-mount'));

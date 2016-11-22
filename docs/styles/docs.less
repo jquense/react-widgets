@@ -5,6 +5,7 @@
 
 body {
   font-size: 16px;
+
 }
 
 // kbd lists
@@ -22,34 +23,66 @@ h1.page-header, h2, h3, h4 {
   background-color: @blue;
   margin-bottom: 0;
 
+  & > * {
+    margin: 0 20px;
+  }
+
+  h1 {
+    font-family: 'lobster', cursive;
+  }
+
   &,
   & *,
   & a, {
     color: @gray-lighter;
-    font-weight: 400;
   }
-
-  > * {
-    width: @screen-md-min;
-    margin: 0 auto;
+}
+.app-navbar,
+.widget-nav {
+  & .container-fluid {
+    padding: 0;
+    max-width: @screen-md-min;
+    display: flex;
   }
 }
 
 .widget-nav {
-  .container {
-    width: @screen-md-min;
+  background-color: @dark-blue;
+  margin-bottom: 0;
+  -webkit-overflow-scrolling: touch;
+
+  .container-fluid {
+    padding: 0;
+    overflow: auto;
+    max-width: @screen-md-min;
+    display: flex;
   }
 
   .nav {
+    margin: auto;
     display: flex;
-    float: none;
-    align-items: center;
-    
+
     & > li {
       float: none;
     }
   }
 }
+
+.r {
+  font-family: "Lobster";
+  font-size: 35px;
+  line-height: 1px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (min-width: @screen-md-min) {
+  .jumbotron > * {
+    width: @screen-md-min;
+    margin: 0 auto;
+  }
+}
+
 
 .pg-content {
   margin-top: @navbar-height + 20px;
