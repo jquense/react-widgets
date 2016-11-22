@@ -88,11 +88,9 @@
 	};
 
 	function simpleNumber(options) {
-	  var _defaults$options = _extends({}, defaults, options);
-
-	  var decimal = _defaults$options.decimal;
-	  var grouping = _defaults$options.grouping;
-
+	  var _defaults$options = _extends({}, defaults, options),
+	      decimal = _defaults$options.decimal,
+	      grouping = _defaults$options.grouping;
 
 	  var localizer = {
 	    formats: {
