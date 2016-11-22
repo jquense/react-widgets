@@ -1,7 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
 
-import _  from './util/_';
 import * as Props from './util/Props';
 
 class ListOption extends React.Component {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import _  from './util/_';
 import caretPos from './util/caret';
 
 import Input from './Input';

@@ -78,7 +78,9 @@ let propTypes = {
                       React.PropTypes.func
                     ]),
 
+    tabIndex: React.PropTypes.any,
     'aria-labelledby': React.PropTypes.string,
+    'aria-describedby': React.PropTypes.string,
 
     onKeyDown: React.PropTypes.func,
     onKeyPress: React.PropTypes.func,
@@ -244,7 +246,6 @@ class DateTimePicker extends React.Component {
       , value
       , editFormat
       , culture
-      , busy
       , placeholder
       , disabled
       , readOnly
@@ -287,7 +288,6 @@ class DateTimePicker extends React.Component {
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
         aria-expanded={!!open}
-        aria-busy={!!busy}
         aria-owns={owns}
       />
     )

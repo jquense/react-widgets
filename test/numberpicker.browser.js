@@ -24,10 +24,16 @@ describe('NumberPicker', function(){
   })
 
   it('should be able to accept a placeholder', function() {
-    let input = tsp(<NumberPicker placeholder={"enter number here"} format='D' onChange={()=>{}} />)
-      .render()
-      .find('.rw-input')
-      .dom()
+    let input = tsp(
+      <NumberPicker
+        placeholder="enter number here"
+        format='D'
+        onChange={()=>{}}
+      />
+    )
+    .render()
+    .find('.rw-input')
+    .dom()
 
      expect(input.placeholder).to.be('enter number here');
   })

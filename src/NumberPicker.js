@@ -36,31 +36,31 @@ class NumberPicker extends React.Component {
   static propTypes = {
 
     // -- controlled props -----------
-    value:          React.PropTypes.number,
-    onChange:       React.PropTypes.func,
+    value: React.PropTypes.number,
+    onChange: React.PropTypes.func,
     //------------------------------------
 
-    min:            React.PropTypes.number,
-    max:            React.PropTypes.number,
-    step:           React.PropTypes.number,
+    min: React.PropTypes.number,
+    max: React.PropTypes.number,
+    step: React.PropTypes.number,
+    precision: React.PropTypes.number,
 
-    precision:      React.PropTypes.number,
+    culture: React.PropTypes.string,
+    format: CustomPropTypes.numberFormat,
+    parse: React.PropTypes.func,
 
-    culture:        React.PropTypes.string,
+    name: React.PropTypes.string,
+    tabIndex: React.PropTypes.any,
+    onKeyDown: React.PropTypes.func,
+    onKeyPress: React.PropTypes.func,
+    onKeyUp: React.PropTypes.func,
+    autoFocus: React.PropTypes.bool,
+    disabled: CustomPropTypes.disabled,
+    readOnly: CustomPropTypes.readOnly,
 
-    format:         CustomPropTypes.numberFormat,
-
-    name:           React.PropTypes.string,
-
-    parse:          React.PropTypes.func,
-
-    autoFocus:      React.PropTypes.bool,
-    disabled:       CustomPropTypes.disabled,
-    readOnly:       CustomPropTypes.readOnly,
-
-    messages:       React.PropTypes.shape({
-      increment:    React.PropTypes.string,
-      decrement:    React.PropTypes.string
+    messages: React.PropTypes.shape({
+      increment: React.PropTypes.string,
+      decrement: React.PropTypes.string
     }),
 
     placeholder: React.PropTypes.string

@@ -19,6 +19,8 @@ let OVERFLOW = {
   [OPENING]: 'hidden'
 }
 
+let styleTransform = transform.replace(/(-.)/g, (str) => str[1].toUpperCase());
+
 class Popup extends React.Component {
   static propTypes = {
     open:           React.PropTypes.bool,
@@ -181,8 +183,8 @@ class Popup extends React.Component {
       return {}
     let { dropUp } = this.props;
 
-    let enter = { [transform]: `translateY(${dropUp ? '100%' : '-100%'})` }
-    let leave = { [transform]: `translateY(0)` }
+    let enter = { [styleTransform]: `translateY(${dropUp ? '100%' : '-100%'})` }
+    let leave = { [styleTransform]: `translateY(0)` }
 
     return {
       [CLOSED]: enter,

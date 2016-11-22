@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 let configure = require('./configure');
 
 if (process.env.NODE_ENV !== 'production' ) {

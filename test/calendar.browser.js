@@ -1,3 +1,4 @@
+import transform from 'lodash/transform';
 import React from 'react'
 import ReactDOM from 'react-dom';
 import tsp from 'teaspoon';
@@ -12,7 +13,6 @@ import Century from '../src/Century';
 import { directions } from '../src/util/constants';
 import dates from '../src/util/dates';
 import globalize from 'globalize';
-import { transform } from '../src/util/_';
 import TestUtils from'react-addons-test-utils';
 
 var render = TestUtils.renderIntoDocument
@@ -25,9 +25,9 @@ const BaseCalendar = Calendar.ControlledComponent;
 
 describe('Calendar', () => {
 
-  it('should set Initial View', function(){
+  it('should set default View', function(){
     var date = new Date()
-      , picker = render(<Calendar defaultValue={date} initialView='year'/>);
+      , picker = render(<Calendar defaultValue={date} defaultView='year'/>);
 
     expect(() =>
       findType(picker, require('../src/Year'))).to.not.throwException();
@@ -37,7 +37,7 @@ describe('Calendar', () => {
     var date = new Date()
       , picker = render(<Calendar defaultValue={date} />)
       , header = findType(picker, Header)
-      , navBtn = findClass(header, 'rw-btn-view');
+      , navBtn = findClass(header, 'rw-calendar-btn-view');
 
     expect(() =>
       findType(picker, Month)).to.not.throwException();
@@ -88,8 +88,8 @@ describe('Calendar', () => {
     var date    = new Date(2014, 5, 15, 0, 0, 0)
       , picker  = render(<Calendar defaultValue={date} />)
       , header  = findType(picker, Header)
-      , leftBtn = findClass(header, 'rw-btn-left')
-      , navBtn  = findClass(header, 'rw-btn-view');
+      , leftBtn = findClass(header, 'rw-calendar-btn-left')
+      , navBtn  = findClass(header, 'rw-calendar-btn-view');
 
 
     trigger.click(leftBtn)
@@ -117,8 +117,8 @@ describe('Calendar', () => {
     var date     = new Date(2014, 5, 15, 0, 0, 0)
       , picker   = render(<Calendar defaultValue={date} max={new Date(2199, 11, 31)} />)
       , header   = findType(picker, Header)
-      , rightBtn = findClass(header, 'rw-btn-right')
-      , navBtn   = findClass(header, 'rw-btn-view');
+      , rightBtn = findClass(header, 'rw-calendar-btn-right')
+      , navBtn   = findClass(header, 'rw-calendar-btn-view');
 
     trigger.click(rightBtn)
     expect(findType(picker, Month).props.focused.getMonth()).to.be(6);
@@ -210,13 +210,13 @@ describe('Calendar', () => {
     )
     .render()
 
-    cal.find('.rw-btn-right')
+    cal.find('.rw-calendar-btn-right')
       .tap(inst =>
         inst.is('[disabled]')
       )
       .trigger('click')
 
-    cal.find('.rw-btn-left')
+    cal.find('.rw-calendar-btn-left')
       .tap(inst =>
         inst.is('[disabled]')
       )
@@ -231,13 +231,13 @@ describe('Calendar', () => {
 
     var date   = new Date(2014, 5, 15)
       , picker = render(<Calendar value={date} culture='es' onChange={()=>{}}/>)
-      , headerBtn = findClass(picker, 'rw-btn-view')
+      , headerBtn = findClass(picker, 'rw-calendar-btn-view')
 
 
     expect($(headerBtn).text()).to.equal('junio 2014')
     expect($(findMultiTag(picker, 'thead')[0].children[0].firstChild).text()).to.equal('lu')
 
-    picker = render(<Calendar initialView='year' value={date} culture='es' onChange={()=>{}}/>)
+    picker = render(<Calendar defaultView='year' value={date} culture='es' onChange={()=>{}}/>)
 
     expect($(findMultiTag(picker, 'tbody')[0].children[0].firstChild).text())
       .to.equal('ene')
@@ -251,20 +251,20 @@ describe('Calendar', () => {
       , calendar;
 
 
-    calendar = render(<BaseCalendar {...formats} value={date} onChange={()=>{}} />)
+    calendar = render(<Calendar {...formats} value={date} onChange={()=>{}} />)
 
     expect(findType(calendar, Month).props.dayFormat).to.equal('dayFormat')
     expect(findType(calendar, Month).props.dateFormat).to.equal('dateFormat')
 
-    calendar = render(<BaseCalendar {...formats} initialView='year' value={date} onChange={()=>{}} />)
+    calendar = render(<Calendar {...formats} defaultView='year' value={date} onChange={()=>{}} />)
 
     expect(findType(calendar, Year).props.monthFormat).to.equal('monthFormat')
 
-    calendar = render(<BaseCalendar {...formats} initialView='decade' value={date} onChange={()=>{}} />)
+    calendar = render(<Calendar {...formats} defaultView='decade' value={date} onChange={()=>{}} />)
 
     expect(findType(calendar, Decade).props.yearFormat).to.equal('yearFormat')
 
-    calendar = render(<BaseCalendar {...formats} initialView='century' value={date} onChange={()=>{}} />)
+    calendar = render(<Calendar {...formats} defaultView='century' value={date} onChange={()=>{}} />)
 
     expect(findType(calendar, Century).props.decadeFormat).to.equal('decadeFormat')
   })
@@ -299,7 +299,7 @@ describe('Calendar', () => {
       expect(dates.move(date, min, max, 'month', directions.DOWN).toString())
         .to.equal((new Date(2014, 0, 23, 0, 0, 0)).toString())
 
-      min = new Date(2014, 0, 11, 0, 0, 0),
+      min = new Date(2014, 0, 11, 0, 0, 0)
       max = new Date(2014, 0, 20, 0, 0, 0)
 
       expect(dates.move(date, min, max, 'month', directions.UP))
@@ -325,7 +325,7 @@ describe('Calendar', () => {
       expect(dates.move(date, min, max, 'year', directions.DOWN).toString())
         .to.equal((new Date(2014, 10, 16, 0, 0, 0)).toString())
 
-      min = new Date(2014, 3, 16, 0, 0, 0),
+      min = new Date(2014, 3, 16, 0, 0, 0)
       max = new Date(2014, 8, 16, 0, 0, 0)
 
       expect(dates.move(date, min, max, 'year', directions.UP))
@@ -351,7 +351,7 @@ describe('Calendar', () => {
       expect(dates.move(date, min, max, 'decade', directions.DOWN).toString())
         .to.equal((new Date(2019, 6, 16, 0, 0, 0)).toString())
 
-      min = new Date(2014, 6, 16, 0, 0, 0),
+      min = new Date(2014, 6, 16, 0, 0, 0)
       max = new Date(2016, 6, 16, 0, 0, 0)
 
       expect(dates.move(date, min, max, 'decade', directions.UP))
@@ -377,7 +377,7 @@ describe('Calendar', () => {
       expect(dates.move(date, min, max, 'century', directions.DOWN).toString())
         .to.equal((new Date(2095, 6, 16, 0, 0, 0)).toString())
 
-      min = new Date(2045, 6, 16, 0, 0, 0),
+      min = new Date(2045, 6, 16, 0, 0, 0)
       max = new Date(2065, 6, 16, 0, 0, 0)
 
       expect(dates.move(date, min, max, 'century', directions.UP))

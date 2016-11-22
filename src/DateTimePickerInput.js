@@ -4,7 +4,6 @@ import Input from './Input';
 import compat from './util/compat';
 import { date as dateLocalizer } from './util/localizers';
 import CustomPropTypes from './util/propTypes';
-import _  from './util/_';
 import * as Props from './util/Props';
 
 class DateTimePickerInput extends React.Component {

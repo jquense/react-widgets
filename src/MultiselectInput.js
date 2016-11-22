@@ -1,5 +1,4 @@
 import React from 'react';
-import _  from './util/_';
 import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
 

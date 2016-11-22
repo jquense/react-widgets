@@ -1,6 +1,16 @@
 import React from 'react';
 import Button from './Button';
 import { date as dateLocalizer } from './util/localizers';
+import CustomPropTypes from './util/propTypes';
+
+const propTypes = {
+  disabled: React.PropTypes.bool,
+  readOnly: React.PropTypes.bool,
+  value: React.PropTypes.instanceOf(Date),
+  onClick: React.PropTypes.func.isRequired,
+  culture: React.PropTypes.string,
+  format: CustomPropTypes.dateFormat,
+}
 
 export default function Footer({
   disabled,
@@ -25,3 +35,5 @@ export default function Footer({
     </div>
   );
 }
+
+Footer.propTypes = propTypes;

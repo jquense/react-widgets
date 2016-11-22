@@ -1,7 +1,6 @@
 import React from 'react';
 
 import MultiselectTag from './MultiselectTag';
-import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 import { dataText } from './util/dataHelpers';
 

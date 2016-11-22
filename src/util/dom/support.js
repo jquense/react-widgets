@@ -1,6 +1,6 @@
 
 export default {
   ios: typeof navigator !== 'undefined'
-    && navigator.userAgent.match(/(iPod|iPhone|iPad)/)
-    && navigator.userAgent.match(/AppleWebKit/)
+    && window.navigator.userAgent.match(/(iPod|iPhone|iPad)/)
+    && window.navigator.userAgent.match(/AppleWebKit/)
 }

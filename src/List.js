@@ -9,13 +9,14 @@ import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabledItem }  from './util/interaction';
 
+import ListMovementMixin from './mixins/ListMovementMixin';
 
 export default React.createClass({
 
   displayName: 'List',
 
   mixins: [
-    require('./mixins/ListMovementMixin')
+    ListMovementMixin
   ],
 
   propTypes: {

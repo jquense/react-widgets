@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Input from './Input';
-import _  from './util/_';
 import * as Props from './util/Props';
 import CustomPropTypes from './util/propTypes';
 import { number as numberLocalizer } from './util/localizers';
