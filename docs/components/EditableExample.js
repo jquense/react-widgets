@@ -6,8 +6,6 @@ var React = require('react')
   , List = require('react-widgets/List')
   , genData = require('./generate-data');
 
-import '../theme/one-light.less';
-
 var scope = {
   ReactWidgets: { ...ReactWidgets, MultiselectTagList, List },
   listOfPeople(){

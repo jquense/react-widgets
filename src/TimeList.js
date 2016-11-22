@@ -40,8 +40,9 @@ class TimeList extends React.Component {
 
     this.timeouts = timeoutManager(this)
 
-    let data = this.getDates(this.props)
-    let focusedItem = this.getClosestDate(data, this.props.value || this.props.currentDate)
+    let { value, currentDate } = this.props;
+    let data = this.getDates()
+    let focusedItem = this.getClosestDate(data, value || currentDate)
 
     this.state = {
       focusedItem: focusedItem || data[0],
@@ -51,7 +52,10 @@ class TimeList extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     let data = this.getDates(nextProps)
-    let focusedItem = this.getClosestDate(data, nextProps.value || nextProps.currentDate)
+    let focusedItem = this.getClosestDate(
+      data,
+      nextProps.value || nextProps.currentDate
+    )
 
     let valChanged  = !dates.eq(nextProps.value, this.props.value, 'minutes')
     let minChanged  = !dates.eq(nextProps.min, this.props.min, 'minutes')
@@ -123,6 +127,11 @@ class TimeList extends React.Component {
     )
   }
 
+  scrollTo = () => {
+    this.refs.list.move
+      && this.refs.list.move()
+  }
+
   getClosestDate(times, date) {
     var roundTo = 1000 * 60 * this.props.step
       , inst = null
@@ -141,7 +150,7 @@ class TimeList extends React.Component {
     return inst
   }
 
-  getDates(props) {
+  getDates(props = this.props) {
     let times  = [];
     let values = this.getBounds(props)
     let start  = values.min
@@ -185,11 +194,6 @@ class TimeList extends React.Component {
       min: dates.eq(value, min, 'day') ? dates.merge(start, min, props.currentDate) : start,
       max: dates.eq(value, max, 'day') ? dates.merge(start, max, props.currentDate) : end
     }
-  }
-
-  scrollTo = () => {
-    this.refs.list.move
-      && this.refs.list.move()
   }
 
   search(character, cb) {

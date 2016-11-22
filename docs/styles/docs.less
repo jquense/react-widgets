@@ -18,6 +18,39 @@ h1.page-header, h2, h3, h4 {
   margin-bottom: 15px;
 }
 
+.jumbotron {
+  background-color: @blue;
+  margin-bottom: 0;
+
+  &,
+  & *,
+  & a, {
+    color: @gray-lighter;
+    font-weight: 400;
+  }
+
+  > * {
+    width: @screen-md-min;
+    margin: 0 auto;
+  }
+}
+
+.widget-nav {
+  .container {
+    width: @screen-md-min;
+  }
+
+  .nav {
+    display: flex;
+    float: none;
+    align-items: center;
+    
+    & > li {
+      float: none;
+    }
+  }
+}
+
 .pg-content {
   margin-top: @navbar-height + 20px;
   margin-bottom: 50px;

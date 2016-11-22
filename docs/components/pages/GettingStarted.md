@@ -1,3 +1,6 @@
+
+
+
 # Getting Started <small className='pull-right' style={{marginTop: 15}}>current version {\_\_VERSION\_\_}</small>
 
 React-widgets offers a set of html form inputs, built from scratch with React. The suite is based on the excellent
@@ -30,14 +33,14 @@ bower install react-widgets --save
 </div>
 
 The npm build offers an additional advantage of allowing you to only require the individual widgets allowing frontend
-bundlers like Webpack and Browserify to only package up the pieces you use saving you bytes.
+bundlers like webpack and Browserify to only package up the pieces you use saving you bytes.
 
 ## Setup
 
-Stylesheets, images, and fonts are found in the `dist` directory. You can use Webpack to `require()` the styles,
+Stylesheets, images, and fonts are found in the `dist` directory. You can use webpack to `require()` the styles,
 or include the css normally. The included icons are provided by - <a href="http://fontawesome.io">Font Awesome by Dave Gandy</a>
 
-#### Webpack
+#### webpack
 
 ```js
 import { render } from 'react-dom';
@@ -49,26 +52,32 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 render(<DropdownList/>, document.getElementById('app-root'))
 ```
 
-If are using Webpack to handle styles in your application you are probably already configured
+If are using webpack to handle styles in your application you are probably already configured
 loaders to make it work with appropriate file extensions. If not, you will have to use
-the `css-loader`, `style-loader`, `file-loader`, `url-loader` and, optionally, the `less-loader` or
+the `css-loader`, `style-loader`, `url-loader` and, optionally, the `less-loader` or
 `scss-loader`.
 
 Below is a common configuration:
 
 ```js
 loaders: [
-  { test: /\\.css$/,  loader: "style-loader!css-loader" },
-  { test: /\\.less$/, loader: "style-loader!css-loader!less-loader" }, // using less
-  // { test: /\\.scss$/, loader: "style-loader!css-loader!scss-loader" }, // using scss
-  { test: /\\.gif$/, loader: "url-loader?mimetype=image/png" },
-  { test: /\\.woff(2)?(\\?v=[0-9]+\\.[0-9]+\\.[0-9]+)?$/, loader: "url-loader?mimetype=application/font-woff" },
-  { test: /\\.(ttf|eot|svg)(\\?v=[0-9]+\\.[0-9]+\\.[0-9]+)?$/, loader: "file-loader?name=[name].[ext]" },
+  // for good ol' css
+  { test: /\\.css$/,  loader: "style!css" },
+
+  // if using less
+  { test: /\\.less$/, loader: "style!css!less" },
+
+  // if using scss
+  { test: /\\.scss$/, loader: "style!css!scss" },
+
+  // images and fonts
+  { test: /\\.(gif|ttf|eot|svg)$/, loader: "url?name=[name].[ext]" },
+  { test: /\\.woff2?(\?.*)?$/, loader: "url?name=[name].[ext]mimetype=application/font-woff" },
 ]
 ```
 
 Also you can encounter problems including `react-widgets` stylesheets if you are managing them with
-Webpack. In case you having problems providing correct path to `fonts` and `img` folders, you can
+webpack. In case you having problems providing correct path to `fonts` and `img` folders, you can
 override corresponding variables from `variables` file. In case of `scss` it should look similar to:
 
 ```scss
@@ -82,8 +91,9 @@ $rw-img-path:  '~react-widgets/lib/img';
 
 ```html
 <link href="dist/css/react-widgets.css" rel="stylesheet"/>
+
 <script src="http://fb.me/react-0.14.0.js"></script>
-<script src="http://fb.me/react-dom-0.14.0.js"></script>
+<script src="http://fb.me/react-dom-0.15.0.js"></script>
 <script src='node_modules/react-widgets/dist/react-widgets.js'></script>
 <script>
   var DropdownList = ReactWidgets.DropDownlist;
@@ -131,13 +141,16 @@ default the animation method for these cases you can. The built in method follow
 jQuery `$.animate()` API closely so you can use it as a drop in replacement.
 
 ##### With the Configure module
+
 ```js
 require('react-widgets/lib/configure')
   .setAnimate((element, props, duration, ease, callback) => {
     $(element).animate(props, duration, callback)
   })
 ```
+
 ##### From the main export
+
 ```js
 require('react-widgets')
   .setAnimate((element, props, duration, ease, callback) => {

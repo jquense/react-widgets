@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import {
     Route
   , Router
+  , Link
   , hashHistory } from 'react-router';
 
 import Navbar from './Navbar';
+import WidgetList from './WidgetList';
 import GettingStarted from './pages/GettingStarted.md';
 import DropdownList from './pages/DropdownList.api.md';
 import ComboBox from './pages/Combobox.api.md';
@@ -27,33 +29,44 @@ var localizers = require('../../src/localizers/globalize')
 
 localizers(require('globalize'))
 
-var locations = [
-  'getting-started',
-  'dropdown-list',
-  'combobox',
-  'number-picker',
-  'multiselect',
-  'selectlist',
-  'calendar',
-  'datetime-picker'
+var widgets = [
+  'DropdownList',
+  'Combobox',
+  'NumberPicker',
+  'Multiselect',
+  'SelectList',
+  'Calendar',
+  'DateTimePicker'
 ];
+
 
 var Docs = React.createClass({
 
-  displayName: 'DocPage',
-
-  getInitialState: function () {
-    return {
-      sideHref: '#intro'
-    }
-  },
-
-  // componentDidMount: function(){
-  //   if (location.hash)
-  //     this.setState({ sideHref: location.hash.split('/')[0] })
-  // },
 
   render() {
+    if (this.props.location.pathname.includes('getting-started')) {
+      return (
+        <div>
+          <div className="jumbotron">
+            <h1>react-widgets</h1>
+            <p>An à la carte set of polished, extensible, and accessible input components</p>
+            <div>
+              {`latest: ${__VERSION__}`}
+
+              {' | '}
+              <a target='_blank' href="https://github.com/intljusticemission/react-big-calendar">
+                <i className='fa fa-github'/> github
+              </a>
+            </div>
+          </div>
+          <WidgetList />
+          <main className='pg-content'>
+            {this.props.children}
+          </main>
+        </div>
+      )
+    }
+
     return (
       <div>
         <Navbar />
@@ -63,23 +76,6 @@ var Docs = React.createClass({
       </div>
     )
   },
-  prev() {
-    var idx = locations.indexOf(this.state.sideHref)
-      , href = locations[Math.max(idx - 1, 0)];
-
-    this.navigate(href)
-  },
-
-  next() {
-    var idx = locations.indexOf(this.state.sideHref)
-      , href = locations[Math.min(idx + 1, locations.length -1)]
-
-    this.navigate(href)
-  },
-
-  handleNavItemSelect: function (key) {
-    this.transitionTo(key)
-  }
 })
 
 function onUpdate() {
