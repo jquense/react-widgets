@@ -2,7 +2,7 @@ import React from 'react';
 import activeElement from 'dom-helpers/activeElement';
 import contains from 'dom-helpers/query/contains';
 import cn from 'classnames';
-import { autoFocus, mountManager, timeoutManager, focusManager }
+import { autoFocus, mountManager, timeoutManager }
   from 'react-component-managers';
 import uncontrollable from 'uncontrollable';
 
@@ -17,6 +17,7 @@ import { result }  from './util/_';
 import * as Props from './util/Props';
 import * as Filter from './util/Filter';
 import compat          from './util/compat';
+import focusManager from './util/focusManager';
 import CustomPropTypes from './util/propTypes';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
@@ -96,8 +97,6 @@ class DropdownList extends React.Component {
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
       didHandle: this.handleFocusChanged,
-      onChange: focused => this.setState({ focused }),
-      fireEventHandlers: true,
     })
 
     this.state = this.getStateFromProps(this.props);
@@ -385,7 +384,6 @@ class DropdownList extends React.Component {
   @widgetEditable
   handleKeyPress = (e) => {
     notify(this.props.onKeyPress, [e])
-
     if (e.defaultPrevented)
       return
 
@@ -431,6 +429,7 @@ class DropdownList extends React.Component {
       var list = this.refs.list
         , key  = this.props.open ? 'focusedItem' : 'selectedItem'
         , item = list.next(this.state[key], word);
+
 
       this._searchTerm = ''
       if (item) cb(item)

@@ -138,7 +138,7 @@ describe('Combobox', function(){
       });
   })
 
-  it.only('should not trigger focus/blur events when disabled', function(done){
+  it('should not trigger focus/blur events when disabled', function(done){
     let blur = sinon.spy()
     let focus = sinon.spy()
 

@@ -1,14 +1,12 @@
 import React, { PropTypes } from 'react';
 import localizers from './localizers';
 
-function getInteractionPropType(key){
-  var types = [ PropTypes.bool, PropTypes.oneOf([key]) ]
-    , propType = PropTypes.oneOfType(types);
+let interactionPropType = (...args) => PropTypes.bool(...args);
 
-  propType.acceptsArray = PropTypes.oneOfType(types.concat(PropTypes.array))
-
-  return propType
-}
+interactionPropType.acceptsArray = PropTypes.oneOfType([
+  interactionPropType,
+  PropTypes.array
+])
 
 export default {
 
@@ -35,8 +33,8 @@ export default {
   dateFormat: createChainableTypeChecker(
     (...args) => localizers.date.propType(...args)),
 
-  disabled: getInteractionPropType('disabled'),
-  readOnly: getInteractionPropType('readOnly'),
+  disabled: interactionPropType,
+  readOnly: interactionPropType,
 
   accessor:     React.PropTypes.oneOfType([
                     React.PropTypes.string,

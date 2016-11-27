@@ -1,6 +1,5 @@
 import React from 'react';
 import cn from 'classnames';
-import { focusManager } from 'react-component-managers';
 import uncontrollable from 'uncontrollable';
 
 import Widget from './Widget';
@@ -9,6 +8,7 @@ import Select from './Select';
 import Input from './NumberInput';
 import Button from './Button';
 import * as Props from './util/Props';
+import focusManager from './util/focusManager';
 import { widgetEditable } from './util/interaction';
 import { notify } from './util/widgetHelpers';
 import compat from './util/compat';
@@ -84,8 +84,6 @@ class NumberPicker extends React.Component {
     super(...args)
 
     this.focusManager = focusManager(this, {
-      fireEventHandlers: true,
-      onChange: focused => this.setState({ focused }),
       willHandle: focused => {
         if (focused) this.focus()
       },
@@ -165,7 +163,8 @@ class NumberPicker extends React.Component {
       , tabIndex
       , parse
       , name
-      , onKeyPress, onKeyUp
+      , onKeyPress
+      , onKeyUp
       , min, max
       , disabled, readOnly
       , format } = this.props;

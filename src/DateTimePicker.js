@@ -2,7 +2,6 @@ import React  from 'react';
 import invariant from 'invariant';
 import activeElement from 'dom-helpers/activeElement';
 import cn from 'classnames';
-import { focusManager } from 'react-component-managers';
 import uncontrollable from 'uncontrollable';
 
 import compat from './util/compat';
@@ -21,6 +20,7 @@ import BaseCalendar from './Calendar';
 import DateTimePickerInput from './DateTimePickerInput';
 import Select  from './Select';
 import TimeList from './TimeList';
+import focusManager from './util/focusManager';
 import CustomPropTypes from './util/propTypes';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
@@ -127,8 +127,6 @@ class DateTimePicker extends React.Component {
 
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
-      fireEventHandlers: true,
-      onChange: focused => this.setState({ focused }),
       didHandle: focused => {
         if (!focused) this.close()
       }

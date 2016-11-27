@@ -73,7 +73,7 @@
     "dom-helpers": "^3.0.0",
     "invariant": "^2.1.0",
     "loose-envify": "^1.2.0",
-    "react-component-managers": "^1.1.1",
+    "react-component-managers": "^2.0.0",
     "spy-on-component": "^1.0.2",
     "uncontrollable": "^4.0.0",
     "warning": "^2.0.0"

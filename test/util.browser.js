@@ -1,7 +1,7 @@
 delete require.cache[require.resolve('../src/util/_')]
 
 var React   = require('react')
-  , filters = require('../src/util/filter')
+  , filters = require('../src/util/filter').presets
   , _       = require('../src/util/_')
   , propTypes = require('../src/util/propTypes')
   , config  = require('../src/util/configuration')
@@ -11,35 +11,9 @@ var React   = require('react')
 
 describe('_ utils', function(){
 
-  it('should EACH', function(){
-    var cnt = 0
-    _.each([1], (v, i, a) => {
-      expect(v).equal(1)
-      expect(i).equal(0)
-      expect(a).eql([1])
-    })
-
-    _.each({ a: 1, b: 2, c: 3}, () => cnt++)
-
-    expect(cnt).to.equal(3)
-    cnt = 0
-    _.each([1, 2, 3], () => cnt++)
-    expect(cnt).to.equal(3)
-  })
-
-  it('should OMIT and PICK', function(){
-    expect(_.omit({ a: 1, b: 2, c: 3}, ['b', 'c'])).to.eql({ a: 1 })
-    expect(_.pick({ a: 1, b: 2, c: 3}, ['b', 'c'])).to.eql({ b: 2, c: 3 })
-  })
-
   it('should FIND', function(){
     expect(_.find([1, 2, 3, 4, 5], v => v === 2)).to.equal(2)
     expect(_.find([1, 2, 3, 4, 5], (v, i) => i === 2)).to.equal(3)
-  })
-
-  it('should UNIQUEID', function(){
-    expect(_.uniqueId('gello_')).to.equal('gello_' + 1)
-    expect(_.uniqueId('ello_')).to.equal('ello_' + 2)
   })
 
   it('should SHALLOW EQUAL', function(){
@@ -60,29 +34,7 @@ describe('_ utils', function(){
     expect( _.isShallowEqual({ a: 1, b: 2}, { b: 2, a: 1 }) ).to.be(true)
     expect( _.isShallowEqual({ a: 1, b: 2}, { a: 1, c: 'hi' }) ).to.be(false)
   })
-
-  it('should TRANSFORM', function(){
-
-    _.transform([1], function(o, v, i){
-      expect(o).to.eql([])
-      expect(v).to.equal(1)
-      expect(i).to.equal(0)
-    })
-
-    _.transform({ key: 1 }, (o, v, i) => {
-      expect(o).to.eql({})
-      expect(v).to.equal(1)
-      expect(i).to.equal('key')
-    })
-
-    expect( _.transform({ a:0, b:1 },
-      (o, v, i) => o[i] = ++v )).to.eql({ a:1, b: 2})
-
-    expect( _.transform([ 0, 1 ],
-      (o, v ) => o[v] = ++v, {})).to.eql({ 0:1, 1: 2})
-  })
 })
-
 describe('when using array filter helpers', function(){
 
   it('should match correctly', function(){

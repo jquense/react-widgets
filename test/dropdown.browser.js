@@ -292,15 +292,16 @@ describe('DROPDOWNS', function(){
     })
   })
 
-  it('should search values on typing', done => {
+  it('should search values on typing when not filtering', done => {
     let change = sinon.spy()
 
     let inst = tsp(
       <ControlledDropdownList
         open
+        delay={0}
+        filter={false}
         value={data[0]}
         data={data}
-        delay={0}
         onChange={change}
         textField='label'
       />

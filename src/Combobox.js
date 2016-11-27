@@ -1,7 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
 import createUncontrolledWidget from 'uncontrollable';
-import { focusManager } from 'react-component-managers';
 
 import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
@@ -9,6 +8,7 @@ import Popup from './Popup';
 import Select  from './Select';
 import ComboboxInput from './ComboboxInput';
 import compat from './util/compat';
+import focusManager from './util/focusManager';
 import CustomPropTypes from './util/propTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
@@ -92,9 +92,7 @@ class ComboBox extends React.Component {
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
       willHandle: this.handleFocusWillChange,
-      didHandle: this.handleFocusChanged,
-      onChange: focused => this.setState({ focused }),
-      fireEventHandlers: true,
+      didHandle: this.handleFocusChanged
     })
 
     this.state = {

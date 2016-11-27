@@ -2,7 +2,6 @@ import React from 'react';
 import cn from 'classnames';
 import { splat }  from './util/_';
 import uncontrollable from 'uncontrollable';
-import { focusManager } from 'react-component-managers';
 
 import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
@@ -16,6 +15,7 @@ import GroupableList from './ListGroupable';
 
 import * as Filter from './util/Filter';
 import * as Props from './util/Props';
+import focusManager from './util/focusManager';
 import validateList from './util/validateListInterface';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
@@ -115,8 +115,6 @@ class Multiselect extends React.Component {
 
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
-      fireEventHandlers: true,
-      onChange: focused => this.setState({ focused }),
       willHandle: this.handleFocusWillChange,
       didHandle: this.handleFocusDidChange,
     })
@@ -236,9 +234,9 @@ class Multiselect extends React.Component {
 
   @widgetEditable
   handleKeyDown = (e) => {
-    let { key, altKey, ctrlKey } = e
-      , noSearch = !this.props.searchTerm && !this._deletingText
-      , isOpen  = this.props.open;
+    let { key, keyCode, altKey, ctrlKey } = e
+    let noSearch = !this.props.searchTerm && !this._deletingText
+    let isOpen  = this.props.open;
 
     let { focusedTag, focusedItem } = this.state;
     let { list, tagList } = this.refs;
@@ -279,7 +277,7 @@ class Multiselect extends React.Component {
       if (isOpen) this.setState({ focusedItem: list.first(), ...nullTag })
       else          tagList && this.setState({ focusedTag: tagList.first() })
     }
-    else if (isOpen && key === 'Enter') {
+    else if (isOpen  && keyCode === 13) { // using keyCode to ignore enter for japanese IME
       e.preventDefault();
       (ctrlKey && this.props.onCreate) || focusedItem === null
         ? this.handleCreate(this.props.searchTerm)

@@ -156,6 +156,7 @@ describe('NumberPicker', function(){
       />
     )
     .render()
+    .find('input')
     .trigger('keyPress')
     .trigger('keyDown')
     .trigger('keyUp')
