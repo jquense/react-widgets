@@ -39,8 +39,8 @@ function makeLocalizerConfig(config, name, args) {
 }
 
 var config = {
-  cache: true,
-  devtool: 'cheap-inline-module-source-map',
+  cache: false,
+  devtool: 'inline-module-source-map',
   module: {
     loaders: [
       { test: /\.json$/, loader: 'json-loader' },

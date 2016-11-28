@@ -4,14 +4,6 @@ import activeElement from 'dom-helpers/activeElement';
 import cn from 'classnames';
 import uncontrollable from 'uncontrollable';
 
-import compat from './util/compat';
-import * as Props from './util/Props';
-import dates  from './util/dates';
-import { date as dateLocalizer } from './util/localizers';
-import {
-  calendarViews as views,
-  datePopups as popups }  from './util/constants';
-
 import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
 import Popup from './Popup';
@@ -20,11 +12,19 @@ import BaseCalendar from './Calendar';
 import DateTimePickerInput from './DateTimePickerInput';
 import Select  from './Select';
 import TimeList from './TimeList';
-import focusManager from './util/focusManager';
+
+import * as Props from './util/Props';
 import * as CustomPropTypes from './util/PropTypes';
+import focusManager from './util/focusManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
-import { widgetEditable, isReadOnly, isDisabled } from './util/interaction';
+import { widgetEditable } from './util/interaction';
+import compat from './util/compat';
+import dates  from './util/dates';
+import { date as dateLocalizer } from './util/localizers';
+import {
+  calendarViews as views,
+  datePopups as popups }  from './util/constants';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let Calendar = BaseCalendar.ControlledComponent;
@@ -297,14 +297,11 @@ class DateTimePicker extends React.Component {
   }
 
   renderButtons(messages) {
-    let { calendar, time } = this.props;
+    let { calendar, time, disabled, readOnly } = this.props;
 
     if (!calendar && !time) {
       return null;
     }
-
-    let disabled = isDisabled(this.props)
-    let readOnly = isReadOnly(this.props)
 
     return (
       <Select bordered>
@@ -419,6 +416,7 @@ class DateTimePicker extends React.Component {
       , time
       , open
       , messages
+      , disabled, readOnly
       , dropUp} = this.props;
 
     let { focused } = this.state;
@@ -430,9 +428,6 @@ class DateTimePicker extends React.Component {
     let owns = '';
     if (calendar) owns += this.calendarId
     if (time)     owns += ' ' + this.listId
-
-    let disabled = isDisabled(this.props)
-    let readOnly = isReadOnly(this.props)
 
     return (
       <Widget

@@ -66,6 +66,15 @@ storiesOf('Multiselect', module)
       />
     </Container>
   )
+  .add('disabled tags', () =>
+    <Container>
+      <Multiselect
+        {...props}
+        disabled={props.data.slice(2, 3)}
+        defaultValue={props.data.slice(0, 3)}
+      />
+    </Container>
+  )
   .add('readonly', () =>
     <Container>
       <Multiselect

@@ -81,7 +81,7 @@ storiesOf('DropdownList', module)
     <Container>
       <DropdownList
         {...props}
-        defaultOpen
+        open
         defaultValue={props.data[1]}
         groupBy="last"
       />
@@ -103,6 +103,15 @@ storiesOf('DropdownList', module)
         open
         disabled={[props.data[2]]}
         defaultValue={props.data[1]}
+      />
+    </Container>
+  )
+  .add('disabled item, first focused', () =>
+    <Container>
+      <DropdownList
+        {...props}
+        open
+        disabled={props.data.slice(0, 2)}
       />
     </Container>
   )

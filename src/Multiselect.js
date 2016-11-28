@@ -9,26 +9,25 @@ import Select from './Select';
 import Popup from './Popup';
 import SelectInput from './MultiselectInput';
 import TagList from './MultiselectTagList';
-import * as CustomPropTypes from './util/PropTypes';
-import PlainList from './List';
-import GroupableList from './ListGroupable';
+import List from './List';
 
 import * as Filter from './util/Filter';
 import * as Props from './util/Props';
+import * as CustomPropTypes from './util/PropTypes';
 import accessorManager from './util/accessorManager';
 import focusManager from './util/focusManager';
-import validateList from './util/validateListInterface';
+import listDataManager from './util/listDataManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
-import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
+import { widgetEditable } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
-var compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
+let compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
   ? msgs.createNew(props)
   : [<strong key='dumb'>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
 
 
-var propTypes = {
+let propTypes = {
   ...Popup.propTypes,
   ...Filter.propTypes,
 
@@ -93,6 +92,7 @@ class Multiselect extends React.Component {
     value: [],
     open: false,
     searchTerm: '',
+    listComponent: List,
     messages: {
       createNew:     '(create new tag)',
       emptyList:     'There are no items in this list',
@@ -115,6 +115,9 @@ class Multiselect extends React.Component {
     this.activeTagId = instanceId(this, '_taglist_active_tag')
     this.activeOptionId = instanceId(this, '_listbox_active_option')
 
+    this.list = listDataManager(this)
+    this.tagList = listDataManager(this, { getListDataState: () => null })
+
     this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
@@ -132,20 +135,17 @@ class Multiselect extends React.Component {
     this.setState(this.getStateFromProps(nextProps))
   }
 
-  componentDidUpdate() {
-    this.refs.list && validateList(this.refs.list)
-  }
-
   getStateFromProps(props) {
+    let { accessors, list, tagList } = this
     let {
       data, searchTerm, minLength, caseSensitive, filter
     } = props
 
     let values = splat(props.value);
-    let dataItems = values.map(item => this.accessors.find(data, item));
+    let dataItems = values.map(item => accessors.findOrSelf(data, item));
 
     data = data.filter(i =>
-      !values.some(v => this.accessors.matches(i, v))
+      !values.some(v => accessors.matches(i, v))
     );
 
     this._lengthWithoutValues = data.length;
@@ -155,16 +155,21 @@ class Multiselect extends React.Component {
       searchTerm,
       minLength,
       caseSensitive,
-      textField: this.accessors.text,
-
+      textField: accessors.text,
     })
 
-    let current = this.state && this.state.focusedItem;
+    list.setData(data);
+    tagList.setData(dataItems);
+
+    let { focusedItem, focusedTag } = this.state || {};
 
     return {
       data,
       dataItems,
-      focusedItem: data.indexOf(current) === -1 ? data[0] : current,
+      focusedTag: list.nextEnabled(
+        ~dataItems.indexOf(focusedTag) ? focusedTag : null),
+      focusedItem: list.nextEnabled(
+        ~data.indexOf(focusedItem) ? focusedItem : data[0]),
     }
   }
 
@@ -183,6 +188,10 @@ class Multiselect extends React.Component {
 
   handleDelete = (value) => {
     let { dataItems } = this.state;
+
+    if (this.props.disabled == true || this.props.readOnly)
+      return;
+
     this.focus()
     this.change(dataItems.filter(d => d !== value))
   };
@@ -242,7 +251,7 @@ class Multiselect extends React.Component {
     let isOpen  = this.props.open;
 
     let { focusedTag, focusedItem } = this.state;
-    let { list, tagList } = this.refs;
+    let { list, tagList } = this;
     let nullTag = { focusedTag: null };
 
     notify(this.props.onKeyDown, [e])
@@ -251,8 +260,11 @@ class Multiselect extends React.Component {
       return
 
     if (key === 'ArrowDown') {
-      var next = list.next(focusedItem)
-        , creating = (this.shouldShowCreate() && focusedItem === next) || focusedItem === null;
+      let next = list.next(focusedItem)
+      let creating = (
+          (this.shouldShowCreate() && focusedItem === next) ||
+          focusedItem === null
+      );
 
       next = creating ? null : next
 
@@ -261,7 +273,7 @@ class Multiselect extends React.Component {
       else        this.open()
     }
     else if (key === 'ArrowUp') {
-      var prev = focusedItem === null
+      let prev = focusedItem === null
         ? list.last()
         : list.prev(focusedItem)
 
@@ -272,13 +284,13 @@ class Multiselect extends React.Component {
     }
     else if (key === 'End') {
       e.preventDefault()
-      if ( isOpen ) this.setState({ focusedItem: list.last(), ...nullTag })
-      else          tagList && this.setState({ focusedTag: tagList.last() })
+      if (isOpen) this.setState({ focusedItem: list.last(), ...nullTag })
+      else        this.setState({ focusedTag: tagList.last() })
     }
     else if (key === 'Home') {
       e.preventDefault()
       if (isOpen) this.setState({ focusedItem: list.first(), ...nullTag })
-      else          tagList && this.setState({ focusedTag: tagList.first() })
+      else        this.setState({ focusedTag: tagList.first() })
     }
     else if (isOpen  && keyCode === 13) { // using keyCode to ignore enter for japanese IME
       e.preventDefault();
@@ -286,21 +298,24 @@ class Multiselect extends React.Component {
         ? this.handleCreate(this.props.searchTerm)
         : this.handleSelect(this.state.focusedItem)
     }
-    else if (key === 'Escape')
+    else if (key === 'Escape') {
       isOpen ? this.close() : tagList && this.setState(nullTag)
+    }
+    else if (noSearch && key === 'ArrowLeft') {
+      this.setState({ focusedTag: tagList.prev(focusedTag) || tagList.last() })
+    }
+    else if (noSearch && key === 'ArrowRight') {
+      let nextTag = focusedTag && tagList.next(focusedTag)
+      if (nextTag === focusedTag) nextTag = null
 
-    else if (noSearch && key === 'ArrowLeft')
-      tagList && this.setState({ focusedTag: tagList.prev(focusedTag) })
-
-    else if (noSearch && key === 'ArrowRight')
-      tagList && this.setState({ focusedTag: tagList.next(focusedTag) })
-
-    else if (noSearch && key === 'Delete')
-      tagList && tagList.remove(focusedTag)
-
-    else if (noSearch && key === 'Backspace')
-      tagList && tagList.removeNext()
-
+      this.setState({ focusedTag: nextTag })
+    }
+    else if (noSearch && key === 'Delete' && !tagList.isDisabled(focusedTag)) {
+      this.handleDelete(focusedTag)
+    }
+    else if (noSearch && key === 'Backspace') {
+      this.handleDelete(tagList.last())
+    }
     else if (noSearch && key === ' ' && !isOpen) {
       e.preventDefault()
       this.open()
@@ -344,8 +359,9 @@ class Multiselect extends React.Component {
 
     let { focusedItem, focusedTag } = this.state;
 
-    let disabled = isDisabled(this.props)
-    let readOnly = isReadOnly(this.props)
+    let disabled = this.props.disabled === true
+    let readOnly = this.props.readOnly === true
+
     let active = open
       ? (focusedItem || this.isCreateTagFocused())
         && this.activeOptionId
@@ -374,22 +390,22 @@ class Multiselect extends React.Component {
     )
   }
 
-  renderList(List, messages) {
+  renderList(messages) {
     let { inputId, activeOptionId, listId, accessors } = this;
-    let { disabled, open, itemComponent, listProps } = this.props;
-    let { focusedItem, data: items } = this.state;
+    let { open } = this.props;
+    let { focusedItem } = this.state;
 
+    let List = this.props.listComponent
+    let props = this.list.defaultProps();
 
     return (
-      <List ref="list" key={0}
-        {...listProps}
+      <List
+        {...props}
+        ref="list"
         id={listId}
         activeId={activeOptionId}
-        data={items}
-        itemComponent={itemComponent}
         valueAccessor={accessors.value}
         textAccessor={accessors.text}
-        disabled={disabled}
         focusedItem={focusedItem}
         onSelect={this.handleSelect}
         onMove={this.handleScroll}
@@ -430,7 +446,7 @@ class Multiselect extends React.Component {
   }
 
   renderTags(messages) {
-    let { disabled, readOnly, valueField, textField } = this.props;
+    let { disabled, readOnly } = this.props;
     let { focusedTag, dataItems } = this.state;
 
     let Component = this.props.tagComponent;
@@ -440,13 +456,13 @@ class Multiselect extends React.Component {
         ref='tagList'
         id={this.tagsId}
         activeId={this.activeTagId}
-        valueField={valueField}
-        textField={textField}
+        textAccessor={this.accessors.text}
+        valueAccessor={this.accessors.value}
         label={messages.tagsLabel}
         value={dataItems}
-        focused={focusedTag}
         disabled={disabled}
         readOnly={readOnly}
+        focusedItem={focusedTag}
         onDelete={this.handleDelete}
         valueComponent={Component}
       />
@@ -456,17 +472,13 @@ class Multiselect extends React.Component {
   render() {
     let {
         className
-      , groupBy
       , messages
       , busy
       , dropUp
       , open
-      , duration
-      , listComponent: List } = this.props;
+      , duration } = this.props;
 
     let { focused, dataItems } = this.state;
-
-    List = List || (groupBy && GroupableList) || PlainList
 
     let elementProps = Props.pickElementProps(this);
 
@@ -478,8 +490,8 @@ class Multiselect extends React.Component {
       + (shouldRenderTags ? this.tagsId : '')
       + (shouldShowCreate ? this.createId : '');
 
-    let disabled = isDisabled(this.props)
-    let readOnly = isReadOnly(this.props)
+    let disabled = this.props.disabled === true
+    let readOnly = this.props.readOnly === true
 
     messages = msgs(messages);
 
@@ -527,7 +539,7 @@ class Multiselect extends React.Component {
             onOpening={()=> this.refs.list.forceUpdate()}
           >
             <div>
-              {this.renderList(List, messages)}
+              {this.renderList(messages)}
 
               {shouldShowCreate &&
                 this.renderCreateItem(messages)

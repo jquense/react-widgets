@@ -46,7 +46,7 @@ var DropdownApi = React.createClass({
   render: function() {
 
     var props = {
-      disabled: this.state.disabled === 'disabled',
+      disabled: list.slice(1, 2),
       readOnly: this.state.disabled === 'readonly',
       groupBy: this.state.groupBy,
       defaultValue: 1,
@@ -56,7 +56,8 @@ var DropdownApi = React.createClass({
       busy: this.state.busy,
       isRtl: this.state.isRtl,
       valueField: 'id',
-      textField: 'name'
+      textField: 'name',
+      listProps: { groupBy: 'lastName' }
     }
 
     //let disabled = this.state.disabled === true || Array.isArray(this.state.disabled);

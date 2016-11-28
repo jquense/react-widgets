@@ -1,8 +1,9 @@
 import React from 'react';
 import { timeoutManager } from 'react-component-managers';
 
-import dates from './util/dates';
 import List from './List';
+import dates from './util/dates';
+import listDataManager from './util/listDataManager';
 import { date as dateLocalizer } from './util/localizers';
 import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
@@ -38,61 +39,59 @@ class TimeList extends React.Component {
   constructor(...args) {
     super(...args)
 
+    this.accessors = {
+      text: item => item.label,
+      value: item => item.date,
+    };
+
     this.timeouts = timeoutManager(this)
+    this.list = listDataManager(this, {
+      getListDataState: List.getListDataState,
+      accessors: this.accessors
+    })
 
-    let { value, currentDate } = this.props;
-    let data = this.getDates()
-    let focusedItem = this.getClosestDate(data, value || currentDate)
-
-    this.state = {
-      focusedItem: focusedItem || data[0],
-      dates: data,
-    }
+    this.state = this.getStateFromProps(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
-    let data = this.getDates(nextProps)
-    let focusedItem = this.getClosestDate(
-      data,
-      nextProps.value || nextProps.currentDate
-    )
+    this.setState(this.getStateFromProps(nextProps))
+  }
 
-    let valChanged  = !dates.eq(nextProps.value, this.props.value, 'minutes')
-    let minChanged  = !dates.eq(nextProps.min, this.props.min, 'minutes')
-    let maxChanged  = !dates.eq(nextProps.max, this.props.max, 'minutes')
+  getStateFromProps(props = this.props) {
+    let { value, currentDate } = props;
+    let data = this.getDates(props)
+    let selectedItem = this.getClosestDate(data, value || currentDate)
 
-    let localeChanged = this.props.format !== nextProps.format
-                     || this.props.culture !== nextProps.culture;
+    this.list.setData(data)
 
-    if (valChanged || minChanged || maxChanged || localeChanged) {
-      this.setState({
-        focusedItem: focusedItem || data[0],
-        dates: data
-      })
+    return {
+      dates: data,
+      selectedItem: this.list.nextEnabled(selectedItem),
+      focusedItem: this.list.nextEnabled(selectedItem || data[0]),
     }
   }
 
   handleKeyDown = (e) => {
-    var key = e.key
-      , focusedItem  = this.state.focusedItem
-      , list = this.refs.list;
+    let key = e.key
+    let focusedItem  = this.state.focusedItem
+    let list = this.list;
 
     if (key === 'End') {
       e.preventDefault()
       this.setState({ focusedItem: list.last() })
     }
-    else if ( key === 'Home' ) {
+    else if (key === 'Home') {
       e.preventDefault()
       this.setState({ focusedItem: list.first() })
     }
-    else if ( key === 'Enter' )
+    else if (key === 'Enter') {
       this.props.onSelect(focusedItem)
-
-    else if ( key === 'ArrowDown' ) {
+    }
+    else if (key === 'ArrowDown') {
       e.preventDefault()
       this.setState({ focusedItem: list.next(focusedItem) })
     }
-    else if ( key === 'ArrowUp' ) {
+    else if (key === 'ArrowUp') {
       e.preventDefault()
       this.setState({ focusedItem: list.prev(focusedItem) })
     }
@@ -108,22 +107,22 @@ class TimeList extends React.Component {
   }
 
   render() {
-    let { value, onSelect, itemComponent } = this.props;
+    let { onSelect } = this.props;
+    let { selectedItem, focusedItem } = this.state;
 
-    var times = this.state.dates
-      , date  = this.getClosestDate(times, value);
+    let props = Props.omitOwn(this)
+    let listProps = this.list.defaultProps();
 
     return (
       <List
-        {...Props.omitOwn(this)}
         ref="list"
-        data={times}
+        {...props}
+        {...listProps}
         onSelect={onSelect}
-        textAccessor={item => item.label}
-        valueAccessor={item => item.date}
-        selectedItem={date}
-        focusedItem={this.state.focusedItem}
-        itemComponent={itemComponent}
+        textAccessor={this.accessors.text}
+        valueAccessor={this.accessors.value}
+        selectedItem={selectedItem}
+        focusedItem={focusedItem}
       />
     )
   }
@@ -201,10 +200,8 @@ class TimeList extends React.Component {
     var word = ((this._searchTerm || '') + character).toLowerCase();
 
     this._searchTerm = word
-
     this.timeouts.set('search', () => {
-      var list = this.refs.list
-        , item = list.next(this.state.focusedItem, word);
+      var item = this.list.next(this.state.focusedItem, word);
 
       this._searchTerm = ''
       if (item) cb(item)

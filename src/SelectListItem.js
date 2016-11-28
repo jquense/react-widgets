@@ -1,70 +1,66 @@
 import React from 'react';
 import ListOption from './ListOption';
 
-import { instanceId } from './util/widgetHelpers';
-import { contains } from './util/interaction';
 
-export default function getSelectListItem(parent) {
+class SelectListItem extends React.Component {
+  static propTypes = {
+    type: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string.isRequired,
+    disabled: React.PropTypes.bool,
+    readOnly: React.PropTypes.bool,
+    dataItem: React.PropTypes.any,
+    checked: React.PropTypes.bool.isRequired,
 
-  class SelectListItem extends React.Component {
-    static propTypes = {
-      disabled: React.PropTypes.bool,
-      readOnly: React.PropTypes.bool,
-      dataItem: React.PropTypes.any,
-    };
+    onChange: React.PropTypes.func.isRequired,
+    onMouseDown: React.PropTypes.func.isRequired,
+  };
 
-    handleChange = (e) => {
-      let { disabled, readOnly, dataItem } = this.props;
+  handleChange = (e) => {
+    let { onChange, disabled, dataItem } = this.props;
 
-      if (!disabled && !readOnly)
-        parent.handleChange(dataItem, e.target.checked)
-    };
+    if (!disabled)
+      onChange(dataItem, e.target.checked)
+  };
 
-    handleMouseDown = () => {
-      parent._clicking = true
-    };
+  render() {
+    let {
+        children
+      , disabled
+      , readOnly
+      , name
+      , type
+      , checked
+      , onMouseDown
+      , ...props } = this.props;
 
-    render() {
-      let {
-          children
-        , disabled
-        , readOnly
-        , dataItem: item } = this.props;
+    delete props.onChange;
 
-      let {
-        multiple,
-        name = instanceId(parent, '_name')
-      } = parent.props;
-
-      let checked = contains(item, parent._values(), parent.props.valueField)
-        , type = multiple ? 'checkbox' : 'radio';
-
-      return (
-        <ListOption
-          {...this.props}
-          role={type}
-          aria-checked={!!checked}
+    return (
+      <ListOption
+        {...props}
+        role={type}
+        disabled={disabled}
+        aria-checked={!!checked}
+      >
+        <label
+          onMouseDown={onMouseDown}
+          className="rw-select-list-label"
         >
-          <label
-            onMouseDown={this.handleMouseDown}
-            className="rw-select-list-label"
-          >
-            <input
-              name={name}
-              type={type}
-              tabIndex='-1'
-              role='presentation'
-              checked={checked}
-              className="rw-select-list-input"
-              disabled={disabled || readOnly}
-              onChange={this.handleChange}
-            />
-              {children}
-          </label>
-        </ListOption>
-      );
-    }
+          <input
+            name={name}
+            type={type}
+            tabIndex='-1'
+            checked={checked}
+            disabled={disabled || !!readOnly}
+            role='presentation'
+            className="rw-select-list-input"
+            onChange={this.handleChange}
+          />
+            {children}
+        </label>
+      </ListOption>
+    );
   }
-
-  return SelectListItem;
 }
+
+export default SelectListItem;

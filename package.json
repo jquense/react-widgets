@@ -85,7 +85,7 @@
     "deconstruct-number-format": "0.0.1"
   },
   "devDependencies": {
-    "@kadira/storybook": "^1.39.0",
+    "@kadira/storybook": "^2.33.1",
     "@monastic.panic/component-playground": "^2.0.0",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",

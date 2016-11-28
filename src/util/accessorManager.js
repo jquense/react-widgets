@@ -15,6 +15,12 @@ export default function createAccessorManager(component) {
     value: item => helpers.dataValue(item, textField),
     indexOf: (data, item) => helpers.dataIndexOf(data, item, valueField),
     matches: (a, b) => helpers.valueMatcher(a, b, valueField),
-    find: (data, item) => helpers.dataItem(data, item, valueField),
+    findOrSelf: (data, item) => helpers.dataItem(data, item, valueField),
+    find: (data, item) => {
+      let idx = helpers.dataIndexOf(data, item, valueField);
+      if (~idx) {
+        return data[idx]
+      }
+    },
   }
 }

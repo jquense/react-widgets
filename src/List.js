@@ -1,143 +1,242 @@
 import React   from 'react';
+import warning from 'warning';
+
+import Listbox from './Listbox';
 import ListOption from './ListOption';
-import * as CustomPropTypes from './util/PropTypes';
+import { result, has }  from './util/_';
 import compat from './util/compat';
-import cn from 'classnames';
-import { result }  from './util/_';
+import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabledItem }  from './util/interaction';
 
-import ListMovementMixin from './mixins/ListMovementMixin';
 
-export default React.createClass({
+function group(groupBy, data, keys) {
+  var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
 
-  displayName: 'List',
+  // the keys array ensures that groups are rendered in the order they came in
+  // which means that if you sort the data array it will render sorted,
+  // so long as you also sorted by group
+  keys = keys || []
 
-  mixins: [
-    ListMovementMixin
-  ],
+  warning(typeof groupBy !== 'string' || !data.length || has(data[0], groupBy)
+    , `[React Widgets] You seem to be trying to group this list by a `
+    + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
 
-  propTypes: {
-    role: React.PropTypes.string,
-    data: React.PropTypes.array,
-    onSelect: React.PropTypes.func,
-    onMove: React.PropTypes.func,
+  return data.reduce((grps, item) => {
+    let group = iter(item);
 
-    optionComponent: CustomPropTypes.elementType,
-    itemComponent: CustomPropTypes.elementType,
-
-    activeId: React.PropTypes.string,
-    selectedItem: React.PropTypes.any,
-    focusedItem: React.PropTypes.any,
-    valueAccessor: React.PropTypes.func.isRequired,
-    textAccessor: React.PropTypes.func.isRequired,
-
-    disabled: CustomPropTypes.disabled.acceptsArray,
-
-    messages: React.PropTypes.shape({
-      emptyList: CustomPropTypes.message
-    })
-  },
-
-
-  getDefaultProps(){
-    return {
-      onSelect: ()=>{},
-      optionComponent: ListOption,
-      data: [],
-      messages: {
-        emptyList:   'There are no items in this list'
-      }
+    if (has(grps, group)) {
+      grps[group].push(item)
     }
-  },
+    else {
+      keys.push(group)
+      grps[group] = [item]
+    }
+
+    return grps
+  }, {})
+}
+
+
+const propTypes = {
+  data: React.PropTypes.array,
+  dataState: React.PropTypes.object,
+  onSelect: React.PropTypes.func,
+  onMove: React.PropTypes.func,
+
+  activeId: React.PropTypes.string,
+  optionComponent: CustomPropTypes.elementType,
+  itemComponent: CustomPropTypes.elementType,
+  groupComponent:  CustomPropTypes.elementType,
+
+  focusedItem: React.PropTypes.any,
+  selectedItem: React.PropTypes.any,
+
+  valueAccessor: React.PropTypes.func.isRequired,
+  textAccessor: React.PropTypes.func.isRequired,
+
+  disabled: CustomPropTypes.disabled.acceptsArray,
+
+  groupBy: CustomPropTypes.accessor,
+
+  messages: React.PropTypes.shape({
+    emptyList: CustomPropTypes.message
+  })
+}
+
+const defaultProps = {
+  onSelect: () => {},
+  data: [],
+  optionComponent: ListOption,
+  messages: {
+    emptyList: 'There are no items in this list'
+  }
+}
+
+class List extends React.Component {
+
+  static getListDataState(data, { groupBy }, lastState = {}) {
+    if (
+      groupBy && (
+      lastState.data !== data ||
+      lastState.groupBy !== groupBy
+    )) {
+      let keys = [];
+      let groups = group(groupBy, data, keys);
+
+      return {
+        data,
+        groupBy,
+        groups,
+        sortedKeys: keys,
+        sequentialData: Object.keys(groups)
+          .reduce((flat, grp) => flat.concat(groups[grp]), [])
+      };
+    }
+
+    return lastState;
+  }
 
   componentDidMount() {
     this.move()
-  },
+  }
 
   componentDidUpdate() {
     this.move()
-  },
+  }
 
-  render(){
-    var {
-        className
-      , role
-      , data
-      , activeId
-      , textAccessor
-      , valueAccessor
-      , focusedItem
-      , selectedItem
-      , messages
-      , onSelect
-      , itemComponent: ItemComponent
-      , optionComponent: Option } = this.props
+  mapItems(fn) {
+    const { data, dataState } = this.props
+    let { sortedKeys, groups } = dataState;
 
-    let id = instanceId(this)
-      , items;
+    if (!groups)
+      return data.map((item, idx) => fn(item, idx, false))
+
+    let idx = -1
+
+    return sortedKeys.reduce((items, key) => {
+      let group = groups[key]
+
+      return items.concat(
+        fn(key, idx, true),
+        group.map(item => fn(item, ++idx, false))
+      )
+    }, [])
+
+  }
+  render() {
+    let { className, messages } = this.props
 
     let elementProps = Props.pickElementProps(this);
 
-    items = !data.length
-      ? (
-        <li className='rw-list-empty'>
-          {result(messages.emptyList, this.props)}
-        </li>
-      ) : data.map((item, idx) => {
-          let isDisabled = isDisabledItem(item, this.props);
-          let isFocused = focusedItem === item;
-          let id = isFocused ? activeId : undefined;
-
-          return (
-            <Option
-              id={id}
-              key={'item_' + idx}
-              dataItem={item}
-              disabled={isDisabled}
-              focused={isFocused}
-              selected={selectedItem === item}
-              onClick={isDisabled ? undefined : onSelect.bind(null, item)}
-            >
-              {ItemComponent
-                ? <ItemComponent
-                    item={item}
-                    value={valueAccessor(item)}
-                    text={textAccessor(item)}
-                    disabled={isDisabled}
-                  />
-                : textAccessor(item)
-              }
-            </Option>
-          )
-        });
-
     return (
-      <ul
-        id={id}
-        tabIndex='-1'
-        className={cn(className, 'rw-list')}
-        role={role === undefined ? 'listbox' : role}
+      <Listbox
         {...elementProps}
+        id={instanceId(this)}
+        className={className}
+        emptyListMessage={result(messages.emptyList, this.props)}
       >
-        { items }
-      </ul>
+        {this.mapItems((item, idx, isHeader) => {
+          return isHeader ?
+            this.renderGroupHeader(item) :
+            this.renderItem(item, idx)
+        })}
+      </Listbox>
     )
-  },
-
-  _data(){
-    return this.props.data
-  },
-
-  move() {
-    var list = compat.findDOMNode(this)
-      , idx  = this._data().indexOf(this.props.focusedItem)
-      , selected = list.children[idx];
-
-    if( !selected ) return
-
-    notify(this.props.onMove, [selected, list, this.props.focusedItem])
   }
 
-})
+  renderGroupHeader(group) {
+    var GroupComponent = this.props.groupComponent
+      , id = instanceId(this);
+
+    return (
+      <li
+        key={'item_' + group}
+        tabIndex='-1'
+        role="separator"
+        id={id + '_group_' + group}
+        className='rw-list-optgroup'
+      >
+        { GroupComponent ? <GroupComponent item={group}/> : group }
+      </li>
+    )
+  }
+
+  renderItem(item, idx) {
+    let {
+        activeId
+      , focusedItem
+      , selectedItem
+      , onSelect
+      , disabled
+      , textAccessor
+      , valueAccessor
+      , itemComponent: ItemComponent
+      , optionComponent: Option } = this.props
+
+    let isDisabled = isDisabledItem(item, disabled, valueAccessor);
+    let isFocused = focusedItem === item;
+    let id = isFocused ? activeId : undefined;
+
+    return (
+      <Option
+        key={'item_' + idx}
+        id={id}
+        dataItem={item}
+        focused={isFocused}
+        disabled={isDisabled}
+        selected={selectedItem === item}
+        onClick={isDisabled ? undefined : onSelect.bind(null, item)}
+      >
+        {ItemComponent
+          ? <ItemComponent
+              item={item}
+              value={valueAccessor(item)}
+              text={textAccessor(item)}
+              disabled={isDisabled}
+            />
+          : textAccessor(item)
+        }
+      </Option>
+    )
+  }
+
+
+  move() {
+    let { focusedItem, onMove, data, dataState } = this.props;
+    let list = compat.findDOMNode(this);
+    let idx = renderedIndexOf(focusedItem, list, data, dataState)
+    let selectedItem = list.children[idx]
+
+    if (selectedItem)
+      notify(onMove, [selectedItem, list, focusedItem])
+  }
+}
+
+function renderedIndexOf(item, list, data, dataState) {
+  let { groups, sortedKeys } = dataState
+
+  if (!groups) return data.indexOf(item)
+
+  let runningIdx = -1
+  let idx = -1
+
+  sortedKeys.some(group => {
+    let itemIdx = groups[group].indexOf(item)
+    runningIdx++;
+
+    if (itemIdx !== -1) {
+      idx = runningIdx + itemIdx + 1;
+      return true
+    }
+
+    runningIdx += groups[group].length
+  })
+  return idx;
+}
+
+List.propTypes = propTypes;
+List.defaultProps = defaultProps;
+
+export default List;

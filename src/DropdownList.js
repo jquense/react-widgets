@@ -9,21 +9,21 @@ import uncontrollable from 'uncontrollable';
 import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
 import Select from './Select';
-import DropdownListInput from './DropdownListInput';
 import Popup from './Popup';
-import PlainList from './List';
-import GroupableList from './ListGroupable';
+import List from './List';
+import DropdownListInput from './DropdownListInput';
 import { result }  from './util/_';
 import * as Props from './util/Props';
 import * as Filter from './util/Filter';
 import compat from './util/compat';
 import focusManager from './util/focusManager';
+import listDataManager from './util/listDataManager';
 import * as CustomPropTypes from './util/PropTypes';
 import accessorManager from './util/accessorManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
 import shallowCompare from './util/shallowCompare';
-import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
+import { widgetEditable } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 @withRightToLeft
@@ -58,18 +58,18 @@ class DropdownList extends React.Component {
     dropUp: React.PropTypes.bool,
     duration: React.PropTypes.number,
 
-    placeholder:    React.PropTypes.string,
+    placeholder: React.PropTypes.string,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
     readOnly: CustomPropTypes.disabled,
 
     listProps: React.PropTypes.object,
 
-    messages:       React.PropTypes.shape({
-      open:              CustomPropTypes.message,
-      emptyList:         CustomPropTypes.message,
-      emptyFilter:       CustomPropTypes.message,
-      filterPlaceholder: CustomPropTypes.message
+    messages: React.PropTypes.shape({
+      open: React.PropTypes.string,
+      emptyList: CustomPropTypes.message,
+      emptyFilter: CustomPropTypes.message,
+      filterPlaceholder: React.PropTypes.string,
     })
   };
 
@@ -82,6 +82,7 @@ class DropdownList extends React.Component {
     minLength: 1,
     filter: true,
     caseSensitive: false,
+    listComponent: List,
     messages: msgs()
   };
 
@@ -94,6 +95,7 @@ class DropdownList extends React.Component {
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
 
+    this.list = listDataManager(this)
     this.mounted = mountManager(this)
     this.timeouts = timeoutManager(this)
     this.accessors = accessorManager(this)
@@ -125,7 +127,7 @@ class DropdownList extends React.Component {
       , caseSensitive
     } = props;
 
-    let { accessors } = this;
+    let { accessors, list } = this;
     let initialIdx = accessors.indexOf(data, value);
 
     data = Filter.filter(data, {
@@ -136,10 +138,14 @@ class DropdownList extends React.Component {
       textField: this.accessors.text,
     })
 
+    list.setData(data);
+
+    let selectedItem = data[initialIdx];
+
     return {
       data,
-      selectedItem: data[initialIdx],
-      focusedItem: data[initialIdx] || data[0]
+      selectedItem: list.nextEnabled(selectedItem),
+      focusedItem: list.nextEnabled(selectedItem || data[0]),
     }
   }
 
@@ -165,12 +171,13 @@ class DropdownList extends React.Component {
     )
   }
 
-  renderList(List, messages) {
-    let { open, filter, data, itemComponent, listProps, disabled } = this.props;
+  renderList(messages) {
+    let { open, filter, data } = this.props;
     let { selectedItem, focusedItem } = this.state;
     let { value, text } = this.accessors;
 
-    let items = this.state.data;
+    let List = this.props.listComponent
+    let props = this.list.defaultProps()
 
     return (
       <div>
@@ -178,14 +185,12 @@ class DropdownList extends React.Component {
           this.renderFilter(messages)
         }
         <List
-          {...listProps}
+          {...props}
           ref="list"
           id={this.listId}
           activeId={this.activeId}
-          data={items}
           valueAccessor={value}
           textAccessor={text}
-          disabled={disabled}
           selectedItem={selectedItem}
           focusedItem={open ? focusedItem : null}
           onSelect={this.handleSelect}
@@ -193,7 +198,6 @@ class DropdownList extends React.Component {
           aria-live={open && 'polite'}
           aria-labelledby={this.inputId}
           aria-hidden={!this.props.open}
-          itemComponent={itemComponent}
           messages={{
             emptyList: data.length
               ? messages.emptyFilter
@@ -209,7 +213,6 @@ class DropdownList extends React.Component {
       , tabIndex
       , duration
       , textField
-      , groupBy
       , messages
       , data
       , busy
@@ -217,16 +220,13 @@ class DropdownList extends React.Component {
       , placeholder
       , value
       , open
-      , valueComponent
-      , listComponent: List } = this.props;
-
-    List = List || (groupBy && GroupableList) || PlainList
+      , valueComponent } = this.props;
 
     let { focused } = this.state;
 
-    let disabled = isDisabled(this.props)
-      , readOnly = isReadOnly(this.props)
-      , valueItem = this.accessors.find(data, value) // take value from the raw data
+    let disabled = this.props.disabled === true
+      , readOnly = this.props.readOnly === true
+      , valueItem = this.accessors.findOrSelf(data, value)
 
     let shouldRenderPopup = open || isFirstFocusedRender(this);
 
@@ -290,7 +290,7 @@ class DropdownList extends React.Component {
             onOpen={() => this.focus()}
             onOpening={() => this.refs.list.forceUpdate()}
           >
-            {this.renderList(List, messages)}
+            {this.renderList(messages)}
           </Popup>
         }
       </Widget>
@@ -322,7 +322,7 @@ class DropdownList extends React.Component {
   handleKeyDown = (e) => {
     let key = e.key
       , alt = e.altKey
-      , list = this.refs.list
+      , list = this.list
       , filtering = this.props.filter
       , focusedItem = this.state.focusedItem
       , selectedItem = this.state.selectedItem
@@ -428,7 +428,7 @@ class DropdownList extends React.Component {
     this._searchTerm = word
 
     this.timeouts.set('search', () => {
-      var list = this.refs.list
+      var list = this.list
         , key  = this.props.open ? 'focusedItem' : 'selectedItem'
         , item = list.next(this.state[key], word);
 

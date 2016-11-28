@@ -8,16 +8,15 @@ class MultiselectTag extends React.Component {
     id: React.PropTypes.string,
     onClick: React.PropTypes.func.isRequired,
     focused: React.PropTypes.bool,
-    readOnly: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
     label: React.PropTypes.string,
     value: React.PropTypes.any,
   }
 
   onClick = () => {
-    const { value, disabled, readOnly, onClick } = this.props;
+    const { value, disabled, onClick } = this.props;
 
-    if (disabled || readOnly) {
+    if (disabled) {
       return
     }
 
@@ -41,7 +40,7 @@ class MultiselectTag extends React.Component {
   }
 
   render() {
-    const { id, children, focused, disabled, readOnly } = this.props;
+    const { id, children, focused, disabled } = this.props;
     let tabIndex = disabled ? undefined : '-1';
 
     return (
@@ -52,7 +51,6 @@ class MultiselectTag extends React.Component {
         className={cn(
           'rw-multiselect-tag',
           disabled && 'rw-state-disabled',
-          readOnly && 'rw-state-readonly',
           focused && !disabled && 'rw-state-focus',
         )}
       >

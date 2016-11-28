@@ -6,8 +6,9 @@ import SelectList from '../src/SelectList';
 
 let generateNames = global.generateNames;
 
+let data = generateNames();
 let props = {
-  data: generateNames(),
+  data,
   valueField: 'id',
   textField: 'fullName'
 }
@@ -61,7 +62,9 @@ storiesOf('SelectList', module)
     <Container>
       <SelectList
         {...props}
-        disabled={props.data[2]}
+        multiple
+        defaultValue={[data[3]]}
+        disabled={[data[3], data[5]]}
       />
     </Container>
   )

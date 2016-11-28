@@ -8,6 +8,11 @@
   border: 1px solid transparent;
   cursor: pointer;
   outline: none; // these are never individually focusable
+
+  .rw-state-readonly &,
+  .rw-state-disabled & {
+    cursor: not-allowed;
+  }
 }
 
 .rw-btn-select {

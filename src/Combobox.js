@@ -4,22 +4,21 @@ import createUncontrolledWidget from 'uncontrollable';
 
 import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
+import List from './List';
 import Popup from './Popup';
 import Select  from './Select';
 import ComboboxInput from './ComboboxInput';
 import compat from './util/compat';
 import focusManager from './util/focusManager';
+import listDataManager from './util/listDataManager';
 import * as CustomPropTypes from './util/PropTypes';
-import PlainList from './List';
-import GroupableList from './ListGroupable';
 import accessorManager from './util/accessorManager';
-import validateList from './util/validateListInterface';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
 import { isShallowEqual, result }  from './util/_';
 import * as Props from './util/Props';
 import * as Filter from './util/Filter';
-import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
+import { widgetEditable } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let propTypes = {
@@ -79,6 +78,7 @@ class Combobox extends React.Component {
     suggest: false,
     filter: false,
     delay: 500,
+    listComponent: List,
 
     messages: msgs(),
   };
@@ -90,6 +90,7 @@ class Combobox extends React.Component {
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
 
+    this.list = listDataManager(this)
     this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
@@ -111,20 +112,17 @@ class Combobox extends React.Component {
     return isSuggesting || stateChanged || valueChanged
   }
 
-  componentDidUpdate() {
-    this.refs.list && validateList(this.refs.list)
-  }
-
   componentWillReceiveProps(nextProps) {
     this.setState(this.getStateFromProps(nextProps))
   }
 
   getStateFromProps(props) {
+    let { accessors, list } = this
     let { value, data, filter } = props;
 
-    let index = this.accessors.indexOf(data, value);
+    let index = accessors.indexOf(data, value);
     let dataItem = index === -1 ? value : data[index]
-    let itemText = this.accessors.text(dataItem);
+    let itemText = accessors.text(dataItem);
 
     let searchTerm
     // filter only when the value is not an item in the data list
@@ -137,22 +135,25 @@ class Combobox extends React.Component {
     let focusedIndex = index
     // index may have changed after filtering
     if (index !== -1) {
-      index = this.accessors.indexOf(data, value)
+      index = accessors.indexOf(data, value)
       focusedIndex = index;
     }
     else {
       // value isn't a dataItem so find the close match
       focusedIndex = Filter.indexOf(data, {
         searchTerm,
-        textField: this.accessors.text,
+        textField: accessors.text,
         filter: filter || true
       })
     }
 
+    list.setData(data);
+
     return {
-      data: data,
-      selectedItem: data[index],
-      focusedItem: focusedIndex === -1 ? data[0] : data[focusedIndex]
+      data,
+      selectedItem: list.nextEnabled(data[index]),
+      focusedItem: list.nextEnabled(
+        ~focusedIndex ? data[focusedIndex] : data[0])
     }
   }
 
@@ -190,7 +191,7 @@ class Combobox extends React.Component {
     let self = this
       , key  = e.key
       , alt  = e.altKey
-      , list = this.refs.list
+      , list = this.list
       , focusedItem = this.state.focusedItem
       , selectedItem = this.state.selectedItem
       , isOpen = this.props.open;
@@ -260,14 +261,14 @@ class Combobox extends React.Component {
       , name
       , data
       , value
-      , valueField
       , autoFocus
       , tabIndex
       , placeholder
       , inputProps
+      , disabled, readOnly
       , open } = this.props;
 
-    let valueItem = this.accessors.find(data, value, valueField) // take value from the raw data
+    let valueItem = this.accessors.findOrSelf(data, value)
 
     let completeType = suggest
         ? filter ? 'both' : 'inline'
@@ -283,8 +284,8 @@ class Combobox extends React.Component {
         autoFocus={autoFocus}
         tabIndex={tabIndex}
         suggest={suggest}
-        disabled={isDisabled(this.props)}
-        readOnly={isReadOnly(this.props)}
+        disabled={disabled === true}
+        readOnly={readOnly === true}
         aria-busy={!!busy}
         aria-owns={this.listId}
         aria-autocomplete={completeType}
@@ -299,24 +300,24 @@ class Combobox extends React.Component {
     )
   }
 
-  renderList(List, messages) {
-    let { activeId, inputId,  listId, accessors } = this;
+  renderList(messages) {
+    let { activeId, inputId, listId, accessors } = this;
 
-    let { open, data, disabled, itemComponent, listProps } = this.props;
-    let { data: items, selectedItem, focusedItem } = this.state;
+    let { open, data } = this.props;
+    let { selectedItem, focusedItem } = this.state;
+
+    let List = this.props.listComponent
+    let props = this.list.defaultProps();
 
     return (
       <List ref="list"
-        {...listProps}
+        {...props}
         id={listId}
         activeId={activeId}
-        data={items}
         valueAccessor={accessors.value}
         textAccessor={accessors.text}
-        disabled={disabled}
         selectedItem={selectedItem}
         focusedItem={open ? focusedItem : null}
-        itemComponent={itemComponent}
         aria-hidden={!open}
         aria-labelledby={inputId}
         aria-live={open && 'polite'}
@@ -335,7 +336,6 @@ class Combobox extends React.Component {
     let {
         className
       , duration
-      , groupBy
       , messages
       , busy
       , dropUp
@@ -344,10 +344,8 @@ class Combobox extends React.Component {
 
     let { focused } = this.state;
 
-    let disabled = isDisabled(this.props)
-      , readOnly = isReadOnly(this.props)
-
-    List = List || (groupBy && GroupableList) || PlainList
+    let disabled = this.props.disabled === true
+      , readOnly = this.props.readonly === true
 
     let elementProps = Props.pickElementProps(this);
     let shouldRenderPopup = open || isFirstFocusedRender(this);
