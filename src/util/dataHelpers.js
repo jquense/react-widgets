@@ -41,7 +41,7 @@ export function dataIndexOf(data, item, valueField){
  * I don't know that the shallow equal makes sense here but am too afraid to
  * remove it.
  */
-export function valueMatcher(a, b, valueField){
+export function valueMatcher(a, b, valueField) {
   return isShallowEqual(
     dataValue(a, valueField), dataValue(b, valueField))
 }

@@ -1,11 +1,11 @@
 import { valueMatcher } from './dataHelpers';
 
 export function isDisabled({ disabled }) {
-  return disabled === true || disabled === 'disabled'
+  return disabled === true
 }
 
 export function isReadOnly({ readOnly }){
-  return readOnly === true || readOnly === 'readOnly'
+  return readOnly === true
 }
 
 export function isDisabledItem(item, props){
@@ -16,7 +16,7 @@ export function isReadOnlyItem(item, props){
   return isReadOnly(props) || contains(item, props.readOnly, props.valueField)
 }
 
-export function contains(item, values, valueField){
+export function contains(item, values, valueField) {
   return Array.isArray(values)
       ? values.some(value => valueMatcher(item, value, valueField))
       : valueMatcher(item, values, valueField)

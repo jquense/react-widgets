@@ -19,10 +19,10 @@ import * as Filter from './util/Filter';
 import compat          from './util/compat';
 import focusManager from './util/focusManager';
 import CustomPropTypes from './util/propTypes';
+import accessorManager from './util/accessorManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
 import shallowCompare from './util/shallowCompare';
-import { dataItem, dataIndexOf, valueMatcher } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
@@ -94,6 +94,7 @@ class DropdownList extends React.Component {
 
     this.mounted = mountManager(this)
     this.timeouts = timeoutManager(this)
+    this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
       didHandle: this.handleFocusChanged,
@@ -116,14 +117,16 @@ class DropdownList extends React.Component {
     let {
         value
       , data
-      , searchTerm, valueField
+      , disabled
+      , searchTerm
       , filter
       , textField
       , minLength
       , caseSensitive
     } = props;
 
-    let initialIdx = dataIndexOf(data, value, valueField);
+    let { accessors } = this;
+    let initialIdx = accessors.indexOf(data, value);
 
     data = Filter.filter(data, {
       filter,
@@ -167,7 +170,7 @@ class DropdownList extends React.Component {
     let { selectedItem, focusedItem } = this.state;
 
     let listProps = Props.pick(this.props, List);
-    let items = this._data();
+    let items = this.state.data;
 
     return (
       <div>
@@ -201,7 +204,6 @@ class DropdownList extends React.Component {
         className
       , tabIndex
       , duration
-      , valueField
       , textField
       , groupBy
       , messages
@@ -220,7 +222,7 @@ class DropdownList extends React.Component {
 
     let disabled = isDisabled(this.props)
       , readOnly = isReadOnly(this.props)
-      , valueItem = dataItem(data, value, valueField) // take value from the raw data
+      , valueItem = this.accessors.find(data, value) // take value from the raw data
 
     let shouldRenderPopup = open || isFirstFocusedRender(this);
 
@@ -396,7 +398,7 @@ class DropdownList extends React.Component {
   };
 
   change(data) {
-    if (!valueMatcher(data, this.props.value, this.props.valueField)) {
+    if (!this.accessors.matches(data, this.props.value)) {
       notify(this.props.onChange, data)
       notify(this.props.onSearch, '')
       this.close()
@@ -411,10 +413,6 @@ class DropdownList extends React.Component {
 
     if (activeElement() !== inst)
       inst.focus()
-  }
-
-  _data() {
-    return this.state.data
   }
 
   search(character, cb) {
