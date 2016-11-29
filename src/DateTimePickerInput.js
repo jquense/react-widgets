@@ -3,7 +3,7 @@ import React from 'react';
 import Input from './Input';
 import compat from './util/compat';
 import { date as dateLocalizer } from './util/localizers';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
 
 class DateTimePickerInput extends React.Component {
@@ -20,7 +20,7 @@ class DateTimePickerInput extends React.Component {
     culture: React.PropTypes.string,
 
     disabled: CustomPropTypes.disabled,
-    readOnly: CustomPropTypes.readOnly,
+    readOnly: CustomPropTypes.disabled,
   };
 
   constructor(...args) {

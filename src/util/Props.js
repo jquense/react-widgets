@@ -1,4 +1,14 @@
 
+const whitelist = [
+  'style',
+  'className',
+  'role',
+  'id',
+  'autocomplete',
+  'size',
+];
+
+const whitelistRegex = [/^aria-/, /^data-/, /^on[A-Z]\w+/]
 
 export function pick(props, componentClass) {
   let keys = Object.keys(componentClass.propTypes);
@@ -8,6 +18,20 @@ export function pick(props, componentClass) {
     result[key] = props[key];
   })
   return result
+}
+
+export function pickElementProps(component) {
+  const props = omitOwn(component);
+  const result = {};
+  Object.keys(props).forEach(key => {
+    if (
+      whitelist.indexOf(key) !== -1 ||
+      whitelistRegex.some(r => !!key.match(r))
+    )
+      result[key] = props[key];
+  })
+
+  return result;
 }
 
 export function omitOwn(component, ...others) {

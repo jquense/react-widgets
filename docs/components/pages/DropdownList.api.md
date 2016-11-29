@@ -1,3 +1,16 @@
+---
+name: DropdownList
+shortcuts: >
+  - <kbd>alt + down arrow</kbd> open dropdown
+  - <kbd>alt + up arrow</kbd> close dropdown
+  - <kbd>down arrow</kbd> move focus to next item
+  - <kbd>up arrow</kbd> move focus to previous item
+  - <kbd>home</kbd> move focus to first item
+  - <kbd>end</kbd> move focus to last item
+  - <kbd>enter</kbd> select focused item
+  - <kbd>any key</kbd> search list for item starting with key
+---
+
 ### value?{ type: 'mixed', controllable: "onChange" }
 
 ${language.valuePicker}
@@ -143,14 +156,3 @@ Text to display when the `data` prop array is empty.
 ### messages.emptyFilter?{ type: 'string | function(props) -> node', default: '"The filter returned no results"' }
 
 Text to display when the the current filter does not return any results.
-
-## Keyboard Navigation
-
-- <kbd>alt + down arrow</kbd> open dropdown
-- <kbd>alt + up arrow</kbd> close dropdown
-- <kbd>down arrow</kbd> move focus to next item
-- <kbd>up arrow</kbd> move focus to previous item
-- <kbd>home</kbd> move focus to first item
-- <kbd>end</kbd> move focus to last item
-- <kbd>enter</kbd> select focused item
-- <kbd>any key</kbd> search list for item starting with key

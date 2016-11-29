@@ -1,6 +1,6 @@
 import { presets } from '../util/Filter';
 import { dataText } from '../util/dataHelpers';
-import CustomPropTypes  from '../util/propTypes';
+import * as CustomPropTypes  from '../util/PropTypes';
 import { isDisabledItem, isReadOnlyItem }  from '../util/interaction';
 
 const EMPTY_VALUE = {};
@@ -13,7 +13,7 @@ export default {
     textField: CustomPropTypes.accessor,
     valueField: CustomPropTypes.accessor,
     disabled: CustomPropTypes.disabled.acceptsArray,
-    readOnly: CustomPropTypes.readOnly.acceptsArray
+    readOnly: CustomPropTypes.disabled.acceptsArray
   },
 
   first() {

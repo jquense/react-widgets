@@ -14,11 +14,11 @@ import Century from './Century';
 import SlideTransition from './SlideTransition';
 import focusManager from './util/focusManager';
 import { date as dateLocalizer } from './util/localizers';
-import CustomPropTypes from './util/propTypes';
-import dates from './util/dates';
+import * as CustomPropTypes from './util/PropTypes';
 import * as constants from './util/constants';
-import withRightToLeft from './util/withRightToLeft';
 import * as Props from './util/Props';
+import dates from './util/dates';
+import withRightToLeft from './util/withRightToLeft';
 import { instanceId, notify } from './util/widgetHelpers';
 import { widgetEditable } from './util/interaction';
 
@@ -63,7 +63,7 @@ let propTypes = {
 
   activeId: React.PropTypes.string,
   disabled: CustomPropTypes.disabled,
-  readOnly: CustomPropTypes.readOnly,
+  readOnly: CustomPropTypes.disabled,
 
   onChange: React.PropTypes.func,
   value: React.PropTypes.instanceOf(Date),
@@ -74,7 +74,6 @@ let propTypes = {
   currentDate: React.PropTypes.instanceOf(Date),
   onCurrentDateChange: React.PropTypes.func,
 
-  // view: React.PropTypes.oneOf(VIEW_OPTIONS),
   view(props, ...args) {
     return React.PropTypes.oneOf(props.views || VIEW_OPTIONS)(props, ...args)
   },
@@ -113,14 +112,14 @@ class Calendar extends React.Component {
 
   static defaultProps = {
 
-    value:        null,
-    min:          new Date(1900, 0, 1),
-    max:          new Date(2099, 11, 31),
+    value: null,
+    min: new Date(1900, 0, 1),
+    max: new Date(2099, 11, 31),
 
     views: VIEW_OPTIONS,
 
-    tabIndex:     '0',
-    footer:        true,
+    tabIndex: '0',
+    footer: true,
 
     messages: msgs({})
   };
@@ -207,10 +206,6 @@ class Calendar extends React.Component {
 
     let firstView = views[0]
 
-    // let slideDir = firstView !== currentView || dates.gt(date, currentDate)
-    //       ? 'left' // move down to the view
-    //       : 'right';
-
     notify(this.props.onChange, date)
 
     if (dates.inRange(date, min, max, firstView)) {
@@ -219,10 +214,6 @@ class Calendar extends React.Component {
       this.setCurrentDate(date);
 
       notify(onViewChange, [firstView])
-      // this.setState({
-      //   slideDirection: slideDir,
-      //   view: firstView
-      // })
     }
   };
 
@@ -300,7 +291,7 @@ class Calendar extends React.Component {
 
     let key = view + '_' + dates[view](currentDate);
 
-    let elementProps = Props.omitOwn(this)
+    let elementProps = Props.pickElementProps(this)
       , viewProps  = Props.pick(this.props, View)
 
     let isDisabled = disabled || readOnly
@@ -390,11 +381,6 @@ class Calendar extends React.Component {
       this.focus(true)
       this.setCurrentDate(date)
       notify(onViewChange, [view])
-
-      // this.setState({
-      //   slideDirection: slideDir,
-      //   view: view
-      // })
     }
   }
 

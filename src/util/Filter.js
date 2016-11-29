@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomPropTypes from './propTypes';
+import * as CustomPropTypes from './PropTypes';
 import { dataText } from './dataHelpers';
 import { find } from './_';
 

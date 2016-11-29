@@ -1,6 +1,17 @@
-Creates a list of radio buttons or checkboxes bound to a data set.
+---
+name: SelectList
+heading: >
+  Creates a list of radio buttons or checkboxes bound to a data set.
 
-<------------------------>
+shortcuts: >
+  - <kbd>down arrow</kbd> move focus to or select next item
+  - <kbd>up arrow</kbd> move focus to or select previous item
+  - <kbd>home</kbd> move focus to or select first item
+  - <kbd>end</kbd> move focus to or select last item
+  - <kbd>spacebar</kbd> <kbd>enter</kbd> toggle focused item
+  - <kbd>ctrl + a</kbd> toggle select all/select none
+  - <kbd>any key</kbd> search list for item starting with key
+---
 
 ### value?{ type: 'mixed|array<mixed>', controllable: "onChange"  }
 
@@ -88,13 +99,3 @@ ${language.messages}
 ### messages.emptyList?{ type: 'string | function(props) -> node', default: '"There are no items in this list"' }
 
 Text to display when the `data` prop array is empty
-
-## Keyboard Navigation
-
-- <kbd>down arrow</kbd> move focus to or select next item
-- <kbd>up arrow</kbd> move focus to or select previous item
-- <kbd>home</kbd> move focus to or select first item
-- <kbd>end</kbd> move focus to or select last item
-- <kbd>spacebar</kbd> <kbd>enter</kbd> toggle focused item
-- <kbd>ctrl + a</kbd> toggle select all/select none
-- <kbd>any key</kbd> search list for item starting with key

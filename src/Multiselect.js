@@ -9,17 +9,17 @@ import Select from './Select';
 import Popup from './Popup';
 import SelectInput from './MultiselectInput';
 import TagList from './MultiselectTagList';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
 
 import * as Filter from './util/Filter';
 import * as Props from './util/Props';
+import accessorManager from './util/accessorManager';
 import focusManager from './util/focusManager';
 import validateList from './util/validateListInterface';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
-import { dataItem, dataText, valueMatcher } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
@@ -32,50 +32,52 @@ var propTypes = {
   ...Popup.propTypes,
   ...Filter.propTypes,
 
-  data:            React.PropTypes.array,
+  data: React.PropTypes.array,
   //-- controlled props --
-  value:           React.PropTypes.array,
-  onChange:        React.PropTypes.func,
+  value: React.PropTypes.array,
+  onChange: React.PropTypes.func,
 
-  searchTerm:      React.PropTypes.string,
-  onSearch:        React.PropTypes.func,
+  searchTerm: React.PropTypes.string,
+  onSearch: React.PropTypes.func,
 
-  open:            React.PropTypes.bool,
-  onToggle:        React.PropTypes.func,
+  open: React.PropTypes.bool,
+  onToggle: React.PropTypes.func,
   //-------------------------------------------
 
-  valueField:      React.PropTypes.string,
-  textField:       CustomPropTypes.accessor,
+  valueField: React.PropTypes.string,
+  textField: CustomPropTypes.accessor,
 
-  tagComponent:    CustomPropTypes.elementType,
-  itemComponent:   CustomPropTypes.elementType,
-  listComponent:   CustomPropTypes.elementType,
+  tagComponent: CustomPropTypes.elementType,
+  itemComponent: CustomPropTypes.elementType,
+  listComponent: CustomPropTypes.elementType,
 
-  groupComponent:  CustomPropTypes.elementType,
-  groupBy:         CustomPropTypes.accessor,
+  groupComponent: CustomPropTypes.elementType,
+  groupBy: CustomPropTypes.accessor,
 
   createComponent: CustomPropTypes.elementType,
 
-  onSelect:        React.PropTypes.func,
-  onCreate:        React.PropTypes.oneOfType([
-                     React.PropTypes.oneOf([false]),
-                     React.PropTypes.func
-                   ]),
+  onSelect: React.PropTypes.func,
+  onCreate: React.PropTypes.oneOfType([
+    React.PropTypes.oneOf([false]),
+    React.PropTypes.func
+  ]),
 
-  busy:            React.PropTypes.bool,
-  dropUp:          React.PropTypes.bool,
+  busy: React.PropTypes.bool,
+  dropUp: React.PropTypes.bool,
 
-  placeholder:     React.PropTypes.string,
+  placeholder: React.PropTypes.string,
 
-  autoFocus:      React.PropTypes.bool,
-  disabled:       CustomPropTypes.disabled.acceptsArray,
-  readOnly:       CustomPropTypes.readOnly,
+  listProps: React.PropTypes.object,
 
-  messages:        React.PropTypes.shape({
-    open:          CustomPropTypes.message,
-    emptyList:     CustomPropTypes.message,
-    emptyFilter:   CustomPropTypes.message,
-    createNew:     CustomPropTypes.message
+  autoFocus:    React.PropTypes.bool,
+  disabled: CustomPropTypes.disabled.acceptsArray,
+  readOnly:    CustomPropTypes.disabled,
+
+  messages: React.PropTypes.shape({
+    open: CustomPropTypes.message,
+    emptyList: CustomPropTypes.message,
+    emptyFilter: CustomPropTypes.message,
+    createNew: CustomPropTypes.message
   })
 };
 
@@ -113,6 +115,7 @@ class Multiselect extends React.Component {
     this.activeTagId = instanceId(this, '_taglist_active_tag')
     this.activeOptionId = instanceId(this, '_listbox_active_option')
 
+    this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
       willHandle: this.handleFocusWillChange,
@@ -135,14 +138,14 @@ class Multiselect extends React.Component {
 
   getStateFromProps(props) {
     let {
-      data, valueField, textField, searchTerm, minLength, caseSensitive, filter
+      data, searchTerm, minLength, caseSensitive, filter
     } = props
 
     let values = splat(props.value);
-    let dataItems = values.map(item => dataItem(data, item, valueField));
+    let dataItems = values.map(item => this.accessors.find(data, item));
 
     data = data.filter(i =>
-      !values.some(v => valueMatcher(i, v, valueField))
+      !values.some(v => this.accessors.matches(i, v))
     );
 
     this._lengthWithoutValues = data.length;
@@ -152,7 +155,7 @@ class Multiselect extends React.Component {
       searchTerm,
       minLength,
       caseSensitive,
-      textField,
+      textField: this.accessors.text,
 
     })
 
@@ -372,11 +375,10 @@ class Multiselect extends React.Component {
   }
 
   renderList(List, messages) {
-    let { inputId, activeOptionId, listId } = this;
-    let { open } = this.props;
+    let { inputId, activeOptionId, listId, accessors } = this;
+    let { disabled, open, itemComponent, listProps } = this.props;
     let { focusedItem, data: items } = this.state;
 
-    let listProps = Props.pick(this.props, List);
 
     return (
       <List ref="list" key={0}
@@ -384,7 +386,11 @@ class Multiselect extends React.Component {
         id={listId}
         activeId={activeOptionId}
         data={items}
-        focused={focusedItem}
+        itemComponent={itemComponent}
+        valueAccessor={accessors.value}
+        textAccessor={accessors.text}
+        disabled={disabled}
+        focusedItem={focusedItem}
         onSelect={this.handleSelect}
         onMove={this.handleScroll}
         aria-live='polite'
@@ -400,10 +406,10 @@ class Multiselect extends React.Component {
   }
 
   renderNotificationArea(messages) {
-    let { textField } = this.props;
     let { focused, dataItems } = this.state;
 
-    let itemText = dataItems.map(item => dataText(item, textField)).join(', ')
+    let itemText = dataItems.map(
+      item => this.accessors.text(item)).join(', ')
 
     return (
       <span
@@ -462,7 +468,7 @@ class Multiselect extends React.Component {
 
     List = List || (groupBy && GroupableList) || PlainList
 
-    let elementProps = Props.omitOwn(this, List);
+    let elementProps = Props.pickElementProps(this);
 
     let shouldRenderTags = !!dataItems.length
       , shouldRenderPopup = isFirstFocusedRender(this) || open
@@ -570,7 +576,8 @@ class Multiselect extends React.Component {
       return false
 
     let lower = text => caseSensitive ? text : text.toLowerCase();
-    let eq =  v => lower(dataText(v, textField)) === lower(searchTerm);
+    let eq =  v => lower(
+      this.accessors.text(v, textField)) === lower(searchTerm);
 
     // if there is an exact match on textFields: "john" => { name: "john" }, don't show
     return !data.some(eq) && !dataItems.some(eq)

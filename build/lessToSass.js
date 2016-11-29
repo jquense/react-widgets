@@ -48,9 +48,11 @@ function convertMixins(line) {
 }
 
 function convertExtend(line) {
-  var extendRegex = /^(\s*?)&:extend\((.*)\s.*\);?$/;
+  var extendRegex = /^(\s*?)&:extend\((.*)\);?$/;
 
-  return line.replace(extendRegex, '$1@extend $2;');
+  return line.replace(extendRegex, (_, g1, g2) => {
+    return `${g1}@extend ${g2.replace(/\s+all$/, '')};`
+  });
 }
 
 function convertTildaStrings(line) {

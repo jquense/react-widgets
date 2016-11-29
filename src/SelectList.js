@@ -6,28 +6,28 @@ import createUncontrolledWidget from 'uncontrollable';
 
 import { find, splat }  from './util/_';
 import compat from './util/compat';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
 import Widget from './Widget';
 import createSelectListItem from './SelectListItem';
 import * as Props from './util/Props';
+import accessorManager from './util/accessorManager';
 import focusManager from './util/focusManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
 import validateList from './util/validateListInterface';
-import { dataItem, dataIndexOf } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly, contains } from './util/interaction';
 import { instanceId, notify } from './util/widgetHelpers';
 
 
 
 function getFirstValue(props) {
-  var { data, value, valueField } = props
+  let { data, value } = props
   value = splat(value);
 
   if (value.length)
-    return find(data, d => dataIndexOf(value, d, valueField) !== -1)
+    return find(data, d => this.accessors.indexOf(value, d) !== -1)
         || null
 
   return null
@@ -60,8 +60,8 @@ class SelectList extends React.Component {
     delay: React.PropTypes.number,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
-    readOnly: CustomPropTypes.readOnly,
-
+    readOnly: CustomPropTypes.disabled,
+    listProps: React.PropTypes.object,
     messages: React.PropTypes.shape({
       emptyList: CustomPropTypes.message,
     })
@@ -84,6 +84,7 @@ class SelectList extends React.Component {
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
 
+    this.accessors = accessorManager(this)
     this.timeouts = timeoutManager(this);
     this.handleScroll = scrollManager(this, false);
     this.focusManager = focusManager(this, {
@@ -95,11 +96,11 @@ class SelectList extends React.Component {
   }
 
   getDefaultState(props) {
-    var { data, value, valueField, multiple } = props
+    let { data, value, multiple } = props
 
     return {
-      dataItems: multiple &&
-        splat(value).map(item => dataItem(data, item, valueField))
+      dataItems: multiple && splat(value)
+        .map(item => this.accessors.find(data, item))
     }
   }
 
@@ -133,14 +134,18 @@ class SelectList extends React.Component {
       , tabIndex
       , busy
       , groupBy
+      , disabled
+      , listProps
+      , itemComponent
       , listComponent: List } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
 
-    let elementProps = Props.omitOwn(this, List);
-    let listProps    = Props.pick(this.props, List);
+    let elementProps = Props.pickElementProps(this);
 
     let { focusedItem, focused } = this.state
+    let { value, text } = this.accessors;
+
     let ListItem = this.ListItem
     let items = this._data()
 
@@ -179,9 +184,12 @@ class SelectList extends React.Component {
           id={this.listId}
           activeId={this.activeId}
           data={items}
-          focused={focusedItem}
+          valueAccessor={value}
+          textAccessor={text}
+          disabled={disabled}
+          focusedItem={focusedItem}
           optionComponent={ListItem}
-          itemComponent={this.props.itemComponent}
+          itemComponent={itemComponent}
           onMove={this.handleScroll}
         />
       </Widget>
@@ -291,7 +299,7 @@ class SelectList extends React.Component {
 
     if (data.length === values.length) {
       data = disabled.filter(item => contains(item, values, valueField))
-      data = data.map(item => dataItem(this._data(), item, valueField))
+      data = data.map(item => this.accessors.find(this._data(), item))
     }
 
     notify(this.props.onChange, [data])

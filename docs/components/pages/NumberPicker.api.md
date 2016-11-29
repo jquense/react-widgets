@@ -1,8 +1,15 @@
+---
+name: NumberPicker
+heading: >
+  Spinner for selecting numbers. The {widgetName} is a _localized_ widget and so __requires__ a localizer to
+  be specified. You can read more about localizers here: [localization](i18n).
 
-Spinner for selecting numbers. The NumberPicker is a _localized_ widget and so __requires__ a localizer to
-be specified.  You can read more about localizers here: [localization](i18n).
-
-<--------------->
+shortcuts: >
+  - <kbd>down arrow</kbd> decrement value
+  - <kbd>up arrow</kbd> increment value
+  - <kbd>home</kbd> set value to minimum value if finite
+  - <kbd>end</kbd> set value to maximum value if finite
+---
 
 ### value?{ type: '?number', controllable: "onChange" }
 
@@ -62,11 +69,3 @@ Number picker spinner up button text for screen readers
 
 ### messages.decrement?{ type: 'string', default: '"decrement value"' }
 Number picker spinner down button text for screen readers
-
-## Keyboard Navigation
-
-- <kbd>down arrow</kbd> decrement value
-- <kbd>up arrow</kbd> increment value
-
-- <kbd>home</kbd> set value to minimum value if finite
-- <kbd>end</kbd> set value to maximum value if finite

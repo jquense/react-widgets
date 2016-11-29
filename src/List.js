@@ -1,11 +1,10 @@
 import React   from 'react';
 import ListOption from './ListOption';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import compat from './util/compat';
 import cn from 'classnames';
 import { result }  from './util/_';
 import * as Props from './util/Props';
-import { dataText, dataValue } from './util/dataHelpers';
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabledItem }  from './util/interaction';
 
@@ -29,10 +28,10 @@ export default React.createClass({
     itemComponent: CustomPropTypes.elementType,
 
     activeId: React.PropTypes.string,
-    selected: React.PropTypes.any,
-    focused: React.PropTypes.any,
-    valueField: CustomPropTypes.accessor,
-    textField: CustomPropTypes.accessor,
+    selectedItem: React.PropTypes.any,
+    focusedItem: React.PropTypes.any,
+    valueAccessor: React.PropTypes.func.isRequired,
+    textAccessor: React.PropTypes.func.isRequired,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
 
@@ -67,10 +66,10 @@ export default React.createClass({
       , role
       , data
       , activeId
-      , textField
-      , valueField
-      , focused
-      , selected
+      , textAccessor
+      , valueAccessor
+      , focusedItem
+      , selectedItem
       , messages
       , onSelect
       , itemComponent: ItemComponent
@@ -79,7 +78,7 @@ export default React.createClass({
     let id = instanceId(this)
       , items;
 
-    let elementProps = Props.omitOwn(this);
+    let elementProps = Props.pickElementProps(this);
 
     items = !data.length
       ? (
@@ -88,7 +87,7 @@ export default React.createClass({
         </li>
       ) : data.map((item, idx) => {
           let isDisabled = isDisabledItem(item, this.props);
-          let isFocused = focused === item;
+          let isFocused = focusedItem === item;
           let id = isFocused ? activeId : undefined;
 
           return (
@@ -98,17 +97,17 @@ export default React.createClass({
               dataItem={item}
               disabled={isDisabled}
               focused={isFocused}
-              selected={selected === item}
+              selected={selectedItem === item}
               onClick={isDisabled ? undefined : onSelect.bind(null, item)}
             >
               {ItemComponent
                 ? <ItemComponent
                     item={item}
-                    value={dataValue(item, valueField)}
-                    text={dataText(item, textField)}
+                    value={valueAccessor(item)}
+                    text={textAccessor(item)}
                     disabled={isDisabled}
                   />
-                : dataText(item, textField)
+                : textAccessor(item)
               }
             </Option>
           )
@@ -133,12 +132,12 @@ export default React.createClass({
 
   move() {
     var list = compat.findDOMNode(this)
-      , idx  = this._data().indexOf(this.props.focused)
+      , idx  = this._data().indexOf(this.props.focusedItem)
       , selected = list.children[idx];
 
     if( !selected ) return
 
-    notify(this.props.onMove, [ selected, list, this.props.focused ])
+    notify(this.props.onMove, [selected, list, this.props.focusedItem])
   }
 
 })

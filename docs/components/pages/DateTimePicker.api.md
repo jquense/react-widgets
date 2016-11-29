@@ -1,10 +1,19 @@
-
-<div className='alert alert-warning'>
- <i className='fa fa-exclamation-triangle'/>
- You must configure a <a href='#/i18n'>localizer</a> to use this component!
-</div>
-
-<--------------->
+---
+name: DateTimePicker
+localized: true
+heading: >
+  Select an item from the list, or input a custom value. The {widgetName} can also make suggestions as you type.
+shortcuts: >
+  - __All Calendar keyboard navigation work here as well__
+  - <kbd>alt + down arrow</kbd> open calendar or times
+  - <kbd>alt + up arrow</kbd> close calendar or times
+  - <kbd>down arrow</kbd> move focus to next time
+  - <kbd>up arrow</kbd> move focus to previous time
+  - <kbd>home</kbd> move focus to first time
+  - <kbd>end</kbd> move focus to last time
+  - <kbd>enter</kbd> select focused item
+  - <kbd>any key</kbd> search list for time starting with key
+---
 
 ### value?{ type: '?Date', controllable: "onChange" }
 
@@ -123,15 +132,3 @@ title and screen reader text for the left arrow button.
 ### messages.timeButton?{ type: 'string', default: '"Select Time"' }
 
 title and screen reader text for the right arrow button.
-
-## Keyboard Navigation
-
-- __All Calendar keyboard navigation work here as well__
-- <kbd>alt + down arrow</kbd> open calendar or times
-- <kbd>alt + up arrow</kbd> close calendar or times
-- <kbd>down arrow</kbd> move focus to next time
-- <kbd>up arrow</kbd> move focus to previous time
-- <kbd>home</kbd> move focus to first time
-- <kbd>end</kbd> move focus to last time
-- <kbd>enter</kbd> select focused item
-- <kbd>any key</kbd> search list for time starting with key

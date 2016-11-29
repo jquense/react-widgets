@@ -1,6 +1,6 @@
 import React   from 'react';
 import ListOption from './ListOption';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import compat from './util/compat';
 import cn from 'classnames';
 import { result }  from './util/_';

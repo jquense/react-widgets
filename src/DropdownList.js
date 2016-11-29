@@ -10,15 +10,15 @@ import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
 import Select from './Select';
 import DropdownListInput from './DropdownListInput';
-import Popup           from './Popup';
-import PlainList       from './List';
-import GroupableList   from './ListGroupable';
+import Popup from './Popup';
+import PlainList from './List';
+import GroupableList from './ListGroupable';
 import { result }  from './util/_';
 import * as Props from './util/Props';
 import * as Filter from './util/Filter';
-import compat          from './util/compat';
+import compat from './util/compat';
 import focusManager from './util/focusManager';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import accessorManager from './util/accessorManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
@@ -32,36 +32,38 @@ class DropdownList extends React.Component {
     ...Filter.propTypes,
 
     //-- controlled props -----------
-    value:          React.PropTypes.any,
-    onChange:       React.PropTypes.func,
-    open:           React.PropTypes.bool,
-    onToggle:       React.PropTypes.func,
+    value: React.PropTypes.any,
+    onChange: React.PropTypes.func,
+    open: React.PropTypes.bool,
+    onToggle: React.PropTypes.func,
     //------------------------------------
 
-    data:           React.PropTypes.array,
-    valueField:     React.PropTypes.string,
-    textField:      CustomPropTypes.accessor,
+    data: React.PropTypes.array,
+    valueField: React.PropTypes.string,
+    textField: CustomPropTypes.accessor,
 
     valueComponent: CustomPropTypes.elementType,
-    itemComponent:  CustomPropTypes.elementType,
-    listComponent:  CustomPropTypes.elementType,
+    itemComponent: CustomPropTypes.elementType,
+    listComponent: CustomPropTypes.elementType,
 
     groupComponent: CustomPropTypes.elementType,
-    groupBy:        CustomPropTypes.accessor,
+    groupBy: CustomPropTypes.accessor,
 
-    onSelect:       React.PropTypes.func,
-    searchTerm:     React.PropTypes.string,
-    onSearch:       React.PropTypes.func,
-    busy:           React.PropTypes.bool,
+    onSelect: React.PropTypes.func,
+    searchTerm: React.PropTypes.string,
+    onSearch: React.PropTypes.func,
+    busy: React.PropTypes.bool,
 
-    delay:          React.PropTypes.number,
-    dropUp:         React.PropTypes.bool,
-    duration:       React.PropTypes.number,
+    delay: React.PropTypes.number,
+    dropUp: React.PropTypes.bool,
+    duration: React.PropTypes.number,
 
     placeholder:    React.PropTypes.string,
 
-    disabled:       CustomPropTypes.disabled.acceptsArray,
-    readOnly:       CustomPropTypes.readOnly,
+    disabled: CustomPropTypes.disabled.acceptsArray,
+    readOnly: CustomPropTypes.disabled,
+
+    listProps: React.PropTypes.object,
 
     messages:       React.PropTypes.shape({
       open:              CustomPropTypes.message,
@@ -117,10 +119,8 @@ class DropdownList extends React.Component {
     let {
         value
       , data
-      , disabled
       , searchTerm
       , filter
-      , textField
       , minLength
       , caseSensitive
     } = props;
@@ -133,7 +133,7 @@ class DropdownList extends React.Component {
       searchTerm,
       minLength,
       caseSensitive,
-      textField
+      textField: this.accessors.text,
     })
 
     return {
@@ -166,10 +166,10 @@ class DropdownList extends React.Component {
   }
 
   renderList(List, messages) {
-    let { open, filter, data } = this.props;
+    let { open, filter, data, itemComponent, listProps, disabled } = this.props;
     let { selectedItem, focusedItem } = this.state;
+    let { value, text } = this.accessors;
 
-    let listProps = Props.pick(this.props, List);
     let items = this.state.data;
 
     return (
@@ -183,13 +183,17 @@ class DropdownList extends React.Component {
           id={this.listId}
           activeId={this.activeId}
           data={items}
+          valueAccessor={value}
+          textAccessor={text}
+          disabled={disabled}
+          selectedItem={selectedItem}
+          focusedItem={open ? focusedItem : null}
+          onSelect={this.handleSelect}
+          onMove={this.handleScroll}
           aria-live={open && 'polite'}
           aria-labelledby={this.inputId}
           aria-hidden={!this.props.open}
-          selected={selectedItem}
-          focused ={open ? focusedItem : null}
-          onSelect={this.handleSelect}
-          onMove={this.handleScroll}
+          itemComponent={itemComponent}
           messages={{
             emptyList: data.length
               ? messages.emptyFilter
@@ -226,7 +230,7 @@ class DropdownList extends React.Component {
 
     let shouldRenderPopup = open || isFirstFocusedRender(this);
 
-    let elementProps = Object.assign(Props.omitOwn(this, List), {
+    let elementProps = Object.assign(Props.pickElementProps(this), {
       name: undefined,
       role: 'combobox',
       id: this.inputId,

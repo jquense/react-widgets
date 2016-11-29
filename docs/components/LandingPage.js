@@ -21,7 +21,7 @@ function LandingPage({ children }) {
             <i className='fa fa-globe'/> localization
           </Link>
           {' | '}
-          <a target='_blank' href="https://github.com/intljusticemission/react-big-calendar">
+          <a target='_blank' href="https://github.com/jquense/react-widgets">
             <i className='fa fa-github'/> github
           </a>
         </div>

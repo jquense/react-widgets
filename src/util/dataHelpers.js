@@ -1,25 +1,27 @@
-import { has, isShallowEqual } from './_';
+import { isShallowEqual } from './_';
 
-function accessor(data, field){
+function accessor(data, field) {
   var value = data;
 
   if (typeof field === 'function')
     value = field(data)
   else if (data == null)
     value = data
-  else if (typeof field === 'string' && typeof data === 'object' && field in data)
+  else if (
+    typeof field === 'string' &&
+    typeof data === 'object' &&
+    field in data
+  )
     value = data[field]
 
   return value
 }
 
-export function dataValue(item, valueField){
-  return valueField && item && has(item, valueField)
-    ? item[valueField]
-    : item
+export function dataValue(item, valueField) {
+  return accessor(item, valueField);
 }
 
-export function dataText(item, textField){
+export function dataText(item, textField) {
   var value = accessor(item, textField);
   return value == null ? '' : (value + '')
 }

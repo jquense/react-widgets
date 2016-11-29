@@ -21,7 +21,7 @@ import DateTimePickerInput from './DateTimePickerInput';
 import Select  from './Select';
 import TimeList from './TimeList';
 import focusManager from './util/focusManager';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
 import { widgetEditable, isReadOnly, isDisabled } from './util/interaction';
@@ -32,66 +32,69 @@ let Calendar = BaseCalendar.ControlledComponent;
 let viewEnum  = Object.keys(views).map( k => views[k] );
 
 let propTypes = {
+  ...Calendar.propTypes,
+  ...Popup.propTypes,
+  //-- controlled props -----------
+  value:          React.PropTypes.instanceOf(Date),
+  onChange:       React.PropTypes.func,
+  open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
+  onToggle:       React.PropTypes.func,
+  currentDate:    React.PropTypes.instanceOf(Date),
+  onCurrentDateChange: React.PropTypes.func,
+  //------------------------------------
 
-    //-- controlled props -----------
-    value:          React.PropTypes.instanceOf(Date),
-    onChange:       React.PropTypes.func,
-    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
-    onToggle:       React.PropTypes.func,
-    currentDate:    React.PropTypes.instanceOf(Date),
-    onCurrentDateChange: React.PropTypes.func,
-    //------------------------------------
+  onSelect:       React.PropTypes.func,
 
-    onSelect:       React.PropTypes.func,
+  min: React.PropTypes.instanceOf(Date),
+  max: React.PropTypes.instanceOf(Date),
+  step: React.PropTypes.number,
 
-    min:            React.PropTypes.instanceOf(Date),
-    max:            React.PropTypes.instanceOf(Date),
+  culture: React.PropTypes.string,
 
-    culture:        React.PropTypes.string,
+  format: CustomPropTypes.dateFormat,
+  timeFormat: CustomPropTypes.dateFormat,
+  editFormat: CustomPropTypes.dateFormat,
 
-    format:         CustomPropTypes.dateFormat,
-    timeFormat:     CustomPropTypes.dateFormat,
-    editFormat:     CustomPropTypes.dateFormat,
+  calendar: React.PropTypes.bool,
+  time: React.PropTypes.bool,
 
-    calendar:       React.PropTypes.bool,
-    time:           React.PropTypes.bool,
+  timeComponent:  CustomPropTypes.elementType,
 
-    timeComponent:  CustomPropTypes.elementType,
+  //popup
+  dropUp: React.PropTypes.bool,
+  duration: React.PropTypes.number,
 
-    //popup
-    dropUp:         React.PropTypes.bool,
-    duration:       React.PropTypes.number,
+  placeholder: React.PropTypes.string,
+  name: React.PropTypes.string,
 
-    placeholder:    React.PropTypes.string,
-    name:           React.PropTypes.string,
+  initialView: React.PropTypes.oneOf(viewEnum),
+  finalView: React.PropTypes.oneOf(viewEnum),
 
-    initialView:    React.PropTypes.oneOf(viewEnum),
-    finalView:      React.PropTypes.oneOf(viewEnum),
+  autoFocus: React.PropTypes.bool,
+  disabled: CustomPropTypes.disabled,
+  readOnly: CustomPropTypes.disabled,
 
-    autoFocus:      React.PropTypes.bool,
-    disabled:       CustomPropTypes.disabled,
-    readOnly:       CustomPropTypes.readOnly,
+  parse: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.string),
+    React.PropTypes.string,
+    React.PropTypes.func
+  ]),
 
-    parse:          React.PropTypes.oneOfType([
-                      React.PropTypes.arrayOf(React.PropTypes.string),
-                      React.PropTypes.string,
-                      React.PropTypes.func
-                    ]),
+  tabIndex: React.PropTypes.any,
+  'aria-labelledby': React.PropTypes.string,
+  'aria-describedby': React.PropTypes.string,
 
-    tabIndex: React.PropTypes.any,
-    'aria-labelledby': React.PropTypes.string,
-    'aria-describedby': React.PropTypes.string,
+  onKeyDown: React.PropTypes.func,
+  onKeyPress: React.PropTypes.func,
+  onBlur: React.PropTypes.func,
+  onFocus: React.PropTypes.func,
 
-    onKeyDown: React.PropTypes.func,
-    onKeyPress: React.PropTypes.func,
-    onBlur: React.PropTypes.func,
-    onFocus: React.PropTypes.func,
-
-    messages:      React.PropTypes.shape({
-      calendarButton: React.PropTypes.string,
-      timeButton:     React.PropTypes.string
-    })
-  }
+  inputProps: React.PropTypes.object,
+  messages: React.PropTypes.shape({
+    calendarButton: React.PropTypes.string,
+    timeButton: React.PropTypes.string
+  })
+}
 
 @withRightToLeft
 class DateTimePicker extends React.Component {
@@ -250,6 +253,7 @@ class DateTimePicker extends React.Component {
       , name
       , tabIndex
       , autoFocus
+      , inputProps
       , 'aria-labelledby': ariaLabelledby
       , 'aria-describedby': ariaDescribedby } = this.props;
 
@@ -265,6 +269,7 @@ class DateTimePicker extends React.Component {
 
     return (
       <DateTimePickerInput
+        {...inputProps}
         id={this.inputId}
         ref='valueInput'
         role='combobox'
@@ -367,13 +372,14 @@ class DateTimePicker extends React.Component {
     let {
         open
       , value
+      , min, max, step
+      , currentDate
       , duration
       , dropUp
       , calendar
       , timeFormat
       , timeComponent } = this.props;
 
-    let timeListProps = Props.pick(this.props, TimeList);
 
     return (
       <Popup
@@ -384,9 +390,12 @@ class DateTimePicker extends React.Component {
       >
         <div>
           <TimeList
-            {...timeListProps}
             ref="timePopup"
             id={listId}
+            min={min}
+            max={max}
+            step={step}
+            currentDate={currentDate}
             activeId={activeOptionId}
             format={timeFormat}
             value={dateOrNull(value)}
@@ -414,7 +423,7 @@ class DateTimePicker extends React.Component {
 
     let { focused } = this.state;
 
-    let elementProps = Props.omitOwn(this, Calendar, Popup, TimeList)
+    let elementProps = Props.pickElementProps(this)
 
     let shouldRenderList = open || isFirstFocusedRender(this);
 

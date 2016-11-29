@@ -4,7 +4,7 @@ import { timeoutManager } from 'react-component-managers';
 import dates from './util/dates';
 import List from './List';
 import { date as dateLocalizer } from './util/localizers';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
 
 var format = props => dateLocalizer.getFormat('time', props.format)
@@ -108,7 +108,7 @@ class TimeList extends React.Component {
   }
 
   render() {
-    let { value, onSelect } = this.props;
+    let { value, onSelect, itemComponent } = this.props;
 
     var times = this.state.dates
       , date  = this.getClosestDate(times, value);
@@ -118,11 +118,12 @@ class TimeList extends React.Component {
         {...Props.omitOwn(this)}
         ref="list"
         data={times}
-        textField='label'
-        valueField='date'
-        selected={date}
         onSelect={onSelect}
-        focused={this.state.focusedItem}
+        textAccessor={item => item.label}
+        valueAccessor={item => item.date}
+        selectedItem={date}
+        focusedItem={this.state.focusedItem}
+        itemComponent={itemComponent}
       />
     )
   }

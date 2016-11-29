@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from './Button';
 import { date as dateLocalizer } from './util/localizers';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 
 const propTypes = {
   disabled: React.PropTypes.bool,

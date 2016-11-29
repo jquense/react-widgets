@@ -27,6 +27,7 @@ JsxRenderer.prototype.link = function(href, title, text){
 }
 
 JsxRenderer.prototype.codespan = function(text) {
+  console.log(text)
   return '<code>{`' + JsxRenderer.unescape(text) + '`}</code>';
 };
 
@@ -34,7 +35,7 @@ JsxRenderer.prototype.code = function(code) {
   return stripIndent`
     <CodeBlock
       codeText={\`${code}\`}
-      scope={this.props.scope}
+      scope={scope}
       ${code.indexOf('React.render(') === -1 ? 'noRender' : ''}
     />
   `;

@@ -1,9 +1,17 @@
-
-Select an item from the list, or input a custom value. The {widgetName} can also make suggestions as you type.
-
-<--------------->
-
-
+---
+name: Combobox
+heading: >
+  Select an item from the list, or input a custom value. The {widgetName} can also make suggestions as you type.
+shortcuts: >
+  - <kbd>alt + down arrow</kbd> open dropdown
+  - <kbd>alt + up arrow</kbd> close dropdown
+  - <kbd>down arrow</kbd> move focus to next item
+  - <kbd>up arrow</kbd> move focus to previous item
+  - <kbd>home</kbd> move focus to first item
+  - <kbd>end</kbd> move focus to last item
+  - <kbd>enter</kbd> select focused item
+  - <kbd>any key</kbd> search list for item starting with key
+---
 
 ## Props
 
@@ -130,14 +138,3 @@ text to display when the `data` prop array is empty
 ### messages.emptyFilter?{ type: 'string | function(props) -> node', default: '"The filter returned no results"' }
 
 text to display when the the current filter does not return any results
-
-## Keyboard Navigation
-
-- <kbd>alt + down arrow</kbd> open dropdown
-- <kbd>alt + up arrow</kbd> close dropdown
-- <kbd>down arrow</kbd> move focus to next item
-- <kbd>up arrow</kbd> move focus to previous item
-- <kbd>home</kbd> move focus to first item
-- <kbd>end</kbd> move focus to last item
-- <kbd>enter</kbd> select focused item
-- <kbd>any key</kbd> search list for item starting with key

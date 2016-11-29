@@ -2,7 +2,7 @@ import React from 'react';
 
 import Input from './Input';
 import * as Props from './util/Props';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import { number as numberLocalizer } from './util/localizers';
 
 let getFormat = props => numberLocalizer.getFormat('default', props.format)
@@ -49,7 +49,7 @@ class NumberPickerInput extends React.Component {
     max: React.PropTypes.number,
 
     disabled: CustomPropTypes.disabled,
-    readOnly: CustomPropTypes.readOnly,
+    readOnly: CustomPropTypes.disabled,
 
     onChange: React.PropTypes.func.isRequired,
   };

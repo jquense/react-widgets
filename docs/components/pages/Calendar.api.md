@@ -1,8 +1,16 @@
-<div className='alert alert-warning'>
- <i className='fa fa-exclamation-triangle'/>
- You must configure a <a href='#/i18n'>localizer</a> to use this component!
-</div>
-<--------------->
+---
+name: Calendar
+localized: true
+shortcuts: >
+  - <kbd>ctrl + down arrow</kbd> navigate to next view
+  - <kbd>ctrl + up arrow</kbd> navigate to previous view
+  - <kbd>ctrl + left arrow</kbd> navigate to previous: month, year, decade, century
+  - <kbd>ctrl + right arrow</kbd> navigate to next: month, year, decade, century
+  - <kbd>left arrow</kbd> move focus to previous date
+  - <kbd>right arrow</kbd> move focus to next date
+  - <kbd>up arrow</kbd> move focus up within view
+  - <kbd>down arrow</kbd> move focus down within view
+---
 
 ### value?{ type: '?Date', controllable: "onChange"}
 
@@ -127,15 +135,3 @@ title and screen reader text for the left arrow button.
 ### messages.moveForward?{ type: 'string', default: '"navigate forward"' }
 
 title and screen reader text for the right arrow button.
-
-
-## Keyboard Navigation
-
-- <kbd>ctrl + down arrow</kbd> navigate to next view
-- <kbd>ctrl + up arrow</kbd> navigate to previous view
-- <kbd>ctrl + left arrow</kbd> navigate to previous: month, year, decade, century
-- <kbd>ctrl + right arrow</kbd> navigate to next: month, year, decade, century
-- <kbd>left arrow</kbd> move focus to previous date
-- <kbd>right arrow</kbd> move focus to next date
-- <kbd>up arrow</kbd> move focus up within view
-- <kbd>down arrow</kbd> move focus down within view

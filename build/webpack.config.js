@@ -1,7 +1,6 @@
 var merge = require('webpack-merge');
 var path = require('path')
   , webpack = require('webpack')
-//  , ExtractTextPlugin = require('extract-text-webpack-plugin')
   , pkg = require('../package.json');
 
 var TARGET = process.env.NODE_ENV || 'development';
@@ -16,11 +15,11 @@ var DOCS = TARGET === 'docs';
 var DIST = TARGET === 'dist';
 var TEST = TARGET === 'test';
 
-var urlLoader = 'url?limit=10000&name=[name].[ext]';
+var urlLoader = 'url-loader?limit=10000&name=[name].[ext]';
 
 function makeLocalizerConfig(config, name, args) {
   return merge({}, config, {
-    devtool: null,
+    devtool: false,
     entry:
       'imports-loader?createLocalizer=../lib/localizers/globalize.js,' +
       'args=>[' + args.join(', ') +']' +
@@ -42,15 +41,14 @@ var config = {
   cache: true,
   devtool: 'cheap-inline-module-source-map',
   module: {
-    loaders: [
-      { test: /\.json$/, loader: 'json' },
-      { test: /\.js$/,   loader: 'babel', exclude: /node_modules/ },
-      { test: /\.css$/,  loader: 'style!css' },
-      { test: /\.less$/, loader: 'style!css!less' },
+    rules: [
+      { test: /\.json$/, loader: 'json-loader' },
+      { test: /\.js$/,   loader: 'babel-loader', exclude: /node_modules/ },
+      { test: /\.css$/,  use: ['style-loader', 'css-loader'] },
+      { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
       { test: /\.(gif|png|eot|ttf|svg)(\?.*)?$/, loader: urlLoader },
       { test: /\.woff2?(\?.*)?$/, loader: urlLoader + '&mimetype=application/font-woff'},
-
-      { test: /\.js$/, loader: 'imports?define=>false' },
+      { test: /\.js$/, loader: 'imports-loader?define=>false' },
     ]
   },
   resolve: {
@@ -75,18 +73,11 @@ if (DOCS || DIST) {
           NODE_ENV: JSON.stringify('production')
         }
       }),
-      // new webpack.optimize.UglifyJsPlugin({
-      //   compress: {
-      //     warnings: false,
-      //     dead_code: true  //eslint-disable-line
-      //   }
-      // }),
       new webpack.optimize.DedupePlugin(),
-      new webpack.BannerPlugin(
-        '(c) 2014 - present: Jason Quense | '
-        + 'https://github.com/jquense/react-widgets/blob/master/License.txt'
-        , { entryOnly : true }
-      )
+      new webpack.BannerPlugin({
+        banner: '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt',
+        entryOnly : true,
+      })
     ]
   })
 }
@@ -105,23 +96,42 @@ if (DOCS) {
     },
 
     plugins: [
-      new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        filename: 'vendor.bundle.js'
+      })
     ],
 
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.raw$/,
           loader: 'raw'
         },
         {
           test: /\.api\.md$/,
-          loader: 'babel!' + path.join(__dirname, '../docs/tools/apiLoader')
+          use: [
+            'babel-loader',
+            {
+              loader: path.join(__dirname, '../docs/tools/apiLoader'),
+              options: {
+                template: require('../docs/templates/doc-page')
+              }
+            }
+          ]
         },
         {
           test: /.md$/,
-          loader: 'babel!' + path.join(__dirname, '../docs/tools/mdLoader'),
-          exclude: /\.api\.md$/
+          exclude: /\.api\.md$/,
+          use: [
+            'babel-loader',
+            {
+              loader: path.join(__dirname, '../docs/tools/apiLoader'),
+              options: {
+                template: require('../docs/templates/md-component')
+              }
+            }
+          ]
         }
       ]
     }
@@ -130,7 +140,7 @@ if (DOCS) {
 else if (DIST) {
   config = [
     merge({}, config, {
-      devtool: null,
+      devtool: false,
       entry: {
         'react-widgets': './lib/index.js'
       },
@@ -153,10 +163,10 @@ else if (DIST) {
 else if (TEST) {
   config = merge(config, {
     module: {
-      loaders: [
+      rules: [
         {
           test: /sinon-chai/,
-          loader: 'imports?define=>false'
+          loader: 'imports-loader?define=>false'
         }
       ]
     }

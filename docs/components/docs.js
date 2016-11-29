@@ -4,7 +4,6 @@ import {
     Route
   , Router
   , IndexRoute
-  , Link
   , hashHistory } from 'react-router';
 
 import Page from './Page';
@@ -18,7 +17,7 @@ import SelectList from './pages/SelectList.api.md';
 import Calendar from './pages/Calendar.api.md';
 import DatePicker from './pages/DateTimePicker.api.md';
 import NumberPicker from './pages/NumberPicker.api.md';
-import Advanced from './pages/Advanced.js';
+// import Advanced from './pages/Advanced.js';
 import Locale from './pages/i18n.md';
 import Controllables from './pages/controllables.md';
 
@@ -26,20 +25,12 @@ import '@monastic.panic/component-playground/codemirror.css';
 
 import '../styles/docs.less';
 
+import 'codemirror/mode/css/css';
 
 var localizers = require('../../src/localizers/globalize')
 
 localizers(require('globalize'))
 
-var widgets = [
-  'DropdownList',
-  'Combobox',
-  'NumberPicker',
-  'Multiselect',
-  'SelectList',
-  'Calendar',
-  'DateTimePicker'
-];
 
 function onUpdate() {
   const location = this.state.location;
@@ -61,7 +52,7 @@ ReactDOM.render((
       <Route component={LandingPage}>
         <IndexRoute path='getting-started(/:topic)' component={GettingStarted}/>
       </Route>
-      
+
       <Route component={ApiPage}>
         <Route  path='dropdownlist' component={DropdownList}>
           <Route path=':topic' component={DropdownList}/>
@@ -87,7 +78,7 @@ ReactDOM.render((
       </Route>
 
       <Route component={Page}>
-        <Route path="advanced" component={Advanced} />
+        {/* <Route path="advanced" component={Advanced} /> */}
         <Route path="i18n" component={Locale} />
         <Route path="controllables" component={Controllables} />
       </Route>

@@ -9,16 +9,16 @@ import Select  from './Select';
 import ComboboxInput from './ComboboxInput';
 import compat from './util/compat';
 import focusManager from './util/focusManager';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import PlainList from './List';
 import GroupableList from './ListGroupable';
+import accessorManager from './util/accessorManager';
 import validateList from './util/validateListInterface';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
 import { isShallowEqual, result }  from './util/_';
 import * as Props from './util/Props';
 import * as Filter from './util/Filter';
-import { dataItem, dataText, dataIndexOf } from './util/dataHelpers';
 import { widgetEditable, isDisabled, isReadOnly } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
@@ -26,48 +26,49 @@ let propTypes = {
   ...Filter.propTypes,
 
   //-- controlled props -----------
-  value:          React.PropTypes.any,
-  onChange:       React.PropTypes.func,
-  open:           React.PropTypes.bool,
-  onToggle:       React.PropTypes.func,
+  value: React.PropTypes.any,
+  onChange: React.PropTypes.func,
+  open: React.PropTypes.bool,
+  onToggle: React.PropTypes.func,
   //------------------------------------
 
-  itemComponent:  CustomPropTypes.elementType,
-  listComponent:  CustomPropTypes.elementType,
+  itemComponent: CustomPropTypes.elementType,
+  listComponent: CustomPropTypes.elementType,
 
   groupComponent: CustomPropTypes.elementType,
-  groupBy:        CustomPropTypes.accessor,
+  groupBy: CustomPropTypes.accessor,
 
-  data:           React.PropTypes.array,
-  valueField:     React.PropTypes.string,
-  textField:      CustomPropTypes.accessor,
-  name:           React.PropTypes.string,
+  data: React.PropTypes.array,
+  valueField: React.PropTypes.string,
+  textField: CustomPropTypes.accessor,
+  name: React.PropTypes.string,
 
-  onSelect:       React.PropTypes.func,
+  onSelect: React.PropTypes.func,
 
-  autoFocus:      React.PropTypes.bool,
-  disabled:       CustomPropTypes.disabled.acceptsArray,
-  readOnly:       CustomPropTypes.readOnly,
+  autoFocus: React.PropTypes.bool,
+  disabled: CustomPropTypes.disabled.acceptsArray,
+  readOnly: CustomPropTypes.disabled,
 
-  suggest:        Filter.propTypes.filter,
+  suggest: Filter.propTypes.filter,
 
-  busy:           React.PropTypes.bool,
+  busy: React.PropTypes.bool,
 
-  delay:          React.PropTypes.number,
-  dropUp:         React.PropTypes.bool,
-  duration:       React.PropTypes.number,
+  delay: React.PropTypes.number,
+  dropUp: React.PropTypes.bool,
+  duration: React.PropTypes.number,
 
-  placeholder:    React.PropTypes.string,
-
-  messages:       React.PropTypes.shape({
-    open:         CustomPropTypes.message,
-    emptyList:    CustomPropTypes.message,
-    emptyFilter:  CustomPropTypes.message
+  placeholder: React.PropTypes.string,
+  inputProps: React.PropTypes.object,
+  listProps: React.PropTypes.object,
+  messages: React.PropTypes.shape({
+    open: CustomPropTypes.message,
+    emptyList: CustomPropTypes.message,
+    emptyFilter: CustomPropTypes.message
   })
 };
 
 @withRightToLeft
-class ComboBox extends React.Component {
+class Combobox extends React.Component {
 
   static propTypes = propTypes;
 
@@ -89,6 +90,7 @@ class ComboBox extends React.Component {
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
 
+    this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
       willHandle: this.handleFocusWillChange,
@@ -118,11 +120,11 @@ class ComboBox extends React.Component {
   }
 
   getStateFromProps(props) {
-    let { value, data, filter, valueField, textField } = props;
+    let { value, data, filter } = props;
 
-    let index = dataIndexOf(data, value, valueField);
+    let index = this.accessors.indexOf(data, value);
     let dataItem = index === -1 ? value : data[index]
-    let itemText = dataText(dataItem, textField);
+    let itemText = this.accessors.text(dataItem);
 
     let searchTerm
     // filter only when the value is not an item in the data list
@@ -135,14 +137,14 @@ class ComboBox extends React.Component {
     let focusedIndex = index
     // index may have changed after filtering
     if (index !== -1) {
-      index = dataIndexOf(data, value, valueField)
+      index = this.accessors.indexOf(data, value)
       focusedIndex = index;
     }
     else {
       // value isn't a dataItem so find the close match
       focusedIndex = Filter.indexOf(data, {
         searchTerm,
-        textField,
+        textField: this.accessors.text,
         filter: filter || true
       })
     }
@@ -254,7 +256,6 @@ class ComboBox extends React.Component {
     let {
         suggest
       , filter
-      , textField
       , busy
       , name
       , data
@@ -263,9 +264,10 @@ class ComboBox extends React.Component {
       , autoFocus
       , tabIndex
       , placeholder
+      , inputProps
       , open } = this.props;
 
-    let valueItem = dataItem(data, value, valueField) // take value from the raw data
+    let valueItem = this.accessors.find(data, value, valueField) // take value from the raw data
 
     let completeType = suggest
         ? filter ? 'both' : 'inline'
@@ -273,6 +275,7 @@ class ComboBox extends React.Component {
 
     return (
       <ComboboxInput
+        {...inputProps}
         ref='input'
         role='combobox'
         name={name}
@@ -289,7 +292,7 @@ class ComboBox extends React.Component {
         aria-expanded={open}
         aria-haspopup={true}
         placeholder={placeholder}
-        value={dataText(valueItem, textField)}
+        value={this.accessors.text(valueItem)}
         onChange={this.handleInputChange}
         onKeyDown={this.handleInputKeyDown}
       />
@@ -297,11 +300,10 @@ class ComboBox extends React.Component {
   }
 
   renderList(List, messages) {
-    let { activeId, inputId, listId } = this;
-    let { open, data } = this.props;
-    let { data: items, selectedItem, focusedItem } = this.state;
+    let { activeId, inputId,  listId, accessors } = this;
 
-    let listProps = Props.pick(this.props, List);
+    let { open, data, disabled, itemComponent, listProps } = this.props;
+    let { data: items, selectedItem, focusedItem } = this.state;
 
     return (
       <List ref="list"
@@ -309,8 +311,12 @@ class ComboBox extends React.Component {
         id={listId}
         activeId={activeId}
         data={items}
-        selected={selectedItem}
-        focused ={focusedItem}
+        valueAccessor={accessors.value}
+        textAccessor={accessors.text}
+        disabled={disabled}
+        selectedItem={selectedItem}
+        focusedItem={open ? focusedItem : null}
+        itemComponent={itemComponent}
         aria-hidden={!open}
         aria-labelledby={inputId}
         aria-live={open && 'polite'}
@@ -343,7 +349,7 @@ class ComboBox extends React.Component {
 
     List = List || (groupBy && GroupableList) || PlainList
 
-    let elementProps = Props.omitOwn(this, List);
+    let elementProps = Props.pickElementProps(this);
     let shouldRenderPopup = open || isFirstFocusedRender(this);
 
     messages = msgs(messages)
@@ -440,7 +446,7 @@ class ComboBox extends React.Component {
 }
 
 export default createUncontrolledWidget(
-      ComboBox, { open: 'onToggle', value: 'onChange' }, ['focus']);
+      Combobox, { open: 'onToggle', value: 'onChange' }, ['focus']);
 
 
 function msgs(msgs){

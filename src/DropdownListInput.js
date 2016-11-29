@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import { dataText } from './util/dataHelpers';
 
 class DropdownListInput extends React.Component {

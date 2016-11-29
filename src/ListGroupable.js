@@ -1,6 +1,6 @@
 import React   from 'react';
 import ListOption from './ListOption';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import compat from './util/compat';
 import cn from 'classnames';
 import { result, has }  from './util/_';
@@ -89,7 +89,7 @@ export default React.createClass({
     let { className, role, data, messages } = this.props
     let { sortedKeys, groups } = this.state;
 
-    let elementProps = Props.omitOwn(this);
+    let elementProps = Props.pickElementProps(this);
 
     let items = []
       , idx = -1

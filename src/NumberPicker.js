@@ -12,13 +12,27 @@ import focusManager from './util/focusManager';
 import { widgetEditable } from './util/interaction';
 import { notify } from './util/widgetHelpers';
 import compat from './util/compat';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import { directions } from './util/constants';
-import repeater from './util/repeater';
 import withRightToLeft from './util/withRightToLeft';
 import { number as numberLocalizer } from './util/localizers';
 
 var format = props => numberLocalizer.getFormat('default', props.format)
+
+// my tests in ie11/chrome/FF indicate that keyDown repeats
+// at about 35ms+/- 5ms after an initial 500ms delay. callback fires on the leading edge
+function createInterval(callback){
+  var id, cancel = () => clearInterval(id);
+
+  id = setTimeout(()=> {
+    cancel()
+    id = setTimeout(callback, 35)
+    callback() //fire after everything in case the user cancels on the first call
+  }, 500)
+
+  return cancel
+}
+
 
 function clamp(value, min, max) {
   max = max == null ? Infinity : max
@@ -56,8 +70,9 @@ class NumberPicker extends React.Component {
     onKeyUp: React.PropTypes.func,
     autoFocus: React.PropTypes.bool,
     disabled: CustomPropTypes.disabled,
-    readOnly: CustomPropTypes.readOnly,
+    readOnly: CustomPropTypes.disabled,
 
+    inputProps: React.PropTypes.object,
     messages: React.PropTypes.shape({
       increment: React.PropTypes.string,
       decrement: React.PropTypes.string
@@ -110,7 +125,7 @@ class NumberPicker extends React.Component {
       this.handleMouseUp()
 
     else if (!this._cancelRepeater)
-      this._cancelRepeater = repeater(() =>
+      this._cancelRepeater = createInterval(() =>
         this.handleMouseDown(direction)
       )
   };
@@ -167,10 +182,12 @@ class NumberPicker extends React.Component {
       , onKeyUp
       , min, max
       , disabled, readOnly
+      , inputProps
       , format } = this.props;
 
     return (
       <Input
+        {...inputProps}
         ref='input'
         role='spinbutton'
         tabIndex={tabIndex}
@@ -203,7 +220,7 @@ class NumberPicker extends React.Component {
       , max } = this.props;
 
     let { focused } = this.state;
-    let elementProps = Props.omitOwn(this);
+    let elementProps = Props.pickElementProps(this);
 
     value = clamp(value, min, max);
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MultiselectTag from './MultiselectTag';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 import { dataText } from './util/dataHelpers';
 
 import { isDisabledItem, isReadOnlyItem } from './util/interaction';
@@ -23,7 +23,7 @@ class MultiselectTagList extends React.Component {
     valueComponent: React.PropTypes.func,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
-    readOnly: CustomPropTypes.readOnly.acceptsArray
+    readOnly: CustomPropTypes.disabled.acceptsArray
   };
 
   handleDelete = (val) => {

@@ -31,7 +31,8 @@
   ],
   "scripts": {
     "test": "npm run lint && npm run test:all",
-    "test:all": "npm run test:server && npm run test:client",
+    "test:all": "npm run test:server && npm run test:client && npm run test:styles",
+    "test:styles": "npm run styles && node-sass lib/scss/react-widgets.scss -o test/output",
     "test:server": "cross-env NODE_ENV=test mocha -R spec ./test/server.js",
     "test:client": "cross-env NODE_ENV=test karma start --single-run=true",
     "tdd": "cross-env NODE_ENV=test karma start",
@@ -74,6 +75,7 @@
     "invariant": "^2.1.0",
     "loose-envify": "^1.2.0",
     "react-component-managers": "^2.0.0",
+    "react-prop-types": "^0.4.0",
     "spy-on-component": "^1.0.2",
     "uncontrollable": "^4.0.0",
     "warning": "^2.0.0"
@@ -105,8 +107,8 @@
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-mocha": "^4.6.0",
     "eslint-plugin-react": "^6.3.0",
-    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.1",
+    "front-matter": "^2.1.1",
     "glob": "^7.0.5",
     "globalize": "0.1.x",
     "imports-loader": "^0.6.4",
@@ -147,9 +149,9 @@
     "teaspoon": "^6.4.1",
     "uncontrollable": "^3.2.3",
     "url-loader": "^0.5.5",
-    "webpack": "^1.10.5",
-    "webpack-dev-server": "^1.10.1",
-    "webpack-merge": "^0.14.0"
+    "webpack": "^2.1.0-beta.27",
+    "webpack-dev-server": "^2.1.0-beta.12",
+    "webpack-merge": "^1.0.1"
   },
   "browserify": {
     "transform": [

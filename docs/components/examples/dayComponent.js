@@ -5,7 +5,7 @@ export default function(widgetName) {
     let { ${widgetName} } = ReactWidgets;
 
     let DayComponent = ({ date, label }) => (
-      <div style={{ backgroundColor: date < new Date() && '#F57B7B' }}>
+      <div style={{ color: date < new Date() && '#F57B7B' }}>
         {label}
       </div>
     );

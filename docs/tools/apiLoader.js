@@ -1,93 +1,54 @@
 var marked = require('marked')
-  , Renderer = require('./jsx-renderer')
-  , fs = require('fs')
-  , path = require('path');
+var frontMatter = require('front-matter')
+  , Renderer = require('./jsx-renderer');
 
-var language = require('./language');
+let replace = require('./replace');
+let language = require('../language');
 
 marked.setOptions({
   xhtml: true
 })
 
-var renderer = new Renderer()
-  , props;
 
-renderer.heading = function (text, level, raw) {
-  var parts = parsePropHeader(text);
-
-  if (level === 3 && parts.props) {
-    if (parts.text)
-      props.push(parts.text)
-
-    return '<PropHeader {...' + parts.props + '}>' + parts.text + '</PropHeader>'
-  }
-
-  return Renderer.prototype.heading.call(this, text, level, raw)
-};
-
-
-module.exports = function(markdown) {
-  var templatePath = path.join(__dirname, '../templates/doc-page')
-    , callback = this.async();
-
+module.exports = function(content) {
   if (this && this.cacheable)
     this.cacheable();
 
-  var widgetName = path.basename(this.resourcePath, '.api.md')
-    , prefix = widgetName.toLowerCase() + '/'
+  let template = this.query.template;
 
-  this.addDependency(templatePath);
-  this.addDependency(require.resolve('./language'));
+  this.addDependency(require.resolve('../language'));
 
-  fs.readFile(templatePath, 'utf8', function(err, docPage){
-    var desc;
+  let props = [];
+  let renderer = Object.assign(new Renderer(), {
+    heading(text, level, raw) {
+      let parts = text.split('?')
+      let headingProps = Renderer.unescape(parts.slice(1).join('?'));
 
-    if ( err ) return callback(err)
+      text = parts[0].trim();
 
-    props = []
+      if (level === 3 && headingProps) {
+        if (text) props.push(text)
+        return '<PropHeader {...' + headingProps + '}>' + text + '</PropHeader>'
+      }
 
-    var match = markdown.match(/<-+>/g)
-      , idx = match ? markdown.indexOf(match[0]) : -1
-
-    if (idx !== -1) {
-      desc = marked(markdown.substr(0, idx), { renderer: renderer })
-      markdown = markdown.substr(idx + match[0].length)
+      return Renderer.prototype.heading.call(this, text, level, raw)
     }
-
-    markdown = t(markdown, { widgetName: widgetName, language: language })
-
-    var file = t(docPage, {
-      html: marked(markdown, { renderer: renderer }),
-      desc: desc || '',
-      prefix: prefix,
-      widgetName: widgetName,
-      props: props.map(function(p){
-        return '<MenuItem>' + p + '</MenuItem>'
-      }).join('\n')
-    })
-
-    callback(null, file)
   })
+
+  let { attributes, body } = frontMatter(content);
+  let heading = attributes.heading || '';
+
+  delete attributes.heading
+
+  let toHtml = md => marked(
+    replace(md, Object.assign({ language }, attributes)), { renderer });
+
+  let file = template({
+    attributes,
+    props,
+    heading: toHtml(heading),
+    body: toHtml(body),
+  })
+
+  return file
 };
-
-function parsePropHeader(text){
-  var parts = text.split('?')
-    , props = Renderer.unescape(parts.slice(1).join('?'));
-
-  return { props: props, text: parts[0].trim() }
-}
-
-
-function t(str, data, path) {
-  path = path ? path + '.' : '';
-
-  for (var p in data) {
-    if (typeof data[p] ==='object') {
-      str = t(str, data[p], p)
-    }
-    else {
-      str = str.replace(new RegExp('\\${' + path + p + '}', 'g'), data[p]);
-    }
-  }
-  return str;
-}

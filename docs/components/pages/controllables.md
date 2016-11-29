@@ -1,3 +1,6 @@
+---
+name: Controllables
+---
 # Controlled and Uncontrolled Components
 
 One of the strengths of React is its extensibility model, enabled by a common practice of pushing component state

@@ -1,7 +1,21 @@
+---
+name: Multiselect
+heading: A select listbox alternative
+shortcuts: >
+  * <kbd>down arrow</kbd> open dropdown, and move focus to next item
+  * <kbd>up arrow</kbd> move focus to previous item
+  * <kbd>alt + up arrow</kbd> close dropdown
+  * <kbd>left arrow</kbd> move focus to previous selected tag
+  * <kbd>right arrow</kbd> move focus to previous selected tag
+  * <kbd>delete</kbd> unselect focused tag
+  * <kbd>backspace</kbd> remove next selected tag
+  * <kbd>home</kbd> move focus to first item
+  * <kbd>end</kbd> move focus to last item
+  * <kbd>enter</kbd> select focused item
+  * <kbd>ctrl + enter</kbd> create new tag from current search term
+  * <kbd>any key</kbd> search list for item starting with key
+---
 
-A select listbox alternative
-
-<--------------->
 
 ### value?{ type: 'array<mixed>', controllable: "onChange" }
 
@@ -146,18 +160,3 @@ Text to display when the `data` prop array is empty
 ### messages.emptyFilter?{ type: 'string | function(props) -> node', default: '"The filter returned no results"' }
 
 Text to display when the the current filter does not return any results
-
-## Keyboard shortcuts
-
-* <kbd>down arrow</kbd> open dropdown, and move focus to next item
-* <kbd>up arrow</kbd> move focus to previous item
-* <kbd>alt + up arrow</kbd> close dropdown
-* <kbd>left arrow</kbd> move focus to previous selected tag
-* <kbd>right arrow</kbd> move focus to previous selected tag
-* <kbd>delete</kbd> unselect focused tag
-* <kbd>backspace</kbd> remove next selected tag
-* <kbd>home</kbd> move focus to first item
-* <kbd>end</kbd> move focus to last item
-* <kbd>enter</kbd> select focused item
-* <kbd>ctrl + enter</kbd> create new tag from current search term
-* <kbd>any key</kbd> search list for item starting with key

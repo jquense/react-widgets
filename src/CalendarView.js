@@ -95,7 +95,6 @@ class CalendarViewCell extends React.Component {
     let { children, activeId, label, disabled } = this.props;
     let isDisabled = disabled || this.isEmpty()
 
-
     return (
       <td
         role='gridcell'

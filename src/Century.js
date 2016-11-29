@@ -5,7 +5,7 @@ import dates  from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
 import { chunk } from './util/_';
 import * as Props from './util/Props';
-import CustomPropTypes from './util/propTypes';
+import * as CustomPropTypes from './util/PropTypes';
 
 let format = props => dateLocalizer.getFormat('decade', props.decadeFormat)
 
