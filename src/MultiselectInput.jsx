@@ -17,7 +17,7 @@ class MultiselectInput extends React.Component {
 
   render() {
       let { disabled, readOnly, ...props } = this.props
-      let size = Math.max((props.value || props.placeholder).length, 1) + 1;
+      let size = Math.max((props.value || props.placeholder).byteLength, 1) + 2;
 
       return (
         <input
