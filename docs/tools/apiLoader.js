@@ -1,6 +1,7 @@
-var marked = require('marked')
-var frontMatter = require('front-matter')
-  , Renderer = require('./jsx-renderer');
+let marked = require('marked')
+let utils = require('loader-utils');
+let frontMatter = require('front-matter')
+let Renderer = require('./jsx-renderer');
 
 let replace = require('./replace');
 let language = require('../language');
@@ -14,7 +15,10 @@ module.exports = function(content) {
   if (this && this.cacheable)
     this.cacheable();
 
-  let template = this.query.template;
+  let template = utils.parseQuery(this.query).template;
+
+  if (typeof template === 'string')
+   template = require(template);
 
   this.addDependency(require.resolve('../language'));
 

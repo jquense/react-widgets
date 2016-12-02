@@ -15,6 +15,7 @@ var DOCS = TARGET === 'docs';
 var DIST = TARGET === 'dist';
 var TEST = TARGET === 'test';
 
+var apiRegex = /\.api\.md$/;
 var urlLoader = 'url-loader?limit=10000&name=[name].[ext]';
 
 function makeLocalizerConfig(config, name, args) {
@@ -41,11 +42,11 @@ var config = {
   cache: true,
   devtool: 'cheap-inline-module-source-map',
   module: {
-    rules: [
+    loaders: [
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.js$/,   loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.css$/,  use: ['style-loader', 'css-loader'] },
-      { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+      { test: /\.css$/,  loader: ['style-loader', 'css-loader'].join('!') },
+      { test: /\.less$/, loader: ['style-loader', 'css-loader', 'less-loader'].join('!') },
       { test: /\.(gif|png|eot|ttf|svg)(\?.*)?$/, loader: urlLoader },
       { test: /\.woff2?(\?.*)?$/, loader: urlLoader + '&mimetype=application/font-woff'},
       { test: /\.js$/, loader: 'imports-loader?define=>false' },
@@ -74,10 +75,10 @@ if (DOCS || DIST) {
         }
       }),
       new webpack.optimize.DedupePlugin(),
-      new webpack.BannerPlugin({
-        banner: '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt',
-        entryOnly : true,
-      })
+      new webpack.BannerPlugin(
+        '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt',
+        { entryOnly : true }
+      )
     ]
   })
 }
@@ -96,43 +97,29 @@ if (DOCS) {
     },
 
     plugins: [
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        filename: 'vendor.bundle.js'
-      })
+      new webpack.optimize.CommonsChunkPlugin(
+        'vendor',
+        'vendor.bundle.js'
+      )
     ],
 
     module: {
-      rules: [
-        {
-          test: /\.raw$/,
-          loader: 'raw'
+      loaders: [
+        { test: /\.raw$/, loader: 'raw' },
+
+        { test: apiRegex, loader: 'babel-loader' },
+        { test: apiRegex, loader: path.join(__dirname, '../docs/tools/apiLoader'),
+          query: {
+            template: require.resolve('../docs/templates/doc-page')
+          }
         },
-        {
-          test: /\.api\.md$/,
-          use: [
-            'babel-loader',
-            {
-              loader: path.join(__dirname, '../docs/tools/apiLoader'),
-              options: {
-                template: require('../docs/templates/doc-page')
-              }
-            }
-          ]
+
+        { test: /.md$/, exclude: apiRegex, loader: 'babel-loader' },
+        { test: /.md$/, exclude: apiRegex, loader: path.join(__dirname, '../docs/tools/apiLoader'),
+          query: {
+            template: require.resolve('../docs/templates/md-component')
+          }
         },
-        {
-          test: /.md$/,
-          exclude: /\.api\.md$/,
-          use: [
-            'babel-loader',
-            {
-              loader: path.join(__dirname, '../docs/tools/apiLoader'),
-              options: {
-                template: require('../docs/templates/md-component')
-              }
-            }
-          ]
-        }
       ]
     }
   })
@@ -163,7 +150,7 @@ else if (DIST) {
 else if (TEST) {
   config = merge(config, {
     module: {
-      rules: [
+      loaders: [
         {
           test: /sinon-chai/,
           loader: 'imports-loader?define=>false'

@@ -127,6 +127,7 @@
     "less-loader": "^2.2.0",
     "less-plugin-autoprefix": "^1.5.1",
     "less2sass": "^1.0.2",
+    "loader-utils": "^0.2.16",
     "lodash": "^4.17.2",
     "marked": "^0.3.5",
     "mkdirp": "^0.5.1",
@@ -149,8 +150,8 @@
     "teaspoon": "^6.4.1",
     "uncontrollable": "^3.2.3",
     "url-loader": "^0.5.5",
-    "webpack": "^2.1.0-beta.27",
-    "webpack-dev-server": "^2.1.0-beta.12",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2",
     "webpack-merge": "^1.0.1"
   },
   "browserify": {

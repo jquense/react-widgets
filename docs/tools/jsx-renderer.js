@@ -27,7 +27,6 @@ JsxRenderer.prototype.link = function(href, title, text){
 }
 
 JsxRenderer.prototype.codespan = function(text) {
-  console.log(text)
   return '<code>{`' + JsxRenderer.unescape(text) + '`}</code>';
 };
 
