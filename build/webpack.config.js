@@ -41,7 +41,7 @@ function makeLocalizerConfig(config, name, args) {
 }
 
 var config = {
-  cache: false,
+  cache: true,
   devtool: 'inline-module-source-map',
   module: {
     loaders: [
@@ -97,7 +97,6 @@ if (DOCS) {
       filename: 'docs.js',
       publicPath: '/docs/public'
     },
-
     plugins: [
       new webpack.DefinePlugin({
         '__VERSION__': JSON.stringify(pkg.version),
@@ -124,23 +123,6 @@ if (DOCS) {
       ]
     }
   })
-
-  if (PRODUCTION) {
-    config = merge(config, {
-      entry:  {
-        app: [
-          'globalize/dist/globalize-runtime',
-          path.join(__dirname, '../docs/public/formatters.js'),
-          docsPath,
-        ],
-      },
-      resolve: {
-        alias: {
-          globalize: 'globalize/dist/globalize-runtime',
-        }
-      },
-    })
-  }
 }
 else if (DIST) {
   config = [

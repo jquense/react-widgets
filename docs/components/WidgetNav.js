@@ -4,13 +4,13 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 
 export const widgets = [
-  'DropdownList',
-  'Combobox',
-  'NumberPicker',
-  'Multiselect',
-  'SelectList',
   'Calendar',
-  'DateTimePicker'
+  'Combobox',
+  'DateTimePicker',
+  'DropdownList',
+  'Multiselect',
+  'NumberPicker',
+  'SelectList',
 ];
 
 

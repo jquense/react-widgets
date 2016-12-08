@@ -27,9 +27,7 @@ import '../styles/docs.less';
 
 import 'codemirror/mode/css/css';
 
-var localizers = require('../../src/localizers/globalize')
-
-localizers(require('globalize'))
+import './locales';
 
 
 function onUpdate() {

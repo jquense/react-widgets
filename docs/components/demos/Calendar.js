@@ -7,11 +7,6 @@ import RW from 'react-widgets';
 import Demo, { createSetter } from '../Demo';
 import Layout from '../Layout';
 
-import 'globalize/lib/cultures/globalize.culture.en-GB';
-import 'globalize/lib/cultures/globalize.culture.es';
-import 'globalize/lib/cultures/globalize.culture.fr';
-import 'globalize/lib/cultures/globalize.culture.ar-AE';
-
 export const VIEWS = ['month', 'year', 'decade', 'century'];
 export const CULTURES = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
 
@@ -73,7 +68,7 @@ export default class CalendarDemo extends React.Component {
           <Demo.Control label="min" >
             <RW.DateTimePicker
               time={false}
-              format='MMM dd, yyyy'
+              format={{ date: 'medium' }}
               value={min}
               onChange={setter('min')}
             />
@@ -82,7 +77,7 @@ export default class CalendarDemo extends React.Component {
             <RW.DateTimePicker
               time={false}
               value={max}
-              format='MMM dd yyyy'
+              format={{ date: 'medium' }}
               onChange={setter('max')}
             />
           </Demo.Control>

@@ -9,25 +9,42 @@ import Layout from '../Layout';
 
 const cultures = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
 
+const formats = [
+  {
+    value: { minimumFractionDigits: 2 },
+    text: '2 minimum digits' },
+  {
+    value: { minimumFractionDigits: 5 },
+    text: '5 minimum digits' },
+  {
+    value: { style: 'percent' },
+    text: 'percentage' },
+  {
+    value: { currency: 'EUR', minimumFractionDigits: 2 },
+    text: 'Currency (euro), 2 digits' },
+]
+
 module.exports = React.createClass({
   getInitialState() {
     return {
       defaultValue: 15,
-      format: 'd',
+      format: formats[0],
       step: 1
     }
   },
 
-
   render() {
-    const { format, culture, step, min, max, isRtl, disabled, readOnly } = this.state;
+    let { format, culture, step, min, max, isRtl, disabled, readOnly } = this.state;
 
     let setter = createSetter(this);
 
     return (
       <Demo shortcuts={this.props.shortcuts}>
         <Demo.Stage>
-          <RW.NumberPicker {...this.state}  />
+          <RW.NumberPicker
+            {...this.state}
+            format={format.value}
+          />
         </Demo.Stage>
         <Demo.Controls>
           <Layout justify="space-between">
@@ -66,20 +83,18 @@ module.exports = React.createClass({
           <Layout>
             <Demo.Control label='culture' flex>
               <RW.DropdownList
+                filter={false}
                 value={culture || cultures[0]}
                 data={cultures}
                 onChange={setter('culture')}
               />
             </Demo.Control>
-            <Demo.Control flex={0.75} label="format">
-              <RW.Combobox
+            <Demo.Control flex={2} label="format">
+              <RW.DropdownList
+                filter={false}
                 value={format}
-                data={[
-                  'd',
-                  'd4',
-                  'c2',
-                  'p0'
-                ]}
+                data={formats}
+                textField="text"
                 onChange={setter('format')}
               />
             </Demo.Control>

@@ -25,14 +25,28 @@ export default function globalizeLocalizers(globalize) {
   return localizers;
 }
 
-function newGlobalize(Globalize){
-  let locale = culture => culture ? Globalize(culture) : Globalize;
+function newGlobalize(globalize) {
+  let cache = Object.create(null);
 
-  let firstDayFormatter = Globalize.dateFormatter({ raw: 'e' });
+  function locale(culture) {
+    return culture ? globalize(culture) : globalize
+  }
 
-  var date = {
+  function createFormat(name) {
+    return (value, culture) => getFormats(culture)[name](value)
+  }
 
-    formats: {
+  function getFormats(culture) {
+    let { locale: current = culture } = globalize.locale() || {}
+
+    current = culture || current;
+
+    if (cache[current]) return cache[current]
+
+    let Globalize = locale(culture)
+
+    return cache[current] = {
+      firstWeekday: Globalize.dateFormatter({ raw: 'e' }),
       date: Globalize.dateFormatter({ date: 'short' }),
       time: Globalize.dateFormatter({ time: 'short' }),
       default: Globalize.dateFormatter({ datetime: 'medium' }),
@@ -43,6 +57,26 @@ function newGlobalize(Globalize){
       month: Globalize.dateFormatter({ raw: 'MMM' }),
       year: Globalize.dateFormatter({ raw: 'yyyy' }),
 
+      number: Globalize.numberFormatter({ maximumFractionDigits: 0 }),
+      decimalChar: Globalize.numberFormatter({ raw: '0.0' }),
+    }
+  }
+
+
+
+  var date = {
+
+    formats: {
+      date: createFormat('date'),
+      time: createFormat('time'),
+      default: createFormat('default'),
+      header: createFormat('header'),
+      footer: createFormat('footer'),
+      weekday: createFormat('weekday'),
+      dayOfMonth: createFormat('dayOfMonth'),
+      month: createFormat('month'),
+      year: createFormat('year'),
+
       decade: (dt, culture, l) =>
         `${l.format(dt, l.formats.year, culture)} - ${l.format(endOfDecade(dt), l.formats.year, culture)}`,
 
@@ -51,11 +85,14 @@ function newGlobalize(Globalize){
     },
 
     propType: PropTypes.oneOfType([
-      PropTypes.string, PropTypes.object, PropTypes.func]),
+      PropTypes.string,
+      PropTypes.object,
+      PropTypes.func
+    ]),
 
     firstOfWeek(culture) {
       let date = new Date();
-      let localeDay = this.format(date, firstDayFormatter, culture);
+      let localeDay = getFormats(culture).firstWeekday(date);
 
       //cldr-data doesn't seem to be zero based
       localeDay = Math.max(parseInt(localeDay, 10) - 1, 0)
@@ -63,22 +100,21 @@ function newGlobalize(Globalize){
       return Math.abs(date.getDay() - localeDay)
     },
 
-    parse(value, format, culture){
+    parse(value, format, culture) {
       format = typeof format === 'string' ? { raw: format } : format;
       return locale(culture).parseDate(value, format)
     },
 
-    format(value, format, culture){
+    format(value, format, culture) {
       format = typeof format === 'string' ? { raw: format } : format;
       return locale(culture).formatDate(value, format)
     }
   }
 
-  let decimalCarFormatter = Globalize.numberFormatter({ raw: '0.0' });
 
   let number = {
     formats: {
-      default: Globalize.numberFormatter({ maximumFractionDigits: 0 }),
+      default: createFormat('number'),
     },
 
     propType: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
@@ -99,7 +135,7 @@ function newGlobalize(Globalize){
     },
 
     decimalChar(format, culture) {
-      let str = this.format(1.1, decimalCarFormatter, culture)
+      let str = getFormats(culture).decimalChar(1.1)
       return str[str.length - 2] || '.'
     },
 

@@ -67,6 +67,14 @@ var SelectListApi = React.createClass({
                 </Button>
               </ButtonGroup>
             </Demo.Control>
+            <Demo.Control>
+              <Checkbox
+                checked={busy}
+                onClick={setter('busy', !busy)}
+              >
+                Busy
+              </Checkbox>
+            </Demo.Control>
           </Layout>
 
           <Demo.Control label='disable individual items'>
@@ -97,14 +105,6 @@ var SelectListApi = React.createClass({
                 onChange={setter('multiple', !multiple)}
               >
                 multiple
-              </Checkbox>
-            </Demo.Control>
-            <Demo.Control>
-              <Checkbox
-                checked={busy}
-                onClick={setter('busy', !busy)}
-              >
-                Busy
               </Checkbox>
             </Demo.Control>
           </Layout>

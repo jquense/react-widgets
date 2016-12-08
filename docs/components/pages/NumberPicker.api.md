@@ -27,6 +27,14 @@ ${language.onChange}
 
 A format string used to display the number value. Localizer dependent, read [localization](i18n) for more info.
 
+<EditableExample codeText={
+  require('../examples/prop')(widgetName, {
+    max: 1, min: -1,
+    defaultValue: 0.2585,
+    format: "{ style: 'percent' }"
+  })}
+/>
+
 ### parse?{ type: 'function(str: string, culture: ?string) | array<string>' }
 
 Determines how the {widgetName} parses a number from the localized string representation.

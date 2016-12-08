@@ -70,25 +70,6 @@ module.exports = React.createClass({
           </div>
         </Demo.Stage>
         <Demo.Controls>
-
-          <Layout>
-            <Demo.Control label="filter" flex>
-              <RW.DropdownList
-                value={filter || false}
-                data={[false, 'startsWith', 'endsWith', 'contains']}
-                onChange={setter('filter')}
-              />
-            </Demo.Control>
-            <Demo.Control flex>
-              <Checkbox
-                checked={suggest}
-                onChange={setter('suggest', !suggest)}
-              >
-                Suggestions
-              </Checkbox>
-            </Demo.Control>
-          </Layout>
-
           <Layout>
             <Demo.Control>
               <ButtonGroup>
@@ -111,6 +92,33 @@ module.exports = React.createClass({
                   Readonly
                 </Button>
               </ButtonGroup>
+            </Demo.Control>
+            <Demo.Control>
+              <Checkbox
+                checked={busy}
+                onClick={setter('busy', !busy)}
+              >
+                Busy
+              </Checkbox>
+            </Demo.Control>
+          </Layout>
+
+          <Layout>
+            <Demo.Control label="filter" flex>
+              <RW.DropdownList
+                filter={false}
+                value={filter || false}
+                data={[false, 'startsWith', 'endsWith', 'contains']}
+                onChange={setter('filter')}
+              />
+            </Demo.Control>
+            <Demo.Control flex>
+              <Checkbox
+                checked={suggest}
+                onChange={setter('suggest', !suggest)}
+              >
+                Suggestions
+              </Checkbox>
             </Demo.Control>
           </Layout>
 
@@ -142,14 +150,6 @@ module.exports = React.createClass({
                 onChange={setter('groupBy', !groupBy ? GroupBy : null)}
               >
                 group
-              </Checkbox>
-            </Demo.Control>
-            <Demo.Control>
-              <Checkbox
-                checked={busy}
-                onClick={setter('busy', !busy)}
-              >
-                Busy
               </Checkbox>
             </Demo.Control>
           </Layout>

@@ -7,7 +7,7 @@ let defaults = {
   grouping: ','
 }
 
-export default function simpleNumber(options) {
+export default function simpleNumber(options = {}) {
   let { decimal, grouping } = { ...defaults, ...options }
 
   let localizer = {

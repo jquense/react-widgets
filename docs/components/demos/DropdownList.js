@@ -88,6 +88,7 @@ var DropdownApi = React.createClass({
             </Demo.Control>
             <Demo.Control label="filter" flex>
               <RW.DropdownList
+                filter={false}
                 value={filter}
                 data={[false, 'startsWith', 'endsWith', 'contains']}
                 onChange={setter('filter')}

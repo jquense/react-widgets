@@ -9,15 +9,35 @@ import Demo, { createSetter } from '../Demo';
 import Layout from '../Layout';
 import { CULTURES, VIEWS } from './Calendar';
 
+let getType = (date, time) => date && time ? 'datetime' : date ? 'date' : 'time';
+
+let getFormat = (date, time, type = 'short') => ({
+  [getType(date, time)]: type
+})
+
+const formats = [
+  {
+    value: { datetime: 'medium' },
+    text: 'date & time "medium"' },
+  {
+    value: { date: 'full' },
+    text: 'date "full"' },
+  {
+    value: { time: 'short' },
+    text: 'time: "short"' },
+  {
+    value: 'MMM-dd-yyyy',
+    text: '"MMM-dd-yyyy"' },
+]
+
 
 export default class DateTimePickerDemo extends React.Component {
   state = {
     calendar: true,
     time: true,
-    format: 'f',
+    format: formats[0],
     views: VIEWS,
   }
-
 
   render() {
     const {
@@ -25,16 +45,15 @@ export default class DateTimePickerDemo extends React.Component {
       , disabled, readOnly, time, calendar } = this.state
 
 
-    let minMaxFormat = time && calendar
-      ? 'MM/dd/yyyy h:mm tt'
-      : time ? 't' : 'd'
+    let minMaxFormat = getFormat(calendar, time)
 
     let setter = createSetter(this)
 
     let props = {
+      ...this.state,
       max: max || undefined,
       min: min || undefined,
-      ...this.state,
+      format: format.value
     }
 
 
@@ -50,16 +69,8 @@ export default class DateTimePickerDemo extends React.Component {
           </div>
         </Demo.Stage>
         <Demo.Controls>
-          <Layout justify="space-between">
-            <Demo.Control label='culture' flex>
-              <RW.DropdownList
-                value={culture || CULTURES[0]}
-                data={CULTURES}
-                onChange={setter('culture')}
-              />
-            </Demo.Control>
-
-            <Demo.Control flex>
+          <Layout>
+            <Demo.Control>
               <ButtonGroup>
                 <Button
                   active={disabled}
@@ -75,50 +86,8 @@ export default class DateTimePickerDemo extends React.Component {
                 </Button>
               </ButtonGroup>
             </Demo.Control>
-          </Layout>
-
-          <Demo.Control label="views" flex>
-            <RW.Multiselect
-              value={views.length ? views : ['month']}
-              data={VIEWS}
-              onChange={(views) => setter('views')(
-                VIEWS.filter(v => ~views.indexOf(v) // correct order
-              ))}
-            />
-          </Demo.Control>
-          <Demo.Control label="min" >
-            <RW.DateTimePicker
-              value={min}
-              ime={time}
-              culture={culture}
-              calendar={calendar}
-              format={minMaxFormat}
-              onChange={setter('min')}
-            />
-          </Demo.Control>
-          <Demo.Control label="max">
-            <RW.DateTimePicker
-              value={max}
-              time={time}
-              culture={culture}
-              calendar={calendar}
-              format={minMaxFormat}
-              onChange={setter('max')}
-            />
-          </Demo.Control>
-          <Layout justify="flex-start">
             <Demo.Control>
               <Checkbox
-                inline
-                checked={!!isRtl}
-                onChange={setter('isRtl', !isRtl)}
-              >
-                right-to-left
-              </Checkbox>
-            </Demo.Control>
-            <Demo.Control>
-              <Checkbox
-                inline
                 checked={calendar}
                 onChange={setter('calendar', !calendar)}
               >
@@ -127,11 +96,76 @@ export default class DateTimePickerDemo extends React.Component {
             </Demo.Control>
             <Demo.Control>
               <Checkbox
-                inline
                 checked={time}
                 onChange={setter('time', !time)}
               >
                 time
+              </Checkbox>
+            </Demo.Control>
+          </Layout>
+
+          <Layout>
+            <Demo.Control label='culture' flex>
+              <RW.DropdownList
+                filter={false}
+                value={culture || CULTURES[0]}
+                data={CULTURES}
+                onChange={setter('culture')}
+              />
+            </Demo.Control>
+            <Demo.Control flex={2} label="format">
+              <RW.DropdownList
+                filter={false}
+                value={format}
+                data={formats}
+                textField="text"
+                onChange={setter('format')}
+              />
+            </Demo.Control>
+          </Layout>
+
+          <Layout>
+            <Demo.Control label="min" >
+              <RW.DateTimePicker
+                value={min}
+                time={time}
+                culture={culture}
+                calendar={calendar}
+                format={minMaxFormat}
+                onChange={setter('min')}
+              />
+            </Demo.Control>
+            <Demo.Control label="max">
+              <RW.DateTimePicker
+                value={max}
+                time={time}
+                culture={culture}
+                calendar={calendar}
+                format={minMaxFormat}
+                onChange={setter('max')}
+              />
+            </Demo.Control>
+          </Layout>
+
+
+          <Demo.Control label="calendar views">
+            <RW.Multiselect
+              value={views.length ? views : ['month']}
+              data={VIEWS}
+              disabled={!calendar}
+              onChange={(views) => setter('views')(
+                VIEWS.filter(v => ~views.indexOf(v) // correct order
+              ))}
+            />
+          </Demo.Control>
+
+          <Layout justify="flex-start">
+            <Demo.Control>
+              <Checkbox
+                checked={!!isRtl}
+                onChange={setter('isRtl', !isRtl)}
+              >
+                right-to-left
               </Checkbox>
             </Demo.Control>
           </Layout>

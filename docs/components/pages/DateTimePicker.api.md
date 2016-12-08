@@ -81,7 +81,14 @@ visit the [Localization page](i18n)
 A string format to be used while the date input has focus. Useful for showing a simpler format for inputing.
 For more information about formats visit the [Localization page](i18n)
 
-<EditableExample codeText={require('../examples/prop')(widgetName, { defaultValue: 'new Date()', editFormat: '"d"', format: '"MMM dd yyyy"'})}/>
+<EditableExample codeText={
+  require('../examples/prop')(widgetName, {
+    time: 'false',
+    defaultValue: 'new Date()',
+    editFormat: "{ date: 'short' }",
+    format: '"MMM dd yyyy"'
+  })}
+/>
 
 ### timeFormat?{ localizable: true }
 
