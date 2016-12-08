@@ -2,7 +2,7 @@
 name: Combobox
 heading: >
   Select an item from the list, or input a custom value. The {widgetName} can also make suggestions as you type.
-shortcuts: >
+shortcuts: |
   - <kbd>alt + down arrow</kbd> open dropdown
   - <kbd>alt + up arrow</kbd> close dropdown
   - <kbd>down arrow</kbd> move focus to next item

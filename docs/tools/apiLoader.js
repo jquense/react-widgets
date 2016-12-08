@@ -50,6 +50,7 @@ module.exports = function(content) {
   let file = template({
     attributes,
     props,
+    toHtml,
     heading: toHtml(heading),
     body: toHtml(body),
   })

@@ -25,21 +25,23 @@ export default function globalizeLocalizers(globalize) {
   return localizers;
 }
 
-function newGlobalize(globalize){
-  let locale = culture => culture ? globalize(culture) : globalize;
+function newGlobalize(Globalize){
+  let locale = culture => culture ? Globalize(culture) : Globalize;
+
+  let firstDayFormatter = Globalize.dateFormatter({ raw: 'e' });
 
   var date = {
 
     formats: {
-      date: { date: 'short' },
-      time: { time: 'short' },
-      default: { datetime: 'medium' },
-      header: 'MMMM yyyy',
-      footer: { date: 'full' },
-      weekday: 'eeeeee',
-      dayOfMonth: 'dd',
-      month: 'MMM',
-      year: 'yyyy',
+      date: Globalize.dateFormatter({ date: 'short' }),
+      time: Globalize.dateFormatter({ time: 'short' }),
+      default: Globalize.dateFormatter({ datetime: 'medium' }),
+      header: Globalize.dateFormatter({ raw: 'MMMM yyyy' }),
+      footer: Globalize.dateFormatter({ date: 'full' }),
+      weekday: Globalize.dateFormatter({ raw: 'eeeeee' }),
+      dayOfMonth: Globalize.dateFormatter({ raw: 'dd' }),
+      month: Globalize.dateFormatter({ raw: 'MMM' }),
+      year: Globalize.dateFormatter({ raw: 'yyyy' }),
 
       decade: (dt, culture, l) =>
         `${l.format(dt, l.formats.year, culture)} - ${l.format(endOfDecade(dt), l.formats.year, culture)}`,
@@ -51,10 +53,12 @@ function newGlobalize(globalize){
     propType: PropTypes.oneOfType([
       PropTypes.string, PropTypes.object, PropTypes.func]),
 
-    firstOfWeek(culture){
+    firstOfWeek(culture) {
       let date = new Date();
+      let localeDay = this.format(date, firstDayFormatter, culture);
+
       //cldr-data doesn't seem to be zero based
-      let localeDay = Math.max(parseInt(locale(culture).formatDate(date, { raw: 'e' }), 10) - 1, 0)
+      localeDay = Math.max(parseInt(localeDay, 10) - 1, 0)
 
       return Math.abs(date.getDay() - localeDay)
     },
@@ -70,9 +74,11 @@ function newGlobalize(globalize){
     }
   }
 
+  let decimalCarFormatter = Globalize.numberFormatter({ raw: '0.0' });
+
   let number = {
     formats: {
-      default: { maximumFractionDigits: 0 }
+      default: Globalize.numberFormatter({ maximumFractionDigits: 0 }),
     },
 
     propType: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
@@ -93,7 +99,7 @@ function newGlobalize(globalize){
     },
 
     decimalChar(format, culture) {
-      let str = this.format(1.1, { raw: '0.0' }, culture)
+      let str = this.format(1.1, decimalCarFormatter, culture)
       return str[str.length - 2] || '.'
     },
 
@@ -105,13 +111,13 @@ function newGlobalize(globalize){
   return { date, number }
 }
 
-function oldGlobalize(globalize){
+function oldGlobalize(oldGlobalize) {
   const shortNames = Object.create(null);
 
   function getCulture(culture){
     return culture
-        ? globalize.findClosestCulture(culture)
-        : globalize.culture()
+        ? oldGlobalize.findClosestCulture(culture)
+        : oldGlobalize.culture()
   }
 
   function firstOfWeek(culture) {
@@ -152,11 +158,11 @@ function oldGlobalize(globalize){
     firstOfWeek,
 
     parse(value, format, culture){
-      return globalize.parseDate(value, format, culture)
+      return oldGlobalize.parseDate(value, format, culture)
     },
 
     format(value, format, culture){
-      return globalize.format(value, format, culture)
+      return oldGlobalize.format(value, format, culture)
     }
   }
 
@@ -180,11 +186,11 @@ function oldGlobalize(globalize){
 
     // TODO major bump consistent ordering
     parse(value, culture) {
-      return globalize.parseFloat(value, 10, culture)
+      return oldGlobalize.parseFloat(value, 10, culture)
     },
 
     format(value, format, culture){
-      return globalize.format(value, format, culture)
+      return oldGlobalize.format(value, format, culture)
     },
 
     decimalChar(format, culture){

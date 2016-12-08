@@ -345,7 +345,7 @@ class Combobox extends React.Component {
     let { focused } = this.state;
 
     let disabled = this.props.disabled === true
-      , readOnly = this.props.readonly === true
+      , readOnly = this.props.readOnly === true
 
     let elementProps = Props.pickElementProps(this);
     let shouldRenderPopup = open || isFirstFocusedRender(this);

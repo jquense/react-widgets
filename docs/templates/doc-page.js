@@ -7,7 +7,7 @@ const localizationWarning = stripIndent`
   </div>
 `
 
-module.exports = function({ attributes, props, body, heading }) {
+module.exports = function({ attributes, props, body, heading, toHtml }) {
   const widgetName = attributes.name
 
   return stripIndent`
@@ -50,14 +50,16 @@ module.exports = function({ attributes, props, body, heading }) {
                     title='props'
                     id='props-${widgetName}'
                   >
-                    ${props}
+                    ${props.map(prop => `
+                    <MenuItem>${prop}</MenuItem>`).join('')}
                   </DropdownButton>
                 </span>
               </h1>
-              ${heading}
-              ${attributes.localized && localizationWarning}
+              ${heading || ''}
+              ${attributes.localized && localizationWarning || ''}
               <ImportSection widgetName={widgetName} />
-              <WidgetDemo/>
+
+              <WidgetDemo shortcuts={${toHtml(attributes.shortcuts)}} />
 
               ${body}
             </section>

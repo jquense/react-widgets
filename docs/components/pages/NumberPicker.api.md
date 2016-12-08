@@ -4,7 +4,7 @@ heading: >
   Spinner for selecting numbers. The {widgetName} is a _localized_ widget and so __requires__ a localizer to
   be specified. You can read more about localizers here: [localization](i18n).
 
-shortcuts: >
+shortcuts: |
   - <kbd>down arrow</kbd> decrement value
   - <kbd>up arrow</kbd> increment value
   - <kbd>home</kbd> set value to minimum value if finite

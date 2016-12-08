@@ -23,11 +23,11 @@ export let widgetEditable = interactionDecorator(false)
 function interactionDecorator(disabledOnly) {
   function wrap(method) {
     return function decoratedMethod(...args) {
+      let { disabled, readOnly } = this.props;
 
-      if (
-        this.props.disabled !== true ||
-        (!disabledOnly && this.props.readOnly === true)
-      ) {
+      disabled = disabled == true || (!disabledOnly && readOnly === true);
+
+      if (!disabled) {
         return method.apply(this, args)
       }
     }

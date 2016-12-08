@@ -1,7 +1,7 @@
 ---
 name: Multiselect
 heading: A select listbox alternative
-shortcuts: >
+shortcuts: |
   * <kbd>down arrow</kbd> open dropdown, and move focus to next item
   * <kbd>up arrow</kbd> move focus to previous item
   * <kbd>alt + up arrow</kbd> close dropdown

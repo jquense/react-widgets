@@ -1,7 +1,7 @@
 ---
 name: Calendar
 localized: true
-shortcuts: >
+shortcuts: |
   - <kbd>ctrl + down arrow</kbd> navigate to next view
   - <kbd>ctrl + up arrow</kbd> navigate to previous view
   - <kbd>ctrl + left arrow</kbd> navigate to previous: month, year, decade, century

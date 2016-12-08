@@ -78,10 +78,11 @@ class List extends React.Component {
 
   static getListDataState(data, { groupBy }, lastState = {}) {
     if (
-      groupBy && (
       lastState.data !== data ||
       lastState.groupBy !== groupBy
-    )) {
+    ) {
+      if (!groupBy) return {};
+
       let keys = [];
       let groups = group(groupBy, data, keys);
 

@@ -7,7 +7,7 @@ import Widget from './Widget';
 import WidgetPicker from './WidgetPicker';
 import Select from './Select';
 import Popup from './Popup';
-import SelectInput from './MultiselectInput';
+import MultiselectInput from './MultiselectInput';
 import TagList from './MultiselectTagList';
 import List from './List';
 
@@ -368,7 +368,7 @@ class Multiselect extends React.Component {
       : focusedTag && this.activeTagId;
 
     return (
-      <SelectInput
+      <MultiselectInput
         ref='input'
         autoFocus={autoFocus}
         tabIndex={tabIndex || 0}

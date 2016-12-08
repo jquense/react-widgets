@@ -1,6 +1,6 @@
 ---
 name: DropdownList
-shortcuts: >
+shortcuts: |
   - <kbd>alt + down arrow</kbd> open dropdown
   - <kbd>alt + up arrow</kbd> close dropdown
   - <kbd>down arrow</kbd> move focus to next item

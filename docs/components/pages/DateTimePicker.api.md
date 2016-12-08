@@ -3,7 +3,7 @@ name: DateTimePicker
 localized: true
 heading: >
   Select an item from the list, or input a custom value. The {widgetName} can also make suggestions as you type.
-shortcuts: >
+shortcuts: |
   - __All Calendar keyboard navigation work here as well__
   - <kbd>alt + down arrow</kbd> open calendar or times
   - <kbd>alt + up arrow</kbd> close calendar or times

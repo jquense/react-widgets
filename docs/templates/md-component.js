@@ -10,11 +10,11 @@ module.exports = function({ body }) {
       , { Link } = require('react-router');
 
     const Tab = (props) => <div {...props} />
-    
+
     module.exports = function Page({ scope, style, className }) {
       return (
         <section className={className} style={style}>
-          ${body}
+          ${body || ''}
         </section>
       )
     }

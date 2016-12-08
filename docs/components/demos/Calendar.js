@@ -1,55 +1,39 @@
 import React from 'react';
-import dates from 'date-arithmetic';
 import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import RW from 'react-widgets';
 
 import Demo, { createSetter } from '../Demo';
 import Layout from '../Layout';
-import { CULTURES, VIEWS } from './Calendar';
+
+import 'globalize/lib/cultures/globalize.culture.en-GB';
+import 'globalize/lib/cultures/globalize.culture.es';
+import 'globalize/lib/cultures/globalize.culture.fr';
+import 'globalize/lib/cultures/globalize.culture.ar-AE';
+
+export const VIEWS = ['month', 'year', 'decade', 'century'];
+export const CULTURES = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
 
 
-export default class DateTimePickerDemo extends React.Component {
-  state = {
-    calendar: true,
-    time: true,
-    format: 'f',
+export default class CalendarDemo extends React.Component {
+  state =  {
+    format: '',
+    footer: true,
     views: VIEWS,
   }
 
-
   render() {
-    const {
-        isRtl, min, max, views, format, culture
-      , disabled, readOnly, time, calendar } = this.state
-
-
-    let minMaxFormat = time && calendar
-      ? 'MM/dd/yyyy h:mm tt'
-      : time ? 't' : 'd'
+    const { views, min, max, footer, culture, isRtl, disabled, readOnly } = this.state;
 
     let setter = createSetter(this)
-
-    let props = {
-      max: max || undefined,
-      min: min || undefined,
-      ...this.state,
-    }
-
 
     return (
       <Demo shortcuts={this.props.shortcuts}>
         <Demo.Stage>
-          <div className='form-group'>
-            <RW.DateTimePicker defaultValue={new Date()} {...props}/>
-          </div>
-          <div className='form-group'>
-            <label>Custom Rendering</label>
-            <RW.DateTimePicker {...props} timeComponent={itemComp}/>
-          </div>
+          <RW.Calendar {...this.state} />
         </Demo.Stage>
-        <Demo.Controls>
+        <Demo.Controls >
           <Layout justify="space-between">
             <Demo.Control label='culture' flex>
               <RW.DropdownList
@@ -88,21 +72,17 @@ export default class DateTimePickerDemo extends React.Component {
           </Demo.Control>
           <Demo.Control label="min" >
             <RW.DateTimePicker
+              time={false}
+              format='MMM dd, yyyy'
               value={min}
-              ime={time}
-              culture={culture}
-              calendar={calendar}
-              format={minMaxFormat}
               onChange={setter('min')}
             />
           </Demo.Control>
           <Demo.Control label="max">
             <RW.DateTimePicker
+              time={false}
               value={max}
-              time={time}
-              culture={culture}
-              calendar={calendar}
-              format={minMaxFormat}
+              format='MMM dd yyyy'
               onChange={setter('max')}
             />
           </Demo.Control>
@@ -119,54 +99,15 @@ export default class DateTimePickerDemo extends React.Component {
             <Demo.Control>
               <Checkbox
                 inline
-                checked={calendar}
-                onChange={setter('calendar', !calendar)}
+                checked={footer}
+                onChange={setter('footer', !footer)}
               >
-                date
-              </Checkbox>
-            </Demo.Control>
-            <Demo.Control>
-              <Checkbox
-                inline
-                checked={time}
-                onChange={setter('time', !time)}
-              >
-                time
+                footer
               </Checkbox>
             </Demo.Control>
           </Layout>
         </Demo.Controls>
-    </Demo>
+      </Demo>
     )
   }
-}
-
-
-var itemComp = React.createClass({
-  render: function() {
-    var date   = merge(new Date, this.props.item.date)
-      , inPast = dates.lt(date, new Date, 'minutes')
-
-    return (
-      <div className={inPast ? 'overdue' : ''}>
-        <i className={'fa fa-' + (inPast ? 'history' : 'clock')}></i>
-        { '  ' + this.props.item.label}
-      </div>
-    );
-  }
-});
-
-
-function merge(date, time){
-  if( time == null && date == null)
-    return null
-
-  if( time == null) time = new Date
-  if( date == null) date = new Date
-
-  date = dates.startOf(date, 'day')
-  date = dates.hours(date,        dates.hours(time))
-  date = dates.minutes(date,      dates.minutes(time))
-  date = dates.seconds(date,      dates.seconds(time))
-  return dates.milliseconds(date, dates.milliseconds(time))
 }

@@ -3,7 +3,7 @@ name: SelectList
 heading: >
   Creates a list of radio buttons or checkboxes bound to a data set.
 
-shortcuts: >
+shortcuts: |
   - <kbd>down arrow</kbd> move focus to or select next item
   - <kbd>up arrow</kbd> move focus to or select previous item
   - <kbd>home</kbd> move focus to or select first item

@@ -3,11 +3,13 @@ var path = require('path')
   , webpack = require('webpack')
   , pkg = require('../package.json');
 
-var TARGET = process.env.NODE_ENV || 'development';
+var TARGET = process.env.TARGET || 'development';
+var PRODUCTION = process.env.NODE_ENV === 'production';
 
 console.log( // eslint-disable-line
   '---------------------\n' +
-  '-- Webpack: compiling target: ' + TARGET + ' \n' +
+  '-- target: ' + TARGET + ' \n' +
+  '--    env: ' + (process.env.NODE_ENV || 'dev') + '\n' +
   '---------------------\n'
 );
 
@@ -59,19 +61,18 @@ var config = {
       'react-dom': path.resolve('./node_modules/react-dom')
     }
   },
+  node: {
+    Buffer: false
+  },
 }
 
-
-if (DOCS || DIST) {
+if (PRODUCTION) {
   config = merge(config, {
-    node: {
-      Buffer: false
-    },
+
     plugins: [
       new webpack.DefinePlugin({
-        '__VERSION__': JSON.stringify(pkg.version),
         'process.env': {
-          NODE_ENV: JSON.stringify('production')
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         }
       }),
       new webpack.optimize.DedupePlugin(),
@@ -84,11 +85,12 @@ if (DOCS || DIST) {
 }
 
 if (DOCS) {
+  let docsPath = path.join(__dirname, '../docs/components/Docs.js');
+
   config = merge(config, {
     devtool: 'source-map',
     entry:  {
-      app: path.join(__dirname, '../docs/components/Docs.js'),
-      vendor: ['react', 'react-dom', 'globalize']
+      app: docsPath,
     },
     output: {
       path: path.join(__dirname, '../docs/public'),
@@ -97,10 +99,9 @@ if (DOCS) {
     },
 
     plugins: [
-      new webpack.optimize.CommonsChunkPlugin(
-        'vendor',
-        'vendor.bundle.js'
-      )
+      new webpack.DefinePlugin({
+        '__VERSION__': JSON.stringify(pkg.version),
+      })
     ],
 
     module: {
@@ -123,6 +124,23 @@ if (DOCS) {
       ]
     }
   })
+
+  if (PRODUCTION) {
+    config = merge(config, {
+      entry:  {
+        app: [
+          'globalize/dist/globalize-runtime',
+          path.join(__dirname, '../docs/public/formatters.js'),
+          docsPath,
+        ],
+      },
+      resolve: {
+        alias: {
+          globalize: 'globalize/dist/globalize-runtime',
+        }
+      },
+    })
+  }
 }
 else if (DIST) {
   config = [

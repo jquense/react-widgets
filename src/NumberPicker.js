@@ -183,7 +183,8 @@ class NumberPicker extends React.Component {
       , min, max
       , disabled, readOnly
       , inputProps
-      , format } = this.props;
+      , format
+      , culture } = this.props;
 
     return (
       <Input
@@ -196,6 +197,7 @@ class NumberPicker extends React.Component {
         autoFocus={autoFocus}
         editing={this.state.focused}
         format={format}
+        culture={culture}
         parse={parse}
         name={name}
         min={min}
