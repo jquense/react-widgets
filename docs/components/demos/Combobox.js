@@ -62,7 +62,7 @@ module.exports = React.createClass({
             <RW.Combobox {...props}/>
           </div>
           <div className='form-group'>
-            <label className='form-label'>Custom list Rendering</label>
+            <label className='control-label'>Custom list Rendering</label>
             <RW.Combobox
               {...props}
               itemComponent={ItemComponent}

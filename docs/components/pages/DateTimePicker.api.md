@@ -33,11 +33,11 @@ This handler fires when an item has been selected from the list or calendar. It 
 
 <EditableExample codeText={require('../examples/onSelect')(widgetName)}/>
 
-### calendar?{ type: 'bool', default: 'true' }
+### date?{ type: 'bool', default: 'true' }
 
 Whether to show the date picker button.
 
-<EditableExample codeText={require('../examples/prop')(widgetName, 'calendar', false)}/>
+<EditableExample codeText={require('../examples/prop')(widgetName, 'date', false)}/>
 
 ### time?{ type: 'bool', default: 'true' }
 
@@ -110,7 +110,7 @@ the `format` prop is a `string` parse will automatically use that format as its 
 <EditableExample codeText={require('../examples/parse')(widgetName)}/>
 
 
-### open?{ type: 'false | "calendar" | "time"', default: 'false', controllable: 'onToggle' }
+### open?{ type: 'false | "date" | "time"', default: 'false', controllable: 'onToggle' }
 
 ${language.open}
 
@@ -132,7 +132,7 @@ ${language.isRtl}
 
 ${language.messages}
 
-### messages.calendarButton?{ type: 'string', default: '"Select Date"' }
+### messages.dateButton?{ type: 'string', default: '"Select Date"' }
 
 title and screen reader text for the left arrow button.
 

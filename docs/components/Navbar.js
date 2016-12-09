@@ -48,22 +48,16 @@ function MobileNav() {
       className="visible-xs"
     >
       <LinkContainer to="/" onlyActiveOnIndex>
-        <NavItem>
-          <i className='fa fa-play'/> Getting Started
-        </NavItem>
+        <NavItem>Getting Started</NavItem>
       </LinkContainer>
       <LinkContainer to="/i18n">
-        <NavItem>
-          <i className='fa fa-globe'/> Localization
-        </NavItem>
+        <NavItem>Localization </NavItem>
       </LinkContainer>
       <LinkContainer to="/controllables">
-        <NavItem>
-          <i className='fa fa-cogs'/> Controlled components
-        </NavItem>
+        <NavItem>Controlled components</NavItem>
       </LinkContainer>
       <NavItem href="https://github.com/jquense/react-widgets">
-        <i className='fa fa-github'/> Github
+         Github
       </NavItem>
     </Nav>
   )

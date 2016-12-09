@@ -2,6 +2,7 @@ import React  from 'react';
 import invariant from 'invariant';
 import activeElement from 'dom-helpers/activeElement';
 import cn from 'classnames';
+import deprecated from 'react-prop-types/lib/deprecated';
 import uncontrollable from 'uncontrollable';
 
 import Widget from './Widget';
@@ -29,7 +30,14 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 let Calendar = BaseCalendar.ControlledComponent;
 
-let viewEnum  = Object.keys(views).map( k => views[k] );
+let viewEnum = Object.keys(views).map(k => views[k]);
+
+let NEXT_VIEW = {
+  [popups.DATE]: popups.TIME,
+  [popups.TIME]: popups.DATE,
+}
+
+let isBothOrNeither = (a, b) => (a && b) || (!a && !b);
 
 let propTypes = {
   ...Calendar.propTypes,
@@ -37,7 +45,7 @@ let propTypes = {
   //-- controlled props -----------
   value:          React.PropTypes.instanceOf(Date),
   onChange:       React.PropTypes.func,
-  open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
+  open:           React.PropTypes.oneOf([false, popups.TIME, popups.DATE]),
   onToggle:       React.PropTypes.func,
   currentDate:    React.PropTypes.instanceOf(Date),
   onCurrentDateChange: React.PropTypes.func,
@@ -55,8 +63,9 @@ let propTypes = {
   timeFormat: CustomPropTypes.dateFormat,
   editFormat: CustomPropTypes.dateFormat,
 
-  calendar: React.PropTypes.bool,
+  date: React.PropTypes.bool,
   time: React.PropTypes.bool,
+  calendar: deprecated(React.PropTypes.bool, 'Use `date` instead'),
 
   timeComponent:  CustomPropTypes.elementType,
 
@@ -91,7 +100,7 @@ let propTypes = {
 
   inputProps: React.PropTypes.object,
   messages: React.PropTypes.shape({
-    calendarButton: React.PropTypes.string,
+    dateButton: React.PropTypes.string,
     timeButton: React.PropTypes.string
   })
 }
@@ -106,7 +115,8 @@ class DateTimePicker extends React.Component {
     value: null,
     min: new Date(1900,  0,  1),
     max: new Date(2099, 11, 31),
-    calendar: true,
+
+    date: true,
     time: true,
     open: false,
 
@@ -114,8 +124,8 @@ class DateTimePicker extends React.Component {
     footer: true,
 
     messages: {
-      calendarButton: 'Select Date',
-      timeButton:     'Select Time'
+      dateButton: 'Select Date',
+      timeButton: 'Select Time'
     },
   }
 
@@ -123,7 +133,7 @@ class DateTimePicker extends React.Component {
     super(...args);
 
     this.inputId = instanceId(this, '_input')
-    this.calendarId = instanceId(this, '_calendar')
+    this.dateId = instanceId(this, '_date')
     this.listId = instanceId(this, '_listbox')
     this.activeCalendarId = instanceId(this, '_calendar_active_cell')
     this.activeOptionId = instanceId(this, '_listbox_active_option')
@@ -161,7 +171,7 @@ class DateTimePicker extends React.Component {
 
   @widgetEditable
   handleKeyDown = (e) => {
-    let { open, calendar, time, onKeyDown } = this.props;
+    let { open, date, time, onKeyDown } = this.props;
 
     notify(onKeyDown, [e])
 
@@ -174,12 +184,7 @@ class DateTimePicker extends React.Component {
     else if (e.altKey) {
       if (e.key === 'ArrowDown') {
         e.preventDefault()
-        if (calendar && time)
-          this.open(open === popups.CALENDAR
-                ? popups.TIME
-                : popups.CALENDAR)
-        else if (time)     this.open(popups.TIME)
-        else if (calendar) this.open(popups.CALENDAR)
+        this.open()
       }
       else if (e.key === 'ArrowUp') {
         e.preventDefault()
@@ -187,7 +192,7 @@ class DateTimePicker extends React.Component {
       }
     }
     else if (open) {
-      if (open === popups.CALENDAR )
+      if (open === popups.DATE )
         this.refs.calPopup.refs.inner.handleKeyDown(e)
       if (open === popups.TIME )
         this.refs.timePopup.handleKeyDown(e)
@@ -232,7 +237,7 @@ class DateTimePicker extends React.Component {
   @widgetEditable
   handleCalendarClick = () => {
     this.focus()
-    this.toggle(popups.CALENDAR)
+    this.toggle(popups.DATE)
   };
 
   @widgetEditable
@@ -263,7 +268,7 @@ class DateTimePicker extends React.Component {
     if (open === popups.TIME) {
       activeId = this.activeOptionId
     }
-    else if (open === popups.CALENDAR) {
+    else if (open === popups.DATE) {
       activeId = this.activeCalendarId
     }
 
@@ -297,18 +302,18 @@ class DateTimePicker extends React.Component {
   }
 
   renderButtons(messages) {
-    let { calendar, time, disabled, readOnly } = this.props;
+    let { date, time, disabled, readOnly } = this.props;
 
-    if (!calendar && !time) {
+    if (!date && !time) {
       return null;
     }
 
     return (
       <Select bordered>
-        {calendar &&
+        {date &&
           <Button
             icon="calendar"
-            label={messages.calendarButton}
+            label={messages.dateButton}
             disabled={disabled || readOnly}
             onClick={this.handleCalendarClick}
           />
@@ -326,7 +331,7 @@ class DateTimePicker extends React.Component {
   }
 
   renderCalendar() {
-    let { activeCalendarId, inputId, calendarId } = this;
+    let { activeCalendarId, inputId, dateId } = this;
     let {
         open
       , value
@@ -339,13 +344,13 @@ class DateTimePicker extends React.Component {
       <Popup
         dropUp={dropUp}
         duration={duration}
-        open={open === popups.CALENDAR}
+        open={open === popups.DATE}
         className='rw-calendar-popup'
       >
         <BaseCalendar
           {...calendarProps}
           ref="calPopup"
-          id={calendarId}
+          id={dateId}
           activeId={activeCalendarId}
           tabIndex='-1'
           value={value}
@@ -373,7 +378,7 @@ class DateTimePicker extends React.Component {
       , currentDate
       , duration
       , dropUp
-      , calendar
+      , date
       , timeFormat
       , timeComponent } = this.props;
 
@@ -398,7 +403,7 @@ class DateTimePicker extends React.Component {
             value={dateOrNull(value)}
             onMove={this.handleScroll}
             onSelect={this.handleTimeSelect}
-            preserveDate={!!calendar}
+            preserveDate={!!date}
             itemComponent={timeComponent}
             aria-labelledby={inputId}
             aria-live={open && 'polite'}
@@ -412,7 +417,7 @@ class DateTimePicker extends React.Component {
   render() {
     let {
         className
-      , calendar
+      , date
       , time
       , open
       , messages
@@ -426,8 +431,8 @@ class DateTimePicker extends React.Component {
     let shouldRenderList = open || isFirstFocusedRender(this);
 
     let owns = '';
-    if (calendar) owns += this.calendarId
-    if (time)     owns += ' ' + this.listId
+    if (date) owns += this.dateId
+    if (time) owns += ' ' + this.listId
 
     return (
       <Widget
@@ -450,10 +455,10 @@ class DateTimePicker extends React.Component {
           {this.renderButtons(messages)}
         </WidgetPicker>
 
-        {shouldRenderList && time &&
+        {!!(shouldRenderList && time) &&
           this.renderTimeList()
         }
-        {shouldRenderList && calendar &&
+        {!!(shouldRenderList && date) &&
           this.renderCalendar()
         }
       </Widget>
@@ -494,16 +499,24 @@ class DateTimePicker extends React.Component {
   }
 
   toggle(view) {
-    this.props.open
-      ? this.props.open !== view
-          ? this.open(view)
-          : this.close(view)
-      : this.open(view)
+    const { open } = this.props;
+
+    if (!open || open !== view)
+      this.open(view)
+    else this.close();
   }
 
   open(view) {
-    if (this.props.open !== view && this.props[view] === true)
-      notify(this.props.onToggle, view)
+    const { open, date, time, onToggle } = this.props;
+
+    if (!view) {
+      if (time) view = popups.TIME
+      if (date) view = popups.DATE
+      if (isBothOrNeither(date, time))
+        view = NEXT_VIEW[open] || popups.DATE
+    }
+
+    if (open !== view) notify(onToggle, view)
   }
 
   close() {
@@ -533,14 +546,14 @@ export default  uncontrollable(
 
 
 function getFormat(props){
-  var cal  = props[popups.CALENDAR] != null ? props.calendar : true
-    , time = props[popups.TIME] != null ? props.time : true;
+  var isDate  = props[popups.DATE] != null ? props[popups.DATE] : true
+    , isTime = props[popups.TIME] != null ? props[popups.TIME] : true;
 
   return props.format
     ? props.format
-    : (cal && time) || (!cal && !time)
+    : (isDate && isTime) || (!isDate && !isTime)
       ? dateLocalizer.getFormat('default')
-      : dateLocalizer.getFormat(cal ? 'date' : 'time')
+      : dateLocalizer.getFormat(isDate ? 'date' : 'time')
 }
 
 function formatDate(date, format, culture){
@@ -555,7 +568,7 @@ function formatDate(date, format, culture){
 function formatsParser(formats, culture, str){
   var date;
 
-  for (var i = 0; i < formats.length; i++ ){
+  for (var i = 0; i < formats.length; i++) {
     date = dateLocalizer.parse(str, formats[i], culture)
     if (date) return date
   }

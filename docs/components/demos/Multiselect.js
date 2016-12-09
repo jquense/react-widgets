@@ -66,7 +66,7 @@ class Multiselect extends React.Component {
             <RW.Multiselect {...props}/>
           </div>
           <div className='form-group'>
-            <label>Custom Rendering</label>
+            <label className='control-label'>Custom Rendering</label>
             <RW.Multiselect
               {...props }
               tagComponent={ItemComponent}

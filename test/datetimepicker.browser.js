@@ -78,7 +78,7 @@ describe('DateTimePicker', function(){
 
     tsp(
       <ControlledDateTimePicker
-        open='calendar'
+        open='date'
         onChange={change}
         onSelect={select}
         onToggle={()=>{}}
@@ -99,7 +99,7 @@ describe('DateTimePicker', function(){
 
     tsp(
       <ControlledDateTimePicker
-        open='calendar'
+        open='date'
         onChange={change}
         onSelect={select}
         onToggle={()=>{}}
@@ -123,7 +123,7 @@ describe('DateTimePicker', function(){
 
   it('should not show time button when not selected', function(){
     var spy
-      , instance = render(<DateTimePicker time={false} calendar={false} onToggle={spy = sinon.spy()}/>);
+      , instance = render(<DateTimePicker time={false} date={false} onToggle={spy = sinon.spy()}/>);
 
     expect(() => findClass(instance, 'rw-btn-time')).to
       .throwException(/Did not find exactly one match.+/)

@@ -1,10 +1,10 @@
 'use strict';
 var views = {
-    MONTH:   'month',
-    YEAR:    'year',
-    DECADE:  'decade',
-    CENTURY: 'century'
-  }
+  MONTH:   'month',
+  YEAR:    'year',
+  DECADE:  'decade',
+  CENTURY: 'century'
+}
 
 export const directions = {
   LEFT:  'LEFT',
@@ -14,8 +14,8 @@ export const directions = {
 };
 
 export const datePopups = {
-  TIME:     'time',
-  CALENDAR: 'calendar'
+  TIME: 'time',
+  DATE: 'date'
 };
 
 export const calendarViews = views;

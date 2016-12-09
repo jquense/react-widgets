@@ -33,7 +33,7 @@ const formats = [
 
 export default class DateTimePickerDemo extends React.Component {
   state = {
-    calendar: true,
+    date: true,
     time: true,
     format: formats[0],
     views: VIEWS,
@@ -42,10 +42,9 @@ export default class DateTimePickerDemo extends React.Component {
   render() {
     const {
         isRtl, min, max, views, format, culture
-      , disabled, readOnly, time, calendar } = this.state
+      , disabled, readOnly, time, date } = this.state;
 
-
-    let minMaxFormat = getFormat(calendar, time)
+    let minMaxFormat = getFormat(date, time)
 
     let setter = createSetter(this)
 
@@ -56,7 +55,6 @@ export default class DateTimePickerDemo extends React.Component {
       format: format.value
     }
 
-
     return (
       <Demo shortcuts={this.props.shortcuts}>
         <Demo.Stage>
@@ -64,7 +62,7 @@ export default class DateTimePickerDemo extends React.Component {
             <RW.DateTimePicker defaultValue={new Date()} {...props}/>
           </div>
           <div className='form-group'>
-            <label>Custom Rendering</label>
+            <label className='control-label'>Custom Rendering</label>
             <RW.DateTimePicker {...props} timeComponent={itemComp}/>
           </div>
         </Demo.Stage>
@@ -88,8 +86,8 @@ export default class DateTimePickerDemo extends React.Component {
             </Demo.Control>
             <Demo.Control>
               <Checkbox
-                checked={calendar}
-                onChange={setter('calendar', !calendar)}
+                checked={date}
+                onChange={setter('date', !date)}
               >
                 date
               </Checkbox>
@@ -130,7 +128,7 @@ export default class DateTimePickerDemo extends React.Component {
                 value={min}
                 time={time}
                 culture={culture}
-                calendar={calendar}
+                date={date}
                 format={minMaxFormat}
                 onChange={setter('min')}
               />
@@ -140,7 +138,7 @@ export default class DateTimePickerDemo extends React.Component {
                 value={max}
                 time={time}
                 culture={culture}
-                calendar={calendar}
+                date={date}
                 format={minMaxFormat}
                 onChange={setter('max')}
               />
@@ -148,11 +146,11 @@ export default class DateTimePickerDemo extends React.Component {
           </Layout>
 
 
-          <Demo.Control label="calendar views">
+          <Demo.Control label="allowed calendar views">
             <RW.Multiselect
               value={views.length ? views : ['month']}
               data={VIEWS}
-              disabled={!calendar}
+              disabled={!date}
               onChange={(views) => setter('views')(
                 VIEWS.filter(v => ~views.indexOf(v) // correct order
               ))}
