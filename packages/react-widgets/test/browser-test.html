@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<head>
+    <link href="../dist/css/react-widgets.css" rel="stylesheet">
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h4>loading...</h4>
+</body>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js" type="text/javascript"></script>
+
+<script src="../dist/react-widgets.js" type="text/javascript"></script>
+<script src="../dist/react-widgets-moment.js" type="text/javascript"></script>
+<script src="../dist/react-widgets-simple-number.js" type="text/javascript"></script>
+<script>
+    var App = React.createClass({
+
+        render: function(){
+
+            return React.createElement('div', null, [
+                React.createElement(ReactWidgets.Calendar),
+                React.createElement(ReactWidgets.DropdownList),
+                React.createElement(ReactWidgets.NumberPicker),
+            ])
+        }
+    })
+
+    React.render(React.createElement(App), document.body)
+</script>
+</html>

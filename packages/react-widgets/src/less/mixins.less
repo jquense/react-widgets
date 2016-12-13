@@ -1,0 +1,143 @@
+
+.border-box() {
+  background-clip: border-box;
+
+  &,
+  & * {
+    box-sizing: border-box;
+  }
+
+  &:before,
+  & *:before,
+  &:after,
+  & *:after, {
+    box-sizing: border-box;
+  }
+}
+
+.opacity(@opacity) {
+  opacity: @opacity;
+  @opacity-ie: (@opacity * 100);
+  filter: ~"alpha(opacity=@{opacity-ie})";
+}
+
+.unstyled-list() {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.select-container(@padding) {
+  padding-right: @padding;
+
+  > .rw-select {
+    width: @padding;
+  }
+
+  &.rw-rtl {
+    padding-right: 0;
+    padding-left: @padding;
+  }
+}
+
+
+.border-bottom-radius(@radius) {
+  border-bottom-right-radius: @radius;
+   border-bottom-left-radius: @radius;
+}
+
+.border-top-radius(@radius) {
+  border-top-right-radius: @radius;
+   border-top-left-radius: @radius;
+}
+
+.state-hover() {
+  background-color: @state-bg-hover;
+  border:           @state-border-hover 1px solid;
+  color:            @state-color-hover;
+}
+
+.state-select() {
+  &,
+  &:hover {
+    background-color: @state-bg-select;
+    border:           @state-border-select 1px solid;
+    color:            @state-color-select;
+  }
+}
+
+.state-focus() {
+  &,
+  &:hover {
+    background-color: @state-bg-focus;
+    border:           @state-border-focus 1px solid;
+    color:            @state-color-focus;
+  }
+}
+
+.state-disabled() {
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+
+.disabled-color(@color) {
+  color: lighten(@color, 40%);
+  filter: alpha(opacity=7);
+  opacity: .7;
+}
+
+.clearfix() {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.placeholder(@color: @input-color-placeholder) {
+  // Firefox
+  &::-moz-placeholder {
+    color: @color;
+    opacity: 1; // See https://github.com/twbs/bootstrap/pull/11526
+  }
+  &:-ms-input-placeholder { color: @color; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { color: @color; } // Safari and Chrome
+}
+
+.height-calc(@total, @minus) {
+  height: ~"calc(@{total} - @{minus})";
+
+  /** ie8 fallback **/
+  margin-top: ~"-@{minus}\9";
+  height: ~"@{total}\9";
+  /** --- **/
+}
+
+.make-btn-state() {
+  cursor: pointer;
+
+  &:hover,
+  &:active, {
+    background-color: @state-bg-hover;
+  }
+
+  &:active {
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+  }
+
+  .rw-state-disabled &,
+  .rw-state-readonly & {
+    &,
+    &:hover,
+    &:active {
+      cursor: not-allowed;
+      background-color: inherit;
+      background-image: none;
+      box-shadow: none;
+    }
+  }
+}

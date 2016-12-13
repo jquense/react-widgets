@@ -1,0 +1,42 @@
+.rw-list {
+  .unstyled-list();
+  font-size: @list-font-size;
+  outline: 0;
+  overflow: auto;
+  max-height: 200px;
+}
+
+.rw-list-option {
+  user-select: none;
+  color: @list-text-color;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: @list-bg-hover;
+    border-color:     @list-border-hover;
+  }
+
+  &.rw-state-disabled,
+  &.rw-state-readonly {
+    .state-disabled();
+    .disabled-color(@list-text-color);
+
+    &:hover {
+      background: none;
+      border-color: transparent;
+    }
+  }
+}
+
+.rw-list-empty,
+.rw-list-option,
+.rw-list-optgroup {
+  padding: @list-padding-vertical @list-padding-horizontal;
+  outline: 0;
+}
+
+.rw-list-optgroup {
+  font-weight: bold;
+  padding-top: 7px;
+}
