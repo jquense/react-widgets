@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import tsp from 'teaspoon';
 
 import List from '../src/List';
+import listDataManager from '../src/util/listDataManager';
 
 var TestUtils = require('react-addons-test-utils');
 var render = TestUtils.renderIntoDocument;
@@ -16,11 +17,16 @@ describe('List', function(){
     { first: 'natalie', last: 'quense', id: 4 },
   ];
 
+  let accessors = {
+    textAccessor: v => v.first || '',
+    valueAccessor: v => v.id
+  }
+
   it('should set initial values', function(){
     let numItems = 5;
 
     expect(
-      tsp(<List data={data} onChange={()=>{}} />)
+      tsp(<List data={data} onChange={()=>{}} {...accessors} />)
         .render()
         .find('li')
         .length
@@ -29,28 +35,35 @@ describe('List', function(){
   })
 
   it('should use activeId', function(){
-    let focused = data[2];
+    let focusedItem = data[2];
 
     expect(
-      tsp(<List data={data} focused={focused} activeId="foo" />)
-        .render()
-        .find('.rw-list-option')
-        .nth(2)
-        .props('id')
+      tsp(
+        <List
+          data={data}
+          activeId="foo"
+          focusedItem={focusedItem}
+          {...accessors}
+        />
+      )
+      .render()
+      .find('.rw-list-option')
+      .nth(2)
+      .props('id')
     )
     .to.equal('foo');
   })
 
   it('should respect textField and valueFields', function(){
     var list = render(
-          <List data={data} textField='first' valueField='id' />);
+          <List data={data} {...accessors} />);
 
     expect($(ReactDOM.findDOMNode(list)).find('li:first-child').text())
       .to.be('jimmy');
   })
 
   it('should render an empty list message', function(){
-    var list = render(<List data={[]} textField='first' valueField='id' />);
+    var list = render(<List data={[]} {...accessors} />);
 
     expect($(ReactDOM.findDOMNode(list)).find('li').text())
       .to.be('There are no items in this list');
@@ -63,7 +76,7 @@ describe('List', function(){
       }
     });
 
-    var list = render(<List data={data} itemComponent={Templ} />);
+    var list = render(<List data={data} itemComponent={Templ} {...accessors} />);
 
     expect($(ReactDOM.findDOMNode(list)).find('li:first-child').text()).to.be('hello - jimmy');
   })
@@ -73,51 +86,61 @@ describe('List', function(){
       return <span>{'hello - ' + item}</span>
     }
 
+    let groupBy = 'last';
+
     expect(
-      tsp(<List data={data} groupComponent={Item} groupBy="last" />)
-        .render()
-        .first('.rw-list-optgroup')
-        .text()
+      tsp(
+        <List
+          data={data}
+          dataState={List.getListDataState(data, { groupBy })}
+          groupComponent={Item}
+          groupBy={groupBy}
+          {...accessors}
+        />
+      )
+      .render()
+      .first('.rw-list-optgroup')
+      .text()
     )
     .to.be('hello - smith');
   })
 
 
   // it('should implement first()', function(){
-  //   var focused = data[2]
+  //   var focusedItem = data[2]
   //     , selected = data[1]
-  //     , list = render(<List data={data} selected={selected} focused={focused} />);
+  //     , list = render(<List data={data} selected={selected} focusedItem={focusedItem} />);
   //
-  //   expect(list.first(focused)).to.be(data[0]);
+  //   expect(list.first(focusedItem)).to.be(data[0]);
   // })
   //
   // it('should implement prev()', function(){
-  //   var focused = data[4]
+  //   var focusedItem = data[4]
   //     , selected = data[3]
-  //     , list = render(<List data={data} selected={selected} focused={focused} textField='first' />);
+  //     , list = render(<List data={data} selected={selected} focusedItem={focusedItem} textField='first' />);
   //
   //   expect(list.prev(selected)).to.be(data[2]);
   //   expect(list.prev(selected, 'sa')).to.be(data[1]);
   //
-  //   expect(list.prev(focused)).to.be(data[3]);
-  //   expect(list.prev(focused, 'ji')).to.be(data[0]);
+  //   expect(list.prev(focusedItem)).to.be(data[3]);
+  //   expect(list.prev(focusedItem, 'ji')).to.be(data[0]);
   // })
   //
   // it('should implement next()', function(){
-  //   var focused = data[2]
+  //   var focusedItem = data[2]
   //     , selected = data[1]
-  //     , list = render(<List data={data} selected={selected} focused={focused} textField='first'/>);
+  //     , list = render(<List data={data} selected={selected} focusedItem={focusedItem} textField='first'/>);
   //
   //   expect(list.next(selected)).to.be(data[2]);
   //   expect(list.next(selected, 'ja')).to.be(data[3]);
   //
-  //   expect(list.next(focused, 'na')).to.be(data[4]);
+  //   expect(list.next(focusedItem, 'na')).to.be(data[4]);
   // })
   //
   // it('should implement last()', function(){
-  //   var focused = data[2]
-  //     , list = render(<List data={data} focused={focused} />);
+  //   var focusedItem = data[2]
+  //     , list = render(<List data={data} focusedItem={focusedItem} />);
   //
-  //   expect(list.last(focused)).to.be(data[4]);
+  //   expect(list.last(focusedItem)).to.be(data[4]);
   // })
 })

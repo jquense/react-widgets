@@ -3,7 +3,6 @@
 
 require('babel-core/register')()
 
-
 var assert = require('assert')
 var React = require('react');
 var renderToString = require('react-dom/server').renderToString
@@ -24,7 +23,7 @@ var components = [
       'NumberPicker'
     ];
 
-describe('server rendering', function() {
+describe('Render to string', function() {
   this.timeout(5000)
 
   components.forEach(function(file){

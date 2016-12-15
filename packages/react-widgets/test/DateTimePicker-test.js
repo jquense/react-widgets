@@ -60,7 +60,7 @@ describe('DateTimePicker', function(){
 
     tsp(
       <ControlledDateTimePicker
-        open='calendar'
+        open='date'
         onChange={change}
         onToggle={()=>{}}
       />
@@ -209,7 +209,7 @@ describe('DateTimePicker', function(){
       , timelist = findDOMNode(findType(instance, require('../src/List'))).children;
 
     trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown', altKey: true })
-    expect(instance._values.open).to.be('calendar')
+    expect(instance._values.open).to.be('date')
 
     trigger.keyDown(findDOMNode(instance), { key: 'ArrowDown', altKey: true })
     expect(instance._values.open).to.be('time')

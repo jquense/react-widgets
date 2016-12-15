@@ -10,6 +10,7 @@ import * as Props from './util/Props';
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabledItem }  from './util/interaction';
 
+const EMPTY_DATA_STATE = {}
 
 function group(groupBy, data, keys) {
   var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
@@ -68,6 +69,7 @@ const propTypes = {
 const defaultProps = {
   onSelect: () => {},
   data: [],
+  dataState: EMPTY_DATA_STATE,
   optionComponent: ListOption,
   messages: {
     emptyList: 'There are no items in this list'

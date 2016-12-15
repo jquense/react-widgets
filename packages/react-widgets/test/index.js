@@ -32,7 +32,7 @@ afterEach(function () {
     config.animate.restore()
 });
 
-var testsContext = require.context('../test', true, /\.browser\.(js$|jsx$)/);
+var testsContext = require.context('.', true, /\-test\.(js$|jsx$)/);
 
 if ( typeof __REACT_VERSION__ !== 'undefined' ) {
   it('Ensure we are testing against the correct version of React: ' + __REACT_VERSION__, ()=> {

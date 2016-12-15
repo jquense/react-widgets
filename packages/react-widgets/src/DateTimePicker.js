@@ -40,8 +40,6 @@ let NEXT_VIEW = {
 let isBothOrNeither = (a, b) => (a && b) || (!a && !b);
 
 let propTypes = {
-  ...Calendar.propTypes,
-  ...Popup.propTypes,
   //-- controlled props -----------
   value:          React.PropTypes.instanceOf(Date),
   onChange:       React.PropTypes.func,
@@ -69,7 +67,7 @@ let propTypes = {
 
   timeComponent:  CustomPropTypes.elementType,
 
-  //popup
+  delay: React.PropTypes.number,
   dropUp: React.PropTypes.bool,
   duration: React.PropTypes.number,
 

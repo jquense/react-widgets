@@ -12,7 +12,7 @@ export default function createAccessorManager(component) {
 
   return {
     text: item => helpers.dataText(item, textField),
-    value: item => helpers.dataValue(item, textField),
+    value: item => helpers.dataValue(item, valueField),
     indexOf: (data, item) => helpers.dataIndexOf(data, item, valueField),
     matches: (a, b) => helpers.valueMatcher(a, b, valueField),
     findOrSelf: (data, item) => helpers.dataItem(data, item, valueField),

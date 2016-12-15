@@ -113,11 +113,12 @@ describe('Multiselect', function() {
       <MultiselectTagList
         id="list"
         activeId="list_active"
-        value={[dataList[0], dataList[1]]}
         data={dataList}
-        textField='label'
-        valueField='id'
-        onDelete={del}/>
+        onDelete={del}
+        value={dataList.slice(0, 2)}
+        valueAccessor={i => i.id}
+        textAccessor={i => i.label}
+      />
     )
     .render()
     .tap(inst =>
@@ -247,7 +248,7 @@ describe('Multiselect', function() {
     )
     .render()
     .find(MultiselectTagList)
-    .single('li.rw-state-disabled > span')
+    .single('li.rw-state-disabled > .rw-multiselect-tag-btn')
     .trigger('click')
 
     expect(change.called).to.be(false)

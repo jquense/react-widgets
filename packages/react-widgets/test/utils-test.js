@@ -5,8 +5,7 @@ var React   = require('react')
   , _       = require('../src/util/_')
   , propTypes = require('../src/util/PropTypes')
   , config  = require('../src/util/configuration')
-  , configure  = require('../src/configure')
-  , validateList = require('../src/util/validateListInterface');
+  , configure  = require('../src/configure');
 
 
 describe('_ utils', function(){
@@ -52,24 +51,6 @@ describe('when using array filter helpers', function(){
     expect(filters.startsWith('hello', 'hel')).to.equal(true)
     expect(filters.endsWith('hello', 'llo')).to.equal(true)
   })
-})
-
-describe('when validating Lists', function(){
-
-  it('should throw when methods are not implemented', function(){
-    var List = { prev: ()=>{}, next: ()=>{}, last: ()=>{}, first: 'wrong type' }
-
-    expect(()=> validateList(List)).to.throwException(/first()/)
-  })
-
-  it('should fail quietly in production', function(){
-    var List = { prev: ()=>{}, next: ()=>{}, last: ()=>{}, first: 'wrong type' }
-
-    process.env.NODE_ENV = 'production'
-    expect(()=> validateList(List)).to.not.throwException()
-    process.env.NODE_ENV = 'test'
-  })
-
 })
 
 describe('when using custom PropTypes', function(){
