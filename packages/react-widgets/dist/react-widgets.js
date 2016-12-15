@@ -51,7 +51,30 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ([
+/******/ ((function(modules) {
+	// Check all modules for deduplicated modules
+	for(var i in modules) {
+		if(Object.prototype.hasOwnProperty.call(modules, i)) {
+			switch(typeof modules[i]) {
+			case "function": break;
+			case "object":
+				// Module can be created from a template
+				modules[i] = (function(_m) {
+					var args = _m.slice(1), fn = modules[_m[0]];
+					return function (a,b,c) {
+						fn.apply(this, [a,b,c].concat(args));
+					};
+				}(modules[i]));
+				break;
+			default:
+				// Module is a copy of another module
+				modules[i] = modules[modules[i]];
+				break;
+			}
+		}
+	}
+	return modules;
+}([
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -73,9 +96,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  Combobox: __webpack_require__(68),
 	  Calendar: __webpack_require__(72),
 	  DateTimePicker: __webpack_require__(86),
-	  NumberPicker: __webpack_require__(90),
-	  Multiselect: __webpack_require__(92),
-	  SelectList: __webpack_require__(96),
+	  NumberPicker: __webpack_require__(91),
+	  Multiselect: __webpack_require__(93),
+	  SelectList: __webpack_require__(97),
 	
 	  utils: {
 	    ReplaceTransitionGroup: __webpack_require__(85),
@@ -3245,6 +3268,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	var EMPTY_DATA_STATE = {};
+	
 	function group(groupBy, data, keys) {
 	  var iter = typeof groupBy === 'function' ? groupBy : function (item) {
 	    return item[groupBy];
@@ -3300,6 +3325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var defaultProps = {
 	  onSelect: function onSelect() {},
 	  data: [],
+	  dataState: EMPTY_DATA_STATE,
 	  optionComponent: _ListOption2.default,
 	  messages: {
 	    emptyList: 'There are no items in this list'
@@ -4517,7 +4543,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return helpers.dataText(item, textField);
 	    },
 	    value: function value(item) {
-	      return helpers.dataValue(item, textField);
+	      return helpers.dataValue(item, valueField);
 	    },
 	    indexOf: function indexOf(data, item) {
 	      return helpers.dataIndexOf(data, item, valueField);
@@ -8213,7 +8239,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Calendar2 = _interopRequireDefault(_Calendar);
 	
-	var _DateTimePickerInput = __webpack_require__(88);
+	var _DateTimePickerInput = __webpack_require__(89);
 	
 	var _DateTimePickerInput2 = _interopRequireDefault(_DateTimePickerInput);
 	
@@ -8221,7 +8247,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
-	var _TimeList = __webpack_require__(89);
+	var _TimeList = __webpack_require__(90);
 	
 	var _TimeList2 = _interopRequireDefault(_TimeList);
 	
@@ -8326,7 +8352,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return a && b || !a && !b;
 	};
 	
-	var propTypes = _extends({}, Calendar.propTypes, _Popup2.default.propTypes, {
+	var propTypes = {
 	  //-- controlled props -----------
 	  value: _react2.default.PropTypes.instanceOf(Date),
 	  onChange: _react2.default.PropTypes.func,
@@ -8354,7 +8380,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  timeComponent: CustomPropTypes.elementType,
 	
-	  //popup
+	  delay: _react2.default.PropTypes.number,
 	  dropUp: _react2.default.PropTypes.bool,
 	  duration: _react2.default.PropTypes.number,
 	
@@ -8384,7 +8410,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    dateButton: _react2.default.PropTypes.string,
 	    timeButton: _react2.default.PropTypes.string
 	  })
-	});
+	};
 	
 	var DateTimePicker = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp = _class3 = function (_React$Component) {
 	  _inherits(DateTimePicker, _React$Component);
@@ -8903,7 +8929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.__esModule = true;
 	exports.default = deprecated;
 	
-	var _warning = __webpack_require__(46);
+	var _warning = __webpack_require__(88);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -8942,6 +8968,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 88 */
+46,
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9109,7 +9137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9374,7 +9402,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9409,7 +9437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
-	var _NumberInput = __webpack_require__(91);
+	var _NumberInput = __webpack_require__(92);
 	
 	var _NumberInput2 = _interopRequireDefault(_NumberInput);
 	
@@ -9828,7 +9856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10055,7 +10083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10096,11 +10124,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Popup2 = _interopRequireDefault(_Popup);
 	
-	var _MultiselectInput = __webpack_require__(93);
+	var _MultiselectInput = __webpack_require__(94);
 	
 	var _MultiselectInput2 = _interopRequireDefault(_MultiselectInput);
 	
-	var _MultiselectTagList = __webpack_require__(94);
+	var _MultiselectTagList = __webpack_require__(95);
 	
 	var _MultiselectTagList2 = _interopRequireDefault(_MultiselectTagList);
 	
@@ -10837,7 +10865,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10918,7 +10946,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10931,7 +10959,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _MultiselectTag = __webpack_require__(95);
+	var _MultiselectTag = __webpack_require__(96);
 	
 	var _MultiselectTag2 = _interopRequireDefault(_MultiselectTag);
 	
@@ -11037,7 +11065,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11153,7 +11181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11186,7 +11214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Widget2 = _interopRequireDefault(_Widget);
 	
-	var _SelectListItem = __webpack_require__(97);
+	var _SelectListItem = __webpack_require__(98);
 	
 	var _SelectListItem2 = _interopRequireDefault(_SelectListItem);
 	
@@ -11638,7 +11666,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11747,7 +11775,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ }
-/******/ ])
+/******/ ])))
 });
 ;
 //# sourceMappingURL=react-widgets.js.map
