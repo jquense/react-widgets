@@ -2,6 +2,7 @@ import React from 'react';
 import _  from './util/_';
 import compat from './util/compat';
 import CustomPropTypes from './util/propTypes';
+import multibyteLength from 'multibyte-length';
 
 class MultiselectInput extends React.Component {
 
@@ -17,7 +18,7 @@ class MultiselectInput extends React.Component {
 
   render() {
       let { disabled, readOnly, ...props } = this.props
-      let size = Math.max((props.value || props.placeholder).length, 1) + 1;
+      let size = Math.max(multibyteLength(props.value || props.placeholder), 1) + 1;
 
       return (
         <input
