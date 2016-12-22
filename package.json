@@ -68,6 +68,7 @@
     "dom-helpers": "^2.2.4",
     "invariant": "^2.1.0",
     "loose-envify": "^1.2.0",
+    "multibyte-length": "^0.1.1",
     "uncontrollable": "^4.0.0",
     "warning": "^2.0.0"
   },
