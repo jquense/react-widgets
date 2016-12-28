@@ -16,13 +16,14 @@ function endOfCentury(date) {
   return date
 }
 
-let localizers = (Globalize.locale && !Globalize.cultures)
-    ? newGlobalize(Globalize)
-    : oldGlobalize(Globalize)
+export default function globalizeLocalizer() {
+  let localizers = (Globalize.locale && !Globalize.cultures)
+      ? newGlobalize(Globalize)
+      : oldGlobalize(Globalize)
 
-configure.setLocalizers(localizers)
-
-export default localizers;
+  configure.setLocalizers(localizers)
+  return localizers;
+}
 
 function newGlobalize(globalize) {
   let cache = Object.create(null);
