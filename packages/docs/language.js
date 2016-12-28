@@ -4,7 +4,7 @@ module.exports = {
   value: stripIndent`
     Controls the current value of the {widgetName}.
   `,
-  
+
   valuePicker: stripIndent`
     Controls the selected value of the {widgetName}. Values can primitive, like strings
     or more complex objects. Values are usually (but not required to be) members of
@@ -21,7 +21,7 @@ module.exports = {
   `,
 
   data: stripIndent`
-    An array of possible values for the \${widgetName}.
+    An array of possible values for the {widgetName}.
 
     **Tip:** When \`data\` is an array of \`objects\` consider specifying
     \`textField\` and \`valueField\` as well.
@@ -37,16 +37,16 @@ module.exports = {
 
   textField: stripIndent`
     A property name, or accessor function, that provides the text content of the \`data\`
-    items. The \${widgetName} will filter data based on this value as well as use it as the
+    items. The {widgetName} will filter data based on this value as well as use it as the
     default display value for list items and selected values.
   `,
 
   disabledPicker: stripIndent`
-    Controls the disabled state of entire \${widgetName}, or individual items.
+    Controls the disabled state of entire {widgetName}, or individual items.
   `,
 
   readOnly: stripIndent`
-    Controls the read-only state of the \${widgetName}.
+    Controls the read-only state of the {widgetName}.
   `,
 
   itemComponent:
@@ -65,7 +65,7 @@ module.exports = {
   `,
 
   filter: stripIndent`
-    Enable and customize filtering behavior for the \${widgetName}. Specify
+    Enable and customize filtering behavior for the {widgetName}. Specify
     one of the built-in methods (\`"startsWith"\` \`"endsWith"\` \`"contains"\`)
     or provide a function that returns \`true\` or \`false\` for each passed in item
     (analogous to the [array.filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/array/filter) builtin)
@@ -83,12 +83,12 @@ module.exports = {
   `,
 
   open: stripIndent`
-    Controls the visibility of the \${widgetName} popup. Use \`defaultOpen\`
+    Controls the visibility of the {widgetName} popup. Use \`defaultOpen\`
     to set an initial value for uncontrolled widgets.
   `,
 
   onToggle: stripIndent`
-    A callback fired with the \${widgetName}'s popup visibility is about to change.
+    A callback fired with the {widgetName}'s popup visibility is about to change.
 
     Use in conjunction with the \`open\` prop to manually control the popup visibility.
   `,
@@ -102,7 +102,7 @@ module.exports = {
     'The speed, in milliseconds, of the popup animation. Set to `0` to disable animation.',
 
   isRtl: stripIndent`
-    Controls the read direction of the \${widgetName}.
+    Controls the read direction of the {widgetName}.
 
     **Tip:** You can also set the direction for all widgets at once, by exposing
     \`isRtl\` on [context](https://facebook.github.io/react/docs/context.html) in a

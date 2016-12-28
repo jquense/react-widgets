@@ -3,7 +3,7 @@
     "lerna": "lerna",
     "lint": "lerna run lint",
     "test": "lerna run test",
-    "docs": "lerna exec --scope docs npm run",
+    "docs": "lerna exec --scope react-widgets-documentation npm run",
     "rw": "lerna exec --scope react-widgets npm run",
     "tdd": "npm run rw tdd",
     "start": "npm run docs start",

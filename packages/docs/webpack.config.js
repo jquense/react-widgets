@@ -22,12 +22,12 @@ var config = appConfig(__dirname, {
   cache: true,
   devtool: 'inline-module-source-map',
 
-  entry:  './components/docs.js',
+  entry:  './components/Docs.js',
 
   output: {
     path: __dirname,
     filename: 'docs.js',
-    publicPath: '/docs/'
+    publicPath: '/'
   },
 
   module: {
@@ -63,7 +63,7 @@ var config = appConfig(__dirname, {
   },
   devServer: {
     historyApiFallback: {
-      index: '/docs/',
+      index: '/',
     },
   },
 })

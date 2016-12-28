@@ -18,7 +18,7 @@ import Calendar from './pages/Calendar.api.md';
 import DatePicker from './pages/DateTimePicker.api.md';
 import NumberPicker from './pages/NumberPicker.api.md';
 // import Advanced from './pages/Advanced.js';
-import Locale from './pages/i18n.md';
+import Locale from './pages/I18n.md';
 import Controllables from './pages/controllables.md';
 
 import '@monastic.panic/component-playground/codemirror.css';
