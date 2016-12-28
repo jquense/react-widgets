@@ -17,7 +17,7 @@ ${language.value}
 
 <EditableExample codeText={require('../examples/valuePicker')(widgetName, [1, null])}/>
 
-### onChange?{ type: 'function(value: ?number)', controllable: "value"  }
+### onChange?{ type: 'function(value: ?number, metadata: { rawValue, lastValue, originalEvent? })', controllable: "value"  }
 
 ${language.onChange}
 

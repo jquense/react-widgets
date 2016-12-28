@@ -1,44 +1,16 @@
 import React   from 'react';
-import warning from 'warning';
 
 import Listbox from './Listbox';
 import ListOption from './ListOption';
-import { result, has }  from './util/_';
+import { result }  from './util/_';
 import compat from './util/compat';
 import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
 import { instanceId, notify } from './util/widgetHelpers';
 import { isDisabledItem }  from './util/interaction';
+import { defaultGetDataState } from './util/listDataManager';
 
 const EMPTY_DATA_STATE = {}
-
-function group(groupBy, data, keys) {
-  var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
-
-  // the keys array ensures that groups are rendered in the order they came in
-  // which means that if you sort the data array it will render sorted,
-  // so long as you also sorted by group
-  keys = keys || []
-
-  warning(typeof groupBy !== 'string' || !data.length || has(data[0], groupBy)
-    , `[React Widgets] You seem to be trying to group this list by a `
-    + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
-
-  return data.reduce((grps, item) => {
-    let group = iter(item);
-
-    if (has(grps, group)) {
-      grps[group].push(item)
-    }
-    else {
-      keys.push(group)
-      grps[group] = [item]
-    }
-
-    return grps
-  }, {})
-}
-
 
 const propTypes = {
   data: React.PropTypes.array,
@@ -78,28 +50,7 @@ const defaultProps = {
 
 class List extends React.Component {
 
-  static getListDataState(data, { groupBy }, lastState = {}) {
-    if (
-      lastState.data !== data ||
-      lastState.groupBy !== groupBy
-    ) {
-      if (!groupBy) return {};
-
-      let keys = [];
-      let groups = group(groupBy, data, keys);
-
-      return {
-        data,
-        groupBy,
-        groups,
-        sortedKeys: keys,
-        sequentialData: Object.keys(groups)
-          .reduce((flat, grp) => flat.concat(groups[grp]), [])
-      };
-    }
-
-    return lastState;
-  }
+  static getDataState = defaultGetDataState
 
   componentDidMount() {
     this.move()
@@ -126,8 +77,8 @@ class List extends React.Component {
         group.map(item => fn(item, ++idx, false))
       )
     }, [])
-
   }
+
   render() {
     let { className, messages } = this.props
 
@@ -190,7 +141,7 @@ class List extends React.Component {
         focused={isFocused}
         disabled={isDisabled}
         selected={selectedItem === item}
-        onClick={isDisabled ? undefined : onSelect.bind(null, item)}
+        onClick={isDisabled ? undefined : e => onSelect(item, e)}
       >
         {ItemComponent
           ? <ItemComponent

@@ -19,6 +19,7 @@ module.exports = function({ attributes, props, body, heading, toHtml }) {
     import ImportSection from '../ImportSection';
     import MenuItem from '../ApiMenuItem';
     import PropHeader from '../PropHeader';
+    import CodeBlock from '../CodeBlock';
     import WidgetDemo from '../demos/${widgetName}';
     import EditableExample from '../EditableExample';
 

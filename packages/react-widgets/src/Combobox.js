@@ -167,22 +167,22 @@ class Combobox extends React.Component {
   };
 
   @widgetEditable
-  handleSelect = (data) => {
+  handleSelect = (data, originalEvent) => {
     this.close()
-    notify(this.props.onSelect, data)
-    this.change(data)
+    notify(this.props.onSelect, [data, { originalEvent }])
+    this.change(data, false, originalEvent)
     this.focus();
   };
 
-  handleInputKeyDown = (e) => {
-    this._deleting = e.key === 'Backspace' || e.key === 'Delete'
+  handleInputKeyDown = ({ key }) => {
+    this._deleting = key === 'Backspace' || key === 'Delete'
     this._isTyping = true
   };
 
-  handleInputChange = (e) => {
-    let suggestion = this.suggest(e.target.value);
+  handleInputChange = (event) => {
+    let suggestion = this.suggest(event.target.value);
 
-    this.change(suggestion, true)
+    this.change(suggestion, true, event)
     this.open()
   };
 
@@ -247,9 +247,9 @@ class Combobox extends React.Component {
       self.refs.input.accept();
 
       if (fromList)
-        return self.handleSelect(item)
+        return self.handleSelect(item, e)
 
-      self.change(item, false)
+      self.change(item, false, e)
     }
   };
 
@@ -402,9 +402,13 @@ class Combobox extends React.Component {
       this.refs.input.focus()
   }
 
-  change(data, typing) {
+  change(nextValue, typing, originalEvent) {
+    const { onChange, value: lastValue } = this.props;
     this._typedChange = !!typing
-    notify(this.props.onChange, data)
+    notify(onChange, [nextValue, {
+      lastValue,
+      originalEvent,
+    }])
   }
 
   open() {
@@ -444,7 +448,7 @@ class Combobox extends React.Component {
 }
 
 export default createUncontrolledWidget(
-      Combobox, { open: 'onToggle', value: 'onChange' }, ['focus']);
+  Combobox, { open: 'onToggle', value: 'onChange' }, ['focus']);
 
 
 function msgs(msgs){

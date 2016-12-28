@@ -24,9 +24,9 @@ class MultiselectTagList extends React.Component {
     readOnly: CustomPropTypes.disabled
   };
 
-  handleDelete = (item) => {
+  handleDelete = (item, event) => {
     if (!this.props.disabled)
-      this.props.onDelete(item)
+      this.props.onDelete(item, event)
   };
 
   render() {

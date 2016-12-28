@@ -200,7 +200,7 @@ describe('NumberPicker', function(){
     .trigger('change', { target: { value: '' } })
 
     expect(changeSpy.calledOnce).to.be(true)
-    expect(changeSpy.calledWithExactly(null)).to.be(true)
+    expect(changeSpy.getCall(0).args[0]).to.equal(null)
   })
 
   it('should not trigger change at delimiter', function() {

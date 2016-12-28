@@ -309,15 +309,42 @@ describe('Multiselect', function() {
     expect(changeSpy.called).to.be(false)
   })
 
+  it('should call onChange with event object from select', function(){
+    let change = sinon.spy()
+    let value = dataList.slice(0, 1);
+    tsp(
+      <ControlledMultiselect
+        open
+        searchTerm=""
+        value={value}
+        data={dataList}
+        onChange={change}
+        onToggle={() =>{}}
+      />
+    )
+    .shallowRender()
+    .find('List')
+    .trigger('select', dataList[1], 'foo')
+
+    expect(change.getCall(0).args[1]).to.eql({
+      originalEvent: 'foo',
+      lastValue: value,
+      dataItem: dataList[1],
+      action: 'insert',
+      searchTerm: ''
+    })
+  })
+
   it('should call Select handler', function(){
     let change = sinon.spy()
-      , onSelect = sinon.spy();
+    let onSelect = sinon.spy();
+    let value = dataList.slice(1);
 
     tsp(
       <ControlledMultiselect
         open
         onToggle={() =>{}}
-        value={dataList.slice(1)}
+        value={value}
         data={dataList}
         onChange={change}
         onSelect={onSelect}
@@ -325,11 +352,14 @@ describe('Multiselect', function() {
     )
     .shallowRender()
     .find('List')
-      .trigger('select', dataList[1])
+      .trigger('select', dataList[1], 'foo')
 
     expect(onSelect.calledOnce).to.be(true)
+    expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
+
     expect(change.calledAfter(onSelect)).to.be(true)
   })
+
 
   it('should clear searchTerm when an item is selected', () => {
     let searchSpy = sinon.spy();

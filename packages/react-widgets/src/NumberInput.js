@@ -89,10 +89,10 @@ class NumberPickerInput extends React.Component {
     }
   }
 
-  handleChange = ({ target }) => {
+  handleChange = (event) => {
     let { value, onChange } = this.props;
 
-    let stringValue = target.value
+    let stringValue = event.target.value
       , numberValue = this.parseNumber(stringValue)
 
     let isIntermediate = this.isIntermediateValue(
@@ -102,19 +102,23 @@ class NumberPickerInput extends React.Component {
 
     if (stringValue == null || stringValue.trim() === '') {
       this.setStringValue('')
-      onChange(null)
+      onChange(null, event)
 
       return
     }
-
-    if (isIntermediate)
+    // order here matters a lot
+    if (isIntermediate) {
       this.setStringValue(stringValue)
-
-    else if (numberValue !== value)
-      onChange(numberValue)
+    }
+    else if (numberValue !== value) {
+      onChange(numberValue, event)
+    }
+    else if (stringValue != this.state.stringValue) {
+      this.setStringValue(stringValue)
+    }
   };
 
-  handleBlur = () => {
+  handleBlur = (event) => {
     var str = this.state.stringValue
       , number = this.parseNumber(str);
 
@@ -124,7 +128,7 @@ class NumberPickerInput extends React.Component {
       if (isNaN(number)) {
         number = null;
       }
-      this.props.onChange(number)
+      this.props.onChange(number, event)
     }
   }
 

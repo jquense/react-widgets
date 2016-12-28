@@ -1,13 +1,14 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
+import { action } from './helpers';
 import Container from './Container';
 import Numberpicker from '../src/NumberPicker';
 
 let generateNames = global.generateNames;
 
 let props = {
-
+  onChange: action('change')
 }
 
 storiesOf('Numberpicker', module)
@@ -52,6 +53,15 @@ storiesOf('Numberpicker', module)
         defaultOpen
         defaultValue={2405}
         groupBy="last"
+      />
+    </Container>
+  )
+  .add('min', () =>
+    <Container>
+      <Numberpicker
+        {...props}
+        min={250}
+        defaultValue={2405}
       />
     </Container>
   )

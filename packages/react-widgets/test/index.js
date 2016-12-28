@@ -7,7 +7,7 @@ import config from '../src/util/configuration';
 
 global.jQuery = global.$ = jQuery;
 
-require('../../react-widgets-globalize/localizer')
+require('../../react-widgets-globalize/localizer')()
 
 //disable this particular optimization
 sinon.stub(widgetHelpers, 'isFirstFocusedRender', ()=> true)

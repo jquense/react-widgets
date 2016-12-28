@@ -231,6 +231,48 @@ describe('Combobox', function(){
       ).to.be.a('string');
   })
 
+  it('should call onChange with event object', () => {
+    let change = sinon.spy()
+
+    tsp(
+      <ControlledCombobox
+        open
+        value='bar'
+        data={dataList}
+        onChange={change}
+        onToggle={() =>{}}
+      />
+    )
+    .shallowRender()
+    .find('List')
+    .trigger('select', null, 'foo')
+
+    expect(change.getCall(0).args[1]).to.eql({
+      originalEvent: 'foo',
+      lastValue: 'bar',
+    })
+  })
+
+  it('should call onChange with event object from keyboard', () => {
+    let change = sinon.spy()
+
+    tsp(
+      <ControlledCombobox
+        data={dataList}
+        value={dataList[0]}
+        onChange={change}
+        onToggle={() => {}}
+      />
+    )
+    .render()
+    .trigger('keyDown', { key: 'ArrowDown' })
+
+    let bonusArgs = change.getCall(0).args[1];
+
+    expect(bonusArgs.originalEvent.type).to.equal('keydown')
+    expect(bonusArgs.lastValue).to.equal(dataList[0])
+  })
+
   it('should call Select handler', function(){
     let change = sinon.spy()
       , onSelect = sinon.spy();
@@ -246,9 +288,11 @@ describe('Combobox', function(){
     )
     .shallowRender()
     .find('List')
-      .trigger('select', dataList[1])
+      .trigger('select', dataList[1], 'foo')
 
     expect(onSelect.calledOnce).to.be(true)
+    expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
+
     expect(change.calledAfter(onSelect)).to.be(true)
   })
 

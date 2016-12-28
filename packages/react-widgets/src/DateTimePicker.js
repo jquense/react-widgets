@@ -473,29 +473,28 @@ class DateTimePicker extends React.Component {
   }
 
   parse = (string) => {
-    var format = getFormat(this.props, true)
-      , editFormat = this.props.editFormat
-      , parse = this.props.parse
-      , formats = [];
+    const { parse, culture, editFormat } = this.props;
+    const format = getFormat(this.props, true);
 
-    if (typeof parse === 'function')
-      return parse(string, this.props.culture)
+    const parsers = parse == null
+      ? [] : [].concat(parse);
 
-    if (typeof format === 'string')
-      formats.push(format)
+    if (typeof format === 'string') parsers.push(format)
+    if (typeof editFormat === 'string') parsers.push(editFormat)
 
-    if (typeof editFormat === 'string')
-      formats.push(editFormat)
-
-    if (parse)
-      formats = formats.concat(this.props.parse)
-
-    invariant(formats.length,
+    invariant(parsers.length,
       'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
       'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
       'please provide either a parse function or Globalize.js compatible string for `format`', string);
 
-    return formatsParser(formats, this.props.culture, string);
+    parsers.sort(sortFnsFirst);
+
+    let date;
+    for (var i = 0; i < parsers.length; i++) {
+      date = parseDate(string, parsers[i], culture)
+      if (date) return date
+    }
+    return null
   }
 
   toggle(view) {
@@ -543,7 +542,11 @@ export default  uncontrollable(
 );
 
 
-
+function parseDate(string, parser, culture) {
+  return typeof parser === 'function'
+    ? parser(string, culture)
+    : dateLocalizer.parse(string, parser, culture)
+}
 
 function getFormat(props){
   var isDate  = props[popups.DATE] != null ? props[popups.DATE] : true
@@ -565,14 +568,13 @@ function formatDate(date, format, culture){
   return val;
 }
 
-function formatsParser(formats, culture, str){
-  var date;
+function sortFnsFirst(a, b) {
+  let aFn = typeof a === 'function';
+  let bFn = typeof b === 'function';
 
-  for (var i = 0; i < formats.length; i++) {
-    date = dateLocalizer.parse(str, formats[i], culture)
-    if (date) return date
-  }
-  return null
+  if (aFn && !bFn) return -1;
+  if (!aFn && bFn) return 1;
+  if ((aFn && bFn) || (!aFn && !bFn)) return 0;
 }
 
 function dateOrNull(dt){

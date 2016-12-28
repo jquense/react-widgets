@@ -208,6 +208,74 @@ describe('DROPDOWNS', function(){
     .to.be('hello - jimmy');
   })
 
+  it('should call onChange with event object from select', function(){
+    let change = sinon.spy()
+
+    tsp(
+      <ControlledDropdownList
+        open
+        data={data}
+        value={data[0]}
+        searchTerm="foooo"
+        onChange={change}
+        onToggle={() =>{}}
+      />
+    )
+    .shallowRender()
+    .find('List')
+    .trigger('select', null, 'foo')
+
+    expect(change.getCall(0).args[1]).to.eql({
+      originalEvent: 'foo',
+      lastValue: data[0],
+      searchTerm: 'foooo'
+    })
+  })
+
+  it('should call onChange with event object from keyboard', () => {
+    let change = sinon.spy()
+
+    tsp(
+      <ControlledDropdownList
+        data={data}
+        value={data[0]}
+        onChange={change}
+        onToggle={() => {}}
+      />
+    )
+    .render()
+    .trigger('keyDown', { key: 'ArrowDown' })
+
+    let bonusArgs = change.getCall(0).args[1];
+
+    expect(bonusArgs.originalEvent.type).to.equal('keydown')
+    expect(bonusArgs.searchTerm).to.equal('')
+    expect(bonusArgs.lastValue).to.equal(data[0])
+  })
+
+  it('should call Select handler', function(){
+    let change = sinon.spy()
+      , onSelect = sinon.spy();
+
+    tsp(
+      <ControlledDropdownList
+        open
+        onToggle={() =>{}}
+        data={data}
+        onChange={change}
+        onSelect={onSelect}
+      />
+    )
+    .shallowRender()
+    .find('List')
+      .trigger('select', data[1], 'foo')
+
+    expect(onSelect.calledOnce).to.be(true)
+    expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
+
+    expect(change.calledAfter(onSelect)).to.be(true)
+  })
+
   it('should change values on keyDown', function(){
     function assertChangedWithValue(itemIndex) {
       return () => {

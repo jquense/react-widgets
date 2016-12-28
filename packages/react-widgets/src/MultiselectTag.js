@@ -14,14 +14,14 @@ class MultiselectTag extends React.Component {
     value: React.PropTypes.any,
   }
 
-  onClick = () => {
+  onClick = (event) => {
     const { value, disabled, onClick } = this.props;
 
     if (disabled) {
       return
     }
 
-    onClick(value)
+    onClick(value, event)
   };
 
   renderDelete() {

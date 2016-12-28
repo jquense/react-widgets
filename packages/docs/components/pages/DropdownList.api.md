@@ -17,13 +17,13 @@ ${language.valuePicker}
 
 <EditableExample codeText={require('../examples/value')(widgetName)}/>
 
-### onChange?{ type: 'function(value: ?mixed)', controllable: 'value' }
+### onChange?{ type: 'function(value: ?mixed, metadata: { lastValue, searchTerm, originalEvent? })', controllable: 'value' }
 
 ${language.onChange}
 
 <EditableExample codeText={require('../examples/onChange')(widgetName)}/>
 
-### onSelect?{ type: 'function(value: ?mixed)' }
+### onSelect?{ type: 'function(value: ?mixed, metadata: { originalEvent? searchTerm })' }
 
 This handler fires when an item has been selected from the list. It fires before the `onChange` handler and fires
 regardless of whether the value has actually changed.

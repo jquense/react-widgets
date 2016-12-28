@@ -31,7 +31,27 @@ describe('List', function(){
         .find('li')
         .length
     )
-    .to.equal( numItems)
+    .to.equal(numItems)
+  })
+
+  it('should fire onSelect', function(){
+    let selectSpy = sinon.spy()
+
+    tsp(
+      <List
+        data={data}
+        onSelect={selectSpy}
+        onChange={()=>{}} {...accessors}
+      />
+    )
+    .render()
+    .first('li')
+    .trigger('click')
+
+    expect(selectSpy.calledOnce).to.equal(true)
+
+    expect(selectSpy.getCall(0).args[0]).to.equal(data[0])
+    expect(selectSpy.getCall(0).args[1].type).to.equal('click')
   })
 
   it('should use activeId', function(){
@@ -92,7 +112,7 @@ describe('List', function(){
       tsp(
         <List
           data={data}
-          dataState={List.getListDataState(data, { groupBy })}
+          dataState={List.getDataState(data, { groupBy })}
           groupComponent={Item}
           groupBy={groupBy}
           {...accessors}

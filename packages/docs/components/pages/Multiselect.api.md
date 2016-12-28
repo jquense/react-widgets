@@ -23,9 +23,19 @@ ${language.valuePicker}
 
 <EditableExample codeText={require('../examples/value')(widgetName, true)}/>
 
-### onChange?{type:'function(array<mixed> values)', controllable: "value" }
+### onChange?{type:'function(array<mixed> values, metadata)', controllable: "value" }
 
-${language.onChange}
+${language.onChange} The second argument of `onChange` contains change metadata:
+
+```
+Metadata {
+  lastValue: array<mixed>
+  dataItem: mixed
+  action: 'insert'|'remove'
+  searchTerm: string
+  originalEvent: SyntheticEvent
+}
+```
 
 <EditableExample codeText={require('../examples/onChange')(widgetName, true)}/>
 

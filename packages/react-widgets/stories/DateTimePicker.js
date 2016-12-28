@@ -29,6 +29,15 @@ storiesOf('DateTimePicker', module)
       />
     </Container>
   )
+  .add('parsers', () =>
+    <Container>
+      <DateTimePicker
+        time={false}
+        format='MM/dd/yyyy'
+        parse={['f', d => new Date(d)]}
+      />
+    </Container>
+  )
   .add('current date', () => {
     class Story extends React.Component {
 

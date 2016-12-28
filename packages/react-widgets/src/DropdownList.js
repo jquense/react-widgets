@@ -298,10 +298,14 @@ class DropdownList extends React.Component {
   }
 
   @widgetEditable
-  handleSelect = (data) => {
+  handleSelect = (data, originalEvent) => {
     this.close()
-    notify(this.props.onSelect, data)
-    this.change(data)
+
+    notify(this.props.onSelect, [data, {
+      originalEvent
+    }])
+
+    this.change(data, originalEvent)
     this.focus(this)
   };
 
@@ -338,8 +342,8 @@ class DropdownList extends React.Component {
     let change = (item, fromList) => {
       if(item == null) return
       fromList
-        ? this.handleSelect(item)
-        : this.change(item)
+        ? this.handleSelect(item, e)
+        : this.change(item, e)
     }
 
     if (e.defaultPrevented)
@@ -397,14 +401,21 @@ class DropdownList extends React.Component {
       this.search(String.fromCharCode(e.which), item => {
         this.mounted() && this.props.open
           ? this.setState({ focusedItem: item })
-          : item && this.change(item)
+          : item && this.change(item, e)
       })
   };
 
-  change(data) {
-    if (!this.accessors.matches(data, this.props.value)) {
-      notify(this.props.onChange, data)
-      notify(this.props.onSearch, '')
+  change(nextValue, originalEvent) {
+    let { onChange, onSearch, searchTerm, value: lastValue } = this.props;
+
+    if (!this.accessors.matches(nextValue, lastValue)) {
+      notify(onChange, [nextValue, {
+        originalEvent,
+        lastValue,
+        searchTerm,
+      }])
+
+      notify(onSearch, ['', originalEvent])
       this.close()
     }
   }
@@ -415,7 +426,7 @@ class DropdownList extends React.Component {
 
     inst = compat.findDOMNode(inst);
 
-    if (activeElement() !== inst)
+    if (inst && activeElement() !== inst)
       inst.focus()
   }
 

@@ -21,13 +21,13 @@ ${language.valuePicker}
 
 <EditableExample codeText={require('../examples/value')(widgetName)}/>
 
-### onChange?{ type: 'function(value: ?mixed)', controllable: "value" }
+### onChange?{ type: 'function(value: ?mixed, metadata: { lastValue, originalEvent? })', controllable: "value" }
 
-A callback fired when the current `value` changes. If the next value is a member of `data` items, the entire data item will be returned. If not present, the string value is returned.
+A callback fired when the current `value` changes. If the next value is a member of `data` items, the entire data item will be returned. If not present, the string value is returned. The second argument is an object containing metadata about the change event.
 
 <EditableExample codeText={require('../examples/onChange')(widgetName)}/>
 
-### onSelect?{ type: 'function(value: ?mixed)' }
+### onSelect?{ type: 'function(value: ?mixed, metadata: { originalEvent })' }
 
 This handler fires when an item has been selected from the list. It fires before the `onChange` handler, and fires
 regardless of whether the value has actually changed.

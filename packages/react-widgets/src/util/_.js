@@ -1,3 +1,4 @@
+import warning from 'warning';
 
 function eql(a, b) {
   return a === b
@@ -68,4 +69,32 @@ export function chunk(array, chunkSize) {
 
 export function splat(obj) {
   return obj == null ? [] : [].concat(obj)
+}
+
+
+export function groupBySortedKeys(groupBy, data, keys) {
+  var iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
+
+  // the keys array ensures that groups are rendered in the order they came in
+  // which means that if you sort the data array it will render sorted,
+  // so long as you also sorted by group
+  keys = keys || []
+
+  warning(typeof groupBy !== 'string' || !data.length || has(data[0], groupBy)
+    , `[React Widgets] You seem to be trying to group this list by a `
+    + `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`)
+
+  return data.reduce((grps, item) => {
+    let group = iter(item);
+
+    if (has(grps, group)) {
+      grps[group].push(item)
+    }
+    else {
+      keys.push(group)
+      grps[group] = [item]
+    }
+
+    return grps
+  }, {})
 }

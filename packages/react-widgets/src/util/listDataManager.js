@@ -1,24 +1,56 @@
 import { spyOnComponent } from 'react-component-managers';
 
 import { presets } from './Filter';
+import { groupBySortedKeys }  from './_';
 import accessorManager from './accessorManager';
 
 const EMPTY_VALUE = {};
 
+export function defaultGetDataState(data, { groupBy }, lastState = {}) {
+  if (
+    lastState.data !== data ||
+    lastState.groupBy !== groupBy
+  ) {
+    if (!groupBy) return {};
+
+    let keys = [];
+    let groups = groupBySortedKeys(groupBy, data, keys);
+
+    return {
+      data,
+      groupBy,
+      groups,
+      sortedKeys: keys,
+      sequentialData: Object.keys(groups)
+        .reduce((flat, grp) => flat.concat(groups[grp]), [])
+    };
+  }
+
+  return lastState;
+}
+
+function defaultGetStateGetterFromList({ listComponent }) {
+  return listComponent && listComponent.getDataState;
+}
 
 export default function listDataManager(component, {
-  getListDataState,
+  getDataState,
+  getStateGetterFromProps,
   accessors = accessorManager(component)
 } = {}) {
 
   let listData;
   let listState;
   let needsUpdate = true;
-  let updateStateFunc = !getListDataState
   let currentProps = component.props;
 
-  if (updateStateFunc) {
-    ({ getListDataState } = currentProps.listComponent)
+  if (getDataState)
+    getStateGetterFromProps = null;
+  else  {
+    if (!getStateGetterFromProps)
+      getStateGetterFromProps = defaultGetStateGetterFromList
+
+    getDataState = getStateGetterFromProps(currentProps) || defaultGetDataState
   }
 
   spyOnComponent(component, {
@@ -28,11 +60,8 @@ export default function listDataManager(component, {
 
       currentProps = nextProps;
 
-      if (
-        updateStateFunc &&
-        currentProps.listComponent !== nextProps.listComponent
-      ) {
-        ({ getListDataState } = nextProps.listComponent);
+      if (needsUpdate && getStateGetterFromProps) {
+        getDataState = getStateGetterFromProps(currentProps) || defaultGetDataState
       }
     },
 
@@ -40,7 +69,8 @@ export default function listDataManager(component, {
       listData = null;
       listState = null;
       currentProps = null;
-      getListDataState = null;
+      getDataState = null;
+      getStateGetterFromProps = null;
     }
   })
 
@@ -124,7 +154,7 @@ export default function listDataManager(component, {
     getState() {
       if (needsUpdate) {
         needsUpdate = false;
-        listState = getListDataState(listData, currentProps, listState)
+        listState = getDataState(listData, currentProps, listState)
       }
 
       return listState

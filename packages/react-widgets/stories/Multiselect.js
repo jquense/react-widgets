@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
+import { action } from './helpers';
 import Container from './Container';
 import Multiselect from '../src/Multiselect';
 
@@ -9,7 +10,8 @@ let generateNames = global.generateNames;
 let props = {
   data: generateNames(),
   valueField: 'id',
-  textField: 'fullName'
+  textField: 'fullName',
+  onChange: action('change')
 }
 
 storiesOf('Multiselect', module)

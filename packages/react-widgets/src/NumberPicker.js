@@ -21,12 +21,12 @@ var format = props => numberLocalizer.getFormat('default', props.format)
 
 // my tests in ie11/chrome/FF indicate that keyDown repeats
 // at about 35ms+/- 5ms after an initial 500ms delay. callback fires on the leading edge
-function createInterval(callback){
-  var id, cancel = () => clearInterval(id);
+function createInterval(callback) {
+  let fn
+  var id, cancel = () => clearTimeout(id);
 
-  id = setTimeout(()=> {
-    cancel()
-    id = setTimeout(callback, 35)
+  id = setTimeout(fn = () => {
+    id = setTimeout(fn, 35)
     callback() //fire after everything in case the user cancels on the first call
   }, 500)
 
@@ -110,24 +110,27 @@ class NumberPicker extends React.Component {
   }
 
   @widgetEditable
-  handleMouseDown = (direction) => {
+  handleMouseDown = (direction, event) => {
     let { min, max } = this.props;
+
+    event && event.persist()
 
     let method = direction === directions.UP
       ? this.increment
       : this.decrement
 
-    let value = method.call(this)
+    let value = method.call(this, event)
       , atTop = direction === directions.UP && value === max
       , atBottom = direction === directions.DOWN && value === min
 
     if (atTop || atBottom)
       this.handleMouseUp()
 
-    else if (!this._cancelRepeater)
-      this._cancelRepeater = createInterval(() =>
-        this.handleMouseDown(direction)
-      )
+    else if (!this._cancelRepeater) {
+      this._cancelRepeater = createInterval(() => {
+        this.handleMouseDown(direction, event)
+      })
+    }
   };
 
   @widgetEditable
@@ -147,28 +150,32 @@ class NumberPicker extends React.Component {
       return
 
     if (key === 'End' && isFinite(max))
-      this.handleChange(max)
+      this.handleChange(max, event)
 
     else if (key === 'Home' && isFinite(min))
-      this.handleChange(min)
+      this.handleChange(min, event)
 
     else if ( key === 'ArrowDown') {
       event.preventDefault()
-      this.decrement()
+      this.decrement(event)
     }
     else if ( key === 'ArrowUp') {
       event.preventDefault()
-      this.increment()
+      this.increment(event)
     }
   };
 
-  handleChange = (newValue) => {
-    let { onChange, value, min, max } = this.props;
+  handleChange = (rawValue, originalEvent = null) => {
+    let { onChange, value: lastValue, min, max } = this.props;
 
-    newValue = clamp(newValue, min, max);
+    let nextValue = clamp(rawValue, min, max);
 
-    if (value !== newValue)
-      notify(onChange, newValue)
+    if (lastValue !== nextValue)
+      notify(onChange, [nextValue, {
+        rawValue,
+        lastValue,
+        originalEvent,
+      }])
   };
 
   renderInput(value) {
@@ -246,18 +253,18 @@ class NumberPicker extends React.Component {
               onClick={this.handleFocus}
               label={messages.increment}
               disabled={value === max || disabled}
-              onMouseUp={() => this.handleMouseUp(directions.UP)}
-              onMouseDown={() => this.handleMouseDown(directions.UP)}
-              onMouseLeave={() => this.handleMouseUp(directions.UP)}
+              onMouseUp={e => this.handleMouseUp(directions.UP, e)}
+              onMouseDown={e => this.handleMouseDown(directions.UP, e)}
+              onMouseLeave={e => this.handleMouseUp(directions.UP, e)}
             />
             <Button
               icon="caret-down"
               onClick={this.handleFocus}
               label={messages.decrement}
               disabled={value === min || disabled}
-              onMouseUp={() => this.handleMouseUp(directions.DOWN)}
-              onMouseDown={() => this.handleMouseDown(directions.DOWN)}
-              onMouseLeave={() => this.handleMouseUp(directions.DOWN)}
+              onMouseUp={e => this.handleMouseUp(directions.DOWN, e)}
+              onMouseDown={e => this.handleMouseDown(directions.DOWN, e)}
+              onMouseLeave={e => this.handleMouseUp(directions.DOWN, e)}
             />
           </Select>
         </WidgetPicker>
@@ -269,15 +276,15 @@ class NumberPicker extends React.Component {
     compat.findDOMNode(this.refs.input).focus()
   }
 
-  increment() {
-    return this.step(this.props.step)
+  increment(event) {
+    return this.step(this.props.step, event)
   }
 
-  decrement() {
-    return this.step(-this.props.step)
+  decrement(event) {
+    return this.step(-this.props.step, event)
   }
 
-  step(amount) {
+  step(amount, event) {
     var value = (this.props.value || 0) + amount
 
     var decimals = this.props.precision != null
@@ -285,7 +292,9 @@ class NumberPicker extends React.Component {
       : numberLocalizer.precision(format(this.props))
 
     this.handleChange(
-      decimals != null ? round(value, decimals) : value)
+      decimals != null ? round(value, decimals) : value,
+      event
+    )
 
     return value
   }
