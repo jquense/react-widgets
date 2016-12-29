@@ -12,7 +12,8 @@ import Select from './Select';
 import Popup from './Popup';
 import List from './List';
 import DropdownListInput from './DropdownListInput';
-import { result }  from './util/_';
+import { getMessages } from './messages';
+
 import * as Props from './util/Props';
 import * as Filter from './util/Filter';
 import compat from './util/compat';
@@ -83,13 +84,13 @@ class DropdownList extends React.Component {
     filter: true,
     caseSensitive: false,
     listComponent: List,
-    messages: msgs()
   };
 
   constructor(...args) {
     super(...args)
 
     autoFocus(this)
+    this.messages = getMessages(this.props.messages)
 
     this.inputId = instanceId(this, '_input')
     this.listId = instanceId(this, '_listbox')
@@ -111,9 +112,10 @@ class DropdownList extends React.Component {
     return shallowCompare(this, ...args)
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(nextProps) {
+    this.messages = getMessages(nextProps.messages)
     this.setState(
-      this.getStateFromProps(props)
+      this.getStateFromProps(nextProps)
     )
   }
 
@@ -164,7 +166,7 @@ class DropdownList extends React.Component {
           ref='filter'
           value={this.props.searchTerm}
           className="rw-input-reset"
-          placeholder={result(messages.filterPlaceholder, this.props)}
+          placeholder={messages.filterPlaceholder(this.props)}
           onChange={e => notify(this.props.onSearch, e.target.value)}
         />
       </WidgetPicker>
@@ -213,7 +215,6 @@ class DropdownList extends React.Component {
       , tabIndex
       , duration
       , textField
-      , messages
       , data
       , busy
       , dropUp
@@ -246,7 +247,7 @@ class DropdownList extends React.Component {
       'aria-readonly': readOnly
     });
 
-    messages = msgs(messages)
+    let messages = this.messages
 
     return (
       <Widget
@@ -279,7 +280,7 @@ class DropdownList extends React.Component {
             role="presentational"
             aria-hidden="true"
             disabled={disabled || readOnly}
-            label={result(messages.open, this.props)}
+            label={messages.openDropdown(this.props)}
           />
         </WidgetPicker>
         {shouldRenderPopup &&
@@ -462,16 +463,6 @@ class DropdownList extends React.Component {
     this.props.open
       ? this.close()
       : this.open()
-  }
-}
-
-function msgs(msgs){
-  return {
-    open: 'open dropdown',
-    filterPlaceholder: '',
-    emptyList:   'There are no items in this list',
-    emptyFilter: 'The filter returned no results',
-    ...msgs
   }
 }
 

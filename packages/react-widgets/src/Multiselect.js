@@ -13,6 +13,7 @@ import List from './List';
 
 import * as Filter from './util/Filter';
 import * as Props from './util/Props';
+import { getMessages } from './messages';
 import * as CustomPropTypes from './util/PropTypes';
 import accessorManager from './util/accessorManager';
 import focusManager from './util/focusManager';
@@ -22,9 +23,6 @@ import withRightToLeft from './util/withRightToLeft';
 import { widgetEditable } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
-let compatCreate = (props, msgs) => typeof msgs.createNew === 'function'
-  ? msgs.createNew(props)
-  : [<strong key='dumb'>{`"${props.searchTerm}"`}</strong>, ' ' + msgs.createNew]
 
 const INSERT = 'insert';
 const REMOVE = 'remove';
@@ -78,7 +76,12 @@ let propTypes = {
     open: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
     emptyFilter: CustomPropTypes.message,
-    createNew: CustomPropTypes.message
+    createNew: CustomPropTypes.message,
+
+    tagsLabel: CustomPropTypes.message,
+    selectedItems: CustomPropTypes.message,
+    noneSelected: CustomPropTypes.message,
+    removeLabel: CustomPropTypes.message,
   })
 };
 
@@ -95,19 +98,12 @@ class Multiselect extends React.Component {
     open: false,
     searchTerm: '',
     listComponent: List,
-    messages: {
-      createNew:     '(create new tag)',
-      emptyList:     'There are no items in this list',
-      emptyFilter:   'The filter returned no results',
-      tagsLabel:     'selected items',
-      selectedItems: 'selected items',
-      noneSelected:  'no selected items',
-      removeLabel:   'remove selected item'
-    }
   };
 
   constructor(...args) {
     super(...args);
+
+    this.messages = getMessages(this.props.messages);
 
     this.inputId = instanceId(this, '_input')
     this.tagsId = instanceId(this, '_taglist')
@@ -134,6 +130,7 @@ class Multiselect extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.messages = getMessages(nextProps.messages);
     this.setState(this.getStateFromProps(nextProps))
   }
 
@@ -346,7 +343,7 @@ class Multiselect extends React.Component {
             createIsFocused && 'rw-state-focus'
           )}
         >
-          {compatCreate(this.props, messages)}
+          {messages.createNewTag(this.props)}
         </li>
       </ul>
     )
@@ -428,8 +425,7 @@ class Multiselect extends React.Component {
   renderNotificationArea(messages) {
     let { focused, dataItems } = this.state;
 
-    let itemText = dataItems.map(
-      item => this.accessors.text(item)).join(', ')
+    let itemLabels = dataItems.map(item => this.accessors.text(item))
 
     return (
       <span
@@ -442,8 +438,8 @@ class Multiselect extends React.Component {
       >
         {focused && (
           dataItems.length
-            ? (messages.selectedItems + ': ' + itemText)
-            : messages.noneSelected
+            ? messages.selectedItems(itemLabels)
+            : messages.noneSelected()
         )}
       </span>
     )
@@ -462,7 +458,7 @@ class Multiselect extends React.Component {
         activeId={this.activeTagId}
         textAccessor={this.accessors.text}
         valueAccessor={this.accessors.value}
-        label={messages.tagsLabel}
+        label={messages.tagsLabel()}
         value={dataItems}
         disabled={disabled}
         readOnly={readOnly}
@@ -476,7 +472,6 @@ class Multiselect extends React.Component {
   render() {
     let {
         className
-      , messages
       , busy
       , dropUp
       , open
@@ -497,7 +492,7 @@ class Multiselect extends React.Component {
     let disabled = this.props.disabled === true
     let readOnly = this.props.readOnly === true
 
-    messages = msgs(messages);
+    let messages = this.messages;
 
     return (
       <Widget
@@ -629,16 +624,3 @@ export default uncontrollable(Multiselect, {
   value: 'onChange',
   searchTerm: 'onSearch'
 }, ['focus']);
-
-
-function msgs(msgs){
-  return {
-    createNew:     '(create new tag)',
-    emptyList:     'There are no items in this list',
-    emptyFilter:   'The filter returned no results',
-    tagsLabel:     'selected items',
-    selectedItems: 'selected items',
-    removeLabel:   'remove selected item',
-    ...msgs
-  }
-}

@@ -14,16 +14,9 @@ class Header extends React.Component {
     onMoveRight:    React.PropTypes.func.isRequired,
 
     messages:       React.PropTypes.shape({
-      moveBack:     React.PropTypes.string,
-      moveForward:  React.PropTypes.string
+      moveBack:     React.PropTypes.func.isRequired,
+      moveForward:  React.PropTypes.func.isRequired,
     })
-  };
-
-  static defaultProps = {
-    messages: {
-      moveBack:     'navigate back',
-      moveForward:  'navigate forward'
-    }
   };
 
   static contextTypes = {
@@ -45,7 +38,7 @@ class Header extends React.Component {
           className="rw-calendar-btn-left"
           onClick={onMoveLeft}
           disabled={prevDisabled}
-          label={messages.moveBack}
+          label={messages.moveBack()}
           icon={`caret-${rtl ? 'right' : 'left'}`}
         />
         <Button
@@ -56,13 +49,13 @@ class Header extends React.Component {
           aria-live="polite"
           aria-atomic="true"
         >
-          { label }
+          {label}
         </Button>
         <Button
           className="rw-calendar-btn-right"
           onClick={onMoveRight}
           disabled={nextDisabled}
-          label={messages.moveForward}
+          label={messages.moveForward()}
           icon={`caret-${rtl ? 'left' : 'right'}`}
         />
       </div>

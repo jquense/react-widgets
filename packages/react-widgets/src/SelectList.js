@@ -7,6 +7,7 @@ import createUncontrolledWidget from 'uncontrollable';
 import List from './List';
 import Widget from './Widget';
 import SelectListItem from './SelectListItem';
+import { getMessages } from './messages';
 
 import { find, splat }  from './util/_';
 import compat from './util/compat';
@@ -69,14 +70,13 @@ class SelectList extends React.Component {
     value: [],
     data:  [],
     listComponent: List,
-    messages: {
-      emptyList: 'There are no items in this list'
-    }
   };
 
   constructor(...args) {
     super(...args);
     autoFocus(this);
+
+    this.messages = getMessages(this.props.messages)
 
     this.widgetId = instanceId(this, '_widget')
     this.listId = instanceId(this, '_listbox')
@@ -106,6 +106,7 @@ class SelectList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.messages = getMessages(nextProps.messages)
     return this.setState(
       this.getStateFromProps(nextProps)
     )
@@ -139,89 +140,99 @@ class SelectList extends React.Component {
   };
 
   @widgetEditable
-  handleKeyDown = (e) => {
+  handleKeyDown = (event) => {
     let { list, accessors } = this;
     let { multiple } = this.props
     let { dataItems, focusedItem } = this.state;
 
-    let key = e.key
+    let { keyCode, key, ctrlKey } = event
 
     let change = (item) => {
       if (!item) return
-      this.handleChange(item, multiple
-          ? !accessors.find(dataItems, item) // toggle value
-          : true)
+
+      let checked = multiple
+        ? !accessors.find(dataItems, item) // toggle value
+        : true
+
+      this.handleChange(item, checked, event)
     }
 
-    notify(this.props.onKeyDown, [e])
+    notify(this.props.onKeyDown, [event])
 
-    if (e.defaultPrevented)
+    if (event.defaultPrevented)
       return
 
     if (key === 'End') {
-      e.preventDefault()
+      event.preventDefault()
       focusedItem = list.last()
 
       this.setState({ focusedItem })
       if (!multiple) change(focusedItem)
     }
     else if (key === 'Home' ) {
-      e.preventDefault()
+      event.preventDefault()
       focusedItem = list.first()
 
       this.setState({ focusedItem })
       if (!multiple) change(focusedItem)
     }
     else if (key === 'Enter' || key === ' ' ) {
-      e.preventDefault()
+      event.preventDefault()
       change(focusedItem)
     }
     else if (key === 'ArrowDown' || key === 'ArrowRight' ) {
-      e.preventDefault()
+      event.preventDefault()
       focusedItem = list.next(focusedItem)
 
       this.setState({ focusedItem })
       if (!multiple) change(focusedItem)
     }
     else if (key === 'ArrowUp' || key === 'ArrowLeft'  ) {
-      e.preventDefault()
+      event.preventDefault()
       focusedItem = list.prev(focusedItem)
 
       this.setState({ focusedItem })
       if (!multiple) change(focusedItem)
     }
-    else if (multiple && e.keyCode === 65 && e.ctrlKey ) {
-      e.preventDefault()
+    else if (multiple && keyCode === 65 && ctrlKey ) {
+      event.preventDefault()
       this.selectAll()
     }
   };
 
   @widgetEditable
-  handleKeyPress = (e) => {
-    notify(this.props.onKeyPress, [e])
+  handleKeyPress = (event) => {
+    notify(this.props.onKeyPress, [event])
 
-    if (e.defaultPrevented)
+    if (event.defaultPrevented)
       return
 
-    this.search(String.fromCharCode(e.which))
+    this.search(String.fromCharCode(event.which), event)
   };
 
-  handleChange = (item, checked) => {
-    var { multiple } = this.props
-      , values = this.state.dataItems;
-
-    multiple  = !!multiple
+  handleChange = (item, checked, originalEvent) => {
+    let { multiple, onChange } = this.props
+    let lastValue = this.state.dataItems;
 
     this.setState({ focusedItem: item })
 
     if (!multiple)
-      return notify(this.props.onChange, checked ? item : null)
+      return notify(onChange, [checked ? item : null, {
+        originalEvent,
+        lastValue,
+        checked,
+      }])
 
-    values = checked
-      ? values.concat(item)
-      : values.filter( v => v !== item)
+    let nextValue = checked
+      ? lastValue.concat(item)
+      : lastValue.filter( v => v !== item)
 
-    notify(this.props.onChange, [values || []])
+    notify(onChange, [nextValue || [], {
+      checked,
+      lastValue,
+      originalEvent,
+      dataItem: item,
+    }])
   };
 
   renderListItem = (itemProps) => {
@@ -296,6 +307,7 @@ class SelectList extends React.Component {
           focusedItem={focusedItem}
           onMove={this.handleScroll}
           optionComponent={this.renderListItem}
+          messages={{ emptyList: this.messages.emptyList }}
         />
       </Widget>
     );
@@ -329,11 +341,13 @@ class SelectList extends React.Component {
   }
 
 
-  search(character) {
+  search(character, originalEvent) {
     let { _searchTerm, list } = this;
 
     let word = ((_searchTerm || '') + character).toLowerCase()
     let multiple = this.props.multiple;
+
+    if (!multiple) originalEvent.persist()
 
     if (!character)
       return
@@ -341,13 +355,13 @@ class SelectList extends React.Component {
     this._searchTerm = word
 
     this.timeouts.set('search', () => {
-      var focusedItem = list.next(this.state.focusedItem, word);
+      let focusedItem = list.next(this.state.focusedItem, word);
 
       this._searchTerm = ''
 
       if (focusedItem) {
         !multiple
-          ? this.handleChange(focusedItem, true)
+          ? this.handleChange(focusedItem, true, originalEvent)
           : this.setState({ focusedItem })
       }
     }, this.props.delay)

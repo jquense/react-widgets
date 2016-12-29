@@ -1,14 +1,13 @@
 import React   from 'react';
 
-import Listbox from './Listbox';
-import ListOption from './ListOption';
-import { result }  from './util/_';
 import compat from './util/compat';
 import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
-import { instanceId, notify } from './util/widgetHelpers';
-import { isDisabledItem }  from './util/interaction';
+import { notify } from './util/widgetHelpers';
 import { defaultGetDataState } from './util/listDataManager';
+import Listbox from './Listbox';
+import ListOption from './ListOption';
+import ListOptionGroup from './ListOptionGroup'
 
 const EMPTY_DATA_STATE = {}
 
@@ -20,21 +19,17 @@ const propTypes = {
 
   activeId: React.PropTypes.string,
   optionComponent: CustomPropTypes.elementType,
-  itemComponent: CustomPropTypes.elementType,
-  groupComponent:  CustomPropTypes.elementType,
+  renderItem: React.PropTypes.func.isRequired,
+  renderGroup:  React.PropTypes.func,
 
   focusedItem: React.PropTypes.any,
   selectedItem: React.PropTypes.any,
 
-  valueAccessor: React.PropTypes.func.isRequired,
-  textAccessor: React.PropTypes.func.isRequired,
-
-  disabled: CustomPropTypes.disabled.acceptsArray,
-
+  isDisabled: React.PropTypes.func.isRequired,
   groupBy: CustomPropTypes.accessor,
 
   messages: React.PropTypes.shape({
-    emptyList: CustomPropTypes.message
+    emptyList: React.PropTypes.func.isRequired,
   })
 }
 
@@ -43,9 +38,6 @@ const defaultProps = {
   data: [],
   dataState: EMPTY_DATA_STATE,
   optionComponent: ListOption,
-  messages: {
-    emptyList: 'There are no items in this list'
-  }
 }
 
 class List extends React.Component {
@@ -87,9 +79,8 @@ class List extends React.Component {
     return (
       <Listbox
         {...elementProps}
-        id={instanceId(this)}
         className={className}
-        emptyListMessage={result(messages.emptyList, this.props)}
+        emptyListMessage={messages.emptyList(this.props)}
       >
         {this.mapItems((item, idx, isHeader) => {
           return isHeader ?
@@ -101,19 +92,14 @@ class List extends React.Component {
   }
 
   renderGroupHeader(group) {
-    var GroupComponent = this.props.groupComponent
-      , id = instanceId(this);
-
+    let { renderGroup } = this.props;
     return (
-      <li
+      <ListOptionGroup
         key={'item_' + group}
-        tabIndex='-1'
-        role="separator"
-        id={id + '_group_' + group}
-        className='rw-list-optgroup'
+        group={group}
       >
-        { GroupComponent ? <GroupComponent item={group}/> : group }
-      </li>
+        {renderGroup({ group })}
+      </ListOptionGroup>
     )
   }
 
@@ -123,35 +109,23 @@ class List extends React.Component {
       , focusedItem
       , selectedItem
       , onSelect
-      , disabled
-      , textAccessor
-      , valueAccessor
-      , itemComponent: ItemComponent
+      , isDisabled
+      , renderItem
       , optionComponent: Option } = this.props
 
-    let isDisabled = isDisabledItem(item, disabled, valueAccessor);
     let isFocused = focusedItem === item;
-    let id = isFocused ? activeId : undefined;
 
     return (
       <Option
-        key={'item_' + idx}
-        id={id}
         dataItem={item}
+        key={'item_' + idx}
+        activeId={activeId}
         focused={isFocused}
-        disabled={isDisabled}
+        onSelect={onSelect}
+        disabled={isDisabled(item)}
         selected={selectedItem === item}
-        onClick={isDisabled ? undefined : e => onSelect(item, e)}
       >
-        {ItemComponent
-          ? <ItemComponent
-              item={item}
-              value={valueAccessor(item)}
-              text={textAccessor(item)}
-              disabled={isDisabled}
-            />
-          : textAccessor(item)
-        }
+        {renderItem({ item })}
       </Option>
     )
   }

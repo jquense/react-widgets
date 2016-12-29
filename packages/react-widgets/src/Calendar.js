@@ -11,8 +11,10 @@ import Month from './Month';
 import Year from './Year';
 import Decade from './Decade';
 import Century from './Century';
+import { getMessages } from './messages';
 import SlideTransition from './SlideTransition';
 import focusManager from './util/focusManager';
+
 import { date as dateLocalizer } from './util/localizers';
 import * as CustomPropTypes from './util/PropTypes';
 import * as constants from './util/constants';
@@ -111,21 +113,18 @@ class Calendar extends React.Component {
   static propTypes = propTypes;
 
   static defaultProps = {
-
     value: null,
     min: new Date(1900, 0, 1),
     max: new Date(2099, 11, 31),
-
     views: VIEW_OPTIONS,
-
     tabIndex: '0',
     footer: true,
-
-    messages: msgs({})
   };
 
   constructor(...args) {
     super(...args)
+
+    this.messages = getMessages(this.props.messages)
 
     this.viewId = instanceId(this, '_calendar')
     this.labelId = instanceId(this, '_calendar_label')
@@ -147,8 +146,10 @@ class Calendar extends React.Component {
     }
   }
 
-  componentWillReceiveProps({ view, views, value, currentDate }) {
+  componentWillReceiveProps({ messages, view, views, value, currentDate }) {
     let val  = this.inRangeValue(value);
+
+    this.messages = getMessages(messages)
 
     view = view || views[0]
 
@@ -274,7 +275,6 @@ class Calendar extends React.Component {
       , disabled
       , readOnly
       , footer
-      , messages
       , views
       , min
       , max
@@ -296,8 +296,6 @@ class Calendar extends React.Component {
 
     let isDisabled = disabled || readOnly
 
-    messages = msgs(this.props.messages)
-
     return (
       <Widget
         {...elementProps}
@@ -315,7 +313,7 @@ class Calendar extends React.Component {
         <Header
           label={this.getHeaderLabel()}
           labelId={this.labelId}
-          messages={messages}
+          messages={this.messages}
           upDisabled={isDisabled || view === last(views)}
           prevDisabled={isDisabled || !dates.inRange(this.nextDate(dir.LEFT), min, max, view)}
           nextDisabled={isDisabled || !dates.inRange(this.nextDate(dir.RIGHT), min, max, view)}
@@ -472,14 +470,6 @@ class Calendar extends React.Component {
 function dateOrNull(dt) {
   if (dt && !isNaN(dt.getTime())) return dt
   return null
-}
-
-function msgs(msgs) {
-  return {
-    moveBack:     'navigate back',
-    moveForward:  'navigate forward',
-    ...msgs
-  }
 }
 
 

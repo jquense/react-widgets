@@ -7,6 +7,8 @@ import WidgetPicker from './WidgetPicker';
 import Select from './Select';
 import Input from './NumberInput';
 import Button from './Button';
+import { getMessages } from './messages';
+
 import * as Props from './util/Props';
 import focusManager from './util/focusManager';
 import { widgetEditable } from './util/interaction';
@@ -88,16 +90,11 @@ class NumberPicker extends React.Component {
     min: -Infinity,
     max:  Infinity,
     step: 1,
-
-    messages: {
-      increment: 'increment value',
-      decrement:  'decrement value'
-    }
   };
 
   constructor(...args) {
     super(...args)
-
+    this.messages = getMessages(this.props.messages)
     this.focusManager = focusManager(this, {
       willHandle: focused => {
         if (focused) this.focus()
@@ -107,6 +104,10 @@ class NumberPicker extends React.Component {
     this.state = {
       focused: false,
     }
+  }
+
+  componentWillReceiveProps({ messages }) {
+    this.messages = getMessages(messages)
   }
 
   @widgetEditable
@@ -224,7 +225,6 @@ class NumberPicker extends React.Component {
       , disabled
       , readOnly
       , value
-      , messages
       , min
       , max } = this.props;
 
@@ -251,8 +251,8 @@ class NumberPicker extends React.Component {
             <Button
               icon="caret-up"
               onClick={this.handleFocus}
-              label={messages.increment}
               disabled={value === max || disabled}
+              label={this.messages.increment({ value, min, max })}
               onMouseUp={e => this.handleMouseUp(directions.UP, e)}
               onMouseDown={e => this.handleMouseDown(directions.UP, e)}
               onMouseLeave={e => this.handleMouseUp(directions.UP, e)}
@@ -260,8 +260,8 @@ class NumberPicker extends React.Component {
             <Button
               icon="caret-down"
               onClick={this.handleFocus}
-              label={messages.decrement}
               disabled={value === min || disabled}
+              label={this.messages.decrement({ value, min, max })}
               onMouseUp={e => this.handleMouseUp(directions.DOWN, e)}
               onMouseDown={e => this.handleMouseDown(directions.DOWN, e)}
               onMouseLeave={e => this.handleMouseUp(directions.DOWN, e)}
@@ -301,8 +301,12 @@ class NumberPicker extends React.Component {
 }
 
 
-export default uncontrollable(
-    NumberPicker, { value: 'onChange' }, ['focus']);
+export default uncontrollable(NumberPicker,
+  {
+    value: 'onChange'
+  },
+  ['focus']
+);
 
 
 

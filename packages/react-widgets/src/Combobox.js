@@ -8,6 +8,7 @@ import List from './List';
 import Popup from './Popup';
 import Select  from './Select';
 import ComboboxInput from './ComboboxInput';
+import { getMessages } from './messages';
 import compat from './util/compat';
 import focusManager from './util/focusManager';
 import listDataManager from './util/listDataManager';
@@ -15,7 +16,7 @@ import * as CustomPropTypes from './util/PropTypes';
 import accessorManager from './util/accessorManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
-import { isShallowEqual, result }  from './util/_';
+import { isShallowEqual }  from './util/_';
 import * as Props from './util/Props';
 import * as Filter from './util/Filter';
 import { widgetEditable } from './util/interaction';
@@ -60,7 +61,7 @@ let propTypes = {
   inputProps: React.PropTypes.object,
   listProps: React.PropTypes.object,
   messages: React.PropTypes.shape({
-    open: CustomPropTypes.message,
+    openCombobox: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
     emptyFilter: CustomPropTypes.message
   })
@@ -79,13 +80,12 @@ class Combobox extends React.Component {
     filter: false,
     delay: 500,
     listComponent: List,
-
-    messages: msgs(),
   };
 
   constructor(props, context) {
     super(props, context);
 
+    this.messages = getMessages(props.messages)
     this.inputId = instanceId(this, '_input')
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
@@ -113,6 +113,7 @@ class Combobox extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.messages = getMessages(nextProps.messages)
     this.setState(this.getStateFromProps(nextProps))
   }
 
@@ -336,11 +337,9 @@ class Combobox extends React.Component {
     let {
         className
       , duration
-      , messages
       , busy
       , dropUp
-      , open
-      , listComponent: List } = this.props;
+      , open } = this.props;
 
     let { focused } = this.state;
 
@@ -350,7 +349,7 @@ class Combobox extends React.Component {
     let elementProps = Props.pickElementProps(this);
     let shouldRenderPopup = open || isFirstFocusedRender(this);
 
-    messages = msgs(messages)
+    let messages = this.messages
 
     return (
       <Widget
@@ -376,7 +375,7 @@ class Combobox extends React.Component {
             icon='caret-down'
             onClick={this.toggle}
             disabled={disabled || readOnly}
-            label={result(messages.open, this.props)}
+            label={messages.openCombobox(this.props)}
           />
         </WidgetPicker>
 
@@ -389,7 +388,7 @@ class Combobox extends React.Component {
             onOpening={() => this.refs.list.forceUpdate()}
           >
             <div>
-              {this.renderList(List, messages)}
+              {this.renderList(messages)}
             </div>
           </Popup>
         }
@@ -449,13 +448,3 @@ class Combobox extends React.Component {
 
 export default createUncontrolledWidget(
   Combobox, { open: 'onToggle', value: 'onChange' }, ['focus']);
-
-
-function msgs(msgs){
-  return {
-    open: 'open combobox',
-    emptyList:   'There are no items in this list',
-    emptyFilter: 'The filter returned no results',
-    ...msgs
-  }
-}

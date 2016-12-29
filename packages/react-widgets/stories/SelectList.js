@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
+import { action } from './helpers';
 import Container from './Container';
 import SelectList from '../src/SelectList';
 
@@ -10,7 +11,8 @@ let data = generateNames();
 let props = {
   data,
   valueField: 'id',
-  textField: 'fullName'
+  textField: 'fullName',
+  onChange: action('change')
 }
 
 storiesOf('SelectList', module)

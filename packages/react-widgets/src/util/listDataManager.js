@@ -1,3 +1,4 @@
+import React from 'react';
 import { spyOnComponent } from 'react-component-managers';
 
 import { presets } from './Filter';
@@ -5,6 +6,14 @@ import { groupBySortedKeys }  from './_';
 import accessorManager from './accessorManager';
 
 const EMPTY_VALUE = {};
+
+export function normalizeComponent(Component) {
+  return (itemProps) => (
+    Component
+      ? <Component {...itemProps} />
+      : (itemProps.text || itemProps.item)
+  )
+}
 
 export function defaultGetDataState(data, { groupBy }, lastState = {}) {
   if (
@@ -94,6 +103,24 @@ export default function listDataManager(component, {
     return (state && state.sequentialData) || listData
   }
 
+  let renderItem = ({ item, ...rest }) => { // eslint-disable-line react/prop-types
+    let Component = currentProps.itemComponent
+    return Component ? (
+      <Component
+        item={item}
+        value={accessors.value(item)}
+        text={accessors.text(item)}
+        disabled={isDisabled(item)}
+        {...rest}
+      />
+    ) : accessors.text(item)
+  }
+
+  let renderGroup = ({ group }) => { // eslint-disable-line react/prop-types
+    let Component = currentProps.groupComponent
+    return Component ? <Component item={group} /> : group
+  }
+
   let manager = {
     isDisabled,
 
@@ -161,16 +188,17 @@ export default function listDataManager(component, {
     },
 
     defaultProps() {
-      const { groupBy, groupComponent, itemComponent, optionComponent, disabled } = currentProps;
+      const { groupBy, optionComponent } = currentProps;
+
       return {
         groupBy,
-        groupComponent,
-        itemComponent,
+        renderItem,
+        renderGroup,
         optionComponent,
+        isDisabled,
         ...currentProps.listProps,
-        disabled,
         data: listData,
-        dataState: manager.getState()
+        dataState: manager.getState(),
       }
     }
   }

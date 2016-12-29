@@ -13,6 +13,7 @@ import BaseCalendar from './Calendar';
 import DateTimePickerInput from './DateTimePickerInput';
 import Select  from './Select';
 import TimeList from './TimeList';
+import { getMessages } from './messages';
 
 import * as Props from './util/Props';
 import * as CustomPropTypes from './util/PropTypes';
@@ -113,22 +114,15 @@ class DateTimePicker extends React.Component {
     value: null,
     min: new Date(1900,  0,  1),
     max: new Date(2099, 11, 31),
-
     date: true,
     time: true,
     open: false,
-
-    //calendar override
-    footer: true,
-
-    messages: {
-      dateButton: 'Select Date',
-      timeButton: 'Select Time'
-    },
   }
 
   constructor(...args) {
     super(...args);
+
+    this.messages = getMessages(this.props.messages)
 
     this.inputId = instanceId(this, '_input')
     this.dateId = instanceId(this, '_date')
@@ -146,6 +140,10 @@ class DateTimePicker extends React.Component {
     this.state = {
       focused: false
     };
+  }
+
+  componentWillReceiveProps({ messages }) {
+    this.messages = getMessages(messages)
   }
 
   @widgetEditable
@@ -299,19 +297,20 @@ class DateTimePicker extends React.Component {
     )
   }
 
-  renderButtons(messages) {
+  renderButtons() {
     let { date, time, disabled, readOnly } = this.props;
 
     if (!date && !time) {
       return null;
     }
+    let messages = this.messages;
 
     return (
       <Select bordered>
         {date &&
           <Button
             icon="calendar"
-            label={messages.dateButton}
+            label={messages.dateButton()}
             disabled={disabled || readOnly}
             onClick={this.handleCalendarClick}
           />
@@ -319,7 +318,7 @@ class DateTimePicker extends React.Component {
         {time &&
           <Button
             icon="clock-o"
-            label={messages.timeButton}
+            label={messages.timeButton()}
             disabled={disabled || readOnly}
             onClick={this.handleTimeClick}
           />
@@ -408,6 +407,7 @@ class DateTimePicker extends React.Component {
             aria-labelledby={inputId}
             aria-live={open && 'polite'}
             aria-hidden={!open}
+            messages={this.messages}
           />
         </div>
       </Popup>
@@ -420,7 +420,6 @@ class DateTimePicker extends React.Component {
       , date
       , time
       , open
-      , messages
       , disabled, readOnly
       , dropUp} = this.props;
 
@@ -452,7 +451,7 @@ class DateTimePicker extends React.Component {
         >
           {this.renderInput(owns.trim())}
 
-          {this.renderButtons(messages)}
+          {this.renderButtons()}
         </WidgetPicker>
 
         {!!(shouldRenderList && time) &&

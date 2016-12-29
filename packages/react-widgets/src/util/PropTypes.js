@@ -30,5 +30,6 @@ export const accessor = React.PropTypes.oneOfType([
 
 export const message = React.PropTypes.oneOfType([
   React.PropTypes.node,
-  React.PropTypes.string
+  React.PropTypes.string,
+  React.PropTypes.func,
 ])
