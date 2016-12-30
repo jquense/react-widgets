@@ -9,6 +9,7 @@ class MultiselectInput extends React.Component {
     value:        React.PropTypes.string,
     placeholder:  React.PropTypes.string,
     maxLength:    React.PropTypes.number,
+    inputSize:    React.PropTypes.func,
     onChange:     React.PropTypes.func.isRequired,
 
     disabled:     CustomPropTypes.disabled,
@@ -17,11 +18,15 @@ class MultiselectInput extends React.Component {
 
   render() {
       let { disabled, readOnly, ...props } = this.props
-      let size = Math.max((props.value || props.placeholder).length, 1) + 1;
+      let size = props.inputSize ?
+        props.inputSize(props.value || props.placeholder) :
+        Math.max((props.value || props.placeholder).length, 1) + 1;
+
+      let elementProps = _.omitOwnProps(this);
 
       return (
         <input
-          {...props}
+          {...elementProps}
           size={size}
           className='rw-input'
           autoComplete='off'

@@ -55,6 +55,8 @@ var propTypes = {
                      React.PropTypes.func
                    ]),
 
+  inputSize:       React.PropTypes.func,
+
   busy:            React.PropTypes.bool,
   dropUp:          React.PropTypes.bool,
 
@@ -219,6 +221,7 @@ var Multiselect = React.createClass({
         disabled={disabled === true}
         readOnly={readOnly === true}
         placeholder={this.getPlaceholder()}
+        inputSize={this.props.inputSize}
         onKeyDown={this.handleSearchKeyDown}
         onKeyUp={this.handleSearchKeyUp}
         onChange={this.handleInputChange}
