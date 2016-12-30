@@ -22,9 +22,11 @@ class MultiselectInput extends React.Component {
         props.inputSize(props.value || props.placeholder) :
         Math.max((props.value || props.placeholder).length, 1) + 1;
 
+      let elementProps = _.omitOwnProps(this);
+
       return (
         <input
-          {...props}
+          {...elementProps}
           size={size}
           className='rw-input'
           autoComplete='off'
