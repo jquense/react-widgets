@@ -55,6 +55,10 @@ module.exports = {
                   React.PropTypes.func,
                   React.PropTypes.bool,
                   React.PropTypes.oneOf(filterTypes)
+                ]),
+  sort:         React.PropTypes.oneOfType([
+                  React.PropTypes.func,
+                  React.PropTypes.bool
                 ])
 }
 
