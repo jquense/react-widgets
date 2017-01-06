@@ -71,7 +71,7 @@ export default React.createClass({
   },
 
   render(){
-    let { value, onSelect } = this.props;
+    let { value, onSelect, itemComponent } = this.props;
 
     var times = this.state.dates
       , date  = this._closestDate(times, value);
@@ -86,6 +86,7 @@ export default React.createClass({
         selected={date}
         onSelect={onSelect}
         focused={this.state.focusedItem}
+        itemComponent={itemComponent}
       />
     )
   },
