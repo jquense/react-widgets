@@ -1,4 +1,4 @@
-/*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! (c) 2017 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("react"), require("react-dom"));
@@ -7821,7 +7821,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _props = this.props,
 	        value = _props.value,
-	        onSelect = _props.onSelect;
+	        onSelect = _props.onSelect,
+	        itemComponent = _props.itemComponent;
 
 
 	    var times = this.state.dates,
@@ -7834,7 +7835,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      valueField: 'date',
 	      selected: date,
 	      onSelect: onSelect,
-	      focused: this.state.focusedItem
+	      focused: this.state.focusedItem,
+	      itemComponent: itemComponent
 	    }));
 	  },
 	  _closestDate: function _closestDate(times, date) {
@@ -8751,6 +8753,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  onSelect: _react2.default.PropTypes.func,
 	  onCreate: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.oneOf([false]), _react2.default.PropTypes.func]),
 
+	  inputSize: _react2.default.PropTypes.func,
+
 	  busy: _react2.default.PropTypes.bool,
 	  dropUp: _react2.default.PropTypes.bool,
 
@@ -8913,6 +8917,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      disabled: disabled === true,
 	      readOnly: readOnly === true,
 	      placeholder: this.getPlaceholder(),
+	      inputSize: this.props.inputSize,
 	      onKeyDown: this.handleSearchKeyDown,
 	      onKeyUp: this.handleSearchKeyUp,
 	      onChange: this.handleInputChange,
@@ -9290,9 +9295,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        readOnly = _props.readOnly,
 	        props = _objectWithoutProperties(_props, ['disabled', 'readOnly']);
 
-	    var size = Math.max((props.value || props.placeholder).length, 1) + 1;
+	    var size = props.inputSize ? props.inputSize(props.value || props.placeholder) : Math.max((props.value || props.placeholder).length, 1) + 1;
 
-	    return _react2.default.createElement('input', _extends({}, props, {
+	    var elementProps = _3.default.omitOwnProps(this);
+
+	    return _react2.default.createElement('input', _extends({}, elementProps, {
 	      size: size,
 	      className: 'rw-input',
 	      autoComplete: 'off',
@@ -9312,6 +9319,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: _react2.default.PropTypes.string,
 	  placeholder: _react2.default.PropTypes.string,
 	  maxLength: _react2.default.PropTypes.number,
+	  inputSize: _react2.default.PropTypes.func,
 	  onChange: _react2.default.PropTypes.func.isRequired,
 
 	  disabled: _propTypes2.default.disabled,
