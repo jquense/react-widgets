@@ -3,7 +3,7 @@ import { directions, calendarViewUnits } from './constants';
 import { date as dateLocalizer } from './localizers';
 
 
-var dates = Object.assign(dateMath, {
+var dates = Object.assign({}, dateMath, {
 
   parse(date, format, culture) {
     return dateLocalizer.parse(date, format, culture)
