@@ -12,7 +12,7 @@ if (!hasLocaleData)
     'The Moment localizer depends on the `localeData` api, please provide a moment object v2.2.0 or higher')
 
 function getMoment(culture, value, format){
-  return culture ? moment(value, format)[localField](culture) : moment(value, format)
+  return culture ? moment(value, format, true)[localField](culture) : moment(value, format, true)
 }
 
 function endOfDecade(date) {
