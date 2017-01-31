@@ -136,7 +136,7 @@
   @include state-select();
 }
 
-&.rw-state-disabled {
+.rw-state-disabled {
   @include state-disabled();
   opacity: 1;
 }
