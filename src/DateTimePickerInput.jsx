@@ -61,8 +61,19 @@ export default React.createClass({
         readOnly={readOnly}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
+        onKeyDown={this.handleKeyDown}
       />
     )
+  },
+
+  handleKeyDown(event) {
+    if(event.key == 'Enter') {
+      let date = this.props.parse(event.target.value);
+      compat.findDOMNode(this).blur();
+      this.props.onChange(date, formatDate(date, this.props.format, this.props.culture));
+    } else if(event.key == 'Escape') {
+      compat.findDOMNode(this).blur();
+    }
   },
 
   handleChange({ target: { value } }) {
