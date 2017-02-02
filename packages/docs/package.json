@@ -1,7 +1,7 @@
 {
   "name": "react-widgets-documentation",
   "private": true,
-  "version": "4.0.0-rc.0",
+  "version": "4.0.0-rc.1",
   "scripts": {
     "clean": "rimraf ../../docs/*",
     "compile:docs": "",
@@ -48,7 +48,7 @@
     "react-router": "^2.8.1",
     "react-router-bootstrap": "^0.23.1",
     "react-widgets": "^4.0.0-rc.0",
-    "react-widgets-globalize": "^4.0.0-rc.0",
+    "react-widgets-globalize": "^4.0.0-rc.1",
     "rimraf": "^2.4.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.5",

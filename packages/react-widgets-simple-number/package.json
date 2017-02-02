@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-simple-number",
-  "version": "4.0.0-rc.0",
+  "version": "4.0.0-rc.1",
   "description": "A globalize.js localizer for react-widgets",
   "main": "index.js",
   "scripts": {
