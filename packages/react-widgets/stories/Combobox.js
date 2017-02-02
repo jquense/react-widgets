@@ -60,6 +60,25 @@ storiesOf('Combobox', module)
       />
     </Container>
   )
+  .add('disabled items', () =>
+    <Container>
+      <Combobox
+        {...props}
+        open
+        disabled={[props.data[2]]}
+        defaultValue={props.data[1]}
+      />
+    </Container>
+  )
+  .add('disabled item, first focused', () =>
+    <Container>
+      <Combobox
+        {...props}
+        open
+        disabled={props.data.slice(0, 2)}
+      />
+    </Container>
+  )
   .add('readOnly', () =>
     <Container>
       <Combobox

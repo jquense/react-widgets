@@ -1,8 +1,8 @@
 ---
 name: DateTimePicker
+subtitle: DatePicker, TimePicker
 localized: true
-heading: >
-  Select an item from the list, or input a custom value. The {widgetName} can also make suggestions as you type.
+
 shortcuts: |
   - __All Calendar keyboard navigation work here as well__
   - <kbd>alt + down arrow</kbd> open calendar or times
@@ -37,11 +37,16 @@ This handler fires when an item has been selected from the list or calendar. It 
 
 Whether to show the date picker button.
 
+> **Hint:** There is a convenient wrapper: `<DatePicker />` for only date parts.
+
+
 <EditableExample codeText={require('../examples/prop')(widgetName, 'date', false)}/>
 
 ### time?{ type: 'bool', default: 'true' }
 
 Whether to show the time picker button.
+
+> **Hint:** There is also a convenient wrapper: `<TimePicker />` for only time parts.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'time', false)}/>
 
@@ -71,29 +76,48 @@ Change event Handler that is called when the currentDate is changed. The handler
 
 ### format?{ localizable: true }
 
-A string format used to display the date value. For more information about formats
+A formatter used to display the date value. For more information about formats
 visit the [Localization page](i18n)
 
-<EditableExample codeText={require('../examples/prop')(widgetName, 'format', '"MMM dd yyyy"')}/>
+<EditableExample
+  codeText={require('../examples/dateFormat')(
+    widgetName,
+    'format',
+    "{ raw: 'MMM dd, yyyy' }",
+    null,
+    { defaultValue: 'new Date()', time: 'false' }
+  )}
+/>
 
 ### editFormat?{ localizable: true }
 
-A string format to be used while the date input has focus. Useful for showing a simpler format for inputing.
+A formatter to be used while the date input has focus. Useful for showing a simpler format for inputing.
 For more information about formats visit the [Localization page](i18n)
 
-<EditableExample codeText={
-  require('../examples/prop')(widgetName, {
-    time: 'false',
-    defaultValue: 'new Date()',
-    editFormat: "{ date: 'short' }",
-    format: '"MMM dd yyyy"'
-  })}
+<EditableExample
+  codeText={require('../examples/dateFormat')(
+    widgetName,
+    'editFormat',
+    "{ date: 'short' }",
+    null,
+    { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }
+  )}
 />
 
 ### timeFormat?{ localizable: true }
 
-A string format used by the time dropdown to render times. For more information about formats visit
+A formatter used by the time dropdown to render times. For more information about formats visit
 the [Localization page](i18n)
+
+<EditableExample
+  codeText={require('../examples/dateFormat')(
+    widgetName,
+    'timeFormat',
+    "{ time: 'medium' }",
+    null,
+    { date: 'false', open: '"time"' }
+  )}
+/>
 
 ### step?{ type: 'number', default: "false" }
 

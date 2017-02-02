@@ -17,6 +17,8 @@ module.exports = {
   DropdownList:     require('./DropdownList'),
   Combobox:         require('./Combobox'),
   Calendar:         require('./Calendar'),
+  DatePicker:       require('./DatePicker'),
+  TimePicker:       require('./TimePicker'),
   DateTimePicker:   require('./DateTimePicker'),
   NumberPicker:     require('./NumberPicker'),
   Multiselect:      require('./Multiselect'),

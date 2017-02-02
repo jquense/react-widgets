@@ -43,7 +43,7 @@ let propTypes = {
   onToggle: React.PropTypes.func,
   //-------------------------------------------
 
-  valueField: React.PropTypes.string,
+  valueField: CustomPropTypes.accessor,
   textField: CustomPropTypes.accessor,
 
   tagComponent: CustomPropTypes.elementType,

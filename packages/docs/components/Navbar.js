@@ -16,7 +16,7 @@ function SiteNav() {
       className="hidden-xs"
       style={{ marginLeft: 'auto' }}
     >
-      <NavDropdown pullRight title={<span className='r'>RW</span>}>
+      <NavDropdown id="extra-menu" pullRight title={<span className='r'>RW</span>}>
         <LinkContainer to="/" onlyActiveOnIndex>
           <MenuItem>
             <i className='fa fa-play'/> Getting Started

@@ -27,9 +27,6 @@ import '../styles/docs.less';
 
 import 'codemirror/mode/css/css';
 
-import './locales';
-
-
 function onUpdate() {
   const location = this.state.location;
   setTimeout(() => {
@@ -44,35 +41,39 @@ function onUpdate() {
   })
 }
 
+function getLocalBundle(page) {
+  return (_, cb) => {
+    require.ensure([], (require) => {
+      require('./locales')
+      cb(null, page)
+    }, 'locale');
+  }
+}
+
 ReactDOM.render((
   <Router history={hashHistory} onUpdate={onUpdate}>
     <Route path="/">
       <Route component={LandingPage}>
-        <IndexRoute path='getting-started(/:topic)' component={GettingStarted}/>
+        <IndexRoute component={GettingStarted}/>
       </Route>
 
       <Route component={ApiPage}>
-        <Route  path='dropdownlist' component={DropdownList}>
-          <Route path=':topic' component={DropdownList}/>
-        </Route>
-        <Route path="combobox" component={ComboBox}>
-          <Route path=':topic' component={ComboBox}/>
-        </Route>
-        <Route path="multiselect" component={MultiSelect}>
-          <Route path=':topic' component={MultiSelect}/>
-        </Route>
-        <Route path="selectlist" component={SelectList}>
-          <Route path=':topic' component={SelectList}/>
-        </Route>
-        <Route path="calendar" component={Calendar}>
-          <Route path=':topic' component={Calendar}/>
-        </Route>
-        <Route path="datetimepicker" component={DatePicker}>
-          <Route path=':topic' component={DatePicker}/>
-        </Route>
-        <Route path="numberpicker" component={NumberPicker}>
-          <Route path=':topic' component={NumberPicker}/>
-        </Route>
+        <Route
+          path="calendar(/:topic)"
+          getComponent={getLocalBundle(Calendar)}
+        />
+        <Route path="combobox(/:topic)" component={ComboBox} />
+        <Route
+          path="datetimepicker(/:topic)"
+          getComponent={getLocalBundle(DatePicker)}
+        />
+        <Route path="dropdownlist(/:topic)" component={DropdownList} />
+        <Route path="multiselect(/:topic)" component={MultiSelect} />
+        <Route
+          path="numberpicker(/:topic)"
+          getComponent={getLocalBundle(NumberPicker)}
+        />
+        <Route path="selectlist(/:topic)" component={SelectList} />
       </Route>
 
       <Route component={Page}>

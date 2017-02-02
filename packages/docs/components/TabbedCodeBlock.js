@@ -14,9 +14,10 @@ function unescape(html) {
     .replace(/&#39;/g, "'");
 }
 
+let count = 0;
 function TabbedCodeBlock({ children }) {
   return (
-    <Tabs defaultActiveKey={0}>
+    <Tabs defaultActiveKey={0} id={`tab-code-block-${count++}`}>
       {React.Children.map(children, ({ props }, idx) => {
         return (
           <Tab title={props.title} eventKey={idx}>

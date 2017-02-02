@@ -1,7 +1,7 @@
+import React from 'react'
 import tsp from 'teaspoon';
 
-var React = require('react');
-var Month = require('../src/Month');
+import Month from '../src/Month'
 
 describe('Month Component', function(){
 

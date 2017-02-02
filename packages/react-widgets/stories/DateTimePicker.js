@@ -3,10 +3,32 @@ import { storiesOf } from '@kadira/storybook';
 
 import Container from './Container';
 import DateTimePicker from '../src/DateTimePicker';
+import DatePicker from '../src/DatePicker';
+import TimePicker from '../src/TimePicker';
 
 let generateNames = global.generateNames;
 
 
+storiesOf('TimePicker', module)
+  .add('TimePicker', () =>
+    <Container>
+      <TimePicker />
+    </Container>
+  )
+
+storiesOf('DatePicker', module)
+  .add('DatePicker', () =>
+    <Container>
+      <DatePicker />
+    </Container>
+  )
+  .add('default open', () =>
+    <Container>
+      <DatePicker
+        defaultOpen
+      />
+    </Container>
+  )
 
 storiesOf('DateTimePicker', module)
   .add('DateTimePicker', () =>
@@ -22,6 +44,7 @@ storiesOf('DateTimePicker', module)
       />
     </Container>
   )
+
   .add('calendar', () =>
     <Container>
       <DateTimePicker

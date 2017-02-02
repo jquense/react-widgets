@@ -8,6 +8,7 @@ import { defaultGetDataState } from './util/listDataManager';
 import Listbox from './Listbox';
 import ListOption from './ListOption';
 import ListOptionGroup from './ListOptionGroup'
+import { getMessages } from './messages';
 
 const EMPTY_DATA_STATE = {}
 
@@ -75,12 +76,13 @@ class List extends React.Component {
     let { className, messages } = this.props
 
     let elementProps = Props.pickElementProps(this);
+    let { emptyList } = getMessages(messages)
 
     return (
       <Listbox
         {...elementProps}
         className={className}
-        emptyListMessage={messages.emptyList(this.props)}
+        emptyListMessage={emptyList(this.props)}
       >
         {this.mapItems((item, idx, isHeader) => {
           return isHeader ?
@@ -95,7 +97,7 @@ class List extends React.Component {
     let { renderGroup } = this.props;
     return (
       <ListOptionGroup
-        key={'item_' + group}
+        key={'group_' + group}
         group={group}
       >
         {renderGroup({ group })}

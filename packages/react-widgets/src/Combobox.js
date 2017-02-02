@@ -39,7 +39,7 @@ let propTypes = {
   groupBy: CustomPropTypes.accessor,
 
   data: React.PropTypes.array,
-  valueField: React.PropTypes.string,
+  valueField: CustomPropTypes.accessor,
   textField: CustomPropTypes.accessor,
   name: React.PropTypes.string,
 

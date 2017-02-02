@@ -32,9 +32,9 @@
 
 
 .rw-widget-container {
-  background-color:   @input-bg;
-  border:             @input-border @input-border-width solid;
-  border-radius:      @input-border-radius;
+  background-color: @input-bg;
+  border: @input-border @input-border-width solid;
+  border-radius: @input-border-radius;
 
   &.rw-state-focus,
   &.rw-state-focus:hover {
@@ -52,7 +52,6 @@
     &:active {
       box-shadow: none;
       .state-disabled();
-      background-color: @input-bg-disabled;
     }
   }
 }
@@ -75,7 +74,6 @@
   }
 
   & > .rw-select {
-    vertical-align: middle;
     width: 1%;
     white-space: nowrap;
   }
@@ -87,6 +85,10 @@
   &.rw-open-up {
     .border-top-radius(0);
   }
+
+  &.rw-state-disabled {
+    background-color: @input-bg-disabled;
+  }
 }
 
 
@@ -95,6 +97,7 @@
 
   & > * {
     width: 1.9em;
+    height: 100%;
   }
 
   .rw-state-readonly &,

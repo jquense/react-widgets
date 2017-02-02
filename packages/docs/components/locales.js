@@ -35,4 +35,4 @@ Globalize.load(
 
 Globalize.locale('en')
 
-require('react-widgets-globalize')
+require('react-widgets-globalize')()

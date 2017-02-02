@@ -5,7 +5,7 @@ let path = require('path')
 let fs = require('fs')
 let mkdir = require('mkdirp')
 
-let files = glob.sync(__dirname + '/../src/less/*.less');
+let files = glob.sync(__dirname + '/src/less/*.less');
 
 files.forEach(transpile)
 
@@ -26,7 +26,7 @@ function transpile(filename) {
   .join('\n')
 
   let outName = path.basename(filename, '.less') + '.scss'
-  let outPath = __dirname + '/../lib/scss'
+  let outPath = __dirname + '/lib/scss'
   let outFile = outPath + '/' + outName;
 
   console.log('Writing scss file: ' + outName) // eslint-disable-line

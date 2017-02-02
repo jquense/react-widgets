@@ -6,22 +6,20 @@ require('babel-core/register')()
 var assert = require('assert')
 var React = require('react');
 var renderToString = require('react-dom/server').renderToString
-var globalize = require('globalize')
 
-require('../src/localizers/globalize')(globalize)
+require('../test-localizer')()
 
 var components = [
-      'Calendar',
-      'Combobox',
-      'DateTimePicker',
-      'DropdownList',
-      'Multiselect',
-      'SelectList',
-      'List',
-      'ListGroupable',
-      'ReplaceTransitionGroup',
-      'NumberPicker'
-    ];
+  'Calendar',
+  'Combobox',
+  'DateTimePicker',
+  'DropdownList',
+  'Multiselect',
+  'SelectList',
+  'List',
+  'ReplaceTransitionGroup',
+  'NumberPicker'
+];
 
 describe('Render to string', function() {
   this.timeout(5000)
@@ -29,10 +27,10 @@ describe('Render to string', function() {
   components.forEach(function(file){
 
     it('should render: ' + file, function(){
-      var Type = require('../src/' + file)
+      var Type = require('../../src/' + file)
 
       assert.doesNotThrow(function(){
-        var comp = renderToString( React.createElement(Type) );
+        var comp = renderToString(React.createElement(Type));
 
         assert.ok(typeof comp === 'string')
       })
@@ -42,7 +40,7 @@ describe('Render to string', function() {
   })
 
   it('should render: Popup', function(){
-    var Type = require('../src/Popup')
+    var Type = require('../../src/Popup')
 
     assert.doesNotThrow(function(){
       var comp = renderToString(

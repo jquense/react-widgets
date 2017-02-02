@@ -70,20 +70,20 @@ the `css-loader`, `style-loader`, `url-loader` and, optionally, the `less-loader
 Here's common configuration:
 
 ```js
-loaders: [
-  // for good ol' css
-  { test: /\\.css$/,  loader: "style!css" },
+module: {
+  loaders: [
+    // for good ol' css
+    { test: /\\.css$/,  loader: "style!css" },
+    // if using less
+    { test: /\\.less$/, loader: "style!css!less" },
+    // if using scss
+    { test: /\\.scss$/, loader: "style!css!scss" },
 
-  // if using less
-  { test: /\\.less$/, loader: "style!css!less" },
-
-  // if using scss
-  { test: /\\.scss$/, loader: "style!css!scss" },
-
-  // images and fonts
-  { test: /\\.(gif|ttf|eot|svg)$/, loader: "url?name=[name].[ext]" },
-  { test: /\\.woff2?(\?.*)?$/, loader: "url?name=[name].[ext]mimetype=application/font-woff" },
-]
+    // images and fonts
+    { test: /\\.(gif|ttf|eot|svg)$/, loader: "url?name=[name].[ext]" },
+    { test: /\\.woff2?(\?.*)?$/, loader: "url?name=[name].[ext]mimetype=application/font-woff" },
+  ]
+}
 ```
 
 When using Less or Sass, you'll need to help webpack find the font and image folders.

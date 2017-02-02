@@ -1,10 +1,8 @@
 import transform from 'lodash/transform';
 import React from 'react'
-import ReactDOM from 'react-dom';
 import tsp from 'teaspoon';
 
 import Calendar from '../src/Calendar'
-import Header from '../src/Header';
 import Footer from '../src/Footer';
 import Month  from '../src/Month';
 import Year from '../src/Year';
@@ -13,133 +11,155 @@ import Century from '../src/Century';
 import { directions } from '../src/util/constants';
 import dates from '../src/util/dates';
 import globalize from 'globalize';
-import TestUtils from'react-addons-test-utils';
 
-var render = TestUtils.renderIntoDocument
-  , findMultiTag = TestUtils.scryRenderedDOMComponentsWithTag
-  , findClass = TestUtils.findRenderedDOMComponentWithClass
-  , findType = TestUtils.findRenderedComponentWithType
-  , trigger = TestUtils.Simulate;
 
 const BaseCalendar = Calendar.ControlledComponent;
 
 describe('Calendar', () => {
 
-  it('should set default View', function(){
-    var date = new Date()
-      , picker = render(<Calendar defaultValue={date} defaultView='year'/>);
-
-    expect(() =>
-      findType(picker, require('../src/Year'))).to.not.throwException();
+  it('should set default View', () => {
+    tsp(
+      <Calendar
+        defaultValue={new Date()}
+        defaultView='year'
+      />
+    )
+    .render()
+    .single(Year);
   })
 
-  it('should click up through views', function(){
-    var date = new Date()
-      , picker = render(<Calendar defaultValue={date} />)
-      , header = findType(picker, Header)
-      , navBtn = findClass(header, 'rw-calendar-btn-view');
+  it('should click up through views', () => {
+    let date = new Date()
+    let calendar = tsp(<Calendar defaultValue={date} />).render()
 
-    expect(() =>
-      findType(picker, Month)).to.not.throwException();
+    let navBtn = calendar.find('button.rw-calendar-btn-view')
 
-    trigger.click(navBtn)
+    calendar.single(Month);
 
-    expect(() =>
-      findType(picker, Year)).to.not.throwException();
+    navBtn.trigger('click');
 
-    trigger.click(navBtn)
+    calendar.single(Year);
 
-    expect(() =>
-      findType(picker, Decade)).to.not.throwException();
+    navBtn.trigger('click');
 
-    trigger.click(navBtn)
+    calendar.single(Decade);
 
-    expect(() =>
-      findType(picker, Century)).to.not.throwException();
+    navBtn.trigger('click');
 
-    expect(navBtn.hasAttribute('disabled')).to.be(true)
+    calendar.single(Century);
+
+    expect(navBtn.dom().hasAttribute('disabled')).to.be(true)
   })
 
-  it('should key up through views', function(){
-    var date = new Date()
-      , picker = render(<Calendar defaultValue={date} />);
+  it('should key up through views', () => {
+    let date = new Date()
+    let keys = { ctrlKey: true, key: 'ArrowUp' };
 
-    expect(() =>
-      findType(picker, Month)).to.not.throwException();
+    tsp(<Calendar defaultValue={date} />).render()
+      .single(Month)
+      .end()
+      .trigger('keyDown', keys)
+        .single(Year)
+        .end()
+      .trigger('keyDown', keys)
+        .single(Decade)
+        .end()
+      .trigger('keyDown', keys)
+        .single(Century);
+  })
 
-    trigger.keyDown(ReactDOM.findDOMNode(picker), { ctrlKey: true, key: 'ArrowUp' })
+  it('should navigate into the past', () => {
+    var date= new Date(2014, 5, 15, 0, 0, 0)
 
-    expect(() =>
-      findType(picker, Year)).to.not.throwException();
+    let calendar = tsp(<Calendar defaultValue={date} />).render()
 
-    trigger.keyDown(ReactDOM.findDOMNode(picker), { ctrlKey: true, key: 'ArrowUp' })
+    let leftBtn = calendar.find('button.rw-calendar-btn-left')
+    let navBtn = calendar.find('button.rw-calendar-btn-view')
 
-    expect(() =>
-      findType(picker, Decade)).to.not.throwException();
+    leftBtn.trigger('click');
 
-    trigger.keyDown(ReactDOM.findDOMNode(picker), { ctrlKey: true, key: 'ArrowUp' })
+    expect(
+      calendar
+        .single(Month).props('focused')
+        .getMonth()
+    ).to.be(4);
 
-    expect(() =>
-      findType(picker, Century)).to.not.throwException();
+    navBtn.trigger('click');
+    leftBtn.trigger('click');
+
+    expect(
+      calendar
+        .single(Year).props('focused')
+        .getFullYear()
+    ).to.be(2013);
+
+    navBtn.trigger('click');
+    leftBtn.trigger('click');
+
+    expect(
+      calendar
+        .single(Decade).props('focused')
+        .getFullYear()
+    ).to.be(2003);
+
+    navBtn.trigger('click');
+    leftBtn.trigger('click');
+
+    expect(
+      calendar
+        .single(Century).props('focused')
+        .getFullYear()
+    ).to.be(1903);
 
   })
 
-  it('should navigate into the past', function(){
-    var date    = new Date(2014, 5, 15, 0, 0, 0)
-      , picker  = render(<Calendar defaultValue={date} />)
-      , header  = findType(picker, Header)
-      , leftBtn = findClass(header, 'rw-calendar-btn-left')
-      , navBtn  = findClass(header, 'rw-calendar-btn-view');
+  it('should navigate into the future', () => {
+    let date = new Date(2014, 5, 15, 0, 0, 0)
+    let calendar = tsp(
+      <Calendar defaultValue={date}  max={new Date(2199, 11, 31)} />
+    )
+    .render()
 
+    let rightBtn = calendar.find('button.rw-calendar-btn-right')
+    let navBtn = calendar.find('button.rw-calendar-btn-view')
 
-    trigger.click(leftBtn)
+    rightBtn.trigger('click');
 
-    expect(findType(picker, Month).props.focused.getMonth()).to.be(4);
+    expect(
+      calendar
+        .single(Month).props('focused')
+        .getMonth()
+    ).to.be(6);
 
-    trigger.click(navBtn)
-    trigger.click(leftBtn)
+    navBtn.trigger('click');
+    rightBtn.trigger('click');
 
-    expect(findType(picker, Year).props.focused.getFullYear()).to.be(2013);
+    expect(
+      calendar
+        .single(Year).props('focused')
+        .getFullYear()
+    ).to.be(2015);
 
-    trigger.click(navBtn)
-    trigger.click(leftBtn)
+    navBtn.trigger('click');
+    rightBtn.trigger('click');
 
-    expect(findType(picker, Decade).props.focused.getFullYear()).to.be(2003);
+    expect(
+      calendar
+        .single(Decade).props('focused')
+        .getFullYear()
+    ).to.be(2025);
 
-    trigger.click(navBtn)
-    trigger.click(leftBtn)
+    navBtn.trigger('click');
+    rightBtn.trigger('click');
 
-    expect(findType(picker, Century).props.focused.getFullYear()).to.be(1903);
+    expect(
+      calendar
+        .single(Century).props('focused')
+        .getFullYear()
+    ).to.be(2125);
   })
 
-  it('should navigate into the future', function(){
-
-    var date     = new Date(2014, 5, 15, 0, 0, 0)
-      , picker   = render(<Calendar defaultValue={date} max={new Date(2199, 11, 31)} />)
-      , header   = findType(picker, Header)
-      , rightBtn = findClass(header, 'rw-calendar-btn-right')
-      , navBtn   = findClass(header, 'rw-calendar-btn-view');
-
-    trigger.click(rightBtn)
-    expect(findType(picker, Month).props.focused.getMonth()).to.be(6);
-
-    trigger.click(navBtn)
-    trigger.click(rightBtn)
-
-    expect(findType(picker, Year).props.focused.getFullYear()).to.be(2015);
-
-    trigger.click(navBtn)
-    trigger.click(rightBtn)
-
-    expect(findType(picker, Decade).props.focused.getFullYear()).to.be(2025);
-
-    trigger.click(navBtn)
-    trigger.click(rightBtn)
-
-    expect(findType(picker, Century).props.focused.getFullYear()).to.be(2125);
-  })
-
-  it('should have a footer', function(){
+  it('should have a footer', () => {
     tsp(<BaseCalendar footer={false} />)
       .shallowRender()
       .none(Footer)
@@ -149,7 +169,7 @@ describe('Calendar', () => {
 
   })
 
-  it('should display date in footer', function(){
+  it('should display date in footer', () => {
     expect(
       tsp(<BaseCalendar />)
         .render()
@@ -159,8 +179,8 @@ describe('Calendar', () => {
     .to.equal(globalize.format(new Date(), 'D'));
   })
 
-  it('should accept footer format', function(){
-    var formatter = sinon.spy((dt, culture) => {
+  it('should accept footer format', () => {
+    let formatter = sinon.spy((dt, culture) => {
       expect(dt).to.be.a(Date)
       expect(culture).to.be.a('string').and.equal('en')
       return 'test'
@@ -200,7 +220,7 @@ describe('Calendar', () => {
     let changeSpy = sinon.spy();
     let date = new Date(2014, 5, 15);
 
-    let cal = tsp(
+    tsp(
       <Calendar
         defaultValue={date}
         max={new Date(2014, 5, 25)}
@@ -209,81 +229,116 @@ describe('Calendar', () => {
       />
     )
     .render()
-
-    cal.find('.rw-calendar-btn-right')
-      .tap(inst =>
-        inst.is('[disabled]')
-      )
+    .find('.rw-calendar-btn-right')
+      .tap(inst => inst.is('[disabled]'))
       .trigger('click')
-
-    cal.find('.rw-calendar-btn-left')
-      .tap(inst =>
-        inst.is('[disabled]')
-      )
+      .end()
+    .find('.rw-calendar-btn-left')
+      .tap(inst => inst.is('[disabled]'))
       .trigger('click')
 
     expect(changeSpy.called).to.equal(false)
 
   })
 
-  it('should use passed in culture', function(){
+  it('should use passed in culture', () => {
     require('globalize/lib/cultures/globalize.culture.es')
 
-    var date   = new Date(2014, 5, 15)
-      , picker = render(<Calendar value={date} culture='es' onChange={()=>{}}/>)
-      , headerBtn = findClass(picker, 'rw-calendar-btn-view')
+    let date = new Date(2014, 5, 15)
+    let calendar = tsp(
+      <Calendar value={date} culture='es' onChange={()=>{}} />
+    )
+    .render()
 
+    expect(
+      calendar.find('button.rw-calendar-btn-view').text()
+    ).to.equal('junio 2014')
 
-    expect($(headerBtn).text()).to.equal('junio 2014')
-    expect($(findMultiTag(picker, 'thead')[0].children[0].firstChild).text()).to.equal('lu')
+    expect(
+      calendar.first('thead th').text()
+    ).to.equal('lu')
 
-    picker = render(<Calendar defaultView='year' value={date} culture='es' onChange={()=>{}}/>)
+    calendar = tsp(
+      <Calendar defaultView='year' value={date} culture='es' onChange={()=>{}} />
+    )
+    .render()
 
-    expect($(findMultiTag(picker, 'tbody')[0].children[0].firstChild).text())
-      .to.equal('ene')
+    expect(
+      calendar.first('tbody td').text()
+    )
+    .to.equal('ene')
   })
 
-  it('should pass on format', function(){
-    var date    = new Date(2014, 5, 15)
-      , formats = transform(
-            ['dayFormat', 'dateFormat', 'monthFormat', 'yearFormat', 'decadeFormat' ]
-          , (o, v) => o[v] = v)
-      , calendar;
+  it('should pass on format', () => {
+    let date = new Date(2014, 5, 15)
+    let formats = transform(
+      ['dayFormat', 'dateFormat', 'monthFormat', 'yearFormat', 'decadeFormat' ],
+      (o, v) => o[v] = v,
+      {}
+    )
 
+    let calendar = tsp(
+      <Calendar
+        {...formats}
+        value={date}
+        onChange={()=>{}}
+        onViewChange={()=>{}}
+      />
+    )
+    .render()
 
-    calendar = render(<Calendar {...formats} value={date} onChange={()=>{}} />)
+    expect(
+      calendar.single(Month).props('dayFormat')
+    )
+    .to.be('dayFormat');
 
-    expect(findType(calendar, Month).props.dayFormat).to.equal('dayFormat')
-    expect(findType(calendar, Month).props.dateFormat).to.equal('dateFormat')
+    expect(
+      calendar.single(Month).props('dateFormat')
+    )
+    .to.be('dateFormat');
 
-    calendar = render(<Calendar {...formats} defaultView='year' value={date} onChange={()=>{}} />)
+    calendar.props('view', 'year')
 
-    expect(findType(calendar, Year).props.monthFormat).to.equal('monthFormat')
+    expect(
+      calendar.single(Year).props('monthFormat')
+    )
+    .to.be('monthFormat');
 
-    calendar = render(<Calendar {...formats} defaultView='decade' value={date} onChange={()=>{}} />)
+    calendar.props('view', 'decade')
 
-    expect(findType(calendar, Decade).props.yearFormat).to.equal('yearFormat')
+    expect(
+      calendar.single(Decade).props('yearFormat')
+    )
+    .to.be('yearFormat');
 
-    calendar = render(<Calendar {...formats} defaultView='century' value={date} onChange={()=>{}} />)
+    calendar.props('view', 'century')
 
-    expect(findType(calendar, Century).props.decadeFormat).to.equal('decadeFormat')
+    expect(
+      calendar.single(Century).props('decadeFormat')
+    )
+    .to.be('decadeFormat');
   })
 
-  it('should accept a currentDate', function(){
-    var currentDate = new Date(2000, 1, 15)
-    var calendar = render(<Calendar currentDate={currentDate} onCurrentDateChange={()=>{}}/>)
+  it('should accept a currentDate', () => {
+    let focused = tsp(
+      <Calendar
+        currentDate={new Date(2000, 1, 15)}
+        onCurrentDateChange={()=>{}}
+      />
+    )
+    .render()
+    .single(Month)
+    .props('focused')
 
-    expect(() => findType(calendar, Month)).to.not.throwException();
-
-    expect(findType(calendar, Month).props.focused.getFullYear()).to.be(2000);
-    expect(findType(calendar, Month).props.focused.getMonth()).to.be(1);
-    expect(findType(calendar, Month).props.focused.getDate()).to.be(15);
+    expect(focused.getFullYear()).to.be(2000);
+    expect(focused.getMonth()).to.be(1);
+    expect(focused.getDate()).to.be(15);
 
   })
 
   describe('Date Helpers', () => {
 
-    it('should move to the proper day', function(){
+    it('should move to the proper day', () => {
       var date = new Date(2014, 0, 16, 0, 0, 0)
         , min, max;
 
@@ -309,7 +364,7 @@ describe('Calendar', () => {
         .to.eql(date)
     })
 
-    it('should move to the proper month', function(){
+    it('should move to the proper month', () => {
       var date = new Date(2014, 6, 16, 0, 0, 0)
         , min, max;
 
@@ -335,7 +390,7 @@ describe('Calendar', () => {
         .to.eql(date)
     })
 
-    it('should move to the proper year', function(){
+    it('should move to the proper year', () => {
       var date = new Date(2015, 6, 16, 0, 0, 0)
         , min, max;
 
@@ -361,7 +416,7 @@ describe('Calendar', () => {
         .to.eql(date)
     })
 
-    it('should move to the proper decade', function(){
+    it('should move to the proper decade', () => {
       var date = new Date(2055, 6, 16, 0, 0, 0)
         , min, max;
 

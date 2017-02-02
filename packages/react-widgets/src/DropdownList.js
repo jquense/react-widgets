@@ -40,7 +40,7 @@ class DropdownList extends React.Component {
     //------------------------------------
 
     data: React.PropTypes.array,
-    valueField: React.PropTypes.string,
+    valueField: CustomPropTypes.accessor,
     textField: CustomPropTypes.accessor,
 
     valueComponent: CustomPropTypes.elementType,
@@ -81,7 +81,7 @@ class DropdownList extends React.Component {
     data: [],
     searchTerm: '',
     minLength: 1,
-    filter: true,
+    filter: false,
     caseSensitive: false,
     listComponent: List,
   };
@@ -161,7 +161,7 @@ class DropdownList extends React.Component {
         ref='filterWrapper'
         className="rw-filter-input rw-input"
       >
-        <Select component="span" icon='search' />
+        <Select icon='search' role="presentation" aria-hidden="true" />
         <input
           ref='filter'
           value={this.props.searchTerm}

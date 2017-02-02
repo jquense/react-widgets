@@ -26,13 +26,6 @@
   }
 }
 
-.rw-btn-primary[disabled],
-.rw-btn-select[disabled] {
-  .state-disabled();
-  .opacity(.65);
-  pointer-events: none;
-}
-
 .rw-btn-primary {
   width: 100%;
   white-space: normal;
@@ -41,4 +34,11 @@
   &:hover {
     background-color: @state-bg-hover;
   }
+}
+
+.rw-btn-primary[disabled],
+.rw-btn-select[disabled] {
+  .state-disabled();
+  .opacity(.65);
+  pointer-events: none;
 }

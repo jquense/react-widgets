@@ -48,7 +48,7 @@ class SelectList extends React.Component {
     itemComponent: CustomPropTypes.elementType,
     listComponent: CustomPropTypes.elementType,
 
-    valueField: React.PropTypes.string,
+    valueField: CustomPropTypes.accessor,
     textField: CustomPropTypes.accessor,
 
     busy: React.PropTypes.bool,
@@ -236,14 +236,14 @@ class SelectList extends React.Component {
   };
 
   renderListItem = (itemProps) => {
-    const { name, multiple, readOnly } = this.props;
+    const { name, multiple, disabled, readOnly } = this.props;
     const { dataItems } = this.state;
     return (
       <SelectListItem
         {...itemProps}
         name={name || this.itemName}
         type={multiple ? 'checkbox' : 'radio'}
-        readOnly={readOnly}
+        readOnly={disabled === true || readOnly}
         onChange={this.handleChange}
         onMouseDown={this.handleMouseDown}
         checked={!!this.accessors.find(dataItems, itemProps.dataItem)}

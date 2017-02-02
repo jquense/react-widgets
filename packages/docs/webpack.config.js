@@ -26,7 +26,7 @@ var config = appConfig(__dirname, {
 
   output: {
     path: __dirname,
-    filename: 'docs.js',
+    filename: '[name].js',
     publicPath: '/'
   },
 
@@ -90,6 +90,18 @@ if (PRODUCTION) {
         { entryOnly : true }
       )
     ]
+  })
+}
+else {
+  config = merge(config, {
+
+    resolve: {
+      alias: {
+        'react-widgets$': require.resolve('../react-widgets/src/index.js'),
+        'react-widgets/lib': path.resolve('../react-widgets/src')
+      }
+    }
+
   })
 }
 

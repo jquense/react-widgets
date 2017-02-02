@@ -8,10 +8,8 @@
     "tdd": "npm run rw tdd",
     "start": "npm run docs start",
     "start-dev": "npm run rw start",
-
     "prerelease": "lerna publish --npm-tag=next"
   },
-
   "devDependencies": {
     "babel-core": "^6.20.0",
     "babel-eslint": "^7.0.0",

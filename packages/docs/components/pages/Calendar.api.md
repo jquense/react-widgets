@@ -77,40 +77,68 @@ first in the list to the last.
 
 A formatter for the header button of the month view
 
-<EditableExample codeText={require('../examples/prop')(widgetName, 'headerFormat', '"MMM yy"')}/>
+<EditableExample codeText={require('../examples/dateFormat')(
+  widgetName, 'headerFormat', "{ date: 'medium' }")}
+/>
 
 ### footerFormat?{ localizable: true }
 
 A formatter for the Calendar footer, formats Today's Date as a string.
 
-<EditableExample codeText={require('../examples/prop')(widgetName, { footerFormat: "\"'today is:' dddd\"", footer: true })}/>
+<EditableExample
+  codeText={require('../examples/dateFormat')(
+    widgetName,
+    'footerFormat',
+    "{ date: 'medium' }",
+    "date => 'Today is: ' + formatter(date)"
+  )}
+/>
 
 ### dayFormat?{ localizable: true }
 
 A formatter calendar days of the week, the default formats each day as a Narrow name: "Mo", "Tu", etc.
 
 <EditableExample codeText={require('../examples/prop')(
-widgetName, { dayFormat: "day => ['M', 'T','W','Th', 'F', '!', '!'][day.getDay()]" })}/>
+widgetName, { dayFormat: "day => \n\
+        ['🎉', 'M', 'T','W','Th', 'F', '🎉'][day.getDay()]" })}/>
 
 ### dateFormat?{ localizable: true }
 
 A formatter for day of the month
-<EditableExample codeText={require('../examples/prop')(
-  widgetName, { dateFormat: "dt => dt.getDate()", footer: true })}/>
+
+<EditableExample
+  codeText={require('../examples/prop')(
+    widgetName, { dateFormat: "dt => String(dt.getDate())" })
+  }
+/>
 
 ### monthFormat?{ localizable: true }
 
 A formatter for month name.
 
-<EditableExample codeText={require('../examples/prop')(
-widgetName, { monthFormat: "'MMMM'", initialView: "'year'" })}/>
+<EditableExample
+  codeText={require('../examples/dateFormat')(
+    widgetName,
+    'monthFormat',
+    "{ raw: 'MMMM' }",
+    null,
+    { defaultView: '"year"' }
+  )}
+/>
 
 ### yearFormat?{ localizable: true }
 
 A formatter for the year.
 
-<EditableExample codeText={require('../examples/prop')(
-widgetName, { yearFormat: "'yy'", initialView: "'decade'" })}/>
+<EditableExample
+  codeText={require('../examples/dateFormat')(
+    widgetName,
+    'yearFormat',
+    "{ raw: 'yy' }",
+    null,
+    { defaultView: '"decade"' }
+  )}
+/>
 
 ### decadeFormat?{ localizable: true }
 
