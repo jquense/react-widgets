@@ -6,7 +6,7 @@ var name = require('./package.json').name;
 module.exports = localizerConfig({
   entry: './localizer.js',
   output: {
-    path: path.join(__dirname, './dist'),
+    path: path.join(__dirname, 'dist'),
     filename: name + '.js'
   },
   externals: {
