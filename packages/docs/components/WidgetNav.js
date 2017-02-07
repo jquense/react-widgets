@@ -14,9 +14,9 @@ export const widgets = [
 ];
 
 
-export default function WidgetNav() {
+export default function WidgetNav({ className }) {
   return (
-    <Nav role='navigation'>
+    <Nav role='navigation' className={className}>
       {widgets.map(name => (
         <LinkContainer key={name} to={`/${name.toLowerCase()}`}>
           <NavItem>{name}</NavItem>

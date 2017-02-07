@@ -7,7 +7,17 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 
 import WidgetNav from './WidgetNav';
+import SubNavbar from './SubNavbar';
 
+const styles = less`
+  .app-navbar {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .20);
+  }
+
+  .app-navbar--widget-nav.navbar-nav {
+    margin: 0 auto;
+  }
+`;
 
 function SiteNav() {
   return (
@@ -63,17 +73,20 @@ function MobileNav() {
   )
 }
 
-export default function Page() {
+export default function ApiNavbar() {
   return (
-    <Navbar fixedTop fluid className="app-navbar">
-      <Navbar.Header>
-        <Navbar.Toggle />
-      </Navbar.Header>
-      <Navbar.Collapse>
-        <WidgetNav />
-        <SiteNav />
-        <MobileNav />
-      </Navbar.Collapse>
-    </Navbar>
+    <div>
+      <Navbar fixedTop fluid className="app-navbar">
+        <Navbar.Header>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <WidgetNav className="app-navbar--widget-nav" />
+          <MobileNav />
+        </Navbar.Collapse>
+      </Navbar>
+      <SubNavbar />
+    </div>
+
   )
 }

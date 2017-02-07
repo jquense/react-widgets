@@ -9,6 +9,9 @@ module.exports = function(root, config) {
       loaders: [
         { test: /\.json$/, loader: 'json-loader' },
         { test: /\.js$/,   loader: 'babel-loader', exclude: /node_modules/ },
+        { test: /\.js$/,   loader: 'css-literal-loader',
+           query: { tagName: 'less', extension: '.less' }
+        },
         { test: /\.css$/,  loader: ['style-loader', 'css-loader'].join('!') },
         { test: /\.less$/, loader: ['style-loader', 'css-loader', 'less-loader'].join('!') },
         { test: /\.(gif|png|eot|ttf|svg)(\?.*)?$/, loader: urlLoader },

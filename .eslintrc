@@ -2,5 +2,7 @@
 parser: babel-eslint
 extends: jason/react
 
+globals:
+  less: false
 rules:
   global-require: off

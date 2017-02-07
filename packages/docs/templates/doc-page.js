@@ -42,7 +42,7 @@ module.exports = function({ attributes, props, body, heading, toHtml }) {
               style={style}
             >
               <h1 className="page-header">
-                ${widgetName}{' '}<small>${attributes.subtitle}</small>
+                ${widgetName}{' '}<small>${attributes.subtitle || ''}</small>
                 <span className='pull-right'>
                   <DropdownButton
                     pullRight
