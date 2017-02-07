@@ -56,7 +56,9 @@ class MultiselectTag extends React.Component {
         )}
       >
         {children}
-        {this.renderDelete()}
+        <div>
+          {this.renderDelete()}
+        </div>
       </li>
     )
   }

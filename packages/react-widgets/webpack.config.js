@@ -38,8 +38,18 @@ if (PRODUCTION) {
       libraryTarget: 'umd'
     },
     externals: {
-      react: { root: 'React', commonjs: 'react', commonjs2: 'react' },
-      'react-dom': { root: 'ReactDOM', commonjs: 'react-dom', commonjs2: 'react-dom' },
+      react: {
+        root: 'React',
+        commonjs: 'react',
+        commonjs2: 'react',
+        amd: 'react'
+      },
+      'react-dom': {
+        root: 'ReactDOM',
+        commonjs: 'react-dom',
+        commonjs2: 'react-dom',
+        amd: 'react-dom',
+      },
     },
     plugins: [
       new webpack.DefinePlugin({

@@ -48,7 +48,7 @@ storiesOf('DateTimePicker', module)
   .add('calendar', () =>
     <Container>
       <DateTimePicker
-        open="calendar"
+        open="date"
       />
     </Container>
   )

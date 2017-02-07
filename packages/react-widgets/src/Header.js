@@ -39,7 +39,7 @@ class Header extends React.Component {
           onClick={onMoveLeft}
           disabled={prevDisabled}
           label={messages.moveBack()}
-          icon={`caret-${rtl ? 'right' : 'left'}`}
+          icon={`chevron-${rtl ? 'right' : 'left'}`}
         />
         <Button
           id={labelId}
@@ -56,7 +56,7 @@ class Header extends React.Component {
           onClick={onMoveRight}
           disabled={nextDisabled}
           label={messages.moveForward()}
-          icon={`caret-${rtl ? 'left' : 'right'}`}
+          icon={`chevron-${rtl ? 'left' : 'right'}`}
         />
       </div>
     )

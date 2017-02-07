@@ -53,7 +53,7 @@ function newGlobalize(globalize) {
       header: Globalize.dateFormatter({ raw: 'MMMM yyyy' }),
       footer: Globalize.dateFormatter({ date: 'full' }),
       weekday: Globalize.dateFormatter({ raw: 'eeeeee' }),
-      dayOfMonth: Globalize.dateFormatter({ raw: 'dd' }),
+      dayOfMonth: Globalize.dateFormatter({ raw: 'd' }),
       month: Globalize.dateFormatter({ raw: 'MMM' }),
       year: Globalize.dateFormatter({ raw: 'yyyy' }),
 
@@ -180,7 +180,7 @@ function oldGlobalize(oldGlobalize) {
       header: 'MMMM yyyy',
       footer: 'D',
       weekday: shortDay,
-      dayOfMonth: 'dd',
+      dayOfMonth: '%d',
       month: 'MMM',
       year: 'yyyy',
 

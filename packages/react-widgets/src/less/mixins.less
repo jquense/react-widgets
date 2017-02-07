@@ -51,27 +51,27 @@
    border-top-left-radius: @radius;
 }
 
-.state-hover() {
-  background-color: @state-bg-hover;
-  border:           @state-border-hover 1px solid;
-  color:            @state-color-hover;
+.state-hover(@bg: @state-bg-hover, @border: @state-border-hover, @color: @state-color-hover) {
+  background-color: @bg;
+  border:           @border 1px solid;
+  color:            @color;
 }
 
-.state-select() {
+.state-select(@bg: @state-bg-select, @border: @state-border-select, @color: @state-color-select) {
   &,
   &:hover {
-    background-color: @state-bg-select;
-    border:           @state-border-select 1px solid;
-    color:            @state-color-select;
+    background-color: @bg;
+    border:           @border 1px solid;
+    color:            @color;
   }
 }
 
-.state-focus() {
+.state-focus(@bg: @state-bg-focus, @border: @state-border-focus, @color: @state-color-focus) {
   &,
   &:hover {
-    background-color: @state-bg-focus;
-    border:           @state-border-focus 1px solid;
-    color:            @state-color-focus;
+    background-color: @bg;
+    border:           @border 1px solid;
+    color:            @color;
   }
 }
 
@@ -126,7 +126,7 @@
   }
 
   &:active {
-    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    box-shadow: @btn-active-box-shadow;
   }
 
   .rw-state-disabled &,

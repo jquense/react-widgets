@@ -12,9 +12,16 @@
   cursor: pointer;
   border: 1px solid transparent;
 
+  &.rw-state-focus {
+    .state-focus(@list-bg-focus, @list-border-focus, @list-color-focus);
+  }
+
   &:hover {
-    background-color: @list-bg-hover;
-    border-color:     @list-border-hover;
+    .state-hover(@list-bg-hover, @list-border-hover, @list-color-hover);
+  }
+
+  &.rw-state-selected {
+    .state-select(@list-bg-select, @list-border-select, @list-color-select);
   }
 
   &.rw-state-disabled,
