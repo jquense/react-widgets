@@ -9,14 +9,14 @@ const styles = less`
     align-items: center;
     justify-content: center;
     background: #0273a3;
-    padding: 10px 0 5px;
-
+    padding: 10px 5px;
+    font-size: 90%;
     & > * {
       &,
       &:focus,
       &:hover,
       &:active{
-        color: white;
+        color: #ececec;
       }
     }
 

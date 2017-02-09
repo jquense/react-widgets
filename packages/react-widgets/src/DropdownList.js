@@ -288,7 +288,7 @@ class DropdownList extends React.Component {
             open={open}
             dropUp={dropUp}
             duration={duration}
-            onOpen={() => this.focus()}
+            onOpened={this.focus}
             onOpening={() => this.refs.list.forceUpdate()}
           >
             {this.renderList(messages)}
@@ -421,7 +421,7 @@ class DropdownList extends React.Component {
     }
   }
 
-  focus(target) {
+  focus = (target) => {
     let { filter, open } = this.props;
     let inst = target || (filter && open ? this.refs.filter : this.refs.input);
 

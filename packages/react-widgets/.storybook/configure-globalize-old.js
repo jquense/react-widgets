@@ -1,2 +1,2 @@
 
-require('../../react-widgets-globalize/localizer')()
+require('../../localizer-globalize/localizer')()

@@ -1,5 +1,5 @@
 var Globalize = require('globalize')
-var localizers = require('../src/localizers/globalize')
+var localizers = require('../../localizer-globalize/localizer')
 
 Globalize.load(
 	require('cldr-data/main/en/ca-gregorian.json'),
@@ -14,6 +14,6 @@ Globalize.load(
 );
 Globalize.locale('en')
 
-localizers(Globalize)
+localizers()
 
 module.exports = Globalize;

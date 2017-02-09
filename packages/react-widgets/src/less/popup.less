@@ -44,3 +44,37 @@
     box-shadow: @popup-box-shadow-up;
   }
 }
+
+.rw-transition-slide {
+  display: block;
+
+  & .rw-popup-animation-box {
+    transition: transform 200ms;
+  }
+}
+
+.rw-transition-slide-entering {
+  overflow: hidden;
+
+  & .rw-popup-animation-box {
+    transform: translateY(0);
+    transition-timing-function: ease-out;
+  }
+}
+
+.rw-transition-slide-exiting .rw-popup-animation-box {
+  transition-timing-function: ease-in;
+}
+
+.rw-transition-slide-exiting,
+.rw-transition-slide-exited {
+  overflow: hidden;
+
+  & .rw-popup-animation-box {
+    transform: translateY(-100%);
+
+    .rw-dropup & {
+      transform: translateY(100%);
+    }
+  }
+}
