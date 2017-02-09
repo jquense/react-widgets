@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import Container from './Container';
-import DropdownList from '../src/DropdownList';
+import DropdownList from 'react-widgets/lib/DropdownList';
 
 let generateNames = global.generateNames;
 

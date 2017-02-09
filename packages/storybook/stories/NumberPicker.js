@@ -3,7 +3,7 @@ import { storiesOf } from '@kadira/storybook';
 
 import { action } from './helpers';
 import Container from './Container';
-import Numberpicker from '../src/NumberPicker';
+import Numberpicker from 'react-widgets/lib/NumberPicker';
 
 let generateNames = global.generateNames;
 

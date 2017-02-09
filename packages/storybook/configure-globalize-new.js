@@ -1,5 +1,5 @@
 var Globalize = require('globalize')
-var localizers = require('../../localizer-globalize/localizer')
+var localizers = require('react-widgets-globalize')
 
 Globalize.load(
 	require('cldr-data/main/en/ca-gregorian.json'),

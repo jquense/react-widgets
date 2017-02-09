@@ -2,63 +2,50 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import Container from './Container';
-import DateTimePicker from '../src/DateTimePicker';
-import DatePicker from '../src/DatePicker';
-import TimePicker from '../src/TimePicker';
+import Calendar from 'react-widgets/lib/Calendar';
 
 let generateNames = global.generateNames;
 
 
-storiesOf('TimePicker', module)
-  .add('TimePicker', () =>
+storiesOf('Calendar', module)
+  .add('Calendar', () =>
     <Container>
-      <TimePicker />
+      <Calendar />
     </Container>
   )
-
-storiesOf('DatePicker', module)
-  .add('DatePicker', () =>
+  .add('min', () =>
     <Container>
-      <DatePicker />
+      <Calendar min={new Date()} />
     </Container>
   )
-  .add('default open', () =>
+  .add('max', () =>
     <Container>
-      <DatePicker
-        defaultOpen
-      />
+      <Calendar max={new Date()}  />
     </Container>
   )
-
-storiesOf('DateTimePicker', module)
-  .add('DateTimePicker', () =>
+  .add('disabled', () =>
     <Container>
-      <DateTimePicker
-      />
+      <Calendar disabled />
     </Container>
   )
-  .add('time', () =>
+  .add('readOnly', () =>
     <Container>
-      <DateTimePicker
-        open="time"
-      />
+      <Calendar readOnly />
     </Container>
   )
-
-  .add('calendar', () =>
+  .add('views', () =>
     <Container>
-      <DateTimePicker
-        open="date"
-      />
+      <Calendar views={['year', 'decade']} />
     </Container>
   )
-  .add('parsers', () =>
+  .add('defaultView', () =>
     <Container>
-      <DateTimePicker
-        time={false}
-        format='MM/dd/yyyy'
-        parse={['f', d => new Date(d)]}
-      />
+      <Calendar defaultView="decade" />
+    </Container>
+  )
+  .add('no animation', () =>
+    <Container>
+      <Calendar duration={0} />
     </Container>
   )
   .add('current date', () => {
@@ -69,7 +56,7 @@ storiesOf('DateTimePicker', module)
 
       render = () => (
         <Container>
-          <DateTimePicker
+          <Calendar
             value={this.state && this.state.value}
             onChange={this.onChange}
           />

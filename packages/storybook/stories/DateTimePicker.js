@@ -2,50 +2,63 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import Container from './Container';
-import Calendar from '../src/Calendar';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import DatePicker from 'react-widgets/lib/DatePicker';
+import TimePicker from 'react-widgets/lib/TimePicker';
 
 let generateNames = global.generateNames;
 
 
-storiesOf('Calendar', module)
-  .add('Calendar', () =>
+storiesOf('TimePicker', module)
+  .add('TimePicker', () =>
     <Container>
-      <Calendar />
+      <TimePicker />
     </Container>
   )
-  .add('min', () =>
+
+storiesOf('DatePicker', module)
+  .add('DatePicker', () =>
     <Container>
-      <Calendar min={new Date()} />
+      <DatePicker />
     </Container>
   )
-  .add('max', () =>
+  .add('default open', () =>
     <Container>
-      <Calendar max={new Date()}  />
+      <DatePicker
+        defaultOpen
+      />
     </Container>
   )
-  .add('disabled', () =>
+
+storiesOf('DateTimePicker', module)
+  .add('DateTimePicker', () =>
     <Container>
-      <Calendar disabled />
+      <DateTimePicker
+      />
     </Container>
   )
-  .add('readOnly', () =>
+  .add('time', () =>
     <Container>
-      <Calendar readOnly />
+      <DateTimePicker
+        open="time"
+      />
     </Container>
   )
-  .add('views', () =>
+
+  .add('calendar', () =>
     <Container>
-      <Calendar views={['year', 'decade']} />
+      <DateTimePicker
+        open="date"
+      />
     </Container>
   )
-  .add('defaultView', () =>
+  .add('parsers', () =>
     <Container>
-      <Calendar defaultView="decade" />
-    </Container>
-  )
-  .add('no animation', () =>
-    <Container>
-      <Calendar duration={0} />
+      <DateTimePicker
+        time={false}
+        format='MM/dd/yyyy'
+        parse={['f', d => new Date(d)]}
+      />
     </Container>
   )
   .add('current date', () => {
@@ -56,7 +69,7 @@ storiesOf('Calendar', module)
 
       render = () => (
         <Container>
-          <Calendar
+          <DateTimePicker
             value={this.state && this.state.value}
             onChange={this.onChange}
           />

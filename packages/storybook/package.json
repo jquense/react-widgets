@@ -1,0 +1,28 @@
+{
+  "name": "storybook",
+  "version": "4.0.0-rc.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "start": "start-storybook -p 9001 --config-dir ."
+  },
+  "author": "",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "classnames": "^2.1.2",
+    "globalize": "^0.1.1",
+    "react": "^0.14.0 || ^15.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0",
+    "react-widgets": "^4.0.0-rc.0",
+    "react-widgets-globalize": "^4.0.0-rc.0",
+    "react-widgets-moment": "^4.0.0-rc.0",
+    "react-widgets-simple-number": "^4.0.0-rc.0",
+    "react-widgets-virtualized": "^4.0.0-rc.0"
+  },
+  "devDependencies": {
+    "@kadira/storybook": "^2.21.0"
+  }
+}

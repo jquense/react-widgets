@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import Container from './Container';
-import Combobox from '../src/Combobox';
+import Combobox from 'react-widgets/lib/Combobox';
 
 let generateNames = global.generateNames;
 

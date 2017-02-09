@@ -1,0 +1,2 @@
+
+require('react-widgets-globalize')()

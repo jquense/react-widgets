@@ -3,46 +3,38 @@ import { storiesOf } from '@kadira/storybook';
 
 import { action } from './helpers';
 import Container from './Container';
-import Multiselect from '../src/Multiselect';
+import SelectList from 'react-widgets/lib/SelectList';
 
 let generateNames = global.generateNames;
 
+let data = generateNames();
 let props = {
-  data: generateNames(),
+  data,
   valueField: 'id',
   textField: 'fullName',
   onChange: action('change')
 }
 
-storiesOf('Multiselect', module)
-  .add('Multiselect', () =>
+storiesOf('SelectList', module)
+  .add('SelectList', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
-        defaultValue={props.data.slice(0, 2)}
       />
     </Container>
   )
-  .add('Create tags', () =>
+  .add('multiple', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
-        onCreate={()=>{}}
-        defaultValue={props.data.slice(0, 2)}
-      />
-    </Container>
-  )
-  .add('open', () =>
-    <Container>
-      <Multiselect
-        {...props}
-        open
+        multiple
+        defaultValue={props.data.slice(0, 3)}
       />
     </Container>
   )
   .add('busy', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
         busy
         defaultValue={props.data.slice(0, 3)}
@@ -51,7 +43,7 @@ storiesOf('Multiselect', module)
   )
   .add('right to left', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
         isRtl
         busy
@@ -61,51 +53,43 @@ storiesOf('Multiselect', module)
   )
   .add('disabled', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
         disabled
         defaultValue={props.data.slice(0, 3)}
       />
     </Container>
   )
-  .add('disabled tags', () =>
+  .add('disabled items', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
-        disabled={props.data.slice(2, 3)}
-        defaultValue={props.data.slice(0, 3)}
+        multiple
+        defaultValue={[data[3]]}
+        disabled={[data[3], data[5]]}
       />
     </Container>
   )
   .add('readonly', () =>
     <Container>
-      <Multiselect
+      <SelectList
         {...props}
         readOnly
         defaultValue={props.data.slice(0, 3)}
       />
     </Container>
   )
-  .add('long tags', () =>
+  .add('Item component', () =>
     <Container>
-      <Multiselect
-        style={{ width: 200 }}
-        defaultValue={['john jacob jingleheimer schmidt']}
-      />
-    </Container>
-  )
-  .add('tag component', () =>
-    <Container>
-      <Multiselect
+      <SelectList
         {...props}
-        tagComponent={({ item }) =>
-          <span>
-            <strong>{item.first}</strong>
-            {' '}
-            <em>{item.last}</em>
-          </span>
-        }
         defaultValue={props.data.slice(0, 3)}
+        itemComponent={({ item }) =>
+          <div>
+            <div>{item.first}</div>
+            <div>{item.last}</div>
+          </div>
+        }
       />
     </Container>
   )

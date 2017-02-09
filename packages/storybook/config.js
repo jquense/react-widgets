@@ -6,7 +6,7 @@ import Globalize from './configure-globalize-old';
 
 import Chance from 'chance';
 
-let testsContext = require.context('../stories', true, /\.js$/);
+let testsContext = require.context('./stories', true, /\.js$/);
 
 configure(() => {
   global.Globalize = Globalize;

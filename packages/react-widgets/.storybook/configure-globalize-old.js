@@ -1,2 +1,0 @@
-
-require('../../localizer-globalize/localizer')()

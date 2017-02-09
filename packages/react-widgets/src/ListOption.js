@@ -11,6 +11,7 @@ class ListOption extends React.Component {
     selected: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
+    component: React.PropTypes.string,
   };
   handleSelect = (event) => {
     let { onSelect, disabled, dataItem } = this.props;
@@ -20,6 +21,7 @@ class ListOption extends React.Component {
   render() {
     let { className, children, focused, selected, disabled, activeId } = this.props;
 
+    let Tag = this.props.component || 'li';
     let props = Props.omitOwn(this);
 
     let classes = {
@@ -31,7 +33,7 @@ class ListOption extends React.Component {
     let id = focused ? activeId : undefined;
 
     return (
-      <li
+      <Tag
         id={id}
         role='option'
         tabIndex={!disabled ? '-1' : undefined}
@@ -41,7 +43,7 @@ class ListOption extends React.Component {
         {...props}
       >
         {children}
-      </li>
+      </Tag>
     );
   }
 }
