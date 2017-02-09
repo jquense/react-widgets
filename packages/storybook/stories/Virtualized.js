@@ -1,10 +1,14 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
+import _DropdownList from 'react-widgets/lib/DropdownList';
+import withVirtualList from 'react-widgets-virtualized';
+
 import Container from './Container';
-import DropdownList from 'react-widgets-virtualized/lib/DropdownList';
 
 import 'react-widgets-virtualized/lib/styles.css';
+
+let DropdownList = withVirtualList(_DropdownList);
 
 let generateNames = global.generateNames;
 
@@ -21,7 +25,7 @@ storiesOf('Virtualization', module)
     <Container>
       <DropdownList
         {...props}
-        filter
+        defaultOpen
       />
     </Container>
   )
@@ -37,7 +41,7 @@ storiesOf('Virtualization', module)
     <Container>
       <DropdownList
         {...props}
-        open
+        defaultOpen
         groupBy="last"
       />
     </Container>
@@ -54,7 +58,7 @@ storiesOf('Virtualization', module)
     <Container>
       <DropdownList
         {...props}
-        open
+        defaultOpen
         itemSizeGetter={() => 25}
       />
     </Container>

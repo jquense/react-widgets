@@ -2,7 +2,7 @@ import React from 'react';
 
 import VirtualList, { virtualListPropTypes } from './VirtualList';
 
-export default function withVirtualList(Widget) {
+export default function virtualize(Widget) {
   let name = Widget.name || Widget.displayName || 'Widget';
   name = name[0] + name.slice(1);
 
@@ -16,8 +16,8 @@ export default function withVirtualList(Widget) {
         type,
         itemSizeGetter,
         itemSizeEstimator,
-        pageSize,
-        threshold,
+        pageSize = 20,
+        threshold = 300,
         useStaticSize,
         useTranslate3d,
         ...props } = this.props;

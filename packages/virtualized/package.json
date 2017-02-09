@@ -2,7 +2,7 @@
   "name": "react-widgets-virtualized",
   "version": "4.0.0-rc.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --out-dir lib"
