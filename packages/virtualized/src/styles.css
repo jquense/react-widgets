@@ -1,0 +1,12 @@
+
+.rw-virtual-list-wrapper {
+  overflow: auto;
+}
+
+.rw-popup .rw-virtual-list-wrapper {
+  max-height: 200px;
+}
+
+.rw-virtual-list-fixed .rw-list-option {
+  overflow: hidden;
+}

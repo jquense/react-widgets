@@ -105,7 +105,7 @@ class List extends React.Component {
     )
   }
 
-  renderItem(item, idx) {
+  renderItem(item, index) {
     let {
         activeId
       , focusedItem
@@ -120,14 +120,15 @@ class List extends React.Component {
     return (
       <Option
         dataItem={item}
-        key={'item_' + idx}
+        key={'item_' + index}
+        index={index}
         activeId={activeId}
         focused={isFocused}
         onSelect={onSelect}
         disabled={isDisabled(item)}
         selected={selectedItem === item}
       >
-        {renderItem({ item })}
+        {renderItem({ item, index })}
       </Option>
     )
   }

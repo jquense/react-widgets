@@ -7,6 +7,7 @@ class ListOption extends React.Component {
   static propTypes = {
     activeId: React.PropTypes.string,
     dataItem: React.PropTypes.any,
+    index: React.PropTypes.number,
     focused:  React.PropTypes.bool,
     selected: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
