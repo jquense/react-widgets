@@ -10,7 +10,7 @@ function Page({ children }) {
   return (
     <div>
       <Navbar />
-      <main className='pg-content'>
+      <main className='page page__narrow'>
         {children}
       </main>
     </div>

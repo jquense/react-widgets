@@ -29,7 +29,7 @@ function LandingPage({ children }) {
       <Navbar staticTop fluid className='widget-nav'>
         <WidgetNav />
       </Navbar>
-      <main className='pg-content'>
+      <main className='page page__narrow'>
         {children}
       </main>
     </div>

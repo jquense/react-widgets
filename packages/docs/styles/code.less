@@ -14,23 +14,11 @@ code {
 }
 
 .pg-code-section {
-  @half-width: @screen-md-min / 2 + 8px;
-
   background-color: @syntax-bg;
   border-top: 1px solid @gray-lighter;
   border-bottom: 1px solid @gray-lighter;
-
-  padding: ~"0 calc(50vw - @{half-width})";
-  margin: ~"0 calc(-1 * 50vw + @{half-width})";
-  margin-bottom: 10px;
 }
 
-@media (max-width: (@screen-sm-max + 60px)) {
-  .pg-code-section {
-    padding: 0 20px;
-    margin: 0 -20px;
-  }
-}
 
 .prism-block {
   background-color: @syntax-bg;
