@@ -3006,10 +3006,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return function decorate(target, key, desc) {
 	    if (desc.initializer) {
-	      var init = desc.initializer;
-	      desc.initializer = function () {
-	        return wrap(init());
-	      };
+	      (function () {
+	        var init = desc.initializer;
+	        desc.initializer = function () {
+	          return wrap(init());
+	        };
+	      })();
 	    } else desc.value = wrap(desc.value);
 	    return desc;
 	  };
