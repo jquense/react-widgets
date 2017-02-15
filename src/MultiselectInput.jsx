@@ -17,10 +17,10 @@ class MultiselectInput extends React.Component {
   };
 
   render() {
-      let { disabled, readOnly, ...props } = this.props
+      let { disabled, readOnly, placeholder, onChange, value, ...props } = this.props
       let size = props.inputSize ?
-        props.inputSize(props.value || props.placeholder) :
-        Math.max((props.value || props.placeholder).length, 1) + 1;
+        props.inputSize(value || placeholder) :
+        Math.max((value || placeholder).length, 1) + 1;
 
       let elementProps = _.omitOwnProps(this);
 
@@ -34,6 +34,9 @@ class MultiselectInput extends React.Component {
           aria-readonly={readOnly}
           disabled={disabled}
           readOnly={readOnly}
+          placeholder={placeholder}
+          onChange={onChange}
+          value={value}
         />
       )
   }

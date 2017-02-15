@@ -3006,12 +3006,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return function decorate(target, key, desc) {
 	    if (desc.initializer) {
-	      (function () {
-	        var init = desc.initializer;
-	        desc.initializer = function () {
-	          return wrap(init());
-	        };
-	      })();
+	      var init = desc.initializer;
+	      desc.initializer = function () {
+	        return wrap(init());
+	      };
 	    } else desc.value = wrap(desc.value);
 	    return desc;
 	  };
@@ -6054,7 +6052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var dates = _extends(_dateArithmetic2.default, {
+	var dates = _extends({}, _dateArithmetic2.default, {
 	  parse: function parse(date, format, culture) {
 	    return _localizers.date.parse(date, format, culture);
 	  },
@@ -9293,9 +9291,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _props = this.props,
 	        disabled = _props.disabled,
 	        readOnly = _props.readOnly,
-	        props = _objectWithoutProperties(_props, ['disabled', 'readOnly']);
+	        placeholder = _props.placeholder,
+	        onChange = _props.onChange,
+	        value = _props.value,
+	        props = _objectWithoutProperties(_props, ['disabled', 'readOnly', 'placeholder', 'onChange', 'value']);
 
-	    var size = props.inputSize ? props.inputSize(props.value || props.placeholder) : Math.max((props.value || props.placeholder).length, 1) + 1;
+	    var size = props.inputSize ? props.inputSize(value || placeholder) : Math.max((value || placeholder).length, 1) + 1;
 
 	    var elementProps = _3.default.omitOwnProps(this);
 
@@ -9306,7 +9307,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      'aria-disabled': disabled,
 	      'aria-readonly': readOnly,
 	      disabled: disabled,
-	      readOnly: readOnly
+	      readOnly: readOnly,
+	      placeholder: placeholder,
+	      onChange: onChange,
+	      value: value
 	    }));
 	  };
 
