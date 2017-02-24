@@ -3,7 +3,6 @@ react-widgets
 
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][downloads-url]
-[![#react-widgets channel on reactiflux discord](https://img.shields.io/badge/discord-%23react--widgets-blue.svg?style=flat-square)](https://discord.gg/0ZcbPKXt5bY4znh9)
 
 An à la carte set of polished, extensible, and accessible form inputs built for React, based on the excellent Kendo UI Core and jQuery UI.
 
