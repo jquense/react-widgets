@@ -8093,6 +8093,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.__esModule = true;
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _desc, _value, _obj;
@@ -8187,7 +8189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  min: _react2.default.PropTypes.number,
 	  max: _react2.default.PropTypes.number,
-	  step: _react2.default.PropTypes.number,
+	  step: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.number, _react2.default.PropTypes.func]),
 
 	  precision: _react2.default.PropTypes.number,
 
@@ -8364,13 +8366,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _compat2.default.findDOMNode(this.refs.input).focus();
 	  },
 	  increment: function increment() {
-	    return this.step(this.props.step);
+	    return this.step(true);
 	  },
 	  decrement: function decrement() {
-	    return this.step(-this.props.step);
+	    return this.step(false);
 	  },
-	  step: function step(amount) {
-	    var value = (this.props.value || 0) + amount;
+	  step: function step(isUp) {
+	    var typeStep = _typeof(this.props.step),
+	        value = this.props.value || 0;
+
+	    switch (typeStep) {
+	      case 'function':
+	        value = this.props.step(value, isUp);
+	        break;
+	      case 'number':
+	        if (isUp) {
+	          value += this.props.step;
+	        } else {
+	          value -= this.props.step;
+	        }
+	        break;
+	    }
 
 	    var decimals = this.props.precision != null ? this.props.precision : _localizers.number.precision(format(this.props));
 

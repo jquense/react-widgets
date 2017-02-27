@@ -98,6 +98,37 @@ describe('NumberPicker', function(){
     expect(change.args[1][0]).to.be(0)
   })
 
+  it('should change value using stepper function', function() {
+    function step(currentValue, isUp) {
+      if(isUp) {
+        return currentValue + 1;
+      } else {
+        return currentValue - .5;
+      }
+    }
+
+    var change = sinon.spy()
+        , instance = render(<NumberPicker value={1} format='D' onChange={change} step={step} />)
+        , upBtn  = findClass(instance, 'rw-select').children[0]
+        , dwnBtn  = findClass(instance, 'rw-select').children[1]
+        , input  = findDOMNode(findClass(instance, 'rw-input'));
+
+    //increment
+    expect(input.value).to.be('1')
+    trigger.mouseDown(upBtn)
+    trigger.mouseUp(upBtn)
+
+    expect(change.calledOnce).to.be(true)
+    expect(change.args[0][0]).to.be(2)
+
+    //decrement
+    trigger.mouseDown(dwnBtn)
+    trigger.mouseUp(dwnBtn)
+
+    expect(change.calledTwice).to.be(true)
+    expect(change.args[1][0]).to.be(0.5)
+  })
+
   it('should trigger focus/blur events', function(done){
     var blur = sinon.spy()
       , focus = sinon.spy()
