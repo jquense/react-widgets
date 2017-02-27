@@ -38,11 +38,15 @@ The maximum number that the {widgetName} value.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'max', 5)}/>
 
-### step?{ type: 'Number', default: '1' }
+### step?{ type: 'Number|Function', default: '1' }
 
 Amount to increase or decrease value when using the spinner buttons.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'step', 5)}/>
+
+Use a function to get more control over the steps
+
+<EditableExample codeText={require('../examples/step')(widgetName)}/>
 
 ### precision?{ type: 'Number' }
 
