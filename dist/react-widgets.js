@@ -6054,7 +6054,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var dates = _extends(_dateArithmetic2.default, {
+	var dates = _extends({}, _dateArithmetic2.default, {
 	  parse: function parse(date, format, culture) {
 	    return _localizers.date.parse(date, format, culture);
 	  },
@@ -8039,8 +8039,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      disabled: disabled,
 	      readOnly: readOnly,
 	      onChange: this.handleChange,
-	      onBlur: this.handleBlur
+	      onBlur: this.handleBlur,
+	      onKeyDown: this.handleKeyDown
 	    }));
+	  },
+	  handleKeyDown: function handleKeyDown(event) {
+	    if (event.key == 'Enter') {
+	      var date = this.props.parse(event.target.value);
+	      _compat2.default.findDOMNode(this).blur();
+	      this.props.onChange(date, formatDate(date, this.props.format, this.props.culture));
+	    } else if (event.key == 'Escape') {
+	      _compat2.default.findDOMNode(this).blur();
+	    }
 	  },
 	  handleChange: function handleChange(_ref) {
 	    var value = _ref.target.value;
