@@ -18,6 +18,7 @@ export default React.createClass({
     min: React.PropTypes.instanceOf(Date),
     max: React.PropTypes.instanceOf(Date),
     currentDate: React.PropTypes.instanceOf(Date),
+    offsetMinutes: React.PropTypes.number,
 
     itemComponent: CustomPropTypes.elementType,
     format: CustomPropTypes.dateFormat,
@@ -118,6 +119,10 @@ export default React.createClass({
       , values = this._dateValues(props)
       , start  = values.min
       , startDay = dates.date(start);
+
+    if(props.offsetMinutes) {
+      start = dates.add(start, props.offsetMinutes, 'minutes')
+    }
 
     while (dates.date(start) === startDay && dates.lte(start, values.max)) {
       i++
