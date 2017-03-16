@@ -3006,12 +3006,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return function decorate(target, key, desc) {
 	    if (desc.initializer) {
-	      (function () {
-	        var init = desc.initializer;
-	        desc.initializer = function () {
-	          return wrap(init());
-	        };
-	      })();
+	      var init = desc.initializer;
+	      desc.initializer = function () {
+	        return wrap(init());
+	      };
 	    } else desc.value = wrap(desc.value);
 	    return desc;
 	  };
@@ -7772,6 +7770,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    min: _react2.default.PropTypes.instanceOf(Date),
 	    max: _react2.default.PropTypes.instanceOf(Date),
 	    currentDate: _react2.default.PropTypes.instanceOf(Date),
+	    offsetMinutes: _react2.default.PropTypes.number,
 
 	    itemComponent: _propTypes2.default.elementType,
 	    format: _propTypes2.default.dateFormat,
@@ -7864,6 +7863,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        values = this._dateValues(props),
 	        start = values.min,
 	        startDay = _dates3.default.date(start);
+
+	    if (props.offsetMinutes) {
+	      start = _dates3.default.add(start, props.offsetMinutes, 'minutes');
+	    }
 
 	    while (_dates3.default.date(start) === startDay && _dates3.default.lte(start, values.max)) {
 	      i++;
@@ -8039,8 +8042,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      disabled: disabled,
 	      readOnly: readOnly,
 	      onChange: this.handleChange,
-	      onBlur: this.handleBlur
+	      onBlur: this.handleBlur,
+	      onKeyDown: this.handleKeyDown,
+	      size: textValue.length
 	    }));
+	  },
+	  handleKeyDown: function handleKeyDown(event) {
+	    if (event.key == 'Enter') {
+	      var date = this.props.parse(event.target.value);
+	      _compat2.default.findDOMNode(this).blur();
+	      this.props.onChange(date, formatDate(date, this.props.format, this.props.culture));
+	    } else if (event.key == 'Escape') {
+	      _compat2.default.findDOMNode(this).blur();
+	    }
 	  },
 	  handleChange: function handleChange(_ref) {
 	    var value = _ref.target.value;
