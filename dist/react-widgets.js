@@ -3006,12 +3006,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return function decorate(target, key, desc) {
 	    if (desc.initializer) {
-	      (function () {
-	        var init = desc.initializer;
-	        desc.initializer = function () {
-	          return wrap(init());
-	        };
-	      })();
+	      var init = desc.initializer;
+	      desc.initializer = function () {
+	        return wrap(init());
+	      };
 	    } else desc.value = wrap(desc.value);
 	    return desc;
 	  };
@@ -7772,6 +7770,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    min: _react2.default.PropTypes.instanceOf(Date),
 	    max: _react2.default.PropTypes.instanceOf(Date),
 	    currentDate: _react2.default.PropTypes.instanceOf(Date),
+	    offsetMinutes: _react2.default.PropTypes.number,
 
 	    itemComponent: _propTypes2.default.elementType,
 	    format: _propTypes2.default.dateFormat,
@@ -7864,6 +7863,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        values = this._dateValues(props),
 	        start = values.min,
 	        startDay = _dates3.default.date(start);
+
+	    if (props.offsetMinutes) {
+	      start = _dates3.default.add(start, props.offsetMinutes, 'minutes');
+	    }
 
 	    while (_dates3.default.date(start) === startDay && _dates3.default.lte(start, values.max)) {
 	      i++;
@@ -8040,7 +8043,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      readOnly: readOnly,
 	      onChange: this.handleChange,
 	      onBlur: this.handleBlur,
-	      onKeyDown: this.handleKeyDown
+	      onKeyDown: this.handleKeyDown,
+	      size: textValue.length
 	    }));
 	  },
 	  handleKeyDown: function handleKeyDown(event) {

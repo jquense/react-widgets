@@ -62,6 +62,7 @@ export default React.createClass({
         onChange={this.handleChange}
         onBlur={this.handleBlur}
         onKeyDown={this.handleKeyDown}
+        size={textValue.length}
       />
     )
   },
