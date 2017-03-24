@@ -57,8 +57,7 @@ var config = appConfig(__dirname, {
   ],
   resolve: {
     alias: {
-      react: path.resolve('./node_modules/react'),
-      'react-dom': path.resolve('./node_modules/react-dom')
+      globalize: path.resolve('./node_modules/globalize'),
     }
   },
   devServer: {

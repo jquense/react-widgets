@@ -19,14 +19,14 @@ module.exports = function(root, config) {
         { test: /\.js$/, loader: 'imports-loader?define=>false' },
       ]
     },
-    resolve: {
-      root: path.join(root, './node_modules'),
-      fallback: path.join(root, './node_modules'),
-    },
-    resolveLoader: {
-      root: path.join(root, './node_modules'),
-      fallback: path.join(root, './node_modules'),
-    },
+    // resolve: {
+    //   root: path.join(root, './node_modules'),
+    //   fallback: path.join(root, './node_modules'),
+    // },
+    // resolveLoader: {
+    //   root: path.join(root, './node_modules'),
+    //   fallback: path.join(root, './node_modules'),
+    // },
     node: {
       Buffer: false
     },

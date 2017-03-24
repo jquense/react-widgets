@@ -1,6 +1,6 @@
 import { configure } from '@kadira/storybook';
 
-import 'typeface-roboto';
+//import 'typeface-roboto';
 import './styles.less';
 import Globalize from './configure-globalize-old';
 

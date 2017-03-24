@@ -13,8 +13,8 @@
   "dependencies": {
     "classnames": "^2.1.2",
     "globalize": "^0.1.1",
-    "react": "^0.14.0 || ^15.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0",
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0",
     "react-widgets": "^4.0.0-rc.2",
     "react-widgets-globalize": "^4.0.0-rc.2",
     "react-widgets-moment": "^4.0.0-rc.2",
