@@ -8,7 +8,7 @@ var ${widgetName} = ReactWidgets.${widgetName};
 var colors = ['orange', 'red', 'blue', 'purple'];
 
 ReactDOM.render(
-    <${widgetName} defaultValue={${value}} data={colors}/>
+    <${widgetName} value={${value}} data={colors}/>
   , mountNode);`
 
 return code
