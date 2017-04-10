@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 import dates from './util/dates';
@@ -11,7 +12,7 @@ function clamp(date, min, max) {
 
 class CalendarView extends React.Component {
   static propTypes = {
-    activeId: React.PropTypes.string,
+    activeId: PropTypes.string,
   };
 
   render() {
@@ -36,19 +37,19 @@ class CalendarView extends React.Component {
 
 class CalendarViewCell extends React.Component {
   static propTypes = {
-    id: React.PropTypes.string,
-    activeId: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string,
-    now: React.PropTypes.instanceOf(Date),
-    date: React.PropTypes.instanceOf(Date),
-    selected: React.PropTypes.instanceOf(Date),
-    focused: React.PropTypes.instanceOf(Date),
-    min: React.PropTypes.instanceOf(Date),
-    max: React.PropTypes.instanceOf(Date),
-    unit: React.PropTypes.oneOf(['day', ...VIEW_UNITS]),
-    viewUnit: React.PropTypes.oneOf(VIEW_UNITS),
-    onChange: React.PropTypes.func.isRequired,
-    disabled: React.PropTypes.bool,
+    id: PropTypes.string,
+    activeId: PropTypes.string.isRequired,
+    label: PropTypes.string,
+    now: PropTypes.instanceOf(Date),
+    date: PropTypes.instanceOf(Date),
+    selected: PropTypes.instanceOf(Date),
+    focused: PropTypes.instanceOf(Date),
+    min: PropTypes.instanceOf(Date),
+    max: PropTypes.instanceOf(Date),
+    unit: PropTypes.oneOf(['day', ...VIEW_UNITS]),
+    viewUnit: PropTypes.oneOf(VIEW_UNITS),
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
   };
 
   isEqual(date) {

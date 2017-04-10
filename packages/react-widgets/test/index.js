@@ -1,11 +1,8 @@
 import 'es5-shim';
 import React from 'react';
-import jQuery from 'jquery';
 import * as widgetHelpers from '../src/util/widgetHelpers';
 
 import config from '../src/util/configuration';
-
-global.jQuery = global.$ = jQuery;
 
 require('../../react-widgets-globalize/localizer')()
 

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import MultiselectTag from './MultiselectTag';
 import * as CustomPropTypes from './util/PropTypes';
 import { isDisabledItem } from './util/interaction';
@@ -7,18 +9,18 @@ import { isDisabledItem } from './util/interaction';
 class MultiselectTagList extends React.Component {
 
   static propTypes ={
-    id: React.PropTypes.string.isRequired,
-    activeId: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string,
+    id: PropTypes.string.isRequired,
+    activeId: PropTypes.string.isRequired,
+    label: PropTypes.string,
 
-    value: React.PropTypes.array,
-    focusedItem: React.PropTypes.any,
+    value: PropTypes.array,
+    focusedItem: PropTypes.any,
 
-    valueAccessor: React.PropTypes.func.isRequired,
-    textAccessor: React.PropTypes.func.isRequired,
+    valueAccessor: PropTypes.func.isRequired,
+    textAccessor: PropTypes.func.isRequired,
 
-    onDelete: React.PropTypes.func.isRequired,
-    valueComponent: React.PropTypes.func,
+    onDelete: PropTypes.func.isRequired,
+    valueComponent: PropTypes.func,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
     readOnly: CustomPropTypes.disabled

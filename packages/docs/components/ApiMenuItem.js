@@ -1,15 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 
 import propId from './propId'
 
 
 const propTypes = {
-  divider: React.PropTypes.bool,
+  divider: PropTypes.bool,
 };
 
 const contextTypes = {
-  prefix: React.PropTypes.string.isRequired,
+  prefix: PropTypes.string.isRequired,
 };
 
 function ApiMenuItem({ divider, children }, { prefix }) {

@@ -25,14 +25,14 @@ module.exports = function({ attributes, props, body, heading, toHtml }) {
 
     let widgetName = '${widgetName}';
 
-    module.exports = React.createClass({
-        childContextTypes: {
+    module.exports = class extends React.Component {
+        static childContextTypes = {
           prefix: React.PropTypes.string.isRequired
-        },
+        }
 
         getChildContext() {
           return { prefix: '${widgetName.toLowerCase()}/' };
-        },
+        }
 
         render() {
           const { scope, className, style } = this.props;
@@ -66,6 +66,6 @@ module.exports = function({ attributes, props, body, heading, toHtml }) {
             </section>
           )
        }
-    })
+    }
   `;
 }

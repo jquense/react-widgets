@@ -17,14 +17,10 @@ var list = [
         { label: 'mauve',  id: 6 }
       ];
 
-var SelectListApi = React.createClass({
-
-  getInitialState() {
-
-    return {
-      defaultValue: list[0]
-    }
-  },
+class SelectListApi extends React.Component {
+  state = {
+    defaultValue: list[0]
+  };
 
   render() {
     const { multiple, busy, isRtl, disabled, readOnly } = this.state;
@@ -112,6 +108,6 @@ var SelectListApi = React.createClass({
       </Demo>
     );
   }
-});
+}
 
 module.exports = SelectListApi;

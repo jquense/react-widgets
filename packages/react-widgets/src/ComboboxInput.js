@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import caretPos from './util/caret';
 
@@ -7,11 +8,11 @@ import Input from './Input';
 class ComboboxInput extends React.Component {
 
   static propTypes = {
-    value: React.PropTypes.string,
-    placeholder: React.PropTypes.string,
-    suggest: React.PropTypes.bool,
-    onChange: React.PropTypes.func.isRequired,
-    onKeyDown:  React.PropTypes.func,
+    value: PropTypes.string,
+    placeholder: PropTypes.string,
+    suggest: PropTypes.bool,
+    onChange: PropTypes.func.isRequired,
+    onKeyDown:  PropTypes.func,
   };
 
   static defaultProps = {

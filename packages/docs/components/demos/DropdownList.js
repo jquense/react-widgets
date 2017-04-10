@@ -24,13 +24,10 @@ const ItemComponent = (itemProps) => {
 }
 
 
-var DropdownApi = React.createClass({
-
-  getInitialState(){
-    return {
-      filter: 'startsWith',
-    }
-  },
+class DropdownApi extends React.Component {
+  state = {
+    filter: 'startsWith',
+  };
 
   render() {
     const { filter, groupBy, busy, isRtl, disabled, readOnly } = this.state;
@@ -139,7 +136,7 @@ var DropdownApi = React.createClass({
         </Demo.Controls>
       </Demo>
     );
-  },
-});
+  }
+}
 
 module.exports = DropdownApi;

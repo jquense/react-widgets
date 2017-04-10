@@ -24,14 +24,12 @@ const formats = [
     text: 'Currency (euro), 2 digits' },
 ]
 
-module.exports = React.createClass({
-  getInitialState() {
-    return {
-      defaultValue: 15,
-      format: formats[0],
-      step: 1
-    }
-  },
+module.exports = class extends React.Component {
+  state = {
+    defaultValue: 15,
+    format: formats[0],
+    step: 1
+  };
 
   render() {
     let { format, culture, step, min, max, isRtl, disabled, readOnly } = this.state;
@@ -123,5 +121,5 @@ module.exports = React.createClass({
         </Demo.Controls>
       </Demo>
     )
-  },
-})
+  }
+}

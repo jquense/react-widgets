@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import uncontrollable from 'uncontrollable';
 
@@ -52,35 +53,35 @@ class NumberPicker extends React.Component {
   static propTypes = {
 
     // -- controlled props -----------
-    value: React.PropTypes.number,
-    onChange: React.PropTypes.func,
+    value: PropTypes.number,
+    onChange: PropTypes.func,
     //------------------------------------
 
-    min: React.PropTypes.number,
-    max: React.PropTypes.number,
-    step: React.PropTypes.number,
-    precision: React.PropTypes.number,
+    min: PropTypes.number,
+    max: PropTypes.number,
+    step: PropTypes.number,
+    precision: PropTypes.number,
 
-    culture: React.PropTypes.string,
+    culture: PropTypes.string,
     format: CustomPropTypes.numberFormat,
-    parse: React.PropTypes.func,
+    parse: PropTypes.func,
 
-    name: React.PropTypes.string,
-    tabIndex: React.PropTypes.any,
-    onKeyDown: React.PropTypes.func,
-    onKeyPress: React.PropTypes.func,
-    onKeyUp: React.PropTypes.func,
-    autoFocus: React.PropTypes.bool,
+    name: PropTypes.string,
+    tabIndex: PropTypes.any,
+    onKeyDown: PropTypes.func,
+    onKeyPress: PropTypes.func,
+    onKeyUp: PropTypes.func,
+    autoFocus: PropTypes.bool,
     disabled: CustomPropTypes.disabled,
     readOnly: CustomPropTypes.disabled,
 
-    inputProps: React.PropTypes.object,
-    messages: React.PropTypes.shape({
-      increment: React.PropTypes.string,
-      decrement: React.PropTypes.string
+    inputProps: PropTypes.object,
+    messages: PropTypes.shape({
+      increment: PropTypes.string,
+      decrement: PropTypes.string
     }),
 
-    placeholder: React.PropTypes.string
+    placeholder: PropTypes.string
   };
 
   static defaultProps = {

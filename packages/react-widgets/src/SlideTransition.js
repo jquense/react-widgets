@@ -1,4 +1,5 @@
 import React  from 'react';
+import PropTypes from 'prop-types';
 import css from 'dom-helpers/style';
 import getWidth from 'dom-helpers/query/width';
 import getHeight from 'dom-helpers/query/height';
@@ -22,8 +23,8 @@ let getDimension = (node, direction) => ({
 
 class SlideChildGroup extends React.Component {
   static propTypes = {
-    direction: React.PropTypes.oneOf(['left', 'right', 'top', 'bottom']),
-    duration:  React.PropTypes.number
+    direction: PropTypes.oneOf(['left', 'right', 'top', 'bottom']),
+    duration:  PropTypes.number
   };
 
   componentWillEnter(done) {
@@ -79,8 +80,8 @@ class SlideChildGroup extends React.Component {
 class SlideTransition extends React.Component {
 
   static propTypes = {
-    direction: React.PropTypes.oneOf(['left', 'right', 'top', 'bottom']),
-    duration:  React.PropTypes.number
+    direction: PropTypes.oneOf(['left', 'right', 'top', 'bottom']),
+    duration:  PropTypes.number
   };
 
   static defaultProps = {

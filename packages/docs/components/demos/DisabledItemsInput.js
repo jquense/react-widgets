@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Multiselect } from 'react-widgets';
 
 const propTypes = {
-  value: React.PropTypes.any,
+  value: PropTypes.any,
 };
 
 function DisabledItemsInput({ value, ...props }) {

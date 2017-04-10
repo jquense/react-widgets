@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import uncontrollable from 'uncontrollable';
 import { autoFocus } from 'react-component-managers';
@@ -63,31 +64,31 @@ let format = (props, f) => dateLocalizer.getFormat(f, props[f + 'Format'])
 let propTypes = {
   ...autoFocus.propTypes,
 
-  activeId: React.PropTypes.string,
+  activeId: PropTypes.string,
   disabled: CustomPropTypes.disabled,
   readOnly: CustomPropTypes.disabled,
 
-  onChange: React.PropTypes.func,
-  value: React.PropTypes.instanceOf(Date),
+  onChange: PropTypes.func,
+  value: PropTypes.instanceOf(Date),
 
-  min: React.PropTypes.instanceOf(Date),
-  max: React.PropTypes.instanceOf(Date),
+  min: PropTypes.instanceOf(Date),
+  max: PropTypes.instanceOf(Date),
 
-  currentDate: React.PropTypes.instanceOf(Date),
-  onCurrentDateChange: React.PropTypes.func,
+  currentDate: PropTypes.instanceOf(Date),
+  onCurrentDateChange: PropTypes.func,
 
   view(props, ...args) {
-    return React.PropTypes.oneOf(props.views || VIEW_OPTIONS)(props, ...args)
+    return PropTypes.oneOf(props.views || VIEW_OPTIONS)(props, ...args);
   },
 
-  views: React.PropTypes.arrayOf(
-    React.PropTypes.oneOf(VIEW_OPTIONS)
+  views: PropTypes.arrayOf(
+    PropTypes.oneOf(VIEW_OPTIONS)
   ).isRequired,
 
-  onViewChange: React.PropTypes.func,
-  onNavigate: React.PropTypes.func,
-  culture: React.PropTypes.string,
-  footer: React.PropTypes.bool,
+  onViewChange: PropTypes.func,
+  onNavigate: PropTypes.func,
+  culture: PropTypes.string,
+  footer: PropTypes.bool,
 
   dayComponent: CustomPropTypes.elementType,
   headerFormat: CustomPropTypes.dateFormat,
@@ -100,9 +101,9 @@ let propTypes = {
   decadeFormat: CustomPropTypes.dateFormat,
   centuryFormat: CustomPropTypes.dateFormat,
 
-  messages: React.PropTypes.shape({
-    moveBack: React.PropTypes.string,
-    moveForward: React.PropTypes.string
+  messages: PropTypes.shape({
+    moveBack: PropTypes.string,
+    moveForward: PropTypes.string
   })
 }
 

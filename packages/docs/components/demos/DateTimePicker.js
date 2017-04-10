@@ -174,8 +174,8 @@ export default class DateTimePickerDemo extends React.Component {
 }
 
 
-var itemComp = React.createClass({
-  render: function() {
+class itemComp extends React.Component {
+  render() {
     var date   = merge(new Date, this.props.item.date)
       , inPast = dates.lt(date, new Date, 'minutes')
 
@@ -186,7 +186,7 @@ var itemComp = React.createClass({
       </div>
     );
   }
-});
+}
 
 
 function merge(date, time){

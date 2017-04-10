@@ -1,4 +1,5 @@
 import React  from 'react';
+import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import activeElement from 'dom-helpers/activeElement';
 import cn from 'classnames';
@@ -42,65 +43,65 @@ let isBothOrNeither = (a, b) => (a && b) || (!a && !b);
 
 let propTypes = {
   //-- controlled props -----------
-  value:          React.PropTypes.instanceOf(Date),
-  onChange:       React.PropTypes.func,
-  open:           React.PropTypes.oneOf([false, popups.TIME, popups.DATE]),
-  onToggle:       React.PropTypes.func,
-  currentDate:    React.PropTypes.instanceOf(Date),
-  onCurrentDateChange: React.PropTypes.func,
+  value:          PropTypes.instanceOf(Date),
+  onChange:       PropTypes.func,
+  open:           PropTypes.oneOf([false, popups.TIME, popups.DATE]),
+  onToggle:       PropTypes.func,
+  currentDate:    PropTypes.instanceOf(Date),
+  onCurrentDateChange: PropTypes.func,
   //------------------------------------
 
-  onSelect:       React.PropTypes.func,
+  onSelect:       PropTypes.func,
 
-  min: React.PropTypes.instanceOf(Date),
-  max: React.PropTypes.instanceOf(Date),
-  step: React.PropTypes.number,
+  min: PropTypes.instanceOf(Date),
+  max: PropTypes.instanceOf(Date),
+  step: PropTypes.number,
 
-  culture: React.PropTypes.string,
+  culture: PropTypes.string,
 
   format: CustomPropTypes.dateFormat,
   timeFormat: CustomPropTypes.dateFormat,
   editFormat: CustomPropTypes.dateFormat,
 
-  date: React.PropTypes.bool,
-  time: React.PropTypes.bool,
-  calendar: deprecated(React.PropTypes.bool, 'Use `date` instead'),
+  date: PropTypes.bool,
+  time: PropTypes.bool,
+  calendar: deprecated(PropTypes.bool, 'Use `date` instead'),
 
   timeComponent:  CustomPropTypes.elementType,
 
-  delay: React.PropTypes.number,
-  dropUp: React.PropTypes.bool,
-  duration: React.PropTypes.number,
+  delay: PropTypes.number,
+  dropUp: PropTypes.bool,
+  duration: PropTypes.number,
 
-  placeholder: React.PropTypes.string,
-  name: React.PropTypes.string,
+  placeholder: PropTypes.string,
+  name: PropTypes.string,
 
-  initialView: React.PropTypes.oneOf(viewEnum),
-  finalView: React.PropTypes.oneOf(viewEnum),
+  initialView: PropTypes.oneOf(viewEnum),
+  finalView: PropTypes.oneOf(viewEnum),
 
-  autoFocus: React.PropTypes.bool,
+  autoFocus: PropTypes.bool,
   disabled: CustomPropTypes.disabled,
   readOnly: CustomPropTypes.disabled,
 
-  parse: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.string),
-    React.PropTypes.string,
-    React.PropTypes.func
+  parse: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.string,
+    PropTypes.func
   ]),
 
-  tabIndex: React.PropTypes.any,
-  'aria-labelledby': React.PropTypes.string,
-  'aria-describedby': React.PropTypes.string,
+  tabIndex: PropTypes.any,
+  'aria-labelledby': PropTypes.string,
+  'aria-describedby': PropTypes.string,
 
-  onKeyDown: React.PropTypes.func,
-  onKeyPress: React.PropTypes.func,
-  onBlur: React.PropTypes.func,
-  onFocus: React.PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onKeyPress: PropTypes.func,
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func,
 
-  inputProps: React.PropTypes.object,
-  messages: React.PropTypes.shape({
-    dateButton: React.PropTypes.string,
-    timeButton: React.PropTypes.string
+  inputProps: PropTypes.object,
+  messages: PropTypes.shape({
+    dateButton: PropTypes.string,
+    timeButton: PropTypes.string
   })
 }
 
