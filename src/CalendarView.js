@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 import dates from './util/dates';
@@ -31,16 +32,16 @@ class CalendarView extends React.Component {
 
 class CalendarViewCell extends React.Component {
   static propTypes = {
-    id: React.PropTypes.string,
-    label: React.PropTypes.string,
-    today: React.PropTypes.instanceOf(Date),
-    selected: React.PropTypes.instanceOf(Date),
-    focused: React.PropTypes.instanceOf(Date),
-    min: React.PropTypes.instanceOf(Date),
-    max: React.PropTypes.instanceOf(Date),
-    unit: React.PropTypes.oneOf(['day', ...VIEW_UNITS]),
-    viewUnit: React.PropTypes.oneOf(VIEW_UNITS),
-    onChange: React.PropTypes.func.isRequired
+    id: PropTypes.string,
+    label: PropTypes.string,
+    today: PropTypes.instanceOf(Date),
+    selected: PropTypes.instanceOf(Date),
+    focused: PropTypes.instanceOf(Date),
+    min: PropTypes.instanceOf(Date),
+    max: PropTypes.instanceOf(Date),
+    unit: PropTypes.oneOf(['day', ...VIEW_UNITS]),
+    viewUnit: PropTypes.oneOf(VIEW_UNITS),
+    onChange: PropTypes.func.isRequired
   };
 
   isEqual(date) {

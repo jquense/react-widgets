@@ -2,10 +2,12 @@
 var React = require('react')
   , MenuItem = require('react-bootstrap/lib/MenuItem');
 
+var PropTypes = require('prop-types');
+
 var ApiMenuItem = React.createClass({
 
   contextTypes: {
-    prefix: React.PropTypes.string.isRequired
+    prefix: PropTypes.string.isRequired
   },
 
   navigate(e){

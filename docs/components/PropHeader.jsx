@@ -2,10 +2,12 @@
 var React = require('react')
   , Default = require('./default.jsx');
 
+var PropTypes = require('prop-types');
+
 var ApiPropHeader = React.createClass({
 
   contextTypes: {
-    prefix: React.PropTypes.string.isRequired
+    prefix: PropTypes.string.isRequired
   },
 
   render: function() {

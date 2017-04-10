@@ -55,11 +55,6 @@ class FilterList extends React.Component {
   prev(...args){ return this.refs.list.prev(...args) }
 }
 
-FilterList.propTypes = {
-  open: React.PropTypes.bool,
-  ...List.type.propTypes,
-}
-
 ReactDOM.render(
     <DropdownList
       data={listOfPeople()}

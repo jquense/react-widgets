@@ -1,4 +1,5 @@
 import React, { cloneElement } from 'react';
+import PropTypes from 'prop-types';
 import _ from './util/_';
 import css from 'dom-helpers/style';
 import getHeight from 'dom-helpers/query/height';
@@ -30,14 +31,14 @@ let OVERFLOW = {
 }
 
 let propTypes = {
-  open:           React.PropTypes.bool,
-  dropUp:         React.PropTypes.bool,
-  duration:       React.PropTypes.number,
+  open:           PropTypes.bool,
+  dropUp:         PropTypes.bool,
+  duration:       PropTypes.number,
 
-  onClosing:      React.PropTypes.func,
-  onOpening:      React.PropTypes.func,
-  onClose:        React.PropTypes.func,
-  onOpen:         React.PropTypes.func
+  onClosing:      PropTypes.func,
+  onOpening:      PropTypes.func,
+  onClose:        PropTypes.func,
+  onOpen:         PropTypes.func
 }
 
 export default React.createClass({

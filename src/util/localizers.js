@@ -1,10 +1,11 @@
 import invariant from 'invariant';
 import { has } from './_';
-import React from 'react';
 
-const localePropType = React.PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.func
+import PropTypes from 'prop-types';
+
+const localePropType = PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func
       ])
 
 const REQUIRED_NUMBER_FORMATS = [ 'default' ];

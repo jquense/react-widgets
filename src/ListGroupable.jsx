@@ -1,4 +1,5 @@
 import React   from 'react';
+import PropTypes from 'prop-types';
 import ListOption from './ListOption';
 import CustomPropTypes from './util/propTypes';
 import compat from './util/compat';
@@ -21,16 +22,16 @@ export default React.createClass({
   ],
 
   propTypes: {
-    data:           React.PropTypes.array,
-    onSelect:       React.PropTypes.func,
-    onMove:         React.PropTypes.func,
+    data:           PropTypes.array,
+    onSelect:       PropTypes.func,
+    onMove:         PropTypes.func,
 
     optionComponent: CustomPropTypes.elementType,
     itemComponent:   CustomPropTypes.elementType,
     groupComponent:  CustomPropTypes.elementType,
 
-    selected:       React.PropTypes.any,
-    focused:        React.PropTypes.any,
+    selected:       PropTypes.any,
+    focused:        PropTypes.any,
 
     valueField:     CustomPropTypes.accessor,
     textField:      CustomPropTypes.accessor,
@@ -40,7 +41,7 @@ export default React.createClass({
 
     groupBy:        CustomPropTypes.accessor,
 
-    messages:       React.PropTypes.shape({
+    messages:       PropTypes.shape({
       emptyList:    CustomPropTypes.message
     })
   },

@@ -1,5 +1,4 @@
-'use strict';
-import React from 'react';
+import PropTypes from 'prop-types';
 import warning from 'warning';
 import propTypes from '../util/propTypes';
 import * as dataHelpers from '../util/dataHelpers';
@@ -7,7 +6,7 @@ import * as dataHelpers from '../util/dataHelpers';
 export default {
 
   propTypes: {
-    valueField: React.PropTypes.string,
+    valueField: PropTypes.string,
     textField:  propTypes.accessor
   },
 

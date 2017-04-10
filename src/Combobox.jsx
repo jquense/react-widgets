@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import _  from './util/_';
 import filter from './util/filter';
@@ -25,10 +26,10 @@ let propTypes = {
   ...Popup.propTypes,
 
   //-- controlled props -----------
-  value:          React.PropTypes.any,
-  onChange:       React.PropTypes.func,
-  open:           React.PropTypes.bool,
-  onToggle:       React.PropTypes.func,
+  value:          PropTypes.any,
+  onChange:       PropTypes.func,
+  open:           PropTypes.bool,
+  onToggle:       PropTypes.func,
   //------------------------------------
 
   itemComponent:  CustomPropTypes.elementType,
@@ -37,29 +38,29 @@ let propTypes = {
   groupComponent: CustomPropTypes.elementType,
   groupBy:        CustomPropTypes.accessor,
 
-  data:           React.PropTypes.array,
-  valueField:     React.PropTypes.string,
+  data:           PropTypes.array,
+  valueField:     PropTypes.string,
   textField:      CustomPropTypes.accessor,
-  name:           React.PropTypes.string,
+  name:           PropTypes.string,
 
-  onSelect:       React.PropTypes.func,
+  onSelect:       PropTypes.func,
 
-  autoFocus:      React.PropTypes.bool,
+  autoFocus:      PropTypes.bool,
   disabled:       CustomPropTypes.disabled.acceptsArray,
   readOnly:       CustomPropTypes.readOnly.acceptsArray,
 
   suggest:        CustomPropTypes.filter,
   filter:         CustomPropTypes.filter,
 
-  busy:           React.PropTypes.bool,
+  busy:           PropTypes.bool,
 
-  dropUp:         React.PropTypes.bool,
-  duration:       React.PropTypes.number,
-  delay:          React.PropTypes.number,
+  dropUp:         PropTypes.bool,
+  duration:       PropTypes.number,
+  delay:          PropTypes.number,
 
-  placeholder:    React.PropTypes.string,
+  placeholder:    PropTypes.string,
 
-  messages:       React.PropTypes.shape({
+  messages:       PropTypes.shape({
     open:         CustomPropTypes.message,
     emptyList:    CustomPropTypes.message,
     emptyFilter:  CustomPropTypes.message

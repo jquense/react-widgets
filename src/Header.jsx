@@ -1,22 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from './Button';
 
 export default React.createClass({
   displayName: 'Header',
   propTypes: {
-    label:          React.PropTypes.string.isRequired,
-    labelId:        React.PropTypes.string,
+    label:          PropTypes.string.isRequired,
+    labelId:        PropTypes.string,
 
-    upDisabled:     React.PropTypes.bool.isRequired,
-    prevDisabled:   React.PropTypes.bool.isRequired,
-    nextDisabled:   React.PropTypes.bool.isRequired,
-    onViewChange:   React.PropTypes.func.isRequired,
-    onMoveLeft:     React.PropTypes.func.isRequired,
-    onMoveRight:    React.PropTypes.func.isRequired,
+    upDisabled:     PropTypes.bool.isRequired,
+    prevDisabled:   PropTypes.bool.isRequired,
+    nextDisabled:   PropTypes.bool.isRequired,
+    onViewChange:   PropTypes.func.isRequired,
+    onMoveLeft:     PropTypes.func.isRequired,
+    onMoveRight:    PropTypes.func.isRequired,
 
-    messages:       React.PropTypes.shape({
-      moveBack:     React.PropTypes.string,
-      moveForward:  React.PropTypes.string
+    messages:       PropTypes.shape({
+      moveBack:     PropTypes.string,
+      moveForward:  PropTypes.string
     })
   },
 

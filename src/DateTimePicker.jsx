@@ -1,4 +1,5 @@
 import React  from 'react';
+import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import activeElement from 'dom-helpers/activeElement';
 import cn from 'classnames';
@@ -31,55 +32,55 @@ let propTypes = {
     ...Calendar.propTypes,
 
     //-- controlled props -----------
-    value:          React.PropTypes.instanceOf(Date),
-    onChange:       React.PropTypes.func,
-    open:           React.PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
-    onToggle:       React.PropTypes.func,
-    currentDate:    React.PropTypes.instanceOf(Date),
-    onCurrentDateChange: React.PropTypes.func,
+    value:          PropTypes.instanceOf(Date),
+    onChange:       PropTypes.func,
+    open:           PropTypes.oneOf([false, popups.TIME, popups.CALENDAR]),
+    onToggle:       PropTypes.func,
+    currentDate:    PropTypes.instanceOf(Date),
+    onCurrentDateChange: PropTypes.func,
     //------------------------------------
 
-    onSelect:       React.PropTypes.func,
+    onSelect:       PropTypes.func,
 
-    min:            React.PropTypes.instanceOf(Date),
-    max:            React.PropTypes.instanceOf(Date),
+    min:            PropTypes.instanceOf(Date),
+    max:            PropTypes.instanceOf(Date),
 
-    culture:        React.PropTypes.string,
+    culture:        PropTypes.string,
 
     format:         CustomPropTypes.dateFormat,
     timeFormat:     CustomPropTypes.dateFormat,
     editFormat:     CustomPropTypes.dateFormat,
 
-    calendar:       React.PropTypes.bool,
-    time:           React.PropTypes.bool,
+    calendar:       PropTypes.bool,
+    time:           PropTypes.bool,
 
     timeComponent:  CustomPropTypes.elementType,
 
     //popup
-    dropUp:         React.PropTypes.bool,
-    duration:       React.PropTypes.number,
+    dropUp:         PropTypes.bool,
+    duration:       PropTypes.number,
 
-    placeholder:    React.PropTypes.string,
-    name:           React.PropTypes.string,
+    placeholder:    PropTypes.string,
+    name:           PropTypes.string,
 
-    initialView:    React.PropTypes.oneOf(viewEnum),
-    finalView:      React.PropTypes.oneOf(viewEnum),
+    initialView:    PropTypes.oneOf(viewEnum),
+    finalView:      PropTypes.oneOf(viewEnum),
 
-    autoFocus:      React.PropTypes.bool,
+    autoFocus:      PropTypes.bool,
     disabled:       CustomPropTypes.disabled,
     readOnly:       CustomPropTypes.readOnly,
 
-    parse:          React.PropTypes.oneOfType([
-                      React.PropTypes.arrayOf(React.PropTypes.string),
-                      React.PropTypes.string,
-                      React.PropTypes.func
+    parse:          PropTypes.oneOfType([
+                      PropTypes.arrayOf(PropTypes.string),
+                      PropTypes.string,
+                      PropTypes.func
                     ]),
 
-    'aria-labelledby': React.PropTypes.string,
+    'aria-labelledby': PropTypes.string,
 
-    messages:      React.PropTypes.shape({
-      calendarButton: React.PropTypes.string,
-      timeButton:     React.PropTypes.string
+    messages:      PropTypes.shape({
+      calendarButton: PropTypes.string,
+      timeButton:     PropTypes.string
     })
   }
 

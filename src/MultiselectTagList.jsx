@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _  from './util/_';
 import cx from 'classnames';
 import CustomPropTypes from './util/propTypes';
@@ -17,14 +18,14 @@ export default React.createClass({
   ],
 
   propTypes: {
-    value:          React.PropTypes.array,
-    focused:        React.PropTypes.number,
+    value:          PropTypes.array,
+    focused:        PropTypes.number,
 
-    valueField:     React.PropTypes.string,
+    valueField:     PropTypes.string,
     textField:      CustomPropTypes.accessor,
 
-    onDelete:       React.PropTypes.func.isRequired,
-    valueComponent: React.PropTypes.func,
+    onDelete:       PropTypes.func.isRequired,
+    valueComponent: PropTypes.func,
 
     disabled:       CustomPropTypes.disabled.acceptsArray,
     readOnly:       CustomPropTypes.readOnly.acceptsArray

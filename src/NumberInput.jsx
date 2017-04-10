@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 import { number as numberLocalizer } from './util/localizers';
@@ -6,19 +7,19 @@ import { number as numberLocalizer } from './util/localizers';
 let getFormat = props => numberLocalizer.getFormat('default', props.format)
 
 let propTypes = {
-  value:       React.PropTypes.number,
-  editing:     React.PropTypes.bool,
-  placeholder: React.PropTypes.string,
+  value:       PropTypes.number,
+  editing:     PropTypes.bool,
+  placeholder: PropTypes.string,
 
   format:      CustomPropTypes.numberFormat,
 
-  parse:       React.PropTypes.func,
-  culture:     React.PropTypes.string,
+  parse:       PropTypes.func,
+  culture:     PropTypes.string,
 
-  min:         React.PropTypes.number,
+  min:         PropTypes.number,
 
-  onChange:    React.PropTypes.func.isRequired,
-  onKeyDown:   React.PropTypes.func
+  onChange:    PropTypes.func.isRequired,
+  onKeyDown:   PropTypes.func
 };
 
 export default React.createClass({
