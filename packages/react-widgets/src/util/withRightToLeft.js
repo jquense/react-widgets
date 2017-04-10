@@ -1,19 +1,19 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import { mixin } from 'react-component-managers';
 
 
 export default mixin({
 
   propTypes: {
-    isRtl: React.PropTypes.bool
+    isRtl: PropTypes.bool
   },
 
   contextTypes: {
-    isRtl: React.PropTypes.bool
+    isRtl: PropTypes.bool
   },
 
   childContextTypes: {
-    isRtl: React.PropTypes.bool
+    isRtl: PropTypes.bool
   },
 
   getChildContext() {

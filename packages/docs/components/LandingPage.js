@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Link from 'react-router/lib/Link';
 
 import WidgetNav from './WidgetNav';
 
 const propTypes = {
-  children: React.PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 function LandingPage({ children }) {

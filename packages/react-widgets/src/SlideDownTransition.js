@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Transition from 'react-overlays/lib/Transition';
 import css from 'dom-helpers/style';
 import getHeight from 'dom-helpers/query/height';
 
 const propTypes = {
-  in: React.PropTypes.bool.isRequired,
-  onEntering: React.PropTypes.func,
-  onEntered: React.PropTypes.func,
+  in: PropTypes.bool.isRequired,
+  onEntering: PropTypes.func,
+  onEntered: PropTypes.func,
 };
 
 class SlideDownTransition extends React.Component {

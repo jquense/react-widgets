@@ -1,26 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from './Button';
 
 class Header extends React.Component {
   static propTypes = {
-    label:          React.PropTypes.string.isRequired,
-    labelId:        React.PropTypes.string,
+    label:          PropTypes.string.isRequired,
+    labelId:        PropTypes.string,
 
-    upDisabled:     React.PropTypes.bool.isRequired,
-    prevDisabled:   React.PropTypes.bool.isRequired,
-    nextDisabled:   React.PropTypes.bool.isRequired,
-    onViewChange:   React.PropTypes.func.isRequired,
-    onMoveLeft:     React.PropTypes.func.isRequired,
-    onMoveRight:    React.PropTypes.func.isRequired,
+    upDisabled:     PropTypes.bool.isRequired,
+    prevDisabled:   PropTypes.bool.isRequired,
+    nextDisabled:   PropTypes.bool.isRequired,
+    onViewChange:   PropTypes.func.isRequired,
+    onMoveLeft:     PropTypes.func.isRequired,
+    onMoveRight:    PropTypes.func.isRequired,
 
-    messages:       React.PropTypes.shape({
-      moveBack:     React.PropTypes.func.isRequired,
-      moveForward:  React.PropTypes.func.isRequired,
+    messages:       PropTypes.shape({
+      moveBack:     PropTypes.func.isRequired,
+      moveForward:  PropTypes.func.isRequired,
     })
   };
 
   static contextTypes = {
-    isRtl: React.PropTypes.bool
+    isRtl: PropTypes.bool
   };
 
 

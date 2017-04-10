@@ -1,13 +1,15 @@
 import cn from 'classnames';
 import React, { cloneElement } from 'react';
 
+import PropTypes from 'prop-types';
+
 import SlideDownTransition from './SlideDownTransition';
 
 class Popup extends React.Component {
   static propTypes = {
-    open: React.PropTypes.bool,
-    dropUp: React.PropTypes.bool,
-    onOpening: React.PropTypes.func,
+    open: PropTypes.bool,
+    dropUp: PropTypes.bool,
+    onOpening: PropTypes.func,
   };
 
   static defaultProps = {
@@ -15,7 +17,7 @@ class Popup extends React.Component {
   };
 
   render() {
-    let { className, dropUp, open, onOpening, onOpened, ...props } = this.props
+    let { className, dropUp, open, onOpening, ...props } = this.props
 
     let child = React.Children.only(this.props.children)
 
@@ -23,7 +25,6 @@ class Popup extends React.Component {
       <SlideDownTransition
         {...props}
         in={open}
-        onEntered={onOpened}
         onEntering={onOpening}
         className={cn(className,
           'rw-popup-container',

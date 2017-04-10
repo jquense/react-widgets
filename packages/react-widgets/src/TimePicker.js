@@ -1,11 +1,13 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import DateTimePicker from './DateTimePicker';
 
 const propTypes = {
-  open: React.PropTypes.bool,
-  defaultOpen: React.PropTypes.bool,
-  onToggle: React.PropTypes.func,
+  open: PropTypes.bool,
+  defaultOpen: PropTypes.bool,
+  onToggle: PropTypes.func,
 };
 
 class TimePicker extends React.Component {

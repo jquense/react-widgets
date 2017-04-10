@@ -1,18 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 import * as Props from './util/Props';
 
 class ListOption extends React.Component {
   static propTypes = {
-    activeId: React.PropTypes.string,
-    dataItem: React.PropTypes.any,
-    index: React.PropTypes.number,
-    focused:  React.PropTypes.bool,
-    selected: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    onSelect: React.PropTypes.func,
-    component: React.PropTypes.string,
+    activeId: PropTypes.string,
+    dataItem: PropTypes.any,
+    index: PropTypes.number,
+    focused:  PropTypes.bool,
+    selected: PropTypes.bool,
+    disabled: PropTypes.bool,
+    onSelect: PropTypes.func,
+    component: PropTypes.string,
   };
   handleSelect = (event) => {
     let { onSelect, disabled, dataItem } = this.props;

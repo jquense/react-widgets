@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-jsx.min';
 
 const propTypes = {
-  widgetName: React.PropTypes.string.isRequired
+  widgetName: PropTypes.string.isRequired
 };
 
 function Pre({ code }) { // eslint-disable-line react/prop-types

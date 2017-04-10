@@ -1,9 +1,11 @@
 import cn from 'classnames';
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 const propTypes = {
-  className: React.PropTypes.string,
-  component: React.PropTypes.string,
+  className: PropTypes.string,
+  component: PropTypes.string,
 };
 
 function ListOptionGroup({ children, className, component = 'li' }) {

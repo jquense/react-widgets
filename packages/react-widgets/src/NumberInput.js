@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import Input from './Input';
 import * as Props from './util/Props';
 import * as CustomPropTypes from './util/PropTypes';
@@ -36,22 +38,22 @@ function isAtDelimiter(num, str, culture) {
 
 class NumberPickerInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.number,
-    editing: React.PropTypes.bool,
-    placeholder: React.PropTypes.string,
+    value: PropTypes.number,
+    editing: PropTypes.bool,
+    placeholder: PropTypes.string,
 
     format: CustomPropTypes.numberFormat,
 
-    parse: React.PropTypes.func,
-    culture: React.PropTypes.string,
+    parse: PropTypes.func,
+    culture: PropTypes.string,
 
-    min: React.PropTypes.number,
-    max: React.PropTypes.number,
+    min: PropTypes.number,
+    max: PropTypes.number,
 
     disabled: CustomPropTypes.disabled,
     readOnly: CustomPropTypes.disabled,
 
-    onChange: React.PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

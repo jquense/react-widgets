@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import activeElement from 'dom-helpers/activeElement';
 import contains from 'dom-helpers/query/contains';
 import cn from 'classnames';
@@ -33,13 +34,13 @@ class DropdownList extends React.Component {
     ...Filter.propTypes,
 
     //-- controlled props -----------
-    value: React.PropTypes.any,
-    onChange: React.PropTypes.func,
-    open: React.PropTypes.bool,
-    onToggle: React.PropTypes.func,
+    value: PropTypes.any,
+    onChange: PropTypes.func,
+    open: PropTypes.bool,
+    onToggle: PropTypes.func,
     //------------------------------------
 
-    data: React.PropTypes.array,
+    data: PropTypes.array,
     valueField: CustomPropTypes.accessor,
     textField: CustomPropTypes.accessor,
 
@@ -50,27 +51,27 @@ class DropdownList extends React.Component {
     groupComponent: CustomPropTypes.elementType,
     groupBy: CustomPropTypes.accessor,
 
-    onSelect: React.PropTypes.func,
-    searchTerm: React.PropTypes.string,
-    onSearch: React.PropTypes.func,
-    busy: React.PropTypes.bool,
+    onSelect: PropTypes.func,
+    searchTerm: PropTypes.string,
+    onSearch: PropTypes.func,
+    busy: PropTypes.bool,
 
-    delay: React.PropTypes.number,
-    dropUp: React.PropTypes.bool,
-    duration: React.PropTypes.number,
+    delay: PropTypes.number,
+    dropUp: PropTypes.bool,
+    duration: PropTypes.number,
 
-    placeholder: React.PropTypes.string,
+    placeholder: PropTypes.string,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
     readOnly: CustomPropTypes.disabled,
 
-    listProps: React.PropTypes.object,
+    listProps: PropTypes.object,
 
-    messages: React.PropTypes.shape({
-      open: React.PropTypes.string,
+    messages: PropTypes.shape({
+      open: PropTypes.string,
       emptyList: CustomPropTypes.message,
       emptyFilter: CustomPropTypes.message,
-      filterPlaceholder: React.PropTypes.string,
+      filterPlaceholder: PropTypes.string,
     })
   };
 

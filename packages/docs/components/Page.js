@@ -1,9 +1,11 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import Navbar from './Navbar';
 
 const propTypes = {
-  children: React.PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 function Page({ children }) {

@@ -1,18 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ListOption from './ListOption';
 
 
 class SelectListItem extends React.Component {
   static propTypes = {
-    type: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string.isRequired,
-    disabled: React.PropTypes.bool,
-    readOnly: React.PropTypes.bool,
-    dataItem: React.PropTypes.any,
-    checked: React.PropTypes.bool.isRequired,
+    type: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
+    dataItem: PropTypes.any,
+    checked: PropTypes.bool.isRequired,
 
-    onChange: React.PropTypes.func.isRequired,
-    onMouseDown: React.PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+    onMouseDown: PropTypes.func.isRequired,
   };
 
   handleChange = (e) => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { timeoutManager } from 'react-component-managers';
 
 import List from './List';
@@ -13,18 +14,18 @@ var format = props => dateLocalizer.getFormat('time', props.format)
 class TimeList extends React.Component {
 
   static propTypes = {
-    value: React.PropTypes.instanceOf(Date),
-    step: React.PropTypes.number,
-    min: React.PropTypes.instanceOf(Date),
-    max: React.PropTypes.instanceOf(Date),
-    currentDate: React.PropTypes.instanceOf(Date),
+    value: PropTypes.instanceOf(Date),
+    step: PropTypes.number,
+    min: PropTypes.instanceOf(Date),
+    max: PropTypes.instanceOf(Date),
+    currentDate: PropTypes.instanceOf(Date),
 
     itemComponent: CustomPropTypes.elementType,
     format: CustomPropTypes.dateFormat,
-    onSelect: React.PropTypes.func,
-    preserveDate: React.PropTypes.bool,
-    culture: React.PropTypes.string,
-    delay: React.PropTypes.number
+    onSelect: PropTypes.func,
+    preserveDate: PropTypes.bool,
+    culture: PropTypes.string,
+    delay: PropTypes.number
   }
 
   static defaultProps = {

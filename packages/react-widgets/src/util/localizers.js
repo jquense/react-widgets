@@ -1,26 +1,26 @@
 import invariant from 'invariant';
 import { has } from './_';
-import React from 'react';
+import PropTypes from 'prop-types';
 
-const localePropType = React.PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.func
-      ])
+const localePropType = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.func
+])
 
-const REQUIRED_NUMBER_FORMATS = [ 'default' ];
+const REQUIRED_NUMBER_FORMATS = ['default'];
 
 const REQUIRED_DATE_FORMATS = [
-      'default',
-      'date',
-      'time',
-      'header',
-      'footer',
-      'dayOfMonth',
-      'month',
-      'year',
-      'decade',
-      'century'
-    ];
+  'default',
+  'date',
+  'time',
+  'header',
+  'footer',
+  'dayOfMonth',
+  'month',
+  'year',
+  'decade',
+  'century'
+];
 
 function _format(localizer, formatter, value, format, culture) {
   let result = typeof format === 'function'
@@ -33,10 +33,10 @@ function _format(localizer, formatter, value, format, culture) {
   return result
 }
 
-function checkFormats(requiredFormats, formats){
-  if( process.env.NODE_ENV !== 'production' )
+function checkFormats(requiredFormats, formats) {
+  if (process.env.NODE_ENV !== 'production')
     requiredFormats.forEach(
-      f => invariant(has(formats, f), 'localizer missing required format: `%s`', f ))
+      f => invariant(has(formats, f), 'localizer missing required format: `%s`', f))
 }
 
 
@@ -58,7 +58,7 @@ export function setNumber({ format, parse, decimalChar = () => '.', precision = 
     decimalChar,
     propType: propType || localePropType,
 
-    format(value, str, culture){
+    format(value, str, culture) {
       return _format(this, format, value, str, culture)
     },
 
@@ -86,7 +86,7 @@ export function setDate(spec) {
     formats: spec.formats,
     propType: spec.propType || localePropType,
     startOfWeek: spec.firstOfWeek,
-    format(value, str, culture){
+    format(value, str, culture) {
       return _format(this, spec.format, value, str, culture)
     },
     parse(value, culture) {
@@ -100,36 +100,36 @@ export function setDate(spec) {
 }
 
 export let number = {
-  propType(...args){ return _numberLocalizer.propType(...args) },
-  getFormat(key, format){
+  propType(...args) { return _numberLocalizer.propType(...args) },
+  getFormat(key, format) {
     return format || _numberLocalizer.formats[key]
   },
-  parse(...args){
+  parse(...args) {
     return _numberLocalizer.parse(...args)
   },
-  format(...args){
+  format(...args) {
     return _numberLocalizer.format(...args)
   },
-  decimalChar(...args){
+  decimalChar(...args) {
     return _numberLocalizer.decimalChar(...args)
   },
-  precision(...args){
+  precision(...args) {
     return _numberLocalizer.precision(...args)
   }
 }
 
 export let date = {
-  propType(...args){ return _dateLocalizer.propType(...args) },
-  getFormat(key, format){
+  propType(...args) { return _dateLocalizer.propType(...args) },
+  getFormat(key, format) {
     return format || _dateLocalizer.formats[key]
   },
-  parse(...args){
+  parse(...args) {
     return _dateLocalizer.parse(...args)
   },
-  format(...args){
+  format(...args) {
     return _dateLocalizer.format(...args)
   },
-  startOfWeek(...args){
+  startOfWeek(...args) {
     return _dateLocalizer.startOfWeek(...args)
   }
 }
@@ -137,14 +137,14 @@ export let date = {
 export default { number, date }
 
 
-function createWrapper(){
+function createWrapper() {
   let dummy = {};
 
-  if (process.env.NODE_ENV !== 'production' ) {
+  if (process.env.NODE_ENV !== 'production') {
     ['formats', 'parse', 'format', 'firstOfWeek', 'precision', 'propType']
       .forEach(name => Object.defineProperty(dummy, name, {
         enumerable: true,
-        get(){
+        get() {
           throw new Error(
             '[React Widgets] You are attempting to use a widget that requires localization ' +
             '(Calendar, DateTimePicker, NumberPicker). ' +

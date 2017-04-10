@@ -1,17 +1,19 @@
 import cn from 'classnames';
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import Button from './Button';
 
 class MultiselectTag extends React.Component {
   static propTypes = {
-    id: React.PropTypes.string,
-    onClick: React.PropTypes.func.isRequired,
-    focused: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    readOnly: React.PropTypes.bool,
-    label: React.PropTypes.string,
-    value: React.PropTypes.any,
+    id: PropTypes.string,
+    onClick: PropTypes.func.isRequired,
+    focused: PropTypes.bool,
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
+    label: PropTypes.string,
+    value: PropTypes.any,
   }
 
   onClick = (event) => {

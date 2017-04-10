@@ -1,14 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import compat from './util/compat';
 import * as CustomPropTypes from './util/PropTypes';
 
 class MultiselectInput extends React.Component {
 
   static propTypes = {
-    value:        React.PropTypes.string,
-    placeholder:  React.PropTypes.string,
-    maxLength:    React.PropTypes.number,
-    onChange:     React.PropTypes.func.isRequired,
+    value:        PropTypes.string,
+    placeholder:  PropTypes.string,
+    maxLength:    PropTypes.number,
+    onChange:     PropTypes.func.isRequired,
 
     disabled:     CustomPropTypes.disabled,
     readOnly:     CustomPropTypes.disabled

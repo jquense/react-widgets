@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import elementType
   from 'react-prop-types/lib/elementType';
 import createChainableTypeChecker
@@ -23,13 +23,13 @@ disabled.acceptsArray = PropTypes.oneOfType([
   PropTypes.array
 ])
 
-export const accessor = React.PropTypes.oneOfType([
-  React.PropTypes.string,
-  React.PropTypes.func,
+export const accessor = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.func,
 ])
 
-export const message = React.PropTypes.oneOfType([
-  React.PropTypes.node,
-  React.PropTypes.string,
-  React.PropTypes.func,
+export const message = PropTypes.oneOfType([
+  PropTypes.node,
+  PropTypes.string,
+  PropTypes.func,
 ])

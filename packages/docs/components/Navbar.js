@@ -19,37 +19,37 @@ const styles = less`
   }
 `;
 
-function SiteNav() {
-  return (
-    <Nav
-      role="navigation"
-      className="hidden-xs"
-      style={{ marginLeft: 'auto' }}
-    >
-      <NavDropdown id="extra-menu" pullRight title={<span className='r'>RW</span>}>
-        <LinkContainer to="/" onlyActiveOnIndex>
-          <MenuItem>
-            <i className='fa fa-play'/> Getting Started
-          </MenuItem>
-        </LinkContainer>
-        <LinkContainer to="/i18n">
-          <MenuItem>
-            <i className='fa fa-globe'/> Localization
-          </MenuItem>
-        </LinkContainer>
-        <LinkContainer to="/controllables">
-          <MenuItem>
-            <i className='fa fa-cogs'/> Controlled components
-          </MenuItem>
-        </LinkContainer>
-        <MenuItem divider />
-        <MenuItem href="https://github.com/jquense/react-widgets">
-          <i className='fa fa-github'/> Github
-        </MenuItem>
-      </NavDropdown>
-    </Nav>
-  )
-}
+// function SiteNav() {
+//   return (
+//     <Nav
+//       role="navigation"
+//       className="hidden-xs"
+//       style={{ marginLeft: 'auto' }}
+//     >
+//       <NavDropdown id="extra-menu" pullRight title={<span className='r'>RW</span>}>
+//         <LinkContainer to="/" onlyActiveOnIndex>
+//           <MenuItem>
+//             <i className='fa fa-play'/> Getting Started
+//           </MenuItem>
+//         </LinkContainer>
+//         <LinkContainer to="/i18n">
+//           <MenuItem>
+//             <i className='fa fa-globe'/> Localization
+//           </MenuItem>
+//         </LinkContainer>
+//         <LinkContainer to="/controllables">
+//           <MenuItem>
+//             <i className='fa fa-cogs'/> Controlled components
+//           </MenuItem>
+//         </LinkContainer>
+//         <MenuItem divider />
+//         <MenuItem href="https://github.com/jquense/react-widgets">
+//           <i className='fa fa-github'/> Github
+//         </MenuItem>
+//       </NavDropdown>
+//     </Nav>
+//   )
+// }
 
 function MobileNav() {
   return (

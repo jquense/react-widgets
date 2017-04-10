@@ -1,14 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 class WidgetPicker extends React.Component {
   static propTypes = {
-    tabIndex: React.PropTypes.node,
-    focused: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    readOnly: React.PropTypes.bool,
-    open: React.PropTypes.bool,
-    dropUp: React.PropTypes.bool,
+    tabIndex: PropTypes.node,
+    focused: PropTypes.bool,
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
+    open: PropTypes.bool,
+    dropUp: PropTypes.bool,
   };
 
   render() {

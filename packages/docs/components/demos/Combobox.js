@@ -34,13 +34,10 @@ const ItemComponent = (itemProps) => {
   );
 }
 
-module.exports = React.createClass({
-
-  getInitialState() {
-    return {
-      suggest: true
-    }
-  },
+module.exports = class extends React.Component {
+  state = {
+    suggest: true
+  };
 
   render() {
     const { filter, suggest, groupBy, busy, isRtl, disabled, readOnly } = this.state;
@@ -156,8 +153,8 @@ module.exports = React.createClass({
         </Demo.Controls>
       </Demo>
     )
-  },
-})
+  }
+}
 
 
 

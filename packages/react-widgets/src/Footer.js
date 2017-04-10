@@ -1,14 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from './Button';
 import { date as dateLocalizer } from './util/localizers';
 import * as CustomPropTypes from './util/PropTypes';
 
 const propTypes = {
-  disabled: React.PropTypes.bool,
-  readOnly: React.PropTypes.bool,
-  value: React.PropTypes.instanceOf(Date),
-  onClick: React.PropTypes.func.isRequired,
-  culture: React.PropTypes.string,
+  disabled: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  value: PropTypes.instanceOf(Date),
+  onClick: PropTypes.func.isRequired,
+  culture: PropTypes.string,
   format: CustomPropTypes.dateFormat,
 }
 

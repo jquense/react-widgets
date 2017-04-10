@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Listbox from 'react-widgets/lib/Listbox';
 import BaseVirtualList from 'react-list';
 import ListOption from 'react-widgets/lib/ListOption';
@@ -9,13 +10,13 @@ import * as CustomPropTypes from 'react-widgets/lib/util/PropTypes';
 
 
 export const virtualListPropTypes = {
-  itemSizeEstimator: React.PropTypes.func,
-  itemSizeGetter: React.PropTypes.func,
-  pageSize: React.PropTypes.number,
-  threshold: React.PropTypes.number,
-  type: React.PropTypes.oneOf(['simple', 'variable', 'uniform']),
-  useStaticSize: React.PropTypes.bool,
-  useTranslate3d: React.PropTypes.bool,
+  itemSizeEstimator: PropTypes.func,
+  itemSizeGetter: PropTypes.func,
+  pageSize: PropTypes.number,
+  threshold: PropTypes.number,
+  type: PropTypes.oneOf(['simple', 'variable', 'uniform']),
+  useStaticSize: PropTypes.bool,
+  useTranslate3d: PropTypes.bool,
 }
 
 class VirtualList extends React.Component {
@@ -23,26 +24,26 @@ class VirtualList extends React.Component {
   static propTypes = {
     ...virtualListPropTypes,
 
-    data: React.PropTypes.array,
-    dataState: React.PropTypes.object,
-    onSelect: React.PropTypes.func,
-    onMove: React.PropTypes.func,
+    data: PropTypes.array,
+    dataState: PropTypes.object,
+    onSelect: PropTypes.func,
+    onMove: PropTypes.func,
 
-    activeId: React.PropTypes.string,
+    activeId: PropTypes.string,
     optionComponent: CustomPropTypes.elementType,
-    renderItem: React.PropTypes.func.isRequired,
-    renderGroup: React.PropTypes.func,
+    renderItem: PropTypes.func.isRequired,
+    renderGroup: PropTypes.func,
 
-    focusedItem: React.PropTypes.any,
-    selectedItem: React.PropTypes.any,
+    focusedItem: PropTypes.any,
+    selectedItem: PropTypes.any,
 
-    isDisabled: React.PropTypes.func.isRequired,
-    textAccessor: React.PropTypes.func.isRequired,
+    isDisabled: PropTypes.func.isRequired,
+    textAccessor: PropTypes.func.isRequired,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
     groupBy: CustomPropTypes.accessor,
 
-    messages: React.PropTypes.shape({
+    messages: PropTypes.shape({
       emptyList: CustomPropTypes.message
     })
   }

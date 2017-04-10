@@ -1,5 +1,7 @@
 import React   from 'react';
 
+import PropTypes from 'prop-types';
+
 import compat from './util/compat';
 import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
@@ -13,24 +15,24 @@ import { getMessages } from './messages';
 const EMPTY_DATA_STATE = {}
 
 const propTypes = {
-  data: React.PropTypes.array,
-  dataState: React.PropTypes.object,
-  onSelect: React.PropTypes.func,
-  onMove: React.PropTypes.func,
+  data: PropTypes.array,
+  dataState: PropTypes.object,
+  onSelect: PropTypes.func,
+  onMove: PropTypes.func,
 
-  activeId: React.PropTypes.string,
+  activeId: PropTypes.string,
   optionComponent: CustomPropTypes.elementType,
-  renderItem: React.PropTypes.func.isRequired,
-  renderGroup:  React.PropTypes.func,
+  renderItem: PropTypes.func.isRequired,
+  renderGroup:  PropTypes.func,
 
-  focusedItem: React.PropTypes.any,
-  selectedItem: React.PropTypes.any,
+  focusedItem: PropTypes.any,
+  selectedItem: PropTypes.any,
 
-  isDisabled: React.PropTypes.func.isRequired,
+  isDisabled: PropTypes.func.isRequired,
   groupBy: CustomPropTypes.accessor,
 
-  messages: React.PropTypes.shape({
-    emptyList: React.PropTypes.func.isRequired,
+  messages: PropTypes.shape({
+    emptyList: PropTypes.func.isRequired,
   })
 }
 

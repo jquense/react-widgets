@@ -1,15 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 class Button extends React.Component {
   static propTypes = {
-    disabled: React.PropTypes.bool,
-    label: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    busy: React.PropTypes.bool,
-    active: React.PropTypes.bool,
-    variant: React.PropTypes.oneOf(['primary', 'select']),
-    component: React.PropTypes.any,
+    disabled: PropTypes.bool,
+    label: PropTypes.string,
+    icon: PropTypes.string,
+    busy: PropTypes.bool,
+    active: PropTypes.bool,
+    variant: PropTypes.oneOf(['primary', 'select']),
+    component: PropTypes.any,
   };
 
   render() {

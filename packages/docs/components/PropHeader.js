@@ -1,15 +1,15 @@
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import Default from './Default';
 import Controllable from './Controllable';
 import Type from './Type';
 import propId from './propId';
 
-let ApiPropHeader = React.createClass({
-
-  contextTypes: {
-    prefix: React.PropTypes.string.isRequired
-  },
+class ApiPropHeader extends React.Component {
+  static contextTypes = {
+    prefix: PropTypes.string.isRequired
+  };
 
   render() {
     var {
@@ -34,8 +34,8 @@ let ApiPropHeader = React.createClass({
         }
        </h3>
     );
-  },
-});
+  }
+}
 
 
 

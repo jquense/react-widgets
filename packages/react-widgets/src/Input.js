@@ -1,13 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 class Input extends React.Component {
   static propTypes = {
-    disabled: React.PropTypes.bool,
-    readOnly: React.PropTypes.bool,
-    value: React.PropTypes.string,
-    tabIndex: React.PropTypes.string,
-    component: React.PropTypes.any,
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
+    value: PropTypes.string,
+    tabIndex: PropTypes.string,
+    component: PropTypes.any,
   };
 
   render() {

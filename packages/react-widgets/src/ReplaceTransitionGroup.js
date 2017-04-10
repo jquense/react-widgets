@@ -5,6 +5,7 @@
  * relevent code is licensed accordingly
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import css from 'dom-helpers/style';
 import height from 'dom-helpers/query/height';
@@ -25,13 +26,13 @@ function key(child){
 class ReplaceTransitionGroup extends React.Component {
 
   static propTypes = {
-    component: React.PropTypes.oneOfType([
-      React.PropTypes.element,
-      React.PropTypes.string
+    component: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string
     ]),
-    childFactory: React.PropTypes.func,
-    onAnimating: React.PropTypes.func,
-    onAnimate: React.PropTypes.func
+    childFactory: PropTypes.func,
+    onAnimating: PropTypes.func,
+    onAnimate: PropTypes.func
   };
 
   static defaultProps = {

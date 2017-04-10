@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import propId from './propId';
 
 function defaultKey(key){
@@ -34,12 +36,12 @@ function Controllable({ other, propName }, { prefix }) {
 }
 
 Controllable.propTypes = {
-  other: React.PropTypes.string.isRequired,
-  propName: React.PropTypes.string.isRequired
+  other: PropTypes.string.isRequired,
+  propName: PropTypes.string.isRequired
 };
 
 Controllable.contextTypes = {
-  prefix: React.PropTypes.string.isRequired
+  prefix: PropTypes.string.isRequired
 };
 
 export default Controllable

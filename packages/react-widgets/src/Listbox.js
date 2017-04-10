@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 import { instanceId } from './util/widgetHelpers';
 
 const propTypes = {
-  className: React.PropTypes.string,
-  role: React.PropTypes.string,
-  emptyListMessage: React.PropTypes.node,
+  className: PropTypes.string,
+  role: PropTypes.string,
+  emptyListMessage: PropTypes.node,
 };
 
 class Listbox extends React.Component {

@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import * as CustomPropTypes from './PropTypes';
 import { dataText } from './dataHelpers';
 import { find } from './_';
@@ -60,12 +60,12 @@ function normalizeOptions(nextOptions) {
 
 export let propTypes = {
   textField: CustomPropTypes.accessor,
-  caseSensitive:  React.PropTypes.bool,
-  minLength: React.PropTypes.number,
-  filter: React.PropTypes.oneOfType([
-    React.PropTypes.func,
-    React.PropTypes.bool,
-    React.PropTypes.oneOf(Object.keys(presets))
+  caseSensitive:  PropTypes.bool,
+  minLength: PropTypes.number,
+  filter: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.bool,
+    PropTypes.oneOf(Object.keys(presets))
   ]),
 }
 
