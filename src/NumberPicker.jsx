@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx    from 'classnames';
 import _     from './util/_';
 import compat from './util/compat';
@@ -19,34 +20,34 @@ var format = props => numberLocalizer.getFormat('default', props.format)
 let propTypes = {
 
       // -- controlled props -----------
-      value:          React.PropTypes.number,
-      onChange:       React.PropTypes.func,
+      value:          PropTypes.number,
+      onChange:       PropTypes.func,
       //------------------------------------
 
-      min:            React.PropTypes.number,
-      max:            React.PropTypes.number,
-      step:           React.PropTypes.number,
+      min:            PropTypes.number,
+      max:            PropTypes.number,
+      step:           PropTypes.number,
 
-      precision:      React.PropTypes.number,
+      precision:      PropTypes.number,
 
-      culture:        React.PropTypes.string,
+      culture:        PropTypes.string,
 
       format:         CustomPropTypes.numberFormat,
 
-      name:           React.PropTypes.string,
+      name:           PropTypes.string,
 
-      parse:          React.PropTypes.func,
+      parse:          PropTypes.func,
 
-      autoFocus:      React.PropTypes.bool,
+      autoFocus:      PropTypes.bool,
       disabled:       CustomPropTypes.disabled,
       readOnly:       CustomPropTypes.readOnly,
 
-      messages:       React.PropTypes.shape({
-        increment:    React.PropTypes.string,
-        decrement:    React.PropTypes.string
+      messages:       PropTypes.shape({
+        increment:    PropTypes.string,
+        decrement:    PropTypes.string
       }),
 
-      placeholder: React.PropTypes.string
+      placeholder: PropTypes.string
     };
 
 let NumberPicker = React.createClass({

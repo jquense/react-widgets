@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import activeElement from 'dom-helpers/activeElement';
 import contains from 'dom-helpers/query/contains';
 import cx from 'classnames';
@@ -26,14 +27,14 @@ var propTypes = {
   ...Popup.propTypes,
 
   //-- controlled props -----------
-  value:          React.PropTypes.any,
-  onChange:       React.PropTypes.func,
-  open:           React.PropTypes.bool,
-  onToggle:       React.PropTypes.func,
+  value:          PropTypes.any,
+  onChange:       PropTypes.func,
+  open:           PropTypes.bool,
+  onToggle:       PropTypes.func,
   //------------------------------------
 
-  data:           React.PropTypes.array,
-  valueField:     React.PropTypes.string,
+  data:           PropTypes.array,
+  valueField:     PropTypes.string,
   textField:      CustomPropTypes.accessor,
 
   valueComponent: CustomPropTypes.elementType,
@@ -43,18 +44,18 @@ var propTypes = {
   groupComponent: CustomPropTypes.elementType,
   groupBy:        CustomPropTypes.accessor,
 
-  onSelect:       React.PropTypes.func,
-  searchTerm:     React.PropTypes.string,
-  onSearch:       React.PropTypes.func,
-  busy:           React.PropTypes.bool,
-  delay:          React.PropTypes.number,
-  dropUp:         React.PropTypes.bool,
-  duration:       React.PropTypes.number, //popup
+  onSelect:       PropTypes.func,
+  searchTerm:     PropTypes.string,
+  onSearch:       PropTypes.func,
+  busy:           PropTypes.bool,
+  delay:          PropTypes.number,
+  dropUp:         PropTypes.bool,
+  duration:       PropTypes.number, //popup
 
   disabled:       CustomPropTypes.disabled.acceptsArray,
   readOnly:       CustomPropTypes.readOnly.acceptsArray,
 
-  messages:       React.PropTypes.shape({
+  messages:       PropTypes.shape({
     open:              CustomPropTypes.message,
     emptyList:         CustomPropTypes.message,
     emptyFilter:       CustomPropTypes.message,

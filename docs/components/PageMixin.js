@@ -1,6 +1,8 @@
 'use strict';
 var React = require('react')
 
+var PropTypes = require('prop-types');
+
 module.exports = function(prefix){
 
   return {
@@ -18,13 +20,13 @@ module.exports = function(prefix){
     },
 
     childContextTypes: {
-      prefix: React.PropTypes.string.isRequired
+      prefix: PropTypes.string.isRequired
     },
 
     getChildContext() {
       return { prefix };
     }
-  }
+  };
 }
 
 function scrollTo(pathname){

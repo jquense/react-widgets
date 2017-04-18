@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import _  from './util/_';
 import createUncontrolledWidget from 'uncontrollable';
@@ -25,19 +26,19 @@ let { splat } = _;
 var propTypes = {
   ...Popup.propTypes,
 
-  data:            React.PropTypes.array,
+  data:            PropTypes.array,
   //-- controlled props --
-  value:           React.PropTypes.array,
-  onChange:        React.PropTypes.func,
+  value:           PropTypes.array,
+  onChange:        PropTypes.func,
 
-  searchTerm:      React.PropTypes.string,
-  onSearch:        React.PropTypes.func,
+  searchTerm:      PropTypes.string,
+  onSearch:        PropTypes.func,
 
-  open:            React.PropTypes.bool,
-  onToggle:        React.PropTypes.func,
+  open:            PropTypes.bool,
+  onToggle:        PropTypes.func,
   //-------------------------------------------
 
-  valueField:      React.PropTypes.string,
+  valueField:      PropTypes.string,
   textField:       CustomPropTypes.accessor,
 
   tagComponent:    CustomPropTypes.elementType,
@@ -49,24 +50,24 @@ var propTypes = {
 
   createComponent: CustomPropTypes.elementType,
 
-  onSelect:        React.PropTypes.func,
-  onCreate:        React.PropTypes.oneOfType([
-                     React.PropTypes.oneOf([false]),
-                     React.PropTypes.func
+  onSelect:        PropTypes.func,
+  onCreate:        PropTypes.oneOfType([
+                     PropTypes.oneOf([false]),
+                     PropTypes.func
                    ]),
 
-  inputSize:       React.PropTypes.func,
+  inputSize:       PropTypes.func,
 
-  busy:            React.PropTypes.bool,
-  dropUp:          React.PropTypes.bool,
+  busy:            PropTypes.bool,
+  dropUp:          PropTypes.bool,
 
-  placeholder:     React.PropTypes.string,
+  placeholder:     PropTypes.string,
 
-  autoFocus:      React.PropTypes.bool,
+  autoFocus:      PropTypes.bool,
   disabled:       CustomPropTypes.disabled.acceptsArray,
   readOnly:       CustomPropTypes.readOnly.acceptsArray,
 
-  messages:        React.PropTypes.shape({
+  messages:        PropTypes.shape({
     open:          CustomPropTypes.message,
     emptyList:     CustomPropTypes.message,
     emptyFilter:   CustomPropTypes.message,

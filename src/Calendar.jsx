@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 import compat from './util/compat';
@@ -62,21 +63,21 @@ let propTypes = {
   disabled:       CustomPropTypes.disabled,
   readOnly:       CustomPropTypes.readOnly,
 
-  onChange:      React.PropTypes.func,
-  value:         React.PropTypes.instanceOf(Date),
+  onChange:      PropTypes.func,
+  value:         PropTypes.instanceOf(Date),
 
-  min:           React.PropTypes.instanceOf(Date),
-  max:           React.PropTypes.instanceOf(Date),
+  min:           PropTypes.instanceOf(Date),
+  max:           PropTypes.instanceOf(Date),
 
-  currentDate:         React.PropTypes.instanceOf(Date),
-  onCurrentDateChange: React.PropTypes.func,
+  currentDate:         PropTypes.instanceOf(Date),
+  onCurrentDateChange: PropTypes.func,
 
-  view: React.PropTypes.oneOf(VIEW_OPTIONS),
-  initialView: React.PropTypes.oneOf(VIEW_OPTIONS),
+  view: PropTypes.oneOf(VIEW_OPTIONS),
+  initialView: PropTypes.oneOf(VIEW_OPTIONS),
 
 
   finalView(props, propName, componentName, ...args) {
-    var err = React.PropTypes.oneOf(VIEW_OPTIONS)(props, propName, componentName, ...args)
+    var err = PropTypes.oneOf(VIEW_OPTIONS)(props, propName, componentName, ...args)
 
     if (err) return err
     if (VIEW_OPTIONS.indexOf(props[propName]) < VIEW_OPTIONS.indexOf(props.initialView))
@@ -84,10 +85,10 @@ let propTypes = {
         prop. This creates a range that cannot be rendered.`.replace(/\n\t/g, ''))
   },
 
-  onViewChange:  React.PropTypes.func,
-  onNavigate:    React.PropTypes.func,
-  culture:       React.PropTypes.string,
-  footer:        React.PropTypes.bool,
+  onViewChange:  PropTypes.func,
+  onNavigate:    PropTypes.func,
+  culture:       PropTypes.string,
+  footer:        PropTypes.bool,
 
   dayComponent:  CustomPropTypes.elementType,
   headerFormat:  CustomPropTypes.dateFormat,
@@ -100,9 +101,9 @@ let propTypes = {
   decadeFormat:  CustomPropTypes.dateFormat,
   centuryFormat: CustomPropTypes.dateFormat,
 
-  messages:      React.PropTypes.shape({
-    moveBack:     React.PropTypes.string,
-    moveForward:  React.PropTypes.string
+  messages:      PropTypes.shape({
+    moveBack:     PropTypes.string,
+    moveForward:  PropTypes.string
   })
 }
 
