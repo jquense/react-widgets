@@ -69,6 +69,7 @@ let propTypes = {
     autoFocus:      PropTypes.bool,
     disabled:       CustomPropTypes.disabled,
     readOnly:       CustomPropTypes.readOnly,
+    readOnlyInput:  CustomPropTypes.readOnly,
 
     parse:          PropTypes.oneOfType([
                       PropTypes.arrayOf(PropTypes.string),
@@ -151,6 +152,7 @@ var DateTimePicker = React.createClass({
       , placeholder
       , disabled
       , readOnly
+      , readOnlyInput
       , name
       , tabIndex
       , autoFocus
@@ -158,6 +160,8 @@ var DateTimePicker = React.createClass({
       , 'aria-describedby': ariaDescribedby } = this.props;
 
     let { focused } = this.state;
+
+    readOnly = readOnly || readOnlyInput
 
     return (
       <DateTimePickerInput

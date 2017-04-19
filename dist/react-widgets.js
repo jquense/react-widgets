@@ -3006,12 +3006,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return function decorate(target, key, desc) {
 	    if (desc.initializer) {
-	      (function () {
-	        var init = desc.initializer;
-	        desc.initializer = function () {
-	          return wrap(init());
-	        };
-	      })();
+	      var init = desc.initializer;
+	      desc.initializer = function () {
+	        return wrap(init());
+	      };
 	    } else desc.value = wrap(desc.value);
 	    return desc;
 	  };
@@ -7313,6 +7311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  autoFocus: _react2.default.PropTypes.bool,
 	  disabled: _propTypes2.default.disabled,
 	  readOnly: _propTypes2.default.readOnly,
+	  readOnlyInput: _propTypes2.default.readOnly,
 
 	  parse: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string), _react2.default.PropTypes.string, _react2.default.PropTypes.func]),
 
@@ -7381,6 +7380,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        placeholder = _props.placeholder,
 	        disabled = _props.disabled,
 	        readOnly = _props.readOnly,
+	        readOnlyInput = _props.readOnlyInput,
 	        name = _props.name,
 	        tabIndex = _props.tabIndex,
 	        autoFocus = _props.autoFocus,
@@ -7388,6 +7388,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ariaDescribedby = _props['aria-describedby'];
 	    var focused = this.state.focused;
 
+
+	    readOnly = readOnly || readOnlyInput;
 
 	    return _react2.default.createElement(_DateTimePickerInput2.default, {
 	      id: id,
