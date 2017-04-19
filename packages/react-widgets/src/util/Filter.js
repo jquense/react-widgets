@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import * as CustomPropTypes from './PropTypes';
 import { dataText } from './dataHelpers';
-import { find } from './_';
 
 export let presets = {
   eq:  (a, b) => a === b,
@@ -63,16 +62,6 @@ export let propTypes = {
     PropTypes.bool,
     PropTypes.oneOf(Object.keys(presets))
   ]),
-}
-
-function run(searchTerm, options) {
-  let { filter, minLength } = normalizeOptions(options);
-  return (
-    !filter ||
-    !searchTerm ||
-    !searchTerm.trim() ||
-    searchTerm.length < minLength
-  )
 }
 
 export function indexOf(data, { searchTerm = '', ...options }) {

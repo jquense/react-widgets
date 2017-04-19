@@ -25,31 +25,30 @@ import withRightToLeft from './util/withRightToLeft';
 import { instanceId, notify } from './util/widgetHelpers';
 import { widgetEditable } from './util/interaction';
 
-let dir    = constants.directions
-  , values = obj => Object.keys(obj).map( k => obj[k] );
+let { DOWN, UP, LEFT, RIGHT } = constants.directions
 
 let last = a => a[a.length - 1];
 
-let views        = constants.calendarViews
-  , VIEW_OPTIONS = values(views)
-  , VIEW_UNIT    = constants.calendarViewUnits
-  , VIEW  = {
-      [views.MONTH]:   Month,
-      [views.YEAR]:    Year,
-      [views.DECADE]:  Decade,
-      [views.CENTURY]: Century
-    };
+let views = constants.calendarViews
+let VIEW_OPTIONS = Object.keys(views).map(k => views[k])
+let VIEW_UNIT = constants.calendarViewUnits
+let VIEW  = {
+  [views.MONTH]:   Month,
+  [views.YEAR]:    Year,
+  [views.DECADE]:  Decade,
+  [views.CENTURY]: Century
+};
 
 let ARROWS_TO_DIRECTION = {
-  ArrowDown:  dir.DOWN,
-  ArrowUp:    dir.UP,
-  ArrowRight: dir.RIGHT,
-  ArrowLeft:  dir.LEFT
+  ArrowDown: DOWN,
+  ArrowUp: UP,
+  ArrowRight: RIGHT,
+  ArrowLeft: LEFT
 }
 
 let OPPOSITE_DIRECTION = {
-  [dir.LEFT]:  dir.RIGHT,
-  [dir.RIGHT]: dir.LEFT
+  [LEFT]: RIGHT,
+  [RIGHT]: LEFT
 };
 
 let MULTIPLIER = {
@@ -57,9 +56,6 @@ let MULTIPLIER = {
   [views.DECADE]:  10,
   [views.CENTURY]: 100
 };
-
-let format = (props, f) => dateLocalizer.getFormat(f, props[f + 'Format'])
-
 
 let propTypes = {
   ...autoFocus.propTypes,
@@ -172,17 +168,17 @@ class Calendar extends React.Component {
 
   @widgetEditable
   handleViewChange = () => {
-    this.navigate(dir.UP);
+    this.navigate(UP);
   }
 
   @widgetEditable
   handleMoveBack = () => {
-    this.navigate(dir.LEFT);
+    this.navigate(LEFT);
   }
 
   @widgetEditable
   handleMoveForward = () => {
-    this.navigate(dir.RIGHT);
+    this.navigate(RIGHT);
   }
 
   @widgetEditable
@@ -199,7 +195,7 @@ class Calendar extends React.Component {
       return;
     }
 
-    this.navigate(dir.DOWN, date)
+    this.navigate(DOWN, date)
   };
 
   @widgetEditable
@@ -254,10 +250,10 @@ class Calendar extends React.Component {
           e.preventDefault()
 
           if (dates.gt(nextDate, currentDate, view))
-            this.navigate(dir.RIGHT, nextDate)
+            this.navigate(RIGHT, nextDate)
 
           else if (dates.lt(nextDate, currentDate, view))
-            this.navigate(dir.LEFT, nextDate)
+            this.navigate(LEFT, nextDate)
 
           else
             this.setCurrentDate(nextDate)
@@ -316,8 +312,8 @@ class Calendar extends React.Component {
           labelId={this.labelId}
           messages={this.messages}
           upDisabled={isDisabled || view === last(views)}
-          prevDisabled={isDisabled || !dates.inRange(this.nextDate(dir.LEFT), min, max, view)}
-          nextDisabled={isDisabled || !dates.inRange(this.nextDate(dir.RIGHT), min, max, view)}
+          prevDisabled={isDisabled || !dates.inRange(this.nextDate(LEFT), min, max, view)}
+          nextDisabled={isDisabled || !dates.inRange(this.nextDate(RIGHT), min, max, view)}
           onViewChange={this.handleViewChange}
           onMoveLeft ={this.handleMoveBack}
           onMoveRight={this.handleMoveForward}
@@ -360,17 +356,17 @@ class Calendar extends React.Component {
     let { views, min, max, onNavigate, onViewChange } = this.props;
     let { view } = this.state
 
-    let slideDir = (direction === dir.LEFT || direction === dir.UP)
+    let slideDir = (direction === LEFT || direction === UP)
           ? 'right' : 'left';
 
-    if (direction === dir.UP)
+    if (direction === UP)
       view = views[views.indexOf(view) + 1] || view
 
-    if (direction === dir.DOWN)
+    if (direction === DOWN)
       view = views[views.indexOf(view) - 1] || view
 
     if (!date)
-      date = [dir.LEFT, dir.RIGHT].indexOf(direction) !== -1
+      date = [LEFT, RIGHT].indexOf(direction) !== -1
         ? this.nextDate(direction)
         : this.getCurrentDate()
 
@@ -402,7 +398,7 @@ class Calendar extends React.Component {
   }
 
   nextDate(direction) {
-    let method = direction === dir.LEFT ? 'subtract' : 'add'
+    let method = direction === LEFT ? 'subtract' : 'add'
       , view   = this.state.view
       , unit   = view === views.MONTH ? view : views.YEAR
       , multi  = MULTIPLIER[view] || 1;
@@ -413,27 +409,34 @@ class Calendar extends React.Component {
   getHeaderLabel() {
     let {
         culture
-      , ...props } = this.props
+      , decadeFormat
+      , yearFormat
+      , headerFormat
+      , centuryFormat } = this.props
       , view = this.state.view
-      , currentDate   = this.getCurrentDate();
+      , currentDate = this.getCurrentDate();
 
     switch (view) {
       case views.MONTH:
-        return dateLocalizer.format(currentDate, format(props, 'header'), culture)
+        headerFormat = dateLocalizer.getFormat('header', headerFormat)
+        return dateLocalizer.format(currentDate, headerFormat, culture)
 
       case views.YEAR:
-        return dateLocalizer.format(currentDate, format(props, 'year'), culture)
+        yearFormat = dateLocalizer.getFormat('year', yearFormat)
+        return dateLocalizer.format(currentDate, yearFormat, culture)
 
       case views.DECADE:
+        decadeFormat = dateLocalizer.getFormat('decade', decadeFormat)
         return dateLocalizer.format(
           dates.startOf(currentDate, 'decade'),
-          format(props, 'decade'),
+          decadeFormat,
           culture
         )
       case views.CENTURY:
+        centuryFormat = dateLocalizer.getFormat('century', centuryFormat)
         return dateLocalizer.format(
           dates.startOf(currentDate, 'century'),
-          format(props, 'century'),
+          centuryFormat,
           culture
         )
     }
@@ -442,11 +445,12 @@ class Calendar extends React.Component {
   inRangeValue(_value) {
     let value = dateOrNull(_value)
 
-    if( value === null) return value
+    if (value === null) return value
 
     return dates.max(
-        dates.min(value, this.props.max)
-      , this.props.min)
+      dates.min(value, this.props.max),
+      this.props.min
+    )
   }
 
   isValidView(next, views = this.props.views) {

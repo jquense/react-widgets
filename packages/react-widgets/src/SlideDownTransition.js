@@ -7,20 +7,12 @@ import getHeight from 'dom-helpers/query/height';
 const propTypes = {
   in: PropTypes.bool.isRequired,
   onEntering: PropTypes.func,
-  onEntered: PropTypes.func,
 };
 
 class SlideDownTransition extends React.Component {
   handleEntering = () => {
     if (this.props.onEntering)
       this.props.onEntering();
-  }
-
-  handleEntered = (elem) => {
-    if (this.props.onEntered)
-      this.props.onEntered();
-
-    // this.clearContainerHeight(elem)
   }
 
   setContainerHeight = (elem) => {
@@ -38,7 +30,7 @@ class SlideDownTransition extends React.Component {
                + parseInt(css(content, 'margin-bottom'), 10);
 
     let old = container.style.display
-      , height;
+    let height;
 
     container.style.display = 'block'
     height = (
@@ -62,7 +54,6 @@ class SlideDownTransition extends React.Component {
         exitedClassName="rw-transition-slide-exited"
         onEnter={this.setContainerHeight}
         onEntering={this.handleEntering}
-        onEntered={this.handleEntered}
         onExit={this.setContainerHeight}
         onExited={this.clearContainerHeight}
       >

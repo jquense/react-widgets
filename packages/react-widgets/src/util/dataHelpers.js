@@ -1,8 +1,7 @@
 import { isShallowEqual } from './_';
 
-function accessor(data, field) {
-  var value = data;
-
+export const dataValue = (data, field) => {
+  let value = data;
   if (typeof field === 'function')
     value = field(data)
   else if (data == null)
@@ -17,23 +16,18 @@ function accessor(data, field) {
   return value
 }
 
-export function dataValue(item, valueField) {
-  return accessor(item, valueField);
-}
-
-export function dataText(item, textField) {
-  var value = accessor(item, textField);
+export const dataText = (item, textField) => {
+  var value = dataValue(item, textField);
   return value == null ? '' : (value + '')
 }
 
-export function dataIndexOf(data, item, valueField){
-  var idx = -1, len = data.length
-    , isValueEqual = datum => valueMatcher(item, datum, valueField);
+export function dataIndexOf(data, item, valueField) {
+  let idx = -1
+  let isValueEqual = datum => valueMatcher(item, datum, valueField);
 
-  while (++idx < len) {
+  while (++idx < data.length) {
     var datum = data[idx];
-    if (datum === item || isValueEqual(datum))
-      return idx
+    if (datum === item || isValueEqual(datum)) return idx
   }
 
   return -1
@@ -45,14 +39,12 @@ export function dataIndexOf(data, item, valueField){
  */
 export function valueMatcher(a, b, valueField) {
   return isShallowEqual(
-    dataValue(a, valueField), dataValue(b, valueField))
+    dataValue(a, valueField),
+    dataValue(b, valueField)
+  )
 }
 
 export function dataItem(data, item, valueField) {
-  var idx = dataIndexOf(data, dataValue(item, valueField), valueField)
-
-  if (idx !== -1)
-    return data[idx]
-
-  return item
+  let idx = dataIndexOf(data, dataValue(item, valueField), valueField)
+  return idx !== -1? data[idx] : item
 }

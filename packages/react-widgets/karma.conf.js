@@ -42,10 +42,10 @@ module.exports = function (config) {
       },
       resolve: {
         alias: {
-          'globalize': path.resolve(__dirname, './node_modules/globalize'),
           'react-widgets/lib': path.resolve(__dirname, './src'),
         }
-      }
+      },
+      stats: 'minimal',
     }),
 
     webpackServer: {

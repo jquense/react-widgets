@@ -2,18 +2,11 @@ delete require.cache[require.resolve('../src/util/_')]
 
 var React   = require('react')
   , filters = require('../src/util/Filter').presets
-  , _       = require('../src/util/_')
-  , propTypes = require('../src/util/PropTypes')
-  , config  = require('../src/util/configuration')
-  , configure  = require('../src/configure');
+  , _ = require('../src/util/_')
+  , propTypes = require('../src/util/PropTypes');
 
 
 describe('_ utils', function(){
-
-  it('should FIND', function(){
-    expect(_.find([1, 2, 3, 4, 5], v => v === 2)).to.equal(2)
-    expect(_.find([1, 2, 3, 4, 5], (v, i) => i === 2)).to.equal(3)
-  })
 
   it('should SHALLOW EQUAL', function(){
     expect( _.isShallowEqual(1, 1) ).to.be(true)
@@ -77,15 +70,3 @@ describe('when using custom PropTypes', function(){
   })
 })
 
-describe('when configuring dependencies', function(){
-
-  it('should use the instances provided', function(){
-    var animate = ()=>{};
-
-    expect(config.animate).to.not.equal(animate)
-
-    configure.setAnimate(animate)
-
-    expect(config.animate).to.equal(animate)
-  })
-})

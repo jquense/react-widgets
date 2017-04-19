@@ -3,7 +3,9 @@ import tsp from 'teaspoon';
 
 import Combobox from '../src/Combobox';
 
+
 let ControlledCombobox = Combobox.ControlledComponent;
+
 
 describe('Combobox', function(){
   var dataList = [

@@ -10,7 +10,7 @@ import Widget from './Widget';
 import SelectListItem from './SelectListItem';
 import { getMessages } from './messages';
 
-import { find, makeArray }  from './util/_';
+import { makeArray }  from './util/_';
 import * as Props from './util/Props';
 import * as CustomPropTypes from './util/PropTypes';
 import listDataManager from './util/listDataManager';
@@ -23,11 +23,12 @@ import { instanceId, notify } from './util/widgetHelpers';
 
 
 function getFirstValue(data, values) {
-  let firstValue = null;
-  if (values.length)
-    firstValue = find(data, d => ~values.indexOf(d))
+  if (!values.length) return null
 
-  return firstValue || null
+  for (var idx = 0; idx < data.length; idx++)
+    if (~values.indexOf(data[idx])) return data[idx]
+
+  return null
 }
 
 @withRightToLeft

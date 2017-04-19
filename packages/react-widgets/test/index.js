@@ -2,19 +2,13 @@ import 'es5-shim';
 import React from 'react';
 import * as widgetHelpers from '../src/util/widgetHelpers';
 
-import config from '../src/util/configuration';
-
-require('../../react-widgets-globalize/localizer')()
+require('./test-localizer')()
 
 //disable this particular optimization
 sinon.stub(widgetHelpers, 'isFirstFocusedRender', ()=> true)
 
 beforeEach(() => {
   sinon.stub(console, 'error');
-
-  sinon.stub(config, 'animate', function(...args) {
-    args.pop()()
-  })
 });
 
 afterEach(function () {
@@ -24,9 +18,6 @@ afterEach(function () {
 
     console.error.restore();
   }
-
-  config.animate.restore &&
-    config.animate.restore()
 });
 
 var testsContext = require.context('.', true, /\-test\.(js$|jsx$)/);

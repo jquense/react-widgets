@@ -234,8 +234,8 @@ describe('Multiselect', function() {
     expect(input.getAttribute('aria-disabled')).to.be('true');
   })
 
-  it('should disable only certain tags', function() {
-    var change = sinon.spy()
+  it('should disable only certain tags', () => {
+    let change = sinon.spy()
     tsp(
       <Multiselect
         onChange={change}
@@ -248,7 +248,7 @@ describe('Multiselect', function() {
     )
     .render()
     .find(MultiselectTagList)
-    .single('li.rw-state-disabled > .rw-multiselect-tag-btn')
+    .single('li.rw-state-disabled button.rw-multiselect-tag-btn')
     .trigger('click')
 
     expect(change.called).to.be(false)

@@ -11,6 +11,7 @@ export function isShallowEqual(a, b) {
   if (a instanceof Date && b instanceof Date) return +a === +b
   if (typeof a !== 'object' && typeof b !== 'object') return a === b
   if (typeof a !== typeof b ) return false
+  if (a == null || b == null) return false; // if they were both null we wouldn't be here
 
   let keysA = Object.keys(a)
   let keysB = Object.keys(b);

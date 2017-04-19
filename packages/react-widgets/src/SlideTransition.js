@@ -38,7 +38,7 @@ class SlideChildGroup extends React.Component {
 
     css(node, { position: 'absolute', [transform]: dimension + 'px' })
 
-    animate(node, { [transform]: 0 }, duration, () => {
+    SlideTransition.animate(node, { [transform]: 0 }, duration, () => {
       css(node, {
         position:  this.ORGINAL_POSITION,
         overflow: 'hidden'
@@ -60,7 +60,7 @@ class SlideChildGroup extends React.Component {
 
     css(node, { position: 'absolute' })
 
-    animate(node, { [transform]: -dimension + 'px' }, duration, () => {
+    SlideTransition.animate(node, { [transform]: -dimension + 'px' }, duration, () => {
       css(node, {
         position: this.ORGINAL_POSITION,
         overflow: 'hidden'
@@ -78,6 +78,7 @@ class SlideChildGroup extends React.Component {
 
 
 class SlideTransition extends React.Component {
+  static animate = animate;
 
   static propTypes = {
     direction: PropTypes.oneOf(['left', 'right', 'top', 'bottom']),

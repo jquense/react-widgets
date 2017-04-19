@@ -12,10 +12,22 @@ import { directions } from '../src/util/constants';
 import dates from '../src/util/dates';
 import globalize from 'globalize';
 
+import SlideTransition from '../src/SlideTransition';
 
 const BaseCalendar = Calendar.ControlledComponent;
+const originalAnimate = SlideTransition.animate;
 
 describe('Calendar', () => {
+
+  beforeEach(() => {
+    SlideTransition.animate = (...args) => {
+      args.pop()()
+    }
+  })
+
+  afterEach(() => {
+    SlideTransition.animate = originalAnimate;
+  })
 
   it('should set default View', () => {
     tsp(
@@ -71,7 +83,7 @@ describe('Calendar', () => {
   it('should navigate into the past', () => {
     var date= new Date(2014, 5, 15, 0, 0, 0)
 
-    let calendar = tsp(<Calendar defaultValue={date} />).render()
+    let calendar = tsp(<Calendar duration={0} defaultValue={date} />).render()
 
     let leftBtn = calendar.find('button.rw-calendar-btn-left')
     let navBtn = calendar.find('button.rw-calendar-btn-view')
@@ -194,7 +206,7 @@ describe('Calendar', () => {
     )
     .to.equal('test')
 
-    expect(formatter.calledOnce).to.be.ok()
+    expect(formatter.called).to.be.ok()
   })
 
   it('should navigate to footer date', () => {
