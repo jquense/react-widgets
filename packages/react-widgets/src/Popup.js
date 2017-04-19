@@ -42,8 +42,3 @@ class Popup extends React.Component {
 
 
 export default Popup
-
-// function childKey(children){
-//   var nextChildMapping = React.Children.map(children, c => c );
-//   for(var key in nextChildMapping) return key
-// }

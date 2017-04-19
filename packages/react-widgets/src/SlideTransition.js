@@ -1,12 +1,12 @@
 import React  from 'react';
 import PropTypes from 'prop-types';
 import css from 'dom-helpers/style';
+import animate from 'dom-helpers/transition/animate';
 import getWidth from 'dom-helpers/query/width';
 import getHeight from 'dom-helpers/query/height';
 
 import ReplaceTransitionGroup  from './ReplaceTransitionGroup';
 import compat from './util/compat';
-import config from './util/configuration';
 import * as Props from './util/Props';
 
 let TRANSFORM_MAP = {
@@ -38,7 +38,7 @@ class SlideChildGroup extends React.Component {
 
     css(node, { position: 'absolute', [transform]: dimension + 'px' })
 
-    config.animate(node, { [transform]: 0 }, duration, () => {
+    animate(node, { [transform]: 0 }, duration, () => {
       css(node, {
         position:  this.ORGINAL_POSITION,
         overflow: 'hidden'
@@ -60,7 +60,7 @@ class SlideChildGroup extends React.Component {
 
     css(node, { position: 'absolute' })
 
-    config.animate(node, { [transform]: -dimension + 'px' }, duration, () => {
+    animate(node, { [transform]: -dimension + 'px' }, duration, () => {
       css(node, {
         position: this.ORGINAL_POSITION,
         overflow: 'hidden'
