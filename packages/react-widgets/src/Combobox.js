@@ -1,4 +1,5 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import createUncontrolledWidget from 'uncontrollable';
@@ -10,7 +11,6 @@ import Popup from './Popup';
 import Select  from './Select';
 import ComboboxInput from './ComboboxInput';
 import { getMessages } from './messages';
-import compat from './util/compat';
 import focusManager from './util/focusManager';
 import listDataManager from './util/listDataManager';
 import * as CustomPropTypes from './util/PropTypes';
@@ -244,7 +244,7 @@ class Combobox extends React.Component {
 
     function select(item, fromList) {
       if (!item)
-        return self.change(compat.findDOMNode(self.refs.input).value, false)
+        return self.change(findDOMNode(self.refs.input).value, false)
 
       self.refs.input.accept();
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import { splat }  from './util/_';
+import { makeArray }  from './util/_';
 import uncontrollable from 'uncontrollable';
 
 import Widget from './Widget';
@@ -69,9 +69,9 @@ let propTypes = {
 
   listProps: PropTypes.object,
 
-  autoFocus:    PropTypes.bool,
+  autoFocus: PropTypes.bool,
   disabled: CustomPropTypes.disabled.acceptsArray,
-  readOnly:    CustomPropTypes.disabled,
+  readOnly: CustomPropTypes.disabled,
 
   messages: PropTypes.shape({
     open: CustomPropTypes.message,
@@ -141,7 +141,7 @@ class Multiselect extends React.Component {
       data, searchTerm, minLength, caseSensitive, filter
     } = props
 
-    let values = splat(props.value);
+    let values = makeArray(props.value);
     let dataItems = values.map(item => accessors.findOrSelf(data, item));
 
     data = data.filter(i =>

@@ -2,20 +2,18 @@
 name: Getting Started
 ---
 
-# Getting Started <small className='pull-right' style={{marginTop: 10}}>current version {\_\_VERSION\_\_}</small>
+# Getting Started
 
 react-widgets is a suite of high-quality input components built for React. Each component is built for ease of use,
 accessibility, and the practical needs of complex (or simple) forms. The work great with complex data
 structures and models, and in keeping with the [React approach](http://facebook.github.io/react/docs/forms.html#controlled-components) to form inputs,
 each component's props can easily be [_controlled_ or _uncontrolled_](controllables).
 
-A special shout-out to Kendo UI Core, and jQuery UI, whose original work inspired the this suite.
-
-## Install
+A special shout-out to Kendo UI Core, and jQuery UI, whose original work inspired this suite.
 
 <div className='row'>
 <div className='col-sm-6'>
-<h4>npm (recommended)</h4>
+<h4>Install: npm (recommended)</h4>
 <pre><code>
 npm install react-widgets --save
 </code></pre>
@@ -39,8 +37,14 @@ or include the css normally. The included icons are provided by - <a href="http:
 <TabbedCodeBlock>
   <Tab title="webpack">
     {\`
+    // Add the css styles...
+    import 'react-widgets/dist/css/react-widgets.css';
+
+    // ...Or if you prefer to use the Less or Sass files directly
+    // import 'react-widgets/lib/less/react-widgets.less';
+    // import 'react-widgets/lib/scss/react-widgets.scss';
+
     import { render } from 'react-dom';
-    import 'react-widgets/lib/less/react-widgets.less';
     import DropdownList from 'react-widgets/lib/DropdownList';
 
     render(<DropdownList />, document.getElementById('app-root'))
@@ -50,17 +54,21 @@ or include the css normally. The included icons are provided by - <a href="http:
     {\`
     <link href="dist/css/react-widgets.css" rel="stylesheet"/>
 
-    <script src="http://fb.me/react-0.14.0.js"></script>
-    <script src="http://fb.me/react-dom-0.15.0.js"></script>
+    <script src="http://fb.me/react-15.5.5.js"></script>
+    <script src="http://fb.me/react-dom-15.5.0.js"></script>
     <script src='node_modules/react-widgets/dist/react-widgets.js'></script>
     <script>
       var DropdownList = ReactWidgets.DropDownlist;
 
-      ReactDom.render(<DropdownList/>, document.getElementById('app-root'))
+      ReactDOM.render(<DropdownList/>, document.getElementById('app-root'))
     </script>
     \`}
   </Tab>
 </TabbedCodeBlock>
+
+> **Hey!** Date and number components need a *Localizer* configured in order to work!
+Check out the [Localization page](i18n) for more information.
+
 
 If are using webpack to handle styles in your application you are probably already configured
 loaders to make it work with appropriate file extensions. If not, you will have to use
@@ -73,15 +81,14 @@ Here's common configuration:
 module: {
   loaders: [
     // for good ol' css
-    { test: /\\.css$/,  loader: "style!css" },
-    // if using less
-    { test: /\\.less$/, loader: "style!css!less" },
-    // if using scss
-    { test: /\\.scss$/, loader: "style!css!scss" },
+    { test: /\\.css$/,  use: ['style-loader', 'css-loader'] },
+    // OR if using less
+    { test: /\\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+    // OR if using scss
+    { test: /\\.scss$/, use: ['style-loader', 'css-loader', 'scss-loader'] },
 
     // images and fonts
-    { test: /\\.(gif|ttf|eot|svg)$/, loader: "url?name=[name].[ext]" },
-    { test: /\\.woff2?(\?.*)?$/, loader: "url?name=[name].[ext]mimetype=application/font-woff" },
+    { test: /\\.(gif|ttf|eot|svg|woff2?)$/, use: 'url-loader?name=[name].[ext]'},
   ]
 }
 ```
@@ -92,8 +99,8 @@ Override corresponding variables from `variables` file.
 <TabbedCodeBlock>
   <Tab title="Sass" lang="text/x-scss">
     {\`
-    $rw-font-path: '~react-widgets/lib/fonts';
-    $rw-img-path:  '~react-widgets/lib/img';
+    $font-path: '~react-widgets/lib/fonts';
+    $img-path:  '~react-widgets/lib/img';
 
     @import '~react-widgets/lib/scss/react-widgets';
     \`}
@@ -102,25 +109,11 @@ Override corresponding variables from `variables` file.
     {\`
     @import '~react-widgets/lib/less/react-widgets';
 
-    @rw-font-path: '~react-widgets/lib/fonts';
-    @rw-img-path:  '~react-widgets/lib/img';
+    @font-path: '~react-widgets/lib/fonts';
+    @img-path:  '~react-widgets/lib/img';
     \`}
   </Tab>
 </TabbedCodeBlock>
-
-### I18n and Localization
-
-If you want to use the `DateTimePicker` or `NumberPicker` widgets, you will also need to set up a *Localizer* to handle
-date and number localization. Check out the [Localization page](i18n) for more information.
-
-## Theming
-
-Styling each widget should be a simple matter of adjusting the relevant LESS variables to suit your needs.
-Included by default is a "Twitter Bootstrap" theme that mimics the look and feel of Twitter Bootstrap 3.0.
-This is less an actual theme and more a neutral starting point for creating your own theme.
-
-- Widget styles with LESS variables (see `./lib/less/variables.less` for reference).
-- Icon fonts can be swapped out in the `./lib/less/icons.less` file
 
 ## Accessibility and Read Direction
 
@@ -131,47 +124,9 @@ right to left (with the `isRtl` prop).
 Each widget also has appropriate ARIA roles and attributes for the benefit of screen readers and visually
 impaired users. Keyboard only navigation of widgets is also supported, for those who prefer to not,
 or cannot use a mouse. to help ensure maximum accessibility, every widget should have
-an `id` attribute. If you do not wish to provide an id attribute, the widget will generate
+an `id` attribute. If you do not wish to provide an id attribute, the component will generate
 the necessary id's to properly label and annotate the widget ARIA.
 
-## Older Browser Support
+> **Note:** Because of how server-side rendering, using auto generated `id`s may
+cause checksum mismatches. Always provide `id` props to your components to avoid this possible pitfall.
 
-Rather than including an entire utility library, like underscore, react-widgets takes a hint from React itself,
-and instead relies on es5 (and transpiled es6) functionality. For most browsers this is will not be an issue, as es5
-is [very well supported](http://kangax.github.io/compat-table/es5/) by modern browsers.
-However older browsers will need the required functionality polyfilled.
-In most cases React already requires most of the needed shims ([see here](http://facebook.github.io/react/docs/working-with-the-browser.html#polyfills-needed-to-support-older-browsers)).
-If you are already including [kriskowal's es5-shim](https://github.com/es-shims/es5-shim')
-then you are already good to go.
-
-For those interested in the specific polyfills needed by react-widgets they are:
-
-- `Array.prototype.some`
-- `Array.prototype.filter`
-- `Array.prototype.reduce`
-
-### Animation
-react-widgets uses CSS animations which are not supported in older IE. If you want to replace the
-default the animation method for these cases you can. The built in method follows the
-jQuery `$.animate()` API closely so you can use it as a drop in replacement.
-
-<TabbedCodeBlock>
-  <Tab title="Configure module">
-    {\`
-    import configure from 'react-widgets/lib/configure';
-
-    configure.setAnimate((element, props, duration, ease, callback) => {
-      $(element).animate(props, duration, callback)
-    })
-    \`}
-  </Tab>
-  <Tab title="Main import">
-    {\`
-    <import ReactWidgets from 'react-widgets';
-
-    ReactWidgets.setAnimate((element, props, duration, ease, callback) => {
-      $(element).animate(props, duration, callback)
-    })
-    \`}
-  </Tab>
-</TabbedCodeBlock>

@@ -1,10 +1,10 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import uncontrollable from 'uncontrollable';
 import { autoFocus } from 'react-component-managers';
 
-import compat from './util/compat';
 import Widget from './Widget';
 import Header from './Header';
 import Footer from './Footer';
@@ -385,7 +385,7 @@ class Calendar extends React.Component {
 
   focus() {
     if (+this.props.tabIndex > -1)
-      compat.findDOMNode(this).focus()
+      findDOMNode(this).focus()
   }
 
   getCurrentDate() {

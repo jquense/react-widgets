@@ -1,9 +1,8 @@
-import React from 'react';
-
 import PropTypes from 'prop-types';
+import React from 'react';
+import { findDOMNode } from 'react-dom';
 
 import Input from './Input';
-import compat from './util/compat';
 import { date as dateLocalizer } from './util/localizers';
 import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
@@ -90,7 +89,7 @@ class DateTimePickerInput extends React.Component {
   }
 
   focus(){
-    compat.findDOMNode(this).focus()
+    findDOMNode(this).focus()
   }
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import activeElement from 'dom-helpers/activeElement';
 import contains from 'dom-helpers/query/contains';
@@ -17,14 +18,12 @@ import { getMessages } from './messages';
 
 import * as Props from './util/Props';
 import * as Filter from './util/Filter';
-import compat from './util/compat';
 import focusManager from './util/focusManager';
 import listDataManager from './util/listDataManager';
 import * as CustomPropTypes from './util/PropTypes';
 import accessorManager from './util/accessorManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
-import shallowCompare from './util/shallowCompare';
 import { widgetEditable } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
@@ -107,10 +106,6 @@ class DropdownList extends React.Component {
     })
 
     this.state = this.getStateFromProps(this.props);
-  }
-
-  shouldComponentUpdate(...args) {
-    return shallowCompare(this, ...args)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -237,7 +232,7 @@ class DropdownList extends React.Component {
       role: 'combobox',
       id: this.inputId,
       tabIndex: tabIndex || 0,
-      'aria-owns': this.listID,
+      'aria-owns': this.listId,
       'aria-activedescendant': open ? this.activeId : null,
       'aria-expanded': !!open,
       'aria-haspopup': true,
@@ -318,7 +313,7 @@ class DropdownList extends React.Component {
     if( !this.props.filter || !this.props.open )
       this.toggle()
 
-    else if( !contains(compat.findDOMNode(wrapper), e.target))
+    else if( !contains(findDOMNode(wrapper), e.target))
       this.close()
 
     notify(this.props.onClick, e)
@@ -336,7 +331,7 @@ class DropdownList extends React.Component {
 
     let closeWithFocus = () => {
       this.close();
-      compat.findDOMNode(this).focus()
+      findDOMNode(this).focus()
     }
 
     notify(this.props.onKeyDown, [e])
@@ -426,7 +421,7 @@ class DropdownList extends React.Component {
     let { filter, open } = this.props;
     let inst = target || (filter && open ? this.refs.filter : this.refs.input);
 
-    inst = compat.findDOMNode(inst);
+    inst = findDOMNode(inst);
 
     if (inst && activeElement() !== inst)
       inst.focus()

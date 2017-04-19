@@ -18,12 +18,7 @@ class MultiselectTag extends React.Component {
 
   onClick = (event) => {
     const { value, disabled, onClick } = this.props;
-
-    if (disabled) {
-      return
-    }
-
-    onClick(value, event)
+    if (!disabled) onClick(value, event)
   };
 
   renderDelete() {

@@ -9,8 +9,6 @@ import { chunk } from './util/_';
 import * as Props from './util/Props';
 import * as CustomPropTypes from './util/PropTypes';
 
-let format = props => dateLocalizer.getFormat('decade', props.decadeFormat)
-
 class CenturyView extends React.Component {
 
   static propTypes = {
@@ -53,17 +51,18 @@ class CenturyView extends React.Component {
       , today
       , culture
       , min
+      , decadeFormat
       , max } = this.props
 
+    decadeFormat = dateLocalizer.getFormat('decade', decadeFormat);
 
     return (
       <CalendarView.Row key={rowIdx}>
         {row.map((date, colIdx) => {
-
           let label = dateLocalizer.format(
-              dates.startOf(date, 'decade')
-            , format(this.props)
-            , culture
+            dates.startOf(date, 'decade'),
+            decadeFormat,
+            culture
           )
 
           return (

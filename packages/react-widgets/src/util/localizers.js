@@ -22,46 +22,34 @@ const REQUIRED_DATE_FORMATS = [
   'century'
 ];
 
-function _format(localizer, formatter, value, format, culture) {
-  let result = typeof format === 'function'
-    ? format(value, culture, localizer)
-    : formatter.call(localizer, value, format, culture)
-
-  invariant(result == null || typeof result === 'string'
-    , '`localizer format(..)` must return a string, null, or undefined')
-
-  return result
-}
-
-function checkFormats(requiredFormats, formats) {
-  if (process.env.NODE_ENV !== 'production')
-    requiredFormats.forEach(
-      f => invariant(has(formats, f), 'localizer missing required format: `%s`', f))
-}
-
 
 let _numberLocalizer = createWrapper('NumberPicker')
+export const number = {
+  propType: (...args) => _numberLocalizer.propType(...args),
+  getFormat: (key, format) => format || _numberLocalizer.formats[key],
 
-export function setNumber({ format, parse, decimalChar = () => '.', precision = () => null, formats, propType }) {
-  invariant(typeof format === 'function'
-    , 'number localizer `format(..)` must be a function')
-  invariant(typeof parse === 'function'
-    , 'number localizer `parse(..)` must be a function')
+  parse: (...args) => _numberLocalizer.parse(...args),
+  format: (...args) => _numberLocalizer.format(...args),
+  decimalChar: (...args) => _numberLocalizer.decimalChar(...args),
+  precision: (...args) => _numberLocalizer.precision(...args),
+}
 
+export function setNumber({
+  format,
+  parse,
+  formats,
+  propType = localePropType,
+  decimalChar = () => '.',
+  precision = () => null,
+}) {
   checkFormats(REQUIRED_NUMBER_FORMATS, formats)
-
-  formats.editFormat = formats.editFormat || (str => parseFloat(str));
 
   _numberLocalizer = {
     formats,
     precision,
     decimalChar,
-    propType: propType || localePropType,
-
-    format(value, str, culture) {
-      return _format(this, format, value, str, culture)
-    },
-
+    propType,
+    format: wrapFormat(format),
     parse(value, culture, format) {
       let result = parse.call(this, value, culture, format)
       invariant(result == null || typeof result === 'number'
@@ -72,25 +60,30 @@ export function setNumber({ format, parse, decimalChar = () => '.', precision = 
 }
 
 let _dateLocalizer = createWrapper('DateTimePicker')
+export const date = {
+  propType: (...args) =>  _dateLocalizer.propType(...args),
+  getFormat: (key, format) => format || _dateLocalizer.formats[key],
 
-export function setDate(spec) {
-  invariant(typeof spec.format === 'function'
-    , 'date localizer `format(..)` must be a function')
-  invariant(typeof spec.parse === 'function'
-    , 'date localizer `parse(..)` must be a function')
-  invariant(typeof spec.firstOfWeek === 'function'
-    , 'date localizer `firstOfWeek(..)` must be a function')
-  checkFormats(REQUIRED_DATE_FORMATS, spec.formats)
+  parse: (...args) => _dateLocalizer.parse(...args),
+  format: (...args) => _dateLocalizer.format(...args),
+  firstOfWeek: (...args) => _dateLocalizer.firstOfWeek(...args),
+}
 
+export function setDate({
+  formats,
+  format,
+  parse,
+  firstOfWeek,
+  propType = localePropType,
+}) {
+  checkFormats(REQUIRED_DATE_FORMATS, formats)
   _dateLocalizer = {
-    formats: spec.formats,
-    propType: spec.propType || localePropType,
-    startOfWeek: spec.firstOfWeek,
-    format(value, str, culture) {
-      return _format(this, spec.format, value, str, culture)
-    },
+    formats,
+    propType,
+    firstOfWeek,
+    format: wrapFormat(format),
     parse(value, culture) {
-      let result = spec.parse.call(this, value, culture)
+      let result = parse.call(this, value, culture)
       invariant(result == null
         || (result instanceof Date && !isNaN(result.getTime()))
         , 'date localizer `parse(..)` must return a valid Date, null, or undefined')
@@ -99,47 +92,25 @@ export function setDate(spec) {
   }
 }
 
-export let number = {
-  propType(...args) { return _numberLocalizer.propType(...args) },
-  getFormat(key, format) {
-    return format || _numberLocalizer.formats[key]
-  },
-  parse(...args) {
-    return _numberLocalizer.parse(...args)
-  },
-  format(...args) {
-    return _numberLocalizer.format(...args)
-  },
-  decimalChar(...args) {
-    return _numberLocalizer.decimalChar(...args)
-  },
-  precision(...args) {
-    return _numberLocalizer.precision(...args)
-  }
+const wrapFormat = (formatter) => function( value, format, culture) {
+  let result = typeof format === 'function'
+    ? format(value, culture, this)
+    : formatter.call(this, value, format, culture)
+
+  invariant(result == null || typeof result === 'string',
+    '`localizer format(..)` must return a string, null, or undefined')
+
+  return result
 }
 
-export let date = {
-  propType(...args) { return _dateLocalizer.propType(...args) },
-  getFormat(key, format) {
-    return format || _dateLocalizer.formats[key]
-  },
-  parse(...args) {
-    return _dateLocalizer.parse(...args)
-  },
-  format(...args) {
-    return _dateLocalizer.format(...args)
-  },
-  startOfWeek(...args) {
-    return _dateLocalizer.startOfWeek(...args)
-  }
+function checkFormats(required, formats) {
+  if (process.env.NODE_ENV !== 'production')
+    required.forEach(f => invariant(has(formats, f),
+      'localizer missing required format: `%s`', f))
 }
-
-export default { number, date }
-
 
 function createWrapper() {
   let dummy = {};
-
   if (process.env.NODE_ENV !== 'production') {
     ['formats', 'parse', 'format', 'firstOfWeek', 'precision', 'propType']
       .forEach(name => Object.defineProperty(dummy, name, {

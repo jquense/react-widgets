@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 
 import MultiselectTag from './MultiselectTag';
 import * as CustomPropTypes from './util/PropTypes';
-import { isDisabledItem } from './util/interaction';
+import { dataIndexOf } from './util/dataHelpers';
+
+// disabled === true || [1, 2, 3, etc]
+const isDisabled = (item, list, value) =>
+  !!(Array.isArray(list) ? ~dataIndexOf(list, item, value) : list)
 
 class MultiselectTagList extends React.Component {
 
@@ -23,7 +27,6 @@ class MultiselectTagList extends React.Component {
     valueComponent: PropTypes.func,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
-    readOnly: CustomPropTypes.disabled
   };
 
   handleDelete = (item, event) => {
@@ -61,7 +64,7 @@ class MultiselectTagList extends React.Component {
               value={item}
               focused={isFocused}
               onClick={this.handleDelete}
-              disabled={isDisabledItem(item, disabled, valueAccessor)}
+              disabled={isDisabled(item, disabled, valueAccessor)}
             >
               {ValueComponent
                 ? <ValueComponent item={item} />

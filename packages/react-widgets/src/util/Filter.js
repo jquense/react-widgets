@@ -10,15 +10,11 @@ export let presets = {
   gte: (a, b) => a >= b,
   lt:  (a, b) => a < b,
   lte: (a, b) => a <= b,
-
   contains: (a, b) => a.indexOf(b) !== -1,
-
   startsWith: (a, b) => a.lastIndexOf(b, 0) === 0,
-
   endsWith(a, b) {
-    var pos = a.length - b.length
-      , lastIndex = a.indexOf(b, pos);
-
+    let pos = a.length - b.length;
+    let lastIndex = a.indexOf(b, pos);
     return  lastIndex !== -1 && lastIndex === pos;
   }
 }
@@ -69,10 +65,18 @@ export let propTypes = {
   ]),
 }
 
+function run(searchTerm, options) {
+  let { filter, minLength } = normalizeOptions(options);
+  return (
+    !filter ||
+    !searchTerm ||
+    !searchTerm.trim() ||
+    searchTerm.length < minLength
+  )
+}
+
 export function indexOf(data, { searchTerm = '', ...options }) {
   let { filter, minLength } = normalizeOptions(options);
-
-  var idx = -1
 
   if (
     !filter ||
@@ -82,14 +86,10 @@ export function indexOf(data, { searchTerm = '', ...options }) {
   )
     return -1
 
-  data.every( (item, i) => {
-    if (filter(item, searchTerm, i))
-      return (idx = i), false
+  for (var idx = 0; idx < data.length; idx++)
+    if (filter(data[idx], searchTerm, idx)) return idx
 
-    return true
-  })
-
-  return idx
+  return -1
 }
 
 export function filter(data, { searchTerm = '', ...options }) {
@@ -117,5 +117,8 @@ export function suggest(data, { searchTerm = '', ...options }) {
   )
     return searchTerm
 
-  return find(data, (item, idx) => filter(item, searchTerm, idx)) || searchTerm
+  for (var idx = 0; idx < data.length; idx++)
+    if (filter(data[idx], searchTerm, idx)) return data[idx];
+
+  return searchTerm
 }

@@ -9,21 +9,20 @@ import { chunk } from './util/_';
 import * as Props from './util/Props';
 import * as CustomPropTypes from './util/PropTypes';
 
-let format = props => dateLocalizer.getFormat('month', props.monthFormat)
-
 class YearView extends React.Component {
 
   static propTypes = {
     activeId: PropTypes.string,
-    culture:      PropTypes.string,
-    today:        PropTypes.instanceOf(Date),
-    value:        PropTypes.instanceOf(Date),
-    focused:      PropTypes.instanceOf(Date),
-    min:          PropTypes.instanceOf(Date),
-    max:          PropTypes.instanceOf(Date),
-    onChange:     PropTypes.func.isRequired,
+    culture: PropTypes.string,
+    today: PropTypes.instanceOf(Date),
+    value: PropTypes.instanceOf(Date),
+    focused: PropTypes.instanceOf(Date),
+    min: PropTypes.instanceOf(Date),
+    max: PropTypes.instanceOf(Date),
+    onChange: PropTypes.func.isRequired,
 
-    monthFormat:  CustomPropTypes.dateFormat,
+    headerFormat: CustomPropTypes.dateFormat,
+    monthFormat: CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
   };
 
@@ -52,15 +51,18 @@ class YearView extends React.Component {
       , value
       , today
       , culture
+      , headerFormat
+      , monthFormat
       , min
       , max } = this.props
 
-    let labelFormat = dateLocalizer.getFormat('header');
+    headerFormat = dateLocalizer.getFormat('header', headerFormat);
+    monthFormat = dateLocalizer.getFormat('month', monthFormat);
 
     return (
       <CalendarView.Row key={rowIdx}>
         {row.map((date, colIdx) => {
-          var label = dateLocalizer.format(date, labelFormat, culture);
+          let label = dateLocalizer.format(date, headerFormat, culture);
 
           return (
             <CalendarView.Cell
@@ -77,7 +79,7 @@ class YearView extends React.Component {
               selected={value}
               disabled={disabled}
             >
-              {dateLocalizer.format(date, format(this.props), culture)}
+              {dateLocalizer.format(date, monthFormat, culture)}
             </CalendarView.Cell>
           )
         })}

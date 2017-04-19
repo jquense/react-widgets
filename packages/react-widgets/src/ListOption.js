@@ -15,6 +15,7 @@ class ListOption extends React.Component {
     onSelect: PropTypes.func,
     component: PropTypes.string,
   };
+
   handleSelect = (event) => {
     let { onSelect, disabled, dataItem } = this.props;
     if (onSelect && !disabled)

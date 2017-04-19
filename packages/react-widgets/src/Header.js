@@ -24,7 +24,6 @@ class Header extends React.Component {
     isRtl: PropTypes.bool
   };
 
-
   render() {
     let {
         messages, label, labelId

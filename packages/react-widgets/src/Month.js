@@ -9,8 +9,6 @@ import * as CustomPropTypes from './util/PropTypes';
 import { chunk } from './util/_';
 import * as Props from './util/Props';
 
-let dayFormat = props => dateLocalizer.getFormat('weekday', props.dayFormat)
-  , dateFormat = props => dateLocalizer.getFormat('dayOfMonth', props.dateFormat)
 
 let isEqual = (dateA, dateB) => dates.eq(dateA, dateB, 'day')
 
@@ -29,6 +27,7 @@ class MonthView extends React.Component {
     dayComponent: CustomPropTypes.elementType,
     dayFormat: CustomPropTypes.dateFormat,
     dateFormat: CustomPropTypes.dateFormat,
+    footerFormat: CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
   };
 
@@ -43,15 +42,18 @@ class MonthView extends React.Component {
       , onChange
       , value
       , culture, min, max
+      , footerFormat
+      , dateFormat
       , dayComponent: Day } = this.props
 
-    let labelFormat = dateLocalizer.getFormat('footer');
+    footerFormat = dateLocalizer.getFormat('footer', footerFormat)
+    dateFormat = dateLocalizer.getFormat('dayOfMonth', dateFormat)
 
     return (
       <CalendarView.Row key={rowIdx}>
         {row.map((date, colIdx) => {
-          let formattedDate = dateLocalizer.format(date, dateFormat(this.props), culture)
-            , label = dateLocalizer.format(date, labelFormat, culture);
+          let formattedDate = dateLocalizer.format(date, dateFormat, culture)
+          let label = dateLocalizer.format(date, footerFormat, culture);
 
           return (
             <CalendarView.Cell
@@ -77,10 +79,11 @@ class MonthView extends React.Component {
     )
   }
 
-  renderHeaders(week, format, culture){
+  renderHeaders(week, format, culture) {
+    let firstOfWeek = dateLocalizer.firstOfWeek(culture);
     return week.map(date => {
       return (
-        <th key={'header_' + dates.weekday(date, undefined, dateLocalizer.startOfWeek(culture)) }>
+        <th key={'header_' + dates.weekday(date, undefined, firstOfWeek) }>
           { dateLocalizer.format(date, format, culture) }
         </th>
       )
@@ -88,9 +91,11 @@ class MonthView extends React.Component {
   }
 
   render() {
-    let { focused, culture, activeId } = this.props
-      , month = dates.visibleDays(focused, culture)
-      , rows  = chunk(month, 7);
+    let { focused, culture, activeId, dayFormat } = this.props
+    let month = dates.visibleDays(focused, culture)
+    let rows  = chunk(month, 7);
+
+    dayFormat = dateLocalizer.getFormat('weekday', dayFormat)
 
     return (
       <CalendarView
@@ -100,11 +105,7 @@ class MonthView extends React.Component {
       >
         <thead>
           <tr>
-            {this.renderHeaders(
-              rows[0],
-              dayFormat(this.props),
-              culture
-            )}
+            {this.renderHeaders(rows[0], dayFormat, culture)}
           </tr>
         </thead>
         <CalendarView.Body >

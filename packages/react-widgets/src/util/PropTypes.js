@@ -4,24 +4,20 @@ import elementType
 import createChainableTypeChecker
   from 'react-prop-types/lib/utils/createChainableTypeChecker';
 
-import localizers from './localizers';
-
+import { date, number } from './localizers';
 
 export { elementType }
 
 export const numberFormat = createChainableTypeChecker(
-  (...args) => localizers.number.propType(...args))
+  (...args) => number.propType(...args))
 
 export const dateFormat = createChainableTypeChecker(
-  (...args) => localizers.date.propType(...args))
+  (...args) => date.propType(...args))
 
 export const disabled = createChainableTypeChecker(
   (...args) => PropTypes.bool(...args));
 
-disabled.acceptsArray = PropTypes.oneOfType([
-  disabled,
-  PropTypes.array
-])
+disabled.acceptsArray = PropTypes.oneOfType([disabled, PropTypes.array])
 
 export const accessor = PropTypes.oneOfType([
   PropTypes.string,

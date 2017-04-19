@@ -51,7 +51,7 @@ module.exports = function({ attributes, props, body, heading, toHtml }) {
                     title='props'
                     id='props-${widgetName}'
                   >
-                    ${props.map(prop => `
+                    ${props.sort().map(prop => `
                     <MenuItem>${prop}</MenuItem>`).join('')}
                   </DropdownButton>
                 </span>

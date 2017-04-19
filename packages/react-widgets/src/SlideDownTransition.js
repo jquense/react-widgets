@@ -20,7 +20,7 @@ class SlideDownTransition extends React.Component {
     if (this.props.onEntered)
       this.props.onEntered();
 
-    this.clearContainerHeight(elem)
+    // this.clearContainerHeight(elem)
   }
 
   setContainerHeight = (elem) => {

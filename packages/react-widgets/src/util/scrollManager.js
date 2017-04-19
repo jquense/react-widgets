@@ -17,7 +17,6 @@ export default function createScrollManager(
     componentWillReceiveProps({ onMove: nextOnMove }) {
       onMove = nextOnMove;
     },
-
     componentWillUnmount() {
       mounted = false
     }

@@ -7,6 +7,9 @@ class Container extends React.Component {
         {...this.props}
         style={{
           width: 400,
+          height: 500,
+          display: 'flex',
+          alignItems: 'center',
           margin: '30px auto',
           ...this.props.style,
         }}

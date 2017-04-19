@@ -3,7 +3,6 @@ import { mixin } from 'react-component-managers';
 
 
 export default mixin({
-
   propTypes: {
     isRtl: PropTypes.bool
   },

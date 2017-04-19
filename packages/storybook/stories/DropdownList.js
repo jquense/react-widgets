@@ -43,8 +43,8 @@ storiesOf('DropdownList', module)
     <Container>
       <DropdownList
         {...props}
-        open
         dropUp
+        defaultOpen
         filter={false}
       />
     </Container>

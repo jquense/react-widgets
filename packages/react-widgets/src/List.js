@@ -1,8 +1,7 @@
-import React   from 'react';
-
 import PropTypes from 'prop-types';
+import React from 'react';
+import { findDOMNode } from 'react-dom';
 
-import compat from './util/compat';
 import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
 import { notify } from './util/widgetHelpers';
@@ -63,7 +62,6 @@ class List extends React.Component {
       return data.map((item, idx) => fn(item, idx, false))
 
     let idx = -1
-
     return sortedKeys.reduce((items, key) => {
       let group = groups[key]
 
@@ -138,7 +136,7 @@ class List extends React.Component {
 
   move() {
     let { focusedItem, onMove, data, dataState } = this.props;
-    let list = compat.findDOMNode(this);
+    let list = findDOMNode(this);
     let idx = renderedIndexOf(focusedItem, list, data, dataState)
     let selectedItem = list.children[idx]
 

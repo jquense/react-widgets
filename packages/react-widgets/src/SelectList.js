@@ -1,8 +1,8 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import { autoFocus, timeoutManager }
-  from 'react-component-managers';
+import { autoFocus, timeoutManager } from 'react-component-managers';
 import createUncontrolledWidget from 'uncontrollable';
 
 import List from './List';
@@ -10,8 +10,7 @@ import Widget from './Widget';
 import SelectListItem from './SelectListItem';
 import { getMessages } from './messages';
 
-import { find, splat }  from './util/_';
-import compat from './util/compat';
+import { find, makeArray }  from './util/_';
 import * as Props from './util/Props';
 import * as CustomPropTypes from './util/PropTypes';
 import listDataManager from './util/listDataManager';
@@ -102,7 +101,7 @@ class SelectList extends React.Component {
     list.setData(data);
 
     return {
-      dataItems: splat(value).map(item => accessors.findOrSelf(data, item))
+      dataItems: makeArray(value).map(item => accessors.findOrSelf(data, item))
     }
   }
 
@@ -315,7 +314,7 @@ class SelectList extends React.Component {
   }
 
   focus() {
-    compat.findDOMNode(this.refs.list).focus()
+    findDOMNode(this.refs.list).focus()
   }
 
   selectAll() {

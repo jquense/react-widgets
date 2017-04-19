@@ -1,6 +1,7 @@
-import React  from 'react';
-import PropTypes from 'prop-types';
 import invariant from 'invariant';
+import PropTypes from 'prop-types';
+import React  from 'react';
+import { findDOMNode } from 'react-dom';
 import activeElement from 'dom-helpers/activeElement';
 import cn from 'classnames';
 import deprecated from 'react-prop-types/lib/deprecated';
@@ -22,7 +23,6 @@ import focusManager from './util/focusManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
 import { widgetEditable } from './util/interaction';
-import compat from './util/compat';
 import dates  from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
 import {
@@ -468,7 +468,7 @@ class DateTimePicker extends React.Component {
   focus() {
     let { valueInput } = this.refs;
 
-    if (valueInput && activeElement() !== compat.findDOMNode(valueInput))
+    if (valueInput && activeElement() !== findDOMNode(valueInput))
       valueInput.focus()
   }
 

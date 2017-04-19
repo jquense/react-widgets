@@ -1,4 +1,5 @@
 import React  from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import css from 'dom-helpers/style';
 import animate from 'dom-helpers/transition/animate';
@@ -6,7 +7,6 @@ import getWidth from 'dom-helpers/query/width';
 import getHeight from 'dom-helpers/query/height';
 
 import ReplaceTransitionGroup  from './ReplaceTransitionGroup';
-import compat from './util/compat';
 import * as Props from './util/Props';
 
 let TRANSFORM_MAP = {
@@ -30,7 +30,7 @@ class SlideChildGroup extends React.Component {
   componentWillEnter(done) {
     let { duration, direction } = this.props;
 
-    let node = compat.findDOMNode(this)
+    let node = findDOMNode(this)
     let dimension = getDimension(node, direction);
     let transform = TRANSFORM_MAP[direction];
 
@@ -52,7 +52,7 @@ class SlideChildGroup extends React.Component {
   componentWillLeave(done) {
     let { duration, direction } = this.props;
 
-    let node = compat.findDOMNode(this)
+    let node = findDOMNode(this)
     let dimension = getDimension(node, direction);
     let transform = TRANSFORM_MAP[direction];
 

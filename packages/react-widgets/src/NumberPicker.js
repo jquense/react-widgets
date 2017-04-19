@@ -1,6 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import cn from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { findDOMNode } from 'react-dom';
 import uncontrollable from 'uncontrollable';
 
 import Widget from './Widget';
@@ -14,7 +15,6 @@ import * as Props from './util/Props';
 import focusManager from './util/focusManager';
 import { widgetEditable } from './util/interaction';
 import { notify } from './util/widgetHelpers';
-import compat from './util/compat';
 import * as CustomPropTypes from './util/PropTypes';
 import { directions } from './util/constants';
 import withRightToLeft from './util/withRightToLeft';
@@ -274,7 +274,7 @@ class NumberPicker extends React.Component {
   }
 
   focus() {
-    compat.findDOMNode(this.refs.input).focus()
+    findDOMNode(this.refs.input).focus()
   }
 
   increment(event) {

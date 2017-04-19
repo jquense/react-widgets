@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
-import caretPos from './util/caret';
 
 import Input from './Input';
+
+export const caretSet = (node, start, end) => {
+  try { node.setSelectionRange(start, end) }
+  catch(e) { /* not focused or not visible */ }
+}
 
 class ComboboxInput extends React.Component {
 
@@ -27,8 +31,8 @@ class ComboboxInput extends React.Component {
       var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
         , end   = val.length - start
 
-      if ( start >= 0) {
-        caretPos(input, start, start + end)
+      if (start >= 0) {
+        caretSet(input, start, start + end)
       }
     }
   }
@@ -79,7 +83,7 @@ class ComboboxInput extends React.Component {
       , end = value.length;
 
     this._last = null
-    caretPos(findDOMNode(this), end, end)
+    caretSet(findDOMNode(this), end, end)
   }
 
 

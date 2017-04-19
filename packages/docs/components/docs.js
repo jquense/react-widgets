@@ -19,6 +19,7 @@ import DatePicker from './pages/DateTimePicker.api.md';
 import NumberPicker from './pages/NumberPicker.api.md';
 // import Advanced from './pages/Advanced.js';
 import Locale from './pages/i18n.md';
+import Theming from './pages/Theming.md';
 import Controllables from './pages/controllables.md';
 
 import '@monastic.panic/component-playground/codemirror.css';
@@ -79,6 +80,7 @@ ReactDOM.render((
       <Route component={Page}>
         {/* <Route path="advanced" component={Advanced} /> */}
         <Route path="i18n" component={Locale} />
+        <Route path="theming" component={Theming} />
         <Route path="controllables" component={Controllables} />
       </Route>
     </Route>

@@ -1,5 +1,4 @@
-'use strict';
-var views = {
+const views = {
   MONTH:   'month',
   YEAR:    'year',
   DECADE:  'decade',
@@ -19,12 +18,6 @@ export const datePopups = {
 };
 
 export const calendarViews = views;
-
-// export const calendarViewHierarchy = {
-//   [views.MONTH]:   views.YEAR,
-//   [views.YEAR]:    views.DECADE,
-//   [views.DECADE]:  views.CENTURY
-// }
 
 export const calendarViewUnits = {
   [views.MONTH]:   'day',

@@ -4,15 +4,15 @@
  * https://github.com/facebook/react/blob/master/src/addons/transitions/ReactTransitionGroup.js
  * relevent code is licensed accordingly
  */
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { findDOMNode } from 'react-dom';
 import css from 'dom-helpers/style';
 import height from 'dom-helpers/query/height';
 import width  from 'dom-helpers/query/width';
 import { mountManager } from 'react-component-managers';
 
-import { splat } from './util/_';
+import { makeArray } from './util/_';
 import * as Props from './util/Props';
 
 function getChild(children){
@@ -51,7 +51,7 @@ class ReplaceTransitionGroup extends React.Component {
     this.entering = null;
 
     this.state = {
-      children: splat(this.props.children)
+      children: makeArray(this.props.children)
     };
   }
 
@@ -99,7 +99,7 @@ class ReplaceTransitionGroup extends React.Component {
       , node     = findDOMNode(this)
       , el       = first && findDOMNode(first);
 
-    if( el )
+    if (el)
       css(node, {
         overflow: 'hidden',
         height: height(el) + 'px',

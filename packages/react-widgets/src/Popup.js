@@ -36,7 +36,6 @@ class Popup extends React.Component {
         })}
       </SlideDownTransition>
     )
-
   }
 }
 
