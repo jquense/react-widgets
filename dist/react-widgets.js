@@ -8262,6 +8262,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        onKeyDown: this._keyDown,
 	        onFocus: this.handleFocus,
 	        onBlur: this.handleBlur,
+	        onWheel: this._wheel,
 	        tabIndex: '-1',
 	        className: (0, _classnames2.default)(className, 'rw-numberpicker', 'rw-widget', {
 	          'rw-state-focus': this.state.focused,
@@ -8345,6 +8346,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._cancelRepeater && this._cancelRepeater();
 	    this._cancelRepeater = null;
 	  },
+	  _wheel: function _wheel(e) {
+	    if (e.deltaY > 0) {
+	      this.decrement();
+	      e.preventDefault();
+	    } else if (e.deltaY < 0) {
+	      this.increment();
+	      e.preventDefault();
+	    }
+	  },
 	  _keyDown: function _keyDown(e) {
 	    var key = e.key;
 
@@ -8391,7 +8401,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return Math.max(Math.min(value, max), min);
 	  }
-	}, (_applyDecoratedDescriptor(_obj, 'handleMouseDown', [_interaction.widgetEditable], Object.getOwnPropertyDescriptor(_obj, 'handleMouseDown'), _obj), _applyDecoratedDescriptor(_obj, 'handleMouseUp', [_interaction.widgetEditable], Object.getOwnPropertyDescriptor(_obj, 'handleMouseUp'), _obj), _applyDecoratedDescriptor(_obj, '_keyDown', [_interaction.widgetEditable], Object.getOwnPropertyDescriptor(_obj, '_keyDown'), _obj)), _obj));
+	}, (_applyDecoratedDescriptor(_obj, 'handleMouseDown', [_interaction.widgetEditable], Object.getOwnPropertyDescriptor(_obj, 'handleMouseDown'), _obj), _applyDecoratedDescriptor(_obj, 'handleMouseUp', [_interaction.widgetEditable], Object.getOwnPropertyDescriptor(_obj, 'handleMouseUp'), _obj), _applyDecoratedDescriptor(_obj, '_wheel', [_interaction.widgetEditable], Object.getOwnPropertyDescriptor(_obj, '_wheel'), _obj), _applyDecoratedDescriptor(_obj, '_keyDown', [_interaction.widgetEditable], Object.getOwnPropertyDescriptor(_obj, '_keyDown'), _obj)), _obj));
 
 	exports.default = (0, _uncontrollable2.default)(NumberPicker, { value: 'onChange' }, ['focus']);
 

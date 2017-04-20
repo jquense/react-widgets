@@ -103,6 +103,7 @@ let NumberPicker = React.createClass({
         onKeyDown={this._keyDown}
         onFocus={this.handleFocus}
         onBlur ={this.handleBlur}
+        onWheel={this._wheel}
         tabIndex={'-1'}
         className={cx(className, 'rw-numberpicker', 'rw-widget', {
           'rw-state-focus':     this.state.focused,
@@ -186,6 +187,18 @@ let NumberPicker = React.createClass({
     this.setState({ active: false })
     this._cancelRepeater && this._cancelRepeater()
     this._cancelRepeater = null;
+  },
+
+  @widgetEditable
+  _wheel(e) {
+    if (e.deltaY > 0) {
+        this.decrement()
+        e.preventDefault()
+    }
+    else if (e.deltaY < 0) {
+        this.increment()
+        e.preventDefault()
+    }
   },
 
   @widgetEditable
