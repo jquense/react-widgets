@@ -548,7 +548,7 @@ var Multiselect = React.createClass({
 
     this._lengthWithoutValues = items.length;
 
-    if (searchTerm)
+    if (searchTerm || this.props.minLength === 0)
       items = this.filter(items, searchTerm)
 
     return items
