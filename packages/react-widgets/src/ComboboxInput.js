@@ -24,14 +24,14 @@ class ComboboxInput extends React.Component {
   };
 
   componentDidUpdate() {
-    var input = findDOMNode(this)
-      , val = this.props.value;
+    let input = findDOMNode(this)
+    let val = this.props.value;
 
     if (this.isSuggesting()) {
-      var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
-        , end   = val.length - start
+      let start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
+      let end = val.length - start
 
-      if (start >= 0) {
+      if (start >= 0 && end !== 0) {
         caretSet(input, start, start + end)
       }
     }
@@ -40,8 +40,8 @@ class ComboboxInput extends React.Component {
   handleChange = (e) => {
     let { placeholder, value, onChange } = this.props;
 
-    var stringValue = e.target.value
-      , hasPlaceholder = !!placeholder
+    let stringValue = e.target.value
+    let hasPlaceholder = !!placeholder
 
     // IE fires input events when setting/unsetting placeholders.
     // issue #112
@@ -79,8 +79,8 @@ class ComboboxInput extends React.Component {
   }
 
   accept() {
-    var value = findDOMNode(this).value || ''
-      , end = value.length;
+    let value = findDOMNode(this).value || ''
+    let end = value.length;
 
     this._last = null
     caretSet(findDOMNode(this), end, end)

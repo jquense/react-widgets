@@ -30,7 +30,7 @@ class MultiselectTagList extends React.Component {
   };
 
   handleDelete = (item, event) => {
-    if (!this.props.disabled)
+    if (this.props.disabled !== true)
       this.props.onDelete(item, event)
   };
 

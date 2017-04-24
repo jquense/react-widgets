@@ -251,7 +251,6 @@ class DropdownList extends React.Component {
         ref="input"
         onBlur={this.focusManager.handleBlur}
         onFocus={this.focusManager.handleFocus}
-        onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
         className={cn(className, 'rw-dropdown-list')}
@@ -262,6 +261,7 @@ class DropdownList extends React.Component {
           focused={focused}
           disabled={disabled}
           readOnly={readOnly}
+          onClick={this.handleClick}
           className="rw-widget-input"
         >
           <DropdownListInput
@@ -308,14 +308,7 @@ class DropdownList extends React.Component {
 
   @widgetEditable
   handleClick = (e) => {
-    var wrapper = this.refs.filterWrapper
-
-    if( !this.props.filter || !this.props.open )
-      this.toggle()
-
-    else if( !contains(findDOMNode(wrapper), e.target))
-      this.close()
-
+    this.toggle()
     notify(this.props.onClick, e)
   };
 

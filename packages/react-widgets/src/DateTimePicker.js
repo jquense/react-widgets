@@ -72,6 +72,7 @@ let propTypes = {
   delay: PropTypes.number,
   dropUp: PropTypes.bool,
   duration: PropTypes.number,
+  calendarDuration: PropTypes.number,
 
   placeholder: PropTypes.string,
   name: PropTypes.string,
@@ -334,6 +335,7 @@ class DateTimePicker extends React.Component {
         open
       , value
       , duration
+      , calendarDuration
       , dropUp } = this.props;
 
     let calendarProps = Props.pick(this.props, Calendar);
@@ -362,6 +364,7 @@ class DateTimePicker extends React.Component {
           aria-hidden={!open}
           aria-live='polite'
           aria-labelledby={inputId}
+          duration={calendarDuration}
         />
       </Popup>
     )

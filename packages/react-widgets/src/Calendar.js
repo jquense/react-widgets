@@ -67,8 +67,8 @@ let propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.instanceOf(Date),
 
-  min: PropTypes.instanceOf(Date),
-  max: PropTypes.instanceOf(Date),
+  min: PropTypes.instanceOf(Date).isRequired,
+  max: PropTypes.instanceOf(Date).isRequired,
 
   currentDate: PropTypes.instanceOf(Date),
   onCurrentDateChange: PropTypes.func,

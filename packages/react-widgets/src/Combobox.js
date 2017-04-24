@@ -203,15 +203,13 @@ class Combobox extends React.Component {
     if (e.defaultPrevented)
       return
 
-    if (key === 'End') {
+    if (key === 'End' && isOpen) {
       e.preventDefault()
-      if (isOpen) this.setState({ focusedItem: list.last() })
-      else          select(list.last(), true)
+      this.setState({ focusedItem: list.last() })
     }
-    else if (key === 'Home') {
+    else if (key === 'Home' && isOpen) {
       e.preventDefault()
-      if (isOpen) this.setState({ focusedItem: list.first() })
-      else        select(list.first(), true)
+      this.setState({ focusedItem: list.first() })
     }
     else if (key === 'Escape' && isOpen)
       this.close()

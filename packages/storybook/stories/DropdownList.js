@@ -100,7 +100,8 @@ storiesOf('DropdownList', module)
     <Container>
       <DropdownList
         {...props}
-        open
+        defaultOpen
+        filter
         disabled={[props.data[2]]}
         defaultValue={props.data[1]}
       />
@@ -110,7 +111,7 @@ storiesOf('DropdownList', module)
     <Container>
       <DropdownList
         {...props}
-        open
+        defaultOpen
         disabled={props.data.slice(0, 2)}
       />
     </Container>
