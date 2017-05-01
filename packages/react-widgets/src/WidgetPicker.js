@@ -10,6 +10,7 @@ class WidgetPicker extends React.Component {
     readOnly: PropTypes.bool,
     open: PropTypes.bool,
     dropUp: PropTypes.bool,
+    picker: PropTypes.bool,
   };
 
   render() {

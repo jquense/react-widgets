@@ -67,6 +67,7 @@ let propTypes = {
 
   placeholder: PropTypes.string,
 
+  inputProps: PropTypes.object,
   listProps: PropTypes.object,
 
   autoFocus: PropTypes.bool,
@@ -357,6 +358,7 @@ class Multiselect extends React.Component {
       , tabIndex
       , busy
       , autoFocus
+      , inputProps
       , open } = this.props;
 
     let { focusedItem, focusedTag } = this.state;
@@ -372,6 +374,7 @@ class Multiselect extends React.Component {
     return (
       <MultiselectInput
         ref='input'
+        {...inputProps}
         autoFocus={autoFocus}
         tabIndex={tabIndex || 0}
         role='listbox'

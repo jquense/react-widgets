@@ -13,7 +13,11 @@ class Container extends React.Component {
           margin: '30px auto',
           ...this.props.style,
         }}
-      />
+      >
+        <div style={{ flex: 1 }}>
+          {this.props.children}
+        </div>
+      </div>
     );
   }
 }

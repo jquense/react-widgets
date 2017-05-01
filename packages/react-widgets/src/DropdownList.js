@@ -2,7 +2,6 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import activeElement from 'dom-helpers/activeElement';
-import contains from 'dom-helpers/query/contains';
 import cn from 'classnames';
 import { autoFocus, mountManager, timeoutManager }
   from 'react-component-managers';
@@ -64,6 +63,8 @@ class DropdownList extends React.Component {
     disabled: CustomPropTypes.disabled.acceptsArray,
     readOnly: CustomPropTypes.disabled,
 
+
+    inputProps: PropTypes.object,
     listProps: PropTypes.object,
 
     messages: PropTypes.shape({
@@ -217,6 +218,7 @@ class DropdownList extends React.Component {
       , placeholder
       , value
       , open
+      , inputProps
       , valueComponent } = this.props;
 
     let { focused } = this.state;
@@ -265,6 +267,7 @@ class DropdownList extends React.Component {
           className="rw-widget-input"
         >
           <DropdownListInput
+            {...inputProps}
             value={valueItem}
             textField={textField}
             placeholder={placeholder}

@@ -7,6 +7,7 @@ class Input extends React.Component {
     disabled: PropTypes.bool,
     readOnly: PropTypes.bool,
     value: PropTypes.string,
+    type: PropTypes.string,
     tabIndex: PropTypes.string,
     component: PropTypes.any,
   };
@@ -18,6 +19,7 @@ class Input extends React.Component {
       , readOnly
       , value
       , tabIndex
+      , type = 'text'
       , component: Component = 'input'
       , ...props
     } = this.props;
@@ -25,7 +27,7 @@ class Input extends React.Component {
     return (
       <Component
         {...props}
-        type="text"
+        type={type}
         tabIndex={tabIndex || 0}
         autoComplete='off'
         disabled={disabled}

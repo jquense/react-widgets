@@ -60,7 +60,6 @@
 .rw-widget-picker {
   position: relative;
   overflow: hidden;
-  border-radius: @input-border-radius;
   border-collapse: separate;
   display: inline-table;
   height: @input-height;
@@ -135,6 +134,10 @@
   color: @input-color;
   padding: 0 @input-padding-horizontal;
   background-color: @input-bg;
+
+  &[type=text]::-ms-clear {
+    display: none;
+  }
 
   &[disabled] {
     .state-disabled();
