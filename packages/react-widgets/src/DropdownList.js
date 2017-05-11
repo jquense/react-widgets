@@ -1,33 +1,35 @@
-import React from 'react';
-import { findDOMNode } from 'react-dom';
-import PropTypes from 'prop-types';
-import activeElement from 'dom-helpers/activeElement';
-import cn from 'classnames';
-import { autoFocus, mountManager, timeoutManager }
-  from 'react-component-managers';
-import uncontrollable from 'uncontrollable';
+import React from 'react'
+import { findDOMNode } from 'react-dom'
+import PropTypes from 'prop-types'
+import activeElement from 'dom-helpers/activeElement'
+import cn from 'classnames'
+import {
+  autoFocus,
+  mountManager,
+  timeoutManager,
+} from 'react-component-managers'
+import uncontrollable from 'uncontrollable'
 
-import Widget from './Widget';
-import WidgetPicker from './WidgetPicker';
-import Select from './Select';
-import Popup from './Popup';
-import List from './List';
-import DropdownListInput from './DropdownListInput';
-import { getMessages } from './messages';
+import Widget from './Widget'
+import WidgetPicker from './WidgetPicker'
+import Select from './Select'
+import Popup from './Popup'
+import List from './List'
+import DropdownListInput from './DropdownListInput'
+import { getMessages } from './messages'
 
-import * as Props from './util/Props';
-import * as Filter from './util/Filter';
-import focusManager from './util/focusManager';
-import listDataManager from './util/listDataManager';
-import * as CustomPropTypes from './util/PropTypes';
-import accessorManager from './util/accessorManager';
-import scrollManager from './util/scrollManager';
-import withRightToLeft from './util/withRightToLeft';
-import { widgetEditable } from './util/interaction';
-import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
+import * as Props from './util/Props'
+import * as Filter from './util/Filter'
+import focusManager from './util/focusManager'
+import listDataManager from './util/listDataManager'
+import * as CustomPropTypes from './util/PropTypes'
+import accessorManager from './util/accessorManager'
+import scrollManager from './util/scrollManager'
+import withRightToLeft from './util/withRightToLeft'
+import { widgetEditable } from './util/interaction'
+import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
-@withRightToLeft
-class DropdownList extends React.Component {
+@withRightToLeft class DropdownList extends React.Component {
   static propTypes = {
     ...Filter.propTypes,
 
@@ -63,7 +65,6 @@ class DropdownList extends React.Component {
     disabled: CustomPropTypes.disabled.acceptsArray,
     readOnly: CustomPropTypes.disabled,
 
-
     inputProps: PropTypes.object,
     listProps: PropTypes.object,
 
@@ -72,8 +73,8 @@ class DropdownList extends React.Component {
       emptyList: CustomPropTypes.message,
       emptyFilter: CustomPropTypes.message,
       filterPlaceholder: PropTypes.string,
-    })
-  };
+    }),
+  }
 
   static defaultProps = {
     delay: 500,
@@ -85,7 +86,7 @@ class DropdownList extends React.Component {
     filter: false,
     caseSensitive: false,
     listComponent: List,
-  };
+  }
 
   constructor(...args) {
     super(...args)
@@ -106,28 +107,19 @@ class DropdownList extends React.Component {
       didHandle: this.handleFocusChanged,
     })
 
-    this.state = this.getStateFromProps(this.props);
+    this.state = this.getStateFromProps(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
     this.messages = getMessages(nextProps.messages)
-    this.setState(
-      this.getStateFromProps(nextProps)
-    )
+    this.setState(this.getStateFromProps(nextProps))
   }
 
   getStateFromProps(props) {
-    let {
-        value
-      , data
-      , searchTerm
-      , filter
-      , minLength
-      , caseSensitive
-    } = props;
+    let { value, data, searchTerm, filter, minLength, caseSensitive } = props
 
-    let { accessors, list } = this;
-    let initialIdx = accessors.indexOf(data, value);
+    let { accessors, list } = this
+    let initialIdx = accessors.indexOf(data, value)
 
     data = Filter.filter(data, {
       filter,
@@ -137,9 +129,9 @@ class DropdownList extends React.Component {
       textField: this.accessors.text,
     })
 
-    list.setData(data);
+    list.setData(data)
 
-    let selectedItem = data[initialIdx];
+    let selectedItem = data[initialIdx]
 
     return {
       data,
@@ -148,19 +140,16 @@ class DropdownList extends React.Component {
     }
   }
 
-  handleFocusChanged = (focused) => {
+  handleFocusChanged = focused => {
     if (!focused) this.close()
-  };
+  }
 
   renderFilter(messages) {
     return (
-       <WidgetPicker
-        ref='filterWrapper'
-        className="rw-filter-input rw-input"
-      >
-        <Select icon='search' role="presentation" aria-hidden="true" />
+      <WidgetPicker ref="filterWrapper" className="rw-filter-input rw-input">
+        <Select icon="search" role="presentation" aria-hidden="true" />
         <input
-          ref='filter'
+          ref="filter"
           value={this.props.searchTerm}
           className="rw-input-reset"
           placeholder={messages.filterPlaceholder(this.props)}
@@ -171,18 +160,16 @@ class DropdownList extends React.Component {
   }
 
   renderList(messages) {
-    let { open, filter, data } = this.props;
-    let { selectedItem, focusedItem } = this.state;
-    let { value, text } = this.accessors;
+    let { open, filter, data } = this.props
+    let { selectedItem, focusedItem } = this.state
+    let { value, text } = this.accessors
 
     let List = this.props.listComponent
     let props = this.list.defaultProps()
 
     return (
       <div>
-        {filter &&
-          this.renderFilter(messages)
-        }
+        {filter && this.renderFilter(messages)}
         <List
           {...props}
           ref="list"
@@ -198,36 +185,36 @@ class DropdownList extends React.Component {
           aria-labelledby={this.inputId}
           aria-hidden={!this.props.open}
           messages={{
-            emptyList: data.length
-              ? messages.emptyFilter
-              : messages.emptyList
-          }}/>
+            emptyList: data.length ? messages.emptyFilter : messages.emptyList,
+          }}
+        />
       </div>
     )
   }
 
   render() {
     let {
-        className
-      , tabIndex
-      , duration
-      , textField
-      , data
-      , busy
-      , dropUp
-      , placeholder
-      , value
-      , open
-      , inputProps
-      , valueComponent } = this.props;
+      className,
+      tabIndex,
+      duration,
+      textField,
+      data,
+      busy,
+      dropUp,
+      placeholder,
+      value,
+      open,
+      inputProps,
+      valueComponent,
+    } = this.props
 
-    let { focused } = this.state;
+    let { focused } = this.state
 
-    let disabled = this.props.disabled === true
-      , readOnly = this.props.readOnly === true
-      , valueItem = this.accessors.findOrSelf(data, value)
+    let disabled = this.props.disabled === true,
+      readOnly = this.props.readOnly === true,
+      valueItem = this.accessors.findOrSelf(data, value)
 
-    let shouldRenderPopup = open || isFirstFocusedRender(this);
+    let shouldRenderPopup = open || isFirstFocusedRender(this)
 
     let elementProps = Object.assign(Props.pickElementProps(this), {
       name: undefined,
@@ -242,8 +229,8 @@ class DropdownList extends React.Component {
       'aria-live': !open && 'polite',
       'aria-autocomplete': 'list',
       'aria-disabled': disabled,
-      'aria-readonly': readOnly
-    });
+      'aria-readonly': readOnly,
+    })
 
     let messages = this.messages
 
@@ -251,21 +238,18 @@ class DropdownList extends React.Component {
       <Widget
         {...elementProps}
         ref="input"
+        open={open}
+        dropUp={dropUp}
+        focused={focused}
+        disabled={disabled}
+        readOnly={readOnly}
         onBlur={this.focusManager.handleBlur}
         onFocus={this.focusManager.handleFocus}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
         className={cn(className, 'rw-dropdown-list')}
       >
-        <WidgetPicker
-          open={open}
-          dropUp={dropUp}
-          focused={focused}
-          disabled={disabled}
-          readOnly={readOnly}
-          onClick={this.handleClick}
-          className="rw-widget-input"
-        >
+        <WidgetPicker onClick={this.handleClick} className="rw-widget-input">
           <DropdownListInput
             {...inputProps}
             value={valueItem}
@@ -291,104 +275,88 @@ class DropdownList extends React.Component {
             onOpening={() => this.refs.list.forceUpdate()}
           >
             {this.renderList(messages)}
-          </Popup>
-        }
+          </Popup>}
       </Widget>
     )
   }
 
-  @widgetEditable
-  handleSelect = (data, originalEvent) => {
+  @widgetEditable handleSelect = (data, originalEvent) => {
     this.close()
 
-    notify(this.props.onSelect, [data, {
-      originalEvent
-    }])
+    notify(this.props.onSelect, [
+      data,
+      {
+        originalEvent,
+      },
+    ])
 
     this.change(data, originalEvent)
     this.focus(this)
-  };
+  }
 
-  @widgetEditable
-  handleClick = (e) => {
+  @widgetEditable handleClick = e => {
     this.toggle()
     notify(this.props.onClick, e)
-  };
+  }
 
-  @widgetEditable
-  handleKeyDown = (e) => {
-    let key = e.key
-      , alt = e.altKey
-      , list = this.list
-      , filtering = this.props.filter
-      , focusedItem = this.state.focusedItem
-      , selectedItem = this.state.selectedItem
-      , isOpen = this.props.open
+  @widgetEditable handleKeyDown = e => {
+    let key = e.key,
+      alt = e.altKey,
+      list = this.list,
+      filtering = this.props.filter,
+      focusedItem = this.state.focusedItem,
+      selectedItem = this.state.selectedItem,
+      isOpen = this.props.open
 
     let closeWithFocus = () => {
-      this.close();
+      this.close()
       findDOMNode(this).focus()
     }
 
     notify(this.props.onKeyDown, [e])
 
     let change = (item, fromList) => {
-      if(item == null) return
-      fromList
-        ? this.handleSelect(item, e)
-        : this.change(item, e)
+      if (item == null) return
+      fromList ? this.handleSelect(item, e) : this.change(item, e)
     }
 
-    if (e.defaultPrevented)
-      return
+    if (e.defaultPrevented) return
 
     if (key === 'End') {
       e.preventDefault()
 
       if (isOpen) this.setState({ focusedItem: list.last() })
-      else        change(list.last())
-    }
-    else if (key === 'Home') {
+      else change(list.last())
+    } else if (key === 'Home') {
       e.preventDefault()
 
       if (isOpen) this.setState({ focusedItem: list.first() })
-      else        change(list.first())
-    }
-    else if (key === 'Escape' && isOpen) {
-      e.preventDefault();
+      else change(list.first())
+    } else if (key === 'Escape' && isOpen) {
+      e.preventDefault()
       closeWithFocus()
-    }
-    else if (
-      (key === 'Enter' ||
-      (key === ' ' && !filtering)) &&
-      isOpen
-    ) {
-      e.preventDefault();
+    } else if ((key === 'Enter' || (key === ' ' && !filtering)) && isOpen) {
+      e.preventDefault()
       change(this.state.focusedItem, true)
-    }
-    else if (key === ' ' && !isOpen) {
-      e.preventDefault();
+    } else if (key === ' ' && !isOpen) {
+      e.preventDefault()
       this.open()
-    }
-    else if (key === 'ArrowDown') {
-      if (alt)         this.open()
+    } else if (key === 'ArrowDown') {
+      if (alt) this.open()
       else if (isOpen) this.setState({ focusedItem: list.next(focusedItem) })
-      else             change(list.next(selectedItem))
+      else change(list.next(selectedItem))
       e.preventDefault()
-    }
-    else if (key === 'ArrowUp') {
-      if (alt)         closeWithFocus()
+    } else if (key === 'ArrowUp') {
+      if (alt) closeWithFocus()
       else if (isOpen) this.setState({ focusedItem: list.prev(focusedItem) })
-      else             change(list.prev(selectedItem))
+      else change(list.prev(selectedItem))
       e.preventDefault()
     }
-  };
+  }
 
-  @widgetEditable
-  handleKeyPress = (e) => {
+  @widgetEditable handleKeyPress = e => {
     notify(this.props.onKeyPress, [e])
-    if (e.defaultPrevented)
-      return
+    if (e.defaultPrevented) return
 
     if (!(this.props.filter && this.props.open))
       this.search(String.fromCharCode(e.which), item => {
@@ -396,51 +364,54 @@ class DropdownList extends React.Component {
           ? this.setState({ focusedItem: item })
           : item && this.change(item, e)
       })
-  };
+  }
 
   change(nextValue, originalEvent) {
-    let { onChange, onSearch, searchTerm, value: lastValue } = this.props;
+    let { onChange, onSearch, searchTerm, value: lastValue } = this.props
 
     if (!this.accessors.matches(nextValue, lastValue)) {
-      notify(onChange, [nextValue, {
-        originalEvent,
-        lastValue,
-        searchTerm,
-      }])
+      notify(onChange, [
+        nextValue,
+        {
+          originalEvent,
+          lastValue,
+          searchTerm,
+        },
+      ])
 
       notify(onSearch, ['', originalEvent])
       this.close()
     }
   }
 
-  focus = (target) => {
-    let { filter, open } = this.props;
-    let inst = target || (filter && open ? this.refs.filter : this.refs.input);
+  focus = target => {
+    let { filter, open } = this.props
+    let inst = target || (filter && open ? this.refs.filter : this.refs.input)
 
-    inst = findDOMNode(inst);
+    inst = findDOMNode(inst)
 
-    if (inst && activeElement() !== inst)
-      inst.focus()
+    if (inst && activeElement() !== inst) inst.focus()
   }
 
   search(character, cb) {
-    var word = ((this._searchTerm || '') + character).toLowerCase();
+    var word = ((this._searchTerm || '') + character).toLowerCase()
 
-    if (!character)
-      return
+    if (!character) return
 
     this._searchTerm = word
 
-    this.timeouts.set('search', () => {
-      var list = this.list
-        , key  = this.props.open ? 'focusedItem' : 'selectedItem'
-        , item = list.next(this.state[key], word);
+    this.timeouts.set(
+      'search',
+      () => {
+        var list = this.list,
+          key = this.props.open ? 'focusedItem' : 'selectedItem',
+          item = list.next(this.state[key], word)
 
-
-      this._searchTerm = ''
-      if (item) cb(item)
-
-    }, this.props.delay)
+        this._searchTerm = ''
+        if (item) cb(item)
+      },
+      this.props.delay
+    )
   }
 
   open() {
@@ -452,17 +423,16 @@ class DropdownList extends React.Component {
   }
 
   toggle() {
-    this.props.open
-      ? this.close()
-      : this.open()
+    this.props.open ? this.close() : this.open()
   }
 }
 
 export default uncontrollable(
-  DropdownList, {
+  DropdownList,
+  {
     open: 'onToggle',
     value: 'onChange',
-    searchTerm: 'onSearch'
+    searchTerm: 'onSearch',
   },
   ['focus']
-);
+)

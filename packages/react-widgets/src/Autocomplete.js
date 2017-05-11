@@ -1,25 +1,25 @@
-import cn from 'classnames';
-import * as PropTypes from 'prop-types';
-import React from 'react';
-import { findDOMNode } from 'react-dom';
-import uncontrollable from 'uncontrollable';
+import cn from 'classnames'
+import * as PropTypes from 'prop-types'
+import React from 'react'
+import { findDOMNode } from 'react-dom'
+import uncontrollable from 'uncontrollable'
 
-import List from './List';
-import Popup from './Popup';
-import Input from './Input';
-import Select from './Select';
-import Widget from './Widget';
-import WidgetPicker from './WidgetPicker';
-import { getMessages } from './messages';
-import focusManager from './util/focusManager';
-import listDataManager from './util/listDataManager';
-import * as CustomPropTypes from './util/PropTypes';
-import accessorManager from './util/accessorManager';
-import scrollManager from './util/scrollManager';
-import * as Props from './util/Props';
-import withRightToLeft from './util/withRightToLeft';
-import { widgetEditable } from './util/interaction';
-import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
+import List from './List'
+import Popup from './Popup'
+import Input from './Input'
+import Select from './Select'
+import Widget from './Widget'
+import WidgetPicker from './WidgetPicker'
+import { getMessages } from './messages'
+import focusManager from './util/focusManager'
+import listDataManager from './util/listDataManager'
+import * as CustomPropTypes from './util/PropTypes'
+import accessorManager from './util/accessorManager'
+import scrollManager from './util/scrollManager'
+import * as Props from './util/Props'
+import withRightToLeft from './util/withRightToLeft'
+import { widgetEditable } from './util/interaction'
+import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
 const propTypes = {
   //-- controlled props -----------
@@ -56,22 +56,20 @@ const propTypes = {
   messages: PropTypes.shape({
     openCombobox: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
-    emptyFilter: CustomPropTypes.message
-  })
-};
+    emptyFilter: CustomPropTypes.message,
+  }),
+}
 
-@withRightToLeft
-class Autocomplete extends React.Component {
-
+@withRightToLeft class Autocomplete extends React.Component {
   static defaultProps = {
     data: [],
     open: false,
     listComponent: List,
     selectComponent: Select,
-  };
+  }
 
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
 
     this.messages = getMessages(props.messages)
     this.inputId = instanceId(this, '_input')
@@ -82,13 +80,13 @@ class Autocomplete extends React.Component {
     this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
-      didHandle: this.handleFocusChanged
+      didHandle: this.handleFocusChanged,
     })
 
     this.state = {
       ...this.getStateFromProps(props),
       open: false,
-    };
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -98,42 +96,40 @@ class Autocomplete extends React.Component {
 
   getStateFromProps(props) {
     let { accessors, list } = this
-    let { value, data } = props;
-    let { focusedItem = null } = this.state || {};
+    let { value, data } = props
+    let { focusedItem = null } = this.state || {}
 
-    let index = accessors.indexOf(data, value);
-    list.setData(data);
+    let index = accessors.indexOf(data, value)
+    list.setData(data)
 
     return {
       data,
       selectedItem: list.nextEnabled(data[index]),
-      focusedItem: ~index ? list.nextEnabled(data[index]) : focusedItem
+      focusedItem: ~index ? list.nextEnabled(data[index]) : focusedItem,
     }
   }
 
-  handleFocusChanged = (focused) => {
+  handleFocusChanged = focused => {
     if (!focused) this.close()
-  };
+  }
 
-  @widgetEditable
-  handleSelect = (data, originalEvent) => {
+  @widgetEditable handleSelect = (data, originalEvent) => {
     this.close()
     notify(this.props.onSelect, [data, { originalEvent }])
     this.change(data, originalEvent)
-    this.focus();
-  };
+    this.focus()
+  }
 
-  handleInputChange = (event) => {
+  handleInputChange = event => {
     this.change(event.target.value, event)
     this.open()
-  };
+  }
 
-  @widgetEditable
-  handleKeyDown = (e) => {
-    let key  = e.key
-      , list = this.list
-      , focusedItem = this.state.focusedItem
-      , isOpen = this.props.open;
+  @widgetEditable handleKeyDown = e => {
+    let key = e.key,
+      list = this.list,
+      focusedItem = this.state.focusedItem,
+      isOpen = this.props.open
 
     notify(this.props.onKeyDown, [e])
 
@@ -141,46 +137,40 @@ class Autocomplete extends React.Component {
 
     if (!isOpen) {
       if (key === 'ArrowDown') this.open()
-      return;
+      return
     }
 
     if (key === 'End') {
       e.preventDefault()
       this.setState({ focusedItem: list.last() })
-    }
-    else if (key === 'Home') {
+    } else if (key === 'Home') {
       e.preventDefault()
       this.setState({ focusedItem: list.first() })
-    }
-    else if (key === 'Escape')
-      this.close()
-
+    } else if (key === 'Escape') this.close()
     else if (key === 'Enter') {
       if (!focusedItem) {
-        return void this.close();
+        return void this.close()
       }
 
-      e.preventDefault();
+      e.preventDefault()
       this.handleSelect(focusedItem, e)
       this.change(focusedItem, false, e)
-    }
-    else if (key === 'ArrowDown') {
+    } else if (key === 'ArrowDown') {
       e.preventDefault()
       this.setState({ focusedItem: list.next(focusedItem) })
-    }
-    else if ( key === 'ArrowUp' ) {
+    } else if (key === 'ArrowUp') {
       e.preventDefault()
       this.setState({ focusedItem: list.prev(focusedItem) })
     }
-  };
+  }
 
   renderList(messages) {
-    let { activeId, inputId, listId, accessors } = this;
+    let { activeId, inputId, listId, accessors } = this
 
-    let { open } = this.props;
-    let { selectedItem, focusedItem } = this.state;
+    let { open } = this.props
+    let { selectedItem, focusedItem } = this.state
     let List = this.props.listComponent
-    let props = this.list.defaultProps();
+    let props = this.list.defaultProps()
 
     return (
       <List
@@ -204,25 +194,26 @@ class Autocomplete extends React.Component {
 
   render() {
     let {
-        className
-      , duration
-      , data
-      , value
-      , busy
-      , dropUp
-      , open
-      , autoFocus
-      , placeholder
-      , inputProps
-      , selectComponent: SelectComponent } = this.props;
+      className,
+      duration,
+      data,
+      value,
+      busy,
+      dropUp,
+      open,
+      autoFocus,
+      placeholder,
+      inputProps,
+      selectComponent: SelectComponent,
+    } = this.props
 
-    let { focused } = this.state;
+    let { focused } = this.state
 
-    let disabled = this.props.disabled === true
-      , readOnly = this.props.readOnly === true
+    let disabled = this.props.disabled === true,
+      readOnly = this.props.readOnly === true
 
-    let elementProps = Props.pickElementProps(this);
-    let shouldRenderPopup = open || isFirstFocusedRender(this);
+    let elementProps = Props.pickElementProps(this)
+    let shouldRenderPopup = open || isFirstFocusedRender(this)
 
     let messages = this.messages
     let valueItem = this.accessors.findOrSelf(data, value)
@@ -230,23 +221,21 @@ class Autocomplete extends React.Component {
     return (
       <Widget
         {...elementProps}
+        open={open}
+        dropUp={dropUp}
+        focused={focused}
+        disabled={disabled}
+        readOnly={readOnly}
         onBlur={this.focusManager.handleBlur}
         onFocus={this.focusManager.handleFocus}
         onKeyDown={this.handleKeyDown}
         className={cn(className, 'rw-autocomplete')}
       >
-        <WidgetPicker
-          picker={false}
-          open={open}
-          dropUp={dropUp}
-          focused={focused}
-          disabled={disabled}
-          readOnly={readOnly}
-        >
+        <WidgetPicker>
           <Input
             {...inputProps}
-            ref='input'
-            role='combobox'
+            ref="input"
+            role="combobox"
             id={this.inputId}
             autoFocus={autoFocus}
             disabled={disabled === true}
@@ -271,7 +260,9 @@ class Autocomplete extends React.Component {
           />
         </WidgetPicker>
 
-        {!!value && !!data.length && shouldRenderPopup &&
+        {!!value &&
+          !!data.length &&
+          shouldRenderPopup &&
           <Popup
             open={open}
             dropUp={dropUp}
@@ -281,28 +272,28 @@ class Autocomplete extends React.Component {
             <div>
               {this.renderList(messages)}
             </div>
-          </Popup>
-        }
+          </Popup>}
       </Widget>
-    );
+    )
   }
 
   focus() {
-    this.refs.input &&
-      findDOMNode(this.refs.input).focus()
+    this.refs.input && findDOMNode(this.refs.input).focus()
   }
 
   change(nextValue, originalEvent) {
-    const { onChange, value: lastValue } = this.props;
-    notify(onChange, [nextValue, {
-      lastValue,
-      originalEvent,
-    }])
+    const { onChange, value: lastValue } = this.props
+    notify(onChange, [
+      nextValue,
+      {
+        lastValue,
+        originalEvent,
+      },
+    ])
   }
 
   open() {
-    if (!this.props.open)
-      notify(this.props.onToggle, true)
+    if (!this.props.open) notify(this.props.onToggle, true)
   }
 
   close() {
@@ -312,9 +303,13 @@ class Autocomplete extends React.Component {
   }
 }
 
-Autocomplete.propTypes = propTypes;
+Autocomplete.propTypes = propTypes
 
-export default uncontrollable(Autocomplete, {
-  open: 'onToggle',
-  value: 'onChange',
-}, ['focus']);
+export default uncontrollable(
+  Autocomplete,
+  {
+    open: 'onToggle',
+    value: 'onChange',
+  },
+  ['focus']
+)

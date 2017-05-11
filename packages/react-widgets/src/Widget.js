@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import cn from 'classnames';
+import React from 'react'
+import PropTypes from 'prop-types'
+import cn from 'classnames'
 
 class Widget extends React.Component {
   static propTypes = {
@@ -8,16 +8,27 @@ class Widget extends React.Component {
     focused: PropTypes.bool,
     disabled: PropTypes.bool,
     readOnly: PropTypes.bool,
-  };
+    open: PropTypes.bool,
+    dropUp: PropTypes.bool,
+  }
 
   static contextTypes = {
-    isRtl: PropTypes.bool
-  };
+    isRtl: PropTypes.bool,
+  }
 
   render() {
-    let { className, tabIndex, focused, disabled, readOnly, ...props } = this.props;
+    let {
+      className,
+      tabIndex,
+      focused,
+      open,
+      dropUp,
+      disabled,
+      readOnly,
+      ...props
+    } = this.props
 
-    let isRtl = !!this.context.isRtl;
+    let isRtl = !!this.context.isRtl
     tabIndex = tabIndex != null ? tabIndex : '-1'
 
     return (
@@ -30,11 +41,12 @@ class Widget extends React.Component {
           isRtl && 'rw-rtl',
           disabled && 'rw-state-disabled',
           readOnly && 'rw-state-readonly',
-          focused && 'rw-state-focus'
+          focused && 'rw-state-focus',
+          open && `rw-open${dropUp ? '-up' : ''}`
         )}
       />
     )
   }
 }
 
-export default Widget;
+export default Widget

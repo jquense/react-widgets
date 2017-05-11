@@ -501,6 +501,11 @@ class Multiselect extends React.Component {
     return (
       <Widget
         {...elementProps}
+        open={open}
+        dropUp={dropUp}
+        focused={focused}
+        disabled={disabled}
+        readOnly={readOnly}
         onKeyDown={this.handleKeyDown}
         onBlur={this.focusManager.handleBlur}
         onFocus={this.focusManager.handleFocus}
@@ -508,11 +513,6 @@ class Multiselect extends React.Component {
       >
         {this.renderNotificationArea(messages)}
         <WidgetPicker
-          open={open}
-          dropUp={dropUp}
-          focused={focused}
-          disabled={disabled}
-          readOnly={readOnly}
           className="rw-widget-input"
           onClick={this.handleClick}
           onTouchEnd={this.handleClick}

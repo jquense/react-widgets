@@ -38,16 +38,21 @@
   border-radius: @input-border-radius;
 
   &.rw-state-focus,
-  &.rw-state-focus:hover {
-    box-shadow: @input-focus-box-shadow;
-    border-color: @input-border-focus;
+  .rw-state-focus > & {
+    &,
+    &:hover {
+      box-shadow: @input-focus-box-shadow;
+      border-color: @input-border-focus;
+    }
   }
 
-  &.rw-state-readonly {
+  &.rw-state-readonly,
+  .rw-state-readonly > & {
     cursor: not-allowed;
   }
 
-  &.rw-state-disabled {
+  &.rw-state-disabled,
+  .rw-state-disabled > &  {
     &,
     &:hover,
     &:active {
@@ -78,15 +83,15 @@
     white-space: nowrap;
   }
 
-  &.rw-open {
+  .rw-open > & {
     .border-bottom-radius(0);
   }
 
-  &.rw-open-up {
+  .rw-open-up > &  {
     .border-top-radius(0);
   }
 
-  &.rw-state-disabled {
+  .rw-state-disabled > &  {
     background-color: @input-bg-disabled;
   }
 }
