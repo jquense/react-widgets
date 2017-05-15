@@ -25,7 +25,7 @@
 @btn-border:                #ccc;
 @btn-active-box-shadow:     inset 0 3px 5px rgba(0,0,0,.125);
 
-
+@icon-color: inherit;
 
 //
 // Widget States
@@ -53,12 +53,12 @@
 @input-padding-horizontal:  0.857em;
 @input-box-shadow:          inset 0 1px 1px rgba(0,0,0,.075);
 
-@input-bg:                  #fff;
+@input-bg:                  @widget-bg;
 @input-bg-disabled:         @gray-lighter;
 @input-color-placeholder:   #999;
 
 @input-border-radius:       @border-radius;
-@input-border:              #ccc;
+@input-border:              @widget-border;
 @input-border-width:        1px;
 
 @input-bg-hover:            @gray-lighter;
@@ -97,8 +97,8 @@
 @popup-bg:                  @widget-bg;
 @popup-border:              @widget-border;
 @popup-box-shadow-offset:   6px;
-@popup-box-shadow:          0 5px @popup-box-shadow-offset rgba(0,0,0,0.2);
-@popup-box-shadow-up:       0 0 @popup-box-shadow-offset rgba(0,0,0,0.2);
+@popup-box-shadow:          0 (@popup-box-shadow-offset - 1px) @popup-box-shadow-offset rgba(0,0,0,0.2);
+@popup-box-shadow-up:       0 -2px @popup-box-shadow-offset rgba(0,0,0,0.2);
 
 @popup-zindex:              1005;
 @popup-zindex-focused:      @popup-zindex + 1;
@@ -144,10 +144,3 @@
 @multiselect-tag-border-hover:         @state-border-hover;
 @multiselect-tag-color-hover:          @state-color-hover;
 
-@multiselect-tag-bg-focus:             @state-bg-focus;
-@multiselect-tag-border-focus:         @state-border-focus;
-@multiselect-tag-color-focus:          @state-color-focus;
-
-@multiselect-tag-bg-select:            @state-bg-select;
-@multiselect-tag-border-select:        @state-border-select;
-@multiselect-tag-color-select:         @state-color-select;
