@@ -1,5 +1,15 @@
 {
-  "presets": ["jason"],
+  "presets": [
+    ["jason", {
+      "targets": {
+        "browsers": [
+          "> 1%",
+          "last 4 versions",
+          "IE >= 9"
+        ]
+      }
+    }]
+  ],
   "plugins": [
     "transform-decorators-legacy"
   ]
