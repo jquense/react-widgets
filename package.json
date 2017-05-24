@@ -68,12 +68,13 @@
     "dom-helpers": "^2.2.4",
     "invariant": "^2.1.0",
     "loose-envify": "^1.2.0",
+    "prop-types": "^15.5.0",
     "uncontrollable": "^4.0.0",
     "warning": "^2.0.0"
   },
   "optionalDependencies": {
-    "format-number-with-string": "0.0.2",
-    "deconstruct-number-format": "0.0.1"
+    "deconstruct-number-format": "0.0.1",
+    "format-number-with-string": "0.0.2"
   },
   "devDependencies": {
     "@monastic.panic/component-playground": "^2.0.0",
