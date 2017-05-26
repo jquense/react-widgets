@@ -1,7 +1,6 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
-
+import createReactClass from 'create-react-class';
 import CalendarView from './CalendarView';
 import dates  from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
@@ -24,7 +23,7 @@ let propTypes = {
   decadeFormat: CustomPropTypes.dateFormat
 };
 
-export default React.createClass({
+export default createReactClass({
 
   displayName: 'CenturyView',
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import cn from 'classnames';
 import _  from './util/_';
 import createUncontrolledWidget from 'uncontrollable';
@@ -75,7 +76,7 @@ var propTypes = {
   })
 };
 
-var Multiselect = React.createClass({
+var Multiselect = createReactClass({
 
   displayName: 'Multiselect',
 

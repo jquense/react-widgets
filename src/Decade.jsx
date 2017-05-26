@@ -1,7 +1,6 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
-
+import createReactClass from 'create-react-class';
 import CalendarView from './CalendarView';
 import dates from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
@@ -23,7 +22,7 @@ let propTypes = {
 
 let optionId = (id, date) => `${id}__decade_${dates.year(date)}`;
 
-export default React.createClass({
+export default createReactClass({
 
   displayName: 'DecadeView',
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 import { number as numberLocalizer } from './util/localizers';
@@ -22,7 +23,7 @@ let propTypes = {
   onKeyDown:   PropTypes.func
 };
 
-export default React.createClass({
+export default createReactClass({
 
   displayName: 'NumberPickerInput',
 

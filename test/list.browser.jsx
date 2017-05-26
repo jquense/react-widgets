@@ -2,6 +2,7 @@
 require('../vendor/phantomjs-shim')
 
 var React = require('react');
+var createReactClass = require('create-react-class');
 import ReactDOM from 'react-dom';
 var List = require('../src/List.jsx');
 
@@ -55,7 +56,7 @@ describe('List', function(){
   })
 
   it('should use a Item template', function(){
-    var Templ  = React.createClass({
+    var Templ  = createReactClass({
       render: function() {
         return (<span>{'hello - ' + this.props.item.label}</span>);
       }

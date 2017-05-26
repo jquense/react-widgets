@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 
 var React = require('react');
 var List = require('../src/ListGroupable.jsx');
-
+var createReactClass = require('create-react-class');
 
 //console.log(sinon)
 var TestUtils = require('react-addons-test-utils');
@@ -59,7 +59,7 @@ describe('Groupable List', function(){
   })
 
   it('should use a Item template', function(){
-    var templ  = React.createClass({
+    var templ  = createReactClass({
       render: function() {
         return (<span>{'hello - ' + this.props.item.first}</span>);
       }
@@ -72,7 +72,7 @@ describe('Groupable List', function(){
   })
 
   it('should use a Group template', function(){
-    var templ  = React.createClass({
+    var templ  = createReactClass({
       render: function() {
         return (<span>{'hello - ' + this.props.item}</span>);
       }
