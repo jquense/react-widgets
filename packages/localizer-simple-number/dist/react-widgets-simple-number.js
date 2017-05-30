@@ -1,3 +1,687 @@
 /*! (c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md */
-!function(e){function t(r){if(a[r])return a[r].exports;var i=a[r]={exports:{},id:r,loaded:!1};return e[r].call(i.exports,i,i.exports,t),i.loaded=!0,i.exports}var a={};return t.m=e,t.c=a,t.p="",t(0)}([function(e,t,a){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function i(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=n({},u,e),a=t.decimal,r=t.grouping,i={formats:{default:"-#"+r+"##0"+a},parse:function(e,t,a){if(a){var r=(0,c.default)(a),i=r.negativeLeftSymbol&&e.indexOf(r.negativeLeftSymbol)!==-1||r.negativeRightSymbol&&e.indexOf(r.negativeRightSymbol)!==-1;e=e.replace(r.negativeLeftSymbol,"").replace(r.negativeRightSymbol,"").replace(r.prefix,"").replace(r.suffix,"");var n=e.split(r.decimalChar);r.integerSeperator&&(n[0]=n[0].replace(new RegExp("\\"+r.integerSeperator,"g"))),r.decimalsSeparator&&(n[1]=n[1].replace(new RegExp("\\"+r.decimalsSeparator,"g"))),""===n[1]&&n.pop(),e=n.join("."),e=+e,i&&(e*=-1)}else e=parseFloat(e);return isNaN(e)?null:e},format:function(e,t){return(0,f.default)(e,t)},decimalChar:function(e){return e&&(0,c.default)(e).decimalsSeparator||"."},precision:function(e){var t=(0,c.default)(e);return t.maxRight!==-1?t.maxRight:null}};return g.default.setNumberLocalizer(i),i}t.__esModule=!0;var n=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r])}return e};t.default=i;var l=a(4),g=r(l),s=a(2),f=r(s),o=a(1),c=r(o),u={decimal:".",grouping:","};e.exports=t.default},function(e,t){t=e.exports=function(e){var t=e||"-9,999.90";t=t.trim();var a="",r="",i="",n=-1,l=-1,g="",s="";for(/^([^()]+)?[(]([^09#]+)?[09#., ]+([^)]+)?[)](.+)?$/.test(t)?(a="brackets",l=t.indexOf("("),i="(",g=l>0?t.slice(0,l):t.search(/0|9|#/)>0?t.slice(1,t.search(/0|9|#/)):"",t=t.slice(g.length+1),n=t.indexOf(")"),r=")",n<t.length-1?(s=t.slice(n+1),t=t.slice(0,n)):(s=t.search(/[^09#,.]([^09#](.+)?)?[)]$/)>-1?t.slice(t.search(/[^09#,.]([^09#](.+)?)?[)]$/),-1):"",t=t.slice(0,t.length-s.length-1),n=0)):t.indexOf("-")===-1?(a="none",g=t.search(/[.,]?[09#]/)>0?t.slice(0,t.search(/[.,]?[09#]/)):"",t=t.slice(g.length),s=t.search(/[^09#,.]([^09#]+|$)/)>-1?t.slice(t.search(/[^09#,.]([^09#]+|$)/)):"",t=t.slice(0,t.length-s.length)):/^([^09#-]+)?-.+$/.test(t)?(a="left",l=t.indexOf("-"),i="-",g=l>0?t.slice(0,l):t.search(/[09#]/)>0?t.slice(1,t.search(/[09#]/)):"",t=t.slice(g.length+1),s=t.search(/[^09#,.]([^09#]+|$)/)>-1?t.slice(t.search(/[^09#,.]([^09#]+|$)/)):"",t=t.slice(0,t.length-s.length)):(g=t.search(/[09#]/)>0?t.slice(0,t.search(/[09#]/)):"",t=t.slice(g.length),a="right",r="-",n=t.lastIndexOf("-"),n<t.length-1?(s=t.slice(n+1),t=t.slice(0,n)):(s=t.search(/[^09#,.]([^09#](.+)?)?-$/)>-1?t.slice(t.search(/[^09#,.]([^09#](.+)?)?-$/),t.length-1):"",t=t.slice(0,t.length-s.length-1),n=0));0===l&&g&&" "===g[0];)i+=" ",g=g.slice(1);for(;0===n&&s&&" "===s[s.length-1];)r=" "+r,s=s.slice(0,-1);for(;l>0&&t.length&&" "===t[0];)i+=" ",t=t.slice(1);for(;n>0&&t.length&&" "===t[t.length-1];)r=" "+r,t=t.slice(0,-1);var f=t,o="",c="",u="",p="",h="";for(","===t[t.length-1]&&t.indexOf(",")===t.length-1?o=",":t.indexOf(".")>-1?o=t.indexOf(".")===t.lastIndexOf(".")?".":",":t.indexOf(",")>-1&&(o=t.indexOf(",")===t.lastIndexOf(",")?",":"."),o&&t.indexOf(o)>-1?(c=t.slice(t.indexOf(o)+1),u=t.slice(0,t.indexOf(o))):(u=t,c="");c.length&&c.search(/[., ]$/)>-1;)c=c.slice(0,-1);for(;u.length&&u[0].search(/[., ]/)>-1;)u=u.slice(1);if(u&&u.search(/[., ]/)>0&&(h=u[u.search(/[., ]/)],u=u.replace(/[., ]/g,"")),c&&c.search(/[., ]/)>0&&(p=c[c.search(/[., ]/)],c=c.replace(/[., ]/g,"")),u.length&&!/^[09#]+$/.test(u)||c.length&&!/^[09#]+$/.test(c))return!1;var d,v,m,x;d=u.indexOf("0")>=0?u.length-u.indexOf("0"):-1,v=0===u.length||"0"===u[0]||"9"===u[0]?u.length:-1,m=c.indexOf("0")>=0?c.lastIndexOf("0")+1:-1,x=0===c.length||"0"===c[c.length-1]||"9"===c[c.length-1]?c.length:-1;var S={negativeType:a,negativeLeftPos:l,negativeRightPos:n,negativeLeftSymbol:i,negativeRightSymbol:r,suffix:s,prefix:g,absMask:f,decimalChar:o,integerSeparator:h,decimalsSeparator:p,padLeft:d,maxLeft:v,padRight:m,maxRight:x};return S}},function(e,t,a){var r=a(1),i=a(3);t=e.exports=function(e,t,a){var n=[];t&&(n=r(t.trim())),e=null===e?"":e,e+="",e=e.length?e.trim():"";var l=i({negativeType:n.negativeType,negativeLeftSymbol:n.negativeLeftSymbol,negativeRightSymbol:n.negativeRightSymbol,negativeLeftOut:0===n.negativeLeftPos,negativeRightOut:0===n.negativeRightPos,prefix:n.prefix,suffix:n.suffix,integerSeparator:n.integerSeparator,decimalsSeparator:n.decimalsSeparator,decimal:n.decimalChar,padLeft:n.padLeft,padRight:n.padRight,round:n.maxRight,truncate:null});return l(e,a)}},function(e,t){function a(e){function t(t,a){if(a=a||{},!t&&0!==t)return"";t=""+t;var f=[],o="-"===t.charAt(0);return t=t.replace(/^\-/g,""),e.negativeLeftOut||a.noUnits||f.push(e.prefix),o&&f.push(e.negativeLeftSymbol),e.negativeLeftOut&&!a.noUnits&&f.push(e.prefix),t=t.split("."),null!=e.round&&s(t,e.round),null!=e.truncate&&(t[1]=g(t[1],e.truncate)),e.padLeft>0&&(t[0]=n(t[0],e.padLeft)),e.padRight>0&&(t[1]=l(t[1],e.padRight)),!a.noSeparator&&t[1]&&(t[1]=i(t[1],e.decimalsSeparator)),!a.noSeparator&&t[0]&&(t[0]=r(t[0],e.integerSeparator)),f.push(t[0]),t[1]&&(f.push(e.decimal),f.push(t[1])),e.negativeRightOut&&!a.noUnits&&f.push(e.suffix),o&&f.push(e.negativeRightSymbol),e.negativeRightOut||a.noUnits||f.push(e.suffix),f.join("")}function a(t,a){a=a||[],e.allowedSeparators&&e.allowedSeparators.forEach(function(e){a.push(e)}),a.push(e.integerSeparator),a.push(e.decimalsSeparator),t=t.replace(e.prefix,""),t=t.replace(e.suffix,"");var r=t;do{t=r;for(var i=0;i<a.length;i++)r=r.replace(a[i],"")}while(r!=t);return t}if(e=e||{},e.negativeType=e.negativeType||("R"===e.negative?"right":"left"),"string"!=typeof e.negativeLeftSymbol)switch(e.negativeType){case"left":e.negativeLeftSymbol="-";break;case"brackets":e.negativeLeftSymbol="(";break;default:e.negativeLeftSymbol=""}if("string"!=typeof e.negativeRightSymbol)switch(e.negativeType){case"right":e.negativeRightSymbol="-";break;case"brackets":e.negativeRightSymbol=")";break;default:e.negativeRightSymbol=""}return"boolean"!=typeof e.negativeLeftOut&&(e.negativeLeftOut=e.negativeOut!==!1),"boolean"!=typeof e.negativeRightOut&&(e.negativeRightOut=e.negativeOut!==!1),e.prefix=e.prefix||"",e.suffix=e.suffix||"","string"!=typeof e.integerSeparator&&(e.integerSeparator="string"==typeof e.separator?e.separator:","),e.decimalsSeparator="string"==typeof e.decimalsSeparator?e.decimalsSeparator:"",e.decimal=e.decimal||".",e.padLeft=e.padLeft||-1,e.padRight=e.padRight||-1,t.negative=e.negative,t.negativeOut=e.negativeOut,t.negativeType=e.negativeType,t.negativeLeftOut=e.negativeLeftOut,t.negativeLeftSymbol=e.negativeLeftSymbol,t.negativeRightOut=e.negativeRightOut,t.negativeRightSymbol=e.negativeRightSymbol,t.prefix=e.prefix,t.suffix=e.suffix,t.separate=e.separate,t.integerSeparator=e.integerSeparator,t.decimalsSeparator=e.decimalsSeparator,t.decimal=e.decimal,t.padLeft=e.padLeft,t.padRight=e.padRight,t.truncate=e.truncate,t.round=e.round,t.unformat=a,t}function r(e,t){if(e+="",!t)return e;for(var a=/(\d+)(\d{3})/;a.test(e);)e=e.replace(a,"$1"+t+"$2");return e}function i(e,t){if(e+="",!t)return e;for(var a=/(\d{3})(\d+)/;a.test(e);)e=e.replace(a,"$1"+t+"$2");return e}function n(e,t){e+="";for(var a=[];a.length+e.length<t;)a.push("0");return a.join("")+e}function l(e,t){e?e+="":e="";for(var a=[];a.length+e.length<t;)a.push("0");return e+a.join("")}function g(e,t){return e&&(e+=""),e&&e.length>t?e.substr(0,t):e}function s(e,t){if(e[1]&&t>=0&&e[1].length>t){var a=e[1].slice(0,t);if(+e[1].substr(t,1)>=5){for(var r="";"0"===a.charAt(0);)r+="0",a=a.substr(1);a=+a+1+"",a=r+a,a.length>t&&(e[0]=+e[0]+ +a.charAt(0)+"",a=a.substring(1))}e[1]=a}return e}e.exports=a},function(e,t){e.exports=window.ReactWidgets}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
+exports = module.exports = function deconstructNumberFormat(requiredFormat) {
+
+
+  var format= requiredFormat || '-9,999.90';
+
+  format=format.trim(); //ignore leading and trailing spaces
+  
+  // *********************************************************************************
+  // find position and type of negative and contents of prefix and suffix text
+  // *********************************************************************************
+  
+  var negativeType = '', negativeRightSymbol = '', negativeLeftSymbol = '',
+      negativeRightPos = -1, negativeLeftPos = -1, 
+      absFormat,
+      prefix = '', suffix = '';
+  
+  // brackets as negative
+  if (/^([^()]+)?[(]([^09#]+)?[09#., ]+([^)]+)?[)](.+)?$/.test(format)) {
+    negativeType = 'brackets';
+    negativeLeftPos = format.indexOf("(");
+    negativeLeftSymbol = '('
+    if (negativeLeftPos > 0) { //after prefix
+      prefix = format.slice(0, negativeLeftPos);
+    } else {
+      prefix = format.search(/0|9|#/) > 0 ? format.slice(1, format.search(/0|9|#/)) : "";
+    }
+    format = format.slice(prefix.length+1);
+
+    negativeRightPos = format.indexOf(")");
+    negativeRightSymbol = ')'
+    if (negativeRightPos < format.length-1) { //before prefix
+      suffix = format.slice(negativeRightPos+1);
+      format = format.slice(0, negativeRightPos);
+    } else {
+      suffix = format.search(/[^09#,.]([^09#](.+)?)?[)]$/) > -1  ? format.slice(format.search(/[^09#,.]([^09#](.+)?)?[)]$/), -1) : "";
+      format = format.slice(0, format.length - suffix.length - 1);
+      negativeRightPos = 0;
+    }
+
+  } else if (format.indexOf("-") === -1){
+    //positive values only
+    negativeType = 'none';
+    prefix = format.search(/[.,]?[09#]/) > 0 ? format.slice(0, format.search(/[.,]?[09#]/)) : "";
+    format = format.slice(prefix.length);
+    suffix = format.search(/[^09#,.]([^09#]+|$)/) > -1  ? format.slice(format.search(/[^09#,.]([^09#]+|$)/)) : "";
+    format = format.slice(0, format.length-suffix.length);
+
+  } else if (/^([^09#-]+)?-.+$/.test(format)) {
+    //negative symbol to left of number (before or after prefix)
+    negativeType = 'left';
+    negativeLeftPos = format.indexOf("-");
+    negativeLeftSymbol = '-'
+    if (negativeLeftPos > 0) { //after prefix
+      prefix = format.slice(0, negativeLeftPos);
+    } else {
+      prefix = format.search(/[09#]/) > 0 ? format.slice(1, format.search(/[09#]/)) : "";
+    }
+    format = format.slice(prefix.length+1);
+    suffix = format.search(/[^09#,.]([^09#]+|$)/) > -1  ? format.slice(format.search(/[^09#,.]([^09#]+|$)/)) : "";
+    format = format.slice(0, format.length-suffix.length);
+
+  } else {
+    //negative symbol to right of number (before or after suffix)
+    prefix = format.search(/[09#]/) > 0 ? format.slice(0, format.search(/[09#]/)) : "";
+    format = format.slice(prefix.length);
+    negativeType = 'right';
+    negativeRightSymbol = '-'
+    negativeRightPos = format.lastIndexOf("-");
+    if (negativeRightPos < format.length-1) { //before suffix
+      suffix = format.slice(negativeRightPos+1);
+      format = format.slice(0, negativeRightPos);
+    } else {
+      suffix = format.search(/[^09#,.]([^09#](.+)?)?-$/) > -1  ? format.slice(format.search(/[^09#,.]([^09#](.+)?)?-$/), format.length-1) : "";
+      format = format.slice(0, format.length - suffix.length - 1);
+      negativeRightPos = 0;
+    }
+  }
+
+  // *********************************************************************************
+  //include spaces with negative symbols
+  // *********************************************************************************
+
+  //When negative is before prefix move spaces from start of prefix to end of negative symbol
+  while (negativeLeftPos === 0 && prefix && prefix[0] === ' ') {
+    negativeLeftSymbol = negativeLeftSymbol + ' ';
+    prefix = prefix.slice(1);
+  }
+
+  //When negative follows suffix move spaces end of suffix to start of negative symbol
+  while (negativeRightPos === 0 && suffix && suffix[suffix.length-1] === ' ') {
+    negativeRightSymbol = ' ' + negativeRightSymbol;
+    suffix = suffix.slice(0, -1);
+  }
+
+  //When negative follows prefix move spaces from start of format to end of negative symbol
+  while (negativeLeftPos > 0 && format.length && format[0] === ' ') {
+    negativeLeftSymbol = negativeLeftSymbol + ' ';
+    format = format.slice(1);
+  }
+
+  //When negative before suffix move spaces from end of format to start of negative symbol
+  while (negativeRightPos > 0 && format.length && format[format.length-1] === ' ') {
+    negativeRightSymbol = ' ' + negativeRightSymbol;
+    format = format.slice(0, -1);
+  }
+
+  var absMask = format;
+
+  // *********************************************************************************
+  //find the decimal character and parts of absolute format
+  // *********************************************************************************
+
+  var decimalChar = '', decimalsPart = '', integerPart = '', decimalsSeparator = '', integerSeparator = '';
+
+  //if last char is a ',' and there are no other commas then use this as decimal point
+  if (format[format.length-1] === ',' && format.indexOf(',') === format.length-1) {
+    decimalChar = ',';
+  //otherwise use consider '.'
+  } else if (format.indexOf('.') > -1) {
+    if (format.indexOf('.') === format.lastIndexOf('.')) {
+      decimalChar = ".";
+    } else {
+      // two of '.' means this must be the separator, so assume  ',' is the decimal
+      decimalChar = ',';
+    }
+  //otherwise use ',' if it exists and there is only one
+  } else if (format.indexOf(',') > -1) {
+    if (format.indexOf(',') === format.lastIndexOf(',')) {
+      decimalChar = ',';
+    } else {
+      decimalChar = '.';
+    }
+  }
+
+  if (decimalChar && format.indexOf(decimalChar)>-1) {
+    decimalsPart = format.slice(format.indexOf(decimalChar)+1);
+    integerPart = format.slice(0,format.indexOf(decimalChar));
+  } else {
+    integerPart = format;
+    decimalsPart = '';
+  }
+
+  while (decimalsPart.length && decimalsPart.search(/[., ]$/) > -1) {
+    decimalsPart = decimalsPart.slice(0, -1);
+  }
+
+  while (integerPart.length && integerPart[0].search(/[., ]/) > -1) {
+    integerPart = integerPart.slice(1);
+  }
+
+  //find the thousands/thousanths separators
+  if (integerPart && integerPart.search(/[., ]/) > 0) {
+    integerSeparator = integerPart[integerPart.search(/[., ]/)];
+    integerPart = integerPart.replace(/[., ]/g, "");
+  }
+
+  if (decimalsPart && decimalsPart.search(/[., ]/) > 0) {
+    decimalsSeparator = decimalsPart[decimalsPart.search(/[., ]/)];
+    decimalsPart = decimalsPart.replace(/[., ]/g, "");
+  }
+
+  if ((integerPart.length && !(/^[09#]+$/).test(integerPart)) || (decimalsPart.length && !(/^[09#]+$/).test(decimalsPart))) {return false};
+
+  // *********************************************************************************
+  //resolve length and padding
+  // *********************************************************************************
+
+  var padLeft, maxLeft, padRight, maxRight;
+  padLeft = integerPart.indexOf("0") >= 0 ? integerPart.length - integerPart.indexOf("0") : -1;
+  maxLeft = integerPart.length === 0 ||integerPart[0] === "0" || integerPart[0] === "9" ? integerPart.length : -1;
+  padRight = decimalsPart.indexOf("0") >= 0 ? decimalsPart.lastIndexOf("0")+1 : -1;
+  maxRight = decimalsPart.length === 0 || decimalsPart[decimalsPart.length-1] === "0" || decimalsPart[decimalsPart.length-1] === "9" ? decimalsPart.length : -1;
+
+  // *********************************************************************************
+  // output
+  // *********************************************************************************
+
+  var deconstructedFormat = {
+    negativeType: negativeType,
+    negativeLeftPos: negativeLeftPos,
+    negativeRightPos: negativeRightPos,
+    negativeLeftSymbol: negativeLeftSymbol,
+    negativeRightSymbol: negativeRightSymbol,
+    suffix: suffix,
+    prefix: prefix,
+    absMask: absMask,
+    decimalChar: decimalChar,
+    integerSeparator: integerSeparator,
+    decimalsSeparator: decimalsSeparator,
+    padLeft: padLeft,
+    maxLeft: maxLeft,
+    padRight: padRight,
+    maxRight: maxRight
+  }
+
+  return deconstructedFormat;
+};
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = simpleNumber;
+
+var _configure = __webpack_require__(5);
+
+var _configure2 = _interopRequireDefault(_configure);
+
+var _formatNumberWithString = __webpack_require__(2);
+
+var _formatNumberWithString2 = _interopRequireDefault(_formatNumberWithString);
+
+var _deconstructNumberFormat = __webpack_require__(0);
+
+var _deconstructNumberFormat2 = _interopRequireDefault(_deconstructNumberFormat);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var defaults = {
+  decimal: '.',
+  grouping: ','
+};
+
+function simpleNumber() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  var _defaults$options = _extends({}, defaults, options),
+      decimal = _defaults$options.decimal,
+      grouping = _defaults$options.grouping;
+
+  var localizer = {
+    formats: {
+      default: '-#' + grouping + '##0' + decimal
+    },
+
+    // TODO major bump consistent ordering
+    parse: function parse(value, culture, format) {
+      if (format) {
+        var data = (0, _deconstructNumberFormat2.default)(format),
+            negative = data.negativeLeftSymbol && value.indexOf(data.negativeLeftSymbol) !== -1 || data.negativeRightSymbol && value.indexOf(data.negativeRightSymbol) !== -1;
+
+        value = value.replace(data.negativeLeftSymbol, '').replace(data.negativeRightSymbol, '').replace(data.prefix, '').replace(data.suffix, '');
+
+        var halves = value.split(data.decimalChar);
+
+        if (data.integerSeperator) halves[0] = halves[0].replace(new RegExp('\\' + data.integerSeperator, 'g'));
+
+        if (data.decimalsSeparator) halves[1] = halves[1].replace(new RegExp('\\' + data.decimalsSeparator, 'g'));
+
+        if (halves[1] === '') halves.pop();
+
+        value = halves.join('.');
+        value = +value;
+
+        if (negative) value = -1 * value;
+      } else value = parseFloat(value);
+
+      return isNaN(value) ? null : value;
+    },
+    format: function format(value, _format) {
+      return (0, _formatNumberWithString2.default)(value, _format);
+    },
+    decimalChar: function decimalChar(format) {
+      return format && (0, _deconstructNumberFormat2.default)(format).decimalsSeparator || '.';
+    },
+    precision: function precision(format) {
+      var data = (0, _deconstructNumberFormat2.default)(format);
+      return data.maxRight !== -1 ? data.maxRight : null;
+    }
+  };
+
+  _configure2.default.setNumberLocalizer(localizer);
+  return localizer;
+}
+module.exports = exports['default'];
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var deconstructNumberFormat = __webpack_require__(0);
+var formatFactory = __webpack_require__(3);
+
+exports = module.exports = function formatNumberWithString(value, requiredFormat, overrideOptions) {
+
+  var deconstructedFormat = []
+
+  if (requiredFormat) deconstructedFormat = deconstructNumberFormat(requiredFormat.trim());
+  
+  value = (value === null ? '' : value);
+  value = value + ''; //make a string
+  value = value.length ? value.trim() : '';
+  
+  var options = [];
+  
+  var format = formatFactory({
+    negativeType: deconstructedFormat.negativeType,
+    negativeLeftSymbol: deconstructedFormat.negativeLeftSymbol,
+    negativeRightSymbol: deconstructedFormat.negativeRightSymbol,
+    negativeLeftOut: deconstructedFormat.negativeLeftPos === 0,
+    negativeRightOut: deconstructedFormat.negativeRightPos === 0,
+    prefix: deconstructedFormat.prefix,
+    suffix: deconstructedFormat.suffix,
+    integerSeparator: deconstructedFormat.integerSeparator,
+    decimalsSeparator: deconstructedFormat.decimalsSeparator,
+    decimal: deconstructedFormat.decimalChar,
+    padLeft: deconstructedFormat.padLeft,
+    padRight: deconstructedFormat.padRight,
+    round: deconstructedFormat.maxRight,
+    truncate: null
+  })
+
+  return format(value, overrideOptions);
+
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+
+module.exports = formatter;
+
+function formatter(options) {
+  options = options || {};
+
+
+  // *********************************************************************************************
+  // Set defaults for negatives
+  // options.negative, options.negativeOut, options.separator retained for backward compatibility
+  // *********************************************************************************************
+
+  // type of negative; default left
+  options.negativeType = options.negativeType || (options.negative === 'R' ? 'right' : 'left')
+
+  // negative symbols '-' or '()'
+  if (typeof options.negativeLeftSymbol !== 'string') {
+    switch (options.negativeType) {
+      case 'left':
+        options.negativeLeftSymbol = '-';
+        break;
+      case 'brackets':
+        options.negativeLeftSymbol = '(';
+        break;
+      default:
+        options.negativeLeftSymbol = '';
+    }
+  }
+  if (typeof options.negativeRightSymbol !== 'string') {
+    switch (options.negativeType) {
+      case 'right':
+        options.negativeRightSymbol = '-';
+        break;
+      case 'brackets':
+        options.negativeRightSymbol = ')';
+        break;
+      default:
+        options.negativeRightSymbol = '';
+    }
+  }
+
+  // whether negative symbol should be inside/outside prefix and suffix
+
+  if (typeof options.negativeLeftOut !== "boolean") {
+    options.negativeLeftOut = (options.negativeOut === false ? false : true);
+  }
+  if (typeof options.negativeRightOut !== "boolean") {
+    options.negativeRightOut = (options.negativeOut === false ? false : true);
+  }
+
+  //prefix and suffix
+  options.prefix = options.prefix || '';
+  options.suffix = options.suffix || '';
+
+  //separators
+  if (typeof options.integerSeparator !== 'string') {
+    options.integerSeparator = (typeof options.separator === 'string' ? options.separator : ',');
+  }
+  options.decimalsSeparator = typeof options.decimalsSeparator === 'string' ? options.decimalsSeparator : '';
+  options.decimal = options.decimal || '.';
+
+  //padders
+  options.padLeft = options.padLeft || -1 //default no padding
+  options.padRight = options.padRight || -1 //default no padding
+
+  function format(number, overrideOptions) {
+    overrideOptions = overrideOptions || {};
+
+    if (number || number === 0) {
+      number = '' + number;//convert number to string if it isn't already
+    } else {
+      return '';
+    }
+
+    //identify a negative number and make it absolute
+    var output = [];
+    var negative = number.charAt(0) === '-';
+    number = number.replace(/^\-/g, '');
+
+    //Prepare output with left hand negative and/or prefix
+    if (!options.negativeLeftOut && !overrideOptions.noUnits) {
+      output.push(options.prefix);
+    }
+    if (negative) {
+      output.push(options.negativeLeftSymbol);
+    }
+    if (options.negativeLeftOut && !overrideOptions.noUnits) {
+      output.push(options.prefix);
+    }
+
+    //Format core number
+    number = number.split('.');
+    if (options.round != null) round(number, options.round);
+    if (options.truncate != null) number[1] = truncate(number[1], options.truncate);
+    if (options.padLeft > 0) number[0] = padLeft(number[0], options.padLeft);
+    if (options.padRight > 0) number[1] = padRight(number[1], options.padRight);
+    if (!overrideOptions.noSeparator && number[1]) number[1] = addDecimalSeparators(number[1], options.decimalsSeparator);
+    if (!overrideOptions.noSeparator && number[0]) number[0] = addIntegerSeparators(number[0], options.integerSeparator);
+    output.push(number[0]);
+    if (number[1]) {
+      output.push(options.decimal);
+      output.push(number[1]);
+    }
+
+    //Prepare output with right hand negative and/or prefix
+    if (options.negativeRightOut && !overrideOptions.noUnits) {
+      output.push(options.suffix);
+    }
+    if (negative) {
+      output.push(options.negativeRightSymbol);
+    }
+    if (!options.negativeRightOut && !overrideOptions.noUnits) {
+      output.push(options.suffix);
+    }
+
+    //join output and return
+    return output.join('');
+  }
+
+  format.negative = options.negative;
+  format.negativeOut = options.negativeOut;
+  format.negativeType = options.negativeType;
+  format.negativeLeftOut = options.negativeLeftOut;
+  format.negativeLeftSymbol = options.negativeLeftSymbol;
+  format.negativeRightOut = options.negativeRightOut;
+  format.negativeRightSymbol = options.negativeRightSymbol;
+  format.prefix = options.prefix;
+  format.suffix = options.suffix;
+  format.separate = options.separate;
+  format.integerSeparator = options.integerSeparator;
+  format.decimalsSeparator = options.decimalsSeparator;
+  format.decimal = options.decimal;
+  format.padLeft = options.padLeft;
+  format.padRight = options.padRight;
+  format.truncate = options.truncate;
+  format.round = options.round;
+
+  function unformat(number, allowedSeparators) {
+    allowedSeparators = allowedSeparators || [];
+    if (options.allowedSeparators) {
+      options.allowedSeparators.forEach(function (s) { allowedSeparators.push (s); });
+    }
+    allowedSeparators.push(options.integerSeparator);
+    allowedSeparators.push(options.decimalsSeparator);
+    number = number.replace(options.prefix, '');
+    number = number.replace(options.suffix, '');
+    var newNumber = number;
+    do {
+      number = newNumber;
+      for (var i = 0; i < allowedSeparators.length; i++) {
+        newNumber = newNumber.replace(allowedSeparators[i], '');
+      }
+    } while (newNumber != number);
+    return number;
+  }
+  format.unformat = unformat;
+
+  function validate(number, allowedSeparators) {
+    number = unformat(number, allowedSeparators);
+    number = number.split(options.decimal);
+    if (number.length > 2) {
+      return false;
+    } else if (options.truncate != null && number[1] && number[1].length > options.truncate) {
+      return false;
+    }  else if (options.round != null && number[1] && number[1].length > options.round) {
+      return false;
+    } else {
+      return /^-?\d+\.?\d*$/.test(number);
+    }
+  }
+  return format;
+}
+
+//where x is already the integer part of the number
+function addIntegerSeparators(x, separator) {
+  x += '';
+  if (!separator) return x;
+  var rgx = /(\d+)(\d{3})/;
+  while (rgx.test(x)) {
+    x = x.replace(rgx, '$1' + separator + '$2');
+  }
+  return x;
+}
+
+//where x is already the decimal part of the number
+function addDecimalSeparators(x, separator) {
+  x += '';
+  if (!separator) return x;
+  var rgx = /(\d{3})(\d+)/;
+  while (rgx.test(x)) {
+    x = x.replace(rgx, '$1' + separator + '$2');
+  }
+  return x;
+}
+
+//where x is the integer part of the number
+function padLeft(x, padding) {
+  x = x + '';
+  var buf = [];
+  while (buf.length + x.length < padding) {
+    buf.push('0');
+  }
+  return buf.join('') + x;
+}
+
+//where x is the decimals part of the number
+function padRight(x, padding) {
+  if (x) {
+    x += '';
+  } else {
+    x = '';
+  }
+  var buf = [];
+  while (buf.length + x.length < padding) {
+    buf.push('0');
+  }
+  return x + buf.join('');
+}
+function truncate(x, length) {
+  if (x) {
+    x += '';
+  }
+  if (x && x.length > length) {
+    return x.substr(0, length);
+  } else {
+    return x;
+  }
+}
+
+//where number is an array with 0th item as integer string and 1st item as decimal string (no negatives)
+function round(number, places) {
+  if (number[1] && places >= 0 && number[1].length > places) {
+    //truncate to correct number of decimal places
+    var decim = number[1].slice(0, places);
+    //if next digit was >= 5 we need to round up
+    if (+(number[1].substr(places, 1)) >= 5) {
+      //But first count leading zeros as converting to a number will loose them
+      var leadingzeros = "";
+      while (decim.charAt(0)==="0") {
+        leadingzeros = leadingzeros + "0";
+        decim = decim.substr(1);
+      }
+      //Then we can change decim to a number and add 1 before replacing leading zeros
+      decim = (+decim + 1) + '';
+      decim = leadingzeros + decim;
+      if (decim.length > places) {
+        //adding one has made it longer
+        number[0] = (+number[0]+ +decim.charAt(0)) + ''; //add value of firstchar to the integer part
+        decim = decim.substring(1);   //ignore the 1st char at the beginning which is the carry to the integer part
+      }
+    }
+    number[1] = decim;
+  }
+  return number;
+}
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*** IMPORTS FROM imports-loader ***/
+var module = __webpack_require__(1);
+
+'use strict';
+
+if (typeof module === 'function') {
+  module();
+}
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = window.ReactWidgets;
+
+/***/ })
+/******/ ]);
 //# sourceMappingURL=react-widgets-simple-number.js.map

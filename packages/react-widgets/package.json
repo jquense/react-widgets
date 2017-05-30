@@ -108,7 +108,7 @@
     "teaspoon": "^6.4.1",
     "uncontrollable": "^3.2.3",
     "url-loader": "^0.5.7",
-    "webpack": "^1.14.0"
+    "webpack": "^2.6.1"
   },
   "browserify": {
     "transform": [

@@ -36,6 +36,6 @@
     "moment": "^2.17.1",
     "react-widgets": "^4.0.0-rc.6",
     "rimraf": "^2.5.4",
-    "webpack": "^1.14.0"
+    "webpack": "^2.6.1"
   }
 }

@@ -1,7 +1,4 @@
-var merge = require('webpack-merge');
 var path = require('path')
-var webpack = require('webpack')
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var appConfig = require('../../tools/app-config');
 var pkg = require('./package.json');
@@ -31,28 +28,40 @@ var config = appConfig(__dirname, {
   },
 
   module: {
-    loaders: [
-      { test: apiRegex, loader: 'babel-loader' },
-      { test: apiRegex, loader: path.join(__dirname, './tools/apiLoader'),
-        query: {
-          template: require.resolve('./templates/doc-page')
-        }
+    rules: [
+      {
+        test: apiRegex,
+        use: [
+          ...appConfig.loaders.js(),
+          {
+            loader: path.join(__dirname, './tools/apiLoader'),
+            options: {
+              template: require.resolve('./templates/doc-page')
+            }
+          },
+        ]
       },
-      { test: /.md$/, exclude: apiRegex, loader: 'babel-loader' },
-      { test: /.md$/, exclude: apiRegex, loader: path.join(__dirname, './tools/apiLoader'),
-        query: {
-          template: require.resolve('./templates/md-component')
-        }
+      {
+        test: /.md$/,
+        exclude: apiRegex,
+        use: [
+          ...appConfig.loaders.js(),
+          {
+            loader: path.join(__dirname, './tools/apiLoader'),
+            options: {
+              template: require.resolve('./templates/md-component'),
+            }
+          },
+        ]
       },
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
+    appConfig.plugins.define({
       '__VERSION__': JSON.stringify(pkg.version),
     }),
-    new HtmlWebpackPlugin({
+    appConfig.plugins.html({
       template: './templates/index.html',
-      inject: true,
     }),
   ],
   resolve: {
@@ -68,7 +77,7 @@ var config = appConfig(__dirname, {
 })
 
 if (PRODUCTION) {
-  config = merge(config, {
+  config = appConfig.merge(config, {
     devtool: 'source-map',
 
     output: {
@@ -78,13 +87,7 @@ if (PRODUCTION) {
     },
 
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        }
-      }),
-      new webpack.optimize.DedupePlugin(),
-      new webpack.BannerPlugin(
+      appConfig.plugins.banner(
         '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
         { entryOnly : true }
       )
@@ -92,8 +95,7 @@ if (PRODUCTION) {
   })
 }
 else {
-  config = merge(config, {
-
+  config = appConfig.merge(config, {
     resolve: {
       alias: {
         'react-widgets$': require.resolve('../react-widgets/src/index.js'),
@@ -104,4 +106,5 @@ else {
   })
 }
 
+console.log(config.module.rules)
 module.exports = config;

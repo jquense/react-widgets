@@ -1,5 +1,5 @@
 var path = require('path')
-var webpack = require('webpack');
+var { plugins, rules } = require('../../tools/app-config');
 
 module.exports = {
   devtool: 'source-map',
@@ -13,8 +13,8 @@ module.exports = {
     libraryTarget: 'umd'
   },
   module: {
-    loaders: [
-      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
+    rules: [
+      rules.js()
     ]
   },
   externals: {
@@ -32,19 +32,17 @@ module.exports = {
     },
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      }
+    plugins.define(),
+    plugins.uglify(),
+    plugins.banner({
+      banner:'(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
+      entryOnly : true
     }),
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.BannerPlugin(
-      '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
-      { entryOnly : true }
-    )
   ],
   node: {
     Buffer: false,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
   },
 }

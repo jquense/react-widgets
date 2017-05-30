@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 
 import _DropdownList from 'react-widgets/lib/DropdownList';
 import withVirtualList from 'react-widgets-virtualized';

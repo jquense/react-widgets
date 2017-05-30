@@ -539,7 +539,7 @@ class Multiselect extends React.Component {
             dropUp={dropUp}
             open={open}
             duration={duration}
-            onOpening={()=> this.refs.list.forceUpdate()}
+            onEntering={()=> this.refs.list.forceUpdate()}
           >
             <div>
               {this.renderList(messages)}

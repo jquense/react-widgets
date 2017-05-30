@@ -1,31 +1,27 @@
-var merge = require('webpack-merge');
-var webpack = require('webpack');
+const path = require('path');
+const merge = require('webpack-merge');
+const { plugins, rules, loaders } = require('webpack-atoms');
 
 module.exports = function (config) {
   return merge({}, config, {
     devtool: 'source-map',
-
+    entry: `${loaders.imports().loader}?` +
+      `module=${path.resolve(process.cwd(), config.entry)}` +
+      `!${require.resolve('./shim.js')}`,
     output: {
       libraryTarget: 'var'
     },
     module: {
-      loaders: [
-        { test: /\.json$/, loader: 'json-loader' },
-        { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
-        { test: /\.js$/, loader: 'imports-loader?define=>false' },
+      rules: [
+        rules.js()
       ]
     },
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        }
+      plugins.define(),
+      plugins.banner({
+        banner:'(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
+        entryOnly : true,
       }),
-      new webpack.optimize.DedupePlugin(),
-      new webpack.BannerPlugin(
-        '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
-        { entryOnly : true }
-      )
     ],
     externals: {
       'react': 'window.React',

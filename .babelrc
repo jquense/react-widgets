@@ -1,11 +1,12 @@
 {
   "presets": [
     ["jason", {
+      "debug": true,
       "targets": {
         "browsers": [
           "> 1%",
           "last 4 versions",
-          "IE >= 9"
+          "not ie < 9"
         ]
       }
     }]
