@@ -267,7 +267,7 @@ const propTypes = {
             open={open}
             dropUp={dropUp}
             duration={duration}
-            onOpening={() => this.refs.list.forceUpdate()}
+            onEntering={() => this.refs.list.forceUpdate()}
           >
             <div>
               {this.renderList(messages)}

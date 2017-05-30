@@ -376,7 +376,7 @@ let propTypes = {
         dropUp={dropUp}
         duration={duration}
         open={open === popups.TIME}
-        onOpening={() => this.refs.timePopup.forceUpdate()}
+        onEntering={() => this.refs.timePopup.forceUpdate()}
       >
         <div>
           <TimeList

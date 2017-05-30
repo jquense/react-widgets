@@ -116,18 +116,19 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
   }
 
   getStateFromProps(props) {
-    let { value, data, searchTerm, filter, minLength, caseSensitive } = props
+    let { open,value, data, searchTerm, filter, minLength, caseSensitive } = props
 
     let { accessors, list } = this
     let initialIdx = accessors.indexOf(data, value)
 
-    data = Filter.filter(data, {
-      filter,
-      searchTerm,
-      minLength,
-      caseSensitive,
-      textField: this.accessors.text,
-    })
+    if (open)
+      data = Filter.filter(data, {
+        filter,
+        searchTerm,
+        minLength,
+        caseSensitive,
+        textField: this.accessors.text,
+      })
 
     list.setData(data)
 
@@ -271,8 +272,8 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
             open={open}
             dropUp={dropUp}
             duration={duration}
-            onOpened={this.focus}
-            onOpening={() => this.refs.list.forceUpdate()}
+            onEntered={() => this.focus()}
+            onEntering={() => this.refs.list.forceUpdate()}
           >
             {this.renderList(messages)}
           </Popup>}

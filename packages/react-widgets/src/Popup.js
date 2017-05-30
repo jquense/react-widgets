@@ -9,7 +9,8 @@ class Popup extends React.Component {
   static propTypes = {
     open: PropTypes.bool,
     dropUp: PropTypes.bool,
-    onOpening: PropTypes.func,
+    onEntering: PropTypes.func,
+    onEntered: PropTypes.func,
   };
 
   static defaultProps = {
@@ -17,7 +18,7 @@ class Popup extends React.Component {
   };
 
   render() {
-    let { className, dropUp, open, onOpening, ...props } = this.props
+    let { className, dropUp, open, ...props } = this.props
 
     let child = React.Children.only(this.props.children)
 
@@ -25,7 +26,6 @@ class Popup extends React.Component {
       <SlideDownTransition
         {...props}
         in={open}
-        onEntering={onOpening}
         className={cn(className,
           'rw-popup-container',
           dropUp && 'rw-dropup'
