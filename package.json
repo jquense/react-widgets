@@ -8,7 +8,7 @@
     "tdd": "npm run rw tdd",
     "start": "npm run docs start",
     "start-dev": "lerna exec --scope storybook npm start",
-    "prerelease": "lerna publish --npm-tag=next"
+    "prerelease": "lerna bootstrap && lerna publish --npm-tag=next"
   },
   "dependencies": {
     "babel-eslint": "^7.2.3",
