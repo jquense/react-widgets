@@ -35,7 +35,7 @@ module.exports = {
     plugins.define(),
     plugins.uglify(),
     plugins.banner({
-      banner:'(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
+      banner: '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
       entryOnly : true
     }),
   ],

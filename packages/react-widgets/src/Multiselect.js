@@ -121,7 +121,6 @@ class Multiselect extends React.Component {
     this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
-      willHandle: this.handleFocusWillChange,
       didHandle: this.handleFocusDidChange,
     })
 
@@ -174,12 +173,8 @@ class Multiselect extends React.Component {
     }
   }
 
-  handleFocusWillChange = (focused) => {
-    if (focused) this.focus()
-  }
-
   handleFocusDidChange = (focused) => {
-    if (focused) return
+    if (focused) return this.focus();
 
     this.close()
 
@@ -579,7 +574,7 @@ class Multiselect extends React.Component {
   }
 
   focus() {
-    this.refs.input &&
+    if (this.refs.input)
       this.refs.input.focus()
   }
 

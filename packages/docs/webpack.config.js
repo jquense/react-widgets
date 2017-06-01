@@ -87,10 +87,10 @@ if (PRODUCTION) {
     },
 
     plugins: [
-      appConfig.plugins.banner(
-        '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
-        { entryOnly : true }
-      )
+      appConfig.plugins.banner({
+        banner: '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
+        entryOnly : true
+      }),
     ]
   })
 }
@@ -106,5 +106,4 @@ else {
   })
 }
 
-console.log(config.module.rules)
 module.exports = config;

@@ -10,7 +10,9 @@ export default function createFocusManager(component, options) {
     didHandle(focused, event) {
       let handler = this.props[focused ? 'onFocus' : 'onBlur']
       handler && handler(event);
-      didHandle && didHandle(focused, event);
+
+      if (didHandle && !event.isWidgetDefaultPrevented)
+        didHandle(focused, event);
     }
   })
 }

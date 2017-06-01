@@ -1,4 +1,4 @@
-var stripIndent = require('common-tags').stripIndent
+const { stripIndent } = require('common-tags')
 
 module.exports = {
   value: stripIndent`
@@ -74,7 +74,7 @@ module.exports = {
   `,
 
   caseSensitive: stripIndent`
-    Determines wether text case is ignored when filtering. Only applicable
+    Determines whether text case is ignored when filtering. Only applicable
     when \`filter\` is one of the built-in methods.
   `,
 

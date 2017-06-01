@@ -162,7 +162,7 @@ class Calendar extends React.Component {
   }
 
   handleFocusWillChange = () => {
-    if (+this.props.tabIndex === -1)
+    if (this.props.tabIndex == -1)
       return false
   }
 

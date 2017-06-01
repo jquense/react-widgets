@@ -15,7 +15,13 @@ const EMPTY_DATA_STATE = {}
 
 const propTypes = {
   data: PropTypes.array,
-  dataState: PropTypes.object,
+  dataState: PropTypes.shape({
+    sortedKeys: PropTypes.array,
+    groups: PropTypes.object,
+    data: PropTypes.array,
+    sequentialData: PropTypes.array,
+  }),
+
   onSelect: PropTypes.func,
   onMove: PropTypes.func,
 

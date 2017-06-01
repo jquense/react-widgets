@@ -53,6 +53,22 @@ class VirtualList extends React.Component {
     type: 'variable',
   }
 
+  static getVirtualListProps({
+    type,
+    itemSizeGetter,
+    itemSizeEstimator,
+    pageSize = 20,
+    threshold = 300,
+    useStaticSize,
+    useTranslate3d,
+    ...props
+  }) {
+    return {
+      props,
+      listProps: { type, itemSizeGetter, itemSizeEstimator, pageSize, threshold, useStaticSize, useTranslate3d },
+    }
+  }
+
   static getDataState(data, { groupBy }, lastState) {
     let initial = { flatData: data }
     lastState = lastState || initial;

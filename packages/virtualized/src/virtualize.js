@@ -12,29 +12,13 @@ export default function virtualize(Widget) {
     static propTypes = virtualListPropTypes;
 
     render() {
-      let {
-        type,
-        itemSizeGetter,
-        itemSizeEstimator,
-        pageSize = 20,
-        threshold = 300,
-        useStaticSize,
-        useTranslate3d,
-        ...props } = this.props;
+      const { listProps, props } = VirtualList.getVirtualListProps(this.props)
 
       return (
         <Widget
           {...props}
           listComponent={VirtualList}
-          listProps={{
-            type,
-            itemSizeGetter,
-            itemSizeEstimator,
-            pageSize,
-            threshold,
-            useStaticSize,
-            useTranslate3d,
-          }}
+          listProps={listProps}
         />
       )
     }

@@ -49,16 +49,14 @@ let propTypes = {
   autoFocus: PropTypes.bool,
   disabled: CustomPropTypes.disabled.acceptsArray,
   readOnly: CustomPropTypes.disabled,
-
   suggest: Filter.propTypes.filter,
-
   busy: PropTypes.bool,
-
   delay: PropTypes.number,
   dropUp: PropTypes.bool,
   duration: PropTypes.number,
 
   placeholder: PropTypes.string,
+
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
   messages: PropTypes.shape({
@@ -93,7 +91,6 @@ let propTypes = {
     this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
-      willHandle: this.handleFocusWillChange,
       didHandle: this.handleFocusChanged,
     })
 
@@ -157,11 +154,8 @@ let propTypes = {
     }
   }
 
-  handleFocusWillChange = focused => {
-    if (!focused && this.refs.input) this.refs.input.accept()
-  }
-
   handleFocusChanged = focused => {
+    if (!focused && this.refs.input) this.refs.input.accept()
     if (!focused) this.close()
   }
 
@@ -370,7 +364,8 @@ let propTypes = {
   }
 
   focus() {
-    this.refs.input && this.refs.input.focus()
+    if (this.refs.input)
+      this.refs.input.focus()
   }
 
   change(nextValue, typing, originalEvent) {
