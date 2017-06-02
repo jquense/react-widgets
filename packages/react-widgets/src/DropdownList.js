@@ -181,10 +181,10 @@ class DropdownList extends React.Component {
 
   @widgetEditable
   handleKeyDown = (e) => {
-    let { key, altKey } = e
+    let { key, altKey, ctrlKey } = e
     let { list } = this;
 
-    let { open, onKeyDown, filter } = this.props;
+    let { open, onKeyDown, filter, searchTerm } = this.props;
     let { focusedItem, selectedItem } = this.state;
 
     let createIsFocused = focusedItem === CREATE_OPTION;
@@ -217,6 +217,10 @@ class DropdownList extends React.Component {
     else if (key === 'Escape' && open) {
       e.preventDefault()
       closeWithFocus()
+    }
+    else if (key === 'Enter' && open && ctrlKey && canCreate) {
+      e.preventDefault()
+     this.handleCreate(searchTerm, e)
     }
     else if ((key === 'Enter' || (key === ' ' && !filter)) && open) {
       e.preventDefault()
