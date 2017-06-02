@@ -15,6 +15,7 @@ import WidgetPicker from './WidgetPicker'
 import Select from './Select'
 import Popup from './Popup'
 import List from './List'
+import AddToListOption from './AddToListOption';
 import DropdownListInput from './DropdownListInput'
 import { getMessages } from './messages'
 
@@ -29,8 +30,12 @@ import withRightToLeft from './util/withRightToLeft'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
-@withRightToLeft class DropdownList extends React.Component {
+const CREATE_OPTION = {};
+
+@withRightToLeft
+class DropdownList extends React.Component {
   static propTypes = {
+    ...Popup.propTypes,
     ...Filter.propTypes,
 
     //-- controlled props -----------
@@ -43,6 +48,7 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
     data: PropTypes.array,
     valueField: CustomPropTypes.accessor,
     textField: CustomPropTypes.accessor,
+    allowCreate: PropTypes.oneOf([true, false, 'onFilter']),
 
     valueComponent: CustomPropTypes.elementType,
     itemComponent: CustomPropTypes.elementType,
@@ -52,13 +58,11 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
     groupBy: CustomPropTypes.accessor,
 
     onSelect: PropTypes.func,
-    searchTerm: PropTypes.string,
+    onCreate: PropTypes.func,
     onSearch: PropTypes.func,
-    busy: PropTypes.bool,
 
-    delay: PropTypes.number,
-    dropUp: PropTypes.bool,
-    duration: PropTypes.number,
+    searchTerm: PropTypes.string,
+    busy: PropTypes.bool,
 
     placeholder: PropTypes.string,
 
@@ -73,18 +77,15 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
       emptyList: CustomPropTypes.message,
       emptyFilter: CustomPropTypes.message,
       filterPlaceholder: PropTypes.string,
+      createOption: CustomPropTypes.message,
     }),
   }
 
   static defaultProps = {
-    delay: 500,
-    value: '',
-    open: false,
     data: [],
+    delay: 500,
     searchTerm: '',
-    minLength: 1,
-    filter: false,
-    caseSensitive: false,
+    allowCreate: false,
     listComponent: List,
   }
 
@@ -116,7 +117,9 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
   }
 
   getStateFromProps(props) {
-    let { open,value, data, searchTerm, filter, minLength, caseSensitive } = props
+    let {
+      open, value, data, searchTerm, filter, minLength, caseSensitive,
+    } = props
 
     let { accessors, list } = this
     let initialIdx = accessors.indexOf(data, value)
@@ -145,23 +148,138 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
     if (!focused) this.close()
   }
 
-  renderFilter(messages) {
-    return (
-      <WidgetPicker ref="filterWrapper" className="rw-filter-input rw-input">
-        <Select icon="search" role="presentation" aria-hidden="true" />
-        <input
-          ref="filter"
-          value={this.props.searchTerm}
-          className="rw-input-reset"
-          placeholder={messages.filterPlaceholder(this.props)}
-          onChange={e => notify(this.props.onSearch, e.target.value)}
-        />
-      </WidgetPicker>
-    )
+
+  @widgetEditable
+  handleSelect = (dataItem, originalEvent) => {
+    if (dataItem === undefined || dataItem === CREATE_OPTION) {
+      this.handleCreate(this.props.searchTerm)
+      return
+    }
+
+    notify(this.props.onSelect, [dataItem, { originalEvent }])
+
+    this.change(dataItem, originalEvent)
+    this.close()
+    this.focus(this)
+  }
+
+  @widgetEditable
+  handleCreate = (searchTerm = '') => {
+    notify(this.props.onCreate, searchTerm)
+    if (searchTerm) notify(this.props.onSearch, [''])
+
+    this.close()
+    this.focus(this)
+  };
+
+  @widgetEditable
+  handleClick = e => {
+    this.focus()
+    this.toggle()
+    notify(this.props.onClick, e)
+  }
+
+  @widgetEditable
+  handleKeyDown = (e) => {
+    let { key, altKey } = e
+    let { list } = this;
+
+    let { open, onKeyDown, filter } = this.props;
+    let { focusedItem, selectedItem } = this.state;
+
+    let createIsFocused = focusedItem === CREATE_OPTION;
+    let canCreate = this.allowCreate()
+
+    notify(onKeyDown, [e])
+
+    let closeWithFocus = () => {
+      this.close()
+      findDOMNode(this).focus()
+    }
+
+    const change = item => item != null && this.change(item, e)
+    const focusItem = item => this.setState({ focusedItem: item })
+
+    if (e.defaultPrevented) return
+
+    if (key === 'End') {
+      e.preventDefault()
+
+      if (open) focusItem(list.last())
+      else      change(list.last())
+    }
+    else if (key === 'Home') {
+      e.preventDefault()
+
+      if (open) focusItem(list.first())
+      else change(list.first())
+    }
+    else if (key === 'Escape' && open) {
+      e.preventDefault()
+      closeWithFocus()
+    }
+    else if ((key === 'Enter' || (key === ' ' && !filter)) && open) {
+      e.preventDefault()
+      this.handleSelect(focusedItem, e)
+    }
+    else if (key === ' ' && !open) {
+      e.preventDefault()
+      this.open()
+    }
+    else if (key === 'ArrowDown') {
+      e.preventDefault()
+
+      if (altKey) return this.open()
+      if (!open)  change(list.next(selectedItem))
+
+      let next = list.next(focusedItem)
+      let creating = createIsFocused || (canCreate && focusedItem === next);
+
+      focusItem(creating ? CREATE_OPTION : next)
+    }
+    else if (key === 'ArrowUp') {
+      e.preventDefault()
+
+      if (altKey) return closeWithFocus()
+      if (!open)  return change(list.prev(selectedItem))
+
+      focusItem(createIsFocused ? list.last() : list.prev(focusedItem))
+    }
+  }
+
+  @widgetEditable
+  handleKeyPress = e => {
+    notify(this.props.onKeyPress, [e])
+    if (e.defaultPrevented) return
+
+    if (!(this.props.filter && this.props.open))
+      this.search(String.fromCharCode(e.which), item => {
+        this.mounted() && this.props.open
+          ? this.setState({ focusedItem: item })
+          : item && this.change(item, e)
+      })
+  }
+
+  change(nextValue, originalEvent) {
+    let { onChange, onSearch, searchTerm, value: lastValue } = this.props
+
+    if (!this.accessors.matches(nextValue, lastValue)) {
+      notify(onChange, [
+        nextValue,
+        {
+          originalEvent,
+          lastValue,
+          searchTerm,
+        },
+      ])
+
+      notify(onSearch, ['', originalEvent])
+      this.close()
+    }
   }
 
   renderList(messages) {
-    let { open, filter, data } = this.props
+    let { open, filter, data, searchTerm, onSearch } = this.props
     let { selectedItem, focusedItem } = this.state
     let { value, text } = this.accessors
 
@@ -170,7 +288,21 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
     return (
       <div>
-        {filter && this.renderFilter(messages)}
+        {filter && (
+          <WidgetPicker
+            ref="filterWrapper"
+            className="rw-filter-input rw-input"
+          >
+            <input
+              ref="filter"
+              value={searchTerm}
+              className="rw-input-reset"
+              placeholder={messages.filterPlaceholder(this.props)}
+              onChange={e => notify(onSearch, e.target.value)}
+            />
+            <Select icon="search" role="presentation" aria-hidden="true" />
+          </WidgetPicker>
+        )}
         <List
           {...props}
           ref="list"
@@ -189,6 +321,16 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
             emptyList: data.length ? messages.emptyFilter : messages.emptyList,
           }}
         />
+        {this.allowCreate() && (
+          <AddToListOption
+            id={this.createId}
+            searchTerm={searchTerm}
+            onSelect={this.handleCreate}
+            focused={!focusedItem || focusedItem === CREATE_OPTION}
+          >
+            {messages.createOption(this.props)}
+          </AddToListOption>
+        )}
       </div>
     )
   }
@@ -281,110 +423,6 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
     )
   }
 
-  @widgetEditable handleSelect = (data, originalEvent) => {
-    this.close()
-
-    notify(this.props.onSelect, [
-      data,
-      {
-        originalEvent,
-      },
-    ])
-
-    this.change(data, originalEvent)
-    this.focus(this)
-  }
-
-  @widgetEditable handleClick = e => {
-    this.toggle()
-    notify(this.props.onClick, e)
-  }
-
-  @widgetEditable handleKeyDown = e => {
-    let key = e.key,
-      alt = e.altKey,
-      list = this.list,
-      filtering = this.props.filter,
-      focusedItem = this.state.focusedItem,
-      selectedItem = this.state.selectedItem,
-      isOpen = this.props.open
-
-    let closeWithFocus = () => {
-      this.close()
-      findDOMNode(this).focus()
-    }
-
-    notify(this.props.onKeyDown, [e])
-
-    let change = (item, fromList) => {
-      if (item == null) return
-      fromList ? this.handleSelect(item, e) : this.change(item, e)
-    }
-
-    if (e.defaultPrevented) return
-
-    if (key === 'End') {
-      e.preventDefault()
-
-      if (isOpen) this.setState({ focusedItem: list.last() })
-      else change(list.last())
-    } else if (key === 'Home') {
-      e.preventDefault()
-
-      if (isOpen) this.setState({ focusedItem: list.first() })
-      else change(list.first())
-    } else if (key === 'Escape' && isOpen) {
-      e.preventDefault()
-      closeWithFocus()
-    } else if ((key === 'Enter' || (key === ' ' && !filtering)) && isOpen) {
-      e.preventDefault()
-      change(this.state.focusedItem, true)
-    } else if (key === ' ' && !isOpen) {
-      e.preventDefault()
-      this.open()
-    } else if (key === 'ArrowDown') {
-      if (alt) this.open()
-      else if (isOpen) this.setState({ focusedItem: list.next(focusedItem) })
-      else change(list.next(selectedItem))
-      e.preventDefault()
-    } else if (key === 'ArrowUp') {
-      if (alt) closeWithFocus()
-      else if (isOpen) this.setState({ focusedItem: list.prev(focusedItem) })
-      else change(list.prev(selectedItem))
-      e.preventDefault()
-    }
-  }
-
-  @widgetEditable handleKeyPress = e => {
-    notify(this.props.onKeyPress, [e])
-    if (e.defaultPrevented) return
-
-    if (!(this.props.filter && this.props.open))
-      this.search(String.fromCharCode(e.which), item => {
-        this.mounted() && this.props.open
-          ? this.setState({ focusedItem: item })
-          : item && this.change(item, e)
-      })
-  }
-
-  change(nextValue, originalEvent) {
-    let { onChange, onSearch, searchTerm, value: lastValue } = this.props
-
-    if (!this.accessors.matches(nextValue, lastValue)) {
-      notify(onChange, [
-        nextValue,
-        {
-          originalEvent,
-          lastValue,
-          searchTerm,
-        },
-      ])
-
-      notify(onSearch, ['', originalEvent])
-      this.close()
-    }
-  }
-
   focus = target => {
     let { filter, open } = this.props
     let inst = target || (filter && open ? this.refs.filter : this.refs.input)
@@ -425,6 +463,27 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
   toggle() {
     this.props.open ? this.close() : this.open()
+  }
+
+  allowCreate() {
+    let { searchTerm, onCreate, allowCreate } = this.props;
+
+    return !!(
+      onCreate &&
+      (allowCreate === true ||
+      (allowCreate === 'onFilter' && searchTerm)) &&
+      !this.hasExtactMatch()
+    )
+  }
+
+  hasExtactMatch() {
+    let {searchTerm, caseSensitive, filter } = this.props;
+    let { data } = this.state;
+    let { text } = this.accessors;
+    let lower = text => caseSensitive ? text : text.toLowerCase();
+
+    // if there is an exact match on textFields:
+    return filter && data.some(v => lower(text(v)) === lower(searchTerm))
   }
 }
 

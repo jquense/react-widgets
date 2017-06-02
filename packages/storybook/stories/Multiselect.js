@@ -1,55 +1,55 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
+import React from 'react'
+import { storiesOf } from '@storybook/react'
 
-import { action } from './helpers';
-import Container from './Container';
-import Multiselect from 'react-widgets/lib/Multiselect';
+import { action } from './helpers'
+import Container from './Container'
+import Multiselect from 'react-widgets/lib/Multiselect'
 
-let generateNames = global.generateNames;
+let generateNames = global.generateNames
 
 let props = {
   data: generateNames(),
   valueField: 'id',
   textField: 'fullName',
-  onChange: action('change')
+  onChange: action('change'),
 }
 
 storiesOf('Multiselect', module)
-  .add('Multiselect', () =>
+  .add('Multiselect', () => (
+    <Container>
+      <Multiselect {...props} defaultValue={props.data.slice(0, 2)} />
+    </Container>
+  ))
+  .add('Create tags', () => (
     <Container>
       <Multiselect
         {...props}
+        onCreate={action('onCreate')}
         defaultValue={props.data.slice(0, 2)}
       />
     </Container>
-  )
-  .add('Create tags', () =>
+  ))
+  .add('Create tags: always', () => (
     <Container>
       <Multiselect
         {...props}
-        onCreate={()=>{}}
+        allowCreate
+        onCreate={action('onCreate')}
         defaultValue={props.data.slice(0, 2)}
       />
     </Container>
-  )
-  .add('open', () =>
+  ))
+  .add('open', () => (
     <Container>
-      <Multiselect
-        {...props}
-        open
-      />
+      <Multiselect {...props} open />
     </Container>
-  )
-  .add('busy', () =>
+  ))
+  .add('busy', () => (
     <Container>
-      <Multiselect
-        {...props}
-        busy
-        defaultValue={props.data.slice(0, 3)}
-      />
+      <Multiselect {...props} busy defaultValue={props.data.slice(0, 3)} />
     </Container>
-  )
-  .add('right to left', () =>
+  ))
+  .add('right to left', () => (
     <Container>
       <Multiselect
         {...props}
@@ -58,17 +58,13 @@ storiesOf('Multiselect', module)
         defaultValue={props.data.slice(0, 3)}
       />
     </Container>
-  )
-  .add('disabled', () =>
+  ))
+  .add('disabled', () => (
     <Container>
-      <Multiselect
-        {...props}
-        disabled
-        defaultValue={props.data.slice(0, 3)}
-      />
+      <Multiselect {...props} disabled defaultValue={props.data.slice(0, 3)} />
     </Container>
-  )
-  .add('disabled tags', () =>
+  ))
+  .add('disabled tags', () => (
     <Container>
       <Multiselect
         {...props}
@@ -76,36 +72,32 @@ storiesOf('Multiselect', module)
         defaultValue={props.data.slice(0, 3)}
       />
     </Container>
-  )
-  .add('readonly', () =>
+  ))
+  .add('readonly', () => (
     <Container>
-      <Multiselect
-        {...props}
-        readOnly
-        defaultValue={props.data.slice(0, 3)}
-      />
+      <Multiselect {...props} readOnly defaultValue={props.data.slice(0, 3)} />
     </Container>
-  )
-  .add('long tags', () =>
+  ))
+  .add('long tags', () => (
     <Container>
       <Multiselect
         style={{ width: 200 }}
         defaultValue={['john jacob jingleheimer schmidt']}
       />
     </Container>
-  )
-  .add('tag component', () =>
+  ))
+  .add('tag component', () => (
     <Container>
       <Multiselect
         {...props}
-        tagComponent={({ item }) =>
+        tagComponent={({ item }) => (
           <span>
             <strong>{item.first}</strong>
             {' '}
             <em>{item.last}</em>
           </span>
-        }
+        )}
         defaultValue={props.data.slice(0, 3)}
       />
     </Container>
-  )
+  ))

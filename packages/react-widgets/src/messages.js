@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const messages = {
   moveBack: 'Navigate back',
@@ -13,21 +13,23 @@ const messages = {
   placeholder: '',
   filterPlaceholder: '',
 
-  emptyList:   'There are no items in this list',
+  emptyList: 'There are no items in this list',
   emptyFilter: 'The filter returned no results',
 
-  createNewTag: ({ searchTerm }) => [
-    <strong key='_'>{`"${searchTerm}"`}</strong>,
-    ' (create new tag)'
+  createOption: ({ searchTerm }) => [
+    ' Create option',
+    searchTerm && ' ',
+    searchTerm && <strong key="_">{`"${searchTerm}"`}</strong>,
   ],
+
   tagsLabel: 'Selected items',
   removeLabel: 'Remove selected item',
-  noneSelected:  'no selected items',
+  noneSelected: 'no selected items',
   selectedItems: labels => `Selected items: ${labels.join(', ')}`,
 
   // number
   increment: 'Increment value',
-  decrement:  'Decrement value',
+  decrement: 'Decrement value',
 }
 
 export function getMessages(defaults = {}) {
@@ -36,9 +38,8 @@ export function getMessages(defaults = {}) {
     let value = defaults[message]
     if (value == null) value = messages[message]
 
-    processed[message] = typeof value === 'function'
-      ? value : (() => value)
+    processed[message] = typeof value === 'function' ? value : () => value
   })
 
-  return processed;
+  return processed
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
+import { action } from './helpers'
 import Container from './Container';
 import DropdownList from 'react-widgets/lib/DropdownList';
 
@@ -30,6 +31,25 @@ storiesOf('DropdownList', module)
       />
     </Container>
   )
+  .add('Create option', () => (
+    <Container>
+      <DropdownList
+        {...props}
+        filter
+        allowCreate="onFilter"
+        onCreate={action('onCreate')}
+      />
+    </Container>
+  ))
+  .add('Create option: always', () => (
+    <Container>
+      <DropdownList
+        {...props}
+        allowCreate
+        onCreate={action('onCreate')}
+      />
+    </Container>
+  ))
   .add('no filter', () =>
     <Container>
       <DropdownList
