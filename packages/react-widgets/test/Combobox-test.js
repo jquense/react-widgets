@@ -105,7 +105,7 @@ describe('Combobox', function(){
     expect(inst.props('open')).to.equal(true)
 
     inst.single('Popup[open]')
-    inst.single('WidgetPicker[open]')
+    inst.single('Widget[open]')
     inst.single('ComboboxInput[aria-expanded]')
   })
 
@@ -321,10 +321,6 @@ describe('Combobox', function(){
     .trigger('keyDown', { key: 'ArrowDown' })
       .tap(assertChangedWithValue(1))
     .trigger('keyDown', { key: 'ArrowUp' })
-      .tap(assertChangedWithValue(0))
-    .trigger('keyDown', { key: 'End' })
-      .tap(assertChangedWithValue(dataList.length - 1))
-    .trigger('keyDown', { key: 'Home' })
       .tap(assertChangedWithValue(0))
   })
 

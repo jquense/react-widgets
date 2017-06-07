@@ -1,3 +1,4 @@
+// @flow
 import cn from 'classnames';
 import closest from 'dom-helpers/query/closest';
 import PropTypes from 'prop-types';
@@ -206,7 +207,7 @@ class Multiselect extends React.Component {
   };
 
   handleInputChange = (e) => {
-    notify(this.props.onSearch, [ e.target.value ])
+    this.search(e.target.value, e, 'input')
     this.open()
   };
 
@@ -221,7 +222,7 @@ class Multiselect extends React.Component {
   @widgetEditable
   handleSelect = (dataItem, originalEvent) => {
     if (dataItem === undefined || dataItem === CREATE_OPTION) {
-      this.handleCreate(this.props.searchTerm)
+      this.handleCreate(this.props.searchTerm, originalEvent)
       return
     }
 
@@ -233,10 +234,10 @@ class Multiselect extends React.Component {
   };
 
   @widgetEditable
-  handleCreate = (searchTerm = '') => {
+  handleCreate = (searchTerm = '', event) => {
     notify(this.props.onCreate, searchTerm)
-    if (searchTerm) notify(this.props.onSearch, [''])
 
+    this.clearSearch(event)
     this.close()
     this.focus()
   };
@@ -533,7 +534,7 @@ class Multiselect extends React.Component {
   }
 
   change(dataItem, originalEvent, action) {
-    let { onChange, onSearch, searchTerm, value: lastValue } = this.props;
+    let { onChange, searchTerm, value: lastValue } = this.props;
     let { dataItems } = this.state;
 
     switch (action) {
@@ -553,7 +554,22 @@ class Multiselect extends React.Component {
       searchTerm,
     }]);
 
-    notify(onSearch, [''])
+    this.clearSearch(originalEvent)
+  }
+
+  clearSearch(originalEvent) {
+    this.search('', originalEvent, 'clear')
+  }
+
+  search(searchTerm, originalEvent, action: 'clear' | 'input' = 'input') {
+    let { onSearch, searchTerm: lastSearchTerm } = this.props;
+
+    if (searchTerm !== lastSearchTerm)
+      notify(onSearch, [searchTerm, {
+        action,
+        lastSearchTerm,
+        originalEvent,
+      }])
   }
 
   focus() {

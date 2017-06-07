@@ -164,10 +164,10 @@ class DropdownList extends React.Component {
   }
 
   @widgetEditable
-  handleCreate = (searchTerm = '') => {
+  handleCreate = (searchTerm = '', event) => {
     notify(this.props.onCreate, searchTerm)
-    if (searchTerm) notify(this.props.onSearch, [''])
 
+    this.clearSearch(event)
     this.close()
     this.focus(this)
   };
@@ -212,7 +212,7 @@ class DropdownList extends React.Component {
       e.preventDefault()
 
       if (open) focusItem(list.first())
-      else change(list.first())
+      else      change(list.first())
     }
     else if (key === 'Escape' && open) {
       e.preventDefault()
@@ -257,15 +257,19 @@ class DropdownList extends React.Component {
     if (e.defaultPrevented) return
 
     if (!(this.props.filter && this.props.open))
-      this.search(String.fromCharCode(e.which), item => {
+      this.findOption(String.fromCharCode(e.which), item => {
         this.mounted() && this.props.open
           ? this.setState({ focusedItem: item })
           : item && this.change(item, e)
       })
   }
 
+  handleInputChange = (e) => {
+    this.search(e.target.value, e, 'input')
+  };
+
   change(nextValue, originalEvent) {
-    let { onChange, onSearch, searchTerm, value: lastValue } = this.props
+    let { onChange, searchTerm, value: lastValue } = this.props
 
     if (!this.accessors.matches(nextValue, lastValue)) {
       notify(onChange, [
@@ -277,13 +281,13 @@ class DropdownList extends React.Component {
         },
       ])
 
-      notify(onSearch, ['', originalEvent])
+      this.clearSearch(originalEvent)
       this.close()
     }
   }
 
   renderList(messages) {
-    let { open, filter, data, searchTerm, onSearch } = this.props
+    let { open, filter, data, searchTerm } = this.props
     let { selectedItem, focusedItem } = this.state
     let { value, text } = this.accessors
 
@@ -301,8 +305,8 @@ class DropdownList extends React.Component {
               ref="filter"
               value={searchTerm}
               className="rw-input-reset"
+              onChange={this.handleInputChange}
               placeholder={messages.filterPlaceholder(this.props)}
-              onChange={e => notify(onSearch, e.target.value)}
             />
             <Select icon="search" role="presentation" aria-hidden="true" />
           </WidgetPicker>
@@ -436,12 +440,12 @@ class DropdownList extends React.Component {
     if (inst && activeElement() !== inst) inst.focus()
   }
 
-  search(character, cb) {
-    var word = ((this._searchTerm || '') + character).toLowerCase()
+  findOption(character, cb) {
+    var word = ((this._currentWord || '') + character).toLowerCase()
 
     if (!character) return
 
-    this._searchTerm = word
+    this._currentWord = word
 
     this.timeouts.set(
       'search',
@@ -450,11 +454,26 @@ class DropdownList extends React.Component {
           key = this.props.open ? 'focusedItem' : 'selectedItem',
           item = list.next(this.state[key], word)
 
-        this._searchTerm = ''
+        this._currentWord = ''
         if (item) cb(item)
       },
       this.props.delay
     )
+  }
+
+  clearSearch(originalEvent) {
+    this.search('', originalEvent, 'clear')
+  }
+
+  search(searchTerm, originalEvent, action: 'clear' | 'input' = 'input') {
+    let { onSearch, searchTerm: lastSearchTerm } = this.props;
+
+    if (searchTerm !== lastSearchTerm)
+      notify(onSearch, [searchTerm, {
+        action,
+        lastSearchTerm,
+        originalEvent,
+      }])
   }
 
   open() {

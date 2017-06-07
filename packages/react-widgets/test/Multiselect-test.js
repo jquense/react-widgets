@@ -55,7 +55,7 @@ describe('Multiselect', function() {
     expect(inst.props('open')).to.equal(true)
 
     inst.single('Popup[open]')
-    inst.single('WidgetPicker[open]')
+    inst.single('Widget[open]')
     inst.single('MultiselectInput[aria-expanded]')
   })
 
@@ -335,6 +335,32 @@ describe('Multiselect', function() {
     })
   })
 
+  it('should call onSearch with event object from select', function(){
+    let search = sinon.spy()
+    let value = dataList.slice(0, 1);
+    let event = { target: { value: 'ba' } };
+
+    tsp(
+      <ControlledMultiselect
+        open
+        searchTerm="b"
+        value={value}
+        data={dataList}
+        onSearch={search}
+        onToggle={() =>{}}
+      />
+    )
+    .shallowRender()
+    .single('MultiselectInput')
+    .trigger('change', event)
+
+    expect(search.getCall(0).args[1]).to.eql({
+      originalEvent: event,
+      lastSearchTerm: 'b',
+      action: 'input',
+    })
+  })
+
   it('should call Select handler', function(){
     let change = sinon.spy()
     let onSelect = sinon.spy();
@@ -419,19 +445,19 @@ describe('Multiselect', function() {
     select
       .render()
       .tap(s => s
-        .single('.rw-multiselect-create-tag')
+        .single('ul.rw-list-option-create')
       )
       .props('searchTerm', undefined)
       .tap(s => s
-        .none('.rw-multiselect-create-tag')
+        .none('ul.rw-list-option-create')
       )
       .props('searchTerm', 'JIMMY')
       .tap(s => s
-        .none('.rw-multiselect-create-tag')
+        .none('ul.rw-list-option-create')
       )
       .props({searchTerm: 'custom', onCreate: undefined })
       .tap(s => s
-        .none('.rw-multiselect-create-tag')
+        .none('ul.rw-list-option-create')
       )
   })
 
@@ -449,11 +475,11 @@ describe('Multiselect', function() {
     )
     .render()
     .tap(s => s
-      .single('.rw-multiselect-create-tag')
+      .single('ul.rw-list-option-create')
     )
     .props('searchTerm', 'jimmy')
     .tap(s => s
-      .none('.rw-multiselect-create-tag')
+      .none('ul.rw-list-option-create')
     )
   })
 
@@ -477,7 +503,7 @@ describe('Multiselect', function() {
       />
     )
     .render()
-    .find('.rw-create-list-option')
+    .find('.rw-list-option-create .rw-list-option')
       .trigger('click')
       .tap(assertOnCreateCalled)
       .end()

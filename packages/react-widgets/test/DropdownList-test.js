@@ -43,6 +43,7 @@ describe('DROPDOWNS', function(){
 
     tsp(<ControlledDropdownList onToggle={openSpy} />)
       .render()
+      .find('.rw-widget-picker')
       .trigger('click')
 
     expect(openSpy.calledOnce).to.be(true);
@@ -97,7 +98,7 @@ describe('DROPDOWNS', function(){
 
     inst.is('[aria-expanded]')
     inst.single('Popup[open]')
-    inst.single('WidgetPicker[open]')
+    inst.single('Widget[open]')
   })
 
   it('should foward props to Popup', () => {

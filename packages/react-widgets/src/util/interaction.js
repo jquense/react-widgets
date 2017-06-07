@@ -1,8 +1,10 @@
 import { findDOMNode } from 'react-dom';
 import matches from 'dom-helpers/query/matches';
 
-export const isInDisabledFieldset = (inst) =>
-  matches(findDOMNode(inst), 'fieldset[disabled] *')
+export const isInDisabledFieldset = (inst) => {
+  let node = findDOMNode(inst)
+  !!node && matches(node, 'fieldset[disabled] *')
+}
 
 export let widgetEnabled = interactionDecorator(true)
 
@@ -40,7 +42,8 @@ import { spyOnComponent } from 'react-component-managers'
 
 export const disabledManager = (component) => {
   let mounted = false;
-
+  let isInFieldSet = false;
+  let useCached = false;
   spyOnComponent(component, {
     componentDidMount() {
       mounted = true
@@ -49,6 +52,13 @@ export const disabledManager = (component) => {
       if (isInDisabledFieldset(this))
         this.forceUpdate()
     },
+    componentWillUpdate() {
+      isInFieldSet = mounted && isInDisabledFieldset(component)
+      useCached = mounted;
+    },
+    componentDidUpdate() {
+      useCached = false;
+    },
     componentWillUnmount() {
       component = null;
     }
@@ -56,7 +66,7 @@ export const disabledManager = (component) => {
 
   return () => (
     component.props.disabled === true ||
-    (mounted && isInDisabledFieldset(component)) ||
+    (useCached ? isInFieldSet : (mounted && isInDisabledFieldset(component))) ||
     component.props.disabled // return the prop if nothing is true in case it's an array
   )
 }

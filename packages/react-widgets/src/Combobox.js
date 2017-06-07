@@ -178,56 +178,55 @@ let propTypes = {
     this.open()
   }
 
-  @widgetEditable handleKeyDown = e => {
-    let self = this,
-      key = e.key,
-      alt = e.altKey,
-      list = this.list,
-      focusedItem = this.state.focusedItem,
-      selectedItem = this.state.selectedItem,
-      isOpen = this.props.open
+  @widgetEditable
+  handleKeyDown = e => {
+    let { key, altKey } = e
+    let { list } = this;
 
-    notify(this.props.onKeyDown, [e])
+    let { open, onKeyDown } = this.props;
+    let { focusedItem, selectedItem } = this.state;
+
+    notify(onKeyDown, [e])
 
     if (e.defaultPrevented) return
 
-    if (key === 'End' && isOpen) {
+    const select = item => item != null && this.handleSelect(item, e)
+    const focusItem = item => this.setState({ focusedItem: item })
+
+    if (key === 'End' && open) {
       e.preventDefault()
-      this.setState({ focusedItem: list.last() })
-    } else if (key === 'Home' && isOpen) {
+      focusItem(list.last())
+    }
+    else if (key === 'Home' && open) {
       e.preventDefault()
-      this.setState({ focusedItem: list.first() })
-    } else if (key === 'Escape' && isOpen) this.close()
-    else if (key === 'Enter' && isOpen) {
+      focusItem(list.first())
+    }
+    else if (key === 'Escape' && open) {
       e.preventDefault()
-      select(this.state.focusedItem, true)
-    } else if (key === 'Tab') {
+      this.close()
+    }
+    else if (key === 'Enter' && open) {
+      e.preventDefault()
+      select(this.state.focusedItem)
+    }
+    else if (key === 'Tab') {
       this.refs.input.accept()
-    } else if (key === 'ArrowDown') {
+    }
+    else if (key === 'ArrowDown') {
       e.preventDefault()
-      if (alt) this.open()
-      else {
-        if (isOpen) this.setState({ focusedItem: list.next(focusedItem) })
-        else select(list.next(selectedItem), true)
-      }
-    } else if (key === 'ArrowUp') {
+      if (altKey) return this.open()
+
+      if (open) focusItem(list.next(focusedItem))
+      else select(list.next(selectedItem))
+    }
+    else if (key === 'ArrowUp') {
       e.preventDefault()
-      if (alt) this.close()
-      else {
-        if (isOpen) this.setState({ focusedItem: list.prev(focusedItem) })
-        else select(list.prev(selectedItem), true)
-      }
+      if (altKey) return this.close()
+
+      if (open) focusItem(list.prev(focusedItem))
+      else      select(list.prev(selectedItem))
     }
 
-    function select(item, fromList) {
-      if (!item) return self.change(findDOMNode(self.refs.input).value, false)
-
-      self.refs.input.accept()
-
-      if (fromList) return self.handleSelect(item, e)
-
-      self.change(item, false, e)
-    }
   }
 
   renderInput() {
