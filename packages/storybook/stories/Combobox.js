@@ -60,6 +60,18 @@ storiesOf('Combobox', module)
       />
     </Container>
   )
+  .add('fieldset disabled', () =>
+    <Container>
+      <fieldset disabled>
+        <legend>disabled Fieldset</legend>
+
+        <Combobox
+          {...props}
+          defaultValue={props.data[1]}
+        />
+      </fieldset>
+    </Container>
+  )
   .add('disabled items', () =>
     <Container>
       <Combobox

@@ -74,6 +74,18 @@ storiesOf('Numberpicker', module)
       />
     </Container>
   )
+  .add('fieldset disabled', () =>
+    <Container>
+      <fieldset disabled>
+        <legend>disabled Fieldset</legend>
+
+        <Numberpicker
+          {...props}
+          defaultValue={2405}
+        />
+      </fieldset>
+    </Container>
+  )
   .add('readonly', () =>
     <Container>
       <Numberpicker

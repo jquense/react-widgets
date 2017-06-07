@@ -64,6 +64,18 @@ storiesOf('Multiselect', module)
       <Multiselect {...props} disabled defaultValue={props.data.slice(0, 3)} />
     </Container>
   ))
+  .add('fieldset disabled', () =>
+    <Container>
+      <fieldset disabled>
+        <legend>disabled fieldset</legend>
+
+        <Multiselect
+          {...props}
+          defaultValue={props.data.slice(0, 3)}
+        />
+      </fieldset>
+    </Container>
+  )
   .add('disabled tags', () => (
     <Container>
       <Multiselect

@@ -1,4 +1,6 @@
-import { focusManager } from 'react-component-managers';
+import { focusManager } from 'react-component-managers'
+
+import { isInDisabledFieldset } from './interaction'
 
 export default function createFocusManager(component, options) {
   const didHandle = options.didHandle;
@@ -6,13 +8,16 @@ export default function createFocusManager(component, options) {
   return focusManager(component, {
     ...options,
     onChange: focused => component.setState({ focused }),
-    isDisabled: () => component.props.disabled === true,
+    isDisabled: () => (
+      isInDisabledFieldset(component) ||
+      component.props.disabled === true
+    ),
     didHandle(focused, event) {
       let handler = this.props[focused ? 'onFocus' : 'onBlur']
-      handler && handler(event);
+      handler && handler(event)
 
       if (didHandle && !event.isWidgetDefaultPrevented)
-        didHandle(focused, event);
+        didHandle(focused, event)
     }
   })
 }

@@ -209,8 +209,8 @@ const propTypes = {
 
     let { focused } = this.state
 
-    let disabled = this.props.disabled === true,
-      readOnly = this.props.readOnly === true
+    let disabled = this.props.disabled === true
+    let readOnly = this.props.readOnly === true
 
     let elementProps = Props.pickElementProps(this)
     let shouldRenderPopup = open || isFirstFocusedRender(this)

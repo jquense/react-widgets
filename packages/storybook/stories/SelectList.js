@@ -60,6 +60,18 @@ storiesOf('SelectList', module)
       />
     </Container>
   )
+  .add('fieldset disabled', () =>
+    <Container>
+      <fieldset disabled>
+        <legend>disabled fieldset</legend>
+
+        <SelectList
+          {...props}
+          defaultValue={props.data.slice(0, 3)}
+        />
+      </fieldset>
+    </Container>
+  )
   .add('disabled items', () =>
     <Container>
       <SelectList

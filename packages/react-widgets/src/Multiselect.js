@@ -23,7 +23,7 @@ import focusManager from './util/focusManager';
 import listDataManager from './util/listDataManager';
 import scrollManager from './util/scrollManager';
 import withRightToLeft from './util/withRightToLeft';
-import { widgetEditable } from './util/interaction';
+import { widgetEditable, disabledManager } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
 const CREATE_OPTION = {};
@@ -124,6 +124,8 @@ class Multiselect extends React.Component {
     this.focusManager = focusManager(this, {
       didHandle: this.handleFocusDidChange,
     })
+
+    this.isDisabled = disabledManager(this)
 
     this.state = {
       focusedTag: null,
@@ -418,7 +420,7 @@ class Multiselect extends React.Component {
   }
 
   renderTags(messages) {
-    let { disabled, readOnly } = this.props;
+    let { readOnly } = this.props;
     let { focusedTag, dataItems } = this.state;
 
     let Component = this.props.tagComponent;
@@ -432,8 +434,8 @@ class Multiselect extends React.Component {
         valueAccessor={this.accessors.value}
         label={messages.tagsLabel()}
         value={dataItems}
-        disabled={disabled}
         readOnly={readOnly}
+        disabled={this.isDisabled()}
         focusedItem={focusedTag}
         onDelete={this.handleDelete}
         valueComponent={Component}
@@ -462,7 +464,7 @@ class Multiselect extends React.Component {
       + (shouldRenderTags ? this.tagsId : '')
       + (allowCreate ? this.createId : '');
 
-    let disabled = this.props.disabled === true
+    let disabled = this.isDisabled() === true
     let readOnly = this.props.readOnly === true
 
     let messages = this.messages;

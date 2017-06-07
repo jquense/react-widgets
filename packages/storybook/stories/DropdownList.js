@@ -116,6 +116,18 @@ storiesOf('DropdownList', module)
       />
     </Container>
   )
+  .add('fieldset disabled', () =>
+    <Container>
+      <fieldset disabled>
+        <legend>disabled Fieldset</legend>
+
+        <DropdownList
+          {...props}
+          defaultValue={props.data[1]}
+        />
+      </fieldset>
+    </Container>
+  )
   .add('disabled items', () =>
     <Container>
       <DropdownList

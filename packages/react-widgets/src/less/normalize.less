@@ -25,9 +25,7 @@ select.rw-input {
   text-transform: none;
 }
 
-html input[type="button"].rw-input,
-input[type="reset"].rw-input,
-input[type="submit"].rw-input {
+html input[type="button"].rw-input {
   -webkit-appearance: button;
   cursor: pointer;
 }
@@ -37,7 +35,9 @@ textarea.rw-input {
   resize: vertical;
 }
 
+
 button[disabled].rw-input,
+fieldset[disabled] .rw-input,
 html input[disabled].rw-input {
   cursor: not-allowed;
 }

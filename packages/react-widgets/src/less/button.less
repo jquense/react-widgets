@@ -36,8 +36,10 @@
   }
 }
 
+.rw-btn-select[disabled],
 .rw-btn-primary[disabled],
-.rw-btn-select[disabled] {
+fieldset[disabled] .rw-btn-select,
+fieldset[disabled] .rw-btn-primary, {
   .state-disabled();
   .opacity(.65);
   pointer-events: none;

@@ -52,7 +52,8 @@
   }
 
   &.rw-state-disabled,
-  .rw-state-disabled > &  {
+  .rw-state-disabled > &,
+  fieldset[disabled] & {
     &,
     &:hover,
     &:active {
@@ -91,6 +92,8 @@
     .border-top-radius(0);
   }
 
+
+  fieldset[disabled] &,
   .rw-state-disabled > &  {
     background-color: @input-bg-disabled;
   }
@@ -144,7 +147,8 @@
     display: none;
   }
 
-  &[disabled] {
+  &[disabled],
+  fieldset[disabled] & {
     .state-disabled();
     opacity: 1;
     background-color: @input-bg-disabled;

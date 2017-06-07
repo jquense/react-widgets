@@ -61,6 +61,15 @@ storiesOf('DateTimePicker', module)
       />
     </Container>
   )
+  .add('fieldset disabled', () =>
+    <Container>
+      <fieldset disabled>
+        <legend>disabled Fieldset</legend>
+
+        <DateTimePicker defaultValue={new Date()}/>
+      </fieldset>
+    </Container>
+  )
   .add('current date', () => {
     class Story extends React.Component {
 
