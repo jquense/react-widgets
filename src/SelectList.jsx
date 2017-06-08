@@ -381,8 +381,9 @@ function getListItem(parent){
           role={type}
           aria-checked={!!checked}
         >
-          <label onMouseDown={this.handleMouseDown}>
+          <label htmlFor={`${this.props.id}_input`} onMouseDown={this.handleMouseDown}>
             <input
+              id={`${this.props.id}_input`}
               name={name}
               type={type}
               tabIndex='-1'
