@@ -1,6 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import dates from './util/dates';
 import List from './List';
 import { date as dateLocalizer } from './util/localizers';
@@ -9,7 +10,7 @@ import _ from './util/_';
 
 var format = props => dateLocalizer.getFormat('time', props.format)
 
-export default React.createClass({
+export default createReactClass({
 
   displayName: 'TimeList',
 
@@ -52,6 +53,14 @@ export default React.createClass({
       focusedItem: focusedItem || data[0],
       dates: data
     }
+  },
+
+  componentDidMount() {
+    this._mounted = true;
+  },
+
+  componentWillUnmount() {
+    this._mounted = false;
   },
 
   componentWillReceiveProps(nextProps) {
@@ -188,7 +197,7 @@ export default React.createClass({
     e.preventDefault();
 
     this.search(String.fromCharCode(e.which), item => {
-      this.isMounted() &&
+      this._mounted &&
         this.setState({ focusedItem: item })
     })
   },

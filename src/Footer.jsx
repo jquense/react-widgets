@@ -1,10 +1,11 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import Button from './Button';
 import { date as dateLocalizer } from './util/localizers';
 
 var format = props => dateLocalizer.getFormat('footer', props.format)
 
-module.exports = React.createClass({
+module.exports = createReactClass({
 
     displayName: 'Footer',
 

@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import css from 'dom-helpers/style';
 import height from 'dom-helpers/query/height';
 import width  from 'dom-helpers/query/width';
@@ -20,7 +21,7 @@ function key(child){
   return child && child.key
 }
 
-export default React.createClass({
+export default createReactClass({
 
   displayName: 'ReplaceTransitionGroup',
 
@@ -91,6 +92,14 @@ export default React.createClass({
     this.entering = null;
   },
 
+  componentDidMount() {
+    this._mounted = true;
+  },
+
+  componentWillUnmount() {
+    this._mounted = false;
+  },
+
   componentDidUpdate() {
     var entering = this.entering
       , leaving  = this.leaving
@@ -133,7 +142,7 @@ export default React.createClass({
     if (this.isTransitioning())
       return
 
-    if ( this.isMounted() )
+    if ( this._mounted)
       css(compat.findDOMNode(this), { overflow: 'visible', height: '', width: '' })
 
     this.props.onAnimate()
@@ -177,14 +186,14 @@ export default React.createClass({
     if (key(this.props.children) === leavekey )
       this.performEnter(leavekey) // This entered again before it fully left. Add it again.
 
-    else if (this.isMounted())
+    else if (this._mounted)
       this.setState({
         children: this.state.children.filter( c => key(c) !== leavekey)
       })
 
     this._tryFinish()
   },
-  
+
   isTransitioning() {
     return !!Object.keys(this.animatingKeys).length
   },

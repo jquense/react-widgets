@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import activeElement from 'dom-helpers/activeElement';
 import contains from 'dom-helpers/query/contains';
 import cx from 'classnames';
@@ -63,7 +64,7 @@ var propTypes = {
   })
 };
 
-var DropdownList = React.createClass({
+var DropdownList = createReactClass({
 
   displayName: 'DropdownList',
 
@@ -352,7 +353,7 @@ var DropdownList = React.createClass({
 
     if (!(this.props.filter && this.props.open))
       this.search(String.fromCharCode(e.which), item => {
-        this.isMounted() && this.props.open
+        this._mounted && this.props.open
           ? this.setState({ focusedItem: item })
           : item && this.change(item)
       })

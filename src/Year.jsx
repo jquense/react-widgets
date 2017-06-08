@@ -1,13 +1,14 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
-
+import createReactClass from 'create-react-class';
 import CalendarView from './CalendarView'
 import dates from './util/dates';
 import { date as dateLocalizer } from './util/localizers';
 import _  from './util/_';
 import CustomPropTypes from './util/propTypes';
 import { instanceId } from './util/widgetHelpers';
+
+
 
 var format = props => dateLocalizer.getFormat('month', props.monthFormat)
 
@@ -25,7 +26,7 @@ let propTypes = {
 
 let optionId = (id, date) => `${id}__year_${dates.year(date)}-${dates.month(date)}`;
 
-let YearView = React.createClass({
+let YearView = createReactClass({
 
   displayName: 'YearView',
 

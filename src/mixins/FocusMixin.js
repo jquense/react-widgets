@@ -18,7 +18,7 @@ export default function FocusMixin({ willHandle, didHandle }) {
 
         if (focused !== inst.state.focused) {
           notify(handler, event)
-          if (inst.isMounted())
+          if (inst._mounted)
             inst.setState({ focused })
         }
       })
@@ -35,6 +35,15 @@ export default function FocusMixin({ willHandle, didHandle }) {
     @widgetEnabled
     handleFocus(event) {
       handleFocus(this, true, event)
+    },
+
+    componentDidMount() {
+      this._mounted = true;
+    },
+
+    componentWillUnmount() {
+      this._mounted = false;
     }
+
   }
 }

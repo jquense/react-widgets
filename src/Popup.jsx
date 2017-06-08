@@ -1,5 +1,6 @@
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import _ from './util/_';
 import css from 'dom-helpers/style';
 import getHeight from 'dom-helpers/query/height';
@@ -41,7 +42,7 @@ let propTypes = {
   onOpen:         PropTypes.func
 }
 
-export default React.createClass({
+export default createReactClass({
 
   displayName: 'Popup',
 
