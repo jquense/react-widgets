@@ -386,6 +386,23 @@ describe('Multiselect', function() {
     expect(change.calledAfter(onSelect)).to.be(true)
   })
 
+  it('should clear search on blur', function(){
+    let onSelect = sinon.spy();
+
+    tsp(
+      <Multiselect
+        data={dataList}
+        onSelect={onSelect}
+        defaultSearchTerm="foo"
+      />
+    )
+    .render()
+    .find('input')
+    .trigger('blur')
+
+    expect(onSelect.calledOnce).to.be(true)
+    expect(onSelect.calledWith('')).to.be(true)
+  })
 
   it('should clear searchTerm when an item is selected', () => {
     let searchSpy = sinon.spy();

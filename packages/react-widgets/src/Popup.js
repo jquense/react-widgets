@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 
 import SlideDownTransition from './SlideDownTransition';
 
+class StaticContainer extends React.Component {
+  shouldComponentUpdate = ({ shouldUpdate }) => !!shouldUpdate
+  render = () => this.props.children;
+}
+
 class Popup extends React.Component {
   static propTypes = {
     open: PropTypes.bool,
@@ -31,9 +36,11 @@ class Popup extends React.Component {
           dropUp && 'rw-dropup'
         )}
       >
-        {cloneElement(child, {
-          className: cn(child.props.className, 'rw-popup')
-        })}
+        <StaticContainer shouldUpdate={open}>
+          {cloneElement(child, {
+            className: cn(child.props.className, 'rw-popup')
+          })}
+        </StaticContainer>
       </SlideDownTransition>
     )
   }

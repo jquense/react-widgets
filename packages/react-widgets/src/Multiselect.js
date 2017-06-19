@@ -181,6 +181,7 @@ class Multiselect extends React.Component {
     if (focused) return this.focus();
 
     this.close()
+    this.clearSearch();
 
     if (this.refs.tagList)
       this.setState({ focusedTag: null })
@@ -229,7 +230,6 @@ class Multiselect extends React.Component {
     notify(this.props.onSelect, [dataItem, { originalEvent  }])
 
     this.change(dataItem, originalEvent, INSERT)
-    this.close()
     this.focus()
   };
 
@@ -238,7 +238,6 @@ class Multiselect extends React.Component {
     notify(this.props.onCreate, searchTerm)
 
     this.clearSearch(event)
-    this.close()
     this.focus()
   };
 
