@@ -141,7 +141,8 @@ var DateTimePicker = React.createClass({
       , placeholder, disabled, readOnly, name, dropUp
       , timeComponent, autoFocus
       , 'aria-labelledby': ariaLabelledby
-      , 'aria-describedby': ariaDescribedby } = this.props;
+      , 'aria-describedby': ariaDescribedby
+      , tetherPopup } = this.props;
 
     let { focused } = this.state;
 
