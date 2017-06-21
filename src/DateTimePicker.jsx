@@ -270,7 +270,7 @@ var DateTimePicker = React.createClass({
               />
             }
           </div>
-        </Popup>
+        </PopupComponent>
         <PopupComponent
           className='rw-calendar-popup'
           dropUp={dropUp}
@@ -294,7 +294,7 @@ var DateTimePicker = React.createClass({
               onNavigate={() => this.focus()}
             />
           }
-        </Popup>
+        </PopupComponent>
       </div>
     )
   },
