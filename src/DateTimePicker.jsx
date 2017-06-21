@@ -18,6 +18,7 @@ import CustomPropTypes from './util/propTypes';
 import createUncontrolledWidget from 'uncontrollable';
 import { widgetEditable, widgetEnabled } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
+import TetheredPopup from './TetheredPopup';
 
 let { calendarViews: views, datePopups: popups } = constants;
 let Calendar = _Calendar.ControlledComponent;
@@ -162,6 +163,8 @@ var DateTimePicker = React.createClass({
 
     value = dateOrNull(value)
 
+    const PopupComponent =  tetherPopup ? TetheredPopup : Popup;
+
     return (
       <div {...elementProps}
         ref="element"
@@ -238,7 +241,7 @@ var DateTimePicker = React.createClass({
         }
         </span>
         }
-        <Popup
+        <PopupComponent
           dropUp={dropUp}
           open={timeIsOpen}
           onRequestClose={this.close}
@@ -267,7 +270,7 @@ var DateTimePicker = React.createClass({
             }
           </div>
         </Popup>
-        <Popup
+        <PopupComponent
           className='rw-calendar-popup'
           dropUp={dropUp}
           open={calendarIsOpen}
