@@ -6,7 +6,7 @@ about localizers here: [localization](i18n).
 Dates are never mutated but always return and operate on a new Date instance.
 When the `date` prop is used the ${widgetName} will pass through the relevant
 props to the Calendar Widget and Calendar keyboard navigation keys will also work.
-
+HOLA COLA
 <--------------->
 
 ### value?{ type: 'Date?', handler: "onChange", controllable: true }
@@ -34,6 +34,14 @@ This handler fires when an item has been selected from the list or calendar. It 
 Whether to show the date picker button.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'calendar', false)}/>
+
+### tetherPopup?{ type: 'Boolean' }
+
+Flag the {widgetName} to tether its popup instead of positioning it absolutely. Big thanks to [tetherJS](http://github.hubspot.com/tether/).
+
+*Note: This option replaces the drop-in animation with a fade do to fixed positioning.*
+
+<EditableExample codeText={require('../examples/tetherPopup')(widgetName)}/>
 
 ### time?{ type: 'Boolean', default: 'true' }
 

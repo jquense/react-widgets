@@ -1,4 +1,4 @@
-/*! (c) 2016 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
+/*! (c) 2017 Jason Quense | https://github.com/jquense/react-widgets/blob/master/License.txt */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("react"), require("ReactWidgets"));
@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -256,10 +256,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 2:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
 	  if (true) {
@@ -397,21 +397,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	})
 
-/***/ },
+/***/ }),
 
 /***/ 21:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_21__;
 
-/***/ },
+/***/ }),
 
 /***/ 93:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_93__;
 
-/***/ }
+/***/ })
 
 /******/ })
 });
