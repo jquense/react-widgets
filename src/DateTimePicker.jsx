@@ -164,7 +164,7 @@ var DateTimePicker = React.createClass({
 
     value = dateOrNull(value)
 
-    const PopupComponent =  tetherPopup ? TetheredPopup : Popup;
+    var PopupComponent =  tetherPopup ? TetheredPopup : Popup;
 
     return (
       <div {...elementProps}
@@ -242,7 +242,7 @@ var DateTimePicker = React.createClass({
         }
         </span>
         }
-        <TetheredPopup
+        <PopupComponent
           dropUp={dropUp}
           open={timeIsOpen}
           onRequestClose={this.close}
@@ -270,8 +270,8 @@ var DateTimePicker = React.createClass({
               />
             }
           </div>
-        </TetheredPopup>
-        <TetheredPopup
+        </PopupComponent>
+        <PopupComponent
           className='rw-calendar-popup'
           dropUp={dropUp}
           open={calendarIsOpen}
@@ -294,7 +294,7 @@ var DateTimePicker = React.createClass({
               onNavigate={() => this.focus()}
             />
           }
-        </TetheredPopup>
+        </PopupComponent>
       </div>
     )
   },
