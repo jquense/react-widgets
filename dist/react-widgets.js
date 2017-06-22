@@ -9184,6 +9184,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var timeIsActive = open === popups.TIME && key === 'timelist';
 
 	      if (!current || timeIsActive || calIsActive) return id;
+	    }), __webpack_require__(62)({
+	      didHandle: function didHandle(focused) {
+	        if (!focused) this.close();
+	      }
 	    })];
 	  }
 	}, {
@@ -9281,9 +9285,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      babelHelpers._extends({}, elementProps, {
 	        ref: 'element',
 	        tabIndex: '-1',
-	        onKeyDown: this._keyDown,
-	        onFocus: this._focus.bind(null, true),
-	        onBlur: this._focus.bind(null, false),
+	        onKeyDown: tetherPopup ? null : this._keyDown,
+	        onFocus: tetherPopup ? function () {
+	          return _this.setState({ focused: true });
+	        } : this.handleFocus,
+	        onBlur: tetherPopup ? function () {
+	          return _this.setState({ focused: false });
+	        } : this.handleBlur,
 	        className: _classnames2['default'](className, 'rw-datetimepicker', 'rw-widget', (_cx = {
 	          'rw-state-focus': focused,
 	          'rw-state-disabled': disabled,
@@ -9359,6 +9367,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          duration: duration,
 	          onOpening: function () {
 	            return _this.refs.timePopup.forceUpdate();
+	          },
+	          onOpen: tetherPopup ? this.handleFocus : this.focus,
+	          onKeyDown: this._keyDown,
+	          onBlur: this._focus.bind(null, false),
+	          getTetherFocus: function () {
+	            return _this.refs.timePopup;
 	          }
 	        },
 	        _react2['default'].createElement(
@@ -9390,7 +9404,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          dropUp: dropUp,
 	          open: calendarIsOpen,
 	          duration: duration,
-	          onRequestClose: this.close
+	          onRequestClose: this.close,
+	          onOpen: tetherPopup ? this.handleFocus : this.focus,
+	          onKeyDown: this._keyDown,
+	          onBlur: this._focus.bind(null, false),
+	          getTetherFocus: function () {
+	            return _this.refs.calPopup;
+	          }
 	        },
 	        shouldRenderList && _react2['default'].createElement(Calendar, babelHelpers._extends({}, calProps, {
 	          ref: 'calPopup',
