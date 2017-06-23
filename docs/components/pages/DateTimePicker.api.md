@@ -6,7 +6,7 @@ about localizers here: [localization](i18n).
 Dates are never mutated but always return and operate on a new Date instance.
 When the `date` prop is used the ${widgetName} will pass through the relevant
 props to the Calendar Widget and Calendar keyboard navigation keys will also work.
-HOLA COLA
+
 <--------------->
 
 ### value?{ type: 'Date?', handler: "onChange", controllable: true }
