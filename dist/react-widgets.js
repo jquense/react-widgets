@@ -9184,10 +9184,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var timeIsActive = open === popups.TIME && key === 'timelist';
 
 	      if (!current || timeIsActive || calIsActive) return id;
-	    }), __webpack_require__(62)({
-	      didHandle: function didHandle(focused) {
-	        if (!focused) this.close();
-	      }
 	    })];
 	  }
 	}, {
@@ -9286,12 +9282,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ref: 'element',
 	        tabIndex: '-1',
 	        onKeyDown: tetherPopup ? null : this._keyDown,
-	        onFocus: tetherPopup ? function () {
-	          return _this._focus.bind(null, true);
-	        } : this.handleFocus,
-	        onBlur: tetherPopup ? function () {
-	          return _this._focus.bind(null, false);
-	        } : this.handleBlur,
+	        onFocus: this._focus.bind(null, true),
+	        onBlur: this._focus.bind(null, false),
 	        className: _classnames2['default'](className, 'rw-datetimepicker', 'rw-widget', (_cx = {
 	          'rw-state-focus': focused,
 	          'rw-state-disabled': disabled,
@@ -9368,7 +9360,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          onOpening: function () {
 	            return _this.refs.timePopup.forceUpdate();
 	          },
-	          onOpen: tetherPopup ? this.handleFocus : this.focus,
+	          onOpen: this._focus.bind(null, true),
 	          onKeyDown: this._keyDown,
 	          onBlur: this._focus.bind(null, false),
 	          getTetherFocus: function () {
@@ -9405,7 +9397,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          open: calendarIsOpen,
 	          duration: duration,
 	          onRequestClose: this.close,
-	          onOpen: tetherPopup ? this.handleFocus : this.focus,
+	          onOpen: this._focus.bind(null, true),
 	          onKeyDown: this._keyDown,
 	          onBlur: this._focus.bind(null, false),
 	          getTetherFocus: function () {
