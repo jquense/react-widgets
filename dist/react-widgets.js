@@ -9403,9 +9403,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          open: calendarIsOpen,
 	          duration: duration,
 	          onRequestClose: this.close,
-	          onOpen: this._focus.bind(null, true),
+	          onOpen: function () {
+	            return _this._focus(true);
+	          },
 	          onKeyDown: this._keyDown,
-	          onBlur: this._focus.bind(null, false),
+	          onBlur: function () {
+	            return _this._focus(false);
+	          },
 	          getTetherFocus: function () {
 	            return _this.refs.calPopup;
 	          }
