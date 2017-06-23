@@ -9287,10 +9287,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        tabIndex: '-1',
 	        onKeyDown: tetherPopup ? null : this._keyDown,
 	        onFocus: tetherPopup ? function () {
-	          return _this.setState({ focused: true });
+	          return _this._focus.bind(null, true);
 	        } : this.handleFocus,
 	        onBlur: tetherPopup ? function () {
-	          return _this.setState({ focused: false });
+	          return _this._focus.bind(null, false);
 	        } : this.handleBlur,
 	        className: _classnames2['default'](className, 'rw-datetimepicker', 'rw-widget', (_cx = {
 	          'rw-state-focus': focused,
