@@ -9285,9 +9285,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        onFocus: function () {
 	          return _this._focus(true);
 	        },
-	        onBlur: function () {
-	          return _this._focus(false);
-	        },
 	        className: _classnames2['default'](className, 'rw-datetimepicker', 'rw-widget', (_cx = {
 	          'rw-state-focus': focused,
 	          'rw-state-disabled': disabled,

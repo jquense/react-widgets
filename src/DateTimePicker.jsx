@@ -172,7 +172,6 @@ var DateTimePicker = React.createClass({
         tabIndex={'-1'}
         onKeyDown={tetherPopup ? null : this._keyDown}
         onFocus={() => this._focus(true)}
-        onBlur={() => this._focus(false)}
         className={cx(className, 'rw-datetimepicker', 'rw-widget', {
           'rw-state-focus':     focused,
           'rw-state-disabled':  disabled,
