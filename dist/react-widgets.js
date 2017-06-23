@@ -9282,8 +9282,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ref: 'element',
 	        tabIndex: '-1',
 	        onKeyDown: tetherPopup ? null : this._keyDown,
-	        onFocus: this._focus.bind(null, true),
-	        onBlur: this._focus.bind(null, false),
+	        onFocus: function () {
+	          return _this._focus(true);
+	        },
+	        onBlur: function () {
+	          return _this._focus(false);
+	        },
 	        className: _classnames2['default'](className, 'rw-datetimepicker', 'rw-widget', (_cx = {
 	          'rw-state-focus': focused,
 	          'rw-state-disabled': disabled,
@@ -9329,7 +9333,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            disabled: disabledOrReadonly,
 	            'aria-disabled': disabledOrReadonly,
 	            'aria-label': messages.calendarButton,
-	            onClick: this._click.bind(null, popups.CALENDAR)
+	            onClick: function () {
+	              return _this._click(popups.CALENDAR);
+	            }
 	          },
 	          _react2['default'].createElement('i', { className: 'rw-i rw-i-calendar',
 	            'aria-hidden': 'true'
