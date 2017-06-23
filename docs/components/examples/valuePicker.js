@@ -16,10 +16,6 @@ ReactDOM.render(widgets, mountNode);`
 
   function getWidget(v){
     return `
-    <${widgetName} defaultValue={${v}} />`
+    <${widgetName} tetherPopup defaultValue={${v}} />`
   }
 }
-
-
-
-

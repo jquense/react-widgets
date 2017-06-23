@@ -18,6 +18,7 @@ import CustomPropTypes from './util/propTypes';
 import createUncontrolledWidget from 'uncontrollable';
 import { widgetEditable, widgetEnabled } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
+import TetheredPopup from './TetheredPopup';
 
 let { calendarViews: views, datePopups: popups } = constants;
 let Calendar = _Calendar.ControlledComponent;
@@ -98,6 +99,11 @@ var DateTimePicker = React.createClass({
 
       if (!current || (timeIsActive || calIsActive))
         return id
+    }),
+    require('./mixins/FocusMixin')({
+      didHandle(focused) {
+        if (!focused) this.close()
+      }
     })
   ],
 
@@ -140,7 +146,8 @@ var DateTimePicker = React.createClass({
       , placeholder, disabled, readOnly, name, dropUp
       , timeComponent, autoFocus
       , 'aria-labelledby': ariaLabelledby
-      , 'aria-describedby': ariaDescribedby } = this.props;
+      , 'aria-describedby': ariaDescribedby
+      , tetherPopup } = this.props;
 
     let { focused } = this.state;
 
@@ -162,13 +169,15 @@ var DateTimePicker = React.createClass({
 
     value = dateOrNull(value)
 
+    var PopupComponent =  tetherPopup ? TetheredPopup : Popup;
+
     return (
       <div {...elementProps}
         ref="element"
         tabIndex={'-1'}
-        onKeyDown={this._keyDown}
-        onFocus={this._focus.bind(null, true)}
-        onBlur={this._focus.bind(null, false)}
+        onKeyDown={tetherPopup ? null : this._keyDown}
+        onFocus={tetherPopup ? () => this.setState({focused: true}) : this.handleFocus}
+        onBlur={tetherPopup ? () => this.setState({focused: false}) : this.handleBlur}
         className={cx(className, 'rw-datetimepicker', 'rw-widget', {
           'rw-state-focus':     focused,
           'rw-state-disabled':  disabled,
@@ -238,12 +247,16 @@ var DateTimePicker = React.createClass({
         }
         </span>
         }
-        <Popup
+        <PopupComponent
           dropUp={dropUp}
           open={timeIsOpen}
           onRequestClose={this.close}
           duration={duration}
           onOpening={() => this.refs.timePopup.forceUpdate()}
+          onOpen={tetherPopup ? this.handleFocus : this.focus}
+          onKeyDown={this._keyDown}
+          onBlur={this._focus.bind(null, false)}
+          getTetherFocus={() => this.refs.timePopup}
         >
           <div>
             { shouldRenderList &&
@@ -266,13 +279,17 @@ var DateTimePicker = React.createClass({
               />
             }
           </div>
-        </Popup>
-        <Popup
+        </PopupComponent>
+        <PopupComponent
           className='rw-calendar-popup'
           dropUp={dropUp}
           open={calendarIsOpen}
           duration={duration}
           onRequestClose={this.close}
+          onOpen={tetherPopup ? this.handleFocus : this.focus}
+          onKeyDown={this._keyDown}
+          onBlur={this._focus.bind(null, false)}
+          getTetherFocus={() => this.refs.calPopup}
         >
           { shouldRenderList &&
             <Calendar
@@ -290,7 +307,7 @@ var DateTimePicker = React.createClass({
               onNavigate={() => this.focus()}
             />
           }
-        </Popup>
+        </PopupComponent>
       </div>
     )
   },

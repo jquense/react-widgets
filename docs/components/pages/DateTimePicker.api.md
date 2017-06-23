@@ -35,6 +35,14 @@ Whether to show the date picker button.
 
 <EditableExample codeText={require('../examples/prop')(widgetName, 'calendar', false)}/>
 
+### tetherPopup?{ type: 'Boolean' }
+
+Flag the {widgetName} to tether its popup instead of positioning it absolutely. Big thanks to [tetherJS](http://github.hubspot.com/tether/).
+
+*Note: This option replaces the drop-in animation with a fade do to fixed positioning.*
+
+<EditableExample codeText={require('../examples/tetherPopup')(widgetName)}/>
+
 ### time?{ type: 'Boolean', default: 'true' }
 
 Whether to show the time picker button.
