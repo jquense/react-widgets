@@ -219,7 +219,7 @@ var DateTimePicker = React.createClass({
               disabled={disabledOrReadonly}
               aria-disabled={disabledOrReadonly}
               aria-label={messages.calendarButton}
-              onClick={() => this._click(popups.CALENDAR)}
+              onClick={() => this.toggle(popups.CALENDAR)}
             >
               <i className="rw-i rw-i-calendar"
                 aria-hidden='true'

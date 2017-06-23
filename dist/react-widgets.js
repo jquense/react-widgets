@@ -9334,7 +9334,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            'aria-disabled': disabledOrReadonly,
 	            'aria-label': messages.calendarButton,
 	            onClick: function () {
-	              return _this._click(popups.CALENDAR);
+	              return _this.toggle(popups.CALENDAR);
 	            }
 	          },
 	          _react2['default'].createElement('i', { className: 'rw-i rw-i-calendar',
