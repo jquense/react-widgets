@@ -248,10 +248,10 @@ var DateTimePicker = React.createClass({
           onRequestClose={this.close}
           duration={duration}
           onOpening={() => this.refs.timePopup.forceUpdate()}
-          onOpen={this._focus.bind(null, true)}
+          onOpen={tetherPopup ? null : () => this._focus(true)}
           onKeyDown={this._keyDown}
           onBlur={this._focus.bind(null, false)}
-          getTetherFocus={() => this.refs.timePopup.refs.ul}
+          getTetherFocus={() => {}}
         >
           <div>
             { shouldRenderList &&
@@ -284,7 +284,7 @@ var DateTimePicker = React.createClass({
           onOpen={tetherPopup ? null : () => this._focus(true)}
           onKeyDown={this._keyDown}
           onBlur={() => this._focus(false)}
-          getTetherFocus={() => this.refs.calPopup.refs.table}
+          getTetherFocus={() => {}}
         >
           { shouldRenderList &&
             <Calendar

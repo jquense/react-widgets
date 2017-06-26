@@ -9370,12 +9370,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          onOpening: function () {
 	            return _this.refs.timePopup.forceUpdate();
 	          },
-	          onOpen: this._focus.bind(null, true),
+	          onOpen: tetherPopup ? null : function () {
+	            return _this._focus(true);
+	          },
 	          onKeyDown: this._keyDown,
 	          onBlur: this._focus.bind(null, false),
-	          getTetherFocus: function () {
-	            return _this.refs.timePopup.refs.ul;
-	          }
+	          getTetherFocus: function () {}
 	        },
 	        _react2['default'].createElement(
 	          'div',
@@ -9414,9 +9414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          onBlur: function () {
 	            return _this._focus(false);
 	          },
-	          getTetherFocus: function () {
-	            return _this.refs.calPopup.refs.table;
-	          }
+	          getTetherFocus: function () {}
 	        },
 	        shouldRenderList && _react2['default'].createElement(Calendar, babelHelpers._extends({}, calProps, {
 	          ref: 'calPopup',
