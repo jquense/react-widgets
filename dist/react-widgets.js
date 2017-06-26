@@ -9282,11 +9282,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ref: 'element',
 	        tabIndex: '-1',
 	        onKeyDown: tetherPopup ? null : this._keyDown,
-	        onFocus: function () {
-	          return _this._focus(true);
+	        onFocus: tetherPopup ? function () {
+	          return _this.setState({ focused: true });
+	        } : function () {
+	          return _this._focus.bind(null, true);
 	        },
-	        onBlur: function () {
-	          return _this._focus(false);
+	        onBlur: tetherPopup ? function () {
+	          return _this.setState({ focused: false });
+	        } : function () {
+	          return _this._focus.bind(null, false);
 	        },
 	        className: _classnames2['default'](className, 'rw-datetimepicker', 'rw-widget', (_cx = {
 	          'rw-state-focus': focused,
@@ -9370,7 +9374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          onKeyDown: this._keyDown,
 	          onBlur: this._focus.bind(null, false),
 	          getTetherFocus: function () {
-	            return _this.refs.timePopup;
+	            return _this.refs.timePopup.refs.ul;
 	          }
 	        },
 	        _react2['default'].createElement(
@@ -9403,7 +9407,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          open: calendarIsOpen,
 	          duration: duration,
 	          onRequestClose: this.close,
-	          onOpen: function () {
+	          onOpen: tetherPopup ? null : function () {
 	            return _this._focus(true);
 	          },
 	          onKeyDown: this._keyDown,
@@ -9411,7 +9415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return _this._focus(false);
 	          },
 	          getTetherFocus: function () {
-	            return _this.refs.calPopup;
+	            return _this.refs.calPopup.refs.table;
 	          }
 	        },
 	        shouldRenderList && _react2['default'].createElement(Calendar, babelHelpers._extends({}, calProps, {
