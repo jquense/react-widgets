@@ -32,6 +32,7 @@ const propTypes = {
 
   focusedItem: PropTypes.any,
   selectedItem: PropTypes.any,
+  searchTerm: PropTypes.string,
 
   isDisabled: PropTypes.func.isRequired,
   groupBy: CustomPropTypes.accessor,

@@ -17,6 +17,9 @@ export const virtualListPropTypes = {
   type: PropTypes.oneOf(['simple', 'variable', 'uniform']),
   useStaticSize: PropTypes.bool,
   useTranslate3d: PropTypes.bool,
+  hasNextPage: PropTypes.bool,
+  onRequestItems: PropTypes.func,
+  loadingComponent: CustomPropTypes.elementType,
 }
 
 class VirtualList extends React.Component {
@@ -44,13 +47,14 @@ class VirtualList extends React.Component {
     groupBy: CustomPropTypes.accessor,
 
     messages: PropTypes.shape({
-      emptyList: CustomPropTypes.message
+      emptyList: CustomPropTypes.message,
     })
   }
 
   static defaultProps = {
     optionComponent: ListOption,
     type: 'variable',
+    hasNextPage: false,
   }
 
   static getVirtualListProps({
@@ -61,11 +65,18 @@ class VirtualList extends React.Component {
     threshold = 300,
     useStaticSize,
     useTranslate3d,
+    onRequestItems,
+    hasNextPage,
+    loadingComponent,
     ...props
   }) {
     return {
       props,
-      listProps: { type, itemSizeGetter, itemSizeEstimator, pageSize, threshold, useStaticSize, useTranslate3d },
+      listProps: {
+        onRequestItems, hasNextPage, loadingComponent,
+        type, itemSizeGetter, itemSizeEstimator, pageSize,
+        threshold, useStaticSize, useTranslate3d,
+      },
     }
   }
 
@@ -107,8 +118,12 @@ class VirtualList extends React.Component {
     this.move()
   }
 
-  componentDidUpdate() {
-    this.move()
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.focusedItem !== this.props.focusedItem ||
+      prevProps.selectedItem !== this.props.selectedItem
+    )
+      this.move()
   }
 
   renderItems = (items, ref) => {
@@ -133,9 +148,31 @@ class VirtualList extends React.Component {
       , dataState
       , renderItem
       , isDisabled
+      , pageSize
+      , hasNextPage
+      , onRequestItems
+      , searchTerm
+      , loadingComponent: LoadingComponent
       , optionComponent: OptionComponent } = this.props
 
     let item = dataState.flatData[index];
+    let len = dataState.flatData.length;
+
+    if (hasNextPage === true && index >= len) {
+      if (onRequestItems)
+        onRequestItems({
+          pageSize,
+          searchTerm,
+          limit: len + pageSize,
+          currentIndex: index,
+        });
+
+      return LoadingComponent ?
+        <LoadingComponent index={index} pageSiz={pageSize} /> :
+        <li className="rw-list-empty rw-list-option-loading">
+          Loading items…
+        </li>
+    }
 
     if (item && item.__isGroup)
       return this.renderGroupHeader(item.group)
@@ -171,9 +208,13 @@ class VirtualList extends React.Component {
       , focusedItem
       , selectedItem
       , onSelect
+      , hasNextPage
+      , searchTerm
       , disabled } = this.props
 
     let length = dataState.flatData.length;
+
+    if (hasNextPage === true) length += 1;
 
     return (
       <div
@@ -199,6 +240,7 @@ class VirtualList extends React.Component {
           dataState={dataState}
           focusedItem={focusedItem}
           selectedItem={selectedItem}
+          searchTerm={searchTerm}
           onSelect={onSelect}
           disabled={disabled}
           itemHeight={itemHeight}

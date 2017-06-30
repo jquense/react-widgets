@@ -188,12 +188,13 @@ export default function listDataManager(component, {
     },
 
     defaultProps() {
-      const { groupBy, optionComponent } = currentProps;
+      const { groupBy, optionComponent, searchTerm } = currentProps;
 
       return {
         groupBy,
         renderItem,
         renderGroup,
+        searchTerm,
         optionComponent,
         isDisabled,
         ...currentProps.listProps,

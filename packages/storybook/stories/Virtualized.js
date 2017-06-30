@@ -78,4 +78,44 @@ storiesOf('Virtualization', module)
         )}
       />
     </Container>
+  )
+  .add('Async incremental fetching', () =>
+    <Container>
+      <InfiniteFetch />
+    </Container>
   );
+
+
+class InfiniteFetch extends React.Component {
+  state = { data: generateNames(30) }
+
+  onRequestItems = ({ pageSize, currentIndex, searchTerm }) => {
+    if (this.searchTerm != searchTerm) this.limit = 0;
+    if (this.limit >= (currentIndex + pageSize)) return;
+
+    this.limit = currentIndex + pageSize;
+    this.searchTerm = searchTerm;
+    this.setState({ busy: true })
+
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.setState({
+        busy: false,
+        data: this.state.data.concat(generateNames(pageSize)),
+      })
+    }, 4000);
+  };
+
+  render() {
+    return (
+      <DropdownList
+        {...props}
+        busy={this.state.busy}
+        data={this.state.data}
+        hasNextPage={true}
+        itemSizeGetter={() => 22}
+        onRequestItems={this.onRequestItems}
+      />
+    )
+  }
+}

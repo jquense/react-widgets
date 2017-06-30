@@ -10,3 +10,7 @@
 .rw-virtual-list-fixed .rw-list-option {
   overflow: hidden;
 }
+
+.rw-list-option-loading {
+  font-style: italic;
+}
