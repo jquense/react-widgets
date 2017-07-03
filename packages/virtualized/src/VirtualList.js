@@ -127,12 +127,13 @@ class VirtualList extends React.Component {
   }
 
   renderItems = (items, ref) => {
-    let { className } = this.props;
+    let { className, messages } = this.props;
     return (
       <Listbox
         ref={ref}
         className={className}
         style={{ overflow: 'visible', maxHeight: 'none' }}
+        emptyListMessage={messages.emptyList(this.props)}
       >
         {items}
       </Listbox>
@@ -167,11 +168,15 @@ class VirtualList extends React.Component {
           currentIndex: index,
         });
 
-      return LoadingComponent ?
-        <LoadingComponent index={index} pageSiz={pageSize} /> :
-        <li className="rw-list-empty rw-list-option-loading">
-          Loading items…
+      return (
+        <li key={key} className="rw-list-option-loading">
+          {LoadingComponent ? (
+            <LoadingComponent key={key} index={index} pageSize={pageSize} />
+          ) : (
+            'Loading items…'
+          )}
         </li>
+      )
     }
 
     if (item && item.__isGroup)

@@ -355,6 +355,7 @@ class DropdownList extends React.Component {
       placeholder,
       value,
       open,
+      filter,
       inputProps,
       valueComponent,
     } = this.props
@@ -371,7 +372,7 @@ class DropdownList extends React.Component {
       name: undefined,
       role: 'combobox',
       id: this.inputId,
-      tabIndex: tabIndex || 0,
+      tabIndex: open && filter ? -1 : tabIndex || 0,
       'aria-owns': this.listId,
       'aria-activedescendant': open ? this.activeId : null,
       'aria-expanded': !!open,
