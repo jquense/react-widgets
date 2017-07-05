@@ -104,6 +104,7 @@ var DropdownList = React.createClass({
       multi: false,
       beforeListComponent: null,
       afterListComponent: null,
+      popupStyle: {},
     }
   },
 
@@ -146,7 +147,8 @@ var DropdownList = React.createClass({
       , placeholder, value, open, disabled, readOnly
       , valueComponent: ValueComponent, multi, tetherPopup, popupClassName
       , beforeListComponent, afterListComponent
-      , listComponent: List } = this.props;
+      , listComponent: List
+      , popupStyle } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
 
@@ -221,6 +223,7 @@ var DropdownList = React.createClass({
           onBlur={this._focus.bind(null, false)}
           onOpening={() => this.refs.list.forceUpdate()}
           onRequestClose={this.close}
+          popupStyle={popupStyle}
         >
           <div>
             { filter && this._renderFilter(messages) }

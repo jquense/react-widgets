@@ -100,11 +100,6 @@ var DateTimePicker = React.createClass({
       if (!current || (timeIsActive || calIsActive))
         return id
     }),
-    require('./mixins/FocusMixin')({
-      didHandle(focused) {
-        if (!focused) this.close()
-      }
-    })
   ],
 
   propTypes,
@@ -134,7 +129,9 @@ var DateTimePicker = React.createClass({
         timeButton:     'Select Time'
       },
 
-      ariaActiveDescendantKey: 'dropdownlist'
+      ariaActiveDescendantKey: 'dropdownlist',
+      timePopupStyle: {},
+      calendarPopupStyle: {},
     }
   },
 
@@ -147,7 +144,9 @@ var DateTimePicker = React.createClass({
       , timeComponent, autoFocus
       , 'aria-labelledby': ariaLabelledby
       , 'aria-describedby': ariaDescribedby
-      , tetherPopup } = this.props;
+      , tetherPopup
+      , calendarPopupStyle
+      , timePopupStyle } = this.props;
 
     let { focused } = this.state;
 
@@ -176,8 +175,8 @@ var DateTimePicker = React.createClass({
         ref="element"
         tabIndex={'-1'}
         onKeyDown={tetherPopup ? null : this._keyDown}
-        onFocus={tetherPopup ? () => this.setState({focused: true}) : this.handleFocus}
-        onBlur={tetherPopup ? () => this.setState({focused: false}) : this.handleBlur}
+        onFocus={tetherPopup ? () => this.setState({focused: true}) : () => this._focus.bind(null, true)}
+        onBlur={tetherPopup ? () => this.setState({focused: false}) : () => this._focus.bind(null, false)}
         className={cx(className, 'rw-datetimepicker', 'rw-widget', {
           'rw-state-focus':     focused,
           'rw-state-disabled':  disabled,
@@ -224,7 +223,7 @@ var DateTimePicker = React.createClass({
               disabled={disabledOrReadonly}
               aria-disabled={disabledOrReadonly}
               aria-label={messages.calendarButton}
-              onClick={this._click.bind(null, popups.CALENDAR)}
+              onClick={() => this.toggle(popups.CALENDAR)}
             >
               <i className="rw-i rw-i-calendar"
                 aria-hidden='true'
@@ -253,10 +252,11 @@ var DateTimePicker = React.createClass({
           onRequestClose={this.close}
           duration={duration}
           onOpening={() => this.refs.timePopup.forceUpdate()}
-          onOpen={tetherPopup ? this.handleFocus : this.focus}
+          onOpen={tetherPopup ? null : () => this._focus(true)}
           onKeyDown={this._keyDown}
           onBlur={this._focus.bind(null, false)}
-          getTetherFocus={() => this.refs.timePopup}
+          getTetherFocus={() => {}}
+          popupStyle={timePopupStyle}
         >
           <div>
             { shouldRenderList &&
@@ -286,10 +286,11 @@ var DateTimePicker = React.createClass({
           open={calendarIsOpen}
           duration={duration}
           onRequestClose={this.close}
-          onOpen={tetherPopup ? this.handleFocus : this.focus}
+          onOpen={tetherPopup ? null : () => this._focus(true)}
           onKeyDown={this._keyDown}
-          onBlur={this._focus.bind(null, false)}
-          getTetherFocus={() => this.refs.calPopup}
+          onBlur={() => this._focus(false)}
+          getTetherFocus={() => {}}
+          popupStyle={calendarPopupStyle}
         >
           { shouldRenderList &&
             <Calendar

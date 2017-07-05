@@ -1387,7 +1387,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      tetherPopup: false,
 	      multi: false,
 	      beforeListComponent: null,
-	      afterListComponent: null
+	      afterListComponent: null,
+	      popupStyle: {}
 	    };
 	  }
 	}, {
@@ -1465,6 +1466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var beforeListComponent = _props2.beforeListComponent;
 	    var afterListComponent = _props2.afterListComponent;
 	    var List = _props2.listComponent;
+	    var popupStyle = _props2.popupStyle;
 
 	    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
 
@@ -1559,7 +1561,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          onOpening: function () {
 	            return _this.refs.list.forceUpdate();
 	          },
-	          onRequestClose: this.close
+	          onRequestClose: this.close,
+	          popupStyle: popupStyle
 	        }),
 	        _react2['default'].createElement(
 	          'div',
@@ -3715,8 +3718,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var open = _props2.open;
 	    var dropUp = _props2.dropUp;
 	    var propStyle = _props2.style;
+	    var popupStyle = _props2.popupStyle;
 	    var onBlur = _props2.onBlur;
-	    var props = babelHelpers.objectWithoutProperties(_props2, ['className', 'open', 'dropUp', 'style', 'onBlur']);
+	    var props = babelHelpers.objectWithoutProperties(_props2, ['className', 'open', 'dropUp', 'style', 'popupStyle', 'onBlur']);
 
 	    var opacity = open ? 1 : 0;
 	    var width = this.state.width;
@@ -3734,7 +3738,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        {
 	          tether: _react2['default'].createElement(
 	            PopupContent,
-	            { className: className, tabIndex: 1, ref: 'content', style: { width: width, opacity: opacity } },
+	            { className: className, tabIndex: 1, ref: 'content', style: babelHelpers._extends({ width: width, opacity: opacity }, popupStyle) },
 	            this.props.children
 	          ),
 	          options: {
@@ -9184,10 +9188,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var timeIsActive = open === popups.TIME && key === 'timelist';
 
 	      if (!current || timeIsActive || calIsActive) return id;
-	    }), __webpack_require__(62)({
-	      didHandle: function didHandle(focused) {
-	        if (!focused) this.close();
-	      }
 	    })];
 	  }
 	}, {
@@ -9223,7 +9223,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        timeButton: 'Select Time'
 	      },
 
-	      ariaActiveDescendantKey: 'dropdownlist'
+	      ariaActiveDescendantKey: 'dropdownlist',
+	      timePopupStyle: {},
+	      calendarPopupStyle: {}
 	    };
 	  }
 	}, {
@@ -9258,6 +9260,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var ariaLabelledby = _props['aria-labelledby'];
 	    var ariaDescribedby = _props['aria-describedby'];
 	    var tetherPopup = _props.tetherPopup;
+	    var calendarPopupStyle = _props.calendarPopupStyle;
+	    var timePopupStyle = _props.timePopupStyle;
 	    var focused = this.state.focused;
 
 	    var inputID = _utilWidgetHelpers.instanceId(this, '_input'),
@@ -9288,10 +9292,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        onKeyDown: tetherPopup ? null : this._keyDown,
 	        onFocus: tetherPopup ? function () {
 	          return _this.setState({ focused: true });
-	        } : this.handleFocus,
+	        } : function () {
+	          return _this._focus.bind(null, true);
+	        },
 	        onBlur: tetherPopup ? function () {
 	          return _this.setState({ focused: false });
-	        } : this.handleBlur,
+	        } : function () {
+	          return _this._focus.bind(null, false);
+	        },
 	        className: _classnames2['default'](className, 'rw-datetimepicker', 'rw-widget', (_cx = {
 	          'rw-state-focus': focused,
 	          'rw-state-disabled': disabled,
@@ -9337,7 +9345,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            disabled: disabledOrReadonly,
 	            'aria-disabled': disabledOrReadonly,
 	            'aria-label': messages.calendarButton,
-	            onClick: this._click.bind(null, popups.CALENDAR)
+	            onClick: function () {
+	              return _this.toggle(popups.CALENDAR);
+	            }
 	          },
 	          _react2['default'].createElement('i', { className: 'rw-i rw-i-calendar',
 	            'aria-hidden': 'true'
@@ -9368,12 +9378,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          onOpening: function () {
 	            return _this.refs.timePopup.forceUpdate();
 	          },
-	          onOpen: tetherPopup ? this.handleFocus : this.focus,
+	          onOpen: tetherPopup ? null : function () {
+	            return _this._focus(true);
+	          },
 	          onKeyDown: this._keyDown,
 	          onBlur: this._focus.bind(null, false),
-	          getTetherFocus: function () {
-	            return _this.refs.timePopup;
-	          }
+	          getTetherFocus: function () {},
+	          popupStyle: timePopupStyle
 	        },
 	        _react2['default'].createElement(
 	          'div',
@@ -9405,12 +9416,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	          open: calendarIsOpen,
 	          duration: duration,
 	          onRequestClose: this.close,
-	          onOpen: tetherPopup ? this.handleFocus : this.focus,
+	          onOpen: tetherPopup ? null : function () {
+	            return _this._focus(true);
+	          },
 	          onKeyDown: this._keyDown,
-	          onBlur: this._focus.bind(null, false),
-	          getTetherFocus: function () {
-	            return _this.refs.calPopup;
-	          }
+	          onBlur: function () {
+	            return _this._focus(false);
+	          },
+	          getTetherFocus: function () {},
+	          popupStyle: calendarPopupStyle
 	        },
 	        shouldRenderList && _react2['default'].createElement(Calendar, babelHelpers._extends({}, calProps, {
 	          ref: 'calPopup',
