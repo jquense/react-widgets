@@ -120,6 +120,7 @@ module.exports = React.createClass({
       , open
       , dropUp
       , style: propStyle
+      , popupStyle
       , onBlur
       , ...props } = this.props;
 
@@ -137,7 +138,7 @@ module.exports = React.createClass({
       >
         <TetherTarget
           tether={
-            <PopupContent className={className} tabIndex={1} ref='content' style={{ width, opacity }}>
+            <PopupContent className={className} tabIndex={1} ref='content' style={{ width, opacity, ...popupStyle }}>
               { this.props.children }
             </PopupContent>
           }

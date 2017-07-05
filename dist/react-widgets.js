@@ -1387,7 +1387,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      tetherPopup: false,
 	      multi: false,
 	      beforeListComponent: null,
-	      afterListComponent: null
+	      afterListComponent: null,
+	      popupStyle: {}
 	    };
 	  }
 	}, {
@@ -1465,6 +1466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var beforeListComponent = _props2.beforeListComponent;
 	    var afterListComponent = _props2.afterListComponent;
 	    var List = _props2.listComponent;
+	    var popupStyle = _props2.popupStyle;
 
 	    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
 
@@ -3715,8 +3717,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var open = _props2.open;
 	    var dropUp = _props2.dropUp;
 	    var propStyle = _props2.style;
+	    var popupStyle = _props2.popupStyle;
 	    var onBlur = _props2.onBlur;
-	    var props = babelHelpers.objectWithoutProperties(_props2, ['className', 'open', 'dropUp', 'style', 'onBlur']);
+	    var props = babelHelpers.objectWithoutProperties(_props2, ['className', 'open', 'dropUp', 'style', 'popupStyle', 'onBlur']);
 
 	    var opacity = open ? 1 : 0;
 	    var width = this.state.width;
@@ -3734,7 +3737,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        {
 	          tether: _react2['default'].createElement(
 	            PopupContent,
-	            { className: className, tabIndex: 1, ref: 'content', style: { width: width, opacity: opacity } },
+	            { className: className, tabIndex: 1, ref: 'content', style: babelHelpers._extends({ width: width, opacity: opacity }, popupStyle) },
 	            this.props.children
 	          ),
 	          options: {
@@ -9219,7 +9222,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        timeButton: 'Select Time'
 	      },
 
-	      ariaActiveDescendantKey: 'dropdownlist'
+	      ariaActiveDescendantKey: 'dropdownlist',
+	      timePopupStyle: {},
+	      calendarPopupStyle: {}
 	    };
 	  }
 	}, {
@@ -9254,6 +9259,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var ariaLabelledby = _props['aria-labelledby'];
 	    var ariaDescribedby = _props['aria-describedby'];
 	    var tetherPopup = _props.tetherPopup;
+	    var calendarPopupStyle = _props.calendarPopupStyle;
+	    var timePopupStyle = _props.timePopupStyle;
 	    var focused = this.state.focused;
 
 	    var inputID = _utilWidgetHelpers.instanceId(this, '_input'),
@@ -9375,7 +9382,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          },
 	          onKeyDown: this._keyDown,
 	          onBlur: this._focus.bind(null, false),
-	          getTetherFocus: function () {}
+	          getTetherFocus: function () {},
+	          popupStyle: timePopupStyle
 	        },
 	        _react2['default'].createElement(
 	          'div',
@@ -9414,7 +9422,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          onBlur: function () {
 	            return _this._focus(false);
 	          },
-	          getTetherFocus: function () {}
+	          getTetherFocus: function () {},
+	          popupStyle: calendarPopupStyle
 	        },
 	        shouldRenderList && _react2['default'].createElement(Calendar, babelHelpers._extends({}, calProps, {
 	          ref: 'calPopup',

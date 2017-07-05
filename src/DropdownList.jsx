@@ -104,6 +104,7 @@ var DropdownList = React.createClass({
       multi: false,
       beforeListComponent: null,
       afterListComponent: null,
+      popupStyle: {},
     }
   },
 
@@ -146,7 +147,8 @@ var DropdownList = React.createClass({
       , placeholder, value, open, disabled, readOnly
       , valueComponent: ValueComponent, multi, tetherPopup, popupClassName
       , beforeListComponent, afterListComponent
-      , listComponent: List } = this.props;
+      , listComponent: List
+      , popupStyle } = this.props;
 
     List = List || (groupBy && GroupableList) || PlainList
 

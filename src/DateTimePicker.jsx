@@ -129,7 +129,9 @@ var DateTimePicker = React.createClass({
         timeButton:     'Select Time'
       },
 
-      ariaActiveDescendantKey: 'dropdownlist'
+      ariaActiveDescendantKey: 'dropdownlist',
+      timePopupStyle: {},
+      calendarPopupStyle: {},
     }
   },
 
@@ -142,7 +144,9 @@ var DateTimePicker = React.createClass({
       , timeComponent, autoFocus
       , 'aria-labelledby': ariaLabelledby
       , 'aria-describedby': ariaDescribedby
-      , tetherPopup } = this.props;
+      , tetherPopup
+      , calendarPopupStyle
+      , timePopupStyle } = this.props;
 
     let { focused } = this.state;
 
@@ -252,6 +256,7 @@ var DateTimePicker = React.createClass({
           onKeyDown={this._keyDown}
           onBlur={this._focus.bind(null, false)}
           getTetherFocus={() => {}}
+          popupStyle={timePopupStyle}
         >
           <div>
             { shouldRenderList &&
@@ -285,6 +290,7 @@ var DateTimePicker = React.createClass({
           onKeyDown={this._keyDown}
           onBlur={() => this._focus(false)}
           getTetherFocus={() => {}}
+          popupStyle={calendarPopupStyle}
         >
           { shouldRenderList &&
             <Calendar
