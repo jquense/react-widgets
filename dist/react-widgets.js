@@ -1561,7 +1561,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          onOpening: function () {
 	            return _this.refs.list.forceUpdate();
 	          },
-	          onRequestClose: this.close
+	          onRequestClose: this.close,
+	          popupStyle: popupStyle
 	        }),
 	        _react2['default'].createElement(
 	          'div',
