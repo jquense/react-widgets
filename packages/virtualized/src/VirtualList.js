@@ -169,7 +169,7 @@ class VirtualList extends React.Component {
         });
 
       return (
-        <li key={key} className="rw-list-option-loading">
+        <li key={key} className="rw-list-empty rw-list-option-loading">
           {LoadingComponent ? (
             <LoadingComponent key={key} index={index} pageSize={pageSize} />
           ) : (

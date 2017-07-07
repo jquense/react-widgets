@@ -39,6 +39,13 @@ class SlideDownTransition extends React.Component {
     events.on(node, transitionEnd, handler, false);
   }
 
+  handleEntered = (elem) => {
+    this.clearContainerHeight(elem);
+
+    if (this.props.onEntered)
+      this.props.onEntered();
+  }
+
   handleEntering = () => {
     if (this.props.onEntering)
       this.props.onEntering();
@@ -80,7 +87,7 @@ class SlideDownTransition extends React.Component {
         timeout={5000}
         onEnter={this.setContainerHeight}
         onEntering={this.handleEntering}
-        onEntered={this.clearContainerHeight}
+        onEntered={this.handleEntered}
         onExit={this.setContainerHeight}
         onExited={this.clearContainerHeight}
         addEndListener={this.handleTransitionEnd}
