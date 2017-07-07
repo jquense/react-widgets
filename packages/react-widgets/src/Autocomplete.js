@@ -48,7 +48,7 @@ const propTypes = {
 
   delay: PropTypes.number,
   dropUp: PropTypes.bool,
-  duration: PropTypes.number,
+  popupTransition: CustomPropTypes.elementType,
 
   placeholder: PropTypes.string,
   inputProps: PropTypes.object,
@@ -195,7 +195,7 @@ const propTypes = {
   render() {
     let {
       className,
-      duration,
+      popupTransition,
       data,
       value,
       busy,
@@ -266,7 +266,7 @@ const propTypes = {
           <Popup
             open={open}
             dropUp={dropUp}
-            duration={duration}
+            transition={popupTransition}
             onEntering={() => this.refs.list.forceUpdate()}
           >
             <div>

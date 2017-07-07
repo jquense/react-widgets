@@ -1,9 +1,9 @@
 import cn from 'classnames';
+import PropTypes from 'prop-types';
 import React, { cloneElement } from 'react';
 
-import PropTypes from 'prop-types';
-
 import SlideDownTransition from './SlideDownTransition';
+import { elementType }from './util/PropTypes';
 
 class StaticContainer extends React.Component {
   shouldComponentUpdate = ({ shouldUpdate }) => !!shouldUpdate
@@ -16,32 +16,32 @@ class Popup extends React.Component {
     dropUp: PropTypes.bool,
     onEntering: PropTypes.func,
     onEntered: PropTypes.func,
+    transition: elementType
   };
 
   static defaultProps = {
     open: false,
+    transition: SlideDownTransition,
   };
 
   render() {
-    let { className, dropUp, open, ...props } = this.props
+    let { className, dropUp, open, transition: Transition, ...props } = this.props
 
     let child = React.Children.only(this.props.children)
 
     return (
-      <SlideDownTransition
+      <Transition
         {...props}
         in={open}
-        className={cn(className,
-          'rw-popup-container',
-          dropUp && 'rw-dropup'
-        )}
+        dropUp={dropUp}
+        className={cn(className, 'rw-popup-container')}
       >
         <StaticContainer shouldUpdate={open}>
           {cloneElement(child, {
             className: cn(child.props.className, 'rw-popup')
           })}
         </StaticContainer>
-      </SlideDownTransition>
+      </Transition>
     )
   }
 }

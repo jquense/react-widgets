@@ -1,5 +1,4 @@
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import createUncontrolledWidget from 'uncontrollable'
@@ -52,8 +51,9 @@ let propTypes = {
   suggest: Filter.propTypes.filter,
   busy: PropTypes.bool,
   delay: PropTypes.number,
+
   dropUp: PropTypes.bool,
-  duration: PropTypes.number,
+  popupTransition: CustomPropTypes.elementType,
 
   placeholder: PropTypes.string,
 
@@ -310,7 +310,7 @@ let propTypes = {
   }
 
   render() {
-    let { className, duration, busy, dropUp, open } = this.props
+    let { className, popupTransition, busy, dropUp, open } = this.props
 
     let { focused } = this.state
 
@@ -351,7 +351,7 @@ let propTypes = {
           <Popup
             open={open}
             dropUp={dropUp}
-            duration={duration}
+            transition={popupTransition}
             onEntering={() => this.refs.list.forceUpdate()}
           >
             <div>

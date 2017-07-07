@@ -65,7 +65,9 @@ let propTypes = {
   onCreate: PropTypes.func,
 
   busy: PropTypes.bool,
+
   dropUp: PropTypes.bool,
+  popupTransition: CustomPropTypes.elementType,
 
   placeholder: PropTypes.string,
 
@@ -450,7 +452,7 @@ class Multiselect extends React.Component {
       , dropUp
       , open
       , searchTerm
-      , duration } = this.props;
+      , popupTransition } = this.props;
 
     let { focused, focusedItem, dataItems } = this.state;
 
@@ -509,7 +511,7 @@ class Multiselect extends React.Component {
           <Popup
             dropUp={dropUp}
             open={open}
-            duration={duration}
+            transition={popupTransition}
             onEntering={()=> this.refs.list.forceUpdate()}
           >
             <div>

@@ -129,9 +129,9 @@ ${language.busy}
 
 <EditableExample codeText={require('../examples/busy')(widgetName)}/>
 
-### duration?{ type: 'number', default: "250" }
+### popupTransition?{ type: 'Transition' }
 
-${language.duration}
+${language.popupTransition}
 
 ### isRtl?{ type: 'bool', default: "false" }
 

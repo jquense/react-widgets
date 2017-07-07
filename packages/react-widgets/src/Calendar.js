@@ -13,7 +13,7 @@ import Year from './Year';
 import Decade from './Decade';
 import Century from './Century';
 import { getMessages } from './messages';
-import SlideTransition from './SlideTransition';
+import SlideTransitionGroup from './SlideTransitionGroup';
 import focusManager from './util/focusManager';
 
 import { date as dateLocalizer } from './util/localizers';
@@ -318,7 +318,7 @@ class Calendar extends React.Component {
           onMoveLeft ={this.handleMoveBack}
           onMoveRight={this.handleMoveForward}
         />
-        <SlideTransition
+        <SlideTransitionGroup
           ref='animation'
           duration={duration}
           direction={slideDirection}
@@ -337,7 +337,7 @@ class Calendar extends React.Component {
             onKeyDown={this.handleKeyDown}
             aria-labelledby={this.labelId}
           />
-        </SlideTransition>
+        </SlideTransitionGroup>
         {footer &&
           <Footer
             value={todaysDate}

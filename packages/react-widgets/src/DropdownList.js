@@ -35,7 +35,6 @@ const CREATE_OPTION = {};
 @withRightToLeft
 class DropdownList extends React.Component {
   static propTypes = {
-    ...Popup.propTypes,
     ...Filter.propTypes,
 
     //-- controlled props -----------
@@ -65,6 +64,9 @@ class DropdownList extends React.Component {
     busy: PropTypes.bool,
 
     placeholder: PropTypes.string,
+
+    dropUp: PropTypes.bool,
+    popupTransition: CustomPropTypes.elementType,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
     readOnly: CustomPropTypes.disabled,
@@ -347,7 +349,7 @@ class DropdownList extends React.Component {
     let {
       className,
       tabIndex,
-      duration,
+      popupTransition,
       textField,
       data,
       busy,
@@ -422,7 +424,7 @@ class DropdownList extends React.Component {
           <Popup
             open={open}
             dropUp={dropUp}
-            duration={duration}
+            transition={popupTransition}
             onEntered={() => this.focus()}
             onEntering={() => this.refs.list.forceUpdate()}
           >

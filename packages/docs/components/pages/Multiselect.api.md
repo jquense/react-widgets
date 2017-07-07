@@ -135,9 +135,9 @@ ${language.minLength}
 
 ${language.busy}
 
-### duration?{ type: 'number', default: "250" }
+### popupTransition?{ type: 'Transition' }
 
-${language.duration}
+${language.popupTransition}
 
 ### disabled?{ type: 'bool | array<?mixed>' }
 

@@ -98,8 +98,12 @@ module.exports = {
     for providing visual feedback while data is being loaded.
   `,
 
-  duration:
-    'The speed, in milliseconds, of the popup animation. Set to `0` to disable animation.',
+  popupTransition: stripIndent`
+    A \`<Transition>\` component from \`react-transition-group@2.0.0\`. The
+    provided component will be used instead of the default \`SlideDownTransition\` for
+    fully customizable animations. The transition component is also injected with a
+    \`dropUp\` prop indicating the direction it should open.
+  `,
 
   isRtl: stripIndent`
     Controls the read direction of the {widgetName}.

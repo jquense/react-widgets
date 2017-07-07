@@ -1,6 +1,6 @@
-import React from 'react';
-
+import cn from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 import CalendarView from './CalendarView';
 import dates from './util/dates';
@@ -91,7 +91,7 @@ class MonthView extends React.Component {
   }
 
   render() {
-    let { focused, culture, activeId, dayFormat } = this.props
+    let { className, focused, culture, activeId, dayFormat } = this.props
     let month = dates.visibleDays(focused, culture)
     let rows  = chunk(month, 7);
 
@@ -101,7 +101,7 @@ class MonthView extends React.Component {
       <CalendarView
         {...Props.omitOwn(this)}
         activeId={activeId}
-        className="rw-calendar-month"
+        className={cn(className, 'rw-calendar-month')}
       >
         <thead>
           <tr>

@@ -1,16 +1,44 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Transition from 'react-overlays/lib/Transition';
+import cn from 'classnames';
+import events from 'dom-helpers/events';
 import css from 'dom-helpers/style';
 import getHeight from 'dom-helpers/query/height';
+import { transitionDuration, transitionEnd } from 'dom-helpers/transition/properties';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Transition, { ENTERING, EXITING, EXITED }
+  from 'react-transition-group/Transition';
 
+const transitionClasses = {
+  [ENTERING]: 'rw-popup-transition-entering',
+  [EXITING]: 'rw-popup-transition-exiting',
+  [EXITED]: 'rw-popup-transition-exited',
+}
 const propTypes = {
   in: PropTypes.bool.isRequired,
+  dropUp: PropTypes.bool,
   onEntering: PropTypes.func,
   onEntered: PropTypes.func,
 };
 
+function parseDuration(node) {
+  let str = css(node, transitionDuration)
+  let mult = str.indexOf('ms') === -1 ? 1000 : 1
+  return parseFloat(str) * mult
+}
+
 class SlideDownTransition extends React.Component {
+  handleTransitionEnd = (node, done) => {
+    let duration = parseDuration(node.lastChild) || 200
+
+    const handler = () => {
+      events.off(node, transitionEnd, handler, false)
+      done();
+    }
+
+    setTimeout(handler, duration * 1.5);
+    events.on(node, transitionEnd, handler, false);
+  }
+
   handleEntering = () => {
     if (this.props.onEntering)
       this.props.onEntering();
@@ -43,30 +71,35 @@ class SlideDownTransition extends React.Component {
   }
 
   render() {
-    const { children, className, onEntered } = this.props;
+    const { children, className, dropUp } = this.props;
 
     return (
       <Transition
-        transitionAppear
+        appear
         in={this.props.in}
-        className="rw-transition-slide"
-        enteringClassName="rw-transition-slide-entering"
-        exitingClassName="rw-transition-slide-exiting"
-        exitedClassName="rw-transition-slide-exited"
+        timeout={5000}
         onEnter={this.setContainerHeight}
         onEntering={this.handleEntering}
-        onEntered={onEntered}
+        onEntered={this.clearContainerHeight}
         onExit={this.setContainerHeight}
         onExited={this.clearContainerHeight}
+        addEndListener={this.handleTransitionEnd}
       >
-        <div
-          ref={r => this.element = r}
-          className={className}
-        >
-          <div className='rw-popup-animation-box'>
-            {children}
+        {(status, innerProps) => (
+          <div
+            {...innerProps}
+            ref={r => this.element = r}
+            className={cn(
+              className,
+              dropUp && 'rw-dropup',
+              transitionClasses[status]
+            )}
+          >
+            <div className='rw-popup-transition'>
+              {children}
+            </div>
           </div>
-        </div>
+        )}
       </Transition>
     );
   }

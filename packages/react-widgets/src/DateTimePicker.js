@@ -67,10 +67,8 @@ let propTypes = {
 
   timeComponent: CustomPropTypes.elementType,
 
-  delay: PropTypes.number,
   dropUp: PropTypes.bool,
-  duration: PropTypes.number,
-  calendarDuration: PropTypes.number,
+  popupTransition: CustomPropTypes.elementType,
 
   placeholder: PropTypes.string,
   name: PropTypes.string,
@@ -320,16 +318,16 @@ let propTypes = {
 
   renderCalendar() {
     let { activeCalendarId, inputId, dateId } = this
-    let { open, value, duration, calendarDuration, dropUp } = this.props
+    let { open, value, popupTransition, dropUp } = this.props
 
     let calendarProps = Props.pick(this.props, Calendar)
 
     return (
       <Popup
         dropUp={dropUp}
-        duration={duration}
         open={open === popups.DATE}
         className="rw-calendar-popup"
+        transition={popupTransition}
       >
         <BaseCalendar
           {...calendarProps}
@@ -348,7 +346,6 @@ let propTypes = {
           aria-hidden={!open}
           aria-live="polite"
           aria-labelledby={inputId}
-          duration={calendarDuration}
         />
       </Popup>
     )
@@ -363,18 +360,18 @@ let propTypes = {
       max,
       step,
       currentDate,
-      duration,
       dropUp,
       date,
       culture,
       timeFormat,
       timeComponent,
+      popupTransition,
     } = this.props
 
     return (
       <Popup
         dropUp={dropUp}
-        duration={duration}
+        transition={popupTransition}
         open={open === popups.TIME}
         onEntering={() => this.refs.timePopup.forceUpdate()}
       >

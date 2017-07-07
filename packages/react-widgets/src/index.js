@@ -14,7 +14,7 @@ module.exports = {
   SelectList: require('./SelectList'),
 
   utils: {
-    ReplaceTransitionGroup: require('./ReplaceTransitionGroup'),
-    SlideTransition:        require('./SlideTransition')
+    SlideTransitionGroup: require('./SlideTransitionGroup'),
+    SlideDownTransition: require('./SlideDownTransition')
   }
 }
