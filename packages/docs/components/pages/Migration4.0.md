@@ -46,7 +46,7 @@ To change the duration of all popup enter and exiting speeds adjust it via CSS
 __For Popups__:
 
 ```css
-.rw-popup-animation-box {
+.rw-popup-transition {
   transition-duration: 400ms;
 }
 ```
@@ -54,7 +54,7 @@ __For Popups__:
 Or if you want to control it per component use a className and selector.
 
 ```css
-.my-slower-dropdown .rw-popup-animation-box {
+.my-slower-dropdown .rw-popup-transition {
   transition-duration: 400ms;
 }
 ```
