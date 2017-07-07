@@ -30,11 +30,17 @@ regardless of whether the value has actually changed.
 
 <EditableExample codeText={require('../examples/onSelect')(widgetName)}/>
 
+### onCreate?{ type: 'function(searchTerm: string)'}
+
+This handler fires when the user chooses to create a new tag, not in the data list. It is up to the widget parent to implement creation logic, a common implementation is shown below, where the new tag is selected and added to the data list.
+
+<EditableExample codeText={require('../examples/onCreate')(widgetName, false)}/>
+
 ### data?{ type: 'array<mixed>' }
 
 ${language.data}
 
-### valueField?{ type: 'string' }
+### valueField?{ type: 'string | function(dataItem: ?mixed) -> string' }
 
 ${language.valueField}
 
@@ -94,7 +100,7 @@ Controls the value of the search text used to filter ${widgetName} items.
 
 Use `defaultSearchTerm` instead to set an initial value for uncontrolled widgets.
 
-### onSearch?{ type: 'function(searchTerm: string)', controllable: 'searchTerm' }
+### onSearch?{ type: 'function(searchTerm: string, metadata: { action, lastSearchTerm, originalEvent? })', controllable: 'searchTerm' }
 
 A callback fired when the current `searchTerm` changes.
 

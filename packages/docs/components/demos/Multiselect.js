@@ -27,34 +27,43 @@ const ItemComponent = (itemProps) => {
 class Multiselect extends React.Component {
 
   state = {
-    defaultValue: [],
+    data: list,
+    value: [],
     allowCustom: true,
     placeholder: 'Type to filter items...'
   }
-
+  handleChange = (value) => {
+    this.setState({ value })
+  }
   handleCreate = (tag) => {
-    var parts = tag.split(' ')
-    //list.push(tag)
+    const { value, data } = this.state;
+    const parts = tag.split(' ')
+    const nextTag = {
+      id: list.length + 1,
+      name: tag,
+      first: parts[0],
+      last: parts[1] || ''
+    }
+
     this.setState({
-      value: [].concat(this.state.value, {
-        id: list.length + 1,
-        name: tag,
-        first: parts[0],
-        last: parts[1]
-      })
+      data: [].concat(data, nextTag),
+      value: value == null ? [nextTag]: value.concat(nextTag)
     })
   };
 
   render() {
-    const { placeholder, groupBy, isRtl, busy, allowCustom, disabled, readOnly } = this.state;
+    const { value, data, placeholder, groupBy, isRtl, busy, allowCustom, disabled, readOnly } = this.state;
 
     let setter = createSetter(this);
 
     let props = {
-      data: list,
+      value,
+      data,
       textField: 'name',
       valueField: 'id',
-      onCreate: allowCustom ? this.onCreate : null,
+      onChange: this.handleChange,
+      onCreate: this.handleCreate,
+      allowCreate: allowCustom ? 'onFilter' : false,
       placeholder, groupBy, isRtl, busy, disabled, readOnly,
     }
 
@@ -63,12 +72,12 @@ class Multiselect extends React.Component {
       <Demo shortcuts={this.props.shortcuts}>
         <Demo.Stage>
           <div className='form-group'>
-            <RW.Multiselect {...props}/>
+            <RW.Multiselect {...props} />
           </div>
           <div className='form-group'>
             <label className='control-label'>Custom Rendering</label>
             <RW.Multiselect
-              {...props }
+              {...props}
               tagComponent={ItemComponent}
               itemComponent={ItemComponent}
             />

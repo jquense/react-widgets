@@ -55,7 +55,7 @@ a common implementation is shown below, where the new tag is selected and added 
 
 ${language.data}
 
-### valueField?{ type: 'string' }
+### valueField?{ type: 'string | function(dataItem: ?mixed) -> string' }
 
 ${language.valueField}
 

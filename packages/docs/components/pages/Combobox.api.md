@@ -38,7 +38,7 @@ regardless of whether the value has actually changed.
 
 ${language.data}
 
-### valueField?{ type: 'string' }
+### valueField?{ type: 'string | function(dataItem: ?mixed) -> string' }
 
 ${language.valueField}
 

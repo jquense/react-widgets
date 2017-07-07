@@ -1,17 +1,17 @@
 import { stripIndent } from 'common-tags';
 
 
-export default
-function(widgetName){
+export default function(widgetName, isArray = true) {
+
   return stripIndent`
     let { ${widgetName} } = ReactWidgets
 
-    class CreateMultiselect extends React.Component {
+    class Create${widgetName} extends React.Component {
       constructor(...args) {
         super(...args)
 
         this.state = {
-          value: [],
+          value: ${isArray ? '[]' : 'null'},
           people: listOfPeople(),
         }
       }
@@ -25,7 +25,7 @@ function(widgetName){
         }
 
         this.setState({
-          value: [...value, newTag],  // select new tag
+          value: ${isArray ? '[...value, newTag]' : 'newTag'},  // select new tag
           people: [...people, newTag] // add new tag to our dataset
         })
       }
@@ -34,9 +34,10 @@ function(widgetName){
         let { value, people } = this.state;
 
         return (
-          <Multiselect
+          <${widgetName} ${isArray ? '' : 'filter'}
             data={people}
             value={value}
+            allowCreate="onFilter"
             onCreate={name => this.handleCreate(name)}
             onChange={value => this.setState({ value })}
             textField="name"
@@ -45,6 +46,6 @@ function(widgetName){
       }
     }
 
-    ReactDOM.render(<CreateMultiselect/>, mountNode);
+    ReactDOM.render(<Create${widgetName}/>, mountNode);
   `
 }
