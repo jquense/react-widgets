@@ -175,8 +175,8 @@ var DateTimePicker = React.createClass({
         ref="element"
         tabIndex={'-1'}
         onKeyDown={tetherPopup ? null : this._keyDown}
-        onFocus={tetherPopup ? () => this.setState({focused: true}) : () => this._focus.bind(null, true)}
-        onBlur={tetherPopup ? () => this.setState({focused: false}) : () => this._focus.bind(null, false)}
+        onFocus={tetherPopup ? () => this.setState({focused: true}) : this._focus.bind(null, true)}
+        onBlur={tetherPopup ? () => this.setState({focused: false}) : this._focus.bind(null, false)}
         className={cx(className, 'rw-datetimepicker', 'rw-widget', {
           'rw-state-focus':     focused,
           'rw-state-disabled':  disabled,
@@ -223,7 +223,7 @@ var DateTimePicker = React.createClass({
               disabled={disabledOrReadonly}
               aria-disabled={disabledOrReadonly}
               aria-label={messages.calendarButton}
-              onClick={() => this.toggle(popups.CALENDAR)}
+              onClick={tetherPopup ? () => this.toggle(popups.CALENDAR) : this._click.bind(null, popups.CALENDAR)}
             >
               <i className="rw-i rw-i-calendar"
                 aria-hidden='true'
