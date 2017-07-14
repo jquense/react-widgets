@@ -1,7 +1,6 @@
 import cn from 'classnames';
 import events from 'dom-helpers/events';
 import css from 'dom-helpers/style';
-import getWidth from 'dom-helpers/query/width';
 import getHeight from 'dom-helpers/query/height';
 import { transitionDuration, transitionEnd } from 'dom-helpers/transition/properties';
 import PropTypes from 'prop-types';
@@ -97,21 +96,21 @@ class SlideTransitionGroup extends React.Component {
     return { direction: this.props.direction };
   }
 
-  componentDidUpdate() {
+  handleEnter = (child) => {
     let node = findDOMNode(this)
-    let child = node.lastChild;
 
-    if (child)
-      css(node, {
-        overflow: 'hidden',
-        height: getHeight(child) + 'px',
-        width:  getWidth(child) + 'px'
-      })
+    if (!child) return
+    const height =  getHeight(child) + 'px';
+
+    css(node, {
+      height,
+      overflow: 'hidden',
+    })
   }
 
-  clearStyles = () => {
+  handleExited = () => {
     let node = findDOMNode(this)
-    css(node, { overflow: '', height: '', width:  '' });
+    css(node, { overflow: '', height: '' });
   }
 
   render() {
@@ -123,15 +122,14 @@ class SlideTransitionGroup extends React.Component {
         component='div'
         className="rw-calendar-transition-group"
       >
-        {React.Children.map(children, (child) => child && (
-          <SlideTransition
-            key={child.key}
-            direction={direction}
-            onExited={this.clearStyles}
-          >
-            {child}
-          </SlideTransition>
-        ))}
+        <SlideTransition
+          key={children.key}
+          direction={direction}
+          onEnter={this.handleEnter}
+          onExited={this.handleExited}
+        >
+          {children}
+        </SlideTransition>
       </TransitionGroup>
     )
   }

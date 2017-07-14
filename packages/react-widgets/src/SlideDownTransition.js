@@ -12,7 +12,8 @@ const transitionClasses = {
   [ENTERING]: 'rw-popup-transition-entering',
   [EXITING]: 'rw-popup-transition-exiting',
   [EXITED]: 'rw-popup-transition-exited',
-}
+};
+
 const propTypes = {
   in: PropTypes.bool.isRequired,
   dropUp: PropTypes.bool,
@@ -28,7 +29,7 @@ function parseDuration(node) {
 
 class SlideDownTransition extends React.Component {
   handleTransitionEnd = (node, done) => {
-    let duration = parseDuration(node.lastChild) || 200
+    let duration = parseDuration(node.lastChild) || 0
 
     const handler = () => {
       events.off(node, transitionEnd, handler, false)

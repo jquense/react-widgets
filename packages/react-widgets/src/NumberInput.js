@@ -1,6 +1,8 @@
-import React from 'react';
-
+import canUseDOM from 'dom-helpers/util/inDOM';
+import activeElement from 'dom-helpers/activeElement';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { findDOMNode } from 'react-dom';
 
 import Input from './Input';
 import * as Props from './util/Props';
@@ -68,9 +70,18 @@ class NumberPickerInput extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (canUseDOM) {
+      this.tabbedSelection = this.isSelectingAllText();
+    }
     this.setState(
       this.getDefaultState(nextProps)
     )
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.tabbedSelection && !prevProps.editing && this.props.editing) {
+      findDOMNode(this).select();
+    }
   }
 
   getDefaultState(props = this.props){
@@ -89,6 +100,13 @@ class NumberPickerInput extends React.Component {
     return {
       stringValue: '' + value
     }
+  }
+
+  isSelectingAllText() {
+    const node = findDOMNode(this);
+    return activeElement() === node
+      && node.selectionStart === 0
+      && node.selectionEnd === node.value.length;
   }
 
   handleChange = (event) => {
