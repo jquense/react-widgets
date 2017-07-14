@@ -19,15 +19,6 @@ storiesOf('Numberpicker', module)
       />
     </Container>
   )
-  .add('filter', () =>
-    <Container>
-      <Numberpicker
-        {...props}
-        open
-        filter="contains"
-      />
-    </Container>
-  )
   .add('right to left', () =>
     <Container>
       <Numberpicker
@@ -37,22 +28,13 @@ storiesOf('Numberpicker', module)
       />
     </Container>
   )
-  .add('ellipsis', () =>
+  .add('format', () =>
     <Container>
       <Numberpicker
         {...props}
-        style={{ width: 80 }}
-        defaultValue={2405}
-      />
-    </Container>
-  )
-  .add('grouped', () =>
-    <Container>
-      <Numberpicker
-        {...props}
-        defaultOpen
-        defaultValue={2405}
-        groupBy="last"
+        min={250}
+        format="d"
+        defaultValue={2405.43534}
       />
     </Container>
   )

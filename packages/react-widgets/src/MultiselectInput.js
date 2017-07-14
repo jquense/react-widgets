@@ -34,6 +34,10 @@ class MultiselectInput extends React.Component {
     )
   }
 
+  select() {
+    findDOMNode(this).select()
+  }
+
   focus() {
     findDOMNode(this).focus()
   }

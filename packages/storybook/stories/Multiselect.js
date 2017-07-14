@@ -94,7 +94,7 @@ storiesOf('Multiselect', module)
     <Container>
       <Multiselect
         style={{ width: 200 }}
-        defaultValue={['john jacob jingleheimer schmidt']}
+        defaultValue={['joe', 'john jacob jingleheimer schmidt']}
       />
     </Container>
   ))

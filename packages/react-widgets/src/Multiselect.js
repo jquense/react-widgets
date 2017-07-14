@@ -223,6 +223,11 @@ class Multiselect extends React.Component {
   };
 
   @widgetEditable
+  handleDblClick = () => {
+    this.input && this.input.select();
+  };
+
+  @widgetEditable
   handleSelect = (dataItem, originalEvent) => {
     if (dataItem === undefined || dataItem === CREATE_OPTION) {
       this.handleCreate(this.props.searchTerm, originalEvent)
@@ -488,6 +493,7 @@ class Multiselect extends React.Component {
         <WidgetPicker
           className="rw-widget-input"
           onClick={this.handleClick}
+          oinDblClick={this.handleDblClick}
           onTouchEnd={this.handleClick}
         >
           <div>
