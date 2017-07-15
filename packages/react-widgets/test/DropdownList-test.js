@@ -102,14 +102,13 @@ describe('DROPDOWNS', function(){
   })
 
   it('should foward props to Popup', () => {
-    let props = tsp(<ControlledDropdownList open duration={2} dropUp />  )
+    let props = tsp(<ControlledDropdownList open dropUp />  )
       .shallowRender()
       .find('Popup')
       .props()
 
     expect(props.dropUp).to.equal(true)
     expect(props.open).to.equal(true)
-    expect(props.duration).to.equal(2)
   })
 
   it('should trigger focus/blur events', function(done){

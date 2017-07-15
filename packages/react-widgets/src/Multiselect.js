@@ -223,8 +223,11 @@ class Multiselect extends React.Component {
   };
 
   @widgetEditable
-  handleDblClick = () => {
-    this.input && this.input.select();
+  handleDoubleClick = () => {
+    if (!this.refs.input) return
+
+    this.focus()
+    this.refs.input.select();
   };
 
   @widgetEditable
@@ -493,7 +496,7 @@ class Multiselect extends React.Component {
         <WidgetPicker
           className="rw-widget-input"
           onClick={this.handleClick}
-          oinDblClick={this.handleDblClick}
+          onDoubleClick={this.handleDoubleClick}
           onTouchEnd={this.handleClick}
         >
           <div>

@@ -7,6 +7,16 @@ require('./test-localizer')()
 //disable this particular optimization
 sinon.stub(widgetHelpers, 'isFirstFocusedRender', ()=> true)
 
+let node = document.createElement('style');
+  document.body.appendChild(node);
+
+node.innerHTML = `
+  .rw-popup-transition
+  .rw-calendar-transition {
+    transition: none;
+  }
+`
+
 beforeEach(() => {
   sinon.stub(console, 'error');
 });

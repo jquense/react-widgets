@@ -28,7 +28,6 @@ import { date as dateLocalizer } from './util/localizers'
 import { calendarViews as views, datePopups as popups } from './util/constants'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
-let Calendar = BaseCalendar.ControlledComponent
 
 let viewEnum = Object.keys(views).map(k => views[k])
 
@@ -47,6 +46,7 @@ let propTypes = {
   onToggle: PropTypes.func,
   currentDate: PropTypes.instanceOf(Date),
   onCurrentDateChange: PropTypes.func,
+
   //------------------------------------
 
   onSelect: PropTypes.func,
@@ -318,9 +318,15 @@ let propTypes = {
 
   renderCalendar() {
     let { activeCalendarId, inputId, dateId } = this
-    let { open, value, popupTransition, dropUp } = this.props
+    let {
+      open,
+      value,
+      popupTransition,
+      dropUp,
+      onCurrentDateChange,
+      currentDate } = this.props
 
-    let calendarProps = Props.pick(this.props, Calendar)
+    let calendarProps = Props.pick(this.props, BaseCalendar.ControlledComponent)
 
     return (
       <Popup
@@ -341,8 +347,8 @@ let propTypes = {
           // #75: need to aggressively reclaim focus from the calendar otherwise
           // disabled header/footer buttons will drop focus completely from the widget
           onNavigate={() => this.focus()}
-          currentDate={this.props.currentDate}
-          onCurrentDateChange={this.props.onCurrentDateChange}
+          currentDate={currentDate}
+          onCurrentDateChange={onCurrentDateChange}
           aria-hidden={!open}
           aria-live="polite"
           aria-labelledby={inputId}
@@ -509,6 +515,7 @@ export default uncontrollable(
   {
     open: 'onToggle',
     value: 'onChange',
+    currentDate: 'onCurrentDateChange',
   },
   ['focus']
 )

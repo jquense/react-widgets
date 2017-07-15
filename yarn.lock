@@ -6650,9 +6650,9 @@ react-style-proptype@^3.0.0:
     fbjs "^0.8.9"
     object-assign "^4.1.0"
 
-react-transition-group@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.0.2.tgz#894012704fd2d2dc57cf5e377f9d182f3c306402"
+react-transition-group@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.1.0.tgz#3a4d115e1b515da3dd0280597b3b00cbbbee996b"
   dependencies:
     chain-function "^1.0.0"
     classnames "^2.2.5"

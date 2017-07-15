@@ -118,6 +118,8 @@ class Calendar extends React.Component {
     footer: true,
   };
 
+  static Transition = SlideTransitionGroup;
+
   constructor(...args) {
     super(...args)
 
@@ -276,7 +278,6 @@ class Calendar extends React.Component {
       , min
       , max
       , culture
-      , duration
       , tabIndex } = this.props
 
     let { view, slideDirection, focused } = this.state;
@@ -318,12 +319,7 @@ class Calendar extends React.Component {
           onMoveLeft ={this.handleMoveBack}
           onMoveRight={this.handleMoveForward}
         />
-        <SlideTransitionGroup
-          ref='animation'
-          duration={duration}
-          direction={slideDirection}
-          onAnimate={() => focused && this.focus()}
-        >
+        <Calendar.Transition direction={slideDirection}>
           <View
             {...viewProps}
             key={key}
@@ -337,7 +333,7 @@ class Calendar extends React.Component {
             onKeyDown={this.handleKeyDown}
             aria-labelledby={this.labelId}
           />
-        </SlideTransitionGroup>
+        </Calendar.Transition>
         {footer &&
           <Footer
             value={todaysDate}

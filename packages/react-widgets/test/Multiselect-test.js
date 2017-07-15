@@ -60,14 +60,13 @@ describe('Multiselect', function() {
   })
 
   it('should foward props to Popup', () => {
-    let props = tsp(<ControlledMultiselect open duration={2} dropUp />  )
+    let props = tsp(<ControlledMultiselect open dropUp />  )
       .shallowRender()
       .find('Popup')
       .props()
 
     expect(props.dropUp).to.equal(true)
     expect(props.open).to.equal(true)
-    expect(props.duration).to.equal(2)
   })
 
   it('should open when clicked', (done) => {
@@ -386,13 +385,13 @@ describe('Multiselect', function() {
     expect(change.calledAfter(onSelect)).to.be(true)
   })
 
-  it('should clear search on blur', function(){
-    let onSelect = sinon.spy();
+  it('should clear search on blur', done => {
+    let onSearch = sinon.spy();
 
     tsp(
       <Multiselect
         data={dataList}
-        onSelect={onSelect}
+        onSearch={onSearch}
         defaultSearchTerm="foo"
       />
     )
@@ -400,8 +399,11 @@ describe('Multiselect', function() {
     .find('input')
     .trigger('blur')
 
-    expect(onSelect.calledOnce).to.be(true)
-    expect(onSelect.calledWith('')).to.be(true)
+    setTimeout(() => {
+      expect(onSearch.calledOnce).to.be(true)
+      expect(onSearch.calledWith('')).to.be(true)
+      done()
+    })
   })
 
   it('should clear searchTerm when an item is selected', () => {
@@ -450,6 +452,7 @@ describe('Multiselect', function() {
   it('should show create tag correctly', function(){
     var select = tsp(
       <Multiselect
+        defaultOpen
         searchTerm="custom tag"
         onCreate={()=>{}}
         data={dataList}
@@ -481,6 +484,7 @@ describe('Multiselect', function() {
   it('should show create tag correctly when caseSensitive', function(){
     tsp(
       <Multiselect
+        defaultOpen
         searchTerm="Jimmy"
         onCreate={()=>{}}
         data={ dataList }

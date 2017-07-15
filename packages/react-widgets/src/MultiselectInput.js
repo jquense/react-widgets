@@ -1,3 +1,4 @@
+import activeElement from 'dom-helpers/activeElement';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
@@ -39,7 +40,10 @@ class MultiselectInput extends React.Component {
   }
 
   focus() {
-    findDOMNode(this).focus()
+    const node = findDOMNode(this);
+
+    if (activeElement() === node) return;
+    node.focus()
   }
 }
 

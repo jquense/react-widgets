@@ -43,11 +43,6 @@ storiesOf('Calendar', module)
       <Calendar defaultView="decade" />
     </Container>
   )
-  .add('no animation', () =>
-    <Container>
-      <Calendar duration={0} />
-    </Container>
-  )
   .add('current date', () => {
     class Story extends React.Component {
 

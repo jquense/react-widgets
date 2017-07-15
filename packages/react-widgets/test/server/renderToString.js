@@ -17,7 +17,6 @@ var components = [
   'Multiselect',
   'SelectList',
   'List',
-  'ReplaceTransitionGroup',
   'NumberPicker'
 ];
 
