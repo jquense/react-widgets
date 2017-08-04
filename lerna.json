@@ -1,6 +1,6 @@
 {
   "lerna": "2.0.0-rc.5",
-  "version": "4.0.0-rc.15",
+  "version": "4.0.0-rc.16",
   "hoist": true,
   "npmClient": "yarn",
   "packages": [
