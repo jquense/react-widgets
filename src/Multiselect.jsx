@@ -73,7 +73,8 @@ var propTypes = {
     emptyList:     CustomPropTypes.message,
     emptyFilter:   CustomPropTypes.message,
     createNew:     CustomPropTypes.message
-  })
+  }),
+  minLengthToOpen: PropTypes.number
 };
 
 var Multiselect = createReactClass({
@@ -95,7 +96,7 @@ var Multiselect = createReactClass({
         if (!focused && this.refs.tagList)
           this.setState({ focusedTag: null })
 
-        if (focused && !this.props.open)
+        if (focused && !this.props.open && this.props.minLengthToOpen && this.props.minLengthToOpen <= this.props.searchTerm.length)
           this.open()
       }
     }),
@@ -412,7 +413,17 @@ var Multiselect = createReactClass({
 
   handleInputChange(e) {
     notify(this.props.onSearch, [ e.target.value ])
-    this.open()
+
+    if (this.props.minLengthToOpen) {
+      if (e.target.value.length >= this.props.minLengthToOpen) {
+        this.open()
+      } else {
+        this.close()
+      }
+    } else {
+      this.open()
+    }
+
   },
 
   @widgetEditable

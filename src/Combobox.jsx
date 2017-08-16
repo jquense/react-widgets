@@ -65,7 +65,8 @@ let propTypes = {
     open:         CustomPropTypes.message,
     emptyList:    CustomPropTypes.message,
     emptyFilter:  CustomPropTypes.message
-  })
+  }),
+  minLengthToOpen: PropTypes.number
 };
 
 var ComboBox = createReactClass({
@@ -326,7 +327,15 @@ var ComboBox = createReactClass({
       ? data
       : strVal, true)
 
-    this.open()
+    if (this.props.minLengthToOpen) {
+      if (strVal.length >= this.props.minLengthToOpen) {
+        this.open()
+      } else {
+        this.close()
+      }
+    } else {
+      this.open()
+    }
   },
 
   focus() {
