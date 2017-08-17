@@ -470,9 +470,11 @@ class Multiselect extends React.Component {
       , shouldRenderPopup = isFirstFocusedRender(this) || open
       , allowCreate = this.allowCreate();
 
-    let inputOwns = `${this.listId} ${this.notifyId} `
-      + (shouldRenderTags ? this.tagsId : '')
-      + (allowCreate ? this.createId : '');
+    let inputOwns = cn(this.notifyId, {
+        [this.listId]: shouldRenderPopup
+      , [this.tagsId]: shouldRenderTags
+      , [this.createId]: allowCreate
+    });
 
     let disabled = this.isDisabled() === true
     let readOnly = this.props.readOnly === true
