@@ -61,6 +61,9 @@ let propTypes = {
 
   placeholder:    PropTypes.string,
 
+  'aria-labelledby': PropTypes.string,
+  'aria-describedby': PropTypes.string,
+
   messages:       PropTypes.shape({
     open:         CustomPropTypes.message,
     emptyList:    CustomPropTypes.message,
@@ -172,7 +175,9 @@ var ComboBox = createReactClass({
       , disabled
       , readOnly
       , placeholder
-      , open } = this.props;
+      , open
+      , 'aria-labelledby': ariaLabelledby
+      , 'aria-describedby': ariaDescribedby } = this.props;
 
     let valueItem = dataItem(data, value, valueField) // take value from the raw data
 
@@ -196,6 +201,8 @@ var ComboBox = createReactClass({
         aria-autocomplete={completeType}
         aria-expanded={open}
         aria-haspopup={true}
+        aria-describedby={ariaDescribedby}
+        aria-labelledby={ariaLabelledby}
         placeholder={placeholder}
         value={dataText(valueItem, textField)}
         onChange={this.handleInputChange}

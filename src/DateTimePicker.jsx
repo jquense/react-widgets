@@ -78,6 +78,7 @@ let propTypes = {
                     ]),
 
     'aria-labelledby': PropTypes.string,
+    'aria-describedby': PropTypes.string,
 
     messages:      PropTypes.shape({
       calendarButton: PropTypes.string,
