@@ -48,24 +48,75 @@ function clamp(value, min, max) {
   return Math.max(Math.min(value, max), min)
 }
 
-@withRightToLeft class NumberPicker extends React.Component {
+/**
+ * ---
+ * localized: true,
+ * shortcuts:
+ *   - { key: down arrow, label: decrement value }
+ *   - { key: up arrow, label: increment value }
+ *   - { key: home, label: set value to minimum value, if finite }
+ *   - { key: end, label: set value to maximum value, if finite }
+ * ---
+ *
+ * @public
+ */
+@withRightToLeft
+class NumberPicker extends React.Component {
   static propTypes = {
-    // -- controlled props -----------
-    value: PropTypes.number,
-    onChange: PropTypes.func,
-    //------------------------------------
 
+    value: PropTypes.number,
+
+    /**
+     * @example ['onChangePicker', [ [1, null] ]]
+     */
+    onChange: PropTypes.func,
+
+    /**
+     * The minimum number that the NumberPicker value.
+     * @example ['prop', ['min', 0]]
+     */
     min: PropTypes.number,
+
+    /**
+     * The maximum number that the NumberPicker value.
+     *
+     * @example ['prop', ['max', 0]]
+     */
     max: PropTypes.number,
+
+    /**
+     * Amount to increase or decrease value when using the spinner buttons.
+     *
+     * @example ['prop', ['step', 5]]
+     */
     step: PropTypes.number,
+
+    /**
+     * Specify how precise the `value` should be when typing, incrementing, or decrementing the value.
+     * When empty, precision is parsed from the current `format` and culture.
+     */
     precision: PropTypes.number,
 
     culture: PropTypes.string,
+
+    /**
+     * A format string used to display the number value. Localizer dependent, read [localization](/i18n) for more info.
+     *
+     * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
+     */
     format: CustomPropTypes.numberFormat,
+
+    /**
+     * Determines how the NumberPicker parses a number from the localized string representation.
+     * You can also provide a parser `function` to pair with a custom `format`.
+     */
     parse: PropTypes.func,
 
-    name: PropTypes.string,
+
+    /** @ignore */
     tabIndex: PropTypes.any,
+    name: PropTypes.string,
+    placeholder: PropTypes.string,
     onKeyDown: PropTypes.func,
     onKeyPress: PropTypes.func,
     onKeyUp: PropTypes.func,
@@ -78,8 +129,6 @@ function clamp(value, min, max) {
       increment: PropTypes.string,
       decrement: PropTypes.string,
     }),
-
-    placeholder: PropTypes.string,
   }
 
   static defaultProps = {

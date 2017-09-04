@@ -31,19 +31,46 @@ function getFirstValue(data, values) {
   return null
 }
 
+/**
+ * ---
+ * shortcuts:
+ *   - { key: down arrow, label: move focus, or select previous option }
+ *   - { key: up arrow, label: move focus, or select next option }
+ *   - { key: home, label: move focus to first option }
+ *   - { key: end, label: move focus to last option }
+ *   - { key: spacebar, label: toggle focused option }
+ *   - { key: ctrl + a, label: ctoggle select all/select none }
+ *   - { key: any key, label: search list for option starting with key }
+ * ---
+ *
+ * A group of radio buttons or checkboxes bound to a dataset.
+ *
+ * @public
+ */
 @withRightToLeft
 class SelectList extends React.Component {
   static propTypes = {
-    ...autoFocus.propTypes,
-
     data: PropTypes.array,
     value: PropTypes.oneOfType([
       PropTypes.any,
       PropTypes.array
     ]),
     onChange: PropTypes.func,
+
+    /**
+     * A handler called when focus shifts on the SelectList. Internally this is used to ensure the focused item is in view.
+     * If you want to define your own "scrollTo" behavior or just disable the default one specify an `onMove` handler.
+     * The handler is called with the relevant DOM nodes needed to implement scroll behavior: the list element,
+     * the element that is currently focused, and a focused value.
+     *
+     * @type {function(list: HTMLELement, focusedNode: HTMLElement, focusedItem: any)}
+     */
     onMove: PropTypes.func,
 
+    /**
+     * Whether or not the SelectList allows multiple selection or not. when `false` the SelectList will
+     * render as a list of radio buttons, and checkboxes when `true`.
+     */
     multiple: PropTypes.bool,
 
     itemComponent: CustomPropTypes.elementType,
@@ -51,12 +78,10 @@ class SelectList extends React.Component {
 
     valueField: CustomPropTypes.accessor,
     textField: CustomPropTypes.accessor,
-
     busy: PropTypes.bool,
-
-    filter: PropTypes.string,
     delay: PropTypes.number,
 
+    autoFocus: PropTypes.bool,
     disabled: CustomPropTypes.disabled.acceptsArray,
     readOnly: CustomPropTypes.disabled,
 

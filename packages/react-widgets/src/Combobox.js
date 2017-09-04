@@ -24,17 +24,13 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
 let propTypes = {
   ...Filter.propTypes,
-
-  //-- controlled props -----------
   value: PropTypes.any,
   onChange: PropTypes.func,
   open: PropTypes.bool,
   onToggle: PropTypes.func,
-  //------------------------------------
 
   itemComponent: CustomPropTypes.elementType,
   listComponent: CustomPropTypes.elementType,
-
   groupComponent: CustomPropTypes.elementType,
   groupBy: CustomPropTypes.accessor,
 
@@ -43,11 +39,20 @@ let propTypes = {
   textField: CustomPropTypes.accessor,
   name: PropTypes.string,
 
+  /**
+   *
+   * @type {(dataItem: ?any, metadata: { originalEvent: SyntheticEvent }) => void}
+   */
   onSelect: PropTypes.func,
 
   autoFocus: PropTypes.bool,
   disabled: CustomPropTypes.disabled.acceptsArray,
   readOnly: CustomPropTypes.disabled,
+
+  /**
+   * When `true` the Combobox will suggest, or fill in, values as you type. The suggestions
+   * are always "startsWith", meaning it will search from the start of the `textField` property
+   */
   suggest: Filter.propTypes.filter,
   busy: PropTypes.bool,
   delay: PropTypes.number,
@@ -66,7 +71,25 @@ let propTypes = {
   }),
 }
 
-@withRightToLeft class Combobox extends React.Component {
+/**
+ * ---
+ * shortcuts:
+ *   - { key: alt + down arrow, label: open combobox }
+ *   - { key: alt + up arrow, label: close combobox }
+ *   - { key: down arrow, label: move focus to next item }
+ *   - { key: up arrow, label: move focus to previous item }
+ *   - { key: home, label: move focus to first item }
+ *   - { key: end, label: move focus to last item }
+ *   - { key: enter, label: select focused item }
+ *   - { key: any key, label: search list for item starting with key }
+ * ---
+ *
+ * Select an item from the list, or input a custom value. The Combobox can also make suggestions as you type.
+
+ * @public
+ */
+@withRightToLeft
+class Combobox extends React.Component {
   static propTypes = propTypes
 
   static defaultProps = {

@@ -25,11 +25,8 @@ import withRightToLeft from './util/withRightToLeft'
 import { widgetEditable } from './util/interaction'
 import dates from './util/dates'
 import { date as dateLocalizer } from './util/localizers'
-import { calendarViews as views, datePopups as popups } from './util/constants'
+import { datePopups as popups } from './util/constants'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
-
-
-let viewEnum = Object.keys(views).map(k => views[k])
 
 let NEXT_VIEW = {
   [popups.DATE]: popups.TIME,
@@ -39,32 +36,96 @@ let NEXT_VIEW = {
 let isBothOrNeither = (a, b) => (a && b) || (!a && !b)
 
 let propTypes = {
-  //-- controlled props -----------
   value: PropTypes.instanceOf(Date),
+
+  /**
+   * @example ['onChangePicker', [ ['new Date()', null] ]]
+   */
   onChange: PropTypes.func,
+  /**
+   * @type (false | 'time' | 'date')
+   */
   open: PropTypes.oneOf([false, popups.TIME, popups.DATE]),
   onToggle: PropTypes.func,
+
+  /**
+   * Default current date at which the calendar opens. If none is provided, opens at today's date or the `value` date (if any).
+   */
   currentDate: PropTypes.instanceOf(Date),
+
+  /**
+   * Change event Handler that is called when the currentDate is changed. The handler is called with the currentDate object.
+   */
   onCurrentDateChange: PropTypes.func,
-
-  //------------------------------------
-
   onSelect: PropTypes.func,
 
+  /**
+   * The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that
+   * can be typed or pasted into the widget. If you need this behavior you can constrain values via
+   * the `onChange` handler.
+   *
+   * @example ['prop', ['min', 'new Date()']]
+   */
   min: PropTypes.instanceOf(Date),
+
+  /**
+   * The maximum Date that can be selected. Max only limits selection, it doesn't constrain the date values that
+   * can be typed or pasted into the widget. If you need this behavior you can constrain values via
+   * the `onChange` handler.
+   *
+   * @example ['prop', ['max', 'new Date()']]
+   */
   max: PropTypes.instanceOf(Date),
+
+  /**
+   * The amount of minutes between each entry in the time list.
+   *
+   * @example ['prop', { step: 90 }]
+   */
   step: PropTypes.number,
 
   culture: PropTypes.string,
 
+  /**
+   * A formatter used to display the date value. For more information about formats
+   * visit the [Localization page](/i18n)
+   *
+   * @example ['dateFormat', ['format', "{ raw: 'MMM dd, yyyy' }", null, { defaultValue: 'new Date()', time: 'false' }]]
+   */
   format: CustomPropTypes.dateFormat,
+
+  /**
+   * A formatter used by the time dropdown to render times. For more information about formats visit
+   * the [Localization page](/i18n).
+   *
+   * @example ['dateFormat', ['timeFormat', "{ time: 'medium' }", null, { date: 'false', open: '"time"' }]]
+   */
   timeFormat: CustomPropTypes.dateFormat,
+
+  /**
+   * A formatter to be used while the date input has focus. Useful for showing a simpler format for inputing.
+   * For more information about formats visit the [Localization page](/i18n)
+   *
+   * @example ['dateFormat', ['editFormat', "{ date: 'short' }", null, { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }]]
+   */
   editFormat: CustomPropTypes.dateFormat,
 
+  /**
+   * Enable the calendar component of the picker.
+   */
   date: PropTypes.bool,
+
+  /**
+   * Enable the time list component of the picker.
+   */
   time: PropTypes.bool,
+
+  /** @ignore */
   calendar: deprecated(PropTypes.bool, 'Use `date` instead'),
 
+  /**
+   * A customize the rendering of times but providing a custom component.
+   */
   timeComponent: CustomPropTypes.elementType,
 
   dropUp: PropTypes.bool,
@@ -72,22 +133,26 @@ let propTypes = {
 
   placeholder: PropTypes.string,
   name: PropTypes.string,
-
-  initialView: PropTypes.oneOf(viewEnum),
-  finalView: PropTypes.oneOf(viewEnum),
-
   autoFocus: PropTypes.bool,
   disabled: CustomPropTypes.disabled,
   readOnly: CustomPropTypes.disabled,
 
+  /**
+   * Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
+   * or provide a function that returns a date to handle parsing yourself. When `parse` is unspecified and
+   * the `format` prop is a `string` parse will automatically use that format as its default.
+   */
   parse: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.string,
     PropTypes.func,
   ]),
 
+  /** @ignore */
   tabIndex: PropTypes.any,
+  /** @ignore */
   'aria-labelledby': PropTypes.string,
+  /** @ignore */
   'aria-describedby': PropTypes.string,
 
   onKeyDown: PropTypes.func,
@@ -102,6 +167,25 @@ let propTypes = {
   }),
 }
 
+
+/**
+ * ---
+ * subtitle: DatePicker, TimePicker
+ * localized: true
+ * shortcuts:
+ *   - { key: alt + down arrow, label:  open calendar or time }
+ *   - { key: alt + up arrow, label: close calendar or time }
+ *   - { key: down arrow, label: move focus to next item }
+ *   - { key: up arrow, label: move focus to previous item }
+ *   - { key: home, label: move focus to first item }
+ *   - { key: end, label: move focus to last item }
+ *   - { key: enter, label: select focused item }
+ *   - { key: any key, label: search list for item starting with key }
+ * ---
+ *
+ * @public
+ * @extends Calendar
+*/
 @withRightToLeft class DateTimePicker extends React.Component {
   static displayName = 'DateTimePicker'
 

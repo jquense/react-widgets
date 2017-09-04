@@ -68,10 +68,9 @@
     "dom-helpers": "^3.0.0",
     "invariant": "^2.1.0",
     "loose-envify": "^1.2.0",
-    "react-component-managers": "^3.0.2",
-    "react-overlays": "^0.7.0",
+    "react-component-managers": "^2.0.0",
+    "react-overlays": "^0.6.10",
     "react-prop-types": "^0.4.0",
-    "react-transition-group": "^2.1.0",
     "spy-on-component": "^1.0.2",
     "uncontrollable": "^4.0.0",
     "warning": "^2.0.0"
@@ -109,7 +108,7 @@
     "teaspoon": "^6.4.1",
     "uncontrollable": "^3.2.3",
     "url-loader": "^0.5.7",
-    "webpack": "^2.6.1"
+    "webpack": "^1.14.0"
   },
   "browserify": {
     "transform": [

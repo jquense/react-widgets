@@ -32,23 +32,53 @@ import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
 const CREATE_OPTION = {};
 
+/**
+ * ---
+ * shortcuts:
+ *   - { key: alt + down arrow, label: open dropdown }
+ *   - { key: alt + up arrow, label: close dropdown }
+ *   - { key: down arrow, label: move focus to next item }
+ *   - { key: up arrow, label: move focus to previous item }
+ *   - { key: home, label: move focus to first item }
+ *   - { key: end, label: move focus to last item }
+ *   - { key: enter, label: select focused item }
+ *   - { key: ctrl + enter, label: create new option from current searchTerm }
+ *   - { key: any key, label: search list for item starting with key }
+ * ---
+ *
+ * A `<select>` replacement for single value lists.
+
+ * @public
+ */
 @withRightToLeft
 class DropdownList extends React.Component {
   static propTypes = {
     ...Filter.propTypes,
 
-    //-- controlled props -----------
     value: PropTypes.any,
+    /**
+   * @type {function (
+   *  dataItems: ?any,
+   *  metadata: {
+   *    lastValue: ?any,
+   *    searchTerm: ?string
+   *    originalEvent: SyntheticEvent,
+   *  }
+   * ): void}
+   */
     onChange: PropTypes.func,
     open: PropTypes.bool,
     onToggle: PropTypes.func,
-    //------------------------------------
 
     data: PropTypes.array,
     valueField: CustomPropTypes.accessor,
     textField: CustomPropTypes.accessor,
     allowCreate: PropTypes.oneOf([true, false, 'onFilter']),
 
+    /**
+     * A React component for customizing the rendering of the DropdownList
+     * value
+     */
     valueComponent: CustomPropTypes.elementType,
     itemComponent: CustomPropTypes.elementType,
     listComponent: CustomPropTypes.elementType,
@@ -56,13 +86,22 @@ class DropdownList extends React.Component {
     groupComponent: CustomPropTypes.elementType,
     groupBy: CustomPropTypes.accessor,
 
+    /**
+     *
+     * @type {(dataItem: ?any, metadata: { originalEvent: SyntheticEvent }) => void}
+     */
     onSelect: PropTypes.func,
+
+
     onCreate: PropTypes.func,
+
+    /**
+     * @type function(searchTerm: string, metadata: { action, lastSearchTerm, originalEvent? })
+     */
     onSearch: PropTypes.func,
 
     searchTerm: PropTypes.string,
     busy: PropTypes.bool,
-
     placeholder: PropTypes.string,
 
     dropUp: PropTypes.bool,

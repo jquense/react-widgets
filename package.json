@@ -1,4 +1,5 @@
 {
+  "private": true,
   "scripts": {
     "lerna": "lerna",
     "lint": "lerna run lint",
@@ -8,6 +9,7 @@
     "tdd": "npm run rw tdd",
     "start": "npm run docs start",
     "start-dev": "lerna exec --scope storybook npm start",
+    "postinstall": "lerna run prepublish",
     "prerelease": "lerna bootstrap && lerna publish --npm-tag=next"
   },
   "dependencies": {
@@ -32,5 +34,8 @@
     "webpack-atoms": "^2.0.6",
     "webpack-dev-server": "^2.4.5",
     "webpack-merge": "^4.1.0"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

@@ -1,4 +1,5 @@
 // @flow
+
 import cn from 'classnames';
 import closest from 'dom-helpers/query/closest';
 import PropTypes from 'prop-types';
@@ -34,15 +35,37 @@ const INSERT = 'insert';
 const REMOVE = 'remove';
 
 let propTypes = {
-  ...Popup.propTypes,
   ...Filter.propTypes,
 
   data: PropTypes.array,
   //-- controlled props --
   value: PropTypes.array,
+
+  /**
+   * @type {function (
+   *  dataItems: ?any[],
+   *  metadata: {
+   *    dataItem: any,
+   *    action: 'insert' | 'remove',
+   *    originalEvent: SyntheticEvent,
+   *    lastValue: ?any[],
+   *    searchTerm: ?string
+   *  }
+   * ): void}
+   */
   onChange: PropTypes.func,
 
   searchTerm: PropTypes.string,
+  /**
+   * @type {function (
+   *  searchTerm: ?string,
+   *  metadata: {
+   *    action: 'clear' | 'input',
+   *    lastSearchTerm: ?string,
+   *    originalEvent: SyntheticEvent,
+   *  }
+   * ): void}
+   */
   onSearch: PropTypes.func,
 
   open: PropTypes.bool,
@@ -61,20 +84,26 @@ let propTypes = {
 
   allowCreate: PropTypes.oneOf([true, false, 'onFilter']),
 
+  /**
+   *
+   * @type { (dataItem: ?any, metadata: { originalEvent: SyntheticEvent }) => void }
+   */
   onSelect: PropTypes.func,
+
+  /**
+   * @type { (searchTerm: string) => void }
+   */
   onCreate: PropTypes.func,
 
   busy: PropTypes.bool,
-
   dropUp: PropTypes.bool,
   popupTransition: CustomPropTypes.elementType,
-
-  placeholder: PropTypes.string,
 
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
 
   autoFocus: PropTypes.bool,
+  placeholder: PropTypes.string,
   disabled: CustomPropTypes.disabled.acceptsArray,
   readOnly: CustomPropTypes.disabled,
 
@@ -91,7 +120,27 @@ let propTypes = {
   })
 };
 
-
+/**
+ * ---
+ * shortcuts:
+ *   - { key: left arrow, label: move focus to previous tag }
+ *   - { key: right arrow, label: move focus to next tag }
+ *   - { key: delete, deselect focused tag }
+ *   - { key: backspace, deselect next tag }
+ *   - { key: alt + up arrow, label: close Multiselect }
+ *   - { key: down arrow, label: open Multiselect, and move focus to next item }
+ *   - { key: up arrow, label: move focus to previous item }
+ *   - { key: home, label: move focus to first item }
+ *   - { key: end, label: move focus to last item }
+ *   - { key: enter, label: select focused item }
+ *   - { key: ctrl + enter, label: create new tag from current searchTerm }
+ *   - { key: any key, label: search list for item starting with key }
+ * ---
+ *
+ * A select listbox alternative.
+ *
+ * @public
+ */
 @withRightToLeft
 class Multiselect extends React.Component {
 
