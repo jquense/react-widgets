@@ -3,6 +3,13 @@
   "version": "3.5.0",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
+  "files": [
+    "License.txt",
+    "README.md",
+    "lib",
+    "dist",
+    "test"
+  ],
   "author": {
     "name": "Jason",
     "email": "monastic.panic@gmail.com"

@@ -1,7 +1,0 @@
-.gitignore
-.npmignore
-
-src/
-docs/
-
-bower.json
