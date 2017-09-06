@@ -15,7 +15,7 @@ Pick and choose one, or more of the following Components
 - Calendar
 - NumberPicker
 
-__Demos and Documentation [here](http://jquense.github.io/react-widgets/docs/)__
+__Demos and Documentation [here](http://jquense.github.io/react-widgets/)__
 
 ### Install
 
