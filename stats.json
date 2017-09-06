@@ -1,9 +1,9 @@
 {
   "assetsByChunkName": {
     "app": [
-      "app-5f95d8dfec2f19ac834d.js",
+      "app-11ba70280d30e299149c.js",
       "build-javascript.css",
-      "app-5f95d8dfec2f19ac834d.js.map",
+      "app-11ba70280d30e299149c.js.map",
       "build-javascript.css.map"
     ],
     "commons": [
@@ -11,8 +11,8 @@
       "commons-03eb9c0aeb48beff027d.js.map"
     ],
     "component---src-layouts-index-js": [
-      "component---src-layouts-index-js-30f16a19aae7a6d4f5c1.js",
-      "component---src-layouts-index-js-30f16a19aae7a6d4f5c1.js.map"
+      "component---src-layouts-index-js-740a6a43aac259859b4e.js",
+      "component---src-layouts-index-js-740a6a43aac259859b4e.js.map"
     ],
     "component---src-pages-controllables-md": [
       "component---src-pages-controllables-md-2dd7aeb12ced819d47fc.js",
