@@ -1,0 +1,33 @@
+
+@font-face {
+  font-family: 'RwWidgets';
+  font-weight: normal;
+  font-style: normal;
+  src: url('@{font-path}/rw-widgets.eot?v=@{version}');
+  src: url('@{font-path}/rw-widgets.eot?#iefix&v=@{version}') format('embedded-opentype'),
+    url('@{font-path}/rw-widgets.woff?v=@{version}') format('woff'),
+    url('@{font-path}/rw-widgets.ttf?v=@{version}') format('truetype'),
+    url('@{font-path}/rw-widgets.svg?v=@{version}#fontawesomeregular') format('svg');
+}
+
+
+.rw-i {
+  display: inline-block;
+  color: @icon-color;
+  font-family: RwWidgets;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+   -webkit-font-smoothing: antialiased;
+}
+
+.rw-i-caret-down:before { content: '\e803'; }
+.rw-i-caret-up:before { content: '\e800'; }
+.rw-i-chevron-left:before { content: '\f104';  }
+.rw-i-chevron-right:before { content: '\f105'; }
+
+.rw-i-clock-o:before { content:'\e805'; }
+.rw-i-calendar:before { content: '\e804'; }
+.rw-i-search:before { content: '\e801'; }

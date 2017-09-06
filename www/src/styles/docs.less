@@ -1,0 +1,296 @@
+@import "./theme/theme.less";
+
+@font-path: '~react-widgets/lib/fonts';
+@img-path:  '~react-widgets/lib/img';
+
+@import '~react-widgets/lib/less/react-widgets.less';
+
+@import "./code.less";
+@import "./demo.less";
+
+body {
+  font-size: 16px;
+
+}
+
+// kbd lists
+ul > li > p {
+  margin: 0;
+}
+
+h1.page-header, h2, h3, h4 {
+  padding-top: 25px;
+  margin-bottom: 15px;
+}
+
+.jumbotron {
+  background-color: @blue;
+  margin-bottom: 0;
+
+  & > * {
+    margin: 0 20px;
+  }
+
+  h1 {
+    font-family: 'lobster', cursive;
+  }
+
+  &,
+  & *,
+  & a, {
+    color: @gray-lighter;
+  }
+}
+
+@media (min-width: @screen-md-min) {
+  .app-navbar,
+  .widget-nav {
+    & .container-fluid {
+      padding: 0;
+      max-width: @screen-md-min;
+
+      & > .navbar-collapse {
+        flex: 1;
+        display: flex !important;
+      }
+    }
+  }
+}
+
+
+
+.widget-nav {
+  //background-color: @dark-blue;
+  margin-bottom: 0;
+  -webkit-overflow-scrolling: touch;
+
+  .container-fluid {
+    padding: 0;
+    overflow: auto;
+    max-width: @screen-md-min;
+    display: flex;
+  }
+
+  .nav {
+    margin: auto;
+    display: flex;
+
+    & > li {
+      float: none;
+    }
+  }
+}
+
+.r {
+  font-family: "Lobster";
+  font-size: 35px;
+  line-height: 1px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (min-width: @screen-md-min) {
+  .jumbotron > * {
+    width: @screen-md-min;
+    margin: 0 auto;
+  }
+}
+
+
+.page-variant(@width, @padding-left: 0px) {
+  @half-width: @width / 2 + 8px;
+
+  & {
+    width: @width;
+    padding-left: @padding-left;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  @media (max-width: @screen-sm-max) {
+    & {
+      width: auto;
+      margin-right: 20px;
+      margin-left: 20px;
+    }
+  }
+
+  & .pg-code-section {
+    padding-left: ~"calc(50vw - @{half-width} + @{padding-left})";
+    padding-right: ~"calc(50vw - @{half-width})";
+    margin-left: ~"calc(-1 * 50vw + @{half-width} - @{padding-left})";
+    margin-right: ~"calc(-1 * 50vw + @{half-width})";
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: (@screen-sm-max + 60px)) {
+    & .pg-code-section {
+      padding: 0 20px;
+      margin: 0 -20px;
+    }
+  }
+
+}
+
+
+.page {
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+
+  &.page__default {
+    .page-variant(@screen-md-min);
+  }
+
+  &.page__detail {
+    .page-variant(@screen-md-min, 270px);
+  }
+
+  &.page__narrow {
+    .page-variant(@screen-sm-min);
+  }
+}
+
+.page--side-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px
+}
+
+.page-content {
+  margin-bottom: 50px;
+}
+
+
+
+
+.pg-api ul {
+  margin: 0 auto;
+}
+
+.side-divider {
+  font-weight: 600;
+  color: #778492;
+  padding: 5px 0 0 15px;
+  border-bottom: 1px solid #DDDDDD;
+}
+
+.import-section {
+  background-color: @syntax-bg;
+  border-top: 1px solid @gray-lighter;
+  border-bottom: 1px solid @gray-lighter;
+  padding-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+
+  & > * { flex: 1; }
+  & * { white-space: nowrap; }
+
+  & .import-section-label {
+    color: @purple;
+  }
+
+  & .prism-block {
+    border: none;
+    margin: 0;
+  }
+}
+
+
+.prop-item {
+  font-family: @font-family-monospace;
+}
+
+.example:before {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  color: #959595;
+  content: 'Example';
+}
+.example + pre {
+ /* background-color: #444;*/
+  margin-top: 0 !important;
+  border-top-width: 0;
+}
+
+
+.keyboard-list.unstyled-list {
+  padding-left: 20px;
+}
+
+.keyboard-list > li {
+  padding: 10px 0;
+}
+
+
+.prop-header {
+  overflow: hidden;
+  margin-top: -65px;
+  padding-top: 85px;
+  font-size: 22px;
+}
+
+.prop-header > a,
+.prop-header > a:hover {
+  //color: #555;
+  display: flex;
+  align-items: baseline;
+}
+
+.prop-header__label {
+  color: #555;
+  font-weight: normal;
+}
+
+.prop-header__type,
+.prop-header__default,
+.prop-header__controllable {
+  font-size: 70%;
+}
+
+.prop-header__type {
+  color: #778492;
+  font-weight: bold;
+  font-family: @font-family-monospace;
+}
+
+.prop-header__label {
+  color: #555;
+  font-weight: bold;
+  font-family: @font-family-sans-serif;
+}
+
+.prop-header__default,
+.prop-header__controllable {
+  margin-top: 5px;
+}
+
+.page-header {
+  margin-top: 0;
+}
+
+.alert-info,
+.alert-warning {
+  border-width: 0;
+  border-left: 4px solid;
+  padding: 10px;
+  border-radius: 0;
+}
+
+.overdue {
+  color: #bd362f;
+}
+
+.layout-pad-row {
+  > * + * {
+    padding-left: 10px;
+  }
+}
+
+.layout-pad-column {
+  > * + * {
+    margin-top: 10px;
+  }
+}

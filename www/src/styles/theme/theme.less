@@ -1,0 +1,78 @@
+@import "./bootstrap.less";
+
+@blue: #028fcc;
+@dark-blue: #0273a3;
+@purple: #913d88;
+
+@font-family-sans-serif: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
+  Roboto, "Helvetica Neue", Arial, sans-serif;
+@font-family-serif:
+  Georgia, "Times New Roman", Times, serif;
+@font-family-monospace:
+  Menlo, Monaco, Consolas,
+  "Liberation Mono", "Courier New", monospace;
+
+@font-family-base: @font-family-sans-serif;
+
+@navbar-height:                    50px;
+
+@navbar-default-color:             white;
+@navbar-default-bg:                @blue;
+@navbar-default-border:            @blue;
+
+// Navbar links
+@navbar-default-link-color:                white;
+@navbar-default-link-hover-color:          white;
+@navbar-default-link-hover-bg:             @dark-blue;
+@navbar-default-link-active-color:         white;
+@navbar-default-link-active-bg:            @dark-blue;
+@navbar-default-link-disabled-color:       #ccc;
+@navbar-default-link-disabled-bg:          transparent;
+
+// Navbar brand label
+@navbar-default-brand-color:               @navbar-default-link-color;
+@navbar-default-brand-hover-color:         @navbar-default-brand-color;
+@navbar-default-brand-hover-bg:            transparent;
+
+// Navbar toggle
+@navbar-default-toggle-hover-bg:           @dark-blue;
+@navbar-default-toggle-icon-bar-bg:        white;
+@navbar-default-toggle-border-color:       transparent;
+
+// @grid-float-breakpoint: 0;
+
+@nav-link-hover-bg: transparent;
+
+.dropdown-menu > li {
+  & > a {
+    position: relative;
+    color: @blue;
+    //transition: all 150ms;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0; top: 0; left: 0;
+      width: 4px;
+      transition: all 150ms;
+    }
+  }
+
+  &.active > a,
+  & > a:active,
+  & > a:hover,
+  & > a:focus {
+    background-color: white;
+    color: @dark-blue;
+
+    &:after {
+      border-left: 4px solid @dark-blue;
+    }
+  }
+}
+
+
+.page-header {
+  border-bottom: none;
+  color: @dark-blue;
+}

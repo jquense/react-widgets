@@ -1,0 +1,56 @@
+.rw-select-list {
+  overflow: auto;
+
+  .rw-list {
+    max-height: none;
+    font-size: @font-size; // use widget font-size
+  }
+}
+
+.rw-select-list-label {
+  display: block;
+  position: relative;
+  font-weight: normal;
+  cursor: inherit;
+  padding-left: 20px;
+  margin: 0;
+
+  .rw-rtl & {
+    padding-left: 0;
+    padding-right: 20px;
+  }
+}
+
+input.rw-select-list-input {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  top: ~"0.1em /9";
+  margin: 0;
+  line-height: normal;
+  cursor: inherit;
+
+  .rw-rtl & {
+    left: auto;
+    right: 0;
+  }
+}
+
+.rw-loading-mask {
+  position: relative;
+  min-height: 50px;
+  border-radius: @input-border-radius;
+
+  &:after {
+    content: '';
+    background: url("@{img-path}/loader-big.gif") no-repeat center;
+    position:   absolute;
+    background-color: #fff;
+    .opacity(0.7);
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+}

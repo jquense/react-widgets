@@ -3,5 +3,6 @@
 
 src/
 docs/
+/packages/*/dist
 
 bower.json

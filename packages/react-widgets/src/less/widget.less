@@ -1,0 +1,186 @@
+/* for debugging */
+// *:focus {
+//   outline: 1px red solid !important;
+// }
+
+.rw-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.rw-widget {
+  .border-box();
+
+  border: none;
+  color: @text-color;
+  font-size: @font-size;
+  font-family: @font-family;
+  outline: none;
+  position: relative;
+
+  // ensure that the "chrome" is the same width as the actual container
+  & > .rw-widget-container {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+
+.rw-widget-container {
+  background-color: @input-bg;
+  border: @input-border @input-border-width solid;
+  border-radius: @input-border-radius;
+
+  &.rw-state-focus,
+  .rw-state-focus > & {
+    &,
+    &:hover {
+      box-shadow: @input-focus-box-shadow;
+      border-color: @input-border-focus;
+    }
+  }
+
+  &.rw-state-readonly,
+  .rw-state-readonly > & {
+    cursor: not-allowed;
+  }
+
+  &.rw-state-disabled,
+  .rw-state-disabled > &,
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:active {
+      box-shadow: none;
+      .state-disabled();
+    }
+  }
+}
+
+.rw-widget-picker {
+  position: relative;
+  overflow: hidden;
+  border-collapse: separate;
+  display: inline-table;
+  height: @input-height;
+
+  & > * {
+    position: relative;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    display: table-cell;
+  }
+
+  & > .rw-select {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  .rw-open > & {
+    .border-bottom-radius(0);
+  }
+
+  .rw-open-up > &  {
+    .border-top-radius(0);
+  }
+
+
+  fieldset[disabled] &,
+  .rw-state-disabled > &  {
+    background-color: @input-bg-disabled;
+  }
+}
+
+
+.rw-select {
+  cursor: pointer;
+
+  & > * {
+    width: 1.9em;
+    height: 100%;
+  }
+
+  .rw-state-readonly &,
+  .rw-state-disabled & {
+    cursor: not-allowed;
+  }
+}
+
+
+.rw-select-bordered {
+  .make-btn-state();
+  border: none;
+  border-left: @input-border 1px solid;
+
+  .rw-rtl & {
+    border-right: @input-border 1px solid;
+    border-left:  none;
+  }
+}
+
+
+.rw-rtl {
+  direction: rtl;
+}
+
+.rw-input-reset {
+  .placeholder();
+  outline: 0;
+}
+
+.rw-input {
+  &:extend(.rw-input-reset);
+
+  color: @input-color;
+  padding: 0 @input-padding-horizontal;
+  background-color: @input-bg;
+
+  &[type=text]::-ms-clear {
+    display: none;
+  }
+
+  &[disabled],
+  fieldset[disabled] & {
+    .state-disabled();
+    opacity: 1;
+    background-color: @input-bg-disabled;
+    border-color: @input-border;
+  }
+
+  &[readonly] {
+    cursor: not-allowed;
+  }
+}
+
+.rw-i.rw-loading {
+  display: block;
+  background: url("@{img-path}/loading.gif") no-repeat center;
+  min-width: 16px;
+  width: 1.9em;
+  height: 16px;
+
+  &:before {
+    content: ""
+  }
+}
+
+.rw-placeholder {
+  color: @input-color-placeholder;
+}
+
+//input inset
+.rw-widget-input {
+  box-shadow: @input-box-shadow;
+}
+
+.rw-widget-input.rw-state-focus {
+  box-shadow: ~"@{input-focus-box-shadow}, @{input-box-shadow}";
+}

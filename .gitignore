@@ -1,3 +1,9 @@
+/lib
+/test/output
+temp
+
+package-lock.json
+packages/**/yarn.lock
 
 # Logs
 logs
