@@ -116,7 +116,8 @@ var DateTimePicker = createReactClass({
 
   getInitialState() {
     return {
-      focused: false
+      focused: false,
+      active: false
     }
   },
 
@@ -203,7 +204,11 @@ var DateTimePicker = createReactClass({
             icon="calendar"
             className='rw-btn-calendar'
             label={messages.calendarButton}
+            active={this.state.active === popups.CALENDAR}
             disabled={!!(disabled || readOnly)}
+            onMouseUp={this.handleMouseUp}
+            onMouseDown={() => this.handleMouseDown(popups.CALENDAR)}
+            onMouseLeave={this.handleMouseUp}
             onClick={this._click.bind(null, popups.CALENDAR)}
           />
         }
@@ -212,7 +217,11 @@ var DateTimePicker = createReactClass({
             icon="clock-o"
             className='rw-btn-time'
             label={messages.timeButton}
+            active={this.state.active === popups.TIME}
             disabled={!!(disabled || readOnly)}
+            onMouseUp={this.handleMouseUp}
+            onMouseDown={() => this.handleMouseDown(popups.TIME)}
+            onMouseLeave={this.handleMouseUp}
             onClick={this._click.bind(null, popups.TIME)}
           />
         }
@@ -373,6 +382,16 @@ var DateTimePicker = createReactClass({
 
       }
     }
+  },
+
+  @widgetEditable
+  handleMouseDown(active) {
+    this.setState({ active })
+  },
+
+  @widgetEditable
+  handleMouseUp() {
+    this.setState({ active: false })
   },
 
   @widgetEditable
