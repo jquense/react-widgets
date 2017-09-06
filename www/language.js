@@ -1,6 +1,11 @@
 const { stripIndent } = require('common-tags')
 
 module.exports = {
+  tabIndex: () => stripIndent`
+    The HTML \`tabindex\` attribute, controls the order in which focus moves
+    via the TAB key
+  `,
+
   autoFocus: d => stripIndent`
     Pass focus to the ${d.name} when it mounts.
   `,
@@ -32,7 +37,7 @@ module.exports = {
     The native \`onKeyDown\` event, called \`preventDefault\` will prevent any custom behavior, included keyboard shortcuts.
   `,
 
-   onKeyPress: () => stripIndent`
+  onKeyPress: () => stripIndent`
     The native \`onKeyPress\` event, called \`preventDefault\` will stop any custom behavior.
   `,
 
@@ -43,36 +48,36 @@ module.exports = {
     Use \`defaultValue\` to set an initial value for uncontrolled widgets.
   `,
 
-  listProps: d => stripIndent`
+  listProps: () => stripIndent`
     An object of props that is passed directly to the underlying \`List\` component.
   `,
 
-  inputProps: d => stripIndent`
+  inputProps: () => stripIndent`
     An object of props that is passed directly to the underlying input component.
   `,
 
-  onChange: d => stripIndent`
+  onChange: () => stripIndent`
     A callback fired when the current \`value\` changes.
   `,
 
-  onSelect: d => stripIndent`
+  onSelect: () => stripIndent`
     This handler fires when an item has been selected from the list. It fires before the \`onChange\` handler and fires
     regardless of whether the value has actually changed.
   `,
 
-  allowCreate: d => stripIndent`
+  allowCreate: () => stripIndent`
     Enables the list option creation UI. \`onFilter\` will only the UI when
     actively filtering for a list item.
   `,
 
-  onCreate: d => stripIndent`
+  onCreate: () => stripIndent`
     This handler fires when the user chooses to create a new list option.
     It is up to the widget parent to implement creation logic,
     a common implementation is shown below, where the new tag is selected
     and added to the data list.
   `,
 
-  onSearch: d => stripIndent`
+  onSearch: () => stripIndent`
     A callback fired when the current \`searchTerm\` changes.
   `,
 
@@ -83,7 +88,7 @@ module.exports = {
     \`textField\` and \`valueField\` as well.
   `,
 
-  valueField: d => stripIndent`
+  valueField: () => stripIndent`
     A property name that provides the value of the \`data\` items.
     This value is used to uniquely distinigush items from others in the \`data\` list.
 
@@ -109,7 +114,7 @@ module.exports = {
     Customize the rendering of each ${d.name} list item.
   `,
 
-  groupBy: d => stripIndent`
+  groupBy: () => stripIndent`
     To display grouped lists, specify a property name, or accesor function,
     whose value is used to group the \`data\` list.
 
@@ -117,7 +122,7 @@ module.exports = {
     is not provided.
   `,
 
-  groupComponent: d => stripIndent`
+  groupComponent: () => stripIndent`
     Customize the rendering of the group headings when \`groupBy\` is active.
   `,
 
@@ -184,5 +189,5 @@ module.exports = {
   messages: () => stripIndent`
     Object hash containing display text and/or text for screen readers.
     Use the \`messages\` object to localize widget text or provide custom rendering.
-  `
+  `,
 }

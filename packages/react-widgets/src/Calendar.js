@@ -197,7 +197,12 @@ let propTypes = {
   messages: PropTypes.shape({
     moveBack: PropTypes.string,
     moveForward: PropTypes.string
-  })
+  }),
+
+  onKeyDown: PropTypes.func,
+
+  /** @ignore */
+  tabIndex: PropTypes.any,
 }
 
 /**

@@ -3,7 +3,7 @@ import matches from 'dom-helpers/query/matches';
 
 export const isInDisabledFieldset = (inst) => {
   let node = findDOMNode(inst)
-  !!node && matches(node, 'fieldset[disabled] *')
+  return !!node && matches(node, 'fieldset[disabled] *')
 }
 
 export let widgetEnabled = interactionDecorator(true)

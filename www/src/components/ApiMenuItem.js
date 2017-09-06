@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 
-import propId from './propId'
-
 
 const propTypes = {
   divider: PropTypes.bool,
@@ -15,7 +13,7 @@ const contextTypes = {
 
 function ApiMenuItem({ divider, children }) {
   if (divider)
-    return <MenuItem divider={true}></MenuItem>
+    return <MenuItem divider />
 
   return (
      <MenuItem className="prop-item" href={`#${children}`}>

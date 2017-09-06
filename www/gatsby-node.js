@@ -3,22 +3,13 @@ const slug = require('slug')
 
 const GraphQLJSON = require('graphql-type-json')
 
-exports.resolvableExtensions = () => ['.md'];
 
-exports.modifyWebpackConfig = (
-  { boundActionCreators, getConfig, stage, rules, loaders },
-) => {
-  // const currentConfig = getConfig()
+exports.modifyWebpackConfig = ({
+  boundActionCreators,
+  rules,
+}) => {
   const { setWebpackConfig } = boundActionCreators;
 
-
-  const jsxtremeRule = {
-    test: /\.md$/,
-    use: [
-      loaders.js(),
-      require.resolve('./jsxtreme-markdown')
-    ]
-  }
   const noAmdRule = {
     test: /\.js$/,
     loader: `imports-loader?` +
@@ -35,7 +26,6 @@ exports.modifyWebpackConfig = (
             loader: require.resolve('css-literal-loader'),
           }
         }),
-        jsxtremeRule,
         noAmdRule,
       ]
     },
@@ -50,69 +40,6 @@ exports.modifyWebpackConfig = (
       },
     }
   })
-
-
-  // console.log(getConfig().module.rules[6])
-  // config.loader('js-2', {
-  //   test: /\.js$/,
-  //   loader: 'css-literal-loader',
-  //   query: { extension: '.less', tagName: 'less' }
-  // })
-
-  // config.loader('js', (current) => {
-  //   config.loader('jsxtreme', {
-  //     test: /\.md$/,
-  //     loader: current.loader,
-  //     query: current.query,
-  //   })
-  //   config.loader('jsxtreme-2', {
-  //     test: /\.md$/,
-  //     loader: require.resolve('./jsxtreme-markdown'),
-  //   })
-  //   return current;
-  // })
-
-
-
-  // switch (stage) {
-  //   case `build-css`:
-  //     config.loader(`less`, {
-  //       test: /\.less$/,
-  //       loader: ExtractText.extract([`css-loader`, `less-loader`]),
-  //     })
-  //     break;
-  //   case 'build-html':
-  //   case 'build-javascript':
-  //     config.loader(`less`, {
-  //       test: /\.less$/,
-  //       loader: 'null-loader',
-  //     })
-  //     break;
-  //   default:
-  //     config.loader(`less`, {
-  //       test: /\.less$/,
-  //       loaders: [`style-loader`, `css-loader`, `less-loader`]
-  //     })
-  // }
-
-  // config.merge({
-  //   resolve: {
-  //     alias: {
-  //       globalize: path.resolve('./node_modules/globalize'),
-  //     },
-  //     // modulesDirectories: [
-  //     //   `node_modules`,
-  //     //   path.resolve(__dirname, 'node_modules/gatsby/node_modules'),
-  //     // ]
-  //   },
-  //   node: {
-  //     Buffer: false,
-  //     fs: 'empty',
-  //     net: 'empty',
-  //     tls: 'empty',
-  //   },
-  // })
-
 };
 
 

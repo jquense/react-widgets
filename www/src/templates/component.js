@@ -58,7 +58,7 @@ class ComponentTemplate extends React.Component {
                 id='props-${widgetName}'
               >
                 {sorted.map(prop =>
-                  <MenuItem>{prop.name}</MenuItem>
+                  <MenuItem key={prop.name}>{prop.name}</MenuItem>
                 )}
               </DropdownButton>
             </span>
@@ -85,7 +85,7 @@ class ComponentTemplate extends React.Component {
           )}
         </h2>
         {sorted.map(prop => (
-          <section>
+          <section key={prop.name}>
             <PropHeader prop={prop} />
             <PropDescription prop={prop} />
             <PropExample prop={prop} displayName={displayName} />
@@ -106,10 +106,10 @@ export const pageQuery = graphql`
       displayName
       doclets
       props {
+        name
         ...PropHeader_prop
         ...PropExample_prop
         ...PropDescription_prop
-        name
       }
       description {
         childMarkdownRemark {

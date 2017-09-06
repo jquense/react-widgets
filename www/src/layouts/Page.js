@@ -4,7 +4,7 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 
 const propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.func.isRequired,
 };
 
 function PageLayout({ children }) {

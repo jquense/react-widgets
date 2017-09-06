@@ -73,6 +73,9 @@ class SelectList extends React.Component {
      */
     multiple: PropTypes.bool,
 
+    onKeyDown: PropTypes.func,
+    onKeyPress: PropTypes.func,
+
     itemComponent: CustomPropTypes.elementType,
     listComponent: CustomPropTypes.elementType,
 
@@ -88,7 +91,15 @@ class SelectList extends React.Component {
     listProps: PropTypes.object,
     messages: PropTypes.shape({
       emptyList: CustomPropTypes.message,
-    })
+    }),
+
+    tabIndex: PropTypes.any,
+
+    /**
+     * The HTML `name` attribute used to group checkboxes and radio buttons
+     * together.
+     */
+    name: PropTypes.string,
   };
 
   static defaultProps = {

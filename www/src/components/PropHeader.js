@@ -3,7 +3,7 @@ import invert from 'lodash/invert'
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Default from './Default';
+import PropDefault from './PropDefault';
 import Controllable from './Controllable';
 import Type from './Type';
 
@@ -17,6 +17,14 @@ const controllableProps = {
 const otherControlled = invert(controllableProps);
 
 class PropHeader extends React.Component {
+  static propTypes = {
+    prop: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      type: PropTypes.object,
+      doclets: PropTypes.object,
+      defaultValue: PropTypes.object,
+    }).isRequired,
+  }
   static contextTypes = {
     prefix: PropTypes.string.isRequired
   };
@@ -39,7 +47,7 @@ class PropHeader extends React.Component {
           <Type type={type} />
         )}
         {defaultValue && (
-          <Default>{defaultValue.value.trim()}</Default>
+          <PropDefault>{defaultValue.value.trim()}</PropDefault>
         )}
         {otherName && (
           <Controllable other={otherName} propName={name} />

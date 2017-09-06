@@ -6,6 +6,7 @@ module.exports = (baseConfig) => Object.assign({},
   baseConfig,
   appConfig(__dirname, {
     resolve: {
+      symlinks: false,
       alias: {
         'react-widgets$': path.resolve('../react-widgets/src/index.js'),
         'react-widgets/lib': path.resolve('../react-widgets/src'),

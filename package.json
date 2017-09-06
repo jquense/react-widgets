@@ -9,7 +9,6 @@
     "tdd": "npm run rw tdd",
     "start": "npm run docs start",
     "start-dev": "lerna exec --scope storybook npm start",
-    "postinstall": "lerna run prepublish",
     "prerelease": "lerna bootstrap && lerna publish --npm-tag=next"
   },
   "dependencies": {
@@ -19,13 +18,14 @@
     "common-tags": "^1.3.1",
     "cpy-cli": "^1.0.0",
     "cross-env": "^3.1.3",
-    "css-literal-loader": "^0.1.2",
+    "css-literal-loader": "^0.2.0",
     "eslint": "^3.7.1",
     "eslint-config-jason": "^4.0.0",
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-mocha": "^4.6.0",
     "eslint-plugin-react": "^6.3.0",
     "glob": "^7.0.5",
+    "global": "^4.3.2",
     "lerna": "^2.0.0-rc.5",
     "lodash": "^4.17.2",
     "mkdirp": "^0.5.1",
@@ -33,7 +33,8 @@
     "webpack": "^2.6.1",
     "webpack-atoms": "^2.0.6",
     "webpack-dev-server": "^2.4.5",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "yarn": "rc"
   },
   "workspaces": [
     "packages/*"

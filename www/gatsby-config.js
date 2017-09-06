@@ -29,6 +29,7 @@ function setDefaults(desc, name, widgetName) {
   return desc
 }
 
+
 module.exports = {
   siteMetadata: {
     title: 'React Widgets Documentation',
@@ -49,8 +50,8 @@ module.exports = {
         name: 'components',
       },
     },
-    `gatsby-plugin-less`,
-    `gatsby-plugin-react-helmet`,
+    'gatsby-plugin-less',
+    'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-transformer-remark',
       options: {
@@ -59,12 +60,13 @@ module.exports = {
         ],
       },
     },
+    { resolve: 'gatsby-plugin-jsxtreme-markdown' },
     {
-      resolve: `gatsby-transformer-react-docgen`,
+      resolve: 'gatsby-transformer-react-docgen',
       options: {
         handlers: [
           function defaultDescriptionsHandler(docs) {
-            let widgetName = docs.get(`displayName`);
+            let widgetName = docs.get('displayName');
             docs._props.forEach((_, name) => {
               let desc = docs.getPropDescriptor(name);
 

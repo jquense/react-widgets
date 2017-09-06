@@ -5,14 +5,11 @@ const propTypes = {
   widgetName: PropTypes.string.isRequired
 };
 
-const t = (token, content) => <span className={`token ${token}`}>{content}</span>
-
+const t = (token, content) =>
+  <span className={`token ${token}`}>{content}</span>
 
 
 function ImportSection({ widgetName }) {
-  let widgetImport = `import ${widgetName} from 'react-widgets/lib/${widgetName}'`;
-  let mainImport = `import { ${widgetName} } from 'react-widgets'`;
-
   return (
     <div className='import-section pg-code-section'>
       <div>
