@@ -6,6 +6,9 @@ const whitelist = [
   'id',
   'autocomplete',
   'size',
+  'tabIndex',
+  'maxLength',
+  'name'
 ];
 
 const whitelistRegex = [/^aria-/, /^data-/, /^on[A-Z]\w+/]
