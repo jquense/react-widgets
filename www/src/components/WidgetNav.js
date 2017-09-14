@@ -18,7 +18,7 @@ export default function WidgetNav({ className }) {
   return (
     <Nav role='navigation' className={className}>
       {widgets.map(name => (
-        <LinkContainer key={name} to={`/api/${name}`}>
+        <LinkContainer key={name} to={`/react-widgets/api/${name}/`}>
           <NavItem>{name}</NavItem>
         </LinkContainer>
       ))}

@@ -15,9 +15,9 @@ const propTypes = {
 
 
 function getLayout(pathname) {
-  if (pathname === '/') {
+  if (pathname === '/react-widgets/') {
     return LandingPage;
-  } else if (pathname.startsWith('/api')) {
+  } else if (pathname.includes('/api')) {
     return ApiPage;
   }
   return Page;

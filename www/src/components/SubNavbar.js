@@ -29,16 +29,16 @@ const _ = less`
 export default function SubNavbar({ className = '', style }) {
   return (
     <div className={`${className} app-subnavbar`} style={style}>
-      <LinkContainer to="/" onlyActiveOnIndex>
+      <LinkContainer to="/react-widgets/" onlyActiveOnIndex>
         <a><i className='fa fa-play'/> Getting Started</a>
       </LinkContainer>
-      <LinkContainer to="/localization">
+      <LinkContainer to="/react-widgets/localization/">
         <a><i className='fa fa-globe'/> Localization</a>
       </LinkContainer>
-      <LinkContainer to="/theming">
+      <LinkContainer to="/react-widgets/theming/">
         <a><i className='fa fa-css3'/> Theming</a>
       </LinkContainer>
-      <LinkContainer to="/controllables">
+      <LinkContainer to="/react-widgets/controllables/">
         <a><i className='fa fa-cogs'/> Controlled components</a>
       </LinkContainer>
       <a href="https://github.com/jquense/react-widgets">

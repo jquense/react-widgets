@@ -1,6 +1,6 @@
 import React from 'react';
 
-const styles = less`
+const _ = less`
   .page--side-nav {
     position: fixed;
     padding: 0;
@@ -15,7 +15,7 @@ const propTypes = {
 function SideNav(props) {
   return (
     <nav className="page--side-nav">
-      <ul className="list-unstyled">      
+      <ul className="list-unstyled">
         {props.children}
       </ul>
     </nav>

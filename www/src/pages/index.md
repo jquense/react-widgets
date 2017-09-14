@@ -7,7 +7,7 @@ name: Getting Started
 react-widgets is a suite of high-quality input components built for React. Each component is built for ease of use,
 accessibility, and the practical needs of complex (or simple) forms. The work great with complex data
 structures and models, and in keeping with the [React approach](http://facebook.github.io/react/docs/forms.html#controlled-components) to form inputs,
-each component's props can easily be [_controlled_ or _uncontrolled_](/controllables).
+each component's props can easily be [_controlled_ or _uncontrolled_](/react-widgets/controllables/).
 
 A special shout-out to Kendo UI Core, and jQuery UI, whose original work inspired this suite.
 
@@ -64,7 +64,7 @@ or include the css normally. The included icons are provided by - [Font Awesome 
 
 
 > **Hey!** Date and number components need a *Localizer* configured in order to work!
-> Check out the [Localization page](/localization) for more information.
+> Check out the [Localization page](/react-widgets/localization/) for more information.
 
 If are using webpack to handle styles in your application you are probably already configured
 loaders to make it work with appropriate file extensions. If not, you will have to use

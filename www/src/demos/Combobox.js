@@ -10,14 +10,15 @@ import DisabledItemsInput from './DisabledItemsInput';
 
 let i = 0
 let list = [
-  { id: i++, name: 'James' },
-  { id: i++, name: 'Jan' },
+  { id: i++, name: 'Jacinda' },
+  { id: i++, name: 'Jane' },
   { id: i++, name: 'Jase' },
+  { id: i++, name: 'Jackie' },
   { id: i++, name: 'Jason' },
-  { id: i++, name: 'Jim' },
   { id: i++, name: 'Jimmy' },
   { id: i++, name: 'Jimmy Smith' },
-  { id: i++, name: 'John' }
+  { id: i++, name: 'John' },
+  { id: i++, name: 'Joanne' }
 ];
 
 const ICONS = ['bicycle', 'area-chart', 'anchor'];

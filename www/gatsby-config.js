@@ -31,6 +31,7 @@ function setDefaults(desc, name, widgetName) {
 
 
 module.exports = {
+  pathPrefix: `/react-widgets`,
   siteMetadata: {
     title: 'React Widgets Documentation',
     author: 'Jason Quense',

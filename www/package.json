@@ -9,7 +9,7 @@
     "serve": "gatsby serve",
     "build": "gatsby build",
     "develop": "gatsby develop",
-    "deploy": "npm run build && gh-pages -d public"
+    "deploy": "npm run build -- --prefix-paths && gh-pages -d public"
   },
   "author": "",
   "license": "MIT",
