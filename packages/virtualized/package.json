@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-virtualized",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0",
     "react-dom": "^0.14.0 || ^15.0.0",
-    "react-widgets": "^4.0.0"
+    "react-widgets": "^4.0.1"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -24,7 +24,7 @@
   "devDependencies": {
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-widgets": "^4.0.0"
+    "react-widgets": "^4.0.1"
   },
   "author": "Jason Quense",
   "license": "MIT"
