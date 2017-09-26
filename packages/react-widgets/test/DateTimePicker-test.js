@@ -8,9 +8,9 @@ import Calendar from '../src/Calendar'
 
 let ControlledDateTimePicker = DateTimePicker.ControlledComponent;
 
-describe('DateTimePicker', function(){
+describe('DateTimePicker', () => {
 
-  it('should set initial values', function(){
+  it('should set initial values', () => {
     var date = new Date();
 
     expect(
@@ -19,7 +19,7 @@ describe('DateTimePicker', function(){
         .find('.rw-input')
         .dom().value
     )
-    .to.be(Globalize.format(date, 'MM-dd-yyyy'))
+    .to.equal(Globalize.format(date, 'MM-dd-yyyy'))
   })
 
   it('should start closed', () => {
@@ -33,7 +33,7 @@ describe('DateTimePicker', function(){
     inst.single(tsp.s`DateTimePickerInput[aria-expanded=${false}]`)
   })
 
-  it('should open when clicked', function(){
+  it('should open when clicked', () => {
     var onOpen = sinon.spy()
 
     tsp(<ControlledDateTimePicker onToggle={onOpen} />)
@@ -44,10 +44,10 @@ describe('DateTimePicker', function(){
       .last('Button')
         .trigger('click');
 
-    expect(onOpen.calledTwice).to.be(true)
+    expect(onOpen.calledTwice).to.equal(true)
   })
 
-  it('should change when selecting a date', function(){
+  it('should change when selecting a date', () => {
     let change = sinon.spy()
 
     tsp(
@@ -61,10 +61,10 @@ describe('DateTimePicker', function(){
     .single(Calendar)
     .trigger('change', new Date());
 
-    expect(change.calledOnce).to.be(true)
+    expect(change.calledOnce).to.equal(true)
   })
 
-  it('should change when selecting a time', function(){
+  it('should change when selecting a time', () => {
     let change = sinon.spy()
       , select = sinon.spy()
 
@@ -80,12 +80,12 @@ describe('DateTimePicker', function(){
     .single(TimeList)
     .trigger('select', { date: new Date() });
 
-    expect(select.calledOnce).to.be(true)
-    expect(change.calledAfter(select)).to.be(true)
-    expect(change.calledOnce).to.be(true)
+    expect(select.calledOnce).to.equal(true)
+    expect(change.calledAfter(select)).to.equal(true)
+    expect(change.calledOnce).to.equal(true)
   })
 
-  it('should change when selecting a time', function(){
+  it('should change when selecting a time', () => {
     let change = sinon.spy()
       , select = sinon.spy();
 
@@ -101,21 +101,21 @@ describe('DateTimePicker', function(){
     .single(TimeList)
     .trigger('select', { date: new Date() });
 
-    expect(select.calledOnce).to.be(true)
-    expect(change.calledAfter(select)).to.be(true)
-    expect(change.calledOnce).to.be(true)
+    expect(select.calledOnce).to.equal(true)
+    expect(change.calledAfter(select)).to.equal(true)
+    expect(change.calledOnce).to.equal(true)
   })
 
-  it('should set id on list', function(){
+  it('should set id on list', () => {
     expect(
       tsp(<DateTimePicker />)
       .render()
       .find('ul').dom()
       .hasAttribute('id')
-    ).to.be(true);
+    ).to.equal(true);
   })
 
-  it('should not show time button when not selected', function(){
+  it('should not show time button when not selected', () => {
     var spy = sinon.spy()
 
     tsp(
@@ -127,33 +127,33 @@ describe('DateTimePicker', function(){
     .trigger('keyDown', { altKey: true })
     .trigger('keyDown', { altKey: true })
 
-    expect(spy.callCount).to.be(0)
+    expect(spy.callCount).to.equal(0)
   })
 
 
-  it('should trigger focus/blur events', function(done){
+  it('should trigger focus/blur events', (done) => {
     let blur = sinon.spy()
     let focus = sinon.spy()
 
     let inst = tsp(<DateTimePicker onBlur={blur} onFocus={focus} />).render()
 
-    expect(focus.calledOnce).to.be(false)
-    expect(blur.calledOnce).to.be(false)
+    expect(focus.calledOnce).to.equal(false)
+    expect(blur.calledOnce).to.equal(false)
 
     inst.trigger('focus')
 
     setTimeout(() => {
-      expect(focus.calledOnce).to.be(true)
+      expect(focus.calledOnce).to.equal(true)
       inst.trigger('blur')
 
       setTimeout(() => {
-        expect(blur.calledOnce).to.be(true)
+        expect(blur.calledOnce).to.equal(true)
         done()
       })
     })
   })
 
-  it('should trigger key events', function(){
+  it('should trigger key events', () => {
     let kp = sinon.spy()
       , kd = sinon.spy()
       , ku = sinon.spy()
@@ -167,12 +167,12 @@ describe('DateTimePicker', function(){
     .trigger('keyDown')
     .trigger('keyUp')
 
-    expect(kp.calledOnce).to.be(true)
-    expect(kd.calledOnce).to.be(true)
-    expect(ku.calledOnce).to.be(true)
+    expect(kp.calledOnce).to.equal(true)
+    expect(kd.calledOnce).to.equal(true)
+    expect(ku.calledOnce).to.equal(true)
   })
 
-  it('should do nothing when disabled', function(done){
+  it('should do nothing when disabled', (done) => {
     let inst = tsp(
       <DateTimePicker defaultValue={new Date()} disabled />
     )
@@ -180,17 +180,17 @@ describe('DateTimePicker', function(){
 
     let input = inst.find('.rw-input').dom();
 
-    expect(input.hasAttribute('disabled')).to.be(true);
+    expect(input.hasAttribute('disabled')).to.equal(true);
 
     inst.find('.rw-i-calendar').trigger('click')
 
     setTimeout(() => {
-      expect(inst.unwrap()._values.open).to.not.be(true)
+      expect(inst.unwrap()._values.open).to.not.equal(true)
       done()
     })
   })
 
-  it('should do nothing when readonly', function(done){
+  it('should do nothing when readonly', (done) => {
     let inst = tsp(
       <DateTimePicker defaultValue={new Date()} readOnly />
     )
@@ -198,17 +198,17 @@ describe('DateTimePicker', function(){
 
     let input = inst.find('.rw-input').dom();
 
-    expect(input.hasAttribute('readonly')).to.be(true);
+    expect(input.hasAttribute('readonly')).to.equal(true);
 
     inst.find('.rw-i-calendar').trigger('click')
 
     setTimeout(() => {
-      expect(inst.unwrap()._values.open).to.not.be(true)
+      expect(inst.unwrap()._values.open).to.not.equal(true)
       done()
     })
   })
 
-  it('should change values on key down', function(){
+  it('should change values on key down', () => {
     let change = sinon.spy()
 
     let inst = tsp(
@@ -220,11 +220,11 @@ describe('DateTimePicker', function(){
 
     inst.trigger('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(inst.unwrap()._values.open).to.be('date')
+    expect(inst.unwrap()._values.open).to.equal('date')
 
     inst.trigger('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(inst.unwrap()._values.open).to.be('time')
+    expect(inst.unwrap()._values.open).to.equal('time')
 
     inst.trigger('keyDown', { key: 'Home' })
 
@@ -248,7 +248,7 @@ describe('DateTimePicker', function(){
   })
 
 
-  describe('TimeList', function(){
+  describe('TimeList', () => {
 
     it('should render max correctly', ()=>{
       let date = new Date(2014, 0, 16, 9, 30)

@@ -1,5 +1,5 @@
-var path = require('path')
-var { plugins, rules } = require('../../tools/app-config');
+const path = require('path')
+const { plugins, rules } = require('webpack-atoms');
 
 module.exports = {
   devtool: 'source-map',
@@ -33,7 +33,7 @@ module.exports = {
   },
   plugins: [
     plugins.define(),
-    plugins.uglify(),
+    // plugins.uglify(),
     plugins.banner({
       banner: '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
       entryOnly : true

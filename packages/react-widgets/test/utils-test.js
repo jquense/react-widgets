@@ -8,23 +8,23 @@ var React   = require('react')
 
 describe('_ utils', function(){
 
-  it('should SHALLOW EQUAL', function(){
-    expect( _.isShallowEqual(1, 1) ).to.be(true)
-    expect( _.isShallowEqual(1, '1') ).to.be(false)
-    expect( _.isShallowEqual(1, 1.4) ).to.be(false)
-    expect( _.isShallowEqual('hi', 'hi') ).to.be(true)
-    expect( _.isShallowEqual('hi', 'hiw') ).to.be(false)
+  it('should SHALLOW EQUAL', function() {
+    expect( _.isShallowEqual(1, 1) ).to.equal(true)
+    expect( _.isShallowEqual(1, '1') ).to.equal(false)
+    expect( _.isShallowEqual(1, 1.4) ).to.equal(false)
+    expect( _.isShallowEqual('hi', 'hi') ).to.equal(true)
+    expect( _.isShallowEqual('hi', 'hiw') ).to.equal(false)
 
-    expect( _.isShallowEqual(null, null) ).to.be(true)
-    expect( _.isShallowEqual(null, undefined) ).to.be(false)
+    expect( _.isShallowEqual(null, null) ).to.equal(true)
+    expect( _.isShallowEqual(null, undefined) ).to.equal(false)
 
-    expect( _.isShallowEqual([1, 2], [1, 2]) ).to.be(true)
-    expect( _.isShallowEqual([1, 2], [1, 3]) ).to.be(false)
+    expect( _.isShallowEqual([1, 2], [1, 2]) ).to.equal(true)
+    expect( _.isShallowEqual([1, 2], [1, 3]) ).to.equal(false)
 
-    expect( _.isShallowEqual([1, 2], { 0: 1, 1: 2}) ).to.be(true)
+    expect( _.isShallowEqual([1, 2], { 0: 1, 1: 2}) ).to.equal(true)
 
-    expect( _.isShallowEqual({ a: 1, b: 2}, { b: 2, a: 1 }) ).to.be(true)
-    expect( _.isShallowEqual({ a: 1, b: 2}, { a: 1, c: 'hi' }) ).to.be(false)
+    expect( _.isShallowEqual({ a: 1, b: 2}, { b: 2, a: 1 }) ).to.equal(true)
+    expect( _.isShallowEqual({ a: 1, b: 2}, { a: 1, c: 'hi' }) ).to.equal(false)
   })
 })
 describe('when using array filter helpers', function(){
@@ -62,11 +62,10 @@ describe('when using custom PropTypes', function(){
     props.type = React.createElement('span')
 
     expect(
-      propTypes.elementType(props, 'type', 'component')).to.be.an(Error)
+      propTypes.elementType(props, 'type', 'component')).to.be.an('error')
 
     props.type = true
-    expect(
-      propTypes.elementType(props, 'type', 'component')).to.be.an(Error)
+    expect(propTypes.elementType(props, 'type', 'component')).to.be.an('error')
   })
 })
 

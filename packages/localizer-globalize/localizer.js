@@ -1,5 +1,5 @@
 import Globalize from 'globalize';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import configure from 'react-widgets/lib/configure';
 
 function endOfDecade(date) {

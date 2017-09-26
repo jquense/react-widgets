@@ -8,7 +8,7 @@ describe('NumberPicker', function(){
 
   it('should set values correctly', function() {
     let expectValueToBe = val =>
-      inst => expect(inst.find('.rw-input').dom().value).to.be(val)
+      inst => expect(inst.find('.rw-input').dom().value).to.equal(val)
 
     tsp(<NumberPicker value={15} format='D' onChange={()=>{}} />)
       .render()
@@ -35,7 +35,7 @@ describe('NumberPicker', function(){
     .find('.rw-input')
     .dom()
 
-     expect(input.placeholder).to.be('enter number here');
+     expect(input.placeholder).to.equal('enter number here');
   })
 
   it('should pass NAME down', function(){
@@ -44,7 +44,7 @@ describe('NumberPicker', function(){
       .find('.rw-input')
       .dom()
 
-    expect(input.hasAttribute('name')).to.be(true)
+    expect(input.hasAttribute('name')).to.equal(true)
   })
 
   it('should not fire change until there is a valid value', function(){
@@ -56,11 +56,11 @@ describe('NumberPicker', function(){
     input.dom().value = '15'
     input.trigger('change')
 
-    expect(change.called).to.be(false);
+    expect(change.called).to.equal(false);
 
     input.dom().value = '154'
     input.trigger('change')
-    expect(change.calledOnce).to.be(true);
+    expect(change.calledOnce).to.equal(true);
 
     //should call change on a null value when no min
     change.reset()
@@ -71,7 +71,7 @@ describe('NumberPicker', function(){
 
     input.dom().value = ''
     input.trigger('change')
-    expect(change.calledOnce).to.be(true)
+    expect(change.calledOnce).to.equal(true)
   })
 
   it('should change value when spinner is clicked', function(){
@@ -91,16 +91,16 @@ describe('NumberPicker', function(){
       .trigger('mouseDown')
       .trigger('mouseUp');
 
-    expect(changeSpy.calledOnce).to.be(true)
-    expect(changeSpy.args[0][0]).to.be(2)
+    expect(changeSpy.calledOnce).to.equal(true)
+    expect(changeSpy.args[0][0]).to.equal(2)
 
     //decrement
     inst.last('Button')
       .trigger('mouseDown')
       .trigger('mouseUp');
 
-    expect(changeSpy.calledTwice).to.be(true)
-    expect(changeSpy.args[1][0]).to.be(0)
+    expect(changeSpy.calledTwice).to.equal(true)
+    expect(changeSpy.args[1][0]).to.equal(0)
   })
 
   it('should trigger focus/blur events', function(done){
@@ -115,8 +115,8 @@ describe('NumberPicker', function(){
           inst.trigger('blur')
 
           setTimeout(() => {
-            expect(focus.calledOnce).to.be(true)
-            expect(blur.calledOnce).to.be(true)
+            expect(focus.calledOnce).to.equal(true)
+            expect(blur.calledOnce).to.equal(true)
             done()
           })
         })
@@ -135,8 +135,8 @@ describe('NumberPicker', function(){
           inst.trigger('blur')
 
           setTimeout(() => {
-            expect(focus.called).to.be(false)
-            expect(blur.called).to.be(false)
+            expect(focus.called).to.equal(false)
+            expect(blur.called).to.equal(false)
             done()
           })
         })
@@ -161,9 +161,9 @@ describe('NumberPicker', function(){
     .trigger('keyDown')
     .trigger('keyUp')
 
-    expect(kp.calledOnce).to.be(true)
-    expect(kd.calledOnce).to.be(true)
-    expect(ku.calledOnce).to.be(true)
+    expect(kp.calledOnce).to.equal(true)
+    expect(kd.calledOnce).to.equal(true)
+    expect(ku.calledOnce).to.equal(true)
   })
 
   it('should add correct markup when read-only', () => {
@@ -172,7 +172,7 @@ describe('NumberPicker', function(){
       .find('.rw-input')
       .dom()
 
-    expect(input.getAttribute('aria-readonly')).to.be('true');
+    expect(input.getAttribute('aria-readonly')).to.equal('true');
   })
 
   it('should add correct markup when disabled', () => {
@@ -181,7 +181,7 @@ describe('NumberPicker', function(){
       .find('.rw-input')
       .dom()
 
-    expect(input.getAttribute('aria-disabled')).to.be('true');
+    expect(input.getAttribute('aria-disabled')).to.equal('true');
   })
 
 
@@ -199,7 +199,7 @@ describe('NumberPicker', function(){
     .find('.rw-input')
     .trigger('change', { target: { value: '' } })
 
-    expect(changeSpy.calledOnce).to.be(true)
+    expect(changeSpy.calledOnce).to.equal(true)
     expect(changeSpy.getCall(0).args[0]).to.equal(null)
   })
 
@@ -216,7 +216,7 @@ describe('NumberPicker', function(){
     .find('.rw-input')
     .trigger('change', { target: { value: '1.' } })
 
-    expect(changeSpy.callCount).to.be(0)
+    expect(changeSpy.callCount).to.equal(0)
   })
 
   it('should not trigger change while below min', () => {
@@ -234,7 +234,7 @@ describe('NumberPicker', function(){
     .trigger('change', { target: { value: '11' } })
     .trigger('change', { target: { value: '111' } })
 
-    expect(changeSpy.calledOnce).to.be(true)
+    expect(changeSpy.calledOnce).to.equal(true)
   })
 
 
@@ -252,31 +252,31 @@ describe('NumberPicker', function(){
       .trigger('keyDown', { key: 'End'})
       .trigger('keyDown', { key: 'Home'})
       .tap(() => {
-        expect(change.called).to.be(false)
+        expect(change.called).to.equal(false)
       })
       .trigger('keyDown', { key: 'ArrowDown'})
       .tap(() => {
-        expect(change.calledOnce).to.be(true)
-        expect(change.calledWith(9)).to.be(true)
+        expect(change.calledOnce).to.equal(true)
+        expect(change.calledWith(9)).to.equal(true)
 
         change.reset()
       })
       .trigger('keyDown', { key: 'ArrowUp'})
       .tap(() => {
-        expect(change.calledOnce).to.be(true)
-        expect(change.calledWith(11)).to.be(true)
+        expect(change.calledOnce).to.equal(true)
+        expect(change.calledWith(11)).to.equal(true)
         change.reset()
       })
       .props({ min: 5, max: 15 })
       .trigger('keyDown', { key: 'End'})
       .tap(() => {
-        expect(change.calledOnce).to.be(true)
-        expect(change.calledWith(15)).to.be(true)
+        expect(change.calledOnce).to.equal(true)
+        expect(change.calledWith(15)).to.equal(true)
         change.reset()
       })
       .trigger('keyDown', { key: 'Home'})
 
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(5)).to.be(true)
+    expect(change.calledOnce).to.equal(true)
+    expect(change.calledWith(5)).to.equal(true)
   })
 })

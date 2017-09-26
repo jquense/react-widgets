@@ -31,9 +31,9 @@ describe('Month Component', function(){
     .tap(inst =>
       expect(inst.first('td').text()).to.equal('hi'))
 
-    expect(formatter.called).to.be.ok();
+    expect(formatter.called).to.equal(true);
     expect(formatter.args[0].length).to.equal(3);
-    expect(formatter.args[0][0]).to.be.a(Date);
+    expect(formatter.args[0][0]).to.be.a('Date');
     expect(formatter.args[0][1]).to.be.a('string').and.to.equal('en');
   })
 })

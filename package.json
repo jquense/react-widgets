@@ -1,5 +1,9 @@
 {
   "private": true,
+  "engines": {
+    "yarn": "^1.0.0",
+    "node": ">=6.0.0"
+  },
   "scripts": {
     "lerna": "lerna",
     "lint": "lerna run lint",
@@ -30,8 +34,8 @@
     "lodash": "^4.17.2",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.5.4",
-    "webpack": "^2.6.1",
-    "webpack-atoms": "^2.0.6",
+    "webpack": "^3.6.0",
+    "webpack-atoms": "^3.0.2",
     "webpack-dev-server": "^2.4.5",
     "webpack-merge": "^4.1.0",
     "yarn": "rc"

@@ -1,10 +1,19 @@
-var path = require('path')
-var appConfig = require('../../tools/app-config');
-
+const path = require('path')
+const { plugins, rules } = require('webpack-atoms')
 
 module.exports = (baseConfig) => Object.assign({},
   baseConfig,
-  appConfig(__dirname, {
+  {
+    module: {
+      rules: [
+        { parser: { amd: false } },
+        rules.js.inlineCss({ tagName: 'less', extension: '.less' }),
+        rules.css(),
+        rules.less(),
+        rules.images(),
+        rules.woff(),
+      ],
+    },
     resolve: {
       symlinks: false,
       alias: {
@@ -16,7 +25,15 @@ module.exports = (baseConfig) => Object.assign({},
       }
     },
     plugins: [
-      appConfig.plugins.hotModuleReplacement()
-    ]
-  })
+      plugins.define(),
+      plugins.extractText(),
+      plugins.hotModuleReplacement(),
+    ],
+    node: {
+      Buffer: false,
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty',
+    },
+  }
 )

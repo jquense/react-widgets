@@ -78,8 +78,8 @@ describe('Multiselect', function() {
       .trigger('click')
 
     setTimeout(() => {
-      expect(openSpy.calledOnce).to.be(true);
-      expect(openSpy.calledWith(true)).to.be(true);
+      expect(openSpy.calledOnce).to.equal(true);
+      expect(openSpy.calledWith(true)).to.equal(true);
       done()
     })
   })
@@ -92,7 +92,7 @@ describe('Multiselect', function() {
       .trigger('focus')
 
     setTimeout(() => {
-      expect(openSpy.called).to.be(false);
+      expect(openSpy.called).to.equal(false);
       done()
     })
   })
@@ -126,8 +126,8 @@ describe('Multiselect', function() {
     .first('.rw-multiselect-tag-btn')
     .trigger('click', {});
 
-    expect(del.calledOnce).to.be(true)
-    expect(del.calledWith(dataList[0])).to.be(true)
+    expect(del.calledOnce).to.equal(true)
+    expect(del.calledWith(dataList[0])).to.equal(true)
   })
 
   it('should change value when tag is clicked', function(){
@@ -146,7 +146,7 @@ describe('Multiselect', function() {
     .first('.rw-multiselect-tag-btn')
     .trigger('click', {});
 
-    expect(change.calledOnce).to.be(true)
+    expect(change.calledOnce).to.equal(true)
     expect(change.getCall(0).args[0]).to.eql(dataList.slice(1, 2))
   })
 
@@ -162,8 +162,8 @@ describe('Multiselect', function() {
           inst.trigger('blur')
 
           setTimeout(() => {
-            expect(focus.calledOnce).to.be(true)
-            expect(blur.calledOnce).to.be(true)
+            expect(focus.calledOnce).to.equal(true)
+            expect(blur.calledOnce).to.equal(true)
             done()
           })
         })
@@ -182,8 +182,8 @@ describe('Multiselect', function() {
           inst.trigger('blur')
 
           setTimeout(() => {
-            expect(focus.called).to.be(false)
-            expect(blur.called).to.be(false)
+            expect(focus.called).to.equal(false)
+            expect(blur.called).to.equal(false)
             done()
           })
         })
@@ -207,9 +207,9 @@ describe('Multiselect', function() {
     .trigger('keyDown')
     .trigger('keyUp')
 
-    expect(kp.calledOnce).to.be(true)
-    expect(kd.calledOnce).to.be(true)
-    expect(ku.calledOnce).to.be(true)
+    expect(kp.calledOnce).to.equal(true)
+    expect(kd.calledOnce).to.equal(true)
+    expect(ku.calledOnce).to.equal(true)
   })
 
 
@@ -219,8 +219,8 @@ describe('Multiselect', function() {
       .single('.rw-input-reset')
       .dom()
 
-    expect(input.hasAttribute('readonly')).to.be(true);
-    expect(input.getAttribute('aria-readonly')).to.be('true');
+    expect(input.hasAttribute('readonly')).to.equal(true);
+    expect(input.getAttribute('aria-readonly')).to.equal('true');
   })
 
   it('should add correct markup when disabled', () => {
@@ -229,8 +229,8 @@ describe('Multiselect', function() {
       .single('.rw-input-reset')
       .dom()
 
-    expect(input.hasAttribute('disabled')).to.be(true);
-    expect(input.getAttribute('aria-disabled')).to.be('true');
+    expect(input.hasAttribute('disabled')).to.equal(true);
+    expect(input.getAttribute('aria-disabled')).to.equal('true');
   })
 
   it('should disable only certain tags', () => {
@@ -250,7 +250,7 @@ describe('Multiselect', function() {
     .single('li.rw-state-disabled button.rw-multiselect-tag-btn')
     .trigger('click')
 
-    expect(change.called).to.be(false)
+    expect(change.called).to.equal(false)
   })
 
   it('should not remove tags when disabled', () => {
@@ -268,7 +268,7 @@ describe('Multiselect', function() {
     .find('.rw-multiselect-tag-btn')
     .trigger('click')
 
-    expect(changeSpy.called).to.be(false)
+    expect(changeSpy.called).to.equal(false)
   })
 
   it('should not remove disabled tags', function() {
@@ -287,7 +287,7 @@ describe('Multiselect', function() {
     .first('.rw-multiselect-tag-btn')
     .trigger('click')
 
-    expect(change.called).to.be(false)
+    expect(change.called).to.equal(false)
   })
 
   it('should not remove tags when readOnly', () => {
@@ -305,7 +305,7 @@ describe('Multiselect', function() {
     .find('.rw-multiselect-tag-btn')
     .trigger('click')
 
-    expect(changeSpy.called).to.be(false)
+    expect(changeSpy.called).to.equal(false)
   })
 
   it('should call onChange with event object from select', function(){
@@ -379,10 +379,10 @@ describe('Multiselect', function() {
     .find('List')
       .trigger('select', dataList[1], 'foo')
 
-    expect(onSelect.calledOnce).to.be(true)
+    expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
 
-    expect(change.calledAfter(onSelect)).to.be(true)
+    expect(change.calledAfter(onSelect)).to.equal(true)
   })
 
   it('should clear search on blur', done => {
@@ -400,8 +400,8 @@ describe('Multiselect', function() {
     .trigger('blur')
 
     setTimeout(() => {
-      expect(onSearch.calledOnce).to.be(true)
-      expect(onSearch.calledWith('')).to.be(true)
+      expect(onSearch.calledOnce).to.equal(true)
+      expect(onSearch.calledWith('')).to.equal(true)
       done()
     })
   })
@@ -422,8 +422,8 @@ describe('Multiselect', function() {
     .render()
     .trigger('keyDown', { keyCode: 13 })
 
-    expect(searchSpy.calledOnce).to.be(true)
-    expect(searchSpy.calledWith('')).to.be(true)
+    expect(searchSpy.calledOnce).to.equal(true)
+    expect(searchSpy.calledWith('')).to.equal(true)
   })
 
   it('should not trigger form submission', function(){
@@ -565,14 +565,14 @@ describe('Multiselect', function() {
 
     inst.trigger('keyDown', { key: 'Delete' })
 
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(listHead)).to.be(true)
+    expect(change.calledOnce).to.equal(true)
+    expect(change.calledWith(listHead)).to.equal(true)
     change.reset()
 
     inst.trigger('keyDown', { key: 'Backspace' })
 
-    expect(change.calledOnce).to.be(true)
-    expect(change.calledWith(listHead)).to.be(true)
+    expect(change.calledOnce).to.equal(true)
+    expect(change.calledWith(listHead)).to.equal(true)
   })
 
   it('should open on ArrowDown', () => {
@@ -587,8 +587,8 @@ describe('Multiselect', function() {
     .render()
     .trigger('keyDown', { key: 'ArrowDown' })
 
-    expect(openSpy.calledOnce).to.be(true)
-    expect(openSpy.calledWith(true)).to.be(true)
+    expect(openSpy.calledOnce).to.equal(true)
+    expect(openSpy.calledWith(true)).to.equal(true)
   })
 
   it('should navigate list', function(){

@@ -80,7 +80,7 @@ describe('List', () => {
         .first('li')
         .text()
     )
-    .to.be('jimmy');
+    .to.equal('jimmy');
   })
 
   it('should render an empty list message', () => {
@@ -90,7 +90,7 @@ describe('List', () => {
         .single('li')
         .text()
     )
-    .to.be('There are no items in this list');
+    .to.equal('There are no items in this list');
   })
 
   it('should use a Item template', () => {
@@ -104,7 +104,7 @@ describe('List', () => {
         .first('li')
         .text()
     )
-    .to.be('hello - jimmy');
+    .to.equal('hello - jimmy');
   })
 
   it('should use a Group template', () => {
@@ -128,7 +128,7 @@ describe('List', () => {
       .first('.rw-list-optgroup')
       .text()
     )
-    .to.be('hello - smith');
+    .to.equal('hello - smith');
   })
 
 })

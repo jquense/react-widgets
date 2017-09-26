@@ -19,7 +19,7 @@ describe('DROPDOWNS', function(){
       .render()
       .find(':dom.rw-input')
       .text()
-    ).to.be('hello');
+    ).to.equal('hello');
   })
 
   it('should respect textField and valueFields', function(){
@@ -35,7 +35,7 @@ describe('DROPDOWNS', function(){
       .render()
       .find(':dom.rw-input')
       .text()
-    ).to.be('jimmy');
+    ).to.equal('jimmy');
   })
 
   it('should open when clicked', () => {
@@ -46,8 +46,8 @@ describe('DROPDOWNS', function(){
       .find('.rw-widget-picker')
       .trigger('click')
 
-    expect(openSpy.calledOnce).to.be(true);
-    expect(openSpy.calledWith(true)).to.be(true);
+    expect(openSpy.calledOnce).to.equal(true);
+    expect(openSpy.calledWith(true)).to.equal(true);
   })
 
   it('should respect autoFocus', () => {
@@ -69,7 +69,7 @@ describe('DROPDOWNS', function(){
       .render()
       .trigger('click')
 
-    expect(openSpy.called).to.be(false);
+    expect(openSpy.called).to.equal(false);
   })
 
   it('should start closed', () => {
@@ -123,8 +123,8 @@ describe('DROPDOWNS', function(){
           inst.trigger('blur')
 
           setTimeout(() => {
-            expect(focus.calledOnce).to.be(true)
-            expect(blur.calledOnce).to.be(true)
+            expect(focus.calledOnce).to.equal(true)
+            expect(blur.calledOnce).to.equal(true)
             done()
           })
         })
@@ -143,8 +143,8 @@ describe('DROPDOWNS', function(){
           inst.trigger('blur')
 
           setTimeout(() => {
-            expect(focus.called).to.be(false)
-            expect(blur.called).to.be(false)
+            expect(focus.called).to.equal(false)
+            expect(blur.called).to.equal(false)
             done()
           })
         })
@@ -168,9 +168,9 @@ describe('DROPDOWNS', function(){
     .trigger('keyDown')
     .trigger('keyUp')
 
-    expect(kp.calledOnce).to.be(true)
-    expect(kd.calledOnce).to.be(true)
-    expect(ku.calledOnce).to.be(true)
+    expect(kp.calledOnce).to.equal(true)
+    expect(kd.calledOnce).to.equal(true)
+    expect(ku.calledOnce).to.equal(true)
   })
 
   it('should add correct markup when read-only', () => {
@@ -178,7 +178,7 @@ describe('DROPDOWNS', function(){
       .render()
       .dom()
 
-    expect(input.getAttribute('aria-readonly')).to.be('true');
+    expect(input.getAttribute('aria-readonly')).to.equal('true');
   })
 
   it('should add correct markup when disabled', () => {
@@ -186,7 +186,7 @@ describe('DROPDOWNS', function(){
       .render()
       .dom()
 
-    expect(input.getAttribute('aria-disabled')).to.be('true');
+    expect(input.getAttribute('aria-disabled')).to.equal('true');
   })
 
   it('should use a value template', function(){
@@ -205,7 +205,7 @@ describe('DROPDOWNS', function(){
       .find(':dom.rw-input')
       .text()
     )
-    .to.be('hello - jimmy');
+    .to.equal('hello - jimmy');
   })
 
   it('should call onChange with event object from select', function(){
@@ -270,17 +270,17 @@ describe('DROPDOWNS', function(){
     .find('List')
       .trigger('select', data[1], 'foo')
 
-    expect(onSelect.calledOnce).to.be(true)
+    expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
 
-    expect(change.calledAfter(onSelect)).to.be(true)
+    expect(change.calledAfter(onSelect)).to.equal(true)
   })
 
   it('should change values on keyDown', function(){
     function assertChangedWithValue(itemIndex) {
       return () => {
-        expect(change.calledOnce).to.be(true)
-        expect(change.calledWith(data[itemIndex])).to.be(true)
+        expect(change.calledOnce).to.equal(true)
+        expect(change.calledWith(data[itemIndex])).to.equal(true)
         change.reset()
       }
     }
@@ -353,8 +353,8 @@ describe('DROPDOWNS', function(){
     .trigger('keyPress', { which: 80, key: 'p' })
 
     setTimeout(() => {
-      expect(change.calledOnce).to.be(true)
-      expect(change.calledWith(data[2])).to.be(true)
+      expect(change.calledOnce).to.equal(true)
+      expect(change.calledWith(data[2])).to.equal(true)
 
       done()
     })
@@ -378,7 +378,7 @@ describe('DROPDOWNS', function(){
     .trigger('keyPress', { which: 80, key: 'p' })
 
     setTimeout(() => {
-      expect(inst.state('focusedItem')).to.be(data[2])
+      expect(inst.state('focusedItem')).to.equal(data[2])
       done()
     })
   })

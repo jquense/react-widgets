@@ -19,7 +19,7 @@ describe('Combobox', function(){
       .render()
       .find('input.rw-input')
       .tap(c =>
-        expect(c.dom().value).to.be('hello'));
+        expect(c.dom().value).to.equal('hello'));
   })
 
   it('should respect textField and valueFields', function(){
@@ -33,7 +33,7 @@ describe('Combobox', function(){
     ).render()
       .find('input.rw-input')
       .tap(c =>
-        expect(c.dom().value).to.be('jimmy'));
+        expect(c.dom().value).to.equal('jimmy'));
   })
 
   it('should pass NAME down', function(){
@@ -48,7 +48,7 @@ describe('Combobox', function(){
     ).render()
       .find(':dom.rw-input')
       .tap(c =>
-        expect(c.dom().hasAttribute('name')).to.be(true));
+        expect(c.dom().hasAttribute('name')).to.equal(true));
   })
 
 
@@ -60,8 +60,8 @@ describe('Combobox', function(){
       .first('button')
       .trigger('click')
 
-    expect(openSpy.calledOnce).to.be(true);
-    expect(openSpy.calledWith(true)).to.be(true);
+    expect(openSpy.calledOnce).to.equal(true);
+    expect(openSpy.calledWith(true)).to.equal(true);
   })
 
   it('should not open when clicked while disabled or readOnly', () => {
@@ -77,7 +77,7 @@ describe('Combobox', function(){
       .first('button')
       .trigger('click')
 
-    expect(openSpy.called).to.be(false);
+    expect(openSpy.called).to.equal(false);
   })
 
   it('should start closed', () => {
@@ -131,8 +131,8 @@ describe('Combobox', function(){
           inst.trigger('blur')
 
           setTimeout(() => {
-            expect(focus.calledOnce).to.be(true)
-            expect(blur.calledOnce).to.be(true)
+            expect(focus.calledOnce).to.equal(true)
+            expect(blur.calledOnce).to.equal(true)
             done()
           })
         })
@@ -151,8 +151,8 @@ describe('Combobox', function(){
           inst.trigger('blur')
 
           setTimeout(() => {
-            expect(focus.called).to.be(false)
-            //expect(blur.called).to.be(false)
+            expect(focus.called).to.equal(false)
+            //expect(blur.called).to.equal(false)
             done()
           })
         })
@@ -176,9 +176,9 @@ describe('Combobox', function(){
     .trigger('keyDown')
     .trigger('keyUp')
 
-    expect(kp.calledOnce).to.be(true)
-    expect(kd.calledOnce).to.be(true)
-    expect(ku.calledOnce).to.be(true)
+    expect(kp.calledOnce).to.equal(true)
+    expect(kd.calledOnce).to.equal(true)
+    expect(ku.calledOnce).to.equal(true)
   })
 
   it('should add correct markup when read-only', () => {
@@ -187,8 +187,8 @@ describe('Combobox', function(){
       .find('.rw-input')
       .dom()
 
-    expect(input.hasAttribute('readonly')).to.be(true);
-    expect(input.getAttribute('aria-readonly')).to.be('true');
+    expect(input.hasAttribute('readonly')).to.equal(true);
+    expect(input.getAttribute('aria-readonly')).to.equal('true');
   })
 
   it('should add correct markup when disabled', () => {
@@ -197,8 +197,8 @@ describe('Combobox', function(){
       .find('.rw-input')
       .dom()
 
-    expect(input.hasAttribute('disabled')).to.be(true);
-    expect(input.getAttribute('aria-disabled')).to.be('true');
+    expect(input.hasAttribute('disabled')).to.equal(true);
+    expect(input.getAttribute('aria-disabled')).to.equal('true');
   })
 
 
@@ -291,18 +291,18 @@ describe('Combobox', function(){
     .find('List')
       .trigger('select', dataList[1], 'foo')
 
-    expect(onSelect.calledOnce).to.be(true)
+    expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
 
-    expect(change.calledAfter(onSelect)).to.be(true)
+    expect(change.calledAfter(onSelect)).to.equal(true)
   })
 
 
   it('should change values on keyDown', function(){
     function assertChangedWithValue(itemIndex) {
       return () => {
-        expect(change.calledOnce).to.be(true)
-        expect(change.calledWith(dataList[itemIndex])).to.be(true)
+        expect(change.calledOnce).to.equal(true)
+        expect(change.calledWith(dataList[itemIndex])).to.equal(true)
         change.reset()
       }
     }

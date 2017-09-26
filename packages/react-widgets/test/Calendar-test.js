@@ -60,7 +60,7 @@ describe('Calendar', () => {
 
     calendar.single(Century);
 
-    expect(navBtn.dom().hasAttribute('disabled')).to.be(true)
+    expect(navBtn.dom().hasAttribute('disabled')).to.equal(true)
   })
 
   it('should key up through views', () => {
@@ -94,7 +94,7 @@ describe('Calendar', () => {
       calendar
         .single(Month).props('focused')
         .getMonth()
-    ).to.be(4);
+    ).to.equal(4);
 
     navBtn.trigger('click');
     leftBtn.trigger('click');
@@ -103,7 +103,7 @@ describe('Calendar', () => {
       calendar
         .single(Year).props('focused')
         .getFullYear()
-    ).to.be(2013);
+    ).to.equal(2013);
 
     navBtn.trigger('click');
     leftBtn.trigger('click');
@@ -112,7 +112,7 @@ describe('Calendar', () => {
       calendar
         .single(Decade).props('focused')
         .getFullYear()
-    ).to.be(2003);
+    ).to.equal(2003);
 
     navBtn.trigger('click');
     leftBtn.trigger('click');
@@ -121,7 +121,7 @@ describe('Calendar', () => {
       calendar
         .single(Century).props('focused')
         .getFullYear()
-    ).to.be(1903);
+    ).to.equal(1903);
 
   })
 
@@ -141,7 +141,7 @@ describe('Calendar', () => {
       calendar
         .single(Month).props('focused')
         .getMonth()
-    ).to.be(6);
+    ).to.equal(6);
 
     navBtn.trigger('click');
     rightBtn.trigger('click');
@@ -150,7 +150,7 @@ describe('Calendar', () => {
       calendar
         .single(Year).props('focused')
         .getFullYear()
-    ).to.be(2015);
+    ).to.equal(2015);
 
     navBtn.trigger('click');
     rightBtn.trigger('click');
@@ -159,7 +159,7 @@ describe('Calendar', () => {
       calendar
         .single(Decade).props('focused')
         .getFullYear()
-    ).to.be(2025);
+    ).to.equal(2025);
 
     navBtn.trigger('click');
     rightBtn.trigger('click');
@@ -168,7 +168,7 @@ describe('Calendar', () => {
       calendar
         .single(Century).props('focused')
         .getFullYear()
-    ).to.be(2125);
+    ).to.equal(2125);
   })
 
   it('should have a footer', () => {
@@ -193,7 +193,7 @@ describe('Calendar', () => {
 
   it('should accept footer format', () => {
     let formatter = sinon.spy((dt, culture) => {
-      expect(dt).to.be.a(Date)
+      expect(dt).to.be.a('Date')
       expect(culture).to.be.a('string').and.equal('en')
       return 'test'
     })
@@ -206,7 +206,7 @@ describe('Calendar', () => {
     )
     .to.equal('test')
 
-    expect(formatter.called).to.be.ok()
+    expect(formatter.called).to.equal(true)
   })
 
   it('should navigate to footer date', () => {
@@ -302,33 +302,33 @@ describe('Calendar', () => {
     expect(
       calendar.single(Month).props('dayFormat')
     )
-    .to.be('dayFormat');
+    .to.equal('dayFormat');
 
     expect(
       calendar.single(Month).props('dateFormat')
     )
-    .to.be('dateFormat');
+    .to.equal('dateFormat');
 
     calendar.props('view', 'year')
 
     expect(
       calendar.single(Year).props('monthFormat')
     )
-    .to.be('monthFormat');
+    .to.equal('monthFormat');
 
     calendar.props('view', 'decade')
 
     expect(
       calendar.single(Decade).props('yearFormat')
     )
-    .to.be('yearFormat');
+    .to.equal('yearFormat');
 
     calendar.props('view', 'century')
 
     expect(
       calendar.single(Century).props('decadeFormat')
     )
-    .to.be('decadeFormat');
+    .to.equal('decadeFormat');
   })
 
   it('should accept a currentDate', () => {
@@ -342,9 +342,9 @@ describe('Calendar', () => {
     .single(Month)
     .props('focused')
 
-    expect(focused.getFullYear()).to.be(2000);
-    expect(focused.getMonth()).to.be(1);
-    expect(focused.getDate()).to.be(15);
+    expect(focused.getFullYear()).to.equal(2000);
+    expect(focused.getMonth()).to.equal(1);
+    expect(focused.getDate()).to.equal(15);
 
   })
 

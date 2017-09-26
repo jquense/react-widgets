@@ -34,8 +34,8 @@
     "test:all": "npm run test:server && npm run test:client && npm run test:styles",
     "test:styles": "npm run styles && node-sass lib/scss/react-widgets.scss -o test/output",
     "test:server": "cross-env NODE_ENV=test mocha -R spec ./test/server/*.js",
-    "test:client": "cross-env NODE_ENV=test karma start --single-run=true",
-    "tdd": "cross-env NODE_ENV=test karma start",
+    "test:client": "jest",
+    "tdd": "jest --watch",
     "lint": "eslint src test --ext .js",
     "to-sass": "node lessToSass.js",
     "less": "lessc -x --autoprefix=\"ie >= 8\" src/less/react-widgets.less dist/css/react-widgets.css",
@@ -73,16 +73,21 @@
     "react-transition-group": "^2.2.0",
     "spy-on-component": "^1.0.2",
     "uncontrollable": "^4.0.0",
-    "warning": "^2.0.0"
+    "warning": "^2.0.0",
+    "webpack": "3",
+    "webpack-atoms": "^3.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-jest": "^21.0.2",
     "bill": "^3.2.2",
+    "chai": "^4.1.2",
     "cpy-cli": "^1.0.0",
     "cross-env": "^5.0.5",
     "eslint": "^3.7.1",
     "glob": "^7.0.5",
     "globalize": "^0.1.1",
+    "jest": "^21.1.0",
     "karma": "^0.13.3",
     "karma-chrome-launcher": "^0.2.1",
     "karma-expect": "~1.1.0",
@@ -102,9 +107,9 @@
     "react": "^15.2.0",
     "react-dom": "^15.2.0",
     "rimraf": "^2.5.4",
-    "sinon": "^1.17.2",
+    "sinon": "^4.0.0",
     "teaspoon": "^6.4.1",
-    "webpack": "^2.6.1"
+    "webpack": "^3.6.0"
   },
   "browserify": {
     "transform": [
