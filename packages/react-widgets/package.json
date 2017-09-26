@@ -73,9 +73,7 @@
     "react-transition-group": "^2.2.0",
     "spy-on-component": "^1.0.2",
     "uncontrollable": "^4.0.0",
-    "warning": "^2.0.0",
-    "webpack": "3",
-    "webpack-atoms": "^3.0.2"
+    "warning": "^2.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -109,7 +107,8 @@
     "rimraf": "^2.5.4",
     "sinon": "^4.0.0",
     "teaspoon": "^6.4.1",
-    "webpack": "^3.6.0"
+    "webpack": "^3.6.0",
+    "webpack-atoms": "^3.0.2"
   },
   "browserify": {
     "transform": [
