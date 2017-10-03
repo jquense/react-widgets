@@ -2,7 +2,7 @@
   "name": "react-widgets-simple-number",
   "version": "4.0.2",
   "description": "A globalize.js localizer for react-widgets",
-  "main": "localizer.js",
+  "main": "index.js",
   "scripts": {
     "clean": "rimraf dist/* lib/*",
     "dist": "cross-env NODE_ENV=production webpack -p",
@@ -10,7 +10,7 @@
     "prepublish": "npm run clean && npm run build && npm run dist"
   },
   "files": [
-    "localizer.js",
+    "index.js",
     "dist"
   ],
   "repository": {
