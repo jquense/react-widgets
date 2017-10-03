@@ -71,7 +71,7 @@ loaders to make it work with appropriate file extensions. If not, you will have 
 the `css-loader`, `style-loader`, `url-loader` and, optionally, the `less-loader` or
 `scss-loader`.
 
-Here's common configuration:
+Here's a common configuration:
 
 ```js
 module: {
@@ -118,11 +118,11 @@ date and number localization, there is first class support for cultures and lang
 right to left (with the `isRtl` prop).
 
 Each widget also has appropriate ARIA roles and attributes for the benefit of screen readers and visually
-impaired users. Keyboard only navigation of widgets is also supported, for those who prefer to not,
-or cannot use a mouse. to help ensure maximum accessibility, every widget should have
+impaired users. Keyboard-only navigation of widgets is also supported, for those who prefer to not,
+or cannot use a mouse. To help ensure maximum accessibility, every widget should have
 an `id` attribute. If you do not wish to provide an id attribute, the component will generate
 the necessary id's to properly label and annotate the widget ARIA.
 
-> **Note:** Because of how server-side rendering, using auto generated `id`s may
+> **Note:** Because of how server-side rendering works, using auto generated `id`s may
 > cause checksum mismatches. Always provide `id` props to your components to avoid this possible pitfall.
 
