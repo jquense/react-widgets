@@ -2,7 +2,7 @@
 ### Localizers (I18n)
 
 In the past `react-widgets` included a set of localizers for use with popular
-I18n libraries like Globalize and moment.js. One issue with this approahc is that
+I18n libraries like Globalize and moment.js. One issue with this approach is that
 we couldn't iterate on those parts of hte package without needing to bump the version
 of all of `react-widgets`. If a localizer needed a breaking change it'd have to wait
 until the whole package bumped a major version.
@@ -13,7 +13,7 @@ installable via npm. The maintained core ones are:
 
 - `react-widgets-moment`
 - `react-widgets-globalize`
-- `react-wwidgets-simple-number`
+- `react-widgets-simple-number`
 
 ### CSS Classes
 
@@ -33,15 +33,15 @@ out of the box for quick prototyping, as well as easier to theme.
 
 ### Props
 
-### Calendar: `initialView` and `finalView`
+#### Calendar: `initialView` and `finalView`
 
 These have been replaced with the `views` prop which provides a lot more freedom
 in defining what views the Calendar starts or ends on and in what order.
 
 #### `duration` speed for animations
 
-Programatic `duration` has been removed, in favor of 100% CSS specified animations.
-To change the duration of all popup enter and exiting speeds adjust it via CSS
+Programmatic `duration` has been removed, in favor of 100% CSS specified animations.
+To change the duration of all popup enter and exiting speeds, adjust it via CSS.
 
 __For Popups__:
 
