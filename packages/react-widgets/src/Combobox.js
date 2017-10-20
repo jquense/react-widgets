@@ -71,6 +71,7 @@ let propTypes = {
   }),
 }
 
+
 /**
  * ---
  * shortcuts:
@@ -114,6 +115,7 @@ class Combobox extends React.Component {
     this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
+      willHandle: this.handleFocusWillChange,
       didHandle: this.handleFocusChanged,
     })
 
@@ -177,8 +179,14 @@ class Combobox extends React.Component {
     }
   }
 
+  // has to be done early since `accept()` re-focuses the input
+  handleFocusWillChange = focused => {
+    if (!focused && this.refs.input)
+      this.refs.input.accept()
+    if (focused) this.focus();
+  }
+
   handleFocusChanged = focused => {
-    if (!focused && this.refs.input) this.refs.input.accept()
     if (!focused) this.close()
   }
 
