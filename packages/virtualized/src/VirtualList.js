@@ -130,9 +130,8 @@ class VirtualList extends React.Component {
     let { className, messages } = this.props;
     return (
       <Listbox
-        ref={ref}
-        className={className}
-        style={{ overflow: 'visible', maxHeight: 'none' }}
+        nodeRef={ref}
+        className={cn(className, 'rw-virtual-list')}
         emptyListMessage={messages.emptyList(this.props)}
       >
         {items}

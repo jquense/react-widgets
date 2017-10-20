@@ -3,6 +3,11 @@
   overflow: auto;
 }
 
+.rw-virtual-list.rw-list {
+  overflow: visible;
+  max-height: none;
+}
+
 .rw-popup .rw-virtual-list-wrapper {
   max-height: 200px;
 }
