@@ -6,7 +6,9 @@ import Input from './Input';
 
 export const caretSet = (node, start, end) => {
   try { node.setSelectionRange(start, end) }
-  catch(e) { /* not focused or not visible */ }
+  catch (e) {
+    /* not focused or not visible */
+  }
 }
 
 class ComboboxInput extends React.Component {
@@ -79,11 +81,8 @@ class ComboboxInput extends React.Component {
   }
 
   accept() {
-    let value = findDOMNode(this).value || ''
-    let end = value.length;
-
     this._last = null
-    caretSet(findDOMNode(this), end, end)
+    // caretSet(node, end, end)
   }
 
 
