@@ -496,7 +496,7 @@ let propTypes = {
 
     let { focused } = this.state
 
-    let elementProps = Props.pickElementProps(this)
+    let elementProps = Props.pickElementProps(this, BaseCalendar.ControlledComponent)
 
     let shouldRenderList = open || isFirstFocusedRender(this)
 

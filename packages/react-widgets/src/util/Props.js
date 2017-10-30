@@ -23,8 +23,8 @@ export function pick(props, componentClass) {
   return result
 }
 
-export function pickElementProps(component) {
-  const props = omitOwn(component);
+export function pickElementProps(component, ...others) {
+  const props = omitOwn(component, ...others);
   const result = {};
   Object.keys(props).forEach(key => {
     if (
