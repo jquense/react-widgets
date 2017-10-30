@@ -1,6 +1,6 @@
 import transform from 'lodash/transform';
 import React from 'react'
-import tsp from 'teaspoon';
+import { mount, shallow } from 'enzyme';
 
 import Calendar from '../src/Calendar'
 import Footer from '../src/Footer';
@@ -30,96 +30,96 @@ describe('Calendar', () => {
   })
 
   it('should set default View', () => {
-    tsp(
+    mount(
       <Calendar
         defaultValue={new Date()}
         defaultView='year'
       />
     )
-    .render()
-    .single(Year);
+    .assertSingle(Year);
   })
 
   it('should click up through views', () => {
     let date = new Date()
-    let calendar = tsp(<Calendar defaultValue={date} />).render()
+    let calendar = mount(<Calendar defaultValue={date} />)
 
     let navBtn = calendar.find('button.rw-calendar-btn-view')
 
-    calendar.single(Month);
+    calendar.assertSingle(Month);
 
-    navBtn.trigger('click');
+    navBtn.simulate('click');
 
-    calendar.single(Year);
+    calendar.assertSingle(Year);
 
-    navBtn.trigger('click');
+    navBtn.simulate('click');
 
-    calendar.single(Decade);
+    calendar.assertSingle(Decade);
 
-    navBtn.trigger('click');
+    navBtn.simulate('click');
 
-    calendar.single(Century);
+    calendar.assertSingle(Century);
 
-    expect(navBtn.dom().hasAttribute('disabled')).to.equal(true)
+    expect(navBtn.getDOMNode().hasAttribute('disabled')).to.equal(true)
   })
 
   it('should key up through views', () => {
     let date = new Date()
     let keys = { ctrlKey: true, key: 'ArrowUp' };
 
-    tsp(<Calendar defaultValue={date} />).render()
-      .single(Month)
-      .end()
-      .trigger('keyDown', keys)
-        .single(Year)
-        .end()
-      .trigger('keyDown', keys)
-        .single(Decade)
-        .end()
-      .trigger('keyDown', keys)
-        .single(Century);
+    let wrapper = mount(<Calendar defaultValue={date} />)
+
+    wrapper.assertSingle(Month)
+
+    wrapper.simulate('keyDown', keys)
+        .assertSingle(Year)
+
+    wrapper.simulate('keyDown', keys)
+      .assertSingle(Decade)
+
+    wrapper.simulate('keyDown', keys)
+        .assertSingle(Century);
   })
 
   it('should navigate into the past', () => {
     var date= new Date(2014, 5, 15, 0, 0, 0)
 
-    let calendar = tsp(<Calendar defaultValue={date} />).render()
+    let calendar = mount(<Calendar defaultValue={date} />)
 
     let leftBtn = calendar.find('button.rw-calendar-btn-left')
     let navBtn = calendar.find('button.rw-calendar-btn-view')
 
-    leftBtn.trigger('click');
+    leftBtn.simulate('click');
 
     expect(
       calendar
-        .single(Month).props('focused')
+        .assertSingle(Month).prop('focused')
         .getMonth()
     ).to.equal(4);
 
-    navBtn.trigger('click');
-    leftBtn.trigger('click');
+    navBtn.simulate('click');
+    leftBtn.simulate('click');
 
     expect(
       calendar
-        .single(Year).props('focused')
+        .assertSingle(Year).prop('focused')
         .getFullYear()
     ).to.equal(2013);
 
-    navBtn.trigger('click');
-    leftBtn.trigger('click');
+    navBtn.simulate('click');
+    leftBtn.simulate('click');
 
     expect(
       calendar
-        .single(Decade).props('focused')
+        .assertSingle(Decade).prop('focused')
         .getFullYear()
     ).to.equal(2003);
 
-    navBtn.trigger('click');
-    leftBtn.trigger('click');
+    navBtn.simulate('click');
+    leftBtn.simulate('click');
 
     expect(
       calendar
-        .single(Century).props('focused')
+        .assertSingle(Century).prop('focused')
         .getFullYear()
     ).to.equal(1903);
 
@@ -127,65 +127,64 @@ describe('Calendar', () => {
 
   it('should navigate into the future', () => {
     let date = new Date(2014, 5, 15, 0, 0, 0)
-    let calendar = tsp(
+    let calendar = mount(
       <Calendar defaultValue={date}  max={new Date(2199, 11, 31)} />
     )
-    .render()
 
     let rightBtn = calendar.find('button.rw-calendar-btn-right')
     let navBtn = calendar.find('button.rw-calendar-btn-view')
 
-    rightBtn.trigger('click');
+    rightBtn.simulate('click');
 
     expect(
       calendar
-        .single(Month).props('focused')
+        .assertSingle(Month).prop('focused')
         .getMonth()
     ).to.equal(6);
 
-    navBtn.trigger('click');
-    rightBtn.trigger('click');
+    navBtn.simulate('click');
+    rightBtn.simulate('click');
 
     expect(
       calendar
-        .single(Year).props('focused')
+        .assertSingle(Year).prop('focused')
         .getFullYear()
     ).to.equal(2015);
 
-    navBtn.trigger('click');
-    rightBtn.trigger('click');
+    navBtn.simulate('click');
+    rightBtn.simulate('click');
 
     expect(
       calendar
-        .single(Decade).props('focused')
+        .assertSingle(Decade).prop('focused')
         .getFullYear()
     ).to.equal(2025);
 
-    navBtn.trigger('click');
-    rightBtn.trigger('click');
+    navBtn.simulate('click');
+    rightBtn.simulate('click');
 
     expect(
       calendar
-        .single(Century).props('focused')
+        .assertSingle(Century).prop('focused')
         .getFullYear()
     ).to.equal(2125);
   })
 
   it('should have a footer', () => {
-    tsp(<BaseCalendar footer={false} />)
-      .shallowRender()
-      .none(Footer)
-        .end()
-      .props('footer', true)
-      .single(Footer);
+    let wrapper = shallow(<BaseCalendar footer={false} />)
+
+    wrapper.assertNone(Footer)
+
+    wrapper
+      .setProps({ footer: true })
+      .assertSingle(Footer);
 
   })
 
   it('should display date in footer', () => {
     expect(
-      tsp(<BaseCalendar />)
-        .render()
-        .single(Footer)
+      mount(<BaseCalendar />)
+        .assertSingle(Footer)
         .text()
     )
     .to.equal(globalize.format(new Date(), 'D'));
@@ -199,9 +198,8 @@ describe('Calendar', () => {
     })
 
     expect(
-      tsp(<BaseCalendar footerFormat={formatter} culture='en'/>)
-        .render()
-        .single(Footer)
+      mount(<BaseCalendar footerFormat={formatter} culture='en'/>)
+        .assertSingle(Footer)
         .text()
     )
     .to.equal('test')
@@ -212,15 +210,15 @@ describe('Calendar', () => {
   it('should navigate to footer date', () => {
     let changeSpy = sinon.spy();
 
-    tsp(
+    mount(
       <BaseCalendar
         value={new Date(2013, 5, 15)}
         onChange={changeSpy}
       />
     )
-    .shallowRender()
     .find(Footer)
-    .trigger('click')
+    .find('button')
+    .simulate('click')
 
     expect(
       changeSpy.calledOnce
@@ -232,7 +230,7 @@ describe('Calendar', () => {
     let changeSpy = sinon.spy();
     let date = new Date(2014, 5, 15);
 
-    tsp(
+    let wrapper = mount(
       <Calendar
         defaultValue={date}
         max={new Date(2014, 5, 25)}
@@ -240,14 +238,16 @@ describe('Calendar', () => {
         onCurrentDateChange={changeSpy}
       />
     )
-    .render()
-    .find('.rw-calendar-btn-right')
+
+    wrapper
+      .find('button.rw-calendar-btn-right')
       .tap(inst => inst.is('[disabled]'))
-      .trigger('click')
-      .end()
-    .find('.rw-calendar-btn-left')
+      .simulate('click')
+
+    wrapper
+      .find('button.rw-calendar-btn-left')
       .tap(inst => inst.is('[disabled]'))
-      .trigger('click')
+      .simulate('click')
 
     expect(changeSpy.called).to.equal(false)
 
@@ -257,28 +257,26 @@ describe('Calendar', () => {
     require('globalize/lib/cultures/globalize.culture.es')
 
     let date = new Date(2014, 5, 15)
-    let calendar = tsp(
+    let calendar = mount(
       <Calendar value={date} culture='es' onChange={()=>{}} />
     )
-    .render()
 
     expect(
-      calendar.find('button.rw-calendar-btn-view').text()
-    ).to.equal('junio 2014')
+      calendar.find('button.rw-calendar-btn-view').contains('junio 2014')
+    ).to.equal(true)
 
     expect(
-      calendar.first('thead th').text()
-    ).to.equal('lu')
+      calendar.first('thead th').contains('lu')
+    ).to.equal(true)
 
-    calendar = tsp(
+    calendar = mount(
       <Calendar defaultView='year' value={date} culture='es' onChange={()=>{}} />
     )
-    .render()
 
     expect(
-      calendar.first('tbody td').text()
+      calendar.first('tbody td').contains('ene')
     )
-    .to.equal('ene')
+    .to.equal(true)
   })
 
   it('should pass on format', () => {
@@ -289,7 +287,7 @@ describe('Calendar', () => {
       {}
     )
 
-    let calendar = tsp(
+    let calendar = mount(
       <Calendar
         {...formats}
         value={date}
@@ -297,50 +295,48 @@ describe('Calendar', () => {
         onViewChange={()=>{}}
       />
     )
-    .render()
 
     expect(
-      calendar.single(Month).props('dayFormat')
+      calendar.assertSingle(Month).prop('dayFormat')
     )
     .to.equal('dayFormat');
 
     expect(
-      calendar.single(Month).props('dateFormat')
+      calendar.assertSingle(Month).prop('dateFormat')
     )
     .to.equal('dateFormat');
 
-    calendar.props('view', 'year')
+    calendar.setProps({ view: 'year' })
 
     expect(
-      calendar.single(Year).props('monthFormat')
+      calendar.assertSingle(Year).prop('monthFormat')
     )
     .to.equal('monthFormat');
 
-    calendar.props('view', 'decade')
+    calendar.setProps({view: 'decade' })
 
     expect(
-      calendar.single(Decade).props('yearFormat')
+      calendar.assertSingle(Decade).prop('yearFormat')
     )
     .to.equal('yearFormat');
 
-    calendar.props('view', 'century')
+    calendar.setProps({view: 'century' })
 
     expect(
-      calendar.single(Century).props('decadeFormat')
+      calendar.assertSingle(Century).prop('decadeFormat')
     )
     .to.equal('decadeFormat');
   })
 
   it('should accept a currentDate', () => {
-    let focused = tsp(
+    let focused = mount(
       <Calendar
         currentDate={new Date(2000, 1, 15)}
         onCurrentDateChange={()=>{}}
       />
     )
-    .render()
-    .single(Month)
-    .props('focused')
+    .assertSingle(Month)
+    .prop('focused')
 
     expect(focused.getFullYear()).to.equal(2000);
     expect(focused.getMonth()).to.equal(1);

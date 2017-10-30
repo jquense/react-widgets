@@ -2,7 +2,11 @@ import { findDOMNode } from 'react-dom';
 import matches from 'dom-helpers/query/matches';
 
 export const isInDisabledFieldset = (inst) => {
-  let node = findDOMNode(inst)
+  let node
+  try {
+    node = findDOMNode(inst)
+  } catch (err) { /* ignore */ }
+
   return !!node && matches(node, 'fieldset[disabled] *')
 }
 

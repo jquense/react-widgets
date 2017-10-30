@@ -1,5 +1,5 @@
 import React from 'react';
-import tsp from 'teaspoon';
+import { mount, shallow } from 'enzyme';
 
 import List from '../src/List';
 
@@ -26,8 +26,7 @@ describe('List', () => {
     let numItems = 5;
 
     expect(
-      tsp(<List data={data} onChange={()=>{}} {...props} />)
-        .render()
+      mount(<List data={data} onChange={()=>{}} {...props} />)
         .find('li')
         .length
     )
@@ -37,16 +36,16 @@ describe('List', () => {
   it('should fire onSelect', () => {
     let selectSpy = sinon.spy()
 
-    tsp(
+    mount(
       <List
         data={data}
         onSelect={selectSpy}
         onChange={()=>{}} {...props}
       />
     )
-    .render()
-    .first('li')
-    .trigger('click')
+    .find('li')
+    .first()
+    .simulate('click')
 
     expect(selectSpy.calledOnce).to.equal(true)
 
@@ -58,26 +57,25 @@ describe('List', () => {
     let focusedItem = data[2];
 
     expect(
-      tsp(
+      mount(
         <List
           {...props}
           activeId="foo"
           focusedItem={focusedItem}
         />
       )
-      .render()
       .find('.rw-list-option')
-      .nth(2)
-      .props('id')
+      .at(2)
+      .prop('id')
     )
     .to.equal('foo');
   })
 
   it('should respect textField and valueFields', () => {
     expect(
-      tsp(<List {...props} />)
-        .render()
-        .first('li')
+      mount(<List {...props} />)
+        .find('li')
+        .first()
         .text()
     )
     .to.equal('jimmy');
@@ -85,9 +83,8 @@ describe('List', () => {
 
   it('should render an empty list message', () => {
     expect(
-      tsp(<List {...props} data={[]} />)
-        .render()
-        .single('li')
+      mount(<List {...props} data={[]} />)
+        .assertSingle('li')
         .text()
     )
     .to.equal('There are no items in this list');
@@ -99,9 +96,9 @@ describe('List', () => {
     );
 
     expect(
-      tsp(<List {...props} renderItem={renderItem}  />)
-        .render()
-        .first('li')
+      mount(<List {...props} renderItem={renderItem}  />)
+        .find('li')
+        .first()
         .text()
     )
     .to.equal('hello - jimmy');
@@ -115,7 +112,7 @@ describe('List', () => {
     let groupBy = 'last';
 
     expect(
-      tsp(
+      mount(
         <List
           {...props}
           data={data}
@@ -124,8 +121,8 @@ describe('List', () => {
           groupBy={groupBy}
         />
       )
-      .render()
-      .first('.rw-list-optgroup')
+      .find('.rw-list-optgroup')
+      .first()
       .text()
     )
     .to.equal('hello - smith');

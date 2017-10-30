@@ -1,5 +1,5 @@
 import React from 'react'
-import tsp from 'teaspoon';
+import { mount } from 'enzyme';
 
 import Month from '../src/Month'
 
@@ -9,7 +9,7 @@ describe('Month Component', function(){
     var date = new Date(2015, 1, 16, 0, 0, 0)
       , formatter = sinon.spy(() => 'hi')
 
-    tsp(
+    mount(
       <Month
         value={date}
         focused={date}
@@ -19,17 +19,16 @@ describe('Month Component', function(){
         activeId='month'
       />
     )
-    .render()
     .tap(inst =>
-      expect(inst.first('td').text()).to.equal('01')
+      expect(inst.first('td').contains('01')).to.equal(true)
     )
-    .props({ dateFormat: '-d' })
+    .setProps({ dateFormat: '-d' })
     .tap(inst =>
-      expect(inst.first('td').text()).to.equal('-1')
+      expect(inst.first('td').contains('-1')).to.equal(true)
     )
-    .props({ dateFormat: formatter, culture: 'en' })
+    .setProps({ dateFormat: formatter, culture: 'en' })
     .tap(inst =>
-      expect(inst.first('td').text()).to.equal('hi'))
+      expect(inst.first('td').contains('hi')).to.equal(true))
 
     expect(formatter.called).to.equal(true);
     expect(formatter.args[0].length).to.equal(3);
