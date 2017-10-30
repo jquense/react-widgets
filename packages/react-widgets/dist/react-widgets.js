@@ -1199,7 +1199,7 @@ function createFocusManager(component, options) {
 
   return (0, _reactComponentManagers.focusManager)(component, _extends({}, options, {
     onChange: function onChange(focused) {
-      return component.setState({ focused: focused });
+      component.setState({ focused: focused });
     },
     isDisabled: function isDisabled() {
       return (0, _interaction.isInDisabledFieldset)(component) || component.props.disabled === true;
@@ -5397,6 +5397,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var propTypes = {
   className: _propTypes2.default.string,
   role: _propTypes2.default.string,
+  nodeRef: _propTypes2.default.func,
   emptyListMessage: _propTypes2.default.node
 };
 
@@ -5415,14 +5416,17 @@ var Listbox = function (_React$Component) {
         role = _props.role,
         children = _props.children,
         emptyListMessage = _props.emptyListMessage,
-        props = _objectWithoutProperties(_props, ['className', 'role', 'children', 'emptyListMessage']);
+        nodeRef = _props.nodeRef,
+        props = _objectWithoutProperties(_props, ['className', 'role', 'children', 'emptyListMessage', 'nodeRef']);
 
     var id = (0, _widgetHelpers.instanceId)(this);
+
     return _react2.default.createElement(
       'ul',
       _extends({
         id: id,
         tabIndex: '-1',
+        ref: nodeRef,
         className: (0, _classnames2.default)(className, 'rw-list'),
         role: role === undefined ? 'listbox' : role
       }, props),
@@ -8131,13 +8135,18 @@ function createFocusManager(instance, _ref) {
 
     if (willHandle && willHandle(focused, event) === false) return;
 
+    console.log('handle', focused, lastFocused)
+
     timeouts.set('focus', function () {
       (0, _reactDom.unstable_batchedUpdates)(function () {
+
+        console.log('timeout', focused, lastFocused)
         if (focused !== lastFocused) {
           if (didHandle) didHandle.call(instance, focused, event);
 
           // only fire a change when unmounted if its a blur
           if (isMounted() || !focused) {
+            console.log('focus changed', focused, lastFocused)
             lastFocused = focused;
             onChange && onChange(focused, event);
           }
@@ -8155,6 +8164,7 @@ function createFocusManager(instance, _ref) {
     }
   };
 }
+
 
 /***/ }),
 /* 72 */
@@ -9411,8 +9421,12 @@ var Combobox = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp = _clas
 
     var _this = _possibleConstructorReturn(this, _React$Component.call(this, props, context));
 
-    _this.handleFocusChanged = function (focused) {
+    _this.handleFocusWillChange = function (focused) {
       if (!focused && _this.refs.input) _this.refs.input.accept();
+      if (focused) _this.focus();
+    };
+
+    _this.handleFocusChanged = function (focused) {
       if (!focused) _this.close();
     };
 
@@ -9445,6 +9459,7 @@ var Combobox = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp = _clas
     _this.accessors = (0, _accessorManager2.default)(_this);
     _this.handleScroll = (0, _scrollManager2.default)(_this);
     _this.focusManager = (0, _focusManager2.default)(_this, {
+      willHandle: _this.handleFocusWillChange,
       didHandle: _this.handleFocusChanged
     });
 
@@ -9509,6 +9524,9 @@ var Combobox = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp = _clas
       focusedItem: list.nextEnabled(~focusedIndex ? data[focusedIndex] : data[0])
     };
   };
+
+  // has to be done early since `accept()` re-focuses the input
+
 
   Combobox.prototype.renderInput = function renderInput() {
     var _props = this.props,
@@ -9831,7 +9849,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var caretSet = exports.caretSet = function caretSet(node, start, end) {
   try {
     node.setSelectionRange(start, end);
-  } catch (e) {/* not focused or not visible */}
+  } catch (e) {
+    /* not focused or not visible */
+  }
 };
 
 var ComboboxInput = (_temp2 = _class = function (_React$Component) {
@@ -9905,11 +9925,8 @@ var ComboboxInput = (_temp2 = _class = function (_React$Component) {
   };
 
   ComboboxInput.prototype.accept = function accept() {
-    var value = (0, _reactDom.findDOMNode)(this).value || '';
-    var end = value.length;
-
     this._last = null;
-    caretSet((0, _reactDom.findDOMNode)(this), end, end);
+    // caretSet(node, end, end)
   };
 
   ComboboxInput.prototype.focus = function focus() {
