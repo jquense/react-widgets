@@ -55,7 +55,7 @@ export default function simpleNumber(options = {}) {
     },
 
     decimalChar(format) {
-      return (format && deconstruct(format).decimalsSeparator) || '.'
+      return (format && deconstruct(format).decimalsSeparator) || decimal || '.'
     },
 
     precision(format) {
