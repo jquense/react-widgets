@@ -44,15 +44,17 @@ node.innerHTML = `
 `
 
 beforeEach(() => {
+  if (console.error.restore) console.error.restore()
   sinon.stub(console, 'error');
 });
 
 afterEach(function () {
   if (typeof console.error.restore === 'function') {
-    if (console.error.called)
-      throw new Error(`${console.error.getCall(0).args[0]} \nIn '${this.currentTest.fullTitle()}'`)
-
+    let err = console.error.getCall(0).args[0];
     console.error.restore();
+
+    if (console.error.called)
+      throw new Error(`${err} \nIn '${this.currentTest.fullTitle()}'`)
   }
 });
 
