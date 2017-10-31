@@ -1,10 +1,12 @@
-import React from 'react';
-import sinon from 'sinon'
-import chai from 'chai'
-import Enzyme, { ShallowWrapper, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+global.requestAnimationFrame = (cb) => setTimeout(cb, 0)
 
-import * as widgetHelpers from '../src/util/widgetHelpers';
+const React = require('react')
+const sinon = require('sinon')
+const chai = require('chai')
+const { configure, ShallowWrapper, ReactWrapper } = require('enzyme')
+const Adapter = require('enzyme-adapter-react-16')
+
+const widgetHelpers = require('../src/util/widgetHelpers')
 
 global.chai = chai
 global.sinon = sinon
@@ -12,7 +14,7 @@ global.sinon = sinon
 chai.should();
 global.expect = chai.expect
 
-Enzyme.configure({ adapter: new Adapter() });
+configure({ adapter: new Adapter() });
 
 function assertLength(length) {
   return function $assertLength(selector) {
@@ -50,11 +52,11 @@ beforeEach(() => {
 
 afterEach(function () {
   if (typeof console.error.restore === 'function') {
-    let err = console.error.getCall(0).args[0];
-    console.error.restore();
-
-    if (console.error.called)
-      throw new Error(`${err} \nIn '${this.currentTest.fullTitle()}'`)
+    if (console.error.called) {
+      let err = console.error.getCall(0).args[0];
+      console.error.restore();
+      throw new Error(`${err}`)
+    }
   }
 });
 
