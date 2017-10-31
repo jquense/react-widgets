@@ -2,7 +2,7 @@ import Globalize from 'globalize';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Playground from '@monastic.panic/component-playground/Playground';
-import ReactWidgets from 'react-widgets';
+import * as ReactWidgets from 'react-widgets';
 import MultiselectTagList from 'react-widgets/lib/MultiselectTagList';
 import List from 'react-widgets/lib/List';
 
