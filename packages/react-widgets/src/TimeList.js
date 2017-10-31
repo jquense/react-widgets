@@ -58,6 +58,10 @@ class TimeList extends React.Component {
     this.setState(this.getStateFromProps(nextProps))
   }
 
+  componentWillUnmount() {
+    this.unmounted = true;
+  }
+
   getStateFromProps(props = this.props) {
     let { value, currentDate } = props;
     let data = this.getDates(props)
@@ -102,7 +106,7 @@ class TimeList extends React.Component {
     e.preventDefault();
 
     this.search(String.fromCharCode(e.which), item => {
-      this.isMounted() &&
+      !this.unmounted &&
         this.setState({ focusedItem: item })
     })
   }

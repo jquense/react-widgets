@@ -3,7 +3,7 @@ import dates from 'date-arithmetic';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
-import RW from 'react-widgets';
+import * as RW from 'react-widgets';
 
 import Demo, { createSetter } from '../components/Demo';
 import Layout from '../components/Layout';

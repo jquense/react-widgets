@@ -1,6 +1,6 @@
 import React from 'react';
 import Globalize from 'globalize';
-import tsp from 'teaspoon';
+import { mount, shallow } from 'enzyme';
 
 import DateTimePicker from '../src/DateTimePicker'
 import TimeList from '../src/TimeList'
@@ -14,35 +14,38 @@ describe('DateTimePicker', () => {
     var date = new Date();
 
     expect(
-      tsp(<DateTimePicker defaultValue={date} format="MM-dd-yyyy"/>)
-        .render()
+      mount(<DateTimePicker defaultValue={date} format="MM-dd-yyyy"/>)
         .find('.rw-input')
-        .dom().value
+        .getDOMNode()
+        .value
     )
     .to.equal(Globalize.format(date, 'MM-dd-yyyy'))
   })
 
   it('should start closed', () => {
 
-    let inst = tsp(<ControlledDateTimePicker />).shallowRender()
+    let inst = shallow(<ControlledDateTimePicker />)
 
-    expect(inst.props('open')).to.not.equal(true)
-    expect(inst.find('Popup').props('open')).to.not.equal(true)
+    expect(inst.prop('open')).to.not.equal(true)
 
-    inst.none('.rw-open')
-    inst.single(tsp.s`DateTimePickerInput[aria-expanded=${false}]`)
+    expect(inst.find('Popup').first().prop('open')).to.not.equal(true)
+
+    inst.assertNone('.rw-open')
+    inst.assertSingle(`DateTimePickerInput[aria-expanded=false]`)
   })
 
   it('should open when clicked', () => {
     var onOpen = sinon.spy()
 
-    tsp(<ControlledDateTimePicker onToggle={onOpen} />)
-      .shallowRender()
-      .first('Button')
-        .trigger('click')
-        .end().end()
-      .last('Button')
-        .trigger('click');
+    let wrapper = shallow(<ControlledDateTimePicker onToggle={onOpen} />)
+
+    wrapper.find('Button')
+      .first()
+      .simulate('click')
+
+    wrapper.find('Button')
+      .last()
+      .simulate('click');
 
     expect(onOpen.calledTwice).to.equal(true)
   })
@@ -50,16 +53,15 @@ describe('DateTimePicker', () => {
   it('should change when selecting a date', () => {
     let change = sinon.spy()
 
-    tsp(
+    shallow(
       <ControlledDateTimePicker
         open='date'
         onChange={change}
         onToggle={()=>{}}
       />
     )
-    .shallowRender()
-    .single(Calendar)
-    .trigger('change', new Date());
+    .assertSingle(Calendar)
+    .simulate('change', new Date());
 
     expect(change.calledOnce).to.equal(true)
   })
@@ -68,7 +70,7 @@ describe('DateTimePicker', () => {
     let change = sinon.spy()
       , select = sinon.spy()
 
-    tsp(
+    shallow(
       <ControlledDateTimePicker
         open='date'
         onChange={change}
@@ -76,9 +78,8 @@ describe('DateTimePicker', () => {
         onToggle={()=>{}}
       />
     )
-    .shallowRender()
-    .single(TimeList)
-    .trigger('select', { date: new Date() });
+    .assertSingle(TimeList)
+    .simulate('select', { date: new Date() });
 
     expect(select.calledOnce).to.equal(true)
     expect(change.calledAfter(select)).to.equal(true)
@@ -89,7 +90,7 @@ describe('DateTimePicker', () => {
     let change = sinon.spy()
       , select = sinon.spy();
 
-    tsp(
+    shallow(
       <ControlledDateTimePicker
         open='date'
         onChange={change}
@@ -97,9 +98,8 @@ describe('DateTimePicker', () => {
         onToggle={()=>{}}
       />
     )
-    .shallowRender()
-    .single(TimeList)
-    .trigger('select', { date: new Date() });
+    .assertSingle(TimeList)
+    .simulate('select', { date: new Date() });
 
     expect(select.calledOnce).to.equal(true)
     expect(change.calledAfter(select)).to.equal(true)
@@ -108,43 +108,41 @@ describe('DateTimePicker', () => {
 
   it('should set id on list', () => {
     expect(
-      tsp(<DateTimePicker />)
-      .render()
-      .find('ul').dom()
-      .hasAttribute('id')
+      mount(<DateTimePicker />)
+        .find('ul').getDOMNode()
+        .hasAttribute('id')
     ).to.equal(true);
   })
 
   it('should not show time button when not selected', () => {
     var spy = sinon.spy()
 
-    tsp(
+    mount(
       <DateTimePicker time={false} date={false} onToggle={spy }/>
     )
-    .render()
-    .tap(_ => _.none('.rw-btn-time'))
-    .tap(_ => _.none('.rw-btn-calendar'))
-    .trigger('keyDown', { altKey: true })
-    .trigger('keyDown', { altKey: true })
+    .tap(_ => _.assertNone('.rw-btn-time'))
+    .tap(_ => _.assertNone('.rw-btn-calendar'))
+    .simulate('keyDown', { altKey: true })
+    .simulate('keyDown', { altKey: true })
 
     expect(spy.callCount).to.equal(0)
   })
 
 
-  it('should trigger focus/blur events', (done) => {
+  it('should simulate focus/blur events', (done) => {
     let blur = sinon.spy()
     let focus = sinon.spy()
 
-    let inst = tsp(<DateTimePicker onBlur={blur} onFocus={focus} />).render()
+    let inst = mount(<DateTimePicker onBlur={blur} onFocus={focus} />)
 
     expect(focus.calledOnce).to.equal(false)
     expect(blur.calledOnce).to.equal(false)
 
-    inst.trigger('focus')
+    inst.simulate('focus')
 
     setTimeout(() => {
       expect(focus.calledOnce).to.equal(true)
-      inst.trigger('blur')
+      inst.simulate('blur')
 
       setTimeout(() => {
         expect(blur.calledOnce).to.equal(true)
@@ -153,19 +151,18 @@ describe('DateTimePicker', () => {
     })
   })
 
-  it('should trigger key events', () => {
+  it('should simulate key events', () => {
     let kp = sinon.spy()
       , kd = sinon.spy()
       , ku = sinon.spy()
 
-    tsp(
+    mount(
       <DateTimePicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd}/>
     )
-    .render()
     .find('.rw-input')
-    .trigger('keyPress')
-    .trigger('keyDown')
-    .trigger('keyUp')
+    .simulate('keyPress')
+    .simulate('keyDown')
+    .simulate('keyUp')
 
     expect(kp.calledOnce).to.equal(true)
     expect(kd.calledOnce).to.equal(true)
@@ -173,37 +170,35 @@ describe('DateTimePicker', () => {
   })
 
   it('should do nothing when disabled', (done) => {
-    let inst = tsp(
+    let wrapper = mount(
       <DateTimePicker defaultValue={new Date()} disabled />
     )
-    .render()
 
-    let input = inst.find('.rw-input').dom();
+    let input = wrapper.find('.rw-input').getDOMNode();
 
     expect(input.hasAttribute('disabled')).to.equal(true);
 
-    inst.find('.rw-i-calendar').trigger('click')
+    wrapper.find('.rw-i-calendar').simulate('click')
 
     setTimeout(() => {
-      expect(inst.unwrap()._values.open).to.not.equal(true)
+      expect(wrapper.instance()._values.open).to.not.equal(true)
       done()
-    })
+    }, 0)
   })
 
   it('should do nothing when readonly', (done) => {
-    let inst = tsp(
+    let wrapper = mount(
       <DateTimePicker defaultValue={new Date()} readOnly />
     )
-    .render()
 
-    let input = inst.find('.rw-input').dom();
+    let input = wrapper.find('.rw-input').getDOMNode();
 
     expect(input.hasAttribute('readonly')).to.equal(true);
 
-    inst.find('.rw-i-calendar').trigger('click')
+    wrapper.find('.rw-i-calendar').simulate('click')
 
     setTimeout(() => {
-      expect(inst.unwrap()._values.open).to.not.equal(true)
+      expect(wrapper.instance()._values.open).to.not.equal(true)
       done()
     })
   })
@@ -211,37 +206,36 @@ describe('DateTimePicker', () => {
   it('should change values on key down', () => {
     let change = sinon.spy()
 
-    let inst = tsp(
+    let wrapper = mount(
       <DateTimePicker onChange={change} />
     )
-    .render()
 
-    let options = inst.find('li').dom()
+    let options = wrapper.find('li').map(n => n.getDOMNode())
 
-    inst.trigger('keyDown', { key: 'ArrowDown', altKey: true })
+    wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(inst.unwrap()._values.open).to.equal('date')
+    expect(wrapper.instance()._values.open).to.equal('date')
 
-    inst.trigger('keyDown', { key: 'ArrowDown', altKey: true })
+    wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(inst.unwrap()._values.open).to.equal('time')
+    expect(wrapper.instance()._values.open).to.equal('time')
 
-    inst.trigger('keyDown', { key: 'Home' })
+    wrapper.simulate('keyDown', { key: 'Home' })
 
     expect(options[0].className)
       .to.match(/\brw-state-focus\b/)
 
-    inst.trigger('keyDown', { key: 'End' })
+    wrapper.simulate('keyDown', { key: 'End' })
 
     expect(options[options.length - 1].className)
       .to.match(/\brw-state-focus\b/)
 
-    inst.trigger('keyDown', { key: 'ArrowUp' })
+    wrapper.simulate('keyDown', { key: 'ArrowUp' })
 
     expect(options[options.length - 2].className)
       .to.match(/\brw-state-focus\b/)
 
-    inst.trigger('keyDown', { key: 'ArrowDown' })
+    wrapper.simulate('keyDown', { key: 'ArrowDown' })
 
     expect(options[options.length - 1].className)
       .to.match(/\brw-state-focus\b/)
@@ -252,13 +246,13 @@ describe('DateTimePicker', () => {
 
     it('should render max correctly', ()=>{
       let date = new Date(2014, 0, 16, 9, 30)
-      let inst = tsp(
+      let inst = mount(
         <TimeList
           value={new Date(2014, 0, 16, 8)}
           max={date}
           preserveDate
         />
-      ).render()
+      )
 
       let dates = inst.state('dates');
       let time = dates[dates.length - 1]
@@ -267,7 +261,7 @@ describe('DateTimePicker', () => {
       expect(time.date.getMinutes()).to.eql(30)
       expect(time.date.getSeconds()).to.eql(0)
 
-      inst.props('value', new Date(2014, 0, 15, 8))
+      inst.setProps({ value: new Date(2014, 0, 15, 8) })
 
       dates = inst.state('dates');
       time = dates[dates.length - 1]
@@ -280,10 +274,9 @@ describe('DateTimePicker', () => {
     it('should render min correctly', ()=>{
       let date = new Date(2014, 0, 16, 9, 30)
 
-      let inst = tsp(
+      let inst = mount(
         <TimeList value={new Date(2014, 0, 16, 12)} min={date} preserveDate />
       )
-      .render()
 
       let time = inst.state('dates')[0];
 
@@ -291,7 +284,7 @@ describe('DateTimePicker', () => {
       expect(time.date.getMinutes()).to.eql(30)
       expect(time.date.getSeconds()).to.eql(0)
 
-      inst = tsp(<TimeList value={new Date(2014, 0, 18, 8)} min={date} preserveDate />).render()
+      inst = mount(<TimeList value={new Date(2014, 0, 18, 8)} min={date} preserveDate />)
       time = inst.state('dates')[0];
 
       expect(time.date.getHours()).to.eql(0)
@@ -301,19 +294,17 @@ describe('DateTimePicker', () => {
 
 
     it('should set the step property', ()=>{
-      let dates = tsp(<DateTimePicker step={60} />)
-        .render()
+      let dates = mount(<DateTimePicker step={60} />)
         .find(TimeList)
-        .state('dates')
+        .instance().state.dates
 
       expect(dates[0].date.getHours()).to.equal(0)
       expect(dates[1].date.getHours()).to.equal(1)
       expect(dates[2].date.getHours()).to.equal(2)
 
-      dates = tsp(<DateTimePicker step={120} />)
-        .render()
+      dates = mount(<DateTimePicker step={120} />)
         .find(TimeList)
-        .state('dates')
+        .instance().state.dates
 
       expect(dates[0].date.getHours()).to.equal(0)
       expect(dates[1].date.getHours()).to.equal(2)

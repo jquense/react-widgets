@@ -8135,18 +8135,13 @@ function createFocusManager(instance, _ref) {
 
     if (willHandle && willHandle(focused, event) === false) return;
 
-    console.log('handle', focused, lastFocused)
-
     timeouts.set('focus', function () {
       (0, _reactDom.unstable_batchedUpdates)(function () {
-
-        console.log('timeout', focused, lastFocused)
         if (focused !== lastFocused) {
           if (didHandle) didHandle.call(instance, focused, event);
 
           // only fire a change when unmounted if its a blur
           if (isMounted() || !focused) {
-            console.log('focus changed', focused, lastFocused)
             lastFocused = focused;
             onChange && onChange(focused, event);
           }
@@ -8164,7 +8159,6 @@ function createFocusManager(instance, _ref) {
     }
   };
 }
-
 
 /***/ }),
 /* 72 */

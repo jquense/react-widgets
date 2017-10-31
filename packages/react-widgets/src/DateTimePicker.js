@@ -36,6 +36,8 @@ let NEXT_VIEW = {
 let isBothOrNeither = (a, b) => (a && b) || (!a && !b)
 
 let propTypes = {
+  ...BaseCalendar.ControlledComponent.propTypes,
+
   value: PropTypes.instanceOf(Date),
 
   /**
@@ -192,6 +194,7 @@ let propTypes = {
   static propTypes = propTypes
 
   static defaultProps = {
+    ...BaseCalendar.ControlledComponent.defaultProps,
     value: null,
     min: new Date(1900, 0, 1),
     max: new Date(2099, 11, 31),
@@ -496,7 +499,7 @@ let propTypes = {
 
     let { focused } = this.state
 
-    let elementProps = Props.pickElementProps(this)
+    let elementProps = Props.pickElementProps(this, BaseCalendar.ControlledComponent)
 
     let shouldRenderList = open || isFirstFocusedRender(this)
 
@@ -541,20 +544,21 @@ let propTypes = {
     const { parse, culture, editFormat } = this.props
     const format = getFormat(this.props, true)
 
-    const parsers = parse == null ? [] : [].concat(parse)
+    let parsers = []
 
-    if (typeof format === 'string') parsers.push(format)
-    if (typeof editFormat === 'string') parsers.push(editFormat)
+    if (format != null) parsers.push(format)
+    if (editFormat  != null) parsers.push(editFormat)
 
     invariant(
       parsers.length,
       'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
         'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
-        'please provide either a parse function or Globalize.js compatible string for `format`',
+        'please provide either a parse function or localizer compatible `format` prop',
       string
     )
 
     parsers.sort(sortFnsFirst)
+    if (parse) parsers = [].concat(parse, parsers)
 
     let date
     for (var i = 0; i < parsers.length; i++) {

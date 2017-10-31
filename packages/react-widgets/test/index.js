@@ -1,7 +1,12 @@
-import React from 'react';
-import sinon from 'sinon'
-import chai from 'chai'
-import * as widgetHelpers from '../src/util/widgetHelpers';
+global.requestAnimationFrame = (cb) => setTimeout(cb, 0)
+
+const React = require('react')
+const sinon = require('sinon')
+const chai = require('chai')
+const { configure, ShallowWrapper, ReactWrapper } = require('enzyme')
+const Adapter = require('enzyme-adapter-react-16')
+
+const widgetHelpers = require('../src/util/widgetHelpers')
 
 global.chai = chai
 global.sinon = sinon
@@ -9,8 +14,21 @@ global.sinon = sinon
 chai.should();
 global.expect = chai.expect
 
+configure({ adapter: new Adapter() });
 
+function assertLength(length) {
+  return function $assertLength(selector) {
+    let result = this.find(selector);
+    expect(result).to.have.length(length);
+    return result;
+  };
+}
 
+ReactWrapper.prototype.assertSingle = assertLength(1);
+ShallowWrapper.prototype.assertSingle = assertLength(1);
+
+ReactWrapper.prototype.assertNone = assertLength(0);
+ShallowWrapper.prototype.assertNone = assertLength(0);
 
 require('./test-localizer')()
 
@@ -28,15 +46,17 @@ node.innerHTML = `
 `
 
 beforeEach(() => {
+  if (console.error.restore) console.error.restore()
   sinon.stub(console, 'error');
 });
 
 afterEach(function () {
   if (typeof console.error.restore === 'function') {
-    if (console.error.called)
-      throw new Error(`${console.error.getCall(0).args[0]} \nIn '${this.currentTest.fullTitle()}'`)
-
-    console.error.restore();
+    if (console.error.called) {
+      let err = console.error.getCall(0).args[0];
+      console.error.restore();
+      throw new Error(`${err}`)
+    }
   }
 });
 
