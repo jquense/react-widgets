@@ -66,16 +66,19 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
         }
 
         const componentTemplate = path.resolve(`src/templates/component.js`)
-        result.data.allComponentMetadata.edges.forEach(({ node }) => {
-          if (node.doclets.public) {
+        const publicComponents = result.data.allComponentMetadata.edges
+          .filter(({ node }) => node.doclets.public)
+          .map(e => e.node.displayName)
+
+        publicComponents.forEach((displayName) => {
             createPage({
-              path: `/api/${slug(node.displayName)}/`,
+              path: `/api/${slug(displayName)}/`,
               component: componentTemplate,
               context: {
-                displayName: node.displayName,
+                displayName,
+                publicComponents,
               },
             })
-          }
         })
       })
     )

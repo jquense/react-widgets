@@ -36,6 +36,8 @@ let NEXT_VIEW = {
 let isBothOrNeither = (a, b) => (a && b) || (!a && !b)
 
 let propTypes = {
+  ...BaseCalendar.ControlledComponent.propTypes,
+
   value: PropTypes.instanceOf(Date),
 
   /**

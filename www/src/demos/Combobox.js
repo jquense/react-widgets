@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import RW from 'react-widgets';
+import * as RW from 'react-widgets';
 
 import Demo, { createSetter } from '../components/Demo';
 import Layout from '../components/Layout';

@@ -4,9 +4,10 @@ import * as PropTypes from 'prop-types'
 import React from 'react';
 import Helmet from 'react-helmet'
 import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
 
 import ImportSection from '../components/ImportSection';
-import MenuItem from '../components/ApiMenuItem';
+import ApiMenuItem from '../components/ApiMenuItem';
 import PropHeader from '../components/PropHeader';
 import PropExample from '../components/PropExample';
 import PropDescription from '../components/PropDescription';
@@ -14,6 +15,9 @@ import PropDescription from '../components/PropDescription';
 
 require('../components/locales')
 
+function basename(path) {
+  return path.slice(path.lastIndexOf('/') + 1)
+}
 
 const propTypes = {
   data: PropTypes.shape({
@@ -31,7 +35,7 @@ class ComponentTemplate extends React.Component {
     return { prefix: componentMetadata.displayName };
   }
   render() {
-    const { data: { componentMetadata } } = this.props;
+    const { data: { componentMetadata }, pathContext } = this.props;
     const { displayName, props, doclets } = componentMetadata;
 
     const { frontmatter = {}, html } = get(componentMetadata, 'description.childMarkdownRemark', {});
@@ -43,6 +47,9 @@ class ComponentTemplate extends React.Component {
     const sorted = sortBy(props, p => p.name.trim().toLowerCase())
       .filter(p => !p.doclets.ignore);
 
+    const composes = (componentMetadata.composes || [])
+      .map(basename)
+      .filter(p => pathContext.publicComponents.includes(p))
     return (
       <div>
         <Helmet title={displayName} />
@@ -57,8 +64,20 @@ class ComponentTemplate extends React.Component {
                 title='props'
                 id='props-${widgetName}'
               >
+                {!!composes.length && [
+                  <MenuItem key="1" header>Composes:</MenuItem>,
+                  ...composes.map(composes =>
+                    <MenuItem
+                      key={composes}
+                      href={`/react-widgets/api/${composes}`}
+                    >
+                      {composes}
+                    </MenuItem>
+                  ),
+                  <MenuItem key="2" divider />,
+                ]}
                 {sorted.map(prop =>
-                  <MenuItem key={prop.name}>{prop.name}</MenuItem>
+                  <ApiMenuItem key={prop.name}>{prop.name}</ApiMenuItem>
                 )}
               </DropdownButton>
             </span>
@@ -105,6 +124,7 @@ export const pageQuery = graphql`
     componentMetadata(displayName: { eq: $displayName }) {
       displayName
       doclets
+      composes
       props {
         name
         ...PropHeader_prop
