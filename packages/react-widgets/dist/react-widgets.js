@@ -244,7 +244,11 @@ function pick(props, componentClass) {
 }
 
 function pickElementProps(component) {
-  var props = omitOwn(component);
+  for (var _len = arguments.length, others = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    others[_key - 1] = arguments[_key];
+  }
+
+  var props = omitOwn.apply(undefined, [component].concat(others));
   var result = {};
   Object.keys(props).forEach(function (key) {
     if (whitelist.indexOf(key) !== -1 || whitelistRegex.some(function (r) {
@@ -258,8 +262,8 @@ function pickElementProps(component) {
 function omitOwn(component) {
   var initial = Object.keys(component.constructor.propTypes);
 
-  for (var _len = arguments.length, others = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    others[_key - 1] = arguments[_key];
+  for (var _len2 = arguments.length, others = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+    others[_key2 - 1] = arguments[_key2];
   }
 
   var keys = others.reduce(function (arr, compClass) {
@@ -908,7 +912,11 @@ var _reactComponentManagers = __webpack_require__(9);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var isInDisabledFieldset = exports.isInDisabledFieldset = function isInDisabledFieldset(inst) {
-  var node = (0, _reactDom.findDOMNode)(inst);
+  var node = void 0;
+  try {
+    node = (0, _reactDom.findDOMNode)(inst);
+  } catch (err) {/* ignore */}
+
   return !!node && (0, _matches2.default)(node, 'fieldset[disabled] *');
 };
 
@@ -3534,7 +3542,8 @@ var isBothOrNeither = function isBothOrNeither(a, b) {
   return a && b || !a && !b;
 };
 
-var propTypes = {
+var propTypes = _extends({}, _Calendar2.default.ControlledComponent.propTypes, {
+
   value: _propTypes2.default.instanceOf(Date),
 
   /**
@@ -3679,7 +3688,7 @@ var propTypes = {
    * @public
    * @extends Calendar
   */
-};
+});
 var DateTimePicker = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp = _class3 = function (_React$Component) {
   _inherits(DateTimePicker, _React$Component);
 
@@ -3714,14 +3723,15 @@ var DateTimePicker = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp =
 
       var format = getFormat(_this.props, true);
 
-      var parsers = parse == null ? [] : [].concat(parse);
+      var parsers = [];
 
-      if (typeof format === 'string') parsers.push(format);
-      if (typeof editFormat === 'string') parsers.push(editFormat);
+      if (format != null) parsers.push(format);
+      if (editFormat != null) parsers.push(editFormat);
 
-      !parsers.length ? process.env.NODE_ENV !== 'production' ? (0, _invariant2.default)(false, 'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' + 'the DateTimePicker is unable to parse `%s` into a dateTime, ' + 'please provide either a parse function or Globalize.js compatible string for `format`', string) : (0, _invariant2.default)(false) : void 0;
+      !parsers.length ? process.env.NODE_ENV !== 'production' ? (0, _invariant2.default)(false, 'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' + 'the DateTimePicker is unable to parse `%s` into a dateTime, ' + 'please provide either a parse function or localizer compatible `format` prop', string) : (0, _invariant2.default)(false) : void 0;
 
       parsers.sort(sortFnsFirst);
+      if (parse) parsers = [].concat(parse, parsers);
 
       var date = void 0;
       for (var i = 0; i < parsers.length; i++) {
@@ -3957,7 +3967,7 @@ var DateTimePicker = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp =
     var focused = this.state.focused;
 
 
-    var elementProps = Props.pickElementProps(this);
+    var elementProps = Props.pickElementProps(this, _Calendar2.default.ControlledComponent);
 
     var shouldRenderList = open || (0, _widgetHelpers.isFirstFocusedRender)(this);
 
@@ -4032,14 +4042,14 @@ var DateTimePicker = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp =
   };
 
   return DateTimePicker;
-}(_react2.default.Component), _class3.displayName = 'DateTimePicker', _class3.propTypes = propTypes, _class3.defaultProps = {
+}(_react2.default.Component), _class3.displayName = 'DateTimePicker', _class3.propTypes = propTypes, _class3.defaultProps = _extends({}, _Calendar2.default.ControlledComponent.defaultProps, {
   value: null,
   min: new Date(1900, 0, 1),
   max: new Date(2099, 11, 31),
   date: true,
   time: true,
   open: false
-}, _temp), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'handleChange', [_interaction.widgetEditable], {
+}), _temp), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'handleChange', [_interaction.widgetEditable], {
   enumerable: true,
   initializer: function initializer() {
     var _this4 = this;
@@ -6528,19 +6538,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var configure = __webpack_require__(64);
 
 module.exports = _extends({}, configure, {
-  DropdownList: __webpack_require__(69),
-  Combobox: __webpack_require__(91),
-  Calendar: __webpack_require__(61),
-  DatePicker: __webpack_require__(102),
-  TimePicker: __webpack_require__(107),
-  DateTimePicker: __webpack_require__(44),
-  NumberPicker: __webpack_require__(108),
-  Multiselect: __webpack_require__(110),
-  SelectList: __webpack_require__(115),
+  DropdownList: __webpack_require__(69).default,
+  Combobox: __webpack_require__(91).default,
+  Calendar: __webpack_require__(61).default,
+  DatePicker: __webpack_require__(102).default,
+  TimePicker: __webpack_require__(107).default,
+  DateTimePicker: __webpack_require__(44).default,
+  NumberPicker: __webpack_require__(108).default,
+  Multiselect: __webpack_require__(110).default,
+  SelectList: __webpack_require__(115).default,
 
   utils: {
-    SlideTransitionGroup: __webpack_require__(62),
-    SlideDownTransition: __webpack_require__(48)
+    SlideTransitionGroup: __webpack_require__(62).default,
+    SlideDownTransition: __webpack_require__(48).default
   }
 });
 
@@ -7790,11 +7800,11 @@ var DropdownList = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp = _
   };
 
   DropdownList.prototype.open = function open() {
-    (0, _widgetHelpers.notify)(this.props.onToggle, true);
+    if (!this.props.open) (0, _widgetHelpers.notify)(this.props.onToggle, true);
   };
 
   DropdownList.prototype.close = function close() {
-    (0, _widgetHelpers.notify)(this.props.onToggle, false);
+    if (this.props.open) (0, _widgetHelpers.notify)(this.props.onToggle, false);
   };
 
   DropdownList.prototype.toggle = function toggle() {
@@ -11833,7 +11843,7 @@ var TimeList = (_temp = _class = function (_React$Component) {
       e.preventDefault();
 
       _this.search(String.fromCharCode(e.which), function (item) {
-        _this.isMounted() && _this.setState({ focusedItem: item });
+        !_this.unmounted && _this.setState({ focusedItem: item });
       });
     };
 
@@ -11862,6 +11872,10 @@ var TimeList = (_temp = _class = function (_React$Component) {
 
   TimeList.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
     this.setState(this.getStateFromProps(nextProps));
+  };
+
+  TimeList.prototype.componentWillUnmount = function componentWillUnmount() {
+    this.unmounted = true;
   };
 
   TimeList.prototype.getStateFromProps = function getStateFromProps() {
@@ -13544,7 +13558,7 @@ var Multiselect = (0, _withRightToLeft2.default)(_class = (_class2 = (_temp = _c
   };
 
   Multiselect.prototype.close = function close() {
-    (0, _widgetHelpers.notify)(this.props.onToggle, false);
+    if (this.props.open) (0, _widgetHelpers.notify)(this.props.onToggle, false);
   };
 
   Multiselect.prototype.allowCreate = function allowCreate() {
