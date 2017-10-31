@@ -646,7 +646,8 @@ class Multiselect extends React.Component {
   }
 
   close() {
-    notify(this.props.onToggle, false)
+    if (this.props.open)
+      notify(this.props.onToggle, false)
   }
 
 

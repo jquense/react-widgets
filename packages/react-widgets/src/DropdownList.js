@@ -519,11 +519,13 @@ class DropdownList extends React.Component {
   }
 
   open() {
-    notify(this.props.onToggle, true)
+    if (!this.props.open)
+      notify(this.props.onToggle, true)
   }
 
   close() {
-    notify(this.props.onToggle, false)
+    if (this.props.open)
+      notify(this.props.onToggle, false)
   }
 
   toggle() {
