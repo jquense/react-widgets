@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import NumberPicker from '../src/NumberPicker';
 
 let ControlledNumberPicker = NumberPicker.ControlledComponent;
