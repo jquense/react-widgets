@@ -6532,27 +6532,83 @@ module.exports = exports['default'];
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.__esModule = true;
+exports.setNumberLocalizer = exports.setDateLocalizer = exports.setLocalizers = exports.utils = exports.SelectList = exports.Multiselect = exports.NumberPicker = exports.DateTimePicker = exports.TimePicker = exports.DatePicker = exports.Calendar = exports.Combobox = exports.DropdownList = undefined;
+
+var _configure = __webpack_require__(64);
+
+var _configure2 = _interopRequireDefault(_configure);
+
+var _DropdownList = __webpack_require__(69);
+
+var _DropdownList2 = _interopRequireDefault(_DropdownList);
+
+var _Combobox = __webpack_require__(91);
+
+var _Combobox2 = _interopRequireDefault(_Combobox);
+
+var _Calendar = __webpack_require__(61);
+
+var _Calendar2 = _interopRequireDefault(_Calendar);
+
+var _DatePicker = __webpack_require__(102);
+
+var _DatePicker2 = _interopRequireDefault(_DatePicker);
+
+var _TimePicker = __webpack_require__(107);
+
+var _TimePicker2 = _interopRequireDefault(_TimePicker);
+
+var _DateTimePicker = __webpack_require__(44);
+
+var _DateTimePicker2 = _interopRequireDefault(_DateTimePicker);
+
+var _NumberPicker = __webpack_require__(108);
+
+var _NumberPicker2 = _interopRequireDefault(_NumberPicker);
+
+var _Multiselect = __webpack_require__(110);
+
+var _Multiselect2 = _interopRequireDefault(_Multiselect);
+
+var _SelectList = __webpack_require__(115);
+
+var _SelectList2 = _interopRequireDefault(_SelectList);
+
+var _SlideTransitionGroup = __webpack_require__(62);
+
+var _SlideTransitionGroup2 = _interopRequireDefault(_SlideTransitionGroup);
+
+var _SlideDownTransition = __webpack_require__(48);
+
+var _SlideDownTransition2 = _interopRequireDefault(_SlideDownTransition);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* eslint-disable global-require */
-var configure = __webpack_require__(64);
+var setLocalizers = _configure2.default.setLocalizers,
+    setDateLocalizer = _configure2.default.setDateLocalizer,
+    setNumberLocalizer = _configure2.default.setNumberLocalizer;
 
-module.exports = _extends({}, configure, {
-  DropdownList: __webpack_require__(69).default,
-  Combobox: __webpack_require__(91).default,
-  Calendar: __webpack_require__(61).default,
-  DatePicker: __webpack_require__(102).default,
-  TimePicker: __webpack_require__(107).default,
-  DateTimePicker: __webpack_require__(44).default,
-  NumberPicker: __webpack_require__(108).default,
-  Multiselect: __webpack_require__(110).default,
-  SelectList: __webpack_require__(115).default,
 
-  utils: {
-    SlideTransitionGroup: __webpack_require__(62).default,
-    SlideDownTransition: __webpack_require__(48).default
-  }
-});
+var utils = {
+  SlideTransitionGroup: _SlideTransitionGroup2.default,
+  SlideDownTransition: _SlideDownTransition2.default
+};
+
+exports.DropdownList = _DropdownList2.default;
+exports.Combobox = _Combobox2.default;
+exports.Calendar = _Calendar2.default;
+exports.DatePicker = _DatePicker2.default;
+exports.TimePicker = _TimePicker2.default;
+exports.DateTimePicker = _DateTimePicker2.default;
+exports.NumberPicker = _NumberPicker2.default;
+exports.Multiselect = _Multiselect2.default;
+exports.SelectList = _SelectList2.default;
+exports.utils = utils;
+exports.setLocalizers = setLocalizers;
+exports.setDateLocalizer = setDateLocalizer;
+exports.setNumberLocalizer = setNumberLocalizer;
 
 /***/ }),
 /* 64 */
