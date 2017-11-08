@@ -13,7 +13,8 @@
     "tdd": "npm run rw tdd",
     "start": "npm run docs start",
     "start-dev": "lerna exec --scope storybook npm start",
-    "release": "lerna run prepublish && lerna publish"
+    "bootstrap": "yarn && lerna run prepublishOnly",
+    "release": "lerna run prepublishOnly && lerna publish"
   },
   "dependencies": {
     "babel-eslint": "^7.2.3",

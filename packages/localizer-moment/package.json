@@ -7,7 +7,7 @@
     "clean": "rimraf dist/* lib/*",
     "dist": "cross-env NODE_ENV=production webpack  -p",
     "build": "babel localizer.js -o index.js",
-    "prepublish": "npm run clean && npm run build && npm run dist"
+    "prepublishOnly": "npm run clean && npm run build && npm run dist"
   },
   "files": [
     "index.js",

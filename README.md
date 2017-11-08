@@ -4,16 +4,7 @@ react-widgets
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][downloads-url]
 
-An à la carte set of polished, extensible, and accessible form inputs built for React, based on the excellent Kendo UI Core and jQuery UI.
-
-Pick and choose one, or more of the following Components
-- DropdownList
-- ComboBox
-- Multiselect
-- SelectList (checkbox and radio group)
-- DateTimePicker
-- Calendar
-- NumberPicker
+An à la carte set of polished, extensible, and accessible form inputs built for React.
 
 __Demos and Documentation [here](http://jquense.github.io/react-widgets/)__
 
@@ -21,17 +12,29 @@ __Demos and Documentation [here](http://jquense.github.io/react-widgets/)__
 
 `npm install react-widgets`
 
-### Building local docs
 
-The docs are a simple React app hosted on gh-pages, you build and run locally with the command `npm run docs` and open up `http://localhost:8080/docs/index.htm#/`
+### Local development and contributing
 
-### Contributing
+React widgets, uses a "monorepo" organization style for managing multiple npm packages
+in a single git repo. This is done through a [Yarn](https://yarnpkg.com/en/) feature called
+workspaces. To get everything setup and dependencies installed:
 
-Patches welcome! Please try to match the style of the repo (comma first, 2 spaces, etc), squash large pull requests (a few commits is fine), and provide tests if relevant. It is also a good idea to open an issue and start a conversation before implementing new features or widgets.
+- make sure you have the __latest__ version of yarn installed
+- run `yarn run bootstrap` in the repo root directory
+
+#### Running the doc site locally
+
+ - Follow the steps above
+ - switch to the `www` directory and run `yarn`
+ - `yarn run develop` to start the site
+
+#### Running the storybook examples
+  - follow the general install instructions
+  - run `yarn start-dev`
 
 ### Old Browser Support
 
-The goal is to support IE8+, but currently it is difficult for me to test a wide variety of browsers so there is no guarantee it will work (patches welcome!).
+The goal is to support IE9+, but it is difficult for me to test a wide variety of browsers so there is no guarantee it will work (patches welcome!).
 
 [npm-image]: https://img.shields.io/npm/v/react-widgets.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/react-widgets

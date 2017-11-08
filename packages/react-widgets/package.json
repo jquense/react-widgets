@@ -49,7 +49,7 @@
     "build:lib": "npm run clean:lib && npm run compile:lib && npm run styles && npm run assets:lib",
     "build:dist": "npm run clean:dist && npm run compile:dist && npm run less && npm run assets:dist",
     "build": "npm run build:lib && npm run build:dist",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "start": "start-storybook -p 9001"
   },
   "homepage": "http://jquense.github.io/react-widgets/docs/",
