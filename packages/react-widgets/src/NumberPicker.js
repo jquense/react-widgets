@@ -112,6 +112,11 @@ class NumberPicker extends React.Component {
      */
     parse: PropTypes.func,
 
+    /**
+     * Conditionally render Up and Down Buttons.
+     */
+    removeButtons: PropTypes.bool,
+
 
     /** @ignore */
     tabIndex: PropTypes.any,
@@ -261,7 +266,7 @@ class NumberPicker extends React.Component {
   }
 
   render() {
-    let { className, disabled, readOnly, value, min, max } = this.props
+    let { className, disabled, readOnly, value, min, max, removeButtons } = this.props
 
     let { focused } = this.state
     let elementProps = Props.pickElementProps(this)
@@ -281,26 +286,27 @@ class NumberPicker extends React.Component {
       >
         <WidgetPicker>
           {this.renderInput(value)}
-          <Select bordered>
-            <Button
-              icon="caret-up"
-              onClick={this.handleFocus}
-              disabled={value === max || disabled}
-              label={this.messages.increment({ value, min, max })}
-              onMouseUp={e => this.handleMouseUp(directions.UP, e)}
-              onMouseDown={e => this.handleMouseDown(directions.UP, e)}
-              onMouseLeave={e => this.handleMouseUp(directions.UP, e)}
-            />
-            <Button
-              icon="caret-down"
-              onClick={this.handleFocus}
-              disabled={value === min || disabled}
-              label={this.messages.decrement({ value, min, max })}
-              onMouseUp={e => this.handleMouseUp(directions.DOWN, e)}
-              onMouseDown={e => this.handleMouseDown(directions.DOWN, e)}
-              onMouseLeave={e => this.handleMouseUp(directions.DOWN, e)}
-            />
-          </Select>
+          { !removeButtons && 
+            <Select bordered>
+              <Button
+                icon="caret-up"
+                onClick={this.handleFocus}
+                disabled={value === max || disabled}
+                label={this.messages.increment({ value, min, max })}
+                onMouseUp={e => this.handleMouseUp(directions.UP, e)}
+                onMouseDown={e => this.handleMouseDown(directions.UP, e)}
+                onMouseLeave={e => this.handleMouseUp(directions.UP, e)}
+              />
+              <Button
+                icon="caret-down"
+                onClick={this.handleFocus}
+                disabled={value === min || disabled}
+                label={this.messages.decrement({ value, min, max })}
+                onMouseUp={e => this.handleMouseUp(directions.DOWN, e)}
+                onMouseDown={e => this.handleMouseDown(directions.DOWN, e)}
+                onMouseLeave={e => this.handleMouseUp(directions.DOWN, e)}
+              />
+            </Select>}
         </WidgetPicker>
       </Widget>
     )
