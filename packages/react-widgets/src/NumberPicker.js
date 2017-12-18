@@ -286,7 +286,7 @@ class NumberPicker extends React.Component {
       >
         <WidgetPicker>
           {this.renderInput(value)}
-          { !removeButtons && 
+          { !removeButtons &&
             <Select bordered>
               <Button
                 icon="caret-up"
