@@ -19,6 +19,7 @@ class DecadeView extends React.Component {
     focused:      PropTypes.instanceOf(Date),
     min:          PropTypes.instanceOf(Date),
     max:          PropTypes.instanceOf(Date),
+    blocked:      PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     onChange:     PropTypes.func.isRequired,
 
     yearFormat:   CustomPropTypes.dateFormat,
@@ -53,7 +54,9 @@ class DecadeView extends React.Component {
       , today
       , culture
       , min
-      , max } = this.props
+      , max
+      , blocked
+      , noWeekends } = this.props
 
     return (
       <CalendarView.Row key={rowIdx}>
@@ -74,6 +77,8 @@ class DecadeView extends React.Component {
               now={today}
               min={min}
               max={max}
+              blocked={blocked}
+              noWeekends={noWeekends}
               onChange={onChange}
               focused={focused}
               selected={value}

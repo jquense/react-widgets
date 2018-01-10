@@ -19,6 +19,8 @@ class YearView extends React.Component {
     focused: PropTypes.instanceOf(Date),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
+    blocked: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    noWeekends: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
 
     headerFormat: CustomPropTypes.dateFormat,
@@ -54,7 +56,9 @@ class YearView extends React.Component {
       , headerFormat
       , monthFormat
       , min
-      , max } = this.props
+      , max
+      , blocked
+      , noWeekends } = this.props
 
     headerFormat = dateLocalizer.getFormat('header', headerFormat);
     monthFormat = dateLocalizer.getFormat('month', monthFormat);
@@ -73,6 +77,8 @@ class YearView extends React.Component {
               now={today}
               min={min}
               max={max}
+              blocked={blocked}
+              noWeekends={noWeekends}
               unit="month"
               onChange={onChange}
               focused={focused}

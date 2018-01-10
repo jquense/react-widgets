@@ -22,6 +22,8 @@ class MonthView extends React.Component {
     focused: PropTypes.instanceOf(Date),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
+    blocked: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    noWeekends: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
 
     dayComponent: CustomPropTypes.elementType,
@@ -44,7 +46,9 @@ class MonthView extends React.Component {
       , culture, min, max
       , footerFormat
       , dateFormat
-      , dayComponent: Day } = this.props
+      , dayComponent: Day
+      , blocked
+      , noWeekends } = this.props
 
     footerFormat = dateLocalizer.getFormat('footer', footerFormat)
     dateFormat = dateLocalizer.getFormat('dayOfMonth', dateFormat)
@@ -64,6 +68,8 @@ class MonthView extends React.Component {
               now={today}
               min={min}
               max={max}
+              blocked={blocked}
+              noWeekends={noWeekends}
               unit="day"
               viewUnit="month"
               onChange={onChange}

@@ -80,6 +80,20 @@ let propTypes = {
   max: PropTypes.instanceOf(Date),
 
   /**
+   * The dates that should be blocked.
+   *
+   * @example ['prop', ['blocked', '[new Date()]']]
+   */
+  blocked: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+
+  /**
+   * The weekends should be blocked
+   *
+   * @example ['prop', ['noWeekends', 'true']]
+   */
+  noWeekends: PropTypes.bool,
+
+  /**
    * The amount of minutes between each entry in the time list.
    *
    * @example ['prop', { step: 90 }]

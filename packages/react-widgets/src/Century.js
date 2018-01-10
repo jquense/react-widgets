@@ -19,6 +19,8 @@ class CenturyView extends React.Component {
     focused: PropTypes.instanceOf(Date),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
+    blocked: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    noWeekends: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     decadeFormat: CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
@@ -52,7 +54,9 @@ class CenturyView extends React.Component {
       , culture
       , min
       , decadeFormat
-      , max } = this.props
+      , max
+      , blocked
+      , noWeekends } = this.props
 
     decadeFormat = dateLocalizer.getFormat('decade', decadeFormat);
 
@@ -75,6 +79,8 @@ class CenturyView extends React.Component {
               now={today}
               min={min}
               max={max}
+              blocked={blocked}
+              noWeekends={noWeekends}
               onChange={onChange}
               focused={focused}
               selected={value}

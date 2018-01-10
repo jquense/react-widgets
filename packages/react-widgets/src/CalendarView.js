@@ -46,6 +46,8 @@ class CalendarViewCell extends React.Component {
     focused: PropTypes.instanceOf(Date),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
+    blocked: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    noWeekends: PropTypes.bool,
     unit: PropTypes.oneOf(['day', ...VIEW_UNITS]),
     viewUnit: PropTypes.oneOf(VIEW_UNITS),
     onChange: PropTypes.func.isRequired,
@@ -61,6 +63,20 @@ class CalendarViewCell extends React.Component {
     return !dates.inRange(date, min, max, unit)
   }
 
+  isBlocked() {
+    let { blocked, date, noWeekends } = this.props;
+
+    if (noWeekends) {
+      if (date.getDay() == 6 || date.getDay() == 0) {
+        return true;
+      }
+    }
+
+    return dates.inArray(blocked, date)
+  }
+
+
+
   isNow() {
     return this.props.now && this.isEqual(this.props.now)
   }
@@ -69,6 +85,7 @@ class CalendarViewCell extends React.Component {
     return (
       !this.props.disabled &&
       !this.isEmpty() &&
+      !this.isBlocked() &&
       this.isEqual(this.props.focused)
     )
   }
@@ -92,9 +109,9 @@ class CalendarViewCell extends React.Component {
     onChange(clamp(date, min, max))
   }
 
-  render()  {
+  render() {
     let { children, activeId, label, disabled } = this.props;
-    let isDisabled = disabled || this.isEmpty()
+    let isDisabled = disabled || this.isEmpty() || this.isBlocked();
 
     return (
       <td
@@ -109,7 +126,7 @@ class CalendarViewCell extends React.Component {
           'rw-cell',
           this.isNow() && 'rw-now',
           isDisabled && 'rw-state-disabled',
-          this.isEmpty() && 'rw-cell-not-allowed',
+          this.isEmpty() || this.isBlocked() && 'rw-cell-not-allowed',
           this.isOffView() && 'rw-cell-off-range',
           this.isFocused() && 'rw-state-focus',
           this.isSelected() && 'rw-state-selected'

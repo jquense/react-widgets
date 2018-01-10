@@ -1064,6 +1064,21 @@ var dates = _extends({}, _dateArithmetic2.default, {
   },
   tomorrow: function tomorrow() {
     return dates.add(dates.startOf(new Date(), 'day'), 1, 'day');
+  },
+
+  inArray: function inArray(dates, date) {
+    if (!dates || dates.length === 0) {
+      return false;
+    }
+
+    var dateInArray = false;
+    dates.forEach(function (dateFromArray) {
+      if (dateFromArray.getDate() === date.getDate() && dateFromArray.getMonth() === date.getMonth() && dateFromArray.getFullYear() === date.getFullYear()) {
+        dateInArray = true;
+      }
+    });
+
+    return dateInArray;
   }
 });
 
@@ -2731,12 +2746,28 @@ var CalendarViewCell = (_temp3 = _class2 = function (_React$Component2) {
     return !_dates2.default.inRange(date, min, max, unit);
   };
 
+  CalendarViewCell.prototype.isBlocked = function isBlocked() {
+    var _props3 = this.props,
+        blocked = _props3.blocked,
+        date = _props3.date,
+        noWeekends = _props3.noWeekends;
+
+
+    if (noWeekends) {
+      if (date.getDay() == 6 || date.getDay() == 0) {
+        return true;
+      }
+    }
+
+    return _dates2.default.inArray(blocked, date);
+  };
+
   CalendarViewCell.prototype.isNow = function isNow() {
     return this.props.now && this.isEqual(this.props.now);
   };
 
   CalendarViewCell.prototype.isFocused = function isFocused() {
-    return !this.props.disabled && !this.isEmpty() && this.isEqual(this.props.focused);
+    return !this.props.disabled && !this.isEmpty() && !this.isBlocked() && this.isEqual(this.props.focused);
   };
 
   CalendarViewCell.prototype.isSelected = function isSelected() {
@@ -2744,22 +2775,22 @@ var CalendarViewCell = (_temp3 = _class2 = function (_React$Component2) {
   };
 
   CalendarViewCell.prototype.isOffView = function isOffView() {
-    var _props3 = this.props,
-        viewUnit = _props3.viewUnit,
-        focused = _props3.focused,
-        date = _props3.date;
+    var _props4 = this.props,
+        viewUnit = _props4.viewUnit,
+        focused = _props4.focused,
+        date = _props4.date;
 
     return date && focused && viewUnit && _dates2.default[viewUnit](date) !== _dates2.default[viewUnit](focused);
   };
 
   CalendarViewCell.prototype.render = function render() {
-    var _props4 = this.props,
-        children = _props4.children,
-        activeId = _props4.activeId,
-        label = _props4.label,
-        disabled = _props4.disabled;
+    var _props5 = this.props,
+        children = _props5.children,
+        activeId = _props5.activeId,
+        label = _props5.label,
+        disabled = _props5.disabled;
 
-    var isDisabled = disabled || this.isEmpty();
+    var isDisabled = disabled || this.isEmpty() || this.isBlocked();
 
     return _react2.default.createElement(
       'td',
@@ -2771,7 +2802,7 @@ var CalendarViewCell = (_temp3 = _class2 = function (_React$Component2) {
         'aria-readonly': disabled,
         'aria-selected': this.isSelected(),
         onClick: !isDisabled ? this.handleChange : undefined,
-        className: (0, _classnames2.default)('rw-cell', this.isNow() && 'rw-now', isDisabled && 'rw-state-disabled', this.isEmpty() && 'rw-cell-not-allowed', this.isOffView() && 'rw-cell-off-range', this.isFocused() && 'rw-state-focus', this.isSelected() && 'rw-state-selected')
+        className: (0, _classnames2.default)('rw-cell', this.isNow() && 'rw-now', isDisabled && 'rw-state-disabled', this.isEmpty() || this.isBlocked() && 'rw-cell-not-allowed', this.isOffView() && 'rw-cell-off-range', this.isFocused() && 'rw-state-focus', this.isSelected() && 'rw-state-selected')
       },
       children
     );
@@ -2788,6 +2819,8 @@ var CalendarViewCell = (_temp3 = _class2 = function (_React$Component2) {
   focused: _propTypes2.default.instanceOf(Date),
   min: _propTypes2.default.instanceOf(Date),
   max: _propTypes2.default.instanceOf(Date),
+  blocked: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(Date)),
+  noWeekends: _propTypes2.default.bool,
   unit: _propTypes2.default.oneOf(['day'].concat(VIEW_UNITS)),
   viewUnit: _propTypes2.default.oneOf(VIEW_UNITS),
   onChange: _propTypes2.default.func.isRequired,
@@ -3584,6 +3617,20 @@ var propTypes = _extends({}, _Calendar2.default.ControlledComponent.propTypes, {
    * @example ['prop', ['max', 'new Date()']]
    */
   max: _propTypes2.default.instanceOf(Date),
+
+  /**
+   * The dates that should be blocked.
+   *
+   * @example ['prop', ['blocked', '[new Date()]']]
+   */
+  blocked: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(Date)),
+
+  /**
+   * The weekends should be blocked
+   *
+   * @example ['prop', ['noWeekends', 'true']]
+   */
+  noWeekends: _propTypes2.default.bool,
 
   /**
    * The amount of minutes between each entry in the time list.
@@ -5772,6 +5819,20 @@ var propTypes = {
    * @example ['prop', ['max', 'new Date()']]
    */
   max: _propTypes2.default.instanceOf(Date).isRequired,
+
+  /**
+   * The dates that should be blocked.
+   *
+   * @example ['prop', ['blocked', '[new Date()]']]
+   */
+  blocked: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(Date)),
+
+  /**
+   * The weekends should be blocked
+   *
+   * @example ['prop', ['noWeekends', 'true']]
+   */
+  noWeekends: _propTypes2.default.bool,
 
   /**
    * Default current date at which the calendar opens. If none is provided, opens at today's date or the `value` date (if any).
@@ -10264,7 +10325,9 @@ var MonthView = (_temp2 = _class = function (_React$Component) {
           max = _this$props.max,
           footerFormat = _this$props.footerFormat,
           dateFormat = _this$props.dateFormat,
-          Day = _this$props.dayComponent;
+          Day = _this$props.dayComponent,
+          blocked = _this$props.blocked,
+          noWeekends = _this$props.noWeekends;
 
 
       footerFormat = _localizers.date.getFormat('footer', footerFormat);
@@ -10287,6 +10350,8 @@ var MonthView = (_temp2 = _class = function (_React$Component) {
               now: today,
               min: min,
               max: max,
+              blocked: blocked,
+              noWeekends: noWeekends,
               unit: 'day',
               viewUnit: 'month',
               onChange: onChange,
@@ -10357,6 +10422,8 @@ var MonthView = (_temp2 = _class = function (_React$Component) {
   focused: _propTypes2.default.instanceOf(Date),
   min: _propTypes2.default.instanceOf(Date),
   max: _propTypes2.default.instanceOf(Date),
+  blocked: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(Date)),
+  noWeekends: _propTypes2.default.bool,
   onChange: _propTypes2.default.func.isRequired,
 
   dayComponent: CustomPropTypes.elementType,
@@ -10670,7 +10737,9 @@ var YearView = (_temp2 = _class = function (_React$Component) {
           headerFormat = _this$props.headerFormat,
           monthFormat = _this$props.monthFormat,
           min = _this$props.min,
-          max = _this$props.max;
+          max = _this$props.max,
+          blocked = _this$props.blocked,
+          noWeekends = _this$props.noWeekends;
 
 
       headerFormat = _localizers.date.getFormat('header', headerFormat);
@@ -10692,6 +10761,8 @@ var YearView = (_temp2 = _class = function (_React$Component) {
               now: today,
               min: min,
               max: max,
+              blocked: blocked,
+              noWeekends: noWeekends,
               unit: 'month',
               onChange: onChange,
               focused: focused,
@@ -10733,6 +10804,8 @@ var YearView = (_temp2 = _class = function (_React$Component) {
   focused: _propTypes2.default.instanceOf(Date),
   min: _propTypes2.default.instanceOf(Date),
   max: _propTypes2.default.instanceOf(Date),
+  blocked: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(Date)),
+  noWeekends: _propTypes2.default.bool,
   onChange: _propTypes2.default.func.isRequired,
 
   headerFormat: CustomPropTypes.dateFormat,
@@ -10816,7 +10889,9 @@ var DecadeView = (_temp2 = _class = function (_React$Component) {
           today = _this$props.today,
           culture = _this$props.culture,
           min = _this$props.min,
-          max = _this$props.max;
+          max = _this$props.max,
+          blocked = _this$props.blocked,
+          noWeekends = _this$props.noWeekends;
 
 
       return _react2.default.createElement(
@@ -10836,6 +10911,8 @@ var DecadeView = (_temp2 = _class = function (_React$Component) {
               now: today,
               min: min,
               max: max,
+              blocked: blocked,
+              noWeekends: noWeekends,
               onChange: onChange,
               focused: focused,
               selected: value,
@@ -10876,6 +10953,7 @@ var DecadeView = (_temp2 = _class = function (_React$Component) {
   focused: _propTypes2.default.instanceOf(Date),
   min: _propTypes2.default.instanceOf(Date),
   max: _propTypes2.default.instanceOf(Date),
+  blocked: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(Date)),
   onChange: _propTypes2.default.func.isRequired,
 
   yearFormat: CustomPropTypes.dateFormat,
@@ -10969,7 +11047,9 @@ var CenturyView = (_temp2 = _class = function (_React$Component) {
           culture = _this$props.culture,
           min = _this$props.min,
           decadeFormat = _this$props.decadeFormat,
-          max = _this$props.max;
+          max = _this$props.max,
+          blocked = _this$props.blocked,
+          noWeekends = _this$props.noWeekends;
 
 
       decadeFormat = _localizers.date.getFormat('decade', decadeFormat);
@@ -10991,6 +11071,8 @@ var CenturyView = (_temp2 = _class = function (_React$Component) {
               now: today,
               min: min,
               max: max,
+              blocked: blocked,
+              noWeekends: noWeekends,
               onChange: onChange,
               focused: focused,
               selected: value,
@@ -11031,6 +11113,8 @@ var CenturyView = (_temp2 = _class = function (_React$Component) {
   focused: _propTypes2.default.instanceOf(Date),
   min: _propTypes2.default.instanceOf(Date),
   max: _propTypes2.default.instanceOf(Date),
+  blocked: _propTypes2.default.arrayOf(_propTypes2.default.instanceOf(Date)),
+  noWeekends: _propTypes2.default.bool,
   onChange: _propTypes2.default.func.isRequired,
   decadeFormat: CustomPropTypes.dateFormat,
   disabled: _propTypes2.default.bool
