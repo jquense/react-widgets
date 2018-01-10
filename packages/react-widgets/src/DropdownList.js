@@ -128,6 +128,7 @@ class DropdownList extends React.Component {
     searchTerm: '',
     allowCreate: false,
     listComponent: List,
+    selectIcon: 'caret-down'
   }
 
   constructor(...args) {
@@ -396,6 +397,7 @@ class DropdownList extends React.Component {
       placeholder,
       value,
       open,
+      selectIcon,
       filter,
       inputProps,
       valueComponent,
@@ -452,7 +454,7 @@ class DropdownList extends React.Component {
           />
           <Select
             busy={busy}
-            icon="caret-down"
+            icon={selectIcon}
             role="presentational"
             aria-hidden="true"
             disabled={disabled || readOnly}

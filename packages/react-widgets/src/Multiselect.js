@@ -153,6 +153,8 @@ class Multiselect extends React.Component {
     value: [],
     searchTerm: '',
     listComponent: List,
+    selectIconFocused: 'caret-down',
+    selectIcon: ''
   };
 
   constructor(...args) {
@@ -509,7 +511,9 @@ class Multiselect extends React.Component {
       , dropUp
       , open
       , searchTerm
-      , popupTransition } = this.props;
+      , popupTransition
+      , selectIconFocused
+      , selectIcon } = this.props;
 
     let { focused, focusedItem, dataItems } = this.state;
 
@@ -557,7 +561,7 @@ class Multiselect extends React.Component {
 
           <Select
             busy={busy}
-            icon={focused ? 'caret-down' :''}
+            icon={focused ? selectIconFocused : selectIcon}
             aria-hidden="true"
             role="presentational"
             disabled={disabled || readOnly}

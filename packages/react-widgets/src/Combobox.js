@@ -101,6 +101,7 @@ class Combobox extends React.Component {
     filter: false,
     delay: 500,
     listComponent: List,
+    selectIcon: 'caret-down'
   }
 
   constructor(props, context) {
@@ -341,7 +342,7 @@ class Combobox extends React.Component {
   }
 
   render() {
-    let { className, popupTransition, busy, dropUp, open } = this.props
+    let { className, popupTransition, busy, dropUp, open, selectIcon } = this.props
 
     let { focused } = this.state
 
@@ -371,7 +372,7 @@ class Combobox extends React.Component {
           <Select
             bordered
             busy={busy}
-            icon="caret-down"
+            icon={selectIcon}
             onClick={this.toggle}
             disabled={disabled || readOnly}
             label={messages.openCombobox(this.props)}
