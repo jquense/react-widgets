@@ -81,6 +81,20 @@ let propTypes = {
   max: PropTypes.instanceOf(Date).isRequired,
 
   /**
+   * The dates that should be blocked.
+   *
+   * @example ['prop', ['blocked', '[new Date()]']]
+   */
+  blocked: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+
+  /**
+   * The weekends should be blocked
+   *
+   * @example ['prop', ['noWeekends', 'true']]
+   */
+  noWeekends: PropTypes.bool,
+
+  /**
    * Default current date at which the calendar opens. If none is provided, opens at today's date or the `value` date (if any).
    */
   currentDate: PropTypes.instanceOf(Date),

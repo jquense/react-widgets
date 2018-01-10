@@ -66,7 +66,22 @@ let dates = Object.assign({}, dateMath, {
   },
 
   today: () => dates.startOf(new Date(), 'day'),
-  tomorrow: () => dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
+  tomorrow: () => dates.add(dates.startOf(new Date(), 'day'), 1, 'day'),
+
+  inArray(dates, date) {
+    if (!dates || dates.length === 0) {
+      return false;
+    }
+
+    let dateInArray = false;
+    dates.forEach(dateFromArray => {
+      if (dateFromArray.getDate() === date.getDate() && dateFromArray.getMonth() === date.getMonth() && dateFromArray.getFullYear() === date.getFullYear()) {
+        dateInArray =  true;
+      }
+    });
+
+    return dateInArray;
+  }
 })
 
 export default dates;
