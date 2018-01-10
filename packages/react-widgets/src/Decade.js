@@ -24,6 +24,7 @@ class DecadeView extends React.Component {
 
     yearFormat:   CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
+    noWeekends: PropTypes.bool,
   };
 
   render(){
