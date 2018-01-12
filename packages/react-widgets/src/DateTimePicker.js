@@ -167,6 +167,7 @@ let propTypes = {
     dateButton: PropTypes.string,
     timeButton: PropTypes.string,
   }),
+  readOnlyInput: PropTypes.bool,
 }
 
 
@@ -335,6 +336,7 @@ let propTypes = {
       inputProps,
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
+      readOnlyInput
     } = this.props
 
     let { focused } = this.state
@@ -357,7 +359,7 @@ let propTypes = {
         autoFocus={autoFocus}
         placeholder={placeholder}
         disabled={disabled}
-        readOnly={readOnly}
+        readOnly={readOnly || readOnlyInput}
         value={value}
         format={getFormat(this.props)}
         editFormat={editFormat}
