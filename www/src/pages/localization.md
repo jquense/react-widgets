@@ -136,6 +136,51 @@ Moment [format](http://momentjs.com/docs/#/displaying/format/) props accept `str
 
 ```
 
+### date-fns
+
+```sh
+npm install react-widgets-date-fns --save
+```
+
+See the official [date-fns docs](https://date-fns.org/docs/Getting-Started) for information on integrating date-fns.
+
+date-fns only provides __date__ localization, if you also need Number localization consider
+the __simple-number__ localizer below, or Globalize.js.
+
+{{<TabbedCodeBlock>
+  <Tab title="webpack">
+    {`
+    import dateFnsLocalizer from 'react-widgets-date-fns';
+    import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+
+    dateFnsLocalizer()
+
+    render(<DateTimePicker />, document.getElementById('app-root'))
+    `}
+  </Tab>
+  <Tab title="browser globals">
+    {`
+    <script src='node_modules/react-widgets/dist/react-widgets.js'></script>
+    <script src='node_modules/react-widgets-date-fns/dist/react-widgets-date-fns.js'></script>
+    <script>
+      dateFnsLocalizer()
+      var DateTimePicker = ReactWidgets.DateTimePicker;
+
+      ReactDOM.render(<DateTimePicker />, document.getElementById('app-root'))
+    </script>
+    `}
+  </Tab>
+</TabbedCodeBlock>}}
+
+
+date-fns [format](https://date-fns.org/v1.29.0/docs/format) props accept `string`s
+
+```jsx
+
+<DateTimePicker format='mmm YYY' />
+
+```
+
 ### Simple Number <small>number</small>
 
 The `simple-number` localizer provides a minimal number formatting and parsing strategy. Its best when you don't need
