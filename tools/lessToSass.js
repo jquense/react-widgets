@@ -8,7 +8,7 @@ const processors = [
   // interpolated variables
   { pattern: /@\{(?!(\s|\())/g, replace: '#{$' },
   // literal strings
-  { pattern: /~("|')(.*?)("|')/g, replace: '$2' },
+  { pattern: /~("|')(.*?)\1/g, replace: '$2' },
   // replace variable prefix
   {
     pattern: /@(?!(media|import|mixin|font-face|keyframes)(\s|\())/g,
