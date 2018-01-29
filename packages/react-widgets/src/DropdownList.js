@@ -497,7 +497,7 @@ class DropdownList extends React.Component {
           item = list.next(this.state[key], word)
 
         if(item === this.state[key]) {
-          item = list.prev(this.state[key], word)
+          item = list.next(null, word)
         }
 
         this._currentWord = ''
