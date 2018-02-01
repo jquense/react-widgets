@@ -6,8 +6,8 @@ import SlideDownTransition from './SlideDownTransition';
 import { elementType }from './util/PropTypes';
 
 class StaticContainer extends React.Component {
-  shouldComponentUpdate = ({ shouldUpdate }) => !!shouldUpdate
-  render = () => this.props.children;
+  shouldComponentUpdate({ shouldUpdate }) { return !!shouldUpdate; }
+  render() { return this.props.children; }
 }
 
 class Popup extends React.Component {
