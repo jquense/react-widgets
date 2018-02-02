@@ -56,6 +56,7 @@ let propTypes = {
   onChange: PropTypes.func,
 
   searchTerm: PropTypes.string,
+  minSearch: PropTypes.number,
   /**
    * @type {function (
    *  searchTerm: ?string,
@@ -152,6 +153,7 @@ class Multiselect extends React.Component {
     filter: 'startsWith',
     value: [],
     searchTerm: '',
+    minSearch: 1,
     listComponent: List,
   };
 
@@ -260,7 +262,7 @@ class Multiselect extends React.Component {
 
   handleInputChange = (e) => {
     this.search(e.target.value, e, 'input')
-    this.open()
+    if (e.target.value.length >= this.props.minSearch) this.open()
   };
 
   @widgetEditable

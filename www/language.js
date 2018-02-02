@@ -144,6 +144,10 @@ module.exports = {
     The minimum number of search characters needed before filtering begins.
   `,
 
+  minSearch: d => stripIndent`
+    The minimum number of search characters needed before the list appears.
+  `,
+
   searchTerm: d => stripIndent`
     Controls the value of the search text used to filter ${d.widgetName} items.
     \`searchTerm\` is only applicable when filtering is enabled.
