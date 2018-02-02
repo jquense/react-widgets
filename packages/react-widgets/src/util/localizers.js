@@ -15,6 +15,7 @@ const REQUIRED_DATE_FORMATS = [
   'time',
   'header',
   'footer',
+  'weekday',
   'dayOfMonth',
   'month',
   'year',
