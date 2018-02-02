@@ -56,6 +56,12 @@ let propTypes = {
   onChange: PropTypes.func,
 
   searchTerm: PropTypes.string,
+
+  /**
+   * The minimum number of search characters needed before the list appears.
+   */
+  minSearch: PropTypes.number,
+
   /**
    * @type {function (
    *  searchTerm: ?string,
@@ -152,6 +158,7 @@ class Multiselect extends React.Component {
     filter: 'startsWith',
     value: [],
     searchTerm: '',
+    minSearch: 0,
     listComponent: List,
   };
 
@@ -641,7 +648,7 @@ class Multiselect extends React.Component {
   }
 
   open() {
-    if (!this.props.open)
+    if (!this.props.open && (this.props.searchTerm.length >= this.props.minSearch))
       notify(this.props.onToggle, true)
   }
 

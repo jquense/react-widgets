@@ -89,6 +89,19 @@ describe('Multiselect', function() {
     })
   })
 
+  it('should not open when minSearch length is not met', (done) => {
+    let openSpy = sinon.spy();
+
+    mount(<ControlledMultiselect onToggle={openSpy} minSearch={3} searchTerm="ab" />)
+      .find('WidgetPicker')
+      .simulate('click')
+
+    setTimeout(() => {
+      expect(openSpy.calledOnce).to.equal(false);
+      done()
+    })
+  })
+
   it('should set id on list', () =>{
     expect(
       shallow(<ControlledMultiselect open />)
