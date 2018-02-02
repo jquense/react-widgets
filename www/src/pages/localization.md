@@ -242,8 +242,12 @@ type Localizer = {
   formats: {
     default: string | object | function
     date: string | object | function
+    time: string | object | function
+    header: string | object | function
     footer: string | object | function
+    weekday: string | object | function
     dayOfMonth: string | object | function
+    month: string | object | function
     year: string | object | function
     decade: string | object | function
     century: string | object | function
