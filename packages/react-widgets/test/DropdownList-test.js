@@ -360,4 +360,26 @@ describe('DROPDOWNS', function(){
       done()
     })
   })
+
+  it('should search values on typing when not filtering - back direction', done => {
+    let change = sinon.spy()
+
+    let inst = mount(
+      <ControlledDropdownList
+        open
+        delay={0}
+        filter={false}
+        value={data[2]}
+        data={data}
+        onChange={change}
+        textField='label'
+      />
+    )
+    .simulate('keyPress', { which: 74, key: 'j' })
+
+    setTimeout(() => {
+      expect(inst.state('focusedItem')).to.equal(data[0])
+      done()
+    })
+  })
 })

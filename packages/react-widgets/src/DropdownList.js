@@ -496,6 +496,10 @@ class DropdownList extends React.Component {
           key = this.props.open ? 'focusedItem' : 'selectedItem',
           item = list.next(this.state[key], word)
 
+        if(item === this.state[key]) {
+          item = list.next(null, word)
+        }
+
         this._currentWord = ''
         if (item) cb(item)
       },
