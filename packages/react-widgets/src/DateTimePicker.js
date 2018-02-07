@@ -45,7 +45,8 @@ let propTypes = {
    */
   onChange: PropTypes.func,
   /**
-   * @type (false | 'time' | 'date')
+   * @type {(false | 'time' | 'date')}
+   * @example ['openDateTime']
    */
   open: PropTypes.oneOf([false, popups.TIME, popups.DATE]),
   onToggle: PropTypes.func,

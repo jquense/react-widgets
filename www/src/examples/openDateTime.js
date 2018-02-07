@@ -3,7 +3,7 @@ import { stripIndent } from 'common-tags';
 export default function(widgetName){
  return stripIndent`
     let { ${widgetName} } = ReactWidgets;
-    let values = [false, 'calendar', 'time'];
+    let values = [false, 'date', 'time'];
 
     class Example extends React.Component {
       render() {
