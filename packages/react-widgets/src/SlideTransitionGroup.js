@@ -80,17 +80,17 @@ class SlideTransition extends React.Component {
 
 class SlideTransitionGroup extends React.Component {
 
-  static propTypes = {
+  static childContextTypes = {
     direction: DirectionPropType,
-  };
+  }
 
   static defaultProps = {
     direction: 'left',
   };
 
-  static childContextTypes = {
+  static propTypes = {
     direction: DirectionPropType,
-  }
+  };
 
   getChildContext() {
     return { direction: this.props.direction };

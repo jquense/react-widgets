@@ -10,7 +10,6 @@ import * as Props from './util/Props';
 import * as CustomPropTypes from './util/PropTypes';
 
 class YearView extends React.Component {
-
   static propTypes = {
     activeId: PropTypes.string,
     culture: PropTypes.string,
@@ -25,22 +24,6 @@ class YearView extends React.Component {
     monthFormat: CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
   };
-
-  render() {
-    let { focused, activeId } = this.props
-      , months = dates.monthsInYear(dates.year(focused))
-
-    return (
-      <CalendarView
-        {...Props.omitOwn(this)}
-        activeId={activeId}
-      >
-        <CalendarView.Body>
-          {chunk(months, 4).map(this.renderRow)}
-        </CalendarView.Body>
-      </CalendarView>
-    )
-  }
 
   renderRow = (row, rowIdx) => {
     let {
@@ -84,6 +67,22 @@ class YearView extends React.Component {
           )
         })}
       </CalendarView.Row>
+    )
+  }
+
+  render() {
+    let { focused, activeId } = this.props
+      , months = dates.monthsInYear(dates.year(focused))
+
+    return (
+      <CalendarView
+        {...Props.omitOwn(this)}
+        activeId={activeId}
+      >
+        <CalendarView.Body>
+          {chunk(months, 4).map(this.renderRow)}
+        </CalendarView.Body>
+      </CalendarView>
     )
   }
 }

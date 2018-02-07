@@ -79,25 +79,14 @@ class List extends React.Component {
     }, [])
   }
 
-  render() {
-    let { className, messages } = this.props
+  move() {
+    let { focusedItem, onMove, data, dataState } = this.props;
+    let list = findDOMNode(this);
+    let idx = renderedIndexOf(focusedItem, list, data, dataState)
+    let selectedItem = list.children[idx]
 
-    let elementProps = Props.pickElementProps(this);
-    let { emptyList } = getMessages(messages)
-
-    return (
-      <Listbox
-        {...elementProps}
-        className={className}
-        emptyListMessage={emptyList(this.props)}
-      >
-        {this.mapItems((item, idx, isHeader) => {
-          return isHeader ?
-            this.renderGroupHeader(item) :
-            this.renderItem(item, idx)
-        })}
-      </Listbox>
-    )
+    if (selectedItem)
+      notify(onMove, [selectedItem, list, focusedItem])
   }
 
   renderGroupHeader(group) {
@@ -141,14 +130,25 @@ class List extends React.Component {
   }
 
 
-  move() {
-    let { focusedItem, onMove, data, dataState } = this.props;
-    let list = findDOMNode(this);
-    let idx = renderedIndexOf(focusedItem, list, data, dataState)
-    let selectedItem = list.children[idx]
+  render() {
+    let { className, messages } = this.props
 
-    if (selectedItem)
-      notify(onMove, [selectedItem, list, focusedItem])
+    let elementProps = Props.pickElementProps(this);
+    let { emptyList } = getMessages(messages)
+
+    return (
+      <Listbox
+        {...elementProps}
+        className={className}
+        emptyListMessage={emptyList(this.props)}
+      >
+        {this.mapItems((item, idx, isHeader) => {
+          return isHeader ?
+            this.renderGroupHeader(item) :
+            this.renderItem(item, idx)
+        })}
+      </Listbox>
+    )
   }
 }
 

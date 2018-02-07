@@ -12,6 +12,14 @@ import * as Props from './util/Props';
 var format = props => dateLocalizer.getFormat('time', props.format)
 
 class TimeList extends React.Component {
+  static defaultProps = {
+    step: 30,
+    onSelect: () => {},
+    min: new Date(1900,  0,  1),
+    max: new Date(2099, 11, 31),
+    preserveDate: true,
+    delay: 300,
+  }
 
   static propTypes = {
     value: PropTypes.instanceOf(Date),
@@ -26,15 +34,6 @@ class TimeList extends React.Component {
     preserveDate: PropTypes.bool,
     culture: PropTypes.string,
     delay: PropTypes.number
-  }
-
-  static defaultProps = {
-    step: 30,
-    onSelect: () => {},
-    min: new Date(1900,  0,  1),
-    max: new Date(2099, 11, 31),
-    preserveDate: true,
-    delay: 300,
   }
 
   constructor(...args) {
@@ -60,6 +59,70 @@ class TimeList extends React.Component {
 
   componentWillUnmount() {
     this.unmounted = true;
+  }
+
+  getBounds(props) {
+    var value = props.value || props.currentDate || dates.today()
+      , useDate = props.preserveDate
+      , min = props.min
+      , max = props.max
+      , start, end;
+
+    //compare just the time regradless of whether they fall on the same day
+    if(!useDate) {
+      start = dates.startOf(dates.merge(new Date(), min, props.currentDate), 'minutes')
+      end   = dates.startOf(dates.merge(new Date(), max, props.currentDate), 'minutes')
+
+      if( dates.lte(end, start) && dates.gt(max, min, 'day'))
+        end = dates.tomorrow()
+
+      return {
+        min: start,
+        max: end
+      }
+    }
+
+    start = dates.today()
+    end = dates.tomorrow()
+    //date parts are equal
+    return {
+      min: dates.eq(value, min, 'day') ? dates.merge(start, min, props.currentDate) : start,
+      max: dates.eq(value, max, 'day') ? dates.merge(start, max, props.currentDate) : end
+    }
+  }
+
+  getClosestDate(times, date) {
+    var roundTo = 1000 * 60 * this.props.step
+      , inst = null
+      , label;
+
+    if( !date) return null
+
+    date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
+    label = dateLocalizer.format(date, format(this.props), this.props.culture)
+
+    times.some( time => {
+      if( time.label === label )
+        return (inst = time)
+    })
+
+    return inst
+  }
+
+  getDates(props = this.props) {
+    let times  = [];
+    let values = this.getBounds(props)
+    let start  = values.min
+    let startDay = dates.date(start);
+
+    while (dates.date(start) === startDay && dates.lte(start, values.max)) {
+      times.push({
+        date: start,
+        label: dateLocalizer.format(start, format(props), props.culture)
+      })
+      start = dates.add(start, props.step || 30, 'minutes')
+    }
+    return times
   }
 
   getStateFromProps(props = this.props) {
@@ -111,6 +174,24 @@ class TimeList extends React.Component {
     })
   }
 
+  scrollTo = () => {
+    this.refs.list.move
+      && this.refs.list.move()
+  }
+
+  search(character, cb) {
+    var word = ((this._searchTerm || '') + character).toLowerCase();
+
+    this._searchTerm = word
+    this.timeouts.set('search', () => {
+      var item = this.list.next(this.state.focusedItem, word);
+
+      this._searchTerm = ''
+      if (item) cb(item)
+
+    }, this.props.delay)
+  }
+
   render() {
     let { onSelect } = this.props;
     let { selectedItem, focusedItem } = this.state;
@@ -130,88 +211,6 @@ class TimeList extends React.Component {
         focusedItem={focusedItem}
       />
     )
-  }
-
-  scrollTo = () => {
-    this.refs.list.move
-      && this.refs.list.move()
-  }
-
-  getClosestDate(times, date) {
-    var roundTo = 1000 * 60 * this.props.step
-      , inst = null
-      , label;
-
-    if( !date) return null
-
-    date  = new Date(Math.floor(date.getTime() / roundTo) * roundTo)
-    label = dateLocalizer.format(date, format(this.props), this.props.culture)
-
-    times.some( time => {
-      if( time.label === label )
-        return (inst = time)
-    })
-
-    return inst
-  }
-
-  getDates(props = this.props) {
-    let times  = [];
-    let values = this.getBounds(props)
-    let start  = values.min
-    let startDay = dates.date(start);
-
-    while (dates.date(start) === startDay && dates.lte(start, values.max)) {
-      times.push({
-        date: start,
-        label: dateLocalizer.format(start, format(props), props.culture)
-      })
-      start = dates.add(start, props.step || 30, 'minutes')
-    }
-    return times
-  }
-
-  getBounds(props) {
-    var value = props.value || props.currentDate || dates.today()
-      , useDate = props.preserveDate
-      , min = props.min
-      , max = props.max
-      , start, end;
-
-    //compare just the time regradless of whether they fall on the same day
-    if(!useDate) {
-      start = dates.startOf(dates.merge(new Date(), min, props.currentDate), 'minutes')
-      end   = dates.startOf(dates.merge(new Date(), max, props.currentDate), 'minutes')
-
-      if( dates.lte(end, start) && dates.gt(max, min, 'day'))
-        end = dates.tomorrow()
-
-      return {
-        min: start,
-        max: end
-      }
-    }
-
-    start = dates.today()
-    end = dates.tomorrow()
-    //date parts are equal
-    return {
-      min: dates.eq(value, min, 'day') ? dates.merge(start, min, props.currentDate) : start,
-      max: dates.eq(value, max, 'day') ? dates.merge(start, max, props.currentDate) : end
-    }
-  }
-
-  search(character, cb) {
-    var word = ((this._searchTerm || '') + character).toLowerCase();
-
-    this._searchTerm = word
-    this.timeouts.set('search', () => {
-      var item = this.list.next(this.state.focusedItem, word);
-
-      this._searchTerm = ''
-      if (item) cb(item)
-
-    }, this.props.delay)
   }
 }
 

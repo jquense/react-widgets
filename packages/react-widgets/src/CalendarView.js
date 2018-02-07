@@ -52,8 +52,9 @@ class CalendarViewCell extends React.Component {
     disabled: PropTypes.bool,
   };
 
-  isEqual(date) {
-    return dates.eq(this.props.date, date, this.props.unit)
+  handleChange = () => {
+    let { onChange, min, max, date } = this.props;
+    onChange(clamp(date, min, max))
   }
 
   isEmpty() {
@@ -61,8 +62,8 @@ class CalendarViewCell extends React.Component {
     return !dates.inRange(date, min, max, unit)
   }
 
-  isNow() {
-    return this.props.now && this.isEqual(this.props.now)
+  isEqual(date) {
+    return dates.eq(this.props.date, date, this.props.unit)
   }
 
   isFocused() {
@@ -73,8 +74,8 @@ class CalendarViewCell extends React.Component {
     )
   }
 
-  isSelected() {
-    return this.props.selected && this.isEqual(this.props.selected)
+  isNow() {
+    return this.props.now && this.isEqual(this.props.now)
   }
 
   isOffView() {
@@ -87,9 +88,8 @@ class CalendarViewCell extends React.Component {
     )
   }
 
-  handleChange = () => {
-    let { onChange, min, max, date } = this.props;
-    onChange(clamp(date, min, max))
+  isSelected() {
+    return this.props.selected && this.isEqual(this.props.selected)
   }
 
   render()  {

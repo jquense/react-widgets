@@ -8,7 +8,6 @@ import * as CustomPropTypes from './util/PropTypes';
 import * as Props from './util/Props';
 
 class DateTimePickerInput extends React.Component {
-
   static propTypes = {
     format: CustomPropTypes.dateFormat.isRequired,
     editing: PropTypes.bool,
@@ -50,10 +49,9 @@ class DateTimePickerInput extends React.Component {
     })
   }
 
-  handleChange = ({ target: { value } }) => {
-    this._needsFlush = true
-    this.setState({ textValue: value });
-  };
+  focus(){
+    findDOMNode(this).focus()
+  }
 
   handleBlur = (event) => {
     let { format, culture, parse, onChange, onBlur } = this.props;
@@ -66,6 +64,11 @@ class DateTimePickerInput extends React.Component {
       this._needsFlush = false
       onChange(date, formatDate(date, format, culture))
     }
+  };
+
+  handleChange = ({ target: { value } }) => {
+    this._needsFlush = true
+    this.setState({ textValue: value });
   };
 
   render() {
@@ -86,10 +89,6 @@ class DateTimePickerInput extends React.Component {
         onBlur={this.handleBlur}
       />
     )
-  }
-
-  focus(){
-    findDOMNode(this).focus()
   }
 }
 

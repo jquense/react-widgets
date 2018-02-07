@@ -11,17 +11,17 @@ class StaticContainer extends React.Component {
 }
 
 class Popup extends React.Component {
+  static defaultProps = {
+    open: false,
+    transition: SlideDownTransition,
+  };
+
   static propTypes = {
     open: PropTypes.bool,
     dropUp: PropTypes.bool,
     onEntering: PropTypes.func,
     onEntered: PropTypes.func,
     transition: elementType
-  };
-
-  static defaultProps = {
-    open: false,
-    transition: SlideDownTransition,
   };
 
   render() {

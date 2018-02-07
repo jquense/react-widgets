@@ -39,6 +39,11 @@ function isAtDelimiter(num, str, culture) {
 }
 
 class NumberPickerInput extends React.Component {
+  static defaultProps = {
+    value: null,
+    editing: false
+  };
+
   static propTypes = {
     value: PropTypes.number,
     editing: PropTypes.bool,
@@ -56,11 +61,6 @@ class NumberPickerInput extends React.Component {
     readOnly: CustomPropTypes.disabled,
 
     onChange: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    value: null,
-    editing: false
   };
 
   constructor(...args) {
@@ -102,11 +102,24 @@ class NumberPickerInput extends React.Component {
     }
   }
 
-  isSelectingAllText() {
-    const node = findDOMNode(this);
-    return activeElement() === node
-      && node.selectionStart === 0
-      && node.selectionEnd === node.value.length;
+  // this intermediate state is for when one runs into
+  // the decimal or are typing the number
+  setStringValue(stringValue) {
+    this.setState({ stringValue })
+  }
+
+  handleBlur = (event) => {
+    var str = this.state.stringValue
+      , number = this.parseNumber(str);
+
+    // if number is below the min
+    // we need to flush low values and decimal stops, onBlur means i'm done inputing
+    if (this.isIntermediateValue(number, str)) {
+      if (isNaN(number)) {
+        number = null;
+      }
+      this.props.onChange(number, event)
+    }
   }
 
   handleChange = (event) => {
@@ -138,18 +151,22 @@ class NumberPickerInput extends React.Component {
     }
   };
 
-  handleBlur = (event) => {
-    var str = this.state.stringValue
-      , number = this.parseNumber(str);
+  isIntermediateValue(num, str) {
+    let { culture, min } = this.props;
 
-    // if number is below the min
-    // we need to flush low values and decimal stops, onBlur means i'm done inputing
-    if (this.isIntermediateValue(number, str)) {
-      if (isNaN(number)) {
-        number = null;
-      }
-      this.props.onChange(number, event)
-    }
+    return !!(
+      num < min ||
+      isSign(str) ||
+      isAtDelimiter(num, str, culture) ||
+      isPaddedZeros(str, culture)
+    );
+  }
+
+  isSelectingAllText() {
+    const node = findDOMNode(this);
+    return activeElement() === node
+      && node.selectionStart === 0
+      && node.selectionEnd === node.value.length;
   }
 
   parseNumber(strVal) {
@@ -164,23 +181,6 @@ class NumberPickerInput extends React.Component {
     strVal = parseFloat(strVal);
 
     return strVal
-  }
-
-  isIntermediateValue(num, str) {
-    let { culture, min } = this.props;
-
-    return !!(
-      num < min ||
-      isSign(str) ||
-      isAtDelimiter(num, str, culture) ||
-      isPaddedZeros(str, culture)
-    );
-  }
-
-  // this intermediate state is for when one runs into
-  // the decimal or are typing the number
-  setStringValue(stringValue) {
-    this.setState({ stringValue })
   }
 
   render() {

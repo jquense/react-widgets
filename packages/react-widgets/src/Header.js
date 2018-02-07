@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 
 class Header extends React.Component {
+  static contextTypes = {
+    isRtl: PropTypes.bool
+  };
+
   static propTypes = {
     label:          PropTypes.string.isRequired,
     labelId:        PropTypes.string,
@@ -18,10 +22,6 @@ class Header extends React.Component {
       moveBack:     PropTypes.func.isRequired,
       moveForward:  PropTypes.func.isRequired,
     })
-  };
-
-  static contextTypes = {
-    isRtl: PropTypes.bool
   };
 
   render() {

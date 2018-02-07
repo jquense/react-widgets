@@ -17,6 +17,17 @@ class MultiselectInput extends React.Component {
     readOnly: CustomPropTypes.disabled
   };
 
+  focus() {
+    const node = findDOMNode(this);
+
+    if (activeElement() === node) return;
+    node.focus()
+  }
+
+  select() {
+    findDOMNode(this).select()
+  }
+
   render() {
     let { disabled, readOnly, ...props } = this.props
     let size = Math.max((props.value || props.placeholder).length, 1) + 1;
@@ -33,17 +44,6 @@ class MultiselectInput extends React.Component {
         readOnly={readOnly}
       />
     )
-  }
-
-  select() {
-    findDOMNode(this).select()
-  }
-
-  focus() {
-    const node = findDOMNode(this);
-
-    if (activeElement() === node) return;
-    node.focus()
   }
 }
 

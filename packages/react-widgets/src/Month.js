@@ -13,6 +13,7 @@ import * as Props from './util/Props';
 let isEqual = (dateA, dateB) => dates.eq(dateA, dateB, 'day')
 
 class MonthView extends React.Component {
+  static isEqual = isEqual;
 
   static propTypes = {
     activeId: PropTypes.string,
@@ -31,7 +32,16 @@ class MonthView extends React.Component {
     disabled: PropTypes.bool,
   };
 
-  static isEqual = isEqual;
+  renderHeaders(week, format, culture) {
+    let firstOfWeek = dateLocalizer.firstOfWeek(culture);
+    return week.map(date => {
+      return (
+        <th key={'header_' + dates.weekday(date, undefined, firstOfWeek) }>
+          { dateLocalizer.format(date, format, culture) }
+        </th>
+      )
+    })
+  }
 
   renderRow = (row, rowIdx) => {
     let {
@@ -77,17 +87,6 @@ class MonthView extends React.Component {
         })}
       </CalendarView.Row>
     )
-  }
-
-  renderHeaders(week, format, culture) {
-    let firstOfWeek = dateLocalizer.firstOfWeek(culture);
-    return week.map(date => {
-      return (
-        <th key={'header_' + dates.weekday(date, undefined, firstOfWeek) }>
-          { dateLocalizer.format(date, format, culture) }
-        </th>
-      )
-    })
   }
 
   render() {
