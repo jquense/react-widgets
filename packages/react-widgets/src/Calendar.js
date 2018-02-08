@@ -18,46 +18,51 @@ import focusManager from './util/focusManager';
 
 import { date as dateLocalizer } from './util/localizers';
 import * as CustomPropTypes from './util/PropTypes';
-import * as constants from './util/constants';
 import * as Props from './util/Props';
 import dates from './util/dates';
-import withRightToLeft from './util/withRightToLeft';
 import { instanceId, notify } from './util/widgetHelpers';
 import { widgetEditable } from './util/interaction';
 
-let { DOWN, UP, LEFT, RIGHT } = constants.directions
 
 let last = a => a[a.length - 1];
 
-let views = constants.calendarViews
-let VIEW_OPTIONS = Object.keys(views).map(k => views[k])
-let VIEW_UNIT = constants.calendarViewUnits
-let VIEW  = {
-  [views.MONTH]:   Month,
-  [views.YEAR]:    Year,
-  [views.DECADE]:  Decade,
-  [views.CENTURY]: Century
+
+const VIEW_UNIT = {
+  month:   'day',
+  year:    'month',
+  decade:  'year',
+  century: 'decade',
 };
 
-let ARROWS_TO_DIRECTION = {
-  ArrowDown: DOWN,
-  ArrowUp: UP,
-  ArrowRight: RIGHT,
-  ArrowLeft: LEFT
+
+const VIEW_OPTIONS = ['month', 'year', 'decade', 'century']
+
+const VIEW  = {
+  month:   Month,
+  year:    Year,
+  decade:  Decade,
+  century: Century
+};
+
+const ARROWS_TO_DIRECTION = {
+  ArrowDown: 'DOWN',
+  ArrowUp: 'UP',
+  ArrowRight: 'RIGHT',
+  ArrowLeft: 'LEFT'
 }
 
-let OPPOSITE_DIRECTION = {
-  [LEFT]: RIGHT,
-  [RIGHT]: LEFT
+const OPPOSITE_DIRECTION = {
+  LEFT: 'RIGHT',
+  RIGHT: 'LEFT'
 };
 
-let MULTIPLIER = {
-  [views.YEAR]:    1,
-  [views.DECADE]:  10,
-  [views.CENTURY]: 100
+const MULTIPLIER = {
+  year:    1,
+  decade:  10,
+  century: 100
 };
 
-let propTypes = {
+const propTypes = {
   /** @ignore */
   activeId: PropTypes.string,
   disabled: CustomPropTypes.disabled,
@@ -194,6 +199,7 @@ let propTypes = {
    */
   centuryFormat: CustomPropTypes.dateFormat,
 
+  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     moveBack: PropTypes.string,
     moveForward: PropTypes.string
@@ -221,7 +227,6 @@ let propTypes = {
  *
  * @public
 */
-@withRightToLeft
 class Calendar extends React.Component {
   static displayName = 'Calendar';
 
@@ -236,7 +241,26 @@ class Calendar extends React.Component {
     footer: true,
   };
 
+  static contextTypes = {
+    isRtl: PropTypes.bool
+  }
+
   static Transition = SlideTransitionGroup;
+
+  static move(date, min, max, unit, direction) {
+    let isMonth = unit === 'month'
+    let isUpOrDown = direction === 'UP' || direction === 'DOWN'
+    let rangeUnit = VIEW_UNIT[unit]
+    let addUnit = isMonth && isUpOrDown ? 'week' : VIEW_UNIT[unit]
+    let amount = isMonth || !isUpOrDown ? 1 : 4
+    let newDate
+
+    if (direction === 'UP' || direction === 'LEFT') amount *= -1
+
+    newDate = dates.add(date, amount, addUnit)
+
+    return dates.inRange(newDate, min, max, rangeUnit) ? newDate : date
+  }
 
   constructor(...args) {
     super(...args)
@@ -288,17 +312,17 @@ class Calendar extends React.Component {
 
   @widgetEditable
   handleViewChange = () => {
-    this.navigate(UP);
+    this.navigate('UP');
   }
 
   @widgetEditable
   handleMoveBack = () => {
-    this.navigate(LEFT);
+    this.navigate('LEFT');
   }
 
   @widgetEditable
   handleMoveForward = () => {
-    this.navigate(RIGHT);
+    this.navigate('RIGHT');
   }
 
   @widgetEditable
@@ -315,7 +339,7 @@ class Calendar extends React.Component {
       return;
     }
 
-    this.navigate(DOWN, date)
+    this.navigate('DOWN', date)
   };
 
   @widgetEditable
@@ -358,7 +382,7 @@ class Calendar extends React.Component {
         if (this.isRtl() && OPPOSITE_DIRECTION[direction])
           direction = OPPOSITE_DIRECTION[direction]
 
-        let nextDate = dates.move(
+        let nextDate = Calendar.move(
           currentDate,
           this.props.min,
           this.props.max,
@@ -370,10 +394,10 @@ class Calendar extends React.Component {
           e.preventDefault()
 
           if (dates.gt(nextDate, currentDate, view))
-            this.navigate(RIGHT, nextDate)
+            this.navigate('RIGHT', nextDate)
 
           else if (dates.lt(nextDate, currentDate, view))
-            this.navigate(LEFT, nextDate)
+            this.navigate('LEFT', nextDate)
 
           else
             this.setCurrentDate(nextDate)
@@ -427,12 +451,13 @@ class Calendar extends React.Component {
         aria-activedescendant={this.activeId}
       >
         <Header
+          isRtl={this.isRtl()}
           label={this.getHeaderLabel()}
           labelId={this.labelId}
           messages={this.messages}
           upDisabled={isDisabled || view === last(views)}
-          prevDisabled={isDisabled || !dates.inRange(this.nextDate(LEFT), min, max, view)}
-          nextDisabled={isDisabled || !dates.inRange(this.nextDate(RIGHT), min, max, view)}
+          prevDisabled={isDisabled || !dates.inRange(this.nextDate('LEFT'), min, max, view)}
+          nextDisabled={isDisabled || !dates.inRange(this.nextDate('RIGHT'), min, max, view)}
           onViewChange={this.handleViewChange}
           onMoveLeft ={this.handleMoveBack}
           onMoveRight={this.handleMoveForward}
@@ -470,17 +495,17 @@ class Calendar extends React.Component {
     let { views, min, max, onNavigate, onViewChange } = this.props;
     let { view } = this.state
 
-    let slideDir = (direction === LEFT || direction === UP)
+    let slideDir = (direction === 'LEFT' || direction === 'UP')
           ? 'right' : 'left';
 
-    if (direction === UP)
+    if (direction === 'UP')
       view = views[views.indexOf(view) + 1] || view
 
-    if (direction === DOWN)
+    if (direction === 'DOWN')
       view = views[views.indexOf(view) - 1] || view
 
     if (!date)
-      date = [LEFT, RIGHT].indexOf(direction) !== -1
+      date = ['LEFT', 'RIGHT'].indexOf(direction) !== -1
         ? this.nextDate(direction)
         : this.getCurrentDate()
 
@@ -512,9 +537,9 @@ class Calendar extends React.Component {
   }
 
   nextDate(direction) {
-    let method = direction === LEFT ? 'subtract' : 'add'
+    let method = direction === 'LEFT' ? 'subtract' : 'add'
       , view   = this.state.view
-      , unit   = view === views.MONTH ? view : views.YEAR
+      , unit   = view === 'month' ? view : 'year'
       , multi  = MULTIPLIER[view] || 1;
 
     return dates[method](this.getCurrentDate(), 1 * multi, unit)
@@ -531,22 +556,22 @@ class Calendar extends React.Component {
       , currentDate = this.getCurrentDate();
 
     switch (view) {
-      case views.MONTH:
+      case 'month':
         headerFormat = dateLocalizer.getFormat('header', headerFormat)
         return dateLocalizer.format(currentDate, headerFormat, culture)
 
-      case views.YEAR:
+      case 'year':
         yearFormat = dateLocalizer.getFormat('year', yearFormat)
         return dateLocalizer.format(currentDate, yearFormat, culture)
 
-      case views.DECADE:
+      case 'decade':
         decadeFormat = dateLocalizer.getFormat('decade', decadeFormat)
         return dateLocalizer.format(
           dates.startOf(currentDate, 'decade'),
           decadeFormat,
           culture
         )
-      case views.CENTURY:
+      case 'century':
         centuryFormat = dateLocalizer.getFormat('century', centuryFormat)
         return dateLocalizer.format(
           dates.startOf(currentDate, 'century'),
@@ -564,6 +589,12 @@ class Calendar extends React.Component {
     return dates.max(
       dates.min(value, this.props.max),
       this.props.min
+    )
+  }
+  isRtl() {
+    return !!(
+      this.props.isRtl ||
+      (this.context && this.context.isRtl)
     )
   }
 

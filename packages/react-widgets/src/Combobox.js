@@ -15,7 +15,6 @@ import listDataManager from './util/listDataManager'
 import * as CustomPropTypes from './util/PropTypes'
 import accessorManager from './util/accessorManager'
 import scrollManager from './util/scrollManager'
-import withRightToLeft from './util/withRightToLeft'
 import { isShallowEqual } from './util/_'
 import * as Props from './util/Props'
 import * as Filter from './util/Filter'
@@ -64,6 +63,8 @@ let propTypes = {
 
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
+
+  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     openCombobox: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
@@ -89,7 +90,6 @@ let propTypes = {
 
  * @public
  */
-@withRightToLeft
 class Combobox extends React.Component {
   static propTypes = propTypes
 

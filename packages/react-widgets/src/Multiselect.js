@@ -24,7 +24,6 @@ import accessorManager from './util/accessorManager';
 import focusManager from './util/focusManager';
 import listDataManager from './util/listDataManager';
 import scrollManager from './util/scrollManager';
-import withRightToLeft from './util/withRightToLeft';
 import { widgetEditable, disabledManager } from './util/interaction';
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers';
 
@@ -107,6 +106,7 @@ let propTypes = {
   disabled: CustomPropTypes.disabled.acceptsArray,
   readOnly: CustomPropTypes.disabled,
 
+  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     open: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
@@ -141,7 +141,6 @@ let propTypes = {
  *
  * @public
  */
-@withRightToLeft
 class Multiselect extends React.Component {
 
   static propTypes = propTypes;

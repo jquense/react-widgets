@@ -17,7 +17,6 @@ import * as CustomPropTypes from './util/PropTypes'
 import accessorManager from './util/accessorManager'
 import scrollManager from './util/scrollManager'
 import * as Props from './util/Props'
-import withRightToLeft from './util/withRightToLeft'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
@@ -53,6 +52,7 @@ const propTypes = {
   placeholder: PropTypes.string,
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
+  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     openCombobox: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
@@ -60,7 +60,7 @@ const propTypes = {
   }),
 }
 
-@withRightToLeft class Autocomplete extends React.Component {
+class Autocomplete extends React.Component {
   static defaultProps = {
     data: [],
     open: false,

@@ -26,7 +26,6 @@ import listDataManager from './util/listDataManager'
 import * as CustomPropTypes from './util/PropTypes'
 import accessorManager from './util/accessorManager'
 import scrollManager from './util/scrollManager'
-import withRightToLeft from './util/withRightToLeft'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
@@ -50,7 +49,6 @@ const CREATE_OPTION = {};
 
  * @public
  */
-@withRightToLeft
 class DropdownList extends React.Component {
   static propTypes = {
     ...Filter.propTypes,
@@ -113,6 +111,7 @@ class DropdownList extends React.Component {
     inputProps: PropTypes.object,
     listProps: PropTypes.object,
 
+    isRtl: PropTypes.bool,
     messages: PropTypes.shape({
       open: PropTypes.string,
       emptyList: CustomPropTypes.message,

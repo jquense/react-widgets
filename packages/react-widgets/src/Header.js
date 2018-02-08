@@ -1,45 +1,50 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Button from './Button';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Button from './Button'
 
 class Header extends React.Component {
-  static contextTypes = {
-    isRtl: PropTypes.bool
-  };
+  static contextTypes = {}
 
   static propTypes = {
-    label:          PropTypes.string.isRequired,
-    labelId:        PropTypes.string,
+    label: PropTypes.string.isRequired,
+    labelId: PropTypes.string,
 
-    upDisabled:     PropTypes.bool.isRequired,
-    prevDisabled:   PropTypes.bool.isRequired,
-    nextDisabled:   PropTypes.bool.isRequired,
-    onViewChange:   PropTypes.func.isRequired,
-    onMoveLeft:     PropTypes.func.isRequired,
-    onMoveRight:    PropTypes.func.isRequired,
+    upDisabled: PropTypes.bool.isRequired,
+    prevDisabled: PropTypes.bool.isRequired,
+    nextDisabled: PropTypes.bool.isRequired,
+    onViewChange: PropTypes.func.isRequired,
+    onMoveLeft: PropTypes.func.isRequired,
+    onMoveRight: PropTypes.func.isRequired,
 
-    messages:       PropTypes.shape({
-      moveBack:     PropTypes.func.isRequired,
-      moveForward:  PropTypes.func.isRequired,
-    })
-  };
+    messages: PropTypes.shape({
+      moveBack: PropTypes.func.isRequired,
+      moveForward: PropTypes.func.isRequired,
+    }),
+    isRtl: PropTypes.bool,
+  }
 
   render() {
     let {
-        messages, label, labelId
-      , onMoveRight, onMoveLeft, onViewChange
-      , prevDisabled, upDisabled, nextDisabled } = this.props;
-
-    let rtl = this.context.isRtl;
+      messages,
+      label,
+      labelId,
+      onMoveRight,
+      onMoveLeft,
+      onViewChange,
+      prevDisabled,
+      upDisabled,
+      nextDisabled,
+      isRtl,
+    } = this.props
 
     return (
-      <div className='rw-calendar-header'>
+      <div className="rw-calendar-header">
         <Button
           className="rw-calendar-btn-left"
           onClick={onMoveLeft}
           disabled={prevDisabled}
           label={messages.moveBack()}
-          icon={`chevron-${rtl ? 'right' : 'left'}`}
+          icon={`chevron-${isRtl ? 'right' : 'left'}`}
         />
         <Button
           id={labelId}
@@ -56,11 +61,11 @@ class Header extends React.Component {
           onClick={onMoveRight}
           disabled={nextDisabled}
           label={messages.moveForward()}
-          icon={`chevron-${rtl ? 'left' : 'right'}`}
+          icon={`chevron-${isRtl ? 'left' : 'right'}`}
         />
       </div>
     )
   }
 }
 
-export default Header;
+export default Header

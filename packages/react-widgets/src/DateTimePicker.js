@@ -11,7 +11,7 @@ import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
 import Popup from './Popup'
 import Button from './Button'
-import BaseCalendar from './Calendar'
+import Calendar from './Calendar'
 import DateTimePickerInput from './DateTimePickerInput'
 import Select from './Select'
 import TimeList from './TimeList'
@@ -21,22 +21,20 @@ import * as Props from './util/Props'
 import * as CustomPropTypes from './util/PropTypes'
 import focusManager from './util/focusManager'
 import scrollManager from './util/scrollManager'
-import withRightToLeft from './util/withRightToLeft'
 import { widgetEditable } from './util/interaction'
 import dates from './util/dates'
 import { date as dateLocalizer } from './util/localizers'
-import { datePopups as popups } from './util/constants'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
 let NEXT_VIEW = {
-  [popups.DATE]: popups.TIME,
-  [popups.TIME]: popups.DATE,
+  date: 'time',
+  time: 'date',
 }
 
 let isBothOrNeither = (a, b) => (a && b) || (!a && !b)
 
 let propTypes = {
-  ...BaseCalendar.ControlledComponent.propTypes,
+  ...Calendar.ControlledComponent.propTypes,
 
   value: PropTypes.instanceOf(Date),
 
@@ -48,7 +46,7 @@ let propTypes = {
    * @type {(false | 'time' | 'date')}
    * @example ['openDateTime']
    */
-  open: PropTypes.oneOf([false, popups.TIME, popups.DATE]),
+  open: PropTypes.oneOf([false, 'time', 'date']),
   onToggle: PropTypes.func,
 
   /**
@@ -164,12 +162,12 @@ let propTypes = {
   onFocus: PropTypes.func,
 
   inputProps: PropTypes.object,
+  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     dateButton: PropTypes.string,
     timeButton: PropTypes.string,
   }),
 }
-
 
 /**
  * ---
@@ -188,14 +186,14 @@ let propTypes = {
  *
  * @public
  * @extends Calendar
-*/
-@withRightToLeft class DateTimePicker extends React.Component {
+ */
+class DateTimePicker extends React.Component {
   static displayName = 'DateTimePicker'
 
   static propTypes = propTypes
 
   static defaultProps = {
-    ...BaseCalendar.ControlledComponent.defaultProps,
+    ...Calendar.ControlledComponent.defaultProps,
     value: null,
     min: new Date(1900, 0, 1),
     max: new Date(2099, 11, 31),
@@ -267,8 +265,8 @@ let propTypes = {
         this.close()
       }
     } else if (open) {
-      if (open === popups.DATE) this.refs.calPopup.refs.inner.handleKeyDown(e)
-      if (open === popups.TIME) this.refs.timePopup.handleKeyDown(e)
+      if (open === 'date') this.refs.calPopup.refs.inner.handleKeyDown(e)
+      if (open === 'time') this.refs.timePopup.handleKeyDown(e)
     }
   }
 
@@ -278,7 +276,7 @@ let propTypes = {
 
     if (e.defaultPrevented) return
 
-    if (this.props.open === popups.TIME) this.refs.timePopup.handleKeyPress(e)
+    if (this.props.open === 'time') this.refs.timePopup.handleKeyPress(e)
   }
 
   @widgetEditable
@@ -312,13 +310,13 @@ let propTypes = {
   @widgetEditable
   handleCalendarClick = () => {
     this.focus()
-    this.toggle(popups.DATE)
+    this.toggle('date')
   }
 
   @widgetEditable
   handleTimeClick = () => {
     this.focus()
-    this.toggle(popups.TIME)
+    this.toggle('time')
   }
 
   renderInput(owns) {
@@ -341,9 +339,9 @@ let propTypes = {
     let { focused } = this.state
 
     let activeId = null
-    if (open === popups.TIME) {
+    if (open === 'time') {
       activeId = this.activeOptionId
-    } else if (open === popups.DATE) {
+    } else if (open === 'date') {
       activeId = this.activeCalendarId
     }
 
@@ -386,20 +384,22 @@ let propTypes = {
 
     return (
       <Select bordered>
-        {date &&
+        {date && (
           <Button
             icon="calendar"
             label={messages.dateButton()}
             disabled={disabled || readOnly}
             onClick={this.handleCalendarClick}
-          />}
-        {time &&
+          />
+        )}
+        {time && (
           <Button
             icon="clock-o"
             label={messages.timeButton()}
             disabled={disabled || readOnly}
             onClick={this.handleTimeClick}
-          />}
+          />
+        )}
       </Select>
     )
   }
@@ -412,18 +412,21 @@ let propTypes = {
       popupTransition,
       dropUp,
       onCurrentDateChange,
-      currentDate } = this.props
+      currentDate,
+    } = this.props
 
-    let calendarProps = Props.pick(this.props, BaseCalendar.ControlledComponent)
+    let calendarProps = Props.pick(this.props, Calendar.ControlledComponent)
+    // manually include the last controlled default Props
+    calendarProps.defaultView = this.props.defaultView
 
     return (
       <Popup
         dropUp={dropUp}
-        open={open === popups.DATE}
+        open={open === 'date'}
         className="rw-calendar-popup"
         transition={popupTransition}
       >
-        <BaseCalendar
+        <Calendar
           {...calendarProps}
           ref="calPopup"
           id={dateId}
@@ -466,7 +469,7 @@ let propTypes = {
       <Popup
         dropUp={dropUp}
         transition={popupTransition}
-        open={open === popups.TIME}
+        open={open === 'time'}
         onEntering={() => this.refs.timePopup.forceUpdate()}
       >
         <div>
@@ -500,7 +503,10 @@ let propTypes = {
 
     let { focused } = this.state
 
-    let elementProps = Props.pickElementProps(this, BaseCalendar.ControlledComponent)
+    let elementProps = Props.pickElementProps(
+      this,
+      Calendar.ControlledComponent
+    )
 
     let shouldRenderList = open || isFirstFocusedRender(this)
 
@@ -548,7 +554,7 @@ let propTypes = {
     let parsers = []
 
     if (format != null) parsers.push(format)
-    if (editFormat  != null) parsers.push(editFormat)
+    if (editFormat != null) parsers.push(editFormat)
 
     invariant(
       parsers.length,
@@ -580,9 +586,9 @@ let propTypes = {
     const { open, date, time, onToggle } = this.props
 
     if (!view) {
-      if (time) view = popups.TIME
-      if (date) view = popups.DATE
-      if (isBothOrNeither(date, time)) view = NEXT_VIEW[open] || popups.DATE
+      if (time) view = 'time'
+      if (date) view = 'date'
+      if (isBothOrNeither(date, time)) view = NEXT_VIEW[open] || 'date'
     }
 
     if (open !== view) notify(onToggle, view)
@@ -616,14 +622,14 @@ function parseDate(string, parser, culture) {
 }
 
 function getFormat(props) {
-  var isDate = props[popups.DATE] != null ? props[popups.DATE] : true,
-    isTime = props[popups.TIME] != null ? props[popups.TIME] : true
+  let isDate = props.date != null ? props.date : true
+  let isTime = props.time != null ? props.time : true
 
   return props.format
     ? props.format
     : (isDate && isTime) || (!isDate && !isTime)
-        ? dateLocalizer.getFormat('default')
-        : dateLocalizer.getFormat(isDate ? 'date' : 'time')
+      ? dateLocalizer.getFormat('default')
+      : dateLocalizer.getFormat(isDate ? 'date' : 'time')
 }
 
 function formatDate(date, format, culture) {

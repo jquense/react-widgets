@@ -17,7 +17,6 @@ import listDataManager from './util/listDataManager';
 import accessorManager from './util/accessorManager';
 import focusManager from './util/focusManager';
 import scrollManager from './util/scrollManager';
-import withRightToLeft from './util/withRightToLeft';
 import { widgetEditable } from './util/interaction';
 import { instanceId, notify } from './util/widgetHelpers';
 
@@ -47,7 +46,6 @@ function getFirstValue(data, values) {
  *
  * @public
  */
-@withRightToLeft
 class SelectList extends React.Component {
   static propTypes = {
     data: PropTypes.array,
@@ -89,10 +87,6 @@ class SelectList extends React.Component {
     readOnly: CustomPropTypes.disabled,
 
     listProps: PropTypes.object,
-    messages: PropTypes.shape({
-      emptyList: CustomPropTypes.message,
-    }),
-
     tabIndex: PropTypes.any,
 
     /**
@@ -100,6 +94,10 @@ class SelectList extends React.Component {
      * together.
      */
     name: PropTypes.string,
+    isRtl: PropTypes.bool,
+    messages: PropTypes.shape({
+      emptyList: CustomPropTypes.message,
+    }),
   };
 
   static defaultProps = {
