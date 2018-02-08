@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'
@@ -217,6 +216,10 @@ class NumberPicker extends React.Component {
       ])
   }
 
+  attachInputRef = ref => {
+    this.inputRef = ref
+  }
+
   renderInput(value) {
     let {
       placeholder,
@@ -238,7 +241,6 @@ class NumberPicker extends React.Component {
     return (
       <Input
         {...inputProps}
-        ref="input"
         role="spinbutton"
         tabIndex={tabIndex}
         value={value}
@@ -256,6 +258,7 @@ class NumberPicker extends React.Component {
         onChange={this.handleChange}
         onKeyPress={onKeyPress}
         onKeyUp={onKeyUp}
+        nodeRef={this.attachInputRef}
       />
     )
   }
@@ -307,7 +310,7 @@ class NumberPicker extends React.Component {
   }
 
   focus() {
-    findDOMNode(this.refs.input).focus()
+    this.inputRef.focus()
   }
 
   increment(event) {

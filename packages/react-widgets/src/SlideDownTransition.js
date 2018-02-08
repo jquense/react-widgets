@@ -78,6 +78,8 @@ class SlideDownTransition extends React.Component {
     events.on(node, transitionEnd, handler, false);
   }
 
+  attachRef = ref => (this.element = ref);
+
   render() {
     const { children, className, dropUp } = this.props;
 
@@ -96,7 +98,7 @@ class SlideDownTransition extends React.Component {
         {(status, innerProps) => (
           <div
             {...innerProps}
-            ref={r => this.element = r}
+            ref={this.attachRef}
             className={cn(
               className,
               dropUp && 'rw-dropup',

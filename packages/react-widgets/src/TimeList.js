@@ -175,8 +175,8 @@ class TimeList extends React.Component {
   }
 
   scrollTo = () => {
-    this.refs.list.move
-      && this.refs.list.move()
+    this.listRef.move
+      && this.listRef.move()
   }
 
   search(character, cb) {
@@ -192,6 +192,8 @@ class TimeList extends React.Component {
     }, this.props.delay)
   }
 
+  attachListRef = ref => (this.listRef = ref)
+
   render() {
     let { onSelect } = this.props;
     let { selectedItem, focusedItem } = this.state;
@@ -201,7 +203,6 @@ class TimeList extends React.Component {
 
     return (
       <List
-        ref="list"
         {...props}
         {...listProps}
         onSelect={onSelect}
@@ -209,6 +210,7 @@ class TimeList extends React.Component {
         valueAccessor={this.accessors.value}
         selectedItem={selectedItem}
         focusedItem={focusedItem}
+        ref={this.attachListRef}
       />
     )
   }

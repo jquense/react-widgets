@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import * as PropTypes from 'prop-types'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import uncontrollable from 'uncontrollable'
 
 import List from './List'
@@ -164,6 +163,13 @@ class Autocomplete extends React.Component {
     }
   }
 
+  attachListRef = (ref) => {
+    this.listRef = ref
+  }
+  attachInputRef = (ref) => {
+    this.inputRef = ref
+  }
+
   renderList(messages) {
     let { activeId, inputId, listId, accessors } = this
 
@@ -174,10 +180,10 @@ class Autocomplete extends React.Component {
 
     return (
       <List
-        ref="list"
         {...props}
         id={listId}
         activeId={activeId}
+        ref={this.attachListRef}
         valueAccessor={accessors.value}
         textAccessor={accessors.text}
         selectedItem={selectedItem}
@@ -234,10 +240,10 @@ class Autocomplete extends React.Component {
         <WidgetPicker>
           <Input
             {...inputProps}
-            ref="input"
             role="combobox"
             id={this.inputId}
             autoFocus={autoFocus}
+            nodeRef={this.attachInputRef}
             disabled={disabled === true}
             readOnly={readOnly === true}
             aria-busy={!!busy}
@@ -267,7 +273,7 @@ class Autocomplete extends React.Component {
             open={open}
             dropUp={dropUp}
             transition={popupTransition}
-            onEntering={() => this.refs.list.forceUpdate()}
+            onEntering={() => this.listRef.forceUpdate()}
           >
             <div>
               {this.renderList(messages)}
@@ -278,7 +284,7 @@ class Autocomplete extends React.Component {
   }
 
   focus() {
-    this.refs.input && findDOMNode(this.refs.input).focus()
+    this.inputRef && this.inputRef.focus()
   }
 
   change(nextValue, originalEvent) {

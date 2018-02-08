@@ -265,8 +265,8 @@ class DateTimePicker extends React.Component {
         this.close()
       }
     } else if (open) {
-      if (open === 'date') this.refs.calPopup.refs.inner.handleKeyDown(e)
-      if (open === 'time') this.refs.timePopup.handleKeyDown(e)
+      if (open === 'date') this.calRef.refs.inner.handleKeyDown(e)
+      if (open === 'time') this.timeRef.handleKeyDown(e)
     }
   }
 
@@ -276,7 +276,7 @@ class DateTimePicker extends React.Component {
 
     if (e.defaultPrevented) return
 
-    if (this.props.open === 'time') this.refs.timePopup.handleKeyPress(e)
+    if (this.props.open === 'time') this.timeRef.handleKeyPress(e)
   }
 
   @widgetEditable
@@ -319,6 +319,12 @@ class DateTimePicker extends React.Component {
     this.toggle('time')
   }
 
+  attachCalRef = ref => (this.calRef = ref)
+
+  attachTimeRef = ref => (this.timeRef = ref)
+
+  attachInputRef = ref => (this.inputRef = ref)
+
   renderInput(owns) {
     let {
       open,
@@ -349,7 +355,7 @@ class DateTimePicker extends React.Component {
       <DateTimePickerInput
         {...inputProps}
         id={this.inputId}
-        ref="valueInput"
+        ref={this.attachInputRef}
         role="combobox"
         name={name}
         tabIndex={tabIndex}
@@ -428,7 +434,6 @@ class DateTimePicker extends React.Component {
       >
         <Calendar
           {...calendarProps}
-          ref="calPopup"
           id={dateId}
           activeId={activeCalendarId}
           tabIndex="-1"
@@ -443,6 +448,7 @@ class DateTimePicker extends React.Component {
           aria-hidden={!open}
           aria-live="polite"
           aria-labelledby={inputId}
+          ref={this.attachCalRef}
         />
       </Popup>
     )
@@ -470,11 +476,10 @@ class DateTimePicker extends React.Component {
         dropUp={dropUp}
         transition={popupTransition}
         open={open === 'time'}
-        onEntering={() => this.refs.timePopup.forceUpdate()}
+        onEntering={() => this.timeRef.forceUpdate()}
       >
         <div>
           <TimeList
-            ref="timePopup"
             id={listId}
             min={min}
             max={max}
@@ -492,6 +497,7 @@ class DateTimePicker extends React.Component {
             aria-live={open && 'polite'}
             aria-hidden={!open}
             messages={this.messages}
+            ref={this.attachTimeRef}
           />
         </div>
       </Popup>
@@ -541,10 +547,8 @@ class DateTimePicker extends React.Component {
   }
 
   focus() {
-    let { valueInput } = this.refs
-
-    if (valueInput && activeElement() !== findDOMNode(valueInput))
-      valueInput.focus()
+    if (this.inputRef && activeElement() !== findDOMNode(this.inputRef))
+      this.inputRef.focus()
   }
 
   parse = string => {
