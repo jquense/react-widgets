@@ -2,7 +2,7 @@
 
 In order to handle the complex international differences in number and date formats `react-widgets` relies on third party
 parsing and formatting libraries via an integration layer of "localizers". We maintain and support localizers
-for __Globalize.js__, __Moment.js__ and a simple number localizer, but you can easily write
+for __Globalize.js__, __Moment.js__, __date-fns__ and a simple number localizer, but you can easily write
 your own for whichever library you are using.
 
 Localization sensitive widgets have `format` props that passed directly to your chosen localizer. The type and shape
@@ -129,6 +129,75 @@ the __simple-number__ localizer below, or Globalize.js.
 
 
 Moment [format](http://momentjs.com/docs/#/displaying/format/) props accept `string`s
+
+```jsx
+
+<DateTimePicker format='mmm YYY' />
+
+```
+
+### date-fns <small>date</small>
+
+```sh
+npm install react-widgets-date-fns date-fns@2.0.0-alpha.7 --save
+```
+
+See the official [date-fns docs](https://date-fns.org/v2.0.0-alpha.7/docs/Getting-Started) for information 
+on integrating date-fns.
+
+`date-fns` only provides __date__ localization, if you also need Number localization consider
+the __simple-number__ localizer below, or Globalize.js.
+
+The `date-fns` localizer is a convenient option to get up and running quickly as it is ready-to-use with
+the `en-US` locale without any configuration, and includes only the `date-fns` bits that are used 
+for formatting and parsing dates so the additional bundle size should be minimal. 
+
+{{<TabbedCodeBlock>
+  <Tab title="webpack">
+    {`
+    import dateFnsLocalizer from 'react-widgets-date-fns';
+    import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+
+    dateFnsLocalizer()
+
+    render(<DateTimePicker />, document.getElementById('app-root'))
+    `}
+  </Tab>
+  <Tab title="browser globals">
+    {`
+    <script src='node_modules/react-widgets/dist/react-widgets.js'></script>
+    <script src='node_modules/react-widgets-date-fns/dist/react-widgets-date-fns.js'></script>
+    <script>
+      dateFnsLocalizer()
+      var DateTimePicker = ReactWidgets.DateTimePicker;
+
+      ReactDOM.render(<DateTimePicker />, document.getElementById('app-root'))
+    </script>
+    `}
+  </Tab>
+</TabbedCodeBlock>}}
+
+Additional locales can be included and date formats overridden by passing them as options to 
+the localizer function.
+
+```js
+
+// Use custom date formats and include all date-fns locales
+import dateFnsLocalizer, { defaultFormats } from 'react-widgets-date-fns'
+import locales from 'date-fns/locale'
+
+const formats = Object.assign(defaultFormats, { default: 'mmm YY' })
+dateFnsLocalizer({ formats, locales })
+
+// Include only the locales you need to limit bundle size
+import enGB from 'date-fns/locale/en-GB'
+import de from 'date-fns/locale/de'
+
+dateFnsLocalizer({ locales: { 'en-GB': enGB, 'de': de } })
+
+```
+
+date-fns [format](https://date-fns.org/v1.29.0/docs/format) props accept `string`s
 
 ```jsx
 
