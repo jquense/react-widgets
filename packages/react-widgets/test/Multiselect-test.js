@@ -24,6 +24,10 @@ describe('Multiselect', function() {
     mount(<Multiselect defaultValue={[0]} data={dataList} textField='label' valueField='id' />)
       .find(MultiselectTag)
       .contains('jimmy')
+
+    mount(<Multiselect defaultValue={[0]} data={dataList} textField='label' valueField={i => i.id} />)
+      .find(MultiselectTag)
+      .contains('jimmy')
   })
 
   it('should start closed', () => {
