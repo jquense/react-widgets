@@ -45,6 +45,6 @@ export function valueMatcher(a, b, valueField) {
 }
 
 export function dataItem(data, item, valueField) {
-  let idx = dataIndexOf(data, dataValue(item, valueField), valueField)
+  let idx = dataIndexOf(data, item, valueField)
   return idx !== -1? data[idx] : item
 }
