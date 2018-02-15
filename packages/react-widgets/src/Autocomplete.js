@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import * as PropTypes from 'prop-types'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import uncontrollable from 'uncontrollable'
 
 import List from './List'
@@ -17,7 +16,6 @@ import * as CustomPropTypes from './util/PropTypes'
 import accessorManager from './util/accessorManager'
 import scrollManager from './util/scrollManager'
 import * as Props from './util/Props'
-import withRightToLeft from './util/withRightToLeft'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
@@ -53,6 +51,7 @@ const propTypes = {
   placeholder: PropTypes.string,
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
+  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     openCombobox: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
@@ -60,7 +59,7 @@ const propTypes = {
   }),
 }
 
-@withRightToLeft class Autocomplete extends React.Component {
+class Autocomplete extends React.Component {
   static defaultProps = {
     data: [],
     open: false,
@@ -164,6 +163,13 @@ const propTypes = {
     }
   }
 
+  attachListRef = (ref) => {
+    this.listRef = ref
+  }
+  attachInputRef = (ref) => {
+    this.inputRef = ref
+  }
+
   renderList(messages) {
     let { activeId, inputId, listId, accessors } = this
 
@@ -174,10 +180,10 @@ const propTypes = {
 
     return (
       <List
-        ref="list"
         {...props}
         id={listId}
         activeId={activeId}
+        ref={this.attachListRef}
         valueAccessor={accessors.value}
         textAccessor={accessors.text}
         selectedItem={selectedItem}
@@ -234,10 +240,10 @@ const propTypes = {
         <WidgetPicker>
           <Input
             {...inputProps}
-            ref="input"
             role="combobox"
             id={this.inputId}
             autoFocus={autoFocus}
+            nodeRef={this.attachInputRef}
             disabled={disabled === true}
             readOnly={readOnly === true}
             aria-busy={!!busy}
@@ -267,7 +273,7 @@ const propTypes = {
             open={open}
             dropUp={dropUp}
             transition={popupTransition}
-            onEntering={() => this.refs.list.forceUpdate()}
+            onEntering={() => this.listRef.forceUpdate()}
           >
             <div>
               {this.renderList(messages)}
@@ -278,7 +284,7 @@ const propTypes = {
   }
 
   focus() {
-    this.refs.input && findDOMNode(this.refs.input).focus()
+    this.inputRef && this.inputRef.focus()
   }
 
   change(nextValue, originalEvent) {

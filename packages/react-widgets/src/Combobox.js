@@ -15,7 +15,6 @@ import listDataManager from './util/listDataManager'
 import * as CustomPropTypes from './util/PropTypes'
 import accessorManager from './util/accessorManager'
 import scrollManager from './util/scrollManager'
-import withRightToLeft from './util/withRightToLeft'
 import { isShallowEqual } from './util/_'
 import * as Props from './util/Props'
 import * as Filter from './util/Filter'
@@ -64,6 +63,8 @@ let propTypes = {
 
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
+
+  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     openCombobox: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
@@ -89,7 +90,6 @@ let propTypes = {
 
  * @public
  */
-@withRightToLeft
 class Combobox extends React.Component {
   static propTypes = propTypes
 
@@ -126,7 +126,7 @@ class Combobox extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    let isSuggesting = this.refs.input && this.refs.input.isSuggesting(),
+    let isSuggesting = this.inputRef && this.inputRef.isSuggesting(),
       stateChanged = !isShallowEqual(nextState, this.state),
       valueChanged = !isShallowEqual(nextProps, this.props)
 
@@ -148,7 +148,7 @@ class Combobox extends React.Component {
 
     let searchTerm
     // filter only when the value is not an item in the data list
-    if (index === -1 || (this.refs.input && this.refs.input.isSuggesting())) {
+    if (index === -1 || (this.inputRef && this.inputRef.isSuggesting())) {
       searchTerm = itemText
     }
 
@@ -181,8 +181,8 @@ class Combobox extends React.Component {
 
   // has to be done early since `accept()` re-focuses the input
   handleFocusWillChange = focused => {
-    if (!focused && this.refs.input)
-      this.refs.input.accept()
+    if (!focused && this.inputRef)
+      this.inputRef.accept()
     if (focused) this.focus();
   }
 
@@ -241,7 +241,7 @@ class Combobox extends React.Component {
       select(this.state.focusedItem)
     }
     else if (key === 'Tab') {
-      this.refs.input.accept()
+      this.inputRef.accept()
     }
     else if (key === 'ArrowDown') {
       e.preventDefault()
@@ -258,6 +258,12 @@ class Combobox extends React.Component {
       else      select(list.prev(selectedItem))
     }
 
+  }
+  attachListRef = (ref) => {
+    this.listRef = ref
+  }
+  attachInputRef = (ref) => {
+    this.inputRef = ref
   }
 
   renderInput() {
@@ -286,7 +292,6 @@ class Combobox extends React.Component {
     return (
       <ComboboxInput
         {...inputProps}
-        ref="input"
         role="combobox"
         name={name}
         id={this.inputId}
@@ -305,6 +310,7 @@ class Combobox extends React.Component {
         value={this.accessors.text(valueItem)}
         onChange={this.handleInputChange}
         onKeyDown={this.handleInputKeyDown}
+        ref={this.attachInputRef}
       />
     )
   }
@@ -320,7 +326,6 @@ class Combobox extends React.Component {
 
     return (
       <List
-        ref="list"
         {...props}
         id={listId}
         activeId={activeId}
@@ -333,6 +338,7 @@ class Combobox extends React.Component {
         aria-live={open && 'polite'}
         onSelect={this.handleSelect}
         onMove={this.handleScroll}
+        ref={this.attachListRef}
         messages={{
           emptyList: data.length ? messages.emptyFilter : messages.emptyList,
         }}
@@ -383,7 +389,7 @@ class Combobox extends React.Component {
             open={open}
             dropUp={dropUp}
             transition={popupTransition}
-            onEntering={() => this.refs.list.forceUpdate()}
+            onEntering={() => this.listRef.forceUpdate()}
           >
             <div>
               {this.renderList(messages)}
@@ -394,8 +400,8 @@ class Combobox extends React.Component {
   }
 
   focus() {
-    if (this.refs.input)
-      this.refs.input.focus()
+    if (this.inputRef)
+      this.inputRef.focus()
   }
 
   change(nextValue, typing, originalEvent) {

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import elementType
-  from 'react-prop-types/lib/elementType';
+  from 'prop-types-extra/lib/elementType';
 import createChainableTypeChecker
-  from 'react-prop-types/lib/utils/createChainableTypeChecker';
+  from 'prop-types-extra/lib/utils/createChainableTypeChecker';
 
 import { date, number } from './localizers';
 

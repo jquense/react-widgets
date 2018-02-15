@@ -12,6 +12,9 @@ export const caretSet = (node, start, end) => {
 }
 
 class ComboboxInput extends React.Component {
+  static defaultProps = {
+    value: '',
+  };
 
   static propTypes = {
     value: PropTypes.string,
@@ -19,10 +22,6 @@ class ComboboxInput extends React.Component {
     suggest: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onKeyDown:  PropTypes.func,
-  };
-
-  static defaultProps = {
-    value: '',
   };
 
   componentDidUpdate() {
@@ -37,6 +36,16 @@ class ComboboxInput extends React.Component {
         caretSet(input, start, start + end)
       }
     }
+  }
+
+  accept() {
+    this._last = null
+    // caretSet(node, end, end)
+  }
+
+
+  focus() {
+    findDOMNode(this).focus()
   }
 
   handleChange = (e) => {
@@ -54,6 +63,17 @@ class ComboboxInput extends React.Component {
     onChange(e, stringValue)
   };
 
+  isSuggesting() {
+    let { value, suggest } = this.props;
+
+    if (!suggest) return false;
+
+    return (
+      this._last != null &&
+      value.toLowerCase().indexOf(this._last.toLowerCase()) !== -1
+    )
+  }
+
   render() {
     let { onKeyDown, ...props } = this.props;
 
@@ -67,27 +87,6 @@ class ComboboxInput extends React.Component {
         onChange={this.handleChange}
       />
     )
-  }
-
-  isSuggesting() {
-    let { value, suggest } = this.props;
-
-    if (!suggest) return false;
-
-    return (
-      this._last != null &&
-      value.toLowerCase().indexOf(this._last.toLowerCase()) !== -1
-    )
-  }
-
-  accept() {
-    this._last = null
-    // caretSet(node, end, end)
-  }
-
-
-  focus() {
-    findDOMNode(this).focus()
   }
 }
 

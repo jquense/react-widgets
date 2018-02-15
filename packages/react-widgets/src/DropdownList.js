@@ -26,7 +26,6 @@ import listDataManager from './util/listDataManager'
 import * as CustomPropTypes from './util/PropTypes'
 import accessorManager from './util/accessorManager'
 import scrollManager from './util/scrollManager'
-import withRightToLeft from './util/withRightToLeft'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
@@ -50,7 +49,6 @@ const CREATE_OPTION = {};
 
  * @public
  */
-@withRightToLeft
 class DropdownList extends React.Component {
   static propTypes = {
     ...Filter.propTypes,
@@ -113,6 +111,7 @@ class DropdownList extends React.Component {
     inputProps: PropTypes.object,
     listProps: PropTypes.object,
 
+    isRtl: PropTypes.bool,
     messages: PropTypes.shape({
       open: PropTypes.string,
       emptyList: CustomPropTypes.message,
@@ -327,6 +326,10 @@ class DropdownList extends React.Component {
     }
   }
 
+  attachInputRef = ref => (this.inputRef = ref)
+  attachFilterRef = ref => (this.filterRef = ref)
+  attachListRef = ref => (this.listRef = ref)
+
   renderList(messages) {
     let { open, filter, data, searchTerm } = this.props
     let { selectedItem, focusedItem } = this.state
@@ -339,22 +342,20 @@ class DropdownList extends React.Component {
       <div>
         {filter && (
           <WidgetPicker
-            ref="filterWrapper"
             className="rw-filter-input rw-input"
           >
             <input
-              ref="filter"
               value={searchTerm}
               className="rw-input-reset"
               onChange={this.handleInputChange}
               placeholder={messages.filterPlaceholder(this.props)}
+              ref={this.attachFilterRef}
             />
             <Select icon="search" role="presentation" aria-hidden="true" />
           </WidgetPicker>
         )}
         <List
           {...props}
-          ref="list"
           id={this.listId}
           activeId={this.activeId}
           valueAccessor={value}
@@ -366,6 +367,7 @@ class DropdownList extends React.Component {
           aria-live={open && 'polite'}
           aria-labelledby={this.inputId}
           aria-hidden={!this.props.open}
+          ref={this.attachListRef}
           messages={{
             emptyList: data.length ? messages.emptyFilter : messages.emptyList,
           }}
@@ -430,7 +432,6 @@ class DropdownList extends React.Component {
     return (
       <Widget
         {...elementProps}
-        ref="input"
         open={open}
         dropUp={dropUp}
         focused={focused}
@@ -441,6 +442,7 @@ class DropdownList extends React.Component {
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleKeyPress}
         className={cn(className, 'rw-dropdown-list')}
+        ref={this.attachInputRef}
       >
         <WidgetPicker onClick={this.handleClick} className="rw-widget-input">
           <DropdownListInput
@@ -465,7 +467,7 @@ class DropdownList extends React.Component {
             dropUp={dropUp}
             transition={popupTransition}
             onEntered={() => this.focus()}
-            onEntering={() => this.refs.list.forceUpdate()}
+            onEntering={() => this.listRef.forceUpdate()}
           >
             {this.renderList(messages)}
           </Popup>}
@@ -475,7 +477,7 @@ class DropdownList extends React.Component {
 
   focus = target => {
     let { filter, open } = this.props
-    let inst = target || (filter && open ? this.refs.filter : this.refs.input)
+    let inst = target || (filter && open ? this.filterRef : this.inputRef)
 
     inst = findDOMNode(inst)
 

@@ -3,6 +3,10 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 
 class Widget extends React.Component {
+  static contextTypes = {
+    isRtl: PropTypes.bool,
+  }
+
   static propTypes = {
     tabIndex: PropTypes.node,
     focused: PropTypes.bool,
@@ -10,10 +14,6 @@ class Widget extends React.Component {
     readOnly: PropTypes.bool,
     open: PropTypes.bool,
     dropUp: PropTypes.bool,
-  }
-
-  static contextTypes = {
-    isRtl: PropTypes.bool,
   }
 
   render() {

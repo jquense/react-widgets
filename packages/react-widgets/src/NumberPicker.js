@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'
@@ -16,8 +15,6 @@ import focusManager from './util/focusManager'
 import { widgetEditable } from './util/interaction'
 import { notify } from './util/widgetHelpers'
 import * as CustomPropTypes from './util/PropTypes'
-import { directions } from './util/constants'
-import withRightToLeft from './util/withRightToLeft'
 import { number as numberLocalizer } from './util/localizers'
 
 var format = props => numberLocalizer.getFormat('default', props.format)
@@ -26,7 +23,8 @@ var format = props => numberLocalizer.getFormat('default', props.format)
 // at about 35ms+/- 5ms after an initial 500ms delay. callback fires on the leading edge
 function createInterval(callback) {
   let fn
-  var id, cancel = () => clearTimeout(id)
+  var id,
+    cancel = () => clearTimeout(id)
 
   id = setTimeout(
     (fn = () => {
@@ -60,10 +58,8 @@ function clamp(value, min, max) {
  *
  * @public
  */
-@withRightToLeft
 class NumberPicker extends React.Component {
   static propTypes = {
-
     value: PropTypes.number,
 
     /**
@@ -112,7 +108,6 @@ class NumberPicker extends React.Component {
      */
     parse: PropTypes.func,
 
-
     /** @ignore */
     tabIndex: PropTypes.any,
     name: PropTypes.string,
@@ -125,6 +120,7 @@ class NumberPicker extends React.Component {
     readOnly: CustomPropTypes.disabled,
 
     inputProps: PropTypes.object,
+    isRtl: PropTypes.bool,
     messages: PropTypes.shape({
       increment: PropTypes.string,
       decrement: PropTypes.string,
@@ -158,16 +154,17 @@ class NumberPicker extends React.Component {
     this.messages = getMessages(messages)
   }
 
-  @widgetEditable handleMouseDown = (direction, event) => {
+  @widgetEditable
+  handleMouseDown = (direction, event) => {
     let { min, max } = this.props
 
     event && event.persist()
 
-    let method = direction === directions.UP ? this.increment : this.decrement
+    let method = direction === 'UP' ? this.increment : this.decrement
 
     let value = method.call(this, event),
-      atTop = direction === directions.UP && value === max,
-      atBottom = direction === directions.DOWN && value === min
+      atTop = direction === 'UP' && value === max,
+      atBottom = direction === 'DOWN' && value === min
 
     if (atTop || atBottom) this.handleMouseUp()
     else if (!this._cancelRepeater) {
@@ -177,12 +174,14 @@ class NumberPicker extends React.Component {
     }
   }
 
-  @widgetEditable handleMouseUp = () => {
+  @widgetEditable
+  handleMouseUp = () => {
     this._cancelRepeater && this._cancelRepeater()
     this._cancelRepeater = null
   }
 
-  @widgetEditable handleKeyDown = event => {
+  @widgetEditable
+  handleKeyDown = event => {
     let { min, max, onKeyDown } = this.props
     let key = event.key
 
@@ -217,6 +216,10 @@ class NumberPicker extends React.Component {
       ])
   }
 
+  attachInputRef = ref => {
+    this.inputRef = ref
+  }
+
   renderInput(value) {
     let {
       placeholder,
@@ -238,7 +241,6 @@ class NumberPicker extends React.Component {
     return (
       <Input
         {...inputProps}
-        ref="input"
         role="spinbutton"
         tabIndex={tabIndex}
         value={value}
@@ -256,6 +258,7 @@ class NumberPicker extends React.Component {
         onChange={this.handleChange}
         onKeyPress={onKeyPress}
         onKeyUp={onKeyUp}
+        nodeRef={this.attachInputRef}
       />
     )
   }
@@ -287,18 +290,18 @@ class NumberPicker extends React.Component {
               onClick={this.handleFocus}
               disabled={value === max || disabled}
               label={this.messages.increment({ value, min, max })}
-              onMouseUp={e => this.handleMouseUp(directions.UP, e)}
-              onMouseDown={e => this.handleMouseDown(directions.UP, e)}
-              onMouseLeave={e => this.handleMouseUp(directions.UP, e)}
+              onMouseUp={e => this.handleMouseUp('UP', e)}
+              onMouseDown={e => this.handleMouseDown('UP', e)}
+              onMouseLeave={e => this.handleMouseUp('UP', e)}
             />
             <Button
               icon="caret-down"
               onClick={this.handleFocus}
               disabled={value === min || disabled}
               label={this.messages.decrement({ value, min, max })}
-              onMouseUp={e => this.handleMouseUp(directions.DOWN, e)}
-              onMouseDown={e => this.handleMouseDown(directions.DOWN, e)}
-              onMouseLeave={e => this.handleMouseUp(directions.DOWN, e)}
+              onMouseUp={e => this.handleMouseUp('DOWN', e)}
+              onMouseDown={e => this.handleMouseDown('DOWN', e)}
+              onMouseLeave={e => this.handleMouseUp('DOWN', e)}
             />
           </Select>
         </WidgetPicker>
@@ -307,7 +310,7 @@ class NumberPicker extends React.Component {
   }
 
   focus() {
-    findDOMNode(this.refs.input).focus()
+    this.inputRef.focus()
   }
 
   increment(event) {
@@ -321,9 +324,10 @@ class NumberPicker extends React.Component {
   step(amount, event) {
     var value = (this.props.value || 0) + amount
 
-    var decimals = this.props.precision != null
-      ? this.props.precision
-      : numberLocalizer.precision(format(this.props))
+    var decimals =
+      this.props.precision != null
+        ? this.props.precision
+        : numberLocalizer.precision(format(this.props))
 
     this.handleChange(decimals != null ? round(value, decimals) : value, event)
 
@@ -331,13 +335,7 @@ class NumberPicker extends React.Component {
   }
 }
 
-export default uncontrollable(
-  NumberPicker,
-  {
-    value: 'onChange',
-  },
-  ['focus']
-)
+export default uncontrollable(NumberPicker, { value: 'onChange' }, ['focus'])
 
 // thank you kendo ui core
 // https://github.com/telerik/kendo-ui-core/blob/master/src/kendo.core.js#L1036

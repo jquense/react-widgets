@@ -10,7 +10,6 @@ import * as Props from './util/Props';
 import * as CustomPropTypes from './util/PropTypes';
 
 class DecadeView extends React.Component {
-
   static propTypes = {
     activeId: PropTypes.string,
     culture:      PropTypes.string,
@@ -24,23 +23,6 @@ class DecadeView extends React.Component {
     yearFormat:   CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
   };
-
-  render(){
-    let { focused, activeId } = this.props;
-
-    return (
-      <CalendarView
-        {...Props.omitOwn(this)}
-        activeId={activeId}
-      >
-        <CalendarView.Body>
-          {chunk(getDecadeYears(focused), 4)
-            .map(this.renderRow)
-          }
-        </CalendarView.Body>
-      </CalendarView>
-    )
-  }
 
   renderRow = (row, rowIdx) => {
     let {
@@ -84,6 +66,23 @@ class DecadeView extends React.Component {
           )
         })}
       </CalendarView.Row>
+    )
+  }
+
+  render(){
+    let { focused, activeId } = this.props;
+
+    return (
+      <CalendarView
+        {...Props.omitOwn(this)}
+        activeId={activeId}
+      >
+        <CalendarView.Body>
+          {chunk(getDecadeYears(focused), 4)
+            .map(this.renderRow)
+          }
+        </CalendarView.Body>
+      </CalendarView>
     )
   }
 }

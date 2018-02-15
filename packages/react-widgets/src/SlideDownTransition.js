@@ -28,38 +28,6 @@ function parseDuration(node) {
 }
 
 class SlideDownTransition extends React.Component {
-  handleTransitionEnd = (node, done) => {
-    let duration = parseDuration(node.lastChild) || 0
-
-    const handler = () => {
-      events.off(node, transitionEnd, handler, false)
-      done();
-    }
-
-    setTimeout(handler, duration * 1.5);
-    events.on(node, transitionEnd, handler, false);
-  }
-
-  handleEntered = (elem) => {
-    this.clearContainerHeight(elem);
-
-    if (this.props.onEntered)
-      this.props.onEntered();
-  }
-
-  handleEntering = () => {
-    if (this.props.onEntering)
-      this.props.onEntering();
-  }
-
-  setContainerHeight = (elem) => {
-    elem.style.height = this.getHeight() + 'px';
-  }
-
-  clearContainerHeight = (elem) => {
-    elem.style.height = '';
-  }
-
   getHeight() {
     let container = this.element
     let content = container.firstChild
@@ -77,6 +45,40 @@ class SlideDownTransition extends React.Component {
     container.style.display = old
     return height
   }
+
+  setContainerHeight = (elem) => {
+    elem.style.height = this.getHeight() + 'px';
+  }
+
+  clearContainerHeight = (elem) => {
+    elem.style.height = '';
+  }
+
+  handleEntered = (elem) => {
+    this.clearContainerHeight(elem);
+
+    if (this.props.onEntered)
+      this.props.onEntered();
+  }
+
+  handleEntering = () => {
+    if (this.props.onEntering)
+      this.props.onEntering();
+  }
+
+  handleTransitionEnd = (node, done) => {
+    let duration = parseDuration(node.lastChild) || 0
+
+    const handler = () => {
+      events.off(node, transitionEnd, handler, false)
+      done();
+    }
+
+    setTimeout(handler, duration * 1.5);
+    events.on(node, transitionEnd, handler, false);
+  }
+
+  attachRef = ref => (this.element = ref);
 
   render() {
     const { children, className, dropUp } = this.props;
@@ -96,7 +98,7 @@ class SlideDownTransition extends React.Component {
         {(status, innerProps) => (
           <div
             {...innerProps}
-            ref={r => this.element = r}
+            ref={this.attachRef}
             className={cn(
               className,
               dropUp && 'rw-dropup',

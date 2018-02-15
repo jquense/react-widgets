@@ -8,8 +8,6 @@ import Month  from '../src/Month';
 import Year from '../src/Year';
 import Decade from '../src/Decade';
 import Century from '../src/Century';
-import { directions } from '../src/util/constants';
-import dates from '../src/util/dates';
 import globalize from 'globalize';
 
 
@@ -350,25 +348,25 @@ describe('Calendar', () => {
       var date = new Date(2014, 0, 16, 0, 0, 0)
         , min, max;
 
-      expect(dates.move(date, min, max, 'month', directions.LEFT).toString())
+      expect(BaseCalendar.move(date, min, max, 'month', 'LEFT').toString())
         .to.equal((new Date(2014, 0, 15, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'month', directions.RIGHT).toString())
+      expect(BaseCalendar.move(date, min, max, 'month', 'RIGHT').toString())
         .to.equal((new Date(2014, 0, 17, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'month', directions.UP).toString())
+      expect(BaseCalendar.move(date, min, max, 'month', 'UP').toString())
         .to.equal((new Date(2014, 0, 9, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'month', directions.DOWN).toString())
+      expect(BaseCalendar.move(date, min, max, 'month', 'DOWN').toString())
         .to.equal((new Date(2014, 0, 23, 0, 0, 0)).toString())
 
       min = new Date(2014, 0, 11, 0, 0, 0)
       max = new Date(2014, 0, 20, 0, 0, 0)
 
-      expect(dates.move(date, min, max, 'month', directions.UP))
+      expect(BaseCalendar.move(date, min, max, 'month', 'UP'))
         .to.eql(date)
 
-      expect(dates.move(date, min, max, 'month', directions.DOWN))
+      expect(BaseCalendar.move(date, min, max, 'month', 'DOWN'))
         .to.eql(date)
     })
 
@@ -376,25 +374,25 @@ describe('Calendar', () => {
       var date = new Date(2014, 6, 16, 0, 0, 0)
         , min, max;
 
-      expect(dates.move(date, min, max, 'year', directions.LEFT).toString())
+      expect(BaseCalendar.move(date, min, max, 'year', 'LEFT').toString())
         .to.equal((new Date(2014, 5, 16, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'year', directions.RIGHT).toString())
+      expect(BaseCalendar.move(date, min, max, 'year', 'RIGHT').toString())
         .to.equal((new Date(2014, 7, 16, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'year', directions.UP).toString())
+      expect(BaseCalendar.move(date, min, max, 'year', 'UP').toString())
         .to.equal((new Date(2014, 2, 16, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'year', directions.DOWN).toString())
+      expect(BaseCalendar.move(date, min, max, 'year', 'DOWN').toString())
         .to.equal((new Date(2014, 10, 16, 0, 0, 0)).toString())
 
       min = new Date(2014, 3, 16, 0, 0, 0)
       max = new Date(2014, 8, 16, 0, 0, 0)
 
-      expect(dates.move(date, min, max, 'year', directions.UP))
+      expect(BaseCalendar.move(date, min, max, 'year', 'UP'))
         .to.eql(date)
 
-      expect(dates.move(date, min, max, 'year', directions.DOWN))
+      expect(BaseCalendar.move(date, min, max, 'year', 'DOWN'))
         .to.eql(date)
     })
 
@@ -402,25 +400,25 @@ describe('Calendar', () => {
       var date = new Date(2015, 6, 16, 0, 0, 0)
         , min, max;
 
-      expect(dates.move(date, min, max, 'decade', directions.LEFT).toString())
+      expect(BaseCalendar.move(date, min, max, 'decade', 'LEFT').toString())
         .to.equal((new Date(2014, 6, 16, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'decade', directions.RIGHT).toString())
+      expect(BaseCalendar.move(date, min, max, 'decade', 'RIGHT').toString())
         .to.equal((new Date(2016, 6, 16, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'decade', directions.UP).toString())
+      expect(BaseCalendar.move(date, min, max, 'decade', 'UP').toString())
         .to.equal((new Date(2011, 6, 16, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'decade', directions.DOWN).toString())
+      expect(BaseCalendar.move(date, min, max, 'decade', 'DOWN').toString())
         .to.equal((new Date(2019, 6, 16, 0, 0, 0)).toString())
 
       min = new Date(2014, 6, 16, 0, 0, 0)
       max = new Date(2016, 6, 16, 0, 0, 0)
 
-      expect(dates.move(date, min, max, 'decade', directions.UP))
+      expect(BaseCalendar.move(date, min, max, 'decade', 'UP'))
         .to.eql(date)
 
-      expect(dates.move(date, min, max, 'decade', directions.DOWN))
+      expect(BaseCalendar.move(date, min, max, 'decade', 'DOWN'))
         .to.eql(date)
     })
 
@@ -428,25 +426,25 @@ describe('Calendar', () => {
       var date = new Date(2055, 6, 16, 0, 0, 0)
         , min, max;
 
-      expect(dates.move(date, min, max, 'century', directions.LEFT).toString())
+      expect(BaseCalendar.move(date, min, max, 'century', 'LEFT').toString())
         .to.equal((new Date(2045, 6, 16, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'century', directions.RIGHT).toString())
+      expect(BaseCalendar.move(date, min, max, 'century', 'RIGHT').toString())
         .to.equal((new Date(2065, 6, 16, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'century', directions.UP).toString())
+      expect(BaseCalendar.move(date, min, max, 'century', 'UP').toString())
         .to.equal((new Date(2015, 6, 16, 0, 0, 0)).toString())
 
-      expect(dates.move(date, min, max, 'century', directions.DOWN).toString())
+      expect(BaseCalendar.move(date, min, max, 'century', 'DOWN').toString())
         .to.equal((new Date(2095, 6, 16, 0, 0, 0)).toString())
 
       min = new Date(2045, 6, 16, 0, 0, 0)
       max = new Date(2065, 6, 16, 0, 0, 0)
 
-      expect(dates.move(date, min, max, 'century', directions.UP))
+      expect(BaseCalendar.move(date, min, max, 'century', 'UP'))
         .to.eql(date)
 
-      expect(dates.move(date, min, max, 'century', directions.DOWN))
+      expect(BaseCalendar.move(date, min, max, 'century', 'DOWN'))
         .to.eql(date)
     })
   })
