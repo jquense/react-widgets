@@ -265,7 +265,7 @@ class DateTimePicker extends React.Component {
         this.close()
       }
     } else if (open) {
-      if (open === 'date') this.calRef.refs.inner.handleKeyDown(e)
+      if (open === 'date') this.calRef.inner.handleKeyDown(e)
       if (open === 'time') this.timeRef.handleKeyDown(e)
     }
   }

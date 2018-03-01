@@ -20,6 +20,7 @@ class TimeList extends React.Component {
   static defaultProps = {
     step: 30,
     onSelect: () => {},
+    currentDate: new Date(),
     min: new Date(1900, 0, 1),
     max: new Date(2099, 11, 31),
     preserveDate: true,

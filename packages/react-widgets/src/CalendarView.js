@@ -122,7 +122,7 @@ class CalendarViewCell extends React.Component {
 }
 
 CalendarView.Body = props => <tbody className='rw-calendar-body' {...props} />;
-CalendarView.Row = props => <tr role='row' {...props} />;
+CalendarView.Row = props => <tr role='row' className='rw-calendar-row' {...props} />;
 CalendarView.Cell = CalendarViewCell;
 
 export default CalendarView;

@@ -48,7 +48,7 @@ function clamp(value, min, max) {
 
 /**
  * ---
- * localized: true,
+ * localized: true
  * shortcuts:
  *   - { key: down arrow, label: decrement value }
  *   - { key: up arrow, label: increment value }
@@ -96,7 +96,7 @@ class NumberPicker extends React.Component {
     culture: PropTypes.string,
 
     /**
-     * A format string used to display the number value. Localizer dependent, read [localization](/i18n) for more info.
+     * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
      *
      * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
      */

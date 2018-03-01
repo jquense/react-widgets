@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
+import Link from 'gatsby-link';
 import * as PropTypes from 'prop-types'
 import React from 'react';
 import Helmet from 'react-helmet'
@@ -88,7 +89,7 @@ class ComponentTemplate extends React.Component {
           {frontmatter.localized && (
             <div className='alert alert-warning'>
               <i className='fa fa-exclamation-triangle'/>
-              You must configure a <a href='#/i18n'>localizer</a> to use this component!
+              You must configure a <Link to='localization'>localizer</Link> to use this component!
             </div>
           )}
 
@@ -134,6 +135,7 @@ export const pageQuery = graphql`
       description {
         childMarkdownRemark {
           frontmatter {
+            localized
             shortcuts { key, label }
           }
           html

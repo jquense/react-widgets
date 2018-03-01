@@ -64,7 +64,7 @@ or include the css normally. The included icons are provided by - [Font Awesome 
 
 
 > **Hey!** Date and number components need a *Localizer* configured in order to work!
-> Check out the [Localization page](/react-widgets/localization/) for more information.
+> Check out the [Localization page](../localization/) for more information.
 
 If are using webpack to handle styles in your application you are probably already configured
 loaders to make it work with appropriate file extensions. If not, you will have to use

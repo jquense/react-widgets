@@ -2894,7 +2894,7 @@ module.exports = exports['default'];
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 function makeEmptyFunction(arg) {
@@ -9268,7 +9268,7 @@ var propTypes = _extends({}, Filter.propTypes, {
    * ---
    *
    * Select an item from the list, or input a custom value. The Combobox can also make suggestions as you type.
-  
+
    * @public
    */
 });var Combobox = (_class = (_temp = _class2 = function (_React$Component) {
@@ -10200,7 +10200,7 @@ var dates = module.exports = {
       case DAY:
         return dates.date(date, dates.date(date) + num)
       case WEEK:
-        return dates.date(date, dates.date(date) + (7 * num)) 
+        return dates.date(date, dates.date(date) + (7 * num))
       case MONTH:
         return monthMath(date, num)
       case DECADE:
@@ -10237,13 +10237,13 @@ var dates = module.exports = {
           date = dates.milliseconds(date, 0);
     }
 
-    if (unit === DECADE) 
+    if (unit === DECADE)
       date = dates.subtract(date, dates.year(date) % 10, 'year')
-    
-    if (unit === CENTURY) 
+
+    if (unit === CENTURY)
       date = dates.subtract(date, dates.year(date) % 100, 'year')
 
-    if (unit === WEEK) 
+    if (unit === WEEK)
       date = dates.weekday(date, 0, firstOfWeek);
 
     return date
@@ -10272,7 +10272,7 @@ var dates = module.exports = {
   max: function(){
     return new Date(Math.max.apply(Math, arguments))
   },
-  
+
   inRange: function(day, min, max, unit){
     unit = unit || 'day'
 
@@ -10290,13 +10290,13 @@ var dates = module.exports = {
   year:           createAccessor('FullYear'),
 
   decade: function (date, val) {
-    return val === undefined 
+    return val === undefined
       ? dates.year(dates.startOf(date, DECADE))
       : dates.add(date, val + 10, YEAR);
   },
 
   century: function (date, val) {
-    return val === undefined 
+    return val === undefined
       ? dates.year(dates.startOf(date, CENTURY))
       : dates.add(date, val + 100, YEAR);
   },
@@ -10304,8 +10304,8 @@ var dates = module.exports = {
   weekday: function (date, val, firstDay) {
       var weekday = (dates.day(date) + 7 - (firstDay || 0) ) % 7;
 
-      return val === undefined 
-        ? weekday 
+      return val === undefined
+        ? weekday
         : dates.add(date, val - weekday, DAY);
   },
 
@@ -10371,7 +10371,7 @@ function monthMath(date, val){
     date = dates.month(date, newMonth)
 
     while (newMonth < 0 ) newMonth = 12 + newMonth
-      
+
     //month rollover
     if ( dates.month(date) !== ( newMonth % 12))
       date = dates.date(date, 0) //move to last of month
@@ -12327,7 +12327,7 @@ var NumberPicker = (_class = (_temp = _class2 = function (_React$Component) {
   culture: _propTypes2.default.string,
 
   /**
-   * A format string used to display the number value. Localizer dependent, read [localization](/i18n) for more info.
+   * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
    *
    * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
    */

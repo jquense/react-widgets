@@ -51,26 +51,26 @@
    border-top-left-radius: @radius;
 }
 
-.state-hover(@bg: @state-bg-hover, @border: @state-border-hover, @color: @state-color-hover) {
+.state-hover(@bg: @state-bg-hover, @border-color: @state-border-hover, @color: @state-color-hover) {
   background-color: @bg;
-  border:           @border 1px solid;
+  border-color:           @border-color;
   color:            @color;
 }
 
-.state-select(@bg: @state-bg-select, @border: @state-border-select, @color: @state-color-select) {
+.state-select(@bg: @state-bg-select, @border-color: @state-border-select, @color: @state-color-select) {
   &,
   &:hover {
     background-color: @bg;
-    border:           @border 1px solid;
+    border-color:     @border-color;
     color:            @color;
   }
 }
 
-.state-focus(@bg: @state-bg-focus, @border: @state-border-focus, @color: @state-color-focus) {
+.state-focus(@bg: @state-bg-focus, @border-color: @state-border-focus, @color: @state-color-focus) {
   &,
   &:hover {
     background-color: @bg;
-    border:           @border 1px solid;
+    border-color:     @border-color;
     color:            @color;
   }
 }
@@ -117,12 +117,12 @@
   /** --- **/
 }
 
-.make-btn-state() {
+.make-btn-state(@hover-color: @btn-bg-hover, @active-shadow: @btn-active-box-shadow) {
   cursor: pointer;
 
   &:hover,
   &:active, {
-    background-color: @state-bg-hover;
+    background-color: @btn-bg-hover;
   }
 
   &:active {

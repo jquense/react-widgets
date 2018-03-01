@@ -42,17 +42,16 @@
   border-spacing: 0;
   width: 100%;
   background-color: @calendar-bg;
-
-  th {
-    text-align: @calendar-cell-align;
-    border-bottom: 1px solid @input-border;
-    padding: @calendar-cell-padding;
-  }
 }
 
+.rw-head-cell {
+  text-align: @calendar-cell-align;
+  border-bottom: 1px solid @input-border;
+  padding: @calendar-cell-padding;
+}
 
 .rw-cell {
-  color: @btn-color;
+  color: @calendar-cell-color;
   border-radius: @calendar-cell-border-radius;
   cursor: pointer;
   line-height: normal;

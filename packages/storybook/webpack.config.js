@@ -28,6 +28,7 @@ module.exports = (baseConfig) => Object.assign({},
       plugins.define(),
       plugins.extractText(),
       plugins.hotModuleReplacement(),
+      ...baseConfig.plugins,
     ],
     node: {
       Buffer: false,

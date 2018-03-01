@@ -31,7 +31,6 @@
   }
 }
 
-
 .rw-widget-container {
   background-color: @input-bg;
   border: @input-border @input-border-width solid;
@@ -41,8 +40,9 @@
   .rw-state-focus > & {
     &,
     &:hover {
-      box-shadow: @input-focus-box-shadow;
+      background-color: @input-bg-focus;
       border-color: @input-border-focus;
+      box-shadow: @input-focus-box-shadow;
     }
   }
 
@@ -116,7 +116,8 @@
 
 
 .rw-select-bordered {
-  .make-btn-state();
+  .make-btn-state(@select-btn-bg-hover);
+
   border: none;
   border-left: @input-border 1px solid;
 
@@ -152,7 +153,7 @@
     .state-disabled();
     opacity: 1;
     background-color: @input-bg-disabled;
-    border-color: @input-border;
+    border-color: @input-border-disabled;
   }
 
   &[readonly] {

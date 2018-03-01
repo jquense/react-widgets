@@ -1,19 +1,18 @@
-import cn from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
+import cn from 'classnames'
+import PropTypes from 'prop-types'
+import React from 'react'
 
-import CalendarView from './CalendarView';
-import dates from './util/dates';
-import { date as dateLocalizer } from './util/localizers';
-import * as CustomPropTypes from './util/PropTypes';
-import { chunk } from './util/_';
-import * as Props from './util/Props';
-
+import CalendarView from './CalendarView'
+import dates from './util/dates'
+import { date as dateLocalizer } from './util/localizers'
+import * as CustomPropTypes from './util/PropTypes'
+import { chunk } from './util/_'
+import * as Props from './util/Props'
 
 let isEqual = (dateA, dateB) => dates.eq(dateA, dateB, 'day')
 
 class MonthView extends React.Component {
-  static isEqual = isEqual;
+  static isEqual = isEqual
 
   static propTypes = {
     activeId: PropTypes.string,
@@ -30,14 +29,17 @@ class MonthView extends React.Component {
     dateFormat: CustomPropTypes.dateFormat,
     footerFormat: CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
-  };
+  }
 
   renderHeaders(week, format, culture) {
-    let firstOfWeek = dateLocalizer.firstOfWeek(culture);
+    let firstOfWeek = dateLocalizer.firstOfWeek(culture)
     return week.map(date => {
       return (
-        <th key={'header_' + dates.weekday(date, undefined, firstOfWeek) }>
-          { dateLocalizer.format(date, format, culture) }
+        <th
+          className="rw-head-cell"
+          key={'header_' + dates.weekday(date, undefined, firstOfWeek)}
+        >
+          {dateLocalizer.format(date, format, culture)}
         </th>
       )
     })
@@ -45,16 +47,19 @@ class MonthView extends React.Component {
 
   renderRow = (row, rowIdx) => {
     let {
-        focused
-      , today
-      , activeId
-      , disabled
-      , onChange
-      , value
-      , culture, min, max
-      , footerFormat
-      , dateFormat
-      , dayComponent: Day } = this.props
+      focused,
+      today,
+      activeId,
+      disabled,
+      onChange,
+      value,
+      culture,
+      min,
+      max,
+      footerFormat,
+      dateFormat,
+      dayComponent: Day,
+    } = this.props
 
     footerFormat = dateLocalizer.getFormat('footer', footerFormat)
     dateFormat = dateLocalizer.getFormat('dayOfMonth', dateFormat)
@@ -63,7 +68,7 @@ class MonthView extends React.Component {
       <CalendarView.Row key={rowIdx}>
         {row.map((date, colIdx) => {
           let formattedDate = dateLocalizer.format(date, dateFormat, culture)
-          let label = dateLocalizer.format(date, footerFormat, culture);
+          let label = dateLocalizer.format(date, footerFormat, culture)
 
           return (
             <CalendarView.Cell
@@ -81,7 +86,7 @@ class MonthView extends React.Component {
               selected={value}
               disabled={disabled}
             >
-              {Day ? <Day date={date} label={formattedDate}/> : formattedDate}
+              {Day ? <Day date={date} label={formattedDate} /> : formattedDate}
             </CalendarView.Cell>
           )
         })}
@@ -92,7 +97,7 @@ class MonthView extends React.Component {
   render() {
     let { className, focused, culture, activeId, dayFormat } = this.props
     let month = dates.visibleDays(focused, culture)
-    let rows  = chunk(month, 7);
+    let rows = chunk(month, 7)
 
     dayFormat = dateLocalizer.getFormat('weekday', dayFormat)
 
@@ -102,14 +107,12 @@ class MonthView extends React.Component {
         activeId={activeId}
         className={cn(className, 'rw-calendar-month')}
       >
-        <thead>
-          <tr>
+        <thead className="rw-calendar-head">
+          <tr className="rw-calendar-row">
             {this.renderHeaders(rows[0], dayFormat, culture)}
           </tr>
         </thead>
-        <CalendarView.Body >
-          {rows.map(this.renderRow)}
-        </CalendarView.Body>
+        <CalendarView.Body>{rows.map(this.renderRow)}</CalendarView.Body>
       </CalendarView>
     )
   }
