@@ -59,7 +59,7 @@ describe('NumberPicker', function(){
     expect(change.calledOnce).to.equal(true);
 
     //should call change on a null value when no min
-    change.reset()
+    change.resetHistory()
 
     input = mount(<NumberPicker value={15} format='D' min={-Infinity} onChange={change} />)
       .find('.rw-input')
@@ -249,20 +249,20 @@ describe('NumberPicker', function(){
         expect(change.calledOnce).to.equal(true)
         expect(change.calledWith(9)).to.equal(true)
 
-        change.reset()
+        change.resetHistory()
       })
       .simulate('keyDown', { key: 'ArrowUp'})
       .tap(() => {
         expect(change.calledOnce).to.equal(true)
         expect(change.calledWith(11)).to.equal(true)
-        change.reset()
+        change.resetHistory()
       })
       .setProps({ min: 5, max: 15 })
       .simulate('keyDown', { key: 'End'})
       .tap(() => {
         expect(change.calledOnce).to.equal(true)
         expect(change.calledWith(15)).to.equal(true)
-        change.reset()
+        change.resetHistory()
       })
       .simulate('keyDown', { key: 'Home'})
 

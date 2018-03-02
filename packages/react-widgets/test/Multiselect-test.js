@@ -487,7 +487,7 @@ describe('Multiselect', function() {
     let assertOnCreateCalled = () => {
       expect(create.calledOnce).to.equal(true)
       expect(create.calledWith('custom tag')).to.equal(true)
-      create.reset()
+      create.resetHistory()
     };
 
     let wrapper = mount(
@@ -545,7 +545,7 @@ describe('Multiselect', function() {
 
     expect(change.calledOnce).to.equal(true)
     expect(change.calledWith(listHead)).to.equal(true)
-    change.reset()
+    change.resetHistory()
 
     inst.simulate('keyDown', { key: 'Backspace' })
 

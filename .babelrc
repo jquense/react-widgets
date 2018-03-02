@@ -2,6 +2,7 @@
   "presets": [
     ["jason", {
       "debug": false,
+      "runtime": false,
       "targets": {
         "browsers": [
           "> 1%",
@@ -9,9 +10,10 @@
           "not ie < 9"
         ]
       }
-    }]
+    }],
+    "@babel/flow"
   ],
   "plugins": [
-    "transform-decorators-legacy"
+    "@babel/plugin-proposal-decorators"
   ]
 }

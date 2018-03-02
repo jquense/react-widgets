@@ -290,7 +290,7 @@ describe('Combobox', function(){
       return () => {
         expect(change.calledOnce).to.equal(true)
         expect(change.calledWith(dataList[itemIndex])).to.equal(true)
-        change.reset()
+        change.resetHistory()
       }
     }
 

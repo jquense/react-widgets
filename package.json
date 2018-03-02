@@ -17,31 +17,34 @@
     "release": "lerna run prepublishOnly && lerna publish"
   },
   "dependencies": {
+    "@babel/core": "^7.0.0-0",
     "babel-eslint": "^7.2.3",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-preset-jason": "^3.1.0",
+    "babel-preset-jason": "^4.1.0",
     "common-tags": "^1.3.1",
     "cpy-cli": "^1.0.0",
-    "cross-env": "^3.1.3",
-    "css-literal-loader": "^0.2.0",
-    "eslint": "^3.7.1",
+    "cross-env": "^5.1.3",
+    "css-literal-loader": "^0.3.0",
+    "eslint": "^4.18.1",
     "eslint-config-jason": "^4.0.0",
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-mocha": "^4.6.0",
-    "eslint-plugin-react": "^6.3.0",
+    "eslint-plugin-react": "^7.7.0",
     "glob": "^7.0.5",
-    "global": "^4.3.2",
     "lerna": "^2.1.2",
     "lodash": "^4.17.2",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.5.4",
     "webpack": "^3.6.0",
-    "webpack-atoms": "^3.0.2",
+    "webpack-atoms": "^5.1.0",
     "webpack-dev-server": "^2.4.5",
-    "webpack-merge": "^4.1.0",
-    "yarn": "rc"
+    "webpack-merge": "^4.1.0"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.0.0-beta.40",
+    "@babel/preset-flow": "^7.0.0-beta.40"
+  }
 }

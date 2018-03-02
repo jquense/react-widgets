@@ -6,6 +6,7 @@ import SlideDownTransition from './SlideDownTransition'
 import { elementType } from './util/PropTypes'
 
 class StaticContainer extends React.Component {
+  static propTypes = { shouldUpdate: () => {} }
   shouldComponentUpdate({ shouldUpdate }) {
     return !!shouldUpdate
   }

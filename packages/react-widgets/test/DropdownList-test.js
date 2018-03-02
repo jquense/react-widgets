@@ -263,7 +263,7 @@ describe('DROPDOWNS', function(){
       return () => {
         expect(change.calledOnce).to.equal(true)
         expect(change.calledWith(data[itemIndex])).to.equal(true)
-        change.reset()
+        change.resetHistory()
       }
     }
 
