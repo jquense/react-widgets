@@ -8,8 +8,8 @@ let mkdir = require('mkdirp')
 const processors = [
   // interpolated variables
   { pattern: /@\{(?!(\s|\())/g, replace: '#{$' },
-  // literal strings
-  { pattern: /~("|')/g, replace: '$1' },
+  // unwrap escape strings
+  { pattern: /~("|')(.+)\1/g, replace: '$2' },
   // replace variable prefix
   { pattern: /@(?!(media|import|mixin|font-face|keyframes)(\s|\())/g, replace: '$$' },
   // add !default to SCSS variables
