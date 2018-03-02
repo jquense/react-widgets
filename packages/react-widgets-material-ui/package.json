@@ -1,0 +1,30 @@
+{
+  "name": "react-widgets-virtualized",
+  "version": "4.0.8",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib && cp src/styles.css lib/styles.css",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": ">=0.14.0",
+    "react-dom": ">=0.14.0",
+    "react-widgets": "^4.2.1"
+  },
+  "dependencies": {
+    "react-list": "^0.8.8"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-widgets": "^4.2.1"
+  },
+  "author": "Jason Quense",
+  "license": "MIT"
+}

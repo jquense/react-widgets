@@ -1,36 +1,29 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
+import React from 'react'
+import { storiesOf } from '@storybook/react'
 
 import { action } from './helpers'
-import Container from './Container';
-import DropdownList from 'react-widgets/lib/DropdownList';
+import Container from './Container'
+import DropdownList from 'react-widgets/lib/DropdownList'
 
-let generateNames = global.generateNames;
+let generateNames = global.generateNames
 
 let props = {
   data: generateNames(),
   valueField: 'id',
-  textField: 'fullName'
+  textField: 'fullName',
 }
 
 storiesOf('DropdownList', module)
-  .add('DropdownList', () =>
+  .add('DropdownList', () => (
     <Container>
-      <DropdownList
-        {...props}
-        filter="contains"
-      />
+      <DropdownList {...props} filter="contains" />
     </Container>
-  )
-  .add('open', () =>
+  ))
+  .add('open', () => (
     <Container>
-      <DropdownList
-        {...props}
-        open
-        filter="contains"
-      />
+      <DropdownList {...props} open filter="contains" />
     </Container>
-  )
+  ))
   .add('Create option', () => (
     <Container>
       <DropdownList
@@ -43,52 +36,30 @@ storiesOf('DropdownList', module)
   ))
   .add('Create option: always', () => (
     <Container>
-      <DropdownList
-        {...props}
-        allowCreate
-        onCreate={action('onCreate')}
-      />
+      <DropdownList {...props} allowCreate onCreate={action('onCreate')} />
     </Container>
   ))
-  .add('no filter', () =>
+  .add('no filter', () => (
     <Container>
-      <DropdownList
-        {...props}
-        open
-        filter={false}
-      />
+      <DropdownList {...props} open filter={false} />
     </Container>
-  )
-  .add('drop up', () =>
+  ))
+  .add('drop up', () => (
     <Container>
-      <DropdownList
-        {...props}
-        dropUp
-        open
-        filter
-      />
+      <DropdownList {...props} dropUp open filter />
     </Container>
-  )
-  .add('busy', () =>
+  ))
+  .add('busy', () => (
     <Container>
-      <DropdownList
-        {...props}
-        busy
-        defaultValue={props.data[1]}
-      />
+      <DropdownList {...props} busy defaultValue={props.data[1]} />
     </Container>
-  )
-  .add('right to left', () =>
+  ))
+  .add('right to left', () => (
     <Container>
-      <DropdownList
-        {...props}
-        isRtl
-        busy
-        defaultValue={props.data[1]}
-      />
+      <DropdownList {...props} isRtl busy defaultValue={props.data[1]} />
     </Container>
-  )
-  .add('ellipsis', () =>
+  ))
+  .add('ellipsis', () => (
     <Container>
       <DropdownList
         {...props}
@@ -96,8 +67,8 @@ storiesOf('DropdownList', module)
         defaultValue={props.data[1]}
       />
     </Container>
-  )
-  .add('grouped', () =>
+  ))
+  .add('grouped', () => (
     <Container>
       <DropdownList
         {...props}
@@ -106,29 +77,22 @@ storiesOf('DropdownList', module)
         groupBy="last"
       />
     </Container>
-  )
-  .add('disabled', () =>
+  ))
+  .add('disabled', () => (
     <Container>
-      <DropdownList
-        {...props}
-        disabled
-        defaultValue={props.data[1]}
-      />
+      <DropdownList {...props} disabled defaultValue={props.data[1]} />
     </Container>
-  )
-  .add('fieldset disabled', () =>
+  ))
+  .add('fieldset disabled', () => (
     <Container>
       <fieldset disabled>
         <legend>disabled Fieldset</legend>
 
-        <DropdownList
-          {...props}
-          defaultValue={props.data[1]}
-        />
+        <DropdownList {...props} defaultValue={props.data[1]} />
       </fieldset>
     </Container>
-  )
-  .add('disabled items', () =>
+  ))
+  .add('disabled items', () => (
     <Container>
       <DropdownList
         {...props}
@@ -138,22 +102,14 @@ storiesOf('DropdownList', module)
         defaultValue={props.data[1]}
       />
     </Container>
-  )
-  .add('disabled item, first focused', () =>
+  ))
+  .add('disabled item, first focused', () => (
     <Container>
-      <DropdownList
-        {...props}
-        defaultOpen
-        disabled={props.data.slice(0, 2)}
-      />
+      <DropdownList {...props} defaultOpen disabled={props.data.slice(0, 2)} />
     </Container>
-  )
-  .add('readonly', () =>
+  ))
+  .add('readonly', () => (
     <Container>
-      <DropdownList
-        {...props}
-        readOnly
-        defaultValue={props.data[1]}
-      />
+      <DropdownList {...props} readOnly defaultValue={props.data[1]} />
     </Container>
-  )
+  ))
