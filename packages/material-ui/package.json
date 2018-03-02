@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-material-ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -8,19 +8,22 @@
     "styles": "cpy src/less/* lib/less/ && node ../../tools/lessToSass.js",
     "prepublishOnly": "npm run build"
   },
-  "files": ["lib", "dist"],
+  "files": [
+    "lib",
+    "dist"
+  ],
   "peerDependencies": {
+    "material-ui": "^1.0.0-0",
     "react": ">=0.14.0",
     "react-dom": ">=0.14.0",
-    "react-widgets": "^4.2.1",
-    "material-ui": "^1.0.0-0"
+    "react-widgets": "^4.2.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-0",
     "@babel/core": "^7.0.0-0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-widgets": "^4.2.1"
+    "react-widgets": "^4.2.2"
   },
   "author": "Jason Quense",
   "license": "MIT"
