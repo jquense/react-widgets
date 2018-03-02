@@ -1,9 +1,8 @@
 const path = require('path')
 const { plugins, rules } = require('webpack-atoms')
 
-module.exports = (baseConfig) => Object.assign({},
-  baseConfig,
-  {
+module.exports = baseConfig =>
+  Object.assign({}, baseConfig, {
     module: {
       rules: [
         { parser: { amd: false } },
@@ -11,7 +10,7 @@ module.exports = (baseConfig) => Object.assign({},
         rules.css(),
         rules.less(),
         rules.images(),
-        rules.woff(),
+        rules.fonts(),
       ],
     },
     resolve: {
@@ -20,9 +19,16 @@ module.exports = (baseConfig) => Object.assign({},
         'react-widgets$': path.resolve('../react-widgets/src/index.js'),
         'react-widgets/lib': path.resolve('../react-widgets/src'),
 
-        'react-widgets-virtualized$': path.resolve('../virtualized/src/index.js'),
-        'react-widgets-virtualized/lib': path.resolve('../virtualized/src')
-      }
+        'react-widgets-virtualized$': path.resolve(
+          '../virtualized/src/index.js'
+        ),
+        'react-widgets-virtualized/lib': path.resolve('../virtualized/src'),
+
+        'react-widgets-material-ui$': path.resolve(
+          '../material-ui/src/index.js'
+        ),
+        'react-widgets-material-ui/lib': path.resolve('../material-ui/src'),
+      },
     },
     plugins: [
       plugins.define(),
@@ -36,5 +42,4 @@ module.exports = (baseConfig) => Object.assign({},
       net: 'empty',
       tls: 'empty',
     },
-  }
-)
+  })

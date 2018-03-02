@@ -1,9 +1,10 @@
-'use strict';
+
+
 // https://github.com/ekryski/less2sass
-let glob = require('glob')
-let path = require('path')
-let fs = require('fs')
-let mkdir = require('mkdirp')
+const glob = require('glob')
+const path = require('path')
+const fs = require('fs')
+const mkdir = require('mkdirp')
 
 const processors = [
   // interpolated variables
@@ -39,7 +40,7 @@ function transpile(filename) {
   let code = lines.map(processLine).join('\n')
 
   let outName = path.basename(filename, '.less') + '.scss'
-  let outPath = __dirname + '/lib/scss'
+  let outPath = process.cwd() + '/lib/scss'
   let outFile = outPath + '/' + outName;
 
   console.log('Writing scss file: ' + outName) // eslint-disable-line
@@ -48,6 +49,6 @@ function transpile(filename) {
   fs.writeFileSync(outFile, code)
 }
 
-let files = glob.sync(__dirname + '/src/less/*.less');
+let files = glob.sync('src/less/*.less');
 
 files.forEach(transpile)

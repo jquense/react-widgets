@@ -29,6 +29,7 @@
     "react-dom": "^16.2.0",
     "react-widgets": "^4.2.1",
     "react-widgets-globalize": "^5.0.1",
+    "react-widgets-material-ui": "^0.0.0",
     "react-widgets-moment": "^4.0.8",
     "react-widgets-simple-number": "^4.1.4",
     "react-widgets-virtualized": "^4.0.8",

@@ -71,7 +71,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 57);
+/******/ 	return __webpack_require__(__webpack_require__.s = 56);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -110,7 +110,7 @@ if (false) {
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(59)();
+  module.exports = __webpack_require__(58)();
 }
 
 
@@ -181,11 +181,11 @@ exports.message = exports.accessor = exports.disabled = exports.dateFormat = exp
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
-var _elementType = _interopRequireDefault(__webpack_require__(77));
+var _elementType = _interopRequireDefault(__webpack_require__(76));
 
 exports.elementType = _elementType.default;
 
-var _createChainableTypeChecker = _interopRequireDefault(__webpack_require__(51));
+var _createChainableTypeChecker = _interopRequireDefault(__webpack_require__(50));
 
 var _localizers = __webpack_require__(5);
 
@@ -460,7 +460,7 @@ exports.chunk = chunk;
 exports.groupBySortedKeys = groupBySortedKeys;
 exports.has = exports.makeArray = void 0;
 
-var _warning = _interopRequireDefault(__webpack_require__(39));
+var _warning = _interopRequireDefault(__webpack_require__(38));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -540,27 +540,27 @@ function groupBySortedKeys(groupBy, data, keys) {
 exports.__esModule = true;
 exports.mixin = exports.spyOnComponent = exports.timeoutManager = exports.mountManager = exports.focusManager = exports.autoFocus = undefined;
 
-var _spyOnComponent = __webpack_require__(26);
+var _spyOnComponent = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"spy-on-component\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 var _spyOnComponent2 = _interopRequireDefault(_spyOnComponent);
 
-var _autoFocus = __webpack_require__(64);
+var _autoFocus = __webpack_require__(63);
 
 var _autoFocus2 = _interopRequireDefault(_autoFocus);
 
-var _focusManager = __webpack_require__(65);
+var _focusManager = __webpack_require__(64);
 
 var _focusManager2 = _interopRequireDefault(_focusManager);
 
-var _mountManager = __webpack_require__(33);
+var _mountManager = __webpack_require__(32);
 
 var _mountManager2 = _interopRequireDefault(_mountManager);
 
-var _timeoutManager = __webpack_require__(41);
+var _timeoutManager = __webpack_require__(40);
 
 var _timeoutManager2 = _interopRequireDefault(_timeoutManager);
 
-var _mixin = __webpack_require__(66);
+var _mixin = __webpack_require__(65);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
@@ -697,7 +697,7 @@ exports.disabledManager = exports.widgetEditable = exports.widgetEnabled = expor
 
 var _reactDom = __webpack_require__(6);
 
-var _matches = _interopRequireDefault(__webpack_require__(54));
+var _matches = _interopRequireDefault(__webpack_require__(53));
 
 var _reactComponentManagers = __webpack_require__(8);
 
@@ -790,7 +790,7 @@ exports.disabledManager = disabledManager;
 exports.__esModule = true;
 exports.default = void 0;
 
-var _dateArithmetic = _interopRequireDefault(__webpack_require__(89));
+var _dateArithmetic = _interopRequireDefault(__webpack_require__(88));
 
 var _localizers = __webpack_require__(5);
 
@@ -861,7 +861,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _invariant = _interopRequireDefault(__webpack_require__(24));
 
-var Utils = _interopRequireWildcard(__webpack_require__(67));
+var Utils = _interopRequireWildcard(__webpack_require__(66));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -1241,7 +1241,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _reactComponentManagers = __webpack_require__(8);
 
-var _Filter = __webpack_require__(30);
+var _Filter = __webpack_require__(29);
 
 var _ = __webpack_require__(7);
 
@@ -1639,11 +1639,11 @@ var _widgetHelpers = __webpack_require__(9);
 
 var _listDataManager = __webpack_require__(18);
 
-var _Listbox = _interopRequireDefault(__webpack_require__(52));
+var _Listbox = _interopRequireDefault(__webpack_require__(51));
 
-var _ListOption = _interopRequireDefault(__webpack_require__(36));
+var _ListOption = _interopRequireDefault(__webpack_require__(35));
 
-var _ListOptionGroup = _interopRequireDefault(__webpack_require__(78));
+var _ListOptionGroup = _interopRequireDefault(__webpack_require__(77));
 
 var _messages = __webpack_require__(11);
 
@@ -1849,7 +1849,7 @@ exports.default = createAccessorManager;
 
 var _reactComponentManagers = __webpack_require__(8);
 
-var helpers = _interopRequireWildcard(__webpack_require__(31));
+var helpers = _interopRequireWildcard(__webpack_require__(30));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -1901,7 +1901,7 @@ module.exports = exports["default"];
 exports.__esModule = true;
 exports.default = createScrollManager;
 
-var _scrollTo = _interopRequireDefault(__webpack_require__(80));
+var _scrollTo = _interopRequireDefault(__webpack_require__(79));
 
 var _reactComponentManagers = __webpack_require__(8);
 
@@ -2015,7 +2015,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = activeElement;
 
-var _ownerDocument = __webpack_require__(40);
+var _ownerDocument = __webpack_require__(39);
 
 var _ownerDocument2 = _interopRequireDefault(_ownerDocument);
 
@@ -2032,58 +2032,6 @@ module.exports = exports['default'];
 
 /***/ }),
 /* 26 */
-/***/ (function(module, exports) {
-
-
-var LIFECYCLE_HOOKS = {
-  componentWillMount: true,
-  componentDidMount: true,
-  componentWillReceiveProps: true,
-  shouldComponentUpdate: true,
-  componentWillUpdate: true,
-  componentDidUpdate: true,
-  componentWillUnmount: true,
-}
-
-function wrap(base, method) {
-  var before = true;
-
-  if (Array.isArray(method)) {
-    before = method[0] !== 'after'
-    method = method[1]
-  }
-
-  if (!base)
-    return method;
-
-  return function wrappedLifecyclehook() {
-    before && method.apply(this, arguments)
-    base.apply(this, arguments)
-    !before && method.apply(this, arguments)
-  }
-}
-
-module.exports = function spyOnComponent(component, hooks) {
-  var originals = Object.create(null);
-
-
-  for (var key in hooks) if (LIFECYCLE_HOOKS[key])
-    component[key] = wrap(
-      originals[key] = component[key],
-      hooks[key]
-    )
-
-  return function reset(key) {
-    if (key && {}.hasOwnProperty.call(originals, key))
-      component[key] = originals[key]
-    else for (var key in originals)
-      component[key] = originals[key]
-  }
-}
-
-
-/***/ }),
-/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2098,7 +2046,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
 var _react = _interopRequireWildcard(__webpack_require__(0));
 
-var _SlideDownTransition = _interopRequireDefault(__webpack_require__(42));
+var _SlideDownTransition = _interopRequireDefault(__webpack_require__(41));
 
 var _PropTypes = __webpack_require__(3);
 
@@ -2145,6 +2093,10 @@ function (_React$Component) {
   return StaticContainer;
 }(_react.default.Component);
 
+StaticContainer.propTypes = {
+  shouldUpdate: function shouldUpdate() {}
+};
+
 var Popup =
 /*#__PURE__*/
 function (_React$Component2) {
@@ -2170,14 +2122,14 @@ function (_React$Component2) {
       className: (0, _classnames.default)(className, 'rw-popup-container'),
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 47
+        lineNumber: 48
       },
       __self: this
     }), _react.default.createElement(StaticContainer, {
       shouldUpdate: open,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 53
+        lineNumber: 54
       },
       __self: this
     }, _react.default.Children.only(this.props.children)));
@@ -2202,7 +2154,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2213,11 +2165,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = height;
 
-var _offset = __webpack_require__(49);
+var _offset = __webpack_require__(48);
 
 var _offset2 = _interopRequireDefault(_offset);
 
-var _isWindow = __webpack_require__(29);
+var _isWindow = __webpack_require__(28);
 
 var _isWindow2 = _interopRequireDefault(_isWindow);
 
@@ -2230,7 +2182,7 @@ function height(node, client) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2246,7 +2198,7 @@ function getWindow(node) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2262,7 +2214,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
 var CustomPropTypes = _interopRequireWildcard(__webpack_require__(3));
 
-var _dataHelpers = __webpack_require__(31);
+var _dataHelpers = __webpack_require__(30);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -2403,7 +2355,7 @@ function suggest(data, _ref4) {
 }
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2462,7 +2414,7 @@ function dataItem(data, item, valueField) {
 }
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2665,7 +2617,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2674,7 +2626,7 @@ module.exports = exports["default"];
 exports.__esModule = true;
 exports.default = spyOnMount;
 
-var _spyOnComponent = __webpack_require__(26);
+var _spyOnComponent = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"spy-on-component\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 var _spyOnComponent2 = _interopRequireDefault(_spyOnComponent);
 
@@ -2696,7 +2648,7 @@ function spyOnMount(componentInstance) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2707,25 +2659,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = style;
 
-var _camelizeStyle = __webpack_require__(48);
+var _camelizeStyle = __webpack_require__(47);
 
 var _camelizeStyle2 = _interopRequireDefault(_camelizeStyle);
 
-var _hyphenateStyle = __webpack_require__(71);
+var _hyphenateStyle = __webpack_require__(70);
 
 var _hyphenateStyle2 = _interopRequireDefault(_hyphenateStyle);
 
-var _getComputedStyle2 = __webpack_require__(73);
+var _getComputedStyle2 = __webpack_require__(72);
 
 var _getComputedStyle3 = _interopRequireDefault(_getComputedStyle2);
 
-var _removeStyle = __webpack_require__(74);
+var _removeStyle = __webpack_require__(73);
 
 var _removeStyle2 = _interopRequireDefault(_removeStyle);
 
-var _properties = __webpack_require__(35);
+var _properties = __webpack_require__(34);
 
-var _isTransform = __webpack_require__(75);
+var _isTransform = __webpack_require__(74);
 
 var _isTransform2 = _interopRequireDefault(_isTransform);
 
@@ -2764,7 +2716,7 @@ function style(node, property, value) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2880,7 +2832,7 @@ function getTransitionProperties() {
 }
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2982,7 +2934,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3052,7 +3004,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3073,7 +3025,7 @@ var _activeElement = _interopRequireDefault(__webpack_require__(25));
 
 var _classnames = _interopRequireDefault(__webpack_require__(2));
 
-var _deprecated = _interopRequireDefault(__webpack_require__(96));
+var _deprecated = _interopRequireDefault(__webpack_require__(95));
 
 var _uncontrollable = _interopRequireDefault(__webpack_require__(14));
 
@@ -3081,17 +3033,17 @@ var _Widget = _interopRequireDefault(__webpack_require__(15));
 
 var _WidgetPicker = _interopRequireDefault(__webpack_require__(19));
 
-var _Popup = _interopRequireDefault(__webpack_require__(27));
+var _Popup = _interopRequireDefault(__webpack_require__(26));
 
 var _Button = _interopRequireDefault(__webpack_require__(17));
 
-var _Calendar = _interopRequireDefault(__webpack_require__(55));
+var _Calendar = _interopRequireDefault(__webpack_require__(54));
 
-var _DateTimePickerInput = _interopRequireDefault(__webpack_require__(97));
+var _DateTimePickerInput = _interopRequireDefault(__webpack_require__(96));
 
 var _Select = _interopRequireDefault(__webpack_require__(20));
 
-var _TimeList = _interopRequireDefault(__webpack_require__(98));
+var _TimeList = _interopRequireDefault(__webpack_require__(97));
 
 var _messages = __webpack_require__(11);
 
@@ -3829,7 +3781,7 @@ function dateOrNull(dt) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3896,7 +3848,7 @@ module.exports = warning;
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3912,7 +3864,7 @@ function ownerDocument(node) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3921,11 +3873,11 @@ module.exports = exports["default"];
 exports.__esModule = true;
 exports.default = createTimeoutManager;
 
-var _spyOnComponent = __webpack_require__(26);
+var _spyOnComponent = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"spy-on-component\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 var _spyOnComponent2 = _interopRequireDefault(_spyOnComponent);
 
-var _mountManager = __webpack_require__(33);
+var _mountManager = __webpack_require__(32);
 
 var _mountManager2 = _interopRequireDefault(_mountManager);
 
@@ -3959,7 +3911,7 @@ function createTimeoutManager(componentInstance) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3970,19 +3922,19 @@ exports.default = void 0;
 
 var _classnames = _interopRequireDefault(__webpack_require__(2));
 
-var _events = _interopRequireDefault(__webpack_require__(43));
+var _events = _interopRequireDefault(__webpack_require__(42));
 
-var _style = _interopRequireDefault(__webpack_require__(34));
+var _style = _interopRequireDefault(__webpack_require__(33));
 
-var _height = _interopRequireDefault(__webpack_require__(28));
+var _height = _interopRequireDefault(__webpack_require__(27));
 
-var _properties = __webpack_require__(35);
+var _properties = __webpack_require__(34);
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
 var _react = _interopRequireDefault(__webpack_require__(0));
 
-var _Transition = _interopRequireWildcard(__webpack_require__(50));
+var _Transition = _interopRequireWildcard(__webpack_require__(49));
 
 var _transitionClasses,
     _jsxFileName = "/Users/jason/src/react-widgets/packages/react-widgets/src/SlideDownTransition.js";
@@ -4115,7 +4067,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4126,19 +4078,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.listen = exports.filter = exports.off = exports.on = undefined;
 
-var _on = __webpack_require__(44);
+var _on = __webpack_require__(43);
 
 var _on2 = _interopRequireDefault(_on);
 
-var _off = __webpack_require__(45);
+var _off = __webpack_require__(44);
 
 var _off2 = _interopRequireDefault(_off);
 
-var _filter = __webpack_require__(68);
+var _filter = __webpack_require__(67);
 
 var _filter2 = _interopRequireDefault(_filter);
 
-var _listen = __webpack_require__(69);
+var _listen = __webpack_require__(68);
 
 var _listen2 = _interopRequireDefault(_listen);
 
@@ -4151,7 +4103,7 @@ exports.listen = _listen2.default;
 exports.default = { on: _on2.default, off: _off2.default, filter: _filter2.default, listen: _listen2.default };
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4188,7 +4140,7 @@ exports.default = on;
 module.exports = exports['default'];
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4219,7 +4171,7 @@ exports.default = off;
 module.exports = exports['default'];
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4259,7 +4211,7 @@ function fallback(context, node) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4298,7 +4250,7 @@ function qsa(element, selector) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4309,7 +4261,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = camelizeStyleName;
 
-var _camelize = __webpack_require__(70);
+var _camelize = __webpack_require__(69);
 
 var _camelize2 = _interopRequireDefault(_camelize);
 
@@ -4326,7 +4278,7 @@ function camelizeStyleName(string) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4337,15 +4289,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = offset;
 
-var _contains = __webpack_require__(46);
+var _contains = __webpack_require__(45);
 
 var _contains2 = _interopRequireDefault(_contains);
 
-var _isWindow = __webpack_require__(29);
+var _isWindow = __webpack_require__(28);
 
 var _isWindow2 = _interopRequireDefault(_isWindow);
 
-var _ownerDocument = __webpack_require__(40);
+var _ownerDocument = __webpack_require__(39);
 
 var _ownerDocument2 = _interopRequireDefault(_ownerDocument);
 
@@ -4377,7 +4329,7 @@ function offset(node) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4398,7 +4350,7 @@ var _reactDom = __webpack_require__(6);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _PropTypes = __webpack_require__(76);
+var _PropTypes = __webpack_require__(75);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4940,7 +4892,7 @@ Transition.EXITING = 4;
 exports.default = Transition;
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4989,7 +4941,7 @@ function createChainableTypeChecker(validate) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5075,7 +5027,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5088,9 +5040,9 @@ var PropTypes = _interopRequireWildcard(__webpack_require__(1));
 
 var _react = _interopRequireDefault(__webpack_require__(0));
 
-var _Listbox = _interopRequireDefault(__webpack_require__(52));
+var _Listbox = _interopRequireDefault(__webpack_require__(51));
 
-var _ListOption = _interopRequireDefault(__webpack_require__(36));
+var _ListOption = _interopRequireDefault(__webpack_require__(35));
 
 var _jsxFileName = "/Users/jason/src/react-widgets/packages/react-widgets/src/AddToListOption.js";
 
@@ -5143,7 +5095,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5158,7 +5110,7 @@ var _inDOM = __webpack_require__(10);
 
 var _inDOM2 = _interopRequireDefault(_inDOM);
 
-var _querySelectorAll = __webpack_require__(47);
+var _querySelectorAll = __webpack_require__(46);
 
 var _querySelectorAll2 = _interopRequireDefault(_querySelectorAll);
 
@@ -5192,7 +5144,7 @@ function ie8MatchesSelector(node, selector) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5215,21 +5167,21 @@ var _reactComponentManagers = __webpack_require__(8);
 
 var _Widget = _interopRequireDefault(__webpack_require__(15));
 
-var _Header = _interopRequireDefault(__webpack_require__(86));
+var _Header = _interopRequireDefault(__webpack_require__(85));
 
-var _Footer = _interopRequireDefault(__webpack_require__(87));
+var _Footer = _interopRequireDefault(__webpack_require__(86));
 
-var _Month = _interopRequireDefault(__webpack_require__(88));
+var _Month = _interopRequireDefault(__webpack_require__(87));
 
-var _Year = _interopRequireDefault(__webpack_require__(90));
+var _Year = _interopRequireDefault(__webpack_require__(89));
 
-var _Decade = _interopRequireDefault(__webpack_require__(91));
+var _Decade = _interopRequireDefault(__webpack_require__(90));
 
-var _Century = _interopRequireDefault(__webpack_require__(92));
+var _Century = _interopRequireDefault(__webpack_require__(91));
 
 var _messages = __webpack_require__(11);
 
-var _SlideTransitionGroup = _interopRequireDefault(__webpack_require__(56));
+var _SlideTransitionGroup = _interopRequireDefault(__webpack_require__(55));
 
 var _focusManager = _interopRequireDefault(__webpack_require__(16));
 
@@ -5901,7 +5853,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5912,19 +5864,19 @@ exports.default = void 0;
 
 var _classnames = _interopRequireDefault(__webpack_require__(2));
 
-var _events = _interopRequireDefault(__webpack_require__(43));
+var _events = _interopRequireDefault(__webpack_require__(42));
 
-var _style = _interopRequireDefault(__webpack_require__(34));
+var _style = _interopRequireDefault(__webpack_require__(33));
 
-var _height = _interopRequireDefault(__webpack_require__(28));
+var _height = _interopRequireDefault(__webpack_require__(27));
 
-var _properties = __webpack_require__(35);
+var _properties = __webpack_require__(34);
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
-var _TransitionGroup = _interopRequireDefault(__webpack_require__(93));
+var _TransitionGroup = _interopRequireDefault(__webpack_require__(92));
 
-var _Transition = _interopRequireWildcard(__webpack_require__(50));
+var _Transition = _interopRequireWildcard(__webpack_require__(49));
 
 var _react = _interopRequireDefault(__webpack_require__(0));
 
@@ -6103,7 +6055,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6112,47 +6064,47 @@ module.exports = exports["default"];
 exports.__esModule = true;
 exports.setNumberLocalizer = exports.setDateLocalizer = exports.setLocalizers = exports.utils = void 0;
 
-var _configure = _interopRequireDefault(__webpack_require__(58));
+var _configure = _interopRequireDefault(__webpack_require__(57));
 
-var _DropdownList = _interopRequireDefault(__webpack_require__(63));
+var _DropdownList = _interopRequireDefault(__webpack_require__(62));
 
 exports.DropdownList = _DropdownList.default;
 
-var _Combobox = _interopRequireDefault(__webpack_require__(84));
+var _Combobox = _interopRequireDefault(__webpack_require__(83));
 
 exports.Combobox = _Combobox.default;
 
-var _Calendar = _interopRequireDefault(__webpack_require__(55));
+var _Calendar = _interopRequireDefault(__webpack_require__(54));
 
 exports.Calendar = _Calendar.default;
 
-var _DatePicker = _interopRequireDefault(__webpack_require__(95));
+var _DatePicker = _interopRequireDefault(__webpack_require__(94));
 
 exports.DatePicker = _DatePicker.default;
 
-var _TimePicker = _interopRequireDefault(__webpack_require__(99));
+var _TimePicker = _interopRequireDefault(__webpack_require__(98));
 
 exports.TimePicker = _TimePicker.default;
 
-var _DateTimePicker = _interopRequireDefault(__webpack_require__(38));
+var _DateTimePicker = _interopRequireDefault(__webpack_require__(37));
 
 exports.DateTimePicker = _DateTimePicker.default;
 
-var _NumberPicker = _interopRequireDefault(__webpack_require__(100));
+var _NumberPicker = _interopRequireDefault(__webpack_require__(99));
 
 exports.NumberPicker = _NumberPicker.default;
 
-var _Multiselect = _interopRequireDefault(__webpack_require__(102));
+var _Multiselect = _interopRequireDefault(__webpack_require__(101));
 
 exports.Multiselect = _Multiselect.default;
 
-var _SelectList = _interopRequireDefault(__webpack_require__(107));
+var _SelectList = _interopRequireDefault(__webpack_require__(106));
 
 exports.SelectList = _SelectList.default;
 
-var _SlideTransitionGroup = _interopRequireDefault(__webpack_require__(56));
+var _SlideTransitionGroup = _interopRequireDefault(__webpack_require__(55));
 
-var _SlideDownTransition = _interopRequireDefault(__webpack_require__(42));
+var _SlideDownTransition = _interopRequireDefault(__webpack_require__(41));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6170,7 +6122,7 @@ var utils = {
 exports.utils = utils;
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6197,7 +6149,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6210,9 +6162,9 @@ module.exports = exports["default"];
 
 
 
-var emptyFunction = __webpack_require__(60);
-var invariant = __webpack_require__(61);
-var ReactPropTypesSecret = __webpack_require__(62);
+var emptyFunction = __webpack_require__(59);
+var invariant = __webpack_require__(60);
+var ReactPropTypesSecret = __webpack_require__(61);
 
 module.exports = function() {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -6262,7 +6214,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6304,7 +6256,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6363,7 +6315,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6382,7 +6334,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6411,19 +6363,19 @@ var _WidgetPicker = _interopRequireDefault(__webpack_require__(19));
 
 var _Select = _interopRequireDefault(__webpack_require__(20));
 
-var _Popup = _interopRequireDefault(__webpack_require__(27));
+var _Popup = _interopRequireDefault(__webpack_require__(26));
 
 var _List = _interopRequireDefault(__webpack_require__(21));
 
-var _AddToListOption = _interopRequireDefault(__webpack_require__(53));
+var _AddToListOption = _interopRequireDefault(__webpack_require__(52));
 
-var _DropdownListInput = _interopRequireDefault(__webpack_require__(79));
+var _DropdownListInput = _interopRequireDefault(__webpack_require__(78));
 
 var _messages = __webpack_require__(11);
 
 var Props = _interopRequireWildcard(__webpack_require__(4));
 
-var Filter = _interopRequireWildcard(__webpack_require__(30));
+var Filter = _interopRequireWildcard(__webpack_require__(29));
 
 var _focusManager = _interopRequireDefault(__webpack_require__(16));
 
@@ -7095,7 +7047,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7113,7 +7065,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(6);
 
-var _spyOnComponent = __webpack_require__(26);
+var _spyOnComponent = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"spy-on-component\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 var _spyOnComponent2 = _interopRequireDefault(_spyOnComponent);
 
@@ -7135,7 +7087,7 @@ function makeAutoFocusable(instance) {
 }
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7147,11 +7099,11 @@ exports.default = createFocusManager;
 
 var _reactDom = __webpack_require__(6);
 
-var _timeoutManager = __webpack_require__(41);
+var _timeoutManager = __webpack_require__(40);
 
 var _timeoutManager2 = _interopRequireDefault(_timeoutManager);
 
-var _mountManager = __webpack_require__(33);
+var _mountManager = __webpack_require__(32);
 
 var _mountManager2 = _interopRequireDefault(_mountManager);
 
@@ -7206,7 +7158,7 @@ function createFocusManager(instance, _ref) {
 }
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7254,7 +7206,7 @@ function mixIntoClass(spec) {
 }
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7319,7 +7271,7 @@ function isReactComponent(component) {
 }
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7330,11 +7282,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = filterEvents;
 
-var _contains = __webpack_require__(46);
+var _contains = __webpack_require__(45);
 
 var _contains2 = _interopRequireDefault(_contains);
 
-var _querySelectorAll = __webpack_require__(47);
+var _querySelectorAll = __webpack_require__(46);
 
 var _querySelectorAll2 = _interopRequireDefault(_querySelectorAll);
 
@@ -7354,7 +7306,7 @@ function filterEvents(selector, handler) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7368,11 +7320,11 @@ var _inDOM = __webpack_require__(10);
 
 var _inDOM2 = _interopRequireDefault(_inDOM);
 
-var _on = __webpack_require__(44);
+var _on = __webpack_require__(43);
 
 var _on2 = _interopRequireDefault(_on);
 
-var _off = __webpack_require__(45);
+var _off = __webpack_require__(44);
 
 var _off2 = _interopRequireDefault(_off);
 
@@ -7393,7 +7345,7 @@ exports.default = listen;
 module.exports = exports['default'];
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7413,7 +7365,7 @@ function camelize(string) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7424,7 +7376,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = hyphenateStyleName;
 
-var _hyphenate = __webpack_require__(72);
+var _hyphenate = __webpack_require__(71);
 
 var _hyphenate2 = _interopRequireDefault(_hyphenate);
 
@@ -7442,7 +7394,7 @@ function hyphenateStyleName(string) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7461,7 +7413,7 @@ function hyphenate(string) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7472,7 +7424,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _getComputedStyle;
 
-var _camelizeStyle = __webpack_require__(48);
+var _camelizeStyle = __webpack_require__(47);
 
 var _camelizeStyle2 = _interopRequireDefault(_camelizeStyle);
 
@@ -7522,7 +7474,7 @@ function _getComputedStyle(node) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7538,7 +7490,7 @@ function removeStyle(node, key) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7556,7 +7508,7 @@ function isTransform(property) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7610,7 +7562,7 @@ var classNamesShape = exports.classNamesShape = _propTypes2.default.oneOfType([_
 })]);
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7626,7 +7578,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _createChainableTypeChecker = __webpack_require__(51);
+var _createChainableTypeChecker = __webpack_require__(50);
 
 var _createChainableTypeChecker2 = _interopRequireDefault(_createChainableTypeChecker);
 
@@ -7651,7 +7603,7 @@ exports.default = (0, _createChainableTypeChecker2.default)(elementType);
 module.exports = exports['default'];
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7699,7 +7651,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7714,7 +7666,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
 var CustomPropTypes = _interopRequireWildcard(__webpack_require__(3));
 
-var _dataHelpers = __webpack_require__(31);
+var _dataHelpers = __webpack_require__(30);
 
 var _jsxFileName = "/Users/jason/src/react-widgets/packages/react-widgets/src/DropdownListInput.js";
 
@@ -7779,7 +7731,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7790,27 +7742,27 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = scrollTo;
 
-var _offset = __webpack_require__(49);
+var _offset = __webpack_require__(48);
 
 var _offset2 = _interopRequireDefault(_offset);
 
-var _height = __webpack_require__(28);
+var _height = __webpack_require__(27);
 
 var _height2 = _interopRequireDefault(_height);
 
-var _scrollParent = __webpack_require__(81);
+var _scrollParent = __webpack_require__(80);
 
 var _scrollParent2 = _interopRequireDefault(_scrollParent);
 
-var _scrollTop = __webpack_require__(82);
+var _scrollTop = __webpack_require__(81);
 
 var _scrollTop2 = _interopRequireDefault(_scrollTop);
 
-var _requestAnimationFrame = __webpack_require__(83);
+var _requestAnimationFrame = __webpack_require__(82);
 
 var _requestAnimationFrame2 = _interopRequireDefault(_requestAnimationFrame);
 
-var _isWindow = __webpack_require__(29);
+var _isWindow = __webpack_require__(28);
 
 var _isWindow2 = _interopRequireDefault(_isWindow);
 
@@ -7861,7 +7813,7 @@ function scrollTo(selected, scrollParent) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7872,11 +7824,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = scrollPrarent;
 
-var _style = __webpack_require__(34);
+var _style = __webpack_require__(33);
 
 var _style2 = _interopRequireDefault(_style);
 
-var _height = __webpack_require__(28);
+var _height = __webpack_require__(27);
 
 var _height2 = _interopRequireDefault(_height);
 
@@ -7904,7 +7856,7 @@ function scrollPrarent(node) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7915,7 +7867,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = scrollTop;
 
-var _isWindow = __webpack_require__(29);
+var _isWindow = __webpack_require__(28);
 
 var _isWindow2 = _interopRequireDefault(_isWindow);
 
@@ -7931,7 +7883,7 @@ function scrollTop(node, val) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7990,7 +7942,7 @@ exports.default = compatRaf;
 module.exports = exports['default'];
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8013,11 +7965,11 @@ var _WidgetPicker = _interopRequireDefault(__webpack_require__(19));
 
 var _List = _interopRequireDefault(__webpack_require__(21));
 
-var _Popup = _interopRequireDefault(__webpack_require__(27));
+var _Popup = _interopRequireDefault(__webpack_require__(26));
 
 var _Select = _interopRequireDefault(__webpack_require__(20));
 
-var _ComboboxInput = _interopRequireDefault(__webpack_require__(85));
+var _ComboboxInput = _interopRequireDefault(__webpack_require__(84));
 
 var _messages = __webpack_require__(11);
 
@@ -8035,7 +7987,7 @@ var _ = __webpack_require__(7);
 
 var Props = _interopRequireWildcard(__webpack_require__(4));
 
-var Filter = _interopRequireWildcard(__webpack_require__(30));
+var Filter = _interopRequireWildcard(__webpack_require__(29));
 
 var _interaction = __webpack_require__(12);
 
@@ -8537,7 +8489,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8552,7 +8504,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
 var _reactDom = __webpack_require__(6);
 
-var _Input = _interopRequireDefault(__webpack_require__(37));
+var _Input = _interopRequireDefault(__webpack_require__(36));
 
 var _jsxFileName = "/Users/jason/src/react-widgets/packages/react-widgets/src/ComboboxInput.js";
 
@@ -8671,7 +8623,7 @@ var _default = ComboboxInput;
 exports.default = _default;
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8783,7 +8735,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8846,7 +8798,7 @@ Footer.propTypes = propTypes;
 module.exports = exports["default"];
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8861,7 +8813,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
 var _react = _interopRequireDefault(__webpack_require__(0));
 
-var _CalendarView = _interopRequireDefault(__webpack_require__(32));
+var _CalendarView = _interopRequireDefault(__webpack_require__(31));
 
 var _dates = _interopRequireDefault(__webpack_require__(13));
 
@@ -9046,7 +8998,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports) {
 
 var MILI    = 'milliseconds'
@@ -9273,7 +9225,7 @@ function createComparer(operator) {
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9286,7 +9238,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
-var _CalendarView = _interopRequireDefault(__webpack_require__(32));
+var _CalendarView = _interopRequireDefault(__webpack_require__(31));
 
 var _dates = _interopRequireDefault(__webpack_require__(13));
 
@@ -9415,7 +9367,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9428,7 +9380,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
-var _CalendarView = _interopRequireDefault(__webpack_require__(32));
+var _CalendarView = _interopRequireDefault(__webpack_require__(31));
 
 var _dates = _interopRequireDefault(__webpack_require__(13));
 
@@ -9561,7 +9513,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9574,7 +9526,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
-var _CalendarView = _interopRequireDefault(__webpack_require__(32));
+var _CalendarView = _interopRequireDefault(__webpack_require__(31));
 
 var _dates = _interopRequireDefault(__webpack_require__(13));
 
@@ -9708,7 +9660,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9726,7 +9678,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _ChildMapping = __webpack_require__(94);
+var _ChildMapping = __webpack_require__(93);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10004,7 +9956,7 @@ exports.default = TransitionGroup;
 module.exports = exports['default'];
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10099,7 +10051,7 @@ function mergeChildMappings(prev, next) {
 }
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10112,7 +10064,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
-var _DateTimePicker = _interopRequireDefault(__webpack_require__(38));
+var _DateTimePicker = _interopRequireDefault(__webpack_require__(37));
 
 var _jsxFileName = "/Users/jason/src/react-widgets/packages/react-widgets/src/DatePicker.js";
 
@@ -10173,7 +10125,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10184,7 +10136,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = deprecated;
 
-var _warning = __webpack_require__(39);
+var _warning = __webpack_require__(38);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -10224,7 +10176,7 @@ deprecated._resetWarned = _resetWarned;
 module.exports = exports['default'];
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10239,7 +10191,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _reactDom = __webpack_require__(6);
 
-var _Input = _interopRequireDefault(__webpack_require__(37));
+var _Input = _interopRequireDefault(__webpack_require__(36));
 
 var _localizers = __webpack_require__(5);
 
@@ -10387,7 +10339,7 @@ function formatDate(date, format, culture) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10648,7 +10600,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10661,7 +10613,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
-var _DateTimePicker = _interopRequireDefault(__webpack_require__(38));
+var _DateTimePicker = _interopRequireDefault(__webpack_require__(37));
 
 var _jsxFileName = "/Users/jason/src/react-widgets/packages/react-widgets/src/TimePicker.js";
 
@@ -10722,7 +10674,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10745,7 +10697,7 @@ var _WidgetPicker = _interopRequireDefault(__webpack_require__(19));
 
 var _Select = _interopRequireDefault(__webpack_require__(20));
 
-var _NumberInput = _interopRequireDefault(__webpack_require__(101));
+var _NumberInput = _interopRequireDefault(__webpack_require__(100));
 
 var _Button = _interopRequireDefault(__webpack_require__(17));
 
@@ -11187,7 +11139,7 @@ function round(value, precision) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11206,7 +11158,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _reactDom = __webpack_require__(6);
 
-var _Input = _interopRequireDefault(__webpack_require__(37));
+var _Input = _interopRequireDefault(__webpack_require__(36));
 
 var Props = _interopRequireWildcard(__webpack_require__(4));
 
@@ -11433,7 +11385,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11444,7 +11396,7 @@ exports.default = void 0;
 
 var _classnames = _interopRequireDefault(__webpack_require__(2));
 
-var _closest = _interopRequireDefault(__webpack_require__(103));
+var _closest = _interopRequireDefault(__webpack_require__(102));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
@@ -11458,19 +11410,19 @@ var _WidgetPicker = _interopRequireDefault(__webpack_require__(19));
 
 var _Select = _interopRequireDefault(__webpack_require__(20));
 
-var _Popup = _interopRequireDefault(__webpack_require__(27));
+var _Popup = _interopRequireDefault(__webpack_require__(26));
 
-var _MultiselectInput = _interopRequireDefault(__webpack_require__(104));
+var _MultiselectInput = _interopRequireDefault(__webpack_require__(103));
 
-var _MultiselectTagList = _interopRequireDefault(__webpack_require__(105));
+var _MultiselectTagList = _interopRequireDefault(__webpack_require__(104));
 
 var _List = _interopRequireDefault(__webpack_require__(21));
 
-var _AddToListOption = _interopRequireDefault(__webpack_require__(53));
+var _AddToListOption = _interopRequireDefault(__webpack_require__(52));
 
 var _ = __webpack_require__(7);
 
-var Filter = _interopRequireWildcard(__webpack_require__(30));
+var Filter = _interopRequireWildcard(__webpack_require__(29));
 
 var Props = _interopRequireWildcard(__webpack_require__(4));
 
@@ -12249,7 +12201,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12260,7 +12212,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = closest;
 
-var _matches = __webpack_require__(54);
+var _matches = __webpack_require__(53);
 
 var _matches2 = _interopRequireDefault(_matches);
 
@@ -12279,7 +12231,7 @@ function closest(node, selector, context) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12370,7 +12322,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12383,11 +12335,11 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
-var _MultiselectTag = _interopRequireDefault(__webpack_require__(106));
+var _MultiselectTag = _interopRequireDefault(__webpack_require__(105));
 
 var CustomPropTypes = _interopRequireWildcard(__webpack_require__(3));
 
-var _dataHelpers = __webpack_require__(31);
+var _dataHelpers = __webpack_require__(30);
 
 var _jsxFileName = "/Users/jason/src/react-widgets/packages/react-widgets/src/MultiselectTagList.js";
 
@@ -12498,7 +12450,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12615,7 +12567,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12640,7 +12592,7 @@ var _List = _interopRequireDefault(__webpack_require__(21));
 
 var _Widget = _interopRequireDefault(__webpack_require__(15));
 
-var _SelectListItem = _interopRequireDefault(__webpack_require__(108));
+var _SelectListItem = _interopRequireDefault(__webpack_require__(107));
 
 var _messages = __webpack_require__(11);
 
@@ -13099,7 +13051,7 @@ exports.default = _default;
 module.exports = exports["default"];
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13112,7 +13064,7 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(1));
 
-var _ListOption = _interopRequireDefault(__webpack_require__(36));
+var _ListOption = _interopRequireDefault(__webpack_require__(35));
 
 var _jsxFileName = "/Users/jason/src/react-widgets/packages/react-widgets/src/SelectListItem.js";
 

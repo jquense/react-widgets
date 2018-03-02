@@ -16,10 +16,11 @@
     "bootstrap": "yarn && lerna run prepublishOnly",
     "release": "lerna run prepublishOnly && lerna publish"
   },
-  "dependencies": {
+  "devDependencies": {
     "@babel/core": "^7.0.0-0",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "@babel/plugin-proposal-decorators": "^7.0.0-beta.40",
+    "@babel/preset-flow": "^7.0.0-beta.40",
+    "babel-eslint": "^8.2.2",
     "babel-preset-jason": "^4.1.0",
     "common-tags": "^1.3.1",
     "cpy-cli": "^1.0.0",
@@ -30,7 +31,7 @@
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-mocha": "^4.6.0",
     "eslint-plugin-react": "^7.7.0",
-    "glob": "^7.0.5",
+    "glob": "^7.1.2",
     "lerna": "^2.1.2",
     "lodash": "^4.17.2",
     "mkdirp": "^0.5.1",
@@ -42,9 +43,5 @@
   },
   "workspaces": [
     "packages/*"
-  ],
-  "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.0.0-beta.40",
-    "@babel/preset-flow": "^7.0.0-beta.40"
-  }
+  ]
 }

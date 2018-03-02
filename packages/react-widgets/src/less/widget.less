@@ -10,7 +10,7 @@
   margin: -1px;
   padding: 0;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   border: 0;
 }
 
@@ -88,17 +88,15 @@
     .border-bottom-radius(0);
   }
 
-  .rw-open-up > &  {
+  .rw-open-up > & {
     .border-top-radius(0);
   }
 
-
   fieldset[disabled] &,
-  .rw-state-disabled > &  {
+  .rw-state-disabled > & {
     background-color: @input-bg-disabled;
   }
 }
-
 
 .rw-select {
   cursor: pointer;
@@ -114,7 +112,6 @@
   }
 }
 
-
 .rw-select-bordered {
   .make-btn-state(@select-btn-bg-hover);
 
@@ -123,10 +120,9 @@
 
   .rw-rtl & {
     border-right: @input-border 1px solid;
-    border-left:  none;
+    border-left: none;
   }
 }
-
 
 .rw-rtl {
   direction: rtl;
@@ -144,7 +140,7 @@
   padding: 0 @input-padding-horizontal;
   background-color: @input-bg;
 
-  &[type=text]::-ms-clear {
+  &[type='text']::-ms-clear {
     display: none;
   }
 
@@ -163,13 +159,13 @@
 
 .rw-i.rw-loading {
   display: block;
-  background: url("@{img-path}/loading.gif") no-repeat center;
+  background: url('@{img-path}/loading.gif') no-repeat center;
   min-width: 16px;
   width: 1.9em;
   height: 16px;
 
   &:before {
-    content: ""
+    content: '';
   }
 }
 
@@ -183,5 +179,5 @@
 }
 
 .rw-widget-input.rw-state-focus {
-  box-shadow: ~"@{input-focus-box-shadow}, @{input-box-shadow}";
+  box-shadow: ~'@{input-focus-box-shadow}, @{input-box-shadow}';
 }
