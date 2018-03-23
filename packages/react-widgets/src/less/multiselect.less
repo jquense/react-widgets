@@ -1,3 +1,8 @@
+/**
+  * 1) Correct width for a case when the placeholder is too long and
+  * when some tags were selected
+  */
+
 .rw-multiselect {
   background-color: @widget-bg;
   border-color: @state-border-hover;
@@ -7,8 +12,7 @@
     .height-calc(@input-height, @input-border-width * 2);
 
     border-width: 0;
-    width: auto;
-    max-width: 100%;
+    width: 100%; /* 1 */
     padding: 0 @input-padding-horizontal;
   }
 
@@ -26,6 +30,10 @@
   .unstyled-list();
   display: inline;
   outline: none;
+
+  & + .rw-input-reset { /* 1 */
+    width: auto;
+  }
 }
 
 .rw-multiselect-tag {
