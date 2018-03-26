@@ -1,13 +1,12 @@
-import cn from 'classnames';
-import React from 'react';
-import PropTypes from 'prop-types';
-import Listbox from 'react-widgets/lib/Listbox';
-import BaseVirtualList from 'react-list';
-import ListOption from 'react-widgets/lib/ListOption';
-import ListOptionGroup from 'react-widgets/lib/ListOptionGroup';
-import { groupBySortedKeys } from 'react-widgets/lib/util/_';
-import * as CustomPropTypes from 'react-widgets/lib/util/PropTypes';
-
+import cn from 'classnames'
+import React from 'react'
+import PropTypes from 'prop-types'
+import Listbox from 'react-widgets/lib/Listbox'
+import BaseVirtualList from 'react-list'
+import ListOption from 'react-widgets/lib/ListOption'
+import ListOptionGroup from 'react-widgets/lib/ListOptionGroup'
+import { groupBySortedKeys } from 'react-widgets/lib/util/_'
+import * as CustomPropTypes from 'react-widgets/lib/util/PropTypes'
 
 export const virtualListPropTypes = {
   itemSizeEstimator: PropTypes.func,
@@ -23,7 +22,6 @@ export const virtualListPropTypes = {
 }
 
 class VirtualList extends React.Component {
-
   static propTypes = {
     ...virtualListPropTypes,
 
@@ -48,7 +46,7 @@ class VirtualList extends React.Component {
 
     messages: PropTypes.shape({
       emptyList: CustomPropTypes.message,
-    })
+    }),
   }
 
   static defaultProps = {
@@ -73,34 +71,38 @@ class VirtualList extends React.Component {
     return {
       props,
       listProps: {
-        onRequestItems, hasNextPage, loadingComponent,
-        type, itemSizeGetter, itemSizeEstimator, pageSize,
-        threshold, useStaticSize, useTranslate3d,
+        onRequestItems,
+        hasNextPage,
+        loadingComponent,
+        type,
+        itemSizeGetter,
+        itemSizeEstimator,
+        pageSize,
+        threshold,
+        useStaticSize,
+        useTranslate3d,
       },
     }
   }
 
   static getDataState(data, { groupBy }, lastState) {
     let initial = { flatData: data }
-    lastState = lastState || initial;
+    lastState = lastState || initial
 
-    if (
-      lastState.data !== data ||
-      lastState.groupBy !== groupBy
-    ) {
-      if (!groupBy) return initial;
+    if (lastState.data !== data || lastState.groupBy !== groupBy) {
+      if (!groupBy) return initial
 
-      let keys = [];
-      let groups = groupBySortedKeys(groupBy, data, keys);
+      let keys = []
+      let groups = groupBySortedKeys(groupBy, data, keys)
 
       let sequentialData = []
       let flatData = []
       keys.forEach(group => {
         let items = groups[group]
-        let groupItem = { __isGroup: true, group };
+        let groupItem = { __isGroup: true, group }
         sequentialData = [...sequentialData, ...items]
         flatData = [...flatData, groupItem, ...items]
-      }, []);
+      }, [])
 
       return {
         groups,
@@ -108,10 +110,10 @@ class VirtualList extends React.Component {
         flatData,
         sequentialData,
         sortedKeys: keys,
-      };
+      }
     }
 
-    return lastState;
+    return lastState
   }
 
   componentDidMount() {
@@ -127,7 +129,7 @@ class VirtualList extends React.Component {
   }
 
   renderItems = (items, ref) => {
-    let { className, messages } = this.props;
+    let { className, messages } = this.props
     return (
       <Listbox
         nodeRef={ref}
@@ -139,24 +141,31 @@ class VirtualList extends React.Component {
     )
   }
 
+  renderGroupHeader(group, key) {
+    var renderGroup = this.props.renderGroup
+    return
+  }
+
   renderItem = (index, key) => {
     let {
-        activeId
-      , focusedItem
-      , selectedItem
-      , onSelect
-      , dataState
-      , renderItem
-      , isDisabled
-      , pageSize
-      , hasNextPage
-      , onRequestItems
-      , searchTerm
-      , loadingComponent: LoadingComponent
-      , optionComponent: OptionComponent } = this.props
+      activeId,
+      focusedItem,
+      selectedItem,
+      onSelect,
+      dataState,
+      renderItem,
+      isDisabled,
+      pageSize,
+      hasNextPage,
+      onRequestItems,
+      searchTerm,
+      renderGroup,
+      loadingComponent: LoadingComponent,
+      optionComponent: OptionComponent,
+    } = this.props
 
-    let item = dataState.flatData[index];
-    let len = dataState.flatData.length;
+    let item = dataState.flatData[index]
+    let len = dataState.flatData.length
 
     if (hasNextPage === true && index >= len) {
       if (onRequestItems)
@@ -165,7 +174,7 @@ class VirtualList extends React.Component {
           searchTerm,
           limit: len + pageSize,
           currentIndex: index,
-        });
+        })
 
       return (
         <li key={key} className="rw-list-empty rw-list-option-loading">
@@ -178,10 +187,15 @@ class VirtualList extends React.Component {
       )
     }
 
-    if (item && item.__isGroup)
-      return this.renderGroupHeader(item.group)
+    if (item && item.__isGroup) {
+      return (
+        <ListOptionGroup key={key}>
+          {renderGroup({ group: item.group })}
+        </ListOptionGroup>
+      )
+    }
 
-    let isFocused = focusedItem === item;
+    let isFocused = focusedItem === item
 
     return (
       <OptionComponent
@@ -200,25 +214,26 @@ class VirtualList extends React.Component {
 
   render() {
     let {
-        type
-      , itemSizeGetter
-      , itemSizeEstimator
-      , pageSize
-      , threshold
-      , useStaticSize
-      , useTranslate3d = true
-      , dataState
-      , itemHeight
-      , focusedItem
-      , selectedItem
-      , onSelect
-      , hasNextPage
-      , searchTerm
-      , disabled } = this.props
+      type,
+      itemSizeGetter,
+      itemSizeEstimator,
+      pageSize,
+      threshold,
+      useStaticSize,
+      useTranslate3d = true,
+      dataState,
+      itemHeight,
+      focusedItem,
+      selectedItem,
+      onSelect,
+      hasNextPage,
+      searchTerm,
+      disabled,
+    } = this.props
 
-    let length = dataState.flatData.length;
+    let length = dataState.flatData.length
 
-    if (hasNextPage === true) length += 1;
+    if (hasNextPage === true) length += 1
 
     return (
       <div
@@ -228,7 +243,7 @@ class VirtualList extends React.Component {
         )}
       >
         <BaseVirtualList
-          ref='scrollable'
+          ref="scrollable"
           type={type}
           length={length}
           pageSize={pageSize}
@@ -239,7 +254,6 @@ class VirtualList extends React.Component {
           itemsRenderer={this.renderItems}
           itemSizeGetter={itemSizeGetter}
           itemSizeEstimator={itemSizeEstimator}
-
           // these are all to break the list's SCU
           dataState={dataState}
           focusedItem={focusedItem}
@@ -253,27 +267,16 @@ class VirtualList extends React.Component {
     )
   }
 
-  renderGroupHeader(group, style) {
-    var renderGroup = this.props.renderGroup
-
-    return (
-      <ListOptionGroup style={style}>
-        {renderGroup({ group })}
-      </ListOptionGroup>
-    )
-  }
-
   move() {
-    let { dataState, focusedItem } = this.props;
+    let { dataState, focusedItem } = this.props
     let scrollable = this.refs.scrollable
 
-    let idx  = dataState.flatData.indexOf(focusedItem);
+    let idx = dataState.flatData.indexOf(focusedItem)
 
     if (idx === -1) return
 
-    scrollable.scrollAround(idx);
+    scrollable.scrollAround(idx)
   }
 }
 
-
-export default VirtualList;
+export default VirtualList
