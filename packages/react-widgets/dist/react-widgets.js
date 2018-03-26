@@ -5444,8 +5444,8 @@ var propTypes = {
    * shortcuts:
    *   - { key: ctrl + down arrow, label: navigate to next view }
    *   - { key: ctrl + up arrow, label: navigate to previous view }
-   *   - { key: ctrl + left arrow, label:  navigate to previous: month, year, decade, or century }
-   *   - { key: ctrl + right arrow, label: navigate to next: month, year, decade, or century }
+   *   - { key: ctrl + left arrow, label: "navigate to previous: month, year, decade, or century" }
+   *   - { key: ctrl + right arrow, label: "navigate to next: month, year, decade, or century" }
    *   - { key: left arrow, label:  move focus to previous date}
    *   - { key: right arrow, label: move focus to next date }
    *   - { key: up arrow, label: move focus up within view }
@@ -5453,7 +5453,7 @@ var propTypes = {
    * ---
    *
    * @public
-  */
+   */
 
 };
 var Calendar = (_class = (_temp = _class2 =
@@ -5581,7 +5581,7 @@ function (_React$Component) {
       "aria-activedescendant": this.activeId,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 440
+        lineNumber: 428
       },
       __self: this
     }), _react.default.createElement(_Header.default, {
@@ -5597,14 +5597,14 @@ function (_React$Component) {
       onMoveRight: this.handleMoveForward,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 453
+        lineNumber: 441
       },
       __self: this
     }), _react.default.createElement(Calendar.Transition, {
       direction: slideDirection,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 465
+        lineNumber: 457
       },
       __self: this
     }, _react.default.createElement(View, _extends({}, viewProps, {
@@ -5620,7 +5620,7 @@ function (_React$Component) {
       "aria-labelledby": this.labelId,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 466
+        lineNumber: 458
       },
       __self: this
     }))), footer && _react.default.createElement(_Footer.default, {
@@ -5632,7 +5632,7 @@ function (_React$Component) {
       onClick: this.handleFooterClick,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 481
+        lineNumber: 473
       },
       __self: this
     }));
