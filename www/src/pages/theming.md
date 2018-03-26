@@ -19,21 +19,22 @@ font-size. If you want to use a fixed size adjust the `font-size` variable. Usin
 at `14px`, but you can also tweak the input height for different root font-sizes.
 
 {{ <TabbedCodeBlock>
-  <Tab title="Sass" lang="text/x-scss">
-    {`
-    $font-size: 16px;
-    $input-height: 2.5em; // at 16px, this an even 40px
+<Tab title="Sass" lang="scss">
+{`
+$font-size: 16px;
+$input-height: 2.5em; // at 16px, this an even 40px
 
     @import '~react-widgets/lib/scss/react-widgets';
     `}
+
   </Tab>
-  <Tab title="Less" lang="text/x-less">
+  <Tab title="Less" lang="less">
     {`
     @import '~react-widgets/lib/less/react-widgets';
 
     @font-size: 16px;
     @input-height: 2.5em; // at 16px, this an even 40px
     `}
+
   </Tab>
 </TabbedCodeBlock> }}
-

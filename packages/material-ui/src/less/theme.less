@@ -9,6 +9,8 @@
 
 @spacing-unit: 8px;
 
+@input-border-error: #f44336;
+
 // --- React-Widgets below here
 @font-size: 16px;
 
@@ -45,6 +47,8 @@
 
 @input-box-shadow: none;
 @input-focus-box-shadow: none;
+
+@input-padding-horizontal: 0;
 
 // @list-bg-hover: @grey-100;
 // @list-border-hover: @grey-100;
@@ -92,6 +96,14 @@
   opacity: 1;
 }
 
+.rw-dropdown-list,
+.rw-multiselect,
+.rw-combobox,
+.rw-number-picker,
+.rw-datetime-picker {
+  margin-top: 1em;
+}
+
 .rw-widget-picker.rw-widget-container {
   padding-bottom: 1px;
   border-width: 0px;
@@ -132,6 +144,12 @@
     transform: scaleX(0);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
     background-color: @input-border-focus;
+  }
+
+  .rbc-mui-field-error > &:after {
+    height: 2px;
+    transform: scaleX(1);
+    background-color: @input-border-error;
   }
 
   .rw-state-focus &:not(.rw-filter-input):after {

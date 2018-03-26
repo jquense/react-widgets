@@ -1,20 +1,16 @@
+exports.resolvableExtensions = () => ['.md']
 
-exports.resolvableExtensions = () => ['.md'];
-
-exports.modifyWebpackConfig = ({ boundActionCreators, loaders }) => {
-  const { setWebpackConfig } = boundActionCreators;
+exports.onCreateWebpackConfig = ({ actions, loaders }) => {
+  const { setWebpackConfig } = actions
 
   setWebpackConfig({
     module: {
       rules: [
         {
           test: /\.md$/,
-          use: [
-            loaders.js(),
-            require.resolve('./loader')
-          ]
+          use: [loaders.js(), require.resolve('./loader')],
         },
-      ]
+      ],
     },
   })
-};
+}

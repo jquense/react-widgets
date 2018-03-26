@@ -31,20 +31,21 @@ Stylesheets, images, and fonts are found in the `dist` directory. You can use we
 or include the css normally. The included icons are provided by - [Font Awesome by Dave Gandy]("http://fontawesome.io">)
 
 {{ <TabbedCodeBlock>
-  <Tab title="webpack">
-    {`
-    // Add the css styles...
-    import 'react-widgets/dist/css/react-widgets.css';
+<Tab title="webpack">
+{`
+// Add the css styles...
+import 'react-widgets/dist/css/react-widgets.css';
 
-    // ...Or if you prefer to use the Less or Sass files directly
-    // import 'react-widgets/lib/less/react-widgets.less';
-    // import 'react-widgets/lib/scss/react-widgets.scss';
+// ...Or if you prefer to use the Less or Sass files directly
+// import 'react-widgets/lib/less/react-widgets.less';
+// import 'react-widgets/lib/scss/react-widgets.scss';
 
-    import { render } from 'react-dom';
-    import DropdownList from 'react-widgets/lib/DropdownList';
+import { render } from 'react-dom';
+import DropdownList from 'react-widgets/lib/DropdownList';
 
-    render(<DropdownList />, document.getElementById('app-root'))
-    `}
+render(<DropdownList />, document.getElementById('app-root'))
+`}
+
   </Tab>
   <Tab title="browser globals">
     {`
@@ -59,11 +60,11 @@ or include the css normally. The included icons are provided by - [Font Awesome 
       ReactDOM.render(<DropdownList/>, document.getElementById('app-root'))
     </script>
     `}
+
   </Tab>
 </TabbedCodeBlock> }}
 
-
-> **Hey!** Date and number components need a *Localizer* configured in order to work!
+> **Hey!** Date and number components need a _Localizer_ configured in order to work!
 > Check out the [Localization page](../localization/) for more information.
 
 If are using webpack to handle styles in your application you are probably already configured
@@ -77,14 +78,17 @@ Here's a common configuration:
 module: {
   loaders: [
     // for good ol' css
-    { test: /\\.css$/,  use: ['style-loader', 'css-loader'] },
+    { test: /\\.css$/, use: ['style-loader', 'css-loader'] },
     // OR if using less
     { test: /\\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
     // OR if using scss
     { test: /\\.scss$/, use: ['style-loader', 'css-loader', 'scss-loader'] },
 
     // images and fonts
-    { test: /\\.(gif|ttf|eot|svg|woff2?)$/, use: 'url-loader?name=[name].[ext]'},
+    {
+      test: /\\.(gif|ttf|eot|svg|woff2?)$/,
+      use: 'url-loader?name=[name].[ext]',
+    },
   ]
 }
 ```
@@ -93,21 +97,23 @@ When using Less or Sass, you'll need to help webpack find the font and image fol
 Override corresponding variables from `variables` file.
 
 {{ <TabbedCodeBlock>
-  <Tab title="Sass" lang="text/x-scss">
-    {`
-    $font-path: '~react-widgets/lib/fonts';
-    $img-path:  '~react-widgets/lib/img';
+<Tab title="Sass" lang="scss">
+{`
+$font-path: '~react-widgets/lib/fonts';
+$img-path: '~react-widgets/lib/img';
 
-    @import '~react-widgets/lib/scss/react-widgets';
-    `}
+@import '~react-widgets/lib/scss/react-widgets';
+`}
+
   </Tab>
-  <Tab title="Less" lang="text/x-less">
+  <Tab title="Less" lang="less">
     {`
     @import '~react-widgets/lib/less/react-widgets';
 
     @font-path: '~react-widgets/lib/fonts';
     @img-path:  '~react-widgets/lib/img';
     `}
+
   </Tab>
 </TabbedCodeBlock> }}
 
@@ -125,4 +131,3 @@ the necessary id's to properly label and annotate the widget ARIA.
 
 > **Note:** Because of how server-side rendering works, using auto generated `id`s may
 > cause checksum mismatches. Always provide `id` props to your components to avoid this possible pitfall.
-

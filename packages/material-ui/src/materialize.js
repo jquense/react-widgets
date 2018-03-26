@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React from 'react'
 import Grow from 'material-ui/transitions/Grow'
 
@@ -26,7 +27,14 @@ export default function materialize(Component) {
   return class extends React.Component {
     static displayName = `Materialized(${name})`
     render() {
-      return <Component popupTransition={PopupTransition} {...this.props} />
+      const { error, className, ...props } = this.props
+      return (
+        <Component
+          className={cn(className, error && 'rbc-mui-field-error')}
+          popupTransition={PopupTransition}
+          {...props}
+        />
+      )
     }
   }
 }

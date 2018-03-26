@@ -1,18 +1,17 @@
-import get from 'lodash/get';
-import sortBy from 'lodash/sortBy';
-import Link from 'gatsby-link';
+import get from 'lodash/get'
+import sortBy from 'lodash/sortBy'
+import Link from 'gatsby-link'
 import * as PropTypes from 'prop-types'
-import React from 'react';
+import React from 'react'
 import Helmet from 'react-helmet'
-import DropdownButton from 'react-bootstrap/lib/DropdownButton';
-import MenuItem from 'react-bootstrap/lib/MenuItem';
+import DropdownButton from 'react-bootstrap/lib/DropdownButton'
+import MenuItem from 'react-bootstrap/lib/MenuItem'
 
-import ImportSection from '../components/ImportSection';
-import ApiMenuItem from '../components/ApiMenuItem';
-import PropHeader from '../components/PropHeader';
-import PropExample from '../components/PropExample';
-import PropDescription from '../components/PropDescription';
-
+import ImportSection from '../components/ImportSection'
+import ApiMenuItem from '../components/ApiMenuItem'
+import PropHeader from '../components/PropHeader'
+import PropExample from '../components/PropExample'
+import PropDescription from '../components/PropDescription'
 
 require('../components/locales')
 
@@ -21,75 +20,81 @@ function basename(path) {
 }
 
 const propTypes = {
+  pageContext: PropTypes.object,
   data: PropTypes.shape({
     componentMetadata: PropTypes.object.isRequired,
   }),
-};
-
+}
 
 class ComponentTemplate extends React.Component {
   static childContextTypes = {
-    prefix: PropTypes.string.isRequired
-  };
+    prefix: PropTypes.string.isRequired,
+  }
   getChildContext() {
-    const { data: { componentMetadata } } = this.props;
-    return { prefix: componentMetadata.displayName };
+    const { data: { componentMetadata } } = this.props
+    return { prefix: componentMetadata.displayName }
   }
   render() {
-    const { data: { componentMetadata }, pathContext } = this.props;
-    const { displayName, props, doclets } = componentMetadata;
+    const { data: { componentMetadata }, pageContext } = this.props
+    const { displayName, props, doclets } = componentMetadata
 
-    const { frontmatter = {}, html } = get(componentMetadata, 'description.childMarkdownRemark', {});
+    const { frontmatter = {}, html } = get(
+      componentMetadata,
+      'description.childMarkdownRemark',
+      {}
+    )
 
-    let WidgetDemo = require(`../demos/${displayName}`).default;
+    let WidgetDemo = require(`../demos/${displayName}`).default
 
-    if (WidgetDemo.default) WidgetDemo = WidgetDemo.default;
+    if (WidgetDemo.default) WidgetDemo = WidgetDemo.default
 
-    const sorted = sortBy(props, p => p.name.trim().toLowerCase())
-      .filter(p => !p.doclets.ignore);
+    const sorted = sortBy(props, p => p.name.trim().toLowerCase()).filter(
+      p => !p.doclets.ignore
+    )
 
     const composes = (componentMetadata.composes || [])
       .map(basename)
-      .filter(p => pathContext.publicComponents.includes(p))
+      .filter(p => pageContext.publicComponents.includes(p))
     return (
       <div>
         <Helmet title={displayName} />
         <section className={'pg-api'}>
           <h1 className="page-header">
-            {displayName}{' '}<small>{frontmatter.subtitle || ''}</small>
-            <span className='pull-right'>
+            {displayName} <small>{frontmatter.subtitle || ''}</small>
+            <span className="pull-right">
               <DropdownButton
                 pullRight
                 bsSize="large"
-                bsStyle='link'
-                title='props'
-                id='props-${widgetName}'
+                bsStyle="link"
+                title="props"
+                id="props-${widgetName}"
               >
                 {!!composes.length && [
-                  <MenuItem key="1" header>Composes:</MenuItem>,
-                  ...composes.map(composes =>
+                  <MenuItem key="1" header>
+                    Composes:
+                  </MenuItem>,
+                  ...composes.map(composes => (
                     <MenuItem
                       key={composes}
                       href={`/react-widgets/api/${composes}`}
                     >
                       {composes}
                     </MenuItem>
-                  ),
+                  )),
                   <MenuItem key="2" divider />,
                 ]}
-                {sorted.map(prop =>
+                {sorted.map(prop => (
                   <ApiMenuItem key={prop.name}>{prop.name}</ApiMenuItem>
-                )}
+                ))}
               </DropdownButton>
             </span>
           </h1>
-          {html && (
-            <p dangerouslySetInnerHTML={{ __html: html }} />
-          )}
+          {html && <p dangerouslySetInnerHTML={{ __html: html }} />}
           {frontmatter.localized && (
-            <div className='alert alert-warning'>
-              <i className='fa fa-exclamation-triangle'/>
-              You must configure a <Link to='localization'>localizer</Link> to use this component!
+            <div className="alert alert-warning">
+              <i className="fa fa-exclamation-triangle" />
+              You must configure a <Link to="localization">localizer</Link> to
+              use this component!
             </div>
           )}
 
@@ -101,7 +106,10 @@ class ComponentTemplate extends React.Component {
         <h2>
           <div>Props</div>
           {doclets.extends && (
-            <small>Also accepts all <code>{doclets.extends}</code> props, unless otherwise noted.</small>
+            <small>
+              Also accepts all <code>{doclets.extends}</code> props, unless
+              otherwise noted.
+            </small>
           )}
         </h2>
         {sorted.map(prop => (
@@ -112,11 +120,11 @@ class ComponentTemplate extends React.Component {
           </section>
         ))}
       </div>
-    );
+    )
   }
 }
 
-ComponentTemplate.propTypes = propTypes;
+ComponentTemplate.propTypes = propTypes
 
 export default ComponentTemplate
 
@@ -136,7 +144,10 @@ export const pageQuery = graphql`
         childMarkdownRemark {
           frontmatter {
             localized
-            shortcuts { key, label }
+            shortcuts {
+              key
+              label
+            }
           }
           html
         }

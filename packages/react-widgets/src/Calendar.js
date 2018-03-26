@@ -1,66 +1,63 @@
-import React from 'react';
-import { findDOMNode } from 'react-dom';
-import PropTypes from 'prop-types';
-import cn from 'classnames';
-import uncontrollable from 'uncontrollable';
-import { autoFocus } from 'react-component-managers';
+import React from 'react'
+import { findDOMNode } from 'react-dom'
+import PropTypes from 'prop-types'
+import cn from 'classnames'
+import uncontrollable from 'uncontrollable'
+import { autoFocus } from 'react-component-managers'
 
-import Widget from './Widget';
-import Header from './Header';
-import Footer from './Footer';
-import Month from './Month';
-import Year from './Year';
-import Decade from './Decade';
-import Century from './Century';
-import { getMessages } from './messages';
-import SlideTransitionGroup from './SlideTransitionGroup';
-import focusManager from './util/focusManager';
+import Widget from './Widget'
+import Header from './Header'
+import Footer from './Footer'
+import Month from './Month'
+import Year from './Year'
+import Decade from './Decade'
+import Century from './Century'
+import { getMessages } from './messages'
+import SlideTransitionGroup from './SlideTransitionGroup'
+import focusManager from './util/focusManager'
 
-import { date as dateLocalizer } from './util/localizers';
-import * as CustomPropTypes from './util/PropTypes';
-import * as Props from './util/Props';
-import dates from './util/dates';
-import { instanceId, notify } from './util/widgetHelpers';
-import { widgetEditable } from './util/interaction';
+import { date as dateLocalizer } from './util/localizers'
+import * as CustomPropTypes from './util/PropTypes'
+import * as Props from './util/Props'
+import dates from './util/dates'
+import { instanceId, notify } from './util/widgetHelpers'
+import { widgetEditable } from './util/interaction'
 
-
-let last = a => a[a.length - 1];
-
+let last = a => a[a.length - 1]
 
 const VIEW_UNIT = {
-  month:   'day',
-  year:    'month',
-  decade:  'year',
+  month: 'day',
+  year: 'month',
+  decade: 'year',
   century: 'decade',
-};
-
+}
 
 const VIEW_OPTIONS = ['month', 'year', 'decade', 'century']
 
-const VIEW  = {
-  month:   Month,
-  year:    Year,
-  decade:  Decade,
-  century: Century
-};
+const VIEW = {
+  month: Month,
+  year: Year,
+  decade: Decade,
+  century: Century,
+}
 
 const ARROWS_TO_DIRECTION = {
   ArrowDown: 'DOWN',
   ArrowUp: 'UP',
   ArrowRight: 'RIGHT',
-  ArrowLeft: 'LEFT'
+  ArrowLeft: 'LEFT',
 }
 
 const OPPOSITE_DIRECTION = {
   LEFT: 'RIGHT',
-  RIGHT: 'LEFT'
-};
+  RIGHT: 'LEFT',
+}
 
 const MULTIPLIER = {
-  year:    1,
-  decade:  10,
-  century: 100
-};
+  year: 1,
+  decade: 10,
+  century: 100,
+}
 
 const propTypes = {
   /** @ignore */
@@ -102,7 +99,7 @@ const propTypes = {
    * @controllable onViewChange
    */
   view(props, ...args) {
-    return PropTypes.oneOf(props.views || VIEW_OPTIONS)(props, ...args);
+    return PropTypes.oneOf(props.views || VIEW_OPTIONS)(props, ...args)
   },
 
   /**
@@ -111,9 +108,7 @@ const propTypes = {
    *
    * @type array<"month"|"year"|"decade"|"century">
    */
-  views: PropTypes.arrayOf(
-    PropTypes.oneOf(VIEW_OPTIONS)
-  ).isRequired,
+  views: PropTypes.arrayOf(PropTypes.oneOf(VIEW_OPTIONS)).isRequired,
 
   /**
    * A callback fired when the `view` changes.
@@ -145,7 +140,6 @@ const propTypes = {
    * - `label`: a formatted `string` of the date to render. To adjust the format of the `label` string use the `dateFormat` prop, listed below.
    */
   dayComponent: CustomPropTypes.elementType,
-
 
   /**
    * A formatter for the header button of the month view.
@@ -202,7 +196,7 @@ const propTypes = {
   isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     moveBack: PropTypes.string,
-    moveForward: PropTypes.string
+    moveForward: PropTypes.string,
   }),
 
   onKeyDown: PropTypes.func,
@@ -217,8 +211,8 @@ const propTypes = {
  * shortcuts:
  *   - { key: ctrl + down arrow, label: navigate to next view }
  *   - { key: ctrl + up arrow, label: navigate to previous view }
- *   - { key: ctrl + left arrow, label:  navigate to previous: month, year, decade, or century }
- *   - { key: ctrl + right arrow, label: navigate to next: month, year, decade, or century }
+ *   - { key: ctrl + left arrow, label: "navigate to previous: month, year, decade, or century" }
+ *   - { key: ctrl + right arrow, label: "navigate to next: month, year, decade, or century" }
  *   - { key: left arrow, label:  move focus to previous date}
  *   - { key: right arrow, label: move focus to next date }
  *   - { key: up arrow, label: move focus up within view }
@@ -226,11 +220,11 @@ const propTypes = {
  * ---
  *
  * @public
-*/
+ */
 class Calendar extends React.Component {
-  static displayName = 'Calendar';
+  static displayName = 'Calendar'
 
-  static propTypes = propTypes;
+  static propTypes = propTypes
 
   static defaultProps = {
     value: null,
@@ -239,13 +233,13 @@ class Calendar extends React.Component {
     views: VIEW_OPTIONS,
     tabIndex: '0',
     footer: true,
-  };
-
-  static contextTypes = {
-    isRtl: PropTypes.bool
   }
 
-  static Transition = SlideTransitionGroup;
+  static contextTypes = {
+    isRtl: PropTypes.bool,
+  }
+
+  static Transition = SlideTransitionGroup
 
   static move(date, min, max, unit, direction) {
     let isMonth = unit === 'month'
@@ -269,26 +263,24 @@ class Calendar extends React.Component {
 
     this.viewId = instanceId(this, '_calendar')
     this.labelId = instanceId(this, '_calendar_label')
-    this.activeId = (
-      this.props.activeId ||
-      instanceId(this, '_calendar_active_cell')
-    )
+    this.activeId =
+      this.props.activeId || instanceId(this, '_calendar_active_cell')
 
-    autoFocus(this);
+    autoFocus(this)
 
     this.focusManager = focusManager(this, {
       willHandle: this.handleFocusWillChange,
     })
 
-    let { view, views } = this.props;
+    let { view, views } = this.props
     this.state = {
       selectedIndex: 0,
-      view: view || views[0]
+      view: view || views[0],
     }
   }
 
   componentWillReceiveProps({ messages, view, views, value, currentDate }) {
-    let val  = this.inRangeValue(value);
+    let val = this.inRangeValue(value)
 
     this.messages = getMessages(messages)
 
@@ -306,27 +298,26 @@ class Calendar extends React.Component {
   }
 
   handleFocusWillChange = () => {
-    if (this.props.tabIndex == -1)
-      return false
+    if (this.props.tabIndex == -1) return false
   }
 
   @widgetEditable
   handleViewChange = () => {
-    this.navigate('UP');
+    this.navigate('UP')
   }
 
   @widgetEditable
   handleMoveBack = () => {
-    this.navigate('LEFT');
+    this.navigate('LEFT')
   }
 
   @widgetEditable
   handleMoveForward = () => {
-    this.navigate('RIGHT');
+    this.navigate('RIGHT')
   }
 
   @widgetEditable
-  handleChange = (date) => {
+  handleChange = date => {
     let { views, onChange } = this.props
     let { view } = this.state
 
@@ -335,38 +326,38 @@ class Calendar extends React.Component {
 
       notify(onChange, date)
 
-      this.focus();
-      return;
+      this.focus()
+      return
     }
 
     this.navigate('DOWN', date)
-  };
+  }
 
   @widgetEditable
-  handleFooterClick = (date) => {
-    let { views, min, max, onViewChange } = this.props;
+  handleFooterClick = date => {
+    let { views, min, max, onViewChange } = this.props
 
     let firstView = views[0]
 
     notify(this.props.onChange, date)
 
     if (dates.inRange(date, min, max, firstView)) {
-      this.focus();
+      this.focus()
 
-      this.setCurrentDate(date);
+      this.setCurrentDate(date)
 
       notify(onViewChange, [firstView])
     }
-  };
+  }
 
   @widgetEditable
-  handleKeyDown = (e) => {
-    let ctrl = e.ctrlKey || e.metaKey
-      , key  = e.key
-      , direction = ARROWS_TO_DIRECTION[key]
-      , currentDate = this.getCurrentDate()
-      , view = this.state.view
-      , unit = VIEW_UNIT[view];
+  handleKeyDown = e => {
+    let ctrl = e.ctrlKey || e.metaKey,
+      key = e.key,
+      direction = ARROWS_TO_DIRECTION[key],
+      currentDate = this.getCurrentDate(),
+      view = this.state.view,
+      unit = VIEW_UNIT[view]
 
     if (key === 'Enter') {
       e.preventDefault()
@@ -377,8 +368,7 @@ class Calendar extends React.Component {
       if (ctrl) {
         e.preventDefault()
         this.navigate(direction)
-      }
-      else {
+      } else {
         if (this.isRtl() && OPPOSITE_DIRECTION[direction])
           direction = OPPOSITE_DIRECTION[direction]
 
@@ -395,51 +385,49 @@ class Calendar extends React.Component {
 
           if (dates.gt(nextDate, currentDate, view))
             this.navigate('RIGHT', nextDate)
-
           else if (dates.lt(nextDate, currentDate, view))
             this.navigate('LEFT', nextDate)
-
-          else
-            this.setCurrentDate(nextDate)
+          else this.setCurrentDate(nextDate)
         }
       }
     }
 
     notify(this.props.onKeyDown, [e])
-  };
+  }
 
   render() {
     let {
-        className
-      , value
-      , footerFormat
-      , disabled
-      , readOnly
-      , footer
-      , views
-      , min
-      , max
-      , culture
-      , tabIndex } = this.props
+      className,
+      value,
+      footerFormat,
+      disabled,
+      readOnly,
+      footer,
+      views,
+      min,
+      max,
+      culture,
+      tabIndex,
+    } = this.props
 
-    let { view, slideDirection, focused } = this.state;
-    let currentDate = this.getCurrentDate();
+    let { view, slideDirection, focused } = this.state
+    let currentDate = this.getCurrentDate()
 
-    let View = VIEW[view]
-      , todaysDate = new Date()
-      , todayNotInRange = !dates.inRange(todaysDate, min, max, view)
+    let View = VIEW[view],
+      todaysDate = new Date(),
+      todayNotInRange = !dates.inRange(todaysDate, min, max, view)
 
-    let key = view + '_' + dates[view](currentDate);
+    let key = view + '_' + dates[view](currentDate)
 
-    let elementProps = Props.pickElementProps(this)
-      , viewProps  = Props.pick(this.props, View)
+    let elementProps = Props.pickElementProps(this),
+      viewProps = Props.pick(this.props, View)
 
     let isDisabled = disabled || readOnly
 
     return (
       <Widget
         {...elementProps}
-        role='group'
+        role="group"
         focused={focused}
         disabled={disabled}
         readOnly={readOnly}
@@ -456,10 +444,14 @@ class Calendar extends React.Component {
           labelId={this.labelId}
           messages={this.messages}
           upDisabled={isDisabled || view === last(views)}
-          prevDisabled={isDisabled || !dates.inRange(this.nextDate('LEFT'), min, max, view)}
-          nextDisabled={isDisabled || !dates.inRange(this.nextDate('RIGHT'), min, max, view)}
+          prevDisabled={
+            isDisabled || !dates.inRange(this.nextDate('LEFT'), min, max, view)
+          }
+          nextDisabled={
+            isDisabled || !dates.inRange(this.nextDate('RIGHT'), min, max, view)
+          }
           onViewChange={this.handleViewChange}
-          onMoveLeft ={this.handleMoveBack}
+          onMoveLeft={this.handleMoveBack}
           onMoveRight={this.handleMoveForward}
         />
         <Calendar.Transition direction={slideDirection}>
@@ -477,7 +469,7 @@ class Calendar extends React.Component {
             aria-labelledby={this.labelId}
           />
         </Calendar.Transition>
-        {footer &&
+        {footer && (
           <Footer
             value={todaysDate}
             format={footerFormat}
@@ -486,28 +478,26 @@ class Calendar extends React.Component {
             readOnly={readOnly}
             onClick={this.handleFooterClick}
           />
-        }
+        )}
       </Widget>
     )
   }
 
   navigate(direction, date) {
-    let { views, min, max, onNavigate, onViewChange } = this.props;
+    let { views, min, max, onNavigate, onViewChange } = this.props
     let { view } = this.state
 
-    let slideDir = (direction === 'LEFT' || direction === 'UP')
-          ? 'right' : 'left';
+    let slideDir = direction === 'LEFT' || direction === 'UP' ? 'right' : 'left'
 
-    if (direction === 'UP')
-      view = views[views.indexOf(view) + 1] || view
+    if (direction === 'UP') view = views[views.indexOf(view) + 1] || view
 
-    if (direction === 'DOWN')
-      view = views[views.indexOf(view) - 1] || view
+    if (direction === 'DOWN') view = views[views.indexOf(view) - 1] || view
 
     if (!date)
-      date = ['LEFT', 'RIGHT'].indexOf(direction) !== -1
-        ? this.nextDate(direction)
-        : this.getCurrentDate()
+      date =
+        ['LEFT', 'RIGHT'].indexOf(direction) !== -1
+          ? this.nextDate(direction)
+          : this.getCurrentDate()
 
     if (dates.inRange(date, min, max, view)) {
       notify(onNavigate, [date, slideDir, view])
@@ -519,8 +509,7 @@ class Calendar extends React.Component {
   }
 
   focus() {
-    if (+this.props.tabIndex > -1)
-      findDOMNode(this).focus()
+    if (+this.props.tabIndex > -1) findDOMNode(this).focus()
   }
 
   getCurrentDate() {
@@ -530,30 +519,33 @@ class Calendar extends React.Component {
   setCurrentDate(date, currentDate = this.getCurrentDate()) {
     let inRangeDate = this.inRangeValue(date ? new Date(date) : currentDate)
 
-    if (dates.eq(inRangeDate, dateOrNull(currentDate), VIEW_UNIT[this.state.view]))
+    if (
+      dates.eq(inRangeDate, dateOrNull(currentDate), VIEW_UNIT[this.state.view])
+    )
       return
 
     notify(this.props.onCurrentDateChange, inRangeDate)
   }
 
   nextDate(direction) {
-    let method = direction === 'LEFT' ? 'subtract' : 'add'
-      , view   = this.state.view
-      , unit   = view === 'month' ? view : 'year'
-      , multi  = MULTIPLIER[view] || 1;
+    let method = direction === 'LEFT' ? 'subtract' : 'add',
+      view = this.state.view,
+      unit = view === 'month' ? view : 'year',
+      multi = MULTIPLIER[view] || 1
 
     return dates[method](this.getCurrentDate(), 1 * multi, unit)
   }
 
   getHeaderLabel() {
     let {
-        culture
-      , decadeFormat
-      , yearFormat
-      , headerFormat
-      , centuryFormat } = this.props
-      , view = this.state.view
-      , currentDate = this.getCurrentDate();
+        culture,
+        decadeFormat,
+        yearFormat,
+        headerFormat,
+        centuryFormat,
+      } = this.props,
+      view = this.state.view,
+      currentDate = this.getCurrentDate()
 
     switch (view) {
       case 'month':
@@ -586,16 +578,10 @@ class Calendar extends React.Component {
 
     if (value === null) return value
 
-    return dates.max(
-      dates.min(value, this.props.max),
-      this.props.min
-    )
+    return dates.max(dates.min(value, this.props.max), this.props.min)
   }
   isRtl() {
-    return !!(
-      this.props.isRtl ||
-      (this.context && this.context.isRtl)
-    )
+    return !!(this.props.isRtl || (this.context && this.context.isRtl))
   }
 
   isValidView(next, views = this.props.views) {
@@ -603,11 +589,11 @@ class Calendar extends React.Component {
   }
 
   getSlideDirection({ view, currentDate, views }) {
-    let { currentDate: lastDate } = this.props;
-    let { slideDirection, view: lastView } = this.state;
+    let { currentDate: lastDate } = this.props
+    let { slideDirection, view: lastView } = this.state
 
     if (lastView !== view) {
-      return views.indexOf(lastView) > views.indexOf(view) ? 'top' : 'bottom';
+      return views.indexOf(lastView) > views.indexOf(view) ? 'top' : 'bottom'
     }
     if (lastDate !== currentDate) {
       return dates.gt(currentDate, lastDate) ? 'left' : 'right'
@@ -622,9 +608,12 @@ function dateOrNull(dt) {
   return null
 }
 
-
-export default uncontrollable(Calendar, {
-  value: 'onChange',
-  currentDate: 'onCurrentDateChange',
-  view: 'onViewChange'
-}, ['focus']);
+export default uncontrollable(
+  Calendar,
+  {
+    value: 'onChange',
+    currentDate: 'onCurrentDateChange',
+    view: 'onViewChange',
+  },
+  ['focus']
+)
