@@ -200,7 +200,7 @@ class Autocomplete extends React.Component {
         valueAccessor={accessors.value}
         textAccessor={accessors.text}
         selectedItem={selectedItem}
-        searchTerm={accessors.text(typeof value) || ''}
+        searchTerm={accessors.text(value) || ''}
         focusedItem={open ? focusedItem : null}
         aria-hidden={!open}
         aria-labelledby={inputId}

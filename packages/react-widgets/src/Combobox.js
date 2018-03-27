@@ -325,7 +325,7 @@ class Combobox extends React.Component {
         textAccessor={accessors.text}
         selectedItem={selectedItem}
         focusedItem={open ? focusedItem : null}
-        searchTerm={typeof value === 'string' ? value : ''}
+        searchTerm={accessors.text(value) || ''}
         aria-hidden={!open}
         aria-labelledby={inputId}
         aria-live={open && 'polite'}
