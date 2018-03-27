@@ -1254,7 +1254,7 @@ function normalizeComponent(Component) {
     return Component ? _react.default.createElement(Component, _extends({}, itemProps, {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 13
+        lineNumber: 12
       },
       __self: this
     })) : itemProps.text || itemProps.item;
@@ -1345,13 +1345,13 @@ function listDataManager(component, _temp) {
   function getSequentialData() {
     var state = manager.getState();
     return state && state.sequentialData || listData;
-  }
+  } // eslint-disable-next-line react/prop-types
+
 
   var renderItem = function renderItem(_ref4) {
     var item = _ref4.item,
         rest = _objectWithoutProperties(_ref4, ["item"]);
 
-    // eslint-disable-line react/prop-types
     var Component = currentProps.itemComponent;
     return Component ? _react.default.createElement(Component, _extends({
       item: item,
@@ -1361,21 +1361,21 @@ function listDataManager(component, _temp) {
     }, rest, {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 109
+        lineNumber: 108
       },
       __self: this
     })) : accessors.text(item);
-  };
+  }; // eslint-disable-next-line react/prop-types
+
 
   var renderGroup = function renderGroup(_ref5) {
     var group = _ref5.group;
-    // eslint-disable-line react/prop-types
     var Component = currentProps.groupComponent;
     return Component ? _react.default.createElement(Component, {
       item: group,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 121
+        lineNumber: 123
       },
       __self: this
     }) : group;
@@ -1736,7 +1736,7 @@ function (_React$Component) {
       group: group,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 95
+        lineNumber: 92
       },
       __self: this
     }, renderGroup({
@@ -1752,6 +1752,7 @@ function (_React$Component) {
         onSelect = _props3.onSelect,
         isDisabled = _props3.isDisabled,
         renderItem = _props3.renderItem,
+        searchTerm = _props3.searchTerm,
         Option = _props3.optionComponent;
     var isFocused = focusedItem === item;
     return _react.default.createElement(Option, {
@@ -1765,12 +1766,13 @@ function (_React$Component) {
       selected: selectedItem === item,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 117
+        lineNumber: 113
       },
       __self: this
     }, renderItem({
       item: item,
-      index: index
+      index: index,
+      searchTerm: searchTerm
     }));
   };
 
@@ -1790,7 +1792,7 @@ function (_React$Component) {
       emptyListMessage: emptyList(this.props),
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 140
+        lineNumber: 135
       },
       __self: this
     }), this.mapItems(function (item, idx, isHeader) {
@@ -8257,7 +8259,7 @@ function (_React$Component) {
       ref: this.attachInputRef,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 293
+        lineNumber: 285
       },
       __self: this
     }));
@@ -8270,7 +8272,8 @@ function (_React$Component) {
         accessors = this.accessors;
     var _props2 = this.props,
         open = _props2.open,
-        data = _props2.data;
+        data = _props2.data,
+        value = _props2.value;
     var _state = this.state,
         selectedItem = _state.selectedItem,
         focusedItem = _state.focusedItem;
@@ -8283,6 +8286,7 @@ function (_React$Component) {
       textAccessor: accessors.text,
       selectedItem: selectedItem,
       focusedItem: open ? focusedItem : null,
+      searchTerm: typeof value === 'string' ? value : '',
       "aria-hidden": !open,
       "aria-labelledby": inputId,
       "aria-live": open && 'polite',
@@ -8294,7 +8298,7 @@ function (_React$Component) {
       },
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 328
+        lineNumber: 320
       },
       __self: this
     }));
@@ -8327,13 +8331,13 @@ function (_React$Component) {
       className: (0, _classnames.default)(className, 'rw-combobox'),
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 363
+        lineNumber: 356
       },
       __self: this
     }), _react.default.createElement(_WidgetPicker.default, {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 375
+        lineNumber: 368
       },
       __self: this
     }, this.renderInput(), _react.default.createElement(_Select.default, {
@@ -8345,7 +8349,7 @@ function (_React$Component) {
       label: messages.openCombobox(this.props),
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 377
+        lineNumber: 370
       },
       __self: this
     })), shouldRenderPopup && _react.default.createElement(_Popup.default, {
@@ -8357,13 +8361,13 @@ function (_React$Component) {
       },
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 388
+        lineNumber: 381
       },
       __self: this
     }, _react.default.createElement("div", {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 394
+        lineNumber: 387
       },
       __self: this
     }, this.renderList(messages))));
