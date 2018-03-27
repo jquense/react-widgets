@@ -18,6 +18,7 @@ import scrollManager from './util/scrollManager'
 import * as Props from './util/Props'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
+import AutocompleteListItem from './AutocompleteListItem'
 
 const propTypes = {
   //-- controlled props -----------
@@ -26,6 +27,8 @@ const propTypes = {
   open: PropTypes.bool,
   onToggle: PropTypes.func,
   //------------------------------------
+
+  openWithoutData: PropTypes.bool,
 
   itemComponent: CustomPropTypes.elementType,
   selectComponent: CustomPropTypes.elementType,
@@ -53,7 +56,6 @@ const propTypes = {
   listProps: PropTypes.object,
   isRtl: PropTypes.bool,
   messages: PropTypes.shape({
-    openCombobox: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
     emptyFilter: CustomPropTypes.message,
   }),
@@ -63,8 +65,10 @@ class Autocomplete extends React.Component {
   static defaultProps = {
     data: [],
     open: false,
+    openWithoutData: false,
     listComponent: List,
     selectComponent: Select,
+    itemComponent: AutocompleteListItem,
   }
 
   constructor(props, context) {
@@ -112,7 +116,8 @@ class Autocomplete extends React.Component {
     if (!focused) this.close()
   }
 
-  @widgetEditable handleSelect = (data, originalEvent) => {
+  @widgetEditable
+  handleSelect = (data, originalEvent) => {
     this.close()
     notify(this.props.onSelect, [data, { originalEvent }])
     this.change(data, originalEvent)
@@ -124,7 +129,8 @@ class Autocomplete extends React.Component {
     this.open()
   }
 
-  @widgetEditable handleKeyDown = e => {
+  @widgetEditable
+  handleKeyDown = e => {
     let key = e.key,
       list = this.list,
       focusedItem = this.state.focusedItem,
@@ -163,17 +169,24 @@ class Autocomplete extends React.Component {
     }
   }
 
-  attachListRef = (ref) => {
+  attachListRef = ref => {
     this.listRef = ref
   }
-  attachInputRef = (ref) => {
+  attachInputRef = ref => {
     this.inputRef = ref
+  }
+
+  canOpen = () => {
+    return (
+      !!this.props.value &&
+      (this.props.openWithoutData || !!this.props.data.length)
+    )
   }
 
   renderList(messages) {
     let { activeId, inputId, listId, accessors } = this
 
-    let { open } = this.props
+    let { open, value } = this.props
     let { selectedItem, focusedItem } = this.state
     let List = this.props.listComponent
     let props = this.list.defaultProps()
@@ -187,6 +200,7 @@ class Autocomplete extends React.Component {
         valueAccessor={accessors.value}
         textAccessor={accessors.text}
         selectedItem={selectedItem}
+        searchTerm={typeof value === 'string' ? value : ''}
         focusedItem={open ? focusedItem : null}
         aria-hidden={!open}
         aria-labelledby={inputId}
@@ -223,15 +237,16 @@ class Autocomplete extends React.Component {
 
     let messages = this.messages
     let valueItem = this.accessors.findOrSelf(data, value)
+    let actuallyOpen = open && this.canOpen()
 
     return (
       <Widget
         {...elementProps}
-        open={open}
         dropUp={dropUp}
         focused={focused}
         disabled={disabled}
         readOnly={readOnly}
+        open={actuallyOpen}
         onBlur={this.focusManager.handleBlur}
         onFocus={this.focusManager.handleFocus}
         onKeyDown={this.handleKeyDown}
@@ -262,23 +277,19 @@ class Autocomplete extends React.Component {
             aria-hidden="true"
             role="presentational"
             disabled={disabled || readOnly}
-            label={messages.openDropdown(this.props)}
           />
         </WidgetPicker>
 
-        {!!value &&
-          !!data.length &&
-          shouldRenderPopup &&
+        {shouldRenderPopup && (
           <Popup
-            open={open}
             dropUp={dropUp}
+            open={actuallyOpen}
             transition={popupTransition}
             onEntering={() => this.listRef.forceUpdate()}
           >
-            <div>
-              {this.renderList(messages)}
-            </div>
-          </Popup>}
+            <div>{this.renderList(messages)}</div>
+          </Popup>
+        )}
       </Widget>
     )
   }

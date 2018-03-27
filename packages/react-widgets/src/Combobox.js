@@ -72,7 +72,6 @@ let propTypes = {
   }),
 }
 
-
 /**
  * ---
  * shortcuts:
@@ -181,16 +180,16 @@ class Combobox extends React.Component {
 
   // has to be done early since `accept()` re-focuses the input
   handleFocusWillChange = focused => {
-    if (!focused && this.inputRef)
-      this.inputRef.accept()
-    if (focused) this.focus();
+    if (!focused && this.inputRef) this.inputRef.accept()
+    if (focused) this.focus()
   }
 
   handleFocusChanged = focused => {
     if (!focused) this.close()
   }
 
-  @widgetEditable handleSelect = (data, originalEvent) => {
+  @widgetEditable
+  handleSelect = (data, originalEvent) => {
     this.close()
     notify(this.props.onSelect, [data, { originalEvent }])
     this.change(data, false, originalEvent)
@@ -212,10 +211,10 @@ class Combobox extends React.Component {
   @widgetEditable
   handleKeyDown = e => {
     let { key, altKey } = e
-    let { list } = this;
+    let { list } = this
 
-    let { open, onKeyDown } = this.props;
-    let { focusedItem, selectedItem } = this.state;
+    let { open, onKeyDown } = this.props
+    let { focusedItem, selectedItem } = this.state
 
     notify(onKeyDown, [e])
 
@@ -227,42 +226,35 @@ class Combobox extends React.Component {
     if (key === 'End' && open) {
       e.preventDefault()
       focusItem(list.last())
-    }
-    else if (key === 'Home' && open) {
+    } else if (key === 'Home' && open) {
       e.preventDefault()
       focusItem(list.first())
-    }
-    else if (key === 'Escape' && open) {
+    } else if (key === 'Escape' && open) {
       e.preventDefault()
       this.close()
-    }
-    else if (key === 'Enter' && open) {
+    } else if (key === 'Enter' && open) {
       e.preventDefault()
       select(this.state.focusedItem)
-    }
-    else if (key === 'Tab') {
+    } else if (key === 'Tab') {
       this.inputRef.accept()
-    }
-    else if (key === 'ArrowDown') {
+    } else if (key === 'ArrowDown') {
       e.preventDefault()
       if (altKey) return this.open()
 
       if (open) focusItem(list.next(focusedItem))
       else select(list.next(selectedItem))
-    }
-    else if (key === 'ArrowUp') {
+    } else if (key === 'ArrowUp') {
       e.preventDefault()
       if (altKey) return this.close()
 
       if (open) focusItem(list.prev(focusedItem))
-      else      select(list.prev(selectedItem))
+      else select(list.prev(selectedItem))
     }
-
   }
-  attachListRef = (ref) => {
+  attachListRef = ref => {
     this.listRef = ref
   }
-  attachInputRef = (ref) => {
+  attachInputRef = ref => {
     this.inputRef = ref
   }
 
@@ -318,7 +310,7 @@ class Combobox extends React.Component {
   renderList(messages) {
     let { activeId, inputId, listId, accessors } = this
 
-    let { open, data } = this.props
+    let { open, data, value } = this.props
     let { selectedItem, focusedItem } = this.state
 
     let List = this.props.listComponent
@@ -333,6 +325,7 @@ class Combobox extends React.Component {
         textAccessor={accessors.text}
         selectedItem={selectedItem}
         focusedItem={open ? focusedItem : null}
+        searchTerm={typeof value === 'string' ? value : ''}
         aria-hidden={!open}
         aria-labelledby={inputId}
         aria-live={open && 'polite'}
@@ -384,24 +377,22 @@ class Combobox extends React.Component {
           />
         </WidgetPicker>
 
-        {shouldRenderPopup &&
+        {shouldRenderPopup && (
           <Popup
             open={open}
             dropUp={dropUp}
             transition={popupTransition}
             onEntering={() => this.listRef.forceUpdate()}
           >
-            <div>
-              {this.renderList(messages)}
-            </div>
-          </Popup>}
+            <div>{this.renderList(messages)}</div>
+          </Popup>
+        )}
       </Widget>
     )
   }
 
   focus() {
-    if (this.inputRef)
-      this.inputRef.focus()
+    if (this.inputRef) this.inputRef.focus()
   }
 
   change(nextValue, typing, originalEvent) {
@@ -424,7 +415,8 @@ class Combobox extends React.Component {
     if (this.props.open) notify(this.props.onToggle, false)
   }
 
-  @widgetEditable toggle = () => {
+  @widgetEditable
+  toggle = () => {
     this.focus()
 
     this.props.open ? this.close() : this.open()

@@ -39,6 +39,7 @@ class VirtualList extends React.Component {
     selectedItem: PropTypes.any,
 
     isDisabled: PropTypes.func.isRequired,
+    valueAccessor: PropTypes.func.isRequired,
     textAccessor: PropTypes.func.isRequired,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
@@ -121,9 +122,10 @@ class VirtualList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    const { valueAccessor, focusedItem, selectedItem } = this.props
     if (
-      prevProps.focusedItem !== this.props.focusedItem ||
-      prevProps.selectedItem !== this.props.selectedItem
+      valueAccessor(prevProps.focusedItem) !== valueAccessor(focusedItem) ||
+      valueAccessor(prevProps.selectedItem) !== valueAccessor(selectedItem)
     )
       this.move()
   }
@@ -139,11 +141,6 @@ class VirtualList extends React.Component {
         {items}
       </Listbox>
     )
-  }
-
-  renderGroupHeader(group, key) {
-    var renderGroup = this.props.renderGroup
-    return
   }
 
   renderItem = (index, key) => {
@@ -190,7 +187,7 @@ class VirtualList extends React.Component {
     if (item && item.__isGroup) {
       return (
         <ListOptionGroup key={key}>
-          {renderGroup({ group: item.group })}
+          {renderGroup({ group: item.group, searchTerm })}
         </ListOptionGroup>
       )
     }
@@ -207,7 +204,7 @@ class VirtualList extends React.Component {
         selected={selectedItem === item}
         onSelect={onSelect}
       >
-        {renderItem({ item, index })}
+        {renderItem({ item, index, searchTerm })}
       </OptionComponent>
     )
   }

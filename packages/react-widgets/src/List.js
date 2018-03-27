@@ -1,15 +1,15 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types'
+import React from 'react'
+import { findDOMNode } from 'react-dom'
 
-import * as CustomPropTypes from './util/PropTypes';
-import * as Props from './util/Props';
-import { notify } from './util/widgetHelpers';
-import { defaultGetDataState } from './util/listDataManager';
-import Listbox from './Listbox';
-import ListOption from './ListOption';
+import * as CustomPropTypes from './util/PropTypes'
+import * as Props from './util/Props'
+import { notify } from './util/widgetHelpers'
+import { defaultGetDataState } from './util/listDataManager'
+import Listbox from './Listbox'
+import ListOption from './ListOption'
 import ListOptionGroup from './ListOptionGroup'
-import { getMessages } from './messages';
+import { getMessages } from './messages'
 
 const EMPTY_DATA_STATE = {}
 
@@ -28,7 +28,7 @@ const propTypes = {
   activeId: PropTypes.string,
   optionComponent: CustomPropTypes.elementType,
   renderItem: PropTypes.func.isRequired,
-  renderGroup:  PropTypes.func,
+  renderGroup: PropTypes.func,
 
   focusedItem: PropTypes.any,
   selectedItem: PropTypes.any,
@@ -39,7 +39,7 @@ const propTypes = {
 
   messages: PropTypes.shape({
     emptyList: PropTypes.func.isRequired,
-  })
+  }),
 }
 
 const defaultProps = {
@@ -50,7 +50,6 @@ const defaultProps = {
 }
 
 class List extends React.Component {
-
   static getDataState = defaultGetDataState
 
   componentDidMount() {
@@ -63,10 +62,9 @@ class List extends React.Component {
 
   mapItems(fn) {
     const { data, dataState } = this.props
-    let { sortedKeys, groups } = dataState;
+    let { sortedKeys, groups } = dataState
 
-    if (!groups)
-      return data.map((item, idx) => fn(item, idx, false))
+    if (!groups) return data.map((item, idx) => fn(item, idx, false))
 
     let idx = -1
     return sortedKeys.reduce((items, key) => {
@@ -80,22 +78,18 @@ class List extends React.Component {
   }
 
   move() {
-    let { focusedItem, onMove, data, dataState } = this.props;
-    let list = findDOMNode(this);
+    let { focusedItem, onMove, data, dataState } = this.props
+    let list = findDOMNode(this)
     let idx = renderedIndexOf(focusedItem, list, data, dataState)
     let selectedItem = list.children[idx]
 
-    if (selectedItem)
-      notify(onMove, [selectedItem, list, focusedItem])
+    if (selectedItem) notify(onMove, [selectedItem, list, focusedItem])
   }
 
   renderGroupHeader(group) {
-    let { renderGroup } = this.props;
+    let { renderGroup } = this.props
     return (
-      <ListOptionGroup
-        key={'group_' + group}
-        group={group}
-      >
+      <ListOptionGroup key={'group_' + group} group={group}>
         {renderGroup({ group })}
       </ListOptionGroup>
     )
@@ -103,15 +97,17 @@ class List extends React.Component {
 
   renderItem(item, index) {
     let {
-        activeId
-      , focusedItem
-      , selectedItem
-      , onSelect
-      , isDisabled
-      , renderItem
-      , optionComponent: Option } = this.props
+      activeId,
+      focusedItem,
+      selectedItem,
+      onSelect,
+      isDisabled,
+      renderItem,
+      searchTerm,
+      optionComponent: Option,
+    } = this.props
 
-    let isFocused = focusedItem === item;
+    let isFocused = focusedItem === item
 
     return (
       <Option
@@ -124,16 +120,15 @@ class List extends React.Component {
         disabled={isDisabled(item)}
         selected={selectedItem === item}
       >
-        {renderItem({ item, index })}
+        {renderItem({ item, index, searchTerm })}
       </Option>
     )
   }
 
-
   render() {
     let { className, messages } = this.props
 
-    let elementProps = Props.pickElementProps(this);
+    let elementProps = Props.pickElementProps(this)
     let { emptyList } = getMessages(messages)
 
     return (
@@ -143,9 +138,9 @@ class List extends React.Component {
         emptyListMessage={emptyList(this.props)}
       >
         {this.mapItems((item, idx, isHeader) => {
-          return isHeader ?
-            this.renderGroupHeader(item) :
-            this.renderItem(item, idx)
+          return isHeader
+            ? this.renderGroupHeader(item)
+            : this.renderItem(item, idx)
         })}
       </Listbox>
     )
@@ -162,19 +157,19 @@ function renderedIndexOf(item, list, data, dataState) {
 
   sortedKeys.some(group => {
     let itemIdx = groups[group].indexOf(item)
-    runningIdx++;
+    runningIdx++
 
     if (itemIdx !== -1) {
-      idx = runningIdx + itemIdx + 1;
+      idx = runningIdx + itemIdx + 1
       return true
     }
 
     runningIdx += groups[group].length
   })
-  return idx;
+  return idx
 }
 
-List.propTypes = propTypes;
-List.defaultProps = defaultProps;
+List.propTypes = propTypes
+List.defaultProps = defaultProps
 
-export default List;
+export default List
