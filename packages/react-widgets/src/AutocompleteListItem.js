@@ -1,7 +1,11 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 const Fragment = React.Fragment || 'div'
-const propTypes = {}
+const propTypes = {
+  text: PropTypes.string,
+  searchTerm: PropTypes.string,
+}
 
 function AutocompleteListItem({ text, searchTerm }) {
   if (!text || !searchTerm) return <Fragment>{text}</Fragment>
