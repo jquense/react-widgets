@@ -10,38 +10,36 @@
     "test": "lerna run test",
     "rw": "lerna exec --scope react-widgets npm run",
     "tdd": "npm run rw tdd",
-    "start": "npm run docs start",
+    "start": "npm run develop -C ./www",
     "start-dev": "lerna exec --scope storybook npm start",
-    "docs": "npm run develop -C ./www",
     "bootstrap": "yarn && lerna run prepublishOnly",
-    "release": "lerna run prepublishOnly && lerna publish"
+    "build": "lerna run build",
+    "release": "lerna publish"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-0",
-    "@babel/plugin-proposal-decorators": "^7.0.0-beta.40",
-    "@babel/preset-flow": "^7.0.0-beta.40",
+    "@babel/core": "^7.0.0-beta.42",
+    "@babel/plugin-proposal-decorators": "^7.0.0-beta.42",
+    "@babel/preset-flow": "^7.0.0-beta.42",
     "babel-eslint": "^8.2.2",
     "babel-preset-jason": "^4.1.0",
     "common-tags": "^1.3.1",
     "cpy-cli": "^1.0.0",
-    "cross-env": "^5.1.3",
+    "cross-env": "^5.1.4",
     "css-literal-loader": "^0.3.0",
-    "eslint": "^4.18.1",
+    "eslint": "^4.19.1",
     "eslint-config-jason": "^4.0.0",
-    "eslint-plugin-import": "^2.0.0",
+    "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-mocha": "^4.6.0",
     "eslint-plugin-react": "^7.7.0",
     "glob": "^7.1.2",
-    "lerna": "^2.1.2",
+    "lerna": "^2.9.1",
     "lodash": "^4.17.2",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.5.4",
-    "webpack": "^3.6.0",
-    "webpack-atoms": "^5.1.0",
-    "webpack-dev-server": "^2.4.5",
+    "webpack": "^4.4.1",
+    "webpack-atoms": "^6.0.6",
+    "webpack-dev-server": "^3.1.1",
     "webpack-merge": "^4.1.0"
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "workspaces": ["packages/*"]
 }

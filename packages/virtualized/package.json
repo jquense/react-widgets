@@ -20,10 +20,10 @@
     "react-list": "^0.8.8"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-0",
-    "@babel/core": "^7.0.0-0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "@babel/cli": "^7.0.0-beta.42",
+    "@babel/core": "^7.0.0-beta.42",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
     "react-widgets": "^4.2.5"
   },
   "author": "Jason Quense",
