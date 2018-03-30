@@ -1,6 +1,8 @@
-/lib
-/test/output
-temp
+lib/
+dist/
+**/test/output/
+
+temp/
 
 package-lock.json
 packages/**/yarn.lock
