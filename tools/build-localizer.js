@@ -8,10 +8,10 @@ const dirname = process.cwd()
 let { name } = require(`${dirname}/package.json`)
 
 const compiler = webpack({
-  mode: 'production',
-  optimization: {
-    minimize: false,
-  },
+  // mode: 'production',
+  // optimization: {
+  //   minimize: false,
+  // },
   entry:
     `${loaders.imports().loader}?` +
     `module=${path.join(dirname, 'localizer.js')}` +

@@ -34,7 +34,6 @@
     "cross-env": "^5.1.4",
     "date-fns": "^2.0.0-alpha.7",
     "react-widgets": "^4.2.5",
-    "rimraf": "^2.6.2",
-    "webpack": "^4.4.1"
+    "rimraf": "^2.6.2"
   }
 }

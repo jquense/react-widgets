@@ -32,7 +32,6 @@
     "cross-env": "^5.1.4",
     "moment": "^2.21.0",
     "react-widgets": "^4.2.5",
-    "rimraf": "^2.6.2",
-    "webpack": "^4.4.1"
+    "rimraf": "^2.6.2"
   }
 }

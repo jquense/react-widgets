@@ -3,7 +3,7 @@ const { plugins, rules } = require('webpack-atoms')
 
 module.exports = baseConfig =>
   Object.assign({}, baseConfig, {
-    mode: 'development',
+    // mode: 'development',
     module: {
       rules: [
         { parser: { amd: false } },
