@@ -1,8 +1,7 @@
-
 .rw-multiselect {
   background-color: @widget-bg;
-  border-color:     @state-border-hover;
-  cursor:           text;
+  border-color: @state-border-hover;
+  cursor: text;
 
   .rw-input-reset {
     .height-calc(@input-height, @input-border-width * 2);
@@ -23,7 +22,6 @@
   }
 }
 
-
 .rw-multiselect-taglist {
   .unstyled-list();
   display: inline;
@@ -31,21 +29,21 @@
 }
 
 .rw-multiselect-tag {
-  display:            inline-table;
-  color:              @multiselect-tag-color;
-  padding:            0 @multiselect-tag-padding-right 0 @multiselect-tag-padding-left;
-  margin-left:        @multiselect-tag-gutter;
-  margin-top:         @multiselect-tag-gutter-fallback;
-  margin-top:         @multiselect-tag-gutter;
-  height:             @multiselect-tag-height;
-  border-radius:      @multiselect-tag-border-radius;
-  background-color:   @multiselect-tag-bg;
-  border:             1px solid @multiselect-tag-border;
-  cursor:             default;
-  vertical-align:     top;
-  text-align:         center;
-  overflow:           hidden;
-  max-width:          100%;
+  display: inline-table;
+  color: @multiselect-tag-color;
+  padding: 0 @multiselect-tag-padding-right 0 @multiselect-tag-padding-left;
+  margin-left: @multiselect-tag-gutter;
+  margin-top: @multiselect-tag-gutter-fallback;
+  margin-top: @multiselect-tag-gutter;
+  height: @multiselect-tag-height;
+  border-radius: @multiselect-tag-border-radius;
+  background-color: @multiselect-tag-bg;
+  border: 1px solid @multiselect-tag-border;
+  cursor: default;
+  vertical-align: top;
+  text-align: center;
+  overflow: hidden;
+  max-width: 100%;
 
   & > * {
     display: table-cell;
@@ -56,7 +54,7 @@
   .rw-rtl & {
     margin-left: 0;
     margin-right: @multiselect-tag-gutter;
-    padding:0 @multiselect-tag-padding-left 0 @multiselect-tag-padding-right;
+    padding: 0 @multiselect-tag-padding-left 0 @multiselect-tag-padding-right;
   }
 
   &.rw-state-focus {
@@ -66,7 +64,8 @@
   &.rw-state-readonly,
   &.rw-state-disabled,
   .rw-state-readonly &,
-  .rw-state-disabled & {
+  .rw-state-disabled &,
+  fieldset[disabled] & {
     cursor: not-allowed;
   }
 

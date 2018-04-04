@@ -1,6 +1,7 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
+import polyfillLifecycles from 'react-lifecycles-compat'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'
@@ -58,6 +59,7 @@ function clamp(value, min, max) {
  *
  * @public
  */
+@polyfillLifecycles
 class NumberPicker extends React.Component {
   static propTypes = {
     value: PropTypes.number,
@@ -138,7 +140,7 @@ class NumberPicker extends React.Component {
 
   constructor(...args) {
     super(...args)
-    this.messages = getMessages(this.props.messages)
+
     this.focusManager = focusManager(this, {
       willHandle: focused => {
         if (focused) this.focus()
@@ -150,8 +152,8 @@ class NumberPicker extends React.Component {
     }
   }
 
-  componentWillReceiveProps({ messages }) {
-    this.messages = getMessages(messages)
+  static getDerivedStateFromProps({ messages }) {
+    return { messages: getMessages(messages) }
   }
 
   @widgetEditable
@@ -266,7 +268,7 @@ class NumberPicker extends React.Component {
   render() {
     let { className, disabled, readOnly, value, min, max } = this.props
 
-    let { focused } = this.state
+    let { focused, messages } = this.state
     let elementProps = Props.pickElementProps(this)
 
     value = clamp(value, min, max)
@@ -289,7 +291,7 @@ class NumberPicker extends React.Component {
               icon="caret-up"
               onClick={this.handleFocus}
               disabled={value === max || disabled}
-              label={this.messages.increment({ value, min, max })}
+              label={messages.increment({ value, min, max })}
               onMouseUp={e => this.handleMouseUp('UP', e)}
               onMouseDown={e => this.handleMouseDown('UP', e)}
               onMouseLeave={e => this.handleMouseUp('UP', e)}
@@ -298,7 +300,7 @@ class NumberPicker extends React.Component {
               icon="caret-down"
               onClick={this.handleFocus}
               disabled={value === min || disabled}
-              label={this.messages.decrement({ value, min, max })}
+              label={messages.decrement({ value, min, max })}
               onMouseUp={e => this.handleMouseUp('DOWN', e)}
               onMouseDown={e => this.handleMouseDown('DOWN', e)}
               onMouseLeave={e => this.handleMouseUp('DOWN', e)}

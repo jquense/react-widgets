@@ -8,6 +8,7 @@ import {
   mountManager,
   timeoutManager,
 } from 'react-component-managers'
+import polyfillLifecycles from 'react-lifecycles-compat'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'
@@ -15,21 +16,22 @@ import WidgetPicker from './WidgetPicker'
 import Select from './Select'
 import Popup from './Popup'
 import List from './List'
-import AddToListOption from './AddToListOption';
+import AddToListOption from './AddToListOption'
 import DropdownListInput from './DropdownListInput'
 import { getMessages } from './messages'
 
 import * as Props from './util/Props'
 import * as Filter from './util/Filter'
 import focusManager from './util/focusManager'
-import listDataManager from './util/listDataManager'
+
 import * as CustomPropTypes from './util/PropTypes'
-import accessorManager from './util/accessorManager'
+import reduceToListState from './util/reduceToListState'
+import getAccessors from './util/getAccessors'
 import scrollManager from './util/scrollManager'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
-const CREATE_OPTION = {};
+const CREATE_OPTION = {}
 
 /**
  * ---
@@ -46,24 +48,24 @@ const CREATE_OPTION = {};
  * ---
  *
  * A `<select>` replacement for single value lists.
-
  * @public
  */
+@polyfillLifecycles
 class DropdownList extends React.Component {
   static propTypes = {
     ...Filter.propTypes,
 
     value: PropTypes.any,
     /**
-   * @type {function (
-   *  dataItems: ?any,
-   *  metadata: {
-   *    lastValue: ?any,
-   *    searchTerm: ?string
-   *    originalEvent: SyntheticEvent,
-   *  }
-   * ): void}
-   */
+     * @type {function (
+     *  dataItems: ?any,
+     *  metadata: {
+     *    lastValue: ?any,
+     *    searchTerm: ?string
+     *    originalEvent: SyntheticEvent,
+     *  }
+     * ): void}
+     */
     onChange: PropTypes.func,
     open: PropTypes.bool,
     onToggle: PropTypes.func,
@@ -80,6 +82,7 @@ class DropdownList extends React.Component {
     valueComponent: CustomPropTypes.elementType,
     itemComponent: CustomPropTypes.elementType,
     listComponent: CustomPropTypes.elementType,
+    optionComponent: CustomPropTypes.elementType,
 
     groupComponent: CustomPropTypes.elementType,
     groupBy: CustomPropTypes.accessor,
@@ -89,7 +92,6 @@ class DropdownList extends React.Component {
      * @type {(dataItem: ?any, metadata: { originalEvent: SyntheticEvent }) => void}
      */
     onSelect: PropTypes.func,
-
 
     onCreate: PropTypes.func,
 
@@ -133,35 +135,34 @@ class DropdownList extends React.Component {
     super(...args)
 
     autoFocus(this)
-    this.messages = getMessages(this.props.messages)
 
     this.inputId = instanceId(this, '_input')
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
 
-    this.list = listDataManager(this)
     this.mounted = mountManager(this)
     this.timeouts = timeoutManager(this)
-    this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
       didHandle: this.handleFocusChanged,
     })
 
-    this.state = this.getStateFromProps(this.props)
+    this.state = {}
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.messages = getMessages(nextProps.messages)
-    this.setState(this.getStateFromProps(nextProps))
-  }
-
-  getStateFromProps(props) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     let {
-      open, value, data, searchTerm, filter, minLength, caseSensitive,
-    } = props
+      open,
+      value,
+      data,
+      messages,
+      searchTerm,
+      filter,
+      minLength,
+      caseSensitive,
+    } = nextProps
 
-    let { accessors, list } = this
+    const accessors = getAccessors(nextProps)
     let initialIdx = accessors.indexOf(data, value)
 
     if (open)
@@ -170,24 +171,24 @@ class DropdownList extends React.Component {
         searchTerm,
         minLength,
         caseSensitive,
-        textField: this.accessors.text,
+        textField: accessors.text,
       })
 
-    list.setData(data)
-
-    let selectedItem = data[initialIdx]
+    const list = reduceToListState(data, prevState.list, { nextProps })
 
     return {
       data,
-      selectedItem: list.nextEnabled(selectedItem),
-      focusedItem: list.nextEnabled(selectedItem || data[0]),
+      list,
+      accessors,
+      messages: getMessages(messages),
+      selectedItem: list.nextEnabled(data[initialIdx]),
+      focusedItem: list.nextEnabled(data[initialIdx] || data[0]),
     }
   }
 
   handleFocusChanged = focused => {
     if (!focused) this.close()
   }
-
 
   @widgetEditable
   handleSelect = (dataItem, originalEvent) => {
@@ -210,7 +211,7 @@ class DropdownList extends React.Component {
     this.clearSearch(event)
     this.close()
     this.focus(this)
-  };
+  }
 
   @widgetEditable
   handleClick = e => {
@@ -220,14 +221,13 @@ class DropdownList extends React.Component {
   }
 
   @widgetEditable
-  handleKeyDown = (e) => {
+  handleKeyDown = e => {
     let { key, altKey, ctrlKey } = e
-    let { list } = this;
 
-    let { open, onKeyDown, filter, searchTerm } = this.props;
-    let { focusedItem, selectedItem } = this.state;
+    let { open, onKeyDown, filter, searchTerm } = this.props
+    let { focusedItem, selectedItem, list } = this.state
 
-    let createIsFocused = focusedItem === CREATE_OPTION;
+    let createIsFocused = focusedItem === CREATE_OPTION
     let canCreate = this.allowCreate()
 
     notify(onKeyDown, [e])
@@ -246,46 +246,39 @@ class DropdownList extends React.Component {
       e.preventDefault()
 
       if (open) focusItem(list.last())
-      else      change(list.last())
-    }
-    else if (key === 'Home') {
+      else change(list.last())
+    } else if (key === 'Home') {
       e.preventDefault()
 
       if (open) focusItem(list.first())
-      else      change(list.first())
-    }
-    else if (key === 'Escape' && open) {
+      else change(list.first())
+    } else if (key === 'Escape' && open) {
       e.preventDefault()
       closeWithFocus()
-    }
-    else if (key === 'Enter' && open && ctrlKey && canCreate) {
+    } else if (key === 'Enter' && open && ctrlKey && canCreate) {
       e.preventDefault()
-     this.handleCreate(searchTerm, e)
-    }
-    else if ((key === 'Enter' || (key === ' ' && !filter)) && open) {
+      this.handleCreate(searchTerm, e)
+    } else if ((key === 'Enter' || (key === ' ' && !filter)) && open) {
       e.preventDefault()
       this.handleSelect(focusedItem, e)
-    }
-    else if (key === ' ' && !open) {
+    } else if (key === ' ' && !open) {
       e.preventDefault()
       this.open()
-    }
-    else if (key === 'ArrowDown') {
+    } else if (key === 'ArrowDown') {
       e.preventDefault()
 
       if (altKey) return this.open()
-      if (!open)  change(list.next(selectedItem))
+      if (!open) change(list.next(selectedItem))
 
       let next = list.next(focusedItem)
-      let creating = createIsFocused || (canCreate && focusedItem === next);
+      let creating = createIsFocused || (canCreate && focusedItem === next)
 
       focusItem(creating ? CREATE_OPTION : next)
-    }
-    else if (key === 'ArrowUp') {
+    } else if (key === 'ArrowUp') {
       e.preventDefault()
 
       if (altKey) return closeWithFocus()
-      if (!open)  return change(list.prev(selectedItem))
+      if (!open) return change(list.prev(selectedItem))
 
       focusItem(createIsFocused ? list.last() : list.prev(focusedItem))
     }
@@ -304,14 +297,14 @@ class DropdownList extends React.Component {
       })
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.search(e.target.value, e, 'input')
-  };
+  }
 
   change(nextValue, originalEvent) {
     let { onChange, searchTerm, value: lastValue } = this.props
 
-    if (!this.accessors.matches(nextValue, lastValue)) {
+    if (!this.state.accessors.matches(nextValue, lastValue)) {
       notify(onChange, [
         nextValue,
         {
@@ -330,20 +323,32 @@ class DropdownList extends React.Component {
   attachFilterRef = ref => (this.filterRef = ref)
   attachListRef = ref => (this.listRef = ref)
 
-  renderList(messages) {
-    let { open, filter, data, searchTerm } = this.props
-    let { selectedItem, focusedItem } = this.state
-    let { value, text } = this.accessors
+  renderList() {
+    let {
+      open,
+      filter,
+      data,
+      searchTerm,
+      optionComponent,
+      itemComponent,
+      groupComponent,
+      listProps,
+    } = this.props
+    let {
+      list,
+      accessors,
+      focusedItem,
+      selectedItem,
+      messages,
+      data: filteredData,
+    } = this.state
 
     let List = this.props.listComponent
-    let props = this.list.defaultProps()
 
     return (
       <div>
         {filter && (
-          <WidgetPicker
-            className="rw-filter-input rw-input"
-          >
+          <WidgetPicker className="rw-filter-input rw-input">
             <input
               value={searchTerm}
               className="rw-input-reset"
@@ -355,11 +360,18 @@ class DropdownList extends React.Component {
           </WidgetPicker>
         )}
         <List
-          {...props}
+          {...listProps}
           id={this.listId}
           activeId={this.activeId}
-          valueAccessor={value}
-          textAccessor={text}
+          data={filteredData}
+          dataState={list.dataState}
+          isDisabled={list.isDisabled}
+          searchTerm={searchTerm}
+          textAccessor={accessors.text}
+          valueAccessor={accessors.value}
+          itemComponent={itemComponent}
+          groupComponent={groupComponent}
+          optionComponent={optionComponent}
           selectedItem={selectedItem}
           focusedItem={open ? focusedItem : null}
           onSelect={this.handleSelect}
@@ -398,16 +410,17 @@ class DropdownList extends React.Component {
       placeholder,
       value,
       open,
+      isRtl,
       filter,
       inputProps,
       valueComponent,
     } = this.props
 
-    let { focused } = this.state
+    let { focused, accessors, messages } = this.state
 
-    let disabled = this.props.disabled === true,
-      readOnly = this.props.readOnly === true,
-      valueItem = this.accessors.findOrSelf(data, value)
+    let disabled = this.props.disabled === true
+    let readOnly = this.props.readOnly === true
+    let valueItem = accessors.findOrSelf(data, value)
 
     let shouldRenderPopup = open || isFirstFocusedRender(this)
 
@@ -427,12 +440,11 @@ class DropdownList extends React.Component {
       'aria-readonly': readOnly,
     })
 
-    let messages = this.messages
-
     return (
       <Widget
         {...elementProps}
         open={open}
+        isRtl={isRtl}
         dropUp={dropUp}
         focused={focused}
         disabled={disabled}
@@ -461,7 +473,7 @@ class DropdownList extends React.Component {
             label={messages.openDropdown(this.props)}
           />
         </WidgetPicker>
-        {shouldRenderPopup &&
+        {shouldRenderPopup && (
           <Popup
             open={open}
             dropUp={dropUp}
@@ -470,7 +482,8 @@ class DropdownList extends React.Component {
             onEntering={() => this.listRef.forceUpdate()}
           >
             {this.renderList(messages)}
-          </Popup>}
+          </Popup>
+        )}
       </Widget>
     )
   }
@@ -494,11 +507,11 @@ class DropdownList extends React.Component {
     this.timeouts.set(
       'search',
       () => {
-        var list = this.list,
-          key = this.props.open ? 'focusedItem' : 'selectedItem',
-          item = list.next(this.state[key], word)
+        let { list } = this.state
+        let key = this.props.open ? 'focusedItem' : 'selectedItem'
+        let item = list.next(this.state[key], word)
 
-        if(item === this.state[key]) {
+        if (item === this.state[key]) {
           item = list.next(null, word)
         }
 
@@ -514,24 +527,25 @@ class DropdownList extends React.Component {
   }
 
   search(searchTerm, originalEvent, action: 'clear' | 'input' = 'input') {
-    let { onSearch, searchTerm: lastSearchTerm } = this.props;
+    let { onSearch, searchTerm: lastSearchTerm } = this.props
 
     if (searchTerm !== lastSearchTerm)
-      notify(onSearch, [searchTerm, {
-        action,
-        lastSearchTerm,
-        originalEvent,
-      }])
+      notify(onSearch, [
+        searchTerm,
+        {
+          action,
+          lastSearchTerm,
+          originalEvent,
+        },
+      ])
   }
 
   open() {
-    if (!this.props.open)
-      notify(this.props.onToggle, true)
+    if (!this.props.open) notify(this.props.onToggle, true)
   }
 
   close() {
-    if (this.props.open)
-      notify(this.props.onToggle, false)
+    if (this.props.open) notify(this.props.onToggle, false)
   }
 
   toggle() {
@@ -539,24 +553,24 @@ class DropdownList extends React.Component {
   }
 
   allowCreate() {
-    let { searchTerm, onCreate, allowCreate } = this.props;
+    let { searchTerm, onCreate, allowCreate } = this.props
 
     return !!(
       onCreate &&
-      (allowCreate === true ||
-      (allowCreate === 'onFilter' && searchTerm)) &&
+      (allowCreate === true || (allowCreate === 'onFilter' && searchTerm)) &&
       !this.hasExtactMatch()
     )
   }
 
   hasExtactMatch() {
-    let {searchTerm, caseSensitive, filter } = this.props;
-    let { data } = this.state;
-    let { text } = this.accessors;
-    let lower = text => caseSensitive ? text : text.toLowerCase();
+    let { searchTerm, caseSensitive, filter } = this.props
+    let { data, accessors } = this.state
+    let lower = text => (caseSensitive ? text : text.toLowerCase())
 
     // if there is an exact match on textFields:
-    return filter && data.some(v => lower(text(v)) === lower(searchTerm))
+    return (
+      filter && data.some(v => lower(accessors.text(v)) === lower(searchTerm))
+    )
   }
 }
 

@@ -14,6 +14,7 @@ class Widget extends React.Component {
     readOnly: PropTypes.bool,
     open: PropTypes.bool,
     dropUp: PropTypes.bool,
+    isRtl: PropTypes.bool,
   }
 
   render() {
@@ -25,10 +26,10 @@ class Widget extends React.Component {
       dropUp,
       disabled,
       readOnly,
+      isRtl = this.context.isRtl,
       ...props
     } = this.props
 
-    let isRtl = !!this.context.isRtl
     tabIndex = tabIndex != null ? tabIndex : '-1'
 
     return (

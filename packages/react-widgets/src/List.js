@@ -5,7 +5,7 @@ import { findDOMNode } from 'react-dom'
 import * as CustomPropTypes from './util/PropTypes'
 import * as Props from './util/Props'
 import { notify } from './util/widgetHelpers'
-import { defaultGetDataState } from './util/listDataManager'
+import { defaultGetDataState } from './util/reduceToListState'
 import Listbox from './Listbox'
 import ListOption from './ListOption'
 import ListOptionGroup from './ListOptionGroup'
@@ -21,13 +21,18 @@ const propTypes = {
     data: PropTypes.array,
     sequentialData: PropTypes.array,
   }),
+  valueAccessor: CustomPropTypes.accessor,
+  textAccessor: CustomPropTypes.accessor,
 
   onSelect: PropTypes.func,
   onMove: PropTypes.func,
 
   activeId: PropTypes.string,
+
+  itemComponent: CustomPropTypes.elementType,
+  groupComponent: CustomPropTypes.elementType,
   optionComponent: CustomPropTypes.elementType,
-  renderItem: PropTypes.func.isRequired,
+  renderItem: PropTypes.func,
   renderGroup: PropTypes.func,
 
   focusedItem: PropTypes.any,
@@ -35,7 +40,6 @@ const propTypes = {
   searchTerm: PropTypes.string,
 
   isDisabled: PropTypes.func.isRequired,
-  groupBy: CustomPropTypes.accessor,
 
   messages: PropTypes.shape({
     emptyList: PropTypes.func.isRequired,
@@ -86,23 +90,42 @@ class List extends React.Component {
     if (selectedItem) notify(onMove, [selectedItem, list, focusedItem])
   }
 
-  renderGroupHeader(group) {
-    let { renderGroup } = this.props
-    return (
-      <ListOptionGroup key={'group_' + group} group={group}>
-        {renderGroup({ group })}
-      </ListOptionGroup>
-    )
+  renderItem = ({ item, ...rest }) => {
+    const { isDisabled, renderItem, textAccessor, valueAccessor } = this.props
+    let Component = this.props.itemComponent
+    if (renderItem) {
+      return renderItem({ item, ...rest })
+    } else if (Component) {
+      return (
+        <Component
+          item={item}
+          value={valueAccessor(item)}
+          text={textAccessor(item)}
+          disabled={isDisabled(item)}
+          {...rest}
+        />
+      )
+    }
+    return textAccessor(item)
   }
 
-  renderItem(item, index) {
+  renderGroup = group => {
+    const { renderGroup, groupComponent: Component } = this.props
+    if (renderGroup) {
+      return renderGroup({ group })
+    } else if (Component) {
+      return <Component item={group} />
+    }
+    return group
+  }
+
+  renderOption(item, index) {
     let {
       activeId,
       focusedItem,
       selectedItem,
       onSelect,
       isDisabled,
-      renderItem,
       searchTerm,
       optionComponent: Option,
     } = this.props
@@ -120,7 +143,7 @@ class List extends React.Component {
         disabled={isDisabled(item)}
         selected={selectedItem === item}
       >
-        {renderItem({ item, index, searchTerm })}
+        {this.renderItem({ item, index, searchTerm })}
       </Option>
     )
   }
@@ -138,9 +161,13 @@ class List extends React.Component {
         emptyListMessage={emptyList(this.props)}
       >
         {this.mapItems((item, idx, isHeader) => {
-          return isHeader
-            ? this.renderGroupHeader(item)
-            : this.renderItem(item, idx)
+          return isHeader ? (
+            <ListOptionGroup key={'group_' + item} group={item}>
+              {this.renderGroup(item)}
+            </ListOptionGroup>
+          ) : (
+            this.renderOption(item, idx)
+          )
         })}
       </Listbox>
     )

@@ -1,5 +1,6 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
+import polyfillLifecycles from 'react-lifecycles-compat'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { autoFocus, timeoutManager } from 'react-component-managers'
@@ -13,8 +14,8 @@ import { getMessages } from './messages'
 import { makeArray } from './util/_'
 import * as Props from './util/Props'
 import * as CustomPropTypes from './util/PropTypes'
-import listDataManager from './util/listDataManager'
-import accessorManager from './util/accessorManager'
+import reduceToListState from './util/reduceToListState'
+import getAccessors from './util/getAccessors'
 import focusManager from './util/focusManager'
 import scrollManager from './util/scrollManager'
 import { widgetEditable } from './util/interaction'
@@ -45,6 +46,7 @@ function getFirstValue(data, values) {
  *
  * @public
  */
+@polyfillLifecycles
 class SelectList extends React.Component {
   static propTypes = {
     data: PropTypes.array,
@@ -72,6 +74,9 @@ class SelectList extends React.Component {
 
     itemComponent: CustomPropTypes.elementType,
     listComponent: CustomPropTypes.elementType,
+
+    groupComponent: CustomPropTypes.elementType,
+    groupBy: CustomPropTypes.accessor,
 
     valueField: CustomPropTypes.accessor,
     textField: CustomPropTypes.accessor,
@@ -107,38 +112,32 @@ class SelectList extends React.Component {
     super(...args)
     autoFocus(this)
 
-    this.messages = getMessages(this.props.messages)
-
     this.widgetId = instanceId(this, '_widget')
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
     this.itemName = instanceId(this, '_name')
 
-    this.list = listDataManager(this)
-    this.accessors = accessorManager(this)
     this.timeouts = timeoutManager(this)
     this.handleScroll = scrollManager(this, false)
     this.focusManager = focusManager(this, {
       didHandle: this.handleFocusChanged,
     })
 
-    this.state = this.getStateFromProps(this.props)
+    this.state = {}
   }
 
-  getStateFromProps(props) {
-    let { accessors, list } = this
-    let { data, value } = props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let { value, data, messages } = nextProps
 
-    list.setData(data)
+    let accessors = getAccessors(nextProps)
+    let list = reduceToListState(data, prevState.list, { nextProps })
 
     return {
+      list,
+      accessors,
+      messages: getMessages(messages),
       dataItems: makeArray(value).map(item => accessors.findOrSelf(data, item)),
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.messages = getMessages(nextProps.messages)
-    return this.setState(this.getStateFromProps(nextProps))
   }
 
   handleMouseDown = () => {
@@ -147,7 +146,7 @@ class SelectList extends React.Component {
 
   handleFocusChanged = focused => {
     let { data, disabled } = this.props
-    let { dataItems } = this.state
+    let { dataItems, accessors, list } = this.state
 
     // the rigamarole here is to avoid flicker went clicking an item and
     // gaining focus at the same time.
@@ -155,12 +154,12 @@ class SelectList extends React.Component {
       if (!focused) this.setState({ focusedItem: null })
       else if (focused && !this._clicking) {
         let allowed = Array.isArray(disabled)
-          ? dataItems.filter(v => !this.accessors.find(disabled, v))
+          ? dataItems.filter(v => !accessors.find(disabled, v))
           : dataItems
 
         this.setState({
           focusedItem:
-            getFirstValue(data, allowed) || this.list.nextEnabled(data[0]),
+            getFirstValue(data, allowed) || list.nextEnabled(data[0]),
         })
       }
       this._clicking = false
@@ -169,9 +168,8 @@ class SelectList extends React.Component {
 
   @widgetEditable
   handleKeyDown = event => {
-    let { list, accessors } = this
     let { multiple } = this.props
-    let { dataItems, focusedItem } = this.state
+    let { dataItems, focusedItem, list, accessors } = this.state
 
     let { keyCode, key, ctrlKey } = event
 
@@ -266,7 +264,7 @@ class SelectList extends React.Component {
 
   renderListItem = itemProps => {
     const { name, multiple, disabled, readOnly } = this.props
-    const { dataItems } = this.state
+    const { dataItems, accessors } = this.state
     return (
       <SelectListItem
         {...itemProps}
@@ -275,21 +273,27 @@ class SelectList extends React.Component {
         readOnly={disabled === true || readOnly}
         onChange={this.handleChange}
         onMouseDown={this.handleMouseDown}
-        checked={!!this.accessors.find(dataItems, itemProps.dataItem)}
+        checked={!!accessors.find(dataItems, itemProps.dataItem)}
       />
     )
   }
 
   render() {
-    let { className, tabIndex, busy } = this.props
+    let {
+      className,
+      tabIndex,
+      busy,
+      data,
+      itemComponent,
+      groupComponent,
+      listProps,
+    } = this.props
 
     let elementProps = Props.pickElementProps(this)
 
-    let { focusedItem, focused } = this.state
-    let { value, text } = this.accessors
+    let { focusedItem, focused, accessors, list, messages } = this.state
 
     let List = this.props.listComponent
-    let listProps = this.list.defaultProps()
 
     let disabled = this.props.disabled === true,
       readOnly = this.props.readOnly === true
@@ -324,12 +328,17 @@ class SelectList extends React.Component {
           tabIndex={tabIndex || '0'}
           id={this.listId}
           activeId={this.activeId}
-          valueAccessor={value}
-          textAccessor={text}
+          data={data}
+          dataState={list.dataState}
+          isDisabled={list.isDisabled}
+          textAccessor={accessors.text}
+          valueAccessor={accessors.value}
+          itemComponent={itemComponent}
+          groupComponent={groupComponent}
+          optionComponent={this.renderListItem}
           focusedItem={focusedItem}
           onMove={this.handleScroll}
-          optionComponent={this.renderListItem}
-          messages={{ emptyList: this.messages.emptyList }}
+          messages={{ emptyList: messages.emptyList }}
           ref={this.attachListRef}
         />
       </Widget>
@@ -394,10 +403,7 @@ class SelectList extends React.Component {
   }
 }
 
-export default createUncontrolledWidget(
-  SelectList,
-  {
-    value: 'onChange',
-  },
-  ['selectAll', 'focus']
-)
+export default createUncontrolledWidget(SelectList, { value: 'onChange' }, [
+  'selectAll',
+  'focus',
+])

@@ -3,6 +3,7 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import uncontrollable from 'uncontrollable'
+import polyfillLifecycles from 'react-lifecycles-compat'
 import { autoFocus } from 'react-component-managers'
 
 import Widget from './Widget'
@@ -57,6 +58,12 @@ const MULTIPLIER = {
   year: 1,
   decade: 10,
   century: 100,
+}
+
+function inRangeValue(_value, min, max) {
+  let value = dateOrNull(_value)
+  if (value === null) return value
+  return dates.max(dates.min(value, max), min)
 }
 
 const propTypes = {
@@ -221,6 +228,7 @@ const propTypes = {
  *
  * @public
  */
+@polyfillLifecycles
 class Calendar extends React.Component {
   static displayName = 'Calendar'
 
@@ -259,8 +267,6 @@ class Calendar extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this.messages = getMessages(this.props.messages)
-
     this.viewId = instanceId(this, '_calendar')
     this.labelId = instanceId(this, '_calendar_label')
     this.activeId =
@@ -279,22 +285,35 @@ class Calendar extends React.Component {
     }
   }
 
-  componentWillReceiveProps({ messages, view, views, value, currentDate }) {
-    let val = this.inRangeValue(value)
-
-    this.messages = getMessages(messages)
-
+  static getDerivedStateFromProps(
+    { messages, view, views, value, currentDate },
+    prevState
+  ) {
     view = view || views[0]
+    let { slideDirection, view: lastView, currentDate: lastDate } = prevState
 
-    this.setState({
-      view,
-      slideDirection: this.getSlideDirection({ view, views, currentDate }),
-    })
-
-    //if the value changes reset views to the new one
-    if (!dates.eq(val, dateOrNull(this.props.value), VIEW_UNIT[view])) {
-      this.setCurrentDate(val, currentDate)
+    if (lastView !== view) {
+      slideDirection =
+        views.indexOf(lastView) > views.indexOf(view) ? 'top' : 'bottom'
+    } else if (lastDate !== currentDate) {
+      slideDirection = dates.gt(currentDate, lastDate) ? 'left' : 'right'
     }
+
+    return {
+      view,
+      slideDirection,
+      messages: getMessages(messages),
+      currentDate: currentDate || value || new Date(),
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    let { value, min, max } = this.props
+    let { view } = this.state
+    value = inRangeValue(value, min, max)
+
+    if (!dates.eq(value, dateOrNull(prevProps.value), VIEW_UNIT[view]))
+      this.maybeSetCurrentDate(value)
   }
 
   handleFocusWillChange = () => {
@@ -322,7 +341,7 @@ class Calendar extends React.Component {
     let { view } = this.state
 
     if (views[0] === view) {
-      this.setCurrentDate(date)
+      this.maybeSetCurrentDate(date)
 
       notify(onChange, date)
 
@@ -344,7 +363,7 @@ class Calendar extends React.Component {
     if (dates.inRange(date, min, max, firstView)) {
       this.focus()
 
-      this.setCurrentDate(date)
+      this.maybeSetCurrentDate(date)
 
       notify(onViewChange, [firstView])
     }
@@ -352,12 +371,12 @@ class Calendar extends React.Component {
 
   @widgetEditable
   handleKeyDown = e => {
-    let ctrl = e.ctrlKey || e.metaKey,
-      key = e.key,
-      direction = ARROWS_TO_DIRECTION[key],
-      currentDate = this.getCurrentDate(),
-      view = this.state.view,
-      unit = VIEW_UNIT[view]
+    let { currentDate, view } = this.state
+
+    let ctrl = e.ctrlKey || e.metaKey
+    let key = e.key
+    let direction = ARROWS_TO_DIRECTION[key]
+    let unit = VIEW_UNIT[view]
 
     if (key === 'Enter') {
       e.preventDefault()
@@ -387,7 +406,7 @@ class Calendar extends React.Component {
             this.navigate('RIGHT', nextDate)
           else if (dates.lt(nextDate, currentDate, view))
             this.navigate('LEFT', nextDate)
-          else this.setCurrentDate(nextDate)
+          else this.maybeSetCurrentDate(nextDate)
         }
       }
     }
@@ -410,8 +429,7 @@ class Calendar extends React.Component {
       tabIndex,
     } = this.props
 
-    let { view, slideDirection, focused } = this.state
-    let currentDate = this.getCurrentDate()
+    let { currentDate, view, slideDirection, focused, messages } = this.state
 
     let View = VIEW[view],
       todaysDate = new Date(),
@@ -442,7 +460,7 @@ class Calendar extends React.Component {
           isRtl={this.isRtl()}
           label={this.getHeaderLabel()}
           labelId={this.labelId}
-          messages={this.messages}
+          messages={messages}
           upDisabled={isDisabled || view === last(views)}
           prevDisabled={
             isDisabled || !dates.inRange(this.nextDate('LEFT'), min, max, view)
@@ -485,7 +503,7 @@ class Calendar extends React.Component {
 
   navigate(direction, date) {
     let { views, min, max, onNavigate, onViewChange } = this.props
-    let { view } = this.state
+    let { view, currentDate } = this.state
 
     let slideDir = direction === 'LEFT' || direction === 'UP' ? 'right' : 'left'
 
@@ -497,13 +515,13 @@ class Calendar extends React.Component {
       date =
         ['LEFT', 'RIGHT'].indexOf(direction) !== -1
           ? this.nextDate(direction)
-          : this.getCurrentDate()
+          : currentDate
 
     if (dates.inRange(date, min, max, view)) {
       notify(onNavigate, [date, slideDir, view])
 
       this.focus(true)
-      this.setCurrentDate(date)
+      this.maybeSetCurrentDate(date)
       notify(onViewChange, [view])
     }
   }
@@ -512,15 +530,19 @@ class Calendar extends React.Component {
     if (+this.props.tabIndex > -1) findDOMNode(this).focus()
   }
 
-  getCurrentDate() {
-    return this.props.currentDate || this.props.value || new Date()
-  }
+  maybeSetCurrentDate(date) {
+    const { min, max } = this.props
+    const { view, currentDate } = this.state
 
-  setCurrentDate(date, currentDate = this.getCurrentDate()) {
-    let inRangeDate = this.inRangeValue(date ? new Date(date) : currentDate)
+    let inRangeDate = inRangeValue(
+      date ? new Date(date) : currentDate,
+      min,
+      max
+    )
 
     if (
-      dates.eq(inRangeDate, dateOrNull(currentDate), VIEW_UNIT[this.state.view])
+      date === currentDate ||
+      dates.eq(inRangeDate, dateOrNull(currentDate), VIEW_UNIT[view])
     )
       return
 
@@ -528,24 +550,23 @@ class Calendar extends React.Component {
   }
 
   nextDate(direction) {
-    let method = direction === 'LEFT' ? 'subtract' : 'add',
-      view = this.state.view,
-      unit = view === 'month' ? view : 'year',
-      multi = MULTIPLIER[view] || 1
+    let method = direction === 'LEFT' ? 'subtract' : 'add'
+    let { currentDate, view } = this.state
+    let unit = view === 'month' ? view : 'year'
+    let multi = MULTIPLIER[view] || 1
 
-    return dates[method](this.getCurrentDate(), 1 * multi, unit)
+    return dates[method](currentDate, 1 * multi, unit)
   }
 
   getHeaderLabel() {
     let {
-        culture,
-        decadeFormat,
-        yearFormat,
-        headerFormat,
-        centuryFormat,
-      } = this.props,
-      view = this.state.view,
-      currentDate = this.getCurrentDate()
+      culture,
+      decadeFormat,
+      yearFormat,
+      headerFormat,
+      centuryFormat,
+    } = this.props
+    let { currentDate, view } = this.state
 
     switch (view) {
       case 'month':
@@ -572,34 +593,12 @@ class Calendar extends React.Component {
         )
     }
   }
-
-  inRangeValue(_value) {
-    let value = dateOrNull(_value)
-
-    if (value === null) return value
-
-    return dates.max(dates.min(value, this.props.max), this.props.min)
-  }
   isRtl() {
     return !!(this.props.isRtl || (this.context && this.context.isRtl))
   }
 
   isValidView(next, views = this.props.views) {
     return views.indexOf(next) !== -1
-  }
-
-  getSlideDirection({ view, currentDate, views }) {
-    let { currentDate: lastDate } = this.props
-    let { slideDirection, view: lastView } = this.state
-
-    if (lastView !== view) {
-      return views.indexOf(lastView) > views.indexOf(view) ? 'top' : 'bottom'
-    }
-    if (lastDate !== currentDate) {
-      return dates.gt(currentDate, lastDate) ? 'left' : 'right'
-    }
-
-    return slideDirection
   }
 }
 

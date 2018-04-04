@@ -58,7 +58,9 @@ describe('DateTimePicker', () => {
       <ControlledDateTimePicker open="date" defaultView="year" />
     )
 
-    expect(wrapper.find(Calendar.ControlledComponent).props().view).to.equal('year')
+    expect(wrapper.find(Calendar.ControlledComponent).props().view).to.equal(
+      'year'
+    )
   })
 
   it('should change when selecting a date', () => {
@@ -245,7 +247,7 @@ describe('DateTimePicker', () => {
         <TimeList value={new Date(2014, 0, 16, 8)} max={date} preserveDate />
       )
 
-      let dates = inst.state('dates')
+      let dates = inst.state('data')
       let time = dates[dates.length - 1]
 
       expect(time.date.getHours()).to.eql(9)
@@ -254,7 +256,7 @@ describe('DateTimePicker', () => {
 
       inst.setProps({ value: new Date(2014, 0, 15, 8) })
 
-      dates = inst.state('dates')
+      dates = inst.state('data')
       time = dates[dates.length - 1]
 
       expect(time.date.getHours()).to.eql(23)
@@ -269,7 +271,7 @@ describe('DateTimePicker', () => {
         <TimeList value={new Date(2014, 0, 16, 12)} min={date} preserveDate />
       )
 
-      let time = inst.state('dates')[0]
+      let time = inst.state('data')[0]
 
       expect(time.date.getHours()).to.eql(9)
       expect(time.date.getMinutes()).to.eql(30)
@@ -278,7 +280,7 @@ describe('DateTimePicker', () => {
       inst = mount(
         <TimeList value={new Date(2014, 0, 18, 8)} min={date} preserveDate />
       )
-      time = inst.state('dates')[0]
+      time = inst.state('data')[0]
 
       expect(time.date.getHours()).to.eql(0)
       expect(time.date.getMinutes()).to.eql(0)
@@ -288,7 +290,7 @@ describe('DateTimePicker', () => {
     it('should set the step property', () => {
       let dates = mount(<DateTimePicker step={60} />)
         .find(TimeList)
-        .instance().state.dates
+        .instance().state.data
 
       expect(dates[0].date.getHours()).to.equal(0)
       expect(dates[1].date.getHours()).to.equal(1)
@@ -296,7 +298,7 @@ describe('DateTimePicker', () => {
 
       dates = mount(<DateTimePicker step={120} />)
         .find(TimeList)
-        .instance().state.dates
+        .instance().state.data
 
       expect(dates[0].date.getHours()).to.equal(0)
       expect(dates[1].date.getHours()).to.equal(2)

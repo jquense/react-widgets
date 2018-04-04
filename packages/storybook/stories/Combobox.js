@@ -1,10 +1,10 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
+import React from 'react'
+import { storiesOf } from '@storybook/react'
 
-import Container from './Container';
-import Combobox from 'react-widgets/lib/Combobox';
+import Container from './Container'
+import Combobox from 'react-widgets/lib/Combobox'
 
-let generateNames = global.generateNames;
+let generateNames = global.generateNames
 
 let suggestList = [
   { id: 1, fullName: 'Jimmy' },
@@ -19,20 +19,16 @@ let suggestList = [
 let props = {
   data: generateNames(),
   valueField: 'id',
-  textField: 'fullName'
+  textField: 'fullName',
 }
 
 storiesOf('Combobox', module)
-  .add('Combobox', () =>
+  .add('Combobox', () => (
     <Container>
-      <Combobox
-        {...props}
-        open
-        filter="contains"
-      />
+      <Combobox {...props} open filter="contains" />
     </Container>
-  )
-  .add('suggestions', () =>
+  ))
+  .add('suggestions', () => (
     <Container>
       <Combobox
         suggest
@@ -41,38 +37,27 @@ storiesOf('Combobox', module)
         data={suggestList}
       />
     </Container>
-  )
-  .add('busy', () =>
+  ))
+  .add('busy', () => (
     <Container>
-      <Combobox
-        {...props}
-        busy
-        defaultValue={props.data[1]}
-      />
+      <Combobox {...props} busy defaultValue={props.data[1]} />
     </Container>
-  )
-  .add('disabled', () =>
+  ))
+  .add('disabled', () => (
     <Container>
-      <Combobox
-        {...props}
-        disabled
-        defaultValue={props.data[1]}
-      />
+      <Combobox {...props} disabled defaultValue={props.data[1]} />
     </Container>
-  )
-  .add('fieldset disabled', () =>
+  ))
+  .add('fieldset disabled', () => (
     <Container>
       <fieldset disabled>
         <legend>disabled Fieldset</legend>
 
-        <Combobox
-          {...props}
-          defaultValue={props.data[1]}
-        />
+        <Combobox {...props} defaultValue={props.data[1]} />
       </fieldset>
     </Container>
-  )
-  .add('disabled items', () =>
+  ))
+  .add('disabled items', () => (
     <Container>
       <Combobox
         {...props}
@@ -81,32 +66,19 @@ storiesOf('Combobox', module)
         defaultValue={props.data[1]}
       />
     </Container>
-  )
-  .add('disabled item, first focused', () =>
+  ))
+  .add('disabled item, first focused', () => (
     <Container>
-      <Combobox
-        {...props}
-        open
-        disabled={props.data.slice(0, 2)}
-      />
+      <Combobox {...props} open disabled={props.data.slice(0, 2)} />
     </Container>
-  )
-  .add('readOnly', () =>
+  ))
+  .add('readOnly', () => (
     <Container>
-      <Combobox
-        {...props}
-        readOnly
-        defaultValue={props.data[1]}
-      />
+      <Combobox {...props} readOnly defaultValue={props.data[1]} />
     </Container>
-  )
-  .add('right to left', () =>
+  ))
+  .add('right to left', () => (
     <Container>
-      <Combobox
-        {...props}
-        isRtl
-        busy
-        defaultValue={props.data[1]}
-      />
+      <Combobox {...props} isRtl busy defaultValue={props.data[1]} />
     </Container>
-  )
+  ))

@@ -33,7 +33,7 @@ module.exports = baseConfig =>
     },
     plugins: [
       plugins.define(),
-      plugins.extractText(),
+      plugins.extractText({ disable: true }),
       plugins.hotModuleReplacement(),
       ...baseConfig.plugins,
     ],

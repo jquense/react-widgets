@@ -1,6 +1,7 @@
 import cn from 'classnames'
 import * as PropTypes from 'prop-types'
 import React from 'react'
+import polyfillLifecycles from 'react-lifecycles-compat'
 import uncontrollable from 'uncontrollable'
 
 import List from './List'
@@ -11,9 +12,9 @@ import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
 import { getMessages } from './messages'
 import focusManager from './util/focusManager'
-import listDataManager from './util/listDataManager'
+import reduceToListState from './util/reduceToListState'
 import * as CustomPropTypes from './util/PropTypes'
-import accessorManager from './util/accessorManager'
+import getAccessors from './util/getAccessors'
 import scrollManager from './util/scrollManager'
 import * as Props from './util/Props'
 import { widgetEditable } from './util/interaction'
@@ -61,6 +62,7 @@ const propTypes = {
   }),
 }
 
+@polyfillLifecycles
 class Autocomplete extends React.Component {
   static defaultProps = {
     data: [],
@@ -74,39 +76,37 @@ class Autocomplete extends React.Component {
   constructor(props, context) {
     super(props, context)
 
-    this.messages = getMessages(props.messages)
     this.inputId = instanceId(this, '_input')
     this.listId = instanceId(this, '_listbox')
     this.activeId = instanceId(this, '_listbox_active_option')
 
-    this.list = listDataManager(this)
-    this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
       didHandle: this.handleFocusChanged,
     })
 
     this.state = {
-      ...this.getStateFromProps(props),
       open: false,
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.messages = getMessages(nextProps.messages)
-    this.setState(this.getStateFromProps(nextProps))
-  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let { value, data, messages } = nextProps
+    let { focusedItem = null } = prevState
 
-  getStateFromProps(props) {
-    let { accessors, list } = this
-    let { value, data } = props
-    let { focusedItem = null } = this.state || {}
-
+    const accessors = getAccessors(nextProps)
     let index = accessors.indexOf(data, value)
-    list.setData(data)
+
+    const list = reduceToListState(data, prevState.list, {
+      accessors,
+      nextProps,
+    })
 
     return {
       data,
+      list,
+      accessors,
+      messages: getMessages(messages),
       selectedItem: list.nextEnabled(data[index]),
       focusedItem: ~index ? list.nextEnabled(data[index]) : focusedItem,
     }
@@ -131,10 +131,9 @@ class Autocomplete extends React.Component {
 
   @widgetEditable
   handleKeyDown = e => {
-    let key = e.key,
-      list = this.list,
-      focusedItem = this.state.focusedItem,
-      isOpen = this.props.open
+    let key = e.key
+    let { list, focusedItem } = this.state
+    let isOpen = this.props.open
 
     notify(this.props.onKeyDown, [e])
 
@@ -184,21 +183,18 @@ class Autocomplete extends React.Component {
   }
 
   renderList(messages) {
-    let { activeId, inputId, listId, accessors } = this
+    let { activeId, inputId, listId } = this
 
     let { open, value } = this.props
-    let { selectedItem, focusedItem } = this.state
+    let { selectedItem, focusedItem, accessors, list } = this.state
     let List = this.props.listComponent
-    let props = this.list.defaultProps()
 
     return (
       <List
-        {...props}
+        {...list.props}
         id={listId}
         activeId={activeId}
         ref={this.attachListRef}
-        valueAccessor={accessors.value}
-        textAccessor={accessors.text}
         selectedItem={selectedItem}
         searchTerm={accessors.text(value) || ''}
         focusedItem={open ? focusedItem : null}
@@ -227,7 +223,7 @@ class Autocomplete extends React.Component {
       selectComponent: SelectComponent,
     } = this.props
 
-    let { focused } = this.state
+    let { focused, accessors, messages } = this.state
 
     let disabled = this.props.disabled === true
     let readOnly = this.props.readOnly === true
@@ -235,8 +231,7 @@ class Autocomplete extends React.Component {
     let elementProps = Props.pickElementProps(this)
     let shouldRenderPopup = open || isFirstFocusedRender(this)
 
-    let messages = this.messages
-    let valueItem = this.accessors.findOrSelf(data, value)
+    let valueItem = accessors.findOrSelf(data, value)
     let actuallyOpen = open && this.canOpen()
 
     return (
@@ -268,7 +263,7 @@ class Autocomplete extends React.Component {
             aria-expanded={open}
             aria-haspopup={true}
             placeholder={placeholder}
-            value={this.accessors.text(valueItem)}
+            value={accessors.text(valueItem)}
             onChange={this.handleInputChange}
             onKeyDown={this.handleInputKeyDown}
           />

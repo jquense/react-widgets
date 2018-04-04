@@ -4,6 +4,7 @@ import cn from 'classnames'
 import closest from 'dom-helpers/query/closest'
 import PropTypes from 'prop-types'
 import React from 'react'
+import polyfillLifecycles from 'react-lifecycles-compat'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'
@@ -20,11 +21,13 @@ import * as Filter from './util/Filter'
 import * as Props from './util/Props'
 import { getMessages } from './messages'
 import * as CustomPropTypes from './util/PropTypes'
-import accessorManager from './util/accessorManager'
+import reduceToListState, {
+  defaultGetDataState,
+} from './util/reduceToListState'
+import getAccessors from './util/getAccessors'
 import focusManager from './util/focusManager'
-import listDataManager from './util/listDataManager'
 import scrollManager from './util/scrollManager'
-import { widgetEditable, disabledManager } from './util/interaction'
+import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 
 const CREATE_OPTION = {}
@@ -141,6 +144,7 @@ let propTypes = {
  *
  * @public
  */
+@polyfillLifecycles
 class Multiselect extends React.Component {
   static propTypes = propTypes
 
@@ -156,8 +160,6 @@ class Multiselect extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this.messages = getMessages(this.props.messages)
-
     this.inputId = instanceId(this, '_input')
     this.tagsId = instanceId(this, '_taglist')
     this.notifyId = instanceId(this, '_notify_area')
@@ -166,38 +168,35 @@ class Multiselect extends React.Component {
     this.activeTagId = instanceId(this, '_taglist_active_tag')
     this.activeOptionId = instanceId(this, '_listbox_active_option')
 
-    this.list = listDataManager(this)
-    this.tagList = listDataManager(this, { getStateGetterFromProps: null })
-
-    this.accessors = accessorManager(this)
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
       didHandle: this.handleFocusDidChange,
     })
 
-    this.isDisabled = disabledManager(this)
-
     this.state = {
       focusedTag: null,
-      ...this.getStateFromProps(this.props),
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.messages = getMessages(nextProps.messages)
-    this.setState(this.getStateFromProps(nextProps))
-  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let {
+      data,
+      searchTerm,
+      messages,
+      minLength,
+      caseSensitive,
+      filter,
+    } = nextProps
+    let { focusedItem, focusedTag } = prevState
 
-  getStateFromProps(props) {
-    let { accessors, list, tagList } = this
-    let { data, searchTerm, minLength, caseSensitive, filter } = props
+    let accessors = getAccessors(nextProps)
 
-    let values = makeArray(props.value)
+    let values = makeArray(nextProps.value)
     let dataItems = values.map(item => accessors.findOrSelf(data, item))
 
     data = data.filter(i => !values.some(v => accessors.matches(i, v)))
 
-    this._lengthWithoutValues = data.length
+    let lengthWithoutValues = data.length
 
     data = Filter.filter(data, {
       filter,
@@ -207,14 +206,21 @@ class Multiselect extends React.Component {
       textField: accessors.text,
     })
 
-    list.setData(data)
-    tagList.setData(dataItems)
+    const list = reduceToListState(data, prevState.list, { nextProps })
 
-    let { focusedItem, focusedTag } = this.state || {}
+    const tagList = reduceToListState(dataItems, prevState.tagList, {
+      nextProps,
+      getDataState: defaultGetDataState,
+    })
 
     return {
       data,
       dataItems,
+      list,
+      tagList,
+      accessors,
+      lengthWithoutValues,
+      messages: getMessages(messages),
       focusedTag: list.nextEnabled(
         ~dataItems.indexOf(focusedTag) ? focusedTag : null
       ),
@@ -298,8 +304,7 @@ class Multiselect extends React.Component {
     const { open, searchTerm, onKeyDown } = this.props
     let { key, keyCode, altKey, ctrlKey } = event
 
-    let { focusedTag, focusedItem } = this.state
-    let { list, tagList } = this
+    let { focusedTag, focusedItem, list, tagList } = this.state
 
     let createIsFocused = focusedItem === CREATE_OPTION
     let canCreate = this.allowCreate()
@@ -410,21 +415,42 @@ class Multiselect extends React.Component {
     )
   }
 
-  renderList(messages) {
-    let { inputId, activeOptionId, listId, accessors } = this
-    let { open } = this.props
-    let { focusedItem } = this.state
+  renderList() {
+    let { inputId, activeOptionId, listId } = this
+    let {
+      open,
+      searchTerm,
+      optionComponent,
+      itemComponent,
+      groupComponent,
+      listProps,
+    } = this.props
+
+    let {
+      focusedItem,
+      list,
+      lengthWithoutValues,
+      accessors,
+      data,
+      messages,
+    } = this.state
 
     let List = this.props.listComponent
-    let props = this.list.defaultProps()
 
     return (
       <List
-        {...props}
+        {...listProps}
         id={listId}
         activeId={activeOptionId}
-        valueAccessor={accessors.value}
+        data={data}
+        dataState={list.dataState}
+        isDisabled={list.isDisabled}
+        searchTerm={searchTerm}
         textAccessor={accessors.text}
+        valueAccessor={accessors.value}
+        itemComponent={itemComponent}
+        groupComponent={groupComponent}
+        optionComponent={optionComponent}
         focusedItem={focusedItem}
         onSelect={this.handleSelect}
         onMove={this.handleScroll}
@@ -433,7 +459,7 @@ class Multiselect extends React.Component {
         aria-hidden={!open}
         ref={this.attachListRef}
         messages={{
-          emptyList: this._lengthWithoutValues
+          emptyList: lengthWithoutValues
             ? messages.emptyFilter
             : messages.emptyList,
         }}
@@ -441,10 +467,10 @@ class Multiselect extends React.Component {
     )
   }
 
-  renderNotificationArea(messages) {
-    let { focused, dataItems } = this.state
+  renderNotificationArea() {
+    let { focused, dataItems, accessors, messages } = this.state
 
-    let itemLabels = dataItems.map(item => this.accessors.text(item))
+    let itemLabels = dataItems.map(item => accessors.text(item))
 
     return (
       <span
@@ -463,9 +489,9 @@ class Multiselect extends React.Component {
     )
   }
 
-  renderTags(messages) {
-    let { readOnly } = this.props
-    let { focusedTag, dataItems } = this.state
+  renderTags() {
+    let { readOnly, disabled } = this.props
+    let { focusedTag, dataItems, accessors, messages } = this.state
 
     let Component = this.props.tagComponent
 
@@ -473,12 +499,12 @@ class Multiselect extends React.Component {
       <TagList
         id={this.tagsId}
         activeId={this.activeTagId}
-        textAccessor={this.accessors.text}
-        valueAccessor={this.accessors.value}
+        textAccessor={accessors.text}
+        valueAccessor={accessors.value}
         label={messages.tagsLabel()}
         value={dataItems}
         readOnly={readOnly}
-        disabled={this.isDisabled()}
+        disabled={disabled}
         focusedItem={focusedTag}
         onDelete={this.handleDelete}
         valueComponent={Component}
@@ -497,7 +523,7 @@ class Multiselect extends React.Component {
       popupTransition,
     } = this.props
 
-    let { focused, focusedItem, dataItems } = this.state
+    let { focused, focusedItem, dataItems, messages } = this.state
 
     let elementProps = Props.pickElementProps(this)
 
@@ -510,10 +536,8 @@ class Multiselect extends React.Component {
       (shouldRenderTags ? this.tagsId : '') +
       (allowCreate ? this.createId : '')
 
-    let disabled = this.isDisabled() === true
+    let disabled = this.props.disabled === true
     let readOnly = this.props.readOnly === true
-
-    let messages = this.messages
 
     return (
       <Widget
@@ -557,7 +581,7 @@ class Multiselect extends React.Component {
             onEntering={() => this.listRef.forceUpdate()}
           >
             <div>
-              {this.renderList(messages)}
+              {this.renderList()}
 
               {allowCreate && (
                 <AddToListOption
@@ -649,11 +673,10 @@ class Multiselect extends React.Component {
 
   hasExtactMatch() {
     let { searchTerm, caseSensitive } = this.props
-    let { data, dataItems } = this.state
-    let { text } = this.accessors
+    let { data, dataItems, accessors } = this.state
 
     let lower = text => (caseSensitive ? text : text.toLowerCase())
-    let eq = v => lower(text(v)) === lower(searchTerm)
+    let eq = v => lower(accessors.text(v)) === lower(searchTerm)
 
     // if there is an exact match on textFields:
     // "john" => { name: "john" }, don't show
