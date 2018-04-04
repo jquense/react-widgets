@@ -13,5 +13,8 @@ module.exports = api => ({
     ],
     '@babel/preset-flow',
   ],
-  plugins: ['@babel/plugin-proposal-decorators'],
+  plugins: [
+    '@babel/plugin-proposal-decorators',
+    '@babel/plugin-proposal-optional-chaining',
+  ],
 })

@@ -193,6 +193,7 @@ class Combobox extends React.Component {
     this.close()
     notify(this.props.onSelect, [data, { originalEvent }])
     this.change(data, false, originalEvent)
+    this.inputRef?.accept(true)
     this.focus()
   }
 

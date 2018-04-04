@@ -1,12 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { findDOMNode } from 'react-dom'
 
-import Input from './Input';
+import Input from './Input'
 
-export const caretSet = (node, start, end) => {
-  try { node.setSelectionRange(start, end) }
-  catch (e) {
+export const caretSet = (node, start, end = start) => {
+  try {
+    node.setSelectionRange(start, end)
+  } catch (e) {
     /* not focused or not visible */
   }
 }
@@ -14,22 +15,23 @@ export const caretSet = (node, start, end) => {
 class ComboboxInput extends React.Component {
   static defaultProps = {
     value: '',
-  };
+  }
 
   static propTypes = {
     value: PropTypes.string,
     placeholder: PropTypes.string,
     suggest: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
-    onKeyDown:  PropTypes.func,
-  };
+    onKeyDown: PropTypes.func,
+  }
 
   componentDidUpdate() {
     let input = findDOMNode(this)
-    let val = this.props.value;
+    let val = this.props.value
 
     if (this.isSuggesting()) {
-      let start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
+      let start =
+        val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length
       let end = val.length - start
 
       if (start >= 0 && end !== 0) {
@@ -38,35 +40,36 @@ class ComboboxInput extends React.Component {
     }
   }
 
-  accept() {
+  accept(clearSelection = false) {
     this._last = null
-    // caretSet(node, end, end)
+    if (clearSelection) {
+      let node = findDOMNode(this)
+      caretSet(node, node.value.length)
+    }
   }
-
 
   focus() {
     findDOMNode(this).focus()
   }
 
-  handleChange = (e) => {
-    let { placeholder, value, onChange } = this.props;
+  handleChange = e => {
+    let { placeholder, value, onChange } = this.props
 
     let stringValue = e.target.value
     let hasPlaceholder = !!placeholder
 
     // IE fires input events when setting/unsetting placeholders.
     // issue #112
-    if (hasPlaceholder && !stringValue && stringValue === (value || ''))
-      return
+    if (hasPlaceholder && !stringValue && stringValue === (value || '')) return
 
-    this._last = stringValue;
+    this._last = stringValue
     onChange(e, stringValue)
-  };
+  }
 
   isSuggesting() {
-    let { value, suggest } = this.props;
+    let { value, suggest } = this.props
 
-    if (!suggest) return false;
+    if (!suggest) return false
 
     return (
       this._last != null &&
@@ -75,9 +78,9 @@ class ComboboxInput extends React.Component {
   }
 
   render() {
-    let { onKeyDown, ...props } = this.props;
+    let { onKeyDown, ...props } = this.props
 
-    delete props.suggest;
+    delete props.suggest
 
     return (
       <Input
