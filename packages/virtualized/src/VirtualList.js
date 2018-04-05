@@ -43,7 +43,6 @@ class VirtualList extends React.Component {
     textAccessor: PropTypes.func.isRequired,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
-    groupBy: CustomPropTypes.accessor,
 
     messages: PropTypes.shape({
       emptyList: CustomPropTypes.message,

@@ -1,50 +1,34 @@
-import scrollTo from 'dom-helpers/util/scrollTo';
-import { spyOnComponent } from 'react-component-managers';
+import scrollTo from 'dom-helpers/util/scrollTo'
+import { mountManager } from 'react-component-managers'
 
 export default function createScrollManager(
-  component,
-  getScrollParent = (list) => list.parentNode
+  inst,
+  getScrollParent = list => list.parentNode
 ) {
+  let isMounted = mountManager(inst)
+  let currentFocused, currentVisible, cancelScroll
 
-  let currentFocused
-    , currentVisible
-    , cancelScroll;
-
-  let onMove = component.props.onMove;
-  let mounted = true;
-
-  spyOnComponent(component, {
-    componentWillReceiveProps({ onMove: nextOnMove }) {
-      onMove = nextOnMove;
-    },
-    componentWillUnmount() {
-      mounted = false
-    }
-  })
-
-  return (selected, list, nextFocused) => {
-    if (!mounted) return;
+  function handleScroll(selected, list, nextFocused) {
+    if (!isMounted()) return
 
     let lastVisible = currentVisible
-    let lastItem    = currentFocused
-    let shown, changed;
+    let lastItem = currentFocused
+    let shown, changed
 
     currentVisible = !(!list.offsetWidth || !list.offsetHeight)
     currentFocused = nextFocused
 
     changed = lastItem !== nextFocused
-    shown   = currentVisible && !lastVisible
+    shown = currentVisible && !lastVisible
 
     if (shown || (currentVisible && changed)) {
-      if (onMove)
-        onMove(selected, list, nextFocused)
+      if (this.props.onMove) this.props.onMove(selected, list, nextFocused)
       else {
         cancelScroll && cancelScroll()
-        cancelScroll = scrollTo(
-          selected,
-          false && getScrollParent(list)
-        )
+        cancelScroll = scrollTo(selected, false && getScrollParent(list))
       }
     }
   }
+
+  return handleScroll.bind(inst)
 }

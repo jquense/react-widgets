@@ -2,6 +2,7 @@ import invariant from 'invariant'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
+import polyfillLifecycles from 'react-lifecycles-compat'
 import activeElement from 'dom-helpers/activeElement'
 import cn from 'classnames'
 import deprecated from 'prop-types-extra/lib/deprecated'
@@ -187,6 +188,7 @@ let propTypes = {
  * @public
  * @extends Calendar
  */
+@polyfillLifecycles
 class DateTimePicker extends React.Component {
   static displayName = 'DateTimePicker'
 
@@ -205,8 +207,6 @@ class DateTimePicker extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this.messages = getMessages(this.props.messages)
-
     this.inputId = instanceId(this, '_input')
     this.dateId = instanceId(this, '_date')
     this.listId = instanceId(this, '_listbox')
@@ -222,11 +222,12 @@ class DateTimePicker extends React.Component {
 
     this.state = {
       focused: false,
+      messages: getMessages(this.props.messages),
     }
   }
 
-  componentWillReceiveProps({ messages }) {
-    this.messages = getMessages(messages)
+  static getDerivedStateFromProps({ messages }) {
+    return { messages: getMessages(messages) }
   }
 
   @widgetEditable
@@ -384,7 +385,7 @@ class DateTimePicker extends React.Component {
     if (!date && !time) {
       return null
     }
-    let messages = this.messages
+    let { messages } = this.state
 
     return (
       <Select bordered>
@@ -466,6 +467,7 @@ class DateTimePicker extends React.Component {
       culture,
       timeFormat,
       timeComponent,
+      timeListProps,
       popupTransition,
     } = this.props
 
@@ -482,6 +484,7 @@ class DateTimePicker extends React.Component {
             min={min}
             max={max}
             step={step}
+            listProps={timeListProps}
             currentDate={currentDate}
             activeId={activeOptionId}
             format={timeFormat}
@@ -494,7 +497,7 @@ class DateTimePicker extends React.Component {
             aria-labelledby={inputId}
             aria-live={open && 'polite'}
             aria-hidden={!open}
-            messages={this.messages}
+            messages={this.state.messages}
             ref={this.attachTimeRef}
           />
         </div>
@@ -569,7 +572,7 @@ class DateTimePicker extends React.Component {
       if (date) return date
     } else {
       // parse is a string format or array of string formats
-      formats = formats.concat(parse).filter(Boolean);
+      formats = formats.concat(parse).filter(Boolean)
     }
 
     for (var i = 0; i < formats.length; i++) {
@@ -618,7 +621,6 @@ export default uncontrollable(
   },
   ['focus']
 )
-
 
 function getFormat(props) {
   let isDate = props.date != null ? props.date : true

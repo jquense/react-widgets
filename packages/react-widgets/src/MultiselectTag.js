@@ -1,9 +1,9 @@
-import cn from 'classnames';
-import React from 'react';
+import cn from 'classnames'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { widgetEditable } from './util/interaction'
 
-import PropTypes from 'prop-types';
-
-import Button from './Button';
+import Button from './Button'
 
 class MultiselectTag extends React.Component {
   static propTypes = {
@@ -16,13 +16,14 @@ class MultiselectTag extends React.Component {
     value: PropTypes.any,
   }
 
-  onClick = (event) => {
-    const { value, disabled, onClick } = this.props;
+  @widgetEditable
+  onClick = event => {
+    const { value, disabled, onClick } = this.props
     if (!disabled) onClick(value, event)
-  };
+  }
 
   renderDelete() {
-    const { label, disabled, readOnly } = this.props;
+    const { label, disabled, readOnly } = this.props
 
     return (
       <Button
@@ -34,31 +35,27 @@ class MultiselectTag extends React.Component {
       >
         <span aria-hidden="true">&times;</span>
       </Button>
-    );
+    )
   }
 
   render() {
-    const { id, children, focused, disabled } = this.props;
-    let tabIndex = disabled ? undefined : '-1';
+    const { id, children, focused, disabled } = this.props
 
     return (
       <li
         id={id}
-        role='option'
-        tabIndex={tabIndex}
+        role="option"
         className={cn(
           'rw-multiselect-tag',
           disabled && 'rw-state-disabled',
-          focused && !disabled && 'rw-state-focus',
+          focused && !disabled && 'rw-state-focus'
         )}
       >
         {children}
-        <div>
-          {this.renderDelete()}
-        </div>
+        <div>{this.renderDelete()}</div>
       </li>
     )
   }
 }
 
-export default MultiselectTag;
+export default MultiselectTag
