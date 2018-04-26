@@ -23,6 +23,8 @@ class DateTimePickerInput extends React.Component {
 
     disabled: CustomPropTypes.disabled,
     readOnly: CustomPropTypes.disabled,
+    className: PropTypes.string,
+    type: PropTypes.string
   }
 
   state = {}
@@ -62,7 +64,7 @@ class DateTimePickerInput extends React.Component {
   }
 
   render() {
-    let { disabled, readOnly } = this.props
+    let { className = '', disabled, readOnly, type = 'text' } = this.props
     let { textValue } = this.state
 
     let props = Props.omitOwn(this)
@@ -70,8 +72,8 @@ class DateTimePickerInput extends React.Component {
     return (
       <Input
         {...props}
-        type="text"
-        className="rw-widget-input"
+        type={type}
+        className={`rw-widget-input ${className}`}
         value={textValue}
         disabled={disabled}
         readOnly={readOnly}
