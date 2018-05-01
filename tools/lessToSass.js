@@ -10,7 +10,7 @@ const processors = [
   // interpolated variables
   { pattern: /@\{(?!(\s|\())/g, replace: '#{$' },
   // literal strings
-  { pattern: /~("|')/g, replace: '$1' },
+  { pattern: /~("|')(.*?)("|')/g, replace: '$2' },
   // replace variable prefix
   { pattern: /@(?!(media|import|mixin|font-face|keyframes)(\s|\())/g, replace: '$$' },
   // add !default to SCSS variables
