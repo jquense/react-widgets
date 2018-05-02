@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import polyfillLifecycles from 'react-lifecycles-compat'
 import { findDOMNode } from 'react-dom'
+import cn from 'classnames'
 
 import Input from './Input'
 import { date as dateLocalizer } from './util/localizers'
@@ -64,7 +65,7 @@ class DateTimePickerInput extends React.Component {
   }
 
   render() {
-    let { className = '', disabled, readOnly, type = 'text' } = this.props
+    let { className, disabled, readOnly } = this.props
     let { textValue } = this.state
 
     let props = Props.omitOwn(this)
@@ -72,8 +73,8 @@ class DateTimePickerInput extends React.Component {
     return (
       <Input
         {...props}
-        type={type}
-        className={`rw-widget-input ${className}`}
+        type="text"
+        className={cn(className, 'rw-widget-input')}
         value={textValue}
         disabled={disabled}
         readOnly={readOnly}
