@@ -363,7 +363,7 @@ class DateTimePicker extends React.Component {
         autoFocus={autoFocus}
         placeholder={placeholder}
         disabled={disabled}
-        readOnly={inputReadOnly || readOnly}
+        readOnly={inputReadOnly !== null ? inputReadOnly : readOnly}
         value={value}
         format={getFormat(this.props)}
         editFormat={editFormat}
