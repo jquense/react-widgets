@@ -91,3 +91,29 @@ storiesOf('DateTimePicker', module)
 
     return <Story />
   })
+  .add('date other than today', () => {
+    class Story extends React.Component {
+
+      componentDidMount(){
+        this.onChange(new Date(2017, 3, 5, 10, 23))
+      }
+
+      onChange = value =>
+        this.setState({ value });
+
+      render = () => (
+        <Container>
+          <DateTimePicker
+            date={false}
+            value={this.state && this.state.value}
+            onChange={this.onChange}
+          />
+          <p>Current Value: {this.state && this.state.value.toString()}</p>
+        </Container>
+      )
+    }
+
+    return <Story />
+  }
+    
+  )
