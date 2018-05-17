@@ -95,22 +95,29 @@ storiesOf('DateTimePicker', module)
     class Story extends React.Component {
 
       componentDidMount(){
-        this.onChange(new Date(2017, 3, 5, 10, 23))
+        this.onChange(new Date(2014, 0, 18, 8));
       }
 
       onChange = value =>
         this.setState({ value });
 
-      render = () => (
-        <Container>
-          <DateTimePicker
-            date={false}
-            value={this.state && this.state.value}
-            onChange={this.onChange}
-          />
-          <p>Current Value: {this.state && this.state.value.toString()}</p>
-        </Container>
-      )
+      render = () => {
+        const max = new Date(2014, 0, 20, 9, 30);
+        const min = new Date(2014, 0, 16, 9, 30);
+        return (
+          <Container>
+            <DateTimePicker
+              max={max}
+              min={min}
+              onChange={this.onChange}
+              value={this.state && this.state.value}
+            />
+            <p>Minimum Value: {min.toString()}</p>
+            <p>Current Value: {this.state && this.state.value.toString()}</p>
+            <p>Maximum Value: {max.toString()}</p>
+          </Container>
+          )
+      }
     }
 
     return <Story />
