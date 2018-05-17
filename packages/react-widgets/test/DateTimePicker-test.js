@@ -281,10 +281,14 @@ describe('DateTimePicker', () => {
         <TimeList value={new Date(2014, 0, 18, 8)} min={date} preserveDate />
       )
       time = inst.state('data')[0]
+      console.log(time, time.date)
 
       expect(time.date.getHours()).to.eql(0)
       expect(time.date.getMinutes()).to.eql(0)
       expect(time.date.getSeconds()).to.eql(0)
+      expect(time.date.getMonth()).to.eql(0)
+      expect(time.date.getDate()).to.eql(18)
+      expect(time.date.getFullYear()).to.eql(2014)
     })
 
     it('should set the step property', () => {

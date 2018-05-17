@@ -21,33 +21,13 @@ const find = (arr, fn) => {
   return null
 }
 
-function getBounds({ min, max, currentDate, value, preserveDate }) {
-  //compare just the time regradless of whether they fall on the same day
-  if (!preserveDate) {
-    value = value || currentDate || new Date()
-    let start = dates.startOf(
-      dates.merge(value, min, currentDate),
-      'minutes'
-    )
-    let end = dates.startOf(
-      dates.merge(value, max, currentDate),
-      'minutes'
-    )
-
-    if (dates.lte(end, start) && dates.gt(max, min, 'day'))
-      end = dates.tomorrow()
-
-    return {
-      min: start,
-      max: end,
-    }
-  }
+function getBounds({ min, max, currentDate, value }) {
+  value = dates.merge(value, value, currentDate)
   let start = dates.startOf(
-      dates.merge(value, min, currentDate),
-      'minutes'
+      value,
+      'day'
     )
-  let end = dates.merge(dates.add(start, 1, 'day'), max, currentDate)
-  value = value || currentDate || start
+  let end = dates.add(start, 1, 'day')
   //date parts are equal
   return {
     min: dates.eq(value, min, 'day')
