@@ -3,7 +3,7 @@
 
 In the past `react-widgets` included a set of localizers for use with popular
 I18n libraries like Globalize and moment.js. One issue with this approach is that
-we couldn't iterate on those parts of hte package without needing to bump the version
+we couldn't iterate on those parts of the package without needing to bump the version
 of all of `react-widgets`. If a localizer needed a breaking change it'd have to wait
 until the whole package bumped a major version.
 
