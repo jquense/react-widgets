@@ -41,7 +41,7 @@ describe('Calendar', () => {
     let date = new Date()
     let calendar = mount(<Calendar defaultValue={date} />)
 
-    let navBtn = calendar.find('button.rw-calendar-btn-view')
+    let navBtn = calendar.find('a.rw-calendar-btn-view')
 
     calendar.assertSingle(Month);
 
@@ -83,8 +83,8 @@ describe('Calendar', () => {
 
     let calendar = mount(<Calendar defaultValue={date} />)
 
-    let leftBtn = calendar.find('button.rw-calendar-btn-left')
-    let navBtn = calendar.find('button.rw-calendar-btn-view')
+    let leftBtn = calendar.find('a.rw-calendar-btn-left')
+    let navBtn = calendar.find('a.rw-calendar-btn-view')
 
     leftBtn.simulate('click');
 
@@ -129,8 +129,8 @@ describe('Calendar', () => {
       <Calendar defaultValue={date}  max={new Date(2199, 11, 31)} />
     )
 
-    let rightBtn = calendar.find('button.rw-calendar-btn-right')
-    let navBtn = calendar.find('button.rw-calendar-btn-view')
+    let rightBtn = calendar.find('a.rw-calendar-btn-right')
+    let navBtn = calendar.find('a.rw-calendar-btn-view')
 
     rightBtn.simulate('click');
 
@@ -215,7 +215,7 @@ describe('Calendar', () => {
       />
     )
     .find(Footer)
-    .find('button')
+    .find('a')
     .simulate('click')
 
     expect(
@@ -238,12 +238,12 @@ describe('Calendar', () => {
     )
 
     wrapper
-      .find('button.rw-calendar-btn-right')
+      .find('a.rw-calendar-btn-right')
       .tap(inst => inst.is('[disabled]'))
       .simulate('click')
 
     wrapper
-      .find('button.rw-calendar-btn-left')
+      .find('a.rw-calendar-btn-left')
       .tap(inst => inst.is('[disabled]'))
       .simulate('click')
 
@@ -260,7 +260,7 @@ describe('Calendar', () => {
     )
 
     expect(
-      calendar.find('button.rw-calendar-btn-view').contains('junio 2014')
+      calendar.find('a.rw-calendar-btn-view').contains('junio 2014')
     ).to.equal(true)
 
     expect(

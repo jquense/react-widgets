@@ -241,7 +241,7 @@ describe('Multiselect', function() {
       />
     )
       .find(MultiselectTagList)
-      .assertSingle('li.rw-state-disabled button.rw-multiselect-tag-btn')
+      .assertSingle('li.rw-state-disabled a.rw-multiselect-tag-btn')
       .simulate('click')
 
     expect(change.called).to.equal(false)
@@ -258,7 +258,7 @@ describe('Multiselect', function() {
         data={dataList}
       />
     )
-      .find('button.rw-multiselect-tag-btn')
+      .find('a.rw-multiselect-tag-btn')
       .simulate('click')
 
     expect(changeSpy.called).to.equal(false)
@@ -276,7 +276,7 @@ describe('Multiselect', function() {
         valueField="id"
       />
     )
-      .find('button.rw-multiselect-tag-btn')
+      .find('a.rw-multiselect-tag-btn')
       .first()
       .simulate('click')
 
@@ -294,7 +294,7 @@ describe('Multiselect', function() {
         data={dataList}
       />
     )
-      .find('button.rw-multiselect-tag-btn')
+      .find('a.rw-multiselect-tag-btn')
       .simulate('click')
 
     expect(changeSpy.called).to.equal(false)

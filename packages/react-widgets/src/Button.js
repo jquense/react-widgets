@@ -27,7 +27,7 @@ class Button extends React.Component {
       children,
       variant = 'primary',
       spinner = <Loading />,
-      component: Tag = 'button',
+      component: Tag = 'a',
       ...props
     } = this.props
 

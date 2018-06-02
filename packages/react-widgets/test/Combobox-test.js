@@ -56,7 +56,7 @@ describe('Combobox', function(){
     let openSpy = sinon.spy();
 
     mount(<ControlledCombobox onToggle={openSpy} />)
-      .find('button')
+      .find('a')
       .first()
       .simulate('click')
 
@@ -68,12 +68,12 @@ describe('Combobox', function(){
     let openSpy = sinon.spy();
 
     mount(<ControlledCombobox onToggle={openSpy} disabled />)
-      .find('button')
+      .find('a')
       .first()
       .simulate('click')
 
     mount(<ControlledCombobox onToggle={openSpy} readOnly />)
-      .find('button')
+      .find('a')
       .first()
       .simulate('click')
 
