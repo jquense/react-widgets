@@ -68,6 +68,7 @@
     "prop-types-extra": "^1.0.1",
     "react-component-managers": "^3.1.0",
     "react-transition-group": "^2.3.0",
+    "react-lifecycles-compat": "^3.0.4",
     "uncontrollable": "^5.0.0",
     "warning": "^3.0.0"
   },
