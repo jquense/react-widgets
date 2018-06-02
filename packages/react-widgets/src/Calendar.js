@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import uncontrollable from 'uncontrollable'
-import polyfillLifecycles from 'react-lifecycles-compat'
+import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import { autoFocus } from 'react-component-managers'
 
 import Widget from './Widget'

@@ -3,7 +3,7 @@ import activeElement from 'dom-helpers/activeElement'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import polyfillLifecycles from 'react-lifecycles-compat'
+import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 
 import Input from './Input'
 import * as Props from './util/Props'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import polyfillLifecycles from 'react-lifecycles-compat'
+import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { autoFocus, timeoutManager } from 'react-component-managers'

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import polyfillLifecycles from 'react-lifecycles-compat'
+import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import { findDOMNode } from 'react-dom'
 
 import Input from './Input'
