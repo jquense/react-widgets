@@ -1,5 +1,5 @@
 import React from 'react'
-import polyfillLifecycles from 'react-lifecycles-compat'
+import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import PropTypes from 'prop-types'
 
 import List from './List'

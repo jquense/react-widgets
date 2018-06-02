@@ -4,7 +4,7 @@ import cn from 'classnames'
 import closest from 'dom-helpers/query/closest'
 import PropTypes from 'prop-types'
 import React from 'react'
-import polyfillLifecycles from 'react-lifecycles-compat'
+import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'

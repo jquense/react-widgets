@@ -8,7 +8,7 @@ import {
   mountManager,
   timeoutManager,
 } from 'react-component-managers'
-import polyfillLifecycles from 'react-lifecycles-compat'
+import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'

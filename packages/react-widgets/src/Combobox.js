@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import polyfillLifecycles from 'react-lifecycles-compat'
+import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import createUncontrolledWidget from 'uncontrollable'
 
 import Widget from './Widget'
