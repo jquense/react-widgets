@@ -23,7 +23,12 @@ const compiler = webpack({
     libraryTarget: 'var',
   },
   module: {
-    rules: [rules.js({ envName: 'esm' })],
+    rules: [
+      rules.js({
+        envName: 'esm',
+        configFile: path.join(dirname, '../../babel.config.js'),
+      }),
+    ],
   },
   plugins: [
     plugins.define(),
@@ -45,7 +50,7 @@ const compiler = webpack({
 
 compiler.run((err, stats) => {
   if (err) {
-    console.error(err.stack || err)
+    // console.error(err.stack || err)
     if (err.details) console.error(err.details)
     process.exit(1) // eslint-disable-line
   }
