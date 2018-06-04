@@ -14,7 +14,7 @@ module.exports = {
   },
   module: {
     rules: [
-      rules.js()
+      rules.js({configFile: '../../babel.config.js'})
     ]
   },
   externals: {

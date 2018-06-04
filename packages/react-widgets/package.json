@@ -41,7 +41,7 @@
     "assets:dist": "cpy src/img/* dist/img/ && cpy src/fonts/* dist/fonts/",
     "clean:lib": "rimraf ./lib/*",
     "clean:dist": "rimraf ./dist/*",
-    "compile:lib": "babel src --out-dir lib",
+    "compile:lib": "babel --config-file ../../babel.config.js src --out-dir lib",
     "compile:dist": "cross-env NODE_ENV=production webpack",
     "build:lib":
       "npm run clean:lib && npm run compile:lib && npm run styles && npm run assets:lib",
@@ -73,8 +73,8 @@
     "warning": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.42",
-    "@babel/core": "^7.0.0-beta.42",
+    "@babel/cli": "^7.0.0-beta.49",
+    "@babel/core": "^7.0.0-beta.49",
     "babel-core": "bridge",
     "babel-jest": "^22.4.3",
     "chai": "^4.1.2",

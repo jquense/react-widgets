@@ -7,7 +7,7 @@
     "clean": "rimraf dist/* ./index.js",
     "dist":
       "node ../../tools/build-localizer.js '{\"moment\": \"window.moment\"}'",
-    "build": "babel localizer.js -o index.js",
+    "build": "babel --config-file ../../babel.config.js localizer.js -o index.js",
     "prepublishOnly": "npm run clean && npm run build && npm run dist"
   },
   "files": ["index.js", "dist"],
@@ -27,8 +27,8 @@
     "react-widgets": "^4.2.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.42",
-    "@babel/core": "^7.0.0-beta.42",
+    "@babel/cli": "^7.0.0-beta.49",
+    "@babel/core": "^7.0.0-beta.49",
     "cross-env": "^5.1.4",
     "moment": "^2.21.0",
     "react-widgets": "^4.2.5",

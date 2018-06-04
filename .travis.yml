@@ -8,7 +8,7 @@ cache:
   directories:
     - node_modules
 node_js:
-  - 8
+  - 10
 branches:
   only:
     - master
