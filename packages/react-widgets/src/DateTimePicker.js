@@ -162,6 +162,8 @@ let propTypes = {
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
 
+  /** Adds a css class to the input container element. */
+  containerClassName: PropTypes.string,
   inputProps: PropTypes.object,
   isRtl: PropTypes.bool,
   messages: PropTypes.shape({
@@ -506,7 +508,16 @@ class DateTimePicker extends React.Component {
   }
 
   render() {
-    let { className, date, time, open, disabled, readOnly, dropUp } = this.props
+    let {
+      className,
+      date,
+      time,
+      open,
+      disabled,
+      readOnly,
+      dropUp,
+      containerClassName,
+    } = this.props
 
     let { focused } = this.state
 
@@ -535,7 +546,7 @@ class DateTimePicker extends React.Component {
         onFocus={this.focusManager.handleFocus}
         className={cn(className, 'rw-datetime-picker')}
       >
-        <WidgetPicker>
+        <WidgetPicker className={containerClassName}>
           {this.renderInput(owns.trim())}
 
           {this.renderButtons()}

@@ -101,11 +101,14 @@ let propTypes = {
   dropUp: PropTypes.bool,
   popupTransition: CustomPropTypes.elementType,
 
+  /** Adds a css class to the input container element. */
+  containerClassName: PropTypes.string,
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
 
   autoFocus: PropTypes.bool,
   placeholder: PropTypes.string,
+
   disabled: CustomPropTypes.disabled.acceptsArray,
   readOnly: CustomPropTypes.disabled,
 
@@ -190,9 +193,12 @@ class Multiselect extends React.Component {
     let { focusedItem, focusedTag } = prevState
 
     let accessors = getAccessors(nextProps)
+    let valueChanged = nextProps.value !== prevState.lastValue
 
     let values = makeArray(nextProps.value)
-    let dataItems = values.map(item => accessors.findOrSelf(data, item))
+    let dataItems = valueChanged
+      ? values.map(item => accessors.findOrSelf(data, item))
+      : prevState.dataItems
 
     data = data.filter(i => !values.some(v => accessors.matches(i, v)))
 
@@ -220,13 +226,14 @@ class Multiselect extends React.Component {
       tagList,
       accessors,
       lengthWithoutValues,
+      lastValue: nextProps.value,
       messages: getMessages(messages),
-      focusedTag: list.nextEnabled(
-        ~dataItems.indexOf(focusedTag) ? focusedTag : null
-      ),
-      focusedItem: list.nextEnabled(
-        ~data.indexOf(focusedItem) ? focusedItem : data[0]
-      ),
+      focusedTag: valueChanged
+        ? list.nextEnabled(~dataItems.indexOf(focusedTag) ? focusedTag : null)
+        : prevState.focusedTag,
+      focusedItem: valueChanged
+        ? list.nextEnabled(~data.indexOf(focusedItem) ? focusedItem : data[0])
+        : prevState.focusedItem,
     }
   }
 
@@ -520,6 +527,7 @@ class Multiselect extends React.Component {
       dropUp,
       open,
       searchTerm,
+      containerClassName,
       popupTransition,
     } = this.props
 
@@ -554,10 +562,10 @@ class Multiselect extends React.Component {
       >
         {this.renderNotificationArea(messages)}
         <WidgetPicker
-          className="rw-widget-input"
           onClick={this.handleClick}
-          onDoubleClick={this.handleDoubleClick}
           onTouchEnd={this.handleClick}
+          onDoubleClick={this.handleDoubleClick}
+          className={cn(containerClassName, 'rw-widget-input')}
         >
           <div>
             {shouldRenderTags && this.renderTags(messages)}

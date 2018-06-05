@@ -103,6 +103,9 @@ class TimeList extends React.Component {
     let { value, currentDate, step } = nextProps
     let data = getDates(nextProps)
     let currentValue = value || currentDate
+    let valueChanged =
+      !prevState.lastValue ||
+      !dates.eq(currentValue, prevState.lastValue, 'minutes')
 
     const list = reduceToListState(data, prevState.list, {
       nextProps,
@@ -119,8 +122,13 @@ class TimeList extends React.Component {
     return {
       data,
       list,
+      lastValue: currentValue,
       selectedItem: list.nextEnabled(selectedItem),
-      focusedItem: list.nextEnabled(selectedItem || closestDate || data[0]),
+      focusedItem: valueChanged
+        ? list.nextEnabled(selectedItem || closestDate || data[0])
+        : find(data, t =>
+            dates.eq(t.date, prevState.focusedItem.date, 'minutes')
+          ),
     }
   }
 

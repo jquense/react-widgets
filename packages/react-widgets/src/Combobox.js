@@ -62,6 +62,9 @@ let propTypes = {
 
   placeholder: PropTypes.string,
 
+  /** Adds a css class to the input container element. */
+  containerClassName: PropTypes.string,
+
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
 
@@ -134,6 +137,8 @@ class Combobox extends React.Component {
     let { value, data, messages, filter, minLength, caseSensitive } = nextProps
 
     let accessors = getAccessors(nextProps)
+    const valueChanged = value !== prevState.lastValue
+
     let index = accessors.indexOf(data, value)
     let dataItem = index === -1 ? value : data[index]
 
@@ -171,11 +176,14 @@ class Combobox extends React.Component {
       data,
       list,
       accessors,
+      lastValue: value,
       messages: getMessages(messages),
-      selectedItem: list.nextEnabled(data[index]),
-      focusedItem: list.nextEnabled(
-        ~focusedIndex ? data[focusedIndex] : data[0]
-      ),
+      selectedItem: valueChanged
+        ? list.nextEnabled(data[index])
+        : prevState.selectedItem,
+      focusedItem: valueChanged
+        ? list.nextEnabled(~focusedIndex ? data[focusedIndex] : data[0])
+        : prevState.focusedItem,
     }
   }
 
@@ -363,7 +371,15 @@ class Combobox extends React.Component {
   }
 
   render() {
-    let { isRtl, className, popupTransition, busy, dropUp, open } = this.props
+    let {
+      isRtl,
+      className,
+      popupTransition,
+      busy,
+      dropUp,
+      open,
+      containerClassName,
+    } = this.props
 
     let { focused, messages } = this.state
 
@@ -387,7 +403,7 @@ class Combobox extends React.Component {
         onKeyDown={this.handleKeyDown}
         className={cn(className, 'rw-combobox')}
       >
-        <WidgetPicker>
+        <WidgetPicker className={containerClassName}>
           {this.renderInput()}
           <Select
             bordered
