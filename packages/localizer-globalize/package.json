@@ -1,21 +1,25 @@
 {
   "name": "react-widgets-globalize",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "A globalize.js localizer for react-widgets",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist/* lib/*",
-    "dist":
-      "node ../../tools/build-localizer.js '{\"globalize\": \"window.Globalize\"}'",
+    "dist": "node ../../tools/build-localizer.js '{\"globalize\": \"window.Globalize\"}'",
     "build": "babel localizer.js -o index.js",
     "prepublishOnly": "npm run clean && npm run build && npm run dist"
   },
-  "files": ["index.js", "dist"],
+  "files": [
+    "index.js",
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jquense/react-widgets.git"
   },
-  "keywords": ["react-widgets"],
+  "keywords": [
+    "react-widgets"
+  ],
   "author": "Jason Quense",
   "license": "MIT",
   "bugs": {
@@ -31,7 +35,7 @@
     "@babel/cli": "^7.0.0-beta.42",
     "@babel/core": "^7.0.0-beta.42",
     "cross-env": "^5.1.4",
-    "react-widgets": "^4.2.5",
+    "react-widgets": "^4.3.0",
     "rimraf": "^2.6.2"
   },
   "dependencies": {

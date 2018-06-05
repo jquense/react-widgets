@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-date-fns",
-  "version": "4.0.11",
+  "version": "4.0.12",
   "description": "A date-fns localizer for react-widgets",
   "main": "index.js",
   "scripts": {
@@ -9,12 +9,17 @@
     "build": "babel localizer.js -o index.js",
     "prepublishOnly": "npm run clean && npm run build && npm run dist"
   },
-  "files": ["index.js", "dist"],
+  "files": [
+    "index.js",
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jquense/react-widgets.git"
   },
-  "keywords": ["react-widgets"],
+  "keywords": [
+    "react-widgets"
+  ],
   "authors": [
     "Eduardo Cancino (https://github.com/ecancino)",
     "Marnus Weststrate <marnusw@gmail.com> (https://github.com/marnusw)"
@@ -33,7 +38,7 @@
     "@babel/core": "^7.0.0-beta.42",
     "cross-env": "^5.1.4",
     "date-fns": "^2.0.0-alpha.7",
-    "react-widgets": "^4.2.5",
+    "react-widgets": "^4.3.0",
     "rimraf": "^2.6.2"
   }
 }

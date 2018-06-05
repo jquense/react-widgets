@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-material-ui",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "cpy-cli": "^2.0.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "react-widgets": "^4.2.5"
+    "react-widgets": "^4.3.0"
   },
   "author": "Jason Quense",
   "license": "MIT"

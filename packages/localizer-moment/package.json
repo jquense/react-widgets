@@ -1,21 +1,25 @@
 {
   "name": "react-widgets-moment",
-  "version": "4.0.12",
+  "version": "4.0.13",
   "description": "A moment.js localizer for react-widgets",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist/* ./index.js",
-    "dist":
-      "node ../../tools/build-localizer.js '{\"moment\": \"window.moment\"}'",
+    "dist": "node ../../tools/build-localizer.js '{\"moment\": \"window.moment\"}'",
     "build": "babel localizer.js -o index.js",
     "prepublishOnly": "npm run clean && npm run build && npm run dist"
   },
-  "files": ["index.js", "dist"],
+  "files": [
+    "index.js",
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jquense/react-widgets.git"
   },
-  "keywords": ["react-widgets"],
+  "keywords": [
+    "react-widgets"
+  ],
   "author": "Jason Quense",
   "license": "MIT",
   "bugs": {
@@ -31,7 +35,7 @@
     "@babel/core": "^7.0.0-beta.42",
     "cross-env": "^5.1.4",
     "moment": "^2.21.0",
-    "react-widgets": "^4.2.5",
+    "react-widgets": "^4.3.0",
     "rimraf": "^2.6.2"
   }
 }
