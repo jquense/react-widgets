@@ -109,6 +109,9 @@ let propTypes = {
   autoFocus: PropTypes.bool,
   placeholder: PropTypes.string,
 
+  /** Continue to show the input placeholder even if tags are selected */
+  showPlaceholderWithValues: PropTypes.bool,
+
   disabled: CustomPropTypes.disabled.acceptsArray,
   readOnly: CustomPropTypes.disabled,
 
@@ -158,6 +161,7 @@ class Multiselect extends React.Component {
     value: [],
     searchTerm: '',
     listComponent: List,
+    showPlaceholderWithValues: false,
   }
 
   constructor(...args) {
@@ -692,8 +696,12 @@ class Multiselect extends React.Component {
   }
 
   getPlaceholder() {
-    let { value, placeholder } = this.props
-    return (value && value.length ? '' : placeholder) || ''
+    let { value, placeholder, showPlaceholderWithValues } = this.props
+    return (
+      (value && value.length && !showPlaceholderWithValues
+        ? ''
+        : placeholder) || ''
+    )
   }
 }
 
