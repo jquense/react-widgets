@@ -38,6 +38,7 @@ class Button extends React.Component {
     return (
       <Tag
         {...props}
+        role="button"
         tabIndex="-1"
         title={label}
         type={type}
