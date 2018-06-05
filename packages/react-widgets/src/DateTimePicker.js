@@ -344,6 +344,7 @@ class DateTimePicker extends React.Component {
     } = this.props
 
     let { focused } = this.state
+    let inputReadOnly = inputProps ? inputProps.readOnly : null
 
     let activeId = null
     if (open === 'time') {
@@ -359,12 +360,12 @@ class DateTimePicker extends React.Component {
         ref={this.attachInputRef}
         role="combobox"
         name={name}
+        value={value}
         tabIndex={tabIndex}
         autoFocus={autoFocus}
         placeholder={placeholder}
         disabled={disabled}
-        readOnly={readOnly}
-        value={value}
+        readOnly={inputReadOnly != null ? inputReadOnly : readOnly}
         format={getFormat(this.props)}
         editFormat={editFormat}
         editing={focused}
