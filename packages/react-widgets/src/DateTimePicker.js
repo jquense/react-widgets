@@ -162,6 +162,8 @@ let propTypes = {
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
 
+  /** Adds a css class to the input container element. */
+  containerClassName: PropTypes.string,
   inputProps: PropTypes.object,
   isRtl: PropTypes.bool,
   messages: PropTypes.shape({
@@ -342,6 +344,7 @@ class DateTimePicker extends React.Component {
     } = this.props
 
     let { focused } = this.state
+    let inputReadOnly = inputProps ? inputProps.readOnly : null
 
     let activeId = null
     if (open === 'time') {
@@ -357,12 +360,12 @@ class DateTimePicker extends React.Component {
         ref={this.attachInputRef}
         role="combobox"
         name={name}
+        value={value}
         tabIndex={tabIndex}
         autoFocus={autoFocus}
         placeholder={placeholder}
         disabled={disabled}
-        readOnly={readOnly}
-        value={value}
+        readOnly={inputReadOnly != null ? inputReadOnly : readOnly}
         format={getFormat(this.props)}
         editFormat={editFormat}
         editing={focused}
@@ -506,7 +509,16 @@ class DateTimePicker extends React.Component {
   }
 
   render() {
-    let { className, date, time, open, disabled, readOnly, dropUp } = this.props
+    let {
+      className,
+      date,
+      time,
+      open,
+      disabled,
+      readOnly,
+      dropUp,
+      containerClassName,
+    } = this.props
 
     let { focused } = this.state
 
@@ -535,7 +547,7 @@ class DateTimePicker extends React.Component {
         onFocus={this.focusManager.handleFocus}
         className={cn(className, 'rw-datetime-picker')}
       >
-        <WidgetPicker>
+        <WidgetPicker className={containerClassName}>
           {this.renderInput(owns.trim())}
 
           {this.renderButtons()}

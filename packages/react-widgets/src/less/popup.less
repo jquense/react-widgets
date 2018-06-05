@@ -30,7 +30,7 @@
 
 .rw-popup {
   .border-top-radius(0);
-  .border-bottom-radius(@border-radius-sm);
+  .border-bottom-radius(@popup-border-radius);
 
   box-shadow:       @popup-box-shadow;
   border:           @popup-border 1px solid;
@@ -38,7 +38,7 @@
 
   .rw-dropup & {
     .border-bottom-radius(0);
-    .border-top-radius(@border-radius-sm);
+    .border-top-radius(@popup-border-radius);
 
     box-shadow: @popup-box-shadow-up;
   }

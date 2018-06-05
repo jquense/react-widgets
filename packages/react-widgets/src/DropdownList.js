@@ -110,6 +110,9 @@ class DropdownList extends React.Component {
     disabled: CustomPropTypes.disabled.acceptsArray,
     readOnly: CustomPropTypes.disabled,
 
+    /** Adds a css class to the input container element. */
+    containerClassName: PropTypes.string,
+
     inputProps: PropTypes.object,
     listProps: PropTypes.object,
 
@@ -163,7 +166,8 @@ class DropdownList extends React.Component {
     } = nextProps
 
     const accessors = getAccessors(nextProps)
-    let initialIdx = accessors.indexOf(data, value)
+    const valueChanged = value !== prevState.lastValue
+    let initialIdx = valueChanged && accessors.indexOf(data, value)
 
     if (open)
       data = Filter.filter(data, {
@@ -180,9 +184,14 @@ class DropdownList extends React.Component {
       data,
       list,
       accessors,
+      lastValue: value,
       messages: getMessages(messages),
-      selectedItem: list.nextEnabled(data[initialIdx]),
-      focusedItem: list.nextEnabled(data[initialIdx] || data[0]),
+      selectedItem: valueChanged
+        ? list.nextEnabled(data[initialIdx])
+        : prevState.selectedItem,
+      focusedItem: valueChanged
+        ? list.nextEnabled(data[initialIdx] || data[0])
+        : prevState.focusedItem,
     }
   }
 
@@ -413,6 +422,7 @@ class DropdownList extends React.Component {
       isRtl,
       filter,
       inputProps,
+      containerClassName,
       valueComponent,
     } = this.props
 
@@ -456,7 +466,10 @@ class DropdownList extends React.Component {
         className={cn(className, 'rw-dropdown-list')}
         ref={this.attachInputRef}
       >
-        <WidgetPicker onClick={this.handleClick} className="rw-widget-input">
+        <WidgetPicker
+          onClick={this.handleClick}
+          className={cn(containerClassName, 'rw-widget-input')}
+        >
           <DropdownListInput
             {...inputProps}
             value={valueItem}

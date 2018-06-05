@@ -17,7 +17,11 @@ let props = {
 storiesOf('Multiselect', module)
   .add('Multiselect', () => (
     <Container>
-      <Multiselect {...props} defaultValue={props.data.slice(0, 2)} />
+      <Multiselect
+        {...props}
+        placeholder="Hello there"
+        defaultValue={props.data.slice(0, 2)}
+      />
     </Container>
   ))
   .add('Create tags', () => (
@@ -64,18 +68,15 @@ storiesOf('Multiselect', module)
       <Multiselect {...props} disabled defaultValue={props.data.slice(0, 3)} />
     </Container>
   ))
-  .add('fieldset disabled', () =>
+  .add('fieldset disabled', () => (
     <Container>
       <fieldset disabled>
         <legend>disabled fieldset</legend>
 
-        <Multiselect
-          {...props}
-          defaultValue={props.data.slice(0, 3)}
-        />
+        <Multiselect {...props} defaultValue={props.data.slice(0, 3)} />
       </fieldset>
     </Container>
-  )
+  ))
   .add('disabled tags', () => (
     <Container>
       <Multiselect
@@ -88,6 +89,16 @@ storiesOf('Multiselect', module)
   .add('readonly', () => (
     <Container>
       <Multiselect {...props} readOnly defaultValue={props.data.slice(0, 3)} />
+    </Container>
+  ))
+  .add('showPlaceholderWithValues', () => (
+    <Container>
+      <Multiselect
+        {...props}
+        placeholder="Hello there"
+        showPlaceholderWithValues
+        defaultValue={props.data.slice(0, 3)}
+      />
     </Container>
   ))
   .add('long tags', () => (
@@ -104,9 +115,7 @@ storiesOf('Multiselect', module)
         {...props}
         tagComponent={({ item }) => (
           <span>
-            <strong>{item.first}</strong>
-            {' '}
-            <em>{item.last}</em>
+            <strong>{item.first}</strong> <em>{item.last}</em>
           </span>
         )}
         defaultValue={props.data.slice(0, 3)}

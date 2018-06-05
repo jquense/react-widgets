@@ -1,68 +1,69 @@
-import React from 'react';
-import { mount, shallow } from 'enzyme';
+import React from 'react'
+import { mount, shallow } from 'enzyme'
 
-import DropdownList from '../src/DropdownList';
+import DropdownList from '../src/DropdownList'
 
-let ControlledDropdownList = DropdownList.ControlledComponent;
+let ControlledDropdownList = DropdownList.ControlledComponent
 
-
-describe('DROPDOWNS', function(){
+describe('DROPDOWNS', function() {
   let data = [
     { label: 'jimmy', id: 0 },
     { label: 'sally', id: 1 },
-    { label: 'pat', id: 2 }
-  ];
+    { label: 'pat', id: 2 },
+  ]
 
-  it('should set initial values', function(){
+  it('should set initial values', function() {
     expect(
       mount(<ControlledDropdownList value={'hello'} />)
         .find('.rw-input')
         .text()
-    ).to.equal('hello');
+    ).to.equal('hello')
   })
 
-  it('should respect textField and valueFields', function(){
+  it('should respect textField and valueFields', function() {
     expect(
       mount(
         <DropdownList
           defaultValue={0}
           data={data}
           textField={i => i.label}
-          valueField='id'
+          valueField="id"
         />
       )
-      .find('.rw-input')
-      .text()
-    ).to.equal('jimmy');
+        .find('.rw-input')
+        .text()
+    ).to.equal('jimmy')
   })
 
   it('should open when clicked', () => {
-    let openSpy = sinon.spy();
+    let openSpy = sinon.spy()
 
     mount(<ControlledDropdownList onToggle={openSpy} />)
       .find('.rw-widget-picker')
       .simulate('click')
 
-    expect(openSpy.calledOnce).to.equal(true);
-    expect(openSpy.calledWith(true)).to.equal(true);
+    expect(openSpy.calledOnce).to.equal(true)
+    expect(openSpy.calledWith(true)).to.equal(true)
   })
 
   it('should respect autoFocus', () => {
-    expect(
-      mount(<ControlledDropdownList autoFocus />).getDOMNode()
-    ).to.equal(document.activeElement);
+    expect(mount(<ControlledDropdownList autoFocus />).getDOMNode()).to.equal(
+      document.activeElement
+    )
   })
 
   it('should not open when clicked while disabled or readOnly', () => {
-    let openSpy = sinon.spy();
+    let openSpy = sinon.spy()
 
-    mount(<ControlledDropdownList onToggle={openSpy} disabled />)
-      .simulate('click')
+    mount(<ControlledDropdownList onToggle={openSpy} disabled />).simulate(
+      'click'
+    )
 
-    mount(<ControlledDropdownList onToggle={openSpy} readOnly />)
-      .simulate('click')
+    mount(<ControlledDropdownList onToggle={openSpy} readOnly />).simulate(
+      'click'
+    )
 
-    expect(openSpy.called).to.equal(false);
+    expect(openSpy.called).to.equal(false)
   })
 
   it('should start closed', () => {
@@ -70,8 +71,8 @@ describe('DROPDOWNS', function(){
       <ControlledDropdownList
         value={data[0]}
         data={data}
-        textField='label'
-        valueField='id'
+        textField="label"
+        valueField="id"
       />
     )
 
@@ -83,7 +84,6 @@ describe('DROPDOWNS', function(){
   })
 
   it('should toggle add aria when open', () => {
-
     let inst = shallow(<ControlledDropdownList open />)
 
     expect(inst.prop('open')).to.equal(true)
@@ -102,11 +102,11 @@ describe('DROPDOWNS', function(){
     expect(props.open).to.equal(true)
   })
 
-  it('should simulate focus/blur events', function(done){
-    let blur = sinon.spy()
-      , focus = sinon.spy()
+  it('should simulate focus/blur events', function(done) {
+    let blur = sinon.spy(),
+      focus = sinon.spy()
 
-    mount(<DropdownList onBlur={blur} onFocus={focus}/>)
+    mount(<DropdownList onBlur={blur} onFocus={focus} />)
       .simulate('focus')
       .tap(inst => {
         setTimeout(() => {
@@ -118,14 +118,14 @@ describe('DROPDOWNS', function(){
             done()
           })
         })
-      });
+      })
   })
 
-  it('should not simulate focus/blur events when disabled', function(done){
-    let blur = sinon.spy()
-      , focus = sinon.spy()
+  it('should not simulate focus/blur events when disabled', function(done) {
+    let blur = sinon.spy(),
+      focus = sinon.spy()
 
-    mount(<DropdownList disabled onBlur={blur} onFocus={focus}/>)
+    mount(<DropdownList disabled onBlur={blur} onFocus={focus} />)
       .simulate('focus')
       .tap(inst => {
         setTimeout(() => {
@@ -137,24 +137,18 @@ describe('DROPDOWNS', function(){
             done()
           })
         })
-      });
+      })
   })
 
-  it('should simulate key events', function(){
-    let kp = sinon.spy()
-      , kd = sinon.spy()
-      , ku = sinon.spy()
+  it('should simulate key events', function() {
+    let kp = sinon.spy(),
+      kd = sinon.spy(),
+      ku = sinon.spy()
 
-    mount(
-      <DropdownList
-        onKeyPress={kp}
-        onKeyUp={ku}
-        onKeyDown={kd}
-      />
-    )
-    .simulate('keyPress')
-    .simulate('keyDown')
-    .simulate('keyUp')
+    mount(<DropdownList onKeyPress={kp} onKeyUp={ku} onKeyDown={kd} />)
+      .simulate('keyPress')
+      .simulate('keyDown')
+      .simulate('keyUp')
 
     expect(kp.calledOnce).to.equal(true)
     expect(kd.calledOnce).to.equal(true)
@@ -162,38 +156,32 @@ describe('DROPDOWNS', function(){
   })
 
   it('should add correct markup when read-only', () => {
-    let input = mount(<ControlledDropdownList readOnly />)
-      .getDOMNode()
+    let input = mount(<ControlledDropdownList readOnly />).getDOMNode()
 
-    expect(input.getAttribute('aria-readonly')).to.equal('true');
+    expect(input.getAttribute('aria-readonly')).to.equal('true')
   })
 
   it('should add correct markup when disabled', () => {
-    let input = mount(<ControlledDropdownList disabled />)
-      .getDOMNode()
+    let input = mount(<ControlledDropdownList disabled />).getDOMNode()
 
-    expect(input.getAttribute('aria-disabled')).to.equal('true');
+    expect(input.getAttribute('aria-disabled')).to.equal('true')
   })
 
-  it('should use a value template', function(){
+  it('should use a value template', function() {
     function ValueComponent({ item }) {
-      return <span>{'hello - ' + item}</span>;
+      return <span>{'hello - ' + item}</span>
     }
 
     expect(
       mount(
-        <DropdownList
-          defaultValue={'jimmy'}
-          valueComponent={ValueComponent}
-        />
+        <DropdownList defaultValue={'jimmy'} valueComponent={ValueComponent} />
       )
-      .find('.rw-input')
-      .text()
-    )
-    .to.equal('hello - jimmy');
+        .find('.rw-input')
+        .text()
+    ).to.equal('hello - jimmy')
   })
 
-  it('should call onChange with event object from select', function(){
+  it('should call onChange with event object from select', function() {
     let change = sinon.spy()
 
     mount(
@@ -203,16 +191,16 @@ describe('DROPDOWNS', function(){
         value={data[0]}
         searchTerm="foooo"
         onChange={change}
-        onToggle={() =>{}}
+        onToggle={() => {}}
       />
     )
-    .find('List')
-    .prop('onSelect')(null, 'foo')
+      .find('List')
+      .prop('onSelect')(null, 'foo')
 
     expect(change.getCall(0).args[1]).to.eql({
       originalEvent: 'foo',
       lastValue: data[0],
-      searchTerm: 'foooo'
+      searchTerm: 'foooo',
     })
   })
 
@@ -226,31 +214,30 @@ describe('DROPDOWNS', function(){
         onChange={change}
         onToggle={() => {}}
       />
-    )
-    .simulate('keyDown', { key: 'ArrowDown' })
+    ).simulate('keyDown', { key: 'ArrowDown' })
 
-    let bonusArgs = change.getCall(0).args[1];
+    let bonusArgs = change.getCall(0).args[1]
 
     expect(bonusArgs.originalEvent.type).to.equal('keydown')
     expect(bonusArgs.searchTerm).to.equal('')
     expect(bonusArgs.lastValue).to.equal(data[0])
   })
 
-  it('should call Select handler', function(){
-    let change = sinon.spy()
-      , onSelect = sinon.spy();
+  it('should call Select handler', function() {
+    let change = sinon.spy(),
+      onSelect = sinon.spy()
 
     mount(
       <ControlledDropdownList
         open
-        onToggle={() =>{}}
+        onToggle={() => {}}
         data={data}
         onChange={change}
         onSelect={onSelect}
       />
     )
-    .find('List')
-    .prop('onSelect')(data[1], 'foo')
+      .find('List')
+      .prop('onSelect')(data[1], 'foo')
 
     expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
@@ -258,7 +245,7 @@ describe('DROPDOWNS', function(){
     expect(change.calledAfter(onSelect)).to.equal(true)
   })
 
-  it('should change values on keyDown', function(){
+  it('should change values on keyDown', function() {
     function assertChangedWithValue(itemIndex) {
       return () => {
         expect(change.calledOnce).to.equal(true)
@@ -269,37 +256,31 @@ describe('DROPDOWNS', function(){
 
     let change = sinon.spy()
 
-    mount(
-      <DropdownList
-        data={data}
-        onChange={change}
-        defaultValue={data[0]}
-      />
-    )
-    .simulate('keyDown', { key: 'ArrowDown' })
+    mount(<DropdownList data={data} onChange={change} defaultValue={data[0]} />)
+      .simulate('keyDown', { key: 'ArrowDown' })
       .tap(assertChangedWithValue(1))
-    .simulate('keyDown', { key: 'ArrowUp' })
+      .simulate('keyDown', { key: 'ArrowUp' })
       .tap(assertChangedWithValue(0))
-    .simulate('keyDown', { key: 'End' })
+      .simulate('keyDown', { key: 'End' })
       .tap(assertChangedWithValue(data.length - 1))
-    .simulate('keyDown', { key: 'Home' })
+      .simulate('keyDown', { key: 'Home' })
       .tap(assertChangedWithValue(0))
   })
 
-  it('should navigate list', function(){
-    let change = sinon.spy();
+  it('should navigate list', function() {
+    let change = sinon.spy()
 
     let inst = mount(
       <DropdownList
         defaultOpen
         data={data}
-        textField='label'
-        valueField='id'
+        textField="label"
+        valueField="id"
         onChange={change}
       />
     )
 
-    let listItems = inst.find('List li');
+    let listItems = inst.find('List li')
 
     listItems.first().is('.rw-state-focus')
 
@@ -316,7 +297,6 @@ describe('DROPDOWNS', function(){
     listItems.first().is('.rw-state-focus')
   })
 
-
   it('should search and change values', done => {
     let change = sinon.spy()
 
@@ -326,10 +306,9 @@ describe('DROPDOWNS', function(){
         data={data}
         delay={0}
         onChange={change}
-        textField='label'
+        textField="label"
       />
-    )
-    .simulate('keyPress', { which: 80, key: 'p' })
+    ).simulate('keyPress', { which: 80, key: 'p' })
 
     setTimeout(() => {
       expect(change.calledOnce).to.equal(true)
@@ -350,15 +329,14 @@ describe('DROPDOWNS', function(){
         value={data[0]}
         data={data}
         onChange={change}
-        textField='label'
+        textField="label"
       />
-    )
-    .simulate('keyPress', { which: 80, key: 'p' })
+    ).simulate('keyPress', { which: 80, key: 'p' })
 
     setTimeout(() => {
       expect(inst.state('focusedItem')).to.equal(data[2])
       done()
-    })
+    }, 10)
   })
 
   it('should search values on typing when not filtering - back direction', done => {
@@ -372,14 +350,13 @@ describe('DROPDOWNS', function(){
         value={data[2]}
         data={data}
         onChange={change}
-        textField='label'
+        textField="label"
       />
-    )
-    .simulate('keyPress', { which: 74, key: 'j' })
+    ).simulate('keyPress', { which: 74, key: 'j' })
 
     setTimeout(() => {
       expect(inst.state('focusedItem')).to.equal(data[0])
       done()
-    })
+    }, 10)
   })
 })

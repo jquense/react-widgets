@@ -1,5 +1,3 @@
-
-
 // https://github.com/ekryski/less2sass
 const glob = require('glob')
 const path = require('path')
@@ -12,36 +10,49 @@ const processors = [
   // literal strings
   { pattern: /~("|')(.*?)("|')/g, replace: '$2' },
   // replace variable prefix
-  { pattern: /@(?!(media|import|mixin|font-face|keyframes)(\s|\())/g, replace: '$$' },
+  {
+    pattern: /@(?!(media|import|mixin|font-face|keyframes)(\s|\())/g,
+    replace: '$$',
+  },
   // add !default to SCSS variables
-  { pattern: /^(\$[\w\d-_]+:\s*(.(?!\!default))+);(.*)$/gm, replace: '$1 !default;$3' },
+  {
+    pattern: /^(\$[\w\d-_]+:\s*(.(?!\!default))+);(.*)$/gm,
+    replace: '$1 !default;$3',
+  },
   // convert Mixins
-  { pattern: /^(\s*?)\.([\w\-]*?)\s*\((.*)\)+\s*\{$/gm, replace: '$1@mixin $2($3) {' },
+  {
+    pattern: /^(\s*?)\.([\w\-]*?)\s*\((.*)\)+\s*\{$/gm,
+    replace: '$1@mixin $2($3) {',
+  },
   // convert :extend
   {
     pattern: /^(\s*?)&:extend\((.*)\);?$/,
-    replace: (_, g1, g2) => `${g1}@extend ${g2.replace(/\s+all$/, '')};`
+    replace: (_, g1, g2) => `${g1}@extend ${g2.replace(/\s+all$/, '')};`,
   },
   // include mixins, must not leave off the parens at invocation
-  { pattern: /^(\s*)\.([a-zA-Z][\w\-]*\([^;]*\);?$)/gm, replace: '$1@include $2' },
+  {
+    pattern: /^(\s*)\.([a-zA-Z][\w\-]*\([^;]*\);?$)/gm,
+    replace: '$1@include $2',
+  },
   // change file extensions
-  { pattern: /\.less/g, replace: '.scss' }
+  { pattern: /\.less/g, replace: '.scss' },
 ]
 
 function processLine(line) {
   return processors.reduce(
-    (line, { pattern, replace }) => line.replace(pattern, replace), line
-  );
+    (line, { pattern, replace }) => line.replace(pattern, replace),
+    line
+  )
 }
 
 function transpile(filename) {
-  let lines = fs.readFileSync(filename, 'utf8').split(/\r?\n/);
+  let lines = fs.readFileSync(filename, 'utf8').split(/\r?\n/)
 
   let code = lines.map(processLine).join('\n')
 
   let outName = path.basename(filename, '.less') + '.scss'
   let outPath = process.cwd() + '/lib/scss'
-  let outFile = outPath + '/' + outName;
+  let outFile = outPath + '/' + outName
 
   console.log('Writing scss file: ' + outName) // eslint-disable-line
 
@@ -49,6 +60,6 @@ function transpile(filename) {
   fs.writeFileSync(outFile, code)
 }
 
-let files = glob.sync('src/less/*.less');
+let files = glob.sync('src/less/*.less')
 
 files.forEach(transpile)

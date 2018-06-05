@@ -121,6 +121,9 @@ class NumberPicker extends React.Component {
     disabled: CustomPropTypes.disabled,
     readOnly: CustomPropTypes.disabled,
 
+    /** Adds a css class to the input container element. */
+    containerClassName: PropTypes.string,
+
     inputProps: PropTypes.object,
     isRtl: PropTypes.bool,
     messages: PropTypes.shape({
@@ -266,7 +269,15 @@ class NumberPicker extends React.Component {
   }
 
   render() {
-    let { className, disabled, readOnly, value, min, max } = this.props
+    let {
+      className,
+      containerClassName,
+      disabled,
+      readOnly,
+      value,
+      min,
+      max,
+    } = this.props
 
     let { focused, messages } = this.state
     let elementProps = Props.pickElementProps(this)
@@ -284,7 +295,7 @@ class NumberPicker extends React.Component {
         onFocus={this.focusManager.handleFocus}
         className={cn(className, 'rw-number-picker')}
       >
-        <WidgetPicker>
+        <WidgetPicker className={containerClassName}>
           {this.renderInput(value)}
           <Select bordered>
             <Button

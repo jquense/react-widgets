@@ -7,7 +7,11 @@ module.exports = baseConfig =>
     module: {
       rules: [
         { parser: { amd: false } },
-        rules.js.inlineCss({ tagName: 'less', extension: '.less' }),
+        rules.js.inlineCss({
+          tagName: 'less',
+          extension: '.less',
+          extends: '../../.babelrc.js',
+        }),
         rules.css(),
         rules.less(),
         rules.images(),
