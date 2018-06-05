@@ -11,17 +11,18 @@ module.exports = function loader(source) {
     return stripIndent`
       var React = require('react')
       var Helmet = require('react-helmet').default
+      var Layout = require('../layouts').default
       var EditableExample = require('../components/EditableExample').default;
       var TabbedCodeBlock = require('../components/TabbedCodeBlock').default;
 
       const Tab = (props) => <div {...props} />
 
-      module.exports = function Page({ scope, style, className }) {
+      module.exports = function Page({ scope, location }) {
         return (
-          <section className={className} style={style}>
+          <Layout location={location}>
             <Helmet title="${name}" />
             ${body}
-          </section>
+          </Layout>
         )
       }
     `

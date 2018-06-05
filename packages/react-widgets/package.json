@@ -1,14 +1,16 @@
 {
   "name": "react-widgets",
   "version": "4.2.6",
-  "description":
-    "An à la carte set of polished, extensible, and accessible inputs built for React",
+  "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
   "author": {
     "name": "Jason",
     "email": "monastic.panic@gmail.com"
   },
-  "files": ["lib", "dist"],
+  "files": [
+    "lib",
+    "dist"
+  ],
   "keywords": [
     "react",
     "widgets",
@@ -30,12 +32,10 @@
   "scripts": {
     "test": "npm run lint && npm run test-only && npm run test:styles",
     "test-only": "jest",
-    "test:styles":
-      "npm run styles && node-sass lib/scss/react-widgets.scss -o test/output",
+    "test:styles": "npm run styles && node-sass lib/scss/react-widgets.scss -o test/output",
     "tdd": "jest --watch",
     "lint": "eslint src test",
-    "less":
-      "lessc -x --autoprefix=\"ie >= 8\" src/less/react-widgets.less dist/css/react-widgets.css",
+    "less": "lessc -x --autoprefix=\"ie >= 8\" src/less/react-widgets.less dist/css/react-widgets.css",
     "styles": "cpy src/less/* lib/less/ && node ../../tools/lessToSass.js",
     "assets:lib": "cpy src/img/* lib/img/ && cpy src/fonts/* lib/fonts/",
     "assets:dist": "cpy src/img/* dist/img/ && cpy src/fonts/* dist/fonts/",
@@ -43,10 +43,8 @@
     "clean:dist": "rimraf ./dist/*",
     "compile:lib": "babel src --out-dir lib",
     "compile:dist": "cross-env NODE_ENV=production webpack",
-    "build:lib":
-      "npm run clean:lib && npm run compile:lib && npm run styles && npm run assets:lib",
-    "build:dist":
-      "npm run clean:dist && npm run compile:dist && npm run less && npm run assets:dist",
+    "build:lib": "npm run clean:lib && npm run compile:lib && npm run styles && npm run assets:lib",
+    "build:dist": "npm run clean:dist && npm run compile:dist && npm run less && npm run assets:dist",
     "build": "npm run build:lib && npm run build:dist",
     "prepublishOnly": "npm run build"
   },
@@ -67,8 +65,8 @@
     "invariant": "^2.2.4",
     "prop-types-extra": "^1.0.1",
     "react-component-managers": "^3.1.0",
-    "react-transition-group": "^2.3.0",
     "react-lifecycles-compat": "^3.0.4",
+    "react-transition-group": "^2.3.0",
     "uncontrollable": "^5.0.0",
     "warning": "^3.0.0"
   },
@@ -76,15 +74,15 @@
     "@babel/cli": "^7.0.0-beta.42",
     "@babel/core": "^7.0.0-beta.42",
     "babel-core": "bridge",
-    "babel-jest": "^22.4.3",
+    "babel-jest": "^23.0.1",
     "chai": "^4.1.2",
-    "cpy-cli": "^1.0.0",
+    "cpy-cli": "^2.0.0",
     "cross-env": "^5.1.4",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
     "globalize": "^0.1.1",
-    "jest": "^22.4.3",
+    "jest": "^23.1.0",
     "less": "^2.7.2",
     "less-plugin-autoprefix": "^1.5.1",
     "lodash": "^4.17.5",
@@ -92,7 +90,7 @@
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "rimraf": "^2.6.2",
-    "sinon": "^4.5.0",
+    "sinon": "^5.0.10",
     "webpack": "^3.0.0",
     "webpack-atoms": "^5.0.0"
   }

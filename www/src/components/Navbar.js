@@ -1,11 +1,11 @@
-import React from 'react';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
-import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
+import React from 'react'
+import Navbar from 'react-bootstrap/lib/Navbar'
+import Nav from 'react-bootstrap/lib/Nav'
+import NavItem from 'react-bootstrap/lib/NavItem'
+import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
-import WidgetNav from './WidgetNav';
-import SubNavbar from './SubNavbar';
+import WidgetNav from './WidgetNav'
+import SubNavbar from './SubNavbar'
 
 const _ = less`
   .app-navbar {
@@ -15,27 +15,21 @@ const _ = less`
   .app-navbar--widget-nav.navbar-nav {
     margin: 0 auto;
   }
-`;
-
+`
 
 function MobileNav() {
   return (
-    <Nav
-      role="navigation"
-      className="visible-xs"
-    >
+    <Nav role="navigation" className="visible-xs">
       <LinkContainer to="/" onlyActiveOnIndex>
         <NavItem>Getting Started</NavItem>
       </LinkContainer>
-      <LinkContainer to="/i18n">
+      <LinkContainer to="/localization">
         <NavItem>Localization </NavItem>
       </LinkContainer>
       <LinkContainer to="/controllables">
         <NavItem>Controlled components</NavItem>
       </LinkContainer>
-      <NavItem href="https://github.com/jquense/react-widgets">
-         Github
-      </NavItem>
+      <NavItem href="https://github.com/jquense/react-widgets">Github</NavItem>
     </Nav>
   )
 }
@@ -55,6 +49,5 @@ export default function ApiNavbar() {
       <div style={{ marginTop: 50 }} />
       <SubNavbar className="hidden-xs" />
     </div>
-
   )
 }

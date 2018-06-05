@@ -7,6 +7,7 @@ import Helmet from 'react-helmet'
 import DropdownButton from 'react-bootstrap/lib/DropdownButton'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
 
+import Layout from '../layouts'
 import ImportSection from '../components/ImportSection'
 import ApiMenuItem from '../components/ApiMenuItem'
 import PropHeader from '../components/PropHeader'
@@ -20,6 +21,7 @@ function basename(path) {
 }
 
 const propTypes = {
+  location: PropTypes.object,
   pageContext: PropTypes.object,
   data: PropTypes.shape({
     componentMetadata: PropTypes.object.isRequired,
@@ -31,11 +33,17 @@ class ComponentTemplate extends React.Component {
     prefix: PropTypes.string.isRequired,
   }
   getChildContext() {
-    const { data: { componentMetadata } } = this.props
+    const {
+      data: { componentMetadata },
+    } = this.props
     return { prefix: componentMetadata.displayName }
   }
   render() {
-    const { data: { componentMetadata }, pageContext } = this.props
+    const {
+      location,
+      data: { componentMetadata },
+      pageContext,
+    } = this.props
     const { displayName, props, doclets } = componentMetadata
 
     const { frontmatter = {}, html } = get(
@@ -56,7 +64,7 @@ class ComponentTemplate extends React.Component {
       .map(basename)
       .filter(p => pageContext.publicComponents.includes(p))
     return (
-      <div>
+      <Layout location={location}>
         <Helmet title={displayName} />
         <section className={'pg-api'}>
           <h1 className="page-header">
@@ -119,7 +127,7 @@ class ComponentTemplate extends React.Component {
             <PropExample prop={prop} displayName={displayName} />
           </section>
         ))}
-      </div>
+      </Layout>
     )
   }
 }

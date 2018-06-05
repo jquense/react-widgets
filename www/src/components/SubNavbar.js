@@ -1,5 +1,5 @@
-import React from 'react';
-import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
+import React from 'react'
+import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
 const _ = less`
   .app-subnavbar {
@@ -23,26 +23,33 @@ const _ = less`
       padding-left: 20px;
     }
   }
-`;
-
+`
 
 export default function SubNavbar({ className = '', style }) {
   return (
     <div className={`${className} app-subnavbar`} style={style}>
-      <LinkContainer to="/react-widgets/" onlyActiveOnIndex>
-        <a><i className='fa fa-play'/> Getting Started</a>
+      <LinkContainer to="/" onlyActiveOnIndex>
+        <a>
+          <i className="fa fa-play" /> Getting Started
+        </a>
       </LinkContainer>
-      <LinkContainer to="/react-widgets/localization/">
-        <a><i className='fa fa-globe'/> Localization</a>
+      <LinkContainer to="/localization/">
+        <a>
+          <i className="fa fa-globe" /> Localization
+        </a>
       </LinkContainer>
-      <LinkContainer to="/react-widgets/theming/">
-        <a><i className='fa fa-css3'/> Theming</a>
+      <LinkContainer to="/theming/">
+        <a>
+          <i className="fa fa-css3" /> Theming
+        </a>
       </LinkContainer>
-      <LinkContainer to="/react-widgets/controllables/">
-        <a><i className='fa fa-cogs'/> Controlled components</a>
+      <LinkContainer to="/controllables/">
+        <a>
+          <i className="fa fa-cogs" /> Controlled components
+        </a>
       </LinkContainer>
       <a href="https://github.com/jquense/react-widgets">
-         <i className='fa fa-github'/> Github
+        <i className="fa fa-github" /> Github
       </a>
     </div>
   )

@@ -24,13 +24,13 @@
     "babel-eslint": "8.2.1",
     "babel-preset-jason": "^4.1.0",
     "common-tags": "^1.3.1",
-    "cpy-cli": "^1.0.0",
+    "cpy-cli": "^2.0.0",
     "cross-env": "^5.1.4",
-    "css-literal-loader": "^0.3.0",
+    "css-literal-loader": "^0.4.7",
     "eslint": "^4.19.1",
     "eslint-config-jason": "^4.0.0",
     "eslint-plugin-import": "^2.10.0",
-    "eslint-plugin-mocha": "^4.6.0",
+    "eslint-plugin-mocha": "^5.0.0",
     "eslint-plugin-react": "^7.7.0",
     "glob": "^7.1.2",
     "lerna": "^2.9.1",
@@ -41,5 +41,7 @@
     "webpack-atoms": "^5.0.0",
     "webpack-merge": "^4.1.0"
   },
-  "workspaces": ["packages/*"]
+  "workspaces": [
+    "packages/*"
+  ]
 }

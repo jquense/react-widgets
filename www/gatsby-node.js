@@ -3,7 +3,7 @@ const slug = require('slug')
 
 const GraphQLJSON = require('graphql-type-json')
 
-exports.onCreateWebpackConfig = ({ actions, rules }) => {
+exports.onCreateWebpackConfig = ({ actions, rules, getConfig }) => {
   const { setWebpackConfig } = actions
 
   const noAmdRule = {
@@ -41,6 +41,9 @@ exports.onCreateWebpackConfig = ({ actions, rules }) => {
       },
     },
   })
+
+  const current = getConfig()
+  current.module.rules = current.module.rules.filter(r => r.enforce !== 'pre')
 }
 
 exports.createPages = ({ graphql, actions }) => {

@@ -181,7 +181,7 @@ class Combobox extends React.Component {
 
   // has to be done early since `accept()` re-focuses the input
   handleFocusWillChange = focused => {
-    if (!focused) this.inputRef?.accept()
+    if (!focused && this.inputRef) this.inputRef.accept()
     if (focused) this.focus()
   }
 
@@ -194,7 +194,7 @@ class Combobox extends React.Component {
     this.close()
     notify(this.props.onSelect, [data, { originalEvent }])
     this.change(data, false, originalEvent)
-    this.inputRef?.accept(true)
+    this.inputRef && this.inputRef.accept(true)
     this.focus()
   }
 
@@ -278,8 +278,12 @@ class Combobox extends React.Component {
     let valueItem = accessors.findOrSelf(data, value)
 
     let completeType = suggest
-      ? filter ? 'both' : 'inline'
-      : filter ? 'list' : ''
+      ? filter
+        ? 'both'
+        : 'inline'
+      : filter
+        ? 'list'
+        : ''
 
     return (
       <ComboboxInput
