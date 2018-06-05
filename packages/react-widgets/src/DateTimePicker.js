@@ -336,7 +336,7 @@ class DateTimePicker extends React.Component {
       name,
       tabIndex,
       autoFocus,
-      inputProps,
+      inputProps = {},
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
     } = this.props
@@ -350,9 +350,11 @@ class DateTimePicker extends React.Component {
       activeId = this.activeCalendarId
     }
 
+    let {readOnly: inputReadOnly, ...otherInputProps} = inputProps
+
     return (
       <DateTimePickerInput
-        {...inputProps}
+        {...otherInputProps}
         id={this.inputId}
         ref={this.attachInputRef}
         role="combobox"
@@ -361,7 +363,7 @@ class DateTimePicker extends React.Component {
         autoFocus={autoFocus}
         placeholder={placeholder}
         disabled={disabled}
-        readOnly={readOnly}
+        readOnly={inputReadOnly !== null ? inputReadOnly : readOnly}
         value={value}
         format={getFormat(this.props)}
         editFormat={editFormat}
