@@ -1,2 +1,2 @@
-**/src/**/*.less
+**/src/**/variables.less
 **/node_modules/
