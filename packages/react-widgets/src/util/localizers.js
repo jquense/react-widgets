@@ -83,8 +83,8 @@ export function setDate({
     propType,
     firstOfWeek,
     format: wrapFormat(format),
-    parse(value, culture) {
-      let result = parse.call(this, value, culture)
+    parse(value, format, culture) {
+      let result = parse.call(this, value, format, culture)
       invariant(result == null
         || (result instanceof Date && !isNaN(result.getTime()))
         , 'date localizer `parse(..)` must return a valid Date, null, or undefined')
