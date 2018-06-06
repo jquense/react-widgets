@@ -75,12 +75,12 @@ export default function dateFnsLocalizer({ formats = defaultFormats, locales = {
     return locales[culture] || enUS
   }
 
-  function format(date, pattern, culture) {
-    return formatWithOptions({ locale: getLocale(culture) }, pattern, date)
+  function format(value, format, culture) {
+    return formatWithOptions({ locale: getLocale(culture) }, format, value)
   }
 
-  function parse(date, pattern, culture) {
-    return parseWithOptions({ locale: getLocale(culture) }, new Date(), pattern, date)
+  function parse(value, format, culture) {
+    return parseWithOptions({ locale: getLocale(culture) }, new Date(), format, value)
   }
 
   function firstOfWeek(culture) {

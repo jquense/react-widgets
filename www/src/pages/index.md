@@ -28,7 +28,7 @@ bundlers like webpack and Browserify to only package up the pieces you use, savi
 ## Setup
 
 Stylesheets, images, and fonts are found in the `dist` directory. You can use webpack to `require()` the styles,
-or include the css normally. The included icons are provided by - [Font Awesome by Dave Gandy]("http://fontawesome.io">)
+or include the css normally. The included icons are provided by - [Font Awesome by Dave Gandy](http://fontawesome.io)
 
 {{ <TabbedCodeBlock>
 <Tab title="webpack">
