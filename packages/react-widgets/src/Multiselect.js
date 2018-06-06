@@ -235,9 +235,10 @@ class Multiselect extends React.Component {
       focusedTag: valueChanged
         ? list.nextEnabled(~dataItems.indexOf(focusedTag) ? focusedTag : null)
         : prevState.focusedTag,
-      focusedItem: valueChanged
-        ? list.nextEnabled(~data.indexOf(focusedItem) ? focusedItem : data[0])
-        : prevState.focusedItem,
+      focusedItem:
+        valueChanged || !prevState.focusedItem
+          ? list.nextEnabled(~data.indexOf(focusedItem) ? focusedItem : data[0])
+          : prevState.focusedItem,
     }
   }
 

@@ -124,11 +124,12 @@ class TimeList extends React.Component {
       list,
       lastValue: currentValue,
       selectedItem: list.nextEnabled(selectedItem),
-      focusedItem: valueChanged
-        ? list.nextEnabled(selectedItem || closestDate || data[0])
-        : find(data, t =>
-            dates.eq(t.date, prevState.focusedItem.date, 'minutes')
-          ),
+      focusedItem:
+        valueChanged || !prevState.focusedItem
+          ? list.nextEnabled(selectedItem || closestDate || data[0])
+          : find(data, t =>
+              dates.eq(t.date, prevState.focusedItem.date, 'minutes')
+            ),
     }
   }
 
