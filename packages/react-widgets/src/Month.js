@@ -29,7 +29,8 @@ class MonthView extends React.Component {
     dateFormat: CustomPropTypes.dateFormat,
     footerFormat: CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
-  }
+    isDateDisabled: PropTypes.func,
+  };
 
   renderHeaders(week, format, culture) {
     let firstOfWeek = dateLocalizer.firstOfWeek(culture)
@@ -47,18 +48,19 @@ class MonthView extends React.Component {
 
   renderRow = (row, rowIdx) => {
     let {
-      focused,
-      today,
-      activeId,
-      disabled,
-      onChange,
-      value,
-      culture,
-      min,
-      max,
-      footerFormat,
-      dateFormat,
-      dayComponent: Day,
+        focused
+      , today
+      , activeId
+      , disabled
+      , onChange
+      , value
+      , culture
+      , min
+      , max
+      , footerFormat
+      , dateFormat
+      , dayComponent: Day
+      , isDateDisabled
     } = this.props
 
     footerFormat = dateLocalizer.getFormat('footer', footerFormat)
@@ -85,6 +87,7 @@ class MonthView extends React.Component {
               focused={focused}
               selected={value}
               disabled={disabled}
+              isDateDisabled={isDateDisabled}
             >
               {Day ? <Day date={date} label={formattedDate} /> : formattedDate}
             </CalendarView.Cell>

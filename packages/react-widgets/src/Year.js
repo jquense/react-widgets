@@ -23,6 +23,7 @@ class YearView extends React.Component {
     headerFormat: CustomPropTypes.dateFormat,
     monthFormat: CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
+    isDateDisabled: PropTypes.func,
   };
 
   renderRow = (row, rowIdx) => {
@@ -37,7 +38,8 @@ class YearView extends React.Component {
       , headerFormat
       , monthFormat
       , min
-      , max } = this.props
+      , max
+      , isDateDisabled } = this.props
 
     headerFormat = dateLocalizer.getFormat('header', headerFormat);
     monthFormat = dateLocalizer.getFormat('month', monthFormat);
@@ -61,6 +63,7 @@ class YearView extends React.Component {
               focused={focused}
               selected={value}
               disabled={disabled}
+              isDateDisabled={isDateDisabled}
             >
               {dateLocalizer.format(date, monthFormat, culture)}
             </CalendarView.Cell>

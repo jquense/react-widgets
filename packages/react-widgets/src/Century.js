@@ -21,6 +21,7 @@ class CenturyView extends React.Component {
     onChange: PropTypes.func.isRequired,
     decadeFormat: CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
+    isDateDisabled: PropTypes.func,
   };
 
   renderRow = (row, rowIdx) => {
@@ -34,7 +35,8 @@ class CenturyView extends React.Component {
       , culture
       , min
       , decadeFormat
-      , max } = this.props
+      , max
+      , isDateDisabled } = this.props
 
     decadeFormat = dateLocalizer.getFormat('decade', decadeFormat);
 
@@ -61,6 +63,7 @@ class CenturyView extends React.Component {
               focused={focused}
               selected={value}
               disabled={disabled}
+              isDateDisabled={isDateDisabled}
             >
               {label}
             </CalendarView.Cell>

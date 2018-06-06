@@ -210,6 +210,11 @@ const propTypes = {
 
   /** @ignore */
   tabIndex: PropTypes.any,
+
+  /**
+  * Determines if a date should be disabled
+  */
+  isDateDisabled: PropTypes.func,
 }
 
 /**
@@ -416,17 +421,18 @@ class Calendar extends React.Component {
 
   render() {
     let {
-      className,
-      value,
-      footerFormat,
-      disabled,
-      readOnly,
-      footer,
-      views,
-      min,
-      max,
-      culture,
-      tabIndex,
+        className
+      , value
+      , footerFormat
+      , disabled
+      , readOnly
+      , footer
+      , views
+      , min
+      , max
+      , culture
+      , tabIndex
+      , isDateDisabled
     } = this.props
 
     let { currentDate, view, slideDirection, focused, messages } = this.state
@@ -434,6 +440,7 @@ class Calendar extends React.Component {
     let View = VIEW[view],
       todaysDate = new Date(),
       todayNotInRange = !dates.inRange(todaysDate, min, max, view)
+      , todayDisabled = (isDateDisabled && isDateDisabled(todaysDate))
 
     let key = view + '_' + dates[view](currentDate)
 
@@ -492,7 +499,7 @@ class Calendar extends React.Component {
             value={todaysDate}
             format={footerFormat}
             culture={culture}
-            disabled={disabled || todayNotInRange}
+            disabled={disabled || todayNotInRange || todayDisabled}
             readOnly={readOnly}
             onClick={this.handleFooterClick}
           />

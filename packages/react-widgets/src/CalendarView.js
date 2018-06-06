@@ -50,6 +50,7 @@ class CalendarViewCell extends React.Component {
     viewUnit: PropTypes.oneOf(VIEW_UNITS),
     onChange: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
+    isDateDisabled: PropTypes.func
   };
 
   handleChange = () => {
@@ -93,8 +94,8 @@ class CalendarViewCell extends React.Component {
   }
 
   render()  {
-    let { children, activeId, label, disabled } = this.props;
-    let isDisabled = disabled || this.isEmpty()
+    let { children, activeId, label, disabled, isDateDisabled, date } = this.props;
+    let isDisabled = disabled || this.isEmpty() || (isDateDisabled && isDateDisabled(date))
 
     return (
       <td

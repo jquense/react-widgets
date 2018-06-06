@@ -170,6 +170,11 @@ let propTypes = {
     dateButton: PropTypes.string,
     timeButton: PropTypes.string,
   }),
+
+  /**
+  * Determines if a date should be disabled
+  */
+  isDateDisabled: PropTypes.func,
 }
 
 /**
@@ -571,8 +576,8 @@ class DateTimePicker extends React.Component {
     invariant(
       parse || format || editFormat,
       'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
-        'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
-        'please provide either a parse function or localizer compatible `format` prop',
+      'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
+      'please provide either a parse function or localizer compatible `format` prop',
       string
     )
 

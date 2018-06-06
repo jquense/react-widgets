@@ -22,6 +22,7 @@ class DecadeView extends React.Component {
 
     yearFormat:   CustomPropTypes.dateFormat,
     disabled: PropTypes.bool,
+    isDateDisabled: PropTypes.func,
   };
 
   renderRow = (row, rowIdx) => {
@@ -35,7 +36,8 @@ class DecadeView extends React.Component {
       , today
       , culture
       , min
-      , max } = this.props
+      , max
+      , isDateDisabled } = this.props
 
     return (
       <CalendarView.Row key={rowIdx}>
@@ -60,6 +62,7 @@ class DecadeView extends React.Component {
               focused={focused}
               selected={value}
               disabled={disabled}
+              isDateDisabled={isDateDisabled}
             >
               {label}
             </CalendarView.Cell>
