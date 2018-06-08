@@ -4511,7 +4511,7 @@ gatsby-cli@^1.1.41-11:
     yargs "^11.1.0"
     yurnalist "^0.2.1"
 
-gatsby-link@^1.6.38-12:
+gatsby-link@^1.6.38-12, gatsby-link@^1.6.38-13:
   version "1.6.44"
   resolved "https://registry.yarnpkg.com/gatsby-link/-/gatsby-link-1.6.44.tgz#31912e66d3b21632ce27e5b7310ec88d9a75eac3"
   dependencies:
@@ -4610,9 +4610,9 @@ gatsby-transformer-remark@^1.7.37:
     unist-util-select "^1.5.0"
     unist-util-visit "^1.1.1"
 
-gatsby@2.0.0-alpha.49:
-  version "2.0.0-alpha.49"
-  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-2.0.0-alpha.49.tgz#9f02f92a8fef7eb85326567c89dd797cd47f5bf9"
+gatsby@2.0.0-alpha.51:
+  version "2.0.0-alpha.51"
+  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-2.0.0-alpha.51.tgz#e6bb17331b3f264d87e3489131db645455998256"
   dependencies:
     "@babel/code-frame" "7.0.0-beta.47"
     "@babel/core" "7.0.0-beta.47"
@@ -4666,7 +4666,7 @@ gatsby@2.0.0-alpha.49:
     front-matter "^2.1.0"
     fs-extra "^5.0.0"
     gatsby-cli "^1.1.41-11"
-    gatsby-link "^1.6.38-12"
+    gatsby-link "^1.6.38-13"
     gatsby-react-router-scroll "^1.0.12-10"
     glob "^7.1.1"
     graphql "^0.13.2"
@@ -8162,12 +8162,12 @@ react-transition-group@^2.0.0, react-transition-group@^2.2.0, react-transition-g
     prop-types "^15.6.1"
 
 "react-widgets-globalize@file:../packages/localizer-globalize":
-  version "5.0.6"
+  version "5.0.7"
   dependencies:
     prop-types "^15.6.1"
 
 "react-widgets@file:../packages/react-widgets":
-  version "4.3.0"
+  version "4.3.1"
   dependencies:
     classnames "^2.1.2"
     date-arithmetic "^3.1.0"

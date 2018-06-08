@@ -27,16 +27,21 @@ class DateTimePickerInput extends React.Component {
 
   state = {}
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     let { value, editing, editFormat, format, culture } = nextProps
+    let textValue = formatDate(
+      value,
+      editing && editFormat ? editFormat : format,
+      culture
+    )
 
-    return {
-      textValue: formatDate(
-        value,
-        editing && editFormat ? editFormat : format,
-        culture
-      ),
-    }
+    if (prevState.lastValueFromProps !== textValue)
+      return {
+        textValue,
+        lastValueFromProps: textValue,
+      }
+
+    return null
   }
 
   focus() {

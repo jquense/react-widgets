@@ -23,7 +23,7 @@
     "common-tags": "^1.7.2",
     "css-literal-loader": "^0.4.1",
     "date-arithmetic": "^3.1.0",
-    "gatsby": "2.0.0-alpha.49",
+    "gatsby": "2.0.0-alpha.51",
     "gatsby-link": "^1.6.38-12",
     "gatsby-plugin-catch-links": "^1.0.19",
     "gatsby-plugin-less": "2.0.0-alpha.15",
