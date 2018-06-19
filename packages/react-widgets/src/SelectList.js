@@ -154,7 +154,7 @@ class SelectList extends React.Component {
       if (!focused) this.setState({ focusedItem: null })
       else if (focused && !this._clicking) {
         let allowed = Array.isArray(disabled)
-          ? dataItems.filter(v => !accessors.find(disabled, v))
+          ? dataItems.filter(v => !accessors.includes(disabled, v))
           : dataItems
 
         this.setState({
@@ -177,7 +177,7 @@ class SelectList extends React.Component {
       if (!item) return
 
       let checked = multiple
-        ? !accessors.find(dataItems, item) // toggle value
+        ? !accessors.includes(dataItems, item) // toggle value
         : true
 
       this.handleChange(item, checked, event)
@@ -273,7 +273,7 @@ class SelectList extends React.Component {
         readOnly={disabled === true || readOnly}
         onChange={this.handleChange}
         onMouseDown={this.handleMouseDown}
-        checked={!!accessors.find(dataItems, itemProps.dataItem)}
+        checked={accessors.includes(dataItems, itemProps.dataItem)}
       />
     )
   }
@@ -361,13 +361,13 @@ class SelectList extends React.Component {
     let enabledData = data
 
     if (disabled.length) {
-      disabledValues = values.filter(v => accessors.find(disabled, v))
-      enabledData = data.filter(v => !accessors.find(disabled, v))
+      disabledValues = values.filter(v => accessors.includes(disabled, v))
+      enabledData = data.filter(v => !accessors.includes(disabled, v))
     }
 
     let nextValues =
       values.length >= enabledData.length
-        ? values.filter(v => accessors.find(disabled, v))
+        ? values.filter(v => accessors.includes(disabled, v))
         : enabledData.concat(disabledValues)
 
     notify(onChange, [nextValues])
