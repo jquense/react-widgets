@@ -1,13 +1,25 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
-export default function(widgetName){
+export default function(widgetName) {
+  if (widgetName === 'SelectList')
+    return stripIndent`
+    let { ${widgetName} } = ReactWidgets;
+
+    render(
+      <${widgetName} busy />
+    );
+  `
+
   return stripIndent`
     let { ${widgetName} } = ReactWidgets;
 
-    let widget = (
-      <${widgetName} busy />
-    )
-
-    ReactDOM.render(widget, mountNode);
+    render(
+      <>
+        <${widgetName} busy />
+        <${widgetName} busy busySpinner={
+          <span className="fas fa-sync fa-spin" />
+        }/>
+      </>
+    );
   `
 }

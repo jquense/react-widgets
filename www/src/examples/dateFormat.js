@@ -1,4 +1,4 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
 export default function(widgetName, prop, format, value, props) {
   return stripIndent`
@@ -8,18 +8,23 @@ export default function(widgetName, prop, format, value, props) {
 
     let widget = (
       <${widgetName}
-        ${prop}={${value || 'formatter'}} ${map(props, (k, v) => `
-        ${k}=${wrap(v)}`)}
+        ${prop}={${value || 'formatter'}} ${map(
+    props,
+    (k, v) => `
+        ${k}=${wrap(v)}`
+  )}
       />
     )
 
-    ReactDOM.render(widget, mountNode);
+    render(widget);
   `
 }
 
-let wrap = v => v[0] === "'" || v[0] === '"' ? `${v}` : `{${v}}`
+let wrap = v => (v[0] === "'" || v[0] === '"' ? `${v}` : `{${v}}`)
 
 function map(o, fn) {
   if (!o) return ''
-  return Object.keys(o).map(key => fn(key, o[key])).join('')
+  return Object.keys(o)
+    .map(key => fn(key, o[key]))
+    .join('')
 }

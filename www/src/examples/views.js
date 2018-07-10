@@ -1,4 +1,4 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
 export default function(widgetName) {
   return stripIndent`
@@ -8,6 +8,6 @@ export default function(widgetName) {
       <${widgetName} views={['year', 'decade']} />
     )
 
-    ReactDOM.render(widget, mountNode);
+    render(widget);
   `
 }

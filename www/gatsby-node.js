@@ -1,7 +1,7 @@
 const path = require('path')
 const slug = require('slug')
 
-exports.onCreateWebpackConfig = ({ actions, rules, getConfig }) => {
+exports.onCreateWebpackConfig = ({ actions, rules, plugins, getConfig }) => {
   const { setWebpackConfig } = actions
 
   const noAmdRule = {
@@ -40,6 +40,10 @@ exports.onCreateWebpackConfig = ({ actions, rules, getConfig }) => {
         'core-js': path.resolve('./node_modules/core-js'),
       },
     },
+    plugins: [
+      // See https://github.com/FormidableLabs/react-live/issues/5
+      plugins.ignore(/^(xor|props)$/),
+    ],
   })
 
   const current = getConfig()

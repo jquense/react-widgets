@@ -1,16 +1,21 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
-export default function(widgetName, values){
+export default function(widgetName, values) {
   return stripIndent`
     let { ${widgetName} } = ReactWidgets;
 
     let widgets = (
-      <div>
-        ${values.map(v => `
-        <${widgetName} defaultValue={${v}} />`).join('').trim()}
-      </div>
+      <>
+        ${values
+          .map(
+            v => `
+        <${widgetName} defaultValue={${v}} />`
+          )
+          .join('')
+          .trim()}
+      </>
     )
 
-    ReactDOM.render(widgets, mountNode);
+    render(widgets);
   `
 }

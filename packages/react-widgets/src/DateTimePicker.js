@@ -38,6 +38,9 @@ let isBothOrNeither = (a, b) => (a && b) || (!a && !b)
 let propTypes = {
   ...Calendar.ControlledComponent.propTypes,
 
+  /**
+   * @example ['valuePicker', [ ['new Date()', null] ]]
+   */
   value: PropTypes.instanceOf(Date),
 
   /**
@@ -143,7 +146,13 @@ let propTypes = {
   placeholder: PropTypes.string,
   name: PropTypes.string,
   autoFocus: PropTypes.bool,
+  /**
+   * @example ['disabled', ['new Date()']]
+   */
   disabled: CustomPropTypes.disabled,
+  /**
+   * @example ['readOnly', ['new Date()']]
+   */
   readOnly: CustomPropTypes.disabled,
 
   /**

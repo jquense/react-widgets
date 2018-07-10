@@ -1,8 +1,8 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
-import { isValueArray } from '../config';
+import { isValueArray } from '../config'
 
-export default function(widgetName){
+export default function(widgetName) {
   let value = !isValueArray(widgetName) ? "'orange'" : "['orange', 'red']"
 
   return stripIndent`
@@ -26,6 +26,6 @@ export default function(widgetName){
       }
     }
 
-    ReactDOM.render(<Example/>, mountNode);
+    render(<Example/>);
   `
 }

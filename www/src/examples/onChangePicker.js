@@ -1,9 +1,14 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
 export default function(widgetName, values) {
   let isMany = values.length > 1
-  let open = isMany ? '<div>' : ''
-  let close = isMany ? '</div>' : ''
+  let examples = isMany
+    ? `<>
+  ${values
+    .map(value => `      <ChangeExample initialValue={${value}} />`)
+    .join('\n  ')}
+      </>`
+    : `<ChangeExample initialValue={${values[0]}} />`
 
   return stripIndent`
     let { ${widgetName} } = ReactWidgets;
@@ -23,12 +28,8 @@ export default function(widgetName, values) {
       }
     }
 
-    let example${isMany ? 's' : ''} = (
-      ${open}${values.map(value => `
-        <ChangeExample initialValue={${value}} />`).join('')}
-      ${close}
-    )
-
-    ReactDOM.render(example${isMany ? 's' : ''}, mountNode);
+    render(
+      ${examples}
+    );
   `
 }

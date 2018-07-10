@@ -1,4 +1,4 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
 export default function(widgetName) {
   return stripIndent`
@@ -21,6 +21,6 @@ export default function(widgetName) {
       />
     )
 
-    ReactDOM.render(widget, mountNode);
+    render(widget);
   `
 }

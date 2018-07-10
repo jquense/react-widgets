@@ -1,9 +1,7 @@
-'use strict';
+'use strict'
 
 module.exports = function() {
-
-var code =
-`
+  var code = `
 var MomentDateTimePicker = React.createClass({
 
   propTypes: {
@@ -39,9 +37,9 @@ var MomentDateTimePicker = React.createClass({
   },
 })
 
-ReactDOM.render(
+ render(
     <MomentDateTimePicker value={moment()}/>
-  , mountNode);`
+   );`
 
-return code
+  return code
 }

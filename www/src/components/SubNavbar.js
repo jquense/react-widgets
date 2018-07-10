@@ -30,26 +30,26 @@ export default function SubNavbar({ className = '', style }) {
     <div className={`${className} app-subnavbar`} style={style}>
       <LinkContainer to="/" exact>
         <a>
-          <i className="fa fa-play" /> Getting Started
+          <i className="fas fa-play" /> Getting Started
         </a>
       </LinkContainer>
       <LinkContainer to="/localization/">
         <a>
-          <i className="fa fa-globe" /> Localization
+          <i className="fas fa-globe" /> Localization
         </a>
       </LinkContainer>
       <LinkContainer to="/theming/">
         <a>
-          <i className="fa fa-css3" /> Theming
+          <i className="fab fa-css3" /> Theming
         </a>
       </LinkContainer>
       <LinkContainer to="/controllables/">
         <a>
-          <i className="fa fa-cogs" /> Controlled components
+          <i className="fas fa-cogs" /> Controlled components
         </a>
       </LinkContainer>
       <a href="https://github.com/jquense/react-widgets">
-        <i className="fa fa-github" /> Github
+        <i className="fab fa-github" /> Github
       </a>
     </div>
   )

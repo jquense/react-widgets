@@ -122,7 +122,13 @@ class NumberPicker extends React.Component {
     onKeyPress: PropTypes.func,
     onKeyUp: PropTypes.func,
     autoFocus: PropTypes.bool,
+    /**
+     * @example ['disabled', ['1']]
+     */
     disabled: CustomPropTypes.disabled,
+    /**
+     * @example ['readOnly', ['1.5']]
+     */
     readOnly: CustomPropTypes.disabled,
 
     /** Adds a css class to the input container element. */

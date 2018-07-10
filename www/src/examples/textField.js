@@ -1,14 +1,15 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
-import { isValueArray } from '../config';
+import { isValueArray } from '../config'
 
 export default function(widgetName) {
   let value = !isValueArray(widgetName) ? 'people[0]' : 'people.slice(0,2)'
-  let text = widgetName === 'Combobox'
-    ? "item => typeof item === 'string' ? item : item.firstName + ' ' + item.lastName"
-    : "item => item.firstName + ' ' + item.lastName"
+  let text =
+    widgetName === 'Combobox'
+      ? "item => typeof item === 'string' ? item : item.firstName + ' ' + item.lastName"
+      : "item => item.firstName + ' ' + item.lastName"
 
- return stripIndent`
+  return stripIndent`
     let { ${widgetName} } = ReactWidgets;
 
     let people = listOfPeople();
@@ -28,6 +29,6 @@ export default function(widgetName) {
       </div>
     )
 
-    ReactDOM.render(widgets, mountNode);
+    render(widgets);
   `
 }

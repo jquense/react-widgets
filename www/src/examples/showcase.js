@@ -1,6 +1,6 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
-export default function(){
+export default function() {
   return stripIndent`
     let { Combobox, DropdownList, DateTimePicker,
       Calendar, SelectList, Multiselect } = ReactWidgets;
@@ -34,6 +34,6 @@ export default function(){
       </div>
     )
 
-    ReactDOM.render(example, mountNode);
+    render(example);
   `
 }

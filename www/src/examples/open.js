@@ -1,7 +1,6 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
-
-export default function(widgetName){
+export default function(widgetName) {
   return stripIndent`
     let { ${widgetName} } = ReactWidgets
     let colors = ['orange', 'red', 'blue', 'purple'];
@@ -26,6 +25,6 @@ export default function(widgetName){
       }
     };
 
-    ReactDOM.render(<Example/>, mountNode);
+    render(<Example/>);
   `
 }

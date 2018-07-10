@@ -1,7 +1,7 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
-export default function(widgetName){
- return stripIndent`
+export default function(widgetName) {
+  return stripIndent`
     let { ${widgetName} } = ReactWidgets;
     let values = [false, 'date', 'time'];
 
@@ -29,6 +29,6 @@ export default function(widgetName){
       }
     };
 
-    ReactDOM.render(<Example/>, mountNode);
+    render(<Example/>);
   `
 }

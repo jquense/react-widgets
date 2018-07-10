@@ -55,11 +55,11 @@ class FilterList extends React.Component {
   prev(...args){ return this.refs.list.prev(...args) }
 }
 
-ReactDOM.render(
+ render(
     <DropdownList
       data={listOfPeople()}
       valueField='id'
       textField='name'
       listComponent={FilterList}
     />
-  , mountNode)
+   )

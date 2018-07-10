@@ -3,6 +3,7 @@
 pre {
   border-radius: 0;
   border: none;
+  background: none;
 }
 code {
   background-color: @syntax-bg;
@@ -19,11 +20,15 @@ code {
   border-bottom: 1px solid @gray-lighter;
 }
 
-
 .prism-block {
   background-color: @syntax-bg;
   border-top: 1px solid @gray-lighter;
   border-bottom: 1px solid @gray-lighter;
+}
+
+.prism-code {
+  outline: none;
+  margin: 0;
 }
 
 .CodeMirror,
@@ -33,9 +38,9 @@ code {
 }
 
 .playground {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @media (min-width: @screen-md-min) {
@@ -51,10 +56,20 @@ code {
 
   .playground-editor {
     flex: 1;
+    position: relative;
+    padding: 40px 0;
     min-width: 0;
+
+    &:after {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      content: 'EDITABLE';
+      font-size: 80%;
+      color: @gray;
+    }
   }
 }
-
 
 .playground-preview {
   position: relative;
@@ -79,19 +94,6 @@ code {
     max-height: 200px;
   }
 }
-
-
-.playground  {
-  background-color: @syntax-bg;
-  position: relative;
-  margin:  0;
-  margin-bottom: 20px;
-}
-
-.playgroundStage {
-  height: 100%;
-}
-
 
 .nav-tabs {
   border-bottom: none;

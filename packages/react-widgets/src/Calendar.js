@@ -69,10 +69,23 @@ function inRangeValue(_value, min, max) {
 const propTypes = {
   /** @ignore */
   activeId: PropTypes.string,
+
+  /**
+   * @example ['disabled', ['new Date()']]
+   */
   disabled: CustomPropTypes.disabled,
+  /**
+   * @example ['readOnly', ['new Date()']]
+   */
   readOnly: CustomPropTypes.disabled,
 
+  /**
+   * @example ['onChangePicker', [ ['new Date()'] ]]
+   */
   onChange: PropTypes.func,
+  /**
+   * @example ['valuePicker', [ ['new Date()'] ]]
+   */
   value: PropTypes.instanceOf(Date),
 
   /**

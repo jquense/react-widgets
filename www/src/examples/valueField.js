@@ -1,6 +1,6 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
-import { isValueArray } from '../config';
+import { isValueArray } from '../config'
 
 export default function(widgetName) {
   return stripIndent`
@@ -22,6 +22,6 @@ export default function(widgetName) {
       />
     )
 
-    ReactDOM.render(widget, mountNode);
+    render(widget);
   `
 }

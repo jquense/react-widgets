@@ -1,9 +1,9 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
-import { isValueArray } from '../config';
+import { isValueArray } from '../config'
 
 export default function(widgetName) {
-  const isArray  = isValueArray(widgetName);
+  const isArray = isValueArray(widgetName)
 
   return stripIndent`
     let { ${widgetName} } = ReactWidgets
@@ -27,7 +27,9 @@ export default function(widgetName) {
         }
 
         this.setState({
-          value: ${isArray ? '[...value, newOption]' : 'newOption'},  // select new option
+          value: ${
+            isArray ? '[...value, newOption]' : 'newOption'
+          },  // select new option
           people: [...people, newOption] // add new option to our dataset
         })
       }
@@ -48,6 +50,6 @@ export default function(widgetName) {
       }
     }
 
-    ReactDOM.render(<Create${widgetName}/>, mountNode);
+    render(<Create${widgetName}/>);
   `
 }

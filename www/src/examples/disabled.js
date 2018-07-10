@@ -1,12 +1,12 @@
-import { stripIndent } from 'common-tags';
-import { isValueArray, isListComponent } from '../config';
+import { stripIndent } from 'common-tags'
+import { isValueArray, isListComponent } from '../config'
 
-export default function(widgetName) {
-  var value = !isValueArray(widgetName) ?
-    '"orange"' : '["orange", "blue"]';
+export default function(widgetName, value) {
+  value =
+    value || (!isValueArray(widgetName) ? '"orange"' : '["orange", "blue"]')
 
-  let example = isListComponent(widgetName) ? (
-    `<div>
+  let example = isListComponent(widgetName)
+    ? `<>
         <${widgetName}
           disabled
           data={colors}
@@ -17,24 +17,24 @@ export default function(widgetName) {
           defaultValue={${value}}
           disabled={["red", "purple"]}
         />
-      </div>`
-  ) : (
-    `<${widgetName}
+      </>`
+    : `<${widgetName}
         disabled
-        data={colors}
         defaultValue={${value}}
       />`
-  )
 
   return stripIndent`
     let { ${widgetName} } = ReactWidgets
 
-    let colors = ['orange', 'red', 'blue', 'purple'];
-
+    ${
+      isListComponent(widgetName)
+        ? `let colors = ['orange', 'red', 'blue', 'purple']\n`
+        : ''
+    }
     let example = (
       ${example}
     )
 
-    ReactDOM.render(example, mountNode);
+    render(example);
   `
 }

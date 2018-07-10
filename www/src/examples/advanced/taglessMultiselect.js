@@ -1,9 +1,7 @@
-'use strict';
+'use strict'
 
 module.exports = function() {
-
-var code =
-`
+  var code = `
 var Multiselect = ReactWidgets.Multiselect;
 //not a public component, but you can use it via require()
 var TagList = ReactWidgets.MultiselectTagList;
@@ -48,7 +46,7 @@ var Example = React.createClass({
   },
 })
 
-ReactDOM.render(<Example/>, mountNode);`
+ render(<Example/> );`
 
-return code
+  return code
 }

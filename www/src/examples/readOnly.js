@@ -1,23 +1,33 @@
-import { stripIndent } from 'common-tags';
-import { isValueArray } from '../config';
+import { stripIndent } from 'common-tags'
+import { isValueArray, isListComponent } from '../config'
 
-export default function(widgetName) {
-  var value = !isValueArray(widgetName) ?
-    '"orange"' : '["orange", "blue"]';
+export default function(widgetName, value) {
+  value =
+    value || (!isValueArray(widgetName) ? '"orange"' : '["orange", "blue"]')
+
+  let example = isListComponent(widgetName)
+    ? `<${widgetName}
+      readOnly
+      data={colors}
+      defaultValue={${value}}
+    />`
+    : `<${widgetName}
+      readOnly
+      defaultValue={${value}}
+    />`
 
   return stripIndent`
-    let { ${widgetName} } = ReactWidgets
+  let { ${widgetName} } = ReactWidgets
 
-    let colors = ['orange', 'red', 'blue', 'purple'];
+  ${
+    isListComponent(widgetName)
+      ? `let colors = ['orange', 'red', 'blue', 'purple']\n`
+      : ''
+  }
+  let example = (
+    ${example}
+  )
 
-    let example = (
-      <${widgetName}
-        readOnly
-        data={colors}
-        defaultValue={${value}}
-      />
-    )
-
-    ReactDOM.render(example, mountNode);
-  `
+  render(example);
+`
 }

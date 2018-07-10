@@ -1,11 +1,15 @@
-import { stripIndent } from 'common-tags';
+import { stripIndent } from 'common-tags'
 
 export default function(widgetName) {
   return stripIndent`
     let { ${widgetName} } = ReactWidgets;
 
     class Example extends React.Component {
-      state = { view: 'decade' };
+      constructor(...args) {
+        super(...args)
+
+        this.state = { view: 'decade' };
+      }
       render() {
         let onViewChange = view => this.setState({ view })
 
@@ -21,6 +25,6 @@ export default function(widgetName) {
       }
     }
 
-    ReactDOM.render(<Example />, mountNode);
+     render(<Example />);
   `
 }

@@ -5,7 +5,6 @@ import Page from './Page'
 import ApiPage from './ApiPage'
 import LandingPage from './LandingPage'
 
-import '@monastic.panic/component-playground/codemirror.css'
 import '../styles/docs.less'
 
 const propTypes = {
