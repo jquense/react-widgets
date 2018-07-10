@@ -1,10 +1,23 @@
+.rw-dropdown-list-autofill {
+  &:extend(.rw-input);
+
+  padding: 0;
+  background-color: red;
+
+  &:-webkit-autofill ~ .rw-widget-container {
+    background-color: rgb(250, 255, 189) !important;
+    background-image: none !important;
+    color: rgb(0, 0, 0) !important;
+  }
+}
 
 .rw-dropdown-list-input {
   background-color: transparent;
   vertical-align: middle;
   padding-right: 0;
 
-  /* ellipsis */ & {
+  /* ellipsis */
+  & {
     max-width: 1px; // very hacky to force ellipsis
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -12,7 +25,7 @@
   }
 
   .rw-rtl & {
-    padding-right:  @input-padding-horizontal;
+    padding-right: @input-padding-horizontal;
     padding-left: 0;
   }
 }

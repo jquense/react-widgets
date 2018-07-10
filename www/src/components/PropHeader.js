@@ -1,4 +1,5 @@
 
+import { graphql } from 'gatsby';
 import invert from 'lodash/invert'
 import PropTypes from 'prop-types';
 import React from 'react';

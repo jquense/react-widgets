@@ -21,6 +21,7 @@ import * as Props from './util/Props'
 import * as Filter from './util/Filter'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
+import { caretDown } from './Icon'
 
 let propTypes = {
   ...Filter.propTypes,
@@ -55,6 +56,13 @@ let propTypes = {
    */
   suggest: Filter.propTypes.filter,
   busy: PropTypes.bool,
+
+  /** Specify the element used to render the select (down arrow) icon. */
+  selectIcon: PropTypes.node,
+
+  /** Specify the element used to render the busy indicator */
+  busySpinner: PropTypes.node,
+
   delay: PropTypes.number,
 
   dropUp: PropTypes.bool,
@@ -104,6 +112,7 @@ class Combobox extends React.Component {
     suggest: false,
     filter: false,
     delay: 500,
+    selectIcon: caretDown,
     listComponent: List,
   }
 
@@ -379,6 +388,8 @@ class Combobox extends React.Component {
       busy,
       dropUp,
       open,
+      selectIcon,
+      busySpinner,
       containerClassName,
     } = this.props
 
@@ -409,7 +420,8 @@ class Combobox extends React.Component {
           <Select
             bordered
             busy={busy}
-            icon="caret-down"
+            icon={selectIcon}
+            spinner={busySpinner}
             onClick={this.toggle}
             disabled={disabled || readOnly}
             label={messages.openCombobox(this.props)}

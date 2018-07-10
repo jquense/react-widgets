@@ -17,6 +17,7 @@ import { widgetEditable } from './util/interaction'
 import { notify } from './util/widgetHelpers'
 import * as CustomPropTypes from './util/PropTypes'
 import { number as numberLocalizer } from './util/localizers'
+import { caretUp, caretDown } from './Icon'
 
 var format = props => numberLocalizer.getFormat('default', props.format)
 
@@ -110,6 +111,9 @@ class NumberPicker extends React.Component {
      */
     parse: PropTypes.func,
 
+    incrementIcon: PropTypes.node,
+    decrementIcon: PropTypes.node,
+
     /** @ignore */
     tabIndex: PropTypes.any,
     name: PropTypes.string,
@@ -135,6 +139,8 @@ class NumberPicker extends React.Component {
   static defaultProps = {
     value: null,
     open: false,
+    incrementIcon: caretUp,
+    decrementIcon: caretDown,
 
     min: -Infinity,
     max: Infinity,
@@ -277,6 +283,8 @@ class NumberPicker extends React.Component {
       value,
       min,
       max,
+      incrementIcon,
+      decrementIcon,
     } = this.props
 
     let { focused, messages } = this.state
@@ -299,7 +307,7 @@ class NumberPicker extends React.Component {
           {this.renderInput(value)}
           <Select bordered>
             <Button
-              icon="caret-up"
+              icon={incrementIcon}
               onClick={this.handleFocus}
               disabled={value === max || disabled}
               label={messages.increment({ value, min, max })}
@@ -308,7 +316,7 @@ class NumberPicker extends React.Component {
               onMouseLeave={e => this.handleMouseUp('UP', e)}
             />
             <Button
-              icon="caret-down"
+              icon={decrementIcon}
               onClick={this.handleFocus}
               disabled={value === min || disabled}
               label={messages.decrement({ value, min, max })}

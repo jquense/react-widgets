@@ -29,6 +29,7 @@ import focusManager from './util/focusManager'
 import scrollManager from './util/scrollManager'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
+import { caretDown } from './Icon'
 
 const CREATE_OPTION = {}
 const ENTER = 13
@@ -98,6 +99,13 @@ let propTypes = {
   onCreate: PropTypes.func,
 
   busy: PropTypes.bool,
+
+  /** Specify the element used to render the select (down arrow) icon. */
+  selectIcon: PropTypes.node,
+
+  /** Specify the element used to render the busy indicator */
+  busySpinner: PropTypes.node,
+
   dropUp: PropTypes.bool,
   popupTransition: CustomPropTypes.elementType,
 
@@ -160,6 +168,7 @@ class Multiselect extends React.Component {
     filter: 'startsWith',
     value: [],
     searchTerm: '',
+    selectIcon: caretDown,
     listComponent: List,
     showPlaceholderWithValues: false,
   }
@@ -532,6 +541,8 @@ class Multiselect extends React.Component {
       dropUp,
       open,
       searchTerm,
+      selectIcon,
+      busySpinner,
       containerClassName,
       popupTransition,
     } = this.props
@@ -579,7 +590,8 @@ class Multiselect extends React.Component {
 
           <Select
             busy={busy}
-            icon={focused ? 'caret-down' : ''}
+            spinner={busySpinner}
+            icon={focused ? selectIcon : null}
             aria-hidden="true"
             role="presentational"
             disabled={disabled || readOnly}

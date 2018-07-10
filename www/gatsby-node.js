@@ -1,8 +1,6 @@
 const path = require('path')
 const slug = require('slug')
 
-const GraphQLJSON = require('graphql-type-json')
-
 exports.onCreateWebpackConfig = ({ actions, rules, getConfig }) => {
   const { setWebpackConfig } = actions
 
@@ -38,6 +36,8 @@ exports.onCreateWebpackConfig = ({ actions, rules, getConfig }) => {
           '../packages/react-widgets/src/index.js'
         ),
         'react-widgets/lib': path.resolve('../packages/react-widgets/src'),
+        'react-hot-loader': path.resolve('./node_modules/react-hot-loader'),
+        'core-js': path.resolve('./node_modules/core-js'),
       },
     },
   })
@@ -86,17 +86,4 @@ exports.createPages = ({ graphql, actions }) => {
       })
     )
   })
-}
-
-GraphQLJSON.name = 'JSON_2'
-
-exports.setFieldsOnGraphQLNodeType = ({ type }) => {
-  if (type.name === 'ComponentProp' || type.name === 'ComponentMetadata')
-    return {
-      doclets: {
-        type: GraphQLJSON,
-      },
-    }
-
-  return {}
 }

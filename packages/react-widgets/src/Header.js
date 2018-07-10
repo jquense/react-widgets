@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Button from './Button'
+import { chevronRight, chevronLeft } from './Icon'
 
 class Header extends React.Component {
-  static contextTypes = {}
-
   static propTypes = {
     label: PropTypes.string.isRequired,
     labelId: PropTypes.string,
@@ -15,6 +14,9 @@ class Header extends React.Component {
     onViewChange: PropTypes.func.isRequired,
     onMoveLeft: PropTypes.func.isRequired,
     onMoveRight: PropTypes.func.isRequired,
+
+    navigatePrevIcon: PropTypes.node,
+    navigateNextIcon: PropTypes.node,
 
     messages: PropTypes.shape({
       moveBack: PropTypes.func.isRequired,
@@ -34,6 +36,8 @@ class Header extends React.Component {
       prevDisabled,
       upDisabled,
       nextDisabled,
+      navigatePrevIcon = chevronLeft,
+      navigateNextIcon = chevronRight,
       isRtl,
     } = this.props
 
@@ -44,7 +48,7 @@ class Header extends React.Component {
           onClick={onMoveLeft}
           disabled={prevDisabled}
           label={messages.moveBack()}
-          icon={`chevron-${isRtl ? 'right' : 'left'}`}
+          icon={isRtl ? navigateNextIcon : navigatePrevIcon}
         />
         <Button
           id={labelId}
@@ -61,7 +65,7 @@ class Header extends React.Component {
           onClick={onMoveRight}
           disabled={nextDisabled}
           label={messages.moveForward()}
-          icon={`chevron-${isRtl ? 'left' : 'right'}`}
+          icon={isRtl ? navigatePrevIcon : navigateNextIcon}
         />
       </div>
     )

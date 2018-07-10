@@ -30,6 +30,8 @@ import getAccessors from './util/getAccessors'
 import scrollManager from './util/scrollManager'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
+import { dataValue, dataText } from './util/dataHelpers'
+import { caretDown, search } from './Icon'
 
 const CREATE_OPTION = {}
 
@@ -102,6 +104,14 @@ class DropdownList extends React.Component {
 
     searchTerm: PropTypes.string,
     busy: PropTypes.bool,
+
+    /** Specify the element used to render the select (down arrow) icon. */
+    selectIcon: PropTypes.node,
+    searchIcon: PropTypes.node,
+
+    /** Specify the element used to render the busy indicator */
+    busySpinner: PropTypes.node,
+
     placeholder: PropTypes.string,
 
     dropUp: PropTypes.bool,
@@ -131,6 +141,8 @@ class DropdownList extends React.Component {
     delay: 500,
     searchTerm: '',
     allowCreate: false,
+    searchIcon: search,
+    selectIcon: caretDown,
     listComponent: List,
   }
 
@@ -311,6 +323,29 @@ class DropdownList extends React.Component {
     this.search(e.target.value, e, 'input')
   }
 
+  handleAutofillChange = e => {
+    const { data } = this.props
+
+    let filledValue = e.target.value.toLowerCase()
+
+    if (filledValue === '') return void this.change(null)
+
+    for (const item of data) {
+      let value = dataValue(item)
+      if (
+        String(value).toLowerCase() === filledValue ||
+        dataText(item).toLowerCase() === filledValue
+      ) {
+        this.change(item, e)
+        break
+      }
+    }
+  }
+
+  handleAutofill = autofilling => {
+    this.setState({ autofilling })
+  }
+
   change(nextValue, originalEvent) {
     let { onChange, searchTerm, value: lastValue } = this.props
 
@@ -339,6 +374,7 @@ class DropdownList extends React.Component {
       filter,
       data,
       searchTerm,
+      searchIcon,
       optionComponent,
       itemComponent,
       groupComponent,
@@ -366,7 +402,7 @@ class DropdownList extends React.Component {
               placeholder={messages.filterPlaceholder(this.props)}
               ref={this.attachFilterRef}
             />
-            <Select icon="search" role="presentation" aria-hidden="true" />
+            <Select icon={searchIcon} role="presentation" aria-hidden="true" />
           </WidgetPicker>
         )}
         <List
@@ -423,11 +459,13 @@ class DropdownList extends React.Component {
       isRtl,
       filter,
       inputProps,
+      selectIcon,
+      busySpinner,
       containerClassName,
       valueComponent,
     } = this.props
 
-    let { focused, accessors, messages } = this.state
+    let { focused, accessors, messages, autofilling } = this.state
 
     let disabled = this.props.disabled === true
     let readOnly = this.props.readOnly === true
@@ -460,6 +498,7 @@ class DropdownList extends React.Component {
         focused={focused}
         disabled={disabled}
         readOnly={readOnly}
+        autofilling={autofilling}
         onBlur={this.focusManager.handleBlur}
         onFocus={this.focusManager.handleFocus}
         onKeyDown={this.handleKeyDown}
@@ -475,12 +514,17 @@ class DropdownList extends React.Component {
             {...inputProps}
             value={valueItem}
             textField={textField}
+            name={this.props.name}
+            autoComplete={this.props.autoComplete}
+            onAutofill={this.handleAutofill}
+            onAutofillChange={this.handleAutofillChange}
             placeholder={placeholder}
             valueComponent={valueComponent}
           />
           <Select
             busy={busy}
-            icon="caret-down"
+            icon={selectIcon}
+            spinner={busySpinner}
             role="presentational"
             aria-hidden="true"
             disabled={disabled || readOnly}

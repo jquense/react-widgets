@@ -1,0 +1,9 @@
+
+parser: babel-eslint
+extends: jason/react
+
+globals:
+  less: false
+  __VERSION__: false,
+rules:
+  global-require: off

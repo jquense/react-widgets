@@ -3,6 +3,24 @@
 //   outline: 1px red solid !important;
 // }
 
+@keyframes react-widgets-autofill-start {
+  from {
+    /**/
+  }
+  to {
+    /**/
+  }
+}
+
+@keyframes react-widgets-autofill-cancel {
+  from {
+    /**/
+  }
+  to {
+    /**/
+  }
+}
+
 .rw-sr {
   position: absolute;
   width: 1px;
@@ -159,7 +177,7 @@
 
 .rw-i.rw-loading {
   display: block;
-  background: url('@{img-path}/loading.gif') no-repeat center;
+  background: @img-busy no-repeat center;
   min-width: 16px;
   width: 1.9em;
   height: 16px;
@@ -171,6 +189,27 @@
 
 .rw-placeholder {
   color: @input-color-placeholder;
+}
+
+// https://github.com/klarna/ui/blob/master/Field/styles.scss
+.rw-detect-autofill {
+  &:-webkit-autofill {
+    animation-name: react-widgets-autofill-start;
+
+    // Make the backgound color become yellow _really slowly_
+    transition: background-color 50000s ease-in-out 0s;
+  }
+
+  &:not(:-webkit-autofill) {
+    animation-name: react-widgets-autofill-cancel;
+  }
+}
+
+.rw-webkit-autofill .rw-widget-container,
+.rw-input:-webkit-autofill {
+  background-color: @input-bg-color-autofill !important;
+  background-image: none !important;
+  color: @input-color-autofill !important;
 }
 
 //input inset

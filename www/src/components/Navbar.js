@@ -20,7 +20,7 @@ const _ = less`
 function MobileNav() {
   return (
     <Nav role="navigation" className="visible-xs">
-      <LinkContainer to="/" onlyActiveOnIndex>
+      <LinkContainer to="/" exact>
         <NavItem>Getting Started</NavItem>
       </LinkContainer>
       <LinkContainer to="/localization">

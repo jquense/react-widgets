@@ -26,6 +26,7 @@ import { widgetEditable } from './util/interaction'
 import dates from './util/dates'
 import { date as dateLocalizer } from './util/localizers'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
+import { calendar, clock } from './Icon'
 
 let NEXT_VIEW = {
   date: 'time',
@@ -130,6 +131,12 @@ let propTypes = {
    */
   timeComponent: CustomPropTypes.elementType,
 
+  /** Specify the element used to render the calendar dropdown icon. */
+  dateIcon: PropTypes.node,
+
+  /** Specify the element used to render the time list dropdown icon. */
+  timeIcon: PropTypes.node,
+
   dropUp: PropTypes.bool,
   popupTransition: CustomPropTypes.elementType,
 
@@ -204,6 +211,8 @@ class DateTimePicker extends React.Component {
     date: true,
     time: true,
     open: false,
+    dateIcon: calendar,
+    timeIcon: clock,
   }
 
   constructor(...args) {
@@ -383,7 +392,7 @@ class DateTimePicker extends React.Component {
   }
 
   renderButtons() {
-    let { date, time, disabled, readOnly } = this.props
+    let { date, dateIcon, time, timeIcon, disabled, readOnly } = this.props
 
     if (!date && !time) {
       return null
@@ -394,7 +403,7 @@ class DateTimePicker extends React.Component {
       <Select bordered>
         {date && (
           <Button
-            icon="calendar"
+            icon={dateIcon}
             label={messages.dateButton()}
             disabled={disabled || readOnly}
             onClick={this.handleCalendarClick}
@@ -402,7 +411,7 @@ class DateTimePicker extends React.Component {
         )}
         {time && (
           <Button
-            icon="clock-o"
+            icon={timeIcon}
             label={messages.timeButton()}
             disabled={disabled || readOnly}
             onClick={this.handleTimeClick}

@@ -21,6 +21,8 @@ import scrollManager from './util/scrollManager'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify } from './util/widgetHelpers'
 
+const BusyMask = () => <span className="rw-loading-mask" />
+
 function getFirstValue(data, values) {
   if (!values.length) return null
 
@@ -73,6 +75,7 @@ class SelectList extends React.Component {
     onKeyPress: PropTypes.func,
 
     itemComponent: CustomPropTypes.elementType,
+    busySpinner: PropTypes.node,
     listComponent: CustomPropTypes.elementType,
 
     groupComponent: CustomPropTypes.elementType,
@@ -105,6 +108,7 @@ class SelectList extends React.Component {
     delay: 250,
     value: [],
     data: [],
+    busySpinner: <BusyMask />,
     listComponent: List,
   }
 
@@ -284,6 +288,7 @@ class SelectList extends React.Component {
       tabIndex,
       busy,
       data,
+      busySpinner,
       itemComponent,
       groupComponent,
       listProps,
@@ -318,8 +323,7 @@ class SelectList extends React.Component {
           className,
           'rw-select-list',
           'rw-widget-input',
-          'rw-widget-container',
-          busy && 'rw-loading-mask'
+          'rw-widget-container'
         )}
       >
         <List
@@ -341,6 +345,8 @@ class SelectList extends React.Component {
           messages={{ emptyList: messages.emptyList }}
           ref={this.attachListRef}
         />
+
+        {busy && busySpinner}
       </Widget>
     )
   }

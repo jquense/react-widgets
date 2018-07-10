@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import Navbar from 'react-bootstrap/lib/Navbar'
 
@@ -10,10 +9,6 @@ const _ = less`
     box-shadow: 0 2px 2px rgba(0, 0, 0, .20);
   }
 `
-
-const propTypes = {
-  children: PropTypes.func.isRequired,
-}
 
 function LandingPage({ children }) {
   return (
@@ -34,7 +29,5 @@ function LandingPage({ children }) {
     </div>
   )
 }
-
-LandingPage.propTypes = propTypes
 
 export default LandingPage

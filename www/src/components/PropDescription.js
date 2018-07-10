@@ -1,3 +1,4 @@
+import { graphql } from 'gatsby';
 import get from 'lodash/get'
 import PropTypes from 'prop-types';
 import React from 'react';

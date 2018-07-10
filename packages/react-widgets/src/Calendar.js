@@ -99,6 +99,12 @@ const propTypes = {
    */
   onCurrentDateChange: PropTypes.func,
 
+  /** Specify the navigate into the past header icon */
+  navigatePrevIcon: PropTypes.node,
+
+  /** Specify the navigate into the future header icon */
+  navigateNextIcon: PropTypes.node,
+
   /**
    * Controls the currently displayed calendar view. Use `defaultView` to set a unique starting view.
    *

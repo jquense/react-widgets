@@ -9,7 +9,6 @@ import '@monastic.panic/component-playground/codemirror.css'
 import '../styles/docs.less'
 
 const propTypes = {
-  children: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
 }
 

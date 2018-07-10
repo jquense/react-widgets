@@ -13,6 +13,8 @@ let props = {
   textField: 'fullName',
 }
 
+const states = ['NJ', 'NY']
+
 storiesOf('DropdownList', module)
   .add('DropdownList', () => (
     <Container>
@@ -111,5 +113,53 @@ storiesOf('DropdownList', module)
   .add('readonly', () => (
     <Container>
       <DropdownList {...props} readOnly defaultValue={props.data[1]} />
+    </Container>
+  ))
+  .add('autofill', () => (
+    <Container>
+      <form>
+        <div>
+          <label>
+            Name
+            <input name="name" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Address
+            <input name="line" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Country
+            <input name="country" />
+          </label>
+        </div>
+        <div>
+          <label>
+            City
+            <input name="city" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Zip
+            <input name="postalCode" />
+          </label>
+        </div>
+        <div>
+          <label>
+            State
+            {/* <select>
+              <option value=""> </option>
+              <option value="NJ">New Jersey</option>
+
+              <option value="NY">New York</option>
+            </select> */}
+            ß
+          </label>
+        </div>
+      </form>
     </Container>
   ))

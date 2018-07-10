@@ -12,6 +12,7 @@ class Widget extends React.Component {
     focused: PropTypes.bool,
     disabled: PropTypes.bool,
     readOnly: PropTypes.bool,
+    autofilling: PropTypes.bool,
     open: PropTypes.bool,
     dropUp: PropTypes.bool,
     isRtl: PropTypes.bool,
@@ -26,6 +27,7 @@ class Widget extends React.Component {
       dropUp,
       disabled,
       readOnly,
+      autofilling,
       isRtl = this.context.isRtl,
       ...props
     } = this.props
@@ -43,6 +45,7 @@ class Widget extends React.Component {
           disabled && 'rw-state-disabled',
           readOnly && 'rw-state-readonly',
           focused && 'rw-state-focus',
+          autofilling && 'rw-webkit-autofill',
           open && `rw-open${dropUp ? '-up' : ''}`
         )}
       />

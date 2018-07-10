@@ -1,35 +1,39 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import cn from 'classnames';
+import React from 'react'
+import PropTypes from 'prop-types'
+import cn from 'classnames'
+
+const Loading = () => <span aria-hidden="true" className="rw-i rw-loading" />
 
 class Button extends React.Component {
   static propTypes = {
     disabled: PropTypes.bool,
     label: PropTypes.string,
-    icon: PropTypes.string,
+    icon: PropTypes.node,
     busy: PropTypes.bool,
     active: PropTypes.bool,
     variant: PropTypes.oneOf(['primary', 'select']),
     component: PropTypes.any,
-  };
+    spinner: PropTypes.node,
+  }
 
   render() {
     let {
-        className
-      , disabled
-      , label
-      , icon
-      , busy
-      , active
-      , children
-      , variant = 'primary'
-      , component: Tag = 'button'
-      , ...props } = this.props;
+      className,
+      disabled,
+      label,
+      icon,
+      busy,
+      active,
+      children,
+      variant = 'primary',
+      spinner = <Loading />,
+      component: Tag = 'button',
+      ...props
+    } = this.props
 
-    let type = props.type;
+    let type = props.type
 
-    if (Tag === 'button')
-     type = type || 'button';
+    if (Tag === 'button') type = type || 'button'
 
     return (
       <Tag
@@ -44,23 +48,15 @@ class Button extends React.Component {
           className,
           'rw-btn',
           active && !disabled && 'rw-state-active',
-          variant && ('rw-btn-' + variant)
+          variant && 'rw-btn-' + variant
         )}
       >
-        {(icon || busy) &&
-          <span
-            aria-hidden="true"
-            className={cn(
-              'rw-i',
-              `rw-i-${icon}`,
-              busy && 'rw-loading'
-            )}
-          />
-        }
+        {busy ? spinner : icon}
+
         {children}
       </Tag>
     )
   }
 }
 
-export default Button;
+export default Button

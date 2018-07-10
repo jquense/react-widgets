@@ -1,11 +1,6 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 
 import Navbar from '../components/Navbar'
-
-const propTypes = {
-  children: PropTypes.func.isRequired,
-}
 
 function ApiPage({ children }) {
   return (
@@ -15,7 +10,5 @@ function ApiPage({ children }) {
     </div>
   )
 }
-
-ApiPage.propTypes = propTypes
 
 export default ApiPage

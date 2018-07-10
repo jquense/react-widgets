@@ -1,6 +1,6 @@
 import get from 'lodash/get'
 import sortBy from 'lodash/sortBy'
-import Link from 'gatsby-link'
+import { Link, graphql } from 'gatsby';
 import * as PropTypes from 'prop-types'
 import React from 'react'
 import Helmet from 'react-helmet'

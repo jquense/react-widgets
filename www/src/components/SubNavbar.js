@@ -28,7 +28,7 @@ const _ = less`
 export default function SubNavbar({ className = '', style }) {
   return (
     <div className={`${className} app-subnavbar`} style={style}>
-      <LinkContainer to="/" onlyActiveOnIndex>
+      <LinkContainer to="/" exact>
         <a>
           <i className="fa fa-play" /> Getting Started
         </a>
