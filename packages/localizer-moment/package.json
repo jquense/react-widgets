@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-moment",
-  "version": "4.0.15",
+  "version": "4.0.16",
   "description": "A moment.js localizer for react-widgets",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "@babel/core": "^7.0.0-beta.52",
     "cross-env": "^5.2.0",
     "moment": "^2.21.0",
-    "react-widgets": "^4.3.2",
+    "react-widgets": "^4.4.0",
     "rimraf": "^2.6.2"
   }
 }
