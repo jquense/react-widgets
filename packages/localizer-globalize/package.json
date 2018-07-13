@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-globalize",
-  "version": "5.0.11",
+  "version": "5.0.12",
   "description": "A globalize.js localizer for react-widgets",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "@babel/cli": "^7.0.0-beta.52",
     "@babel/core": "^7.0.0-beta.52",
     "cross-env": "^5.2.0",
-    "react-widgets": "^4.4.2",
+    "react-widgets": "^4.4.3",
     "rimraf": "^2.6.2"
   },
   "dependencies": {

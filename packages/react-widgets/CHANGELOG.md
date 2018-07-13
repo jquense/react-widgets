@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.4.3"></a>
+## [4.4.3](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.2...react-widgets@4.4.3) (2018-07-13)
+
+
+### Bug Fixes
+
+* touch bug where dropdown was not animating out ([9054125](https://github.com/jquense/react-widgets/commit/9054125))
+
+
+
+
 <a name="4.4.2"></a>
 ## [4.4.2](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.1...react-widgets@4.4.2) (2018-07-10)
 

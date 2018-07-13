@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="5.0.12"></a>
+## [5.0.12](https://github.com/jquense/react-widgets/compare/react-widgets-globalize@5.0.11...react-widgets-globalize@5.0.12) (2018-07-13)
+
+
+
+
+**Note:** Version bump only for package react-widgets-globalize
+
 <a name="5.0.11"></a>
 ## [5.0.11](https://github.com/jquense/react-widgets/compare/react-widgets-globalize@5.0.10...react-widgets-globalize@5.0.11) (2018-07-10)
 

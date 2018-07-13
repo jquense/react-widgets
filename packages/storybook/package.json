@@ -1,6 +1,6 @@
 {
   "name": "storybook",
-  "version": "4.0.18",
+  "version": "4.0.19",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -27,12 +27,12 @@
     "material-ui": "^1.0.0-beta.35",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-widgets": "^4.4.2",
-    "react-widgets-globalize": "^5.0.11",
-    "react-widgets-material-ui": "^0.2.8",
-    "react-widgets-moment": "^4.0.18",
-    "react-widgets-simple-number": "^4.1.14",
-    "react-widgets-virtualized": "^4.0.18",
+    "react-widgets": "^4.4.3",
+    "react-widgets-globalize": "^5.0.12",
+    "react-widgets-material-ui": "^0.2.9",
+    "react-widgets-moment": "^4.0.19",
+    "react-widgets-simple-number": "^4.1.15",
+    "react-widgets-virtualized": "^4.0.19",
     "rimraf": "^2.5.4",
     "webpack": "^3.0.0",
     "webpack-atoms": "^5.0.0"
