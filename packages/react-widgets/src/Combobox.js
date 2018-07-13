@@ -399,7 +399,7 @@ class Combobox extends React.Component {
       readOnly = this.props.readOnly === true
 
     let elementProps = Props.pickElementProps(this)
-    let shouldRenderPopup = open || isFirstFocusedRender(this)
+    let shouldRenderPopup = isFirstFocusedRender(this)
 
     return (
       <Widget

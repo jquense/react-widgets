@@ -545,7 +545,7 @@ class DateTimePicker extends React.Component {
       Calendar.ControlledComponent
     )
 
-    let shouldRenderList = open || isFirstFocusedRender(this)
+    let shouldRenderList = isFirstFocusedRender(this)
 
     let owns = ''
     if (date) owns += this.dateId

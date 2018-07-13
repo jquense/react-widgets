@@ -471,7 +471,7 @@ class DropdownList extends React.Component {
     let readOnly = this.props.readOnly === true
     let valueItem = accessors.findOrSelf(data, value)
 
-    let shouldRenderPopup = open || isFirstFocusedRender(this)
+    let shouldRenderPopup = isFirstFocusedRender(this)
 
     let elementProps = Object.assign(Props.pickElementProps(this), {
       name: undefined,

@@ -229,7 +229,7 @@ class Autocomplete extends React.Component {
     let readOnly = this.props.readOnly === true
 
     let elementProps = Props.pickElementProps(this)
-    let shouldRenderPopup = open || isFirstFocusedRender(this)
+    let shouldRenderPopup = isFirstFocusedRender(this)
 
     let valueItem = accessors.findOrSelf(data, value)
     let actuallyOpen = open && this.canOpen()

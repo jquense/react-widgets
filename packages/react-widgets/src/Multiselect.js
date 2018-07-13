@@ -552,7 +552,7 @@ class Multiselect extends React.Component {
     let elementProps = Props.pickElementProps(this)
 
     let shouldRenderTags = !!dataItems.length,
-      shouldRenderPopup = isFirstFocusedRender(this) || open,
+      shouldRenderPopup = isFirstFocusedRender(this),
       allowCreate = this.allowCreate()
 
     let inputOwns =
