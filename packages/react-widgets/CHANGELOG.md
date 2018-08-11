@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.4.4"></a>
+## [4.4.4](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.3...react-widgets@4.4.4) (2018-08-11)
+
+
+### Bug Fixes
+
+* focus mgmt for dropdowns ([f150993](https://github.com/jquense/react-widgets/commit/f150993)), closes [#830](https://github.com/jquense/react-widgets/issues/830) [#831](https://github.com/jquense/react-widgets/issues/831)
+
+
+
+
+
 <a name="4.4.3"></a>
 ## [4.4.3](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.2...react-widgets@4.4.3) (2018-07-13)
 
