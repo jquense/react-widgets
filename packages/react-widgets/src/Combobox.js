@@ -144,6 +144,7 @@ class Combobox extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { value, data, messages, filter, minLength, caseSensitive } = nextProps
+    const { focusedItem } = prevState
 
     let accessors = getAccessors(nextProps)
     const valueChanged = value !== prevState.lastValue
@@ -180,6 +181,7 @@ class Combobox extends React.Component {
         filter: filter || true,
       })
     }
+    const nextFocusedItem = ~focusedIndex ? focusedItem : data[0]
 
     return {
       data,
@@ -191,9 +193,9 @@ class Combobox extends React.Component {
         ? list.nextEnabled(data[index])
         : prevState.selectedItem,
       focusedItem:
-        valueChanged || !prevState.focusedItem
-          ? list.nextEnabled(~focusedIndex ? data[focusedIndex] : data[0])
-          : prevState.focusedItem,
+        valueChanged || !focusedItem
+          ? list.nextEnabled(nextFocusedItem)
+          : nextFocusedItem,
     }
   }
 

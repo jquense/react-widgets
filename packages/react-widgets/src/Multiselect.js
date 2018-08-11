@@ -231,7 +231,7 @@ class Multiselect extends React.Component {
       nextProps,
       getDataState: defaultGetDataState,
     })
-
+    const nextFocusedItem = ~data.indexOf(focusedItem) ? focusedItem : data[0]
     return {
       data,
       dataItems,
@@ -243,11 +243,11 @@ class Multiselect extends React.Component {
       messages: getMessages(messages),
       focusedTag: valueChanged
         ? list.nextEnabled(~dataItems.indexOf(focusedTag) ? focusedTag : null)
-        : prevState.focusedTag,
+        : focusedTag,
       focusedItem:
         valueChanged || !prevState.focusedItem
-          ? list.nextEnabled(~data.indexOf(focusedItem) ? focusedItem : data[0])
-          : prevState.focusedItem,
+          ? list.nextEnabled(nextFocusedItem)
+          : nextFocusedItem,
     }
   }
 
