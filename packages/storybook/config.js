@@ -1,24 +1,24 @@
-import { configure } from '@storybook/react';
+import { configure } from '@storybook/react'
 
 //import 'typeface-roboto';
-import './styles.less';
-import Globalize from './configure-globalize-old';
+import './styles.less'
+import Globalize from './configure-date-fns'
 
-import Chance from 'chance';
+import Chance from 'chance'
 
-let testsContext = require.context('./stories', true, /\.js$/);
+let testsContext = require.context('./stories', true, /\.js$/)
 
 configure(() => {
-  global.Globalize = Globalize;
+  global.Globalize = Globalize
 
-  let chance = global.chance = new Chance();
+  let chance = (global.chance = new Chance())
 
   global.generateNames = function(limit = 100) {
     var arr = new Array(limit)
 
-    for(var i = 0; i < arr.length; i++){
-      var first = chance.first()
-        , last = chance.last()
+    for (var i = 0; i < arr.length; i++) {
+      var first = chance.first(),
+        last = chance.last()
 
       arr[i] = {
         first,
@@ -31,6 +31,5 @@ configure(() => {
     return arr
   }
 
-  testsContext.keys().forEach(testsContext);
-
-}, module);
+  testsContext.keys().forEach(testsContext)
+}, module)

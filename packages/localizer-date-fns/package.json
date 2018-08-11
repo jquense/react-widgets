@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/jquense/react-widgets#readme",
   "peerDependencies": {
-    "date-fns": ">=2.0.0-alpha.7",
+    "date-fns": "2.0.0-alpha.13",
     "react-widgets": "^4.2.2"
   },
   "devDependencies": {

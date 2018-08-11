@@ -13,21 +13,29 @@ function getYear(date, culture, localizer) {
 }
 
 function decade(date, culture, localizer) {
-  return getYear(date, culture, localizer) + ' - ' + getYear(endOfDecade(date), culture, localizer)
+  return (
+    getYear(date, culture, localizer) +
+    ' - ' +
+    getYear(endOfDecade(date), culture, localizer)
+  )
 }
 
 function century(date, culture, localizer) {
-  return getYear(date, culture, localizer) + ' - ' + getYear(endOfCentury(date), culture, localizer)
+  return (
+    getYear(date, culture, localizer) +
+    ' - ' +
+    getYear(endOfCentury(date), culture, localizer)
+  )
 }
 
 export const defaultFormats = {
-  date: 'L',
-  time: 'LT',
-  default: 'lll',
+  date: 'P',
+  time: 'pp',
+  default: 'Pp',
   header: 'MMMM YYYY',
-  footer: 'LL',
-  weekday: 'dd',
-  dayOfMonth: 'DD',
+  footer: 'PPPP',
+  weekday: 'cccccc',
+  dayOfMonth: 'dd',
   month: 'MMM',
   year: 'YYYY',
   decade: decade,
@@ -70,7 +78,10 @@ export const defaultFormats = {
  * dateFnsLocalizer({ locales: { 'en-GB': enGB, 'de': de } })
  * // => Include only the locales you need to limit the bundled size
  */
-export default function dateFnsLocalizer({ formats = defaultFormats, locales = {} } = {}) {
+export default function dateFnsLocalizer({
+  formats = defaultFormats,
+  locales = {},
+} = {}) {
   function getLocale(culture) {
     return locales[culture] || enUS
   }
@@ -80,11 +91,16 @@ export default function dateFnsLocalizer({ formats = defaultFormats, locales = {
   }
 
   function parse(value, format, culture) {
-    return parseWithOptions({ locale: getLocale(culture) }, new Date(), format, value)
+    return parseWithOptions(
+      { locale: getLocale(culture) },
+      new Date(),
+      format,
+      value
+    )
   }
 
   function firstOfWeek(culture) {
-    const {options} = getLocale(culture)
+    const { options } = getLocale(culture)
     return (options && options.weekStartsOn) || 0
   }
 
