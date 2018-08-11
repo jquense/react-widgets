@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "4.4.5",
+  "version": "4.4.4",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
   "author": {

@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 <a name="4.0.20"></a>
-## [4.0.20](https://github.com/jquense/react-widgets/compare/storybook@4.0.19...storybook@4.0.20) (2018-09-20)
+## [4.0.20](https://github.com/jquense/react-widgets/compare/storybook@4.0.19...storybook@4.0.20) (2018-08-11)
 
 
 ### Bug Fixes
 
 * update date-ins alpha to new formatting style ([526e9b7](https://github.com/jquense/react-widgets/commit/526e9b7)), closes [#827](https://github.com/jquense/react-widgets/issues/827)
+
 
 
 
