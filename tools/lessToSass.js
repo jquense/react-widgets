@@ -24,6 +24,11 @@ const processors = [
     pattern: /^(\s*?)\.([\w\-]*?)\s*\((.*)\)+\s*\{$/gm,
     replace: '$1@mixin $2($3) {',
   },
+  // convert calc
+  {
+    pattern: //gm,
+    replace: '',
+  },
   // convert :extend
   {
     pattern: /^(\s*?)&:extend\((.*)\);?$/,
