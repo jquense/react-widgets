@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src --out-dir lib && npm run styles",
-    "styles": "cpy src/less/* lib/less/ && node ../../tools/lessToSass.js",
+    "styles": "cpy src/scss/* lib/scss/",
     "prepublishOnly": "npm run build"
   },
   "files": [

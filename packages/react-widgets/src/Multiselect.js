@@ -583,7 +583,7 @@ class Multiselect extends React.Component {
           onDoubleClick={this.handleDoubleClick}
           className={cn(containerClassName, 'rw-widget-input')}
         >
-          <div>
+          <div className="rw-multiselect-content">
             {shouldRenderTags && this.renderTags(messages)}
             {this.renderInput(inputOwns)}
           </div>

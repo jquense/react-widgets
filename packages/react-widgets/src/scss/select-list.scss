@@ -4,7 +4,7 @@
 
   .rw-list {
     max-height: none;
-    font-size: @font-size; // use widget font-size
+    font-size: $font-size; // use widget font-size
   }
 }
 
@@ -27,7 +27,7 @@ input.rw-select-list-input {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  top: ~'0.1em /9';
+  top: 0.1em /9;
   margin: 0;
   line-height: normal;
   cursor: inherit;
@@ -40,12 +40,12 @@ input.rw-select-list-input {
 
 .rw-loading-mask {
   content: '';
-  background: @img-busy-lg no-repeat center;
+  background: $img-busy-lg no-repeat center;
   position: absolute;
   background-color: #fff;
-  border-radius: @input-border-radius;
+  border-radius: $input-border-radius;
 
-  .opacity(0.7);
+  opacity: 0.7;
   top: 0;
   left: 0;
   height: 100%;

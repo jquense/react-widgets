@@ -33,12 +33,12 @@
 }
 
 .rw-widget {
-  .border-box();
+  @include border-box();
 
   border: none;
-  color: @text-color;
-  font-size: @font-size;
-  font-family: @font-family;
+  color: $text-color;
+  font-size: $font-size;
+  font-family: $font-family;
   outline: none;
   position: relative;
 
@@ -50,17 +50,17 @@
 }
 
 .rw-widget-container {
-  background-color: @input-bg;
-  border: @input-border @input-border-width solid;
-  border-radius: @input-border-radius;
+  background-color: $input-bg;
+  border: $input-border $input-border-width solid;
+  border-radius: $input-border-radius;
 
   &.rw-state-focus,
   .rw-state-focus > & {
     &,
     &:hover {
-      background-color: @input-bg-focus;
-      border-color: @input-border-focus;
-      box-shadow: @input-focus-box-shadow;
+      background-color: $input-bg-focus;
+      border-color: $input-border-focus;
+      box-shadow: $input-focus-box-shadow;
     }
   }
 
@@ -76,43 +76,34 @@
     &:hover,
     &:active {
       box-shadow: none;
-      .state-disabled();
+      @include state-disabled();
     }
   }
 }
 
 .rw-widget-picker {
-  position: relative;
   overflow: hidden;
-  border-collapse: separate;
-  display: inline-table;
-  height: @input-height;
+  display: flex;
+  min-height: $input-height;
 
-  & > * {
-    position: relative;
+  & > *:first-child {
     border: none;
     outline: none;
     width: 100%;
-    height: 100%;
-    display: table-cell;
-  }
-
-  & > .rw-select {
-    width: 1%;
-    white-space: nowrap;
+    flex: 1 1 0;
   }
 
   .rw-open > & {
-    .border-bottom-radius(0);
+    @include border-bottom-radius(0);
   }
 
   .rw-open-up > & {
-    .border-top-radius(0);
+    @include border-top-radius(0);
   }
 
   fieldset[disabled] &,
   .rw-state-disabled > & {
-    background-color: @input-bg-disabled;
+    background-color: $input-bg-disabled;
   }
 }
 
@@ -131,13 +122,13 @@
 }
 
 .rw-select-bordered {
-  .make-btn-state(@select-btn-bg-hover);
+  @include make-btn-state($select-btn-bg-hover);
 
   border: none;
-  border-left: @input-border 1px solid;
+  border-left: $input-border 1px solid;
 
   .rw-rtl & {
-    border-right: @input-border 1px solid;
+    border-right: $input-border 1px solid;
     border-left: none;
   }
 }
@@ -147,16 +138,16 @@
 }
 
 .rw-input-reset {
-  .placeholder();
+  @include placeholder();
   outline: 0;
 }
 
 .rw-input {
-  &:extend(.rw-input-reset);
+  @extend .rw-input-reset;
 
-  color: @input-color;
-  padding: 0 @input-padding-horizontal;
-  background-color: @input-bg;
+  color: $input-color;
+  padding: 0 $input-padding-horizontal;
+  background-color: $input-bg;
 
   &[type='text']::-ms-clear {
     display: none;
@@ -164,10 +155,10 @@
 
   &[disabled],
   fieldset[disabled] & {
-    .state-disabled();
+    @include state-disabled();
     opacity: 1;
-    background-color: @input-bg-disabled;
-    border-color: @input-border-disabled;
+    background-color: $input-bg-disabled;
+    border-color: $input-border-disabled;
   }
 
   &[readonly] {
@@ -175,20 +166,8 @@
   }
 }
 
-.rw-i.rw-loading {
-  display: block;
-  background: @img-busy no-repeat center;
-  min-width: 16px;
-  width: 1.9em;
-  height: 16px;
-
-  &:before {
-    content: '';
-  }
-}
-
 .rw-placeholder {
-  color: @input-color-placeholder;
+  color: $input-color-placeholder;
 }
 
 // https://github.com/klarna/ui/blob/master/Field/styles.scss
@@ -207,16 +186,16 @@
 
 .rw-webkit-autofill .rw-widget-container,
 .rw-input:-webkit-autofill {
-  background-color: @input-bg-color-autofill !important;
+  background-color: $input-bg-color-autofill !important;
   background-image: none !important;
-  color: @input-color-autofill !important;
+  color: $input-color-autofill !important;
 }
 
 //input inset
 .rw-widget-input {
-  box-shadow: @input-box-shadow;
+  box-shadow: $input-box-shadow;
 }
 
 .rw-widget-input.rw-state-focus {
-  box-shadow: ~'@{input-focus-box-shadow}, @{input-box-shadow}';
+  box-shadow: #{$input-focus-box-shadow}, #{$input-box-shadow};
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
-const _ = less`
+const _ = css`
   .app-subnavbar {
     display: flex;
     align-items: center;
@@ -14,7 +14,7 @@ const _ = less`
       &,
       &:focus,
       &:hover,
-      &:active{
+      &:active {
         color: #ececec;
       }
     }
