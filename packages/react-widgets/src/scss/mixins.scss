@@ -1,0 +1,144 @@
+
+@mixin border-box() {
+  background-clip: border-box;
+
+  &,
+  & * {
+    box-sizing: border-box;
+  }
+
+  &:before,
+  & *:before,
+  &:after,
+  & *:after, {
+    box-sizing: border-box;
+  }
+}
+
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: ($opacity * 100);
+  filter: alpha(opacity=#{$opacity-ie});
+}
+
+@mixin unstyled-list() {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@mixin select-container($padding) {
+  padding-right: $padding;
+
+  > .rw-select {
+    width: $padding;
+  }
+
+  &.rw-rtl {
+    padding-right: 0;
+    padding-left: $padding;
+  }
+}
+
+
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+   border-bottom-left-radius: $radius;
+}
+
+@mixin border-top-radius($radius) {
+  border-top-right-radius: $radius;
+   border-top-left-radius: $radius;
+}
+
+@mixin state-hover($bg: $state-bg-hover, $border-color: $state-border-hover, $color: $state-color-hover) {
+  background-color: $bg;
+  border-color:           $border-color;
+  color:            $color;
+}
+
+@mixin state-select($bg: $state-bg-select, $border-color: $state-border-select, $color: $state-color-select) {
+  &,
+  &:hover {
+    background-color: $bg;
+    border-color:     $border-color;
+    color:            $color;
+  }
+}
+
+@mixin state-focus($bg: $state-bg-focus, $border-color: $state-border-focus, $color: $state-color-focus) {
+  &,
+  &:hover {
+    background-color: $bg;
+    border-color:     $border-color;
+    color:            $color;
+  }
+}
+
+@mixin state-disabled() {
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+
+@mixin disabled-color($color) {
+  color: lighten($color, 40%);
+  filter: alpha(opacity=7);
+  opacity: .7;
+}
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+@mixin placeholder($color: $input-color-placeholder) {
+  // Firefox
+  &::-moz-placeholder {
+    color: $color;
+    opacity: 1; // See https://github.com/twbs/bootstrap/pull/11526
+  }
+  &:-ms-input-placeholder { color: $color; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { color: $color; } // Safari and Chrome
+}
+
+@mixin height-calc($total, $minus) {
+  height: calc(#{$total} - #{$minus});
+
+  /** ie8 fallback **/
+  margin-top: -#{$minus}\9;
+  height: #{$total}\9;
+  /** --- **/
+}
+
+@mixin make-btn-state($hover-color: $btn-bg-hover, $active-shadow: $btn-active-box-shadow) {
+  cursor: pointer;
+
+  &:hover,
+  &:active, {
+    background-color: $btn-bg-hover;
+  }
+
+  &:active {
+    box-shadow: $btn-active-box-shadow;
+  }
+
+  .rw-state-disabled &,
+  .rw-state-readonly &,
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:active {
+      cursor: not-allowed;
+      background-color: inherit;
+      background-image: none;
+      box-shadow: none;
+    }
+  }
+}

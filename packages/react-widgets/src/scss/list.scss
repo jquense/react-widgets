@@ -1,6 +1,6 @@
 .rw-list {
-  .unstyled-list();
-  font-size: @list-font-size;
+  @include unstyled-list();
+  font-size: $list-font-size;
   outline: 0;
   overflow: auto;
   max-height: 200px;
@@ -8,28 +8,28 @@
 
 .rw-list-option {
   user-select: none;
-  color: @list-text-color;
+  color: $list-text-color;
   cursor: pointer;
   border: 1px solid transparent;
 
   &.rw-state-focus {
-    .state-focus(@list-bg-focus, @list-border-focus, @list-color-focus);
+    @include state-focus($list-bg-focus, $list-border-focus, $list-color-focus);
   }
 
   &:hover,
   &:hover.rw-state-focus {
-    .state-hover(@list-bg-hover, @list-border-hover, @list-color-hover);
+    @include state-hover($list-bg-hover, $list-border-hover, $list-color-hover);
   }
 
   &.rw-state-selected {
-    .state-select(@list-bg-select, @list-border-select, @list-color-select);
+    @include state-select($list-bg-select, $list-border-select, $list-color-select);
   }
 
   fieldset[disabled] &,
   &.rw-state-disabled,
   &.rw-state-readonly {
-    .state-disabled();
-    .disabled-color(@list-text-color);
+    @include state-disabled();
+    @include disabled-color($list-text-color);
 
     &:hover {
       background: none;
@@ -41,7 +41,7 @@
 .rw-list-empty,
 .rw-list-option,
 .rw-list-optgroup {
-  padding: @list-padding-vertical @list-padding-horizontal;
+  padding: $list-padding-vertical $list-padding-horizontal;
   outline: 0;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .rw-list-option-create {
-  border-top:  1px @widget-border solid;
+  border-top:  1px $widget-border solid;
   //padding-top: 0.357em;
   //margin-top:  0.357em;
 }

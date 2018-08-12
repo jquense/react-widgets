@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-
-const Loading = () => <span aria-hidden="true" className="rw-i rw-loading" />
+import { Spinner } from './Icon'
 
 class Button extends React.Component {
   static propTypes = {
@@ -26,7 +25,7 @@ class Button extends React.Component {
       active,
       children,
       variant = 'primary',
-      spinner = <Loading />,
+      spinner = Spinner,
       component: Tag = 'button',
       ...props
     } = this.props

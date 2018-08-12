@@ -1,8 +1,8 @@
 import { configure } from '@storybook/react'
 
 //import 'typeface-roboto';
-import './styles.less'
-import Globalize from './configure-date-fns'
+import './styles.scss'
+import Globalize from './configure-globalize-old'
 
 import Chance from 'chance'
 

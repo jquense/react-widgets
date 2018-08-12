@@ -10,7 +10,8 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@storybook/react": "^3.4.8",
+    "@storybook/addon-actions": "^4.0.0-alpha.16",
+    "@storybook/react": "4.0.0-alpha.16",
     "babel-core": "bridge",
     "babel-preset-jason": "^4.2.0",
     "chance": "^1.0.13",
@@ -37,7 +38,7 @@
     "react-widgets-simple-number": "^4.1.16",
     "react-widgets-virtualized": "^4.0.20",
     "rimraf": "^2.5.4",
-    "webpack": "^3.0.0",
-    "webpack-atoms": "^5.0.0"
+    "webpack": "^4.16.5",
+    "webpack-atoms": "^7.0.1"
   }
 }

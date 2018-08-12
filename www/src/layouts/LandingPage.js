@@ -4,9 +4,9 @@ import Navbar from 'react-bootstrap/lib/Navbar'
 import SubNavbar from '../components/SubNavbar'
 import WidgetNav from '../components/WidgetNav'
 
-const _ = less`
+const _ = css`
   .widget-nav {
-    box-shadow: 0 2px 2px rgba(0, 0, 0, .20);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   }
 `
 

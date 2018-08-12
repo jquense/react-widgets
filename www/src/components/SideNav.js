@@ -1,27 +1,23 @@
-import React from 'react';
+import React from 'react'
 
-const _ = less`
+const _ = css`
   .page--side-nav {
     position: fixed;
     padding: 0;
     top: 150px;
   }
-`;
+`
 
-const propTypes = {
-
-};
+const propTypes = {}
 
 function SideNav(props) {
   return (
     <nav className="page--side-nav">
-      <ul className="list-unstyled">
-        {props.children}
-      </ul>
+      <ul className="list-unstyled">{props.children}</ul>
     </nav>
-  );
+  )
 }
 
-SideNav.propTypes = propTypes;
+SideNav.propTypes = propTypes
 
-export default SideNav;
+export default SideNav

@@ -1,4 +1,7 @@
-@import '~react-widgets/src/less/react-widgets.less';
+$font-path: '~react-widgets/lib/fonts';
+$img-path: '~react-widgets/lib/img';
+
+@import '~react-widgets/src/scss/react-widgets';
 
 // @import '~react-widgets-material-ui/src/less/theme.less';
 

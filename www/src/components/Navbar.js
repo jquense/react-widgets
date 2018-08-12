@@ -7,9 +7,9 @@ import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 import WidgetNav from './WidgetNav'
 import SubNavbar from './SubNavbar'
 
-const _ = less`
+const _ = css`
   .app-navbar {
-    box-shadow: 0 2px 2px rgba(0, 0, 0, .20);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   }
 
   .app-navbar--widget-nav.navbar-nav {

@@ -1,10 +1,9 @@
-
 .rw-btn {
   position: relative;
-  color: @btn-color;
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
+  color: $btn-color;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid transparent;
   cursor: pointer;
   outline: none; // these are never individually focusable
@@ -16,13 +15,13 @@
 }
 
 .rw-btn-select {
-  .opacity(.75);
+  opacity: 0.75;
   transition: opacity 150ms ease-in;
 
   &:hover,
   .rw-state-focus &,
   :hover > & {
-    .opacity(1);
+    opacity: 1;
   }
 }
 
@@ -32,15 +31,15 @@
   line-height: 2em;
 
   &:hover {
-    background-color: @state-bg-hover;
+    background-color: $state-bg-hover;
   }
 }
 
 .rw-btn-select[disabled],
 .rw-btn-primary[disabled],
 fieldset[disabled] .rw-btn-select,
-fieldset[disabled] .rw-btn-primary, {
-  .state-disabled();
-  .opacity(.65);
+fieldset[disabled] .rw-btn-primary {
+  @include state-disabled();
+  opacity: 0.65;
   pointer-events: none;
 }

@@ -1,0 +1,19 @@
+.rw-number-picker {
+  $half-width: $input-height / 2;
+
+  & .rw-select {
+    display: flex;
+    flex-direction: column;
+
+    &,
+    &:hover,
+    &:active {
+      box-shadow: none;
+    }
+  }
+  .rw-btn {
+    @include make-btn-state();
+
+    border: none;
+  }
+}

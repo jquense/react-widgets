@@ -8,12 +8,11 @@ module.exports = baseConfig =>
       rules: [
         { parser: { amd: false } },
         rules.js.inlineCss({
-          tagName: 'less',
-          extension: '.less',
+          extension: '.scss',
           extends: '../../.babelrc.js',
         }),
         rules.css(),
-        rules.less(),
+        rules.sass(),
         rules.images(),
         rules.fonts(),
       ],
@@ -37,7 +36,7 @@ module.exports = baseConfig =>
     },
     plugins: [
       plugins.define(),
-      plugins.extractText({ disable: true }),
+      plugins.extractCss({ disable: true }),
       plugins.hotModuleReplacement(),
       ...baseConfig.plugins,
     ],
