@@ -42,8 +42,8 @@ function getBounds({ min, max, currentDate, value, preserveDate }) {
     }
   }
 
-  let start = dates.today()
-  let end = dates.tomorrow()
+  let start = dates.startOf(currentDate, 'day')
+  let end = dates.add(start, 1, 'day')
   value = value || currentDate || start
   //date parts are equal
   return {
