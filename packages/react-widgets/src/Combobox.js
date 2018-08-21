@@ -12,6 +12,7 @@ import Select from './Select'
 import ComboboxInput from './ComboboxInput'
 import { getMessages } from './messages'
 import focusManager from './util/focusManager'
+import * as A11y from './util/A11y'
 import reduceToListState from './util/reduceToListState'
 import getAccessors from './util/getAccessors'
 import * as CustomPropTypes from './util/PropTypes'
@@ -142,6 +143,13 @@ class Combobox extends React.Component {
     return isSuggesting || stateChanged || valueChanged
   }
 
+  componentDidUpdate(_, { focusedItem }) {
+    const { open } = this.props
+    if (!open || focusedItem !== this.state.focusedItem) {
+      A11y.setActiveDescendant(this.inputRef, this.activeId, open)
+    }
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     let { value, data, messages, filter, minLength, caseSensitive } = nextProps
     const { focusedItem } = prevState
@@ -195,7 +203,9 @@ class Combobox extends React.Component {
       focusedItem:
         valueChanged || !focusedItem
           ? list.nextEnabled(nextFocusedItem)
-          : nextFocusedItem,
+          : ~data.indexOf(focusedItem)
+            ? focusedItem
+            : data[0],
     }
   }
 
@@ -319,7 +329,6 @@ class Combobox extends React.Component {
         aria-busy={!!busy}
         aria-owns={this.listId}
         aria-autocomplete={completeType}
-        aria-activedescendant={open ? this.activeId : null}
         aria-expanded={open}
         aria-haspopup={true}
         placeholder={placeholder}

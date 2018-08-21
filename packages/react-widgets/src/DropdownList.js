@@ -22,6 +22,7 @@ import { getMessages } from './messages'
 
 import * as Props from './util/Props'
 import * as Filter from './util/Filter'
+import * as A11y from './util/A11y'
 import focusManager from './util/focusManager'
 
 import * as CustomPropTypes from './util/PropTypes'
@@ -207,6 +208,13 @@ class DropdownList extends React.Component {
         valueChanged || !focusedItem
           ? list.nextEnabled(nextFocusedItem)
           : nextFocusedItem,
+    }
+  }
+
+  componentDidUpdate(_, { focusedItem }) {
+    const { open } = this.props
+    if (!open || focusedItem !== this.state.focusedItem) {
+      A11y.setActiveDescendant(this.inputRef, this.activeId, open)
     }
   }
 
