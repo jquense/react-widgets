@@ -13,6 +13,7 @@ import { getMessages } from './messages'
 
 import { makeArray } from './util/_'
 import * as Props from './util/Props'
+import * as A11y from './util/A11y'
 import * as CustomPropTypes from './util/PropTypes'
 import reduceToListState from './util/reduceToListState'
 import getAccessors from './util/getAccessors'
@@ -141,6 +142,13 @@ class SelectList extends React.Component {
       accessors,
       messages: getMessages(messages),
       dataItems: makeArray(value).map(item => accessors.findOrSelf(data, item)),
+    }
+  }
+
+  componentDidUpdate(_, { focusedItem }) {
+    const { focused } = this.state
+    if (focused && focusedItem !== this.state.focusedItem) {
+      A11y.setActiveDescendant(this, this.activeId, true)
     }
   }
 

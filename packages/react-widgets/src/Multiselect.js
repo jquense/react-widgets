@@ -20,6 +20,7 @@ import { makeArray } from './util/_'
 import * as Filter from './util/Filter'
 import * as Props from './util/Props'
 import { getMessages } from './messages'
+import * as A11y from './util/A11y'
 import * as CustomPropTypes from './util/PropTypes'
 import reduceToListState, {
   defaultGetDataState,
@@ -251,6 +252,18 @@ class Multiselect extends React.Component {
     }
   }
 
+  componentDidUpdate(_, prevState) {
+    const { open } = this.props
+    const { focusedItem, focusedTag } = this.state
+    if (!open || prevState.focusedItem !== focusedItem) {
+      let active
+      if (!open) active = focusedTag ? this.activeTagId : ''
+      else if (focusedItem || this.allowCreate()) active = this.activeOptionId
+
+      A11y.setActiveDescendant(this.inputRef, active, open)
+    }
+  }
+
   handleFocusDidChange = focused => {
     if (focused) return this.focus()
 
@@ -402,15 +415,8 @@ class Multiselect extends React.Component {
       open,
     } = this.props
 
-    let { focusedItem, focusedTag } = this.state
-
     let disabled = this.props.disabled === true
     let readOnly = this.props.readOnly === true
-
-    let active
-
-    if (!open) active = focusedTag ? this.activeTagId : ''
-    else if (focusedItem || this.allowCreate()) active = this.activeOptionId
 
     return (
       <MultiselectInput
@@ -422,7 +428,6 @@ class Multiselect extends React.Component {
         aria-busy={!!busy}
         aria-owns={ownedIds}
         aria-haspopup={true}
-        aria-activedescendant={active || null}
         value={searchTerm}
         maxLength={maxLength}
         disabled={disabled}
