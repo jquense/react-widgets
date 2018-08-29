@@ -1,7 +1,7 @@
 {
-  "name": "react-widgets-globalize",
+  "name": "react-widgets-globalize-old",
   "version": "5.0.13",
-  "description": "A globalize.js localizer for react-widgets",
+  "description": "A globalize.js (pre v1.0.0) localizer for react-widgets",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist/* lib/*",

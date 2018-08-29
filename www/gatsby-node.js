@@ -1,6 +1,14 @@
 const path = require('path')
 const slug = require('slug')
 
+exports.onCreateBabelConfig = ({ actions }) => {
+  actions.setBabelOptions({
+    options: {
+      babelrcRoots: [__dirname, path.resolve(__dirname, '../packages/*')],
+    },
+  })
+}
+
 exports.onCreateWebpackConfig = ({ actions, rules, plugins, getConfig }) => {
   const { setWebpackConfig } = actions
 
@@ -17,12 +25,17 @@ exports.onCreateWebpackConfig = ({ actions, rules, plugins, getConfig }) => {
   setWebpackConfig({
     module: {
       rules: [
-        Object.assign(rules.js(), {
-          use: {
-            options: { extension: '.less', tagName: 'less' },
-            loader: require.resolve('css-literal-loader'),
-          },
-        }),
+        Object.assign(
+          rules.js({
+            babelrcRoots: [__dirname, path.resolve(__dirname, '../packages/*')],
+          }),
+          {
+            use: {
+              options: { extension: '.less', tagName: 'less' },
+              loader: require.resolve('css-literal-loader'),
+            },
+          }
+        ),
         noAmdRule,
       ],
     },

@@ -1,18 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 import CalendarView from './CalendarView'
-import dates from './util/dates';
-import { date as dateLocalizer } from './util/localizers';
-import { chunk } from './util/_';
-import * as Props from './util/Props';
-import * as CustomPropTypes from './util/PropTypes';
+import dates from './util/dates'
+import { chunk } from './util/_'
+import * as Props from './util/Props'
 
 class YearView extends React.Component {
   static propTypes = {
     activeId: PropTypes.string,
-    culture: PropTypes.string,
     today: PropTypes.instanceOf(Date),
     value: PropTypes.instanceOf(Date),
     focused: PropTypes.instanceOf(Date),
@@ -20,32 +17,27 @@ class YearView extends React.Component {
     max: PropTypes.instanceOf(Date),
     onChange: PropTypes.func.isRequired,
 
-    headerFormat: CustomPropTypes.dateFormat,
-    monthFormat: CustomPropTypes.dateFormat,
+    localizer: PropTypes.object.isRequired,
     disabled: PropTypes.bool,
-  };
+  }
 
   renderRow = (row, rowIdx) => {
     let {
-        focused
-      , activeId
-      , disabled
-      , onChange
-      , value
-      , today
-      , culture
-      , headerFormat
-      , monthFormat
-      , min
-      , max } = this.props
-
-    headerFormat = dateLocalizer.getFormat('header', headerFormat);
-    monthFormat = dateLocalizer.getFormat('month', monthFormat);
+      focused,
+      activeId,
+      disabled,
+      onChange,
+      value,
+      today,
+      min,
+      localizer,
+      max,
+    } = this.props
 
     return (
       <CalendarView.Row key={rowIdx}>
         {row.map((date, colIdx) => {
-          let label = dateLocalizer.format(date, headerFormat, culture);
+          let label = localizer.formatDate(date, 'header')
 
           return (
             <CalendarView.Cell
@@ -62,7 +54,7 @@ class YearView extends React.Component {
               selected={value}
               disabled={disabled}
             >
-              {dateLocalizer.format(date, monthFormat, culture)}
+              {localizer.formatDate(date, 'month')}
             </CalendarView.Cell>
           )
         })}
@@ -71,14 +63,11 @@ class YearView extends React.Component {
   }
 
   render() {
-    let { focused, activeId } = this.props
-      , months = dates.monthsInYear(dates.year(focused))
+    let { focused, activeId } = this.props,
+      months = dates.monthsInYear(dates.year(focused))
 
     return (
-      <CalendarView
-        {...Props.omitOwn(this)}
-        activeId={activeId}
-      >
+      <CalendarView {...Props.omitOwn(this)} activeId={activeId}>
         <CalendarView.Body>
           {chunk(months, 4).map(this.renderRow)}
         </CalendarView.Body>
@@ -87,4 +76,4 @@ class YearView extends React.Component {
   }
 }
 
-export default YearView;
+export default YearView

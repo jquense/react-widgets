@@ -1,15 +1,11 @@
 import React from 'react'
-import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import PropTypes from 'prop-types'
 
 import List from './List'
 import dates from './util/dates'
 
 import reduceToListState from './util/reduceToListState'
-import { date as dateLocalizer } from './util/localizers'
 import * as CustomPropTypes from './util/PropTypes'
-
-const format = props => dateLocalizer.getFormat('time', props.format)
 
 const accessors = {
   text: item => item.label,
@@ -56,7 +52,7 @@ function getBounds({ min, max, currentDate, value, preserveDate }) {
   }
 }
 
-function getDates({ step, culture, ...props }) {
+function getDates({ step, localizer, ...props }) {
   let times = []
   let { min, max } = getBounds(props)
   let startDay = dates.date(min)
@@ -64,14 +60,13 @@ function getDates({ step, culture, ...props }) {
   while (dates.date(min) === startDay && dates.lte(min, max)) {
     times.push({
       date: min,
-      label: dateLocalizer.format(min, format(props), culture),
+      label: localizer.formatDate(min, 'time'),
     })
     min = dates.add(min, step || 30, 'minutes')
   }
   return times
 }
 
-@polyfillLifecycles
 class TimeList extends React.Component {
   static defaultProps = {
     step: 30,

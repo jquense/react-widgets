@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import createUncontrolledWidget from 'uncontrollable'
 
 import Widget from './Widget'
@@ -102,7 +101,6 @@ let propTypes = {
 
  * @public
  */
-@polyfillLifecycles
 class Combobox extends React.Component {
   static propTypes = propTypes
 

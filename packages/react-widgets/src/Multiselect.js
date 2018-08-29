@@ -4,7 +4,6 @@ import cn from 'classnames'
 import closest from 'dom-helpers/query/closest'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'
@@ -159,7 +158,6 @@ let propTypes = {
  *
  * @public
  */
-@polyfillLifecycles
 class Multiselect extends React.Component {
   static propTypes = propTypes
 

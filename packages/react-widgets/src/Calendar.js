@@ -3,7 +3,6 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import uncontrollable from 'uncontrollable'
-import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import { autoFocus } from 'react-component-managers'
 
 import Widget from './Widget'
@@ -13,11 +12,10 @@ import Month from './Month'
 import Year from './Year'
 import Decade from './Decade'
 import Century from './Century'
-import { getMessages } from './messages'
+import LocalizationProvider from './LocalizationProvider'
 import SlideTransitionGroup from './SlideTransitionGroup'
 import focusManager from './util/focusManager'
 
-import { date as dateLocalizer } from './util/localizers'
 import * as CustomPropTypes from './util/PropTypes'
 import * as Props from './util/Props'
 import dates from './util/dates'
@@ -167,57 +165,59 @@ const propTypes = {
    */
   dayComponent: CustomPropTypes.elementType,
 
-  /**
-   * A formatter for the header button of the month view.
-   *
-   * @example ['dateFormat', ['headerFormat', "{ date: 'medium' }"]]
-   */
-  headerFormat: CustomPropTypes.dateFormat,
+  formats: PropTypes.shape({
+    /**
+     * A formatter for the header button of the month view.
+     *
+     * @example ['dateFormat', ['headerFormat', "{ date: 'medium' }"]]
+     */
+    header: CustomPropTypes.dateFormat,
 
-  /**
-   * A formatter for the Calendar footer, formats today's Date as a string.
-   *
-   * @example ['dateFormat', ['footerFormat', "{ date: 'medium' }", "date => 'Today is: ' + formatter(date)"]]
-   */
-  footerFormat: CustomPropTypes.dateFormat,
+    /**
+     * A formatter for the Calendar footer, formats today's Date as a string.
+     *
+     * @example ['dateFormat', ['footerFormat', "{ date: 'medium' }", "date => 'Today is: ' + formatter(date)"]]
+     */
+    footer: CustomPropTypes.dateFormat,
 
-  /**
-   * A formatter calendar days of the week, the default formats each day as a Narrow name: "Mo", "Tu", etc.
-   *
-   * @example ['prop', { dayFormat: "day => \n['🎉', 'M', 'T','W','Th', 'F', '🎉'][day.getDay()]" }]
-   */
-  dayFormat: CustomPropTypes.dateFormat,
+    /**
+     * A formatter calendar days of the week, the default formats each day as a Narrow name: "Mo", "Tu", etc.
+     *
+     * @example ['prop', { day: "day => \n['🎉', 'M', 'T','W','Th', 'F', '🎉'][day.getDay()]" }]
+     */
+    day: CustomPropTypes.dateFormat,
 
-  /**
-   * A formatter for day of the month
-   *
-   * @example ['prop', { dateFormat: "dt => String(dt.getDate())" }]
-   */
-  dateFormat: CustomPropTypes.dateFormat,
+    /**
+     * A formatter for day of the month
+     *
+     * @example ['prop', { date: "dt => String(dt.getDate())" }]
+     */
+    date: CustomPropTypes.dateFormat,
 
-  /**
-   * A formatter for month name.
-   *
-   * @example ['dateFormat', ['monthFormat', "{ raw: 'MMMM' }", null, { defaultView: '"year"' }]]
-   */
-  monthFormat: CustomPropTypes.dateFormat,
+    /**
+     * A formatter for month name.
+     *
+     * @example ['dateFormat', ['monthFormat', "{ raw: 'MMMM' }", null, { defaultView: '"year"' }]]
+     */
+    month: CustomPropTypes.dateFormat,
 
-  /**
-   * A formatter for month name.
-   *
-   * @example ['dateFormat', ['yearFormat', "{ raw: 'yy' }", null, { defaultView: '"decade"' }]]
-   */
-  yearFormat: CustomPropTypes.dateFormat,
+    /**
+     * A formatter for month name.
+     *
+     * @example ['dateFormat', ['yearFormat', "{ raw: 'yy' }", null, { defaultView: '"decade"' }]]
+     */
+    year: CustomPropTypes.dateFormat,
 
-  /**
-   * A formatter for decade, the default formats the first and last year of the decade like: 2000 - 2009.
-   */
-  decadeFormat: CustomPropTypes.dateFormat,
+    /**
+     * A formatter for decade, the default formats the first and last year of the decade like: 2000 - 2009.
+     */
+    decade: CustomPropTypes.dateFormat,
 
-  /**
-   * A formatter for century, the default formats the first and last year of the century like: 1900 - 1999.
-   */
-  centuryFormat: CustomPropTypes.dateFormat,
+    /**
+     * A formatter for century, the default formats the first and last year of the century like: 1900 - 1999.
+     */
+    century: CustomPropTypes.dateFormat,
+  }),
 
   isRtl: PropTypes.bool,
   messages: PropTypes.shape({
@@ -247,7 +247,6 @@ const propTypes = {
  *
  * @public
  */
-@polyfillLifecycles
 class Calendar extends React.Component {
   static displayName = 'Calendar'
 
@@ -305,7 +304,7 @@ class Calendar extends React.Component {
   }
 
   static getDerivedStateFromProps(
-    { messages, view, views, value, currentDate },
+    { view, views, value, currentDate },
     prevState
   ) {
     view = view || views[0]
@@ -321,7 +320,6 @@ class Calendar extends React.Component {
     return {
       view,
       slideDirection,
-      messages: getMessages(messages),
       currentDate: currentDate || value || new Date(),
     }
   }
@@ -437,7 +435,6 @@ class Calendar extends React.Component {
     let {
       className,
       value,
-      footerFormat,
       disabled,
       readOnly,
       footer,
@@ -446,9 +443,10 @@ class Calendar extends React.Component {
       max,
       culture,
       tabIndex,
+      localizer,
     } = this.props
 
-    let { currentDate, view, slideDirection, focused, messages } = this.state
+    let { currentDate, view, slideDirection, focused } = this.state
 
     let View = VIEW[view],
       todaysDate = new Date(),
@@ -479,7 +477,7 @@ class Calendar extends React.Component {
           isRtl={this.isRtl()}
           label={this.getHeaderLabel()}
           labelId={this.labelId}
-          messages={messages}
+          localizer={localizer}
           upDisabled={isDisabled || view === last(views)}
           prevDisabled={
             isDisabled || !dates.inRange(this.nextDate('LEFT'), min, max, view)
@@ -509,7 +507,7 @@ class Calendar extends React.Component {
         {footer && (
           <Footer
             value={todaysDate}
-            format={footerFormat}
+            localizer={localizer}
             culture={culture}
             disabled={disabled || todayNotInRange}
             readOnly={readOnly}
@@ -578,37 +576,25 @@ class Calendar extends React.Component {
   }
 
   getHeaderLabel() {
-    let {
-      culture,
-      decadeFormat,
-      yearFormat,
-      headerFormat,
-      centuryFormat,
-    } = this.props
+    let { localizer } = this.props
     let { currentDate, view } = this.state
 
     switch (view) {
       case 'month':
-        headerFormat = dateLocalizer.getFormat('header', headerFormat)
-        return dateLocalizer.format(currentDate, headerFormat, culture)
+        return localizer.formatDate(currentDate, 'header')
 
       case 'year':
-        yearFormat = dateLocalizer.getFormat('year', yearFormat)
-        return dateLocalizer.format(currentDate, yearFormat, culture)
+        return localizer.formatDate(currentDate, 'year')
 
       case 'decade':
-        decadeFormat = dateLocalizer.getFormat('decade', decadeFormat)
-        return dateLocalizer.format(
+        return localizer.formatDate(
           dates.startOf(currentDate, 'decade'),
-          decadeFormat,
-          culture
+          'decade'
         )
       case 'century':
-        centuryFormat = dateLocalizer.getFormat('century', centuryFormat)
-        return dateLocalizer.format(
+        return localizer.formatDate(
           dates.startOf(currentDate, 'century'),
-          centuryFormat,
-          culture
+          'century'
         )
     }
   }
@@ -626,12 +612,8 @@ function dateOrNull(dt) {
   return null
 }
 
-export default uncontrollable(
-  Calendar,
-  {
-    value: 'onChange',
-    currentDate: 'onCurrentDateChange',
-    view: 'onViewChange',
-  },
-  ['focus']
-)
+export default uncontrollable(LocalizationProvider.withLocalizer(Calendar), {
+  value: 'onChange',
+  currentDate: 'onCurrentDateChange',
+  view: 'onViewChange',
+})
