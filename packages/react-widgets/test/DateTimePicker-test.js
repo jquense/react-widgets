@@ -1,8 +1,9 @@
 import React from 'react'
 import Globalize from 'globalize'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 
 import DateTimePicker from '../src/DateTimePicker'
+import LocalizationProvider from '../src/LocalizationProvider'
 import TimeList from '../src/TimeList'
 import Calendar from '../src/Calendar'
 
@@ -13,14 +14,19 @@ describe('DateTimePicker', () => {
     var date = new Date()
 
     expect(
-      mount(<DateTimePicker defaultValue={date} format="MM-dd-yyyy" />)
+      mount(
+        <DateTimePicker
+          defaultValue={date}
+          formats={{ datetime: 'MM-dd-yyyy' }}
+        />
+      )
         .find('.rw-input')
         .getDOMNode().value
     ).to.equal(Globalize.format(date, 'MM-dd-yyyy'))
   })
 
   it('should start closed', () => {
-    let inst = shallow(<ControlledDateTimePicker />)
+    let inst = mount(<ControlledDateTimePicker />)
 
     expect(inst.prop('open')).to.not.equal(true)
 
@@ -36,26 +42,28 @@ describe('DateTimePicker', () => {
   })
 
   it('should open when clicked', () => {
-    var onOpen = sinon.spy()
-
-    let wrapper = shallow(<ControlledDateTimePicker onToggle={onOpen} />)
+    let onOpen = sinon.spy()
+    let wrapper = mount(<ControlledDateTimePicker onToggle={onOpen} />)
 
     wrapper
-      .find('Button')
+      .find('.rw-select Button')
       .first()
       .simulate('click')
 
     wrapper
-      .find('Button')
+      .find('.rw-select Button')
       .last()
       .simulate('click')
 
-    expect(onOpen.calledTwice).to.equal(true)
+    expect(onOpen.getCalls().length).to.equal(2)
   })
 
   it('passes default props to calendar', () => {
     let wrapper = mount(
-      <ControlledDateTimePicker open="date" defaultView="year" />
+      <ControlledDateTimePicker
+        open="date"
+        calendarProps={{ defaultView: 'year' }}
+      />
     )
 
     expect(wrapper.find(Calendar.ControlledComponent).props().view).to.equal(
@@ -66,15 +74,16 @@ describe('DateTimePicker', () => {
   it('should change when selecting a date', () => {
     let change = sinon.spy()
 
-    shallow(
+    mount(
       <ControlledDateTimePicker
         open="date"
         onChange={change}
         onToggle={() => {}}
       />
     )
-      .assertSingle(Calendar)
-      .simulate('change', new Date())
+      .find('td.rw-cell')
+      .first()
+      .simulate('click')
 
     expect(change.calledOnce).to.equal(true)
   })
@@ -83,36 +92,17 @@ describe('DateTimePicker', () => {
     let change = sinon.spy(),
       select = sinon.spy()
 
-    shallow(
+    mount(
       <ControlledDateTimePicker
-        open="date"
+        open="time"
         onChange={change}
         onSelect={select}
         onToggle={() => {}}
       />
     )
-      .assertSingle(TimeList)
-      .simulate('select', { date: new Date() })
-
-    expect(select.calledOnce).to.equal(true)
-    expect(change.calledAfter(select)).to.equal(true)
-    expect(change.calledOnce).to.equal(true)
-  })
-
-  it('should change when selecting a time', () => {
-    let change = sinon.spy(),
-      select = sinon.spy()
-
-    shallow(
-      <ControlledDateTimePicker
-        open="date"
-        onChange={change}
-        onSelect={select}
-        onToggle={() => {}}
-      />
-    )
-      .assertSingle(TimeList)
-      .simulate('select', { date: new Date() })
+      .find('li.rw-list-option')
+      .first()
+      .simulate('click')
 
     expect(select.calledOnce).to.equal(true)
     expect(change.calledAfter(select)).to.equal(true)
@@ -188,7 +178,7 @@ describe('DateTimePicker', () => {
     wrapper.find('.rw-i-calendar').simulate('click')
 
     setTimeout(() => {
-      expect(wrapper.instance()._values.open).to.not.equal(true)
+      expect(wrapper.children().instance()._values.open).to.not.equal(true)
       done()
     }, 0)
   })
@@ -203,7 +193,7 @@ describe('DateTimePicker', () => {
     wrapper.find('.rw-i-calendar').simulate('click')
 
     setTimeout(() => {
-      expect(wrapper.instance()._values.open).to.not.equal(true)
+      expect(wrapper.children().instance()._values.open).to.not.equal(true)
       done()
     })
   })
@@ -217,11 +207,11 @@ describe('DateTimePicker', () => {
 
     wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(wrapper.instance()._values.open).to.equal('date')
+    expect(wrapper.children().instance()._values.open).to.equal('date')
 
     wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(wrapper.instance()._values.open).to.equal('time')
+    expect(wrapper.children().instance()._values.open).to.equal('time')
 
     wrapper.simulate('keyDown', { key: 'Home' })
 
@@ -241,13 +231,19 @@ describe('DateTimePicker', () => {
   })
 
   describe('TimeList', () => {
+    let LocalizedTimeList = LocalizationProvider.withLocalizer(TimeList)
+
     it('should render max correctly', () => {
       let date = new Date(2014, 0, 16, 9, 30)
       let inst = mount(
-        <TimeList value={new Date(2014, 0, 16, 8)} max={date} preserveDate />
+        <LocalizedTimeList
+          value={new Date(2014, 0, 16, 8)}
+          max={date}
+          preserveDate
+        />
       )
 
-      let dates = inst.state('data')
+      let dates = inst.find(TimeList).instance().state.data
       let time = dates[dates.length - 1]
 
       expect(time.date.getHours()).to.eql(9)
@@ -256,7 +252,7 @@ describe('DateTimePicker', () => {
 
       inst.setProps({ value: new Date(2014, 0, 15, 8) })
 
-      dates = inst.state('data')
+      dates = inst.find(TimeList).instance().state.data
       time = dates[dates.length - 1]
 
       expect(time.date.getHours()).to.eql(23)
@@ -268,19 +264,27 @@ describe('DateTimePicker', () => {
       let date = new Date(2014, 0, 16, 9, 30)
 
       let inst = mount(
-        <TimeList value={new Date(2014, 0, 16, 12)} min={date} preserveDate />
+        <LocalizedTimeList
+          value={new Date(2014, 0, 16, 12)}
+          min={date}
+          preserveDate
+        />
       )
 
-      let time = inst.state('data')[0]
+      let time = inst.find(TimeList).instance().state.data[0]
 
       expect(time.date.getHours()).to.eql(9)
       expect(time.date.getMinutes()).to.eql(30)
       expect(time.date.getSeconds()).to.eql(0)
 
       inst = mount(
-        <TimeList value={new Date(2014, 0, 18, 8)} min={date} preserveDate />
+        <LocalizedTimeList
+          value={new Date(2014, 0, 18, 8)}
+          min={date}
+          preserveDate
+        />
       )
-      time = inst.state('data')[0]
+      time = inst.find(TimeList).instance().state.data[0]
 
       expect(time.date.getHours()).to.eql(0)
       expect(time.date.getMinutes()).to.eql(0)

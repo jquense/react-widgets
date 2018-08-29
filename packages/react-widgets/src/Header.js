@@ -18,16 +18,13 @@ class Header extends React.Component {
     navigatePrevIcon: PropTypes.node,
     navigateNextIcon: PropTypes.node,
 
-    messages: PropTypes.shape({
-      moveBack: PropTypes.func.isRequired,
-      moveForward: PropTypes.func.isRequired,
-    }),
+    localizer: PropTypes.object.isRequired,
     isRtl: PropTypes.bool,
   }
 
   render() {
     let {
-      messages,
+      localizer,
       label,
       labelId,
       onMoveRight,
@@ -47,7 +44,7 @@ class Header extends React.Component {
           className="rw-calendar-btn-left"
           onClick={onMoveLeft}
           disabled={prevDisabled}
-          label={messages.moveBack()}
+          label={localizer.messages.moveBack()}
           icon={isRtl ? navigateNextIcon : navigatePrevIcon}
         />
         <Button
@@ -64,7 +61,7 @@ class Header extends React.Component {
           className="rw-calendar-btn-right"
           onClick={onMoveRight}
           disabled={nextDisabled}
-          label={messages.moveForward()}
+          label={localizer.messages.moveForward()}
           icon={isRtl ? navigatePrevIcon : navigateNextIcon}
         />
       </div>

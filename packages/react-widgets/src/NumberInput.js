@@ -3,26 +3,22 @@ import activeElement from 'dom-helpers/activeElement'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 
 import Input from './Input'
 import * as Props from './util/Props'
 import * as CustomPropTypes from './util/PropTypes'
-import { number as numberLocalizer } from './util/localizers'
-
-let getFormat = props => numberLocalizer.getFormat('default', props.format)
 
 let isSign = val => (val || '').trim() === '-'
 
-function isPaddedZeros(str, culture) {
-  let localeChar = numberLocalizer.decimalChar(null, culture)
+function isPaddedZeros(str, localizer) {
+  let localeChar = localizer.decimalChar()
   let [_, decimals] = str.split(localeChar)
 
   return !!(decimals && decimals.match(/0+$/))
 }
 
-function isAtDelimiter(num, str, culture) {
-  let localeChar = numberLocalizer.decimalChar(null, culture),
+function isAtDelimiter(num, str, localizer) {
+  let localeChar = localizer.decimalChar(),
     lastIndex = str.length - 1,
     char
 
@@ -33,7 +29,6 @@ function isAtDelimiter(num, str, culture) {
   return !!(char === localeChar && str.indexOf(char) === lastIndex)
 }
 
-@polyfillLifecycles
 class NumberPickerInput extends React.Component {
   static defaultProps = {
     value: null,
@@ -45,10 +40,8 @@ class NumberPickerInput extends React.Component {
     editing: PropTypes.bool,
     placeholder: PropTypes.string,
 
-    format: CustomPropTypes.numberFormat,
-
+    localizer: PropTypes.object.isRequired,
     parse: PropTypes.func,
-    culture: PropTypes.string,
 
     min: PropTypes.number,
     max: PropTypes.number,
@@ -68,16 +61,14 @@ class NumberPickerInput extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps) {
-    let { value, culture, editing } = nextProps
+    let { value, editing, localizer } = nextProps
 
-    let decimal = numberLocalizer.decimalChar(null, culture)
-    let format = getFormat(nextProps)
-
+    let decimal = localizer.decimalChar()
     if (value == null || isNaN(value)) value = ''
     else
       value = editing
         ? ('' + value).replace('.', decimal)
-        : numberLocalizer.format(value, format, culture)
+        : localizer.formatNumber(value, 'default')
 
     return {
       stringValue: '' + value,
@@ -95,8 +86,8 @@ class NumberPickerInput extends React.Component {
   }
 
   handleBlur = event => {
-    var str = this.state.stringValue,
-      number = this.parseNumber(str)
+    let str = this.state.stringValue
+    let number = this.parseNumber(str)
 
     // if number is below the min
     // we need to flush low values and decimal stops, onBlur means i'm done inputing
@@ -133,13 +124,13 @@ class NumberPickerInput extends React.Component {
   }
 
   isIntermediateValue(num, str) {
-    let { culture, min } = this.props
+    let { localizer, min } = this.props
 
     return !!(
       num < min ||
       isSign(str) ||
-      isAtDelimiter(num, str, culture) ||
-      isPaddedZeros(str, culture)
+      isAtDelimiter(num, str, localizer) ||
+      isPaddedZeros(str, localizer)
     )
   }
 
@@ -154,11 +145,11 @@ class NumberPickerInput extends React.Component {
   }
 
   parseNumber(strVal) {
-    let { culture, parse: userParse } = this.props
+    let { localizer, parse: userParse } = this.props
 
-    let delimChar = numberLocalizer.decimalChar(null, culture)
+    let delimChar = localizer.decimalChar()
 
-    if (userParse) return userParse(strVal, culture)
+    if (userParse) return userParse(strVal, localizer)
 
     strVal = strVal.replace(delimChar, '.')
     strVal = parseFloat(strVal)

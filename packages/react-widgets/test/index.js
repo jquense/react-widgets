@@ -6,6 +6,7 @@ const chai = require('chai')
 const { configure, ShallowWrapper, ReactWrapper } = require('enzyme')
 const Adapter = require('enzyme-adapter-react-16')
 
+require('./test-localizer')
 const widgetHelpers = require('../src/util/widgetHelpers')
 
 global.chai = chai
@@ -23,14 +24,15 @@ function assertLength(length) {
     return result
   }
 }
-
+ReactWrapper.prototype.print = function() {
+  console.log(this.debug())
+  return this
+}
 ReactWrapper.prototype.assertSingle = assertLength(1)
 ShallowWrapper.prototype.assertSingle = assertLength(1)
 
 ReactWrapper.prototype.assertNone = assertLength(0)
 ShallowWrapper.prototype.assertNone = assertLength(0)
-
-require('./test-localizer')()
 
 //disable this particular optimization
 sinon.stub(widgetHelpers, 'isFirstFocusedRender').callsFake(() => true)

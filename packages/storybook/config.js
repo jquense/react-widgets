@@ -1,15 +1,17 @@
-import { configure } from '@storybook/react'
+import { configure, addDecorator } from '@storybook/react'
 
 //import 'typeface-roboto';
 import './styles.scss'
-import Globalize from './configure-globalize-old'
+import decorator from './configure-globalize-old'
 
 import Chance from 'chance'
 
 let testsContext = require.context('./stories', true, /\.js$/)
 
+addDecorator(decorator)
+
 configure(() => {
-  global.Globalize = Globalize
+  // global.Globalize = Globalize
 
   let chance = (global.chance = new Chance())
 

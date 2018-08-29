@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'
@@ -9,17 +8,14 @@ import WidgetPicker from './WidgetPicker'
 import Select from './Select'
 import Input from './NumberInput'
 import Button from './Button'
-import { getMessages } from './messages'
+import LocalizationProvider from './LocalizationProvider'
 
 import * as Props from './util/Props'
 import focusManager from './util/focusManager'
 import { widgetEditable } from './util/interaction'
 import { notify } from './util/widgetHelpers'
 import * as CustomPropTypes from './util/PropTypes'
-import { number as numberLocalizer } from './util/localizers'
 import { caretUp, caretDown } from './Icon'
-
-var format = props => numberLocalizer.getFormat('default', props.format)
 
 // my tests in ie11/chrome/FF indicate that keyDown repeats
 // at about 35ms+/- 5ms after an initial 500ms delay. callback fires on the leading edge
@@ -60,7 +56,6 @@ function clamp(value, min, max) {
  *
  * @public
  */
-@polyfillLifecycles
 class NumberPicker extends React.Component {
   static propTypes = {
     value: PropTypes.number,
@@ -96,14 +91,14 @@ class NumberPicker extends React.Component {
      */
     precision: PropTypes.number,
 
-    culture: PropTypes.string,
-
-    /**
-     * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
-     *
-     * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
-     */
-    format: CustomPropTypes.numberFormat,
+    formats: PropTypes.shape({
+      /**
+       * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
+       *
+       * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
+       */
+      default: CustomPropTypes.numberFormat,
+    }),
 
     /**
      * Determines how the NumberPicker parses a number from the localized string representation.
@@ -122,6 +117,7 @@ class NumberPicker extends React.Component {
     onKeyPress: PropTypes.func,
     onKeyUp: PropTypes.func,
     autoFocus: PropTypes.bool,
+
     /**
      * @example ['disabled', ['1']]
      */
@@ -140,6 +136,9 @@ class NumberPicker extends React.Component {
       increment: PropTypes.string,
       decrement: PropTypes.string,
     }),
+
+    /** @ignore */
+    localizer: PropTypes.object,
   }
 
   static defaultProps = {
@@ -165,10 +164,6 @@ class NumberPicker extends React.Component {
     this.state = {
       focused: false,
     }
-  }
-
-  static getDerivedStateFromProps({ messages }) {
-    return { messages: getMessages(messages) }
   }
 
   @widgetEditable
@@ -251,8 +246,7 @@ class NumberPicker extends React.Component {
       disabled,
       readOnly,
       inputProps,
-      format,
-      culture,
+      localizer,
     } = this.props
 
     return (
@@ -264,8 +258,7 @@ class NumberPicker extends React.Component {
         placeholder={placeholder}
         autoFocus={autoFocus}
         editing={this.state.focused}
-        format={format}
-        culture={culture}
+        localizer={localizer}
         parse={parse}
         name={name}
         min={min}
@@ -289,11 +282,12 @@ class NumberPicker extends React.Component {
       value,
       min,
       max,
+      localizer,
       incrementIcon,
       decrementIcon,
     } = this.props
 
-    let { focused, messages } = this.state
+    let { focused } = this.state
     let elementProps = Props.pickElementProps(this)
 
     value = clamp(value, min, max)
@@ -316,7 +310,7 @@ class NumberPicker extends React.Component {
               icon={incrementIcon}
               onClick={this.handleFocus}
               disabled={value === max || disabled}
-              label={messages.increment({ value, min, max })}
+              label={localizer.messages.increment({ value, min, max })}
               onMouseUp={e => this.handleMouseUp('UP', e)}
               onMouseDown={e => this.handleMouseDown('UP', e)}
               onMouseLeave={e => this.handleMouseUp('UP', e)}
@@ -325,7 +319,7 @@ class NumberPicker extends React.Component {
               icon={decrementIcon}
               onClick={this.handleFocus}
               disabled={value === min || disabled}
-              label={messages.decrement({ value, min, max })}
+              label={localizer.messages.decrement({ value, min, max })}
               onMouseUp={e => this.handleMouseUp('DOWN', e)}
               onMouseDown={e => this.handleMouseDown('DOWN', e)}
               onMouseLeave={e => this.handleMouseUp('DOWN', e)}
@@ -354,7 +348,7 @@ class NumberPicker extends React.Component {
     var decimals =
       this.props.precision != null
         ? this.props.precision
-        : numberLocalizer.precision(format(this.props))
+        : this.props.localizer.precision('default')
 
     this.handleChange(decimals != null ? round(value, decimals) : value, event)
 
@@ -362,7 +356,12 @@ class NumberPicker extends React.Component {
   }
 }
 
-export default uncontrollable(NumberPicker, { value: 'onChange' }, ['focus'])
+export default uncontrollable(
+  LocalizationProvider.withLocalizer(NumberPicker),
+  {
+    value: 'onChange',
+  }
+)
 
 // thank you kendo ui core
 // https://github.com/telerik/kendo-ui-core/blob/master/src/kendo.core.js#L1036

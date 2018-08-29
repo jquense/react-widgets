@@ -1,5 +1,3 @@
-
-
 .rw-calendar-popup {
   right: auto;
   min-width: 0;
@@ -36,7 +34,7 @@
 
 .rw-calendar-grid {
   outline: none;
-  height: 200 / 14em;
+  height: 14em;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
@@ -60,15 +58,27 @@
   padding: $calendar-cell-padding;
 
   &:hover {
-    @include state-hover($calendar-cell-bg-hover, $calendar-cell-border-hover, $calendar-cell-color-hover);
+    @include state-hover(
+      $calendar-cell-bg-hover,
+      $calendar-cell-border-hover,
+      $calendar-cell-color-hover
+    );
   }
 
   &.rw-state-focus {
-    @include state-focus($calendar-cell-bg-focus, $calendar-cell-border-focus, $calendar-cell-color-focus);
+    @include state-focus(
+      $calendar-cell-bg-focus,
+      $calendar-cell-border-focus,
+      $calendar-cell-color-focus
+    );
   }
 
   &.rw-state-selected {
-    @include state-select($calendar-cell-bg-select, $calendar-cell-border-select, $calendar-cell-color-select);
+    @include state-select(
+      $calendar-cell-bg-select,
+      $calendar-cell-border-select,
+      $calendar-cell-color-select
+    );
   }
 
   &.rw-state-disabled {
@@ -86,9 +96,8 @@
 }
 
 .rw-cell-off-range {
-  color: lighten($btn-color, 40%)
+  color: lighten($btn-color, 40%);
 }
-
 
 .rw-calendar-transition-group {
   position: relative;
@@ -139,4 +148,3 @@
     transform: translateX(-100%);
   }
 }
-

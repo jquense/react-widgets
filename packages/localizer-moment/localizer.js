@@ -1,67 +1,62 @@
-import moment from 'moment';
-import configure from 'react-widgets/lib/configure';
-
-if (typeof moment !== 'function')
-  throw new TypeError('You must provide a valid moment object')
-
-var localField = typeof moment().locale === 'function' ? 'locale' : 'lang'
-  , hasLocaleData = !!moment.localeData;
-
-if (!hasLocaleData)
-  throw new TypeError(
-    'The Moment localizer depends on the `localeData` api, please provide a moment object v2.2.0 or higher')
-
-function getMoment(culture, value, format){
-  return culture ? moment(value, format, true)[localField](culture) : moment(value, format, true)
-}
+import Localizer from 'react-widgets/lib/Localizer'
 
 function endOfDecade(date) {
-  return moment(date).add(10, 'year').add(-1, 'millisecond').toDate()
+  date = new Date(date)
+  date.setFullYear(date.getFullYear() + 10)
+  date.setMilliseconds(date.getMilliseconds() - 1)
+  return date
 }
 
 function endOfCentury(date) {
-  return moment(date).add(100, 'year').add(-1, 'millisecond').toDate()
+  date = new Date(date)
+  date.setFullYear(date.getFullYear() + 100)
+  date.setMilliseconds(date.getMilliseconds() - 1)
+  return date
 }
 
-export default function momentLocalizer() {
-  let localizer = {
-    formats: {
-      date: 'L',
-      time: 'LT',
-      default: 'lll',
-      header: 'MMMM YYYY',
-      footer: 'LL',
-      weekday: 'dd',
-      dayOfMonth: 'DD',
-      month: 'MMM',
-      year: 'YYYY',
+const yr = 'YYYY'
+const defaultDateFormats = {
+  date: 'L',
+  time: 'LT',
+  datetime: 'lll',
+  header: 'MMMM YYYY',
+  footer: 'LL',
+  weekday: 'dd',
+  dayOfMonth: 'DD',
+  month: 'MMM',
+  year: yr,
 
-      decade(date, culture, localizer) {
-        return localizer.format(date, 'YYYY', culture)
-          + ' - ' + localizer.format(endOfDecade(date), 'YYYY', culture)
-      },
+  decade: (date, l) =>
+    `${l.formatDate(date, yr)} - ${l.formatDate(endOfDecade(date), yr)}`,
 
-      century(date, culture, localizer) {
-        return localizer.format(date, 'YYYY', culture)
-          + ' - ' + localizer.format(endOfCentury(date), 'YYYY', culture)
-      }
-    },
+  century: (date, l) =>
+    `${l.formatDate(date, yr)} - ${l.formatDate(endOfCentury(date), yr)}`,
+}
 
-    firstOfWeek(culture) {
-      return moment.localeData(culture).firstDayOfWeek()
-    },
+export default class MomentLocalizer extends Localizer {
+  constructor(moment, { culture, dateFormats = defaultDateFormats }) {
+    super({ dateFormats })
 
-    parse(value, format, culture) {
-      if (!value) return null;
-      const m = getMoment(culture, value, format);
-      if (m.isValid()) return m.toDate();
-      return null;
-    },
-
-    format(value, format, culture) {
-      return getMoment(culture, value).format(format)
-    }
+    this.m = moment
+    this.culture = culture
+    this.localField = typeof moment().locale === 'function' ? 'locale' : 'lang'
+    this.firstOfWeek = moment.localeData(culture).firstDayOfWeek()
   }
 
-  configure.setDateLocalizer(localizer)
+  getMoment(value, format) {
+    let moment = this.m(value, format, true)
+    if (this.culture) moment = moment[this.localField](this.culture)
+    return moment
+  }
+
+  _formatDate(value, format) {
+    return this.getMoment(value).format(format)
+  }
+
+  parseDate(value, format) {
+    if (!value) return null
+    const m = this.getMoment(value, format)
+    if (m.isValid()) return m.toDate()
+    return null
+  }
 }

@@ -8,7 +8,6 @@ import {
   mountManager,
   timeoutManager,
 } from 'react-component-managers'
-import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'
@@ -53,7 +52,6 @@ const CREATE_OPTION = {}
  * A `<select>` replacement for single value lists.
  * @public
  */
-@polyfillLifecycles
 class DropdownList extends React.Component {
   static propTypes = {
     ...Filter.propTypes,

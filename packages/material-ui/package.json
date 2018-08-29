@@ -19,8 +19,8 @@
     "react-widgets": "^4.2.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.52",
-    "@babel/core": "^7.0.0-beta.52",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
     "cpy-cli": "^2.0.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",

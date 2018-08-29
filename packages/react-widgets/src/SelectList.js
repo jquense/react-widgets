@@ -1,6 +1,5 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { autoFocus, timeoutManager } from 'react-component-managers'
@@ -49,7 +48,7 @@ function getFirstValue(data, values) {
  *
  * @public
  */
-@polyfillLifecycles
+
 class SelectList extends React.Component {
   static propTypes = {
     data: PropTypes.array,

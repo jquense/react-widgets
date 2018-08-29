@@ -1,34 +1,37 @@
-const path = require('path');
+const path = require('path')
 const { cleanDoclets } = require('gatsby-transformer-react-docgen/Doclets')
 
 const defaultDescriptions = require('./language')
 const defaultTypes = require('./types')
 
 function setDefaults(desc, name, widgetName) {
-  let type = desc.type;
-  let typeName = type && type.raw &&
-  type.raw.replace('CustomPropTypes.', '');
+  let type = desc.type
+  let typeName = type && type.raw && type.raw.replace('CustomPropTypes.', '')
 
   if (type && type.name === 'shape' && type.value) {
-    Object.keys(type.value).forEach((key) => {
-      type.value[key] = setDefaults({ type: type.value[key] }, key, widgetName).type
+    Object.keys(type.value).forEach(key => {
+      type.value[key] = setDefaults(
+        { type: type.value[key] },
+        key,
+        widgetName
+      ).type
     })
   }
 
   if (defaultTypes[typeName]) {
-    desc.type = Object.assign({}, type, defaultTypes[typeName]);
+    desc.type = Object.assign({}, type, defaultTypes[typeName])
   }
 
   if (defaultDescriptions[name]) {
     let dft = defaultDescriptions[name]
     if (!cleanDoclets(desc.description)) {
-      desc.description = dft({ name: widgetName }) + '\n' + desc.description || '';
+      desc.description =
+        dft({ name: widgetName }) + '\n' + desc.description || ''
     }
   }
 
   return desc
 }
-
 
 module.exports = {
   pathPrefix: `/react-widgets`,
@@ -37,11 +40,39 @@ module.exports = {
     author: 'Jason Quense',
   },
   plugins: [
+    'gatsby-transformer-documentationjs',
     {
       resolve: 'gatsby-source-filesystem',
       options: {
         path: path.join(__dirname, 'src/pages'),
         name: 'pages',
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: path.join(
+          __dirname,
+          '../packages/localizer-globalize/localizer.js'
+        ),
+        name: 'localizer-globalize',
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: path.join(
+          __dirname,
+          '../packages/localizer-globalize-old/localizer.js'
+        ),
+        name: 'localizer-globalize-old',
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: path.join(__dirname, '../packages/localizer-moment/localizer.js'),
+        name: 'localizer-moment',
       },
     },
     {
@@ -56,9 +87,7 @@ module.exports = {
     {
       resolve: 'gatsby-transformer-remark',
       options: {
-        plugins: [
-          'gatsby-remark-prismjs',
-        ],
+        plugins: ['gatsby-remark-prismjs'],
       },
     },
     { resolve: 'gatsby-plugin-jsxtreme-markdown' },
@@ -67,15 +96,15 @@ module.exports = {
       options: {
         handlers: [
           function defaultDescriptionsHandler(docs) {
-            let widgetName = docs.get('displayName');
+            let widgetName = docs.get('displayName')
             docs._props.forEach((_, name) => {
-              let desc = docs.getPropDescriptor(name);
+              let desc = docs.getPropDescriptor(name)
 
-              setDefaults(desc, name, widgetName);
-            });
-          }
-        ]
+              setDefaults(desc, name, widgetName)
+            })
+          },
+        ],
       },
     },
-  ]
-};
+  ],
+}

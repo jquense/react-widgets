@@ -1,5 +1,4 @@
 import dateMath from 'date-arithmetic'
-import { date as dateLocalizer } from './localizers'
 
 let dates = Object.assign({}, dateMath, {
   monthsInYear(year) {
@@ -7,24 +6,9 @@ let dates = Object.assign({}, dateMath, {
     return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => dates.month(date, i))
   },
 
-  firstVisibleDay(date, culture) {
-    let firstOfMonth = dates.startOf(date, 'month')
-    return dates.startOf(
-      firstOfMonth,
-      'week',
-      dateLocalizer.firstOfWeek(culture)
-    )
-  },
-
-  lastVisibleDay(date, culture) {
-    let endOfMonth = dates.endOf(date, 'month')
-
-    return dates.endOf(endOfMonth, 'week', dateLocalizer.firstOfWeek(culture))
-  },
-
-  visibleDays(date, culture) {
-    let current = dates.firstVisibleDay(date, culture)
-    let last = dates.lastVisibleDay(date, culture)
+  visibleDays(date, weekStart) {
+    let current = dates.startOf(dates.startOf(date, 'month'), 'week', weekStart)
+    let last = dates.endOf(dates.endOf(date, 'month'), 'week', weekStart)
     let days = []
 
     while (dates.lte(current, last, 'day')) {

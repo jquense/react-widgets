@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import { findDOMNode } from 'react-dom'
 
 import Input from './Input'
-import { date as dateLocalizer } from './util/localizers'
 import * as CustomPropTypes from './util/PropTypes'
 import * as Props from './util/Props'
 
-@polyfillLifecycles
 class DateTimePickerInput extends React.Component {
   static propTypes = {
     format: CustomPropTypes.dateFormat.isRequired,
@@ -19,7 +16,7 @@ class DateTimePickerInput extends React.Component {
     value: PropTypes.instanceOf(Date),
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func,
-    culture: PropTypes.string,
+    localizer: PropTypes.object.isRequired,
 
     disabled: CustomPropTypes.disabled,
     readOnly: CustomPropTypes.disabled,
@@ -28,12 +25,14 @@ class DateTimePickerInput extends React.Component {
   state = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let { value, editing, editFormat, format, culture } = nextProps
-    let textValue = formatDate(
-      value,
-      editing && editFormat ? editFormat : format,
-      culture
-    )
+    let { value, editing, editFormat, format, localizer } = nextProps
+    let textValue =
+      value instanceof Date && isValid(value)
+        ? localizer.formatDate(
+            value,
+            editing && editFormat ? editFormat : format
+          )
+        : ''
 
     if (prevState.lastValueFromProps !== textValue)
       return {
@@ -49,7 +48,7 @@ class DateTimePickerInput extends React.Component {
   }
 
   handleBlur = event => {
-    let { format, culture, parse, onChange, onBlur } = this.props
+    let { parse, onChange, onBlur } = this.props
 
     onBlur && onBlur(event)
 
@@ -57,7 +56,8 @@ class DateTimePickerInput extends React.Component {
       let date = parse(event.target.value)
 
       this._needsFlush = false
-      onChange(date, formatDate(date, format, culture))
+
+      onChange(date, event.target.value)
     }
   }
 
@@ -91,13 +91,4 @@ export default DateTimePickerInput
 
 function isValid(d) {
   return !isNaN(d.getTime())
-}
-
-function formatDate(date, format, culture) {
-  var val = ''
-
-  if (date instanceof Date && isValid(date))
-    val = dateLocalizer.format(date, format, culture)
-
-  return val
 }
