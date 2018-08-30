@@ -11,7 +11,7 @@ import Year from './Year'
 import Decade from './Decade'
 import Century from './Century'
 import LocalizationProvider from './LocalizationProvider'
-import SlideTransitionGroup from './SlideTransitionGroup'
+import SlideTransitionGroup from './SlideTransitionGroup2'
 import focusManager from './util/focusManager'
 
 import * as CustomPropTypes from './util/PropTypes'
