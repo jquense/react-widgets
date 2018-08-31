@@ -101,7 +101,7 @@ class ComponentTemplate extends React.Component {
           {frontmatter.localized && (
             <div className="alert alert-warning">
               <i className="fa fa-exclamation-triangle" />
-              You must configure a <Link to="localization">localizer</Link> to
+              You must configure a <Link to="/react-widgets/localization">localizer</Link> to
               use this component!
             </div>
           )}
