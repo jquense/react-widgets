@@ -30,14 +30,14 @@
   },
   "homepage": "https://github.com/jquense/react-widgets#readme",
   "peerDependencies": {
-    "date-fns": "2.0.0-alpha.13",
+    "date-fns": ">=2.0.0-alpha.8",
     "react-widgets": "^4.2.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.52",
     "@babel/core": "^7.0.0-beta.52",
     "cross-env": "^5.2.0",
-    "date-fns": "^2.0.0-alpha.7",
+    "date-fns": "^2.0.0-alpha.16",
     "react-widgets": "^4.4.3",
     "rimraf": "^2.6.2"
   }

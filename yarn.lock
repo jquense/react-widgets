@@ -3687,10 +3687,6 @@ date-fns@^2.0.0-alpha.16:
   version "2.0.0-alpha.16"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.16.tgz#d249a6c9b799252652fb9e3f25460eaf9de86ac7"
 
-date-fns@^2.0.0-alpha.7:
-  version "2.0.0-alpha.9"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.9.tgz#1406f2b57107781cf02ad84741a9013990f198ca"
-
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
