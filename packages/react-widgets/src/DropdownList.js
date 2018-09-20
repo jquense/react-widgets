@@ -192,6 +192,7 @@ class DropdownList extends React.Component {
       })
 
     const list = reduceToListState(data, prevState.list, { nextProps })
+    const selectedItem = data[initialIdx]
     const nextFocusedItem = ~data.indexOf(focusedItem) ? focusedItem : data[0]
 
     return {
@@ -201,11 +202,11 @@ class DropdownList extends React.Component {
       lastValue: value,
       messages: getMessages(messages),
       selectedItem: valueChanged
-        ? list.nextEnabled(data[initialIdx])
+        ? list.nextEnabled(selectedItem)
         : prevState.selectedItem,
       focusedItem:
         valueChanged || !focusedItem
-          ? list.nextEnabled(nextFocusedItem)
+          ? list.nextEnabled(selectedItem || data[0])
           : nextFocusedItem,
     }
   }

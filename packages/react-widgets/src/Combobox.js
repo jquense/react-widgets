@@ -181,6 +181,7 @@ class Combobox extends React.Component {
         filter: filter || true,
       })
     }
+    const selectedItem = data[index]
     const nextFocusedItem = ~focusedIndex ? focusedItem : data[0]
 
     return {
@@ -190,11 +191,11 @@ class Combobox extends React.Component {
       lastValue: value,
       messages: getMessages(messages),
       selectedItem: valueChanged
-        ? list.nextEnabled(data[index])
+        ? list.nextEnabled(selectedItem)
         : prevState.selectedItem,
       focusedItem:
         valueChanged || !focusedItem
-          ? list.nextEnabled(nextFocusedItem)
+          ? list.nextEnabled(selectedItem || nextFocusedItem)
           : nextFocusedItem,
     }
   }
