@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.20"></a>
+## [4.0.20](https://github.com/jquense/react-widgets/compare/react-widgets-moment@4.0.19...react-widgets-moment@4.0.20) (2018-09-20)
+
+
+
+
+**Note:** Version bump only for package react-widgets-moment
+
 <a name="4.0.19"></a>
 ## [4.0.19](https://github.com/jquense/react-widgets/compare/react-widgets-moment@4.0.18...react-widgets-moment@4.0.19) (2018-07-13)
 

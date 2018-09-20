@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.19"></a>
+## [4.0.19](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@4.0.18...react-widgets-date-fns@4.0.19) (2018-09-20)
+
+
+### Bug Fixes
+
+* update date-ins alpha to new formatting style ([526e9b7](https://github.com/jquense/react-widgets/commit/526e9b7)), closes [#827](https://github.com/jquense/react-widgets/issues/827)
+
+
+
+
 <a name="4.0.18"></a>
 ## [4.0.18](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@4.0.17...react-widgets-date-fns@4.0.18) (2018-07-13)
 
