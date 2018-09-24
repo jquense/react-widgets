@@ -9,7 +9,7 @@ const endOfDecade = addYears(10)
 const endOfCentury = addYears(100)
 
 function getYear(date, culture, localizer) {
-  return localizer.format(date, 'YYYY', culture)
+  return localizer.format(date, 'yyyy', culture)
 }
 
 function decade(date, culture, localizer) {
@@ -32,12 +32,12 @@ export const defaultFormats = {
   date: 'P',
   time: 'pp',
   default: 'Pp',
-  header: 'MMMM YYYY',
+  header: 'MMMM yyyy',
   footer: 'PPPP',
   weekday: 'cccccc',
   dayOfMonth: 'dd',
   month: 'MMM',
-  year: 'YYYY',
+  year: 'yyyy',
   decade: decade,
   century: century,
 }
