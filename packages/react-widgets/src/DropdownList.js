@@ -206,7 +206,7 @@ class DropdownList extends React.Component {
         : prevState.selectedItem,
       focusedItem:
         valueChanged || !focusedItem
-          ? list.nextEnabled(selectedItem || data[0])
+          ? list.nextEnabled(selectedItem || nextFocusedItem)
           : nextFocusedItem,
     }
   }
