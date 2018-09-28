@@ -22,13 +22,13 @@ if (process.env.NODE_ENV !== 'production') {
         'decade',
         'century',
       ].forEach(f =>
-        invariant(f in formats, `localizer missing required format: \`${f}\``)
+        invariant(f in formats, `localizer missing required format: \`${f}\``),
       )
   }
   checkNumberFormats = formats => {
     formats &&
       ['default'].forEach(f =>
-        invariant(f in formats, `localizer missing required format: \`${f}\``)
+        invariant(f in formats, `localizer missing required format: \`${f}\``),
       )
   }
 }
@@ -42,12 +42,12 @@ export function mergeWithDefaults(localizer, formatOverrides, messages) {
     formatDate: (value, format) =>
       localizer.formatDate(
         value,
-        formatOverrides[format] || localizer.dateFormats[format] || format
+        formatOverrides[format] || localizer.dateFormats[format] || format,
       ),
     formatNumber: (value, format) =>
       localizer.formatNumber(
         value,
-        formatOverrides[format] || localizer.numberFormats[format] || format
+        formatOverrides[format] || localizer.numberFormats[format] || format,
       ),
   }
 }

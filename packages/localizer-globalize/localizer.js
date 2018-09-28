@@ -35,13 +35,13 @@ export const defaultDateFormats = {
   decade: (dt, l) =>
     `${l.format(dt, l.formats.year)} - ${l.formatDate(
       endOfDecade(dt),
-      l.formats.year
+      l.formats.year,
     )}`,
 
   century: (dt, l) =>
     `${l.format(dt, l.formats.year)} - ${l.formatDate(
       endOfCentury(dt),
-      l.formats.year
+      l.formats.year,
     )}`,
 }
 export const defaultNumberFormats = {
@@ -73,7 +73,7 @@ class GlobalizeLocalizer extends Localizer {
       culture,
       dateFormats = defaultDateFormats,
       numberFormats = defaultNumberFormats,
-    }
+    },
   ) {
     super({ propType, dateFormats, numberFormats })
 

@@ -6,3 +6,4 @@ globals:
   css: false
 rules:
   global-require: off
+  quotes: off

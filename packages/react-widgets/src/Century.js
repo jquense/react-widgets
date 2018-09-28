@@ -12,7 +12,7 @@ class CenturyView extends React.Component {
     activeId: PropTypes.string,
     today: PropTypes.instanceOf(Date),
     value: PropTypes.instanceOf(Date),
-    focused: PropTypes.instanceOf(Date),
+    focusedItem: PropTypes.instanceOf(Date),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
     onChange: PropTypes.func.isRequired,
@@ -22,7 +22,7 @@ class CenturyView extends React.Component {
 
   renderRow = (row, rowIdx) => {
     let {
-      focused,
+      focusedItem,
       activeId,
       disabled,
       onChange,
@@ -52,7 +52,7 @@ class CenturyView extends React.Component {
               min={min}
               max={max}
               onChange={onChange}
-              focused={focused}
+              focusedItem={focusedItem}
               selected={value}
               disabled={disabled}
             >
@@ -65,12 +65,17 @@ class CenturyView extends React.Component {
   }
 
   render() {
-    let { focused, activeId } = this.props
+    let { focusedItem, activeId, onChange } = this.props
 
     return (
-      <CalendarView {...Props.omitOwn(this)} activeId={activeId}>
+      <CalendarView
+        {...Props.omitOwn(this)}
+        focusedItem={focusedItem}
+        onChange={onChange}
+        activeId={activeId}
+      >
         <CalendarView.Body>
-          {chunk(getCenturyDecades(focused), 4).map(this.renderRow)}
+          {chunk(getCenturyDecades(focusedItem), 4).map(this.renderRow)}
         </CalendarView.Body>
       </CalendarView>
     )

@@ -1,7 +1,7 @@
 .rw-calendar-popup {
   right: auto;
   min-width: 0;
-  width: 18em;
+  width: 22em;
 }
 
 .rw-calendar {
@@ -10,22 +10,40 @@
   border: $widget-border 1px solid;
   overflow: hidden;
 
-  &.rw-popup {
-    border-color: $popup-border;
+  .rw-popup & {
+    border: none;
   }
 }
 
 .rw-calendar-now {
   font-weight: bold;
 }
+.rw-calendar-header {
+  display: flex;
+  padding: 0.8em;
+}
 
 .rw-calendar-btn-left,
-.rw-calendar-btn-right {
-  width: 12.5%;
+.rw-calendar-btn-today,
+.rw-calendar-btn-right,
+.rw-calendar-btn-view {
+  padding: 0.3em 0.6em;
 }
 
 .rw-calendar-btn-view {
-  width: 75%;
+  font-weight: bold;
+
+  & > :last-child {
+    margin: 0 0.5em;
+  }
+  & + * {
+    margin-left: auto;
+  }
+
+  .rw-rtl & + * {
+    margin-left: 0;
+    margin-right: auto;
+  }
 }
 
 .rw-calendar-footer {
@@ -35,6 +53,7 @@
 .rw-calendar-grid {
   outline: none;
   height: 14em;
+  padding: $widget-focus-width;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
@@ -56,6 +75,7 @@
   text-align: center;
   border: 1px solid transparent;
   padding: $calendar-cell-padding;
+  outline: none;
 
   &:hover {
     @include state-hover(
@@ -65,7 +85,7 @@
     );
   }
 
-  &.rw-state-focus {
+  &:focus {
     @include focus-ring();
   }
 

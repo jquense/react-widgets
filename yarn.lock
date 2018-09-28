@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@4c/layout@file:../4c-layout":
+  version "0.1.1"
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    classnames "^2.2.6"
+    prop-types "^15.6.2"
+    prop-types-extra "^1.1.0"
+
 "@babel/cli@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.0.0.tgz#108b395fd43fff6681d36fb41274df4d8ffeb12e"
@@ -709,6 +717,12 @@
   dependencies:
     core-js "^2.5.3"
     regenerator-runtime "^0.11.1"
+
+"@babel/runtime@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0.tgz#adeb78fedfc855aa05bc041640f3f6f98e85424c"
+  dependencies:
+    regenerator-runtime "^0.12.0"
 
 "@babel/runtime@^7.0.0-beta.42", "@babel/runtime@^7.0.0-rc.1":
   version "7.0.0-rc.1"
@@ -8606,7 +8620,7 @@ prompts@^0.1.9:
     kleur "^2.0.1"
     sisteransi "^0.1.1"
 
-prop-types-extra@^1.0.1:
+prop-types-extra@^1.0.1, prop-types-extra@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/prop-types-extra/-/prop-types-extra-1.1.0.tgz#32609910ea2dcf190366bacd3490d5a6412a605f"
   dependencies:

@@ -2,32 +2,24 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 
-Input.propTypes = {
-  disabled: PropTypes.bool,
-  readOnly: PropTypes.bool,
-  value: PropTypes.string,
-  type: PropTypes.string,
-  tabIndex: PropTypes.string,
-  component: PropTypes.any,
-  nodeRef: PropTypes.func,
-}
-
-function Input({
-  className,
-  disabled,
-  readOnly,
-  value,
-  tabIndex,
-  nodeRef,
-  type = 'text',
-  component: Component = 'input',
-  ...props
-}) {
+const Input = React.forwardRef(function Input(
+  {
+    className,
+    disabled,
+    readOnly,
+    value,
+    tabIndex,
+    type = 'text',
+    component: Component = 'input',
+    ...props
+  },
+  ref
+) {
   return (
     <Component
       {...props}
       type={type}
-      ref={nodeRef}
+      ref={ref}
       tabIndex={tabIndex || 0}
       autoComplete="off"
       disabled={disabled}
@@ -38,6 +30,15 @@ function Input({
       className={cn(className, 'rw-input')}
     />
   )
+})
+
+Input.propTypes = {
+  disabled: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  value: PropTypes.string,
+  type: PropTypes.string,
+  tabIndex: PropTypes.string,
+  component: PropTypes.any,
 }
 
 export default Input

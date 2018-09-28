@@ -1,18 +1,24 @@
-import cn from 'classnames';
-import events from 'dom-helpers/events';
-import css from 'dom-helpers/style';
-import getHeight from 'dom-helpers/query/height';
-import { transitionDuration, transitionEnd } from 'dom-helpers/transition/properties';
-import PropTypes from 'prop-types';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import Transition, { ENTERING, ENTERED, EXITING, EXITED }
-  from 'react-transition-group/Transition';
-import React  from 'react';
-import { findDOMNode } from 'react-dom';
+import cn from 'classnames'
+import events from 'dom-helpers/events'
+import css from 'dom-helpers/style'
+import getHeight from 'dom-helpers/query/height'
+import getWidth from 'dom-helpers/query/width'
+import {
+  transitionDuration,
+  transitionEnd,
+} from 'dom-helpers/transition/properties'
+import PropTypes from 'prop-types'
+import TransitionGroup from 'react-transition-group/TransitionGroup'
+import Transition, {
+  ENTERING,
+  ENTERED,
+  EXITING,
+  EXITED,
+} from 'react-transition-group/Transition'
+import React from 'react'
+import { findDOMNode } from 'react-dom'
 
-import * as Props from './util/Props';
-
-const DirectionPropType = PropTypes.oneOf(['left', 'right', 'top', 'bottom']);
+const DirectionPropType = PropTypes.oneOf(['left', 'right', 'top', 'bottom'])
 
 const transitionStyle = {
   [ENTERING]: { position: 'absolute' },
@@ -32,27 +38,26 @@ function parseDuration(node) {
   return parseFloat(str) * mult
 }
 class SlideTransition extends React.Component {
-
   static contextTypes = {
     direction: DirectionPropType,
-  };
+  }
 
   handleTransitionEnd = (node, done) => {
     let duration = parseDuration(node) || 300
 
     const handler = () => {
       events.off(node, transitionEnd, handler, false)
-      done();
+      done()
     }
 
-    setTimeout(handler, duration * 1.5);
-    events.on(node, transitionEnd, handler, false);
+    setTimeout(handler, duration * 1.5)
+    events.on(node, transitionEnd, handler, false)
   }
 
   render() {
-    const { children, ...props } = this.props;
-    const { direction } = this.context;
-    const child = React.Children.only(children);
+    const { children, ...props } = this.props
+    const { direction } = this.context
+    const child = React.Children.only(children)
 
     return (
       <Transition
@@ -60,7 +65,7 @@ class SlideTransition extends React.Component {
         timeout={5000}
         addEndListener={this.handleTransitionEnd}
       >
-        {(status, innerProps) => (
+        {(status, innerProps) =>
           React.cloneElement(child, {
             ...innerProps,
             style: transitionStyle[status],
@@ -69,63 +74,65 @@ class SlideTransition extends React.Component {
               'rw-calendar-transition',
               `rw-calendar-transition-${direction}`,
               transitionClasses[status],
-            )
+            ),
           })
-        )}
+        }
       </Transition>
     )
   }
 }
 
-
 class SlideTransitionGroup extends React.Component {
-
   static childContextTypes = {
     direction: DirectionPropType,
   }
 
   static defaultProps = {
     direction: 'left',
-  };
+  }
 
   static propTypes = {
     direction: DirectionPropType,
-  };
-
-  getChildContext() {
-    return { direction: this.props.direction };
   }
 
-  handleEnter = (child) => {
+  getChildContext() {
+    return { direction: this.props.direction }
+  }
+
+  handleEnter = child => {
     let node = findDOMNode(this)
 
     if (!child) return
-    const height =  getHeight(child) + 'px';
+    const height = `${getHeight(child)}px`
+    const width = `${getWidth(child)}px`
 
+    this.props.onEnter(child)
     css(node, {
       height,
+      width,
       overflow: 'hidden',
     })
   }
 
   handleExited = () => {
     let node = findDOMNode(this)
-    css(node, { overflow: '', height: '' });
+    css(node, { overflow: '', height: '', width: '' })
   }
 
   render() {
-    let { children, direction } = this.props
+    let { children, direction, onEntering, ...props } = this.props
 
     return (
       <TransitionGroup
-        {...Props.omitOwn(this)}
-        component='div'
+        {...props}
+        component="div"
         className="rw-calendar-transition-group"
       >
         <SlideTransition
           key={children.key}
           direction={direction}
           onEnter={this.handleEnter}
+          onEntering={onEntering}
           onExited={this.handleExited}
         >
           {children}

@@ -10,6 +10,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
+    "@4c/layout": "file:../../../4c-layout",
     "@storybook/addon-actions": "^3.4.10",
     "@storybook/react": "4.0.0-alpha.16",
     "babel-core": "bridge",

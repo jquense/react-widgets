@@ -1,25 +1,31 @@
-import cn from 'classnames';
-import events from 'dom-helpers/events';
-import css from 'dom-helpers/style';
-import getHeight from 'dom-helpers/query/height';
-import { transitionDuration, transitionEnd } from 'dom-helpers/transition/properties';
-import PropTypes from 'prop-types';
-import React from 'react';
-import Transition, { ENTERING, EXITING, EXITED }
-  from 'react-transition-group/Transition';
+import cn from 'classnames'
+import events from 'dom-helpers/events'
+import css from 'dom-helpers/style'
+import getHeight from 'dom-helpers/query/height'
+import {
+  transitionDuration,
+  transitionEnd,
+} from 'dom-helpers/transition/properties'
+import PropTypes from 'prop-types'
+import React from 'react'
+import Transition, {
+  ENTERING,
+  EXITING,
+  EXITED,
+} from 'react-transition-group/Transition'
 
 const transitionClasses = {
   [ENTERING]: 'rw-popup-transition-entering',
   [EXITING]: 'rw-popup-transition-exiting',
   [EXITED]: 'rw-popup-transition-exited',
-};
+}
 
 const propTypes = {
   in: PropTypes.bool.isRequired,
   dropUp: PropTypes.bool,
   onEntering: PropTypes.func,
   onEntered: PropTypes.func,
-};
+}
 
 function parseDuration(node) {
   let str = css(node, transitionDuration)
@@ -31,39 +37,45 @@ class SlideDownTransition extends React.Component {
   getHeight() {
     let container = this.element
     let content = container.firstChild
-    let margin = parseInt(css(content, 'margin-top'), 10)
-               + parseInt(css(content, 'margin-bottom'), 10);
+    let margin =
+      parseInt(css(content, 'margin-top'), 10) +
+      parseInt(css(content, 'margin-bottom'), 10)
 
     let old = container.style.display
-    let height;
+    let height
 
     container.style.display = 'block'
-    height = (
-      (getHeight(content) || 0) +
-      (isNaN(margin) ? 0 : margin)
-    );
+    height = (getHeight(content) || 0) + (isNaN(margin) ? 0 : margin)
     container.style.display = old
     return height
   }
 
-  setContainerHeight = (elem) => {
-    elem.style.height = this.getHeight() + 'px';
+  setContainerHeight = elem => {
+    elem.style.height = this.getHeight() + 'px'
   }
 
-  clearContainerHeight = (elem) => {
-    elem.style.height = '';
+  clearContainerHeight = elem => {
+    elem.style.height = ''
   }
 
-  handleEntered = (elem) => {
-    this.clearContainerHeight(elem);
+  handleEntered = elem => {
+    this.clearContainerHeight(elem)
 
-    if (this.props.onEntered)
-      this.props.onEntered();
+    if (this.props.onEntered) this.props.onEntered()
   }
 
   handleEntering = () => {
-    if (this.props.onEntering)
-      this.props.onEntering();
+    if (this.props.onEntering) this.props.onEntering()
+  }
+
+  handleExit = elem => {
+    this.setContainerHeight(elem)
+
+    if (this.props.onExit) this.props.onExit()
+  }
+  handleExited = elem => {
+    this.clearContainerHeight(elem)
+    if (this.props.onExited) this.props.onExited()
   }
 
   handleTransitionEnd = (node, done) => {
@@ -71,17 +83,17 @@ class SlideDownTransition extends React.Component {
 
     const handler = () => {
       events.off(node, transitionEnd, handler, false)
-      done();
+      done()
     }
 
-    setTimeout(handler, duration * 1.5);
-    events.on(node, transitionEnd, handler, false);
+    setTimeout(handler, duration * 1.5)
+    events.on(node, transitionEnd, handler, false)
   }
 
-  attachRef = ref => (this.element = ref);
+  attachRef = ref => (this.element = ref)
 
   render() {
-    const { children, className, dropUp } = this.props;
+    const { children, className, dropUp } = this.props
 
     return (
       <Transition
@@ -91,8 +103,8 @@ class SlideDownTransition extends React.Component {
         onEnter={this.setContainerHeight}
         onEntering={this.handleEntering}
         onEntered={this.handleEntered}
-        onExit={this.setContainerHeight}
-        onExited={this.clearContainerHeight}
+        onExit={this.handleExit}
+        onExited={this.handleExited}
         addEndListener={this.handleTransitionEnd}
       >
         {(status, innerProps) => (
@@ -105,16 +117,14 @@ class SlideDownTransition extends React.Component {
               transitionClasses[status]
             )}
           >
-            <div className='rw-popup-transition'>
-              {children}
-            </div>
+            <div className="rw-popup-transition">{children}</div>
           </div>
         )}
       </Transition>
-    );
+    )
   }
 }
 
-SlideDownTransition.propTypes = propTypes;
+SlideDownTransition.propTypes = propTypes
 
 export default SlideDownTransition

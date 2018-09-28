@@ -1,6 +1,7 @@
 import React from 'react'
 
 const messages = {
+  moveToday: 'Today',
   moveBack: 'Navigate back',
   moveForward: 'Navigate forward',
 
