@@ -1,13 +1,11 @@
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import uncontrollable from 'uncontrollable'
 import { autoFocus } from 'react-component-managers'
 
 import Widget from './Widget'
-import Header from './Header'
-import Footer from './Footer'
+import CalendarHeader from './CalendarHeader'
 import Month from './Month'
 import Year from './Year'
 import Decade from './Decade'
@@ -23,6 +21,9 @@ import { instanceId, notify } from './util/widgetHelpers'
 import { widgetEditable } from './util/interaction'
 
 let last = a => a[a.length - 1]
+
+const CELL_CLASSNAME = 'rw-cell'
+const FOCUSED_CELL_SELECTOR = `.${CELL_CLASSNAME}[tabindex]`
 
 const VIEW_UNIT = {
   month: 'day',
@@ -285,6 +286,9 @@ class Calendar extends React.Component {
   constructor(...args) {
     super(...args)
 
+    this.viewRef = React.createRef()
+    this.ref = React.createRef()
+
     this.viewId = instanceId(this, '_calendar')
     this.labelId = instanceId(this, '_calendar_label')
     this.activeId =
@@ -305,7 +309,7 @@ class Calendar extends React.Component {
 
   static getDerivedStateFromProps(
     { view, views, value, currentDate },
-    prevState
+    prevState,
   ) {
     view = view || views[0]
     let { slideDirection, view: lastView, currentDate: lastDate } = prevState
@@ -370,8 +374,9 @@ class Calendar extends React.Component {
   }
 
   @widgetEditable
-  handleFooterClick = date => {
+  handleMoveToday = () => {
     let { views, min, max, onViewChange } = this.props
+    let date = new Date()
 
     let firstView = views[0]
 
@@ -395,6 +400,7 @@ class Calendar extends React.Component {
     let direction = ARROWS_TO_DIRECTION[key]
     let unit = VIEW_UNIT[view]
 
+    // TODO: should be in
     if (key === 'Enter') {
       e.preventDefault()
       return this.handleChange(currentDate)
@@ -413,7 +419,7 @@ class Calendar extends React.Component {
           this.props.min,
           this.props.max,
           view,
-          direction
+          direction,
         )
 
         if (!dates.eq(currentDate, nextDate, unit)) {
@@ -437,20 +443,17 @@ class Calendar extends React.Component {
       value,
       disabled,
       readOnly,
-      footer,
       views,
       min,
       max,
-      culture,
       tabIndex,
       localizer,
     } = this.props
 
     let { currentDate, view, slideDirection, focused } = this.state
 
-    let View = VIEW[view],
-      todaysDate = new Date(),
-      todayNotInRange = !dates.inRange(todaysDate, min, max, view)
+    let View = VIEW[view]
+    let todayNotInRange = !dates.inRange(new Date(), min, max, view)
 
     let key = view + '_' + dates[view](currentDate)
 
@@ -463,17 +466,15 @@ class Calendar extends React.Component {
       <Widget
         {...elementProps}
         role="group"
+        ref={this.ref}
         focused={focused}
         disabled={disabled}
         readOnly={readOnly}
         tabIndex={tabIndex || 0}
-        onKeyDown={this.handleKeyDown}
-        onBlur={this.focusManager.handleBlur}
-        onFocus={this.focusManager.handleFocus}
         className={cn(className, 'rw-calendar rw-widget-container')}
         aria-activedescendant={this.activeId}
       >
-        <Header
+        <CalendarHeader
           isRtl={this.isRtl()}
           label={this.getHeaderLabel()}
           labelId={this.labelId}
@@ -482,38 +483,32 @@ class Calendar extends React.Component {
           prevDisabled={
             isDisabled || !dates.inRange(this.nextDate('LEFT'), min, max, view)
           }
+          todayDisabled={disabled || todayNotInRange}
           nextDisabled={
             isDisabled || !dates.inRange(this.nextDate('RIGHT'), min, max, view)
           }
           onViewChange={this.handleViewChange}
           onMoveLeft={this.handleMoveBack}
           onMoveRight={this.handleMoveForward}
+          onMoveToday={this.handleMoveToday}
         />
-        <Calendar.Transition direction={slideDirection}>
+        <Calendar.Transition
+          direction={slideDirection}
+          onTransitionStart={this.moveFocus}
+        >
           <View
             {...viewProps}
             key={key}
             id={this.viewId}
             activeId={this.activeId}
             value={value}
-            today={todaysDate}
             disabled={disabled}
-            focused={currentDate}
+            focusedItem={currentDate}
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
             aria-labelledby={this.labelId}
           />
         </Calendar.Transition>
-        {footer && (
-          <Footer
-            value={todaysDate}
-            localizer={localizer}
-            culture={culture}
-            disabled={disabled || todayNotInRange}
-            readOnly={readOnly}
-            onClick={this.handleFooterClick}
-          />
-        )}
       </Widget>
     )
   }
@@ -537,14 +532,23 @@ class Calendar extends React.Component {
     if (dates.inRange(date, min, max, view)) {
       notify(onNavigate, [date, slideDir, view])
 
-      this.focus(true)
+      //this.focus()
       this.maybeSetCurrentDate(date)
       notify(onViewChange, [view])
     }
   }
 
-  focus() {
-    if (+this.props.tabIndex > -1) findDOMNode(this).focus()
+  focus = () => {
+    this.ref.current?.querySelector(FOCUSED_CELL_SELECTOR)?.focus()
+  }
+
+  moveFocus = node => {
+    let listitem = node.querySelector(FOCUSED_CELL_SELECTOR)
+    let current = document.activeElement
+
+    if (listitem && (!current || current.classList.contains(CELL_CLASSNAME))) {
+      listitem.focus()
+    }
   }
 
   maybeSetCurrentDate(date) {
@@ -554,7 +558,7 @@ class Calendar extends React.Component {
     let inRangeDate = inRangeValue(
       date ? new Date(date) : currentDate,
       min,
-      max
+      max,
     )
 
     if (
@@ -589,12 +593,12 @@ class Calendar extends React.Component {
       case 'decade':
         return localizer.formatDate(
           dates.startOf(currentDate, 'decade'),
-          'decade'
+          'decade',
         )
       case 'century':
         return localizer.formatDate(
           dates.startOf(currentDate, 'century'),
-          'century'
+          'century',
         )
     }
   }

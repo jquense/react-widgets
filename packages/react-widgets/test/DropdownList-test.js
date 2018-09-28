@@ -16,7 +16,7 @@ describe('DROPDOWNS', function() {
     expect(
       mount(<ControlledDropdownList value={'hello'} />)
         .find('.rw-input')
-        .text()
+        .text(),
     ).to.equal('hello')
   })
 
@@ -28,10 +28,10 @@ describe('DROPDOWNS', function() {
           data={data}
           textField={i => i.label}
           valueField="id"
-        />
+        />,
       )
         .find('.rw-input')
-        .text()
+        .text(),
     ).to.equal('jimmy')
   })
 
@@ -48,7 +48,7 @@ describe('DROPDOWNS', function() {
 
   it('should respect autoFocus', () => {
     expect(mount(<ControlledDropdownList autoFocus />).getDOMNode()).to.equal(
-      document.activeElement
+      document.activeElement,
     )
   })
 
@@ -56,11 +56,11 @@ describe('DROPDOWNS', function() {
     let openSpy = sinon.spy()
 
     mount(<ControlledDropdownList onToggle={openSpy} disabled />).simulate(
-      'click'
+      'click',
     )
 
     mount(<ControlledDropdownList onToggle={openSpy} readOnly />).simulate(
-      'click'
+      'click',
     )
 
     expect(openSpy.called).to.equal(false)
@@ -73,7 +73,7 @@ describe('DROPDOWNS', function() {
         data={data}
         textField="label"
         valueField="id"
-      />
+      />,
     )
 
     expect(inst.prop('open')).to.not.equal(true)
@@ -90,7 +90,7 @@ describe('DROPDOWNS', function() {
 
     inst.is('[aria-expanded]')
     inst.assertSingle('Popup[open]')
-    inst.assertSingle('Widget[open]')
+    inst.assertSingle('ForwardRef(Widget)[open]')
   })
 
   it('should foward props to Popup', () => {
@@ -174,10 +174,10 @@ describe('DROPDOWNS', function() {
 
     expect(
       mount(
-        <DropdownList defaultValue={'jimmy'} valueComponent={ValueComponent} />
+        <DropdownList defaultValue={'jimmy'} valueComponent={ValueComponent} />,
       )
         .find('.rw-input')
-        .text()
+        .text(),
     ).to.equal('hello - jimmy')
   })
 
@@ -192,7 +192,7 @@ describe('DROPDOWNS', function() {
         searchTerm="foooo"
         onChange={change}
         onToggle={() => {}}
-      />
+      />,
     )
       .find('List')
       .prop('onSelect')(null, 'foo')
@@ -213,7 +213,7 @@ describe('DROPDOWNS', function() {
         value={data[0]}
         onChange={change}
         onToggle={() => {}}
-      />
+      />,
     ).simulate('keyDown', { key: 'ArrowDown' })
 
     let bonusArgs = change.getCall(0).args[1]
@@ -234,7 +234,7 @@ describe('DROPDOWNS', function() {
         data={data}
         onChange={change}
         onSelect={onSelect}
-      />
+      />,
     )
       .find('List')
       .prop('onSelect')(data[1], 'foo')
@@ -277,10 +277,10 @@ describe('DROPDOWNS', function() {
         textField="label"
         valueField="id"
         onChange={change}
-      />
+      />,
     )
 
-    let listItems = inst.find('List li')
+    let listItems = inst.find('ListOption > div')
 
     listItems.first().is('.rw-state-focus')
 
@@ -307,7 +307,7 @@ describe('DROPDOWNS', function() {
         delay={0}
         onChange={change}
         textField="label"
-      />
+      />,
     ).simulate('keyPress', { which: 80, key: 'p' })
 
     setTimeout(() => {
@@ -330,7 +330,7 @@ describe('DROPDOWNS', function() {
         data={data}
         onChange={change}
         textField="label"
-      />
+      />,
     ).simulate('keyPress', { which: 80, key: 'p' })
 
     setTimeout(() => {
@@ -351,7 +351,7 @@ describe('DROPDOWNS', function() {
         data={data}
         onChange={change}
         textField="label"
-      />
+      />,
     ).simulate('keyPress', { which: 74, key: 'j' })
 
     setTimeout(() => {

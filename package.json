@@ -41,6 +41,11 @@
     "webpack-atoms": "^10.0.2",
     "webpack-merge": "^4.2.1"
   },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "semi": false
+  },
   "workspaces": [
     "packages/*"
   ]

@@ -6,7 +6,11 @@
   justify-content: center;
   border: 1px solid transparent;
   cursor: pointer;
-  outline: none; // these are never individually focusable
+  outline: none;
+
+  &:focus {
+    @include focus-ring();
+  }
 
   .rw-state-readonly &,
   .rw-state-disabled & {
@@ -26,9 +30,10 @@
 }
 
 .rw-btn-primary {
-  width: 100%;
+  //width: 100%;
   white-space: normal;
   line-height: 2em;
+  border-radius: $btn-border-radius;
 
   &:hover {
     background-color: $state-hover-bg;

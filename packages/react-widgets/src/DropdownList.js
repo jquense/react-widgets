@@ -409,18 +409,6 @@ class DropdownList extends React.Component {
 
     return (
       <div>
-        {/* {filter && (
-          <WidgetPicker className="rw-filter-input rw-input">
-            <input
-              value={searchTerm}
-              className="rw-input-reset"
-              onChange={this.handleInputChange}
-              placeholder={messages.filterPlaceholder(this.props)}
-              ref={this.attachFilterRef}
-            />
-            <Select icon={searchIcon} role="presentation" aria-hidden="true" />
-          </WidgetPicker>
-        )} */}
         <List
           {...listProps}
           id={this.listId}
@@ -594,7 +582,7 @@ class DropdownList extends React.Component {
         this._currentWord = ''
         if (item) cb(item)
       },
-      this.props.delay
+      this.props.delay,
     )
   }
 
@@ -648,5 +636,5 @@ export default uncontrollable(
     value: 'onChange',
     searchTerm: 'onSearch',
   },
-  ['focus']
+  ['focus'],
 )

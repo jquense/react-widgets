@@ -2,8 +2,9 @@ import invariant from 'invariant'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import activeElement from 'dom-helpers/activeElement'
+
 import cn from 'classnames'
+import tabTrap from './util/tabTrap'
 import uncontrollable from 'uncontrollable'
 
 import Widget from './Widget'
@@ -12,8 +13,9 @@ import Popup from './Popup'
 import Button from './Button'
 import Calendar from './Calendar'
 import DateTimePickerInput from './DateTimePickerInput'
+import TimeInput from './TimeInput'
 import Select from './Select'
-import TimeList from './TimeList'
+// import TimeList from './TimeList'
 
 import * as Props from './util/Props'
 import * as CustomPropTypes from './util/PropTypes'
@@ -43,10 +45,9 @@ let propTypes = {
    */
   onChange: PropTypes.func,
   /**
-   * @type {(false | 'time' | 'date')}
    * @example ['openDateTime']
    */
-  open: PropTypes.oneOf([false, 'time', 'date']),
+  open: PropTypes.bool,
   onToggle: PropTypes.func,
 
   /**
@@ -121,10 +122,10 @@ let propTypes = {
    */
   time: PropTypes.bool,
 
-  /**
-   * A customize the rendering of times but providing a custom component.
-   */
-  timeComponent: CustomPropTypes.elementType,
+  timePrecision: PropTypes.oneOf(['minutes', 'seconds', 'milliseconds'])
+    .isRequired,
+
+  timeInputProps: PropTypes.object,
 
   /** Specify the element used to render the calendar dropdown icon. */
   dateIcon: PropTypes.node,
@@ -233,7 +234,10 @@ class DateTimePicker extends React.Component {
     this.handleScroll = scrollManager(this)
     this.focusManager = focusManager(this, {
       didHandle: focused => {
-        if (!focused) this.close()
+        if (!focused) {
+          this.close()
+          this.tabTrap.stop()
+        }
       },
     })
 
@@ -277,9 +281,6 @@ class DateTimePicker extends React.Component {
         e.preventDefault()
         this.close()
       }
-    } else if (open) {
-      if (open === 'date') this.calRef.inner.handleKeyDown(e)
-      if (open === 'time') this.timeRef.handleKeyDown(e)
     }
   }
 
@@ -292,45 +293,45 @@ class DateTimePicker extends React.Component {
 
   @widgetEditable
   handleDateSelect = date => {
-    let dateTime = dates.merge(date, this.props.value, this.props.currentDate)
+    const { value, time, currentDate, onSelect } = this.props
+    let dateTime = dates.merge(date, value, currentDate)
     let dateStr = this.formatDate(date)
 
-    this.close()
-    notify(this.props.onSelect, [dateTime, dateStr])
+    !time && this.close()
+    notify(onSelect, [dateTime, dateStr])
     this.handleChange(dateTime, dateStr, true)
     this.focus()
   }
 
   @widgetEditable
-  handleTimeSelect = datum => {
-    let dateTime = dates.merge(
-      this.props.value,
-      datum.date,
-      this.props.currentDate
-    )
-    let dateStr = this.formatDate(datum.date)
-
-    this.close()
-    notify(this.props.onSelect, [dateTime, dateStr])
-    this.handleChange(dateTime, dateStr, true)
-    this.focus()
+  handleTimeChange = date => {
+    this.handleChange(date, this.formatDate(date), true)
   }
 
   @widgetEditable
   handleCalendarClick = () => {
-    this.focus()
-    this.toggle('date')
+    // this.focus()
+    this.toggle()
   }
 
-  @widgetEditable
-  handleTimeClick = () => {
-    this.focus()
-    this.toggle('time')
+  handleOpening = () => {
+    this.tabTrap.start()
+    requestAnimationFrame(() => {
+      this.calRef?.focus()
+    })
   }
 
-  attachCalRef = ref => (this.calRef = ref)
+  handleClosing = () => {
+    this.tabTrap.stop()
+    this.state.focused && this.focus()
+  }
 
-  attachTimeRef = ref => (this.timeRef = ref)
+  attachCalRef = ref => {
+    this.calRef = ref
+
+    if (ref === null) this.tabTrap?.stop()
+    else this.tabTrap = tabTrap(findDOMNode(ref)?.parentNode)
+  }
 
   attachInputRef = ref => (this.inputRef = ref)
 
@@ -355,9 +356,7 @@ class DateTimePicker extends React.Component {
     let inputReadOnly = inputProps ? inputProps.readOnly : null
 
     let activeId = null
-    if (open === 'time') {
-      activeId = this.activeOptionId
-    } else if (open === 'date') {
+    if (open) {
       activeId = this.activeCalendarId
     }
 
@@ -391,35 +390,19 @@ class DateTimePicker extends React.Component {
   }
 
   renderButtons() {
-    let {
-      date,
-      dateIcon,
-      time,
-      timeIcon,
-      disabled,
-      readOnly,
-      localizer,
-    } = this.props
+    let { date, dateIcon, time, disabled, readOnly, localizer } = this.props
 
     if (!date && !time) {
       return null
     }
     return (
       <Select bordered>
-        {date && (
+        {(date || time) && (
           <Button
             icon={dateIcon}
             label={localizer.messages.dateButton()}
             disabled={disabled || readOnly}
             onClick={this.handleCalendarClick}
-          />
-        )}
-        {time && (
-          <Button
-            icon={timeIcon}
-            label={localizer.messages.timeButton()}
-            disabled={disabled || readOnly}
-            onClick={this.handleTimeClick}
           />
         )}
       </Select>
@@ -437,85 +420,49 @@ class DateTimePicker extends React.Component {
       currentDate,
       min,
       max,
-
+      time,
+      timePrecision,
       calendarProps,
+      timeInputProps,
     } = this.props
 
     return (
       <Popup
         dropUp={dropUp}
-        open={open === 'date'}
+        open={open}
+        role="dialog"
         className="rw-calendar-popup"
         transition={popupTransition}
-      >
-        <Calendar
-          id={dateId}
-          min={min}
-          max={max}
-          {...calendarProps}
-          activeId={activeCalendarId}
-          tabIndex="-1"
-          value={value}
-          autoFocus={false}
-          onChange={this.handleDateSelect}
-          // #75: need to aggressively reclaim focus from the calendar otherwise
-          // disabled header/footer buttons will drop focus completely from the widget
-          onNavigate={() => this.focus()}
-          currentDate={currentDate}
-          onCurrentDateChange={onCurrentDateChange}
-          aria-hidden={!open}
-          aria-live="polite"
-          aria-labelledby={inputId}
-          ref={this.attachCalRef}
-        />
-      </Popup>
-    )
-  }
-
-  renderTimeList() {
-    let { activeOptionId, inputId, listId } = this
-    let {
-      open,
-      value,
-      min,
-      max,
-      step,
-      currentDate,
-      dropUp,
-      date,
-      localizer,
-      timeComponent,
-      timeListProps,
-      popupTransition,
-    } = this.props
-
-    return (
-      <Popup
-        dropUp={dropUp}
-        transition={popupTransition}
-        open={open === 'time'}
-        onEntering={() => this.timeRef.forceUpdate()}
+        onEntering={this.handleOpening}
+        onExited={this.handleClosing}
       >
         <div>
-          <TimeList
-            id={listId}
+          <Calendar
+            id={dateId}
             min={min}
             max={max}
-            step={step}
-            listProps={timeListProps}
+            {...calendarProps}
+            activeId={activeCalendarId}
+            tabIndex="-1"
+            value={value}
+            autoFocus={false}
+            onChange={this.handleDateSelect}
             currentDate={currentDate}
-            activeId={activeOptionId}
-            value={dateOrNull(value)}
-            onMove={this.handleScroll}
-            onSelect={this.handleTimeSelect}
-            preserveDate={!!date}
-            itemComponent={timeComponent}
-            aria-labelledby={inputId}
-            aria-live={open && 'polite'}
+            onCurrentDateChange={onCurrentDateChange}
             aria-hidden={!open}
-            localizer={localizer}
-            ref={this.attachTimeRef}
+            aria-live="polite"
+            aria-labelledby={inputId}
+            ref={this.attachCalRef}
           />
+          {time && (
+            <TimeInput
+              {...timeInputProps}
+              value={value}
+              precision={timePrecision}
+              onChange={this.handleTimeChange}
+              datePart={this.props.currentDate}
+            />
+          )}
         </div>
       </Popup>
     )
@@ -562,15 +509,14 @@ class DateTimePicker extends React.Component {
           {this.renderButtons()}
         </WidgetPicker>
 
-        {!!(shouldRenderList && time) && this.renderTimeList()}
-        {!!(shouldRenderList && date) && this.renderCalendar()}
+        {!!(shouldRenderList && (date || time)) && this.renderCalendar()}
       </Widget>
     )
   }
 
   focus() {
-    if (this.inputRef && activeElement() !== findDOMNode(this.inputRef))
-      this.inputRef.focus()
+    if (this.props.open) this.calRef?.focus()
+    else this.inputRef?.focus()
   }
 
   parse = string => {
@@ -582,7 +528,7 @@ class DateTimePicker extends React.Component {
       'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
         'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
         'please provide either a parse function or localizer compatible `format` prop',
-      string
+      string,
     )
 
     let date
@@ -603,23 +549,17 @@ class DateTimePicker extends React.Component {
     return null
   }
 
-  toggle(view) {
+  toggle() {
     const { open } = this.props
 
-    if (!open || open !== view) this.open(view)
+    if (!open) this.open()
     else this.close()
   }
 
-  open(view) {
-    const { open, date, time, onToggle } = this.props
+  open() {
+    const { open, onToggle } = this.props
 
-    if (!view) {
-      if (time) view = 'time'
-      if (date) view = 'date'
-      if (isBothOrNeither(date, time)) view = NEXT_VIEW[open] || 'date'
-    }
-
-    if (open !== view) notify(onToggle, view)
+    if (!open) notify(onToggle, true)
   }
 
   close() {
@@ -657,10 +597,5 @@ export default uncontrollable(
     open: 'onToggle',
     value: 'onChange',
     currentDate: 'onCurrentDateChange',
-  }
+  },
 )
-
-function dateOrNull(dt) {
-  if (dt && !isNaN(dt.getTime())) return dt
-  return null
-}

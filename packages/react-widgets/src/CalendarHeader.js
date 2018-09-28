@@ -1,18 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Button from './Button'
-import { chevronRight, chevronLeft } from './Icon'
+import { chevronRight, chevronLeft, caretDown } from './Icon'
 
-class Header extends React.Component {
+class CalendarHeader extends React.Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     labelId: PropTypes.string,
 
     upDisabled: PropTypes.bool.isRequired,
     prevDisabled: PropTypes.bool.isRequired,
+    todayDisabled: PropTypes.bool.isRequired,
     nextDisabled: PropTypes.bool.isRequired,
     onViewChange: PropTypes.func.isRequired,
     onMoveLeft: PropTypes.func.isRequired,
+    onMoveToday: PropTypes.func.isRequired,
     onMoveRight: PropTypes.func.isRequired,
 
     navigatePrevIcon: PropTypes.node,
@@ -28,9 +30,11 @@ class Header extends React.Component {
       label,
       labelId,
       onMoveRight,
+      onMoveToday,
       onMoveLeft,
       onViewChange,
       prevDisabled,
+      todayDisabled,
       upDisabled,
       nextDisabled,
       navigatePrevIcon = chevronLeft,
@@ -41,13 +45,7 @@ class Header extends React.Component {
     return (
       <div className="rw-calendar-header">
         <Button
-          className="rw-calendar-btn-left"
-          onClick={onMoveLeft}
-          disabled={prevDisabled}
-          label={localizer.messages.moveBack()}
-          icon={isRtl ? navigateNextIcon : navigatePrevIcon}
-        />
-        <Button
+          acceptFocus
           id={labelId}
           onClick={onViewChange}
           className="rw-calendar-btn-view"
@@ -55,9 +53,26 @@ class Header extends React.Component {
           aria-live="polite"
           aria-atomic="true"
         >
-          {label}
+          {label} {caretDown}
         </Button>
         <Button
+          acceptFocus
+          className="rw-calendar-btn-left"
+          onClick={onMoveLeft}
+          disabled={prevDisabled}
+          label={localizer.messages.moveBack()}
+          icon={isRtl ? navigateNextIcon : navigatePrevIcon}
+        />
+        <Button
+          acceptFocus
+          className="rw-calendar-btn-today"
+          disabled={todayDisabled}
+          onClick={onMoveToday}
+        >
+          {localizer.messages.moveToday()}
+        </Button>
+        <Button
+          acceptFocus
           className="rw-calendar-btn-right"
           onClick={onMoveRight}
           disabled={nextDisabled}
@@ -69,4 +84,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header
+export default CalendarHeader

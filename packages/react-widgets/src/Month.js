@@ -16,7 +16,7 @@ class MonthView extends React.Component {
     activeId: PropTypes.string,
     today: PropTypes.instanceOf(Date),
     value: PropTypes.instanceOf(Date),
-    focused: PropTypes.instanceOf(Date),
+    focusedItem: PropTypes.instanceOf(Date),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
     onChange: PropTypes.func.isRequired,
@@ -31,6 +31,7 @@ class MonthView extends React.Component {
     return week.map(date => {
       return (
         <th
+          scope="col"
           className="rw-head-cell"
           key={
             'header_' + dates.weekday(date, undefined, localizer.firstOfWeek)
@@ -44,7 +45,7 @@ class MonthView extends React.Component {
 
   renderRow = (row, rowIdx) => {
     let {
-      focused,
+      focusedItem,
       today,
       activeId,
       disabled,
@@ -74,7 +75,7 @@ class MonthView extends React.Component {
               unit="day"
               viewUnit="month"
               onChange={onChange}
-              focused={focused}
+              focusedItem={focusedItem}
               selected={value}
               disabled={disabled}
             >
@@ -87,14 +88,29 @@ class MonthView extends React.Component {
   }
 
   render() {
-    let { className, focused, activeId, localizer } = this.props
-    let month = dates.visibleDays(focused, localizer.firstOfWeek)
+    let {
+      className,
+      focusedItem,
+      localizer,
+      onChange,
+      activeId,
+      today: _6,
+      disabled: _5,
+      value: _3,
+      min: _2,
+      max: _1,
+      dayComponent: _0,
+      ...props
+    } = this.props
+    let month = dates.visibleDays(focusedItem, localizer.firstOfWeek)
     let rows = chunk(month, 7)
 
     return (
       <CalendarView
-        {...Props.omitOwn(this)}
+        {...props}
+        onChange={onChange}
         activeId={activeId}
+        focusedItem={focusedItem}
         className={cn(className, 'rw-calendar-month')}
       >
         <thead className="rw-calendar-head">

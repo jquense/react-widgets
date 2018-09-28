@@ -1,0 +1,37 @@
+.rw-time-input {
+  display: inline-flex;
+  min-height: $input-height;
+  align-items: center;
+  padding: 0;
+}
+
+.rw-time-part-input {
+  padding: 0 0.5em;
+  min-height: $input-height;
+  text-align: center;
+
+  &::placeholder {
+    text-align: center;
+  }
+}
+
+.rw-time-part-meridiem {
+  padding: 0 0.5em;
+  text-transform: lowercase;
+  font-variant: small-caps;
+
+  & :focus {
+    outline: none;
+  }
+}
+
+.rw-time-input-clear {
+  padding: 0 0.4em;
+  outline: none;
+  opacity: 0;
+
+  .rw-time-input:hover &.rw-show,
+  .rw-time-input.rw-state-focus &.rw-show {
+    opacity: 1;
+  }
+}

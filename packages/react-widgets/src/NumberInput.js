@@ -158,14 +158,24 @@ class NumberPickerInput extends React.Component {
   }
 
   render() {
-    let { disabled, readOnly, placeholder, min, max } = this.props
+    let {
+      disabled,
+      readOnly,
+      placeholder,
+      innerRef,
+      min,
+      max,
+      localizer: _0,
+      editing: _1,
+      ...props
+    } = this.props
 
     let value = this.state.stringValue
-    let props = Props.omitOwn(this)
 
     return (
       <Input
         {...props}
+        ref={innerRef}
         className="rw-widget-input"
         onChange={this.handleChange}
         onBlur={this.handleBlur}

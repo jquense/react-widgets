@@ -23,6 +23,7 @@ class DateTimePickerInput extends React.Component {
   }
 
   state = {}
+  input = React.createRef()
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { value, editing, editFormat, format, localizer } = nextProps
@@ -44,7 +45,7 @@ class DateTimePickerInput extends React.Component {
   }
 
   focus() {
-    findDOMNode(this).focus()
+    this.input.current?.focus()
   }
 
   handleBlur = event => {
@@ -80,6 +81,7 @@ class DateTimePickerInput extends React.Component {
       <Input
         {...props}
         type="text"
+        ref={this.input}
         className="rw-widget-input"
         value={textValue}
         disabled={disabled}

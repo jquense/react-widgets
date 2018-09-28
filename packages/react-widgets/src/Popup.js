@@ -43,7 +43,6 @@ class Popup extends React.Component {
       ...props
     } = this.props
 
-
     return (
       <Transition
         {...props}

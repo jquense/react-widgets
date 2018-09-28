@@ -1,7 +1,7 @@
 .rw-calendar-popup {
   right: auto;
   min-width: 0;
-  width: 18em;
+  width: 22em;
 }
 
 .rw-calendar {
@@ -10,22 +10,40 @@
   border: $widget-border 1px solid;
   overflow: hidden;
 
-  &.rw-popup {
-    border-color: $popup-border;
+  .rw-popup & {
+    border: none;
   }
 }
 
 .rw-calendar-now {
   font-weight: bold;
 }
+.rw-calendar-header {
+  display: flex;
+  padding: 0.8em;
+}
 
 .rw-calendar-btn-left,
-.rw-calendar-btn-right {
-  width: 12.5%;
+.rw-calendar-btn-today,
+.rw-calendar-btn-right,
+.rw-calendar-btn-view {
+  padding: 0.3em 0.6em;
 }
 
 .rw-calendar-btn-view {
-  width: 75%;
+  font-weight: bold;
+
+  & > :last-child {
+    margin: 0 0.5em;
+  }
+  & + * {
+    margin-left: auto;
+  }
+
+  .rw-rtl & + * {
+    margin-left: 0;
+    margin-right: auto;
+  }
 }
 
 .rw-calendar-footer {
@@ -35,6 +53,7 @@
 .rw-calendar-grid {
   outline: none;
   height: 14em;
+  padding: $widget-focus-width;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
@@ -56,6 +75,7 @@
   text-align: center;
   border: 1px solid transparent;
   padding: $calendar-cell-padding;
+  outline: none;
 
   &:hover {
     @include state-hover(
@@ -65,7 +85,7 @@
     );
   }
 
-  &.rw-state-focus {
+  &:focus {
     @include focus-ring();
   }
 
@@ -95,52 +115,86 @@
   color: lighten($btn-color, 40%);
 }
 
-.rw-calendar-transition-group {
-  position: relative;
+@mixin translate($x, $y) {
+  transform: translate(#{$x}, #{$y});
+
+  @supports (transform-style: preserve-3d) {
+    transform: translate3d(#{$x}, #{$y}, 0);
+  }
 }
 
-.rw-calendar-transition {
-  transition: transform 300ms;
+.rw-calendar-transition-group {
+  position: relative;
   overflow: hidden;
 }
 
-.rw-calendar-transition-top {
-  transform: translateY(-100%);
-}
-.rw-calendar-transition-bottom {
-  transform: translateY(100%);
-}
-
-.rw-calendar-transition-right {
-  transform: translateX(-100%);
-}
-.rw-calendar-transition-left {
-  transform: translateX(100%);
+.rw-calendar-transition {
+  width: 100%;
+  transition: transform 0.4s;
+  overflow: hidden;
+  @include translate(0, 0);
 }
 
-.rw-calendar-transition-entering,
-.rw-calendar-transition-entered {
-  &.rw-calendar-transition-top,
-  &.rw-calendar-transition-bottom {
-    transform: translateY(0);
+.rw-calendar-transition-next {
+  position: absolute;
+  top: 0;
+
+  .rw-calendar-transition-top & {
+    @include translate(0, -100%);
   }
-  &.rw-calendar-transition-right,
-  &.rw-calendar-transition-left {
-    transform: translateX(0);
+  .rw-calendar-transition-bottom & {
+    @include translate(0, 100%);
+  }
+  .rw-calendar-transition-right & {
+    @include translate(-100%, 0);
+  }
+  .rw-calendar-transition-left & {
+    @include translate(100%, 0);
+  }
+
+  &.rw-calendar-transition-active {
+    @include translate(0, 0);
   }
 }
 
-.rw-calendar-transition-exiting {
-  &.rw-calendar-transition-top {
-    transform: translateY(100%);
+.rw-calendar-transition-prev {
+  .rw-calendar-transition-top & {
+    @include translate(0, 100%);
   }
-  &.rw-calendar-transition-bottom {
-    transform: translateY(-100%);
+  .rw-calendar-transition-bottom & {
+    @include translate(0, -100%);
   }
-  &.rw-calendar-transition-right {
-    transform: translateX(100%);
+  .rw-calendar-transition-right & {
+    @include translate(100%, 0);
   }
-  &.rw-calendar-transition-left {
-    transform: translateX(-100%);
+  .rw-calendar-transition-left & {
+    @include translate(-100%, 0);
   }
 }
+
+// .rw-calendar-transition-entering,
+// .rw-calendar-transition-entered {
+//   &.rw-calendar-transition-top,
+//   &.rw-calendar-transition-bottom {
+//     transform: translateY(0);
+//   }
+//   &.rw-calendar-transition-right,
+//   &.rw-calendar-transition-left {
+//     transform: translateX(0);
+//   }
+// }
+
+// .rw-calendar-transition-exiting {
+//   &.rw-calendar-transition-top {
+//     transform: translateY(100%);
+//   }
+//   &.rw-calendar-transition-bottom {
+//     transform: translateY(-100%);
+//   }
+//   &.rw-calendar-transition-right {
+//     transform: translateX(100%);
+//   }
+//   &.rw-calendar-transition-left {
+//     transform: translateX(-100%);
+//   }
+// }

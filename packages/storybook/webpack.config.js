@@ -4,6 +4,7 @@ const { plugins, rules } = require('webpack-atoms')
 module.exports = ({ config }) =>
   Object.assign({}, config, {
     // mode: 'development',
+    devtool: 'inline-module-source-map',
     module: {
       rules: [
         { parser: { amd: false } },
@@ -11,7 +12,9 @@ module.exports = ({ config }) =>
           extends: '../../.babelrc.js',
         }),
         rules.astroturf({ extension: '.scss' }),
-        rules.css(),
+        {
+          oneOf: [rules.css.modules(), rules.css()],
+        },
         rules.sass(),
         rules.images(),
         rules.fonts(),

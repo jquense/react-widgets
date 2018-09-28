@@ -752,5 +752,5 @@ export default uncontrollable(
     value: 'onChange',
     searchTerm: 'onSearch',
   },
-  ['focus']
+  ['focus'],
 )

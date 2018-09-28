@@ -10,10 +10,9 @@ import * as Props from './util/Props'
 class DecadeView extends React.Component {
   static propTypes = {
     activeId: PropTypes.string,
-    culture: PropTypes.string,
     today: PropTypes.instanceOf(Date),
     value: PropTypes.instanceOf(Date),
-    focused: PropTypes.instanceOf(Date),
+    focusedItem: PropTypes.instanceOf(Date),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
     onChange: PropTypes.func.isRequired,
@@ -24,7 +23,7 @@ class DecadeView extends React.Component {
 
   renderRow = (row, rowIdx) => {
     let {
-      focused,
+      focusedItem,
       activeId,
       disabled,
       onChange,
@@ -51,7 +50,7 @@ class DecadeView extends React.Component {
               min={min}
               max={max}
               onChange={onChange}
-              focused={focused}
+              focusedItem={focusedItem}
               selected={value}
               disabled={disabled}
             >
@@ -64,12 +63,17 @@ class DecadeView extends React.Component {
   }
 
   render() {
-    let { focused, activeId } = this.props
+    let { focusedItem, activeId, onChange } = this.props
 
     return (
-      <CalendarView {...Props.omitOwn(this)} activeId={activeId}>
+      <CalendarView
+        {...Props.omitOwn(this)}
+        focusedItem={focusedItem}
+        onChange={onChange}
+        activeId={activeId}
+      >
         <CalendarView.Body>
-          {chunk(getDecadeYears(focused), 4).map(this.renderRow)}
+          {chunk(getDecadeYears(focusedItem), 4).map(this.renderRow)}
         </CalendarView.Body>
       </CalendarView>
     )

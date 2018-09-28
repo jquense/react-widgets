@@ -251,7 +251,7 @@ class Autocomplete extends React.Component {
             role="combobox"
             id={this.inputId}
             autoFocus={autoFocus}
-            nodeRef={this.attachInputRef}
+            ref={this.attachInputRef}
             disabled={disabled === true}
             readOnly={readOnly === true}
             aria-busy={!!busy}

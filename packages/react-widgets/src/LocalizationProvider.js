@@ -3,7 +3,10 @@ import React from 'react'
 import { getMessages } from './messages'
 
 function mergeWithDefaults(date, number, formatOverrides, messages) {
-  if (date.__original) [date, number] = date.__original
+  if (!date && !number)
+    throw new Error('This component requires a Localizer but none was provided')
+
+  if (date?.__original) [date, number] = date.__original
   number = number || date
 
   return {
@@ -21,14 +24,14 @@ function mergeWithDefaults(date, number, formatOverrides, messages) {
     formatDate: (value, format) =>
       date.formatDate(
         value,
-        formatOverrides[format] || date.dateFormats[format] || format
+        formatOverrides[format] || date.dateFormats[format] || format,
       ),
     parseDate: date.parseDate.bind(date),
 
     formatNumber: (value, format) =>
       number.formatNumber(
         value,
-        formatOverrides[format] || number.numberFormats[format] || format
+        formatOverrides[format] || number.numberFormats[format] || format,
       ),
 
     parseNumber: number.parseNumber.bind(number),
@@ -39,7 +42,7 @@ function mergeWithDefaults(date, number, formatOverrides, messages) {
 }
 
 const LocalizerContext = React.createContext(
-  process.env.NODE_ENV === 'test' && { date: global.TEST_LOCALIZER }
+  process.env.NODE_ENV === 'test' && { date: global.TEST_LOCALIZER },
 )
 
 const propTypes = {

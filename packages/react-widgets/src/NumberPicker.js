@@ -6,7 +6,7 @@ import uncontrollable from 'uncontrollable'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
 import Select from './Select'
-import Input from './NumberInput'
+import NumberInput from './NumberInput'
 import Button from './Button'
 import LocalizationProvider from './LocalizationProvider'
 
@@ -29,7 +29,7 @@ function createInterval(callback) {
       id = setTimeout(fn, 35)
       callback() //fire after everything in case the user cancels on the first call
     }),
-    500
+    500,
   )
 
   return cancel
@@ -250,7 +250,7 @@ class NumberPicker extends React.Component {
     } = this.props
 
     return (
-      <Input
+      <NumberInput
         {...inputProps}
         role="spinbutton"
         tabIndex={tabIndex}
@@ -268,7 +268,7 @@ class NumberPicker extends React.Component {
         onChange={this.handleChange}
         onKeyPress={onKeyPress}
         onKeyUp={onKeyUp}
-        nodeRef={this.attachInputRef}
+        innerRef={this.attachInputRef}
       />
     )
   }
@@ -360,7 +360,7 @@ export default uncontrollable(
   LocalizationProvider.withLocalizer(NumberPicker),
   {
     value: 'onChange',
-  }
+  },
 )
 
 // thank you kendo ui core
@@ -370,7 +370,7 @@ function round(value, precision) {
 
   value = ('' + value).split('e')
   value = Math.round(
-    +(value[0] + 'e' + (value[1] ? +value[1] + precision : precision))
+    +(value[0] + 'e' + (value[1] ? +value[1] + precision : precision)),
   )
 
   value = ('' + value).split('e')

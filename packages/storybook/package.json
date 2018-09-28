@@ -12,6 +12,7 @@
   "dependencies": {
     "@storybook/addon-actions": "^5.0.11",
     "@storybook/react": "5.0.11",
+    "@4c/layout": "^0.2.0",
     "babel-core": "bridge",
     "babel-preset-jason": "^6.0.1",
     "chance": "^1.0.18",
