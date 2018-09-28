@@ -20,7 +20,6 @@ $border-radius-sm: 3px !default;
 
 $widget-bg: #fff !default;
 $widget-border: #ccc !default;
-
 $icon-color: inherit !default;
 
 //
@@ -38,12 +37,16 @@ $state-bg-focus: transparent !default;
 $state-border-focus: #66afe9 !default;
 $state-color-focus: $text-color !default;
 
+$focus-ring-color: $state-border-focus;
+$focus-ring-width: 2px;
+
 //
 // Buttons
 //
 $btn-bg: #fff !default;
 $btn-color: $text-color !default;
 $btn-border: #ccc !default;
+$btn-border-radius: $border-radius !default;
 
 $btn-bg-hover: $state-bg-hover !default;
 $btn-border-hover: $state-border-hover !default;

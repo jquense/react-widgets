@@ -13,6 +13,7 @@ class Button extends React.Component {
     variant: PropTypes.oneOf(['primary', 'select']),
     component: PropTypes.any,
     spinner: PropTypes.node,
+    acceptFocus: PropTypes.bool,
   }
 
   render() {
@@ -23,6 +24,7 @@ class Button extends React.Component {
       icon,
       busy,
       active,
+      acceptFocus,
       children,
       variant = 'primary',
       spinner = Spinner,
@@ -33,11 +35,11 @@ class Button extends React.Component {
     let type = props.type
 
     if (Tag === 'button') type = type || 'button'
+    if (!acceptFocus) props.tabIndex = '-1'
 
     return (
       <Tag
         {...props}
-        tabIndex="-1"
         title={label}
         type={type}
         disabled={disabled}
@@ -46,6 +48,7 @@ class Button extends React.Component {
         className={cn(
           className,
           'rw-btn',
+          !acceptFocus && 'rw-outline-none',
           active && !disabled && 'rw-state-active',
           variant && 'rw-btn-' + variant
         )}

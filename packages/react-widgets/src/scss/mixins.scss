@@ -1,4 +1,3 @@
-
 @mixin border-box() {
   background-clip: border-box;
 
@@ -10,7 +9,7 @@
   &:before,
   & *:before,
   &:after,
-  & *:after, {
+  & *:after {
     box-sizing: border-box;
   }
 }
@@ -40,38 +39,57 @@
   }
 }
 
+@mixin focus-ring($color: $focus-ring-color, $width: $focus-ring-width) {
+  outline: none;
+  &:focus {
+    z-index: 1;
+    box-shadow: 0 0 0 $width $color;
+  }
+}
 
 @mixin border-bottom-radius($radius) {
   border-bottom-right-radius: $radius;
-   border-bottom-left-radius: $radius;
+  border-bottom-left-radius: $radius;
 }
 
 @mixin border-top-radius($radius) {
   border-top-right-radius: $radius;
-   border-top-left-radius: $radius;
+  border-top-left-radius: $radius;
 }
 
-@mixin state-hover($bg: $state-bg-hover, $border-color: $state-border-hover, $color: $state-color-hover) {
+@mixin state-hover(
+  $bg: $state-bg-hover,
+  $border-color: $state-border-hover,
+  $color: $state-color-hover
+) {
   background-color: $bg;
-  border-color:           $border-color;
-  color:            $color;
+  border-color: $border-color;
+  color: $color;
 }
 
-@mixin state-select($bg: $state-bg-select, $border-color: $state-border-select, $color: $state-color-select) {
+@mixin state-select(
+  $bg: $state-bg-select,
+  $border-color: $state-border-select,
+  $color: $state-color-select
+) {
   &,
   &:hover {
     background-color: $bg;
-    border-color:     $border-color;
-    color:            $color;
+    border-color: $border-color;
+    color: $color;
   }
 }
 
-@mixin state-focus($bg: $state-bg-focus, $border-color: $state-border-focus, $color: $state-color-focus) {
+@mixin state-focus(
+  $bg: $state-bg-focus,
+  $border-color: $state-border-focus,
+  $color: $state-color-focus
+) {
   &,
   &:hover {
     background-color: $bg;
-    border-color:     $border-color;
-    color:            $color;
+    border-color: $border-color;
+    color: $color;
   }
 }
 
@@ -80,17 +98,16 @@
   cursor: not-allowed;
 }
 
-
 @mixin disabled-color($color) {
   color: lighten($color, 40%);
   filter: alpha(opacity=7);
-  opacity: .7;
+  opacity: 0.7;
 }
 
 @mixin clearfix() {
   &:before,
   &:after {
-    content: " ";
+    content: ' ';
     display: table;
   }
   &:after {
@@ -104,8 +121,12 @@
     color: $color;
     opacity: 1; // See https://github.com/twbs/bootstrap/pull/11526
   }
-  &:-ms-input-placeholder { color: $color; } // Internet Explorer 10+
-  &::-webkit-input-placeholder  { color: $color; } // Safari and Chrome
+  &:-ms-input-placeholder {
+    color: $color;
+  } // Internet Explorer 10+
+  &::-webkit-input-placeholder {
+    color: $color;
+  } // Safari and Chrome
 }
 
 @mixin height-calc($total, $minus) {
@@ -117,11 +138,14 @@
   /** --- **/
 }
 
-@mixin make-btn-state($hover-color: $btn-bg-hover, $active-shadow: $btn-active-box-shadow) {
+@mixin make-btn-state(
+  $hover-color: $btn-bg-hover,
+  $active-shadow: $btn-active-box-shadow
+) {
   cursor: pointer;
 
   &:hover,
-  &:active, {
+  &:active {
     background-color: $btn-bg-hover;
   }
 

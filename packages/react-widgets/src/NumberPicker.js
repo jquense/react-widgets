@@ -268,7 +268,7 @@ class NumberPicker extends React.Component {
         onChange={this.handleChange}
         onKeyPress={onKeyPress}
         onKeyUp={onKeyUp}
-        nodeRef={this.attachInputRef}
+        ref={this.attachInputRef}
       />
     )
   }

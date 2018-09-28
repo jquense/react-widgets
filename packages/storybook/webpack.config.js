@@ -1,9 +1,10 @@
-const path = require('path')
-const { plugins, rules } = require('webpack-atoms')
+const path = require('path');
+const { plugins, rules } = require('webpack-atoms');
 
 module.exports = baseConfig =>
   Object.assign({}, baseConfig, {
     // mode: 'development',
+    devtool: 'inline-module-source-map',
     module: {
       rules: [
         { parser: { amd: false } },
@@ -11,7 +12,9 @@ module.exports = baseConfig =>
           extension: '.scss',
           extends: '../../.babelrc.js',
         }),
-        rules.css(),
+        {
+          oneOf: [rules.css.modules(), rules.css()],
+        },
         rules.sass(),
         rules.images(),
         rules.fonts(),
@@ -24,12 +27,12 @@ module.exports = baseConfig =>
         'react-widgets/lib': path.resolve('../react-widgets/src'),
 
         'react-widgets-virtualized$': path.resolve(
-          '../virtualized/src/index.js'
+          '../virtualized/src/index.js',
         ),
         'react-widgets-virtualized/lib': path.resolve('../virtualized/src'),
 
         'react-widgets-material-ui$': path.resolve(
-          '../material-ui/src/index.js'
+          '../material-ui/src/index.js',
         ),
         'react-widgets-material-ui/lib': path.resolve('../material-ui/src'),
       },
@@ -46,4 +49,4 @@ module.exports = baseConfig =>
       net: 'empty',
       tls: 'empty',
     },
-  })
+  });

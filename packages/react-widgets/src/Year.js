@@ -12,7 +12,7 @@ class YearView extends React.Component {
     activeId: PropTypes.string,
     today: PropTypes.instanceOf(Date),
     value: PropTypes.instanceOf(Date),
-    focused: PropTypes.instanceOf(Date),
+    focusedItem: PropTypes.instanceOf(Date),
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
     onChange: PropTypes.func.isRequired,
@@ -23,7 +23,7 @@ class YearView extends React.Component {
 
   renderRow = (row, rowIdx) => {
     let {
-      focused,
+      focusedItem,
       activeId,
       disabled,
       onChange,
@@ -50,7 +50,7 @@ class YearView extends React.Component {
               max={max}
               unit="month"
               onChange={onChange}
-              focused={focused}
+              focusedItem={focusedItem}
               selected={value}
               disabled={disabled}
             >
@@ -63,11 +63,16 @@ class YearView extends React.Component {
   }
 
   render() {
-    let { focused, activeId } = this.props,
-      months = dates.monthsInYear(dates.year(focused))
+    let { focusedItem, onChange, activeId } = this.props
+    let months = dates.monthsInYear(dates.year(focusedItem))
 
     return (
-      <CalendarView {...Props.omitOwn(this)} activeId={activeId}>
+      <CalendarView
+        {...Props.omitOwn(this)}
+        onChange={onChange}
+        focusedItem={focusedItem}
+        activeId={activeId}
+      >
         <CalendarView.Body>
           {chunk(months, 4).map(this.renderRow)}
         </CalendarView.Body>
