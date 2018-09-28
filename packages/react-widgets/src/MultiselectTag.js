@@ -8,6 +8,7 @@ import Button from './Button'
 class MultiselectTag extends React.Component {
   static propTypes = {
     id: PropTypes.string,
+    clearTagIcon: PropTypes.node,
     onClick: PropTypes.func.isRequired,
     focused: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -23,17 +24,17 @@ class MultiselectTag extends React.Component {
   }
 
   renderDelete() {
-    const { label, disabled, readOnly } = this.props
+    const { label, disabled, readOnly, clearTagIcon } = this.props
 
     return (
       <Button
-        variant="select"
+        variant={null}
         onClick={this.onClick}
         className="rw-multiselect-tag-btn"
         disabled={disabled || readOnly}
-        aria-label={label || 'Remove item'}
+        label={label || 'Remove item'}
       >
-        <span aria-hidden="true">&times;</span>
+        {clearTagIcon}
       </Button>
     )
   }
@@ -51,8 +52,8 @@ class MultiselectTag extends React.Component {
           focused && !disabled && 'rw-state-focus'
         )}
       >
-        {children}
-        <div>{this.renderDelete()}</div>
+        <span className="rw-multiselect-tag-label">{children}</span>
+        {this.renderDelete()}
       </li>
     )
   }

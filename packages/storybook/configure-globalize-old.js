@@ -1,4 +1,4 @@
-import React from 'react'
+const React = require('react')
 const globalize = require('globalize')
 const Localizer = require('react-widgets-globalize-old')
 

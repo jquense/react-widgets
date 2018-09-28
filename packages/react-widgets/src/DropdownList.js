@@ -1,7 +1,6 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
-import activeElement from 'dom-helpers/activeElement'
 import cn from 'classnames'
 import {
   autoFocus,
@@ -31,7 +30,8 @@ import scrollManager from './util/scrollManager'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 import { dataValue, dataText } from './util/dataHelpers'
-import { caretDown, search } from './Icon'
+import { caretDown } from './Icon'
+import canShowCreate from './util/canShowCreate'
 
 const CREATE_OPTION = {}
 
@@ -106,7 +106,6 @@ class DropdownList extends React.Component {
 
     /** Specify the element used to render the select (down arrow) icon. */
     selectIcon: PropTypes.node,
-    searchIcon: PropTypes.node,
 
     /** Specify the element used to render the busy indicator */
     busySpinner: PropTypes.node,
@@ -140,7 +139,6 @@ class DropdownList extends React.Component {
     delay: 500,
     searchTerm: '',
     allowCreate: false,
-    searchIcon: search,
     selectIcon: caretDown,
     listComponent: List,
   }
@@ -173,6 +171,7 @@ class DropdownList extends React.Component {
       searchTerm,
       filter,
       minLength,
+      allowCreate,
       caseSensitive,
     } = nextProps
     const { focusedItem } = prevState
@@ -190,9 +189,19 @@ class DropdownList extends React.Component {
         textField: accessors.text,
       })
 
+    const createIsFocused =
+      focusedItem === CREATE_OPTION &&
+      canShowCreate(allowCreate, {
+        searchTerm,
+        caseSensitive,
+        data,
+        accessors,
+      })
+
     const list = reduceToListState(data, prevState.list, { nextProps })
     const selectedItem = data[initialIdx]
-    const nextFocusedItem = ~data.indexOf(focusedItem) ? focusedItem : data[0]
+    const nextFocusedItem =
+      createIsFocused || ~data.indexOf(focusedItem) ? focusedItem : data[0]
 
     return {
       data,
@@ -259,7 +268,7 @@ class DropdownList extends React.Component {
     let { focusedItem, selectedItem, list } = this.state
 
     let createIsFocused = focusedItem === CREATE_OPTION
-    let canCreate = this.allowCreate()
+    let canCreate = this.canShowCreate()
 
     notify(onKeyDown, [e])
 
@@ -318,18 +327,18 @@ class DropdownList extends React.Component {
   @widgetEditable
   handleKeyPress = e => {
     notify(this.props.onKeyPress, [e])
-    if (e.defaultPrevented) return
+    if (e.defaultPrevented || this.props.filter) return
 
-    if (!(this.props.filter && this.props.open))
-      this.findOption(String.fromCharCode(e.which), item => {
-        this.mounted() && this.props.open
-          ? this.setState({ focusedItem: item })
-          : item && this.change(item, e)
-      })
+    this.findOption(String.fromCharCode(e.which), item => {
+      this.mounted() && this.props.open
+        ? this.setState({ focusedItem: item })
+        : item && this.change(item, e)
+    })
   }
 
   handleInputChange = e => {
     this.search(e.target.value, e, 'input')
+    this.open()
   }
 
   handleAutofillChange = e => {
@@ -380,10 +389,8 @@ class DropdownList extends React.Component {
   renderList() {
     let {
       open,
-      filter,
       data,
       searchTerm,
-      searchIcon,
       optionComponent,
       itemComponent,
       groupComponent,
@@ -402,7 +409,7 @@ class DropdownList extends React.Component {
 
     return (
       <div>
-        {filter && (
+        {/* {filter && (
           <WidgetPicker className="rw-filter-input rw-input">
             <input
               value={searchTerm}
@@ -413,7 +420,7 @@ class DropdownList extends React.Component {
             />
             <Select icon={searchIcon} role="presentation" aria-hidden="true" />
           </WidgetPicker>
-        )}
+        )} */}
         <List
           {...listProps}
           id={this.listId}
@@ -439,7 +446,7 @@ class DropdownList extends React.Component {
             emptyList: data.length ? messages.emptyFilter : messages.emptyList,
           }}
         />
-        {this.allowCreate() && (
+        {this.canShowCreate() && (
           <AddToListOption
             id={this.createId}
             searchTerm={searchTerm}
@@ -467,6 +474,7 @@ class DropdownList extends React.Component {
       open,
       isRtl,
       filter,
+      searchTerm,
       inputProps,
       selectIcon,
       busySpinner,
@@ -524,7 +532,12 @@ class DropdownList extends React.Component {
             value={valueItem}
             textField={textField}
             name={this.props.name}
+            allowSearch={!!filter}
+            searchTerm={searchTerm}
+            onSearch={this.onSearch}
+            ref={this.attachFilterRef}
             autoComplete={this.props.autoComplete}
+            onSearch={this.handleInputChange}
             onAutofill={this.handleAutofill}
             onAutofillChange={this.handleAutofillChange}
             placeholder={placeholder}
@@ -555,13 +568,9 @@ class DropdownList extends React.Component {
     )
   }
 
-  focus = target => {
-    let { filter, open } = this.props
-    let inst = target || (filter && open ? this.filterRef : this.inputRef)
-
-    inst = findDOMNode(inst)
-
-    if (inst && activeElement() !== inst) inst.focus()
+  focus = () => {
+    let { filter } = this.props
+    filter ? this.filterRef.focus() : this.inputRef.focus()
   }
 
   findOption(character, cb) {
@@ -619,25 +628,16 @@ class DropdownList extends React.Component {
     this.props.open ? this.close() : this.open()
   }
 
-  allowCreate() {
-    let { searchTerm, onCreate, allowCreate } = this.props
-
-    return !!(
-      onCreate &&
-      (allowCreate === true || (allowCreate === 'onFilter' && searchTerm)) &&
-      !this.hasExtactMatch()
-    )
-  }
-
-  hasExtactMatch() {
-    let { searchTerm, caseSensitive, filter } = this.props
-    let { data, accessors } = this.state
-    let lower = text => (caseSensitive ? text : text.toLowerCase())
-
-    // if there is an exact match on textFields:
-    return (
-      filter && data.some(v => lower(accessors.text(v)) === lower(searchTerm))
-    )
+  canShowCreate() {
+    const { allowCreate, caseSensitive, searchTerm } = this.props
+    const { data, dataItems, accessors } = this.state
+    return canShowCreate(allowCreate, {
+      searchTerm,
+      caseSensitive,
+      dataItems,
+      data,
+      accessors,
+    })
   }
 }
 

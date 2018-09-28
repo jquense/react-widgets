@@ -19,22 +19,22 @@ $text-color: $md-text-primary-color;
 $text-secondary-color: $md-text-secondary-color;
 
 // Actions: hover/focus
-$state-bg-hover: rgba(0, 0, 0, 0.08);
-$state-border-hover: transparent;
-$state-color-hover: $text-color;
+$state-hover-bg: rgba(0, 0, 0, 0.08);
+$state-hover-border-color: transparent;
+$state-hover-color: $text-color;
 
-$state-bg-focus: $state-bg-hover;
-$state-border-focus: $state-border-hover;
-$state-color-focus: $state-color-hover;
+$state-focus-bg: $state-hover-bg;
+$state-focus-border: $state-hover-border-color;
+$state-focus-color: $state-hover-color;
 
 // Actions: selected
-$state-bg-select: rgba(0, 0, 0, 0.14);
-$state-border-select: transparent;
-$state-color-select: $text-color;
+$state-select-bg: rgba(0, 0, 0, 0.14);
+$state-select-border-color: transparent;
+$state-select-color: $text-color;
 
 /// Buttons
 $btn-color: $md-text-secondary-color;
-$btn-bg-hover: none;
+$btn-hover-bg: none;
 $btn-active-box-shadow: none;
 
 $input-bg: transparent;
@@ -42,24 +42,24 @@ $input-border: rgba(0, 0, 0, 0.42);
 $input-border-radius: 0;
 $input-border-width: 0;
 
-$input-bg-focus: rgba(0, 0, 0, 0.05);
-$input-border-focus: $primary-dark;
+$input-focus-bg: rgba(0, 0, 0, 0.05);
+$input-focus-border: $primary-dark;
 
 $input-box-shadow: none;
 $input-focus-box-shadow: none;
 
-$input-padding-horizontal: 0;
+$input-btn-padding-x: 0;
 
-// $list-bg-hover: $grey-100;
-// $list-border-hover: $grey-100;
-// $list-color-hover: $text-color;
+// $list-hover-bg: $grey-100;
+// $list-hover-border-color: $grey-100;
+// $list-hover-color: $text-color;
 
-// $list-bg-select: $list-bg-hover;
-// $list-border-select: $list-border-hover;
-// $list-color-select: $list-color-hover;
+// $list-select-bg: $list-hover-bg;
+// $list-select-border-color: $list-hover-border-color;
+// $list-select-color: $list-hover-color;
 
-// $list-bg-focus: $list-bg-hover;
-// $list-border-focus: $list-border-hover;
+// $list-focus-bg: $list-hover-bg;
+// $list-focus-border: $list-hover-border-color;
 
 $list-padding-vertical: 0.8rem;
 $list-padding-horizontal: 1rem;
@@ -136,7 +136,7 @@ $multiselect-tag-border: $multiselect-tag-bg;
     height: 2px;
     transform: scaleX(0);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
-    background-color: $input-border-focus;
+    background-color: $input-focus-border;
   }
 
   .rbc-mui-field-error > &:after {

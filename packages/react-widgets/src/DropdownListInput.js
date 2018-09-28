@@ -21,6 +21,9 @@ class DropdownListInput extends React.Component {
     autofilling: false,
   }
 
+  search = React.createRef()
+  value = React.createRef()
+
   handleAutofillDetect = ({ animationName }) => {
     let autofilling
 
@@ -37,46 +40,77 @@ class DropdownListInput extends React.Component {
     this.setState({ autofilling: false })
     this.props.onAutofillChange(e)
   }
-  render() {
+
+  focus() {
+    if (this.props.allowSearch) this.search.current?.focus()
+    else this.value.current?.focus()
+  }
+
+  renderInput() {
     let {
-      name,
       placeholder,
       value,
       textField,
-      autoComplete,
+      searchTerm,
+      onSearch,
+      allowSearch,
       valueComponent: Component,
     } = this.props
-    const { autofilling } = this.state
-    let child = null
-    if (!autofilling && autoComplete !== 'off') {
-      child =
-        !value && placeholder ? (
-          <span className="rw-placeholder">{placeholder}</span>
-        ) : Component ? (
-          <Component item={value} />
-        ) : (
-          dataText(value, textField)
-        )
-    }
-    let val = dataValue(value)
+
+    const inputValue =
+      !value && placeholder ? (
+        <span className="rw-placeholder">{placeholder}</span>
+      ) : Component ? (
+        <Component item={value} />
+      ) : (
+        dataText(value, textField)
+      )
+
     return (
-      <div className="rw-input rw-dropdown-list-input">
-        {autoComplete !== 'off' && (
+      <React.Fragment>
+        {allowSearch && (
           <input
-            tabIndex="-1"
-            name={name}
-            value={val == null ? '' : val}
-            autoComplete={autoComplete}
-            onChange={this.handleAutofill}
-            onAnimationStart={this.handleAutofillDetect}
-            className={cn(
-              'rw-dropdown-list-autofill rw-detect-autofill',
-              !autofilling && 'rw-sr'
-            )}
+            ref={this.search}
+            className="rw-dropdown-list-search"
+            value={searchTerm || ''}
+            size={(searchTerm || '').length + 2}
+            onChange={onSearch}
           />
         )}
+        {!searchTerm && inputValue}
+      </React.Fragment>
+    )
+  }
 
-        {child}
+  renderAutofill() {
+    let { name, autoComplete } = this.props
+    let value = dataValue(this.props.value)
+
+    return (
+      <input
+        tabIndex="-1"
+        name={name}
+        value={value == null ? '' : value}
+        autoComplete={autoComplete}
+        onChange={this.handleAutofill}
+        onAnimationStart={this.handleAutofillDetect}
+        className={cn(
+          'rw-dropdown-list-search rw-detect-autofill',
+          !this.state.autofilling && 'rw-sr'
+        )}
+      />
+    )
+  }
+
+  render() {
+    let { autoComplete } = this.props
+    const { autofilling } = this.state
+
+    return (
+      <div className="rw-input rw-dropdown-list-input">
+        {autoComplete !== 'off' && this.renderAutofill()}
+
+        {!autofilling && autoComplete !== 'off' && this.renderInput()}
       </div>
     )
   }

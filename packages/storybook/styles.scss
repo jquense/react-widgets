@@ -1,17 +1,18 @@
 $font-path: '~react-widgets/lib/fonts';
 $img-path: '~react-widgets/lib/img';
 
+// @import './themes/bootstrap4.scss';
 @import '~react-widgets/src/scss/react-widgets';
 
 // @import '~react-widgets-material-ui/src/less/theme.less';
 
 html {
-  font-size: 14px;
+  font-size: 16px;
   font-family: -apple-system, 'San Francisco', Roboto, 'Segoe UI',
     'Helvetica Neue', 'Lucida Grande', sans-serif;
 }
 
 body {
-  background-color: lightblue;
+  background-color: #edf5e4;
 }
 //@font-path: "../fonts";

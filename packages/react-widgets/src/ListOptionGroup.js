@@ -1,26 +1,26 @@
-import cn from 'classnames';
-import React from 'react';
+import cn from 'classnames'
+import React from 'react'
 
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 const propTypes = {
   className: PropTypes.string,
   component: PropTypes.string,
-};
+}
 
-function ListOptionGroup({ children, className, component = 'li' }) {
+function ListOptionGroup({ children, className, component = 'div' }) {
   let Tag = component
   return (
     <Tag
-      tabIndex='-1'
+      tabIndex="-1"
       role="separator"
       className={cn(className, 'rw-list-optgroup')}
     >
       {children}
     </Tag>
-  );
+  )
 }
 
-ListOptionGroup.propTypes = propTypes;
+ListOptionGroup.propTypes = propTypes
 
-export default ListOptionGroup;
+export default ListOptionGroup

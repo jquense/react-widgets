@@ -1,4 +1,3 @@
-
 @mixin border-box() {
   background-clip: border-box;
 
@@ -10,15 +9,9 @@
   &:before,
   & *:before,
   &:after,
-  & *:after, {
+  & *:after {
     box-sizing: border-box;
   }
-}
-
-@mixin opacity($opacity) {
-  opacity: $opacity;
-  $opacity-ie: ($opacity * 100);
-  filter: alpha(opacity=#{$opacity-ie});
 }
 
 @mixin unstyled-list() {
@@ -40,38 +33,50 @@
   }
 }
 
+@mixin focus-ring($color: $widget-focus-color, $width: $widget-focus-width) {
+  z-index: 1;
+  box-shadow: 0 0 0 $width $color;
+}
 
 @mixin border-bottom-radius($radius) {
   border-bottom-right-radius: $radius;
-   border-bottom-left-radius: $radius;
+  border-bottom-left-radius: $radius;
 }
 
 @mixin border-top-radius($radius) {
   border-top-right-radius: $radius;
-   border-top-left-radius: $radius;
+  border-top-left-radius: $radius;
 }
 
-@mixin state-hover($bg: $state-bg-hover, $border-color: $state-border-hover, $color: $state-color-hover) {
+@mixin state-hover(
+  $bg: $state-hover-bg,
+  $border-color: $state-hover-border-color,
+  $color: $state-hover-color
+) {
   background-color: $bg;
-  border-color:           $border-color;
-  color:            $color;
+  border-color: $border-color;
+  color: $color;
 }
 
-@mixin state-select($bg: $state-bg-select, $border-color: $state-border-select, $color: $state-color-select) {
+@mixin state-select(
+  $bg: $state-select-bg,
+  $border-color: $state-select-border-color,
+  $color: $state-select-color
+) {
   &,
   &:hover {
     background-color: $bg;
-    border-color:     $border-color;
-    color:            $color;
+    border-color: $border-color;
+    color: $color;
   }
 }
 
-@mixin state-focus($bg: $state-bg-focus, $border-color: $state-border-focus, $color: $state-color-focus) {
+@mixin state-focus($bg, $border-color, $color) {
   &,
   &:hover {
     background-color: $bg;
-    border-color:     $border-color;
-    color:            $color;
+    border-color: $border-color;
+    color: $color;
   }
 }
 
@@ -80,22 +85,9 @@
   cursor: not-allowed;
 }
 
-
 @mixin disabled-color($color) {
   color: lighten($color, 40%);
-  filter: alpha(opacity=7);
-  opacity: .7;
-}
-
-@mixin clearfix() {
-  &:before,
-  &:after {
-    content: " ";
-    display: table;
-  }
-  &:after {
-    clear: both;
-  }
+  opacity: 0.7;
 }
 
 @mixin placeholder($color: $input-color-placeholder) {
@@ -104,25 +96,23 @@
     color: $color;
     opacity: 1; // See https://github.com/twbs/bootstrap/pull/11526
   }
-  &:-ms-input-placeholder { color: $color; } // Internet Explorer 10+
-  &::-webkit-input-placeholder  { color: $color; } // Safari and Chrome
+  &:-ms-input-placeholder {
+    color: $color;
+  } // Internet Explorer 10+
+  &::-webkit-input-placeholder {
+    color: $color;
+  } // Safari and Chrome
 }
 
-@mixin height-calc($total, $minus) {
-  height: calc(#{$total} - #{$minus});
-
-  /** ie8 fallback **/
-  margin-top: -#{$minus}\9;
-  height: #{$total}\9;
-  /** --- **/
-}
-
-@mixin make-btn-state($hover-color: $btn-bg-hover, $active-shadow: $btn-active-box-shadow) {
+@mixin make-btn-state(
+  $hover-color: $btn-hover-bg,
+  $active-shadow: $btn-active-box-shadow
+) {
   cursor: pointer;
 
   &:hover,
-  &:active, {
-    background-color: $btn-bg-hover;
+  &:active {
+    background-color: $btn-hover-bg;
   }
 
   &:active {

@@ -201,7 +201,7 @@ class Combobox extends React.Component {
         : prevState.selectedItem,
       focusedItem:
         valueChanged || !focusedItem
-          ? list.nextEnabled(nextFocusedItem)
+          ? list.nextEnabled(selectedItem || nextFocusedItem)
           : ~data.indexOf(focusedItem)
             ? focusedItem
             : data[0],

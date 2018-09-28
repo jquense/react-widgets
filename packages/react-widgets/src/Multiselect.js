@@ -29,7 +29,8 @@ import focusManager from './util/focusManager'
 import scrollManager from './util/scrollManager'
 import { widgetEditable } from './util/interaction'
 import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
-import { caretDown } from './Icon'
+import { caretDown, times } from './Icon'
+import canShowCreate from './util/canShowCreate'
 
 const CREATE_OPTION = {}
 const ENTER = 13
@@ -103,6 +104,9 @@ let propTypes = {
   /** Specify the element used to render the select (down arrow) icon. */
   selectIcon: PropTypes.node,
 
+  /** Specify the element used to render tag clear icons. */
+  clearTagIcon: PropTypes.node,
+
   /** Specify the element used to render the busy indicator */
   busySpinner: PropTypes.node,
 
@@ -167,6 +171,7 @@ class Multiselect extends React.Component {
     filter: 'startsWith',
     value: [],
     searchTerm: '',
+    clearTagIcon: times,
     selectIcon: caretDown,
     listComponent: List,
     showPlaceholderWithValues: false,
@@ -199,6 +204,7 @@ class Multiselect extends React.Component {
       searchTerm,
       messages,
       minLength,
+      allowCreate,
       caseSensitive,
       filter,
     } = nextProps
@@ -224,13 +230,26 @@ class Multiselect extends React.Component {
       textField: accessors.text,
     })
 
+    const createIsFocused =
+      focusedItem === CREATE_OPTION &&
+      canShowCreate(allowCreate, {
+        searchTerm,
+        caseSensitive,
+        dataItems,
+        data,
+        accessors,
+      })
+
     const list = reduceToListState(data, prevState.list, { nextProps })
 
     const tagList = reduceToListState(dataItems, prevState.tagList, {
       nextProps,
       getDataState: defaultGetDataState,
     })
-    const nextFocusedItem = ~data.indexOf(focusedItem) ? focusedItem : data[0]
+
+    const nextFocusedItem =
+      createIsFocused || ~data.indexOf(focusedItem) ? focusedItem : data[0]
+
     return {
       data,
       dataItems,
@@ -244,7 +263,7 @@ class Multiselect extends React.Component {
         ? list.nextEnabled(~dataItems.indexOf(focusedTag) ? focusedTag : null)
         : focusedTag,
       focusedItem:
-        valueChanged || !prevState.focusedItem
+        valueChanged || prevState.focusedItem === undefined
           ? list.nextEnabled(nextFocusedItem)
           : nextFocusedItem,
     }
@@ -256,7 +275,7 @@ class Multiselect extends React.Component {
     if (!open || prevState.focusedItem !== focusedItem) {
       let active
       if (!open) active = focusedTag ? this.activeTagId : ''
-      else if (focusedItem || this.allowCreate()) active = this.activeOptionId
+      else if (focusedItem || this.canShowCreate()) active = this.activeOptionId
 
       A11y.setActiveDescendant(this.inputRef, active, open)
     }
@@ -339,7 +358,7 @@ class Multiselect extends React.Component {
     let { focusedTag, focusedItem, list, tagList } = this.state
 
     let createIsFocused = focusedItem === CREATE_OPTION
-    let canCreate = this.allowCreate()
+    let canCreate = this.canShowCreate()
 
     const focusTag = tag => this.setState({ focusedTag: tag })
     const focusItem = item =>
@@ -402,7 +421,7 @@ class Multiselect extends React.Component {
   attachTagsRef = ref => (this.tagsRef = ref)
   attachInputRef = ref => (this.inputRef = ref)
 
-  renderInput(ownedIds) {
+  renderInput() {
     let {
       searchTerm,
       maxLength,
@@ -413,8 +432,16 @@ class Multiselect extends React.Component {
       open,
     } = this.props
 
+    let { dataItems } = this.state
+
     let disabled = this.props.disabled === true
     let readOnly = this.props.readOnly === true
+
+    let shouldRenderTags = !!dataItems.length
+    let inputOwns =
+      `${this.listId} ${this.notifyId} ` +
+      (shouldRenderTags ? this.tagsId : '') +
+      (this.canShowCreate() ? this.createId : '')
 
     return (
       <MultiselectInput
@@ -424,7 +451,7 @@ class Multiselect extends React.Component {
         role="listbox"
         aria-expanded={!!open}
         aria-busy={!!busy}
-        aria-owns={ownedIds}
+        aria-owns={inputOwns}
         aria-haspopup={true}
         value={searchTerm}
         maxLength={maxLength}
@@ -514,7 +541,7 @@ class Multiselect extends React.Component {
   }
 
   renderTags() {
-    let { readOnly, disabled } = this.props
+    let { readOnly, disabled, clearTagIcon } = this.props
     let { focusedTag, dataItems, accessors, messages } = this.state
 
     let Component = this.props.tagComponent
@@ -525,6 +552,7 @@ class Multiselect extends React.Component {
         activeId={this.activeTagId}
         textAccessor={accessors.text}
         valueAccessor={accessors.value}
+        clearTagIcon={clearTagIcon}
         label={messages.tagsLabel()}
         value={dataItems}
         readOnly={readOnly}
@@ -533,7 +561,9 @@ class Multiselect extends React.Component {
         onDelete={this.handleDelete}
         valueComponent={Component}
         ref={this.attachTagsRef}
-      />
+      >
+        {this.renderInput()}
+      </TagList>
     )
   }
 
@@ -548,20 +578,15 @@ class Multiselect extends React.Component {
       busySpinner,
       containerClassName,
       popupTransition,
+      isRtl,
     } = this.props
 
-    let { focused, focusedItem, dataItems, messages } = this.state
+    let { focused, focusedItem, messages } = this.state
 
     let elementProps = Props.pickElementProps(this)
 
-    let shouldRenderTags = !!dataItems.length,
-      shouldRenderPopup = isFirstFocusedRender(this),
-      allowCreate = this.allowCreate()
-
-    let inputOwns =
-      `${this.listId} ${this.notifyId} ` +
-      (shouldRenderTags ? this.tagsId : '') +
-      (allowCreate ? this.createId : '')
+    let shouldRenderPopup = isFirstFocusedRender(this)
+    let showCreateOption = this.canShowCreate()
 
     let disabled = this.props.disabled === true
     let readOnly = this.props.readOnly === true
@@ -570,6 +595,7 @@ class Multiselect extends React.Component {
       <Widget
         {...elementProps}
         open={open}
+        isRtl={isRtl}
         dropUp={dropUp}
         focused={focused}
         disabled={disabled}
@@ -586,10 +612,7 @@ class Multiselect extends React.Component {
           onDoubleClick={this.handleDoubleClick}
           className={cn(containerClassName, 'rw-widget-input')}
         >
-          <div className="rw-multiselect-content">
-            {shouldRenderTags && this.renderTags(messages)}
-            {this.renderInput(inputOwns)}
-          </div>
+          {this.renderTags()}
 
           <Select
             busy={busy}
@@ -611,7 +634,7 @@ class Multiselect extends React.Component {
             <div>
               {this.renderList()}
 
-              {allowCreate && (
+              {showCreateOption && (
                 <AddToListOption
                   id={this.createId}
                   searchTerm={searchTerm}
@@ -689,26 +712,16 @@ class Multiselect extends React.Component {
     if (this.props.open) notify(this.props.onToggle, false)
   }
 
-  allowCreate() {
-    let { searchTerm, onCreate, allowCreate } = this.props
-
-    return !!(
-      onCreate &&
-      (allowCreate === true || (allowCreate === 'onFilter' && searchTerm)) &&
-      !this.hasExtactMatch()
-    )
-  }
-
-  hasExtactMatch() {
-    let { searchTerm, caseSensitive } = this.props
-    let { data, dataItems, accessors } = this.state
-
-    let lower = text => (caseSensitive ? text : text.toLowerCase())
-    let eq = v => lower(accessors.text(v)) === lower(searchTerm)
-
-    // if there is an exact match on textFields:
-    // "john" => { name: "john" }, don't show
-    return dataItems.some(eq) || data.some(eq)
+  canShowCreate() {
+    const { allowCreate, caseSensitive, searchTerm } = this.props
+    const { data, dataItems, accessors } = this.state
+    return canShowCreate(allowCreate, {
+      searchTerm,
+      caseSensitive,
+      dataItems,
+      data,
+      accessors,
+    })
   }
 
   getPlaceholder() {

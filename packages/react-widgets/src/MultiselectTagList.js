@@ -19,6 +19,8 @@ class MultiselectTagList extends React.Component {
     value: PropTypes.array,
     focusedItem: PropTypes.any,
 
+    clearTagIcon: PropTypes.node,
+
     valueAccessor: PropTypes.func.isRequired,
     textAccessor: PropTypes.func.isRequired,
 
@@ -39,11 +41,13 @@ class MultiselectTagList extends React.Component {
       disabled,
       onDelete,
       focusedItem,
+      children,
+      clearTagIcon,
       valueComponent: ValueComponent,
     } = this.props
 
     return (
-      <ul
+      <div
         id={id}
         role="listbox"
         aria-label={label}
@@ -59,17 +63,19 @@ class MultiselectTagList extends React.Component {
               value={item}
               focused={isFocused}
               onClick={onDelete}
+              clearTagIcon={clearTagIcon}
               disabled={isDisabled(item, disabled, valueAccessor)}
             >
               {ValueComponent ? (
                 <ValueComponent item={item} />
               ) : (
-                <span>{textAccessor(item)}</span>
+                textAccessor(item)
               )}
             </MultiselectTag>
           )
         })}
-      </ul>
+        {children}
+      </div>
     )
   }
 }

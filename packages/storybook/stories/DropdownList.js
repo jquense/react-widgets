@@ -139,7 +139,7 @@ storiesOf('DropdownList', module)
         <div>
           <label>
             City
-            <input name="city" />
+            <DropdownList {...props} readOnly defaultValue={props.data[1]} />
           </label>
         </div>
         <div>
@@ -157,7 +157,6 @@ storiesOf('DropdownList', module)
 
               <option value="NY">New York</option>
             </select> */}
-            ß
           </label>
         </div>
       </form>

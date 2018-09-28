@@ -66,11 +66,7 @@
   }
 
   &.rw-state-focus {
-    @include state-focus(
-      $calendar-cell-bg-focus,
-      $calendar-cell-border-focus,
-      $calendar-cell-color-focus
-    );
+    @include focus-ring();
   }
 
   &.rw-state-selected {

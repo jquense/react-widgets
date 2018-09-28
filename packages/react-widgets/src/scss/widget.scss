@@ -58,8 +58,8 @@
   .rw-state-focus > & {
     &,
     &:hover {
-      background-color: $input-bg-focus;
-      border-color: $input-border-focus;
+      background-color: $input-focus-bg;
+      border-color: $input-focus-border-color;
       box-shadow: $input-focus-box-shadow;
     }
   }
@@ -93,17 +93,9 @@
     flex: 1 1 0;
   }
 
-  .rw-open > & {
-    @include border-bottom-radius(0);
-  }
-
-  .rw-open-up > & {
-    @include border-top-radius(0);
-  }
-
   fieldset[disabled] &,
   .rw-state-disabled > & {
-    background-color: $input-bg-disabled;
+    background-color: $input-disabled-bg;
   }
 }
 
@@ -122,7 +114,7 @@
 }
 
 .rw-select-bordered {
-  @include make-btn-state($select-btn-bg-hover);
+  @include make-btn-state($select-btn-hover-bg);
 
   border: none;
   border-left: $input-border 1px solid;
@@ -146,7 +138,7 @@
   @extend .rw-input-reset;
 
   color: $input-color;
-  padding: 0 $input-padding-horizontal;
+  padding: 0 $input-btn-padding-x;
   background-color: $input-bg;
 
   &[type='text']::-ms-clear {
@@ -157,8 +149,8 @@
   fieldset[disabled] & {
     @include state-disabled();
     opacity: 1;
-    background-color: $input-bg-disabled;
-    border-color: $input-border-disabled;
+    background-color: $input-disabled-bg;
+    border-color: $input-disabled-border;
   }
 
   &[readonly] {
