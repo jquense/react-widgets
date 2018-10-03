@@ -1,92 +1,22 @@
 import cn from 'classnames'
-import events from 'dom-helpers/events'
-import css from 'dom-helpers/style'
-import getHeight from 'dom-helpers/query/height'
-import getWidth from 'dom-helpers/query/width'
-import {
-  transitionDuration,
-  transitionEnd,
-} from 'dom-helpers/transition/properties'
+import transition from 'dom-helpers/transition'
 import PropTypes from 'prop-types'
-import TransitionGroup from 'react-transition-group/TransitionGroup'
-import Transition, {
-  ENTERING,
-  ENTERED,
-  EXITING,
-  EXITED,
-} from 'react-transition-group/Transition'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 
 const DirectionPropType = PropTypes.oneOf(['left', 'right', 'top', 'bottom'])
 
-const transitionStyle = {
-  [ENTERING]: { position: 'absolute' },
-  [EXITING]: { position: 'absolute' },
-}
+const prefix = 'rw-calendar-transition'
+const active = `${prefix}-active`
+const next = `${prefix}-next`
+const prev = `${prefix}-prev`
 
-const transitionClasses = {
-  [ENTERED]: 'rw-calendar-transition-entered',
-  [ENTERING]: 'rw-calendar-transition-entering',
-  [EXITING]: 'rw-calendar-transition-exiting',
-  [EXITED]: 'rw-calendar-transition-exited',
-}
-
-function parseDuration(node) {
-  let str = css(node, transitionDuration)
-  let mult = str.indexOf('ms') === -1 ? 1000 : 1
-  return parseFloat(str) * mult
-}
-class SlideTransition extends React.Component {
-  static contextTypes = {
-    direction: DirectionPropType,
-  }
-
-  handleTransitionEnd = (node, done) => {
-    let duration = parseDuration(node) || 300
-
-    const handler = () => {
-      events.off(node, transitionEnd, handler, false)
-      done()
-    }
-
-    setTimeout(handler, duration * 1.5)
-    events.on(node, transitionEnd, handler, false)
-  }
-
-  render() {
-    const { children, ...props } = this.props
-    const { direction } = this.context
-    const child = React.Children.only(children)
-
-    return (
-      <Transition
-        {...props}
-        timeout={5000}
-        addEndListener={this.handleTransitionEnd}
-      >
-        {(status, innerProps) =>
-          React.cloneElement(child, {
-            ...innerProps,
-            style: transitionStyle[status],
-            className: cn(
-              child.props.className,
-              'rw-calendar-transition',
-              `rw-calendar-transition-${direction}`,
-              transitionClasses[status],
-            ),
-          })
-        }
-      </Transition>
-    )
-  }
-}
+const clone = (el, cls) =>
+  el &&
+  React.cloneElement(el, {
+    className: cn(el.props.className, prefix, cls),
+  })
 
 class SlideTransitionGroup extends React.Component {
-  static childContextTypes = {
-    direction: DirectionPropType,
-  }
-
   static defaultProps = {
     direction: 'left',
   }
@@ -95,49 +25,83 @@ class SlideTransitionGroup extends React.Component {
     direction: DirectionPropType,
   }
 
-  getChildContext() {
-    return { direction: this.props.direction }
+  constructor(...args) {
+    super(...args)
+
+    this.current = this.props.children
+    this.container = React.createRef()
+
+    this.state = {
+      prevClasses: '',
+      currentClasses: '',
+    }
   }
 
-  handleEnter = child => {
-    let node = findDOMNode(this)
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.isTransitioning) return
 
-    if (!child) return
-    const height = `${getHeight(child)}px`
-    const width = `${getWidth(child)}px`
+    if (this.current.key !== nextProps.children.key) {
+      this.prev = this.current
+      this.flush = true
+    }
 
-    this.props.onEnter(child)
-    css(node, {
-      height,
-      width,
-      overflow: 'hidden',
+    this.current = nextProps.children
+  }
+
+  componentDidUpdate() {
+    if (!this.flush || this.isTransitioning) return
+    this.flush = false
+    this.isTransitioning = true
+
+    this.setState({ prevClasses: '', currentClasses: next }, () => {
+      let current = this.container.current.lastChild
+
+      current.clientHeight // eslint-disable-line
+
+      this.setState(
+        {
+          prevClasses: prev,
+          currentClasses: cn(next, active),
+        },
+        () => {
+          this.props.onTransitionStart && this.props.onTransitionStart(current)
+
+          transition.end(current, () => {
+            this.prev = null
+
+            if (this.current.key !== this.props.children.key) {
+              this.current = this.props.children
+            }
+
+            this.setState(
+              { prevClasses: '', currentClasses: '' },
+              this.handleTransitionEnd,
+            )
+          })
+        },
+      )
     })
   }
 
-  handleExited = () => {
-    let node = findDOMNode(this)
-    css(node, { overflow: '', height: '', width: '' })
+  handleTransitionEnd = () => {
+    let current = this.container.current.lastChild
+
+    this.isTransitioning = false
+    this.props.onTransitionEnd && this.props.onTransitionEnd(current)
   }
 
   render() {
-    let { children, direction, onEntering, ...props } = this.props
-
+    let { direction, onTransitionEnd: _, ...props } = this.props
+    let { prevClasses, currentClasses } = this.state
     return (
-      <TransitionGroup
+      <div
         {...props}
-        component="div"
-        className="rw-calendar-transition-group"
+        ref={this.container}
+        className={cn(`${prefix}-group`, `${prefix}-${direction}`)}
       >
-        <SlideTransition
-          key={children.key}
-          direction={direction}
-          onEnter={this.handleEnter}
-          onEntering={onEntering}
-          onExited={this.handleExited}
-        >
-          {children}
-        </SlideTransition>
-      </TransitionGroup>
+        {clone(this.prev, prevClasses)}
+        {clone(this.current, currentClasses)}
+      </div>
     )
   }
 }

@@ -115,52 +115,86 @@
   color: lighten($btn-color, 40%);
 }
 
-.rw-calendar-transition-group {
-  position: relative;
+@mixin translate($x, $y) {
+  transform: translate(#{$x}, #{$y});
+
+  @supports (transform-style: preserve-3d) {
+    transform: translate3d(#{$x}, #{$y}, 0);
+  }
 }
 
-.rw-calendar-transition {
-  transition: transform 300ms;
+.rw-calendar-transition-group {
+  position: relative;
   overflow: hidden;
 }
 
-.rw-calendar-transition-top {
-  transform: translateY(-100%);
-}
-.rw-calendar-transition-bottom {
-  transform: translateY(100%);
-}
-
-.rw-calendar-transition-right {
-  transform: translateX(-100%);
-}
-.rw-calendar-transition-left {
-  transform: translateX(100%);
+.rw-calendar-transition {
+  width: 100%;
+  transition: transform 0.4s;
+  overflow: hidden;
+  @include translate(0, 0);
 }
 
-.rw-calendar-transition-entering,
-.rw-calendar-transition-entered {
-  &.rw-calendar-transition-top,
-  &.rw-calendar-transition-bottom {
-    transform: translateY(0);
+.rw-calendar-transition-next {
+  position: absolute;
+  top: 0;
+
+  .rw-calendar-transition-top & {
+    @include translate(0, -100%);
   }
-  &.rw-calendar-transition-right,
-  &.rw-calendar-transition-left {
-    transform: translateX(0);
+  .rw-calendar-transition-bottom & {
+    @include translate(0, 100%);
+  }
+  .rw-calendar-transition-right & {
+    @include translate(-100%, 0);
+  }
+  .rw-calendar-transition-left & {
+    @include translate(100%, 0);
+  }
+
+  &.rw-calendar-transition-active {
+    @include translate(0, 0);
   }
 }
 
-.rw-calendar-transition-exiting {
-  &.rw-calendar-transition-top {
-    transform: translateY(100%);
+.rw-calendar-transition-prev {
+  .rw-calendar-transition-top & {
+    @include translate(0, 100%);
   }
-  &.rw-calendar-transition-bottom {
-    transform: translateY(-100%);
+  .rw-calendar-transition-bottom & {
+    @include translate(0, -100%);
   }
-  &.rw-calendar-transition-right {
-    transform: translateX(100%);
+  .rw-calendar-transition-right & {
+    @include translate(100%, 0);
   }
-  &.rw-calendar-transition-left {
-    transform: translateX(-100%);
+  .rw-calendar-transition-left & {
+    @include translate(-100%, 0);
   }
 }
+
+// .rw-calendar-transition-entering,
+// .rw-calendar-transition-entered {
+//   &.rw-calendar-transition-top,
+//   &.rw-calendar-transition-bottom {
+//     transform: translateY(0);
+//   }
+//   &.rw-calendar-transition-right,
+//   &.rw-calendar-transition-left {
+//     transform: translateX(0);
+//   }
+// }
+
+// .rw-calendar-transition-exiting {
+//   &.rw-calendar-transition-top {
+//     transform: translateY(100%);
+//   }
+//   &.rw-calendar-transition-bottom {
+//     transform: translateY(-100%);
+//   }
+//   &.rw-calendar-transition-right {
+//     transform: translateX(100%);
+//   }
+//   &.rw-calendar-transition-left {
+//     transform: translateX(-100%);
+//   }
+// }

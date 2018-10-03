@@ -1,53 +1,50 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
+import React from 'react'
+import { storiesOf } from '@storybook/react'
 
-import Container from './Container';
-import Calendar from 'react-widgets/lib/Calendar';
+import Container from './Container'
+import Calendar from 'react-widgets/lib/Calendar'
 
-let generateNames = global.generateNames;
-
+let generateNames = global.generateNames
 
 storiesOf('Calendar', module)
-  .add('Calendar', () =>
+  .add('Calendar', () => (
     <Container>
       <Calendar />
     </Container>
-  )
-  .add('min', () =>
+  ))
+  .add('min', () => (
     <Container>
       <Calendar min={new Date()} />
     </Container>
-  )
-  .add('max', () =>
+  ))
+  .add('max', () => (
     <Container>
-      <Calendar max={new Date()}  />
+      <Calendar max={new Date()} />
     </Container>
-  )
-  .add('disabled', () =>
+  ))
+  .add('disabled', () => (
     <Container>
       <Calendar disabled />
     </Container>
-  )
-  .add('readOnly', () =>
+  ))
+  .add('readOnly', () => (
     <Container>
       <Calendar readOnly />
     </Container>
-  )
-  .add('views', () =>
+  ))
+  .add('views', () => (
     <Container>
       <Calendar views={['year', 'decade']} />
     </Container>
-  )
-  .add('defaultView', () =>
+  ))
+  .add('defaultView', () => (
     <Container>
       <Calendar defaultView="decade" />
     </Container>
-  )
+  ))
   .add('current date', () => {
     class Story extends React.Component {
-
-      onChange = value =>
-        this.setState({ value });
+      onChange = value => this.setState({ value })
 
       render = () => (
         <Container>
@@ -55,9 +52,7 @@ storiesOf('Calendar', module)
             value={this.state && this.state.value}
             onChange={this.onChange}
           />
-          <button onClick={()=> this.onChange(new Date()) }>
-            change date
-          </button>
+          <button onClick={() => this.onChange(new Date())}>change date</button>
         </Container>
       )
     }

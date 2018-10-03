@@ -20,7 +20,7 @@ const yr = 'yyyy'
 const defaultDateFormats = {
   date: 'd',
   time: 't',
-  datetime: 'f',
+  datetime: 'd t',
   header: 'MMMM yyyy',
   footer: 'D',
   weekday: (day, l) => l._shortDay(day),
@@ -45,7 +45,7 @@ export default class OldGlobalizeLocalizer extends Localizer {
       culture,
       dateFormats = defaultDateFormats,
       numberFormats = defaultNumberFormats,
-    }
+    },
   ) {
     super({ dateFormats, numberFormats })
 

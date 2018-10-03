@@ -309,7 +309,7 @@ class Calendar extends React.Component {
 
   static getDerivedStateFromProps(
     { view, views, value, currentDate },
-    prevState
+    prevState,
   ) {
     view = view || views[0]
     let { slideDirection, view: lastView, currentDate: lastDate } = prevState
@@ -419,7 +419,7 @@ class Calendar extends React.Component {
           this.props.min,
           this.props.max,
           view,
-          direction
+          direction,
         )
 
         if (!dates.eq(currentDate, nextDate, unit)) {
@@ -494,7 +494,7 @@ class Calendar extends React.Component {
         />
         <Calendar.Transition
           direction={slideDirection}
-          onEnter={this.moveFocus}
+          onTransitionStart={this.moveFocus}
         >
           <View
             {...viewProps}
@@ -558,7 +558,7 @@ class Calendar extends React.Component {
     let inRangeDate = inRangeValue(
       date ? new Date(date) : currentDate,
       min,
-      max
+      max,
     )
 
     if (
@@ -593,12 +593,12 @@ class Calendar extends React.Component {
       case 'decade':
         return localizer.formatDate(
           dates.startOf(currentDate, 'decade'),
-          'decade'
+          'decade',
         )
       case 'century':
         return localizer.formatDate(
           dates.startOf(currentDate, 'century'),
-          'century'
+          'century',
         )
     }
   }

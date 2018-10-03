@@ -42,7 +42,7 @@ class CalendarView extends React.Component {
       A11y.setActiveDescendant(
         node,
         this.props.activeId,
-        this.props.focusedItem
+        this.props.focusedItem,
       )
   }
 
@@ -57,7 +57,7 @@ class CalendarView extends React.Component {
   }
 
   render() {
-    let { className, ...props } = this.props
+    let { className, focusedItem: _0, activeId: _1, ...props } = this.props
 
     return (
       <table
@@ -151,7 +151,7 @@ class CalendarViewCell extends React.Component {
           isDisabled && 'rw-state-disabled',
           this.isEmpty() && 'rw-cell-not-allowed',
           this.isOffView() && 'rw-cell-off-range',
-          this.isSelected() && 'rw-state-selected'
+          this.isSelected() && 'rw-state-selected',
         )}
       >
         <span aria-hidden>{children}</span>
