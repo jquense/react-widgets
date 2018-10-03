@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.1.18"></a>
+## [4.1.18](https://github.com/jquense/react-widgets/compare/react-widgets-simple-number@4.1.17...react-widgets-simple-number@4.1.18) (2018-10-03)
+
+
+
+
+**Note:** Version bump only for package react-widgets-simple-number
+
 <a name="4.1.16"></a>
 ## [4.1.16](https://github.com/jquense/react-widgets/compare/react-widgets-simple-number@4.1.15...react-widgets-simple-number@4.1.16) (2018-09-20)
 

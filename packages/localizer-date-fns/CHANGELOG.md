@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.21"></a>
+## [4.0.21](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@4.0.20...react-widgets-date-fns@4.0.21) (2018-10-03)
+
+
+### Bug Fixes
+
+* localizer-date-fns uses calendar year date format yyyy ([#849](https://github.com/jquense/react-widgets/issues/849)) ([c125862](https://github.com/jquense/react-widgets/commit/c125862))
+
+
+
+
 <a name="4.0.19"></a>
 ## [4.0.19](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@4.0.18...react-widgets-date-fns@4.0.19) (2018-09-20)
 

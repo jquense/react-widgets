@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.12"></a>
+## [0.2.12](https://github.com/jquense/react-widgets/compare/react-widgets-material-ui@0.2.11...react-widgets-material-ui@0.2.12) (2018-10-03)
+
+
+
+
+**Note:** Version bump only for package react-widgets-material-ui
+
 <a name="0.2.10"></a>
 ## [0.2.10](https://github.com/jquense/react-widgets/compare/react-widgets-material-ui@0.2.9...react-widgets-material-ui@0.2.10) (2018-09-20)
 
