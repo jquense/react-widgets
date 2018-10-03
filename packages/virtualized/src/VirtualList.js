@@ -128,6 +128,34 @@ class VirtualList extends React.Component {
     )
       this.move()
   }
+  _renderItem = ({ item, ...rest }) => {
+    const { isDisabled, renderItem, textAccessor, valueAccessor } = this.props
+    let Component = this.props.itemComponent
+    if (renderItem) {
+      return renderItem({ item, ...rest })
+    } else if (Component) {
+      return (
+        <Component
+          item={item}
+          value={valueAccessor(item)}
+          text={textAccessor(item)}
+          disabled={isDisabled(item)}
+          {...rest}
+        />
+      )
+    }
+    return textAccessor(item)
+  }
+
+  _renderGroup = (group, searchTerm) => {
+    const { renderGroup, groupComponent: Component } = this.props
+    if (renderGroup) {
+      return renderGroup({ group, searchTerm })
+    } else if (Component) {
+      return <Component item={group} searchTerm={searchTerm} />
+    }
+    return group
+  }
 
   renderItems = (items, ref) => {
     let { className, messages } = this.props
@@ -141,7 +169,6 @@ class VirtualList extends React.Component {
       </Listbox>
     )
   }
-
   renderItem = (index, key) => {
     let {
       activeId,
@@ -149,13 +176,11 @@ class VirtualList extends React.Component {
       selectedItem,
       onSelect,
       dataState,
-      renderItem,
       isDisabled,
       pageSize,
       hasNextPage,
       onRequestItems,
       searchTerm,
-      renderGroup,
       loadingComponent: LoadingComponent,
       optionComponent: OptionComponent,
     } = this.props
@@ -186,7 +211,7 @@ class VirtualList extends React.Component {
     if (item && item.__isGroup) {
       return (
         <ListOptionGroup key={key}>
-          {renderGroup({ group: item.group, searchTerm })}
+          {this._renderGroup({ group: item.group, searchTerm })}
         </ListOptionGroup>
       )
     }
@@ -203,7 +228,7 @@ class VirtualList extends React.Component {
         selected={selectedItem === item}
         onSelect={onSelect}
       >
-        {renderItem({ item, index, searchTerm })}
+        {this._renderItem({ item, index, searchTerm })}
       </OptionComponent>
     )
   }
