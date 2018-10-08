@@ -3,8 +3,6 @@ import Globalize from 'globalize'
 import { mount } from 'enzyme'
 
 import DateTimePicker from '../src/DateTimePicker'
-import LocalizationProvider from '../src/LocalizationProvider'
-import TimeList from '../src/TimeList'
 import Calendar from '../src/Calendar'
 
 let ControlledDateTimePicker = DateTimePicker.ControlledComponent
@@ -18,10 +16,10 @@ describe('DateTimePicker', () => {
         <DateTimePicker
           defaultValue={date}
           formats={{ datetime: 'MM-dd-yyyy' }}
-        />
+        />,
       )
         .find('.rw-input')
-        .getDOMNode().value
+        .getDOMNode().value,
     ).to.equal(Globalize.format(date, 'MM-dd-yyyy'))
   })
 
@@ -34,7 +32,7 @@ describe('DateTimePicker', () => {
       inst
         .find('Popup')
         .first()
-        .prop('open')
+        .prop('open'),
     ).to.not.equal(true)
 
     inst.assertNone('.rw-open')
@@ -63,11 +61,11 @@ describe('DateTimePicker', () => {
       <ControlledDateTimePicker
         open="date"
         calendarProps={{ defaultView: 'year' }}
-      />
+      />,
     )
 
     expect(wrapper.find(Calendar.ControlledComponent).props().view).to.equal(
-      'year'
+      'year',
     )
   })
 
@@ -79,7 +77,7 @@ describe('DateTimePicker', () => {
         open="date"
         onChange={change}
         onToggle={() => {}}
-      />
+      />,
     )
       .find('td.rw-cell')
       .first()
@@ -98,7 +96,7 @@ describe('DateTimePicker', () => {
         onChange={change}
         onSelect={select}
         onToggle={() => {}}
-      />
+      />,
     )
       .find('li.rw-list-option')
       .first()
@@ -114,7 +112,7 @@ describe('DateTimePicker', () => {
       mount(<DateTimePicker />)
         .find('ul')
         .getDOMNode()
-        .hasAttribute('id')
+        .hasAttribute('id'),
     ).to.equal(true)
   })
 
@@ -228,85 +226,5 @@ describe('DateTimePicker', () => {
     wrapper.simulate('keyDown', { key: 'ArrowDown' })
 
     expect(options[options.length - 1].className).to.match(/\brw-state-focus\b/)
-  })
-
-  describe('TimeList', () => {
-    let LocalizedTimeList = LocalizationProvider.withLocalizer(TimeList)
-
-    it('should render max correctly', () => {
-      let date = new Date(2014, 0, 16, 9, 30)
-      let inst = mount(
-        <LocalizedTimeList
-          value={new Date(2014, 0, 16, 8)}
-          max={date}
-          preserveDate
-        />
-      )
-
-      let dates = inst.find(TimeList).instance().state.data
-      let time = dates[dates.length - 1]
-
-      expect(time.date.getHours()).to.eql(9)
-      expect(time.date.getMinutes()).to.eql(30)
-      expect(time.date.getSeconds()).to.eql(0)
-
-      inst.setProps({ value: new Date(2014, 0, 15, 8) })
-
-      dates = inst.find(TimeList).instance().state.data
-      time = dates[dates.length - 1]
-
-      expect(time.date.getHours()).to.eql(23)
-      expect(time.date.getMinutes()).to.eql(30)
-      expect(time.date.getSeconds()).to.eql(0)
-    })
-
-    it('should render min correctly', () => {
-      let date = new Date(2014, 0, 16, 9, 30)
-
-      let inst = mount(
-        <LocalizedTimeList
-          value={new Date(2014, 0, 16, 12)}
-          min={date}
-          preserveDate
-        />
-      )
-
-      let time = inst.find(TimeList).instance().state.data[0]
-
-      expect(time.date.getHours()).to.eql(9)
-      expect(time.date.getMinutes()).to.eql(30)
-      expect(time.date.getSeconds()).to.eql(0)
-
-      inst = mount(
-        <LocalizedTimeList
-          value={new Date(2014, 0, 18, 8)}
-          min={date}
-          preserveDate
-        />
-      )
-      time = inst.find(TimeList).instance().state.data[0]
-
-      expect(time.date.getHours()).to.eql(0)
-      expect(time.date.getMinutes()).to.eql(0)
-      expect(time.date.getSeconds()).to.eql(0)
-    })
-
-    it('should set the step property', () => {
-      let dates = mount(<DateTimePicker step={60} />)
-        .find(TimeList)
-        .instance().state.data
-
-      expect(dates[0].date.getHours()).to.equal(0)
-      expect(dates[1].date.getHours()).to.equal(1)
-      expect(dates[2].date.getHours()).to.equal(2)
-
-      dates = mount(<DateTimePicker step={120} />)
-        .find(TimeList)
-        .instance().state.data
-
-      expect(dates[0].date.getHours()).to.equal(0)
-      expect(dates[1].date.getHours()).to.equal(2)
-      expect(dates[2].date.getHours()).to.equal(4)
-    })
   })
 })

@@ -27,7 +27,7 @@ describe('Multiselect', function() {
         data={dataList}
         textField="label"
         valueField="id"
-      />
+      />,
     )
       .find(MultiselectTag)
       .contains('jimmy')
@@ -38,7 +38,7 @@ describe('Multiselect', function() {
         data={dataList}
         textField="label"
         valueField={i => i.id}
-      />
+      />,
     )
       .find(MultiselectTag)
       .contains('jimmy')
@@ -51,7 +51,7 @@ describe('Multiselect', function() {
         data={dataList}
         textField="label"
         valueField="id"
-      />
+      />,
     )
 
     expect(wrapper.prop('open')).to.not.equal(true)
@@ -67,7 +67,7 @@ describe('Multiselect', function() {
     expect(inst.prop('open')).to.equal(true)
 
     inst.assertSingle('Popup[open]')
-    inst.assertSingle('Widget[open]')
+    inst.assertSingle('ForwardRef(Widget)[open]')
     inst.assertSingle('MultiselectInput[aria-expanded]')
   })
 
@@ -98,7 +98,7 @@ describe('Multiselect', function() {
     let openSpy = sinon.spy()
 
     mount(<ControlledMultiselect onToggle={openSpy} disabled />).simulate(
-      'focus'
+      'focus',
     )
 
     setTimeout(() => {
@@ -111,7 +111,7 @@ describe('Multiselect', function() {
     expect(
       shallow(<ControlledMultiselect open />)
         .find('List')
-        .prop('id')
+        .prop('id'),
     ).to.be.a('string')
   })
 
@@ -126,7 +126,7 @@ describe('Multiselect', function() {
         value={dataList.slice(0, 2)}
         valueAccessor={i => i.id}
         textAccessor={i => i.label}
-      />
+      />,
     )
       .tap(inst => expect(inst.find(MultiselectTag).length).to.equal(2))
       .find('.rw-multiselect-tag-btn')
@@ -147,7 +147,7 @@ describe('Multiselect', function() {
         data={dataList}
         textField="label"
         valueField="id"
-      />
+      />,
     )
       .find('.rw-multiselect-tag-btn')
       .first()
@@ -238,7 +238,7 @@ describe('Multiselect', function() {
         disabled={[1]}
         textField="label"
         valueField="id"
-      />
+      />,
     )
       .find(MultiselectTagList)
       .assertSingle('li.rw-state-disabled button.rw-multiselect-tag-btn')
@@ -256,7 +256,7 @@ describe('Multiselect', function() {
         onChange={changeSpy}
         value={['jimmy']}
         data={dataList}
-      />
+      />,
     )
       .find('button.rw-multiselect-tag-btn')
       .simulate('click')
@@ -274,7 +274,7 @@ describe('Multiselect', function() {
         disabled={[1]}
         textField="label"
         valueField="id"
-      />
+      />,
     )
       .find('button.rw-multiselect-tag-btn')
       .first()
@@ -292,7 +292,7 @@ describe('Multiselect', function() {
         onChange={changeSpy}
         value={['jimmy']}
         data={dataList}
-      />
+      />,
     )
       .find('button.rw-multiselect-tag-btn')
       .simulate('click')
@@ -311,7 +311,7 @@ describe('Multiselect', function() {
         data={dataList}
         onChange={change}
         onToggle={() => {}}
-      />
+      />,
     )
       .find('List')
       .prop('onSelect')(dataList[1], 'foo')
@@ -338,7 +338,7 @@ describe('Multiselect', function() {
         data={dataList}
         onSearch={search}
         onToggle={() => {}}
-      />
+      />,
     )
       .assertSingle('MultiselectInput')
       .simulate('change', event)
@@ -363,7 +363,7 @@ describe('Multiselect', function() {
         data={dataList}
         onChange={change}
         onSelect={onSelect}
-      />
+      />,
     )
       .find('List')
       .simulate('select', dataList[1], 'foo')
@@ -382,7 +382,7 @@ describe('Multiselect', function() {
         data={dataList}
         onSearch={onSearch}
         defaultSearchTerm="foo"
-      />
+      />,
     )
       .find('input')
       .simulate('blur')
@@ -405,7 +405,7 @@ describe('Multiselect', function() {
         valueField="id"
         defaultSearchTerm="ji"
         onSearch={searchSpy}
-      />
+      />,
     ).simulate('keyDown', { keyCode: 13 })
 
     expect(searchSpy.calledOnce).to.equal(true)
@@ -428,7 +428,7 @@ describe('Multiselect', function() {
           onSearch={() => {}}
           onKeyDown={spy}
         />
-      </form>
+      </form>,
     )
       .find('input')
       .simulate('keyDown', { key: 'Enter' })
@@ -440,27 +440,28 @@ describe('Multiselect', function() {
     mount(
       <Multiselect
         defaultOpen
+        allowCreate="onFilter"
         searchTerm="custom tag"
-        onCreate={() => {}}
         data={dataList}
         onSearch={() => {}}
         textField="label"
         valueField="id"
-      />
+      />,
     )
-      .tap(s => s.assertSingle('ul.rw-list-option-create'))
+      .tap(s => s.assertSingle('div.rw-list-option-create'))
       .setProps({ searchTerm: undefined })
-      .tap(s => s.assertNone('ul.rw-list-option-create'))
+      .tap(s => s.assertNone('div.rw-list-option-create'))
       .setProps({ searchTerm: 'JIMMY' })
-      .tap(s => s.assertNone('ul.rw-list-option-create'))
-      .setProps({ searchTerm: 'custom', onCreate: undefined })
-      .tap(s => s.assertNone('ul.rw-list-option-create'))
+      .tap(s => s.assertNone('div.rw-list-option-create'))
+      .setProps({ searchTerm: 'custom', allowCreate: false })
+      .tap(s => s.assertNone('div.rw-list-option-create'))
   })
 
   it('should show create tag correctly when caseSensitive', function() {
     mount(
       <Multiselect
         defaultOpen
+        allowCreate
         searchTerm="Jimmy"
         onCreate={() => {}}
         data={dataList}
@@ -468,11 +469,11 @@ describe('Multiselect', function() {
         textField="label"
         valueField="id"
         caseSensitive={true}
-      />
+      />,
     )
-      .tap(s => s.assertSingle('ul.rw-list-option-create'))
+      .tap(s => s.assertSingle('div.rw-list-option-create'))
       .setProps({ searchTerm: 'jimmy' })
-      .tap(s => s.assertNone('ul.rw-list-option-create'))
+      .tap(s => s.assertNone('div.rw-list-option-create'))
   })
 
   it('should call onCreate', function() {
@@ -487,12 +488,13 @@ describe('Multiselect', function() {
     let wrapper = mount(
       <Multiselect
         open
+        allowCreate
         searchTerm="custom tag"
         data={dataList}
         onCreate={create}
         onSearch={() => {}}
         onToggle={() => {}}
-      />
+      />,
     )
 
     wrapper
@@ -518,7 +520,7 @@ describe('Multiselect', function() {
         textField="label"
         valueField="id"
         onChange={change}
-      />
+      />,
     )
 
     let tags = inst.find('MultiselectTagList li')
@@ -552,7 +554,7 @@ describe('Multiselect', function() {
 
     mount(<Multiselect data={dataList} onToggle={openSpy} />).simulate(
       'keyDown',
-      { key: 'ArrowDown' }
+      { key: 'ArrowDown' },
     )
 
     expect(openSpy.calledOnce).to.equal(true)
@@ -569,10 +571,10 @@ describe('Multiselect', function() {
         textField="label"
         valueField="id"
         onChange={change}
-      />
+      />,
     )
 
-    let listItems = inst.find('List li')
+    let listItems = inst.find('List div.rw-list-option')
 
     listItems.first().is('.rw-state-focus')
 

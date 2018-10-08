@@ -167,7 +167,7 @@ class Multiselect extends React.Component {
 
   static defaultProps = {
     data: [],
-    allowCreate: 'onFilter',
+    allowCreate: false,
     filter: 'startsWith',
     value: [],
     searchTerm: '',
@@ -741,5 +741,5 @@ export default uncontrollable(
     value: 'onChange',
     searchTerm: 'onSearch',
   },
-  ['focus']
+  ['focus'],
 )
