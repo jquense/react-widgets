@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-simple-number",
-  "version": "4.1.16",
+  "version": "5.0.0-0",
   "description": "A globalize.js localizer for react-widgets",
   "main": "index.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "cross-env": "^5.2.0",
-    "react-widgets": "^4.4.4",
+    "react-widgets": "^5.0.0-0",
     "rimraf": "^2.6.2"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-virtualized",
-  "version": "4.0.20",
+  "version": "5.0.0-0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "@babel/core": "^7.0.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-widgets": "^4.4.4"
+    "react-widgets": "^5.0.0-0"
   },
   "author": "Jason Quense",
   "license": "MIT"
