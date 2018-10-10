@@ -27,7 +27,7 @@ class MultiselectTag extends React.Component {
     return (
       <Button
         variant={null}
-        onClick={this.onClick}
+        onClick={this.handleRemove}
         className="rw-multiselect-tag-btn"
         disabled={disabled || readOnly}
         label={label || 'Remove item'}
