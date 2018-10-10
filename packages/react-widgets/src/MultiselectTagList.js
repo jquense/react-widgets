@@ -44,7 +44,7 @@ class MultiselectTagList extends React.Component {
       focusedItem,
       children,
       clearTagIcon,
-      tagOptionComponent,
+      tagOptionComponent: TagOption = MultiselectTag,
       tagComponent: Tag,
     } = this.props
 
@@ -59,18 +59,17 @@ class MultiselectTagList extends React.Component {
           let isFocused = focusedItem === item
 
           return (
-            <MultiselectTag
+            <TagOption
               key={i}
               id={isFocused ? activeId : null}
               value={item}
               focused={isFocused}
-              onClick={onDelete}
+              onRemove={onDelete}
               clearTagIcon={clearTagIcon}
-              tagOptionComponent={tagOptionComponent}
               disabled={isDisabled(item, disabled, valueAccessor)}
             >
               {Tag ? <Tag item={item} /> : textAccessor(item)}
-            </MultiselectTag>
+            </TagOption>
           )
         })}
         {children}
