@@ -25,8 +25,8 @@ class MultiselectTagList extends React.Component {
     textAccessor: PropTypes.func.isRequired,
 
     onDelete: PropTypes.func.isRequired,
-    tagComponent: PropTypes.CustomPropTypes.elementType,
-    tagOptionComponent: PropTypes.CustomPropTypes.elementType,
+    tagComponent: CustomPropTypes.elementType,
+    tagOptionComponent: CustomPropTypes.elementType,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
   }
