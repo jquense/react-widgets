@@ -2,6 +2,7 @@ import cn from 'classnames'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { widgetEditable } from './util/interaction'
+import * as CustomPropTypes from './util/PropTypes'
 
 import Button from './Button'
 
@@ -15,6 +16,7 @@ class MultiselectTag extends React.Component {
     readOnly: PropTypes.bool,
     label: PropTypes.string,
     value: PropTypes.any,
+    tagOptionComponent: CustomPropTypes.elementType,
   }
 
   @widgetEditable
@@ -40,10 +42,16 @@ class MultiselectTag extends React.Component {
   }
 
   render() {
-    const { id, children, focused, disabled } = this.props
+    const {
+      id,
+      children,
+      focused,
+      disabled,
+      tagOptionComponent: Tag = 'div',
+    } = this.props
 
     return (
-      <li
+      <Tag
         id={id}
         role="option"
         className={cn(
@@ -54,7 +62,7 @@ class MultiselectTag extends React.Component {
       >
         <span className="rw-multiselect-tag-label">{children}</span>
         {this.renderDelete()}
-      </li>
+      </Tag>
     )
   }
 }

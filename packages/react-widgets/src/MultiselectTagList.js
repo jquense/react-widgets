@@ -25,7 +25,8 @@ class MultiselectTagList extends React.Component {
     textAccessor: PropTypes.func.isRequired,
 
     onDelete: PropTypes.func.isRequired,
-    valueComponent: PropTypes.func,
+    tagComponent: PropTypes.CustomPropTypes.elementType,
+    tagOptionComponent: PropTypes.CustomPropTypes.elementType,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
   }
@@ -43,7 +44,8 @@ class MultiselectTagList extends React.Component {
       focusedItem,
       children,
       clearTagIcon,
-      valueComponent: ValueComponent,
+      tagOptionComponent,
+      tagComponent: Tag,
     } = this.props
 
     return (
@@ -64,13 +66,10 @@ class MultiselectTagList extends React.Component {
               focused={isFocused}
               onClick={onDelete}
               clearTagIcon={clearTagIcon}
+              tagOptionComponent={tagOptionComponent}
               disabled={isDisabled(item, disabled, valueAccessor)}
             >
-              {ValueComponent ? (
-                <ValueComponent item={item} />
-              ) : (
-                textAccessor(item)
-              )}
+              {Tag ? <Tag item={item} /> : textAccessor(item)}
             </MultiselectTag>
           )
         })}

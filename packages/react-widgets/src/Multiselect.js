@@ -80,6 +80,10 @@ let propTypes = {
   textField: CustomPropTypes.accessor,
 
   tagComponent: CustomPropTypes.elementType,
+  /**
+   * Control the rendering of the outer tag component, including the delete button. To control just hte tag label, `use tagComponent` instead
+   */
+  tagOptionComponent: CustomPropTypes.elementType,
   itemComponent: CustomPropTypes.elementType,
   listComponent: CustomPropTypes.elementType,
 
@@ -167,7 +171,7 @@ class Multiselect extends React.Component {
 
   static defaultProps = {
     data: [],
-    allowCreate: 'onFilter',
+    allowCreate: false,
     filter: 'startsWith',
     value: [],
     searchTerm: '',
@@ -541,7 +545,13 @@ class Multiselect extends React.Component {
   }
 
   renderTags() {
-    let { readOnly, disabled, clearTagIcon } = this.props
+    let {
+      readOnly,
+      disabled,
+      clearTagIcon,
+      tagComponent,
+      tagOptionComponent,
+    } = this.props
     let { focusedTag, dataItems, accessors, messages } = this.state
 
     let Component = this.props.tagComponent
@@ -559,7 +569,8 @@ class Multiselect extends React.Component {
         disabled={disabled}
         focusedItem={focusedTag}
         onDelete={this.handleDelete}
-        valueComponent={Component}
+        tagOptionComponent={tagOptionComponent}
+        tagComponent={tagComponent}
         ref={this.attachTagsRef}
       >
         {this.renderInput()}
