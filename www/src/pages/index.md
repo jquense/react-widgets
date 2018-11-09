@@ -65,7 +65,7 @@ render(<DropdownList />, document.getElementById('app-root'))
 </TabbedCodeBlock> }}
 
 > **Hey!** Date and number components need a _Localizer_ configured in order to work!
-> Check out the [Localization page](../localization/) for more information.
+> Check out the [Localization page](/react-widgets/localization/) for more information.
 
 If are using webpack to handle styles in your application you are probably already configured
 loaders to make it work with appropriate file extensions. If not, you will have to use
