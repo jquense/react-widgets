@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.4.7"></a>
+## [4.4.7](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.6...react-widgets@4.4.7) (2018-11-20)
+
+
+### Bug Fixes
+
+* problem typing decimals in NumberPicker ([#811](https://github.com/jquense/react-widgets/issues/811)). ([#880](https://github.com/jquense/react-widgets/issues/880)) ([c8b26c1](https://github.com/jquense/react-widgets/commit/c8b26c1))
+
+
+
+
 <a name="4.4.6"></a>
 ## [4.4.6](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.5...react-widgets@4.4.6) (2018-10-03)
 
