@@ -182,7 +182,7 @@ class Combobox extends React.Component {
       })
     }
     const selectedItem = data[index]
-    const nextFocusedItem = ~focusedIndex ? focusedItem : data[0]
+    const nextFocusedItem = focusedIndex === -1 ? focusedItem : data[focusedIndex]
 
     return {
       data,
