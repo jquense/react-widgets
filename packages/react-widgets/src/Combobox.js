@@ -149,16 +149,16 @@ class Combobox extends React.Component {
     let accessors = getAccessors(nextProps)
     const valueChanged = value !== prevState.lastValue
 
-    let index = accessors.indexOf(data, value)
-    let dataItem = index === -1 ? value : data[index]
+    let selectedIndex = accessors.indexOf(data, value)
+    let dataItem = selectedIndex === -1 ? value : data[selectedIndex]
 
     let searchTerm
     // filter only when the value is not an item in the data list
-    if (index === -1 || prevState.isSuggesting()) {
+    if (selectedIndex === -1 || prevState.isSuggesting()) {
       searchTerm = accessors.text(dataItem)
     }
 
-    data = data = Filter.filter(data, {
+    data = Filter.filter(data, {
       filter,
       searchTerm,
       minLength,
@@ -168,12 +168,13 @@ class Combobox extends React.Component {
 
     const list = reduceToListState(data, prevState.list, { nextProps })
 
-    let focusedIndex = index
     // index may have changed after filtering
-    if (index !== -1) {
-      index = accessors.indexOf(data, value)
-      focusedIndex = index
-    } else {
+    if (selectedIndex !== -1) {
+      selectedIndex = accessors.indexOf(data, value)
+    }
+
+    let focusedIndex = accessors.indexOf(data, focusedItem);
+    if (focusedIndex === -1) {
       // value isn't a dataItem so find the close match
       focusedIndex = Filter.indexOf(data, {
         searchTerm,
@@ -181,8 +182,20 @@ class Combobox extends React.Component {
         filter: filter || true,
       })
     }
-    const selectedItem = data[index]
-    const nextFocusedItem = focusedIndex === -1 ? focusedItem : data[focusedIndex]
+    const selectedItem = data[selectedIndex]
+
+    let nextFocusedItem = null
+    // If no item is focused, or is no longer in the dataset, default to either the selected item, or to the first item in the list
+    if (focusedIndex === -1) {
+      if (selectedItem) {
+        nextFocusedItem = selectedItem
+      } else {
+        nextFocusedItem = data[0]
+      }
+    } else {
+      nextFocusedItem = data[focusedIndex]
+    }
+
 
     return {
       data,
@@ -194,7 +207,7 @@ class Combobox extends React.Component {
         ? list.nextEnabled(selectedItem)
         : prevState.selectedItem,
       focusedItem:
-        valueChanged || !focusedItem
+        (valueChanged || !focusedItem)
           ? list.nextEnabled(selectedItem || nextFocusedItem)
           : nextFocusedItem,
     }
