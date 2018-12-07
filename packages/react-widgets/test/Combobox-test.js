@@ -9,9 +9,10 @@ let ControlledCombobox = Combobox.ControlledComponent;
 
 describe('Combobox', function(){
   var dataList = [
-    { label: 'jimmy', id: 0 },
-    { label: 'sally', id: 1 },
-    { label: 'pat', id: 2 }
+    { label: 'jimmy smith', id: 0 },
+    { label: 'sally smith', id: 1 },
+    { label: 'pat doe', id: 2 },
+    { label: 'suzy smith', id: 3 },
   ];
 
   it('should set initial values', function(){
@@ -32,7 +33,7 @@ describe('Combobox', function(){
     )
     .find('input.rw-input')
     .tap(c =>
-      expect(c.getDOMNode().value).to.equal('jimmy'));
+      expect(c.getDOMNode().value).to.equal('jimmy smith'));
   })
 
   it('should pass NAME down', function(){
@@ -322,19 +323,99 @@ describe('Combobox', function(){
       />
     )
 
-    let listItems = inst.find('List li');
-    listItems.first().is('.rw-state-focus')
+    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    listItems.at(1).is('.rw-state-focus')
+    expect(inst.find('List li').at(1).is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowUp' })
-    listItems.first().is('.rw-state-focus')
+    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'End' })
-    listItems.last().is('.rw-state-focus')
+    expect(inst.find('List li').last().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'Home' })
-    listItems.first().is('.rw-state-focus')
+    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
+  })
+
+  it('should navigate list when filtered', function(){
+    let change = sinon.spy();
+    let inst = mount(
+      <ControlledCombobox
+        open={true}
+        filter={'contains'}
+        data={dataList}
+        value='smith'
+        textField='label'
+        valueField='id'
+        onChange={change}
+        onToggle={() => {}}
+      />
+    )
+
+    expect(inst.find('List li').length).to.equal(3)
+
+    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
+
+    inst.simulate('keyDown', { key: 'ArrowDown' })
+    expect(inst.find('List li').at(1).is('.rw-state-focus')).to.equal(true)
+
+    inst.simulate('keyDown', { key: 'ArrowDown' })
+    expect(inst.find('List li').at(2).is('.rw-state-focus')).to.equal(true)
+  })
+
+  it('should refocus to the first option when the focused option is filtered out', function() {
+    let change = sinon.spy();
+    let inst = mount(
+      <ControlledCombobox
+        open={true}
+        filter={'contains'}
+        data={dataList}
+        value='smith'
+        minLength={2}
+        textField='label'
+        valueField='id'
+        onChange={change}
+        onToggle={() => {}}
+      />
+    )
+
+    expect(inst.find('List li').length).to.equal(3)
+
+    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
+    expect(inst.state().focusedItem).to.equal(dataList[0])
+    inst.setProps({
+        value: 'doe',
+    })
+
+    expect(inst.find('List li').length).to.equal(1)
+
+    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
+    expect(inst.state().focusedItem).to.equal(dataList[2])
+  })
+
+  it('should default focus to the selected value', function() {
+    let change = sinon.spy();
+    let inst = mount(
+      <ControlledCombobox
+        open={true}
+        data={dataList}
+        value={dataList[2]}
+        minLength={2}
+        textField='label'
+        valueField='id'
+        onChange={change}
+        onToggle={() => {}}
+      />
+    )
+
+    expect(inst.find('List li').length).to.equal(4)
+
+    expect(inst.find('List li').at(2).is('.rw-state-focus')).to.equal(true)
+    expect(inst.state().focusedItem).to.equal(dataList[2])
+
+    inst.simulate('keyDown', { key: 'ArrowDown' })
+    expect(inst.find('List li').at(2).is('.rw-state-focus')).to.equal(false)
+    expect(inst.find('List li').at(3).is('.rw-state-focus')).to.equal(true)
   })
 })
