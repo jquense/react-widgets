@@ -94,7 +94,7 @@ let propTypes = {
 
   /**
    * A formatter used to display the date value. For more information about formats
-   * visit the [Localization page](/i18n)
+   * visit the [Localization page](/localization)
    *
    * @example ['dateFormat', ['format', "{ raw: 'MMM dd, yyyy' }", null, { defaultValue: 'new Date()', time: 'false' }]]
    */
@@ -102,7 +102,7 @@ let propTypes = {
 
   /**
    * A formatter used by the time dropdown to render times. For more information about formats visit
-   * the [Localization page](/i18n).
+   * the [Localization page](/localization).
    *
    * @example ['dateFormat', ['timeFormat', "{ time: 'medium' }", null, { date: 'false', open: '"time"' }]]
    */
@@ -110,7 +110,7 @@ let propTypes = {
 
   /**
    * A formatter to be used while the date input has focus. Useful for showing a simpler format for inputing.
-   * For more information about formats visit the [Localization page](/i18n)
+   * For more information about formats visit the [Localization page](/localization)
    *
    * @example ['dateFormat', ['editFormat', "{ date: 'short' }", null, { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }]]
    */
