@@ -40,6 +40,15 @@ export default class DateFnsLocalizer extends Localizer {
   }
 
   parseDate(value, format) {
-    return parseWithOptions({ locale: this.locale }, new Date(), format, value)
+    const result = parseWithOptions(
+      { locale: this.locale },
+      new Date(),
+      format,
+      value
+    )
+    if (result.toString() === 'Invalid Date') {
+      return null
+    }
+    return result
   }
 }
