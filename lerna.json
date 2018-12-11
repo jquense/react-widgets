@@ -4,7 +4,6 @@
   "hoist": true,
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "packages": [
-    "packages/*"
-  ]
+  "conventionalCommits": true,
+  "packages": ["packages/*"]
 }
