@@ -91,12 +91,16 @@ export default function dateFnsLocalizer({
   }
 
   function parse(value, format, culture) {
-    return parseWithOptions(
+    const result = parseWithOptions(
       { locale: getLocale(culture) },
       new Date(),
       format,
       value
     )
+    if (result.toString() === 'Invalid Date') {
+      return null;
+    }
+    return result;
   }
 
   function firstOfWeek(culture) {
