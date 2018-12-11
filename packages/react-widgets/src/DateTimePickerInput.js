@@ -56,6 +56,10 @@ class DateTimePickerInput extends React.Component {
     if (this._needsFlush) {
       let date = parse(event.target.value)
 
+      const dateIsInvalid = event.target.value != '' && date == null
+      if (dateIsInvalid) {
+        this.setState({ textValue: '' })
+      }
       this._needsFlush = false
       onChange(date, formatDate(date, format, culture))
     }
