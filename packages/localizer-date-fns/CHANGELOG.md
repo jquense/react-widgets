@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.23"></a>
+## [4.0.23](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@4.0.22...react-widgets-date-fns@4.0.23) (2018-12-11)
+
+
+### Bug Fixes
+
+* date-fns localizer ensure parse returns null when invalid date ([#893](https://github.com/jquense/react-widgets/issues/893)) ([bcfbdf5](https://github.com/jquense/react-widgets/commit/bcfbdf5))
+
+
+
+
 <a name="4.0.22"></a>
 ## [4.0.22](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@4.0.21...react-widgets-date-fns@4.0.22) (2018-11-20)
 

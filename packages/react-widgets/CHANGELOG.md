@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.4.8"></a>
+## [4.4.8](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.7...react-widgets@4.4.8) (2018-12-11)
+
+
+### Bug Fixes
+
+* arrow keys not working on Combobox select when data is filtered ([#891](https://github.com/jquense/react-widgets/issues/891)) ([2e14597](https://github.com/jquense/react-widgets/commit/2e14597))
+* edge case where upon hitting enter before using arrows or clicking, the first item out of all options (not just filtered options) was selected by default ([#883](https://github.com/jquense/react-widgets/issues/883)) ([971b326](https://github.com/jquense/react-widgets/commit/971b326))
+* force reset of DatePickerInput when date is invalid ([#864](https://github.com/jquense/react-widgets/issues/864)) ([1f5bd74](https://github.com/jquense/react-widgets/commit/1f5bd74))
+
+
+
+
 <a name="4.4.7"></a>
 ## [4.4.7](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.6...react-widgets@4.4.7) (2018-11-20)
 
