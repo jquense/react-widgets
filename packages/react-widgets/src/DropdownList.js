@@ -399,6 +399,9 @@ class DropdownList extends React.Component {
         {filter && (
           <WidgetPicker className="rw-filter-input rw-input">
             <input
+              aria-activedescendant={open ? this.activeId : null}
+              aria-autocomplete="list"
+              aria-controls={open ? this.listId : null}
               value={searchTerm}
               className="rw-input-reset"
               onChange={this.handleInputChange}
@@ -482,12 +485,10 @@ class DropdownList extends React.Component {
       id: this.inputId,
       tabIndex: open && filter ? -1 : tabIndex || 0,
       'aria-owns': this.listId,
-      'aria-activedescendant': open ? this.activeId : null,
       'aria-expanded': !!open,
       'aria-haspopup': true,
       'aria-busy': !!busy,
       'aria-live': !open && 'polite',
-      'aria-autocomplete': 'list',
       'aria-disabled': disabled,
       'aria-readonly': readOnly,
     })
