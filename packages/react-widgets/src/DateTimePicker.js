@@ -546,10 +546,12 @@ class DateTimePicker extends React.Component {
     )
 
     let shouldRenderList = isFirstFocusedRender(this)
+    let shouldRenderTimeList = !!(shouldRenderList && time)
+    let shouldRenderCalendar = !!(shouldRenderList && date)
 
     let owns = ''
-    if (date) owns += this.dateId
-    if (time) owns += ' ' + this.listId
+    if (shouldRenderCalendar && open === 'date') owns += this.dateId
+    if (shouldRenderTimeList && open === 'time') owns += ' ' + this.listId
 
     return (
       <Widget
@@ -571,8 +573,8 @@ class DateTimePicker extends React.Component {
           {this.renderButtons()}
         </WidgetPicker>
 
-        {!!(shouldRenderList && time) && this.renderTimeList()}
-        {!!(shouldRenderList && date) && this.renderCalendar()}
+        {shouldRenderTimeList && this.renderTimeList()}
+        {shouldRenderCalendar && this.renderCalendar()}
       </Widget>
     )
   }
