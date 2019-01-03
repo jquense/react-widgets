@@ -72,8 +72,6 @@ describe('DateTimePicker', () => {
   it('sets aria-owns relationship for TimePicker', () => {
     const inst = shallow(<ControlledDateTimePicker open="time" date={false} time={true} />)
     const listId = inst.find(TimeList).props().id
-    console.log(inst.find(TimeList).debug())
-    console.log(inst.find('DateTimePickerInput').debug())
     inst.assertSingle(`[aria-owns='${listId}']`)
   })
 
