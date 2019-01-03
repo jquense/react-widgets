@@ -32,7 +32,7 @@ describe('DateTimePicker', () => {
     ).to.not.equal(true)
 
     inst.assertNone('.rw-open')
-    inst.assertSingle(`DateTimePickerInput[aria-expanded=false]`)
+    inst.assertSingle('DateTimePickerInput[aria-expanded=false]')
   })
 
   it('should open when clicked', () => {
@@ -61,6 +61,20 @@ describe('DateTimePicker', () => {
     expect(wrapper.find(Calendar.ControlledComponent).props().view).to.equal(
       'year'
     )
+  })
+
+  it('sets aria-owns relationship for Calendar', () => {
+    const inst = shallow(<ControlledDateTimePicker open="date" time={false} />)
+    const dateId = inst.find(Calendar).props().id
+    inst.assertSingle(`[aria-owns='${dateId}']`)
+  })
+
+  it('sets aria-owns relationship for TimePicker', () => {
+    const inst = shallow(<ControlledDateTimePicker open="time" date={false} time={true} />)
+    const listId = inst.find(TimeList).props().id
+    console.log(inst.find(TimeList).debug())
+    console.log(inst.find('DateTimePickerInput').debug())
+    inst.assertSingle(`[aria-owns='${listId}']`)
   })
 
   it('should change when selecting a date', () => {
@@ -184,6 +198,7 @@ describe('DateTimePicker', () => {
     let input = wrapper.find('.rw-input').getDOMNode()
 
     expect(input.hasAttribute('disabled')).to.equal(true)
+    expect(input.getAttribute('aria-owns')).to.equal('')
 
     wrapper.find('.rw-i-calendar').simulate('click')
 
@@ -199,6 +214,7 @@ describe('DateTimePicker', () => {
     let input = wrapper.find('.rw-input').getDOMNode()
 
     expect(input.hasAttribute('readonly')).to.equal(true)
+    expect(input.getAttribute('aria-owns')).to.equal('')
 
     wrapper.find('.rw-i-calendar').simulate('click')
 
