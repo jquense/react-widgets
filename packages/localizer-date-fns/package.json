@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-date-fns",
-  "version": "4.0.23",
+  "version": "4.0.24",
   "description": "A date-fns localizer for react-widgets",
   "main": "index.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "@babel/core": "^7.0.0-beta.52",
     "cross-env": "^5.2.0",
     "date-fns": "^2.0.0-alpha.7",
-    "react-widgets": "^4.4.8",
+    "react-widgets": "^4.4.9",
     "rimraf": "^2.6.2"
   }
 }

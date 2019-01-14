@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.25"></a>
+## [4.0.25](https://github.com/jquense/react-widgets/compare/react-widgets-virtualized@4.0.24...react-widgets-virtualized@4.0.25) (2019-01-14)
+
+
+
+
+**Note:** Version bump only for package react-widgets-virtualized
+
 <a name="4.0.24"></a>
 ## [4.0.24](https://github.com/jquense/react-widgets/compare/react-widgets-virtualized@4.0.23...react-widgets-virtualized@4.0.24) (2018-12-11)
 

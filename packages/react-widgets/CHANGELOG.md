@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.4.9"></a>
+## [4.4.9](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.8...react-widgets@4.4.9) (2019-01-14)
+
+
+### Bug Fixes
+
+* for issue 875 Multiselect height bug in Firefox ([#904](https://github.com/jquense/react-widgets/issues/904)) ([e91f7c5](https://github.com/jquense/react-widgets/commit/e91f7c5))
+* hidden aria-owns for DateTimePicker ([#902](https://github.com/jquense/react-widgets/issues/902)) ([6ad1b9a](https://github.com/jquense/react-widgets/commit/6ad1b9a)), closes [#619](https://github.com/jquense/react-widgets/issues/619)
+
+
+
+
 <a name="4.4.8"></a>
 ## [4.4.8](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.7...react-widgets@4.4.8) (2018-12-11)
 
