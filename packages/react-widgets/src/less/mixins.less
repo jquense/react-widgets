@@ -17,8 +17,6 @@
 
 .opacity(@opacity) {
   opacity: @opacity;
-  @opacity-ie: (@opacity * 100);
-  filter: ~"alpha(opacity=@{opacity-ie})";
 }
 
 .unstyled-list() {
@@ -83,7 +81,6 @@
 
 .disabled-color(@color) {
   color: lighten(@color, 40%);
-  filter: alpha(opacity=7);
   opacity: .7;
 }
 
