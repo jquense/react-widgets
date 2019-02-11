@@ -86,14 +86,12 @@
   overflow: hidden;
   border-collapse: separate;
   display: inline-table;
-  height: @input-height;
 
   & > * {
     position: relative;
     border: none;
     outline: none;
     width: 100%;
-    height: 100%;
     display: table-cell;
   }
 
@@ -158,7 +156,7 @@
   padding: 0 @input-padding-horizontal;
   background-color: @input-bg;
 
-  &[type='text']::-ms-clear {
+  &[type="text"]::-ms-clear {
     display: none;
   }
 
@@ -183,7 +181,7 @@
   height: 16px;
 
   &:before {
-    content: '';
+    content: "";
   }
 }
 
@@ -218,5 +216,5 @@
 }
 
 .rw-widget-input.rw-state-focus {
-  box-shadow: ~'@{input-focus-box-shadow}, @{input-box-shadow}';
+  box-shadow: ~"@{input-focus-box-shadow}, @{input-box-shadow}";
 }
