@@ -591,7 +591,7 @@ class Multiselect extends React.Component {
           <Select
             busy={busy}
             spinner={busySpinner}
-            icon={focused ? selectIcon : null}
+            icon={selectIcon}
             aria-hidden="true"
             role="presentational"
             disabled={disabled || readOnly}
