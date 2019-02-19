@@ -116,6 +116,10 @@
   }
 }
 
+.rw-multiselect > .rw-widget-picker {
+  height: auto;
+}
+
 .rw-select {
   cursor: pointer;
 
@@ -158,7 +162,7 @@
   padding: 0 @input-padding-horizontal;
   background-color: @input-bg;
 
-  &[type='text']::-ms-clear {
+  &[type="text"]::-ms-clear {
     display: none;
   }
 
@@ -183,7 +187,7 @@
   height: 16px;
 
   &:before {
-    content: '';
+    content: "";
   }
 }
 
@@ -218,5 +222,5 @@
 }
 
 .rw-widget-input.rw-state-focus {
-  box-shadow: ~'@{input-focus-box-shadow}, @{input-box-shadow}';
+  box-shadow: ~"@{input-focus-box-shadow}, @{input-box-shadow}";
 }
