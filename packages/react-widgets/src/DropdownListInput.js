@@ -58,7 +58,7 @@ class DropdownListInput extends React.Component {
           dataText(value, textField)
         )
     }
-    let val = dataValue(value)
+    let val = dataValue(value, textField)
     return (
       <div className="rw-input rw-dropdown-list-input">
         {autoComplete !== 'off' && (
