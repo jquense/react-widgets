@@ -29,7 +29,7 @@ function Input({
       type={type}
       ref={nodeRef}
       tabIndex={tabIndex || 0}
-      autoComplete="off"
+      autoComplete="nope"
       disabled={disabled}
       readOnly={readOnly}
       aria-disabled={disabled}
