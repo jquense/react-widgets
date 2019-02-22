@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.10](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.9...react-widgets@4.4.10) (2019-02-22)
+
+
+### Bug Fixes
+
+* ff alignment issues  875 and 911 ([#912](https://github.com/jquense/react-widgets/issues/912)) ([6210f16](https://github.com/jquense/react-widgets/commit/6210f16)), closes [#911](https://github.com/jquense/react-widgets/issues/911) [#875](https://github.com/jquense/react-widgets/issues/875)
+* remove old ie alpha to fix Stylus usage ([#908](https://github.com/jquense/react-widgets/issues/908)) ([fd7baca](https://github.com/jquense/react-widgets/commit/fd7baca))
+
+
+
+
+
 <a name="4.4.9"></a>
 ## [4.4.9](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.8...react-widgets@4.4.9) (2019-01-14)
 
