@@ -211,16 +211,9 @@ The `simple-number` localizer provides a minimal number formatting and parsing s
 robust locale support for currencies, and numbers;
 
 ```js
-var numberLocalizer = require('react-widgets/lib/localizers/simple-number')
+import simpleNumberLocalizer from "react-widgets-simple-number";
 
-numberLocalizer();
-```
-
-Or
-
-```html
-<script src='node_modules/react-widgets/dist/react-widgets.js'></script>
-<script src='node_modules/react-widgets/dist/react-widgets-simple-number.js'></script>
+simpleNumberLocalizer();
 ```
 
 {{<TabbedCodeBlock>
