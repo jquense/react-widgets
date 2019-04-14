@@ -159,9 +159,9 @@
 @multiselect-tag-border:          @btn-border;
 @multiselect-tag-bg:              @gray-lighter;
 @multiselect-tag-height-pt:       1 - (@multiselect-gutter-pt * 2);
-@multiselect-tag-gutter-fallback: @input-height * @multiselect-gutter-pt;
+@multiselect-tag-gutter-fallback: ~"calc(@{input-height} * @{multiselect-gutter-pt})";
 @multiselect-tag-gutter:          ~"calc(@{multiselect-tag-gutter-fallback} - @{input-border-width})";
-@multiselect-tag-height:          @input-height * @multiselect-tag-height-pt;
+@multiselect-tag-height:          ~"calc(@{input-height} * @{multiselect-tag-height-pt})";
 @multiselect-tag-border-radius:   @border-radius-sm;
 
 @multiselect-tag-bg-hover:             @state-bg-hover;
