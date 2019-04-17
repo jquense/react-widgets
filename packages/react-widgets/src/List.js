@@ -34,10 +34,10 @@ const propTypes = {
   optionComponent: CustomPropTypes.elementType,
   renderItem: PropTypes.func,
   renderGroup: PropTypes.func,
+  renderLimit: PropTypes.number,
 
   focusedItem: PropTypes.any,
   selectedItem: PropTypes.any,
-  searchTerm: PropTypes.string,
 
   isDisabled: PropTypes.func.isRequired,
 
@@ -65,8 +65,13 @@ class List extends React.Component {
   }
 
   mapItems(fn) {
-    const { data, dataState } = this.props
+    const { dataState, renderLimit } = this.props
+    let { data } = this.props;
     let { sortedKeys, groups } = dataState
+
+    if (renderLimit) {
+      data = data.slice(0, renderLimit);
+    }
 
     if (!groups) return data.map((item, idx) => fn(item, idx, false))
 
