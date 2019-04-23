@@ -14,6 +14,7 @@ class Button extends React.Component {
     variant: PropTypes.oneOf(['primary', 'select']),
     component: PropTypes.any,
     spinner: PropTypes.node,
+    onClick: PropTypes.func,
   }
 
   render() {
@@ -25,6 +26,7 @@ class Button extends React.Component {
       busy,
       active,
       children,
+      onClick,
       variant = 'primary',
       spinner = <Loading />,
       component: Tag = 'a',
@@ -33,7 +35,13 @@ class Button extends React.Component {
 
     let type = props.type
 
-    if (Tag === 'button') type = type || 'button'
+    if (Tag === 'button') {
+      type = type || 'button'
+    } else {
+      // only "real" buttons are truly disabled in browsers
+      // remove onClick handler in other cases
+      if (disabled && onClick) onClick = null
+    }
 
     return (
       <Tag
@@ -45,6 +53,7 @@ class Button extends React.Component {
         disabled={disabled}
         aria-disabled={disabled}
         aria-label={label}
+        onClick={onClick}
         className={cn(
           className,
           'rw-btn',
