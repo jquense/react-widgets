@@ -73,6 +73,7 @@ let propTypes = {
 
   open: PropTypes.bool,
   onToggle: PropTypes.func,
+  onDelete: PropTypes.func,
   //-------------------------------------------
 
   valueField: CustomPropTypes.accessor,
@@ -264,6 +265,8 @@ class Multiselect extends React.Component {
     let { disabled, readOnly } = this.props
 
     if (disabled == true || readOnly) return
+
+    notify(this.props.onDelete, [dataItem, event])
 
     this.focus()
     this.change(dataItem, event, REMOVE)

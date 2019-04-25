@@ -166,6 +166,13 @@ module.exports = {
     Use in conjunction with the \`open\` prop to manually control the popup visibility.
   `,
 
+  onDelete: d => stripIndent`
+    A callback fired when ${d.name}'s contained item is about to be deleted.
+    Given the item and the DOM event as arguments.
+
+    Can be used for example to prevent event propagation on item deletion.
+  `,
+
   busy: () => stripIndent`
     Controls the loading/busy spinner visibility. Presentational only! Useful
     for providing visual feedback while data is being loaded.
