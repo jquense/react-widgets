@@ -187,7 +187,7 @@ class Combobox extends React.Component {
     let nextFocusedItem = null
     // If no item is focused, or is no longer in the dataset, default to either the selected item, or to the first item in the list
     if (focusedIndex === -1) {
-      if (selectedItem) {
+      if (selectedItem !== undefined) {
         nextFocusedItem = selectedItem
       } else {
         nextFocusedItem = data[0]
@@ -207,8 +207,8 @@ class Combobox extends React.Component {
         ? list.nextEnabled(selectedItem)
         : prevState.selectedItem,
       focusedItem:
-        (valueChanged || !focusedItem)
-          ? list.nextEnabled(selectedItem || nextFocusedItem)
+        (valueChanged || focusedItem === undefined)
+          ? list.nextEnabled(selectedItem !== undefined ? selectedItem : nextFocusedItem)
           : nextFocusedItem,
     }
   }
