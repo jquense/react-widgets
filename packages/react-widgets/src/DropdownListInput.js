@@ -83,14 +83,14 @@ class DropdownListInput extends React.Component {
   }
 
   renderAutofill() {
-    let { name, autoComplete } = this.props
-    let value = dataValue(this.props.value)
+    let { name, autoComplete, value, textField } = this.props
+    let strValue = dataValue(value, textField)
 
     return (
       <input
         tabIndex="-1"
         name={name}
-        value={value == null ? '' : value}
+        value={strValue == null ? '' : strValue}
         autoComplete={autoComplete}
         onChange={this.handleAutofill}
         onAnimationStart={this.handleAutofillDetect}

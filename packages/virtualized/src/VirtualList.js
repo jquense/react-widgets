@@ -32,7 +32,7 @@ class VirtualList extends React.Component {
 
     activeId: PropTypes.string,
     optionComponent: CustomPropTypes.elementType,
-    renderItem: PropTypes.func.isRequired,
+    renderItem: PropTypes.func,
     renderGroup: PropTypes.func,
 
     focusedItem: PropTypes.any,

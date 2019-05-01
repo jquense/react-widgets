@@ -1,6 +1,10 @@
 .rw-multiselect {
   cursor: text;
 
+  & > .rw-widget-picker {
+    height: auto;
+  }
+
   .rw-input-reset {
     height: calc(#{$input-height} - #{$input-border-width * 2});
     border-width: 0;
@@ -9,6 +13,8 @@
   }
 
   & .rw-select {
+    vertical-align: middle;
+
     &,
     &:hover,
     &:active {

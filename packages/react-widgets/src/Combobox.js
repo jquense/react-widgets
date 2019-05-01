@@ -179,7 +179,7 @@ class Combobox extends React.Component {
       selectedIndex = accessors.indexOf(data, value)
     }
 
-    let focusedIndex = accessors.indexOf(data, focusedItem);
+    let focusedIndex = accessors.indexOf(data, focusedItem)
     if (focusedIndex === -1) {
       // value isn't a dataItem so find the close match
       focusedIndex = Filter.indexOf(data, {
@@ -193,7 +193,7 @@ class Combobox extends React.Component {
     let nextFocusedItem = null
     // If no item is focused, or is no longer in the dataset, default to either the selected item, or to the first item in the list
     if (focusedIndex === -1) {
-      if (selectedItem) {
+      if (selectedItem !== undefined) {
         nextFocusedItem = selectedItem
       } else {
         nextFocusedItem = data[0]
@@ -201,7 +201,6 @@ class Combobox extends React.Component {
     } else {
       nextFocusedItem = data[focusedIndex]
     }
-
 
     return {
       data,
@@ -213,11 +212,13 @@ class Combobox extends React.Component {
         ? list.nextEnabled(selectedItem)
         : prevState.selectedItem,
       focusedItem:
-        (valueChanged || !focusedItem)
-          ? list.nextEnabled(selectedItem || nextFocusedItem)
+        valueChanged || focusedItem === undefined
+          ? list.nextEnabled(
+              selectedItem !== undefined ? selectedItem : nextFocusedItem
+            )
           : ~data.indexOf(focusedItem)
-            ? focusedItem
-            : data[0],
+          ? focusedItem
+          : data[0],
     }
   }
 
@@ -324,8 +325,8 @@ class Combobox extends React.Component {
         ? 'both'
         : 'inline'
       : filter
-        ? 'list'
-        : ''
+      ? 'list'
+      : ''
 
     return (
       <ComboboxInput
