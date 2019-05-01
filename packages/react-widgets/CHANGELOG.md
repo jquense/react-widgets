@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.11](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.10...react-widgets@4.4.11) (2019-05-01)
+
+
+### Bug Fixes
+
+* DropdownListInput ([#917](https://github.com/jquense/react-widgets/issues/917)) ([b7da000](https://github.com/jquense/react-widgets/commit/b7da000))
+* focusedItem logic to better handle boolean dropdownlists item values ([#932](https://github.com/jquense/react-widgets/issues/932)) ([fcf64b6](https://github.com/jquense/react-widgets/commit/fcf64b6))
+
+
+
+
+
 ## [4.4.10](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.9...react-widgets@4.4.10) (2019-02-22)
 
 

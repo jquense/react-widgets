@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.27](https://github.com/jquense/react-widgets/compare/react-widgets-virtualized@4.0.26...react-widgets-virtualized@4.0.27) (2019-05-01)
+
+
+### Bug Fixes
+
+* removed `isRequired` prop type validation from `renderItem` inside `VirtualList` ([#924](https://github.com/jquense/react-widgets/issues/924)) ([a9de54a](https://github.com/jquense/react-widgets/commit/a9de54a))
+
+
+
+
+
 ## [4.0.26](https://github.com/jquense/react-widgets/compare/react-widgets-virtualized@4.0.25...react-widgets-virtualized@4.0.26) (2019-02-22)
 
 **Note:** Version bump only for package react-widgets-virtualized
