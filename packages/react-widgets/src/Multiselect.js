@@ -245,7 +245,7 @@ class Multiselect extends React.Component {
         ? list.nextEnabled(~dataItems.indexOf(focusedTag) ? focusedTag : null)
         : focusedTag,
       focusedItem:
-        valueChanged || !prevState.focusedItem
+        valueChanged || prevState.focusedItem === undefined
           ? list.nextEnabled(nextFocusedItem)
           : nextFocusedItem,
     }
