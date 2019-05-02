@@ -12,9 +12,7 @@ module.exports = ({ config }) =>
           extends: '../../.babelrc.js',
         }),
         rules.astroturf({ extension: '.scss' }),
-        {
-          oneOf: [rules.css.modules(), rules.css()],
-        },
+        rules.css(),
         rules.sass(),
         rules.images(),
         rules.fonts(),

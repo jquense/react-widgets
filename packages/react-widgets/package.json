@@ -56,13 +56,13 @@
     "react-dom": ">=0.14.0"
   },
   "dependencies": {
+    "@restart/hooks": "^0.2.11",
     "classnames": "^2.2.6",
     "date-arithmetic": "^3.1.0",
     "dom-helpers": "^3.4.0",
     "invariant": "^2.2.4",
     "prop-types-extra": "^1.0.1",
     "react-component-managers": "^3.1.0",
-    "react-lifecycles-compat": "^3.0.4",
     "react-transition-group": "^4.0.0",
     "uncontrollable": "^6.1.0",
     "warning": "^4.0.3"

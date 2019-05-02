@@ -472,7 +472,6 @@ class Calendar extends React.Component {
         readOnly={readOnly}
         tabIndex={tabIndex || 0}
         className={cn(className, 'rw-calendar rw-widget-container')}
-        aria-activedescendant={this.activeId}
       >
         <CalendarHeader
           isRtl={this.isRtl()}
@@ -500,7 +499,6 @@ class Calendar extends React.Component {
             {...viewProps}
             key={key}
             id={this.viewId}
-            activeId={this.activeId}
             value={value}
             disabled={disabled}
             focusedItem={currentDate}

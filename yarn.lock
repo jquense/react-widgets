@@ -2457,6 +2457,11 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
+"@restart/hooks@^0.2.11":
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.2.11.tgz#5968dd5b9ce880522259e5177413ce011529cad8"
+  integrity sha512-1FcdDKzz4YB+zC6Nu6exSPjuDoNsivalKcKhDHS6VTMo3xLQNrv4lwDOkhHv4/Mz1VtcLDUhbgb9fheZ+QMEcA==
+
 "@sailshq/lodash@^3.10.2":
   version "3.10.3"
   resolved "https://registry.yarnpkg.com/@sailshq/lodash/-/lodash-3.10.3.tgz#61b6fa3a5db3fe802409b0ba152bcc99e7d27a58"
