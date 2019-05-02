@@ -17,13 +17,13 @@
     "react-widgets": "^4.2.2"
   },
   "dependencies": {
-    "react-list": "^0.8.10"
+    "react-list": "^0.8.11"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-widgets": "^4.4.4"
   },
   "author": "Jason Quense",

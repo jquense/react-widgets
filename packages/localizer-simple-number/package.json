@@ -34,10 +34,10 @@
     "format-number-with-string": "^0.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
     "cross-env": "^5.2.0",
     "react-widgets": "^4.4.4",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.3"
   }
 }

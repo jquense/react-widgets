@@ -19,11 +19,11 @@
     "react-widgets": "^4.2.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
     "cpy-cli": "^2.0.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-widgets": "^4.4.4"
   },
   "author": "Jason Quense",

@@ -1,16 +1,16 @@
 const path = require('path')
 const { plugins, rules } = require('webpack-atoms')
 
-module.exports = baseConfig =>
-  Object.assign({}, baseConfig, {
+module.exports = ({ config }) =>
+  Object.assign({}, config, {
     // mode: 'development',
     module: {
       rules: [
         { parser: { amd: false } },
-        rules.js.inlineCss({
-          extension: '.scss',
+        rules.js({
           extends: '../../.babelrc.js',
         }),
+        rules.astroturf({ extension: '.scss' }),
         rules.css(),
         rules.sass(),
         rules.images(),
@@ -41,7 +41,7 @@ module.exports = baseConfig =>
       plugins.define(),
       plugins.extractCss({ disable: true }),
       plugins.hotModuleReplacement(),
-      ...baseConfig.plugins,
+      ...config.plugins,
     ],
     node: {
       Buffer: false,
