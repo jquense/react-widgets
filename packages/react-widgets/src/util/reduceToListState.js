@@ -19,7 +19,7 @@ export function defaultGetDataState(data, { groupBy }, lastState = {}) {
       sortedKeys: keys,
       sequentialData: Object.keys(groups).reduce(
         (flat, grp) => flat.concat(groups[grp]),
-        []
+        [],
       ),
     }
   }
@@ -33,7 +33,7 @@ const getIsDisabled = (disabledProp, valueField) =>
     ? returnFalse
     : item =>
         disabledProp.some(
-          i => dataValue(item, valueField) === dataValue(i, valueField)
+          i => dataValue(item, valueField) === dataValue(i, valueField),
         )
 
 export function getCommonListProps(
@@ -46,7 +46,7 @@ export function getCommonListProps(
     groupComponent,
     searchTerm,
     listProps,
-  }
+  },
 ) {
   return {
     searchTerm,
@@ -65,7 +65,7 @@ export function getCommonListProps(
 export default function reduceToListState(
   nextListData,
   prevList,
-  { nextProps, getDataState } = {}
+  { nextProps, getDataState } = {},
 ) {
   let { disabled, valueField, textField } = nextProps
 
@@ -75,7 +75,7 @@ export default function reduceToListState(
   const dataState = getDataState(
     nextListData,
     nextProps,
-    prevList && prevList.dataState
+    prevList && prevList.dataState,
   )
 
   const data = (dataState && dataState.sequentialData) || nextListData
@@ -87,7 +87,7 @@ export default function reduceToListState(
     (word &&
       !presets.startsWith(
         dataText(item, textField).toLowerCase(),
-        word.toLowerCase()
+        word.toLowerCase(),
       ))
 
   const list = {
@@ -102,7 +102,7 @@ export default function reduceToListState(
       while (nextIdx > -1 && moveNext(data[nextIdx], word)) nextIdx--
 
       if (nextIdx >= 0) return data[nextIdx]
-      return isDisabled(item) ? null : item
+      return isDisabled(item) ? undefined : item
     },
 
     next(item, word) {
@@ -110,7 +110,7 @@ export default function reduceToListState(
       while (nextIdx < data.length && moveNext(data[nextIdx], word)) nextIdx++
 
       if (nextIdx < data.length) return data[nextIdx]
-      return isDisabled(item) ? null : item
+      return isDisabled(item) ? undefined : item
     },
 
     prevEnabled: item => (isDisabled(item) ? list.prev(item) : item),

@@ -25,23 +25,22 @@ module.exports = ({ config }) =>
         'react-widgets/lib': path.resolve('../react-widgets/src'),
 
         'react-widgets-virtualized$': path.resolve(
-          '../virtualized/src/index.js'
+          '../virtualized/src/index.js',
         ),
         'react-widgets-virtualized/lib': path.resolve('../virtualized/src'),
 
         'react-widgets-material-ui$': path.resolve(
-          '../material-ui/src/index.js'
+          '../material-ui/src/index.js',
         ),
         'react-widgets-material-ui/lib': path.resolve('../material-ui/src'),
         'react-widgets-globalize-old': path.resolve(
-          '../localizer-globalize-old/localizer.js'
+          '../localizer-globalize-old/localizer.js',
         ),
       },
     },
     plugins: [
       plugins.define(),
       plugins.extractCss({ disable: true }),
-      plugins.hotModuleReplacement(),
       ...config.plugins,
     ],
     node: {

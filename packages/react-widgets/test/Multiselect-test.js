@@ -1,13 +1,12 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { act } from 'react-dom/test-utils'
+import { mount } from 'enzyme'
 
 import Multiselect from '../src/Multiselect'
 import MultiselectTag from '../src/MultiselectTag'
 import MultiselectTagList from '../src/MultiselectTagList'
 
 describe('Multiselect', function() {
-  const ControlledMultiselect = Multiselect.ControlledComponent
-
   let dataList = [
     { label: 'jimmy', id: 0 },
     { label: 'sally', id: 1 },
@@ -45,8 +44,8 @@ describe('Multiselect', function() {
   })
 
   it('should start closed', () => {
-    let wrapper = shallow(
-      <ControlledMultiselect
+    let wrapper = mount(
+      <Multiselect
         value={dataList.slice(0, 2)}
         data={dataList}
         textField="label"
@@ -62,17 +61,17 @@ describe('Multiselect', function() {
   })
 
   it('should toggle add aria when open', () => {
-    let inst = shallow(<ControlledMultiselect open />)
+    let inst = mount(<Multiselect open />)
 
     expect(inst.prop('open')).to.equal(true)
 
     inst.assertSingle('Popup[open]')
-    inst.assertSingle('ForwardRef(Widget)[open]')
+    inst.assertSingle('Widget[open]')
     inst.assertSingle('MultiselectInput[aria-expanded]')
   })
 
   it('should foward props to Popup', () => {
-    let props = shallow(<ControlledMultiselect open dropUp />)
+    let props = mount(<Multiselect open dropUp />)
       .find('Popup')
       .props()
 
@@ -83,7 +82,7 @@ describe('Multiselect', function() {
   it('should open when clicked', done => {
     let openSpy = sinon.spy()
 
-    mount(<ControlledMultiselect onToggle={openSpy} />)
+    mount(<Multiselect onToggle={openSpy} />)
       .find('WidgetPicker')
       .simulate('click')
 
@@ -97,9 +96,7 @@ describe('Multiselect', function() {
   it('should not open when disabled', done => {
     let openSpy = sinon.spy()
 
-    mount(<ControlledMultiselect onToggle={openSpy} disabled />).simulate(
-      'focus',
-    )
+    mount(<Multiselect onToggle={openSpy} disabled />).simulate('focus')
 
     setTimeout(() => {
       expect(openSpy.called).to.equal(false)
@@ -109,7 +106,7 @@ describe('Multiselect', function() {
 
   it('should set id on list', () => {
     expect(
-      shallow(<ControlledMultiselect open />)
+      mount(<Multiselect open />)
         .find('List')
         .prop('id'),
     ).to.be.a('string')
@@ -157,42 +154,28 @@ describe('Multiselect', function() {
     expect(change.getCall(0).args[0]).to.eql(dataList.slice(1, 2))
   })
 
-  it('should simulate focus/blur events', function(done) {
+  it('should simulate focus/blur events', () => {
     let blur = sinon.spy(),
       focus = sinon.spy()
 
     mount(<Multiselect onBlur={blur} onFocus={focus} />)
-      .simulate('focus')
-      .tap(inst => {
-        setTimeout(() => {
-          inst.simulate('blur')
+      .simulateWithTimers('focus')
+      .simulateWithTimers('blur')
 
-          setTimeout(() => {
-            expect(focus.calledOnce).to.equal(true)
-            expect(blur.calledOnce).to.equal(true)
-            done()
-          })
-        })
-      })
+    expect(focus.calledOnce).to.equal(true)
+    expect(blur.calledOnce).to.equal(true)
   })
 
-  it('should not simulate focus/blur events when disabled', function(done) {
+  it('should not simulate focus/blur events when disabled', function() {
     let blur = sinon.spy(),
       focus = sinon.spy()
 
     mount(<Multiselect disabled onBlur={blur} onFocus={focus} />)
-      .simulate('focus')
-      .tap(inst => {
-        setTimeout(() => {
-          inst.simulate('blur')
+      .simulateWithTimers('focus')
+      .simulateWithTimers('blur')
 
-          setTimeout(() => {
-            expect(focus.called).to.equal(false)
-            expect(blur.called).to.equal(false)
-            done()
-          })
-        })
-      })
+    expect(focus.called).to.equal(false)
+    expect(blur.called).to.equal(false)
   })
 
   it('should simulate key events', function() {
@@ -211,7 +194,7 @@ describe('Multiselect', function() {
   })
 
   it('should add correct markup when read-only', () => {
-    let input = mount(<ControlledMultiselect readOnly />)
+    let input = mount(<Multiselect readOnly />)
       .assertSingle('.rw-input-reset')
       .getDOMNode()
 
@@ -220,7 +203,7 @@ describe('Multiselect', function() {
   })
 
   it('should add correct markup when disabled', () => {
-    let input = mount(<ControlledMultiselect disabled />)
+    let input = mount(<Multiselect disabled />)
       .assertSingle('.rw-input-reset')
       .getDOMNode()
 
@@ -240,8 +223,8 @@ describe('Multiselect', function() {
         valueField="id"
       />,
     )
-      .find(MultiselectTagList)
-      .assertSingle('li.rw-state-disabled button.rw-multiselect-tag-btn')
+      .find('MultiselectTagList')
+      .assertSingle('div.rw-state-disabled button.rw-multiselect-tag-btn')
       .simulate('click')
 
     expect(change.called).to.equal(false)
@@ -300,11 +283,13 @@ describe('Multiselect', function() {
     expect(changeSpy.called).to.equal(false)
   })
 
+  //  .tap(i => console.log(i.debug()))
+
   it('should call onChange with event object from select', function() {
     let change = sinon.spy()
     let value = dataList.slice(0, 1)
-    shallow(
-      <ControlledMultiselect
+    let list = mount(
+      <Multiselect
         open
         searchTerm=""
         value={value}
@@ -312,9 +297,11 @@ describe('Multiselect', function() {
         onChange={change}
         onToggle={() => {}}
       />,
-    )
-      .find('List')
-      .prop('onSelect')(dataList[1], 'foo')
+    ).find('List')
+
+    act(() => {
+      list.prop('onSelect')(dataList[1], 'foo')
+    })
 
     expect(change.getCall(0).args[1]).to.eql({
       originalEvent: 'foo',
@@ -330,8 +317,8 @@ describe('Multiselect', function() {
     let value = dataList.slice(0, 1)
     let event = { target: { value: 'ba' } }
 
-    shallow(
-      <ControlledMultiselect
+    mount(
+      <Multiselect
         open
         searchTerm="b"
         value={value}
@@ -343,11 +330,10 @@ describe('Multiselect', function() {
       .assertSingle('MultiselectInput')
       .simulate('change', event)
 
-    expect(search.getCall(0).args[1]).to.eql({
-      originalEvent: event,
-      lastSearchTerm: 'b',
-      action: 'input',
-    })
+    const { lastSearchTerm, action } = search.getCall(0).args[1]
+
+    expect(lastSearchTerm).to.equal('b')
+    expect(action).to.equal('input')
   })
 
   it('should call Select handler', function() {
@@ -355,18 +341,20 @@ describe('Multiselect', function() {
     let onSelect = sinon.spy()
     let value = dataList.slice(1)
 
-    shallow(
-      <ControlledMultiselect
-        open
-        onToggle={() => {}}
-        value={value}
-        data={dataList}
-        onChange={change}
-        onSelect={onSelect}
-      />,
-    )
-      .find('List')
-      .simulate('select', dataList[1], 'foo')
+    act(() => {
+      mount(
+        <Multiselect
+          open
+          onToggle={() => {}}
+          value={value}
+          data={dataList}
+          onChange={change}
+          onSelect={onSelect}
+        />,
+      )
+        .find('List')
+        .prop('onSelect')(dataList[1], 'foo')
+    })
 
     expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
@@ -374,7 +362,7 @@ describe('Multiselect', function() {
     expect(change.calledAfter(onSelect)).to.equal(true)
   })
 
-  it('should clear search on blur', done => {
+  it('should clear search on blur', () => {
     let onSearch = sinon.spy()
 
     mount(
@@ -385,13 +373,10 @@ describe('Multiselect', function() {
       />,
     )
       .find('input')
-      .simulate('blur')
+      .simulateWithTimers('blur')
 
-    setTimeout(() => {
-      expect(onSearch.calledOnce).to.equal(true)
-      expect(onSearch.calledWith('')).to.equal(true)
-      done()
-    })
+    expect(onSearch.calledOnce).to.equal(true)
+    expect(onSearch.calledWith('')).to.equal(true)
   })
 
   it('should clear searchTerm when an item is selected', () => {
@@ -523,7 +508,7 @@ describe('Multiselect', function() {
       />,
     )
 
-    let tags = inst.find('MultiselectTagList li')
+    let tags = inst.find('MultiselectTagList div')
 
     inst.simulate('keyDown', { key: 'ArrowLeft' })
     tags.last().is('.rw-state-focus')

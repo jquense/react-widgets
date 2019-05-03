@@ -3,8 +3,8 @@
 import cn from 'classnames'
 import closest from 'dom-helpers/query/closest'
 import PropTypes from 'prop-types'
-import React from 'react'
-import uncontrollable from 'uncontrollable'
+import React, { useMemo, useRef, useState, useEffect } from 'react'
+import useUncontrollable from 'uncontrollable/hook'
 
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
@@ -15,24 +15,32 @@ import TagList from './MultiselectTagList'
 import List from './List'
 import AddToListOption from './AddToListOption'
 
-import { makeArray } from './util/_'
 import * as Filter from './util/Filter'
-import * as Props from './util/Props'
-import { getMessages } from './messages'
-import * as A11y from './util/A11y'
+
+import { useMessagesWithDefaults } from './messages'
+import { setActiveDescendant } from './util/A11y'
+
 import * as CustomPropTypes from './util/PropTypes'
-import reduceToListState, {
-  defaultGetDataState,
-} from './util/reduceToListState'
-import getAccessors from './util/getAccessors'
-import focusManager from './util/focusManager'
-import scrollManager from './util/scrollManager'
-import { widgetEditable } from './util/interaction'
-import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
+import { defaultGetDataState } from './util/reduceToListState'
+import { useEditableCallback as createCallbackHook } from './util/interaction'
+import { useAccessors } from './util/getAccessors'
+import useScrollManager from './util/useScrollManager'
+import useFocusManager from './util/useFocusManager'
+import {
+  useInstanceId,
+  notify,
+  useFirstFocusedRender,
+} from './util/widgetHelpers'
 import { caretDown, times } from './Icon'
 import canShowCreate from './util/canShowCreate'
 
-const CREATE_OPTION = {}
+import {
+  CREATE_OPTION,
+  useList,
+  useFilteredData,
+  useFocusedItem,
+} from './util/hooks'
+
 const ENTER = 13
 
 const INSERT = 'insert'
@@ -145,6 +153,48 @@ let propTypes = {
   }),
 }
 
+const defaultProps = {
+  data: [],
+  allowCreate: false,
+  filter: 'startsWith',
+  defaultValue: [],
+  defaultSearchTerm: '',
+  clearTagIcon: times,
+  selectIcon: caretDown,
+  listComponent: List,
+  showPlaceholderWithValues: false,
+}
+
+const EMPTY_ARRAY = []
+
+function useMultiselectData(
+  value = EMPTY_ARRAY,
+  data,
+  filter,
+  searchTerm,
+  minLength,
+  caseSensitive,
+  accessors,
+) {
+  data = useMemo(
+    () => data.filter(i => !value.some(v => accessors.matches(i, v))),
+    [data, value, accessors],
+  )
+
+  return [
+    useFilteredData(
+      value,
+      data,
+      filter,
+      searchTerm,
+      minLength,
+      caseSensitive,
+      accessors.text,
+    ),
+    data.length,
+  ]
+}
+
 /**
  * ---
  * shortcuts:
@@ -166,207 +216,206 @@ let propTypes = {
  *
  * @public
  */
-class Multiselect extends React.Component {
-  static propTypes = propTypes
-
-  static defaultProps = {
-    data: [],
-    allowCreate: false,
-    filter: 'startsWith',
-    value: [],
-    searchTerm: '',
-    clearTagIcon: times,
-    selectIcon: caretDown,
+function Multiselect(uncontrolledProps) {
+  const {
+    id,
+    autoFocus,
+    textField,
+    valueField,
+    open,
+    value: rawValue,
+    searchTerm,
+    filter,
+    maxLength,
+    minLength,
+    allowCreate,
+    caseSensitive,
+    isRtl,
+    className,
+    containerClassName,
+    placeholder,
+    busy,
+    disabled,
+    readOnly,
+    selectIcon,
+    clearTagIcon,
+    busySpinner,
+    dropUp,
+    tabIndex,
+    popupTransition,
+    showPlaceholderWithValues,
+    onSelect,
+    onCreate,
+    onChange,
+    onToggle,
+    onKeyDown,
+    onSearch,
+    inputProps,
+    listProps,
+    itemComponent,
+    groupComponent,
+    optionComponent,
+    tagComponent,
+    tagOptionComponent,
     listComponent: List,
-    showPlaceholderWithValues: false,
+    data: rawData,
+    messages: userMessages,
+    ...elementProps
+  } = useUncontrollable(uncontrolledProps, {
+    open: 'onToggle',
+    value: 'onChange',
+    searchTerm: 'onSearch',
+  })
+
+  const ref = useRef()
+  const inputRef = useRef()
+  const tagsRef = useRef()
+  const listRef = useRef()
+
+  const inputId = useInstanceId(id, '_input')
+  const tagsId = useInstanceId(id, '_taglist')
+  const notifyId = useInstanceId(id, '_notify_area')
+  const listId = useInstanceId(id, '_listbox')
+  const createId = useInstanceId(id, '_createlist_option')
+  const activeTagId = useInstanceId(id, '_taglist_active_tag')
+  const activeOptionId = useInstanceId(id, '_listbox_active_option')
+
+  const accessors = useAccessors(textField, valueField)
+  const messages = useMessagesWithDefaults(userMessages)
+
+  const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
+    didHandle(focused) {
+      if (focused) return focus()
+
+      closeDropdown()
+      clearSearch()
+
+      if (tagsRef.current) setFocusedTag(null)
+    },
+  })
+  // TODO: don't cover this?
+  const value = rawValue || EMPTY_ARRAY
+
+  const dataItems = useMemo(
+    () => value.map(item => accessors.findOrSelf(rawData, item)),
+    [rawData, value, accessors],
+  )
+
+  const [data, lengthWithoutValues] = useMultiselectData(
+    value,
+    rawData,
+    open ? filter : false,
+    searchTerm,
+    minLength,
+    caseSensitive,
+    accessors,
+  )
+
+  const list = useList(data, { nextProps: uncontrolledProps })
+  const tagList = useList(dataItems, {
+    nextProps: uncontrolledProps,
+    getDataState: defaultGetDataState,
+  })
+
+  const [focusedItem, setFocusedItem] = useFocusedItem(value, data, list)
+  const [focusedTag, setFocusedTag] = useFocusedItem(
+    value,
+    dataItems,
+    list,
+    null,
+  )
+
+  const showCreateOption = canShowCreate(allowCreate, {
+    searchTerm,
+    caseSensitive,
+    data,
+    dataItems,
+    accessors,
+  })
+
+  const isDisabled = disabled === true
+  const isReadOnly = !!readOnly
+
+  /**
+   * Update aria when it changes on update
+   */
+  useEffect(() => {
+    let active
+    if (!open) active = focusedTag ? activeTagId : ''
+    else if (focusedItem || showCreateOption) active = activeOptionId
+    setActiveDescendant(inputRef.current, active, open)
+  }, [open, focusedItem])
+
+  /**
+   * Event Handlers
+   */
+
+  const useEditableCallback = createCallbackHook(isDisabled || isReadOnly, ref)
+
+  const handleScroll = useScrollManager(ref)
+
+  const handleDelete = (dataItem, event) => {
+    if (isDisabled || readOnly) return
+
+    focus()
+    change(dataItem, event, REMOVE)
   }
 
-  constructor(...args) {
-    super(...args)
+  const deletingRef = useRef(false)
 
-    this.inputId = instanceId(this, '_input')
-    this.tagsId = instanceId(this, '_taglist')
-    this.notifyId = instanceId(this, '_notify_area')
-    this.listId = instanceId(this, '_listbox')
-    this.createId = instanceId(this, '_createlist_option')
-    this.activeTagId = instanceId(this, '_taglist_active_tag')
-    this.activeOptionId = instanceId(this, '_listbox_active_option')
+  const handleSearchKeyDown = e => {
+    if (e.key === 'Backspace' && e.target.value && !deletingRef.current)
+      deletingRef.current = true
+  }
 
-    this.handleScroll = scrollManager(this)
-    this.focusManager = focusManager(this, {
-      didHandle: this.handleFocusDidChange,
-    })
-
-    this.state = {
-      focusedTag: null,
+  const handleSearchKeyUp = e => {
+    if (e.key === 'Backspace' && deletingRef.current) {
+      deletingRef.current = false
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let {
-      data,
-      searchTerm,
-      messages,
-      minLength,
-      allowCreate,
-      caseSensitive,
-      filter,
-    } = nextProps
-    let { focusedItem, focusedTag } = prevState
-
-    let accessors = getAccessors(nextProps)
-    let valueChanged = nextProps.value !== prevState.lastValue
-
-    let values = makeArray(nextProps.value)
-    let dataItems = valueChanged
-      ? values.map(item => accessors.findOrSelf(data, item))
-      : prevState.dataItems
-
-    data = data.filter(i => !values.some(v => accessors.matches(i, v)))
-
-    let lengthWithoutValues = data.length
-
-    data = Filter.filter(data, {
-      filter,
-      searchTerm,
-      minLength,
-      caseSensitive,
-      textField: accessors.text,
-    })
-
-    const createIsFocused =
-      focusedItem === CREATE_OPTION &&
-      canShowCreate(allowCreate, {
-        searchTerm,
-        caseSensitive,
-        dataItems,
-        data,
-        accessors,
-      })
-
-    const list = reduceToListState(data, prevState.list, { nextProps })
-
-    const tagList = reduceToListState(dataItems, prevState.tagList, {
-      nextProps,
-      getDataState: defaultGetDataState,
-    })
-
-    const nextFocusedItem =
-      createIsFocused || ~data.indexOf(focusedItem) ? focusedItem : data[0]
-
-    return {
-      data,
-      dataItems,
-      list,
-      tagList,
-      accessors,
-      lengthWithoutValues,
-      lastValue: nextProps.value,
-      messages: getMessages(messages),
-      focusedTag: valueChanged
-        ? list.nextEnabled(~dataItems.indexOf(focusedTag) ? focusedTag : null)
-        : focusedTag,
-      focusedItem:
-        valueChanged || prevState.focusedItem === undefined
-          ? list.nextEnabled(nextFocusedItem)
-          : nextFocusedItem,
-    }
+  const handleInputChange = e => {
+    search(e.target.value, e, 'input')
+    openDropdown()
   }
 
-  componentDidUpdate(_, prevState) {
-    const { open } = this.props
-    const { focusedItem, focusedTag } = this.state
-    if (!open || prevState.focusedItem !== focusedItem) {
-      let active
-      if (!open) active = focusedTag ? this.activeTagId : ''
-      else if (focusedItem || this.canShowCreate()) active = this.activeOptionId
+  const handleClick = useEditableCallback(({ target }) => {
+    focus()
 
-      A11y.setActiveDescendant(this.inputRef, active, open)
-    }
-  }
+    if (closest(target, '.rw-select')) open ? closeDropdown() : openDropdown()
+    else openDropdown()
+  })
 
-  handleFocusDidChange = focused => {
-    if (focused) return this.focus()
+  const handleDoubleClick = useEditableCallback(() => {
+    if (!inputRef.current) return
 
-    this.close()
-    this.clearSearch()
+    focus()
+    inputRef.current?.select()
+  })
 
-    if (this.tagsRef) this.setState({ focusedTag: null })
-  }
-
-  handleDelete = (dataItem, event) => {
-    let { disabled, readOnly } = this.props
-
-    if (disabled == true || readOnly) return
-
-    this.focus()
-    this.change(dataItem, event, REMOVE)
-  }
-
-  handleSearchKeyDown = e => {
-    if (e.key === 'Backspace' && e.target.value && !this._deletingText)
-      this._deletingText = true
-  }
-
-  handleSearchKeyUp = e => {
-    if (e.key === 'Backspace' && this._deletingText) this._deletingText = false
-  }
-
-  handleInputChange = e => {
-    this.search(e.target.value, e, 'input')
-    this.open()
-  }
-
-  @widgetEditable
-  handleClick = ({ target }) => {
-    this.focus()
-
-    if (closest(target, '.rw-select')) this.toggle()
-    else this.open()
-  }
-
-  @widgetEditable
-  handleDoubleClick = () => {
-    if (!this.inputRef) return
-
-    this.focus()
-    this.inputRef.select()
-  }
-
-  @widgetEditable
-  handleSelect = (dataItem, originalEvent) => {
+  const handleSelect = useEditableCallback((dataItem, originalEvent) => {
     if (dataItem === undefined || dataItem === CREATE_OPTION) {
-      this.handleCreate(this.props.searchTerm, originalEvent)
+      handleCreate(searchTerm, originalEvent)
       return
     }
 
-    notify(this.props.onSelect, [dataItem, { originalEvent }])
+    notify(onSelect, [dataItem, { originalEvent }])
 
-    this.change(dataItem, originalEvent, INSERT)
-    this.focus()
-  }
+    change(dataItem, originalEvent, INSERT)
+    focus()
+  })
 
-  @widgetEditable
-  handleCreate = (searchTerm = '', event) => {
-    notify(this.props.onCreate, searchTerm)
+  const handleCreate = useEditableCallback((searchTerm = '', event) => {
+    notify(onCreate, searchTerm)
 
-    this.clearSearch(event)
-    this.focus()
-  }
+    clearSearch(event)
+    focus()
+  })
 
-  @widgetEditable
-  handleKeyDown = event => {
-    const { open, searchTerm, onKeyDown } = this.props
+  const handleKeyDown = useEditableCallback(event => {
     let { key, keyCode, altKey, ctrlKey } = event
 
-    let { focusedTag, focusedItem, list, tagList } = this.state
-
     let createIsFocused = focusedItem === CREATE_OPTION
-    let canCreate = this.canShowCreate()
-
-    const focusTag = tag => this.setState({ focusedTag: tag })
-    const focusItem = item =>
-      this.setState({ focusedItem: item, focusedTag: null })
 
     notify(onKeyDown, [event])
 
@@ -375,161 +424,146 @@ class Multiselect extends React.Component {
     if (key === 'ArrowDown') {
       event.preventDefault()
 
-      if (!open) return this.open()
+      if (!open) return openDropdown()
 
       let next = list.next(focusedItem)
-      let creating = createIsFocused || (canCreate && focusedItem === next)
+      let creating =
+        createIsFocused || (showCreateOption && focusedItem === next)
 
-      focusItem(creating ? CREATE_OPTION : next)
+      setFocusedItem(creating ? CREATE_OPTION : next)
     } else if (key === 'ArrowUp' && (open || altKey)) {
       event.preventDefault()
 
-      if (altKey) return this.close()
-      focusItem(createIsFocused ? list.last() : list.prev(focusedItem))
+      if (altKey) return closeDropdown()
+      setFocusedItem(createIsFocused ? list.last() : list.prev(focusedItem))
     } else if (key === 'End') {
       event.preventDefault()
 
-      if (open) focusItem(list.last())
-      else focusTag(tagList.last())
+      if (open) setFocusedItem(list.last())
+      else setFocusedTag(tagList.last())
     } else if (key === 'Home') {
       event.preventDefault()
-      if (open) focusItem(list.first())
-      else focusTag(tagList.first())
+      if (open) setFocusedItem(list.first())
+      else setFocusedTag(tagList.first())
     } else if (open && keyCode === ENTER) {
       // using keyCode to ignore enter for japanese IME
       event.preventDefault()
 
-      if (ctrlKey && canCreate) return this.handleCreate(searchTerm, event)
+      if (ctrlKey && showCreateOption) return handleCreate(searchTerm, event)
 
-      this.handleSelect(focusedItem, event)
+      handleSelect(focusedItem, event)
     } else if (key === 'Escape') {
-      open ? this.close() : tagList && focusTag(null)
-    } else if (!searchTerm && !this._deletingText) {
+      open ? closeDropdown() : tagList && setFocusedTag(null)
+    } else if (!searchTerm && !deletingRef.current) {
       if (key === 'ArrowLeft') {
-        focusTag(tagList.prev(focusedTag) || tagList.last())
+        setFocusedTag(tagList.prev(focusedTag) || tagList.last())
       } else if (key === 'ArrowRight' && focusedTag) {
         let nextTag = tagList.next(focusedTag)
-        focusTag(nextTag === focusedTag ? null : nextTag)
+        setFocusedTag(nextTag === focusedTag ? null : nextTag)
+        //
       } else if (key === 'Delete' && !tagList.isDisabled(focusedTag)) {
-        this.handleDelete(focusedTag, event)
+        handleDelete(focusedTag, event)
+        //
       } else if (key === 'Backspace') {
-        this.handleDelete(tagList.last(), event)
+        handleDelete(tagList.last(), event)
+        //
       } else if (key === ' ' && !open) {
         event.preventDefault()
-        this.open()
+        openDropdown()
       }
     }
+  })
+
+  /**
+   * Methods
+   */
+
+  function change(dataItem, originalEvent, action) {
+    let nextDataItems = dataItems
+
+    switch (action) {
+      case INSERT:
+        nextDataItems = nextDataItems.concat(dataItem)
+        break
+      case REMOVE:
+        nextDataItems = nextDataItems.filter(d => d !== dataItem)
+        break
+    }
+
+    notify(onChange, [
+      nextDataItems,
+      {
+        action,
+        dataItem,
+        originalEvent,
+        searchTerm,
+        lastValue: rawValue,
+      },
+    ])
+
+    clearSearch(originalEvent)
   }
 
-  attachListRef = ref => (this.listRef = ref)
-  attachTagsRef = ref => (this.tagsRef = ref)
-  attachInputRef = ref => (this.inputRef = ref)
-
-  renderInput() {
-    let {
-      searchTerm,
-      maxLength,
-      tabIndex,
-      busy,
-      autoFocus,
-      inputProps,
-      open,
-    } = this.props
-
-    let { dataItems } = this.state
-
-    let disabled = this.props.disabled === true
-    let readOnly = this.props.readOnly === true
-
-    let shouldRenderTags = !!dataItems.length
-    let inputOwns =
-      `${this.listId} ${this.notifyId} ` +
-      (shouldRenderTags ? this.tagsId : '') +
-      (this.canShowCreate() ? this.createId : '')
-
-    return (
-      <MultiselectInput
-        {...inputProps}
-        autoFocus={autoFocus}
-        tabIndex={tabIndex || 0}
-        role="listbox"
-        aria-expanded={!!open}
-        aria-busy={!!busy}
-        aria-owns={inputOwns}
-        aria-haspopup={true}
-        value={searchTerm}
-        maxLength={maxLength}
-        disabled={disabled}
-        readOnly={readOnly}
-        placeholder={this.getPlaceholder()}
-        onKeyDown={this.handleSearchKeyDown}
-        onKeyUp={this.handleSearchKeyUp}
-        onChange={this.handleInputChange}
-        ref={this.attachInputRef}
-      />
-    )
+  function clearSearch(originalEvent) {
+    search('', originalEvent, 'clear')
   }
 
-  renderList() {
-    let { inputId, activeOptionId, listId } = this
-    let {
-      open,
-      searchTerm,
-      optionComponent,
-      itemComponent,
-      groupComponent,
-      listProps,
-    } = this.props
-
-    let {
-      focusedItem,
-      list,
-      lengthWithoutValues,
-      accessors,
-      data,
-      messages,
-    } = this.state
-
-    let List = this.props.listComponent
-
-    return (
-      <List
-        {...listProps}
-        id={listId}
-        activeId={activeOptionId}
-        data={data}
-        dataState={list.dataState}
-        isDisabled={list.isDisabled}
-        searchTerm={searchTerm}
-        textAccessor={accessors.text}
-        valueAccessor={accessors.value}
-        itemComponent={itemComponent}
-        groupComponent={groupComponent}
-        optionComponent={optionComponent}
-        focusedItem={focusedItem}
-        onSelect={this.handleSelect}
-        onMove={this.handleScroll}
-        aria-live="polite"
-        aria-labelledby={inputId}
-        aria-hidden={!open}
-        ref={this.attachListRef}
-        messages={{
-          emptyList: lengthWithoutValues
-            ? messages.emptyFilter
-            : messages.emptyList,
-        }}
-      />
-    )
+  function search(
+    nextSearchTerm,
+    originalEvent,
+    action: 'clear' | 'input' = 'input',
+  ) {
+    if (nextSearchTerm !== searchTerm)
+      notify(onSearch, [
+        nextSearchTerm,
+        {
+          action,
+          originalEvent,
+          lastSearchTerm: searchTerm,
+        },
+      ])
   }
 
-  renderNotificationArea() {
-    let { focused, dataItems, accessors, messages } = this.state
+  function focus() {
+    inputRef.current?.focus()
+  }
 
-    let itemLabels = dataItems.map(item => accessors.text(item))
+  function openDropdown() {
+    if (!open) notify(onToggle, true)
+  }
 
-    return (
+  function closeDropdown() {
+    if (open) notify(onToggle, false)
+  }
+
+  /**
+   * Render
+   */
+
+  let shouldRenderPopup = useFirstFocusedRender(focused, open)
+
+  let itemLabels = dataItems.map(item => accessors.text(item))
+  let shouldRenderTags = !!dataItems.length
+  let inputOwns =
+    `${listId} ${notifyId} ` +
+    (shouldRenderTags ? tagsId : '') +
+    (showCreateOption ? createId : '')
+
+  return (
+    <Widget
+      {...elementProps}
+      open={open}
+      isRtl={isRtl}
+      dropUp={dropUp}
+      focused={focused}
+      disabled={isDisabled}
+      readOnly={isReadOnly}
+      onKeyDown={handleKeyDown}
+      {...focusEvents}
+      className={cn(className, 'rw-multiselect')}
+    >
       <span
-        id={this.notifyId}
+        id={notifyId}
         role="status"
         className="rw-sr"
         aria-live="assertive"
@@ -541,216 +575,115 @@ class Multiselect extends React.Component {
             ? messages.selectedItems(itemLabels)
             : messages.noneSelected())}
       </span>
-    )
-  }
 
-  renderTags() {
-    let {
-      readOnly,
-      disabled,
-      clearTagIcon,
-      tagComponent,
-      tagOptionComponent,
-    } = this.props
-    let { focusedTag, dataItems, accessors, messages } = this.state
-
-    let Component = this.props.tagComponent
-
-    return (
-      <TagList
-        id={this.tagsId}
-        activeId={this.activeTagId}
-        textAccessor={accessors.text}
-        valueAccessor={accessors.value}
-        clearTagIcon={clearTagIcon}
-        label={messages.tagsLabel()}
-        value={dataItems}
-        readOnly={readOnly}
-        disabled={disabled}
-        focusedItem={focusedTag}
-        onDelete={this.handleDelete}
-        tagOptionComponent={tagOptionComponent}
-        tagComponent={tagComponent}
-        ref={this.attachTagsRef}
+      <WidgetPicker
+        onClick={handleClick}
+        onTouchEnd={handleClick}
+        onDoubleClick={handleDoubleClick}
+        className={cn(containerClassName, 'rw-widget-input')}
       >
-        {this.renderInput()}
-      </TagList>
-    )
-  }
-
-  render() {
-    let {
-      className,
-      busy,
-      dropUp,
-      open,
-      searchTerm,
-      selectIcon,
-      busySpinner,
-      containerClassName,
-      popupTransition,
-      isRtl,
-    } = this.props
-
-    let { focused, focusedItem, messages } = this.state
-
-    let elementProps = Props.pickElementProps(this)
-
-    let shouldRenderPopup = isFirstFocusedRender(this)
-    let showCreateOption = this.canShowCreate()
-
-    let disabled = this.props.disabled === true
-    let readOnly = this.props.readOnly === true
-
-    return (
-      <Widget
-        {...elementProps}
-        open={open}
-        isRtl={isRtl}
-        dropUp={dropUp}
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
-        onKeyDown={this.handleKeyDown}
-        onBlur={this.focusManager.handleBlur}
-        onFocus={this.focusManager.handleFocus}
-        className={cn(className, 'rw-multiselect')}
-      >
-        {this.renderNotificationArea(messages)}
-        <WidgetPicker
-          onClick={this.handleClick}
-          onTouchEnd={this.handleClick}
-          onDoubleClick={this.handleDoubleClick}
-          className={cn(containerClassName, 'rw-widget-input')}
+        <TagList
+          id={tagsId}
+          activeId={activeTagId}
+          textAccessor={accessors.text}
+          valueAccessor={accessors.value}
+          clearTagIcon={clearTagIcon}
+          label={messages.tagsLabel()}
+          value={dataItems}
+          readOnly={readOnly}
+          disabled={disabled}
+          focusedItem={focusedTag}
+          onDelete={handleDelete}
+          tagOptionComponent={tagOptionComponent}
+          tagComponent={tagComponent}
+          ref={tagsRef}
         >
-          {this.renderTags()}
-
-          <Select
-            busy={busy}
-            spinner={busySpinner}
-            icon={focused ? selectIcon : null}
-            aria-hidden="true"
-            role="presentational"
-            disabled={disabled || readOnly}
+          <MultiselectInput
+            {...inputProps}
+            aria-haspopup
+            role="listbox"
+            autoFocus={autoFocus}
+            tabIndex={tabIndex || 0}
+            aria-expanded={!!open}
+            aria-busy={!!busy}
+            aria-owns={inputOwns}
+            value={searchTerm}
+            maxLength={maxLength}
+            disabled={isDisabled}
+            readOnly={isReadOnly}
+            placeholder={
+              (value.length && !showPlaceholderWithValues ? '' : placeholder) ||
+              ''
+            }
+            onKeyDown={handleSearchKeyDown}
+            onKeyUp={handleSearchKeyUp}
+            onChange={handleInputChange}
+            ref={inputRef}
           />
-        </WidgetPicker>
+        </TagList>
+        <Select
+          busy={busy}
+          aria-hidden="true"
+          role="presentational"
+          spinner={busySpinner}
+          icon={focused ? selectIcon : null}
+          disabled={isDisabled || isReadOnly}
+        />
+      </WidgetPicker>
 
-        {shouldRenderPopup && (
-          <Popup
-            dropUp={dropUp}
-            open={open}
-            transition={popupTransition}
-            onEntering={() => this.listRef.forceUpdate()}
-          >
-            <div>
-              {this.renderList()}
+      {shouldRenderPopup && (
+        <Popup
+          dropUp={dropUp}
+          open={open}
+          transition={popupTransition}
+          onEntering={() => listRef.current.forceUpdate()}
+        >
+          <div>
+            <List
+              {...listProps}
+              id={listId}
+              data={data}
+              activeId={activeOptionId}
+              dataState={list.dataState}
+              isDisabled={list.isDisabled}
+              searchTerm={searchTerm}
+              textAccessor={accessors.text}
+              valueAccessor={accessors.value}
+              itemComponent={itemComponent}
+              groupComponent={groupComponent}
+              optionComponent={optionComponent}
+              focusedItem={focusedItem}
+              onSelect={handleSelect}
+              onMove={handleScroll}
+              aria-live="polite"
+              aria-labelledby={inputId}
+              aria-hidden={!open}
+              ref={listRef}
+              messages={{
+                emptyList: lengthWithoutValues
+                  ? messages.emptyFilter
+                  : messages.emptyList,
+              }}
+            />
 
-              {showCreateOption && (
-                <AddToListOption
-                  id={this.createId}
-                  searchTerm={searchTerm}
-                  onSelect={this.handleCreate}
-                  focused={!focusedItem || focusedItem === CREATE_OPTION}
-                >
-                  {messages.createOption(this.props)}
-                </AddToListOption>
-              )}
-            </div>
-          </Popup>
-        )}
-      </Widget>
-    )
-  }
-
-  change(dataItem, originalEvent, action) {
-    let { onChange, searchTerm, value: lastValue } = this.props
-    let { dataItems } = this.state
-
-    switch (action) {
-      case INSERT:
-        dataItems = dataItems.concat(dataItem)
-        break
-      case REMOVE:
-        dataItems = dataItems.filter(d => d !== dataItem)
-        break
-    }
-
-    notify(onChange, [
-      dataItems,
-      {
-        action,
-        dataItem,
-        originalEvent,
-        lastValue,
-        searchTerm,
-      },
-    ])
-
-    this.clearSearch(originalEvent)
-  }
-
-  clearSearch(originalEvent) {
-    this.search('', originalEvent, 'clear')
-  }
-
-  search(searchTerm, originalEvent, action: 'clear' | 'input' = 'input') {
-    let { onSearch, searchTerm: lastSearchTerm } = this.props
-
-    if (searchTerm !== lastSearchTerm)
-      notify(onSearch, [
-        searchTerm,
-        {
-          action,
-          lastSearchTerm,
-          originalEvent,
-        },
-      ])
-  }
-
-  focus() {
-    if (this.inputRef) this.inputRef.focus()
-  }
-
-  toggle() {
-    this.props.open ? this.close() : this.open()
-  }
-
-  open() {
-    if (!this.props.open) notify(this.props.onToggle, true)
-  }
-
-  close() {
-    if (this.props.open) notify(this.props.onToggle, false)
-  }
-
-  canShowCreate() {
-    const { allowCreate, caseSensitive, searchTerm } = this.props
-    const { data, dataItems, accessors } = this.state
-    return canShowCreate(allowCreate, {
-      searchTerm,
-      caseSensitive,
-      dataItems,
-      data,
-      accessors,
-    })
-  }
-
-  getPlaceholder() {
-    let { value, placeholder, showPlaceholderWithValues } = this.props
-    return (
-      (value && value.length && !showPlaceholderWithValues
-        ? ''
-        : placeholder) || ''
-    )
-  }
+            {showCreateOption && (
+              <AddToListOption
+                id={createId}
+                searchTerm={searchTerm}
+                onSelect={handleCreate}
+                focused={!focusedItem || focusedItem === CREATE_OPTION}
+              >
+                {messages.createOption(value, searchTerm)}
+              </AddToListOption>
+            )}
+          </div>
+        </Popup>
+      )}
+    </Widget>
+  )
 }
 
-export default uncontrollable(
-  Multiselect,
-  {
-    open: 'onToggle',
-    value: 'onChange',
-    searchTerm: 'onSearch',
-  },
-  ['focus'],
-)
+Multiselect.propTypes = propTypes
+Multiselect.defaultProps = defaultProps
+
+export default Multiselect

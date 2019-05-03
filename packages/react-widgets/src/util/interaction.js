@@ -35,11 +35,17 @@ export let widgetEditable = (target, key, desc) => {
   return desc
 }
 
-export const useEditableCallback = (disabled, ref, fn) => {
+function createCallback(disabled, ref, fn) {
   return useEventCallback((...args) => {
     const inDisabledFieldset = ref.current && isInDisabledFieldset(ref.current)
 
     if (inDisabledFieldset || disabled == true) return
     return fn(...args)
   })
+}
+
+export const useEditableCallback = (...args) => {
+  return args.length === 2
+    ? fn => createCallback(...args, fn)
+    : createCallback(...args)
 }

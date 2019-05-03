@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 const messages = {
   moveToday: 'Today',
@@ -17,7 +17,7 @@ const messages = {
   emptyList: 'There are no items in this list',
   emptyFilter: 'The filter returned no results',
 
-  createOption: ({ searchTerm }) => [
+  createOption: (value, searchTerm) => [
     ' Create option',
     searchTerm && ' ',
     searchTerm && <strong key="_">{`"${searchTerm}"`}</strong>,
@@ -32,8 +32,9 @@ const messages = {
   increment: 'Increment value',
   decrement: 'Decrement value',
 }
+const DEFAULTS = {}
 
-export function getMessages(defaults = {}) {
+export function getMessages(defaults = DEFAULTS) {
   let processed = {}
   Object.keys(messages).forEach(message => {
     let value = defaults[message]
@@ -44,3 +45,6 @@ export function getMessages(defaults = {}) {
 
   return processed
 }
+
+export const useMessagesWithDefaults = defaults =>
+  useMemo(() => getMessages(defaults), [defaults])

@@ -31,3 +31,8 @@ export function isFirstFocusedRender(component) {
       (component._firstFocus = true))
   )
 }
+
+export function useFirstFocusedRender(focused, open) {
+  const ref = useRef(false)
+  return ref.current || ((focused || !!open) && (ref.current = true))
+}

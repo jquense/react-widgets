@@ -37,15 +37,6 @@ class SlideTransitionGroup extends React.Component {
     }
   }
 
-  // getSnapshotBeforeUpdate() {
-  //   if (this.flush && !this.isTransitioning) {
-  //     let previous = this.container.current.firstChild
-  //     return document.activeElement && previous.contains(document.activeElement)
-  //   }
-
-  //   return null
-  // }
-
   componentDidUpdate() {
     if (!this.flush || this.isTransitioning) return
 
@@ -56,16 +47,8 @@ class SlideTransitionGroup extends React.Component {
     const hadFocus =
       document.activeElement && previous.contains(document.activeElement)
 
-    console.log('start', hadFocus)
-
     this.setState({ prevClasses: '', currentClasses: next }, () => {
       let current = this.container.current.lastChild
-
-      // if (hadFocus) {
-      //   console.log('herere')
-      //   current?.querySelector(`.rw-cell[tabindex]`).focus()
-      //   current.clientHeight // eslint-disable-line
-      // }
 
       this.props.onTransitionStart &&
         this.props.onTransitionStart(current, hadFocus)
@@ -95,7 +78,6 @@ class SlideTransitionGroup extends React.Component {
 
   handleTransitionEnd = hadFocus => {
     this.isTransitioning = false
-    console.log('end', hadFocus)
     let current = this.container.current.lastChild
     this.props.onTransitionEnd && this.props.onTransitionEnd(current, hadFocus)
   }

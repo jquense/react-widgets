@@ -3,6 +3,7 @@ global.requestAnimationFrame = cb => setTimeout(cb, 0)
 const React = require('react')
 const sinon = require('sinon')
 const chai = require('chai')
+const { act } = require('react-dom/test-utils')
 const { configure, ShallowWrapper, ReactWrapper } = require('enzyme')
 const Adapter = require('enzyme-adapter-react-16')
 
@@ -17,6 +18,8 @@ global.expect = chai.expect
 
 configure({ adapter: new Adapter() })
 
+const baseSimulate = ReactWrapper.prototype.simulate
+
 function assertLength(length) {
   return function $assertLength(selector) {
     let result = this.find(selector)
@@ -24,6 +27,32 @@ function assertLength(length) {
     return result
   }
 }
+
+ReactWrapper.prototype.act = function(fn) {
+  return this.tap(inst => {
+    let retval
+    act(() => {
+      retval = fn(inst)
+    })
+    return retval
+  })
+}
+
+ReactWrapper.prototype.simulate = function(...args) {
+  return this.act(inst => baseSimulate.apply(inst, args))
+}
+
+ReactWrapper.prototype.simulateWithTimers = function(...args) {
+  let retval
+  jest.useFakeTimers()
+  act(() => {
+    retval = baseSimulate.apply(this, args)
+    jest.runAllTimers()
+  })
+  jest.useRealTimers()
+  return retval
+}
+
 ReactWrapper.prototype.print = function() {
   console.log(this.debug())
   return this
@@ -36,6 +65,7 @@ ShallowWrapper.prototype.assertNone = assertLength(0)
 
 //disable this particular optimization
 sinon.stub(widgetHelpers, 'isFirstFocusedRender').callsFake(() => true)
+sinon.stub(widgetHelpers, 'useFirstFocusedRender').callsFake(() => true)
 
 if (typeof document !== 'undefined') {
   let node = document.createElement('style')
@@ -70,6 +100,6 @@ if (typeof __REACT_VERSION__ !== 'undefined') {
       __REACT_VERSION__,
     () => {
       expect(React.version).to.equal(__REACT_VERSION__)
-    }
+    },
   )
 }

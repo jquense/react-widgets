@@ -1,24 +1,21 @@
-import React from 'react';
-import Layout from '@4c/layout';
+import React from 'react'
+import Layout from '@4c/layout'
 
 class Container extends React.Component {
   render() {
     return (
-      <Layout
-        align="center"
+      <Layout.Block
+        {...this.props}
         style={{
           width: 400,
-          height: 500,
-          margin: '30px auto',
+          margin: '200px auto',
           ...this.props.style,
         }}
       >
-        <Layout grow {...this.props}>
-          {this.props.children}
-        </Layout>
-      </Layout>
-    );
+        {this.props.children}
+      </Layout.Block>
+    )
   }
 }
 
-export default Container;
+export default Container

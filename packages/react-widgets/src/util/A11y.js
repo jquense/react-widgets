@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { findDOMNode } from 'react-dom'
 
 /**
@@ -10,4 +11,10 @@ export const setActiveDescendant = (ref, activeId, visible) => {
   const node = findDOMNode(ref)
   node.removeAttribute('aria-activedescendant')
   node.setAttribute('aria-activedescendant', visible ? activeId : '')
+}
+
+export const useActiveDescendant = (ref, id, visible, deps) => {
+  useEffect(() => {
+    setActiveDescendant(ref.current, id, visible)
+  }, [visible, ...deps])
 }

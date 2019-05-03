@@ -5,6 +5,10 @@
   padding: 0;
 }
 
+.rw-dropdown-list {
+  width: 100%;
+}
+
 .rw-dropdown-list-search {
   position: absolute;
   top: 0;
@@ -29,33 +33,3 @@
     padding-left: 0;
   }
 }
-
-// .rw-filter-input {
-//   @extend .rw-input;
-//   @extend .rw-widget-input;
-
-//   position: relative;
-//   margin: 4px;
-//   padding-right: 0;
-
-//   .rw-rtl {
-//     padding-right: $input-btn-padding-x;
-//     padding-left: 0;
-//   }
-
-//   .rw-select,
-//   .rw-btn {
-//     opacity: 0.75;
-//     cursor: text;
-//   }
-
-//   > .rw-select {
-//     &,
-//     &:active,
-//     &:hover {
-//       background: none;
-//       cursor: initial;
-//       box-shadow: none;
-//     }
-//   }
-// }

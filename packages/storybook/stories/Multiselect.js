@@ -28,6 +28,7 @@ storiesOf('Multiselect', module)
     <Container>
       <Multiselect
         {...props}
+        allowCreate="onFilter"
         onCreate={action('onCreate')}
         defaultValue={props.data.slice(0, 2)}
       />
