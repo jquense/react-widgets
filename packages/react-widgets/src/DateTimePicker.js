@@ -436,7 +436,7 @@ class DateTimePicker extends React.Component {
         onEntering={this.handleOpening}
         onExited={this.handleClosing}
       >
-        <div>
+        <div ref={this.attachCalRef}>
           <Calendar
             id={dateId}
             min={min}
@@ -452,7 +452,6 @@ class DateTimePicker extends React.Component {
             aria-hidden={!open}
             aria-live="polite"
             aria-labelledby={inputId}
-            ref={this.attachCalRef}
           />
           {time && (
             <TimeInput

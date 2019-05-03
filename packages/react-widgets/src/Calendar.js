@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import uncontrollable from 'uncontrollable'
-import { autoFocus } from 'react-component-managers'
 
 import Widget from './Widget'
 import CalendarHeader from './CalendarHeader'
@@ -12,13 +11,19 @@ import Decade from './Decade'
 import Century from './Century'
 import LocalizationProvider from './LocalizationProvider'
 import SlideTransitionGroup from './SlideTransitionGroup'
-import focusManager from './util/focusManager'
+import useFocusManager from './util/useFocusManager'
 
 import * as CustomPropTypes from './util/PropTypes'
-import * as Props from './util/Props'
 import dates from './util/dates'
-import { instanceId, notify } from './util/widgetHelpers'
-import { widgetEditable } from './util/interaction'
+import { pick } from './util/Props'
+import { useInstanceId, notify } from './util/widgetHelpers'
+import { useEditableCallback } from './util/interaction'
+
+function useAutoFocus(autoFocus, ref) {
+  useEffect(() => {
+    autoFocus && ref.current.focus()
+  }, [])
+}
 
 let last = a => a[a.length - 1]
 
@@ -232,6 +237,27 @@ const propTypes = {
   tabIndex: PropTypes.any,
 }
 
+const useViewState = (views, view = views[0], value, currentDate) => {
+  const lastView = useRef(view)
+  const lastDate = useRef(currentDate)
+
+  let slideDirection
+  if (view !== lastView.current) {
+    slideDirection =
+      views.indexOf(lastView.current) > views.indexOf(view) ? 'top' : 'bottom'
+  } else if (lastDate.current !== currentDate) {
+    slideDirection = dates.gt(currentDate, lastDate.current) ? 'left' : 'right'
+  }
+
+  const nextCurrent = currentDate || value || new Date()
+  useEffect(() => {
+    lastDate.current = nextCurrent
+    lastView.current = view
+  })
+
+  return [view, slideDirection, nextCurrent]
+}
+
 /**
  * ---
  * localized: true
@@ -248,153 +274,108 @@ const propTypes = {
  *
  * @public
  */
-class Calendar extends React.Component {
-  static displayName = 'Calendar'
+function Calendar(props) {
+  const {
+    id,
+    autoFocus,
+    views,
+    tabIndex,
+    disabled,
+    readOnly,
+    className,
+    value,
+    min,
+    max,
+    onChange,
+    onCurrentDateChange,
+    onViewChange,
+    onKeyDown,
+    onNavigate,
+    isRtl,
+    messages,
+    formats,
+    // activeId: pActiveId,
+    view: pView,
+    currentDate: pCurrentDate,
+  } = props
 
-  static propTypes = propTypes
+  const localizer = LocalizationProvider.useLocalizer(messages, formats)
+  const ref = useRef()
 
-  static defaultProps = {
-    value: null,
-    min: new Date(1900, 0, 1),
-    max: new Date(2099, 11, 31),
-    views: VIEW_OPTIONS,
-    tabIndex: '0',
-    footer: true,
-  }
+  const viewId = useInstanceId(id, '_calendar')
+  const labelId = useInstanceId(id, '_calendar_label')
+  // let activeId = useInstanceId(id, '_calendar_active_cell')
 
-  static contextTypes = {
-    isRtl: PropTypes.bool,
-  }
+  // if (pActiveId) activeId = pActiveId
 
-  static Transition = SlideTransitionGroup
+  useAutoFocus(autoFocus, ref)
 
-  static move(date, min, max, unit, direction) {
-    let isMonth = unit === 'month'
-    let isUpOrDown = direction === 'UP' || direction === 'DOWN'
-    let rangeUnit = VIEW_UNIT[unit]
-    let addUnit = isMonth && isUpOrDown ? 'week' : VIEW_UNIT[unit]
-    let amount = isMonth || !isUpOrDown ? 1 : 4
-    let newDate
+  const [view, slideDirection, currentDate] = useViewState(
+    views,
+    pView,
+    value,
+    pCurrentDate,
+  )
 
-    if (direction === 'UP' || direction === 'LEFT') amount *= -1
+  const [, focused] = useFocusManager(ref, {
+    willHandle() {
+      if (tabIndex == -1) return false
+    },
+  })
 
-    newDate = dates.add(date, amount, addUnit)
+  const lastValue = useRef(value)
+  useEffect(() => {
+    const inValue = inRangeValue(value, min, max)
+    const last = lastValue.current
+    lastValue.current = value
 
-    return dates.inRange(newDate, min, max, rangeUnit) ? newDate : date
-  }
+    if (!dates.eq(inValue, dateOrNull(last), VIEW_UNIT[view]))
+      maybeSetCurrentDate(inValue)
+  })
 
-  constructor(...args) {
-    super(...args)
+  const isDisabled = disabled || readOnly
 
-    this.viewRef = React.createRef()
-    this.ref = React.createRef()
+  // const isValidView = next => views.indexOf(next) !== -1
 
-    this.viewId = instanceId(this, '_calendar')
-    this.labelId = instanceId(this, '_calendar_label')
-    this.activeId =
-      this.props.activeId || instanceId(this, '_calendar_active_cell')
+  const handleViewChange = useEditableCallback(isDisabled, ref, () => {
+    navigate('UP')
+  })
 
-    autoFocus(this)
+  const handleMoveBack = useEditableCallback(isDisabled, ref, () => {
+    navigate('LEFT')
+  })
 
-    this.focusManager = focusManager(this, {
-      willHandle: this.handleFocusWillChange,
-    })
+  const handleMoveForward = useEditableCallback(isDisabled, ref, () => {
+    navigate('RIGHT')
+  })
 
-    let { view, views } = this.props
-    this.state = {
-      selectedIndex: 0,
-      view: view || views[0],
-    }
-  }
-
-  static getDerivedStateFromProps(
-    { view, views, value, currentDate },
-    prevState,
-  ) {
-    view = view || views[0]
-    let { slideDirection, view: lastView, currentDate: lastDate } = prevState
-
-    if (lastView !== view) {
-      slideDirection =
-        views.indexOf(lastView) > views.indexOf(view) ? 'top' : 'bottom'
-    } else if (lastDate !== currentDate) {
-      slideDirection = dates.gt(currentDate, lastDate) ? 'left' : 'right'
-    }
-
-    return {
-      view,
-      slideDirection,
-      currentDate: currentDate || value || new Date(),
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    let { value, min, max } = this.props
-    let { view } = this.state
-    value = inRangeValue(value, min, max)
-
-    if (!dates.eq(value, dateOrNull(prevProps.value), VIEW_UNIT[view]))
-      this.maybeSetCurrentDate(value)
-  }
-
-  handleFocusWillChange = () => {
-    if (this.props.tabIndex == -1) return false
-  }
-
-  @widgetEditable
-  handleViewChange = () => {
-    this.navigate('UP')
-  }
-
-  @widgetEditable
-  handleMoveBack = () => {
-    this.navigate('LEFT')
-  }
-
-  @widgetEditable
-  handleMoveForward = () => {
-    this.navigate('RIGHT')
-  }
-
-  @widgetEditable
-  handleChange = date => {
-    let { views, onChange } = this.props
-    let { view } = this.state
-
+  const handleChange = useEditableCallback(isDisabled, ref, date => {
     if (views[0] === view) {
-      this.maybeSetCurrentDate(date)
+      maybeSetCurrentDate(date)
 
       notify(onChange, date)
 
-      this.focus()
+      focus()
       return
     }
 
-    this.navigate('DOWN', date)
-  }
+    navigate('DOWN', date)
+  })
 
-  @widgetEditable
-  handleMoveToday = () => {
-    let { views, min, max, onViewChange } = this.props
+  const handleMoveToday = useEditableCallback(isDisabled, ref, () => {
     let date = new Date()
-
     let firstView = views[0]
 
-    notify(this.props.onChange, date)
+    notify(onChange, date)
 
     if (dates.inRange(date, min, max, firstView)) {
-      this.focus()
-
-      this.maybeSetCurrentDate(date)
-
+      focus()
+      maybeSetCurrentDate(date)
       notify(onViewChange, [firstView])
     }
-  }
+  })
 
-  @widgetEditable
-  handleKeyDown = e => {
-    let { currentDate, view } = this.state
-
+  const handleKeyDown = useEditableCallback(isDisabled, ref, e => {
     let ctrl = e.ctrlKey || e.metaKey
     let key = e.key
     let direction = ARROWS_TO_DIRECTION[key]
@@ -403,156 +384,73 @@ class Calendar extends React.Component {
     // TODO: should be in
     if (key === 'Enter') {
       e.preventDefault()
-      return this.handleChange(currentDate)
+      return handleChange(currentDate)
     }
 
     if (direction) {
       if (ctrl) {
         e.preventDefault()
-        this.navigate(direction)
+        navigate(direction)
       } else {
-        if (this.isRtl() && OPPOSITE_DIRECTION[direction])
+        if (isRtl && OPPOSITE_DIRECTION[direction])
           direction = OPPOSITE_DIRECTION[direction]
 
-        let nextDate = Calendar.move(
-          currentDate,
-          this.props.min,
-          this.props.max,
-          view,
-          direction,
-        )
+        let nextDate = Calendar.move(currentDate, min, max, view, direction)
 
         if (!dates.eq(currentDate, nextDate, unit)) {
           e.preventDefault()
 
-          if (dates.gt(nextDate, currentDate, view))
-            this.navigate('RIGHT', nextDate)
+          if (dates.gt(nextDate, currentDate, view)) navigate('RIGHT', nextDate)
           else if (dates.lt(nextDate, currentDate, view))
-            this.navigate('LEFT', nextDate)
-          else this.maybeSetCurrentDate(nextDate)
+            navigate('LEFT', nextDate)
+          else maybeSetCurrentDate(nextDate)
         }
       }
     }
 
-    notify(this.props.onKeyDown, [e])
-  }
+    notify(onKeyDown, [e])
+  })
 
-  render() {
-    let {
-      className,
-      value,
-      disabled,
-      readOnly,
-      views,
-      min,
-      max,
-      tabIndex,
-      localizer,
-    } = this.props
-
-    let { currentDate, view, slideDirection, focused } = this.state
-
-    let View = VIEW[view]
-    let todayNotInRange = !dates.inRange(new Date(), min, max, view)
-
-    let key = view + '_' + dates[view](currentDate)
-
-    let elementProps = Props.pickElementProps(this),
-      viewProps = Props.pick(this.props, View)
-
-    let isDisabled = disabled || readOnly
-
-    return (
-      <Widget
-        {...elementProps}
-        role="group"
-        ref={this.ref}
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
-        tabIndex={tabIndex || 0}
-        className={cn(className, 'rw-calendar rw-widget-container')}
-      >
-        <CalendarHeader
-          isRtl={this.isRtl()}
-          label={this.getHeaderLabel()}
-          labelId={this.labelId}
-          localizer={localizer}
-          upDisabled={isDisabled || view === last(views)}
-          prevDisabled={
-            isDisabled || !dates.inRange(this.nextDate('LEFT'), min, max, view)
-          }
-          todayDisabled={disabled || todayNotInRange}
-          nextDisabled={
-            isDisabled || !dates.inRange(this.nextDate('RIGHT'), min, max, view)
-          }
-          onViewChange={this.handleViewChange}
-          onMoveLeft={this.handleMoveBack}
-          onMoveRight={this.handleMoveForward}
-          onMoveToday={this.handleMoveToday}
-        />
-        <Calendar.Transition
-          direction={slideDirection}
-          onTransitionStart={this.moveFocus}
-        >
-          <View
-            {...viewProps}
-            key={key}
-            id={this.viewId}
-            value={value}
-            disabled={disabled}
-            focusedItem={currentDate}
-            onChange={this.handleChange}
-            onKeyDown={this.handleKeyDown}
-            aria-labelledby={this.labelId}
-          />
-        </Calendar.Transition>
-      </Widget>
-    )
-  }
-
-  navigate(direction, date) {
-    let { views, min, max, onNavigate, onViewChange } = this.props
-    let { view, currentDate } = this.state
-
+  function navigate(direction, date) {
+    let nextView = view
     let slideDir = direction === 'LEFT' || direction === 'UP' ? 'right' : 'left'
 
-    if (direction === 'UP') view = views[views.indexOf(view) + 1] || view
+    if (direction === 'UP')
+      nextView = views[views.indexOf(view) + 1] || nextView
 
-    if (direction === 'DOWN') view = views[views.indexOf(view) - 1] || view
+    if (direction === 'DOWN')
+      nextView = views[views.indexOf(view) - 1] || nextView
 
     if (!date)
       date =
         ['LEFT', 'RIGHT'].indexOf(direction) !== -1
-          ? this.nextDate(direction)
+          ? nextDate(direction)
           : currentDate
 
-    if (dates.inRange(date, min, max, view)) {
-      notify(onNavigate, [date, slideDir, view])
+    if (dates.inRange(date, min, max, nextView)) {
+      notify(onNavigate, [date, slideDir, nextView])
 
       //this.focus()
-      this.maybeSetCurrentDate(date)
-      notify(onViewChange, [view])
+      maybeSetCurrentDate(date)
+      notify(onViewChange, [nextView])
     }
   }
 
-  focus = () => {
-    this.ref.current?.querySelector(FOCUSED_CELL_SELECTOR)?.focus()
+  const focus = () => {
+    ref.current?.querySelector(FOCUSED_CELL_SELECTOR)?.focus()
   }
 
-  moveFocus = node => {
-    let listitem = node.querySelector(FOCUSED_CELL_SELECTOR)
+  const moveFocus = (node, hadFocus) => {
+    // let listitem = node.querySelector(FOCUSED_CELL_SELECTOR)
     let current = document.activeElement
 
-    if (listitem && (!current || current.classList.contains(CELL_CLASSNAME))) {
-      listitem.focus()
+    if (hadFocus && (!current || !node.contains(current))) {
+      console.log('FOCUS', node)
+      node.focus()
     }
   }
 
-  maybeSetCurrentDate(date) {
-    const { min, max } = this.props
-    const { view, currentDate } = this.state
-
+  function maybeSetCurrentDate(date) {
     let inRangeDate = inRangeValue(
       date ? new Date(date) : currentDate,
       min,
@@ -565,22 +463,19 @@ class Calendar extends React.Component {
     )
       return
 
-    notify(this.props.onCurrentDateChange, inRangeDate)
+    notify(onCurrentDateChange, inRangeDate)
   }
 
-  nextDate(direction) {
+  function nextDate(direction) {
     let method = direction === 'LEFT' ? 'subtract' : 'add'
-    let { currentDate, view } = this.state
+
     let unit = view === 'month' ? view : 'year'
     let multi = MULTIPLIER[view] || 1
 
     return dates[method](currentDate, 1 * multi, unit)
   }
 
-  getHeaderLabel() {
-    let { localizer } = this.props
-    let { currentDate, view } = this.state
-
+  function getHeaderLabel() {
     switch (view) {
       case 'month':
         return localizer.formatDate(currentDate, 'header')
@@ -600,13 +495,65 @@ class Calendar extends React.Component {
         )
     }
   }
-  isRtl() {
-    return !!(this.props.isRtl || (this.context && this.context.isRtl))
-  }
 
-  isValidView(next, views = this.props.views) {
-    return views.indexOf(next) !== -1
-  }
+  let View = VIEW[view]
+  let todayNotInRange = !dates.inRange(new Date(), min, max, view)
+
+  let key = view + '_' + dates[view](currentDate)
+
+  // let elementProps = Props.pickElementProps(this),
+  let viewProps = pick(props, View)
+
+  const prevDisabled =
+    isDisabled || !dates.inRange(nextDate('LEFT'), min, max, view)
+
+  const nextDisabled =
+    isDisabled || !dates.inRange(nextDate('RIGHT'), min, max, view)
+
+  return (
+    <Widget
+      // {...elementProps}
+      role="group"
+      ref={ref}
+      focused={focused}
+      disabled={disabled}
+      readOnly={readOnly}
+      tabIndex={tabIndex || 0}
+      className={cn(className, 'rw-calendar rw-widget-container')}
+    >
+      <CalendarHeader
+        isRtl={isRtl}
+        label={getHeaderLabel()}
+        labelId={labelId}
+        localizer={localizer}
+        upDisabled={isDisabled || view === last(views)}
+        prevDisabled={prevDisabled}
+        todayDisabled={disabled || todayNotInRange}
+        nextDisabled={nextDisabled}
+        onViewChange={handleViewChange}
+        onMoveLeft={handleMoveBack}
+        onMoveRight={handleMoveForward}
+        onMoveToday={handleMoveToday}
+      />
+      <Calendar.Transition
+        direction={slideDirection}
+        onTransitionEnd={moveFocus}
+      >
+        <View
+          {...viewProps}
+          key={key}
+          id={viewId}
+          value={value}
+          localizer={localizer}
+          disabled={disabled}
+          focusedItem={currentDate}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          aria-labelledby={labelId}
+        />
+      </Calendar.Transition>
+    </Widget>
+  )
 }
 
 function dateOrNull(dt) {
@@ -614,7 +561,37 @@ function dateOrNull(dt) {
   return null
 }
 
-export default uncontrollable(LocalizationProvider.withLocalizer(Calendar), {
+Calendar.displayName = 'Calendar'
+
+Calendar.propTypes = propTypes
+
+Calendar.defaultProps = {
+  value: null,
+  min: new Date(1900, 0, 1),
+  max: new Date(2099, 11, 31),
+  views: VIEW_OPTIONS,
+  tabIndex: '0',
+  footer: true,
+}
+
+Calendar.Transition = SlideTransitionGroup
+
+Calendar.move = (date, min, max, unit, direction) => {
+  let isMonth = unit === 'month'
+  let isUpOrDown = direction === 'UP' || direction === 'DOWN'
+  let rangeUnit = VIEW_UNIT[unit]
+  let addUnit = isMonth && isUpOrDown ? 'week' : VIEW_UNIT[unit]
+  let amount = isMonth || !isUpOrDown ? 1 : 4
+  let newDate
+
+  if (direction === 'UP' || direction === 'LEFT') amount *= -1
+
+  newDate = dates.add(date, amount, addUnit)
+
+  return dates.inRange(newDate, min, max, rangeUnit) ? newDate : date
+}
+
+export default uncontrollable(Calendar, {
   value: 'onChange',
   currentDate: 'onCurrentDateChange',
   view: 'onViewChange',

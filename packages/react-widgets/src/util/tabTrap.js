@@ -4,18 +4,18 @@ const selector = [
   '[tabindex="0"]',
 ].join(',')
 
-export default function tabTrap(element) {
+export default function useTabTrap(ref) {
   function keyHandler(event) {
-    if (event.key !== 'Tab') return
+    if (!ref.current || event.key !== 'Tab') return
 
-    const tabbables = element.querySelectorAll(selector)
+    const tabbables = ref.current.querySelectorAll(selector)
 
     if (event.shiftKey && event.target === tabbables[0]) {
       tabbables[tabbables.length - 1].focus()
       event.preventDefault()
     } else if (
       (!event.shiftKey && event.target === tabbables[tabbables.length - 1]) ||
-      !element.contains(event.target)
+      !ref.current.contains(event.target)
     ) {
       tabbables[0].focus()
       event.preventDefault()
@@ -23,6 +23,10 @@ export default function tabTrap(element) {
   }
 
   return {
+    focus() {
+      const tabbables = ref.current?.querySelectorAll(selector)
+      tabbables[0]?.focus()
+    },
     start() {
       document.addEventListener('keydown', keyHandler)
     },

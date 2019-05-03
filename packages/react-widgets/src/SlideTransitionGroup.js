@@ -37,25 +37,38 @@ class SlideTransitionGroup extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.isTransitioning) return
+  // getSnapshotBeforeUpdate() {
+  //   if (this.flush && !this.isTransitioning) {
+  //     let previous = this.container.current.firstChild
+  //     return document.activeElement && previous.contains(document.activeElement)
+  //   }
 
-    if (this.current.key !== nextProps.children.key) {
-      this.prev = this.current
-      this.flush = true
-    }
-
-    this.current = nextProps.children
-  }
+  //   return null
+  // }
 
   componentDidUpdate() {
     if (!this.flush || this.isTransitioning) return
+
     this.flush = false
     this.isTransitioning = true
+
+    let previous = this.container.current.firstChild
+    const hadFocus =
+      document.activeElement && previous.contains(document.activeElement)
+
+    console.log('start', hadFocus)
 
     this.setState({ prevClasses: '', currentClasses: next }, () => {
       let current = this.container.current.lastChild
 
+      // if (hadFocus) {
+      //   console.log('herere')
+      //   current?.querySelector(`.rw-cell[tabindex]`).focus()
+      //   current.clientHeight // eslint-disable-line
+      // }
+
+      this.props.onTransitionStart &&
+        this.props.onTransitionStart(current, hadFocus)
       current.clientHeight // eslint-disable-line
 
       this.setState(
@@ -64,8 +77,6 @@ class SlideTransitionGroup extends React.Component {
           currentClasses: cn(next, active),
         },
         () => {
-          this.props.onTransitionStart && this.props.onTransitionStart(current)
-
           transition.end(current, () => {
             this.prev = null
 
@@ -73,9 +84,8 @@ class SlideTransitionGroup extends React.Component {
               this.current = this.props.children
             }
 
-            this.setState(
-              { prevClasses: '', currentClasses: '' },
-              this.handleTransitionEnd,
+            this.setState({ prevClasses: '', currentClasses: '' }, () =>
+              this.handleTransitionEnd(hadFocus),
             )
           })
         },
@@ -83,15 +93,31 @@ class SlideTransitionGroup extends React.Component {
     })
   }
 
-  handleTransitionEnd = () => {
-    let current = this.container.current.lastChild
-
+  handleTransitionEnd = hadFocus => {
     this.isTransitioning = false
-    this.props.onTransitionEnd && this.props.onTransitionEnd(current)
+    console.log('end', hadFocus)
+    let current = this.container.current.lastChild
+    this.props.onTransitionEnd && this.props.onTransitionEnd(current, hadFocus)
   }
 
   render() {
-    let { direction, onTransitionEnd: _, ...props } = this.props
+    let {
+      direction,
+      children,
+      onTransitionEnd: _,
+      onTransitionStart: _0,
+      ...props
+    } = this.props
+
+    if (!this.isTransitioning) {
+      if (this.current.key !== children.key) {
+        this.prev = this.current
+        this.flush = true
+      }
+
+      this.current = children
+    }
+
     let { prevClasses, currentClasses } = this.state
     return (
       <div

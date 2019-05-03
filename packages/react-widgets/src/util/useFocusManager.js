@@ -1,15 +1,17 @@
 import { useState } from 'react'
+import useMounted from '@restart/hooks/useMounted'
 import useFocusManagerBase from '@restart/hooks/useFocusManager'
 
 import { isInDisabledFieldset } from './interaction'
 
 export default function useFocusManager(ref, props, opts = {}) {
+  const isMounted = useMounted()
   const [focused, setFocus] = useState(false)
 
   const events = useFocusManagerBase({
     ...opts,
     onChange: focused => {
-      setFocus(focused)
+      isMounted() && setFocus(focused)
     },
     isDisabled: () =>
       props.disabled === true || isInDisabledFieldset(ref.current),

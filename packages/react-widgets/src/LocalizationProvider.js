@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useMemo } from 'react'
 
 import { getMessages } from './messages'
 
@@ -77,6 +77,14 @@ const Provider = ({ localizer, dateLocalizer, numberLocalizer, children }) => (
 )
 
 Provider.propTypes = propTypes
+
+Provider.useLocalizer = (messages, formats) => {
+  const { date, number } = useContext(LocalizerContext) || {}
+  return useMemo(
+    () => mergeWithDefaults(date, number, formats || {}, messages),
+    [date, number, formats, messages],
+  )
+}
 
 Provider.Consumer = LocalizerContext.Consumer
 

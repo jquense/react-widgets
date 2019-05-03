@@ -130,14 +130,13 @@
 
 .rw-calendar-transition {
   width: 100%;
-  transition: transform 0.4s;
   overflow: hidden;
+  transition: transform 0.2s ease-in-out 0ms;
   @include translate(0, 0);
 }
 
 .rw-calendar-transition-next {
-  position: absolute;
-  top: 0;
+  -webkit-backface-visibility: hidden;
 
   .rw-calendar-transition-top & {
     @include translate(0, -100%);
@@ -158,6 +157,11 @@
 }
 
 .rw-calendar-transition-prev {
+  -webkit-backface-visibility: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+
   .rw-calendar-transition-top & {
     @include translate(0, 100%);
   }
@@ -171,30 +175,3 @@
     @include translate(-100%, 0);
   }
 }
-
-// .rw-calendar-transition-entering,
-// .rw-calendar-transition-entered {
-//   &.rw-calendar-transition-top,
-//   &.rw-calendar-transition-bottom {
-//     transform: translateY(0);
-//   }
-//   &.rw-calendar-transition-right,
-//   &.rw-calendar-transition-left {
-//     transform: translateX(0);
-//   }
-// }
-
-// .rw-calendar-transition-exiting {
-//   &.rw-calendar-transition-top {
-//     transform: translateY(100%);
-//   }
-//   &.rw-calendar-transition-bottom {
-//     transform: translateY(-100%);
-//   }
-//   &.rw-calendar-transition-right {
-//     transform: translateX(100%);
-//   }
-//   &.rw-calendar-transition-left {
-//     transform: translateX(-100%);
-//   }
-// }

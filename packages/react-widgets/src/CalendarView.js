@@ -23,8 +23,10 @@ function CalendarView({ className, focusedItem, activeId: _, ...props }) {
 
   useEffect(() => {
     const node = ref.current
+    // console.log('FOCUS!', !!node, focused)
 
     if (!node || !focused) return
+
     node.querySelector('.rw-cell[tabindex]').focus()
   }, [focusedItem, focused, ref])
 

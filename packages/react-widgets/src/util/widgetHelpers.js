@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 let idCount = 0
 function uniqueId(prefix) {
   return '' + ((prefix == null ? '' : prefix) + ++idCount)
@@ -5,6 +7,12 @@ function uniqueId(prefix) {
 
 export function notify(handler, args) {
   handler && handler.apply(null, [].concat(args))
+}
+
+export const useInstanceId = (otherId, suffix = '') => {
+  const id = useRef(null)
+  if (!id.current) id.current = uniqueId('rw_')
+  return (otherId || id.current) + suffix
 }
 
 export function instanceId(component, suffix = '') {
