@@ -516,6 +516,7 @@ class DropdownList extends React.Component {
           <DropdownListInput
             {...inputProps}
             value={valueItem}
+            data={data}
             textField={textField}
             name={this.props.name}
             autoComplete={this.props.autoComplete}

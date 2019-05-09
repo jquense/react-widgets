@@ -9,6 +9,7 @@ import { dataText, dataValue } from './util/dataHelpers'
 class DropdownListInput extends React.Component {
   static propTypes = {
     value: PropTypes.any,
+    data: PropTypes.array,
     placeholder: PropTypes.string,
     name: PropTypes.string,
     autoComplete: PropTypes.string,
@@ -42,6 +43,7 @@ class DropdownListInput extends React.Component {
       name,
       placeholder,
       value,
+      data,
       textField,
       autoComplete,
       valueComponent: Component,
@@ -53,7 +55,7 @@ class DropdownListInput extends React.Component {
         !value && placeholder ? (
           <span className="rw-placeholder">{placeholder}</span>
         ) : Component ? (
-          <Component item={value} />
+          <Component item={value} data={data} />
         ) : (
           dataText(value, textField)
         )
