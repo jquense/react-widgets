@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import React from 'react'
-import uncontrollable from 'uncontrollable'
+import React, { useRef } from 'react'
+import useUncontrolled from 'uncontrollable/hook'
 
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
@@ -9,10 +9,8 @@ import Select from './Select'
 import NumberInput from './NumberInput'
 import Button from './Button'
 import LocalizationProvider from './LocalizationProvider'
-
-import * as Props from './util/Props'
-import focusManager from './util/focusManager'
-import { widgetEditable } from './util/interaction'
+import { createEditableCallback } from './util/interaction'
+import useFocusManager from './util/useFocusManager'
 import { notify } from './util/widgetHelpers'
 import * as CustomPropTypes from './util/PropTypes'
 import { caretUp, caretDown } from './Icon'
@@ -44,6 +42,101 @@ function clamp(value, min, max) {
   return Math.max(Math.min(value, max), min)
 }
 
+const propTypes = {
+  value: PropTypes.number,
+
+  /**
+   * @example ['onChangePicker', [ [1, null] ]]
+   */
+  onChange: PropTypes.func,
+
+  /**
+   * The minimum number that the NumberPicker value.
+   * @example ['prop', ['min', 0]]
+   */
+  min: PropTypes.number,
+
+  /**
+   * The maximum number that the NumberPicker value.
+   *
+   * @example ['prop', ['max', 0]]
+   */
+  max: PropTypes.number,
+
+  /**
+   * Amount to increase or decrease value when using the spinner buttons.
+   *
+   * @example ['prop', ['step', 5]]
+   */
+  step: PropTypes.number,
+
+  /**
+   * Specify how precise the `value` should be when typing, incrementing, or decrementing the value.
+   * When empty, precision is parsed from the current `format` and culture.
+   */
+  precision: PropTypes.number,
+
+  formats: PropTypes.shape({
+    /**
+     * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
+     *
+     * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
+     */
+    default: CustomPropTypes.numberFormat,
+  }),
+
+  /**
+   * Determines how the NumberPicker parses a number from the localized string representation.
+   * You can also provide a parser `function` to pair with a custom `format`.
+   */
+  parse: PropTypes.func,
+
+  incrementIcon: PropTypes.node,
+  decrementIcon: PropTypes.node,
+
+  /** @ignore */
+  tabIndex: PropTypes.any,
+  name: PropTypes.string,
+  placeholder: PropTypes.string,
+  onKeyDown: PropTypes.func,
+  onKeyPress: PropTypes.func,
+  onKeyUp: PropTypes.func,
+  autoFocus: PropTypes.bool,
+
+  /**
+   * @example ['disabled', ['1']]
+   */
+  disabled: CustomPropTypes.disabled,
+  /**
+   * @example ['readOnly', ['1.5']]
+   */
+  readOnly: CustomPropTypes.disabled,
+
+  /** Adds a css class to the input container element. */
+  containerClassName: PropTypes.string,
+
+  inputProps: PropTypes.object,
+  isRtl: PropTypes.bool,
+  messages: PropTypes.shape({
+    increment: PropTypes.string,
+    decrement: PropTypes.string,
+  }),
+
+  /** @ignore */
+  localizer: PropTypes.object,
+}
+
+const defaultProps = {
+  value: null,
+  open: false,
+  incrementIcon: caretUp,
+  decrementIcon: caretDown,
+
+  min: -Infinity,
+  max: Infinity,
+  step: 1,
+}
+
 /**
  * ---
  * localized: true
@@ -56,145 +149,77 @@ function clamp(value, min, max) {
  *
  * @public
  */
-class NumberPicker extends React.Component {
-  static propTypes = {
-    value: PropTypes.number,
+function NumberPicker(uncontrolledProps) {
+  const {
+    className,
+    containerClassName,
+    disabled,
+    readOnly,
+    value,
+    min,
+    max,
+    incrementIcon,
+    decrementIcon,
+    placeholder,
+    autoFocus,
+    tabIndex,
+    parse,
+    name,
+    onChange,
+    messages,
+    formats,
+    onKeyDown,
+    onKeyPress,
+    onKeyUp,
+    inputProps,
+    precision,
+    step: pStep,
+    ...elementProps
+  } = useUncontrolled(uncontrolledProps, { value: 'onChange' })
 
-    /**
-     * @example ['onChangePicker', [ [1, null] ]]
-     */
-    onChange: PropTypes.func,
+  const localizer = LocalizationProvider.useLocalizer(messages, formats)
 
-    /**
-     * The minimum number that the NumberPicker value.
-     * @example ['prop', ['min', 0]]
-     */
-    min: PropTypes.number,
+  const ref = useRef()
+  const inputRef = useRef()
+  const repeaterRef = useRef()
 
-    /**
-     * The maximum number that the NumberPicker value.
-     *
-     * @example ['prop', ['max', 0]]
-     */
-    max: PropTypes.number,
+  const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
+    willHandle(focused) {
+      if (focused) focus()
+    },
+  })
 
-    /**
-     * Amount to increase or decrease value when using the spinner buttons.
-     *
-     * @example ['prop', ['step', 5]]
-     */
-    step: PropTypes.number,
-
-    /**
-     * Specify how precise the `value` should be when typing, incrementing, or decrementing the value.
-     * When empty, precision is parsed from the current `format` and culture.
-     */
-    precision: PropTypes.number,
-
-    formats: PropTypes.shape({
-      /**
-       * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
-       *
-       * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
-       */
-      default: CustomPropTypes.numberFormat,
-    }),
-
-    /**
-     * Determines how the NumberPicker parses a number from the localized string representation.
-     * You can also provide a parser `function` to pair with a custom `format`.
-     */
-    parse: PropTypes.func,
-
-    incrementIcon: PropTypes.node,
-    decrementIcon: PropTypes.node,
-
-    /** @ignore */
-    tabIndex: PropTypes.any,
-    name: PropTypes.string,
-    placeholder: PropTypes.string,
-    onKeyDown: PropTypes.func,
-    onKeyPress: PropTypes.func,
-    onKeyUp: PropTypes.func,
-    autoFocus: PropTypes.bool,
-
-    /**
-     * @example ['disabled', ['1']]
-     */
-    disabled: CustomPropTypes.disabled,
-    /**
-     * @example ['readOnly', ['1.5']]
-     */
-    readOnly: CustomPropTypes.disabled,
-
-    /** Adds a css class to the input container element. */
-    containerClassName: PropTypes.string,
-
-    inputProps: PropTypes.object,
-    isRtl: PropTypes.bool,
-    messages: PropTypes.shape({
-      increment: PropTypes.string,
-      decrement: PropTypes.string,
-    }),
-
-    /** @ignore */
-    localizer: PropTypes.object,
-  }
-
-  static defaultProps = {
-    value: null,
-    open: false,
-    incrementIcon: caretUp,
-    decrementIcon: caretDown,
-
-    min: -Infinity,
-    max: Infinity,
-    step: 1,
-  }
-
-  constructor(...args) {
-    super(...args)
-
-    this.focusManager = focusManager(this, {
-      willHandle: focused => {
-        if (focused) this.focus()
-      },
-    })
-
-    this.state = {
-      focused: false,
-    }
-  }
-
-  @widgetEditable
-  handleMouseDown = (direction, event) => {
+  // @widgetEditable
+  const handleMouseDown = (direction, event) => {
     let { min, max } = this.props
 
-    event && event.persist()
+    if (event) event.persist()
 
-    let method = direction === 'UP' ? this.increment : this.decrement
+    let method = direction === 'UP' ? increment : decrement
 
-    let value = method.call(this, event),
+    let value = method(event),
       atTop = direction === 'UP' && value === max,
       atBottom = direction === 'DOWN' && value === min
 
-    if (atTop || atBottom) this.handleMouseUp()
-    else if (!this._cancelRepeater) {
-      this._cancelRepeater = createInterval(() => {
-        this.handleMouseDown(direction, event)
+    if (atTop || atBottom) handleMouseUp()
+    else if (!repeaterRef.current) {
+      repeaterRef.current = createInterval(() => {
+        handleMouseDown(direction, event)
       })
     }
   }
 
-  @widgetEditable
-  handleMouseUp = () => {
-    this._cancelRepeater && this._cancelRepeater()
-    this._cancelRepeater = null
-  }
+  const useEditableCallback = createEditableCallback(disabled || readOnly, ref)
 
-  @widgetEditable
-  handleKeyDown = event => {
-    let { min, max, onKeyDown } = this.props
+  // @widgetEditable
+  const handleMouseUp = useEditableCallback(() => {
+    if (!repeaterRef.current) return
+    repeaterRef.current()
+    repeaterRef.current = null
+  })
+
+  // @widgetEditable
+  const handleKeyDown = useEditableCallback(event => {
     let key = event.key
 
     notify(onKeyDown, [event])
@@ -210,158 +235,117 @@ class NumberPicker extends React.Component {
       event.preventDefault()
       this.increment(event)
     }
-  }
+  })
 
-  handleChange = (rawValue, originalEvent = null) => {
-    let { onChange, value: lastValue, min, max } = this.props
-
+  const handleChange = (rawValue, originalEvent = null) => {
     let nextValue = clamp(rawValue, min, max)
 
-    if (lastValue !== nextValue)
+    if (value !== nextValue)
       notify(onChange, [
         nextValue,
         {
           rawValue,
-          lastValue,
           originalEvent,
+          lastValue: value,
         },
       ])
   }
 
-  attachInputRef = ref => {
-    this.inputRef = ref
-  }
-
-  renderInput(value) {
-    let {
-      placeholder,
-      autoFocus,
-      tabIndex,
-      parse,
-      name,
-      onKeyPress,
-      onKeyUp,
-      min,
-      max,
-      disabled,
-      readOnly,
-      inputProps,
-      localizer,
-    } = this.props
-
-    return (
-      <NumberInput
-        {...inputProps}
-        role="spinbutton"
-        tabIndex={tabIndex}
-        value={value}
-        placeholder={placeholder}
-        autoFocus={autoFocus}
-        editing={this.state.focused}
-        localizer={localizer}
-        parse={parse}
-        name={name}
-        min={min}
-        max={max}
-        disabled={disabled}
-        readOnly={readOnly}
-        onChange={this.handleChange}
-        onKeyPress={onKeyPress}
-        onKeyUp={onKeyUp}
-        innerRef={this.attachInputRef}
-      />
-    )
-  }
-
-  render() {
-    let {
-      className,
-      containerClassName,
-      disabled,
-      readOnly,
-      value,
-      min,
-      max,
-      localizer,
-      incrementIcon,
-      decrementIcon,
-    } = this.props
-
-    let { focused } = this.state
-    let elementProps = Props.pickElementProps(this)
-
-    value = clamp(value, min, max)
-
-    return (
-      <Widget
-        {...elementProps}
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
-        onKeyDown={this.handleKeyDown}
-        onBlur={this.focusManager.handleBlur}
-        onFocus={this.focusManager.handleFocus}
-        className={cn(className, 'rw-number-picker')}
-      >
-        <WidgetPicker className={containerClassName}>
-          {this.renderInput(value)}
-          <Select bordered>
-            <Button
-              icon={incrementIcon}
-              onClick={this.handleFocus}
-              disabled={value === max || disabled}
-              label={localizer.messages.increment({ value, min, max })}
-              onMouseUp={e => this.handleMouseUp('UP', e)}
-              onMouseDown={e => this.handleMouseDown('UP', e)}
-              onMouseLeave={e => this.handleMouseUp('UP', e)}
-            />
-            <Button
-              icon={decrementIcon}
-              onClick={this.handleFocus}
-              disabled={value === min || disabled}
-              label={localizer.messages.decrement({ value, min, max })}
-              onMouseUp={e => this.handleMouseUp('DOWN', e)}
-              onMouseDown={e => this.handleMouseDown('DOWN', e)}
-              onMouseLeave={e => this.handleMouseUp('DOWN', e)}
-            />
-          </Select>
-        </WidgetPicker>
-      </Widget>
-    )
-  }
-
-  focus() {
+  function focus() {
     this.inputRef.focus()
   }
 
-  increment(event) {
-    return this.step(this.props.step, event)
+  function increment(event) {
+    return step(pStep, event)
   }
 
-  decrement(event) {
-    return this.step(-this.props.step, event)
+  function decrement(event) {
+    return step(-pStep, event)
   }
 
-  step(amount, event) {
-    var value = (this.props.value || 0) + amount
+  function step(amount, event) {
+    const nextValue = (value || 0) + amount
 
-    var decimals =
-      this.props.precision != null
-        ? this.props.precision
-        : this.props.localizer.precision('default')
+    const decimals =
+      precision != null ? precision : localizer.precision('default')
 
-    this.handleChange(decimals != null ? round(value, decimals) : value, event)
+    handleChange(
+      decimals != null ? round(nextValue, decimals) : nextValue,
+      event,
+    )
 
     return value
   }
+
+  const clampedValue = clamp(value, min, max)
+
+  return (
+    <Widget
+      {...elementProps}
+      focused={focused}
+      disabled={disabled}
+      readOnly={readOnly}
+      onKeyDown={handleKeyDown}
+      {...focusEvents}
+      ref={ref}
+      className={cn(className, 'rw-number-picker')}
+    >
+      <WidgetPicker className={containerClassName}>
+        <NumberInput
+          {...inputProps}
+          role="spinbutton"
+          tabIndex={tabIndex}
+          value={clampedValue}
+          placeholder={placeholder}
+          autoFocus={autoFocus}
+          editing={this.state.focused}
+          localizer={localizer}
+          parse={parse}
+          name={name}
+          min={min}
+          max={max}
+          disabled={disabled}
+          readOnly={readOnly}
+          onChange={handleChange}
+          onKeyPress={onKeyPress}
+          onKeyUp={onKeyUp}
+          innerRef={inputRef}
+        />
+        <Select bordered>
+          <Button
+            icon={incrementIcon}
+            disabled={clampedValue === max || disabled}
+            label={localizer.messages.increment({
+              value: clampedValue,
+              min,
+              max,
+            })}
+            onMouseUp={e => handleMouseUp('UP', e)}
+            onMouseDown={e => handleMouseDown('UP', e)}
+            onMouseLeave={e => handleMouseUp('UP', e)}
+          />
+          <Button
+            icon={decrementIcon}
+            disabled={clampedValue === min || disabled}
+            label={localizer.messages.decrement({
+              value: clampedValue,
+              min,
+              max,
+            })}
+            onMouseUp={e => handleMouseUp('DOWN', e)}
+            onMouseDown={e => handleMouseDown('DOWN', e)}
+            onMouseLeave={e => handleMouseUp('DOWN', e)}
+          />
+        </Select>
+      </WidgetPicker>
+    </Widget>
+  )
 }
 
-export default uncontrollable(
-  LocalizationProvider.withLocalizer(NumberPicker),
-  {
-    value: 'onChange',
-  },
-)
+NumberPicker.propTypes = propTypes
+NumberPicker.defaultProps = defaultProps
+
+export default NumberPicker
 
 // thank you kendo ui core
 // https://github.com/telerik/kendo-ui-core/blob/master/src/kendo.core.js#L1036

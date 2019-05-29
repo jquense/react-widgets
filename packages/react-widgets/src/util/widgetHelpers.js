@@ -16,24 +16,10 @@ export const useInstanceId = (otherId, suffix = '') => {
   return (otherId || id.current) + suffix
 }
 
-export function instanceId(component, suffix = '') {
-  // eslint-disable-next-line babel/no-unused-expressions
-  component.__id || (component.__id = uniqueId('rw_'))
-  return (component.props.id || component.__id) + suffix
-}
-
 /**
  * Allows for defering popup rendering untill the widget is focused,
  * or has been opened (in order to not remove it suddenly on close)
  */
-export function isFirstFocusedRender(component) {
-  return (
-    component._firstFocus ||
-    ((component.state.focused || !!component.props.open) &&
-      (component._firstFocus = true))
-  )
-}
-
 export function useFirstFocusedRender(focused, open) {
   const ref = useRef(false)
   return ref.current || ((focused || !!open) && (ref.current = true))

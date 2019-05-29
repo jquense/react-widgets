@@ -64,7 +64,6 @@ ReactWrapper.prototype.assertNone = assertLength(0)
 ShallowWrapper.prototype.assertNone = assertLength(0)
 
 //disable this particular optimization
-sinon.stub(widgetHelpers, 'isFirstFocusedRender').callsFake(() => true)
 sinon.stub(widgetHelpers, 'useFirstFocusedRender').callsFake(() => true)
 
 if (typeof document !== 'undefined') {

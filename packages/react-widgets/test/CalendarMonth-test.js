@@ -2,14 +2,17 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 import Month from '../src/Month'
-import Provider from '../src/LocalizationProvider'
+import { useLocalizer } from '../src/LocalizationProvider'
 
 describe('Month Component', function() {
   it('should use the right format', () => {
     var date = new Date(2015, 1, 16, 0, 0, 0),
       formatter = sinon.spy(() => 'hi')
 
-    const LocalizedMonth = Provider.withLocalizer(Month)
+    const LocalizedMonth = ({ messages, formats, ...props }) => (
+      <Month {...props} localizer={useLocalizer(messages, formats)} />
+    )
+
     mount(
       <LocalizedMonth
         value={date}
