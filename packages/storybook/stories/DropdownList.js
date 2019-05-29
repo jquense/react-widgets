@@ -18,7 +18,7 @@ const states = ['NJ', 'NY']
 storiesOf('DropdownList', module)
   .add('DropdownList', () => (
     <Container>
-      <DropdownList {...props} filter="contains" />
+      <DropdownList {...props} changeOnItemActive filter="contains" />
     </Container>
   ))
   .add('open', () => (
@@ -43,7 +43,7 @@ storiesOf('DropdownList', module)
   ))
   .add('no filter', () => (
     <Container>
-      <DropdownList {...props} open filter={false} />
+      <DropdownList {...props} filter={false} />
     </Container>
   ))
   .add('drop up', () => (

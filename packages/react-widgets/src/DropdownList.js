@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import useUncontrollable from 'uncontrollable/hook'
+import useEventCallback from '@restart/hooks/useEventCallback'
 
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
@@ -16,7 +17,6 @@ import * as Filter from './util/Filter'
 import { useActiveDescendant } from './util/A11y'
 
 import * as CustomPropTypes from './util/PropTypes'
-import reduceToListState from './util/reduceToListState'
 import { useAccessors } from './util/getAccessors'
 import useScrollManager from './util/useScrollManager'
 import {
@@ -28,7 +28,7 @@ import { dataValue, dataText } from './util/dataHelpers'
 import { caretDown } from './Icon'
 import canShowCreate from './util/canShowCreate'
 
-import { useEditableCallback as createCallbackHook } from './util/interaction'
+import { createEditableCallback } from './util/interaction'
 import useTimeout from '@restart/hooks/useTimeout'
 import useFocusManager from './util/useFocusManager'
 import {
@@ -36,6 +36,7 @@ import {
   useList,
   useFilteredData,
   useFocusedItem,
+  useDropodownToggle,
 } from './util/hooks'
 
 const propTypes = {
@@ -110,6 +111,7 @@ const propTypes = {
   listProps: PropTypes.object,
 
   isRtl: PropTypes.bool,
+
   messages: PropTypes.shape({
     open: PropTypes.string,
     emptyList: CustomPropTypes.message,
@@ -235,11 +237,18 @@ function DropdownList(uncontrolledProps) {
 
   useAutoFocus(autoFocus, ref)
 
+  const toggle = useDropodownToggle(open, onToggle)
   const handleScroll = useScrollManager(ref)
 
   const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
     didHandle(focused) {
-      if (!focused) closeDropdown()
+      if (focused) {
+        if (filter) focus()
+        return
+      }
+
+      toggle.close()
+      clearSearch()
     },
   })
 
@@ -278,13 +287,16 @@ function DropdownList(uncontrolledProps) {
     accessors,
   })
 
-  const useEditableCallback = createCallbackHook(isDisabled || isReadOnly, ref)
+  const useEditableCallback = createEditableCallback(
+    isDisabled || isReadOnly,
+    ref,
+  )
 
   const handleCreate = useEditableCallback((searchTerm = '', event) => {
     notify(onCreate, searchTerm)
 
     clearSearch(event)
-    closeDropdown()
+    toggle.close()
     focus(ref)
   })
 
@@ -295,7 +307,7 @@ function DropdownList(uncontrolledProps) {
     }
     notify(onSelect, [dataItem, { originalEvent }])
     change(dataItem, originalEvent)
-    closeDropdown()
+    toggle.close()
     focus(ref)
   })
 
@@ -306,32 +318,28 @@ function DropdownList(uncontrolledProps) {
   })
 
   const handleKeyDown = useEditableCallback(e => {
-    let { key, altKey, ctrlKey } = e
+    let { key, altKey, ctrlKey, shiftKey } = e
 
     let createIsFocused = focusedItem === CREATE_OPTION
 
     notify(onKeyDown, [e])
 
     let closeWithFocus = () => {
-      closeDropdown()
-      ref.current?.focus()
-    }
+      clearSearch()
 
-    const changeItem = item => item !== undefined && change(item, e)
+      toggle.close()
+      open && setTimeout(focus)
+    }
 
     if (e.defaultPrevented) return
 
-    if (key === 'End') {
+    if (key === 'End' && open && !shiftKey) {
       e.preventDefault()
-
-      if (open) setFocusedItem(list.last())
-      else changeItem(list.last())
-    } else if (key === 'Home') {
+      setFocusedItem(list.last())
+    } else if (key === 'Home' && open && !shiftKey) {
       e.preventDefault()
-
-      if (open) setFocusedItem(list.first())
-      else changeItem(list.first())
-    } else if (key === 'Escape' && open) {
+      setFocusedItem(list.first())
+    } else if (key === 'Escape' && (open || searchTerm)) {
       e.preventDefault()
       closeWithFocus()
     } else if (key === 'Enter' && open && ctrlKey && showCreateOption) {
@@ -340,14 +348,13 @@ function DropdownList(uncontrolledProps) {
     } else if ((key === 'Enter' || (key === ' ' && !filter)) && open) {
       e.preventDefault()
       handleSelect(focusedItem, e)
-    } else if (key === ' ' && !open) {
-      e.preventDefault()
-      openDropdown()
     } else if (key === 'ArrowDown') {
       e.preventDefault()
 
-      if (altKey) return openDropdown()
-      if (!open) changeItem(list.next(selectedItem))
+      if (!open) {
+        toggle.open()
+        return
+      }
 
       let next = list.next(focusedItem)
       let creating =
@@ -358,7 +365,6 @@ function DropdownList(uncontrolledProps) {
       e.preventDefault()
 
       if (altKey) return closeWithFocus()
-      if (!open) return changeItem(list.prev(selectedItem))
 
       setFocusedItem(createIsFocused ? list.last() : list.prev(focusedItem))
     }
@@ -383,7 +389,7 @@ function DropdownList(uncontrolledProps) {
 
   const handleInputChange = e => {
     search(e.target.value, e, 'input')
-    openDropdown()
+    toggle.open()
   }
 
   const handleAutofillChange = e => {
@@ -403,6 +409,12 @@ function DropdownList(uncontrolledProps) {
     }
   }
 
+  // The EventCallback is required b/c Popup blocks updates
+  let handleHoverOption = useEventCallback(item => {
+    if (!open) return
+    setFocusedItem(item)
+  })
+
   function change(nextValue, originalEvent) {
     if (!accessors.matches(nextValue, value)) {
       notify(onChange, [
@@ -415,7 +427,7 @@ function DropdownList(uncontrolledProps) {
       ])
 
       clearSearch(originalEvent)
-      closeDropdown()
+      toggle.close()
     }
   }
 
@@ -437,18 +449,6 @@ function DropdownList(uncontrolledProps) {
           lastSearchTerm: searchTerm,
         },
       ])
-  }
-
-  function openDropdown() {
-    if (!open) notify(onToggle, true)
-  }
-
-  function closeDropdown() {
-    if (open) notify(onToggle, false)
-  }
-
-  function toggle(nextOpen = open) {
-    nextOpen ? closeDropdown() : openDropdown()
   }
 
   /**
@@ -529,45 +529,44 @@ function DropdownList(uncontrolledProps) {
           onEntered={focus}
           onEntering={() => listRef.current.forceUpdate()}
         >
-          <div>
-            <List
-              {...listProps}
-              id={listId}
-              activeId={activeId}
-              data={data}
-              dataState={list.dataState}
-              isDisabled={list.isDisabled}
+          <List
+            {...listProps}
+            id={listId}
+            activeId={activeId}
+            data={data}
+            dataState={list.dataState}
+            isDisabled={list.isDisabled}
+            searchTerm={searchTerm}
+            textAccessor={accessors.text}
+            valueAccessor={accessors.value}
+            itemComponent={itemComponent}
+            groupComponent={groupComponent}
+            optionComponent={optionComponent}
+            selectedItem={selectedItem}
+            focusedItem={open ? focusedItem : null}
+            onSelect={handleSelect}
+            onMove={handleScroll}
+            onHoverOption={handleHoverOption}
+            aria-live={open && 'polite'}
+            aria-labelledby={inputId}
+            aria-hidden={!open}
+            ref={listRef}
+            messages={{
+              emptyList: rawData.length
+                ? messages.emptyFilter
+                : messages.emptyList,
+            }}
+          />
+          {showCreateOption && (
+            <AddToListOption
+              id={createId}
               searchTerm={searchTerm}
-              textAccessor={accessors.text}
-              valueAccessor={accessors.value}
-              itemComponent={itemComponent}
-              groupComponent={groupComponent}
-              optionComponent={optionComponent}
-              selectedItem={selectedItem}
-              focusedItem={open ? focusedItem : null}
-              onSelect={handleSelect}
-              onMove={handleScroll}
-              aria-live={open && 'polite'}
-              aria-labelledby={inputId}
-              aria-hidden={!open}
-              ref={listRef}
-              messages={{
-                emptyList: rawData.length
-                  ? messages.emptyFilter
-                  : messages.emptyList,
-              }}
-            />
-            {showCreateOption && (
-              <AddToListOption
-                id={createId}
-                searchTerm={searchTerm}
-                onSelect={handleCreate}
-                focused={!focusedItem || focusedItem === CREATE_OPTION}
-              >
-                {messages.createOption(value, searchTerm)}
-              </AddToListOption>
-            )}
-          </div>
+              onSelect={handleCreate}
+              focused={!focusedItem || focusedItem === CREATE_OPTION}
+            >
+              {messages.createOption(value, searchTerm)}
+            </AddToListOption>
+          )}
         </Popup>
       )}
     </Widget>

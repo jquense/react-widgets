@@ -1,8 +1,25 @@
 import { useState, useRef, useMemo } from 'react'
 import reduceToListState from './reduceToListState'
 import { filter } from './Filter'
+import { notify } from './widgetHelpers'
 
 export const CREATE_OPTION = {}
+
+export function useDropodownToggle(isOpen, onToggle) {
+  function open() {
+    if (!isOpen) notify(onToggle, true)
+  }
+  function close() {
+    if (isOpen) notify(onToggle, false)
+  }
+  function toggle() {
+    isOpen ? close() : open()
+  }
+
+  toggle.open = open
+  toggle.close = close
+  return toggle
+}
 
 export function useList(data, options) {
   const prev = useRef()
@@ -54,8 +71,8 @@ export function useFocusedItem(
   const isCreateItem = focusedItem === CREATE_OPTION
 
   // if the selectedItem has changed we reset the focusedItem to it
-  if (selectedItem && prevSelected !== selectedItem) {
-    setItem(list.nextEnabled(selectedItem))
+  if (prevSelected !== selectedItem) {
+    setItem(selectedItem ? list.nextEnabled(selectedItem) : startItem)
   }
   // if the current focused item is no longer in the array (e.g. filtered out)
   // reset it to the first enabled item

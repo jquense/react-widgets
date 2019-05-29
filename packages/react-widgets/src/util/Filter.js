@@ -1,23 +1,22 @@
-import PropTypes from 'prop-types';
-import * as CustomPropTypes from './PropTypes';
-import { dataText } from './dataHelpers';
+import PropTypes from 'prop-types'
+import * as CustomPropTypes from './PropTypes'
+import { dataText } from './dataHelpers'
 
 export let presets = {
-  eq:  (a, b) => a === b,
+  eq: (a, b) => a === b,
   neq: (a, b) => a !== b,
-  gt:  (a, b) => a > b,
+  gt: (a, b) => a > b,
   gte: (a, b) => a >= b,
-  lt:  (a, b) => a < b,
+  lt: (a, b) => a < b,
   lte: (a, b) => a <= b,
   contains: (a, b) => a.indexOf(b) !== -1,
   startsWith: (a, b) => a.lastIndexOf(b, 0) === 0,
   endsWith(a, b) {
-    let pos = a.length - b.length;
-    let lastIndex = a.indexOf(b, pos);
-    return  lastIndex !== -1 && lastIndex === pos;
-  }
+    let pos = a.length - b.length
+    let lastIndex = a.indexOf(b, pos)
+    return lastIndex !== -1 && lastIndex === pos
+  },
 }
-
 
 function normalizeFilterType(type) {
   if (type === false) return null
@@ -32,10 +31,10 @@ function normalizeFilter({ filter, caseSensitive = false, textField }) {
     return filter
   }
 
-  filter = presets[filter];
+  filter = presets[filter]
 
   return (item, searchTerm) => {
-    let textValue = dataText(item, textField);
+    let textValue = dataText(item, textField)
 
     if (!caseSensitive) {
       textValue = textValue.toLowerCase()
@@ -47,25 +46,25 @@ function normalizeFilter({ filter, caseSensitive = false, textField }) {
 }
 
 function normalizeOptions(nextOptions) {
-  let options = { ...nextOptions };
+  let options = { ...nextOptions }
   options.minLengh = options.minLengh || 0
   options.filter = normalizeFilter(options)
-  return options;
+  return options
 }
 
 export let propTypes = {
   textField: CustomPropTypes.accessor,
-  caseSensitive:  PropTypes.bool,
+  caseSensitive: PropTypes.bool,
   minLength: PropTypes.number,
   filter: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.bool,
-    PropTypes.oneOf(Object.keys(presets))
+    PropTypes.oneOf(Object.keys(presets)),
   ]),
 }
 
 export function indexOf(data, { searchTerm = '', ...options }) {
-  let { filter, minLength } = normalizeOptions(options);
+  let { filter, minLength } = normalizeOptions(options)
 
   if (
     !filter ||
@@ -82,7 +81,7 @@ export function indexOf(data, { searchTerm = '', ...options }) {
 }
 
 export function filter(data, { searchTerm = '', ...options }) {
-  let { filter, minLength } = normalizeOptions(options);
+  let { filter, minLength } = normalizeOptions(options)
 
   if (
     !filter ||
@@ -95,19 +94,19 @@ export function filter(data, { searchTerm = '', ...options }) {
   return data.filter((item, idx) => filter(item, searchTerm, idx))
 }
 
-export function suggest(data, { searchTerm = '', ...options }) {
-  let { filter, minLength } = normalizeOptions(options);
+// export function suggest(data, { searchTerm = '', ...options }) {
+//   let { filter, minLength } = normalizeOptions(options);
 
-  if (
-    !filter ||
-    !searchTerm ||
-    !searchTerm.trim() ||
-    searchTerm.length < minLength
-  )
-    return searchTerm
+//   if (
+//     !filter ||
+//     !searchTerm ||
+//     !searchTerm.trim() ||
+//     searchTerm.length < minLength
+//   )
+//     return searchTerm
 
-  for (var idx = 0; idx < data.length; idx++)
-    if (filter(data[idx], searchTerm, idx)) return data[idx];
+//   for (var idx = 0; idx < data.length; idx++)
+//     if (filter(data[idx], searchTerm, idx)) return data[idx];
 
-  return searchTerm
-}
+//   return searchTerm
+// }

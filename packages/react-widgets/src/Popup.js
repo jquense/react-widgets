@@ -1,24 +1,14 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import React, { cloneElement } from 'react'
+import React from 'react'
 
 import SlideDownTransition from './SlideDownTransition'
 import { elementType } from './util/PropTypes'
 
-class StaticContainer extends React.Component {
-  static propTypes = { shouldUpdate: () => {} }
-  shouldComponentUpdate({ shouldUpdate }) {
-    return !!shouldUpdate
-  }
-  render() {
-    const { className, children, ...props } = this.props
-    delete props.shouldUpdate
-    return cloneElement(children, {
-      ...props,
-      className: cn(className, children.props.className, 'rw-popup'),
-    })
-  }
-}
+const StaticContainer = React.memo(
+  ({ children }) => children,
+  (_, { shouldUpdate }) => !shouldUpdate,
+)
 
 class Popup extends React.Component {
   static defaultProps = {
@@ -48,10 +38,11 @@ class Popup extends React.Component {
         {...props}
         in={open}
         dropUp={dropUp}
+        innerClassName="rw-popup"
         className={cn(className, 'rw-popup-container')}
       >
         <StaticContainer shouldUpdate={open}>
-          {React.Children.only(this.props.children)}
+          {this.props.children}
         </StaticContainer>
       </Transition>
     )

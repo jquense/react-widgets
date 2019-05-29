@@ -225,7 +225,7 @@ class DurationInput extends React.Component {
     const currentValue = this.state.timeParts[part]
 
     const { target } = event
-    const strValue = `${currentValue || ''}${target.value.replace(/^0+/, '')}`
+    const strValue = `${currentValue || ''}${target.value}`
     const numValue = +strValue
 
     this.select(target)
@@ -320,7 +320,10 @@ class DurationInput extends React.Component {
     seconds != null && nextDate.setSeconds(seconds)
     milliseconds != null && nextDate.setMilliseconds(milliseconds)
 
-    onChange(nextDate)
+    onChange(nextDate, {
+      lastValue: value,
+      timeParts,
+    })
   }
 
   focusNext(input, delta) {

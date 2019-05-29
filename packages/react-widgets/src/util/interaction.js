@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { findDOMNode } from 'react-dom'
 import useEventCallback from '@restart/hooks/useEventCallback'
 
@@ -44,8 +45,7 @@ function createCallback(disabled, ref, fn) {
   })
 }
 
-export const useEditableCallback = (...args) => {
-  return args.length === 2
-    ? fn => createCallback(...args, fn)
-    : createCallback(...args)
+export const createEditableCallback = (...args) => {
+  const ref = useRef(fn => createCallback(...args, fn))
+  return ref.current
 }

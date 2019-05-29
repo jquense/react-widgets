@@ -30,12 +30,7 @@ storiesOf('Combobox', module)
   ))
   .add('suggestions', () => (
     <Container>
-      <Combobox
-        suggest
-        valueField="id"
-        textField="fullName"
-        data={suggestList}
-      />
+      <Combobox valueField="id" textField="fullName" data={suggestList} />
     </Container>
   ))
   .add('busy', () => (

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useMemo } from 'react'
+import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import uncontrollable from 'uncontrollable'
+import useUncontrollable from 'uncontrollable/hook'
 
 import Widget from './Widget'
 import CalendarHeader from './CalendarHeader'
@@ -17,7 +17,7 @@ import * as CustomPropTypes from './util/PropTypes'
 import dates from './util/dates'
 import { pick } from './util/Props'
 import { useInstanceId, notify } from './util/widgetHelpers'
-import { useEditableCallback } from './util/interaction'
+import { createEditableCallback } from './util/interaction'
 
 function useAutoFocus(autoFocus, ref) {
   useEffect(() => {
@@ -71,9 +71,6 @@ function inRangeValue(_value, min, max) {
 }
 
 const propTypes = {
-  /** @ignore */
-  activeId: PropTypes.string,
-
   /**
    * @example ['disabled', ['new Date()']]
    */
@@ -274,7 +271,7 @@ const useViewState = (views, view = views[0], value, currentDate) => {
  *
  * @public
  */
-function Calendar(props) {
+function Calendar(uncontrolledProps) {
   const {
     id,
     autoFocus,
@@ -294,19 +291,19 @@ function Calendar(props) {
     isRtl,
     messages,
     formats,
-    // activeId: pActiveId,
     view: pView,
     currentDate: pCurrentDate,
-  } = props
-
+  } = useUncontrollable(uncontrolledProps, {
+    value: 'onChange',
+    currentDate: 'onCurrentDateChange',
+    view: 'onViewChange',
+  })
+  // console.log(value, currentDate, uncontrolledProps)
   const localizer = LocalizationProvider.useLocalizer(messages, formats)
   const ref = useRef()
 
   const viewId = useInstanceId(id, '_calendar')
   const labelId = useInstanceId(id, '_calendar_label')
-  // let activeId = useInstanceId(id, '_calendar_active_cell')
-
-  // if (pActiveId) activeId = pActiveId
 
   useAutoFocus(autoFocus, ref)
 
@@ -336,20 +333,24 @@ function Calendar(props) {
   const isDisabled = disabled || readOnly
 
   // const isValidView = next => views.indexOf(next) !== -1
+  /**
+   * Handlers
+   */
+  const useEditableCallback = createEditableCallback(isDisabled, ref)
 
-  const handleViewChange = useEditableCallback(isDisabled, ref, () => {
+  const handleViewChange = useEditableCallback(() => {
     navigate('UP')
   })
 
-  const handleMoveBack = useEditableCallback(isDisabled, ref, () => {
+  const handleMoveBack = useEditableCallback(() => {
     navigate('LEFT')
   })
 
-  const handleMoveForward = useEditableCallback(isDisabled, ref, () => {
+  const handleMoveForward = useEditableCallback(() => {
     navigate('RIGHT')
   })
 
-  const handleChange = useEditableCallback(isDisabled, ref, date => {
+  const handleChange = useEditableCallback(date => {
     if (views[0] === view) {
       maybeSetCurrentDate(date)
 
@@ -362,7 +363,7 @@ function Calendar(props) {
     navigate('DOWN', date)
   })
 
-  const handleMoveToday = useEditableCallback(isDisabled, ref, () => {
+  const handleMoveToday = useEditableCallback(() => {
     let date = new Date()
     let firstView = views[0]
 
@@ -375,13 +376,12 @@ function Calendar(props) {
     }
   })
 
-  const handleKeyDown = useEditableCallback(isDisabled, ref, e => {
+  const handleKeyDown = useEditableCallback(e => {
     let ctrl = e.ctrlKey || e.metaKey
     let key = e.key
     let direction = ARROWS_TO_DIRECTION[key]
     let unit = VIEW_UNIT[view]
 
-    // TODO: should be in
     if (key === 'Enter') {
       e.preventDefault()
       return handleChange(currentDate)
@@ -441,11 +441,9 @@ function Calendar(props) {
   }
 
   const moveFocus = (node, hadFocus) => {
-    // let listitem = node.querySelector(FOCUSED_CELL_SELECTOR)
     let current = document.activeElement
 
     if (hadFocus && (!current || !node.contains(current))) {
-      console.log('FOCUS', node)
       node.focus()
     }
   }
@@ -502,7 +500,7 @@ function Calendar(props) {
   let key = view + '_' + dates[view](currentDate)
 
   // let elementProps = Props.pickElementProps(this),
-  let viewProps = pick(props, View)
+  let viewProps = pick(uncontrolledProps, View)
 
   const prevDisabled =
     isDisabled || !dates.inRange(nextDate('LEFT'), min, max, view)
@@ -566,7 +564,6 @@ Calendar.displayName = 'Calendar'
 Calendar.propTypes = propTypes
 
 Calendar.defaultProps = {
-  value: null,
   min: new Date(1900, 0, 1),
   max: new Date(2099, 11, 31),
   views: VIEW_OPTIONS,
@@ -591,8 +588,4 @@ Calendar.move = (date, min, max, unit, direction) => {
   return dates.inRange(newDate, min, max, rangeUnit) ? newDate : date
 }
 
-export default uncontrollable(Calendar, {
-  value: 'onChange',
-  currentDate: 'onCurrentDateChange',
-  view: 'onViewChange',
-})
+export default Calendar

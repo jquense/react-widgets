@@ -187,25 +187,6 @@ describe('DropdownList', function() {
     })
   })
 
-  it('should call onChange with event object from keyboard', () => {
-    let change = sinon.spy()
-
-    mount(
-      <DropdownList
-        data={data}
-        value={data[0]}
-        onChange={change}
-        onToggle={() => {}}
-      />,
-    ).simulate('keyDown', { key: 'ArrowDown' })
-
-    let bonusArgs = change.getCall(0).args[1]
-
-    expect(bonusArgs.originalEvent.type).to.equal('keydown')
-    expect(bonusArgs.searchTerm).to.equal('')
-    expect(bonusArgs.lastValue).to.equal(data[0])
-  })
-
   it('should call Select handler', function() {
     let change = sinon.spy(),
       onSelect = sinon.spy()
@@ -226,28 +207,6 @@ describe('DropdownList', function() {
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
 
     expect(change.calledAfter(onSelect)).to.equal(true)
-  })
-
-  it('should change values on keyDown', function() {
-    function assertChangedWithValue(itemIndex) {
-      return () => {
-        expect(change.calledOnce).to.equal(true)
-        expect(change.calledWith(data[itemIndex])).to.equal(true)
-        change.resetHistory()
-      }
-    }
-
-    let change = sinon.spy()
-
-    mount(<DropdownList data={data} onChange={change} defaultValue={data[0]} />)
-      .simulate('keyDown', { key: 'ArrowDown' })
-      .tap(assertChangedWithValue(1))
-      .simulate('keyDown', { key: 'ArrowUp' })
-      .tap(assertChangedWithValue(0))
-      .simulate('keyDown', { key: 'End' })
-      .tap(assertChangedWithValue(data.length - 1))
-      .simulate('keyDown', { key: 'Home' })
-      .tap(assertChangedWithValue(0))
   })
 
   it('should navigate list', function() {

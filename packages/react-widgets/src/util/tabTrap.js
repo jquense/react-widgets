@@ -1,3 +1,5 @@
+import { useRef, useEffect } from 'react'
+
 const selector = [
   'input',
   'button:not([tabindex="-1"])',
@@ -5,6 +7,8 @@ const selector = [
 ].join(',')
 
 export default function useTabTrap(ref) {
+  const startedRef = useRef(false)
+
   function keyHandler(event) {
     if (!ref.current || event.key !== 'Tab') return
 
@@ -22,15 +26,26 @@ export default function useTabTrap(ref) {
     }
   }
 
+  useEffect(
+    () => () => {
+      document.removeEventListener('keydown', keyHandler)
+    },
+    [startedRef],
+  )
+
   return {
     focus() {
       const tabbables = ref.current?.querySelectorAll(selector)
       tabbables[0]?.focus()
     },
     start() {
-      document.addEventListener('keydown', keyHandler)
+      if (!startedRef.current) {
+        startedRef.current = true
+        document.addEventListener('keydown', keyHandler)
+      }
     },
     stop() {
+      startedRef.current = false
       document.removeEventListener('keydown', keyHandler)
     },
   }

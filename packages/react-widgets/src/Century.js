@@ -7,7 +7,6 @@ import dates from './util/dates'
 import { chunk } from './util/_'
 
 const propTypes = {
-  activeId: PropTypes.string,
   today: PropTypes.instanceOf(Date),
   value: PropTypes.instanceOf(Date),
   focusedItem: PropTypes.instanceOf(Date),
@@ -20,7 +19,6 @@ const propTypes = {
 
 function CenturyView({
   focusedItem,
-  activeId,
   disabled,
   onChange,
   value,
@@ -35,12 +33,7 @@ function CenturyView({
   ])
 
   return (
-    <CalendarView
-      {...props}
-      focusedItem={focusedItem}
-      onChange={onChange}
-      activeId={activeId}
-    >
+    <CalendarView {...props} focusedItem={focusedItem} onChange={onChange}>
       <CalendarView.Body>
         {chunks.map((row, rowIdx) => (
           <CalendarView.Row key={rowIdx}>
@@ -54,7 +47,6 @@ function CenturyView({
                 <CalendarView.Cell
                   key={colIdx}
                   unit="decade"
-                  activeId={activeId}
                   label={label}
                   date={date}
                   now={today}

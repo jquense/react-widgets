@@ -13,11 +13,9 @@ function clamp(date, min, max) {
 
 const viewPropTypes = {
   focusedItem: PropTypes.any,
-  onKeyDown: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
 }
 
-function CalendarView({ className, focusedItem, activeId: _, ...props }) {
+function CalendarView({ className, focusedItem, ...props }) {
   const ref = useRef(null)
   const [focusEvents, focused] = useFocusManager(ref, props)
 
@@ -46,7 +44,6 @@ CalendarView.propTypes = viewPropTypes
 
 const cellPropTypes = {
   id: PropTypes.string,
-  activeId: PropTypes.string.isRequired,
   label: PropTypes.string,
   now: PropTypes.instanceOf(Date),
   date: PropTypes.instanceOf(Date),

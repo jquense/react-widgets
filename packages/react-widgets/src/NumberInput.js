@@ -60,19 +60,26 @@ class NumberPickerInput extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps) {
-    let { value, editing, localizer } = nextProps
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let { value, culture, editing, localizer } = nextProps
 
-    let decimal = localizer.decimalChar()
+    let decimal = localizer.decimalChar(null, culture)
+
     if (value == null || isNaN(value)) value = ''
     else
       value = editing
         ? ('' + value).replace('.', decimal)
         : localizer.formatNumber(value, 'default')
 
-    return {
-      stringValue: '' + value,
-    }
+    let stringValue = '' + value
+
+    if (prevState.lastValueFromProps !== stringValue)
+      return {
+        stringValue,
+        lastValueFromProps: stringValue,
+      }
+
+    return null
   }
 
   componentDidUpdate(_, __, { reselectText }) {

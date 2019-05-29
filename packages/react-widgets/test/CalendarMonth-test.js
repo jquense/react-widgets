@@ -13,14 +13,13 @@ describe('Month Component', function() {
     mount(
       <LocalizedMonth
         value={date}
-        focused={date}
+        focusedItem={date}
         onChange={() => {}}
         formats={{
           dayOfMonth: 'dd',
           dayFormat: 'd',
         }}
-        activeId="month"
-      />
+      />,
     )
       //.print()
       .tap(inst => expect(inst.first('td').contains('01')).to.equal(true))

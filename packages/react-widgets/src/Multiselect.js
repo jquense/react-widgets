@@ -22,7 +22,7 @@ import { setActiveDescendant } from './util/A11y'
 
 import * as CustomPropTypes from './util/PropTypes'
 import { defaultGetDataState } from './util/reduceToListState'
-import { useEditableCallback as createCallbackHook } from './util/interaction'
+import { createEditableCallback } from './util/interaction'
 import { useAccessors } from './util/getAccessors'
 import useScrollManager from './util/useScrollManager'
 import useFocusManager from './util/useFocusManager'
@@ -350,7 +350,10 @@ function Multiselect(uncontrolledProps) {
    * Event Handlers
    */
 
-  const useEditableCallback = createCallbackHook(isDisabled || isReadOnly, ref)
+  const useEditableCallback = createEditableCallback(
+    isDisabled || isReadOnly,
+    ref,
+  )
 
   const handleScroll = useScrollManager(ref)
 

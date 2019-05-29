@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState, useImperativeHandle } from 'react'
 import cn from 'classnames'
 
 import PropTypes from 'prop-types'
@@ -6,56 +6,56 @@ import PropTypes from 'prop-types'
 import * as CustomPropTypes from './util/PropTypes'
 import { dataText, dataValue } from './util/dataHelpers'
 
-class DropdownListInput extends React.Component {
-  static propTypes = {
-    value: PropTypes.any,
-    placeholder: PropTypes.string,
-    name: PropTypes.string,
-    autoComplete: PropTypes.string,
-    textField: CustomPropTypes.accessor,
-    valueComponent: CustomPropTypes.elementType,
-    onAutofill: PropTypes.func.isRequired,
-    onAutofillChange: PropTypes.func.isRequired,
-  }
-  state = {
-    autofilling: false,
-  }
+const propTypes = {
+  value: PropTypes.any,
+  placeholder: PropTypes.string,
+  name: PropTypes.string,
+  autoComplete: PropTypes.string,
+  textField: CustomPropTypes.accessor,
+  valueComponent: CustomPropTypes.elementType,
+  onAutofill: PropTypes.func.isRequired,
+  onAutofillChange: PropTypes.func.isRequired,
+}
 
-  search = React.createRef()
-  value = React.createRef()
-
-  handleAutofillDetect = ({ animationName }) => {
-    let autofilling
-
-    if (animationName === 'react-widgets-autofill-start') autofilling = true
-    else if (animationName === 'react-widgets-autofill-cancel')
-      autofilling = false
-    else return
-
-    this.setState({ autofilling })
-    this.props.onAutofill(autofilling)
-  }
-
-  handleAutofill = e => {
-    this.setState({ autofilling: false })
-    this.props.onAutofillChange(e)
-  }
-
-  focus() {
-    if (this.props.allowSearch) this.search.current?.focus()
-    else this.value.current?.focus()
-  }
-
-  renderInput() {
-    let {
-      placeholder,
+const DropdownListInput = React.forwardRef(
+  (
+    {
+      name,
+      autoComplete,
       value,
+      allowSearch,
+      placeholder,
       textField,
       searchTerm,
       onSearch,
-      allowSearch,
+      onAutofill,
+      onAutofillChange,
       valueComponent: Component,
-    } = this.props
+    },
+    ref,
+  ) => {
+    const [autofilling, setAutofilling] = useState(false)
+
+    const searchRef = useRef()
+
+    const handleAutofillDetect = ({ animationName }) => {
+      let autofilling
+
+      if (animationName === 'react-widgets-autofill-start') autofilling = true
+      else if (animationName === 'react-widgets-autofill-cancel')
+        autofilling = false
+      else return
+
+      setAutofilling(autofilling)
+      onAutofill(autofilling)
+    }
+
+    const handleAutofill = e => {
+      setAutofilling(false)
+      onAutofillChange(e)
+    }
+
+    let strValue = dataValue(value)
 
     const inputValue =
       !value && placeholder ? (
@@ -66,53 +66,49 @@ class DropdownListInput extends React.Component {
         dataText(value, textField)
       )
 
-    return (
-      <React.Fragment>
-        {allowSearch && (
-          <input
-            ref={this.search}
-            className="rw-dropdown-list-search"
-            value={searchTerm || ''}
-            size={(searchTerm || '').length + 2}
-            onChange={onSearch}
-          />
-        )}
-        {!searchTerm && inputValue}
-      </React.Fragment>
-    )
-  }
-
-  renderAutofill() {
-    let { name, autoComplete, value, textField } = this.props
-    let strValue = dataValue(value, textField)
-
-    return (
-      <input
-        tabIndex="-1"
-        name={name}
-        value={strValue == null ? '' : strValue}
-        autoComplete={autoComplete}
-        onChange={this.handleAutofill}
-        onAnimationStart={this.handleAutofillDetect}
-        className={cn(
-          'rw-dropdown-list-search rw-detect-autofill',
-          !this.state.autofilling && 'rw-sr'
-        )}
-      />
-    )
-  }
-
-  render() {
-    let { autoComplete } = this.props
-    const { autofilling } = this.state
+    useImperativeHandle(ref, () => ({
+      focus() {
+        searchRef.current?.focus()
+      },
+    }))
 
     return (
       <div className="rw-input rw-dropdown-list-input">
-        {autoComplete !== 'off' && this.renderAutofill()}
+        {autoComplete !== 'off' && (
+          <input
+            tabIndex="-1"
+            name={name}
+            value={strValue == null ? '' : strValue}
+            autoComplete={autoComplete}
+            onChange={handleAutofill}
+            onAnimationStart={handleAutofillDetect}
+            className={cn(
+              'rw-dropdown-list-search rw-detect-autofill',
+              !autofilling && 'rw-sr',
+            )}
+          />
+        )}
 
-        {!autofilling && autoComplete !== 'off' && this.renderInput()}
+        {!autofilling && autoComplete !== 'off' && (
+          <>
+            {allowSearch && (
+              <input
+                ref={searchRef}
+                className="rw-dropdown-list-search"
+                value={searchTerm || ''}
+                size={(searchTerm || '').length + 2}
+                onChange={onSearch}
+              />
+            )}
+            {!searchTerm && inputValue}
+          </>
+        )}
       </div>
     )
-  }
-}
+  },
+)
+
+DropdownListInput.displayName = 'DropdownListInput'
+DropdownListInput.propTypes = propTypes
+
 export default DropdownListInput

@@ -4,6 +4,7 @@
   top: 100%;
   left: -$popup-box-shadow-offset;
   right: -$popup-box-shadow-offset;
+  padding: 0 $popup-box-shadow-offset;
 
   &.rw-dropup {
     top: auto;
@@ -19,7 +20,7 @@
   // the offsets allows for drop shadow to not be clipped by the container
   width: 100%;
   margin-bottom: $popup-box-shadow-offset;
-  padding: 0 $popup-box-shadow-offset;
+  // margin: 0 $popup-box-shadow-offset;
 
   .rw-dropup > & {
     margin-bottom: 0;

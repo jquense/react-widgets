@@ -8,7 +8,6 @@ import { chunk } from './util/_'
 
 function YearView({
   focusedItem,
-  activeId,
   disabled,
   onChange,
   value,
@@ -21,12 +20,7 @@ function YearView({
   let months = dates.monthsInYear(dates.year(focusedItem))
 
   return (
-    <CalendarView
-      {...props}
-      onChange={onChange}
-      focusedItem={focusedItem}
-      activeId={activeId}
-    >
+    <CalendarView {...props} onChange={onChange} focusedItem={focusedItem}>
       <CalendarView.Body>
         {chunk(months, 4).map((row, rowIdx) => (
           <CalendarView.Row key={rowIdx}>
@@ -36,7 +30,6 @@ function YearView({
               return (
                 <CalendarView.Cell
                   key={colIdx}
-                  activeId={activeId}
                   label={label}
                   date={date}
                   now={today}
@@ -60,7 +53,6 @@ function YearView({
 }
 
 YearView.propTypes = {
-  activeId: PropTypes.string,
   today: PropTypes.instanceOf(Date),
   value: PropTypes.instanceOf(Date),
   focusedItem: PropTypes.instanceOf(Date),

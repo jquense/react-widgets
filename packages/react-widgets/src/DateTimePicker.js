@@ -1,11 +1,11 @@
 import invariant from 'invariant'
 import PropTypes from 'prop-types'
-import React from 'react'
-import { findDOMNode } from 'react-dom'
+import React, { useRef } from 'react'
 
+import useUncontrollable from 'uncontrollable/hook'
 import cn from 'classnames'
-import tabTrap from './util/tabTrap'
-import uncontrollable from 'uncontrollable'
+
+import useTabTrap from './util/tabTrap'
 
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
@@ -17,22 +17,19 @@ import TimeInput from './TimeInput'
 import Select from './Select'
 // import TimeList from './TimeList'
 
-import * as Props from './util/Props'
 import * as CustomPropTypes from './util/PropTypes'
-import focusManager from './util/focusManager'
-import scrollManager from './util/scrollManager'
-import { widgetEditable } from './util/interaction'
 import LocalizationProvider from './LocalizationProvider'
+import { createEditableCallback } from './util/interaction'
+import useFocusManager from './util/useFocusManager'
+
 import dates from './util/dates'
-import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
+import {
+  useInstanceId,
+  notify,
+  useFirstFocusedRender,
+} from './util/widgetHelpers'
 import { calendar, clock } from './Icon'
-
-let NEXT_VIEW = {
-  date: 'time',
-  time: 'date',
-}
-
-let isBothOrNeither = (a, b) => (a && b) || (!a && !b)
+import { useDropodownToggle } from './util/hooks'
 
 let propTypes = {
   /**
@@ -113,14 +110,9 @@ let propTypes = {
   }),
 
   /**
-   * Enable the calendar component of the picker.
-   */
-  date: PropTypes.bool,
-
-  /**
    * Enable the time list component of the picker.
    */
-  time: PropTypes.bool,
+  includeTime: PropTypes.bool,
 
   timePrecision: PropTypes.oneOf(['minutes', 'seconds', 'milliseconds'])
     .isRequired,
@@ -186,6 +178,18 @@ let propTypes = {
   }),
 }
 
+const defaultProps = {
+  ...Calendar.defaultProps,
+  value: null,
+  min: new Date(1900, 0, 1),
+  max: new Date(2099, 11, 31),
+  includeTime: true,
+  open: false,
+  dateIcon: calendar,
+  timeIcon: clock,
+  formats: {},
+}
+
 /**
  * ---
  * subtitle: DatePicker, TimePicker
@@ -204,53 +208,82 @@ let propTypes = {
  * @public
  * @extends Calendar
  */
-class DateTimePicker extends React.Component {
-  static displayName = 'DateTimePicker'
+function DateTimePicker(uncontrolledProps) {
+  const {
+    id,
+    value,
+    onChange,
+    onSelect,
+    onToggle,
+    onKeyDown,
+    onKeyPress,
+    onCurrentDateChange,
+    inputProps,
+    calendarProps,
+    timeInputProps,
+    autoFocus,
+    tabIndex,
+    disabled,
+    readOnly,
+    className,
+    containerClassName,
+    name,
 
-  static propTypes = propTypes
+    dateIcon,
+    placeholder,
+    includeTime,
+    min,
+    max,
+    isRtl,
+    open,
+    dropUp,
+    messages,
+    formats,
+    currentDate,
+    popupTransition,
+    timePrecision,
+    'aria-labelledby': ariaLabelledby,
+    'aria-describedby': ariaDescribedby,
+    ...elementProps
+  } = useUncontrollable(uncontrolledProps, {
+    open: 'onToggle',
+    value: 'onChange',
+    currentDate: 'onCurrentDateChange',
+  })
+  const localizer = LocalizationProvider.useLocalizer(messages, formats)
 
-  static defaultProps = {
-    ...Calendar.ControlledComponent.defaultProps,
-    value: null,
-    min: new Date(1900, 0, 1),
-    max: new Date(2099, 11, 31),
-    date: true,
-    time: true,
-    open: false,
-    dateIcon: calendar,
-    timeIcon: clock,
-    formats: {},
-  }
+  const ref = useRef()
+  const calRef = useRef()
 
-  constructor(...args) {
-    super(...args)
+  const tabTrap = useTabTrap(calRef)
 
-    this.inputId = instanceId(this, '_input')
-    this.dateId = instanceId(this, '_date')
-    this.listId = instanceId(this, '_listbox')
-    this.activeCalendarId = instanceId(this, '_calendar_active_cell')
-    this.activeOptionId = instanceId(this, '_listbox_active_option')
+  const inputId = useInstanceId(id, '_input')
+  const dateId = useInstanceId(id, '_date')
+  const activeCalendarId = useInstanceId(id, '_calendar_active_cell')
 
-    this.handleScroll = scrollManager(this)
-    this.focusManager = focusManager(this, {
-      didHandle: focused => {
-        if (!focused) {
-          this.close()
-          this.tabTrap.stop()
-        }
-      },
-    })
+  const currentFormat = includeTime ? 'datetime' : 'date'
 
-    this.state = {
-      focused: false,
-    }
-  }
+  const toggle = useDropodownToggle(open, onToggle)
 
-  @widgetEditable
-  handleChange = (date, str, constrain) => {
-    let { onChange, value } = this.props
+  const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
+    didHandle(focused) {
+      if (!focused) {
+        toggle.close()
+        tabTrap.stop()
+      } else if (open) {
+        tabTrap.focus()
+      }
+    },
+  })
 
-    if (constrain) date = this.inRangeValue(date)
+  /**
+   * Handlers
+   */
+  const useEditableCallback = createEditableCallback(disabled || readOnly, ref)
+
+  // @widgetEditable
+  const handleChange = useEditableCallback((date, str, constrain) => {
+    if (constrain) date = inRangeValue(date)
 
     if (onChange) {
       if (date == null || value == null) {
@@ -262,268 +295,80 @@ class DateTimePicker extends React.Component {
         onChange(date, str)
       }
     }
-  }
+  })
 
-  @widgetEditable
-  handleKeyDown = e => {
-    let { open, onKeyDown } = this.props
-
+  // @widgetEditable
+  const handleKeyDown = useEditableCallback(e => {
     notify(onKeyDown, [e])
 
     if (e.defaultPrevented) return
 
-    if (e.key === 'Escape' && open) this.close()
-    else if (e.altKey) {
+    if (e.key === 'Escape' && open) {
+      toggle.close()
+    } else if (e.altKey) {
       if (e.key === 'ArrowDown') {
         e.preventDefault()
-        this.open()
+        toggle.open()
       } else if (e.key === 'ArrowUp') {
         e.preventDefault()
-        this.close()
+        toggle.close()
       }
     }
-  }
+  })
 
-  @widgetEditable
-  handleKeyPress = e => {
-    notify(this.props.onKeyPress, [e])
+  // @widgetEditable
+  const handleKeyPress = useEditableCallback(e => {
+    notify(onKeyPress, [e])
 
     if (e.defaultPrevented) return
-  }
+  })
 
-  @widgetEditable
-  handleDateSelect = date => {
-    const { value, time, currentDate, onSelect } = this.props
+  // @widgetEditable
+  const handleDateSelect = useEditableCallback(date => {
     let dateTime = dates.merge(date, value, currentDate)
-    let dateStr = this.formatDate(date)
+    let dateStr = formatDate(date)
 
-    !time && this.close()
+    !includeTime && toggle.close()
     notify(onSelect, [dateTime, dateStr])
-    this.handleChange(dateTime, dateStr, true)
-    this.focus()
-  }
+    handleChange(dateTime, dateStr, true)
+    toggle.focus()
+  })
 
-  @widgetEditable
-  handleTimeChange = date => {
-    this.handleChange(date, this.formatDate(date), true)
-  }
+  // @widgetEditable
+  const handleTimeChange = useEditableCallback(date => {
+    handleChange(date, formatDate(date), true)
+  })
 
-  @widgetEditable
-  handleCalendarClick = () => {
+  // @widgetEditable
+  const handleCalendarClick = useEditableCallback(() => {
     // this.focus()
-    this.toggle()
-  }
+    toggle()
+  })
 
-  handleOpening = () => {
-    this.tabTrap.start()
+  const handleOpening = () => {
+    tabTrap.start()
     requestAnimationFrame(() => {
-      this.calRef?.focus()
+      tabTrap.focus()
     })
   }
 
-  handleClosing = () => {
-    this.tabTrap.stop()
-    this.state.focused && this.focus()
+  const handleClosing = () => {
+    tabTrap.stop()
+    focused && focus()
   }
 
-  attachCalRef = ref => {
-    this.calRef = ref
+  /**
+   * Methods
+   */
 
-    if (ref === null) this.tabTrap?.stop()
-    else this.tabTrap = tabTrap(findDOMNode(ref)?.parentNode)
+  function focus() {
+    if (open) calRef?.focus()
+    else ref?.focus()
   }
 
-  attachInputRef = ref => (this.inputRef = ref)
-
-  renderInput(owns) {
-    let {
-      open,
-      value,
-      formats,
-      localizer,
-      placeholder,
-      disabled,
-      readOnly,
-      name,
-      tabIndex,
-      autoFocus,
-      inputProps,
-      'aria-labelledby': ariaLabelledby,
-      'aria-describedby': ariaDescribedby,
-    } = this.props
-
-    let { focused } = this.state
-    let inputReadOnly = inputProps ? inputProps.readOnly : null
-
-    let activeId = null
-    if (open) {
-      activeId = this.activeCalendarId
-    }
-
-    return (
-      <DateTimePickerInput
-        {...inputProps}
-        id={this.inputId}
-        ref={this.attachInputRef}
-        role="combobox"
-        name={name}
-        value={value}
-        tabIndex={tabIndex}
-        autoFocus={autoFocus}
-        placeholder={placeholder}
-        disabled={disabled}
-        readOnly={inputReadOnly != null ? inputReadOnly : readOnly}
-        format={this.getValueFormat()}
-        editFormat={formats.editFormat}
-        editing={focused}
-        localizer={localizer}
-        parse={this.parse}
-        onChange={this.handleChange}
-        aria-haspopup
-        aria-activedescendant={activeId}
-        aria-labelledby={ariaLabelledby}
-        aria-describedby={ariaDescribedby}
-        aria-expanded={!!open}
-        aria-owns={owns}
-      />
-    )
-  }
-
-  renderButtons() {
-    let { date, dateIcon, time, disabled, readOnly, localizer } = this.props
-
-    if (!date && !time) {
-      return null
-    }
-    return (
-      <Select bordered>
-        {(date || time) && (
-          <Button
-            icon={dateIcon}
-            label={localizer.messages.dateButton()}
-            disabled={disabled || readOnly}
-            onClick={this.handleCalendarClick}
-          />
-        )}
-      </Select>
-    )
-  }
-
-  renderCalendar() {
-    let { activeCalendarId, inputId, dateId } = this
-    let {
-      open,
-      value,
-      popupTransition,
-      dropUp,
-      onCurrentDateChange,
-      currentDate,
-      min,
-      max,
-      time,
-      timePrecision,
-      calendarProps,
-      timeInputProps,
-    } = this.props
-
-    return (
-      <Popup
-        dropUp={dropUp}
-        open={open}
-        role="dialog"
-        className="rw-calendar-popup"
-        transition={popupTransition}
-        onEntering={this.handleOpening}
-        onExited={this.handleClosing}
-      >
-        <div ref={this.attachCalRef}>
-          <Calendar
-            id={dateId}
-            min={min}
-            max={max}
-            {...calendarProps}
-            activeId={activeCalendarId}
-            tabIndex="-1"
-            value={value}
-            autoFocus={false}
-            onChange={this.handleDateSelect}
-            currentDate={currentDate}
-            onCurrentDateChange={onCurrentDateChange}
-            aria-hidden={!open}
-            aria-live="polite"
-            aria-labelledby={inputId}
-          />
-          {time && (
-            <TimeInput
-              {...timeInputProps}
-              value={value}
-              precision={timePrecision}
-              onChange={this.handleTimeChange}
-              datePart={this.props.currentDate}
-            />
-          )}
-        </div>
-      </Popup>
-    )
-  }
-
-  render() {
-    let {
-      className,
-      date,
-      time,
-      open,
-      disabled,
-      readOnly,
-      dropUp,
-      containerClassName,
-    } = this.props
-
-    let { focused } = this.state
-
-    let elementProps = Props.pickElementProps(this)
-    let shouldRenderList = isFirstFocusedRender(this)
-
-    let owns = ''
-    if (date) owns += this.dateId
-    if (time) owns += ' ' + this.listId
-
-    return (
-      <Widget
-        {...elementProps}
-        open={!!open}
-        dropUp={dropUp}
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
-        onKeyDown={this.handleKeyDown}
-        onKeyPress={this.handleKeyPress}
-        onBlur={this.focusManager.handleBlur}
-        onFocus={this.focusManager.handleFocus}
-        className={cn(className, 'rw-datetime-picker')}
-      >
-        <WidgetPicker className={containerClassName}>
-          {this.renderInput(owns.trim())}
-
-          {this.renderButtons()}
-        </WidgetPicker>
-
-        {!!(shouldRenderList && (date || time)) && this.renderCalendar()}
-      </Widget>
-    )
-  }
-
-  focus() {
-    if (this.props.open) this.calRef?.focus()
-    else this.inputRef?.focus()
-  }
-
-  parse = string => {
-    const { parse, formats, localizer } = this.props
-    const format = this.getValueFormat()
-
+  const parse = string => {
     invariant(
-      parse || format || formats.editValue,
+      parse || currentFormat || formats.editValue,
       'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
         'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
         'please provide either a parse function or localizer compatible `format` prop',
@@ -531,7 +376,7 @@ class DateTimePicker extends React.Component {
     )
 
     let date
-    let checkFormats = [format, formats.editValue]
+    let checkFormats = [currentFormat, formats.editValue]
 
     if (typeof parse == 'function') {
       date = parse(string)
@@ -548,53 +393,116 @@ class DateTimePicker extends React.Component {
     return null
   }
 
-  toggle() {
-    const { open } = this.props
-
-    if (!open) this.open()
-    else this.close()
-  }
-
-  open() {
-    const { open, onToggle } = this.props
-
-    if (!open) notify(onToggle, true)
-  }
-
-  close() {
-    if (this.props.open) notify(this.props.onToggle, false)
-  }
-
-  inRangeValue(value) {
+  function inRangeValue(value) {
     if (value == null) return value
 
-    return dates.max(dates.min(value, this.props.max), this.props.min)
+    return dates.max(dates.min(value, max), min)
   }
 
-  formatDate(date) {
+  function formatDate(date) {
     return date instanceof Date && !isNaN(date.getTime())
-      ? this.props.localizer.formatDate(date, this.getValueFormat())
+      ? localizer.formatDate(date, currentFormat)
       : ''
   }
 
-  getValueFormat() {
-    const { date, time } = this.props
-    let isDate = date != null ? date : true
-    let isTime = time != null ? time : true
+  let shouldRenderList = useFirstFocusedRender(focused, open)
 
-    return (isDate && isTime) || (!isDate && !isTime)
-      ? 'datetime'
-      : isDate
-      ? 'date'
-      : 'time'
-  }
+  let inputReadOnly =
+    inputProps?.readOnly != null ? inputProps?.readOnly : readOnly
+  return (
+    <Widget
+      {...elementProps}
+      open={!!open}
+      dropUp={dropUp}
+      focused={focused}
+      disabled={disabled}
+      readOnly={readOnly}
+      onKeyDown={handleKeyDown}
+      onKeyPress={handleKeyPress}
+      {...focusEvents}
+      className={cn(className, 'rw-datetime-picker')}
+    >
+      <WidgetPicker className={containerClassName}>
+        <DateTimePickerInput
+          {...inputProps}
+          id={inputId}
+          ref={ref}
+          role="combobox"
+          name={name}
+          value={value}
+          tabIndex={tabIndex}
+          autoFocus={autoFocus}
+          placeholder={placeholder}
+          disabled={disabled}
+          readOnly={inputReadOnly}
+          // format={getValueFormat()}
+          editFormat={formats.editFormat}
+          editing={focused}
+          localizer={localizer}
+          parse={parse}
+          onChange={handleChange}
+          aria-haspopup
+          aria-labelledby={ariaLabelledby}
+          aria-describedby={ariaDescribedby}
+          aria-expanded={!!open}
+          aria-owns={dateId}
+        />
+
+        <Select bordered>
+          <Button
+            icon={dateIcon}
+            label={localizer.messages.dateButton()}
+            disabled={disabled || readOnly}
+            onClick={handleCalendarClick}
+          />
+        </Select>
+      </WidgetPicker>
+
+      {!!(shouldRenderList && open) && (
+        <Popup
+          dropUp={dropUp}
+          open={open}
+          role="dialog"
+          className="rw-calendar-popup"
+          transition={popupTransition}
+          onEntering={handleOpening}
+          onExited={handleClosing}
+        >
+          <div ref={calRef} id={dateId}>
+            <Calendar
+              min={min}
+              max={max}
+              {...calendarProps}
+              isRtl={isRtl}
+              activeId={activeCalendarId}
+              tabIndex="-1"
+              value={value}
+              autoFocus={false}
+              onChange={handleDateSelect}
+              currentDate={currentDate}
+              onCurrentDateChange={onCurrentDateChange}
+              aria-hidden={!open}
+              aria-live="polite"
+              aria-labelledby={inputId}
+            />
+            {includeTime && (
+              <TimeInput
+                {...timeInputProps}
+                value={value}
+                precision={timePrecision}
+                onChange={handleTimeChange}
+                datePart={currentDate}
+              />
+            )}
+          </div>
+        </Popup>
+      )}
+    </Widget>
+  )
 }
 
-export default uncontrollable(
-  LocalizationProvider.withLocalizer(DateTimePicker),
-  {
-    open: 'onToggle',
-    value: 'onChange',
-    currentDate: 'onCurrentDateChange',
-  },
-)
+DateTimePicker.displayName = 'DateTimePicker'
+DateTimePicker.propTypes = propTypes
+DateTimePicker.defaultProps = defaultProps
+
+export default DateTimePicker

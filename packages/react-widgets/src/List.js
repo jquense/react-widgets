@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-
+import inDOM from 'dom-helpers/util/inDOM'
 import * as CustomPropTypes from './util/PropTypes'
 import * as Props from './util/Props'
 import { notify } from './util/widgetHelpers'
@@ -10,6 +10,8 @@ import Listbox from './Listbox'
 import ListOption from './ListOption'
 import ListOptionGroup from './ListOptionGroup'
 import { getMessages } from './messages'
+
+const supportsPointerEvents = inDOM && 'PointerEvent' in window
 
 const EMPTY_DATA_STATE = {}
 
@@ -26,6 +28,7 @@ const propTypes = {
 
   onSelect: PropTypes.func,
   onMove: PropTypes.func,
+  onHoverOption: PropTypes.func,
 
   activeId: PropTypes.string,
 
@@ -76,7 +79,7 @@ class List extends React.Component {
 
       return items.concat(
         fn(key, idx, true),
-        group.map(item => fn(item, ++idx, false))
+        group.map(item => fn(item, ++idx, false)),
       )
     }, [])
   }
@@ -127,13 +130,25 @@ class List extends React.Component {
       onSelect,
       isDisabled,
       searchTerm,
+      onHoverOption,
       optionComponent: Option,
     } = this.props
 
     let isFocused = focusedItem === item
+    let hover = supportsPointerEvents
+      ? {
+          onPointerEnter(e) {
+            e.isPrimary && onHoverOption(item)
+          },
+        }
+      : {
+          onTouchMove: () => onHoverOption(item),
+          onMouseEnter: () => onHoverOption(item),
+        }
 
     return (
       <Option
+        {...hover}
         dataItem={item}
         key={'item_' + index}
         index={index}
@@ -149,7 +164,7 @@ class List extends React.Component {
   }
 
   render() {
-    let { className, messages } = this.props
+    let { className, messages, onHoverOption: _ } = this.props
 
     let elementProps = Props.pickElementProps(this)
     let { emptyList } = getMessages(messages)

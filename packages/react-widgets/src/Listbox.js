@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 
-import { instanceId } from './util/widgetHelpers'
+import { useInstanceId } from './util/widgetHelpers'
 
 const propTypes = {
   className: PropTypes.string,
@@ -11,21 +11,14 @@ const propTypes = {
   emptyListMessage: PropTypes.node,
 }
 
-class Listbox extends React.Component {
-  render() {
-    let {
-      className,
-      role,
-      children,
-      emptyListMessage,
-      nodeRef,
-      ...props
-    } = this.props
-    let id = instanceId(this)
+const Listbox = React.forwardRef(
+  ({ className, role, children, emptyListMessage, nodeRef, ...props }, ref) => {
+    let id = useInstanceId()
 
     return (
       <div
         id={id}
+        ref={ref}
         tabIndex="-1"
         ref={nodeRef}
         className={cn(className, 'rw-list')}
@@ -39,8 +32,10 @@ class Listbox extends React.Component {
         )}
       </div>
     )
-  }
-}
+  },
+)
+
+Listbox.displayName = Listbox
 
 Listbox.propTypes = propTypes
 

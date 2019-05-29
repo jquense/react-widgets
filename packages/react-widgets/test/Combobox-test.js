@@ -1,9 +1,7 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 
 import Combobox from '../src/Combobox'
-
-let ControlledCombobox = Combobox.ControlledComponent
 
 describe('Combobox', function() {
   var dataList = [
@@ -11,7 +9,7 @@ describe('Combobox', function() {
     { label: 'sally smith', id: 1 },
     { label: 'pat doe', id: 2 },
     { label: 'suzy smith', id: 3 },
-  ];
+  ]
 
   it('should set initial values', function() {
     mount(<Combobox value={'hello'} onChange={() => {}} />)
@@ -28,9 +26,8 @@ describe('Combobox', function() {
         valueField="id"
       />,
     )
-    .find('input.rw-input')
-    .tap(c =>
-      expect(c.getDOMNode().value).to.equal('jimmy smith'));
+      .find('input.rw-input')
+      .tap(c => expect(c.getDOMNode().value).to.equal('jimmy smith'))
   })
 
   it('should pass NAME down', function() {
@@ -50,7 +47,7 @@ describe('Combobox', function() {
   it('should open when clicked', () => {
     let openSpy = sinon.spy()
 
-    mount(<ControlledCombobox onToggle={openSpy} />)
+    mount(<Combobox onToggle={openSpy} />)
       .find('button')
       .first()
       .simulate('click')
@@ -62,12 +59,12 @@ describe('Combobox', function() {
   it('should not open when clicked while disabled or readOnly', () => {
     let openSpy = sinon.spy()
 
-    mount(<ControlledCombobox onToggle={openSpy} disabled />)
+    mount(<Combobox onToggle={openSpy} disabled />)
       .find('button')
       .first()
       .simulate('click')
 
-    mount(<ControlledCombobox onToggle={openSpy} readOnly />)
+    mount(<Combobox onToggle={openSpy} readOnly />)
       .find('button')
       .first()
       .simulate('click')
@@ -76,8 +73,8 @@ describe('Combobox', function() {
   })
 
   it('should start closed', () => {
-    let inst = shallow(
-      <ControlledCombobox
+    let inst = mount(
+      <Combobox
         value={dataList[0]}
         data={dataList}
         textField="label"
@@ -89,21 +86,21 @@ describe('Combobox', function() {
     expect(inst.find('Popup').prop('open')).to.not.equal(true)
 
     inst.assertNone('.rw-open')
-    inst.assertSingle(`ComboboxInput[aria-expanded=false]`)
+    inst.assertSingle(`input[aria-expanded=false]`)
   })
 
   it('should toggle add aria when open', () => {
-    let inst = shallow(<ControlledCombobox open />)
+    let inst = mount(<Combobox open />)
 
     expect(inst.prop('open')).to.equal(true)
 
     inst.assertSingle('Popup[open]')
-    inst.assertSingle('ForwardRef(Widget)[open]')
-    inst.assertSingle('ComboboxInput[aria-expanded]')
+    inst.assertSingle('Widget[open]')
+    inst.assertSingle('input[aria-expanded]')
   })
 
   it('should foward props to Popup', () => {
-    let props = shallow(<ControlledCombobox open dropUp />)
+    let props = mount(<Combobox open dropUp />)
       .find('Popup')
       .props()
 
@@ -111,42 +108,28 @@ describe('Combobox', function() {
     expect(props.open).to.equal(true)
   })
 
-  it('should simulate focus/blur events', function(done) {
+  it('should simulate focus/blur events', () => {
     let blur = sinon.spy()
     let focus = sinon.spy()
 
     mount(<Combobox onBlur={blur} onFocus={focus} />)
-      .simulate('focus')
-      .tap(inst => {
-        setTimeout(() => {
-          inst.simulate('blur')
+      .simulateWithTimers('focus')
+      .simulateWithTimers('blur')
 
-          setTimeout(() => {
-            expect(focus.calledOnce).to.equal(true)
-            expect(blur.calledOnce).to.equal(true)
-            done()
-          })
-        })
-      })
+    expect(focus.calledOnce).to.equal(true)
+    expect(blur.calledOnce).to.equal(true)
   })
 
-  it('should not simulate focus/blur events when disabled', function(done) {
+  it('should not simulate focus/blur events when disabled', () => {
     let blur = sinon.spy()
     let focus = sinon.spy()
 
     mount(<Combobox disabled onBlur={blur} onFocus={focus} />)
-      .simulate('focus')
-      .tap(inst => {
-        setTimeout(() => {
-          inst.simulate('blur')
+      .simulateWithTimers('focus')
+      .simulateWithTimers('blur')
 
-          setTimeout(() => {
-            expect(focus.called).to.equal(false)
-            //expect(blur.called).to.equal(false)
-            done()
-          })
-        })
-      })
+    expect(focus.called).to.equal(false)
+    //expect(blur.called).to.equal(false)
   })
 
   it('should simulate key events', function() {
@@ -165,7 +148,7 @@ describe('Combobox', function() {
   })
 
   it('should add correct markup when read-only', () => {
-    let input = mount(<ControlledCombobox readOnly />)
+    let input = mount(<Combobox readOnly />)
       .find('.rw-input')
       .getDOMNode()
 
@@ -174,7 +157,7 @@ describe('Combobox', function() {
   })
 
   it('should add correct markup when disabled', () => {
-    let input = mount(<ControlledCombobox disabled />)
+    let input = mount(<Combobox disabled />)
       .find('.rw-input')
       .getDOMNode()
 
@@ -203,7 +186,7 @@ describe('Combobox', function() {
 
   it('should set id on list', () => {
     expect(
-      shallow(<ControlledCombobox open />)
+      mount(<Combobox open />)
         .find('List')
         .prop('id'),
     ).to.be.a('string')
@@ -212,8 +195,8 @@ describe('Combobox', function() {
   it('should call onChange with event object', () => {
     let change = sinon.spy()
 
-    shallow(
-      <ControlledCombobox
+    mount(
+      <Combobox
         open
         value="bar"
         data={dataList}
@@ -222,7 +205,7 @@ describe('Combobox', function() {
       />,
     )
       .find('List')
-      .simulate('select', null, 'foo')
+      .act(_ => _.prop('onSelect')(null, 'foo'))
 
     expect(change.getCall(0).args[1]).to.eql({
       originalEvent: 'foo',
@@ -230,30 +213,12 @@ describe('Combobox', function() {
     })
   })
 
-  it('should call onChange with event object from keyboard', () => {
-    let change = sinon.spy()
-
-    mount(
-      <ControlledCombobox
-        data={dataList}
-        value={dataList[0]}
-        onChange={change}
-        onToggle={() => {}}
-      />,
-    ).simulate('keyDown', { key: 'ArrowDown' })
-
-    let bonusArgs = change.getCall(0).args[1]
-
-    expect(bonusArgs.originalEvent.type).to.equal('keydown')
-    expect(bonusArgs.lastValue).to.equal(dataList[0])
-  })
-
   it('should call Select handler', function() {
     let change = sinon.spy(),
       onSelect = sinon.spy()
 
-    shallow(
-      <ControlledCombobox
+    mount(
+      <Combobox
         open
         onToggle={() => {}}
         data={dataList}
@@ -262,32 +227,12 @@ describe('Combobox', function() {
       />,
     )
       .find('List')
-      .simulate('select', dataList[1], 'foo')
+      .act(_ => _.prop('onSelect')(dataList[1], 'foo'))
 
     expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
 
     expect(change.calledAfter(onSelect)).to.equal(true)
-  })
-
-  it('should change values on keyDown', function() {
-    function assertChangedWithValue(itemIndex) {
-      return () => {
-        expect(change.calledOnce).to.equal(true)
-        expect(change.calledWith(dataList[itemIndex])).to.equal(true)
-        change.resetHistory()
-      }
-    }
-
-    let change = sinon.spy()
-
-    mount(
-      <Combobox data={dataList} onChange={change} defaultValue={dataList[0]} />,
-    )
-      .simulate('keyDown', { key: 'ArrowDown' })
-      .tap(assertChangedWithValue(1))
-      .simulate('keyDown', { key: 'ArrowUp' })
-      .tap(assertChangedWithValue(0))
   })
 
   it('should navigate list', function() {
@@ -303,99 +248,65 @@ describe('Combobox', function() {
       />,
     )
 
-    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
+    let listItems = inst.find('ListOption > div')
+
+    listItems.first().is('.rw-state-focus')
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(inst.find('List li').at(1).is('.rw-state-focus')).to.equal(true)
+    listItems.at(1).is('.rw-state-focus')
 
     inst.simulate('keyDown', { key: 'ArrowUp' })
-    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
+    listItems.first().is('.rw-state-focus')
 
     inst.simulate('keyDown', { key: 'End' })
-    expect(inst.find('List li').last().is('.rw-state-focus')).to.equal(true)
+    listItems.last().is('.rw-state-focus')
 
     inst.simulate('keyDown', { key: 'Home' })
-    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
-  })
-
-  it('should navigate list when filtered', function(){
-    let change = sinon.spy();
-    let inst = mount(
-      <ControlledCombobox
-        open={true}
-        filter={'contains'}
-        data={dataList}
-        value='smith'
-        textField='label'
-        valueField='id'
-        onChange={change}
-        onToggle={() => {}}
-      />
-    )
-
-    expect(inst.find('List li').length).to.equal(3)
-
-    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
-
-    inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(inst.find('List li').at(1).is('.rw-state-focus')).to.equal(true)
-
-    inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(inst.find('List li').at(2).is('.rw-state-focus')).to.equal(true)
-  })
-
-  it('should refocus to the first option when the focused option is filtered out', function() {
-    let change = sinon.spy();
-    let inst = mount(
-      <ControlledCombobox
-        open={true}
-        filter={'contains'}
-        data={dataList}
-        value='smith'
-        minLength={2}
-        textField='label'
-        valueField='id'
-        onChange={change}
-        onToggle={() => {}}
-      />
-    )
-
-    expect(inst.find('List li').length).to.equal(3)
-
-    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
-    expect(inst.state().focusedItem).to.equal(dataList[0])
-    inst.setProps({
-        value: 'doe',
-    })
-
-    expect(inst.find('List li').length).to.equal(1)
-
-    expect(inst.find('List li').first().is('.rw-state-focus')).to.equal(true)
-    expect(inst.state().focusedItem).to.equal(dataList[2])
+    listItems.first().is('.rw-state-focus')
   })
 
   it('should default focus to the selected value', function() {
-    let change = sinon.spy();
+    let change = sinon.spy()
     let inst = mount(
-      <ControlledCombobox
+      <Combobox
         open={true}
         data={dataList}
         value={dataList[2]}
         minLength={2}
-        textField='label'
-        valueField='id'
+        textField="label"
+        valueField="id"
         onChange={change}
         onToggle={() => {}}
-      />
+      />,
     )
 
-    expect(inst.find('List li').length).to.equal(4)
+    expect(inst.find('ListOption > div').length).to.equal(4)
 
-    expect(inst.find('List li').at(2).is('.rw-state-focus')).to.equal(true)
-    expect(inst.state().focusedItem).to.equal(dataList[2])
+    expect(
+      inst
+        .find('ListOption > div')
+        .at(2)
+        .is('.rw-state-focus'),
+    ).to.equal(true)
+
+    expect(inst.find('List').prop('focusedItem')).to.equal(dataList[2])
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(inst.find('List li').at(2).is('.rw-state-focus')).to.equal(false)
-    expect(inst.find('List li').at(3).is('.rw-state-focus')).to.equal(true)
+
+    expect(
+      inst
+        .update()
+        .find('ListOption > div')
+        .at(2)
+        .is('.rw-state-focus'),
+    ).to.equal(false)
+
+    expect(
+      inst
+        .update()
+        .find('ListOption > div')
+        .at(3)
+        .is('.rw-state-focus'),
+    ).to.equal(true)
   })
 })

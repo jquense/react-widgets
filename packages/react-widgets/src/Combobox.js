@@ -1,27 +1,38 @@
-import React from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import createUncontrolledWidget from 'uncontrollable'
+import useUncontrollable from 'uncontrollable/hook'
 
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
 import List from './List'
 import Popup from './Popup'
 import Select from './Select'
-import ComboboxInput from './ComboboxInput'
-import { getMessages } from './messages'
-import focusManager from './util/focusManager'
-import * as A11y from './util/A11y'
-import reduceToListState from './util/reduceToListState'
-import getAccessors from './util/getAccessors'
+import Input from './Input'
+import { useMessagesWithDefaults } from './messages'
+
+import { useActiveDescendant } from './util/A11y'
 import * as CustomPropTypes from './util/PropTypes'
-import scrollManager from './util/scrollManager'
-import { isShallowEqual } from './util/_'
-import * as Props from './util/Props'
 import * as Filter from './util/Filter'
-import { widgetEditable } from './util/interaction'
-import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 import { caretDown } from './Icon'
+
+import { createEditableCallback } from './util/interaction'
+
+import { useAccessors } from './util/getAccessors'
+import useFocusManager from './util/useFocusManager'
+import useScrollManager from './util/useScrollManager'
+import {
+  useList,
+  useFilteredData,
+  useFocusedItem,
+  useDropodownToggle,
+} from './util/hooks'
+import {
+  useInstanceId,
+  notify,
+  useFirstFocusedRender,
+} from './util/widgetHelpers'
+import useEventCallback from '@restart/hooks/useEventCallback'
 
 let propTypes = {
   ...Filter.propTypes,
@@ -84,6 +95,16 @@ let propTypes = {
   }),
 }
 
+const defaultProps = {
+  data: [],
+  defaultValue: '',
+  defaultOpen: false,
+  filter: true,
+  delay: 500,
+  selectIcon: caretDown,
+  listComponent: List,
+}
+
 /**
  * ---
  * shortcuts:
@@ -101,421 +122,323 @@ let propTypes = {
 
  * @public
  */
-class Combobox extends React.Component {
-  static propTypes = propTypes
-
-  static defaultProps = {
-    data: [],
-    value: '',
-    open: false,
-    suggest: false,
-    filter: false,
-    delay: 500,
-    selectIcon: caretDown,
+function Combobox(uncontrolledProps) {
+  const {
+    id,
+    autoSelectMatches,
+    autoFocus,
+    textField,
+    valueField,
+    open,
+    value,
+    filter,
+    minLength,
+    caseSensitive,
+    isRtl,
+    className,
+    containerClassName,
+    placeholder,
+    busy,
+    disabled,
+    readOnly,
+    selectIcon,
+    busySpinner,
+    dropUp,
+    tabIndex,
+    popupTransition,
+    name,
+    onSelect,
+    onChange,
+    onToggle,
+    onKeyDown,
+    inputProps,
+    listProps,
+    itemComponent,
+    groupComponent,
+    optionComponent,
     listComponent: List,
-  }
+    data: rawData,
+    messages: userMessages,
+    ...elementProps
+  } = useUncontrollable(uncontrolledProps, {
+    open: 'onToggle',
+    value: 'onChange',
+  })
 
-  constructor(props, context) {
-    super(props, context)
+  const ref = useRef()
+  const inputRef = useRef()
+  const listRef = useRef()
 
-    this.inputId = instanceId(this, '_input')
-    this.listId = instanceId(this, '_listbox')
-    this.activeId = instanceId(this, '_listbox_active_option')
+  const [suggestion, setSuggestion] = useState(null)
+  const shouldFilter = useRef(false)
 
-    this.handleScroll = scrollManager(this)
-    this.focusManager = focusManager(this, {
-      willHandle: this.handleFocusWillChange,
-      didHandle: this.handleFocusChanged,
-    })
+  const inputId = useInstanceId(id, '_input')
+  const listId = useInstanceId(id, '_listbox')
+  const activeId = useInstanceId(id, '_listbox_active_option')
 
-    this.state = {
-      isSuggesting: () => this.inputRef && this.inputRef.isSuggesting(),
-    }
-  }
+  const accessors = useAccessors(textField, valueField)
+  const messages = useMessagesWithDefaults(userMessages)
+  const toggle = useDropodownToggle(open, onToggle)
 
-  shouldComponentUpdate(nextProps, nextState) {
-    let isSuggesting = nextState.isSuggesting(),
-      stateChanged = !isShallowEqual(nextState, this.state),
-      valueChanged = !isShallowEqual(nextProps, this.props)
-
-    return isSuggesting || stateChanged || valueChanged
-  }
-
-  componentDidUpdate(_, { focusedItem }) {
-    const { open } = this.props
-    if (!open || focusedItem !== this.state.focusedItem) {
-      A11y.setActiveDescendant(this.inputRef, this.activeId, open)
-    }
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let { value, data, messages, filter, minLength, caseSensitive } = nextProps
-    const { focusedItem } = prevState
-
-    let accessors = getAccessors(nextProps)
-    const valueChanged = value !== prevState.lastValue
-
-    let selectedIndex = accessors.indexOf(data, value)
-    let dataItem = selectedIndex === -1 ? value : data[selectedIndex]
-
-    let searchTerm
-    // filter only when the value is not an item in the data list
-    if (selectedIndex === -1 || prevState.isSuggesting()) {
-      searchTerm = accessors.text(dataItem)
-    }
-
-    data = Filter.filter(data, {
-      filter,
-      searchTerm,
-      minLength,
-      caseSensitive,
-      textField: accessors.text,
-    })
-
-    const list = reduceToListState(data, prevState.list, { nextProps })
-
-    // index may have changed after filtering
-    if (selectedIndex !== -1) {
-      selectedIndex = accessors.indexOf(data, value)
-    }
-
-    let focusedIndex = accessors.indexOf(data, focusedItem)
-    if (focusedIndex === -1) {
-      // value isn't a dataItem so find the close match
-      focusedIndex = Filter.indexOf(data, {
-        searchTerm,
-        textField: accessors.text,
-        filter: filter || true,
-      })
-    }
-    const selectedItem = data[selectedIndex]
-
-    let nextFocusedItem = null
-    // If no item is focused, or is no longer in the dataset, default to either the selected item, or to the first item in the list
-    if (focusedIndex === -1) {
-      if (selectedItem !== undefined) {
-        nextFocusedItem = selectedItem
+  const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
+    didHandle(focused) {
+      if (!focused) {
+        shouldFilter.current = false
+        toggle.close()
+        setSuggestion(null)
+        setFocusedItem(null)
       } else {
-        nextFocusedItem = data[0]
+        focus()
       }
-    } else {
-      nextFocusedItem = data[focusedIndex]
+    },
+  })
+
+  const data = useFilteredData(
+    value,
+    rawData,
+    filter,
+    shouldFilter.current ? accessors.text(value) : null,
+    minLength,
+    caseSensitive,
+    accessors.text,
+  )
+
+  const selectedItem = useMemo(() => data[accessors.indexOf(data, value)], [
+    data,
+    value,
+    accessors,
+  ])
+
+  const list = useList(data, { nextProps: uncontrolledProps })
+
+  const [focusedItem, setFocusedItem] = useFocusedItem(
+    selectedItem,
+    data,
+    list,
+    null,
+  )
+
+  useActiveDescendant(ref, activeId, open, [focusedItem])
+
+  const isDisabled = disabled === true
+  const isReadOnly = !!readOnly
+
+  /**
+   * Handlers
+   */
+
+  const useEditableCallback = createEditableCallback(
+    isDisabled || isReadOnly,
+    ref,
+  )
+
+  const handleScroll = useScrollManager(ref)
+
+  const handleSelect = useEditableCallback((data, originalEvent) => {
+    toggle.close()
+    shouldFilter.current = false
+
+    setSuggestion(null)
+    notify(onSelect, [data, { originalEvent }])
+    change(data, originalEvent)
+    focus()
+  })
+
+  const handleInputKeyDown = ({ key }) => {
+    if (key === 'Backspace' || key === 'Delete') {
+      setFocusedItem(null)
     }
-
-    return {
-      data,
-      list,
-      accessors,
-      lastValue: value,
-      messages: getMessages(messages),
-      selectedItem: valueChanged
-        ? list.nextEnabled(selectedItem)
-        : prevState.selectedItem,
-      focusedItem:
-        valueChanged || focusedItem === undefined
-          ? list.nextEnabled(
-              selectedItem !== undefined ? selectedItem : nextFocusedItem
-            )
-          : ~data.indexOf(focusedItem)
-          ? focusedItem
-          : data[0],
-    }
   }
 
-  // has to be done early since `accept()` re-focuses the input
-  handleFocusWillChange = focused => {
-    if (!focused && this.inputRef) this.inputRef.accept()
-    if (focused) this.focus()
+  const handleInputChange = event => {
+    let idx = -1
+    if (autoSelectMatches)
+      idx = Filter.indexOf(rawData, {
+        minLength,
+        filter: 'eq',
+        caseSensitive: false,
+        searchTerm: event.target.value,
+        textField: accessors.text,
+      })
+
+    shouldFilter.current = true
+
+    setSuggestion(null)
+
+    change(idx === -1 ? event.target.value : rawData[idx], event)
+    toggle.open()
   }
 
-  handleFocusChanged = focused => {
-    if (!focused) this.close()
-  }
-
-  @widgetEditable
-  handleSelect = (data, originalEvent) => {
-    this.close()
-    notify(this.props.onSelect, [data, { originalEvent }])
-    this.change(data, false, originalEvent)
-    this.inputRef && this.inputRef.accept(true)
-    this.focus()
-  }
-
-  handleInputKeyDown = ({ key }) => {
-    this._deleting = key === 'Backspace' || key === 'Delete'
-    this._isTyping = true
-  }
-
-  handleInputChange = event => {
-    let suggestion = this.suggest(event.target.value)
-
-    this.change(suggestion, true, event)
-    this.open()
-  }
-
-  @widgetEditable
-  handleKeyDown = e => {
-    let { key, altKey } = e
-    let { open, onKeyDown } = this.props
-    let { focusedItem, selectedItem, list } = this.state
+  const handleKeyDown = useEditableCallback(e => {
+    let { key, altKey, shiftKey } = e
 
     notify(onKeyDown, [e])
 
     if (e.defaultPrevented) return
 
-    const select = item => item != null && this.handleSelect(item, e)
-    const focusItem = item => this.setState({ focusedItem: item })
+    const select = item => item != null && handleSelect(item, e)
+    const setFocused = item => {
+      setSuggestion(item)
+      setFocusedItem(item)
+    }
 
-    if (key === 'End' && open) {
+    if (key === 'End' && open && !shiftKey) {
       e.preventDefault()
-      focusItem(list.last())
-    } else if (key === 'Home' && open) {
+      setFocused(list.last())
+    } else if (key === 'Home' && open && !shiftKey) {
       e.preventDefault()
-      focusItem(list.first())
+      setFocused(list.first())
     } else if (key === 'Escape' && open) {
       e.preventDefault()
-      this.close()
+      toggle.close()
     } else if (key === 'Enter' && open) {
       e.preventDefault()
-      select(this.state.focusedItem)
-    } else if (key === 'Tab') {
-      this.inputRef.accept()
+      select(focusedItem)
     } else if (key === 'ArrowDown') {
       e.preventDefault()
-      if (altKey) return this.open()
-
-      if (open) focusItem(list.next(focusedItem))
-      else select(list.next(selectedItem))
+      if (open) {
+        let nextFocusedItem = list.next(focusedItem)
+        setFocused(nextFocusedItem === focusedItem ? null : nextFocusedItem)
+      } else {
+        return toggle.open()
+      }
     } else if (key === 'ArrowUp') {
       e.preventDefault()
-      if (altKey) return this.close()
+      if (altKey) return toggle.close()
 
-      if (open) focusItem(list.prev(focusedItem))
-      else select(list.prev(selectedItem))
+      if (open) {
+        let prevFocusedItem = list.prev(focusedItem)
+        setFocused(prevFocusedItem === focusedItem ? null : prevFocusedItem)
+      }
     }
-  }
-  attachListRef = ref => {
-    this.listRef = ref
-  }
-  attachInputRef = ref => {
-    this.inputRef = ref
-  }
+  })
 
-  renderInput() {
-    let {
-      suggest,
-      filter,
-      busy,
-      name,
-      data,
-      value,
-      autoFocus,
-      tabIndex,
-      placeholder,
-      inputProps,
-      disabled,
-      readOnly,
-      open,
-    } = this.props
-    let { accessors } = this.state
-    let valueItem = accessors.findOrSelf(data, value)
+  // The EventCallback is required b/c Popup blocks updates
+  let handleHoverOption = useEventCallback(item => {
+    if (!open) return
+    setFocusedItem(item)
+  })
 
-    let completeType = suggest
-      ? filter
-        ? 'both'
-        : 'inline'
-      : filter
-      ? 'list'
-      : ''
+  /**
+   * Methods
+   */
 
-    return (
-      <ComboboxInput
-        {...inputProps}
-        role="combobox"
-        name={name}
-        id={this.inputId}
-        autoFocus={autoFocus}
-        tabIndex={tabIndex}
-        suggest={suggest}
-        disabled={disabled === true}
-        readOnly={readOnly === true}
-        aria-busy={!!busy}
-        aria-owns={this.listId}
-        aria-autocomplete={completeType}
-        aria-expanded={open}
-        aria-haspopup={true}
-        placeholder={placeholder}
-        value={accessors.text(valueItem)}
-        onChange={this.handleInputChange}
-        onKeyDown={this.handleInputKeyDown}
-        ref={this.attachInputRef}
-      />
-    )
+  function focus() {
+    inputRef.current?.focus()
   }
 
-  renderList(messages) {
-    let { activeId, inputId, listId } = this
-    let {
-      open,
-      data,
-      value,
-      listProps,
-      optionComponent,
-      itemComponent,
-      groupComponent,
-    } = this.props
-
-    let {
-      list,
-      accessors,
-      focusedItem,
-      selectedItem,
-      data: filteredData,
-    } = this.state
-
-    let List = this.props.listComponent
-
-    return (
-      <List
-        {...listProps}
-        id={listId}
-        activeId={activeId}
-        data={filteredData}
-        dataState={list.dataState}
-        isDisabled={list.isDisabled}
-        textAccessor={accessors.text}
-        valueAccessor={accessors.value}
-        itemComponent={itemComponent}
-        groupComponent={groupComponent}
-        optionComponent={optionComponent}
-        selectedItem={selectedItem}
-        focusedItem={open ? focusedItem : null}
-        searchTerm={accessors.text(value) || ''}
-        aria-hidden={!open}
-        aria-labelledby={inputId}
-        aria-live={open && 'polite'}
-        onSelect={this.handleSelect}
-        onMove={this.handleScroll}
-        ref={this.attachListRef}
-        messages={{
-          emptyList: data.length ? messages.emptyFilter : messages.emptyList,
-        }}
-      />
-    )
-  }
-
-  render() {
-    let {
-      isRtl,
-      className,
-      popupTransition,
-      busy,
-      dropUp,
-      open,
-      selectIcon,
-      busySpinner,
-      containerClassName,
-    } = this.props
-
-    let { focused, messages } = this.state
-
-    let disabled = this.props.disabled === true,
-      readOnly = this.props.readOnly === true
-
-    let elementProps = Props.pickElementProps(this)
-    let shouldRenderPopup = isFirstFocusedRender(this)
-
-    return (
-      <Widget
-        {...elementProps}
-        open={open}
-        isRtl={isRtl}
-        dropUp={dropUp}
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
-        onBlur={this.focusManager.handleBlur}
-        onFocus={this.focusManager.handleFocus}
-        onKeyDown={this.handleKeyDown}
-        className={cn(className, 'rw-combobox')}
-      >
-        <WidgetPicker className={containerClassName}>
-          {this.renderInput()}
-          <Select
-            bordered
-            busy={busy}
-            icon={selectIcon}
-            spinner={busySpinner}
-            onClick={this.toggle}
-            disabled={disabled || readOnly}
-            label={messages.openCombobox(this.props)}
-          />
-        </WidgetPicker>
-
-        {shouldRenderPopup && (
-          <Popup
-            open={open}
-            dropUp={dropUp}
-            transition={popupTransition}
-            onEntering={() => this.listRef.forceUpdate()}
-          >
-            <div>{this.renderList(messages)}</div>
-          </Popup>
-        )}
-      </Widget>
-    )
-  }
-
-  focus() {
-    if (this.inputRef) this.inputRef.focus()
-  }
-
-  change(nextValue, typing, originalEvent) {
-    const { onChange, value: lastValue } = this.props
-    this._typedChange = !!typing
+  function change(nextValue, originalEvent) {
     notify(onChange, [
       nextValue,
       {
-        lastValue,
+        lastValue: value,
         originalEvent,
       },
     ])
   }
 
-  open() {
-    if (!this.props.open) notify(this.props.onToggle, true)
-  }
+  /**
+   * Rendering
+   */
 
-  close() {
-    if (this.props.open) notify(this.props.onToggle, false)
-  }
+  let shouldRenderPopup = useFirstFocusedRender(focused, open)
 
-  @widgetEditable
-  toggle = () => {
-    this.focus()
+  let valueItem = accessors.findOrSelf(data, value)
+  let inputValue = accessors.text(suggestion || valueItem)
 
-    this.props.open ? this.close() : this.open()
-  }
+  let completeType = filter ? 'list' : ''
 
-  suggest(searchTerm) {
-    let { textField, suggest, minLength } = this.props
-    let { data } = this.state
+  return (
+    <Widget
+      {...elementProps}
+      ref={ref}
+      open={open}
+      isRtl={isRtl}
+      dropUp={dropUp}
+      focused={focused}
+      disabled={isDisabled}
+      readOnly={isReadOnly}
+      {...focusEvents}
+      onKeyDown={handleKeyDown}
+      className={cn(className, 'rw-combobox')}
+    >
+      <WidgetPicker className={containerClassName}>
+        <Input
+          {...inputProps}
+          role="combobox"
+          name={name}
+          id={inputId}
+          className={cn(
+            inputProps?.className,
+            'rw-widget-input rw-combobox-input',
+          )}
+          autoFocus={autoFocus}
+          tabIndex={tabIndex}
+          disabled={isDisabled}
+          readOnly={isReadOnly}
+          aria-busy={!!busy}
+          aria-owns={listId}
+          aria-autocomplete={completeType}
+          aria-expanded={open}
+          aria-haspopup={true}
+          placeholder={placeholder}
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleInputKeyDown}
+          ref={inputRef}
+        />
+        <Select
+          bordered
+          busy={busy}
+          icon={selectIcon}
+          spinner={busySpinner}
+          onClick={toggle}
+          disabled={disabled || readOnly}
+          // FIXME
+          label={messages.openCombobox(uncontrolledProps)}
+        />
+      </WidgetPicker>
 
-    if (!this._deleting)
-      return Filter.suggest(data, {
-        minLength,
-        textField,
-        searchTerm,
-        filter: suggest,
-        caseSensitive: false,
-      })
-
-    return searchTerm
-  }
+      {shouldRenderPopup && (
+        <Popup
+          open={open}
+          dropUp={dropUp}
+          transition={popupTransition}
+          onEntering={() => listRef.current.forceUpdate()}
+        >
+          <List
+            {...listProps}
+            id={listId}
+            activeId={activeId}
+            data={data}
+            dataState={list.dataState}
+            isDisabled={list.isDisabled}
+            textAccessor={accessors.text}
+            valueAccessor={accessors.value}
+            itemComponent={itemComponent}
+            groupComponent={groupComponent}
+            optionComponent={optionComponent}
+            selectedItem={selectedItem}
+            focusedItem={open ? focusedItem : null}
+            searchTerm={accessors.text(value) || ''}
+            aria-hidden={!open}
+            aria-labelledby={inputId}
+            aria-live={open && 'polite'}
+            onSelect={handleSelect}
+            onHoverOption={handleHoverOption}
+            onMove={handleScroll}
+            ref={listRef}
+            messages={{
+              emptyList: rawData.length
+                ? messages.emptyFilter
+                : messages.emptyList,
+            }}
+          />
+        </Popup>
+      )}
+    </Widget>
+  )
 }
-
-export default createUncontrolledWidget(
-  Combobox,
-  { open: 'onToggle', value: 'onChange' },
-  ['focus']
-)
+Combobox.propTypes = propTypes
+Combobox.defaultProps = defaultProps
+export default Combobox

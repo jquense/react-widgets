@@ -1,0 +1,26 @@
+.rw-combobox-suggestion {
+  @extend .rw-input-reset;
+
+  position: absolute;
+  background-color: transparent;
+  align-self: center;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  padding-left: $input-btn-padding-x;
+
+  /* ellipsis */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  .rw-rtl & {
+    padding-right: $input-btn-padding-x;
+    padding-left: 0;
+  }
+}
+
+.rw-combobox-input {
+  background-color: transparent;
+  z-index: 1;
+}

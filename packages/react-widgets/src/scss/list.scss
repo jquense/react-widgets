@@ -21,14 +21,14 @@
     );
   }
 
-  &:hover,
-  &:hover.rw-state-focus {
-    @include state-hover(
-      $list-hover-bg,
-      $list-hover-border-color,
-      $list-hover-color
-    );
-  }
+  // &:hover,
+  // &:hover.rw-state-focus {
+  //   @include state-hover(
+  //     $list-hover-bg,
+  //     $list-hover-border-color,
+  //     $list-hover-color
+  //   );
+  // }
 
   &.rw-state-selected {
     @include state-select(

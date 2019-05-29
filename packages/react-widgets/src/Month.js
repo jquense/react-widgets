@@ -6,25 +6,10 @@ import CalendarView from './CalendarView'
 import dates from './util/dates'
 import { chunk } from './util/_'
 
-function renderHeaders(week, localizer) {
-  return week.map(date => {
-    return (
-      <th
-        scope="col"
-        className="rw-head-cell"
-        key={'header_' + dates.weekday(date, undefined, localizer.firstOfWeek)}
-      >
-        {localizer.formatDate(date, 'weekday')}
-      </th>
-    )
-  })
-}
-
 function MonthView({
   className,
   focusedItem,
   today,
-  activeId,
   disabled,
   onChange,
   value,
@@ -41,12 +26,17 @@ function MonthView({
     <CalendarView
       {...props}
       onChange={onChange}
-      activeId={activeId}
       focusedItem={focusedItem}
       className={cn(className, 'rw-calendar-month')}
     >
       <thead className="rw-calendar-head">
-        <tr className="rw-calendar-row">{renderHeaders(rows[0], localizer)}</tr>
+        <tr className="rw-calendar-row">
+          {rows[0].map((date, idx) => (
+            <th scope="col" className="rw-head-cell" key={idx}>
+              {localizer.formatDate(date, 'weekday')}
+            </th>
+          ))}
+        </tr>
       </thead>
       <CalendarView.Body>
         {rows.map((row, rowIdx) => (
@@ -86,7 +76,6 @@ function MonthView({
 }
 
 MonthView.propTypes = {
-  activeId: PropTypes.string,
   today: PropTypes.instanceOf(Date),
   value: PropTypes.instanceOf(Date),
   focusedItem: PropTypes.instanceOf(Date),

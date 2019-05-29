@@ -34,8 +34,7 @@ function parseDuration(node) {
 }
 
 class SlideDownTransition extends React.Component {
-  getHeight() {
-    let container = this.element
+  getHeight(container) {
     let content = container.firstChild
     let margin =
       parseInt(css(content, 'margin-top'), 10) +
@@ -51,7 +50,8 @@ class SlideDownTransition extends React.Component {
   }
 
   setContainerHeight = elem => {
-    elem.style.height = this.getHeight() + 'px'
+    console.log(elem, this.element)
+    elem.style.height = this.getHeight(elem) + 'px'
   }
 
   clearContainerHeight = elem => {
@@ -93,7 +93,7 @@ class SlideDownTransition extends React.Component {
   attachRef = ref => (this.element = ref)
 
   render() {
-    const { children, className, dropUp } = this.props
+    const { children, className, innerClassName, dropUp } = this.props
 
     return (
       <Transition
@@ -110,14 +110,15 @@ class SlideDownTransition extends React.Component {
         {(status, innerProps) => (
           <div
             {...innerProps}
-            ref={this.attachRef}
             className={cn(
               className,
               dropUp && 'rw-dropup',
-              transitionClasses[status]
+              transitionClasses[status],
             )}
           >
-            <div className="rw-popup-transition">{children}</div>
+            <div className={`rw-popup-transition ${innerClassName}`}>
+              {children}
+            </div>
           </div>
         )}
       </Transition>
