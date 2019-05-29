@@ -21,7 +21,7 @@ import { createEditableCallback } from './util/interaction'
 
 function useAutoFocus(autoFocus, ref) {
   useEffect(() => {
-    autoFocus && ref.current.focus()
+    if (autoFocus) ref.current.focus()
   }, [])
 }
 

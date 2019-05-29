@@ -3,7 +3,7 @@ import { mountManager } from 'react-component-managers'
 
 export default function createScrollManager(
   inst,
-  getScrollParent = list => list.parentNode
+  getScrollParent = list => list.parentNode,
 ) {
   let isMounted = mountManager(inst)
   let currentFocused, currentVisible, cancelScroll
@@ -24,7 +24,7 @@ export default function createScrollManager(
     if (shown || (currentVisible && changed)) {
       if (this.props.onMove) this.props.onMove(selected, list, nextFocused)
       else {
-        cancelScroll && cancelScroll()
+        if (cancelScroll) cancelScroll()
         cancelScroll = scrollTo(selected, false && getScrollParent(list))
       }
     }

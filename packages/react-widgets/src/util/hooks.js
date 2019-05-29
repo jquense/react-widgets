@@ -1,9 +1,15 @@
-import { useState, useRef, useMemo } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import reduceToListState from './reduceToListState'
 import { filter } from './Filter'
 import { notify } from './widgetHelpers'
 
 export const CREATE_OPTION = {}
+
+export function useAutoFocus(autoFocus, ref) {
+  useEffect(() => {
+    if (autoFocus) ref.current.focus()
+  }, [])
+}
 
 export function useDropodownToggle(isOpen, onToggle) {
   function open() {
@@ -13,7 +19,8 @@ export function useDropodownToggle(isOpen, onToggle) {
     if (isOpen) notify(onToggle, false)
   }
   function toggle() {
-    isOpen ? close() : open()
+    if (isOpen) close()
+    else open()
   }
 
   toggle.open = open

@@ -1,25 +1,22 @@
-import React from 'react'
-import { findDOMNode } from 'react-dom'
+import React, { useRef, useState, useMemo, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { autoFocus, timeoutManager } from 'react-component-managers'
-import createUncontrolledWidget from 'uncontrollable'
-
+import useUncontrollable from 'uncontrollable/hook'
+import useTimeout from '@restart/hooks/useTimeout'
 import List from './List'
 import Widget from './Widget'
 import SelectListItem from './SelectListItem'
-import { getMessages } from './messages'
 
 import { makeArray } from './util/_'
-import * as Props from './util/Props'
-import * as A11y from './util/A11y'
+import { useActiveDescendant } from './util/A11y'
+import { useMessagesWithDefaults } from './messages'
 import * as CustomPropTypes from './util/PropTypes'
-import reduceToListState from './util/reduceToListState'
-import getAccessors from './util/getAccessors'
-import focusManager from './util/focusManager'
-import scrollManager from './util/scrollManager'
-import { widgetEditable } from './util/interaction'
-import { instanceId, notify } from './util/widgetHelpers'
+import { useAutoFocus, useList } from './util/hooks'
+import { createEditableCallback } from './util/interaction'
+import { useInstanceId, notify } from './util/widgetHelpers'
+import { useAccessors } from './util/getAccessors'
+import useFocusManager from './util/useFocusManager'
+import useScrollManager from './util/useScrollManager'
 
 const BusyMask = () => <span className="rw-loading-mask" />
 
@@ -30,6 +27,67 @@ function getFirstValue(data, values) {
     if (~values.indexOf(data[idx])) return data[idx]
 
   return null
+}
+
+const propTypes = {
+  data: PropTypes.array,
+  value: PropTypes.oneOfType([PropTypes.any, PropTypes.array]),
+  onChange: PropTypes.func,
+
+  /**
+   * A handler called when focus shifts on the SelectList. Internally this is used to ensure the focused item is in view.
+   * If you want to define your own "scrollTo" behavior or just disable the default one specify an `onMove` handler.
+   * The handler is called with the relevant DOM nodes needed to implement scroll behavior: the list element,
+   * the element that is currently focused, and a focused value.
+   *
+   * @type {function(list: HTMLELement, focusedNode: HTMLElement, focusedItem: any)}
+   */
+  onMove: PropTypes.func,
+
+  /**
+   * Whether or not the SelectList allows multiple selection or not. when `false` the SelectList will
+   * render as a list of radio buttons, and checkboxes when `true`.
+   */
+  multiple: PropTypes.bool,
+
+  onKeyDown: PropTypes.func,
+  onKeyPress: PropTypes.func,
+
+  itemComponent: CustomPropTypes.elementType,
+  busySpinner: PropTypes.node,
+  listComponent: CustomPropTypes.elementType,
+
+  groupComponent: CustomPropTypes.elementType,
+  groupBy: CustomPropTypes.accessor,
+
+  valueField: CustomPropTypes.accessor,
+  textField: CustomPropTypes.accessor,
+  busy: PropTypes.bool,
+  delay: PropTypes.number,
+
+  autoFocus: PropTypes.bool,
+  disabled: CustomPropTypes.disabled.acceptsArray,
+  readOnly: CustomPropTypes.disabled,
+
+  listProps: PropTypes.object,
+  tabIndex: PropTypes.any,
+
+  /**
+   * The HTML `name` attribute used to group checkboxes and radio buttons
+   * together.
+   */
+  name: PropTypes.string,
+  isRtl: PropTypes.bool,
+  messages: PropTypes.shape({
+    emptyList: CustomPropTypes.message,
+  }),
+}
+
+const defaultProps = {
+  delay: 250,
+  data: [],
+  busySpinner: <BusyMask />,
+  listComponent: List,
 }
 
 /**
@@ -48,140 +106,98 @@ function getFirstValue(data, values) {
  *
  * @public
  */
-
-class SelectList extends React.Component {
-  static propTypes = {
-    data: PropTypes.array,
-    value: PropTypes.oneOfType([PropTypes.any, PropTypes.array]),
-    onChange: PropTypes.func,
-
-    /**
-     * A handler called when focus shifts on the SelectList. Internally this is used to ensure the focused item is in view.
-     * If you want to define your own "scrollTo" behavior or just disable the default one specify an `onMove` handler.
-     * The handler is called with the relevant DOM nodes needed to implement scroll behavior: the list element,
-     * the element that is currently focused, and a focused value.
-     *
-     * @type {function(list: HTMLELement, focusedNode: HTMLElement, focusedItem: any)}
-     */
-    onMove: PropTypes.func,
-
-    /**
-     * Whether or not the SelectList allows multiple selection or not. when `false` the SelectList will
-     * render as a list of radio buttons, and checkboxes when `true`.
-     */
-    multiple: PropTypes.bool,
-
-    onKeyDown: PropTypes.func,
-    onKeyPress: PropTypes.func,
-
-    itemComponent: CustomPropTypes.elementType,
-    busySpinner: PropTypes.node,
-    listComponent: CustomPropTypes.elementType,
-
-    groupComponent: CustomPropTypes.elementType,
-    groupBy: CustomPropTypes.accessor,
-
-    valueField: CustomPropTypes.accessor,
-    textField: CustomPropTypes.accessor,
-    busy: PropTypes.bool,
-    delay: PropTypes.number,
-
-    autoFocus: PropTypes.bool,
-    disabled: CustomPropTypes.disabled.acceptsArray,
-    readOnly: CustomPropTypes.disabled,
-
-    listProps: PropTypes.object,
-    tabIndex: PropTypes.any,
-
-    /**
-     * The HTML `name` attribute used to group checkboxes and radio buttons
-     * together.
-     */
-    name: PropTypes.string,
-    isRtl: PropTypes.bool,
-    messages: PropTypes.shape({
-      emptyList: CustomPropTypes.message,
-    }),
-  }
-
-  static defaultProps = {
-    delay: 250,
-    value: [],
-    data: [],
-    busySpinner: <BusyMask />,
+const SelectList = React.forwardRef((uncontrolledProps, outerRef) => {
+  const {
+    id,
+    autoFocus,
+    textField,
+    valueField,
+    data,
+    value,
+    delay,
+    multiple,
+    className,
+    busy,
+    disabled,
+    readOnly,
+    busySpinner,
+    tabIndex,
+    name,
+    onChange,
+    onKeyPress,
+    onKeyDown,
+    listProps,
+    itemComponent,
+    groupComponent,
     listComponent: List,
-  }
+    messages: userMessages,
+    ...elementProps
+  } = useUncontrollable(uncontrolledProps, { value: 'onChange' })
 
-  constructor(...args) {
-    super(...args)
-    autoFocus(this)
+  const ref = useRef()
+  const listRef = useRef()
 
-    this.widgetId = instanceId(this, '_widget')
-    this.listId = instanceId(this, '_listbox')
-    this.activeId = instanceId(this, '_listbox_active_option')
-    this.itemName = instanceId(this, '_name')
+  const clickingRef = useRef(false)
+  const searchingRef = useRef('')
 
-    this.timeouts = timeoutManager(this)
-    this.handleScroll = scrollManager(this, false)
-    this.focusManager = focusManager(this, {
-      didHandle: this.handleFocusChanged,
-    })
+  const widgetId = useInstanceId(id, '_widget')
+  const listId = useInstanceId(id, '_listbox')
+  const activeId = useInstanceId(id, '_listbox_active_option')
+  const itemName = useInstanceId(id, '_name')
 
-    this.state = {}
-  }
+  const accessors = useAccessors(textField, valueField)
+  const messages = useMessagesWithDefaults(userMessages)
+  const timeout = useTimeout()
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let { value, data, messages } = nextProps
+  useAutoFocus(autoFocus, ref)
 
-    let accessors = getAccessors(nextProps)
-    let list = reduceToListState(data, prevState.list, { nextProps })
+  const handleScroll = useScrollManager(ref)
 
-    return {
-      list,
-      accessors,
-      messages: getMessages(messages),
-      dataItems: makeArray(value).map(item => accessors.findOrSelf(data, item)),
-    }
-  }
+  const list = useList(data, { nextProps: uncontrolledProps })
 
-  componentDidUpdate(_, { focusedItem }) {
-    const { focused } = this.state
-    if (focused && focusedItem !== this.state.focusedItem) {
-      A11y.setActiveDescendant(this, this.activeId, true)
-    }
-  }
+  const [focusedItem, setFocusedItem] = useState(null)
 
-  handleMouseDown = () => {
-    this._clicking = true
-  }
+  const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
+    didHandle(nextFocused) {
+      // the rigamarole here is to avoid flicker went clicking an item and
+      // gaining focus at the same time.
+      if (nextFocused !== focused) {
+        if (!nextFocused) setFocusedItem(null)
+        else if (nextFocused && !clickingRef.current) {
+          let allowed = Array.isArray(disabled)
+            ? dataItems.filter(v => !accessors.includes(disabled, v))
+            : dataItems
 
-  handleFocusChanged = focused => {
-    let { data, disabled } = this.props
-    let { dataItems, accessors, list } = this.state
-
-    // the rigamarole here is to avoid flicker went clicking an item and
-    // gaining focus at the same time.
-    if (focused !== this.state.focused) {
-      if (!focused) this.setState({ focusedItem: null })
-      else if (focused && !this._clicking) {
-        let allowed = Array.isArray(disabled)
-          ? dataItems.filter(v => !accessors.includes(disabled, v))
-          : dataItems
-
-        this.setState({
-          focusedItem:
+          setFocusedItem(
             getFirstValue(data, allowed) || list.nextEnabled(data[0]),
-        })
+          )
+        }
+        clickingRef.current = false
       }
-      this._clicking = false
-    }
+    },
+  })
+
+  const dataItems = useMemo(
+    () => makeArray(value).map(item => accessors.findOrSelf(data, item)),
+    [data, value, accessors],
+  )
+
+  useActiveDescendant(ref, activeId, true, [focusedItem])
+
+  const isDisabled = disabled === true
+  const isReadOnly = !!readOnly
+
+  const useEditableCallback = createEditableCallback(
+    isDisabled || isReadOnly,
+    ref,
+  )
+
+  const handleMouseDown = () => {
+    clickingRef.current = true
   }
 
-  @widgetEditable
-  handleKeyDown = event => {
-    let { multiple } = this.props
-    let { dataItems, focusedItem, list, accessors } = this.state
-
+  // @widgetEditable
+  const handleKeyDown = useEditableCallback(event => {
     let { keyCode, key, ctrlKey } = event
 
     let change = item => {
@@ -191,60 +207,58 @@ class SelectList extends React.Component {
         ? !accessors.includes(dataItems, item) // toggle value
         : true
 
-      this.handleChange(item, checked, event)
+      handleChange(item, checked, event)
     }
 
-    notify(this.props.onKeyDown, [event])
+    notify(onKeyDown, [event])
 
     if (event.defaultPrevented) return
 
     if (key === 'End') {
       event.preventDefault()
-      focusedItem = list.last()
+      const nextFocusedItem = list.last()
 
-      this.setState({ focusedItem })
+      setFocusedItem(nextFocusedItem)
       if (!multiple) change(focusedItem)
     } else if (key === 'Home') {
       event.preventDefault()
-      focusedItem = list.first()
+      const nextFocusedItem = list.first()
 
-      this.setState({ focusedItem })
+      setFocusedItem(nextFocusedItem)
       if (!multiple) change(focusedItem)
     } else if (key === 'Enter' || key === ' ') {
       event.preventDefault()
       change(focusedItem)
     } else if (key === 'ArrowDown' || key === 'ArrowRight') {
       event.preventDefault()
-      focusedItem = list.next(focusedItem)
+      const nextFocusedItem = list.next(focusedItem)
 
-      this.setState({ focusedItem })
-      if (!multiple) change(focusedItem)
+      setFocusedItem(nextFocusedItem)
+      if (!multiple) change(nextFocusedItem)
     } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
       event.preventDefault()
-      focusedItem = list.prev(focusedItem)
+      const nextFocusedItem = list.prev(focusedItem)
 
-      this.setState({ focusedItem })
-      if (!multiple) change(focusedItem)
+      setFocusedItem(nextFocusedItem)
+      if (!multiple) change(nextFocusedItem)
     } else if (multiple && keyCode === 65 && ctrlKey) {
       event.preventDefault()
-      this.selectAll()
+      selectAll()
     }
-  }
+  })
 
-  @widgetEditable
-  handleKeyPress = event => {
-    notify(this.props.onKeyPress, [event])
+  const handleKeyPress = useEditableCallback(event => {
+    notify(onKeyPress, [event])
 
     if (event.defaultPrevented) return
 
-    this.search(String.fromCharCode(event.which), event)
-  }
+    search(String.fromCharCode(event.which), event)
+  })
 
-  handleChange = (item, checked, originalEvent) => {
-    let { multiple, onChange } = this.props
-    let lastValue = this.state.dataItems
+  const handleChange = (item, checked, originalEvent) => {
+    let lastValue = dataItems
 
-    this.setState({ focusedItem: item })
+    setFocusedItem(item)
 
     if (!multiple)
       return notify(onChange, [
@@ -271,152 +285,120 @@ class SelectList extends React.Component {
     ])
   }
 
-  attachListRef = ref => (this.listRef = ref)
-
-  renderListItem = itemProps => {
-    const { name, multiple, disabled, readOnly } = this.props
-    const { dataItems, accessors } = this.state
-    return (
-      <SelectListItem
-        {...itemProps}
-        name={name || this.itemName}
-        type={multiple ? 'checkbox' : 'radio'}
-        readOnly={disabled === true || readOnly}
-        onChange={this.handleChange}
-        onMouseDown={this.handleMouseDown}
-        checked={accessors.includes(dataItems, itemProps.dataItem)}
-      />
-    )
-  }
-
-  render() {
-    let {
-      className,
-      tabIndex,
-      busy,
-      data,
-      busySpinner,
-      itemComponent,
-      groupComponent,
-      listProps,
-    } = this.props
-
-    let elementProps = Props.pickElementProps(this)
-
-    let { focusedItem, focused, accessors, list, messages } = this.state
-
-    let List = this.props.listComponent
-
-    let disabled = this.props.disabled === true,
-      readOnly = this.props.readOnly === true
-
-    focusedItem = focused && !disabled && !readOnly && focusedItem
-
-    return (
-      <Widget
-        {...elementProps}
-        id={this.widgetId}
-        onBlur={this.focusManager.handleBlur}
-        onFocus={this.focusManager.handleFocus}
-        onKeyDown={this.handleKeyDown}
-        onKeyPress={this.handleKeyPress}
-        focused={focused}
-        disabled={disabled}
-        readOnly={readOnly}
-        role="radiogroup"
-        aria-busy={!!busy}
-        aria-activedescendant={this.activeId}
-        className={cn(
-          className,
-          'rw-select-list',
-          'rw-widget-input',
-          'rw-widget-container'
-        )}
-      >
-        <List
-          {...listProps}
-          role="radiogroup"
-          tabIndex={tabIndex || '0'}
-          id={this.listId}
-          activeId={this.activeId}
-          data={data}
-          dataState={list.dataState}
-          isDisabled={list.isDisabled}
-          textAccessor={accessors.text}
-          valueAccessor={accessors.value}
-          itemComponent={itemComponent}
-          groupComponent={groupComponent}
-          optionComponent={this.renderListItem}
-          focusedItem={focusedItem}
-          onMove={this.handleScroll}
-          messages={{ emptyList: messages.emptyList }}
-          ref={this.attachListRef}
-        />
-
-        {busy && busySpinner}
-      </Widget>
-    )
-  }
-
-  focus() {
-    findDOMNode(this.refs.list).focus()
-  }
-
-  selectAll() {
-    let { accessors } = this
-
-    let { data, disabled, onChange } = this.props
-    let values = this.state.dataItems
-
-    disabled = Array.isArray(disabled) ? disabled : []
+  function selectAll() {
+    const disabledItems = Array.isArray(disabled) ? disabled : []
 
     let disabledValues
     let enabledData = data
 
-    if (disabled.length) {
-      disabledValues = values.filter(v => accessors.includes(disabled, v))
-      enabledData = data.filter(v => !accessors.includes(disabled, v))
+    if (disabledItems.length) {
+      disabledValues = dataItems.filter(v =>
+        accessors.includes(disabledItems, v),
+      )
+      enabledData = data.filter(v => !accessors.includes(disabledItems, v))
     }
 
     let nextValues =
-      values.length >= enabledData.length
-        ? values.filter(v => accessors.includes(disabled, v))
+      dataItems.length >= enabledData.length
+        ? dataItems.filter(v => accessors.includes(disabledItems, v))
         : enabledData.concat(disabledValues)
 
     notify(onChange, [nextValues])
   }
 
-  search(character, originalEvent) {
-    let { _searchTerm, list } = this
+  useImperativeHandle(
+    outerRef,
+    () => ({
+      selectAll,
+      focus() {
+        listRef.current?.focus()
+      },
+    }),
+    [disabled, dataItems, onChange, data],
+  )
 
-    let word = ((_searchTerm || '') + character).toLowerCase()
-    let multiple = this.props.multiple
+  function search(character, originalEvent) {
+    let word = `${searchingRef.current}${character}`.toLowerCase()
 
     if (!multiple) originalEvent.persist()
 
     if (!character) return
 
-    this._searchTerm = word
+    searchingRef.current = word
 
-    this.timeouts.set(
-      'search',
-      () => {
-        let focusedItem = list.next(this.state.focusedItem, word)
+    timeout.set(() => {
+      let nextFocusedItem = list.next(focusedItem, word)
 
-        this._searchTerm = ''
+      searchingRef.current = ''
 
-        if (focusedItem) {
-          !multiple
-            ? this.handleChange(focusedItem, true, originalEvent)
-            : this.setState({ focusedItem })
-        }
-      },
-      this.props.delay
+      if (nextFocusedItem) {
+        if (!multiple) handleChange(nextFocusedItem, true, originalEvent)
+        else setFocusedItem(nextFocusedItem)
+      }
+    }, delay)
+  }
+
+  const renderListItem = itemProps => {
+    return (
+      <SelectListItem
+        {...itemProps}
+        name={name || itemName}
+        type={multiple ? 'checkbox' : 'radio'}
+        readOnly={disabled === true || readOnly}
+        onChange={handleChange}
+        onMouseDown={handleMouseDown}
+        checked={accessors.includes(dataItems, itemProps.dataItem)}
+      />
     )
   }
-}
 
-export default createUncontrolledWidget(SelectList, { value: 'onChange' }, [
-  'selectAll',
-  'focus',
-])
+  return (
+    <Widget
+      {...elementProps}
+      {...focusEvents}
+      id={widgetId}
+      onKeyDown={handleKeyDown}
+      onKeyPress={handleKeyPress}
+      focused={focused}
+      disabled={disabled}
+      readOnly={readOnly}
+      role="radiogroup"
+      aria-busy={!!busy}
+      aria-activedescendant={activeId}
+      ref={ref}
+      className={cn(
+        className,
+        'rw-select-list',
+        'rw-widget-input',
+        'rw-widget-container',
+      )}
+    >
+      <List
+        {...listProps}
+        role="radiogroup"
+        tabIndex={tabIndex || '0'}
+        id={listId}
+        activeId={activeId}
+        data={data}
+        dataState={list.dataState}
+        isDisabled={list.isDisabled}
+        textAccessor={accessors.text}
+        valueAccessor={accessors.value}
+        itemComponent={itemComponent}
+        groupComponent={groupComponent}
+        optionComponent={renderListItem}
+        focusedItem={focused && !disabled && !readOnly && focusedItem}
+        onMove={handleScroll}
+        messages={{ emptyList: messages.emptyList }}
+        ref={listRef}
+      />
+
+      {busy && busySpinner}
+    </Widget>
+  )
+})
+
+SelectList.propTypes = propTypes
+SelectList.defaultProps = defaultProps
+
+export default SelectList

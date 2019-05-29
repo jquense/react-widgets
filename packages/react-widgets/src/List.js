@@ -135,16 +135,18 @@ class List extends React.Component {
     } = this.props
 
     let isFocused = focusedItem === item
-    let hover = supportsPointerEvents
-      ? {
-          onPointerEnter(e) {
-            e.isPrimary && onHoverOption(item)
-          },
-        }
-      : {
-          onTouchMove: () => onHoverOption(item),
-          onMouseEnter: () => onHoverOption(item),
-        }
+    let hover =
+      onHoverOption &&
+      (supportsPointerEvents && onHoverOption
+        ? {
+            onPointerEnter(e) {
+              if (e.isPrimary) onHoverOption(item)
+            },
+          }
+        : {
+            onTouchMove: () => onHoverOption(item),
+            onMouseEnter: () => onHoverOption(item),
+          })
 
     return (
       <Option

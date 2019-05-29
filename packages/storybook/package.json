@@ -10,9 +10,9 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
+    "@4c/layout": "^0.2.0",
     "@storybook/addon-actions": "^5.0.11",
     "@storybook/react": "5.0.11",
-    "@4c/layout": "^0.2.0",
     "babel-core": "bridge",
     "babel-preset-jason": "^6.0.1",
     "chance": "^1.0.18",
@@ -22,7 +22,7 @@
     "css-literal-loader": "^0.5.3",
     "date-fns": "^2.0.0-alpha.16",
     "globalize": "^0.1.1",
-    "lerna": "^3.13.4",
+    "lerna": "^3.14.1",
     "lodash": "^4.17.11",
     "material-ui": "^1.0.0-beta.35",
     "moment": "^2.24.0",
@@ -37,7 +37,7 @@
     "react-widgets-simple-number": "^4.1.16",
     "react-widgets-virtualized": "^4.0.20",
     "rimraf": "^2.6.3",
-    "webpack": "^4.30.0",
+    "webpack": "^4.32.2",
     "webpack-atoms": "^10.0.2"
   },
   "devDependencies": {

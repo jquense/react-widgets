@@ -14,7 +14,7 @@ export default function createFocusManager(inst, options) {
       inst.props.disabled === true || isInDisabledFieldset(inst),
     didHandle(focused, event) {
       let handler = this.props[focused ? 'onFocus' : 'onBlur']
-      handler && handler(event)
+      if (handler) handler(event)
 
       if (didHandle && !event.isWidgetDefaultPrevented)
         didHandle(focused, event)

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState, useEffect } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import useUncontrollable from 'uncontrollable/hook'
@@ -34,6 +34,7 @@ import useFocusManager from './util/useFocusManager'
 import {
   CREATE_OPTION,
   useList,
+  useAutoFocus,
   useFilteredData,
   useFocusedItem,
   useDropodownToggle,
@@ -147,12 +148,6 @@ function useSearchWordBuilder(delay) {
     }, delay)
   }
   return search
-}
-
-function useAutoFocus(autoFocus, ref) {
-  useEffect(() => {
-    autoFocus && ref.current.focus()
-  }, [])
 }
 
 /**
@@ -328,7 +323,7 @@ function DropdownList(uncontrolledProps) {
       clearSearch()
 
       toggle.close()
-      open && setTimeout(focus)
+      if (open) setTimeout(focus)
     }
 
     if (e.defaultPrevented) return
@@ -383,7 +378,9 @@ function DropdownList(uncontrolledProps) {
       }
 
       if (!item) return
-      open ? setFocusedItem(item) : item && change(item, e)
+
+      if (open) setFocusedItem(item)
+      else change(item, e)
     })
   })
 
@@ -432,7 +429,8 @@ function DropdownList(uncontrolledProps) {
   }
 
   function focus() {
-    filter ? filterRef.current.focus() : ref.current.focus()
+    if (filter) filterRef.current.focus()
+    else ref.current.focus()
   }
 
   function clearSearch(originalEvent) {

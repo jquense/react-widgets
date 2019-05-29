@@ -22,7 +22,10 @@ const transitionClasses = {
 
 const propTypes = {
   in: PropTypes.bool.isRequired,
+  innerClassName: PropTypes.string,
   dropUp: PropTypes.bool,
+  onExit: PropTypes.func,
+  onExited: PropTypes.func,
   onEntering: PropTypes.func,
   onEntered: PropTypes.func,
 }
@@ -50,7 +53,6 @@ class SlideDownTransition extends React.Component {
   }
 
   setContainerHeight = elem => {
-    console.log(elem, this.element)
     elem.style.height = this.getHeight(elem) + 'px'
   }
 

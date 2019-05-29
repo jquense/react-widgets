@@ -23,6 +23,7 @@ class SlideTransitionGroup extends React.Component {
 
   static propTypes = {
     direction: DirectionPropType,
+    onTransitionEnd: PropTypes.func,
   }
 
   constructor(...args) {
@@ -50,8 +51,6 @@ class SlideTransitionGroup extends React.Component {
     this.setState({ prevClasses: '', currentClasses: next }, () => {
       let current = this.container.current.lastChild
 
-      this.props.onTransitionStart &&
-        this.props.onTransitionStart(current, hadFocus)
       current.clientHeight // eslint-disable-line
 
       this.setState(
@@ -83,13 +82,7 @@ class SlideTransitionGroup extends React.Component {
   }
 
   render() {
-    let {
-      direction,
-      children,
-      onTransitionEnd: _,
-      onTransitionStart: _0,
-      ...props
-    } = this.props
+    let { direction, children, onTransitionEnd: _, ...props } = this.props
 
     if (!this.isTransitioning) {
       if (this.current.key !== children.key) {

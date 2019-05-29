@@ -1,0 +1,13 @@
+
+parser: babel-eslint
+extends: jason/react
+plugins:
+  - babel
+
+globals:
+  css: false
+rules:
+  global-require: 0
+  quotes: 0
+  no-unused-expressions: 0
+  babel/no-unused-expressions: 2

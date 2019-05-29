@@ -9,15 +9,14 @@ export default function useScrollManager(
 ) {
   let isMounted = useMounted()
   const stateBagRef = useRef({})
-  let currentFocused, currentVisible, cancelScroll
 
   function handleScroll(selected, list, nextFocused) {
     if (!isMounted()) return
 
     const stateBag = stateBagRef.current
 
-    let lastVisible = currentVisible
-    let lastItem = currentFocused
+    let lastVisible = stateBag.currentVisible
+    let lastItem = stateBag.currentFocused
     let shown, changed
 
     stateBag.currentVisible = !(!list.offsetWidth || !list.offsetHeight)
@@ -29,7 +28,7 @@ export default function useScrollManager(
     if (shown || (stateBag.currentVisible && changed)) {
       if (onMove) onMove(selected, list, nextFocused)
       else {
-        stateBag.cancelScroll && stateBag.cancelScroll()
+        if (stateBag.cancelScroll) stateBag.cancelScroll()
         stateBag.cancelScroll = scrollTo(
           selected,
           false && getScrollParent(list),

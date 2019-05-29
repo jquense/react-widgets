@@ -217,7 +217,9 @@ class DurationInput extends React.Component {
   handleClear = () => {
     const { value, onChange } = this.props
     this.hourRef.current?.focus()
-    value ? onChange(null) : this.setState({ timeParts: getValueParts(null) })
+
+    if (value) onChange(null)
+    else this.setState({ timeParts: getValueParts(null) })
   }
 
   handleChange = (part, event) => {
@@ -242,7 +244,7 @@ class DurationInput extends React.Component {
 
   select = (target = document.activeElement) => {
     window.Promise.resolve().then(() => {
-      this.state.focused && select(target)
+      if (this.state.focused) select(target)
     })
   }
 
@@ -317,8 +319,9 @@ class DurationInput extends React.Component {
 
     nextDate.setHours(hours)
     nextDate.setMinutes(minutes)
-    seconds != null && nextDate.setSeconds(seconds)
-    milliseconds != null && nextDate.setMilliseconds(milliseconds)
+
+    if (seconds != null) nextDate.setSeconds(seconds)
+    if (milliseconds != null) nextDate.setMilliseconds(milliseconds)
 
     onChange(nextDate, {
       lastValue: value,

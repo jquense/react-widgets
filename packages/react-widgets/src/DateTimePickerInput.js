@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 
 import Input from './Input'
 import * as CustomPropTypes from './util/PropTypes'
@@ -31,7 +30,7 @@ class DateTimePickerInput extends React.Component {
       value instanceof Date && isValid(value)
         ? localizer.formatDate(
             value,
-            editing && editFormat ? editFormat : format
+            editing && editFormat ? editFormat : format,
           )
         : ''
 

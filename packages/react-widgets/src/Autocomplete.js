@@ -288,7 +288,7 @@ class Autocomplete extends React.Component {
   }
 
   focus() {
-    this.inputRef && this.inputRef.focus()
+    this.inputRef?.focus()
   }
 
   change(nextValue, originalEvent) {
@@ -321,5 +321,5 @@ export default uncontrollable(
     open: 'onToggle',
     value: 'onChange',
   },
-  ['focus']
+  ['focus'],
 )

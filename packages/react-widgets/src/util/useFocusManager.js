@@ -11,13 +11,13 @@ export default function useFocusManager(ref, props, opts = {}) {
   const events = useFocusManagerBase({
     ...opts,
     onChange: focused => {
-      isMounted() && setFocus(focused)
+      if (isMounted()) setFocus(focused)
     },
     isDisabled: () =>
       props.disabled === true || isInDisabledFieldset(ref.current),
     didHandle(focused, event) {
       let handler = props[focused ? 'onFocus' : 'onBlur']
-      handler && handler(event)
+      if (handler) handler(event)
 
       if (opts.didHandle && !event.isWidgetDefaultPrevented)
         opts.didHandle(focused, event)
