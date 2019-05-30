@@ -62,7 +62,6 @@
     "dom-helpers": "^3.4.0",
     "invariant": "^2.2.4",
     "prop-types-extra": "^1.0.1",
-    "react-component-managers": "^3.1.0",
     "react-transition-group": "^4.0.1",
     "uncontrollable": "^6.1.0",
     "warning": "^4.0.3"

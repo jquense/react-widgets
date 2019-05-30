@@ -404,7 +404,7 @@ function Combobox(uncontrolledProps) {
           open={open}
           dropUp={dropUp}
           transition={popupTransition}
-          onEntering={() => listRef.current.forceUpdate()}
+          onEntering={() => listRef.current?.forceUpdate()}
         >
           <List
             {...listProps}

@@ -15,7 +15,6 @@ import useFocusManager from './util/useFocusManager'
 
 import * as CustomPropTypes from './util/PropTypes'
 import dates from './util/dates'
-import { pick } from './util/Props'
 import { useInstanceId, notify } from './util/widgetHelpers'
 import { createEditableCallback } from './util/interaction'
 
@@ -500,7 +499,7 @@ function Calendar(uncontrolledProps) {
   let key = view + '_' + dates[view](currentDate)
 
   // let elementProps = Props.pickElementProps(this),
-  let viewProps = pick(uncontrolledProps, View)
+  // let viewProps = pick(uncontrolledProps, View)
 
   const prevDisabled =
     isDisabled || !dates.inRange(nextDate('LEFT'), min, max, view)
@@ -538,7 +537,7 @@ function Calendar(uncontrolledProps) {
         onTransitionEnd={moveFocus}
       >
         <View
-          {...viewProps}
+          {...uncontrolledProps}
           key={key}
           id={viewId}
           value={value}
@@ -568,7 +567,6 @@ Calendar.defaultProps = {
   max: new Date(2099, 11, 31),
   views: VIEW_OPTIONS,
   tabIndex: '0',
-  footer: true,
 }
 
 Calendar.Transition = SlideTransitionGroup

@@ -37,7 +37,7 @@
   border: $popup-border 1px solid;
   background: $popup-bg;
 
-  & > .rw-list {
+  & .rw-list {
     max-height: $popup-max-height;
   }
 

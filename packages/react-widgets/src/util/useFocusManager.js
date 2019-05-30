@@ -4,7 +4,7 @@ import useFocusManagerBase from '@restart/hooks/useFocusManager'
 
 import { isInDisabledFieldset } from './interaction'
 
-export default function useFocusManager(ref, props, opts = {}) {
+export default function useFocusManager(ref, props = {}, opts = {}) {
   const isMounted = useMounted()
   const [focused, setFocus] = useState(false)
 

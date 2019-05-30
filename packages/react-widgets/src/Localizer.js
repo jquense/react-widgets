@@ -8,7 +8,7 @@ let checkDateFormats
 let checkNumberFormats
 if (process.env.NODE_ENV !== 'production') {
   checkDateFormats = formats => {
-    formats &&
+    if (formats)
       [
         'date',
         'time',
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV !== 'production') {
       )
   }
   checkNumberFormats = formats => {
-    formats &&
+    if (formats)
       ['default'].forEach(f =>
         invariant(f in formats, `localizer missing required format: \`${f}\``),
       )
@@ -39,6 +39,11 @@ export function mergeWithDefaults(localizer, formatOverrides, messages) {
   return {
     ...localizer,
     messages,
+    parseDate: (value, format) =>
+      localizer.parseDate(
+        value,
+        formatOverrides[format] || localizer.dateFormats[format] || format,
+      ),
     formatDate: (value, format) =>
       localizer.formatDate(
         value,

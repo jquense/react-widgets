@@ -10,9 +10,12 @@ const propTypes = {
   value: PropTypes.any,
   placeholder: PropTypes.string,
   name: PropTypes.string,
+  searchTerm: PropTypes.string,
   autoComplete: PropTypes.string,
   textField: CustomPropTypes.accessor,
+  allowSearch: PropTypes.bool,
   valueComponent: CustomPropTypes.elementType,
+  onSearch: PropTypes.func,
   onAutofill: PropTypes.func.isRequired,
   onAutofillChange: PropTypes.func.isRequired,
 }

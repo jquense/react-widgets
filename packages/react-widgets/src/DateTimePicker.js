@@ -1,4 +1,3 @@
-import invariant from 'invariant'
 import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
 
@@ -24,11 +23,11 @@ import useFocusManager from './util/useFocusManager'
 
 import dates from './util/dates'
 import {
-  useInstanceId,
   notify,
+  useInstanceId,
   useFirstFocusedRender,
 } from './util/widgetHelpers'
-import { calendar, clock } from './Icon'
+import { calendar } from './Icon'
 import { useDropodownToggle } from './util/hooks'
 
 let propTypes = {
@@ -41,6 +40,7 @@ let propTypes = {
    * @example ['onChangePicker', [ ['new Date()', null] ]]
    */
   onChange: PropTypes.func,
+
   /**
    * @example ['openDateTime']
    */
@@ -93,14 +93,6 @@ let propTypes = {
     value: CustomPropTypes.dateFormat,
 
     /**
-     * A formatter used by the time dropdown to render times. For more information about formats visit
-     * the [Localization page](/localization).
-     *
-     * @example ['dateFormat', ['time', "{ time: 'medium' }", null, { date: 'false', open: '"time"' }]]
-     */
-    time: CustomPropTypes.dateFormat,
-
-    /**
      * A formatter to be used while the date input has focus. Useful for showing a simpler format for inputing.
      * For more information about formats visit the [Localization page](/localization)
      *
@@ -114,18 +106,15 @@ let propTypes = {
    */
   includeTime: PropTypes.bool,
 
-  timePrecision: PropTypes.oneOf(['minutes', 'seconds', 'milliseconds'])
-    .isRequired,
+  timePrecision: PropTypes.oneOf(['minutes', 'seconds', 'milliseconds']),
 
   timeInputProps: PropTypes.object,
 
   /** Specify the element used to render the calendar dropdown icon. */
-  dateIcon: PropTypes.node,
-
-  /** Specify the element used to render the time list dropdown icon. */
-  timeIcon: PropTypes.node,
+  selectIcon: PropTypes.node,
 
   dropUp: PropTypes.bool,
+
   popupTransition: CustomPropTypes.elementType,
 
   placeholder: PropTypes.string,
@@ -180,13 +169,11 @@ let propTypes = {
 
 const defaultProps = {
   ...Calendar.defaultProps,
-  value: null,
+
   min: new Date(1900, 0, 1),
   max: new Date(2099, 11, 31),
   includeTime: true,
-  open: false,
-  dateIcon: calendar,
-  timeIcon: clock,
+  selectIcon: calendar,
   formats: {},
 }
 
@@ -228,8 +215,7 @@ function DateTimePicker(uncontrolledProps) {
     className,
     containerClassName,
     name,
-
-    dateIcon,
+    selectIcon,
     placeholder,
     includeTime,
     min,
@@ -237,6 +223,7 @@ function DateTimePicker(uncontrolledProps) {
     isRtl,
     open,
     dropUp,
+    parse,
     messages,
     formats,
     currentDate,
@@ -281,7 +268,6 @@ function DateTimePicker(uncontrolledProps) {
    */
   const useEditableCallback = createEditableCallback(disabled || readOnly, ref)
 
-  // @widgetEditable
   const handleChange = useEditableCallback((date, str, constrain) => {
     if (constrain) date = inRangeValue(date)
 
@@ -297,7 +283,6 @@ function DateTimePicker(uncontrolledProps) {
     }
   })
 
-  // @widgetEditable
   const handleKeyDown = useEditableCallback(e => {
     notify(onKeyDown, [e])
 
@@ -316,30 +301,27 @@ function DateTimePicker(uncontrolledProps) {
     }
   })
 
-  // @widgetEditable
   const handleKeyPress = useEditableCallback(e => {
     notify(onKeyPress, [e])
 
     if (e.defaultPrevented) return
   })
 
-  // @widgetEditable
   const handleDateSelect = useEditableCallback(date => {
     let dateTime = dates.merge(date, value, currentDate)
     let dateStr = formatDate(date)
 
-    !includeTime && toggle.close()
+    if (!includeTime) toggle.close()
+
     notify(onSelect, [dateTime, dateStr])
     handleChange(dateTime, dateStr, true)
-    toggle.focus()
+    ref.current?.focus()
   })
 
-  // @widgetEditable
   const handleTimeChange = useEditableCallback(date => {
     handleChange(date, formatDate(date), true)
   })
 
-  // @widgetEditable
   const handleCalendarClick = useEditableCallback(() => {
     // this.focus()
     toggle()
@@ -354,7 +336,7 @@ function DateTimePicker(uncontrolledProps) {
 
   const handleClosing = () => {
     tabTrap.stop()
-    focused && focus()
+    if (focused) focus()
   }
 
   /**
@@ -363,34 +345,7 @@ function DateTimePicker(uncontrolledProps) {
 
   function focus() {
     if (open) calRef?.focus()
-    else ref?.focus()
-  }
-
-  const parse = string => {
-    invariant(
-      parse || currentFormat || formats.editValue,
-      'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
-        'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
-        'please provide either a parse function or localizer compatible `format` prop',
-      string,
-    )
-
-    let date
-    let checkFormats = [currentFormat, formats.editValue]
-
-    if (typeof parse == 'function') {
-      date = parse(string)
-      if (date) return date
-    } else {
-      // parse is a string format or array of string formats
-      checkFormats = checkFormats.concat(parse).filter(Boolean)
-    }
-
-    for (let f of checkFormats) {
-      date = localizer.parseDate(string, f)
-      if (date) return date
-    }
-    return null
+    else ref.current?.focus()
   }
 
   function inRangeValue(value) {
@@ -435,8 +390,8 @@ function DateTimePicker(uncontrolledProps) {
           placeholder={placeholder}
           disabled={disabled}
           readOnly={inputReadOnly}
-          // format={getValueFormat()}
-          editFormat={formats.editFormat}
+          format={currentFormat}
+          editFormat={formats.editValue}
           editing={focused}
           localizer={localizer}
           parse={parse}
@@ -450,7 +405,7 @@ function DateTimePicker(uncontrolledProps) {
 
         <Select bordered>
           <Button
-            icon={dateIcon}
+            icon={selectIcon}
             label={localizer.messages.dateButton()}
             disabled={disabled || readOnly}
             onClick={handleCalendarClick}
@@ -458,7 +413,7 @@ function DateTimePicker(uncontrolledProps) {
         </Select>
       </WidgetPicker>
 
-      {!!(shouldRenderList && open) && (
+      {!!shouldRenderList && (
         <Popup
           dropUp={dropUp}
           open={open}

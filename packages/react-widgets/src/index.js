@@ -4,7 +4,7 @@ import DropdownList from './DropdownList'
 import Combobox from './Combobox'
 import Calendar from './Calendar'
 import DatePicker from './DatePicker'
-import TimePicker from './TimePicker'
+import TimeInput from './TimeInput'
 import DateTimePicker from './DateTimePicker'
 import NumberPicker from './NumberPicker'
 import Multiselect from './Multiselect'
@@ -18,7 +18,7 @@ export {
   Combobox,
   Calendar,
   DatePicker,
-  TimePicker,
+  TimeInput,
   DateTimePicker,
   NumberPicker,
   Multiselect,

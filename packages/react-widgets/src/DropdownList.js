@@ -385,7 +385,13 @@ function DropdownList(uncontrolledProps) {
   })
 
   const handleInputChange = e => {
-    search(e.target.value, e, 'input')
+    // hitting space to open
+    if (!open && !e.target.value.trim()) {
+      e.preventDefault()
+    } else {
+      search(e.target.value, e, 'input')
+    }
+
     toggle.open()
   }
 

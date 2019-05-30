@@ -13,16 +13,22 @@ function clamp(date, min, max) {
 
 const viewPropTypes = {
   focusedItem: PropTypes.any,
+  onKeyDown: PropTypes.func,
+  'aria-labelledby': PropTypes.string,
 }
 
-function CalendarView({ className, focusedItem, ...props }) {
+function CalendarView({
+  className,
+  focusedItem,
+  onKeyDown,
+  children,
+  'aria-labelledby': labelledby,
+}) {
   const ref = useRef(null)
-  const [focusEvents, focused] = useFocusManager(ref, props)
+  const [focusEvents, focused] = useFocusManager(ref)
 
   useEffect(() => {
     const node = ref.current
-    // console.log('FOCUS!', !!node, focused)
-
     if (!node || !focused) return
 
     node.querySelector('.rw-cell[tabindex]').focus()
@@ -30,13 +36,16 @@ function CalendarView({ className, focusedItem, ...props }) {
 
   return (
     <table
-      {...props}
       role="grid"
       ref={ref}
       tabIndex="-1"
       {...focusEvents}
+      onKeyDown={onKeyDown}
+      aria-labelledby={labelledby}
       className={cn(className, 'rw-nav-view', 'rw-calendar-grid')}
-    />
+    >
+      {children}
+    </table>
   )
 }
 

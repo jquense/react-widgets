@@ -1,17 +1,20 @@
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useCallback, useRef, useState } from 'react'
+import useUncontrollable from 'uncontrollable/hook'
+
 import qsa from 'dom-helpers/query/querySelectorAll'
-import uncontrollable from 'uncontrollable'
 
 import dates from './util/dates'
-import focusManager from './util/focusManager'
-import { widgetEditable } from './util/interaction'
+
+import useFocusManager from './util/useFocusManager'
+import { createEditableCallback } from './util/interaction'
+
 import Button from './Button'
 import Widget from './Widget'
 import { times } from './Icon'
 
-const select = el => {
+const selectTextRange = el => {
   if (el.select) return el.select()
   var range = document.createRange()
   range.selectNodeContents(el)
@@ -64,6 +67,7 @@ const TESTS = {
   seconds: /^([0-5]?\d)$/,
   milliseconds: /^(\d{1,3})$/,
 }
+
 const isValid = (value, part, use12HourClock) => {
   if (part === 'hours') part = !use12HourClock ? 'hours' : 'hours12'
   return TESTS[part].test(value)
@@ -103,156 +107,193 @@ const TimePartInput = ({
 )
 /* eslint-enable react/prop-types */
 
-class DurationInput extends React.Component {
-  static propTypes = {
-    value: PropTypes.instanceOf(Date),
-    onChange: PropTypes.func,
+const propTypes = {
+  value: PropTypes.instanceOf(Date),
+  onChange: PropTypes.func,
 
-    /**
-     * The defualt date used to construct a new time when the `value` is empty
-     *
-     * @default new Date()
-     **/
-    datePart: PropTypes.instanceOf(Date),
+  /**
+   * The default date used to construct a new time when the `value` is empty
+   *
+   * @default new Date()
+   **/
+  datePart: PropTypes.instanceOf(Date),
 
-    /**
-     * Use a 12 hour clock (with AM/PM) instead of 24 hour one.
-     * The configured localizer may provide a default value .
-     **/
-    use12HourClock: PropTypes.bool,
+  /**
+   * Use a 12 hour clock (with AM/PM) instead of 24 hour one.
+   * The configured localizer may provide a default value .
+   **/
+  use12HourClock: PropTypes.bool,
 
-    /** Time part values will be padded by `0` */
-    padValues: PropTypes.bool,
+  /** Time part values will be padded by `0` */
+  padValues: PropTypes.bool,
 
-    /** The string character used to pad empty, or cleared values */
-    emptyCharacter: PropTypes.string,
+  /** The string character used to pad empty, or cleared values */
+  emptyCharacter: PropTypes.string,
 
-    /** Hide the input clear button */
-    noClearButton: PropTypes.bool,
+  /** Hide the input clear button */
+  noClearButton: PropTypes.bool,
 
-    disabled: PropTypes.bool,
-    readOnly: PropTypes.bool,
+  disabled: PropTypes.bool,
+  readOnly: PropTypes.bool,
 
-    /** Controls how precise of a time can be input **/
-    precision: PropTypes.oneOf(['minutes', 'seconds', 'milliseconds'])
-      .isRequired,
+  /** Controls how precise of a time can be input **/
+  precision: PropTypes.oneOf(['minutes', 'seconds', 'milliseconds']).isRequired,
 
-    /**
-     * The seperator between hours and minutes
-     * @default ':'
-     */
-    hoursAddon: PropTypes.node.isRequired,
+  /**
+   * The seperator between hours and minutes
+   * @default ':'
+   */
+  hoursAddon: PropTypes.node,
 
-    /**
-     * The seperator between hours and minutes
-     * @default ':'
-     */
-    minutesAddon: PropTypes.node.isRequired,
+  /**
+   * The seperator between hours and minutes
+   * @default ':'
+   */
+  minutesAddon: PropTypes.node,
 
-    /**
-     * The seperator between hours and minutes
-     * @default ':'
-     */
-    secondsAddon: PropTypes.node.isRequired,
+  /**
+   * The seperator between hours and minutes
+   * @default ':'
+   */
+  secondsAddon: PropTypes.node,
 
-    /**
-     * The seperator between hours and minutes
-     * @default '.'
-     */
-    millisecondsAddon: PropTypes.node.isRequired,
+  /**
+   * The seperator between hours and minutes
+   * @default '.'
+   */
+  millisecondsAddon: PropTypes.node,
+}
+
+const defaultProps = {
+  hoursAddon: ':',
+  padValues: true,
+  precision: 'minutes',
+  emptyCharacter: '-',
+}
+
+let count = 0
+function useTimePartState(value, use12HourClock) {
+  const [state, setState] = useState(() => ({
+    value,
+    use12HourClock,
+    timeParts: getValueParts(value, use12HourClock),
+  }))
+
+  const setTimeParts = useCallback(
+    timeParts => setState(s => ({ ...s, timeParts })),
+    [setState],
+  )
+
+  if (state.value !== value || state.use12HourClock !== use12HourClock) {
+    count++
+    if (count < 100)
+      setState({
+        value,
+        use12HourClock,
+        timeParts: getValueParts(value, use12HourClock),
+      })
   }
 
-  static defaultProps = {
-    hoursAddon: ':',
-    padValues: true,
-    precision: 'minutes',
-    emptyCharacter: '-',
-  }
+  return [state.timeParts, setTimeParts]
+}
 
-  state = {}
+function TimeInput(uncontrolledProps) {
+  const {
+    value,
+    use12HourClock,
+    padValues: pad,
+    emptyCharacter,
+    precision,
+    noClearButton,
+    hoursAddon,
+    minutesAddon = precision === 'seconds' || precision === 'milliseconds'
+      ? ':'
+      : '',
+    secondsAddon = precision === 'milliseconds' ? '.' : '',
+    millisecondsAddon,
+    className,
+    disabled,
+    readOnly,
+    datePart,
+    onChange,
+    ...props
+  } = useUncontrollable(uncontrolledProps, { value: 'onChange' })
 
-  width = 34
+  const ref = useRef()
+  const hourRef = useRef()
 
-  ref = React.createRef()
-  secRef = React.createRef()
-  minRef = React.createRef()
-  hourRef = React.createRef()
-
-  focusManager = focusManager(this, {
+  const [focusEvents, focused] = useFocusManager(ref, {
     didHandle: (focused, e) => {
       if (!focused) return
-      if (!e.target.dataset.focusable) this.hourRef.current?.focus()
-      else this.select(e.target)
+      if (!e.target.dataset.focusable) hourRef.current?.focus()
+      else select(e.target)
     },
   })
 
-  static getDerivedStateFromProps({ value, use12HourClock }, prevState) {
-    if (
-      prevState.timeParts &&
-      prevState.value === value &&
-      prevState.use12HourClock === use12HourClock
-    )
-      return null
+  const [timeParts, setTimeParts] = useTimePartState(value, use12HourClock)
 
-    return {
-      value,
-      use12HourClock,
-      timeParts: getValueParts(value, use12HourClock),
-    }
+  function getDatePart() {
+    return dates.startOf(datePart || dates.today(), 'day')
   }
 
-  getDatePart() {
-    return dates.startOf(this.props.datePart || dates.today(), 'day')
-  }
+  const getMin = part => (part === 'hours' ? 1 : 0)
 
-  getMin = part => (part === 'hours' ? 1 : 0)
-
-  getMax = part => {
-    if (part === 'hours') return this.props.use12HourClock ? 12 : 23
+  const getMax = part => {
+    if (part === 'hours') return use12HourClock ? 12 : 23
     if (part === 'milliseconds') return 999
     return 59
   }
 
-  @widgetEditable
-  handleClear = () => {
-    const { value, onChange } = this.props
-    this.hourRef.current?.focus()
-
-    if (value) onChange(null)
-    else this.setState({ timeParts: getValueParts(null) })
+  function select(target = document.activeElement) {
+    window.Promise.resolve().then(() => {
+      if (focused) selectTextRange(target)
+    })
   }
 
-  handleChange = (part, event) => {
-    const { use12HourClock } = this.props
-    const currentValue = this.state.timeParts[part]
+  /**
+   * Handlers
+   */
+
+  const useEditableCallback = createEditableCallback(disabled || readOnly, ref)
+
+  const handleClear = useEditableCallback(() => {
+    hourRef.current?.focus()
+
+    if (value) onChange(null)
+    else setTimeParts(getValueParts(null))
+  })
+
+  const handleChange = (part, event) => {
+    const currentValue = timeParts[part]
 
     const { target } = event
-    const strValue = `${currentValue || ''}${target.value}`
-    const numValue = +strValue
+    const rawValue = target.value
+    const strValue = `${currentValue || ''}${rawValue}`
+    let numValue = +strValue
 
-    this.select(target)
+    select(target)
 
     if (
       isNaN(numValue) ||
       (strValue && !isValid(strValue, part, use12HourClock))
     ) {
-      return event.preventDefault()
+      // the combined value is now past the max or invalid so try the single
+      // digit and "start over" filling the value
+      if (isValid(rawValue, part, use12HourClock) && !isNaN(+rawValue)) {
+        numValue = +rawValue
+      } else {
+        return event.preventDefault()
+      }
     }
 
-    this.notifyChange({ [part]: target.value ? numValue : null })
+    notifyChange({ [part]: target.value ? numValue : null })
   }
 
-  select = (target = document.activeElement) => {
-    window.Promise.resolve().then(() => {
-      if (this.state.focused) select(target)
-    })
+  const handleSelect = ({ target }) => {
+    select(target)
   }
 
-  handleSelect = ({ target }) => {
-    this.select(target)
-  }
-
-  handleKeyDown = (part, event) => {
+  const handleKeyDown = useEditableCallback((part, event) => {
     const { key, target: input } = event
     const { selectionStart: start, selectionEnd: end } = input
 
@@ -260,35 +301,32 @@ class DurationInput extends React.Component {
 
     if (key === 'ArrowUp') {
       event.preventDefault()
-      this.increment(part, 1)
+      increment(part, 1)
     }
     if (key === 'ArrowDown') {
       event.preventDefault()
-      this.increment(part, -1)
+      increment(part, -1)
     }
     if (key === 'ArrowLeft' && (isMeridiem || start - 1 < 0)) {
       event.preventDefault()
-      this.focusNext(input, -1)
+      focusNext(input, -1)
     }
     if (key === 'ArrowRight' && (isMeridiem || input.value.length <= end + 1)) {
       event.preventDefault()
-      this.focusNext(input, +1)
+      focusNext(input, +1)
     }
 
-    if (this.props.readOnly && key !== 'Tab') {
+    if (readOnly && key !== 'Tab') {
       event.preventDefault()
     }
 
     if (isMeridiem) {
-      if (key === 'a' || key === 'A') this.notifyChange({ meridiem: 'AM' })
-      if (key === 'p' || key === 'P') this.notifyChange({ meridiem: 'PM' })
+      if (key === 'a' || key === 'A') notifyChange({ meridiem: 'AM' })
+      if (key === 'p' || key === 'P') notifyChange({ meridiem: 'PM' })
     }
-  }
+  })
 
-  @widgetEditable
-  increment(part, inc) {
-    const { use12HourClock } = this.props
-    const { timeParts } = this.state
+  const increment = useEditableCallback((part, inc) => {
     let nextPart = timeParts[part]
     if (part === 'meridiem') {
       nextPart = nextPart === 'AM' ? 'PM' : 'AM'
@@ -297,21 +335,23 @@ class DurationInput extends React.Component {
       if (!isValid(String(nextPart), part, use12HourClock)) return
     }
 
-    this.notifyChange({ [part]: nextPart })
-    this.select()
-  }
+    notifyChange({ [part]: nextPart })
+    select()
+  })
 
-  notifyChange(updates) {
-    const timeParts = { ...this.state.timeParts, ...updates }
-    const { precision, value, use12HourClock, onChange } = this.props
+  function notifyChange(updates) {
+    const nextTimeParts = { ...timeParts, ...updates }
 
-    if (value && isEmptyValue(timeParts, precision)) return onChange(null)
+    if (value && isEmptyValue(nextTimeParts, precision)) {
+      return onChange(null)
+    }
 
-    if (isPartialValue(timeParts, precision))
-      return this.setState({ timeParts })
+    if (isPartialValue(nextTimeParts, precision))
+      return setTimeParts(nextTimeParts)
 
-    let { hours, minutes, seconds, milliseconds, meridiem } = timeParts
-    let nextDate = new Date(value || this.getDatePart())
+    let { hours, minutes, seconds, milliseconds, meridiem } = nextTimeParts
+    let nextDate = new Date(value || getDatePart())
+
     if (use12HourClock) {
       if (hours === 12) hours = 0
       hours += meridiem === 'PM' ? 12 : 0
@@ -329,170 +369,145 @@ class DurationInput extends React.Component {
     })
   }
 
-  focusNext(input, delta) {
-    let nodes = qsa(this.ref.current, '* [data-focusable="true"]')
+  function focusNext(input, delta) {
+    let nodes = qsa(ref.current, '* [data-focusable="true"]')
     let next = nodes[nodes.indexOf(input) + delta]
     next?.focus()
-    this.select(next)
+    select(next)
   }
 
-  render() {
-    const {
-      padValues: pad,
-      emptyCharacter,
-      use12HourClock,
-      precision,
-      noClearButton,
-      hoursAddon,
-      minutesAddon = precision === 'seconds' || precision === 'milliseconds'
-        ? ':'
-        : '',
-      secondsAddon = precision === 'milliseconds' ? '.' : '',
-      millisecondsAddon,
-      className,
-      disabled,
-      readOnly,
-      ...props
-    } = this.props
-    const { focused, timeParts } = this.state
-    const { hours, minutes, seconds, milliseconds, meridiem } = timeParts
-    const showClear = !isEmptyValue(timeParts, precision)
+  const { hours, minutes, seconds, milliseconds, meridiem } = timeParts
+  const showClear = !isEmptyValue(timeParts, precision)
 
-    delete props.onChange
-
-    return (
-      <Widget
-        role="textbox"
-        ref={this.ref}
-        onBlur={this.focusManager.handleBlur}
-        onFocus={this.focusManager.handleFocus}
-        focused={focused}
+  return (
+    <Widget
+      {...props}
+      role="textbox"
+      ref={ref}
+      {...focusEvents}
+      focused={focused}
+      disabled={disabled}
+      readOnly={readOnly}
+      className={classNames(
+        className,
+        'rw-input',
+        'rw-time-input',
+        'rw-widget-container',
+      )}
+    >
+      <TimePartInput
+        size={2}
+        pad={pad && 2}
+        value={hours}
         disabled={disabled}
         readOnly={readOnly}
-        className={classNames(
-          className,
-          'rw-input',
-          'rw-time-input',
-          'rw-widget-container',
-        )}
-      >
-        <TimePartInput
-          size={2}
-          pad={pad && 2}
-          value={hours}
-          disabled={disabled}
-          readOnly={readOnly}
-          aria-label="hours"
-          min={this.getMin('hours')}
-          max={this.getMax('hours')}
-          innerRef={this.hourRef}
-          emptyChar={emptyCharacter}
-          onSelect={this.handleSelect}
-          onChange={this.handleChange.bind(null, 'hours')}
-          onKeyDown={this.handleKeyDown.bind(null, 'hours')}
-        />
+        aria-label="hours"
+        min={getMin('hours')}
+        max={getMax('hours')}
+        innerRef={hourRef}
+        emptyChar={emptyCharacter}
+        onSelect={handleSelect}
+        onChange={e => handleChange('hours', e)}
+        onKeyDown={e => handleKeyDown('hours', e)}
+      />
 
-        {hoursAddon && <span>{hoursAddon}</span>}
-        <TimePartInput
-          size={2}
-          pad={pad && 2}
-          value={minutes}
-          disabled={disabled}
-          readOnly={readOnly}
-          aria-label="minutes"
-          innerRef={this.minRef}
-          min={this.getMin('minutes')}
-          max={this.getMax('minutes')}
-          emptyChar={emptyCharacter}
-          onSelect={this.handleSelect}
-          onChange={this.handleChange.bind(null, 'minutes')}
-          onKeyDown={this.handleKeyDown.bind(null, 'minutes')}
-        />
+      {hoursAddon && <span>{hoursAddon}</span>}
+      <TimePartInput
+        size={2}
+        pad={pad && 2}
+        value={minutes}
+        disabled={disabled}
+        readOnly={readOnly}
+        aria-label="minutes"
+        min={getMin('minutes')}
+        max={getMax('minutes')}
+        emptyChar={emptyCharacter}
+        onSelect={handleSelect}
+        onChange={e => handleChange('minutes', e)}
+        onKeyDown={e => handleKeyDown('minutes', e)}
+      />
 
-        {minutesAddon && <span>{minutesAddon}</span>}
-        {(precision === 'seconds' || precision === 'milliseconds') && (
-          <>
-            <TimePartInput
-              size={2}
-              pad={pad && 2}
-              value={seconds}
-              disabled={disabled}
-              readOnly={readOnly}
-              aria-label="seconds"
-              min={this.getMin('seconds')}
-              max={this.getMax('seconds')}
-              innerRef={this.secRef}
-              emptyChar={emptyCharacter}
-              onSelect={this.handleSelect}
-              onChange={this.handleChange.bind(null, 'seconds')}
-              onKeyDown={this.handleKeyDown.bind(null, 'seconds')}
-            />
-            {secondsAddon && <span>{secondsAddon}</span>}
-          </>
-        )}
-        {precision === 'milliseconds' && (
-          <>
-            <TimePartInput
-              size={3}
-              pad={pad && 3}
-              value={milliseconds}
-              disabled={disabled}
-              readOnly={readOnly}
-              aria-label="milliseconds"
-              min={this.getMin('milliseconds')}
-              max={this.getMax('milliseconds')}
-              innerRef={this.secRef}
-              emptyChar={emptyCharacter}
-              onSelect={this.handleSelect}
-              onChange={this.handleChange.bind(null, 'milliseconds')}
-              onKeyDown={this.handleKeyDown.bind(null, 'milliseconds')}
-            />
-            {millisecondsAddon && <span>{millisecondsAddon}</span>}
-          </>
-        )}
-        {use12HourClock && (
+      {minutesAddon && <span>{minutesAddon}</span>}
+      {(precision === 'seconds' || precision === 'milliseconds') && (
+        <>
+          <TimePartInput
+            size={2}
+            pad={pad && 2}
+            value={seconds}
+            disabled={disabled}
+            readOnly={readOnly}
+            aria-label="seconds"
+            min={getMin('seconds')}
+            max={getMax('seconds')}
+            emptyChar={emptyCharacter}
+            onSelect={handleSelect}
+            onChange={e => handleChange('seconds', e)}
+            onKeyDown={e => handleKeyDown('seconds', e)}
+          />
+          {secondsAddon && <span>{secondsAddon}</span>}
+        </>
+      )}
+      {precision === 'milliseconds' && (
+        <>
+          <TimePartInput
+            size={3}
+            pad={pad && 3}
+            value={milliseconds}
+            disabled={disabled}
+            readOnly={readOnly}
+            aria-label="milliseconds"
+            min={getMin('milliseconds')}
+            max={getMax('milliseconds')}
+            emptyChar={emptyCharacter}
+            onSelect={handleSelect}
+            onChange={e => handleChange('milliseconds', e)}
+            onKeyDown={e => handleKeyDown('milliseconds', e)}
+          />
+          {millisecondsAddon && <span>{millisecondsAddon}</span>}
+        </>
+      )}
+      {use12HourClock && (
+        <div
+          role="listbox"
+          aria-label="AM/PM"
+          aria-disabled={disabled}
+          aria-readonly={readOnly}
+          onKeyDown={e => handleKeyDown('meridiem', e)}
+          className="rw-input-reset rw-time-part-meridiem"
+        >
           <div
-            role="listbox"
-            aria-label="AM/PM"
+            data-focusable
+            tabIndex="0"
+            role="option"
+            aria-atomic
+            aria-selected
+            aria-setsize="2"
+            aria-live="assertive"
             aria-disabled={disabled}
             aria-readonly={readOnly}
-            onKeyDown={this.handleKeyDown.bind(null, 'meridiem')}
-            className="rw-input-reset rw-time-part-meridiem"
+            aria-posinset={meridiem === 'AM' ? 1 : 2}
+            onFocus={handleSelect}
+            onSelect={handleSelect}
           >
-            <div
-              data-focusable
-              tabIndex="0"
-              role="option"
-              aria-atomic
-              aria-selected
-              aria-setsize="2"
-              aria-live="assertive"
-              aria-disabled={disabled}
-              aria-readonly={readOnly}
-              aria-posinset={meridiem === 'AM' ? 1 : 2}
-              onFocus={this.handleSelect}
-              onSelect={this.handleSelect}
-            >
-              <abbr>{meridiem}</abbr>
-            </div>
+            <abbr>{meridiem}</abbr>
           </div>
-        )}
-        {!noClearButton && (
-          <Button
-            variant={null}
-            label={'clear input'}
-            onClick={this.handleClear}
-            className={classNames(
-              'rw-time-input-clear',
-              showClear && 'rw-show',
-            )}
-          >
-            {times}
-          </Button>
-        )}
-      </Widget>
-    )
-  }
+        </div>
+      )}
+      {!noClearButton && (
+        <Button
+          variant={null}
+          label={'clear input'}
+          onClick={handleClear}
+          className={classNames('rw-time-input-clear', showClear && 'rw-show')}
+        >
+          {times}
+        </Button>
+      )}
+    </Widget>
+  )
 }
 
-export default uncontrollable(DurationInput, { value: 'onChange' })
+TimeInput.propTypes = propTypes
+TimeInput.defaultProps = defaultProps
+
+export default TimeInput

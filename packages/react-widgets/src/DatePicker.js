@@ -1,46 +1,44 @@
-import React from 'react';
+import React from 'react'
 
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
-import DateTimePicker from './DateTimePicker';
+import DateTimePicker from './DateTimePicker'
 
 const propTypes = {
   open: PropTypes.bool,
   defaultOpen: PropTypes.bool,
   onToggle: PropTypes.func,
-};
+}
 
 class DatePicker extends React.Component {
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
 
     this.toggleState = props.defaultOpen
   }
 
-  handleToggle = (open) => {
-    this.toggleState = !!open;
+  handleToggle = open => {
+    this.toggleState = !!open
 
-    if (this.props.onToggle)
-      this.props.onToggle(this.toggleState)
-    else
-      this.forceUpdate()
+    if (this.props.onToggle) this.props.onToggle(this.toggleState)
+    else this.forceUpdate()
   }
 
   render() {
-    let { open } = this.props;
-    open = open === undefined ? this.toggleState : open;
+    let { open } = this.props
+    open = open === undefined ? this.toggleState : open
 
     return (
       <DateTimePicker
         {...this.props}
-        time={false}
-        open={open ? 'date' : open}
+        open={open}
+        includeTime={false}
         onToggle={this.handleToggle}
       />
-    );
+    )
   }
 }
 
-DatePicker.propTypes = propTypes;
+DatePicker.propTypes = propTypes
 
 export default DatePicker

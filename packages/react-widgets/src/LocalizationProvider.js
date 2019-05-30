@@ -26,8 +26,11 @@ function mergeWithDefaults(date, number, formatOverrides, messages) {
         value,
         formatOverrides[format] || date.dateFormats[format] || format,
       ),
-    parseDate: date.parseDate.bind(date),
-
+    parseDate: (value, format) =>
+      date.parseDate(
+        value,
+        formatOverrides[format] || date.dateFormats[format] || format,
+      ),
     formatNumber: (value, format) =>
       number.formatNumber(
         value,
@@ -78,7 +81,7 @@ const Provider = ({ localizer, dateLocalizer, numberLocalizer, children }) => (
 
 Provider.propTypes = propTypes
 
-Provider.useLocalizer = (messages, formats) => {
+export const useLocalizer = (messages, formats) => {
   const { date, number } = useContext(LocalizerContext) || {}
   return useMemo(
     () => mergeWithDefaults(date, number, formats || {}, messages),
@@ -86,23 +89,6 @@ Provider.useLocalizer = (messages, formats) => {
   )
 }
 
-Provider.Consumer = LocalizerContext.Consumer
-
-Provider.withLocalizer = Component => {
-  const render = ({ messages, formats, ...props }, ref) => (
-    <LocalizerContext.Consumer>
-      {({ date, number } = {}) => (
-        <Component
-          ref={ref}
-          {...props}
-          formats={formats}
-          localizer={mergeWithDefaults(date, number, formats || {}, messages)}
-        />
-      )}
-    </LocalizerContext.Consumer>
-  )
-  render.displayName = `withLocalizer(${Component.name})`
-  return Object.assign(React.forwardRef(render), { Component })
-}
+Provider.useLocalizer = useLocalizer
 
 export default Provider

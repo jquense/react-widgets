@@ -61,11 +61,7 @@ storiesOf('DateTimePicker', module)
 
   .add('parsers', () => (
     <Container>
-      <DateTimePicker
-        time={false}
-        format="MM/dd/yyyy"
-        parse={d => new Date(d)}
-      />
+      <DateTimePicker format="MM/dd/yyyy" parse={d => new Date(d)} />
     </Container>
   ))
   .add('fieldset disabled', () => (

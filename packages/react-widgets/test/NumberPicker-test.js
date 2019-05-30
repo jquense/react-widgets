@@ -2,15 +2,17 @@ import React from 'react'
 import { mount } from 'enzyme'
 import NumberPicker from '../src/NumberPicker'
 
-let ControlledNumberPicker = NumberPicker.ControlledComponent
-
 describe('NumberPicker', function() {
   it('should set values correctly', function() {
     let expectValueToBe = val => inst =>
       expect(inst.find('.rw-input').getDOMNode().value).to.equal(val)
 
     mount(
-      <NumberPicker value={15} formats={{ default: 'D' }} onChange={() => {}} />
+      <NumberPicker
+        value={15}
+        formats={{ default: 'D' }}
+        onChange={() => {}}
+      />,
     )
       .tap(expectValueToBe('15'))
       .setProps({ value: null, min: 10, max: 10 })
@@ -25,7 +27,7 @@ describe('NumberPicker', function() {
 
   it('should be able to accept a placeholder', function() {
     let input = mount(
-      <NumberPicker placeholder="enter number here" onChange={() => {}} />
+      <NumberPicker placeholder="enter number here" onChange={() => {}} />,
     )
       .find('.rw-input')
       .getDOMNode()
@@ -35,7 +37,7 @@ describe('NumberPicker', function() {
 
   it('should pass NAME down', function() {
     let input = mount(
-      <NumberPicker value={15} onChange={() => {}} name="hello" />
+      <NumberPicker value={15} onChange={() => {}} name="hello" />,
     )
       .find('.rw-input')
       .getDOMNode()
@@ -46,7 +48,7 @@ describe('NumberPicker', function() {
   it('should not fire change until there is a valid value', function() {
     let change = sinon.spy()
     let input = mount(
-      <NumberPicker value={150} min={100} onChange={change} />
+      <NumberPicker value={150} min={100} onChange={change} />,
     ).find('.rw-input')
 
     input.getDOMNode().value = '15'
@@ -62,7 +64,7 @@ describe('NumberPicker', function() {
     change.resetHistory()
 
     input = mount(
-      <NumberPicker value={15} min={-Infinity} onChange={change} />
+      <NumberPicker value={15} min={-Infinity} onChange={change} />,
     ).find('.rw-input')
 
     input.getDOMNode().value = ''
@@ -96,42 +98,28 @@ describe('NumberPicker', function() {
     expect(changeSpy.args[1][0]).to.equal(0)
   })
 
-  it('should simulate focus/blur events', function(done) {
+  it('should simulate focus/blur events', () => {
     let blur = sinon.spy(),
       focus = sinon.spy()
 
     mount(<NumberPicker onBlur={blur} onFocus={focus} />)
-      .simulate('focus')
-      .tap(inst => {
-        setTimeout(() => {
-          inst.simulate('blur')
+      .simulateWithTimers('focus')
+      .simulateWithTimers('blur')
 
-          setTimeout(() => {
-            expect(focus.calledOnce).to.equal(true)
-            expect(blur.calledOnce).to.equal(true)
-            done()
-          })
-        })
-      })
+    expect(focus.calledOnce).to.equal(true)
+    expect(blur.calledOnce).to.equal(true)
   })
 
-  it('should not simulate focus/blur events when disabled', function(done) {
+  it('should not simulate focus/blur events when disabled', () => {
     let blur = sinon.spy(),
       focus = sinon.spy()
 
     mount(<NumberPicker disabled onBlur={blur} onFocus={focus} />)
-      .simulate('focus')
-      .tap(inst => {
-        setTimeout(() => {
-          inst.simulate('blur')
+      .simulateWithTimers('focus')
+      .simulateWithTimers('blur')
 
-          setTimeout(() => {
-            expect(focus.called).to.equal(false)
-            expect(blur.called).to.equal(false)
-            done()
-          })
-        })
-      })
+    expect(focus.called).to.equal(false)
+    expect(blur.called).to.equal(false)
   })
 
   it('should simulate key events', function() {
@@ -151,7 +139,7 @@ describe('NumberPicker', function() {
   })
 
   it('should add correct markup when read-only', () => {
-    let input = mount(<ControlledNumberPicker readOnly />)
+    let input = mount(<NumberPicker readOnly />)
       .find('.rw-input')
       .getDOMNode()
 
@@ -159,7 +147,7 @@ describe('NumberPicker', function() {
   })
 
   it('should add correct markup when disabled', () => {
-    let input = mount(<ControlledNumberPicker disabled />)
+    let input = mount(<NumberPicker disabled />)
       .find('.rw-input')
       .getDOMNode()
 

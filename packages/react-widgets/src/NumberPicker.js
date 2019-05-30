@@ -127,8 +127,6 @@ const propTypes = {
 }
 
 const defaultProps = {
-  value: null,
-  open: false,
   incrementIcon: caretUp,
   decrementIcon: caretDown,
 
@@ -189,10 +187,9 @@ function NumberPicker(uncontrolledProps) {
     },
   })
 
-  // @widgetEditable
-  const handleMouseDown = (direction, event) => {
-    let { min, max } = this.props
+  const useEditableCallback = createEditableCallback(disabled || readOnly, ref)
 
+  const handleMouseDown = useEditableCallback((direction, event) => {
     if (event) event.persist()
 
     let method = direction === 'UP' ? increment : decrement
@@ -207,9 +204,7 @@ function NumberPicker(uncontrolledProps) {
         handleMouseDown(direction, event)
       })
     }
-  }
-
-  const useEditableCallback = createEditableCallback(disabled || readOnly, ref)
+  })
 
   // @widgetEditable
   const handleMouseUp = useEditableCallback(() => {
@@ -226,14 +221,14 @@ function NumberPicker(uncontrolledProps) {
 
     if (event.defaultPrevented) return
 
-    if (key === 'End' && isFinite(max)) this.handleChange(max, event)
-    else if (key === 'Home' && isFinite(min)) this.handleChange(min, event)
+    if (key === 'End' && isFinite(max)) handleChange(max, event)
+    else if (key === 'Home' && isFinite(min)) handleChange(min, event)
     else if (key === 'ArrowDown') {
       event.preventDefault()
-      this.decrement(event)
+      decrement(event)
     } else if (key === 'ArrowUp') {
       event.preventDefault()
-      this.increment(event)
+      increment(event)
     }
   })
 
@@ -252,7 +247,7 @@ function NumberPicker(uncontrolledProps) {
   }
 
   function focus() {
-    this.inputRef.focus()
+    inputRef.current?.focus()
   }
 
   function increment(event) {
@@ -266,15 +261,14 @@ function NumberPicker(uncontrolledProps) {
   function step(amount, event) {
     const nextValue = (value || 0) + amount
 
-    const decimals =
-      precision != null ? precision : localizer.precision('default')
+    const decimals = precision != null ? precision : localizer.precision()
 
     handleChange(
       decimals != null ? round(nextValue, decimals) : nextValue,
       event,
     )
 
-    return value
+    return nextValue
   }
 
   const clampedValue = clamp(value, min, max)
@@ -298,7 +292,7 @@ function NumberPicker(uncontrolledProps) {
           value={clampedValue}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          editing={this.state.focused}
+          editing={focused}
           localizer={localizer}
           parse={parse}
           name={name}

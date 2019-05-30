@@ -3,7 +3,7 @@
 import cn from 'classnames'
 import closest from 'dom-helpers/query/closest'
 import PropTypes from 'prop-types'
-import React, { useMemo, useRef, useState, useEffect } from 'react'
+import React, { useMemo, useRef, useEffect } from 'react'
 import useUncontrollable from 'uncontrollable/hook'
 
 import Widget from './Widget'
@@ -33,12 +33,14 @@ import {
 } from './util/widgetHelpers'
 import { caretDown, times } from './Icon'
 import canShowCreate from './util/canShowCreate'
+import useEventCallback from '@restart/hooks/useEventCallback'
 
 import {
   CREATE_OPTION,
   useList,
   useFilteredData,
   useFocusedItem,
+  useDropodownToggle,
 } from './util/hooks'
 
 const ENTER = 13
@@ -282,12 +284,13 @@ function Multiselect(uncontrolledProps) {
 
   const accessors = useAccessors(textField, valueField)
   const messages = useMessagesWithDefaults(userMessages)
+  const toggle = useDropodownToggle(open, onToggle)
 
   const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
     didHandle(focused) {
       if (focused) return focus()
 
-      closeDropdown()
+      toggle.close()
       clearSearch()
 
       if (tagsRef.current) setFocusedTag(null)
@@ -379,14 +382,15 @@ function Multiselect(uncontrolledProps) {
 
   const handleInputChange = e => {
     search(e.target.value, e, 'input')
-    openDropdown()
+    toggle.open()
   }
 
   const handleClick = useEditableCallback(({ target }) => {
     focus()
 
-    if (closest(target, '.rw-select')) open ? closeDropdown() : openDropdown()
-    else openDropdown()
+    if (closest(target, '.rw-select') && open) {
+      toggle.close()
+    } else toggle.open()
   })
 
   const handleDoubleClick = useEditableCallback(() => {
@@ -427,7 +431,7 @@ function Multiselect(uncontrolledProps) {
     if (key === 'ArrowDown') {
       event.preventDefault()
 
-      if (!open) return openDropdown()
+      if (!open) return toggle.open()
 
       let next = list.next(focusedItem)
       let creating =
@@ -437,7 +441,7 @@ function Multiselect(uncontrolledProps) {
     } else if (key === 'ArrowUp' && (open || altKey)) {
       event.preventDefault()
 
-      if (altKey) return closeDropdown()
+      if (altKey) return toggle.close()
       setFocusedItem(createIsFocused ? list.last() : list.prev(focusedItem))
     } else if (key === 'End') {
       event.preventDefault()
@@ -456,7 +460,8 @@ function Multiselect(uncontrolledProps) {
 
       handleSelect(focusedItem, event)
     } else if (key === 'Escape') {
-      open ? closeDropdown() : tagList && setFocusedTag(null)
+      if (open) toggle.close()
+      else if (tagList) setFocusedTag(null)
     } else if (!searchTerm && !deletingRef.current) {
       if (key === 'ArrowLeft') {
         setFocusedTag(tagList.prev(focusedTag) || tagList.last())
@@ -472,9 +477,15 @@ function Multiselect(uncontrolledProps) {
         //
       } else if (key === ' ' && !open) {
         event.preventDefault()
-        openDropdown()
+        toggle.open()
       }
     }
+  })
+
+  // The EventCallback is required b/c Popup blocks updates
+  let handleHoverOption = useEventCallback(item => {
+    if (!open) return
+    setFocusedItem(item)
   })
 
   /**
@@ -529,14 +540,6 @@ function Multiselect(uncontrolledProps) {
 
   function focus() {
     inputRef.current?.focus()
-  }
-
-  function openDropdown() {
-    if (!open) notify(onToggle, true)
-  }
-
-  function closeDropdown() {
-    if (open) notify(onToggle, false)
   }
 
   /**
@@ -641,45 +644,44 @@ function Multiselect(uncontrolledProps) {
           transition={popupTransition}
           onEntering={() => listRef.current.forceUpdate()}
         >
-          <div>
-            <List
-              {...listProps}
-              id={listId}
-              data={data}
-              activeId={activeOptionId}
-              dataState={list.dataState}
-              isDisabled={list.isDisabled}
-              searchTerm={searchTerm}
-              textAccessor={accessors.text}
-              valueAccessor={accessors.value}
-              itemComponent={itemComponent}
-              groupComponent={groupComponent}
-              optionComponent={optionComponent}
-              focusedItem={focusedItem}
-              onSelect={handleSelect}
-              onMove={handleScroll}
-              aria-live="polite"
-              aria-labelledby={inputId}
-              aria-hidden={!open}
-              ref={listRef}
-              messages={{
-                emptyList: lengthWithoutValues
-                  ? messages.emptyFilter
-                  : messages.emptyList,
-              }}
-            />
+          <List
+            {...listProps}
+            id={listId}
+            data={data}
+            activeId={activeOptionId}
+            dataState={list.dataState}
+            isDisabled={list.isDisabled}
+            searchTerm={searchTerm}
+            textAccessor={accessors.text}
+            valueAccessor={accessors.value}
+            itemComponent={itemComponent}
+            groupComponent={groupComponent}
+            optionComponent={optionComponent}
+            focusedItem={focusedItem}
+            onSelect={handleSelect}
+            onMove={handleScroll}
+            onHoverOption={handleHoverOption}
+            aria-live="polite"
+            aria-labelledby={inputId}
+            aria-hidden={!open}
+            ref={listRef}
+            messages={{
+              emptyList: lengthWithoutValues
+                ? messages.emptyFilter
+                : messages.emptyList,
+            }}
+          />
 
-            {showCreateOption && (
-              <AddToListOption
-                id={createId}
-                searchTerm={searchTerm}
-                onSelect={handleCreate}
-                focused={!focusedItem || focusedItem === CREATE_OPTION}
-              >
-                {messages.createOption(value, searchTerm)}
-              </AddToListOption>
-            )}
-          </div>
+          {showCreateOption && (
+            <AddToListOption
+              id={createId}
+              searchTerm={searchTerm}
+              onSelect={handleCreate}
+              focused={!focusedItem || focusedItem === CREATE_OPTION}
+            >
+              {messages.createOption(value, searchTerm)}
+            </AddToListOption>
+          )}
         </Popup>
       )}
     </Widget>

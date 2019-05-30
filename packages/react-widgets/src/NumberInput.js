@@ -5,7 +5,6 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 
 import Input from './Input'
-import * as Props from './util/Props'
 import * as CustomPropTypes from './util/PropTypes'
 
 let isSign = val => (val || '').trim() === '-'
@@ -61,9 +60,9 @@ class NumberPickerInput extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let { value, culture, editing, localizer } = nextProps
+    let { value, editing, localizer } = nextProps
 
-    let decimal = localizer.decimalChar(null, culture)
+    let decimal = localizer.decimalChar(null)
 
     if (value == null || isNaN(value)) value = ''
     else
@@ -169,11 +168,13 @@ class NumberPickerInput extends React.Component {
       disabled,
       readOnly,
       placeholder,
+      // eslint-disable-next-line react/prop-types
       innerRef,
       min,
       max,
-      localizer: _0,
-      editing: _1,
+      localizer: _,
+      // eslint-disable-next-line no-unused-vars
+      editing: __,
       ...props
     } = this.props
 

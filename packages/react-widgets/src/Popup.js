@@ -10,43 +10,41 @@ const StaticContainer = React.memo(
   (_, { shouldUpdate }) => !shouldUpdate,
 )
 
-class Popup extends React.Component {
-  static defaultProps = {
-    open: false,
-    transition: SlideDownTransition,
-  }
-
-  static propTypes = {
-    open: PropTypes.bool,
-    dropUp: PropTypes.bool,
-    onEntering: PropTypes.func,
-    onEntered: PropTypes.func,
-    transition: elementType,
-  }
-
-  render() {
-    let {
-      className,
-      dropUp,
-      open,
-      transition: Transition,
-      ...props
-    } = this.props
-
-    return (
-      <Transition
-        {...props}
-        in={open}
-        dropUp={dropUp}
-        innerClassName="rw-popup"
-        className={cn(className, 'rw-popup-container')}
-      >
-        <StaticContainer shouldUpdate={open}>
-          {this.props.children}
-        </StaticContainer>
-      </Transition>
-    )
-  }
+const defaultProps = {
+  open: false,
+  transition: SlideDownTransition,
 }
+
+const propTypes = {
+  open: PropTypes.bool,
+  dropUp: PropTypes.bool,
+  onEntering: PropTypes.func,
+  onEntered: PropTypes.func,
+  transition: elementType,
+}
+
+function Popup({
+  className,
+  dropUp,
+  open,
+  transition: Transition,
+  children,
+  ...props
+}) {
+  return (
+    <Transition
+      {...props}
+      in={open}
+      dropUp={dropUp}
+      innerClassName="rw-popup"
+      className={cn(className, 'rw-popup-container')}
+    >
+      <StaticContainer shouldUpdate={open}>{children}</StaticContainer>
+    </Transition>
+  )
+}
+
+Popup.propTypes = propTypes
+Popup.defaultProps = defaultProps
 
 export default Popup

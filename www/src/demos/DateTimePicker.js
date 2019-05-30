@@ -1,35 +1,39 @@
-import React from 'react';
-import dates from 'date-arithmetic';
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import Checkbox from 'react-bootstrap/lib/Checkbox';
-import * as RW from 'react-widgets';
+import React from 'react'
+import dates from 'date-arithmetic'
+import Button from 'react-bootstrap/lib/Button'
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
+import Checkbox from 'react-bootstrap/lib/Checkbox'
+import * as RW from 'react-widgets'
 
-import Demo, { createSetter } from '../components/Demo';
-import Layout from '../components/Layout';
-import { CULTURES, VIEWS } from './Calendar';
+import Demo, { createSetter } from '../components/Demo'
+import Layout from '../components/Layout'
+import { CULTURES, VIEWS } from './Calendar'
 
-let getType = (date, time) => date && time ? 'datetime' : date ? 'date' : 'time';
+let getType = (date, time) =>
+  date && time ? 'datetime' : date ? 'date' : 'time'
 
 let getFormat = (date, time, type = 'short') => ({
-  [getType(date, time)]: type
+  [getType(date, time)]: type,
 })
 
 const formats = [
   {
     value: { datetime: 'medium' },
-    text: 'date & time "medium"' },
+    text: 'date & time "medium"',
+  },
   {
     value: { date: 'full' },
-    text: 'date "full"' },
+    text: 'date "full"',
+  },
   {
     value: { time: 'short' },
-    text: 'time: "short"' },
+    text: 'time: "short"',
+  },
   {
     value: 'MMM-dd-yyyy',
-    text: '"MMM-dd-yyyy"' },
+    text: '"MMM-dd-yyyy"',
+  },
 ]
-
 
 export default class DateTimePickerDemo extends React.Component {
   state = {
@@ -41,8 +45,17 @@ export default class DateTimePickerDemo extends React.Component {
 
   render() {
     const {
-        isRtl, min, max, views, format, culture
-      , disabled, readOnly, time, date } = this.state;
+      isRtl,
+      min,
+      max,
+      views,
+      format,
+      culture,
+      disabled,
+      readOnly,
+      time,
+      date,
+    } = this.state
 
     let minMaxFormat = getFormat(date, time)
 
@@ -52,18 +65,18 @@ export default class DateTimePickerDemo extends React.Component {
       ...this.state,
       max: max || undefined,
       min: min || undefined,
-      format: format.value
+      format: format.value,
     }
 
     return (
       <Demo shortcuts={this.props.shortcuts}>
         <Demo.Stage>
-          <div className='form-group'>
-            <RW.DateTimePicker defaultValue={new Date()} {...props}/>
+          <div className="form-group">
+            <RW.DateTimePicker defaultValue={new Date()} {...props} />
           </div>
-          <div className='form-group'>
-            <label className='control-label'>Custom Rendering</label>
-            <RW.DateTimePicker {...props} timeComponent={itemComp}/>
+          <div className="form-group">
+            <label className="control-label">Custom Rendering</label>
+            <RW.DateTimePicker {...props} timeComponent={itemComp} />
           </div>
         </Demo.Stage>
         <Demo.Controls>
@@ -85,25 +98,19 @@ export default class DateTimePickerDemo extends React.Component {
               </ButtonGroup>
             </Demo.Control>
             <Demo.Control>
-              <Checkbox
-                checked={date}
-                onChange={setter('date', !date)}
-              >
+              <Checkbox checked={date} onChange={setter('date', !date)}>
                 date
               </Checkbox>
             </Demo.Control>
             <Demo.Control>
-              <Checkbox
-                checked={time}
-                onChange={setter('time', !time)}
-              >
+              <Checkbox checked={time} onChange={setter('time', !time)}>
                 time
               </Checkbox>
             </Demo.Control>
           </Layout>
 
           <Layout>
-            <Demo.Control label='culture' flex>
+            <Demo.Control label="culture" flex>
               <RW.DropdownList
                 filter={false}
                 value={culture || CULTURES[0]}
@@ -123,10 +130,10 @@ export default class DateTimePickerDemo extends React.Component {
           </Layout>
 
           <Layout>
-            <Demo.Control label="min" >
+            <Demo.Control label="min">
               <RW.DateTimePicker
                 value={min}
-                time={time}
+                includeTime={time}
                 culture={culture}
                 date={date}
                 format={minMaxFormat}
@@ -136,7 +143,7 @@ export default class DateTimePickerDemo extends React.Component {
             <Demo.Control label="max">
               <RW.DateTimePicker
                 value={max}
-                time={time}
+                includeTime={time}
                 culture={culture}
                 date={date}
                 format={minMaxFormat}
@@ -145,60 +152,57 @@ export default class DateTimePickerDemo extends React.Component {
             </Demo.Control>
           </Layout>
 
-
           <Demo.Control label="allowed calendar views">
             <RW.Multiselect
               value={views.length ? views : ['month']}
               data={VIEWS}
               disabled={!date}
-              onChange={(views) => setter('views')(
-                VIEWS.filter(v => ~views.indexOf(v) // correct order
-              ))}
+              onChange={views =>
+                setter('views')(
+                  VIEWS.filter(
+                    v => ~views.indexOf(v), // correct order
+                  ),
+                )
+              }
             />
           </Demo.Control>
 
           <Layout justify="flex-start">
             <Demo.Control>
-              <Checkbox
-                checked={!!isRtl}
-                onChange={setter('isRtl', !isRtl)}
-              >
+              <Checkbox checked={!!isRtl} onChange={setter('isRtl', !isRtl)}>
                 right-to-left
               </Checkbox>
             </Demo.Control>
           </Layout>
         </Demo.Controls>
-    </Demo>
+      </Demo>
     )
   }
 }
 
-
 class itemComp extends React.Component {
   render() {
-    var date   = merge(new Date, this.props.item.date)
-      , inPast = dates.lt(date, new Date, 'minutes')
+    var date = merge(new Date(), this.props.item.date),
+      inPast = dates.lt(date, new Date(), 'minutes')
 
     return (
       <div className={inPast ? 'overdue' : ''}>
-        <i className={'fa fa-' + (inPast ? 'history' : 'clock')}></i>
-        { '  ' + this.props.item.label}
+        <i className={'fa fa-' + (inPast ? 'history' : 'clock')} />
+        {'  ' + this.props.item.label}
       </div>
-    );
+    )
   }
 }
 
+function merge(date, time) {
+  if (time == null && date == null) return null
 
-function merge(date, time){
-  if( time == null && date == null)
-    return null
-
-  if( time == null) time = new Date
-  if( date == null) date = new Date
+  if (time == null) time = new Date()
+  if (date == null) date = new Date()
 
   date = dates.startOf(date, 'day')
-  date = dates.hours(date,        dates.hours(time))
-  date = dates.minutes(date,      dates.minutes(time))
-  date = dates.seconds(date,      dates.seconds(time))
+  date = dates.hours(date, dates.hours(time))
+  date = dates.minutes(date, dates.minutes(time))
+  date = dates.seconds(date, dates.seconds(time))
   return dates.milliseconds(date, dates.milliseconds(time))
 }

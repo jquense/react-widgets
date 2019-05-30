@@ -78,7 +78,8 @@ class SlideTransitionGroup extends React.Component {
   handleTransitionEnd = hadFocus => {
     this.isTransitioning = false
     let current = this.container.current.lastChild
-    this.props.onTransitionEnd && this.props.onTransitionEnd(current, hadFocus)
+    if (this.props.onTransitionEnd)
+      this.props.onTransitionEnd(current, hadFocus)
   }
 
   render() {
