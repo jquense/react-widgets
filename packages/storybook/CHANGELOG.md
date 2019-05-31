@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.27](https://github.com/jquense/react-widgets/compare/storybook@4.0.26...storybook@4.0.27) (2019-05-01)
+
+**Note:** Version bump only for package storybook
+
+
+
+
+
+## [4.0.26](https://github.com/jquense/react-widgets/compare/storybook@4.0.25...storybook@4.0.26) (2019-02-22)
+
+**Note:** Version bump only for package storybook
+
+
+
+
+
 <a name="4.0.25"></a>
 ## [4.0.25](https://github.com/jquense/react-widgets/compare/storybook@4.0.24...storybook@4.0.25) (2019-01-14)
 
