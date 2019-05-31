@@ -107,18 +107,13 @@
 
 .height-calc(@total, @minus) {
   height: ~"calc(@{total} - @{minus})";
-
-  /** ie8 fallback **/
-  margin-top: ~"-@{minus}\9";
-  height: ~"@{total}\9";
-  /** --- **/
 }
 
 .make-btn-state(@hover-color: @btn-bg-hover, @active-shadow: @btn-active-box-shadow) {
   cursor: pointer;
 
   &:hover,
-  &:active, {
+  &:active {
     background-color: @btn-bg-hover;
   }
 
