@@ -21,15 +21,6 @@
     );
   }
 
-  // &:hover,
-  // &:hover.rw-state-focus {
-  //   @include state-hover(
-  //     $list-hover-bg,
-  //     $list-hover-border-color,
-  //     $list-hover-color
-  //   );
-  // }
-
   &.rw-state-selected {
     @include state-select(
       $list-select-bg,
@@ -44,10 +35,10 @@
     @include state-disabled();
     @include disabled-color($list-color);
 
-    &:hover {
-      background: none;
-      border-color: transparent;
-    }
+    // &:hover {
+    //   background: none;
+    //   border-color: transparent;
+    // }
   }
 }
 

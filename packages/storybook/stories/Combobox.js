@@ -22,6 +22,15 @@ let props = {
   textField: 'fullName',
 }
 
+function Disabled() {
+  const [disabled, setDisabled] = React.useState(false)
+  return (
+    <Container>
+      <Combobox {...props} disabled={disabled} defaultValue={props.data[1]} />
+      <button onClick={() => setDisabled(s => !s)}>toggle</button>
+    </Container>
+  )
+}
 storiesOf('Combobox', module)
   .add('Combobox', () => (
     <Container>
@@ -38,11 +47,7 @@ storiesOf('Combobox', module)
       <Combobox {...props} busy defaultValue={props.data[1]} />
     </Container>
   ))
-  .add('disabled', () => (
-    <Container>
-      <Combobox {...props} disabled defaultValue={props.data[1]} />
-    </Container>
-  ))
+  .add('disabled', () => <Disabled />)
   .add('fieldset disabled', () => (
     <Container>
       <fieldset disabled>
