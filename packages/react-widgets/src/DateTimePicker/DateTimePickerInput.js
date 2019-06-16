@@ -3,11 +3,15 @@ import React from 'react'
 import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import { findDOMNode } from 'react-dom'
 
-import Input from './Input'
-import { date as dateLocalizer } from './util/localizers'
-import * as CustomPropTypes from './util/PropTypes'
-import * as Props from './util/Props'
+import Input from '../Input'
+import { date as dateLocalizer } from '../util/localizers'
+import * as CustomPropTypes from '../util/PropTypes'
+import * as Props from '../util/Props'
 
+/**
+ * Input that allows the date-time to be directly edited
+ * using the keyboard.
+ */
 @polyfillLifecycles
 class DateTimePickerInput extends React.Component {
   static propTypes = {
@@ -26,6 +30,13 @@ class DateTimePickerInput extends React.Component {
   }
 
   state = {}
+
+  /**
+   * To be set whenever this input's text is altered; it
+   * lifts the new DateTime to the parent by calling
+   * {@code onChange}.
+   */
+  _needFlush = false
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { value, editing, editFormat, format, culture } = nextProps
@@ -57,11 +68,20 @@ class DateTimePickerInput extends React.Component {
       let date = parse(event.target.value)
 
       const dateIsInvalid = event.target.value != '' && date == null
-      if (dateIsInvalid) {
-        this.setState({ textValue: '' })
-      }
       this._needsFlush = false
-      onChange(date, formatDate(date, format, culture))
+
+      if (dateIsInvalid) {
+        this.setState({
+          textValue: formatDate(
+            this.props.value,
+            this.props.editing && this.props.editFormat ?
+              this.props.editFormat : this.props.format,
+            this.props.culture
+          )
+        })
+      } else {
+        onChange(date, formatDate(date, format, culture))
+      }
     }
   }
 

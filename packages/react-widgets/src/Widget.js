@@ -32,7 +32,7 @@ class Widget extends React.Component {
       ...props
     } = this.props
 
-    tabIndex = tabIndex != null ? tabIndex : '-1'
+    tabIndex = (tabIndex != null) ? tabIndex : '-1'
 
     return (
       <div

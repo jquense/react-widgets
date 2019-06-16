@@ -8,25 +8,25 @@ import cn from 'classnames'
 import deprecated from 'prop-types-extra/lib/deprecated'
 import uncontrollable from 'uncontrollable'
 
-import Widget from './Widget'
-import WidgetPicker from './WidgetPicker'
-import Popup from './Popup'
-import Button from './Button'
-import Calendar from './Calendar'
+import Widget from '../Widget'
+import WidgetPicker from '../WidgetPicker'
+import Popup from '../Popup'
+import Button from '../Button'
+import Calendar from '../Calendar'
 import DateTimePickerInput from './DateTimePickerInput'
-import Select from './Select'
-import TimeList from './TimeList'
-import { getMessages } from './messages'
+import Select from '../Select'
+import TimeList from '../TimeList'
+import { getMessages } from '../messages'
 
-import * as Props from './util/Props'
-import * as CustomPropTypes from './util/PropTypes'
-import focusManager from './util/focusManager'
-import scrollManager from './util/scrollManager'
-import { widgetEditable } from './util/interaction'
-import dates from './util/dates'
-import { date as dateLocalizer } from './util/localizers'
-import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
-import { calendar, clock } from './Icon'
+import * as Props from '../util/Props'
+import * as CustomPropTypes from '../util/PropTypes'
+import focusManager from '../util/focusManager'
+import scrollManager from '../util/scrollManager'
+import { widgetEditable } from '../util/interaction'
+import dates from '../util/dates'
+import { date as dateLocalizer } from '../util/localizers'
+import { instanceId, notify, isFirstFocusedRender } from '../util/widgetHelpers'
+import { calendar, clock } from '../Icon'
 
 let NEXT_VIEW = {
   date: 'time',
@@ -55,29 +55,37 @@ let propTypes = {
   onToggle: PropTypes.func,
 
   /**
-   * Default current date at which the calendar opens. If none is provided, opens at today's date or the `value` date (if any).
+   * Default current date at which the calendar opens. If
+   * none is provided, opens at today's date or the `value`
+   * date (if any).
    */
   currentDate: PropTypes.instanceOf(Date),
 
   /**
-   * Change event Handler that is called when the currentDate is changed. The handler is called with the currentDate object.
+   * Change event Handler that is called when the currentDate
+   * is changed. The handler is called with the {@code currentDate}
+   * object.
    */
   onCurrentDateChange: PropTypes.func,
   onSelect: PropTypes.func,
 
   /**
-   * The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that
-   * can be typed or pasted into the widget. If you need this behavior you can constrain values via
-   * the `onChange` handler.
+   * The minimum date that can be selected. Min only limits
+   * selection, it doesn't constrain the date values that can
+   * be typed or pasted into the widget. If you need this
+   * behavior you can constrain values via the `onChange`
+   * handler.
    *
    * @example ['prop', ['min', 'new Date()']]
    */
   min: PropTypes.instanceOf(Date),
 
   /**
-   * The maximum Date that can be selected. Max only limits selection, it doesn't constrain the date values that
-   * can be typed or pasted into the widget. If you need this behavior you can constrain values via
-   * the `onChange` handler.
+   * The maximum date that can be selected. Max only limits
+   * selection, it doesn't constrain the date values that
+   * can be typed or pasted into the widget. If you need
+   * this behavior you can constrain values via the `onChange`
+   * handler.
    *
    * @example ['prop', ['max', 'new Date()']]
    */
@@ -93,15 +101,17 @@ let propTypes = {
   culture: PropTypes.string,
 
   /**
-   * A formatter used to display the date value. For more information about formats
-   * visit the [Localization page](/localization)
+   * A formatter used to display the date value. For more
+   * information about formats, visit
+   * the [Localization page](/localization)
    *
    * @example ['dateFormat', ['format', "{ raw: 'MMM dd, yyyy' }", null, { defaultValue: 'new Date()', time: 'false' }]]
    */
   format: CustomPropTypes.dateFormat,
 
   /**
-   * A formatter used by the time dropdown to render times. For more information about formats visit
+   * A formatter used by the time dropdown to render
+   * times. For more information about formats, visit
    * the [Localization page](/localization).
    *
    * @example ['dateFormat', ['timeFormat', "{ time: 'medium' }", null, { date: 'false', open: '"time"' }]]
@@ -109,8 +119,10 @@ let propTypes = {
   timeFormat: CustomPropTypes.dateFormat,
 
   /**
-   * A formatter to be used while the date input has focus. Useful for showing a simpler format for inputing.
-   * For more information about formats visit the [Localization page](/localization)
+   * A formatter to be used while the date input has focus.
+   * Useful for showing a simpler format for inputing. For
+   * more information about formats, visit
+   * the [Localization page](/localization)
    *
    * @example ['dateFormat', ['editFormat', "{ date: 'short' }", null, { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }]]
    */
@@ -130,14 +142,21 @@ let propTypes = {
   calendar: deprecated(PropTypes.bool, 'Use `date` instead'),
 
   /**
-   * A customize the rendering of times but providing a custom component.
+   * A customize the rendering of times but providing a
+   * custom component.
    */
   timeComponent: CustomPropTypes.elementType,
 
-  /** Specify the element used to render the calendar dropdown icon. */
+  /**
+   * Specify the element used to render the calendar dropdown
+   * icon.
+   */
   dateIcon: PropTypes.node,
 
-  /** Specify the element used to render the time list dropdown icon. */
+  /**
+   * Specify the element used to render the time list dropdown
+   * icon.
+   */
   timeIcon: PropTypes.node,
 
   dropUp: PropTypes.bool,
@@ -146,19 +165,24 @@ let propTypes = {
   placeholder: PropTypes.string,
   name: PropTypes.string,
   autoFocus: PropTypes.bool,
+
   /**
    * @example ['disabled', ['new Date()']]
    */
   disabled: CustomPropTypes.disabled,
+
   /**
    * @example ['readOnly', ['new Date()']]
    */
   readOnly: CustomPropTypes.disabled,
 
   /**
-   * Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
-   * or provide a function that returns a date to handle parsing yourself. When `parse` is unspecified and
-   * the `format` prop is a `string` parse will automatically use that format as its default.
+   * Determines how the widget parses the typed date string
+   * into a Date object. You can provide an array of formats
+   * to try, or provide a function that returns a date to
+   * handle parsing yourself. When `parse` is unspecified and
+   * the `format` prop is a `string` parse will automatically
+   * use that format as its default.
    */
   parse: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.string),
@@ -243,6 +267,7 @@ class DateTimePicker extends React.Component {
     this.state = {
       focused: false,
       messages: getMessages(this.props.messages),
+
     }
   }
 
@@ -254,13 +279,12 @@ class DateTimePicker extends React.Component {
   handleChange = (date, str, constrain) => {
     let { onChange, value } = this.props
 
-    if (constrain) date = this.inRangeValue(date)
+    if (constrain)
+      date = this.inRangeValue(date)
 
     if (onChange) {
       if (date == null || value == null) {
-        if (
-          date != value //eslint-disable-line eqeqeq
-        )
+        if (date != value /* eslint-disable-line eqeqeq*/)
           onChange(date, str)
       } else if (!dates.eq(date, value)) {
         onChange(date, str)
@@ -274,10 +298,12 @@ class DateTimePicker extends React.Component {
 
     notify(onKeyDown, [e])
 
-    if (e.defaultPrevented) return
+    if (e.defaultPrevented)
+      return
 
-    if (e.key === 'Escape' && open) this.close()
-    else if (e.altKey) {
+    if (e.key === 'Escape' && open) {
+      this.close()
+    } else if (e.altKey) {
       if (e.key === 'ArrowDown') {
         e.preventDefault()
         this.open()
@@ -286,8 +312,10 @@ class DateTimePicker extends React.Component {
         this.close()
       }
     } else if (open) {
-      if (open === 'date') this.calRef.inner.handleKeyDown(e)
-      if (open === 'time') this.timeRef.handleKeyDown(e)
+      if (open === 'date')
+        this.calRef.inner.handleKeyDown(e)
+      if (open === 'time')
+        this.timeRef.handleKeyDown(e)
     }
   }
 
