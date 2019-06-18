@@ -15,6 +15,7 @@ the excellent [`react-list`](https://github.com/orgsync/react-list).
 ```js
 import DropdownList from 'react-widgets/lib/DropdownList';
 import virtualize from 'react-widgets-virtualized';
+import "react-widgets-virtualized/lib/styles.css";
 
 let VirtualDropdownList = virtualize(DropdownList);
 
