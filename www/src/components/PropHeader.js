@@ -10,7 +10,7 @@ import Type from './Type';
 
 const controllableProps = {
   value: 'onChange',
-  searchTerm: 'onSeach',
+  searchTerm: 'onSearch',
   open: 'onToggle',
   currentDate: 'onCurrentDateChange',
 }
