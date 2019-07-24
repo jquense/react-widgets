@@ -262,6 +262,7 @@ function Multiselect(uncontrolledProps) {
     listComponent: List,
     data: rawData,
     messages: userMessages,
+    groupBy: _,
     ...elementProps
   } = useUncontrollable(uncontrolledProps, {
     open: 'onToggle',
