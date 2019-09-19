@@ -1,38 +1,34 @@
-import React, { useMemo, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
 import cn from 'classnames'
+import PropTypes from 'prop-types'
+import React, { useImperativeHandle, useMemo, useRef, useState } from 'react'
 import useUncontrollable from 'uncontrollable/hook'
-
-import Widget from './Widget'
-import WidgetPicker from './WidgetPicker'
+import useEventCallback from '@restart/hooks/useEventCallback'
+import { caretDown } from './Icon'
+import Input from './Input'
 import List from './List'
 import Popup from './Popup'
 import Select from './Select'
-import Input from './Input'
+import Widget from './Widget'
+import WidgetPicker from './WidgetPicker'
 import { useMessagesWithDefaults } from './messages'
-
 import { useActiveDescendant } from './util/A11y'
-import * as CustomPropTypes from './util/PropTypes'
 import * as Filter from './util/Filter'
-import { caretDown } from './Icon'
-
-import { createEditableCallback } from './util/interaction'
-
+import * as CustomPropTypes from './util/PropTypes'
 import { useAccessors } from './util/getAccessors'
+import {
+  useDropodownToggle,
+  useFilteredData,
+  useFocusedItem,
+  useList,
+} from './util/hooks'
+import { createEditableCallback } from './util/interaction'
 import useFocusManager from './util/useFocusManager'
 import useScrollManager from './util/useScrollManager'
 import {
-  useList,
-  useFilteredData,
-  useFocusedItem,
-  useDropodownToggle,
-} from './util/hooks'
-import {
-  useInstanceId,
   notify,
   useFirstFocusedRender,
+  useInstanceId,
 } from './util/widgetHelpers'
-import useEventCallback from '@restart/hooks/useEventCallback'
 
 let propTypes = {
   ...Filter.propTypes,
@@ -122,7 +118,7 @@ const defaultProps = {
 
  * @public
  */
-function Combobox(uncontrolledProps) {
+const Combobox = React.forwardRef((uncontrolledProps, outerRef) => {
   const {
     id,
     autoSelectMatches,
@@ -342,6 +338,10 @@ function Combobox(uncontrolledProps) {
    * Rendering
    */
 
+  useImperativeHandle(outerRef, () => ({
+    focus,
+  }))
+
   let shouldRenderPopup = useFirstFocusedRender(focused, open)
 
   let valueItem = accessors.findOrSelf(data, value)
@@ -439,7 +439,9 @@ function Combobox(uncontrolledProps) {
       )}
     </Widget>
   )
-}
+})
+
+Combobox.displayName = 'Combobox'
 Combobox.propTypes = propTypes
 Combobox.defaultProps = defaultProps
 export default Combobox

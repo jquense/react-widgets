@@ -1,34 +1,30 @@
-import PropTypes from 'prop-types'
-import React, { useRef } from 'react'
-
-import useUncontrollable from 'uncontrollable/hook'
 import cn from 'classnames'
-
-import useTabTrap from './util/tabTrap'
-
-import Widget from './Widget'
-import WidgetPicker from './WidgetPicker'
-import Popup from './Popup'
+import PropTypes from 'prop-types'
+import React, { useImperativeHandle, useRef } from 'react'
+import useUncontrollable from 'uncontrollable/hook'
 import Button from './Button'
 import Calendar from './Calendar'
 import DateTimePickerInput from './DateTimePickerInput'
-import TimeInput from './TimeInput'
-import Select from './Select'
-// import TimeList from './TimeList'
-
-import * as CustomPropTypes from './util/PropTypes'
+import { calendar } from './Icon'
 import LocalizationProvider from './LocalizationProvider'
-import { createEditableCallback } from './util/interaction'
-import useFocusManager from './util/useFocusManager'
-
+import Popup from './Popup'
+import Select from './Select'
+import TimeInput from './TimeInput'
+import Widget from './Widget'
+import WidgetPicker from './WidgetPicker'
+import * as CustomPropTypes from './util/PropTypes'
 import dates from './util/dates'
+import { useDropodownToggle } from './util/hooks'
+import { createEditableCallback } from './util/interaction'
+import useTabTrap from './util/tabTrap'
+import useFocusManager from './util/useFocusManager'
 import {
   notify,
-  useInstanceId,
   useFirstFocusedRender,
+  useInstanceId,
 } from './util/widgetHelpers'
-import { calendar } from './Icon'
-import { useDropodownToggle } from './util/hooks'
+
+// import TimeList from './TimeList'
 
 let propTypes = {
   /**
@@ -195,7 +191,7 @@ const defaultProps = {
  * @public
  * @extends Calendar
  */
-function DateTimePicker(uncontrolledProps) {
+const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
   const {
     id,
     value,
@@ -360,6 +356,10 @@ function DateTimePicker(uncontrolledProps) {
       : ''
   }
 
+  useImperativeHandle(outerRef, () => ({
+    focus,
+  }))
+
   let shouldRenderList = useFirstFocusedRender(focused, open)
 
   let inputReadOnly =
@@ -454,7 +454,7 @@ function DateTimePicker(uncontrolledProps) {
       )}
     </Widget>
   )
-}
+})
 
 DateTimePicker.displayName = 'DateTimePicker'
 DateTimePicker.propTypes = propTypes

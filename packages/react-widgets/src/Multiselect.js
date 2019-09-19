@@ -3,45 +3,40 @@
 import cn from 'classnames'
 import closest from 'dom-helpers/query/closest'
 import PropTypes from 'prop-types'
-import React, { useMemo, useRef, useEffect } from 'react'
+import React, { useEffect, useImperativeHandle, useMemo, useRef } from 'react'
 import useUncontrollable from 'uncontrollable/hook'
-
-import Widget from './Widget'
-import WidgetPicker from './WidgetPicker'
-import Select from './Select'
-import Popup from './Popup'
+import useEventCallback from '@restart/hooks/useEventCallback'
+import AddToListOption from './AddToListOption'
+import { caretDown, times } from './Icon'
+import List from './List'
 import MultiselectInput from './MultiselectInput'
 import TagList from './MultiselectTagList'
-import List from './List'
-import AddToListOption from './AddToListOption'
-
-import * as Filter from './util/Filter'
-
+import Popup from './Popup'
+import Select from './Select'
+import Widget from './Widget'
+import WidgetPicker from './WidgetPicker'
 import { useMessagesWithDefaults } from './messages'
 import { setActiveDescendant } from './util/A11y'
-
+import * as Filter from './util/Filter'
 import * as CustomPropTypes from './util/PropTypes'
-import { defaultGetDataState } from './util/reduceToListState'
-import { createEditableCallback } from './util/interaction'
-import { useAccessors } from './util/getAccessors'
-import useScrollManager from './util/useScrollManager'
-import useFocusManager from './util/useFocusManager'
-import {
-  useInstanceId,
-  notify,
-  useFirstFocusedRender,
-} from './util/widgetHelpers'
-import { caretDown, times } from './Icon'
 import canShowCreate from './util/canShowCreate'
-import useEventCallback from '@restart/hooks/useEventCallback'
-
+import { useAccessors } from './util/getAccessors'
 import {
   CREATE_OPTION,
-  useList,
+  useDropodownToggle,
   useFilteredData,
   useFocusedItem,
-  useDropodownToggle,
+  useList,
 } from './util/hooks'
+import { createEditableCallback } from './util/interaction'
+import { defaultGetDataState } from './util/reduceToListState'
+import useFocusManager from './util/useFocusManager'
+import useScrollManager from './util/useScrollManager'
+import {
+  notify,
+  useFirstFocusedRender,
+  useInstanceId,
+} from './util/widgetHelpers'
 
 const ENTER = 13
 
@@ -218,7 +213,7 @@ function useMultiselectData(
  *
  * @public
  */
-function Multiselect(uncontrolledProps) {
+const Multiselect = React.forwardRef((uncontrolledProps, outerRef) => {
   const {
     id,
     autoFocus,
@@ -547,6 +542,10 @@ function Multiselect(uncontrolledProps) {
    * Render
    */
 
+  useImperativeHandle(outerRef, () => ({
+    focus,
+  }))
+
   let shouldRenderPopup = useFirstFocusedRender(focused, open)
 
   let itemLabels = dataItems.map(item => accessors.text(item))
@@ -687,8 +686,9 @@ function Multiselect(uncontrolledProps) {
       )}
     </Widget>
   )
-}
+})
 
+Multiselect.displayName = 'Multiselect'
 Multiselect.propTypes = propTypes
 Multiselect.defaultProps = defaultProps
 

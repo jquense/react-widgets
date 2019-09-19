@@ -1,44 +1,40 @@
-import React, { useMemo, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
 import cn from 'classnames'
+import PropTypes from 'prop-types'
+import React, { useImperativeHandle, useMemo, useRef, useState } from 'react'
 import useUncontrollable from 'uncontrollable/hook'
 import useEventCallback from '@restart/hooks/useEventCallback'
-
-import Widget from './Widget'
-import WidgetPicker from './WidgetPicker'
-import Select from './Select'
-import Popup from './Popup'
-import List from './List'
+import useTimeout from '@restart/hooks/useTimeout'
 import AddToListOption from './AddToListOption'
 import DropdownListInput from './DropdownListInput'
-import { useMessagesWithDefaults } from './messages'
-
-import * as Filter from './util/Filter'
-import { useActiveDescendant } from './util/A11y'
-
-import * as CustomPropTypes from './util/PropTypes'
-import { useAccessors } from './util/getAccessors'
-import useScrollManager from './util/useScrollManager'
-import {
-  useInstanceId,
-  notify,
-  useFirstFocusedRender,
-} from './util/widgetHelpers'
-import { dataValue, dataText } from './util/dataHelpers'
 import { caretDown } from './Icon'
+import List from './List'
+import Popup from './Popup'
+import Select from './Select'
+import Widget from './Widget'
+import WidgetPicker from './WidgetPicker'
+import { useMessagesWithDefaults } from './messages'
+import { useActiveDescendant } from './util/A11y'
+import * as Filter from './util/Filter'
+import * as CustomPropTypes from './util/PropTypes'
 import canShowCreate from './util/canShowCreate'
-
-import { createEditableCallback } from './util/interaction'
-import useTimeout from '@restart/hooks/useTimeout'
-import useFocusManager from './util/useFocusManager'
+import { dataText, dataValue } from './util/dataHelpers'
+import { useAccessors } from './util/getAccessors'
 import {
   CREATE_OPTION,
-  useList,
   useAutoFocus,
+  useDropodownToggle,
   useFilteredData,
   useFocusedItem,
-  useDropodownToggle,
+  useList,
 } from './util/hooks'
+import { createEditableCallback } from './util/interaction'
+import useFocusManager from './util/useFocusManager'
+import useScrollManager from './util/useScrollManager'
+import {
+  notify,
+  useFirstFocusedRender,
+  useInstanceId,
+} from './util/widgetHelpers'
 
 const propTypes = {
   ...Filter.propTypes,
@@ -167,7 +163,7 @@ function useSearchWordBuilder(delay) {
  * A `<select>` replacement for single value lists.
  * @public
  */
-function DropdownList(uncontrolledProps) {
+const DropdownList = React.forwardRef((uncontrolledProps, outerRef) => {
   const {
     id,
     autoFocus,
@@ -211,6 +207,7 @@ function DropdownList(uncontrolledProps) {
     listComponent: List,
     data: rawData,
     messages: userMessages,
+    groupBy: _,
     ...elementProps
   } = useUncontrollable(uncontrolledProps, {
     open: 'onToggle',
@@ -459,6 +456,10 @@ function DropdownList(uncontrolledProps) {
    * Render
    */
 
+  useImperativeHandle(outerRef, () => ({
+    focus,
+  }))
+
   let valueItem = accessors.findOrSelf(data, value)
 
   let shouldRenderPopup = useFirstFocusedRender(focused, open)
@@ -575,8 +576,9 @@ function DropdownList(uncontrolledProps) {
       )}
     </Widget>
   )
-}
+})
 
+DropdownList.displayName = 'DropdownList'
 DropdownList.propTypes = propTypes
 DropdownList.defaultProps = defaultProps
 
