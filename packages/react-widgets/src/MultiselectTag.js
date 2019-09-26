@@ -39,7 +39,7 @@ class MultiselectTag extends React.Component {
   }
 
   render() {
-    const { id, children, focused, disabled } = this.props
+    const { id, children, focused, disabled, style } = this.props
 
     return (
       <li
@@ -50,6 +50,7 @@ class MultiselectTag extends React.Component {
           disabled && 'rw-state-disabled',
           focused && !disabled && 'rw-state-focus'
         )}
+        style={style}
       >
         {children}
         <div>{this.renderDelete()}</div>
