@@ -1,7 +1,6 @@
 import cn from 'classnames'
-import React from 'react'
 import PropTypes from 'prop-types'
-
+import React from 'react'
 import Button from './Button'
 
 class MultiselectTag extends React.Component {
@@ -38,7 +37,7 @@ class MultiselectTag extends React.Component {
   }
 
   render() {
-    const { id, className, children, focused, disabled } = this.props
+    const { id, className, children, focused, disabled, style } = this.props
 
     return (
       <div
@@ -48,8 +47,9 @@ class MultiselectTag extends React.Component {
           className,
           'rw-multiselect-tag',
           disabled && 'rw-state-disabled',
-          focused && !disabled && 'rw-state-focus'
+          focused && !disabled && 'rw-state-focus',
         )}
+        style={style}
       >
         <span className="rw-multiselect-tag-label">{children}</span>
         {this.renderDelete()}
