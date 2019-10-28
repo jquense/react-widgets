@@ -30,10 +30,10 @@
 
 //   openWithoutData: PropTypes.bool,
 
-//   itemComponent: CustomPropTypes.elementType,
+//   renderListGroup: PropTypes.func,
 //   selectComponent: CustomPropTypes.elementType,
 //   listComponent: CustomPropTypes.elementType,
-//   groupComponent: CustomPropTypes.elementType,
+//   renderListGroup: PropTypes.func,
 //   groupBy: CustomPropTypes.accessor,
 
 //   data: PropTypes.array,

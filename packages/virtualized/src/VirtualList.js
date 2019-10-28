@@ -1,12 +1,12 @@
 import cn from 'classnames'
-import React from 'react'
 import PropTypes from 'prop-types'
-import Listbox from 'react-widgets/lib/Listbox'
+import React from 'react'
 import BaseVirtualList from 'react-list'
+import Listbox from 'react-widgets/lib/BaseListbox'
 import ListOption from 'react-widgets/lib/ListOption'
 import ListOptionGroup from 'react-widgets/lib/ListOptionGroup'
-import { groupBySortedKeys } from 'react-widgets/lib/util/_'
 import * as CustomPropTypes from 'react-widgets/lib/util/PropTypes'
+import { groupBySortedKeys } from 'react-widgets/lib/util/_'
 
 export const virtualListPropTypes = {
   itemSizeEstimator: PropTypes.func,
@@ -133,7 +133,7 @@ class VirtualList extends React.Component {
     let { className, messages } = this.props
     return (
       <Listbox
-        nodeRef={ref}
+        ref={ref}
         className={cn(className, 'rw-virtual-list')}
         emptyListMessage={messages.emptyList(this.props)}
       >
@@ -235,7 +235,7 @@ class VirtualList extends React.Component {
       <div
         className={cn(
           'rw-virtual-list-wrapper',
-          type === 'uniform' && 'rw-virtual-list-fixed'
+          type === 'uniform' && 'rw-virtual-list-fixed',
         )}
       >
         <BaseVirtualList

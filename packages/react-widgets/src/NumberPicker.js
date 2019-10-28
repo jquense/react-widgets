@@ -1,19 +1,18 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useRef } from 'react'
-import useUncontrolled from 'uncontrollable/hook'
-
+import { useUncontrolled } from 'uncontrollable'
+import Button from './Button'
+import { caretDown, caretUp } from './Icon'
+import LocalizationProvider from './LocalizationProvider'
+import NumberInput from './NumberInput'
+import Select from './Select'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
-import Select from './Select'
-import NumberInput from './NumberInput'
-import Button from './Button'
-import LocalizationProvider from './LocalizationProvider'
+import * as CustomPropTypes from './util/PropTypes'
 import { createEditableCallback } from './util/interaction'
 import useFocusManager from './util/useFocusManager'
 import { notify } from './util/widgetHelpers'
-import * as CustomPropTypes from './util/PropTypes'
-import { caretUp, caretDown } from './Icon'
 
 // my tests in ie11/chrome/FF indicate that keyDown repeats
 // at about 35ms+/- 5ms after an initial 500ms delay. callback fires on the leading edge

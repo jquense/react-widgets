@@ -1,13 +1,13 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useImperativeHandle, useMemo, useRef, useState } from 'react'
-import useUncontrollable from 'uncontrollable/hook'
+import { useUncontrolled } from 'uncontrollable'
 import useEventCallback from '@restart/hooks/useEventCallback'
 import useTimeout from '@restart/hooks/useTimeout'
 import AddToListOption from './AddToListOption'
 import DropdownListInput from './DropdownListInput'
 import { caretDown } from './Icon'
-import List from './List'
+import Listbox from './Listbox'
 import Popup from './Popup'
 import Select from './Select'
 import Widget from './Widget'
@@ -64,11 +64,11 @@ const propTypes = {
    * value
    */
   valueComponent: CustomPropTypes.elementType,
-  itemComponent: CustomPropTypes.elementType,
+  renderListItem: PropTypes.func,
   listComponent: CustomPropTypes.elementType,
   optionComponent: CustomPropTypes.elementType,
 
-  groupComponent: CustomPropTypes.elementType,
+  renderListGroup: PropTypes.func,
   groupBy: CustomPropTypes.accessor,
 
   /**
@@ -124,7 +124,7 @@ const defaultProps = {
   defaultSearchTerm: '',
   allowCreate: false,
   selectIcon: caretDown,
-  listComponent: List,
+  listComponent: Listbox,
 }
 
 function useSearchWordBuilder(delay) {
@@ -200,8 +200,8 @@ const DropdownList = React.forwardRef((uncontrolledProps, outerRef) => {
     onClick,
     inputProps,
     listProps,
-    itemComponent,
-    groupComponent,
+    renderListItem,
+    renderListGroup,
     optionComponent,
     valueComponent,
     listComponent: List,
@@ -209,7 +209,7 @@ const DropdownList = React.forwardRef((uncontrolledProps, outerRef) => {
     messages: userMessages,
     groupBy: _,
     ...elementProps
-  } = useUncontrollable(uncontrolledProps, {
+  } = useUncontrolled(uncontrolledProps, {
     open: 'onToggle',
     value: 'onChange',
     searchTerm: 'onSearch',
@@ -532,7 +532,7 @@ const DropdownList = React.forwardRef((uncontrolledProps, outerRef) => {
           dropUp={dropUp}
           transition={popupTransition}
           onEntered={focus}
-          onEntering={() => listRef.current.forceUpdate()}
+          onEntering={() => listRef.current.move()}
         >
           <List
             {...listProps}
@@ -544,8 +544,8 @@ const DropdownList = React.forwardRef((uncontrolledProps, outerRef) => {
             searchTerm={searchTerm}
             textAccessor={accessors.text}
             valueAccessor={accessors.value}
-            itemComponent={itemComponent}
-            groupComponent={groupComponent}
+            renderListItem={renderListItem}
+            renderListGroup={renderListGroup}
             optionComponent={optionComponent}
             selectedItem={selectedItem}
             focusedItem={open ? focusedItem : null}

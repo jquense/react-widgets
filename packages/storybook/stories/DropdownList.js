@@ -1,9 +1,8 @@
 import React from 'react'
-import { storiesOf } from '@storybook/react'
-
-import { action } from './helpers'
-import Container from './Container'
 import DropdownList from 'react-widgets/lib/DropdownList'
+import { storiesOf } from '@storybook/react'
+import Container from './Container'
+import { action } from './helpers'
 
 let generateNames = global.generateNames
 
@@ -18,7 +17,7 @@ const states = ['NJ', 'NY']
 storiesOf('DropdownList', module)
   .add('DropdownList', () => (
     <Container>
-      <DropdownList {...props} changeOnItemActive filter="contains" />
+      <DropdownList {...props} filter="contains" />
     </Container>
   ))
   .add('open', () => (

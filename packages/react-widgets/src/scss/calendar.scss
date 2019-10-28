@@ -85,9 +85,7 @@
     );
   }
 
-  &:focus {
-    @include focus-ring();
-  }
+  @include focus();
 
   &.rw-state-selected {
     @include state-select(

@@ -1,7 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ListOption from './ListOption';
-
+import PropTypes from 'prop-types'
+import React from 'react'
+import ListOption from './ListOption'
 
 class SelectListItem extends React.Component {
   static propTypes = {
@@ -14,27 +13,27 @@ class SelectListItem extends React.Component {
 
     onChange: PropTypes.func.isRequired,
     onMouseDown: PropTypes.func.isRequired,
-  };
+  }
 
-  handleChange = (e) => {
-    let { onChange, disabled, dataItem } = this.props;
+  handleChange = e => {
+    let { onChange, disabled, dataItem } = this.props
 
-    if (!disabled)
-      onChange(dataItem, e.target.checked)
-  };
+    if (!disabled) onChange(dataItem, e.target.checked)
+  }
 
   render() {
     let {
-        children
-      , disabled
-      , readOnly
-      , name
-      , type
-      , checked
-      , onMouseDown
-      , ...props } = this.props;
+      children,
+      disabled,
+      readOnly,
+      name,
+      type,
+      checked,
+      onMouseDown,
+      ...props
+    } = this.props
 
-    delete props.onChange;
+    delete props.onChange
 
     return (
       <ListOption
@@ -43,25 +42,23 @@ class SelectListItem extends React.Component {
         disabled={disabled}
         aria-checked={!!checked}
       >
-        <label
-          onMouseDown={onMouseDown}
-          className="rw-select-list-label"
-        >
+        <label onMouseDown={onMouseDown} className="rw-select-list-label">
           <input
+            readOnly
             name={name}
             type={type}
-            tabIndex='-1'
+            // tabIndex="-1"
             checked={checked}
-            disabled={disabled || !!readOnly}
-            role='presentation'
+            disabled={true}
+            role="presentation"
             className="rw-select-list-input"
             onChange={this.handleChange}
           />
-            {children}
+          {children}
         </label>
       </ListOption>
-    );
+    )
   }
 }
 
-export default SelectListItem;
+export default SelectListItem

@@ -1,7 +1,6 @@
 import invariant from 'invariant'
 import PropTypes from 'prop-types'
 import React, { useMemo, useRef, useState } from 'react'
-
 import Input from './Input'
 import * as CustomPropTypes from './util/PropTypes'
 
@@ -74,10 +73,11 @@ const DateTimePickerInput = React.forwardRef(
         checkFormats = checkFormats.concat(parse).filter(Boolean)
       }
 
-      for (let f of checkFormats) {
-        date = localizer.parseDate(string, f)
+      for (let i = 0; i < checkFormats.length; i++) {
+        date = localizer.parseDate(string, checkFormats[i])
         if (date) return date
       }
+
       return null
     }
 

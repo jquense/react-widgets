@@ -1,17 +1,14 @@
 import cn from 'classnames'
-import events from 'dom-helpers/events'
-import css from 'dom-helpers/style'
-import getHeight from 'dom-helpers/query/height'
-import {
-  transitionDuration,
-  transitionEnd,
-} from 'dom-helpers/transition/properties'
+import addEventListener from 'dom-helpers/addEventListener'
+import css from 'dom-helpers/css'
+import getHeight from 'dom-helpers/height'
+import { emulateTransitionEnd, parseDuration } from 'dom-helpers/transitionEnd'
 import PropTypes from 'prop-types'
 import React from 'react'
 import Transition, {
   ENTERING,
-  EXITING,
   EXITED,
+  EXITING,
 } from 'react-transition-group/Transition'
 
 const transitionClasses = {
@@ -28,12 +25,6 @@ const propTypes = {
   onExited: PropTypes.func,
   onEntering: PropTypes.func,
   onEntered: PropTypes.func,
-}
-
-function parseDuration(node) {
-  let str = css(node, transitionDuration)
-  let mult = str.indexOf('ms') === -1 ? 1000 : 1
-  return parseFloat(str) * mult
 }
 
 class SlideDownTransition extends React.Component {
@@ -80,16 +71,10 @@ class SlideDownTransition extends React.Component {
     if (this.props.onExited) this.props.onExited()
   }
 
-  handleTransitionEnd = (node, done) => {
-    let duration = parseDuration(node.lastChild) || 0
-
-    const handler = () => {
-      events.off(node, transitionEnd, handler, false)
-      done()
-    }
-
-    setTimeout(handler, duration * 1.5)
-    events.on(node, transitionEnd, handler, false)
+  handleTransitionEnd = (el, done) => {
+    const duration = parseDuration(el.firstChild)
+    emulateTransitionEnd(el, duration + 10)
+    addEventListener(el, 'transitionend', done, { once: true })
   }
 
   attachRef = ref => (this.element = ref)
@@ -101,7 +86,6 @@ class SlideDownTransition extends React.Component {
       <Transition
         appear
         in={this.props.in}
-        timeout={5000}
         onEnter={this.setContainerHeight}
         onEntering={this.handleEntering}
         onEntered={this.handleEntered}

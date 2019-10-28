@@ -1,9 +1,8 @@
-import canUseDOM from 'dom-helpers/util/inDOM'
 import activeElement from 'dom-helpers/activeElement'
+import canUseDOM from 'dom-helpers/canUseDOM'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-
 import Input from './Input'
 import * as CustomPropTypes from './util/PropTypes'
 

@@ -38,6 +38,19 @@
   box-shadow: 0 0 0 $width $color;
 }
 
+@mixin focus($color: $widget-focus-color, $width: $widget-focus-width) {
+  &:focus {
+    z-index: 1;
+    box-shadow: 0 0 0 $width $color;
+  }
+
+  &:focus:not(:focus-visible),
+  .js-focus-visible &:focus:not([data-focus-visible-added]) {
+    z-index: auto;
+    box-shadow: none;
+  }
+}
+
 @mixin border-bottom-radius($radius) {
   border-bottom-right-radius: $radius;
   border-bottom-left-radius: $radius;

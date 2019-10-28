@@ -1,13 +1,12 @@
-
-parser: babel-eslint
-extends: jason/react
-plugins:
-  - babel
-
+extends:
+  - jason/react
+  - eslint-config-4catalyzer-typescript
+  - prettier
 globals:
   css: false
 rules:
   global-require: 0
   quotes: 0
   no-unused-expressions: 0
-  babel/no-unused-expressions: 2
+  prefer-const: off
+  "@typescript-eslint/member-delimiter-style": "off"

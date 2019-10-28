@@ -1,22 +1,20 @@
-import React, { useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
 import cn from 'classnames'
-import useUncontrollable from 'uncontrollable/hook'
-
-import Widget from './Widget'
+import PropTypes from 'prop-types'
+import React, { useEffect, useRef } from 'react'
+import { useUncontrolled } from 'uncontrollable'
 import CalendarHeader from './CalendarHeader'
-import Month from './Month'
-import Year from './Year'
-import Decade from './Decade'
 import Century from './Century'
+import Decade from './Decade'
 import LocalizationProvider from './LocalizationProvider'
+import Month from './Month'
 import SlideTransitionGroup from './SlideTransitionGroup'
-import useFocusManager from './util/useFocusManager'
-
+import Widget from './Widget'
+import Year from './Year'
 import * as CustomPropTypes from './util/PropTypes'
 import dates from './util/dates'
-import { useInstanceId, notify } from './util/widgetHelpers'
 import { createEditableCallback } from './util/interaction'
+import useFocusManager from './util/useFocusManager'
+import { notify, useInstanceId } from './util/widgetHelpers'
 
 function useAutoFocus(autoFocus, ref) {
   useEffect(() => {
@@ -292,7 +290,7 @@ function Calendar(uncontrolledProps) {
     formats,
     view: pView,
     currentDate: pCurrentDate,
-  } = useUncontrollable(uncontrolledProps, {
+  } = useUncontrolled(uncontrolledProps, {
     value: 'onChange',
     currentDate: 'onCurrentDateChange',
     view: 'onViewChange',

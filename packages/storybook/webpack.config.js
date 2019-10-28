@@ -8,9 +8,12 @@ module.exports = ({ config }) =>
     module: {
       rules: [
         { parser: { amd: false } },
-        rules.js({
-          extends: '../../.babelrc.js',
-        }),
+        {
+          ...rules.js({
+            extends: '../../.babelrc.js',
+          }),
+          test: /\.[jt]sx?$/,
+        },
         rules.astroturf({ extension: '.scss' }),
         rules.css(),
         rules.sass(),
@@ -20,6 +23,7 @@ module.exports = ({ config }) =>
     },
     resolve: {
       symlinks: false,
+      extensions: ['.mjs', '.js', '.ts', '.tsx', '.json'],
       alias: {
         'react-widgets$': path.resolve('../react-widgets/src/index.js'),
         'react-widgets/lib': path.resolve('../react-widgets/src'),

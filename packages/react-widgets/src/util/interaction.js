@@ -1,7 +1,6 @@
+import matches from 'dom-helpers/matches'
 import { useCallback } from 'react'
 import useEventCallback from '@restart/hooks/useEventCallback'
-
-import matches from 'dom-helpers/query/matches'
 
 export const isInDisabledFieldset = node => {
   return !!node && matches(node, 'fieldset[disabled] *')

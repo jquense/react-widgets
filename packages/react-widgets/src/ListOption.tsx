@@ -1,16 +1,29 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import cn from 'classnames'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 const propTypes = {
   activeId: PropTypes.string,
   dataItem: PropTypes.any,
   index: PropTypes.number,
-  focused: PropTypes.bool,
+  // focused: PropTypes.bool,
   selected: PropTypes.bool,
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
   component: PropTypes.string,
+  tabIndex: PropTypes.number,
+}
+
+export interface ListOptionProps
+  extends Omit<React.HTMLProps<HTMLDivElement>, 'onSelect'> {
+  dataItem: object
+  activeId?: string
+  focused: boolean
+  selected: boolean
+  disabled: boolean
+  onSelect: (dataItem: object, event: React.MouseEvent) => void
+  index?: number
+  component?: React.ElementType
 }
 
 function ListOption({
@@ -22,10 +35,11 @@ function ListOption({
   selected,
   disabled,
   onSelect,
+  tabIndex = -1,
   index: _,
   component: Tag = 'div',
   ...props
-}) {
+}: ListOptionProps) {
   const handleSelect = event => {
     if (onSelect && !disabled) onSelect(dataItem, event)
   }
@@ -42,7 +56,7 @@ function ListOption({
     <Tag
       id={id}
       role="option"
-      tabIndex={!disabled ? '-1' : undefined}
+      tabIndex={disabled ? undefined : tabIndex}
       aria-selected={!!selected}
       className={cn('rw-list-option', className, classes)}
       onClick={handleSelect}

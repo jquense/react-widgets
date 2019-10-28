@@ -1,22 +1,27 @@
-import React, { useRef, useState, useMemo, useImperativeHandle } from 'react'
-import PropTypes from 'prop-types'
 import cn from 'classnames'
-import useUncontrollable from 'uncontrollable/hook'
+import PropTypes from 'prop-types'
+import React, {
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { useUncontrolled } from 'uncontrollable'
 import useTimeout from '@restart/hooks/useTimeout'
-import List from './List'
-import Widget from './Widget'
+import Listbox from './Listbox'
 import SelectListItem from './SelectListItem'
-
-import { makeArray } from './util/_'
-import { useActiveDescendant } from './util/A11y'
+import Widget from './Widget'
 import { useMessagesWithDefaults } from './messages'
+import { useActiveDescendant } from './util/A11y'
 import * as CustomPropTypes from './util/PropTypes'
+import { makeArray } from './util/_'
+import { useAccessors } from './util/getAccessors'
 import { useAutoFocus, useList } from './util/hooks'
 import { createEditableCallback } from './util/interaction'
-import { useInstanceId, notify } from './util/widgetHelpers'
-import { useAccessors } from './util/getAccessors'
 import useFocusManager from './util/useFocusManager'
 import useScrollManager from './util/useScrollManager'
+import { notify, useInstanceId } from './util/widgetHelpers'
 
 const BusyMask = () => <span className="rw-loading-mask" />
 
@@ -53,11 +58,11 @@ const propTypes = {
   onKeyDown: PropTypes.func,
   onKeyPress: PropTypes.func,
 
-  itemComponent: CustomPropTypes.elementType,
+  renderListItem: PropTypes.func,
   busySpinner: PropTypes.node,
   listComponent: CustomPropTypes.elementType,
 
-  groupComponent: CustomPropTypes.elementType,
+  renderListGroup: PropTypes.func,
   groupBy: CustomPropTypes.accessor,
 
   valueField: CustomPropTypes.accessor,
@@ -87,7 +92,7 @@ const defaultProps = {
   delay: 250,
   data: [],
   busySpinner: <BusyMask />,
-  listComponent: List,
+  listComponent: Listbox,
 }
 
 /**
@@ -127,13 +132,13 @@ const SelectList = React.forwardRef((uncontrolledProps, outerRef) => {
     onKeyPress,
     onKeyDown,
     listProps,
-    itemComponent,
-    groupComponent,
+    renderListItem,
+    renderListGroup,
     listComponent: List,
     messages: userMessages,
     ...elementProps
-  } = useUncontrollable(uncontrolledProps, { value: 'onChange' })
-
+  } = useUncontrolled(uncontrolledProps, { value: 'onChange' })
+  const itemType = multiple ? 'checkbox' : 'radio'
   const ref = useRef()
   const listRef = useRef()
 
@@ -167,7 +172,6 @@ const SelectList = React.forwardRef((uncontrolledProps, outerRef) => {
           let allowed = Array.isArray(disabled)
             ? dataItems.filter(v => !accessors.includes(disabled, v))
             : dataItems
-
           setFocusedItem(
             getFirstValue(data, allowed) || list.nextEnabled(data[0]),
           )
@@ -181,6 +185,14 @@ const SelectList = React.forwardRef((uncontrolledProps, outerRef) => {
     () => makeArray(value).map(item => accessors.findOrSelf(data, item)),
     [data, value, accessors],
   )
+
+  useEffect(() => {
+    const node = ref.current
+    console.log('focus effect', focused, node)
+    if (!node || !focused) return
+    const next = node.querySelector(`[role="${itemType}"][tabindex="0"]`)
+    next?.focus()
+  }, [focusedItem, focused, ref, itemType])
 
   useActiveDescendant(ref, activeId, true, [focusedItem])
 
@@ -338,15 +350,17 @@ const SelectList = React.forwardRef((uncontrolledProps, outerRef) => {
     }, delay)
   }
 
-  const renderListItem = itemProps => {
+  const renderListOption = ({ focused, className, ...itemProps }) => {
     return (
       <SelectListItem
         {...itemProps}
+        tabIndex={focused ? 0 : -1}
         name={name || itemName}
-        type={multiple ? 'checkbox' : 'radio'}
+        type={itemType}
         readOnly={disabled === true || readOnly}
         onChange={handleChange}
-        onMouseDown={handleMouseDown}
+        // onMouseDown={handleMouseDown}
+        className={cn(className, 'rw-select-list-item')}
         checked={accessors.includes(dataItems, itemProps.dataItem)}
       />
     )
@@ -359,7 +373,7 @@ const SelectList = React.forwardRef((uncontrolledProps, outerRef) => {
       id={widgetId}
       onKeyDown={handleKeyDown}
       onKeyPress={handleKeyPress}
-      focused={focused}
+      // focused={focused}
       disabled={disabled}
       readOnly={readOnly}
       role="radiogroup"
@@ -376,17 +390,16 @@ const SelectList = React.forwardRef((uncontrolledProps, outerRef) => {
       <List
         {...listProps}
         role="radiogroup"
-        tabIndex={tabIndex || '0'}
         id={listId}
-        activeId={activeId}
         data={data}
+        // tabIndex={tabIndex || '0'}
         dataState={list.dataState}
         isDisabled={list.isDisabled}
         textAccessor={accessors.text}
         valueAccessor={accessors.value}
-        itemComponent={itemComponent}
-        groupComponent={groupComponent}
-        optionComponent={renderListItem}
+        renderListItem={renderListItem}
+        renderListGroup={renderListGroup}
+        optionComponent={renderListOption}
         focusedItem={focused && !disabled && !readOnly && focusedItem}
         onMove={handleScroll}
         messages={{ emptyList: messages.emptyList }}

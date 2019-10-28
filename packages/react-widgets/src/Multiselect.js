@@ -1,14 +1,12 @@
-// @flow
-
 import cn from 'classnames'
-import closest from 'dom-helpers/query/closest'
+import closest from 'dom-helpers/closest'
 import PropTypes from 'prop-types'
 import React, { useEffect, useImperativeHandle, useMemo, useRef } from 'react'
-import useUncontrollable from 'uncontrollable/hook'
+import { useUncontrolled } from 'uncontrollable'
 import useEventCallback from '@restart/hooks/useEventCallback'
 import AddToListOption from './AddToListOption'
 import { caretDown, times } from './Icon'
-import List from './List'
+import Listbox from './Listbox'
 import MultiselectInput from './MultiselectInput'
 import TagList from './MultiselectTagList'
 import Popup from './Popup'
@@ -84,15 +82,14 @@ let propTypes = {
   valueField: CustomPropTypes.accessor,
   textField: CustomPropTypes.accessor,
 
-  tagComponent: CustomPropTypes.elementType,
+  renderTagValue: PropTypes.func,
   /**
    * Control the rendering of the outer tag component, including the delete button. To control just hte tag label, `use tagComponent` instead
    */
-  tagOptionComponent: CustomPropTypes.elementType,
-  itemComponent: CustomPropTypes.elementType,
-  listComponent: CustomPropTypes.elementType,
+  renderTag: CustomPropTypes.elementType,
+  renderListItem: PropTypes.func,
 
-  groupComponent: CustomPropTypes.elementType,
+  renderListGroup: PropTypes.func,
   groupBy: CustomPropTypes.accessor,
 
   allowCreate: PropTypes.oneOf([true, false, 'onFilter']),
@@ -158,7 +155,7 @@ const defaultProps = {
   defaultSearchTerm: '',
   clearTagIcon: times,
   selectIcon: caretDown,
-  listComponent: List,
+  listComponent: Listbox,
   showPlaceholderWithValues: false,
 }
 
@@ -249,17 +246,17 @@ const Multiselect = React.forwardRef((uncontrolledProps, outerRef) => {
     onSearch,
     inputProps,
     listProps,
-    itemComponent,
-    groupComponent,
+    renderListItem,
+    renderListGroup,
+    renderTagValue,
     optionComponent,
-    tagComponent,
     tagOptionComponent,
     listComponent: List,
     data: rawData,
     messages: userMessages,
     groupBy: _,
     ...elementProps
-  } = useUncontrollable(uncontrolledProps, {
+  } = useUncontrolled(uncontrolledProps, {
     open: 'onToggle',
     value: 'onChange',
     searchTerm: 'onSearch',
@@ -521,7 +518,7 @@ const Multiselect = React.forwardRef((uncontrolledProps, outerRef) => {
   function search(
     nextSearchTerm,
     originalEvent,
-    action: 'clear' | 'input' = 'input',
+    action = 'input', // : 'clear' | 'input'
   ) {
     if (nextSearchTerm !== searchTerm)
       notify(onSearch, [
@@ -601,7 +598,7 @@ const Multiselect = React.forwardRef((uncontrolledProps, outerRef) => {
           focusedItem={focusedTag}
           onDelete={handleDelete}
           tagOptionComponent={tagOptionComponent}
-          tagComponent={tagComponent}
+          renderTagValue={renderTagValue}
           ref={tagsRef}
         >
           <MultiselectInput
@@ -642,7 +639,7 @@ const Multiselect = React.forwardRef((uncontrolledProps, outerRef) => {
           dropUp={dropUp}
           open={open}
           transition={popupTransition}
-          onEntering={() => listRef.current.forceUpdate()}
+          onEntering={() => listRef.current.move()}
         >
           <List
             {...listProps}
@@ -654,8 +651,8 @@ const Multiselect = React.forwardRef((uncontrolledProps, outerRef) => {
             searchTerm={searchTerm}
             textAccessor={accessors.text}
             valueAccessor={accessors.value}
-            itemComponent={itemComponent}
-            groupComponent={groupComponent}
+            renderListItem={renderListItem}
+            renderListGroup={renderListGroup}
             optionComponent={optionComponent}
             focusedItem={focusedItem}
             onSelect={handleSelect}

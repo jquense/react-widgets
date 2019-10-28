@@ -1,18 +1,14 @@
 import classNames from 'classnames'
+import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
 import React, { useCallback, useRef, useState } from 'react'
-import useUncontrollable from 'uncontrollable/hook'
-
-import qsa from 'dom-helpers/query/querySelectorAll'
-
-import dates from './util/dates'
-
-import useFocusManager from './util/useFocusManager'
-import { createEditableCallback } from './util/interaction'
-
+import { useUncontrolled } from 'uncontrollable'
 import Button from './Button'
-import Widget from './Widget'
 import { times } from './Icon'
+import Widget from './Widget'
+import dates from './util/dates'
+import { createEditableCallback } from './util/interaction'
+import useFocusManager from './util/useFocusManager'
 
 const selectTextRange = el => {
   if (el.select) return el.select()
@@ -217,7 +213,7 @@ function TimeInput(uncontrolledProps) {
     datePart,
     onChange,
     ...props
-  } = useUncontrollable(uncontrolledProps, { value: 'onChange' })
+  } = useUncontrolled(uncontrolledProps, { value: 'onChange' })
 
   const ref = useRef()
   const hourRef = useRef()

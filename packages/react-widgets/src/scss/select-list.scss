@@ -38,6 +38,10 @@ input.rw-select-list-input {
   }
 }
 
+.rw-select-list-item {
+  @include focus();
+}
+
 .rw-loading-mask {
   content: '';
   background: $img-busy-lg no-repeat center;

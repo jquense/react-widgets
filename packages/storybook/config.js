@@ -1,10 +1,9 @@
-import { configure, addDecorator } from '@storybook/react'
-
 //import 'typeface-roboto';
 import './styles.scss'
-import decorator from './configure-globalize-old'
 
 import Chance from 'chance'
+import { addDecorator, configure } from '@storybook/react'
+import decorator from './configure-intl'
 
 let testsContext = require.context('./stories', true, /\.js$/)
 

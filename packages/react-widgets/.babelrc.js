@@ -11,7 +11,7 @@ module.exports = api => ({
         },
       },
     ],
-    '@babel/preset-flow',
+    '@babel/preset-typescript',
   ],
   plugins: [
     ['@babel/plugin-proposal-decorators', { legacy: true }],

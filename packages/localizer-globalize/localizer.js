@@ -33,15 +33,15 @@ export const defaultDateFormats = {
   year: { raw: 'yyyy' },
 
   decade: (dt, l) =>
-    `${l.format(dt, l.formats.year)} - ${l.formatDate(
+    `${l.formatDate(dt, l.dateFormats.year)} - ${l.formatDate(
       endOfDecade(dt),
-      l.formats.year,
+      l.dateFormats.year,
     )}`,
 
   century: (dt, l) =>
-    `${l.format(dt, l.formats.year)} - ${l.formatDate(
+    `${l.formatDate(dt, l.dateFormats.year)} - ${l.formatDate(
       endOfCentury(dt),
-      l.formats.year,
+      l.dateFormats.year,
     )}`,
 }
 export const defaultNumberFormats = {

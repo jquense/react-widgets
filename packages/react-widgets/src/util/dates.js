@@ -1,4 +1,4 @@
-import dateMath from 'date-arithmetic'
+import * as dateMath from 'date-arithmetic'
 
 let dates = Object.assign({}, dateMath, {
   monthsInYear(year) {

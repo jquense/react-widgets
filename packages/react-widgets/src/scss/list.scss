@@ -5,6 +5,10 @@
   overflow-y: auto;
   padding-top: $list-padding-y;
   padding-bottom: $list-padding-y;
+
+  :not(.rw-popup) > & {
+    @extend .rw-widget-container;
+  }
 }
 
 .rw-list-option {
@@ -34,11 +38,6 @@
   &.rw-state-readonly {
     @include state-disabled();
     @include disabled-color($list-color);
-
-    // &:hover {
-    //   background: none;
-    //   border-color: transparent;
-    // }
   }
 }
 

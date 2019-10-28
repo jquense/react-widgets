@@ -1,18 +1,22 @@
-import * as PropTypes from 'prop-types';
-import React from 'react';
-
-import Listbox from './Listbox';
-import ListOption from './ListOption';
+import * as PropTypes from 'prop-types'
+import React from 'react'
+import Listbox from './BaseListbox'
+import ListOption from './ListOption'
 
 const propTypes = {
   searchTerm: PropTypes.string,
   focused: PropTypes.bool,
   onSelect: PropTypes.func.isRequired,
   activeId: PropTypes.string,
-};
+}
 
 function AddToListOption({
-  searchTerm, onSelect, focused, children, activeId, ...props
+  searchTerm,
+  onSelect,
+  focused,
+  children,
+  activeId,
+  ...props
 }) {
   return (
     <Listbox {...props} className="rw-list-option-create">
@@ -25,9 +29,9 @@ function AddToListOption({
         {children}
       </ListOption>
     </Listbox>
-  );
+  )
 }
 
-AddToListOption.propTypes = propTypes;
+AddToListOption.propTypes = propTypes
 
-export default AddToListOption;
+export default AddToListOption

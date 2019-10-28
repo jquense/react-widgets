@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useImperativeHandle, useRef } from 'react'
-import useUncontrollable from 'uncontrollable/hook'
+import { useUncontrolled } from 'uncontrollable'
 import Button from './Button'
 import Calendar from './Calendar'
 import DateTimePickerInput from './DateTimePickerInput'
@@ -228,7 +228,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
     'aria-labelledby': ariaLabelledby,
     'aria-describedby': ariaDescribedby,
     ...elementProps
-  } = useUncontrollable(uncontrolledProps, {
+  } = useUncontrolled(uncontrolledProps, {
     open: 'onToggle',
     value: 'onChange',
     currentDate: 'onCurrentDateChange',

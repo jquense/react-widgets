@@ -6,7 +6,6 @@ function uniqueId(prefix) {
 }
 
 export function notify(handler, args) {
-  // eslint-disable-next-line babel/no-unused-expressions
   handler && handler.apply(null, [].concat(args))
 }
 

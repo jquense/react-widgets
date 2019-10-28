@@ -1,26 +1,29 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import cn from 'classnames'
-
+import PropTypes from 'prop-types'
+import React from 'react'
 import { useInstanceId } from './util/widgetHelpers'
 
 const propTypes = {
   className: PropTypes.string,
   role: PropTypes.string,
-  nodeRef: PropTypes.func,
   emptyListMessage: PropTypes.node,
 }
 
-const Listbox = React.forwardRef(
-  ({ className, role, children, emptyListMessage, nodeRef, ...props }, ref) => {
-    let id = useInstanceId()
+interface Props {
+  emptyListMessage: React.ReactNode
+  role?: string
+  className?: string
+}
+
+const Listbox = React.forwardRef<HTMLDivElement, Props>(
+  ({ className, role, children, emptyListMessage, ...props }, ref) => {
+    const id = useInstanceId()
 
     return (
       <div
         id={id}
-        ref={ref}
-        tabIndex="-1"
-        ref={nodeRef}
+        ref={ref as any}
+        tabIndex={-1}
         className={cn(className, 'rw-list')}
         role={role === undefined ? 'listbox' : role}
         {...props}
@@ -35,7 +38,7 @@ const Listbox = React.forwardRef(
   },
 )
 
-Listbox.displayName = Listbox
+Listbox.displayName = 'Listbox'
 
 Listbox.propTypes = propTypes
 

@@ -1,17 +1,27 @@
-import { useEffect, useState, useRef, useMemo } from 'react'
-import reduceToListState from './reduceToListState'
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { filter } from './Filter'
+import reduceToListState, {
+  DataState,
+  List,
+  ReduceToListOptions,
+} from './reduceToListState'
 import { notify } from './widgetHelpers'
 
 export const CREATE_OPTION = {}
 
-export function useAutoFocus(autoFocus, ref) {
+export function useAutoFocus(
+  autoFocus: boolean,
+  ref: MutableRefObject<HTMLElement>,
+) {
   useEffect(() => {
     if (autoFocus) ref.current.focus()
   }, [])
 }
 
-export function useDropodownToggle(isOpen, onToggle) {
+export function useDropodownToggle(
+  isOpen: boolean,
+  onToggle: (isOpen: boolean) => void,
+) {
   function open() {
     if (!isOpen) notify(onToggle, true)
   }
@@ -28,8 +38,11 @@ export function useDropodownToggle(isOpen, onToggle) {
   return toggle
 }
 
-export function useList(data, options) {
-  const prev = useRef()
+export function useList<TState extends DataState>(
+  data: object[],
+  options: ReduceToListOptions<TState>,
+) {
+  const prev = useRef<List<TState>>()
   const list = reduceToListState(data, prev.current, options)
   prev.current = list
   return list

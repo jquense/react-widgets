@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { ReactNode, useMemo } from 'react'
 
 const messages = {
   moveToday: 'Today',
@@ -17,7 +17,7 @@ const messages = {
   emptyList: 'There are no items in this list',
   emptyFilter: 'The filter returned no results',
 
-  createOption: (value, searchTerm) => [
+  createOption: (_value: any, searchTerm: string) => [
     ' Create option',
     searchTerm && ' ',
     searchTerm && <strong key="_">{`"${searchTerm}"`}</strong>,
@@ -26,15 +26,27 @@ const messages = {
   tagsLabel: 'Selected items',
   removeLabel: 'Remove selected item',
   noneSelected: 'no selected items',
-  selectedItems: labels => `Selected items: ${labels.join(', ')}`,
+  selectedItems: (labels: string[]) => `Selected items: ${labels.join(', ')}`,
 
   // number
   increment: 'Increment value',
   decrement: 'Decrement value',
 }
+type Messages = typeof messages
+
+export type UserProvidedMessages = {
+  [P in keyof Messages]?: ReactNode | ((...args: any[]) => ReactNode)
+}
+
+export type ProcessedMessages = {
+  [P in keyof Messages]: Messages[P] extends string
+    ? () => ReactNode
+    : Messages[P]
+}
+
 const DEFAULTS = {}
 
-export function getMessages(defaults = DEFAULTS) {
+export function getMessages(defaults: UserProvidedMessages = DEFAULTS) {
   let processed = {}
   Object.keys(messages).forEach(message => {
     let value = defaults[message]
@@ -43,8 +55,8 @@ export function getMessages(defaults = DEFAULTS) {
     processed[message] = typeof value === 'function' ? value : () => value
   })
 
-  return processed
+  return processed as ProcessedMessages
 }
 
-export const useMessagesWithDefaults = defaults =>
+export const useMessagesWithDefaults = (defaults: UserProvidedMessages) =>
   useMemo(() => getMessages(defaults), [defaults])

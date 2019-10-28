@@ -1,7 +1,5 @@
-import React from 'react'
-
 import PropTypes from 'prop-types'
-
+import React from 'react'
 import MultiselectTag from './MultiselectTag'
 import * as CustomPropTypes from './util/PropTypes'
 import { dataIndexOf } from './util/dataHelpers'
@@ -25,7 +23,7 @@ class MultiselectTagList extends React.Component {
     textAccessor: PropTypes.func.isRequired,
 
     onDelete: PropTypes.func.isRequired,
-    tagComponent: CustomPropTypes.elementType,
+    renderTagValue: PropTypes.func,
     tagOptionComponent: CustomPropTypes.elementType,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
@@ -44,8 +42,8 @@ class MultiselectTagList extends React.Component {
       focusedItem,
       children,
       clearTagIcon,
+      renderTagValue,
       tagOptionComponent: TagOption = MultiselectTag,
-      tagComponent: Tag,
     } = this.props
 
     return (
@@ -68,7 +66,7 @@ class MultiselectTagList extends React.Component {
               clearTagIcon={clearTagIcon}
               disabled={isDisabled(item, disabled, valueAccessor)}
             >
-              {Tag ? <Tag item={item} /> : textAccessor(item)}
+              {renderTagValue ? renderTagValue({ item }) : textAccessor(item)}
             </TagOption>
           )
         })}

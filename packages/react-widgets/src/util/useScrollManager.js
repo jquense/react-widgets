@@ -1,5 +1,6 @@
+import * as animationFrame from 'dom-helpers/animationFrame'
+import scrollTo from 'dom-helpers/scrollTo'
 import { useRef } from 'react'
-import scrollTo from 'dom-helpers/util/scrollTo'
 import useMounted from '@restart/hooks/useMounted'
 
 export default function useScrollManager(
@@ -28,11 +29,26 @@ export default function useScrollManager(
     if (shown || (stateBag.currentVisible && changed)) {
       if (onMove) onMove(selected, list, nextFocused)
       else {
-        if (stateBag.cancelScroll) stateBag.cancelScroll()
-        stateBag.cancelScroll = scrollTo(
-          selected,
-          false && getScrollParent(list),
-        )
+        if (stateBag.id) animationFrame.cancel(stateBag.id)
+        stateBag.id = animationFrame.request(() => {
+          const { scrollTop } = list
+          const listOffset = list.getBoundingClientRect()
+          const selectedOffset = selected.getBoundingClientRect()
+          const top = selectedOffset.top - listOffset.top + scrollTop
+          const bottom = top + selectedOffset.height
+
+          // below the fold
+          if (bottom > scrollTop + listOffset.height) {
+            list.scrollTop = bottom - listOffset.height
+          }
+          // above the fold
+          else if (top < scrollTop) {
+            list.scrollTop = top
+          }
+
+          //scrollTo(selected, list)
+          // selected.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+        })
       }
     }
   }

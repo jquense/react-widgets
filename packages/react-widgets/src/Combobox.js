@@ -1,11 +1,11 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useImperativeHandle, useMemo, useRef, useState } from 'react'
-import useUncontrollable from 'uncontrollable/hook'
+import { useUncontrolled } from 'uncontrollable'
 import useEventCallback from '@restart/hooks/useEventCallback'
 import { caretDown } from './Icon'
 import Input from './Input'
-import List from './List'
+import Listbox from './Listbox'
 import Popup from './Popup'
 import Select from './Select'
 import Widget from './Widget'
@@ -37,9 +37,10 @@ let propTypes = {
   open: PropTypes.bool,
   onToggle: PropTypes.func,
 
-  itemComponent: CustomPropTypes.elementType,
+  renderListItem: PropTypes.func,
   listComponent: CustomPropTypes.elementType,
-  groupComponent: CustomPropTypes.elementType,
+
+  renderListGroup: PropTypes.func,
   groupBy: CustomPropTypes.accessor,
 
   data: PropTypes.array,
@@ -98,7 +99,7 @@ const defaultProps = {
   filter: true,
   delay: 500,
   selectIcon: caretDown,
-  listComponent: List,
+  listComponent: Listbox,
 }
 
 /**
@@ -149,15 +150,15 @@ const Combobox = React.forwardRef((uncontrolledProps, outerRef) => {
     onKeyDown,
     inputProps,
     listProps,
-    itemComponent,
-    groupComponent,
+    renderListItem,
+    renderListGroup,
     optionComponent,
     listComponent: List,
     data: rawData,
     messages: userMessages,
     groupBy: _,
     ...elementProps
-  } = useUncontrollable(uncontrolledProps, {
+  } = useUncontrolled(uncontrolledProps, {
     open: 'onToggle',
     value: 'onChange',
   })
@@ -405,7 +406,7 @@ const Combobox = React.forwardRef((uncontrolledProps, outerRef) => {
           open={open}
           dropUp={dropUp}
           transition={popupTransition}
-          onEntering={() => listRef.current?.forceUpdate()}
+          onEntering={() => listRef.current?.move()}
         >
           <List
             {...listProps}
@@ -416,8 +417,8 @@ const Combobox = React.forwardRef((uncontrolledProps, outerRef) => {
             isDisabled={list.isDisabled}
             textAccessor={accessors.text}
             valueAccessor={accessors.value}
-            itemComponent={itemComponent}
-            groupComponent={groupComponent}
+            renderListItem={renderListItem}
+            renderListGroup={renderListGroup}
             optionComponent={optionComponent}
             selectedItem={selectedItem}
             focusedItem={open ? focusedItem : null}
