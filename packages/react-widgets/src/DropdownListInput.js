@@ -44,6 +44,7 @@ class DropdownListInput extends React.Component {
       value,
       textField,
       autoComplete,
+	  required,
       valueComponent: Component,
     } = this.props
     const { autofilling } = this.state
@@ -63,6 +64,7 @@ class DropdownListInput extends React.Component {
       <div className="rw-input rw-dropdown-list-input">
         {autoComplete !== 'off' && (
           <input
+			required={required}
             tabIndex="-1"
             name={name}
             value={val == null ? '' : val}
