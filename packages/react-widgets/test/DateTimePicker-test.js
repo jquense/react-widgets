@@ -191,7 +191,8 @@ describe('DateTimePicker', () => {
   })
 
   it('should do nothing when disabled', done => {
-    let wrapper = mount(<DateTimePicker defaultValue={new Date()} disabled />)
+    let instanceRef = React.createRef()
+    let wrapper = mount(<DateTimePicker defaultValue={new Date()} disabled ref={instanceRef} />)
 
     let input = wrapper.find('.rw-input').getDOMNode()
 
@@ -201,13 +202,14 @@ describe('DateTimePicker', () => {
     wrapper.find('.rw-i-calendar').simulate('click')
 
     setTimeout(() => {
-      expect(wrapper.instance()._values.open).to.not.equal(true)
+      expect(instanceRef.current.props.open).to.not.equal(true)
       done()
     }, 0)
   })
 
   it('should do nothing when readonly', done => {
-    let wrapper = mount(<DateTimePicker defaultValue={new Date()} readOnly />)
+    let instanceRef = React.createRef()
+    let wrapper = mount(<DateTimePicker defaultValue={new Date()} readOnly ref={instanceRef} />)
 
     let input = wrapper.find('.rw-input').getDOMNode()
 
@@ -217,25 +219,27 @@ describe('DateTimePicker', () => {
     wrapper.find('.rw-i-calendar').simulate('click')
 
     setTimeout(() => {
-      expect(wrapper.instance()._values.open).to.not.equal(true)
+      expect(instanceRef.current.props.open).to.not.equal(true)
       done()
     })
   })
 
   it('should change values on key down', () => {
+    let instanceRef = React.createRef()
+
     let change = sinon.spy()
 
-    let wrapper = mount(<DateTimePicker onChange={change} />)
+    let wrapper = mount(<DateTimePicker onChange={change} ref={instanceRef} />)
 
     let options = wrapper.find('li').map(n => n.getDOMNode())
 
     wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(wrapper.instance()._values.open).to.equal('date')
+    expect(instanceRef.current.props.open).to.equal('date')
 
     wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(wrapper.instance()._values.open).to.equal('time')
+    expect(instanceRef.current.props.open).to.equal('time')
 
     wrapper.simulate('keyDown', { key: 'Home' })
 

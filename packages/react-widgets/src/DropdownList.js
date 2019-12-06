@@ -9,7 +9,7 @@ import {
   timeoutManager,
 } from 'react-component-managers'
 import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
-import uncontrollable from 'uncontrollable'
+import { uncontrollable } from 'uncontrollable'
 
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'

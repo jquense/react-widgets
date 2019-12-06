@@ -2,7 +2,7 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import uncontrollable from 'uncontrollable'
+import { uncontrollable } from 'uncontrollable'
 import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import { autoFocus } from 'react-component-managers'
 
