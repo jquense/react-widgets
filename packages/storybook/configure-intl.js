@@ -1,7 +1,16 @@
 const React = require('react')
-const Localizer = require('react-widgets/lib/IntlLocalizer')
+const {
+  DateLocalizer,
+  NumberLocalizer,
+} = require('react-widgets/lib/IntlLocalizer')
 
-const Provider = require('react-widgets/lib/LocalizationProvider').default
-const localizer = new Localizer({ culture: 'en' })
+const Localization = require('react-widgets/lib/Localization').default
 
-module.exports = fn => <Provider localizer={localizer}>{fn()}</Provider>
+const date = new DateLocalizer({ culture: 'en' })
+const number = new NumberLocalizer({ culture: 'en' })
+
+module.exports = fn => (
+  <Localization date={date} number={number}>
+    {fn()}
+  </Localization>
+)

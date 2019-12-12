@@ -1,8 +1,8 @@
 import * as animationFrame from 'dom-helpers/animationFrame'
-import scrollTo from 'dom-helpers/scrollTo'
 import { useRef } from 'react'
 import useMounted from '@restart/hooks/useMounted'
 
+// TODO: XXXX
 export default function useScrollManager(
   ref,
   onMove,

@@ -47,7 +47,7 @@ export default class extends React.Component {
       data: list,
       defaultValue: 1,
       textField: 'name',
-      valueField: 'id',
+      dataKey: 'id',
       ...this.state,
     }
 
@@ -112,7 +112,7 @@ export default class extends React.Component {
             <DisabledItemsInput
               value={disabled}
               data={list}
-              valueField="id"
+              dataKey="id"
               textField="name"
               onChange={disabled =>
                 this.setState({

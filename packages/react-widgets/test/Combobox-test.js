@@ -1,6 +1,5 @@
-import React from 'react'
 import { mount } from 'enzyme'
-
+import React from 'react'
 import Combobox from '../src/Combobox'
 
 describe('Combobox', function() {
@@ -17,13 +16,13 @@ describe('Combobox', function() {
       .tap(c => expect(c.getDOMNode().value).to.equal('hello'))
   })
 
-  it('should respect textField and valueFields', function() {
+  it('should respect textField and dataKeys', function() {
     mount(
       <Combobox
         defaultValue={0}
         data={dataList}
         textField={i => i.label}
-        valueField="id"
+        dataKey="id"
       />,
     )
       .find('input.rw-input')
@@ -36,7 +35,7 @@ describe('Combobox', function() {
         defaultValue={0}
         data={dataList}
         textField="label"
-        valueField="id"
+        dataKey="id"
         name="hello"
       />,
     )
@@ -78,7 +77,7 @@ describe('Combobox', function() {
         value={dataList[0]}
         data={dataList}
         textField="label"
-        valueField="id"
+        dataKey="id"
       />,
     )
 
@@ -243,7 +242,7 @@ describe('Combobox', function() {
         defaultOpen
         data={dataList}
         textField="label"
-        valueField="id"
+        dataKey="id"
         onChange={change}
       />,
     )
@@ -274,7 +273,7 @@ describe('Combobox', function() {
         value={dataList[2]}
         minLength={2}
         textField="label"
-        valueField="id"
+        dataKey="id"
         onChange={change}
         onToggle={() => {}}
       />,

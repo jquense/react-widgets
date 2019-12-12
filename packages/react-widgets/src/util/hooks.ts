@@ -1,32 +1,50 @@
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react'
-import { filter } from './Filter'
-import reduceToListState, {
-  DataState,
-  List,
-  ReduceToListOptions,
-} from './reduceToListState'
+import { RefObject, useEffect, useMemo, useRef, useState } from 'react'
+import useGlobalListener from '@restart/hooks/useGlobalListener'
+import useStableMemo from '@restart/hooks/useStableMemo'
+import { Filter, filter } from './Filter'
+import { TextAccessor } from './dataHelpers'
 import { notify } from './widgetHelpers'
 
-export const CREATE_OPTION = {}
-
-export function useAutoFocus(
-  autoFocus: boolean,
-  ref: MutableRefObject<HTMLElement>,
-) {
+export function useAutoFocus(autoFocus: boolean, ref: RefObject<HTMLElement>) {
   useEffect(() => {
-    if (autoFocus) ref.current.focus()
+    if (autoFocus && ref.current) ref.current.focus()
   }, [])
 }
 
+function useImmediateUpdateEffect(
+  updater: () => void,
+  deps: React.DependencyList,
+) {
+  const firstRef = useRef(true)
+
+  useStableMemo(() => {
+    if (firstRef.current) {
+      firstRef.current = false
+      return
+    }
+
+    updater()
+  }, deps)
+}
+
+export function useStateFromProp<T>(propValue?: T) {
+  const [focusedItem, setFocusedItem] = useState<T | undefined>(propValue)
+  useImmediateUpdateEffect(() => {
+    setFocusedItem(propValue)
+  }, [propValue])
+
+  return [focusedItem, setFocusedItem] as const
+}
+
 export function useDropodownToggle(
-  isOpen: boolean,
+  isOpen: boolean | undefined,
   onToggle: (isOpen: boolean) => void,
 ) {
   function open() {
-    if (!isOpen) notify(onToggle, true)
+    if (!isOpen) notify(onToggle, [true])
   }
   function close() {
-    if (isOpen) notify(onToggle, false)
+    if (isOpen) notify(onToggle, [false])
   }
   function toggle() {
     if (isOpen) close()
@@ -38,68 +56,40 @@ export function useDropodownToggle(
   return toggle
 }
 
-export function useList<TState extends DataState>(
-  data: object[],
-  options: ReduceToListOptions<TState>,
-) {
-  const prev = useRef<List<TState>>()
-  const list = reduceToListState(data, prev.current, options)
-  prev.current = list
-  return list
-}
-
-export function useFilteredData(
-  value,
-  data,
-  filterer,
-  searchTerm,
-  minLength,
-  caseSensitive,
-  textAccessor,
+export function useFilteredData<TDataItem>(
+  data: TDataItem[],
+  filterer: Filter<TDataItem>,
+  searchTerm?: string,
+  textAccessor?: TextAccessor,
 ) {
   return useMemo(
     () =>
       filter(data, {
         searchTerm,
-        minLength,
-        caseSensitive,
         filter: filterer,
         textField: textAccessor,
       }),
-    [data, filter, searchTerm, minLength, caseSensitive, textAccessor],
+    [data, filter, searchTerm, textAccessor],
   )
 }
 
-export function useFocusedItem(
-  selectedItem,
-  data,
-  list,
-  defaultItem = data[0],
-) {
-  const ref = useRef(null)
+export function useKeyboardNavigationCheck() {
+  const [isNavigatingViaKeyboard, setIsNavigatingViaKeyboard] = useState(false)
+  useGlobalListener('keydown', ({ key }) => {
+    if (
+      key == ' ' ||
+      key === 'Tab' ||
+      key == 'Enter' ||
+      key.indexOf('Arrow') !== -1
+    ) {
+      setIsNavigatingViaKeyboard(true)
+    }
+  })
 
-  const prevSelected = ref.current
-  ref.current = selectedItem
+  // TODO: use pointerdown once we polyfill it
+  useGlobalListener('mousedown', () => {
+    setIsNavigatingViaKeyboard(false)
+  })
 
-  // Focused item defaults the first when nothing is selected
-  const startItem = selectedItem !== undefined ? selectedItem : defaultItem
-
-  const [focusedItem, setItem] = useState(() =>
-    // nextEnabled in case the first or selected item is disabled
-    list.nextEnabled(startItem),
-  )
-  const isCreateItem = focusedItem === CREATE_OPTION
-
-  // if the selectedItem has changed we reset the focusedItem to it
-  if (prevSelected !== selectedItem) {
-    setItem(selectedItem ? list.nextEnabled(selectedItem) : startItem)
-  }
-  // if the current focused item is no longer in the array (e.g. filtered out)
-  // reset it to the first enabled item
-  else if (!isCreateItem && data.indexOf(focusedItem) === -1) {
-    const nextItem = list.nextEnabled(defaultItem)
-    if (nextItem !== focusedItem) setItem(nextItem)
-  }
-
-  return [focusedItem, setItem]
+  return isNavigatingViaKeyboard
 }

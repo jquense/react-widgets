@@ -1,0 +1,9 @@
+{
+  "extends": "@4c/tsconfig/web.json",
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "declaration": true,
+    "declarationMap": true,
+    "composite": true
+  }
+}

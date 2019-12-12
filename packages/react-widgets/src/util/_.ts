@@ -1,5 +1,10 @@
 import warning from 'warning'
 
+export function toItemArray<TDataItem>(a?: TDataItem[] | boolean): TDataItem[] {
+  if (Array.isArray(a)) return a
+  return [] as TDataItem[]
+}
+
 export const makeArray = <T>(obj: T | T[]): T[] =>
   obj == null ? [] : ([] as T[]).concat(obj)
 
@@ -34,7 +39,7 @@ export function chunk<T>(array: T[], chunkSize: number): Array<T[]> {
 }
 
 export function groupBySortedKeys<TData>(
-  groupBy: keyof TData | ((item: TData) => any),
+  groupBy: string | ((item: TData) => any),
   data: TData[],
   keys: string[] = [],
 ): Record<string, TData[]> {

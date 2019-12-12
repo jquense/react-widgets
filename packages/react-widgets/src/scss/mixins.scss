@@ -42,12 +42,11 @@
   &:focus {
     z-index: 1;
     box-shadow: 0 0 0 $width $color;
-  }
 
-  &:focus:not(:focus-visible),
-  .js-focus-visible &:focus:not([data-focus-visible-added]) {
-    z-index: auto;
-    box-shadow: none;
+    [data-intent='mouse'] & {
+      z-index: auto;
+      box-shadow: none;
+    }
   }
 }
 

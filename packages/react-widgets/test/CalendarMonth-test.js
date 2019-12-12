@@ -1,8 +1,7 @@
-import React from 'react'
 import { mount } from 'enzyme'
-
+import React from 'react'
+import { useLocalizer } from '../src/Localization'
 import Month from '../src/Month'
-import { useLocalizer } from '../src/LocalizationProvider'
 
 describe('Month Component', function() {
   it('should use the right format', () => {

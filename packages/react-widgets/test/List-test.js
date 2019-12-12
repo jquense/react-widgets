@@ -1,7 +1,6 @@
-import React from 'react'
 import { mount } from 'enzyme'
-
-import List from '../src/List'
+import React from 'react'
+import List from '../src/Listbox'
 
 describe('List', () => {
   var data = [
@@ -15,7 +14,7 @@ describe('List', () => {
   let props = {
     data,
     textAccessor: v => v.first || '',
-    valueAccessor: v => v.id,
+    dataKeyAccessor: v => v.id,
     isDisabled: () => false,
     renderItem: ({ item }) => item.first,
   }
@@ -57,7 +56,7 @@ describe('List', () => {
     ).to.equal('foo')
   })
 
-  it('should respect textField and valueFields', () => {
+  it('should respect textField and dataKeys', () => {
     expect(
       mount(<List {...props} />)
         .find('[role="option"]')

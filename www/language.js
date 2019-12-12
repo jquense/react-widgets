@@ -44,7 +44,7 @@ module.exports = {
   valuePicker: d => stripIndent`
     Controls the selected value of the ${d.name}. Values can primitive, like strings
     or more complex objects. Values are usually (but not required to be) members of
-    \`data\`items, either referentially or identifiable by a \`valueField\`.
+    \`data\`items, either referentially or identifiable by a \`dataKey\`.
     Use \`defaultValue\` to set an initial value for uncontrolled widgets.
   `,
 
@@ -85,14 +85,14 @@ module.exports = {
     An array of possible values for the ${d.name}.
 
     **Tip:** When \`data\` is an array of \`objects\` consider specifying
-    \`textField\` and \`valueField\` as well.
+    \`textField\` and \`dataKey\` as well.
   `,
 
-  valueField: () => stripIndent`
+  dataKey: () => stripIndent`
     A property name that provides the value of the \`data\` items.
     This value is used to uniquely distinigush items from others in the \`data\` list.
 
-    Generally, \`valueField\` points to an Id field, or other unique identifier.
+    Generally, \`dataKey\` points to an Id field, or other unique identifier.
     When not provided, the referential identity of each data item is used.
   `,
 

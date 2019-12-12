@@ -19,14 +19,14 @@ describe('DropdownList', function() {
     ).to.equal('hello')
   })
 
-  it('should respect textField and valueFields', function() {
+  it('should respect textField and dataKeys', function() {
     expect(
       mount(
         <DropdownList
           defaultValue={0}
           data={data}
           textField={i => i.label}
-          valueField="id"
+          dataKey="id"
         />,
       )
         .find('.rw-input')
@@ -67,7 +67,7 @@ describe('DropdownList', function() {
         value={data[0]}
         data={data}
         textField="label"
-        valueField="id"
+        dataKey="id"
       />,
     )
 
@@ -217,7 +217,7 @@ describe('DropdownList', function() {
         defaultOpen
         data={data}
         textField="label"
-        valueField="id"
+        dataKey="id"
         onChange={change}
       />,
     )

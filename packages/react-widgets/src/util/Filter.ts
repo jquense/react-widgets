@@ -4,78 +4,38 @@ import { TextAccessor, dataText } from './dataHelpers'
 
 export const presets = {
   eq: (a: any, b: any) => a === b,
-  neq: (a: any, b: any) => a !== b,
-  gt: (a: any, b: any) => a > b,
-  gte: (a: any, b: any) => a >= b,
-  lt: (a: any, b: any) => a < b,
-  lte: (a: any, b: any) => a <= b,
   contains: (a: string, b: string) => a.indexOf(b) !== -1,
   startsWith: (a: string, b: string) => a.lastIndexOf(b, 0) === 0,
-  endsWith(a: string, b: string) {
-    const pos = a.length - b.length
-    const lastIndex = a.indexOf(b, pos)
-    return lastIndex !== -1 && lastIndex === pos
-  },
 }
-export type FilterFunction = (
-  item: object,
+
+export type FilterFunction<TDataItem> = (
+  item: TDataItem,
   searchTerm: string,
   idx?: number,
 ) => boolean
 export type FilterPreset = keyof typeof presets
-export type Filter = boolean | FilterPreset | FilterFunction | null
+export type Filter<TDataItem> =
+  | boolean
+  | FilterPreset
+  | FilterFunction<TDataItem>
+  | null
 
-function normalizeFilterType(
-  type: Filter,
-): FilterPreset | FilterFunction | null {
-  if (type === false) return null
-  if (type === true) return 'startsWith'
-  return type || 'eq'
-}
-
-interface NormalizedFilterOptions {
-  minLength: number
-  caseSensitive: boolean
-  filter: FilterFunction | null
-  textField: TextAccessor
-}
-
-function normalizeFilter({
+function normalizeFilter<TDataItem>({
   filter,
-  caseSensitive = false,
   textField,
-}: FilterOptions): FilterFunction | null {
-  filter = normalizeFilterType(filter)
+}: FilterOptions<TDataItem>): FilterFunction<TDataItem> | null {
+  if (filter === false) return null
+  if (typeof filter === 'function') return filter
 
-  if (typeof filter === 'function' || !filter) {
-    return filter
-  }
-
-  const filterPreset = presets[filter]
-
-  return (item: object, searchTerm: string) => {
+  const filterPreset = presets[filter === true ? 'startsWith' : filter || 'eq']
+  return (item: TDataItem, searchTerm: string) => {
     let textValue = dataText(item, textField)
-
-    if (!caseSensitive) {
-      textValue = textValue.toLowerCase()
-      searchTerm = searchTerm.toLowerCase()
-    }
-
-    return filterPreset(textValue, searchTerm)
+    return filterPreset(textValue.toLowerCase(), searchTerm.toLowerCase())
   }
-}
-
-function normalizeOptions(nextOptions: FilterOptions) {
-  const options = { ...nextOptions }
-  options.minLength = options.minLength || 0
-  options.filter = normalizeFilter(options)
-  return options as NormalizedFilterOptions
 }
 
 export const propTypes = {
   textField: CustomPropTypes.accessor,
-  caseSensitive: PropTypes.bool,
-  minLength: PropTypes.number,
   filter: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.bool,
@@ -83,61 +43,19 @@ export const propTypes = {
   ]),
 }
 
-export function indexOf(data, { searchTerm = '', ...options }: FilterOptions) {
-  const { filter, minLength } = normalizeOptions(options)
-
-  if (
-    !filter ||
-    !searchTerm ||
-    !searchTerm.trim() ||
-    searchTerm.length < minLength
-  )
-    return -1
-
-  for (let idx = 0; idx < data.length; idx++)
-    if (filter(data[idx], searchTerm, idx)) return idx
-
-  return -1
-}
-
-interface FilterOptions {
+interface FilterOptions<TDataItem> {
+  filter: Filter<TDataItem>
   searchTerm?: string
-  minLength: number
-  caseSensitive: boolean
-  filter: Filter
-  textField: TextAccessor
+  textField?: TextAccessor
 }
 
-export function filter(
-  data: object[],
-  { searchTerm = '', ...options }: FilterOptions,
+export function filter<TDataItem>(
+  data: TDataItem[],
+  { searchTerm = '', ...options }: FilterOptions<TDataItem>,
 ) {
-  const { filter, minLength } = normalizeOptions(options)
+  const filter = normalizeFilter(options)
 
-  if (
-    !filter ||
-    !searchTerm ||
-    !searchTerm.trim() ||
-    searchTerm.length < minLength
-  )
-    return data
+  if (!filter || !searchTerm.trim()) return data
 
   return data.filter((item, idx) => filter(item, searchTerm, idx))
 }
-
-// export function suggest(data, { searchTerm = '', ...options }) {
-//   let { filter, minLength } = normalizeOptions(options);
-
-//   if (
-//     !filter ||
-//     !searchTerm ||
-//     !searchTerm.trim() ||
-//     searchTerm.length < minLength
-//   )
-//     return searchTerm
-
-//   for (var idx = 0; idx < data.length; idx++)
-//     if (filter(data[idx], searchTerm, idx)) return data[idx];
-
-//   return searchTerm
-// }

@@ -75,6 +75,9 @@
   &.rw-state-disabled,
   .rw-state-disabled > &,
   fieldset[disabled] & {
+    pointer-events: none;
+    user-select: none;
+
     &,
     &:hover,
     &:active {

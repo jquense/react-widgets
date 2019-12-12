@@ -1,17 +1,17 @@
 /* eslint-disable global-require */
 
-import DropdownList from './DropdownList'
-import Combobox from './Combobox'
 import Calendar from './Calendar'
+import Combobox from './Combobox'
 import DatePicker from './DatePicker'
-import TimeInput from './TimeInput'
 import DateTimePicker from './DateTimePicker'
-import NumberPicker from './NumberPicker'
+import DropdownList from './DropdownList'
+import Localization from './Localization'
 import Multiselect from './Multiselect'
+import NumberPicker from './NumberPicker'
 import SelectList from './SelectList'
-import SlideTransitionGroup from './SlideTransitionGroup'
 import SlideDownTransition from './SlideDownTransition'
-import LocalizationProvider from './LocalizationProvider'
+import SlideTransitionGroup from './SlideTransitionGroup'
+import TimeInput from './TimeInput'
 
 export {
   DropdownList,
@@ -25,5 +25,5 @@ export {
   SelectList,
   SlideTransitionGroup,
   SlideDownTransition,
-  LocalizationProvider,
+  Localization,
 }

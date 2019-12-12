@@ -33,7 +33,7 @@ class SelectListApi extends React.Component {
           <div className='form-group'>
             <RW.SelectList
               data={list}
-              valueField='id'
+              dataKey='id'
               textField='label'
               {...this.state}
             />
@@ -77,7 +77,7 @@ class SelectListApi extends React.Component {
             <DisabledItemsInput
               value={disabled}
               data={list}
-              valueField="id"
+              dataKey="id"
               textField="label"
               onChange={disabled => this.setState({
                 disabled,

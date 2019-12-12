@@ -14,7 +14,7 @@ let generateNames = global.generateNames;
 
 let props = {
   data: generateNames(2000),
-  valueField: 'id',
+  dataKey: 'id',
   textField: 'fullName',
   filter: true,
 }

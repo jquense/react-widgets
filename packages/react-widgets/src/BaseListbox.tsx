@@ -13,17 +13,22 @@ interface Props {
   emptyListMessage: React.ReactNode
   role?: string
   className?: string
+  multiple?: boolean
 }
 
 const Listbox = React.forwardRef<HTMLDivElement, Props>(
-  ({ className, role, children, emptyListMessage, ...props }, ref) => {
+  (
+    { className, role, multiple, children, emptyListMessage, ...props },
+    ref,
+  ) => {
     const id = useInstanceId()
 
     return (
       <div
         id={id}
         ref={ref as any}
-        tabIndex={-1}
+        tabIndex={0}
+        aria-multiselectable={!!multiple}
         className={cn(className, 'rw-list')}
         role={role === undefined ? 'listbox' : role}
         {...props}

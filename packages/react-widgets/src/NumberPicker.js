@@ -4,7 +4,7 @@ import React, { useRef } from 'react'
 import { useUncontrolled } from 'uncontrollable'
 import Button from './Button'
 import { caretDown, caretUp } from './Icon'
-import LocalizationProvider from './LocalizationProvider'
+import { useLocalizer } from './Localization'
 import NumberInput from './NumberInput'
 import Select from './Select'
 import Widget from './Widget'
@@ -174,7 +174,7 @@ function NumberPicker(uncontrolledProps) {
     ...elementProps
   } = useUncontrolled(uncontrolledProps, { value: 'onChange' })
 
-  const localizer = LocalizationProvider.useLocalizer(messages, formats)
+  const localizer = useLocalizer(messages, formats)
 
   const ref = useRef()
   const inputRef = useRef()

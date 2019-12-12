@@ -1,13 +1,13 @@
 import cn from 'classnames'
-import PropTypes from 'prop-types'
 import React from 'react'
+import { useKeyboardNavigationCheck } from './util/hooks'
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
-  focused: boolean
-  open: boolean
-  dropUp: boolean
-  autofilling: boolean
-  isRtl: boolean
+  focused?: boolean
+  open?: boolean
+  dropUp?: boolean
+  autofilling?: boolean
+  isRtl?: boolean
 }
 
 const Widget = React.forwardRef<HTMLDivElement, Props>(
@@ -26,6 +26,8 @@ const Widget = React.forwardRef<HTMLDivElement, Props>(
     },
     ref,
   ) => {
+    const isKeyboardNavigating = useKeyboardNavigationCheck()
+
     tabIndex = tabIndex != null ? tabIndex : -1
 
     return (
@@ -33,6 +35,7 @@ const Widget = React.forwardRef<HTMLDivElement, Props>(
         {...props}
         ref={ref}
         tabIndex={tabIndex}
+        data-intent={isKeyboardNavigating ? undefined : 'mouse'}
         className={cn(
           className,
           'rw-widget',
@@ -49,16 +52,5 @@ const Widget = React.forwardRef<HTMLDivElement, Props>(
 )
 
 Widget.displayName = 'Widget'
-
-Widget.propTypes = {
-  tabIndex: PropTypes.number,
-  focused: PropTypes.bool.isRequired,
-  disabled: PropTypes.bool,
-  readOnly: PropTypes.bool,
-  autofilling: PropTypes.bool.isRequired,
-  open: PropTypes.bool.isRequired,
-  dropUp: PropTypes.bool.isRequired,
-  isRtl: PropTypes.bool.isRequired,
-}
 
 export default Widget

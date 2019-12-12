@@ -1,32 +1,28 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
+import { useListOption } from './ListboxContext'
 
 const propTypes = {
   activeId: PropTypes.string,
   dataItem: PropTypes.any,
-  index: PropTypes.number,
-  // focused: PropTypes.bool,
-  selected: PropTypes.bool,
-  disabled: PropTypes.bool,
-  onSelect: PropTypes.func,
-  component: PropTypes.string,
-  tabIndex: PropTypes.number,
+  selected: PropTypes.bool.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  component: PropTypes.any,
 }
 
-export interface ListOptionProps
+export interface ListOptionProps<TDataItem>
   extends Omit<React.HTMLProps<HTMLDivElement>, 'onSelect'> {
-  dataItem: object
+  dataItem: TDataItem
   activeId?: string
   focused: boolean
   selected: boolean
   disabled: boolean
-  onSelect: (dataItem: object, event: React.MouseEvent) => void
-  index?: number
-  component?: React.ElementType
+  onSelect: (dataItem: TDataItem, event: React.MouseEvent) => void
+  component?: React.ElementType | null
 }
 
-function ListOption({
+function ListOption<TDataItem>({
   className,
   children,
   activeId,
@@ -36,10 +32,13 @@ function ListOption({
   disabled,
   onSelect,
   tabIndex = -1,
-  index: _,
-  component: Tag = 'div',
+  component,
   ...props
-}: ListOptionProps) {
+}: ListOptionProps<TDataItem>) {
+  const Tag = component || 'div'
+
+  useListOption(dataItem)
+
   const handleSelect = event => {
     if (onSelect && !disabled) onSelect(dataItem, event)
   }
@@ -56,6 +55,7 @@ function ListOption({
     <Tag
       id={id}
       role="option"
+      data-rw-focused={focused ? '' : undefined}
       tabIndex={disabled ? undefined : tabIndex}
       aria-selected={!!selected}
       className={cn('rw-list-option', className, classes)}
@@ -67,6 +67,7 @@ function ListOption({
   )
 }
 
+// @ts-ignore
 ListOption.propTypes = propTypes
 
 export default ListOption

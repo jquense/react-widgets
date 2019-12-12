@@ -1,19 +1,26 @@
 import React from 'react'
-import Layout from '@4c/layout'
-import { storiesOf } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
-
-import Container from './Container'
-import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import DatePicker from 'react-widgets/lib/DatePicker'
+import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import TimeInput from 'react-widgets/lib/TimeInput'
+import Layout from '@4c/layout'
+import { action } from '@storybook/addon-actions'
+import { storiesOf } from '@storybook/react'
+import Container from './Container'
 
 const change = action('change')
 storiesOf('TimePicker', module).add('TimePicker', () => (
   <Container direction="column" pad="4" align="flex-start">
-    <input type="time" onChange={e => change(e.target.valueAsDate)} />
-    <TimeInput use12HourClock padValues={false} onChange={change} />
-
+    <label>
+      date and time of birth
+      <input
+        type="datetime-local"
+        onChange={e => change(e.target.valueAsDate, e.target.value)}
+      />
+    </label>
+    <label>
+      Time is the label
+      <TimeInput use12HourClock padValues={false} onChange={change} />
+    </label>
     <TimeInput noClearButton onChange={change} />
 
     <Layout as="fieldset" direction="column" pad>

@@ -17,6 +17,7 @@
   cursor: pointer;
   border: 1px solid transparent;
 
+  &:hover,
   &.rw-state-focus {
     @include state-focus(
       $list-focus-bg,
@@ -36,6 +37,9 @@
   fieldset[disabled] &,
   &.rw-state-disabled,
   &.rw-state-readonly {
+    pointer-events: none;
+    user-select: none;
+
     @include state-disabled();
     @include disabled-color($list-color);
   }

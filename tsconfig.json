@@ -1,6 +1,8 @@
 {
-  "extends": "@4c/tsconfig/web.json",
-  "compilerOptions": {
-    "noImplicitAny": false
-  }
+  "files": [],
+  "references": [
+    { "path": "packages/localizer-moment" },
+    { "path": "packages/react-widgets" },
+    { "path": "packages/storybook" }
+  ]
 }

@@ -5,7 +5,7 @@ import Chance from 'chance'
 import { addDecorator, configure } from '@storybook/react'
 import decorator from './configure-intl'
 
-let testsContext = require.context('./stories', true, /\.js$/)
+let testsContext = require.context('./stories', true, /\.(j|t)sx?$/)
 
 addDecorator(decorator)
 

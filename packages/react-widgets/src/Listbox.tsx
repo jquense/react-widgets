@@ -1,94 +1,32 @@
-import inDOM from 'dom-helpers/canUseDOM'
+import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React, {
   useCallback,
   useImperativeHandle,
   useLayoutEffect,
+  useMemo,
   useRef,
 } from 'react'
+import { useUncontrolledProp } from 'uncontrollable'
 import BaseListbox from './BaseListbox'
 import ListOption, { ListOptionProps } from './ListOption'
 import ListOptionGroup from './ListOptionGroup'
+import { useClearListOptions } from './ListboxContext'
 import { UserProvidedMessages, useMessagesWithDefaults } from './messages'
-import { RenderProp } from './types'
+import { WidgetHTMLProps } from './shared'
+import { DataItem, RenderProp, Value } from './types'
 import * as CustomPropTypes from './util/PropTypes'
 import * as Props from './util/Props'
-import { TextAccessorFn, ValueAccessorFn } from './util/dataHelpers'
-import { DataState, defaultGetDataState } from './util/reduceToListState'
+import { groupBySortedKeys, toItemArray } from './util/_'
+import { DataKeyAccessor, TextAccessor } from './util/dataHelpers'
+import { useAccessors } from './util/getAccessors'
 import { notify } from './util/widgetHelpers'
-
-const supportsPointerEvents = inDOM && 'PointerEvent' in window
-
-const EMPTY_DATA_STATE = {}
-
-function mapItems<T extends object>(
-  data: T[],
-  dataState: DataState<T>,
-  fn: (
-    value: { item: T } | { group: string },
-    index: number,
-  ) => React.ReactNode,
-) {
-  let { sortedKeys, groups } = dataState
-
-  if (!groups) {
-    return data.map((item, idx) => fn({ item }, idx))
-  }
-
-  let idx = -1
-  return sortedKeys.reduce(
-    (items, group) => {
-      let groupItems = groups![group]
-
-      return items.concat(
-        fn({ group }, idx),
-        groupItems.map(item => fn({ item }, ++idx)),
-      )
-    },
-    [] as React.ReactNode[],
-  )
-}
-
-function renderedIndexOf(
-  item: object,
-  data: object[],
-  dataState: DataState,
-): number {
-  let { groups, sortedKeys } = dataState
-
-  if (!groups) {
-    return data.indexOf(item)
-  }
-
-  let runningIdx = -1
-  let idx = -1
-
-  sortedKeys.some(group => {
-    let itemIdx = groups![group].indexOf(item)
-    runningIdx++
-
-    if (itemIdx !== -1) {
-      idx = runningIdx + itemIdx + 1
-      return true
-    }
-
-    runningIdx += groups![group].length
-  })
-  return idx
-}
-
-function useUncontrolledList(props) {}
 
 const propTypes = {
   data: PropTypes.array,
-  dataState: PropTypes.shape({
-    sortedKeys: PropTypes.array,
-    groups: PropTypes.object,
-    data: PropTypes.array,
-    sequentialData: PropTypes.array,
-  }),
-  valueAccessor: CustomPropTypes.accessor,
-  textAccessor: CustomPropTypes.accessor,
+
+  dataKey: CustomPropTypes.accessor,
+  textField: CustomPropTypes.accessor,
 
   onSelect: PropTypes.func,
   onMove: PropTypes.func,
@@ -104,28 +42,52 @@ const propTypes = {
   selectedItem: PropTypes.any,
   searchTerm: PropTypes.string,
 
-  isDisabled: PropTypes.func.isRequired,
+  disabled: CustomPropTypes.disabled.acceptsArray,
 
   messages: PropTypes.shape({
     emptyList: PropTypes.func.isRequired,
   }),
 }
 
+type GroupedItem = { __isGroup: string }
+
+const isGroup = (item: unknown): item is GroupedItem =>
+  typeof item === 'object' && item != null && '__isGroup' in item
+
 const defaultProps = {
   onSelect: () => {},
   data: [],
-  dataState: EMPTY_DATA_STATE,
   optionComponent: ListOption,
 }
 
-export const getDataState = defaultGetDataState
+function useFlattenedData<T>(
+  data: T[],
+  groupBy?: GroupBy<T>,
+): Array<T | GroupedItem> {
+  return useMemo(() => {
+    if (!groupBy) return data
 
-interface ListHandle {
-  move(): void
+    const flatData = [] as Array<T | GroupedItem>
+
+    let keys = []
+    let grouped = groupBySortedKeys<T>(groupBy, data, keys)
+
+    keys.forEach(group => {
+      flatData.push({ __isGroup: group }, ...grouped[group])
+    }, [])
+
+    return flatData
+  }, [data, groupBy])
 }
 
-type RenderItemProp = RenderProp<{
-  item: object
+export type GroupBy<TDataItem> = string | ((item: TDataItem) => string)
+
+export interface ListboxHandle {
+  scrollIntoView(): void
+}
+
+export type RenderItemProp<TDataItem> = RenderProp<{
+  item: TDataItem
   searchTerm?: string
   index: number
   text: string
@@ -133,144 +95,250 @@ type RenderItemProp = RenderProp<{
   disabled: boolean
 }>
 
-type RenderGroupProp = RenderProp<{
+export type RenderGroupProp = RenderProp<{
   group: string
 }>
 
-interface Props {
-  data: object[]
-  dataState: DataState
-  focusedItem: object
-  selectedItem: object
+export type OptionComponentProp = React.ComponentType<ListOptionProps<any>>
+
+interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
+  bordered?: boolean
+  data: TDataItem[]
+  focusedItem?: TDataItem
   className?: string
-  messages: UserProvidedMessages
-  isDisabled: (item: object) => boolean
-  textAccessor: TextAccessorFn
-  valueAccessor: ValueAccessorFn
-  renderItem: RenderItemProp
-  renderGroup: RenderGroupProp
+  disabled?: boolean | TDataItem[]
+  messages?: UserProvidedMessages
+  textField?: TextAccessor
+  dataKey?: DataKeyAccessor
+  renderItem?: RenderItemProp<TDataItem>
+  renderGroup?: RenderGroupProp
   activeId?: string
   searchTerm?: string
-  optionComponent?: React.ComponentType<ListOptionProps>
-  onSelect<T extends object>(dataItem: T): void
-  onHoverOption<T extends object>(item: T): void
-  onMove<T extends object>(
+  groupBy?: GroupBy<TDataItem>
+  optionComponent?: OptionComponentProp
+  onMove?(
     selectedElement: Element,
     listElement: HTMLDivElement,
-    focusedItem: T,
+    focusedItem: TDataItem,
   ): void
 }
 
-const Listbox = React.forwardRef<ListHandle, Props>(
-  (
-    {
-      focusedItem,
-      onMove,
-      data,
-      dataState,
-      className,
-      messages,
-      isDisabled,
-      renderItem,
-      textAccessor,
-      valueAccessor,
-      renderGroup,
-      activeId,
-      selectedItem,
-      onSelect,
-      searchTerm,
-      onHoverOption,
-      optionComponent: Option = ListOption,
-      onHoverOption: _,
-      ...props
-    },
-    outerRef,
-  ) => {
-    const ref = useRef<HTMLDivElement>()
-
-    const move = useCallback(() => {
-      let list = ref.current
-      if (!list) return
-
-      let idx = renderedIndexOf(focusedItem, data, dataState)
-      let selectedItem = list.children[idx]
-
-      if (selectedItem) notify(onMove, [selectedItem, list, focusedItem])
-    }, [focusedItem, data, dataState])
-
-    const { emptyList } = useMessagesWithDefaults(messages)
-
-    useLayoutEffect(move, [move])
-
-    let elementProps = Props.pickElementProps(props)
-
-    useImperativeHandle(outerRef, () => ({ move }), [move])
-
-    return (
-      <BaseListbox
-        ref={ref}
-        {...elementProps}
-        className={className}
-        emptyListMessage={emptyList()}
-      >
-        {mapItems(data, dataState, (detail, idx) => {
-          if ('group' in detail)
-            return (
-              <ListOptionGroup key={`group_${detail.group}`}>
-                {renderGroup ? renderGroup(detail) : detail.group}
-              </ListOptionGroup>
-            )
-
-          let { item } = detail
-          let isFocused = focusedItem === item
-          let hover =
-            onHoverOption &&
-            (supportsPointerEvents && onHoverOption
-              ? {
-                  onPointerEnter(e) {
-                    if (e.isPrimary) onHoverOption(item)
-                  },
-                }
-              : {
-                  onTouchMove: () => onHoverOption(item),
-                  onMouseEnter: () => onHoverOption(item),
-                })
-          const textValue = textAccessor(item)
-
-          const itemIsDisabled = isDisabled(item)
-
-          return (
-            <Option
-              {...hover}
-              dataItem={item}
-              index={idx}
-              key={`item_${idx}`}
-              activeId={activeId}
-              focused={isFocused}
-              onSelect={onSelect}
-              disabled={itemIsDisabled}
-              selected={selectedItem === item}
-            >
-              {renderItem
-                ? renderItem({
-                    item,
-                    searchTerm,
-                    index: idx,
-                    text: textValue,
-                    value: valueAccessor(item),
-                    disabled: itemIsDisabled,
-                  })
-                : textValue}
-            </Option>
-          )
-        })}
-      </BaseListbox>
-    )
+type SingleChangeHandler<TDataItem> = (
+  dataItem: TDataItem,
+  metadata: {
+    lastValue: Value
+    originalEvent?: React.SyntheticEvent
   },
-)
+) => void
+
+interface SingleListboxProps<TDataItem> extends BaseListboxProps<TDataItem> {
+  value?: Value
+  defaultValue?: Value
+  multiple?: false
+  onChange?: SingleChangeHandler<TDataItem>
+}
+
+type MultipleChangeHandler<TDataItem> = (
+  dataItem: TDataItem[],
+  metadata: {
+    action: 'insert' | 'remove'
+    dataItem: TDataItem
+    lastValue: Value
+    originalEvent?: React.SyntheticEvent
+  },
+) => void
+
+interface MultipleListboxProps<TDataItem> extends BaseListboxProps<TDataItem> {
+  value?: Value[]
+  defaultValue?: Value[]
+  multiple: true
+  onChange?: MultipleChangeHandler<TDataItem>
+}
+
+export type ListboxProps<TDataItem> =
+  | SingleListboxProps<TDataItem>
+  | MultipleListboxProps<TDataItem>
+
+declare interface Listbox {
+  <TDataItem = DataItem>(
+    props: ListboxProps<TDataItem> & React.RefAttributes<ListboxHandle>,
+  ): React.ReactElement | null
+
+  displayName?: string
+}
+
+const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
+  {
+    multiple = false,
+    focusedItem,
+    data,
+
+    value,
+    defaultValue,
+    onChange,
+
+    className,
+    messages,
+    disabled,
+    renderItem,
+    textField,
+    dataKey,
+    renderGroup,
+    activeId,
+    searchTerm,
+    groupBy,
+    bordered = true,
+    optionComponent: Option = ListOption,
+    // onKeyDown,
+    ...props
+  }: ListboxProps<TDataItem>,
+  outerRef: React.Ref<ListboxHandle>,
+) {
+  const [rawValue, handleChange] = useUncontrolledProp(
+    value,
+    defaultValue,
+    onChange,
+  )
+
+  const accessors = useAccessors(textField, dataKey)
+
+  const currentValue = ([] as unknown[]).concat(rawValue)
+
+  const dataItems = useMemo(
+    () => currentValue!.map(item => accessors.findOrSelf(data, item)),
+    [data, currentValue, accessors],
+  )
+
+  const ref = useRef<HTMLDivElement>()
+  const disabledItems = toItemArray(disabled)
+  const { emptyList } = useMessagesWithDefaults(messages)
+  const flatData = useFlattenedData(data, groupBy)
+
+  const handleSelect = (dataItem: TDataItem, event: React.MouseEvent) => {
+    if (multiple === false) {
+      const handler = handleChange as SingleChangeHandler<TDataItem>
+      handler(dataItem, {
+        lastValue: value,
+        originalEvent: event,
+      })
+      return
+    }
+    const handler = handleChange as MultipleChangeHandler<TDataItem>
+    const checked = dataItems.indexOf(dataItem) > -1
+    handler(
+      checked
+        ? dataItems.filter(d => d !== dataItem)
+        : [...dataItems, dataItem],
+      {
+        dataItem,
+        lastValue: value,
+        action: checked ? 'remove' : 'insert',
+        originalEvent: event,
+      },
+    )
+  }
+
+  // const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  //   let { key, altKey, ctrlKey, shiftKey } = e
+  //   const currentFocused = focusedItem || selectedItem
+  //   notify(onKeyDown, [e])
+
+  //   if (e.defaultPrevented) return
+
+  //   if (key === 'End' && !shiftKey) {
+  //     e.preventDefault()
+  //     setFocusedItem(list.last())
+  //   } else if (key === 'Home'&& !shiftKey) {
+  //     e.preventDefault()
+  //     setFocusedItem(list.first())
+  //   } else if (key === 'Enter') {
+  //     e.preventDefault()
+  //     if (focusedItem) handleSelect(focusedItem, e)
+  //   } else if (key === 'ArrowDown') {
+  //     e.preventDefault()
+  //     setFocusedItem(list.next(currentFocused))
+  //   } else if (key === 'ArrowUp') {
+  //     e.preventDefault()
+
+  //     if (altKey) return closeWithFocus()
+
+  //     setFocusedItem(list.prev(currentFocused))
+  //   }
+  // }
+
+  const scrollIntoView = useCallback(() => {
+    let list = ref.current
+    if (!list || !focusedItem) return
+
+    let selectedItem = list.querySelector('[data-rw-focused]')
+
+    if (selectedItem) {
+      selectedItem.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    }
+  }, [focusedItem])
+
+  useLayoutEffect(scrollIntoView, [scrollIntoView])
+
+  useClearListOptions()
+
+  let elementProps = Props.pickElementProps(props)
+
+  useImperativeHandle(outerRef, () => ({ scrollIntoView }), [scrollIntoView])
+
+  return (
+    <BaseListbox
+      ref={ref}
+      {...elementProps}
+      multiple={multiple}
+      className={cn(className, bordered && 'rw-widget-container')}
+      emptyListMessage={emptyList()}
+    >
+      {flatData.map((item, idx) => {
+        if (isGroup(item))
+          return (
+            <ListOptionGroup key={`group_${item.__isGroup}`}>
+              {renderGroup
+                ? renderGroup({ group: item.__isGroup })
+                : item.__isGroup}
+            </ListOptionGroup>
+          )
+
+        let isFocused = focusedItem === item
+
+        const textValue = accessors.text(item)
+
+        const itemIsDisabled = disabledItems.indexOf(item) !== -1
+        const itemIsSelected = dataItems.indexOf(item) !== -1
+
+        return (
+          <Option
+            dataItem={item}
+            key={`item_${idx}`}
+            activeId={activeId}
+            focused={isFocused}
+            onSelect={handleSelect}
+            disabled={itemIsDisabled}
+            selected={itemIsSelected}
+          >
+            {renderItem
+              ? renderItem({
+                  item,
+                  searchTerm,
+                  index: idx,
+                  text: textValue,
+                  // TODO: probably remove
+                  value: accessors.value(item),
+                  disabled: itemIsDisabled,
+                })
+              : textValue}
+          </Option>
+        )
+      })}
+    </BaseListbox>
+  )
+})
 
 export default Object.assign(Listbox, {
-  getDataState,
   defaultProps,
   propTypes,
 })

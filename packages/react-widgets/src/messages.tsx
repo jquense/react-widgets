@@ -1,5 +1,37 @@
 import React, { ReactNode, useMemo } from 'react'
 
+type LabelMessage = string | (() => string)
+type RenderableMessage = ReactNode | (() => ReactNode)
+
+export interface Messages {
+  moveToday: LabelMessage
+  moveBack: LabelMessage
+  moveForward: LabelMessage
+
+  dateButton: LabelMessage
+  timeButton: LabelMessage
+
+  openCombobox: LabelMessage
+  openDropdown: LabelMessage
+
+  placeholder: LabelMessage
+  // filterPlaceholder: LabelMessage,
+
+  emptyList: RenderableMessage
+  emptyFilter: RenderableMessage
+
+  createOption: (_value: any, searchTerm: string) => ReactNode | ReactNode
+
+  tagsLabel: LabelMessage
+  removeLabel: LabelMessage
+  noneSelected: LabelMessage
+  selectedItems: (labels: string[]) => string
+
+  // number
+  increment: LabelMessage
+  decrement: LabelMessage
+}
+
 const messages = {
   moveToday: 'Today',
   moveBack: 'Navigate back',
@@ -32,16 +64,13 @@ const messages = {
   increment: 'Increment value',
   decrement: 'Decrement value',
 }
-type Messages = typeof messages
 
-export type UserProvidedMessages = {
-  [P in keyof Messages]?: ReactNode | ((...args: any[]) => ReactNode)
-}
+export type UserProvidedMessages = Partial<Messages>
 
 export type ProcessedMessages = {
-  [P in keyof Messages]: Messages[P] extends string
-    ? () => ReactNode
-    : Messages[P]
+  [P in keyof Messages]: Messages[P] extends Function
+    ? Messages[P]
+    : () => string
 }
 
 const DEFAULTS = {}
@@ -58,5 +87,5 @@ export function getMessages(defaults: UserProvidedMessages = DEFAULTS) {
   return processed as ProcessedMessages
 }
 
-export const useMessagesWithDefaults = (defaults: UserProvidedMessages) =>
+export const useMessagesWithDefaults = (defaults?: UserProvidedMessages) =>
   useMemo(() => getMessages(defaults), [defaults])

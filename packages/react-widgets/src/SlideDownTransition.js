@@ -12,9 +12,9 @@ import Transition, {
 } from 'react-transition-group/Transition'
 
 const transitionClasses = {
-  [ENTERING]: 'rw-popup-transition-entering',
-  [EXITING]: 'rw-popup-transition-exiting',
-  [EXITED]: 'rw-popup-transition-exited',
+  [ENTERING]: 'rw-slide-transition-entering',
+  [EXITING]: 'rw-slide-transition-exiting',
+  [EXITED]: 'rw-slide-transition-exited',
 }
 
 const propTypes = {
@@ -73,14 +73,14 @@ class SlideDownTransition extends React.Component {
 
   handleTransitionEnd = (el, done) => {
     const duration = parseDuration(el.firstChild)
-    emulateTransitionEnd(el, duration + 10)
+    emulateTransitionEnd(el, duration + 5000)
     addEventListener(el, 'transitionend', done, { once: true })
   }
 
   attachRef = ref => (this.element = ref)
 
   render() {
-    const { children, className, innerClassName, dropUp } = this.props
+    const { children, className, dropUp } = this.props
 
     return (
       <Transition
@@ -102,9 +102,9 @@ class SlideDownTransition extends React.Component {
               transitionClasses[status],
             )}
           >
-            <div className={`rw-popup-transition ${innerClassName}`}>
-              {children}
-            </div>
+            {React.cloneElement(children, {
+              className: cn('rw-slide-transition', children.props.className),
+            })}
           </div>
         )}
       </Transition>

@@ -6,7 +6,7 @@ import Button from './Button'
 import Calendar from './Calendar'
 import DateTimePickerInput from './DateTimePickerInput'
 import { calendar } from './Icon'
-import LocalizationProvider from './LocalizationProvider'
+import { useLocalizer } from './Localization'
 import Popup from './Popup'
 import Select from './Select'
 import TimeInput from './TimeInput'
@@ -233,7 +233,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
     value: 'onChange',
     currentDate: 'onCurrentDateChange',
   })
-  const localizer = LocalizationProvider.useLocalizer(messages, formats)
+  const localizer = useLocalizer(messages, formats)
 
   const ref = useRef()
   const calRef = useRef()
@@ -418,38 +418,39 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
           dropUp={dropUp}
           open={open}
           role="dialog"
+          ref={calRef}
+          id={dateId}
           className="rw-calendar-popup"
           transition={popupTransition}
           onEntering={handleOpening}
           onExited={handleClosing}
         >
-          <div ref={calRef} id={dateId}>
-            <Calendar
-              min={min}
-              max={max}
-              {...calendarProps}
-              isRtl={isRtl}
-              activeId={activeCalendarId}
-              tabIndex="-1"
+          <Calendar
+            min={min}
+            max={max}
+            bordered={false}
+            {...calendarProps}
+            isRtl={isRtl}
+            activeId={activeCalendarId}
+            tabIndex="-1"
+            value={value}
+            autoFocus={false}
+            onChange={handleDateSelect}
+            currentDate={currentDate}
+            onCurrentDateChange={onCurrentDateChange}
+            aria-hidden={!open}
+            aria-live="polite"
+            aria-labelledby={inputId}
+          />
+          {includeTime && (
+            <TimeInput
+              {...timeInputProps}
               value={value}
-              autoFocus={false}
-              onChange={handleDateSelect}
-              currentDate={currentDate}
-              onCurrentDateChange={onCurrentDateChange}
-              aria-hidden={!open}
-              aria-live="polite"
-              aria-labelledby={inputId}
+              precision={timePrecision}
+              onChange={handleTimeChange}
+              datePart={currentDate}
             />
-            {includeTime && (
-              <TimeInput
-                {...timeInputProps}
-                value={value}
-                precision={timePrecision}
-                onChange={handleTimeChange}
-                datePart={currentDate}
-              />
-            )}
-          </div>
+          )}
         </Popup>
       )}
     </Widget>

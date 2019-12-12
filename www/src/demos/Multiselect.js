@@ -60,7 +60,7 @@ class Multiselect extends React.Component {
       value,
       data,
       textField: 'name',
-      valueField: 'id',
+      dataKey: 'id',
       onChange: this.handleChange,
       onCreate: this.handleCreate,
       allowCreate: allowCustom ? 'onFilter' : false,
@@ -139,7 +139,7 @@ class Multiselect extends React.Component {
             <DisabledItemsInput
               value={disabled}
               data={list}
-              valueField="id"
+              dataKey="id"
               textField="name"
               onChange={disabled => this.setState({
                 disabled,

@@ -1,9 +1,8 @@
 import React from 'react'
 import Button from 'react-bootstrap/lib/Button'
-import Checkbox from 'react-bootstrap/lib/Checkbox'
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
+import Checkbox from 'react-bootstrap/lib/Checkbox'
 import * as RW from 'react-widgets'
-
 import Demo, { createSetter } from '../components/Demo'
 import Layout from '../components/Layout'
 
@@ -13,7 +12,6 @@ export const CULTURES = ['en', 'en-GB', 'es', 'fr', 'ar-AE']
 export default class CalendarDemo extends React.Component {
   state = {
     format: '',
-    footer: true,
     views: VIEWS,
   }
 

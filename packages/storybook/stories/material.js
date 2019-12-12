@@ -12,7 +12,7 @@
 
 // let props = {
 //   data: generateNames(),
-//   valueField: 'id',
+//   dataKey: 'id',
 //   textField: 'fullName',
 // }
 

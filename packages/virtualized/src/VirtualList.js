@@ -39,7 +39,7 @@ class VirtualList extends React.Component {
     selectedItem: PropTypes.any,
 
     isDisabled: PropTypes.func.isRequired,
-    valueAccessor: PropTypes.func.isRequired,
+    dataKeyAccessor: PropTypes.func.isRequired,
     textAccessor: PropTypes.func.isRequired,
 
     disabled: CustomPropTypes.disabled.acceptsArray,
@@ -121,10 +121,10 @@ class VirtualList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { valueAccessor, focusedItem, selectedItem } = this.props
+    const { dataKeyAccessor, focusedItem, selectedItem } = this.props
     if (
-      valueAccessor(prevProps.focusedItem) !== valueAccessor(focusedItem) ||
-      valueAccessor(prevProps.selectedItem) !== valueAccessor(selectedItem)
+      dataKeyAccessor(prevProps.focusedItem) !== dataKeyAccessor(focusedItem) ||
+      dataKeyAccessor(prevProps.selectedItem) !== dataKeyAccessor(selectedItem)
     )
       this.move()
   }

@@ -1,7 +1,6 @@
+import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { mount } from 'enzyme'
-
 import Multiselect from '../src/Multiselect'
 import MultiselectTag from '../src/MultiselectTag'
 import MultiselectTagList from '../src/MultiselectTagList'
@@ -19,13 +18,13 @@ describe('Multiselect', function() {
       .contains('hello')
   })
 
-  it('should respect textField and valueFields', function() {
+  it('should respect textField and dataKeys', function() {
     mount(
       <Multiselect
         defaultValue={[0]}
         data={dataList}
         textField="label"
-        valueField="id"
+        dataKey="id"
       />,
     )
       .find(MultiselectTag)
@@ -36,7 +35,7 @@ describe('Multiselect', function() {
         defaultValue={[0]}
         data={dataList}
         textField="label"
-        valueField={i => i.id}
+        dataKey={i => i.id}
       />,
     )
       .find(MultiselectTag)
@@ -49,7 +48,7 @@ describe('Multiselect', function() {
         value={dataList.slice(0, 2)}
         data={dataList}
         textField="label"
-        valueField="id"
+        dataKey="id"
       />,
     )
 
@@ -121,7 +120,7 @@ describe('Multiselect', function() {
         data={dataList}
         onDelete={del}
         value={dataList.slice(0, 2)}
-        valueAccessor={i => i.id}
+        dataKeyAccessor={i => i.id}
         textAccessor={i => i.label}
       />,
     )
@@ -143,7 +142,7 @@ describe('Multiselect', function() {
         value={dataList.slice(0, 2)}
         data={dataList}
         textField="label"
-        valueField="id"
+        dataKey="id"
       />,
     )
       .find('.rw-multiselect-tag-btn')
@@ -220,7 +219,7 @@ describe('Multiselect', function() {
         data={dataList}
         disabled={[1]}
         textField="label"
-        valueField="id"
+        dataKey="id"
       />,
     )
       .find('MultiselectTagList')
@@ -256,7 +255,7 @@ describe('Multiselect', function() {
         data={dataList}
         disabled={[1]}
         textField="label"
-        valueField="id"
+        dataKey="id"
       />,
     )
       .find('button.rw-multiselect-tag-btn')
@@ -387,7 +386,7 @@ describe('Multiselect', function() {
         defaultOpen
         data={dataList}
         textField="label"
-        valueField="id"
+        dataKey="id"
         defaultSearchTerm="ji"
         onSearch={searchSpy}
       />,
@@ -430,7 +429,7 @@ describe('Multiselect', function() {
         data={dataList}
         onSearch={() => {}}
         textField="label"
-        valueField="id"
+        dataKey="id"
       />,
     )
       .tap(s => s.assertSingle('div.rw-list-option-create'))
@@ -452,7 +451,7 @@ describe('Multiselect', function() {
         data={dataList}
         onSearch={() => {}}
         textField="label"
-        valueField="id"
+        dataKey="id"
         caseSensitive={true}
       />,
     )
@@ -503,7 +502,7 @@ describe('Multiselect', function() {
         value={[0, 1, 2]}
         data={dataList}
         textField="label"
-        valueField="id"
+        dataKey="id"
         onChange={change}
       />,
     )
@@ -537,10 +536,9 @@ describe('Multiselect', function() {
   it('should open on ArrowDown', () => {
     let openSpy = sinon.spy()
 
-    mount(<Multiselect data={dataList} onToggle={openSpy} />).simulate(
-      'keyDown',
-      { key: 'ArrowDown' },
-    )
+    mount(
+      <Multiselect data={dataList} onToggle={openSpy} />,
+    ).simulate('keyDown', { key: 'ArrowDown' })
 
     expect(openSpy.calledOnce).to.equal(true)
     expect(openSpy.calledWith(true)).to.equal(true)
@@ -554,7 +552,7 @@ describe('Multiselect', function() {
         defaultOpen
         data={dataList}
         textField="label"
-        valueField="id"
+        dataKey="id"
         onChange={change}
       />,
     )

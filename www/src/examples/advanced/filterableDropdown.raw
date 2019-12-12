@@ -58,7 +58,7 @@ class FilterList extends React.Component {
  render(
     <DropdownList
       data={listOfPeople()}
-      valueField='id'
+      dataKey='id'
       textField='name'
       listComponent={FilterList}
     />

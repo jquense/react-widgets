@@ -32,16 +32,16 @@ var Example = React.createClass({
         <strong>{'Normal multiselect'}</strong>
         <Multiselect
           defaultValue={this.state.values} data={this.state.data}
-          valueField='id' textField='name' />
+          dataKey='id' textField='name' />
         <hr/>
         <strong>{'Look no wrapper!'}</strong>
         <Multiselect
           value={[]} data={this.state.data}
           onChange={change}
-          valueField='id' textField='name' />
+          dataKey='id' textField='name' />
         <TagList
           value={this.state.values} onDelete={remove}
-          valueField='id' textField='name' />
+          dataKey='id' textField='name' />
       </div>)
   },
 })

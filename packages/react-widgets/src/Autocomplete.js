@@ -37,7 +37,7 @@
 //   groupBy: CustomPropTypes.accessor,
 
 //   data: PropTypes.array,
-//   valueField: CustomPropTypes.accessor,
+//   dataKey: CustomPropTypes.accessor,
 //   textField: CustomPropTypes.accessor,
 
 //   onKeyDown: PropTypes.func,

@@ -37,7 +37,7 @@ class DropdownApi extends React.Component {
     var props = {
       defaultValue: 1,
       data: list,
-      valueField: 'id',
+      dataKey: 'id',
       textField: 'name',
       filter, groupBy, busy, isRtl, disabled, readOnly,
     }
@@ -97,7 +97,7 @@ class DropdownApi extends React.Component {
             <DisabledItemsInput
               value={disabled}
               data={list}
-              valueField="id"
+              dataKey="id"
               textField="name"
               onChange={disabled => this.setState({
                 disabled,

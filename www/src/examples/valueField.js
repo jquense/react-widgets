@@ -16,7 +16,7 @@ export default function(widgetName) {
     let widget = (
       <${widgetName}
         data={colors}
-        valueField='id'
+        dataKey='id'
         textField='name'
         defaultValue={${!isValueArray(widgetName) ? '1' : '[1, 2]'}}
       />

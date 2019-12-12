@@ -16,5 +16,6 @@ module.exports = api => ({
   plugins: [
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     '@babel/plugin-proposal-optional-chaining',
+    '@babel/plugin-proposal-nullish-coalescing-operator',
   ],
 })

@@ -10,7 +10,7 @@ export const setActiveDescendant = (ref, activeId, visible) => {
   if (!ref) return
   const node = findDOMNode(ref)
   node.removeAttribute('aria-activedescendant')
-  node.setAttribute('aria-activedescendant', visible ? activeId : '')
+  if (visible) node.setAttribute('aria-activedescendant', activeId)
 }
 
 export const useActiveDescendant = (ref, id, visible, deps) => {

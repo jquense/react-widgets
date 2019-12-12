@@ -3,6 +3,8 @@ import React from 'react'
 import Listbox from './BaseListbox'
 import ListOption from './ListOption'
 
+export const CREATE_OPTION = {}
+
 const propTypes = {
   searchTerm: PropTypes.string,
   focused: PropTypes.bool,
@@ -10,21 +12,14 @@ const propTypes = {
   activeId: PropTypes.string,
 }
 
-function AddToListOption({
-  searchTerm,
-  onSelect,
-  focused,
-  children,
-  activeId,
-  ...props
-}) {
+function AddToListOption({ onSelect, focused, children, activeId, ...props }) {
   return (
     <Listbox {...props} className="rw-list-option-create">
       <ListOption
         onSelect={onSelect}
         focused={focused}
         activeId={activeId}
-        dataItem={searchTerm}
+        dataItem={CREATE_OPTION}
       >
         {children}
       </ListOption>

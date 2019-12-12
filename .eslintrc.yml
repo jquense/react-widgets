@@ -9,4 +9,5 @@ rules:
   quotes: 0
   no-unused-expressions: 0
   prefer-const: off
-  "@typescript-eslint/member-delimiter-style": "off"
+  "@typescript-eslint/member-delimiter-style": off
+  "@typescript-eslint/no-use-before-define": off

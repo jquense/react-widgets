@@ -71,7 +71,7 @@ if (typeof document !== 'undefined') {
   document.body.appendChild(node)
 
   node.innerHTML = `
-    .rw-popup-transition
+    .rw-slide-transition,
     .rw-calendar-transition {
       transition: none;
     }
