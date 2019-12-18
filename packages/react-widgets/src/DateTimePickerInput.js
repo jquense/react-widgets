@@ -44,8 +44,8 @@ class DateTimePickerInput extends React.Component {
     return null
   }
 
-  focus() {
-    findDOMNode(this).focus()
+  focus({ preventScroll = false }) {
+    findDOMNode(this).focus({ preventScroll });
   }
 
   handleBlur = event => {

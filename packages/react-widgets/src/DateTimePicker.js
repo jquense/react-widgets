@@ -143,6 +143,9 @@ let propTypes = {
   dropUp: PropTypes.bool,
   popupTransition: CustomPropTypes.elementType,
 
+  /** Prevent the window scrolling to the top when datepicker is focused */
+  preventScroll: PropTypes.bool,
+
   placeholder: PropTypes.string,
   name: PropTypes.string,
   autoFocus: PropTypes.bool,
@@ -222,6 +225,7 @@ class DateTimePicker extends React.Component {
     open: false,
     dateIcon: calendar,
     timeIcon: clock,
+    preventScroll: false,
   }
 
   constructor(...args) {
@@ -580,8 +584,9 @@ class DateTimePicker extends React.Component {
   }
 
   focus() {
+    const { preventScroll } = this.props;
     if (this.inputRef && activeElement() !== findDOMNode(this.inputRef))
-      this.inputRef.focus()
+      this.inputRef.focus({ preventScroll })
   }
 
   parse = string => {
