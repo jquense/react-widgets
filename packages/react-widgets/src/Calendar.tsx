@@ -94,14 +94,14 @@ const propTypes = {
    *
    * @example ['prop', ['min', 'new Date()']]
    */
-  min: PropTypes.instanceOf(Date).isRequired,
+  min: PropTypes.instanceOf(Date),
 
   /**
    * The maximum date that the Calendar can navigate to.
    *
    * @example ['prop', ['max', 'new Date()']]
    */
-  max: PropTypes.instanceOf(Date).isRequired,
+  max: PropTypes.instanceOf(Date),
 
   /**
    * Default current date at which the calendar opens. If none is provided, opens at today's date or the `value` date (if any).
@@ -136,7 +136,7 @@ const propTypes = {
    *
    * @type array<"month"|"year"|"decade"|"century">
    */
-  views: PropTypes.arrayOf(PropTypes.oneOf(VIEW_OPTIONS)).isRequired,
+  views: PropTypes.arrayOf(PropTypes.oneOf(VIEW_OPTIONS)),
 
   /**
    * A callback fired when the `view` changes.

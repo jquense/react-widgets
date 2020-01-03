@@ -9,14 +9,14 @@ import * as CustomPropTypes from './util/PropTypes'
 let isSign = val => (val || '').trim() === '-'
 
 function isPaddedZeros(str, localizer) {
-  let localeChar = localizer.decimalChar()
+  let localeChar = localizer.decimalCharacter()
   let [_, decimals] = str.split(localeChar)
 
   return !!(decimals && decimals.match(/0+$/))
 }
 
 function isAtDelimiter(num, str, localizer) {
-  let localeChar = localizer.decimalChar(),
+  let localeChar = localizer.decimalCharacter(),
     lastIndex = str.length - 1,
     char
 
@@ -61,7 +61,7 @@ class NumberPickerInput extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     let { value, editing, localizer } = nextProps
 
-    let decimal = localizer.decimalChar(null)
+    let decimal = localizer.decimalCharacter(null)
 
     if (value == null || isNaN(value)) value = ''
     else
@@ -152,7 +152,7 @@ class NumberPickerInput extends React.Component {
   parseNumber(strVal) {
     let { localizer, parse: userParse } = this.props
 
-    let delimChar = localizer.decimalChar()
+    let delimChar = localizer.decimalCharacter()
 
     if (userParse) return userParse(strVal, localizer)
 

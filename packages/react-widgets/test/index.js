@@ -3,6 +3,7 @@ global.requestAnimationFrame = cb => setTimeout(cb, 0)
 const React = require('react')
 const sinon = require('sinon')
 const chai = require('chai')
+const { format } = require('util')
 const { act } = require('react-dom/test-utils')
 const { configure, ShallowWrapper, ReactWrapper } = require('enzyme')
 const Adapter = require('enzyme-adapter-react-16')
@@ -78,6 +79,9 @@ if (typeof document !== 'undefined') {
   `
 }
 
+if (typeof window !== 'undefined')
+  window.Element.prototype.scrollIntoView = jest.fn()
+
 beforeEach(() => {
   if (console.error.restore) console.error.restore()
   sinon.stub(console, 'error')
@@ -86,9 +90,9 @@ beforeEach(() => {
 afterEach(function() {
   if (typeof console.error.restore === 'function') {
     if (console.error.called) {
-      let err = console.error.getCall(0).args[0]
+      let { args } = console.error.getCall(0)
       console.error.restore()
-      throw new Error(`${err}`)
+      throw new Error(format(...args))
     }
   }
 })

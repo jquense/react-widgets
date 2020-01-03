@@ -1,8 +1,14 @@
 {
   "files": [],
   "references": [
-    { "path": "packages/localizer-moment" },
-    { "path": "packages/react-widgets" },
-    { "path": "packages/storybook" }
+    {
+      "path": "www2"
+    },
+    {
+      "path": "packages/localizer-moment"
+    },
+    {
+      "path": "packages/storybook"
+    }
   ]
 }

@@ -406,7 +406,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   }
 
   const handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    search(e.currentTarget.value, e, 'input')
+    search(e.target.value, e, 'input')
     toggle.open()
   }
 
@@ -508,6 +508,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
         key === 'Delete' &&
         disabledItems.indexOf(focusedItem) === -1
       ) {
+        console.log('FF', focusedTag)
         handleDelete(focusedTag, event)
         //
       } else if (key === 'Backspace') {
@@ -530,7 +531,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     action: 'insert' | 'remove',
   ) {
     let nextDataItems = dataItems
-
+    console.log('HERE', dataItem, action)
     switch (action) {
       case INSERT:
         nextDataItems = nextDataItems.concat(dataItem)
@@ -708,7 +709,6 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
               <AddToListOption
                 id={createId}
                 onSelect={handleCreate}
-                searchTerm={currentSearch}
                 focused={focusedItem === CREATE_OPTION}
               >
                 {messages.createOption(currentValue, currentSearch!)}

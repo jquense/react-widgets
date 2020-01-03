@@ -43,7 +43,7 @@ const Listbox = React.forwardRef<HTMLDivElement, Props>(
   },
 )
 
-Listbox.displayName = 'Listbox'
+Listbox.displayName = 'BaseListbox'
 
 Listbox.propTypes = propTypes
 

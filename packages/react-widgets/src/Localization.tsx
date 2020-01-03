@@ -53,7 +53,7 @@ export interface Localizer<TD = unknown, TN = unknown> {
   messages: ProcessedMessages
 
   formatDate(value: Date, format: RequiredDateMethods): string
-  formatDateToParts(value: Date, format: TD): DateTimePart[]
+  // formatDateToParts(value: Date, format: TD): DateTimePart[]
 
   formatNumber(value: number): string
 
@@ -85,14 +85,15 @@ function mergeWithDefaults<TD, TN>(
     formatOverrides,
     messages: getMessages(messages),
 
-    formatDate: (value: Date, format: RequiredDateMethods) =>
-      date![format](value, formatOverrides[format]),
-
-    formatNumber: (value: number) =>
-      number!.format(value, formatOverrides.number),
-
-    parseDate: (value: string, format: RequiredDateMethods) =>
-      date!.parse(value, formatOverrides[format]),
+    formatDate(value: Date, format: RequiredDateMethods) {
+      return date![format](value, this.formatOverrides[format])
+    },
+    formatNumber(value: number) {
+      return number!.format(value, this.formatOverrides.number)
+    },
+    parseDate(value: string, format: RequiredDateMethods) {
+      return date!.parse(value, this.formatOverrides[format])
+    },
 
     parseNumber: number!.parse.bind(number),
 
@@ -104,7 +105,13 @@ function mergeWithDefaults<TD, TN>(
 
 const LocalizerContext = React.createContext<Localizer<unknown, unknown>>(
   // @ts-ignore
-  process.env.NODE_ENV === 'test' && global.TEST_LOCALIZER,
+  process.env.NODE_ENV === 'test' &&
+    mergeWithDefaults(
+      // @ts-ignore
+      global.TEST_LOCALIZERS.date,
+      // @ts-ignore
+      global.TEST_LOCALIZERS.number,
+    ),
 )
 
 type ProviderProps = {
@@ -128,8 +135,6 @@ const Localization = ({ date, number, messages, children }: ProviderProps) => {
   )
 }
 
-// Provider.propTypes = propTypes
-
 export const useLocalizer = (
   messages?: UserProvidedMessages,
   formats?: FormatterOverrides<any, any>,
@@ -139,6 +144,7 @@ export const useLocalizer = (
   return useMemo(() => {
     if (!messages && !formats) return localizer
     return {
+      // @ts-ignore
       ...localizer,
       messages: getMessages({ ...localizer.messages, ...messages }),
       formatOverrides: { ...localizer.formatOverrides, ...formats },

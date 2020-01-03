@@ -10,7 +10,7 @@ module.exports = ({ config }) =>
         { parser: { amd: false } },
         {
           ...rules.js({
-            extends: '../../.babelrc.js',
+            rootMode: 'upward',
           }),
           test: /\.[jt]sx?$/,
         },

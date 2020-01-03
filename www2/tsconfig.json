@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "paths": {
+      "@bfly/ui/*": ["../libraries/ui/lib/*"]
+    },
+    "baseUrl": "."
+  },
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../libraries/ui"
+    }
+  ]
+}

@@ -17,7 +17,7 @@ import { WidgetHTMLProps } from './shared'
 import { DataItem, RenderProp, Value } from './types'
 import * as CustomPropTypes from './util/PropTypes'
 import * as Props from './util/Props'
-import { groupBySortedKeys, toItemArray } from './util/_'
+import { groupBySortedKeys, makeArray, toItemArray } from './util/_'
 import { DataKeyAccessor, TextAccessor } from './util/dataHelpers'
 import { useAccessors } from './util/getAccessors'
 import { notify } from './util/widgetHelpers'
@@ -202,7 +202,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
 
   const accessors = useAccessors(textField, dataKey)
 
-  const currentValue = ([] as unknown[]).concat(rawValue)
+  const currentValue = makeArray(rawValue)
 
   const dataItems = useMemo(
     () => currentValue!.map(item => accessors.findOrSelf(data, item)),
@@ -338,6 +338,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
   )
 })
 
+Listbox.displayName = 'Listbox'
 export default Object.assign(Listbox, {
   defaultProps,
   propTypes,

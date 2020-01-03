@@ -3,6 +3,10 @@
   "compilerOptions": {
     "rootDir": "."
   },
-  "references": [{ "path": "../react-widgets" }],
+  "references": [
+    {
+      "path": "../react-widgets"
+    }
+  ],
   "include": ["*.ts"]
 }

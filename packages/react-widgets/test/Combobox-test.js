@@ -186,7 +186,7 @@ describe('Combobox', function() {
   it('should set id on list', () => {
     expect(
       mount(<Combobox open />)
-        .find('List')
+        .find('Listbox')
         .prop('id'),
     ).to.be.a('string')
   })
@@ -203,8 +203,8 @@ describe('Combobox', function() {
         onToggle={() => {}}
       />,
     )
-      .find('List')
-      .act(_ => _.prop('onSelect')(null, 'foo'))
+      .find('Listbox')
+      .act(_ => _.prop('onChange')(null, { originalEvent: 'foo' }))
 
     expect(change.getCall(0).args[1]).to.eql({
       originalEvent: 'foo',
@@ -225,8 +225,8 @@ describe('Combobox', function() {
         onSelect={onSelect}
       />,
     )
-      .find('List')
-      .act(_ => _.prop('onSelect')(dataList[1], 'foo'))
+      .find('Listbox')
+      .act(_ => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
 
     expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
@@ -247,21 +247,40 @@ describe('Combobox', function() {
       />,
     )
 
-    let listItems = inst.find('ListOption > div')
-
-    listItems.first().is('.rw-state-focus')
+    let listItems = () => inst.update().find('ListOption > div')
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    listItems.at(1).is('.rw-state-focus')
+    listItems()
+      .first()
+      .is('.rw-state-focus')
+
+    inst.simulate('keyDown', { key: 'ArrowDown' })
+    expect(
+      listItems()
+        .at(1)
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowUp' })
-    listItems.first().is('.rw-state-focus')
+    expect(
+      listItems()
+        .first()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'End' })
-    listItems.last().is('.rw-state-focus')
+    expect(
+      listItems()
+        .last()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'Home' })
-    listItems.first().is('.rw-state-focus')
+    expect(
+      listItems()
+        .first()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
   })
 
   it('should default focus to the selected value', function() {
@@ -288,7 +307,7 @@ describe('Combobox', function() {
         .is('.rw-state-focus'),
     ).to.equal(true)
 
-    expect(inst.find('List').prop('focusedItem')).to.equal(dataList[2])
+    expect(inst.find('Listbox').prop('focusedItem')).to.equal(dataList[2])
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
 

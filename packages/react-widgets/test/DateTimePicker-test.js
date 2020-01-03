@@ -1,7 +1,5 @@
-import React from 'react'
-import Globalize from 'globalize'
 import { mount } from 'enzyme'
-
+import React from 'react'
 import DateTimePicker from '../src/DateTimePicker'
 
 describe('DateTimePicker', () => {
@@ -12,12 +10,12 @@ describe('DateTimePicker', () => {
       mount(
         <DateTimePicker
           defaultValue={date}
-          formats={{ datetime: 'MM-dd-yyyy' }}
+          formats={{ datetime: { date: 'short' } }}
         />,
       )
         .find('DateTimePickerInput')
         .getDOMNode().value,
-    ).to.equal(Globalize.format(date, 'MM-dd-yyyy'))
+    ).to.equal(date.toLocaleString({ date: 'short' }))
   })
 
   it('should start closed', () => {

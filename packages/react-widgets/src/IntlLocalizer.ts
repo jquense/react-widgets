@@ -9,30 +9,40 @@ import dates from './util/dates'
 type Formatters = {
   [Key in RequiredDateMethods]: (date?: number | Date) => string
 }
+type UserDateFormat =
+  | Intl.DateTimeFormatOptions
+  | ((date: Date, culture?: string) => string)
+
 /**
  * A `react-widgets` Localizer using native `Intl` APIs.
  *
  */
 class IntlDateLocalizer implements DateLocalizer<Intl.DateTimeFormatOptions> {
-  culture: string
+  culture?: string
 
   firstOfWeek: () => number
 
-  date!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  time!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  datetime!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  header!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  footer!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  weekday!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  dayOfMonth!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  month!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  year!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  decade!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
-  century!: (date: Date, format?: Intl.DateTimeFormatOptions) => string
+  date!: (date: Date, format?: UserDateFormat) => string
+  time!: (date: Date, format?: UserDateFormat) => string
+  datetime!: (date: Date, format?: UserDateFormat) => string
+  header!: (date: Date, format?: UserDateFormat) => string
+  footer!: (date: Date, format?: UserDateFormat) => string
+  weekday!: (date: Date, format?: UserDateFormat) => string
+  dayOfMonth!: (date: Date, format?: UserDateFormat) => string
+  month!: (date: Date, format?: UserDateFormat) => string
+  year!: (date: Date, format?: UserDateFormat) => string
+  decade!: (date: Date, format?: UserDateFormat) => string
+  century!: (date: Date, format?: UserDateFormat) => string
 
-  constructor({ culture, firstOfWeek = 0 }) {
+  constructor({ culture = undefined, firstOfWeek = 0 } = {}) {
     this.culture = culture
     this.firstOfWeek = () => firstOfWeek
+
+    function normalizeFormat(date: Date, format: UserDateFormat) {
+      return typeof format === 'function'
+        ? format(date, culture)
+        : date.toLocaleString(culture, format)
+    }
 
     const formats: Formatters = {
       date: Intl.DateTimeFormat(culture, { dateStyle: 'short' }).format,
@@ -55,11 +65,8 @@ class IntlDateLocalizer implements DateLocalizer<Intl.DateTimeFormatOptions> {
     }
 
     Object.keys(formats).forEach((key: RequiredDateMethods) => {
-      this[key] = (date: Date, format?: Intl.DateTimeFormatOptions): string => {
-        return format
-          ? date.toLocaleString(culture, format)
-          : formats[key](date)
-      }
+      this[key] = (date: Date, format?: UserDateFormat): string =>
+        format ? normalizeFormat(date, format) : formats[key](date)
     })
   }
 
@@ -80,12 +87,16 @@ class IntlDateLocalizer implements DateLocalizer<Intl.DateTimeFormatOptions> {
   }
 }
 
-class IntlNumberLocalizer implements NumberLocalizer<Intl.NumberFormatOptions> {
-  culture: string
-  decimalCharacter: () => string
-  format: (date: number, format?: Intl.NumberFormatOptions) => string
+type UserNumberFormat =
+  | Intl.NumberFormatOptions
+  | ((num: number, culture?: string) => string)
 
-  constructor({ culture }) {
+class IntlNumberLocalizer implements NumberLocalizer<Intl.NumberFormatOptions> {
+  culture?: string
+  decimalCharacter: () => string
+  format: (num: number, format?: UserNumberFormat) => string
+
+  constructor({ culture = undefined } = {}) {
     this.culture = culture
 
     const decimal = Intl.NumberFormat(culture).formatToParts(1.1)[1].value
@@ -93,8 +104,14 @@ class IntlNumberLocalizer implements NumberLocalizer<Intl.NumberFormatOptions> {
       .format
 
     this.decimalCharacter = () => decimal
-    this.format = (num: number, format?: Intl.NumberFormatOptions): string => {
-      return format ? num.toLocaleString(culture, format) : formatter(num)
+    this.format = (num: number, format?: UserNumberFormat): string => {
+      if (format) {
+        return typeof format === 'function'
+          ? format(num, culture)
+          : num.toLocaleString(culture, format)
+      }
+
+      return formatter(num)
     }
   }
 

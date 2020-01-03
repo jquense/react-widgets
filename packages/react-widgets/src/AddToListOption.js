@@ -20,6 +20,7 @@ function AddToListOption({ onSelect, focused, children, activeId, ...props }) {
         focused={focused}
         activeId={activeId}
         dataItem={CREATE_OPTION}
+        selected={false}
       >
         {children}
       </ListOption>

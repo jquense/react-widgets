@@ -1,0 +1,23 @@
+{
+  "name": "www2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "gatsby develop"
+  },
+  "dependencies": {
+    "@docpocalypse/gatsby-theme": "^0.5.0",
+    "@types/classnames": "^2.2.9",
+    "@types/lodash": "^4.14.149",
+    "@types/react": "^16.9.16",
+    "astroturf": "^0.10.2",
+    "gatsby": "^2.18.11",
+    "postcss-nested": "^4.2.1",
+    "prismjs": "^1.17.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "tailwindcss": "^1.1.4",
+    "webpack-atoms": "^12.0.0"
+  }
+}

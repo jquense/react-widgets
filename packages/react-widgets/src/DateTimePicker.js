@@ -242,7 +242,6 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
 
   const inputId = useInstanceId(id, '_input')
   const dateId = useInstanceId(id, '_date')
-  const activeCalendarId = useInstanceId(id, '_calendar_active_cell')
 
   const currentFormat = includeTime ? 'datetime' : 'date'
 
@@ -431,7 +430,6 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
             bordered={false}
             {...calendarProps}
             isRtl={isRtl}
-            activeId={activeCalendarId}
             tabIndex="-1"
             value={value}
             autoFocus={false}

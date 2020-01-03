@@ -23,7 +23,7 @@ const compiler = webpack({
     libraryTarget: 'var',
   },
   module: {
-    rules: [rules.js({ envName: 'esm' })],
+    rules: [rules.js({ envName: 'esm', rootMode: 'upwards' })],
   },
   plugins: [
     plugins.define(),

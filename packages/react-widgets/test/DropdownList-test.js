@@ -1,7 +1,6 @@
+import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { mount } from 'enzyme'
-
 import DropdownList from '../src/DropdownList'
 
 describe('DropdownList', function() {
@@ -155,7 +154,7 @@ describe('DropdownList', function() {
 
     expect(
       mount(
-        <DropdownList defaultValue={'jimmy'} valueComponent={ValueComponent} />,
+        <DropdownList defaultValue={'jimmy'} renderValue={ValueComponent} />,
       )
         .find('.rw-input')
         .text(),
@@ -176,8 +175,8 @@ describe('DropdownList', function() {
           onToggle={() => {}}
         />,
       )
-        .find('List')
-        .prop('onSelect')(null, 'foo')
+        .find('Listbox')
+        .act(_ => _.prop('onChange')(null, { originalEvent: 'foo' }))
     })
 
     expect(change.getCall(0).args[1]).to.eql({
@@ -200,8 +199,8 @@ describe('DropdownList', function() {
         onSelect={onSelect}
       />,
     )
-      .find('List')
-      .act(_ => _.prop('onSelect')(data[1], 'foo'))
+      .find('Listbox')
+      .act(_ => _.prop('onChange')(data[1], { originalEvent: 'foo' }))
 
     expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
@@ -222,23 +221,43 @@ describe('DropdownList', function() {
       />,
     )
 
-    let listItems = inst.find('ListOption > div')
-
-    listItems.first().is('.rw-state-focus')
+    let listItems = () => inst.update().find('ListOption > div')
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    listItems.at(1).is('.rw-state-focus')
+    listItems()
+      .first()
+      .is('.rw-state-focus')
+
+    inst.simulate('keyDown', { key: 'ArrowDown' })
+    expect(
+      listItems()
+        .at(1)
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowUp' })
-    listItems.first().is('.rw-state-focus')
+    expect(
+      listItems()
+        .first()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'End' })
-    listItems.last().is('.rw-state-focus')
+    expect(
+      listItems()
+        .last()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'Home' })
-    listItems.first().is('.rw-state-focus')
+    expect(
+      listItems()
+        .first()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
   })
 
+  // TODO: Remove this?
   it('should search and change values', () => {
     let change = sinon.spy()
 
@@ -247,6 +266,7 @@ describe('DropdownList', function() {
         value={data[0]}
         data={data}
         delay={0}
+        filter={false}
         onChange={change}
         textField="label"
       />,
@@ -273,7 +293,7 @@ describe('DropdownList', function() {
     expect(
       inst
         .update()
-        .find('List')
+        .find('Listbox')
         .prop('focusedItem'),
     ).to.equal(data[2])
   })
@@ -296,7 +316,7 @@ describe('DropdownList', function() {
     expect(
       inst
         .update()
-        .find('List')
+        .find('Listbox')
         .prop('focusedItem'),
     ).to.equal(data[0])
   })

@@ -17,15 +17,23 @@
     "release": "lerna publish"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/plugin-proposal-decorators": "^7.6.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
-    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
-    "@babel/preset-typescript": "^7.6.0",
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
+    "@babel/plugin-proposal-export-namespace-from": "^7.5.2",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.7.4",
+    "@babel/preset-modules": "^0.1.1",
+    "@babel/preset-react": "^7.7.4",
+    "@babel/preset-typescript": "^7.7.4",
     "@typescript-eslint/eslint-plugin": "^2.6.0",
     "@typescript-eslint/parser": "^2.6.0",
     "babel-eslint": "10.0.3",
     "babel-preset-jason": "^6.0.1",
+    "comment-json": "^2.2.0",
     "common-tags": "^1.3.1",
     "cpy-cli": "^2.0.0",
     "cross-env": "^6.0.3",
@@ -36,6 +44,8 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-mocha": "^6.2.1",
     "eslint-plugin-react": "^7.16.0",
+    "find-workspaces-root": "^0.1.0",
+    "get-workspaces": "^0.5.2",
     "glob": "^7.1.3",
     "lerna": "^3.18.3",
     "lodash": "^4.17.11",
@@ -53,6 +63,24 @@
     "semi": false
   },
   "workspaces": [
-    "packages/*"
-  ]
+    "packages/*",
+    "www2"
+  ],
+  "resolutions": {
+    "@monastic.panic/react-docgen": "^5.0.1"
+  },
+  "workspace-sources": {
+    "react-widgets-moment/./*": [
+      "packages/localizer-moment/./*"
+    ],
+    "react-widgets/lib/*": [
+      "packages/react-widgets/src/*"
+    ],
+    "storybook/./*": [
+      "packages/storybook/stories/*"
+    ],
+    "www2/./*": [
+      "www2/src/*"
+    ]
+  }
 }

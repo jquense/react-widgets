@@ -1,6 +1,5 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import Multiselect from '../src/Multiselect'
 import MultiselectTag from '../src/MultiselectTag'
 import MultiselectTagList from '../src/MultiselectTagList'
@@ -106,7 +105,7 @@ describe('Multiselect', function() {
   it('should set id on list', () => {
     expect(
       mount(<Multiselect open />)
-        .find('List')
+        .find('Listbox')
         .prop('id'),
     ).to.be.a('string')
   })
@@ -287,7 +286,8 @@ describe('Multiselect', function() {
   it('should call onChange with event object from select', function() {
     let change = sinon.spy()
     let value = dataList.slice(0, 1)
-    let list = mount(
+
+    mount(
       <Multiselect
         open
         searchTerm=""
@@ -296,11 +296,9 @@ describe('Multiselect', function() {
         onChange={change}
         onToggle={() => {}}
       />,
-    ).find('List')
-
-    act(() => {
-      list.prop('onSelect')(dataList[1], 'foo')
-    })
+    )
+      .find('Listbox')
+      .act(_ => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
 
     expect(change.getCall(0).args[1]).to.eql({
       originalEvent: 'foo',
@@ -340,20 +338,18 @@ describe('Multiselect', function() {
     let onSelect = sinon.spy()
     let value = dataList.slice(1)
 
-    act(() => {
-      mount(
-        <Multiselect
-          open
-          onToggle={() => {}}
-          value={value}
-          data={dataList}
-          onChange={change}
-          onSelect={onSelect}
-        />,
-      )
-        .find('List')
-        .prop('onSelect')(dataList[1], 'foo')
-    })
+    mount(
+      <Multiselect
+        open
+        onToggle={() => {}}
+        value={value}
+        data={dataList}
+        onChange={change}
+        onSelect={onSelect}
+      />,
+    )
+      .find('Listbox')
+      .act(_ => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
 
     expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
@@ -441,25 +437,6 @@ describe('Multiselect', function() {
       .tap(s => s.assertNone('div.rw-list-option-create'))
   })
 
-  it('should show create tag correctly when caseSensitive', function() {
-    mount(
-      <Multiselect
-        defaultOpen
-        allowCreate
-        searchTerm="Jimmy"
-        onCreate={() => {}}
-        data={dataList}
-        onSearch={() => {}}
-        textField="label"
-        dataKey="id"
-        caseSensitive={true}
-      />,
-    )
-      .tap(s => s.assertSingle('div.rw-list-option-create'))
-      .setProps({ searchTerm: 'jimmy' })
-      .tap(s => s.assertNone('div.rw-list-option-create'))
-  })
-
   it('should call onCreate', function() {
     let create = sinon.spy()
 
@@ -507,19 +484,29 @@ describe('Multiselect', function() {
       />,
     )
 
-    let tags = inst.find('MultiselectTagList div')
+    let tags = () => inst.update().find('MultiselectTagList div')
+
+    inst = inst.simulate('keyDown', { key: 'ArrowLeft' })
+    expect(
+      tags()
+        .last()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowLeft' })
-    tags.last().is('.rw-state-focus')
 
-    inst.simulate('keyDown', { key: 'ArrowRight' })
-    tags.at(1).is('.rw-state-focus')
+    expect(
+      tags()
+        .at(2)
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
-    inst.simulate('keyDown', { key: 'Home' })
-    tags.first().is('.rw-state-focus')
-
-    inst.simulate('keyDown', { key: 'End' })
-    tags.last().is('.rw-state-focus')
+    inst = inst.simulate('keyDown', { key: 'ArrowRight' })
+    expect(
+      tags()
+        .last()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'Delete' })
 
@@ -557,20 +544,41 @@ describe('Multiselect', function() {
       />,
     )
 
-    let listItems = inst.find('List div.rw-list-option')
-
-    listItems.first().is('.rw-state-focus')
+    let listItems = () => inst.update().find('Listbox div.rw-list-option')
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    listItems.at(1).is('.rw-state-focus')
+    expect(
+      listItems()
+        .first()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
+
+    inst.simulate('keyDown', { key: 'ArrowDown' })
+    expect(
+      listItems()
+        .at(1)
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowUp' })
-    listItems.first().is('.rw-state-focus')
+    expect(
+      listItems()
+        .first()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'End' })
-    listItems.last().is('.rw-state-focus')
+    expect(
+      listItems()
+        .last()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
 
     inst.simulate('keyDown', { key: 'Home' })
-    listItems.first().is('.rw-state-focus')
+    expect(
+      listItems()
+        .first()
+        .is('.rw-state-focus'),
+    ).to.equal(true)
   })
 })

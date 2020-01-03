@@ -18,17 +18,16 @@ describe('Month Component', function() {
         focusedItem={date}
         onChange={() => {}}
         formats={{
-          dayOfMonth: 'dd',
-          dayFormat: 'd',
+          dayOfMonth: { day: '2-digit' },
         }}
       />,
     )
-      //.print()
+      // .print()
       .tap(inst => expect(inst.first('td').contains('01')).to.equal(true))
       .setProps({
-        formats: { dayOfMonth: '-d' },
+        formats: { dayOfMonth: { day: 'numeric' } },
       })
-      .tap(inst => expect(inst.first('td').contains('-1')).to.equal(true))
+      .tap(inst => expect(inst.first('td').contains('1')).to.equal(true))
       .setProps({
         formats: { dayOfMonth: formatter },
       })
@@ -37,6 +36,5 @@ describe('Month Component', function() {
     expect(formatter.called).to.equal(true)
     expect(formatter.args[0].length).to.equal(2)
     expect(formatter.args[0][0]).to.be.a('Date')
-    expect(formatter.args[0][1]).to.be.an('object')
   })
 })

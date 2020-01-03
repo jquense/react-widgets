@@ -3,5 +3,9 @@
   "compilerOptions": {
     "rootDir": "stories"
   },
-  "references": [{ "path": "../react-widgets" }]
+  "references": [
+    {
+      "path": "../localizer-moment"
+    }
+  ]
 }
