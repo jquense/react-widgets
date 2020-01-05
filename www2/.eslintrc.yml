@@ -6,3 +6,4 @@ globals:
   __VERSION__: readonly
 rules:
   global-require: off
+  react/prop-types: off

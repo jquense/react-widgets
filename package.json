@@ -70,16 +70,16 @@
     "@monastic.panic/react-docgen": "^5.0.1"
   },
   "workspace-sources": {
-    "react-widgets-moment/./*": [
+    "react-widgets-moment/*": [
       "packages/localizer-moment/./*"
     ],
     "react-widgets/lib/*": [
       "packages/react-widgets/src/*"
     ],
-    "storybook/./*": [
+    "storybook/*": [
       "packages/storybook/stories/*"
     ],
-    "www2/./*": [
+    "www2/*": [
       "www2/src/*"
     ]
   }

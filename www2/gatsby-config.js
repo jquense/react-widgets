@@ -9,7 +9,9 @@ module.exports = {
     {
       resolve: '@docpocalypse/gatsby-theme',
       options: {
+        theming: 'full',
         sources: ['../packages/react-widgets/src'],
+        tailwindConfig: require.resolve('./tailwind.config'),
       },
     },
   ],
