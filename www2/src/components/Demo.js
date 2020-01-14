@@ -1,6 +1,5 @@
 import partial from 'lodash/partial'
 import React from 'react'
-import Button from './Button'
 import Layout from './Layout'
 
 class Demo extends React.Component {
@@ -10,14 +9,20 @@ class Demo extends React.Component {
     let toggle = () => this.setState({ show: !show })
 
     return (
-      <section className="demo" role="application">
-        <div className="demo-content">{children}</div>
+      <section className="flex flex-col" role="application">
+        <div className="flex flex-col md:flex-row md:items-center text-sm">
+          {children}
+        </div>
         {shortcuts && (
-          <div className="demo-keyboard">
-            <Button bsStyle="link" onClick={toggle}>
+          <div className="flex flex-col">
+            <button
+              type="button"
+              onClick={toggle}
+              className="font-brand text-xl px-4 mb-4 self-center text-purple focus:outline-none focus:shadow-outline"
+            >
               <i className="fa fa-keyboard-o" aria-hidden="true" />
               Keyboard shortcuts
-            </Button>
+            </button>
             <div hidden={!show}>
               <div>
                 <ul>
@@ -36,10 +41,32 @@ class Demo extends React.Component {
   }
 }
 
-Demo.Stage = ({ children }) => <div className="demo-stage">{children}</div>
+Demo.Stage = ({ children }) => (
+  <div
+    className="mt-4 mb-6 mx-auto px-4"
+    css={css`
+      min-width: 400px;
+
+      @screen md {
+        min-width: 300px;
+      }
+    `}
+  >
+    {children}
+  </div>
+)
 
 Demo.Controls = props => (
-  <Layout {...props} direction="column" className="demo-controls" />
+  <Layout
+    {...props}
+    direction="column"
+    className="px-4 py-3 mt-3 border-t border-divider -lg md:p-4 md:border-t-0 md:border-l"
+    css={css`
+      @screen md {
+        flex: 0 0 40%;
+      }
+    `}
+  />
 )
 
 Demo.Control = props => (

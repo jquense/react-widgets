@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "packages": {
+    "@docpocalypse/gatsby-theme": {
+      "signature": "a4aa7783f7f4249218c3f51721a2c548",
+      "link": true,
+      "replaced": "^0.8.9"
+    }
+  }
+}

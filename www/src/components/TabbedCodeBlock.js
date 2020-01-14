@@ -25,7 +25,7 @@ function TabbedCodeBlock({ children }) {
                 dangerouslySetInnerHTML={{
                   __html: prism(
                     stripIndent([unescape(props.children)]),
-                    props.lang || 'jsx'
+                    props.lang || 'jsx',
                   ),
                 }}
               />
@@ -36,5 +36,7 @@ function TabbedCodeBlock({ children }) {
     </Tabs>
   )
 }
+
+export const Tab = () => null
 
 export default TabbedCodeBlock

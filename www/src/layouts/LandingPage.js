@@ -1,6 +1,5 @@
 import React from 'react'
 import Navbar from 'react-bootstrap/lib/Navbar'
-
 import SubNavbar from '../components/SubNavbar'
 import WidgetNav from '../components/WidgetNav'
 

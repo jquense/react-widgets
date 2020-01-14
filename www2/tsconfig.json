@@ -4,7 +4,7 @@
     "rootDir": "src",
     "baseUrl": "."
   },
-  "include": ["src"],
+  "include": ["src", "tailwind.config.js"],
   "references": [
     {
       "path": "../packages/react-widgets"

@@ -5,64 +5,42 @@ import Checkbox from 'react-bootstrap/lib/Checkbox'
 import * as RW from 'react-widgets'
 import Demo, { createSetter } from '../components/Demo'
 import Layout from '../components/Layout'
-import genData from '../generate-data'
 import DisabledItemsInput from './DisabledItemsInput'
 
-const list = genData(25)
-const ICONS = ['bicycle', 'area-chart', 'anchor']
+var list = [
+  { label: 'orange', id: 1 },
+  { label: 'blue', id: 2 },
+  { label: 'red', id: 3 },
+  { label: 'maroon', id: 4 },
+  { label: 'purple', id: 5 },
+  { label: 'mauve', id: 6 },
+]
 
-const ItemComponent = itemProps => {
-  const { item } = itemProps
-  return (
-    <div>
-      <i className={'fa fa-' + ICONS[list.indexOf(item) % 3]} />
-      {'  ' + item.name}
-    </div>
-  )
-}
-
-class DropdownApi extends React.Component {
+class SelectListApi extends React.Component {
   state = {
-    filter: 'startsWith',
+    defaultValue: list[0],
   }
 
   render() {
-    const { filter, groupBy, busy, isRtl, disabled, readOnly } = this.state
+    const { multiple, busy, isRtl, disabled, readOnly } = this.state
 
     let setter = createSetter(this)
-
-    var props = {
-      defaultValue: 1,
-      data: list,
-      dataKey: 'id',
-      textField: 'name',
-      filter,
-      groupBy,
-      busy,
-      isRtl,
-      disabled,
-      readOnly,
-    }
 
     return (
       <Demo shortcuts={this.props.shortcuts}>
         <Demo.Stage>
           <div className="form-group">
-            <RW.DropdownList {...props} />
-          </div>
-          <div className="form-group">
-            <label className="control-label">Custom Rendering</label>
-
-            <RW.DropdownList
-              {...props}
-              valueComponent={ItemComponent}
-              itemComponent={ItemComponent}
+            <RW.Listbox
+              data={list}
+              dataKey="id"
+              textField="label"
+              {...this.state}
             />
           </div>
         </Demo.Stage>
         <Demo.Controls>
           <Layout>
-            <Demo.Control flex>
+            <Demo.Control>
               <ButtonGroup>
                 <Button
                   active={disabled === true}
@@ -88,13 +66,10 @@ class DropdownApi extends React.Component {
                 </Button>
               </ButtonGroup>
             </Demo.Control>
-            <Demo.Control label="filter" flex>
-              <RW.DropdownList
-                filter={false}
-                value={filter}
-                data={[false, 'startsWith', 'endsWith', 'contains']}
-                onChange={setter('filter')}
-              />
+            <Demo.Control>
+              <Checkbox checked={busy} onClick={setter('busy', !busy)}>
+                Busy
+              </Checkbox>
             </Demo.Control>
           </Layout>
 
@@ -103,7 +78,7 @@ class DropdownApi extends React.Component {
               value={disabled}
               data={list}
               dataKey="id"
-              textField="name"
+              textField="label"
               onChange={disabled =>
                 this.setState({
                   disabled,
@@ -121,15 +96,10 @@ class DropdownApi extends React.Component {
             </Demo.Control>
             <Demo.Control>
               <Checkbox
-                checked={groupBy}
-                onChange={setter('groupBy', !groupBy ? 'lastName' : null)}
+                checked={multiple}
+                onChange={setter('multiple', !multiple)}
               >
-                group
-              </Checkbox>
-            </Demo.Control>
-            <Demo.Control>
-              <Checkbox checked={busy} onClick={setter('busy', !busy)}>
-                Busy
+                multiple
               </Checkbox>
             </Demo.Control>
           </Layout>
@@ -139,4 +109,4 @@ class DropdownApi extends React.Component {
   }
 }
 
-export default DropdownApi
+export default SelectListApi

@@ -2,7 +2,7 @@ const path = require('path')
 const { createAtoms } = require('webpack-atoms')
 
 exports.onCreateWebpackConfig = function onCreateWebpackConfig({ actions }) {
-  const { rules } = createAtoms({
+  const { rules, plugins } = createAtoms({
     env: process.env.NODE_ENV || 'development',
   })
 
@@ -10,6 +10,13 @@ exports.onCreateWebpackConfig = function onCreateWebpackConfig({ actions }) {
     module: {
       rules: [rules.astroturf({ enableCssProp: true })],
     },
+    plugins: [
+      plugins.define({
+        __VERSION__: `"${
+          require('../packages/react-widgets/package.json').version
+        }"`,
+      }),
+    ],
     resolve: {
       symlinks: false,
       alias: {

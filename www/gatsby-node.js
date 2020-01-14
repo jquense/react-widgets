@@ -4,7 +4,7 @@ const slug = require('slug')
 exports.onCreateBabelConfig = ({ actions }) => {
   actions.setBabelOptions({
     options: {
-      babelrcRoots: [__dirname, path.resolve(__dirname, '../packages/*')],
+      rootMode: 'upward',
     },
   })
 }
@@ -24,20 +24,7 @@ exports.onCreateWebpackConfig = ({ actions, rules, plugins, getConfig }) => {
 
   setWebpackConfig({
     module: {
-      rules: [
-        Object.assign(
-          rules.js({
-            babelrcRoots: [__dirname, path.resolve(__dirname, '../packages/*')],
-          }),
-          {
-            use: {
-              options: { extension: '.less', tagName: 'less' },
-              loader: require.resolve('css-literal-loader'),
-            },
-          }
-        ),
-        noAmdRule,
-      ],
+      rules: [rules.astroturf({ enableCssProp: true, extension: '.less' })],
     },
     resolve: {
       symlinks: false,
@@ -46,7 +33,7 @@ exports.onCreateWebpackConfig = ({ actions, rules, plugins, getConfig }) => {
         react: path.resolve('./node_modules/react'),
         'react-dom': path.resolve('./node_modules/react-dom'),
         'react-widgets$': require.resolve(
-          '../packages/react-widgets/src/index.js'
+          '../packages/react-widgets/src/index.js',
         ),
         'react-widgets/lib': path.resolve('../packages/react-widgets/src'),
         'react-hot-loader': path.resolve('./node_modules/react-hot-loader'),
@@ -100,7 +87,7 @@ exports.createPages = ({ graphql, actions }) => {
             },
           })
         })
-      })
+      }),
     )
   })
 }

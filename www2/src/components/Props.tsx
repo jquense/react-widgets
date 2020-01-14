@@ -2,10 +2,10 @@ import React from 'react'
 import {
   LinkedHeading,
   MDXProvider,
-  Pre,
   PropDescription,
 } from '@docpocalypse/gatsby-theme'
 import renderProps from '@docpocalypse/props-table'
+import PropExample from './PropExample'
 
 // const tokenMap = css`
 //   .union {
@@ -19,12 +19,12 @@ const components = {
   pre: () => null,
 }
 
-function PropsTable({ metadata }) {
+function Props({ metadata }) {
   const props = renderProps(metadata.props || [], { tokenMap: {} })
 
   return (
     <>
-      {props.map(prop => (
+      {props.slice(0, 3).map(prop => (
         <React.Fragment key={prop.name}>
           <LinkedHeading id={prop.name} h={3}>
             <div className="inline-flex items-center">
@@ -51,14 +51,15 @@ function PropsTable({ metadata }) {
 
           <MDXProvider components={components}>
             <PropDescription
-              mdx={prop.propData.description.childMdx}
+              mdx={prop.propData.description?.childMdx}
               html={prop.description}
             />
           </MDXProvider>
+          <PropExample prop={prop} displayName={metadata.displayName} />
         </React.Fragment>
       ))}
     </>
   )
 }
 
-export default PropsTable
+export default Props

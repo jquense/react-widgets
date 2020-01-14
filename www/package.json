@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "gatsby serve",
     "build": "gatsby build",
+    "start": "yarn develop",
     "develop": "gatsby develop",
     "deploy": "npm run build -- --prefix-paths && gh-pages -d public"
   },
