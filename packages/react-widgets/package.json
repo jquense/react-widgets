@@ -3,6 +3,7 @@
   "version": "5.0.0-beta.0",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/index.js",
+  "types": "lib/index.d.js",
   "author": {
     "name": "Jason",
     "email": "monastic.panic@gmail.com"
@@ -39,10 +40,10 @@
     "assets:lib": "cpy src/img/* lib/img/",
     "assets:dist": "cpy src/img/* dist/img/",
     "compile:lib": "build src",
-    "compile:dist": "rimraf ./dist/* cross-env NODE_ENV=production webpack",
+    "compile:dist": "rimraf ./dist/* && cross-env NODE_ENV=production webpack",
     "build:lib": "npm run compile:lib && npm run styles && npm run assets:lib",
     "build:dist": "npm run compile:dist && npm run scss && npm run assets:dist",
-    "build": "npm run build:lib && npm run build:dist",
+    "build": "npm run build:lib",
     "prepublishOnly": "npm run build"
   },
   "homepage": "http://jquense.github.io/react-widgets/docs/",

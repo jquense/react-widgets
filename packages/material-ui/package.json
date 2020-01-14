@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src --out-dir lib && npm run styles",
+    "build": "babel src --out-dir lib --root-mode upward && npm run styles",
     "styles": "cpy src/scss/* lib/scss/",
     "prepublishOnly": "npm run build"
   },

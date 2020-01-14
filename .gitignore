@@ -1,6 +1,7 @@
 lib/
 dist/
 **/test/output/
+*.tsbuildinfo
 
 temp/
 

@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src --out-dir lib && cp src/styles.css lib/styles.css",
+    "build": "babel src --out-dir lib  --root-mode upward && cp src/styles.css lib/styles.css",
     "prepublishOnly": "npm run build"
   },
   "files": [

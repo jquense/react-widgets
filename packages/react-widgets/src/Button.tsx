@@ -2,7 +2,7 @@ import cn from 'classnames'
 import React, { ReactNode } from 'react'
 import { Spinner } from './Icon'
 
-interface Props extends React.HTMLProps<HTMLButtonElement> {
+export interface Props extends React.HTMLProps<HTMLButtonElement> {
   label?: string
   icon?: ReactNode
   busy?: boolean

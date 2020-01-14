@@ -14,7 +14,7 @@ const compiler = webpack({
   // },
   entry:
     `${loaders.imports().loader}?` +
-    `module=${path.join(dirname, 'localizer.js')}` +
+    `module=${path.join(dirname, 'localizer')}` +
     `!${require.resolve('./shim.js')}`,
 
   output: {
@@ -25,6 +25,9 @@ const compiler = webpack({
   module: {
     rules: [rules.js({ envName: 'esm', rootMode: 'upwards' })],
   },
+  "resolve": {
+    "extensions": ['js','json', 'ts', 'tsx']
+  }
   plugins: [
     plugins.define(),
     plugins.banner({

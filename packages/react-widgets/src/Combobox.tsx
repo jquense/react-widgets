@@ -430,7 +430,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
           icon={selectIcon}
           spinner={busySpinner}
           onClick={toggle}
-          disabled={disabled || readOnly}
+          disabled={!!disabled || readOnly}
           // FIXME
           label={messages.openCombobox()}
         />

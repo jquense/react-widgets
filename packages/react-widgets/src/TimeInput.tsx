@@ -28,8 +28,6 @@ interface TimeParts {
   milliseconds?: number
 }
 
-type CompleteTimeParts = Required<TimeParts>
-
 type TimePart = keyof TimeParts
 
 const selectTextRange = el => {
