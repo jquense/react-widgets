@@ -683,6 +683,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
               {...listProps}
               id={listId}
               data={data}
+              tabIndex={-1}
               bordered={false}
               disabled={disabled}
               activeId={activeOptionId}

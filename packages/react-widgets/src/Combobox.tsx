@@ -446,6 +446,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
             <List
               {...listProps}
               id={listId}
+              tabIndex={-1}
               activeId={activeId}
               data={data}
               bordered={false}

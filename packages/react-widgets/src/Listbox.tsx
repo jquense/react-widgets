@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React, {
@@ -11,7 +12,7 @@ import { useUncontrolledProp } from 'uncontrollable'
 import BaseListbox from './BaseListbox'
 import ListOption, { ListOptionProps } from './ListOption'
 import ListOptionGroup from './ListOptionGroup'
-import { useClearListOptions } from './ListboxContext'
+import { getList, useClearListOptions } from './ListboxContext'
 import { UserProvidedMessages, useMessagesWithDefaults } from './messages'
 import { WidgetHTMLProps } from './shared'
 import { DataItem, RenderProp, Value } from './types'
@@ -170,7 +171,8 @@ declare interface Listbox {
 const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
   {
     multiple = false,
-    focusedItem,
+    focusedItem: propsFocusedItem,
+
     data,
 
     value,
@@ -189,11 +191,16 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
     groupBy,
     bordered = true,
     optionComponent: Option = ListOption,
-    // onKeyDown,
+    onKeyDown,
     ...props
   }: ListboxProps<TDataItem>,
   outerRef: React.Ref<ListboxHandle>,
 ) {
+  const [focusedItem, setFocusedItem] = useUncontrolledProp(
+    propsFocusedItem,
+    null,
+    (_: TDataItem) => {},
+  )
   const [rawValue, handleChange] = useUncontrolledProp(
     value,
     defaultValue,
@@ -213,6 +220,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
   const disabledItems = toItemArray(disabled)
   const { emptyList } = useMessagesWithDefaults(messages)
   const flatData = useFlattenedData(data, groupBy)
+  const list = getList(flatData, accessors.text, disabledItems)
 
   const handleSelect = (dataItem: TDataItem, event: React.MouseEvent) => {
     if (multiple === false) {
@@ -238,41 +246,13 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
     )
   }
 
-  // const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-  //   let { key, altKey, ctrlKey, shiftKey } = e
-  //   const currentFocused = focusedItem || selectedItem
-  //   notify(onKeyDown, [e])
-
-  //   if (e.defaultPrevented) return
-
-  //   if (key === 'End' && !shiftKey) {
-  //     e.preventDefault()
-  //     setFocusedItem(list.last())
-  //   } else if (key === 'Home'&& !shiftKey) {
-  //     e.preventDefault()
-  //     setFocusedItem(list.first())
-  //   } else if (key === 'Enter') {
-  //     e.preventDefault()
-  //     if (focusedItem) handleSelect(focusedItem, e)
-  //   } else if (key === 'ArrowDown') {
-  //     e.preventDefault()
-  //     setFocusedItem(list.next(currentFocused))
-  //   } else if (key === 'ArrowUp') {
-  //     e.preventDefault()
-
-  //     if (altKey) return closeWithFocus()
-
-  //     setFocusedItem(list.prev(currentFocused))
-  //   }
-  // }
-
   const scrollIntoView = useCallback(() => {
     let list = ref.current
     if (!list || !focusedItem) return
 
     let selectedItem = list.querySelector('[data-rw-focused]')
 
-    if (selectedItem) {
+    if (selectedItem && selectedItem.scrollIntoView) {
       selectedItem.scrollIntoView({ block: 'nearest', inline: 'nearest' })
     }
   }, [focusedItem])
@@ -285,11 +265,39 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
 
   useImperativeHandle(outerRef, () => ({ scrollIntoView }), [scrollIntoView])
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    let { key, shiftKey } = e
+    const currentFocused = focusedItem || currentValue[currentValue.length - 1]
+
+    notify(onKeyDown, [e])
+
+    if (e.defaultPrevented) return
+
+    if (key === 'End' && !shiftKey) {
+      e.preventDefault()
+      setFocusedItem(list.last())
+    } else if (key === 'Home' && !shiftKey) {
+      e.preventDefault()
+      setFocusedItem(list.first())
+    } else if (key === 'Enter') {
+      e.preventDefault()
+      if (focusedItem) handleSelect(focusedItem, e as any)
+    } else if (key === 'ArrowDown') {
+      e.preventDefault()
+      setFocusedItem(list.next(currentFocused))
+    } else if (key === 'ArrowUp') {
+      e.preventDefault()
+
+      setFocusedItem(list.prev(currentFocused))
+    }
+  }
+
   return (
     <BaseListbox
       ref={ref}
       {...elementProps}
       multiple={multiple}
+      onKeyDown={handleKeyDown}
       className={cn(className, bordered && 'rw-widget-container')}
       emptyListMessage={emptyList()}
     >

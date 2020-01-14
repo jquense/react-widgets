@@ -573,6 +573,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
             <List
               {...listProps}
               id={listId}
+              tabIndex={-1}
               activeId={activeId}
               data={data}
               bordered={false}

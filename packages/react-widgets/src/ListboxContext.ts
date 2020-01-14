@@ -12,12 +12,11 @@ export const OptionsContext = React.createContext<ListOptionContext | null>(
   null,
 )
 
-export function useOptionList(
+export function getList(
+  options: DataItem[],
   textAccessor: TextAccessorFn,
   disabledItems: DataItem[],
 ) {
-  const options = useMemo<object[]>(() => [], [])
-
   const isDisabled = item => disabledItems.indexOf(item) !== -1
 
   let moveNext = (item: any, word?: string) =>
@@ -52,6 +51,16 @@ export function useOptionList(
 
     nextEnabled: (item: any) => (isDisabled(item) ? list.next(item) : item),
   }
+  return list
+}
+
+export function useOptionList(
+  textAccessor: TextAccessorFn,
+  disabledItems: DataItem[],
+) {
+  const options = useMemo<object[]>(() => [], [])
+
+  const list = getList(options, textAccessor, disabledItems)
 
   return [useMemo(() => ({ options }), [options]), list] as const
 }
