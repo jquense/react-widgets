@@ -99,7 +99,9 @@ class IntlNumberLocalizer implements NumberLocalizer<Intl.NumberFormatOptions> {
   constructor({ culture = undefined } = {}) {
     this.culture = culture
 
-    const decimal = Intl.NumberFormat(culture).formatToParts(1.1)[1].value
+    const decimal = Intl.NumberFormat(culture).formatToParts
+      ? Intl.NumberFormat(culture).formatToParts(1.1)[1].value
+      : (1.1).toLocaleString(culture).match(/[^\d]/)?.[0] || '.'
     const formatter = Intl.NumberFormat(culture, { maximumFractionDigits: 0 })
       .format
 

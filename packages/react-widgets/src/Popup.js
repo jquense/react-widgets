@@ -20,6 +20,8 @@ const propTypes = {
   onEntering: PropTypes.func,
   onEntered: PropTypes.func,
   transition: elementType,
+  role: PropTypes.string,
+  id: PropTypes.string,
 }
 
 const Popup = React.forwardRef(

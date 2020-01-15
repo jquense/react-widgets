@@ -1,5 +1,5 @@
-import React from 'react'
 import { mount } from 'enzyme'
+import React from 'react'
 import NumberPicker from '../src/NumberPicker'
 
 describe('NumberPicker', function() {
@@ -21,7 +21,7 @@ describe('NumberPicker', function() {
       .tap(expectValueToBe('10'))
       .setProps({ value: 20, max: 10 })
       .tap(expectValueToBe('10'))
-      .setProps({ value: 10, formats: { default: 'c' } })
+      .setProps({ value: 10, format: { style: 'currency', currency: 'USD' } })
       .tap(expectValueToBe('$10.00'))
   })
 

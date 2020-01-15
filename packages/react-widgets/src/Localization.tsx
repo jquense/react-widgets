@@ -1,4 +1,5 @@
 import React, { useContext, useMemo } from 'react'
+import * as IntlLocalizers from '../src/IntlLocalizer'
 import {
   ProcessedMessages,
   UserProvidedMessages,
@@ -104,14 +105,10 @@ function mergeWithDefaults<TD, TN>(
 }
 
 const LocalizerContext = React.createContext<Localizer<unknown, unknown>>(
-  // @ts-ignore
-  process.env.NODE_ENV === 'test' &&
-    mergeWithDefaults(
-      // @ts-ignore
-      global.TEST_LOCALIZERS.date,
-      // @ts-ignore
-      global.TEST_LOCALIZERS.number,
-    ),
+  mergeWithDefaults(
+    new IntlLocalizers.DateLocalizer(),
+    new IntlLocalizers.NumberLocalizer(),
+  ),
 )
 
 type ProviderProps = {

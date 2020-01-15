@@ -2,7 +2,7 @@ import { mount } from 'enzyme'
 import React from 'react'
 import List from '../src/Listbox'
 
-describe('List', () => {
+xdescribe('List', () => {
   var data = [
     { first: 'jimmy', last: 'smith', id: 0 },
     { first: 'sally', last: 'smith', id: 1 },

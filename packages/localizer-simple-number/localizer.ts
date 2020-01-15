@@ -1,11 +1,13 @@
-import Localizer from 'react-widgets/lib/Localizer'
-import formatNumber from 'format-number-with-string'
 import deconstruct from 'deconstruct-number-format'
+import formatNumber from 'format-number-with-string'
+import { NumberLocalizer } from 'react-widgets/lib/Localization'
 
 let defaults = {
   decimal: '.',
   grouping: ',',
 }
+
+export type UserNumberFormat = string | ((num: number) => string)
 
 /**
  * A straightforward number formatting and parsing localizer that is locale
@@ -22,7 +24,7 @@ let defaults = {
  * />
  * ```
  */
-class SimpleNumberLocalizer extends Localizer {
+class SimpleNumberLocalizer implements NumberLocalizer<UserNumberFormat> {
   /**
    *
    * @param {Object} options            A set of options used to configure localization details
@@ -32,16 +34,21 @@ class SimpleNumberLocalizer extends Localizer {
   constructor(options = {}) {
     let { decimal, grouping } = { ...defaults, ...options }
 
-    super({
-      numberFormats: {
-        default: `-#${grouping}##0${decimal}`,
-      },
-    })
+    this.decimalCharacter = () => decimal
+    this.format = (num: number, format?: UserNumberFormat): string => {
+      if (typeof format === 'function') {
+        return format(num)
+      }
 
-    this.decimal = decimal
+      return formatNumber(num, format || `-#${grouping}##0${decimal}`)
+    }
   }
 
-  parseNumber(value, format) {
+  culture?: string
+  decimalCharacter: () => string
+  format: (num: number, format?: string) => string
+
+  parse(value: any, format: string) {
     if (format) {
       let data = deconstruct(format),
         negative =
@@ -60,12 +67,14 @@ class SimpleNumberLocalizer extends Localizer {
 
       if (data.integerSeperator)
         halves[0] = halves[0].replace(
-          new RegExp('\\' + data.integerSeperator, 'g')
+          new RegExp('\\' + data.integerSeperator, 'g'),
+          '',
         )
 
       if (data.decimalsSeparator)
         halves[1] = halves[1].replace(
-          new RegExp('\\' + data.decimalsSeparator, 'g')
+          new RegExp('\\' + data.decimalsSeparator, 'g'),
+          '',
         )
 
       if (halves[1] === '') halves.pop()
@@ -77,23 +86,6 @@ class SimpleNumberLocalizer extends Localizer {
     } else value = parseFloat(value)
 
     return isNaN(value) ? null : value
-  }
-
-  formatNumber(value, format) {
-    return formatNumber(value, format)
-  }
-
-  decimalChar(format) {
-    return (
-      (format && deconstruct(format).decimalsSeparator) ||
-      this.decimal ||
-      super.decimalChar()
-    )
-  }
-
-  precision(format) {
-    let { maxRight } = deconstruct(format)
-    return maxRight !== -1 ? maxRight : super.precision()
   }
 }
 

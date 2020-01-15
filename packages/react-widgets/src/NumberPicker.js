@@ -75,14 +75,12 @@ const propTypes = {
    */
   precision: PropTypes.number,
 
-  formats: PropTypes.shape({
-    /**
-     * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
-     *
-     * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
-     */
-    default: CustomPropTypes.numberFormat,
-  }),
+  /**
+   * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
+   *
+   * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
+   */
+  format: CustomPropTypes.numberFormat,
 
   /**
    * Determines how the NumberPicker parses a number from the localized string representation.
@@ -164,7 +162,7 @@ function NumberPicker(uncontrolledProps) {
     name,
     onChange,
     messages,
-    formats,
+    format,
     onKeyDown,
     onKeyPress,
     onKeyUp,
@@ -174,7 +172,7 @@ function NumberPicker(uncontrolledProps) {
     ...elementProps
   } = useUncontrolled(uncontrolledProps, { value: 'onChange' })
 
-  const localizer = useLocalizer(messages, formats)
+  const localizer = useLocalizer(messages, { number: format })
 
   const ref = useRef()
   const inputRef = useRef()
@@ -260,10 +258,8 @@ function NumberPicker(uncontrolledProps) {
   function step(amount, event) {
     const nextValue = (value || 0) + amount
 
-    const decimals = precision != null ? precision : localizer.precision()
-
     handleChange(
-      decimals != null ? round(nextValue, decimals) : nextValue,
+      precision != null ? round(nextValue, precision) : nextValue,
       event,
     )
 

@@ -508,7 +508,6 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
         key === 'Delete' &&
         disabledItems.indexOf(focusedItem) === -1
       ) {
-        console.log('FF', focusedTag)
         handleDelete(focusedTag, event)
         //
       } else if (key === 'Backspace') {
@@ -531,7 +530,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     action: 'insert' | 'remove',
   ) {
     let nextDataItems = dataItems
-    console.log('HERE', dataItem, action)
+
     switch (action) {
       case INSERT:
         nextDataItems = nextDataItems.concat(dataItem)

@@ -6,7 +6,14 @@ import DatePicker from './DatePicker'
 import DateTimePicker from './DateTimePicker'
 import DropdownList from './DropdownList'
 import Listbox from './Listbox'
-import Localization from './Localization'
+import Localization, {
+  DateFormats,
+  DateLocalizer,
+  FormatterOverrides,
+  Localizer,
+  NumberLocalizer,
+  RequiredDateMethods,
+} from './Localization'
 import Multiselect from './Multiselect'
 import NumberPicker from './NumberPicker'
 import SlideDownTransition from './SlideDownTransition'
@@ -26,4 +33,10 @@ export {
   SlideTransitionGroup,
   SlideDownTransition,
   Localization,
+  DateFormats,
+  DateLocalizer,
+  FormatterOverrides,
+  Localizer,
+  NumberLocalizer,
+  RequiredDateMethods,
 }
