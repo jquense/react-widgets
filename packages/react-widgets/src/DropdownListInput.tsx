@@ -1,9 +1,13 @@
 import cn from 'classnames'
 import React, { useImperativeHandle, useRef, useState } from 'react'
-import { RenderProp, WidgetHandle } from './types'
+import { RenderProp, Value, WidgetHandle } from './types'
 import { DataKeyAccessorFn, TextAccessorFn } from './util/dataHelpers'
 
-export type RenderValueProp<TDataItem> = RenderProp<{ item: TDataItem }>
+export type RenderValueProp<TDataItem> = RenderProp<{
+  item: TDataItem
+  dataKey: Value
+  text: string
+}>
 
 export type DropdownInputHandle = WidgetHandle
 
@@ -61,17 +65,19 @@ const DropdownListInput = React.forwardRef(function<TDataItem>(
     setAutofilling(false)
     onAutofillChange(e)
   }
+  let dataKey = dataKeyAccessor(value)
+  let text = textAccessor(value)
 
-  let strValue = String(dataKeyAccessor(value))
+  let strValue = String(dataKey)
   if (strValue === String({})) strValue = ''
 
   const inputValue =
     !value && placeholder ? (
       <span className="rw-placeholder">{placeholder}</span>
     ) : renderValue ? (
-      renderValue({ item: value })
+      renderValue({ item: value, dataKey, text })
     ) : (
-      textAccessor(value)
+      text
     )
 
   useImperativeHandle(ref, () => ({

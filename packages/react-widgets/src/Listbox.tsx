@@ -298,7 +298,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
       {...elementProps}
       multiple={multiple}
       onKeyDown={handleKeyDown}
-      className={cn(className, bordered && 'rw-widget-container')}
+      className={cn(className, bordered && 'rw-listbox rw-widget-container')}
       emptyListMessage={emptyList()}
     >
       {flatData.map((item, idx) => {
