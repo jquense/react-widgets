@@ -15,10 +15,6 @@ $font-family: inherit !default;
 $text-color: $gray-900 !default;
 
 $version: '4.1.0' !default;
-$font-path: '../fonts' !default;
-$img-path: '../img' !default;
-$img-busy: url('#{$img-path}/loading.gif') !default;
-$img-busy-lg: url('#{$img-path}/loader-big.gif') !default;
 
 $border-radius: 4px !default;
 $border-radius-sm: 3px !default;
