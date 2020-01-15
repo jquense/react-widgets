@@ -176,9 +176,9 @@ function useMultiselectData<TDataItem>(
   ] as const
 }
 
-type MultiselectHandle = WidgetHandle
+export type MultiselectHandle = WidgetHandle
 
-type ChangeHandler<TDataItem> = (
+export type ChangeHandler<TDataItem> = (
   dataItem: TDataItem[],
   metadata: {
     action: 'insert' | 'remove'
@@ -189,7 +189,7 @@ type ChangeHandler<TDataItem> = (
   },
 ) => void
 
-interface MultiselectProps<TDataItem = DataItem>
+export interface MultiselectProps<TDataItem = DataItem>
   extends WidgetHTMLProps,
     WidgetProps,
     PopupWidgetProps,

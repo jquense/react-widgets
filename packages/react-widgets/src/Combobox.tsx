@@ -113,9 +113,9 @@ let propTypes = {
   }),
 }
 
-type ComboboxHandle = WidgetHandle
+export type ComboboxHandle = WidgetHandle
 
-interface ComboboxProps<TDataItem = DataItem>
+export interface ComboboxProps<TDataItem = DataItem>
   extends WidgetHTMLProps,
     WidgetProps,
     PopupWidgetProps,

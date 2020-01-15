@@ -20,6 +20,8 @@ import SlideDownTransition from './SlideDownTransition'
 import SlideTransitionGroup from './SlideTransitionGroup'
 import TimeInput from './TimeInput'
 
+export * from './types'
+
 export {
   DropdownList,
   Combobox,

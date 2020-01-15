@@ -1,5 +1,3 @@
-type Overwrapped<T, U> = Pick<T, Extract<keyof T, keyof U>>
-
 export type DataItem = unknown
 export type Value = unknown
 

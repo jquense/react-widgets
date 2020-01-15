@@ -145,9 +145,9 @@ function useSearchWordBuilder(delay: number) {
   return search
 }
 
-type DropdownHandle = WidgetHandle
+export type DropdownHandle = WidgetHandle
 
-interface DropdownProps<TDataItem>
+export interface DropdownProps<TDataItem>
   extends WidgetProps,
     WidgetHTMLProps,
     PopupWidgetProps,
