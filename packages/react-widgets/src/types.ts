@@ -7,12 +7,6 @@ export interface WidgetHandle {
   focus(): void
 }
 
-export type ElementProps<TProps, TElement> = Omit<
-  WidgetHTMLAttributes,
-  keyof TProps
-> &
-  TProps
-
 export type SearchMetadata = {
   action: 'clear' | 'input'
   lastSearchTerm?: string
