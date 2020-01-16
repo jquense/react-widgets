@@ -446,6 +446,8 @@ class Calendar extends React.Component {
       max,
       culture,
       tabIndex,
+      navigatePrevIcon,
+      navigateNextIcon
     } = this.props
 
     let { currentDate, view, slideDirection, focused, messages } = this.state
@@ -490,6 +492,8 @@ class Calendar extends React.Component {
           onViewChange={this.handleViewChange}
           onMoveLeft={this.handleMoveBack}
           onMoveRight={this.handleMoveForward}
+          navigatePrevIcon={navigatePrevIcon}
+          navigateNextIcon={navigateNextIcon}
         />
         <Calendar.Transition direction={slideDirection}>
           <View
