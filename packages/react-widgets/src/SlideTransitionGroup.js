@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import transition from 'dom-helpers/transition'
+import transitionEnd from 'dom-helpers/transitionEnd'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -59,7 +59,7 @@ class SlideTransitionGroup extends React.Component {
           currentClasses: cn(next, active),
         },
         () => {
-          transition.end(current, () => {
+          transitionEnd(current, () => {
             this.prev = null
 
             if (this.current.key !== this.props.children.key) {
