@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react'
-import * as IntlLocalizers from '../src/IntlLocalizer'
+import * as IntlLocalizers from './IntlLocalizer'
 import {
   ProcessedMessages,
   UserProvidedMessages,
