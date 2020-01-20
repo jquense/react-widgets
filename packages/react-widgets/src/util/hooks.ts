@@ -86,7 +86,7 @@ export function useKeyboardNavigationCheck() {
     }
   })
 
-  // TODO: use pointerdown once we polyfill it
+  // TODO: use pointerdown
   useGlobalListener('mousedown', () => {
     setIsNavigatingViaKeyboard(false)
   })

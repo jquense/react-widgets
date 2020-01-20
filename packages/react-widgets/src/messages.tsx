@@ -15,7 +15,6 @@ export interface Messages {
   openDropdown: LabelMessage
 
   placeholder: LabelMessage
-  // filterPlaceholder: LabelMessage,
 
   emptyList: RenderableMessage
   emptyFilter: RenderableMessage

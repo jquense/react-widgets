@@ -66,7 +66,7 @@ const DropdownListInput = React.forwardRef(function<TDataItem>(
     onAutofillChange(e)
   }
   let dataKey = dataKeyAccessor(value)
-  let text = textAccessor(value)
+  let text = value == null ? '' : textAccessor(value)
 
   let strValue = String(dataKey)
   if (strValue === String({})) strValue = ''

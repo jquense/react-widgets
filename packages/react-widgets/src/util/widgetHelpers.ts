@@ -10,7 +10,7 @@ export function notify<T extends (...args: any) => any>(
   args: Parameters<T>,
 ) {
   // eslint-disable-next-line prefer-spread
-  handler && handler.apply(null, args)
+  if (handler) handler.apply(null, args)
 }
 
 export const useInstanceId = (otherId?: string, suffix = '') => {

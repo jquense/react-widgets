@@ -1,5 +1,4 @@
 import { DataItem, Value } from '../types'
-import { isShallowEqual } from './_'
 
 export type DataKeyAccessorFn = (item: DataItem) => DataItem
 
@@ -42,7 +41,7 @@ export function valueMatcher(
   b: DataItem,
   dataKey?: DataKeyAccessor,
 ) {
-  return isShallowEqual(dataValue(a, dataKey), dataValue(b, dataKey))
+  return dataValue(a, dataKey) === dataValue(b, dataKey)
 }
 
 export function dataIndexOf(
@@ -50,10 +49,13 @@ export function dataIndexOf(
   value: Value,
   dataKey?: DataKeyAccessor,
 ) {
+  const valueDataKey = dataValue(value, dataKey)
   let idx = -1
+
   while (++idx < data.length) {
     const datum = data[idx]
-    if (datum === value || valueMatcher(value, datum, dataKey)) return idx
+    if (datum === value || dataValue(datum, dataKey) === valueDataKey)
+      return idx
   }
 
   return -1
