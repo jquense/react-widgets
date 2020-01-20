@@ -283,10 +283,10 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     renderTagValue,
     optionComponent,
     tagOptionComponent,
+    groupBy,
     listComponent: List = Listbox,
     data: rawData = [],
     messages: userMessages,
-    groupBy: _,
     ...elementProps
   }: MultiselectProps<TDataItem>,
   outerRef: React.RefObject<MultiselectHandle>,
@@ -691,6 +691,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
               dataKey={dataKey}
               renderItem={renderListItem}
               renderGroup={renderListGroup}
+              groupBy={groupBy}
               optionComponent={optionComponent}
               focusedItem={focusedItem}
               onChange={(d, meta) => handleSelect(d, meta.originalEvent)}
