@@ -17,7 +17,8 @@ storiesOf('Multiselect', module)
       <Multiselect
         {...props}
         placeholder="Hello there"
-        defaultValue={props.data.slice(0, 4)}
+        defaultFocusedItem={props.data[0]}
+        defaultValue={props.data.slice(1, 4)}
       />
     </Container>
   ))

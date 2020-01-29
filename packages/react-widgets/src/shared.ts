@@ -231,9 +231,13 @@ export interface BaseListboxInputProps<TDataItem, TValue = Value> {
   defaultValue?: TValue
   onChange?: ChangeHandler<TDataItem>
 
+  defaultFocusedItem?: TDataItem
+
   onSelect?: SelectHandler<TDataItem>
 
   placeholder?: string
+
+  focusFirstItem?: boolean
 
   busy?: boolean
   busySpinner?: ReactNode

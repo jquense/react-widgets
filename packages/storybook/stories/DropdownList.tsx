@@ -104,7 +104,12 @@ storiesOf('DropdownList', module)
   ))
   .add('disabled item, first focused', () => (
     <Container>
-      <DropdownList {...props} defaultOpen disabled={props.data.slice(0, 2)} />
+      <DropdownList
+        {...props}
+        defaultOpen
+        focusFirstItem
+        disabled={props.data.slice(0, 2)}
+      />
     </Container>
   ))
   .add('readonly', () => (

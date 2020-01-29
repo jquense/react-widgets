@@ -102,7 +102,7 @@ export type RenderGroupProp = RenderProp<{
 
 export type OptionComponentProp = React.ComponentType<ListOptionProps<any>>
 
-interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
+export interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
   bordered?: boolean
   data: TDataItem[]
   focusedItem?: TDataItem
@@ -124,7 +124,7 @@ interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
   ): void
 }
 
-type SingleChangeHandler<TDataItem> = (
+export type SingleChangeHandler<TDataItem> = (
   dataItem: TDataItem,
   metadata: {
     lastValue: Value
@@ -132,14 +132,15 @@ type SingleChangeHandler<TDataItem> = (
   },
 ) => void
 
-interface SingleListboxProps<TDataItem> extends BaseListboxProps<TDataItem> {
+export interface SingleListboxProps<TDataItem>
+  extends BaseListboxProps<TDataItem> {
   value?: Value
   defaultValue?: Value
   multiple?: false
   onChange?: SingleChangeHandler<TDataItem>
 }
 
-type MultipleChangeHandler<TDataItem> = (
+export type MultipleChangeHandler<TDataItem> = (
   dataItem: TDataItem[],
   metadata: {
     action: 'insert' | 'remove'
@@ -149,7 +150,8 @@ type MultipleChangeHandler<TDataItem> = (
   },
 ) => void
 
-interface MultipleListboxProps<TDataItem> extends BaseListboxProps<TDataItem> {
+export interface MultipleListboxProps<TDataItem>
+  extends BaseListboxProps<TDataItem> {
   value?: Value[]
   defaultValue?: Value[]
   multiple: true
@@ -232,7 +234,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
       return
     }
     const handler = handleChange as MultipleChangeHandler<TDataItem>
-    const checked = dataItems.indexOf(dataItem) > -1
+    const checked = dataItems.includes(dataItem)
     handler(
       checked
         ? dataItems.filter(d => d !== dataItem)
@@ -315,8 +317,8 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
 
         const textValue = accessors.text(item)
 
-        const itemIsDisabled = disabledItems.indexOf(item) !== -1
-        const itemIsSelected = dataItems.indexOf(item) !== -1
+        const itemIsDisabled = disabledItems.includes(item)
+        const itemIsSelected = dataItems.includes(item)
 
         return (
           <Option

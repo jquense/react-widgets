@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useMemo } from 'react'
+import React, { useContext, useLayoutEffect, useMemo } from 'react'
 import { DataItem } from './types'
 import { presets } from './util/Filter'
 import { TextAccessorFn } from './util/dataHelpers'
@@ -12,11 +12,19 @@ export const OptionsContext = React.createContext<ListOptionContext | null>(
   null,
 )
 
+export interface OptionList {
+  first: () => any
+  last: () => any
+  prev(item: any, word?: string | undefined): any
+  next(item: any, word?: string | undefined): any
+  nextEnabled: (item: any) => any
+}
+
 export function getList(
   options: DataItem[],
   textAccessor: TextAccessorFn,
   disabledItems: DataItem[],
-) {
+): OptionList {
   const isDisabled = item => disabledItems.indexOf(item) !== -1
 
   let moveNext = (item: any, word?: string) =>
@@ -68,15 +76,17 @@ export function useOptionList(
 export function useClearListOptions(providedContext?: ListOptionContext) {
   const parent = useContext(OptionsContext)
   const ctx = providedContext || parent
-  useLayoutEffect(() => {
-    if (ctx) ctx.options.length = 0
-  })
+
+  if (ctx) ctx.options.length = 0
+  // useLayoutEffect(() => {
+  //   if (ctx) ctx.options.length = 0
+  // })
 }
 
 export function useListOption(dataItem: unknown) {
   const ctx = useContext(OptionsContext)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ctx) return
     const idx = ctx.options.length
     ctx.options.push(dataItem)

@@ -1,11 +1,17 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import React, { useImperativeHandle, useMemo, useRef, useState } from 'react'
+import React, {
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
 import { caretDown } from './Icon'
 import Input from './Input'
 import Listbox, { ListboxHandle } from './Listbox'
-import { OptionsContext, useOptionList } from './ListboxContext'
+import { OptionList, OptionsContext, useOptionList } from './ListboxContext'
 import { RenderTagProp, TagComponentProp } from './MultiselectTagList'
 import Popup from './Popup'
 import Select from './Select'
@@ -170,6 +176,8 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
     dataKey,
     autoSelectMatches,
 
+    focusFirstItem = false,
+
     value,
     defaultValue = '',
     onChange,
@@ -267,7 +275,13 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
     [data, currentValue, accessors],
   )
 
-  const [focusedItem, setFocusedItem] = useStateFromProp(selectedItem)
+  const [focusedItem, setFocusedItem] = useFocusedItem<TDataItem>(
+    focusFirstItem,
+    selectedItem,
+    data,
+    currentOpen,
+    list,
+  )
 
   useActiveDescendant(ref, activeId, currentOpen, [focusedItem])
 
@@ -476,6 +490,30 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
     </Widget>
   )
 })
+
+function useFocusedItem<T>(
+  focusFirstItem = false,
+  dataItem: T,
+  data: T[],
+  open: boolean,
+  list: OptionList,
+) {
+  const [focusedItem, setFocusedItem] = useStateFromProp(dataItem)
+
+  useLayoutEffect(() => {
+    if (!open) return setFocusedItem(undefined)
+
+    const missing = focusedItem && !data.includes(focusedItem)
+
+    if ((focusFirstItem && focusedItem == null) || missing) {
+      const nextFocused = focusFirstItem ? list.nextEnabled(data[0]) : undefined
+
+      setFocusedItem(nextFocused)
+    }
+  }, [focusFirstItem, open, dataItem, data])
+
+  return [focusedItem, setFocusedItem] as const
+}
 
 Combobox.displayName = 'Combobox'
 Combobox.propTypes = propTypes

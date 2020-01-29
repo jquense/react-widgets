@@ -1,11 +1,10 @@
-//@ts-nocheck
-
 import cn from 'classnames'
 import closest from 'dom-helpers/closest'
 import PropTypes from 'prop-types'
 import React, {
   useEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -14,7 +13,7 @@ import { useUncontrolledProp } from 'uncontrollable'
 import AddToListOption, { CREATE_OPTION } from './AddToListOption'
 import { caretDown, times } from './Icon'
 import Listbox, { ListboxHandle } from './Listbox'
-import { OptionsContext, useOptionList } from './ListboxContext'
+import { OptionList, OptionsContext, useOptionList } from './ListboxContext'
 import MultiselectInput from './MultiselectInput'
 import TagList, { RenderTagProp, TagComponentProp } from './MultiselectTagList'
 import Popup from './Popup'
@@ -161,9 +160,9 @@ const EMPTY_ARRAY = [] as unknown[]
 function useMultiselectData<TDataItem>(
   value = EMPTY_ARRAY,
   data: TDataItem[],
-  filter?: Filter,
-  searchTerm?: string,
   accessors: Accessors,
+  filter?: Filter.Filter<TDataItem>,
+  searchTerm?: string,
 ) {
   data = useMemo(
     () => data.filter(i => !value.some(v => accessors.matches(i, v))),
@@ -171,7 +170,7 @@ function useMultiselectData<TDataItem>(
   )
 
   return [
-    useFilteredData(data, filter, searchTerm, accessors.text),
+    useFilteredData(data, filter || false, searchTerm, accessors.text),
     data.length,
   ] as const
 }
@@ -250,6 +249,8 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     open,
     defaultOpen = false,
     onToggle,
+
+    focusFirstItem = false,
 
     searchTerm,
     defaultSearchTerm = '',
@@ -350,20 +351,22 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   const [data, lengthWithoutValues] = useMultiselectData(
     currentValue,
     rawData,
+    accessors,
     currentOpen ? filter : false,
     currentSearch,
-    accessors,
   )
 
   const [listContext, list] = useOptionList(accessors.text, [])
   const [tagListContext, tagList] = useOptionList(accessors.text, disabledItems)
 
-  const [focusedItem, setFocusedItem] = useState()
-  const [focusedTag, setFocusedTag] = useState()
+  const [focusedItem, setFocusedItem] = useFocusedItem<TDataItem>(
+    focusFirstItem,
+    data,
+    currentOpen,
+    list,
+  )
 
-  if (focusedTag && dataItems.indexOf(focusedTag) === -1) {
-    setFocusedTag(null)
-  }
+  const [focusedTag, setFocusedTag] = useFocusedTag(dataItems)
 
   const showCreateOption = canShowCreate(allowCreate, {
     searchTerm: currentSearch,
@@ -405,7 +408,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     }
   }
 
-  const handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     search(e.target.value, e, 'input')
     toggle.open()
   }
@@ -450,7 +453,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     notify(onKeyDown, [event])
 
     const setFocused = (listItem?: TDataItem, tag?: TDataItem) => {
-      if (listItem || tag) setFocusedItem(listItem || null)
+      if (listItem || tag) setFocusedItem(listItem || undefined)
       if (listItem || tag) setFocusedTag(tag || null)
     }
 
@@ -504,10 +507,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
         let nextTag = tagList.next(focusedTag)
         setFocusedTag(nextTag === focusedTag ? null : nextTag)
         //
-      } else if (
-        key === 'Delete' &&
-        disabledItems.indexOf(focusedItem) === -1
-      ) {
+      } else if (key === 'Delete' && !disabledItems.includes(focusedItem!)) {
         handleDelete(focusedTag, event)
         //
       } else if (key === 'Backspace') {
@@ -721,6 +721,37 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     </Widget>
   )
 })
+
+function useFocusedTag(data: unknown[]) {
+  const [focusedTag, setFocusedTag] = useState()
+
+  if (focusedTag && !data.includes(focusedTag)) {
+    setFocusedTag(null)
+  }
+
+  return [focusedTag, setFocusedTag] as const
+}
+
+function useFocusedItem<T>(
+  focusFirstItem = false,
+  data: T[],
+  open: boolean,
+  list: OptionList,
+) {
+  const [focusedItem, setFocusedItem] = useState<T>()
+
+  useLayoutEffect(() => {
+    if (!open) return setFocusedItem(undefined)
+
+    if (focusedItem != null && !data.includes(focusedItem)) {
+      const nextFocused = focusFirstItem ? list.nextEnabled(data[0]) : undefined
+
+      setFocusedItem(nextFocused)
+    }
+  }, [focusFirstItem, open, data])
+
+  return [focusedItem, setFocusedItem] as const
+}
 
 Multiselect.displayName = 'Multiselect'
 Multiselect.propTypes = propTypes
