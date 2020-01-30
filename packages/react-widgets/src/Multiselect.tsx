@@ -742,8 +742,12 @@ function useFocusedItem<T>(
 
   useLayoutEffect(() => {
     if (!open) return setFocusedItem(undefined)
+    const hasItem = focusedItem != null
 
-    if (focusedItem != null && !data.includes(focusedItem)) {
+    if (
+      (!hasItem && focusFirstItem) ||
+      (hasItem && !data.includes(focusedItem!))
+    ) {
       const nextFocused = focusFirstItem ? list.nextEnabled(data[0]) : undefined
 
       setFocusedItem(nextFocused)
