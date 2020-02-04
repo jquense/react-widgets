@@ -4,7 +4,7 @@ export type Value = unknown
 export type RenderProp<TArg> = (arg: TArg) => React.ReactNode
 
 export interface WidgetHandle {
-  focus(): void
+  focus(opts?: FocusOptions): void
 }
 
 export type SearchMetadata = {

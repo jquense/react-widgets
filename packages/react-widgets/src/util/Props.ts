@@ -12,8 +12,8 @@ const whitelist = [
 
 const whitelistRegex = [/^aria-/, /^data-/, /^on[A-Z]\w+/]
 
-export function pickElementProps<T>(props: T): T {
-  const result = {} as T;
+export function pickElementProps<T>(props: T): Partial<T> {
+  const result: Partial<T> = {}
   Object.keys(props).forEach(key => {
     if (
       whitelist.indexOf(key) !== -1 ||

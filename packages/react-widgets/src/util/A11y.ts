@@ -1,5 +1,4 @@
 import { useEffect, RefObject } from 'react'
-import { findDOMNode } from 'react-dom'
 
 /**
  * Do a "hard" set on the aria, so that it's always announced
@@ -7,18 +6,18 @@ import { findDOMNode } from 'react-dom'
  * per item.
  */
 export const setActiveDescendant = (
-  ref: Element | React.Component | null,
+  ref: Element | null,
   activeId: string,
   visible: boolean | null | undefined,
 ) => {
   if (!ref) return
-  const node = findDOMNode(ref) as Element
-  node.removeAttribute('aria-activedescendant')
-  if (visible) node.setAttribute('aria-activedescendant', activeId)
+
+  ref.removeAttribute('aria-activedescendant')
+  if (visible) ref.setAttribute('aria-activedescendant', activeId)
 }
 
 export const useActiveDescendant = (
-  ref: RefObject<Element | React.Component>,
+  ref: RefObject<Element>,
   id: string,
   visible: boolean | null | undefined,
   deps: any[],

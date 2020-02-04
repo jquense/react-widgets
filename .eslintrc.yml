@@ -8,8 +8,9 @@ rules:
   global-require: 0
   quotes: 0
   no-unused-expressions: 0
-  prefer-const: "off"
-  "import/no-duplicates": off
-  "@typescript-eslint/member-delimiter-style": off
-  "@typescript-eslint/no-use-before-define": off
-  "@typescript-eslint/consistent-type-assertions": off
+  prefer-const: off
+  no-duplicate-imports: off
+  import/no-duplicates: off
+  '@typescript-eslint/member-delimiter-style': off
+  '@typescript-eslint/no-use-before-define': off
+  '@typescript-eslint/consistent-type-assertions': off

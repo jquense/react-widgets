@@ -16,19 +16,13 @@ function isPaddedZeros(str: string, localizer: Localizer) {
   return !!(decimals && decimals.match(/0+$/))
 }
 
-function isAtDelimiter(
-  _num: number | undefined,
-  str: string,
-  localizer: Localizer,
-) {
-  let localeChar = localizer.decimalCharacter(),
-    lastIndex = str.length - 1,
-    char
+function isAtDelimiter(str: string, localizer: Localizer) {
+  let localeChar = localizer.decimalCharacter()
+  let lastIndex = str.length - 1
 
   if (str.length < 1) return false
 
-  char = str[lastIndex]
-
+  let char = str[lastIndex]
   return !!(char === localeChar && str.indexOf(char) === lastIndex)
 }
 
@@ -92,7 +86,7 @@ class NumberPickerInput extends React.Component<
     onChange: PropTypes.func.isRequired,
   }
 
-  state = {} as NumberPickerInputState
+  state: NumberPickerInputState = {}
 
   getSnapshotBeforeUpdate({
     editing,
@@ -184,7 +178,7 @@ class NumberPickerInput extends React.Component<
     return !!(
       num! < min! ||
       isSign(str) ||
-      isAtDelimiter(num!, str, localizer) ||
+      isAtDelimiter(str, localizer) ||
       isPaddedZeros(str, localizer)
     )
   }

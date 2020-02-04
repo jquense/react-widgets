@@ -15,7 +15,6 @@ module.exports = {
         templates: {
           ...templates,
           default: require.resolve('./src/components/PageLayout.tsx'),
-          component: require.resolve('./src/templates/component.tsx'),
         },
         tailwindConfig: require.resolve('./tailwind.config'),
         reactDocgenConfig: {

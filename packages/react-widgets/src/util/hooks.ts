@@ -93,3 +93,49 @@ export function useKeyboardNavigationCheck() {
 
   return isNavigatingViaKeyboard
 }
+
+export function useMutationObserver(
+  element: Element | null | undefined,
+  config: MutationObserverInit,
+  callback: MutationCallback,
+): void {
+  const {
+    attributeFilter,
+    attributeOldValue,
+    attributes,
+    characterData,
+    characterDataOldValue,
+    childList,
+    subtree,
+  } = config
+
+  useEffect(() => {
+    if (!element) return
+
+    const observer = new MutationObserver(callback)
+
+    observer.observe(element, {
+      attributeFilter,
+      attributeOldValue,
+      attributes,
+      characterData,
+      characterDataOldValue,
+      childList,
+      subtree,
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [
+    element,
+    callback,
+    attributeFilter?.join(','),
+    attributeOldValue,
+    attributes,
+    characterData,
+    characterDataOldValue,
+    childList,
+    subtree,
+  ])
+}

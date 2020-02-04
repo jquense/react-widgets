@@ -22,7 +22,7 @@ type Direction = 'DOWN' | 'UP' | 'LEFT' | 'RIGHT'
 
 type SlideDirection = 'bottom' | 'top' | 'left' | 'right'
 
-let last: <T>(array: T[]) => T = a => a[a.length - 1];
+let last: <T>(array: T[]) => T = a => a[a.length - 1]
 
 const CELL_CLASSNAME = 'rw-cell'
 const FOCUSED_CELL_SELECTOR = `.${CELL_CLASSNAME}[tabindex]`
@@ -51,12 +51,12 @@ const ARROWS_TO_DIRECTION = {
   ArrowUp: 'UP',
   ArrowRight: 'RIGHT',
   ArrowLeft: 'LEFT',
-};
+}
 
-const OPPOSITE_DIRECTION: { [key in "RIGHT" | "LEFT"]: "RIGHT" | "LEFT" } = {
+const OPPOSITE_DIRECTION: { [key in 'RIGHT' | 'LEFT']: 'RIGHT' | 'LEFT' } = {
   LEFT: 'RIGHT',
   RIGHT: 'LEFT',
-};
+}
 
 const MULTIPLIER = {
   year: 1,
@@ -257,13 +257,16 @@ const useViewState = (views: View[], view = views[0], currentDate: Date) => {
 
 type View = 'month' | 'year' | 'decade' | 'century'
 
-export interface CalendarProps<TLocalizer = unknown> extends WidgetHTMLProps, WidgetProps, DateLocalizationProps<TLocalizer> {
+export interface CalendarProps<TLocalizer = unknown>
+  extends WidgetHTMLProps,
+    WidgetProps,
+    DateLocalizationProps<TLocalizer> {
   bordered?: boolean
   views?: View[]
   disabled?: boolean
   readOnly?: boolean
 
-  value?: Date | null;
+  value?: Date | null
   defaultValue?: Date
   onChange?: (nextValue: Date) => void
 
@@ -427,8 +430,10 @@ function Calendar({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let ctrl = e.ctrlKey || e.metaKey
-    let key = e.key;
-    let direction: Direction = ARROWS_TO_DIRECTION[key as keyof typeof ARROWS_TO_DIRECTION] as Direction;
+    let key = e.key
+    let direction: Direction = ARROWS_TO_DIRECTION[
+      key as keyof typeof ARROWS_TO_DIRECTION
+    ] as Direction
     let unit = VIEW_UNIT[currentView]
 
     if (key === 'Enter') {
@@ -441,8 +446,8 @@ function Calendar({
         e.preventDefault()
         navigate(direction)
       } else {
-        if (isRtl && OPPOSITE_DIRECTION[direction as "LEFT" | "RIGHT"])
-          direction = OPPOSITE_DIRECTION[direction as "LEFT" | "RIGHT"]
+        if (isRtl && OPPOSITE_DIRECTION[direction as 'LEFT' | 'RIGHT'])
+          direction = OPPOSITE_DIRECTION[direction as 'LEFT' | 'RIGHT']
 
         let nextDate = Calendar.move(
           currentDate,
@@ -636,7 +641,13 @@ Calendar.propTypes = propTypes
 
 Calendar.Transition = SlideTransitionGroup
 
-Calendar.move = (date: Date, min: Date, max: Date, view: View, direction: Direction) => {
+Calendar.move = (
+  date: Date,
+  min: Date,
+  max: Date,
+  view: View,
+  direction: Direction,
+) => {
   let isMonth = view === 'month'
   let isUpOrDown = direction === 'UP' || direction === 'DOWN'
   let rangeUnit = view && VIEW_UNIT[view]

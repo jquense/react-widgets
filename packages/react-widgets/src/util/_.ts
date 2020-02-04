@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import warning from 'warning'
+import { GroupBy } from '../List'
 
 export function toItemArray<TDataItem>(a?: TDataItem[] | boolean): TDataItem[] {
   if (Array.isArray(a)) return a
-  return [] as TDataItem[]
+  return []
 }
 
-export const makeArray = <T>(obj: T | T[]): T[] =>
-  obj == null ? [] : ([] as T[]).concat(obj)
+export const makeArray = <T>(obj: T | T[] | undefined | null): T[] => {
+  const result: T[] = []
+  return obj == null ? result : result.concat(obj)
+}
 
 export const has = <T>(o: T, key: string) =>
   o ? Object.prototype.hasOwnProperty.call(o, key) : false
@@ -40,14 +43,12 @@ export function chunk<T>(array: T[], chunkSize: number): Array<T[]> {
 }
 
 export function groupBySortedKeys<TData>(
-  groupBy: string | ((item: TData) => string),
+  groupBy: GroupBy<TData>,
   data: TData[],
-  keys: string[] = [],
-): Record<string, TData[]> {
+  _keys: unknown[] = [],
+) {
   const iter =
-    typeof groupBy === 'function'
-      ? groupBy
-      : (item: TData) => (item as any)[groupBy] as string
+    typeof groupBy === 'function' ? groupBy : (item: any) => item[groupBy]
 
   warning(
     typeof groupBy !== 'string' || !data.length || has(data[0], groupBy),
@@ -55,16 +56,14 @@ export function groupBySortedKeys<TData>(
       `property \`${groupBy}\` that doesn't exist in the dataset items, this may be a typo`,
   )
 
-  return data.reduce((grps, item) => {
+  const groups = new Map<unknown, TData[]>()
+
+  data.forEach(item => {
     let group = iter(item)
 
-    if (has(grps, group)) {
-      grps[group].push(item)
-    } else {
-      keys.push(group)
-      grps[group] = [item]
-    }
+    if (groups.has(group)) groups.get(group)!.push(item)
+    else groups.set(group, [item])
+  })
 
-    return grps
-  }, {} as Record<string, TData[]>)
+  return Array.from(groups)
 }

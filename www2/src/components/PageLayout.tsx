@@ -28,11 +28,13 @@ function PageLayout({ children, className, style }: Props) {
             order: 2;
 
             @screen md {
-              @apply col-3 block;
+              @apply col-span-3 block;
             }
           `}
         />
-        <main className="order-1 px-10 col-12 md:col-9">{children}</main>
+        <main className="order-1 px-10 col-span-12 md:col-span-9">
+          {children}
+        </main>
       </div>
     </div>
   )

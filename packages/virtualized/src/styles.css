@@ -1,4 +1,3 @@
-
 .rw-virtual-list-wrapper {
   overflow: auto;
 }
@@ -6,6 +5,8 @@
 .rw-virtual-list.rw-list {
   overflow: visible;
   max-height: none;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .rw-popup .rw-virtual-list-wrapper {

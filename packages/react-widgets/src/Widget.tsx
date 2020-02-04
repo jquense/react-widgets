@@ -6,9 +6,28 @@ export interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   open?: boolean
   dropUp?: boolean
   autofilling?: boolean
-  isRtl?: boolean;
-  disabled?: boolean;
-  readOnly?: boolean;
+  isRtl?: boolean
+  disabled?: boolean
+  readOnly?: boolean
+}
+
+export function useWidgetProps(props: WidgetProps) {
+  const tabIndex = props.tabIndex != null ? props.tabIndex : -1
+  const isKeyboardNavigating = useKeyboardNavigationCheck()
+  return {
+    tabIndex: tabIndex,
+    'data-intent': isKeyboardNavigating ? 'keyboard' : 'mouse',
+    className: cn(
+      props.className,
+      'rw-widget',
+      props.isRtl && 'rw-rtl',
+      props.disabled && 'rw-state-disabled',
+      props.readOnly && 'rw-state-readonly',
+      props.focused && 'rw-state-focus',
+      props.autofilling && 'rw-webkit-autofill',
+      props.open && `rw-open${props.dropUp ? '-up' : ''}`,
+    ),
+  }
 }
 
 const Widget = React.forwardRef<HTMLDivElement, WidgetProps>(
@@ -27,28 +46,19 @@ const Widget = React.forwardRef<HTMLDivElement, WidgetProps>(
     },
     ref,
   ) => {
-    const isKeyboardNavigating = useKeyboardNavigationCheck()
+    const widgetProps = useWidgetProps({
+      className,
+      tabIndex,
+      focused,
+      open,
+      dropUp,
+      disabled,
+      readOnly,
+      autofilling,
+      isRtl,
+    })
 
-    tabIndex = tabIndex != null ? tabIndex : -1
-
-    return (
-      <div
-        {...props}
-        ref={ref}
-        tabIndex={tabIndex}
-        data-intent={isKeyboardNavigating ? undefined : 'mouse'}
-        className={cn(
-          className,
-          'rw-widget',
-          isRtl && 'rw-rtl',
-          disabled && 'rw-state-disabled',
-          readOnly && 'rw-state-readonly',
-          focused && 'rw-state-focus',
-          autofilling && 'rw-webkit-autofill',
-          open && `rw-open${dropUp ? '-up' : ''}`,
-        )}
-      />
-    )
+    return <div ref={ref} {...props} {...widgetProps} />
   },
 )
 

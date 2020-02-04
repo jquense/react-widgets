@@ -76,7 +76,8 @@ export type ProcessedMessages = {
 const DEFAULTS = {}
 
 export function getMessages(defaults: UserProvidedMessages = DEFAULTS) {
-  let processed = {} as ProcessedMessages
+  let processed: Record<string, any> = {}
+
   Object.keys(messages).forEach((message: keyof Messages) => {
     let value = defaults[message]
     if (value == null) value = messages[message]
@@ -87,7 +88,7 @@ export function getMessages(defaults: UserProvidedMessages = DEFAULTS) {
         : () => value as string
   })
 
-  return processed
+  return processed as ProcessedMessages
 }
 
 export const useMessagesWithDefaults = (defaults?: UserProvidedMessages) =>

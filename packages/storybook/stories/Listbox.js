@@ -17,6 +17,7 @@ let props = {
 storiesOf('Listbox', module)
   .add('Listbox', () => (
     <Container style={{ height: 300 }}>
+      <input />
       <Listbox {...props} />
     </Container>
   ))
@@ -69,7 +70,7 @@ storiesOf('Listbox', module)
       <Listbox
         {...props}
         defaultValue={props.data.slice(0, 3)}
-        itemComponent={({ item }) => (
+        renderItem={({ item }) => (
           <div>
             <div>{item.first}</div>
             <div>{item.last}</div>

@@ -1,18 +1,12 @@
 import cn from 'classnames'
 import * as PropTypes from 'prop-types'
 import * as React from 'react'
-import {
-  useImperativeHandle,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
 import { caretDown } from './Icon'
 import Input from './Input'
-import Listbox, { ListboxHandle } from './Listbox'
-import { OptionList, OptionsContext, useOptionList } from './ListboxContext'
+import List, { ListHandle } from './List'
+import { FocusListContext, useFocusList } from './FocusListContext'
 import { RenderTagProp, TagComponentProp } from './MultiselectTagList'
 import Popup from './Popup'
 import Select from './Select'
@@ -32,14 +26,9 @@ import { DataItem, WidgetHandle } from './types'
 import { useActiveDescendant } from './util/A11y'
 import * as Filter from './util/Filter'
 import * as CustomPropTypes from './util/PropTypes'
-import { toItemArray } from './util/_'
 import { TextAccessorFn } from './util/dataHelpers'
 import { useAccessors } from './util/getAccessors'
-import {
-  useDropodownToggle,
-  useFilteredData,
-  useStateFromProp,
-} from './util/hooks'
+import { useDropodownToggle, useFilteredData } from './util/hooks'
 import useFocusManager from './util/useFocusManager'
 import {
   notify,
@@ -209,7 +198,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
     renderListItem,
     renderListGroup,
     optionComponent,
-    listComponent: List = Listbox,
+    listComponent: ListComponent = List,
     data: rawData = [],
     messages: userMessages,
     ...elementProps
@@ -229,9 +218,9 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
 
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const listRef = useRef<ListboxHandle>(null)
+  const listRef = useRef<ListHandle>(null)
 
-  const [suggestion, setSuggestion] = useState<TDataItem| null>(null)
+  const [suggestion, setSuggestion] = useState<TDataItem | null>(null)
   const shouldFilter = useRef(false)
 
   const inputId = useInstanceId(id, '_input')
@@ -243,8 +232,26 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
   const toggle = useDropodownToggle(currentOpen, handleOpen)
 
   const isDisabled = disabled === true
-  const disabledItems = toItemArray(disabled)
   const isReadOnly = !!readOnly
+
+  const data = useFilteredData(
+    rawData,
+    filter,
+    shouldFilter.current ? accessors.text(currentValue) : void 0,
+    accessors.text,
+  )
+
+  const selectedItem = useMemo(
+    () => data[accessors.indexOf(data, currentValue)],
+    [data, currentValue, accessors],
+  )
+
+  const list = useFocusList<TDataItem>({
+    activeId,
+    scope: ref,
+    focusFirstItem,
+    anchorItem: selectedItem,
+  })
 
   const [focusEvents, focused] = useFocusManager(
     ref,
@@ -255,36 +262,15 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
           shouldFilter.current = false
           toggle.close()
           setSuggestion(null)
-          setFocusedItem(undefined)
+          list.focus(undefined)
         } else {
-          focus()
+          focus({ preventScroll: true })
         }
       },
     },
   )
 
-  const data = useFilteredData(
-    rawData,
-    filter,
-    shouldFilter.current ? accessors.text(currentValue) : void 0,
-    accessors.text,
-  )
-
-  const [listContext, list] = useOptionList(accessors.text, disabledItems)
-  const selectedItem = useMemo(
-    () => data[accessors.indexOf(data, currentValue)],
-    [data, currentValue, accessors],
-  )
-
-  const [focusedItem, setFocusedItem] = useFocusedItem<TDataItem>(
-    focusFirstItem,
-    selectedItem,
-    data,
-    currentOpen,
-    list,
-  )
-
-  useActiveDescendant(ref, activeId, currentOpen, [focusedItem])
+  useActiveDescendant(ref, activeId, currentOpen, [list.getFocused()])
 
   /**
    * Handlers
@@ -300,12 +286,14 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
     setSuggestion(null)
     notify(onSelect, [data, { originalEvent }])
     change(data, originalEvent)
-    focus()
+    focus({ preventScroll: true })
   }
 
-  const handleInputKeyDown = ({ key }: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyDown = ({
+    key,
+  }: React.KeyboardEvent<HTMLInputElement>) => {
     if (key === 'Backspace' || key === 'Delete') {
-      setFocusedItem(undefined)
+      list.focus(null)
     }
   }
 
@@ -329,10 +317,13 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
 
     if (e.defaultPrevented) return
 
-    const select = (item: TDataItem | undefined) => item != null && handleSelect(item, e)
-    const setFocused = (item: TDataItem) => {
-      setSuggestion(item)
-      setFocusedItem(item)
+    const select = (item: TDataItem | undefined) =>
+      item != null && handleSelect(item, e)
+
+    const setFocused = (el?: HTMLElement) => {
+      if (!el) return
+      setSuggestion(list.toDataItem(el)!)
+      list.focus(el)
     }
 
     if (key === 'End' && currentOpen && !shiftKey) {
@@ -343,15 +334,15 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
       setFocused(list.first())
     } else if (key === 'Escape' && currentOpen) {
       e.preventDefault()
+      setSuggestion(null)
       toggle.close()
     } else if (key === 'Enter' && currentOpen) {
       e.preventDefault()
-      select(focusedItem)
+      select(list.getFocused()!)
     } else if (key === 'ArrowDown') {
       e.preventDefault()
       if (currentOpen) {
-        let nextFocusedItem = list.next(focusedItem)
-        setFocused(nextFocusedItem === focusedItem ? null : nextFocusedItem)
+        setFocused(list.next())
       } else {
         return toggle.open()
       }
@@ -360,8 +351,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
       if (altKey) return toggle.close()
 
       if (currentOpen) {
-        let prevFocusedItem = list.prev(focusedItem)
-        setFocused(prevFocusedItem === focusedItem ? null : prevFocusedItem)
+        setFocused(list.prev())
       }
     }
   }
@@ -370,8 +360,8 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
    * Methods
    */
 
-  function focus() {
-    if (inputRef.current) inputRef.current.focus()
+  function focus(opts?: FocusOptions) {
+    if (inputRef.current) inputRef.current.focus(opts)
   }
 
   function change(
@@ -450,7 +440,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
           label={messages.openCombobox()}
         />
       </WidgetPicker>
-      <OptionsContext.Provider value={listContext}>
+      <FocusListContext.Provider value={list.context}>
         {shouldRenderPopup && (
           <Popup
             dropUp={dropUp}
@@ -458,26 +448,24 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
             transition={popupTransition}
             onEntering={() => listRef.current!.scrollIntoView()}
           >
-            <List
+            <ListComponent
               {...listProps}
               id={listId}
               tabIndex={-1}
-              activeId={activeId}
               data={data}
-              bordered={false}
               groupBy={groupBy}
-              textField={textField}
-              dataKey={dataKey}
+              accessors={accessors}
               renderItem={renderListItem}
               renderGroup={renderListGroup}
               optionComponent={optionComponent}
               value={selectedItem}
-              focusedItem={currentOpen ? focusedItem : void 0}
               searchTerm={(valueItem && accessors.text(valueItem)) || ''}
               aria-hidden={!currentOpen}
               aria-labelledby={inputId}
               aria-live={currentOpen ? 'polite' : void 0}
-              onChange={(d: TDataItem | TDataItem[], meta: {originalEvent?: React.SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
+              onChange={(d, meta) =>
+                handleSelect(d as TDataItem, meta.originalEvent!)
+              }
               ref={listRef}
               messages={{
                 emptyList: rawData.length
@@ -487,37 +475,12 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
             />
           </Popup>
         )}
-      </OptionsContext.Provider>
+      </FocusListContext.Provider>
     </Widget>
   )
 })
 
-function useFocusedItem<T>(
-  focusFirstItem = false,
-  dataItem: T,
-  data: T[],
-  open: boolean,
-  list: OptionList,
-) {
-  const [focusedItem, setFocusedItem] = useStateFromProp(dataItem)
-
-  useLayoutEffect(() => {
-    if (!open) return setFocusedItem(undefined)
-
-    const missing = focusedItem && !data.includes(focusedItem)
-
-    if ((focusFirstItem && focusedItem == null) || missing) {
-      const nextFocused = focusFirstItem ? list.nextEnabled(data[0]) : undefined
-
-      setFocusedItem(nextFocused)
-    }
-  }, [focusFirstItem, open, dataItem, data])
-
-  return [focusedItem, setFocusedItem] as const
-}
-
 Combobox.displayName = 'Combobox'
 Combobox.propTypes = propTypes
-// Combobox.defaultProps = defaultProps
 
 export default Combobox

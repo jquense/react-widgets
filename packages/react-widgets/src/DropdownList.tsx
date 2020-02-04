@@ -1,12 +1,6 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import React, {
-  useImperativeHandle,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
 import useTimeout from '@restart/hooks/useTimeout'
 import AddToListOption, { CREATE_OPTION } from './AddToListOption'
@@ -15,8 +9,8 @@ import DropdownListInput, {
   RenderValueProp,
 } from './DropdownListInput'
 import { caretDown } from './Icon'
-import Listbox, { ListboxHandle } from './Listbox'
-import { OptionList, OptionsContext, useOptionList } from './ListboxContext'
+import List, { ListHandle } from './List'
+import { FocusListContext, useFocusList } from './FocusListContext'
 import Popup from './Popup'
 import Select from './Select'
 import Widget from './Widget'
@@ -34,17 +28,10 @@ import { DataItem, WidgetHandle } from './types'
 import { useActiveDescendant } from './util/A11y'
 import * as Filter from './util/Filter'
 import * as CustomPropTypes from './util/PropTypes'
-import { toItemArray } from './util/_'
 import canShowCreate from './util/canShowCreate'
 import { useAccessors } from './util/getAccessors'
-import {
-  useAutoFocus,
-  useDropodownToggle,
-  useFilteredData,
-  useStateFromProp,
-} from './util/hooks'
+import { useAutoFocus, useDropodownToggle, useFilteredData } from './util/hooks'
 import useFocusManager from './util/useFocusManager'
-import SyntheticEvent from 'react'
 import {
   notify,
   useFirstFocusedRender,
@@ -250,7 +237,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     groupBy,
     onBlur,
     onFocus,
-    listComponent: List = Listbox,
+    listComponent: ListComponent = List,
     data: rawData = [],
     messages: userMessages,
     ...elementProps
@@ -275,11 +262,10 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
 
   const ref = useRef<HTMLDivElement>(null)
   const filterRef = useRef<DropdownInputHandle>(null)
-  const listRef = useRef<ListboxHandle>(null)
+  const listRef = useRef<ListHandle>(null)
 
   const inputId = useInstanceId(id, '_input')
   const listId = useInstanceId(id, '_listbox')
-  const createId = useInstanceId(id, '_create_option')
   const activeId = useInstanceId(id, '_listbox_active_option')
 
   const accessors = useAccessors(textField, dataKey)
@@ -290,7 +276,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   const toggle = useDropodownToggle(currentOpen, handleOpen!)
 
   const isDisabled = disabled === true
-  const disabledItems = toItemArray(disabled)
+  // const disabledItems = toItemArray(disabled)
   const isReadOnly = !!readOnly
 
   const [focusEvents, focused] = useFocusManager(
@@ -315,25 +301,24 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     currentSearch,
     accessors.text,
   )
-  const [listContext, list] = useOptionList(accessors.text, disabledItems)
 
   const selectedItem = useMemo(
     () => data[accessors.indexOf(data, currentValue)],
     [data, currentValue, accessors],
   )
 
-  const [focusedItem, setFocusedItem] = useFocusedItem<TDataItem>(
+  const list = useFocusList({
+    activeId,
+    scope: ref,
     focusFirstItem,
-    selectedItem,
-    data,
-    currentOpen,
-    list,
-  )
+    anchorItem: selectedItem,
+  })
 
   const [autofilling, setAutofilling] = useState(false)
 
   const nextSearchChar = useSearchWordBuilder(delay)
 
+  const focusedItem = list.getFocused()
   useActiveDescendant(ref, activeId, focusedItem && currentOpen, [focusedItem])
 
   const showCreateOption = canShowCreate(allowCreate, {
@@ -342,7 +327,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     accessors,
   })
 
-  const handleCreate = (_: string, event?: React.SyntheticEvent) => {
+  const handleCreate = (event?: React.SyntheticEvent) => {
     notify(onCreate, [currentSearch!])
 
     clearSearch(event)
@@ -354,10 +339,12 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     dataItem: TDataItem,
     originalEvent?: React.SyntheticEvent,
   ) => {
-    if (dataItem === undefined || dataItem === CREATE_OPTION) {
-      handleCreate(currentSearch)
+    if (dataItem === undefined) return
+    if (dataItem === CREATE_OPTION) {
+      handleCreate(originalEvent)
       return
     }
+
     notify(onSelect, [dataItem, { originalEvent }])
     change(dataItem, originalEvent)
     toggle.close()
@@ -372,7 +359,6 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let { key, altKey, ctrlKey, shiftKey } = e
-    const currentFocused = focusedItem || selectedItem
     notify(onKeyDown, [e])
 
     let closeWithFocus = () => {
@@ -386,19 +372,19 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
 
     if (key === 'End' && currentOpen && !shiftKey) {
       e.preventDefault()
-      setFocusedItem(list.last())
+      list.focus(list.last())
     } else if (key === 'Home' && currentOpen && !shiftKey) {
       e.preventDefault()
-      setFocusedItem(list.first())
+      list.focus(list.first())
     } else if (key === 'Escape' && (currentOpen || currentSearch)) {
       e.preventDefault()
       closeWithFocus()
     } else if (key === 'Enter' && currentOpen && ctrlKey && showCreateOption) {
       e.preventDefault()
-      handleCreate(currentSearch, e)
+      handleCreate(e)
     } else if ((key === 'Enter' || (key === ' ' && !filter)) && currentOpen) {
       e.preventDefault()
-      if (focusedItem) handleSelect(focusedItem, e)
+      if (list.getFocused()) handleSelect(list.getFocused()!, e)
     } else if (key === 'ArrowDown') {
       e.preventDefault()
 
@@ -407,13 +393,13 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
         return
       }
 
-      setFocusedItem(list.next(currentFocused))
+      list.focus(list.next())
     } else if (key === 'ArrowUp') {
       e.preventDefault()
 
       if (altKey) return closeWithFocus()
 
-      setFocusedItem(list.prev(currentFocused))
+      list.focus(list.prev())
     }
   }
 
@@ -422,17 +408,31 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     if (e.defaultPrevented || filter) return
 
     nextSearchChar(String.fromCharCode(e.which), word => {
-      let startItem = currentOpen ? focusedItem : selectedItem
+      if (!currentOpen) return
 
-      let item = list.next(startItem, word)
-      if (item === startItem) {
-        item = list.next(null, word)
+      let isValid = (item: TDataItem) =>
+        Filter.presets.startsWith(
+          accessors.text(item).toLowerCase(),
+          word.toLowerCase(),
+        )
+
+      const [items, focusedItem] = list.get()
+      const len = items.length
+      const startIdx = items.indexOf(focusedItem!) + 1
+      const offset = startIdx >= len ? 0 : startIdx
+
+      let idx = 0
+      let pointer = offset
+      while (idx < len) {
+        pointer = (idx + offset) % len
+        let item = items[pointer]
+        if (isValid(list.toDataItem(item)!)) break
+        idx++
       }
 
-      if (!item) return
+      if (idx === len) return
 
-      if (currentOpen) setFocusedItem(item)
-      else change(item, e)
+      list.focus(items[pointer])
     })
   }
 
@@ -532,7 +532,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   }
 
   return (
-    <OptionsContext.Provider value={listContext}>
+    <FocusListContext.Provider value={list.context}>
       <Widget
         {...widgetProps}
         open={!!currentOpen}
@@ -588,27 +588,22 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
             onEntered={focus}
             onEntering={() => listRef.current!.scrollIntoView()}
           >
-            <List
+            <ListComponent
               {...listProps}
               id={listId}
-              tabIndex={-1}
-              activeId={activeId}
               data={data}
-              bordered={false}
+              tabIndex={-1}
               disabled={disabled}
               groupBy={groupBy}
               searchTerm={currentSearch}
-              textField={textField}
-              dataKey={dataKey}
+              accessors={accessors}
               renderItem={renderListItem}
               renderGroup={renderListGroup}
               optionComponent={optionComponent}
               value={selectedItem}
-              focusedItem={focusedItem}
-              onChange={(
-                d: TDataItem | TDataItem[],
-                meta: { originalEvent?: React.SyntheticEvent },
-              ) => handleSelect(d as any /*HACK*/, meta.originalEvent!)}
+              onChange={(d, meta) =>
+                handleSelect(d as TDataItem, meta.originalEvent!)
+              }
               aria-live={currentOpen ? 'polite' : undefined}
               aria-labelledby={inputId}
               aria-hidden={!currentOpen}
@@ -620,44 +615,16 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
               }}
             />
             {showCreateOption && (
-              <AddToListOption
-                id={createId}
-                onSelect={handleCreate}
-                focused={focusedItem === CREATE_OPTION}
-              >
+              <AddToListOption onSelect={handleCreate}>
                 {messages.createOption(currentValue, currentSearch || '')}
               </AddToListOption>
             )}
           </Popup>
         )}
       </Widget>
-    </OptionsContext.Provider>
+    </FocusListContext.Provider>
   )
 })
-
-function useFocusedItem<T>(
-  focusFirstItem = false,
-  dataItem: T,
-  data: T[],
-  open: boolean,
-  list: OptionList,
-) {
-  const [focusedItem, setFocusedItem] = useStateFromProp(dataItem)
-
-  useLayoutEffect(() => {
-    if (!open) return setFocusedItem(undefined)
-
-    const missing = focusedItem && !data.includes(focusedItem)
-
-    if ((focusFirstItem && focusedItem == null) || missing) {
-      const nextFocused = focusFirstItem ? list.nextEnabled(data[0]) : undefined
-
-      setFocusedItem(nextFocused)
-    }
-  }, [focusFirstItem, open, dataItem, data])
-
-  return [focusedItem, setFocusedItem] as const
-}
 
 DropdownList.displayName = 'DropdownList'
 

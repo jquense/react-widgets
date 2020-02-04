@@ -51,7 +51,7 @@ function Props({ metadata }) {
 
           <MDXProvider components={components}>
             <PropDescription
-              mdx={prop.propData.description?.childMdx}
+              mdx={prop.propData.description?.mdx}
               html={prop.description}
             />
           </MDXProvider>

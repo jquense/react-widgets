@@ -7,7 +7,7 @@ import dates from './util/dates'
 interface DecadeProps extends CalendarViewProps {
   disabled?: boolean
   onChange: (nextDate: Date) => void
-  value?: Date | null;
+  value?: Date | null
   min: Date
   max: Date
   localizer: Localizer

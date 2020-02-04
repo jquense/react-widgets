@@ -18,12 +18,13 @@ exports.onCreateWebpackConfig = function onCreateWebpackConfig({ actions }) {
       }),
     ],
     resolve: {
+      extensions: ['.js', '.ts', '.tsx', '.json'],
       symlinks: false,
       alias: {
         // react: path.resolve('./node_modules/react'),
         // 'react-dom': path.resolve('./node_modules/react-dom'),
         'react-widgets$': require.resolve(
-          '../packages/react-widgets/src/index.js',
+          '../packages/react-widgets/src/index.ts',
         ),
         'react-widgets/lib': path.resolve('../packages/react-widgets/src'),
       },

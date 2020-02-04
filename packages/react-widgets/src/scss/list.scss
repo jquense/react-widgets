@@ -54,7 +54,9 @@
 }
 
 .rw-list-option-create {
-  border-top: 1px $widget-border solid;
-  //padding-top: 0.357em;
-  //margin-top:  0.357em;
+  @extend .rw-list-option;
+
+  display: block;
+  font-size: $list-font-size;
+  padding: $list-option-padding-y $list-option-padding-x;
 }

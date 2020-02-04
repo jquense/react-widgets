@@ -105,7 +105,7 @@ describe('Multiselect', function() {
   it('should set id on list', () => {
     expect(
       mount(<Multiselect open />)
-        .find('Listbox')
+        .find('List')
         .prop('id'),
     ).to.be.a('string')
   })
@@ -297,7 +297,7 @@ describe('Multiselect', function() {
         onToggle={() => {}}
       />,
     )
-      .find('Listbox')
+      .find('List')
       .act(_ => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
 
     expect(change.getCall(0).args[1]).to.eql({
@@ -348,7 +348,7 @@ describe('Multiselect', function() {
         onSelect={onSelect}
       />,
     )
-      .find('Listbox')
+      .find('List')
       .act(_ => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
 
     expect(onSelect.calledOnce).to.equal(true)
@@ -383,10 +383,13 @@ describe('Multiselect', function() {
         data={dataList}
         textField="label"
         dataKey="id"
+        focusFirstItem
         defaultSearchTerm="ji"
         onSearch={searchSpy}
       />,
-    ).simulate('keyDown', { keyCode: 13 })
+    )
+      .simulate('keyDown', { key: 'ArrowDown' })
+      .simulate('keyDown', { keyCode: 13 })
 
     expect(searchSpy.calledOnce).to.equal(true)
     expect(searchSpy.calledWith('')).to.equal(true)
@@ -428,13 +431,13 @@ describe('Multiselect', function() {
         dataKey="id"
       />,
     )
-      .tap(s => s.assertSingle('div.rw-list-option-create'))
+      .tap(s => s.assertSingle('button.rw-list-option-create'))
       .setProps({ searchTerm: undefined })
-      .tap(s => s.assertNone('div.rw-list-option-create'))
+      .tap(s => s.assertNone('button.rw-list-option-create'))
       .setProps({ searchTerm: 'JIMMY' })
-      .tap(s => s.assertNone('div.rw-list-option-create'))
+      .tap(s => s.assertNone('button.rw-list-option-create'))
       .setProps({ searchTerm: 'custom', allowCreate: false })
-      .tap(s => s.assertNone('div.rw-list-option-create'))
+      .tap(s => s.assertNone('button.rw-list-option-create'))
   })
 
   it('should call onCreate', function() {
@@ -459,11 +462,12 @@ describe('Multiselect', function() {
     )
 
     wrapper
-      .find('.rw-list-option-create .rw-list-option')
+      .find('.rw-list-option-create')
       .simulate('click')
       .tap(assertOnCreateCalled)
 
     wrapper
+      .simulate('keyDown', { key: 'ArrowDown' })
       .simulate('keyDown', { keyCode: 13 })
       .tap(assertOnCreateCalled)
       .simulate('keyDown', { keyCode: 13, ctrlKey: true })
@@ -544,7 +548,7 @@ describe('Multiselect', function() {
       />,
     )
 
-    let listItems = () => inst.update().find('Listbox div.rw-list-option')
+    let listItems = () => inst.update().find('List div.rw-list-option')
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
     expect(

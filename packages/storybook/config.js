@@ -2,35 +2,40 @@
 import './styles.scss'
 
 import Chance from 'chance'
-import { addDecorator, configure } from '@storybook/react'
+import { addDecorator, addParameters, configure } from '@storybook/react'
 import decorator from './configure-intl'
 
 let testsContext = require.context('./stories', true, /\.(j|t)sx?$/)
 
 addDecorator(decorator)
 
-configure(() => {
-  // global.Globalize = Globalize
+addParameters({
+  options: {
+    enableShortcuts: false,
+  },
+}),
+  configure(() => {
+    // global.Globalize = Globalize
 
-  let chance = (global.chance = new Chance())
+    let chance = (global.chance = new Chance())
 
-  global.generateNames = function(limit = 100) {
-    var arr = new Array(limit)
+    global.generateNames = function(limit = 100) {
+      var arr = new Array(limit)
 
-    for (var i = 0; i < arr.length; i++) {
-      var first = chance.first(),
-        last = chance.last()
+      for (var i = 0; i < arr.length; i++) {
+        var first = chance.first(),
+          last = chance.last()
 
-      arr[i] = {
-        first,
-        last,
-        id: i + 1,
-        fullName: `${first} ${last}`,
+        arr[i] = {
+          first,
+          last,
+          id: i + 1,
+          fullName: `${first} ${last}`,
+        }
       }
+
+      return arr
     }
 
-    return arr
-  }
-
-  testsContext.keys().forEach(testsContext)
-}, module)
+    testsContext.keys().forEach(testsContext)
+  }, module)

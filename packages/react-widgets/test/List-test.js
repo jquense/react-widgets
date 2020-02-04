@@ -1,6 +1,6 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import List from '../src/Listbox'
+import List from '../src/List'
 
 xdescribe('List', () => {
   var data = [

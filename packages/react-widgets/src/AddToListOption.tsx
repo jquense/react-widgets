@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types'
-import React from 'react'
-import Listbox, { BaseListBoxProps} from './BaseListbox'
-import ListOption from './ListOption'
+import React, { ReactNode } from 'react'
+import cn from 'classnames'
+import { useListOption } from './FocusListContext'
 
 export const CREATE_OPTION = {}
 
@@ -12,27 +12,30 @@ const propTypes = {
   activeId: PropTypes.string,
 }
 
-export interface AddToListOptionProps extends Omit<BaseListBoxProps, "onSelect">
-{
-  searchTerm?: string;
-  focused?: boolean;
-  onSelect: (dataItem: any, event: React.MouseEvent) => void;
-  activeId?: string;
+export interface AddToListOptionProps {
+  children: ReactNode
+  onSelect: (event: React.MouseEvent) => void
 }
 
-function AddToListOption({ onSelect, focused, children, activeId, ...props }: AddToListOptionProps) {
+function AddToListOption({
+  children,
+  onSelect,
+  ...props
+}: AddToListOptionProps) {
+  const [ref, focused, id] = useListOption(CREATE_OPTION)
+
   return (
-    <Listbox {...props} className="rw-list-option-create">
-      <ListOption
-        onSelect={onSelect}
-        focused={focused}
-        activeId={activeId}
-        dataItem={CREATE_OPTION}
-        selected={false}
-      >
-        {children}
-      </ListOption>
-    </Listbox>
+    <button
+      id={id}
+      ref={ref as any}
+      data-rw-focusable
+      data-rw-focused={focused ? '' : undefined}
+      className={cn('rw-list-option-create', focused && 'rw-state-focus')}
+      onClick={onSelect}
+      {...props}
+    >
+      {children}
+    </button>
   )
 }
 

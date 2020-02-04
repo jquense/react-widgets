@@ -2,19 +2,17 @@ import cn from 'classnames'
 import closest from 'dom-helpers/closest'
 import PropTypes from 'prop-types'
 import React, {
-  useEffect,
   useImperativeHandle,
-  useLayoutEffect,
   useMemo,
   useRef,
-  useState,
   SyntheticEvent,
+  useEffect,
 } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
 import AddToListOption, { CREATE_OPTION } from './AddToListOption'
 import { caretDown, times } from './Icon'
-import Listbox, { ListboxHandle } from './Listbox'
-import { OptionList, OptionsContext, useOptionList } from './ListboxContext'
+import List, { ListHandle } from './List'
+import { FocusListContext, useFocusList } from './FocusListContext'
 import MultiselectInput from './MultiselectInput'
 import TagList, { RenderTagProp, TagComponentProp } from './MultiselectTagList'
 import Popup from './Popup'
@@ -286,7 +284,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     optionComponent,
     tagOptionComponent,
     groupBy,
-    listComponent: List = Listbox,
+    listComponent: ListComponent = List,
     data: rawData = [],
     messages: userMessages,
     ...elementProps
@@ -311,7 +309,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
 
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const listRef = useRef<ListboxHandle>(null)
+  const listRef = useRef<ListHandle>(null)
 
   const inputId = useInstanceId(id, '_input')
   const tagsId = useInstanceId(id, '_taglist')
@@ -339,7 +337,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
         toggle.close()
         clearSearch(event)
 
-        setFocusedTag(null)
+        tagList.focus(null)
       },
     },
   )
@@ -350,24 +348,24 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   )
 
   const [data, lengthWithoutValues] = useMultiselectData(
-    currentValue,
+    dataItems,
     rawData,
     accessors,
     currentOpen ? filter : false,
     currentSearch,
   )
 
-  const [listContext, list] = useOptionList(accessors.text, [])
-  const [tagListContext, tagList] = useOptionList(accessors.text, disabledItems)
-
-  const [focusedItem, setFocusedItem] = useFocusedItem<TDataItem>(
+  const list = useFocusList<TDataItem>({
+    scope: ref,
+    scopeSelector: '.rw-popup',
     focusFirstItem,
-    data,
-    currentOpen,
-    list,
-  )
-
-  const [focusedTag, setFocusedTag] = useFocusedTag(dataItems)
+    activeId: activeOptionId,
+  })
+  const tagList = useFocusList<TDataItem>({
+    scope: ref,
+    scopeSelector: '.rw-multiselect-taglist',
+    activeId: activeTagId,
+  })
 
   const showCreateOption = canShowCreate(allowCreate, {
     searchTerm: currentSearch,
@@ -379,12 +377,18 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   /**
    * Update aria when it changes on update
    */
+  const focusedItem = list.getFocused()
+  const focusedTag = tagList.getFocused()
   useEffect(() => {
-    let active: string | undefined;
-    if (!currentOpen) active = focusedTag ? activeTagId : ''
-    else if (focusedItem || showCreateOption) active = activeOptionId
-    setActiveDescendant(inputRef.current as any /*HACK*/, active!, currentOpen)
-  }, [currentOpen, focusedItem])
+    let active: string
+    if (!currentOpen) {
+      active = focusedTag ? activeTagId : ''
+      setActiveDescendant(inputRef.current, active!, true)
+    } else if (focusedItem || showCreateOption) {
+      active = activeOptionId
+      setActiveDescendant(inputRef.current, active!, currentOpen)
+    }
+  }, [currentOpen, focusedItem, focusedTag])
 
   /**
    * Event Handlers
@@ -429,9 +433,13 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     if (inputRef.current) inputRef.current.select()
   }
 
-  const handleSelect = (dataItem: TDataItem | undefined, originalEvent: React.SyntheticEvent) => {
-    if (dataItem === undefined || dataItem === CREATE_OPTION) {
-      handleCreate(currentSearch, originalEvent)
+  const handleSelect = (
+    dataItem: TDataItem | undefined,
+    originalEvent: React.SyntheticEvent,
+  ) => {
+    if (dataItem === undefined) return
+    if (dataItem === CREATE_OPTION) {
+      handleCreate(originalEvent)
       return
     }
 
@@ -441,7 +449,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     focus()
   }
 
-  const handleCreate = (_: string, event: SyntheticEvent) => {
+  const handleCreate = (event: SyntheticEvent) => {
     notify(onCreate, [currentSearch!])
 
     clearSearch(event)
@@ -453,11 +461,6 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
 
     notify(onKeyDown, [event])
 
-    const setFocused = (listItem?: TDataItem, tag?: TDataItem) => {
-      if (listItem || tag) setFocusedItem(listItem || undefined)
-      if (listItem || tag) setFocusedTag(tag || null)
-    }
-
     if (event.defaultPrevented) return
 
     if (key === 'ArrowDown') {
@@ -467,8 +470,8 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
         toggle.open()
         return
       }
-
-      setFocused(list.next(focusedItem))
+      list.focus(list.next())
+      tagList.focus(null)
     } else if (key === 'ArrowUp' && (currentOpen || altKey)) {
       event.preventDefault()
 
@@ -477,43 +480,47 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
         return
       }
 
-      setFocused(list.prev(focusedItem))
+      list.focus(list.prev())
+      tagList.focus(null)
     } else if (key === 'End') {
       event.preventDefault()
 
-      if (currentOpen) setFocused(list.last())
-      else setFocused(tagList.last())
+      if (currentOpen) {
+        list.focus(list.last())
+        tagList.focus(null)
+      } else {
+        tagList.focus(tagList.last())
+        list.focus(null)
+      }
     } else if (key === 'Home') {
       event.preventDefault()
-      if (currentOpen) setFocused(list.first())
-      else setFocused(tagList.first())
+      if (currentOpen) list.focus(list.first())
+      else list.focus(tagList.first())
     } else if (currentOpen && keyCode === ENTER) {
       // using keyCode to ignore enter for japanese IME
       event.preventDefault()
 
       if (ctrlKey && showCreateOption) {
-        return handleCreate(currentSearch, event)
+        return handleCreate(event)
       }
 
-      handleSelect(focusedItem, event)
+      handleSelect(list.getFocused(), event)
     } else if (key === 'Escape') {
       if (currentOpen) toggle.close()
-      else setFocusedTag(null)
+      else tagList.focus(null)
       //
     } else if (!currentSearch && !deletingRef.current) {
       //
       if (key === 'ArrowLeft') {
-        setFocusedTag(tagList.prev(focusedTag) || tagList.last())
-      } else if (key === 'ArrowRight' && focusedTag) {
-        let nextTag = tagList.next(focusedTag)
-        setFocusedTag(nextTag === focusedTag ? null : nextTag)
+        tagList.focus(tagList.prev({ behavior: 'loop' }))
+      } else if (key === 'ArrowRight') {
+        tagList.focus(tagList.next({ behavior: 'loop' }))
         //
-      } else if (key === 'Delete' && !disabledItems.includes(focusedItem!)) {
-        handleDelete(focusedTag, event)
+      } else if (key === 'Delete' && tagList.getFocused()) {
+        handleDelete(tagList.getFocused()!, event)
         //
       } else if (key === 'Backspace') {
-        handleDelete(tagList.last(), event)
-        //
+        handleDelete(tagList.toDataItem(tagList.last()!)!, event)
       } else if (key === ' ' && !currentOpen) {
         event.preventDefault()
         toggle.open()
@@ -593,6 +600,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   return (
     <Widget
       {...elementProps}
+      ref={ref}
       open={currentOpen}
       isRtl={isRtl}
       dropUp={dropUp}
@@ -623,17 +631,15 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
         onDoubleClick={handleDoubleClick}
         className={cn(containerClassName, 'rw-widget-input')}
       >
-        <OptionsContext.Provider value={tagListContext}>
+        <FocusListContext.Provider value={tagList.context}>
           <TagList<TDataItem>
             id={tagsId}
-            activeId={activeTagId}
             textAccessor={accessors.text}
             dataKeyAccessor={accessors.value}
             clearTagIcon={clearTagIcon}
             label={messages.tagsLabel()}
             value={dataItems}
             disabled={disabledItems}
-            focusedItem={focusedTag}
             onDelete={handleDelete}
             tagOptionComponent={tagOptionComponent}
             renderTagValue={renderTagValue}
@@ -661,7 +667,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
               ref={inputRef}
             />
           </TagList>
-        </OptionsContext.Provider>
+        </FocusListContext.Provider>
         <Select
           busy={busy}
           aria-hidden="true"
@@ -671,7 +677,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
           disabled={isDisabled || isReadOnly}
         />
       </WidgetPicker>
-      <OptionsContext.Provider value={listContext}>
+      <FocusListContext.Provider value={list.context}>
         {shouldRenderPopup && (
           <Popup
             dropUp={dropUp}
@@ -679,23 +685,21 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
             transition={popupTransition}
             onEntering={() => listRef.current!.scrollIntoView()}
           >
-            <List
+            <ListComponent
               {...listProps}
               id={listId}
               data={data}
               tabIndex={-1}
-              bordered={false}
               disabled={disabled}
-              activeId={activeOptionId}
               searchTerm={currentSearch}
-              textField={textField}
-              dataKey={dataKey}
+              accessors={accessors}
               renderItem={renderListItem}
               renderGroup={renderListGroup}
               groupBy={groupBy}
               optionComponent={optionComponent}
-              focusedItem={focusedItem}
-              onChange={(d: TDataItem | TDataItem[], meta: {originalEvent?: SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
+              onChange={(d, meta) =>
+                handleSelect(d as TDataItem, meta.originalEvent!)
+              }
               aria-live="polite"
               aria-labelledby={inputId}
               aria-hidden={!currentOpen}
@@ -708,58 +712,18 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
             />
 
             {showCreateOption && (
-              <AddToListOption
-                id={createId}
-                onSelect={handleCreate}
-                focused={focusedItem === CREATE_OPTION}
-              >
+              <AddToListOption onSelect={handleCreate}>
                 {messages.createOption(currentValue, currentSearch!)}
               </AddToListOption>
             )}
           </Popup>
         )}
-      </OptionsContext.Provider>
+      </FocusListContext.Provider>
     </Widget>
   )
 })
 
-function useFocusedTag(data: unknown[]) {
-  const [focusedTag, setFocusedTag] = useState()
-
-  if (focusedTag && !data.includes(focusedTag)) {
-    setFocusedTag(null)
-  }
-
-  return [focusedTag, setFocusedTag] as const
-}
-
-function useFocusedItem<T>(
-  focusFirstItem = false,
-  data: T[],
-  open: boolean,
-  list: OptionList,
-) {
-  const [focusedItem, setFocusedItem] = useState<T>()
-
-  useLayoutEffect(() => {
-    if (!open) return setFocusedItem(undefined)
-    const hasItem = focusedItem != null
-
-    if (
-      (!hasItem && focusFirstItem) ||
-      (hasItem && !data.includes(focusedItem!))
-    ) {
-      const nextFocused = focusFirstItem ? list.nextEnabled(data[0]) : undefined
-
-      setFocusedItem(nextFocused)
-    }
-  }, [focusFirstItem, open, data])
-
-  return [focusedItem, setFocusedItem] as const
-}
-
 Multiselect.displayName = 'Multiselect'
 Multiselect.propTypes = propTypes
-// Multiselect.defaultProps = defaultProps
 
 export default Multiselect

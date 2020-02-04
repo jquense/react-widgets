@@ -3,18 +3,19 @@ import React, { useMemo, useRef, useState } from 'react'
 import Input, { InputProps } from './Input'
 import { Localizer, RequiredDateMethods } from './Localization'
 
-export interface DateTimePickerInputProps extends Omit<InputProps, "value" | "onChange"> {
-  format: RequiredDateMethods;
-  editing: boolean;
-  editFormat?: string;
-  parse: string[] | string | ((str: string) => Date | undefined);
-  value?: Date | null;
-  onChange: (date: Date | null, rawValue: string) => void;
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
-  localizer: Localizer;
+export interface DateTimePickerInputProps
+  extends Omit<InputProps, 'value' | 'onChange'> {
+  format: RequiredDateMethods
+  editing: boolean
+  editFormat?: string
+  parse: string[] | string | ((str: string) => Date | undefined)
+  value?: Date | null
+  onChange: (date: Date | null, rawValue: string) => void
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
+  localizer: Localizer
 
-  disabled?: boolean;
-  readOnly?: boolean;
+  disabled?: boolean
+  readOnly?: boolean
 }
 
 const DateTimePickerInput = React.forwardRef(

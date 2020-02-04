@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { useListOption } from './ListboxContext'
+import { useListOption } from './FocusListContext'
 
 const propTypes = {
   activeId: PropTypes.string,
@@ -14,31 +14,25 @@ const propTypes = {
 export interface ListOptionProps<TDataItem>
   extends Omit<React.HTMLProps<HTMLDivElement>, 'onSelect'> {
   dataItem: TDataItem
-  activeId?: string
   focused?: boolean
   selected: boolean
   disabled?: boolean
   onSelect: (dataItem: TDataItem, event: React.MouseEvent) => void
-  component?: React.ElementType | null,
-  children? : React.ReactNode
+  component?: React.ElementType | null
+  children?: React.ReactNode
 }
 
 function ListOption<TDataItem>({
   className,
   children,
-  activeId,
   dataItem,
-  focused,
   selected,
   disabled,
   onSelect,
   tabIndex = -1,
-  component,
   ...props
 }: ListOptionProps<TDataItem>) {
-  const Tag = component || 'div'
-
-  useListOption(dataItem)
+  const [ref, focused, id] = useListOption<TDataItem, HTMLDivElement>(dataItem)
 
   const handleSelect = (event: React.MouseEvent<HTMLElement>) => {
     if (onSelect && !disabled) onSelect(dataItem, event)
@@ -50,12 +44,12 @@ function ListOption<TDataItem>({
     'rw-state-disabled': disabled,
   }
 
-  let id = focused ? activeId : undefined
-
   return (
-    <Tag
+    <div
       id={id}
+      ref={ref}
       role="option"
+      data-rw-option=""
       data-rw-focused={focused ? '' : undefined}
       tabIndex={disabled ? undefined : tabIndex}
       aria-selected={!!selected}
@@ -64,7 +58,7 @@ function ListOption<TDataItem>({
       {...props}
     >
       {children}
-    </Tag>
+    </div>
   )
 }
 

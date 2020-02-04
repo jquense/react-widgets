@@ -1,27 +1,20 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import cn from 'classnames'
 import PropTypes from 'prop-types'
-import React, {
-  useCallback,
-  useImperativeHandle,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-} from 'react'
+import cn from 'classnames'
+import React, { useMemo, useRef } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
-import BaseListbox from './BaseListbox'
-import ListOption, { ListOptionProps } from './ListOption'
-import ListOptionGroup from './ListOptionGroup'
-import { getList, useClearListOptions } from './ListboxContext'
-import { UserProvidedMessages, useMessagesWithDefaults } from './messages'
-import { WidgetHTMLProps } from './shared'
+import List, { GroupBy, useHandleSelect } from './List'
+import { useFocusList, FocusListContext } from './FocusListContext'
 import { DataItem, RenderProp, Value } from './types'
 import * as CustomPropTypes from './util/PropTypes'
-import * as Props from './util/Props'
-import { groupBySortedKeys, makeArray, toItemArray } from './util/_'
+import { makeArray } from './util/_'
 import { DataKeyAccessor, TextAccessor } from './util/dataHelpers'
 import { useAccessors } from './util/getAccessors'
+import { WidgetHTMLProps } from './shared'
+import { UserProvidedMessages } from './messages'
 import { notify } from './util/widgetHelpers'
+import useFocusManager from './util/useFocusManager'
+import { useWidgetProps } from './Widget'
 
 const propTypes = {
   data: PropTypes.array,
@@ -32,8 +25,6 @@ const propTypes = {
   onSelect: PropTypes.func,
   onMove: PropTypes.func,
   onHoverOption: PropTypes.func,
-
-  activeId: PropTypes.string,
 
   optionComponent: CustomPropTypes.elementType,
   renderItem: PropTypes.func,
@@ -50,39 +41,6 @@ const propTypes = {
   }),
 }
 
-type GroupedItem = { __isGroup: string }
-
-const isGroup = (item: unknown): item is GroupedItem =>
-  typeof item === 'object' && item != null && '__isGroup' in item
-
-const defaultProps = {
-  onSelect: () => {},
-  data: [],
-  optionComponent: ListOption,
-}
-
-function useFlattenedData<T>(
-  data: T[],
-  groupBy?: GroupBy<T>,
-): Array<T | GroupedItem> {
-  return useMemo(() => {
-    if (!groupBy) return data
-
-    const flatData = [] as Array<T | GroupedItem>
-
-    const keys: string[] = []
-    const grouped = groupBySortedKeys<T>(groupBy, data, keys)
-
-    keys.forEach(group => {
-      flatData.push({ __isGroup: group }, ...grouped[group])
-    }, [])
-
-    return flatData
-  }, [data, groupBy])
-}
-
-export type GroupBy<TDataItem> = string | ((item: TDataItem) => string)
-
 export interface ListboxHandle {
   scrollIntoView(): void
 }
@@ -97,32 +55,8 @@ export type RenderItemProp<TDataItem> = RenderProp<{
 }>
 
 export type RenderGroupProp = RenderProp<{
-  group: string
+  group: any
 }>
-
-export type OptionComponentProp = React.ComponentType<ListOptionProps<any>>
-
-export interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
-  bordered?: boolean
-  data: TDataItem[]
-  focusedItem?: TDataItem
-  className?: string
-  disabled?: boolean | TDataItem[]
-  messages?: UserProvidedMessages
-  textField?: TextAccessor
-  dataKey?: DataKeyAccessor
-  renderItem?: RenderItemProp<TDataItem>
-  renderGroup?: RenderGroupProp
-  activeId?: string
-  searchTerm?: string
-  groupBy?: GroupBy<TDataItem>
-  optionComponent?: OptionComponentProp
-  onMove?(
-    selectedElement: Element,
-    listElement: HTMLDivElement,
-    focusedItem: TDataItem,
-  ): void
-}
 
 export type SingleChangeHandler<TDataItem> = (
   dataItem: TDataItem,
@@ -131,14 +65,6 @@ export type SingleChangeHandler<TDataItem> = (
     originalEvent?: React.SyntheticEvent
   },
 ) => void
-
-export interface SingleListboxProps<TDataItem>
-  extends BaseListboxProps<TDataItem> {
-  value?: Value
-  defaultValue?: Value
-  multiple?: false
-  onChange?: SingleChangeHandler<TDataItem>
-}
 
 export type MultipleChangeHandler<TDataItem> = (
   dataItem: TDataItem[],
@@ -149,6 +75,33 @@ export type MultipleChangeHandler<TDataItem> = (
     originalEvent?: React.SyntheticEvent
   },
 ) => void
+
+export interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
+  data: TDataItem[]
+  // value: Value
+  defaultValue?: Value
+  focusedItem?: TDataItem
+  className?: string
+  multiple?: boolean
+  disabled?: boolean | TDataItem[]
+  messages?: UserProvidedMessages
+  renderItem?: RenderItemProp<TDataItem>
+  renderGroup?: RenderGroupProp
+  searchTerm?: string
+  groupBy?: GroupBy<TDataItem>
+  optionComponent?: React.ElementType
+  textField?: TextAccessor
+  dataKey?: DataKeyAccessor
+  // onChange: ChangeHandler<TDataItem>
+}
+
+export interface SingleListboxProps<TDataItem>
+  extends BaseListboxProps<TDataItem> {
+  value?: Value
+  defaultValue?: Value
+  multiple?: false
+  onChange?: SingleChangeHandler<TDataItem>
+}
 
 export interface MultipleListboxProps<TDataItem>
   extends BaseListboxProps<TDataItem> {
@@ -168,108 +121,73 @@ declare interface Listbox {
   ): React.ReactElement | null
 
   displayName?: string
+  propTypes?: any
 }
+const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>({
+  defaultValue,
+  value: propsValue,
+  onChange: propsOnChange,
 
-const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
-  {
-    multiple = false,
-    focusedItem: propsFocusedItem,
+  textField,
+  dataKey,
 
-    data,
-
-    value,
+  data,
+  onKeyDown,
+  onBlur,
+  onFocus,
+  ...props
+}: ListboxProps<TDataItem>) {
+  const [value, onChange] = useUncontrolledProp(
+    propsValue,
     defaultValue,
-    onChange,
-
-    className,
-    messages,
-    disabled,
-    renderItem,
-    textField,
-    dataKey,
-    renderGroup,
-    activeId,
-    searchTerm,
-    groupBy,
-    bordered = true,
-    optionComponent: Option = ListOption,
-    onKeyDown,
-    ...props
-  }: ListboxProps<TDataItem>,
-  outerRef: React.Ref<ListboxHandle>,
-) {
-  const [focusedItem, setFocusedItem] = useUncontrolledProp(
-    propsFocusedItem,
-    null,
-    (_: TDataItem) => {},
-  )
-  const [rawValue, handleChange] = useUncontrolledProp(
-    value,
-    defaultValue,
-    onChange,
+    propsOnChange,
   )
 
   const accessors = useAccessors(textField, dataKey)
 
-  const currentValue = makeArray(rawValue)
-
   const dataItems = useMemo(
-    () => currentValue!.map(item => accessors.findOrSelf(data, item)),
-    [data, currentValue, accessors],
+    () => makeArray(value).map(item => accessors.findOrSelf(data, item)),
+    [data, value, accessors],
   )
-
   const ref = useRef<HTMLDivElement>(null)
-  const disabledItems = toItemArray(disabled)
-  const { emptyList } = useMessagesWithDefaults(messages)
-  const flatData = useFlattenedData(data, groupBy)
-  const list = getList(flatData, accessors.text, disabledItems)
+  const lastItemRef = useRef<TDataItem | null>(dataItems[dataItems.length - 1])
 
-  const handleSelect = (dataItem: TDataItem, event: React.MouseEvent) => {
-    if (multiple === false) {
-      const handler = handleChange as SingleChangeHandler<TDataItem>
-      handler(dataItem, {
-        lastValue: value,
-        originalEvent: event,
-      })
-      return
-    }
-    const handler = handleChange as MultipleChangeHandler<TDataItem>
-    const checked = dataItems.includes(dataItem)
-    handler(
-      checked
-        ? dataItems.filter(d => d !== dataItem)
-        : [...dataItems, dataItem],
-      {
-        dataItem,
-        lastValue: value,
-        action: checked ? 'remove' : 'insert',
-        originalEvent: event,
-      },
-    )
+  const list = useFocusList({
+    scope: ref,
+    anchorItem: lastItemRef.current,
+  })
+
+  const handleChange = (dataItem: any, meta: any) => {
+    lastItemRef.current = meta.dataItem
+    onChange(dataItem, meta)
   }
 
-  const scrollIntoView = useCallback(() => {
-    let list = ref.current
-    if (!list || !focusedItem) return
+  const handleSelect = useHandleSelect(
+    !!props.multiple,
+    dataItems,
+    handleChange,
+  )
 
-    let selectedItem = list.querySelector('[data-rw-focused]')
+  const [focusEvents, focused] = useFocusManager(
+    ref,
+    { disabled: props.disabled === true, onBlur, onFocus },
+    {
+      didHandle(focused) {
+        if (!focused) {
+          list.focus(undefined)
+        } else {
+          focus({ preventScroll: true })
+        }
+      },
+    },
+  )
 
-    if (selectedItem && selectedItem.scrollIntoView) {
-      selectedItem.scrollIntoView({ block: 'nearest', inline: 'nearest' })
-    }
-  }, [focusedItem])
-
-  useLayoutEffect(scrollIntoView, [scrollIntoView])
-
-  useClearListOptions()
-
-  let elementProps = Props.pickElementProps(props)
-
-  useImperativeHandle(outerRef, () => ({ scrollIntoView }), [scrollIntoView])
+  function focus(opts: FocusOptions) {
+    if (ref.current) ref.current.focus(opts)
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let { key, shiftKey } = e
-    const currentFocused = focusedItem || currentValue[currentValue.length - 1]
 
     notify(onKeyDown, [e])
 
@@ -277,79 +195,47 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
 
     if (key === 'End' && !shiftKey) {
       e.preventDefault()
-      setFocusedItem(list.last())
+      list.focus(list.last())
     } else if (key === 'Home' && !shiftKey) {
       e.preventDefault()
-      setFocusedItem(list.first())
-    } else if (key === 'Enter') {
+      list.focus(list.first())
+    } else if (key === 'Enter' || key === ' ') {
       e.preventDefault()
-      if (focusedItem) handleSelect(focusedItem, e as any)
+      if (list.getFocused()) handleSelect(list.getFocused()!, e)
     } else if (key === 'ArrowDown') {
       e.preventDefault()
-      setFocusedItem(list.next(currentFocused))
+      list.focus(list.next())
     } else if (key === 'ArrowUp') {
       e.preventDefault()
 
-      setFocusedItem(list.prev(currentFocused))
+      list.focus(list.prev())
     }
   }
+  const widgetProps = useWidgetProps({
+    focused,
+    disabled: props.disabled === true,
+    className: cn(props.className, 'rw-listbox rw-widget rw-widget-container'),
+  })
 
   return (
-    <BaseListbox
-      ref={ref}
-      {...elementProps}
-      multiple={multiple}
-      onKeyDown={handleKeyDown}
-      className={cn(className, bordered && 'rw-listbox rw-widget-container')}
-      emptyListMessage={emptyList()}
-    >
-      {flatData.map((item, idx) => {
-        if (isGroup(item))
-          return (
-            <ListOptionGroup key={`group_${item.__isGroup}`}>
-              {renderGroup
-                ? renderGroup({ group: item.__isGroup })
-                : item.__isGroup}
-            </ListOptionGroup>
-          );
-
-        let isFocused = focusedItem === item
-
-        const textValue = accessors.text(item)
-
-        const itemIsDisabled = disabledItems.includes(item)
-        const itemIsSelected = dataItems.includes(item)
-
-        return (
-          <Option
-            dataItem={item}
-            key={`item_${idx}`}
-            activeId={activeId}
-            focused={isFocused}
-            onSelect={handleSelect}
-            disabled={itemIsDisabled}
-            selected={itemIsSelected}
-          >
-            {renderItem
-              ? renderItem({
-                  item,
-                  searchTerm,
-                  index: idx,
-                  text: textValue,
-                  // TODO: probably remove
-                  value: accessors.value(item),
-                  disabled: itemIsDisabled,
-                })
-              : textValue}
-          </Option>
-        );
-      })}
-    </BaseListbox>
+    <FocusListContext.Provider value={list.context}>
+      <List
+        {...props}
+        {...widgetProps}
+        tabIndex={0}
+        data={data}
+        elementRef={ref}
+        value={dataItems}
+        accessors={accessors}
+        {...focusEvents}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+      />
+    </FocusListContext.Provider>
   )
 })
 
 Listbox.displayName = 'Listbox'
-export default Object.assign(Listbox, {
-  defaultProps,
-  propTypes,
-})
+Listbox.propTypes = propTypes
+
+export default Listbox

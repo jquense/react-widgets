@@ -14,20 +14,21 @@ import React, {
   UIEventHandler,
   WheelEventHandler,
 } from 'react'
-import {
-  GroupBy,
-  ListboxHandle,
-  ListboxProps,
-  OptionComponentProp,
-  RenderGroupProp,
-  RenderItemProp,
-} from './Listbox'
+
 import { DateFormats, Localizer } from './Localization'
 import { UserProvidedMessages } from './messages'
 import { SearchMetadata, Value } from './types'
 import { Filter } from './util/Filter'
 import { DataKeyAccessor, TextAccessor } from './util/dataHelpers'
 import { TransitionProps } from 'react-transition-group/Transition'
+import {
+  ListProps,
+  ListHandle,
+  GroupBy,
+  OptionComponentProp,
+  RenderGroupProp,
+  RenderItemProp,
+} from './List'
 
 export interface WidgetProps {
   isRtl?: boolean
@@ -254,9 +255,7 @@ export interface BaseListboxInputProps<TDataItem, TValue = Value> {
   renderListGroup?: RenderGroupProp
   optionComponent?: OptionComponentProp
   groupBy?: GroupBy<TDataItem>
-  listComponent?: ComponentType<
-    ListboxProps<TDataItem> & { ref: Ref<ListboxHandle> }
-  >
+  listComponent?: ComponentType<ListProps<TDataItem> & { ref: Ref<ListHandle> }>
 }
 
 export interface DateLocalizationProps<

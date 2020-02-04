@@ -186,7 +186,7 @@ describe('Combobox', function() {
   it('should set id on list', () => {
     expect(
       mount(<Combobox open />)
-        .find('Listbox')
+        .find('List')
         .prop('id'),
     ).to.be.a('string')
   })
@@ -203,7 +203,7 @@ describe('Combobox', function() {
         onToggle={() => {}}
       />,
     )
-      .find('Listbox')
+      .find('List')
       .act(_ => _.prop('onChange')(null, { originalEvent: 'foo' }))
 
     expect(change.getCall(0).args[1]).to.eql({
@@ -225,7 +225,7 @@ describe('Combobox', function() {
         onSelect={onSelect}
       />,
     )
-      .find('Listbox')
+      .find('List')
       .act(_ => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
 
     expect(onSelect.calledOnce).to.equal(true)
@@ -306,8 +306,6 @@ describe('Combobox', function() {
         .at(2)
         .is('.rw-state-focus'),
     ).to.equal(true)
-
-    expect(inst.find('Listbox').prop('focusedItem')).to.equal(dataList[2])
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
 

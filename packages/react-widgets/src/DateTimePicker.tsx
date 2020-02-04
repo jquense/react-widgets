@@ -27,7 +27,6 @@ import {
 } from './util/widgetHelpers'
 
 import { TransitionProps } from 'react-transition-group/Transition'
-
 import { WidgetHTMLProps, DateLocalizationProps } from './shared'
 
 let propTypes = {

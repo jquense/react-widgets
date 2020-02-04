@@ -1,14 +1,7 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
-
 import DateTimePicker, { DateTimePickerProps } from './DateTimePicker'
-
-const propTypes = {
-  open: PropTypes.bool,
-  defaultOpen: PropTypes.bool,
-  onToggle: PropTypes.func,
-} as React.WeakValidationMap<DatePickerProps>
 
 interface DatePickerProps extends DateTimePickerProps {
   open?: boolean
@@ -17,9 +10,14 @@ interface DatePickerProps extends DateTimePickerProps {
 }
 
 class DatePicker extends React.Component<DatePickerProps> {
-  static propTypes = propTypes
+  static propTypes = {
+    open: PropTypes.bool,
+    defaultOpen: PropTypes.bool,
+    onToggle: PropTypes.func,
+  }
 
   toggleState: boolean | undefined
+
   constructor(props: DatePickerProps, context: any) {
     super(props, context)
 

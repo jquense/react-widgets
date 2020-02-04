@@ -2,7 +2,6 @@
 const glob = require('glob')
 const path = require('path')
 const fs = require('fs')
-const mkdir = require('mkdirp')
 
 const processors = [
   // interpolated variables
@@ -41,7 +40,7 @@ const processors = [
 function processLine(line) {
   return processors.reduce(
     (line, { pattern, replace }) => line.replace(pattern, replace),
-    line
+    line,
   )
 }
 
@@ -56,7 +55,7 @@ function transpile(filename) {
 
   console.log('Writing scss file: ' + outName) // eslint-disable-line
 
-  mkdir.sync(outPath)
+  fs.mkdirSync(outPath, { recursive: true })
   fs.writeFileSync(outFile, code)
 }
 
