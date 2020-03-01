@@ -19,7 +19,8 @@ export interface ListOptionProps<TDataItem>
   selected: boolean
   disabled: boolean
   onSelect: (dataItem: TDataItem, event: React.MouseEvent) => void
-  component?: React.ElementType | null
+  component?: React.ElementType | null,
+  children? : React.ReactChildren
 }
 
 function ListOption<TDataItem>({
@@ -39,7 +40,7 @@ function ListOption<TDataItem>({
 
   useListOption(dataItem)
 
-  const handleSelect = event => {
+  const handleSelect = (event : React.MouseEvent<HTMLElement>) => {
     if (onSelect && !disabled) onSelect(dataItem, event)
   }
 

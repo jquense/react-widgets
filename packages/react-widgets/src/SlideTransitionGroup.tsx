@@ -2,6 +2,7 @@ import cn from 'classnames'
 import transitionEnd from 'dom-helpers/transitionEnd'
 import PropTypes from 'prop-types'
 import React from 'react'
+import { ClassValue } from 'classnames/types'
 
 const DirectionPropType = PropTypes.oneOf(['left', 'right', 'top', 'bottom'])
 
@@ -10,13 +11,17 @@ const active = `${prefix}-active`
 const next = `${prefix}-next`
 const prev = `${prefix}-prev`
 
-const clone = (el, cls) =>
+const clone = (el: React.ReactElement, cls: ClassValue[]) =>
   el &&
   React.cloneElement(el, {
     className: cn(el.props.className, prefix, cls),
   })
 
-class SlideTransitionGroup extends React.Component {
+interface SlideTransitionGroupProps{
+  onTransitionEnd: ()=> void;
+}
+
+class SlideTransitionGroup extends React.Component<SlideTransitionGroupProps> {
   static defaultProps = {
     direction: 'left',
   }
@@ -25,9 +30,15 @@ class SlideTransitionGroup extends React.Component {
     direction: DirectionPropType,
     onTransitionEnd: PropTypes.func,
   }
+  
+  isTransitioning?: boolean;
+  container: React.RefObject<HTMLDivElement>
+  current: React.ReactNode
+  flush?: boolean;
+  prev: React.ReactNode | null;
 
-  constructor(...args) {
-    super(...args)
+  constructor(args: SlideTransitionGroupProps) {
+    super(args)
 
     this.current = this.props.children
     this.container = React.createRef()
@@ -44,12 +55,12 @@ class SlideTransitionGroup extends React.Component {
     this.flush = false
     this.isTransitioning = true
 
-    let previous = this.container.current.firstChild
+    let previous = this.container.current!.firstChild!
     const hadFocus =
       document.activeElement && previous.contains(document.activeElement)
 
     this.setState({ prevClasses: '', currentClasses: next }, () => {
-      let current = this.container.current.lastChild
+      let current = this.container.current!.lastChild! as HTMLElement
 
       current.clientHeight // eslint-disable-line
 

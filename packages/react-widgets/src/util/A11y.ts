@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, Ref, RefObject } from 'react';
 import { findDOMNode } from 'react-dom'
 
 /**
@@ -6,14 +6,15 @@ import { findDOMNode } from 'react-dom'
  * even if the id hasn't changed, this saves us from having to have a different id
  * per item.
  */
-export const setActiveDescendant = (ref, activeId, visible) => {
-  if (!ref) return
-  const node = findDOMNode(ref)
+export const setActiveDescendant = (ref: React.Component | null, activeId: string, visible: boolean) => {
+  if (!ref)
+    return;
+  const node = findDOMNode(ref) as Element;
   node.removeAttribute('aria-activedescendant')
   if (visible) node.setAttribute('aria-activedescendant', activeId)
 }
 
-export const useActiveDescendant = (ref, id, visible, deps) => {
+export const useActiveDescendant = (ref: RefObject<React.Component>, id: string, visible: boolean, deps: any[]) => {
   useEffect(() => {
     setActiveDescendant(ref.current, id, visible)
   }, [visible, ...deps])

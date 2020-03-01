@@ -1,4 +1,5 @@
-import React, { ReactNode, useMemo } from 'react'
+import * as React from 'react'
+import { ReactNode, useMemo } from 'react'
 
 type LabelMessage = string | (() => string)
 type RenderableMessage = ReactNode | (() => ReactNode)

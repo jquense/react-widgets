@@ -9,18 +9,19 @@ const propTypes = {
   emptyListMessage: PropTypes.node,
 }
 
-interface Props {
+export interface BaseListBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   emptyListMessage: React.ReactNode
   role?: string
   className?: string
-  multiple?: boolean
+  multiple?: boolean,
+  children?: React.ReactChildren
 }
 
-const Listbox = React.forwardRef<HTMLDivElement, Props>(
+const BaseListBox = React.forwardRef(function BaseListBox
   (
-    { className, role, multiple, children, emptyListMessage, ...props },
-    ref,
-  ) => {
+    { className, role, multiple, children, emptyListMessage, ...props }: BaseListBoxProps,
+    ref : React.Ref<HTMLDivElement>,
+  ) {
     const id = useInstanceId()
 
     return (
@@ -41,10 +42,8 @@ const Listbox = React.forwardRef<HTMLDivElement, Props>(
       </div>
     )
   },
-)
+);
 
-Listbox.displayName = 'BaseListbox'
+(BaseListBox as any).propTypes = propTypes;
 
-Listbox.propTypes = propTypes
-
-export default Listbox
+export default BaseListBox;

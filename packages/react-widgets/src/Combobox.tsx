@@ -1,6 +1,7 @@
 import cn from 'classnames'
-import PropTypes from 'prop-types'
-import React, {
+import * as PropTypes from 'prop-types'
+import * as React from 'react'
+import {
   useImperativeHandle,
   useLayoutEffect,
   useMemo,

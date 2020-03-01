@@ -24,7 +24,7 @@ declare namespace Intl {
 //   type ConfigMap<TProps extends object> = {
 //     [p in keyof TProps]?: AllowedNames<TProps, Function>
 //   }
-
+ 
 //   export function useUncontrolled<TProps extends object>(
 //     props: TProps,
 //     config: ConfigMap<TProps>,
@@ -92,14 +92,14 @@ declare module 'date-arithmetic' {
     day: Date,
     min?: Date,
     max?: Date,
-    unit: DateUnit,
+    unit?: DateUnit,
   ): boolean
 
   /** Subtract specified amount of units from a provided date and return new date as a result */
   export function subtract(
-    date?: Date | null | number,
+    date: Date | null | number,
     num: number,
-    unit: Unit,
+    unit: DateUnit,
   ): Date
 
   /** Compare two dates and return true if they are equal */

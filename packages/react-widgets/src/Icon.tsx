@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 /*!
 Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
