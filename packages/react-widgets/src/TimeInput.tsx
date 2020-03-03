@@ -6,9 +6,10 @@ import { useUncontrolled } from 'uncontrollable'
 import Button from './Button'
 import DateTimePartInput from './DateTimePartInput'
 import { times } from './Icon'
-import Widget from './Widget'
+import Widget, { WidgetProps } from './Widget'
 import dates from './util/dates'
 import useFocusManager from './util/useFocusManager'
+import { DateTimePart } from './Localization';
 
 type Meridiem = 'AM' | 'PM'
 
@@ -30,8 +31,9 @@ interface TimeParts {
 
 type TimePart = keyof TimeParts
 
-const selectTextRange = el => {
-  if (el.select) return el.select()
+const selectTextRange = (el: HTMLInputElement | HTMLDivElement) => {
+  if (el instanceof HTMLInputElement)
+    return el.select()
   const range = document.createRange()
   range.selectNodeContents(el)
   const selection = window.getSelection()
@@ -42,18 +44,18 @@ const selectTextRange = el => {
 }
 
 // prettier-ignore
-const isEmptyValue = (p: TimeParts, precision: 'seconds' | 'milliseconds') =>
+const isEmptyValue = (p: TimeParts, precision: TimePart) =>
   p.hours == null &&
   p.minutes == null &&
   ((precision != 'seconds' && precision !== 'milliseconds') || p.seconds == null) &&
   (precision !== 'milliseconds' || p.milliseconds == null);
 
 // prettier-ignore
-const isPartialValue = (p: TimeParts, precision: 'seconds' | 'milliseconds') =>
+const isPartialValue = (p: TimeParts, precision: TimePart) =>
   p.hours == null ||
   p.minutes == null ||
   ((precision === 'seconds' || precision === 'milliseconds') && p.seconds == null) ||
-  ( precision === 'milliseconds' && p.milliseconds == null);
+  (precision === 'milliseconds' && p.milliseconds == null);
 
 const getValueParts = (
   value?: Date | null,
@@ -83,11 +85,28 @@ const TESTS = {
   minutes: /^([0-5]?\d)$/,
   seconds: /^([0-5]?\d)$/,
   milliseconds: /^(\d{1,3})$/,
+};
+
+const isValid = (value: string, part: TimePart, use12HourClock: boolean) => {
+  const key = part === 'hours' && use12HourClock ? 'hours12' : part as keyof typeof TESTS;
+  return TESTS[key].test(value)
 }
 
-const isValid = (value, part, use12HourClock) => {
-  if (part === 'hours') part = !use12HourClock ? 'hours' : 'hours12'
-  return TESTS[part].test(value)
+export interface TimeInputProps extends Omit<WidgetProps, "value" | "onChange"> {
+  value?: Date;
+  onChange?: (date: Date | null, ctx?: any) => void;
+  datePart?: Date;
+  use12HourClock?: boolean;
+  padValues?: boolean;
+  emptyCharacter?: string;
+  noClearButton?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  precision: 'minutes' | 'seconds' | 'milliseconds';
+  hoursAddon?: React.ReactNode;
+  minutesAddon?: React.ReactNode;
+  secondsAddon?: React.ReactNode;
+  millisecondsAddon?: React.ReactNode;
 }
 
 const propTypes = {
@@ -169,7 +188,7 @@ function useTimePartState(value: Date | null, use12HourClock: boolean) {
   }))
 
   const setTimeParts = useCallback(
-    timeParts => setState(s => ({ ...s, timeParts })),
+    (timeParts: TimeParts) => setState(s => ({ ...s, timeParts })),
     [setState],
   )
 
@@ -186,7 +205,7 @@ function useTimePartState(value: Date | null, use12HourClock: boolean) {
   return [state.timeParts, setTimeParts] as const
 }
 
-function TimeInput(uncontrolledProps) {
+function TimeInput(uncontrolledProps: TimeInputProps) {
   const {
     value,
     use12HourClock,
@@ -195,10 +214,8 @@ function TimeInput(uncontrolledProps) {
     precision,
     noClearButton,
     hoursAddon,
-    minutesAddon = precision === 'seconds' || precision === 'milliseconds'
-      ? ':'
-      : '',
-    secondsAddon = precision === 'milliseconds' ? '.' : '',
+    minutesAddon,
+    secondsAddon,
     millisecondsAddon,
     className,
     disabled,
@@ -208,7 +225,10 @@ function TimeInput(uncontrolledProps) {
     onBlur,
     onFocus,
     ...props
-  } = useUncontrolled(uncontrolledProps, { value: 'onChange' })
+  } = useUncontrolled(uncontrolledProps, { value: 'onChange' });
+
+  var minsAddon = minutesAddon !== undefined ? minutesAddon : (precision === 'seconds' || precision === 'milliseconds' ? ':' : '');
+  var secsAddon = secondsAddon !== undefined ? secondsAddon : (precision === 'milliseconds' ? ':' : '');
 
   const ref = useRef<HTMLDivElement>(null)
   const hourRef = useRef<HTMLInputElement>(null)
@@ -220,26 +240,26 @@ function TimeInput(uncontrolledProps) {
       didHandle: (focused, e: React.FocusEvent<HTMLElement>) => {
         if (!focused) return
         if (!e.target.dataset.focusable) hourRef.current?.focus()
-        else select(e.target)
+        else select(e.target as HTMLInputElement)
       },
     },
   )
 
-  const [timeParts, setTimeParts] = useTimePartState(value, use12HourClock)
+  const [timeParts, setTimeParts] = useTimePartState(value ?? null, use12HourClock ?? false)
 
   function getDatePart() {
     return dates.startOf(datePart || dates.today(), 'day')
   }
 
-  const getMin = part => (part === 'hours' ? 1 : 0)
+  const getMin = (part: TimePart) => (part === 'hours' ? 1 : 0)
 
-  const getMax = part => {
+  const getMax = (part: TimePart) => {
     if (part === 'hours') return use12HourClock ? 12 : 23
     if (part === 'milliseconds') return 999
     return 59
   }
 
-  function select(target = document.activeElement) {
+  function select(target: HTMLInputElement = document.activeElement as HTMLInputElement) {
     window.Promise.resolve().then(() => {
       if (focused) selectTextRange(target)
     })
@@ -252,7 +272,7 @@ function TimeInput(uncontrolledProps) {
   const handleClear = () => {
     hourRef.current?.focus()
 
-    if (value) onChange(null)
+    if (value) onChange!(null)
     else setTimeParts(getValueParts(null))
   }
 
@@ -271,11 +291,11 @@ function TimeInput(uncontrolledProps) {
 
     if (
       isNaN(numValue) ||
-      (strValue && !isValid(strValue, part, use12HourClock))
+      (strValue && !isValid(strValue, part, use12HourClock ?? false))
     ) {
       // the combined value is now past the max or invalid so try the single
       // digit and "start over" filling the value
-      if (isValid(rawValue, part, use12HourClock) && !isNaN(+rawValue)) {
+      if (isValid(rawValue, part, use12HourClock ?? false) && !isNaN(+rawValue)) {
         numValue = +rawValue
       } else {
         return event.preventDefault()
@@ -285,13 +305,14 @@ function TimeInput(uncontrolledProps) {
     notifyChange({ [part]: target.value ? numValue : null })
   }
 
-  const handleSelect = ({ target }) => {
-    select(target)
+  const handleSelect = ({ target }: (React.SyntheticEvent<HTMLInputElement | HTMLDivElement> | React.FocusEvent<HTMLInputElement | HTMLDivElement>)) => {
+    select(target as HTMLInputElement);
   }
 
-  const handleKeyDown = (part, event) => {
-    const { key, target: input } = event
-    const { selectionStart: start, selectionEnd: end } = input
+  const handleKeyDown = (part: TimePart, event: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>) => {
+    const { key } = event;
+    const input = event.target as HTMLInputElement;
+    const { selectionStart: start, selectionEnd: end } = input;
 
     const isMeridiem = part === 'meridiem'
 
@@ -303,11 +324,11 @@ function TimeInput(uncontrolledProps) {
       event.preventDefault()
       increment(part, -1)
     }
-    if (key === 'ArrowLeft' && (isMeridiem || start - 1 < 0)) {
+    if (key === 'ArrowLeft' && (isMeridiem || start! - 1 < 0)) {
       event.preventDefault()
       focusNext(input, -1)
     }
-    if (key === 'ArrowRight' && (isMeridiem || input.value.length <= end + 1)) {
+    if (key === 'ArrowRight' && (isMeridiem || input.value.length <= end! + 1)) {
       event.preventDefault()
       focusNext(input, +1)
     }
@@ -322,13 +343,13 @@ function TimeInput(uncontrolledProps) {
     }
   }
 
-  const increment = (part, inc) => {
+  const increment = (part: TimePart, inc: number) => {
     let nextPart = timeParts[part]
     if (part === 'meridiem') {
       nextPart = nextPart === 'AM' ? 'PM' : 'AM'
     } else {
-      nextPart = (nextPart || 0) + inc
-      if (!isValid(String(nextPart), part, use12HourClock)) return
+      nextPart = (nextPart as number || 0) + inc
+      if (!isValid(String(nextPart), part, use12HourClock ?? false)) return
     }
 
     notifyChange({ [part]: nextPart })
@@ -339,7 +360,7 @@ function TimeInput(uncontrolledProps) {
     const nextTimeParts: TimeParts = { ...timeParts, ...updates }
 
     if (value && isEmptyValue(nextTimeParts, precision)) {
-      return onChange(null)
+      return onChange!(null)
     }
 
     if (isPartialValue(nextTimeParts, precision))
@@ -359,17 +380,17 @@ function TimeInput(uncontrolledProps) {
     if (seconds != null) nextDate.setSeconds(seconds)
     if (milliseconds != null) nextDate.setMilliseconds(milliseconds)
 
-    onChange(nextDate, {
+    onChange!(nextDate, {
       lastValue: value,
       timeParts,
     })
   }
 
-  function focusNext(input, delta) {
+  function focusNext(input: HTMLInputElement, delta: number) {
     let nodes = qsa(ref.current!, '* [data-focusable]')
     let next = nodes[nodes.indexOf(input) + delta]
     next?.focus()
-    select(next)
+    select(next as HTMLInputElement)
   }
 
   const { hours, minutes, seconds, milliseconds, meridiem } = timeParts
@@ -393,7 +414,7 @@ function TimeInput(uncontrolledProps) {
     >
       <DateTimePartInput
         size={2}
-        pad={pad && 2}
+        pad={pad ? 2 : undefined}
         value={hours}
         disabled={disabled}
         readOnly={readOnly}
@@ -410,7 +431,7 @@ function TimeInput(uncontrolledProps) {
       {hoursAddon && <span>{hoursAddon}</span>}
       <DateTimePartInput
         size={2}
-        pad={pad && 2}
+        pad={pad ? 2 : undefined}
         value={minutes}
         disabled={disabled}
         readOnly={readOnly}
@@ -423,12 +444,12 @@ function TimeInput(uncontrolledProps) {
         onKeyDown={e => handleKeyDown('minutes', e)}
       />
 
-      {minutesAddon && <span>{minutesAddon}</span>}
+      {minsAddon && <span>{minsAddon}</span>}
       {(precision === 'seconds' || precision === 'milliseconds') && (
         <>
           <DateTimePartInput
             size={2}
-            pad={pad && 2}
+            pad={pad ? 2 : undefined}
             value={seconds}
             disabled={disabled}
             readOnly={readOnly}
@@ -440,14 +461,14 @@ function TimeInput(uncontrolledProps) {
             onChange={e => handleChange('seconds', e)}
             onKeyDown={e => handleKeyDown('seconds', e)}
           />
-          {secondsAddon && <span>{secondsAddon}</span>}
+          {secsAddon && <span>{secsAddon}</span>}
         </>
       )}
       {precision === 'milliseconds' && (
         <>
           <DateTimePartInput
             size={3}
-            pad={pad && 3}
+            pad={pad ? 3 : undefined}
             value={milliseconds}
             disabled={disabled}
             readOnly={readOnly}

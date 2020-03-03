@@ -24,7 +24,7 @@ declare namespace Intl {
 //   type ConfigMap<TProps extends object> = {
 //     [p in keyof TProps]?: AllowedNames<TProps, Function>
 //   }
- 
+
 //   export function useUncontrolled<TProps extends object>(
 //     props: TProps,
 //     config: ConfigMap<TProps>,
@@ -143,4 +143,19 @@ declare module 'date-arithmetic' {
     date2?: Date | null | number,
     unit?: DateUnit,
   ): boolean
+}
+
+declare module 'prop-types-extra/lib/elementType' {
+
+}
+
+
+declare module 'prop-types-extra/lib/utils/createChainableTypeChecker' {
+  import * as  PropTypes from 'prop-types'
+
+  export default function createChainableTypeChecker<T>(props: PropTypes.Validator<T>) : PropTypes.Validator<T>
+}
+
+declare module 'warning' {
+  export default function warning(enabled: boolean, message: string) : void
 }

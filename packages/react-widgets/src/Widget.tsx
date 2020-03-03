@@ -2,7 +2,7 @@ import cn from 'classnames'
 import React from 'react'
 import { useKeyboardNavigationCheck } from './util/hooks'
 
-interface Props extends React.HTMLProps<HTMLDivElement> {
+export interface WidgetProps extends React.HTMLProps<HTMLDivElement> {
   focused?: boolean
   open?: boolean
   dropUp?: boolean
@@ -10,7 +10,7 @@ interface Props extends React.HTMLProps<HTMLDivElement> {
   isRtl?: boolean
 }
 
-const Widget = React.forwardRef<HTMLDivElement, Props>(
+const Widget = React.forwardRef<HTMLDivElement, WidgetProps>(
   (
     {
       className,

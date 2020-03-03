@@ -18,7 +18,7 @@ interface Props
   placeholder?: string
   min: number
   max: number
-  emptyChar: string
+  emptyChar?: string
   onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 

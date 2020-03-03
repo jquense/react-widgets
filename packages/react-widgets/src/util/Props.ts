@@ -12,14 +12,14 @@ const whitelist = [
 
 const whitelistRegex = [/^aria-/, /^data-/, /^on[A-Z]\w+/]
 
-export function pickElementProps(props) {
-  const result = {}
+export function pickElementProps<T>(props : T) : T {
+  const result = {} as T;
   Object.keys(props).forEach(key => {
     if (
       whitelist.indexOf(key) !== -1 ||
       whitelistRegex.some(r => !!key.match(r))
     )
-      result[key] = props[key]
+      (result as any)[key] = (props as any)[key]
   })
 
   return result
