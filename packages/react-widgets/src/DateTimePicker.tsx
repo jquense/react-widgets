@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import React, { useImperativeHandle, useRef } from 'react'
 import { useUncontrolled } from 'uncontrollable'
 import Button from './Button'
-import Calendar from './Calendar'
+import Calendar, {CalendarProps} from './Calendar'
 import DateTimePickerInput from './DateTimePickerInput'
 import { calendar } from './Icon'
 import { useLocalizer } from './Localization'
 import Popup from './Popup'
 import Select from './Select'
 import TimeInput from './TimeInput'
-import Widget from './Widget'
+import Widget, { WidgetProps } from './Widget'
 import WidgetPicker from './WidgetPicker'
 import * as CustomPropTypes from './util/PropTypes'
 import dates from './util/dates'
@@ -25,6 +25,10 @@ import {
 } from './util/widgetHelpers'
 
 // import TimeList from './TimeList'
+import { TimeInputProps } from './TimeInput';
+import { Localizer } from './Localization';
+import { TransitionProps } from 'react-transition-group/Transition'
+import { DateTimePickerInputProps } from './DateTimePickerInput';
 
 let propTypes = {
   /**
@@ -164,13 +168,147 @@ let propTypes = {
 }
 
 const defaultProps = {
-  ...Calendar.defaultProps,
+  ...(Calendar as any).defaultProps,
 
   min: new Date(1900, 0, 1),
   max: new Date(2099, 11, 31),
   includeTime: true,
   selectIcon: calendar,
   formats: {},
+}
+
+export interface DateTimePickerProps extends Omit<WidgetProps, "min" | "max" | "value" | "onChange" | "onSelect"> {
+   /**
+   * @example ['valuePicker', [ ['new Date()', null] ]]
+   */
+  value?: Date | null;
+
+  /**
+   * @example ['onChangePicker', [ ['new Date()', null] ]]
+   */
+  onChange?: (date : Date | null | undefined, rawValue: string)=> void;
+
+  /**
+   * @example ['openDateTime']
+   */
+  open?: boolean;
+  onToggle?: (isOpen: boolean)=> void;
+
+  /**
+   * Default current date at which the calendar opens. If none is provided, opens at today's date or the `value` date (if any).
+   */
+  currentDate?:  Date;
+
+  /**
+   * Change event Handler that is called when the currentDate is changed. The handler is called with the currentDate object.
+   */
+  onCurrentDateChange: ()=> void;
+  onSelect: (date: Date | null, rawValue : string)=> void;
+
+  /**
+   * The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that
+   * can be typed or pasted into the widget. If you need this behavior you can constrain values via
+   * the `onChange` handler.
+   *
+   * @example ['prop', ['min', 'new Date()']]
+   */
+  min?: Date;
+
+  /**
+   * The maximum Date that can be selected. Max only limits selection, it doesn't constrain the date values that
+   * can be typed or pasted into the widget. If you need this behavior you can constrain values via
+   * the `onChange` handler.
+   *
+   * @example ['prop', ['max', 'new Date()']]
+   */
+  max?: Date;
+
+  /**
+   * The amount of minutes between each entry in the time list.
+   *
+   * @example ['prop', { step: 90 }]
+   */
+  step?: number;
+
+  formats?: {
+    /**
+     * A formatter used to display the date value. For more information about formats
+     * visit the [Localization page](/localization)
+     *
+     * @example ['dateFormat', ['default', "{ raw: 'MMM dd, yyyy' }", null, { defaultValue: 'new Date()', time: 'false' }]]
+     */
+    value? :string;
+
+    /**
+     * A formatter to be used while the date input has focus. Useful for showing a simpler format for inputing.
+     * For more information about formats visit the [Localization page](/localization)
+     *
+     * @example ['dateFormat', ['edit', "{ date: 'short' }", null, { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }]]
+     */
+    editValue? : string;
+  };
+
+  /**
+   * Enable the time list component of the picker.
+   */
+  includeTime?: boolean;
+
+  timePrecision?: 'minutes' | 'seconds' | 'milliseconds',
+
+  timeInputProps?: Partial<TimeInputProps>;
+
+  /** Specify the element used to render the calendar dropdown icon. */
+  selectIcon?: React.ReactNode;
+
+  dropUp?: boolean;
+
+  popupTransition?: React.ComponentType<TransitionProps>;
+
+  placeholder?: string,
+  name?: string,
+  autoFocus?: boolean,
+  /**
+   * @example ['disabled', ['new Date()']]
+   */
+  disabled?: boolean,
+  /**
+   * @example ['readOnly', ['new Date()']]
+   */
+  readOnly?: boolean,
+
+  /**
+   * Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
+   * or provide a function that returns a date to handle parsing yourself. When `parse` is unspecified and
+   * the `format` prop is a `string` parse will automatically use that format as its default.
+   */
+  parse: string[] | string | ((str: string)=> Date | undefined);
+
+  tabIndex?: number;
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
+
+  /** @ignore */
+  localizer?: Localizer;
+
+  onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>)=>void;
+  onKeyPress?: (e: React.KeyboardEvent<HTMLDivElement>)=>void;
+  onBlur?: ()=>void;
+  onFocus?:  ()=>void;
+
+  /** Adds a css class to the input container element. */
+  containerClassName?: string;
+
+  calendarProps?: Partial<CalendarProps>,
+  inputProps? : Partial<DateTimePickerInputProps>,
+  isRtl?: boolean;
+  messages: {
+    dateButton?: string,
+    timeButton?: string,
+  },
+}
+
+export interface DateTimePickerHandle {
+    focus() : void;
 }
 
 /**
@@ -191,7 +329,7 @@ const defaultProps = {
  * @public
  * @extends Calendar
  */
-const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
+const DateTimePicker = React.forwardRef((uncontrolledProps : DateTimePickerProps, outerRef : React.Ref<DateTimePickerHandle>) => {
   const {
     id,
     value,
@@ -233,10 +371,10 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
     value: 'onChange',
     currentDate: 'onCurrentDateChange',
   })
-  const localizer = useLocalizer(messages, formats)
+  const localizer = useLocalizer(messages, formats as any /*HACK*/)
 
-  const ref = useRef()
-  const calRef = useRef()
+  const ref = useRef<HTMLInputElement>(null)
+  const calRef = useRef<HTMLDivElement>(null)
 
   const tabTrap = useTabTrap(calRef)
 
@@ -245,7 +383,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
 
   const currentFormat = includeTime ? 'datetime' : 'date'
 
-  const toggle = useDropodownToggle(open, onToggle)
+  const toggle = useDropodownToggle(open, onToggle!)
 
   const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
     didHandle(focused) {
@@ -263,7 +401,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
    */
   const useEditableCallback = createEditableCallback(disabled || readOnly, ref)
 
-  const handleChange = useEditableCallback((date, str, constrain) => {
+  const handleChange = useEditableCallback((date: Date | null | undefined, str : string, constrain?: boolean) => {
     if (constrain) date = inRangeValue(date)
 
     if (onChange) {
@@ -278,7 +416,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
     }
   })
 
-  const handleKeyDown = useEditableCallback(e => {
+  const handleKeyDown = useEditableCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     notify(onKeyDown, [e])
 
     if (e.defaultPrevented) return
@@ -296,7 +434,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
     }
   })
 
-  const handleKeyPress = useEditableCallback(e => {
+  const handleKeyPress = useEditableCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     notify(onKeyPress, [e])
 
     if (e.defaultPrevented) return
@@ -339,17 +477,17 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
    */
 
   function focus() {
-    if (open) calRef?.focus()
+    if (open) calRef.current?.focus()
     else ref.current?.focus()
   }
 
-  function inRangeValue(value) {
+  function inRangeValue(value: Date | null | undefined) {
     if (value == null) return value
 
-    return dates.max(dates.min(value, max), min)
-  }
+    return dates.max(dates.min(value, max!), min!)
+   }
 
-  function formatDate(date) {
+  function formatDate(date : Date) {
     return date instanceof Date && !isNaN(date.getTime())
       ? localizer.formatDate(date, currentFormat)
       : ''
@@ -359,7 +497,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
     focus,
   }))
 
-  let shouldRenderList = useFirstFocusedRender(focused, open)
+  let shouldRenderList = useFirstFocusedRender(focused, open!)
 
   let inputReadOnly =
     inputProps?.readOnly != null ? inputProps?.readOnly : readOnly
@@ -390,7 +528,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
           disabled={disabled}
           readOnly={inputReadOnly}
           format={currentFormat}
-          editFormat={formats.editValue}
+          editFormat={formats!.editValue}
           editing={focused}
           localizer={localizer}
           parse={parse}
@@ -430,7 +568,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
             bordered={false}
             {...calendarProps}
             isRtl={isRtl}
-            tabIndex="-1"
+            tabIndex={-1}
             value={value}
             autoFocus={false}
             onChange={handleDateSelect}
@@ -455,8 +593,8 @@ const DateTimePicker = React.forwardRef((uncontrolledProps, outerRef) => {
   )
 })
 
-DateTimePicker.displayName = 'DateTimePicker'
-DateTimePicker.propTypes = propTypes
-DateTimePicker.defaultProps = defaultProps
+DateTimePicker.displayName = 'DateTimePicker';
+DateTimePicker.propTypes = propTypes as any;
+DateTimePicker.defaultProps = defaultProps;
 
 export default DateTimePicker

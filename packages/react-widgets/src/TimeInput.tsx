@@ -93,7 +93,7 @@ const isValid = (value: string, part: TimePart, use12HourClock: boolean) => {
 }
 
 export interface TimeInputProps extends Omit<WidgetProps, "value" | "onChange"> {
-  value?: Date;
+  value?: Date | null;
   onChange?: (date: Date | null, ctx?: any) => void;
   datePart?: Date;
   use12HourClock?: boolean;

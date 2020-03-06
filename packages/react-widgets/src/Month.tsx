@@ -11,7 +11,7 @@ export type RenderDayProp = RenderProp<{ date: Date; label: string }>
 interface MonthProps extends CalendarViewProps {
   disabled?: boolean
   onChange: (nextDate: Date) => void
-  value?: Date
+  value?: Date | null;
   min: Date
   max: Date
   localizer: Localizer

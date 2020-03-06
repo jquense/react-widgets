@@ -15,9 +15,9 @@ export const dateFormat = createChainableTypeChecker(
     props.localizer ? props.localizer.datePropType(props, ...args) : null
 )
 
-export const disabled = createChainableTypeChecker((...args) =>
+export let disabled : PropTypes.Validator<boolean> & {acceptsArray :  PropTypes.Validator<any> } = createChainableTypeChecker((...args) =>
   PropTypes.bool(...args)
-)
+) as any;
 
 {
   (disabled as any).acceptsArray = PropTypes.oneOfType([disabled as any, PropTypes.array])

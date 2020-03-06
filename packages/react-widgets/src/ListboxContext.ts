@@ -25,9 +25,9 @@ export function getList(
   textAccessor: TextAccessorFn,
   disabledItems: DataItem[],
 ): OptionList {
-  const isDisabled = item => disabledItems.indexOf(item) !== -1
+  const isDisabled = (item : DataItem) => disabledItems.indexOf(item) !== -1
 
-  let moveNext = (item: any, word?: string) =>
+  let moveNext = (item: DataItem, word?: string) =>
     isDisabled(item) ||
     (word &&
       !presets.startsWith(textAccessor(item).toLowerCase(), word.toLowerCase()))

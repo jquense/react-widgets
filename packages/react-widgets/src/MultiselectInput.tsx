@@ -34,9 +34,9 @@ const MultiselectInput = React.forwardRef(
       />
     )
   },
-)
+);
 
-MultiselectInput.displayName = 'MultiselectInput'
-MultiselectInput.propTypes = propTypes
+MultiselectInput.displayName = 'MultiselectInput';
+(MultiselectInput as any).propTypes = propTypes;
 
 export default MultiselectInput

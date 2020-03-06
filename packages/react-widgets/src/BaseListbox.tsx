@@ -10,11 +10,10 @@ const propTypes = {
 }
 
 export interface BaseListBoxProps extends React.HTMLAttributes<HTMLDivElement> {
-  emptyListMessage: React.ReactNode
-  role?: string
+  emptyListMessage?: React.ReactNode
   className?: string
   multiple?: boolean,
-  children?: React.ReactChildren
+  children?: React.ReactNode
 }
 
 const BaseListBox = React.forwardRef(function BaseListBox

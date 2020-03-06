@@ -53,7 +53,7 @@ const DateTimePartInput = React.forwardRef<HTMLInputElement, Props>(
       value={
         placeholder && !value
           ? ''
-          : padStart(value, pad || 0, value == null ? emptyChar : '0')
+          : padStart(value, pad || 0, value == null ? emptyChar! : '0')
       }
     />
   ),

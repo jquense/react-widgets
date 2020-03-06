@@ -22,7 +22,7 @@ type Direction = 'DOWN' | 'UP' | 'LEFT' | 'RIGHT'
 
 type SlideDirection = 'bottom' | 'top' | 'left' | 'right'
 
-let last = a => a[a.length - 1]
+let last : <T>(array: T[]) => T = a => a[a.length - 1];
 
 const CELL_CLASSNAME = 'rw-cell'
 const FOCUSED_CELL_SELECTOR = `.${CELL_CLASSNAME}[tabindex]`
@@ -64,7 +64,7 @@ const MULTIPLIER = {
   century: 100,
 }
 
-function inRangeValue(_value: Date | undefined, min: Date, max: Date) {
+function inRangeValue(_value: Date | undefined | null, min: Date, max: Date) {
   let value = dateOrNull(_value)
   if (value === null) return value
   return dates.max(dates.min(value, max), min)
@@ -125,7 +125,7 @@ const propTypes = {
    * @type {("month"|"year"|"decade"|"century")}
    * @controllable onViewChange
    */
-  view(props, ...args) {
+  view(props: any, ...args : any[]) {
     // @ts-ignore
     return PropTypes.oneOf(props.views || VIEW_OPTIONS)(props, ...args)
   },
@@ -257,16 +257,13 @@ const useViewState = (views: View[], view = views[0], currentDate: Date) => {
 
 type View = 'month' | 'year' | 'decade' | 'century'
 
-interface CalendarProps<TLocalizer = unknown>
-  extends WidgetHTMLProps,
-    WidgetProps,
-    DateLocalizationProps<TLocalizer> {
+export interface CalendarProps<TLocalizer = unknown> extends WidgetHTMLProps, WidgetProps, DateLocalizationProps<TLocalizer> {
   bordered?: boolean
   views?: View[]
   disabled?: boolean
   readOnly?: boolean
 
-  value?: Date
+  value?: Date | null;
   defaultValue?: Date
   onChange?: (nextValue: Date) => void
 
@@ -402,7 +399,7 @@ function Calendar({
     navigate('RIGHT')
   }
 
-  const handleDateChange = date => {
+  const handleDateChange = (date: Date) => {
     if (views[0] === currentView) {
       maybeSetCurrentDate(date)
 
@@ -430,8 +427,8 @@ function Calendar({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let ctrl = e.ctrlKey || e.metaKey
-    let key = e.key
-    let direction = ARROWS_TO_DIRECTION[key]
+    let key = e.key;
+    let direction : Direction = (ARROWS_TO_DIRECTION as any)[key]
     let unit = VIEW_UNIT[currentView]
 
     if (key === 'Enter') {
@@ -444,8 +441,8 @@ function Calendar({
         e.preventDefault()
         navigate(direction)
       } else {
-        if (isRtl && OPPOSITE_DIRECTION[direction])
-          direction = OPPOSITE_DIRECTION[direction]
+        if (isRtl && (OPPOSITE_DIRECTION as any)[direction])
+          direction = (OPPOSITE_DIRECTION as any)[direction]
 
         let nextDate = Calendar.move(
           currentDate,
@@ -509,7 +506,7 @@ function Calendar({
     }
   }
 
-  function maybeSetCurrentDate(date) {
+  function maybeSetCurrentDate(date : Date | null | undefined) {
     let inRangeDate = inRangeValue(
       date ? new Date(date) : currentDate,
       min,
@@ -529,9 +526,9 @@ function Calendar({
     let method = direction === 'LEFT' ? 'subtract' : 'add'
 
     let unit = currentView === 'month' ? currentView : 'year'
-    let multi = MULTIPLIER[currentView] || 1
+    let multi = (MULTIPLIER as any)[currentView] || 1
 
-    return dates[method](currentDate, 1 * multi, unit)
+    return (dates as any)[method](currentDate, 1 * multi, unit)
   }
 
   function getHeaderLabel() {
@@ -639,11 +636,11 @@ Calendar.propTypes = propTypes
 
 Calendar.Transition = SlideTransitionGroup
 
-Calendar.move = (date, min, max, unit, direction) => {
-  let isMonth = unit === 'month'
+Calendar.move = (date: Date, min: Date, max: Date, view: View, direction: Direction) => {
+  let isMonth = view === 'month'
   let isUpOrDown = direction === 'UP' || direction === 'DOWN'
-  let rangeUnit = VIEW_UNIT[unit]
-  let addUnit = isMonth && isUpOrDown ? 'week' : VIEW_UNIT[unit]
+  let rangeUnit = view && VIEW_UNIT[view]
+  let addUnit = isMonth && isUpOrDown ? 'week' : VIEW_UNIT[view]
   let amount = isMonth || !isUpOrDown ? 1 : 4
   let newDate
 

@@ -6,7 +6,7 @@ const propTypes = {
   searchTerm: PropTypes.string,
 }
 
-function AutocompleteListItem({ text, searchTerm }) {
+function AutocompleteListItem({ text, searchTerm }: {text: string, searchTerm: string}) {
   if (!text || !searchTerm) return text
   let idx = text.indexOf(searchTerm)
   if (idx === -1) idx = text.toLowerCase().indexOf(searchTerm)

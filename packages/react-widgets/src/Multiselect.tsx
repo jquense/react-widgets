@@ -8,6 +8,7 @@ import React, {
   useMemo,
   useRef,
   useState,
+  SyntheticEvent,
 } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
 import AddToListOption, { CREATE_OPTION } from './AddToListOption'
@@ -379,10 +380,10 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
    * Update aria when it changes on update
    */
   useEffect(() => {
-    let active
+    let active : string | undefined;
     if (!currentOpen) active = focusedTag ? activeTagId : ''
     else if (focusedItem || showCreateOption) active = activeOptionId
-    setActiveDescendant(inputRef.current, active, currentOpen)
+    setActiveDescendant(inputRef.current as any /*HACK*/, active!, currentOpen)
   }, [currentOpen, focusedItem])
 
   /**
@@ -413,10 +414,10 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     toggle.open()
   }
 
-  const handleClick = ({ target }) => {
+  const handleClick = ({ target } : React.SyntheticEvent<HTMLDivElement>) => {
     focus()
 
-    if (closest(target, '.rw-select') && currentOpen) {
+    if (closest(target as HTMLDivElement, '.rw-select') && currentOpen) {
       toggle.close()
     } else toggle.open()
   }
@@ -428,7 +429,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     if (inputRef.current) inputRef.current.select()
   }
 
-  const handleSelect = (dataItem, originalEvent: React.SyntheticEvent) => {
+  const handleSelect = (dataItem : TDataItem | undefined, originalEvent: React.SyntheticEvent) => {
     if (dataItem === undefined || dataItem === CREATE_OPTION) {
       handleCreate(currentSearch, originalEvent)
       return
@@ -440,7 +441,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     focus()
   }
 
-  const handleCreate = (_, event) => {
+  const handleCreate = (_ : string, event : SyntheticEvent) => {
     notify(onCreate, [currentSearch!])
 
     clearSearch(event)
@@ -694,7 +695,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
               groupBy={groupBy}
               optionComponent={optionComponent}
               focusedItem={focusedItem}
-              onChange={(d, meta) => handleSelect(d, meta.originalEvent)}
+              onChange={(d : TDataItem | TDataItem[], meta: {originalEvent?: SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
               aria-live="polite"
               aria-labelledby={inputId}
               aria-hidden={!currentOpen}

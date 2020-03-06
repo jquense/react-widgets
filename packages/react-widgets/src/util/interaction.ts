@@ -9,7 +9,7 @@ export const isInDisabledFieldset = (node: Element) => {
 }
 
 function createCallback<T extends DefaultFn>(
-  disabled: boolean,
+  disabled: boolean | undefined,
   ref: React.RefObject<Element>,
   fn: T,
 ) {
@@ -24,7 +24,7 @@ function createCallback<T extends DefaultFn>(
 type UseEditableCallback = <T extends (...args: any[]) => any>(callback: T) => T
 
 export const createEditableCallback = (
-  disabled: boolean,
+  disabled: boolean | undefined,
   ref: React.RefObject<Element>,
 ): UseEditableCallback => {
   return useCallback(

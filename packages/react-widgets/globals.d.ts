@@ -159,3 +159,7 @@ declare module 'prop-types-extra/lib/utils/createChainableTypeChecker' {
 declare module 'warning' {
   export default function warning(enabled: boolean, message: string) : void
 }
+
+declare module 'invariant' {
+  export default function invariant(enabled: boolean, message: string, other?: string) : void
+}
