@@ -124,8 +124,8 @@ class TimeList extends React.Component {
         currentValue.getDate()
       )
 
-      const diff = dates.diff(t.date, currentValue, 'minutes')
-      // const diff2 = dates.diff(relativeDate, currentValue, 'minutes')
+      const diff2 = dates.diff(relativeDate, currentValue, 'minutes')
+      // const diff = dates.diff(t.date, currentValue, 'minutes')
 
       // console.log(
       //   'comparison date',
