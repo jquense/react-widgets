@@ -114,10 +114,30 @@ class TimeList extends React.Component {
     let selectedItem = find(data, t =>
       dates.eq(t.date, currentValue, 'minutes')
     )
-    let closestDate = find(
-      data,
-      t => Math.abs(dates.diff(t.date, currentValue, 'minutes')) < step
-    )
+
+    let closestDate = find(data, t => {
+      let relativeDate = new Date(t.date)
+
+      relativeDate.setFullYear(
+        currentValue.getFullYear(),
+        currentValue.getMonth(),
+        currentValue.getDate()
+      )
+
+      const diff = dates.diff(t.date, currentValue, 'minutes')
+      // const diff2 = dates.diff(relativeDate, currentValue, 'minutes')
+
+      // console.log(
+      //   'comparison date',
+      //   '\n orignal date  \t', t.date,
+      //   '\n relative date \t', relativeDate,
+      //   '\n current date  \t', currentValue,
+      //   '\n original diff \t', diff,
+      //   '\n relative diff \t', diff2
+      // )
+
+      return Math.abs(diff2) < step
+    });
 
     return {
       data,
@@ -128,8 +148,8 @@ class TimeList extends React.Component {
         valueChanged || !prevState.focusedItem
           ? list.nextEnabled(selectedItem || closestDate || data[0])
           : find(data, t =>
-              dates.eq(t.date, prevState.focusedItem.date, 'minutes')
-            ),
+            dates.eq(t.date, prevState.focusedItem.date, 'minutes')
+          ),
     }
   }
 
