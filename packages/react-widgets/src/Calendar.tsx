@@ -51,12 +51,12 @@ const ARROWS_TO_DIRECTION = {
   ArrowUp: 'UP',
   ArrowRight: 'RIGHT',
   ArrowLeft: 'LEFT',
-}
+};
 
-const OPPOSITE_DIRECTION = {
+const OPPOSITE_DIRECTION : { [key in "RIGHT" | "LEFT"]: "RIGHT" | "LEFT" } = {
   LEFT: 'RIGHT',
   RIGHT: 'LEFT',
-}
+};
 
 const MULTIPLIER = {
   year: 1,
@@ -428,7 +428,7 @@ function Calendar({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let ctrl = e.ctrlKey || e.metaKey
     let key = e.key;
-    let direction : Direction = (ARROWS_TO_DIRECTION as any)[key]
+    let direction : Direction = ARROWS_TO_DIRECTION[key as keyof typeof ARROWS_TO_DIRECTION] as Direction;
     let unit = VIEW_UNIT[currentView]
 
     if (key === 'Enter') {
@@ -441,8 +441,8 @@ function Calendar({
         e.preventDefault()
         navigate(direction)
       } else {
-        if (isRtl && (OPPOSITE_DIRECTION as any)[direction])
-          direction = (OPPOSITE_DIRECTION as any)[direction]
+        if (isRtl && OPPOSITE_DIRECTION[direction as "LEFT" | "RIGHT"])
+          direction = OPPOSITE_DIRECTION[direction as "LEFT" | "RIGHT"]
 
         let nextDate = Calendar.move(
           currentDate,

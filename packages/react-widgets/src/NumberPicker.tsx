@@ -1,18 +1,19 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import React, { useRef } from 'react'
+import React, { useRef, StatelessComponent, WeakValidationMap } from 'react'
 import { useUncontrolled } from 'uncontrollable'
 import Button from './Button'
 import { caretDown, caretUp } from './Icon'
 import { useLocalizer, Localizer } from './Localization'
 import NumberInput from './NumberInput'
 import Select from './Select'
-import Widget from './Widget'
+import Widget, { WidgetProps } from './Widget'
 import WidgetPicker from './WidgetPicker'
 import * as CustomPropTypes from './util/PropTypes'
 import { createEditableCallback } from './util/interaction'
 import useFocusManager from './util/useFocusManager'
 import { notify } from './util/widgetHelpers'
+import { WidgetHTMLProps } from './shared'
 
 // my tests in ie11/chrome/FF indicate that keyDown repeats
 // at about 35ms+/- 5ms after an initial 500ms delay. callback fires on the leading edge
@@ -32,11 +33,11 @@ function createInterval(callback : ()=> void) {
   return cancel
 }
 
-function clamp(value : number | string | null | undefined, min : number , max: number) {
+function clamp(value : number | null | undefined, min : number , max: number) {
   max = max == null ? Infinity : max
   min = min == null ? -Infinity : min
 
-  if (value == null || value === '') return null
+  if (value == null || (value as any) === '') return null
 
   return Math.max(Math.min(typeof value == "string" ? parseInt(value): value, max), min);
 }
@@ -132,7 +133,7 @@ const defaultProps = {
   step: 1,
 }
 
-export interface NumberPicker extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+export interface NumberPickerProps extends WidgetHTMLProps, Omit<WidgetProps, "onChange">{
   value: number |undefined;
 
   /**
@@ -230,7 +231,7 @@ export interface NumberPicker extends Omit<React.HTMLAttributes<HTMLDivElement>,
  *
  * @public
  */
-function NumberPicker(uncontrolledProps: NumberPicker) {
+function NumberPicker(uncontrolledProps: NumberPickerProps) {
   const {
     className,
     containerClassName,
@@ -345,7 +346,7 @@ function NumberPicker(uncontrolledProps: NumberPicker) {
     const nextValue = (value || 0) + amount
 
     handleChange(
-      precision != null ? round(nextValue, precision) as any as number /*HACK*/ : nextValue,
+      precision != null ? parseFloat(round(nextValue, precision)) : nextValue,
       event,
     )
 

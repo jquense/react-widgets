@@ -29,6 +29,7 @@ import { TimeInputProps } from './TimeInput';
 import { Localizer } from './Localization';
 import { TransitionProps } from 'react-transition-group/Transition'
 import { DateTimePickerInputProps } from './DateTimePickerInput';
+import { WidgetHTMLProps, DateLocalizationProps } from './shared';
 
 let propTypes = {
   /**
@@ -177,7 +178,7 @@ const defaultProps = {
   formats: {},
 }
 
-export interface DateTimePickerProps extends Omit<WidgetProps, "min" | "max" | "value" | "onChange" | "onSelect"> {
+export interface DateTimePickerProps<TLocalizer = unknown> extends Omit<WidgetHTMLProps, "onChange">, Omit<WidgetProps, "onChange" | "onSelect">, DateLocalizationProps<TLocalizer> {
    /**
    * @example ['valuePicker', [ ['new Date()', null] ]]
    */
@@ -230,24 +231,6 @@ export interface DateTimePickerProps extends Omit<WidgetProps, "min" | "max" | "
    */
   step?: number;
 
-  formats?: {
-    /**
-     * A formatter used to display the date value. For more information about formats
-     * visit the [Localization page](/localization)
-     *
-     * @example ['dateFormat', ['default', "{ raw: 'MMM dd, yyyy' }", null, { defaultValue: 'new Date()', time: 'false' }]]
-     */
-    value? :string;
-
-    /**
-     * A formatter to be used while the date input has focus. Useful for showing a simpler format for inputing.
-     * For more information about formats visit the [Localization page](/localization)
-     *
-     * @example ['dateFormat', ['edit', "{ date: 'short' }", null, { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }]]
-     */
-    editValue? : string;
-  };
-
   /**
    * Enable the time list component of the picker.
    */
@@ -282,10 +265,6 @@ export interface DateTimePickerProps extends Omit<WidgetProps, "min" | "max" | "
    * the `format` prop is a `string` parse will automatically use that format as its default.
    */
   parse: string[] | string | ((str: string)=> Date | undefined);
-
-  tabIndex?: number;
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
 
   /** @ignore */
   localizer?: Localizer;
@@ -528,7 +507,7 @@ const DateTimePicker = React.forwardRef((uncontrolledProps : DateTimePickerProps
           disabled={disabled}
           readOnly={inputReadOnly}
           format={currentFormat}
-          editFormat={formats!.editValue}
+          editFormat={(formats as any)!.editValue}
           editing={focused}
           localizer={localizer}
           parse={parse}
