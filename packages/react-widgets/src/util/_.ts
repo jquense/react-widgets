@@ -39,12 +39,12 @@ export function chunk<T>(array: T[], chunkSize: number): Array<T[]> {
 }
 
 export function groupBySortedKeys<TData>(
-  groupBy: string | ((item: TData) => any),
+  groupBy: string | ((item: TData) => string),
   data: TData[],
   keys: string[] = [],
 ): Record<string, TData[]> {
-  const iter = typeof groupBy === 'function' ? groupBy : item => item[groupBy]
-
+  const iter = typeof groupBy === 'function' ? groupBy : (item : TData)=> (item as any)[groupBy] as string;
+ 
   warning(
     typeof groupBy !== 'string' || !data.length || has(data[0], groupBy),
     `[React Widgets] You seem to be trying to group this list by a ` +
@@ -62,5 +62,5 @@ export function groupBySortedKeys<TData>(
     }
 
     return grps
-  }, {})
+  }, {} as Record<string, TData[]>)
 }

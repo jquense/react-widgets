@@ -1,44 +1,45 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import React, { useRef } from 'react'
+import React, { useRef, StatelessComponent, WeakValidationMap } from 'react'
 import { useUncontrolled } from 'uncontrollable'
 import Button from './Button'
 import { caretDown, caretUp } from './Icon'
-import { useLocalizer } from './Localization'
+import { useLocalizer, Localizer } from './Localization'
 import NumberInput from './NumberInput'
 import Select from './Select'
-import Widget from './Widget'
+import Widget, { WidgetProps } from './Widget'
 import WidgetPicker from './WidgetPicker'
 import * as CustomPropTypes from './util/PropTypes'
 import { createEditableCallback } from './util/interaction'
 import useFocusManager from './util/useFocusManager'
 import { notify } from './util/widgetHelpers'
+import { WidgetHTMLProps } from './shared'
 
 // my tests in ie11/chrome/FF indicate that keyDown repeats
 // at about 35ms+/- 5ms after an initial 500ms delay. callback fires on the leading edge
-function createInterval(callback) {
-  let fn
-  var id,
-    cancel = () => clearTimeout(id)
+function createInterval(callback : ()=> void) {
+  let fn : ()=> void;
+  let id : number;
+  const cancel = () => clearTimeout(id);
 
-  id = setTimeout(
+  id = window.setTimeout(
     (fn = () => {
-      id = setTimeout(fn, 35)
+      id = window.setTimeout(fn, 35)
       callback() //fire after everything in case the user cancels on the first call
     }),
     500,
-  )
+  );
 
   return cancel
 }
 
-function clamp(value, min, max) {
+function clamp(value : number | null | undefined, min : number , max: number) {
   max = max == null ? Infinity : max
   min = min == null ? -Infinity : min
 
-  if (value == null || value === '') return null
+  if (value == null || (value as any) === '') return null
 
-  return Math.max(Math.min(value, max), min)
+  return Math.max(Math.min(typeof value == "string" ? parseInt(value): value, max), min);
 }
 
 const propTypes = {
@@ -132,6 +133,92 @@ const defaultProps = {
   step: 1,
 }
 
+export interface NumberPickerProps extends WidgetHTMLProps, Omit<WidgetProps, "onChange">{
+  value: number |undefined;
+
+  /**
+   * @example ['onChangePicker', [ [1, null] ]]
+   */
+  onChange?: (nextValue : number | null, ctx: {
+      rawValue : number,
+      originalEvent : React.SyntheticEvent<HTMLDivElement | HTMLButtonElement> | null,
+      lastValue: number | undefined,
+    })=> void;
+
+  /**
+   * The minimum number that the NumberPicker value.
+   * @example ['prop', ['min', 0]]
+   */
+  min?: number;
+
+  /**
+   * The maximum number that the NumberPicker value.
+   *
+   * @example ['prop', ['max', 0]]
+   */
+  max?: number;
+
+  /**
+   * Amount to increase or decrease value when using the spinner buttons.
+   *
+   * @example ['prop', ['step', 5]]
+   */
+  step?: number;
+
+  /**
+   * Specify how precise the `value` should be when typing, incrementing, or decrementing the value.
+   * When empty, precision is parsed from the current `format` and culture.
+   */
+  precision?: number;
+
+  /**
+   * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
+   *
+   * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
+   */
+  format?: string;
+
+  /**
+   * Determines how the NumberPicker parses a number from the localized string representation.
+   * You can also provide a parser `function` to pair with a custom `format`.
+   */
+  parse?: (str: string, localizer : Localizer)=>number;
+
+  incrementIcon?: React.ReactNode;
+  decrementIcon?: React.ReactNode;
+
+  /** @ignore */
+  tabIndex?: number;
+  name?: string;
+  placeholder?: string;
+  onKeyDown?: (event : React.KeyboardEvent<HTMLDivElement>) => void;
+  onKeyPress?: (event : React.KeyboardEvent<HTMLDivElement>) => void;
+  onKeyUp?: (event : React.KeyboardEvent<HTMLDivElement>) => void;
+  autoFocus?: boolean;
+
+  /**
+   * @example ['disabled', ['1']]
+   */
+  disabled?: boolean;
+  /**
+   * @example ['readOnly', ['1.5']]
+   */
+  readOnly?: boolean;
+
+  /** Adds a css class to the input container element. */
+  containerClassName?: string;
+
+  inputProps?:  React.HtmlHTMLAttributes<HTMLInputElement>,
+  isRtl?: boolean;
+  messages?: {
+    increment?: string;
+    decrement?: string;
+  };
+
+  /** @ignore */
+  localizer?: Localizer,
+}
+
 /**
  * ---
  * localized: true
@@ -144,7 +231,7 @@ const defaultProps = {
  *
  * @public
  */
-function NumberPicker(uncontrolledProps) {
+function NumberPicker(uncontrolledProps: NumberPickerProps) {
   const {
     className,
     containerClassName,
@@ -174,9 +261,9 @@ function NumberPicker(uncontrolledProps) {
 
   const localizer = useLocalizer(messages, { number: format })
 
-  const ref = useRef()
-  const inputRef = useRef()
-  const repeaterRef = useRef()
+  const ref = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null)
+  const repeaterRef = useRef<(()=>void) | null>(null);
 
   const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
     willHandle(focused) {
@@ -186,7 +273,7 @@ function NumberPicker(uncontrolledProps) {
 
   const useEditableCallback = createEditableCallback(disabled || readOnly, ref)
 
-  const handleMouseDown = useEditableCallback((direction, event) => {
+  const handleMouseDown = useEditableCallback((direction : "UP" | "DOWN", event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement>) => {
     if (event) event.persist()
 
     let method = direction === 'UP' ? increment : decrement
@@ -211,15 +298,15 @@ function NumberPicker(uncontrolledProps) {
   })
 
   // @widgetEditable
-  const handleKeyDown = useEditableCallback(event => {
+  const handleKeyDown = useEditableCallback((event : React.KeyboardEvent<HTMLDivElement>) => {
     let key = event.key
 
     notify(onKeyDown, [event])
 
     if (event.defaultPrevented) return
 
-    if (key === 'End' && isFinite(max)) handleChange(max, event)
-    else if (key === 'Home' && isFinite(min)) handleChange(min, event)
+    if (key === 'End' && isFinite(max!)) handleChange(max!, event)
+    else if (key === 'Home' && isFinite(min!)) handleChange(min!, event)
     else if (key === 'ArrowDown') {
       event.preventDefault()
       decrement(event)
@@ -229,8 +316,8 @@ function NumberPicker(uncontrolledProps) {
     }
   })
 
-  const handleChange = (rawValue, originalEvent = null) => {
-    let nextValue = clamp(rawValue, min, max)
+  const handleChange = (rawValue : number, originalEvent : React.SyntheticEvent<HTMLDivElement | HTMLButtonElement> | null = null ) => {
+    let nextValue = clamp(rawValue, min!, max!);
 
     if (value !== nextValue)
       notify(onChange, [
@@ -247,26 +334,26 @@ function NumberPicker(uncontrolledProps) {
     inputRef.current?.focus()
   }
 
-  function increment(event) {
-    return step(pStep, event)
+  function increment(event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) {
+    return step(pStep!, event)
   }
 
-  function decrement(event) {
-    return step(-pStep, event)
+  function decrement(event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) {
+    return step(-pStep!, event)
   }
 
-  function step(amount, event) {
+  function step(amount : number, event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) {
     const nextValue = (value || 0) + amount
 
     handleChange(
-      precision != null ? round(nextValue, precision) : nextValue,
+      precision != null ? parseFloat(round(nextValue, precision)) : nextValue,
       event,
     )
 
     return nextValue
   }
 
-  const clampedValue = clamp(value, min, max)
+  const clampedValue = clamp(value, min!, max!)
 
   return (
     <Widget
@@ -286,7 +373,7 @@ function NumberPicker(uncontrolledProps) {
           tabIndex={tabIndex}
           value={clampedValue}
           placeholder={placeholder}
-          autoFocus={autoFocus}
+          /*autoFocus={autoFocus}*/
           editing={focused}
           localizer={localizer}
           parse={parse}
@@ -304,50 +391,50 @@ function NumberPicker(uncontrolledProps) {
           <Button
             icon={incrementIcon}
             disabled={clampedValue === max || disabled}
-            label={localizer.messages.increment({
+            label={(localizer.messages.increment as any)({
               value: clampedValue,
               min,
               max,
             })}
-            onMouseUp={e => handleMouseUp('UP', e)}
+            onMouseUp={() => handleMouseUp()}
             onMouseDown={e => handleMouseDown('UP', e)}
-            onMouseLeave={e => handleMouseUp('UP', e)}
+            onMouseLeave={() => handleMouseUp()}
           />
           <Button
             icon={decrementIcon}
             disabled={clampedValue === min || disabled}
-            label={localizer.messages.decrement({
+            label={(localizer.messages.decrement as any)({
               value: clampedValue,
               min,
               max,
             })}
-            onMouseUp={e => handleMouseUp('DOWN', e)}
+            onMouseUp={() => handleMouseUp()}
             onMouseDown={e => handleMouseDown('DOWN', e)}
-            onMouseLeave={e => handleMouseUp('DOWN', e)}
+            onMouseLeave={() => handleMouseUp()}
           />
         </Select>
       </WidgetPicker>
     </Widget>
   )
-}
+};
 
-NumberPicker.propTypes = propTypes
-NumberPicker.defaultProps = defaultProps
+(NumberPicker as any).propTypes = propTypes;
+(NumberPicker as any).defaultProps = defaultProps;
 
 export default NumberPicker
 
 // thank you kendo ui core
 // https://github.com/telerik/kendo-ui-core/blob/master/src/kendo.core.js#L1036
-function round(value, precision) {
-  precision = precision || 0
+function round(value: string | number, precision?: number): string {
+  precision = precision || 0;
 
-  value = ('' + value).split('e')
-  value = Math.round(
-    +(value[0] + 'e' + (value[1] ? +value[1] + precision : precision)),
-  )
+  let parts = ('' + value).split('e');
+  let valueInt = Math.round(
+    +(parts[0] + 'e' + (parts[1] ? +parts[1] + precision : precision)),
+  );
 
-  value = ('' + value).split('e')
-  value = +(value[0] + 'e' + (value[1] ? +value[1] - precision : -precision))
+  parts = ('' + valueInt).split('e');
+  valueInt = +(parts[0] + 'e' + (parts[1] ? +parts[1] - precision : -precision));
 
-  return value.toFixed(precision)
+  return valueInt.toFixed(precision)
 }

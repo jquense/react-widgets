@@ -9,30 +9,44 @@ import Transition, {
   ENTERING,
   EXITED,
   EXITING,
+  TransitionStatus,
 } from 'react-transition-group/Transition'
 
 const transitionClasses = {
   [ENTERING]: 'rw-slide-transition-entering',
   [EXITING]: 'rw-slide-transition-exiting',
   [EXITED]: 'rw-slide-transition-exited',
+};
+
+
+export interface SlideDownTransitionProps {
+  in: boolean;
+  innerClassName?: string;
+  dropUp?: boolean;
+  onExit?:()=>void;
+  onExited?:()=>void;
+  onEntering?:()=>void;
+  onEntered?:()=>void;
+  className?: string;
 }
 
-const propTypes = {
-  in: PropTypes.bool.isRequired,
-  innerClassName: PropTypes.string,
-  dropUp: PropTypes.bool,
-  onExit: PropTypes.func,
-  onExited: PropTypes.func,
-  onEntering: PropTypes.func,
-  onEntered: PropTypes.func,
-}
+class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
 
-class SlideDownTransition extends React.Component {
-  getHeight(container) {
-    let content = container.firstChild
+  static propTypes = {
+    in: PropTypes.bool.isRequired,
+    innerClassName: PropTypes.string,
+    dropUp: PropTypes.bool,
+    onExit: PropTypes.func,
+    onExited: PropTypes.func,
+    onEntering: PropTypes.func,
+    onEntered: PropTypes.func,
+  };
+
+  getHeight(container: HTMLElement) {
+    let content = container.firstChild as HTMLElement
     let margin =
-      parseInt(css(content, 'margin-top'), 10) +
-      parseInt(css(content, 'margin-bottom'), 10)
+      parseInt(css(content, 'margin-top') as string, 10) +
+      parseInt(css(content, 'margin-bottom') as string, 10)
 
     let old = container.style.display
     let height
@@ -43,15 +57,15 @@ class SlideDownTransition extends React.Component {
     return height
   }
 
-  setContainerHeight = elem => {
+  setContainerHeight = (elem: HTMLElement) => {
     elem.style.height = this.getHeight(elem) + 'px'
   }
 
-  clearContainerHeight = elem => {
+  clearContainerHeight = (elem: HTMLElement) => {
     elem.style.height = ''
   }
 
-  handleEntered = elem => {
+  handleEntered = (elem: HTMLElement) => {
     this.clearContainerHeight(elem)
 
     if (this.props.onEntered) this.props.onEntered()
@@ -61,23 +75,23 @@ class SlideDownTransition extends React.Component {
     if (this.props.onEntering) this.props.onEntering()
   }
 
-  handleExit = elem => {
+  handleExit = (elem: HTMLElement) => {
     this.setContainerHeight(elem)
 
     if (this.props.onExit) this.props.onExit()
   }
-  handleExited = elem => {
+  handleExited = (elem: HTMLElement) => {
     this.clearContainerHeight(elem)
     if (this.props.onExited) this.props.onExited()
   }
 
-  handleTransitionEnd = (el, done) => {
-    const duration = parseDuration(el.firstChild)
+  handleTransitionEnd = (el : HTMLElement, done : ()=> void) => {
+    const duration = parseDuration(el.firstChild as HTMLElement)
     emulateTransitionEnd(el, duration + 5000)
     addEventListener(el, 'transitionend', done, { once: true })
   }
 
-  attachRef = ref => (this.element = ref)
+  //attachRef = ref => (this.element = ref)
 
   render() {
     const { children, className, dropUp } = this.props
@@ -92,18 +106,19 @@ class SlideDownTransition extends React.Component {
         onExit={this.handleExit}
         onExited={this.handleExited}
         addEndListener={this.handleTransitionEnd}
+        timeout={undefined as any/*hack*/}
       >
-        {(status, innerProps) => (
+        {(status : TransitionStatus, innerProps: any) => (
           <div
             {...innerProps}
             className={cn(
               className,
               dropUp && 'rw-dropup',
-              transitionClasses[status],
+              (transitionClasses as any)[status],
             )}
           >
-            {React.cloneElement(children, {
-              className: cn('rw-slide-transition', children.props.className),
+            {React.cloneElement(children as React.ReactElement, {
+              className: cn('rw-slide-transition', (children as React.ReactElement).props.className),
             })}
           </div>
         )}
@@ -112,6 +127,5 @@ class SlideDownTransition extends React.Component {
   }
 }
 
-SlideDownTransition.propTypes = propTypes
 
 export default SlideDownTransition

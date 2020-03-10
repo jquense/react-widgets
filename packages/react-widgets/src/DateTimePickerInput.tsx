@@ -1,22 +1,23 @@
 import invariant from 'invariant'
 import React, { useMemo, useRef, useState } from 'react'
-import Input from './Input'
+import Input, { InputProps } from './Input'
+import { Localizer, RequiredDateMethods } from './Localization'
 
-// interface DateTimePickerInput extends InputProps {
-//   format: RequiredDateMethods,
-//   editing: boolean,
-//   editFormat: CustomPropTypes.dateFormat,
-//   parse: (),
-//   value: PropTypes.instanceOf(Date),
-//   onChange: PropTypes.func.isRequired,
-//   onBlur: PropTypes.func,
-//   localizer: PropTypes.object.isRequired,
+export interface DateTimePickerInputProps extends Omit<InputProps, "value" | "onChange"> {
+  format: RequiredDateMethods;
+  editing: boolean;
+  editFormat?: string;
+  parse: string[] | string | ((str: string)=> Date | undefined);
+  value?: Date | null;
+  onChange: (date: Date | null, rawValue: string)=>void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>)=> void;
+  localizer: Localizer;
 
-//   disabled: CustomPropTypes.disabled,
-//   readOnly: CustomPropTypes.disabled,
-// }
+  disabled?: boolean;
+  readOnly?: boolean;
+}
 
-const DateTimePickerInput = React.forwardRef<any, any>(
+const DateTimePickerInput = React.forwardRef(
   (
     {
       value,
@@ -30,8 +31,8 @@ const DateTimePickerInput = React.forwardRef<any, any>(
       disabled,
       readOnly,
       ...props
-    },
-    ref,
+    } : DateTimePickerInputProps,
+    ref : React.Ref<HTMLInputElement>,
   ) => {
     const needsFlush = useRef(false)
 
@@ -51,20 +52,20 @@ const DateTimePickerInput = React.forwardRef<any, any>(
       setTextValue(nextTextValue)
     }
 
-    const parseStringInput = string => {
+    const parseStringInput = (str: string) => {
       invariant(
-        parse || format || editFormat,
+        Boolean(parse || format || editFormat),
         'React Widgets: there are no specified `parse` formats provided and the `format` prop is a function. ' +
           'the DateTimePicker is unable to parse `%s` into a dateTime, ' +
           'please provide either a parse function or localizer compatible `format` prop',
-        string,
+        str,
       )
 
       let date
       let checkFormats = [format, editFormat]
 
       if (typeof parse == 'function') {
-        date = parse(string)
+        date = parse(str)
         if (date) return date
       } else {
         // parse is a string format or array of string formats
@@ -72,14 +73,14 @@ const DateTimePickerInput = React.forwardRef<any, any>(
       }
 
       for (let i = 0; i < checkFormats.length; i++) {
-        date = localizer.parseDate(string, checkFormats[i])
+        date = localizer.parseDate(str, checkFormats[i] as any /*HACK*/)
         if (date) return date
       }
 
       return null
     }
 
-    const handleBlur = event => {
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
       if (onBlur) onBlur(event)
 
       if (needsFlush.current) {
@@ -95,9 +96,9 @@ const DateTimePickerInput = React.forwardRef<any, any>(
       }
     }
 
-    const handleChange = ({ target: { value } }) => {
+    const handleChange = ({ target }: React.FormEvent<HTMLInputElement>) => {
       needsFlush.current = true
-      setTextValue(value)
+      setTextValue((target as HTMLInputElement).value)
     }
 
     return (
@@ -120,6 +121,6 @@ DateTimePickerInput.displayName = 'DateTimePickerInput'
 
 export default DateTimePickerInput
 
-function isValid(d) {
+function isValid(d : Date) {
   return !isNaN(d.getTime())
 }

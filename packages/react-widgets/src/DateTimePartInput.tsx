@@ -18,7 +18,7 @@ interface Props
   placeholder?: string
   min: number
   max: number
-  emptyChar: string
+  emptyChar?: string
   onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
@@ -53,7 +53,7 @@ const DateTimePartInput = React.forwardRef<HTMLInputElement, Props>(
       value={
         placeholder && !value
           ? ''
-          : padStart(value, pad || 0, value == null ? emptyChar : '0')
+          : padStart(value, pad || 0, value == null ? emptyChar! : '0')
       }
     />
   ),

@@ -10,8 +10,9 @@ import {
 
 // FIXME: just do data items
 // disabled === true || [1, 2, 3, etc]
-const isDisabled = (item, list, value) =>
-  !!(Array.isArray(list) ? ~dataIndexOf(list, item, value) : list)
+function isDisabled<TDataItem>(item : TDataItem, list: unknown[] | undefined, value: DataKeyAccessorFn) {
+  return !!(Array.isArray(list) ? ~dataIndexOf(list, item, value) : list);
+}
 
 export type RenderTagProp<TDataItem> = RenderProp<{ item: TDataItem }>
 

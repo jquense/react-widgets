@@ -1,13 +1,19 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
-import SlideDownTransition from './SlideDownTransition'
+import SlideDownTransition, { SlideDownTransitionProps } from './SlideDownTransition'
 import { elementType } from './util/PropTypes'
+import { TransitionProps } from 'react-transition-group/Transition'
+
+interface StaticContainerProps {
+  children : React.ReactNode;
+  shouldUpdate? : boolean;
+}
 
 const StaticContainer = React.memo(
-  ({ children }) => children,
-  (_, { shouldUpdate }) => !shouldUpdate,
-)
+  ({ children }: StaticContainerProps) => children as React.ReactElement, 
+  (_, { shouldUpdate } : StaticContainerProps) => !shouldUpdate,
+);
 
 const defaultProps = {
   open: false,
@@ -24,6 +30,18 @@ const propTypes = {
   id: PropTypes.string,
 }
 
+export interface PopupProps extends TransitionProps {
+  className?: string;
+  open?: boolean;
+  dropUp?: boolean;
+  onEntering?: ()=> void;
+  onEntered?: ()=> void;
+  transition?: React.ComponentType<TransitionProps>;
+  role?: string;
+  id?: string;
+  children: React.ReactNode;
+}
+
 const Popup = React.forwardRef(
   (
     {
@@ -32,17 +50,21 @@ const Popup = React.forwardRef(
       open,
       role,
       id,
-      transition: Transition,
+      transition,
       children,
       ...props
-    },
-    ref,
+    } : PopupProps,
+    ref : React.Ref<HTMLDivElement>,
   ) => {
+
+    const Transition = transition!;
+
     return (
       <Transition
         {...props}
         in={open}
         dropUp={dropUp}
+        timeout={undefined! /**hack*/}
         className={cn('rw-popup-container', className)}
       >
         <div id={id} className="rw-popup" ref={ref} role={role}>
@@ -50,11 +72,11 @@ const Popup = React.forwardRef(
         </div>
       </Transition>
     )
-  },
-)
+  }
+);
 
-Popup.displayName = 'Popup'
-Popup.propTypes = propTypes
-Popup.defaultProps = defaultProps
+(Popup as any).displayName = 'Popup';
+(Popup as any).propTypes = propTypes;
+(Popup as any).defaultProps = defaultProps;
 
 export default Popup

@@ -1,6 +1,8 @@
-import React, { ReactNode, useMemo } from 'react'
+import * as React from 'react'
+import { ReactNode, useMemo } from 'react'
+import { message } from './util/PropTypes';
 
-type LabelMessage = string | (() => string)
+type LabelMessage = string | ((ctx: any) => string)
 type RenderableMessage = ReactNode | (() => ReactNode)
 
 export interface Messages {
@@ -75,15 +77,15 @@ export type ProcessedMessages = {
 const DEFAULTS = {}
 
 export function getMessages(defaults: UserProvidedMessages = DEFAULTS) {
-  let processed = {}
-  Object.keys(messages).forEach(message => {
+  let processed = {} as ProcessedMessages;
+  Object.keys(messages).forEach((message : keyof Messages) => {
     let value = defaults[message]
     if (value == null) value = messages[message]
 
-    processed[message] = typeof value === 'function' ? value : () => value
+    processed[message] = typeof value === 'function' ? (value as ()=> string) : () => (value as string)
   })
 
-  return processed as ProcessedMessages
+  return processed
 }
 
 export const useMessagesWithDefaults = (defaults?: UserProvidedMessages) =>

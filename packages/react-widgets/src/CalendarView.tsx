@@ -57,7 +57,7 @@ interface CellProps {
   date: Date
   unit: DateUnit
   disabled?: boolean
-  selected?: Date
+  selected?: Date | null
   focusedItem?: Date
   viewUnit: 'month' | 'year' | 'decade' | 'century'
   children?: ReactNode
@@ -77,7 +77,7 @@ function CalendarViewCell({
   children,
   label,
 }: CellProps) {
-  const isEqual = nextDate => dates.eq(date, nextDate, unit)
+  const isEqual = (nextDate: Date | undefined) => dates.eq(date, nextDate, unit)
 
   const isEmpty = !dates.inRange(date, min, max, unit)
   const isDisabled = disabled || isEmpty
@@ -103,7 +103,7 @@ function CalendarViewCell({
       title={label}
       aria-label={label}
       aria-readonly={disabled}
-      aria-selected={isSelected}
+      aria-selected={Boolean(isSelected)}
       tabIndex={isFocused ? 0 : void 0}
       onClick={!isDisabled ? handleChange : undefined}
       className={cn(

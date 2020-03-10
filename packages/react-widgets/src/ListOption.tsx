@@ -15,11 +15,12 @@ export interface ListOptionProps<TDataItem>
   extends Omit<React.HTMLProps<HTMLDivElement>, 'onSelect'> {
   dataItem: TDataItem
   activeId?: string
-  focused: boolean
+  focused?: boolean
   selected: boolean
-  disabled: boolean
+  disabled?: boolean
   onSelect: (dataItem: TDataItem, event: React.MouseEvent) => void
-  component?: React.ElementType | null
+  component?: React.ElementType | null,
+  children? : React.ReactNode
 }
 
 function ListOption<TDataItem>({
@@ -39,7 +40,7 @@ function ListOption<TDataItem>({
 
   useListOption(dataItem)
 
-  const handleSelect = event => {
+  const handleSelect = (event : React.MouseEvent<HTMLElement>) => {
     if (onSelect && !disabled) onSelect(dataItem, event)
   }
 

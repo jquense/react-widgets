@@ -1,6 +1,7 @@
 import cn from 'classnames'
-import PropTypes from 'prop-types'
-import React, {
+import * as PropTypes from 'prop-types'
+import * as React from 'react'
+import {
   useImperativeHandle,
   useLayoutEffect,
   useMemo,
@@ -230,7 +231,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<ListboxHandle>(null)
 
-  const [suggestion, setSuggestion] = useState(null)
+  const [suggestion, setSuggestion] = useState<TDataItem| null>(null)
   const shouldFilter = useRef(false)
 
   const inputId = useInstanceId(id, '_input')
@@ -302,7 +303,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
     focus()
   }
 
-  const handleInputKeyDown = ({ key }) => {
+  const handleInputKeyDown = ({ key } : React.KeyboardEvent<HTMLInputElement>) => {
     if (key === 'Backspace' || key === 'Delete') {
       setFocusedItem(undefined)
     }
@@ -328,8 +329,8 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
 
     if (e.defaultPrevented) return
 
-    const select = item => item != null && handleSelect(item, e)
-    const setFocused = item => {
+    const select = (item: TDataItem | undefined) => item != null && handleSelect(item, e)
+    const setFocused = (item: TDataItem) => {
       setSuggestion(item)
       setFocusedItem(item)
     }
@@ -476,7 +477,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
               aria-hidden={!currentOpen}
               aria-labelledby={inputId}
               aria-live={currentOpen ? 'polite' : void 0}
-              onChange={(d, meta) => handleSelect(d, meta.originalEvent)}
+              onChange={(d : TDataItem | TDataItem[], meta: {originalEvent?: React.SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
               ref={listRef}
               messages={{
                 emptyList: rawData.length

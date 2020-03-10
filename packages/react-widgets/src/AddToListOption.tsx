@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types'
 import React from 'react'
-import Listbox from './BaseListbox'
+import Listbox, { BaseListBoxProps} from './BaseListbox'
 import ListOption from './ListOption'
 
 export const CREATE_OPTION = {}
@@ -12,7 +12,15 @@ const propTypes = {
   activeId: PropTypes.string,
 }
 
-function AddToListOption({ onSelect, focused, children, activeId, ...props }) {
+export interface AddToListOptionProps extends Omit<BaseListBoxProps, "onSelect">
+{
+  searchTerm?: string;
+  focused?: boolean;
+  onSelect: (dataItem: any, event: React.MouseEvent)=> void;
+  activeId?: string;
+}
+
+function AddToListOption({ onSelect, focused, children, activeId, ...props } : AddToListOptionProps) {
   return (
     <Listbox {...props} className="rw-list-option-create">
       <ListOption

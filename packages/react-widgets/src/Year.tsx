@@ -7,7 +7,7 @@ import dates from './util/dates'
 interface YearProps extends CalendarViewProps {
   disabled?: boolean
   onChange: (nextDate: Date) => void
-  value?: Date
+  value?: Date | null;
   min: Date
   max: Date
   localizer: Localizer

@@ -1,5 +1,6 @@
 import cn from 'classnames'
-import React, { ReactNode } from 'react'
+import * as React from 'react'
+import { ReactNode } from 'react'
 import { Spinner } from './Icon'
 
 export interface Props extends React.HTMLProps<HTMLButtonElement> {

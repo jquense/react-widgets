@@ -92,14 +92,14 @@ declare module 'date-arithmetic' {
     day: Date,
     min?: Date,
     max?: Date,
-    unit: DateUnit,
+    unit?: DateUnit,
   ): boolean
 
   /** Subtract specified amount of units from a provided date and return new date as a result */
   export function subtract(
-    date?: Date | null | number,
+    date: Date | null | number,
     num: number,
-    unit: Unit,
+    unit: DateUnit,
   ): Date
 
   /** Compare two dates and return true if they are equal */
@@ -143,4 +143,23 @@ declare module 'date-arithmetic' {
     date2?: Date | null | number,
     unit?: DateUnit,
   ): boolean
+}
+
+declare module 'prop-types-extra/lib/elementType' {
+
+}
+
+
+declare module 'prop-types-extra/lib/utils/createChainableTypeChecker' {
+  import * as  PropTypes from 'prop-types'
+
+  export default function createChainableTypeChecker<T>(props: PropTypes.Validator<T>) : PropTypes.Validator<T>
+}
+
+declare module 'warning' {
+  export default function warning(enabled: boolean, message: string) : void
+}
+
+declare module 'invariant' {
+  export default function invariant(enabled: boolean, message: string, other?: string) : void
 }

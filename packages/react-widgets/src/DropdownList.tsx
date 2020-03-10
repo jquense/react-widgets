@@ -44,6 +44,7 @@ import {
   useStateFromProp,
 } from './util/hooks'
 import useFocusManager from './util/useFocusManager'
+import SyntheticEvent from 'react';
 import {
   notify,
   useFirstFocusedRender,
@@ -331,7 +332,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
 
   const [autofilling, setAutofilling] = useState(false)
 
-  const nextSearchChar = useSearchWordBuilder(delay)
+  const nextSearchChar = useSearchWordBuilder(delay);
 
   useActiveDescendant(ref, activeId, focusedItem && currentOpen, [focusedItem])
 
@@ -339,9 +340,9 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     searchTerm: currentSearch,
     data,
     accessors,
-  })
+  });
 
-  const handleCreate = (_, event?: React.SyntheticEvent) => {
+  const handleCreate = (_ : string, event?: React.SyntheticEvent) => {
     notify(onCreate, [currentSearch!])
 
     clearSearch(event)
@@ -363,10 +364,10 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     focus()
   }
 
-  const handleClick = e => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     focus()
     toggle()
-    notify(onClick, e)
+    notify(onClick, [e])
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -416,7 +417,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     }
   }
 
-  const handleKeyPress = e => {
+  const handleKeyPress = (e : React.KeyboardEvent<HTMLDivElement>) => {
     notify(onKeyPress, [e])
     if (e.defaultPrevented || filter) return
 
@@ -446,7 +447,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     toggle.open()
   }
 
-  const handleAutofillChange = e => {
+  const handleAutofillChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     let filledValue = e.target.value.toLowerCase()
 
     if (filledValue === '') return void change(null)
@@ -602,7 +603,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
               optionComponent={optionComponent}
               value={selectedItem}
               focusedItem={focusedItem}
-              onChange={(d, meta) => handleSelect(d, meta.originalEvent)}
+              onChange={(d : TDataItem | TDataItem[], meta: {originalEvent?: React.SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
               aria-live={currentOpen ? 'polite' : undefined}
               aria-labelledby={inputId}
               aria-hidden={!currentOpen}

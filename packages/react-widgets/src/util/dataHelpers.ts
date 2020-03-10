@@ -19,7 +19,7 @@ export const dataValue = (
     typeof dataItem === 'object' &&
     field in dataItem!
   )
-    return dataItem![field]
+    return (dataItem as any)![field]
 
   return dataItem
 }

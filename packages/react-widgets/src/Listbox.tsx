@@ -70,8 +70,8 @@ function useFlattenedData<T>(
 
     const flatData = [] as Array<T | GroupedItem>
 
-    let keys = []
-    let grouped = groupBySortedKeys<T>(groupBy, data, keys)
+    const keys : string[] = []
+    const grouped = groupBySortedKeys<T>(groupBy, data, keys)
 
     keys.forEach(group => {
       flatData.push({ __isGroup: group }, ...grouped[group])
@@ -218,7 +218,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
     [data, currentValue, accessors],
   )
 
-  const ref = useRef<HTMLDivElement>()
+  const ref = useRef<HTMLDivElement>(null)
   const disabledItems = toItemArray(disabled)
   const { emptyList } = useMessagesWithDefaults(messages)
   const flatData = useFlattenedData(data, groupBy)
@@ -311,7 +311,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
                 ? renderGroup({ group: item.__isGroup })
                 : item.__isGroup}
             </ListOptionGroup>
-          )
+          );
 
         let isFocused = focusedItem === item
 
@@ -342,7 +342,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
                 })
               : textValue}
           </Option>
-        )
+        );
       })}
     </BaseListbox>
   )
