@@ -380,7 +380,7 @@ class SelectList extends React.Component {
   }
 
   search(character, originalEvent) {
-    let { _searchTerm, list } = this
+    let { _searchTerm, state: { list } } = this
 
     let word = ((_searchTerm || '') + character).toLowerCase()
     let multiple = this.props.multiple
