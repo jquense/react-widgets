@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@4.0.26...react-widgets-date-fns@4.1.0) (2020-03-16)
+
+
+### Features
+
+* bumping  date-fn to v2 ([#964](https://github.com/jquense/react-widgets/issues/964)) ([4f28dc2](https://github.com/jquense/react-widgets/commit/4f28dc27d42af9978469e4aeb589de786d9760e0))
+
+
+
+
+
 ## [4.0.26](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@4.0.25...react-widgets-date-fns@4.0.26) (2019-05-01)
 
 **Note:** Version bump only for package react-widgets-date-fns

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.11...react-widgets@4.5.0) (2020-03-16)
+
+
+### Bug Fixes
+
+* timeList should compare date values relative to currently selected day when seeding focus for time value ([#997](https://github.com/jquense/react-widgets/issues/997)) ([834af33](https://github.com/jquense/react-widgets/commit/834af33909b36629f2cf229944ee30dc1821a684))
+* **DropdownList:** move aria tags to correct place ([#900](https://github.com/jquense/react-widgets/issues/900)) ([c8beae3](https://github.com/jquense/react-widgets/commit/c8beae3e966c9bfa9eede75e98fe29ab6e05842f))
+* invalid CSS selector ([#939](https://github.com/jquense/react-widgets/issues/939)) ([16931df](https://github.com/jquense/react-widgets/commit/16931df5b843e56c31598ddc992becb97083fa9e))
+* pass navigatePrevIcon & navigateNextIcon props to Calendar Header ([#986](https://github.com/jquense/react-widgets/issues/986)) ([040861a](https://github.com/jquense/react-widgets/commit/040861a02d82cba6555af292639e7bd208164881)), closes [#896](https://github.com/jquense/react-widgets/issues/896)
+
+
+### Features
+
+* add style as a prop to MultiselectTag ([#968](https://github.com/jquense/react-widgets/issues/968)) ([1dfe620](https://github.com/jquense/react-widgets/commit/1dfe6207e2af9aed2b4b2b9be3847b3d7b6f5b3a))
+
+
+
+
+
 ## [4.4.11](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.10...react-widgets@4.4.11) (2019-05-01)
 
 
