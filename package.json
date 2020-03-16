@@ -1,4 +1,5 @@
 {
+  "name": "react-widgets",
   "private": true,
   "engines": {
     "yarn": "^1.0.0",
