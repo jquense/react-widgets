@@ -102,6 +102,9 @@ class SelectList extends React.Component {
     messages: PropTypes.shape({
       emptyList: CustomPropTypes.message,
     }),
+
+    labelClass: PropTypes.string,
+    inputClass: PropTypes.string,
   }
 
   static defaultProps = {
@@ -267,7 +270,7 @@ class SelectList extends React.Component {
   attachListRef = ref => (this.listRef = ref)
 
   renderListItem = itemProps => {
-    const { name, multiple, disabled, readOnly } = this.props
+    const { name, multiple, disabled, readOnly, labelClass, inputClass } = this.props
     const { dataItems, accessors } = this.state
     return (
       <SelectListItem
@@ -278,6 +281,8 @@ class SelectList extends React.Component {
         onChange={this.handleChange}
         onMouseDown={this.handleMouseDown}
         checked={accessors.includes(dataItems, itemProps.dataItem)}
+        labelClass={labelClass}
+        inputClass={inputClass}
       />
     )
   }

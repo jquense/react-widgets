@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ListOption from './ListOption';
+import cs from 'classnames';
 
 
 class SelectListItem extends React.Component {
@@ -14,6 +15,9 @@ class SelectListItem extends React.Component {
 
     onChange: PropTypes.func.isRequired,
     onMouseDown: PropTypes.func.isRequired,
+
+    labelClass: PropTypes.string,
+    inputClass: PropTypes.string,
   };
 
   handleChange = (e) => {
@@ -25,13 +29,15 @@ class SelectListItem extends React.Component {
 
   render() {
     let {
-        children
+      children
       , disabled
       , readOnly
       , name
       , type
       , checked
       , onMouseDown
+      , labelClass
+      , inputClass
       , ...props } = this.props;
 
     delete props.onChange;
@@ -45,7 +51,7 @@ class SelectListItem extends React.Component {
       >
         <label
           onMouseDown={onMouseDown}
-          className="rw-select-list-label"
+          className={cs('rw-select-list-label', labelClass)}
         >
           <input
             name={name}
@@ -54,10 +60,10 @@ class SelectListItem extends React.Component {
             checked={checked}
             disabled={disabled || !!readOnly}
             role='presentation'
-            className="rw-select-list-input"
+            className={cs('rw-select-list-input', inputClass)}
             onChange={this.handleChange}
           />
-            {children}
+          {children}
         </label>
       </ListOption>
     );
