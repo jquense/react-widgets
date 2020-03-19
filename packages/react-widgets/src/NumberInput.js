@@ -9,6 +9,7 @@ import Input from './Input'
 import * as Props from './util/Props'
 import * as CustomPropTypes from './util/PropTypes'
 import { number as numberLocalizer } from './util/localizers'
+import cn from 'classnames';
 
 let getFormat = props => numberLocalizer.getFormat('default', props.format)
 
@@ -57,6 +58,8 @@ class NumberPickerInput extends React.Component {
     readOnly: CustomPropTypes.disabled,
 
     onChange: PropTypes.func.isRequired,
+
+    className: PropTypes.string
   }
 
   state = {}
@@ -173,7 +176,7 @@ class NumberPickerInput extends React.Component {
   }
 
   render() {
-    let { disabled, readOnly, placeholder, min, max } = this.props
+    let { disabled, readOnly, placeholder, min, max, className } = this.props
 
     let value = this.state.stringValue
     let props = Props.omitOwn(this)
@@ -181,7 +184,7 @@ class NumberPickerInput extends React.Component {
     return (
       <Input
         {...props}
-        className="rw-widget-input"
+        className={cn(className, 'rw-widget-input')}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
         aria-valuenow={value}
