@@ -9,7 +9,7 @@ import Input from './Input'
 import * as Props from './util/Props'
 import * as CustomPropTypes from './util/PropTypes'
 import { number as numberLocalizer } from './util/localizers'
-import cs from 'classnames';
+import cn from 'classnames';
 
 let getFormat = props => numberLocalizer.getFormat('default', props.format)
 
@@ -184,7 +184,7 @@ class NumberPickerInput extends React.Component {
     return (
       <Input
         {...props}
-        className={cs('rw-widget-input', className)}
+        className={cn(className, 'rw-widget-input')}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
         aria-valuenow={value}
