@@ -184,7 +184,7 @@ class NumberPickerInput extends React.Component {
     return (
       <Input
         {...props}
-        className={cs("rw-widget-input", className)}
+        className={cs('rw-widget-input', className)}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
         aria-valuenow={value}
