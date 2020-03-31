@@ -74,7 +74,7 @@ class DateTimePickerInput extends React.Component {
   }
 
   render() {
-    let { disabled, readOnly } = this.props
+    let { disabled, readOnly, className } = this.props
     let { textValue } = this.state
 
     let props = Props.omitOwn(this)
