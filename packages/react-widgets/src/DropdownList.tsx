@@ -44,7 +44,7 @@ import {
   useStateFromProp,
 } from './util/hooks'
 import useFocusManager from './util/useFocusManager'
-import SyntheticEvent from 'react';
+import SyntheticEvent from 'react'
 import {
   notify,
   useFirstFocusedRender,
@@ -332,7 +332,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
 
   const [autofilling, setAutofilling] = useState(false)
 
-  const nextSearchChar = useSearchWordBuilder(delay);
+  const nextSearchChar = useSearchWordBuilder(delay)
 
   useActiveDescendant(ref, activeId, focusedItem && currentOpen, [focusedItem])
 
@@ -340,7 +340,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     searchTerm: currentSearch,
     data,
     accessors,
-  });
+  })
 
   const handleCreate = (_: string, event?: React.SyntheticEvent) => {
     notify(onCreate, [currentSearch!])
@@ -518,7 +518,8 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     ...elementProps,
     role: 'combobox',
     id: inputId,
-    tabIndex: currentOpen && filter ? -1 : tabIndex || 0,
+    //tab index when there is no filter input to take focus
+    tabIndex: filter ? -1 : tabIndex || 0,
     // FIXME: only when item exists
     'aria-owns': listId,
     'aria-expanded': !!currentOpen,
@@ -549,6 +550,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
       >
         <WidgetPicker
           onClick={handleClick}
+          tabIndex={filter ? -1 : 0}
           className={cn(containerClassName, 'rw-widget-input')}
         >
           <DropdownListInput
@@ -603,7 +605,10 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
               optionComponent={optionComponent}
               value={selectedItem}
               focusedItem={focusedItem}
-              onChange={(d: TDataItem | TDataItem[], meta: {originalEvent?: React.SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
+              onChange={(
+                d: TDataItem | TDataItem[],
+                meta: { originalEvent?: React.SyntheticEvent },
+              ) => handleSelect(d as any /*HACK*/, meta.originalEvent!)}
               aria-live={currentOpen ? 'polite' : undefined}
               aria-labelledby={inputId}
               aria-hidden={!currentOpen}
