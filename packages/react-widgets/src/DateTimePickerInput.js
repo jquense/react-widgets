@@ -7,6 +7,7 @@ import Input from './Input'
 import { date as dateLocalizer } from './util/localizers'
 import * as CustomPropTypes from './util/PropTypes'
 import * as Props from './util/Props'
+import cn from 'classnames';
 
 @polyfillLifecycles
 class DateTimePickerInput extends React.Component {
@@ -23,6 +24,8 @@ class DateTimePickerInput extends React.Component {
 
     disabled: CustomPropTypes.disabled,
     readOnly: CustomPropTypes.disabled,
+
+    className: PropTypes.string
   }
 
   state = {}
@@ -80,7 +83,7 @@ class DateTimePickerInput extends React.Component {
       <Input
         {...props}
         type="text"
-        className="rw-widget-input"
+        className={cn(className, 'rw-widget-input')}
         value={textValue}
         disabled={disabled}
         readOnly={readOnly}
