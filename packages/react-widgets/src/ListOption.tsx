@@ -40,7 +40,7 @@ function ListOption<TDataItem>({
 
   useListOption(dataItem)
 
-  const handleSelect = (event : React.MouseEvent<HTMLElement>) => {
+  const handleSelect = (event: React.MouseEvent<HTMLElement>) => {
     if (onSelect && !disabled) onSelect(dataItem, event)
   }
 

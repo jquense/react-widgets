@@ -70,7 +70,7 @@ function useFlattenedData<T>(
 
     const flatData = [] as Array<T | GroupedItem>
 
-    const keys : string[] = []
+    const keys: string[] = []
     const grouped = groupBySortedKeys<T>(groupBy, data, keys)
 
     keys.forEach(group => {

@@ -10,7 +10,7 @@ import {
 
 // FIXME: just do data items
 // disabled === true || [1, 2, 3, etc]
-function isDisabled<TDataItem>(item : TDataItem, list: unknown[] | undefined, value: DataKeyAccessorFn) {
+function isDisabled<TDataItem>(item: TDataItem, list: unknown[] | undefined, value: DataKeyAccessorFn) {
   return !!(Array.isArray(list) ? ~dataIndexOf(list, item, value) : list);
 }
 

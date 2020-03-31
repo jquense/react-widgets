@@ -7,18 +7,20 @@ import Input from './Input'
 import * as CustomPropTypes from './util/PropTypes'
 import { Localizer } from './Localization'
 
-let isSign = (val : string) => (val || '').trim() === '-'
+let isSign = (val: string) => (val || '').trim() === '-'
 
-function isPaddedZeros(str : string, localizer : Localizer) {
+function isPaddedZeros(str: string, localizer: Localizer) {
   let localeChar = localizer.decimalCharacter()
   let [_, decimals] = str.split(localeChar)
 
   return !!(decimals && decimals.match(/0+$/))
 }
 
-function isAtDelimiter(num : number | undefined, str : string, localizer: Localizer) {
-  num = num; /*HACK to rmove warning*/
-
+function isAtDelimiter(
+  _num: number | undefined,
+  str: string,
+  localizer: Localizer,
+) {
   let localeChar = localizer.decimalCharacter(),
     lastIndex = str.length - 1,
     char
@@ -30,33 +32,44 @@ function isAtDelimiter(num : number | undefined, str : string, localizer: Locali
   return !!(char === localeChar && str.indexOf(char) === lastIndex)
 }
 
-export interface NumberPickerInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "value"> {
-    value: number | null | undefined,
-    editing?: boolean;
-    placeholder?: string;
-    innerRef?: React.Ref<HTMLInputElement>;
-    localizer: Localizer;
-    parse?: (str: string, localizer : Localizer)=>number;
+export interface NumberPickerInputProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'onChange' | 'value'
+  > {
+  value: number | null | undefined
+  editing?: boolean
+  placeholder?: string
+  innerRef?: React.Ref<HTMLInputElement>
+  localizer: Localizer
+  parse?: (str: string, localizer: Localizer) => number
 
-    min?: number;
-    max?: number;
+  min?: number
+  max?: number
 
-    disabled?: boolean;
-    readOnly?: boolean;
+  disabled?: boolean
+  readOnly?: boolean
 
-    onChange: (number: number | null | undefined, event: SyntheticEvent<HTMLInputElement>)=> void;
+  onChange: (
+    number: number | null | undefined,
+    event: SyntheticEvent<HTMLInputElement>,
+  ) => void
 }
 
 interface NumberPickerInputState {
-   stringValue?: string;
-   lastValueFromProps?: string;
+  stringValue?: string
+  lastValueFromProps?: string
 }
 
-interface NumberPickerInputSnapshot{
-  reselectText?: boolean;
+interface NumberPickerInputSnapshot {
+  reselectText?: boolean
 }
 
-class NumberPickerInput extends React.Component<NumberPickerInputProps, NumberPickerInputState, NumberPickerInputSnapshot> {
+class NumberPickerInput extends React.Component<
+  NumberPickerInputProps,
+  NumberPickerInputState,
+  NumberPickerInputSnapshot
+> {
   static defaultProps = {
     value: null,
     editing: false,
@@ -79,22 +92,30 @@ class NumberPickerInput extends React.Component<NumberPickerInputProps, NumberPi
     onChange: PropTypes.func.isRequired,
   }
 
-  state = {} as NumberPickerInputState;
+  state = {} as NumberPickerInputState
 
-  getSnapshotBeforeUpdate({ editing } : NumberPickerInputProps) : NumberPickerInputSnapshot {
+  getSnapshotBeforeUpdate({
+    editing,
+  }: NumberPickerInputProps): NumberPickerInputSnapshot {
     return {
       reselectText: !editing && this.props.editing && this.isSelectingAllText(),
     }
   }
 
-  static getDerivedStateFromProps(nextProps : NumberPickerInputProps, prevState : NumberPickerInputState) {
+  static getDerivedStateFromProps(
+    nextProps: NumberPickerInputProps,
+    prevState: NumberPickerInputState,
+  ) {
     let { value, editing, localizer } = nextProps
 
     let decimal = localizer.decimalCharacter()
 
-    const stringValue = value == null || isNaN(value) ? '' :
-    editing  ? ('' + value).replace('.', decimal) : 
-    localizer.formatNumber(value/*, 'default'*/);
+    const stringValue =
+      value == null || isNaN(value)
+        ? ''
+        : editing
+        ? ('' + value).replace('.', decimal)
+        : localizer.formatNumber(value /*, 'default'*/)
 
     if (prevState.lastValueFromProps !== stringValue)
       return {
@@ -105,14 +126,17 @@ class NumberPickerInput extends React.Component<NumberPickerInputProps, NumberPi
     return null
   }
 
-  componentDidUpdate(_ : NumberPickerInputProps, __: NumberPickerInputState, { reselectText } : NumberPickerInputSnapshot) {
-    if (reselectText) 
-    (findDOMNode(this) as HTMLInputElement).select()
+  componentDidUpdate(
+    _: NumberPickerInputProps,
+    __: NumberPickerInputState,
+    { reselectText }: NumberPickerInputSnapshot,
+  ) {
+    if (reselectText) (findDOMNode(this) as HTMLInputElement).select()
   }
 
   // this intermediate state is for when one runs into
   // the decimal or are typing the number
-  setStringValue(stringValue : string) {
+  setStringValue(stringValue: string) {
     this.setState({ stringValue })
   }
 
@@ -154,7 +178,7 @@ class NumberPickerInput extends React.Component<NumberPickerInputProps, NumberPi
     }
   }
 
-  isIntermediateValue(num : number | undefined | null, str : string) {
+  isIntermediateValue(num: number | undefined | null, str: string) {
     let { localizer, min } = this.props
 
     return !!(
@@ -166,7 +190,7 @@ class NumberPickerInput extends React.Component<NumberPickerInputProps, NumberPi
   }
 
   isSelectingAllText() {
-    const node = canUseDOM && findDOMNode(this) as HTMLInputElement;
+    const node = canUseDOM && (findDOMNode(this) as HTMLInputElement)
     return (
       canUseDOM &&
       activeElement() === node &&
@@ -175,13 +199,12 @@ class NumberPickerInput extends React.Component<NumberPickerInputProps, NumberPi
     )
   }
 
-  parseNumber(strVal : string) : number | undefined | null {
+  parseNumber(strVal: string): number | undefined | null {
     let { localizer, parse: userParse } = this.props
 
     let delimChar = localizer.decimalCharacter()
 
-    if (userParse) 
-      return userParse(strVal, localizer)
+    if (userParse) return userParse(strVal, localizer)
 
     strVal = strVal.replace(delimChar, '.')
     return parseFloat(strVal)
@@ -211,7 +234,7 @@ class NumberPickerInput extends React.Component<NumberPickerInputProps, NumberPi
         className="rw-widget-input"
         onChange={this.handleChange}
         onBlur={this.handleBlur}
-        aria-valuenow={value as any as number /*HACK*/}
+        aria-valuenow={(value as any) as number /*HACK*/}
         aria-valuemin={isFinite(min!) ? min : undefined}
         aria-valuemax={isFinite(max!) ? max : undefined}
         disabled={disabled}

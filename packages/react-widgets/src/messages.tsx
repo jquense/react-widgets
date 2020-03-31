@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { ReactNode, useMemo } from 'react'
-import { message } from './util/PropTypes';
 
 type LabelMessage = string | ((ctx: any) => string)
 type RenderableMessage = ReactNode | (() => ReactNode)
@@ -77,12 +76,15 @@ export type ProcessedMessages = {
 const DEFAULTS = {}
 
 export function getMessages(defaults: UserProvidedMessages = DEFAULTS) {
-  let processed = {} as ProcessedMessages;
-  Object.keys(messages).forEach((message : keyof Messages) => {
+  let processed = {} as ProcessedMessages
+  Object.keys(messages).forEach((message: keyof Messages) => {
     let value = defaults[message]
     if (value == null) value = messages[message]
 
-    processed[message] = typeof value === 'function' ? (value as ()=> string) : () => (value as string)
+    processed[message] =
+      typeof value === 'function'
+        ? (value as () => string)
+        : () => value as string
   })
 
   return processed

@@ -380,7 +380,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
    * Update aria when it changes on update
    */
   useEffect(() => {
-    let active : string | undefined;
+    let active: string | undefined;
     if (!currentOpen) active = focusedTag ? activeTagId : ''
     else if (focusedItem || showCreateOption) active = activeOptionId
     setActiveDescendant(inputRef.current as any /*HACK*/, active!, currentOpen)
@@ -414,7 +414,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     toggle.open()
   }
 
-  const handleClick = ({ target } : React.SyntheticEvent<HTMLDivElement>) => {
+  const handleClick = ({ target }: React.SyntheticEvent<HTMLDivElement>) => {
     focus()
 
     if (closest(target as HTMLDivElement, '.rw-select') && currentOpen) {
@@ -429,7 +429,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     if (inputRef.current) inputRef.current.select()
   }
 
-  const handleSelect = (dataItem : TDataItem | undefined, originalEvent: React.SyntheticEvent) => {
+  const handleSelect = (dataItem: TDataItem | undefined, originalEvent: React.SyntheticEvent) => {
     if (dataItem === undefined || dataItem === CREATE_OPTION) {
       handleCreate(currentSearch, originalEvent)
       return
@@ -441,7 +441,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     focus()
   }
 
-  const handleCreate = (_ : string, event : SyntheticEvent) => {
+  const handleCreate = (_: string, event: SyntheticEvent) => {
     notify(onCreate, [currentSearch!])
 
     clearSearch(event)
@@ -695,7 +695,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
               groupBy={groupBy}
               optionComponent={optionComponent}
               focusedItem={focusedItem}
-              onChange={(d : TDataItem | TDataItem[], meta: {originalEvent?: SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
+              onChange={(d: TDataItem | TDataItem[], meta: {originalEvent?: SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
               aria-live="polite"
               aria-labelledby={inputId}
               aria-hidden={!currentOpen}

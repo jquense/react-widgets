@@ -22,7 +22,7 @@ type Direction = 'DOWN' | 'UP' | 'LEFT' | 'RIGHT'
 
 type SlideDirection = 'bottom' | 'top' | 'left' | 'right'
 
-let last : <T>(array: T[]) => T = a => a[a.length - 1];
+let last: <T>(array: T[]) => T = a => a[a.length - 1];
 
 const CELL_CLASSNAME = 'rw-cell'
 const FOCUSED_CELL_SELECTOR = `.${CELL_CLASSNAME}[tabindex]`
@@ -53,7 +53,7 @@ const ARROWS_TO_DIRECTION = {
   ArrowLeft: 'LEFT',
 };
 
-const OPPOSITE_DIRECTION : { [key in "RIGHT" | "LEFT"]: "RIGHT" | "LEFT" } = {
+const OPPOSITE_DIRECTION: { [key in "RIGHT" | "LEFT"]: "RIGHT" | "LEFT" } = {
   LEFT: 'RIGHT',
   RIGHT: 'LEFT',
 };
@@ -125,7 +125,7 @@ const propTypes = {
    * @type {("month"|"year"|"decade"|"century")}
    * @controllable onViewChange
    */
-  view(props: any, ...args : any[]) {
+  view(props: any, ...args: any[]) {
     // @ts-ignore
     return PropTypes.oneOf(props.views || VIEW_OPTIONS)(props, ...args)
   },
@@ -428,7 +428,7 @@ function Calendar({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let ctrl = e.ctrlKey || e.metaKey
     let key = e.key;
-    let direction : Direction = ARROWS_TO_DIRECTION[key as keyof typeof ARROWS_TO_DIRECTION] as Direction;
+    let direction: Direction = ARROWS_TO_DIRECTION[key as keyof typeof ARROWS_TO_DIRECTION] as Direction;
     let unit = VIEW_UNIT[currentView]
 
     if (key === 'Enter') {
@@ -506,7 +506,7 @@ function Calendar({
     }
   }
 
-  function maybeSetCurrentDate(date : Date | null | undefined) {
+  function maybeSetCurrentDate(date: Date | null | undefined) {
     let inRangeDate = inRangeValue(
       date ? new Date(date) : currentDate,
       min,

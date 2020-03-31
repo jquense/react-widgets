@@ -16,11 +16,11 @@ export interface AddToListOptionProps extends Omit<BaseListBoxProps, "onSelect">
 {
   searchTerm?: string;
   focused?: boolean;
-  onSelect: (dataItem: any, event: React.MouseEvent)=> void;
+  onSelect: (dataItem: any, event: React.MouseEvent) => void;
   activeId?: string;
 }
 
-function AddToListOption({ onSelect, focused, children, activeId, ...props } : AddToListOptionProps) {
+function AddToListOption({ onSelect, focused, children, activeId, ...props }: AddToListOptionProps) {
   return (
     <Listbox {...props} className="rw-list-option-create">
       <ListOption

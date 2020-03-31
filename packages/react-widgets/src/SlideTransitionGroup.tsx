@@ -2,7 +2,6 @@ import cn from 'classnames'
 import transitionEnd from 'dom-helpers/transitionEnd'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { ClassValue } from 'classnames/types'
 
 const DirectionPropType = PropTypes.oneOf(['left', 'right', 'top', 'bottom'])
 
@@ -11,21 +10,26 @@ const active = `${prefix}-active`
 const next = `${prefix}-next`
 const prev = `${prefix}-prev`
 
-const clone = (el: React.ReactElement | null | undefined, cls: string) => el &&  React.cloneElement(el, {
+const clone = (el: React.ReactElement | null | undefined, cls: string) =>
+  el &&
+  React.cloneElement(el, {
     className: cn(el.props.className, prefix, cls),
   })
 
-interface SlideTransitionGroupProps{
-  onTransitionEnd: (node: ChildNode, hadFocus: boolean | null)=> void;
-  direction: 'left'| 'right'| 'top'| 'bottom'
+interface SlideTransitionGroupProps {
+  onTransitionEnd: (node: ChildNode, hadFocus: boolean | null) => void
+  direction: 'left' | 'right' | 'top' | 'bottom'
 }
 
 interface SlideTransitionGroupState {
-  prevClasses : string;
-  currentClasses : string;
+  prevClasses: string
+  currentClasses: string
 }
 
-class SlideTransitionGroup extends React.Component<SlideTransitionGroupProps, SlideTransitionGroupState> {
+class SlideTransitionGroup extends React.Component<
+  SlideTransitionGroupProps,
+  SlideTransitionGroupState
+> {
   static defaultProps = {
     direction: 'left',
   }
@@ -34,17 +38,17 @@ class SlideTransitionGroup extends React.Component<SlideTransitionGroupProps, Sl
     direction: DirectionPropType,
     onTransitionEnd: PropTypes.func,
   }
-  
-  isTransitioning?: boolean;
+
+  isTransitioning?: boolean
   container: React.RefObject<HTMLDivElement>
   current: React.ReactElement
-  flush?: boolean;
-  prev?: React.ReactElement | null;
+  flush?: boolean
+  prev?: React.ReactElement | null
 
   constructor(args: SlideTransitionGroupProps) {
     super(args)
 
-    this.current = this.props.children as React.ReactElement;
+    this.current = this.props.children as React.ReactElement
     this.container = React.createRef()
 
     this.state = {
@@ -77,8 +81,10 @@ class SlideTransitionGroup extends React.Component<SlideTransitionGroupProps, Sl
           transitionEnd(current, () => {
             this.prev = null
 
-            if ((this.current as any).key !== (this.props.children as any).key) {
-              this.current = this.props.children as React.ReactElement;
+            if (
+              (this.current as any).key !== (this.props.children as any).key
+            ) {
+              this.current = this.props.children as React.ReactElement
             }
 
             this.setState({ prevClasses: '', currentClasses: '' }, () =>
@@ -90,9 +96,9 @@ class SlideTransitionGroup extends React.Component<SlideTransitionGroupProps, Sl
     })
   }
 
-  handleTransitionEnd = (hadFocus : boolean | null) => {
+  handleTransitionEnd = (hadFocus: boolean | null) => {
     this.isTransitioning = false
-    let current = this.container.current!.lastChild!;
+    let current = this.container.current!.lastChild!
     if (this.props.onTransitionEnd)
       this.props.onTransitionEnd(current, hadFocus)
   }
@@ -106,7 +112,7 @@ class SlideTransitionGroup extends React.Component<SlideTransitionGroupProps, Sl
         this.flush = true
       }
 
-      this.current = children as React.ReactElement;
+      this.current = children as React.ReactElement
     }
 
     let { prevClasses, currentClasses } = this.state

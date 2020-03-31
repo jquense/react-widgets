@@ -19,7 +19,7 @@ export interface BaseListBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 const BaseListBox = React.forwardRef(function BaseListBox
   (
     { className, role, multiple, children, emptyListMessage, ...props }: BaseListBoxProps,
-    ref : React.Ref<HTMLDivElement>,
+    ref: React.Ref<HTMLDivElement>,
   ) {
     const id = useInstanceId()
 

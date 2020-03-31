@@ -34,7 +34,7 @@
     "test": "npm run lint && npm run test-only",
     "test-only": "jest --runInBand",
     "tdd": "jest --watch --runInBand",
-    "lint": "eslint src test",
+    "lint": "eslint src test --ext .ts,.tsx,.js",
     "scss": "node-sass src/scss/react-widgets.scss -o dist/css",
     "styles": "cpy src/scss/* lib/scss/",
     "compile:lib": "build src",

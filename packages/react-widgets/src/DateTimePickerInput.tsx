@@ -7,10 +7,10 @@ export interface DateTimePickerInputProps extends Omit<InputProps, "value" | "on
   format: RequiredDateMethods;
   editing: boolean;
   editFormat?: string;
-  parse: string[] | string | ((str: string)=> Date | undefined);
+  parse: string[] | string | ((str: string) => Date | undefined);
   value?: Date | null;
-  onChange: (date: Date | null, rawValue: string)=>void;
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>)=> void;
+  onChange: (date: Date | null, rawValue: string) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   localizer: Localizer;
 
   disabled?: boolean;
@@ -31,8 +31,8 @@ const DateTimePickerInput = React.forwardRef(
       disabled,
       readOnly,
       ...props
-    } : DateTimePickerInputProps,
-    ref : React.Ref<HTMLInputElement>,
+    }: DateTimePickerInputProps,
+    ref: React.Ref<HTMLInputElement>,
   ) => {
     const needsFlush = useRef(false)
 
@@ -121,6 +121,6 @@ DateTimePickerInput.displayName = 'DateTimePickerInput'
 
 export default DateTimePickerInput
 
-function isValid(d : Date) {
+function isValid(d: Date) {
   return !isNaN(d.getTime())
 }

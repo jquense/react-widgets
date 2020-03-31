@@ -9,7 +9,6 @@ import { times } from './Icon'
 import Widget, { WidgetProps } from './Widget'
 import dates from './util/dates'
 import useFocusManager from './util/useFocusManager'
-import { DateTimePart } from './Localization';
 
 type Meridiem = 'AM' | 'PM'
 
@@ -32,8 +31,7 @@ interface TimeParts {
 type TimePart = keyof TimeParts
 
 const selectTextRange = (el: HTMLInputElement | HTMLDivElement) => {
-  if (el instanceof HTMLInputElement)
-    return el.select()
+  if (el instanceof HTMLInputElement) return el.select()
   const range = document.createRange()
   range.selectNodeContents(el)
   const selection = window.getSelection()
@@ -85,28 +83,32 @@ const TESTS = {
   minutes: /^([0-5]?\d)$/,
   seconds: /^([0-5]?\d)$/,
   milliseconds: /^(\d{1,3})$/,
-};
+}
 
 const isValid = (value: string, part: TimePart, use12HourClock: boolean) => {
-  const key = part === 'hours' && use12HourClock ? 'hours12' : part as keyof typeof TESTS;
+  const key =
+    part === 'hours' && use12HourClock
+      ? 'hours12'
+      : (part as keyof typeof TESTS)
   return TESTS[key].test(value)
 }
 
-export interface TimeInputProps extends Omit<WidgetProps, "value" | "onChange"> {
-  value?: Date | null;
-  onChange?: (date: Date | null, ctx?: any) => void;
-  datePart?: Date;
-  use12HourClock?: boolean;
-  padValues?: boolean;
-  emptyCharacter?: string;
-  noClearButton?: boolean;
-  disabled?: boolean;
-  readOnly?: boolean;
-  precision: 'minutes' | 'seconds' | 'milliseconds';
-  hoursAddon?: React.ReactNode;
-  minutesAddon?: React.ReactNode;
-  secondsAddon?: React.ReactNode;
-  millisecondsAddon?: React.ReactNode;
+export interface TimeInputProps
+  extends Omit<WidgetProps, 'value' | 'onChange'> {
+  value?: Date | null
+  onChange?: (date: Date | null, ctx?: any) => void
+  datePart?: Date
+  use12HourClock?: boolean
+  padValues?: boolean
+  emptyCharacter?: string
+  noClearButton?: boolean
+  disabled?: boolean
+  readOnly?: boolean
+  precision: 'minutes' | 'seconds' | 'milliseconds'
+  hoursAddon?: React.ReactNode
+  minutesAddon?: React.ReactNode
+  secondsAddon?: React.ReactNode
+  millisecondsAddon?: React.ReactNode
 }
 
 const propTypes = {
@@ -225,10 +227,20 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     onBlur,
     onFocus,
     ...props
-  } = useUncontrolled(uncontrolledProps, { value: 'onChange' });
+  } = useUncontrolled(uncontrolledProps, { value: 'onChange' })
 
-  var minsAddon = minutesAddon !== undefined ? minutesAddon : (precision === 'seconds' || precision === 'milliseconds' ? ':' : '');
-  var secsAddon = secondsAddon !== undefined ? secondsAddon : (precision === 'milliseconds' ? ':' : '');
+  let minsAddon =
+    minutesAddon !== undefined
+      ? minutesAddon
+      : precision === 'seconds' || precision === 'milliseconds'
+      ? ':'
+      : ''
+  let secsAddon =
+    secondsAddon !== undefined
+      ? secondsAddon
+      : precision === 'milliseconds'
+      ? ':'
+      : ''
 
   const ref = useRef<HTMLDivElement>(null)
   const hourRef = useRef<HTMLInputElement>(null)
@@ -245,7 +257,10 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     },
   )
 
-  const [timeParts, setTimeParts] = useTimePartState(value ?? null, use12HourClock ?? false)
+  const [timeParts, setTimeParts] = useTimePartState(
+    value ?? null,
+    use12HourClock ?? false,
+  )
 
   function getDatePart() {
     return dates.startOf(datePart || dates.today(), 'day')
@@ -259,7 +274,9 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     return 59
   }
 
-  function select(target: HTMLInputElement = document.activeElement as HTMLInputElement) {
+  function select(
+    target: HTMLInputElement = document.activeElement as HTMLInputElement,
+  ) {
     window.Promise.resolve().then(() => {
       if (focused) selectTextRange(target)
     })
@@ -295,7 +312,10 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     ) {
       // the combined value is now past the max or invalid so try the single
       // digit and "start over" filling the value
-      if (isValid(rawValue, part, use12HourClock ?? false) && !isNaN(+rawValue)) {
+      if (
+        isValid(rawValue, part, use12HourClock ?? false) &&
+        !isNaN(+rawValue)
+      ) {
         numValue = +rawValue
       } else {
         return event.preventDefault()
@@ -305,14 +325,21 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     notifyChange({ [part]: target.value ? numValue : null })
   }
 
-  const handleSelect = ({ target }: (React.SyntheticEvent<HTMLInputElement | HTMLDivElement> | React.FocusEvent<HTMLInputElement | HTMLDivElement>)) => {
-    select(target as HTMLInputElement);
+  const handleSelect = ({
+    target,
+  }:
+    | React.SyntheticEvent<HTMLInputElement | HTMLDivElement>
+    | React.FocusEvent<HTMLInputElement | HTMLDivElement>) => {
+    select(target as HTMLInputElement)
   }
 
-  const handleKeyDown = (part: TimePart, event: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>) => {
-    const { key } = event;
-    const input = event.target as HTMLInputElement;
-    const { selectionStart: start, selectionEnd: end } = input;
+  const handleKeyDown = (
+    part: TimePart,
+    event: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>,
+  ) => {
+    const { key } = event
+    const input = event.target as HTMLInputElement
+    const { selectionStart: start, selectionEnd: end } = input
 
     const isMeridiem = part === 'meridiem'
 
@@ -328,7 +355,10 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
       event.preventDefault()
       focusNext(input, -1)
     }
-    if (key === 'ArrowRight' && (isMeridiem || input.value.length <= end! + 1)) {
+    if (
+      key === 'ArrowRight' &&
+      (isMeridiem || input.value.length <= end! + 1)
+    ) {
       event.preventDefault()
       focusNext(input, +1)
     }
@@ -348,7 +378,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     if (part === 'meridiem') {
       nextPart = nextPart === 'AM' ? 'PM' : 'AM'
     } else {
-      nextPart = (nextPart as number || 0) + inc
+      nextPart = ((nextPart as number) || 0) + inc
       if (!isValid(String(nextPart), part, use12HourClock ?? false)) return
     }
 

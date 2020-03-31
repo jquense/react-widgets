@@ -2,7 +2,6 @@ import React, {
   AnimationEventHandler,
   ComponentType,
   DragEventHandler,
-  ElementType,
   FocusEventHandler,
   KeyboardEventHandler,
   MouseEventHandler,
@@ -28,7 +27,7 @@ import { UserProvidedMessages } from './messages'
 import { SearchMetadata, Value } from './types'
 import { Filter } from './util/Filter'
 import { DataKeyAccessor, TextAccessor } from './util/dataHelpers'
-import { TransitionProps } from 'react-transition-group/Transition';
+import { TransitionProps } from 'react-transition-group/Transition'
 
 export interface WidgetProps {
   isRtl?: boolean
@@ -171,7 +170,7 @@ export interface PopupWidgetProps {
   containerClassName?: string
 
   dropUp?: boolean
-  popupTransition?: React.ComponentType<TransitionProps>;
+  popupTransition?: React.ComponentType<TransitionProps>
 
   onKeyPress?: KeyboardEventHandler<HTMLDivElement>
   onKeyDown?: KeyboardEventHandler<HTMLDivElement>

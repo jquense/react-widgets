@@ -1,5 +1,4 @@
 import cn from 'classnames'
-import addEventListener from 'dom-helpers/addEventListener'
 import css from 'dom-helpers/css'
 import getHeight from 'dom-helpers/height'
 import transitionEnd from 'dom-helpers/transitionEnd'
@@ -16,22 +15,20 @@ const transitionClasses = {
   [ENTERING]: 'rw-slide-transition-entering',
   [EXITING]: 'rw-slide-transition-exiting',
   [EXITED]: 'rw-slide-transition-exited',
-};
-
+}
 
 export interface SlideDownTransitionProps {
-  in: boolean;
-  innerClassName?: string;
-  dropUp?: boolean;
-  onExit?:()=>void;
-  onExited?:()=>void;
-  onEntering?:()=>void;
-  onEntered?:()=>void;
-  className?: string;
+  in: boolean
+  innerClassName?: string
+  dropUp?: boolean
+  onExit?: () => void
+  onExited?: () => void
+  onEntering?: () => void
+  onEntered?: () => void
+  className?: string
 }
 
 class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
-
   static propTypes = {
     in: PropTypes.bool.isRequired,
     innerClassName: PropTypes.string,
@@ -40,7 +37,7 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
     onExited: PropTypes.func,
     onEntering: PropTypes.func,
     onEntered: PropTypes.func,
-  };
+  }
 
   getHeight(container: HTMLElement) {
     let content = container.firstChild as HTMLElement
@@ -85,8 +82,8 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
     if (this.props.onExited) this.props.onExited()
   }
 
-  handleTransitionEnd = (el : HTMLElement, done : ()=> void) => {
-    transitionEnd(el.firstChild as HTMLElement, done);
+  handleTransitionEnd = (el: HTMLElement, done: () => void) => {
+    transitionEnd(el.firstChild as HTMLElement, done)
   }
 
   render() {
@@ -102,9 +99,9 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
         onExit={this.handleExit}
         onExited={this.handleExited}
         addEndListener={this.handleTransitionEnd}
-        timeout={undefined as any/*hack*/}
+        timeout={undefined as any /*hack*/}
       >
-        {(status : TransitionStatus, innerProps: any) => (
+        {(status: TransitionStatus, innerProps: any) => (
           <div
             {...innerProps}
             className={cn(
@@ -114,7 +111,10 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
             )}
           >
             {React.cloneElement(children as React.ReactElement, {
-              className: cn('rw-slide-transition', (children as React.ReactElement).props.className),
+              className: cn(
+                'rw-slide-transition',
+                (children as React.ReactElement).props.className,
+              ),
             })}
           </div>
         )}
@@ -122,6 +122,5 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
     )
   }
 }
-
 
 export default SlideDownTransition

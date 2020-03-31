@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import warning from 'warning'
 
 export function toItemArray<TDataItem>(a?: TDataItem[] | boolean): TDataItem[] {
@@ -43,8 +44,11 @@ export function groupBySortedKeys<TData>(
   data: TData[],
   keys: string[] = [],
 ): Record<string, TData[]> {
-  const iter = typeof groupBy === 'function' ? groupBy : (item : TData)=> (item as any)[groupBy] as string;
- 
+  const iter =
+    typeof groupBy === 'function'
+      ? groupBy
+      : (item: TData) => (item as any)[groupBy] as string
+
   warning(
     typeof groupBy !== 'string' || !data.length || has(data[0], groupBy),
     `[React Widgets] You seem to be trying to group this list by a ` +

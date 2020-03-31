@@ -303,7 +303,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
     focus()
   }
 
-  const handleInputKeyDown = ({ key } : React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyDown = ({ key }: React.KeyboardEvent<HTMLInputElement>) => {
     if (key === 'Backspace' || key === 'Delete') {
       setFocusedItem(undefined)
     }
@@ -477,7 +477,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
               aria-hidden={!currentOpen}
               aria-labelledby={inputId}
               aria-live={currentOpen ? 'polite' : void 0}
-              onChange={(d : TDataItem | TDataItem[], meta: {originalEvent?: React.SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
+              onChange={(d: TDataItem | TDataItem[], meta: {originalEvent?: React.SyntheticEvent}) => handleSelect(d as any/*HACK*/, meta.originalEvent!)}
               ref={listRef}
               messages={{
                 emptyList: rawData.length
