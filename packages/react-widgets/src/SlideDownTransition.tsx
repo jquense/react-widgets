@@ -2,7 +2,7 @@ import cn from 'classnames'
 import addEventListener from 'dom-helpers/addEventListener'
 import css from 'dom-helpers/css'
 import getHeight from 'dom-helpers/height'
-import { emulateTransitionEnd, parseDuration } from 'dom-helpers/transitionEnd'
+import transitionEnd from 'dom-helpers/transitionEnd'
 import PropTypes from 'prop-types'
 import React from 'react'
 import Transition, {
@@ -86,12 +86,8 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
   }
 
   handleTransitionEnd = (el : HTMLElement, done : ()=> void) => {
-    const duration = parseDuration(el.firstChild as HTMLElement)
-    emulateTransitionEnd(el, duration + 5000)
-    addEventListener(el, 'transitionend', done, { once: true })
+    transitionEnd(el.firstChild as HTMLElement, done);
   }
-
-  //attachRef = ref => (this.element = ref)
 
   render() {
     const { children, className, dropUp } = this.props
