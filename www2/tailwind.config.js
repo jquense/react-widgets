@@ -14,13 +14,18 @@ module.exports = {
         default: 'Raleway',
         brand: 'Lobster',
       },
-      LiveCode: {
+      LiveCode: t => ({
         '@screen lg': {
+          borderColor: 'hsl(230, 1%, 98%)',
+
           '& .content': {
             '@apply flex flex-row-reverse': true,
+
+            backgroundColor: 'hsl(230, 1%, 98%)',
           },
           '& .preview': {
             flex: '0 0 40%',
+            paddingLeft: t('padding.5'),
 
             '& :global': {
               '.rw-widget-container': {
@@ -38,10 +43,11 @@ module.exports = {
             },
           },
           '& .editor': {
+            fontFamily: t('fontFamily.mono'),
             flex: '1',
           },
         },
-      },
+      }),
     },
   },
 }

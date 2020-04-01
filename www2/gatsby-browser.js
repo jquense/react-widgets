@@ -1,4 +1,4 @@
 // require('focus-visible');
-require('react-widgets/dist/css/react-widgets.css')
+require('react-widgets/src/scss/react-widgets.scss')
 
 // exports.wrapPageElement = require('./src/wrap-page');

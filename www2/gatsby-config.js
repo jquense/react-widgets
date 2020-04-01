@@ -1,5 +1,14 @@
 // const path = require('path')
-const templates = require('@docpocalypse/gatsby-theme/src/templates')
+
+const publicComponents = [
+  'Calendar',
+  'Combobox',
+  'DateTimePicker',
+  'DropdownList',
+  'Multiselect',
+  'NumberPicker',
+  'Listbox',
+]
 
 module.exports = {
   siteMetadata: {
@@ -7,14 +16,22 @@ module.exports = {
     author: 'Jason Quense',
   },
   plugins: [
+    'gatsby-plugin-sass',
     {
       resolve: '@docpocalypse/gatsby-theme',
       options: {
         theming: 'full',
+        propsLayout: 'list',
         sources: ['../packages/react-widgets/src'],
-        templates: {
-          ...templates,
-          default: require.resolve('./src/components/PageLayout.tsx'),
+        exampleCodeScope: {
+          listOfPeople: require.resolve('./src/generate-data'),
+        },
+        // templates: {
+        //   ...templates,
+        //   // default: require.resolve('./src/components/PageLayout.tsx'),
+        // },
+        ignore(docNode) {
+          return !publicComponents.includes(docNode.name)
         },
         tailwindConfig: require.resolve('./tailwind.config'),
         reactDocgenConfig: {

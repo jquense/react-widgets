@@ -4,8 +4,8 @@ import React from 'react'
 import { LiveCode } from '@docpocalypse/gatsby-theme'
 import generateData from '../generate-data'
 
-const examples = require.context('../prop-examples', false)
-const keys = examples.keys()
+// const examples = require.context('../prop-examples', false)
+// const keys = examples.keys()
 
 const scope = {
   listOfPeople: () => generateData(15),
@@ -42,7 +42,8 @@ function PropExample({ prop, displayName }) {
       language="jsx"
       scope={scope}
       resolveImports={resolver}
-      code={examples(`./${exampleName}`).default(displayName, ...args) || ''}
+      code=""
+      // code={examples(`./${exampleName}`).default(displayName, ...args) || ''}
     />
   )
 }

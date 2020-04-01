@@ -1262,10 +1262,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@docpocalypse/code-live@^0.4.5":
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/@docpocalypse/code-live/-/code-live-0.4.5.tgz#5a6e04f7f925a52186c50949ff1c9df5ac80eeea"
-  integrity sha512-FSs4Ou+uJZDjM/vCWWAvUtl7CPUcbHq9lLLAuKEKFxMvYtxX7wsDsptThERnEtyHD3JMUBzOUgLHazWZoS0HyQ==
+"@docpocalypse/code-live@^0.4.6":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@docpocalypse/code-live/-/code-live-0.4.6.tgz#b1c49a612d80774602822ace53132aeaa899b40c"
+  integrity sha512-Zja0L8tI85VAeUf5hHA3Vb+gJa6j/9w8AbO2xlC0YFY4dtLi18p/cTwrlMyE258wuDXt2mKlLghc0bpUlfDe6A==
   dependencies:
     "@4c/tsconfig" "^0.3.1"
     "@docpocalypse/prism-react-renderer" "^2.0.2"
@@ -1297,10 +1297,10 @@
     graphql "^14.6.0"
     lodash "^4.17.15"
 
-"@docpocalypse/gatsby-theme-core@^0.8.2":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@docpocalypse/gatsby-theme-core/-/gatsby-theme-core-0.8.2.tgz#a9e887e8f27a8dc2ef31d264fdac67ef9091f967"
-  integrity sha512-AnQFbc32ujzMsJS1yNc5qtIp1dnNn3oya3Gh0aCNmntqZeFjRxR1pwxP/or8S7qNE2k0v+O7kAL9kqSp7HfIFg==
+"@docpocalypse/gatsby-theme-core@^0.8.6":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@docpocalypse/gatsby-theme-core/-/gatsby-theme-core-0.8.6.tgz#babe1a29c4dfd30431bb866adf085ca3d29f82ba"
+  integrity sha512-qIWJKs3HUR401BI9dX1QK+LvqIsqsX11X2VLwqy8Svf/DhrjIgiCNn4tBEV2jilKgM5MspXBTuDDHX4d31y/QQ==
   dependencies:
     "@4c/layout" "^2.0.5"
     "@babel/code-frame" "^7.8.3"
@@ -1340,13 +1340,13 @@
   optionalDependencies:
     fibers "^4.0.1"
 
-"@docpocalypse/gatsby-theme@^0.10.3":
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/@docpocalypse/gatsby-theme/-/gatsby-theme-0.10.3.tgz#9ea01c399432220a800f594c798cbdfe2ba3ac91"
-  integrity sha512-Sc8+/z4k7ZD7BlikbgNe9tJJzBnhFP8mAOkebrYm18BTgkTEjyYvnoGlKGHL0phKJCzjVklO6wq2M2oyMGplQg==
+"@docpocalypse/gatsby-theme@^0.10.8":
+  version "0.10.8"
+  resolved "https://registry.yarnpkg.com/@docpocalypse/gatsby-theme/-/gatsby-theme-0.10.8.tgz#575c7d258fd48094c03cb26258a1718041e0e910"
+  integrity sha512-bt9KAztdsPe2URbLEu1zpRakgYGteTHk89TtGsXZFG0yFPgNKSTCXAWXmkAHK3gIeKkEHpeniHFyqy8fLfz4og==
   dependencies:
-    "@docpocalypse/code-live" "^0.4.5"
-    "@docpocalypse/gatsby-theme-core" "^0.8.2"
+    "@docpocalypse/code-live" "^0.4.6"
+    "@docpocalypse/gatsby-theme-core" "^0.8.6"
     "@docpocalypse/props-table" "^0.3.5"
     "@fortawesome/free-brands-svg-icons" "^5.12.1"
     "@fortawesome/react-fontawesome" "^0.1.8"
@@ -2797,20 +2797,6 @@
   resolved "https://registry.yarnpkg.com/@mikaelkristiansson/domready/-/domready-1.0.9.tgz#b2b85d8ac7bb2797e577050b61aeaf1b26fbd906"
   integrity sha512-FOAjeRHULSWXd6JMuCDwf3zPbe11kP971+Bufrj9M8rQ33ZMtThgKd6IJgzj6tr/+1Rq3czzLI1LAa9x0IC92w==
 
-"@monastic.panic/react-docgen@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@monastic.panic/react-docgen/-/react-docgen-5.0.1.tgz#e7641793c27ccf6afc81d63f39ffa3072d41d38f"
-  integrity sha512-QKUdWHcBPc2MWg2fLT8K7edogSMoAq6W7W34/xl+JRfdQ25TwpVb0ylBasBmiRCZGX29CqSbqAKt2C6sWoR7XQ==
-  dependencies:
-    "@babel/core" "^7.7.5"
-    "@babel/runtime" "^7.7.6"
-    ast-types "^0.13.2"
-    async "^2.1.4"
-    commander "^2.19.0"
-    doctrine "^3.0.0"
-    node-dir "^0.1.10"
-    strip-indent "^3.0.0"
-
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -2932,6 +2918,14 @@
   version "0.3.21"
   resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.3.21.tgz#5264d12019ffb844dc1fc44d55517ded7b580ee2"
   integrity sha512-Wcu3CFJV+iiqPEIoPVx3/CYnZBRgPeRABo6bLJByRH9ptJXyObn7WYPG7Rv0cg3+55bqcBbG0xEfovzwE2PNXg==
+
+"@restart/hooks@^0.3.22":
+  version "0.3.22"
+  resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.3.22.tgz#bb7e27c832bf576f56977d0a0b8b9d8ccee877b8"
+  integrity sha512-tW0T3hP6emYNOc76/iC96rlu+f7JYLSVk/Wnn+7dj1gJUcw4CkQNLy16vx2mBLtVKsFMZ9miVEZXat8blruDHQ==
+  dependencies:
+    lodash "^4.17.15"
+    lodash-es "^4.17.15"
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
@@ -4611,7 +4605,7 @@ async@1.5.2:
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
   integrity sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
 
-async@^2.0.1, async@^2.1.4, async@^2.6.2:
+async@^2.0.1, async@^2.6.2:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.3.tgz#d72625e2344a3656e3a3ad4fa749fa83299d82ff"
   integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
@@ -8303,6 +8297,11 @@ emojis-list@^2.0.0:
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
   integrity sha1-TapNnbAPmBmIDHn6RXrlsJof04k=
 
+emojis-list@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
+  integrity sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==
+
 emotion-theming@^10.0.19:
   version "10.0.27"
   resolved "https://registry.yarnpkg.com/emotion-theming/-/emotion-theming-10.0.27.tgz#1887baaec15199862c89b1b984b79806f2b9ab10"
@@ -10027,6 +10026,14 @@ gatsby-plugin-page-creator@^2.1.39:
     glob "^7.1.6"
     lodash "^4.17.15"
     micromatch "^3.1.10"
+
+gatsby-plugin-sass@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-sass/-/gatsby-plugin-sass-2.2.1.tgz#574d2ff4763e5a78648d69022b7b570da9f903cb"
+  integrity sha512-YRzP5ZrGgABF/3ya9YJz80+pqLpVVuJf8gyBFjvC+GmM8kqbwm5w9k3HOf61kYcCDg5bje1CPNXu7ZQMkxu2mQ==
+  dependencies:
+    "@babel/runtime" "^7.8.7"
+    sass-loader "^7.3.1"
 
 gatsby-plugin-sorted-assets@^1.0.2:
   version "1.0.2"
@@ -13767,6 +13774,15 @@ loader-utils@^0.2.16:
     json5 "^0.5.0"
     object-assign "^4.0.1"
 
+loader-utils@^1.0.1:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.4.0.tgz#c579b5e34cb34b1a74edc6c1fb36bfa371d5a613"
+  integrity sha512-qH0WSMBtn/oHuwjy/NucEgbx5dbxxnxup9s4PVXJUDHZBQY+s0NWA9rJf53RBnQZxfch7euUui7hpoAPvALZdA==
+  dependencies:
+    big.js "^5.2.2"
+    emojis-list "^3.0.0"
+    json5 "^1.0.1"
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -13796,6 +13812,11 @@ lockfile@^1.0.4:
   integrity sha512-cvbTwETRfsFh4nHsL1eGWapU1XFi5Ot9E85sWAwia7Y7EgB7vfqcZhTKZ+l7hCGxSPoushMv5GKhT5PdLv03WA==
   dependencies:
     signal-exit "^3.0.2"
+
+lodash-es@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
+  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
 
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
@@ -18933,6 +18954,17 @@ sass-graph@^2.2.4:
     lodash "^4.0.0"
     scss-tokenizer "^0.2.3"
     yargs "^7.0.0"
+
+sass-loader@^7.3.1:
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-7.3.1.tgz#a5bf68a04bcea1c13ff842d747150f7ab7d0d23f"
+  integrity sha512-tuU7+zm0pTCynKYHpdqaPpe+MMTQ76I9TPZ7i4/5dZsigE350shQWe5EZNl5dBidM49TPET75tNqRbcsUZWeNA==
+  dependencies:
+    clone-deep "^4.0.1"
+    loader-utils "^1.0.1"
+    neo-async "^2.5.0"
+    pify "^4.0.1"
+    semver "^6.3.0"
 
 sass-loader@^8.0.0:
   version "8.0.2"

@@ -32,6 +32,35 @@ function setDefaults(desc, name, widgetName) {
   return desc
 }
 
+function buildExample(prop, name, widgetName) {
+  let exampleTag = prop.tags.find(t => t.name === 'example')
+  let exampleName = exampleTag
+  let args = []
+
+  if (typeof exampleTag === 'string') exampleTag = eval(exampleTag)
+
+  if (Array.isArray(exampleTag)) {
+    ;[exampleName, args] = exampleTag
+  }
+
+  if (exampleName === false) return null
+  if (!exampleName) exampleName = name
+
+  let example
+  try {
+    example = require(`./prop-examples/${exampleName}`)
+  } catch (err) {
+    return null
+  }
+
+  args = args == null ? [] : [].concat(args)
+
+  prop.description +=
+    '\n\n```jsx live\n' + example(widgetName, ...args) + '\n```'
+
+  // console.log('H:', prop.description)
+}
+
 module.exports = function defaultDescriptionsHandler(docs) {
   let widgetName = docs.get('displayName')
 
@@ -39,5 +68,6 @@ module.exports = function defaultDescriptionsHandler(docs) {
     let desc = docs.getPropDescriptor(name)
 
     setDefaults(desc, name, widgetName)
+    buildExample(desc, name, widgetName)
   })
 }

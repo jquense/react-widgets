@@ -55,7 +55,7 @@
     "react-dom": ">=0.14.0"
   },
   "dependencies": {
-    "@restart/hooks": "^0.3.21",
+    "@restart/hooks": "^0.3.22",
     "classnames": "^2.2.6",
     "date-arithmetic": "^4.0.1",
     "dom-helpers": "^5.1.3",
