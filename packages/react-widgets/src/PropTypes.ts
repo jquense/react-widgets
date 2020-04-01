@@ -1,7 +1,6 @@
 import * as PropTypes from 'prop-types'
 import elementType from 'prop-types-extra/lib/elementType'
 import createChainableTypeChecker from 'prop-types-extra/lib/utils/createChainableTypeChecker'
-import { Validator } from 'react'
 
 export { elementType }
 

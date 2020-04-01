@@ -9,14 +9,13 @@ import React, {
   useImperativeHandle,
 } from 'react'
 import useEventCallback from '@restart/hooks/useEventCallback'
-import { useAccessors } from 'react-widgets/lib//util/getAccessors'
+import { useAccessors } from 'react-widgets/lib/Accessors'
 import BaseVirtualList from 'react-list'
 // import Listbox from 'react-widgets/lib/BaseListbox'
 import ListOption from 'react-widgets/lib/ListOption'
 import { FocusListContext } from 'react-widgets/lib/FocusListContext'
 import ListOptionGroup from 'react-widgets/lib/ListOptionGroup'
-import * as CustomPropTypes from 'react-widgets/lib/util/PropTypes'
-import { groupBySortedKeys, toItemArray } from 'react-widgets/lib/util/_'
+import { groupBySortedKeys, toItemArray } from 'react-widgets/lib/_'
 
 export const virtualListPropTypes = {
   itemSizeEstimator: PropTypes.func,
@@ -28,7 +27,7 @@ export const virtualListPropTypes = {
   useTranslate3d: PropTypes.bool,
   hasNextPage: PropTypes.bool,
   onRequestItems: PropTypes.func,
-  loadingComponent: CustomPropTypes.elementType,
+  loadingComponent: PropTypes.elementType,
 }
 
 function useFlattenedData(data, groupBy) {

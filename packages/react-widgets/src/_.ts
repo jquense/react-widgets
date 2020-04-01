@@ -1,35 +1,27 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import warning from 'warning'
-import { GroupBy } from '../List'
+import { GroupBy } from './List'
 
 export function toItemArray<TDataItem>(a?: TDataItem[] | boolean): TDataItem[] {
   if (Array.isArray(a)) return a
   return []
 }
 
-export const makeArray = <T>(obj: T | T[] | undefined | null): T[] => {
+export const makeArray = <T>(
+  obj: T | T[] | undefined | null,
+  excludeNull = true,
+): T[] => {
   const result: T[] = []
-  return obj == null ? result : result.concat(obj)
+
+  return excludeNull
+    ? obj == null
+      ? result
+      : result.concat(obj)
+    : result.concat(obj!)
 }
 
 export const has = <T>(o: T, key: string) =>
   o ? Object.prototype.hasOwnProperty.call(o, key) : false
-
-export function isShallowEqual(a: any, b: any): boolean {
-  if (a === b) return true
-  if (a instanceof Date && b instanceof Date) return +a === +b
-  if (typeof a !== 'object' && typeof b !== 'object') return a === b
-  if (typeof a !== typeof b) return false
-  if (a == null || b == null) return false // if they were both null we wouldn't be here
-
-  let keysA = Object.keys(a)
-  let keysB = Object.keys(b)
-
-  if (keysA.length !== keysB.length) return false
-  for (let i = 0; i < keysA.length; i++)
-    if (!has(b, keysA[i]) || a[keysA[i]] !== b[keysA[i]]) return false
-  return true
-}
 
 export function chunk<T>(array: T[], chunkSize: number): Array<T[]> {
   let index = 0

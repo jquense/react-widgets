@@ -2,7 +2,7 @@ import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SlideDownTransition from './SlideDownTransition'
-import { elementType } from './util/PropTypes'
+import { elementType } from './PropTypes'
 import { TransitionProps } from 'react-transition-group/Transition'
 
 interface StaticContainerProps {

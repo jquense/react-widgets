@@ -7,14 +7,14 @@ import {
 
 type MomentPartMap = Record<DateTimePartType, string>
 
-function endOfDecade(date) {
+function endOfDecade(date: Date) {
   date = new Date(date)
   date.setFullYear(date.getFullYear() + 10)
   date.setMilliseconds(date.getMilliseconds() - 1)
   return date
 }
 
-function endOfCentury(date) {
+function endOfCentury(date: Date) {
   date = new Date(date)
   date.setFullYear(date.getFullYear() + 100)
   date.setMilliseconds(date.getMilliseconds() - 1)

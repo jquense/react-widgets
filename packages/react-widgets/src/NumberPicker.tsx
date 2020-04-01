@@ -9,11 +9,11 @@ import NumberInput from './NumberInput'
 import Select from './Select'
 import Widget, { WidgetProps } from './Widget'
 import WidgetPicker from './WidgetPicker'
-import * as CustomPropTypes from './util/PropTypes'
-import { createEditableCallback } from './util/interaction'
-import useFocusManager from './util/useFocusManager'
-import { notify } from './util/widgetHelpers'
+import * as CustomPropTypes from './PropTypes'
+import useFocusManager from './useFocusManager'
+import { notify } from './WidgetHelpers'
 import { WidgetHTMLProps } from './shared'
+import useEventCallback from '@restart/hooks/useEventCallback'
 
 // my tests in ie11/chrome/FF indicate that keyDown repeats
 // at about 35ms+/- 5ms after an initial 500ms delay. callback fires on the leading edge
@@ -84,7 +84,7 @@ const propTypes = {
    *
    * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
    */
-  format: CustomPropTypes.numberFormat,
+  format: PropTypes.any,
 
   /**
    * Determines how the NumberPicker parses a number from the localized string representation.
@@ -281,9 +281,7 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
     },
   })
 
-  const useEditableCallback = createEditableCallback(disabled || readOnly, ref)
-
-  const handleMouseDown = useEditableCallback(
+  const handleMouseDown = useEventCallback(
     (
       direction: 'UP' | 'DOWN',
       event:
@@ -307,16 +305,16 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
     },
   )
 
-  // @widgetEditable
-  const handleMouseUp = useEditableCallback(() => {
+  const handleMouseUp = useEventCallback(() => {
     if (!repeaterRef.current) return
     repeaterRef.current()
     repeaterRef.current = null
   })
 
-  // @widgetEditable
-  const handleKeyDown = useEditableCallback(
+  const handleKeyDown = useEventCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (readOnly) return
+
       let key = event.key
 
       notify(onKeyDown, [event])
@@ -427,7 +425,7 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
         <Select bordered>
           <Button
             icon={incrementIcon}
-            disabled={clampedValue === max || disabled}
+            disabled={clampedValue === max || disabled || readOnly}
             label={(localizer.messages.increment as any)({
               value: clampedValue,
               min,
@@ -439,7 +437,7 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
           />
           <Button
             icon={decrementIcon}
-            disabled={clampedValue === min || disabled}
+            disabled={clampedValue === min || disabled || readOnly}
             label={(localizer.messages.decrement as any)({
               value: clampedValue,
               min,

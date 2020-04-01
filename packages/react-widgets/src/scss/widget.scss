@@ -56,6 +56,7 @@
   background-color: $input-bg;
   border: $input-border $input-border-width solid;
   border-radius: $input-border-radius;
+  outline: none;
 
   &.rw-state-focus,
   .rw-state-focus > & {

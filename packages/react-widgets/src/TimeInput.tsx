@@ -7,8 +7,8 @@ import Button from './Button'
 import DateTimePartInput from './DateTimePartInput'
 import { times } from './Icon'
 import Widget, { WidgetProps } from './Widget'
-import dates from './util/dates'
-import useFocusManager from './util/useFocusManager'
+import dates from './dates'
+import useFocusManager from './useFocusManager'
 
 type Meridiem = 'AM' | 'PM'
 
@@ -263,7 +263,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
   )
 
   function getDatePart() {
-    return dates.startOf(datePart || dates.today(), 'day')
+    return dates.startOf(datePart || new Date(), 'day')
   }
 
   const getMin = (part: TimePart) => (part === 'hours' ? 1 : 0)

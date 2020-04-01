@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types'
-import * as CustomPropTypes from './PropTypes'
-import { TextAccessor, dataText } from './dataHelpers'
+import { dataText, TextAccessor } from './Accessors'
+import { useMemo } from 'react'
 
 export const presets = {
   eq: (a: any, b: any) => a === b,
@@ -13,17 +12,19 @@ export type FilterFunction<TDataItem> = (
   searchTerm: string,
   idx?: number,
 ) => boolean
+
 export type FilterPreset = keyof typeof presets
+
 export type Filter<TDataItem> =
   | boolean
   | FilterPreset
   | FilterFunction<TDataItem>
   | null
 
-function normalizeFilter<TDataItem>({
-  filter,
-  textField,
-}: FilterOptions<TDataItem>): FilterFunction<TDataItem> | null {
+function normalizeFilter<TDataItem>(
+  filter: Filter<TDataItem>,
+  textField?: TextAccessor,
+): FilterFunction<TDataItem> | null {
   if (filter === false) return null
   if (typeof filter === 'function') return filter
 
@@ -34,28 +35,17 @@ function normalizeFilter<TDataItem>({
   }
 }
 
-export const propTypes = {
-  textField: CustomPropTypes.accessor,
-  filter: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.bool,
-    PropTypes.oneOf(Object.keys(presets)),
-  ]),
-}
-
-interface FilterOptions<TDataItem> {
-  filter: Filter<TDataItem>
-  searchTerm?: string
-  textField?: TextAccessor
-}
-
-export function filter<TDataItem>(
+export function useFilteredData<TDataItem>(
   data: TDataItem[],
-  { searchTerm = '', ...options }: FilterOptions<TDataItem>,
+  filterer: Filter<TDataItem>,
+  searchTerm = '',
+  textAccessor?: TextAccessor,
 ) {
-  const filter = normalizeFilter(options)
+  return useMemo(() => {
+    const filter = normalizeFilter(filterer, textAccessor)
 
-  if (!filter || !searchTerm.trim()) return data
+    if (!filter || !searchTerm.trim()) return data
 
-  return data.filter((item, idx) => filter(item, searchTerm, idx))
+    return data.filter((item, idx) => filter(item, searchTerm, idx))
+  }, [data, filterer, searchTerm, textAccessor])
 }

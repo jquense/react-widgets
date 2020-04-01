@@ -10,7 +10,7 @@
     "test": "lerna run test",
     "rw": "lerna exec --scope react-widgets npm run",
     "tdd": "npm run rw tdd",
-    "start": "npm run develop -C ./www",
+    "start": "npm run start -C ./www2",
     "start-dev": "lerna exec --scope storybook npm start",
     "bootstrap": "yarn && lerna run prepublishOnly",
     "build": "lerna run build",

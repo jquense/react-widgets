@@ -26,10 +26,6 @@ module.exports = {
         exampleCodeScope: {
           listOfPeople: require.resolve('./src/generate-data'),
         },
-        // templates: {
-        //   ...templates,
-        //   // default: require.resolve('./src/components/PageLayout.tsx'),
-        // },
         ignore(docNode) {
           return !publicComponents.includes(docNode.name)
         },

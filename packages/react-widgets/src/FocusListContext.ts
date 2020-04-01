@@ -7,7 +7,7 @@ import React, {
   useState,
   useRef,
 } from 'react'
-import { TextAccessorFn } from './util/dataHelpers'
+import { TextAccessorFn } from './Accessors'
 
 type FocusListContext = {
   focusedItem: any | undefined
@@ -32,6 +32,7 @@ export interface FocusList<TDataItem = unknown> {
   last: () => HTMLElement | undefined
   prev(opts?: FocusOptions): HTMLElement | undefined
   next(opts?: FocusOptions): HTMLElement | undefined
+  hasFocused: () => boolean
   getFocused: () => TDataItem | undefined
   toDataItem: (el: HTMLElement) => TDataItem | undefined
   context: FocusListContext
@@ -180,6 +181,7 @@ export const useFocusList = <TDataItem>({
   list.context = context
 
   list.getFocused = useCallback(() => focusedItem, [focusedItem])
+  list.hasFocused = () => focusedItem !== undefined
 
   return list as FocusList<TDataItem>
 }

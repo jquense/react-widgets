@@ -12,11 +12,11 @@ import SlideTransitionGroup from './SlideTransitionGroup'
 import Widget from './Widget'
 import Year from './Year'
 import { DateLocalizationProps, WidgetHTMLProps, WidgetProps } from './shared'
-import * as CustomPropTypes from './util/PropTypes'
-import dates from './util/dates'
-import { useAutoFocus } from './util/hooks'
-import useFocusManager from './util/useFocusManager'
-import { notify, useInstanceId } from './util/widgetHelpers'
+
+import dates from './dates'
+import useAutoFocus from './useAutoFocus'
+import useFocusManager from './useFocusManager'
+import { notify, useInstanceId } from './WidgetHelpers'
 
 type Direction = 'DOWN' | 'UP' | 'LEFT' | 'RIGHT'
 
@@ -74,11 +74,11 @@ const propTypes = {
   /**
    * @example ['disabled', ['new Date()']]
    */
-  disabled: CustomPropTypes.disabled,
+  disabled: PropTypes.bool,
   /**
    * @example ['readOnly', ['new Date()']]
    */
-  readOnly: CustomPropTypes.disabled,
+  readOnly: PropTypes.bool,
 
   /**
    * @example ['onChangePicker', [ ['new Date()'] ]]
@@ -175,52 +175,52 @@ const propTypes = {
      *
      * @example ['dateFormat', ['headerFormat', "{ date: 'medium' }"]]
      */
-    header: CustomPropTypes.dateFormat,
+    header: PropTypes.any,
 
     /**
      * A formatter for the Calendar footer, formats today's Date as a string.
      *
      * @example ['dateFormat', ['footerFormat', "{ date: 'medium' }", "date => 'Today is: ' + formatter(date)"]]
      */
-    footer: CustomPropTypes.dateFormat,
+    footer: PropTypes.any,
 
     /**
      * A formatter calendar days of the week, the default formats each day as a Narrow name: "Mo", "Tu", etc.
      *
      * @example ['prop', { day: "day => \n['🎉', 'M', 'T','W','Th', 'F', '🎉'][day.getDay()]" }]
      */
-    day: CustomPropTypes.dateFormat,
+    day: PropTypes.any,
 
     /**
      * A formatter for day of the month
      *
      * @example ['prop', { date: "dt => String(dt.getDate())" }]
      */
-    date: CustomPropTypes.dateFormat,
+    date: PropTypes.any,
 
     /**
      * A formatter for month name.
      *
      * @example ['dateFormat', ['monthFormat', "{ raw: 'MMMM' }", null, { defaultView: '"year"' }]]
      */
-    month: CustomPropTypes.dateFormat,
+    month: PropTypes.any,
 
     /**
      * A formatter for month name.
      *
      * @example ['dateFormat', ['yearFormat', "{ raw: 'yy' }", null, { defaultView: '"decade"' }]]
      */
-    year: CustomPropTypes.dateFormat,
+    year: PropTypes.any,
 
     /**
      * A formatter for decade, the default formats the first and last year of the decade like: 2000 - 2009.
      */
-    decade: CustomPropTypes.dateFormat,
+    decade: PropTypes.any,
 
     /**
      * A formatter for century, the default formats the first and last year of the century like: 1900 - 1999.
      */
-    century: CustomPropTypes.dateFormat,
+    century: PropTypes.any,
   }),
 
   isRtl: PropTypes.bool,

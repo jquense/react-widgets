@@ -12,14 +12,40 @@ import ListOptionGroup from './ListOptionGroup'
 import { UserProvidedMessages, useMessagesWithDefaults } from './messages'
 // import { WidgetHTMLProps } from './shared'
 import { DataItem, RenderProp, Value } from './types'
-import * as CustomPropTypes from './util/PropTypes'
-import * as Props from './util/Props'
-import { groupBySortedKeys, makeArray, toItemArray } from './util/_'
-import { Accessors } from './util/getAccessors'
-import { useInstanceId } from './util/widgetHelpers'
-import { useMutationObserver } from './util/hooks'
+import * as CustomPropTypes from './PropTypes'
+import { groupBySortedKeys, makeArray, toItemArray } from './_'
+import { Accessors } from './Accessors'
+import { useInstanceId } from './WidgetHelpers'
+import useMutationObserver from '@restart/hooks/useMutationObserver'
 import useCallbackRef from '@restart/hooks/useCallbackRef'
 import useMergedRefs from '@restart/hooks/useMergedRefs'
+
+const whitelist = [
+  'style',
+  'className',
+  'role',
+  'id',
+  'autocomplete',
+  'size',
+  'tabIndex',
+  'maxLength',
+  'name',
+]
+
+const whitelistRegex = [/^aria-/, /^data-/, /^on[A-Z]\w+/]
+
+function pickElementProps<T>(props: T): Partial<T> {
+  const result: Partial<T> = {}
+  Object.keys(props).forEach(key => {
+    if (
+      whitelist.indexOf(key) !== -1 ||
+      whitelistRegex.some(r => !!key.match(r))
+    )
+      (result as any)[key] = (props as any)[key]
+  })
+
+  return result
+}
 
 const propTypes = {
   data: PropTypes.array,
@@ -31,7 +57,7 @@ const propTypes = {
   onMove: PropTypes.func,
   onHoverOption: PropTypes.func,
 
-  optionComponent: CustomPropTypes.elementType,
+  optionComponent: PropTypes.elementType,
   renderItem: PropTypes.func,
   renderGroup: PropTypes.func,
 
@@ -189,7 +215,7 @@ const List: List = React.forwardRef(function List<TDataItem>(
 ) {
   const id = useInstanceId()
 
-  const dataItems = makeArray(value)
+  const dataItems = makeArray(value, multiple)
 
   const groupedData = useMemo(
     () => (groupBy ? groupBySortedKeys<TDataItem>(groupBy, data) : undefined),
@@ -205,7 +231,7 @@ const List: List = React.forwardRef(function List<TDataItem>(
 
   const scrollIntoView = useScrollFocusedIntoView(element, true)
 
-  let elementProps = Props.pickElementProps(props)
+  let elementProps = pickElementProps(props)
 
   useImperativeHandle(outerRef, () => ({ scrollIntoView }), [scrollIntoView])
 

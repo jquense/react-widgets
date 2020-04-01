@@ -1,6 +1,7 @@
 import cn from 'classnames'
-import React from 'react'
-import { useKeyboardNavigationCheck } from './util/hooks'
+import React, { useState } from 'react'
+import useGlobalListener from '@restart/hooks/useGlobalListener'
+
 export interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   focused?: boolean
   open?: boolean
@@ -9,6 +10,27 @@ export interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   isRtl?: boolean
   disabled?: boolean
   readOnly?: boolean
+}
+
+function useKeyboardNavigationCheck() {
+  const [isNavigatingViaKeyboard, setIsNavigatingViaKeyboard] = useState(false)
+  useGlobalListener('keydown', ({ key }) => {
+    if (
+      key == ' ' ||
+      key === 'Tab' ||
+      key == 'Enter' ||
+      key.indexOf('Arrow') !== -1
+    ) {
+      setIsNavigatingViaKeyboard(true)
+    }
+  })
+
+  // TODO: use pointerdown
+  useGlobalListener('mousedown', () => {
+    setIsNavigatingViaKeyboard(false)
+  })
+
+  return isNavigatingViaKeyboard
 }
 
 export function useWidgetProps(props: WidgetProps) {

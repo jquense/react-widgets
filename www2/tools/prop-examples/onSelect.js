@@ -7,14 +7,10 @@ module.exports = function(widgetName) {
     let alertWhenSelected = () => alert('selected!');
     let alertWhenChanged = () => alert('changed!');
 
-    let widget = (
-      <${widgetName}
-        onSelect={alertWhenSelected}
-        onChange={alertWhenChanged}
-        data={['orange', 'red', 'blue', 'purple']}
-      />
-    )
-
-    render(widget);
+    <${widgetName}
+      onSelect={alertWhenSelected}
+      onChange={alertWhenChanged}
+      data={['Orange', 'Red', 'Blue', 'Purple']}
+    />
   `
 }

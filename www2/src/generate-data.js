@@ -1,14 +1,22 @@
-'use strict';
-var chance = new (require('chance'))
+'use strict'
+var chance = new (require('chance'))()
 
-chance.set('lastNames', { en: ['Smith', 'Williams', 'Chang', 'Diaz', 'Morales'] })
+chance.set('lastNames', {
+  en: ['Smith', 'Williams', 'Chang', 'Diaz', 'Morales'],
+})
 
-module.exports = function generateList(len){
+module.exports = function generateList(len = 30) {
   var arr = new Array(len)
 
-  for(var i = 0; i < arr.length; i++){
-    var firstName = chance.first(), lastName = chance.last()
-    arr[i] = { id: i + 1, name: `${firstName} ${lastName}`, firstName, lastName }
+  for (var i = 0; i < arr.length; i++) {
+    var firstName = chance.first(),
+      lastName = chance.last()
+    arr[i] = {
+      id: i + 1,
+      name: `${firstName} ${lastName}`,
+      firstName,
+      lastName,
+    }
   }
 
   return arr

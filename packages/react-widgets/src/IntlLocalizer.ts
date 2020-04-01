@@ -4,7 +4,7 @@ import {
   NumberLocalizer,
   RequiredDateMethods,
 } from './Localization'
-import dates from './util/dates'
+import dates from './dates'
 
 type Formatters = {
   [Key in RequiredDateMethods]: (date?: number | Date) => string

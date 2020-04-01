@@ -25,22 +25,17 @@ import {
   WidgetProps,
 } from './shared'
 import { DataItem, WidgetHandle } from './types'
-import { useActiveDescendant } from './util/A11y'
-import * as Filter from './util/Filter'
-import * as CustomPropTypes from './util/PropTypes'
-import canShowCreate from './util/canShowCreate'
-import { useAccessors } from './util/getAccessors'
-import { useAutoFocus, useDropodownToggle, useFilteredData } from './util/hooks'
-import useFocusManager from './util/useFocusManager'
-import {
-  notify,
-  useFirstFocusedRender,
-  useInstanceId,
-} from './util/widgetHelpers'
+import { useActiveDescendant } from './A11y'
+import { useFilteredData, presets } from './Filter'
+import * as CustomPropTypes from './PropTypes'
+import canShowCreate from './canShowCreate'
+import { useAccessors } from './Accessors'
+import useAutoFocus from './useAutoFocus'
+import useDropdownToggle from './useDropdownToggle'
+import useFocusManager from './useFocusManager'
+import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 
 const propTypes = {
-  ...Filter.propTypes,
-
   value: PropTypes.any,
   /**
    * @type {function (
@@ -273,7 +268,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
 
   useAutoFocus(!!autoFocus, ref)
 
-  const toggle = useDropodownToggle(currentOpen, handleOpen!)
+  const toggle = useDropdownToggle(currentOpen, handleOpen!)
 
   const isDisabled = disabled === true
   // const disabledItems = toItemArray(disabled)
@@ -311,7 +306,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     activeId,
     scope: ref,
     focusFirstItem,
-    anchorItem: selectedItem,
+    anchorItem: currentOpen ? selectedItem : undefined,
   })
 
   const [autofilling, setAutofilling] = useState(false)
@@ -352,12 +347,15 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   }
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (readOnly) return
+
     focus()
     toggle()
     notify(onClick, [e])
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (readOnly) return
     let { key, altKey, ctrlKey, shiftKey } = e
     notify(onKeyDown, [e])
 
@@ -384,7 +382,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
       handleCreate(e)
     } else if ((key === 'Enter' || (key === ' ' && !filter)) && currentOpen) {
       e.preventDefault()
-      if (list.getFocused()) handleSelect(list.getFocused()!, e)
+      if (list.hasFocused()) handleSelect(list.getFocused()!, e)
     } else if (key === 'ArrowDown') {
       e.preventDefault()
 
@@ -404,6 +402,8 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (readOnly) return
+
     notify(onKeyPress, [e])
     if (e.defaultPrevented || filter) return
 
@@ -411,7 +411,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
       if (!currentOpen) return
 
       let isValid = (item: TDataItem) =>
-        Filter.presets.startsWith(
+        presets.startsWith(
           accessors.text(item).toLowerCase(),
           word.toLowerCase(),
         )
@@ -559,6 +559,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
             dataKeyAccessor={accessors.value}
             textAccessor={accessors.text}
             name={name}
+            readOnly={readOnly}
             disabled={isDisabled}
             allowSearch={!!filter}
             searchTerm={currentSearch}

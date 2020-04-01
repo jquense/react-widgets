@@ -37,9 +37,6 @@ module.exports = ({ config }) =>
           '../material-ui/src/index.js',
         ),
         'react-widgets-material-ui/lib': path.resolve('../material-ui/src'),
-        'react-widgets-globalize-old': path.resolve(
-          '../localizer-globalize-old/localizer.js',
-        ),
       },
     },
     plugins: [

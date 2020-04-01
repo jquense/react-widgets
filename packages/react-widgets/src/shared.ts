@@ -18,8 +18,7 @@ import React, {
 import { DateFormats, Localizer } from './Localization'
 import { UserProvidedMessages } from './messages'
 import { SearchMetadata, Value } from './types'
-import { Filter } from './util/Filter'
-import { DataKeyAccessor, TextAccessor } from './util/dataHelpers'
+import { Filter } from './Filter'
 import { TransitionProps } from 'react-transition-group/Transition'
 import {
   ListProps,
@@ -29,6 +28,7 @@ import {
   RenderGroupProp,
   RenderItemProp,
 } from './List'
+import { TextAccessor, DataKeyAccessor } from './Accessors'
 
 export interface WidgetProps {
   isRtl?: boolean

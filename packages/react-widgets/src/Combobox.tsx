@@ -7,7 +7,6 @@ import { caretDown } from './Icon'
 import Input from './Input'
 import List, { ListHandle } from './List'
 import { FocusListContext, useFocusList } from './FocusListContext'
-import { RenderTagProp, TagComponentProp } from './MultiselectTagList'
 import Popup from './Popup'
 import Select from './Select'
 import Widget from './Widget'
@@ -23,18 +22,13 @@ import {
   WidgetProps,
 } from './shared'
 import { DataItem, WidgetHandle } from './types'
-import { useActiveDescendant } from './util/A11y'
-import * as Filter from './util/Filter'
-import * as CustomPropTypes from './util/PropTypes'
-import { TextAccessorFn } from './util/dataHelpers'
-import { useAccessors } from './util/getAccessors'
-import { useDropodownToggle, useFilteredData } from './util/hooks'
-import useFocusManager from './util/useFocusManager'
-import {
-  notify,
-  useFirstFocusedRender,
-  useInstanceId,
-} from './util/widgetHelpers'
+import { useActiveDescendant } from './A11y'
+import * as CustomPropTypes from './PropTypes'
+import { TextAccessorFn, useAccessors } from './Accessors'
+import { useFilteredData } from './Filter'
+import useDropdownToggle from './useDropdownToggle'
+import useFocusManager from './useFocusManager'
+import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 
 function indexOf<TDataItem>(
   data: TDataItem[],
@@ -48,14 +42,13 @@ function indexOf<TDataItem>(
 }
 
 let propTypes = {
-  ...Filter.propTypes,
   value: PropTypes.any,
   onChange: PropTypes.func,
   open: PropTypes.bool,
   onToggle: PropTypes.func,
 
   renderListItem: PropTypes.func,
-  listComponent: CustomPropTypes.elementType,
+  listComponent: PropTypes.elementType,
 
   renderListGroup: PropTypes.func,
   groupBy: CustomPropTypes.accessor,
@@ -75,11 +68,6 @@ let propTypes = {
   disabled: CustomPropTypes.disabled.acceptsArray,
   readOnly: CustomPropTypes.disabled,
 
-  /**
-   * When `true` the Combobox will suggest, or fill in, values as you type. The suggestions
-   * are always "startsWith", meaning it will search from the start of the `textField` property
-   */
-  suggest: Filter.propTypes.filter,
   busy: PropTypes.bool,
 
   /** Specify the element used to render the select (down arrow) icon. */
@@ -88,10 +76,8 @@ let propTypes = {
   /** Specify the element used to render the busy indicator */
   busySpinner: PropTypes.node,
 
-  delay: PropTypes.number,
-
   dropUp: PropTypes.bool,
-  popupTransition: CustomPropTypes.elementType,
+  popupTransition: PropTypes.elementType,
 
   placeholder: PropTypes.string,
 
@@ -118,14 +104,13 @@ export interface ComboboxProps<TDataItem = DataItem>
     Filterable<TDataItem>,
     BaseListboxInputProps<TDataItem, string | TDataItem> {
   name?: string
+
+  /**
+   * If a `data` item matches the current typed value select it automatically.
+   */
   autoSelectMatches?: boolean
   onChange?: ChangeHandler<TDataItem | string>
   onSelect?: SelectHandler<TDataItem | string>
-  onCreate?: (searchTerm: string) => void
-  showPlaceholderWithValues?: boolean
-  renderTagValue?: RenderTagProp<TDataItem>
-  clearTagIcon?: React.ReactNode
-  tagOptionComponent?: TagComponentProp
 }
 
 declare interface Combobox {
@@ -229,7 +214,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
 
   const accessors = useAccessors(textField, dataKey)
   const messages = useMessagesWithDefaults(userMessages)
-  const toggle = useDropodownToggle(currentOpen, handleOpen)
+  const toggle = useDropdownToggle(currentOpen, handleOpen)
 
   const isDisabled = disabled === true
   const isReadOnly = !!readOnly
@@ -250,7 +235,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
     activeId,
     scope: ref,
     focusFirstItem,
-    anchorItem: selectedItem,
+    anchorItem: currentOpen ? selectedItem : undefined,
   })
 
   const [focusEvents, focused] = useFocusManager(
@@ -311,6 +296,8 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (readOnly) return
+
     let { key, altKey, shiftKey } = e
 
     notify(onKeyDown, [e])
@@ -435,7 +422,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
           icon={selectIcon}
           spinner={busySpinner}
           onClick={toggle}
-          disabled={!!disabled || readOnly}
+          disabled={!!isDisabled || isReadOnly}
           // FIXME
           label={messages.openCombobox()}
         />
@@ -454,6 +441,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
               tabIndex={-1}
               data={data}
               groupBy={groupBy}
+              disabled={disabled}
               accessors={accessors}
               renderItem={renderListItem}
               renderGroup={renderListGroup}

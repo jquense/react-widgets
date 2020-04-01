@@ -1,4 +1,7 @@
-import { DataItem, Value } from '../types'
+import { useMemo } from 'react'
+import { DataItem, Value } from './types'
+
+export type Accessors = ReturnType<typeof useAccessors>
 
 export type DataKeyAccessorFn = (item: DataItem) => DataItem
 
@@ -69,4 +72,24 @@ export function dataItem<TDataItem = DataItem>(
   const idx = dataIndexOf(data, value, dataKey)
   // This isn't strictly safe, but we want to allow items that aren't in the list
   return idx !== -1 ? data[idx] : (value as TDataItem)
+}
+
+export const useAccessors = (
+  textField?: TextAccessor,
+  dataKey?: DataKeyAccessor,
+) => {
+  return useMemo(
+    () => ({
+      text: (item: DataItem) => dataText(item, textField),
+      value: (item: DataItem) => dataValue(item, dataKey),
+      indexOf: (data: DataItem[], value: Value) =>
+        dataIndexOf(data, value, dataKey),
+      matches: (a: DataItem, b: DataItem) => valueMatcher(a, b, dataKey),
+      findOrSelf: <TDataItem>(data: TDataItem[], value: Value) =>
+        dataItem(data, value, dataKey),
+      includes: (data: DataItem[], value: Value) =>
+        dataIndexOf(data, value, dataKey) !== -1,
+    }),
+    [textField, dataKey],
+  )
 }

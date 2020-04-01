@@ -14,20 +14,15 @@ import Select from './Select'
 import TimeInput, { TimeInputProps } from './TimeInput'
 import Widget, { WidgetProps } from './Widget'
 import WidgetPicker from './WidgetPicker'
-import * as CustomPropTypes from './util/PropTypes'
-import dates from './util/dates'
-import { useDropodownToggle } from './util/hooks'
-import { createEditableCallback } from './util/interaction'
-import useTabTrap from './util/tabTrap'
-import useFocusManager from './util/useFocusManager'
-import {
-  notify,
-  useFirstFocusedRender,
-  useInstanceId,
-} from './util/widgetHelpers'
+import dates from './dates'
+import useDropdownToggle from './useDropdownToggle'
+import useTabTrap from './useTabTrap'
+import useFocusManager from './useFocusManager'
+import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 
 import { TransitionProps } from 'react-transition-group/Transition'
 import { WidgetHTMLProps, DateLocalizationProps } from './shared'
+import useEventCallback from '@restart/hooks/esm/useEventCallback'
 
 let propTypes = {
   /**
@@ -89,7 +84,7 @@ let propTypes = {
      *
      * @example ['dateFormat', ['default', "{ raw: 'MMM dd, yyyy' }", null, { defaultValue: 'new Date()', time: 'false' }]]
      */
-    value: CustomPropTypes.dateFormat,
+    value: PropTypes.any,
 
     /**
      * A formatter to be used while the date input has focus. Useful for showing a simpler format for inputing.
@@ -97,7 +92,7 @@ let propTypes = {
      *
      * @example ['dateFormat', ['edit', "{ date: 'short' }", null, { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }]]
      */
-    editValue: CustomPropTypes.dateFormat,
+    editValue: PropTypes.any,
   }),
 
   /**
@@ -114,7 +109,7 @@ let propTypes = {
 
   dropUp: PropTypes.bool,
 
-  popupTransition: CustomPropTypes.elementType,
+  popupTransition: PropTypes.elementType,
 
   placeholder: PropTypes.string,
   name: PropTypes.string,
@@ -122,11 +117,11 @@ let propTypes = {
   /**
    * @example ['disabled', ['new Date()']]
    */
-  disabled: CustomPropTypes.disabled,
+  disabled: PropTypes.bool,
   /**
    * @example ['readOnly', ['new Date()']]
    */
-  readOnly: CustomPropTypes.disabled,
+  readOnly: PropTypes.bool,
 
   /**
    * Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
@@ -367,7 +362,7 @@ const DateTimePicker = React.forwardRef(
 
     const currentFormat = includeTime ? 'datetime' : 'date'
 
-    const toggle = useDropodownToggle(open, onToggle!)
+    const toggle = useDropdownToggle(open, onToggle!)
 
     const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
       didHandle(focused) {
@@ -383,12 +378,8 @@ const DateTimePicker = React.forwardRef(
     /**
      * Handlers
      */
-    const useEditableCallback = createEditableCallback(
-      disabled || readOnly,
-      ref,
-    )
 
-    const handleChange = useEditableCallback(
+    const handleChange = useEventCallback(
       (date: Date | null | undefined, str: string, constrain?: boolean) => {
         if (constrain) date = inRangeValue(date)
 
@@ -405,8 +396,10 @@ const DateTimePicker = React.forwardRef(
       },
     )
 
-    const handleKeyDown = useEditableCallback(
+    const handleKeyDown = useEventCallback(
       (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (readOnly) return
+
         notify(onKeyDown, [e])
 
         if (e.defaultPrevented) return
@@ -425,7 +418,7 @@ const DateTimePicker = React.forwardRef(
       },
     )
 
-    const handleKeyPress = useEditableCallback(
+    const handleKeyPress = useEventCallback(
       (e: React.KeyboardEvent<HTMLDivElement>) => {
         notify(onKeyPress, [e])
 
@@ -433,7 +426,7 @@ const DateTimePicker = React.forwardRef(
       },
     )
 
-    const handleDateSelect = useEditableCallback(date => {
+    const handleDateSelect = useEventCallback(date => {
       let dateTime = dates.merge(date, value, currentDate)
       let dateStr = formatDate(date)
 
@@ -444,11 +437,11 @@ const DateTimePicker = React.forwardRef(
       ref.current?.focus()
     })
 
-    const handleTimeChange = useEditableCallback(date => {
+    const handleTimeChange = useEventCallback(date => {
       handleChange(date, formatDate(date), true)
     })
 
-    const handleCalendarClick = useEditableCallback(() => {
+    const handleCalendarClick = useEventCallback(() => {
       // this.focus()
       toggle()
     })

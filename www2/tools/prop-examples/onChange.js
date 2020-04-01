@@ -6,25 +6,21 @@ module.exports = function(widgetName) {
 
   return stripIndent`
     import { ${widgetName} } from 'react-widgets';
-    let colors = ['orange', 'red', 'blue', 'purple'];
 
-    class Example extends React.Component {
-      constructor(...args) {
-        super(...args)
-        this.state = { value: ${value} }
-      }
+    let colors = ['Orange', 'Red', 'Blue', 'Purple'];
 
-      render() {
-        return (
-          <${widgetName}
-            data={colors}
-            value={this.state.value}
-            onChange={value => this.setState({ value })}
-          />
-        )
-      }
+    function Example() {
+      const [value, setValue] = useState(${value})
+
+      return (
+        <${widgetName}
+          data={colors}
+          value={value}
+          onChange={value => setValue(value)}
+        />
+      )
     }
 
-    render(<Example/>);
+    <Example/>;
   `
 }

@@ -1,11 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "stories"
+    "rootDir": "."
   },
   "references": [
     {
-      "path": "../localizer-simple-number"
+      "path": "../react-widgets"
     }
-  ]
+  ],
+  "include": ["*.ts"]
 }

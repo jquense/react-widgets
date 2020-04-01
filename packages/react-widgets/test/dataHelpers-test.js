@@ -1,4 +1,4 @@
-import * as helpers from '../src/util/dataHelpers'
+import * as helpers from '../src/Accessors'
 
 describe('when using DATA HELPERS', function() {
   it('should get a Value Out', function() {

@@ -1,11 +1,7 @@
 import React, { ReactNode } from 'react'
 import MultiselectTag, { MultiselectTagProps } from './MultiselectTag'
 import { RenderProp } from './types'
-import {
-  DataKeyAccessorFn,
-  TextAccessorFn,
-  dataIndexOf,
-} from './util/dataHelpers'
+import { DataKeyAccessorFn, dataIndexOf, TextAccessorFn } from './Accessors'
 
 // FIXME: just do data items
 // disabled === true || [1, 2, 3, etc]

@@ -6,14 +6,13 @@ import { useUncontrolledProp } from 'uncontrollable'
 import List, { GroupBy, useHandleSelect } from './List'
 import { useFocusList, FocusListContext } from './FocusListContext'
 import { DataItem, RenderProp, Value } from './types'
-import * as CustomPropTypes from './util/PropTypes'
-import { makeArray } from './util/_'
-import { DataKeyAccessor, TextAccessor } from './util/dataHelpers'
-import { useAccessors } from './util/getAccessors'
+import * as CustomPropTypes from './PropTypes'
+import { makeArray } from './_'
+import { useAccessors, TextAccessor, DataKeyAccessor } from './Accessors'
 import { WidgetHTMLProps } from './shared'
 import { UserProvidedMessages } from './messages'
-import { notify } from './util/widgetHelpers'
-import useFocusManager from './util/useFocusManager'
+import { notify } from './WidgetHelpers'
+import useFocusManager from './useFocusManager'
 import { useWidgetProps } from './Widget'
 
 const propTypes = {
@@ -26,7 +25,7 @@ const propTypes = {
   onMove: PropTypes.func,
   onHoverOption: PropTypes.func,
 
-  optionComponent: CustomPropTypes.elementType,
+  optionComponent: PropTypes.elementType,
   renderItem: PropTypes.func,
   renderGroup: PropTypes.func,
 
@@ -123,20 +122,24 @@ declare interface Listbox {
   displayName?: string
   propTypes?: any
 }
-const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>({
-  defaultValue,
-  value: propsValue,
-  onChange: propsOnChange,
+const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
+  {
+    defaultValue,
+    value: propsValue,
+    onChange: propsOnChange,
 
-  textField,
-  dataKey,
+    textField,
+    dataKey,
 
-  data,
-  onKeyDown,
-  onBlur,
-  onFocus,
-  ...props
-}: ListboxProps<TDataItem>) {
+    data,
+    onKeyDown,
+    onBlur,
+    onFocus,
+    multiple,
+    ...props
+  }: ListboxProps<TDataItem>,
+  _outerRef: any,
+) {
   const [value, onChange] = useUncontrolledProp(
     propsValue,
     defaultValue,
@@ -146,7 +149,8 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>({
   const accessors = useAccessors(textField, dataKey)
 
   const dataItems = useMemo(
-    () => makeArray(value).map(item => accessors.findOrSelf(data, item)),
+    () =>
+      makeArray(value, multiple).map(item => accessors.findOrSelf(data, item)),
     [data, value, accessors],
   )
   const ref = useRef<HTMLDivElement>(null)
@@ -162,11 +166,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>({
     onChange(dataItem, meta)
   }
 
-  const handleSelect = useHandleSelect(
-    !!props.multiple,
-    dataItems,
-    handleChange,
-  )
+  const handleSelect = useHandleSelect(!!multiple, dataItems, handleChange)
 
   const [focusEvents, focused] = useFocusManager(
     ref,
@@ -226,6 +226,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>({
         data={data}
         elementRef={ref}
         value={dataItems}
+        multiple={multiple}
         accessors={accessors}
         {...focusEvents}
         onChange={handleChange}

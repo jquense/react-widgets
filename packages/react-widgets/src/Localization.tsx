@@ -35,7 +35,7 @@ export type RequiredDateMethods =
   | 'century'
 
 export type DateLocalizer<TD> = {
-  toFormattedParts(date: Date, format: any): DateTimePart[]
+  // toFormattedParts(date: Date, format: any): DateTimePart[]
 
   parse(dateString: string, format?: TD): Date | null
   firstOfWeek(): number

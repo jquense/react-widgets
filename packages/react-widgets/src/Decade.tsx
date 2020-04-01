@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 import CalendarView, { CalendarViewProps } from './CalendarView'
 import { Localizer } from './Localization'
-import { chunk } from './util/_'
-import dates from './util/dates'
+import { chunk } from './_'
+import dates from './dates'
 
 interface DecadeProps extends CalendarViewProps {
   disabled?: boolean

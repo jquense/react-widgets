@@ -3,12 +3,16 @@ import useFocusManagerBase, {
   FocusManagerOptions,
 } from '@restart/hooks/useFocusManager'
 import useMounted from '@restart/hooks/useMounted'
-import { isInDisabledFieldset } from './interaction'
+import matches from 'dom-helpers/matches'
 
 interface Props {
   disabled?: boolean
   onBlur?: React.FocusEventHandler
   onFocus?: React.FocusEventHandler
+}
+
+const isInDisabledFieldset = (node: Element) => {
+  return !!node && matches(node, 'fieldset[disabled] *')
 }
 
 export default function useFocusManager(

@@ -29,19 +29,15 @@ import {
   WidgetProps,
 } from './shared'
 import { DataItem, Value, WidgetHandle } from './types'
-import { setActiveDescendant } from './util/A11y'
-import * as Filter from './util/Filter'
-import * as CustomPropTypes from './util/PropTypes'
-import { toItemArray } from './util/_'
-import canShowCreate from './util/canShowCreate'
-import { Accessors, useAccessors } from './util/getAccessors'
-import { useDropodownToggle, useFilteredData } from './util/hooks'
-import useFocusManager from './util/useFocusManager'
-import {
-  notify,
-  useFirstFocusedRender,
-  useInstanceId,
-} from './util/widgetHelpers'
+import { setActiveDescendant } from './A11y'
+import { useFilteredData, Filter } from './Filter'
+import * as CustomPropTypes from './PropTypes'
+import { toItemArray } from './_'
+import canShowCreate from './canShowCreate'
+import { Accessors, useAccessors } from './Accessors'
+import useDropdownToggle from './useDropdownToggle'
+import useFocusManager from './useFocusManager'
+import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 
 const ENTER = 13
 
@@ -49,8 +45,6 @@ const INSERT = 'insert'
 const REMOVE = 'remove'
 
 let propTypes = {
-  ...Filter.propTypes,
-
   data: PropTypes.array,
   //-- controlled props --
   value: PropTypes.array,
@@ -90,10 +84,7 @@ let propTypes = {
   textField: CustomPropTypes.accessor,
 
   renderTagValue: PropTypes.func,
-  /**
-   * Control the rendering of the outer tag component, including the delete button. To control just hte tag label, `use tagComponent` instead
-   */
-  renderTag: CustomPropTypes.elementType,
+
   renderListItem: PropTypes.func,
 
   renderListGroup: PropTypes.func,
@@ -124,7 +115,7 @@ let propTypes = {
   busySpinner: PropTypes.node,
 
   dropUp: PropTypes.bool,
-  popupTransition: CustomPropTypes.elementType,
+  popupTransition: PropTypes.elementType,
 
   /** Adds a css class to the input container element. */
   containerClassName: PropTypes.string,
@@ -160,7 +151,7 @@ function useMultiselectData<TDataItem>(
   value = EMPTY_ARRAY,
   data: TDataItem[],
   accessors: Accessors,
-  filter?: Filter.Filter<TDataItem>,
+  filter?: Filter<TDataItem>,
   searchTerm?: string,
 ) {
   data = useMemo(
@@ -321,7 +312,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
 
   const accessors = useAccessors(textField, dataKey)
   const messages = useMessagesWithDefaults(userMessages)
-  const toggle = useDropodownToggle(currentOpen, handleOpen)
+  const toggle = useDropdownToggle(currentOpen, handleOpen)
 
   const isDisabled = disabled === true
   const disabledItems = toItemArray(disabled)
@@ -457,6 +448,11 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (readOnly) {
+      event.preventDefault()
+      return
+    }
+
     let { key, keyCode, altKey, ctrlKey } = event
 
     notify(onKeyDown, [event])

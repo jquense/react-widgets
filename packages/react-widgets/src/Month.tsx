@@ -3,8 +3,8 @@ import React from 'react'
 import CalendarView, { CalendarViewProps } from './CalendarView'
 import { Localizer } from './Localization'
 import { RenderProp } from './types'
-import { chunk } from './util/_'
-import dates from './util/dates'
+import { chunk } from './_'
+import dates from './dates'
 
 export type RenderDayProp = RenderProp<{ date: Date; label: string }>
 
@@ -16,6 +16,19 @@ interface MonthProps extends CalendarViewProps {
   max: Date
   localizer: Localizer
   renderDay?: RenderDayProp
+}
+
+function visibleDays(date: Date, weekStart: number) {
+  let current = dates.startOf(dates.startOf(date, 'month'), 'week', weekStart)
+  let last = dates.endOf(dates.endOf(date, 'month'), 'week', weekStart)
+  let days = [] as Date[]
+
+  while (dates.lte(current, last, 'day')) {
+    days.push(current)
+    current = dates.add(current, 1, 'day')
+  }
+
+  return days
 }
 
 function MonthView({
@@ -30,7 +43,7 @@ function MonthView({
   renderDay,
   ...props
 }: MonthProps) {
-  let month = dates.visibleDays(focusedItem, localizer.firstOfWeek())
+  let month = visibleDays(focusedItem, localizer.firstOfWeek())
   let rows = chunk(month, 7)
   // console.log(localizer)
   return (

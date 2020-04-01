@@ -3,28 +3,25 @@ const { stripIndent } = require('common-tags')
 module.exports = function(widgetName) {
   return stripIndent`
     import { ${widgetName} } from 'react-widgets';
-    let colors = ['orange', 'red', 'blue', 'purple'];
 
-    class Example extends React.Component {
-      render() {
-        let { open } = this.state || {};
-        let toggleWidget = () => this.setState({ open: !open });
+    let colors = ['Orange', 'Red', 'Blue', 'Purple'];
 
-        return (
-          <div>
-            <button onClick={toggleWidget}>
-              {open ? 'close' : 'open'}
-            </button>
-            <${widgetName}
-              open={open}
-              data={colors}
-              onToggle={()=>{}}
-            />
-          </div>
-        )
-      }
+    function Example() {
+      const [open, setOpen] = useState(false)
+
+      return (
+        <div>
+          <button onClick={() => setOpen(prev => !prev)}>
+            {open ? 'close' : 'open'}
+          </button>
+          <${widgetName}
+            open={open}
+            data={colors}
+          />
+        </div>
+      )
     };
 
-    render(<Example/>);
+    <Example/>
   `
 }

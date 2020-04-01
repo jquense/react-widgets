@@ -1,5 +1,5 @@
-import { AllowCreate } from '../shared'
-import { Accessors } from './getAccessors'
+import { AllowCreate } from './shared'
+import { Accessors } from './Accessors'
 
 interface Options {
   searchTerm?: string

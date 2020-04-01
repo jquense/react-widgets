@@ -1,0 +1,105 @@
+A `<select>` elemant alternative for single value lists, with filtering.
+
+## Overview
+
+The `<DropdownList>` renders an array of `data` and manages the selection, filtering and value state.
+
+```jsx
+import DropdownList from "react-widgets/lib/DropdownList";
+
+<DropdownList
+  defaultValue="Yellow"
+  data={["Red", "Yellow", "Blue", "Orange"]}
+/>;
+```
+
+Like other React Widget components, data can be complex; not limited to strings or numbers.
+
+```jsx
+import DropdownList from "react-widgets/lib/DropdownList";
+
+<DropdownList
+  dataKey="id"
+  textField="color"
+  defaultValue={1}
+  data={[
+    { id: 1, color: "Red" },
+    { id: 2, color: "Yellow" },
+    { id: 3, color: "Blue" },
+    { id: 4, color: "Orange" }
+  ]}
+/>;
+```
+
+## Custom Rendering
+
+You can customize value and list options by providing render props.
+
+```jsx
+import DropdownList from "react-widgets/lib/DropdownList";
+
+const renderColor = ({ item }) => (
+  <>
+    <span
+      style={{
+        width: 18,
+        height: 18,
+        marginRight: 8,
+        display: "inline-block",
+        verticalAlign: "text-bottom",
+        backgroundColor: item.toLowerCase()
+      }}
+    />
+    {item}
+  </>
+);
+
+<DropdownList
+  defaultValue="Red"
+  data={["Red", "Yellow", "Blue", "Orange"]}
+  renderValue={renderColor}
+  renderListItem={renderColor}
+/>;
+```
+
+The render props can also be used to implement dynamic feedback such as highlighting
+search matches.
+
+```jsx showImports
+import DropdownList from "react-widgets/lib/DropdownList";
+import { findAll } from "highlight-words-core";
+
+const renderItem = ({ item, searchTerm }) => {
+  const results = findAll({
+    searchWords: searchTerm.split(/\s+/),
+    textToHighlight: item
+  });
+
+  return results.length
+    ? results.map(({ start, end, highlight }, index) => (
+        <span
+          key={index}
+          style={{
+            backgroundColor: highlight ? item : undefined
+          }}
+        >
+          {item.slice(start, end)}
+        </span>
+      ))
+    : item;
+};
+
+<DropdownList
+  defaultValue="Red"
+  data={["Red", "Yellow", "Blue", "Orange"]}
+  renderListItem={renderItem}
+/>;
+```
+
+## Keyboard Shortcuts
+
+DropdownList implements many keyboard shortcuts for power or keyboard only users.
+
+```
+
+```

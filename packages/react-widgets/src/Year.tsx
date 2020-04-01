@@ -1,13 +1,19 @@
 import React from 'react'
 import CalendarView, { CalendarViewProps } from './CalendarView'
 import { Localizer } from './Localization'
-import { chunk } from './util/_'
-import dates from './util/dates'
+import { chunk } from './_'
+import dates from './dates'
+
+const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+function monthsInYear(year: number) {
+  let date = new Date(year, 0, 1)
+  return months.map(i => dates.month(date, i))
+}
 
 interface YearProps extends CalendarViewProps {
   disabled?: boolean
   onChange: (nextDate: Date) => void
-  value?: Date | null;
+  value?: Date | null
   min: Date
   max: Date
   localizer: Localizer
@@ -23,7 +29,7 @@ function YearView({
   max,
   ...props
 }: YearProps) {
-  let months = dates.monthsInYear(dates.year(focusedItem))
+  let months = monthsInYear(dates.year(focusedItem))
 
   return (
     <CalendarView {...props} focusedItem={focusedItem}>

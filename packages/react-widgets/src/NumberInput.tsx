@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import React, { FocusEvent, SyntheticEvent } from 'react'
 import { findDOMNode } from 'react-dom'
 import Input from './Input'
-import * as CustomPropTypes from './util/PropTypes'
+import * as CustomPropTypes from './PropTypes'
 import { Localizer } from './Localization'
 
 let isSign = (val: string) => (val || '').trim() === '-'

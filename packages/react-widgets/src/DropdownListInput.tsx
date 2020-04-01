@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import React, { useImperativeHandle, useRef, useState } from 'react'
 import { RenderProp, Value, WidgetHandle } from './types'
-import { DataKeyAccessorFn, TextAccessorFn } from './util/dataHelpers'
+import { TextAccessorFn, DataKeyAccessorFn } from './Accessors'
 
 export type RenderValueProp<TDataItem> = RenderProp<{
   item: TDataItem
@@ -16,6 +16,7 @@ interface Props<TDataItem> {
   autoComplete?: 'on' | 'off'
   value: TDataItem
   disabled?: boolean
+  readOnly?: boolean
   allowSearch?: boolean
   placeholder?: string
   textAccessor: TextAccessorFn
@@ -42,6 +43,7 @@ const DropdownListInput = React.forwardRef(function<TDataItem>(
     onAutofillChange,
     renderValue,
     disabled,
+    readOnly,
   }: Props<TDataItem>,
   ref: React.Ref<DropdownInputHandle>,
 ) {
@@ -95,6 +97,7 @@ const DropdownListInput = React.forwardRef(function<TDataItem>(
           name={name}
           tabIndex={-1}
           disabled={disabled}
+          readOnly={readOnly}
           value={strValue == null ? '' : strValue}
           autoComplete={autoComplete}
           onChange={handleAutofill}
@@ -112,6 +115,7 @@ const DropdownListInput = React.forwardRef(function<TDataItem>(
             <input
               ref={searchRef}
               disabled={disabled}
+              readOnly={readOnly}
               className="rw-dropdown-list-search"
               value={searchTerm || ''}
               size={(searchTerm || '').length + 2}
