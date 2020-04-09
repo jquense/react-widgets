@@ -54,8 +54,8 @@ let propTypes = {
   /**
    * Change event Handler that is called when the currentDate is changed. The handler is called with the currentDate object.
    */
-  onCurrentDateChange: PropTypes.func,
-  onSelect: PropTypes.func,
+  onCurrentDateChange?: PropTypes.func,
+  onSelect?: PropTypes.func,
 
   /**
    * The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that
