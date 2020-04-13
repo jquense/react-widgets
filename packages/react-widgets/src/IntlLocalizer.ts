@@ -13,6 +13,18 @@ type UserDateFormat =
   | Intl.DateTimeFormatOptions
   | ((date: Date, culture?: string) => string)
 
+// assumes both are supported or none
+
+let supportStyles = false
+new Intl.DateTimeFormat(undefined, {
+  // @ts-ignore
+  get dateStyle() {
+    supportStyles = true
+  },
+})
+
+const dateShort = { day: 'numeric', month: 'numeric', year: 'numeric' }
+const timeShort = { hour: 'numeric', minute: 'numeric' }
 /**
  * A `react-widgets` Localizer using native `Intl` APIs.
  *
@@ -45,15 +57,23 @@ class IntlDateLocalizer implements DateLocalizer<Intl.DateTimeFormatOptions> {
     }
 
     const formats: Formatters = {
-      date: Intl.DateTimeFormat(culture, { dateStyle: 'short' }).format,
-      time: Intl.DateTimeFormat(culture, { timeStyle: 'short' }).format,
-      datetime: Intl.DateTimeFormat(culture, {
-        dateStyle: 'short',
-        timeStyle: 'short',
-      }).format,
+      date: Intl.DateTimeFormat(
+        culture,
+        supportStyles ? { dateStyle: 'short' } : dateShort,
+      ).format,
+      time: Intl.DateTimeFormat(
+        culture,
+        supportStyles ? { timeStyle: 'short' } : timeShort,
+      ).format,
+      datetime: Intl.DateTimeFormat(
+        culture,
+        supportStyles
+          ? { dateStyle: 'short', timeStyle: 'short' }
+          : { ...dateShort, ...timeShort },
+      ).format,
       header: Intl.DateTimeFormat(culture, { month: 'short', year: 'numeric' })
         .format,
-      footer: Intl.DateTimeFormat(culture, { dateStyle: 'full' }).format,
+
       weekday: Intl.DateTimeFormat(culture, { weekday: 'narrow' }).format,
       dayOfMonth: Intl.DateTimeFormat(culture, { day: '2-digit' }).format,
       month: Intl.DateTimeFormat(culture, { month: 'short' }).format,

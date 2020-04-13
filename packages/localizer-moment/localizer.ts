@@ -54,10 +54,6 @@ export default class MomentLocalizer implements DateLocalizer<string> {
     return this.m(date).format(format || 'MMM YYYY')
   }
 
-  footer(date: Date, format?: string) {
-    return this.m(date).format(format || 'LL')
-  }
-
   weekday(date: Date, format?: string) {
     return this.m(date).format(format || 'dd')
   }

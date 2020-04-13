@@ -26,7 +26,6 @@ export type RequiredDateMethods =
   | 'time'
   | 'datetime'
   | 'header'
-  | 'footer'
   | 'weekday'
   | 'dayOfMonth'
   | 'month'
@@ -53,13 +52,17 @@ export interface Localizer<TD = unknown, TN = unknown> {
   formatOverrides: FormatterOverrides<TD, TN>
   messages: ProcessedMessages
 
-  formatDate(value: Date, format: RequiredDateMethods): string
+  formatDate(
+    value: Date,
+    formatter: RequiredDateMethods,
+    userFormat?: TD,
+  ): string
   // formatDateToParts(value: Date, format: TD): DateTimePart[]
 
-  formatNumber(value: number): string
+  formatNumber(value: number, userFormat?: TN): string
 
-  parseDate(dateString: string, format?: RequiredDateMethods): Date | null
-  parseNumber(numberString: string): number | null
+  parseDate(dateString: string, format?: TD): Date | null
+  parseNumber(numberString: string, format?: TN): number | null
 
   firstOfWeek(): number
   decimalCharacter(): string
@@ -86,15 +89,14 @@ function mergeWithDefaults<TD, TN>(
     formatOverrides,
     messages: getMessages(messages),
 
-    formatDate(value: Date, format: RequiredDateMethods) {
-      return date![format](value, this.formatOverrides[format])
+    formatDate(value: Date, format: RequiredDateMethods, userFormat?: TD) {
+      return date![format](value, userFormat ?? this.formatOverrides[format])
     },
-    formatNumber(value: number) {
-      return number!.format(value, this.formatOverrides.number)
+    formatNumber(value: number, userFormat?: TN) {
+      return number!.format(value, userFormat ?? this.formatOverrides.number)
     },
-    parseDate(value: string, format: RequiredDateMethods) {
-      return date!.parse(value, this.formatOverrides[format])
-    },
+
+    parseDate: date!.parse.bind(date),
 
     parseNumber: number!.parse.bind(number),
 
@@ -119,9 +121,11 @@ type ProviderProps = {
 }
 
 const Localization = ({ date, number, messages, children }: ProviderProps) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const localizer = useMemo(() => mergeWithDefaults(date, number, messages), [
     date,
     number,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(messages),
   ])
 
@@ -146,7 +150,7 @@ export const useLocalizer = (
       messages: getMessages({ ...localizer.messages, ...messages }),
       formatOverrides: { ...localizer.formatOverrides, ...formats },
     }
-  }, [messages, formats])
+  }, [messages, formats, localizer])
 }
 
 Localization.useLocalizer = useLocalizer

@@ -38,10 +38,6 @@ export default class DateFnsLocalizer implements DateLocalizer<string> {
     return this.format(date, format || 'MMMM yyyy')
   }
 
-  footer(date: Date, format?: string) {
-    return this.format(date, format || 'PPPP')
-  }
-
   weekday(date: Date, format?: string) {
     return this.format(date, format || 'cccccc')
   }

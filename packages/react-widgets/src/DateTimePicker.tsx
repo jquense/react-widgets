@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import React, { useImperativeHandle, useRef } from 'react'
+import React, { useImperativeHandle, useRef, useCallback } from 'react'
 import { useUncontrolled } from 'uncontrollable'
 import Button from './Button'
 import Calendar, { CalendarProps } from './Calendar'
@@ -8,7 +8,7 @@ import DateTimePickerInput, {
   DateTimePickerInputProps,
 } from './DateTimePickerInput'
 import { calendar } from './Icon'
-import { useLocalizer, Localizer } from './Localization'
+import { useLocalizer, Localizer, DateFormats } from './Localization'
 import Popup from './Popup'
 import Select from './Select'
 import TimeInput, { TimeInputProps } from './TimeInput'
@@ -21,7 +21,7 @@ import useFocusManager from './useFocusManager'
 import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 
 import { TransitionProps } from 'react-transition-group/Transition'
-import { WidgetHTMLProps, DateLocalizationProps } from './shared'
+import { WidgetHTMLProps, InferFormat } from './shared'
 import useEventCallback from '@restart/hooks/esm/useEventCallback'
 
 let propTypes = {
@@ -49,8 +49,9 @@ let propTypes = {
   /**
    * Change event Handler that is called when the currentDate is changed. The handler is called with the currentDate object.
    */
-  onCurrentDateChange?: PropTypes.func,
-  onSelect?: PropTypes.func,
+  onCurrentDateChange: PropTypes.func,
+
+  onSelect: PropTypes.func,
 
   /**
    * The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that
@@ -77,23 +78,22 @@ let propTypes = {
    */
   step: PropTypes.number,
 
-  formats: PropTypes.shape({
-    /**
-     * A formatter used to display the date value. For more information about formats
-     * visit the [Localization page](/localization)
-     *
-     * @example ['dateFormat', ['default', "{ raw: 'MMM dd, yyyy' }", null, { defaultValue: 'new Date()', time: 'false' }]]
-     */
-    value: PropTypes.any,
+  /**
+   * A formatting options used to display the date value. For more information about formats
+   * visit the [Localization page](/localization)
+   *
+   * @example ['dateFormat', ['default', "{ raw: 'MMM dd, yyyy' }", null, { defaultValue: 'new Date()', time: 'false' }]]
+   */
 
-    /**
-     * A formatter to be used while the date input has focus. Useful for showing a simpler format for inputing.
-     * For more information about formats visit the [Localization page](/localization)
-     *
-     * @example ['dateFormat', ['edit', "{ date: 'short' }", null, { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }]]
-     */
-    editValue: PropTypes.any,
-  }),
+  valueDisplayFormat: PropTypes.any,
+
+  /**
+   * A formatting options used while the date input has focus. Useful for showing a simpler format for inputing.
+   * For more information about formats visit the [Localization page](/localization)
+   *
+   * @example ['dateFormat', ['edit', "{ date: 'short' }", null, { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }]]
+   */
+  valueEditFormat: PropTypes.any,
 
   /**
    * Enable the time list component of the picker.
@@ -173,8 +173,7 @@ const defaultProps = {
 
 export interface DateTimePickerProps<TLocalizer = unknown>
   extends Omit<WidgetHTMLProps, 'onChange'>,
-    Omit<WidgetProps, 'onChange' | 'onSelect'>,
-    DateLocalizationProps<TLocalizer> {
+    Omit<WidgetProps, 'onChange' | 'onSelect'> {
   /**
    * @example ['valuePicker', [ ['new Date()', null] ]]
    */
@@ -199,8 +198,9 @@ export interface DateTimePickerProps<TLocalizer = unknown>
   /**
    * Change event Handler that is called when the currentDate is changed. The handler is called with the currentDate object.
    */
-  onCurrentDateChange: () => void
-  onSelect: (date: Date | null, rawValue: string) => void
+  onCurrentDateChange?: () => void
+
+  onSelect?: (date: Date | null, rawValue: string) => void
 
   /**
    * The minimum Date that can be selected. Min only limits selection, it doesn't constrain the date values that
@@ -256,11 +256,11 @@ export interface DateTimePickerProps<TLocalizer = unknown>
   readOnly?: boolean
 
   /**
-   * Determines how the widget parses the typed date string into a Date object. You can provide an array of formats to try,
-   * or provide a function that returns a date to handle parsing yourself. When `parse` is unspecified and
-   * the `format` prop is a `string` parse will automatically use that format as its default.
+   * Determines how the widget parses the typed date string into a Date object. You can provide a date format
+   * or a function that returns a date to handle parsing yourself. When `parse` is unspecified and
+   * the default `localizer.parse` is used and passed the string as well as `valueDisplayFormat` or `valueEditFormat`.
    */
-  parse: string[] | string | ((str: string) => Date | undefined)
+  parse: string | ((str: string, localizer?: TLocalizer) => Date | undefined)
 
   /** @ignore */
   localizer?: Localizer
@@ -276,6 +276,12 @@ export interface DateTimePickerProps<TLocalizer = unknown>
   calendarProps?: Partial<CalendarProps>
   inputProps?: Partial<DateTimePickerInputProps>
   isRtl?: boolean
+
+  valueDisplayFormat?: InferFormat<TLocalizer>
+  valueEditFormat?: InferFormat<TLocalizer>
+
+  formats?: DateFormats<InferFormat<TLocalizer>>
+
   messages: {
     dateButton?: string
     timeButton?: string
@@ -326,6 +332,8 @@ const DateTimePicker = React.forwardRef(
       disabled,
       readOnly,
       className,
+      valueDisplayFormat,
+      valueEditFormat,
       containerClassName,
       name,
       selectIcon,
@@ -350,7 +358,7 @@ const DateTimePicker = React.forwardRef(
       value: 'onChange',
       currentDate: 'onCurrentDateChange',
     })
-    const localizer = useLocalizer(messages, formats as any /*HACK*/)
+    const localizer = useLocalizer(messages, formats)
 
     const ref = useRef<HTMLInputElement>(null)
     const calRef = useRef<HTMLDivElement>(null)
@@ -375,6 +383,21 @@ const DateTimePicker = React.forwardRef(
       },
     })
 
+    const dateParser = useCallback(
+      (str: string) => {
+        if (typeof parse == 'function') {
+          return parse(str, localizer) ?? null
+        }
+
+        return (
+          localizer.parseDate(
+            str,
+            parse ?? valueEditFormat ?? valueDisplayFormat,
+          ) ?? null
+        )
+      },
+      [localizer, parse, valueDisplayFormat, valueEditFormat],
+    )
     /**
      * Handlers
      */
@@ -513,11 +536,12 @@ const DateTimePicker = React.forwardRef(
             placeholder={placeholder}
             disabled={disabled}
             readOnly={inputReadOnly}
-            format={currentFormat}
-            editFormat={(formats as any)!.editValue}
+            formatter={currentFormat}
+            displayFormat={valueDisplayFormat}
+            editFormat={valueEditFormat}
             editing={focused}
             localizer={localizer}
-            parse={parse}
+            parse={dateParser}
             onChange={handleChange}
             aria-haspopup
             aria-labelledby={ariaLabelledby}

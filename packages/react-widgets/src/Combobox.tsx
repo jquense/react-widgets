@@ -31,7 +31,7 @@ import useFocusManager from './useFocusManager'
 import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 
 function indexOf<TDataItem>(
-  data: TDataItem[],
+  data: readonly TDataItem[],
   searchTerm: string,
   text: TextAccessorFn,
 ) {

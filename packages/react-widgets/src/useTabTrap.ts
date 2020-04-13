@@ -54,6 +54,6 @@ export default function useTabTrap(
         startedRef.current = false
       },
     }),
-    [selector],
+    [ref, selector],
   )
 }

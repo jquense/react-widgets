@@ -149,7 +149,7 @@ const EMPTY_ARRAY = [] as unknown[]
 
 function useMultiselectData<TDataItem>(
   value = EMPTY_ARRAY,
-  data: TDataItem[],
+  data: readonly TDataItem[],
   accessors: Accessors,
   filter?: Filter<TDataItem>,
   searchTerm?: string,
@@ -368,18 +368,18 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   /**
    * Update aria when it changes on update
    */
-  const focusedItem = list.getFocused()
   const focusedTag = tagList.getFocused()
   useEffect(() => {
-    let active: string
-    if (!currentOpen) {
-      active = focusedTag ? activeTagId : ''
-      setActiveDescendant(inputRef.current, active!, true)
-    } else if (focusedItem || showCreateOption) {
-      active = activeOptionId
-      setActiveDescendant(inputRef.current, active!, currentOpen)
-    }
-  }, [currentOpen, focusedItem, focusedTag])
+    if (currentOpen) return
+    setActiveDescendant(inputRef.current, focusedTag ? activeTagId : '')
+  }, [activeTagId, currentOpen, focusedTag])
+
+  const focusedItem = list.getFocused()
+  useEffect(() => {
+    if (!currentOpen) return
+    // if (focusedItem) tagList.focus(null)
+    setActiveDescendant(inputRef.current, focusedItem ? activeOptionId : '')
+  }, [activeOptionId, currentOpen, focusedItem])
 
   /**
    * Event Handlers
@@ -631,7 +631,6 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
           <TagList<TDataItem>
             id={tagsId}
             textAccessor={accessors.text}
-            dataKeyAccessor={accessors.value}
             clearTagIcon={clearTagIcon}
             label={messages.tagsLabel()}
             value={dataItems}

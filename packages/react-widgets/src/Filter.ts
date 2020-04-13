@@ -36,7 +36,7 @@ function normalizeFilter<TDataItem>(
 }
 
 export function useFilteredData<TDataItem>(
-  data: TDataItem[],
+  data: readonly TDataItem[],
   filterer: Filter<TDataItem>,
   searchTerm = '',
   textAccessor?: TextAccessor,

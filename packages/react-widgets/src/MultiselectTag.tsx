@@ -12,7 +12,6 @@ export interface MultiselectTagProps {
   readOnly?: boolean
   label?: string
   style?: React.CSSProperties
-  tabIndex?: number
   onRemove: (
     dataItem: DataItem,
     event: React.MouseEvent<HTMLButtonElement>,
@@ -29,7 +28,6 @@ function MultiselectTag({
   disabled,
   readOnly,
   onRemove,
-  tabIndex = -1,
   clearTagIcon,
   dataItem,
 }: MultiselectTagProps) {
@@ -44,8 +42,8 @@ function MultiselectTag({
       ref={ref}
       role="option"
       id={id}
-      tabIndex={disabled ? undefined : tabIndex}
       data-rw-option=""
+      data-rw-focusable={disabled ? undefined : ''}
       data-rw-focused={focused ? '' : undefined}
       className={cn(
         className,

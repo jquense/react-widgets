@@ -66,7 +66,7 @@ export type SingleChangeHandler<TDataItem> = (
 ) => void
 
 export type MultipleChangeHandler<TDataItem> = (
-  dataItem: TDataItem[],
+  dataItem: readonly TDataItem[],
   metadata: {
     action: 'insert' | 'remove'
     dataItem: TDataItem
@@ -77,7 +77,6 @@ export type MultipleChangeHandler<TDataItem> = (
 
 export interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
   data: TDataItem[]
-  // value: Value
   defaultValue?: Value
   focusedItem?: TDataItem
   className?: string
@@ -91,7 +90,6 @@ export interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
   optionComponent?: React.ElementType
   textField?: TextAccessor
   dataKey?: DataKeyAccessor
-  // onChange: ChangeHandler<TDataItem>
 }
 
 export interface SingleListboxProps<TDataItem>
@@ -151,7 +149,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
   const dataItems = useMemo(
     () =>
       makeArray(value, multiple).map(item => accessors.findOrSelf(data, item)),
-    [data, value, accessors],
+    [value, multiple, accessors, data],
   )
   const ref = useRef<HTMLDivElement>(null)
   const lastItemRef = useRef<TDataItem | null>(dataItems[dataItems.length - 1])

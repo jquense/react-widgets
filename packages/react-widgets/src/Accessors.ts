@@ -48,7 +48,7 @@ export function valueMatcher(
 }
 
 export function dataIndexOf(
-  data: DataItem[],
+  data: readonly DataItem[],
   value: Value,
   dataKey?: DataKeyAccessor,
 ) {
@@ -65,7 +65,7 @@ export function dataIndexOf(
 }
 
 export function dataItem<TDataItem = DataItem>(
-  data: TDataItem[],
+  data: readonly TDataItem[],
   value: Value,
   dataKey?: DataKeyAccessor,
 ): TDataItem {
@@ -82,12 +82,12 @@ export const useAccessors = (
     () => ({
       text: (item: DataItem) => dataText(item, textField),
       value: (item: DataItem) => dataValue(item, dataKey),
-      indexOf: (data: DataItem[], value: Value) =>
+      indexOf: (data: readonly DataItem[], value: Value) =>
         dataIndexOf(data, value, dataKey),
       matches: (a: DataItem, b: DataItem) => valueMatcher(a, b, dataKey),
-      findOrSelf: <TDataItem>(data: TDataItem[], value: Value) =>
+      findOrSelf: <TDataItem>(data: readonly TDataItem[], value: Value) =>
         dataItem(data, value, dataKey),
-      includes: (data: DataItem[], value: Value) =>
+      includes: (data: readonly DataItem[], value: Value) =>
         dataIndexOf(data, value, dataKey) !== -1,
     }),
     [textField, dataKey],

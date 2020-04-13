@@ -57,6 +57,15 @@ storiesOf('DateTimePicker', module)
       <DateTimePicker />
     </Container>
   ))
+  .add('Formats', () => (
+    <Container>
+      <DateTimePicker
+        defaultValue={new Date()}
+        valueDisplayFormat={{ dateStyle: 'full' }}
+        valueEditFormat={{ dateStyle: 'medium' }}
+      />
+    </Container>
+  ))
   .add('open', () => (
     <Container>
       <DateTimePicker
@@ -68,7 +77,7 @@ storiesOf('DateTimePicker', module)
 
   .add('parsers', () => (
     <Container>
-      <DateTimePicker format="MM/dd/yyyy" parse={d => new Date(d)} />
+      <DateTimePicker parse={d => new Date(d)} />
     </Container>
   ))
   .add('fieldset disabled', () => (

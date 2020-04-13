@@ -45,6 +45,9 @@
   max-width: 100%;
   align-items: center;
 
+  &:focus {
+    outline: none;
+  }
   .rw-rtl & {
     margin-left: 0;
     margin-right: $multiselect-tag-gutter;

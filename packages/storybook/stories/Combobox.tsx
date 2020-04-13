@@ -33,15 +33,10 @@ storiesOf('Combobox', module)
     <Container>
       <Combobox
         {...props}
-        defaultValue={props.data[3]}
         open
+        defaultValue={props.data[3]}
         filter="contains"
       />
-    </Container>
-  ))
-  .add('suggestions', () => (
-    <Container>
-      <Combobox dataKey="id" textField="fullName" data={suggestList} />
     </Container>
   ))
   .add('busy', () => (

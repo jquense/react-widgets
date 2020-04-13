@@ -1,17 +1,7 @@
 import React, { ReactNode } from 'react'
 import MultiselectTag, { MultiselectTagProps } from './MultiselectTag'
 import { RenderProp } from './types'
-import { DataKeyAccessorFn, dataIndexOf, TextAccessorFn } from './Accessors'
-
-// FIXME: just do data items
-// disabled === true || [1, 2, 3, etc]
-function isDisabled<TDataItem>(
-  item: TDataItem,
-  list: unknown[] | undefined,
-  value: DataKeyAccessorFn,
-) {
-  return !!(Array.isArray(list) ? ~dataIndexOf(list, item, value) : list)
-}
+import { TextAccessorFn } from './Accessors'
 
 export type RenderTagProp<TDataItem> = RenderProp<{ item: TDataItem }>
 
@@ -20,10 +10,9 @@ export type TagComponentProp = React.ComponentType<MultiselectTagProps>
 interface MultiselectTagListProps<TDataItem> {
   id: string
   label?: string
-  value: TDataItem[]
+  value: readonly TDataItem[]
   focusedItem?: TDataItem
   clearTagIcon: React.ReactNode
-  dataKeyAccessor: DataKeyAccessorFn
   textAccessor: TextAccessorFn
   onDelete: (
     dataItem: TDataItem,
@@ -32,14 +21,13 @@ interface MultiselectTagListProps<TDataItem> {
   renderTagValue?: RenderTagProp<TDataItem>
   tagOptionComponent?: TagComponentProp
 
-  disabled?: TDataItem[]
+  disabled?: readonly TDataItem[]
   children?: ReactNode
 }
 
 function MultiselectTagList<TDataItem>({
   id,
   value,
-  dataKeyAccessor,
   textAccessor,
   label,
   disabled,
@@ -63,7 +51,7 @@ function MultiselectTagList<TDataItem>({
             dataItem={item}
             onRemove={onDelete}
             clearTagIcon={clearTagIcon}
-            disabled={isDisabled(item, disabled, dataKeyAccessor)}
+            disabled={disabled?.includes(item)}
           >
             {renderTagValue ? renderTagValue({ item }) : textAccessor(item)}
           </TagOption>

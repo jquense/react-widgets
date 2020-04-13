@@ -208,7 +208,7 @@ export type ChangeHandler<TDataItem> = (
 ) => void
 
 export type MultipleChangeHandler<TDataItem> = (
-  dataItem: TDataItem[],
+  dataItem: readonly TDataItem[],
   metadata: {
     action: 'insert' | 'remove'
     dataItem: TDataItem
@@ -224,7 +224,7 @@ export type SelectHandler<TDataItem> = (
 ) => void
 
 export interface BaseListboxInputProps<TDataItem, TValue = Value> {
-  data?: TDataItem[]
+  data?: readonly TDataItem[]
   textField?: TextAccessor
   dataKey?: DataKeyAccessor
 
@@ -243,7 +243,7 @@ export interface BaseListboxInputProps<TDataItem, TValue = Value> {
   busy?: boolean
   busySpinner?: ReactNode
 
-  disabled?: boolean | Array<TDataItem>
+  disabled?: boolean | ReadonlyArray<TDataItem>
   readOnly?: boolean
 
   selectIcon?: ReactNode
@@ -258,16 +258,17 @@ export interface BaseListboxInputProps<TDataItem, TValue = Value> {
   listComponent?: ComponentType<ListProps<TDataItem> & { ref: Ref<ListHandle> }>
 }
 
-export interface DateLocalizationProps<
-  TLocalizer = unknown,
-  TFormat = TLocalizer extends Localizer<infer TFormat, any> ? TFormat : unknown
-> {
-  formats?: DateFormats<TFormat>
+export type InferFormat<TLocalizer> = TLocalizer extends Localizer<
+  infer TFormat,
+  any
+>
+  ? TFormat
+  : unknown
+
+export interface DateLocalizationProps<TLocalizer = unknown> {
+  formats?: DateFormats<InferFormat<TLocalizer>>
 }
 
-export interface NumberLocalizationProps<
-  TLocalizer = unknown,
-  TFormat = TLocalizer extends Localizer<any, infer TFormat> ? TFormat : unknown
-> {
-  formats?: DateFormats<TFormat>
+export interface NumberLocalizationProps<TLocalizer = unknown> {
+  formats?: DateFormats<InferFormat<TLocalizer>>
 }

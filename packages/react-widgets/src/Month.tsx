@@ -66,8 +66,7 @@ function MonthView({
           <CalendarView.Row key={rowIdx}>
             {row.map((date, colIdx) => {
               let formattedDate = localizer.formatDate(date, 'dayOfMonth')
-              // TODO: change format
-              let label = localizer.formatDate(date, 'footer')
+              let label = localizer.formatDate(date, 'date')
 
               return (
                 <CalendarView.Cell

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import querySelectorAll from 'dom-helpers/querySelectorAll'
 import React, {
   useCallback,
@@ -18,8 +19,6 @@ type FocusListContext = {
 export const FocusListContext = React.createContext<FocusListContext | null>(
   null,
 )
-
-const SELECTOR = '[data-rw-option][tabindex], [data-rw-focusable]'
 
 export interface FocusProps {
   children: any
@@ -95,7 +94,7 @@ export const useFocusList = <TDataItem>({
   const map = useMemo(() => new WeakMap<HTMLElement, any>(), [])
 
   const [focusedItem, setFocusedItem] = useState<TDataItem>()
-  const itemSelector = `${scopeSelector} ${SELECTOR}`.trim()
+  const itemSelector = `${scopeSelector} [data-rw-option][tabindex], ${scopeSelector} [data-rw-focusable]`.trim()
 
   const get = () => {
     const items = querySelectorAll(listRef.current!, itemSelector)

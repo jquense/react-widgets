@@ -5,15 +5,11 @@ import { useEffect, RefObject } from 'react'
  * even if the id hasn't changed, this saves us from having to have a different id
  * per item.
  */
-export const setActiveDescendant = (
-  ref: Element | null,
-  activeId: string,
-  visible: boolean | null | undefined,
-) => {
+export const setActiveDescendant = (ref: Element | null, activeId: string) => {
   if (!ref) return
 
   ref.removeAttribute('aria-activedescendant')
-  if (visible) ref.setAttribute('aria-activedescendant', activeId)
+  if (activeId) ref.setAttribute('aria-activedescendant', activeId)
 }
 
 export const useActiveDescendant = (
@@ -23,6 +19,7 @@ export const useActiveDescendant = (
   deps: any[],
 ) => {
   useEffect(() => {
-    setActiveDescendant(ref.current, id, visible)
-  }, [visible, ...deps])
+    setActiveDescendant(ref.current, visible ? id : '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref, id, visible, ...deps])
 }

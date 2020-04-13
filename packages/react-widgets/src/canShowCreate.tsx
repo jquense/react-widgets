@@ -3,8 +3,8 @@ import { Accessors } from './Accessors'
 
 interface Options {
   searchTerm?: string
-  data: unknown[]
-  dataItems?: unknown[]
+  data: readonly unknown[]
+  dataItems?: readonly unknown[]
   accessors: Accessors
 }
 export default function allowCreate(

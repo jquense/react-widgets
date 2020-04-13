@@ -6,12 +6,12 @@ import { useUncontrolledProp } from 'uncontrollable'
 import CalendarHeader from './CalendarHeader'
 import Century from './Century'
 import Decade from './Decade'
-import { useLocalizer } from './Localization'
+import { useLocalizer, DateFormats } from './Localization'
 import Month, { RenderDayProp } from './Month'
 import SlideTransitionGroup from './SlideTransitionGroup'
 import Widget from './Widget'
 import Year from './Year'
-import { DateLocalizationProps, WidgetHTMLProps, WidgetProps } from './shared'
+import { WidgetHTMLProps, WidgetProps, InferFormat } from './shared'
 
 import dates from './dates'
 import useAutoFocus from './useAutoFocus'
@@ -259,8 +259,7 @@ type View = 'month' | 'year' | 'decade' | 'century'
 
 export interface CalendarProps<TLocalizer = unknown>
   extends WidgetHTMLProps,
-    WidgetProps,
-    DateLocalizationProps<TLocalizer> {
+    WidgetProps {
   bordered?: boolean
   views?: View[]
   disabled?: boolean
@@ -287,6 +286,7 @@ export interface CalendarProps<TLocalizer = unknown>
     nextView: View,
   ) => void
   renderDay?: RenderDayProp
+  formats?: DateFormats<InferFormat<TLocalizer>>
 }
 
 /**

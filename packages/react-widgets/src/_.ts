@@ -2,13 +2,15 @@
 import warning from 'warning'
 import { GroupBy } from './List'
 
-export function toItemArray<TDataItem>(a?: TDataItem[] | boolean): TDataItem[] {
+export function toItemArray<TDataItem>(
+  a?: readonly TDataItem[] | boolean,
+): readonly TDataItem[] {
   if (Array.isArray(a)) return a
   return []
 }
 
 export const makeArray = <T>(
-  obj: T | T[] | undefined | null,
+  obj: T | readonly T[] | undefined | null,
   excludeNull = true,
 ): T[] => {
   const result: T[] = []
@@ -23,7 +25,7 @@ export const makeArray = <T>(
 export const has = <T>(o: T, key: string) =>
   o ? Object.prototype.hasOwnProperty.call(o, key) : false
 
-export function chunk<T>(array: T[], chunkSize: number): Array<T[]> {
+export function chunk<T>(array: readonly T[], chunkSize: number): Array<T[]> {
   let index = 0
   let length = array ? array.length : 0
   let result = [] as Array<T[]>
@@ -36,7 +38,7 @@ export function chunk<T>(array: T[], chunkSize: number): Array<T[]> {
 
 export function groupBySortedKeys<TData>(
   groupBy: GroupBy<TData>,
-  data: TData[],
+  data: readonly TData[],
   _keys: unknown[] = [],
 ) {
   const iter =

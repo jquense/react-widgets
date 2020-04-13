@@ -106,13 +106,13 @@ export type ChangeHandler<TDataItem> = (
 ) => void
 
 export interface ListProps<TDataItem> {
-  data: TDataItem[]
-  value?: TDataItem[] | TDataItem
+  data: readonly TDataItem[]
+  value?: readonly TDataItem[] | TDataItem
   accessors: Accessors
   focusedItem?: TDataItem
   className?: string
   multiple?: boolean
-  disabled?: boolean | TDataItem[]
+  disabled?: boolean | readonly TDataItem[]
   messages?: UserProvidedMessages
   renderItem?: RenderItemProp<TDataItem>
   renderGroup?: RenderGroupProp

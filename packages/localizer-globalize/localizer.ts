@@ -46,7 +46,6 @@ export const defaultDateFormats: DateFormatters = {
   time: { time: 'short' },
   datetime: { datetime: 'medium' },
   header: { raw: 'MMMM yyyy' },
-  footer: { date: 'full' },
   weekday: { raw: 'eeeeee' },
   dayOfMonth: { raw: 'd' },
   month: { raw: 'MMM' },
