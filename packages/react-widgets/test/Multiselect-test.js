@@ -4,20 +4,20 @@ import Multiselect from '../src/Multiselect'
 import MultiselectTag from '../src/MultiselectTag'
 import MultiselectTagList from '../src/MultiselectTagList'
 
-describe('Multiselect', function() {
+describe('Multiselect', function () {
   let dataList = [
     { label: 'jimmy', id: 0 },
     { label: 'sally', id: 1 },
     { label: 'pat', id: 2 },
   ]
 
-  it('should set initial values', function() {
+  it('should set initial values', function () {
     mount(<Multiselect value={['hello']} onChange={() => {}} />)
       .find(MultiselectTag)
       .contains('hello')
   })
 
-  it('should respect textField and dataKeys', function() {
+  it('should respect textField and dataKeys', function () {
     mount(
       <Multiselect
         defaultValue={[0]}
@@ -34,7 +34,7 @@ describe('Multiselect', function() {
         defaultValue={[0]}
         data={dataList}
         textField="label"
-        dataKey={i => i.id}
+        dataKey={(i) => i.id}
       />,
     )
       .find(MultiselectTag)
@@ -77,7 +77,7 @@ describe('Multiselect', function() {
     expect(props.open).to.equal(true)
   })
 
-  it('should open when clicked', done => {
+  it('should open when clicked', (done) => {
     let openSpy = sinon.spy()
 
     mount(<Multiselect onToggle={openSpy} />)
@@ -91,7 +91,7 @@ describe('Multiselect', function() {
     })
   })
 
-  it('should not open when disabled', done => {
+  it('should not open when disabled', (done) => {
     let openSpy = sinon.spy()
 
     mount(<Multiselect onToggle={openSpy} disabled />).simulate('focus')
@@ -110,7 +110,7 @@ describe('Multiselect', function() {
     ).to.be.a('string')
   })
 
-  it('should remove tag when clicked', function() {
+  it('should remove tag when clicked', function () {
     let del = sinon.spy()
     mount(
       <MultiselectTagList
@@ -119,11 +119,11 @@ describe('Multiselect', function() {
         data={dataList}
         onDelete={del}
         value={dataList.slice(0, 2)}
-        dataKeyAccessor={i => i.id}
-        textAccessor={i => i.label}
+        dataKeyAccessor={(i) => i.id}
+        textAccessor={(i) => i.label}
       />,
     )
-      .tap(inst => expect(inst.find(MultiselectTag).length).to.equal(2))
+      .tap((inst) => expect(inst.find(MultiselectTag).length).to.equal(2))
       .find('.rw-multiselect-tag-btn')
       .first()
       .simulate('click', {})
@@ -132,7 +132,7 @@ describe('Multiselect', function() {
     expect(del.calledWith(dataList[0])).to.equal(true)
   })
 
-  it('should change value when tag is clicked', function() {
+  it('should change value when tag is clicked', function () {
     let change = sinon.spy()
 
     mount(
@@ -164,7 +164,7 @@ describe('Multiselect', function() {
     expect(blur.calledOnce).to.equal(true)
   })
 
-  it('should not simulate focus/blur events when disabled', function() {
+  it('should not simulate focus/blur events when disabled', function () {
     let blur = sinon.spy(),
       focus = sinon.spy()
 
@@ -176,7 +176,7 @@ describe('Multiselect', function() {
     expect(blur.called).to.equal(false)
   })
 
-  it('should simulate key events', function() {
+  it('should simulate key events', function () {
     let kp = sinon.spy(),
       kd = sinon.spy(),
       ku = sinon.spy()
@@ -216,7 +216,7 @@ describe('Multiselect', function() {
         onChange={change}
         defaultValue={[0, 1]}
         data={dataList}
-        disabled={[1]}
+        disabled={[dataList[1]]}
         textField="label"
         dataKey="id"
       />,
@@ -245,14 +245,14 @@ describe('Multiselect', function() {
     expect(changeSpy.called).to.equal(false)
   })
 
-  it('should not remove disabled tags', function() {
+  it('should not remove disabled tags', function () {
     let change = sinon.spy()
     mount(
       <Multiselect
         onChange={change}
         defaultValue={[1, 0]}
         data={dataList}
-        disabled={[1]}
+        disabled={[dataList[1]]}
         textField="label"
         dataKey="id"
       />,
@@ -283,7 +283,7 @@ describe('Multiselect', function() {
 
   //  .tap(i => console.log(i.debug()))
 
-  it('should call onChange with event object from select', function() {
+  it('should call onChange with event object from select', function () {
     let change = sinon.spy()
     let value = dataList.slice(0, 1)
 
@@ -298,7 +298,7 @@ describe('Multiselect', function() {
       />,
     )
       .find('List')
-      .act(_ => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
+      .act((_) => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
 
     expect(change.getCall(0).args[1]).to.eql({
       originalEvent: 'foo',
@@ -309,7 +309,7 @@ describe('Multiselect', function() {
     })
   })
 
-  it('should call onSearch with event object from select', function() {
+  it('should call onSearch with event object from select', function () {
     let search = sinon.spy()
     let value = dataList.slice(0, 1)
     let event = { target: { value: 'ba' } }
@@ -333,7 +333,7 @@ describe('Multiselect', function() {
     expect(action).to.equal('input')
   })
 
-  it('should call Select handler', function() {
+  it('should call Select handler', function () {
     let change = sinon.spy()
     let onSelect = sinon.spy()
     let value = dataList.slice(1)
@@ -349,7 +349,7 @@ describe('Multiselect', function() {
       />,
     )
       .find('List')
-      .act(_ => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
+      .act((_) => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
 
     expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
@@ -395,7 +395,7 @@ describe('Multiselect', function() {
     expect(searchSpy.calledWith('')).to.equal(true)
   })
 
-  it('should not simulate form submission', function() {
+  it('should not simulate form submission', function () {
     let spy = sinon.spy()
 
     mount(
@@ -419,7 +419,7 @@ describe('Multiselect', function() {
     expect(spy.calledOnce).to.equal(true)
   })
 
-  it('should show create tag correctly', function() {
+  it('should show create tag correctly', function () {
     mount(
       <Multiselect
         defaultOpen
@@ -431,16 +431,16 @@ describe('Multiselect', function() {
         dataKey="id"
       />,
     )
-      .tap(s => s.assertSingle('button.rw-list-option-create'))
+      .tap((s) => s.assertSingle('button.rw-list-option-create'))
       .setProps({ searchTerm: undefined })
-      .tap(s => s.assertNone('button.rw-list-option-create'))
+      .tap((s) => s.assertNone('button.rw-list-option-create'))
       .setProps({ searchTerm: 'JIMMY' })
-      .tap(s => s.assertNone('button.rw-list-option-create'))
+      .tap((s) => s.assertNone('button.rw-list-option-create'))
       .setProps({ searchTerm: 'custom', allowCreate: false })
-      .tap(s => s.assertNone('button.rw-list-option-create'))
+      .tap((s) => s.assertNone('button.rw-list-option-create'))
   })
 
-  it('should call onCreate', function() {
+  it('should call onCreate', function () {
     let create = sinon.spy()
 
     let assertOnCreateCalled = () => {
@@ -474,7 +474,7 @@ describe('Multiselect', function() {
       .tap(assertOnCreateCalled)
   })
 
-  it('should navigate tags list', function() {
+  it('should navigate tags list', function () {
     let change = sinon.spy()
     let listHead = dataList.slice(0, 2)
 
@@ -491,26 +491,14 @@ describe('Multiselect', function() {
     let tags = () => inst.update().find('MultiselectTagList div')
 
     inst = inst.simulate('keyDown', { key: 'ArrowLeft' })
-    expect(
-      tags()
-        .last()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(tags().last().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowLeft' })
 
-    expect(
-      tags()
-        .at(2)
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(tags().at(2).is('.rw-state-focus')).to.equal(true)
 
     inst = inst.simulate('keyDown', { key: 'ArrowRight' })
-    expect(
-      tags()
-        .last()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(tags().last().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'Delete' })
 
@@ -535,7 +523,7 @@ describe('Multiselect', function() {
     expect(openSpy.calledWith(true)).to.equal(true)
   })
 
-  it('should navigate list', function() {
+  it('should navigate list', function () {
     let change = sinon.spy()
 
     let inst = mount(
@@ -551,38 +539,18 @@ describe('Multiselect', function() {
     let listItems = () => inst.update().find('List div.rw-list-option')
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(
-      listItems()
-        .first()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(listItems().first().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(
-      listItems()
-        .at(1)
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(listItems().at(1).is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowUp' })
-    expect(
-      listItems()
-        .first()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(listItems().first().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'End' })
-    expect(
-      listItems()
-        .last()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(listItems().last().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'Home' })
-    expect(
-      listItems()
-        .first()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(listItems().first().is('.rw-state-focus')).to.equal(true)
   })
 })

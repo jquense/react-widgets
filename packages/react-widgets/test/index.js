@@ -1,4 +1,4 @@
-global.requestAnimationFrame = cb => setTimeout(cb, 0)
+global.requestAnimationFrame = (cb) => setTimeout(cb, 0)
 
 const React = require('react')
 const sinon = require('sinon')
@@ -8,8 +8,7 @@ const { act } = require('react-dom/test-utils')
 const { configure, ShallowWrapper, ReactWrapper } = require('enzyme')
 const Adapter = require('enzyme-adapter-react-16')
 
-require('./test-localizer')
-const widgetHelpers = require('../src/util/widgetHelpers')
+const widgetHelpers = require('../src/widgetHelpers')
 
 global.chai = chai
 global.sinon = sinon
@@ -29,8 +28,8 @@ function assertLength(length) {
   }
 }
 
-ReactWrapper.prototype.act = function(fn) {
-  return this.tap(inst => {
+ReactWrapper.prototype.act = function (fn) {
+  return this.tap((inst) => {
     let retval
     act(() => {
       retval = fn(inst)
@@ -39,11 +38,11 @@ ReactWrapper.prototype.act = function(fn) {
   })
 }
 
-ReactWrapper.prototype.simulate = function(...args) {
-  return this.act(inst => baseSimulate.apply(inst, args))
+ReactWrapper.prototype.simulate = function (...args) {
+  return this.act((inst) => baseSimulate.apply(inst, args))
 }
 
-ReactWrapper.prototype.simulateWithTimers = function(...args) {
+ReactWrapper.prototype.simulateWithTimers = function (...args) {
   let retval
   jest.useFakeTimers()
   act(() => {
@@ -54,7 +53,7 @@ ReactWrapper.prototype.simulateWithTimers = function(...args) {
   return retval
 }
 
-ReactWrapper.prototype.print = function() {
+ReactWrapper.prototype.print = function () {
   console.log(this.debug())
   return this
 }
@@ -87,7 +86,7 @@ beforeEach(() => {
   sinon.stub(console, 'error')
 })
 
-afterEach(function() {
+afterEach(function () {
   if (typeof console.error.restore === 'function') {
     if (console.error.called) {
       let { args } = console.error.getCall(0)

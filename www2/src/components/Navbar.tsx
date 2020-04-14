@@ -5,7 +5,7 @@ import React from 'react'
 export const widgets = [
   'Calendar',
   'Combobox',
-  'Date/TimePicker',
+  'Date/Time Picker',
   'DropdownList',
   'Listbox',
   'Multiselect',
@@ -23,10 +23,10 @@ export default function Navbar({ static: isStatic }: { static?: boolean }) {
       `}
     >
       <nav className="flex flex-wrap w-100 justify-center">
-        {widgets.map(name => (
+        {widgets.map((name) => (
           <Link
             activeClassName="bg-accent"
-            to={`/api/${name.replace('/', '')}`}
+            to={`/api/${name.replace('/', '').replace(' ', '')}`}
             className="px-4 flex  h-navbar items-center hover:bg-accent"
           >
             <span>{name}</span>

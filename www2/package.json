@@ -6,6 +6,7 @@
   "scripts": {
     "start": "gatsby develop"
   },
+  "private": true,
   "dependencies": {
     "@babel/cli": "^7.7.7",
     "@babel/core": "^7.9.0",

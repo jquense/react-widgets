@@ -3,7 +3,5 @@
   "version": "independent",
   "hoist": true,
   "npmClient": "yarn",
-  "useWorkspaces": true,
-  "conventionalCommits": true,
   "packages": ["packages/*"]
 }

@@ -26,7 +26,7 @@ import DropdownList from "react-widgets/lib/DropdownList";
     { id: 1, color: "Red" },
     { id: 2, color: "Yellow" },
     { id: 3, color: "Blue" },
-    { id: 4, color: "Orange" }
+    { id: 4, color: "Orange" },
   ]}
 />;
 ```
@@ -47,7 +47,7 @@ const renderColor = ({ item }) => (
         marginRight: 8,
         display: "inline-block",
         verticalAlign: "text-bottom",
-        backgroundColor: item.toLowerCase()
+        backgroundColor: item.toLowerCase(),
       }}
     />
     {item}
@@ -72,7 +72,7 @@ import { findAll } from "highlight-words-core";
 const renderItem = ({ item, searchTerm }) => {
   const results = findAll({
     searchWords: searchTerm.split(/\s+/),
-    textToHighlight: item
+    textToHighlight: item,
   });
 
   return results.length
@@ -80,7 +80,7 @@ const renderItem = ({ item, searchTerm }) => {
         <span
           key={index}
           style={{
-            backgroundColor: highlight ? item : undefined
+            backgroundColor: highlight ? item : undefined,
           }}
         >
           {item.slice(start, end)}
@@ -100,4 +100,12 @@ const renderItem = ({ item, searchTerm }) => {
 
 DropdownList implements many keyboard shortcuts for power or keyboard only users.
 
-<ul>{console.log(data)}</ul>
+- <kbd>alt + down arrow</kbd> open dropdown
+- <kbd>alt + up arrow</kbd> close dropdown
+- <kbd>down arrow</kbd> move focus to next item
+- <kbd>up arrow</kbd> move focus to previous item
+- <kbd>home</kbd> move focus to first item
+- <kbd>end</kbd> move focus to last item
+- <kbd>enter</kbd> select focused item
+- <kbd>ctrl + enter</kbd> create new option from current searchTerm
+- <kbd>any key</kbd> search list for item starting with key

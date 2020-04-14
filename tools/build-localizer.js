@@ -25,9 +25,9 @@ const compiler = webpack({
   module: {
     rules: [rules.js({ envName: 'esm', rootMode: 'upwards' })],
   },
-  "resolve": {
-    "extensions": ['js','json', 'ts', 'tsx']
-  }
+  resolve: {
+    extensions: ['js', 'json', 'ts', 'tsx'],
+  },
   plugins: [
     plugins.define(),
     plugins.banner({

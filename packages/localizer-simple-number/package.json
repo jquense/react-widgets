@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist/* lib/*",
-    "dist": "node ../../tools/build-localizer.js",
-    "build": "babel localizer.ts -o index.js",
-    "prepublishOnly": "npm run clean && npm run build && npm run dist"
+    "build": "babel localizer.ts -o index.js --root-mode upward",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "files": [
     "index.js",

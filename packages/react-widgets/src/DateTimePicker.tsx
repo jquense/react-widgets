@@ -22,7 +22,7 @@ import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 
 import { TransitionProps } from 'react-transition-group/Transition'
 import { WidgetHTMLProps, InferFormat } from './shared'
-import useEventCallback from '@restart/hooks/esm/useEventCallback'
+import useEventCallback from '@restart/hooks/useEventCallback'
 
 let propTypes = {
   /**
@@ -449,7 +449,7 @@ const DateTimePicker = React.forwardRef(
       },
     )
 
-    const handleDateSelect = useEventCallback(date => {
+    const handleDateSelect = useEventCallback((date) => {
       let dateTime = dates.merge(date, value, currentDate)
       let dateStr = formatDate(date)
 
@@ -460,7 +460,7 @@ const DateTimePicker = React.forwardRef(
       ref.current?.focus()
     })
 
-    const handleTimeChange = useEventCallback(date => {
+    const handleTimeChange = useEventCallback((date) => {
       handleChange(date, formatDate(date), true)
     })
 
