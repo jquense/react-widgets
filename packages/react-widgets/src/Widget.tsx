@@ -7,7 +7,6 @@ export interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   open?: boolean
   dropUp?: boolean
   autofilling?: boolean
-  isRtl?: boolean
   disabled?: boolean
   readOnly?: boolean
 }
@@ -42,7 +41,6 @@ export function useWidgetProps(props: WidgetProps) {
     className: cn(
       props.className,
       'rw-widget',
-      props.isRtl && 'rw-rtl',
       props.disabled && 'rw-state-disabled',
       props.readOnly && 'rw-state-readonly',
       props.focused && 'rw-state-focus',
@@ -63,7 +61,6 @@ const Widget = React.forwardRef<HTMLDivElement, WidgetProps>(
       disabled,
       readOnly,
       autofilling,
-      isRtl,
       ...props
     },
     ref,
@@ -77,7 +74,6 @@ const Widget = React.forwardRef<HTMLDivElement, WidgetProps>(
       disabled,
       readOnly,
       autofilling,
-      isRtl,
     })
 
     return <div ref={ref} {...props} {...widgetProps} />

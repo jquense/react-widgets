@@ -21,7 +21,8 @@ interface MultiselectTagListProps<TDataItem> {
   renderTagValue?: RenderTagProp<TDataItem>
   tagOptionComponent?: TagComponentProp
 
-  disabled?: readonly TDataItem[]
+  disabled?: readonly TDataItem[] | boolean
+  readOnly?: boolean
   children?: ReactNode
 }
 
@@ -31,6 +32,7 @@ function MultiselectTagList<TDataItem>({
   textAccessor,
   label,
   disabled,
+  readOnly,
   onDelete,
   children,
   clearTagIcon,
@@ -45,13 +47,17 @@ function MultiselectTagList<TDataItem>({
       className="rw-multiselect-taglist"
     >
       {value.map((item, i) => {
+        const itemDisabled = Array.isArray(disabled)
+          ? disabled.includes(item)
+          : !!disabled
         return (
           <TagOption
             key={i}
             dataItem={item}
             onRemove={onDelete}
             clearTagIcon={clearTagIcon}
-            disabled={disabled?.includes(item)}
+            disabled={itemDisabled}
+            readOnly={readOnly}
           >
             {renderTagValue ? renderTagValue({ item }) : textAccessor(item)}
           </TagOption>

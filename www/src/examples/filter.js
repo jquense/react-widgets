@@ -18,8 +18,6 @@ export default function(widgetName) {
           data={people}
           defaultValue={people[0]}
           textField='name'
-          caseSensitive={false}
-          minLength={3}
           filter='contains'
         />
         <${widgetName}

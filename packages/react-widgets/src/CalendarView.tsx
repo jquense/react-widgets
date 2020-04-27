@@ -31,7 +31,7 @@ function CalendarView({
     const node = ref.current
     if (!node || !focused) return
 
-    node.querySelector<HTMLElement>('.rw-cell[tabindex]')!.focus()
+    node.querySelector<HTMLElement>('.rw-cell[tabindex]')?.focus()
   }, [focusedItem, focused, ref])
 
   return (

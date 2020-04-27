@@ -102,7 +102,7 @@ export default class extends React.Component {
               <RW.DropdownList
                 filter={false}
                 value={filter || false}
-                data={[false, 'startsWith', 'endsWith', 'contains']}
+                data={[false, 'startsWith', 'eq', 'contains']}
                 onChange={setter('filter')}
               />
             </Demo.Control>

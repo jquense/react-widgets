@@ -5,7 +5,7 @@ import TimeInput from 'react-widgets/lib/TimeInput'
 import Layout from '@4c/layout'
 import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
-import Container from './Container'
+import Container from '../Container'
 
 const change = action('change')
 storiesOf('TimePicker', module).add('TimePicker', () => (
@@ -14,7 +14,7 @@ storiesOf('TimePicker', module).add('TimePicker', () => (
       date and time of birth
       <input
         type="datetime-local"
-        onChange={e => change(e.target.valueAsDate, e.target.value)}
+        onChange={(e) => change(e.target.valueAsDate, e.target.value)}
       />
     </label>
     <label>
@@ -77,7 +77,7 @@ storiesOf('DateTimePicker', module)
 
   .add('parsers', () => (
     <Container>
-      <DateTimePicker parse={d => new Date(d)} />
+      <DateTimePicker parse={(d) => new Date(d)} />
     </Container>
   ))
   .add('fieldset disabled', () => (
@@ -91,7 +91,7 @@ storiesOf('DateTimePicker', module)
   ))
   .add('current date', () => {
     class Story extends React.Component {
-      onChange = value => this.setState({ value })
+      onChange = (value) => this.setState({ value })
 
       render = () => (
         <Container>

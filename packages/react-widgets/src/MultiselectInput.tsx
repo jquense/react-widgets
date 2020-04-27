@@ -25,8 +25,8 @@ const MultiselectInput = React.forwardRef(
         {...props}
         size={size}
         ref={ref}
-        className="rw-input-reset"
         autoComplete="off"
+        className="rw-multiselect-input"
         aria-disabled={disabled}
         aria-readonly={readOnly}
         disabled={disabled}

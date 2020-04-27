@@ -5,14 +5,13 @@
 }
 
 .rw-calendar {
+  overflow: hidden;
+}
+
+.rw-calendar-contained {
   border-radius: $border-radius;
   background-color: $calendar-bg;
   border: $widget-border 1px solid;
-  overflow: hidden;
-
-  .rw-popup & {
-    border: none;
-  }
 }
 
 .rw-calendar-now {
@@ -23,6 +22,27 @@
   padding: 0.8em;
 }
 
+.rw-cell,
+.rw-calendar-btn {
+  line-height: 2em;
+  border-radius: $calendar-btn-border-radius;
+
+  @include focus();
+
+  &:hover {
+    background-color: $calendar-btn-hover-bg;
+  }
+  &:active {
+    background-color: $calendar-btn-active-bg;
+  }
+
+  &:disabled,
+  &.rw-state-disabled {
+    pointer-events: none;
+    opacity: 0.35;
+  }
+}
+
 .rw-calendar-btn-left,
 .rw-calendar-btn-today,
 .rw-calendar-btn-right,
@@ -30,19 +50,26 @@
   padding: 0.3em 0.6em;
 }
 
+.rw-calendar-btn-left,
+.rw-calendar-btn-right {
+  [dir='rtl'] & {
+    transform: scale(-1, 1);
+  }
+}
 .rw-calendar-btn-view {
   font-weight: bold;
 
   & > :last-child {
     margin: 0 0.5em;
   }
+
   & + * {
     margin-left: auto;
-  }
 
-  .rw-rtl & + * {
-    margin-left: 0;
-    margin-right: auto;
+    [dir='rtl'] & {
+      margin-left: 0;
+      margin-right: auto;
+    }
   }
 }
 
@@ -77,31 +104,12 @@
   padding: $calendar-cell-padding;
   outline: none;
 
-  &:hover {
-    @include state-hover(
-      $calendar-cell-bg-hover,
-      $calendar-cell-border-hover,
-      $calendar-cell-color-hover
-    );
-  }
-
   @include focus();
 
   &.rw-state-selected {
-    @include state-select(
-      $calendar-cell-bg-select,
-      $calendar-cell-border-select,
-      $calendar-cell-color-select
-    );
-  }
-
-  &.rw-state-disabled {
-    @include disabled-color($btn-color);
-
-    &:hover {
-      background: none;
-      border-color: transparent;
-    }
+    background-color: $calendar-cell-select-bg;
+    border-color: $calendar-cell-select-border-color;
+    color: $calendar-cell-select-color;
   }
 
   .rw-calendar-month & {
@@ -110,7 +118,7 @@
 }
 
 .rw-cell-off-range {
-  color: lighten($btn-color, 40%);
+  color: lighten($calendar-btn-color, 40%);
 }
 
 @mixin translate($x, $y) {

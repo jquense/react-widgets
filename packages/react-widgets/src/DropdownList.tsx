@@ -12,7 +12,6 @@ import { caretDown } from './Icon'
 import List, { ListHandle } from './List'
 import { FocusListContext, useFocusList } from './FocusListContext'
 import Popup from './Popup'
-import Select from './Select'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
 import { useMessagesWithDefaults } from './messages'
@@ -34,6 +33,7 @@ import useAutoFocus from './useAutoFocus'
 import useDropdownToggle from './useDropdownToggle'
 import useFocusManager from './useFocusManager'
 import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
+import PickerCaret from './PickerCaret'
 
 const propTypes = {
   value: PropTypes.any,
@@ -103,8 +103,6 @@ const propTypes = {
 
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
-
-  isRtl: PropTypes.bool,
 
   messages: PropTypes.shape({
     open: PropTypes.string,
@@ -191,7 +189,6 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
 
     focusFirstItem,
 
-    isRtl,
     className,
     containerClassName,
     placeholder,
@@ -321,6 +318,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     dataItem: TDataItem,
     originalEvent?: React.SyntheticEvent,
   ) => {
+    if (readOnly || disabled) return
     if (dataItem === undefined) return
     if (dataItem === CREATE_OPTION) {
       handleCreate(originalEvent)
@@ -334,7 +332,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   }
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (readOnly) return
+    if (readOnly || disabled) return
 
     focus()
     toggle()
@@ -342,7 +340,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (readOnly) return
+    if (readOnly || disabled) return
     let { key, altKey, ctrlKey, shiftKey } = e
     notify(onKeyDown, [e])
 
@@ -389,7 +387,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (readOnly) return
+    if (readOnly || disabled) return
 
     notify(onKeyPress, [e])
     if (e.defaultPrevented || filter) return
@@ -523,7 +521,6 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
       <Widget
         {...widgetProps}
         open={!!currentOpen}
-        isRtl={!!isRtl}
         dropUp={!!dropUp}
         focused={!!focused}
         disabled={isDisabled}
@@ -558,14 +555,11 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
             placeholder={placeholder}
             renderValue={renderValue}
           />
-          <Select
+          <PickerCaret
+            visible
             busy={busy}
             icon={selectIcon}
-            aria-hidden="true"
             spinner={busySpinner}
-            role="presentational"
-            disabled={isDisabled || isReadOnly}
-            label={messages.openDropdown()}
           />
         </WidgetPicker>
         {shouldRenderPopup && (

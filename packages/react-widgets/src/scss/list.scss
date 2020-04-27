@@ -13,31 +13,25 @@
   cursor: pointer;
   border: 1px solid transparent;
 
-  &:hover,
-  &.rw-state-focus {
-    @include state-focus(
-      $list-focus-bg,
-      $list-focus-border-color,
-      $list-focus-color
-    );
+  [data-intent='keyboard'] &.rw-state-focus:not(.rw-state-selected),
+  &:hover {
+    background-color: $list-focus-bg;
+    border-color: $list-focus-border-color;
+    color: $list-focus-color;
   }
 
   &.rw-state-selected {
-    @include state-select(
-      $list-select-bg,
-      $list-select-border-color,
-      $list-select-color
-    );
+    background-color: $list-select-bg;
+    border-color: $list-select-border-color;
+    color: $list-select-color;
   }
 
-  fieldset[disabled] &,
   &.rw-state-disabled,
-  &.rw-state-readonly {
-    pointer-events: none;
-    user-select: none;
-
-    @include state-disabled();
-    @include disabled-color($list-color);
+  &.rw-state-disabled:hover {
+    cursor: not-allowed; // required to override the cursor above
+    background-color: $list-disabled-bg;
+    border-color: $list-disabled-border-color;
+    color: $list-disabled-color;
   }
 }
 
@@ -45,7 +39,7 @@
 .rw-list-option,
 .rw-list-optgroup {
   padding: $list-option-padding-y $list-option-padding-x;
-  outline: 0;
+  outline: none;
 }
 
 .rw-list-optgroup {

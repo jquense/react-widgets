@@ -7,44 +7,40 @@ module.exports = {
         purple: '#913d88',
         divider: '#ddd',
       },
-      height: {
-        navbar: 50,
-      },
+      // height: {
+      //   navbar: '50px',
+      // },
       fontFamily: {
         default: 'Raleway',
         brand: 'Lobster',
       },
-      LiveCode: t => ({
-        '@screen lg': {
-          borderColor: 'hsl(230, 1%, 98%)',
+      LiveCode: (t) => ({
+        '& .content': {
+          backgroundColor: t('colors.gray.200'),
+        },
 
-          '& .content': {
-            '@apply flex flex-row-reverse': true,
+        '& .editor': {
+          backgroundColor: t('colors.gray.200'),
+        },
 
-            backgroundColor: 'hsl(230, 1%, 98%)',
-          },
-          '& .preview': {
-            flex: '0 0 40%',
-            paddingLeft: t('padding.5'),
+        '& .show-code:focus': {
+          '@apply outline-none shadow-outline': '',
+        },
 
-            '& :global': {
-              '.rw-widget-container': {
-                maxWidth: 400,
-              },
+        '& .preview': {
+          maxWidth: 400,
+          width: '100%',
+          margin: '0 auto',
 
-              '.rw-widget + input, .rw-widget + button,  input + .rw-widget, button + .rw-widget,  .rw-widget + .rw-widget': {
-                marginTop: 15,
-              },
-
-              '.rw-listbox': {
-                overflow: 'auto',
-                maxHeight: 200,
-              },
+          '& :global': {
+            '.rw-widget + input, .rw-widget + button,  input + .rw-widget, button + .rw-widget,  .rw-widget + .rw-widget': {
+              marginTop: 15,
             },
-          },
-          '& .editor': {
-            fontFamily: t('fontFamily.mono'),
-            flex: '1',
+
+            '.rw-listbox': {
+              overflow: 'auto',
+              maxHeight: 200,
+            },
           },
         },
       }),

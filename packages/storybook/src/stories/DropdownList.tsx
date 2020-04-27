@@ -1,8 +1,8 @@
 import React from 'react'
 import DropdownList from 'react-widgets/lib/DropdownList'
 import { storiesOf } from '@storybook/react'
-import Container from './Container'
-import { action } from './helpers'
+import Container from '../Container'
+import { action } from '../helpers'
 
 let props = {
   data: generateNames(),
@@ -51,11 +51,6 @@ storiesOf('DropdownList', module)
   .add('busy', () => (
     <Container>
       <DropdownList {...props} busy defaultValue={props.data[1]} />
-    </Container>
-  ))
-  .add('right to left', () => (
-    <Container>
-      <DropdownList {...props} isRtl busy defaultValue={props.data[1]} />
     </Container>
   ))
   .add('ellipsis', () => (

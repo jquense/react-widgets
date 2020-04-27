@@ -1,0 +1,20 @@
+.rw-listbox {
+  border-radius: $border-radius;
+  background-color: $widget-bg;
+  border: $widget-border 1px solid;
+
+  &.rw-state-focus {
+    background-color: $input-focus-bg;
+    border-color: $input-focus-border-color;
+    box-shadow: #{$input-focus-box-shadow}, #{$input-box-shadow};
+  }
+
+  &.rw-state-disabled > *,
+  fieldset[disabled] & > * {
+    pointer-events: none;
+  }
+
+  &.rw-state-readonly > * {
+    cursor: inherit;
+  }
+}

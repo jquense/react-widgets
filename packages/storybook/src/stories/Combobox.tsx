@@ -1,7 +1,7 @@
 import React from 'react'
 import Combobox from 'react-widgets/lib/Combobox'
 import { storiesOf } from '@storybook/react'
-import Container from './Container'
+import Container from '../Container'
 
 let suggestList = [
   { id: 1, fullName: 'Jimmy' },
@@ -24,7 +24,7 @@ function Disabled() {
   return (
     <Container>
       <Combobox {...props} disabled={disabled} defaultValue={props.data[1]} />
-      <button onClick={() => setDisabled(s => !s)}>toggle</button>
+      <button onClick={() => setDisabled((s) => !s)}>toggle</button>
     </Container>
   )
 }
@@ -72,10 +72,5 @@ storiesOf('Combobox', module)
   .add('readOnly', () => (
     <Container>
       <Combobox {...props} readOnly defaultValue={props.data[1]} />
-    </Container>
-  ))
-  .add('right to left', () => (
-    <Container>
-      <Combobox {...props} isRtl busy defaultValue={props.data[1]} />
     </Container>
   ))

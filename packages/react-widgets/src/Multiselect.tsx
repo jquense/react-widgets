@@ -10,13 +10,12 @@ import React, {
 } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
 import AddToListOption, { CREATE_OPTION } from './AddToListOption'
-import { caretDown, times } from './Icon'
+import { times } from './Icon'
 import List, { ListHandle } from './List'
 import { FocusListContext, useFocusList } from './FocusListContext'
 import MultiselectInput from './MultiselectInput'
 import TagList, { RenderTagProp, TagComponentProp } from './MultiselectTagList'
 import Popup from './Popup'
-import Select from './Select'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
 import { useMessagesWithDefaults } from './messages'
@@ -32,12 +31,12 @@ import { DataItem, Value, WidgetHandle } from './types'
 import { setActiveDescendant } from './A11y'
 import { useFilteredData, Filter } from './Filter'
 import * as CustomPropTypes from './PropTypes'
-import { toItemArray } from './_'
 import canShowCreate from './canShowCreate'
 import { Accessors, useAccessors } from './Accessors'
 import useDropdownToggle from './useDropdownToggle'
 import useFocusManager from './useFocusManager'
 import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
+import DropdownCaret from './PickerCaret'
 
 const ENTER = 13
 
@@ -131,7 +130,6 @@ let propTypes = {
   disabled: CustomPropTypes.disabled.acceptsArray,
   readOnly: CustomPropTypes.disabled,
 
-  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     open: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
@@ -155,7 +153,7 @@ function useMultiselectData<TDataItem>(
   searchTerm?: string,
 ) {
   data = useMemo(
-    () => data.filter(i => !value.some(v => accessors.matches(i, v))),
+    () => data.filter((i) => !value.some((v) => accessors.matches(i, v))),
     [data, value, accessors],
   )
 
@@ -248,14 +246,13 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
 
     filter = 'startsWith',
     allowCreate = false,
-    isRtl,
     className,
     containerClassName,
     placeholder,
     busy,
     disabled,
     readOnly,
-    selectIcon = caretDown,
+    selectIcon,
     clearTagIcon = times,
     busySpinner,
     dropUp,
@@ -315,7 +312,6 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   const toggle = useDropdownToggle(currentOpen, handleOpen)
 
   const isDisabled = disabled === true
-  const disabledItems = toItemArray(disabled)
   const isReadOnly = !!readOnly
 
   const [focusEvents, focused] = useFocusManager(
@@ -334,7 +330,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   )
 
   const dataItems = useMemo(
-    () => currentValue!.map(item => accessors.findOrSelf(rawData, item)),
+    () => currentValue!.map((item) => accessors.findOrSelf(rawData, item)),
     [rawData, currentValue, accessors],
   )
 
@@ -410,6 +406,8 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   }
 
   const handleClick = ({ target }: React.SyntheticEvent<HTMLDivElement>) => {
+    if (isDisabled || readOnly) return
+
     focus()
 
     if (closest(target as HTMLDivElement, '.rw-select') && currentOpen) {
@@ -418,7 +416,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   }
 
   const handleDoubleClick = () => {
-    if (!inputRef.current) return
+    if (isDisabled || !inputRef.current) return
 
     focus()
     if (inputRef.current) inputRef.current.select()
@@ -540,7 +538,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
         nextDataItems = nextDataItems.concat(dataItem)
         break
       case REMOVE:
-        nextDataItems = nextDataItems.filter(d => d !== dataItem)
+        nextDataItems = nextDataItems.filter((d) => d !== dataItem)
         break
     }
 
@@ -586,7 +584,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
 
   let shouldRenderPopup = useFirstFocusedRender(focused, currentOpen!)
 
-  let itemLabels = dataItems.map(item => accessors.text(item))
+  let itemLabels = dataItems.map((item) => accessors.text(item))
   let shouldRenderTags = !!dataItems.length
   let inputOwns =
     `${listId} ${notifyId} ` +
@@ -598,7 +596,6 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
       {...elementProps}
       ref={ref}
       open={currentOpen}
-      isRtl={isRtl}
       dropUp={dropUp}
       focused={focused}
       disabled={isDisabled}
@@ -634,7 +631,8 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
             clearTagIcon={clearTagIcon}
             label={messages.tagsLabel()}
             value={dataItems}
-            disabled={disabledItems}
+            readOnly={isReadOnly}
+            disabled={disabled}
             onDelete={handleDelete}
             tagOptionComponent={tagOptionComponent}
             renderTagValue={renderTagValue}
@@ -663,13 +661,11 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
             />
           </TagList>
         </FocusListContext.Provider>
-        <Select
+        <DropdownCaret
           busy={busy}
-          aria-hidden="true"
-          role="presentational"
           spinner={busySpinner}
-          icon={focused ? selectIcon : null}
-          disabled={isDisabled || isReadOnly}
+          icon={selectIcon}
+          visible={focused}
         />
       </WidgetPicker>
       <FocusListContext.Provider value={list.context}>

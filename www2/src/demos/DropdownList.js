@@ -11,7 +11,7 @@ import DisabledItemsInput from './DisabledItemsInput'
 const list = genData(25)
 const ICONS = ['bicycle', 'area-chart', 'anchor']
 
-const ItemComponent = itemProps => {
+const ItemComponent = (itemProps) => {
   const { item } = itemProps
   return (
     <div>
@@ -92,7 +92,7 @@ class DropdownApi extends React.Component {
               <RW.DropdownList
                 filter={false}
                 value={filter}
-                data={[false, 'startsWith', 'endsWith', 'contains']}
+                data={[false, 'startsWith', 'eq', 'contains']}
                 onChange={setter('filter')}
               />
             </Demo.Control>
@@ -104,7 +104,7 @@ class DropdownApi extends React.Component {
               data={list}
               dataKey="id"
               textField="name"
-              onChange={disabled =>
+              onChange={(disabled) =>
                 this.setState({
                   disabled,
                   readOnly: false,

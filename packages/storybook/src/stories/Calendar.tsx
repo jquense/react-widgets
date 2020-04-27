@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Calendar from 'react-widgets/lib/Calendar'
 import { storiesOf } from '@storybook/react'
-import Container from './Container'
+import Container from '../Container'
 
 storiesOf('Calendar', module)
   .add('Calendar', () => (

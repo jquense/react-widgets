@@ -1,6 +1,5 @@
 import cn from 'classnames'
 import React from 'react'
-import Button from './Button'
 import { useListOption } from './FocusListContext'
 import { DataItem } from './types'
 
@@ -54,15 +53,15 @@ function MultiselectTag({
       style={style}
     >
       <span className="rw-multiselect-tag-label">{children}</span>
-      <Button
-        variant={null}
+      <button
+        type="button"
         onClick={handleRemove}
-        className="rw-multiselect-tag-btn"
         disabled={disabled || readOnly}
-        label={label || 'Remove item'}
+        className="rw-multiselect-tag-btn"
+        aria-label={label || 'Remove item'}
       >
         {clearTagIcon}
-      </Button>
+      </button>
     </div>
   )
 }

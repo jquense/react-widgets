@@ -1,8 +1,12 @@
 const path = require('path')
 const { plugins, rules } = require('webpack-atoms')
 
-module.exports = ({ config }) =>
-  Object.assign({}, config, {
+module.exports = {
+  stories: ['../src/stories/**/*.{js,ts,tsx}'],
+  addons: ['@storybook/addon-actions/register', 'storybook-addon-rtl/register'],
+
+  webpackFinal: (config) => ({
+    ...config,
     // mode: 'development',
     devtool: 'inline-module-source-map',
     module: {
@@ -50,4 +54,5 @@ module.exports = ({ config }) =>
       net: 'empty',
       tls: 'empty',
     },
-  })
+  }),
+}

@@ -1,8 +1,8 @@
 import React from 'react'
 import Multiselect from 'react-widgets/lib/Multiselect'
 import { storiesOf } from '@storybook/react'
-import Container from './Container'
-import { action } from './helpers'
+import Container from '../Container'
+import { action } from '../helpers'
 
 let props = {
   data: generateNames(),
@@ -52,16 +52,7 @@ storiesOf('Multiselect', module)
       <Multiselect {...props} busy defaultValue={props.data.slice(0, 3)} />
     </Container>
   ))
-  .add('right to left', () => (
-    <Container>
-      <Multiselect
-        {...props}
-        isRtl
-        busy
-        defaultValue={props.data.slice(0, 3)}
-      />
-    </Container>
-  ))
+
   .add('disabled', () => (
     <Container>
       <Multiselect {...props} disabled defaultValue={props.data.slice(0, 3)} />

@@ -31,7 +31,6 @@ import {
 import { TextAccessor, DataKeyAccessor } from './Accessors'
 
 export interface WidgetProps {
-  isRtl?: boolean
   className?: string
   tabIndex?: number
   id?: string
@@ -192,9 +191,7 @@ export type AllowCreate = boolean | 'onFilter'
 
 export interface Filterable<TDataItem> {
   filter?: Filter<TDataItem>
-  minLength?: number
   allowCreate?: AllowCreate
-  caseSensitive?: boolean
   delay?: number
 }
 

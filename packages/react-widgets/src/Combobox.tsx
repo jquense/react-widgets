@@ -8,7 +8,7 @@ import Input from './Input'
 import List, { ListHandle } from './List'
 import { FocusListContext, useFocusList } from './FocusListContext'
 import Popup from './Popup'
-import Select from './Select'
+import InputAddon from './InputAddon'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
 import { useMessagesWithDefaults } from './messages'
@@ -87,7 +87,6 @@ let propTypes = {
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
 
-  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     openCombobox: CustomPropTypes.message,
     emptyList: CustomPropTypes.message,
@@ -162,8 +161,6 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
     onToggle,
 
     filter = true,
-    isRtl,
-
     busy,
     disabled,
     readOnly,
@@ -260,6 +257,13 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
   /**
    * Handlers
    */
+
+  const handleClick = () => {
+    if (readOnly || disabled) return
+
+    focus()
+    toggle()
+  }
 
   const handleSelect = (
     data: string | TDataItem,
@@ -381,7 +385,6 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
       {...elementProps}
       ref={ref}
       open={currentOpen}
-      isRtl={isRtl}
       dropUp={dropUp}
       focused={focused}
       disabled={isDisabled}
@@ -416,12 +419,11 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
           onKeyDown={handleInputKeyDown}
           ref={inputRef}
         />
-        <Select
-          bordered
+        <InputAddon
           busy={busy}
           icon={selectIcon}
           spinner={busySpinner}
-          onClick={toggle}
+          onClick={handleClick}
           disabled={!!isDisabled || isReadOnly}
           // FIXME
           label={messages.openCombobox()}

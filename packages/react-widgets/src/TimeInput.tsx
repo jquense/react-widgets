@@ -190,7 +190,7 @@ function useTimePartState(value: Date | null, use12HourClock: boolean) {
   }))
 
   const setTimeParts = useCallback(
-    (timeParts: TimeParts) => setState(s => ({ ...s, timeParts })),
+    (timeParts: TimeParts) => setState((s) => ({ ...s, timeParts })),
     [setState],
   )
 
@@ -435,12 +435,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
       focused={focused}
       disabled={disabled}
       readOnly={readOnly}
-      className={classNames(
-        className,
-        'rw-input',
-        'rw-time-input',
-        'rw-widget-container',
-      )}
+      className={classNames(className, 'rw-time-input rw-widget-input')}
     >
       <DateTimePartInput
         size={2}
@@ -454,8 +449,8 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
         ref={hourRef}
         emptyChar={emptyCharacter}
         onSelect={handleSelect}
-        onChange={e => handleChange('hours', e)}
-        onKeyDown={e => handleKeyDown('hours', e)}
+        onChange={(e) => handleChange('hours', e)}
+        onKeyDown={(e) => handleKeyDown('hours', e)}
       />
 
       {hoursAddon && <span>{hoursAddon}</span>}
@@ -470,8 +465,8 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
         max={getMax('minutes')}
         emptyChar={emptyCharacter}
         onSelect={handleSelect}
-        onChange={e => handleChange('minutes', e)}
-        onKeyDown={e => handleKeyDown('minutes', e)}
+        onChange={(e) => handleChange('minutes', e)}
+        onKeyDown={(e) => handleKeyDown('minutes', e)}
       />
 
       {minsAddon && <span>{minsAddon}</span>}
@@ -488,8 +483,8 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
             max={getMax('seconds')}
             emptyChar={emptyCharacter}
             onSelect={handleSelect}
-            onChange={e => handleChange('seconds', e)}
-            onKeyDown={e => handleKeyDown('seconds', e)}
+            onChange={(e) => handleChange('seconds', e)}
+            onKeyDown={(e) => handleKeyDown('seconds', e)}
           />
           {secsAddon && <span>{secsAddon}</span>}
         </>
@@ -507,8 +502,8 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
             max={getMax('milliseconds')}
             emptyChar={emptyCharacter}
             onSelect={handleSelect}
-            onChange={e => handleChange('milliseconds', e)}
-            onKeyDown={e => handleKeyDown('milliseconds', e)}
+            onChange={(e) => handleChange('milliseconds', e)}
+            onKeyDown={(e) => handleKeyDown('milliseconds', e)}
           />
           {millisecondsAddon && <span>{millisecondsAddon}</span>}
         </>
@@ -519,8 +514,8 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
           aria-label="AM/PM"
           aria-disabled={disabled}
           aria-readonly={readOnly}
-          onKeyDown={e => handleKeyDown('meridiem', e)}
-          className="rw-input-reset rw-time-part-meridiem"
+          onKeyDown={(e) => handleKeyDown('meridiem', e)}
+          className="rw-time-part-meridiem"
         >
           <div
             data-focusable

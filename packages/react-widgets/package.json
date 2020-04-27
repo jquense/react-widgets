@@ -75,8 +75,6 @@
     "@types/react-dom": "^16.9.6",
     "@typescript-eslint/eslint-plugin": "^2.28.0",
     "@typescript-eslint/parser": "^2.28.0",
-    "babel-core": "^7.0.0-0",
-    "babel-eslint": "10.1.0",
     "babel-jest": "^25.3.0",
     "babel-preset-jason": "^6.2.0",
     "chai": "^4.2.0",

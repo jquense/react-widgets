@@ -46,10 +46,10 @@ module.exports = {
       via the TAB key
     `,
 
-    autoFocus: d => stripIndent`
+    autoFocus: (d) => stripIndent`
       Pass focus to the ${d.name} when it mounts.
     `,
-    culture: d => stripIndent`
+    culture: (d) => stripIndent`
       Set the culture of the ${d.name}, passed to the configured localizer.
     `,
 
@@ -57,7 +57,7 @@ module.exports = {
       Text to display in the input when the value is empty.
     `,
 
-    value: d => stripIndent`
+    value: (d) => stripIndent`
     Controls the current value of the ${d.name}.
   `,
 
@@ -65,11 +65,11 @@ module.exports = {
       The HTML \`name\` attribute, passed directly to the input element.
     `,
 
-    onFocus: d => stripIndent`
+    onFocus: (d) => stripIndent`
       The native \`onFocus\` event, called when focus enters the ${d.name}.
     `,
 
-    onBlur: d => stripIndent`
+    onBlur: (d) => stripIndent`
       The native \`onBlur\` event, called when focus leaves the ${d.name} entirely.
     `,
 
@@ -81,7 +81,7 @@ module.exports = {
     The native \`onKeyPress\` event, called \`preventDefault\` will stop any custom behavior.
   `,
 
-    valuePicker: d => stripIndent`
+    valuePicker: (d) => stripIndent`
     Controls the selected value of the ${d.name}. Values can primitive, like strings
     or more complex objects. Values are usually (but not required to be) members of
     \`data\`items, either referentially or identifiable by a \`dataKey\`.
@@ -121,7 +121,7 @@ module.exports = {
     A callback fired when the current \`searchTerm\` changes.
   `,
 
-    data: d => stripIndent`
+    data: (d) => stripIndent`
     An array of possible values for the ${d.name}.
 
     **Tip:** When \`data\` is an array of \`objects\` consider specifying
@@ -136,21 +136,21 @@ module.exports = {
     When not provided, the referential identity of each data item is used.
   `,
 
-    textField: d => stripIndent`
+    textField: (d) => stripIndent`
     A property name, or accessor function, that provides the text content of the \`data\`
     items. The ${d.name} will filter data based on this value as well as use it as the
     default display value for list items and selected values.
   `,
 
-    disabledPicker: d => stripIndent`
+    disabledPicker: (d) => stripIndent`
     Controls the disabled state of entire ${d.name}, or individual items.
   `,
 
-    readOnly: d => stripIndent`
+    readOnly: (d) => stripIndent`
     Controls the read-only state of the ${d.name}.
   `,
 
-    itemComponent: d => stripIndent`
+    itemComponent: (d) => stripIndent`
     Customize the rendering of each ${d.name} list item.
   `,
 
@@ -166,41 +166,32 @@ module.exports = {
     Customize the rendering of the group headings when \`groupBy\` is active.
   `,
 
-    filter: d => stripIndent`
+    filter: (d) => stripIndent`
     Enable and customize filtering behavior for the ${d.name}. Specify
-    one of the built-in methods (\`"startsWith"\` \`"endsWith"\` \`"contains"\`)
+    one of the built-in methods (\`"startsWith"\` \`"eq"\` \`"contains"\`)
     or provide a function that returns \`true\` or \`false\` for each passed in item
     (analogous to the [array.filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/array/filter) builtin)
 
     You can explicitly disable filtering by setting \`filter\` to \`false\`.
   `,
 
-    caseSensitive: d => stripIndent`
-    Determines whether text case is ignored when filtering. Only applicable
-    when \`filter\` is one of the built-in methods.
-  `,
-
-    minLength: d => stripIndent`
-    The minimum number of search characters needed before filtering begins.
-  `,
-
-    searchTerm: d => stripIndent`
+    searchTerm: (d) => stripIndent`
     Controls the value of the search text used to filter ${d.widgetName} items.
     \`searchTerm\` is only applicable when filtering is enabled.
 
     Use \`defaultSearchTerm\` instead to set an initial value for uncontrolled widgets.
   `,
 
-    dropUp: d => stripIndent`
+    dropUp: (d) => stripIndent`
     Controls the opening direction of the ${d.name} popup.
   `,
 
-    open: d => stripIndent`
+    open: (d) => stripIndent`
     Controls the visibility of the ${d.name} popup. Use \`defaultOpen\`
     to set an initial value for uncontrolled widgets.
   `,
 
-    onToggle: d => stripIndent`
+    onToggle: (d) => stripIndent`
     A callback fired with the ${d.name}'s popup visibility is about to change.
 
     Use in conjunction with the \`open\` prop to manually control the popup visibility.
@@ -216,14 +207,6 @@ module.exports = {
     provided component will be used instead of the default \`SlideDownTransition\` for
     fully customizable animations. The transition component is also injected with a
     \`dropUp\` prop indicating the direction it should open.
-  `,
-
-    isRtl: d => stripIndent`
-    Controls the read direction of the ${d.name}.
-
-    **Tip:** You can also set the direction for all widgets at once, by exposing
-    \`isRtl\` on [context](https://facebook.github.io/react/docs/context.html) in a
-    common parent component, such as your application root.
   `,
 
     messages: () => stripIndent`

@@ -193,7 +193,7 @@ describe('Multiselect', function () {
 
   it('should add correct markup when read-only', () => {
     let input = mount(<Multiselect readOnly />)
-      .assertSingle('.rw-input-reset')
+      .assertSingle('%rw-btn-input-reset')
       .getDOMNode()
 
     expect(input.hasAttribute('readonly')).to.equal(true)
@@ -202,7 +202,7 @@ describe('Multiselect', function () {
 
   it('should add correct markup when disabled', () => {
     let input = mount(<Multiselect disabled />)
-      .assertSingle('.rw-input-reset')
+      .assertSingle('%rw-btn-input-reset')
       .getDOMNode()
 
     expect(input.hasAttribute('disabled')).to.equal(true)

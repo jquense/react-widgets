@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from './Button'
+import CalendarButton from './CalendarButton'
 import { caretDown, chevronLeft, chevronRight } from './Icon'
 import { Localizer } from './Localization'
 
@@ -41,8 +41,7 @@ function CalendarHeader({
 }: Props) {
   return (
     <div className="rw-calendar-header">
-      <Button
-        acceptFocus
+      <CalendarButton
         id={labelId}
         onClick={onViewChange}
         className="rw-calendar-btn-view"
@@ -51,30 +50,27 @@ function CalendarHeader({
         aria-atomic="true"
       >
         {label} {caretDown}
-      </Button>
-      <Button
-        acceptFocus
+      </CalendarButton>
+      <CalendarButton
         className="rw-calendar-btn-left"
         onClick={onMoveLeft}
         disabled={prevDisabled}
         label={localizer.messages.moveBack()}
-        icon={isRtl ? navigateNextIcon : navigatePrevIcon}
+        icon={navigatePrevIcon}
       />
-      <Button
-        acceptFocus
+      <CalendarButton
         className="rw-calendar-btn-today"
         disabled={todayDisabled}
         onClick={onMoveToday}
       >
         {localizer.messages.moveToday()}
-      </Button>
-      <Button
-        acceptFocus
+      </CalendarButton>
+      <CalendarButton
         className="rw-calendar-btn-right"
         onClick={onMoveRight}
         disabled={nextDisabled}
         label={localizer.messages.moveForward()}
-        icon={isRtl ? navigatePrevIcon : navigateNextIcon}
+        icon={navigateNextIcon}
       />
     </div>
   )

@@ -20,19 +20,6 @@
   list-style: none;
 }
 
-@mixin select-container($padding) {
-  padding-right: $padding;
-
-  > .rw-select {
-    width: $padding;
-  }
-
-  &.rw-rtl {
-    padding-right: 0;
-    padding-left: $padding;
-  }
-}
-
 @mixin focus-ring($color: $widget-focus-color, $width: $widget-focus-width) {
   z-index: 1;
   box-shadow: 0 0 0 $width $color;
@@ -100,20 +87,6 @@
 @mixin disabled-color($color) {
   color: lighten($color, 40%);
   opacity: 0.7;
-}
-
-@mixin placeholder($color: $input-color-placeholder) {
-  // Firefox
-  &::-moz-placeholder {
-    color: $color;
-    opacity: 1; // See https://github.com/twbs/bootstrap/pull/11526
-  }
-  &:-ms-input-placeholder {
-    color: $color;
-  } // Internet Explorer 10+
-  &::-webkit-input-placeholder {
-    color: $color;
-  } // Safari and Chrome
 }
 
 @mixin make-btn-state(

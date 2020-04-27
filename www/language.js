@@ -30,7 +30,9 @@ module.exports = {
   `,
 
   onBlur: d => stripIndent`
-    The native \`onBlur\` event, called when focus leaves the ${d.name} entirely.
+    The native \`onBlur\` event, called when focus leaves the ${
+      d.name
+    } entirely.
   `,
 
   onKeyDown: () => stripIndent`
@@ -42,7 +44,9 @@ module.exports = {
   `,
 
   valuePicker: d => stripIndent`
-    Controls the selected value of the ${d.name}. Values can primitive, like strings
+    Controls the selected value of the ${
+      d.name
+    }. Values can primitive, like strings
     or more complex objects. Values are usually (but not required to be) members of
     \`data\`items, either referentially or identifiable by a \`dataKey\`.
     Use \`defaultValue\` to set an initial value for uncontrolled widgets.
@@ -98,7 +102,9 @@ module.exports = {
 
   textField: d => stripIndent`
     A property name, or accessor function, that provides the text content of the \`data\`
-    items. The ${d.name} will filter data based on this value as well as use it as the
+    items. The ${
+      d.name
+    } will filter data based on this value as well as use it as the
     default display value for list items and selected values.
   `,
 
@@ -128,20 +134,11 @@ module.exports = {
 
   filter: d => stripIndent`
     Enable and customize filtering behavior for the ${d.name}. Specify
-    one of the built-in methods (\`"startsWith"\` \`"endsWith"\` \`"contains"\`)
+    one of the built-in methods (\`"startsWith"\` \`"eq"\` \`"contains"\`)
     or provide a function that returns \`true\` or \`false\` for each passed in item
     (analogous to the [array.filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/array/filter) builtin)
 
     You can explicitly disable filtering by setting \`filter\` to \`false\`.
-  `,
-
-  caseSensitive: d => stripIndent`
-    Determines whether text case is ignored when filtering. Only applicable
-    when \`filter\` is one of the built-in methods.
-  `,
-
-  minLength: d => stripIndent`
-    The minimum number of search characters needed before filtering begins.
   `,
 
   searchTerm: d => stripIndent`
@@ -176,14 +173,6 @@ module.exports = {
     provided component will be used instead of the default \`SlideDownTransition\` for
     fully customizable animations. The transition component is also injected with a
     \`dropUp\` prop indicating the direction it should open.
-  `,
-
-  isRtl: d => stripIndent`
-    Controls the read direction of the ${d.name}.
-
-    **Tip:** You can also set the direction for all widgets at once, by exposing
-    \`isRtl\` on [context](https://facebook.github.io/react/docs/context.html) in a
-    common parent component, such as your application root.
   `,
 
   messages: () => stripIndent`

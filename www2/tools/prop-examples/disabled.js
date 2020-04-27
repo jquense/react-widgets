@@ -1,7 +1,7 @@
 const { stripIndent } = require('common-tags')
 const { isListComponent, isValueArray } = require('../config')
 
-module.exports = function(widgetName, value) {
+module.exports = function (widgetName, value) {
   value =
     value || (!isValueArray(widgetName) ? '"orange"' : '["orange", "blue"]')
 
@@ -31,6 +31,7 @@ module.exports = function(widgetName, value) {
         ? `let colors = ['orange', 'red', 'blue', 'purple']\n`
         : ''
     }
+
     let example = (
       ${example}
     )

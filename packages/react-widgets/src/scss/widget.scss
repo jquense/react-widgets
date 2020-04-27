@@ -21,6 +21,80 @@
   }
 }
 
+%rw-btn-input-reset {
+  padding: 0;
+  margin: 0;
+  border: none;
+  color: inherit;
+  box-shadow: none;
+  background: none;
+  font: inherit;
+  line-height: inherit;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  outline: 0;
+}
+
+.rw-btn {
+  @extend %rw-btn-input-reset;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+
+  &:disabled,
+  fieldset[disabled] &,
+  // for picker-caret
+  .rw-state-disabled & {
+    cursor: inherit;
+  }
+  // easier to disable this way then check in each event handler
+  fieldset[disabled] & {
+    pointer-events: none;
+  }
+}
+
+// The Psuedo button on DropdownList and Multiselect
+// also composes rw-btn
+.rw-picker-caret {
+  color: $picker-btn-color;
+}
+
+.rw-picker-btn {
+  @extend %rw-btn-input-reset;
+
+  color: $picker-btn-color;
+  border-color: $picker-btn-border-color;
+  background-color: $picker-btn-bg;
+
+  &:hover {
+    color: $picker-btn-hover-color;
+    border-color: $picker-btn-hover-border-color;
+    background-color: $picker-btn-hover-bg;
+  }
+  &:active {
+    color: $picker-btn-active-color;
+    background-color: $picker-btn-active-bg;
+    border-color: $picker-btn-active-border-color;
+  }
+
+  &:disabled,
+  fieldset[disabled] & {
+    background-color: $btn-disabled-bg;
+  }
+}
+
+.rw-input-addon {
+  border-left: $input-border 1px solid;
+
+  [dir='rtl'] & {
+    border-right: $input-border 1px solid;
+    border-left: none;
+  }
+}
+
 .rw-sr {
   position: absolute;
   width: 1px;
@@ -44,128 +118,71 @@
   font-family: $font-family;
   outline: none;
   position: relative;
-
-  // ensure that the "chrome" is the same width as the actual container
-  & > .rw-widget-container {
-    width: 100%;
-    margin: 0;
-  }
 }
 
-.rw-widget-container {
-  background-color: $input-bg;
-  border: $input-border $input-border-width solid;
-  border-radius: $input-border-radius;
-  outline: none;
-
-  &.rw-state-focus,
-  .rw-state-focus > & {
-    &,
-    &:hover {
-      background-color: $input-focus-bg;
-      border-color: $input-focus-border-color;
-      box-shadow: $input-focus-box-shadow;
-    }
-  }
-
-  &.rw-state-readonly,
-  .rw-state-readonly > & {
-    cursor: not-allowed;
-  }
-
-  &.rw-state-disabled,
-  .rw-state-disabled > &,
-  fieldset[disabled] & {
-    pointer-events: none;
-    user-select: none;
-
-    &,
-    &:hover,
-    &:active {
-      box-shadow: none;
-      @include state-disabled();
-    }
-  }
+.rw-state-readonly,
+.rw-state-disabled,
+fieldset[disabled] .rw-widget {
+  cursor: not-allowed;
 }
 
 .rw-widget-picker {
   overflow: hidden;
-  display: flex;
+  display: grid;
   min-height: $input-height;
+  background-color: $input-bg;
+  border: $input-border $input-border-width solid;
+  border-radius: $input-border-radius;
+  outline: none;
+  grid-template: 1fr / 1fr 1.9em;
+  // ensure that the "chrome" is the same width as the actual container
+  width: 100%;
 
-  & > *:first-child {
-    border: none;
-    outline: none;
-    width: 100%;
-    flex: 1 1 0;
+  .rw-state-focus & {
+    background-color: $input-focus-bg;
+    border-color: $input-focus-border-color;
+    box-shadow: $input-focus-box-shadow;
+
+    &.rw-widget-input {
+      box-shadow: #{$input-focus-box-shadow}, #{$input-box-shadow};
+    }
   }
+}
 
-  fieldset[disabled] &,
-  .rw-state-disabled > & {
+// This class represents the abstract container that is the "input" of any
+// given widget
+.rw-widget-input {
+  color: $input-color;
+  background-color: $input-bg;
+  box-shadow: $input-box-shadow;
+
+  // Listbox is also the rw-widget
+  &.rw-state-disabled,
+  .rw-state-disabled &,
+  fieldset[disabled] & {
     background-color: $input-disabled-bg;
+    border-color: $input-disabled-border;
   }
-}
-
-.rw-select {
-  cursor: pointer;
-
-  & > * {
-    width: 1.9em;
-    height: 100%;
-  }
-
-  .rw-state-readonly &,
-  .rw-state-disabled & {
-    cursor: not-allowed;
-  }
-}
-
-.rw-select-bordered {
-  @include make-btn-state($select-btn-hover-bg);
-
-  border: none;
-  border-left: $input-border 1px solid;
-
-  .rw-rtl & {
-    border-right: $input-border 1px solid;
-    border-left: none;
-  }
-}
-
-.rw-rtl {
-  direction: rtl;
-}
-
-.rw-input-reset {
-  @include placeholder();
-  outline: 0;
 }
 
 .rw-input {
-  @extend .rw-input-reset;
+  @extend %rw-btn-input-reset;
 
-  color: $input-color;
   padding: 0 $input-btn-padding-x;
-  background-color: $input-bg;
 
   &[type='text']::-ms-clear {
     display: none;
   }
 
-  &[disabled],
-  fieldset[disabled] & {
-    @include state-disabled();
-    opacity: 1;
-    background-color: $input-disabled-bg;
-    border-color: $input-disabled-border;
-  }
-
-  &[readonly] {
-    cursor: not-allowed;
+  &:disabled,
+  &:read-only {
+    // use parent style
+    cursor: inherit;
   }
 }
 
-.rw-placeholder {
+.rw-placeholder,
+.rw-input::placeholder {
   color: $input-color-placeholder;
 }
 
@@ -188,13 +205,4 @@
   background-color: $input-bg-color-autofill !important;
   background-image: none !important;
   color: $input-color-autofill !important;
-}
-
-//input inset
-.rw-widget-input {
-  box-shadow: $input-box-shadow;
-}
-
-.rw-widget-input.rw-state-focus {
-  box-shadow: #{$input-focus-box-shadow}, #{$input-box-shadow};
 }

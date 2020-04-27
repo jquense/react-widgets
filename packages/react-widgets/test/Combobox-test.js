@@ -2,7 +2,7 @@ import { mount } from 'enzyme'
 import React from 'react'
 import Combobox from '../src/Combobox'
 
-describe('Combobox', function() {
+describe('Combobox', function () {
   var dataList = [
     { label: 'jimmy smith', id: 0 },
     { label: 'sally smith', id: 1 },
@@ -10,26 +10,26 @@ describe('Combobox', function() {
     { label: 'suzy smith', id: 3 },
   ]
 
-  it('should set initial values', function() {
+  it('should set initial values', function () {
     mount(<Combobox value={'hello'} onChange={() => {}} />)
       .find('input.rw-input')
-      .tap(c => expect(c.getDOMNode().value).to.equal('hello'))
+      .tap((c) => expect(c.getDOMNode().value).to.equal('hello'))
   })
 
-  it('should respect textField and dataKeys', function() {
+  it('should respect textField and dataKeys', function () {
     mount(
       <Combobox
         defaultValue={0}
         data={dataList}
-        textField={i => i.label}
+        textField={(i) => i.label}
         dataKey="id"
       />,
     )
       .find('input.rw-input')
-      .tap(c => expect(c.getDOMNode().value).to.equal('jimmy smith'))
+      .tap((c) => expect(c.getDOMNode().value).to.equal('jimmy smith'))
   })
 
-  it('should pass NAME down', function() {
+  it('should pass NAME down', function () {
     mount(
       <Combobox
         defaultValue={0}
@@ -40,7 +40,7 @@ describe('Combobox', function() {
       />,
     )
       .find('.rw-input')
-      .tap(c => expect(c.getDOMNode().hasAttribute('name')).to.equal(true))
+      .tap((c) => expect(c.getDOMNode().hasAttribute('name')).to.equal(true))
   })
 
   it('should open when clicked', () => {
@@ -131,7 +131,7 @@ describe('Combobox', function() {
     //expect(blur.called).to.equal(false)
   })
 
-  it('should simulate key events', function() {
+  it('should simulate key events', function () {
     var kp = sinon.spy(),
       kd = sinon.spy(),
       ku = sinon.spy()
@@ -164,7 +164,7 @@ describe('Combobox', function() {
     expect(input.getAttribute('aria-disabled')).to.equal('true')
   })
 
-  it('should not simulate form submission', function() {
+  it('should not simulate form submission', function () {
     let spy = sinon.spy()
 
     mount(
@@ -204,7 +204,7 @@ describe('Combobox', function() {
       />,
     )
       .find('List')
-      .act(_ => _.prop('onChange')(null, { originalEvent: 'foo' }))
+      .act((_) => _.prop('onChange')(null, { originalEvent: 'foo' }))
 
     expect(change.getCall(0).args[1]).to.eql({
       originalEvent: 'foo',
@@ -212,7 +212,7 @@ describe('Combobox', function() {
     })
   })
 
-  it('should call Select handler', function() {
+  it('should call Select handler', function () {
     let change = sinon.spy(),
       onSelect = sinon.spy()
 
@@ -226,7 +226,7 @@ describe('Combobox', function() {
       />,
     )
       .find('List')
-      .act(_ => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
+      .act((_) => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
 
     expect(onSelect.calledOnce).to.equal(true)
     expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
@@ -234,7 +234,7 @@ describe('Combobox', function() {
     expect(change.calledAfter(onSelect)).to.equal(true)
   })
 
-  it('should navigate list', function() {
+  it('should navigate list', function () {
     let change = sinon.spy()
 
     let inst = mount(
@@ -250,47 +250,28 @@ describe('Combobox', function() {
     let listItems = () => inst.update().find('ListOption > div')
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    listItems()
-      .first()
-      .is('.rw-state-focus')
+    listItems().first().is('.rw-state-focus')
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(
-      listItems()
-        .at(1)
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(listItems().at(1).is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'ArrowUp' })
-    expect(
-      listItems()
-        .first()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(listItems().first().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'End' })
-    expect(
-      listItems()
-        .last()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(listItems().last().is('.rw-state-focus')).to.equal(true)
 
     inst.simulate('keyDown', { key: 'Home' })
-    expect(
-      listItems()
-        .first()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(listItems().first().is('.rw-state-focus')).to.equal(true)
   })
 
-  it('should default focus to the selected value', function() {
+  it('should default focus to the selected value', function () {
     let change = sinon.spy()
     let inst = mount(
       <Combobox
         open={true}
         data={dataList}
         value={dataList[2]}
-        minLength={2}
         textField="label"
         dataKey="id"
         onChange={change}
@@ -300,29 +281,18 @@ describe('Combobox', function() {
 
     expect(inst.find('ListOption > div').length).to.equal(4)
 
-    expect(
-      inst
-        .find('ListOption > div')
-        .at(2)
-        .is('.rw-state-focus'),
-    ).to.equal(true)
+    expect(inst.find('ListOption > div').at(2).is('.rw-state-focus')).to.equal(
+      true,
+    )
 
     inst.simulate('keyDown', { key: 'ArrowDown' })
 
     expect(
-      inst
-        .update()
-        .find('ListOption > div')
-        .at(2)
-        .is('.rw-state-focus'),
+      inst.update().find('ListOption > div').at(2).is('.rw-state-focus'),
     ).to.equal(false)
 
     expect(
-      inst
-        .update()
-        .find('ListOption > div')
-        .at(3)
-        .is('.rw-state-focus'),
+      inst.update().find('ListOption > div').at(3).is('.rw-state-focus'),
     ).to.equal(true)
   })
 })

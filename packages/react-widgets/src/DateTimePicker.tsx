@@ -2,7 +2,6 @@ import cn from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useImperativeHandle, useRef, useCallback } from 'react'
 import { useUncontrolled } from 'uncontrollable'
-import Button from './Button'
 import Calendar, { CalendarProps } from './Calendar'
 import DateTimePickerInput, {
   DateTimePickerInputProps,
@@ -10,7 +9,6 @@ import DateTimePickerInput, {
 import { calendar } from './Icon'
 import { useLocalizer, Localizer, DateFormats } from './Localization'
 import Popup from './Popup'
-import Select from './Select'
 import TimeInput, { TimeInputProps } from './TimeInput'
 import Widget, { WidgetProps } from './Widget'
 import WidgetPicker from './WidgetPicker'
@@ -23,6 +21,7 @@ import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 import { TransitionProps } from 'react-transition-group/Transition'
 import { WidgetHTMLProps, InferFormat } from './shared'
 import useEventCallback from '@restart/hooks/useEventCallback'
+import InputAddon from './InputAddon'
 
 let propTypes = {
   /**
@@ -154,7 +153,6 @@ let propTypes = {
 
   calendarProps: PropTypes.object,
   inputProps: PropTypes.object,
-  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     dateButton: PropTypes.string,
     timeButton: PropTypes.string,
@@ -275,7 +273,6 @@ export interface DateTimePickerProps<TLocalizer = unknown>
 
   calendarProps?: Partial<CalendarProps>
   inputProps?: Partial<DateTimePickerInputProps>
-  isRtl?: boolean
 
   valueDisplayFormat?: InferFormat<TLocalizer>
   valueEditFormat?: InferFormat<TLocalizer>
@@ -341,7 +338,6 @@ const DateTimePicker = React.forwardRef(
       includeTime,
       min,
       max,
-      isRtl,
       open,
       dropUp,
       parse,
@@ -404,6 +400,7 @@ const DateTimePicker = React.forwardRef(
 
     const handleChange = useEventCallback(
       (date: Date | null | undefined, str: string, constrain?: boolean) => {
+        if (readOnly || disabled) return
         if (constrain) date = inRangeValue(date)
 
         if (onChange) {
@@ -465,6 +462,7 @@ const DateTimePicker = React.forwardRef(
     })
 
     const handleCalendarClick = useEventCallback(() => {
+      if (readOnly || disabled) return
       // this.focus()
       toggle()
     })
@@ -550,14 +548,12 @@ const DateTimePicker = React.forwardRef(
             aria-owns={dateId}
           />
 
-          <Select bordered>
-            <Button
-              icon={selectIcon}
-              label={localizer.messages.dateButton()}
-              disabled={disabled || readOnly}
-              onClick={handleCalendarClick}
-            />
-          </Select>
+          <InputAddon
+            icon={selectIcon}
+            label={localizer.messages.dateButton()}
+            disabled={disabled || readOnly}
+            onClick={handleCalendarClick}
+          />
         </WidgetPicker>
 
         {!!shouldRenderList && (
@@ -577,7 +573,6 @@ const DateTimePicker = React.forwardRef(
               max={max}
               bordered={false}
               {...calendarProps}
-              isRtl={isRtl}
               tabIndex={-1}
               value={value}
               autoFocus={false}

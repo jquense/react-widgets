@@ -6,7 +6,6 @@ import Button from './Button'
 import { caretDown, caretUp } from './Icon'
 import { useLocalizer, Localizer } from './Localization'
 import NumberInput from './NumberInput'
-import Select from './Select'
 import Widget, { WidgetProps } from './Widget'
 import WidgetPicker from './WidgetPicker'
 import * as CustomPropTypes from './PropTypes'
@@ -117,7 +116,6 @@ const propTypes = {
   containerClassName: PropTypes.string,
 
   inputProps: PropTypes.object,
-  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     increment: PropTypes.string,
     decrement: PropTypes.string,
@@ -219,7 +217,6 @@ export interface NumberPickerProps
   containerClassName?: string
 
   inputProps?: React.HtmlHTMLAttributes<HTMLInputElement>
-  isRtl?: boolean
   messages?: {
     increment?: string
     decrement?: string
@@ -422,9 +419,10 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
           onKeyUp={onKeyUp}
           innerRef={inputRef}
         />
-        <Select bordered>
+        <span className="rw-input-addon rw-number-picker-spinners">
           <Button
             icon={incrementIcon}
+            className="rw-picker-btn"
             disabled={clampedValue === max || disabled || readOnly}
             label={(localizer.messages.increment as any)({
               value: clampedValue,
@@ -432,11 +430,12 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
               max,
             })}
             onMouseUp={() => handleMouseUp()}
-            onMouseDown={e => handleMouseDown('UP', e)}
+            onMouseDown={(e) => handleMouseDown('UP', e)}
             onMouseLeave={() => handleMouseUp()}
           />
           <Button
             icon={decrementIcon}
+            className="rw-picker-btn"
             disabled={clampedValue === min || disabled || readOnly}
             label={(localizer.messages.decrement as any)({
               value: clampedValue,
@@ -444,10 +443,10 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
               max,
             })}
             onMouseUp={() => handleMouseUp()}
-            onMouseDown={e => handleMouseDown('DOWN', e)}
+            onMouseDown={(e) => handleMouseDown('DOWN', e)}
             onMouseLeave={() => handleMouseUp()}
           />
-        </Select>
+        </span>
       </WidgetPicker>
     </Widget>
   )

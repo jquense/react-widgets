@@ -18,7 +18,7 @@ const syntaxBg = 'hsl(230, 1%, 98%)'
 const theme = {
   plain: {
     fontSize: '0.9rem',
-    backgroundColor: syntaxBg,
+    backgroundColor: 'transparent',
     color: syntaxFg,
   },
   styles: [

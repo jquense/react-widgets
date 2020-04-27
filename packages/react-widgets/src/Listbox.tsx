@@ -81,6 +81,7 @@ export interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
   focusedItem?: TDataItem
   className?: string
   multiple?: boolean
+  readOnly?: boolean
   disabled?: boolean | TDataItem[]
   messages?: UserProvidedMessages
   renderItem?: RenderItemProp<TDataItem>
@@ -131,6 +132,8 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
 
     data,
     onKeyDown,
+    disabled,
+    readOnly,
     onBlur,
     onFocus,
     multiple,
@@ -148,7 +151,9 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
 
   const dataItems = useMemo(
     () =>
-      makeArray(value, multiple).map(item => accessors.findOrSelf(data, item)),
+      makeArray(value, multiple).map((item) =>
+        accessors.findOrSelf(data, item),
+      ),
     [value, multiple, accessors, data],
   )
   const ref = useRef<HTMLDivElement>(null)
@@ -159,7 +164,11 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
     anchorItem: lastItemRef.current,
   })
 
+  const isDisabled = disabled === true
+
   const handleChange = (dataItem: any, meta: any) => {
+    if (isDisabled || readOnly) return
+
     lastItemRef.current = meta.dataItem
     onChange(dataItem, meta)
   }
@@ -168,7 +177,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
 
   const [focusEvents, focused] = useFocusManager(
     ref,
-    { disabled: props.disabled === true, onBlur, onFocus },
+    { disabled: isDisabled, onBlur, onFocus },
     {
       didHandle(focused) {
         if (!focused) {
@@ -185,6 +194,7 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (isDisabled || readOnly) return
     let { key, shiftKey } = e
 
     notify(onKeyDown, [e])
@@ -209,10 +219,12 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
       list.focus(list.prev())
     }
   }
+
   const widgetProps = useWidgetProps({
     focused,
-    disabled: props.disabled === true,
-    className: cn(props.className, 'rw-listbox rw-widget rw-widget-container'),
+    readOnly,
+    disabled: isDisabled,
+    className: cn(props.className, 'rw-listbox rw-widget-input rw-widget'),
   })
 
   return (
@@ -220,7 +232,8 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
       <List
         {...props}
         {...widgetProps}
-        tabIndex={0}
+        disabled={disabled}
+        tabIndex={isDisabled ? -1 : 0}
         data={data}
         elementRef={ref}
         value={dataItems}

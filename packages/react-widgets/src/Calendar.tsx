@@ -1,6 +1,7 @@
 import cn from 'classnames'
 import { DateUnit } from 'date-arithmetic'
 import PropTypes from 'prop-types'
+import matches from 'dom-helpers/matches'
 import React, { useEffect, useRef } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
 import CalendarHeader from './CalendarHeader'
@@ -22,7 +23,7 @@ type Direction = 'DOWN' | 'UP' | 'LEFT' | 'RIGHT'
 
 type SlideDirection = 'bottom' | 'top' | 'left' | 'right'
 
-let last: <T>(array: T[]) => T = a => a[a.length - 1]
+let last: <T>(array: T[]) => T = (a) => a[a.length - 1]
 
 const CELL_CLASSNAME = 'rw-cell'
 const FOCUSED_CELL_SELECTOR = `.${CELL_CLASSNAME}[tabindex]`
@@ -53,7 +54,7 @@ const ARROWS_TO_DIRECTION = {
   ArrowLeft: 'LEFT',
 }
 
-const OPPOSITE_DIRECTION: { [key in 'RIGHT' | 'LEFT']: 'RIGHT' | 'LEFT' } = {
+const OPPOSITE_DIRECTION: Record<'RIGHT' | 'LEFT', 'RIGHT' | 'LEFT'> = {
   LEFT: 'RIGHT',
   RIGHT: 'LEFT',
 }
@@ -223,7 +224,6 @@ const propTypes = {
     century: PropTypes.any,
   }),
 
-  isRtl: PropTypes.bool,
   messages: PropTypes.shape({
     moveBack: PropTypes.string,
     moveForward: PropTypes.string,
@@ -333,7 +333,6 @@ function Calendar({
   onKeyDown,
   onNavigate,
   renderDay,
-  isRtl,
   messages,
   formats,
   ...elementProps
@@ -446,7 +445,9 @@ function Calendar({
         e.preventDefault()
         navigate(direction)
       } else {
-        if (isRtl && OPPOSITE_DIRECTION[direction as 'LEFT' | 'RIGHT'])
+        const isRTL = matches(e.currentTarget, '[dir="rtl"]')
+
+        if (isRTL && direction in OPPOSITE_DIRECTION)
           direction = OPPOSITE_DIRECTION[direction as 'LEFT' | 'RIGHT']
 
         let nextDate = Calendar.move(
@@ -583,11 +584,10 @@ function Calendar({
       className={cn(
         className,
         'rw-calendar',
-        bordered && 'rw-widget-container',
+        bordered && 'rw-calendar-contained',
       )}
     >
       <CalendarHeader
-        isRtl={isRtl}
         label={getHeaderLabel()}
         labelId={labelId}
         localizer={localizer}

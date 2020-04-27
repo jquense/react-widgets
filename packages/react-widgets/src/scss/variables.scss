@@ -45,30 +45,32 @@ $state-hover-color: $text-color !default;
 //
 // Buttons
 //
-$btn-bg: #fff !default;
-$btn-color: $text-color !default;
-$btn-border: #ccc !default;
-$btn-border-radius: $border-radius !default;
 
 $btn-hover-bg: $state-hover-bg !default;
 $btn-hover-border: $state-hover-border-color !default;
-$btn-active-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !default;
+$btn-active-bg: darken($state-hover-bg, 3%);
+$btn-disabled-bg: $gray-200 !default;
 
-$select-btn-bg: $btn-bg !default;
-$select-btn-color: $btn-color !default;
-$select-btn-border: $btn-border !default;
+$picker-btn-color: $gray-700 !default;
+$picker-btn-border-color: null !default;
+$picker-btn-bg: null !default;
 
-$select-btn-hover-bg: $btn-hover-bg !default;
-$select-btn-hover-border: $btn-hover-border !default;
-$select-btn-active-box-shadow: $btn-active-box-shadow !default;
+$picker-btn-hover-color: null !default;
+$picker-btn-hover-border-color: null !default;
+$picker-btn-hover-bg: darken(#fff, 10%) !default;
+
+$picker-btn-active-color: null !default;
+$picker-btn-active-border-color: null !default;
+$picker-btn-active-bg: darken($picker-btn-hover-bg, 3%) !default;
 
 //
 // Picker inputs
 //
-$input-color: $gray-700 !default;
+
 $input-height: 2.429em !default; // 2.5em is good for 16px roots
-$input-btn-padding-x: 0.857em !default;
+$input-color: $gray-700 !default;
 $input-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075) !default;
+$input-btn-padding-x: 0.857em !default;
 
 $input-bg: $widget-bg !default;
 $input-color-placeholder: #999 !default;
@@ -80,8 +82,8 @@ $input-border-radius: $border-radius !default;
 $input-disabled-bg: $gray-200 !default;
 $input-disabled-border: $input-border !default;
 
-$input-hover-bg: $gray-200 !default;
-$input-hover-border: $input-border !default;
+// $input-hover-bg: $gray-200 !default;
+// $input-hover-border: $input-border !default;
 
 $input-focus-bg: $input-bg !default;
 $input-focus-border-color: lighten($widget-active-bg, 25%) !default;
@@ -110,6 +112,10 @@ $list-select-bg: $state-select-bg !default;
 $list-select-border-color: $state-select-border-color !default;
 $list-select-color: $state-select-color !default;
 
+$list-disabled-bg: null !default;
+$list-disabled-border-color: null !default;
+$list-disabled-color: transparentize($list-color, 0.7) !default;
+
 $list-option-padding-y: 0.25em;
 $list-option-padding-x: 1.5em;
 
@@ -132,22 +138,28 @@ $popup-zindex-focused: $popup-zindex + 1 !default;
 // Calendar
 //
 $calendar-bg: $widget-bg !default;
+
+$calendar-btn-bg: #fff !default;
+$calendar-btn-color: $text-color !default;
+$calendar-btn-border: #ccc !default;
+$calendar-btn-border-radius: $border-radius !default;
+
 $calendar-cell-align: center !default;
 $calendar-cell-padding: 0.25em !default;
-$calendar-cell-color: $btn-color !default;
+$calendar-cell-color: $calendar-btn-color !default;
 $calendar-cell-border-radius: $input-border-radius !default;
 
-$calendar-cell-bg-hover: $state-hover-bg !default;
-$calendar-cell-border-hover: $state-hover-border-color !default;
-$calendar-cell-color-hover: $state-hover-color !default;
+$calendar-btn-hover-bg: $state-hover-bg !default;
+$calendar-btn-hover-border-color: $state-hover-border-color !default;
+$calendar-btn-hover-color: $state-hover-color !default;
 
-// $calendar-cell-bg-focus: $widget-focus-bg !default;
-// $calendar-cell-border-focus: $widget-focus-border !default;
-// $calendar-cell-color-focus: $widget-focus-color !default;
+$calendar-btn-active-color: null !default;
+$calendar-btn-active-border-color: null !default;
+$calendar-btn-active-bg: darken($calendar-btn-hover-bg, 3%) !default;
 
-$calendar-cell-bg-select: $state-select-bg !default;
-$calendar-cell-border-select: $state-select-border-color !default;
-$calendar-cell-color-select: $state-select-color !default;
+$calendar-cell-select-color: $state-select-color !default;
+$calendar-cell-select-border-color: $state-select-border-color !default;
+$calendar-cell-select-bg: $state-select-bg !default;
 
 //
 // Multiselect

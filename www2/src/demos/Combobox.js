@@ -23,9 +23,9 @@ let list = [
 
 const ICONS = ['bicycle', 'area-chart', 'anchor']
 
-const GroupBy = item => item.name.substr(0, 2)
+const GroupBy = (item) => item.name.substr(0, 2)
 
-const ItemComponent = itemProps => {
+const ItemComponent = (itemProps) => {
   const { item } = itemProps
   return (
     <div>
@@ -102,7 +102,7 @@ export default class extends React.Component {
               <RW.DropdownList
                 filter={false}
                 value={filter || false}
-                data={[false, 'startsWith', 'endsWith', 'contains']}
+                data={[false, 'startsWith', 'eq', 'contains']}
                 onChange={setter('filter')}
               />
             </Demo.Control>
@@ -114,7 +114,7 @@ export default class extends React.Component {
               data={list}
               dataKey="id"
               textField="name"
-              onChange={disabled =>
+              onChange={(disabled) =>
                 this.setState({
                   disabled,
                   readOnly: false,

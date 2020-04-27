@@ -2,6 +2,7 @@ import { useState } from 'react'
 import useFocusManagerBase, {
   FocusManagerOptions,
 } from '@restart/hooks/useFocusManager'
+import useEventCallback from '@restart/hooks/useEventCallback'
 import useMounted from '@restart/hooks/useMounted'
 import matches from 'dom-helpers/matches'
 
@@ -23,13 +24,16 @@ export default function useFocusManager(
   const isMounted = useMounted()
   const [focused, setFocus] = useState(false)
 
+  const isDisabled = useEventCallback(
+    () => props.disabled === true || isInDisabledFieldset(ref.current!),
+  )
+
   const events = useFocusManagerBase({
     ...opts,
-    onChange: focused => {
+    isDisabled,
+    onChange: (focused) => {
       if (isMounted()) setFocus(focused)
     },
-    isDisabled: () =>
-      props.disabled === true || isInDisabledFieldset(ref.current!),
     didHandle(focused, event) {
       let handler = props[focused ? 'onFocus' : 'onBlur']
       if (handler) handler(event)

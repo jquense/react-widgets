@@ -5,13 +5,6 @@
     height: auto;
   }
 
-  .rw-input-reset {
-    height: calc(#{$input-height} - #{$input-border-width * 2});
-    border-width: 0;
-    padding: 0 $input-btn-padding-x;
-    max-width: 100%; // breaks to a new line but doesn't stop growing
-  }
-
   & .rw-select {
     vertical-align: middle;
 
@@ -21,6 +14,20 @@
       box-shadow: none;
       background: none;
     }
+  }
+}
+
+.rw-multiselect-input {
+  @extend %rw-btn-input-reset;
+
+  height: calc(#{$input-height} - #{$input-border-width * 2});
+  padding: 0 $input-btn-padding-x;
+  max-width: 100%; // breaks to a new line but doesn't stop growing
+
+  &:disabled,
+  &:read-only {
+    // use parent style
+    cursor: inherit;
   }
 }
 
@@ -41,6 +48,7 @@
   border-radius: $multiselect-tag-border-radius;
   background-color: $multiselect-tag-bg;
   border: 1px solid $multiselect-tag-border;
+  // reset the text selection cursor on the parent
   cursor: default;
   max-width: 100%;
   align-items: center;
@@ -48,7 +56,8 @@
   &:focus {
     outline: none;
   }
-  .rw-rtl & {
+
+  [dir='rtl'] & {
     margin-left: 0;
     margin-right: $multiselect-tag-gutter;
     padding: 0 $multiselect-tag-padding-left 0 $multiselect-tag-padding-right;
@@ -58,22 +67,9 @@
     @include focus-ring();
   }
 
-  &.rw-state-readonly,
   &.rw-state-disabled,
-  .rw-state-readonly &,
-  .rw-state-disabled &,
-  fieldset[disabled] & {
-    cursor: not-allowed;
-  }
-
-  &.rw-state-disabled,
-  .rw-state-disabled &,
   fieldset[disabled] & {
     opacity: 0.65;
-  }
-
-  fieldset[disabled] & {
-    @include state-disabled();
   }
 }
 
@@ -82,12 +78,14 @@
 }
 
 .rw-multiselect-tag-btn {
-  color: $multiselect-tag-color;
+  @extend %rw-btn-input-reset;
+
+  cursor: pointer;
   align-self: stretch;
+  color: $multiselect-tag-color;
   padding: 0 $multiselect-tag-button-padding;
 
-  .rw-rtl & {
-    margin-left: 0;
-    margin-right: 0.25em;
+  &:disabled {
+    cursor: inherit;
   }
 }

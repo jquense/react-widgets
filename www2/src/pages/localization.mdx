@@ -1,4 +1,6 @@
-import TabbedCodeBlock, { Tab } from '../components/TabbedCodeBlock'
+import TabbedCodeBlock, {
+  Tab,
+} from "../components/TabbedCodeBlock";
 
 # Localization
 
@@ -18,7 +20,7 @@ such as Moment, Date-fns, Luxon, etc.
 Localizer's are split into `DateLocalizer` and `NumberLocalizer` classes to better
 customize which libraries are needed for specific use-cases.
 
-## configuration
+## Configuration
 
 Localizer configuration is handled via a top level "Provider" component, exported from `react-widgets`. This should
 ideally rendered close to the root of your App. You can broadly customize the
@@ -26,10 +28,14 @@ default language used by each compoent (via `messages`) and configure date and/o
 localizer instances.
 
 ```tsx
-import { Localization } from 'react-widgets'
-;<Localization messages={customMessages} date={myDateLocalizer}>
+import { Localization } from "react-widgets";
+
+<Localization
+  messages={customMessages}
+  date={myDateLocalizer}
+>
   {app}
-</Localization>
+</Localization>;
 ```
 
 ### Moment.js <small>date</small>
@@ -65,10 +71,10 @@ Moment [format](http://momentjs.com/docs/#/displaying/format/) props accept `str
 ### date-fns <small>date</small>
 
 ```sh
-npm install react-widgets-date-fns date-fns@2.0.0-alpha.7 --save
+npm install react-widgets-date-fns date-fns@2.0.0 --save
 ```
 
-See the official [date-fns docs](https://date-fns.org/v2.0.0-alpha.7/docs/Getting-Started) for information
+See the official [date-fns docs](https://date-fns.org/v2.0.0/docs/Getting-Started) for information
 on integrating date-fns.
 
 `date-fns` only provides **date** localization, if you also need Number localization consider
@@ -79,9 +85,11 @@ the `en-US` locale without any configuration, and includes only the `date-fns` b
 for formatting and parsing dates so the additional bundle size should be minimal.
 
 ```tsx
-import DateFnsLocalizer from 'react-widgets-date-fns'
-import DateTimePicker from 'react-widgets/lib/DateTimePicker'
-;<Localization date={new DateFnsLocalizer()}>...</Localization>
+import DateFnsLocalizer from "react-widgets-date-fns";
+import DateTimePicker from "react-widgets/lib/DateTimePicker";
+<Localization date={new DateFnsLocalizer()}>
+  ...
+</Localization>;
 ```
 
 Additional locales can be included and date formats overridden by passing them as options to
@@ -89,17 +97,26 @@ the localizer function.
 
 ```js
 // Use custom date formats and include all date-fns locales
-import DateFnsLocalizer, { defaultFormats } from 'react-widgets-date-fns'
-import locales from 'date-fns/locale'
+import DateFnsLocalizer, {
+  defaultFormats,
+} from "react-widgets-date-fns";
+import locales from "date-fns/locale";
 
-const formats = Object.assign(defaultFormats, { default: 'mmm YY' })
-const localizer = new DateFnsLocalizer({ formats, locales })
+const formats = Object.assign(defaultFormats, {
+  default: "mmm YY",
+});
+const localizer = new DateFnsLocalizer({
+  formats,
+  locales,
+});
 
 // Include only the locales you need to limit bundle size
-import enGB from 'date-fns/locale/en-GB'
-import de from 'date-fns/locale/de'
+import enGB from "date-fns/locale/en-GB";
+import de from "date-fns/locale/de";
 
-new DateFnsLocalizer({ locales: { 'en-GB': enGB, de: de } })
+new DateFnsLocalizer({
+  locales: { "en-GB": enGB, de: de },
+});
 ```
 
 date-fns [format](https://date-fns.org/v1.29.0/docs/format) props accept `string`s
@@ -136,3 +153,6 @@ a complete guide to its format syntax.
 New localizers are easy to create, either by sub-classing an existing one
 to customize it or by creating a new one entirely by implementing the
 Localizer interface for either Dates or Numbers.
+
+Consult the source code and TypeScript types for details on what interface needs
+to be implemented.

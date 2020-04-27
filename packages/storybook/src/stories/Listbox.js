@@ -1,8 +1,8 @@
 import React from 'react'
 import Listbox from 'react-widgets/lib/Listbox'
 import { storiesOf } from '@storybook/react'
-import Container from './Container'
-import { action } from './helpers'
+import Container from '../Container'
+import { action } from '../helpers'
 
 let generateNames = global.generateNames
 
@@ -12,6 +12,10 @@ let props = {
   dataKey: 'id',
   textField: 'fullName',
   onChange: action('change'),
+}
+
+export default {
+  title: 'Listbox',
 }
 
 storiesOf('Listbox', module)
@@ -24,16 +28,6 @@ storiesOf('Listbox', module)
   .add('multiple', () => (
     <Container>
       <Listbox {...props} multiple defaultValue={props.data.slice(0, 3)} />
-    </Container>
-  ))
-  .add('busy', () => (
-    <Container>
-      <Listbox {...props} busy defaultValue={props.data.slice(0, 3)} />
-    </Container>
-  ))
-  .add('right to left', () => (
-    <Container>
-      <Listbox {...props} isRtl busy defaultValue={props.data.slice(0, 3)} />
     </Container>
   ))
   .add('disabled', () => (
@@ -65,7 +59,7 @@ storiesOf('Listbox', module)
       <Listbox {...props} readOnly defaultValue={props.data.slice(0, 3)} />
     </Container>
   ))
-  .add('Item component', () => (
+  .add('Item Component', () => (
     <Container>
       <Listbox
         {...props}

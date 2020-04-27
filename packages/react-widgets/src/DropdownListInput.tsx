@@ -28,7 +28,7 @@ interface Props<TDataItem> {
   renderValue?: RenderValueProp<TDataItem>
 }
 
-const DropdownListInput = React.forwardRef(function<TDataItem>(
+const DropdownListInput = React.forwardRef(function <TDataItem>(
   {
     name,
     autoComplete,
@@ -71,6 +71,7 @@ const DropdownListInput = React.forwardRef(function<TDataItem>(
   }
   let dataKey = dataKeyAccessor(value)
   let text = value == null ? '' : textAccessor(value)
+  let isNonInteractive = disabled || readOnly
 
   let strValue = String(dataKey)
   if (strValue === String({})) strValue = ''
@@ -91,8 +92,8 @@ const DropdownListInput = React.forwardRef(function<TDataItem>(
   }))
 
   return (
-    <div className="rw-input rw-dropdown-list-input">
-      {autoComplete !== 'off' && (
+    <div className="rw-dropdown-list-input">
+      {autoComplete !== 'off' && !isNonInteractive && (
         <input
           name={name}
           tabIndex={-1}
@@ -102,10 +103,7 @@ const DropdownListInput = React.forwardRef(function<TDataItem>(
           autoComplete={autoComplete}
           onChange={handleAutofill}
           onAnimationStart={handleAutofillDetect}
-          className={cn(
-            'rw-dropdown-list-search rw-detect-autofill',
-            !autofilling && 'rw-sr',
-          )}
+          className={cn('rw-detect-autofill', !autofilling && 'rw-sr')}
         />
       )}
 
@@ -116,13 +114,15 @@ const DropdownListInput = React.forwardRef(function<TDataItem>(
               ref={searchRef}
               disabled={disabled}
               readOnly={readOnly}
-              className="rw-dropdown-list-search"
+              className="rw-dropdownlist-search"
               value={searchTerm || ''}
               size={(searchTerm || '').length + 2}
               onChange={onSearch}
             />
           )}
-          {!searchTerm && inputValue}
+          {!searchTerm && (
+            <span className="rw-dropdown-list-value">{inputValue}</span>
+          )}
         </>
       )}
     </div>

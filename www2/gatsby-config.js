@@ -21,7 +21,10 @@ module.exports = {
       resolve: '@docpocalypse/gatsby-theme',
       options: {
         theming: 'full',
-        propsLayout: 'list',
+        defaults: {
+          propsLayout: 'list',
+          showExampleCode: 'collapsible',
+        },
         sources: ['../packages/react-widgets/src'],
         exampleCodeScope: {
           listOfPeople: require.resolve('./src/generate-data'),
