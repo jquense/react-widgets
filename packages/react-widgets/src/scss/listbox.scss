@@ -1,12 +1,14 @@
 .rw-listbox {
-  border-radius: $border-radius;
+  border-radius: $widget-border-radius;
   background-color: $widget-bg;
-  border: $widget-border 1px solid;
+  border: $widget-border-color 1px solid;
 
   &.rw-state-focus {
+    color: $input-focus-color;
     background-color: $input-focus-bg;
     border-color: $input-focus-border-color;
-    box-shadow: #{$input-focus-box-shadow}, #{$input-box-shadow};
+    box-shadow: #{$widget-focus-box-shadow}, #{$input-box-shadow};
+    transition: if($widget-focus-box-shadow, $widget-focus-transition, null);
   }
 
   &.rw-state-disabled > *,

@@ -136,7 +136,7 @@ storiesOf('DropdownList', module)
         <div>
           <label>
             City
-            <DropdownList {...props} readOnly defaultValue={props.data[1]} />
+            <DropdownList {...props} defaultValue={props.data[1]} />
           </label>
         </div>
         <div>

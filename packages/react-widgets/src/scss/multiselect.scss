@@ -1,26 +1,10 @@
 .rw-multiselect {
-  cursor: text;
-
-  & > .rw-widget-picker {
-    height: auto;
-  }
-
-  & .rw-select {
-    vertical-align: middle;
-
-    &,
-    &:hover,
-    &:active {
-      box-shadow: none;
-      background: none;
-    }
-  }
 }
 
 .rw-multiselect-input {
   @extend %rw-btn-input-reset;
 
-  height: calc(#{$input-height} - #{$input-border-width * 2});
+  height: calc(#{$input-height} - #{$input-border-width} * 2);
   padding: 0 $input-btn-padding-x;
   max-width: 100%; // breaks to a new line but doesn't stop growing
 
@@ -35,8 +19,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  flex: 1 1 0%;
+  width: 100%;
   outline: none;
+  cursor: text;
+
+  .rw-state-disabled & {
+    cursor: unset;
+  }
 }
 
 .rw-multiselect-tag {
@@ -47,7 +36,7 @@
   min-height: $multiselect-tag-height;
   border-radius: $multiselect-tag-border-radius;
   background-color: $multiselect-tag-bg;
-  border: 1px solid $multiselect-tag-border;
+  border: 1px solid $multiselect-tag-border-color;
   // reset the text selection cursor on the parent
   cursor: default;
   max-width: 100%;
@@ -82,8 +71,21 @@
 
   cursor: pointer;
   align-self: stretch;
-  color: $multiselect-tag-color;
-  padding: 0 $multiselect-tag-button-padding;
+  padding: $multiselect-tag-btn-padding-y $multiselect-tag-btn-padding-x;
+  color: $multiselect-tag-btn-color;
+  border-color: $multiselect-tag-btn-border-color;
+  background-color: $multiselect-tag-btn-bg;
+
+  &:hover {
+    color: $multiselect-tag-btn-hover-color;
+    border-color: $multiselect-tag-btn-hover-border-color;
+    background-color: $multiselect-tag-btn-hover-bg;
+  }
+  &:active {
+    color: $multiselect-tag-btn-active-color;
+    background-color: $multiselect-tag-btn-active-bg;
+    border-color: $multiselect-tag-btn-active-border-color;
+  }
 
   &:disabled {
     cursor: inherit;

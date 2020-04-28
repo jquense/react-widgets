@@ -9,9 +9,9 @@
 }
 
 .rw-calendar-contained {
-  border-radius: $border-radius;
+  border-radius: $widget-border-radius;
   background-color: $calendar-bg;
-  border: $widget-border 1px solid;
+  border: $widget-border-color 1px solid;
 }
 
 .rw-calendar-now {
@@ -35,12 +35,16 @@
   &:active {
     background-color: $calendar-btn-active-bg;
   }
-
+  // TODO: normal button disabled
   &:disabled,
   &.rw-state-disabled {
     pointer-events: none;
     opacity: 0.35;
   }
+}
+
+.rw-calendar-btn {
+  border-color: $calendar-btn-border-color;
 }
 
 .rw-calendar-btn-left,
@@ -73,10 +77,6 @@
   }
 }
 
-.rw-calendar-footer {
-  border-top: 1px solid $input-border;
-}
-
 .rw-calendar-grid {
   outline: none;
   height: 14em;
@@ -90,12 +90,13 @@
 
 .rw-head-cell {
   text-align: $calendar-cell-align;
-  border-bottom: 1px solid $input-border;
+  border-bottom: 1px solid $input-border-color;
   padding: $calendar-cell-padding;
 }
 
 .rw-cell {
   color: $calendar-cell-color;
+  border-color: $calendar-cell-border-color;
   border-radius: $calendar-cell-border-radius;
   cursor: pointer;
   line-height: normal;
@@ -103,8 +104,6 @@
   border: 1px solid transparent;
   padding: $calendar-cell-padding;
   outline: none;
-
-  @include focus();
 
   &.rw-state-selected {
     background-color: $calendar-cell-select-bg;
@@ -118,7 +117,7 @@
 }
 
 .rw-cell-off-range {
-  color: lighten($calendar-btn-color, 40%);
+  color: $calendar-btn-muted-color;
 }
 
 @mixin translate($x, $y) {

@@ -22,6 +22,17 @@ storiesOf('Multiselect', module)
       />
     </Container>
   ))
+  .add('Long Search', () => (
+    <Container>
+      <Multiselect
+        {...props}
+        allowCreate="onFilter"
+        onCreate={action('onCreate')}
+        defaultValue={props.data.slice(1, 2)}
+        searchTerm="longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong"
+      />
+    </Container>
+  ))
   .add('Create tags', () => (
     <Container>
       <Multiselect

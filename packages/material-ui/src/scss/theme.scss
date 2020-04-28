@@ -12,24 +12,24 @@ $spacing-unit: 8px;
 $input-border-error: #f44336;
 
 // --- React-Widgets below here
-$font-size: 16px;
+$widget-font-size: 16px;
 
-$font-family: Roboto, sans-serif;
+$widget-font-family: Roboto, sans-serif;
 $text-color: $md-text-primary-color;
 $text-secondary-color: $md-text-secondary-color;
 
 // Actions: hover/focus
-$state-hover-bg: rgba(0, 0, 0, 0.08);
-$state-hover-border-color: transparent;
-$state-hover-color: $text-color;
+$widget-hover-bg: rgba(0, 0, 0, 0.08);
+$widget-hover-border-color: transparent;
+$widget-hover-color: $text-color;
 
-$state-focus-bg: $state-hover-bg;
-$state-focus-border: $state-hover-border-color;
-$state-focus-color: $state-hover-color;
+$state-focus-bg: $widget-hover-bg;
+$state-focus-border: $widget-hover-border-color;
+$state-focus-color: $widget-hover-color;
 
 // Actions: selected
-$state-select-bg: rgba(0, 0, 0, 0.14);
-$state-select-border-color: transparent;
+$widget-selected-bg: rgba(0, 0, 0, 0.14);
+$widget-selected-border-color: transparent;
 $state-select-color: $text-color;
 
 /// Buttons
@@ -54,9 +54,9 @@ $input-btn-padding-x: 0;
 // $list-hover-border-color: $grey-100;
 // $list-hover-color: $text-color;
 
-// $list-select-bg: $list-hover-bg;
-// $list-select-border-color: $list-hover-border-color;
-// $list-select-color: $list-hover-color;
+// $list-selected-bg: $list-hover-bg;
+// $list-selected-border-color: $list-hover-border-color;
+// $list-selected-color: $list-hover-color;
 
 // $list-focus-bg: $list-hover-bg;
 // $list-focus-border: $list-hover-border-color;
@@ -117,7 +117,7 @@ $multiselect-tag-border: $multiselect-tag-bg;
     left: 0px;
     right: 0px;
     height: 1px;
-    background-color: $input-border;
+    background-color: $input-border-color;
     transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 

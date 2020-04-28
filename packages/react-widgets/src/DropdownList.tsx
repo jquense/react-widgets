@@ -318,7 +318,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
     dataItem: TDataItem,
     originalEvent?: React.SyntheticEvent,
   ) => {
-    if (readOnly || disabled) return
+    if (readOnly || isDisabled) return
     if (dataItem === undefined) return
     if (dataItem === CREATE_OPTION) {
       handleCreate(originalEvent)
@@ -332,7 +332,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   }
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (readOnly || disabled) return
+    if (readOnly || isDisabled) return
 
     focus()
     toggle()
@@ -340,7 +340,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (readOnly || disabled) return
+    if (readOnly || isDisabled) return
     let { key, altKey, ctrlKey, shiftKey } = e
     notify(onKeyDown, [e])
 
@@ -387,7 +387,7 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (readOnly || disabled) return
+    if (readOnly || isDisabled) return
 
     notify(onKeyPress, [e])
     if (e.defaultPrevented || filter) return

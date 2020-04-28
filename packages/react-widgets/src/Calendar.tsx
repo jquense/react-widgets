@@ -593,7 +593,7 @@ function Calendar({
         localizer={localizer}
         upDisabled={isDisabled || currentView === last(views)}
         prevDisabled={prevDisabled}
-        todayDisabled={disabled || todayNotInRange}
+        todayDisabled={isDisabled || todayNotInRange}
         nextDisabled={nextDisabled}
         onViewChange={handleViewChangeImpl}
         onMoveLeft={handleMoveBack}
@@ -611,7 +611,7 @@ function Calendar({
           id={viewId}
           value={currentValue}
           localizer={localizer}
-          disabled={disabled}
+          disabled={isDisabled}
           focusedItem={currentDate}
           onChange={handleDateChange}
           onKeyDown={handleKeyDown}

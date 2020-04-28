@@ -71,9 +71,8 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
   }
   let dataKey = dataKeyAccessor(value)
   let text = value == null ? '' : textAccessor(value)
-  let isNonInteractive = disabled || readOnly
 
-  let strValue = String(dataKey)
+  let strValue = String(dataKey ?? '')
   if (strValue === String({})) strValue = ''
 
   const inputValue =
@@ -93,7 +92,7 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
 
   return (
     <div className="rw-dropdown-list-input">
-      {autoComplete !== 'off' && !isNonInteractive && (
+      {autoComplete !== 'off' && (
         <input
           name={name}
           tabIndex={-1}

@@ -21,7 +21,7 @@ at `14px`, but you can also tweak the input height for different root font-sizes
 {{ <TabbedCodeBlock>
 <Tab title="Sass" lang="scss">
 {`
-$font-size: 16px;
+$widget-font-size: 16px;
 $input-height: 2.5em; // at 16px, this an even 40px
 
     @import '~react-widgets/lib/scss/react-widgets';

@@ -1,11 +1,14 @@
 import { addDecorator, addParameters } from '@storybook/react'
 import { initializeRTL } from 'storybook-addon-rtl'
+import addons from '@storybook/addons'
 import decorator from '../src/localizers/configure-intl'
+import initializeTheme from '../src/addon-theme'
 
 import Chance from 'chance'
 import '../src/styles.scss'
 
 initializeRTL()
+initializeTheme()
 
 let chance = (global.chance = new Chance())
 
@@ -28,9 +31,3 @@ global.generateNames = function (limit = 100) {
 }
 
 addDecorator(decorator)
-
-addParameters({
-  options: {
-    enableShortcuts: false,
-  },
-})

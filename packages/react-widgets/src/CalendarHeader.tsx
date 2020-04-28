@@ -37,7 +37,6 @@ function CalendarHeader({
   nextDisabled,
   navigatePrevIcon = chevronLeft,
   navigateNextIcon = chevronRight,
-  isRtl,
 }: Props) {
   return (
     <div className="rw-calendar-header">

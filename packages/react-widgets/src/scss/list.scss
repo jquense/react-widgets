@@ -21,13 +21,12 @@
   }
 
   &.rw-state-selected {
-    background-color: $list-select-bg;
-    border-color: $list-select-border-color;
-    color: $list-select-color;
+    background-color: $list-selected-bg;
+    border-color: $list-selected-border-color;
+    color: $list-selected-color;
   }
 
-  &.rw-state-disabled,
-  &.rw-state-disabled:hover {
+  &.rw-state-disabled {
     cursor: not-allowed; // required to override the cursor above
     background-color: $list-disabled-bg;
     border-color: $list-disabled-border-color;

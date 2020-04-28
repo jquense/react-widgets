@@ -1,0 +1,87 @@
+@use '~react-widgets/src/scss/variables.scss' as rw;
+
+@function dft($var, $var2) {
+  @if ($var == null) {
+    @return $var2;
+  }
+  @return $var;
+}
+
+$gray-100: var(--rw-gray-100);
+$gray-200: var(--rw-gray-200);
+$gray-300: var(--rw-gray-300);
+$gray-400: var(--rw-gray-400);
+$gray-500: var(--rw-gray-500);
+$gray-600: var(--rw-gray-600);
+$gray-700: var(--rw-gray-700);
+$gray-800: var(--rw-gray-800);
+$gray-900: var(--rw-gray-900);
+
+// $list-disabled-color: var(--rw-list-disabled-color, #{$gray-400});
+// $calendar-btn-color: var(--rw-calendar-btn-color, #{$gray-900});
+// $calendar-btn-muted-color: var(--rw-calendar-btn-muted-color, #{$gray-400});
+
+$widget-font-size: var(--rw-widget-font-size);
+$widget-font-family: var(--rw-widget-font-family);
+
+$widget-border-radius: var(--rw-widget-border-radius);
+
+$widget-bg: var(--rw-widget-bg);
+$widget-color: var(--rw-widget-color);
+$widget-border-color: var(--rw-widget-border);
+$widget-disabled-bg: var(--rw-widget-disabled-bg);
+
+$widget-hover-bg: var(--rw-widget-hover-bg);
+$widget-hover-border-color: var(--rw-widget-hover-border-color);
+$widget-hover-color: var(--rw-widget-hover-color);
+
+$widget-focus-width: var(--rw-widget-focus-width);
+$widget-focus-color: var(--rw-widget-focus-color);
+$widget-focus-box-shadow: var(--rw-widget-focus-box-shadow);
+$widget-focus-transition: var(--rw-widget-focus-transition);
+
+//
+// Buttons
+//
+$picker-btn-color: var(--rw-picker-btn-color);
+$picker-btn-border-color: var(--rw-picker-btn-border-color);
+$picker-btn-bg: var(--rw-picker-btn-bg);
+$picker-btn-disabled-bg: var(--rw-picker-btn-disabled-bg);
+
+$picker-btn-hover-color: var(--rw-picker-btn-hover-color);
+$picker-btn-hover-border-color: var(--rw-picker-btn-hover-border-color);
+$picker-btn-hover-bg: var(--rw-picker-btn-hover-bg);
+
+$picker-btn-active-color: var(--rw-picker-btn-active-color);
+$picker-btn-active-border-color: var(--rw-picker-btn-active-border-color);
+
+$picker-btn-active-bg: var(--rw-picker-btn-active-bg);
+
+$input-height: var(--rw-input-height);
+$input-color: var(--rw-input-color);
+$input-box-shadow: var(--rw-input-box-shadow);
+$input-btn-padding-x: var(--rw-input-btn-padding-x);
+
+$input-bg: var(--rw-input-bg);
+$input-color-placeholder: var(--rw-input-color-placeholder);
+
+$input-border-color: var(--rw-input-border-color);
+$input-border-width: var(--rw-input-border-width);
+$input-border-radius: var(--rw-input-border-radius);
+$input-addon-border-color: var(
+  --rw-input-addon-border-color,
+  $picker-btn-border-color
+);
+
+$input-disabled-bg: var(--rw-input-disabled-bg);
+$input-disabled-border-color: var(--rw-input-disabled-border-color);
+$input-disabled-color: var(--rw-input-disabled-color);
+
+$input-focus-bg: var(--rw-input-focus-bg, var(--rw-input-bg));
+$input-focus-border-color: var(--rw-input-focus-border-color);
+$input-focus-color: var(--rw-input-focus-color);
+
+$input-autofill-bg: var(--rw-input-autofill-bg);
+$input-autofill-color: var(--rw-input-autofill-color);
+
+// $multiselect-tag-height-pt: ;

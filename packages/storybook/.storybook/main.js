@@ -3,15 +3,18 @@ const { plugins, rules } = require('webpack-atoms')
 
 module.exports = {
   stories: ['../src/stories/**/*.{js,ts,tsx}'],
-  addons: ['@storybook/addon-actions/register', 'storybook-addon-rtl/register'],
-
+  addons: [
+    require.resolve('./preset.js'),
+    '@storybook/addon-actions/register',
+    'storybook-addon-rtl/register',
+    require.resolve('../src/addon-theme/register'),
+  ],
   webpackFinal: (config) => ({
     ...config,
     // mode: 'development',
     devtool: 'inline-module-source-map',
     module: {
       rules: [
-        { parser: { amd: false } },
         {
           ...rules.js({
             rootMode: 'upward',
@@ -20,7 +23,7 @@ module.exports = {
         },
         rules.astroturf({ extension: '.scss' }),
         rules.css(),
-        rules.sass(),
+        rules.sass({ implementation: require('sass') }),
         rules.images(),
         rules.fonts(),
       ],

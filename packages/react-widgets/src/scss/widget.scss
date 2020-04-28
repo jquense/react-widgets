@@ -47,7 +47,8 @@
   &:disabled,
   fieldset[disabled] &,
   // for picker-caret
-  .rw-state-disabled & {
+  .rw-state-disabled &,
+  .rw-state-readonly & {
     cursor: inherit;
   }
   // easier to disable this way then check in each event handler
@@ -66,32 +67,35 @@
   @extend %rw-btn-input-reset;
 
   color: $picker-btn-color;
-  border-color: $picker-btn-border-color;
   background-color: $picker-btn-bg;
+  // border color doesn't make sense here
+  // since it's surrounded by the input border
 
   &:hover {
     color: $picker-btn-hover-color;
-    border-color: $picker-btn-hover-border-color;
     background-color: $picker-btn-hover-bg;
   }
   &:active {
     color: $picker-btn-active-color;
     background-color: $picker-btn-active-bg;
-    border-color: $picker-btn-active-border-color;
   }
 
   &:disabled,
   fieldset[disabled] & {
-    background-color: $btn-disabled-bg;
+    background-color: $picker-btn-disabled-bg;
   }
 }
 
 .rw-input-addon {
-  border-left: $input-border 1px solid;
+  // The input border should be more important here
+  &,
+  &.rw-picker-btn {
+    border-left: $input-addon-border-color 1px solid;
 
-  [dir='rtl'] & {
-    border-right: $input-border 1px solid;
-    border-left: none;
+    [dir='rtl'] & {
+      border-right: $input-addon-border-color 1px solid;
+      border-left: none;
+    }
   }
 }
 
@@ -105,19 +109,27 @@
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
 .rw-outline-none {
   outline: none;
 }
 
 .rw-widget {
-  @include border-box();
-
   border: none;
-  color: $text-color;
-  font-size: $font-size;
-  font-family: $font-family;
+  color: $widget-color;
+  font-size: $widget-font-size;
+  font-family: $widget-font-family;
   outline: none;
   position: relative;
+
+  &,
+  & *,
+  &:after,
+  &:before,
+  & *:after,
+  & *:before {
+    box-sizing: border-box;
+  }
 }
 
 .rw-state-readonly,
@@ -131,7 +143,7 @@ fieldset[disabled] .rw-widget {
   display: grid;
   min-height: $input-height;
   background-color: $input-bg;
-  border: $input-border $input-border-width solid;
+  border: $input-border-color $input-border-width solid;
   border-radius: $input-border-radius;
   outline: none;
   grid-template: 1fr / 1fr 1.9em;
@@ -139,12 +151,16 @@ fieldset[disabled] .rw-widget {
   width: 100%;
 
   .rw-state-focus & {
+    color: $input-focus-color;
     background-color: $input-focus-bg;
     border-color: $input-focus-border-color;
-    box-shadow: $input-focus-box-shadow;
+    box-shadow: $widget-focus-box-shadow;
+    transition: if($widget-focus-box-shadow, $widget-focus-transition, null);
 
     &.rw-widget-input {
-      box-shadow: #{$input-focus-box-shadow}, #{$input-box-shadow};
+      @if ($input-box-shadow) {
+        box-shadow: #{$widget-focus-box-shadow}, #{$input-box-shadow};
+      }
     }
   }
 }
@@ -161,7 +177,7 @@ fieldset[disabled] .rw-widget {
   .rw-state-disabled &,
   fieldset[disabled] & {
     background-color: $input-disabled-bg;
-    border-color: $input-disabled-border;
+    border-color: $input-disabled-border-color;
   }
 }
 
@@ -188,6 +204,8 @@ fieldset[disabled] .rw-widget {
 
 // https://github.com/klarna/ui/blob/master/Field/styles.scss
 .rw-detect-autofill {
+  @extend %rw-btn-input-reset;
+
   &:-webkit-autofill {
     animation-name: react-widgets-autofill-start;
 
@@ -202,7 +220,7 @@ fieldset[disabled] .rw-widget {
 
 .rw-webkit-autofill .rw-widget-container,
 .rw-input:-webkit-autofill {
-  background-color: $input-bg-color-autofill !important;
+  background-color: $input-autofill-bg !important;
   background-image: none !important;
-  color: $input-color-autofill !important;
+  color: $input-autofill-color !important;
 }

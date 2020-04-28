@@ -20,99 +20,18 @@
   list-style: none;
 }
 
-@mixin focus-ring($color: $widget-focus-color, $width: $widget-focus-width) {
+@mixin focus-ring() {
   z-index: 1;
-  box-shadow: 0 0 0 $width $color;
+  box-shadow: $widget-focus-box-shadow;
+  transition: if($widget-focus-box-shadow, $widget-focus-transition, null);
 }
 
-@mixin focus($color: $widget-focus-color, $width: $widget-focus-width) {
+@mixin focus() {
   &:focus {
-    z-index: 1;
-    box-shadow: 0 0 0 $width $color;
+    @include focus-ring();
 
     [data-intent='mouse'] & {
       z-index: auto;
-      box-shadow: none;
-    }
-  }
-}
-
-@mixin border-bottom-radius($radius) {
-  border-bottom-right-radius: $radius;
-  border-bottom-left-radius: $radius;
-}
-
-@mixin border-top-radius($radius) {
-  border-top-right-radius: $radius;
-  border-top-left-radius: $radius;
-}
-
-@mixin state-hover(
-  $bg: $state-hover-bg,
-  $border-color: $state-hover-border-color,
-  $color: $state-hover-color
-) {
-  background-color: $bg;
-  border-color: $border-color;
-  color: $color;
-}
-
-@mixin state-select(
-  $bg: $state-select-bg,
-  $border-color: $state-select-border-color,
-  $color: $state-select-color
-) {
-  &,
-  &:hover {
-    background-color: $bg;
-    border-color: $border-color;
-    color: $color;
-  }
-}
-
-@mixin state-focus($bg, $border-color, $color) {
-  &,
-  &:hover {
-    background-color: $bg;
-    border-color: $border-color;
-    color: $color;
-  }
-}
-
-@mixin state-disabled() {
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-@mixin disabled-color($color) {
-  color: lighten($color, 40%);
-  opacity: 0.7;
-}
-
-@mixin make-btn-state(
-  $hover-color: $btn-hover-bg,
-  $active-shadow: $btn-active-box-shadow
-) {
-  cursor: pointer;
-
-  &:hover,
-  &:active {
-    background-color: $btn-hover-bg;
-  }
-
-  &:active {
-    box-shadow: $btn-active-box-shadow;
-  }
-
-  .rw-state-disabled &,
-  .rw-state-readonly &,
-  fieldset[disabled] & {
-    &,
-    &:hover,
-    &:active {
-      cursor: not-allowed;
-      background-color: inherit;
-      background-image: none;
       box-shadow: none;
     }
   }

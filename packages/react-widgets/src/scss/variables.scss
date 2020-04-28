@@ -1,4 +1,3 @@
-$white: #fff !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
 $gray-300: #dee2e6 !default;
@@ -8,66 +7,50 @@ $gray-600: #6c757d !default;
 $gray-700: #495057 !default;
 $gray-800: #343a40 !default;
 $gray-900: #212529 !default;
-$black: #000 !default;
-
-$font-size: 1em !default;
-$font-family: inherit !default;
-$text-color: $gray-900 !default;
-
-$version: '4.1.0' !default;
-
-$border-radius: 4px !default;
-$border-radius-sm: 3px !default;
-
-$widget-bg: #fff !default;
-$widget-border: #ccc !default;
-
-$widget-active-color: $white !default;
-$widget-active-bg: #007bff !default;
-
-$widget-focus-width: 3px;
-$widget-focus-color: rgba($widget-active-bg, 0.25) !default;
-$widget-focus-box-shadow: 0 0 0 $widget-focus-width $widget-focus-color !default;
-
-$icon-color: inherit !default;
 
 //
 // Widget States
 //
-$state-select-bg: $widget-active-bg !default;
-$state-select-border-color: $state-select-bg !default;
-$state-select-color: $widget-active-color !default;
+$widget-font-size: 1em !default;
+$widget-font-family: inherit !default;
 
-$state-hover-bg: darken(#fff, 10%) !default;
-$state-hover-border-color: $state-hover-bg !default;
-$state-hover-color: $text-color !default;
+$widget-border-radius: 4px !default;
+
+$widget-bg: #fff !default;
+$widget-color: $gray-900;
+$widget-border-color: #ccc !default;
+$widget-disabled-bg: $gray-200 !default;
+
+$widget-hover-bg: $gray-200 !default;
+$widget-hover-border-color: $widget-hover-bg !default;
+$widget-hover-color: null !default;
+
+$widget-focus-width: 3px;
+$widget-focus-color: rgba(0, 123, 255, 0.25) !default;
+$widget-focus-box-shadow: 0 0 0 $widget-focus-width $widget-focus-color !default;
+$widget-focus-transition: box-shadow 0.15s ease-in-out !default;
 
 //
 // Buttons
 //
-
-$btn-hover-bg: $state-hover-bg !default;
-$btn-hover-border: $state-hover-border-color !default;
-$btn-active-bg: darken($state-hover-bg, 3%);
-$btn-disabled-bg: $gray-200 !default;
-
-$picker-btn-color: $gray-700 !default;
+$picker-btn-color: $widget-color !default;
 $picker-btn-border-color: null !default;
 $picker-btn-bg: null !default;
+$picker-btn-disabled-bg: $widget-disabled-bg !default;
 
 $picker-btn-hover-color: null !default;
 $picker-btn-hover-border-color: null !default;
-$picker-btn-hover-bg: darken(#fff, 10%) !default;
+$picker-btn-hover-bg: $widget-hover-bg !default;
 
 $picker-btn-active-color: null !default;
 $picker-btn-active-border-color: null !default;
-$picker-btn-active-bg: darken($picker-btn-hover-bg, 3%) !default;
+$picker-btn-active-bg: $gray-300 !default;
 
 //
 // Picker inputs
 //
 
-$input-height: 2.429em !default; // 2.5em is good for 16px roots
+$input-height: 38px !default; // 2.5em is good for 16px roots
 $input-color: $gray-700 !default;
 $input-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075) !default;
 $input-btn-padding-x: 0.857em !default;
@@ -75,46 +58,79 @@ $input-btn-padding-x: 0.857em !default;
 $input-bg: $widget-bg !default;
 $input-color-placeholder: #999 !default;
 
-$input-border: $widget-border !default;
+$input-border-color: $widget-border-color !default;
 $input-border-width: 1px !default;
-$input-border-radius: $border-radius !default;
+$input-border-radius: $widget-border-radius !default;
+$input-addon-border-color: $input-border-color !default;
 
-$input-disabled-bg: $gray-200 !default;
-$input-disabled-border: $input-border !default;
+$input-disabled-bg: $widget-disabled-bg !default;
+$input-disabled-border-color: null !default;
+$input-disabled-color: null !default;
 
-// $input-hover-bg: $gray-200 !default;
-// $input-hover-border: $input-border !default;
+$input-focus-bg: null !default;
+$input-focus-border-color: #80bdff !default; // 25% lighter active-bg
+$input-focus-color: null !default;
 
-$input-focus-bg: $input-bg !default;
-$input-focus-border-color: lighten($widget-active-bg, 25%) !default;
-$input-focus-color: $input-color !default;
-$input-focus-width: $widget-focus-width !default;
-$input-focus-box-shadow: $widget-focus-box-shadow !default;
+$input-autofill-bg: rgb(232, 240, 254) !default;
+$input-autofill-color: rgb(0, 0, 0) !default;
 
-$input-bg-color-autofill: rgb(232, 240, 254) !default;
-$input-color-autofill: rgb(0, 0, 0) !default;
+//
+// Multiselect
+//
+$multiselect-gutter-pt: 0.115 !default;
+$multiselect-tag-padding-left: 0.35em !default;
+$multiselect-tag-padding-right: 0.35em !default;
+
+$multiselect-tag-color: null !default;
+$multiselect-tag-border-color: $gray-300 !default;
+$multiselect-tag-bg: $gray-300 !default;
+
+$multiselect-tag-height-pt: 1 - ($multiselect-gutter-pt * 2) !default;
+$multiselect-tag-gutter: calc(
+  #{$input-height} * #{$multiselect-gutter-pt} - #{$input-border-width}
+) !default;
+$multiselect-tag-height: calc(
+  #{$input-height} * #{$multiselect-tag-height-pt}
+) !default;
+$multiselect-tag-border-radius: 3px !default;
+
+$multiselect-tag-btn-padding-y: 0 !default;
+$multiselect-tag-btn-padding-x: 0.35em !default;
+
+$multiselect-tag-btn-bg: null !default;
+$multiselect-tag-btn-border-color: null !default;
+$multiselect-tag-btn-color: null !default;
+
+$multiselect-tag-btn-hover-bg: null !default;
+$multiselect-tag-btn-hover-border-color: null !default;
+$multiselect-tag-btn-hover-color: null !default;
+
+$multiselect-tag-btn-active-bg: null !default;
+$multiselect-tag-btn-active-border-color: null !default;
+$multiselect-tag-btn-active-color: null !default;
+
 //
 // List
 //
-$list-color: $text-color !default;
-$list-font-size: $font-size !default;
+$list-color: $widget-color !default;
+$list-font-size: $widget-font-size !default;
 $list-padding-y: 0.5em !default;
 
-$list-hover-bg: $state-hover-bg !default;
-$list-hover-border-color: $state-hover-border-color !default;
-$list-hover-color: $state-hover-color !default;
+$list-hover-bg: $widget-hover-bg !default;
+$list-hover-border-color: $widget-hover-border-color !default;
+$list-hover-color: $widget-hover-color !default;
 
 $list-focus-bg: $list-hover-bg !default;
 $list-focus-border-color: $list-hover-border-color !default;
 $list-focus-color: $list-hover-color !default;
 
-$list-select-bg: $state-select-bg !default;
-$list-select-border-color: $state-select-border-color !default;
-$list-select-color: $state-select-color !default;
+$list-selected-bg: #007bff !default;
+$list-selected-border-color: $list-selected-bg !default;
+$list-selected-color: #fff !default;
 
-$list-disabled-bg: null !default;
-$list-disabled-border-color: null !default;
-$list-disabled-color: transparentize($list-color, 0.7) !default;
+$list-disabled-bg: transparent !default;
+$list-disabled-border-color: transparent !default;
+$list-disabled-color: $gray-300 !default;
 
 $list-option-padding-y: 0.25em;
 $list-option-padding-x: 1.5em;
@@ -125,11 +141,11 @@ $list-option-padding-x: 1.5em;
 $popup-widget-offset: 2px !default;
 $popup-max-height: 250px;
 $popup-bg: $widget-bg !default;
-$popup-border: $widget-border !default;
-$popup-border-radius: $border-radius !default;
+$popup-border: $widget-border-color !default;
+$popup-border-radius: $widget-border-radius !default;
 $popup-box-shadow-offset: 1em !default;
-$popup-box-shadow: 0 0.5em 1em rgba($black, 0.175) !default;
-$popup-box-shadow-up: 0 0.5em 1em rgba($black, 0.175) !default !default;
+$popup-box-shadow: 0 0.5em 1em rgba(#000, 0.175) !default;
+$popup-box-shadow-up: 0 0.5em 1em rgba(#000, 0.175) !default !default;
 
 $popup-zindex: 1005 !default;
 $popup-zindex-focused: $popup-zindex + 1 !default;
@@ -140,46 +156,29 @@ $popup-zindex-focused: $popup-zindex + 1 !default;
 $calendar-bg: $widget-bg !default;
 
 $calendar-btn-bg: #fff !default;
-$calendar-btn-color: $text-color !default;
-$calendar-btn-border: #ccc !default;
-$calendar-btn-border-radius: $border-radius !default;
+$calendar-btn-color: $widget-color !default;
+$calendar-btn-border-color: null !default;
+$calendar-btn-muted-color: $gray-400;
+$calendar-btn-border-radius: $widget-border-radius !default;
+
+$calendar-btn-hover-bg: $widget-hover-bg !default;
+$calendar-btn-hover-border-color: $widget-hover-border-color !default;
+$calendar-btn-hover-color: $widget-hover-color !default;
+
+$calendar-btn-active-color: null !default;
+$calendar-btn-active-border-color: null !default;
+$calendar-btn-active-bg: $gray-300 !default;
+
+$calendar-btn-focus-color: null !default;
+$calendar-btn-focus-border-color: null !default;
+$calendar-btn-focus-bg: null !default;
 
 $calendar-cell-align: center !default;
 $calendar-cell-padding: 0.25em !default;
 $calendar-cell-color: $calendar-btn-color !default;
-$calendar-cell-border-radius: $input-border-radius !default;
+$calendar-cell-border-color: null !default;
+$calendar-cell-border-radius: $calendar-btn-border-radius !default;
 
-$calendar-btn-hover-bg: $state-hover-bg !default;
-$calendar-btn-hover-border-color: $state-hover-border-color !default;
-$calendar-btn-hover-color: $state-hover-color !default;
-
-$calendar-btn-active-color: null !default;
-$calendar-btn-active-border-color: null !default;
-$calendar-btn-active-bg: darken($calendar-btn-hover-bg, 3%) !default;
-
-$calendar-cell-select-color: $state-select-color !default;
-$calendar-cell-select-border-color: $state-select-border-color !default;
-$calendar-cell-select-bg: $state-select-bg !default;
-
-//
-// Multiselect
-//
-$multiselect-gutter-pt: 0.115 !default;
-$multiselect-tag-padding-left: 0.35em !default;
-$multiselect-tag-padding-right: 0.35em !default;
-
-$multiselect-tag-button-padding: 0.35em !default;
-
-$multiselect-tag-color: inherit !default;
-$multiselect-tag-border: $gray-300 !default;
-$multiselect-tag-bg: $gray-300 !default;
-$multiselect-tag-height-pt: 1 - ($multiselect-gutter-pt * 2) !default;
-$multiselect-tag-gutter: calc(
-  #{$input-height * $multiselect-gutter-pt} - #{$input-border-width}
-) !default;
-$multiselect-tag-height: $input-height * $multiselect-tag-height-pt !default;
-$multiselect-tag-border-radius: $border-radius-sm !default;
-
-$multiselect-tag-bg-hover: $state-hover-bg !default;
-$multiselect-tag-border-hover: $state-hover-border-color !default;
-$multiselect-tag-color-hover: $state-hover-color !default;
+$calendar-cell-select-color: $list-selected-color !default;
+$calendar-cell-select-border-color: $list-selected-border-color !default;
+$calendar-cell-select-bg: $list-selected-bg !default;

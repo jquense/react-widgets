@@ -29,7 +29,7 @@ function ListOption<TDataItem>({
   selected,
   disabled,
   onSelect,
-  tabIndex = -1,
+  tabIndex = 0,
   ...props
 }: ListOptionProps<TDataItem>) {
   const [ref, focused, id] = useListOption<TDataItem, HTMLDivElement>(dataItem)
