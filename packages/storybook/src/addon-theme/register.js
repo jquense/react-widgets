@@ -42,7 +42,7 @@ const MyPanel = ({ channel }) => {
         <fieldset key={group}>
           <legend>{upperFirst(lowerCase(group))}</legend>
           {items.map(([key, value]) => (
-            <div style={{ marginBottom: '1rem' }}>
+            <div key={key} style={{ marginBottom: '1rem' }}>
               <label>
                 <strong style={{ display: 'block', marginBottom: '.25rem' }}>
                   {upperFirst(

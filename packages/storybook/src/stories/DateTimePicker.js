@@ -13,7 +13,7 @@ storiesOf('TimePicker', module).add('TimePicker', () => (
     <label>
       date and time of birth
       <input
-        type="datetime-local"
+        type="time"
         onChange={(e) => change(e.target.valueAsDate, e.target.value)}
       />
     </label>

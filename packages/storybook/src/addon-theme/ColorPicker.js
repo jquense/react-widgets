@@ -28,9 +28,9 @@ function getColor({ hex, rgb }) {
 function ColorPicker({ value, onChange }) {
   const [show, setShow] = useState(false)
 
-  const [popper, attachPopper] = useState(false)
+  const [popper, attachPopper] = useState(null)
 
-  const [reference, attachReference] = useState(false)
+  const [reference, attachReference] = useState(null)
 
   const { styles } = usePopper(reference, popper, {
     placement: 'bottom-start',

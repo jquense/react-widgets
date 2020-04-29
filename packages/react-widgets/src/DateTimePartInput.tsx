@@ -48,6 +48,7 @@ const DateTimePartInput = React.forwardRef<HTMLInputElement, Props>(
       aria-valuetext={valueText}
       // seems readonly is not valid
       aria-disabled={props.disabled || props.readOnly}
+      arai-placeholder={placeholder}
       placeholder={placeholder}
       className="rw-time-part-input"
       value={

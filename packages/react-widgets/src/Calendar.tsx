@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import { DateUnit } from 'date-arithmetic'
 import PropTypes from 'prop-types'
-import matches from 'dom-helpers/matches'
 import React, { useEffect, useRef } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
 import CalendarHeader from './CalendarHeader'
@@ -445,7 +444,9 @@ function Calendar({
         e.preventDefault()
         navigate(direction)
       } else {
-        const isRTL = matches(e.currentTarget, '[dir="rtl"]')
+        const isRTL =
+          getComputedStyle(e.currentTarget).getPropertyValue('direction') ===
+          'rtl'
 
         if (isRTL && direction in OPPOSITE_DIRECTION)
           direction = OPPOSITE_DIRECTION[direction as 'LEFT' | 'RIGHT']

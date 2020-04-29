@@ -77,21 +77,40 @@ const getValueParts = (
   return { hours, minutes, seconds, milliseconds, meridiem }
 }
 
-const TESTS = {
+const TEST_VALID = {
   hours: /^([1]?[0-9]|2[0-3])$/,
-  hours12: /^^(1[0-2]|0?[1-9])$$/,
+  hours12: /^(1[0-2]|0?[1-9])$/,
   minutes: /^([0-5]?\d)$/,
   seconds: /^([0-5]?\d)$/,
   milliseconds: /^(\d{1,3})$/,
 }
 
-const isValid = (value: string, part: TimePart, use12HourClock: boolean) => {
+const TEST_COMPLETE = {
+  hours: /^([3-9]|\d{2})$/,
+  hours12: /^(\d{2}|[2-9])$/,
+  minutes: /^(d{2}|[6-9])$/,
+  seconds: /^(d{2}|[6-9])$/,
+  milliseconds: /^(\d{3})$/,
+}
+
+function testPart(
+  value: string,
+  part: TimePart,
+  use12HourClock: boolean,
+  tests: Record<keyof typeof TEST_VALID, RegExp>,
+) {
   const key =
     part === 'hours' && use12HourClock
       ? 'hours12'
-      : (part as keyof typeof TESTS)
-  return TESTS[key].test(value)
+      : (part as keyof typeof tests)
+  return tests[key].test(value)
 }
+
+const isValid = (value: string, part: TimePart, use12HourClock: boolean) =>
+  testPart(value, part, use12HourClock, TEST_VALID)
+
+const isComplete = (value: string, part: TimePart, use12HourClock: boolean) =>
+  testPart(value, part, use12HourClock, TEST_COMPLETE)
 
 export interface TimeInputProps
   extends Omit<WidgetProps, 'value' | 'onChange'> {
@@ -301,10 +320,8 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
 
     const { target } = event
     const rawValue = target.value
-    const strValue = `${currentValue || ''}${rawValue}`
+    let strValue = `${currentValue || ''}${rawValue}`
     let numValue = +strValue
-
-    select(target)
 
     if (
       isNaN(numValue) ||
@@ -316,13 +333,26 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
         isValid(rawValue, part, use12HourClock ?? false) &&
         !isNaN(+rawValue)
       ) {
+        // change the effective current value
+        strValue = rawValue
         numValue = +rawValue
       } else {
         return event.preventDefault()
       }
     }
 
-    notifyChange({ [part]: target.value ? numValue : null })
+    const nextValue = target.value ? numValue : null
+
+    notifyChange({ [part]: nextValue })
+
+    if (
+      nextValue != null &&
+      isComplete(strValue, part, use12HourClock ?? false)
+    ) {
+      focusNext(event.currentTarget, +1)
+    } else {
+      select(target)
+    }
   }
 
   const handleSelect = ({
@@ -338,10 +368,14 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     event: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>,
   ) => {
     const { key } = event
-    const input = event.target as HTMLInputElement
+    const input = event.currentTarget as HTMLInputElement
     const { selectionStart: start, selectionEnd: end } = input
 
+    const isRTL =
+      getComputedStyle(input).getPropertyValue('direction') === 'rtl'
     const isMeridiem = part === 'meridiem'
+    const isNext = key === (isRTL ? 'ArrowLeft' : 'ArrowRight')
+    const isPrev = key === (isRTL ? 'ArrowRight' : 'ArrowLeft')
 
     if (key === 'ArrowUp') {
       event.preventDefault()
@@ -351,14 +385,11 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
       event.preventDefault()
       increment(part, -1)
     }
-    if (key === 'ArrowLeft' && (isMeridiem || start! - 1 < 0)) {
+    if (isPrev && (isMeridiem || start! - 1 < 0)) {
       event.preventDefault()
       focusNext(input, -1)
     }
-    if (
-      key === 'ArrowRight' &&
-      (isMeridiem || input.value.length <= end! + 1)
-    ) {
+    if (isNext && (isMeridiem || input.value.length <= end! + 1)) {
       event.preventDefault()
       focusNext(input, +1)
     }
@@ -514,7 +545,6 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
           aria-label="AM/PM"
           aria-disabled={disabled}
           aria-readonly={readOnly}
-          onKeyDown={(e) => handleKeyDown('meridiem', e)}
           className="rw-time-part-meridiem"
         >
           <div
@@ -530,6 +560,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
             tabIndex={!disabled ? 0 : void 0}
             onFocus={handleSelect}
             onSelect={handleSelect}
+            onKeyDown={(e) => handleKeyDown('meridiem', e)}
           >
             <abbr>{meridiem}</abbr>
           </div>
@@ -537,7 +568,6 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
       )}
       {!noClearButton && (
         <Button
-          variant={null}
           label={'clear input'}
           onClick={handleClear}
           disabled={disabled || readOnly}
