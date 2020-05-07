@@ -20,7 +20,7 @@ class SelectListItem extends React.Component {
     let { onChange, disabled, dataItem } = this.props;
 
     if (!disabled)
-      onChange(dataItem, e.target.checked)
+      onChange(dataItem, e.target.checked, e)
   };
 
   render() {
