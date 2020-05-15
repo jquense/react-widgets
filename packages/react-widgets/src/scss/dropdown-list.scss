@@ -3,14 +3,14 @@
 }
 
 .rw-dropdownlist-search {
-  @extend %rw-btn-input-reset;
+  @extend %rw-btn-input-reset, %rw-input-base;
 }
 
 .rw-dropdown-list-value {
 }
 
 .rw-dropdown-list-input {
-  padding: 0 $input-btn-padding-x;
+  padding: 0 $input-padding-x;
   align-self: center;
   display: grid;
   min-width: 0;
@@ -24,7 +24,7 @@
   }
 
   [dir='rtl'] & {
-    padding-right: $input-btn-padding-x;
+    padding-right: $input-padding-x;
     padding-left: 0;
   }
 }

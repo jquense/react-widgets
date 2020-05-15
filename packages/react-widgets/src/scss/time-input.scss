@@ -10,7 +10,7 @@
 }
 
 .rw-time-part-input {
-  @extend %rw-btn-input-reset;
+  @extend %rw-btn-input-reset, %rw-input-base;
   padding: 0 0.5em;
   // min-height: $input-height;
 

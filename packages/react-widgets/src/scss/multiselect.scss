@@ -2,10 +2,10 @@
 }
 
 .rw-multiselect-input {
-  @extend %rw-btn-input-reset;
+  @extend %rw-btn-input-reset, %rw-input-base;
 
   height: calc(#{$input-height} - #{$input-border-width} * 2);
-  padding: 0 $input-btn-padding-x;
+  padding: 0 $input-padding-x;
   max-width: 100%; // breaks to a new line but doesn't stop growing
 
   &:disabled,

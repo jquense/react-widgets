@@ -35,6 +35,17 @@
   outline: 0;
 }
 
+%rw-input-base {
+  caret-color: $input-caret-color;
+
+  &:disabled {
+    // For safari, which seems to ignore color on disabled inputs
+    // opacity for IOS
+    -webkit-text-fill-color: $input-disabled-color;
+    opacity: 1;
+  }
+}
+
 .rw-btn {
   @extend %rw-btn-input-reset;
 
@@ -59,14 +70,18 @@
 
 // The Psuedo button on DropdownList and Multiselect
 // also composes rw-btn
-.rw-picker-caret {
+.rw-picker-caret,
+.rw-picker-btn {
   color: $picker-btn-color;
+  align-items: $picker-btn-align-items;
+  justify-content: $picker-btn-justify-content;
+  padding-left: $picker-btn-padding-left;
+  padding-right: $picker-btn-padding-right;
 }
 
 .rw-picker-btn {
   @extend %rw-btn-input-reset;
 
-  color: $picker-btn-color;
   background-color: $picker-btn-bg;
   // border color doesn't make sense here
   // since it's surrounded by the input border
@@ -110,10 +125,6 @@
   border: 0;
 }
 
-.rw-outline-none {
-  outline: none;
-}
-
 .rw-widget {
   border: none;
   color: $widget-color;
@@ -146,7 +157,7 @@ fieldset[disabled] .rw-widget {
   border: $input-border-color $input-border-width solid;
   border-radius: $input-border-radius;
   outline: none;
-  grid-template: 1fr / 1fr 1.9em;
+  grid-template: 1fr / 1fr $input-addon-width;
   // ensure that the "chrome" is the same width as the actual container
   width: 100%;
 
@@ -182,9 +193,9 @@ fieldset[disabled] .rw-widget {
 }
 
 .rw-input {
-  @extend %rw-btn-input-reset;
+  @extend %rw-btn-input-reset, %rw-input-base;
 
-  padding: 0 $input-btn-padding-x;
+  padding: 0 $input-padding-x;
 
   &[type='text']::-ms-clear {
     display: none;
@@ -204,7 +215,7 @@ fieldset[disabled] .rw-widget {
 
 // https://github.com/klarna/ui/blob/master/Field/styles.scss
 .rw-detect-autofill {
-  @extend %rw-btn-input-reset;
+  @extend %rw-btn-input-reset, %rw-input-base;
 
   &:-webkit-autofill {
     animation-name: react-widgets-autofill-start;
