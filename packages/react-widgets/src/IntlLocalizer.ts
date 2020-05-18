@@ -99,7 +99,7 @@ class IntlDateLocalizer implements DateLocalizer<Intl.DateTimeFormatOptions> {
   ): DateTimePart[] {
     return Intl.DateTimeFormat(this.culture, format)
       .formatToParts(date)
-      .filter(p => p.type !== 'timeZoneName') as any
+      .filter((p) => p.type !== 'timeZoneName') as any
   }
 
   parse(value: string) {
@@ -119,9 +119,11 @@ class IntlNumberLocalizer implements NumberLocalizer<Intl.NumberFormatOptions> {
   constructor({ culture = undefined } = {}) {
     this.culture = culture
 
-    const decimal = Intl.NumberFormat(culture).formatToParts
-      ? Intl.NumberFormat(culture).formatToParts(1.1)[1].value
-      : (1.1).toLocaleString(culture).match(/[^\d]/)?.[0] || '.'
+    const decimal =
+      'formatToParts' in Intl.NumberFormat(culture)
+        ? Intl.NumberFormat(culture).formatToParts(1.1)[1].value
+        : (1.1).toLocaleString(culture).match(/[^\d]/)?.[0] || '.'
+
     const formatter = Intl.NumberFormat(culture, { maximumFractionDigits: 0 })
       .format
 

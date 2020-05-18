@@ -55,6 +55,8 @@ function MultiselectTag({
       <span className="rw-multiselect-tag-label">{children}</span>
       <button
         type="button"
+        // these should not be tabbable
+        tabIndex={-1}
         onClick={handleRemove}
         disabled={disabled || readOnly}
         className="rw-multiselect-tag-btn"

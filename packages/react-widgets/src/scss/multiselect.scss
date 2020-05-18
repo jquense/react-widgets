@@ -87,6 +87,10 @@
     border-color: $multiselect-tag-btn-active-border-color;
   }
 
+  &:focus {
+    outline: none;
+  }
+
   &:disabled {
     cursor: inherit;
   }

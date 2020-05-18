@@ -36,7 +36,7 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "cross-env": "^7.0.2",
-    "date-fns": "^2.12.0",
+    "date-fns": "^2.14.0",
     "react-widgets": "^5.0.0-beta.13",
     "rimraf": "^3.0.2"
   }
