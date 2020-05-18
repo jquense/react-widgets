@@ -9,7 +9,7 @@ function SubNavbar() {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #6b7080; //#0273a3;
+        background: #6b7080;
         padding: 10px 5px;
         font-size: 90%;
 

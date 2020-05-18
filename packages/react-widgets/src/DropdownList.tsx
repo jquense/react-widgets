@@ -162,7 +162,7 @@ declare interface DropdownList {
  * A `<select>` replacement for single value lists.
  * @public
  */
-const DropdownList: DropdownList = React.forwardRef(function DropdownList<
+const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
   TDataItem
 >(
   {
@@ -608,8 +608,8 @@ const DropdownList: DropdownList = React.forwardRef(function DropdownList<
   )
 })
 
-DropdownList.displayName = 'DropdownList'
+DropdownListImpl.displayName = 'DropdownList'
 
-DropdownList.propTypes = propTypes
+DropdownListImpl.propTypes = propTypes
 
-export default DropdownList
+export default DropdownListImpl

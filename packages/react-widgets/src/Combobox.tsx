@@ -138,7 +138,7 @@ declare interface Combobox {
 
  * @public
  */
-const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
+const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
   {
     id,
     className,
@@ -470,7 +470,7 @@ const Combobox: Combobox = React.forwardRef(function Combobox<TDataItem>(
   )
 })
 
-Combobox.displayName = 'Combobox'
-Combobox.propTypes = propTypes
+ComboboxImpl.displayName = 'Combobox'
+ComboboxImpl.propTypes = propTypes
 
-export default Combobox
+export default ComboboxImpl

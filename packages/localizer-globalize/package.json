@@ -38,7 +38,7 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@types/globalize": "^0.0.36",
+    "@types/globalize": "^0.0.37",
     "prop-types": "^15.7.2"
   }
 }

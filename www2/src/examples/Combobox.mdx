@@ -1,0 +1,114 @@
+A text box that provides suggestions.
+
+## Overview
+
+The `<Combobox>` allows any text `value` but also provides a list of auto complete
+options to select from.
+
+```jsx
+import Combobox from "react-widgets/lib/Combobox";
+
+<Combobox
+  defaultValue="Yellow"
+  data={["Red", "Yellow", "Blue", "Orange"]}
+/>;
+```
+
+Like other React Widget components, data can be complex; not limited to
+strings or numbers. When an option is selected, or a typed value matches the
+text of a `data` item it will be used as the `value` of the input in order
+to provide richer context for the selection.
+
+```jsx
+import Combobox from "react-widgets/lib/Combobox";
+
+<Combobox
+  dataKey="id"
+  textField="color"
+  autoSelectMatches
+  data={[
+    { id: 1, color: "Red" },
+    { id: 2, color: "Yellow" },
+    { id: 3, color: "Blue" },
+    { id: 4, color: "Orange" },
+  ]}
+/>;
+```
+
+## Custom Rendering
+
+You can customize list options by providing a `renderListItem` prop.
+
+```jsx
+import Combobox from "react-widgets/lib/Combobox";
+
+const renderColor = ({ item }) => (
+  <>
+    <span
+      style={{
+        width: 18,
+        height: 18,
+        marginRight: 8,
+        display: "inline-block",
+        verticalAlign: "text-bottom",
+        backgroundColor: item.toLowerCase(),
+      }}
+    />
+    {item}
+  </>
+);
+
+<Combobox
+  defaultValue="Red"
+  data={["Red", "Yellow", "Blue", "Orange"]}
+  renderListItem={renderColor}
+/>;
+```
+
+The render props can also be used to implement dynamic feedback such as highlighting
+search matches.
+
+```jsx showImports
+import Combobox from "react-widgets/lib/Combobox";
+import { findAll } from "highlight-words-core";
+
+const renderItem = ({ item, searchTerm }) => {
+  const results = findAll({
+    searchWords: searchTerm.split(/\s+/),
+    textToHighlight: item,
+  });
+
+  return results.length
+    ? results.map(({ start, end, highlight }, index) => (
+        <span
+          key={index}
+          style={{
+            backgroundColor: highlight ? item : undefined,
+          }}
+        >
+          {item.slice(start, end)}
+        </span>
+      ))
+    : item;
+};
+
+<Combobox
+  defaultValue="Red"
+  data={["Red", "Yellow", "Blue", "Orange"]}
+  renderListItem={renderItem}
+/>;
+```
+
+## Keyboard Shortcuts
+
+Combobox implements many keyboard shortcuts for power or keyboard only users.
+
+- <kbd>alt + down arrow</kbd> open dropdown
+- <kbd>alt + up arrow</kbd> close dropdown
+- <kbd>down arrow</kbd> move focus to next item
+- <kbd>up arrow</kbd> move focus to previous item
+- <kbd>home</kbd> move focus to first item
+- <kbd>end</kbd> move focus to last item
+- <kbd>enter</kbd> select focused item
+- <kbd>ctrl + enter</kbd> create new option from current searchTerm
+- <kbd>any key</kbd> search list for item starting with key

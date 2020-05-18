@@ -29,7 +29,6 @@ function ListOption<TDataItem>({
   selected,
   disabled,
   onSelect,
-  tabIndex = 0,
   ...props
 }: ListOptionProps<TDataItem>) {
   const [ref, focused, id] = useListOption<TDataItem, HTMLDivElement>(dataItem)
@@ -51,7 +50,8 @@ function ListOption<TDataItem>({
       role="option"
       data-rw-option=""
       data-rw-focused={focused ? '' : undefined}
-      tabIndex={disabled ? undefined : tabIndex}
+      data-rw-focusable={!disabled ? '' : undefined}
+      tabIndex={-1}
       aria-selected={!!selected}
       className={cn('rw-list-option', className, classes)}
       onClick={handleSelect}

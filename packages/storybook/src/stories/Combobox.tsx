@@ -31,12 +31,7 @@ function Disabled() {
 storiesOf('Combobox', module)
   .add('Combobox', () => (
     <Container>
-      <Combobox
-        {...props}
-        open
-        defaultValue={props.data[3]}
-        filter="contains"
-      />
+      <Combobox {...props} defaultValue={props.data[3]} filter="contains" />
     </Container>
   ))
   .add('busy', () => (

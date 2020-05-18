@@ -15,7 +15,6 @@ and mapping values to data is usually app specific. On the other hand RW has nev
 had a proper Listbox implementation that was public, and may folks hacked the SelectList
 to fit that need. So in v5 we've removed SelectList and added `Listbox` input.
 
-
 ### (Date)TimePicker time selection
 
 A new `TimeInput` has been added for time only values.
@@ -42,3 +41,18 @@ These are all implemented by providing a function for filter
   }
 />
 ```
+
+## Localizers
+
+### Removed browser dist builds
+
+We've removed the browser dist builds, they are too much trouble to maintain
+and add very minimal value nowadays. Bundle yourself with webpack, parcel, et al.
+
+### Provider based specification
+
+Rather than have a bespoke configuration approach for localizers there is now
+a `<Localization>` provider component that accepts a date and/or number localizer,
+and provides them to each widget in the react component tree.
+
+If no localizer is set the default `Intl` based one will be used.
