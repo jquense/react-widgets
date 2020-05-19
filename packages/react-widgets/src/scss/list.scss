@@ -13,8 +13,8 @@
   cursor: pointer;
   border: 1px solid transparent;
 
-  [data-intent='keyboard'] &.rw-state-focus:not(.rw-state-selected),
-  &:hover {
+  &:hover,
+  [data-intent='keyboard'] &.rw-state-focus:not(.rw-state-selected) {
     background-color: $list-focus-bg;
     border-color: $list-focus-border-color;
     color: $list-focus-color;

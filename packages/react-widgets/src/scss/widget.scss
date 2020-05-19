@@ -151,8 +151,8 @@ fieldset[disabled] .rw-widget {
 }
 
 .rw-widget-picker {
-  overflow: hidden;
   display: grid;
+  overflow: hidden;
   min-height: $input-height;
   background-color: $input-bg;
   border: $input-border-color $input-border-width solid;
@@ -188,6 +188,7 @@ fieldset[disabled] .rw-widget {
   &.rw-state-disabled,
   .rw-state-disabled &,
   fieldset[disabled] & {
+    color: $input-disabled-color;
     background-color: $input-disabled-bg;
     border-color: $input-disabled-border-color;
   }
@@ -211,7 +212,11 @@ fieldset[disabled] .rw-widget {
 
 .rw-placeholder,
 .rw-input::placeholder {
-  color: $input-color-placeholder;
+  color: $input-placeholder-color;
+
+  .rw-state-disabled & {
+    color: $input-disabled-placeholder-color;
+  }
 }
 
 // https://github.com/klarna/ui/blob/master/Field/styles.scss

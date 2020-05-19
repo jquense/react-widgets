@@ -71,6 +71,9 @@
 
   cursor: pointer;
   align-self: stretch;
+  // border radius clipping when there are background colors, e.g. hover/active
+  // easier than rtl border radius'in
+  overflow: hidden;
   padding: $multiselect-tag-btn-padding-y $multiselect-tag-btn-padding-x;
   color: $multiselect-tag-btn-color;
   border-color: $multiselect-tag-btn-border-color;
