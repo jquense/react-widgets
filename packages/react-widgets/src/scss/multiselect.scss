@@ -36,11 +36,18 @@
   min-height: $multiselect-tag-height;
   border-radius: $multiselect-tag-border-radius;
   background-color: $multiselect-tag-bg;
-  border: 1px solid $multiselect-tag-border-color;
+  border: if(
+    $multiselect-tag-border-color,
+    1px solid $multiselect-tag-border-color,
+    null
+  );
   // reset the text selection cursor on the parent
   cursor: default;
   max-width: 100%;
   align-items: center;
+  // border radius clipping when there are background colors, e.g. hover/active
+  // easier than rtl border radius'in
+  overflow: hidden;
 
   &:focus {
     outline: none;
@@ -71,9 +78,7 @@
 
   cursor: pointer;
   align-self: stretch;
-  // border radius clipping when there are background colors, e.g. hover/active
-  // easier than rtl border radius'in
-  overflow: hidden;
+
   padding: $multiselect-tag-btn-padding-y $multiselect-tag-btn-padding-x;
   color: $multiselect-tag-btn-color;
   border-color: $multiselect-tag-btn-border-color;
