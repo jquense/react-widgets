@@ -32,6 +32,7 @@ function AddToListOption({
       data-rw-focused={focused ? '' : undefined}
       className={cn('rw-list-option-create', focused && 'rw-state-focus')}
       onClick={onSelect}
+      type="button"
       {...props}
     >
       {children}
