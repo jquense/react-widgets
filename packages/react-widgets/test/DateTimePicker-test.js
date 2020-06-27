@@ -69,6 +69,13 @@ describe('DateTimePicker', () => {
     inst.assertSingle(`[aria-owns='${dateId}']`)
   })
 
+  it('sets aria-owns relationship for Calendar', () => {
+    const inst = shallow(<ControlledDateTimePicker id="custom-dt" open="date" time={false} />)
+    const dateId = inst.find(Calendar).props().id
+    expect(dateId).toEqual('custom-dt')
+    inst.assertSingle(`[aria-owns='${dateId}']`)
+  })
+
   it('sets aria-owns relationship for TimePicker', () => {
     const inst = shallow(<ControlledDateTimePicker open="time" date={false} time={true} />)
     const listId = inst.find(TimeList).props().id

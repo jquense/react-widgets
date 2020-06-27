@@ -227,7 +227,7 @@ class DateTimePicker extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this.inputId = instanceId(this, '_input')
+    this.inputId = this.props.id || instanceId(this, '_input')
     this.dateId = instanceId(this, '_date')
     this.listId = instanceId(this, '_listbox')
     this.activeCalendarId = instanceId(this, '_calendar_active_cell')
