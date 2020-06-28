@@ -69,9 +69,12 @@ describe('DateTimePicker', () => {
     inst.assertSingle(`[aria-owns='${dateId}']`)
   })
 
-  it('sets given custom id prop for DateTimePickerInput without suffix', () => {
-    const inst = shallow(<ControlledDateTimePicker id="custom-dt-id" open="date" time={false} />)
-    expect(inst.find('DateTimePickerInput').prop('id')).to.equal('custom-dt-id')
+  it('sets given custom id prop for DateTimePickerInput without suffix if valid', () => {
+    const componentWithValidId = shallow(<ControlledDateTimePicker inputProps={{id:'custom-dt-id'}} open="date" time={false} />)
+    expect(componentWithValidId.find('DateTimePickerInput').prop('id')).to.equal('custom-dt-id')
+
+    const componentWithInvalidId = shallow(<ControlledDateTimePicker inputProps={{id: false}} open="date" time={false} />)
+    expect(componentWithInvalidId.find('DateTimePickerInput').prop('id')).to.match(/rw_(\d+)_input/)
   })
 
   it('sets aria-owns relationship for TimePicker', () => {

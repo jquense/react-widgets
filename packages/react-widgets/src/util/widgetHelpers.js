@@ -23,3 +23,7 @@ export function isFirstFocusedRender(component) {
       (component._firstFocus = true))
   )
 }
+
+export function hasValidCustomInputId(inputProps) {
+  return inputProps && typeof inputProps.id === 'string'
+}

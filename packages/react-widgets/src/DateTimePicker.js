@@ -25,7 +25,7 @@ import scrollManager from './util/scrollManager'
 import { widgetEditable } from './util/interaction'
 import dates from './util/dates'
 import { date as dateLocalizer } from './util/localizers'
-import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
+import { instanceId, notify, isFirstFocusedRender, hasValidCustomInputId } from './util/widgetHelpers'
 import { calendar, clock } from './Icon'
 
 let NEXT_VIEW = {
@@ -227,7 +227,7 @@ class DateTimePicker extends React.Component {
   constructor(...args) {
     super(...args)
 
-    this.inputId = this.props.id || instanceId(this, '_input')
+    this.inputId = instanceId(this, '_input')
     this.dateId = instanceId(this, '_date')
     this.listId = instanceId(this, '_listbox')
     this.activeCalendarId = instanceId(this, '_calendar_active_cell')
@@ -360,6 +360,7 @@ class DateTimePicker extends React.Component {
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
     } = this.props
+    const resovledInputId = hasValidCustomInputId(inputProps) ? inputProps.id : this.inputId;
 
     let { focused } = this.state
     let inputReadOnly = inputProps ? inputProps.readOnly : null
@@ -374,7 +375,7 @@ class DateTimePicker extends React.Component {
     return (
       <DateTimePickerInput
         {...inputProps}
-        id={this.inputId}
+        id={resovledInputId}
         ref={this.attachInputRef}
         role="combobox"
         name={name}
