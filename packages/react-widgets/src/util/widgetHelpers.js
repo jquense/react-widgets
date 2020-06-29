@@ -23,4 +23,3 @@ export function isFirstFocusedRender(component) {
       (component._firstFocus = true))
   )
 }
-
