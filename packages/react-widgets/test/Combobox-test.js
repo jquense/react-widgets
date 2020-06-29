@@ -418,4 +418,29 @@ describe('Combobox', function(){
     expect(inst.find('List li').at(2).is('.rw-state-focus')).to.equal(false)
     expect(inst.find('List li').at(3).is('.rw-state-focus')).to.equal(true)
   })
+
+  it('sets given custom id prop for ComboboxInput without suffix if valid', () => {
+    const componentWithCustomId = shallow(<ControlledCombobox
+        open={true}
+        inputProps={{id:'custom-dt-id'}}
+        filter={'contains'}
+        data={dataList}
+        value='smith'
+        minLength={2}
+        textField='label'
+        valueField='id'
+      />)
+    expect(componentWithCustomId.find('ComboboxInput').prop('id')).to.equal('custom-dt-id')
+
+    const componentWithoutCustomId = shallow(<ControlledCombobox
+      open={true}
+      filter={'contains'}
+      data={dataList}
+      value='smith'
+      minLength={2}
+      textField='label'
+      valueField='id'
+    />)
+    expect(componentWithoutCustomId.find('ComboboxInput').prop('id')).to.match(/rw_(\d+)_input/)
+  })
 })

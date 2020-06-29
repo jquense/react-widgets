@@ -310,6 +310,7 @@ class Combobox extends React.Component {
     } = this.props
     let { accessors } = this.state
     let valueItem = accessors.findOrSelf(data, value)
+    const resovledInputId = inputProps?.id || this.inputId
 
     let completeType = suggest
       ? filter
@@ -324,7 +325,7 @@ class Combobox extends React.Component {
         {...inputProps}
         role="combobox"
         name={name}
-        id={this.inputId}
+        id={resovledInputId}
         autoFocus={autoFocus}
         tabIndex={tabIndex}
         suggest={suggest}

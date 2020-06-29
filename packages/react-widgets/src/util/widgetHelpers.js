@@ -24,6 +24,3 @@ export function isFirstFocusedRender(component) {
   )
 }
 
-export function hasValidCustomInputId(inputProps) {
-  return inputProps && typeof inputProps.id === 'string'
-}

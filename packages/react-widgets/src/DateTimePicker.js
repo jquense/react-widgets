@@ -25,7 +25,7 @@ import scrollManager from './util/scrollManager'
 import { widgetEditable } from './util/interaction'
 import dates from './util/dates'
 import { date as dateLocalizer } from './util/localizers'
-import { instanceId, notify, isFirstFocusedRender, hasValidCustomInputId } from './util/widgetHelpers'
+import { instanceId, notify, isFirstFocusedRender } from './util/widgetHelpers'
 import { calendar, clock } from './Icon'
 
 let NEXT_VIEW = {
@@ -360,7 +360,7 @@ class DateTimePicker extends React.Component {
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
     } = this.props
-    const resovledInputId = hasValidCustomInputId(inputProps) ? inputProps.id : this.inputId;
+    const resovledInputId = inputProps?.id || this.inputId
 
     let { focused } = this.state
     let inputReadOnly = inputProps ? inputProps.readOnly : null
