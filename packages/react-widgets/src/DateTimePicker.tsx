@@ -258,7 +258,7 @@ export interface DateTimePickerProps<TLocalizer = unknown>
    * or a function that returns a date to handle parsing yourself. When `parse` is unspecified and
    * the default `localizer.parse` is used and passed the string as well as `valueDisplayFormat` or `valueEditFormat`.
    */
-  parse: string | ((str: string, localizer?: TLocalizer) => Date | undefined)
+  parse?: string | ((str: string, localizer?: TLocalizer) => Date | undefined)
 
   /** @ignore */
   localizer?: Localizer
