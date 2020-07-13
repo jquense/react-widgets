@@ -83,6 +83,7 @@ class DropdownList extends React.Component {
      */
     valueComponent: CustomPropTypes.elementType,
     itemComponent: CustomPropTypes.elementType,
+    popupComponent: CustomPropTypes.elementType,
     listComponent: CustomPropTypes.elementType,
     optionComponent: CustomPropTypes.elementType,
 
@@ -125,6 +126,7 @@ class DropdownList extends React.Component {
 
     inputProps: PropTypes.object,
     listProps: PropTypes.object,
+    popupProps: PropTypes.object,
 
     isRtl: PropTypes.bool,
     messages: PropTypes.shape({
@@ -144,6 +146,7 @@ class DropdownList extends React.Component {
     searchIcon: search,
     selectIcon: caretDown,
     listComponent: List,
+    popupComponent: Popup
   }
 
   constructor(...args) {
@@ -370,6 +373,7 @@ class DropdownList extends React.Component {
   attachInputRef = ref => (this.inputRef = ref)
   attachFilterRef = ref => (this.filterRef = ref)
   attachListRef = ref => (this.listRef = ref)
+  attachPopupRef = ref => (this.popupRef = ref);
 
   renderList() {
     let {
@@ -450,11 +454,32 @@ class DropdownList extends React.Component {
     )
   }
 
+  renderPopup() {
+    let {
+      popupTransition,
+      dropUp,
+      open,
+      popupProps={}
+    } = this.props
+
+    let Popup = this.props.popupComponent;
+
+    return (<Popup
+    {...popupProps}
+    ref={this.attachPopupRef}
+    open={open}
+    dropUp={dropUp}
+    transition={popupTransition}
+    onEntered={() => this.focus()}
+    onEntering={() => this.listRef.forceUpdate()}>
+    {this.renderList()}
+  </Popup>)
+  }
+
   render() {
     let {
       className,
       tabIndex,
-      popupTransition,
       textField,
       data,
       busy,
@@ -477,7 +502,7 @@ class DropdownList extends React.Component {
     let readOnly = this.props.readOnly === true
     let valueItem = accessors.findOrSelf(data, value)
 
-    let shouldRenderPopup = isFirstFocusedRender(this)
+    const shouldRenderPopup = isFirstFocusedRender(this)
 
     let elementProps = Object.assign(Props.pickElementProps(this), {
       name: undefined,
@@ -535,17 +560,9 @@ class DropdownList extends React.Component {
             label={messages.openDropdown(this.props)}
           />
         </WidgetPicker>
-        {shouldRenderPopup && (
-          <Popup
-            open={open}
-            dropUp={dropUp}
-            transition={popupTransition}
-            onEntered={() => this.focus()}
-            onEntering={() => this.listRef.forceUpdate()}
-          >
-            {this.renderList(messages)}
-          </Popup>
-        )}
+        {shouldRenderPopup &&
+          this.renderPopup()
+        }
       </Widget>
     )
   }
