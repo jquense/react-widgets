@@ -48,7 +48,7 @@
     "build": "npm run build:lib && npm run build:dist",
     "prepublishOnly": "npm run build"
   },
-  "homepage": "http://jquense.github.io/react-widgets/docs/",
+  "homepage": "https://jquense.github.io/react-widgets/",
   "license": "MIT",
   "repository": {
     "type": "git",
