@@ -191,8 +191,9 @@ describe('DateTimePicker', () => {
   })
 
   it('should do nothing when disabled', done => {
-    let instanceRef = React.createRef()
-    let wrapper = mount(<DateTimePicker defaultValue={new Date()} disabled ref={instanceRef} />)
+    let open = false,
+      toggle = sinon.spy()
+    let wrapper = mount(<DateTimePicker defaultValue={new Date()} disabled open={open} onToggle={toggle} />)
 
     let input = wrapper.find('.rw-input').getDOMNode()
 
@@ -202,14 +203,15 @@ describe('DateTimePicker', () => {
     wrapper.find('.rw-i-calendar').simulate('click')
 
     setTimeout(() => {
-      expect(instanceRef.current.props.open).to.not.equal(true)
+      expect(toggle.notCalled).to.equal(true);
       done()
     }, 0)
   })
 
   it('should do nothing when readonly', done => {
-    let instanceRef = React.createRef()
-    let wrapper = mount(<DateTimePicker defaultValue={new Date()} readOnly ref={instanceRef} />)
+    let open = false,
+      toggle = sinon.spy()
+    let wrapper = mount(<DateTimePicker defaultValue={new Date()} readOnly open={open} onToggle={toggle} />)
 
     let input = wrapper.find('.rw-input').getDOMNode()
 
@@ -219,27 +221,35 @@ describe('DateTimePicker', () => {
     wrapper.find('.rw-i-calendar').simulate('click')
 
     setTimeout(() => {
-      expect(instanceRef.current.props.open).to.not.equal(true)
+      expect(toggle.notCalled).to.equal(true)
       done()
     })
   })
 
   it('should change values on key down', () => {
-    let instanceRef = React.createRef()
+    let change = sinon.spy(),
+      open = false,
+      toggle = sinon.fake(_open => {
+        open = _open
+      })
 
-    let change = sinon.spy()
-
-    let wrapper = mount(<DateTimePicker onChange={change} ref={instanceRef} />)
+    let wrapper = mount(<DateTimePicker onChange={change} open={open} onToggle={toggle} />)
 
     let options = wrapper.find('li').map(n => n.getDOMNode())
 
     wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(instanceRef.current.props.open).to.equal('date')
+    expect(toggle.called).to.equal(true)
+    expect(open).to.equal('date')
+    toggle.resetHistory()
+    wrapper.setProps({ onChange: change, open, onToggle: toggle })
 
     wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
 
-    expect(instanceRef.current.props.open).to.equal('time')
+    expect(toggle.called).to.equal(true)
+    expect(open).to.equal('time')
+    toggle.resetHistory()
+    wrapper.setProps({ onChange: change, open, onToggle: toggle })
 
     wrapper.simulate('keyDown', { key: 'Home' })
 
