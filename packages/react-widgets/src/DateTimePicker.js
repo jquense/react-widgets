@@ -6,7 +6,7 @@ import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
 import activeElement from 'dom-helpers/activeElement'
 import cn from 'classnames'
 import deprecated from 'prop-types-extra/lib/deprecated'
-import uncontrollable from 'uncontrollable'
+import { uncontrollable } from 'uncontrollable'
 
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'

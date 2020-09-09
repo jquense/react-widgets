@@ -2,7 +2,7 @@ import cn from 'classnames'
 import * as PropTypes from 'prop-types'
 import React from 'react'
 import { polyfill as polyfillLifecycles } from 'react-lifecycles-compat'
-import uncontrollable from 'uncontrollable'
+import { uncontrollable } from 'uncontrollable'
 
 import List from './List'
 import Popup from './Popup'
