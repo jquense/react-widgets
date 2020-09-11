@@ -3,45 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [4.5.0](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.11...react-widgets@4.5.0) (2020-03-16)
+<a name="4.6.0"></a>
+# [4.6.0](https://github.com/jquense/react-widgets/compare/react-widgets@4.5.0...react-widgets@4.6.0) (2020-09-11)
 
 
 ### Bug Fixes
 
-* timeList should compare date values relative to currently selected day when seeding focus for time value ([#997](https://github.com/jquense/react-widgets/issues/997)) ([834af33](https://github.com/jquense/react-widgets/commit/834af33909b36629f2cf229944ee30dc1821a684))
-* **DropdownList:** move aria tags to correct place ([#900](https://github.com/jquense/react-widgets/issues/900)) ([c8beae3](https://github.com/jquense/react-widgets/commit/c8beae3e966c9bfa9eede75e98fe29ab6e05842f))
-* invalid CSS selector ([#939](https://github.com/jquense/react-widgets/issues/939)) ([16931df](https://github.com/jquense/react-widgets/commit/16931df5b843e56c31598ddc992becb97083fa9e))
-* pass navigatePrevIcon & navigateNextIcon props to Calendar Header ([#986](https://github.com/jquense/react-widgets/issues/986)) ([040861a](https://github.com/jquense/react-widgets/commit/040861a02d82cba6555af292639e7bd208164881)), closes [#896](https://github.com/jquense/react-widgets/issues/896)
+* React deprecation warnings ([#970](https://github.com/jquense/react-widgets/issues/970)) ([#978](https://github.com/jquense/react-widgets/issues/978)) ([74e26a0](https://github.com/jquense/react-widgets/commit/74e26a0))
+* undefined originalEvent on change list item ([#1011](https://github.com/jquense/react-widgets/issues/1011)) ([f986d3c](https://github.com/jquense/react-widgets/commit/f986d3c))
 
 
 ### Features
 
-* add style as a prop to MultiselectTag ([#968](https://github.com/jquense/react-widgets/issues/968)) ([1dfe620](https://github.com/jquense/react-widgets/commit/1dfe6207e2af9aed2b4b2b9be3847b3d7b6f5b3a))
-
-
-
-
-
-## [4.4.11](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.10...react-widgets@4.4.11) (2019-05-01)
-
-
-### Bug Fixes
-
-* DropdownListInput ([#917](https://github.com/jquense/react-widgets/issues/917)) ([b7da000](https://github.com/jquense/react-widgets/commit/b7da000))
-* focusedItem logic to better handle boolean dropdownlists item values ([#932](https://github.com/jquense/react-widgets/issues/932)) ([fcf64b6](https://github.com/jquense/react-widgets/commit/fcf64b6))
-
-
-
-
-
-## [4.4.10](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.9...react-widgets@4.4.10) (2019-02-22)
-
-
-### Bug Fixes
-
-* ff alignment issues  875 and 911 ([#912](https://github.com/jquense/react-widgets/issues/912)) ([6210f16](https://github.com/jquense/react-widgets/commit/6210f16)), closes [#911](https://github.com/jquense/react-widgets/issues/911) [#875](https://github.com/jquense/react-widgets/issues/875)
-* remove old ie alpha to fix Stylus usage ([#908](https://github.com/jquense/react-widgets/issues/908)) ([fd7baca](https://github.com/jquense/react-widgets/commit/fd7baca))
-
+* className prop now forwarded to NumberInput if passed from parent ([#1002](https://github.com/jquense/react-widgets/issues/1002)) ([3ec1dc2](https://github.com/jquense/react-widgets/commit/3ec1dc2))
 
 
 

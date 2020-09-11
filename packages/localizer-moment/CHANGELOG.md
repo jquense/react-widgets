@@ -3,29 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [4.0.28](https://github.com/jquense/react-widgets/compare/react-widgets-moment@4.0.27...react-widgets-moment@4.0.28) (2020-03-16)
+<a name="4.0.29"></a>
+## [4.0.29](https://github.com/jquense/react-widgets/compare/react-widgets-moment@4.0.28...react-widgets-moment@4.0.29) (2020-09-11)
+
+
+
 
 **Note:** Version bump only for package react-widgets-moment
-
-
-
-
-
-## [4.0.27](https://github.com/jquense/react-widgets/compare/react-widgets-moment@4.0.26...react-widgets-moment@4.0.27) (2019-05-01)
-
-**Note:** Version bump only for package react-widgets-moment
-
-
-
-
-
-## [4.0.26](https://github.com/jquense/react-widgets/compare/react-widgets-moment@4.0.25...react-widgets-moment@4.0.26) (2019-02-22)
-
-**Note:** Version bump only for package react-widgets-moment
-
-
-
-
 
 <a name="4.0.25"></a>
 ## [4.0.25](https://github.com/jquense/react-widgets/compare/react-widgets-moment@4.0.24...react-widgets-moment@4.0.25) (2019-01-14)

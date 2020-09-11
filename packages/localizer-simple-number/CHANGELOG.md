@@ -3,29 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [4.1.24](https://github.com/jquense/react-widgets/compare/react-widgets-simple-number@4.1.23...react-widgets-simple-number@4.1.24) (2020-03-16)
+<a name="4.1.25"></a>
+## [4.1.25](https://github.com/jquense/react-widgets/compare/react-widgets-simple-number@4.1.24...react-widgets-simple-number@4.1.25) (2020-09-11)
+
+
+
 
 **Note:** Version bump only for package react-widgets-simple-number
-
-
-
-
-
-## [4.1.23](https://github.com/jquense/react-widgets/compare/react-widgets-simple-number@4.1.22...react-widgets-simple-number@4.1.23) (2019-05-01)
-
-**Note:** Version bump only for package react-widgets-simple-number
-
-
-
-
-
-## [4.1.22](https://github.com/jquense/react-widgets/compare/react-widgets-simple-number@4.1.21...react-widgets-simple-number@4.1.22) (2019-02-22)
-
-**Note:** Version bump only for package react-widgets-simple-number
-
-
-
-
 
 <a name="4.1.21"></a>
 ## [4.1.21](https://github.com/jquense/react-widgets/compare/react-widgets-simple-number@4.1.20...react-widgets-simple-number@4.1.21) (2019-01-14)
