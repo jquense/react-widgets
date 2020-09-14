@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types'
 import React, { ReactNode } from 'react'
-import cn from 'classnames'
-import { useListOption } from './FocusListContext'
+
+import ListOption from './ListOption'
 
 export const CREATE_OPTION = {}
 
@@ -17,26 +17,16 @@ export interface AddToListOptionProps {
   onSelect: (event: React.MouseEvent) => void
 }
 
-function AddToListOption({
-  children,
-  onSelect,
-  ...props
-}: AddToListOptionProps) {
-  const [ref, focused, id] = useListOption(CREATE_OPTION)
-
+function AddToListOption({ children, ...props }: AddToListOptionProps) {
   return (
-    <button
-      id={id}
-      ref={ref as any}
-      data-rw-focusable
-      data-rw-focused={focused ? '' : undefined}
-      className={cn('rw-list-option-create', focused && 'rw-state-focus')}
-      onClick={onSelect}
-      type="button"
+    <ListOption
       {...props}
+      dataItem={CREATE_OPTION}
+      className={'rw-list-option-create'}
+      selected={false}
     >
       {children}
-    </button>
+    </ListOption>
   )
 }
 

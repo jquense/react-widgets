@@ -142,8 +142,14 @@ $list-disabled-bg: transparent !default;
 $list-disabled-border-color: transparent !default;
 $list-disabled-color: $gray-300 !default;
 
-$list-option-padding-y: 0.25em;
-$list-option-padding-x: 1.5em;
+$list-option-padding-y: 0.25em !default;
+$list-option-padding-x: 1.5em !default;
+$list-option-muted-color: $gray-400 !default;
+
+$list-option-create-bg: $widget-bg !default;
+
+$list-optgroup-color: null !default;
+$list-optgroup-font-weight: bold !default;
 
 //
 // Popup

@@ -5,6 +5,10 @@
   overflow-y: auto;
   padding-top: $list-padding-y;
   padding-bottom: $list-padding-y;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .rw-list-option {
@@ -41,8 +45,14 @@
   outline: none;
 }
 
+.rw-list-empty {
+  text-align: center;
+  color: $list-option-muted-color;
+}
+
 .rw-list-optgroup {
-  font-weight: bold;
+  color: $list-optgroup-color;
+  font-weight: $list-optgroup-font-weight;
   padding-top: 7px;
 }
 

@@ -7,7 +7,7 @@ interface Options {
   dataItems?: readonly unknown[]
   accessors: Accessors
 }
-export default function allowCreate(
+export default function canShowCreate(
   allowCreate: AllowCreate,
   { searchTerm = '', data, dataItems, accessors }: Options,
 ) {

@@ -2942,6 +2942,20 @@
     resolve-from "^5.0.0"
     unique-slug "^2.0.0"
 
+"@monastic.panic/react-docgen@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@monastic.panic/react-docgen/-/react-docgen-5.0.1.tgz#e7641793c27ccf6afc81d63f39ffa3072d41d38f"
+  integrity sha512-QKUdWHcBPc2MWg2fLT8K7edogSMoAq6W7W34/xl+JRfdQ25TwpVb0ylBasBmiRCZGX29CqSbqAKt2C6sWoR7XQ==
+  dependencies:
+    "@babel/core" "^7.7.5"
+    "@babel/runtime" "^7.7.6"
+    ast-types "^0.13.2"
+    async "^2.1.4"
+    commander "^2.19.0"
+    doctrine "^3.0.0"
+    node-dir "^0.1.10"
+    strip-indent "^3.0.0"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -4957,7 +4971,7 @@ async@1.5.2:
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
   integrity sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
 
-async@^2.6.2:
+async@^2.1.4, async@^2.6.2:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.3.tgz#d72625e2344a3656e3a3ad4fa749fa83299d82ff"
   integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
