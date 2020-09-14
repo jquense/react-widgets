@@ -33,17 +33,9 @@ describe('DateTimePicker', () => {
     let onOpen = sinon.spy()
     let wrapper = mount(<DateTimePicker onToggle={onOpen} />)
 
-    wrapper
-      .find('.rw-select Button')
-      .first()
-      .simulate('click')
+    wrapper.find('button.rw-picker-btn').simulate('click')
 
-    wrapper
-      .find('.rw-select Button')
-      .last()
-      .simulate('click')
-
-    expect(onOpen.getCalls().length).to.equal(2)
+    expect(onOpen.getCalls().length).to.equal(1)
   })
 
   it('passes default props to calendar', () => {
@@ -90,8 +82,8 @@ describe('DateTimePicker', () => {
     var spy = sinon.spy()
 
     mount(<DateTimePicker includeTime={false} date={false} onToggle={spy} />)
-      .tap(_ => _.assertNone('.rw-btn-time'))
-      .tap(_ => _.assertNone('.rw-btn-calendar'))
+      .tap((_) => _.assertNone('.rw-btn-time'))
+      .tap((_) => _.assertNone('.rw-btn-calendar'))
       .simulate('keyDown', { altKey: true })
       .simulate('keyDown', { altKey: true })
 
@@ -133,10 +125,7 @@ describe('DateTimePicker', () => {
 
     expect(input.hasAttribute('disabled')).to.equal(true)
 
-    wrapper
-      .find('.rw-i-calendar')
-      .simulate('click')
-      .update()
+    wrapper.find('.rw-i-calendar').simulate('click').update()
 
     expect(spy.called).to.equal(false)
   })
@@ -151,10 +140,7 @@ describe('DateTimePicker', () => {
 
     expect(input.hasAttribute('readonly')).to.equal(true)
 
-    wrapper
-      .find('.rw-i-calendar')
-      .simulate('click')
-      .update()
+    wrapper.find('.rw-i-calendar').simulate('click').update()
 
     expect(spy.called).to.equal(false)
   })

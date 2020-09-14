@@ -58,6 +58,9 @@ let propTypes = {
   textField: CustomPropTypes.accessor,
   name: PropTypes.string,
 
+  hideEmptyPopup: PropTypes.bool,
+  hideCaret: PropTypes.bool,
+
   /**
    *
    * @type {(dataItem: ?any, metadata: { originalEvent: SyntheticEvent }) => void}
@@ -110,6 +113,9 @@ export interface ComboboxProps<TDataItem = DataItem>
   autoSelectMatches?: boolean
   onChange?: ChangeHandler<TDataItem | string>
   onSelect?: SelectHandler<TDataItem | string>
+
+  hideCaret?: boolean
+  hideEmptyPopup?: boolean
 }
 
 declare interface Combobox {
@@ -165,6 +171,8 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
     disabled,
     readOnly,
     selectIcon = caretDown,
+    hideCaret,
+    hideEmptyPopup,
     busySpinner,
     dropUp,
     tabIndex,
@@ -380,6 +388,8 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
 
   let completeType = filter ? ('list' as const) : ('none' as const)
 
+  let popupOpen = currentOpen && (!hideEmptyPopup || !!data.length)
+
   return (
     <Widget
       {...elementProps}
@@ -393,7 +403,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       onKeyDown={handleKeyDown}
       className={cn(className, 'rw-combobox')}
     >
-      <WidgetPicker className={containerClassName}>
+      <WidgetPicker className={containerClassName} hideCaret={hideCaret}>
         <Input
           {...inputProps}
           role="combobox"
@@ -419,21 +429,23 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
           onKeyDown={handleInputKeyDown}
           ref={inputRef}
         />
-        <InputAddon
-          busy={busy}
-          icon={selectIcon}
-          spinner={busySpinner}
-          onClick={handleClick}
-          disabled={!!isDisabled || isReadOnly}
-          // FIXME
-          label={messages.openCombobox()}
-        />
+        {!hideCaret && (
+          <InputAddon
+            busy={busy}
+            icon={selectIcon}
+            spinner={busySpinner}
+            onClick={handleClick}
+            disabled={!!isDisabled || isReadOnly}
+            // FIXME
+            label={messages.openCombobox()}
+          />
+        )}
       </WidgetPicker>
       <FocusListContext.Provider value={list.context}>
         {shouldRenderPopup && (
           <Popup
             dropUp={dropUp}
-            open={currentOpen}
+            open={popupOpen}
             transition={popupTransition}
             onEntering={() => listRef.current!.scrollIntoView()}
           >
@@ -450,9 +462,9 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
               optionComponent={optionComponent}
               value={selectedItem}
               searchTerm={(valueItem && accessors.text(valueItem)) || ''}
-              aria-hidden={!currentOpen}
+              aria-hidden={!popupOpen}
               aria-labelledby={inputId}
-              aria-live={currentOpen ? 'polite' : void 0}
+              aria-live={popupOpen ? 'polite' : void 0}
               onChange={(d, meta) =>
                 handleSelect(d as TDataItem, meta.originalEvent!)
               }

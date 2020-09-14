@@ -28,6 +28,7 @@ function Disabled() {
     </Container>
   )
 }
+
 storiesOf('Combobox', module)
   .add('Combobox', () => (
     <Container>
@@ -37,6 +38,11 @@ storiesOf('Combobox', module)
   .add('busy', () => (
     <Container>
       <Combobox {...props} busy defaultValue={props.data[1]} />
+    </Container>
+  ))
+  .add('hideCaret', () => (
+    <Container>
+      <Combobox {...props} hideCaret />
     </Container>
   ))
   .add('disabled', () => <Disabled />)

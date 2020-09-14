@@ -3,32 +3,32 @@ import React from 'react'
 import { act } from 'react-dom/test-utils'
 import DropdownList from '../src/DropdownList'
 
-describe('DropdownList', function() {
+describe('DropdownList', function () {
   let data = [
     { label: 'jimmy', id: 0 },
     { label: 'sally', id: 1 },
     { label: 'pat', id: 2 },
   ]
 
-  it('should set initial values', function() {
+  it('should set initial values', function () {
     expect(
       mount(<DropdownList value={'hello'} />)
-        .find('.rw-input')
+        .find('.rw-dropdown-list-input')
         .text(),
     ).to.equal('hello')
   })
 
-  it('should respect textField and dataKeys', function() {
+  it('should respect textField and dataKeys', function () {
     expect(
       mount(
         <DropdownList
           defaultValue={0}
           data={data}
-          textField={i => i.label}
+          textField={(i) => i.label}
           dataKey="id"
         />,
       )
-        .find('.rw-input')
+        .find('.rw-dropdown-list-input')
         .text(),
     ).to.equal('jimmy')
   })
@@ -44,7 +44,7 @@ describe('DropdownList', function() {
     expect(openSpy.calledWith(true)).to.equal(true)
   })
 
-  it.skip('should respect autoFocus', done => {
+  it.skip('should respect autoFocus', (done) => {
     const wrapper = mount(<DropdownList autoFocus />)
 
     setTimeout(() => {
@@ -123,7 +123,7 @@ describe('DropdownList', function() {
     expect(blur.called).to.equal(false)
   })
 
-  it('should simulate key events', function() {
+  it('should simulate key events', function () {
     let kp = sinon.spy(),
       kd = sinon.spy(),
       ku = sinon.spy()
@@ -150,7 +150,7 @@ describe('DropdownList', function() {
     expect(input.getAttribute('aria-disabled')).to.equal('true')
   })
 
-  it('should use a value template', function() {
+  it('should use a value template', function () {
     function ValueComponent({ item }) {
       return <span>{'hello - ' + item}</span>
     }
@@ -159,12 +159,12 @@ describe('DropdownList', function() {
       mount(
         <DropdownList defaultValue={'jimmy'} renderValue={ValueComponent} />,
       )
-        .find('.rw-input')
+        .find('.rw-dropdown-list-value')
         .text(),
     ).to.equal('hello - jimmy')
   })
 
-  it('should call onChange with event object from select', function() {
+  it('should call onChange with event object from select', function () {
     let change = sinon.spy()
 
     act(() => {
@@ -179,7 +179,7 @@ describe('DropdownList', function() {
         />,
       )
         .find('List')
-        .act(_ => _.prop('onChange')(null, { originalEvent: 'foo' }))
+        .act((_) => _.prop('onChange')(null, { originalEvent: 'foo' }))
     })
 
     expect(change.getCall(0).args[1]).to.eql({
@@ -187,77 +187,6 @@ describe('DropdownList', function() {
       lastValue: data[0],
       searchTerm: 'foooo',
     })
-  })
-
-  it('should call Select handler', function() {
-    let change = sinon.spy(),
-      onSelect = sinon.spy()
-
-    mount(
-      <DropdownList
-        open
-        onToggle={() => {}}
-        data={data}
-        onChange={change}
-        onSelect={onSelect}
-      />,
-    )
-      .find('List')
-      .act(_ => _.prop('onChange')(data[1], { originalEvent: 'foo' }))
-
-    expect(onSelect.calledOnce).to.equal(true)
-    expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
-
-    expect(change.calledAfter(onSelect)).to.equal(true)
-  })
-
-  it('should navigate list', function() {
-    let change = sinon.spy()
-
-    let inst = mount(
-      <DropdownList
-        defaultOpen
-        data={data}
-        textField="label"
-        dataKey="id"
-        onChange={change}
-      />,
-    )
-
-    let listItems = () => inst.update().find('ListOption > div')
-
-    inst.simulate('keyDown', { key: 'ArrowDown' })
-    listItems()
-      .first()
-      .is('.rw-state-focus')
-
-    inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(
-      listItems()
-        .at(1)
-        .is('.rw-state-focus'),
-    ).to.equal(true)
-
-    inst.simulate('keyDown', { key: 'ArrowUp' })
-    expect(
-      listItems()
-        .first()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
-
-    inst.simulate('keyDown', { key: 'End' })
-    expect(
-      listItems()
-        .last()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
-
-    inst.simulate('keyDown', { key: 'Home' })
-    expect(
-      listItems()
-        .first()
-        .is('.rw-state-focus'),
-    ).to.equal(true)
   })
 
   it('should search values on typing when not filtering', () => {
@@ -274,12 +203,9 @@ describe('DropdownList', function() {
       />,
     ).simulateWithTimers('keyPress', { which: 80, key: 'p' })
 
-    expect(
-      inst
-        .update()
-        .find('[data-rw-focused]')
-        .text(),
-    ).to.equal(data[2].label)
+    expect(inst.update().find('[data-rw-focused]').text()).to.equal(
+      data[2].label,
+    )
   })
 
   it('should search values on typing when not filtering - back direction', () => {
@@ -298,11 +224,7 @@ describe('DropdownList', function() {
     ).simulateWithTimers('keyPress', { which: 74, key: 'j' })
 
     expect(
-      inst
-        .update()
-        .find('List')
-        .find('[data-rw-focused]')
-        .text(),
+      inst.update().find('List').find('[data-rw-focused]').text(),
     ).to.equal(data[0].label)
   })
 })

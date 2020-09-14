@@ -165,6 +165,10 @@ fieldset[disabled] .rw-widget {
   // ensure that the "chrome" is the same width as the actual container
   width: 100%;
 
+  &.rw-hide-caret {
+    grid-template-columns: 1fr;
+  }
+
   .rw-state-focus & {
     color: $input-focus-color;
     background-color: $input-focus-bg;

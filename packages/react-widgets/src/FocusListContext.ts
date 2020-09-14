@@ -94,11 +94,11 @@ export const useFocusList = <TDataItem>({
   const map = useMemo(() => new WeakMap<HTMLElement, any>(), [])
 
   const [focusedItem, setFocusedItem] = useState<TDataItem>()
-  const itemSelector = `${scopeSelector} [data-rw-option][tabindex], ${scopeSelector} [data-rw-focusable]`.trim()
+  const itemSelector = `${scopeSelector} [data-rw-focusable]`.trim()
 
   const get = () => {
     const items = querySelectorAll(listRef.current!, itemSelector)
-    return [items, items.find(e => e.dataset.rwFocused === '')] as const
+    return [items, items.find((e) => e.dataset.rwFocused === '')] as const
   }
 
   const list: any = useMemo(() => {
@@ -150,7 +150,7 @@ export const useFocusList = <TDataItem>({
       return
     }
 
-    const element = get()[0].find(el => list.toDataItem(el) === anchorItem)
+    const element = get()[0].find((el) => list.toDataItem(el) === anchorItem)
     list.focus(element)
   }, [anchorItem])
 

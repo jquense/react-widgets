@@ -176,24 +176,9 @@ describe('Multiselect', function () {
     expect(blur.called).to.equal(false)
   })
 
-  it('should simulate key events', function () {
-    let kp = sinon.spy(),
-      kd = sinon.spy(),
-      ku = sinon.spy()
-
-    mount(<Multiselect onKeyPress={kp} onKeyUp={ku} onKeyDown={kd} />)
-      .simulate('keyPress')
-      .simulate('keyDown')
-      .simulate('keyUp')
-
-    expect(kp.calledOnce).to.equal(true)
-    expect(kd.calledOnce).to.equal(true)
-    expect(ku.calledOnce).to.equal(true)
-  })
-
   it('should add correct markup when read-only', () => {
     let input = mount(<Multiselect readOnly />)
-      .assertSingle('%rw-btn-input-reset')
+      .assertSingle('.rw-multiselect-input')
       .getDOMNode()
 
     expect(input.hasAttribute('readonly')).to.equal(true)
@@ -202,7 +187,7 @@ describe('Multiselect', function () {
 
   it('should add correct markup when disabled', () => {
     let input = mount(<Multiselect disabled />)
-      .assertSingle('%rw-btn-input-reset')
+      .assertSingle('.rw-multiselect-input')
       .getDOMNode()
 
     expect(input.hasAttribute('disabled')).to.equal(true)
@@ -333,30 +318,6 @@ describe('Multiselect', function () {
     expect(action).to.equal('input')
   })
 
-  it('should call Select handler', function () {
-    let change = sinon.spy()
-    let onSelect = sinon.spy()
-    let value = dataList.slice(1)
-
-    mount(
-      <Multiselect
-        open
-        onToggle={() => {}}
-        value={value}
-        data={dataList}
-        onChange={change}
-        onSelect={onSelect}
-      />,
-    )
-      .find('List')
-      .act((_) => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
-
-    expect(onSelect.calledOnce).to.equal(true)
-    expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
-
-    expect(change.calledAfter(onSelect)).to.equal(true)
-  })
-
   it('should clear search on blur', () => {
     let onSearch = sinon.spy()
 
@@ -431,13 +392,13 @@ describe('Multiselect', function () {
         dataKey="id"
       />,
     )
-      .tap((s) => s.assertSingle('button.rw-list-option-create'))
+      .tap((s) => s.assertSingle('div.rw-list-option-create'))
       .setProps({ searchTerm: undefined })
-      .tap((s) => s.assertNone('button.rw-list-option-create'))
+      .tap((s) => s.assertNone('div.rw-list-option-create'))
       .setProps({ searchTerm: 'JIMMY' })
-      .tap((s) => s.assertNone('button.rw-list-option-create'))
+      .tap((s) => s.assertNone('div.rw-list-option-create'))
       .setProps({ searchTerm: 'custom', allowCreate: false })
-      .tap((s) => s.assertNone('button.rw-list-option-create'))
+      .tap((s) => s.assertNone('div.rw-list-option-create'))
   })
 
   it('should call onCreate', function () {
@@ -462,7 +423,7 @@ describe('Multiselect', function () {
     )
 
     wrapper
-      .find('.rw-list-option-create')
+      .find('div.rw-list-option-create')
       .simulate('click')
       .tap(assertOnCreateCalled)
 
@@ -510,47 +471,5 @@ describe('Multiselect', function () {
 
     expect(change.calledOnce).to.equal(true)
     expect(change.calledWith(listHead)).to.equal(true)
-  })
-
-  it('should open on ArrowDown', () => {
-    let openSpy = sinon.spy()
-
-    mount(
-      <Multiselect data={dataList} onToggle={openSpy} />,
-    ).simulate('keyDown', { key: 'ArrowDown' })
-
-    expect(openSpy.calledOnce).to.equal(true)
-    expect(openSpy.calledWith(true)).to.equal(true)
-  })
-
-  it('should navigate list', function () {
-    let change = sinon.spy()
-
-    let inst = mount(
-      <Multiselect
-        defaultOpen
-        data={dataList}
-        textField="label"
-        dataKey="id"
-        onChange={change}
-      />,
-    )
-
-    let listItems = () => inst.update().find('List div.rw-list-option')
-
-    inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(listItems().first().is('.rw-state-focus')).to.equal(true)
-
-    inst.simulate('keyDown', { key: 'ArrowDown' })
-    expect(listItems().at(1).is('.rw-state-focus')).to.equal(true)
-
-    inst.simulate('keyDown', { key: 'ArrowUp' })
-    expect(listItems().first().is('.rw-state-focus')).to.equal(true)
-
-    inst.simulate('keyDown', { key: 'End' })
-    expect(listItems().last().is('.rw-state-focus')).to.equal(true)
-
-    inst.simulate('keyDown', { key: 'Home' })
-    expect(listItems().first().is('.rw-state-focus')).to.equal(true)
   })
 })
