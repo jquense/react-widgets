@@ -1,44 +1,46 @@
-.rw-time-input {
-  display: inline-flex;
-  min-height: $input-height;
-  align-items: center;
-  background-color: $input-bg;
-  border: $input-border-color $input-border-width solid;
-  border-radius: $input-border-radius;
-  outline: none;
-  cursor: text;
-}
-
-.rw-time-part-input {
-  @extend %rw-btn-input-reset, %rw-input-base;
-  padding: 0 0.5em;
-  // min-height: $input-height;
-
-  &,
-  &::placeholder {
-    text-align: center;
-  }
-}
-
-.rw-time-part-meridiem {
-  @extend %rw-btn-input-reset;
-
-  padding: 0 0.5em;
-  text-transform: lowercase;
-  font-variant: small-caps;
-
-  & :focus {
+@mixin TimeInput() {
+  .rw-time-input {
+    display: inline-flex;
+    min-height: $input-height;
+    align-items: center;
+    background-color: $input-bg;
+    border: $input-border-color $input-border-width solid;
+    border-radius: $input-border-radius;
     outline: none;
+    cursor: text;
   }
-}
 
-.rw-time-input-clear {
-  padding: 0 0.4em;
-  outline: none;
-  opacity: 0;
+  .rw-time-part-input {
+    @extend %rw-btn-input-reset, %rw-input-base;
+    padding: 0 0.5em;
+    // min-height: $input-height;
 
-  .rw-time-input:hover &.rw-show,
-  .rw-time-input.rw-state-focus &.rw-show {
-    opacity: 1;
+    &,
+    &::placeholder {
+      text-align: center;
+    }
+  }
+
+  .rw-time-part-meridiem {
+    @extend %rw-btn-input-reset;
+
+    padding: 0 0.5em;
+    text-transform: lowercase;
+    font-variant: small-caps;
+
+    & :focus {
+      outline: none;
+    }
+  }
+
+  .rw-time-input-clear {
+    padding: 0 0.4em;
+    outline: none;
+    opacity: 0;
+
+    .rw-time-input:hover &.rw-show,
+    .rw-time-input.rw-state-focus &.rw-show {
+      opacity: 1;
+    }
   }
 }

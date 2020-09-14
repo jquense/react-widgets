@@ -1,3 +1,15 @@
+$widgets: (
+  'Listbox',
+  'DropdownList',
+  'Combobox',
+  'Autocomplete',
+  'Multiselect',
+  'DateTimePicker',
+  'Calendar',
+  'TimeInput',
+  'NumberPicker'
+) !default;
+
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
 $gray-300: #dee2e6 !default;

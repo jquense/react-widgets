@@ -1,22 +1,24 @@
-.rw-listbox {
-  border-radius: $widget-border-radius;
-  background-color: $widget-bg;
-  border: $widget-border-color 1px solid;
+@mixin Listbox() {
+  .rw-listbox {
+    border-radius: $widget-border-radius;
+    background-color: $widget-bg;
+    border: $widget-border-color 1px solid;
 
-  &.rw-state-focus {
-    color: $input-focus-color;
-    background-color: $input-focus-bg;
-    border-color: $input-focus-border-color;
-    box-shadow: #{$widget-focus-box-shadow}, #{$input-box-shadow};
-    transition: if($widget-focus-box-shadow, $widget-focus-transition, null);
-  }
+    &.rw-state-focus {
+      color: $input-focus-color;
+      background-color: $input-focus-bg;
+      border-color: $input-focus-border-color;
+      box-shadow: #{$widget-focus-box-shadow}, #{$input-box-shadow};
+      transition: if($widget-focus-box-shadow, $widget-focus-transition, null);
+    }
 
-  &.rw-state-disabled > *,
-  fieldset[disabled] & > * {
-    pointer-events: none;
-  }
+    &.rw-state-disabled > *,
+    fieldset[disabled] & > * {
+      pointer-events: none;
+    }
 
-  &.rw-state-readonly > * {
-    cursor: inherit;
+    &.rw-state-readonly > * {
+      cursor: inherit;
+    }
   }
 }

@@ -1,18 +1,20 @@
-.rw-number-picker {
-  $half-width: $input-height / 2;
-}
-
-.rw-number-picker-spinners {
-  display: flex;
-  flex-direction: column;
-
-  .rw-btn {
-    flex: 1 1 0;
+@mixin NumberPicker() {
+  .rw-number-picker {
+    $half-width: $input-height / 2;
   }
 
-  // &,
-  // &:hover,
-  // &:active {
-  //   box-shadow: none;
-  // }
+  .rw-number-picker-spinners {
+    display: flex;
+    flex-direction: column;
+
+    .rw-btn {
+      flex: 1 1 0;
+    }
+
+    // &,
+    // &:hover,
+    // &:active {
+    //   box-shadow: none;
+    // }
+  }
 }

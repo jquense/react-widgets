@@ -12,6 +12,95 @@
 @import './datetime-picker.scss';
 @import './time-input.scss';
 @import './multiselect.scss';
-@import './autocomplete.scss';
-
 @import './popup.scss';
+
+$_graph: (
+  'List': (),
+  'Popup': (),
+  'Listbox': (
+    'List',
+  ),
+  'DropdownList': (
+    'List',
+    'Popup',
+  ),
+  'Combobox': (
+    'List',
+    'Popup',
+  ),
+  'Autocomplete': (
+    'List',
+    'Popup',
+    'Combobox',
+  ),
+  'Multiselect': (
+    'List',
+    'Popup',
+  ),
+  'DateTimePicker': (
+    'Popup',
+    'Calendar',
+  ),
+  'Calendar': (),
+  'TimeInput': (),
+  'NumberPicker': (),
+);
+
+//
+// Largely unnecessary Toposort
+// --------------------------------
+$_visited: ();
+@function _sort($node) {
+  $result: ();
+  $deps: map-get($_graph, $node);
+
+  @each $dep in $deps {
+    @if not index($_visited, $dep) {
+      $result: join($result, _sort($dep));
+    }
+  }
+  $_visited: append($_visited, $node) !global;
+  @return append($result, $node);
+}
+
+$_widgets: ();
+@each $node, $_ in $_graph {
+  @if index($widgets, $node) and not index($_visited, $node) {
+    $_widgets: join($_widgets, _sort($node));
+  }
+}
+
+// @debug 'Including: #{$_widgets}';
+
+@each $mod in $_widgets {
+  @if $mod == 'List' {
+    @include List();
+  }
+  @if $mod == 'Popup' {
+    @include Popup();
+  }
+  @if $mod == 'Listbox' {
+    @include Listbox();
+  }
+  @if $mod == 'DropdownList' {
+    @include DropdownList();
+  }
+  @if $mod == 'Combobox' {
+    @include Combobox();
+  }
+  @if $mod == 'Multiselect' {
+    @include Multiselect();
+  }
+  @if $mod == 'DropdownList' {
+    @include DropdownList();
+  }
+  @if $mod == 'Calendar' {
+    @include Calendar();
+  }
+  @if $mod == 'DateTimePicker' {
+    @include DateTimePicker();
+  }
+  @if $mod == 'TimeInput' {
+    @include TimeInput();
+  }
+}
