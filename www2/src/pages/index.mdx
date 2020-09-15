@@ -92,10 +92,9 @@ When using Less or Sass, you'll need to help webpack find the font and image fol
 Override corresponding variables from `variables` file.
 
 ```scss
-$font-path: "~react-widgets/lib/fonts";
-$img-path: "~react-widgets/lib/img";
-
-@import "~react-widgets/lib/scss/react-widgets";
+@use "~react-widgets/lib/scss/react-widgets" with (
+  $widget-bg: orange,
+);
 ```
 
 ## Accessibility and Read Direction

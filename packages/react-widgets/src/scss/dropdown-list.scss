@@ -1,3 +1,5 @@
+@use './variables.scss' as *;
+
 @mixin DropdownList() {
   .rw-dropdown-list {
     width: 100%;

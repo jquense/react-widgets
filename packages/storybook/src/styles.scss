@@ -1,8 +1,5 @@
-$font-path: '~react-widgets/lib/fonts';
-$img-path: '~react-widgets/lib/img';
-
 // @import './theme.scss';
-@import '~react-widgets/src/scss/react-widgets';
+@use '~react-widgets/src/scss/react-widgets';
 
 // @import '~react-widgets-material-ui/src/less/theme.less';
 
@@ -15,4 +12,3 @@ html {
 body {
   background-color: #edf5e4;
 }
-//@font-path: "../fonts";

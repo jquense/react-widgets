@@ -1,3 +1,5 @@
+@use './variables.scss' as *;
+
 @mixin Listbox() {
   .rw-listbox {
     border-radius: $widget-border-radius;

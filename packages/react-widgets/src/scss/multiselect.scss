@@ -1,3 +1,36 @@
+@use './variables.scss' as *;
+@use './mixins.scss';
+
+$gutter-pt: 0.115 !default;
+$tag-padding-left: 0.35em !default;
+$tag-padding-right: 0.35em !default;
+
+$tag-color: null !default;
+$tag-border-color: $gray-300 !default;
+$tag-bg: $gray-300 !default;
+
+$tag-height-pt: 1 - ($gutter-pt * 2) !default;
+$tag-gutter: calc(
+  #{$input-height} * #{$gutter-pt} - #{$input-border-width}
+) !default;
+$tag-height: calc(#{$input-height} * #{$tag-height-pt}) !default;
+$tag-border-radius: 3px !default;
+
+$tag-btn-padding-y: 0 !default;
+$tag-btn-padding-x: 0.35em !default;
+
+$tag-btn-bg: null !default;
+$tag-btn-border-color: null !default;
+$tag-btn-color: null !default;
+
+$tag-btn-hover-bg: null !default;
+$tag-btn-hover-border-color: null !default;
+$tag-btn-hover-color: null !default;
+
+$tag-btn-active-bg: null !default;
+$tag-btn-active-border-color: null !default;
+$tag-btn-active-color: null !default;
+
 @mixin Multiselect() {
   .rw-multiselect {
   }
@@ -31,17 +64,13 @@
 
   .rw-multiselect-tag {
     display: inline-flex;
-    color: $multiselect-tag-color;
-    margin-left: $multiselect-tag-gutter;
-    margin-top: $multiselect-tag-gutter;
-    min-height: $multiselect-tag-height;
-    border-radius: $multiselect-tag-border-radius;
-    background-color: $multiselect-tag-bg;
-    border: if(
-      $multiselect-tag-border-color,
-      1px solid $multiselect-tag-border-color,
-      null
-    );
+    color: $tag-color;
+    margin-left: $tag-gutter;
+    margin-top: $tag-gutter;
+    min-height: $tag-height;
+    border-radius: $tag-border-radius;
+    background-color: $tag-bg;
+    border: if($tag-border-color, 1px solid $tag-border-color, null);
     // reset the text selection cursor on the parent
     cursor: default;
     max-width: 100%;
@@ -56,12 +85,12 @@
 
     [dir='rtl'] & {
       margin-left: 0;
-      margin-right: $multiselect-tag-gutter;
-      padding: 0 $multiselect-tag-padding-left 0 $multiselect-tag-padding-right;
+      margin-right: $tag-gutter;
+      padding: 0 $tag-padding-left 0 $tag-padding-right;
     }
 
     &.rw-state-focus {
-      @include focus-ring();
+      @include mixins.focus-ring();
     }
 
     &.rw-state-disabled,
@@ -71,7 +100,7 @@
   }
 
   .rw-multiselect-tag-label {
-    padding: 0 $multiselect-tag-padding-right 0 $multiselect-tag-padding-left;
+    padding: 0 $tag-padding-right 0 $tag-padding-left;
   }
 
   .rw-multiselect-tag-btn {
@@ -80,20 +109,20 @@
     cursor: pointer;
     align-self: stretch;
 
-    padding: $multiselect-tag-btn-padding-y $multiselect-tag-btn-padding-x;
-    color: $multiselect-tag-btn-color;
-    border-color: $multiselect-tag-btn-border-color;
-    background-color: $multiselect-tag-btn-bg;
+    padding: $tag-btn-padding-y $tag-btn-padding-x;
+    color: $tag-btn-color;
+    border-color: $tag-btn-border-color;
+    background-color: $tag-btn-bg;
 
     &:hover {
-      color: $multiselect-tag-btn-hover-color;
-      border-color: $multiselect-tag-btn-hover-border-color;
-      background-color: $multiselect-tag-btn-hover-bg;
+      color: $tag-btn-hover-color;
+      border-color: $tag-btn-hover-border-color;
+      background-color: $tag-btn-hover-bg;
     }
     &:active {
-      color: $multiselect-tag-btn-active-color;
-      background-color: $multiselect-tag-btn-active-bg;
-      border-color: $multiselect-tag-btn-active-border-color;
+      color: $tag-btn-active-color;
+      background-color: $tag-btn-active-bg;
+      border-color: $tag-btn-active-border-color;
     }
 
     &:focus {

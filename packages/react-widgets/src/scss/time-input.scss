@@ -1,3 +1,5 @@
+@use './variables.scss' as *;
+
 @mixin TimeInput() {
   .rw-time-input {
     display: inline-flex;

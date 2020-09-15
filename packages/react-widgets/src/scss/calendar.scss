@@ -1,3 +1,37 @@
+@use './variables.scss' as *;
+@use './mixins.scss';
+@use './list.scss' as list;
+
+$bg: $widget-bg !default;
+
+$btn-bg: #fff !default;
+$btn-color: $widget-color !default;
+$btn-border-color: null !default;
+$btn-muted-color: $gray-400;
+$btn-border-radius: $widget-border-radius !default;
+
+$btn-hover-bg: $widget-hover-bg !default;
+$btn-hover-border-color: $widget-hover-border-color !default;
+$btn-hover-color: $widget-hover-color !default;
+
+$btn-active-color: null !default;
+$btn-active-border-color: null !default;
+$btn-active-bg: $gray-300 !default;
+
+$btn-focus-color: null !default;
+$btn-focus-border-color: null !default;
+$btn-focus-bg: null !default;
+
+$cell-align: center !default;
+$cell-padding: 0.25em !default;
+$cell-color: $btn-color !default;
+$cell-border-color: null !default;
+$cell-border-radius: $btn-border-radius !default;
+
+$cell-select-color: list.$selected-color !default;
+$cell-select-border-color: list.$selected-border-color !default;
+$cell-select-bg: list.$selected-bg !default;
+
 @mixin _translate($x, $y) {
   transform: translate(#{$x}, #{$y});
 
@@ -19,7 +53,7 @@
 
   .rw-calendar-contained {
     border-radius: $widget-border-radius;
-    background-color: $calendar-bg;
+    background-color: $bg;
     border: $widget-border-color 1px solid;
   }
 
@@ -34,15 +68,15 @@
   .rw-cell,
   .rw-calendar-btn {
     line-height: 2em;
-    border-radius: $calendar-btn-border-radius;
+    border-radius: $btn-border-radius;
 
-    @include focus();
+    @include mixins.focus();
 
     &:hover {
-      background-color: $calendar-btn-hover-bg;
+      background-color: $btn-hover-bg;
     }
     &:active {
-      background-color: $calendar-btn-active-bg;
+      background-color: $btn-active-bg;
     }
     // TODO: normal button disabled
     &:disabled,
@@ -53,7 +87,7 @@
   }
 
   .rw-calendar-btn {
-    border-color: $calendar-btn-border-color;
+    border-color: $btn-border-color;
   }
 
   .rw-calendar-btn-left,
@@ -94,39 +128,39 @@
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
-    background-color: $calendar-bg;
+    background-color: $bg;
   }
 
   .rw-head-cell {
-    text-align: $calendar-cell-align;
+    text-align: $cell-align;
     border-bottom: 1px solid $input-border-color;
-    padding: $calendar-cell-padding;
+    padding: $cell-padding;
   }
 
   .rw-cell {
-    color: $calendar-cell-color;
-    border-color: $calendar-cell-border-color;
-    border-radius: $calendar-cell-border-radius;
+    color: $cell-color;
+    border-color: $cell-border-color;
+    border-radius: $cell-border-radius;
     cursor: pointer;
     line-height: normal;
     text-align: center;
     border: 1px solid transparent;
-    padding: $calendar-cell-padding;
+    padding: $cell-padding;
     outline: none;
 
     &.rw-state-selected {
-      background-color: $calendar-cell-select-bg;
-      border-color: $calendar-cell-select-border-color;
-      color: $calendar-cell-select-color;
+      background-color: $cell-select-bg;
+      border-color: $cell-select-border-color;
+      color: $cell-select-color;
     }
 
     .rw-calendar-month & {
-      text-align: $calendar-cell-align;
+      text-align: $cell-align;
     }
   }
 
   .rw-cell-off-range {
-    color: $calendar-btn-muted-color;
+    color: $btn-muted-color;
   }
 
   .rw-calendar-transition-group {
