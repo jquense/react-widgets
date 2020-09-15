@@ -6,7 +6,7 @@ react-widgets
 
 An à la carte set of polished, extensible, and accessible form inputs built for React.
 
-__Demos and Documentation [here](http://jquense.github.io/react-widgets/)__
+__Demos and Documentation [here](https://jquense.github.io/react-widgets/)__
 
 ### Install
 
@@ -38,5 +38,5 @@ The goal is to support IE9+, but it is difficult for me to test a wide variety o
 
 [npm-image]: https://img.shields.io/npm/v/react-widgets.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/react-widgets
-[downloads-image]: http://img.shields.io/npm/dm/react-widgets.svg?style=flat-square
+[downloads-image]: https://img.shields.io/npm/dm/react-widgets.svg?style=flat-square
 [downloads-url]: https://npmjs.org/package/react-widgets
