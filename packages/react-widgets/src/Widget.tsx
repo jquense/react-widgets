@@ -18,7 +18,7 @@ function useKeyboardNavigationCheck() {
       key == ' ' ||
       key === 'Tab' ||
       key == 'Enter' ||
-      key.indexOf('Arrow') !== -1
+      (key && key.indexOf('Arrow') !== -1)
     ) {
       setIsNavigatingViaKeyboard(true)
     }
