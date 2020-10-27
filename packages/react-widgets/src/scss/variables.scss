@@ -38,7 +38,7 @@ $widget-hover-bg: $gray-200 !default;
 $widget-hover-border-color: $widget-hover-bg !default;
 $widget-hover-color: null !default;
 
-$widget-focus-width: 3px;
+$widget-focus-width: 3px !default;
 $widget-focus-color: rgba(0, 123, 255, 0.25) !default;
 $widget-focus-box-shadow: 0 0 0 $widget-focus-width $widget-focus-color !default;
 $widget-focus-transition: box-shadow 0.15s ease-in-out !default;

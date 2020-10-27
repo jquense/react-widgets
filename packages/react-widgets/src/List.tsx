@@ -36,10 +36,10 @@ const whitelistRegex = [/^aria-/, /^data-/, /^on[A-Z]\w+/]
 
 function pickElementProps<T>(props: T): Partial<T> {
   const result: Partial<T> = {}
-  Object.keys(props).forEach(key => {
+  Object.keys(props).forEach((key) => {
     if (
       whitelist.indexOf(key) !== -1 ||
-      whitelistRegex.some(r => !!key.match(r))
+      whitelistRegex.some((r) => !!key.match(r))
     )
       (result as any)[key] = (props as any)[key]
   })
@@ -178,7 +178,7 @@ export function useHandleSelect<TDataItem>(
     const checked = dataItems.includes(dataItem)
     onChange(
       checked
-        ? dataItems.filter(d => d !== dataItem)
+        ? dataItems.filter((d) => d !== dataItem)
         : [...dataItems, dataItem],
       {
         dataItem,
@@ -265,8 +265,8 @@ const List: List = React.forwardRef(function List<TDataItem>(
 
   const children = groupedData
     ? groupedData.map(([group, items], idx) => (
-        <div role="group">
-          <ListOptionGroup key={`group_${idx}`}>
+        <div role="group" key={`group_${idx}`}>
+          <ListOptionGroup>
             {renderGroup ? renderGroup({ group }) : (group as string)}
           </ListOptionGroup>
           {items.map(renderOption)}
