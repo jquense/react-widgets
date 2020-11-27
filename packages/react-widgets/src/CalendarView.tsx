@@ -1,8 +1,18 @@
 import cn from 'classnames'
-import { DateUnit } from 'date-arithmetic'
 import React, { ReactNode, useEffect, useRef } from 'react'
 import dates from './dates'
 import useFocusManager from './useFocusManager'
+
+export type DateUnit =
+| 'second'
+| 'minutes'
+| 'hours'
+| 'day'
+| 'week'
+| 'month'
+| 'year'
+| 'decade'
+| 'century'
 
 function clamp(date: Date, min: Date, max: Date) {
   return dates.max(dates.min(date, max), min)
