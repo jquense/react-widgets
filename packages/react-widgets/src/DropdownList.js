@@ -515,7 +515,7 @@ class DropdownList extends React.Component {
           className={cn(containerClassName, 'rw-widget-input')}
         >
           <DropdownListInput
-            {...inputProps}
+            inputProps={inputProps}
             value={valueItem}
             textField={textField}
             name={this.props.name}
