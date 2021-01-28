@@ -58,7 +58,10 @@ let propTypes = {
   textField: CustomPropTypes.accessor,
   name: PropTypes.string,
 
+  /** Do not show the auto complete list when it returns no results. */
   hideEmptyPopup: PropTypes.bool,
+
+  /** Hide the combobox dropdown indicator. */
   hideCaret: PropTypes.bool,
 
   /**
@@ -68,7 +71,9 @@ let propTypes = {
   onSelect: PropTypes.func,
 
   autoFocus: PropTypes.bool,
+
   disabled: CustomPropTypes.disabled.acceptsArray,
+
   readOnly: CustomPropTypes.disabled,
 
   busy: PropTypes.bool,
@@ -267,7 +272,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
    */
 
   const handleClick = () => {
-    if (readOnly || disabled) return
+    if (readOnly || isDisabled) return
 
     focus()
     toggle()
@@ -282,7 +287,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
 
     setSuggestion(null)
     notify(onSelect, [data, { originalEvent }])
-    change(data, originalEvent)
+    change(data, originalEvent, true)
     focus({ preventScroll: true })
   }
 
@@ -366,10 +371,12 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
   function change(
     nextValue: TDataItem | string,
     originalEvent?: React.SyntheticEvent,
+    selected = false,
   ) {
     handleChange(nextValue, {
       lastValue: currentValue,
       originalEvent,
+      source: selected ? 'listbox' : 'input',
     })
   }
 

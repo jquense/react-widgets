@@ -14,7 +14,6 @@ type UserDateFormat =
   | ((date: Date, culture?: string) => string)
 
 // assumes both are supported or none
-
 let supportStyles = false
 new Intl.DateTimeFormat(undefined, {
   // @ts-ignore
@@ -25,6 +24,12 @@ new Intl.DateTimeFormat(undefined, {
 
 const dateShort = { day: 'numeric', month: 'numeric', year: 'numeric' }
 const timeShort = { hour: 'numeric', minute: 'numeric' }
+
+const getFormatter = (
+  culture: string | undefined,
+  options: Intl.DateTimeFormatOptions,
+): Intl.DateTimeFormat['format'] => Intl.DateTimeFormat(culture, options).format
+
 /**
  * A `react-widgets` Localizer using native `Intl` APIs.
  *
@@ -46,7 +51,10 @@ class IntlDateLocalizer implements DateLocalizer<Intl.DateTimeFormatOptions> {
   decade!: (date: Date, format?: UserDateFormat) => string
   century!: (date: Date, format?: UserDateFormat) => string
 
-  constructor({ culture = undefined, firstOfWeek = 0 } = {}) {
+  constructor({
+    culture = undefined,
+    firstOfWeek = 0,
+  }: { culture?: string; firstOfWeek?: number } = {}) {
     this.culture = culture
     this.firstOfWeek = () => firstOfWeek
 
@@ -57,27 +65,25 @@ class IntlDateLocalizer implements DateLocalizer<Intl.DateTimeFormatOptions> {
     }
 
     const formats: Formatters = {
-      date: Intl.DateTimeFormat(
+      date: getFormatter(
         culture,
         supportStyles ? { dateStyle: 'short' } : dateShort,
-      ).format,
-      time: Intl.DateTimeFormat(
+      ),
+      time: getFormatter(
         culture,
         supportStyles ? { timeStyle: 'short' } : timeShort,
-      ).format,
-      datetime: Intl.DateTimeFormat(
+      ),
+      datetime: getFormatter(
         culture,
         supportStyles
           ? { dateStyle: 'short', timeStyle: 'short' }
           : { ...dateShort, ...timeShort },
-      ).format,
-      header: Intl.DateTimeFormat(culture, { month: 'short', year: 'numeric' })
-        .format,
-
-      weekday: Intl.DateTimeFormat(culture, { weekday: 'narrow' }).format,
-      dayOfMonth: Intl.DateTimeFormat(culture, { day: '2-digit' }).format,
-      month: Intl.DateTimeFormat(culture, { month: 'short' }).format,
-      year: Intl.DateTimeFormat(culture, { year: 'numeric' }).format,
+      ),
+      header: getFormatter(culture, { month: 'short', year: 'numeric' }),
+      weekday: getFormatter(culture, { weekday: 'narrow' }),
+      dayOfMonth: getFormatter(culture, { day: '2-digit' }),
+      month: getFormatter(culture, { month: 'short' }),
+      year: getFormatter(culture, { year: 'numeric' }),
       decade: (date: Date) =>
         `${this.year(date)} - ${this.year(dates.endOf(date, 'decade'))}`,
       century: (date: Date) =>
@@ -124,8 +130,7 @@ class IntlNumberLocalizer implements NumberLocalizer<Intl.NumberFormatOptions> {
         ? Intl.NumberFormat(culture).formatToParts(1.1)[1].value
         : (1.1).toLocaleString(culture).match(/[^\d]/)?.[0] || '.'
 
-    const formatter = Intl.NumberFormat(culture, { maximumFractionDigits: 0 })
-      .format
+    const formatter = Intl.NumberFormat(culture).format
 
     this.decimalCharacter = () => decimal
     this.format = (num: number, format?: UserNumberFormat): string => {

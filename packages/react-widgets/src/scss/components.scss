@@ -12,7 +12,7 @@
 @use './dropdown-list.scss';
 @use './number-picker.scss';
 @use './calendar.scss';
-@use './datetime-picker.scss';
+@use './date-picker.scss';
 @use './time-input.scss';
 @use './multiselect.scss';
 @use './popup.scss';
@@ -40,7 +40,7 @@ $_graph: (
     'List',
     'Popup',
   ),
-  'DateTimePicker': (
+  'DatePicker': (
     'Popup',
     'Calendar',
   ),
@@ -66,16 +66,16 @@ $_visited: ();
   @return append($result, $node);
 }
 
-$_widgets: ();
+$_components: ();
 @each $node, $_ in $_graph {
-  @if index(v.$widgets, $node) and not index($_visited, $node) {
-    $_widgets: join($_widgets, _sort($node));
+  @if index(v.$components, $node) and not index($_visited, $node) {
+    $_components: join($_components, _sort($node));
   }
 }
 
-// @debug 'Including: #{$_widgets}';
+// @debug 'Including: #{$_components}';
 
-@each $mod in $_widgets {
+@each $mod in $_components {
   @if $mod == 'List' {
     @include list.List();
   }
@@ -100,8 +100,8 @@ $_widgets: ();
   @if $mod == 'Calendar' {
     @include calendar.Calendar();
   }
-  @if $mod == 'DateTimePicker' {
-    @include datetime-picker.DateTimePicker();
+  @if $mod == 'DatePicker' {
+    @include date-picker.DateTimePicker();
   }
   @if $mod == 'TimeInput' {
     @include time-input.TimeInput();

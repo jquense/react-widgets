@@ -1,5 +1,5 @@
-import DateTimePicker from 'react-widgets/lib/DateTimePicker'
+import DatePicker from 'react-widgets/lib/DatePicker'
 
 import materialize from './materialize'
 
-export default materialize(DateTimePicker)
+export default materialize(DatePicker)

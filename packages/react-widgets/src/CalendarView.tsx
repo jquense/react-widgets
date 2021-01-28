@@ -4,15 +4,15 @@ import dates from './dates'
 import useFocusManager from './useFocusManager'
 
 export type DateUnit =
-| 'second'
-| 'minutes'
-| 'hours'
-| 'day'
-| 'week'
-| 'month'
-| 'year'
-| 'decade'
-| 'century'
+  | 'second'
+  | 'minutes'
+  | 'hours'
+  | 'day'
+  | 'week'
+  | 'month'
+  | 'year'
+  | 'decade'
+  | 'century'
 
 function clamp(date: Date, min: Date, max: Date) {
   return dates.max(dates.min(date, max), min)
@@ -45,7 +45,7 @@ function CalendarView({
   }, [focusedItem, focused, ref])
 
   return (
-    <table
+    <div
       role="grid"
       ref={ref}
       tabIndex={-1}
@@ -55,7 +55,7 @@ function CalendarView({
       className={cn(className, 'rw-nav-view', 'rw-calendar-grid')}
     >
       {children}
-    </table>
+    </div>
   )
 }
 
@@ -108,7 +108,7 @@ function CalendarViewCell({
   }
 
   return (
-    <td
+    <div
       role="gridcell"
       title={label}
       aria-label={label}
@@ -126,16 +126,16 @@ function CalendarViewCell({
       )}
     >
       <span aria-hidden>{children}</span>
-    </td>
+    </div>
   )
 }
 
 CalendarView.Body = (
   props: React.AllHTMLAttributes<HTMLTableSectionElement>,
-) => <tbody className="rw-calendar-body" {...props} />
+) => <div role="rowgroup" className="rw-calendar-body" {...props} />
 
 CalendarView.Row = (props: React.AllHTMLAttributes<HTMLTableRowElement>) => (
-  <tr role="row" className="rw-calendar-row" {...props} />
+  <div role="row" className="rw-calendar-row" {...props} />
 )
 CalendarView.Cell = CalendarViewCell
 

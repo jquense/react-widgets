@@ -326,7 +326,7 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     }
 
     notify(onSelect, [dataItem, { originalEvent }])
-    change(dataItem, originalEvent)
+    change(dataItem, originalEvent, true)
     toggle.close()
     focus()
   }
@@ -449,12 +449,17 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     }
   }
 
-  function change(nextValue: unknown, originalEvent?: React.SyntheticEvent) {
+  function change(
+    nextValue: unknown,
+    originalEvent?: React.SyntheticEvent,
+    selected = false,
+  ) {
     if (!accessors.matches(nextValue, currentValue)) {
       notify(handleChange, [
         nextValue,
         {
           originalEvent,
+          source: selected ? 'listbox' : 'input',
           lastValue: currentValue,
           searchTerm: currentSearch,
         },

@@ -79,16 +79,12 @@ const propTypes = {
   precision: PropTypes.number,
 
   /**
-   * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
+   * A format string used to display the number value. Localizer dependent, read about [localization](localization) for more info.
    *
    * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
    */
   format: PropTypes.any,
 
-  /**
-   * Determines how the NumberPicker parses a number from the localized string representation.
-   * You can also provide a parser `function` to pair with a custom `format`.
-   */
   parse: PropTypes.func,
 
   incrementIcon: PropTypes.node,
@@ -132,6 +128,7 @@ const defaultProps = {
   min: -Infinity,
   max: Infinity,
   step: 1,
+  precision: 'auto',
 }
 
 export interface NumberPickerProps
@@ -174,10 +171,12 @@ export interface NumberPickerProps
   step?: number
 
   /**
-   * Specify how precise the `value` should be when typing, incrementing, or decrementing the value.
-   * When empty, precision is parsed from the current `format` and culture.
+   * Specify the decimal precision of the value when incrementing or decrementing by the
+   * `step` value. This may be necessary to work around rounding issues due to
+   * floating point math. By default the precision value used will be inferred
+   * from the `step` and `value`, rounding the result to that.
    */
-  precision?: number
+  precision?: number | 'auto'
 
   /**
    * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
@@ -188,7 +187,18 @@ export interface NumberPickerProps
 
   /**
    * Determines how the NumberPicker parses a number from the localized string representation.
-   * You can also provide a parser `function` to pair with a custom `format`.
+   *
+   * ```jsx live
+   * import NumberPicker from 'react-widgets/lib/NumberPicker';
+   *
+   * <NumberPicker
+   *   parse={(strValue, localizer) => {
+   *     return localizer.parseNumber(strValue.replace('_', ''))
+   *   }}
+   * />
+   * ```
+   *
+   * @example false
    */
   parse?: (str: string, localizer: Localizer) => number
 
@@ -376,9 +386,13 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
       | React.MouseEvent<HTMLButtonElement>,
   ) {
     const nextValue = (value || 0) + amount
+    let p: number | undefined =
+      precision === 'auto'
+        ? Math.max(getPrecision(value || 0), getPrecision(amount))
+        : precision
 
     handleChange(
-      precision != null ? parseFloat(round(nextValue, precision)) : nextValue,
+      p != null ? parseFloat(nextValue.toFixed(p)) : nextValue,
       event,
     )
 
@@ -457,18 +471,13 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
 
 export default NumberPicker
 
-// thank you kendo ui core
-// https://github.com/telerik/kendo-ui-core/blob/master/src/kendo.core.js#L1036
-function round(value: string | number, precision?: number): string {
-  precision = precision || 0
-
-  let parts = ('' + value).split('e')
-  let valueInt = Math.round(
-    +(parts[0] + 'e' + (parts[1] ? +parts[1] + precision : precision)),
-  )
-
-  parts = ('' + valueInt).split('e')
-  valueInt = +(parts[0] + 'e' + (parts[1] ? +parts[1] - precision : -precision))
-
-  return valueInt.toFixed(precision)
+function getPrecision(a: number) {
+  if (!isFinite(a)) return 0
+  let e = 1
+  let p = 0
+  while (Math.round(a * e) / e !== a) {
+    e *= 10
+    p++
+  }
+  return p
 }

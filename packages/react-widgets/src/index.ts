@@ -3,7 +3,6 @@
 import Calendar from './Calendar'
 import Combobox from './Combobox'
 import DatePicker from './DatePicker'
-import DateTimePicker from './DateTimePicker'
 import DropdownList from './DropdownList'
 import Listbox from './Listbox'
 import Localization, {
@@ -26,9 +25,9 @@ export {
   DropdownList,
   Combobox,
   Calendar,
-  DatePicker,
   TimeInput,
-  DateTimePicker,
+  DatePicker,
+  DatePicker as DateTimePicker,
   NumberPicker,
   Multiselect,
   Listbox,

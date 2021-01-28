@@ -196,12 +196,9 @@ class NumberPickerInput extends React.Component<
   parseNumber(strVal: string): number | undefined | null {
     let { localizer, parse: userParse } = this.props
 
-    let delimChar = localizer.decimalCharacter()
-
     if (userParse) return userParse(strVal, localizer)
 
-    strVal = strVal.replace(delimChar, '.')
-    return parseFloat(strVal)
+    return localizer.parseNumber(strVal)
   }
 
   render() {
@@ -225,6 +222,7 @@ class NumberPickerInput extends React.Component<
       <Input
         {...props}
         ref={innerRef}
+        inputMode="numeric"
         className="rw-widget-input"
         onChange={this.handleChange}
         onBlur={this.handleBlur}

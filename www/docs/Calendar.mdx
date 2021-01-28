@@ -1,0 +1,38 @@
+import KeyboardShortcuts from "@site/src/components/KeyboardShortcuts";
+import CalendarMetadata from "@react-metadata/Calendar";
+import PropsList from "@theme/PropsList";
+
+A simple Calendar input for selecting individual dates.
+
+```jsx live showImports
+import Calendar from "react-widgets/lib/Calendar";
+
+<Calendar />;
+```
+
+## Keyboard Shortcuts
+
+Calendar implements many keyboard shortcuts for power or keyboard only users.
+
+<KeyboardShortcuts
+  shortcuts={[
+    ["ctrl + down arrow", "navigate to next view"],
+    ["ctrl + up arrow", "navigate to previous view"],
+    [
+      "ctrl + left arrow",
+      "navigate to previous: month, year, decade, or century",
+    ],
+    [
+      "ctrl + right arrow",
+      "navigate to next: month, year, decade, or century",
+    ],
+    ["left arrow", " move focus to previous dat"],
+    ["right arrow", "move focus to next date"],
+    ["up arrow", "move focus up within view"],
+    ["down key", "move focus down within view"],
+  ]}
+/>
+
+## API
+
+<PropsList props={CalendarMetadata.props} />

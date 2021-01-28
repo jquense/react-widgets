@@ -289,19 +289,6 @@ export interface CalendarProps<TLocalizer = unknown>
 }
 
 /**
- * ---
- * localized: true
- * shortcuts:
- *   - { key: ctrl + down arrow, label: navigate to next view }
- *   - { key: ctrl + up arrow, label: navigate to previous view }
- *   - { key: ctrl + left arrow, label: "navigate to previous: month, year, decade, or century" }
- *   - { key: ctrl + right arrow, label: "navigate to next: month, year, decade, or century" }
- *   - { key: left arrow, label:  move focus to previous date}
- *   - { key: right arrow, label: move focus to next date }
- *   - { key: up arrow, label: move focus up within view }
- *   - { key: down key, label: move focus down within view }
- * ---
- *
  * @public
  */
 function Calendar({

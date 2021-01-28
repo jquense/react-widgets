@@ -1,6 +1,5 @@
 import React from 'react'
 import DatePicker from 'react-widgets/lib/DatePicker'
-import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import TimeInput from 'react-widgets/lib/TimeInput'
 import Layout from '@4c/layout'
 import { action } from '@storybook/addon-actions'
@@ -51,15 +50,15 @@ storiesOf('DatePicker', module)
     </Container>
   ))
 
-storiesOf('DateTimePicker', module)
-  .add('DateTimePicker', () => (
+storiesOf('DatePicker', module)
+  .add('DatePicker', () => (
     <Container>
-      <DateTimePicker />
+      <DatePicker />
     </Container>
   ))
   .add('Formats', () => (
     <Container>
-      <DateTimePicker
+      <DatePicker
         defaultValue={new Date()}
         valueDisplayFormat={{ dateStyle: 'full' }}
         valueEditFormat={{ dateStyle: 'medium' }}
@@ -68,7 +67,7 @@ storiesOf('DateTimePicker', module)
   ))
   .add('open', () => (
     <Container>
-      <DateTimePicker
+      <DatePicker
         open
         timeInputProps={{ use12HourClock: true, noClearButton: true }}
       />
@@ -77,7 +76,7 @@ storiesOf('DateTimePicker', module)
 
   .add('parsers', () => (
     <Container>
-      <DateTimePicker parse={(d) => new Date(d)} />
+      <DatePicker parse={(d) => new Date(d)} />
     </Container>
   ))
   .add('fieldset disabled', () => (
@@ -85,7 +84,7 @@ storiesOf('DateTimePicker', module)
       <fieldset disabled>
         <legend>disabled Fieldset</legend>
 
-        <DateTimePicker defaultValue={new Date()} />
+        <DatePicker defaultValue={new Date()} />
       </fieldset>
     </Container>
   ))
@@ -95,7 +94,7 @@ storiesOf('DateTimePicker', module)
 
       render = () => (
         <Container>
-          <DateTimePicker
+          <DatePicker
             value={this.state && this.state.value}
             onChange={this.onChange}
           />

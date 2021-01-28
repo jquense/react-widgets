@@ -221,7 +221,7 @@ declare interface Multiselect {
  *
  * @public
  */
-const MultiselectImpl: Multiselect = React.forwardRef(function Multiselect<
+const Multiselect: Multiselect = React.forwardRef(function Multiselect<
   TDataItem
 >(
   {
@@ -714,7 +714,7 @@ const MultiselectImpl: Multiselect = React.forwardRef(function Multiselect<
   )
 })
 
-MultiselectImpl.displayName = 'MultiselectImpl'
-MultiselectImpl.propTypes = propTypes
+Multiselect.displayName = 'Multiselect'
+Multiselect.propTypes = propTypes
 
-export default MultiselectImpl
+export default Multiselect

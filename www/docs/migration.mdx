@@ -1,0 +1,75 @@
+---
+title: Migrating to v5
+---
+
+## Breaking Changes
+
+### Naming Changes
+
+- `valueField` -> `dataKey`
+
+### SelectList has been removed
+
+`SelectList` has always been an awkward component that was half checkbox/radio group,
+half listbox component. Checkbox/radio group inputs are actually fairly simple
+to build with plain ol react and native inputs, you don't need special focus handling
+and mapping values to data is usually app specific. On the other hand RW has never
+had a proper Listbox implementation that was public, and may folks hacked the SelectList
+to fit that need. So in v5 we've removed SelectList and added `Listbox` input.
+
+### DateTimePicker
+
+The Date picker component has changed it's UX substantially to a single
+popup with the calendar, and optionally time input.
+
+Using the picker for both date and time has been soft deprecated (supported but not recommended).
+In general, unstructured date and time input is not great UX. We recommend
+using two inputs together, instead.
+
+- `DateTimePicker` has been renamed to just `DatePicker` and does not support time values by default
+  The `includeTime` can be used to enable time picking
+
+- An experimental `TimeInput` has been added for time only values.
+- the `parse` prop only accepts a single format (not an array of formats) or a function
+
+### Filtering differences
+
+In order to simplify and streamline the RW API, we've removed some API niceties
+that took up space and added complexity and easier left to the user to implement if needed.
+
+One of these things is for inputs that support filtering: dropdown, multiselect, combobox.
+We have removed a few of the built-in filtering options. in particular:
+
+- `caseSensitive`
+- `minLength`
+- All filter preset values _besides_ 'eq', 'contains', 'startsWith'
+
+These can are all be reimplemented by providing a function for the filter prop:
+
+```jsx
+<DropdownList
+  filter={(item, searchValue = "") =>
+    searchValue.length < 2 ||
+    searchValue.startsWith(item.name)
+  }
+/>
+```
+
+## Localizers
+
+### Removed browser dist builds
+
+We've removed the browser dist builds, they are too much trouble to maintain
+and add very little value now-a-days. Please bundle yourself with webpack, parcel, et al.
+
+### Provider based specification
+
+Rather than have a bespoke configuration approach for localizers there is now
+a `<Localization>` provider component that accepts a date and/or number localizer,
+and provides them to each widget in the react component tree.
+
+If no localizer is set the default `Intl` based one will be used.
+
+## Styling
+
+Less has been removed replaces fully by Sass.

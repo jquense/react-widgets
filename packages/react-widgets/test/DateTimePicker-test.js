@@ -1,37 +1,37 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import DateTimePicker from '../src/DateTimePicker'
+import DatePicker from '../src/DatePicker'
 
-describe('DateTimePicker', () => {
+describe('DatePicker', () => {
   it('should set initial values', () => {
     var date = new Date()
 
     expect(
       mount(
-        <DateTimePicker
+        <DatePicker
           defaultValue={date}
           formats={{ datetime: { date: 'short' } }}
         />,
       )
-        .find('DateTimePickerInput')
+        .find('DatePickerInput')
         .getDOMNode().value,
     ).to.equal(date.toLocaleString({ date: 'short' }))
   })
 
   it('should start closed', () => {
-    let inst = mount(<DateTimePicker />)
+    let inst = mount(<DatePicker />)
 
     expect(inst.find('Popup').prop('open')).to.not.equal(true)
 
     expect(inst.prop('open')).to.not.equal(true)
 
     inst.assertNone('.rw-open')
-    inst.assertSingle(`DateTimePickerInput[aria-expanded=false]`)
+    inst.assertSingle(`DatePickerInput[aria-expanded=false]`)
   })
 
   it('should open when clicked', () => {
     let onOpen = sinon.spy()
-    let wrapper = mount(<DateTimePicker onToggle={onOpen} />)
+    let wrapper = mount(<DatePicker onToggle={onOpen} />)
 
     wrapper.find('button.rw-picker-btn').simulate('click')
 
@@ -40,7 +40,7 @@ describe('DateTimePicker', () => {
 
   it('passes default props to calendar', () => {
     let wrapper = mount(
-      <DateTimePicker open calendarProps={{ defaultView: 'year' }} />,
+      <DatePicker open calendarProps={{ defaultView: 'year' }} />,
     )
 
     expect(wrapper.find('Calendar').props().defaultView).to.equal('year')
@@ -49,7 +49,7 @@ describe('DateTimePicker', () => {
   it('should change when selecting a date', () => {
     let change = sinon.spy()
 
-    mount(<DateTimePicker open onChange={change} onToggle={() => {}} />)
+    mount(<DatePicker open onChange={change} onToggle={() => {}} />)
       .find('td.rw-cell')
       .first()
       .simulate('click')
@@ -62,7 +62,7 @@ describe('DateTimePicker', () => {
       select = sinon.spy()
 
     mount(
-      <DateTimePicker
+      <DatePicker
         open
         onChange={change}
         onSelect={select}
@@ -81,7 +81,7 @@ describe('DateTimePicker', () => {
   xit('should not show time button when not selected', () => {
     var spy = sinon.spy()
 
-    mount(<DateTimePicker includeTime={false} date={false} onToggle={spy} />)
+    mount(<DatePicker includeTime={false} date={false} onToggle={spy} />)
       .tap((_) => _.assertNone('.rw-btn-time'))
       .tap((_) => _.assertNone('.rw-btn-calendar'))
       .simulate('keyDown', { altKey: true })
@@ -94,7 +94,7 @@ describe('DateTimePicker', () => {
     let blur = sinon.spy()
     let focus = sinon.spy()
 
-    mount(<DateTimePicker onBlur={blur} onFocus={focus} />)
+    mount(<DatePicker onBlur={blur} onFocus={focus} />)
       .simulateWithTimers('focus')
       .simulateWithTimers('blur')
   })
@@ -104,7 +104,7 @@ describe('DateTimePicker', () => {
       kd = sinon.spy(),
       ku = sinon.spy()
 
-    mount(<DateTimePicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd} />)
+    mount(<DatePicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd} />)
       .find('input.rw-input')
       .simulate('keyPress')
       .simulate('keyDown')
@@ -118,7 +118,7 @@ describe('DateTimePicker', () => {
   it('should do nothing when disabled', () => {
     let spy = sinon.spy()
     let wrapper = mount(
-      <DateTimePicker defaultValue={new Date()} disabled onToggle={spy} />,
+      <DatePicker defaultValue={new Date()} disabled onToggle={spy} />,
     )
 
     let input = wrapper.find('input.rw-input').getDOMNode()
@@ -133,7 +133,7 @@ describe('DateTimePicker', () => {
   it('should do nothing when readonly', () => {
     let spy = sinon.spy()
     let wrapper = mount(
-      <DateTimePicker defaultValue={new Date()} readOnly onToggle={spy} />,
+      <DatePicker defaultValue={new Date()} readOnly onToggle={spy} />,
     )
 
     let input = wrapper.find('input.rw-input').getDOMNode()

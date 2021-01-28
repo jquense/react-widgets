@@ -121,6 +121,7 @@ $cell-select-bg: list.$selected-bg !default;
   }
 
   .rw-calendar-grid {
+    display: table;
     outline: none;
     height: 14em;
     padding: $widget-focus-width;
@@ -130,15 +131,28 @@ $cell-select-bg: list.$selected-bg !default;
     width: 100%;
     background-color: $bg;
   }
+  .rw-calendar-head {
+    display: table-header-group;
+  }
+  .rw-calendar-body {
+    display: table-row-group;
+  }
+
+  .rw-calendar-row {
+    display: table-row;
+  }
 
   .rw-head-cell {
+    display: table-cell;
     text-align: $cell-align;
     border-bottom: 1px solid $input-border-color;
     padding: $cell-padding;
   }
 
   .rw-cell {
+    display: table-cell;
     color: $cell-color;
+    vertical-align: middle;
     border-color: $cell-border-color;
     border-radius: $cell-border-radius;
     cursor: pointer;

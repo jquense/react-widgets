@@ -1,0 +1,59 @@
+---
+title: Styling
+---
+
+The default look and feel of inputs is Bootstrap-esque and intended to
+be a neutral starting point for customization. React widgets's theme is written in Sass.
+Be sure to configure which ever bundler your using to handle `.scss` files. Be sure
+to install `sass` not `node-sass`, the latter does not support
+the necessary Sass features RW depends on.
+
+## Customize
+
+Styles can be fully customized through Sass's module
+configuration syntax: https://sass-lang.com/documentation/at-rules/use#configuration
+
+```scss title="my-theme.scss"
+@use "react-widgets/styles.scss" with (
+  $widget-font-size: 16px,
+  $input-height: 2.5em
+);
+```
+
+## A la carte component builds
+
+If you don't need every input RW offers, don't include the styles for the ones
+you aren't using.
+
+```scss
+@use "react-widgets/styles.scss" with (
+  $components: (
+    'Listbox',
+    'DropdownList',
+    'Combobox',
+    'Multiselect',
+    // 'DatePicker',
+    // 'Calendar',
+    // 'TimeInput',
+    'NumberPicker'
+  )
+);
+```
+
+Components that depend on each other will automatically be enabled if required. E.g.
+`Calendar` is required to use `DatePicker`, so is included automatically.
+
+## Font and Input sizes
+
+Component sizing is done via `em` units, and the base font-size is `1em`
+enabling components to scale with the surrounding
+font-size. If you want to use a fixed size adjust the `font-size` variable.
+Using the default values, inputs look best at `14px`, but you
+can also tweak the input height for different root font-sizes.
+
+```scss title="Sass Configuration"
+@use "react-widgets/lib/scss/react-widgets" with (
+  $widget-font-size: 16px,
+  $input-height: 2.5em
+);
+```

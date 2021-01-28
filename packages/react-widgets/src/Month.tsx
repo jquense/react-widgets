@@ -52,15 +52,15 @@ function MonthView({
       focusedItem={focusedItem}
       className={cn(className, 'rw-calendar-month')}
     >
-      <thead className="rw-calendar-head">
-        <tr className="rw-calendar-row">
+      <div role="rowgroup" className="rw-calendar-head">
+        <CalendarView.Row className="rw-calendar-row">
           {rows[0].map((date, idx) => (
-            <th scope="col" className="rw-head-cell" key={idx}>
+            <div role="columnheader" className="rw-head-cell" key={idx}>
               {localizer.formatDate(date, 'weekday')}
-            </th>
+            </div>
           ))}
-        </tr>
-      </thead>
+        </CalendarView.Row>
+      </div>
       <CalendarView.Body>
         {rows.map((row, rowIdx) => (
           <CalendarView.Row key={rowIdx}>

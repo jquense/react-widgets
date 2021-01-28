@@ -200,6 +200,7 @@ export type ChangeHandler<TDataItem> = (
   metadata: {
     searchTerm?: string
     lastValue: Value
+    source: 'listbox' | 'input'
     originalEvent?: SyntheticEvent
   },
 ) => void

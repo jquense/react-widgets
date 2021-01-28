@@ -33,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^2.6.0",
     "@typescript-eslint/parser": "^2.6.0",
     "babel-eslint": "10.1.0",
+    "babel-preset-env-modules": "^1.0.0",
     "babel-preset-jason": "^6.0.1",
     "common-tags": "^1.3.1",
     "cpy-cli": "^3.1.1",
@@ -60,7 +61,7 @@
   },
   "workspaces": [
     "packages/*",
-    "www2"
+    "www"
   ],
   "resolutions": {
     "@monastic.panic/react-docgen": "^5.0.1"
@@ -75,8 +76,8 @@
     "storybook/*": [
       "packages/storybook/stories/*"
     ],
-    "www2/*": [
-      "www2/src/*"
+    "www/*": [
+      "www/src/*"
     ]
   }
 }

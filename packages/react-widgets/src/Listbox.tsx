@@ -33,6 +33,9 @@ const propTypes = {
   selectedItem: PropTypes.any,
   searchTerm: PropTypes.string,
 
+  /**
+   * @example false
+   */
   disabled: CustomPropTypes.disabled.acceptsArray,
 
   messages: PropTypes.shape({
@@ -82,6 +85,9 @@ export interface BaseListboxProps<TDataItem> extends WidgetHTMLProps {
   className?: string
   multiple?: boolean
   readOnly?: boolean
+  /**
+   * @example false
+   */
   disabled?: boolean | TDataItem[]
   messages?: UserProvidedMessages
   renderItem?: RenderItemProp<TDataItem>
