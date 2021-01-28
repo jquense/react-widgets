@@ -11,7 +11,7 @@ import DropdownListInput, {
 import { caretDown } from './Icon'
 import List, { ListHandle } from './List'
 import { FocusListContext, useFocusList } from './FocusListContext'
-import Popup from './Popup'
+import BasePopup from './Popup'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
 import { useMessagesWithDefaults } from './messages'
@@ -65,6 +65,7 @@ const propTypes = {
   renderListItem: PropTypes.func,
   listComponent: CustomPropTypes.elementType,
   optionComponent: CustomPropTypes.elementType,
+  renderPopup: PropTypes.func,
 
   renderListGroup: PropTypes.func,
   groupBy: CustomPropTypes.accessor,
@@ -217,6 +218,7 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     onBlur,
     onFocus,
     listComponent: ListComponent = List,
+    popupComponent: Popup = BasePopup,
     data: rawData = [],
     messages: userMessages,
     ...elementProps

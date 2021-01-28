@@ -6,7 +6,7 @@ import Calendar, { CalendarProps } from './Calendar'
 import DatePickerInput, { DatePickerInputProps } from './DatePickerInput'
 import { calendar } from './Icon'
 import { useLocalizer, DateFormats } from './Localization'
-import Popup from './Popup'
+import BasePopup, { PopupProps } from './Popup'
 import TimeInput, { TimeInputProps } from './TimeInput'
 import Widget, { WidgetProps } from './Widget'
 import WidgetPicker from './WidgetPicker'
@@ -258,6 +258,7 @@ export interface DatePickerProps<TLocalizer = unknown>
   dropUp?: boolean
 
   popupTransition?: React.ComponentType<TransitionProps>
+  popupComponent?: React.ComponentType<PopupProps>
 
   placeholder?: string
   name?: string
@@ -362,6 +363,7 @@ const DatePicker = React.forwardRef(
       formats,
       currentDate,
       popupTransition,
+      popupComponent: Popup = BasePopup,
       timePrecision,
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,

@@ -6,9 +6,6 @@
     },
     {
       "path": "packages/localizer-moment"
-    },
-    {
-      "path": "packages/storybook"
     }
   ]
 }

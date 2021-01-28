@@ -11,7 +11,12 @@ module.exports = () => {
             {
               test: /\.(j|t)sx?$/,
               include: [/packages\/react-widgets\/src/],
-              use: [getBabelLoader(isServer)],
+              use: [
+                getBabelLoader(
+                  isServer,
+                  path.resolve(__dirname, '../babel.config.js'),
+                ),
+              ],
             },
             {
               test: /\.s[ca]ss$/,

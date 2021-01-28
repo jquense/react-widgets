@@ -15,7 +15,7 @@ import List, { ListHandle } from './List'
 import { FocusListContext, useFocusList } from './FocusListContext'
 import MultiselectInput from './MultiselectInput'
 import TagList, { RenderTagProp, TagComponentProp } from './MultiselectTagList'
-import Popup from './Popup'
+import BasePopup from './Popup'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
 import { useMessagesWithDefaults } from './messages'
@@ -273,6 +273,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     tagOptionComponent,
     groupBy,
     listComponent: ListComponent = List,
+    popupComponent: Popup = BasePopup,
     data: rawData = [],
     messages: userMessages,
     ...elementProps

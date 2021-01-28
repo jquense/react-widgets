@@ -7,7 +7,7 @@ import { caretDown } from './Icon'
 import Input from './Input'
 import List, { ListHandle } from './List'
 import { FocusListContext, useFocusList } from './FocusListContext'
-import Popup from './Popup'
+import BasePopup from './Popup'
 import InputAddon from './InputAddon'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
@@ -194,6 +194,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
     renderListGroup,
     optionComponent,
     listComponent: ListComponent = List,
+    popupComponent: Popup = BasePopup,
     data: rawData = [],
     messages: userMessages,
     ...elementProps

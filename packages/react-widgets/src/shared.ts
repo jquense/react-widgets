@@ -29,6 +29,7 @@ import {
   RenderItemProp,
 } from './List'
 import { TextAccessor, DataKeyAccessor } from './Accessors'
+import { PopupProps } from './Popup'
 
 export interface WidgetProps {
   className?: string
@@ -171,6 +172,7 @@ export interface PopupWidgetProps {
 
   dropUp?: boolean
   popupTransition?: React.ComponentType<TransitionProps>
+  popupComponent?: React.ComponentType<PopupProps>
 
   onKeyPress?: KeyboardEventHandler<HTMLDivElement>
   onKeyDown?: KeyboardEventHandler<HTMLDivElement>
