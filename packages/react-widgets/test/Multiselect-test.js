@@ -4,6 +4,8 @@ import { mount, shallow } from 'enzyme'
 import Multiselect from '../src/Multiselect'
 import MultiselectTag from '../src/MultiselectTag'
 import MultiselectTagList from '../src/MultiselectTagList'
+import SlideDownTransition from "../src/SlideDownTransition";
+import Popup from "../src/Popup";
 
 describe('Multiselect', function() {
   const ControlledMultiselect = Multiselect.ControlledComponent
@@ -587,5 +589,49 @@ describe('Multiselect', function() {
 
     inst.simulate('keyDown', { key: 'Home' })
     listItems.first().is('.rw-state-focus')
+  })
+
+  it('should render with a custom PopupComponent if one is provided', () => {
+    class CustomPopupComponent extends React.PureComponent {
+      render() {
+        return <div id="custom-popup-component" />
+      }
+    }
+
+    let inst = mount(
+        <ControlledMultiselect
+            open
+            dropUp
+            popupTransition={SlideDownTransition}
+            popupComponent={CustomPopupComponent}
+            popupProps={{
+              customProp: 'custom-prop'
+            }} />
+    );
+
+    const forceUpdate = sinon.stub();
+
+    inst.instance().listRef = {
+      forceUpdate
+    }
+
+    const props = inst.find(CustomPopupComponent).props();
+
+    expect(props.open).to.equal(true);
+    expect(props.dropUp).to.equal(true);
+    expect(props.customProp).to.equal('custom-prop');
+    expect(props.transition).to.equal(SlideDownTransition);
+
+    expect(forceUpdate.notCalled).to.equal(true);
+    props.onEntering();
+    expect(forceUpdate.calledOnce).to.equal(true);
+  })
+
+  it('defaults to using a Popup component', () => {
+    let inst = mount(
+        <ControlledMultiselect open/>
+    );
+
+    expect(inst.find(Popup).exists()).to.equal(true);
   })
 })

@@ -81,6 +81,7 @@ let propTypes = {
   tagComponent: CustomPropTypes.elementType,
   itemComponent: CustomPropTypes.elementType,
   listComponent: CustomPropTypes.elementType,
+  popupComponent: CustomPropTypes.elementType,
 
   groupComponent: CustomPropTypes.elementType,
   groupBy: CustomPropTypes.accessor,
@@ -113,6 +114,7 @@ let propTypes = {
   containerClassName: PropTypes.string,
   inputProps: PropTypes.object,
   listProps: PropTypes.object,
+  popupProps: PropTypes.object,
 
   autoFocus: PropTypes.bool,
   placeholder: PropTypes.string,
@@ -170,6 +172,7 @@ class Multiselect extends React.Component {
     searchTerm: '',
     selectIcon: caretDown,
     listComponent: List,
+    popupComponent: Popup,
     showPlaceholderWithValues: false,
   }
 
@@ -488,6 +491,43 @@ class Multiselect extends React.Component {
     )
   }
 
+  renderPopup() {
+    let {
+      dropUp,
+      open,
+      searchTerm,
+      popupTransition,
+      popupProps,
+      popupComponent:Popup
+    } = this.props
+
+    let { focusedItem, messages } = this.state
+    let allowCreate = this.allowCreate();
+
+    return <Popup
+        {...popupProps}
+        dropUp={dropUp}
+        open={open}
+        transition={popupTransition}
+        onEntering={() => this.listRef.forceUpdate()}
+      >
+      <div>
+        {this.renderList()}
+
+        {allowCreate && (
+            <AddToListOption
+                id={this.createId}
+                searchTerm={searchTerm}
+                onSelect={this.handleCreate}
+                focused={!focusedItem || focusedItem === CREATE_OPTION}
+            >
+              {messages.createOption(this.props)}
+            </AddToListOption>
+        )}
+      </div>
+    </Popup>
+  }
+
   renderNotificationArea() {
     let { focused, dataItems, accessors, messages } = this.state
 
@@ -540,14 +580,12 @@ class Multiselect extends React.Component {
       busy,
       dropUp,
       open,
-      searchTerm,
       selectIcon,
       busySpinner,
       containerClassName,
-      popupTransition,
     } = this.props
 
-    let { focused, focusedItem, dataItems, messages } = this.state
+    let { focused, dataItems, messages } = this.state
 
     let elementProps = Props.pickElementProps(this)
 
@@ -598,29 +636,9 @@ class Multiselect extends React.Component {
           />
         </WidgetPicker>
 
-        {shouldRenderPopup && (
-          <Popup
-            dropUp={dropUp}
-            open={open}
-            transition={popupTransition}
-            onEntering={() => this.listRef.forceUpdate()}
-          >
-            <div>
-              {this.renderList()}
-
-              {allowCreate && (
-                <AddToListOption
-                  id={this.createId}
-                  searchTerm={searchTerm}
-                  onSelect={this.handleCreate}
-                  focused={!focusedItem || focusedItem === CREATE_OPTION}
-                >
-                  {messages.createOption(this.props)}
-                </AddToListOption>
-              )}
-            </div>
-          </Popup>
-        )}
+        {shouldRenderPopup &&
+          this.renderPopup()
+        }
       </Widget>
     )
   }
