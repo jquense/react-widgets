@@ -16,6 +16,7 @@ class DropdownListInput extends React.Component {
     valueComponent: CustomPropTypes.elementType,
     onAutofill: PropTypes.func.isRequired,
     onAutofillChange: PropTypes.func.isRequired,
+    inputProps: PropTypes.object,
   }
   state = {
     autofilling: false,
@@ -45,6 +46,7 @@ class DropdownListInput extends React.Component {
       textField,
       autoComplete,
       valueComponent: Component,
+      inputProps,
     } = this.props
     const { autofilling } = this.state
     let child = null
@@ -67,6 +69,7 @@ class DropdownListInput extends React.Component {
             name={name}
             value={val == null ? '' : val}
             autoComplete={autoComplete}
+            {...inputProps}
             onChange={this.handleAutofill}
             onAnimationStart={this.handleAutofillDetect}
             className={cn(
