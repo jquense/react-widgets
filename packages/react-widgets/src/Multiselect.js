@@ -420,10 +420,8 @@ class Multiselect extends React.Component {
         {...inputProps}
         autoFocus={autoFocus}
         tabIndex={tabIndex || 0}
-        role="listbox"
-        aria-expanded={!!open}
+        aria-label="input"
         aria-busy={!!busy}
-        aria-owns={ownedIds}
         aria-haspopup={true}
         aria-activedescendant={active || null}
         value={searchTerm}

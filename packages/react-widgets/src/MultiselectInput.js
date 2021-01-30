@@ -38,6 +38,7 @@ class MultiselectInput extends React.Component {
         size={size}
         className="rw-input-reset"
         autoComplete='off'
+        aria-label='input'
         aria-disabled={disabled}
         aria-readonly={readOnly}
         disabled={disabled}
