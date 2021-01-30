@@ -332,5 +332,34 @@ describe('DateTimePicker', () => {
       expect(dates[1].date.getHours()).to.equal(2)
       expect(dates[2].date.getHours()).to.equal(4)
     })
+
+    it('should set availableTimes property', () => {
+      let availableTimes = {
+        hours: [8, 9]
+      }
+      let dates = mount(<DateTimePicker availableTimes={availableTimes} />)
+        .find(TimeList)
+        .instance().state.data
+
+      expect(dates.length).to.equal(3)
+      expect(dates[0].date.getHours()).to.equal(8)
+      expect(dates[1].date.getHours()).to.equal(8)
+      expect(dates[2].date.getHours()).to.equal(9)
+
+      availableTimes = {
+        hours: [8, 9],
+        includeLastStep: true
+      }
+
+      dates = mount(<DateTimePicker availableTimes={availableTimes} />)
+        .find(TimeList)
+        .instance().state.data
+
+      expect(dates.length).to.equal(4)
+      expect(dates[0].date.getHours()).to.equal(8)
+      expect(dates[1].date.getHours()).to.equal(8)
+      expect(dates[2].date.getHours()).to.equal(9)
+      expect(dates[3].date.getHours()).to.equal(9)
+    })
   })
 })

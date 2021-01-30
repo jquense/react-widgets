@@ -134,6 +134,17 @@ let propTypes = {
    */
   timeComponent: CustomPropTypes.elementType,
 
+  /**
+   * Customize available time range for time select, includeLastStep defines whether last
+   * time element will be in time range list
+   *
+   * @example { hours: [8, 9, 10], includeLastStep: true }
+   */
+  availableTimes: PropTypes.shape({
+    hours: PropTypes.arrayOf(PropTypes.number),
+    includeLastStep: PropTypes.bool
+  }),
+
   /** Specify the element used to render the calendar dropdown icon. */
   dateIcon: PropTypes.node,
 
@@ -490,6 +501,7 @@ class DateTimePicker extends React.Component {
       timeComponent,
       timeListProps,
       popupTransition,
+      availableTimes
     } = this.props
 
     return (
@@ -505,6 +517,7 @@ class DateTimePicker extends React.Component {
             min={min}
             max={max}
             step={step}
+            availableTimes={availableTimes}
             listProps={timeListProps}
             currentDate={currentDate}
             activeId={activeOptionId}

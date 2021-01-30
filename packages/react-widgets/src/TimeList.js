@@ -56,7 +56,15 @@ function getBounds({ min, max, currentDate, value, preserveDate }) {
   }
 }
 
-function getDates({ step, culture, ...props }) {
+function getDates({ step, culture, availableTimes, ...props }) {
+  if(availableTimes) {
+    return fetchAvailableTimes({ step, culture, availableTimes, ...props })
+  }
+
+  return fetchDefaultTimes({ step, culture, ...props })
+}
+
+function fetchDefaultTimes({ step, culture, ...props }) {
   let times = []
   let { min, max } = getBounds(props)
   let startDay = dates.date(min)
@@ -66,8 +74,31 @@ function getDates({ step, culture, ...props }) {
       date: min,
       label: dateLocalizer.format(min, format(props), culture),
     })
+
     min = dates.add(min, step || 30, 'minutes')
   }
+
+  return times
+}
+
+function fetchAvailableTimes({ step, culture, availableTimes, ...props }) {
+  let times = []
+  let { min, max } = getBounds(props)
+  let startDay = dates.date(min)
+
+  while (dates.date(min) === startDay && dates.lte(min, max)) {
+    if(availableTimes.hours.includes(min.getHours())) {
+      times.push({
+        date: min,
+        label: dateLocalizer.format(min, format(props), culture),
+      })
+    }
+
+    min = dates.add(min, step || 30, 'minutes')
+  }
+
+  if(!availableTimes.includeLastStep) times.pop()
+
   return times
 }
 
@@ -87,6 +118,10 @@ class TimeList extends React.Component {
     min: PropTypes.instanceOf(Date),
     max: PropTypes.instanceOf(Date),
     currentDate: PropTypes.instanceOf(Date),
+    availableTimes: PropTypes.shape({
+      hours: PropTypes.arrayOf(PropTypes.number),
+      includeLastStep: PropTypes.bool
+    }),
 
     itemComponent: CustomPropTypes.elementType,
     listProps: PropTypes.object,
