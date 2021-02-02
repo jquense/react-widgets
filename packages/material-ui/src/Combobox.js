@@ -1,4 +1,4 @@
-import Combobox from 'react-widgets/lib/Combobox'
+import Combobox from 'react-widgets/Combobox'
 
 import materialize from './materialize'
 

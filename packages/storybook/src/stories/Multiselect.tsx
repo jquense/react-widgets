@@ -1,5 +1,5 @@
 import React from 'react'
-import Multiselect from 'react-widgets/lib/Multiselect'
+import Multiselect from 'react-widgets/Multiselect'
 import { storiesOf } from '@storybook/react'
 import Container from '../Container'
 import { action } from '../helpers'

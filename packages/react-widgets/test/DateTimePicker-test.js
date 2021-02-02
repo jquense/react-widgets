@@ -1,10 +1,12 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import DatePicker from '../src/DatePicker'
+import { DateLocalizer } from '../src/IntlLocalizer'
 
 describe('DatePicker', () => {
   it('should set initial values', () => {
     var date = new Date()
+    const intl = new DateLocalizer()
 
     expect(
       mount(
@@ -15,7 +17,7 @@ describe('DatePicker', () => {
       )
         .find('DatePickerInput')
         .getDOMNode().value,
-    ).to.equal(date.toLocaleString({ date: 'short' }))
+    ).to.equal(intl.date(date))
   })
 
   it('should start closed', () => {
@@ -50,7 +52,7 @@ describe('DatePicker', () => {
     let change = sinon.spy()
 
     mount(<DatePicker open onChange={change} onToggle={() => {}} />)
-      .find('td.rw-cell')
+      .find('.rw-cell')
       .first()
       .simulate('click')
 

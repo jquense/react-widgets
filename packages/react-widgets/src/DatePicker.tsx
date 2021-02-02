@@ -5,7 +5,7 @@ import { useUncontrolled } from 'uncontrollable'
 import Calendar, { CalendarProps } from './Calendar'
 import DatePickerInput, { DatePickerInputProps } from './DatePickerInput'
 import { calendar } from './Icon'
-import { useLocalizer, Localizer, DateFormats } from './Localization'
+import { useLocalizer, DateFormats } from './Localization'
 import Popup from './Popup'
 import TimeInput, { TimeInputProps } from './TimeInput'
 import Widget, { WidgetProps } from './Widget'
@@ -155,7 +155,6 @@ let propTypes = {
   inputProps: PropTypes.object,
   messages: PropTypes.shape({
     dateButton: PropTypes.string,
-    timeButton: PropTypes.string,
   }),
 }
 
@@ -259,9 +258,6 @@ export interface DatePickerProps<TLocalizer = unknown>
    */
   parse?: string | ((str: string, localizer?: TLocalizer) => Date | undefined)
 
-  /** @ignore */
-  localizer?: Localizer
-
   onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void
   onKeyPress?: (e: React.KeyboardEvent<HTMLDivElement>) => void
   onBlur?: () => void
@@ -281,7 +277,6 @@ export interface DatePickerProps<TLocalizer = unknown>
 
   messages: {
     dateButton?: string
-    timeButton?: string
   }
 }
 

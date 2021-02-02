@@ -117,6 +117,9 @@ type UserNumberFormat =
   | Intl.NumberFormatOptions
   | ((num: number, culture?: string) => string)
 
+/**
+ * A number localization strategy based on `Intl.NumberFormat`.
+ */
 class IntlNumberLocalizer implements NumberLocalizer<Intl.NumberFormatOptions> {
   culture?: string
   decimalCharacter: () => string

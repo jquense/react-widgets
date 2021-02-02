@@ -5,7 +5,7 @@ import PropsList from "@theme/PropsList";
 ## Overview
 
 ```jsx live showImports
-import DatePicker from "react-widgets/lib/DatePicker";
+import DatePicker from "react-widgets/DatePicker";
 
 <DatePicker placeholder="m/dd/yy" />;
 ```
@@ -18,7 +18,7 @@ case for Luxon or DateFns, an options object passed to `Intl` directly. The defa
 case uses the built-in `Intl` APIs.
 
 ```jsx live
-import DatePicker from "react-widgets/lib/DatePicker";
+import DatePicker from "react-widgets/DatePicker";
 
 <>
   <DatePicker
@@ -40,13 +40,82 @@ The best date format to read is not always the easier to input. You can provide 
 between edit and display formats; the former is used while the input is focused.
 
 ```jsx live
-import DatePicker from "react-widgets/lib/DatePicker";
+import DatePicker from "react-widgets/DatePicker";
 
 <DatePicker
   defaultValue={new Date()}
   valueEditFormat={{ dateStyle: "short" }}
   valueDisplayFormat={{ dateStyle: "medium" }}
 />;
+```
+
+## Parsing date strings
+
+When a user types a value into the textbox it need's to parsed into a proper `Date`
+object. The built-in parsing logic simply passes the value to `new Date`. This often
+works fine, but can produce confusing results given how varied of an input the Date
+constructor will accept. Localizer's may provide more structured parsing,
+if the backing library supports it. The `parse` prop provides another escape hatch for per
+component parse tweaking.
+
+## I18n: locales
+
+The locale used by inputs is determined by the user's browser, you can manually
+configure it with the `<Localization>` Provider component.
+
+```jsx live renderAsComponent
+import Localization from "react-widgets/Localization";
+import { DateLocalizer } from "react-widgets/IntlLocalizer";
+import DatePicker from "react-widgets/DatePicker";
+import DropdownList from "react-widgets/DropdownList";
+
+const Locales = [
+  {
+    label: "English: USA",
+    culture: "en",
+    firstOfWeek: 0,
+  },
+  {
+    label: "English: Great Britain",
+    culture: "en-gb",
+    firstOfWeek: 1,
+  },
+  {
+    label: "Spanish",
+    culture: "es",
+    firstOfWeek: 1,
+  },
+  {
+    label: "French",
+    culture: "fr",
+    firstOfWeek: 1,
+  },
+  {
+    label: "Arabic: U.A.E",
+    culture: "ar-AE",
+    firstOfWeek: 0,
+  },
+];
+
+const [current, setCurrent] = useState(Locales[1]);
+
+<Localization date={new DateLocalizer(current)}>
+  <div className="mb-10 ">
+    <label className="block">Select a locale:</label>
+    <DropdownList
+      textField="label"
+      data={Locales}
+      value={current}
+      onChange={setCurrent}
+      className="w-60 inline-block"
+    />
+  </div>
+  <DatePicker
+    defaultValue={new Date()}
+    valueEditFormat={{ dateStyle: "short" }}
+    valueDisplayFormat={{ dateStyle: "medium" }}
+  />
+</Localization>;
 ```
 
 ## Date and time input
@@ -56,9 +125,9 @@ well. To meet the variety of user needs, inputs can be combined and configured t
 support the input pattern that works best for your users.
 
 ```jsx live
-import DatePicker from "react-widgets/lib/DatePicker";
-import TimeInput from "react-widgets/lib/TimeInput";
-import DropdownList from "react-widgets/lib/DropdownList";
+import DatePicker from "react-widgets/DatePicker";
+import TimeInput from "react-widgets/TimeInput";
+import DropdownList from "react-widgets/DropdownList";
 import { getTimeList } from "@site/src/date-utils";
 
 <div className="flex flex-col items-start max-w-sm">

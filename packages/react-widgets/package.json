@@ -2,8 +2,9 @@
   "name": "react-widgets",
   "version": "5.0.0-beta.22",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
-  "main": "lib/index.js",
-  "types": "lib/index.d.js",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/cjs/index.d.js",
   "author": {
     "name": "Jason",
     "email": "monastic.panic@gmail.com"
@@ -35,20 +36,22 @@
     "test-only": "jest --runInBand",
     "tdd": "jest --watch --runInBand",
     "lint": "eslint src test --ext .ts,.tsx,.js",
-    "scss": "sass src/scss/react-widgets.scss dist/css/react-widgets.css",
-    "styles": "cpy src/scss/* lib/scss/",
-    "compile:lib": "build src",
-    "compile:dist": "rimraf ./dist/* && cross-env NODE_ENV=production webpack",
-    "build:lib": "npm run compile:lib && npm run styles",
-    "build:dist": "npm run compile:dist && npm run scss",
-    "build": "npm run build:lib && npm run build:dist",
-    "prepublishOnly": "npm run build"
+    "scss": "sass src/scss/styles.scss lib/styles.css",
+    "build:pick": "cherry-pick --cwd=lib --input-dir=../src --cjs-dir=cjs --esm-dir=esm",
+    "build:lib": "4c build src --no-copy-files && cpy src/scss/* lib/scss/",
+    "build:dist": "webpack --mode production && yarn scss",
+    "build": "yarn build:lib && yarn build:dist",
+    "prepublishOnly": "yarn build"
   },
   "homepage": "http://jquense.github.io/react-widgets/docs/",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jquense/react-widgets.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "lib"
   },
   "peerDependencies": {
     "react": ">=0.14.0",
@@ -67,6 +70,7 @@
   },
   "devDependencies": {
     "@4c/build": "^2.2.6",
+    "@4c/cli": "^2.1.13",
     "@4c/tsconfig": "^0.3.1",
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
@@ -83,6 +87,7 @@
     "babel-preset-jason": "^6.2.0",
     "chai": "^4.2.0",
     "cpy-cli": "^3.1.0",
+    "cherry-pick": "^0.5.0",
     "cross-env": "^7.0.2",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
@@ -112,7 +117,5 @@
   },
   "bugs": {
     "url": "https://github.com/jquense/react-widgets/issues"
-  },
-  "readme": "ERROR: No README data found!",
-  "_id": "react-widgets@5.0.0-beta.8"
+  }
 }

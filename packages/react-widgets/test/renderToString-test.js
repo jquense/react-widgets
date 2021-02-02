@@ -8,7 +8,7 @@ const renderToString = require('react-dom/server').renderToString
 const components = [
   'Calendar',
   'Combobox',
-  'DateTimePicker',
+  'DatePicker',
   'DropdownList',
   'Multiselect',
   'Listbox',
@@ -20,13 +20,13 @@ describe('Render to string', () => {
     console.error.restore()
   })
 
-  components.forEach(function(file) {
+  components.forEach(function (file) {
     it(
       'should render: ' + file,
-      function() {
+      function () {
         const Type = require('../src/' + file).default
 
-        expect(function() {
+        expect(function () {
           const comp = renderToString(React.createElement(Type))
 
           expect(typeof comp === 'string').to.equal(true)
@@ -35,10 +35,10 @@ describe('Render to string', () => {
     )
   })
 
-  it('should render: Popup', function() {
+  it('should render: Popup', function () {
     const Type = require('../src/Popup').default
 
-    expect(function() {
+    expect(function () {
       const comp = renderToString(
         React.createElement(Type, null, React.createElement('div')),
       )

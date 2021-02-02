@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 
 import { action } from '../helpers'
 import Container from '../Container'
-import Numberpicker from 'react-widgets/lib/NumberPicker'
+import Numberpicker from 'react-widgets/NumberPicker'
 
 let props = {
   onChange: action('change'),

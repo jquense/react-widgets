@@ -1,5 +1,5 @@
 import React from 'react'
-import Listbox from 'react-widgets/lib/Listbox'
+import Listbox from 'react-widgets/Listbox'
 import { storiesOf } from '@storybook/react'
 import Container from '../Container'
 import { action } from '../helpers'

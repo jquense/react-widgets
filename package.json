@@ -10,7 +10,7 @@
     "test": "lerna run test",
     "rw": "lerna exec --scope react-widgets npm run",
     "tdd": "npm run rw tdd",
-    "start": "npm run start -C ./www2",
+    "start": "npm run start -C ./www",
     "start-dev": "lerna exec --scope storybook npm start",
     "bootstrap": "yarn && lerna run prepublishOnly",
     "build": "lerna run build",
@@ -34,7 +34,6 @@
     "@typescript-eslint/parser": "^2.6.0",
     "babel-eslint": "10.1.0",
     "babel-preset-env-modules": "^1.0.0",
-    "babel-preset-jason": "^6.0.1",
     "common-tags": "^1.3.1",
     "cpy-cli": "^3.1.1",
     "cross-env": "^7.0.2",
@@ -70,7 +69,7 @@
     "react-widgets-moment/*": [
       "packages/localizer-moment/./*"
     ],
-    "react-widgets/lib/*": [
+    "react-widgets/*": [
       "packages/react-widgets/src/*"
     ],
     "storybook/*": [

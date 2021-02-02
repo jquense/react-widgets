@@ -7,116 +7,73 @@ title: Getting Started
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-React Widgets is a suite of high-quality input components built for React. Each component is built for ease of use,
-accessibility, and the practical needs of complex (or simple) forms. The work great with complex data
-structures and models, and in keeping with the [React approach](http://facebook.github.io/react/docs/forms.html#controlled-components) to form inputs,
-each component's props can easily be [_controlled_ or _uncontrolled_](../docs/controllables).
-
-A special shout-out to Kendo UI Core, and jQuery UI, whose original work inspired this suite.
+React widgets is a high quality suite of React inputs. Each component is built for ease of use,
+accessibility, and the practical needs of complex (or simple) forms. Get going quickly with
+the low friction setup.
 
 <Tabs
   defaultValue="npm"
   values={[
     { label: 'npm', value: 'npm', },
-    { label: 'Yarn', value: 'yarn', },
+    { label: 'yarn', value: 'yarn', },
   ]
 }>
 <TabItem value="npm">
 
-```sh
+```bash
   npm install react-widgets --save
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
-```sh
+```bash
   yarn add react-widgets
 ```
 
 </TabItem>
 </Tabs>
 
-## Setup
+Import or link to the stylesheet. Icons and images are included as inline SVG's
+and don't require additional configuration.
 
-Stylesheets, images, and fonts are found in the `dist` directory. You can use webpack to `require()` the styles,
-or include the css normally. The included icons are by - [Font Awesome by Dave Gandy](http://fontawesome.io)
+<Tabs
+  defaultValue="css"
+  values={[
+    { label: 'CSS', value: 'css' },
+    { label: 'Sass', value: 'scss', },
+  ]
+}>
+<TabItem value="css">
 
 ```js
-// Add the css styles...
-import "react-widgets/dist/css/react-widgets.css";
-
-// ...Or if you prefer to use the Sass files directly
-// import 'react-widgets/lib/scss/react-widgets.scss';
-
-import { render } from "react-dom";
-import DropdownList from "react-widgets/lib/DropdownList";
-
-render(
-  <DropdownList />,
-  document.getElementById("app-root")
-);
+import "react-widgets/styles.css";
 ```
 
-:::info Heads up
-Date and number components may need additional configuration based on your app!
-Check out the [Localization page](../docs/localization) for more information.
-:::
-
-### Webpack
-
-If are using webpack to handle styles in your application you are probably already configured
-loaders to make it work with appropriate file extensions. If not, you will have to use
-the `css-loader`, `style-loader`, `url-loader` and, optionally, `scss-loader`.
-
-Here's a common configuration:
+</TabItem>
+<TabItem value="scss">
 
 ```js
-module: {
-  loaders: [
-    // for good ol' css
-    {
-      test: /\\.css$/,
-      use: ["style-loader", "css-loader"],
-    },
+import "react-widgets/scss/styles.css";
+```
 
-    // OR if using scss
-    {
-      test: /\\.scss$/,
-      use: ["style-loader", "css-loader", "scss-loader"],
-    },
+</TabItem>
+</Tabs>
 
-    // images and fonts
-    {
-      test: /\\.(gif|ttf|eot|svg|woff2?)$/,
-      use: "url-loader?name=[name].[ext]",
-    },
-  ];
+Import your component or components of choice
+
+```jsx
+import DropdownList from "react-widgets/DropdownList";
+
+function App() {
+  return (
+    <>
+      {...}
+      <DropdownList />
+    </>
+  );
 }
 ```
 
-When using Sass, you'll need to help webpack find the font and image folders.
-Override corresponding variables from `variables` file.
-
-```scss
-@use "~react-widgets/lib/scss/react-widgets" with (
-  $widget-bg: orange,
-);
-```
-
-## Accessibility and Read Direction
-
-React-widgets tries to be as inclusive and wide reaching as possible. Along with an included solution for
-date and number localization, there is first class support for cultures and languages that read
-right to left (with the `dir="rtl"` attribute).
-
-Each widget also has appropriate ARIA roles and attributes for the benefit of screen readers and visually
-impaired users. Keyboard-only navigation of widgets is also supported, for those who prefer to not,
-or cannot use a mouse. To help ensure maximum accessibility, every widget should have
-an `id` attribute. If you do not wish to provide an id attribute, the component will generate
-the necessary id's to properly label and annotate the widget ARIA.
-
-:::info
-Because of how server-side rendering works, using auto generated `id`s may
-cause checksum mismatches. Always provide `id` props to your components to avoid this possible pitfall.
-:::
+Consult the input documentation for API details, or the styling guide for custimizing
+the look and feel of each input.

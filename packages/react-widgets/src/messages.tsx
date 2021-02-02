@@ -10,12 +10,7 @@ export interface Messages {
   moveForward: LabelMessage
 
   dateButton: LabelMessage
-  timeButton: LabelMessage
-
   openCombobox: LabelMessage
-  openDropdown: LabelMessage
-
-  placeholder: LabelMessage
 
   emptyList: RenderableMessage
   emptyFilter: RenderableMessage
@@ -38,13 +33,8 @@ const messages = {
   moveForward: 'Navigate forward',
 
   dateButton: 'Select date',
-  timeButton: 'Select time',
 
   openCombobox: 'open combobox',
-  openDropdown: 'open dropdown',
-
-  placeholder: '',
-  filterPlaceholder: '',
 
   emptyList: 'There are no items in this list',
   emptyFilter: 'The filter returned no results',

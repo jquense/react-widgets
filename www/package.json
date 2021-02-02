@@ -12,6 +12,7 @@
     "clear": "docusaurus clear"
   },
   "dependencies": {
+    "@4c/docusaurus-preset": "^0.2.1",
     "@docusaurus/core": "2.0.0-alpha.70",
     "@docusaurus/plugin-content-docs": "^2.0.0-alpha.70",
     "@docusaurus/plugin-content-pages": "^2.0.0-alpha.70",
@@ -30,7 +31,7 @@
     "react": "^16.8.4",
     "react-docgen": "^5.3.1",
     "react-dom": "^16.8.4",
-    "react-widgets": "^5.0.0-beta.0",
+    "react-widgets": "*",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "unist-util-flatmap": "^1.0.0",
     "unist-util-visit": "^2.0.3"
@@ -53,6 +54,7 @@
     "@types/react": "^17.0.0",
     "@types/react-helmet": "^6.1.0",
     "@types/react-router-dom": "^5.1.6",
+    "docusaurus-plugin-astroturf": "^1.0.1",
     "typescript": "^4.1.3"
   }
 }

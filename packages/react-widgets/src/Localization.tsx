@@ -120,7 +120,12 @@ type ProviderProps = {
   children?: React.ReactNode
 }
 
-const Localization = ({ date, number, messages, children }: ProviderProps) => {
+const Localization = ({
+  date = new IntlLocalizers.DateLocalizer(),
+  number = new IntlLocalizers.NumberLocalizer(),
+  messages,
+  children,
+}: ProviderProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const localizer = useMemo(() => mergeWithDefaults(date, number, messages), [
     date,

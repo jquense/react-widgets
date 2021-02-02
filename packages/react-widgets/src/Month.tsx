@@ -45,7 +45,7 @@ function MonthView({
 }: MonthProps) {
   let month = visibleDays(focusedItem, localizer.firstOfWeek())
   let rows = chunk(month, 7)
-  // console.log(localizer)
+
   return (
     <CalendarView
       {...props}

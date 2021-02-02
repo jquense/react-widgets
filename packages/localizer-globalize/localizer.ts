@@ -7,7 +7,7 @@ import {
   DateLocalizer,
   RequiredDateMethods,
   NumberLocalizer,
-} from 'react-widgets/lib/Localization'
+} from 'react-widgets/Localization'
 
 function endOfDecade(date: Date) {
   date = new Date(date)
@@ -182,8 +182,6 @@ class GlobalizeNumberLocalizer
     return this.g.parseNumber(value)
   }
 }
-
-export default GlobalizeLocalizer
 
 export {
   GlobalizeDateLocalizer as DateLocalizer,

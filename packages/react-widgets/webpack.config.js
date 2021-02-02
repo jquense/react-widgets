@@ -7,7 +7,7 @@ module.exports = {
     'react-widgets': './src/index.ts',
   },
   output: {
-    path: path.join(__dirname, './dist'),
+    path: path.join(__dirname, './lib/umd'),
     filename: '[name].js',
     library: 'ReactWidgets',
     libraryTarget: 'umd',

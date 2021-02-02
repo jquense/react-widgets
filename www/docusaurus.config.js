@@ -66,19 +66,26 @@ module.exports = {
     },
   },
   plugins: [
-    require.resolve('./plugins/resolve-react'),
-    require.resolve('./plugins/tailwind'),
-    require.resolve('./plugins/astroturf'),
+    require.resolve('./plugins/webpack'),
+    'docusaurus-plugin-astroturf',
   ],
   presets: [
     [
-      require.resolve('./plugins/preset'),
+      '@4c/docusaurus-preset',
       {
+        theme: [
+          '@docusaurus/theme-classic',
+          { customCss: require.resolve('./src/css/custom.css') },
+        ],
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
         },
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+        reactMetadata: {
+          src: '../packages/react-widgets/src/**/*.{js,tsx,ts}',
+          watchPaths: ['./plugins/examples/*'],
+          docgen: {
+            handlers: [require('./plugins/doc-handler')],
+          },
         },
       },
     ],

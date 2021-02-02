@@ -176,6 +176,7 @@ describe('Combobox', function () {
     expect(change.getCall(0).args[1]).to.eql({
       originalEvent: 'foo',
       lastValue: 'bar',
+      source: 'listbox',
     })
   })
 })

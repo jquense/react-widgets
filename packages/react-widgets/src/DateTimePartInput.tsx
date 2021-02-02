@@ -50,7 +50,7 @@ const DateTimePartInput = React.forwardRef<HTMLInputElement, Props>(
       aria-disabled={props.disabled || props.readOnly}
       arai-placeholder={placeholder}
       placeholder={placeholder}
-      className="rw-time-part-input"
+      className="rw-btn-input-reset rw-time-part-input"
       value={
         placeholder && !value
           ? ''

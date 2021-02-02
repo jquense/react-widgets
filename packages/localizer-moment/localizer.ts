@@ -3,7 +3,7 @@ import {
   DateLocalizer,
   DateTimePart,
   DateTimePartType,
-} from 'react-widgets/lib/Localization'
+} from 'react-widgets/Localization'
 
 type MomentPartMap = Record<DateTimePartType, string>
 

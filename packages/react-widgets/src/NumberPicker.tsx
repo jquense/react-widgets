@@ -76,7 +76,7 @@ const propTypes = {
    * Specify how precise the `value` should be when typing, incrementing, or decrementing the value.
    * When empty, precision is parsed from the current `format` and culture.
    */
-  precision: PropTypes.number,
+  precision: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['auto'])]),
 
   /**
    * A format string used to display the number value. Localizer dependent, read about [localization](localization) for more info.
@@ -189,7 +189,7 @@ export interface NumberPickerProps
    * Determines how the NumberPicker parses a number from the localized string representation.
    *
    * ```jsx live
-   * import NumberPicker from 'react-widgets/lib/NumberPicker';
+   * import NumberPicker from 'react-widgets/NumberPicker';
    *
    * <NumberPicker
    *   parse={(strValue, localizer) => {

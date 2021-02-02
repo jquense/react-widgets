@@ -59,7 +59,7 @@ function MultiselectTag({
         tabIndex={-1}
         onClick={handleRemove}
         disabled={disabled || readOnly}
-        className="rw-multiselect-tag-btn"
+        className="rw-btn-input-reset rw-multiselect-tag-btn"
         aria-label={label || 'Remove item'}
       >
         {clearTagIcon}

@@ -1,6 +1,6 @@
 import deconstruct from 'deconstruct-number-format'
 import formatNumber from 'format-number-with-string'
-import { NumberLocalizer } from 'react-widgets/lib/Localization'
+import { NumberLocalizer } from 'react-widgets/Localization'
 
 let defaults = {
   decimal: '.',

@@ -9,13 +9,13 @@ import React, {
   useImperativeHandle,
 } from 'react'
 import useEventCallback from '@restart/hooks/useEventCallback'
-import { useAccessors } from 'react-widgets/lib/Accessors'
+import { useAccessors } from 'react-widgets/Accessors'
 import BaseVirtualList from 'react-list'
-// import Listbox from 'react-widgets/lib/BaseListbox'
-import ListOption from 'react-widgets/lib/ListOption'
-import { FocusListContext } from 'react-widgets/lib/FocusListContext'
-import ListOptionGroup from 'react-widgets/lib/ListOptionGroup'
-import { groupBySortedKeys, toItemArray } from 'react-widgets/lib/_'
+// import Listbox from 'react-widgets/BaseListbox'
+import ListOption from 'react-widgets/ListOption'
+import { FocusListContext } from 'react-widgets/FocusListContext'
+import ListOptionGroup from 'react-widgets/ListOptionGroup'
+import { groupBySortedKeys, toItemArray } from 'react-widgets/_'
 
 export const virtualListPropTypes = {
   itemSizeEstimator: PropTypes.func,
@@ -39,7 +39,7 @@ function useFlattenedData(data, groupBy) {
     let keys = []
     let grouped = groupBySortedKeys(groupBy, data, keys)
 
-    keys.forEach(group => {
+    keys.forEach((group) => {
       flatData.push({ __isGroup: group }, ...grouped[group])
     }, [])
 

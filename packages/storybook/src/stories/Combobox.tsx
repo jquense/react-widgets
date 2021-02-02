@@ -1,5 +1,5 @@
 import React from 'react'
-import Combobox from 'react-widgets/lib/Combobox'
+import Combobox from 'react-widgets/Combobox'
 import { storiesOf } from '@storybook/react'
 import Container from '../Container'
 

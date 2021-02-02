@@ -5,12 +5,9 @@ import PropsList from "@theme/PropsList";
 A locale aware number input
 
 ```jsx live showImports
-import NumberPicker from "react-widgets/lib/NumberPicker";
+import NumberPicker from "react-widgets/NumberPicker";
 
-<NumberPicker
-  defaultValue="Yellow"
-  data={["Red", "Yellow", "Blue", "Orange"]}
-/>;
+<NumberPicker defaultValue={9000} />;
 ```
 
 ## Formatting
@@ -20,7 +17,7 @@ for the value it represents, such as displaying currency. The type accepted by `
 dependent on the configured [localizer](localization).
 
 ```jsx live
-import NumberPicker from "react-widgets/lib/NumberPicker";
+import NumberPicker from "react-widgets/NumberPicker";
 
 <NumberPicker
   defaultValue={1.4}
@@ -34,7 +31,7 @@ Set the amount to increment or decrement the value when the spinner buttons are
 used with the `step` prop.
 
 ```jsx live
-import NumberPicker from "react-widgets/lib/NumberPicker";
+import NumberPicker from "react-widgets/NumberPicker";
 
 <NumberPicker defaultValue={0} step={10} />;
 ```
@@ -48,7 +45,7 @@ the precision of the current value or `step` amount, depending on which is large
 Use the `precision` prop to manually control the precision used.
 
 ```jsx live
-import NumberPicker from "react-widgets/lib/NumberPicker";
+import NumberPicker from "react-widgets/NumberPicker";
 
 <>
   <label>Increment to see rounding error</label>

@@ -38,3 +38,28 @@
     }
   }
 }
+
+@mixin btn-input-reset {
+  padding: 0;
+  margin: 0;
+  border: none;
+  color: inherit;
+  box-shadow: none;
+  background: none;
+  font: inherit;
+  line-height: inherit;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  outline: 0;
+}
+
+@mixin input-base {
+  caret-color: $input-caret-color;
+
+  &:disabled {
+    // For safari, which seems to ignore color on disabled inputs
+    // opacity for IOS
+    -webkit-text-fill-color: $input-disabled-color;
+    opacity: 1;
+  }
+}

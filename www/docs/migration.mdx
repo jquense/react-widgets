@@ -4,6 +4,12 @@ title: Migrating to v5
 
 ## Breaking Changes
 
+### Package Changes
+
+- Cherry picked imports don't require `/lib`, e.g. `import DropdownList from 'react-widgets/DropdownList';`
+- Browser support has been updated to browsers that support 'es modules': safari 10.1+ Chrome 60+ FF 60, Edge 16+
+  **no IE support**, you can compile the library further if you need IE or older support.
+
 ### Naming Changes
 
 - `valueField` -> `dataKey`

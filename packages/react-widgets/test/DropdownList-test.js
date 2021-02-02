@@ -186,6 +186,7 @@ describe('DropdownList', function () {
       originalEvent: 'foo',
       lastValue: data[0],
       searchTerm: 'foooo',
+      source: 'listbox',
     })
   })
 

@@ -1,5 +1,5 @@
 @use './variables.scss' as *;
-
+@use './mixins.scss';
 /* for debugging */
 // *:focus {
 //   outline: 1px red solid !important;
@@ -23,33 +23,8 @@
   }
 }
 
-%rw-btn-input-reset {
-  padding: 0;
-  margin: 0;
-  border: none;
-  color: inherit;
-  box-shadow: none;
-  background: none;
-  font: inherit;
-  line-height: inherit;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
-  outline: 0;
-}
-
-%rw-input-base {
-  caret-color: $input-caret-color;
-
-  &:disabled {
-    // For safari, which seems to ignore color on disabled inputs
-    // opacity for IOS
-    -webkit-text-fill-color: $input-disabled-color;
-    opacity: 1;
-  }
-}
-
 .rw-btn {
-  @extend %rw-btn-input-reset;
+  @include mixins.btn-input-reset;
 
   display: inline-flex;
   align-items: center;
@@ -85,7 +60,7 @@
 }
 
 .rw-picker-btn {
-  @extend %rw-btn-input-reset;
+  @include mixins.btn-input-reset;
 
   background-color: $picker-btn-bg;
   // border color doesn't make sense here
@@ -204,7 +179,8 @@ fieldset[disabled] .rw-widget {
 }
 
 .rw-input {
-  @extend %rw-btn-input-reset, %rw-input-base;
+  @include mixins.btn-input-reset;
+  @include mixins.input-base;
 
   padding: 0 $input-padding-x;
 
@@ -230,7 +206,8 @@ fieldset[disabled] .rw-widget {
 
 // https://github.com/klarna/ui/blob/master/Field/styles.scss
 .rw-detect-autofill {
-  @extend %rw-btn-input-reset, %rw-input-base;
+  @include mixins.btn-input-reset;
+  @include mixins.input-base;
 
   &:-webkit-autofill {
     animation-name: react-widgets-autofill-start;

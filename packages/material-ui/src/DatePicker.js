@@ -1,4 +1,4 @@
-import DatePicker from 'react-widgets/lib/DatePicker'
+import DatePicker from 'react-widgets/DatePicker'
 
 import materialize from './materialize'
 

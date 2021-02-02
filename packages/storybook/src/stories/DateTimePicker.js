@@ -1,6 +1,6 @@
 import React from 'react'
-import DatePicker from 'react-widgets/lib/DatePicker'
-import TimeInput from 'react-widgets/lib/TimeInput'
+import DatePicker from 'react-widgets/DatePicker'
+import TimeInput from 'react-widgets/TimeInput'
 import Layout from '@4c/layout'
 import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'

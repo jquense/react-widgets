@@ -1,4 +1,5 @@
 @use './variables.scss' as *;
+@use './mixins.scss';
 
 @mixin TimeInput() {
   .rw-time-input {
@@ -13,7 +14,9 @@
   }
 
   .rw-time-part-input {
-    @extend %rw-btn-input-reset, %rw-input-base;
+    @include mixins.btn-input-reset;
+    @include mixins.input-base;
+
     padding: 0 0.5em;
     // min-height: $input-height;
 
@@ -24,7 +27,7 @@
   }
 
   .rw-time-part-meridiem {
-    @extend %rw-btn-input-reset;
+    @include mixins.btn-input-reset;
 
     padding: 0 0.5em;
     text-transform: lowercase;

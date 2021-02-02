@@ -108,7 +108,6 @@ const propTypes = {
     open: PropTypes.string,
     emptyList: CustomPropTypes.message,
     emptyFilter: CustomPropTypes.message,
-    filterPlaceholder: PropTypes.string,
     createOption: CustomPropTypes.message,
   }),
 }

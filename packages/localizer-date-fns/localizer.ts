@@ -3,7 +3,7 @@ import parseWithOptions from 'date-fns/fp/parseWithOptions'
 import addYears from 'date-fns/fp/addYears'
 import enUS from 'date-fns/locale/en-US'
 
-import { DateLocalizer } from 'react-widgets/lib/Localization'
+import { DateLocalizer } from 'react-widgets/Localization'
 
 const endOfDecade = addYears(10)
 const endOfCentury = addYears(100)

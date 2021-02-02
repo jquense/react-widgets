@@ -38,7 +38,7 @@ const compiler = webpack({
   ],
   externals: {
     react: 'window.React',
-    'react-widgets/lib/configure': 'window.ReactWidgets',
+    'react-widgets/configure': 'window.ReactWidgets',
     ...JSON.parse(externals || '{}'),
   },
   node: {

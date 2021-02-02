@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import Container from '../Container'
-import Autocomplete from 'react-widgets/lib/Autocomplete'
+import Autocomplete from 'react-widgets/Autocomplete'
 
 let generateNames = global.generateNames
 

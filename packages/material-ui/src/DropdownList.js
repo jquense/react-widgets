@@ -1,4 +1,4 @@
-import DropdownList from 'react-widgets/lib/DropdownList'
+import DropdownList from 'react-widgets/DropdownList'
 
 import materialize from './materialize'
 

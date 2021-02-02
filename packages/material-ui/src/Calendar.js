@@ -1,4 +1,4 @@
-import Calendar from 'react-widgets/lib/Calendar'
+import Calendar from 'react-widgets/Calendar'
 
 import materialize from './materialize'
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 
-import _DropdownList from 'react-widgets/lib/DropdownList'
+import _DropdownList from 'react-widgets/DropdownList'
 import withVirtualList from 'react-widgets-virtualized'
 
 import Container from '../Container'

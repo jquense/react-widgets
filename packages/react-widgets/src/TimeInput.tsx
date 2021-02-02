@@ -545,7 +545,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
           aria-label="AM/PM"
           aria-disabled={disabled}
           aria-readonly={readOnly}
-          className="rw-time-part-meridiem"
+          className="rw-btn-input-reset rw-time-part-meridiem"
         >
           <div
             data-focusable

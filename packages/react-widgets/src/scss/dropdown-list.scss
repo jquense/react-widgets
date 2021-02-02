@@ -1,4 +1,5 @@
 @use './variables.scss' as *;
+@use './mixins.scss';
 
 @mixin DropdownList() {
   .rw-dropdown-list {
@@ -6,7 +7,8 @@
   }
 
   .rw-dropdownlist-search {
-    @extend %rw-btn-input-reset, %rw-input-base;
+    @include mixins.btn-input-reset;
+    @include mixins.input-base;
   }
 
   .rw-dropdown-list-value {

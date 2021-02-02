@@ -1,5 +1,5 @@
 import React from 'react'
-import DropdownList from 'react-widgets/lib/DropdownList'
+import DropdownList from 'react-widgets/DropdownList'
 import { storiesOf } from '@storybook/react'
 import Container from '../Container'
 import { action } from '../helpers'

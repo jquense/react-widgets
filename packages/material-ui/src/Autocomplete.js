@@ -1,4 +1,4 @@
-import Autocomplete from 'react-widgets/lib/Autocomplete'
+import Autocomplete from 'react-widgets/Autocomplete'
 
 import materialize from './materialize'
 
