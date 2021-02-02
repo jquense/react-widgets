@@ -58,12 +58,11 @@
     "singleQuote": true,
     "semi": false
   },
-  "workspaces": [
-    "packages/*",
-    "www"
-  ],
-  "resolutions": {
-    "@monastic.panic/react-docgen": "^5.0.1"
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "www"
+    ]
   },
   "workspace-sources": {
     "react-widgets-moment/*": [

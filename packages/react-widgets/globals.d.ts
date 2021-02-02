@@ -12,25 +12,6 @@ declare namespace Intl {
   }
 }
 
-// declare module 'uncontrollable' {
-//   type DefaultKeys =
-//     | 'defaultOpen'
-//     | 'defaultValue'
-//     | 'defaultSearch'
-//     | 'defaultSearchTerm'
-//     | 'defaultCurrentDate'
-//     | 'defaultView'
-
-//   type ConfigMap<TProps extends object> = {
-//     [p in keyof TProps]?: AllowedNames<TProps, Function>
-//   }
-
-//   export function useUncontrolled<TProps extends object>(
-//     props: TProps,
-//     config: ConfigMap<TProps>,
-//   ): Omit<TProps, DefaultKeys>
-// }
-
 declare module 'date-arithmetic' {
   export type DateUnit =
     | 'second'
@@ -145,21 +126,24 @@ declare module 'date-arithmetic' {
   ): boolean
 }
 
-declare module 'prop-types-extra/lib/elementType' {
-
-}
-
+declare module 'prop-types-extra/lib/elementType'
 
 declare module 'prop-types-extra/lib/utils/createChainableTypeChecker' {
-  import * as  PropTypes from 'prop-types'
+  import * as PropTypes from 'prop-types'
 
-  export default function createChainableTypeChecker<T>(props: PropTypes.Validator<T>) : PropTypes.Validator<T>
+  export default function createChainableTypeChecker<T>(
+    props: PropTypes.Validator<T>,
+  ): PropTypes.Validator<T>
 }
 
 declare module 'warning' {
-  export default function warning(enabled: boolean, message: string) : void
+  export default function warning(enabled: boolean, message: string): void
 }
 
 declare module 'invariant' {
-  export default function invariant(enabled: boolean, message: string, other?: string) : void
+  export default function invariant(
+    enabled: boolean,
+    message: string,
+    other?: string,
+  ): void
 }

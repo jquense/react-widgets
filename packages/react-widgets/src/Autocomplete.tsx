@@ -2,8 +2,6 @@ import React from 'react'
 import Combobox, { ComboboxProps } from './Combobox'
 import { useUncontrolledProp } from 'uncontrollable'
 
-interface Props {}
-
 function Autocomplete<TDataItem>(props: ComboboxProps<TDataItem>) {
   const [open, onToggle] = useUncontrolledProp(
     props.open,

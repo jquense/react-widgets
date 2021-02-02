@@ -43,7 +43,6 @@ module.exports = {
         'react-widgets-material-ui$': path.resolve(
           '../material-ui/src/index.js',
         ),
-        'react-widgets-material-ui/lib': path.resolve('../material-ui/src'),
       },
     },
     plugins: [
