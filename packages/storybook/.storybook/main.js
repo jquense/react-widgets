@@ -39,7 +39,6 @@ module.exports = {
           '../virtualized/src/index.js',
         ),
         'react-widgets-virtualized/lib': path.resolve('../virtualized/src'),
-
         'react-widgets-material-ui$': path.resolve(
           '../material-ui/src/index.js',
         ),
