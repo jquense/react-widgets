@@ -1,0 +1,16 @@
+@import 'https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css';
+@import '../../src/scss/styles.scss';
+
+html {
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+
+#app {
+  min-height: 100%;
+  display: flex;
+}
