@@ -168,12 +168,14 @@ const defaultProps = {
 }
 
 export interface DatePickerProps<TLocalizer = unknown>
-  extends Omit<WidgetHTMLProps, 'onChange'>,
-    Omit<WidgetProps, 'onChange' | 'onSelect'> {
+  extends Omit<WidgetHTMLProps, 'onChange' | 'defaultValue'>,
+    Omit<WidgetProps, 'onChange' | 'onSelect' | 'defaultValue'> {
   /**
    * @example ['valuePicker', [ ['new Date()', null] ]]
    */
   value?: Date | null
+
+  defaultValue?: Date | null
 
   /**
    * @example ['onChangePicker', [ ['new Date()', null] ]]
@@ -275,7 +277,7 @@ export interface DatePickerProps<TLocalizer = unknown>
 
   formats?: DateFormats<InferFormat<TLocalizer>>
 
-  messages: {
+  messages?: {
     dateButton?: string
   }
 }
@@ -508,6 +510,7 @@ const DatePicker = React.forwardRef(
     return (
       <Widget
         {...elementProps}
+        defaultValue={undefined}
         open={!!open}
         dropUp={dropUp}
         focused={focused}

@@ -1,3 +1,5 @@
+import '../../src/scss/styles.scss'
+
 import faker from 'faker'
 
 faker.seed(420)
@@ -6,8 +8,8 @@ global.generateNames = function (limit = 100) {
   var arr = new Array(limit)
 
   for (var i = 0; i < arr.length; i++) {
-    var first = faker.name.first(),
-      last = faker.name.last()
+    var first = faker.name.firstName(),
+      last = faker.name.lastName()
 
     arr[i] = {
       first,

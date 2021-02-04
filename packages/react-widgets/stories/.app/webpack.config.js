@@ -1,27 +1,32 @@
 const path = require('path')
-const { plugins, rules } = require('webpack-atoms')
+const { plugins, rules } = require('mini-storybook/webpack-atoms')
+
+const tailwindConfig = require.resolve('../config/tailwind.config.js')
 
 module.exports = {
-  devtool: 'inline-module-source-map',
-  entry: './stories/.app/index.js',
+  devtool: 'inline-cheap-module-source-map',
+  entry: require.resolve('./index.js'),
   output: {
     publicPath: '/',
     path: `${__dirname}/stories/build`,
   },
   module: {
     rules: [
-      { ...rules.js({ rootMode: 'upward' }), test: /\.[jt]sx?$/ },
-      rules.css(),
+      rules.js({ rootMode: 'upward' }),
+      rules.postcss({
+        postcssOptions: {
+          plugins: require('mini-storybook/postcss-preset')(tailwindConfig),
+        },
+      }),
       rules.sass(),
       rules.images(),
+      rules.fonts(),
+      rules.audioVideo(),
     ],
   },
   plugins: [plugins.html()],
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.tsx', '.json'],
-    alias: {
-      'react-widgets': path.resolve('../../src'),
-    },
   },
   devServer: {
     historyApiFallback: true,

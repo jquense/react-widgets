@@ -18,7 +18,7 @@
     "astroturf": "^1.0.0-beta.17",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-widgets": "*",
+    "react-widgets": "file:../packages/react-widgets",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   },
   "devDependencies": {

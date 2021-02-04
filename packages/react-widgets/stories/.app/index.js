@@ -1,3 +1,4 @@
+import './styles.css'
 import React, {
   useState,
   useEffect,
@@ -8,7 +9,6 @@ import React, {
 import { render } from 'react-dom'
 import usePopState, { RouterContext } from './usePopState'
 import '../config/setup'
-import './styles.scss'
 
 const storyRequire = require.context('../', false, /\.(j|t)sx?$/)
 
@@ -54,6 +54,8 @@ const Link = ({ href, ...props }) => {
 }
 
 function App({ stories, children }) {
+  const [isRtl, setIsRtl] = useState(false)
+
   const [location, router] = usePopState()
   const CurrentStory = useMemo(() => {
     for (const s of stories) {
@@ -66,28 +68,42 @@ function App({ stories, children }) {
 
   return (
     <RouterContext.Provider value={router}>
-      <div className="container-md vh-100 w-full min-h-full grid grid-cols-12 overflow-y-auto">
-        <div className="col-span-3 px-6 py-6 bg-blue-100 border-r border-blue-200">
+      <div className="container-md vh-100 w-full h-screen grid grid-cols-12 overflow-y-auto grid-rows-main">
+        <div className="col-span-3 px-4 py-6 bg-blue-100 border-r border-blue-300">
           <ul>
             {stories.map(({ label, items }) => (
               <li key={label}>
-                <div className="mb-2 font-bold">{label}</div>
-                <ul className="pl-4">
-                  {items.map(([name, story]) => (
-                    <li key={name}>
-                      <Link href={`/${label}/${name}`}>{name}</Link>
-                    </li>
-                  ))}
-                </ul>
+                <details>
+                  <summary className="mb-2 font-bold cursor-pointer">
+                    {label}
+                  </summary>
+                  <ul className="pl-4">
+                    {items.map(([name, story]) => (
+                      <li key={name}>
+                        <Link href={`/${label}/${name}`}>{name}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
               </li>
             ))}
           </ul>
         </div>
-        <main className="col-span-9 flex flex-col items-center mt-40">
-          <div className="max-w-sm">
+        <main className="col-span-9 flex flex-col items-center pt-40  overflow-y-auto">
+          <div dir={isRtl ? 'rtl' : 'ltr'} className="max-w-sm">
             {CurrentStory ? <CurrentStory /> : null}
           </div>
         </main>
+        <div className="col-span-full p-4 border-t border-blue-300 flex justify-end">
+          <label className="font-bold cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isRtl}
+              onChange={(e) => setIsRtl(e.target.checked)}
+            />
+            {' Right to left'}
+          </label>
+        </div>
       </div>
     </RouterContext.Provider>
   )
