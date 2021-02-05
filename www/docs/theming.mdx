@@ -22,8 +22,8 @@ configuration syntax: https://sass-lang.com/documentation/at-rules/use#configura
 
 ## A la carte component builds
 
-If you don't need every input RW offers, don't include the styles for the ones
-you aren't using.
+You may not need every input RW offers. To keep your bundles small, you can configure
+exactly which components you want to include styles for with the `$components` variable.
 
 ```scss
 @use "react-widgets/styles.scss" with (
@@ -41,15 +41,16 @@ you aren't using.
 ```
 
 Components that depend on each other will automatically be enabled if required. E.g.
-`Calendar` is required to use `DatePicker`, so is included automatically.
+`Calendar` is required to use `DatePicker`, so is enabled automatically when you
+include `DatePicker`.
 
 ## Font and Input sizes
 
 Component sizing is done via `em` units, and the base font-size is `1em`
 enabling components to scale with the surrounding
 font-size. If you want to use a fixed size adjust the `font-size` variable.
-Using the default values, inputs look best at `14px`, but you
-can also tweak the input height for different root font-sizes.
+Using the default values, inputs were designed with a 16px font size in mind, but you
+can also tweak the input height for different root font sizes.
 
 ```scss title="Sass Configuration"
 @use "react-widgets/scss/react-widgets" with (

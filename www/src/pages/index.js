@@ -24,7 +24,7 @@ function Home() {
           <h1 className="hero__title" style={{}}>
             Build <span className="text--primary">Beautiful</span> Forms
           </h1>
-          <p className="hero__subtitle ">
+          <p className="hero__subtitle">
             Polished, feature rich, accessible form inputs
           </p>
         </div>
@@ -32,7 +32,7 @@ function Home() {
           <DropdownList
             data={people}
             defaultValue={people[0]}
-            textField="name"
+            textField="fullName"
           />
           <DatePicker
             defaultValue={new Date()}

@@ -105,6 +105,8 @@ $tag-btn-active-color: null !default;
   }
 
   .rw-multiselect-tag-btn {
+    @include mixins.btn-input-reset;
+
     cursor: pointer;
     align-self: stretch;
 

@@ -2,6 +2,9 @@
   flex-direction: column-reverse;
 }
 
+.preview {
+  font-size: initial;
+}
 .preview > * > *:global(.rw-widget) {
   max-width: 300px;
   width: 100%;

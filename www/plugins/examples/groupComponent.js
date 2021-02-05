@@ -1,6 +1,6 @@
 const { stripIndent } = require('common-tags')
 
-module.exports = function(widgetName) {
+module.exports = function (widgetName) {
   return stripIndent`
     import { ${widgetName} } from 'react-widgets';
     let people = listOfPeople();
@@ -12,9 +12,9 @@ module.exports = function(widgetName) {
     let widget = (
       <${widgetName}
         data={people}
-        textField='name'
+        textField='fullName'
         groupComponent={GroupHeading}
-        groupBy={person => person.name.length}
+        groupBy={person => person.fullName.length}
       />
     )
 

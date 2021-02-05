@@ -28,7 +28,7 @@ module.exports = function (widgetName) {
           ${isArray ? '' : 'filter'}
           data={people}
           value={value}
-          textField="name"
+          textField="fullName"
           allowCreate="onFilter"
           onCreate={handleCreate}
           onChange={setValue}

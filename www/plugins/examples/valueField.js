@@ -2,7 +2,7 @@ const { stripIndent } = require('common-tags')
 
 const { isValueArray } = require('../config')
 
-module.exports = function(widgetName) {
+module.exports = function (widgetName) {
   return stripIndent`
     import { ${widgetName} } from 'react-widgets';
 
@@ -17,7 +17,7 @@ module.exports = function(widgetName) {
       <${widgetName}
         data={colors}
         dataKey='id'
-        textField='name'
+        textField='fullName'
         defaultValue={${!isValueArray(widgetName) ? '1' : '[1, 2]'}}
       />
     )

@@ -2,7 +2,7 @@ const path = require('path')
 module.exports = () => {
   return {
     name: 'tailwindcss-loader',
-    configureWebpack(_, isServer, { getBabelLoader }) {
+    configureWebpack(_, isServer, { getStyleLoaders, getBabelLoader }) {
       return {
         devtool: 'inline-module-source-map',
 
@@ -19,10 +19,14 @@ module.exports = () => {
               ],
             },
             {
+              test: /\.s[ca]ss$/,
+              use: [...getStyleLoaders(isServer), 'sass-loader'],
+            },
+            {
               test: /\.css$/,
               use: [
                 {
-                  loader: require.resolve('postcss-loader'),
+                  loader: 'postcss-loader',
                   options: {
                     plugins: () => [require('tailwindcss')],
                   },
@@ -33,9 +37,6 @@ module.exports = () => {
         },
         resolve: {
           alias: {
-            // react: require.resolve('react'),
-            // 'react-dom$': require.resolve('react-dom'),
-            // 'react-dom/server': require.resolve('react-dom/server'),
             'react-widgets/styles.css': path.resolve(
               __dirname,
               '../../packages/react-widgets/lib/styles.css',

@@ -1,6 +1,6 @@
 const { stripIndent } = require('common-tags')
 
-module.exports = function(widgetName) {
+module.exports = function (widgetName) {
   return stripIndent`
     import { ${widgetName} } from 'react-widgets';
 
@@ -16,7 +16,7 @@ module.exports = function(widgetName) {
     let widget =(
       <${widgetName}
         data={people}
-        textField='name'
+        textField='fullName'
         tagComponent={TagItem}
         defaultValue={people.slice(0, 1)}
       />

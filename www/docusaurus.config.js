@@ -75,7 +75,12 @@ module.exports = {
       {
         theme: [
           '@docusaurus/theme-classic',
-          { customCss: require.resolve('./src/css/custom.css') },
+          {
+            customCss: [
+              require.resolve('./src/css/custom.scss'),
+              require.resolve('./src/css/tailwind.css'),
+            ],
+          },
         ],
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),

@@ -9,14 +9,14 @@ module.exports = function (widgetName) {
     <>
       <${widgetName}
         data={people}
-        textField='name'
+        textField='fullName'
         groupBy='lastName'
       />
       <br />
       <${widgetName}
         data={people}
-        textField='name'
-        groupBy={person => person.name.length}
+        textField='fullName'
+        groupBy={person => person.fullName.length}
       />
     </>
   `

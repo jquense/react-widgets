@@ -15,12 +15,12 @@ module.exports = function (widgetName) {
     <>
       <${widgetName}
         data={people}
-        textField='name'
+        textField='fullName'
         filter='contains'
       />
       <${widgetName}
         data={people}
-        textField='name'
+        textField='fullName'
         filter={filterLastName}
       />
     </>
