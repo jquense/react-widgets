@@ -41,10 +41,4 @@ module.exports = {
       entryOnly: true,
     }),
   ],
-  node: {
-    Buffer: false,
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-  },
 }

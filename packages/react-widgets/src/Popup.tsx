@@ -30,12 +30,16 @@ const propTypes = {
   id: PropTypes.string,
 }
 
-export interface PopupProps extends TransitionProps {
+export interface PopupProps {
   className?: string
   open?: boolean
   dropUp?: boolean
+  onEnter?: () => void
   onEntering?: () => void
   onEntered?: () => void
+  onExit?: () => void
+  onExited?: () => void
+  onExiting?: () => void
   transition?: React.ComponentType<TransitionProps>
   role?: string
   id?: string
