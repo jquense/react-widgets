@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "5.0.0-beta.22",
+  "version": "5.0.0-beta.23",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -74,8 +74,8 @@
   "devDependencies": {
     "@4c/build": "^2.2.8",
     "@4c/cli": "^2.1.13",
-    "@4c/layout": "^2.0.6",
     "@4c/file-butler": "^4.2.0",
+    "@4c/layout": "^2.0.6",
     "@4c/tsconfig": "^0.3.1",
     "@babel/cli": "^7.12.13",
     "@babel/core": "^7.12.13",
