@@ -38,11 +38,11 @@
     "lint": "eslint src test --ext .ts,.tsx,.js",
     "scss": "sass src/scss/styles.scss lib/styles.css",
     "build:pick": "cherry-pick --cwd=lib --input-dir=../src --cjs-dir=cjs --esm-dir=esm",
-    "build:lib": "4c build src --no-copy-files && cpy src/scss/* lib/scss/",
+    "build:lib": "4c build src --no-copy-files && yarn run build:pick && cpy src/scss/* lib/scss/",
     "build:dist": "webpack --mode production && yarn scss",
     "build": "yarn build:lib && yarn build:dist",
     "start": "4c start --config ./stories/.app/webpack.config.js",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build && file-butler prepare-publish-dir lib"
   },
   "homepage": "http://jquense.github.io/react-widgets/docs/",
   "license": "MIT",
@@ -75,6 +75,7 @@
     "@4c/build": "^2.2.8",
     "@4c/cli": "^2.1.13",
     "@4c/layout": "^2.0.6",
+    "@4c/file-butler": "^4.2.0",
     "@4c/tsconfig": "^0.3.1",
     "@babel/cli": "^7.12.13",
     "@babel/core": "^7.12.13",
