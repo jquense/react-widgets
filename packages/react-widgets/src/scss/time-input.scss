@@ -42,6 +42,12 @@
     padding: 0 0.4em;
     outline: none;
     opacity: 0;
+    margin-left: auto;
+
+    [dir='rtl'] & {
+      margin-left: revert;
+      margin-right: auto;
+    }
 
     .rw-time-input:hover &.rw-show,
     .rw-time-input.rw-state-focus &.rw-show {

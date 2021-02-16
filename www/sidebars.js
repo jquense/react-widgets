@@ -13,6 +13,7 @@ module.exports = {
       collapsed: false,
       items: [
         'Calendar',
+        'TimeInput',
         'DatePicker',
         'NumberPicker',
         'Listbox',
