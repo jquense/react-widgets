@@ -1,27 +1,15 @@
 import * as PropTypes from 'prop-types'
-import elementType from 'prop-types-extra/lib/elementType'
-import createChainableTypeChecker from 'prop-types-extra/lib/utils/createChainableTypeChecker'
 
-export { elementType }
-
-export const numberFormat = createChainableTypeChecker((props, ...args) =>
-  props.localizer ? props.localizer.numberPropType(props, ...args) : null,
-)
-
-export const dateFormat = createChainableTypeChecker((props, ...args) =>
-  props.localizer ? props.localizer.datePropType(props, ...args) : null,
-)
+export const elementType = PropTypes.elementType
 
 export let disabled: PropTypes.Validator<boolean> & {
   acceptsArray: PropTypes.Validator<any>
-} = createChainableTypeChecker((...args) => PropTypes.bool(...args)) as any
-
-{
-  ;(disabled as any).acceptsArray = PropTypes.oneOfType([
-    disabled as any,
-    PropTypes.array,
-  ])
-}
+} = Object.assign(
+  (...args: [any, any, any, any, any]) => PropTypes.bool(...args),
+  {
+    acceptsArray: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
+  },
+)
 
 export const accessor = PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 

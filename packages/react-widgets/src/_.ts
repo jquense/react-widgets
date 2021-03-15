@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import warning from 'warning'
+import warning from 'tiny-warning'
 import { GroupBy } from './List'
 
 export function toItemArray<TDataItem>(
