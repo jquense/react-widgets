@@ -1,7 +1,7 @@
 const path = require('path')
-const { plugins, rules } = require('mini-storybook/webpack-atoms')
+const { plugins, rules, loaders } = require('mini-storybook/webpack/utils')
 
-const tailwindConfig = require.resolve('../config/tailwind.config.js')
+const tailwindConfig = require.resolve('../tailwind.config.js')
 
 module.exports = {
   devtool: 'inline-cheap-module-source-map',
@@ -15,7 +15,7 @@ module.exports = {
       rules.js({ rootMode: 'upward' }),
       rules.postcss({
         postcssOptions: {
-          plugins: require('mini-storybook/postcss-preset')(tailwindConfig),
+          plugins: require('mini-storybook/postcss')(tailwindConfig),
         },
       }),
       rules.sass(),

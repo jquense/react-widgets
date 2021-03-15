@@ -8,21 +8,24 @@ import React, {
 } from 'react'
 import { render } from 'react-dom'
 import usePopState, { RouterContext } from './usePopState'
-import '../config/setup'
+import '../setup'
 
-const storyRequire = require.context('../', false, /\.(j|t)sx?$/)
+const storyRequire = require.context('../../stories', false, /\.(j|t)sx?$/)
 
 const stories = []
 storyRequire.keys().forEach((filePath) => {
   const module = storyRequire(filePath)
   const dflt = module.default
   stories.push({
-    label:
-      dflt?.label ||
+    title:
+      dflt?.title ||
       filePath.slice(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.')),
-    items: Object.entries(module).filter(
-      ([name, story]) => !name.startsWith('_') && typeof story === 'function',
-    ),
+    items: Object.entries(module)
+      .filter(
+        ([ident, story]) =>
+          !name.startsWith('_') && typeof story === 'function',
+      )
+      .map(([ident, story]) => [story.storyName || ident, story]),
   })
 })
 
@@ -54,13 +57,11 @@ const Link = ({ href, ...props }) => {
 }
 
 function App({ stories, children }) {
-  const [isRtl, setIsRtl] = useState(false)
-
   const [location, router] = usePopState()
   const CurrentStory = useMemo(() => {
     for (const s of stories) {
       for (const [name, story] of s.items) {
-        if (location.pathname === `/${s.label}/${name}`) return story
+        if (location.pathname === `/${s.title}/${name}`) return story
       }
     }
     return null
@@ -68,19 +69,17 @@ function App({ stories, children }) {
 
   return (
     <RouterContext.Provider value={router}>
-      <div className="container-md vh-100 w-full h-screen grid grid-cols-12 overflow-y-auto grid-rows-main">
-        <div className="col-span-3 px-4 py-6 bg-blue-100 border-r border-blue-300">
+      <div className="container-md vh-100 w-full min-h-full grid grid-cols-12 overflow-y-auto">
+        <div className="col-span-3 px-4 py-6 bg-blue-100 border-r border-blue-200">
           <ul>
-            {stories.map(({ label, items }) => (
-              <li key={label}>
+            {stories.map(({ title, items }) => (
+              <li key={title}>
                 <details>
-                  <summary className="mb-2 font-bold cursor-pointer">
-                    {label}
-                  </summary>
+                  <summary className="mb-2 font-bold">{title}</summary>
                   <ul className="pl-4">
                     {items.map(([name, story]) => (
                       <li key={name}>
-                        <Link href={`/${label}/${name}`}>{name}</Link>
+                        <Link href={`/${title}/${name}`}>{name}</Link>
                       </li>
                     ))}
                   </ul>
@@ -89,21 +88,11 @@ function App({ stories, children }) {
             ))}
           </ul>
         </div>
-        <main className="col-span-9 flex flex-col items-center pt-40  overflow-y-auto">
-          <div dir={isRtl ? 'rtl' : 'ltr'} className="max-w-sm">
+        <main className="col-span-9 flex flex-col items-center mt-40">
+          <div className="max-w-sm">
             {CurrentStory ? <CurrentStory /> : null}
           </div>
         </main>
-        <div className="col-span-full p-4 border-t border-blue-300 flex justify-end">
-          <label className="font-bold cursor-pointer">
-            <input
-              type="checkbox"
-              checked={isRtl}
-              onChange={(e) => setIsRtl(e.target.checked)}
-            />
-            {' Right to left'}
-          </label>
-        </div>
       </div>
     </RouterContext.Provider>
   )
