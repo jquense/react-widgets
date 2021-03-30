@@ -2,19 +2,17 @@
 title: Migrating to v5
 ---
 
-## Breaking Changes
-
-### Package Changes
+## Package Changes
 
 - Cherry picked imports don't require `/lib`, e.g. `import DropdownList from 'react-widgets/DropdownList';`
 - Browser support has been updated to browsers that support 'es modules': safari 10.1+ Chrome 60+ FF 60, Edge 16+
   **no IE support**, you can compile the library further if you need IE or older support.
 
-### Naming Changes
+## Naming Changes
 
 - `valueField` -> `dataKey`
 
-### SelectList has been removed
+## SelectList has been removed
 
 `SelectList` has always been an awkward component that was half checkbox/radio group,
 half listbox component. Checkbox/radio group inputs are actually fairly simple
@@ -23,7 +21,7 @@ and mapping values to data is usually app specific. On the other hand RW has nev
 had a proper Listbox implementation that was public, and may folks hacked the SelectList
 to fit that need. So in v5 we've removed SelectList and added `Listbox` input.
 
-### DateTimePicker
+## DateTimePicker
 
 The Date picker component has changed it's UX substantially to a single
 popup with the calendar, and optionally time input.
@@ -38,7 +36,7 @@ using two inputs together, instead.
 - An experimental `TimeInput` has been added for time only values.
 - the `parse` prop only accepts a single format (not an array of formats) or a function
 
-### Filtering differences
+## Filtering differences
 
 In order to simplify and streamline the RW API, we've removed some API niceties
 that took up space and added complexity and easier left to the user to implement if needed.
@@ -63,19 +61,25 @@ These can are all be reimplemented by providing a function for the filter prop:
 
 ## Localizers
 
-### Removed browser dist builds
+With v5, react-widgets comes preconfigured with a localization strategy based on
+the built-in browser `Intl` API. If you want to integrate with moment, luxon, etc you still can.
 
-We've removed the browser dist builds, they are too much trouble to maintain
-and add very little value now-a-days. Please bundle yourself with webpack, parcel, et al.
+### Breaking Changes
 
-### Provider based specification
-
-Rather than have a bespoke configuration approach for localizers there is now
-a `<Localization>` provider component that accepts a date and/or number localizer,
-and provides them to each widget in the react component tree.
-
-If no localizer is set the default `Intl` based one will be used.
+- **Removed browser dist builds:** they are a lot of work to maintain and add very little value now-a-days.
+  Please bundle yourself with webpack, parcel, et al.
+- **Provider based specification:** Rather than have a bespoke configuration approach for localizers there is now
+  a `<Localization>` provider component that accepts a date and/or number localizer,
+  and provides them to each widget in the react component tree.
+- **Deprecated Globalize localizer:** After many years, the Globalize.js adapter is being
+  retired. It's a pain to maintain and usage of Globalize seems to have waned signifantly
 
 ## Styling
 
-Less has been removed replaces fully by Sass.
+- Less has been removed replaces fully by Sass.
+- Sass builds require Sass modules, which are not implemented in the (now deprecated) node-sass,
+  use the`sass` npm package instead
+
+## Typescript support
+
+RW is now fully written in TypeScript and so ships with it's own type defs.

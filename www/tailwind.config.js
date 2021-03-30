@@ -3,6 +3,7 @@ module.exports = {
     './docs/**/*.{js,ts,tsx,mdx}',
     './src/**/*.{js,ts,tsx}',
     './src/**/*.html',
+    '../react-widgets/src/**/*.tsx',
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
