@@ -84,8 +84,16 @@ const propTypes = {
    * @example ['onChangePicker', [ ['new Date()'] ]]
    */
   onChange: PropTypes.func,
+
   /**
-   * @example ['valuePicker', [ ['new Date()'] ]]
+   * The selected Date.
+   *
+   * ```tsx live
+   * import { Calendar } from 'react-widgets';
+   *
+   * <Calendar value={new Date()} />
+   * ```
+   * @example false
    */
   value: PropTypes.instanceOf(Date),
 

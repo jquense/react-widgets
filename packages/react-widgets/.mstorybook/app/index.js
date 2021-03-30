@@ -89,7 +89,7 @@ function App({ stories, children }) {
           </ul>
         </div>
         <main className="col-span-9 flex flex-col items-center mt-40">
-          <div className="max-w-sm">
+          <div className="max-w-sm w-64">
             {CurrentStory ? <CurrentStory /> : null}
           </div>
         </main>

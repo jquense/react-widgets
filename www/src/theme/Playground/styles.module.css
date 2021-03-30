@@ -10,6 +10,10 @@
   width: 100%;
 }
 
+.preview *:global(.rw-widget) + *:global(.rw-widget):not(:global(.mt-0)) {
+  margin-top: 1rem;
+}
+
 .preview > * > label {
   font-weight: bold;
   max-width: 300px;

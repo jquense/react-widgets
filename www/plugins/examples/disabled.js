@@ -30,9 +30,9 @@ module.exports = function (widgetName, value) {
     ${end}`
   } else {
     example = `<${widgetName}
-        disabled
-        defaultValue={${value}}
-      />`
+      disabled
+      defaultValue={${value}}
+    />`
   }
 
   return stripIndent`

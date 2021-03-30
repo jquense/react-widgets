@@ -271,8 +271,11 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
    * Handlers
    */
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
     if (readOnly || isDisabled) return
+
+    // prevents double clicks when in a <label>
+    e.preventDefault()
 
     focus()
     toggle()
@@ -308,8 +311,12 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
 
     setSuggestion(null)
 
-    change(idx === -1 ? event.target.value : rawData[idx], event)
-    toggle.open()
+    const nextValue = idx === -1 ? event.target.value : rawData[idx]
+
+    change(nextValue, event)
+
+    if (!nextValue) toggle.close()
+    else toggle.open()
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {

@@ -100,14 +100,13 @@ const Locales = [
 const [current, setCurrent] = useState(Locales[1]);
 
 <Localization date={new DateLocalizer(current)}>
-  <div className="mb-10 ">
-    <label className="block">Select a locale:</label>
+  <div className="mb-10 w-64">
+    <label>Select a locale:</label>
     <DropdownList
       textField="label"
       data={Locales}
       value={current}
       onChange={setCurrent}
-      className="w-60 inline-block"
     />
   </div>
   <DatePicker
@@ -144,7 +143,7 @@ import { getTimeList } from "@site/src/date-utils";
     <DropdownList
       data={getTimeList()}
       textField="label"
-      className="w-2/5"
+      className="w-2/5 mt-0"
     />
   </div>
   <br />
@@ -156,7 +155,7 @@ import { getTimeList } from "@site/src/date-utils";
     />
     <TimeInput
       defaultValue={new Date()}
-      className="w-2/5"
+      className="w-2/5 mt-0"
       use12HourClock
     />
   </div>

@@ -1,35 +1,29 @@
 const { stripIndent } = require('common-tags')
 
-module.exports = function(widgetName, values) {
+module.exports = function (widgetName, values) {
   let isMany = values.length > 1
   let examples = isMany
     ? `<>
   ${values
-    .map(value => `      <ChangeExample initialValue={${value}} />`)
+    .map((value) => `    <ChangeExample initialValue={${value}} />`)
     .join('\n  ')}
-      </>`
+    </>`
     : `<ChangeExample initialValue={${values[0]}} />`
 
   return stripIndent`
-    import { ${widgetName} } from 'react-widgets';
+    import ${widgetName} from 'react-widgets/${widgetName}';
 
-    class ChangeExample extends React.Component {
-      constructor(...args) {
-        super(...args)
-        this.state = { value: this.props.initialValue }
-      }
-      render() {
-        return (
-          <${widgetName}
-            value={this.state.value}
-            onChange={value => this.setState({ value })}
-          />
-        )
-      }
+    function ChangeExample({ initialValue }) {
+      const [value, setValue] = useState(initialValue)
+
+      return (
+        <${widgetName}
+          value={value}
+          onChange={value => setValue(value)}
+        />
+      )
     }
 
-    render(
-      ${examples}
-    );
+    ${examples}
   `
 }

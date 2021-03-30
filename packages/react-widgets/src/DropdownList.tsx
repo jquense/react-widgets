@@ -37,6 +37,7 @@ import PickerCaret from './PickerCaret'
 
 const propTypes = {
   value: PropTypes.any,
+
   /**
    * @type {function (
    *  dataItems: ?any,
@@ -319,6 +320,9 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
   ) => {
     if (readOnly || isDisabled) return
     if (dataItem === undefined) return
+
+    originalEvent?.preventDefault()
+
     if (dataItem === CREATE_OPTION) {
       handleCreate(originalEvent)
       return
@@ -332,6 +336,9 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (readOnly || isDisabled) return
+
+    // prevents double clicks when in a <label>
+    e.preventDefault()
 
     focus()
     toggle()

@@ -85,9 +85,7 @@ You can also leave the value _uncontrolled_, and provide an initial default with
 ```jsx live
 <>
   <Combobox defaultValue="Yellow" />
-  <br />
   <DropdownList defaultValue="Yellow" />
-  <br />
   <Multiselect defaultValue={["Yellow", "Red"]} />
 </>
 ```
@@ -191,55 +189,21 @@ and can be customized with the `busySpinner` prop.
 Combine with the some React state to asynchronously load data to
 
 ```jsx live
-function useSearch() {
-  const [loading, setLoading] = useState(!!term);
-  const [result, setResult] = useState([]);
-  const ref = useRef();
-
-  function search(term) {
-    if (!term) {
-      setResult([]);
-      return;
-    }
-
-    setLoading(true);
-    const timer = setTimeout(async () => {
-      const resp = await fetch(
-        `https://api.github.com/search/repositories?q=${encodeURIComponent(
-          term
-        )}`
-      );
-      const json = await resp.json();
-      setResult(
-        json.items
-          ? json.items.slice(10).map((d) => d.name)
-          : []
-      );
-      setLoading(false);
-    }, 100);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [term]);
-
-  return [result, loading];
-}
+import useStarWarsApi from "./_useStarWarsApi";
 
 function Example() {
-  const [repos, { loading, search }] = useSearch();
-
-  const onChange = (value, meta) => {
-    if (meta.source === 'input') {
-
-    }
-  }
+  const [person, setPerson] = useState(null);
+  const [people, loading] = useStarWarsApi(
+    typeof person === "string" ? person : ""
+  );
 
   return (
     <Combobox
       busy={loading}
-      data={repos}
-      onChange={setValue}
+      data={people}
+      textField="name"
+      value={person}
+      onChange={setPerson}
       hideEmptyPopup
     />
   );

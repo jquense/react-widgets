@@ -1,6 +1,6 @@
 module.exports = {
   title: 'React Widgets',
-  tagline: 'A la carte form components',
+  tagline: 'Build Beautiful Forms',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',

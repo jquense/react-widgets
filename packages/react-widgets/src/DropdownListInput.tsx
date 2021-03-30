@@ -90,6 +90,11 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
     },
   }))
 
+  // There is some interaction between unmounting the search and value inputs
+  // that cancels autofilling in Chrome, it may be due to an inpu the browser
+  // was considering suddenly disappeared. hiding it seems to avoid the issue
+  const style = autofilling ? { display: 'none' } : undefined
+
   return (
     <div className="rw-dropdown-list-input">
       {autoComplete !== 'off' && (
@@ -102,28 +107,29 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
           autoComplete={autoComplete}
           onChange={handleAutofill}
           onAnimationStart={handleAutofillDetect}
-          className={cn('rw-detect-autofill', !autofilling && 'rw-sr')}
+          className={cn('rw-detect-autofill')}
         />
       )}
-
-      {!autofilling && autoComplete !== 'off' && (
-        <>
-          {allowSearch && (
-            <input
-              ref={searchRef}
-              disabled={disabled}
-              readOnly={readOnly}
-              className="rw-dropdownlist-search"
-              value={searchTerm || ''}
-              size={(searchTerm || '').length + 2}
-              onChange={onSearch}
-            />
-          )}
-          {!searchTerm && (
-            <span className="rw-dropdown-list-value">{inputValue}</span>
-          )}
-        </>
-      )}
+      <>
+        {allowSearch && (
+          <input
+            ref={searchRef}
+            disabled={disabled}
+            readOnly={readOnly}
+            style={style}
+            className="rw-dropdownlist-search"
+            autoComplete="off"
+            value={searchTerm || ''}
+            size={(searchTerm || '').length + 2}
+            onChange={onSearch}
+          />
+        )}
+        {!searchTerm && (
+          <span className="rw-dropdown-list-value" style={style}>
+            {inputValue}
+          </span>
+        )}
+      </>
     </div>
   )
 })

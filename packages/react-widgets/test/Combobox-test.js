@@ -161,6 +161,8 @@ describe('Combobox', function () {
   it('should call onChange with event object', () => {
     let change = sinon.spy()
 
+    const evt = new Event('foo')
+
     mount(
       <Combobox
         open
@@ -171,10 +173,10 @@ describe('Combobox', function () {
       />,
     )
       .find('List')
-      .act((_) => _.prop('onChange')(null, { originalEvent: 'foo' }))
+      .act((_) => _.prop('onChange')(null, { originalEvent: evt }))
 
     expect(change.getCall(0).args[1]).to.eql({
-      originalEvent: 'foo',
+      originalEvent: evt,
       lastValue: 'bar',
       source: 'listbox',
     })

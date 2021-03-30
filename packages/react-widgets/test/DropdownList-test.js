@@ -166,7 +166,7 @@ describe('DropdownList', function () {
 
   it('should call onChange with event object from select', function () {
     let change = sinon.spy()
-
+    const evt = new Event('foo')
     act(() => {
       mount(
         <DropdownList
@@ -179,11 +179,11 @@ describe('DropdownList', function () {
         />,
       )
         .find('List')
-        .act((_) => _.prop('onChange')(null, { originalEvent: 'foo' }))
+        .act((_) => _.prop('onChange')(null, { originalEvent: evt }))
     })
 
     expect(change.getCall(0).args[1]).to.eql({
-      originalEvent: 'foo',
+      originalEvent: evt,
       lastValue: data[0],
       searchTerm: 'foooo',
       source: 'listbox',

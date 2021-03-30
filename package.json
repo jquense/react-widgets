@@ -10,9 +10,9 @@
     "test": "lerna run test",
     "rw": "lerna exec --scope react-widgets npm run",
     "tdd": "npm run rw tdd",
-    "start": "npm run start -C ./www",
-    "start-dev": "lerna exec --scope storybook npm start",
+    "start": "yarn --cwd ./www start",
     "bootstrap": "yarn && lerna run prepublishOnly",
+    "deploy-docs": "yarn build && yarn --cwd ./www && GIT_USER=jquense yarn --cwd ./www deploy",
     "build": "lerna run build",
     "release": "lerna publish"
   },

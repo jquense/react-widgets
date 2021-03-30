@@ -12,17 +12,19 @@ module.exports = {
       label: 'Inputs',
       collapsed: false,
       items: [
-        'Calendar',
-        'TimeInput',
-        'DatePicker',
         'NumberPicker',
-        'Listbox',
-
         {
           type: 'category',
           label: 'Dropdowns',
           collapsed: false,
           items: ['Dropdowns', 'Combobox', 'DropdownList', 'Multiselect'],
+        },
+        'Listbox',
+        {
+          type: 'category',
+          label: 'Date and Time',
+          collapsed: false,
+          items: ['DatePicker', 'TimeInput', 'Calendar'],
         },
       ],
     },

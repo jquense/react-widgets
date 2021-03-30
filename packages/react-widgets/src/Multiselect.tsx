@@ -405,12 +405,14 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     toggle.open()
   }
 
-  const handleClick = ({ target }: React.SyntheticEvent<HTMLDivElement>) => {
+  const handleClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
     if (isDisabled || readOnly) return
 
+    // prevents double clicks when in a <label>
+    e.preventDefault()
     focus()
 
-    if (closest(target as HTMLDivElement, '.rw-select') && currentOpen) {
+    if (closest(e.target as HTMLDivElement, '.rw-select') && currentOpen) {
       toggle.close()
     } else toggle.open()
   }
@@ -427,6 +429,9 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     originalEvent: React.SyntheticEvent,
   ) => {
     if (dataItem === undefined) return
+
+    originalEvent.preventDefault()
+
     if (dataItem === CREATE_OPTION) {
       handleCreate(originalEvent)
       return

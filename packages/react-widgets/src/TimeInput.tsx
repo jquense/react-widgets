@@ -131,7 +131,14 @@ export interface TimeInputProps
 }
 
 const propTypes = {
+  /**
+   * @example ['valuePicker', [ ['new Date()'] ]]
+   */
   value: PropTypes.instanceOf(Date),
+
+  /**
+   * @example ['onChangePicker', [ ['new Date()'] ]]
+   */
   onChange: PropTypes.func,
 
   /**
@@ -156,7 +163,14 @@ const propTypes = {
   /** Hide the input clear button */
   noClearButton: PropTypes.bool,
 
+  /**
+   * @example ['disabled', ['new Date()']]
+   */
   disabled: PropTypes.bool,
+
+  /**
+   * @example ['readOnly', ['new Date()']]
+   */
   readOnly: PropTypes.bool,
 
   /** Controls how precise of a time can be input **/

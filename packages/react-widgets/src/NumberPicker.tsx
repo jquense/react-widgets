@@ -45,6 +45,9 @@ function clamp(value: number | null | undefined, min: number, max: number) {
 }
 
 const propTypes = {
+  /**
+   * @example ['valuePicker', [ [1, null] ]]
+   */
   value: PropTypes.number,
 
   /**
@@ -134,7 +137,10 @@ const defaultProps = {
 export interface NumberPickerProps
   extends WidgetHTMLProps,
     Omit<WidgetProps, 'onChange'> {
-  value: number | undefined
+  /**
+   * @example ['valuePicker', [ [1, null] ]]
+   */
+  value?: number | undefined
 
   /**
    * @example ['onChangePicker', [ [1, null] ]]
@@ -179,7 +185,7 @@ export interface NumberPickerProps
   precision?: number | 'auto'
 
   /**
-   * A format string used to display the number value. Localizer dependent, read [localization](../localization) for more info.
+   * A format string used to display the number value. Localizer dependent, read [localization](./localization) for more info.
    *
    * @example ['prop', { max: 1, min: -1 , defaultValue: 0.2585, format: "{ style: 'percent' }" }]
    */

@@ -12,7 +12,7 @@ let props = {
 }
 
 export default {
-  title: 'Listbox 222',
+  title: 'Listbox',
 }
 
 export const Default = () => (

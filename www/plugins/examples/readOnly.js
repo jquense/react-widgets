@@ -7,21 +7,21 @@ module.exports = function (widgetName, value) {
 
   let example = isListComponent(widgetName)
     ? `<${widgetName}
-      readOnly
-      data={colors}
-      defaultValue={${value}}
-    />`
+    readOnly
+    data={colors}
+    defaultValue={${value}}
+  />`
     : `<${widgetName}
-      readOnly
-      defaultValue={${value}}
-    />`
+    readOnly
+    defaultValue={${value}}
+  />`
 
   return stripIndent`
   import { ${widgetName} } from 'react-widgets';
 
   ${
     isListComponent(widgetName)
-      ? `let colors = ['orange', 'red', 'blue', 'purple']\n`
+      ? `let colors = ['orange', 'red', 'blue', 'purple'];\n`
       : ''
   }
 

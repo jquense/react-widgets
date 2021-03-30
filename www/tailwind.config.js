@@ -1,13 +1,17 @@
 module.exports = {
-  purge: [],
+  purge: [
+    './docs/**/*.{js,ts,tsx,mdx}',
+    './src/**/*.{js,ts,tsx}',
+    './src/**/*.html',
+  ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {},
     flexGrow: {
-      '0': 0,
+      0: 0,
       DEFAULT: 1,
-      '1': 1,
-      '2': 2,
+      1: 1,
+      2: 2,
     },
     extend: {},
   },

@@ -17,7 +17,7 @@ module.exports = function (widgetName) {
       <${widgetName}
         data={colors}
         dataKey='id'
-        textField='fullName'
+        textField='name'
         defaultValue={${!isValueArray(widgetName) ? '1' : '[1, 2]'}}
       />
     )

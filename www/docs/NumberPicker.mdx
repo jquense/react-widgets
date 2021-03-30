@@ -42,7 +42,7 @@ Take care with decimal `step` values, JavaScript's floating point math can produ
 unexpected results when adding decimals together. The `NumberPicker` input will
 do it's best to avoid these errors, by rounding the result of a step increase to either
 the precision of the current value or `step` amount, depending on which is larger.
-Use the `precision` prop to manually control the precision used.
+You can also use the `precision` prop to manually control the precision used.
 
 ```jsx live
 import NumberPicker from "react-widgets/NumberPicker";

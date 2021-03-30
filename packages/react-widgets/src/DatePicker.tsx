@@ -83,18 +83,33 @@ let propTypes = {
 
   /**
    * A formatting options used to display the date value. For more information about formats
-   * visit the [Localization page](/localization)
+   * visit the [Localization page](./localization)
    *
-   * @example ['dateFormat', ['default', "{ raw: 'MMM dd, yyyy' }", null, { defaultValue: 'new Date()', time: 'false' }]]
+   * ```tsx live
+   * import { DatePicker } from 'react-widgets';
+   *
+   * <DatePicker
+   *   defaultValue={new Date()}
+   *   valueDisplayFormat={{ dateStyle: "medium" }}
+   * />
+   * ```
    */
 
   valueDisplayFormat: PropTypes.any,
 
   /**
    * A formatting options used while the date input has focus. Useful for showing a simpler format for inputing.
-   * For more information about formats visit the [Localization page](/localization)
+   * For more information about formats visit the [Localization page](./localization)
    *
-   * @example ['dateFormat', ['edit', "{ date: 'short' }", null, { defaultValue: 'new Date()', format: "{ raw: 'MMM dd, yyyy' }", time: 'false' }]]
+   * ```tsx live
+   * import { DatePicker } from 'react-widgets';
+   *
+   * <DatePicker
+   *   defaultValue={new Date()}
+   *   valueEditFormat={{ dateStyle: "short" }}
+   *   valueDisplayFormat={{ dateStyle: "medium" }}
+   * />
+   * ```
    */
   valueEditFormat: PropTypes.any,
 
@@ -237,6 +252,9 @@ export interface DatePickerProps<TLocalizer = unknown>
   /** Specify the element used to render the calendar dropdown icon. */
   selectIcon?: React.ReactNode
 
+  /**
+   * @example ['prop', { dropUp: true }]
+   */
   dropUp?: boolean
 
   popupTransition?: React.ComponentType<TransitionProps>
@@ -460,9 +478,11 @@ const DatePicker = React.forwardRef(
       handleChange(date, formatDate(date), true)
     })
 
-    const handleCalendarClick = useEventCallback(() => {
+    const handleCalendarClick = useEventCallback((e: React.MouseEvent) => {
       if (readOnly || disabled) return
-      // this.focus()
+
+      // prevents double clicks when in a <label>
+      e.preventDefault()
       toggle()
     })
 

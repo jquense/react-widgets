@@ -12,7 +12,6 @@ module.exports = function (widgetName) {
         textField='fullName'
         groupBy='lastName'
       />
-      <br />
       <${widgetName}
         data={people}
         textField='fullName'

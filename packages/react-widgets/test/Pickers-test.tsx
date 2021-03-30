@@ -147,6 +147,7 @@ describe('Pickers', () => {
     it(`${Widget.displayName}: should call onSelect`, function () {
       let change = sinon.spy()
       let onSelect = sinon.spy()
+      const evt = new Event('foo')
 
       mount(
         <Widget
@@ -158,10 +159,10 @@ describe('Pickers', () => {
         />,
       )
         .find('List')
-        .act((_) => _.prop('onChange')(data[1], { originalEvent: 'foo' }))
+        .act((_) => _.prop('onChange')(data[1], { originalEvent: evt }))
 
       expect(onSelect.calledOnce).to.equal(true)
-      expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: 'foo' })
+      expect(onSelect.getCall(0).args[1]).to.eql({ originalEvent: evt })
 
       expect(change.calledAfter(onSelect)).to.equal(true)
     })

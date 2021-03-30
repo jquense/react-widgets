@@ -1,6 +1,6 @@
 const { stripIndent } = require('common-tags')
 
-module.exports = function(widgetName) {
+module.exports = function (widgetName) {
   return stripIndent`
     import { ${widgetName} } from 'react-widgets';
 
@@ -14,7 +14,7 @@ module.exports = function(widgetName) {
         let onViewChange = view => this.setState({ view })
 
         return (
-          <div>
+          <div className='max-w-xs'>
             <${widgetName}
               view={this.state.view}
               onViewChange={onViewChange}

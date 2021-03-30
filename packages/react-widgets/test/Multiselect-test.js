@@ -272,6 +272,8 @@ describe('Multiselect', function () {
     let change = sinon.spy()
     let value = dataList.slice(0, 1)
 
+    const evt = new Event('foo')
+
     mount(
       <Multiselect
         open
@@ -283,10 +285,10 @@ describe('Multiselect', function () {
       />,
     )
       .find('List')
-      .act((_) => _.prop('onChange')(dataList[1], { originalEvent: 'foo' }))
+      .act((_) => _.prop('onChange')(dataList[1], { originalEvent: evt }))
 
     expect(change.getCall(0).args[1]).to.eql({
-      originalEvent: 'foo',
+      originalEvent: evt,
       lastValue: value,
       dataItem: dataList[1],
       action: 'insert',
